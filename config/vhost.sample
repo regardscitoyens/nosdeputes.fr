@@ -1,11 +1,5 @@
-    # Be sure to only have this line once in your configuration
-    NameVirtualHost 127.0.0.1:80
-
-    # This is the configuration for cpc
-    Listen 127.0.0.1:80
-
-    <VirtualHost 127.0.0.1:80>
-      ServerName cpc.localhost
+    <VirtualHost *:80>
+      ServerName cpc.tangui.eu.org
       DocumentRoot "/home/cpc/project/web"
       DirectoryIndex index.php
       <Directory "/home/cpc/project/web">
@@ -13,8 +7,8 @@
         Allow from All
       </Directory>
 
-      Alias /sf "/home/cpc/symfony-1.2.7/data/web/sf"
-      <Directory "/home/cpc/symfony-1.2.7/data/web/sf">
+      Alias /sf "/home/cpc/symfony/data/web/sf"
+      <Directory "/home/cpc/symfony/data/web/sf">
         AllowOverride All
         Allow from All
       </Directory>
