@@ -21,8 +21,3 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
-AuthType basic
-AuthUserFile /home/cpc/htpasswd
-AuthName cpc
-Require valid-user
-
