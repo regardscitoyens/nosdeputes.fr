@@ -1,0 +1,7 @@
+#!/bin/bash
+
+mkdir log cache
+chmod 777 log cache
+
+echo "Don't forget to copy and adapt config/ProjectConfiguration.class.example.php to config/ProjectConfiguration.class.php"
+
