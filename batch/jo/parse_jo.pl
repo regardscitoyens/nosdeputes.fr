@@ -2,6 +2,19 @@
 
 open FILE, shift;
 
+$mois{'janvier'} = '01';
+$mois{'février'} = '02';
+$mois{'mars'} = '03';
+$mois{'avril'} = '04';
+$mois{'mai'} = '05';
+$mois{'juin'} = '06';
+$mois{'juillet'} = '07';
+$mois{'août'} = '08';
+$mois{'septembre'} = '09';
+$mois{'octobre'} = '10';
+$mois{'novembre'} = '11';
+$mois{'décembre'} = '12';
+
 $on = 0;
 while(<FILE>) {
     if ($on) {
@@ -45,7 +58,7 @@ foreach (split /\n/, $lines) {
 	s/ heures/:00/;
 	s/ h /:/;
 	if (/([\d]+)[er]* ([\wé]+) (\d+)/) {
-	    $reunion = "$1 $2 $3";
+	    $reunion = "$1/".$mois{$2}."/$3";
 	}
 	if (/ à ([\d:]+)/) {
 	    $session = $1;
