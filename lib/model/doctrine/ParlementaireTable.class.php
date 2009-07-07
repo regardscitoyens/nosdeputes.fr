@@ -4,5 +4,5 @@
  */
 class ParlementaireTable extends PersonnaliteTable
 {
-
+  
 }

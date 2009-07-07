@@ -3,6 +3,7 @@ Personnalite:
     Timestampable:
   columns:
     nom: string(255)
+    nom_de_famille: string(255)
     permalink: 
       type: string(255)
       unique: true

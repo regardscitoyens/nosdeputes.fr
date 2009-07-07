@@ -13,6 +13,9 @@ class Parlementaire extends BaseParlementaire
 	       $perma = preg_replace('/[ù]+/', 'u', $perma);
 	       $perma = preg_replace('/\W/', '-', $perma);
 	       $this->_set('permalink', $perma);
+	       if (preg_match('/^\S+ [a-z\s\']*([A-Z].+)/', $str, $match)) {
+		 $this->_set('nom_de_famille', $match[1]);
+	       }
 	       return $this->_set('nom', $str);
 	}
 	public function getCirconscription() {
