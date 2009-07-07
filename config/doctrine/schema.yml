@@ -29,14 +29,16 @@ Parlementaire:
     extends: Personnalite
     type: concrete
   relations:
-    Organisme:
+    Organismes:
       class: Organisme
       refClass: ParlementaireOrganisme
-      foreignAlias: Parlementaire
+      foreignAlias: Organismes
 
 Organisme:
   columns:
-    nom: string(255)
+    nom: 
+      type: string(255)
+      unique: true
     permalink:
       type: string(255)
       unique: true
@@ -54,5 +56,10 @@ ParlementaireOrganisme:
     parlementaire_id:
       type: integer
       primary: true
+  relations:
+    Parlementaire:
+      foreignAlias: ParlementaireOrganismes
+    Organisme:
+      foreignAlias: ParlementaireOrganismes
 
   

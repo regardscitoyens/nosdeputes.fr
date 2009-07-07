@@ -20,8 +20,12 @@ class parlementaireActions extends sfActions
     $this->pager = new sfDoctrinePager('Parlementaire',
 				       20
 				       );
-    $this->pager->setQuery(Doctrine_Query::create()->select("*")->From("Parlementaire p")->orderBy("p.nom_de_famille ASC"));
+    $this->pager->setQuery(Doctrine::getTable('Parlementaire')->pager($request->getParameter('search')));
     $this->pager->setPage($request->getParameter('page', 1));
     $this->pager->init();
+    if ($this->pager->getNbResults() == 1) {
+      $p = $this->pager->getResults();
+      return $this->redirect('parlementaire/show?permalink='.$p[0]->permalink);
+    }
   }
 }

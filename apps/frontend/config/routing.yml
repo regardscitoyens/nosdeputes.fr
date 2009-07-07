@@ -3,6 +3,10 @@ parlementaire:
   url: /parlementaire/:permalink
   param: {module: parlementaire, action: show}
 
+search_parlementaire:
+  url: /parlementaire
+  param: {module: parlementaire, action list}
+
 homepage:
   url:   /
   param: { module: parlementaire, action: list }

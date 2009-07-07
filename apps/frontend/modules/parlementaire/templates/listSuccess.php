@@ -4,6 +4,7 @@
 <li><? echo link_to($parlementaire->nom, 'parlementaire/show?permalink='.$parlementaire->permalink); ?></li>
 <? endforeach ; ?>
 </ul>
+<? if ($pager->haveToPaginate()) : ?>
 <div class="pagination">
     <a href="<?php echo url_for('parlementaire/list') ?>?page=1">
    << 
@@ -28,4 +29,5 @@
     <a href="<?php echo url_for('parlementaire/list') ?>?page=<?php echo $pager->getLastPage() ?>">
    >>
     </a>
-  </div>
+</div>
+<? endif; ?>

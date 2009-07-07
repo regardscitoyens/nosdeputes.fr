@@ -7,6 +7,11 @@
     <link rel="shortcut icon" href="/favicon.ico" />
   </head>
   <body>
+   <div>
+   <form action="<? echo url_for('@search_parlementaire'); ?>" method="GET">
+   <input name="search" value=""/><input type="submit" value="Chercher"/>
+   </form>
+   </div>
     <?php echo $sf_content ?>
   </body>
 </html>

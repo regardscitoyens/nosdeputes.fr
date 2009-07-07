@@ -29,7 +29,8 @@ sub infosgene {
 	$p->get_tag('td');
 	$txt = $p->get_text('/td');
 	if ($e =~ /groupe|président/i) {
-	    push @{$depute{'Fonctions'}}, {'orga' => lc($txt), 'fonction' => ($e =~ /président/i) ? 'président' : 'membre' };
+	    $fonction = ($e =~ /président/i) ? 'président' : 'membre';
+	    push @{$depute{'Groupe'}}, lc($txt)." / $fonction";
 	    next;
 	}
 	next if ($e =~ /Commission/);
@@ -60,7 +61,8 @@ sub contact {
 		if ($text =~ /^\S+\@/) {
 		    push @{$depute{'Mails'}}, $text;
 		}else {
-		    push @{$depute{'Adresses'}}, $text;		    
+		    push @{$depute{'Adresses'}}, $text
+			if ($text);
 		}
 	    }
 	}
@@ -88,7 +90,7 @@ sub mandat {
 			$deb = $1;
 		    }
 		}
-		push @{$depute{'Fonctions'}}, {'orga' => lc($orga), 'fonction' =>lc($fonction), 'deb'=>$deb};
+		push @{$depute{'Fonctions'}}, lc($orga)." / ".lc($fonction)." / ".$deb;
 		$p->get_tag('/li');
 	    }
 	}
@@ -105,7 +107,7 @@ sub extra {
 	    $fonction = $1;
 	    $orga = $3;
 	}
-	push @{$depute{'Extras'}}, {'orga' => lc($orga), 'fonction' =>lc($fonction)};
+	push @{$depute{'Extras'}}, lc($orga)." / ".lc($fonction);
     }
 }
 
@@ -182,8 +184,15 @@ exit;
 } 
 print "  depute_".$depute{'id_an'}.":\n";
 foreach $k (keys %depute) {
-    next if ($k =~ /suppléant|groupe/i);
-    next if (ref($depute{$k}) =~ /ARRAY|HASH/);
-    print "    ".lc($k).": ".$depute{$k}."\n";
+    next if ($k =~ /suppléant/i);
+    next if (ref($depute{$k}) =~ /HASH/);
+    if (ref($depute{$k}) =~ /ARRAY/) {
+	print "    ".lc($k).":\n";
+	foreach $i (@{$depute{$k}}) {
+	    print "      - $i\n";
+	}
+    }else {
+	print "    ".lc($k).": ".$depute{$k}."\n";
+    }
 }
 print "    type: depute\n";

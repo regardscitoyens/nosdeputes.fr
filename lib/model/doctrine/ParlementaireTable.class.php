@@ -4,5 +4,11 @@
  */
 class ParlementaireTable extends PersonnaliteTable
 {
-  
+  public function pager($search) {
+    $q = Doctrine_Query::create()->select("*")->From("Parlementaire p")->orderBy("p.nom_de_famille ASC");
+    if ($search) {
+      $q->where("p.nom LIKE '%$search%'");
+    }
+    return $q;
+  }
 }
