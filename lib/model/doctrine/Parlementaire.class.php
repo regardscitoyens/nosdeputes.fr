@@ -15,6 +15,9 @@ class Parlementaire extends BaseParlementaire
 	       $this->_set('permalink', $perma);
 	       return $this->_set('nom', $str);
 	}
+	public function getCirconscription() {
+	  return $this->nom_circo."(".$this->num_circo.")";
+	}
 	public function setCirconscription($str) {
 	       if (preg_match('/(.*)\((\d+)/', $str, $match)) {
 	       	  $this->nom_circo = $match[1];
