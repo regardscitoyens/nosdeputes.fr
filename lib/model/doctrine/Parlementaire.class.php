@@ -9,7 +9,6 @@ class Parlementaire extends BaseParlementaire
 {
 
   public function setNom($str) {
-    $this->_set('permalink', myTools::Permalinkise($str));
     if (preg_match('/^\S+ [a-z\s\']*([A-Z].+)/', $str, $match)) {
       $this->_set('nom_de_famille', $match[1]);
     }
@@ -44,7 +43,7 @@ class Parlementaire extends BaseParlementaire
   public function setParlementaireOrganisme($type, $array) {
     $orgas = $this->getOrganismes();
     foreach ($array as $item) {
-      $args = split('/ \/ ', $item);
+      $args = preg_split('/\s+\/\s*/', $item);
       $orga = Doctrine::getTable('Organisme')->findOneByNom($args[0]);
       if (!$orga) {
 	$orga = new Organisme();

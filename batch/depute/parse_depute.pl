@@ -19,8 +19,8 @@ sub infosgene {
     $p = shift;
     $t = $p->get_tag("li");
     $depute{'Nom'} = $p->get_text("/li");
+    $depute{'Sexe'} = ($depute{'Nom'} =~ /M[ml]/) ? 'F' : 'H';
     $depute{'Nom'} =~ s/^\s*M\S+\s//;
-    $depute{'Sexe'} = ($depute{'nom'} =~ /Mm/) ? 'F' : 'M'; 
     while($t = $p->get_tag('u', '/div')) {
 	return if ($t->[0] eq '/div');
 	$txt = $p->get_text('/u');

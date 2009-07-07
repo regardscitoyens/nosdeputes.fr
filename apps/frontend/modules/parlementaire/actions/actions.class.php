@@ -12,8 +12,8 @@ class parlementaireActions extends sfActions
 {
   public function executeShow(sfWebRequest $request)
   {
-    $perma = $request->getParameter('permalink');
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneByPermalink($perma);
+    $slug = $request->getParameter('slug');
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
   }
   public function executeList(sfWebRequest $request)
   {

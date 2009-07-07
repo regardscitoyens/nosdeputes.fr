@@ -1,6 +1,6 @@
 # default rules
 parlementaire:
-  url: /parlementaire/:permalink
+  url: /parlementaire/:slug
   param: {module: parlementaire, action: show}
 
 search_parlementaire:

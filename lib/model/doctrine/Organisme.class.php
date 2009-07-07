@@ -7,8 +7,4 @@ require_once "myTools.class.php";
  */
 class Organisme extends BaseOrganisme
 {
-  public function setNom($str) {
-    //    $this->_set('permalink', myTools::Permalinkize($str));
-    return $this->_set('nom', $str);
-  }
 }

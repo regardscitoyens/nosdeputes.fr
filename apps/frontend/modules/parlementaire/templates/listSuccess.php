@@ -1,7 +1,7 @@
 <p><? echo $pager->getNbResults(); ?> résultats</p>
 <ul>
 <? foreach($pager->getResults() as $parlementaire) : ?>
-<li><? echo link_to($parlementaire->nom, 'parlementaire/show?permalink='.$parlementaire->permalink); ?></li>
+<li><? echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?></li>
 <? endforeach ; ?>
 </ul>
 <? if ($pager->haveToPaginate()) : ?>
