@@ -1,11 +1,11 @@
 # default rules
+parlementaire:
+  url: /parlementaire/:permalink
+  param: {module: parlementaire, action: show}
+
 homepage:
   url:   /
-  param: { module: default, action: index }
-
-default_index:
-  url:   /:module
-  param: { action: index }
+  param: { module: parlementaire, action: list }
 
 default:
   url:   /:module/:action/*
