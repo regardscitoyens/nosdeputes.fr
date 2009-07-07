@@ -1,0 +1,6092 @@
+Parlementaire:
+  depute_1001:
+    place_hemicycle: 346
+    sexe: M
+    id_an: 1001
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1001.asp
+    circonscription: Nord (4ème)
+    site_web: http://www.mpdaubresse.com
+    profession: Ancien directeur d'une société de recrutement
+    debut_mandat: 20/06/2007
+    nom: Marc-Philippe Daubresse
+    type: depute
+  depute_1012:
+    place_hemicycle: 40
+    sexe: M
+    id_an: 1012
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1012.asp
+    circonscription: Ain (2ème)
+    site_web: http://www.charlesdelaverpilliere.com
+    profession: Conseiller d'Etat
+    debut_mandat: 20/06/2007
+    nom: Charles de La Verpillière
+    type: depute
+  depute_1020:
+    place_hemicycle: 10
+    sexe: M
+    id_an: 1020
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1020.asp
+    circonscription: Paris (15ème)
+    site_web: http://www.bernarddebre.fr
+    profession: Chirurgien des hôpitaux, professeur des Universités
+    debut_mandat: 20/06/2007
+    nom: Bernard Debré
+    type: depute
+  depute_1029:
+    place_hemicycle: 253
+    sexe: M
+    id_an: 1029
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1029.asp
+    circonscription: Bouches-du-Rhône (9ème)
+    site_web: http://www.bernarddeflesselles.com
+    profession: Ingénieur
+    debut_mandat: 20/06/2007
+    nom: Bernard Deflesselles
+    type: depute
+  depute_1031:
+    place_hemicycle: 52
+    sexe: M
+    id_an: 1031
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1031.asp
+    circonscription: Oise (5ème)
+    profession: Horticulteur
+    debut_mandat: 20/06/2007
+    nom: Lucien Degauchy
+    type: depute
+  depute_1032:
+    place_hemicycle: 638
+    sexe: M
+    id_an: 1032
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1032.asp
+    circonscription: Dordogne (1ère)
+    site_web: http://pascaldeguilhem.free.fr
+    profession: Professeur d'Education physique (Université Bordeaux IV)
+    debut_mandat: 20/06/2007
+    nom: Pascal Deguilhem
+    type: depute
+  depute_1048:
+    place_hemicycle: 533
+    sexe: M
+    id_an: 1048
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1048.asp
+    circonscription: Nord (13ème)
+    profession: Préfet
+    debut_mandat: 20/06/2007
+    nom: Michel Delebarre
+    type: depute
+  depute_1058:
+    place_hemicycle: 357
+    sexe: M
+    id_an: 1058
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1058.asp
+    circonscription: Val-de-Marne (12ème)
+    site_web: http://www.richard-dellagnola.com
+    profession: Attaché principal d'administration au ministère de la justice
+    debut_mandat: 20/06/2007
+    nom: Richard Dell'Agnola
+    type: depute
+  depute_1066:
+    place_hemicycle: 404
+    sexe: M
+    id_an: 1066
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1066.asp
+    circonscription: Gironde (8ème)
+    site_web: http://www.francoisdeluga.net
+    profession: Agent général d'assurances
+    debut_mandat: 01/12/2008
+    nom: François Deluga
+    type: depute
+  depute_1079:
+    place_hemicycle: 100
+    sexe: M
+    id_an: 1079
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1079.asp
+    circonscription: Orne (1ère)
+    site_web: http://www.yves-deniaud.org
+    profession: Cadre commercial
+    debut_mandat: 20/06/2007
+    nom: Yves Deniaud
+    type: depute
+  depute_1085:
+    place_hemicycle: 21
+    sexe: M
+    id_an: 1085
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1085.asp
+    circonscription: Côte-d'Or (1ère)
+    site_web: http://www.bernard-depierre.com
+    profession: Consultant 
+    debut_mandat: 20/06/2007
+    nom: Bernard Depierre
+    type: depute
+  depute_1092:
+    place_hemicycle: 528
+    sexe: M
+    id_an: 1092
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1092.asp
+    circonscription: Nord (2ème)
+    profession: Instituteur retraité
+    debut_mandat: 20/06/2007
+    nom: Bernard Derosier
+    type: depute
+  depute_1094:
+    place_hemicycle: 581
+    sexe: M
+    id_an: 1094
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1094.asp
+    circonscription: Aisne (4ème)
+    site_web: http://www.jacques-desallangre.org/accueil.php
+    profession: Journaliste
+    debut_mandat: 20/06/2007
+    nom: Jacques Desallangre
+    type: depute
+  depute_1116:
+    place_hemicycle: 543
+    sexe: M
+    id_an: 1116
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1116.asp
+    circonscription: Isère (3ème)
+    site_web: http://micheldestot.blogs.com/
+    profession: Ingénieur
+    debut_mandat: 20/06/2007
+    nom: Michel Destot
+    type: depute
+  depute_1141:
+    place_hemicycle: 602
+    sexe: M
+    id_an: 1141
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1141.asp
+    circonscription: Nord (17ème)
+    site_web: http://www.marc-dolez.net
+    profession: Maître de conférences
+    debut_mandat: 20/06/2007
+    nom: Marc Dolez
+    type: depute
+  depute_1152:
+    place_hemicycle: 264
+    sexe: M
+    id_an: 1152
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1152.asp
+    circonscription: Savoie (1ère)
+    site_web: http://www.blogdord.fr
+    profession: Gérant de société
+    debut_mandat: 20/06/2007
+    nom: Dominique Dord
+    type: depute
+  depute_1155:
+    place_hemicycle: 554
+    sexe: M
+    id_an: 1155
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1155.asp
+    circonscription: Aisne (1ère)
+    site_web: http://renedosiere.over-blog.com
+    profession: Consultant international
+    debut_mandat: 20/06/2007
+    nom: René Dosière
+    type: depute
+  depute_1165:
+    place_hemicycle: 416
+    sexe: M
+    id_an: 1165
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1165.asp
+    circonscription: Essonne (10ème)
+    profession: Enseignant chercheur
+    debut_mandat: 20/06/2007
+    nom: Julien Dray
+    type: depute
+  depute_1166:
+    place_hemicycle: 420
+    sexe: M
+    id_an: 1166
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1166.asp
+    circonscription: Paris (5ème)
+    profession: Avocat au Barreau de Paris
+    debut_mandat: 20/06/2007
+    nom: Tony Dreyfus
+    type: depute
+  depute_1182:
+    place_hemicycle: 362
+    sexe: M
+    id_an: 1182
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1182.asp
+    circonscription: Landes (2ème)
+    site_web: http://www.jeanpierredufau.org
+    profession: Enseignant retraité
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Dufau
+    type: depute
+  depute_1193:
+    place_hemicycle: 465
+    sexe: M
+    id_an: 1193
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1193.asp
+    circonscription: Gard (5ème)
+    site_web: http://www.williamdumas.net
+    debut_mandat: 20/06/2007
+    nom: William Dumas
+    type: depute
+  depute_1198:
+    place_hemicycle: 644
+    sexe: M
+    id_an: 1198
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1198.asp
+    circonscription: Calvados (2ème)
+    site_web: http://www.laurencedumont.net
+    profession: Chargée d'études
+    debut_mandat: 20/06/2007
+    nom: Laurence Dumont
+    type: depute
+  depute_1199:
+    place_hemicycle: 557
+    sexe: M
+    id_an: 1199
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1199.asp
+    circonscription: Meuse (2ème)
+    site_web: http://www.jeanlouisdumont.fr
+    profession: Enseignant
+    debut_mandat: 20/06/2007
+    nom: Jean-Louis Dumont
+    type: depute
+  depute_1205:
+    place_hemicycle: 114
+    sexe: M
+    id_an: 1205
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1205.asp
+    circonscription: Corrèze (3ème)
+    profession: Docteur vétérinaire
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Dupont
+    type: depute
+  depute_1206:
+    place_hemicycle: 68
+    sexe: M
+    id_an: 1206
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1206.asp
+    circonscription: Essonne (8ème)
+    site_web: http://www.nicolasdupontaignan.fr
+    profession: Administrateur civil
+    debut_mandat: 20/06/2007
+    nom: Nicolas Dupont-Aignan
+    type: depute
+  depute_1208:
+    place_hemicycle: 455
+    sexe: M
+    id_an: 1208
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1208.asp
+    circonscription: Aude (3ème)
+    site_web: http://www.jean-paul-dupre.fr
+    profession: Cadre bancaire retraité
+    debut_mandat: 20/06/2007
+    nom: Jean-Paul Dupré
+    type: depute
+  depute_1214:
+    place_hemicycle: 475
+    sexe: M
+    id_an: 1214
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1214.asp
+    circonscription: Nord (11ème)
+    profession: Enseignant
+    debut_mandat: 20/06/2007
+    nom: Yves Durand
+    type: depute
+  depute_1224:
+    place_hemicycle: 511
+    sexe: M
+    id_an: 1224
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1224.asp
+    circonscription: Pas-de-Calais (11ème)
+    site_web: http://www.odetteduriez.com
+    profession: Comptable
+    debut_mandat: 20/06/2007
+    nom: Odette Duriez
+    type: depute
+  depute_1226:
+    place_hemicycle: 439
+    sexe: M
+    id_an: 1226
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1226.asp
+    circonscription: Calvados (1ère)
+    site_web: http://philippe-duron.fr/blog
+    profession: Professeur de lycée agrégé d'histoire
+    debut_mandat: 20/06/2007
+    nom: Philippe Duron
+    type: depute
+  depute_1243:
+    place_hemicycle: 648
+    sexe: M
+    id_an: 1243
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1243.asp
+    circonscription: Meurthe-et-Moselle (7ème)
+    site_web: http://christianeckert.over-blog.com
+    profession: Professeur
+    debut_mandat: 20/06/2007
+    nom: Christian Eckert
+    type: depute
+  depute_1252:
+    place_hemicycle: 501
+    sexe: M
+    id_an: 1252
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1252.asp
+    circonscription: Landes (3ème)
+    site_web: http://www.henriemmanuelli.fr
+    profession: Directeur-adjoint de banque
+    debut_mandat: 20/06/2007
+    nom: Henri Emmanuelli
+    type: depute
+  depute_1263:
+    sexe: M
+    id_an: 1263
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1263.asp
+    circonscription: Alpes-Maritimes (5ème)
+    profession: Ancien sportif de haut niveau
+    debut_mandat: 26/05/2008
+    nom: Christian Estrosi
+    type: depute
+  depute_1268:
+    place_hemicycle: 515
+    sexe: M
+    id_an: 1268
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1268.asp
+    circonscription: Seine-Maritime (4ème)
+    site_web: http://www.laurent-fabius.net
+    profession: Ancien Maître des requêtes au Conseil d'Etat
+    debut_mandat: 20/06/2007
+    nom: Laurent Fabius
+    type: depute
+  depute_1271:
+    place_hemicycle: 512
+    sexe: M
+    id_an: 1271
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1271.asp
+    circonscription: Pas-de-Calais (14ème)
+    profession: Professeur
+    debut_mandat: 20/06/2007
+    nom: Albert Facon
+    type: depute
+  depute_1300:
+    place_hemicycle: 105
+    sexe: M
+    id_an: 1300
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1300.asp
+    circonscription: Vaucluse (3ème)
+    site_web: http://www.jeanmichelferrand.com
+    profession: Professeur de lettres
+    debut_mandat: 20/06/2007
+    nom: Jean-Michel Ferrand
+    type: depute
+  depute_1304:
+    place_hemicycle: 297
+    sexe: M
+    id_an: 1304
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1304.asp
+    circonscription: Bas-Rhin (6ème)
+    profession: Chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Alain Ferry
+    type: depute
+  depute_1326:
+    place_hemicycle: 474
+    sexe: M
+    id_an: 1326
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1326.asp
+    circonscription: Hautes-Pyrénées (1ère)
+    profession: Professeur de mathématiques
+    debut_mandat: 20/06/2007
+    nom: Pierre Forgues
+    type: depute
+  depute_1327:
+    place_hemicycle: 344
+    sexe: M
+    id_an: 1327
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1327.asp
+    circonscription: Indre (2ème)
+    profession: Chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Nicolas Forissier
+    type: depute
+  depute_1341:
+    place_hemicycle: 343
+    sexe: M
+    id_an: 1341
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1341.asp
+    circonscription: Yvelines (11ème)
+    site_web: http://www.jmfourgous.com
+    profession: Chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Jean-Michel Fourgous
+    type: depute
+  depute_1353:
+    place_hemicycle: 457
+    sexe: M
+    id_an: 1353
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1353.asp
+    circonscription: Oise (3ème)
+    site_web: http://www.michelfrancaix.fr
+    profession: Consultant en communication
+    debut_mandat: 20/06/2007
+    nom: Michel Françaix
+    type: depute
+  depute_1355:
+    place_hemicycle: 274
+    sexe: M
+    id_an: 1355
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1355.asp
+    circonscription: Hauts-de-Seine (6ème)
+    profession: Ancien clerc de notaire
+    debut_mandat: 20/06/2007
+    nom: Joëlle Ceccaldi-Raynaud
+    type: depute
+  depute_1364:
+    place_hemicycle: 590
+    sexe: M
+    id_an: 1364
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1364.asp
+    circonscription: Hauts-de-Seine (4ème)
+    profession: Médecin cardiologue
+    debut_mandat: 20/06/2007
+    nom: Jacqueline Fraysse
+    type: depute
+  depute_1375:
+    place_hemicycle: 277
+    sexe: M
+    id_an: 1375
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1375.asp
+    circonscription: Nouvelle-Calédonie (2ème)
+    profession: Administrateur de biens
+    debut_mandat: 20/06/2007
+    nom: Pierre Frogier
+    type: depute
+  depute_1379:
+    place_hemicycle: 272
+    sexe: M
+    id_an: 1379
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1379.asp
+    circonscription: Cher (1ère)
+    site_web: http://www.fromion.org
+    profession: Sous-préfet
+    debut_mandat: 20/06/2007
+    nom: Yves Fromion
+    type: depute
+  depute_1399:
+    place_hemicycle: 3
+    sexe: M
+    id_an: 1399
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1399.asp
+    circonscription: Nord (21ème)
+    profession: Pharmacienne retraitée
+    debut_mandat: 20/07/2007
+    nom: Cécile Gallez
+    type: depute
+  depute_1418:
+    place_hemicycle: 148
+    sexe: M
+    id_an: 1418
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1418.asp
+    circonscription: Dordogne (2ème)
+    site_web: http://www.danielgarrigue.com
+    profession: Administrateur à l'Assemblée nationale
+    debut_mandat: 20/06/2007
+    nom: Daniel Garrigue
+    type: depute
+  depute_1432:
+    place_hemicycle: 261
+    sexe: M
+    id_an: 1432
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1432.asp
+    circonscription: Manche (4ème)
+    profession: Docteur vétérinaire
+    debut_mandat: 20/06/2007
+    nom: Claude Gatignol
+    type: depute
+  depute_1433:
+    place_hemicycle: 471
+    sexe: M
+    id_an: 1433
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1433.asp
+    circonscription: Côtes-d'Armor (2ème)
+    site_web: http://jeangaubert.typepad.com
+    profession: Agriculteur-éleveur
+    debut_mandat: 20/06/2007
+    nom: Jean Gaubert
+    type: depute
+  depute_1445:
+    place_hemicycle: 170
+    sexe: M
+    id_an: 1445
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1445.asp
+    circonscription: Savoie (2ème)
+    profession: Administrateur civil
+    debut_mandat: 20/06/2007
+    nom: Hervé Gaymard
+    type: depute
+  depute_1452:
+    place_hemicycle: 496
+    sexe: M
+    id_an: 1452
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1452.asp
+    circonscription: Pas-de-Calais (2ème)
+    site_web: http://www.catherine-genisson.fr
+    profession: Praticien hospitalier
+    debut_mandat: 20/06/2007
+    nom: Catherine Génisson
+    type: depute
+  depute_1459:
+    place_hemicycle: 324
+    sexe: M
+    id_an: 1459
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1459.asp
+    circonscription: Nord (9ème)
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Bernard Gérard
+    type: depute
+  depute_1463:
+    place_hemicycle: 576
+    sexe: M
+    id_an: 1463
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1463.asp
+    circonscription: Rhône (14ème)
+    site_web: http://www.andregerin.com
+    profession: Dessinateur industriel
+    debut_mandat: 20/06/2007
+    nom: André Gerin
+    type: depute
+  depute_1466:
+    place_hemicycle: 260
+    sexe: M
+    id_an: 1466
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1466.asp
+    circonscription: Somme (6ème)
+    site_web: http://www.alaingest.info
+    profession: Consultant
+    debut_mandat: 20/06/2007
+    nom: Alain Gest
+    type: depute
+  depute_1477:
+    place_hemicycle: 313
+    sexe: M
+    id_an: 1477
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1477.asp
+    circonscription: Var (5ème)
+    profession: Ingénieur ETP
+    debut_mandat: 20/06/2007
+    nom: Georges Ginesta
+    type: depute
+  depute_1483:
+    place_hemicycle: 102
+    sexe: M
+    id_an: 1483
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1483.asp
+    circonscription: Var (3ème)
+    site_web: http://www.giran.fr
+    profession: Professeur d'Université
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Giran
+    type: depute
+  depute_1496:
+    place_hemicycle: 495
+    sexe: M
+    id_an: 1496
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1496.asp
+    circonscription: Hautes-Pyrénées (3ème)
+    site_web: http://www.jean-glavany.net
+    profession: Préfet
+    debut_mandat: 20/06/2007
+    nom: Jean Glavany
+    type: depute
+  depute_1498:
+    place_hemicycle: 172
+    sexe: M
+    id_an: 1498
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1498.asp
+    circonscription: Paris (14ème)
+    site_web: http://www.claudegoasguen.typepad.com
+    profession: Avocat à la Cour d'appel de Paris
+    debut_mandat: 20/06/2007
+    nom: Claude Goasguen
+    type: depute
+  depute_1514:
+    place_hemicycle: 258
+    sexe: M
+    id_an: 1514
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1514.asp
+    circonscription: Oise (6ème)
+    site_web: http://gonnot.over-blog.com
+    profession: Conseil en entreprises
+    debut_mandat: 20/06/2007
+    nom: François-Michel Gonnot
+    type: depute
+  depute_1515:
+    place_hemicycle: 423
+    sexe: M
+    id_an: 1515
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1515.asp
+    circonscription: Nièvre (2ème)
+    site_web: http://gorce.typepad.fr/blog/
+    profession: Administrateur civil
+    debut_mandat: 20/06/2007
+    nom: Gaëtan Gorce
+    type: depute
+  depute_1521:
+    place_hemicycle: 232
+    sexe: M
+    id_an: 1521
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1521.asp
+    circonscription: Paris (12ème)
+    profession: Cadre
+    debut_mandat: 20/06/2007
+    nom: Philippe Goujon
+    type: depute
+  depute_1522:
+    place_hemicycle: 255
+    sexe: M
+    id_an: 1522
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1522.asp
+    circonscription: Morbihan (1ère)
+    site_web: http://www.fgoulard.fr
+    debut_mandat: 20/06/2007
+    nom: François Goulard
+    type: depute
+  depute_1548:
+    place_hemicycle: 595
+    sexe: M
+    id_an: 1548
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1548.asp
+    circonscription: Somme (1ère)
+    site_web: http://www.maxime-gremetz.fr
+    profession: Métallurgiste
+    debut_mandat: 20/06/2007
+    nom: Maxime Gremetz
+    type: depute
+  depute_1549:
+    place_hemicycle: 311
+    sexe: M
+    id_an: 1549
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1549.asp
+    circonscription: Pyrénées-Atlantiques (5ème)
+    profession: Chirurgien retraité
+    debut_mandat: 20/06/2007
+    nom: Jean Grenet
+    type: depute
+  depute_1562:
+    place_hemicycle: 215
+    sexe: M
+    id_an: 1562
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1562.asp
+    circonscription: Moselle (1ère)
+    site_web: http://www.fgrosdidier.fr
+    profession: Fonctionnaire territorial
+    debut_mandat: 20/06/2007
+    nom: François Grosdidier
+    type: depute
+  depute_1568:
+    place_hemicycle: 213
+    sexe: M
+    id_an: 1568
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1568.asp
+    circonscription: Vendée (3ème)
+    profession: Docteur en  pharmacie, biologiste
+    debut_mandat: 20/06/2007
+    nom: Louis Guédon
+    type: depute
+  depute_1574:
+    place_hemicycle: 187
+    sexe: M
+    id_an: 1574
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1574.asp
+    circonscription: Alpes-Maritimes (4ème)
+    profession: Ancien dirigeant d'organisations professionnelles
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Guibal
+    type: depute
+  depute_1579:
+    place_hemicycle: 412
+    sexe: M
+    id_an: 1579
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1579.asp
+    circonscription: Seine-Saint-Denis (9ème)
+    site_web: http://elisabethguigou.hautetfort.com
+    profession: Administrateur civil du ministère des finances
+    debut_mandat: 20/06/2007
+    nom: Élisabeth Guigou
+    type: depute
+  depute_1585:
+    place_hemicycle: 165
+    sexe: M
+    id_an: 1585
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1585.asp
+    circonscription: Hauts-de-Seine (8ème)
+    site_web: http://www.jjguillet.org
+    profession: Chef d'entreprise retraité
+    debut_mandat: 20/06/2007
+    nom: Jean-Jacques Guillet
+    type: depute
+  depute_1592:
+    place_hemicycle: 446
+    sexe: M
+    id_an: 1592
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1592.asp
+    circonscription: Pyrénées-Atlantiques (3ème)
+    profession: Cadre
+    debut_mandat: 20/06/2007
+    nom: David Habib
+    type: depute
+  depute_1604:
+    place_hemicycle: 251
+    sexe: M
+    id_an: 1604
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1604.asp
+    circonscription: Eure-et-Loir (2ème)
+    profession: Chef d'entreprise du bâtiment
+    debut_mandat: 20/06/2007
+    nom: Gérard Hamel
+    type: depute
+  depute_1630:
+    place_hemicycle: 259
+    sexe: M
+    id_an: 1630
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1630.asp
+    circonscription: Val-de-Marne (8ème)
+    site_web: http://www.maisons-alfort.fr
+    profession: Cadre
+    debut_mandat: 20/06/2007
+    nom: Michel Herbillon
+    type: depute
+  depute_1654:
+    place_hemicycle: 509
+    sexe: M
+    id_an: 1654
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1654.asp
+    circonscription: Corrèze (1ère)
+    profession: Conseiller référendaire à la Cour des comptes
+    debut_mandat: 20/06/2007
+    nom: François Hollande
+    type: depute
+  depute_1658:
+    place_hemicycle: 64
+    sexe: M
+    id_an: 1658
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1658.asp
+    circonscription: Nord (15ème)
+    site_web: http://www.francoisehostalier.fr
+    profession: Inspecteur général de l'Education nationale
+    debut_mandat: 20/06/2007
+    nom: Françoise Hostalier
+    type: depute
+  depute_1661:
+    place_hemicycle: 337
+    sexe: M
+    id_an: 1661
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1661.asp
+    circonscription: Val-d'Oise (1ère)
+    profession: Avocat, ancien Bâtonnier de l'Ordre
+    debut_mandat: 20/06/2007
+    nom: Philippe Houillon
+    type: depute
+  depute_1677:
+    place_hemicycle: 378
+    sexe: M
+    id_an: 1677
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1677.asp
+    circonscription: Loire-Atlantique (6ème)
+    site_web: http://www.michel-hunault.com
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Michel Hunault
+    type: depute
+  depute_1686:
+    place_hemicycle: 541
+    sexe: M
+    id_an: 1686
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1686.asp
+    circonscription: Haute-Garonne (8ème)
+    profession: Contrôleur des impôts
+    debut_mandat: 20/06/2007
+    nom: Jean-Louis Idiart
+    type: depute
+  depute_1689:
+    place_hemicycle: 532
+    sexe: M
+    id_an: 1689
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1689.asp
+    circonscription: Haute-Garonne (5ème)
+    profession: Ancien chef de cabinet du maire de Colomiers
+    debut_mandat: 20/06/2007
+    nom: Françoise Imbert
+    type: depute
+  depute_1695:
+    place_hemicycle: 90
+    sexe: M
+    id_an: 1695
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1695.asp
+    circonscription: Seine-et-Marne (4ème)
+    site_web: http://www.christianjacob.fr
+    profession: Agriculteur
+    debut_mandat: 20/06/2007
+    nom: Christian Jacob
+    type: depute
+  depute_1699:
+    place_hemicycle: 135
+    sexe: M
+    id_an: 1699
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1699.asp
+    circonscription: Moselle (2ème)
+    site_web: http://www.denisjacquat.fr
+    profession: Médecin O.R.L.
+    debut_mandat: 20/06/2007
+    nom: Denis Jacquat
+    type: depute
+  depute_1710:
+    place_hemicycle: 442
+    sexe: M
+    id_an: 1710
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1710.asp
+    circonscription: Pas-de-Calais (10ème)
+    profession: Professeur certifié de sciences économiques et sociales, enseignement secondaire
+    debut_mandat: 20/06/2007
+    nom: Serge Janquin
+    type: depute
+  depute_1712:
+    place_hemicycle: 400
+    sexe: M
+    id_an: 1712
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1712.asp
+    circonscription: Somme (2ème)
+    site_web: http://www.olivierjarde.info
+    profession: Professeur de chirurgie, professeur de droit de la santé
+    debut_mandat: 20/06/2007
+    nom: Olivier Jardé
+    type: depute
+  depute_1746:
+    place_hemicycle: 16
+    sexe: M
+    id_an: 1746
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1746.asp
+    circonscription: Seine-et-Marne (2ème)
+    profession: Professeur d'Université
+    debut_mandat: 20/06/2007
+    nom: Didier Julia
+    type: depute
+  depute_1748:
+    place_hemicycle: 472
+    sexe: M
+    id_an: 1748
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1748.asp
+    circonscription: Bas-Rhin (1ère)
+    profession: Fonctionnaire territorial
+    site_web: http://www.armandjung-depute.fr 
+    debut_mandat: 20/06/2007
+    nom: Armand Jung
+    type: depute
+  depute_1761:
+    place_hemicycle: 183
+    sexe: M
+    id_an: 1761
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1761.asp
+    circonscription: Bouches-du-Rhône (11ème)
+    site_web: http://www.christiankert.over-blog.fr
+    profession: Cadre administratif
+    debut_mandat: 20/06/2007
+    nom: Christian Kert
+    type: depute
+  depute_1770:
+    place_hemicycle: 91
+    sexe: M
+    id_an: 1770
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1770.asp
+    circonscription: Hauts-de-Seine (3ème)
+    site_web: http://quinquasplus.com
+    profession: Dirigeant d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Jacques Kossowski
+    type: depute
+  depute_1774:
+    place_hemicycle: 507
+    sexe: M
+    id_an: 1774
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1774.asp
+    circonscription: Pas-de-Calais (12ème)
+    site_web: http://www.jpkucheida.fr/
+    profession: Professeur certifié
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Kucheida
+    type: depute
+  depute_1778:
+    place_hemicycle: 13
+    sexe: M
+    id_an: 1778
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1778.asp
+    circonscription: Drôme (1ère)
+    profession: Enseignant
+    debut_mandat: 20/06/2007
+    nom: Patrick Labaune
+    type: depute
+  depute_1789:
+    place_hemicycle: 531
+    sexe: M
+    id_an: 1789
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1789.asp
+    circonscription: Gironde (4ème)
+    profession: Cadre comptable
+    debut_mandat: 20/06/2007
+    nom: Conchita Lacuey
+    type: depute
+  depute_1790:
+    place_hemicycle: 254
+    sexe: M
+    id_an: 1790
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1790.asp
+    circonscription: Maine-et-Loire (7ème)
+    site_web: http://www.marclaffineur.org
+    profession: Médecin anesthésiste-réanimateur
+    debut_mandat: 20/06/2007
+    nom: Marc Laffineur
+    type: depute
+  depute_1809:
+    place_hemicycle: 548
+    sexe: M
+    id_an: 1809
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1809.asp
+    circonscription: Charente (3ème)
+    profession: Cadre de l'industrie
+    debut_mandat: 20/06/2007
+    nom: Jérôme Lambert
+    type: depute
+  depute_1816:
+    place_hemicycle: 497
+    sexe: M
+    id_an: 1816
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1816.asp
+    circonscription: Essonne (6ème)
+    profession: Instituteur
+    debut_mandat: 20/06/2007
+    nom: François Lamy
+    type: depute
+  depute_1821:
+    place_hemicycle: 419
+    sexe: M
+    id_an: 1821
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1821.asp
+    circonscription: Pas-de-Calais (6ème)
+    site_web: http://www.jacklang.org
+    profession: Professeur agrégé de droit public
+    debut_mandat: 20/06/2007
+    nom: Jack Lang
+    type: depute
+  depute_1822:
+    place_hemicycle: 9
+    sexe: M
+    id_an: 1822
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1822.asp
+    circonscription: Moselle (6ème)
+    profession: Biologiste, directeur d'un laboratoire d'analyses médicales
+    debut_mandat: 20/06/2007
+    nom: Pierre Lang
+    type: depute
+  depute_1835:
+    place_hemicycle: 333
+    sexe: M
+    id_an: 1835
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1835.asp
+    circonscription: Essonne (5ème)
+    site_web: http://www.lasbordes.fr
+    profession: Directeur commercial
+    debut_mandat: 20/06/2007
+    nom: Pierre Lasbordes
+    type: depute
+  depute_1838:
+    place_hemicycle: 71
+    sexe: M
+    id_an: 1838
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1838.asp
+    circonscription: Pyrénées-Atlantiques (4ème)
+    site_web: http://www.jeanlassalle.fr
+    profession: Technicien agricole
+    debut_mandat: 20/06/2007
+    nom: Jean Lassalle
+    type: depute
+  depute_1844:
+    place_hemicycle: 469
+    sexe: M
+    id_an: 1844
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1844.asp
+    circonscription: Lot (2ème)
+    site_web: http://www.jeanlaunay.com
+    profession: Inspecteur du Trésor
+    debut_mandat: 20/06/2007
+    nom: Jean Launay
+    type: depute
+  depute_1857:
+    place_hemicycle: 334
+    sexe: M
+    id_an: 1857
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1857.asp
+    circonscription: Nord (6ème)
+    profession: Chargé de communication
+    debut_mandat: 20/06/2007
+    nom: Thierry Lazaro
+    type: depute
+  depute_1866:
+    place_hemicycle: 607
+    sexe: M
+    id_an: 1866
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1866.asp
+    circonscription: Finistère (8ème)
+    site_web: http://www.gilbertlebris.net 
+    profession: Commerçant
+    debut_mandat: 20/06/2007
+    nom: Gilbert Le Bris
+    type: depute
+  depute_1871:
+    place_hemicycle: 447
+    sexe: M
+    id_an: 1871
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1871.asp
+    circonscription: Meurthe-et-Moselle (6ème)
+    site_web: http://www.jyledeaut.fr
+    profession: Professeur d'Université
+    debut_mandat: 20/06/2007
+    nom: Jean-Yves Le Déaut
+    type: depute
+  depute_1874:
+    place_hemicycle: 54
+    sexe: M
+    id_an: 1874
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1874.asp
+    circonscription: Côtes-d'Armor (3ème)
+    site_web: http://www.marclefur.com
+    profession: Sous-préfet
+    debut_mandat: 20/06/2007
+    nom: Marc Le Fur
+    type: depute
+  depute_1880:
+    place_hemicycle: 433
+    sexe: M
+    id_an: 1880
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1880.asp
+    circonscription: Paris (9ème)
+    profession: Médecin 
+    debut_mandat: 20/06/2007
+    nom: Jean-Marie Le Guen
+    type: depute
+  depute_1883:
+    place_hemicycle: 335
+    sexe: M
+    id_an: 1883
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1883.asp
+    circonscription: Morbihan (6ème)
+    site_web: http://www.jacques-lenay.org
+    profession: Horticulteur
+    debut_mandat: 20/06/2007
+    nom: Jacques Le Nay
+    type: depute
+  depute_1886:
+    place_hemicycle: 421
+    sexe: M
+    id_an: 1886
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1886.asp
+    circonscription: Seine-Saint-Denis (1ère)
+    site_web: http://www.brunoleroux-blog.org
+    profession: Consultant en gestion et management
+    debut_mandat: 20/06/2007
+    nom: Bruno Le Roux
+    type: depute
+  depute_1893:
+    place_hemicycle: 500
+    sexe: M
+    id_an: 1893
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1893.asp
+    circonscription: Finistère (4ème)
+    site_web: http://www.lebranchu.fr
+    profession: Vacataire professionnelle à l'Université
+    debut_mandat: 20/06/2007
+    nom: Marylise Lebranchu
+    type: depute
+  depute_1911:
+    place_hemicycle: 513
+    sexe: M
+    id_an: 1911
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1911.asp
+    circonscription: Pas-de-Calais (8ème)
+    site_web: http://michellefait.com  
+    profession: Professeur de collège
+    debut_mandat: 20/06/2007
+    nom: Michel Lefait
+    type: depute
+  depute_1931:
+    sexe: M
+    id_an: 1931
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1931.asp
+    circonscription: Paris (4ème)
+    profession: Avocat et universitaire
+    debut_mandat: 20/06/2007
+    nom: Pierre Lellouche
+    type: depute
+  depute_1936:
+    place_hemicycle: 540
+    sexe: M
+    id_an: 1936
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1936.asp
+    circonscription: Haute-Garonne (7ème)
+    profession: Exploitant agricole
+    debut_mandat: 20/06/2007
+    nom: Patrick Lemasle
+    type: depute
+  depute_1942:
+    place_hemicycle: 257
+    sexe: M
+    id_an: 1942
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1942.asp
+    circonscription: Orne (2ème)
+    profession: Cadre EDF
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Lenoir
+    type: depute
+  depute_1944:
+    place_hemicycle: 206
+    sexe: M
+    id_an: 1944
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1944.asp
+    circonscription: Charente-Maritime (2ème)
+    site_web: http://www.jeanlouisleonard.com
+    profession: Ingénieur
+    debut_mandat: 20/06/2007
+    nom: Jean-Louis Léonard
+    type: depute
+  depute_1946:
+    place_hemicycle: 181
+    sexe: M
+    id_an: 1946
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1946.asp
+    circonscription: Alpes-Maritimes (7ème)
+    profession: Praticien hospitalier
+    debut_mandat: 20/06/2007
+    nom: Jean Leonetti
+    type: depute
+  depute_1954:
+    place_hemicycle: 269
+    sexe: M
+    id_an: 1954
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1954.asp
+    circonscription: Yvelines (4ème)
+    profession: Cadre de banque
+    debut_mandat: 20/06/2007
+    nom: Pierre Lequiller
+    type: depute
+  depute_1960:
+    place_hemicycle: 376
+    sexe: M
+    id_an: 1960
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1960.asp
+    circonscription: Loir-et-Cher (3ème)
+    profession: Économiste
+    debut_mandat: 20/06/2007
+    nom: Maurice Leroy
+    type: depute
+  depute_1977:
+    place_hemicycle: 551
+    sexe: M
+    id_an: 1977
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1977.asp
+    circonscription: Moselle (10ème)
+    site_web: http://www.michel-liebgott.com
+    profession: Inspecteur des affaires sanitaires et sociales
+    debut_mandat: 20/06/2007
+    nom: Michel Liebgott
+    type: depute
+  depute_1979:
+    place_hemicycle: 410
+    sexe: M
+    id_an: 1979
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1979.asp
+    circonscription: Pyrénées-Atlantiques (1ère)
+    site_web: http://www.martine-lignieres-cassou.fr/
+    profession: Chargée d'études à la DDE des Pyrénées-Atlantiques
+    debut_mandat: 20/06/2007
+    nom: Martine Lignières-Cassou
+    type: depute
+  depute_1991:
+    place_hemicycle: 526
+    sexe: M
+    id_an: 1991
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1991.asp
+    circonscription: Eure (4ème)
+    profession: Journaliste
+    debut_mandat: 20/06/2007
+    nom: François Loncle
+    type: depute
+  depute_1994:
+    place_hemicycle: 162
+    sexe: M
+    id_an: 1994
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1994.asp
+    circonscription: Bas-Rhin (9ème)
+    profession: Ingénieur en chef des mines
+    debut_mandat: 20/06/2007
+    nom: François Loos
+    type: depute
+  depute_2011:
+    place_hemicycle: 276
+    sexe: M
+    id_an: 2011
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2011.asp
+    circonscription: Alpes-Maritimes (6ème)
+    site_web: http://www.lionnel-luca.org
+    profession: Professeur d'histoire-géographie
+    debut_mandat: 20/06/2007
+    nom: Lionnel Luca
+    type: depute
+  depute_2045:
+    place_hemicycle: 596
+    sexe: M
+    id_an: 2045
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2045.asp
+    circonscription: Gironde (3ème)
+    site_web: http://www.noelmamere.fr
+    profession: Journaliste
+    debut_mandat: 20/06/2007
+    nom: Noël Mamère
+    type: depute
+  depute_2048:
+    place_hemicycle: 280
+    sexe: M
+    id_an: 2048
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2048.asp
+    circonscription: Oise (2ème)
+    site_web: http://www.jfmancel.com
+    profession: Administrateur civil
+    debut_mandat: 20/06/2007
+    nom: Jean-François Mancel
+    type: depute
+  depute_2073:
+    place_hemicycle: 93
+    sexe: M
+    id_an: 2073
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2073.asp
+    circonscription: Vaucluse (4ème)
+    site_web: http://www.thierrymariani.fr
+    profession: Cadre
+    debut_mandat: 20/06/2007
+    nom: Thierry Mariani
+    type: depute
+  depute_2075:
+    place_hemicycle: 591
+    sexe: M
+    id_an: 2075
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2075.asp
+    circonscription: Martinique (4ème)
+    profession: Professeur de mathématiques
+    debut_mandat: 20/06/2007
+    nom: Alfred Marie-Jeanne
+    type: depute
+  depute_2083:
+    place_hemicycle: 78
+    sexe: M
+    id_an: 2083
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2083.asp
+    circonscription: Drôme (3ème)
+    site_web: http://www.herve-mariton.net
+    profession: Ingénieur en chef des mines
+    debut_mandat: 20/06/2007
+    nom: Hervé Mariton
+    type: depute
+  depute_2086:
+    place_hemicycle: 18
+    sexe: M
+    id_an: 2086
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2086.asp
+    circonscription: Essonne (2ème)
+    debut_mandat: 20/06/2007
+    nom: Franck Marlin
+    type: depute
+  depute_2098:
+    place_hemicycle: 11
+    sexe: M
+    id_an: 2098
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2098.asp
+    circonscription: Marne (6ème)
+    profession: Viticulteur
+    debut_mandat: 20/06/2007
+    nom: Philippe Armand Martin
+    type: depute
+  depute_2099:
+    place_hemicycle: 125
+    sexe: M
+    id_an: 2099
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2099.asp
+    circonscription: Loir-et-Cher (2ème)
+    profession: Cadre administratif
+    debut_mandat: 20/06/2007
+    nom: Patrice Martin-Lalande
+    type: depute
+  depute_2102:
+    place_hemicycle: 199
+    sexe: M
+    id_an: 2102
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2102.asp
+    circonscription: Hautes-Alpes (1ère)
+    site_web: http://www.henriettemartinez.com
+    profession: Professeur certifié
+    debut_mandat: 20/06/2007
+    nom: Henriette Martinez
+    type: depute
+  depute_210741:
+    place_hemicycle: 527
+    sexe: M
+    id_an: 210741
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/210741.asp
+    circonscription: Pas-de-Calais (3ème)
+    profession: Attaché territorial
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Leroy
+    type: depute
+  depute_2107:
+    place_hemicycle: 266
+    sexe: M
+    id_an: 2107
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2107.asp
+    circonscription: Yvelines (12ème)
+    site_web: http://www.jmasdeu-arus.com
+    profession: Ingénieur conseil
+    debut_mandat: 20/06/2007
+    nom: Jacques Masdeu-Arus
+    type: depute
+  depute_211169:
+    place_hemicycle: 584
+    sexe: M
+    id_an: 211169
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/211169.asp
+    circonscription: Hauts-de-Seine (1ère)
+    site_web: http://www.roland-muzeau.org
+    profession: Ajusteur-outilleur
+    debut_mandat: 20/06/2007
+    nom: Roland Muzeau
+    type: depute
+  depute_2124:
+    place_hemicycle: 220
+    sexe: M
+    id_an: 2124
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2124.asp
+    circonscription: Aube (2ème)
+    profession: Directeur de société
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Mathis
+    type: depute
+  depute_2126:
+    place_hemicycle: 524
+    sexe: M
+    id_an: 2126
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2126.asp
+    circonscription: Saône-et-Loire (4ème)
+    site_web: http://www.didiermathus.com
+    profession: Enseignant
+    debut_mandat: 20/06/2007
+    nom: Didier Mathus
+    type: depute
+  depute_2148:
+    place_hemicycle: 186
+    sexe: M
+    id_an: 2148
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2148.asp
+    circonscription: Ille-et-Vilaine (5ème)
+    site_web: http://www.pierre-mehaignerie.org
+    profession: Ingénieur du génie rural et des eaux et forêts
+    debut_mandat: 20/06/2007
+    nom: Pierre Méhaignerie
+    type: depute
+  depute_216574:
+    place_hemicycle: 399
+    sexe: M
+    id_an: 216574
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/216574.asp
+    circonscription: Haut-Rhin (6ème)
+    profession: Journaliste reporter-photographe
+    debut_mandat: 20/06/2007
+    nom: Francis Hillmeyer
+    type: depute
+  depute_2181:
+    place_hemicycle: 445
+    sexe: M
+    id_an: 2181
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2181.asp
+    circonscription: Puy-de-Dôme (6ème)
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Jean Michel
+    type: depute
+  depute_2189:
+    place_hemicycle: 514
+    sexe: M
+    id_an: 2189
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2189.asp
+    circonscription: Isère (4ème)
+    site_web: http://www.didiermigaud.fr
+    profession: Juriste
+    debut_mandat: 20/06/2007
+    nom: Didier Migaud
+    type: depute
+  depute_2191:
+    place_hemicycle: 27
+    sexe: M
+    id_an: 2191
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2191.asp
+    circonscription: Seine-et-Marne (1ère)
+    site_web: http://www.jean-claude-mignon.net
+    profession: Ancien chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Mignon
+    type: depute
+  depute_2224:
+    place_hemicycle: 503
+    sexe: M
+    id_an: 2224
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2224.asp
+    circonscription: Saône-et-Loire (6ème)
+    site_web: http://www.arnaudmontebourg.fr
+    profession: Avocat 
+    debut_mandat: 20/06/2007
+    nom: Arnaud Montebourg
+    type: depute
+  depute_2229:
+    place_hemicycle: 332
+    sexe: M
+    id_an: 2229
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2229.asp
+    circonscription: Yvelines (6ème)
+    site_web: http://www.pierre-morange.fr
+    profession: Médecin généraliste
+    debut_mandat: 20/06/2007
+    nom: Pierre Morange
+    type: depute
+  depute_2237:
+    place_hemicycle: 243
+    sexe: M
+    id_an: 2237
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2237.asp
+    circonscription: Deux-Sèvres (3ème)
+    profession: Directeur informatique
+    debut_mandat: 20/06/2007
+    nom: Jean-Marie Morisset
+    type: depute
+  depute_223837:
+    place_hemicycle: 103
+    sexe: M
+    id_an: 223837
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/223837.asp
+    circonscription: Alpes-Maritimes (8ème)
+    site_web: http://www.bernard-brochand.com
+    profession: Cadre du secteur privé retraité
+    debut_mandat: 20/06/2007
+    nom: Bernard Brochand
+    type: depute
+  depute_2240:
+    place_hemicycle: 430
+    sexe: M
+    id_an: 2240
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2240.asp
+    circonscription: Doubs (4ème)
+    site_web: http://moscovici.typepad.fr/blognational
+    profession: Conseiller maître à la cour des comptes
+    debut_mandat: 20/06/2007
+    nom: Pierre Moscovici
+    type: depute
+  depute_2242:
+    place_hemicycle: 89
+    sexe: M
+    id_an: 2242
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2242.asp
+    circonscription: Val-d'Oise (5ème)
+    site_web: http://www.georges-mothron.fr
+    profession: Chef des ventes
+    debut_mandat: 20/06/2007
+    nom: Georges Mothron
+    type: depute
+  depute_2250:
+    place_hemicycle: 43
+    sexe: M
+    id_an: 2250
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2250.asp
+    circonscription: Isère (6ème)
+    profession: Chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Alain Moyne-Bressand
+    type: depute
+  depute_2256:
+    place_hemicycle: 96
+    sexe: M
+    id_an: 2256
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2256.asp
+    circonscription: Bouches-du-Rhône (5ème)
+    site_web: http://www.renaud-muselier.com
+    profession: Médecin coordonnateur d'un établissement hospitalier privé
+    debut_mandat: 20/06/2007
+    nom: Renaud Muselier
+    type: depute
+  depute_2257:
+    place_hemicycle: 292
+    sexe: M
+    id_an: 2257
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2257.asp
+    circonscription: Yvelines (5ème)
+    site_web: http://www.jacques-myard.org
+    profession: Conseiller des affaires étrangères
+    debut_mandat: 20/06/2007
+    nom: Jacques Myard
+    type: depute
+  depute_2265:
+    place_hemicycle: 352
+    sexe: M
+    id_an: 2265
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2265.asp
+    circonscription: Corrèze (2ème)
+    profession: Médecin hospitalier
+    debut_mandat: 20/06/2007
+    nom: Philippe Nauche
+    type: depute
+  depute_2269:
+    place_hemicycle: 544
+    sexe: M
+    id_an: 2269
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2269.asp
+    circonscription: Ariège (2ème)
+    site_web: http://www.henrinayrou.com
+    profession: Journaliste
+    debut_mandat: 20/06/2007
+    nom: Henri Nayrou
+    type: depute
+  depute_226:
+    place_hemicycle: 385
+    sexe: M
+    id_an: 226
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/226.asp
+    circonscription: Vienne (4ème)
+    site_web: http://www.jpabelin.com
+    profession: Directeur-adjoint de service à la Banque de France
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Abelin
+    type: depute
+  depute_2272:
+    place_hemicycle: 522
+    sexe: M
+    id_an: 2272
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2272.asp
+    circonscription: Puy-de-Dôme (2ème)
+    profession: Retraité de l'Education nationale
+    debut_mandat: 20/06/2007
+    nom: Alain Néri
+    type: depute
+  depute_2273:
+    place_hemicycle: 336
+    sexe: M
+    id_an: 2273
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2273.asp
+    circonscription: Saône-et-Loire (2ème)
+    profession: Cadre consulaire
+    debut_mandat: 20/06/2007
+    nom: Jean-Marc Nesme
+    type: depute
+  depute_2277:
+    place_hemicycle: 265
+    sexe: M
+    id_an: 2277
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2277.asp
+    circonscription: Loire (5ème)
+    site_web: http://www.yvesnicolin.fr
+    profession: Gestionnaire
+    debut_mandat: 20/06/2007
+    nom: Yves Nicolin
+    type: depute
+  depute_2295:
+    place_hemicycle: 180
+    sexe: M
+    id_an: 2295
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2295.asp
+    circonscription: Hauts-de-Seine (7ème)
+    site_web: http://www.patrick-ollier.com
+    profession: Cadre de société
+    debut_mandat: 20/06/2007
+    nom: Patrick Ollier
+    type: depute
+  depute_230329:
+    place_hemicycle: 101
+    sexe: M
+    id_an: 230329
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/230329.asp
+    circonscription: Paris (13ème)
+    site_web: http://www.jeanfrancoislamour.fr
+    profession: Kinésithérapeute
+    debut_mandat: 20/06/2007
+    nom: Jean-François Lamour
+    type: depute
+  depute_230:
+    place_hemicycle: 77
+    sexe: M
+    id_an: 230
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/230.asp
+    circonscription: Haute-Savoie (1ère)
+    profession: Médecin ORL
+    debut_mandat: 20/06/2007
+    nom: Bernard Accoyer
+    type: depute
+  depute_2317:
+    place_hemicycle: 499
+    sexe: M
+    id_an: 2317
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2317.asp
+    circonscription: Seine-Saint-Denis (13ème)
+    profession: Maître de conférence en économie (Paris I)
+    debut_mandat: 20/06/2007
+    nom: Michel Pajon
+    type: depute
+  depute_2319:
+    place_hemicycle: 177
+    sexe: M
+    id_an: 2319
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2319.asp
+    circonscription: Paris (16ème)
+    debut_mandat: 20/06/2007
+    nom: Françoise de Panafieu
+    type: depute
+  depute_2338:
+    place_hemicycle: 502
+    sexe: M
+    id_an: 2338
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2338.asp
+    circonscription: Nièvre (3ème)
+    site_web: http://www.christianpaul.fr
+    profession: Administrateur civil
+    debut_mandat: 20/06/2007
+    nom: Christian Paul
+    type: depute
+  depute_2339:
+    place_hemicycle: 588
+    sexe: M
+    id_an: 2339
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2339.asp
+    circonscription: Seine-Maritime (8ème)
+    profession: Instituteur
+    site_web: http://www.danielpaul-lehavre.org
+    debut_mandat: 20/06/2007
+    nom: Daniel Paul
+    type: depute
+  depute_2343:
+    place_hemicycle: 444
+    sexe: M
+    id_an: 2343
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2343.asp
+    circonscription: Dordogne (4ème)
+    site_web: http://germinal-peiro.com
+    profession: Instituteur
+    debut_mandat: 20/06/2007
+    nom: Germinal Peiro
+    type: depute
+  depute_2345:
+    place_hemicycle: 84
+    sexe: M
+    id_an: 2345
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2345.asp
+    circonscription: Jura (1ère)
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Jacques Pélissard
+    type: depute
+  depute_2357:
+    place_hemicycle: 83
+    sexe: M
+    id_an: 2357
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2357.asp
+    circonscription: Rhône (4ème)
+    site_web: http://www.perben.com
+    profession: Sous-préfet
+    debut_mandat: 20/06/2007
+    nom: Dominique Perben
+    type: depute
+  depute_2365:
+    place_hemicycle: 516
+    sexe: M
+    id_an: 2365
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2365.asp
+    circonscription: Aude (1ère)
+    profession: Secrétaire de mairie
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Perez
+    type: depute
+  depute_236:
+    place_hemicycle: 204
+    sexe: M
+    id_an: 236
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/236.asp
+    circonscription: Hauts-de-Seine (2ème)
+    site_web: http://www.manuel-aeschlimann.fr
+    profession: Maître de conférences à l'IEP-Paris
+    debut_mandat: 20/06/2007
+    nom: Manuel Aeschlimann
+    type: depute
+  depute_2371:
+    place_hemicycle: 428
+    sexe: M
+    id_an: 2371
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2371.asp
+    circonscription: Haute-Vienne (3ème)
+    profession: Professeur de collège (en détachement depuis 1997)
+    debut_mandat: 20/06/2007
+    nom: Marie-Françoise Pérol-Dumont
+    type: depute
+  depute_2374:
+    place_hemicycle: 534
+    sexe: M
+    id_an: 2374
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2374.asp
+    circonscription: Deux-Sèvres (1ère)
+    site_web: http://www.genevieve-gaillard.com
+    profession: Vétérinaire
+    debut_mandat: 20/06/2007
+    nom: Geneviève Gaillard
+    type: depute
+  depute_2377:
+    place_hemicycle: 203
+    sexe: M
+    id_an: 2377
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2377.asp
+    circonscription: Rhône (9ème)
+    site_web: http://www.bernardperrut.fr
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Bernard Perrut
+    type: depute
+  depute_2421:
+    place_hemicycle: 329
+    sexe: M
+    id_an: 2421
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2421.asp
+    circonscription: Yvelines (1ère)
+    site_web: http://www.etiennepinte.com
+    profession: Cadre d'un établissement public
+    debut_mandat: 20/06/2007
+    nom: Étienne Pinte
+    type: depute
+  depute_2424:
+    place_hemicycle: 338
+    sexe: M
+    id_an: 2424
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2424.asp
+    circonscription: Val-de-Marne (1ère)
+    profession: Conseiller d'État - Professeur associé à Paris Dauphine
+    debut_mandat: 20/06/2007
+    nom: Henri Plagnol
+    type: depute
+  depute_2430:
+    place_hemicycle: 643
+    sexe: M
+    id_an: 2430
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2430.asp
+    circonscription: Gironde (11ème)
+    site_web: http://www.philippeplisson.net
+    profession: Retraité de l'enseignement
+    debut_mandat: 20/06/2007
+    nom: Philippe Plisson
+    type: depute
+  depute_2438:
+    place_hemicycle: 262
+    sexe: M
+    id_an: 2438
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2438.asp
+    circonscription: Loire-Atlantique (10ème)
+    profession: Retraité du C.N.R.S.
+    debut_mandat: 20/06/2007
+    nom: Serge Poignant
+    type: depute
+  depute_243:
+    place_hemicycle: 225
+    sexe: M
+    id_an: 243
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/243.asp
+    circonscription: Seine-et-Marne (7ème)
+    site_web: http://www.albarello.info
+    profession: Directeur administratif et financier
+    debut_mandat: 20/06/2007
+    nom: Yves Albarello
+    type: depute
+  depute_2463:
+    place_hemicycle: 111
+    sexe: M
+    id_an: 2463
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2463.asp
+    circonscription: Pyrénées-Atlantiques (6ème)
+    profession: Directeur de société
+    debut_mandat: 20/07/2007
+    nom: Daniel Poulou
+    type: depute
+  depute_2473:
+    place_hemicycle: 398
+    sexe: M
+    id_an: 2473
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2473.asp
+    circonscription: Vendée (1ère)
+    site_web: http://www.preel.net
+    profession: Chef de service hospitalier
+    debut_mandat: 20/06/2007
+    nom: Jean-Luc Préel
+    type: depute
+  depute_2480:
+    place_hemicycle: 331
+    sexe: M
+    id_an: 2480
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2480.asp
+    circonscription: Haute-Loire (2ème)
+    site_web: http://www.bluebox.fr/jean-proriol
+    profession: Ancien cadre
+    debut_mandat: 20/06/2007
+    nom: Jean Proriol
+    type: depute
+  depute_2492:
+    place_hemicycle: 267
+    sexe: M
+    id_an: 2492
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2492.asp
+    circonscription: Charente-Maritime (5ème)
+    site_web: http://www.didierquentin.com
+    profession: Ministre plénipotentiaire
+    debut_mandat: 20/06/2007
+    nom: Didier Quentin
+    type: depute
+  depute_2494:
+    place_hemicycle: 504
+    sexe: M
+    id_an: 2494
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2494.asp
+    circonscription: Rhône (7ème)
+    profession: Maître de conférences à l'Université
+    debut_mandat: 20/06/2007
+    nom: Jean-Jack Queyranne
+    type: depute
+  depute_2503:
+    place_hemicycle: 480
+    sexe: M
+    id_an: 2503
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2503.asp
+    circonscription: Loire-Atlantique (4ème)
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Dominique Raimbourg
+    type: depute
+  depute_2511:
+    place_hemicycle: 268
+    sexe: M
+    id_an: 2511
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2511.asp
+    circonscription: Seine-Saint-Denis (12ème)
+    site_web: http://ericraoult.over-blog.com
+    profession: Assistant parlementaire du groupe RPR
+    debut_mandat: 20/06/2007
+    nom: Éric Raoult
+    type: depute
+  depute_2529:
+    place_hemicycle: 166
+    sexe: M
+    id_an: 2529
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2529.asp
+    circonscription: Haut-Rhin (3ème)
+    site_web: http://www.depute-reitzer.net
+    profession: Cadre d'entreprise chargé des relations sociales
+    debut_mandat: 20/06/2007
+    nom: Jean-Luc Reitzer
+    type: depute
+  depute_253:
+    place_hemicycle: 123
+    sexe: M
+    id_an: 253
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/253.asp
+    circonscription: Martinique (2ème)
+    profession: Chargé de mission à la Chambre de Commerce et d'Industrie de la Martinique
+    debut_mandat: 20/06/2007
+    nom: Alfred Almont
+    type: depute
+  depute_2549:
+    place_hemicycle: 481
+    sexe: M
+    id_an: 2549
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2549.asp
+    circonscription: Charente (2ème)
+    site_web: http://marie-line-reynaud.parti-socialiste.fr/
+    profession: Conseillère technique au centre d'information des droits de la femme
+    debut_mandat: 20/06/2007
+    nom: Marie-Line Reynaud
+    type: depute
+  depute_2580:
+    place_hemicycle: 80
+    sexe: M
+    id_an: 2580
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2580.asp
+    circonscription: Bouches-du-Rhône (3ème)
+    debut_mandat: 20/06/2007
+    nom: Jean Roatta
+    type: depute
+  depute_2591:
+    place_hemicycle: 618
+    sexe: M
+    id_an: 2591
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2591.asp
+    circonscription: Hautes-Pyrénées (2ème)
+    site_web: http://chantalrobinrodrigo.hautetfort.com
+    profession: Directeur départemental crédit immobilier
+    debut_mandat: 20/06/2007
+    nom: Chantal Robin-Rodrigo
+    type: depute
+  depute_2597:
+    place_hemicycle: 368
+    sexe: M
+    id_an: 2597
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2597.asp
+    circonscription: Loire (3ème)
+    site_web: http://www.francois-rochebloine.com
+    profession: Directeur commercial
+    debut_mandat: 20/06/2007
+    nom: François Rochebloine
+    type: depute
+  depute_259:
+    place_hemicycle: 87
+    sexe: M
+    id_an: 259
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/259.asp
+    circonscription: Calvados (4ème)
+    profession: Directeur territorial
+    debut_mandat: 20/06/2007
+    nom: Nicole Ameline
+    type: depute
+  depute_2600:
+    place_hemicycle: 609
+    sexe: M
+    id_an: 2600
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2600.asp
+    circonscription: Haute-Vienne (4ème)
+    profession: Économiste
+    debut_mandat: 20/06/2007
+    nom: Alain Rodet
+    type: depute
+  depute_2603:
+    place_hemicycle: 479
+    sexe: M
+    id_an: 2603
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2603.asp
+    circonscription: Ille-et-Vilaine (3ème)
+    profession: Cadre
+    site_web: http://www.marcelrogemont.net
+    debut_mandat: 20/06/2007
+    nom: Marcel Rogemont
+    type: depute
+  depute_2608:
+    place_hemicycle: 192
+    sexe: M
+    id_an: 2608
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2608.asp
+    circonscription: Vaucluse (1ère)
+    site_web: http://www.mjroig.fr
+    profession: Professeur de lettres
+    debut_mandat: 20/06/2007
+    nom: Marie-Josée Roig
+    type: depute
+  depute_2611:
+    place_hemicycle: 510
+    sexe: M
+    id_an: 2611
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2611.asp
+    circonscription: Nord (1ère)
+    site_web: http://www.bernard-roman.net
+    profession: Avocat, administrateur territorial
+    debut_mandat: 20/06/2007
+    nom: Bernard Roman
+    type: depute
+  depute_2631:
+    place_hemicycle: 467
+    sexe: M
+    id_an: 2631
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2631.asp
+    circonscription: Val-de-Marne (9ème)
+    profession: Électromécanicien
+    debut_mandat: 20/06/2007
+    nom: René Rouquet
+    type: depute
+  depute_2640:
+    place_hemicycle: 140
+    sexe: M
+    id_an: 2640
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2640.asp
+    circonscription: Gard (4ème)
+    site_web: http://maxroustan.fr
+    profession: Professeur d'enseignement technique
+    debut_mandat: 20/06/2007
+    nom: Max Roustan
+    type: depute
+  depute_265:
+    place_hemicycle: 195
+    sexe: M
+    id_an: 265
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/265.asp
+    circonscription: Saône-et-Loire (3ème)
+    site_web: http://www.jeanpaulanciaux.com
+    profession: Technicien qualiticien
+    debut_mandat: 20/06/2007
+    nom: Jean-Paul Anciaux
+    type: depute
+  depute_2661:
+    place_hemicycle: 518
+    sexe: M
+    id_an: 2661
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2661.asp
+    circonscription: Gironde (6ème)
+    profession: Retraité
+    debut_mandat: 20/06/2007
+    nom: Michel Sainte-Marie
+    type: depute
+  depute_266776:
+    place_hemicycle: 216
+    sexe: M
+    id_an: 266776
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/266776.asp
+    circonscription: Bas-Rhin (8ème)
+    profession: Agrégé de mathématiques
+    debut_mandat: 20/06/2007
+    nom: Frédéric Reiss
+    type: depute
+  depute_266782:
+    place_hemicycle: 20
+    sexe: M
+    id_an: 266782
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/266782.asp
+    circonscription: Sarthe (4ème)
+    debut_mandat: 20/07/2007
+    nom: Marc Joulaud
+    type: depute
+  depute_266788:
+    place_hemicycle: 137
+    sexe: M
+    id_an: 266788
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/266788.asp
+    circonscription: Lozère (2ème)
+    site_web: http://www.pierre-morel.fr
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Pierre Morel-A-L'Huissier
+    type: depute
+  depute_266793:
+    place_hemicycle: 17
+    sexe: M
+    id_an: 266793
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/266793.asp
+    circonscription: Cantal (2ème)
+    profession: Exploitant agricole
+    debut_mandat: 20/07/2007
+    nom: Jean-Yves Bony
+    type: depute
+  depute_266797:
+    place_hemicycle: 150
+    sexe: M
+    id_an: 266797
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/266797.asp
+    circonscription: Manche (1ère)
+    site_web: http://www.philippegosselin.fr
+    profession: Professeur de droit en classes préparatoires aux grandes écoles
+    debut_mandat: 20/06/2007
+    nom: Philippe Gosselin
+    type: depute
+  depute_2667:
+    place_hemicycle: 365
+    sexe: M
+    id_an: 2667
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2667.asp
+    circonscription: Alpes-Maritimes (3ème)
+    site_web: http://www.rudy-salles.com
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Rudy Salles
+    type: depute
+  depute_266815:
+    place_hemicycle: 120
+    sexe: M
+    id_an: 266815
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/266815.asp
+    circonscription: Finistère (5ème)
+    site_web: http://www.jacquesleguen.org
+    profession: Docteur en médecine
+    debut_mandat: 20/06/2007
+    nom: Jacques Le Guen
+    type: depute
+  depute_267003:
+    place_hemicycle: 227
+    sexe: M
+    id_an: 267003
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267003.asp
+    circonscription: Lozère (1ère)
+    profession: Ingénieur
+    debut_mandat: 20/06/2007
+    nom: Francis Saint-Léger
+    type: depute
+  depute_267013:
+    place_hemicycle: 301
+    sexe: M
+    id_an: 267013
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267013.asp
+    circonscription: Haut-Rhin (7ème)
+    site_web: http://michel.sordi.over-blog.com
+    profession: Cadre d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Michel Sordi
+    type: depute
+  depute_267018:
+    place_hemicycle: 2
+    sexe: M
+    id_an: 267018
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267018.asp
+    circonscription: Haute-Saône (3ème)
+    site_web: http://www.michelraison.fr
+    profession: Agriculteur
+    debut_mandat: 20/06/2007
+    nom: Michel Raison
+    type: depute
+  depute_267028:
+    place_hemicycle: 141
+    sexe: M
+    id_an: 267028
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267028.asp
+    circonscription: Seine-Maritime (9ème)
+    site_web: http://www.danielfidelin.net
+    profession: Assureur
+    debut_mandat: 20/06/2007
+    nom: Daniel Fidelin
+    type: depute
+  depute_267031:
+    place_hemicycle: 211
+    sexe: M
+    id_an: 267031
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267031.asp
+    circonscription: Seine-Maritime (12ème)
+    profession: Vétérinaire
+    debut_mandat: 20/06/2007
+    nom: Michel Lejeune
+    type: depute
+  depute_267042:
+    place_hemicycle: 339
+    sexe: M
+    id_an: 267042
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267042.asp
+    circonscription: Mayenne (3ème)
+    site_web: http://www.yannickfavennec.com
+    profession: Directeur de cabinet
+    debut_mandat: 20/06/2007
+    nom: Yannick Favennec
+    type: depute
+  depute_267049:
+    place_hemicycle: 32
+    sexe: M
+    id_an: 267049
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267049.asp
+    circonscription: Morbihan (3ème)
+    site_web: http://www.gerardlorgeoux.com
+    profession: Imprimeur
+    debut_mandat: 20/06/2007
+    nom: Gérard Lorgeoux
+    type: depute
+  depute_267057:
+    place_hemicycle: 222
+    sexe: M
+    id_an: 267057
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267057.asp
+    circonscription: Moselle (5ème)
+    profession: Cadre hospitalier
+    debut_mandat: 20/06/2007
+    nom: Céleste Lett
+    type: depute
+  depute_267069:
+    place_hemicycle: 286
+    sexe: M
+    id_an: 267069
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267069.asp
+    circonscription: Puy-de-Dôme (3ème)
+    site_web: http://www.lge-pour-clermontmontagne.fr
+    profession: Chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Louis Giscard d'Estaing
+    type: depute
+  depute_267075:
+    place_hemicycle: 45
+    sexe: M
+    id_an: 267075
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267075.asp
+    circonscription: Ain (3ème)
+    site_web: http://www.etienne-blanc.org
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Étienne Blanc
+    type: depute
+  depute_267080:
+    place_hemicycle: 88
+    sexe: M
+    id_an: 267080
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267080.asp
+    circonscription: Aisne (2ème)
+    profession: Agent d'assurance
+    debut_mandat: 20/06/2007
+    nom: Xavier Bertrand
+    type: depute
+  depute_267087:
+    place_hemicycle: 397
+    sexe: M
+    id_an: 267087
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267087.asp
+    circonscription: Lot-et-Garonne (1ère)
+    site_web: http://www.jeandionis.com
+    profession: Ingénieur
+    debut_mandat: 20/06/2007
+    nom: Jean Dionis du Séjour
+    type: depute
+  depute_267091:
+    place_hemicycle: 569
+    sexe: M
+    id_an: 267091
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267091.asp
+    circonscription: Ariège (1ère)
+    site_web: http://www.frederiquemassat.com
+    profession: Fonctionnaire territoriale
+    debut_mandat: 20/06/2007
+    nom: Frédérique Massat
+    type: depute
+  depute_267099:
+    place_hemicycle: 109
+    sexe: M
+    id_an: 267099
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267099.asp
+    circonscription: Calvados (5ème)
+    site_web: http://www.jmlefranc.fr
+    debut_mandat: 20/06/2007
+    nom: Jean-Marc Lefranc
+    type: depute
+  depute_267110:
+    place_hemicycle: 389
+    sexe: M
+    id_an: 267110
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267110.asp
+    circonscription: Eure (3ème)
+    profession: Informaticien retraité
+    debut_mandat: 20/07/2007
+    nom: Marc Vampa
+    type: depute
+  depute_267118:
+    place_hemicycle: 51
+    sexe: M
+    id_an: 267118
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267118.asp
+    circonscription: Finistère (6ème)
+    site_web: http://cmenard.com
+    profession: Médecin
+    debut_mandat: 20/06/2007
+    nom: Christian Ménard
+    type: depute
+  depute_267140:
+    place_hemicycle: 14
+    sexe: M
+    id_an: 267140
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267140.asp
+    circonscription: Drôme (4ème)
+    profession: Vétérinaire
+    debut_mandat: 20/06/2007
+    nom: Gabriel Biancheri
+    type: depute
+  depute_267144:
+    place_hemicycle: 281
+    sexe: M
+    id_an: 267144
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267144.asp
+    circonscription: Eure (2ème)
+    site_web: http://www.jean-pierre-nicolas.fr
+    profession: Ingénieur
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Nicolas
+    type: depute
+  depute_267148:
+    place_hemicycle: 133
+    sexe: M
+    id_an: 267148
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267148.asp
+    circonscription: Eure (5ème)
+    site_web: http://www.franckgilard.info 
+    profession: Consultant
+    debut_mandat: 20/06/2007
+    nom: Franck Gilard
+    type: depute
+  depute_267151:
+    place_hemicycle: 340
+    sexe: M
+    id_an: 267151
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267151.asp
+    circonscription: Eure-et-Loir (1ère)
+    profession: Directeur informatique
+    debut_mandat: 15/09/2008
+    nom: Jean-Pierre Gorges
+    type: depute
+  depute_267166:
+    place_hemicycle: 380
+    sexe: M
+    id_an: 267166
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267166.asp
+    circonscription: Haute-Marne (1ère)
+    profession: Médecin du travail
+    debut_mandat: 20/07/2007
+    nom: Sophie Delong
+    type: depute
+  depute_267178:
+    place_hemicycle: 239
+    sexe: M
+    id_an: 267178
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267178.asp
+    circonscription: Aube (1ère)
+    site_web: http://www.nicolasdhuicq.com
+    profession: Psychiatre des hôpitaux
+    debut_mandat: 20/06/2007
+    nom: Nicolas Dhuicq
+    type: depute
+  depute_267182:
+    place_hemicycle: 122
+    sexe: M
+    id_an: 267182
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267182.asp
+    circonscription: Calvados (6ème)
+    profession: Inspecteur principal des impôts
+    debut_mandat: 20/06/2007
+    nom: Jean-Yves Cousin
+    type: depute
+  depute_267188:
+    place_hemicycle: 361
+    sexe: M
+    id_an: 267188
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267188.asp
+    circonscription: Nièvre (1ère)
+    profession: Directrice d'un institut médico-éducatif
+    debut_mandat: 20/06/2007
+    nom: Martine Carrillon-Couvreur
+    type: depute
+  depute_2671:
+    place_hemicycle: 587
+    sexe: M
+    id_an: 2671
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2671.asp
+    circonscription: Cher (2ème)
+    profession: Chimiste
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Sandrier
+    type: depute
+  depute_267200:
+    place_hemicycle: 200
+    sexe: M
+    id_an: 267200
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267200.asp
+    circonscription: Nord (5ème)
+    site_web: http://sebastienhuyghe.blogs.com 
+    profession: Notaire
+    debut_mandat: 20/06/2007
+    nom: Sébastien Huyghe
+    type: depute
+  depute_267204:
+    place_hemicycle: 309
+    sexe: M
+    id_an: 267204
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267204.asp
+    circonscription: Jura (3ème)
+    site_web: http://jm-sermier.fr
+    profession: Viticulteur
+    debut_mandat: 20/06/2007
+    nom: Jean-Marie Sermier
+    type: depute
+  depute_267209:
+    place_hemicycle: 374
+    sexe: M
+    id_an: 267209
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267209.asp
+    circonscription: Loir-et-Cher (1ère)
+    site_web: http://nicolasperruchot.fr/
+    profession: Consultant en entreprise
+    debut_mandat: 20/06/2007
+    nom: Nicolas Perruchot
+    type: depute
+  depute_267224:
+    place_hemicycle: 147
+    sexe: M
+    id_an: 267224
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267224.asp
+    circonscription: Pyrénées-Orientales (1ère)
+    site_web: http://www.danielmach.fr
+    profession: Cadre commercial
+    debut_mandat: 20/06/2007
+    nom: Daniel Mach
+    type: depute
+  depute_267227:
+    place_hemicycle: 282
+    sexe: M
+    id_an: 267227
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267227.asp
+    circonscription: Haut-Rhin (5ème)
+    site_web: http://www.arlette-grosskost.com
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Arlette Grosskost
+    type: depute
+  depute_267233:
+    place_hemicycle: 634
+    sexe: M
+    id_an: 267233
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267233.asp
+    circonscription: Seine-Maritime (5ème)
+    site_web: http://www.christophebouillon.fr
+    profession: Fonctionnaire de catégorie A
+    debut_mandat: 20/06/2007
+    nom: Christophe Bouillon
+    type: depute
+  depute_267241:
+    place_hemicycle: 386
+    sexe: M
+    id_an: 267241
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267241.asp
+    circonscription: Somme (5ème)
+    site_web: http://www.stephane-demilly.org
+    profession: Consultant en management
+    debut_mandat: 20/06/2007
+    nom: Stéphane Demilly
+    type: depute
+  depute_267246:
+    place_hemicycle: 118
+    sexe: M
+    id_an: 267246
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267246.asp
+    circonscription: Vosges (1ère)
+    site_web: http://www.michel-heinrich.fr
+    profession: Pharmacien
+    debut_mandat: 20/06/2007
+    nom: Michel Heinrich
+    type: depute
+  depute_267253:
+    place_hemicycle: 116
+    sexe: M
+    id_an: 267253
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267253.asp
+    circonscription: Alpes-de-Haute-Provence (2ème)
+    site_web: http://www.danielspagnou.com
+    profession: Directeur de caisse d'épargne retraité
+    debut_mandat: 20/06/2007
+    nom: Daniel Spagnou
+    type: depute
+  depute_267257:
+    place_hemicycle: 293
+    sexe: M
+    id_an: 267257
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267257.asp
+    circonscription: Ardèche (3ème)
+    profession: Conseiller en gestion locale
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Flory
+    type: depute
+  depute_267260:
+    place_hemicycle: 92
+    sexe: M
+    id_an: 267260
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267260.asp
+    circonscription: Ardennes (1ère)
+    site_web: http://www.berengere-poletti.fr
+    profession: Sage-femme
+    debut_mandat: 20/06/2007
+    nom: Bérengère Poletti
+    type: depute
+  depute_267266:
+    place_hemicycle: 79
+    sexe: M
+    id_an: 267266
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267266.asp
+    circonscription: Aveyron (1ère)
+    site_web: http://www.yvescensi.com
+    profession: Ingénieur conseil
+    debut_mandat: 20/06/2007
+    nom: Yves Censi
+    type: depute
+  depute_267270:
+    place_hemicycle: 401
+    sexe: M
+    id_an: 267270
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267270.asp
+    circonscription: Calvados (3ème)
+    site_web: http://www.claudeleteurtre.net
+    profession: Chirurgien orthopédiste
+    debut_mandat: 20/06/2007
+    nom: Claude Leteurtre
+    type: depute
+  depute_267278:
+    place_hemicycle: 517
+    sexe: M
+    id_an: 267278
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267278.asp
+    circonscription: Gers (1ère)
+    profession: Préfet
+    debut_mandat: 20/06/2007
+    nom: Philippe Martin
+    type: depute
+  depute_267283:
+    place_hemicycle: 59
+    sexe: M
+    id_an: 267283
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267283.asp
+    circonscription: Indre-et-Loire (4ème)
+    profession: Directeur financier
+    debut_mandat: 20/07/2007
+    nom: Michel Lezeau
+    type: depute
+  depute_267289:
+    place_hemicycle: 279
+    sexe: M
+    id_an: 267289
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267289.asp
+    circonscription: Loiret (4ème)
+    profession: Cardiologue
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Door
+    type: depute
+  depute_267297:
+    place_hemicycle: 128
+    sexe: M
+    id_an: 267297
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267297.asp
+    circonscription: Lot-et-Garonne (2ème)
+    site_web: http://www.mdiefenbacher.org
+    profession: Conseiller Maître à la Cour des comptes
+    debut_mandat: 20/06/2007
+    nom: Michel Diefenbacher
+    type: depute
+  depute_267306:
+    place_hemicycle: 594
+    sexe: M
+    id_an: 267306
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267306.asp
+    circonscription: Puy-de-Dôme (5ème)
+    site_web: http://www.andrechassaigne.org
+    profession: Principal de collège
+    debut_mandat: 20/06/2007
+    nom: André Chassaigne
+    type: depute
+  depute_267309:
+    place_hemicycle: 370
+    sexe: M
+    id_an: 267309
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267309.asp
+    circonscription: Haute-Saône (1ère)
+    profession: Médecin
+    debut_mandat: 19/04/2008
+    nom: Patrice Debray
+    type: depute
+  depute_267314:
+    place_hemicycle: 219
+    sexe: M
+    id_an: 267314
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267314.asp
+    circonscription: Sarthe (3ème)
+    site_web: http://www.beatricepavy.blogspot.com
+    profession: Comptable
+    debut_mandat: 20/06/2007
+    nom: Béatrice Pavy
+    type: depute
+  depute_267317:
+    place_hemicycle: 205
+    sexe: M
+    id_an: 267317
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267317.asp
+    circonscription: Sarthe (5ème)
+    profession: Juriste
+    debut_mandat: 20/06/2007
+    nom: Dominique Le Mèner
+    type: depute
+  depute_267324:
+    place_hemicycle: 117
+    sexe: M
+    id_an: 267324
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267324.asp
+    circonscription: Vosges (4ème)
+    profession: Médecin biologiste
+    debut_mandat: 20/06/2007
+    nom: Jean-Jacques Gaultier
+    type: depute
+  depute_267327:
+    place_hemicycle: 217
+    sexe: M
+    id_an: 267327
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267327.asp
+    circonscription: Territoire-de-Belfort (1ère)
+    site_web: http://www.damienmeslot.com
+    profession: Cadre bancaire
+    debut_mandat: 20/06/2007
+    nom: Damien Meslot
+    type: depute
+  depute_267330:
+    place_hemicycle: 214
+    sexe: M
+    id_an: 267330
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267330.asp
+    circonscription: Territoire-de-Belfort (2ème)
+    site_web: http://www.michelzumkeller.net
+    profession: Comptable
+    debut_mandat: 20/06/2007
+    nom: Michel Zumkeller
+    type: depute
+  depute_267336:
+    place_hemicycle: 620
+    sexe: M
+    id_an: 267336
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267336.asp
+    circonscription: Hautes-Alpes (2ème)
+    site_web: http://www.joelgiraud.net
+    profession: Administrateur civil hors-classe
+    debut_mandat: 20/06/2007
+    nom: Joël Giraud
+    type: depute
+  depute_267350:
+    place_hemicycle: 145
+    sexe: M
+    id_an: 267350
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267350.asp
+    circonscription: Pyrénées-Orientales (2ème)
+    profession: Enseignante
+    debut_mandat: 20/06/2007
+    nom: Arlette Franco
+    type: depute
+  depute_267355:
+    place_hemicycle: 163
+    sexe: M
+    id_an: 267355
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267355.asp
+    circonscription: Bas-Rhin (5ème)
+    site_web: http://www.antoine-herth.fr
+    profession: Agriculteur
+    debut_mandat: 20/06/2007
+    nom: Antoine Herth
+    type: depute
+  depute_267358:
+    place_hemicycle: 19
+    sexe: M
+    id_an: 267358
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267358.asp
+    circonscription: Haut-Rhin (2ème)
+    site_web: http://www.jlchrist-depute.com
+    profession: Chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Jean-Louis Christ
+    type: depute
+  depute_267378:
+    place_hemicycle: 312
+    sexe: M
+    id_an: 267378
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267378.asp
+    circonscription: Var (1ère)
+    site_web: http://www.genevievelevy.com
+    profession: Expert foncier et commercial
+    debut_mandat: 20/06/2007
+    nom: Geneviève Levy
+    type: depute
+  depute_267382:
+    place_hemicycle: 31
+    sexe: M
+    id_an: 267382
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267382.asp
+    circonscription: Seine-Saint-Denis (8ème)
+    profession: Ingénieur
+    debut_mandat: 20/06/2007
+    nom: Patrice Calméjane
+    type: depute
+  depute_267399:
+    place_hemicycle: 295
+    sexe: M
+    id_an: 267399
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267399.asp
+    circonscription: Bouches-du-Rhône (14ème)
+    site_web: http://www.marysejoissains.com
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Maryse Joissains-Masini
+    type: depute
+  depute_267407:
+    place_hemicycle: 616
+    sexe: M
+    id_an: 267407
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267407.asp
+    circonscription: Haute-Corse (2ème)
+    site_web: http://www.paul-giacobbi.org
+    profession: Administrateur civil hors classe au ministère de l'équipement
+    debut_mandat: 20/06/2007
+    nom: Paul Giacobbi
+    type: depute
+  depute_267424:
+    place_hemicycle: 6
+    sexe: M
+    id_an: 267424
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267424.asp
+    circonscription: Gironde (10ème)
+    site_web: http://www.jpgarraud.net
+    profession: Magistrat
+    debut_mandat: 20/06/2007
+    nom: Jean-Paul Garraud
+    type: depute
+  depute_267429:
+    place_hemicycle: 196
+    sexe: M
+    id_an: 267429
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267429.asp
+    circonscription: Loire (4ème)
+    site_web: http://www.dinocinieri.com
+    profession: Consultant sécurité
+    debut_mandat: 20/06/2007
+    nom: Dino Cinieri
+    type: depute
+  depute_267433:
+    place_hemicycle: 306
+    sexe: M
+    id_an: 267433
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267433.asp
+    circonscription: Maine-et-Loire (5ème)
+    profession: Chargé d'enseignement
+    debut_mandat: 20/06/2007
+    nom: Gilles Bourdouleix
+    type: depute
+  depute_267440:
+    place_hemicycle: 234
+    sexe: M
+    id_an: 267440
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267440.asp
+    circonscription: Bouches-du-Rhône (12ème)
+    site_web: http://www.ericdiard.fr
+    profession: Consultant en gestion
+    debut_mandat: 20/06/2007
+    nom: Éric Diard
+    type: depute
+  depute_267450:
+    place_hemicycle: 221
+    sexe: M
+    id_an: 267450
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267450.asp
+    circonscription: Côte-d'Or (2ème)
+    profession: Agriculteur-propriétaire exploitant
+    site_web: http://www.remi-delatte.com
+    debut_mandat: 20/06/2007
+    nom: Rémi Delatte
+    type: depute
+  depute_267457:
+    place_hemicycle: 134
+    sexe: M
+    id_an: 267457
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267457.asp
+    circonscription: Hérault (6ème)
+    profession: Médecin cardiologue (Chef de service)
+    debut_mandat: 04/07/2007
+    nom: Élie Aboud
+    type: depute
+  depute_267459:
+    place_hemicycle: 263
+    sexe: M
+    id_an: 267459
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267459.asp
+    circonscription: Indre-et-Loire (2ème)
+    site_web: http://www.claudegreff.fr
+    profession: Infirmière
+    debut_mandat: 20/06/2007
+    nom: Claude Greff
+    type: depute
+  depute_267469:
+    place_hemicycle: 287
+    sexe: M
+    id_an: 267469
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267469.asp
+    circonscription: Maine-et-Loire (4ème)
+    site_web: http://www.michel-piron.fr
+    profession: Enseignant, puis chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Michel Piron
+    type: depute
+  depute_267479:
+    place_hemicycle: 473
+    sexe: M
+    id_an: 267479
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267479.asp
+    circonscription: Hérault (5ème)
+    profession: Ingénieur
+    debut_mandat: 20/06/2007
+    nom: Kléber Mesquida
+    type: depute
+  depute_267492:
+    place_hemicycle: 582
+    sexe: M
+    id_an: 267492
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267492.asp
+    circonscription: Nord (16ème)
+    site_web: http://www.jeanjacquescandelier.fr
+    profession: Retraité de la fonction publique
+    debut_mandat: 20/06/2007
+    nom: Jean-Jacques Candelier
+    type: depute
+  depute_267499:
+    place_hemicycle: 349
+    sexe: M
+    id_an: 267499
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267499.asp
+    circonscription: Rhône (10ème)
+    site_web: http://www.christopheguilloteau.com
+    profession: Ancien assistant parlementaire
+    debut_mandat: 20/06/2007
+    nom: Christophe Guilloteau
+    type: depute
+  depute_267506:
+    place_hemicycle: 327
+    sexe: M
+    id_an: 267506
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267506.asp
+    circonscription: Var (2ème)
+    site_web: http://www.philippevitel.com
+    profession: Chirurgien plasticien
+    debut_mandat: 20/06/2007
+    nom: Philippe Vitel
+    type: depute
+  depute_267512:
+    place_hemicycle: 30
+    sexe: M
+    id_an: 267512
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267512.asp
+    circonscription: Aveyron (3ème)
+    site_web: http://www.alainmarc.com
+    profession: Retraité de l'enseignement
+    debut_mandat: 20/06/2007
+    nom: Alain Marc
+    type: depute
+  depute_267519:
+    place_hemicycle: 384
+    sexe: M
+    id_an: 267519
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267519.asp
+    circonscription: Gard (1ère)
+    site_web: http://www.yvan-lachaud.com.
+    profession: Chef d'établissement scolaire
+    debut_mandat: 20/06/2007
+    nom: Yvan Lachaud
+    type: depute
+  depute_267527:
+    place_hemicycle: 231
+    sexe: M
+    id_an: 267527
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267527.asp
+    circonscription: Haute-Savoie (3ème)
+    site_web: http://www.martial-saddier.fr
+    profession: Cadre à la Chambre d'agriculture d'Annecy
+    debut_mandat: 20/06/2007
+    nom: Martial Saddier
+    type: depute
+  depute_267532:
+    place_hemicycle: 126
+    sexe: M
+    id_an: 267532
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267532.asp
+    circonscription: Haute-Savoie (5ème)
+    site_web: http://www.marcfrancina.net
+    profession: Conseiller financier et bancaire
+    debut_mandat: 20/06/2007
+    nom: Marc Francina
+    type: depute
+  depute_267542:
+    place_hemicycle: 436
+    sexe: M
+    id_an: 267542
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267542.asp
+    circonscription: Côtes-d'Armor (4ème)
+    profession: Directrice d'association
+    debut_mandat: 20/06/2007
+    nom: Marie-Renée Oget
+    type: depute
+  depute_267545:
+    place_hemicycle: 8
+    sexe: M
+    id_an: 267545
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267545.asp
+    circonscription: Doubs (1ère)
+    site_web: http://www.branget.com
+    profession: Gestionnaire en immobilier
+    debut_mandat: 20/06/2007
+    nom: Françoise Branget
+    type: depute
+  depute_267551:
+    place_hemicycle: 38
+    sexe: M
+    id_an: 267551
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267551.asp
+    circonscription: Meurthe-et-Moselle (4ème)
+    site_web: http://www.jacqueslamblin.fr
+    profession: Vétérinaire
+    debut_mandat: 20/06/2007
+    nom: Jacques Lamblin
+    type: depute
+  depute_267556:
+    place_hemicycle: 317
+    sexe: M
+    id_an: 267556
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267556.asp
+    circonscription: Moselle (4ème)
+    profession: Gynécologue obstétricien
+    debut_mandat: 20/06/2007
+    nom: Alain Marty
+    type: depute
+  depute_267561:
+    place_hemicycle: 188
+    sexe: M
+    id_an: 267561
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267561.asp
+    circonscription: Tarn-et-Garonne (1ère)
+    site_web: http://www.brigittebareges.com
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Brigitte Barèges
+    type: depute
+  depute_267570:
+    place_hemicycle: 300
+    sexe: M
+    id_an: 267570
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267570.asp
+    circonscription: Yonne (2ème)
+    profession: Médecin généraliste
+    debut_mandat: 20/06/2007
+    nom: Jean-Marie Rolland
+    type: depute
+  depute_267573:
+    place_hemicycle: 464
+    sexe: M
+    id_an: 267573
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267573.asp
+    circonscription: Corse-du-Sud (1ère)
+    site_web: http://simon-renucci.org
+    profession: Pédiatre
+    debut_mandat: 20/06/2007
+    nom: Simon Renucci
+    type: depute
+  depute_267576:
+    place_hemicycle: 228
+    sexe: M
+    id_an: 267576
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267576.asp
+    circonscription: Doubs (3ème)
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Marcel Bonnot
+    type: depute
+  depute_267585:
+    place_hemicycle: 377
+    sexe: M
+    id_an: 267585
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267585.asp
+    circonscription: Nord (7ème)
+    site_web: http://www.vercamer.fr
+    profession: Ingénieur
+    debut_mandat: 20/06/2007
+    nom: Francis Vercamer
+    type: depute
+  depute_267598:
+    place_hemicycle: 314
+    sexe: M
+    id_an: 267598
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267598.asp
+    circonscription: Var (6ème)
+    site_web: http://www.josettepons.fr
+    debut_mandat: 20/06/2007
+    nom: Josette Pons
+    type: depute
+  depute_267606:
+    place_hemicycle: 392
+    sexe: M
+    id_an: 267606
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267606.asp
+    circonscription: Yvelines (2ème)
+    profession: Professeur agrégé de géographie
+    debut_mandat: 20/07/2007
+    nom: Yves Vandewalle
+    type: depute
+  depute_267622:
+    place_hemicycle: 425
+    sexe: M
+    id_an: 267622
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267622.asp
+    circonscription: Essonne (1ère)
+    site_web: http://www.valls.fr
+    profession: Conseiller en communication
+    debut_mandat: 20/06/2007
+    nom: Manuel Valls
+    type: depute
+  depute_267641:
+    place_hemicycle: 296
+    sexe: M
+    id_an: 267641
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267641.asp
+    circonscription: Cher (3ème)
+    site_web: http://www.louiscosyns.fr
+    profession: Agent général d'assurances
+    debut_mandat: 20/06/2007
+    nom: Louis Cosyns
+    type: depute
+  depute_267644:
+    place_hemicycle: 460
+    sexe: M
+    id_an: 267644
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267644.asp
+    circonscription: Côte-d'Or (3ème)
+    profession: Enseignante
+    debut_mandat: 20/06/2007
+    nom: Claude Darciaux
+    type: depute
+  depute_267647:
+    place_hemicycle: 15
+    sexe: M
+    id_an: 267647
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267647.asp
+    circonscription: Gard (2ème)
+    profession: Commerçant retraité
+    debut_mandat: 20/06/2007
+    nom: Étienne Mourrut
+    type: depute
+  depute_267650:
+    place_hemicycle: 302
+    sexe: M
+    id_an: 267650
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267650.asp
+    circonscription: Gard (3ème)
+    site_web: http://www.jmroubaud.com
+    profession: Pharmacien
+    debut_mandat: 20/06/2007
+    nom: Jean-Marc Roubaud
+    type: depute
+  depute_267662:
+    place_hemicycle: 356
+    sexe: M
+    id_an: 267662
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267662.asp
+    circonscription: Isère (8ème)
+    profession: Cadre bancaire retraité
+    debut_mandat: 20/06/2007
+    nom: Jacques Remiller
+    type: depute
+  depute_267673:
+    place_hemicycle: 387
+    sexe: M
+    id_an: 267673
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267673.asp
+    circonscription: Tarn (3ème)
+    site_web: http://www.philippe-folliot.fr
+    profession: Directeur d'un organisme de financement du logement social
+    debut_mandat: 20/06/2007
+    nom: Philippe Folliot
+    type: depute
+  depute_267689:
+    place_hemicycle: 33
+    sexe: M
+    id_an: 267689
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267689.asp
+    circonscription: Corse-du-Sud (2ème)
+    site_web: http://www.camillederoccaserra.com
+    debut_mandat: 20/06/2007
+    nom: Camille de Rocca Serra
+    type: depute
+  depute_267695:
+    place_hemicycle: 424
+    sexe: M
+    id_an: 267695
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267695.asp
+    circonscription: Finistère (2ème)
+    profession: Cadre d'action sociale
+    debut_mandat: 20/06/2007
+    nom: Patricia Adam
+    type: depute
+  depute_267698:
+    place_hemicycle: 129
+    sexe: M
+    id_an: 267698
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267698.asp
+    circonscription: Finistère (3ème)
+    profession: Assistante administrative
+    debut_mandat: 20/06/2007
+    nom: Marguerite Lamour
+    type: depute
+  depute_267705:
+    place_hemicycle: 552
+    sexe: M
+    id_an: 267705
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267705.asp
+    circonscription: Ille-et-Vilaine (2ème)
+    site_web: http://www.philippe-tourtelier.fr
+    profession: Professeur retraité
+    debut_mandat: 20/06/2007
+    nom: Philippe Tourtelier
+    type: depute
+  depute_267711:
+    place_hemicycle: 345
+    sexe: M
+    id_an: 267711
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267711.asp
+    circonscription: Meurthe-et-Moselle (1ère)
+    site_web: http://www.laurenthenart.com
+    profession: Juriste d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Laurent Hénart
+    type: depute
+  depute_267719:
+    place_hemicycle: 76
+    sexe: M
+    id_an: 267719
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267719.asp
+    circonscription: Bouches-du-Rhône (10ème)
+    site_web: http://www.depute-mallie.com
+    profession: Docteur en chirurgie dentaire
+    debut_mandat: 20/06/2007
+    nom: Richard Mallié
+    type: depute
+  depute_267728:
+    place_hemicycle: 304
+    sexe: M
+    id_an: 267728
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267728.asp
+    circonscription: Loire-Atlantique (7ème)
+    profession: Cadre de chambre de commerce et d'industrie 
+    debut_mandat: 20/06/2007
+    nom: Christophe Priou
+    type: depute
+  depute_267743:
+    place_hemicycle: 41
+    sexe: M
+    id_an: 267743
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267743.asp
+    circonscription: Oise (7ème)
+    site_web: http://www.edouardcourtial.fr
+    profession: Consultant
+    debut_mandat: 20/06/2007
+    nom: Édouard Courtial
+    type: depute
+  depute_267762:
+    place_hemicycle: 35
+    sexe: M
+    id_an: 267762
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267762.asp
+    circonscription: Nord (14ème)
+    site_web: http://www.jeanpierredecool.com
+    profession: Professeur
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Decool
+    type: depute
+  depute_267765:
+    place_hemicycle: 67
+    sexe: M
+    id_an: 267765
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267765.asp
+    circonscription: Nord (18ème)
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: François-Xavier Villain
+    type: depute
+  depute_267768:
+    place_hemicycle: 550
+    sexe: M
+    id_an: 267768
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267768.asp
+    circonscription: Nord (19ème)
+    site_web: http://www.patrick-roy.fr
+    profession: Enseignant
+    debut_mandat: 20/06/2007
+    nom: Patrick Roy
+    type: depute
+  depute_267773:
+    place_hemicycle: 5
+    sexe: M
+    id_an: 267773
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267773.asp
+    circonscription: Oise (4ème)
+    profession: Agriculteur
+    debut_mandat: 20/07/2007
+    nom: Christian Patria
+    type: depute
+  depute_267775:
+    place_hemicycle: 271
+    sexe: M
+    id_an: 267775
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267775.asp
+    circonscription: Rhône (5ème)
+    site_web: http://www.philippecochet.com
+    profession: Gérant de société
+    debut_mandat: 20/06/2007
+    nom: Philippe Cochet
+    type: depute
+  depute_267787:
+    place_hemicycle: 307
+    sexe: M
+    id_an: 267787
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267787.asp
+    circonscription: Réunion (1ère)
+    site_web: http://www.rpvictoria.fr
+    profession: Directeur d'école
+    debut_mandat: 20/06/2007
+    nom: René-Paul Victoria
+    type: depute
+  depute_267794:
+    place_hemicycle: 98
+    sexe: M
+    id_an: 267794
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267794.asp
+    circonscription: Alpes-Maritimes (9ème)
+    site_web: http://www.michele-tabarot.fr
+    profession: Chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Michèle Tabarot
+    type: depute
+  depute_267797:
+    place_hemicycle: 82
+    sexe: M
+    id_an: 267797
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267797.asp
+    circonscription: Marne (2ème)
+    site_web: http://www.catherine-vautrin.fr
+    profession: Directeur marketing
+    debut_mandat: 20/06/2007
+    nom: Catherine Vautrin
+    type: depute
+  depute_267810:
+    place_hemicycle: 104
+    sexe: M
+    id_an: 267810
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267810.asp
+    circonscription: Seine-et-Marne (8ème)
+    site_web: http://www.chantalbrunel.fr
+    debut_mandat: 20/06/2007
+    nom: Chantal Brunel
+    type: depute
+  depute_267813:
+    place_hemicycle: 198
+    sexe: M
+    id_an: 267813
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267813.asp
+    circonscription: Seine-et-Marne (9ème)
+    site_web: http://www.guy-geoffroy.com
+    profession: Proviseur
+    debut_mandat: 20/06/2007
+    nom: Guy Geoffroy
+    type: depute
+  depute_267822:
+    place_hemicycle: 288
+    sexe: M
+    id_an: 267822
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267822.asp
+    circonscription: Val-de-Marne (4ème)
+    site_web: http://www.jabenisti.com
+    profession: Cadre d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Jacques Alain Bénisti
+    type: depute
+  depute_267827:
+    place_hemicycle: 86
+    sexe: M
+    id_an: 267827
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267827.asp
+    circonscription: Val-de-Marne (7ème)
+    site_web: http://www.marie-anne-montchamp.fr
+    debut_mandat: 20/06/2007
+    nom: Marie-Anne Montchamp
+    type: depute
+  depute_267835:
+    place_hemicycle: 452
+    sexe: M
+    id_an: 267835
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267835.asp
+    circonscription: Val-de-Marne (11ème)
+    site_web: http://www.le-bouillonnec.net
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Jean-Yves Le Bouillonnec
+    type: depute
+  depute_267859:
+    place_hemicycle: 130
+    sexe: M
+    id_an: 267859
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267859.asp
+    circonscription: Hérault (1ère)
+    site_web: http://www.jacquesdomergue.com
+    profession: Chirurgien
+    debut_mandat: 20/06/2007
+    nom: Jacques Domergue
+    type: depute
+  depute_267862:
+    place_hemicycle: 212
+    sexe: M
+    id_an: 267862
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267862.asp
+    circonscription: Hérault (4ème)
+    site_web: http://www.robert-lecou.fr
+    profession: Cadre territorial
+    debut_mandat: 20/06/2007
+    nom: Robert Lecou
+    type: depute
+  depute_267875:
+    place_hemicycle: 303
+    sexe: M
+    id_an: 267875
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267875.asp
+    circonscription: Hauts-de-Seine (13ème)
+    profession: Directeur de société
+    debut_mandat: 05/01/2009
+    nom: Georges Siffredi
+    type: depute
+  depute_267886:
+    place_hemicycle: 285
+    sexe: M
+    id_an: 267886
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267886.asp
+    circonscription: Val-d'Oise (2ème)
+    site_web: http://www.axelponiatowski.com
+    profession: Directeur de société
+    debut_mandat: 20/06/2007
+    nom: Axel Poniatowski
+    type: depute
+  depute_267895:
+    place_hemicycle: 95
+    sexe: M
+    id_an: 267895
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267895.asp
+    circonscription: Val-d'Oise (7ème)
+    site_web: http://www.jeromechartier.fr
+    profession: Ancien associé gérant
+    debut_mandat: 20/06/2007
+    nom: Jérôme Chartier
+    type: depute
+  depute_267903:
+    place_hemicycle: 207
+    sexe: M
+    id_an: 267903
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267903.asp
+    circonscription: Alpes-Maritimes (2ème)
+    site_web: http://marland-militello.fr
+    debut_mandat: 20/06/2007
+    nom: Muriel Marland-Militello
+    type: depute
+  depute_267907:
+    place_hemicycle: 75
+    sexe: M
+    id_an: 267907
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267907.asp
+    circonscription: Hérault (3ème)
+    site_web: http://www.jpgrand.com
+    profession: Attaché parlementaire
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Grand
+    type: depute
+  depute_267923:
+    place_hemicycle: 623
+    sexe: M
+    id_an: 267923
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267923.asp
+    circonscription: Pas-de-Calais (13ème)
+    site_web: http://www.guydelcourt.fr
+    profession: Retraité de la fonction publique territoriale
+    debut_mandat: 20/06/2007
+    nom: Guy Delcourt
+    type: depute
+  depute_267950:
+    place_hemicycle: 599
+    sexe: M
+    id_an: 267950
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267950.asp
+    circonscription: Paris (1ère)
+    site_web: http://www.martinebillard-blog.org
+    profession: Bibliothécaire
+    debut_mandat: 20/06/2007
+    nom: Martine Billard
+    type: depute
+  depute_267954:
+    place_hemicycle: 422
+    sexe: M
+    id_an: 267954
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267954.asp
+    circonscription: Paris (6ème)
+    site_web: http://www.daniele-hoffman-rispal.fr
+    profession: Comptable
+    debut_mandat: 20/06/2007
+    nom: Danièle Hoffman-Rispal
+    type: depute
+  depute_267965:
+    place_hemicycle: 450
+    sexe: M
+    id_an: 267965
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267965.asp
+    circonscription: Paris (17ème)
+    site_web: http://www.annicklepetit.fr
+    debut_mandat: 20/06/2007
+    nom: Annick Lepetit
+    type: depute
+  depute_2679:
+    place_hemicycle: 506
+    sexe: M
+    id_an: 2679
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2679.asp
+    circonscription: Indre (1ère)
+    profession: Conseiller de tribunal administratif
+    debut_mandat: 20/06/2007
+    nom: Michel Sapin
+    type: depute
+  depute_268001:
+    place_hemicycle: 136
+    sexe: M
+    id_an: 268001
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268001.asp
+    circonscription: Pas-de-Calais (9ème)
+    site_web: http://www.andre-flajolet.net
+    profession: Professeur
+    debut_mandat: 20/06/2007
+    nom: André Flajolet
+    type: depute
+  depute_268011:
+    place_hemicycle: 58
+    sexe: M
+    id_an: 268011
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268011.asp
+    circonscription: Bas-Rhin (2ème)
+    site_web: http://www.jpmaurer.info
+    profession: Assistant parlementaire
+    debut_mandat: 20/06/2007
+    nom: Jean-Philippe Maurer
+    type: depute
+  depute_268019:
+    place_hemicycle: 367
+    sexe: M
+    id_an: 268019
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268019.asp
+    circonscription: Seine-Saint-Denis (5ème)
+    site_web: http://www.jclagarde.net
+    profession: Attaché de direction
+    debut_mandat: 20/06/2007
+    nom: Jean-Christophe Lagarde
+    type: depute
+  depute_268031:
+    place_hemicycle: 466
+    sexe: M
+    id_an: 268031
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268031.asp
+    circonscription: Martinique (1ère)
+    profession: Professeur de collège
+    debut_mandat: 20/06/2007
+    nom: Louis-Joseph Manscour
+    type: depute
+  depute_268039:
+    place_hemicycle: 468
+    sexe: M
+    id_an: 268039
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268039.asp
+    circonscription: Guadeloupe (1ère)
+    site_web: http://www.ericjalton.fr
+    profession: Dentiste
+    debut_mandat: 20/06/2007
+    nom: Éric Jalton
+    type: depute
+  depute_268042:
+    place_hemicycle: 127
+    sexe: M
+    id_an: 268042
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268042.asp
+    circonscription: Guadeloupe (2ème)
+    profession: Agent de contrôle retraitée
+    debut_mandat: 20/06/2007
+    nom: Gabrielle Louis-Carabin
+    type: depute
+  depute_268048:
+    place_hemicycle: 505
+    sexe: M
+    id_an: 268048
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268048.asp
+    circonscription: Guadeloupe (4ème)
+    site_web: http://www.lurel.parti-socialiste.fr
+    profession: Fonctionnaire territorial
+    debut_mandat: 20/06/2007
+    nom: Victorin Lurel
+    type: depute
+  depute_268051:
+    place_hemicycle: 190
+    sexe: M
+    id_an: 268051
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268051.asp
+    circonscription: Loiret (2ème)
+    profession: Administrateur civil
+    debut_mandat: 20/06/2007
+    nom: Serge Grouard
+    type: depute
+  depute_2685:
+    place_hemicycle: 530
+    sexe: M
+    id_an: 2685
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2685.asp
+    circonscription: Puy-de-Dôme (1ère)
+    site_web: http://www.odile-saugues.org
+    profession: Retraitée
+    debut_mandat: 20/06/2007
+    nom: Odile Saugues
+    type: depute
+  depute_2690:
+    place_hemicycle: 364
+    sexe: M
+    id_an: 2690
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2690.asp
+    circonscription: Côte-d'Or (4ème)
+    site_web: http://www.francois-sauvadet.net
+    profession: Journaliste
+    debut_mandat: 20/06/2007
+    nom: François Sauvadet
+    type: depute
+  depute_2700:
+    place_hemicycle: 290
+    sexe: M
+    id_an: 2700
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2700.asp
+    circonscription: Val-d'Oise (6ème)
+    site_web: http://www.scellier.net
+    profession: Directeur divisionnaire des impôts honoraire
+    debut_mandat: 20/06/2007
+    nom: François Scellier
+    type: depute
+  depute_2707:
+    place_hemicycle: 164
+    sexe: M
+    id_an: 2707
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2707.asp
+    circonscription: Bas-Rhin (3ème)
+    profession: Principal de collège en retraite
+    debut_mandat: 20/06/2007
+    nom: André Schneider
+    type: depute
+  depute_2708:
+    place_hemicycle: 25
+    sexe: M
+    id_an: 2708
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2708.asp
+    circonscription: Hauts-de-Seine (12ème)
+    debut_mandat: 04/02/2008
+    nom: Jean-Pierre Schosteck
+    type: depute
+  depute_271:
+    place_hemicycle: 523
+    sexe: M
+    id_an: 271
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/271.asp
+    circonscription: Bouches-du-Rhône (7ème)
+    profession: Cadre commercial d'entreprise de manutention et d'acconage
+    debut_mandat: 20/06/2007
+    nom: Sylvie Andrieux
+    type: depute
+  depute_2744:
+    place_hemicycle: 189
+    sexe: M
+    id_an: 2744
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2744.asp
+    circonscription: Yonne (1ère)
+    profession: Conseiller référendaire à la Cour des comptes
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Soisson
+    type: depute
+  depute_2775:
+    place_hemicycle: 294
+    sexe: M
+    id_an: 2775
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2775.asp
+    circonscription: Côte-d'Or (5ème)
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Alain Suguenot
+    type: depute
+  depute_2791:
+    place_hemicycle: 615
+    sexe: M
+    id_an: 2791
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2791.asp
+    circonscription: Guyane (1ère)
+    site_web: http://www.christiane-taubira.net
+    profession: Économiste
+    debut_mandat: 20/06/2007
+    nom: Christiane Taubira
+    type: depute
+  depute_2792:
+    place_hemicycle: 350
+    sexe: M
+    id_an: 2792
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2792.asp
+    circonscription: Maine-et-Loire (3ème)
+    site_web: http://www.jctaugourdeau.fr
+    profession: Chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Jean-Charles Taugourdeau
+    type: depute
+  depute_2796:
+    place_hemicycle: 168
+    sexe: M
+    id_an: 2796
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2796.asp
+    circonscription: Bouches-du-Rhône (6ème)
+    site_web: http://www.guyteissier.com
+    profession: Administrateur de biens
+    debut_mandat: 20/06/2007
+    nom: Guy Teissier
+    type: depute
+  depute_2799:
+    place_hemicycle: 414
+    sexe: M
+    id_an: 2799
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2799.asp
+    circonscription: Ardèche (1ère)
+    site_web: http://www.pascal-terrasse.net
+    profession: Directeur de maison de retraite
+    debut_mandat: 20/06/2007
+    nom: Pascal Terrasse
+    type: depute
+  depute_2801:
+    place_hemicycle: 108
+    sexe: M
+    id_an: 2801
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2801.asp
+    circonscription: Rhône (12ème)
+    site_web: http://www.michel-terrot.com
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Michel Terrot
+    type: depute
+  depute_2811:
+    place_hemicycle: 330
+    sexe: M
+    id_an: 2811
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2811.asp
+    circonscription: Marne (3ème)
+    profession: Docteur en chirurgie dentaire
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Thomas
+    type: depute
+  depute_2815:
+    place_hemicycle: 245
+    sexe: M
+    id_an: 2815
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2815.asp
+    circonscription: Bouches-du-Rhône (2ème)
+    profession: Gérant de sociétés
+    debut_mandat: 20/06/2007
+    nom: Dominique Tian
+    type: depute
+  depute_2816:
+    place_hemicycle: 81
+    sexe: M
+    id_an: 2816
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2816.asp
+    circonscription: Paris (2ème)
+    profession: Magistrat
+    debut_mandat: 20/06/2007
+    nom: Jean Tiberi
+    type: depute
+  depute_2825:
+    place_hemicycle: 432
+    sexe: M
+    id_an: 2825
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2825.asp
+    circonscription: Indre-et-Loire (3ème)
+    site_web: http://www.marisoltouraine.typepad.fr
+    profession: Conseillère d'Etat
+    debut_mandat: 20/06/2007
+    nom: Marisol Touraine
+    type: depute
+  depute_2832:
+    place_hemicycle: 132
+    sexe: M
+    id_an: 2832
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2832.asp
+    circonscription: Seine-Maritime (10ème)
+    site_web: http://www.alfredtrassypaillogues.fr
+    profession: Ingénieur
+    debut_mandat: 20/06/2007
+    nom: Alfred Trassy-Paillogues
+    type: depute
+  depute_2843:
+    place_hemicycle: 273
+    sexe: M
+    id_an: 2843
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2843.asp
+    circonscription: Essonne (9ème)
+    site_web: http://www.georgestron.fr
+    profession: Agent public des collectivités locales
+    debut_mandat: 20/06/2007
+    nom: Georges Tron
+    type: depute
+  depute_2850:
+    place_hemicycle: 167
+    sexe: M
+    id_an: 2850
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2850.asp
+    circonscription: Haut-Rhin (4ème)
+    site_web: http://jean.ueberschlag.over-blog.com
+    profession: Chirurgien-dentiste retraité
+    debut_mandat: 20/06/2007
+    nom: Jean Ueberschlag
+    type: depute
+  depute_2859:
+    place_hemicycle: 427
+    sexe: M
+    id_an: 2859
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2859.asp
+    circonscription: Paris (19ème)
+    site_web: http://www.danielvaillant.net
+    profession: Technicien biologiste
+    debut_mandat: 20/06/2007
+    nom: Daniel Vaillant
+    type: depute
+  depute_2870:
+    place_hemicycle: 498
+    sexe: M
+    id_an: 2870
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2870.asp
+    circonscription: Isère (9ème)
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: André Vallini
+    type: depute
+  depute_2875:
+    place_hemicycle: 53
+    sexe: M
+    id_an: 2875
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2875.asp
+    circonscription: Nord (10ème)
+    site_web: http://vanneste.over-blog.org
+    profession: Professeur de philosophie
+    debut_mandat: 20/06/2007
+    nom: Christian Vanneste
+    type: depute
+  depute_2876:
+    place_hemicycle: 341
+    sexe: M
+    id_an: 2876
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2876.asp
+    circonscription: Vosges (3ème)
+    site_web: http://www.vannson.fr
+    profession: Opticien
+    debut_mandat: 20/06/2007
+    nom: François Vannson
+    type: depute
+  depute_2883:
+    place_hemicycle: 417
+    sexe: M
+    id_an: 2883
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2883.asp
+    circonscription: Bouches-du-Rhône (16ème)
+    profession: Préfet
+    debut_mandat: 20/06/2007
+    nom: Michel Vauzelle
+    type: depute
+  depute_2884:
+    place_hemicycle: 589
+    sexe: M
+    id_an: 2884
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2884.asp
+    circonscription: Bouches-du-Rhône (13ème)
+    profession: Conseiller d'orientation-psychologue
+    debut_mandat: 20/06/2007
+    nom: Michel Vaxès
+    type: depute
+  depute_288865:
+    place_hemicycle: 366
+    sexe: M
+    id_an: 288865
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/288865.asp
+    circonscription: Yvelines (3ème)
+    debut_mandat: 19/04/2008
+    nom: Colette Le Moal
+    type: depute
+  depute_2895:
+    place_hemicycle: 353
+    sexe: M
+    id_an: 2895
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2895.asp
+    circonscription: Creuse (1ère)
+    profession: Directeur d'école retraité
+    debut_mandat: 20/06/2007
+    nom: Michel Vergnier
+    type: depute
+  depute_2904:
+    place_hemicycle: 462
+    sexe: M
+    id_an: 2904
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2904.asp
+    circonscription: Hérault (2ème)
+    profession: Directeur de recherche (retraité)
+    debut_mandat: 20/06/2007
+    nom: André Vézinhet
+    type: depute
+  depute_2907:
+    place_hemicycle: 315
+    sexe: M
+    id_an: 2907
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2907.asp
+    circonscription: Var (7ème)
+    profession: Biologiste
+    debut_mandat: 20/06/2007
+    nom: Jean-Sébastien Vialatte
+    type: depute
+  depute_2912:
+    place_hemicycle: 354
+    sexe: M
+    id_an: 2912
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2912.asp
+    circonscription: Landes (1ère)
+    site_web: http://www.alainvidalies.fr
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Alain Vidalies
+    type: depute
+  depute_2925:
+    place_hemicycle: 553
+    sexe: M
+    id_an: 2925
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2925.asp
+    circonscription: Charente (1ère)
+    profession: Assistant technique des travaux publics de l'Etat
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Viollet
+    type: depute
+  depute_2936:
+    place_hemicycle: 28
+    sexe: M
+    id_an: 2936
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2936.asp
+    circonscription: Ain (4ème)
+    site_web: http://www.michel-voisin.net
+    profession: Expert comptable, commissaire aux comptes et expert-judiciaire 
+    debut_mandat: 20/06/2007
+    nom: Michel Voisin
+    type: depute
+  depute_2937:
+    place_hemicycle: 44
+    sexe: M
+    id_an: 2937
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2937.asp
+    circonscription: Saône-et-Loire (1ère)
+    site_web: http://www.gerardvoisin.com
+    profession: Garagiste
+    debut_mandat: 20/06/2007
+    nom: Gérard Voisin
+    type: depute
+  depute_2943:
+    place_hemicycle: 537
+    sexe: M
+    id_an: 2943
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2943.asp
+    circonscription: Ardennes (2ème)
+    site_web: http://www.philippevuilque.fr
+    profession: Directeur de clinique
+    debut_mandat: 20/06/2007
+    nom: Philippe Vuilque
+    type: depute
+  depute_2952:
+    place_hemicycle: 179
+    sexe: M
+    id_an: 2952
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2952.asp
+    circonscription: Ardennes (3ème)
+    profession: Sans profession
+    debut_mandat: 20/06/2007
+    nom: Jean-Luc Warsmann
+    type: depute
+  depute_295:
+    place_hemicycle: 586
+    sexe: M
+    id_an: 295
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/295.asp
+    circonscription: Seine-Saint-Denis (11ème)
+    site_web: http://www.francoisasensi.com
+    profession: Dessinateur industriel
+    debut_mandat: 20/06/2007
+    nom: François Asensi
+    type: depute
+  depute_2964:
+    place_hemicycle: 237
+    sexe: M
+    id_an: 2964
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2964.asp
+    circonscription: Nouvelle-Calédonie (1ère)
+    site_web: http://www.yanno.nc
+    profession: Commissaire aux comptes
+    debut_mandat: 20/06/2007
+    nom: Gaël Yanno
+    type: depute
+  depute_2971:
+    place_hemicycle: 36
+    sexe: M
+    id_an: 2971
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2971.asp
+    circonscription: Moselle (3ème)
+    profession: Professeur certifié
+    debut_mandat: 20/06/2007
+    nom: Marie-Jo Zimmermann
+    type: depute
+  depute_303108:
+    place_hemicycle: 56
+    sexe: M
+    id_an: 303108
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/303108.asp
+    circonscription: Haute-Loire (1ère)
+    profession: Cadre bancaire
+    debut_mandat: 20/07/2007
+    nom: Jean-Pierre Marcon
+    type: depute
+  depute_304016:
+    place_hemicycle: 633
+    sexe: M
+    id_an: 304016
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/304016.asp
+    circonscription: Seine-Maritime (11ème)
+    site_web: http://sandrine-hurel.info
+    profession: Secrétaire de direction
+    debut_mandat: 20/06/2007
+    nom: Sandrine Hurel
+    type: depute
+  depute_309643:
+    place_hemicycle: 66
+    sexe: M
+    id_an: 309643
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/309643.asp
+    circonscription: Vendée (4ème)
+    debut_mandat: 20/06/2007
+    nom: Véronique Besse
+    type: depute
+  depute_312:
+    place_hemicycle: 60
+    sexe: M
+    id_an: 312
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/312.asp
+    circonscription: Creuse (2ème)
+    profession: Agriculteur
+    site_web: http://www.jean-auclair.fr
+    debut_mandat: 20/06/2007
+    nom: Jean Auclair
+    type: depute
+  depute_320:
+    place_hemicycle: 182
+    sexe: M
+    id_an: 320
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/320.asp
+    circonscription: Paris (3ème)
+    site_web: http://www.martine-aurillac.fr
+    profession: Attachée d'administration centrale en détachement
+    debut_mandat: 20/06/2007
+    nom: Martine Aurillac
+    type: depute
+  depute_328:
+    place_hemicycle: 508
+    sexe: M
+    id_an: 328
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/328.asp
+    circonscription: Loire-Atlantique (3ème)
+    profession: Professeur d'allemand
+    debut_mandat: 20/06/2007
+    nom: Jean-Marc Ayrault
+    type: depute
+  depute_330008:
+    place_hemicycle: 50
+    sexe: M
+    id_an: 330008
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330008.asp
+    circonscription: Ain (1ère)
+    profession: Cadre territorial
+    debut_mandat: 20/06/2007
+    nom: Xavier Breton
+    type: depute
+  depute_330112:
+    place_hemicycle: 236
+    sexe: M
+    id_an: 330112
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330112.asp
+    circonscription: Aisne (5ème)
+    site_web: http://www.isabellevasseur.fr
+    profession: Infirmière
+    debut_mandat: 20/06/2007
+    nom: Isabelle Vasseur
+    type: depute
+  depute_330118:
+    place_hemicycle: 650
+    sexe: M
+    id_an: 330118
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330118.asp
+    circonscription: Allier (1ère)
+    profession: Retraité de l'enseignement
+    debut_mandat: 20/06/2007
+    nom: Guy Chambefort
+    type: depute
+  depute_330130:
+    place_hemicycle: 487
+    sexe: M
+    id_an: 330130
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330130.asp
+    circonscription: Allier (2ème)
+    site_web: http://bernardlesterlin.typepad.fr
+    profession: Administrateur civil
+    debut_mandat: 20/06/2007
+    nom: Bernard Lesterlin
+    type: depute
+  depute_330146:
+    place_hemicycle: 488
+    sexe: M
+    id_an: 330146
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330146.asp
+    circonscription: Allier (3ème)
+    site_web: http://jean.mallot.over-blog.com
+    profession: Contrôleur général économique et financier
+    debut_mandat: 20/06/2007
+    nom: Jean Mallot
+    type: depute
+  depute_330240:
+    place_hemicycle: 155
+    sexe: M
+    id_an: 330240
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330240.asp
+    circonscription: Alpes-Maritimes (1ère)
+    site_web: http://www.eric-ciotti.fr
+    profession: Directeur de cabinet d'un président de conseil général
+    debut_mandat: 20/06/2007
+    nom: Éric Ciotti
+    type: depute
+  depute_330357:
+    place_hemicycle: 381
+    sexe: M
+    id_an: 330357
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330357.asp
+    circonscription: Ardèche (2ème)
+    site_web: http://www.olivierdussopt.fr
+    profession: Assistant parlementaire
+    debut_mandat: 20/06/2007
+    nom: Olivier Dussopt
+    type: depute
+  depute_330546:
+    place_hemicycle: 570
+    sexe: M
+    id_an: 330546
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330546.asp
+    circonscription: Aveyron (2ème)
+    profession: Responsable Ressources Humaines en dispense d'activité
+    debut_mandat: 20/06/2007
+    nom: Marie-Lou Marcel
+    type: depute
+  depute_330613:
+    place_hemicycle: 394
+    sexe: M
+    id_an: 330613
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330613.asp
+    circonscription: Bouches-du-Rhône (4ème)
+    site_web: http://henrijibrayel.over-blog.com
+    profession: Retraité des entreprises publiques
+    debut_mandat: 20/06/2007
+    nom: Henri Jibrayel
+    type: depute
+  depute_330684:
+    place_hemicycle: 223
+    sexe: M
+    id_an: 330684
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330684.asp
+    circonscription: Bouches-du-Rhône (8ème)
+    site_web: http://www.valerieboyer.fr
+    profession: Cadre du secteur hospitalier
+    debut_mandat: 20/06/2007
+    nom: Valérie Boyer
+    type: depute
+  depute_330788:
+    place_hemicycle: 12
+    sexe: M
+    id_an: 330788
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330788.asp
+    circonscription: Bouches-du-Rhône (15ème)
+    site_web: http://www.bernard-reynes.com
+    profession: Dentiste
+    debut_mandat: 20/06/2007
+    nom: Bernard Reynès
+    type: depute
+  depute_330909:
+    place_hemicycle: 49
+    sexe: M
+    id_an: 330909
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330909.asp
+    circonscription: Cantal (1ère)
+    site_web: http://www.descoeur.com
+    profession: Professeur agrégé de biologie
+    debut_mandat: 20/06/2007
+    nom: Vincent Descoeur
+    type: depute
+  depute_330981:
+    place_hemicycle: 649
+    sexe: M
+    id_an: 330981
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330981.asp
+    circonscription: Charente (4ème)
+    profession: Retraitée de la fonction publique
+    debut_mandat: 20/06/2007
+    nom: Martine Pinville
+    type: depute
+  depute_331014:
+    place_hemicycle: 482
+    sexe: M
+    id_an: 331014
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331014.asp
+    circonscription: Charente-Maritime (3ème)
+    site_web: http://www.catherine-quere.fr
+    profession:  Viticultrice
+    debut_mandat: 20/06/2007
+    nom: Catherine Quéré
+    type: depute
+  depute_331146:
+    place_hemicycle: 244
+    sexe: M
+    id_an: 331146
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331146.asp
+    circonscription: Haute-Corse (1ère)
+    site_web: http://www.depute-gandolfi.com
+    profession: Médecin
+    debut_mandat: 20/06/2007
+    nom: Sauveur Gandolfi-Scheit
+    type: depute
+  depute_331282:
+    place_hemicycle: 565
+    sexe: M
+    id_an: 331282
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331282.asp
+    circonscription: Côtes-d'Armor (5ème)
+    profession: Assistante parlementaire
+    site_web: http://www.corinne-erhel.fr
+    debut_mandat: 20/06/2007
+    nom: Corinne Erhel
+    type: depute
+  depute_331381:
+    place_hemicycle: 48
+    sexe: M
+    id_an: 331381
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331381.asp
+    circonscription: Doubs (2ème)
+    site_web: http://www.grosperrin.net
+    profession: Professeur de faculté
+    debut_mandat: 20/06/2007
+    nom: Jacques Grosperrin
+    type: depute
+  depute_331442:
+    place_hemicycle: 241
+    sexe: M
+    id_an: 331442
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331442.asp
+    circonscription: Drôme (2ème)
+    site_web: http://www.franck-reynier.fr
+    profession: Informaticien
+    debut_mandat: 20/06/2007
+    nom: Franck Reynier
+    type: depute
+  depute_331567:
+    place_hemicycle: 322
+    sexe: M
+    id_an: 331567
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331567.asp
+    circonscription: Eure-et-Loir (3ème)
+    site_web: http://www.la-raudiere.com
+    profession: Chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Laure de La Raudière
+    type: depute
+  depute_331582:
+    place_hemicycle: 388
+    sexe: M
+    id_an: 331582
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331582.asp
+    circonscription: Eure-et-Loir (4ème)
+    site_web: http://www.philippevigier.com
+    profession: Médecin
+    debut_mandat: 20/06/2007
+    nom: Philippe Vigier
+    type: depute
+  depute_331594:
+    place_hemicycle: 486
+    sexe: M
+    id_an: 331594
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331594.asp
+    circonscription: Finistère (1ère)
+    site_web: http://www.urvoas.org
+    profession: Maître de conférences
+    debut_mandat: 20/06/2007
+    nom: Jean-Jacques Urvoas
+    type: depute
+  depute_331658:
+    place_hemicycle: 485
+    sexe: M
+    id_an: 331658
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331658.asp
+    circonscription: Finistère (7ème)
+    site_web: http://www.annickleloch.fr
+    profession: Commercant
+    debut_mandat: 20/06/2007
+    nom: Annick Le Loch
+    type: depute
+  depute_331753:
+    place_hemicycle: 572
+    sexe: M
+    id_an: 331753
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331753.asp
+    circonscription: Haute-Garonne (1ère)
+    site_web: http://catherine-lemorton.eu
+    profession: Pharmacien
+    debut_mandat: 20/06/2007
+    nom: Catherine Lemorton
+    type: depute
+  depute_331807:
+    place_hemicycle: 571
+    sexe: M
+    id_an: 331807
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331807.asp
+    circonscription: Haute-Garonne (4ème)
+    site_web: http://www.martine-martinel.org
+    profession: Enseignant
+    debut_mandat: 20/06/2007
+    nom: Martine Martinel
+    type: depute
+  depute_331835:
+    place_hemicycle: 463
+    sexe: M
+    id_an: 331835
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331835.asp
+    circonscription: Haute-Garonne (6ème)
+    site_web: http://www.moniqueiborra.net
+    profession: Fonctionnaire de catégorie A
+    debut_mandat: 20/06/2007
+    nom: Monique Iborra
+    type: depute
+  depute_331924:
+    place_hemicycle: 383
+    sexe: M
+    id_an: 331924
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331924.asp
+    circonscription: Gironde (2ème)
+    site_web: http://www.michele-delaunay.net
+    profession: Médecin des hôpitaux
+    debut_mandat: 20/06/2007
+    nom: Michèle Delaunay
+    type: depute
+  depute_331973:
+    place_hemicycle: 382
+    sexe: M
+    id_an: 331973
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331973.asp
+    circonscription: Gironde (5ème)
+    site_web: http://www.pascalegot.fr
+    profession: Journaliste
+    debut_mandat: 20/06/2007
+    nom: Pascale Got
+    type: depute
+  depute_331990:
+    place_hemicycle: 418
+    sexe: M
+    id_an: 331990
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331990.asp
+    circonscription: Gironde (7ème)
+    profession: Cadre supérieur (secteur privé)
+    debut_mandat: 20/06/2007
+    nom: Alain Rousset
+    type: depute
+  depute_332015:
+    place_hemicycle: 642
+    sexe: M
+    id_an: 332015
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332015.asp
+    circonscription: Gironde (9ème)
+    site_web: http://www.martinefaure.fr
+    profession: Retraitée de l'enseignement
+    debut_mandat: 20/06/2007
+    nom: Martine Faure
+    type: depute
+  depute_332154:
+    place_hemicycle: 124
+    sexe: M
+    id_an: 332154
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332154.asp
+    circonscription: Hérault (7ème)
+    site_web: http://www.gillesdettore.fr
+    profession: Permanent politique
+    debut_mandat: 20/06/2007
+    nom: Gilles d'Ettore
+    type: depute
+  depute_332206:
+    place_hemicycle: 484
+    sexe: M
+    id_an: 332206
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332206.asp
+    circonscription: Ille-et-Vilaine (4ème)
+    site_web: http://www.jrmarsac-leblog.typepad.fr
+    profession: Cadre
+    debut_mandat: 20/06/2007
+    nom: Jean-René Marsac
+    type: depute
+  depute_332228:
+    place_hemicycle: 402
+    sexe: M
+    id_an: 332228
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332228.asp
+    circonscription: Ille-et-Vilaine (6ème)
+    site_web: http://www.thierry-benoit.fr
+    profession: Représentant de commerce
+    debut_mandat: 20/06/2007
+    nom: Thierry Benoit
+    type: depute
+  depute_332305:
+    place_hemicycle: 395
+    sexe: M
+    id_an: 332305
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332305.asp
+    circonscription: Indre-et-Loire (1ère)
+    site_web: http://blog.jean-patrick-gille.fr/
+    profession: Chargé de mission auprès d'un conseil régional
+    debut_mandat: 20/06/2007
+    nom: Jean-Patrick Gille
+    type: depute
+  depute_332364:
+    place_hemicycle: 568
+    sexe: M
+    id_an: 332364
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332364.asp
+    circonscription: Isère (1ère)
+    site_web: http://www.genevieve-fioraso.fr
+    profession: Cadre supérieur
+    debut_mandat: 20/06/2007
+    nom: Geneviève Fioraso
+    type: depute
+  depute_332384:
+    place_hemicycle: 483
+    sexe: M
+    id_an: 332384
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332384.asp
+    circonscription: Isère (2ème)
+    site_web: http://issindou.unblog.fr
+    profession: Cadre de la fonction publique
+    debut_mandat: 20/06/2007
+    nom: Michel Issindou
+    type: depute
+  depute_332523:
+    place_hemicycle: 39
+    sexe: M
+    id_an: 332523
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332523.asp
+    circonscription: Jura (2ème)
+    debut_mandat: 20/06/2007
+    nom: Marie-Christine Dalloz
+    type: depute
+  depute_332614:
+    place_hemicycle: 564
+    sexe: M
+    id_an: 332614
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332614.asp
+    circonscription: Loire (1ère)
+    site_web: http://www.juanico.fr
+    profession: Fonctionnaire territorial
+    debut_mandat: 20/06/2007
+    nom: Régis Juanico
+    type: depute
+  depute_332636:
+    place_hemicycle: 393
+    sexe: M
+    id_an: 332636
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332636.asp
+    circonscription: Loire (2ème)
+    site_web: http://www.jlgagnaire.com
+    profession: Enseignant
+    debut_mandat: 20/06/2007
+    nom: Jean-Louis Gagnaire
+    type: depute
+  depute_332747:
+    place_hemicycle: 601
+    sexe: M
+    id_an: 332747
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332747.asp
+    circonscription: Loire-Atlantique (1ère)
+    site_web: http://blog.francoisderugy.fr
+    profession: Assistant parlementaire
+    debut_mandat: 20/06/2007
+    nom: François de Rugy
+    type: depute
+  depute_332796:
+    place_hemicycle: 604
+    sexe: M
+    id_an: 332796
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332796.asp
+    circonscription: Loire-Atlantique (5ème)
+    profession: Professeur des écoles
+    site_web: http://www.michelmenard.fr
+    debut_mandat: 20/06/2007
+    nom: Michel Ménard
+    type: depute
+  depute_332843:
+    place_hemicycle: 603
+    sexe: M
+    id_an: 332843
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332843.asp
+    circonscription: Loire-Atlantique (8ème)
+    profession: Sage-femme
+    debut_mandat: 20/06/2007
+    nom: Marie-Odile Bouillé
+    type: depute
+  depute_332858:
+    place_hemicycle: 319
+    sexe: M
+    id_an: 332858
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332858.asp
+    circonscription: Loire-Atlantique (9ème)
+    profession: Médecin
+    debut_mandat: 20/06/2007
+    nom: Philippe Boënnec
+    type: depute
+  depute_332886:
+    place_hemicycle: 63
+    sexe: M
+    id_an: 332886
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332886.asp
+    circonscription: Loiret (1ère)
+    profession: Chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Olivier Carré
+    type: depute
+  depute_332950:
+    place_hemicycle: 630
+    sexe: M
+    id_an: 332950
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332950.asp
+    circonscription: Lot (1ère)
+    profession: Médecin
+    debut_mandat: 20/06/2007
+    nom: Dominique Orliac
+    type: depute
+  depute_333043:
+    place_hemicycle: 406
+    sexe: M
+    id_an: 333043
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333043.asp
+    circonscription: Maine-et-Loire (2ème)
+    site_web: http://www.marcgoua.fr
+    profession: Retraité salarié privé
+    debut_mandat: 20/06/2007
+    nom: Marc Goua
+    type: depute
+  depute_333134:
+    place_hemicycle: 149
+    sexe: M
+    id_an: 333134
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333134.asp
+    circonscription: Manche (2ème)
+    site_web: http://www.guenael-huet.org
+    profession: Fonctionnaire
+    debut_mandat: 20/06/2007
+    nom: Guénhaël Huet
+    type: depute
+  depute_333224:
+    sexe: M
+    id_an: 333224
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333224.asp
+    circonscription: Marne (4ème)
+    site_web: http://www.benoistapparu.com
+    debut_mandat: 20/06/2007
+    nom: Benoist Apparu
+    type: depute
+  depute_333285:
+    place_hemicycle: 566
+    sexe: M
+    id_an: 333285
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333285.asp
+    circonscription: Mayenne (1ère)
+    debut_mandat: 20/06/2007
+    nom: Guillaume Garot
+    type: depute
+  depute_333335:
+    place_hemicycle: 645
+    sexe: M
+    id_an: 333335
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333335.asp
+    circonscription: Meurthe-et-Moselle (2ème)
+    site_web: http://herveferon.fr
+    profession: Homme de lettres et Artiste
+    debut_mandat: 20/06/2007
+    nom: Hervé Féron
+    type: depute
+  depute_333352:
+    place_hemicycle: 144
+    sexe: M
+    id_an: 333352
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333352.asp
+    circonscription: Meurthe-et-Moselle (3ème)
+    profession: Juriste d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Valérie Rosso-Debord
+    type: depute
+  depute_333421:
+    place_hemicycle: 326
+    sexe: M
+    id_an: 333421
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333421.asp
+    circonscription: Meuse (1ère)
+    site_web: http://www.bertrandpancher.com
+    profession: Directeur du développement
+    debut_mandat: 20/06/2007
+    nom: Bertrand Pancher
+    type: depute
+  depute_333457:
+    place_hemicycle: 143
+    sexe: M
+    id_an: 333457
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333457.asp
+    circonscription: Morbihan (2ème)
+    profession: Ingénieur conseil
+    debut_mandat: 20/06/2007
+    nom: Michel Grall
+    type: depute
+  depute_333494:
+    place_hemicycle: 494
+    sexe: M
+    id_an: 333494
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333494.asp
+    circonscription: Morbihan (5ème)
+    profession: Chargée de mission auprès d'une collectivité territoriale
+    debut_mandat: 20/06/2007
+    nom: Françoise Olivier-Coupeau
+    type: depute
+  depute_333590:
+    place_hemicycle: 57
+    sexe: M
+    id_an: 333590
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333590.asp
+    circonscription: Moselle (7ème)
+    profession: Employé (secteur privé)
+    debut_mandat: 20/06/2007
+    nom: André Wojciechowski
+    type: depute
+  depute_333611:
+    place_hemicycle: 546
+    sexe: M
+    id_an: 333611
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333611.asp
+    circonscription: Moselle (8ème)
+    site_web: http://www.aureliefilippetti.org
+    profession: Enseignante et écrivain
+    debut_mandat: 20/06/2007
+    nom: Aurélie Filippetti
+    type: depute
+  depute_333818:
+    place_hemicycle: 606
+    sexe: M
+    id_an: 333818
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333818.asp
+    circonscription: Nord (12ème)
+    site_web: http://www.christianhutin.fr
+    profession: Médecin généraliste
+    debut_mandat: 20/06/2007
+    nom: Christian Hutin
+    type: depute
+  depute_333972:
+    place_hemicycle: 151
+    sexe: M
+    id_an: 333972
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333972.asp
+    circonscription: Nord (23ème)
+    site_web: http://www.christinemarin.fr
+    profession: Commerçante
+    debut_mandat: 20/06/2007
+    nom: Christine Marin
+    type: depute
+  depute_333975:
+    place_hemicycle: 627
+    sexe: M
+    id_an: 333975
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333975.asp
+    circonscription: Nord (24ème)
+    site_web: http://www.perat.fr
+    profession: Professeur de l'enseignement secondaire et technique
+    debut_mandat: 20/06/2007
+    nom: Jean-Luc Pérat
+    type: depute
+  depute_334116:
+    place_hemicycle: 624
+    sexe: M
+    id_an: 334116
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334116.asp
+    circonscription: Pas-de-Calais (1ère)
+    profession: Directrice de mission
+    debut_mandat: 20/06/2007
+    nom: Jacqueline Maquet
+    type: depute
+  depute_334149:
+    place_hemicycle: 62
+    sexe: M
+    id_an: 334149
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334149.asp
+    circonscription: Pas-de-Calais (4ème)
+    site_web: http://danielfasquelle.blogspot.com
+    profession: Professeur de faculté
+    debut_mandat: 20/06/2007
+    nom: Daniel Fasquelle
+    type: depute
+  depute_334160:
+    place_hemicycle: 371
+    sexe: M
+    id_an: 334160
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334160.asp
+    circonscription: Pas-de-Calais (5ème)
+    site_web: http://www.fredericcuvillier.com
+    profession: Professeur de faculté
+    debut_mandat: 20/06/2007
+    nom: Frédéric Cuvillier
+    type: depute
+  depute_334525:
+    place_hemicycle: 158
+    sexe: M
+    id_an: 334525
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334525.asp
+    circonscription: Pyrénées-Orientales (4ème)
+    profession: Cadre supérieur
+    debut_mandat: 20/06/2007
+    nom: Jacqueline Irles
+    type: depute
+  depute_334654:
+    place_hemicycle: 308
+    sexe: M
+    id_an: 334654
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334654.asp
+    circonscription: Haut-Rhin (1ère)
+    site_web: http://www.ericstraumann.info
+    profession: Professeur agrégé
+    debut_mandat: 20/06/2007
+    nom: Éric Straumann
+    type: depute
+  depute_334750:
+    place_hemicycle: 154
+    sexe: M
+    id_an: 334750
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334750.asp
+    circonscription: Rhône (1ère)
+    site_web: http://www.michelhavard.fr
+    profession: Autre cadre (secteur privé)
+    debut_mandat: 20/06/2007
+    nom: Michel Havard
+    type: depute
+  depute_334755:
+    place_hemicycle: 549
+    sexe: M
+    id_an: 334755
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334755.asp
+    circonscription: Rhône (2ème)
+    site_web: http://pa-muet.com
+    profession: Inspecteur général des finances
+    debut_mandat: 20/06/2007
+    nom: Pierre-Alain Muet
+    type: depute
+  depute_334768:
+    place_hemicycle: 560
+    sexe: M
+    id_an: 334768
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334768.asp
+    circonscription: Rhône (3ème)
+    profession: Professeur de médecine
+    debut_mandat: 20/06/2007
+    nom: Jean-Louis Touraine
+    type: depute
+  depute_334811:
+    place_hemicycle: 640
+    sexe: M
+    id_an: 334811
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334811.asp
+    circonscription: Rhône (6ème)
+    site_web: http://blog.pascalecrozon.fr
+    profession: Chargée de mission - Ancienne déléguée régionale chargée des droits des femmes
+    debut_mandat: 20/06/2007
+    nom: Pascale Crozon
+    type: depute
+  depute_334843:
+    place_hemicycle: 325
+    sexe: M
+    id_an: 334843
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334843.asp
+    circonscription: Rhône (8ème)
+    site_web: http://www.patriceverchere.fr
+    profession: Assistant parlementaire
+    debut_mandat: 20/06/2007
+    nom: Patrice Verchère
+    type: depute
+  depute_334906:
+    place_hemicycle: 139
+    sexe: M
+    id_an: 334906
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334906.asp
+    circonscription: Rhône (13ème)
+    profession: Directeur de cabinet
+    debut_mandat: 20/06/2007
+    nom: Philippe Meunier
+    type: depute
+  depute_334951:
+    place_hemicycle: 567
+    sexe: M
+    id_an: 334951
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334951.asp
+    circonscription: Haute-Saône (2ème)
+    site_web: http://www.depute-villaume.fr
+    profession: Retraité de l'enseignement
+    debut_mandat: 20/06/2007
+    nom: Jean-Michel Villaumé
+    type: depute
+  depute_334:
+    place_hemicycle: 411
+    sexe: M
+    id_an: 334
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334.asp
+    circonscription: Puy-de-Dôme (4ème)
+    profession: Médecin 
+    debut_mandat: 20/06/2007
+    nom: Jean-Paul Bacquet
+    type: depute
+  depute_335017:
+    place_hemicycle: 405
+    sexe: M
+    id_an: 335017
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335017.asp
+    circonscription: Saône-et-Loire (5ème)
+    profession: Cadre supérieur (secteur privé)
+    debut_mandat: 20/06/2007
+    nom: Christophe Sirugue
+    type: depute
+  depute_335040:
+    place_hemicycle: 321
+    sexe: M
+    id_an: 335040
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335040.asp
+    circonscription: Sarthe (1ère)
+    site_web: http://www.fabienne-labrette-menager.com
+    profession: Administrateur de sociétés
+    debut_mandat: 20/06/2007
+    nom: Fabienne Labrette-Ménager
+    type: depute
+  depute_335054:
+    place_hemicycle: 559
+    sexe: M
+    id_an: 335054
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335054.asp
+    circonscription: Sarthe (2ème)
+    site_web: http://www.mariettakaramanli.fr
+    profession: Professeur du secondaire et techn.
+    debut_mandat: 20/06/2007
+    nom: Marietta Karamanli
+    type: depute
+  depute_335159:
+    place_hemicycle: 157
+    sexe: M
+    id_an: 335159
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335159.asp
+    circonscription: Haute-Savoie (2ème)
+    site_web: http://tardy.hautetfort.com
+    profession: Gérant d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Lionel Tardy
+    type: depute
+  depute_335319:
+    place_hemicycle: 429
+    sexe: M
+    id_an: 335319
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335319.asp
+    circonscription: Paris (8ème)
+    site_web: http://www.sandrinemazetier.fr
+    profession: Cadre supérieur (secteur privé)
+    debut_mandat: 20/06/2007
+    nom: Sandrine Mazetier
+    type: depute
+  depute_335532:
+    place_hemicycle: 451
+    sexe: M
+    id_an: 335532
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335532.asp
+    circonscription: Paris (21ème)
+    site_web: http://www.georgepau-langevin.com
+    profession: Avocate
+    debut_mandat: 20/06/2007
+    nom: George Pau-Langevin
+    type: depute
+  depute_335543:
+    place_hemicycle: 636
+    sexe: M
+    id_an: 335543
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335543.asp
+    circonscription: Seine-Maritime (1ère)
+    site_web: http://www.valerie-fourneyron.parti-socialiste.fr
+    profession: Médecin du sport
+    debut_mandat: 20/06/2007
+    nom: Valérie Fourneyron
+    type: depute
+  depute_335567:
+    place_hemicycle: 153
+    sexe: M
+    id_an: 335567
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335567.asp
+    circonscription: Seine-Maritime (2ème)
+    profession: Maître de conférence associée
+    debut_mandat: 20/06/2007
+    nom: Françoise Guégot
+    type: depute
+  depute_335612:
+    place_hemicycle: 577
+    sexe: M
+    id_an: 335612
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335612.asp
+    circonscription: Seine-Maritime (6ème)
+    profession: Fonctionnaire de catégorie B
+    debut_mandat: 20/06/2007
+    nom: Jean-Paul Lecoq
+    type: depute
+  depute_335758:
+    place_hemicycle: 224
+    sexe: M
+    id_an: 335758
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335758.asp
+    circonscription: Seine-et-Marne (5ème)
+    profession: Chef d'entreprise
+    debut_mandat: 20/06/2007
+    nom: Franck Riester
+    type: depute
+  depute_335999:
+    place_hemicycle: 373
+    sexe: M
+    id_an: 335999
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335999.asp
+    circonscription: Deux-Sèvres (2ème)
+    profession: Cadre territorial
+    debut_mandat: 20/06/2007
+    nom: Delphine Batho
+    type: depute
+  depute_336015:
+    place_hemicycle: 372
+    sexe: M
+    id_an: 336015
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336015.asp
+    circonscription: Deux-Sèvres (4ème)
+    site_web: http://jean-grellier.fr
+    profession: Retraité salarié privé, dirigeant d'entreprise (SCOP)
+    debut_mandat: 20/06/2007
+    nom: Jean Grellier
+    type: depute
+  depute_336067:
+    place_hemicycle: 478
+    sexe: M
+    id_an: 336067
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336067.asp
+    circonscription: Somme (4ème)
+    profession: Retraité de l'enseignement
+    debut_mandat: 20/06/2007
+    nom: Gilbert Mathon
+    type: depute
+  depute_336112:
+    place_hemicycle: 573
+    sexe: M
+    id_an: 336112
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336112.asp
+    circonscription: Tarn (1ère)
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Jacques Valax
+    type: depute
+  depute_336175:
+    place_hemicycle: 628
+    sexe: M
+    id_an: 336175
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336175.asp
+    circonscription: Tarn-et-Garonne (2ème)
+    site_web: http://www.sylviapinel.com
+    profession: Collaborateur de cabinet
+    debut_mandat: 20/06/2007
+    nom: Sylvia Pinel
+    type: depute
+  depute_336316:
+    place_hemicycle: 24
+    sexe: M
+    id_an: 336316
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336316.asp
+    circonscription: Vaucluse (2ème)
+    site_web: http://www.jeanclaudebouchet.fr
+    profession: Gérant de société
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Bouchet
+    type: depute
+  depute_336421:
+    place_hemicycle: 611
+    sexe: M
+    id_an: 336421
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336421.asp
+    circonscription: Vienne (2ème)
+    site_web: http://www.catherinecoutelle.fr
+    profession: Retraitée de l'enseignement
+    debut_mandat: 20/06/2007
+    nom: Catherine Coutelle
+    type: depute
+  depute_336439:
+    place_hemicycle: 612
+    sexe: M
+    id_an: 336439
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336439.asp
+    circonscription: Vienne (3ème)
+    site_web: http://www.jeanmichelclement.com/
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Jean-Michel Clément
+    type: depute
+  depute_336454:
+    place_hemicycle: 610
+    sexe: M
+    id_an: 336454
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336454.asp
+    circonscription: Haute-Vienne (1ère)
+    profession: Professeur de lettres en détachement
+    debut_mandat: 20/06/2007
+    nom: Monique Boulestin
+    type: depute
+  depute_336576:
+    place_hemicycle: 230
+    sexe: M
+    id_an: 336576
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336576.asp
+    circonscription: Yonne (3ème)
+    site_web: http://www.marielouisefort.fr
+    debut_mandat: 20/06/2007
+    nom: Marie-Louise Fort
+    type: depute
+  depute_336898:
+    place_hemicycle: 580
+    sexe: M
+    id_an: 336898
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336898.asp
+    circonscription: Hauts-de-Seine (11ème)
+    site_web: http://www.mhamiable.fr
+    profession: Enseignante
+    debut_mandat: 20/06/2007
+    nom: Marie-Hélène Amiable
+    type: depute
+  depute_336971:
+    place_hemicycle: 407
+    sexe: M
+    id_an: 336971
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336971.asp
+    circonscription: Seine-Saint-Denis (3ème)
+    site_web: http://www.danielgoldberg.fr
+    profession: Maître de conférences
+    debut_mandat: 20/06/2007
+    nom: Daniel Goldberg
+    type: depute
+  depute_337084:
+    place_hemicycle: 240
+    sexe: M
+    id_an: 337084
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337084.asp
+    circonscription: Seine-Saint-Denis (10ème)
+    site_web: http://ggaudron.fr
+    profession: Géologue
+    debut_mandat: 20/06/2007
+    nom: Gérard Gaudron
+    type: depute
+  depute_337171:
+    place_hemicycle: 152
+    sexe: M
+    id_an: 337171
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337171.asp
+    circonscription: Val-de-Marne (3ème)
+    site_web: http://www.didier-gonzales.fr
+    profession: Fonctionnaire
+    debut_mandat: 20/06/2007
+    nom: Didier Gonzales
+    type: depute
+  depute_337248:
+    place_hemicycle: 578
+    sexe: M
+    id_an: 337248
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337248.asp
+    circonscription: Val-de-Marne (10ème)
+    site_web: http://www.pierregosnat.fr
+    profession: Fonctionnaire
+    debut_mandat: 20/06/2007
+    nom: Pierre Gosnat
+    type: depute
+  depute_337332:
+    place_hemicycle: 318
+    sexe: M
+    id_an: 337332
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337332.asp
+    circonscription: Val-d'Oise (4ème)
+    site_web: http://www.claudebodin.fr
+    profession: Attaché d'administration hospitalière
+    debut_mandat: 20/06/2007
+    nom: Claude Bodin
+    type: depute
+  depute_337421:
+    place_hemicycle: 305
+    sexe: M
+    id_an: 337421
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337421.asp
+    circonscription: Val-d'Oise (9ème)
+    site_web: http://www.paternotte.fr
+    profession: Docteur en pharmacie, gérant de société pharmaceutique
+    debut_mandat: 20/06/2007
+    nom: Yanick Paternotte
+    type: depute
+  depute_337442:
+    place_hemicycle: 619
+    sexe: M
+    id_an: 337442
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337442.asp
+    circonscription: Guadeloupe (3ème)
+    site_web: http://www.jmlaguadeloupe.canalblog.com
+    profession: Retraité de l'enseignement
+    debut_mandat: 20/06/2007
+    nom: Jeanny Marc
+    type: depute
+  depute_337483:
+    place_hemicycle: 409
+    sexe: M
+    id_an: 337483
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337483.asp
+    circonscription: Martinique (3ème)
+    site_web: http://serge-letchimy.fr
+    profession: Urbaniste
+    debut_mandat: 20/06/2007
+    nom: Serge Letchimy
+    type: depute
+  depute_337504:
+    place_hemicycle: 629
+    sexe: M
+    id_an: 337504
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337504.asp
+    circonscription: Guyane (2ème)
+    profession: Agricultrice
+    debut_mandat: 20/06/2007
+    nom: Chantal Berthelot
+    type: depute
+  depute_337544:
+    place_hemicycle: 242
+    sexe: M
+    id_an: 337544
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337544.asp
+    circonscription: Réunion (3ème)
+    site_web: http://www.didierrobert.fr
+    profession: Cadre administratif (collaborateur de cabinet)
+    debut_mandat: 20/06/2007
+    nom: Didier Robert
+    type: depute
+  depute_337550:
+    place_hemicycle: 574
+    sexe: M
+    id_an: 337550
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337550.asp
+    circonscription: Réunion (4ème)
+    profession: Fonctionnaire de catégorie B
+    debut_mandat: 20/06/2007
+    nom: Patrick Lebreton
+    type: depute
+  depute_337568:
+    place_hemicycle: 561
+    sexe: M
+    id_an: 337568
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337568.asp
+    circonscription: Réunion (5ème)
+    profession: Retraité de l'enseignement
+    debut_mandat: 20/06/2007
+    nom: Jean-Claude Fruteau
+    type: depute
+  depute_337586:
+    place_hemicycle: 73
+    sexe: M
+    id_an: 337586
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337586.asp
+    circonscription: Mayotte (1ère)
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Abdoulatifou Aly
+    type: depute
+  depute_337621:
+    place_hemicycle: 323
+    sexe: M
+    id_an: 337621
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337621.asp
+    circonscription: Polynésie Française (2ème)
+    profession: Permanent politique
+    debut_mandat: 20/06/2007
+    nom: Bruno Sandras
+    type: depute
+  depute_337633:
+    place_hemicycle: 621
+    sexe: M
+    id_an: 337633
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337633.asp
+    circonscription: Saint-Pierre-et-Miquelon (1ère)
+    site_web: http://www.annickgirardin.fr
+    profession: Fonctionnaire de catégorie A
+    debut_mandat: 20/06/2007
+    nom: Annick Girardin
+    type: depute
+  depute_337635:
+    place_hemicycle: 558
+    sexe: M
+    id_an: 337635
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337635.asp
+    circonscription: Wallis-et-Futuna (1ère)
+    profession: Retraité de l'enseignement
+    debut_mandat: 20/06/2007
+    nom: Apeleto Albert Likuvalu
+    type: depute
+  depute_339:
+    place_hemicycle: 626
+    sexe: M
+    id_an: 339
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/339.asp
+    circonscription: Nord (8ème)
+    profession: Directeur à la Banque de France
+    debut_mandat: 20/06/2007
+    nom: Dominique Baert
+    type: depute
+  depute_341339:
+    place_hemicycle: 639
+    sexe: M
+    id_an: 341339
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/341339.asp
+    circonscription: Dordogne (3ème)
+    profession: Professeur
+    debut_mandat: 07/03/2008
+    nom: Colette Langlade
+    type: depute
+  depute_341481:
+    place_hemicycle: 209
+    sexe: M
+    id_an: 341481
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/341481.asp
+    circonscription: Eure (1ère)
+    profession: Médecin
+    debut_mandat: 13/01/2009
+    nom: Guy Lefrand
+    type: depute
+  depute_341:
+    place_hemicycle: 291
+    sexe: M
+    id_an: 341
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/341.asp
+    circonscription: Hauts-de-Seine (9ème)
+    site_web: http:// www.pcbaguet.com 
+    profession: Conseiller en communication
+    debut_mandat: 20/06/2007
+    nom: Pierre-Christophe Baguet
+    type: depute
+  depute_343034:
+    place_hemicycle: 320
+    sexe: M
+    id_an: 343034
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/343034.asp
+    circonscription: Maine-et-Loire (1ère)
+    profession: Pharmacien d'officine
+    debut_mandat: 20/07/2007
+    nom: Paul Jeanneteau
+    type: depute
+  depute_343385:
+    place_hemicycle: 156
+    sexe: M
+    id_an: 343385
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/343385.asp
+    circonscription: Meurthe-et-Moselle (5ème)
+    profession: Chef d'entreprise
+    debut_mandat: 20/04/2008
+    nom: Philippe Morenvillier
+    type: depute
+  depute_343623:
+    sexe: M
+    id_an: 343623
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/343623.asp
+    circonscription: Moselle (9ème)
+    profession: Directrice des ventes
+    debut_mandat: 17/11/2008
+    nom: Anne Grommerch
+    type: depute
+  depute_344878:
+    place_hemicycle: 391
+    sexe: M
+    id_an: 344878
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/344878.asp
+    circonscription: Rhône (11ème)
+    site_web: http://www.raymond-durand.com
+    profession: Retraité
+    debut_mandat: 02/06/2008
+    nom: Raymond Durand
+    type: depute
+  depute_345727:
+    place_hemicycle: 351
+    sexe: M
+    id_an: 345727
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/345727.asp
+    circonscription: Seine-et-Marne (3ème)
+    profession: Proviseur-adjoint en retraite
+    debut_mandat: 20/04/2008
+    nom: Gérard Millet
+    type: depute
+  depute_345898:
+    place_hemicycle: 226
+    sexe: M
+    id_an: 345898
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/345898.asp
+    circonscription: Yvelines (8ème)
+    debut_mandat: 17/04/2009
+    nom: Cécile Dumoulin
+    type: depute
+  depute_345937:
+    place_hemicycle: 47
+    sexe: M
+    id_an: 345937
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/345937.asp
+    circonscription: Yvelines (10ème)
+    profession: Chef d'entreprise
+    debut_mandat: 20/07/2007
+    nom: Jean-Frédéric Poisson
+    type: depute
+  depute_346652:
+    place_hemicycle: 23
+    sexe: M
+    id_an: 346652
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/346652.asp
+    circonscription: Essonne (4ème)
+    profession: Administrateur civil hors classe
+    debut_mandat: 20/07/2007
+    nom: Guy Malherbe
+    type: depute
+  depute_346692:
+    place_hemicycle: 403
+    sexe: M
+    id_an: 346692
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/346692.asp
+    circonscription: Essonne (7ème)
+    profession: Ingénieur de recherche
+    debut_mandat: 19/09/2008
+    nom: Françoise Briand
+    type: depute
+  depute_346886:
+    place_hemicycle: 358
+    sexe: M
+    id_an: 346886
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/346886.asp
+    circonscription: Hauts-de-Seine (10ème)
+    debut_mandat: 20/07/2007
+    nom: Frédéric Lefebvre
+    type: depute
+  depute_346:
+    place_hemicycle: 359
+    sexe: M
+    id_an: 346
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/346.asp
+    circonscription: Hauts-de-Seine (5ème)
+    profession: Directeur de société
+    debut_mandat: 20/06/2007
+    nom: Patrick Balkany
+    type: depute
+  depute_350:
+    place_hemicycle: 438
+    sexe: M
+    id_an: 350
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/350.asp
+    circonscription: Aisne (3ème)
+    profession: Assistant parlementaire
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Balligand
+    type: depute
+  depute_356:
+    place_hemicycle: 437
+    sexe: M
+    id_an: 356
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/356.asp
+    circonscription: Haute-Garonne (2ème)
+    site_web: http://www.gerardbapt.info
+    profession: Médecin cardiologue
+    debut_mandat: 20/06/2007
+    nom: Gérard Bapt
+    type: depute
+  depute_362:
+    place_hemicycle: 256
+    sexe: M
+    id_an: 362
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/362.asp
+    circonscription: Val-d'Oise (3ème)
+    profession: Professeur de médecine
+    debut_mandat: 20/06/2007
+    nom: Jean Bardet
+    type: depute
+  depute_369:
+    place_hemicycle: 174
+    sexe: M
+    id_an: 369
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/369.asp
+    circonscription: Aube (3ème)
+    profession: Avocat à la Cour
+    debut_mandat: 20/06/2007
+    nom: François Baroin
+    type: depute
+  depute_381:
+    place_hemicycle: 525
+    sexe: M
+    id_an: 381
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/381.asp
+    circonscription: Seine-Saint-Denis (6ème)
+    site_web: http://www.claudebartolone.net
+    profession: Cadre de l'industrie pharmaceutique
+    debut_mandat: 20/06/2007
+    nom: Claude Bartolone
+    type: depute
+  depute_384:
+    place_hemicycle: 454
+    sexe: M
+    id_an: 384
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/384.asp
+    circonscription: Aude (2ème)
+    site_web: http://www.jacques-bascou.fr
+    profession: Cadre territorial
+    debut_mandat: 20/06/2007
+    nom: Jacques Bascou
+    type: depute
+  depute_390:
+    place_hemicycle: 22
+    sexe: M
+    id_an: 390
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/390.asp
+    circonscription: Orne (3ème)
+    debut_mandat: 20/06/2007
+    nom: Sylvia Bassot
+    type: depute
+  depute_394:
+    place_hemicycle: 434
+    sexe: M
+    id_an: 394
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/394.asp
+    circonscription: Nord (22ème)
+    site_web: http://www.christianbataille.org
+    profession: Professeur de lettres
+    debut_mandat: 20/06/2007
+    nom: Christian Bataille
+    type: depute
+  depute_405480:
+    place_hemicycle: 440
+    sexe: M
+    id_an: 405480
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/405480.asp
+    circonscription: Val-d'Oise (8ème)
+    profession: Directeur divisionnaire des Impôts
+    debut_mandat: 16/12/2007
+    nom: François Pupponi
+    type: depute
+  depute_410:
+    place_hemicycle: 70
+    sexe: M
+    id_an: 410
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/410.asp
+    circonscription: Pyrénées-Atlantiques (2ème)
+    profession: Professeur agrégé de lettres
+    debut_mandat: 20/06/2007
+    nom: François Bayrou
+    type: depute
+  depute_412525:
+    place_hemicycle: 72
+    sexe: M
+    id_an: 412525
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/412525.asp
+    circonscription: Vendée (5ème)
+    profession: Conseiller des affaires étrangères hors classe (en détachement)
+    debut_mandat: 13/04/2008
+    nom: Dominique Souchet
+    type: depute
+  depute_414:
+    place_hemicycle: 233
+    sexe: M
+    id_an: 414
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/414.asp
+    circonscription: Val-de-Marne (6ème)
+    site_web: http://patrickbeaudouin.over-blog.com
+    profession: Consultant en communication et relations publiques
+    debut_mandat: 20/06/2007
+    nom: Patrick Beaudouin
+    type: depute
+  depute_417099:
+    place_hemicycle: 235
+    sexe: M
+    id_an: 417099
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/417099.asp
+    circonscription: Marne (1ère)
+    site_web: http://www.arnaud-robinet.fr
+    profession: Enseignant - Chercheur - Praticien hospitalier
+    debut_mandat: 15/12/2008
+    nom: Arnaud Robinet
+    type: depute
+  depute_418:
+    place_hemicycle: 26
+    sexe: M
+    id_an: 418
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/418.asp
+    circonscription: Charente-Maritime (4ème)
+    profession: Chirurgien des hôpitaux
+    debut_mandat: 20/07/2007
+    nom: Jean-Claude Beaulieu
+    type: depute
+  depute_441:
+    place_hemicycle: 597
+    sexe: M
+    id_an: 441
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/441.asp
+    circonscription: Réunion (2ème)
+    profession: Directrice d'école maternelle
+    debut_mandat: 20/06/2007
+    nom: Huguette Bello
+    type: depute
+  depute_475:
+    place_hemicycle: 191
+    sexe: M
+    id_an: 475
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/475.asp
+    circonscription: Loiret (3ème)
+    profession: Chirurgien retraité
+    debut_mandat: 20/06/2007
+    nom: Jean-Louis Bernard
+    type: depute
+  depute_479:
+    place_hemicycle: 278
+    sexe: M
+    id_an: 479
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/479.asp
+    circonscription: Mayenne (2ème)
+    profession: Chirurgien-dentiste
+    debut_mandat: 20/06/2007
+    nom: Marc Bernier
+    type: depute
+  depute_493:
+    place_hemicycle: 113
+    sexe: M
+    id_an: 493
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/493.asp
+    circonscription: Seine-Maritime (7ème)
+    site_web: http://www.jeanyvesbesselat.com
+    debut_mandat: 20/06/2007
+    nom: Jean-Yves Besselat
+    type: depute
+  depute_503:
+    place_hemicycle: 415
+    sexe: M
+    id_an: 503
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/503.asp
+    circonscription: Alpes-de-Haute-Provence (1ère)
+    site_web: http://www.jean-louis-bianco.com
+    profession: Conseiller d'Etat
+    debut_mandat: 20/06/2007
+    nom: Jean-Louis Bianco
+    type: depute
+  depute_508:
+    place_hemicycle: 637
+    sexe: M
+    id_an: 508
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/508.asp
+    circonscription: Gers (2ème)
+    site_web: http://gisele-biemouret.over-blog.fr
+    profession: Assistante parlementaire
+    debut_mandat: 20/06/2007
+    nom: Gisèle Biémouret
+    type: depute
+  depute_513:
+    place_hemicycle: 106
+    sexe: M
+    id_an: 513
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/513.asp
+    circonscription: Somme (3ème)
+    site_web: http://www.bignon.info
+    profession: Avocat au Barreau de Paris
+    debut_mandat: 20/06/2007
+    nom: Jérôme Bignon
+    type: depute
+  depute_522:
+    place_hemicycle: 1
+    sexe: M
+    id_an: 522
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/522.asp
+    circonscription: Doubs (5ème)
+    site_web: http://jeanmariebinetruy.blogspirit.com/
+    profession: Enseignant
+    debut_mandat: 20/06/2007
+    nom: Jean-Marie Binetruy
+    type: depute
+  depute_525:
+    place_hemicycle: 270
+    sexe: M
+    id_an: 525
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/525.asp
+    circonscription: Haute-Savoie (4ème)
+    site_web: http://www.claudebirraux.com
+    profession: Ingénieur
+    debut_mandat: 20/06/2007
+    nom: Claude Birraux
+    type: depute
+  depute_538:
+    place_hemicycle: 201
+    sexe: M
+    id_an: 538
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/538.asp
+    circonscription: Bas-Rhin (7ème)
+    site_web: http://www.blessig.org
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Émile Blessig
+    type: depute
+  depute_542:
+    place_hemicycle: 547
+    sexe: M
+    id_an: 542
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/542.asp
+    circonscription: Paris (10ème)
+    site_web: http://www.blisko2007.typepad.fr
+    profession: Médecin
+    debut_mandat: 20/06/2007
+    nom: Serge Blisko
+    type: depute
+  depute_543:
+    place_hemicycle: 453
+    sexe: M
+    id_an: 543
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/543.asp
+    circonscription: Paris (7ème)
+    site_web: http://www.patrickbloche.org
+    profession: Directeur commercial
+    debut_mandat: 20/06/2007
+    nom: Patrick Bloche
+    type: depute
+  depute_546:
+    place_hemicycle: 112
+    sexe: M
+    id_an: 546
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/546.asp
+    circonscription: Bouches-du-Rhône (1ère)
+    site_web: http://www.roland-blum.com
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Roland Blum
+    type: depute
+  depute_551:
+    place_hemicycle: 592
+    sexe: M
+    id_an: 551
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/551.asp
+    circonscription: Nord (20ème)
+    profession: Éducateur spécialisé
+    debut_mandat: 20/06/2007
+    nom: Alain Bocquet
+    type: depute
+  depute_560:
+    place_hemicycle: 360
+    sexe: M
+    id_an: 560
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/560.asp
+    circonscription: Haute-Vienne (2ème)
+    profession: Architecte
+    debut_mandat: 20/06/2007
+    nom: Daniel Boisserie
+    type: depute
+  depute_580:
+    place_hemicycle: 456
+    sexe: M
+    id_an: 580
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/580.asp
+    circonscription: Charente-Maritime (1ère)
+    site_web: http://maximebono.over-blog.com
+    profession: Inspecteur des impôts
+    debut_mandat: 20/06/2007
+    nom: Maxime Bono
+    type: depute
+  depute_599:
+    place_hemicycle: 539
+    sexe: M
+    id_an: 599
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/599.asp
+    circonscription: Ille-et-Vilaine (1ère)
+    site_web: http://www.jmboucheron.fr
+    profession: Assistant d'Université
+    debut_mandat: 20/06/2007
+    nom: Jean-Michel Boucheron
+    type: depute
+  depute_621:
+    place_hemicycle: 520
+    sexe: M
+    id_an: 621
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/621.asp
+    circonscription: Seine-Maritime (3ème)
+    site_web: http://www.pierrebourguignon.net
+    profession: Sociologue urbaniste
+    debut_mandat: 20/06/2007
+    nom: Pierre Bourguignon
+    type: depute
+  depute_624:
+    place_hemicycle: 197
+    sexe: M
+    id_an: 624
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/624.asp
+    circonscription: Gironde (1ère)
+    site_web: http://www.chantal-bourrague.net
+    profession: Cadre commercial
+    debut_mandat: 20/06/2007
+    nom: Chantal Bourragué
+    type: depute
+  depute_627:
+    place_hemicycle: 441
+    sexe: M
+    id_an: 627
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/627.asp
+    circonscription: Côtes-d'Armor (1ère)
+    profession: Chef d'établissement
+    debut_mandat: 20/06/2007
+    nom: Danielle Bousquet
+    type: depute
+  depute_633:
+    place_hemicycle: 184
+    sexe: M
+    id_an: 633
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/633.asp
+    circonscription: Savoie (3ème)
+    site_web: http://www.michelbouvard.com
+    profession: Chargé de mission
+    debut_mandat: 20/06/2007
+    nom: Michel Bouvard
+    type: depute
+  depute_634:
+    place_hemicycle: 250
+    sexe: M
+    id_an: 634
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/634.asp
+    circonscription: Morbihan (4ème)
+    profession: Conseil en management
+    debut_mandat: 20/06/2007
+    nom: Loïc Bouvard
+    type: depute
+  depute_653:
+    place_hemicycle: 585
+    sexe: M
+    id_an: 653
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/653.asp
+    circonscription: Seine-Saint-Denis (2ème)
+    profession: Instituteur
+    debut_mandat: 20/06/2007
+    nom: Patrick Braouezec
+    type: depute
+  depute_654:
+    place_hemicycle: 583
+    sexe: M
+    id_an: 654
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/654.asp
+    circonscription: Seine-Saint-Denis (7ème)
+    site_web: http://www.depute-brard.org
+    profession: Instituteur
+    debut_mandat: 20/06/2007
+    nom: Jean-Pierre Brard
+    type: depute
+  depute_667:
+    place_hemicycle: 97
+    sexe: M
+    id_an: 667
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/667.asp
+    circonscription: Indre-et-Loire (5ème)
+    profession: Chef d'entreprise et assureur
+    debut_mandat: 20/06/2007
+    nom: Philippe Briand
+    type: depute
+  depute_680:
+    place_hemicycle: 519
+    sexe: M
+    id_an: 680
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/680.asp
+    circonscription: Isère (5ème)
+    site_web: http://www.francois-brottes.com
+    profession: Directeur associé de société
+    debut_mandat: 20/06/2007
+    nom: François Brottes
+    type: depute
+  depute_689:
+    place_hemicycle: 593
+    sexe: M
+    id_an: 689
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/689.asp
+    circonscription: Seine-Saint-Denis (4ème)
+    profession: Employée
+    debut_mandat: 20/06/2007
+    nom: Marie-George Buffet
+    type: depute
+  depute_690:
+    place_hemicycle: 110
+    sexe: M
+    id_an: 690
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/690.asp
+    circonscription: Polynésie Française (1ère)
+    profession: Fonctionnaire
+    debut_mandat: 20/06/2007
+    nom: Michel Buillard
+    type: depute
+  depute_691:
+    place_hemicycle: 178
+    sexe: M
+    id_an: 691
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/691.asp
+    circonscription: Bas-Rhin (4ème)
+    profession: Chirurgien-dentiste
+    debut_mandat: 20/06/2007
+    nom: Yves Bur
+    type: depute
+  depute_704:
+    place_hemicycle: 625
+    sexe: M
+    id_an: 704
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/704.asp
+    circonscription: Nord (3ème)
+    site_web: http://alain-cacheux.blogspirit.com/
+    profession: Ancien chargé d'études
+    debut_mandat: 20/06/2007
+    nom: Alain Cacheux
+    type: depute
+  depute_706:
+    place_hemicycle: 536
+    sexe: M
+    id_an: 706
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/706.asp
+    circonscription: Lot-et-Garonne (3ème)
+    profession: Chirurgien
+    debut_mandat: 20/06/2007
+    nom: Jérôme Cahuzac
+    type: depute
+  depute_707:
+    place_hemicycle: 284
+    sexe: M
+    id_an: 707
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/707.asp
+    circonscription: Vendée (2ème)
+    profession: Gérant de société
+    debut_mandat: 20/06/2007
+    nom: Dominique Caillaud
+    type: depute
+  depute_716:
+    place_hemicycle: 146
+    sexe: M
+    id_an: 716
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/716.asp
+    circonscription: Pyrénées-Orientales (3ème)
+    site_web: http://www.francois-calvet.com
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: François Calvet
+    type: depute
+  depute_719:
+    place_hemicycle: 431
+    sexe: M
+    id_an: 719
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/719.asp
+    circonscription: Paris (20ème)
+    site_web: http://www.cambadelis.net
+    profession: Conseiller en communication
+    debut_mandat: 20/06/2007
+    nom: Jean-Christophe Cambadélis
+    type: depute
+  depute_732:
+    place_hemicycle: 348
+    sexe: M
+    id_an: 732
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/732.asp
+    circonscription: Tarn (4ème)
+    site_web: http://www.bcarayon-ie.com
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Bernard Carayon
+    type: depute
+  depute_733:
+    place_hemicycle: 458
+    sexe: M
+    id_an: 733
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/733.asp
+    circonscription: Tarn (2ème)
+    profession: Inspecteur principal des impôts
+    debut_mandat: 20/06/2007
+    nom: Thierry Carcenac
+    type: depute
+  depute_734:
+    place_hemicycle: 169
+    sexe: M
+    id_an: 734
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/734.asp
+    circonscription: Yvelines (7ème)
+    site_web: http://www.pierre-cardo.fr
+    profession: Cadre de gestion
+    debut_mandat: 20/06/2007
+    nom: Pierre Cardo
+    type: depute
+  depute_735:
+    place_hemicycle: 448
+    sexe: M
+    id_an: 735
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/735.asp
+    circonscription: Paris (18ème)
+    profession: Chargé d'études
+    debut_mandat: 20/06/2007
+    nom: Christophe Caresche
+    type: depute
+  depute_746:
+    place_hemicycle: 176
+    sexe: M
+    id_an: 746
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/746.asp
+    circonscription: Val-de-Marne (5ème)
+    profession: Fonctionnaire de l'Etat en disponibilité
+    debut_mandat: 20/06/2007
+    nom: Gilles Carrez
+    type: depute
+  depute_765:
+    place_hemicycle: 538
+    sexe: M
+    id_an: 765
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/765.asp
+    circonscription: Val-de-Marne (2ème)
+    profession: Cadre hospitalier
+    debut_mandat: 20/06/2007
+    nom: Laurent Cathala
+    type: depute
+  depute_785:
+    place_hemicycle: 555
+    sexe: M
+    id_an: 785
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/785.asp
+    circonscription: Manche (5ème)
+    site_web: http://www.bernardcazeneuve.com
+    profession: Avocat au Barreau de Paris
+    debut_mandat: 20/06/2007
+    nom: Bernard Cazeneuve
+    type: depute
+  depute_810:
+    place_hemicycle: 461
+    sexe: M
+    id_an: 810
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/810.asp
+    circonscription: Indre (3ème)
+    site_web: http://chanteguet.com
+    profession: Conseiller économique
+    debut_mandat: 20/06/2007
+    nom: Jean-Paul Chanteguet
+    type: depute
+  depute_815:
+    place_hemicycle: 614
+    sexe: M
+    id_an: 815
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/815.asp
+    circonscription: Allier (4ème)
+    site_web: http://www.charasse.net
+    profession: Chargé de mission d'inspection de l'enseignement technique retraité
+    debut_mandat: 20/06/2007
+    nom: Gérard Charasse
+    type: depute
+  depute_817:
+    place_hemicycle: 248
+    sexe: M
+    id_an: 817
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/817.asp
+    circonscription: Loiret (5ème)
+    site_web: http://www.jeanpaulcharie.fr
+    profession: Directeur multimédia de société de presse
+    debut_mandat: 20/06/2007
+    nom: Jean-Paul Charié
+    type: depute
+  depute_825:
+    place_hemicycle: 193
+    sexe: M
+    id_an: 825
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/825.asp
+    circonscription: Maine-et-Loire (6ème)
+    site_web: http://hervedecharette.typepad.fr
+    profession: Avocat
+    debut_mandat: 20/06/2007
+    nom: Hervé de Charette
+    type: depute
+  depute_856:
+    place_hemicycle: 119
+    sexe: M
+    id_an: 856
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/856.asp
+    circonscription: Vosges (2ème)
+    profession: Pharmacien
+    debut_mandat: 20/06/2007
+    nom: Gérard Cherpion
+    type: depute
+  depute_866:
+    place_hemicycle: 7
+    sexe: M
+    id_an: 866
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/866.asp
+    circonscription: Loire (7ème)
+    site_web: http://www.jeanfrancoischossy.fr
+    profession: Préparateur en pharmacie
+    debut_mandat: 20/06/2007
+    nom: Jean-François Chossy
+    type: depute
+  depute_872:
+    place_hemicycle: 426
+    sexe: M
+    id_an: 872
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/872.asp
+    circonscription: Vienne (1ère)
+    profession: Enseignant
+    debut_mandat: 20/06/2007
+    nom: Alain Claeys
+    type: depute
+  depute_876:
+    place_hemicycle: 249
+    sexe: M
+    id_an: 876
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/876.asp
+    circonscription: Loire (6ème)
+    profession: Avocat à la cour
+    debut_mandat: 20/06/2007
+    nom: Pascal Clément
+    type: depute
+  depute_877:
+    place_hemicycle: 413
+    sexe: M
+    id_an: 877
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/877.asp
+    circonscription: Loire-Atlantique (2ème)
+    site_web: http://www.clergeau.net
+    profession: Attachée commerciale
+    debut_mandat: 20/06/2007
+    nom: Marie-Françoise Clergeau
+    type: depute
+  depute_885:
+    place_hemicycle: 600
+    sexe: M
+    id_an: 885
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/885.asp
+    circonscription: Paris (11ème)
+    site_web: http://www.yvescochet.net
+    profession: Informaticien
+    debut_mandat: 20/06/2007
+    nom: Yves Cochet
+    type: depute
+  depute_886:
+    place_hemicycle: 632
+    sexe: M
+    id_an: 886
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/886.asp
+    circonscription: Pas-de-Calais (7ème)
+    profession: Chargé de mission
+    debut_mandat: 20/06/2007
+    nom: Gilles Cocquempot
+    type: depute
+  depute_891:
+    place_hemicycle: 542
+    sexe: M
+    id_an: 891
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/891.asp
+    circonscription: Haute-Garonne (3ème)
+    site_web: http://www.pierrecohen.net
+    profession: Ingénieur de recherche à l' INRIA
+    debut_mandat: 20/06/2007
+    nom: Pierre Cohen
+    type: depute
+  depute_909:
+    place_hemicycle: 347
+    sexe: M
+    id_an: 909
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/909.asp
+    circonscription: Isère (7ème)
+    site_web: http://www.georges-colombier.fr
+    profession: Salarié de l'industrie
+    debut_mandat: 20/06/2007
+    nom: Georges Colombier
+    type: depute
+  depute_911:
+    place_hemicycle: 210
+    sexe: M
+    id_an: 911
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/911.asp
+    circonscription: Essonne (3ème)
+    debut_mandat: 20/06/2007
+    nom: Geneviève Colot
+    type: depute
+  depute_917:
+    place_hemicycle: 99
+    sexe: M
+    id_an: 917
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/917.asp
+    circonscription: Seine-et-Marne (6ème)
+    profession: Administrateur civil et avocat
+    debut_mandat: 20/06/2007
+    nom: Jean-François Copé
+    type: depute
+  depute_923:
+    place_hemicycle: 94
+    sexe: M
+    id_an: 923
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/923.asp
+    circonscription: Haute-Marne (2ème)
+    profession: Cadre d'entreprise
+    debut_mandat: 20/06/2007
+    nom: François Cornut-Gentille
+    type: depute
+  depute_934:
+    place_hemicycle: 173
+    sexe: M
+    id_an: 934
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/934.asp
+    circonscription: Ille-et-Vilaine (7ème)
+    profession: Inspecteur général de l'administration de l'Éducation nationale retraité
+    debut_mandat: 20/06/2007
+    nom: René Couanau
+    type: depute
+  depute_942:
+    place_hemicycle: 375
+    sexe: M
+    id_an: 942
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/942.asp
+    circonscription: Marne (5ème)
+    profession: Magistrat à la Cour des comptes (conseiller référendaire)
+    debut_mandat: 20/06/2007
+    nom: Charles de Courson
+    type: depute
+  depute_946:
+    place_hemicycle: 175
+    sexe: M
+    id_an: 946
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/946.asp
+    circonscription: Manche (3ème)
+    site_web: http://www.alaincousin.fr
+    profession: Agent général d'assurances
+    debut_mandat: 20/06/2007
+    nom: Alain Cousin
+    type: depute
+  depute_951:
+    place_hemicycle: 171
+    sexe: M
+    id_an: 951
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/951.asp
+    circonscription: Var (4ème)
+    profession: Cardiologue
+    debut_mandat: 20/06/2007
+    nom: Jean-Michel Couve
+    type: depute
+  depute_966:
+    place_hemicycle: 85
+    sexe: M
+    id_an: 966
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/966.asp
+    circonscription: Yvelines (9ème)
+    profession: Ancien fonctionnaire du ministère de l'intérieur
+    debut_mandat: 20/06/2007
+    nom: Henri Cuq
+    type: depute
+  depute_998:
+    place_hemicycle: 342
+    sexe: M
+    id_an: 998
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/998.asp
+    circonscription: Oise (1ère)
+    profession: Président de sociétés
+    debut_mandat: 20/06/2007
+    nom: Olivier Dassault
+    type: depute

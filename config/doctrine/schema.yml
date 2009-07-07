@@ -1,0 +1,57 @@
+Personnalite:
+  actAs:
+    Timestampable:
+  columns:
+    nom: string(255)
+    permalink: 
+      type: string(255)
+      unique: true
+    sexe: 
+      type: enum
+      values: ['M', 'F']
+Parlementaire:
+  columns:     
+    nom_circo: string(255)
+    num_circo: integer
+    site_web: string(255)
+    debut_mandat: date
+    place_hemicycle:	integer
+    url_an:	string(255)
+    profession:	string(255)
+    id_an:
+      type:	integer
+      unique:	true
+    type:
+      type:	enum
+      values:	['depute', 'senateur']
+  inheritance:
+    extends: Personnalite
+    type: concrete
+  relations:
+    Organisme:
+      class: Organisme
+      refClass: ParlementaireOrganisme
+      foreignAlias: Parlementaire
+
+Organisme:
+  columns:
+    nom: string(255)
+    permalink:
+      type: string(255)
+      unique: true
+    type:
+      type: enum
+      values: ['parlementaire', 'groupe', 'extra']
+
+ParlementaireOrganisme:
+  columns:
+    fonction: string(255)
+    debut_fonction: date
+    organisme_id:
+      type: integer
+      primary: true
+    parlementaire_id:
+      type: integer
+      primary: true
+
+  
