@@ -5,31 +5,34 @@
  */
 class Parlementaire extends BaseParlementaire
 {
-	public function setNom($str) {
-	       $perma = strtolower($str);
-	       $perma = preg_replace('/[éèêë]+/', 'e', $perma);
-	       $perma = preg_replace('/[à]+/', 'a', $perma);
-	       $perma = preg_replace('/[ç]+/', 'c', $perma);
-	       $perma = preg_replace('/[ù]+/', 'u', $perma);
-	       $perma = preg_replace('/\W/', '-', $perma);
-	       $this->_set('permalink', $perma);
-	       if (preg_match('/^\S+ [a-z\s\']*([A-Z].+)/', $str, $match)) {
-		 $this->_set('nom_de_famille', $match[1]);
-	       }
-	       return $this->_set('nom', $str);
-	}
-	public function getCirconscription() {
-	  return $this->nom_circo."(".$this->num_circo.")";
-	}
-	public function setCirconscription($str) {
-	       if (preg_match('/(.*)\((\d+)/', $str, $match)) {
-	       	  $this->nom_circo = $match[1];
-		  $this->num_circo = $match[2];
-	       }
-	}
-	public function setDebutMandat($str) {
-	       if (preg_match('/(\d{2})\/(\d{2})\/(\d{4})/', $str, $m)) {
-	       	  $this->_set('debut_mandat', $m[3].'-'.$m[2].'-'.$m[1]);
-	       }
-	}
+  public function setNom($str) {
+    $perma = strtolower($str);
+    $perma = preg_replace('/[éèêë]+/', 'e', $perma);
+    $perma = preg_replace('/[à]+/', 'a', $perma);
+    $perma = preg_replace('/[ç]+/', 'c', $perma);
+    $perma = preg_replace('/[ù]+/', 'u', $perma);
+    $perma = preg_replace('/\W/', '-', $perma);
+    $this->_set('permalink', $perma);
+    if (preg_match('/^\S+ [a-z\s\']*([A-Z].+)/', $str, $match)) {
+      $this->_set('nom_de_famille', $match[1]);
+    }
+    return $this->_set('nom', $str);
+  }
+
+  public function getCirconscription() {
+    return $this->nom_circo."(".$this->num_circo.")";
+  }
+
+  public function setCirconscription($str) {
+    if (preg_match('/(.*)\((\d+)/', $str, $match)) {
+      $this->nom_circo = $match[1];
+      $this->num_circo = $match[2];
+    }
+  }
+
+  public function setDebutMandat($str) {
+    if (preg_match('/(\d{2})\/(\d{2})\/(\d{4})/', $str, $m)) {
+      $this->_set('debut_mandat', $m[3].'-'.$m[2].'-'.$m[1]);
+    }
+  }
 }
