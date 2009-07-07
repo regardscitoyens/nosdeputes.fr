@@ -31,7 +31,7 @@ $lines =~ s/<\/b>/<\/b>\n/g;
 $lines =~ s/<\/i>/<\/i>\n/g;
 $lines =~ s/\. <b>/<b>\n/g;
 $lines =~ s/<b>/\n<b>/g;
-$lines =~ s/<\/b>//g;
+$lines =~ s/<\/?b>//g;
 $lines =~ s/\. \. \. <hr>[^\n]*//;
 $lines =~ s/\. <A href[^\n]*//g;
 $lines =~ s/ Réunion/\nRéunion/g;
@@ -47,7 +47,7 @@ $lines =~ s/ : ?\n/\n/g;
 $lines =~ s/– //g;
 $lines =~ s/\. /\n/g;
 
-#print $lines; exit;
+print $lines; exit;
 
 foreach (split /\n/, $lines) {
     if (/commission|mission/i) {
