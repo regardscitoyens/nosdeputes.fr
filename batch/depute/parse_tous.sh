@@ -1,5 +1,12 @@
 #!/bin/bash
 
+DIR=$(echo $0 | sed 's/[^\/]*$//');
+
+if echo $DIR | grep -i [a-z]
+then
+    cd $DIR
+fi
+
 if [ ! -d xml ] || [ ! -d html ]
 then
     tar zxvf last_data.tgz

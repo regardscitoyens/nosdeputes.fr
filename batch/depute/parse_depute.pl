@@ -3,6 +3,7 @@
 use HTML::TokeParser;
 
 $file = shift;
+$xml = shift || 0;
 
 open $fh, $file ;
 $p = HTML::TokeParser->new($fh);
@@ -10,8 +11,8 @@ $p = HTML::TokeParser->new($fh);
 my %depute;
 
 if ($file =~ /(\d+)/) {
-    $depute{'id'} = $1;
-    $depute{'url'} = "http://www.assembleenationale.fr/13/tribun/fiches_id/$1.asp";
+    $depute{'id_an'} = $1;
+    $depute{'url_an'} = "http://www.assembleenationale.fr/13/tribun/fiches_id/$1.asp";
 }
 
 sub infosgene {
@@ -25,9 +26,14 @@ sub infosgene {
 	$txt = $p->get_text('/u');
 	$txt =~ /^(\S+)\s*/;
 	$e = $1;
-	next if ($e =~ /Commission/);
 	$p->get_tag('td');
-	$depute{$e} = $p->get_text('/td');
+	$txt = $p->get_text('/td');
+	if ($e =~ /groupe|président/i) {
+	    push @{$depute{'Fonctions'}}, {'orga' => lc($txt), 'fonction' => ($e =~ /président/i) ? 'président' : 'membre' };
+	    next;
+	}
+	next if ($e =~ /Commission/);
+	$depute{$e} = $txt;
 	return if ($e =~ /Suppléant/);
     }
 }
@@ -45,7 +51,7 @@ sub contact {
 	    }
 	}elsif (/Site internet/) {
 	    $a = $p->get_tag('a');
-	    $depute{'Web'} = $a->[1]->{'href'};
+	    $depute{'Site_Web'} = $a->[1]->{'href'};
 	}elsif (/Adresses/){
 	    while ($t = $p->get_tag('li', '/ul')) {
 		last if ($t->[0] =~ /^\//);
@@ -69,7 +75,7 @@ sub mandat {
 	if (/Mandat|Commission|Délégation|Mission/) {
 	    $text = $p->get_text('ul');
 	    if ($text =~ /Date de début de mandat : ([\d\/]+) /) {
-		$depute{'DebutMandat'} = $1;
+		$depute{'Debut_Mandat'} = $1;
 	    }
 	    while ($t = $p->get_tag('li', '/li')) {
 		last if ($t->[0] =~ /^\//);
@@ -122,7 +128,7 @@ sub place {
     $p->get_tag('p');
     $place = $p->get_text('/p');
     if ($place =~ /(\d+)/) {
-	$depute{'Place'} = $1;
+	$depute{'Place_Hemicycle'} = $1;
     }
 }
 
@@ -143,9 +149,11 @@ while($p->get_tag("h1")) {
     }
 }
 
+if ($xml) {
+
 print "<Depute>\n";
 foreach $k (keys %depute) {
-    print "<$k>";
+    print '<'.lc($k).'>';
     if (ref($depute{$k}) eq 'ARRAY' ) {
 	if (ref(${$depute{$k}}[0]) eq 'HASH') {
 	    foreach $h (@{$depute{$k}}) {
@@ -166,7 +174,16 @@ foreach $k (keys %depute) {
     }else {
 	print $depute{$k};
     }
-    print "</$k>";
+    print '</'.lc($k).'>';
     print "\n";
 }
 print "</Depute>\n";
+exit;
+} 
+print "  depute_".$depute{'id_an'}.":\n";
+foreach $k (keys %depute) {
+    next if ($k =~ /suppléant|groupe/i);
+    next if (ref($depute{$k}) =~ /ARRAY|HASH/);
+    print "    ".lc($k).": ".$depute{$k}."\n";
+}
+print "    type: depute\n";
