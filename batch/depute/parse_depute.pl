@@ -30,7 +30,10 @@ sub infosgene {
 	$txt = $p->get_text('/td');
 	if ($e =~ /groupe|président/i) {
 	    $fonction = ($e =~ /président/i) ? 'président' : 'membre';
-	    push @{$depute{'Groupe'}}, lc($txt)." / $fonction";
+	    if ($txt =~ s/apparenté //i) {
+		$fonction = 'apparenté';
+	    }
+	    ${$depute{'Groupe'}}{lc($txt)." / $fonction"} = 1;
 	    next;
 	}
 	next if ($e =~ /Commission/);
@@ -48,7 +51,7 @@ sub contact {
 	if (/Mél/) {
 	    $_ = $p->get_text('/li');
 	    if (/MAILTO:([^_]+)_(\w+)/) {
-		push @{$depute{'Mails'}}, $1.$2.'@assemblee-nationale.fr';
+		${$depute{'Mails'}}{$1.$2.'@assemblee-nationale.fr'} = 1;
 	    }
 	}elsif (/Site internet/) {
 	    $a = $p->get_tag('a');
@@ -59,9 +62,9 @@ sub contact {
 		$text = $p->get_text('/li');
 		$text =~ s/^\s+//;
 		if ($text =~ /^\S+\@/) {
-		    push @{$depute{'Mails'}}, $text;
+		    ${$depute{'Mails'}}{$text} = 1;
 		}else {
-		    push @{$depute{'Adresses'}}, $text
+		    ${$depute{'Adresses'}}{$text} = 1
 			if ($text);
 		}
 	    }
@@ -90,7 +93,7 @@ sub mandat {
 			$deb = $1;
 		    }
 		}
-		push @{$depute{'Fonctions'}}, lc($orga)." / ".lc($fonction)." / ".$deb;
+		${$depute{'Fonctions'}}{lc($orga)." / ".lc($fonction)." / ".$deb} = 1;
 		$p->get_tag('/li');
 	    }
 	}
@@ -107,7 +110,7 @@ sub extra {
 	    $fonction = $1;
 	    $orga = $3;
 	}
-	push @{$depute{'Extras'}}, lc($orga)." / ".lc($fonction);
+	${$depute{'Extras'}}{lc($orga)." / ".lc($fonction)} = 1;
     }
 }
 
@@ -121,7 +124,7 @@ sub autre_mandat {
 	$text =~ s/^\s+//;
 	$text =~ s/\s+$//;
 	$text =~ s/\s\s+/ /g;
-	push @{$depute{'AutresMandats'}}, $text;
+	${$depute{'AutresMandats'}}{$text} = 1;
     }    
 }
 
@@ -156,9 +159,9 @@ if ($xml) {
 print "<Depute>\n";
 foreach $k (keys %depute) {
     print '<'.lc($k).'>';
-    if (ref($depute{$k}) eq 'ARRAY' ) {
+    if (ref($depute{$k}) eq 'HASH' ) {
 	if (ref(${$depute{$k}}[0]) eq 'HASH') {
-	    foreach $h (@{$depute{$k}}) {
+	    foreach $h (keys %{$depute{$k}}) {
 		print "\n<hash>";
 		foreach $cle (keys (%{$h})) {
 		    next unless ($h->{$cle});
@@ -185,10 +188,9 @@ exit;
 print "  depute_".$depute{'id_an'}.":\n";
 foreach $k (keys %depute) {
     next if ($k =~ /suppléant/i);
-    next if (ref($depute{$k}) =~ /HASH/);
-    if (ref($depute{$k}) =~ /ARRAY/) {
+    if (ref($depute{$k}) =~ /HASH/) {
 	print "    ".lc($k).":\n";
-	foreach $i (@{$depute{$k}}) {
+	foreach $i (keys %{$depute{$k}}) {
 	    print "      - $i\n";
 	}
     }else {

@@ -3,9 +3,17 @@ parlementaire:
   url: /parlementaire/:slug
   param: {module: parlementaire, action: show}
 
+list_parlementaires_profession:
+  url: /parlementaire/profession/:profession
+  param: {module: parlementaire, action: listProfession}
+
+list_parlementaires_organisme:
+  url: /parlementaire/organisme/:slug
+  param: {module: parlementaire, action: listOrganisme}
+
 search_parlementaire:
   url: /parlementaire
-  param: {module: parlementaire, action list}
+  param: {module: parlementaire, action: list}
 
 homepage:
   url:   /

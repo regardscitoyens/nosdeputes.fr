@@ -32,16 +32,17 @@ class Parlementaire extends BaseParlementaire
     }
   }
   public function setFonctions($array) {
-    return $this->setParlementaireOrganisme('parlementaire', $array);
+    return $this->setPOrganisme('parlementaire', $array);
   }
   public function setExtras($array) {
-    return $this->setParlementaireOrganisme('extra', $array);
+    return $this->setPOrganisme('extra', $array);
   }
   public function setGroupe($array) {
-    return $this->setParlementaireOrganisme('groupe', $array);
+    return $this->setPOrganisme('groupe', $array);
   }
-  public function setParlementaireOrganisme($type, $array) {
-    $orgas = $this->getOrganismes();
+
+  public function setPOrganisme($type, $array) {
+    $orgas = $this->getParlementaireOrganismes();
     foreach ($array as $item) {
       $args = preg_split('/\s+\/\s*/', $item);
       $orga = Doctrine::getTable('Organisme')->findOneByNom($args[0]);
@@ -51,9 +52,16 @@ class Parlementaire extends BaseParlementaire
 	$orga->type = $type;
 	$orga->save();
       }
-      $orgas->add($orga);
+      $po = new ParlementaireOrganisme();
+      $po->setParlementaire($this);
+      $po->setOrganisme($orga);
+      $po->setFonction($args[1]);
+      /*      if (isset($args[2])) {
+	$po->setDebutFonction($args[2]);
+	}*/
+      $orgas->add($po);
     }
-    $this->_set('Organismes', $orgas);
+    $this->_set('ParlementaireOrganismes', $orgas);
   }
   public function setAutresmandats($array) {
 
@@ -61,5 +69,27 @@ class Parlementaire extends BaseParlementaire
   public function setMails($array) {
   }
   public function setAdresses($array) {
+  }
+  public function getGroupe() {
+    foreach($this->getParlementaireOrganismes() as $po) {
+      if ($po->type == 'groupe') 
+	return $po;
+    }
+  }
+  public function getExtras() {
+    $res = array();
+    foreach($this->getParlementaireOrganismes() as $po) {
+      if ($po->type == 'extra') 
+	array_push($res, $po);
+    }
+    return $res;
+  }
+  public function getResponsabilites() {
+    $res = array();
+    foreach($this->getParlementaireOrganismes() as $po) {
+      if ($po->type == 'parlementaire') 
+	array_push($res, $po);
+    }
+    return $res;
   }
 }

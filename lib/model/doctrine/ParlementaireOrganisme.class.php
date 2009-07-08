@@ -5,5 +5,13 @@
  */
 class ParlementaireOrganisme extends BaseParlementaireOrganisme
 {
-
+  public function getNom() {
+    return $this->getOrganisme()->getNom();
+  }
+  public function getType() {
+    return $this->getOrganisme()->getType();
+  }
+  public function getSlug() {
+    return $this->getOrganisme()->getSlug();
+  }
 }
