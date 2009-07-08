@@ -11,7 +11,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1001.asp
     mails:
       - mpdaubresse@assemblee-nationale.fr
-      - mpdaubresse@assemblee-nationale.fr mpdaubresse@ville-lambersart.fr
     adresses:
       - Hôtel de Ville BP 19 59831 Lambersart cedex Téléphone : 03 20 08 44 44 Télécopie : 03 20 08 44 48 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 75 53 Télécopie : 01 40 63 79 37 
@@ -37,7 +36,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1012.asp
     mails:
       - cdelaverpilliere@assemblee-nationale.fr
-      - charlesdelaverpilliere@orange.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Permanence parlementaire 4 Rue du Docteur Mehier BP 49 01152 Lagnieu Cedex Téléphone : 04 74 35 13 58  Télécopie : 04 74 35 74 93 
@@ -77,7 +75,6 @@ Parlementaire:
     place_hemicycle: 253
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission de la défense nationale et des forces armées / membre / 
     autresmandats:
       - Membre du conseil régional (Provence-Alpes-Côte-d'Azur)
@@ -133,7 +130,6 @@ Parlementaire:
     id_an: 1032
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1032.asp
     mails:
-      - pascaldeguilhem@free.fr
       - pdeguilhem@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 7 Bis Place de la Cité 24000 Périgueux Téléphone : 05 53 46 72 45 Télécopie : 05 53 09 08 22 
@@ -150,7 +146,6 @@ Parlementaire:
     place_hemicycle: 533
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires étrangères / membre / 
     autresmandats:
       - Maire de Dunkerque, Nord (70776 habitants)
@@ -206,7 +201,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1066.asp
     mails:
       - fdeluga@assemblee-nationale.fr
-      - contact@francoisdeluga.net f.deluga@leteich.fr
     adresses:
       - Assemblée nationale 126 Rue de l'Université 75355 Paris 07 SP 
       - Hôtel de Ville Avenue de la Côte d'Argent 33470 Le Teich Téléphone : 05 56 22 33 66 Télécopie : 05 56 22 83 24 
@@ -252,7 +246,6 @@ Parlementaire:
     id_an: 1085
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1085.asp
     mails:
-      - bernarddepierre@wanadoo.fr
       - bdepierre@assemblee-nationale.fr
     adresses:
       - Permanence 17 Rue Diderot 21000 Dijon Téléphone : 03 80 73 34 47 Télécopie : 03 80 72 28 56 
@@ -298,7 +291,6 @@ Parlementaire:
       - assemblée nationale / secrétaire / 27/06/2007
       - délégation chargée des représentants d'intérêts / membre / 
       - délégation spéciale chargée de la question des groupes d'intérêt / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / secrétaire / 
       - commission de la défense nationale et des forces armées / membre / 
     autresmandats:
       - Maire de Tergnier, Aisne (15069 habitants)
@@ -353,7 +345,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1141.asp
     mails:
       - mdolez@assemblee-nationale.fr
-      - contact@marc-dolez.org
     adresses:
       - 57 Rue de Bellain 59500 Douai Téléphone : 03 27 87 60 65 Télécopie : 03 27 87 50 48 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -379,7 +370,6 @@ Parlementaire:
       - comité de surveillance du fonds de solidarité vieillesse / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1152.asp
     mails:
-      - dord@blogdord.fr
       - ddord@assemblee-nationale.fr
     adresses:
       - 91 Rue d'Angleterre 73000 Chambéry Téléphone : 04 79 68 20 39 Télécopie : 04 79 69 27 09 
@@ -492,7 +482,6 @@ Parlementaire:
     id_an: 1193
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1193.asp
     mails:
-      - dumas.william@wanadoo.fr
       - wdumas@assemblee-nationale.fr
     adresses:
       - 15  Route de Salinelles BP 82012 30252 Sommières cedex Téléphone : 04 66 80 60 60 Télécopie : 04 66 80 60 61 
@@ -512,7 +501,6 @@ Parlementaire:
     id_an: 1198
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1198.asp
     mails:
-      - ejardin-payet.ldumont@orange.fr dumont-laurence@orange.fr pleroy.ldumont@orange.fr
       - ldumont@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 17 Rue Paul Toutain 14000 Caen Téléphone : 02 31 78 15 10 Télécopie : 02 31 72 86 31 
@@ -542,7 +530,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1199.asp
     mails:
       - jldumont@assemblee-nationale.fr
-      - Jean-Louis.Dumont@wanadoo.fr
     adresses:
       - 7 Rue de la Liberté 55100 Verdun 
       - Permanence 1  Avenue Garibaldi BP 70075 55102 Verdun cedex Téléphone : 03 29 84 85 55 Télécopie : 03 29 84 85 60 
@@ -609,7 +596,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1208.asp
     mails:
       - jpdupre@assemblee-nationale.fr
-      - jp.dupre@ataraxie.fr
     adresses:
       - 90 Rue Saint-Martin 11300 Limoux Téléphone : 04 68 31 67 67 Télécopie : 04 68 31 70 70 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -632,7 +618,6 @@ Parlementaire:
     id_an: 1214
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1214.asp
     mails:
-      - yvesdurand.lomme@orange.fr
       - ydurand@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 351  Avenue de Dunkerque BP 20415 59464 Lomme cedex Téléphone : 03 20 93 00 59 Télécopie : 03 20 93 97 75 
@@ -648,7 +633,6 @@ Parlementaire:
   depute_1224:
     place_hemicycle: 511
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Membre du conseil général (Pas-de-Calais)
@@ -659,7 +643,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1224.asp
     mails:
       - oduriez@assemblee-nationale.fr
-      - duriez.odette@wanadoo.fr
     adresses:
       - Permanence parlementaire 25  Rue du Bois BP 9 62149 Cambrin Téléphone : 03 21 27 83 29 Télécopie : 03 21 27 91 87 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -682,7 +665,6 @@ Parlementaire:
     id_an: 1226
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1226.asp
     mails:
-      - philippeduron@orange.fr
       - pduron@assemblee-nationale.fr
     adresses:
       - Mairie Esplanade Jean-Marie Louvel 14000 Caen Téléphone : 02 31 30 40 50 Télécopie : 02 31 30 45 80 
@@ -725,7 +707,6 @@ Parlementaire:
     place_hemicycle: 501
     fonctions:
       - commission des finances / membre / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
     autresmandats:
       - Président du conseil général (Landes)
     sexe: H
@@ -836,7 +817,6 @@ Parlementaire:
     id_an: 1304
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1304.asp
     mails:
-      - alain.ferry2@wanadoo.fr
       - aferry@assemblee-nationale.fr
     adresses:
       - 2 Rue des Ecoles 67130 Wisches Téléphone : 03 88 47 36 45 Télécopie : 03 88 47 39 92 
@@ -852,7 +832,6 @@ Parlementaire:
     place_hemicycle: 474
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission de la défense nationale et des forces armées / membre / 
     autresmandats:
       - Vice-président du conseil régional (Midi-Pyrénées)
@@ -862,7 +841,6 @@ Parlementaire:
       - comité de liaison pour l'accessibilité des transports et du cadre bâti / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1326.asp
     mails:
-      - pierre.forgues@laposte.net
       - pforgues@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 1  Rue Émile Péreire 65000 Tarbes Téléphone : 05 62 38 00 42 Télécopie : 05 62 38 09 60 
@@ -938,7 +916,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1353.asp
     mails:
       - mfrancaix@assemblee-nationale.fr
-      - michel.francaix@ville-chambly.fr
     adresses:
       - Hôtel de Ville Place de la Mairie BP 10110 60230 Chambly Cedex Téléphone : 01 39 37 44 13 Télécopie : 01 72 72 96 12 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -953,7 +930,6 @@ Parlementaire:
   depute_1355:
     place_hemicycle: 274
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Maire de Puteaux, Hauts-de-Seine (40671 habitants)
@@ -961,7 +937,6 @@ Parlementaire:
     id_an: 1355
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1355.asp
     mails:
-      - joelle.ceccaldi@mairie-puteaux.fr jceccaldi@gmail.com
       - jceccaldi@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -986,7 +961,6 @@ Parlementaire:
       - conseil d'administration de l'établissement d'hospitalisation public de fresnes spécifiquement destine à l'accueil des personnes incarcérées / membre suppléante
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1364.asp
     mails:
-      - jacqueline.fraysse@mairie-nanterre.fr
       - jfraysse@assemblee-nationale.fr
     adresses:
       - Hôtel de Ville Rue du 8 Mai 1945 92000 Nanterre Téléphone : 01 70 72 47 24 Télécopie : 01 70 72 47 17 
@@ -1037,7 +1011,6 @@ Parlementaire:
       - comité des prix de revient des fabrications d'armement / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1379.asp
     mails:
-      - yves@fromion.org
       - yfromion@assemblee-nationale.fr
     adresses:
       - Secrétariat parlementaire Hôtel de ville 18700 Aubigny-sur-Nère Téléphone : 02 48 81 50 91 Télécopie : 02 48 81 50 99 
@@ -1070,12 +1043,10 @@ Parlementaire:
     place_hemicycle: 148
     fonctions:
       - commission des finances / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / vice-président / 
     sexe: H
     id_an: 1418
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1418.asp
     mails:
-      - garrigue.daniel.depute@wanadoo.fr
       - dgarrigue@assemblee-nationale.fr
     adresses:
       - Permanence 2 Rue des 2 conils 24100 Bergerac Téléphone : 05 53 27 65 35 Télécopie : 05 53 58 22 31 
@@ -1092,7 +1063,6 @@ Parlementaire:
     place_hemicycle: 261
     fonctions:
       - commission des affaires économiques / membre / 
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / vice-président / 
     sexe: H
     id_an: 1432
     extras:
@@ -1102,7 +1072,6 @@ Parlementaire:
       - conseil supérieur de l'aviation marchande / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1432.asp
     mails:
-      - claude.gatignol.permanence@wanadoo.fr
       - cgatignol@assemblee-nationale.fr
     adresses:
       - 2 Rue des Résistants 50700 Valognes Téléphone : 02 33 95 15 00 Télécopie : 02 33 95 13 57 
@@ -1127,7 +1096,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1433.asp
     mails:
       - jgaubert@assemblee-nationale.fr
-      - jean-gaubert@wanadoo.fr
     adresses:
       - 12 Bis Rue de Brest 22100 Dinan Téléphone : 02 96 39 09 50 Télécopie : 02 96 39 19 21 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 04 06 Télécopie : 01 40 63 04 86 
@@ -1143,7 +1111,6 @@ Parlementaire:
     place_hemicycle: 170
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires étrangères / membre / 
     autresmandats:
       - Président du conseil général (Savoie)
@@ -1222,7 +1189,6 @@ Parlementaire:
     id_an: 1463
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1463.asp
     mails:
-      - andregerin@orange.fr
       - agerin@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 27 Rue Francis de Préssensé 69190 Saint-Fons Téléphone : 04 78 67 16 99 Télécopie : 04 78 67 16 99 
@@ -1239,7 +1205,6 @@ Parlementaire:
   depute_1466:
     place_hemicycle: 260
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - commission du développement durable et de l'aménagement du territoire / secrétaire / 
       - délégation chargée de la communication et de la presse / membre / 
       - assemblée nationale / secrétaire / 01/10/2008
@@ -1301,7 +1266,6 @@ Parlementaire:
       - conseil d'administration du conservatoire de l'espace littoral et des rivages lacustres / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1483.asp
     mails:
-      - jeanpierre.giran@wanadoo.fr
       - jpgiran@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -1324,7 +1288,6 @@ Parlementaire:
     id_an: 1496
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1496.asp
     mails:
-      - glavany.jean@wanadoo.fr
       - jglavany@assemblee-nationale.fr
     adresses:
       - Permanence 170 Place de la Libération 65700 Maubourguet Téléphone : 05 62 96 99 27 Télécopie : 05 62 96 39 54 
@@ -1378,7 +1341,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1514.asp
     mails:
       - fmgonnot@assemblee-nationale.fr
-      - gonnot2007@yahoo.fr
     adresses:
       - Permanence parlementaire 40 Ter Rue Saint Eloi 60400 NOYON Téléphone : 03 44 09 12 19 Télécopie : 03 44 09 12 07 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -1405,7 +1367,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1515.asp
     mails:
       - ggorce@assemblee-nationale.fr
-      - GORCE.GAETAN@wanadoo.fr
     adresses:
       - 9 Rue Saint-Jacques 58200 Cosne-sur-Loire Téléphone : 03 86 26 91 99 Télécopie : 03 86 26 89 97 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -1433,7 +1394,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1521.asp
     mails:
       - pgoujon@assemblee-nationale.fr
-      - philippegoujon@hotmail.com
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 60 00 
       - Mairie du 15ème Rue Peclet 75015 Paris Téléphone : 01 55 76 75 00 Télécopie : 01 55 76 75 18 
@@ -1447,7 +1407,6 @@ Parlementaire:
   depute_1522:
     place_hemicycle: 255
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - commission des finances / membre / 
     autresmandats:
       - Maire de Vannes, Morbihan (51759 habitants)
@@ -1483,7 +1442,6 @@ Parlementaire:
       - conseil national de la formation professionnelle tout au long de la vie / membre suppléant
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1548.asp
     mails:
-      - contact@maxime-gremetz.fr
       - mgremetz@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -1507,7 +1465,6 @@ Parlementaire:
     id_an: 1549
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1549.asp
     mails:
-      - jeangrenetdepute@gmail.com
       - jgrenet@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -1530,7 +1487,6 @@ Parlementaire:
     id_an: 1562
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1562.asp
     mails:
-      - woippy.grosdidier@wanadoo.fr permanence.francoisgrosdidier@voila.fr
       - fgrosdidier@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 57140 Woippy Téléphone : 03 87 30 44 15 Télécopie : 03 87 30 74 87 
@@ -1559,7 +1515,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1568.asp
     mails:
       - lguedon@assemblee-nationale.fr
-      - louis.guedon885@orange.fr
     adresses:
       - Hôtel de Ville BP 30386 85108 Les Sables-d'Olonne Téléphone : 02 51 23 16 02 
       - 40 Rue de Bel Air 85100 Les Sables d'Olonne Téléphone : 08 79 57 04 31 Télécopie : 02 51 21 58 87 
@@ -1599,7 +1554,6 @@ Parlementaire:
     place_hemicycle: 412
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires étrangères / membre / 
     autresmandats:
       - Adjointe au Maire de Noisy-le-Sec, Seine-Saint-Denis (37312 habitants)
@@ -1608,7 +1562,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1579.asp
     mails:
       - eguigou@assemblee-nationale.fr
-      - guigou.e@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 93 20 Télécopie : 01 40 63 93 36 
       - BP 47 93141 Bondy cedex Téléphone : 01 48 50 04 67 Télécopie : 01 48 49 66 72 
@@ -1656,7 +1609,6 @@ Parlementaire:
     id_an: 1592
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1592.asp
     mails:
-      - dhabib.orthez@wanadoo.fr
       - dhabib@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 51 Rue Saint-Gilles 64300 Orthez Téléphone : 05 59 67 20 07 Télécopie : 05 59 67 20 02 
@@ -1684,7 +1636,6 @@ Parlementaire:
       - commission nationale chargée de l'examen du respect des obligations de réalisation de logements sociaux / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1604.asp
     mails:
-      - permanence.ghamel@wanadoo.fr g.hamel@ville-dreux.fr
       - ghamel@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 67 95 Télécopie : 01 40 63 56 91 
@@ -1701,7 +1652,6 @@ Parlementaire:
     place_hemicycle: 259
     fonctions:
       - commission des affaires culturelles et de l'éducation / vice-président / 
-      - délégation de l'assemblée nationale pour l'union européenne / vice-président / 
       - commission des affaires européennes / vice-président / 
     autresmandats:
       - Maire de Maisons-Alfort, Val-de-Marne (54000 habitants)
@@ -1716,7 +1666,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1630.asp
     mails:
       - mherbillon@assemblee-nationale.fr
-      - michel.herbillon@wanadoo.fr
     adresses:
       - Hôtel de Ville 118 Avenue du Général de Gaulle 94700 Maisons-Alfort Téléphone : 01 43 96 77 23 Télécopie : 01 43 96 96 38 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -1808,7 +1757,6 @@ Parlementaire:
       - conseil supérieur de l' administration pénitentiaire / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1677.asp
     mails:
-      - michel.hunault-depute@wanadoo.fr
       - mhunault@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -1834,7 +1782,6 @@ Parlementaire:
       - conseil d'administration de l'office franco-allemand pour la jeunesse / membre suppléant
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1686.asp
     mails:
-      - jean-louis.idiart@wanadoo.fr
       - jlidiart@assemblee-nationale.fr
     adresses:
       - 5 Place Jean Jaurès 31800 Saint-Gaudens Téléphone : 05 62 00 80 80 Télécopie : 05 61 95 99 99 
@@ -1857,7 +1804,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1689.asp
     mails:
       - fimbert@assemblee-nationale.fr
-      - imbert.francoise@wanadoo.fr
     adresses:
       - 17 Allée des Mauges BP 122 31772 Colomiers cedex Téléphone : 05 61 78 61 85 Télécopie : 05 61 78 61 94 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -1872,6 +1818,7 @@ Parlementaire:
     place_hemicycle: 90
     fonctions:
       - commission chargée de l'application de l'article 26 de la constitution / membre suppléant / 
+      - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
       - commission du développement durable et de l'aménagement du territoire / président / 
     autresmandats:
       - Maire de Provins, Seine-et-Marne (11667 habitants)
@@ -1907,7 +1854,6 @@ Parlementaire:
       - conseil d'orientation des retraites / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1699.asp
     mails:
-      - djacquat@wanadoo.fr
       - djacquat@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 25  Rue du Cambout 57000 Metz Téléphone : 03 87 36 48 28 Télécopie : 03 87 36 11 91 
@@ -1945,7 +1891,6 @@ Parlementaire:
     place_hemicycle: 400
     fonctions:
       - commission des affaires culturelles et de l'éducation / vice-président / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / secrétaire / 
       - mission d'évaluation de la loi n°2005-370 du 22 avril 2005 relative aux droits des malades et à la fin de vie / membre / 
       - mission d'évaluation et de contrôle des lois de financement de la sécurité sociale / membre / 
     autresmandats:
@@ -1975,7 +1920,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1746.asp
     mails:
       - djulia@assemblee-nationale.fr
-      - contact@didier-julia.org
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 67 73 Télécopie : 01 40 63 53 45 
       - Permanence 202 Rue Grande 77300 Fontainebleau Téléphone : 01 64 22 46 30 Télécopie : 01 60 72 33 97 
@@ -1996,8 +1940,6 @@ Parlementaire:
     id_an: 1748
     extras:
       - conseil national des transports / membre suppléant
-    mails:
-      - contact@armandjung-depute.fr
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1748.asp
     adresses:
       - 40 Avenue des Vosges 67000 Strasbourg Téléphone : 03 88 24 73 00 Télécopie : 03 88 24 73 03 
@@ -2013,7 +1955,6 @@ Parlementaire:
   depute_1761:
     place_hemicycle: 183
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - commission des affaires culturelles et de l'éducation / vice-président / 
     sexe: H
     id_an: 1761
@@ -2023,7 +1964,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1761.asp
     mails:
       - ckert@assemblee-nationale.fr
-      - ckert.cabparlementaire@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Permanence parlementaire 14 Rue des Cordeliers 13300 Salon-de-Provence Téléphone : 04 90 56 12 25 Télécopie : 04 90 56 39 98 
@@ -2048,7 +1988,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1770.asp
     mails:
       - jkossowski@assemblee-nationale.fr
-      - jakossowski@yahoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Hôtel de Ville 92401 Courbevoie cedex Téléphone : 01 43 34 70 33 Télécopie : 01 43 34 70 38 
@@ -2094,7 +2033,6 @@ Parlementaire:
     id_an: 1778
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1778.asp
     mails:
-      - patrick.labaune@orange.fr
       - plabaune@assemblee-nationale.fr
     adresses:
       - 158 Avenue Victor Hugo Immeuble le Saint Joseph 26000 Valence Téléphone : 09 64 23 81 69 Télécopie : 04 75 42 76 12 
@@ -2118,7 +2056,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1789.asp
     mails:
       - clacuey@assemblee-nationale.fr
-      - clacuey@wanadoo.fr
     adresses:
       - Hôtel de Ville 6 Avenue Pasteur 33270 Floirac Téléphone : 05 57 80 87 44 Télécopie : 05 56 86 77 41 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -2134,7 +2071,6 @@ Parlementaire:
     fonctions:
       - commission des affaires européennes / membre / 
       - assemblée nationale / vice-président / 27/06/2007
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des finances / membre / 
       - délégation chargée des activités internationales / président / 
     autresmandats:
@@ -2147,7 +2083,6 @@ Parlementaire:
       - conseil de surveillance du fonds de réserve pour les retraites / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1790.asp
     mails:
-      - contact@marclaffineur.org
       - mlaffineur@assemblee-nationale.fr
     adresses:
       - Cabinet parlementaire Mairie 49240 Avrillé Téléphone : 02 41 37 41 09 Télécopie : 02 41 69 66 41 
@@ -2163,7 +2098,6 @@ Parlementaire:
   depute_1809:
     place_hemicycle: 548
     fonctions:
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires européennes / vice-président / 
       - commission des lois / membre / 
     sexe: H
@@ -2195,7 +2129,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1816.asp
     mails:
       - flamy@assemblee-nationale.fr
-      - contact@francois-lamy.org
     adresses:
       - Permanence 91 Rue de Paris 91120 Palaiseau Téléphone : 01 60 11 25 77 Télécopie : 01 69 30 71 54 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 68 63 Télécopie : 01 40 63 68 50 
@@ -2216,7 +2149,6 @@ Parlementaire:
     id_an: 1821
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1821.asp
     mails:
-      - jacklang62@wanadoo.fr
       - jlang@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 74 Rue du Chemin Vert 62200 Boulogne-sur-Mer Téléphone : 03 21 30 91 21 Télécopie : 03 21 30 91 22 
@@ -2240,7 +2172,6 @@ Parlementaire:
     id_an: 1822
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1822.asp
     mails:
-      - pierrelang@wanadoo.fr
       - plang@assemblee-nationale.fr
     adresses:
       - Hôtel de Ville 42 Rue Nicolas Colson BP 40062 57803 Freyming-Merlebach cedex Téléphone : 03 87 90 59 33 Télécopie : 03 87 90 59 36 
@@ -2257,7 +2188,6 @@ Parlementaire:
     fonctions:
       - mission d'évaluation et de contrôle (commission des finances) / membre / 
       - commission des affaires économiques / membre / 
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / vice-président / 
     autresmandats:
       - Membre du conseil régional (Ile-de-France)
     sexe: H
@@ -2266,7 +2196,6 @@ Parlementaire:
       - conseil de l'agence d'évaluation de la recherche et de l'enseignement supérieur / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1835.asp
     mails:
-      - p.lasbordes@wanadoo.fr
       - plasbordes@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -2320,7 +2249,6 @@ Parlementaire:
       - comité d'enquête sur le coût et le rendement des services publics / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1844.asp
     mails:
-      - launay.depute@wanadoo.fr
       - jlaunay@assemblee-nationale.fr
     adresses:
       - Permanence 5 Rue Roquefort BP 99 46103 Figeac Cedex Téléphone : 05 65 34 12 46 Télécopie : 05 65 34 76 07 
@@ -2344,7 +2272,6 @@ Parlementaire:
     id_an: 1857
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1857.asp
     mails:
-      - Thierry.LAZARO@wanadoo.fr
       - tlazaro@assemblee-nationale.fr
     adresses:
       - 95 Rue du Général de Gaulle 59133 Phalempin 
@@ -2380,7 +2307,6 @@ Parlementaire:
     place_hemicycle: 447
     fonctions:
       - commission des affaires économiques / membre / 
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / vice-président / 
     autresmandats:
       - Premier Vice-président du conseil régional (Lorraine)
     sexe: H
@@ -2390,7 +2316,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1871.asp
     mails:
       - jyledeaut@assemblee-nationale.fr
-      - jean-yves.le-deaut@wanadoo.fr
     adresses:
       - Permanence parlementaire 14 Rue Victor Hugo BP 177 54706 Pont-à-Mousson cedex Téléphone : 03 83 82 13 81 Télécopie : 03 83 82 40 95 
       - Permanence 3 Rue Joffre 54150 Briey Téléphone : 03 82 46 67 33 Télécopie : 03 82 20 97 27 
@@ -2479,14 +2404,12 @@ Parlementaire:
   depute_1886:
     place_hemicycle: 421
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission des lois / membre / 
     sexe: H
     id_an: 1886
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1886.asp
     mails:
       - bleroux@assemblee-nationale.fr
-      - brunolerouxdepute@yahoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
     circonscription: Seine-Saint-Denis (1ère)
@@ -2516,7 +2439,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1893.asp
     mails:
       - mlebranchu@assemblee-nationale.fr
-      - permanence.lebranchu@wanadoo.fr
     adresses:
       - 6  Place Emile Souvestre 29600 Morlaix Téléphone : 02 98 88 10 09 Télécopie : 02 98 63 44 85 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -2538,7 +2460,6 @@ Parlementaire:
     id_an: 1911
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1911.asp
     mails:
-      - lefait.michel@wanadoo.fr ass.nat.lefait.michel@orange.fr
       - mlefait@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -2562,7 +2483,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1931.asp
     mails:
       - plellouche@assemblee-nationale.fr
-      - pierre.lellouche@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Permanence parlementaire (8e et 9e) 9 Bis Rue de Maubeuge 75009 Paris Téléphone : 01 48 78 24 10 Télécopie : 01 48 78 24 03 
@@ -2584,7 +2504,6 @@ Parlementaire:
     id_an: 1936
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1936.asp
     mails:
-      - Patrick.LEMASLE@wanadoo.fr
       - plemasle@assemblee-nationale.fr
     adresses:
       - 21 Rue du Faubourg Saint-Germain 31310 Montesquieu-Volvestre Téléphone : 05 61 98 41 93 Télécopie : 05 61 90 52 01 
@@ -2635,7 +2554,6 @@ Parlementaire:
       - commission chargée d'examiner les demandes d'autorisation ou de renouvellement d'autorisation des jeux / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1944.asp
     mails:
-      - jl.leonard@chatelaillonplage.fr
       - jlleonard@assemblee-nationale.fr
     adresses:
       - Mairie Boulevard de la Libération 17340 Châtelaillon-Plage Téléphone : 05 46 30 18 01 
@@ -2674,7 +2592,7 @@ Parlementaire:
     place_hemicycle: 269
     fonctions:
       - commission des affaires européennes / président / 
-      - délégation de l'assemblée nationale pour l'union européenne / président / 
+      - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Vice-président du conseil général (Yvelines)
@@ -2706,7 +2624,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1960.asp
     mails:
       - mleroy@assemblee-nationale.fr
-      - mleroy.depute@wanadoo.fr
     adresses:
       - Permanence 32    Mail Leclerc 41100 Vendôme Téléphone : 02 54 89 01 72 Télécopie : 02 54 89 01 75 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -2729,7 +2646,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1977.asp
     mails:
       - mliebgott@assemblee-nationale.fr
-      - michel.liebgott@wanadoo.fr
     adresses:
       - 4 Rue Jacques Tourneur BP 90069 57703 Hayange cedex Téléphone : 03 82 84 06 06 Télécopie : 03 82 84 66 88 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -2754,7 +2670,6 @@ Parlementaire:
       - conseil supérieur du service public ferroviaire / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1979.asp
     mails:
-      - martine.lignieres-cassou@wanadoo.fr
       - mlignieres@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 56 Rue Émile Guichenné BP 621 64006 Pau cedex Téléphone : 05 59 82 20 80 Télécopie : 05 59 82 20 84 
@@ -2775,7 +2690,6 @@ Parlementaire:
     id_an: 1991
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1991.asp
     mails:
-      - francois.loncle@wanadoo.fr
       - floncle@assemblee-nationale.fr
     adresses:
       - 17 Rue du Rempart 27400 Louviers Téléphone : 02 32 40 58 80 Télécopie : 02 32 40 45 13 
@@ -2791,7 +2705,6 @@ Parlementaire:
     place_hemicycle: 162
     fonctions:
       - commission des affaires économiques / membre / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
     autresmandats:
       - Membre du conseil régional (Alsace)
     sexe: H
@@ -2802,7 +2715,6 @@ Parlementaire:
       - conseil de surveillance de l'agence française de développement / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1994.asp
     mails:
-      - francois.loos@yahoo.fr
       - floos@assemblee-nationale.fr
     adresses:
       - 5A Rue du Maréchal Foch 67500 Haguenau Téléphone : 03 88 93 63 40 Télécopie : 03 88 93 24 97 
@@ -2831,7 +2743,6 @@ Parlementaire:
       - observatoire national de la sécurité des établissements scolaires et d'enseignement supérieur / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2011.asp
     mails:
-      - ll@lionnel-luca.org
       - lluca@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -2847,7 +2758,6 @@ Parlementaire:
   depute_2045:
     place_hemicycle: 596
     fonctions:
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des lois / secrétaire / 
     autresmandats:
       - Maire de Bègles, Gironde (22475 habitants)
@@ -2899,7 +2809,6 @@ Parlementaire:
     place_hemicycle: 93
     fonctions:
       - mission d'évaluation et de contrôle (commission des finances) / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / vice-président / 
       - commission des affaires européennes / vice-président / 
       - commission des lois / membre / 
     autresmandats:
@@ -2950,7 +2859,6 @@ Parlementaire:
     fonctions:
       - mision d'information commune sur la mesure des grandes données économiques et sociales / rapporteur / 
       - commission des finances / membre / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
     autresmandats:
       - Maire de Crest, Drôme (7744 habitants)
     sexe: H
@@ -2982,8 +2890,6 @@ Parlementaire:
       - Maire d'Étampes, Essonne (21839 habitants)
     sexe: H
     id_an: 2086
-    mails:
-      - depute@franckmarlin.com
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2086.asp
     circonscription: Essonne (2ème)
     adresses:
@@ -3048,7 +2954,6 @@ Parlementaire:
     place_hemicycle: 199
     fonctions:
       - commission des affaires étrangères / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Membre du Conseil municipal de Laragne-Montéglin, Hautes-Alpes (3296 habitants)
     sexe: F
@@ -3057,7 +2962,6 @@ Parlementaire:
       - commission de surveillance et de contrôle des publications destinées à l'enfance et à l'adolescence / membre suppléante
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2102.asp
     mails:
-      - henriette.martinez@wanadoo.fr
       - hmartinez@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 72 76 Télécopie : 01 40 63 78 24 
@@ -3080,7 +2984,6 @@ Parlementaire:
     id_an: 210741
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/210741.asp
     mails:
-      - Jean-Claude.Leroy9@wanadoo.fr
       - jcleroy@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -3125,7 +3028,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/211169.asp
     mails:
       - rmuzeau@assemblee-nationale.fr
-      - r.muzeau@orange.fr
     adresses:
       - Mairie 177 Avenue Gabriel Péri 92230 Gennevilliers Téléphone : 01 40 85 62 30 Télécopie : 01 47 99 07 56 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 60 88 
@@ -3177,7 +3079,6 @@ Parlementaire:
       - conseil d'administration de l'institut national de l'audiovisuel (ina) / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2126.asp
     mails:
-      - mathus.didier@wanadoo.fr
       - dmathus@assemblee-nationale.fr
     adresses:
       - Hôtel de Ville 18  Rue Carnot BP 188 71307 Montceau-les-Mines cedex Téléphone : 03 85 67 68 30 Télécopie : 03 85 67 68 32 
@@ -3195,6 +3096,7 @@ Parlementaire:
   depute_2148:
     place_hemicycle: 186
     fonctions:
+      - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
       - commission des affaires sociales / président / 
     autresmandats:
       - Président de la communauté d'agglomération de Vitré communauté
@@ -3207,7 +3109,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2148.asp
     mails:
       - pmehaignerie@assemblee-nationale.fr
-      - pmehaign@club-internet.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Mairie BP 70627 35506 Vitré cedex Téléphone : 02 99 75 07 28 
@@ -3230,7 +3131,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/216574.asp
     mails:
       - fhillmeyer@assemblee-nationale.fr
-      - FRANCIS.HILLMEYER@wanadoo.fr
     adresses:
       - 128 Rue de la République 68120 Pfastatt Téléphone : 03 89 53 59 92 Télécopie : 03 89 53 57 38 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -3253,7 +3153,6 @@ Parlementaire:
       - haut conseil du secteur public / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2181.asp
     mails:
-      - jean.michel10@wanadoo.fr
       - jmichel@assemblee-nationale.fr
     adresses:
       - Permanence 36 Avenue Archon-Despérouses 63200 Riom Téléphone : 04 73 38 66 03 Télécopie : 04 73 38 66 45 
@@ -3269,7 +3168,6 @@ Parlementaire:
     place_hemicycle: 514
     fonctions:
       - comité d'évaluation et de contrôle des politiques publiques / membre / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
       - commission des finances) de la mission d'évaluation et de contrôle (commission des finances) / (président / 
       - commission des finances / président / 
     autresmandats:
@@ -3359,7 +3257,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2229.asp
     mails:
       - pmorange@assemblee-nationale.fr
-      - cabinet@chambourcy.fr pierre.morange@noos.fr
     adresses:
       - Permanence parlementaire 2  Rue de la Procession 78100 Saint-Germain-en-Laye Téléphone : 01 34 51 20 20 Télécopie : 01 39 73 68 74 
       - Mairie Place Charles de Gaulle 78240 Chambourcy Téléphone : 01 39 22 31 31 Télécopie : 01 39 22 31 30 
@@ -3382,7 +3279,6 @@ Parlementaire:
     id_an: 2237
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2237.asp
     mails:
-      - jm.morisset@cg79.fr
       - jmmorisset@assemblee-nationale.fr
     adresses:
       - La Cointrie 79310 Saint-Pardoux Téléphone : 05 49 64 23 22 Télécopie : 05 49 63 32 38 
@@ -3424,7 +3320,6 @@ Parlementaire:
     place_hemicycle: 430
     fonctions:
       - commission des finances / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / vice-président / 
     autresmandats:
       - Membre du Conseil municipal de Valentigney, Doubs (12484 habitants)
       - Président de la communauté d'agglomération du Pays-de-Montbéliard
@@ -3479,7 +3374,6 @@ Parlementaire:
     id_an: 2250
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2250.asp
     mails:
-      - moyne-bressand.alain@wanadoo.fr
       - amoyne@assemblee-nationale.fr
     adresses:
       - Mairie 38460 Crémieu Téléphone : 04 74 90 70 92 Télécopie : 04 74 90 88 86 
@@ -3506,7 +3400,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2256.asp
     mails:
       - rmuselier@assemblee-nationale.fr
-      - muselier.ump@online.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Fédération UMP 39 Rue Sainte-Cécile 13005 Marseille Téléphone : 04 91 25 62 61 Télécopie : 04 91 80 46 46 
@@ -3522,7 +3415,6 @@ Parlementaire:
     place_hemicycle: 292
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires étrangères / membre / 
     autresmandats:
       - Maire de Maisons-Laffitte, Yvelines (21856 habitants)
@@ -3554,7 +3446,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2265.asp
     mails:
       - pnauche@assemblee-nationale.fr
-      - permanence.nauche@orange.fr
     adresses:
       - Permanence parlementaire 2 Rue du maréchal Brune 19100 Brive la Gaillarde Téléphone : 05 55 17 02 86 Télécopie : 05 55 17 03 53 
       - Mairie de Brive Place de l'Hôtel de Ville BP 433 19312 Brive cedex Téléphone : 05 55 18 17 63 Télécopie : 05 55 18 15 01 
@@ -3580,7 +3471,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2269.asp
     mails:
       - hnayrou@assemblee-nationale.fr
-      - henri.nayrou@wanadoo.fr
     adresses:
       - 1 Quai du Gravier BP 40 09201 Saint-Girons cedex Téléphone : 05 61 04 64 64 Télécopie : 05 61 04 65 65 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -3692,6 +3582,7 @@ Parlementaire:
     place_hemicycle: 180
     fonctions:
       - mission d'information commune sur les prix des carburants dans les dom / président / 
+      - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
       - commission des affaires économiques / président / 
     autresmandats:
       - Maire de Rueil-Malmaison, Hauts-de-Seine (73469 habitants)
@@ -3747,7 +3638,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/230.asp
     mails:
       - baccoyer@assemblee-nationale.fr
-      - bernard.accoyer@wanadoo.fr
     adresses:
       - 49 Avenue de Genève 74000 Annecy Téléphone : 04 50 57 57 62 
       - Mairie 74940 Annecy-le-Vieux Téléphone : 04 50 23 86 33 Télécopie : 04 50 27 66 90 
@@ -3806,7 +3696,6 @@ Parlementaire:
     place_hemicycle: 502
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires sociales / membre / 
     autresmandats:
       - Membre de la Communauté de communes des Portes du Morvan
@@ -3820,7 +3709,6 @@ Parlementaire:
       - conseil d'administration de l'ecole nationale d'administration / membre suppléant
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2338.asp
     mails:
-      - christian.paul@wanadoo.fr
       - cpaul@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 68 11 
@@ -3843,8 +3731,6 @@ Parlementaire:
     id_an: 2339
     extras:
       - commission supérieure du crédit maritime mutuel / membre titulaire
-    mails:
-      - an.dpaul@wanadoo.fr
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2339.asp
     adresses:
       - 12 Rue Michel Gautier 76600 Le Havre Téléphone : 02 35 53 05 79 Télécopie : 02 35 53 66 91 
@@ -3898,7 +3784,6 @@ Parlementaire:
       - conseil d'orientation pour la prévention des risques naturels majeurs / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2345.asp
     mails:
-      - jacques.pelissard@ville-lons-le-saunier.fr
       - jpelissard@assemblee-nationale.fr
     adresses:
       - Hôtel de Ville 39000 Lons-le-Saunier Téléphone : 03 84 47 88 31 Télécopie : 03 84 47 88 96 
@@ -3921,7 +3806,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2357.asp
     mails:
       - dperben@assemblee-nationale.fr
-      - contact@perben.com
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 91 22 Télécopie : 01 40 63 91 41 
       - Permanence 116 Rue Cuvier 69006 Lyon  Téléphone : 04 78 24 41 13 Télécopie : 04 78 24 23 30 
@@ -3943,7 +3827,6 @@ Parlementaire:
     id_an: 2365
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2365.asp
     mails:
-      - jean-claude.perez@wanadoo.fr
       - jcperez@assemblee-nationale.fr
     adresses:
       - 2 Rue Barbès BP 158 11004 Carcassonne cedex Téléphone : 04 68 47 49 28 Télécopie : 04 68 47 43 88 
@@ -3988,7 +3871,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2371.asp
     mails:
       - mfperol@assemblee-nationale.fr
-      - mf.peroldumont@wanadoo.fr
     adresses:
       - Conseil général 43 Avenue de la Libération 87000 Limoges Téléphone : 05 55 45 10 49 Télécopie : 05 55 79 57 81 
       - BP 262 87007 Limoges cedex 1 Téléphone : 05 55 10 18 33 Télécopie : 05 55 10 18 42 
@@ -4013,7 +3895,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2374.asp
     mails:
       - ggaillard@assemblee-nationale.fr
-      - deputee@genevieve-gaillard.com
     adresses:
       - 43 Rue du 24 Février BP 88 79003 Niort cedex Téléphone : 05 49 77 29 40 Télécopie : 05 49 77 29 44 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -4042,7 +3923,6 @@ Parlementaire:
       - conseil national du tourisme / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2377.asp
     mails:
-      - bperrut@villefranche.net bperrut@wanadoo.fr
       - bperrut@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 227 Boulevard Gambetta 69400 Villefranche-sur-Saône Téléphone : 04 74 68 07 44 Télécopie : 04 74 68 21 57 
@@ -4114,7 +3994,6 @@ Parlementaire:
     id_an: 2430
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2430.asp
     mails:
-      - philippe.plisson@free.fr
       - pplisson@assemblee-nationale.fr
     adresses:
       - 24 Rue Gambetta 33230 Coutras Téléphone : 05 57 69 46 62 Télécopie : 05 57 69 46 63 
@@ -4139,7 +4018,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2438.asp
     mails:
       - spoignant@assemblee-nationale.fr
-      - serge.poignant@wanadoo.fr
     adresses:
       - Permanence parlementaire 290 Route du Loroux-Bottereau BP 22604 44115 Basse-Goulaine Téléphone : 02 40 06 20 57 Télécopie : 02 40 06 05 01 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -4160,7 +4038,6 @@ Parlementaire:
     id_an: 243
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/243.asp
     mails:
-      - yves.albarello@gmail.com
       - yalbarello@assemblee-nationale.fr
     adresses:
       - Hôtel de ville 77410 Claye-Souilly Téléphone : 01 60 26 92 00 Télécopie : 01 60 26 30 06 
@@ -4202,7 +4079,6 @@ Parlementaire:
       - conseil d'orientation des retraites / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2473.asp
     mails:
-      - jlpreel@orange.fr
       - jlpreel@assemblee-nationale.fr
     adresses:
       - 3 Place Napoléon 85000 La Roche-sur-Yon Téléphone : 02 51 37 87 70 Télécopie : 02 51 62 74 34 
@@ -4229,7 +4105,6 @@ Parlementaire:
       - commission supérieure du service public des postes et télécommunications / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2480.asp
     mails:
-      - mairie@ville-beauzac.fr jproriol.permanence@wanadoo.fr
       - jproriol@assemblee-nationale.fr
     adresses:
       - Les Granges 43590 Beauzac Téléphone : 04 71 61 47 04 Télécopie : 04 71 61 47 10 
@@ -4246,7 +4121,6 @@ Parlementaire:
   depute_2492:
     place_hemicycle: 267
     fonctions:
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires européennes / vice-président / 
       - commission des lois / membre / 
     autresmandats:
@@ -4258,7 +4132,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2492.asp
     mails:
       - dquentin@assemblee-nationale.fr
-      - didierquentin@voila.fr
     adresses:
       - 72 Avenue Charles de Gaulle 17620 Saint-Agnant Téléphone : 05 46 83 29 31 Télécopie : 05 46 39 11 15 
       - Permanence 21 Boulevard Germaine de la Falaise 17200 Royan Téléphone : 05 46 23 99 77 Télécopie : 05 46 39 11 15 
@@ -4300,7 +4173,6 @@ Parlementaire:
     id_an: 2503
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2503.asp
     mails:
-      - dominiqueraimbourg@orange.fr
       - draimbourg@assemblee-nationale.fr
     adresses:
       - 73 Rue de la Commune de 1871 44400 Rezé  Téléphone : 02 40 02 73 80 Télécopie : 02 40 04 10 48 
@@ -4323,7 +4195,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2511.asp
     mails:
       - eraoult@assemblee-nationale.fr
-      - ericraoult2007@yahoo.fr
     adresses:
       - Mairie 121 Avenue de la Résistance 93340 Le Raincy Téléphone : 01 43 02 52 94 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -4345,7 +4216,6 @@ Parlementaire:
     id_an: 2529
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2529.asp
     mails:
-      - jlr.depute@online.fr reitzer.jeanluc@free.fr
       - jlreitzer@assemblee-nationale.fr
     adresses:
       - Mairie d'Altkirch 5 Place de la République 68130 Altkirch Téléphone : 03 89 40 00 04 Télécopie : 03 89 08 81 71 
@@ -4363,7 +4233,6 @@ Parlementaire:
     place_hemicycle: 123
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires économiques / membre / 
       - mission d'information commune sur les prix des carburants dans les dom / vice-président / 
     autresmandats:
@@ -4436,7 +4305,6 @@ Parlementaire:
       - conseil national pour le développement, l'aménagement et la protection de la montagne / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2591.asp
     mails:
-      - c.robin-rodrigo@wanadoo.fr
       - crobin@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -4528,8 +4396,6 @@ Parlementaire:
       - Membre du conseil général (Ille-et-Vilaine)
     sexe: H
     id_an: 2603
-    mails:
-      - marcel.rogemont@wanadoo.fr
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2603.asp
     adresses:
       - Permanence en circonscription 13 Boulevard Maréchal de Lattre de Tassigny 35000 Rennes Téléphone : 02 99 78 23 23 Télécopie : 02 99 59 78 02 
@@ -4553,7 +4419,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2608.asp
     mails:
       - mjroig@assemblee-nationale.fr
-      - marie-josee.roig@mairie-avignon.com
     adresses:
       - Mairie 84045 Avignon cedex Téléphone : 04 90 80 83 85 Télécopie : 04 90 80 83 90 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -4575,7 +4440,6 @@ Parlementaire:
     id_an: 2611
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2611.asp
     mails:
-      - contact@bernard-roman.org
       - broman@assemblee-nationale.fr
     adresses:
       - Permanence 165 Rue d'Arras 59000 Lille Téléphone : 03 20 52 09 20 Télécopie : 03 28 54 01 37 
@@ -4691,7 +4555,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/266776.asp
     mails:
       - freiss@assemblee-nationale.fr
-      - reiss.depute@wanadoo.fr
     adresses:
       - Permanence parlementaire 12 Allée des Peupliers BP 2 67161 Wissembourg cedex Téléphone : 03 88 54 81 00 Télécopie : 03 88 94 18 16 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -4779,7 +4642,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/266797.asp
     mails:
       - pgosselin@assemblee-nationale.fr
-      - philippegosselin50@orange.fr
     adresses:
       - Permanence parlementaire 45 Route de Villedieu 50000 Saint Lô Téléphone : 02 33 05 05 50 Télécopie : 02 33 57 39 98 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -4810,7 +4672,6 @@ Parlementaire:
     id_an: 2667
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2667.asp
     mails:
-      - contact@rudy-salles.com
       - rsalles@assemblee-nationale.fr
     adresses:
       - 31 Avenue Jean Médecin 06000 Nice Téléphone : 04 93 80 35 00 Télécopie : 04 93 80 02 56 
@@ -4840,7 +4701,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/266815.asp
     mails:
       - jleguen@assemblee-nationale.fr
-      - jacques-leguen@wanadoo.fr
     adresses:
       - Permanence 54 Quai de Léon 29800 Landerneau Téléphone : 02 98 85 66 96 Télécopie : 02 98 21 58 54 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -4865,7 +4725,6 @@ Parlementaire:
       - conseil supérieur des prestations sociales agricoles / membre suppléant
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267003.asp
     mails:
-      - contact@francissaintleger.fr
       - fsaint@assemblee-nationale.fr
     adresses:
       - Rue de Salassous 48700 Rieutort-de-Randon Téléphone : 04 66 47 19 79 
@@ -4889,7 +4748,6 @@ Parlementaire:
     id_an: 267013
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267013.asp
     mails:
-      - michel.sordi.depute@wanadoo.fr
       - msordi@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 3 Faubourg de Belfort 68700 Cernay Téléphone : 03 89 75 83 95 Télécopie : 03 89 75 63 22 
@@ -4916,7 +4774,6 @@ Parlementaire:
       - commission supérieure du service public des postes et télécommunications / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267018.asp
     mails:
-      - michel.raison@michel-raison.net
       - mraison@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 13  Rue de la Tour BP 50056 70302 Luxeuil-les-Bains cedex Téléphone : 03 84 40 62 35 Télécopie : 03 84 40 35 05 
@@ -4942,7 +4799,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267028.asp
     mails:
       - dfidelin@assemblee-nationale.fr
-      - d.fidelin.depute@wanadoo.fr fidelin.monti@wanadoo.fr
     adresses:
       - Permanence  21 Rue des Mégissiers BP 21 76290 Montivilliers Téléphone : 02 35 20 74 55 Télécopie : 02 35 55 28 00 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -4958,7 +4814,6 @@ Parlementaire:
   depute_267031:
     place_hemicycle: 211
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - commission des affaires économiques / membre / 
     autresmandats:
       - Maire de Forges-les-Eaux, Seine-Maritime (3461 habitants)
@@ -4970,7 +4825,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267031.asp
     mails:
       - mlejeune@assemblee-nationale.fr
-      - mlejeune@forgesleseaux.fr mlejeune.depute76@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Permanence parlementaire 14 Rue Albert Bochet 76440 Forges-les-Eaux Téléphone : 02 35 09 36 53 Télécopie : 02 35 09 36 57 
@@ -4992,7 +4846,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267042.asp
     mails:
       - yfavennec@assemblee-nationale.fr
-      - favennec.yannick@wanadoo.fr
     adresses:
       - 6 Boulevard du Général Leclerc 53100 Mayenne Téléphone : 02 43 30 29 60 Télécopie : 02 43 30 29 61 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5015,7 +4868,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267049.asp
     mails:
       - glorgeoux@assemblee-nationale.fr
-      - gerardlorgeouxdepute@wanadoo.fr
     adresses:
       - Permanence parlementaire 3 Allée Forestière BP 40122 56501 Locminé cedex Téléphone : 02 97 60 09 80 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5030,7 +4882,6 @@ Parlementaire:
   depute_267057:
     place_hemicycle: 222
     fonctions:
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires sociales / membre / 
     autresmandats:
       - Maire de Sarreguemines, Moselle (23202 habitants)
@@ -5039,7 +4890,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267057.asp
     mails:
       - clett@assemblee-nationale.fr
-      - clett@wanadoo.fr
     adresses:
       - Permanence 18A Rue Chamborand 57200 Sarreguemines Téléphone : 03 87 98 33 68 Télécopie : 03 87 98 36 61 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5054,7 +4904,6 @@ Parlementaire:
     place_hemicycle: 286
     fonctions:
       - mission d'évaluation et de contrôle (commission des finances) / membre / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
       - commission des finances / vice-président / 
       - comité d'évaluation et de contrôle des politiques publiques / vice-président / 
       - mission d'information commune sur les exonérations sociales / membre / 
@@ -5068,7 +4917,6 @@ Parlementaire:
       - conseil d'administration de l'établissement public "autoroutes de france" / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267069.asp
     mails:
-      - louis.giscard-destaing@wanadoo.fr
       - lgiscarddestaing@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5095,7 +4943,6 @@ Parlementaire:
       - conseil d'orientation de la simplification administrative / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267075.asp
     mails:
-      - contact@etienne-blanc.org
       - eblanc@assemblee-nationale.fr
     adresses:
       - Mairie 73 Avenue des Thermes 01220 Divonne-les-Bains Téléphone : 04 50 99 17 45 Télécopie : 04 50 99 16 75 
@@ -5112,7 +4959,7 @@ Parlementaire:
     place_hemicycle: 88
     fonctions:
       - commission des finances / membre / 
-      - exercice du mandat de député suite à la cessation de fonction de membre du gouvernement le : 15/02/2009 / reprise / 
+      - mandat de député suite à la cessation de fonction de membre du gouvernement le : 15/02/2009 / reprise de l'exercice / 
     autresmandats:
       - Membre de la Communauté d'agglomération de Saint-Quentin
       - Adjoint au Maire de Saint-Quentin, Aisne (59066 habitants)
@@ -5136,7 +4983,6 @@ Parlementaire:
     fonctions:
       - commission des affaires européennes / membre / 
       - commission des affaires économiques / vice-président / 
-      - délégation de l'assemblée nationale pour l'union européenne / secrétaire / 
     autresmandats:
       - Président de la Communauté d'agglomération d'Agen
       - Maire d'Agen, Lot-et-Garonne (30099 habitants)
@@ -5192,7 +5038,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267099.asp
     mails:
       - jmlefranc@assemblee-nationale.fr
-      - contact@jmlefranc.fr jmlefrancdepute@wanadoo.fr
     adresses:
       - Villa Molière 19 Place Saint-Patrice BP 53501 14405 Bayeux cedex Téléphone : 02 31 51 73 73 Télécopie : 02 31 22 91 48 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5253,7 +5098,6 @@ Parlementaire:
     id_an: 267140
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267140.asp
     mails:
-      - gabriel.biancheri@wanadoo.fr
       - gbiancheri@assemblee-nationale.fr
     adresses:
       - Permanence 23 Rue Jacquemart 26100 Romans Téléphone : 04 75 05 19 62 Télécopie : 04 75 05 19 30 
@@ -5278,7 +5122,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267144.asp
     mails:
       - jpnicolas@assemblee-nationale.fr
-      - jean.pierre.nicolas@wanadoo.fr
     adresses:
       - Permanence 2 Rue de la Petite Cité BP 146 27001 Évreux cedex Téléphone : 02 32 38 74 07 Télécopie : 02 32 33 69 90 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5356,7 +5199,6 @@ Parlementaire:
     id_an: 267178
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267178.asp
     mails:
-      - ndhuicq@orange.fr
       - ndhuicq@assemblee-nationale.fr
     adresses:
       - 7 Rue Joseph Gaucher 10500 Brienne-le-Château Téléphone : 03 25 92 20 31 Télécopie : 03 25 92 22 60 
@@ -5396,7 +5238,6 @@ Parlementaire:
     fonctions:
       - commission des affaires sociales / membre / 
       - mission d'évaluation et de contrôle des lois de financement de la sécurité sociale / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Adjointe au Maire de Nevers, Nièvre (40932 habitants)
     sexe: F
@@ -5407,7 +5248,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267188.asp
     mails:
       - mcarrillon@assemblee-nationale.fr
-      - martine-carrillon@wanadoo.fr
     adresses:
       - 1 Bis Avenue Saint Just 58000 Nevers Téléphone : 03 86 61 80 90 Télécopie : 03 86 36 53 47 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5424,6 +5264,7 @@ Parlementaire:
     fonctions:
       - commission des finances / membre / 
       - commission spéciale chargée de vérifier et d'apurer les comptes / membre / 
+      - bureau du comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
     sexe: H
     id_an: 2671
     extras:
@@ -5431,7 +5272,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2671.asp
     mails:
       - jcsandrier@assemblee-nationale.fr
-      - JC.SANDRIER@wanadoo.fr
     adresses:
       - 7 Avenue de la République 18100 Vierzon Téléphone : 02 48 52 28 43 Télécopie : 02 48 52 28 54 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5455,7 +5295,6 @@ Parlementaire:
       - commission nationale de l'informatique et des libertés / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267200.asp
     mails:
-      - hr.huyghe@orange.fr
       - shuyghe@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5480,7 +5319,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267204.asp
     mails:
       - jmsermier@assemblee-nationale.fr
-      - jmsermier-dole@wanadoo.fr
     adresses:
       - 39  Grande Rue 39600 Cramans Téléphone : 03 84 37 72 49 Télécopie : 03 84 37 68 40 
       - 17 Rue Marcel Aymé 39100 Dole Téléphone : 03 84 72 08 01 Télécopie : 03 84 82 07 60 
@@ -5497,7 +5335,6 @@ Parlementaire:
     place_hemicycle: 374
     fonctions:
       - commission des finances / membre / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
     autresmandats:
       - Membre du Conseil municipal de Blois, Loir-et-Cher (49184 habitants)
     sexe: H
@@ -5528,7 +5365,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267224.asp
     mails:
       - dmach@assemblee-nationale.fr
-      - daniel.mach@wanadoo.fr
     adresses:
       - Hôtel de Ville Avenue Pablo Casals 66450 Pollestres Téléphone : 04 68 85 70 75 Télécopie : 04 68 85 70 77 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5547,7 +5383,6 @@ Parlementaire:
       - délégation chargée des représentants d'intérêts / membre / 
       - commission des finances / membre / 
       - délégation chargée de l'application du statut du député / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - assemblée nationale / secrétaire / 01/10/2008
     autresmandats:
       - Vice-présidente du conseil régional (Alsace)
@@ -5559,7 +5394,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267227.asp
     mails:
       - agrosskost@assemblee-nationale.fr
-      - depute.grosskost@wanadoo.fr
     adresses:
       - Permanence 26B Rue de la Wanne 68100 Mulhouse Téléphone : 03 89 31 70 00 Télécopie : 03 89 44 65 23 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5606,7 +5440,6 @@ Parlementaire:
       - conseil national du bruit / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267241.asp
     mails:
-      - depute.demilly@wanadoo.fr
       - sdemilly@assemblee-nationale.fr
     adresses:
       - Hôtel de Ville, Cabinet du Maire Place Émile Leturcq 80300 Albert Téléphone : 03 22 74 38 51 Télécopie : 03 22 74 38 58 
@@ -5631,7 +5464,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267246.asp
     mails:
       - mheinrich@assemblee-nationale.fr
-      - michelheinrich.depute@wanadoo.fr
     adresses:
       - Permanence parlementaire 11 Rue de la Préfecture 88000 Épinal Téléphone : 03 29 35 76 25 Télécopie : 03 29 82 95 57 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5647,7 +5479,6 @@ Parlementaire:
   depute_267253:
     place_hemicycle: 116
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Maire de Sisteron, Alpes-de-Haute-Provence (6964 habitants)
@@ -5681,7 +5512,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267257.asp
     mails:
       - jcflory@assemblee-nationale.fr
-      - jean-claude.flory@wanadoo.fr
     adresses:
       - Permanence parlementaire BP 107 07600 Vals les Bains Téléphone : 04 75 37 90 25 Télécopie : 04 75 38 07 16 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5695,8 +5525,6 @@ Parlementaire:
   depute_267260:
     place_hemicycle: 92
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / vice-présidente / 
       - comité d'évaluation et de contrôle des politiques publiques / secrétaire / 
       - commission des affaires sociales / membre / 
     autresmandats:
@@ -5746,7 +5574,6 @@ Parlementaire:
   depute_267270:
     place_hemicycle: 401
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - commission des affaires sociales / membre / 
       - mission d'évaluation et de contrôle des lois de financement de la sécurité sociale / membre / 
     autresmandats:
@@ -5758,7 +5585,6 @@ Parlementaire:
       - comité national de l'organisation sanitaire et sociale / membre suppléant
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267270.asp
     mails:
-      - cleteurtre@falaise.fr
       - cleteurtre@assemblee-nationale.fr
     adresses:
       - Hôtel de Ville Place Guillaume-le-Conquérant 14700 Falaise Téléphone : 02 31 41 66 85 Télécopie : 02 31 20 02 92 
@@ -5781,7 +5607,6 @@ Parlementaire:
     id_an: 267278
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267278.asp
     mails:
-      - ph.martin-depute@wanadoo.fr pmartin@cg32.fr
       - pmartin@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -5810,7 +5635,6 @@ Parlementaire:
   depute_267289:
     place_hemicycle: 279
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - commission des affaires sociales / secrétaire / 
       - mission d'information commune sur l'indemnisation des victimes des maladies nosocomiales et accès au dossier médical / membre / 
       - mission d'évaluation et de contrôle des lois de financement de la sécurité sociale / membre / 
@@ -5823,7 +5647,6 @@ Parlementaire:
       - haut conseil des musées de france / membre suppléant
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267289.asp
     mails:
-      - doorjp@wanadoo.fr
       - jpdoor@assemblee-nationale.fr
     adresses:
       - Hôtel de Ville 6 Rue Gambetta 45200 Montargis Téléphone : 02 38 95 10 30 
@@ -5870,7 +5693,6 @@ Parlementaire:
     id_an: 267306
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267306.asp
     mails:
-      - chassaigne.a@wanadoo.fr
       - achassaigne@assemblee-nationale.fr
     adresses:
       - 4 Place Jean-Antoine Pourtier 63890 Saint-Amant-Roche-Savine Téléphone : 04 73 95 74 90 Télécopie : 04 73 95 71 21 
@@ -5939,7 +5761,6 @@ Parlementaire:
       - conseil d'administration de l'établissement public de sécurité ferroviaire / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267317.asp
     mails:
-      - dominique.le-mener@voila.fr
       - dlemener@assemblee-nationale.fr
     adresses:
       - 119 Rue de Malpalu "Résidence des Noisetiers" 72000 Le Mans Téléphone : 02 43 76 07 41 Télécopie : 02 43 76 12 79 
@@ -5963,7 +5784,6 @@ Parlementaire:
       - conseil d'administration de l'institut des hautes études pour la science et la technologie / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267324.asp
     mails:
-      - jjgaultier.depute@wanadoo.fr
       - jjgaultier@assemblee-nationale.fr
     adresses:
       - 5 Rue du Colonel Renard 88300 Neufchâteau Téléphone : 03 29 94 20 86 Télécopie : 03 29 94 35 13 
@@ -6007,7 +5827,6 @@ Parlementaire:
     id_an: 267330
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267330.asp
     mails:
-      - michel.zumkeller@wanadoo.fr
       - mzumkeller@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -6047,7 +5866,6 @@ Parlementaire:
     place_hemicycle: 145
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission du développement durable et de l'aménagement du territoire / membre / 
     autresmandats:
       - Maire de Canet-en-Roussillon, Pyrénées-Orientales (10182 habitants)
@@ -6058,7 +5876,6 @@ Parlementaire:
       - conseil national du tourisme / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267350.asp
     mails:
-      - arlette.franco@free.fr
       - afranco@assemblee-nationale.fr
     adresses:
       - 103 Boulevard Cassagnes 66140 Canet-en-Roussillon Téléphone : 04 68 80 25 63 Télécopie : 04 68 80 33 68 
@@ -6105,7 +5922,6 @@ Parlementaire:
       - conseil d'orientation de l'observatoire national sur les effets du réchauffement climatique en france métropolitaine et dans les départements et territoires d'outre-mer / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267358.asp
     mails:
-      - christjl@wanadoo.fr
       - jlchrist@assemblee-nationale.fr
     adresses:
       - Mairie Place de l'Hôtel de Ville 68150 Ribeauvillé Téléphone : 03 89 73 20 00 Télécopie : 03 89 73 37 18 
@@ -6122,7 +5938,6 @@ Parlementaire:
   depute_267378:
     place_hemicycle: 312
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / vice-présidente / 
       - mission d'évaluation et de contrôle des lois de financement de la sécurité sociale / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
@@ -6135,7 +5950,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267378.asp
     mails:
       - glevy@assemblee-nationale.fr
-      - permanence.levy@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Permanence parlementaire 52 Cours Lafayette 83000 Toulon Téléphone : 04 94 24 06 23 Télécopie : 04 94 24 91 01 
@@ -6160,7 +5974,6 @@ Parlementaire:
       - commission nationale de la vidéosurveillance / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267382.asp
     mails:
-      - p.calmejane@mairie-villemomble.fr
       - pcalmejane@assemblee-nationale.fr
     adresses:
       - Mairie de Villemomble 13 Bis Rue d'Avron 93250 Villemomble Téléphone : 01 49 35 25 55 
@@ -6183,7 +5996,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267399.asp
     mails:
       - mjoissains@assemblee-nationale.fr
-      - depute@marysejoissains.com
     adresses:
       - 33 Rue Mignet 13100 Aix-en-Provence 
       - Mairie Place de l'Hôtel de Ville 13100 Aix-en-Provence Téléphone : 04 42 91 99 55 
@@ -6202,7 +6014,6 @@ Parlementaire:
       - délégation chargée des activités internationales / membre / 
       - assemblée nationale / secrétaire / 27/06/2007
       - commission des affaires étrangères / membre / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
       - délégation chargée de la communication audiovisuelle et de la presse / membre / 
       - délégation chargée de la communication et de la presse / membre / 
     autresmandats:
@@ -6211,7 +6022,6 @@ Parlementaire:
     id_an: 267407
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267407.asp
     mails:
-      - pgiacobbi@cg2b.fr
       - pgiacobbi@assemblee-nationale.fr
     adresses:
       - Hôtel du Département Rond-Point du Maréchal Leclerc 20405 Bastia cedex Téléphone : 04 95 55 55 51 Télécopie : 04 95 55 02 15 
@@ -6278,7 +6088,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267433.asp
     mails:
       - gbourdouleix@assemblee-nationale.fr
-      - gbourdouleix@ville-cholet.fr
     adresses:
       - Permanence parlementaire 7  Rue Travot 49300 Cholet Téléphone : 02 41 70 03 51 Télécopie : 02 41 49 13 52 
       - Mairie Place Jean Moulin 49300 Cholet Téléphone : 02 41 49 25 08 Télécopie : 02 41 49 26 26 
@@ -6327,8 +6136,6 @@ Parlementaire:
       - Maire de Saint-Apollinaire, Côte-d'Or (5016 habitants)
     sexe: H
     id_an: 267450
-    mails:
-      - permanence@remi-delatte.com
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267450.asp
     adresses:
       - Permanence 81 Avenue Maréchal Lyautey 21000 Dijon 
@@ -6362,7 +6169,6 @@ Parlementaire:
       - délégation chargée des activités internationales / membre / 
       - assemblée nationale / secrétaire / 27/06/2007
       - commission chargée de l'application de l'article 26 de la constitution / membre suppléante / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / vice-présidente / 
       - délégation chargée de l'application du statut du député / membre / 
       - commission des affaires culturelles et de l'éducation / secrétaire / 
       - délégation chargée de la communication audiovisuelle et de la presse / membre / 
@@ -6376,7 +6182,6 @@ Parlementaire:
       - conseil supérieur de la mutualité / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267459.asp
     mails:
-      - c.greff@wanadoo.fr
       - cgreff@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 11 Place Saint-Denis 37400 Amboise Téléphone : 02 47 57 68 57 Télécopie : 02 47 57 74 83 
@@ -6404,7 +6209,6 @@ Parlementaire:
       - comité des finances locales / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267469.asp
     mails:
-      - michelpirondepute@wanadoo.fr
       - mpiron@assemblee-nationale.fr
     adresses:
       - Permanence, Place Saint-Pierre 3 Rue des Patenôtriers 49400 Saumur Téléphone : 02 41 67 65 26 Télécopie : 02 41 67 65 50 
@@ -6431,7 +6235,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267479.asp
     mails:
       - kmesquida@assemblee-nationale.fr
-      - mesquida.depute@wanadoo.fr
     adresses:
       - 1  Rue Général Thomières 34500 Béziers Téléphone : 04 67 11 29 61 Télécopie : 04 67 11 26 32 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -6493,7 +6296,6 @@ Parlementaire:
     place_hemicycle: 327
     fonctions:
       - commission chargée de l'application de l'article 26 de la constitution / membre titulaire / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission de la défense nationale et des forces armées / vice-président / 
     autresmandats:
       - Vice-président du conseil général (Var)
@@ -6504,7 +6306,6 @@ Parlementaire:
       - conseil d'administration de l'institut des hautes études de défense nationale / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267506.asp
     mails:
-      - vitel.depute@wanadoo.fr
       - pvitel@assemblee-nationale.fr
     adresses:
       - Le Concorde 280 Avenue Maréchal Foch 83000 Toulon Téléphone : 04 94 24 42 19 Télécopie : 04 94 24 12 34 
@@ -6553,7 +6354,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267519.asp
     mails:
       - ylachaud@assemblee-nationale.fr
-      - info@yvan-lachaud.com
     adresses:
       - Mairie 30000 Nîmes Téléphone : 04 66 76 51 05 Télécopie : 04 66 76 51 36 
       - 35 Avenue Georges Pompidou 30000 Nîmes Téléphone : 04 66 02 11 50 Télécopie : 04 66 02 43 32 
@@ -6602,7 +6402,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267532.asp
     mails:
       - mfrancina@assemblee-nationale.fr
-      - p.mahut@marcfrancina.net
     adresses:
       - BP 64 74502 Évian-les-Bains cedex Téléphone : 04 50 83 10 07 Télécopie : 04 50 75 68 85 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 02 63 Télécopie : 01 40 63 02 93 
@@ -6628,7 +6427,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267542.asp
     mails:
       - mroget@assemblee-nationale.fr
-      - oget.mr@wanadoo.fr
     adresses:
       - 1 Rue des Carmélites 22200 Guingamp Téléphone : 02 96 40 08 97 Télécopie : 02 96 44 26 09 
       - Hôtel de Ville 1 Place de la Mairie 22340 Treffrin 
@@ -6650,7 +6448,6 @@ Parlementaire:
     id_an: 267545
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267545.asp
     mails:
-      - francoise@branget.com
       - fbranget@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 27 B Rue Clément Marot 25000 Besançon Téléphone : 03 81 21 24 25 Télécopie : 03 81 83 49 68 
@@ -6673,7 +6470,6 @@ Parlementaire:
     id_an: 267551
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267551.asp
     mails:
-      - permanence.lamblin@yahoo.fr
       - jlamblin@assemblee-nationale.fr
     adresses:
       - 13 Place Leopold 54300 Lunéville Téléphone : 03 83 73 79 58 Télécopie : 03 83 73 78 02 
@@ -6696,7 +6492,6 @@ Parlementaire:
     id_an: 267556
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267556.asp
     mails:
-      - a.marty-depute@wanadoo.fr
       - amarty@assemblee-nationale.fr
     adresses:
       - 16 Rue de la Gare 57400 Sarrebourg Téléphone : 03 87 25 74 36 
@@ -6719,7 +6514,6 @@ Parlementaire:
     id_an: 267561
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267561.asp
     mails:
-      - brigitte.bareges@wanadoo.fr
       - bbareges@assemblee-nationale.fr
     adresses:
       - 4 Rue Armand Cambon 82000 Montauban Téléphone : 05 63 20 40 83 Télécopie : 05 63 63 96 68 
@@ -6746,7 +6540,6 @@ Parlementaire:
       - conseil de surveillance du fonds de financement de la protection complémentaire  de la couverture universelle du risque maladie / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267570.asp
     mails:
-      - jeanmarie.rolland@free.fr
       - jmrolland@assemblee-nationale.fr
     adresses:
       - Permanence 44 Rue du Général de Gaulle 89270 Vermenton Téléphone : 03 86 31 91 80 Télécopie : 03 86 31 91 83 
@@ -6790,7 +6583,6 @@ Parlementaire:
     id_an: 267576
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267576.asp
     mails:
-      - marcelbonnot@yahoo.fr
       - mbonnot@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -6830,7 +6622,6 @@ Parlementaire:
     place_hemicycle: 314
     fonctions:
       - commission des affaires économiques / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Vice-présidente du conseil général (Var)
     sexe: F
@@ -6876,7 +6667,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267622.asp
     mails:
       - mvalls@assemblee-nationale.fr
-      - maire@mairie-evry.fr
     adresses:
       - Permanence parlementaire 35 Rue de Paris 91100 Corbeil-Essonnes Téléphone : 01 60 88 01 23 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -6900,7 +6690,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267641.asp
     mails:
       - lcosyns@assemblee-nationale.fr
-      - l.cosyns.sam@wanadoo.fr
     adresses:
       - Permanence 3 Rue rue Lamarque BP 30 18201 Saint-Amand-Montrond  Téléphone : 02 48 96 09 44 Télécopie : 02 48 60 18 95 
       - Mairie Place des Ormes 18130 Dun-sur-Auron Téléphone : 02 48 66 64 20 Télécopie : 02 48 59 84 22 
@@ -6917,7 +6706,6 @@ Parlementaire:
     place_hemicycle: 460
     fonctions:
       - commission du développement durable et de l'aménagement du territoire / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Maire de Longvic, Côte-d'Or (8962 habitants)
       - Membre de la communauté de l'agglomération dijonnaise
@@ -6950,7 +6738,6 @@ Parlementaire:
     id_an: 267647
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267647.asp
     mails:
-      - emourrut.depute@wanadoo.fr
       - emourrut@assemblee-nationale.fr
     adresses:
       - Permanence 22 Rue de la Poissonnerie BP 200 30240 Le Grau-du-Roi Téléphone : 04 66 51 73 64 Télécopie : 04 66 51 88 37 
@@ -6976,7 +6763,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267650.asp
     mails:
       - jmroubaud@assemblee-nationale.fr
-      - permanencejmroubaud@wanadoo.fr
     adresses:
       - Hôtel de Ville 30400 Villeneuve-lèz-Avignon Téléphone : 04 90 27 49 04 Télécopie : 04 90 27 49 79 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -6992,7 +6778,6 @@ Parlementaire:
     place_hemicycle: 356
     fonctions:
       - commission des affaires étrangères / secrétaire / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Maire de Vienne, Isère (29972 habitants)
     sexe: H
@@ -7024,7 +6809,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267673.asp
     mails:
       - pfolliot@assemblee-nationale.fr
-      - contact@philippe-folliot.fr
     adresses:
       - Permanence 3  Boulevard des Lices 81100 Castres Téléphone : 05 63 71 29 23 Télécopie : 05 63 59 82 71 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -7069,7 +6853,6 @@ Parlementaire:
       - conseil supérieur de la réserve militaire / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267695.asp
     mails:
-      - patricia.adam-deputee@wanadoo.fr
       - padam@assemblee-nationale.fr
     adresses:
       - Permanence 43 D Rue Branda BP 21041 29210 Brest cedex 1 Téléphone : 02 98 33 21 80 Télécopie : 02 98 33 21 83 
@@ -7085,7 +6868,6 @@ Parlementaire:
     place_hemicycle: 129
     fonctions:
       - commission de la défense nationale et des forces armées / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Vice-présidente de la communauté de communes du Pays d'Iroise
       - Maire de Ploudalmézeau, Finistère (6087 habitants)
@@ -7112,7 +6894,6 @@ Parlementaire:
     place_hemicycle: 552
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission du développement durable et de l'aménagement du territoire / vice-président / 
     sexe: H
     id_an: 267705
@@ -7169,7 +6950,6 @@ Parlementaire:
     id_an: 267719
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267719.asp
     mails:
-      - mallie.richard@wanadoo.fr
       - rmallie@assemblee-nationale.fr
     adresses:
       - 20 Rue Jules Ferry 13120 Gardanne Téléphone : 04 42 65 44 44 Télécopie : 04 42 65 44 48 
@@ -7194,7 +6974,6 @@ Parlementaire:
       - conseil supérieur de l'énergie / membre suppléant
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267728.asp
     mails:
-      - christophepriou@wanadoo.fr
       - cpriou@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 3  Rue du Beausoleil 44350 Guérande Téléphone : 02 40 62 02 72 Télécopie : 02 40 62 00 99 
@@ -7218,7 +6997,6 @@ Parlementaire:
       - commission nationale pour l'autonomie des jeunes / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267743.asp
     mails:
-      - contact@edouard-courtial.org
       - ecourtial@assemblee-nationale.fr
     adresses:
       - 45   Rue du Pont de Pierre 60600 Clermont Téléphone : 03 44 19 07 87 Télécopie : 03 44 19 07 22 
@@ -7243,7 +7021,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267762.asp
     mails:
       - jpdecool@assemblee-nationale.fr
-      - jpdecool@orange.fr
     adresses:
       - Permanence 11 Place du Marché-aux-Fruits 59630 Bourbourg Téléphone : 03 28 22 33 33 Télécopie : 03 28 20 00 86 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -7268,7 +7045,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267765.asp
     mails:
       - fxvillain@assemblee-nationale.fr
-      - fxvillain@wanadoo.fr
     adresses:
       - Hôtel de Ville 2 Rue de Nice 59400 Cambrai Téléphone : 03 27 73 21 00 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -7369,6 +7145,7 @@ Parlementaire:
     place_hemicycle: 98
     fonctions:
       - commission des affaires culturelles et de l'éducation / présidente / 
+      - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
     autresmandats:
       - Maire du Cannet, Alpes-Maritimes (41885 habitants)
     sexe: F
@@ -7381,7 +7158,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267794.asp
     mails:
       - mtabarot@assemblee-nationale.fr
-      - 9circonscription@wanadoo.fr
     adresses:
       - Mairie 20 Boulevard Sadi Carnot 06110 Le Cannet Téléphone : 04 92 18 21 00 Télécopie : 04 92 18 21 01 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -7399,7 +7175,6 @@ Parlementaire:
       - commission des affaires économiques / membre / 
       - délégation chargée de la communication et de la presse / présidente / 
       - assemblée nationale / vice-présidente / 26/09/2008
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Membre du Conseil municipal de Reims, Marne (187201 habitants)
     sexe: F
@@ -7408,7 +7183,6 @@ Parlementaire:
       - conseil de surveillance du fonds de financement de l'allocation personnalisée d'autonomie / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267797.asp
     mails:
-      - contact@catherine-vautrin.fr
       - cvautrin@assemblee-nationale.fr
     adresses:
       - Permanence 8 Rue de Venise 51100 Reims Téléphone : 03 26 82 42 15 Télécopie : 03 26 35 89 68 
@@ -7424,7 +7198,6 @@ Parlementaire:
   depute_267810:
     place_hemicycle: 104
     fonctions:
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des finances / membre / 
     autresmandats:
       - Membre du conseil régional (Ile-de-France)
@@ -7448,8 +7221,6 @@ Parlementaire:
     fonctions:
       - commission des affaires européennes / membre / 
       - commission des lois / vice-président / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Maire de Combs-la-Ville, Seine-et-Marne (20953 habitants)
     sexe: H
@@ -7461,7 +7232,6 @@ Parlementaire:
       - commission de surveillance et de contrôle des publications destinées à l'enfance et à l'adolescence / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267813.asp
     mails:
-      - geoffroy.depute@wanadoo.fr
       - ggeoffroy@assemblee-nationale.fr
     adresses:
       - Mairie de Combs-La-Ville Place de l'Hôtel de Ville 77385 Combs-la-Ville Cedex Téléphone : 01 64 13 16 03 Télécopie : 01 64 88 61 66 
@@ -7573,7 +7343,6 @@ Parlementaire:
     place_hemicycle: 212
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires étrangères / membre / 
     autresmandats:
       - Membre du Conseil municipal de Lodève, Hérault (6900 habitants)
@@ -7582,7 +7351,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267862.asp
     mails:
       - rlecou@assemblee-nationale.fr
-      - permanence.lecou@wanadoo.fr
     adresses:
       - Permanence parlementaire 1  Boulevard du général Leclerc 34700 Lodève Téléphone : 04 67 88 61 21 Télécopie : 04 67 44 33 05 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -7615,6 +7383,7 @@ Parlementaire:
     place_hemicycle: 285
     fonctions:
       - commission des affaires étrangères / président / 
+      - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
     autresmandats:
       - Président de la communauté de communes de la Vallée de l'Oise et des Trois-Forêts
       - Maire de L'Isle-Adam, Val-d'Oise (11173 habitants)
@@ -7715,7 +7484,6 @@ Parlementaire:
     id_an: 267923
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267923.asp
     mails:
-      - delcourt.guy@laposte.net
       - gdelcourt@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire Hôtel de ville 62307 Lens cedex Téléphone : 03 21 70 89 51 Télécopie : 03 21 70 89 51 
@@ -7732,7 +7500,6 @@ Parlementaire:
     place_hemicycle: 599
     fonctions:
       - commission chargée de l'application de l'article 26 de la constitution / membre suppléante / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / secrétaire / 
       - commission des affaires sociales / membre / 
       - mission d'évaluation et de contrôle des lois de financement de la sécurité sociale / membre / 
     sexe: F
@@ -7794,7 +7561,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267965.asp
     mails:
       - alepetit@assemblee-nationale.fr
-      - annick-lepetit@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 93 23 
       - Permanence parlementaire 30  Rue Berzélius 75017 Paris Téléphone : 01 46 27 78 32 Télécopie : 01 46 27 78 32 
@@ -7818,7 +7584,6 @@ Parlementaire:
       - commission de vérification des fonds spéciaux (art 154 de la loi de finances pour 2002 / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2679.asp
     mails:
-      - msapin.circo@orange.fr
       - msapin@assemblee-nationale.fr
     adresses:
       - 62 Avenue de la Châtre 36000 Châteauroux Téléphone : 02 54 08 43 48 
@@ -7866,7 +7631,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268011.asp
     mails:
       - jmaurer@assemblee-nationale.fr
-      - maurer.jean-philippe@wanadoo.fr
     adresses:
       - Permanence parlementaire 60 Route du polygone Boîte postale A 67000 Strasbourg Téléphone : 03 88 84 55 30 Télécopie : 03 88 41 06 05 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -7892,7 +7656,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268019.asp
     mails:
       - jclagarde@assemblee-nationale.fr
-      - lagardejc@wanadoo.fr
     adresses:
       - Permanence parlementaire 176  Avenue Jean Jaurès 93000 Bobigny Téléphone : 01 41 50 50 50 
       - Mairie Place de l'Hôtel de Ville 93700 Drancy Téléphone : 01 48 96 50 55 Télécopie : 01 48 30 00 48 
@@ -7915,7 +7678,6 @@ Parlementaire:
     id_an: 268031
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268031.asp
     mails:
-      - ljmanscour@wanadoo.fr
       - ljmanscour@assemblee-nationale.fr
     adresses:
       - Mairie 5 Avenue Casimir Branglidor 97220 La Trinité Téléphone : 05 96 58 20 12 Télécopie : 05 96 58 65 59 
@@ -7938,7 +7700,6 @@ Parlementaire:
     id_an: 268039
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268039.asp
     mails:
-      - eric.jalton@wanadoo.fr
       - ejalton@assemblee-nationale.fr
     adresses:
       - Dothémare 97139 Les Abymes Téléphone : 05 90 20 18 31 Télécopie : 05 90 90 48 80 
@@ -7955,7 +7716,6 @@ Parlementaire:
     place_hemicycle: 127
     fonctions:
       - commission des affaires sociales / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Maire du Moule, Guadeloupe (20827 habitants)
     sexe: F
@@ -7986,7 +7746,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268048.asp
     mails:
       - vlurel@assemblee-nationale.fr
-      - victorin.lurel@wanadoo.fr
     adresses:
       - Permanence parlementaire 6 Rue Delrieu 97100 Basse-Terre Téléphone : 05 90 80 75 15 Télécopie : 05 90 80 76 34 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -8009,7 +7768,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/268051.asp
     mails:
       - sgrouard@assemblee-nationale.fr
-      - sergegrouard.deputemaire45@wanadoo.fr
     adresses:
       - Permanence parlementaire 27  Rue du Colombier 45000 Orléans Téléphone : 02 38 53 51 05 Télécopie : 02 38 77 45 02 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -8025,7 +7783,6 @@ Parlementaire:
     fonctions:
       - commission des affaires européennes / membre / 
       - délégation chargée des activités internationales / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires étrangères / membre / 
       - délégation chargée des groupes d'études et des offices parlementaires / membre / 
       - assemblée nationale / secrétaire / 01/10/2008
@@ -8051,6 +7808,7 @@ Parlementaire:
     place_hemicycle: 364
     fonctions:
       - commission du développement durable et de l'aménagement du territoire / membre / 
+      - bureau du comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
     autresmandats:
       - Président de la communauté de communes du canton de Vitteaux
       - Président du conseil général (Côte-d'Or)
@@ -8062,7 +7820,6 @@ Parlementaire:
       - conseil d'orientation de la simplification administrative / membre suppléant
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2690.asp
     mails:
-      - francois.sauvadet@wanadoo.fr
       - fsauvadet@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 67 01 Télécopie : 01 40 63 52 25 
@@ -8086,7 +7843,6 @@ Parlementaire:
     id_an: 2700
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2700.asp
     mails:
-      - francois.scellier@valdoise.fr
       - fscellier@assemblee-nationale.fr
     adresses:
       - 6 Rue du Général Leclerc BP 40049 Cedex 95210 Saint-Gratien Téléphone : 01 39 64 37 85 Télécopie : 01 39 64 37 85 
@@ -8103,7 +7859,6 @@ Parlementaire:
     place_hemicycle: 164
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires étrangères / secrétaire / 
     sexe: H
     id_an: 2707
@@ -8111,7 +7866,6 @@ Parlementaire:
       - haut conseil de la coopération internationale / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2707.asp
     mails:
-      - schneider.depute@wanadoo.fr
       - aschneider@assemblee-nationale.fr
     adresses:
       - Permanence 53 Route de Bischwiller BP 12 67301 Schiltigheim cedex Téléphone : 03 88 18 55 05 Télécopie : 03 88 18 55 06 
@@ -8154,7 +7908,6 @@ Parlementaire:
     id_an: 271
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/271.asp
     mails:
-      - permanenceparlementaire@sylvieandrieux.fr
       - sandrieux@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -8204,7 +7957,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2775.asp
     mails:
       - asuguenot@assemblee-nationale.fr
-      - alain.suguenot@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 67 86 Télécopie : 01 40 63 54 79 
       - Mairie 21200 Beaune Téléphone : 03 80 24 56 44 Télécopie : 03 80 24 57 57 
@@ -8250,7 +8002,6 @@ Parlementaire:
       - comité de gestion du fonds de soutien aux hydrocarbures ou assimiles d'origine nationale / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2792.asp
     mails:
-      - jctaugourdeau.depute@wanadoo.fr
       - jctaugourdeau@assemblee-nationale.fr
     adresses:
       - 71 Rue du Maréchal Leclerc BP 17 49250 Beaufort-en-Vallée Téléphone : 02 41 80 18 32 Télécopie : 02 41 80 18 33 
@@ -8266,7 +8017,7 @@ Parlementaire:
   depute_2796:
     place_hemicycle: 168
     fonctions:
-      - délégation parlementaire au renseignement / président / 
+      - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
       - commission de la défense nationale et des forces armées / président / 
     autresmandats:
       - Membre de la communauté urbaine Marseille Provence Métropole
@@ -8277,7 +8028,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2796.asp
     mails:
       - gteissier@assemblee-nationale.fr
-      - gteissier@mairie-marseille.com
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Mairie des 9e et 10e arrondissements 150 Boulevard Paul Claudel 13009 Marseille Téléphone : 04 91 14 63 11 Télécopie : 04 91 14 63 44 
@@ -8305,7 +8055,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2799.asp
     mails:
       - pterrasse@assemblee-nationale.fr
-      - pascal.terrasse@wanadoo.fr
     adresses:
       - 11 Avenue de Coux 07000 Privas Téléphone : 04 75 66 76 90 Télécopie : 04 75 66 76 91 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -8328,7 +8077,6 @@ Parlementaire:
     id_an: 2801
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2801.asp
     mails:
-      - mterrot@michel-terrot.com
       - mterrot@assemblee-nationale.fr
     adresses:
       - 8 Rue Victor Hugo 69600 Oullins Téléphone : 04 78 50 50 50 Télécopie : 04 78 86 00 44 
@@ -8349,7 +8097,6 @@ Parlementaire:
     id_an: 2811
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2811.asp
     mails:
-      - jeanclaude-thomas@wanadoo.fr
       - jcthomas@assemblee-nationale.fr
     adresses:
       - Secrétariat 1  Rue Roger Salengro 51100 Reims Téléphone : 03 26 40 19 20 Télécopie : 03 26 47 64 23 
@@ -8375,7 +8122,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2815.asp
     mails:
       - dtian@assemblee-nationale.fr
-      - dominique.tian@wanadoo.fr
     adresses:
       - 486 Bis Rue Paradis 13008 Marseille Téléphone : 04 91 71 45 25 Télécopie : 04 91 76 42 99 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -8502,7 +8248,6 @@ Parlementaire:
       - commission nationale des comptes de la formation professionnelle / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2850.asp
     mails:
-      - jean.ueberschlag@wanadoo.fr
       - jueberschlag@assemblee-nationale.fr
     adresses:
       - 34 Rue de la Liberté 68300 Saint-Louis 
@@ -8532,7 +8277,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2859.asp
     mails:
       - dvaillant@assemblee-nationale.fr
-      - contact@danielvaillant.net
     adresses:
       - 13 Rue Cavé 75018 Paris Téléphone : 01 42 62 87 15 Téléphone : 01 42 54 78 80 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -8574,7 +8318,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2875.asp
     mails:
       - cvanneste@assemblee-nationale.fr
-      - cvanneste@hotmail.fr
     adresses:
       - 79 Rue du Brun Pain 59200 Tourcoing Téléphone : 03 20 46 42 63 Télécopie : 03 20 94 61 09 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -8597,7 +8340,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2876.asp
     mails:
       - fvannson@assemblee-nationale.fr
-      - f.vannson@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 33 01 Télécopie : 01 40 63 33 81 
       - Permanence principale 1 Rue Baugru 88200 Remiremont Téléphone : 03 29 23 97 58 Télécopie : 03 29 23 97 60 
@@ -8644,7 +8386,6 @@ Parlementaire:
       - conseil d'orientation de la simplification administrative / membre suppléant
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2884.asp
     mails:
-      - vaxes.michel@orange.fr
       - mvaxes@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire,  22 Ter Cours Landrivon BP 199 13528 Port-de-Bouc cedex Téléphone : 04 42 40 54 90 Télécopie : 04 42 40 54 93 
@@ -8702,7 +8443,6 @@ Parlementaire:
     id_an: 2904
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2904.asp
     mails:
-      - a.vezinhet.depute@orange.fr
       - avezinhet@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 100 Rue Lejzer Zamenhof Le Messidor 34080 Montpellier Téléphone : 04 67 45 02 04 Télécopie : 04 67 45 05 30 
@@ -8717,7 +8457,6 @@ Parlementaire:
   depute_2907:
     place_hemicycle: 315
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - commission des lois / membre / 
     autresmandats:
       - Maire de Six-Fours-les-Plages, Var (32740 habitants)
@@ -8727,7 +8466,6 @@ Parlementaire:
       - conseil national du tourisme / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2907.asp
     mails:
-      - jean-sebastien.vialatte@mairie-six-fours.fr
       - jsvialatte@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 87 Rue de la République Les Terrasses d'Engaline 83140 Six-Fours-les-Plages Téléphone : 04 94 30 57 17 Télécopie : 04 94 34 09 03 
@@ -8751,7 +8489,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2912.asp
     mails:
       - avidalies@assemblee-nationale.fr
-      - alain.vidalies@orange.fr
     adresses:
       - 11 Avenue Sadi Carnot 40000 Mont-de-Marsan Téléphone : 05 58 85 20 55 Télécopie : 05 58 06 45 67 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -8772,7 +8509,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2925.asp
     mails:
       - jcviollet@assemblee-nationale.fr
-      - jcviollet@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - 13 Boulevard de Bury 16000 Angoulême Téléphone : 05 45 93 13 70 Télécopie : 05 45 93 13 71 
@@ -8815,7 +8551,6 @@ Parlementaire:
     place_hemicycle: 44
     fonctions:
       - commission des affaires européennes / secrétaire / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires étrangères / membre / 
     autresmandats:
       - Maire de Charnay-lès-Mâcon, Saône-et-Loire (6739 habitants)
@@ -8864,7 +8599,7 @@ Parlementaire:
   depute_2952:
     place_hemicycle: 179
     fonctions:
-      - commission des lois) de la délégation parlementaire au renseignement / (président / 
+      - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
       - commission des lois / président / 
     autresmandats:
       - Président de la Communauté de communes des Trois cantons de Carignan, Mouzon et Raucourt
@@ -8879,7 +8614,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2952.asp
     mails:
       - jlwarsmann@assemblee-nationale.fr
-      - jean-luc.warsmann@wanadoo.fr
     adresses:
       - Permanence 11 Rue Carnot 08200 Sedan Téléphone : 03 24 27 13 37 Télécopie : 03 24 29 12 73 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -8900,7 +8634,6 @@ Parlementaire:
     id_an: 295
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/295.asp
     mails:
-      - depute.maire@ville-tremblay-en-france.fr
       - fasensi@assemblee-nationale.fr
     adresses:
       - Hôtel de Ville BP 23 93290 Tremblay-en-France Téléphone : 01 49 63 71 17 Télécopie : 01 49 63 69 66 
@@ -8939,7 +8672,7 @@ Parlementaire:
   depute_2971:
     place_hemicycle: 36
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / présidente / 
+      - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Membre du conseil régional (Lorraine)
@@ -8983,7 +8716,6 @@ Parlementaire:
     id_an: 304016
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/304016.asp
     mails:
-      - sandrine.hurel@cg76.fr hurel.sandrine@wanadoo.fr
       - shurel@assemblee-nationale.fr
     adresses:
       - 42 Boulevard du Général de Gaulle 76200 Dieppe Téléphone : 02 35 06 11 52 Télécopie : 02 35 06 12 14 
@@ -9007,7 +8739,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/309643.asp
     mails:
       - vbesse@assemblee-nationale.fr
-      - veronique.besse@vendee.fr
     adresses:
       - 14  Rue de Saumur 85500 Les Herbiers Téléphone : 02 51 92 94 95 Télécopie : 02 51 92 94 96 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -9026,8 +8757,6 @@ Parlementaire:
       - Membre du conseil général (Creuse)
     sexe: H
     id_an: 312
-    mails:
-      - auclair.j@wanadoo.fr
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/312.asp
     adresses:
       - Mairie 23140 Cressat Téléphone : 05 55 62 93 59 Télécopie : 05 55 62 33 62 
@@ -9066,6 +8795,7 @@ Parlementaire:
     place_hemicycle: 508
     fonctions:
       - commission de la défense nationale et des forces armées / membre / 
+      - bureau du comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
     autresmandats:
       - Président de la communauté urbaine de Nantes Métropole
       - Maire de Nantes, Loire-Atlantique (269131 habitants)
@@ -9096,7 +8826,6 @@ Parlementaire:
     id_an: 330008
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330008.asp
     mails:
-      - contact@xavier-breton.com
       - xbreton@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -9143,7 +8872,6 @@ Parlementaire:
     id_an: 330118
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330118.asp
     mails:
-      - guy.chambefort@orange.fr
       - gchambefort@assemblee-nationale.fr
     adresses:
       - Mairie d'Yzeure Place Jules Ferry 03400 Yzeure Téléphone : 04 70 20 23 68 Télécopie : 04 70 46 10 81 
@@ -9163,7 +8891,6 @@ Parlementaire:
     id_an: 330130
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330130.asp
     mails:
-      - bernard.lesterlin@orange.fr
       - blesterlin@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 148 Bis Boulevard de Courtais 03100 Montluçon Téléphone : 04 70 03 74 31 Télécopie : 04 70 09 31 22 
@@ -9210,7 +8937,6 @@ Parlementaire:
     id_an: 330240
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330240.asp
     mails:
-      - e.ciotti@orange.fr
       - eciotti@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 75 96 Télécopie : 01 40 63 78 41 
@@ -9256,7 +8982,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330546.asp
     mails:
       - mlmarcel@assemblee-nationale.fr
-      - marielou.marcel.p@orange.fr
     adresses:
       - 6 Avenue du Quercy 12200 Villefranche de Rouergue Téléphone : 05 65 45 62 25 
       - 20 Rue Emma Calvé 12300 Decazeville Téléphone : 05 65 43 02 27 Télécopie : 05 65 63 92 24 
@@ -9295,7 +9020,6 @@ Parlementaire:
     place_hemicycle: 223
     fonctions:
       - commission des affaires sociales / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Adjointe au Maire de Marseille, Bouches-du-Rhône (798021 habitants)
     sexe: F
@@ -9352,7 +9076,6 @@ Parlementaire:
     id_an: 330909
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/330909.asp
     mails:
-      - vdescoeur@cg15.fr
       - vdescoeur@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -9389,7 +9112,6 @@ Parlementaire:
   depute_331014:
     place_hemicycle: 482
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission du développement durable et de l'aménagement du territoire / secrétaire / 
     sexe: F
     id_an: 331014
@@ -9419,7 +9141,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331146.asp
     mails:
       - sgandolfi@assemblee-nationale.fr
-      - depute-gandolfi@orange.fr
     adresses:
       - Hôtel de ville,  20620 Biguglia Téléphone : 04 95 58 98 58 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -9439,8 +9160,6 @@ Parlementaire:
       - Membre du conseil régional (Bretagne)
     sexe: F
     id_an: 331282
-    mails:
-      - erhel.corinne@orange.fr
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331282.asp
     adresses:
       - Résidence du Manoir 32 Bis Place du Marchallac'h 22300 Lannion Téléphone : 02 96 37 03 23 Télécopie : 02 96 37 05 70 
@@ -9485,7 +9204,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331442.asp
     mails:
       - freynier@assemblee-nationale.fr
-      - courriel@franck-reynier.fr
     adresses:
       - Hôtel de ville Place Emile Loubet 26200 Montélimar Téléphone : 04 75 00 25 05 Télécopie : 04 75 00 25 72 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -9512,7 +9230,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331567.asp
     mails:
       - ldelaraudiere@assemblee-nationale.fr
-      - laure@la-raudiere.com
     adresses:
       - Permanence 6 Allée Édouard Manet 28110 Lucé Téléphone : 02 37 34 84 29 Télécopie : 02 37 28 24 02 
       - Permanence 17 Clos Couronnet 28400 Nogent-le-Rotrou Téléphone : 02 37 52 10 07 
@@ -9530,7 +9247,6 @@ Parlementaire:
     fonctions:
       - mission d'évaluation et de contrôle (commission des finances) / membre / 
       - commission des finances / membre / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
     autresmandats:
       - Maire de Cloyes-sur-le-Loir, Eure-et-Loir (2645 habitants)
       - Membre du conseil régional (Centre)
@@ -9559,7 +9275,6 @@ Parlementaire:
     id_an: 331594
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331594.asp
     mails:
-      - contact@urvoas.org
       - jjurvoas@assemblee-nationale.fr
     adresses:
       - 8-10 Place de la Tourbie 29000 Quimper Téléphone : 02 98 95 69 80 Télécopie : 02 98 95 01 30 
@@ -9582,7 +9297,6 @@ Parlementaire:
     id_an: 331658
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331658.asp
     mails:
-      - annick.leloch.deputee@orange.fr
       - aleloch@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -9604,7 +9318,6 @@ Parlementaire:
     id_an: 331753
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331753.asp
     mails:
-      - catherine.lemorton@orange.fr
       - clemorton@assemblee-nationale.fr
     adresses:
       - 47 Bis Boulevard de Strasbourg 31000 Toulouse Téléphone : 05 61 13 76 50 Télécopie : 05 61 12 44 60 
@@ -9620,7 +9333,6 @@ Parlementaire:
   depute_331807:
     place_hemicycle: 571
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Membre du conseil général (Haute-Garonne)
@@ -9629,7 +9341,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331807.asp
     mails:
       - mmartinel@assemblee-nationale.fr
-      - martinemartinel@orange.fr
     adresses:
       - Permanence parlementaire 37 Rue Clément Ader 31300 Toulouse Téléphone : 05 34 26 51 85 Télécopie : 05 34 26 13 42 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -9652,7 +9363,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331835.asp
     mails:
       - miborra@assemblee-nationale.fr
-      - monique.iborra@orange.fr
     adresses:
       - 50 Avenue Marie Curie 31600 Seysses Téléphone : 05 61 44 63 82 Télécopie : 05 61 08 84 68 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -9674,7 +9384,6 @@ Parlementaire:
     id_an: 331924
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331924.asp
     mails:
-      - delaunay.deputee@orange.fr
       - mdelaunay@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 20 Rue Saint Laurent 33000 Bordeaux Téléphone : 05 56 44 84 80 Télécopie : 05 56 52 57 06 
@@ -9696,7 +9405,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331973.asp
     mails:
       - pgot@assemblee-nationale.fr
-      - contact@pascalegot.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 03 13 
       - Bureau de poste principal BP 30 33320 Eysines Téléphone : 05 56 15 65 28 Télécopie : 05 56 15 51 36 
@@ -9740,7 +9448,6 @@ Parlementaire:
     id_an: 332015
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332015.asp
     mails:
-      - martine.faure2007@orange.fr
       - mfaure@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -9787,7 +9494,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332206.asp
     mails:
       - jrmarsac@assemblee-nationale.fr
-      - jrmarsac.permanence@orange.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Permanence 55 Rue Notre Dame 35600 Redon 
@@ -9810,7 +9516,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332228.asp
     mails:
       - tbenoit@assemblee-nationale.fr
-      - contact@thierry-benoit.fr thierry.benoit13@wanadoo.fr
     adresses:
       - 1 Bis Boulevard Leclerc 35300 Fougères Téléphone : 02 99 17 11 71 Télécopie : 02 99 17 11 72 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -9835,7 +9540,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332305.asp
     mails:
       - jpgille@assemblee-nationale.fr
-      - contact@jean-patrick-gille.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 69 49 
       - Permanence parlementaire 45 Avenue de Grammont 37000 Tours Téléphone : 02 47 20 25 28 Télécopie : 02 47 20 25 29 
@@ -9850,7 +9554,6 @@ Parlementaire:
   depute_332364:
     place_hemicycle: 568
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - commission des affaires économiques / membre / 
     autresmandats:
       - Adjointe au Maire de Grenoble, Isère (153298 habitants)
@@ -9861,7 +9564,6 @@ Parlementaire:
       - conseil d'administration de l'agence nationale pour la gestion des déchets radioactifs / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332364.asp
     mails:
-      - genevieve.fioraso@gmail.com
       - gfioraso@assemblee-nationale.fr
     adresses:
       - Permanence 7 Rue Voltaire 38000 Grenoble 
@@ -9887,7 +9589,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332384.asp
     mails:
       - missindou@assemblee-nationale.fr
-      - michel.issindou@free.fr michel.issindou@ville-gieres.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Permanence parlementaire 21 Rue du Doyen Gosse 38400 Saint Martin d'Hères Téléphone : 04 76 57 04 37 Télécopie : 04 76 41 84 04 
@@ -9903,7 +9604,6 @@ Parlementaire:
     place_hemicycle: 39
     fonctions:
       - commission des affaires sociales / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Membre du conseil général (Jura)
     sexe: F
@@ -9912,7 +9612,6 @@ Parlementaire:
       - conseil supérieur de la forêt, des produits forestiers et de la transformation du bois / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332523.asp
     mails:
-      - marie-christine.dalloz39@orange.fr marie-christine.dalloz390@orange.fr
       - mcdalloz@assemblee-nationale.fr
     adresses:
       - 63 Rue du Collège 39200 Saint-Claude Téléphone : 03 84 45 11 14 
@@ -9928,7 +9627,6 @@ Parlementaire:
     place_hemicycle: 564
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Membre du conseil général (Loire)
@@ -9960,7 +9658,6 @@ Parlementaire:
     id_an: 332636
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332636.asp
     mails:
-      - contact@jlgagnaire.com
       - jlgagnaire@assemblee-nationale.fr
     adresses:
       - 2 Rue Faure-Belon BP 60 208 42005 Saint-Étienne cedex 1 
@@ -9980,7 +9677,6 @@ Parlementaire:
       - mission d'évaluation et de contrôle (commission des finances) / membre / 
       - comité d'évaluation et de contrôle des politiques publiques / secrétaire / 
       - commission des finances / membre / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
       - délégation chargée de l'application du statut du député / membre / 
     autresmandats:
       - Membre du Conseil municipal d'Orvault, Loire-Atlantique (23558 habitants)
@@ -9991,7 +9687,6 @@ Parlementaire:
       - commission nationale pour l'autonomie des jeunes / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332747.asp
     mails:
-      - permanence.fderugy@orange.fr
       - fderugy@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -10013,8 +9708,6 @@ Parlementaire:
       - Membre du conseil général (Loire-Atlantique)
     sexe: H
     id_an: 332796
-    mails:
-      - contact@michelmenard.fr
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332796.asp
     adresses:
       - Permanence parlementaire 4 Rue Léonard de Vinci 44470 Carquefou 
@@ -10029,7 +9722,6 @@ Parlementaire:
   depute_332843:
     place_hemicycle: 603
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Vice-présidente de la communauté d'agglomération de la région nazairienne et l'estuaire
@@ -10102,8 +9794,6 @@ Parlementaire:
       - Membre du conseil général (Lot)
     sexe: F
     id_an: 332950
-    mails:
-      - orliacdominique@orange.fr
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332950.asp
     circonscription: Lot (1ère)
     adresses:
@@ -10125,7 +9815,6 @@ Parlementaire:
     id_an: 333043
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333043.asp
     mails:
-      - secretariat.mairie@mairie-trelaze.fr
       - mgoua@assemblee-nationale.fr
     adresses:
       - Hôtel de ville BP 27 49800 Trélazé Téléphone : 02 41 33 74 60 Télécopie : 02 41 69 71 73 
@@ -10143,7 +9832,6 @@ Parlementaire:
     fonctions:
       - commission chargée de l'application de l'article 26 de la constitution / membre suppléant / 
       - mission d'information commune sur l'indemnisation des victimes des maladies nosocomiales et accès au dossier médical / président / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission des lois / membre / 
     autresmandats:
       - Maire d'Avranches, Manche (8500 habitants)
@@ -10153,7 +9841,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333134.asp
     mails:
       - ghuet@assemblee-nationale.fr
-      - guenhael.huet@yahoo.fr
     adresses:
       - 22 Rue du Jardin des Plantes 50300 Avranches Téléphone : 02 33 60 99 38 Télécopie : 02 33 48 75 39 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -10179,7 +9866,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333224.asp
     mails:
       - bapparu@assemblee-nationale.fr
-      - contact@benoistapparu.com
     adresses:
       - Permanence parlementaire 25 Rue Prieur de la Marne 51000 Châlons-en-Champagne Téléphone : 03 26 64 13 12 Télécopie : 03 26 64 79 79 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -10244,7 +9930,6 @@ Parlementaire:
     id_an: 333352
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333352.asp
     mails:
-      - permanence@v-r-d.fr
       - vrosso@assemblee-nationale.fr
     adresses:
       - 23 Rue Lavigerie Bâtiment B 54000 Nancy Téléphone : 03 83 41 69 20 Télécopie : 03 83 41 12 98 
@@ -10267,7 +9952,6 @@ Parlementaire:
       - comité local d'information et de suivi du laboratoire souterrain de bure / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333421.asp
     mails:
-      - bpancher.depute@orange.fr
       - bpancher@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 12 Rue Jean Errard 55000 Bar-le-Duc Téléphone : 03 29 70 69 76 Télécopie : 03 29 75 09 27 
@@ -10292,7 +9976,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333457.asp
     mails:
       - mgrall@assemblee-nationale.fr
-      - michelgrall.depute@orange.fr
     adresses:
       - Permanence parlementaire 30 Avenue du Maréchal Foch 56400 Auray Téléphone : 02 97 56 24 24 Télécopie : 02 97 50 70 39 
       - Hôtel de ville BP 80 56341 Carnac Cedex Téléphone : 02 97 52 79 83 Télécopie : 02 97 52 79 78 
@@ -10335,7 +10018,6 @@ Parlementaire:
     id_an: 333590
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333590.asp
     mails:
-      - wojciechowski1@orange.fr
       - awojciechowski@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 2 Boulevard de Lorraine 57500 Saint Avold Téléphone : 03 87 91 22 22 Télécopie : 03 87 91 14 63 
@@ -10380,7 +10062,6 @@ Parlementaire:
     id_an: 333818
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333818.asp
     mails:
-      - hutinchristian@orange.fr
       - chutin@assemblee-nationale.fr
     adresses:
       - Mairie 59430 Saint-Pol-sur-Mer Téléphone : 03 28 29 66 00 Télécopie : 03 28 60 73 34 
@@ -10404,7 +10085,6 @@ Parlementaire:
     id_an: 333972
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333972.asp
     mails:
-      - christinemarin@orange.fr
       - cmarin@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -10421,7 +10101,6 @@ Parlementaire:
     place_hemicycle: 627
     fonctions:
       - commission du développement durable et de l'aménagement du territoire / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Membre du conseil général (Nord)
       - Membre du Conseil municipal d'Anor, Nord (3093 habitants)
@@ -10430,7 +10109,6 @@ Parlementaire:
     id_an: 333975
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/333975.asp
     mails:
-      - jean-luc@perat.fr
       - jlperat@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -10467,7 +10145,6 @@ Parlementaire:
     place_hemicycle: 62
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des affaires économiques / membre / 
     autresmandats:
       - Maire du Touquet-Paris-Plage, Pas-de-Calais (5293 habitants)
@@ -10524,7 +10201,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334525.asp
     mails:
       - jirles@assemblee-nationale.fr
-      - jacquelineirles@wanadoo.fr
     adresses:
       - Cabinet parlementaire 66180 Villeneuve de la Raho Téléphone : 04 68 56 76 38 Télécopie :  Télécopie : 04 68 87 11 36 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -10547,7 +10223,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334654.asp
     mails:
       - estraumann@assemblee-nationale.fr
-      - ericstraumann@yahoo.fr
     adresses:
       - Mairie 13 Rue Principale 68125 Houssen 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -10570,7 +10245,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334750.asp
     mails:
       - mhavard@assemblee-nationale.fr
-      - michel.havard.depute@orange.fr
     adresses:
       - Permanence parlementaire 59 Ter Avenue du Point du Jour 69005 Lyon 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -10608,7 +10282,6 @@ Parlementaire:
   depute_334768:
     place_hemicycle: 560
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Membre de la communauté urbaine du Grand-Lyon
@@ -10634,7 +10307,6 @@ Parlementaire:
     place_hemicycle: 640
     fonctions:
       - commission chargée de l'application de l'article 26 de la constitution / secrétaire / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Membre du Conseil municipal de Villeurbanne, Rhône (124135 habitants)
@@ -10643,7 +10315,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334811.asp
     mails:
       - pcrozon@assemblee-nationale.fr
-      - p.crozon@orange.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Télécopie : 01 40 63 31 97 
       - Permanence parlementaire 25 Rue Paul Verlaine 69100 Villeurbanne Téléphone : 04 78 84 09 12 Télécopie : 04 78 03 54 74 
@@ -10665,7 +10336,6 @@ Parlementaire:
     id_an: 334843
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334843.asp
     mails:
-      - vercherepatrice@orange.fr
       - pverchere@assemblee-nationale.fr
     adresses:
       - 1 Avenue Charles de Gaulle 69170 Tarare Téléphone : 04 74 05 29 59 Télécopie : 04 74 05 28 21 
@@ -10689,7 +10359,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334906.asp
     mails:
       - pmeunier@assemblee-nationale.fr
-      - permanence.pmeunier@orange.fr
     adresses:
       - 18 Rue Louis Saunier 69330 Meyzieu Téléphone : 04 78 31 09 35 Télécopie : 04 78 31 72 21 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -10710,7 +10379,6 @@ Parlementaire:
     id_an: 334951
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/334951.asp
     mails:
-      - permanence@depute-villaume.fr
       - jmvillaume@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 2 Rue Desault 70200 Lure Téléphone : 03 84 62 40 20 Télécopie : 03 84 62 40 94 
@@ -10779,7 +10447,6 @@ Parlementaire:
     id_an: 335040
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335040.asp
     mails:
-      - fabienne.labrette.menagerlm1@orange.fr 
       - flabrette@assemblee-nationale.fr
     adresses:
       - 111 Avenue Rhin et Danube 72000 Le Mans Téléphone : 02 43 28 32 33 Télécopie : 02 43 87 58 28 
@@ -10796,7 +10463,6 @@ Parlementaire:
     place_hemicycle: 559
     fonctions:
       - commission des affaires européennes / secrétaire / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - mission d'information commune sur l'indemnisation des victimes des maladies nosocomiales et accès au dossier médical / membre / 
       - commission des lois / membre / 
     autresmandats:
@@ -10873,7 +10539,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335532.asp
     mails:
       - gpau@assemblee-nationale.fr
-      - georgepaulangevin@yahoo.fr
     adresses:
       - Permanence 8 Rue de la Cour des Noues 75020 Paris Téléphone : 01 43 15 61 24 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 68 64 Téléphone : 01 40 63 69 52 
@@ -10910,7 +10575,6 @@ Parlementaire:
   depute_335567:
     place_hemicycle: 153
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Membre du Conseil municipal de Mont-Saint-Aignan, Seine-Maritime (21285 habitants)
@@ -10941,7 +10605,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/335612.asp
     mails:
       - jplecoq@assemblee-nationale.fr
-      - jplecoq-6vgo@wanadoo.fr
     adresses:
       - Permanence 38 Rue des Marthyrs 76210 Bolbec Téléphone : 06 78 89 28 36 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -11004,7 +10667,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336015.asp
     mails:
       - jgrellier@assemblee-nationale.fr
-      - j.grellier@orange.fr
     adresses:
       - Permanence parlementaire 44 Rue Jean Jaurès 37 Résidence Démeter 79300 BRESSUIRE Téléphone : 05 49 74 58 38 Télécopie : 05 49 74 30 52 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -11026,7 +10688,6 @@ Parlementaire:
     id_an: 336067
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336067.asp
     mails:
-      - gilbert.mathon80@orange.fr
       - gmathon@assemblee-nationale.fr
     adresses:
       - Permanence 5 Rue du pont d'amour 80100 Abbeville Téléphone : 03 22 19 33 20 Télécopie : 03 22 19 12 99 
@@ -11091,7 +10752,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336316.asp
     mails:
       - jcbouchet@assemblee-nationale.fr
-      - bouchetjc@wanadoo.fr
     adresses:
       - 33, Cours Sadi Carnot BP 70044 84302 Cavaillon cedex Téléphone : 04 90 05 85 02 Télécopie : 04 90 71 29 58 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -11107,7 +10767,6 @@ Parlementaire:
     place_hemicycle: 611
     fonctions:
       - commission des affaires économiques / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     sexe: F
     id_an: 336421
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336421.asp
@@ -11157,7 +10816,6 @@ Parlementaire:
     id_an: 336454
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/336454.asp
     mails:
-      - monique_boulestin@ville-limoges.fr
       - mboulestin@assemblee-nationale.fr
     adresses:
       - 40 Rue Haute Vienne 87000 Limoges Téléphone : 05 55 34 57 63 Télécopie : 05 55 34 38 83 
@@ -11290,7 +10948,6 @@ Parlementaire:
     id_an: 337248
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337248.asp
     mails:
-      - pierregosnat@ivry94.fr
       - pgosnat@assemblee-nationale.fr
     adresses:
       - Hôtel de ville Esplanade Georges Marrane 94200 Ivry Téléphone : 01.49.60.24.27 Télécopie : 01.72.04.64.89 
@@ -11314,7 +10971,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337332.asp
     mails:
       - cbodin@assemblee-nationale.fr
-      - bodin9504@orange.fr
     adresses:
       - Permanence 17 Avenue de l'Europe 95600 Eaubonne Téléphone : 01 39 59 73 10 Télécopie : 01 39 59 55 74 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 05 13 Télécopie : 01 40 63 05 93 
@@ -11351,7 +11007,6 @@ Parlementaire:
   depute_337442:
     place_hemicycle: 619
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Maire de Deshaies, Guadeloupe (4039 habitants)
@@ -11360,7 +11015,6 @@ Parlementaire:
     id_an: 337442
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337442.asp
     mails:
-      - permanencejmarc@orange.fr
       - jmarc@assemblee-nationale.fr
     adresses:
       - Immeuble "Le Negresco I" Boulevard Destrellau 97122 Baie Mahault Téléphone : 05 90 99 84 89 Télécopie : 05 90 99 73 88 
@@ -11405,7 +11059,6 @@ Parlementaire:
     id_an: 337504
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337504.asp
     mails:
-      - cberthelot@guyane.fr
       - cberthelot@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire PK 7 5 Route de Montjoly 97354 Remire Montjoly Téléphone : 05 94 25 02 96 Télécopie : 05 94 28 89 60 
@@ -11465,7 +11118,6 @@ Parlementaire:
     fonctions:
       - commission des affaires européennes / membre / 
       - mission d'information commune sur les prix des carburants dans les dom / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission du développement durable et de l'aménagement du territoire / membre / 
     autresmandats:
       - Maire de Saint-Benoît, Réunion (31662 habitants)
@@ -11493,7 +11145,6 @@ Parlementaire:
     id_an: 337586
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337586.asp
     mails:
-      - abdoulatifou.aly@orange.fr
       - aaly@assemblee-nationale.fr
     adresses:
       - 28  espace Coralium Route nationale 1 Kawéni,  BP 424 97600 Mamoudzou Téléphone : 02 69 61 18 71 Télécopie : 02 69 61 18 72 
@@ -11518,7 +11169,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337621.asp
     mails:
       - bsandras@assemblee-nationale.fr
-      - bruno.sandras@papara.pf
     adresses:
       - Mairie 98712 Papara Téléphone : 00 689 54 75 47 Télécopie : 00 689 57 37 78 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -11533,7 +11183,6 @@ Parlementaire:
     place_hemicycle: 621
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des finances / membre / 
     autresmandats:
       - Membre Conseil territorial de Saint-Pierre et Miquelon
@@ -11584,7 +11233,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/339.asp
     mails:
       - dbaert@assemblee-nationale.fr
-      - d.baert@ville-wattrelos.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Télécopie : 01 40 63 68 16 
       - Hôtel de Ville Place J. Delvainquière 59150 Wattrelos Téléphone : 03 20 81 64 97 
@@ -11639,7 +11287,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/341.asp
     mails:
       - pcbaguet@assemblee-nationale.fr
-      - pc.baguet@mairie-boulogne-billancourt.fr 
     adresses:
       - Hôtel de Ville 26 Avenue André Morizet 92104 Boulogne-Billancourt Cedex Téléphone : 01 55 18 53 00 Télécopie : 01 55 18 63 00 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 60 00 Télécopie : 01 40 63 91 84 
@@ -11840,7 +11487,6 @@ Parlementaire:
     place_hemicycle: 438
     fonctions:
       - commission des finances / membre / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
     autresmandats:
       - Maire de Vervins, Aisne (2653 habitants)
       - Membre du conseil général (Aisne)
@@ -11851,7 +11497,6 @@ Parlementaire:
       - commission de surveillance de la caisse des dépôts et consignations / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/350.asp
     mails:
-      - jp.balligand@wanadoo.fr
       - jpballigand@assemblee-nationale.fr
     adresses:
       - Mairie 02140 Vervins Téléphone : 03 23 98 00 30 
@@ -11880,7 +11525,6 @@ Parlementaire:
       - commission des comptes de la sécurité sociale / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/356.asp
     mails:
-      - depute.bapt@wanadoo.fr
       - gbapt@assemblee-nationale.fr
     adresses:
       - 5 Rue Pierrette Louin Résidence L'Aiglon 31500 Toulouse Téléphone : 05 34 25 02 90 Télécopie : 05 34 25 02 99 
@@ -11928,7 +11572,6 @@ Parlementaire:
     id_an: 369
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/369.asp
     mails:
-      - baroin.francois@wanadoo.fr
       - fbaroin@assemblee-nationale.fr
     adresses:
       - 33 Rue Urbain IV 10000 Troyes Téléphone : 03 25 73 09 70 Télécopie : 03 25 73 53 82 
@@ -11974,7 +11617,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/384.asp
     mails:
       - jbascou@assemblee-nationale.fr
-      - permanence.bascou@orange.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Espace Soleil Route de Gruissan Bâtiment B, BP 134 11101 Narbonne cedex Téléphone : 04 68 90 28 28 Télécopie : 04 68 32 98 96 
@@ -12011,7 +11653,6 @@ Parlementaire:
   depute_394:
     place_hemicycle: 434
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - commission des affaires étrangères / membre / 
     autresmandats:
       - Membre du Conseil municipal de Solesmes, Nord (4767 habitants)
@@ -12020,7 +11661,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/394.asp
     mails:
       - cbataille@assemblee-nationale.fr
-      - contact@christianbataille.org
     adresses:
       - Secrétariat 26  Rue de Selle 59730 Solesmes Téléphone : 03 27 37 37 37 Télécopie : 03 27 37 38 15 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -12063,7 +11703,6 @@ Parlementaire:
     id_an: 410
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/410.asp
     mails:
-      - f.bayrou@lesdemocrates.fr
       - fbayrou@assemblee-nationale.fr
     adresses:
       - MoDem 133 Bis Rue de l'Université 75007 Paris Téléphone : 01 53 59 20 00 
@@ -12154,7 +11793,6 @@ Parlementaire:
   depute_441:
     place_hemicycle: 597
     fonctions:
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
     autresmandats:
       - Maire de Saint-Paul, Réunion (88254 habitants)
@@ -12163,7 +11801,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/441.asp
     mails:
       - hbello@assemblee-nationale.fr
-      - huguette.bello@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - 19  Chaussée Royale BP 69 97862 Saint-Paul cedex Téléphone : 02 62 22 60 82 Télécopie : 02 62 45 57 07 
@@ -12185,7 +11822,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/475.asp
     mails:
       - jlbernard@assemblee-nationale.fr
-      - jl.bernard.depute@wanadoo.fr
     adresses:
       - 38 Rue de la République 45000 Orléans Téléphone : 02 38 62 92 50 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -12213,7 +11849,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/479.asp
     mails:
       - mbernier@assemblee-nationale.fr
-      - marc.bernier53@wanadoo.fr
     adresses:
       - Mairie 1 Route de la Bazouge de Cheméré 53480 Vaiges Téléphone : 02 43 66 57 64 
       - 58  Avenue Carnot 53200 Château-Gontier Téléphone : 02 43 07 25 54 
@@ -12234,7 +11869,6 @@ Parlementaire:
     id_an: 493
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/493.asp
     mails:
-      - besselat.depute@wanadoo.fr
       - jybesselat@assemblee-nationale.fr
     adresses:
       - Permanence 32 Rue Jules Lecesne 76600 Le Havre Téléphone : 02 35 41 38 38 Télécopie : 02 35 42 05 49 
@@ -12282,7 +11916,6 @@ Parlementaire:
     id_an: 508
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/508.asp
     mails:
-      - biemouret.gisele@orange.fr
       - gbiemouret@assemblee-nationale.fr
     adresses:
       - Permanence 28 Avenue Grünberg 32100 Condom Téléphone : 05 62 68 09 55 Télécopie : 05 62 68 09 55 
@@ -12299,7 +11932,6 @@ Parlementaire:
     place_hemicycle: 106
     fonctions:
       - mission d'information commune sur les prix des carburants dans les dom / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission du développement durable et de l'aménagement du territoire / vice-président / 
     autresmandats:
       - Membre du conseil général (Somme)
@@ -12312,7 +11944,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/513.asp
     mails:
       - jbignon@assemblee-nationale.fr
-      - jerome@bignon.info
     adresses:
       - 18 Rue de la Prévôté 80140 Oisemont Téléphone : 03 22 25 05 62 Télécopie : 03 22 25 89 30 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -12335,7 +11966,6 @@ Parlementaire:
     id_an: 522
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/522.asp
     mails:
-      - jean-marie.binetruy@wanadoo.fr
       - jmbinetruy@assemblee-nationale.fr
     adresses:
       - Permanence 5 Rue du Parc 25300 Pontarlier Téléphone : 03 81 38 88 80 Télécopie : 03 81 38 86 27 
@@ -12352,8 +11982,8 @@ Parlementaire:
   depute_525:
     place_hemicycle: 270
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / président / 
       - commission des affaires étrangères / membre / 
+      - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
     autresmandats:
       - Membre du conseil général (Haute-Savoie)
     sexe: H
@@ -12362,7 +11992,6 @@ Parlementaire:
       - institut de radioprotection et de sûreté nucléaire / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/525.asp
     mails:
-      - deputebirraux@orange.fr 
       - cbirraux@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -12378,7 +12007,6 @@ Parlementaire:
   depute_538:
     place_hemicycle: 201
     fonctions:
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission des lois / membre / 
     autresmandats:
       - Maire de Saverne, Bas-Rhin (11201 habitants)
@@ -12391,7 +12019,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/538.asp
     mails:
       - eblessig@assemblee-nationale.fr
-      - depute@blessig.org
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Permanence 9  Rue de la Gare 67700 Saverne Téléphone : 03 88 91 25 88 
@@ -12417,7 +12044,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/542.asp
     mails:
       - sblisko@assemblee-nationale.fr
-      - blisko@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - 41 Rue Bobillot 75013 Paris Téléphone : 01 45 89 88 63 Télécopie : 01 45 89 04 16 
@@ -12444,7 +12070,6 @@ Parlementaire:
       - haut conseil des musées de france / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/543.asp
     mails:
-      - p.bloche@wanadoo.fr
       - pbloche@assemblee-nationale.fr
     adresses:
       - 7 Rue François de Neufchâteau 75011 Paris 
@@ -12468,7 +12093,6 @@ Parlementaire:
     id_an: 546
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/546.asp
     mails:
-      - rblum@mairie-marseille.fr
       - rblum@assemblee-nationale.fr
     adresses:
       - Cabinet du 1er adjoint, Hôtel de ville Quai du port 13002 Marseille Téléphone : 04 91 55 35 90 Télécopie : 04 91 14 62 84 
@@ -12539,7 +12163,6 @@ Parlementaire:
       - commission supérieure des sites, perspectives et paysages / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/580.asp
     mails:
-      - maxime.bono@ville-larochelle.fr
       - mbono@assemblee-nationale.fr
     adresses:
       - Mairie Place de l'Hôtel de Ville 17000 La Rochelle Téléphone : 05 46 28 18 06 
@@ -12556,7 +12179,6 @@ Parlementaire:
     place_hemicycle: 539
     fonctions:
       - commission des affaires étrangères / membre / 
-      - délégation parlementaire au renseignement / vice-président / 
     autresmandats:
       - Membre du Conseil municipal de Rennes, Ille-et-Vilaine (205925 habitants)
     sexe: H
@@ -12592,7 +12214,6 @@ Parlementaire:
       - conseil national de l'information statistique / membre suppléant
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/621.asp
     mails:
-      - p.bourguignon@mairie-sotteville-les-rouen.fr
       - pbourguignon@assemblee-nationale.fr
     adresses:
       - Hôtel de Ville BP19 76301 Sotteville-lès-Rouen cedex Téléphone : 02 35 72 08 19 Télécopie : 02 35 72 88 75 
@@ -12610,14 +12231,12 @@ Parlementaire:
     fonctions:
       - commission spéciale chargée de vérifier et d'apurer les comptes / vice-présidente / 
       - commission des affaires étrangères / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Membre du Conseil municipal de Bordeaux, Gironde (214633 habitants)
     sexe: F
     id_an: 624
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/624.asp
     mails:
-      - chantal.bourrague@wanadoo.fr
       - cbourrague@assemblee-nationale.fr
     adresses:
       - 1 Rue Jacques Camille Paris BP 24 33030 Bordeaux cedex Téléphone : 05 56 29 07 29 Télécopie : 05 56 39 94 93 
@@ -12634,7 +12253,6 @@ Parlementaire:
     place_hemicycle: 441
     fonctions:
       - délégation chargée des activités internationales / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / vice-présidente / 
       - commission des affaires culturelles et de l'éducation / membre / 
       - délégation chargée de la communication et de la presse / membre / 
       - assemblée nationale / secrétaire / 01/10/2008
@@ -12643,7 +12261,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/627.asp
     mails:
       - dbousquet@assemblee-nationale.fr
-      - bousquetsb@wanadoo.fr
     adresses:
       - Permanence 39 Avenue des Promenades BP 4633 22046 Saint-Brieuc cedex 2 Téléphone : 02 96 68 27 32 Télécopie : 02 96 68 25 93 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -12671,7 +12288,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/633.asp
     mails:
       - mbouvard@assemblee-nationale.fr
-      - mbouvard@icor.fr mbouvard@cg73.fr
     adresses:
       - Secrétariat du Conseil général Château des Ducs de Savoie BP 1802 73018 Chambéry cedex Téléphone : 04 79 96 73 22 Télécopie : 04 79 62 29 31 
       - Permanence parlementaire 16  Place de la Sous-Préfecture BP 41 73302 Saint-Jean-de-Maurienne Téléphone : 04 79 59 93 96 Télécopie : 04 79 59 97 62 
@@ -12694,7 +12310,6 @@ Parlementaire:
       - conseil d'orientation stratégique du fonds de solidarité prioritaire / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/634.asp
     mails:
-      - loicbouvard-ploermel@wanadoo.fr
       - lbouvard@assemblee-nationale.fr
     adresses:
       - 8 Rue des Forges 56800 Ploërmel Téléphone : 02 97 74 05 47 Télécopie : 02 97 74 10 82 
@@ -12720,7 +12335,6 @@ Parlementaire:
       - conseil national de l'enseignement supérieur et de la recherche / membre suppléant
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/653.asp
     mails:
-      - patrick.braouezec@plainecommune.com.fr
       - pbraouezec@assemblee-nationale.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 49 68 
@@ -12737,9 +12351,7 @@ Parlementaire:
     place_hemicycle: 583
     fonctions:
       - commission des finances / secrétaire / 
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - mission d'évaluation et de contrôle (commission des finances) / membre / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
     autresmandats:
       - Membre du Conseil municipal de Montreuil, Seine-Saint-Denis (90588 habitants)
     sexe: H
@@ -12797,7 +12409,6 @@ Parlementaire:
       - commission du dividende numérique / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/680.asp
     mails:
-      - francois.brottes@wanadoo.fr
       - fbrottes@assemblee-nationale.fr
     adresses:
       - Les Portes de Crolles Rond-Point du Rafour 38927 Crolles Téléphone : 04 76 92 18 96 Télécopie : 04 76 92 18 98 
@@ -12839,8 +12450,6 @@ Parlementaire:
       - Maire de Papeete, Polynésie Française (23535 habitants)
     sexe: H
     id_an: 690
-    mails:
-      - michel.buillard@mail.pf
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/690.asp
     circonscription: Polynésie Française (1ère)
     adresses:
@@ -12895,7 +12504,6 @@ Parlementaire:
       - comité de gestion du fonds de soutien aux hydrocarbures ou assimiles d'origine nationale / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/704.asp
     mails:
-      - acacheux@cudl-lille.fr
       - acacheux@assemblee-nationale.fr
     adresses:
       - Communauté urbaine de Lille 1, Rue du Ballon BP 749 59000 Lille Téléphone : 03 20 21 22 23 
@@ -12917,8 +12525,6 @@ Parlementaire:
       - Maire de Villeneuve-sur-Lot, Lot-et-Garonne (22772 habitants)
     sexe: H
     id_an: 706
-    mails:
-      - j.cahuzac@jcahuzac.fr
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/706.asp
     circonscription: Lot-et-Garonne (3ème)
     adresses:
@@ -12939,7 +12545,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/707.asp
     mails:
       - dcaillaud@assemblee-nationale.fr
-      - permanence@dominique-caillaud.com
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - 29 Rue La Bruyère BP 261 85007 La-Roche-sur-Yon cedex Téléphone : 02 51 37 82 15 Télécopie : 02 51 62 06 24 
@@ -12966,7 +12571,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/716.asp
     mails:
       - fcalvet@assemblee-nationale.fr
-      - francois-calvet@wanadoo.fr
     adresses:
       - 4 Quai Nobel 66000 Perpignan Téléphone : 04 68 35 61 49 Télécopie : 04 68 35 62 48 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -13008,7 +12612,6 @@ Parlementaire:
     id_an: 732
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/732.asp
     mails:
-      - boulzeb@yahoo.fr
       - bcarayon@assemblee-nationale.fr
     adresses:
       - Hôtel de Ville 81500 Lavaur Téléphone : 05 63 83 12 20 Télécopie : 05 63 58 63 40 
@@ -13035,7 +12638,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/733.asp
     mails:
       - tcarcenac@assemblee-nationale.fr
-      - thierry.carcenac@wanadoo.fr
     adresses:
       - Permanence parlementaire 34 Rue de l'Hôtel de Ville 81000 Albi Téléphone : 05 63 49 28 50 Télécopie : 05 63 49 28 54 
       - Conseil général Lices Georges Pompidou 81013 Albi cedex 9 Téléphone : 05 63 45 66 36 Télécopie : 05 63 45 64 43 
@@ -13058,7 +12660,6 @@ Parlementaire:
     id_an: 734
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/734.asp
     mails:
-      - caroline.raison@wanadoo.fr claude.h.ney@wanadoo.fr pierre.cardo@wanadoo.fr
       - pcardo@assemblee-nationale.fr
     adresses:
       - 26 Rue de l'Abreuvoir 78570 Chanteloup-les-Vignes Téléphone : 01 39 70 88 99 Télécopie : 01 39 74 20 51 
@@ -13075,7 +12676,6 @@ Parlementaire:
     place_hemicycle: 448
     fonctions:
       - commission des affaires européennes / membre / 
-      - délégation de l'assemblée nationale pour l'union européenne / membre / 
       - commission du développement durable et de l'aménagement du territoire / membre / 
     sexe: H
     id_an: 735
@@ -13084,7 +12684,6 @@ Parlementaire:
       - conseil d'orientation de l'observatoire national de la délinquance / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/735.asp
     mails:
-      - caresche@club-internet.fr
       - ccaresche@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 76 Bis Rue Duhesme 75018 Paris Téléphone : 01 55 79 15 15 
@@ -13100,7 +12699,7 @@ Parlementaire:
     place_hemicycle: 176
     fonctions:
       - commission des finances / rapporteur général / 
-      - groupe de travail assemblée nationale - sénat sur la crise financière internationale / membre / 
+      - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
       - commission des finances) de la mission d'évaluation et de contrôle (commission des finances) / (rapporteur général / 
     autresmandats:
       - Maire du Perreux-sur-Marne, Val-de-Marne (30057 habitants)
@@ -13110,7 +12709,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/746.asp
     mails:
       - gcarrez@assemblee-nationale.fr
-      - gillescarrez@leperreux.fr
     adresses:
       - Hôtel de Ville Place de la Libération 94170 Le Perreux-sur-Marne Téléphone : 01 48 71 53 53 Télécopie : 01 43 24 14 45 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -13200,7 +12798,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/815.asp
     mails:
       - gcharasse@assemblee-nationale.fr
-      - permanence.charasse@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - Permanence parlementaire 72 Rue de Paris 03200 Vichy Téléphone : 04 70 97 14 50 Télécopie : 04 70 97 00 26 
@@ -13225,7 +12822,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/817.asp
     mails:
       - jpcharie@assemblee-nationale.fr
-      - jean-paul.charie@orange.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP Téléphone : 01 40 63 69 23 Télécopie : 01 40 63 93 80 
       - 40  Mail ouest 45300 Pithiviers  Téléphone : 02 38 30 53 67 Télécopie : 02 38 30 15 74 
@@ -13301,7 +12897,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/866.asp
     mails:
       - jfchossy@assemblee-nationale.fr
-      - j-f.chossy@wanadoo.fr
     adresses:
       - 4 Rue Placette BP 141,  Moingt 42603 Montbrison cedex Téléphone : 04 77 58 37 36 Télécopie : 04 77 58 86 76 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -13317,7 +12912,6 @@ Parlementaire:
     place_hemicycle: 426
     fonctions:
       - comité d'évaluation et de contrôle des politiques publiques / membre / 
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - mission d'évaluation et de contrôle (commission des finances) / membre / 
       - commission des finances / membre / 
     autresmandats:
@@ -13364,7 +12958,6 @@ Parlementaire:
     fonctions:
       - commission des affaires sociales / membre / 
       - mission d'évaluation et de contrôle des lois de financement de la sécurité sociale / membre / 
-      - délégation de l'assemblée nationale aux droits des femmes et à l'égalité des chances entre les hommes et les femmes     / membre / 
     autresmandats:
       - Adjointe au Maire de Nantes, Loire-Atlantique (269131 habitants)
       - Vice-présidente de la communauté urbaine de Nantes Métropole
@@ -13431,7 +13024,6 @@ Parlementaire:
   depute_891:
     place_hemicycle: 542
     fonctions:
-      - office parlementaire d'évaluation des choix scientifiques et technologiques / membre / 
       - commission des affaires étrangères / membre / 
     autresmandats:
       - Président de la communauté d'agglomération du Grand Toulouse
@@ -13443,7 +13035,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/891.asp
     mails:
       - pcohen@assemblee-nationale.fr
-      - contact@pierrecohen.net
     adresses:
       - Permanence parlementaire 1  Rue Bonnat BP 14343 31028 Toulouse cedex 4 Téléphone : 05 61 14 00 31 Télécopie : 05 61 14 79 40 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -13468,7 +13059,6 @@ Parlementaire:
       - conseil d'administration de l'office national des anciens combattants et victimes de guerre / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/909.asp
     mails:
-      - georges.colombier@orange.fr
       - gcolombier@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire BP 21 38440 Saint-Jean-de-Bournay Téléphone : 04 74 59 76 76 Télécopie : 04 74 59 76 70 
@@ -13509,6 +13099,7 @@ Parlementaire:
     place_hemicycle: 99
     fonctions:
       - commission des affaires culturelles et de l'éducation / membre / 
+      - bureau du comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
     autresmandats:
       - Maire de Meaux, Seine-et-Marne (49421 habitants)
     sexe: H
@@ -13593,7 +13184,6 @@ Parlementaire:
       - conseil d'administration de l'établissement public de financement et de restructuration / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/942.asp
     mails:
-      - charles.de-courson@wanadoo.fr
       - cdecourson@assemblee-nationale.fr
     adresses:
       - 38 Rue de la Petite-Sainte 51300 Vitry-le-François Téléphone : 03 26 73 29 70 Télécopie : 03 26 72 18 12 
@@ -13616,7 +13206,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/946.asp
     mails:
       - acousin@assemblee-nationale.fr
-      - cousin.alain@wanadoo.fr
     adresses:
       - 8 Rue du Puits Notre-Dame 50200 Coutances Téléphone : 02 33 19 03 20 Télécopie : 02 33 19 03 21 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
@@ -13638,7 +13227,6 @@ Parlementaire:
       - commission supérieure des sites, perspectives et paysages / membre titulaire
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/951.asp
     mails:
-      - couve.jean-michel@wanadoo.fr
       - jmcouve@assemblee-nationale.fr
     adresses:
       - 5  traverse des Lices 83990 Saint-Tropez Téléphone : 04 94 97 64 39 Télécopie : 04 94 43 99 44 
@@ -13659,7 +13247,6 @@ Parlementaire:
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/966.asp
     mails:
       - hcuq@assemblee-nationale.fr
-      - hcuq.perm@wanadoo.fr
     adresses:
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
       - 15 Avenue Charles de Gaulle BP 90067 78410 Aubergenville Cedex Téléphone : 01 30 91 19 50 Télécopie : 01 30 95 28 33 
@@ -13678,7 +13265,6 @@ Parlementaire:
     id_an: 998
     url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/998.asp
     mails:
-      - permanence.dassault@wanadoo.fr
       - odassault@assemblee-nationale.fr
     adresses:
       - Permanence 11 Bis Boulevard Amyot-d'Inville 60000 Beauvais Téléphone : 03 44 45 78 48 Télécopie : 03 44 48 54 49 

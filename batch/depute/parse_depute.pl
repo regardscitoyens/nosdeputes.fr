@@ -62,7 +62,9 @@ sub contact {
 		$text = $p->get_text('/li');
 		$text =~ s/^\s+//;
 		if ($text =~ /^\S+\@/) {
-		    ${$depute{'Mails'}}{$text} = 1;
+		    while (text =~ /(\S+@\S+)/g) {
+			${$depute{'Mails'}}{$text} = 1;
+		    }
 		}else {
 		    ${$depute{'Adresses'}}{$text} = 1
 			if ($text);
@@ -77,7 +79,7 @@ sub mandat {
     while ($t = $p->get_tag('u', '/div')) {
 	last if ($t->[0] =~ /^\//);
 	$_ = $p->get_text('/u');
-	if (/Mandat|Commission|Délégation|Mission/) {
+	if (/Mandat|Commission|Mission/) {
 	    $text = $p->get_text('ul');
 	    if ($text =~ /Date de début de mandat : ([\d\/]+) /) {
 		$depute{'Debut_Mandat'} = $1;
@@ -85,7 +87,7 @@ sub mandat {
 	    while ($t = $p->get_tag('li', '/li')) {
 		last if ($t->[0] =~ /^\//);
 		$text = $p->get_text('/li');
-		if  ($text =~ /^(\S+\s*\S*)( du | de la | de l')\s*(.*)/) {
+		if  ($text =~ /^(\S+\s*\S*\s*\S*)( du | de la | de l')\s*(.*)/) {
 		    $fonction = $1;
 		    $orga = $3;
 		    $deb = "";
