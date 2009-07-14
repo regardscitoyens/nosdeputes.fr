@@ -7,4 +7,14 @@ require_once "myTools.class.php";
  */
 class Organisme extends BaseOrganisme
 {
+  public function getSmallNomGroupe() {
+    $hashmap = array(
+        "union pour un mouvement populaire" => "UMP",
+        "socialiste, radical, citoyen et divers gauche" => "SRC",
+        "gauche démocrate et républicaine" => "GDR",
+        "députés n'appartenant à aucun groupe" => "NI",
+        "nouveau centre" => "NC"
+    );
+    return $hashmap[$this->getNom()];
+  }
 }

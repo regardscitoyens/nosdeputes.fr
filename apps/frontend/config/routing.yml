@@ -3,6 +3,10 @@ parlementaire:
   url: /parlementaire/:slug
   param: {module: parlementaire, action: show}
 
+list_parlementaires_circo:
+  url: /parlementaire/circo/:nom_circo
+  param: {module: parlementaire, action: listCirco}
+
 list_parlementaires_profession:
   url: /parlementaire/profession/:profession
   param: {module: parlementaire, action: listProfession}

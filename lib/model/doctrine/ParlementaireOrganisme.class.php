@@ -6,7 +6,8 @@
 class ParlementaireOrganisme extends BaseParlementaireOrganisme
 {
   public function getNom() {
-    return $this->getOrganisme()->getNom();
+    if ($this->getType() == 'groupe') return $this->getOrganisme()->getSmallNomGroupe();
+    else return $this->getOrganisme()->getNom();
   }
   public function getType() {
     return $this->getOrganisme()->getType();

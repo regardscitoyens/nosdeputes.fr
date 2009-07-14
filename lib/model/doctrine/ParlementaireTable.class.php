@@ -8,7 +8,7 @@ class ParlementaireTable extends PersonnaliteTable
   {
     $pager = new sfDoctrinePager('Parlementaire',20);
     if (!$query) {
-      $query = $this->createQuery()->orderBy('nom_de_famille ASC');
+      $query = $this->createQuery('p')->orderBy('p.nom_de_famille ASC');
     }
     $pager->setQuery($query);
     $pager->setPage($request->getParameter('page', 1));

@@ -14,16 +14,159 @@ class Parlementaire extends BaseParlementaire
     }
     return $this->_set('nom', $str);
   }
-
-  public function getCirconscription() {
-    return $this->nom_circo."(".$this->num_circo.")";
-  }
-
-  public function setCirconscription($str) {
+   public function setCirconscription($str) {
     if (preg_match('/(.*)\((\d+)/', $str, $match)) {
-      $this->nom_circo = $match[1];
+      $this->nom_circo = trim($match[1]);
       $this->num_circo = $match[2];
     }
+  }
+/*
+  public function setCirconscription($str) {
+    if (preg_match('/(.*)\((\d+)/', $str, $match)) {
+      $nom = trim($match[1]);
+      $circo = Doctrine::getTable('Circonscription')->findOneByNom($nom);
+      if (!$circo) {
+	$circo = new Circonscription();
+	$circo->nom = $nom;
+        $circo->prefixe = 'de';
+        $circo->save();
+      }
+      $this->_set('Circonscription', $circo);
+      $this->num_circo = $match[2];
+    }
+  }
+*/
+
+  public function getCirconscription() {
+    $hashmap = array(
+     "Ain" => "de l'",
+     "Aisne" => "de l'",
+     "Allier" => "de l'",
+     "Alpes-de-Haute-Provence" => "des",
+     "Alpes-Maritimes" => "des",
+     "Ardèche" => "de l'",
+     "Ardennes" => "des",
+     "Ariège" => "de l'",
+     "Aube" => "de l'",
+     "Aude" => "de l'",
+     "Aveyron" => "de l'",
+     "Bas-Rhin" => "du",
+     "Bouches-du-Rhône" => "des",
+     "Calvados" => "du",
+     "Cantal" => "du",
+     "Charente" => "de la",
+     "Charente-Maritime" => "de la",
+     "Cher" => "du",
+     "Corrèze" => "de la",
+     "Corse-du-Sud" => "de",
+     "Côte-d'Or" => "de la",
+     "Côtes-d'Armor" => "des",
+     "Creuse" => "de la",
+     "Deux-Sèvres" => "des",
+     "Dordogne" => "de la",
+     "Doubs" => "du",
+     "Drôme" => "de la",
+     "Essonne" => "de l'",
+     "Eure" => "de l'",
+     "Eure-et-Loir" => "de l'",
+     "Finistère" => "du",
+     "Gard" => "du",
+     "Gers" => "du",
+     "Gironde" => "de la",
+     "Guadeloupe" => "de",
+     "Guyane" => "de",
+     "Haut-Rhin" => "du",
+     "Haute-Corse" => "de",
+     "Haute-Garonne" => "de la",
+     "Haute-Loire" => "de la",
+     "Haute-Marne" => "de la",
+     "Haute-Saône" => "de la",
+     "Haute-Savoie" => "de",
+     "Haute-Vienne" => "de la",
+     "Hautes-Alpes" => "des",
+     "Hautes-Pyrénées" => "des",
+     "Hauts-de-Seine" => "des",
+     "Hérault" => "de l'",
+     "Ille-et-Vilaine" => "de l'",
+     "Indre" => "de l'",
+     "Indre-et-Loire" => "de l'",
+     "Isère" => "de l'",
+     "Jura" => "du",
+     "Landes" => "des",
+     "Loir-et-Cher" => "du",
+     "Loire" => "de la",
+     "Loire-Atlantique" => "de la",
+     "Loiret" => "du",
+     "Lot" => "du",
+     "Lot-et-Garonne" => "du",
+     "Lozère" => "de la",
+     "Maine-et-Loire" => "du",
+     "Manche" => "de la",
+     "Marne" => "de la",
+     "Martinique" => "de",
+     "Mayenne" => "de",
+     "Mayotte" => "de",
+     "Meurthe-et-Moselle" => "de la",
+     "Meuse" => "de la",
+     "Morbihan" => "du",
+     "Moselle" => "de la",
+     "Nièvre" => "de la",
+     "Nord" => "du",
+     "Nouvelle-Calédonie" => "de",
+     "Oise" => "de l'",
+     "Orne" => "de l'",
+     "Paris" => "de",
+     "Pas-de-Calais" => "du",
+     "Polynésie Française" => "de",
+     "Puy-de-Dôme" => "du",
+     "Pyrénées-Atlantiques" => "des",
+     "Pyrénées-Orientales" => "des",
+     "Réunion" => "de la",
+     "Rhône" => "du",
+     "Saint-Pierre-et-Miquelon" => "de",
+     "Saône-et-Loire" => "de la",
+     "Sarthe" => "de la",
+     "Savoie" => "de",
+     "Seine-et-Marne" => "de la",
+     "Seine-Maritime" => "de la",
+     "Seine-Saint-Denis" => "de la",
+     "Somme" => "de la",
+     "Tarn" => "du",
+     "Tarn-et-Garonne" => "du",
+     "Territoire-de-Belfort" => "du",
+     "Val-d'Oise" => "du",
+     "Val-de-Marne" => "du",
+     "Var" => "du",
+     "Vaucluse" => "du",
+     "Vendée" => "de",
+     "Vienne" => "de la",
+     "Vosges" => "des",
+     "Wallis-et-Futuna" => "de",
+     "Yonne" => "de l'",
+     "Yvelines" => "des"
+    );
+    $prefixe = $hashmap[$this->nom_circo];
+    if ($prefixe != "de l'") $prefixe = $prefixe.' ';
+    return $prefixe.$this->nom_circo;
+  }
+
+  public function getNumCircoString() {
+    if ($this->num_circo == 1) return $this->num_circo.'ère circonscription';
+    else return $this->num_circo.'ème circonscription';
+  }
+
+  public function getStatut() {
+    if ($this->type == 'depute') {
+        if ($this->sexe == 'F') return 'Députée';
+        else return 'Député';
+    } else  {
+        if ($this->sexe == 'F') return 'Sénatrice';
+        else return 'Sénateur';
+    }
+  }
+  
+  public function getLongStatut() {
+    return $this->getStatut().' '.$this->getGroupe()->getNom().' de la '.$this->getNumCircoString().' '.$this->getCirconscription();
   }
 
   public function setDebutMandat($str) {
@@ -62,6 +205,12 @@ class Parlementaire extends BaseParlementaire
       $orgas->add($po);
     }
     $this->_set('ParlementaireOrganismes', $orgas);
+  }
+  public function getPOrganisme($str) {
+    foreach($this->getParlementaireOrganismes() as $po) {
+      if ($po->getOrganisme()->getNom() == $str)
+	return $po;
+    }
   }
   public function setAutresmandats($array) {
 
