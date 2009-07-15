@@ -62,8 +62,8 @@ sub contact {
 		$text = $p->get_text('/li');
 		$text =~ s/^\s+//;
 		if ($text =~ /^\S+\@/) {
-		    while (text =~ /(\S+@\S+)/g) {
-			${$depute{'Mails'}}{$text} = 1;
+		    while ($text =~ /(\S+)/g) {
+			${$depute{'Mails'}}{$1} = 1;
 		    }
 		}else {
 		    ${$depute{'Adresses'}}{$text} = 1
@@ -156,9 +156,27 @@ while($p->get_tag("h1")) {
     }
 }
 
-if ($xml) {
+@noms = split / /, $depute{'Nom'};
+if ((join " ", keys %{$depute{'Mails'}}) =~ /(\S+)\@assemblee/) {
+    $login = $1;
+    while ($login = substr($login, 1)) {
+	for($i = 0 ; $i <= $#noms ; $i++) {
+	    if ($noms[$i] =~ /$login/i)  {
+		if ($depute{'Nom'} =~ /(\S*$login.*)/i) {
+		    $depute{'Nom_de_famille'} = $1;
+		    last;
+		}
+	    }
+	}
+	if ($depute{'Nom_de_famille'}) {
+	    last;
+	}
+    }
+}
 
+if ($xml) {
 print "<Depute>\n";
+
 foreach $k (keys %depute) {
     print '<'.lc($k).'>';
     if (ref($depute{$k}) eq 'HASH' ) {
