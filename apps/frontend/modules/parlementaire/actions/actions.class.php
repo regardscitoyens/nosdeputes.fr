@@ -38,6 +38,7 @@ class parlementaireActions extends sfActions
       $query->where('p.nom_circo = ?', $this->circo);
     }
     $query->orderBy("p.num_circo");
+    $query->leftJoin('p.ParlementaireOrganisme po')->leftJoin('po.Organisme o')->andWhere('o.type = "groupe"');
     $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
   }
   public function executeListProfession(sfWebRequest $request) 
@@ -47,6 +48,7 @@ class parlementaireActions extends sfActions
     if ($this->prof) {
       $query->where('p.profession LIKE "%'.$this->prof.'%"');
     }
+    $query->leftJoin('p.ParlementaireOrganisme po')->leftJoin('po.Organisme o')->andWhere('o.type = "groupe"');
     $query->orderBy("p.nom_de_famille ASC");
     $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
   }
