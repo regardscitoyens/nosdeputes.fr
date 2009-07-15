@@ -5,7 +5,12 @@
 <p><a href="<? echo $parlementaire->site_web ?>">Site web</a></p>
 <? endif; ?>
 <p><a href="<? echo $parlementaire->url_an ?>">Fiche sur le site de l'Assemblée Nationale</a></p>
-<p>Profession : <? echo link_to($parlementaire->profession, '@list_parlementaires_profession?profession='.$parlementaire->profession); ?></p>
+<p>Profession : 
+<? if ($parlementaire->profession) : ?>
+<? echo link_to($parlementaire->profession, '@list_parlementaires_profession?profession='.$parlementaire->profession); ?>
+<? else : ?>
+Non communiqué
+<? endif; ?></p>
 <p>Groupe : <? echo link_to($parlementaire->getGroupe()->getNom(), '@list_parlementaires_organisme?slug='.$parlementaire->getGroupe()->getSlug()); ?> (<? echo $parlementaire->getGroupe()->getFonction(); ?>)</p>
 <p>Responsabilités parlementaires :</p>
 <ul>
