@@ -21,7 +21,7 @@ class parlementaireActions extends sfActions
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
     $this->search = $request->getParameter('search');
     if ($this->search) {
-      $query->where('p.nom LIKE "%'.$this->search.'%"');
+      $query->where('p.nom LIKE ?' , '%'.$this->search.'%');
     }
     $query->orderBy("p.nom_de_famille ASC");
     $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
@@ -46,7 +46,7 @@ class parlementaireActions extends sfActions
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
     $this->prof = $request->getParameter('profession');
     if ($this->prof) {
-      $query->where('p.profession LIKE "%'.$this->prof.'%"');
+      $query->where('p.profession LIKE ?', '%'.$this->prof.'%');
     }
     $query->leftJoin('p.ParlementaireOrganisme po')->leftJoin('po.Organisme o')->andWhere('o.type = "groupe"');
     $query->orderBy("p.nom_de_famille ASC");
