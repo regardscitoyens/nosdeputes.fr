@@ -9,7 +9,7 @@
 <? if ($parlementaire->profession) : ?>
 <? echo link_to($parlementaire->profession, '@list_parlementaires_profession?profession='.$parlementaire->profession); ?>
 <? else : ?>
-Non communiqué
+Non communiquée
 <? endif; ?></p>
 <p>Groupe : <? echo link_to($parlementaire->getGroupe()->getNom(), '@list_parlementaires_organisme?slug='.$parlementaire->getGroupe()->getSlug()); ?> (<? echo $parlementaire->getGroupe()->getFonction(); ?>)</p>
 <p>Responsabilités parlementaires :</p>
