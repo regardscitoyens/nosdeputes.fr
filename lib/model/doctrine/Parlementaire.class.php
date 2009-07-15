@@ -8,12 +8,6 @@ require_once "myTools.class.php";
 class Parlementaire extends BaseParlementaire
 {
 
-  public function setNom($str) {
-    if (preg_match('/^\S+ [a-z\s\']*([A-Z].+)/', $str, $match)) {
-      $this->_set('nom_de_famille', $match[1]);
-    }
-    return $this->_set('nom', $str);
-  }
    public function setCirconscription($str) {
     if (preg_match('/(.*)\((\d+)/', $str, $match)) {
       $this->nom_circo = trim($match[1]);
@@ -206,9 +200,28 @@ class Parlementaire extends BaseParlementaire
     }
     $this->_set('ParlementaireOrganismes', $orgas);
   }
+
+  private function getPOFromJoinIf($field, $value) {
+    $p = $this->toArray();
+    if (isset($p['ParlementaireOrganisme']) &&
+	isset($p['ParlementaireOrganisme'][0]) &&
+	$p['ParlementaireOrganisme'][0]['Organisme'][$field] == $value)  {
+      $po = new ParlementaireOrganisme();
+      $o = new Organisme();
+      $o->fromArray($p['ParlementaireOrganisme'][0]['Organisme']);
+      $po->setFonction($p['ParlementaireOrganisme'][0]['fonction']);
+      $po->setParlementaire($this);
+      $po->setOrganisme($o);
+      return $po;
+    }
+    return NULL;
+  }
+
   public function getPOrganisme($str) {
+    if($po = $this->getPOFromJoinIf('nom', $str))
+      return $po;
     foreach($this->getParlementaireOrganismes() as $po) {
-      if ($po->getOrganisme()->getNom() == $str)
+      if ($po['Organisme']->nom == $str)
 	return $po;
     }
   }
@@ -220,6 +233,8 @@ class Parlementaire extends BaseParlementaire
   public function setAdresses($array) {
   }
   public function getGroupe() {
+    if($po = $this->getPOFromJoinIf('type', 'groupe'))
+      return $po;
     foreach($this->getParlementaireOrganismes() as $po) {
       if ($po->type == 'groupe') 
 	return $po;
