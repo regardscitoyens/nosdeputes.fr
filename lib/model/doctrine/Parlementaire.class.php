@@ -192,7 +192,7 @@ class Parlementaire extends BaseParlementaire
       $po = new ParlementaireOrganisme();
       $po->setParlementaire($this);
       $po->setOrganisme($orga);
-      $po->setFonction($args[1]);
+      $po->setFonction(preg_replace("/\(/","",$args[1]));
       /*      if (isset($args[2])) {
 	$po->setDebutFonction($args[2]);
 	}*/
