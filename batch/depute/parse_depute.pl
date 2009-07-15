@@ -156,6 +156,7 @@ while($p->get_tag("h1")) {
     }
 }
 
+#On récupère le nom de famille à partir des emails
 @noms = split / /, $depute{'Nom'};
 if ((join " ", keys %{$depute{'Mails'}}) =~ /(\S+)\@assemblee/) {
     $login = $1;
@@ -173,6 +174,13 @@ if ((join " ", keys %{$depute{'Mails'}}) =~ /(\S+)\@assemblee/) {
 	}
     }
 }
+#Si pas de nom de famille, on le récupère par le nom
+if (!$depute{'Nom_de_famille'}) {
+    if ($depute{'Nom'} =~ /\S (.*)$/) {
+	$depute{'Nom_de_famille'} = $1;
+    }
+}
+
 
 if ($xml) {
 print "<Depute>\n";

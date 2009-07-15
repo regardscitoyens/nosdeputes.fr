@@ -788,6 +788,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Ancien sportif de haut niveau
     debut_mandat: 26/05/2008
+    nom_de_famille: Estrosi
     nom: Christian Estrosi
     type: depute
   depute_1268:
@@ -1106,6 +1107,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Pharmacienne retraitée
     debut_mandat: 20/07/2007
+    nom_de_famille: Gallez
     nom: Cécile Gallez
     type: depute
   depute_1418:
@@ -2061,26 +2063,27 @@ Parlementaire:
     nom: Didier Julia
     type: depute
   depute_1748:
-    place_hemicycle: 472
     fonctions:
       - commission du développement durable et de l'aménagement du territoire / membre / 
-    autresmandats:
-      - Membre du conseil général (Bas-Rhin)
     sexe: H
     id_an: 1748
     extras:
       - conseil national des transports / membre suppléant
-    mails:
-      - contact@armandjung-depute.fr
-    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1748.asp
     adresses:
       - 40 Avenue des Vosges 67000 Strasbourg Téléphone : 03 88 24 73 00 Télécopie : 03 88 24 73 03 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
     circonscription: Bas-Rhin (1ère)
     groupe:
       - socialiste, radical, citoyen et divers gauche / membre
-    profession: Fonctionnaire territorial
+    nom_de_famille: Jung
+    place_hemicycle: 472
+    autresmandats:
+      - Membre du conseil général (Bas-Rhin)
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/1748.asp
+    mails:
+      - contact@armandjung-depute.fr
     site_web: http://www.armandjung-depute.fr 
+    profession: Fonctionnaire territorial
     debut_mandat: 20/06/2007
     nom: Armand Jung
     type: depute
@@ -3096,6 +3099,7 @@ Parlementaire:
     groupe:
       - union pour un mouvement populaire / apparenté
     debut_mandat: 20/06/2007
+    nom_de_famille: Marlin
     nom: Franck Marlin
     type: depute
   depute_2098:
@@ -3970,26 +3974,27 @@ Parlementaire:
     nom: Christian Paul
     type: depute
   depute_2339:
-    place_hemicycle: 588
     fonctions:
       - commission des affaires économiques / secrétaire / 
-    autresmandats:
-      - Membre du Conseil municipal du Havre, Seine-Maritime (190590 habitants)
     sexe: H
     id_an: 2339
     extras:
       - commission supérieure du crédit maritime mutuel / membre titulaire
-    mails:
-      - an.dpaul@wanadoo.fr
-    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2339.asp
     adresses:
       - 12 Rue Michel Gautier 76600 Le Havre Téléphone : 02 35 53 05 79 Télécopie : 02 35 53 66 91 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
     circonscription: Seine-Maritime (8ème)
     groupe:
       - gauche démocrate et républicaine / membre
-    profession: Instituteur
+    nom_de_famille: Paul
+    place_hemicycle: 588
+    autresmandats:
+      - Membre du Conseil municipal du Havre, Seine-Maritime (190590 habitants)
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2339.asp
+    mails:
+      - an.dpaul@wanadoo.fr
     site_web: http://www.danielpaul-lehavre.org
+    profession: Instituteur
     debut_mandat: 20/06/2007
     nom: Daniel Paul
     type: depute
@@ -4338,6 +4343,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Directeur de société
     debut_mandat: 20/07/2007
+    nom_de_famille: Poulou
     nom: Daniel Poulou
     type: depute
   depute_2473:
@@ -4685,25 +4691,26 @@ Parlementaire:
     nom: Alain Rodet
     type: depute
   depute_2603:
-    place_hemicycle: 479
     fonctions:
       - commission des affaires culturelles et de l'éducation / vice-président / 
       - comité d'évaluation et de contrôle des politiques publiques / secrétaire / 
-    autresmandats:
-      - Membre du conseil général (Ille-et-Vilaine)
     sexe: H
     id_an: 2603
-    mails:
-      - marcel.rogemont@wanadoo.fr
-    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2603.asp
     adresses:
       - Permanence en circonscription 13 Boulevard Maréchal de Lattre de Tassigny 35000 Rennes Téléphone : 02 99 78 23 23 Télécopie : 02 99 59 78 02 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
     circonscription: Ille-et-Vilaine (3ème)
     groupe:
       - socialiste, radical, citoyen et divers gauche / apparenté
-    profession: Cadre
+    nom_de_famille: Rogemont
+    place_hemicycle: 479
+    autresmandats:
+      - Membre du conseil général (Ille-et-Vilaine)
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2603.asp
+    mails:
+      - marcel.rogemont@wanadoo.fr
     site_web: http://www.marcelrogemont.net
+    profession: Cadre
     debut_mandat: 20/06/2007
     nom: Marcel Rogemont
     type: depute
@@ -4889,6 +4896,7 @@ Parlementaire:
     groupe:
       - union pour un mouvement populaire / membre
     debut_mandat: 20/07/2007
+    nom_de_famille: Joulaud
     nom: Marc Joulaud
     type: depute
   depute_266788:
@@ -4937,6 +4945,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Exploitant agricole
     debut_mandat: 20/07/2007
+    nom_de_famille: Bony
     nom: Jean-Yves Bony
     type: depute
   depute_266797:
@@ -5410,6 +5419,7 @@ Parlementaire:
       - nouveau centre / membre
     profession: Informaticien retraité
     debut_mandat: 20/07/2007
+    nom_de_famille: Vampa
     nom: Marc Vampa
     type: depute
   depute_267118:
@@ -5524,6 +5534,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Directeur informatique
     debut_mandat: 15/09/2008
+    nom_de_famille: Gorges
     nom: Jean-Pierre Gorges
     type: depute
   depute_267166:
@@ -5541,6 +5552,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Médecin du travail
     debut_mandat: 20/07/2007
+    nom_de_famille: Delong
     nom: Sophie Delong
     type: depute
   depute_267178:
@@ -6017,6 +6029,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Directeur financier
     debut_mandat: 20/07/2007
+    nom_de_famille: Lezeau
     nom: Michel Lezeau
     type: depute
   depute_267289:
@@ -6112,6 +6125,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Médecin
     debut_mandat: 19/04/2008
+    nom_de_famille: Debray
     nom: Patrice Debray
     type: depute
   depute_267314:
@@ -6547,25 +6561,26 @@ Parlementaire:
     nom: Éric Diard
     type: depute
   depute_267450:
-    place_hemicycle: 221
     fonctions:
       - mision d'information commune sur la mesure des grandes données économiques et sociales / membre / 
       - commission des affaires sociales / membre / 
       - mission d'évaluation et de contrôle des lois de financement de la sécurité sociale / membre / 
-    autresmandats:
-      - Maire de Saint-Apollinaire, Côte-d'Or (5016 habitants)
     sexe: H
     id_an: 267450
-    mails:
-      - permanence@remi-delatte.com
-    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267450.asp
     adresses:
       - Permanence 81 Avenue Maréchal Lyautey 21000 Dijon 
     circonscription: Côte-d'Or (2ème)
     groupe:
       - union pour un mouvement populaire / membre
-    profession: Agriculteur-propriétaire exploitant
+    nom_de_famille: Delatte
+    place_hemicycle: 221
+    autresmandats:
+      - Maire de Saint-Apollinaire, Côte-d'Or (5016 habitants)
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/267450.asp
+    mails:
+      - permanence@remi-delatte.com
     site_web: http://www.remi-delatte.com
+    profession: Agriculteur-propriétaire exploitant
     debut_mandat: 20/06/2007
     nom: Rémi Delatte
     type: depute
@@ -6584,6 +6599,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Médecin cardiologue (Chef de service)
     debut_mandat: 04/07/2007
+    nom_de_famille: Aboud
     nom: Élie Aboud
     type: depute
   depute_267459:
@@ -7091,6 +7107,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     site_web: http://www.josettepons.fr
     debut_mandat: 20/06/2007
+    nom_de_famille: Pons
     nom: Josette Pons
     type: depute
   depute_267606:
@@ -7109,6 +7126,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Professeur agrégé de géographie
     debut_mandat: 20/07/2007
+    nom_de_famille: Vandewalle
     nom: Yves Vandewalle
     type: depute
   depute_267622:
@@ -7436,6 +7454,7 @@ Parlementaire:
     site_web: http://www.depute-mallie.com
     profession: Docteur en chirurgie dentaire
     debut_mandat: 20/06/2007
+    nom_de_famille: Mallié
     nom: Richard Mallié
     type: depute
   depute_267728:
@@ -7577,6 +7596,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Agriculteur
     debut_mandat: 20/07/2007
+    nom_de_famille: Patria
     nom: Christian Patria
     type: depute
   depute_267775:
@@ -7879,6 +7899,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Directeur de société
     debut_mandat: 05/01/2009
+    nom_de_famille: Siffredi
     nom: Georges Siffredi
     type: depute
   depute_267886:
@@ -8981,6 +9002,7 @@ Parlementaire:
     groupe:
       - nouveau centre / membre
     debut_mandat: 19/04/2008
+    nom_de_famille: Le Moal
     nom: Colette Le Moal
     type: depute
   depute_2895:
@@ -9258,25 +9280,26 @@ Parlementaire:
     nom: Gaël Yanno
     type: depute
   depute_2971:
-    place_hemicycle: 36
     fonctions:
       - comité d'évaluation et de contrôle des politiques publiques / membre de droit / 
       - commission des affaires culturelles et de l'éducation / membre / 
-    autresmandats:
-      - Membre du conseil régional (Lorraine)
-      - Membre du Conseil municipal de Metz, Moselle (123776 habitants)
     sexe: F
     id_an: 2971
-    mails:
     extras:
       - conseil de surveillance de la caisse nationale des allocations familiales / membre titulaire
-    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2971.asp
     circonscription: Moselle (3ème)
     adresses:
       - 9 Square du Pontiffroy 57000 Metz Téléphone : 03 87 30 39 15 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
     groupe:
       - union pour un mouvement populaire / membre
+    nom_de_famille: Zimmermann
+    place_hemicycle: 36
+    autresmandats:
+      - Membre du conseil régional (Lorraine)
+      - Membre du Conseil municipal de Metz, Moselle (123776 habitants)
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/2971.asp
+    mails:
     profession: Professeur certifié
     debut_mandat: 20/06/2007
     nom: Marie-Jo Zimmermann
@@ -9294,6 +9317,7 @@ Parlementaire:
       - union pour un mouvement populaire / apparenté
     profession: Cadre bancaire
     debut_mandat: 20/07/2007
+    nom_de_famille: Marcon
     nom: Jean-Pierre Marcon
     type: depute
   depute_304016:
@@ -9344,25 +9368,26 @@ Parlementaire:
     nom: Véronique Besse
     type: depute
   depute_312:
-    place_hemicycle: 60
     fonctions:
       - commission des affaires économiques / membre / 
-    autresmandats:
-      - Maire de Cressat, Creuse (523 habitants)
-      - Membre du conseil général (Creuse)
     sexe: H
     id_an: 312
-    mails:
-      - auclair.j@wanadoo.fr
-    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/312.asp
     adresses:
       - Mairie 23140 Cressat Téléphone : 05 55 62 93 59 Télécopie : 05 55 62 33 62 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
     circonscription: Creuse (2ème)
     groupe:
       - union pour un mouvement populaire / membre
-    profession: Agriculteur
+    nom_de_famille: Auclair
+    place_hemicycle: 60
+    autresmandats:
+      - Maire de Cressat, Creuse (523 habitants)
+      - Membre du conseil général (Creuse)
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/312.asp
+    mails:
+      - auclair.j@wanadoo.fr
     site_web: http://www.jean-auclair.fr
+    profession: Agriculteur
     debut_mandat: 20/06/2007
     nom: Jean Auclair
     type: depute
@@ -9774,24 +9799,25 @@ Parlementaire:
     nom: Sauveur Gandolfi-Scheit
     type: depute
   depute_331282:
-    place_hemicycle: 565
     fonctions:
       - commission des affaires économiques / membre / 
-    autresmandats:
-      - Membre du conseil régional (Bretagne)
     sexe: F
     id_an: 331282
-    mails:
-      - erhel.corinne@orange.fr
-    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331282.asp
     adresses:
       - Résidence du Manoir 32 Bis Place du Marchallac'h 22300 Lannion Téléphone : 02 96 37 03 23 Télécopie : 02 96 37 05 70 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
     circonscription: Côtes-d'Armor (5ème)
     groupe:
       - socialiste, radical, citoyen et divers gauche / membre
-    profession: Assistante parlementaire
+    nom_de_famille: Erhel
+    place_hemicycle: 565
+    autresmandats:
+      - Membre du conseil régional (Bretagne)
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/331282.asp
+    mails:
+      - erhel.corinne@orange.fr
     site_web: http://www.corinne-erhel.fr
+    profession: Assistante parlementaire
     debut_mandat: 20/06/2007
     nom: Corinne Erhel
     type: depute
@@ -10367,24 +10393,25 @@ Parlementaire:
     nom: François de Rugy
     type: depute
   depute_332796:
-    place_hemicycle: 604
     fonctions:
       - mision d'information commune sur la mesure des grandes données économiques et sociales / membre / 
       - commission des affaires culturelles et de l'éducation / membre / 
-    autresmandats:
-      - Membre du conseil général (Loire-Atlantique)
     sexe: H
     id_an: 332796
-    mails:
-      - contact@michelmenard.fr
-    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332796.asp
     adresses:
       - Permanence parlementaire 4 Rue Léonard de Vinci 44470 Carquefou 
     circonscription: Loire-Atlantique (5ème)
     groupe:
       - socialiste, radical, citoyen et divers gauche / membre
-    profession: Professeur des écoles
+    nom_de_famille: Ménard
+    place_hemicycle: 604
+    autresmandats:
+      - Membre du conseil général (Loire-Atlantique)
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/332796.asp
+    mails:
+      - contact@michelmenard.fr
     site_web: http://www.michelmenard.fr
+    profession: Professeur des écoles
     debut_mandat: 20/06/2007
     nom: Michel Ménard
     type: depute
@@ -10477,6 +10504,7 @@ Parlementaire:
       - socialiste, radical, citoyen et divers gauche / apparenté
     profession: Médecin
     debut_mandat: 20/06/2007
+    nom_de_famille: Orliac
     nom: Dominique Orliac
     type: depute
   depute_333043:
@@ -11736,24 +11764,25 @@ Parlementaire:
     nom: Claude Bodin
     type: depute
   depute_337421:
-    place_hemicycle: 305
     fonctions:
       - commission du développement durable et de l'aménagement du territoire / membre / 
-    autresmandats:
-      - Maire de Sannois, Val-d'Oise (25353 habitants)
     sexe: H
     id_an: 337421
-    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337421.asp
-    mails:
-      - abenard@assemblee-nationale.fr
     adresses:
       - Permanence parlementaire 8 Rue de l'Hôtel Dieu 95500 Gonesse 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
     circonscription: Val-d'Oise (9ème)
     groupe:
       - union pour un mouvement populaire / membre
-    site_web: http://www.paternotte.fr
+    nom_de_famille: Paternotte
+    place_hemicycle: 305
+    autresmandats:
+      - Maire de Sannois, Val-d'Oise (25353 habitants)
+    mails:
+      - abenard@assemblee-nationale.fr
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/337421.asp
     profession: Docteur en pharmacie, gérant de société pharmaceutique
+    site_web: http://www.paternotte.fr
     debut_mandat: 20/06/2007
     nom: Yanick Paternotte
     type: depute
@@ -12028,6 +12057,7 @@ Parlementaire:
       - socialiste, radical, citoyen et divers gauche / membre
     profession: Professeur
     debut_mandat: 07/03/2008
+    nom_de_famille: Langlade
     nom: Colette Langlade
     type: depute
   depute_341481:
@@ -12043,6 +12073,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Médecin
     debut_mandat: 13/01/2009
+    nom_de_famille: Lefrand
     nom: Guy Lefrand
     type: depute
   depute_341:
@@ -12087,6 +12118,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Pharmacien d'officine
     debut_mandat: 20/07/2007
+    nom_de_famille: Jeanneteau
     nom: Paul Jeanneteau
     type: depute
   depute_343385:
@@ -12104,6 +12136,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Chef d'entreprise
     debut_mandat: 20/04/2008
+    nom_de_famille: Morenvillier
     nom: Philippe Morenvillier
     type: depute
   depute_343623:
@@ -12121,6 +12154,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Directrice des ventes
     debut_mandat: 17/11/2008
+    nom_de_famille: Grommerch
     nom: Anne Grommerch
     type: depute
   depute_344878:
@@ -12164,6 +12198,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Proviseur-adjoint en retraite
     debut_mandat: 20/04/2008
+    nom_de_famille: Millet
     nom: Gérard Millet
     type: depute
   depute_345898:
@@ -12178,6 +12213,7 @@ Parlementaire:
     groupe:
       - union pour un mouvement populaire / membre
     debut_mandat: 17/04/2009
+    nom_de_famille: Dumoulin
     nom: Cécile Dumoulin
     type: depute
   depute_345937:
@@ -12195,6 +12231,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Chef d'entreprise
     debut_mandat: 20/07/2007
+    nom_de_famille: Poisson
     nom: Jean-Frédéric Poisson
     type: depute
   depute_346652:
@@ -12212,6 +12249,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Administrateur civil hors classe
     debut_mandat: 20/07/2007
+    nom_de_famille: Malherbe
     nom: Guy Malherbe
     type: depute
   depute_346692:
@@ -12227,6 +12265,7 @@ Parlementaire:
       - union pour un mouvement populaire / apparenté
     profession: Ingénieur de recherche
     debut_mandat: 19/09/2008
+    nom_de_famille: Briand
     nom: Françoise Briand
     type: depute
   depute_346886:
@@ -12243,6 +12282,7 @@ Parlementaire:
     groupe:
       - union pour un mouvement populaire / membre
     debut_mandat: 20/07/2007
+    nom_de_famille: Lefebvre
     nom: Frédéric Lefebvre
     type: depute
   depute_346:
@@ -12530,6 +12570,7 @@ Parlementaire:
       - députés n'appartenant à aucun groupe / membre
     profession: Conseiller des affaires étrangères hors classe (en détachement)
     debut_mandat: 13/04/2008
+    nom_de_famille: Souchet
     nom: Dominique Souchet
     type: depute
   depute_414:
@@ -12592,6 +12633,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Chirurgien des hôpitaux
     debut_mandat: 20/07/2007
+    nom_de_famille: Beaulieu
     nom: Jean-Claude Beaulieu
     type: depute
   depute_441:
@@ -13063,26 +13105,27 @@ Parlementaire:
     nom: Pierre Bourguignon
     type: depute
   depute_624:
-    place_hemicycle: 197
     fonctions:
       - commission spéciale chargée de vérifier et d'apurer les comptes / vice-présidente / 
       - commission des affaires étrangères / membre / 
-    autresmandats:
-      - Membre du Conseil municipal de Bordeaux, Gironde (214633 habitants)
     sexe: F
     id_an: 624
-    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/624.asp
-    mails:
-      - chantal.bourrague@wanadoo.fr
-      - cbourrague@assemblee-nationale.fr
     adresses:
       - 1 Rue Jacques Camille Paris BP 24 33030 Bordeaux cedex Téléphone : 05 56 29 07 29 Télécopie : 05 56 39 94 93 
       - Assemblée nationale 126 rue de l'Université 75355 Paris 07 SP 
     circonscription: Gironde (1ère)
     groupe:
       - union pour un mouvement populaire / membre
-    site_web: http://www.chantal-bourrague.net
+    nom_de_famille: Bourragué
+    place_hemicycle: 197
+    autresmandats:
+      - Membre du Conseil municipal de Bordeaux, Gironde (214633 habitants)
+    mails:
+      - chantal.bourrague@wanadoo.fr
+      - cbourrague@assemblee-nationale.fr
+    url_an: http://www.assembleenationale.fr/13/tribun/fiches_id/624.asp
     profession: Cadre commercial
+    site_web: http://www.chantal-bourrague.net
     debut_mandat: 20/06/2007
     nom: Chantal Bourragué
     type: depute
@@ -13312,6 +13355,7 @@ Parlementaire:
       - union pour un mouvement populaire / membre
     profession: Fonctionnaire
     debut_mandat: 20/06/2007
+    nom_de_famille: Buillard
     nom: Michel Buillard
     type: depute
   depute_691:
@@ -13392,6 +13436,7 @@ Parlementaire:
       - socialiste, radical, citoyen et divers gauche / membre
     profession: Chirurgien
     debut_mandat: 20/06/2007
+    nom_de_famille: Cahuzac
     nom: Jérôme Cahuzac
     type: depute
   depute_707:
