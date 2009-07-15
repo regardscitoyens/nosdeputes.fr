@@ -6,28 +6,16 @@
 </ul>
 <? if ($pager->haveToPaginate()) : ?>
 <div class="pagination">
-    <a href="<?php echo url_for('parlementaire/list') ?>?search=<? echo $search; ?>&page=1">
-   << 
-    </a>
- 
-    <a href="<?php echo url_for('parlementaire/list') ?>?search=<? echo $search; ?>&page=<?php echo $pager->getPreviousPage() ?>">
-   <
-    </a>
- 
+    <? echo link_to('<<', '@search_parlementaire?search='.$search.'&page=1'); ?>
+    <? echo link_to('<', '@search_parlementaire?search='.$search.'&page='.$pager->getPreviousPage()); ?>
     <?php foreach ($pager->getLinks() as $page): ?>
       <?php if ($page == $pager->getPage()): ?>
         <?php echo $page ?>
       <?php else: ?>
-        <a href="<?php echo url_for('parlementaire/list') ?>?search=<? echo $search; ?>&page=<?php echo $page ?>"><?php echo $page ?></a>
+        <?php echo link_to($page, '@search_parlementaire?search='.$search.'&page='.$page); ?>
       <?php endif; ?>
     <?php endforeach; ?>
- 
-    <a href="<?php echo url_for('parlementaire/list') ?>?search=<? echo $search; ?>&page=<?php echo $pager->getNextPage() ?>">
-   >
-    </a>
- 
-    <a href="<?php echo url_for('parlementaire/list') ?>?search=<? echo $search; ?>&page=<?php echo $pager->getLastPage() ?>">
-   >>
-    </a>
+    <? echo link_to('>', '@search_parlementaire?search='.$search.'&page='.$pager->getNextPage()); ?>
+    <? echo link_to('>>', '@search_parlementaire?search='.$search.'&page='.$pager->getLastPage()); ?>
 </div>
 <? endif; ?>

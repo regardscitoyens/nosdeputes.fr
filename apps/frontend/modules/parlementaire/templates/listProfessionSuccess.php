@@ -5,28 +5,16 @@
 </ul>
 <? if ($pager->haveToPaginate()) : ?>
 <div class="pagination">
-    <a href="<?php echo url_for('parlementaire/list') ?>?profession=<? echo $prof; ?>&page=1">
-   <<
-    </a>
-
-    <a href="<?php echo url_for('parlementaire/list') ?>?profession=<? echo prof; ?>&page=<?php echo $pager->getPreviousPage() ?>">
-   <
-    </a>
-
+    <? echo link_to('<<', '@list_parlementaires_profession?profession='.$prof.'&page=1'); ?>
+    <? echo link_to('<', '@list_parlementaires_profession?profession='.$prof.'&page='.$pager->getPreviousPage()); ?>
     <?php foreach ($pager->getLinks() as $page): ?>
       <?php if ($page == $pager->getPage()): ?>
         <?php echo $page ?>
       <?php else: ?>
-        <a href="<?php echo url_for('parlementaire/list') ?>?profession=<? echo $prof; ?>&page=<?php echo $page ?>"><?php echo $page ?></a>
+        <?php echo link_to($page, '@list_parlementaires_profession?profession='.$prof.'&page='.$page); ?>
       <?php endif; ?>
     <?php endforeach; ?>
-
-    <a href="<?php echo url_for('parlementaire/list') ?>?profession=<? echo $prof; ?>&page=<?php echo $pager->getNextPage() ?>">
-   >
-    </a>
-
-    <a href="<?php echo url_for('parlementaire/list') ?>?profession=<? echo $prof; ?>&page=<?php echo $pager->getLastPage() ?>">
-   >>
-    </a>
+    <? echo link_to('>', '@list_parlementaires_profession?profession='.$prof.'&page='.$pager->getNextPage()); ?>
+    <? echo link_to('>>', '@list_parlementaires_profession?profession='.$prof.'&page='.$pager->getLastPage()); ?>
 </div>
 <? endif; ?>
