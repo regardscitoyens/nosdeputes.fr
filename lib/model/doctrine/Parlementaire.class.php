@@ -145,7 +145,7 @@ class Parlementaire extends BaseParlementaire
      "Yonne" => "de l'",
      "Yvelines" => "des"
     );
-    $prefixe = $hashmap[$this->nom_circo];
+    $prefixe = $hashmap[trim($this->nom_circo)];
     if ($prefixe != "de l'") $prefixe = $prefixe.' ';
     return $prefixe.$this->nom_circo;
   }
