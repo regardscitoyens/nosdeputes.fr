@@ -64,4 +64,46 @@ ParlementaireOrganisme:
     Organisme:
       foreignAlias: ParlementaireOrganismes
 
-  
+Seance:
+  actAs:
+    Timestampable:
+  columns:
+    date: 
+      type: date
+    type:
+      type: enum
+      values: ['commission', 'hemicycle']
+    nom: string(30)
+    organisme_id: integer
+  relations:
+    Organisme:
+      foreignAlias: Seances
+  indexes:
+    uniq_index:
+      fields: [organisme_id, date, nom]
+      type: unique
+
+Presence:
+  actAs:
+    Timestampable:
+  columns:
+    parlementaire_id: integer
+    seance_id: integer
+  relations:
+    Parlementaire:
+      foreignAlias: Presences
+    Seance:
+      foreignAlias: Presences
+
+PreuvePresence:
+  actAs:
+    Timestampable:
+  columns:
+    presence_id: integer
+    type:
+      type: enum
+      values: ['jo', 'intervension']
+    source: string(50)
+  relations:
+    Presence:
+      foreignAlias: Preuves

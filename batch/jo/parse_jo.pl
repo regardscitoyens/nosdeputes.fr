@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 
 open FILE, shift;
+$source = shift;
+
 
 $mois{'janvier'} = '01';
 $mois{'février'} = '02';
@@ -47,8 +49,6 @@ $lines =~ s/ : ?\n/\n/g;
 $lines =~ s/– //g;
 $lines =~ s/\. /\n/g;
 
-print $lines; exit;
-
 foreach (split /\n/, $lines) {
     if (/commission|mission/i) {
 	$commission = $_;
@@ -58,7 +58,7 @@ foreach (split /\n/, $lines) {
 	s/ heures/:00/;
 	s/ h /:/;
 	if (/([\d]+)[er]* ([\wé]+) (\d+)/) {
-	    $reunion = "$1/".$mois{$2}."/$3";
+	    $reunion = "$3-".$mois{$2}."-$1";
 	}
 	if (/ à ([\d:]+)/) {
 	    $session = $1;
@@ -71,14 +71,16 @@ foreach (split /\n/, $lines) {
 	$on = 0;
     }
     if ($on && /\w/) {
-	foreach $d (split /\, / ) {
-	print "<presence>";
-	print "<r>$reunion</r>";
-	print "<s>$session</s>";
-	print "<c>$commission</c>";
-	print "<d>$d</d>";
-	print "</presence>\n";
-}
+	foreach $d (split /\, / ) { #/
+		    
+		    print '{ ';
+		    print '"reunion": "'.$reunion.'",';
+		    print '"session": "'.$session.'",';
+		    print '"commission": "'.$commission.'",';
+		    print '"depute": "'.$d.'",';
+		    print '"source": "Journal officiel du '.$source.'"';
+		    print " } \n";
+	    }
     }
     if (/<i>(Présents|Assistait)/) {
 	$on = 1;
