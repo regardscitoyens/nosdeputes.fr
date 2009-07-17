@@ -51,6 +51,7 @@ Organisme:
 ParlementaireOrganisme:
   columns:
     fonction: string(255)
+    importance: integer
     debut_fonction: date
     organisme_id:
       type: integer
@@ -73,14 +74,14 @@ Seance:
     type:
       type: enum
       values: ['commission', 'hemicycle']
-    nom: string(30)
+    moment: string(30)
     organisme_id: integer
   relations:
     Organisme:
       foreignAlias: Seances
   indexes:
     uniq_index:
-      fields: [organisme_id, date, nom]
+      fields: [organisme_id, date, moment]
       type: unique
 
 Presence:
