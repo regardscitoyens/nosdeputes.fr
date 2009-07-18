@@ -50,20 +50,19 @@ $lines =~ s/,? ?M(\.|mes?) /\n/g;
 $lines =~ s/<\/?\w>\n/\n/g;
 $lines =~ s/ : ?\n/\n/g;
 $lines =~ s/– //g;
-$lines =~ s/\. /\n/g;
 $lines =~ s/\<hr.*Texte \d+ sur \d+\s*//g;
 
 $lines =~ s/\<A .*\<\/a\>\s*//g;
 $lines =~ s/,? ?\<hr/\n<hr/;
 $lines =~ s/<[^i][^>]+>//g;
-$lines =~ s/\n([^\s<]+)\s\n+(\S+)/\n$1 $2/g;
-$lines =~ s/Réunion/\nRéunion/g;
+$lines =~ s/\n([^\s<]+)\s\n+(\S+)\n/\n$1 $2\n/g;
+$lines =~ s/(\d[erm]+ r|R)éunion /\n$1éunion /gi;
+$lines =~ s/\. / /g;
 
 #print $lines ; exit;
 
-
 foreach (split /\n/, $lines) {
-    if (/comité|commission|mission/i && !/Ordre du jour/) {
+    if (/comité|commission|mission/i && !/Ordre du jour/ && !/(réunion|séance)/i) {
 	$commission = $_;
 	$on = 0;
     }
@@ -85,7 +84,7 @@ foreach (split /\n/, $lines) {
     }
     if ($on && /\w/) {
 	foreach $d (split /\, / ) { #/
-
+		    chomp($d);
 		    print '{ ';
 		    print '"reunion": "'.$reunion.'",';
 		    print '"session": "'.$session.'",';

@@ -9,6 +9,14 @@ class ParlementaireTable extends PersonnaliteTable
   public function similarTo($str)
   {
     $str = preg_replace('/\(.*\)/', '', $str);
+    $word = preg_replace('/^.*\s(\S+)\s*$/i', '\\1', $str);
+    $q = $this->createQuery('p')->where('nom LIKE ?', '% '.$word.'%');
+    $res = $q->Execute();
+    if ($res->count() == 1) {
+      return $res[0];
+    }
+    $q->free();
+    $res->free();
 
     //load parlementaires only once
     if (!$this->all)
