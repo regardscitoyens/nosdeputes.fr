@@ -34,30 +34,43 @@ $lines =~ s/<\/i>/<\/i>\n/g;
 $lines =~ s/\. <b>/<b>\n/g;
 $lines =~ s/<b>/\n<b>/g;
 $lines =~ s/<\/?b>//g;
-$lines =~ s/\. \. \. <hr>[^\n]*//;
+$lines =~ s/\. \. \. <hr>/\n<hr>/;
+
+
 $lines =~ s/\. <A href[^\n]*//g;
-$lines =~ s/ Réunion/\nRéunion/g;
-$lines =~ s/du\s*<b>/du /g;
+$lines =~ s/du\s*(<b>|\n)/du /g;
 $lines =~ s/\nà\s*.<i>/à /g;
 $lines =~ s/, à (<i>)?/ à /g;
 $lines =~ s/ : Pr/ <i>Pr/g;
 $lines =~ s/<i>/\n<i>/g;
 $lines =~ s/\.\s*\n/\n/g;
-$lines =~ s/,? ?M(\.|me) /\n/g;
+
+
+$lines =~ s/,? ?M(\.|mes?) /\n/g;
 $lines =~ s/<\/?\w>\n/\n/g;
 $lines =~ s/ : ?\n/\n/g;
 $lines =~ s/– //g;
 $lines =~ s/\. /\n/g;
+$lines =~ s/\<hr.*Texte \d+ sur \d+\s*//g;
+
+$lines =~ s/\<A .*\<\/a\>\s*//g;
+$lines =~ s/,? ?\<hr/\n<hr/;
+$lines =~ s/<[^i][^>]+>//g;
+$lines =~ s/\n([^\s<]+)\s\n+(\S+)/\n$1 $2/g;
+$lines =~ s/Réunion/\nRéunion/g;
+
+#print $lines ; exit;
+
 
 foreach (split /\n/, $lines) {
-    if (/commission|mission/i) {
+    if (/comité|commission|mission/i && !/Ordre du jour/) {
 	$commission = $_;
 	$on = 0;
     }
     if (/(réunion|séance)/i) {
 	s/ heures/:00/;
 	s/ h /:/;
-	if (/([\d]+)[er]* ([\wé]+) (\d+)/) {
+	if (/([\d]+)[er]* ([\wéû]+) (\d+)/) {
 	    $reunion = "$3-".$mois{$2}."-$1";
 	}
 	if (/ à ([\d:]+)/) {
@@ -67,12 +80,12 @@ foreach (split /\n/, $lines) {
 	}
 	$on = 0;
     }
-    if (/<i>Excus/) {
+    if (/(<i>Excus|Ordre)/) {
 	$on = 0;
     }
     if ($on && /\w/) {
 	foreach $d (split /\, / ) { #/
-		    
+
 		    print '{ ';
 		    print '"reunion": "'.$reunion.'",';
 		    print '"session": "'.$session.'",';
@@ -82,7 +95,7 @@ foreach (split /\n/, $lines) {
 		    print " } \n";
 	    }
     }
-    if (/<i>(Présents|Assistait)/) {
+    if (/<i>(Présent|Assistai)/) {
 	$on = 1;
     }
 }

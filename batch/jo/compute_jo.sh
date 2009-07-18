@@ -18,9 +18,9 @@ else if [ ! -s pdf/$FILE.pdf ] ; then exit ; fi
     echo $FILE cached
     ln pdf/$FILE.pdf jo.pdf
 fi
-if [ -s xml/$FILE.xml ] ; then exit; fi
+#if [ -s xml/$FILE.xml ] ; then exit; fi
 pdftohtml jo.pdf > /dev/null
 if [ ! -e jos.html ] ; then exit; fi
 perl parse_jo.pl jos.html $DATE > xml/$FILE.xml
 if [ ! -s xml/$FILE.xml ] ; then rm xml/$FILE.xml ; fi
-rm jo.html  jo_ind.html  jo.pdf  jos.html 2> /dev/null
+#rm jo.html  jo_ind.html  jo.pdf  jos.html 2> /dev/null

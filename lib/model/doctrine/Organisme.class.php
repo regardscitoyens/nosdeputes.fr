@@ -19,7 +19,11 @@ class Organisme extends BaseOrganisme
   }
 
   public function getSeancesByDateAndMoment($date, $nom) {
-    $q = Doctrine::getTable('Seance')->createQuery('s')->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('nom = ?', $nom);
-    return $q->execute()->getFirst();
+    $q = Doctrine::getTable('Seance')->createQuery('s');
+    $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment = ?', $nom);
+    $res = $q->fetchOne();
+    $q->free();
+    unset($q);
+    return $res;
   }
 }

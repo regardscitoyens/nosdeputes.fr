@@ -4,31 +4,36 @@
  */
 class ParlementaireTable extends PersonnaliteTable
 {
-  static $all = null;
+  static $all;
+
   public function similarTo($str)
   {
     $str = preg_replace('/\(.*\)/', '', $str);
 
     //load parlementaires only once
-    if ($all == null) {
-      $all = $this->createQuery('p')->execute();
-    }
+    if (!$this->all)
+      $this->all = $this->createQuery('p')->fetchArray();
+
     $closest = null;
     $closest_res = -1;
     //Compare each parlementaire with the string and keep the best
-    foreach ($all as $parl) {
-      $res = similar_text(preg_replace('/[^a-z]/i', ' ', $str), preg_replace('/[^a-z]/i', ' ', $parl->nom), $pc);
+    foreach ($this->all as $parl) {
+      $res = similar_text(preg_replace('/[^a-z]+/i', ' ', $parl['nom']), preg_replace('/[^a-z]+/i', ' ', $str), $pc);
       if ($res > 0 && $pc > $closest_res) {
 	$closest = $parl;
 	$closest_res = $pc;
       }
     }
+
+#    echo $closest['nom'];    echo " $closest_res\n";
+
     //If more than 90% similarities, it is the best
     if ($closest_res > 90)
-      return $closest;
-    //If str is the end of the best parlementaire, it is OK
-    if (preg_match('/'.preg_replace('/[^a-z]/i', '', $str).'$/', $closest->nom))
-      return $closest;
+      return $this->find($closest['id']);
+    //If str is the end of the best parlementaire, it is OK (remove non alpha car to avoid preg pb)
+    if (preg_match('/'.preg_replace('/[^a-z]/i', '', $str).'$/', preg_replace('/[^a-z]/i', '', $closest['nom'])))
+      return $this->find($closest['id']);
+
 
     return null;
   }

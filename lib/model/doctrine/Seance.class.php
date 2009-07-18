@@ -6,13 +6,19 @@
 class Seance extends BaseSeance
 {
   public function addPresence($parlementaire, $type, $source) {
-    $presence = Doctrine::getTable('Presence')->createQuery('p')->where('parlementaire_id = ?', $parlementaire->id)->andWhere('seance_id = ?', $this->id)->execute()->getFirst();
+    $q = Doctrine::getTable('Presence')->createQuery('p');
+    $q->where('parlementaire_id = ?', $parlementaire->id)->andWhere('seance_id = ?', $this->id);
+    $presence = $q->execute()->getFirst();
+    $q->free();
+    unset($q);
     if (!$presence) {
       $presence = new Presence();
       $presence->Parlementaire = $parlementaire;
       $presence->Seance = $this;
       $presence->save();
     }
-    return $presence->addPreuve($type, $source);
+    $res = $presence->addPreuve($type, $source);
+    $presence->free();
+    return $res;
   }
 }

@@ -11,9 +11,10 @@ class loadJOTask extends sfBaseTask
  
   protected function execute($arguments = array(), $options = array())
   {
-    $databaseManager = new sfDatabaseManager($this->configuration);
     // your code here
     $dir = dirname(__FILE__).'/../../batch/jo/xml/';
+    $manager = new sfDatabaseManager($this->configuration);    
+
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) !== false) {
@@ -25,7 +26,12 @@ class loadJOTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
-
+	    if (!$jo->depute) {
+	      echo "ERROR null : ";
+	      echo $line;
+	      echo "\n";
+	      continue;
+	    }
 	    $depute = Doctrine::getTable('Parlementaire')->findOneByNom($jo->depute);
 	    if ($jo->depute && !$depute) {
 	      $depute = Doctrine::getTable('Parlementaire')->similarTo($jo->depute);
@@ -44,24 +50,30 @@ class loadJOTask extends sfBaseTask
 	      $commission->save();
 	    }
 	    if (!$jo->reunion) {
+	      $depute->clearRelated();
+	      $depute->free();
+	      $commission->clearRelated();
+	      $commission->free();
 	      echo "ERROR date : ";
 	      echo $line;
 	      echo "\n";
 	      continue;
 	    }
-	    $seance = $commission->getSeancesByDateAndNom($jo->reunion, $jo->session);
+	    $seance = $commission->getSeancesByDateAndMoment($jo->reunion, $jo->session);
 	    if (!$seance) {
 	      $seance = new Seance();
 	      $seance->date = $jo->reunion;
-	      $seance->nom = $jo->session;
+	      $seance->moment = $jo->session;
 	      $seance->type = 'commission';
 	      $seance->Organisme = $commission;
 	      $seance->save();
 	    }
 	    $seance->addPresence($depute, 'jo', $jo->source);
-	    
+	    $seance->free();
+	    $commission->free();
+	    $depute->free();
 	  }
-        }
+	}
         closedir($dh);
       }
     }
