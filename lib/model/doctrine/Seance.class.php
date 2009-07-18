@@ -21,4 +21,12 @@ class Seance extends BaseSeance
     $presence->free();
     return $res;
   }
+  public function setDate($date) {
+    if (!$this->_set('date', $date))
+      return false;
+    $date = strtotime($date);
+    $this->_set('annee', date('Y', $date));
+    $this->_set('numero_semaine', date('W', $date));
+    return true;
+  }
 }
