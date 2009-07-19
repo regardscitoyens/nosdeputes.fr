@@ -14,22 +14,6 @@ class Parlementaire extends BaseParlementaire
       $this->num_circo = $match[2];
     }
   }
-/*
-  public function setCirconscription($str) {
-    if (preg_match('/(.*)\((\d+)/', $str, $match)) {
-      $nom = trim($match[1]);
-      $circo = Doctrine::getTable('Circonscription')->findOneByNom($nom);
-      if (!$circo) {
-	$circo = new Circonscription();
-	$circo->nom = $nom;
-        $circo->prefixe = 'de';
-        $circo->save();
-      }
-      $this->_set('Circonscription', $circo);
-      $this->num_circo = $match[2];
-    }
-  }
-*/
 
   public function getCirconscription() {
     $hashmap = array(
@@ -192,8 +176,11 @@ class Parlementaire extends BaseParlementaire
       $po = new ParlementaireOrganisme();
       $po->setParlementaire($this);
       $po->setOrganisme($orga);
-      $po->setFonction(preg_replace("/\(/","",$args[1]));
-      /*      if (isset($args[2])) {
+      $fonction = preg_replace("/\(/","",$args[1]);
+      $po->setFonction($fonction);
+      $importance = ParlementaireOrganisme::defImportance($fonction);
+      $po->setImportance($importance);
+  /*      if (isset($args[2])) {
 	$po->setDebutFonction($args[2]);
 	}*/
       $orgas->add($po);

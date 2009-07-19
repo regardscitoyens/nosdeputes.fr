@@ -59,12 +59,13 @@ class loadJOTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
-	    $seance = $commission->getSeancesByDateAndMoment($jo->reunion, $jo->session);
+            $moment = Seance::convertMoment($jo->session);
+	    $seance = $commission->getSeancesByDateAndMoment($jo->reunion, $moment);
 	    if (!$seance) {
 	      $seance = new Seance();
-	      $seance->date = $jo->reunion;
-	      $seance->moment = $jo->session;
 	      $seance->type = 'commission';
+	      $seance->setDate($jo->reunion);
+              $seance->moment = $moment;
 	      $seance->Organisme = $commission;
 	      $seance->save();
 	    }

@@ -5,6 +5,34 @@
  */
 class ParlementaireOrganisme extends BaseParlementaireOrganisme
 {
+    public static function defImportance($fonction) {
+ /*       $fonctions = array("présidente", "président",
+                      "coprésidente", "coprésident",
+                      "vice-présidente", "vice-président",
+                      "rapporteur général", "rapporteur", "secrétaire",
+                      "questeure, membre", "questeur, membre",
+                      "questeure", "questeur",
+                      "membre de droit", "membre titulaire", "membre",
+                      "membre suppléante", "membre suppléant",
+                      "apparentée", "apparenté",
+                      "reprise de l'exercice");     */
+      if (preg_match('`^(président|président)`i', $fonction)) return 100;
+      if (preg_match('`(président|président)`i', $fonction)) return 90;
+      if (preg_match('`(rapporteur|secretaire|secrétaire)`i', $fonction)) return 80;
+      if (preg_match('`questeur`i', $fonction)) {
+          if (preg_match('`membre`i', $fonction)) return 70;
+          return 60;
+      }
+      if (preg_match('`membre`i', $fonction)) {
+          if (preg_match('`(suppleant|suppléant)`i', $fonction)) return 30;
+          if ($fonction == "membre") return 40;
+          return 50;
+      }
+      if (preg_match('`apparent`i', $fonction)) return 20;
+      if (preg_match('`reprise`i', $fonction)) return 10;
+      return 0;
+  }
+
   public function getNom() {
     if ($this->getType() == 'groupe') return $this->getOrganisme()->getSmallNomGroupe();
     else return $this->getOrganisme()->getNom();

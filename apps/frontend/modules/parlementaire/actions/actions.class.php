@@ -63,7 +63,7 @@ class parlementaireActions extends sfActions
         ->where('o.slug = ?', $orga);
       $query2->where('o.slug = ?', $orga);
     }
-    $query->orderBy("po.fonction DESC, p.nom_de_famille ASC");
+    $query->orderBy("po.importance DESC, p.sexe ASC, p.nom_de_famille ASC");
     $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
     $this->orga = $query2->fetchOne();
   }

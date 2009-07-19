@@ -21,6 +21,23 @@ class Seance extends BaseSeance
     $presence->free();
     return $res;
   }
+  
+  public static function convertMoment($moment) {
+    if (preg_match('`(seance|séance)`i', $moment)) {
+        if (preg_match('`1`', $moment)) return "1ère séance";
+        if (preg_match('`(\d{1})`', $moment, $match)) return $match[1];
+        return $moment;
+    }
+    if (preg_match('`(reunion|réunion)`i', $moment)) {
+        if (preg_match('`1`', $moment)) return "1ère réunion";
+        if (preg_match('`(\d{1})`', $moment, $match)) return $match[1]."ème réunion";
+        return $moment;
+    }
+    if (preg_match('`(\d{2}):(\d{2})`', $moment, $match)) return $match[1]."h".$match[2];
+    if (preg_match('`(\d{1}):(\d{2})`', $moment, $match)) return "0".$match[1]."h".$match[2];
+    return $moment;
+  }
+  
   public function setDate($date) {
     if (!$this->_set('date', $date))
       return false;
