@@ -28,6 +28,7 @@ while(<FILE>) {
 	$on = 1;
     }
 }
+$lines =~ s/&nbsp;/ /g;
 $lines =~ s/<\/b> *<b>/ /g;
 $lines =~ s/<\/b>/<\/b>\n/g;
 $lines =~ s/<\/i>/<\/i>\n/g;
@@ -37,7 +38,7 @@ $lines =~ s/<\/?b>//g;
 $lines =~ s/\. \. \. <hr>/\n<hr>/;
 
 
-$lines =~ s/\. <A href[^\n]*//g;
+$lines =~ s/\. <A href[^\n]*//ig;
 $lines =~ s/du\s*(<b>|\n)/du /g;
 $lines =~ s/\nà\s*.<i>/à /g;
 $lines =~ s/, à (<i>)?/ à /g;
@@ -52,14 +53,12 @@ $lines =~ s/ : ?\n/\n/g;
 $lines =~ s/– //g;
 $lines =~ s/\<hr.*Texte \d+ sur \d+\s*//g;
 
-$lines =~ s/\<A .*\<\/a\>\s*//g;
+$lines =~ s/\<A .*\<\/a\>\s*//ig;
 $lines =~ s/,? ?\<hr/\n<hr/;
 $lines =~ s/<[^i][^>]+>//g;
 $lines =~ s/\n([^\s<]+)\s\n+(\S+)\n/\n$1 $2\n/g;
 $lines =~ s/(\d[erm]+ r|R)éunion /\n$1éunion /gi;
 $lines =~ s/\. / /g;
-
-#print $lines ; exit;
 
 foreach (split /\n/, $lines) {
     if (/comité|commission|mission/i && !/Ordre du jour/ && !/(réunion|séance)/i) {
