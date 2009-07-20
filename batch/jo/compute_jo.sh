@@ -23,4 +23,4 @@ pdftohtml jo.pdf > /dev/null
 if [ ! -e jos.html ] ; then exit; fi
 perl parse_jo.pl jos.html $DATE > xml/$FILE.xml
 if [ ! -s xml/$FILE.xml ] ; then rm xml/$FILE.xml ; fi
-#rm jo.html  jo_ind.html  jo.pdf  jos.html 2> /dev/null
+rm jo.html  jo_ind.html  jo.pdf  jos.html 2> /dev/null
