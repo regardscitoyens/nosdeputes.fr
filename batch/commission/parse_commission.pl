@@ -1,7 +1,7 @@
 #!/usr/bin/perl
 
 $file = shift;
-use HTML::TokeParser;
+#use HTML::TokeParser;
 
 open(FILE, $file) ;
 @string = <FILE>;
@@ -12,6 +12,20 @@ $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/\r//g;
 
+$mois{'janvier'} = '01';
+$mois{'février'} = '02';
+$mois{'mars'} = '03';
+$mois{'avril'} = '04';
+$mois{'mai'} = '05';
+$mois{'juin'} = '06';
+$mois{'juillet'} = '07';
+$mois{'août'} = '08';
+$mois{'septembre'} = '09';
+$mois{'octobre'} = '10';
+$mois{'novembre'} = '11';
+$mois{'décembre'} = '12';
+
+
 #utf8::decode($string);
 #
 #$p = HTML::TokeParser->new(\$string);
@@ -21,21 +35,24 @@ $string =~ s/\r//g;
 #}
 #
 #exit;
+$cpt = 0;
 sub checkout {
     chop($intervention);
+    $cpt++;
+    print "{ ";
     if ($intervenant) {
 	if ($intervenant =~ s/ et M[mes\.]* (.*)//) {
 	    print '"'.$1.'": "'.$intervention."\"\n";
 	}
-	print '"'.$intervenant.'": "';
+	print '"intervenant":"'.$intervenant.'", ';
     }elsif($intervention) {
-	print '"comment": "';
+	print '"iscomment": "1", ';
 	
     }else {
 	return ;
     }
-#    print $intervention;
-    print '"'."\n";
+    print '"intervention": "'.$intervention.'", ';
+    print '"timestamp": "'.$cpt.'", "date": "'.$date.'", "heure":"'.$heure."\"}\n";
     $commentaire = "";
     $intervenant = "";
     $intervention = "";
@@ -164,6 +181,16 @@ foreach $line (split /\n/, $string)
     }elsif ($line =~ /<h[1-9]+/i) {
 	rapporteur();
 	print "$line\n";
+	if ($line =~ /date/) {
+	    if ($line =~ /(\d+)[erme]* (\w+) (\d)/) {
+		$date = sprintf("%02d/%02d/%04d", $1, $mois{$2}, $3);
+	    }
+	}elsif ($line =~ /seance/i) {
+	    if ($line =~ /(\d+) heures?( \d+|)/i) {
+		$heure = sprintf("%02d:%02d", $1, $2 || "00");
+	    }
+	}
     }
 }
 checkout();
+
