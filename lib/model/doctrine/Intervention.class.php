@@ -35,6 +35,7 @@ class Intervention extends BaseIntervention
     $ip = new PersonnaliteIntervention();
     $ip->setParlementaire($parlementaire);
     $ip->setIntervention($this);
+    $this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);
     return $ip->save();
   }
   public function setPersonnalite($perso) {
@@ -51,4 +52,5 @@ class Intervention extends BaseIntervention
     $p = $this->getParlementaires();
     return $p;
   }
+
 }
