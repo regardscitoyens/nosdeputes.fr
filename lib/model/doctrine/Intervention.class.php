@@ -49,7 +49,8 @@ class Intervention extends BaseIntervention
     return $ip->save();
   }
   public function getAllPersonnalites() {
-    $p = $this->getParlementaires();
+    $p = $this->getPersonnalites();
+    $p->merge($this->getParlementaires());
     return $p;
   }
 
