@@ -5,5 +5,8 @@
  */
 class Personnalite extends BasePersonnalite
 {
-
+  /*  public function save(Doctrine_Connection $conn = null) {
+    Doctrinue::getTable('Personnalite')->hasChanged();
+    return parent::save($conn);
+    }*/
 }

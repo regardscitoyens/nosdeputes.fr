@@ -46,4 +46,8 @@ class Seance extends BaseSeance
     $this->_set('numero_semaine', date('W', $date));
     return true;
   }
+  public function getInterventions() {
+    $q = doctrine::getTable('Intervention')->createQuery('i')->where('seance_id = ?', $this->id)->leftJoin('i.Personnalites p')->leftJoin('i.Parlementaires pa')->orderBy('i.timestamp ASC');
+    return $q->execute();
+  }
 }

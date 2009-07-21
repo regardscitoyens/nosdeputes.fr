@@ -1,7 +1,10 @@
 #!/usr/bin/perl
 
-$file = shift;
+$file = $url = shift;
 #use HTML::TokeParser;
+$url =~ s/^[^\/]+\///;
+$url =~ s/_/\//g;
+$source = $url;
 
 open(FILE, $file) ;
 @string = <FILE>;
@@ -37,22 +40,18 @@ $mois{'décembre'} = '12';
 #exit;
 $cpt = 0;
 sub checkout {
-    chop($intervention);
-    $cpt++;
-    print "{ ";
+    $cpt+=10;
+    $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure."\", ";
     if ($intervenant) {
 	if ($intervenant =~ s/ et M[mes\.]* (.*)//) {
-	    print '"'.$1.'": "'.$intervention."\"\n";
+	    print $out.'"intervenant": "'.$1."\"}\n";
 	}
-	print '"intervenant":"'.$intervenant.'", ';
+	print $out.'"intervenant":"'.$intervenant."\"}\n";
     }elsif($intervention) {
-	print '"iscomment": "1", ';
-	
+	print $out.'"intervenant":"'."\"}\n";
     }else {
 	return ;
     }
-    print '"intervention": "'.$intervention.'", ';
-    print '"timestamp": "'.$cpt.'", "date": "'.$date.'", "heure":"'.$heure."\"}\n";
     $commentaire = "";
     $intervenant = "";
     $intervention = "";
@@ -144,6 +143,7 @@ $string =~ s/&nbsp;/ /g;
 $string =~ s/\|(\W+)\|/$1/g;
 $majIntervenant = 0;
 $body = 0;
+
 foreach $line (split /\n/, $string)
 {
     if ($line =~ /<body>/) {
@@ -154,6 +154,11 @@ foreach $line (split /\n/, $string)
 	checkout();
 	next;
     }
+    if ($line =~ /\<[a]/i) {
+	if ($line =~ /<a name=["']([^"']+)["']/) {
+	    $source = $url."#$1";
+	}
+    }
     if ($line =~ /\<[p]/i) {
 	$line =~ s/\s*\<\/?[^\>]+\>//g;
 	last if ($line =~ /^\|annexe/i);
@@ -161,7 +166,7 @@ foreach $line (split /\n/, $string)
 
 	#si italique ou tout gras => commentaire
 	if ($line =~ /[\|\/]\s*$/) {
-	    checkout if ($intervenant);	    
+	    checkout() if ($intervenant);	    
 	    rapporteur();
 	}elsif ($line =~ s/^\|(M[^\|]+)[\|]// ) {
 	    checkout();
@@ -174,23 +179,26 @@ foreach $line (split /\n/, $string)
 	$line =~ s/^\s+//;
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
-	$intervention .= "<p>$line</p>\n";
+	$intervention .= "<p>$line</p>";
 	if ($line =~ /séance est levée|Informations? relatives? à la Commission/i) {
 	    last;
 	}
     }elsif ($line =~ /<h[1-9]+/i) {
 	rapporteur();
-	print "$line\n";
-	if ($line =~ /date/) {
-	    if ($line =~ /(\d+)[erme]* (\w+) (\d)/) {
-		$date = sprintf("%02d/%02d/%04d", $1, $mois{$2}, $3);
+#	print "$line\n";
+	if ($line =~ /SOMdate/) {
+	    if ($line =~ /\w+\s+(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/) {
+		$date = sprintf("%04d-%02d-%02d", $3, $mois{$2}, $1);
 	    }
-	}elsif ($line =~ /seance/i) {
+	}elsif ($line =~ /SOMseance/i) {
 	    if ($line =~ /(\d+) heures?( \d+|)/i) {
 		$heure = sprintf("%02d:%02d", $1, $2 || "00");
+	    }
+	}elsif(!$commission && $line =~ /commission/i) {
+	    if ($line =~ /\>\|?(Comm[^\>\|]+)[\<\|]/) {
+		$commission = $1;
 	    }
 	}
     }
 }
 checkout();
-

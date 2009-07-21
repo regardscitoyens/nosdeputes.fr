@@ -18,9 +18,23 @@ class Organisme extends BaseOrganisme
     return $hashmap[$this->getNom()];
   }
 
-  public function getSeancesByDateAndMoment($date, $nom) {
+  public function getSeanceByDateAndMomentOrCreateIt($date, $moment) {
+    $seance = $this->getSeanceByDateAndMoment($date, $moment);
+    if (!$seance) {
+      $seance = new Seance();
+      $seance->type = 'commission';
+      $seance->setDate($date);
+      $seance->moment = $moment;
+      $seance->Organisme = $this;
+      $seance->save();
+    }
+    return $seance;
+  }
+
+
+  public function getSeanceByDateAndMoment($date, $moment) {
     $q = Doctrine::getTable('Seance')->createQuery('s');
-    $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment = ?', $nom);
+    $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment = ?', $moment);
     $res = $q->fetchOne();
     $q->free();
     unset($q);

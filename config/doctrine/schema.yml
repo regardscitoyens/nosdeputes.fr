@@ -32,7 +32,7 @@ Parlementaire:
     Organismes:
       class: Organisme
       refClass: ParlementaireOrganisme
-      foreignAlias: Organismes
+      foreignAlias: Parlementaires
 
 Organisme:
   actAs:
@@ -109,3 +109,42 @@ PreuvePresence:
   relations:
     Presence:
       foreignAlias: Preuves
+
+Intervention:
+  actAs:
+    Timestampable:
+  columns:
+    id:
+      type: string(36)
+      primary: true
+    intervention: 
+      type: blob
+    timestamp: integer
+    source: string(128)
+    seance_id: integer
+  relations:
+    Seance:
+      foreignAlias: Interventions
+    Personnalites:
+      class: Personnalite
+      refClass: PersonnaliteIntervention
+      foreignAlias: Interventions
+    Parlementaires:
+      class: Parlementaire
+      refClass: PersonnaliteIntervention
+      foreignAlias: Interventions
+
+PersonnaliteIntervention:
+  actAs:
+    Timestampable:
+  columns:
+    personnalite_id: integer
+    parlementaire_id: integer
+    intervention_id: string(36)
+  relations:
+    Personnalite:
+      foreignAlias: PersonnaliteInterventions
+    Parlementaire:
+      foreignAlias: PersonnaliteInterventions
+    Intervention:
+      foreignAlias: PersonnaliteInterventions

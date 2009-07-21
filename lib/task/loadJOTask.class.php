@@ -42,13 +42,7 @@ class loadJOTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
-	    $commission = Doctrine::getTable('Organisme')->findOneByNom(strtolower($jo->commission));
-	    if (!$commission) {
-	      $commission = new Organisme();
-	      $commission->nom = strtolower($jo->commission);
-	      $commission->type = 'parlementaire';
-	      $commission->save();
-	    }
+	    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt(strtolower($jo->commission), 'parlementaire');
 	    if (!$jo->reunion) {
 	      $depute->clearRelated();
 	      $depute->free();
@@ -60,15 +54,7 @@ class loadJOTask extends sfBaseTask
 	      continue;
 	    }
             $moment = Seance::convertMoment($jo->session);
-	    $seance = $commission->getSeancesByDateAndMoment($jo->reunion, $moment);
-	    if (!$seance) {
-	      $seance = new Seance();
-	      $seance->type = 'commission';
-	      $seance->setDate($jo->reunion);
-              $seance->moment = $moment;
-	      $seance->Organisme = $commission;
-	      $seance->save();
-	    }
+	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->reunion, $moment, $commission, 'commission');
 	    $seance->addPresence($depute, 'jo', $jo->source);
 	    $seance->free();
 	    $commission->free();

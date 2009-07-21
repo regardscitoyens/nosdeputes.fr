@@ -4,5 +4,14 @@
  */
 class OrganismeTable extends Doctrine_Table
 {
-
+  public function findOneByNomOrCreateIt($nom, $type) {
+    $org = $this->findOneByNom($nom);
+    if (!$org) {
+      $org = new Organisme();
+      $org->type = $type;
+      $org->nom = $nom;
+      $org->save();
+    }
+    return $org;
+  }
 }

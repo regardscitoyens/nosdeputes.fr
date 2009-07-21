@@ -8,7 +8,12 @@ require_once "myTools.class.php";
 class Parlementaire extends BaseParlementaire
 {
 
-   public function setCirconscription($str) {
+  /*  public function save() {
+    Doctrine::getTable('Personnalite')->hasChanged();
+    return parent::save($conn);
+    }*/
+
+  public function setCirconscription($str) {
     if (preg_match('/(.*)\((\d+)/', $str, $match)) {
       $this->nom_circo = trim($match[1]);
       $this->num_circo = $match[2];
