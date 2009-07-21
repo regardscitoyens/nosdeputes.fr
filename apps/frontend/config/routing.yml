@@ -19,6 +19,10 @@ search_parlementaire:
   url: /parlementaire
   param: {module: parlementaire, action: list}
 
+interventions_seance:
+  url: /seance/:seance
+  param: {module: intervention, action: seance}
+
 homepage:
   url:   /
   param: { module: parlementaire, action: list }
