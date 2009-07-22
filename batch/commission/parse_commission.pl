@@ -46,7 +46,7 @@ sub checkout {
 	if ($intervenant =~ s/ et M[mes\.]* (.*)//) {
 	    print $out.'"intervenant": "'.$1."\"}\n";
 	}
-	print $out.'"intervenant":"'.$intervenant."\"}\n";
+	print $out.'"intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}."\"}\n";
     }elsif($intervention) {
 	print $out.'"intervenant":"'."\"}\n";
     }else {
@@ -144,6 +144,8 @@ $string =~ s/\|(\W+)\|/$1/g;
 $majIntervenant = 0;
 $body = 0;
 
+$string =~ s/<br>\n//gi;
+
 foreach $line (split /\n/, $string)
 {
     if ($line =~ /<body>/) {
@@ -160,6 +162,7 @@ foreach $line (split /\n/, $string)
 	}
     }
     if ($line =~ /\<[p]/i) {
+	$found = 0;
 	$line =~ s/\s*\<\/?[^\>]+\>//g;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
@@ -168,17 +171,25 @@ foreach $line (split /\n/, $string)
 	if ($line =~ /[\|\/]\s*$/) {
 	    checkout() if ($intervenant);	    
 	    rapporteur();
+	    $found = 1;
 	}elsif ($line =~ s/^\|(M[^\|]+)[\|]// ) {
 	    checkout();
 	    $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
-	}elsif (!$majIntervenant && $line =~ s/^(M[mes\.]+\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
-	    checkout();
-	    $intervenant = setIntervenant($1);
+	    $found = 1;
 	}
 	$line =~ s/^\s+//;
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
+	if (!$majIntervenant && !$found) {
+	    if     ($line =~ s/^\s*(M[mes\.]+\s[^\.]+)\.//) {
+		checkout();
+		$intervenant = setIntervenant($1);		
+	    }elsif ($line =~ s/^\s*(M[mes\.]+\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
+		checkout();
+		$intervenant = setIntervenant($1);
+	    }
+	}
 	$intervention .= "<p>$line</p>";
 	if ($line =~ /séance est levée|Informations? relatives? à la Commission/i) {
 	    last;
