@@ -9,4 +9,10 @@ class Personnalite extends BasePersonnalite
     Doctrinue::getTable('Personnalite')->hasChanged();
     return parent::save($conn);
     }*/
+  public function getLink() {
+    return "";
+  }
+  public function getPhoto() {
+    return "";
+  }
 }

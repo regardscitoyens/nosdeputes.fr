@@ -73,7 +73,7 @@ sub setIntervenant {
     my $intervenant = shift;
 #    print "$intervenant\n";
     $intervenant =~ s/^(M(\.|me))(\S)/$1 $2/;
-    $intervenant =~ s/[\|\/]//g;
+    $intervenant =~ s/[\|\/\.]//g;
     $intervenant =~ s/\s*\&\#8211\;\s*$//;
     $intervenant =~ s/\s*[\.\:]\s*$//;
     $intervenant =~ s/Madame/Mme/;
@@ -146,6 +146,28 @@ $body = 0;
 
 $string =~ s/<br>\n//gi;
 
+# Le cas de <ul> qui peut faire confondre une nomination à une intervention : 
+#on vire les paragraphes contenus et on didascalise
+
+@uls = split /<ul>/, $string ;
+$string = shift @uls;
+foreach $ul (@uls) {
+    $ul = "<ul>$ul";
+    while ($ul =~ s/(<ul>.*)\n/$1/gi) {
+	if ($1 =~ /<\/ul/) {
+	    $ul =~ s/<\/ul>/<\/ul>\n/gi;
+	    last;
+	}
+    }
+    if ($ul =~ s/\s*<ul>(.*)<\/ul>\s*/-----/) {
+	$changed = $1;
+	$changed =~ s/<\/?p>//gi;
+	$ul =~ s/\-\-\-\-\-/<p>\/$changed\/<\/p>\n/;
+    }
+    $string .= $ul;
+}
+
+
 foreach $line (split /\n/, $string)
 {
     if ($line =~ /<body>/) {
@@ -208,6 +230,10 @@ foreach $line (split /\n/, $string)
 	}elsif(!$commission && $line =~ /commission/i) {
 	    if ($line =~ /\>\|?(Comm[^\>\|]+)[\<\|]/) {
 		$commission = $1;
+	    }
+	}elsif($line =~ /SOMnumcr/i) {
+	    if ($line =~ /\s0*(\d+)/ && $1 > 1) {
+		$cpt = $1*1000000;
 	    }
 	}
     }

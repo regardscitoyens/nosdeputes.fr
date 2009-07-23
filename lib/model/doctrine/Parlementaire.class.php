@@ -248,4 +248,11 @@ class Parlementaire extends BaseParlementaire
     }
     return $res;
   }
+  public function getPhoto() {
+    $id_an = $this->getIdAN();
+    return 'http://www.palais-bourbon.fr/13/tribun/photos/'.$id_an.'.jpg';
+  }
+  public function getPageLink() {
+    return '@parlementaire?slug='.$this->slug;
+  }
 }

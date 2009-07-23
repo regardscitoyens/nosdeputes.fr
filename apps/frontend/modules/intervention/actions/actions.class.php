@@ -13,7 +13,7 @@ class interventionActions extends sfActions
   public function executeSeance(sfWebRequest $request)
   {
     $seance_id = $request->getParameter('seance');
-    $this->seance = doctrine::getTable('Seance')->find($seance_id);
+    $this->seance = doctrine::getTable('Seance')->find($seance_id)->loadRelated();
     $this->forward404Unless($this->seance);
   }
 }

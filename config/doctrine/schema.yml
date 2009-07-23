@@ -105,7 +105,7 @@ PreuvePresence:
     type:
       type: enum
       values: ['jo', 'intervention']
-    source: string(50)
+    source: string(200)
   relations:
     Presence:
       foreignAlias: Preuves
@@ -141,6 +141,7 @@ PersonnaliteIntervention:
     personnalite_id: integer
     parlementaire_id: integer
     intervention_id: string(36)
+    fonction: string(200)
   relations:
     Personnalite:
       foreignAlias: PersonnaliteInterventions

@@ -10,24 +10,29 @@ class Intervention extends BaseIntervention
     $seance = $commission->getSeanceByDateAndMomentOrCreateIt($date, $heure);
     return $this->_set('seance_id', $seance->id);
   }
-  public function setPersonnaliteByNom($nom) 
+  public function setPersonnaliteByNom($nom, $fonction = null) 
   {
     $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
     if (!$personne) {
       $personne = Doctrine::getTable('Parlementaire')->similarTo($nom);
     }
     if ($personne) {
-      return $this->parlementaire = $personne;
+      return $this->setParlementaire($personne, $fonction);
     }
     $personne = Doctrine::getTable('Personnalite')->findOneByNom($nom);
     if (!$personne) {
       $personne = Doctrine::getTable('Personnalite')->similarTo($nom);
     }
+    if (!$personne) {
+      $personne = new Personnalite();
+      $personne->setNom($nom);
+      $personne->save();
+    }
     if ($personne) {
-      return $this->personnalite = $personne;
+      return $this->setPersonnalite($personne,$fonction);
     }
   }
-  public function setParlementaire($parlementaire) {
+  public function setParlementaire($parlementaire, $fonction = null) {
     foreach($this->getParlementaires() as $par) {
       if ($par == $parlementaire)
 	return false;
@@ -35,10 +40,12 @@ class Intervention extends BaseIntervention
     $ip = new PersonnaliteIntervention();
     $ip->setParlementaire($parlementaire);
     $ip->setIntervention($this);
+    if ($fonction)
+      $ip->setFonction($fonction);
     $this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);
     return $ip->save();
   }
-  public function setPersonnalite($perso) {
+  public function setPersonnalite($perso, $fonction = null) {
     foreach($this->getPersonnalites() as $per) {
       if ($per == $perso)
 	return false;
@@ -46,12 +53,23 @@ class Intervention extends BaseIntervention
     $ip = new PersonnaliteIntervention();
     $ip->setPersonnalite($perso);
     $ip->setIntervention($this);
+    if ($fonction)
+      $ip->setFonction($fonction);
     return $ip->save();
   }
-  public function getAllPersonnalites() {
-    $p = $this->getPersonnalites();
-    $p->merge($this->getParlementaires());
-    return $p;
+  public function getAllPersonnalitesAndFonctions() {
+    $pis = $this->getPersonnaliteInterventions();
+    $res = array();
+    echo $this->id;
+    foreach($pis as $pi){
+      $p = $pi->getParlementaire();
+      echo $p->getNom();
+      if (!$p) 
+	$p = $pi->getPersonnalite();
+      echo $p->getNom();
+      array_push($res, array($p, $pi->fonction));
+    }
+    return $res;
   }
 
 }

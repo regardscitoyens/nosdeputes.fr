@@ -32,13 +32,13 @@ class loadCommissionTask extends sfBaseTask
 	    if(!$intervention) {
 	      $intervention = new Intervention();
 	      $intervention->id = $id;
-	      $intervention->intervention = $json->intervention;
+	      $intervention->setIntervention($json->intervention);
 	      $intervention->setSeance($json->commission, $json->date, $json->heure);
 	      $intervention->setSource($json->source);
-	      $intervention->timestamp = $json->timestamp;
+	      $intervention->setTimestamp($json->timestamp);
 	    }
 	    if ($json->intervenant)
-	      $intervention->setPersonnaliteByNom($json->intervenant);
+	      $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);
 	    $intervention->save();
 	  }
 	  
