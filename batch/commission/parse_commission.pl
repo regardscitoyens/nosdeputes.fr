@@ -168,7 +168,7 @@ foreach $line (split /\n/, $string)
 	next if ($line !~ /\w/);
 
 	#si italique ou tout gras => commentaire
-	if ($line =~ /[\|\/]\s*$/) {
+	if ($line =~ /[\|\/]\s*$/ || $line =~ /^\//) {
 	    checkout() if ($intervenant);	    
 	    rapporteur();
 	    $found = 1;
