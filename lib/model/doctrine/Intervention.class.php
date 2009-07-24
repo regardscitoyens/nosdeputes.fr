@@ -60,13 +60,10 @@ class Intervention extends BaseIntervention
   public function getAllPersonnalitesAndFonctions() {
     $pis = $this->getPersonnaliteInterventions();
     $res = array();
-    echo $this->id;
     foreach($pis as $pi){
       $p = $pi->getParlementaire();
-      echo $p->getNom();
       if (!$p) 
 	$p = $pi->getPersonnalite();
-      echo $p->getNom();
       array_push($res, array($p, $pi->fonction));
     }
     return $res;
