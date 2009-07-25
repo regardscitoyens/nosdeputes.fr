@@ -8,7 +8,7 @@
 <? endif; endif; ?>
 <ul>
 <? foreach($pager->getResults() as $parlementaire) : ?>
-<li><? echo $parlementaire->getPOrganisme($orga->getNom())->getFonction(); ?> : <? echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<? echo link_to($parlementaire->nom_circo, '@list_parlementaires_circo?nom_circo='.$parlementaire->nom_circo); ?>)</li>
+<li><? echo $parlementaire->getPOrganisme($orga->getNom())->getFonction(); ?> : <? echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<? echo $parlementaire->getStatut(); ?><? if ($orga->type != 'groupe') : echo ' '.link_to($parlementaire->getGroupe()->getNom(), '@list_parlementaires_organisme?slug='.$parlementaire->getGroupe()->getSlug()); endif; ?>, <? echo link_to($parlementaire->nom_circo, '@list_parlementaires_circo?nom_circo='.$parlementaire->nom_circo); ?>)</li>
 <? endforeach ; ?>
 </ul>
 <? if ($pager->haveToPaginate()) : ?>

@@ -1,4 +1,4 @@
-<? foreach($seance->getInterventions() as $intervention) : ?>
+<? foreach($interventions as $intervention) : ?>
 <div>
 <div class='intervenant'><? 
 $persos = $intervention->getAllPersonnalitesAndFonctions(); 

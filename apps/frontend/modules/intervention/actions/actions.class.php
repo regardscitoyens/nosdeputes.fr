@@ -15,5 +15,12 @@ class interventionActions extends sfActions
     $seance_id = $request->getParameter('seance');
     $this->seance = doctrine::getTable('Seance')->find($seance_id);
     $this->forward404Unless($this->seance);
+    $query = doctrine::getTable('Intervention')->createquery('i')
+        ->where('i.seance_id = ?', $seance_id)
+        ->leftJoin('i.PersonnaliteInterventions pis')
+        ->leftJoin('pis.Personnalite pe')
+        ->leftJoin('pis.Parlementaire pa')
+        ->orderBy('i.timestamp ASC');
+    $this->interventions = $query->execute();
   }
 }

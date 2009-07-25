@@ -1,4 +1,5 @@
 <h1><? echo $parlementaire->nom; ?></h1>
+<? if ($parlementaire->getPhoto()) { echo "<img src=\"".$parlementaire->getPhoto()."\">"; } ?>
 <h2><? echo $parlementaire->getLongStatut(); ?></h2>
 <p>Mandat en cours débuté le <? echo $parlementaire->debut_mandat ?></p>
 <? if ($parlementaire->site_web) : ?>
@@ -24,3 +25,4 @@ Non communiquée
 <li><? echo link_to($extra->getNom(),'@list_parlementaires_organisme?slug='.$extra->getSlug() ); ?> (<? echo $extra->getFonction(); ?>)</li>
 <? } ?>
 </ul>
+<p><? echo link_to("Présences",'@parlementaire_presences?slug='.$parlementaire->getSlug() ); ?></p>
