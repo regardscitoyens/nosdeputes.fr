@@ -6,10 +6,10 @@ default:
     #title:        symfony project
     #description:  symfony project
     #keywords:     symfony, project
-    #language:     en
+    language:     fr
     #robots:       index, follow
 
-  stylesheets:    [main.css]
+  stylesheets:    [fixe/style.css]
 
   javascripts:    []
 
