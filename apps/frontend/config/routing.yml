@@ -4,7 +4,7 @@ parlementaire:
   param: {module: parlementaire, action: show}
 
 list_parlementaires_circo:
-  url: /parlementaire/circo/:nom_circo
+  url: /circo/:nom_circo
   param: {module: parlementaire, action: listCirco}
 
 list_parlementaires_profession:
@@ -12,7 +12,7 @@ list_parlementaires_profession:
   param: {module: parlementaire, action: listProfession}
 
 list_parlementaires_organisme:
-  url: /parlementaire/organisme/:slug
+  url: /organisme/:slug
   param: {module: parlementaire, action: listOrganisme}
 
 search_parlementaire:
@@ -22,6 +22,14 @@ search_parlementaire:
 interventions_seance:
   url: /seance/:seance
   param: {module: intervention, action: seance}
+
+parlementaire_presences:
+  url: /presence/:slug
+  param: {module: presence, action: parlementaire}
+
+presents_seance:
+  url: /presence/:seance
+  param: {module: presence, action: seance}
 
 homepage:
   url:   /

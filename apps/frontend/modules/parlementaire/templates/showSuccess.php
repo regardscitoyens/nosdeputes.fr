@@ -27,5 +27,5 @@ Non communiquée
 <?php } ?>
 </ul>
 <?php } ?>
-<!-- <p><?php #echo link_to("Présences",'@parlementaire_presences?slug='.$parlementaire->getSlug() ); ?></p> -->
+<?php echo link_to("Présences",'@parlementaire_presences?slug='.$parlementaire->getSlug()); ?></p>
 

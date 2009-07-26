@@ -5,5 +5,17 @@
  */
 class PreuvePresence extends BasePreuvePresence
 {
-
+    public static function getPreuves($array) {
+      $n_preuves = count($array) ;
+      $preuves = $n_preuves." preuve";
+      if ($n_preuves == 1) $preuves = $preuves." : ";
+      else $preuves = $preuves."s : ";
+      foreach($array as $preuve) {
+         $type = "Journal Officiel";
+         if ($preuve['type'] == "intervention") $type = "Compte-Rendu de séance";
+         $preuves = $preuves.link_to($type, $preuve['source']);
+         if (current($array) != end($array)) $preuves=$preuves.', ';
+      }
+      return $preuves;
+    }
 }
