@@ -149,3 +149,43 @@ PersonnaliteIntervention:
       foreignAlias: PersonnaliteInterventions
     Intervention:
       foreignAlias: PersonnaliteInterventions
+
+Amendement:
+  actAs:
+    Timestampable:
+  columns:
+    id:
+      type: integer
+      primary: true
+    legislature: integer
+    texteloi_id: integer
+    numero: integer
+    rectif: integer
+    sujet: string(100)
+    sort:
+      type: enum
+      values: ['En attente', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non-soutenu', 'Retiré avant séance']
+    date: date
+    texte: 
+      type: blob
+    expose: 
+      type: blob
+    content_md5: string(36)
+  relations:
+    Parlementaires:
+      class: Parlementaire
+      refClass: ParlementaireAmendement
+      foreignAlias: Amendements
+
+ParlementaireAmendement:
+  actAs:
+    Timestampable:
+  columns:
+    parlementaire_id: integer
+    amendement_id: integer
+  relations:
+    Parlementaire:
+      foreignAlias: ParlementaireAmendements
+    Amendement:
+      foreignAlias: ParlementaireAmendements
+
