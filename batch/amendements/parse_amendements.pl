@@ -22,7 +22,7 @@ while ($t = $p->get_tag('a')) {
 	print FILE2 $a->content;
 	close FILE2;
 	print "downloaded ... ";
-	print FILE `perl cut_amdmt2.pl html/$file`;
+	print FILE `perl cut_amdmt.pl html/$file`;
 	print "done.\n";		
 	$a->back();
     }
