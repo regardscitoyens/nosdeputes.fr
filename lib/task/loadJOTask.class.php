@@ -53,7 +53,7 @@ class loadJOTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
-	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->reunion, $jo->session, $commission, 'commission');
+	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->reunion, $jo->session);
 	    $seance->addPresence($depute, 'jo', $jo->source);
 	    $seance->free();
 	    $commission->free();
