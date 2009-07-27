@@ -3,6 +3,7 @@
 <div class='intervenant'><? 
 $persos = $intervention->getAllPersonnalitesAndFonctions(); 
 if (count($persos)) {
+  $didascalie = 0;
   echo "<a id='".$intervention->getId()."'";
   if ($persos[0][0]->getPageLink())
     echo " href=\"".url_for($persos[0][0]->getPageLink())."\"";
@@ -17,6 +18,7 @@ if (count($persos)) {
   }
   echo "</a>";
  } else {
+  $didascalie = 1;
   echo "<a id='".$intervention->getId()."'>";
   echo 'Didascalie&nbsp;:</a>';
  }
@@ -25,6 +27,12 @@ if (count($persos)) {
 if (!$persos) 
   echo ' comment';?>'><ul><? echo $intervention->getIntervention(); ?></ul></div>
 </div>
+<? if (!$didascalie) : ?>
+<div class="commentaires">
+  3 commentaires dont celui de toto :
+  Cette intervention c'est de la balle !
+</div>
+<?endif; ?>
 <div class="source">
 <a href="<? echo $intervention->getSource(); ?>">source</a> - 
 <a href="<? echo url_for('@interventions_seance?seance='.$seance->id); ?>#<? echo $intervention->getId(); ?>">permalink</a>
