@@ -27,6 +27,10 @@ parlementaire_presences:
   url: /presence/:slug
   param: {module: presence, action: parlementaire}
 
+plot_parlementaire_presences:
+  url: /presence/plot/:slug
+  param: {module: presence, action: plotParlementaire}
+
 presents_seance:
   url: /presence/:seance
   param: {module: presence, action: seance}

@@ -26,8 +26,10 @@ sub auteurs {
 
 sub texte {
     $line =~ s/\s*\<\/?[^\>]+\>//g;
-    if ($amdmt{'texte'} =~ /^$/) { $amdmt{'texte'} = "<p>".$line."</p>"; }
-    else { $amdmt{'texte'} = $amdmt{'texte'}."<p>".$line."</p>"; }
+    $output = 'texte';
+    if ($expose) { $output = 'expose'; }
+    if ($amdmt{$output} =~ /^$/) { $amdmt{$output} = "<p>".$line."</p>"; }
+    else { $amdmt{$output} = $amdmt{$output}."<p>".$line."</p>"; }
 }
 
 sub expose {
@@ -41,6 +43,7 @@ sub expose {
 $string =~ s/\r//g;
 $string =~ s/&nbsp;/ /g;
 $string =~ s/\|(\W+)\|/$1/g;
+$expose = false;
 foreach $line (split /\n/, $string)
 {
     if ($line =~ /meta/) {
@@ -75,6 +78,8 @@ foreach $line (split /\n/, $string)
 	    auteurs();
 	}elsif ($line =~ /class="amddispotexte"/) {
 	    texte();
+	}elsif ($line =~ /class="amdexpotitre"/) {
+	    $expose = true;
 	}elsif ($line =~ /class="amdexpotexte"/) {
 	    expose();
 	}

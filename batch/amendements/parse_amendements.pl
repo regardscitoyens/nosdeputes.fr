@@ -3,13 +3,25 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
-$a = WWW::Mechanize->new();
-$a->get("http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?LEGISLATURE=13Amendements&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML&ResultCount=50000&searchadvanced=Rechercher");
+@url = (
+#    "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?LEGISLATURE=13Amendements&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML&ResultCount=5000&searchadvanced=Rechercher",
+#    "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?LEGISLATURE=13Amendements&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML&ResultCount=5000&ResultStart=5001",
+    "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?LEGISLATURE=13Amendements&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML&ResultCount=5000&ResultStart=10001"
+#    "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?LEGISLATURE=13Amendements&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML&ResultCount=5000&ResultStart=15001",
+#    "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?LEGISLATURE=13Amendements&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML&ResultCount=5000&ResultStart=20001",
+#    "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?LEGISLATURE=13Amendements&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML&ResultCount=5000&ResultStart=25001"
+);
 
+$a = WWW::Mechanize->new();
+$count = 0;
+
+foreach $url (@url) {
+
+$a->get($url);
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 
-open FILE, ">:utf8", "txt/amendements_13.txt";
+open FILE, ">:utf8", "txt/amendements_13".$count."txt";
 while ($t = $p->get_tag('a')) {
     if ($t->[1]{class} eq 'lienamendement') {
 	$a->get($t->[1]{href});
@@ -28,4 +40,5 @@ while ($t = $p->get_tag('a')) {
     }
 }
 close FILE;
-
+$count ++;
+}
