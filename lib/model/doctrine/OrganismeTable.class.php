@@ -7,7 +7,7 @@ class OrganismeTable extends Doctrine_Table
   public function findOneByNomOrCreateIt($nom, $type) {
     $nom = strtolower($nom);
     $nom = preg_replace('/&#8217;/', '’', $nom);
-    echo "-$nom-\n";
+    $nom = preg_replace('/\W+$/', '', $nom);
     $org = $this->findOneByNom($nom);
     if (!$org) {
       $org = new Organisme();

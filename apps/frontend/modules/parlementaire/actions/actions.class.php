@@ -54,17 +54,19 @@ class parlementaireActions extends sfActions
   }
   public function executeListOrganisme(sfWebRequest $request) 
   {
-    $query = Doctrine::getTable('Parlementaire')->createQuery('p');
-    $query2 = Doctrine::getTable('Organisme')->createQuery('o');
     $orga = $request->getParameter('slug');
-    if ($orga) {
-      $query->leftJoin('p.ParlementaireOrganisme po')
-        ->leftJoin('po.Organisme o')
-        ->where('o.slug = ?', $orga);
-      $query2->where('o.slug = ?', $orga);
-    }
+    $this->forward404Unless($orga);
+
+    $query = Doctrine::getTable('Parlementaire')->createQuery('p');
+    $query->leftJoin('p.ParlementaireOrganisme po')
+      ->leftJoin('po.Organisme o')
+      ->where('o.slug = ?', $orga);
     $query->orderBy("po.importance DESC, p.sexe ASC, p.nom_de_famille ASC");
     $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
+    
+    $query2 = Doctrine::getTable('Organisme')->createQuery('o');
+    $query2->where('o.slug = ?', $orga);
     $this->orga = $query2->fetchOne();
+
   }
 }

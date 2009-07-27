@@ -155,9 +155,6 @@ Amendement:
   actAs:
     Timestampable:
   columns:
-    id:
-      type: integer
-      primary: true
     legislature: integer
     texteloi_id: integer
     numero: integer
