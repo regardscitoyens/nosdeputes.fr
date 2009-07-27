@@ -6,7 +6,7 @@
 class Intervention extends BaseIntervention
 {
   public function setSeance($commission, $date, $heure) {
-    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt(strtolower($commission), 'parlementaire');
+    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commission, 'parlementaire');
     $seance = $commission->getSeanceByDateAndMomentOrCreateIt($date, $heure);
     return $this->_set('seance_id', $seance->id);
   }
