@@ -13,9 +13,11 @@ class Presence extends BasePresence
       $preuve = new PreuvePresence();
       $preuve->presence_id = $this->id;
       $preuve->type = $type;
+      $this->nb_preuves++ ;
     }
     $preuve->source = $source;
     $res = $preuve->save();
+    $this->save();
     $preuve->free();
     return $res;
   }

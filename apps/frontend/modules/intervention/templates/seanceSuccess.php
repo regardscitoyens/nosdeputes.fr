@@ -17,8 +17,8 @@ if (count($persos)) {
   }
   echo "</a>";
  } else {
-  echo "<a id='".$intervention->getId()."'/>";
-  echo 'Didascalie&nbsp;:';
+  echo "<a id='".$intervention->getId()."'>";
+  echo 'Didascalie&nbsp;:</a>';
  }
 ?></div>
 <div class='intervention<? 

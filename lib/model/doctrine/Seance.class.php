@@ -33,8 +33,10 @@ class Seance extends BaseSeance
         if (preg_match('`(\d{1})`', $moment, $match)) return $match[1]."ème réunion";
         return $moment;
     }
-    if (preg_match('`(\d{2}):(\d{2})`', $moment, $match)) return $match[1]."h".$match[2];
-    if (preg_match('`(\d{1}):(\d{2})`', $moment, $match)) return "0".$match[1]."h".$match[2];
+    if (preg_match('/(\d{1,2})[:h](\d{2})/', $moment, $match)) {
+      $moment = sprintf("%02d:%02d", $match[1], $match[2]);
+      return $moment;
+    }
     return $moment;
   }
   

@@ -24,7 +24,7 @@ class Organisme extends BaseOrganisme
       $seance = new Seance();
       $seance->type = 'commission';
       $seance->setDate($date);
-      $seance->moment = $moment;
+      $seance->moment = Seance::convertMoment($moment);
       $seance->Organisme = $this;
       $seance->save();
     }
@@ -33,6 +33,7 @@ class Organisme extends BaseOrganisme
 
 
   public function getSeanceByDateAndMoment($date, $moment) {
+    $moment = Seance::convertMoment($moment);
     $q = Doctrine::getTable('Seance')->createQuery('s');
     $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment = ?', $moment);
     $res = $q->fetchOne();

@@ -31,6 +31,10 @@ presents_seance:
   url: /presence/:seance
   param: {module: presence, action: seance}
 
+preuve_presence_seance:
+  url: /preuve/:slug/:seance
+  param: {module: presence, action: preuve}
+
 homepage:
   url:   /
   param: { module: parlementaire, action: list }

@@ -91,6 +91,7 @@ Presence:
   columns:
     parlementaire_id: integer
     seance_id: integer
+    nb_preuves: integer
   relations:
     Parlementaire:
       foreignAlias: Presences
@@ -141,7 +142,7 @@ PersonnaliteIntervention:
     personnalite_id: integer
     parlementaire_id: integer
     intervention_id: string(36)
-    fonction: string(200)
+    fonction: string(300)
   relations:
     Personnalite:
       foreignAlias: PersonnaliteInterventions
