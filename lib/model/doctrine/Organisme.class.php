@@ -39,28 +39,30 @@ class Organisme extends BaseOrganisme
     $res = $q->fetchOne();
     $q->free();
     unset($q);
-    if (!$res) {
-      $q = Doctrine::getTable('Seance')->createQuery('s');
-      $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date);
-      if (count($res = $q->fetchArray()) && preg_match('/(\d+)[:](\d+)/', $moment, $match)) {
-	$match[2]+=15;
-	if ($match[2] < 60) {
-	  $q = Doctrine::getTable('Seance')->createQuery('s');
-	  $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment = ?', $match[1].':'.$match[2]);
-	  $res = $q->fetchOne();
-	  $q->free();
-	  unset($q);
-	}
-	if (!$res) {
-	  $match[2]-=30;
-	  if ($match[2] > 0) {
-	    $q = Doctrine::getTable('Seance')->createQuery('s');
-	    $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment = ?', $match[1].':'.$match[2]);
-	    $res = $q->fetchOne();
-	    $q->free();
-	    unset($q);
-	  }
-	}
+    if ($res) {
+      return $res;
+    }
+    $q = Doctrine::getTable('Seance')->createQuery('s');
+    $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date);
+    if (count($q->fetchArray()) && preg_match('/(\d+)[:](\d+)/', $moment, $match)) {
+      $match[2]+=15;
+      if ($match[2] < 60) {
+	$q = Doctrine::getTable('Seance')->createQuery('s');
+	$q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment = ?', $match[1].':'.$match[2]);
+	$res = $q->fetchOne();
+	$q->free();
+	unset($q);
+      }
+      if ($res) {
+	return $res;
+      }
+      $match[2]-=30;
+      if ($match[2] > 0) {
+	$q = Doctrine::getTable('Seance')->createQuery('s');
+	$q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment = ?', $match[1].':'.$match[2]);
+	$res = $q->fetchOne();
+	$q->free();
+	unset($q);
       }
     }
     return $res;

@@ -5,10 +5,13 @@
 class OrganismeTable extends Doctrine_Table
 {
   public function findOneByNomOrCreateIt($nom, $type) {
+    echo $nom;
     $nom = strtolower($nom);
     $nom = preg_replace('/&#8217;/', '’', $nom);
     $nom = preg_replace('/\W+$/', '', $nom);
+    $nom = preg_replace('/\s+/', ' ', $nom);
     $org = $this->findOneByNom($nom);
+    echo "\n$nom\n";
     if (!$org) {
       $org = new Organisme();
       $org->type = $type;
