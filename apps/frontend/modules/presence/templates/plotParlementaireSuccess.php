@@ -2,30 +2,19 @@
 $debut_mandat = strtotime($parlementaire->getDebutMandat());
 $debut_mandat_annee = date('Y', $debut_mandat);
 $debut_mandat_sem = date('W', $debut_mandat);
-if ($debut_mandat_sem == 53) {
-    $debut_mandat_annee++;
-    $debut_mandat_sem = 1;
-}
-$last_commission = strtotime($presences[0]['Seance']['date']);
-$last_commission_annee = date('Y', $last_commission);
-$last_commission_sem = date('W', $last_commission);
-if ($last_commission_sem == 53) {
-    $last_commission_annee++;
-    $last_commission_sem = 1;
-}
+if ($debut_mandat_sem == 53) { $debut_mandat_annee++ ; $debut_mandat_sem = 1 ; }
+$last_commission_annee = $presences[0]['Seance']['annee'];
+$last_commission_sem = $presences[0]['Seance']['numero_semaine'];
+if ($last_commission_sem == 53) { $last_commission_annee++ ; $last_commission_sem = 1 ; }
 $n_weeks = ($last_commission_annee - $debut_mandat_annee)*52 + $last_commission_sem - $debut_mandat_sem + 1;
 $semaines = range(1, $n_weeks);
 $n_presences = array_fill(1, $n_weeks, 0);
 foreach($presences as $presence) {
-    $date = strtotime($presence['Seance']['date']);
-    $annee = date('Y', $date);
-    $sem = date('W', $date);
-    if ($sem == 53) {
-        $annee++;
-        $sem = 1;
-    }
+    $annee = $presence['Seance']['annee'];
+    $sem = $presence['Seance']['numero_semaine'];
+    if ($sem == 53) { $annee++ ; $sem = 1 ; }
     $n = ($annee - $debut_mandat_annee)*52 + $sem - $debut_mandat_sem + 1;
-    $n_presences[$n] ++;
+    $n_presences[$n] = $presence['nombre'];
 }
 // Dataset definition
 $DataSet = new xsPData;
