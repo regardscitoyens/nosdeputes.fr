@@ -1,4 +1,4 @@
-<h1>Présence de <? echo $parlementaire->nom; ?></h1>
+<h1>Présence de <?php echo $parlementaire->nom; ?></h1>
 <p><?php $n_presences = count($presences); echo $n_presences." présences en commission depuis "; ?></p>
 <ul>
 <?php foreach($presences as $presence) : ?>

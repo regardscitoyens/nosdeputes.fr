@@ -23,6 +23,10 @@ interventions_seance:
   url: /seance/:seance
   param: {module: intervention, action: seance}
 
+parlementaire_interventions:
+  url: /intervention/:slug
+  param: {module: intervention, action: parlementaire}
+
 top_interventions:
   url: /top/intervention
   param: {module: intervention, action: top}

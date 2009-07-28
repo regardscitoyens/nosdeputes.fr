@@ -10,6 +10,10 @@
  */
 class interventionActions extends sfActions
 {
+  public function executeParlementaire(sfWebRequest $request)
+  {
+    $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+  }
   public function executeTop(sfWebRequest $request)
   {
     $q = Doctrine_Query::create()
