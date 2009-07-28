@@ -10,6 +10,16 @@
  */
 class interventionActions extends sfActions
 {
+  public function executeTop(sfWebRequest $request)
+  {
+    $q = Doctrine_Query::create()
+      ->select('p.*, count(i.id) as nb')
+      ->from('Parlementaire p')
+      ->leftJoin('p.Interventions i')
+      ->groupBy('p.id')
+      ->orderBy('nb DESC');
+    $this->top = $q->fetchArray();
+  }
   public function executeSeance(sfWebRequest $request)
   {
     $seance_id = $request->getParameter('seance');

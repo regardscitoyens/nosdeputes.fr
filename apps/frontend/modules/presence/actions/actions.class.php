@@ -10,6 +10,17 @@
  */
 class presenceActions extends sfActions
 {
+  public function executeTop(sfWebRequest $request)
+  {
+    $q = Doctrine_Query::create()
+      ->select('p.*, count(pr.id) as nb')
+      ->from('Parlementaire p')
+      ->leftJoin('p.Presences pr')
+      ->groupBy('p.id')
+      ->orderBy('nb DESC');
+    $this->top = $q->fetchArray();
+  }
+
   public function executeParlementaire(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');

@@ -23,6 +23,14 @@ interventions_seance:
   url: /seance/:seance
   param: {module: intervention, action: seance}
 
+top_interventions:
+  url: /top/intervention
+  param: {module: intervention, action: top}
+
+top_presence:
+  url: /top/presence
+  param: {module: presence, action: top}
+
 parlementaire_presences:
   url: /presence/:slug
   param: {module: presence, action: parlementaire}
@@ -42,6 +50,3 @@ preuve_presence_seance:
 homepage:
   url:   /
   param: { module: parlementaire, action: list }
-
-default:
-  url:   /:module/:action/*
