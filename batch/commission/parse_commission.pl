@@ -181,6 +181,11 @@ foreach $line (split /\n/, $string)
     if ($line =~ /\<[a]/i) {
 	if ($line =~ /<a name=["']([^"']+)["']/) {
 	    $source = $url."#$1";
+	}elsif($line =~ /<a[^>]+>([^<]+)</) {
+	    $test = $1;
+	    if ($test =~ /Commission/) {
+		$commission = $test;
+	    }
 	}
     }
     if ($line =~ /\<[p]/i) {
@@ -224,7 +229,7 @@ foreach $line (split /\n/, $string)
 		$date = sprintf("%04d-%02d-%02d", $3, $mois{$2}, $1);
 	    }
 	}elsif ($line =~ /SOMseance/i) {
-	    if ($line =~ /(\d+) heures?( \d+|)/i) {
+	    if ($line =~ /(\d+)\s*(h|heures?)\s*(\d+|)/i) {
 		$heure = sprintf("%02d:%02d", $1, $2 || "00");
 	    }
 	}elsif(!$commission && $line =~ /commission/i) {

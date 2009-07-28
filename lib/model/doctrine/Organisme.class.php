@@ -45,25 +45,11 @@ class Organisme extends BaseOrganisme
     $q = Doctrine::getTable('Seance')->createQuery('s');
     $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date);
     if (count($q->fetchArray()) && preg_match('/(\d+)[:](\d+)/', $moment, $match)) {
-      $match[2]+=15;
-      if ($match[2] < 60) {
-	$q = Doctrine::getTable('Seance')->createQuery('s');
-	$q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment = ?', $match[1].':'.$match[2]);
-	$res = $q->fetchOne();
-	$q->free();
-	unset($q);
-      }
-      if ($res) {
-	return $res;
-      }
-      $match[2]-=30;
-      if ($match[2] > 0) {
-	$q = Doctrine::getTable('Seance')->createQuery('s');
-	$q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment = ?', $match[1].':'.$match[2]);
-	$res = $q->fetchOne();
-	$q->free();
-	unset($q);
-      }
+      $q = Doctrine::getTable('Seance')->createQuery('s');
+      $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment LIKE ?', $match[1].':%');
+      $res = $q->fetchOne();
+      $q->free();
+      unset($q);
     }
     return $res;
   }
