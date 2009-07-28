@@ -17,7 +17,7 @@ foreach($presences as $presence) {
     $n_presences[$n] = $presence['nombre'];
 }
 // Dataset definition
-$DataSet = new xsPData;
+$DataSet = new xsPData();
 $DataSet->AddPoint($n_presences,"Présences");
 $DataSet->AddPoint($semaines,"Semaines");
 $DataSet->AddSerie("Présences");
@@ -41,8 +41,8 @@ $Test->drawPlotGraph($GetData,$GetDataDescription,3,2,255,255,255);
 $Test->xsSetFontProperties("tahoma.ttf",8);
 $Test->drawLegend(75,35,$GetDataDescription,255,255,255);
 $Test->xsSetFontProperties("tahoma.ttf",10);
-$Test->drawTitle(60,22,"example 1",50,50,50,585);
-$Test->xsRender("example1.png");
+$Test->drawTitle(60,22,'Présence de '.$parlementaire->nom,50,50,50,585);
+$Test->xsRender('presence-'.$parlementaire->slug.'.png');
 
 ?>
-<?php echo xspchart_image_tag('example1.png'); ?>
+<?php echo xspchart_image_tag('presence-'.$parlementaire->slug.'.png'); ?>
