@@ -29,7 +29,7 @@
     <div class="haut">
       <div class="conteneur_entete">
         <div class="entete">
-          <div class="logo">
+          <div class="logo">  
             <a href="index.php"><?php echo image_tag($style.'/logo.png', array('alt' => 'Légitruc')); ?></a>
           </div>
           <div class="haut_droite">
@@ -53,12 +53,12 @@
             <li class="douze"><a href="#">L'Assemblée</a></li>
           </ul>
           <div class="search_box">
-						<form action="<?php echo url_for('@search_parlementaire'); ?>" method="get">
-						<p>
-							<input class="rechercher" name="search" type="text" size="15" value="rechercher"/>
-							<input class="bouton_ok" type="submit" value="ok"/>
-						</p>
-						</form>
+            <form action="<?php echo url_for('@search_parlementaire'); ?>" method="get">
+            <p>
+              <input class="rechercher" name="search" type="text" size="15" value="rechercher"/>
+              <input class="bouton_ok" type="submit" value="ok"/>
+            </p>
+            </form>
           </div>
         </div>
       </div>
