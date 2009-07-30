@@ -156,10 +156,11 @@ Amendement:
     Timestampable:
   columns:
     id:
-      type: string
+      type: string(36)
       primary: true
     legislature: integer
     texteloi_id: integer
+    source: string(255)
     numero: integer
     rectif: integer
     sujet: string(100)
@@ -183,7 +184,7 @@ ParlementaireAmendement:
     Timestampable:
   columns:
     parlementaire_id: integer
-    amendement_id: integer
+    amendement_id: string(36)
   relations:
     Parlementaire:
       foreignAlias: ParlementaireAmendements

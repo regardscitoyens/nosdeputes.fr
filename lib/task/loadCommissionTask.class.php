@@ -18,10 +18,12 @@ class loadCommissionTask extends sfBaseTask
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) !== false) {
-	  print "$dir$file\n";
+	  if (preg_match('/^\./', $file))
+	    continue;
+	  echo "$dir$file\n";
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
-	    if (!$json && !$json->intervention && !$json->date && !$json->heure && !$json->commission && !$json->source) {
+	    if (!$json || !$json->intervention || !$json->date || !$json->heure || !$json->commission || !$json->source) {
 	      echo "ERROR json : ";
 	      echo $line;
 	      echo "\n";
