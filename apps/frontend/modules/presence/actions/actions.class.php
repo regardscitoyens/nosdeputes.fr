@@ -42,18 +42,6 @@ class presenceActions extends sfActions
     $slug = $request->getParameter('slug');
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->forward404Unless($this->parlementaire);
-    $query = Doctrine_Query::create()
-        ->select('COUNT(*) as nombre, p.*')
-        ->from('Presence p')
-        ->where('p.parlementaire_id = ?', $this->parlementaire->id)
-        ->leftJoin('p.Seance s')
-        ->addSelect('s.annee, s.numero_semaine')
-        ->orderBy('s.annee DESC')
-        ->addOrderBy('s.numero_semaine DESC')
-        ->groupBy('s.annee')
-        ->addGroupBy('s.numero_semaine');
-    $this->presences = $query->fetchArray();
-    $this->forward404Unless($this->presences);
   }
 
   public function executePreuve(sfWebRequest $request)
