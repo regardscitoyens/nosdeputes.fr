@@ -92,7 +92,6 @@ sub checkout {
     if ($titre2) {
 	$contexte .= ' > '.$titre2;
     }
-
     $out =  '{"contexte": "'.$contexte.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure."\", ";
     if ($ploi = getProjetLoi($titre1)) {
 	$out .= "\"numeros_loi\": \"$ploi\", ";
@@ -102,7 +101,7 @@ sub checkout {
     }
 
     if ($intervenant) {
-	if ($intervenant =~ s/ et M[mes\.]* (.*)//) {
+	if ($intervenant =~ s/ et\s*M[mes\.]* (.*)//) {
 	    print $out.'"intervenant": "'.$1."\"}\n";
 	}
 	print $out.'"intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.'", "intervenant_url": "'.$intervenant_url."\"}\n";
@@ -123,7 +122,6 @@ sub setFonction {
     my $intervenant = shift;
     my $kfonction = lc($fonction);
     $kfonction =~ s/[^a-z]+/ /gi;
-    $intervenant =~ s/^M\S+\s//;
     $intervenant =~ s/\W+$//;
     $fonction2inter{$kfonction} = $intervenant;
 #    print "$fonction ($kfonction)  => $intervenant \n";
@@ -151,7 +149,7 @@ sub setIntervenant {
     $intervenant =~ s/^\s+//;
     $intervenant =~ s/É+/é/gi;
     $intervenant =~ s/\&\#8217\;/'/g;
-    if ($intervenant =~ s/\, (.*)//) {
+    if ($intervenant =~ s/\,\s*(.*)//) {
 	setFonction($1, $intervenant);
     }
     if ($intervenant =~ /^[a-z]/) {
@@ -182,6 +180,7 @@ sub setIntervenant {
 		}
 	    }
 	    if ($inter) {
+		$fonction2inter{lc($intervenant)} = $inter;
 		$intervenant = $inter;
 	    }
 	}
@@ -196,9 +195,6 @@ $majIntervenant = 0;
 $debut = 0;
 
 $string =~ s/<br>\n//gi;
-
-#Si italique inclue dans un paragraphe d'intervention, on sépare
-$string =~ s/([^|])\/\s*\(([^\)]+)\)\//$1<\/p>\n<p>\/$2\//g;
 
 #print "$string\n"; exit;
 
@@ -217,6 +213,11 @@ foreach $line (split /\n/, $string)
 
     #suppression des commentaires
     $line =~ s/\<\!\-\-[^\>]+\>//g;
+    #si deux intervenant en même temps
+    $line =~ s/\|\s*et\s*\|/ et /gi;
+    #si italique ou gras sans raison on supprime
+    $line =~ s/\/\s*\// /g;
+    $line =~ s/\|\s*\|/ /g;
 
     #récupère les ancres pour de meilleurs liens sources
     if ($line =~ /\<[a]/i) {
@@ -238,17 +239,18 @@ foreach $line (split /\n/, $string)
 	    $titre2 = $1;
 	    $titre2 =~ s/\W+$//;
 	    $amendements = @pre_amendements = ();
+	    $line = "<p>|$titre2|</p>";
 	}elsif($line =~ /h2 class="titre1">([^<]+)/) {
 	    checkout();
 	    $titre1 = $1;
 	    $titre2 = '';
 	    $amendements = @pre_amendements = ();
+	    $line = "<p>|$titre1|</p>";
 	}elsif($line =~ /h1 class="seance"/) {
 	    if ($line =~ /(\d{1,2})\s+([a-zéù]+)\s+(\d{4})/) {
 		$date = $3.'-'.$mois{$2}.'-'.sprintf('%02d', $1);
 	    }
 	}
-	next;
     }
 
     next unless ($debut);
@@ -265,14 +267,16 @@ foreach $line (split /\n/, $string)
 	next if ($line !~ /\w/);
 
 	#si italique ou tout gras => commentaire
-	if ($line =~ /[\|\/]\s*$/ || $line =~ /^\//) {
-	    checkout() if ($intervenant);	    
-	}elsif ($line =~ s/^\|(M[^\|]+)[\|]// ) {
+	if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/.*\/\s$/) {
+	    checkout() if ($intervenant);
+	}elsif ($line =~ s/^\s*\|\s*(M[^\|]+)[\|]// ) {
 	    checkout();
 	    $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
 	    $intervenant_url = $last_href;
 	    $found = 1;
+	}elsif ($line =~ /^\s*\|/) {
+	    checkout() if ($intervenant);
 	}
 	$line =~ s/^\s+//;
 	$line =~ s/[\|\/]//g;

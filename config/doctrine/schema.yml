@@ -33,7 +33,10 @@ Parlementaire:
       class: Organisme
       refClass: ParlementaireOrganisme
       foreignAlias: Parlementaires
-
+  indexes:
+    uniq_url:
+      fields: [url_an]
+      type: unique
 Organisme:
   actAs:
     Timestampable:
@@ -50,7 +53,7 @@ Organisme:
 
 ParlementaireOrganisme:
   columns:
-    fonction: string(255)
+    fonction: string(512)
     importance: integer
     debut_fonction: date
     organisme_id:
@@ -123,6 +126,9 @@ Intervention:
     timestamp: integer
     source: string(128)
     seance_id: integer
+    type:
+      type: enum
+      values: ['commission', 'question', 'loi']
   relations:
     Seance:
       foreignAlias: Interventions
@@ -142,7 +148,7 @@ PersonnaliteIntervention:
     personnalite_id: integer
     parlementaire_id: integer
     intervention_id: string(36)
-    fonction: string(300)
+    fonction: string(512)
   relations:
     Personnalite:
       foreignAlias: PersonnaliteInterventions

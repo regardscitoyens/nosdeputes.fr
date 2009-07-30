@@ -5,9 +5,14 @@
  */
 class Intervention extends BaseIntervention
 {
-  public function setSeance($commission, $date, $heure) {
-    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commission, 'parlementaire');
-    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($date, $heure);
+  public function setSeance($type, $date, $heure, $commission = null) {
+    $this->setType($type);
+    if ($type == 'commission') {
+      $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commission, 'parlementaire');
+      $seance = $commission->getSeanceByDateAndMomentOrCreateIt($date, $heure);
+    }else{
+      $seance = Doctrine::getTable('Seance')->findOneOrCreateIt('hemicycle', $date, $heure);
+    }
     return $this->_set('seance_id', $seance->id);
   }
   public function setPersonnaliteByNom($nom, $fonction = null) 
