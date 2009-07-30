@@ -10,7 +10,7 @@
  */
 class plotComponents extends sfComponents
 {
-  public function executeParlementaire()
+  public function executeParlementairePresence()
   {
     $query = Doctrine_Query::create()
         ->select('COUNT(*) as nombre, p.*')

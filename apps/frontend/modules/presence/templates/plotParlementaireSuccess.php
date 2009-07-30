@@ -1,3 +1,3 @@
 <?
-echo include_component('plot', 'parlementaire', array('parlementaire' => $parlementaire));
+echo include_component('plot', 'parlementairePresence', array('parlementaire' => $parlementaire));
 ?>
