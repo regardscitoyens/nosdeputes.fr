@@ -1,3 +1,4 @@
+<?php $style = 'fixe'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
@@ -6,10 +7,10 @@
     <?php include_metas() ?>  
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="stylesheet" type="text/css" media="screen" href="css/fixe/style.css" />
-    <link rel="stylesheet" type="text/css" media="print" href="css/fixe/print.css" />
+    <?php echo stylesheet_tag($style.'/style'); ?>
+    <?php echo stylesheet_tag($style.'/print'); ?>
     <!--[if lte IE 6]>
-    <link rel="stylesheet" type="text/css" media="screen" href="css/fixe/ie6.css" />
+    <?php echo stylesheet_tag($style.'/ie6'); ?>
     <script type="text/javascript" src="js/fixe/fonctions_ie.js"></script>
     <script type="text/javascript" src="includes/iepngfix/iepngfix_tilebg.js"></script>  
     <style type="text/css">
@@ -29,7 +30,7 @@
       <div class="conteneur_entete">
         <div class="entete">
           <div class="logo">
-            <a href="index.php"><?php echo image_tag('fixe/logo.png', 'alt=Légitruc'); ?></a>
+            <a href="index.php"><?php echo image_tag($style.'/logo.png', array('alt' => 'Légitruc')); ?></a>
           </div>
           <div class="haut_droite">
             <div class="boite_util">
@@ -45,11 +46,11 @@
       <div class="conteneur_menu">
         <div class="menu" id="menu">
           <ul>
-            <li class="neuf"><a href="<?php echo url_for('parlementaire/list'); ?>">Accueil</a></li>
+            <li class="neuf"><a href="<?php echo url_for('parlementaire/index'); ?>">Accueil</a></li>
             <li class="douze"><a href="<?php echo url_for('parlementaire/list'); ?>">Les Députés</a></li>
-            <li class="neuf"><a href="lois.php">Les Lois</a></li>
-            <li class="treize"><a href="citoyens.php">Les Citoyens</a></li>
-            <li class="douze"><a href="assemblee.php">L'Assemblée</a></li>
+            <li class="neuf"><a href="#">Les Lois</a></li>
+            <li class="treize"><a href="#">Les Citoyens</a></li>
+            <li class="douze"><a href="#">L'Assemblée</a></li>
           </ul>
           <div class="search_box">
 						<form action="<?php echo url_for('@search_parlementaire'); ?>" method="get">
@@ -71,7 +72,7 @@
       <div class="conteneur_menu_suite">
         <div class="menu">
           <div class="mini_logo">
-            <a href="#" title="haut de page"><?php echo image_tag('fixe/mini_logo.png', 'alt=LGT'); ?></a>
+            <a href="#" title="haut de page"><?php echo image_tag($style.'/mini_logo.png', 'alt=LGT'); ?></a>
           </div>
           <!-- <div class="style_switcher">
             <form method="post" action="<?php echo  $_SERVER['PHP_SELF'] ?>" id="select_style">

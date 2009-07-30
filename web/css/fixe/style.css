@@ -241,10 +241,14 @@ img {
 .depute_gauche {
 	float: left;
 }
-.photo_fiche {
+.photo_depute {
 	height: 150px;
 	width: 117px;
 	border-right: 1px solid #BFBFBF;
+}
+.photo_fiche {
+	height: 150px;
+	width: 117px;
 }
 .depute_milieu {
 	float: left;
@@ -387,6 +391,8 @@ img {
 }
 .rss {
 	float: right;
+	margin: 0;
+	padding: 0;
 }
 /* Boite extrait article */
 .boite_extrait_article {
