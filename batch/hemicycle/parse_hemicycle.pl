@@ -247,7 +247,7 @@ foreach $line (split /\n/, $string)
 	    $amendements = @pre_amendements = ();
 	    $line = "<p>|$titre1|</p>";
 	}elsif($line =~ /h1 class="seance"/) {
-	    if ($line =~ /(\d{1,2})\s+([a-zéù]+)\s+(\d{4})/) {
+	    if ($line =~ /(\d{1,2})[ermd]*\s+([a-zéù]+)\s+(\d{4})/) {
 		$date = $3.'-'.$mois{$2}.'-'.sprintf('%02d', $1);
 	    }
 	}
