@@ -35,7 +35,7 @@ class loadHemicyleTask extends sfBaseTask
 	      $intervention = new Intervention();
 	      $intervention->md5 = $id;
 	      $intervention->setIntervention($json->intervention);
-	      if (preg_match('/question/i', $json->context))
+	      if (preg_match('/question/i', $json->contexte))
 		$type = 'question';
 	      else
 		$type = 'loi';
