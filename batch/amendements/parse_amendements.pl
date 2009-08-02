@@ -5,9 +5,25 @@ use HTML::TokeParser;
 
 $legislature = shift;
 
-$url0 = "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?LEGISLATURE=".sprintf("%2d", $legislature)."Amendements&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML&ResultCount=500&searchadvanced=Rechercher";
+@urls = ("http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F04%2F2007&DateFin=15%2F08%2F2007&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML",
+	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F08%2F2007&DateFin=15%2F12%2F2007&Scope=TEXTEINTEGRAL&Sor
+tField=DATE&SortOrder=Asc&format=HTML",
+	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F12%2F2007&DateFin=15%2F04%2F2008&Scope=TEXTEINTEGRAL&Sor
+tField=DATE&SortOrder=Asc&format=HTML",
+	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F04%2F2008&DateFin=15%2F08%2F2008&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML",
+	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F08%2F2008&DateFin=15%2F12%2F2008&Scope=TEXTEINTEGRAL&Sor
+tField=DATE&SortOrder=Asc&format=HTML",
+	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F12%2F2008&DateFin=15%2F04%2F2009&Scope=TEXTEINTEGRAL&Sor
+tField=DATE&SortOrder=Asc&format=HTML",
+	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F04%2F2009&DateFin=15%2F08%2F2009&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML"
+);
+
+$trimestre = 0;
+foreach $url0 (@urls) {
+$trimestre++;
+
 $a = WWW::Mechanize->new();
-$a->get($url0);
+$a->get($url0."&ResultCount=100&ResultStart=1");
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 while ($t = $p->get_tag('span')) {
@@ -15,14 +31,14 @@ while ($t = $p->get_tag('span')) {
 	$n_amdmts = $p->get_text('/span');
     }
 }
-$n_pages = $n_amdmts / 500;
+$n_pages = $n_amdmts / 100;
 print $n_amdmts."\n";
 
 for ($i = 0; $i <= $n_pages; $i++) {
 
-$start = $i*500+1;
-$url = "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?LEGISLATURE=".sprintf("%2d", $legislature)."Amendements&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML&ResultCount=500&ResultStart=".$start;
-$file = "txt/amendements_".$legislature."_".$i.".txt";
+$start = $i*100+1;
+$url = $url0."&ResultCount=100&ResultStart=".$start;
+$file = "txt/amendements_13_trimestre_".$trimestre."_".$i.".txt";
 print $url." > ".$file."\n";
 
 $a = WWW::Mechanize->new();
@@ -35,6 +51,7 @@ while ($t = $p->get_tag('a')) {
     if ($t->[1]{class} eq 'lienamendement') {
 	$a->get($t->[1]{href});
 	$htmfile = $a->uri();
+	$htmfile = $t->[1]{href};
 	next if ($htmfile =~ /(index|javascript)/);
 	$htmfile =~ s/\//_/gi;
 	$htmfile =~ s/\#.*//;
@@ -50,4 +67,5 @@ while ($t = $p->get_tag('a')) {
 }
 close FILE;
 $count ++;
+}
 }
