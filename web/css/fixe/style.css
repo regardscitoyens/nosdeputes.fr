@@ -2,7 +2,7 @@
 body {
 	margin: 0;
 	padding: 0;
-	font: 62.5% Verdana, "DejaVu Sans", "Bitstream Vera Sans", Tahoma, Geneva, Arial, Sans-serif;
+	font: 65% Verdana, "DejaVu Sans", "Bitstream Vera Sans", Tahoma, Geneva, Arial, Sans-serif;
 	color: #484848;
 	background-color: #DFDFDF;
 }
@@ -11,13 +11,20 @@ body {
 }
 #contenu {
 	padding: 15px;
-	background-color: #fff;
+	padding-bottom: 31px;
 }
 .haut_droite {
 	float: right;
 }
+.haut_droite input {
+	color: #fff;
+	background-color: gray;
+	border : 1px solid #BFBFBF;
+}
+.haut_droite:focus, .haut_droite:hover {
+}
 .bouton_connexion {
-	width: 24px;
+	width: 26px;
 	height: 24px;
 	margin-right: 5px;
 	margin-top: 10px;
@@ -50,7 +57,7 @@ a:visited {
 img {
 	border: none;
 }
-.float_droite {
+.menu_bas {
 	float: right;
 }
 .stopfloat {
@@ -79,7 +86,6 @@ img {
 }
 .logo {
 	float: left;
-	margin-left: 25px;
 	padding-top: 22px;
 }
 /* Début menu */
@@ -121,7 +127,7 @@ img {
 	background: url('images/fond_bouton.gif') repeat-x 0 -31px;
 }
 .menu li a:hover, .menu li a:focus {
-	background: url('images/fond_bouton.gif') repeat-x 0 0 ;
+	background: url('images/fond_bouton.gif') repeat-x 0 0;
 	color: #fff;
 	text-decoration: none;
 }
@@ -166,12 +172,12 @@ img {
 
 .corps {
 	width: 970px;
-	height: 800px;
+	min-height: 800px;
 	margin: auto;
 	padding: 0;
-	background-color: #fff;
 	border-left : 1px solid #BFBFBF;
 	border-right : 1px solid #BFBFBF;
+	background: #fff url("images/rayures-horizon.gif") 0 0;
 }
 /* Bas */
 .conteneur_menu_suite {
@@ -231,7 +237,6 @@ img {
 }
 .fiche_depute h2 {
 	padding-left: 5px;
-	background-color: #EFEFEF;
 }
 
 .fiche_depute dt, .fiche_depute dd {
@@ -267,18 +272,22 @@ img {
 	float: left;
 	width: 100%;
 	padding-top: 3px;
-	background-color: #EFEFEF;
+	background: #8F8F8F url("images/fond_bas.gif") repeat-x 0 0;
 }
 .barre_activite ul, .barre_activite li {
 	display: inline;
 	margin: 0;
 	padding: 0;
 	font-weight: bold;
+	line-height: 24px;
 	background-color: transparent;
 }
 .barre_activite h2 {
 	display: inline;
 	margin: 0;
+	font-size: 1.3em;
+	color: #6F6F6F;
+	line-height: 24px;
 	background-color: transparent;
 }
 .barre_activite li img{
@@ -287,27 +296,69 @@ img {
 .barre_activite a {
 	text-decoration: none;
 }
+.barre_date {
+	margin-left: 25px;
+}
+.logo_parti {
+	float: right;
+}
 .contenu_depute {
 	width: 938px;
-	margin-bottom: 31px;
+	margin-bottom: 15px;
 }
 .boite_depute {
 	margin-top: 15px;
 	padding: 15px;
+	background-color: #fff;
 	border: 1px solid #BFBFBF;
 }
-.boite_depute h2 {
+.boite_depute h2, #b1 h1 {
 	margin-top: 0;
 	padding-left: 5px;
-	color: #fff;
-	background-color: #808080;
+	color: #6F6F6F;
+	background-color: #EFEFEF;
 }
+/* les boites principales */
+#b1 {
+	float: left;
+	width: 459px;
+	margin-right: 15px;
+	margin-bottom: 15px;
+}
+#b1 h2{
+	color: #000;
+	background-color: #fff;
+	font-size: 1.5em;
+}
+#b1 h1{
+	font-size: 1.6em;
+}
+#b2 {
+	float: left;
+	width: 400px;
+}
+#b3 {
+	float: left;
+	width: 400px;
+}
+#b4 {
+	float: left;
+	width: 400px;
+}
+#b5 {
+	float: left;
+	width: 400px;
+}
+/**/
 .mot_dep {
 	text-align: justify;
 }
 .bas_depute {
+	clear: both;
 	margin-top: 15px;
 	padding: 15px;
+	padding-bottom: 7px;
+	background-color: #fff;
 	border: 1px solid #BFBFBF;
 }
 .bas_depute h2 {
@@ -530,3 +581,40 @@ img {
 	padding-left: 0;
 }
 /* Fin fiche député */
+
+/* Séances */
+.interventions {
+	background-color: #fff;
+	border: 1px solid #DFDFDF;
+	padding: 15px;
+	margin-bottom: 15px;
+	font-size: 1.1em;
+}
+.interventions a {
+	font-weight: bold;
+}
+.intervention {
+	margin-bottom: 10px;
+	border-bottom: 1px dashed #DFDFDF;
+}
+.intervention img {
+	float: left;
+	margin-right: 7px;
+	margin-bottom: 7px;
+}
+.intervenant {
+	
+}
+.texte_intervention {
+	
+}
+.commentaires {
+	margin-bottom: 10px;
+}
+.source {
+	float: right;
+}
+.perso {
+	text-transform: capitalize;
+	font-weight: bold;
+}

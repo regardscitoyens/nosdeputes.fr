@@ -6,7 +6,32 @@
     </div>
   </div>
   <div class="depute_milieu">
-    <h1><?php echo $parlementaire->nom; ?></h1>
+    
+  </div>
+  <div class="depute_droite">
+    
+  </div>
+  <div class="barre_activite">
+    <h2>Activité parlementaire : </h2>
+    <ul>
+      <li title="Interventions en séance"><a href="#"><?php echo image_tag('../css/'.$style.'/images/seance.png', 'alt="Interventions en séance"'); ?> : 7</a></li>
+      <li title="Interventions en commissions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Interventions en commissions"'); ?> : 2</a></li>
+      <li title="Rapports"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Rapports"'); ?> : 2</a></li>
+      <li title="Propositions de loi (auteur)"><a href="#"><?php echo image_tag('../css/'.$style.'/images/balance.png', 'alt="Propositions de loi (auteur)"'); ?> : 0</a></li>
+      <li title="Questions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/question.png', 'alt="Questions"'); ?>   : 50</a></li>
+      <li><span class="barre_date">Depuis le : <?php echo $parlementaire->debut_mandat; ?></span></li>
+    </ul>
+  <span class="logo_parti"><?php echo image_tag($parlementaire->getGroupe()->getNom().'.gif', 'alt="Logo '.$parlementaire->getGroupe()->getNom().' "'); ?></span>
+  </div>
+  <div class="stopfloat"></div>
+</div>
+
+<div class="contenu_depute">
+  <div class="boite_depute" id="b1">
+    <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
+    <div class="b_d_cont">
+      <div class="b_d_infos">
+			<h1><?php echo $parlementaire->nom; ?></h1>
     <p>Né le ... (... ans) à ... (...)</p>
     <ul>
       <li><?php echo $parlementaire->getLongStatut(); ?> depuis le <?php echo $parlementaire->debut_mandat ?></li>
@@ -18,38 +43,6 @@
       <?php endif; ?>
       <li>Suppléant : Mr Toto</li>
     </ul>
-  </div>
-  <div class="depute_droite">
-    <h2>Table des matières</h2>
-    <ul>
-      <li><a href="#b1">Infos générales</a></li>
-      <li><a href="#b2">Travaux Législatifs</a></li>
-      <li><a href="#b3">Questions au gouvernement</a></li>
-      <li><a href="#b4">Présence en hémicycle et commission</a></li>
-      <li><a href="#b5">Les votes en séance</a></li>
-    </ul>
-  </div>
-  <div class="barre_activite">
-    <h2>Activité parlementaire : </h2>
-    <ul>
-      <li title="Interventions en séance"><a href="#"><?php echo image_tag('../css/'.$style.'/images/seance.png', 'alt="Interventions en séance"'); ?> : 7</a></li>
-      <li title="Interventions en commissions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Interventions en commissions"'); ?> : 2</a></li>
-      <li title="Rapports"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Rapports"'); ?> : 2</a></li>
-      <li title="Propositions de loi (auteur)"><a href="#"><?php echo image_tag('../css/'.$style.'/images/balance.png', 'alt="Propositions de loi (auteur)"'); ?> : 0</a></li>
-      <li title="Questions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/question.png', 'alt="Questions"'); ?>   : 50</a></li>
-      <li title="Depuis le"><?php echo image_tag('../css/'.$style.'/images/calendrier.png', 'alt="Depuis le : "'); echo $parlementaire->debut_mandat; ?></li>
-    </ul>
-  <span class="float_droite"><?php echo image_tag($parlementaire->getGroupe()->getNom().'.gif', 'alt="Logo '.$parlementaire->getGroupe()->getNom().' "'); ?></span>
-  </div>
-  <div class="stopfloat"></div>
-</div>
-
-<div class="contenu_depute">
-  <div class="boite_depute" id="b1">
-    <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
-    <div class="b_d_cont">
-      <div class="b_d_infos">
-      <h2>Infos générales</h2>
       
       <h3>Le mot de <?php echo $parlementaire->nom; ?></h3>
       <p class="mot_dep">Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos.</p>
@@ -59,7 +52,7 @@
         <li>Parlementaires :
           <ul>
             <?php foreach ($parlementaire->getResponsabilites() as $resp) { ?>
-            <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug()); ?> (<?php echo $resp->getFonction(); ?>)</li>
+            <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo '('.$resp->getFonction().')'; ?></li>
             <?php } ?>
           </ul>
         </li>
@@ -81,103 +74,9 @@
       Télécopie : 05 49 02 15 76
       </p>
       
-      <h3>Autres adresses</h3>
-      <ul>
-        <li>Assemblée nationale<br />126 rue de l'Université<br />75355 Paris 07 SP<br /></li>
-        <li>Cabinet du Maire<br />78 Boulevard Blossac<br />BP619<br />86106 Châtellerault cedex<br /></li>
-      </ul>
-      
-      <h3>Tables nominatives des débats</h3>
-      <ul>
-        <li><a href="http://www.assembleenationale.fr/13/tribun/tnom/2007/226.pdf" onclick="window.open(this.href); return false;">Table nominative en cours, actualisée périodiquement par le service des archives et de la recherche historique parlementaire</a></li>
-      </ul>
-      
-      <h3>Place dans l'hémicycle</h3>
+			<h3>Place dans l'hémicycle</h3>
       <p>Numéro de la place occupée : 385</p>
       
-      <h3>Autres mandats</h3>
-      <ul>
-        <li>Mandats intercommunaux
-          <ul>
-            <li>Président : 
-              <ul>
-                <li>communauté d'agglomération du Pays Châtelleraudais</li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li>Mandats locaux
-          <ul>
-            <li>Maire :
-              <ul>
-                <li>Châtellerault, Vienne (34126 habitants)</li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
-      <h3>Anciens mandats</h3>
-      <ul>
-        <li>Parlement Européen
-          <ul>
-            <li>Député
-              <ul>
-                <li>du 24/07/1984 au 25/05/1989</li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li>Assemblée Nationale
-          <ul>
-            <li>Député
-              <ul>
-                <li>Élu le 19/03/1978 - Mandat du 03/04/1978 (élections générales) au 22/05/1981 (Fin de législature)</li>
-                <li>Réélu le 16/03/1986 - Mandat du 02/04/1986 (élections générales) au 14/05/1988 (Fin de législature)</li>
-                <li>Réélu le 28/03/1993 - Mandat du 02/04/1993 (élections générales) au 21/04/1997 (Fin de législature)</li>
-                <li>Réélu le 01/06/1997 - Mandat du 01/06/1997 (élections générales) au 18/06/2002 (Fin de législature)</li>
-                <li>Réélu le 16/06/2002 - Mandat du 19/06/2002 (élections générales) au 19/06/2007 (Fin de législature)</li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li>Mandats intercommunaux
-          <ul>
-            <li>Conseil général de la Vienne
-              <ul>
-                <li>Membre
-                  <ul>
-                    <li>du 01/07/1977 au 21/03/1982</li>
-                    <li>du 10/03/2008 au 10/04/2008</li>
-                  </ul>
-                </li>
-                <li>Vice-président
-                  <ul>
-                    <li>du 22/03/1982 au 02/10/1988</li>
-                    <li>du 03/10/1988 au 27/03/1994</li>
-                    <li>du 28/03/1994 au 18/03/2001</li>
-                    <li>du 19/03/2001 au 09/03/2008</li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-        <li>Mandats locaux
-          <ul>
-            <li>Conseil municipal de Châtellerault (Vienne)
-              <ul>
-                <li>Membre
-                  <ul>
-                    <li>du 14/03/1983 au 19/03/1989</li>
-                    <li>du 20/03/1989 au 18/06/1995</li>
-                    <li>du 19/06/1995 au 30/09/2000</li>
-                  </ul>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </li>
-      </ul>
       <p>Source : <a href="http://www.assembleenationale.fr/" onclick="window.open(this.href); return false;">Assemblée Nationale</a></p>
       </div>
     </div>
@@ -234,15 +133,15 @@
   
   <div class="bas_depute">
     <div class="bas_depute_g">
-      <h2>Statut du Député : <span class="statut">Dépressif ^^</span></h2>
+      <h2>Top Karma</h2>
       <div class="boite_citoyen">
         <div class="b_c_h"><div class="b_c_hg"></div><div class="b_c_hd"></div></div>
         <div class="b_c_cont">
           <div class="b_c_photo">
-            <?php if ($parlementaire->getPhoto()) { echo image_tag($parlementaire->getPhoto(), 'alt=Photo de '.$parlementaire->nom); } ?>
+					
           </div>
           <div class="b_c_text">
-            <h3><?php echo $parlementaire->nom; ?> <span class="note"><?php echo image_tag('../css/'.$style.'/images/etoile.png', 'alt="***"'); ?></span></h3>
+            <h3>Jojo C. <span class="note"><?php echo image_tag('../css/'.$style.'/images/etoile.png', 'alt="***"'); ?></span></h3>
             <p><a href="#">23 articles</a></p>
             <p><a href="#">Voir la fiche perso</a></p>
           </div>
@@ -250,7 +149,6 @@
         <div class="b_c_b"><div class="b_c_bg"></div><div class="b_c_bd"></div></div>
       </div>
       
-      <h2>Attachés Parlementaires inscrits</h2>
       <div class="boite_citoyen">
         <div class="b_c_h"><div class="b_c_hg"></div><div class="b_c_hd"></div></div>
         <div class="b_c_cont">

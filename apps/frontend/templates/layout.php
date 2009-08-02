@@ -30,13 +30,15 @@
       <div class="conteneur_entete">
         <div class="entete">
           <div class="logo">  
-            <a href="index.php"><?php echo image_tag($style.'/logo.png', array('alt' => 'Légitruc')); ?></a>
+            <a href="index.php"><?php echo image_tag($style.'/logo2.png', array('alt' => 'NosDéputés.fr')); ?></a>
           </div>
           <div class="haut_droite">
             <div class="boite_util">
               <div class="b_u_h"><div class="b_u_hg"></div><div class="b_u_hd"></div></div>
               <div class="b_u_cont">
-                <div class="bouton_connexion" title="Se connecter"></div>
+								<input type="text" value="nom" size="10" />
+								<input type="password" value="password" size="10" />
+								<input type="submit" value="Go" />
               </div>
               <div class="b_u_b"><div class="b_u_bg"></div><div class="b_u_bd"></div></div>
             </div>
@@ -85,7 +87,7 @@
               <noscript><p><input type="submit" value="ok" /></p></noscript>
             </form>
           </div> -->
-          <div class="float_droite">
+          <div class="menu_bas">
             <ul>
               <li class="dixhuit"><a href="#">Qui sommes nous ?</a></li>
               <li class="treize"><a href="#">Plan du site</a></li>
