@@ -16,7 +16,7 @@ $string = "@string";
 close FILE;
 
 #Si italique dans gras, on vire (pb fonction)
-$string =~ s/<\/b>\s*<i>([^<]+)<\/i>/$1<\/b>/g;
+$string =~ s/([^\.])\s*<\/b>\s*<i>([^<]+)<\/i>/$1 $2<\/b>/g;
 $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/\r//g;
