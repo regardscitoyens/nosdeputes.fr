@@ -17,12 +17,6 @@
       img, div { behavior: url('includes/iepngfix/iepngfix.php') }
     </style>
     <![endif]-->
-    <!--[if gt IE 6]>
-    <script type="text/javascript" src="js/fixe/fonctions_ie.js"></script>
-    <![endif]-->
-    <!--[if !IE]><-->
-    <script type="text/javascript" src="js/fixe/fonctions.js"></script>
-    <!--><![endif]-->
   </head>
   <body>
   <div id="navigation"><a href="#menu">Aller au menu</a> <a href="#contenu">Aller au contenu</a> <a href="#raccourcis"  accesskey="0">Racourcis clavier</a> <a href="#"  accesskey="3">Plan du site</a></div>
@@ -30,7 +24,7 @@
       <div class="conteneur_entete">
         <div class="entete">
           <div class="logo">  
-            <a href="index.php"><?php echo image_tag($style.'/logo2.png', array('alt' => 'NosDéputés.fr')); ?></a>
+            <a href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/logo2.png', array('alt' => 'NosDéputés.fr')); ?></a>
           </div>
           <div class="haut_droite">
             <div class="boite_util">
