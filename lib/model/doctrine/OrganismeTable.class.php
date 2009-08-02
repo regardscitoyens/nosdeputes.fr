@@ -9,6 +9,7 @@ class OrganismeTable extends Doctrine_Table
     $nom = preg_replace('/(&#8217;|\')/', '’', $nom);
     $nom = preg_replace('/\W+$/', '', $nom);
     $nom = preg_replace('/\s+/', ' ', $nom);
+    $nom = preg_replace('/assemblée nationale/', "bureau de l'assemblée nationale", $nom);
     $org = $this->findOneByNom($nom);
     if (!$org) {
       $orgs = doctrine::getTable('Organisme')->createQuery('o')->where('type = ?', $type)->execute();
