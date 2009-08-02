@@ -9,11 +9,11 @@ class Organisme extends BaseOrganisme
 {
   public function getSmallNomGroupe() {
     $hashmap = array(
-        "union pour un mouvement populaire" => "UMP",
-        "socialiste, radical, citoyen et divers gauche" => "SRC",
-        "gauche démocrate et républicaine" => "GDR",
-        "députés n'appartenant à aucun groupe" => "NI",
-        "nouveau centre" => "NC"
+        "Union pour un mouvement populaire" => "UMP",
+        "Socialiste, radical, citoyen et divers gauche" => "SRC",
+        "Gauche démocrate et républicaine" => "GDR",
+        "Députés n'appartenant à aucun groupe" => "NI",
+        "Nouveau centre" => "NC"
     );
     return $hashmap[$this->getNom()];
   }
@@ -33,8 +33,7 @@ class Organisme extends BaseOrganisme
 
   public function getNom() {
     $nom = $this->_get('nom');
-    $premiere_lettre = substr($nom, 0, 1);
-    $nom = strtoupper($premiere_lettre).substr($nom, 1);
+		$nom = ucfirst($nom);
     return $nom;
   }
 
