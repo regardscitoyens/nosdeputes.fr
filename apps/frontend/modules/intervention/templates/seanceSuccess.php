@@ -1,10 +1,11 @@
 <div>
 <?php if ($seance->type == 'commission') : ?>
-   <h1>Séance de <? echo $seance->getOrganisme()->getNom(); ?></h1>
+<h1><? echo $seance->getOrganisme()->getNom(); ?></h1>
+<h2>Séance du <?php echo $seance->getDate() ?> à <? echo $seance->getMoment(); ?></h2>
 <?php else :?>
 <h1>Séance en hémicycle</h1>
-<?php endif; ?>
 <h2>du <?php echo $seance->getDate() ?> à <? echo $seance->getMoment(); ?></h2>
+<?php endif; ?>
 <ul>
 <?php foreach($seance->getTableMatiere() as $table) : if (!$table['titre']) {continue;} ;?>
 <?php if ($table['section_id']) echo '<ul>'; ?>
