@@ -31,6 +31,12 @@ class Organisme extends BaseOrganisme
     return $seance;
   }
 
+  public function getNom() {
+    $nom = $this->_get('nom');
+    $premiere_lettre = substr($nom, 0, 1);
+    $nom = strtoupper($premiere_lettre).substr($nom, 1);
+    return $nom;
+  }
 
   public function getSeanceByDateAndMoment($date, $moment) {
     $moment = Seance::convertMoment($moment);
