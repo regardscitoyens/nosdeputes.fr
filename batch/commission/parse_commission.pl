@@ -60,6 +60,7 @@ sub checkout {
 sub setFonction {
     my $fonction = shift;
     my $intervenant = shift;
+    $fonction =~ s/\W+$//;
     my $kfonction = lc($fonction);
     $kfonction =~ s/[^a-z]+/ /gi;
     $fonction2inter{$kfonction} = $intervenant;
