@@ -255,18 +255,10 @@ img {
 	height: 150px;
 	width: 117px;
 }
-.depute_milieu {
+.graph_depute {
 	float: left;
-	margin-left: 10px;
-	width: 380px;
-}
-.depute_milieu ul {
-	padding-left: 20px;
-}
-.depute_droite {
-	float: right;
-	width: 390px;
-	margin-right: 10px;
+	width: 820px;
+	height: 150px;
 }
 .barre_activite {
 	float: left;
@@ -305,12 +297,12 @@ img {
 .contenu_depute {
 	width: 938px;
 	margin-bottom: 15px;
-}
-.boite_depute {
-	margin-top: 15px;
-	padding: 15px;
 	background-color: #fff;
 	border: 1px solid #BFBFBF;
+}
+.boite_depute {
+	padding: 15px;
+	background-color: #fff;
 }
 .boite_depute h2, #b1 h1 {
 	margin-top: 0;
@@ -322,8 +314,7 @@ img {
 #b1 {
 	float: left;
 	width: 459px;
-	margin-right: 15px;
-	margin-bottom: 15px;
+	border-right: 1px dashed #BFBFBF;
 }
 #b1 h2{
 	color: #000;
@@ -335,19 +326,22 @@ img {
 }
 #b2 {
 	float: left;
-	width: 400px;
+	width: 416px;
+	border-bottom: 1px dashed #BFBFBF;
 }
 #b3 {
 	float: left;
-	width: 400px;
+	width: 416px;
+	border-bottom: 1px dashed #BFBFBF;
 }
 #b4 {
 	float: left;
-	width: 400px;
+	width: 416px;
+	border-bottom: 1px dashed #BFBFBF;
 }
 #b5 {
 	float: left;
-	width: 400px;
+	width: 416px;
 }
 /**/
 .mot_dep {
@@ -359,7 +353,7 @@ img {
 	padding: 15px;
 	padding-bottom: 7px;
 	background-color: #fff;
-	border: 1px solid #BFBFBF;
+	border-top: 1px solid #BFBFBF;
 }
 .bas_depute h2 {
 	margin-top: 0;
@@ -372,7 +366,7 @@ img {
 .statut {
 	color: red;
 }
-/* Boite citoyen */
+/* Boite citoyen b_c = initiales; h = haut, b = bas, hg = haut gauche, etc... */
 .boite_citoyen {
 	width: 300px;
 	height: 100px;

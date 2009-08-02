@@ -45,9 +45,6 @@
       Cette intervention c'est de la balle !
     </div>
   <?php endif; ?>
-    <div class="source">
-    
-    </div>
   </div>
   <?php } ?>
 </div>

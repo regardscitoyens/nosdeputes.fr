@@ -5,10 +5,7 @@
     <?php if ($parlementaire->getPhoto()) { echo image_tag($parlementaire->getPhoto(), 'class="photo_fiche" alt=Photo de '.$parlementaire->nom); } ?>
     </div>
   </div>
-  <div class="depute_milieu">
-    
-  </div>
-  <div class="depute_droite">
+  <div class="graph_depute">
     
   </div>
   <div class="barre_activite">
