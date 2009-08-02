@@ -1,6 +1,26 @@
+<div>
+<?php if ($seance->type == 'commission') : ?>
+   <h1>Séance de <? echo $seance->getOrganisme()->getNom(); ?></h1>
+<?php else :?>
+<h1>Séance en hémicycle</h1>
+<?php endif; ?>
+<h2>du <?php echo $seance->getDate() ?> à <? echo $seance->getMoment(); ?></h2>
+<ul>
+<?php foreach($seance->getTableMatiere() as $table) : if (!$table['titre']) {continue;} ;?>
+<?php if ($table['section_id']) echo '<ul>'; ?>
+<li><a href="#table_<?php echo $table['id']; ?>"><?php echo $table['titre']; ?></a></li>
+<?php if ($table['section_id']) echo '</ul>'; ?>
+<?php endforeach; ?>
+</ul>
+</div>
 <div class="interventions">
-  <?php foreach($interventions as $intervention) { ?>
+   <?php $table = ''; foreach($interventions as $intervention) : ?>
   <div class="intervention" id="<?php echo $intervention->getId(); ?>">
+<?php if ($table != $intervention->getSectionId()) {
+   $table = $intervention->getSectionId();
+   echo "<a name='table_$table'/>";
+}
+?>
     <div class="intervenant">
   <?php 
   $persos = $intervention->getAllPersonnalitesAndFonctions(); 
@@ -46,5 +66,5 @@
     </div>
   <?php endif; ?>
   </div>
-  <?php } ?>
+  <?php endforeach; ?>
 </div>

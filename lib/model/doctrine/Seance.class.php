@@ -52,4 +52,8 @@ class Seance extends BaseSeance
     $q = doctrine::getTable('Intervention')->createQuery('i')->where('seance_id = ?', $this->id)->leftJoin('i.Personnalites p')->leftJoin('i.Parlementaires pa')->orderBy('i.timestamp ASC');
     return $q->execute();
   }
+  public function getTableMatiere() {
+    $q = Doctrine_Query::create()->select('s.titre, s.id, s.section_id')->from('Section s')->leftJoin('s.Interventions i')->where('i.seance_id = ?', $this->id)->orderBy('i.timestamp ASC');
+    return $q->fetchArray();
+  }
 }
