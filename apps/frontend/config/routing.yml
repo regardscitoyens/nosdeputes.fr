@@ -1,7 +1,7 @@
 # default rules
 homepage:
-  url:   /
-  param: { module: parlementaire, action: index }
+  url: /
+  param: {module: parlementaire, action: index}
 
 search_parlementaire:
   url: /parlementaire
@@ -17,11 +17,13 @@ list_parlementaires_organisme:
 
 list_parlementaires_circo:
   url: /circo/:nom_circo
-  param: {module: parlementaire, action: listCirco}        # Add include user's module to get same circonscription?
+  param: {module: parlementaire, action: listCirco}
+# Add include user's module to get same circonscription?
 
 list_parlementaires_profession:
   url: /profession/:profession
-  param: {module: parlementaire, action: listProfession}   # Add include user's module to get same job
+  param: {module: parlementaire, action: listProfession}
+# Add include user's module to get same job
 
 parlementaire_interventions:
   url: /intervention/:slug
@@ -58,4 +60,3 @@ intervention:
 top_presences:
   url: /top/presence
   param: {module: presence, action: top}
-
