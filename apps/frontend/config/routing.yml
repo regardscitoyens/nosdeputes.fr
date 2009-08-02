@@ -3,7 +3,7 @@ homepage:
   url: /
   param: {module: parlementaire, action: index}
 
-search_parlementaire:
+list_parlementaires:
   url: /parlementaire
   param: {module: parlementaire, action: list}
 

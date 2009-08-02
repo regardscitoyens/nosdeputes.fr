@@ -55,7 +55,7 @@
             <li class="douze"><a href="#">L'Assemblée</a></li>
           </ul>
           <div class="search_box">
-            <form action="<?php echo url_for('@search_parlementaire'); ?>" method="get">
+            <form action="<?php echo url_for('@list_parlementaires'); ?>" method="get">
             <p>
               <input class="rechercher" name="search" type="text" size="15" value="rechercher"/>
               <input class="bouton_ok" type="submit" value="ok"/>
