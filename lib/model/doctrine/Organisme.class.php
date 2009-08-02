@@ -33,7 +33,7 @@ class Organisme extends BaseOrganisme
 
   public function getNom() {
     $nom = $this->_get('nom');
-		$nom = ucfirst($nom);
+    $nom = ucfirst($nom);
     return $nom;
   }
 
