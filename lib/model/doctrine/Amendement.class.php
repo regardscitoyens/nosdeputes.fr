@@ -5,48 +5,57 @@
  */
 class Amendement extends BaseAmendement {
     public function setAuteurs($auteurs) {
-    //        parse string -> noms_famille + sexe, des fois nom complet?
-    //        foreach ($array as $name, $sexe)
-    //          addParlementaireByNom($nom, $sexe)
+      $groupe = null;
+      if (preg_match('/(.*), les membres du groupe (.*)/' ,$auteurs, $match)) {
+        $auteurs = $match[1];
+        $groupe = $match[2];
+      }
+      $arr = preg_split('/, /', $auteurs);
+      foreach ($arr as $depute) {
+        if (preg_match('/(M[.,a-z]*) ([A-Z].*)/', $depute, $match)) {
+          $nom = $match[2];
+          if (preg_match('/M[ml]/', $match[1]))
+            $sexe = 'F';
+          else $sexe = 'H';
+          $this->addParlementaireByNom($nom, $sexe, $groupe);
+        } else if (preg_match('/gouvernement/i', $depute)) {
+
+        } else print "ERROR: Nom mal formaté".$depute."\n";
+      }
     }
 
-    public function addParlementaireByNom($nom, $sexe) {
-        $memeNom = Doctrine::getTable('Parlementaire')->findAllByNomFamille($nom);
-        if (!$memeNom)
+    public function addParlementaireByNom($nom, $sexe, $groupe) {
+        $memeNom = Doctrine::getTable('Parlementaire')->findByNom($nom);
+        if (count($memeNom) == 0) {
+            $memeNom = Doctrine::getTable('Parlementaire')->findByNomDeFamille($nom);
+        }
+        if (count($memeNom) == 0) {
             $depute = Doctrine::getTable('Parlementaire')->similarTo($nom);
-        elseif (count($memeNom) == 1)
+        }
+        else if (count($memeNom) == 1)
             $depute = $memeNom[0];
-        else {
-            $count == 0;
-            foreach ($memeNom as $de)
-                if ($de->sexe == $sexe) {
-                    if ($count == 0) {
-                        $count ++;
-                        $depute = $de;
-                    } else $depute = NULL;
-                }
+        else foreach ($memeNom as $de) {
+            print $de->nom." ".$de->sexe.' '.$de->nom_de_famille." ; ";
+            if ($de->sexe == $sexe) {
+                if (!$depute) $depute = $de;
+                else print "ERROR: Plusieurs députés de meme sexe et nom : ".$nom." sexe: ".$sexe." groupe: ".$groupe;
+            }
         }
         if (!$depute) {
-            $depute = new Parlementaire();
-            $depute->setNom($nom);
-            $depute->setType('depute');
-            $depute->save();
+             print "ERROR: Auteur de l'amendement inconnu en base : ".$nom." sexe: ".$sexe." groupe: ".$groupe."\n";
+             return false;
         }
         foreach($this->getParlementaires() as $par) {
-            if ($par == $depute)
-                return false;
-        }
+          if ($par == $depute)
+            return false;
+          }
         $pa = new ParlementaireAmendement();
-        $pa->amendement = $this;
-        $pa->parlementaire = $depute;
+        $pa->_set('Parlementaire', $depute);
+        $pa->_set('Amendement', $this);
         return $pa->save();
     }
 
     public function setSort($sort) {
 // parse sort to fit enum
-    }
-
-    public function getLink() {
-        return "http://www.assembleenationale.fr/".$this->id.".asp";
     }
 }

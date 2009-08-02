@@ -18,16 +18,34 @@ $string =~ s/&#8211;/-/g;
 close FILE;
 
 my %amdmt;
+my $expose = 0;
+my $presente = 0;
+
+sub numero {
+    $line =~ s/^.*content="//; 
+    $line =~ s/".*$//;
+    if ($line =~ /(\d+).*(\d).*rect/) {
+	 $amdmt{'numero'} = $1;
+	 $amdmt{'rectif'} = $2;
+     } elsif ($line =~ /(\d+).*rect/) {
+         $amdmt{'numero'} = $1;
+	 $amdmt{'rectif'} = 1;
+     } else {
+         $amdmt{'numero'} = $line;
+	 $amdmt{'rectif'} = 0;
+     }
+}
 
 sub auteurs {
     $line =~ s/\s*\<\/?[^\>]+\>//g;
+    $line =~ s/ et /, /g;
     $amdmt{'auteurs'} = $amdmt{'auteurs'}.$line;
 }
 
 sub texte {
     $line =~ s/\s*\<\/?[^\>]+\>//g;
     $output = 'texte';
-    if ($expose) { $output = 'expose'; }
+    if ($expose == 1) { $output = 'expose'; }
     if ($amdmt{$output} =~ /^$/) { $amdmt{$output} = "<p>".$line."</p>"; }
     else { $amdmt{$output} = $amdmt{$output}."<p>".$line."</p>"; }
 }
@@ -43,7 +61,6 @@ sub expose {
 $string =~ s/\r//g;
 $string =~ s/&nbsp;/ /g;
 $string =~ s/\|(\W+)\|/$1/g;
-$expose = false;
 foreach $line (split /\n/, $string)
 {
     if ($line =~ /meta/) {
@@ -54,7 +71,9 @@ foreach $line (split /\n/, $string)
 	} elsif ($line =~ /name="DATE_BADAGE"/) { 
 	    $line =~ s/^.*content="//; 
 	    $line =~ s/".*$//;
-	    $amdmt{'date'} = $line;
+	    if ($line =~ /(\d{1,2})\/(\d{2})\/(\d{4})/) {
+		$amdmt{'date'} = $3.'-'.$2.'-'.sprintf('%02d', $1);
+	    }
 	} elsif ($line =~ /name="DESIGNATION_ARTICLE"/) { 
 	    $line =~ s/^.*content="//; 
 	    $line =~ s/".*$//;
@@ -68,26 +87,34 @@ foreach $line (split /\n/, $string)
 	    $line =~ s/".*$//;
 	    $amdmt{'loi'} = $line;
 	} elsif ($line =~ /name="NUM_AMENDG"/) { 
-	    $line =~ s/^.*content="//; 
-	    $line =~ s/".*$//;
-	    $amdmt{'numero'} = $line;
+	    numero();
 	}
+    }
+    if ($line =~ /class="presente"/) {
+	    $presente = 1;
     }
     if ($line =~ /(NOEXTRACT|EXPOSE)/) {
 	if ($line =~ /class="presente"/) {
 	    auteurs();
-	}elsif ($line =~ /class="amddispotexte"/) {
+	} elsif ($line =~ /div.*M/ && $presente == 1) {
+	    auteurs();
+	} elsif ($line =~ /class="tirets"/) {
+	    $presente = 2;
+	} elsif ($line =~ /class="amddispotexte"/) {
 	    texte();
-	}elsif ($line =~ /class="amdexpotitre"/) {
-	    $expose = true;
-	}elsif ($line =~ /class="amdexpotexte"/) {
+	} elsif ($line =~ /class="amdexpotitre"/) {
+	    $expose = 1;
+	} elsif ($line =~ /class="amdexpotexte"/) {
 	    expose();
 	}
+    } elsif ($line =~ /\<p style="text-indent:/) {
+	if ($line =~ /amendement.*irrecevable.*application/i) {
+	    if (!$amdmt{'sort'}) {
+		$amdmt{'sort'} = "Irrecevable";
+	    }
+	}
+	texte();
     }
 }
 
-print '{ ';
-foreach $k (keys %amdmt) {
-    if (lc($k) =~ /texte/) { print '"'.lc($k).'": "'.$amdmt{$k}.'" } '."\n"; }
-    else { print '"'.lc($k).'": "'.$amdmt{$k}.'", '; }
-}
+print '{"legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "rectif": "'.$amdmt{'rectif'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
