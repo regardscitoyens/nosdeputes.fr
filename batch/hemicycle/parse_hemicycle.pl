@@ -6,6 +6,10 @@ $url =~ s/^[^\/]+\///;
 $url =~ s/_/\//g;
 $source = $url;
 
+
+if ($url =~ /\/(\d{4})-(\d{$4})[\/\-]/) {
+    $session = $1.$2;
+}
 open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
@@ -93,7 +97,7 @@ sub checkout {
     if ($titre2) {
 	$contexte .= ' > '.$titre2;
     }
-    $out =  '{"contexte": "'.$contexte.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure."\", ";
+    $out =  '{"contexte": "'.$contexte.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
     if ($ploi = getProjetLoi($titre1)) {
 	$out .= "\"numeros_loi\": \"$ploi\", ";
     }
@@ -102,8 +106,8 @@ sub checkout {
     }
 
     if ($intervenant) {
-	if ($intervenant =~ s/ et\s*M[mes\.]* (.*)//) {
-	    print $out.'"intervenant": "'.$1."\"}\n";
+	if ($intervenant =~ s/ et(\s*M[mes\.]*|) ([A-Z].*)//) {
+	    print $out.'"intervenant": "'.$2."\"}\n";
 	}
 	print $out.'"intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.'", "intervenant_url": "'.$intervenant_url."\"}\n";
     }elsif($intervention) {
