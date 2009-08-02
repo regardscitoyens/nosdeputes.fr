@@ -6,10 +6,10 @@ $url =~ s/^[^\/]+\///;
 $url =~ s/_/\//g;
 $source = $url;
 
-
-if ($url =~ /\/(\d{4})-(\d{$4})[\/\-]/) {
+if ($url =~ /\/(\d{4})\-(\d{4})[\/\-]/) {
     $session = $1.$2;
 }
+
 open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";

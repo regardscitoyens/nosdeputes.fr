@@ -81,6 +81,7 @@ Seance:
     moment: string(30)
     organisme_id: integer
     tagged: boolean
+    session: string(10)
   relations:
     Organisme:
       foreignAlias: Seances
@@ -88,6 +89,12 @@ Seance:
     uniq_index:
       fields: [organisme_id, date, moment]
       type: unique
+    index_sesssion:
+      fields: [session]
+    index_nsemaine:
+      fields: [numero_semaine]
+    index_annee:
+      fields: [annee]
 
 Presence:
   actAs:

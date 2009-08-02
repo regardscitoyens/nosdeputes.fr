@@ -6,6 +6,10 @@ $url =~ s/^[^\/]+\///;
 $url =~ s/_/\//g;
 $source = $url;
 
+if ($url =~ /\/(\d+)-(\d+)\//) {
+    $session = '20'.$1.'20'.$2;
+}
+
 open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
@@ -41,7 +45,7 @@ $mois{'décembre'} = '12';
 $cpt = 0;
 sub checkout {
     $cpt+=10;
-    $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure."\", ";
+    $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
     if ($intervenant) {
 	if ($intervenant =~ s/ et M[mes\.]* (.*)//) {
 	    print $out.'"intervenant": "'.$1."\"}\n";

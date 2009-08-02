@@ -5,6 +5,9 @@
  */
 class Seance extends BaseSeance
 {
+  public function setSession($session) {
+    return $this->_set('session', $session);
+  }
   public function addPresence($parlementaire, $type, $source) {
     $q = Doctrine::getTable('Presence')->createQuery('p');
     $q->where('parlementaire_id = ?', $parlementaire->id)->andWhere('seance_id = ?', $this->id);

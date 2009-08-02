@@ -18,7 +18,7 @@ class Organisme extends BaseOrganisme
     return $hashmap[$this->getNom()];
   }
 
-  public function getSeanceByDateAndMomentOrCreateIt($date, $moment) {
+  public function getSeanceByDateAndMomentOrCreateIt($date, $moment, $session) {
     $seance = $this->getSeanceByDateAndMoment($date, $moment);
     if (!$seance) {
       $seance = new Seance();
@@ -26,6 +26,7 @@ class Organisme extends BaseOrganisme
       $seance->setDate($date);
       $seance->moment = Seance::convertMoment($moment);
       $seance->Organisme = $this;
+      $seance->setSession($session);
       $seance->save();
     }
     return $seance;

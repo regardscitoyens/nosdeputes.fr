@@ -4,7 +4,7 @@
  */
 class SeanceTable extends Doctrine_Table
 {
-  public function findOneOrCreateIt($type, $date, $heure) {
+  public function findOneOrCreateIt($type, $date, $heure, $session) {
     $s = $this->createQuery('s')->where('type = ?', $type)->andWhere('date = ?', $date)->andWhere('moment = ?', $heure)->fetchOne();
     if (!$s) {
       if ($type != 'hemicycle')
@@ -13,6 +13,7 @@ class SeanceTable extends Doctrine_Table
       $s->type = $type;
       $s->date = $date;
       $s->moment = $heure;
+      $s->setSession($session);
       $s->save();
     }
     return $s;

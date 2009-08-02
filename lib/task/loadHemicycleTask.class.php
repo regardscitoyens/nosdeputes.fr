@@ -39,7 +39,7 @@ class loadHemicyleTask extends sfBaseTask
 		$type = 'question';
 	      else
 		$type = 'loi';
-	      $intervention->setSeance($type, $json->date, $json->heure);
+	      $intervention->setSeance($type, $json->date, $json->heure, $json->session);
 	      $intervention->setSource($json->source);
 	      $intervention->setTimestamp($json->timestamp);
 	      if ($json->timestamp)
