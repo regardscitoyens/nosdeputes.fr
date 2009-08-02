@@ -14,6 +14,15 @@ class interventionActions extends sfActions
   {
     $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
   }
+  public function executeShow(sfWebRequest $request)
+  {
+    $query = doctrine::getTable('Intervention')->createquery('i')
+        ->where('i.id = ?', $request->getParameter('id'))
+        ->leftJoin('i.PersonnaliteInterventions pis')
+        ->leftJoin('pis.Personnalite pe')
+        ->leftJoin('pis.Parlementaire pa');
+     $this->intervention = $query->fetchOne();
+  }
   public function executeTop(sfWebRequest $request)
   {
     $q = Doctrine_Query::create()

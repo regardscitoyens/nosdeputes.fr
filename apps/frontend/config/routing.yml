@@ -1,43 +1,35 @@
 # default rules
-parlementaire:
-  url: /parlementaire/:slug
-  param: {module: parlementaire, action: show}
-
-parlementaires:
-  url: /parlementaire
-  param: {module: parlementaire, action: list}
-
-list_parlementaires_circo:
-  url: /circo/:nom_circo
-  param: {module: parlementaire, action: listCirco}
-
-list_parlementaires_profession:
-  url: /parlementaire/profession/:profession
-  param: {module: parlementaire, action: listProfession}
-
-list_parlementaires_organisme:
-  url: /organisme/:slug
-  param: {module: parlementaire, action: listOrganisme}
+homepage:
+  url:   /
+  param: { module: parlementaire, action: index }
 
 search_parlementaire:
   url: /parlementaire
   param: {module: parlementaire, action: list}
 
-interventions_seance:
-  url: /seance/:seance
-  param: {module: intervention, action: seance}
+parlementaire:
+  url: /parlementaire/:slug
+  param: {module: parlementaire, action: show}
+
+list_parlementaires_organisme:
+  url: /organisme/:slug
+  param: {module: parlementaire, action: listOrganisme}
+
+list_parlementaires_circo:
+  url: /circo/:nom_circo
+  param: {module: parlementaire, action: listCirco}        # Add include user's module to get same circonscription?
+
+list_parlementaires_profession:
+  url: /profession/:profession
+  param: {module: parlementaire, action: listProfession}   # Add include user's module to get same job
 
 parlementaire_interventions:
   url: /intervention/:slug
   param: {module: intervention, action: parlementaire}
 
-top_interventions:
-  url: /top/intervention
-  param: {module: intervention, action: top}
-
-top_presences:
-  url: /top/presence
-  param: {module: presence, action: top}
+interventions_seance:
+  url: /seance/:seance
+  param: {module: intervention, action: seance}
 
 parlementaire_presences:
   url: /presence/:slug
@@ -52,9 +44,18 @@ presents_seance:
   param: {module: presence, action: seance}
 
 preuve_presence_seance:
-  url: /preuve/:slug/:seance
+  url: /presence/:slug/:seance
   param: {module: presence, action: preuve}
 
-homepage:
-  url:   /
-  param: { module: parlementaire, action: index }
+top_interventions:
+  url: /top/intervention
+  param: {module: intervention, action: top}
+
+intervention:
+  url: /intervention/id/:id
+  param: {module: intervention, action: show}
+
+top_presences:
+  url: /top/presence
+  param: {module: presence, action: top}
+
