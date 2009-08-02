@@ -81,7 +81,6 @@ class Intervention extends BaseIntervention
     $amends = preg_split('/\s*,\s*/', $tamendements);
     foreach($amends as $amend) {
       $tag = 'loi:amendement='.$amend;
-      echo "$tag\n";
       $this->addTag($tag);
       //      $this->getSection()->addTag('amendement:'.$amend);
     }
@@ -91,7 +90,6 @@ class Intervention extends BaseIntervention
     $lois = preg_split('/\s*,\s*/', $tlois);
     foreach($lois as $loi) {
       $tag = 'loi:numero='.$loi;
-      echo "$tag\n";
       $this->addTag($tag);
       //      $this->getSection()->addTag('loi:'.$loi);
     }
