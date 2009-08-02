@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" packagerversion="1.4.1" version="2.0" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+  <name>sfDoctrineActAsTaggablePlugin</name>
+  <channel>pear.symfony-project.com</channel>
+  <summary>This behavior allows tags to be attached to Doctrine objects.</summary>
+  <description>This behavior allows tags to be attached to Doctrine objects. It includes tag-cloud generation and helpers to display these clouds. It also offers optional typeahead features for entering tags.
+  </description>
+  <lead>
+    <name>Mickael Kurmann</name>
+    <user>Mickael.Kurmann</user>
+    <email>mickael.kurmann@gmail.com</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>Klemens Ullmann</name>
+    <user>klemens-ullmann</user>
+    <email>klemens.ullmann@ull.at</email>
+    <active>yes</active>
+  </lead>
+  <lead>
+    <name>Thomas Boutell</name>
+    <user>boutell</user>
+    <email>tom@punkave.com</email>
+    <active>yes</active>
+  </lead>
+  <developer>
+    <name>Alex Gilbert</name>
+    <user>alex-gilbert</user>
+    <email>alex@punkave.com</email>
+    <active>yes</active>
+  </developer>
+  <date>2009-06-09</date>
+  <version>
+    <release>0.0.7</release>
+    <api>0.0.7</api>
+  </version>
+  <stability>
+    <release>beta</release>
+    <api>beta</api>
+  </stability>
+  <license uri="http://www.symfony-project.org/license">MIT license</license>
+  <notes>-</notes>
+  <contents>
+    <dir name="/"><dir name="config"><dir name="doctrine"><file name="schema.yml" role="data"/></dir></dir><dir name="lib"><dir name="filter"><dir name="doctrine"><file name="PluginTagFormFilter.class.php" role="data"/><file name="PluginTaggingFormFilter.class.php" role="data"/></dir></dir><dir name="form"><dir name="doctrine"><file name="PluginTagForm.class.php" role="data"/><file name="PluginTaggingForm.class.php" role="data"/></dir><file name="TagForm.class.php" role="data"/><file name="TaggingForm.class.php" role="data"/></dir><dir name="helper"><file name="TagsHelper.php" role="data"/></dir><dir name="model"><dir name="doctrine"><file name="PluginTag.class.php" role="data"/><file name="PluginTagging.class.php" role="data"/><file name="PluginTaggingTable.class.php" role="data"/><file name="PluginTagTable.class.php" role="data"/></dir></dir><file name="TaggableTemplate.class.php" role="data"/><file name="TaggableToolkit.class.php" role="data"/><dir name="task"><file name="taggableCleanTask.class.php" role="data"/></dir></dir><file name="LICENSE" role="data"/><dir name="modules"><dir name="taggableComplete"><dir name="actions"><file name="actions.class.php" role="data"/></dir><dir name="templates"><file name="completeSuccess.php" role="data"/></dir></dir></dir><file name="package-sfDoctrineActAsTaggablePlugin.xml" role="data"/><file name="package.xml.error" role="data"/><file name="README" role="data"/><file name="sfDoctrineActAsTaggablePlugin-0.0.7.tgz" role="data"/><dir name="web"><dir name="js"><file name="pkTagahead.js" role="data"/></dir></dir></dir>
+  </contents>
+  <dependencies>
+    <required>
+      <php>
+        <min>5.2.4</min>
+      </php>
+      <pearinstaller>
+        <min>1.4.1</min>
+      </pearinstaller>
+      <package>
+        <name>symfony</name>
+        <channel>pear.symfony-project.com</channel>
+        <min>1.2.0</min>
+        <max>1.3.0</max>
+        <exclude>1.3.0</exclude>
+      </package>
+    </required>
+  </dependencies>
+  <phprelease></phprelease>
+  <changelog>
+    <release>
+        <version>
+            <release>0.0.5</release>
+            <api>1.0.0</api>
+        </version>
+        <stability>
+            <release>stable</release>
+            <api>stable</api>
+        </stability>
+        <license uri="http://www.symfony-project.com/license">MIT license</license>
+        <date>2009-04-19</date>
+        <license>MIT</license>
+        <notes>
+            * Tag typeahead feature. Optional, based on jQuery (boutell)
+            * getObjectTaggedWithQuery correctly returns nothing rather than everything when there are no matching objects (agilbert)
+            * Removing tags works properly (boutell, agilbert)
+            * getAllTagName lets you pass a query without setting select() and from() yourself (but you can if you want to) (boutell, agilbert)
+            * Fixed Doctrine INDEXBY error
+        </notes>
+    </release>
+     <release>
+        <version>
+            <release>0.0.4</release>
+            <api>1.0.0</api>
+        </version>
+        <stability>
+            <release>stable</release>
+            <api>stable</api>
+        </stability>
+        <license uri="http://www.symfony-project.com/license">MIT license</license>
+        <date>2009-03-08</date>
+        <license>MIT</license>
+        <notes>
+            * (klemens_u) PluginTagTable::getAllTagNameWithCount: Set the "from" query part only if not passed. This allows more complex queries with joins etc to be passed to the function.
+            * (punkave) Various bugfixes
+        </notes>
+    </release>
+    <release>
+        <version>
+            <release>0.0.3</release>
+            <api>1.0.0</api>
+        </version>
+        <stability>
+            <release>stable</release>
+            <api>stable</api>
+        </stability>
+        <license uri="http://www.symfony-project.com/license">MIT license</license>
+        <date>2009-01-13</date>
+        <license>MIT</license>
+        <notes>
+            * Package compatible with sf1.2 and with last svn version
+            * made all failing unit-tests green
+            * fixed relation in schema (klemens)
+            * beautified schema (klemens)
+            * removed schema.xml (klemens)
+            * updated schema: don't export constraints to database for Tagging. This is necessary because multiple models can join Tagging->taggable_id (klemens)
+            * fixed missing "from" part in tags removal (klemens)
+            * added option for min tag occurence in selectAllTagWithCount (mickael)
+            * various additional fixes for symfony 1.2 upgrade (new included doctrine version) (klemens)
+        </notes>
+    </release>
+    <release>
+        <version>
+            <release>0.0.2</release>
+            <api>1.0.0</api>
+        </version>
+        <stability>
+            <release>stable</release>
+            <api>stable</api>
+        </stability>
+        <license uri="http://www.symfony-project.com/license">MIT license</licens
+e>
+        <date>2008-09-22</date>
+        <license>MIT</license>
+        <notes>
+            * Organisation of svn, documentation update (Klemens)
+            * Added .xml file for plugin-manager (Mickael)
+        </notes>
+    </release>
+    <release>
+        <version>
+            <release>0.0.1</release>
+            <api>1.0.0</api>
+        </version>
+        <stability>
+            <release>stable</release>
+            <api>stable</api>
+        </stability>
+        <license uri="http://www.symfony-project.com/license">MIT license</licens
+e>
+        <date>2008-09-22</date>
+        <license>MIT</license>
+        <notes>
+            * Initial public release. Features tags attachment to heterogene Doct
+rine objects, and includes tag-clouds generation. Some bug still remaining
+        </notes>
+    </release>    
+  </changelog>
+</package>

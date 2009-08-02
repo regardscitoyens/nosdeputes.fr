@@ -30,10 +30,10 @@ class loadCommissionTask extends sfBaseTask
 	      continue;
 	    }
 	    $id = md5($json->intervention.$json->date.$json->heure.$json->commission);
-	    $intervention = Doctrine::getTable('Intervention')->find($id);
+	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
 	    if(!$intervention) {
 	      $intervention = new Intervention();
-	      $intervention->id = $id;
+	      $intervention->md5 = $id;
 	      $intervention->setIntervention($json->intervention);
 	      $intervention->setSeance('commission', $json->date, $json->heure, $json->commission);
 	      $intervention->setSource($json->source);

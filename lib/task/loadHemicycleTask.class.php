@@ -29,11 +29,11 @@ class loadHemicyleTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
-	    $id = md5($json->intervention.$json->date.$json->heure.'hemicyle'.$json->context);
-	    $intervention = Doctrine::getTable('Intervention')->find($id);
+	    $id = md5($json->intervention.$json->date.$json->heure.'hemicyle'.$json->context.substr($json->timestamp, 2));
+	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
 	    if(!$intervention) {
 	      $intervention = new Intervention();
-	      $intervention->id = $id;
+	      $intervention->md5 = $id;
 	      $intervention->setIntervention($json->intervention);
 	      if (preg_match('/question/i', $json->context))
 		$type = 'question';
@@ -42,6 +42,12 @@ class loadHemicyleTask extends sfBaseTask
 	      $intervention->setSeance($type, $json->date, $json->heure);
 	      $intervention->setSource($json->source);
 	      $intervention->setTimestamp($json->timestamp);
+	      if ($json->timestamp)
+		$intervention->setContexte($json->contexte);
+	      if ($json->numeros_loi)
+		$intervention->setLois($json->numeros_loi);
+	      if ($json->amendements)
+		$intervention->setAmendements($json->amendements);
 	    }
 	    if ($json->intervenant) {
 	      $p = null;

@@ -80,6 +80,7 @@ Seance:
       values: ['commission', 'hemicycle']
     moment: string(30)
     organisme_id: integer
+    tagged: boolean
   relations:
     Organisme:
       foreignAlias: Seances
@@ -114,22 +115,43 @@ PreuvePresence:
     Presence:
       foreignAlias: Preuves
 
-Intervention:
+Section:
   actAs:
-    Timestampable:
+    Timestampable
   columns:
     id:
       type: string(36)
       primary: true
+    titre: string(256)
+    titre_complet: string(512)
+    section_id: string(36)
+  relations:
+    Section:
+      foreignAlias: SubSections
+
+Intervention:
+  actAs: 
+    Timestampable: ~
+    Taggable: ~
+  columns:
+#    id:
+#      type: string(36)
+#      primary: true
+    md5: 
+      type: string(36)
+      unique: true
     intervention: 
       type: blob
     timestamp: integer
     source: string(128)
     seance_id: integer
+    section_id: string(36)
     type:
       type: enum
       values: ['commission', 'question', 'loi']
   relations:
+    Section:
+      foreignAlias: Interventions
     Seance:
       foreignAlias: Interventions
     Personnalites:
@@ -147,7 +169,7 @@ PersonnaliteIntervention:
   columns:
     personnalite_id: integer
     parlementaire_id: integer
-    intervention_id: string(36)
+    intervention_id: integer
     fonction: string(512)
   relations:
     Personnalite:

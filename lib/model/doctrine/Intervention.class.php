@@ -73,5 +73,28 @@ class Intervention extends BaseIntervention
     }
     return $res;
   }
+  public function setContexte($context) {
+    return $this->setSection(doctrine::getTable('Section')->findOneByContexteOrCreateIt($context));
+  }
+  public function setAmendements($tamendements) {
+    $tamendements = preg_replace('/[^,\d]+/', '', $tamendements);
+    $amends = preg_split('/\s*,\s*/', $tamendements);
+    foreach($amends as $amend) {
+      $tag = 'loi:amendement='.$amend;
+      echo "$tag\n";
+      $this->addTag($tag);
+      //      $this->getSection()->addTag('amendement:'.$amend);
+    }
+  }
+  public function setLois($tlois) {
+    $tlois = preg_replace('/[^,\d]+/', '', $tlois);
+    $lois = preg_split('/\s*,\s*/', $tlois);
+    foreach($lois as $loi) {
+      $tag = 'loi:numero='.$loi;
+      echo "$tag\n";
+      $this->addTag($tag);
+      //      $this->getSection()->addTag('loi:'.$loi);
+    }
+  }
 
 }

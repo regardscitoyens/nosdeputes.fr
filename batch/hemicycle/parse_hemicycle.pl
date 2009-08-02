@@ -46,13 +46,13 @@ $heure{'vingt et une'} = '21';
 $heure{'quarante-cinq'} = '45';
 $heure{'trente'} = '30';
 $heure{'quinze'} = '15';
+$heure{'zéro'} = '00';
 $heure{''} = '00';
-if ($string =~ /est ouverte à ([^\.]+) heures? ?(|[^\.]+)\./) {
+
+if ($string =~ /ouverte[^\.]+à ([^\.]+) heures?([^\.]*)\./) {
     $heure = $heure{$1}.':'.$heure{$2};
 }
-if ($string =~ /est ouverte à ([^\.]+) heures? ?(|[^\.]+)\./) {
-    $heure = $heure{$1}.':'.$heure{$2};
-}
+
 $string =~ s/<\/?sup>//g;
 #Recherche des numéros de  de loi
 while($string =~ /ordre du jour ([^<]+ loi [^<]+)\(n\D+(\d+[^\)]+)\)/ig) {
