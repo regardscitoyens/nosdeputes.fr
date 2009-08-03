@@ -64,50 +64,58 @@ $string =~ s/\|(\W+)\|/$1/g;
 foreach $line (split /\n/, $string)
 {
     if ($line =~ /meta/) {
-	if ($line =~ /name="LEGISLATURE"/) { 
-	    $line =~ s/^.*content="//; 
+	if ($line =~ /name="LEGISLATURE"/i) { 
+	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
 	    $amdmt{'legislature'} = $line;
-	} elsif ($line =~ /name="DATE_BADAGE"/) { 
-	    $line =~ s/^.*content="//; 
+	} elsif ($line =~ /name="DATE_BADAGE"/i) { 
+	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
 	    if ($line =~ /(\d{1,2})\/(\d{2})\/(\d{4})/) {
 		$amdmt{'date'} = $3.'-'.$2.'-'.sprintf('%02d', $1);
 	    }
-	} elsif ($line =~ /name="DESIGNATION_ARTICLE"/) { 
-	    $line =~ s/^.*content="//; 
+	} elsif ($line =~ /name="DESIGNATION_ARTICLE"/i) { 
+	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
 	    $amdmt{'sujet'} = $line;
-	} elsif ($line =~ /name="SORT_EN_SEANCE"/) { 
-	    $line =~ s/^.*content="//; 
+	} elsif ($line =~ /name="SORT_EN_SEANCE"/i) { 
+	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
 	    $amdmt{'sort'} = $line;
-	} elsif ($line =~ /name="NUM_INITG"/) { 
-	    $line =~ s/^.*content="//; 
+	} elsif ($line =~ /name="NUM_INITG"/i) { 
+	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
 	    $amdmt{'loi'} = $line;
-	} elsif ($line =~ /name="NUM_AMENDG"/) { 
+	} elsif ($line =~ /name="NUM_AMENDG"/i) { 
 	    numero();
 	}
     }
-    if ($line =~ /class="presente"/) {
+    if ($line =~ /class="presente"/i) {
 	    $presente = 1;
     }
-    if ($line =~ /(NOEXTRACT|EXPOSE)/) {
-	if ($line =~ /class="presente"/) {
+    if ($line =~ /(NOEXTRACT|EXPOSE)/i) {
+	if (!$amdmt{'numero'} && $line =~ /class="numamendement"/i) { 
+	    $line =~ s/^.*\<num_amend\>//i; 
+	    $line =~ s/\<\/num_amend\>.*$//i;
+	    numero();
+	} elsif (!$amdmt{'loi'} && $line =~ /class="titreinitiative"/i) { 
+	    $line =~ s/^.*\<num_init\>//i; 
+	    $line =~ s/\<\/num_init\>.*$//i;
+	    $amdmt{'loi'} = $line;
+	} elsif ($line =~ /class="presente"/i) {
 	    auteurs();
 	} elsif ($line =~ /div.*M/ && $presente == 1) {
 	    auteurs();
-	} elsif ($line =~ /class="tirets"/) {
+	} elsif ($line =~ /class="tirets"/i) {
 	    $presente = 2;
-	} elsif ($line =~ /class="amddispotexte"/) {
+	} elsif ($line =~ /class="amddispotexte"/i) {
 	    texte();
-	} elsif ($line =~ /class="amdexpotitre"/) {
+	} elsif ($line =~ /class="amdexpotitre"/i) {
 	    $expose = 1;
-	} elsif ($line =~ /class="amdexpotexte"/) {
+	} elsif ($line =~ /class="amdexpotexte"/i) {
 	    expose();
 	}
-    } elsif ($line =~ /\<p style="text-indent:/) {
+    } elsif ($line =~ /\<p style="text-indent:/i) {
 	if ($line =~ /amendement.*irrecevable.*application/i) {
 	    if (!$amdmt{'sort'}) {
 		$amdmt{'sort'} = "Irrecevable";
