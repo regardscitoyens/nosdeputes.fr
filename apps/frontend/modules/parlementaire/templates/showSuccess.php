@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="graph_depute">
-    
+  <?php echo include_component('plot', 'parlementairePresence', array('parlementaire' => $parlementaire)); ?>    
   </div>
   <div class="barre_activite">
     <h2>Activité parlementaire : </h2>

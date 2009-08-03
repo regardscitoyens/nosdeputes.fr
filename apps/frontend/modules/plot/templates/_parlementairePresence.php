@@ -21,7 +21,7 @@ $DataSet = new xsPData();
 $DataSet->AddPoint($n_presences,"Présences");
 $DataSet->AddPoint($semaines,"Semaines");
 $DataSet->AddSerie("Présences");
-$DataSet->SetAbsciseLabelSerie("Semaines");
+//$DataSet->SetAbsciseLabelSerie("Semaines");
 $DataSet->SetYAxisName("Présences");
 $DataSet->SetXAxisName("Semaine");
 $Test = new xsPChart(700,230);
