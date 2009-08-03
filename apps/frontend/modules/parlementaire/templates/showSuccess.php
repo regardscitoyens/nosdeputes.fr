@@ -116,7 +116,7 @@
       <h3>Tags</h3>
 <div style="text-align: justify">
 <?php foreach(array_keys($tags) as $tag) : ?>
-<span><?php echo $tag; ?></span>
+<span><?php echo preg_replace('/\s+/', '&nbsp;', $tag); ?>&nbsp;- </span>
 <?php endforeach; ?>
 </div>
       </div>
