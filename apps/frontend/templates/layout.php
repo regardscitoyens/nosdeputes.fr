@@ -7,7 +7,7 @@
     <?php include_metas() ?>  
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <?php echo stylesheet_tag($style.'/style'); ?>
+    <?php echo stylesheet_tag($style.'/style'); ?>  
     <?php echo stylesheet_tag($style.'/print'); ?>
     <!--[if lte IE 6]>
     <?php echo stylesheet_tag($style.'/ie6'); ?>
@@ -30,9 +30,9 @@
             <div class="boite_util">
               <div class="b_u_h"><div class="b_u_hg"></div><div class="b_u_hd"></div></div>
               <div class="b_u_cont">
-								<input type="text" value="nom" size="10" />
-								<input type="password" value="password" size="10" />
-								<input type="submit" value="Go" />
+                <input type="text" value="nom" size="10" />
+                <input type="password" value="password" size="10" />
+                <input type="submit" value="Go" />
               </div>
               <div class="b_u_b"><div class="b_u_bg"></div><div class="b_u_bd"></div></div>
             </div>
