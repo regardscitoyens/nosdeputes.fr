@@ -44,6 +44,12 @@ class interventionActions extends sfActions
         ->leftJoin('pis.Personnalite pe')
         ->leftJoin('pis.Parlementaire pa')
         ->orderBy('i.timestamp ASC');
+    $qtag = Doctrine_Query::create();
+    $qtag->from('Tagging tg, tg.Tag t, Intervention i');
+    $qtag->where('i.seance_id = ?', $seance_id);
+    $qtag->andWhere('i.id = tg.taggable_id');
+    $qtag->andWhere('t.name NOT LIKE ?', 'loi:%');
+    $this->tags = PluginTagTable::getPopulars($qtag, array('model' => 'Intervention'));
     $this->interventions = $query->execute();
   }
 }

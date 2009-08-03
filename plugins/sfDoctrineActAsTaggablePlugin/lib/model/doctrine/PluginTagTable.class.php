@@ -89,7 +89,7 @@ class PluginTagTable extends Doctrine_Table
         if (!$q->getDqlPart('from'))
         {
           $q->from('Tagging tg, tg.Tag t');    
-        }
+	}
 
         if (isset($options['limit']))
         {

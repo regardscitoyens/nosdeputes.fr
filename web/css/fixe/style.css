@@ -576,7 +576,7 @@ img {
 
 /* Séances */
 .titre_int_et_seance {
-  height: 70px;
+  min-height: 70px;
   background-color: #fff;
   border: 1px solid #DFDFDF;
   border-bottom: 1px dashed #DFDFDF;

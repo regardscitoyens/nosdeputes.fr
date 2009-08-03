@@ -17,6 +17,13 @@ class parlementaireActions extends sfActions
   {
     $slug = $request->getParameter('slug');
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    $qtag = Doctrine_Query::create();
+    $qtag->from('Tagging tg, tg.Tag t, Intervention i');
+    $qtag->leftJoin('i.PersonnaliteInterventions pi');
+    $qtag->where('pi.parlementaire_id = ?', $this->parlementaire->id);
+    $qtag->andWhere('i.id = tg.taggable_id');
+    $qtag->andWhere('t.name NOT LIKE ?', 'loi:%');
+    $this->tags = PluginTagTable::getPopulars($qtag, array('model' => 'Intervention'));
   }
 
   public function executeList(sfWebRequest $request)

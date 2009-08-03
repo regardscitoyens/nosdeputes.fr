@@ -15,7 +15,7 @@
     ?> 
     </strong>
     <span class="source">
-      <a href="<?php echo url_for('@interventions_seance?seance='.$intervention->getSeance()->id); ?>#<?php echo $intervention->getId(); ?>">Voir l'intervention dans son contexte</a>
+      <a href="<?php echo url_for('@interventions_seance?seance='.$intervention->getSeance()->id); ?>#inter_<?php echo $intervention->getMd5(); ?>">Voir l'intervention dans son contexte</a>
     </span>
     </div>
     <div class="texte_intervention"><?php echo $intervention->getIntervention(); ?></div>

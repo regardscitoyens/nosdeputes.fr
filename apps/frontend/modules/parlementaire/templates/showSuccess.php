@@ -113,6 +113,12 @@
       <h2>Présence en hémicycle et commission</h2>
       <h3><?php echo link_to("Présences",'@parlementaire_presences?slug='.$parlementaire->getSlug()); ?></h3>
       <h3><?php echo link_to("Interventions",'@parlementaire_interventions?slug='.$parlementaire->getSlug()); ?></h3>
+      <h3>Tags</h3>
+<div>
+<?php foreach(array_keys($tags) as $tag) : ?>
+<span><?php echo $tag; ?></span>
+<?php endforeach; ?>
+</div>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
