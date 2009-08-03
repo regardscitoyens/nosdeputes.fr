@@ -116,7 +116,20 @@
       <h3>Tags</h3>
 <div style="text-align: justify">
 <?php foreach(array_keys($tags) as $tag) : ?>
-<span><?php echo preg_replace('/\s+/', '&nbsp;', $tag); ?>&nbsp;- </span>
+<span><?php 
+echo preg_replace('/\s+/', '&nbsp;', $tag); ?>&nbsp;- 
+<?php 
+/***
+echo "<br/>";
+$sex = soundex($tag);
+if (isset($sound[$sex])) {
+  foreach (array_keys($sound[$sex]) as $word) 
+    echo "$tag ".similar_text($tag, $word, $pc)." $pc ".$word."<br/>\n";
+}
+$sound[$sex][$tag] = 1;
+**/
+?>
+</span>
 <?php endforeach; ?>
 </div>
       </div>
