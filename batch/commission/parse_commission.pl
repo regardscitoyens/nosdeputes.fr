@@ -172,7 +172,6 @@ foreach $ul (@uls) {
     $string .= $ul;
 }
 
-
 foreach $line (split /\n/, $string)
 {
     if ($line =~ /<body>/) {
@@ -200,7 +199,7 @@ foreach $line (split /\n/, $string)
 	next if ($line !~ /\w/);
 
 	#si italique ou tout gras => commentaire
-	if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/.*\/\s$/) {
+	if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/.*\/\s*$/) {
 	    checkout() if ($intervenant);	    
 	    rapporteur();
 	    $found = 1;
