@@ -94,5 +94,8 @@ class Intervention extends BaseIntervention
       //      $this->getSection()->addTag('loi:'.$loi);
     }
   }
-
+  public function setIntervention($s) {
+    $this->_set('nb_mots', str_word_count($s));
+    return $this->_set('intervention', $s);
+  }
 }

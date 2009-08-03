@@ -144,6 +144,7 @@ Intervention:
 #    id:
 #      type: string(36)
 #      primary: true
+    nb_mots: integer
     md5: 
       type: string(36)
       unique: true
