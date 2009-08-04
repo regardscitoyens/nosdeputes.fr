@@ -72,7 +72,8 @@ class tagSeanceTask extends sfBaseTask
 
       //Recherche toutes les interventions pour cette séance
       $q = Doctrine_Query::create();
-      $q->select('intervention, id')->from('Intervention i')->leftJoin('i.PersonnaliteInterventions pi')->where('seance_id = ?', $s['id']);
+      $q->select('intervention, id')->from('Intervention i')->leftJoin('i.PersonnaliteInterventions pi')->where('seance_id = ?', $s['id'])->andWhere('(pi.fonction IS NULL OR pi.fonction NOT LIKE ? )', 'président%');
+
       $array = $q->fetchArray();
       if (!count($array))
 	continue;
@@ -113,14 +114,22 @@ class tagSeanceTask extends sfBaseTask
 
       //Si les groupes de mots ont une certernaines popularité, on les garde
       //Au dessus de 70% d'utilisation le tag contenu est supprimé
+      $debut_bani = 'à|de|la|ainsi|ensuite';
+
       foreach (array_keys($sentences) as $sent) {
+
+	if  (preg_match("/^($debut_bani)/i", $sent) || preg_match("/($debut_bani)$/i", $sent) || preg_match('/\d|amendement|rapporteur|commision|collègue/i', $sent) ) 
+	  continue;
+
 	if (preg_match('/^[A-Z][a-z]/', $sent)) {
 	  unset($tags[$sent2word[$sent]]);	  
 	  continue;
 	}
+
 	if (preg_match('/^([a-z]{2} |[A-Z]+)/', $sent) || preg_match('/ [a-z]$/i', $sent)) {
 	  continue;
 	}
+
 	if (($sentences[$sent]*100/$tot > 0.8 || $sentences[$sent]*100/$words[$sent2word[$sent]] > 70)&& $words[$sent2word[$sent]] > 5) {
 	  echo $sent2word[$sent]." ";
 	  echo $sentences[$sent]*100/$tot." > 0.8 || ".$sentences[$sent]*100/$words[$sent2word[$sent]]." > 70)&& ".$words[$sent2word[$sent]]."\n";
