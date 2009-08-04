@@ -16,9 +16,11 @@ class loadAmdmtsTask extends sfBaseTask {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) !== false) {
           print "$dir$file\n";
+          $ct = 0;
           foreach(file($dir.$file) as $line) {
+            $ct++;
             $json = json_decode($line);
-            if (!$json || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->date) {
+            if (!$json || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->date || !$json->sujet || !$json->sujet) {
               echo "ERROR json : ";
               echo "$line";
               echo "\n";
@@ -36,17 +38,19 @@ class loadAmdmtsTask extends sfBaseTask {
               $amdmt->numero = $json->numero;
             } elseif ($amdmt->rectif == $json->rectif && $amdmt->date == $json->date) {
               $modif = false;
-            }
+            } // else print "/".$amdmt->rectif."/".$json->rectif."///".$amdmt->date."/".$json->date."/\n";
             if ($json->sort)
               $amdmt->setSort($json->sort);
             if ($modif) {
               $amdmt->rectif = $json->rectif;
-              if ($json->auteurs) {
+              if ($json->auteurs) {         /// remettre dans modif
                 $amdmt->setAuteurs($json->auteurs);
               }
-              else if (!$json->sort) {
-                echo "ERROR auteurs/sort : $line\n";
-                continue;
+              else {
+                if (!$json->sort || !preg_match('/irrecevable/i', $json->sort)) {
+                  echo "ERROR auteurs missing : $line\n";
+                  continue;
+                }
               }
               $amdmt->sujet = $json->sujet;
               if ($json->texte)
@@ -57,8 +61,9 @@ class loadAmdmtsTask extends sfBaseTask {
               $amdmt->content_md5 = md5($json->legislature.$json->numero.$json->loi.$json->sujet.$json->texte);
             }
             $amdmt->save();
-
+            $amdmt->free();
           }
+          print $ct." amdmts"."\n";
         }
         closedir($dh);
       }

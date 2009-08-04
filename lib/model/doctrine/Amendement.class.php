@@ -5,26 +5,41 @@
  */
 class Amendement extends BaseAmendement {
     public function setAuteurs($auteurs) {
+      $debug = false;
+      if ($debug) $save = sprintf($auteurs);
       $groupe = null;
-      if (preg_match('/(.*), les membres du groupe (.*)/' ,$auteurs, $match)) {
+      $sexe = null;
+      if ($debug) print "1: ".$auteurs."\n";
+      $auteurs = preg_replace('/,+/', ',', $auteurs, -1, $ct);
+      $auteurs = preg_replace('/([a-z])\s+M[\.Mml]/', '\1, M', $auteurs, -1, $ct);
+      if ($ct >= 1 && $debug) print "2: ".$auteurs."\n";
+      $auteurs = preg_replace('/M\./', 'M ', $auteurs, -1, $ct);
+      if ($ct >= 1 && $debug) print "3: ".$auteurs."\n";
+      if (preg_match('/^\s*(.*),\s*les\s+.*\s+groupe\s+(.*)\s*$/' ,$auteurs, $match)) {
         $auteurs = $match[1];
-        $groupe = $match[2];
+        $groupe = preg_replace('/\s*de\s+la\s*/', '', $match[2]);
+        if ($debug) print "4: ".$auteurs." // ".$groupe."\n";
       }
-      $arr = preg_split('/, /', $auteurs);
+      $arr = preg_split('/,/', $auteurs);
       foreach ($arr as $depute) {
-        if (preg_match('/(M[.,a-z]*) ([A-Z].*)/', $depute, $match)) {
+        $bool = false;
+        if (preg_match('/^\s*(M+[\s\.Mml]{1,2})\s*([dA-Z\s].*)\s*$/', $depute, $match)) {
           $nom = $match[2];
           if (preg_match('/M[ml]/', $match[1]))
             $sexe = 'F';
           else $sexe = 'H';
-          $this->addParlementaireByNom($nom, $sexe, $groupe);
+          $bool = $this->addParlementaireByNom($nom, $sexe, $groupe, $debug);
         } else if (preg_match('/gouvernement/i', $depute)) {
-
-        } else print "ERROR: Nom mal formaté".$depute."\n";
+          if ($debug) print "5: "."  ".$depute."\n";
+        } else if (preg_match('/rapporteur/i', $depute)) {
+          print "5: "."  ".$depute."\n";
+        } else $bool = $this->addParlementaireByNom($depute, $sexe, $groupe, $debug);
+        if (!$bool && $debug) print "6: "."  source : ".$save."\n";
       }
     }
 
-    public function addParlementaireByNom($nom, $sexe, $groupe) {
+    public function addParlementaireByNom($nom, $sexe, $groupe, $debug) {
+        if ($debug) print "5: "."  ".$nom." // ".$sexe." // ".$groupe."\n";
         $memeNom = Doctrine::getTable('Parlementaire')->findByNom($nom);
         if (count($memeNom) == 0) {
             $memeNom = Doctrine::getTable('Parlementaire')->findByNomDeFamille($nom);
@@ -32,26 +47,35 @@ class Amendement extends BaseAmendement {
         if (count($memeNom) == 0) {
             $depute = Doctrine::getTable('Parlementaire')->similarTo($nom);
         }
-        else if (count($memeNom) == 1)
+        else if (count($memeNom) == 1) {
             $depute = $memeNom[0];
-        else foreach ($memeNom as $de) {
-            print $de->nom." ".$de->sexe.' '.$de->nom_de_famille." ; ";
+        }
+        else if ($sexe) foreach ($memeNom as $de) {
+         //   print $de->nom." ".$de->sexe.' '.$de->nom_de_famille." ; ";
             if ($de->sexe == $sexe) {
                 if (!$depute) $depute = $de;
-                else print "ERROR: Plusieurs députés de meme sexe et nom : ".$nom." sexe: ".$sexe." groupe: ".$groupe;
+                else {
+                  unset($memenom);
+                  print "ERROR: Plusieurs députés de meme sexe et nom : ".$nom." sexe: ".$sexe." groupe: ".$groupe."\n";
+                  // try to find by groupe, if groupe unset try with previous auteurs ex: Cochet amdmt 1630 69, 7_28.txt
+                  return false;
+                }
             }
         }
+        unset($memenom);
         if (!$depute) {
-             print "ERROR: Auteur de l'amendement inconnu en base : ".$nom." sexe: ".$sexe." groupe: ".$groupe."\n";
+             print "ERROR: Auteur ".$nom." sexe: ".$sexe." groupe: ".$groupe."\n";
              return false;
         }
         foreach($this->getParlementaires() as $par) {
           if ($par == $depute)
-            return false;
+            $depute->free();
+            return true;
           }
         $pa = new ParlementaireAmendement();
         $pa->_set('Parlementaire', $depute);
         $pa->_set('Amendement', $this);
+        $depute->free();
         return $pa->save();
     }
 

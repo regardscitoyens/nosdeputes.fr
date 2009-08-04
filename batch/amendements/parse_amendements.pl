@@ -23,7 +23,7 @@ foreach $url0 (@urls) {
 $trimestre++;
 
 $a = WWW::Mechanize->new();
-$a->get($url0."&ResultCount=100&ResultStart=1");
+$a->get($url0."&ResultCount=50&ResultStart=1");
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 while ($t = $p->get_tag('span')) {
@@ -31,13 +31,13 @@ while ($t = $p->get_tag('span')) {
 	$n_amdmts = $p->get_text('/span');
     }
 }
-$n_pages = $n_amdmts / 100;
+$n_pages = $n_amdmts / 50;
 print $n_amdmts."\n";
 
 for ($i = 0; $i <= $n_pages; $i++) {
 
-$start = $i*100+1;
-$url = $url0."&ResultCount=100&ResultStart=".$start;
+$start = $i*50+1;
+$url = $url0."&ResultCount=50&ResultStart=".$start;
 $file = "txt/amendements_13_trimestre_".$trimestre."_".$i.".txt";
 print $url." > ".$file."\n";
 
@@ -49,17 +49,17 @@ $p = HTML::TokeParser->new(\$content);
 open FILE, ">:utf8", $file;
 while ($t = $p->get_tag('a')) {
     if ($t->[1]{class} eq 'lienamendement') {
-	$a->get($t->[1]{href});
-	$htmfile = $a->uri();
+#	$a->get($t->[1]{href});
+#	$htmfile = $a->uri();
 	$htmfile = $t->[1]{href};
 	next if ($htmfile =~ /(index|javascript)/);
 	$htmfile =~ s/\//_/gi;
 	$htmfile =~ s/\#.*//;
 	print "  $htmfile ... ";	
-	open FILE2, ">:utf8", "html/$htmfile";
-	print FILE2 $a->content;
-	close FILE2;
-	print "downloaded ... ";
+#	open FILE2, ">:utf8", "html/$htmfile";
+#	print FILE2 $a->content;
+#	close FILE2;
+#	print "downloaded ... ";
 	print FILE `perl cut_amdmt.pl html/$htmfile`;
 	print "done.\n";
 	$a->back();

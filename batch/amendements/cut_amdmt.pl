@@ -24,12 +24,21 @@ my $presente = 0;
 sub numero {
     $line =~ s/^.*content="//; 
     $line =~ s/".*$//;
-    if ($line =~ /(\d+).*(\d).*rect/) {
-	 $amdmt{'numero'} = $1;
-	 $amdmt{'rectif'} = $2;
-     } elsif ($line =~ /(\d+).*rect/) {
-         $amdmt{'numero'} = $1;
-	 $amdmt{'rectif'} = 1;
+    if ($line =~ /^\s*(\d+)\s*([1-9a-zA-Z].*)$/i) {
+	$amdmt{'numero'} = $1;
+	$suite = $2;
+	if (!$suite =~ /rect/i) {
+	    $amdmt{'rectif'} = 0;
+	} else {
+	    if ($suite =~ /(\d+)/) {
+		$amdmt{'rectif'} = $1;
+	    } else {
+		$amdmt{'rectif'} = 1;
+	    } 
+	    if ($suite =~ /bis/i) {
+		$amdmt{'rectif'}++;
+	    }
+     	}
      } else {
          $amdmt{'numero'} = $line;
 	 $amdmt{'rectif'} = 0;
@@ -39,6 +48,7 @@ sub numero {
 sub auteurs {
     $line =~ s/\s*\<\/?[^\>]+\>//g;
     $line =~ s/ et /, /g;
+    $line =~ s/EXPOSÉ SOMMAIRE//g;
     $amdmt{'auteurs'} = $amdmt{'auteurs'}.$line;
 }
 
@@ -104,7 +114,7 @@ foreach $line (split /\n/, $string)
 	    $amdmt{'loi'} = $line;
 	} elsif ($line =~ /class="presente"/i) {
 	    auteurs();
-	} elsif ($line =~ /div.*M/ && $presente == 1) {
+	} elsif ($line =~ /\<div.*\sM[\.ml]/ && $presente == 1) {
 	    auteurs();
 	} elsif ($line =~ /class="tirets"/i) {
 	    $presente = 2;
