@@ -20,11 +20,12 @@ close FILE;
 my %amdmt;
 my $expose = 0;
 my $presente = 0;
+my $identiques =0;
 
 sub numero {
     $line =~ s/^.*content="//; 
     $line =~ s/".*$//;
-    if ($line =~ /^\s*(\d+)\s*([1-9a-zA-Z].*)$/i) {
+    if ($line =~ /^\s*(\d+)\s+([1-9a-zA-Z].*)$/i) {
 	$amdmt{'numero'} = $1;
 	$suite = $2;
 	if (!$suite =~ /rect/i) {
@@ -47,9 +48,10 @@ sub numero {
 
 sub auteurs {
     $line =~ s/\s*\<\/?[^\>]+\>//g;
-    $line =~ s/ et /, /g;
+    $line =~ s/\s+et\s+/, /g;
+    $line =~ s/^et\s+/, /g;
     $line =~ s/EXPOSÉ SOMMAIRE//g;
-    $amdmt{'auteurs'} = $amdmt{'auteurs'}.$line;
+    $amdmt{'auteurs'} = $amdmt{'auteurs'}.", ".$line;
 }
 
 sub texte {
@@ -64,6 +66,25 @@ sub expose {
     $line =~ s/\s*\<\/?[^\>]+\>//g;
     if ($amdmt{'expose'} =~ /^$/) { $amdmt{'expose'} = "<p>".$line."</p>"; }
     else { $amdmt{'expose'} = $amdmt{'expose'}."<p>".$line."</p>"; }
+}
+
+sub identiques {
+    if ($line =~ /\<div\>\s*de\s*(.*)\s*\<\/div\>/) {
+	$line = $1;
+	if ($amdmt{'numero'} != $amdmt{'fin_serie'}) {
+	    auteurs();
+	}
+    } else {
+	$line =~ s/\s*\<\/?[^\>]+\>//g;
+	if ($line =~ /.*Adt\s*.*[°\s](\d+)\s+.*de\s*(.*)$/) {
+    	    $num = $1;    	
+	    $line = $2;
+	    if ($amdmt{'numero'} != $num) {
+	    	$amdmt{'fin_serie'} = $num;
+	    	auteurs();
+	    }
+	}
+    }
 }
 
 
@@ -114,8 +135,6 @@ foreach $line (split /\n/, $string)
 	    $amdmt{'loi'} = $line;
 	} elsif ($line =~ /class="presente"/i) {
 	    auteurs();
-	} elsif ($line =~ /\<div.*\sM[\.ml]/ && $presente == 1) {
-	    auteurs();
 	} elsif ($line =~ /class="tirets"/i) {
 	    $presente = 2;
 	} elsif ($line =~ /class="amddispotexte"/i) {
@@ -124,7 +143,19 @@ foreach $line (split /\n/, $string)
 	    $expose = 1;
 	} elsif ($line =~ /class="amdexpotexte"/i) {
 	    expose();
+	} elsif ($line =~ /amendements\s*identiques/i) {
+	    $identiques = 1;
+	} elsif ($line =~ /\<div.*\>.*M[\.Mml]/) { 
+	    if ($identiques == 1) {
+		identiques();
+	    } elsif ($presente == 1) {
+		auteurs();
+	    }
+	} elsif ($identiques == 1 && $line =~ /\<div\>(\d+)\<\/div\>/) {
+	    $amdmt{'fin_serie'} = $1;
 	}
+    } elsif ($presente == 1 && $line =~ /\<p style="text-indent:.*\>.*M[\.Mml]/i) { 
+	    auteurs();
     } elsif ($line =~ /\<p style="text-indent:/i) {
 	if ($line =~ /amendement.*irrecevable.*application/i) {
 	    if (!$amdmt{'sort'}) {
@@ -135,4 +166,4 @@ foreach $line (split /\n/, $string)
     }
 }
 
-print '{"legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "rectif": "'.$amdmt{'rectif'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
+print '{"legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "fin_serie": "'.$amdmt{'fin_serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";

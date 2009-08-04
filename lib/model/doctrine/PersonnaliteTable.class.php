@@ -34,7 +34,7 @@ class PersonnaliteTable extends Doctrine_Table
       $res = similar_text(preg_replace('/[^a-z]+/i', ' ', $parl[$champ]), preg_replace('/[^a-z]+/i', ' ', $str), $pc);
       if ($res > 0 && $pc > $closest_res) {
 	$closest = $parl;
-	$closest_res = (strlen($str) - $res < 2) ? 90 : $pc;
+	$closest_res = (strlen($str) - $res < 3) ? 90 : $pc;
       }
     }
 

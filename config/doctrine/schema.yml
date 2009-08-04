@@ -89,10 +89,10 @@ Seance:
     uniq_index:
       fields: [organisme_id, date, moment]
       type: unique
-    index_sesssion:
+    index_session:
       fields: [session]
-    index_nsemaine:
-      fields: [numero_semaine]
+    index_semaine:
+      fields: [annee, numero_semaine]
     index_annee:
       fields: [annee]
 

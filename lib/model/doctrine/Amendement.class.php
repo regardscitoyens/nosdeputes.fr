@@ -9,13 +9,20 @@ class Amendement extends BaseAmendement {
       if ($debug) $save = sprintf($auteurs);
       $groupe = null;
       $sexe = null;
-      if ($debug) print "1: ".$auteurs."\n";
-      $auteurs = preg_replace('/,+/', ',', $auteurs, -1, $ct);
-      $auteurs = preg_replace('/([a-z])\s+M[\.Mml]/', '\1, M', $auteurs, -1, $ct);
+      if ($debug) print "0: ".$auteurs."\n";
+      $auteurs = preg_replace('/^\s*,\s*/', '', $auteurs);
+      $auteurs = preg_replace('/,\s*$/', '', $auteurs);
+      $auteurs = preg_replace('/\s+Mme,\s*/', ' Mme ', $auteurs);
+      $auteurs = preg_replace('/([a-z])\s+(M[\.Mml])/', '\1, \2', $auteurs, -1, $ct);
+      $auteurs = preg_replace('/\s*([rR]apporteur.*),\s*M/', ', M',$auteurs, -1, $ct);
+      $auteurs = preg_replace('/\s*([rR]apporteur.*)/', ', M',$auteurs, -1, $ct);
+      if ($ct >= 1 && $debug) print "1: ".$auteurs."\n";
       if ($ct >= 1 && $debug) print "2: ".$auteurs."\n";
       $auteurs = preg_replace('/M\./', 'M ', $auteurs, -1, $ct);
       if ($ct >= 1 && $debug) print "3: ".$auteurs."\n";
-      if (preg_match('/^\s*(.*),\s*les\s+.*\s+groupe\s+(.*)\s*$/' ,$auteurs, $match)) {
+      $auteurs = preg_replace('/(,\s*)+,/', ',', $auteurs, -1, $ct);
+      if ($debug) print "4: ".$auteurs." // ".$groupe."\n";
+      if (preg_match('/^\s*(.*),\s*les\s+.*\s+[gG]roupe\s+(.*)\s*$/' ,$auteurs, $match)) {
         $auteurs = $match[1];
         $groupe = preg_replace('/\s*de\s+la\s*/', '', $match[2]);
         if ($debug) print "4: ".$auteurs." // ".$groupe."\n";
@@ -23,7 +30,7 @@ class Amendement extends BaseAmendement {
       $arr = preg_split('/,/', $auteurs);
       foreach ($arr as $depute) {
         $bool = false;
-        if (preg_match('/^\s*(M+[\s\.Mml]{1,2})\s*([dA-Z\s].*)\s*$/', $depute, $match)) {
+        if (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([dA-Z\s].*)\s*$/', $depute, $match)) {
           $nom = $match[2];
           if (preg_match('/M[ml]/', $match[1]))
             $sexe = 'F';
@@ -31,10 +38,8 @@ class Amendement extends BaseAmendement {
           $bool = $this->addParlementaireByNom($nom, $sexe, $groupe, $debug);
         } else if (preg_match('/gouvernement/i', $depute)) {
           if ($debug) print "5: "."  ".$depute."\n";
-        } else if (preg_match('/rapporteur/i', $depute)) {
-          print "5: "."  ".$depute."\n";
         } else $bool = $this->addParlementaireByNom($depute, $sexe, $groupe, $debug);
-        if (!$bool && $debug) print "6: "."  source : ".$save."\n";
+    //    if (!$bool && $debug) print "6: "."  source : ".$save."\n";
       }
     }
 
@@ -64,7 +69,7 @@ class Amendement extends BaseAmendement {
         }
         unset($memenom);
         if (!$depute) {
-             print "ERROR: Auteur ".$nom." sexe: ".$sexe." groupe: ".$groupe."\n";
+             print "ERROR json: Auteur d'amendement inconnu : ".$nom." sexe: ".$sexe." groupe: ".$groupe."\n";
              return false;
         }
         foreach($this->getParlementaires() as $par) {

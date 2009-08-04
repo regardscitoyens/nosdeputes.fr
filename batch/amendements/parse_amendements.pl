@@ -3,24 +3,19 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
-$legislature = shift;
-
 @urls = ("http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F04%2F2007&DateFin=15%2F08%2F2007&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML",
-	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F08%2F2007&DateFin=15%2F12%2F2007&Scope=TEXTEINTEGRAL&Sor
-tField=DATE&SortOrder=Asc&format=HTML",
-	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F12%2F2007&DateFin=15%2F04%2F2008&Scope=TEXTEINTEGRAL&Sor
-tField=DATE&SortOrder=Asc&format=HTML",
+	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F08%2F2007&DateFin=15%2F12%2F2007&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML",
+	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F12%2F2007&DateFin=15%2F04%2F2008&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML",
 	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F04%2F2008&DateFin=15%2F08%2F2008&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML",
-	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F08%2F2008&DateFin=15%2F12%2F2008&Scope=TEXTEINTEGRAL&Sor
-tField=DATE&SortOrder=Asc&format=HTML",
-	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F12%2F2008&DateFin=15%2F04%2F2009&Scope=TEXTEINTEGRAL&Sor
-tField=DATE&SortOrder=Asc&format=HTML",
+	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F08%2F2008&DateFin=15%2F12%2F2008&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML",
+	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F12%2F2008&DateFin=15%2F04%2F2009&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML",
 	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F04%2F2009&DateFin=15%2F08%2F2009&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML"
 );
 
 $trimestre = 0;
 foreach $url0 (@urls) {
 $trimestre++;
+#$trimestre = 6;
 
 $a = WWW::Mechanize->new();
 $a->get($url0."&ResultCount=50&ResultStart=1");
@@ -35,7 +30,7 @@ $n_pages = $n_amdmts / 50;
 print $n_amdmts."\n";
 
 for ($i = 0; $i <= $n_pages; $i++) {
-
+#$i = 0;
 $start = $i*50+1;
 $url = $url0."&ResultCount=50&ResultStart=".$start;
 $file = "txt/amendements_13_trimestre_".$trimestre."_".$i.".txt";

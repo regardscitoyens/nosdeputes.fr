@@ -41,7 +41,7 @@ class loadAmdmtsTask extends sfBaseTask {
             } // else print "/".$amdmt->rectif."/".$json->rectif."///".$amdmt->date."/".$json->date."/\n";
             if ($json->sort)
               $amdmt->setSort($json->sort);
-            if ($modif) {
+ //           if ($modif) {
               $amdmt->rectif = $json->rectif;
               if ($json->auteurs) {         /// remettre dans modif
                 $amdmt->setAuteurs($json->auteurs);
@@ -59,7 +59,10 @@ class loadAmdmtsTask extends sfBaseTask {
                 $amdmt->expose = $json->expose;
               $amdmt->date = $json->date;
               $amdmt->content_md5 = md5($json->legislature.$json->numero.$json->loi.$json->sujet.$json->texte);
-            }
+ //           }
+
+// ﻿addTag('loi:amendement=123')
+// ﻿addTag('loi:numero_loi=123')
             $amdmt->save();
             $amdmt->free();
           }
