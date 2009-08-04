@@ -1,5 +1,5 @@
 #!/bin/bash
-MYSQLID=-u cpc 
+MYSQLID="-u root"
 echo "SET FOREIGN_KEY_CHECKS = 0;" > /tmp/drop.sql
 echo "SET FOREIGN_KEY_CHECKS = 0;" > /tmp/delete.sql
 echo "SHOW TABLES" | mysql $MYSQLID cpc  | grep -v Tables_  > /tmp/tables.sql
