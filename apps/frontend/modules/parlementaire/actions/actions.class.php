@@ -23,7 +23,7 @@ class parlementaireActions extends sfActions
     $qtag->where('pi.parlementaire_id = ?', $this->parlementaire->id);
     $qtag->andWhere('i.id = tg.taggable_id');
     $qtag->andWhere('t.name NOT LIKE ?', 'loi:%');
-    $this->tags = PluginTagTable::getPopulars($qtag, array('model' => 'Intervention'));
+    $this->tags = array(); //PluginTagTable::getPopulars($qtag, array('model' => 'Intervention'));
   }
 
   public function executeList(sfWebRequest $request)
