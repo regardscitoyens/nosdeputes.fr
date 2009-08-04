@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="graph_depute">
-  <?php echo include_component('plot', 'parlementairePresence', array('parlementaire' => $parlementaire)); ?>    
+			 <?php //echo include_component('plot', 'parlementairePresence', array('parlementaire' => $parlementaire)); ?>    
   </div>
   <div class="barre_activite">
     <h2>Activité parlementaire : </h2>
@@ -115,23 +115,26 @@
       <h3><?php echo link_to("Interventions",'@parlementaire_interventions?slug='.$parlementaire->getSlug()); ?></h3>
       <h3>Tags</h3>
 <div style="text-align: justify">
-<?php foreach(array_keys($tags) as $tag) : ?>
-<span><?php 
-echo preg_replace('/\s+/', '&nbsp;', $tag); ?>&nbsp;- 
-<?php 
-/***
-echo "<br/>";
-$sex = soundex($tag);
-if (isset($sound[$sex])) {
-  foreach (array_keys($sound[$sex]) as $word) 
-    echo "$tag ".similar_text($tag, $word, $pc)." $pc ".$word."<br/>\n";
-}
-$sound[$sex][$tag] = 1;
-**/
-?>
-</span>
-<?php endforeach; ?>
+<style>
+.tag_level_0 {font-size: 0.8em;}
+.tag_level_1 {font-size: 0.9em;}
+.tag_level_2 {font-size: 1em;}
+.tag_level_3 {font-size: 1.5em;}
+</style>
+<?php foreach(array_keys($tags) as $tag) : 
+?><span class="tag_level_<?php echo $tags[$tag]['class']; ?>"><a href="<?php 
+echo $tags[$tag]['related']; ?>" title="<?php echo $tags[$tag]['count']; ?>"><?php 
+echo preg_replace('/\s+/', '&nbsp;', $tag); ?></a> <?php 
+?></span><?php endforeach; ?>
 </div>
+
+<h3>Textes</h3>
+<ul>
+<?php $cpt = 0; foreach($textes as $texte) : ?>
+<li><?php $cpt++ ;echo $texte['Section']['titre'].' ('.$texte['nb'].' interventions)'; ?></li>
+<?php if ($cpt > 5) break; endforeach; ?>
+</ul>
+
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>

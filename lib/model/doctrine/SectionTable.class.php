@@ -5,7 +5,9 @@
 class SectionTable extends Doctrine_Table
 {
   public function findOneByContexteOrCreateIt($contexte) {
-    $contexte = preg_replace('/[\/\|\)\(]/', '', $contexte);
+    $contexte = preg_replace('/[\/\|\)\(]/', '', strtolower($contexte));
+    $context = preg_replace('/&#8217;/', '\'', $contexte);
+    $contexte = preg_replace('/\s+/', ' ', $contexte);
     $section = $this->find(md5($contexte));
     if ($section)
       return $section;

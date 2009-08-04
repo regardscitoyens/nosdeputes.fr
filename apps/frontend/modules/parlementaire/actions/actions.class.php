@@ -13,6 +13,7 @@ class parlementaireActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
   }
+
   public function executeShow(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
@@ -22,8 +23,68 @@ class parlementaireActions extends sfActions
     $qtag->leftJoin('i.PersonnaliteInterventions pi');
     $qtag->where('pi.parlementaire_id = ?', $this->parlementaire->id);
     $qtag->andWhere('i.id = tg.taggable_id');
-    $qtag->andWhere('t.name NOT LIKE ?', 'loi:%');
-    $this->tags = array(); //PluginTagTable::getPopulars($qtag, array('model' => 'Intervention'));
+    $this->tags = PluginTagTable::getAllTagNameWithCount($qtag, array('model' => 'Intervention', 'triple' => false, 'min_tags_count' => 2));
+
+    asort($this->tags);
+
+
+    //Ici on cherche à groupes les tags qui sont très similaires
+    foreach(array_keys($this->tags) as $tag) {
+      $sex = soundex($tag);
+      if (isset($sound[$sex])) {
+	foreach (array_keys($sound[$sex]) as $word) {
+	  $words = preg_split('/\|/', $word);
+	  similar_text($tag, $words[0], $pc);
+	  if ($pc >= 75) {
+	    $ntag = $tag.'|'.$word;
+	    $this->tags[$ntag] = $this->tags[$tag] + $this->word[$word];
+	    unset($this->tags[$tag]);
+	    unset($this->tags[$word]);
+	    unset($sound[$sex][$tag]);
+	    unset($sound[$sex][$word]);
+	    $sound[$sex][$ntag] = 1;
+	    continue;
+	  }
+	}
+      }
+      $sound[$sex][$tag] = 1;
+    }
+
+
+    //On trie par ordre alpha, et inserre des infos sur l'utilisation des tags (class + count)
+    $tot = count($this->tags);
+    $cpt = 0;
+    asort($this->tags);
+    $class = array();
+    foreach(array_keys($this->tags) as $tag) {
+      $count = $this->tags[$tag];
+      unset($this->tags[$tag]);
+      $related = preg_split('/\|/', $tag);
+      $tag = $related[0];
+      $this->tags[$tag] = array();
+      $this->tags[$tag]['count'] = $count;
+      if (!isset($class[$count]))
+	$class[$count] = intval($cpt * 4 / $tot);
+      $cpt++;
+      $this->tags[$tag]['class'] = $class[$count];
+      $this->tags[$tag]['related'] = implode('|', $related);
+    }
+    ksort($this->tags);
+
+
+
+    $this->textes = doctrine_query::create()
+      ->from('Section s')
+      ->select('s.section_id, sp.titre, count(i.id) as nb')
+      ->where('s.section_id = sp.id')
+      ->leftJoin('s.Section sp')
+      ->leftJoin('s.Interventions i')
+      ->leftJoin('i.PersonnaliteIntervention pi')
+      ->andWhere('pi.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('i.nb_mots > 20')
+      ->groupBy('s.section_id')
+      ->orderBy('nb DESC')
+      ->fetchArray();
   }
 
   public function executeList(sfWebRequest $request)

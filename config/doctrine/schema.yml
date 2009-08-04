@@ -226,4 +226,3 @@ ParlementaireAmendement:
       foreignAlias: ParlementaireAmendements
     Amendement:
       foreignAlias: ParlementaireAmendements
-
