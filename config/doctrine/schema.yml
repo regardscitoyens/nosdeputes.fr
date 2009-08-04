@@ -132,6 +132,8 @@ Section:
     titre: string(256)
     titre_complet: string(512)
     section_id: string(36)
+    min_date: date
+    timestamp: integer
   relations:
     Section:
       foreignAlias: SubSections

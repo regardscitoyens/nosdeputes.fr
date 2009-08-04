@@ -1,0 +1,30 @@
+<h1><?php echo $section->titre_complet ; 
+?></h1>
+
+<div>
+<p>Voici la liste des mots clés pour cette section :</p>
+<?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention')); ?>
+</div>
+
+<div>
+Voici l'organisation du projet :
+<ul>
+<?php foreach($section->getSubSections() as $subsection) : ?>
+<li><?php echo link_to($subsection->titre, '@section?id='.$subsection->id); ?></li>
+<?php endforeach; ?>
+</ul>
+</div>
+
+
+<div>
+Voici la liste des séances pour cette section : 
+<ul>
+<?php foreach($section->getSeances() as $seance) : ?>
+<li><?php echo link_to($seance->getDate().', '.$seance->getMoment(), '@interventions_seance?seance='.$seance->id.'#table_'.$section->id); ?></li>
+<?php endforeach; ?>
+</ul>
+</div>
+<div>
+Voici la liste des principaux orateurs pour cette section :
+<? echo include_component('parlementaire', 'list', array('parlementairequery' => $ptag)); ?>
+</div>

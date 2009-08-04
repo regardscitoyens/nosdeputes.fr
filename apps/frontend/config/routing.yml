@@ -7,6 +7,18 @@ list_parlementaires:
   url: /parlementaire
   param: {module: parlementaire, action: list}
 
+parlementaire_texte:
+  url: /parlementaire/:slug/textes/:id
+  param: {module: section, action: parlementaireSection}
+
+parlementaire_textes:
+  url: /parlementaire/:slug/textes
+  param: {module: section, action: parlementaire}
+
+section:
+  url: /section/:id
+  param: {module: section, action: show}
+
 parlementaire:
   url: /parlementaire/:slug
   param: {module: parlementaire, action: show}

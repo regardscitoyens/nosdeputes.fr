@@ -4,15 +4,20 @@
  */
 class SectionTable extends Doctrine_Table
 {
-  public function findOneByContexteOrCreateIt($contexte) {
-    $contexte = preg_replace('/[\/\|\)\(]/', '', strtolower($contexte));
+  public function findOneByContexteOrCreateIt($contexte, $date = '', $timestamp = '') {
+    $contexte = preg_replace('/[\/\|\)\(«]/', '', strtolower($contexte));
     $context = preg_replace('/&#8217;/', '\'', $contexte);
+    $context = preg_replace('/&#\d+;/', '', $contexte);
     $contexte = preg_replace('/\s+/', ' ', $contexte);
     $section = $this->find(md5($contexte));
-    if ($section)
-      return $section;
-    $section = new Section();
-    $section->setTitreComplet($contexte);
+    if (!$section) {
+      $section = new Section();
+      $section->setTitreComplet($contexte);
+    }
+    if ($date && (! $section->date || $section->date > $date))
+      $section->date = $date;
+    if ($timestamp && (! $section->timestamp || $section->timestamp > $timestamp))
+      $section->timestamp = $timestamp;
     $section->save();
     return $section;
   }

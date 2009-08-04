@@ -74,7 +74,7 @@ class Intervention extends BaseIntervention
     return $res;
   }
   public function setContexte($context) {
-    return $this->setSection(doctrine::getTable('Section')->findOneByContexteOrCreateIt($context));
+    return $this->setSection(doctrine::getTable('Section')->findOneByContexteOrCreateIt($context, $this->date, $this->timestamp));
   }
   public function setAmendements($tamendements) {
     $tamendements = preg_replace('/[^,\d]+/', '', $tamendements);

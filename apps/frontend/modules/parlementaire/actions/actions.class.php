@@ -18,60 +18,11 @@ class parlementaireActions extends sfActions
   {
     $slug = $request->getParameter('slug');
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
-    $qtag = Doctrine_Query::create();
-    $qtag->from('Tagging tg, tg.Tag t, Intervention i');
-    $qtag->leftJoin('i.PersonnaliteInterventions pi');
-    $qtag->where('pi.parlementaire_id = ?', $this->parlementaire->id);
-    $qtag->andWhere('i.id = tg.taggable_id');
-    $this->tags = PluginTagTable::getAllTagNameWithCount($qtag, array('model' => 'Intervention', 'triple' => false, 'min_tags_count' => 2));
-
-    asort($this->tags);
-
-
-    //Ici on cherche à groupes les tags qui sont très similaires
-    foreach(array_keys($this->tags) as $tag) {
-      $sex = soundex($tag);
-      if (isset($sound[$sex])) {
-	foreach (array_keys($sound[$sex]) as $word) {
-	  $words = preg_split('/\|/', $word);
-	  similar_text($tag, $words[0], $pc);
-	  if ($pc >= 75) {
-	    $ntag = $tag.'|'.$word;
-	    $this->tags[$ntag] = $this->tags[$tag] + $this->word[$word];
-	    unset($this->tags[$tag]);
-	    unset($this->tags[$word]);
-	    unset($sound[$sex][$tag]);
-	    unset($sound[$sex][$word]);
-	    $sound[$sex][$ntag] = 1;
-	    continue;
-	  }
-	}
-      }
-      $sound[$sex][$tag] = 1;
-    }
-
-
-    //On trie par ordre alpha, et inserre des infos sur l'utilisation des tags (class + count)
-    $tot = count($this->tags);
-    $cpt = 0;
-    asort($this->tags);
-    $class = array();
-    foreach(array_keys($this->tags) as $tag) {
-      $count = $this->tags[$tag];
-      unset($this->tags[$tag]);
-      $related = preg_split('/\|/', $tag);
-      $tag = $related[0];
-      $this->tags[$tag] = array();
-      $this->tags[$tag]['count'] = $count;
-      if (!isset($class[$count]))
-	$class[$count] = intval($cpt * 4 / $tot);
-      $cpt++;
-      $this->tags[$tag]['class'] = $class[$count];
-      $this->tags[$tag]['related'] = implode('|', $related);
-    }
-    ksort($this->tags);
-
-
+    $this->qtag = Doctrine_Query::create()
+      ->from('Tagging tg, tg.Tag t, Intervention i')
+      ->leftJoin('i.PersonnaliteInterventions pi')
+      ->where('pi.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('i.id = tg.taggable_id');
 
     $this->textes = doctrine_query::create()
       ->from('Section s')

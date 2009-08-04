@@ -50,8 +50,10 @@ $heure{'dix-neuf'} = '19';
 $heure{'vingt'} = '20';
 $heure{'vingt et une'} = '21';
 $heure{'vingt-deux'} = '22';
+$heure{'quarante'} = '45';
 $heure{'quarante-cinq'} = '45';
 $heure{'trente'} = '30';
+$heure{'trente-cinq'} = '35';
 $heure{'quinze'} = '15';
 $heure{'zéro'} = '00';
 $heure{''} = '00';
@@ -201,10 +203,11 @@ $string =~ s/\|(\W+)\|/$1/g;
 $majIntervenant = 0;
 $debut = 0;
 
-$string =~ s/<br>\n//gi;
+$string =~ s/<br>\n*//gi;
 
 #print "$string\n"; exit;
 
+$donetitre1 = 0;
 foreach $line (split /\n/, $string)
 {
     if ($line =~ /DEBUT_SEANCE|séance est ouverte/) {
@@ -228,7 +231,7 @@ foreach $line (split /\n/, $string)
 
     #récupère les ancres pour de meilleurs liens sources
     if ($line =~ /\<[a]/i) {
-	if ($line =~ s/<a name=["']([^"']+)["'][^<]+<[^>]+>//g) {
+	if ($line =~ s/<a name=["']([^"']+)["'][^<]+<[^>]+>/<</g) {
 	    $source = $url."#$1";
 	}
     }
@@ -241,14 +244,16 @@ foreach $line (split /\n/, $string)
 	    }else {
 		setFonction('président', $prez);
 	    }
-	}elsif($line =~ /h2 class="titre[23]">([^<]+)/ || $line =~ /class="sstitreinfo">\/([^\/]+)\//) {
+	}elsif($line =~ /h2 class="titre[23]"><*([^<\(]+)\s*/ || $line =~ /class="sstitreinfo">\/([^\/]+)\//) {
 	    checkout();
 	    $titre2 = $1;
 	    $titre2 =~ s/\W+$//;
 	    $amendements = @pre_amendements = ();
 	    $line = "<p>|$titre2|</p>";
-	}elsif($line =~ /h2 class="titre1">([^<]+)/) {
+	    $donetitre1 = 0;
+	}elsif($line =~ /h2 class="titre1"><*([^<]+)/) {
 	    checkout();
+	    $donetitre1 = 1;
 	    $titre1 = $1;
 	    $titre2 = '';
 	    $amendements = @pre_amendements = ();
@@ -261,6 +266,8 @@ foreach $line (split /\n/, $string)
     }
 
     next unless ($debut);
+
+    $line =~ s/<<//g;
 
 #    print "$titre1 > $titre2 : $line\n" ; next;
 
