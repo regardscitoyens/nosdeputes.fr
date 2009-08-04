@@ -26,9 +26,12 @@ class PersonnaliteTable extends Doctrine_Table
 
     $closest = null;
     $closest_res = -1;
+    $champ = 'nom';
+    if (!preg_match('/ /', $str))
+      $champ = 'nom_de_famille';
     //Compare each parlementaire with the string and keep the best
     foreach ($this->all as $parl) {
-      $res = similar_text(preg_replace('/[^a-z]+/i', ' ', $parl['nom']), preg_replace('/[^a-z]+/i', ' ', $str), $pc);
+      $res = similar_text(preg_replace('/[^a-z]+/i', ' ', $parl[$champ]), preg_replace('/[^a-z]+/i', ' ', $str), $pc);
       if ($res > 0 && $pc > $closest_res) {
 	$closest = $parl;
 	$closest_res = $pc;
