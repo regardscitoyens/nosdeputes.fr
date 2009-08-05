@@ -5,7 +5,7 @@ echo $section->titre;
 
 <div>
 <p>Voici la liste des mots clés pour cette section :</p>
-<?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'route' => '@tag_section_interventions?id='.$section->id.'&')); ?>
+<?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>
 </div>
 
 <div>
