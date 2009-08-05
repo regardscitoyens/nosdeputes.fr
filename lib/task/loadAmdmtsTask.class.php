@@ -47,7 +47,7 @@ class loadAmdmtsTask extends sfBaseTask {
                 $amdmt->setAuteurs($json->auteurs);
               }
               else {
-                if (!$json->sort || !preg_match('/irrecevable/i', $json->sort)) {
+                if (!$json->sort || !preg_match('/(irrecevable|retir)/i', $json->sort)) {
                   echo "ERROR auteurs missing : $line\n";
                   continue;
                 }

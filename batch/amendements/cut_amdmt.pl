@@ -11,6 +11,7 @@ open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
 utf8::decode($string);
+$string =~ s/(\<p class="presente".*)\s*\<br[\/]?\>\s*[\n]?\s*(.*)/\1, \2/g;
 $string =~ s/\<br\>.*\n//g;
 $string =~ s/&#8217;/'/g;
 $string =~ s/&#339;/oe/g;
@@ -25,6 +26,7 @@ my $identiques =0;
 sub numero {
     $line =~ s/^.*content="//; 
     $line =~ s/".*$//;
+    $line =~ s/[\(\)]//g;
     if ($line =~ /^\s*(\d+)\s+([1-9a-zA-Z].*)$/i) {
 	$amdmt{'numero'} = $1;
 	$suite = $2;
@@ -47,10 +49,11 @@ sub numero {
 }
 
 sub auteurs {
+    $line =~ s/\<br\/\>/, /g;
     $line =~ s/\s*\<\/?[^\>]+\>//g;
-    $line =~ s/\s+et\s+/, /g;
+    $line =~ s/\s+e{1,2}t\s+/, /g;
     $line =~ s/^et\s+/, /g;
-    $line =~ s/EXPOSÉ SOMMAIRE//g;
+    $line =~ s/\s*EXPOSÉ SOMMAIRE\s*//g;
     $amdmt{'auteurs'} = $amdmt{'auteurs'}.", ".$line;
 }
 
@@ -94,7 +97,7 @@ $string =~ s/&nbsp;/ /g;
 $string =~ s/\|(\W+)\|/$1/g;
 foreach $line (split /\n/, $string)
 {
-    if ($line =~ /meta/) {
+    if ($line =~ /meta.*content=/) {
 	if ($line =~ /name="LEGISLATURE"/i) { 
 	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
@@ -123,20 +126,31 @@ foreach $line (split /\n/, $string)
     }
     if ($line =~ /class="presente"/i) {
 	    $presente = 1;
+    } elsif ($presente == 1 && $line =~ /class="tirets"/i) {
+	    $presente = 2;
     }
     if ($line =~ /(NOEXTRACT|EXPOSE)/i) {
-	if (!$amdmt{'numero'} && $line =~ /class="numamendement"/i) { 
-	    $line =~ s/^.*\<num_amend\>//i; 
-	    $line =~ s/\<\/num_amend\>.*$//i;
-	    numero();
-	} elsif (!$amdmt{'loi'} && $line =~ /class="titreinitiative"/i) { 
-	    $line =~ s/^.*\<num_init\>//i; 
-	    $line =~ s/\<\/num_init\>.*$//i;
-	    $amdmt{'loi'} = $line;
+	if (!$amdmt{'numero'} && ($line =~ /class="numamendement"/i || $line =~ /class="titreamend".*num_partie/i)) {
+	    if ($line =~ /\<num_amend\>\s*(.*)\s*\<\/num_amend\>/i) { 
+	    	$line = $1;
+	    	numero();
+	    } elsif ($line =~ /\<\/num_partie\>\s*-\s*(.*)\<\/p\>/i) {
+		$line = $1;
+		numero();
+	    } 
+	} elsif (!$amdmt{'loi'} && $line =~ /class="titreinitiative"/i) {
+	    if ($line =~ /\<num_init\>\s*(\d+)\s*\<\/num_init\>/i) {
+		$amdmt{'loi'} = $1;
+	    } elsif ($line =~ /\(\s*n.*(\d+).*\)/) {
+		$amdmt{'loi'} = $1;
+	    }
 	} elsif ($line =~ /class="presente"/i) {
-	    auteurs();
-	} elsif ($line =~ /class="tirets"/i) {
-	    $presente = 2;
+	    if ($line =~ /amendement/) {
+		$line =~ /(\d+)/;
+		$amdmt{'parent'} = $1;
+	    } else {
+		auteurs();
+	    }
 	} elsif ($line =~ /class="amddispotexte"/i) {
 	    texte();
 	} elsif ($line =~ /class="amdexpotitre"/i) {
@@ -145,25 +159,40 @@ foreach $line (split /\n/, $string)
 	    expose();
 	} elsif ($line =~ /amendements\s*identiques/i) {
 	    $identiques = 1;
-	} elsif ($line =~ /\<div.*\>.*M[\.Mml]/) { 
+	} elsif ($line =~ /\<div.*\>.*M[\.Mml]/ && !($line =~ /EXPOSE SOMMAIRE/i)) {
 	    if ($identiques == 1) {
 		identiques();
-	    } elsif ($presente == 1) {
+	    } elsif ($presente == 1) {	
 		auteurs();
 	    }
 	} elsif ($identiques == 1 && $line =~ /\<div\>(\d+)\<\/div\>/) {
 	    $amdmt{'fin_serie'} = $1;
 	}
-    } elsif ($presente == 1 && $line =~ /\<p style="text-indent:.*\>.*M[\.Mml]/i) { 
-	    auteurs();
-    } elsif ($line =~ /\<p style="text-indent:/i) {
-	if ($line =~ /amendement.*irrecevable.*application/i) {
+    } elsif ($presente == 1 && $line =~ /\<p style=".*text-indent:.*\>.*M[\.Mml]/i) { 
+		auteurs();
+    } elsif ($line =~ /\<p style=".*text-indent:/i) {
+	if ($line =~ /amendement.*(irrecevable|retir)/i) {
 	    if (!$amdmt{'sort'}) {
-		$amdmt{'sort'} = "Irrecevable";
+		if ($line =~ /irrecevable/i) {
+		    $amdmt{'sort'} = "Irrecevable";
+		} elsif ($line =~ /retir/i) {
+		    $amdmt{'sort'} = "Retiré avant séance";
+		}
 	    }
 	}
 	texte();
     }
 }
 
-print '{"legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "fin_serie": "'.$amdmt{'fin_serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
+$amdmt{'auteurs'} =~ s/^\s*,\s*//g;
+$amdmt{'auteurs'} =~ s/,\s*$//g;
+$amdmt{'auteurs'} =~ s/,+/,/g;
+$amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
+$amdmt{'auteurs'} =~ s/([a-z])\s+(M[\.Mml])/\1, \2/g;
+$amdmt{'auteurs'} =~ s/M\./M /g;
+$amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèeêà']*/, /g;
+$amdmt{'auteurs'} =~ s/\s*[,]?\s*les\s+[cC]ommissaires.*$//g;
+$amdmt{'auteurs'} =~ s/,\s*,/,/g;
+$amdmt{'auteurs'} =~ s/\s*,\s*$//g;
+     
+print '"legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "fin_serie": "'.$amdmt{'fin_serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";

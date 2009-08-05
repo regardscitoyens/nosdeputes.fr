@@ -10,23 +10,12 @@ class Amendement extends BaseAmendement {
       $groupe = null;
       $sexe = null;
       if ($debug) print "0: ".$auteurs."\n";
-      $auteurs = preg_replace('/^\s*,\s*/', '', $auteurs);
-      $auteurs = preg_replace('/,\s*$/', '', $auteurs);
-      $auteurs = preg_replace('/\s+Mme,\s*/', ' Mme ', $auteurs);
-      $auteurs = preg_replace('/([a-z])\s+(M[\.Mml])/', '\1, \2', $auteurs, -1, $ct);
-      $auteurs = preg_replace('/\s*([rR]apporteur.*),\s*M/', ', M',$auteurs, -1, $ct);
-      $auteurs = preg_replace('/\s*([rR]apporteur.*)/', ', M',$auteurs, -1, $ct);
-      if ($ct >= 1 && $debug) print "1: ".$auteurs."\n";
-      if ($ct >= 1 && $debug) print "2: ".$auteurs."\n";
-      $auteurs = preg_replace('/M\./', 'M ', $auteurs, -1, $ct);
-      if ($ct >= 1 && $debug) print "3: ".$auteurs."\n";
-      $auteurs = preg_replace('/(,\s*)+,/', ',', $auteurs, -1, $ct);
-      if ($debug) print "4: ".$auteurs." // ".$groupe."\n";
-      if (preg_match('/^\s*(.*),\s*les\s+.*\s+[gG]roupe\s+(.*)\s*$/' ,$auteurs, $match)) {
+      if (preg_match('/^\s*(.*),+\s*les\s+(.*\s+[gG]roupe|membres)\s+(.*)\s*$/' ,$auteurs, $match)) {
         $auteurs = $match[1];
-        $groupe = preg_replace('/\s*de\s+la\s*/', '', $match[2]);
+        $groupe = preg_replace("/^\s*(de la|de l'|du)\s*/", "", $match[3]);
         if ($debug) print "4: ".$auteurs." // ".$groupe."\n";
       }
+      if ($debug) print "4: ".$auteurs." // ".$groupe."\n";
       $arr = preg_split('/,/', $auteurs);
       foreach ($arr as $depute) {
         $bool = false;
@@ -36,8 +25,8 @@ class Amendement extends BaseAmendement {
             $sexe = 'F';
           else $sexe = 'H';
           $bool = $this->addParlementaireByNom($nom, $sexe, $groupe, $debug);
-        } else if (preg_match('/gouvernement/i', $depute)) {
-          if ($debug) print "5: "."  ".$depute."\n";
+        } else if (preg_match('/(gouvernement|président|rapporteur|commission|questeur)/i', $depute)) {
+          if ($debug) print "5 skip: "."  ".$depute."\n";
         } else $bool = $this->addParlementaireByNom($depute, $sexe, $groupe, $debug);
     //    if (!$bool && $debug) print "6: "."  source : ".$save."\n";
       }
@@ -48,6 +37,10 @@ class Amendement extends BaseAmendement {
         $memeNom = Doctrine::getTable('Parlementaire')->findByNom($nom);
         if (count($memeNom) == 0) {
             $memeNom = Doctrine::getTable('Parlementaire')->findByNomDeFamille($nom);
+        }
+        if (count($memeNom) == 0 && preg_match('/([A-Z].*) ([A-Z].*)/', $nom, $match)) {
+            $revert_nom = $match[2]." ".$match[1];
+            $memeNom = Doctrine::getTable('Parlementaire')->findByNom($revert_nom);
         }
         if (count($memeNom) == 0) {
             $depute = Doctrine::getTable('Parlementaire')->similarTo($nom);

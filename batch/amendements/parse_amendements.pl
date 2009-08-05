@@ -15,7 +15,6 @@ use HTML::TokeParser;
 $trimestre = 0;
 foreach $url0 (@urls) {
 $trimestre++;
-#$trimestre = 6;
 
 $a = WWW::Mechanize->new();
 $a->get($url0."&ResultCount=50&ResultStart=1");
@@ -30,7 +29,7 @@ $n_pages = $n_amdmts / 50;
 print $n_amdmts."\n";
 
 for ($i = 0; $i <= $n_pages; $i++) {
-#$i = 0;
+
 $start = $i*50+1;
 $url = $url0."&ResultCount=50&ResultStart=".$start;
 $file = "txt/amendements_13_trimestre_".$trimestre."_".$i.".txt";
@@ -55,6 +54,11 @@ while ($t = $p->get_tag('a')) {
 #	print FILE2 $a->content;
 #	close FILE2;
 #	print "downloaded ... ";
+	if ($htmfile =~ /http\:__www.assemblee-nationale.fr_(.*).asp/) {
+		$source = $1;
+		$source =~ s/_/\//g;
+	}	
+	print FILE '{"source": "'.$source.'", ';
 	print FILE `perl cut_amdmt.pl html/$htmfile`;
 	print "done.\n";
 	$a->back();
