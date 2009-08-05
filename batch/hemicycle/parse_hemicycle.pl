@@ -256,7 +256,7 @@ foreach $line (split /\n/, $string)
 	}elsif(!$donetitre1 && $line =~ /h2 class="titre1"><*([^<]+)/) {
 	    checkout();
 	    $titre = $1;
-	    $titre =~ s/\([^\)]+\)//;
+	    $titre =~ s/[\(\/][^\)\/]+[\)\/]//;
 	    if ($titre =~ /^[\/\s]*[\wéè]+ \s*partie[\/\s]*(suite[\/\s]*|)$/i) {
 		next
 	    }
