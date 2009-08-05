@@ -16,7 +16,9 @@ $string = "@string";
 close FILE;
 
 #Si italique dans gras, on vire (pb fonction)
-$string =~ s/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>/$1,<\/b><i>/g;
+if ($string =~ /M[me\.]+[ \&][^<]+<\/a>\.[^<]*<\/b>[^<]*<i>([^<]+)</ && $1 =~ /rapporteur|president/i) {
+	$string =~ s/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>/$1,<\/b><i>/g;
+}
 $string =~ s/([^\.])\s*<\/b>\s*<i>([^<]+)<\/i>/$1 $2<\/b>/g;
 
 $string =~ s/<\/?b>/|/g;
