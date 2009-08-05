@@ -44,10 +44,12 @@ class Intervention extends BaseIntervention
     }
     $ip = new PersonnaliteIntervention();
     $ip->setParlementaire($parlementaire);
+
     $ip->setIntervention($this);
     if ($fonction)
       $ip->setFonction($fonction);
     $this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);
+
     return $ip->save();
   }
   public function setPersonnalite($perso, $fonction = null) {
@@ -73,8 +75,8 @@ class Intervention extends BaseIntervention
     }
     return $res;
   }
-  public function setContexte($context) {
-    return $this->setSection(doctrine::getTable('Section')->findOneByContexteOrCreateIt($context, $this->date, $this->timestamp));
+  public function setContexte($context, $date = null, $timestamp = null) {
+    return $this->setSection(doctrine::getTable('Section')->findOneByContexteOrCreateIt($context, $date, $timestamp));
   }
   public function setAmendements($tamendements) {
     $tamendements = preg_replace('/[^,\d]+/', '', $tamendements);

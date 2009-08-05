@@ -8,9 +8,9 @@
 <?php endif; ?>
 <ul>
 <?php foreach($seance->getTableMatiere() as $table) : if (!$table['titre']) {continue;} ;?>
-<?php if ($table['section_id']) echo '<ul>'; ?>
-<li><a href="#table_<?php echo $table['id']; ?>"><?php echo $table['titre']; ?></a></li>
-<?php if ($table['section_id']) echo '</ul>'; ?>
+<?php if ($table['section_id'] != $table['id']) echo '<ul>'; ?>
+<li><a href="#table_<?php echo $table['id']; ?>"><?php echo $table['titre']; ?></a> (<?php echo link_to('voir le dossier', '@section?id='.$table['id']); ?>)</li>
+<?php if ($table['section_id'] != $table['id']) echo '</ul>'; ?>
 <?php endforeach; ?>
 </ul>
 <ul>

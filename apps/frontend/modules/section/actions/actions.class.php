@@ -60,11 +60,19 @@ class sectionActions extends sfActions
       ->whereIn('tg.taggable_id', $interventions);
     
     
-    $this->ptag = doctrine_query::create()
+    $this->ptag = Doctrine_Query::create()
       ->from('Parlementaire p')
       ->leftJoin('p.PersonnaliteIntervention pi')
       ->whereIn('pi.intervention_id', $interventions)
       ->andWhere('(pi.fonction <> ? AND pi.fonction <> ? )', array('président', 'présidente'))
       ;
+  }
+  public function executeList(sfWebRequest $request) 
+  {
+
+    $this->sections = doctrine::getTable('Section')->createQuery('s')
+      ->where('s.id = s.section_id')
+      ->execute();
+
   }
 }

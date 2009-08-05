@@ -247,14 +247,19 @@ foreach $line (split /\n/, $string)
 	}elsif($line =~ /h2 class="titre[23]"><*([^<\(]+)\s*/ || $line =~ /class="sstitreinfo">\/([^\/]+)\//) {
 	    checkout();
 	    $titre2 = $1;
-	    $titre2 =~ s/\W+$//;
+	    $titre2 =~ s/\s+$//;
 	    $amendements = @pre_amendements = ();
 	    $line = "<p>|$titre2|</p>";
 	    $donetitre1 = 0;
-	}elsif($line =~ /h2 class="titre1"><*([^<]+)/) {
+	}elsif(!$donetitre1 && $line =~ /h2 class="titre1"><*([^<]+)/) {
 	    checkout();
+	    $titre = $1;
+	    $titre =~ s/\([^\)]+\)//;
+	    if ($titre =~ /^[\/\s]*[\wéè]+ \s*partie[\/\s]*(suite[\/\s]*|)$/i) {
+		next
+	    }
 	    $donetitre1 = 1;
-	    $titre1 = $1;
+	    $titre1 = $titre;
 	    $titre2 = '';
 	    $amendements = @pre_amendements = ();
 	    $line = "<p>|$titre1|</p>";
@@ -262,6 +267,8 @@ foreach $line (split /\n/, $string)
 	    if ($line =~ /(\d{1,2})[ermd]*\s+([a-zéù]+)\s+(\d{4})/) {
 		$date = $3.'-'.$mois{$2}.'-'.sprintf('%02d', $1);
 	    }
+	}elsif($line =~ /h5 class="numencad"/) {
+	    $donetitre1 = 0;
 	}
     }
 

@@ -23,7 +23,7 @@ class Section extends BaseSection
   public function getSubSections() {
     return $q = doctrine::getTable('Section')->createQuery('s')
       ->where('s.section_id = ?', $this->id)
-      //      ->orderBy('s.date ASC, s.timestamp ASC')->execute()
+      ->orderBy('s.min_date ASC, s.timestamp ASC')->execute()
       ;
   }
   public function getSeances() {
@@ -37,4 +37,5 @@ class Section extends BaseSection
       ;
     return $q->execute();
   }
+
 }

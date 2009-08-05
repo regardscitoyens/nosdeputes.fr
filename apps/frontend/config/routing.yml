@@ -19,6 +19,10 @@ section:
   url: /section/:id
   param: {module: section, action: show}
 
+sections:
+  url: /section
+  param: {module: section, action: list}
+
 parlementaire:
   url: /parlementaire/:slug
   param: {module: parlementaire, action: show}
