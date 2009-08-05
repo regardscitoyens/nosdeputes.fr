@@ -40,8 +40,9 @@ class sectionActions extends sfActions
   public function executeShow(sfWebRequest $request) 
   {
     $this->section = doctrine::getTable('Section')->find($request->getParameter('id'));
-    $this->forward404Unless($this->section);
 
+    $this->forward404Unless($this->section);
+      
     $inters = Doctrine_Query::create()
       ->select('i.id')
       ->from('Intervention i')
@@ -50,10 +51,13 @@ class sectionActions extends sfActions
       ->andWhere('i.nb_mots > 20')
       ->fetchArray();
     
+    $interventions = array();
     foreach($inters as $i) {
       $interventions[] = $i['id'];
     }
 
+    //    $this->forward404Unless(count($interventions));
+      
     
     $this->qtag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t')
@@ -64,7 +68,8 @@ class sectionActions extends sfActions
       ->from('Parlementaire p')
       ->leftJoin('p.PersonnaliteIntervention pi')
       ->whereIn('pi.intervention_id', $interventions)
-      ->andWhere('(pi.fonction <> ? AND pi.fonction <> ? )', array('président', 'présidente'))
+      ->andWhere('((pi.fonction != ? AND pi.fonction != ? ) OR pi.fonction IS NULL)', array('président', 'présidente'))
+      ->groupBy('p.id')
       ;
   }
   public function executeList(sfWebRequest $request) 
@@ -72,6 +77,7 @@ class sectionActions extends sfActions
 
     $this->sections = doctrine::getTable('Section')->createQuery('s')
       ->where('s.id = s.section_id')
+      ->orderBy('s.nb_interventions DESC')
       ->execute();
 
   }
