@@ -7,8 +7,5 @@ if ($parlementaire->getPhoto()) {
 
 </div>
 <div class="interventions">
-<?php 
-foreach ($parlementaire->getInterventions() as $intervention) {
-  echo include_component('intervention', 'parlementaireIntervention', array('intervention' => $intervention));
-}?>
+<?php  echo include_component('intervention', 'pagerInterventions', array('intervention_query' => $interventions)); ?>
 </div>
