@@ -29,13 +29,12 @@ class sectionActions extends sfActions
     $this->section = doctrine::getTable('Section')->find($request->getParameter('id'));
     $this->forward404Unless($this->section);
 
-    $this->interventions = doctrine::getTable('Intervention')->createQuery('i')
+    $this->qinterventions = doctrine::getTable('Intervention')->createQuery('i')
       ->leftJoin('i.PersonnaliteInterventions pi')
       ->where('pi.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('i.Section s')
       ->andWhere('s.section_id = ?', $this->section->id)
-      ->andWhere('i.nb_mots > 20')
-      ->execute();
+      ->andWhere('i.nb_mots > 20');
   }
   public function executeShow(sfWebRequest $request) 
   {

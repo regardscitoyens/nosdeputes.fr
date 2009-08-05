@@ -15,6 +15,10 @@ parlementaire_textes:
   url: /parlementaire/:slug/textes
   param: {module: section, action: parlementaire}
 
+tag_section_interventions:
+  url: /section/:id/tag/:tags
+  param: {module: intervention, action: tag}
+
 section:
   url: /section/:id
   param: {module: section, action: show}
@@ -22,6 +26,10 @@ section:
 sections:
   url: /section
   param: {module: section, action: list}
+
+tag_parlementaire_interventions:
+  url: /parlementaire/:parlementaire/tag/:tags
+  param: {module: intervention, action: tag}
 
 parlementaire:
   url: /parlementaire/:slug
@@ -40,6 +48,10 @@ list_parlementaires_profession:
   url: /profession/:profession
   param: {module: parlementaire, action: listProfession}
 # Add include user's module to get same job
+
+tag_interventions:
+  url: /tag/:tags
+  param: {module: intervention, action: tag}
 
 parlementaire_interventions:
   url: /intervention/:slug

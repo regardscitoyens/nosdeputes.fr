@@ -115,7 +115,7 @@
       <h3><?php echo link_to("Interventions",'@parlementaire_interventions?slug='.$parlementaire->getSlug()); ?></h3>
       <h3>Tags</h3>
 <div style="text-align: justify">
-<?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'min_tag' => 2)); ?>
+<?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'min_tag' => 2, 'route' => '@tag_parlementaire_interventions?parlementaire='.$parlementaire->slug.'&')); ?>
 </div>
 
 <h3>Textes</h3>

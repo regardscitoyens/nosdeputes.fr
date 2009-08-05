@@ -52,4 +52,30 @@ class interventionActions extends sfActions
     $this->tags = PluginTagTable::getPopulars($qtag, array('model' => 'Intervention'));
     $this->interventions = $query->execute();
   }
+
+  public function executeTag(sfWebRequest $request) 
+  {
+    $this->tags = split('\|', $request->getParameter('tags'));
+    
+    if (doctrine::getTable('Tag')->findOneByName($this->tags[0]))
+      $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', $this->tags);
+    else
+      $query = doctrine::getTable('Intervention')
+	->createQuery('i')->where('0');
+
+    if ($slug = $request->getParameter('parlementaire')) {
+      $this->parlementaire = doctrine::getTable('Parlementaire')
+	->findOneBySlug($slug);
+      if ($this->parlementaire)
+	$query->andWhere('pi.parlementaire_id = ?', $this->parlementaire->id)
+	  ->leftJoin('Intervention.PersonnaliteIntervention pi');
+    }
+
+    if ($section = $request->getParameter('section')) {
+      $query->andWhere('(Intervention.section_id = ? OR si.section_id = ?)', array($section, $section))
+	->leftJoin('Intervention.Section si');
+    }
+
+    $this->query = $query;
+  }
 }
