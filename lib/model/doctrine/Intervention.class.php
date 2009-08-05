@@ -78,6 +78,7 @@ class Intervention extends BaseIntervention
   public function setContexte($context, $date = null, $timestamp = null) {
     return $this->setSection(doctrine::getTable('Section')->findOneByContexteOrCreateIt($context, $date, $timestamp));
   }
+
   public function setAmendements($tamendements) {
     $tamendements = preg_replace('/[^,\d]+/', '', $tamendements);
     $amends = preg_split('/\s*,\s*/', $tamendements);

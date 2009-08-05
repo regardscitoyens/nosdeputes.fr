@@ -38,4 +38,22 @@ class Section extends BaseSection
     return $q->execute();
   }
 
+  public function updateNbInterventions() {
+    $a = Doctrine_Query::create()
+      ->select('count(*) as nb')
+      ->from('Intervention i')
+      ->leftJoin('i.Section s')
+      ->where('(i.section_id = ? OR s.section_id = ?)', array($this->id, $this->id))
+      ->fetchArray();
+
+    $this->_set('nb_interventions', $a[0]['nb']);
+    $this->save();
+  }
+
+  public function getSection() {
+    if ($this->id == $this->section_id)
+      return NULL;
+    return $this->_get('Section');
+  }
+
 }

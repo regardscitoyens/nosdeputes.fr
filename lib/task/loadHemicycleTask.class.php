@@ -18,6 +18,7 @@ class loadHemicyleTask extends sfBaseTask
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) !== false) {
+	  $sections = array();
 	  if (preg_match('/^\./', $file))
 	    continue;
 	  echo "$dir$file\n";
@@ -64,7 +65,11 @@ class loadHemicyleTask extends sfBaseTask
 
 	    }
 	    $intervention->save();
+	    if (!isset($sections[$intervention->getSection()->id]))
+	      $sections[$intervention->getSection()->id] = $intervention->getSection();
 	  }
+	  foreach(array_values($sections) as $section)
+	    $section->updateNbInterventions();
 	  unlink($dir.$file);
 	}
         closedir($dh);

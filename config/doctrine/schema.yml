@@ -134,6 +134,7 @@ Section:
     section_id: string(36)
     min_date: string(15)
     timestamp: integer
+    nb_interventions: integer
   relations:
     Section:
       foreignAlias: SubSections
