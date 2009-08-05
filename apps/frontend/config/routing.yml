@@ -16,8 +16,17 @@ parlementaire_textes:
   param: {module: section, action: parlementaire}
 
 tag_section_interventions:
-  url: /section/:id/tag/:tags
+  url: /section/:section/tag/:tags
   param: {module: intervention, action: tag}
+
+
+search_interventions:
+  url: /rechercher
+  param: {module: intervention, action: search}
+
+search_interventions_mots:
+  url: /rechercher/:search
+  param: {module: intervention, action: search}
 
 section:
   url: /section/:id

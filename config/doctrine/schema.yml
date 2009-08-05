@@ -1,3 +1,6 @@
+options:
+    type: MyISAM
+
 Personnalite:
   actAs:
     Timestampable:
@@ -152,7 +155,7 @@ Intervention:
       type: string(36)
       unique: true
     intervention: 
-      type: blob
+      type: string
     timestamp: integer
     source: string(128)
     seance_id: integer
@@ -173,6 +176,10 @@ Intervention:
       class: Parlementaire
       refClass: PersonnaliteIntervention
       foreignAlias: Interventions
+  indexes:
+    ft_intervention:
+      fields: [intervention]
+      type: fulltext
 
 PersonnaliteIntervention:
   actAs:
@@ -208,9 +215,9 @@ Amendement:
       values: ['En attente', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non-soutenu', 'Retiré avant séance']
     date: date
     texte: 
-      type: blob
+      type: string
     expose: 
-      type: blob
+      type: string
     content_md5: string(36)
   relations:
     Parlementaires:

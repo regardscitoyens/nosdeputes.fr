@@ -78,4 +78,47 @@ class interventionActions extends sfActions
 
     $this->query = $query;
   }
+
+  public function executeSearch(sfWebRequest $request)
+  {
+    $this->mots = $request->getParameter('search');
+    $mots = $this->mots;
+    $mcle = array();
+    
+    if (preg_match_all('/("[^"]+")/', $mots, $quotes)) {
+      foreach(array_values($quotes[0]) as $q)
+	$mcle[] = '+'.$q;
+      $mots = preg_replace('/\s*"([^\"]+)"\s*/', ' ', $mots);
+    }
+
+    foreach(split(' ', $mots) as $mot) {
+      if ($mot && !preg_match('/^[\-\+]/', $mot))
+	$mcle[] = '+'.$mot;
+    }
+
+    $this->high = array();
+    foreach($mcle as $m) {
+      $this->high[] = preg_replace('/^[+-]"?([^"]*)"?$/', '\\1', $m);
+    }
+
+    $sql = 'SELECT i.id FROM intervention i WHERE MATCH (i.intervention) AGAINST (\''.implode(' ', $mcle).'\' IN BOOLEAN MODE)';
+
+    $search = Doctrine_Manager::connection()
+      ->getDbh()
+      ->query($sql)->fetchAll();
+
+    $ids = array();
+    foreach($search as $s) {
+      $ids[] = $s['id'];
+    }
+    
+    $this->query = doctrine::getTable('Intervention')->createQuery('i');
+    if (count($ids))
+      $this->query->whereIn('i.id', $ids);
+    else if (count($mcle))
+      foreach($mcle as $m)
+	$this->query->andWhere('i.intervention LIKE ?', '% '.$m.' %');
+    else
+      $this->query->where('0');
+  }
 }
