@@ -106,9 +106,13 @@ class Intervention extends BaseIntervention
     $inter = $this->_get('intervention');
     if (isset($args['linkify_amendements'])) {
       if (preg_match_all('/(amendements?[,\s]+(identiques)?[,\s]*)((n[°os\s]*|\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
+	$lois = implode(',', $this->getTags(array('is_triple' => true,
+						  'namespace' => 'loi',
+						  'key' => 'numero',
+						  'return'    => 'value')));
 	for ($i = 0 ; $i < count($match[0]) ; $i++) {
 	  $replace= $match[1][$i];
-	  $replace .= preg_replace('/\s*([\d\s\à]+rectifiés?|[\d\s\à]+)(,\s*|\s*et\s*)*/', ' <a href="#\1">\1</a>\2 ', $match[3][$i]);
+	  $replace .= preg_replace('/\s*([\d\s\à]+rectifiés?|[\d\s\à]+)(,\s*|\s*et\s*)*/', ' <a href="#&lois='.$lois.'&amendements=\1">\1</a>\2 ', $match[3][$i]);
 	  $inter = preg_replace('/'.$match[1][$i].$match[3][$i].'/', $replace, $inter);
 	}
       }
