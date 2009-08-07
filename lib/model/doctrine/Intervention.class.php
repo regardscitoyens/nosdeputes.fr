@@ -101,4 +101,18 @@ class Intervention extends BaseIntervention
     $this->_set('nb_mots', str_word_count($s));
     return $this->_set('intervention', $s);
   }
+
+  public function getIntervention($args = array()) {
+    $inter = $this->_get('intervention');
+    if (isset($args['linkify_amendements'])) {
+      if (preg_match_all('/(amendements?[,\s]+(identifiques)?[,\s]*(n[^\d\.]+|))((\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
+	for ($i = 0 ; $i < count($match[0]) ; $i++) {
+	  $replace= $match[1][$i];
+	  $replace .= preg_replace('/([\d\s\à]+rectifiés?|[\d\s\à]+)(,\s*|\s*et\s*)*/', '<a href="#\1">\1</a>\2 ', $match[4][$i]);
+	  $inter = preg_replace('/'.$match[1][$i].$match[4][$i].'/', $replace, $inter);
+	}
+      }
+    }
+    return $inter;
+  }
 }

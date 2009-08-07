@@ -65,7 +65,7 @@
   }
   ?></div>
     <div class="texte_intervention">
-  <?php echo $intervention->getIntervention(); ?>
+    <?php echo $intervention->getIntervention(array('linkify_amendements'=>1)); ?>
     </div>
   <?php if (!$didascalie) : ?>
     <div class="commentaires">
