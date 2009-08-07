@@ -3,14 +3,15 @@
 $file = shift;
 use HTML::TokeParser;
 
-$id = $file;
-$id =~ s/^.*\d{4}_//;
-$id =~ s/\.asp$//;
-
+if ($file =~ /http\:__www.assemblee-nationale.fr_(.*).asp/) {
+    $source = $1;
+    $source =~ s/_/\//g;
+}
+	
 open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
-utf8::decode($string);
+#utf8::decode($string);
 $string =~ s/(\<p class="presente".*)\s*\<br[\/]?\>\s*[\n]?\s*(.*)/\1, \2/g;
 $string =~ s/\<br\>.*\n//g;
 $string =~ s/&#8217;/'/g;
@@ -43,8 +44,9 @@ sub numero {
 	    }
      	}
      } else {
-         $amdmt{'numero'} = $line;
-	 $amdmt{'rectif'} = 0;
+	$line =~ /(\d+)/;
+        $amdmt{'numero'} = $1;
+	$amdmt{'rectif'} = 0;
      }
 }
 
@@ -71,15 +73,33 @@ sub expose {
     else { $amdmt{'expose'} = $amdmt{'expose'}."<p>".$line."</p>"; }
 }
 
+sub sort {
+    if ($line =~ /irrecevable/i) {
+	$amdmt{'sort'} = 'Irrecevable';
+    } elsif ($line =~ /retiré.*séance/i) {
+	$amdmt{'sort'} = 'Retiré avant séance';
+    } elsif ($line =~ /retiré/i) {
+	$amdmt{'sort'} = 'Retiré';
+    } elsif ($line =~ /non.*(soutenu|défendu)/i) {
+	$amdmt{'sort'} = 'Non soutenu';
+    } elsif ($line =~ /tombe/i) {
+	$amdmt{'sort'} = 'Tombe';
+    } elsif ($line =~ /rejet/i) {
+	$amdmt{'sort'} = 'Rejeté';
+    } elsif ($line =~ /adopt/i) {
+	$amdmt{'sort'} = 'Adopté';
+    }
+}
+
 sub identiques {
-    if ($line =~ /\<div\>\s*de\s*(.*)\s*\<\/div\>/) {
+    if ($line =~ /\<div\>\s*de\s+(.*)\s*\<\/div\>/) {
 	$line = $1;
 	if ($amdmt{'numero'} != $amdmt{'fin_serie'}) {
 	    auteurs();
 	}
     } else {
 	$line =~ s/\s*\<\/?[^\>]+\>//g;
-	if ($line =~ /.*Adt\s*.*[°\s](\d+)\s+.*de\s*(.*)$/) {
+	if ($line =~ /^.*Adt\s+n°\s+(\d+).*\s+de\s+(.*)\s*$/) {
     	    $num = $1;    	
 	    $line = $2;
 	    if ($amdmt{'numero'} != $num) {
@@ -115,7 +135,7 @@ foreach $line (split /\n/, $string)
 	} elsif ($line =~ /name="SORT_EN_SEANCE"/i) { 
 	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
-	    $amdmt{'sort'} = $line;
+	    sort();
 	} elsif ($line =~ /name="NUM_INITG"/i) { 
 	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
@@ -151,6 +171,8 @@ foreach $line (split /\n/, $string)
 	    } else {
 		auteurs();
 	    }
+	} elsif ($line =~ /class="amddispotitre"/i) {
+	    $texte = 1;
 	} elsif ($line =~ /class="amddispotexte"/i) {
 	    texte();
 	} elsif ($line =~ /class="amdexpotitre"/i) {
@@ -165,6 +187,9 @@ foreach $line (split /\n/, $string)
 	    } elsif ($presente == 1) {	
 		auteurs();
 	    }
+	} elsif ($texte == 1 && $line =~ /\<div\>(.*)\<\/div\>/) {
+	    $line = $1;
+	    texte();
 	} elsif ($identiques == 1 && $line =~ /\<div\>(\d+)\<\/div\>/) {
 	    $amdmt{'fin_serie'} = $1;
 	}
@@ -185,14 +210,13 @@ foreach $line (split /\n/, $string)
 }
 
 $amdmt{'auteurs'} =~ s/^\s*,\s*//g;
-$amdmt{'auteurs'} =~ s/,\s*$//g;
-$amdmt{'auteurs'} =~ s/,+/,/g;
 $amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
 $amdmt{'auteurs'} =~ s/([a-z])\s+(M[\.Mml])/\1, \2/g;
 $amdmt{'auteurs'} =~ s/M\./M /g;
-$amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèeêà']*/, /g;
+$amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà\-']*M(.*)/, M\1/g;
+$amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà']*//g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*les\s+[cC]ommissaires.*$//g;
-$amdmt{'auteurs'} =~ s/,\s*,/,/g;
+$amdmt{'auteurs'} =~ s/(,\s*,|,+)/,/g;
 $amdmt{'auteurs'} =~ s/\s*,\s*$//g;
-     
-print '"legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "fin_serie": "'.$amdmt{'fin_serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
+
+print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "fin_serie": "'.$amdmt{'fin_serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";

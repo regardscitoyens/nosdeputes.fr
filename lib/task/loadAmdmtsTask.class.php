@@ -15,54 +15,61 @@ class loadAmdmtsTask extends sfBaseTask {
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) !== false) {
+          if ($file == ".." || $file == ".") continue;
           print "$dir$file\n";
           $ct = 0;
           foreach(file($dir.$file) as $line) {
             $ct++;
             $json = json_decode($line);
-            if (!$json || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->date || !$json->sujet || !$json->sujet) {
-              echo "ERROR json : ";
-              echo "$line";
-              echo "\n";
+            if (!$json || !$json->source || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->texte) {
+              echo "ERROR json : $line\n";
               continue;
             }
             $modif = true;
-            $id = $json->legislature."/amendements/".$json->loi."/".sprintf("%04d%05d",$json->loi,$json->numero);
-            $amdmt = Doctrine::getTable('Amendement')->find($id);
+            $amdmt = Doctrine::getTable('Amendement')->findOneBySource($json->source);
             if (!$amdmt) {
               $amdmt = new Amendement();
-              $amdmt->id = $id;
-              $amdmt->source = "http://www.assemblee-nationale.fr/".$id;
+              $amdmt->source = $json->source;
               $amdmt->legislature = $json->legislature;
               $amdmt->texteloi_id = $json->loi;
+              $amdmt->addTag('loi:numero_loi='.$amdmt->texteloi_id);
               $amdmt->numero = $json->numero;
+              $amdmt->addTag('loi:amendement='.$amdmt->numero);
             } elseif ($amdmt->rectif == $json->rectif && $amdmt->date == $json->date) {
               $modif = false;
-            } // else print "/".$amdmt->rectif."/".$json->rectif."///".$amdmt->date."/".$json->date."/\n";
-            if ($json->sort)
-              $amdmt->setSort($json->sort);
- //           if ($modif) {
+            }
+            if ($modif) {
               $amdmt->rectif = $json->rectif;
-              if ($json->auteurs) {         /// remettre dans modif
-                $amdmt->setAuteurs($json->auteurs);
-              }
-              else {
-                if (!$json->sort || !preg_match('/(irrecevable|retir)/i', $json->sort)) {
-                  echo "ERROR auteurs missing : $line\n";
-                  continue;
+              if ($json->date)
+                $amdmt->date = $json->date;
+              if ($json->fin_serie) {
+                $n = $amdmt->numero + 1;
+                while ($n <= $json_fin_serie) {
+                  $amdmt->addTag('loi:amendement='.$n);
                 }
               }
+              if ($json->parent) {
+                $amdmt->addTag('loi:suramendement='.$json->parent);
+              }
               $amdmt->sujet = $json->sujet;
-              if ($json->texte)
-                $amdmt->texte = $json->texte;
+              $amdmt->texte = $json->texte;
               if ($json->expose)
                 $amdmt->expose = $json->expose;
-              $amdmt->date = $json->date;
-              $amdmt->content_md5 = md5($json->legislature.$json->numero.$json->loi.$json->sujet.$json->texte);
- //           }
-
-// ﻿addTag('loi:amendement=123')
-// ﻿addTag('loi:numero_loi=123')
+              $amdmt->content_md5 = md5($json->legislature.$json->loi.$json->sujet.$json->texte);
+            }
+            if ($json->sort)
+              $amdmt->sort = $json->sort;
+            elseif (!$amdmt->sort)
+                $amdmt->sort = "Indéfini";
+            if ($json->auteurs) { /// remettre dans modif?
+              $amdmt->signataires = $json->auteurs;
+              $amdmt->setAuteurs($json->auteurs);
+            } else {
+              if (!$json->sort || !preg_match('/(irrecevable|retir)/i', $json->sort)) {
+                echo "ERROR json auteurs missing : $line\n";
+                continue;
+              }
+            }
             $amdmt->save();
             $amdmt->free();
           }

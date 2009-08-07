@@ -40,7 +40,6 @@ $a->get($url);
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 
-open FILE, ">:utf8", $file;
 while ($t = $p->get_tag('a')) {
     if ($t->[1]{class} eq 'lienamendement') {
 #	$a->get($t->[1]{href});
@@ -54,17 +53,11 @@ while ($t = $p->get_tag('a')) {
 #	print FILE2 $a->content;
 #	close FILE2;
 #	print "downloaded ... ";
-	if ($htmfile =~ /http\:__www.assemblee-nationale.fr_(.*).asp/) {
-		$source = $1;
-		$source =~ s/_/\//g;
-	}	
-	print FILE '{"source": "'.$source.'", ';
-	print FILE `perl cut_amdmt.pl html/$htmfile`;
+	`perl cut_amdmt.pl html/$htmfile > $file`;
 	print "done.\n";
 	$a->back();
     }
 }
-close FILE;
 $count ++;
 }
 }

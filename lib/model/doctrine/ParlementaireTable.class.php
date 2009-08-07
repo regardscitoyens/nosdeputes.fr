@@ -4,6 +4,44 @@
  */
 class ParlementaireTable extends PersonnaliteTable
 {
+  public function findOneByNomSexeGroupe($nom, $sexe, $groupe) {
+    $depute = null;
+    $memeNom = $this->findByNom($nom);
+    if (count($memeNom) == 0) $memeNom = $this->findByNomDeFamille($nom);
+    if (count($memeNom) == 0 && preg_match('/([A-Z].*) ([A-Z].*)/', $nom, $match)) {
+      $revert_nom = $match[2]." ".$match[1];
+      $memeNom = $this->findByNom($revert_nom);
+    }
+    if (count($memeNom) == 0) $depute = $this->similarTo($nom);
+    elseif (count($memeNom) == 1) $depute = $memeNom[0];
+    else {
+      $memeSexe = array();
+      if ($sexe) {
+        foreach ($memeNom as $de) {
+          if ($de->sexe == $sexe) array_push($memeSexe, $de);
+        }
+        if (count($memeSexe) == 1) $depute = $memeSexe[0];
+      }
+      if (!$depute && $groupe) {
+        $memeGroupe = array();
+        $procheGroupe = array();
+        if (count($memeSexe) == 0) $memeSexe = $memeNom;
+        foreach ($memeSexe as $de) {
+          $groupe2 = $de->getGroupe()->getNom();
+          if ($groupe2 == $groupe) array_push($memeGroupe, $de);
+          elseif (($groupe2 == "UMP" && $groupe == "NC") || ($groupe2 == "NC" && $groupe == "UMP")) array_push($procheGroupe, $de);
+          elseif (($groupe2 == "SRC" && $groupe == "GDR") || ($groupe2 == "GDR" && $groupe == "SRC")) array_push($procheGroupe, $de);
+        }
+        if (count($memeGroupe) == 1) $depute = $memeGroupe[0];
+        elseif (count($procheGroupe) == 1) $depute = $procheGroupe[0];
+        unset($memeGroupe);
+        unset($procheGroupe);
+      }
+      unset($memeSexe);
+    }
+    unset($memeNom);
+    return $depute;
+  }
 
   public function getPager($request, $query = NULL)
   {
