@@ -33,7 +33,7 @@ class sectionActions extends sfActions
       ->leftJoin('i.PersonnaliteInterventions pi')
       ->where('pi.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('i.Section s')
-      ->andWhere('s.section_id = ?', $this->section->id)
+      ->andWhere('(s.section_id = ? OR s.id = ?)', array($this->section->id, $this->section->id))
       ->andWhere('i.nb_mots > 20');
   }
   public function executeShow(sfWebRequest $request) 

@@ -119,7 +119,23 @@ class interventionActions extends sfActions
     else if (count($mcle))
       foreach($mcle as $m)
 	$this->query->andWhere('i.intervention LIKE ?', '% '.$m.' %');
-    else
+    else {
       $this->query->where('0');
+      return ;
+    }
+
+    if ($slug = $request->getParameter('parlementaire')) {
+      $this->parlementaire = doctrine::getTable('Parlementaire')
+	->findOneBySlug($slug);
+      if ($this->parlementaire)
+	$this->query->andWhere('pi.parlementaire_id = ?', $this->parlementaire->id)
+	  ->leftJoin('i.PersonnaliteIntervention pi');
+    }
+
+    if ($section = $request->getParameter('section')) {
+      $this->query->andWhere('(Intervention.section_id = ? OR si.section_id = ?)', array($section, $section))
+	->leftJoin('i.Section si');
+    }
+    //    echo($request->getUri());
   }
 }
