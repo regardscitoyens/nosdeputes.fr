@@ -1,0 +1,33 @@
+#!/bin/bash
+
+echo Parse JO
+cd batch/jo
+cd -
+for an in 2009 2008 2007 ; do cd - ; rm xml/* ; perl compute_year.sh $an 1 ; cd - ; php symfony load:JO   > /tmp/load_jo_$an.log ; done  ; 
+cd batch/commission/
+bash compute_commission.sh
+cd -
+
+echo Parse commission
+echo > /tmp/load_commission.log
+while ls batch/commission/out | grep [a-z] > /dev/null ; 
+do
+	php symfony load:Commission >> /tmp/load_commission.log
+	php symfony cc
+done
+
+echo Parse Hemicycle
+echo > /tmp/load_hemicycle.log 
+cd batch/hemicycle
+bash compute_hemicycle.sh
+cd -
+while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do 
+	php symfony load:Hemicycle >> /tmp/load_hemicycle.log
+	php symfony cc
+done
+
+echo Tag Séances
+echo > /tmp/tag_seance.log
+while ! php symfony tag:Seance >> /tmp/tag_seance.log ; do
+	php symfony cc
+done; 
