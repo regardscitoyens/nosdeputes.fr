@@ -105,11 +105,11 @@ class Intervention extends BaseIntervention
   public function getIntervention($args = array()) {
     $inter = $this->_get('intervention');
     if (isset($args['linkify_amendements'])) {
-      if (preg_match_all('/(amendements?[,\s]+(identifiques)?[,\s]*(n[^\d\.]+|))((\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
+      if (preg_match_all('/(amendements?[,\s]+(identiques)?[,\s]*)((n[°os\s]*|\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
 	for ($i = 0 ; $i < count($match[0]) ; $i++) {
 	  $replace= $match[1][$i];
-	  $replace .= preg_replace('/([\d\s\à]+rectifiés?|[\d\s\à]+)(,\s*|\s*et\s*)*/', '<a href="#\1">\1</a>\2 ', $match[4][$i]);
-	  $inter = preg_replace('/'.$match[1][$i].$match[4][$i].'/', $replace, $inter);
+	  $replace .= preg_replace('/([\d\s\à]+rectifiés?|[\d\s\à]+)(,\s*|\s*et\s*)*/', '<a href="#\1">\1</a>\2 ', $match[3][$i]);
+	  $inter = preg_replace('/'.$match[1][$i].$match[3][$i].'/', $replace, $inter);
 	}
       }
     }
