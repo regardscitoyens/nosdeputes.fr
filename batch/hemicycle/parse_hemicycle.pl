@@ -112,8 +112,12 @@ sub checkout {
     }
 
     if ($intervenant) {
-	if ($intervenant =~ s/ et(\s*M[mes\.]*|) ([A-Z].*)//) {
-	    print $out.'"intervenant": "'.$2."\"}\n";
+	if ($intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*([A-Z].*)//) {
+	    print $out.'"intervenant": "'.$3."\"}\n";
+	}
+	if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*([A-Z].*)//g) {
+	    print $out.'"intervenant": "'.$3."\"}\n";
+	    $inter2fonction{$intervenant} = '';
 	}
 	print $out.'"intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.'", "intervenant_url": "'.$intervenant_url."\"}\n";
     }elsif($intervention) {
