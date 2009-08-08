@@ -127,9 +127,9 @@ delete_utilisateur:
   url: /citoyen/:slug/edition
   param: {module: utilisateur, action: delete}
 new_utilisateur:
-  url: /citoyen/inscription
+  url: /citoyens/inscription
   param: {module: utilisateur, action: new}
 create_utilisateur:
-  url: /citoyen/inscription
+  url: /citoyens/inscription
   param: {module: utilisateur, action: create}
 # Add include user's module to get same circonscription?

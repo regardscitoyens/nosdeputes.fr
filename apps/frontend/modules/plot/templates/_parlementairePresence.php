@@ -44,4 +44,6 @@ $Test->xsSetFontProperties("tahoma.ttf",10);
 $Test->drawTitle(60,22,'Présence de '.$parlementaire->nom,50,50,50,585);
 $Test->xsRender('presence-'.$parlementaire->slug.'.png');
 
-echo xspchart_image_tag('presence-'.$parlementaire->slug.'.png');
+echo image_tag('tmp/xspchart/presence-'.$parlementaire->slug.'.png', 'alt="Presence de '.$parlementaire->nom.'"');
+# le div fait 820px par 150px a voir si on le modifie ou pas
+?>
