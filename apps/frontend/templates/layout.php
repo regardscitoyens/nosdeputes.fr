@@ -49,9 +49,14 @@
             <li class="douze"><a href="http://www.assemblee-nationale.fr/">L'Assemblée</a></li>
           </ul>
           <div class="search_box">
-            <form action="<?php echo url_for('@search_interventions'); ?>" method="get">
+            <form action="<?php echo url_for('@search'); ?>" method="get">
             <p>
               <input class="rechercher" name="search" type="text" size="15" value="rechercher"/>
+              <select class="type_recherche" name="type">
+                <option value="depute">Députés</option>
+                <option value="intervention">Interventions</option>
+                <option value="amendement">Amendements</option>
+              </select>
               <input class="bouton_ok" type="submit" value="ok"/>
             </p>
             </form>

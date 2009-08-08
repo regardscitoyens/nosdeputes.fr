@@ -67,6 +67,9 @@ parlementaire_amendements:
   param: {module: amendement, action: parlementaire}
 
 # Recherche lexicale d'interventions ou d'amendements
+search:
+  url: /rechercher
+  param: {module: search, action: index}
 search_interventions:
   url: /rechercher/intervention
   param: {module: intervention, action: search}
