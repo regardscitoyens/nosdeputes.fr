@@ -20,9 +20,10 @@ $string =~ s/&#8211;/-/g;
 close FILE;
 
 my %amdmt;
-my $expose = 0;
 my $presente = 0;
-my $identiques =0;
+my $texte = 0;
+my $identiques = 0;
+my $num_ident = -1;
 
 sub numero {
     $line =~ s/^.*content="//; 
@@ -53,6 +54,7 @@ sub numero {
 sub auteurs {
     $line =~ s/\<br\/\>/, /g;
     $line =~ s/\s*\<\/?[^\>]+\>//g;
+    $line =~ s/\s*présenté\s*par\s*//g;
     $line =~ s/\s+e{1,2}t\s+/, /g;
     $line =~ s/^et\s+/, /g;
     $line =~ s/\s*EXPOSÉ SOMMAIRE\s*//g;
@@ -62,18 +64,12 @@ sub auteurs {
 sub texte {
     $line =~ s/\s*\<\/?[^\>]+\>//g;
     $output = 'texte';
-    if ($expose == 1) { $output = 'expose'; }
-    if ($amdmt{$output} =~ /^$/) { $amdmt{$output} = "<p>".$line."</p>"; }
+    if ($texte == 2) { $output = 'expose'; }
+    if (!$amdmt{$output}) { $amdmt{$output} = "<p>".$line."</p>"; }
     else { $amdmt{$output} = $amdmt{$output}."<p>".$line."</p>"; }
 }
 
-sub expose {
-    $line =~ s/\s*\<\/?[^\>]+\>//g;
-    if ($amdmt{'expose'} =~ /^$/) { $amdmt{'expose'} = "<p>".$line."</p>"; }
-    else { $amdmt{'expose'} = $amdmt{'expose'}."<p>".$line."</p>"; }
-}
-
-sub sort {
+sub sortseance {
     if ($line =~ /irrecevable/i) {
 	$amdmt{'sort'} = 'Irrecevable';
     } elsif ($line =~ /retiré.*séance/i) {
@@ -92,20 +88,27 @@ sub sort {
 }
 
 sub identiques {
-    if ($line =~ /\<div\>\s*de\s+(.*)\s*\<\/div\>/) {
+    if ($line =~ /\<div\>\s*(de|M[\s\.Mml])\s+(.*)\s*\<\/div\>/) {
 	$line = $1;
-	if ($amdmt{'numero'} != $amdmt{'fin_serie'}) {
+	if ($amdmt{'numero'} != $num_ident) {
 	    auteurs();
 	}
     } else {
 	$line =~ s/\s*\<\/?[^\>]+\>//g;
 	if ($line =~ /^.*Adt\s+n°\s+(\d+).*\s+de\s+(.*)\s*$/) {
-    	    $num = $1;    	
+    	    $num = $1;
 	    $line = $2;
-	    if ($amdmt{'numero'} != $num) {
-	    	$amdmt{'fin_serie'} = $num;
-	    	auteurs();
+	    if ($num_ident == -1) {
+		$num_ident = $num;
+		$amdmt{'serie'} = $num_ident."-";
 	    }
+	    if ($amdmt{'numero'} != $num) {
+		auteurs();
+	    }
+	    if ($num > $num_ident + 1) {
+		$amdmt{'serie'} = $amdmt{'serie'}.$num_ident.",".$num."-";
+	    }
+	    $num_ident = $num;
 	}
     }
 }
@@ -128,14 +131,14 @@ foreach $line (split /\n/, $string)
 	    if ($line =~ /(\d{1,2})\/(\d{2})\/(\d{4})/) {
 		$amdmt{'date'} = $3.'-'.$2.'-'.sprintf('%02d', $1);
 	    }
-	} elsif ($line =~ /name="DESIGNATION_ARTICLE"/i) { 
+	} elsif ($line =~ /name="DESIGNATION_ARTICLE"/i) {
 	    $line =~ s/^.*content="//i; 
-	    $line =~ s/".*$//;
+	    $line =~ s/"\s*(name|\>).*$//;
 	    $amdmt{'sujet'} = $line;
 	} elsif ($line =~ /name="SORT_EN_SEANCE"/i) { 
 	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
-	    sort();
+	    sortseance();
 	} elsif ($line =~ /name="NUM_INITG"/i) { 
 	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
@@ -145,9 +148,13 @@ foreach $line (split /\n/, $string)
 	}
     }
     if ($line =~ /class="presente"/i) {
+	if ($presente == 0) {
 	    $presente = 1;
+	} elsif ($texte >= 1 && $line =~ /font-style: italic/i) {
+	    texte();
+	}
     } elsif ($presente == 1 && $line =~ /class="tirets"/i) {
-	    $presente = 2;
+	$presente = 2;
     }
     if ($line =~ /(NOEXTRACT|EXPOSE)/i) {
 	if (!$amdmt{'numero'} && ($line =~ /class="numamendement"/i || $line =~ /class="titreamend".*num_partie/i)) {
@@ -168,17 +175,24 @@ foreach $line (split /\n/, $string)
 	    if ($line =~ /amendement/) {
 		$line =~ /(\d+)/;
 		$amdmt{'parent'} = $1;
-	    } else {
+	    } elsif ($presente == 1) {
 		auteurs();
+	    } else {
+		texte();
 	    }
 	} elsif ($line =~ /class="amddispotitre"/i) {
 	    $texte = 1;
+	    if ($line =~ /amendement.*[\s°](\d+)[\s\<]/i) {
+		$amdmt{'parent'} = $1;
+	    }
 	} elsif ($line =~ /class="amddispotexte"/i) {
 	    texte();
 	} elsif ($line =~ /class="amdexpotitre"/i) {
-	    $expose = 1;
+	    if ($amdmt{'texte'} || !$line =~ /article/i) {
+		$texte = 2;
+	    }
 	} elsif ($line =~ /class="amdexpotexte"/i) {
-	    expose();
+	    texte();
 	} elsif ($line =~ /amendements\s*identiques/i) {
 	    $identiques = 1;
 	} elsif ($line =~ /\<div.*\>.*M[\.Mml]/ && !($line =~ /EXPOSE SOMMAIRE/i)) {
@@ -187,14 +201,25 @@ foreach $line (split /\n/, $string)
 	    } elsif ($presente == 1) {	
 		auteurs();
 	    }
+	} elsif ($identiques == 1 && $line =~ /\<div\>.*(\d+).*\<\/div\>/) {
+	    identiques();
 	} elsif ($texte == 1 && $line =~ /\<div\>(.*)\<\/div\>/) {
 	    $line = $1;
 	    texte();
-	} elsif ($identiques == 1 && $line =~ /\<div\>(\d+)\<\/div\>/) {
-	    $amdmt{'fin_serie'} = $1;
+	}
+    } elsif (!$amdt{'sort'} && $line =~ /\<div.*id="sort"/i) {
+	sortseance();
+    } elsif ($line =~ /class="presente"/i) {
+	if ($line =~ /amendement/) {
+	    $line =~ /(\d+)/;
+	    $amdmt{'parent'} = $1;
+	} elsif ($texte < 1) {
+	    auteurs();
+	} else {
+	    texte();
 	}
     } elsif ($presente == 1 && $line =~ /\<p style=".*text-indent:.*\>.*M[\.Mml]/i) { 
-		auteurs();
+	auteurs();
     } elsif ($line =~ /\<p style=".*text-indent:/i) {
 	if ($line =~ /amendement.*(irrecevable|retir)/i) {
 	    if (!$amdmt{'sort'}) {
@@ -206,17 +231,24 @@ foreach $line (split /\n/, $string)
 	    }
 	}
 	texte();
+    } elsif ($line =~ /\<p\>(.*)\<\/p\>/ && $texte > 1) {
+	$line = $1;
+	texte();
     }
 }
 
-$amdmt{'auteurs'} =~ s/^\s*,\s*//g;
+if ($num_ident > 0) {
+    $amdmt{'serie'} = $amdmt{'serie'}.$num_ident;
+}
+
 $amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
 $amdmt{'auteurs'} =~ s/([a-z])\s+(M[\.Mml])/\1, \2/g;
 $amdmt{'auteurs'} =~ s/M\./M /g;
+$amdmt{'auteurs'} =~ s/\s*[,]?\s*les\s+[cC]ommissaires.*$//g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà\-']*M(.*)/, M\1/g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà']*//g;
-$amdmt{'auteurs'} =~ s/\s*[,]?\s*les\s+[cC]ommissaires.*$//g;
 $amdmt{'auteurs'} =~ s/(,\s*,|,+)/,/g;
+$amdmt{'auteurs'} =~ s/^\s*,\s*//g;
 $amdmt{'auteurs'} =~ s/\s*,\s*$//g;
 
-print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "fin_serie": "'.$amdmt{'fin_serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
+print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";

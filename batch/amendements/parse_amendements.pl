@@ -2,6 +2,7 @@
 
 use WWW::Mechanize;
 use HTML::TokeParser;
+$total_amdmts = 0;
 
 @urls = ("http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F04%2F2007&DateFin=15%2F08%2F2007&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML",
 	 "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=100&LEGISLATURE=13Amendements&DateDebut=15%2F08%2F2007&DateFin=15%2F12%2F2007&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Asc&format=HTML",
@@ -27,6 +28,7 @@ while ($t = $p->get_tag('span')) {
 }
 $n_pages = $n_amdmts / 50;
 print $n_amdmts."\n";
+$total_amdmts = $total_amdmts + $n_amdmts;
 
 for ($i = 0; $i <= $n_pages; $i++) {
 
@@ -34,7 +36,7 @@ $start = $i*50+1;
 $url = $url0."&ResultCount=50&ResultStart=".$start;
 $file = "txt/amendements_13_trimestre_".$trimestre."_".$i.".txt";
 print $url." > ".$file."\n";
-
+	
 $a = WWW::Mechanize->new();
 $a->get($url);
 $content = $a->content;
@@ -53,11 +55,14 @@ while ($t = $p->get_tag('a')) {
 #	print FILE2 $a->content;
 #	close FILE2;
 #	print "downloaded ... ";
-	`perl cut_amdmt.pl html/$htmfile > $file`;
+	`perl cut_amdmt.pl html/$htmfile >> $file`;
 	print "done.\n";
 	$a->back();
     }
 }
+close FILE;
 $count ++;
 }
 }
+print $total_amdmts." amendements parsés\n";
+

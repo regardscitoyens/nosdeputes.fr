@@ -34,7 +34,6 @@ class loadAmdmtsTask extends sfBaseTask {
               $amdmt->texteloi_id = $json->loi;
               $amdmt->addTag('loi:numero_loi='.$amdmt->texteloi_id);
               $amdmt->numero = $json->numero;
-              $amdmt->addTag('loi:amendement='.$amdmt->numero);
             } elseif ($amdmt->rectif == $json->rectif && $amdmt->date == $json->date) {
               $modif = false;
             }
@@ -42,15 +41,22 @@ class loadAmdmtsTask extends sfBaseTask {
               $amdmt->rectif = $json->rectif;
               if ($json->date)
                 $amdmt->date = $json->date;
-              if ($json->fin_serie) {
-                $n = $amdmt->numero + 1;
-                while ($n <= $json_fin_serie) {
-                  $amdmt->addTag('loi:amendement='.$n);
+              if ($json->serie) {
+                if (preg_match('/,/', $json->serie)) {
+                  $arr = preg_split('/,/', $json->serie);
+                  foreach ($arr as $gap_stri) {
+                    $gap = preg_split('/-/', $gap_stri);
+                    for ($n = $gap[0]; $n <= $gap[1]; $n++) 
+                      $amdmt->addTag('loi:amendement='.$n);
+                  }
+                } else {
+                  $gap = preg_split('/-/', $json->serie);
+                  for ($n = $gap[0]; $n <= $gap[1]; $n++)
+                    $amdmt->addTag('loi:amendement='.$n);
                 }
-              }
-              if ($json->parent) {
-                $amdmt->addTag('loi:suramendement='.$json->parent);
-              }
+              } else $amdmt->addTag('loi:amendement='.$amdmt->numero);
+              if ($json->parent)
+                $amdmt->addTag('loi:sous_amendement_de='.$json->parent);
               $amdmt->sujet = $json->sujet;
               $amdmt->texte = $json->texte;
               if ($json->expose)

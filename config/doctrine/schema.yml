@@ -199,7 +199,8 @@ PersonnaliteIntervention:
 
 Amendement:
   actAs:
-    Timestampable:
+    Timestampable: ~
+    Taggable: ~
   columns:
     source:
       type: string(255)
