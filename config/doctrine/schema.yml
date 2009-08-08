@@ -236,3 +236,35 @@ ParlementaireAmendement:
       foreignAlias: ParlementaireAmendements
     Amendement:
       foreignAlias: ParlementaireAmendements
+
+Utilisateur:
+  actAs:
+    Timestampable:
+    Sluggable:
+      fields: [login]
+  columns:
+    login:
+      type: string(255)
+      unique: true
+    pass:
+      type: string(40)
+      notnull: true
+    sexe: 
+      type: enum
+      values: ['H', 'F']
+    naissance: date
+    profession: string(255)
+    parlementaire_id: integer
+    mail: 
+      type: string(255)
+      notnull: true
+    activation_id: string(32)
+    activation:
+      type: boolean
+      default: 0
+      notnull: true
+    circo: string(255)
+    circo_num: integer
+    photo:
+      type: boolean
+      default: 0

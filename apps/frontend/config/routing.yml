@@ -97,3 +97,31 @@ intervention:
 top_presences:
   url: /top/presence
   param: {module: presence, action: top}
+
+list_utilisateurs:
+  url: /citoyens
+  param: {module: utilisateur, action: index}
+
+utilisateur:
+  url: /citoyen/:slug
+  param: {module: utilisateur, action: show}
+
+edit_utilisateur:
+  url: /citoyen/:slug/edition
+  param: {module: utilisateur, action: edit}
+
+update_utilisateur:
+  url: /citoyen/:slug/edition
+  param: {module: utilisateur, action: update}
+
+delete_utilisateur:
+  url: /citoyen/:slug/edition
+  param: {module: utilisateur, action: delete}
+
+new_utilisateur:
+  url: /citoyens/inscription
+  param: {module: utilisateur, action: new}
+
+create_utilisateur:
+  url: /citoyens/inscription
+  param: {module: utilisateur, action: create}
