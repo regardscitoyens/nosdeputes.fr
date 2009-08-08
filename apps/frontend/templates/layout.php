@@ -66,8 +66,8 @@
     </div>
     <div class="bas">
       <div class="conteneur_menu_suite">
-        <div class="menu">
-          <div class="mini_logo">
+        <div class="menu2">
+          <div class="up">
             <a href="#" title="haut de page"><?php echo image_tag($style.'/mini_logo.png', 'alt=LGT'); ?></a>
           </div>
           <!-- <div class="style_switcher">

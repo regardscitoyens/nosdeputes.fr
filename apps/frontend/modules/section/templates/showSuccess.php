@@ -1,3 +1,4 @@
+<div class="temp">
 <h1><?php if ($section->getSection()) 
   echo link_to($section->getSection()->titre, '@section?id='.$section->section_id).' > '; 
 echo $section->titre;
@@ -29,4 +30,5 @@ Voici la liste des séances pour cette section :
 <div>
 Voici la liste des principaux orateurs pour cette section :
 <? echo include_component('parlementaire', 'list', array('parlementairequery' => $ptag, 'route'=>'@parlementaire_texte?id='.$section->id.'&slug=')); ?>
+</div>
 </div>

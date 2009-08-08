@@ -1,3 +1,4 @@
+<div class="temp">
 <p><?php echo $circo; ?> : <?php $nResults = $pager->getNbResults(); echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?></p>
 <ul>
 <?php foreach($pager->getResults() as $parlementaire) : ?>
@@ -19,3 +20,4 @@
     <?php echo link_to('>>', '@list_parlementaires_circo?nom_circo='.$circo.'&page='.$pager->getLastPage()); ?>
 </div>
 <?php endif; ?>
+</div>

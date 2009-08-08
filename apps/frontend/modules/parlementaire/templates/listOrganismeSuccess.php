@@ -1,3 +1,4 @@
+<div class="temp">
 <?php $nResults = $pager->getNbResults(); ?>
 <?php if ($orga->type == 'groupe') : ?>
 <p>Groupe politique <?php echo $orga->getNom(); ?> (<?php echo $orga->getSmallNomGroupe(); ?>) : <?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?></p>
@@ -26,3 +27,4 @@
     <?php echo link_to('>> ', '@list_parlementaires_organisme?slug='.$orga->getSlug().'&page='.$pager->getLastPage()); ?>
 </div>
 <?php endif; ?>
+</div>

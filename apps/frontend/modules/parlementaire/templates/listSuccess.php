@@ -1,3 +1,4 @@
+<div class="temp">
 <p><?php $nResults = $pager->getNbResults(); echo $nResults; ?> résultat<?php if ($nResults > 1) echo 's'; ?> <?php if ($search) echo 'pour <em>"'.$search.'"</em>'; ?></p>
 <ul>
 <?php foreach($pager->getResults() as $parlementaire) : ?>
@@ -19,3 +20,4 @@
     <?php echo link_to('>> ', '@list_parlementaires?search='.$search.'&page='.$pager->getLastPage()); ?>
 </div>
 <?php endif; ?>
+</div>

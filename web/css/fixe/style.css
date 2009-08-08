@@ -6,12 +6,18 @@ body {
   color: #484848;
   background-color: #DFDFDF;
 }
+.temp {
+  font-size: 1.1em;
+	height: auto;
+	padding: 15px;
+  background-color: #fff;
+  border : 1px solid #BFBFBF;
+}
 #navigation {
   display: none;
 }
 #contenu {
   padding: 15px;
-  padding-bottom: 31px;
 }
 .haut_droite {
   float: right;
@@ -167,7 +173,7 @@ img {
 
 .corps {
   width: 970px;  
-  min-height: 800px;
+  min-height: 600px;
   margin: auto;
   padding: 0;
   border-left : 1px solid #BFBFBF;
@@ -178,19 +184,23 @@ img {
 .bas {
   
 }
+.menu2 {
+  width: 970px;
+  height: 200px;
+  margin: auto;
+  padding: 0;
+  background-color: #BFBFBF;
+  border : 1px solid #AFAFAF;
+}
 .menu_bas {
-  float: right;
+  float: left;
 }
 .conteneur_menu_suite {
-  position: fixed;
-  bottom: 0;
   width: 100%;
-  height: 31px;
-  background: #D0D0D0 url("images/fond_bas.gif") repeat-x 0 0;
-  z-index: 10;
+  height: 200px;
 }
-.mini_logo {
-  float: left;
+.up {
+  float: right;
 }
 .select_style {
   float: left;
@@ -258,6 +268,10 @@ img {
   width: 820px;
   height: 150px;
 }
+.graph_depute img {
+  width: 820px;
+  height: 150px;
+}
 .barre_activite {
   float: left;
   width: 100%;
@@ -294,7 +308,6 @@ img {
 }
 .contenu_depute {
   width: 938px;
-  margin-bottom: 15px;
   background-color: #fff;
   border: 1px solid #BFBFBF;
 }
@@ -603,7 +616,6 @@ img {
   border: 1px solid #DFDFDF;
   border-top: none;
   padding: 15px;
-  margin-bottom: 15px;
   font-size: 1.1em;
 }
 .interventions a {

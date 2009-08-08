@@ -1,3 +1,4 @@
+<div class="temp">
 <h1>Liste des utilisateurs</h1>
 
 <table>
@@ -20,3 +21,5 @@
 </table>
 
   <a href="<?php echo url_for('utilisateur/new') ?>">S'inscrire</a>
+
+</div>

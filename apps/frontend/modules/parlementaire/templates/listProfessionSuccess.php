@@ -1,3 +1,4 @@
+<div class="temp">
 <p><?php $nResults = $pager->getNbResults(); echo $nResults; ?> parlementaire<?php if ($nResults > 1) echo 's'; ?> exerçant la profession de <em>"<?php echo $prof; ?>"</em></p>
 <ul>
 <?php foreach($pager->getResults() as $parlementaire) : ?>
@@ -18,3 +19,4 @@
     <?php echo link_to('>> ', '@list_parlementaires_profession?profession='.$prof.'&page='.$pager->getLastPage()); ?>
 </div>
 <?php endif; ?>
+</div>

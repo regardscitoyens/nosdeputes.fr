@@ -1,3 +1,4 @@
+<div class="temp">
 <ul><?php foreach($sections as $s) if ($s->titre)
 { 
   echo '<li>';
@@ -6,3 +7,4 @@
   if ($s->nb_interventions > 1) echo 's';
   echo ')</li>';
  } ?></ul>
+</div>
