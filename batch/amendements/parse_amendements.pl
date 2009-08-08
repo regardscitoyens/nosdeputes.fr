@@ -34,7 +34,7 @@ for ($i = 0; $i <= $n_pages; $i++) {
 
 $start = $i*50+1;
 $url = $url0."&ResultCount=50&ResultStart=".$start;
-$file = "txt/amendements_13_trimestre_".$trimestre."_".$i.".txt";
+$file = "xmlt/amendements_13_trimestre_".$trimestre."_".$i.".xml";
 print $url." > ".$file."\n";
 	
 $a = WWW::Mechanize->new();
@@ -50,13 +50,13 @@ while ($t = $p->get_tag('a')) {
 	next if ($htmfile =~ /(index|javascript)/);
 	$htmfile =~ s/\//_/gi;
 	$htmfile =~ s/\#.*//;
-	print "  $htmfile ... ";	
+#	print "  $htmfile ... ";	
 #	open FILE2, ">:utf8", "html/$htmfile";
 #	print FILE2 $a->content;
 #	close FILE2;
 #	print "downloaded ... ";
 	`perl cut_amdmt.pl html/$htmfile >> $file`;
-	print "done.\n";
+#	print "done.\n";
 	$a->back();
     }
 }

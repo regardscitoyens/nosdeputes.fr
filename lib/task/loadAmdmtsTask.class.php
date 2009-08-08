@@ -9,7 +9,7 @@ class loadAmdmtsTask extends sfBaseTask {
 
   protected function execute($arguments = array(), $options = array()) {
   // your code here
-    $dir = dirname(__FILE__).'/../../batch/amendements/txt/';
+    $dir = dirname(__FILE__).'/../../batch/amendements/input/';
     $manager = new sfDatabaseManager($this->configuration);
 
     if (is_dir($dir)) {
@@ -17,17 +17,21 @@ class loadAmdmtsTask extends sfBaseTask {
         while (($file = readdir($dh)) !== false) {
           if ($file == ".." || $file == ".") continue;
           print "$dir$file\n";
-          $ct = 0;
+          $ct_lines = 0;
+          $ct_lus = 0;
+          $ct_crees = 0;
           foreach(file($dir.$file) as $line) {
-            $ct++;
+            $ct_lines++;
             $json = json_decode($line);
             if (!$json || !$json->source || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->texte) {
               echo "ERROR json : $line\n";
               continue;
             }
+            $ct_lus++;
             $modif = true;
             $amdmt = Doctrine::getTable('Amendement')->findOneBySource($json->source);
             if (!$amdmt) {
+              $ct_crees++;
               $amdmt = new Amendement();
               $amdmt->source = $json->source;
               $amdmt->legislature = $json->legislature;
@@ -73,13 +77,15 @@ class loadAmdmtsTask extends sfBaseTask {
             } else {
               if (!$json->sort || !preg_match('/(irrecevable|retir)/i', $json->sort)) {
                 echo "ERROR json auteurs missing : $line\n";
+                $amdmt->free();
                 continue;
               }
             }
             $amdmt->save();
             $amdmt->free();
           }
-          print $ct." amdmts"."\n";
+          print $ct_lines." amendements lus : ".$ct_lus." écrits dont ".$ct_crees." nouveaux.\n";
+          unlink($dir.$file);
         }
         closedir($dh);
       }

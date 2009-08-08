@@ -6,10 +6,8 @@
 class Amendement extends BaseAmendement {
 
   public function setAuteurs($auteurs) {
-    $debug = false;
     $groupe = null;
     $sexe = null;
-    if ($debug) print "0: ".$auteurs."\n";
     if (preg_match('/^\s*(.*),+\s*les\s+(.*\s+[gG]roupe|membres)\s+(.*)\s*$/' ,$auteurs, $match)) {
       $auteurs = $match[1];
       $groupe = preg_replace("/^\s*(de la|de l'|du)\s*/", "", $match[3]);
@@ -18,14 +16,11 @@ class Amendement extends BaseAmendement {
 	  elseif (preg_match('/(gauche.*démocrate|GDR)/i',$groupe)) $groupe = "GDR";
       elseif (preg_match('/(nouveau.*centre|NC)/i',$groupe)) $groupe = "NC";
       else $groupe = null;
-      if ($debug) print "4: ".$auteurs." // ".$groupe."\n";
     }
-    if ($debug) print "4: ".$auteurs." // ".$groupe."\n";
     $arr = preg_split('/,/', $auteurs);
     foreach ($arr as $depute) {
-      $bool = false;
       if (preg_match('/(gouvernement|président|rapporteur|commission|questeur)/i', $depute)) {
-        if ($debug) print "5 skip: "."  ".$depute."\n";
+        if ($debug) print "WARN: Skip auteur ".$depute." for ".$this->source."\n";
         continue;
       } elseif (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([dA-Z].*)\s*$/', $depute, $match)) {
           $nom = $match[2];
@@ -33,7 +28,6 @@ class Amendement extends BaseAmendement {
             $sexe = 'F';
           else $sexe = 'H';
       } else $nom = preg_replace("/^\s*(.*)\s*$/", "\1", $depute);
-      if ($debug) print "5: "."  ".$nom." // ".$sexe." // ".$groupe."\n";
       $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupe($nom, $sexe, $groupe, $this);
       if (!$depute) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$groupe."\n";
       else {
@@ -53,7 +47,10 @@ class Amendement extends BaseAmendement {
     $pa = new ParlementaireAmendement();
     $pa->_set('Parlementaire', $depute);
     $pa->_set('Amendement', $this);
-    return $pa->save();
+    if ($pa->save()) {
+      $pa->free();
+      return true;
+    } else return false;
   }
 
   public function getLink() {

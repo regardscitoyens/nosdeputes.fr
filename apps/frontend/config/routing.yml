@@ -3,125 +3,130 @@ homepage:
   url: /
   param: {module: parlementaire, action: index}
 
-list_parlementaires:
-  url: /parlementaire
-  param: {module: parlementaire, action: list}
-
-parlementaire_texte:
-  url: /parlementaire/:slug/textes/:id
-  param: {module: section, action: parlementaireSection}
-
-parlementaire_textes:
-  url: /parlementaire/:slug/textes
-  param: {module: section, action: parlementaire}
-
-tag_section_interventions:
-  url: /section/:section/tag/:tags
-  param: {module: intervention, action: tag}
-
-
-search_interventions:
-  url: /rechercher
-  param: {module: intervention, action: search}
-
-search_interventions_mots:
-  url: /rechercher/:search
-  param: {module: intervention, action: search}
-
-section:
-  url: /section/:id
-  param: {module: section, action: show}
-
-sections:
-  url: /section
-  param: {module: section, action: list}
-
-tag_parlementaire_interventions:
-  url: /parlementaire/:parlementaire/tag/:tags
-  param: {module: intervention, action: tag}
-
+# Fiche parlementaire
 parlementaire:
   url: /parlementaire/:slug
   param: {module: parlementaire, action: show}
 
+# Liste de tous les parlementaires ou par catégorie
+list_parlementaires:
+  url: /parlementaire
+  param: {module: parlementaire, action: list}
 list_parlementaires_organisme:
   url: /organisme/:slug
   param: {module: parlementaire, action: listOrganisme}
-
 list_parlementaires_circo:
-  url: /circo/:nom_circo
+  url: /circonscription/:nom_circo
   param: {module: parlementaire, action: listCirco}
-# Add include user's module to get same circonscription?
-
 list_parlementaires_profession:
   url: /profession/:profession
   param: {module: parlementaire, action: listProfession}
-# Add include user's module to get same job
 
-tag_interventions:
-  url: /tag/:tags
-  param: {module: intervention, action: tag}
+# Sommaire des textes ou du travail d'un texte par sections et pour un parlementaire donné
+sections:
+  url: /section
+  param: {module: section, action: list}
+section:
+  url: /section/:id
+  param: {module: section, action: show}
+parlementaire_textes:
+  url: /textes/:slug
+  param: {module: section, action: parlementaire}
+parlementaire_texte:
+  url: /textes/:slug/:id
+  param: {module: section, action: parlementaireSection}
 
+# Interventions par parlementaire ou séance
+intervention:
+  url: /intervention/:id
+  param: {module: intervention, action: show}
 parlementaire_interventions:
-  url: /intervention/:slug
+  url: /interventions/:slug
   param: {module: intervention, action: parlementaire}
-
 interventions_seance:
   url: /seance/:seance
   param: {module: intervention, action: seance}
 
+# Présences d'un parlementaire ou lors d'une séance
 parlementaire_presences:
   url: /presence/:slug
   param: {module: presence, action: parlementaire}
-
-plot_parlementaire_presences:
-  url: /presence/plot/:slug
-  param: {module: presence, action: plotParlementaire}
-
 presents_seance:
-  url: /presence/:seance
+  url: /presence/seance/:seance
   param: {module: presence, action: seance}
-
 preuve_presence_seance:
   url: /presence/:slug/:seance
   param: {module: presence, action: preuve}
 
+# Tags d'une intervention, d'une section ou d'un parlementaire, d'une section ou  ou lors d'une séance
+amendement:
+  url: /amendement/:id
+  param: {module: amendement, action: show}
+parlementaire_amendements:
+  url: /amendements/:slug
+  param: {module: amendement, action: parlementaire}
+
+# Recherche lexicale d'interventions ou d'amendements
+search_interventions:
+  url: /rechercher/intervention
+  param: {module: intervention, action: search}
+search_interventions_mots:
+  url: /rechercher/intervention/:search
+  param: {module: intervention, action: search}
+search_amendements:
+  url: /rechercher/amendement
+  param: {module: amendement, action: search}
+search_amendements_mots:
+  url: /rechercher/amendement/:search
+  param: {module: amendement, action: search}
+
+# Tags d'une intervention, d'une section ou d'un parlementaire, d'une section ou  ou lors d'une séance
+tag_interventions:
+  url: /tag/:tags
+  param: {module: intervention, action: tag}
+tag_section_interventions:
+  url: /section/:section/tag/:tags
+  param: {module: intervention, action: tag}
+tag_parlementaire_interventions:
+  url: /parlementaire/:parlementaire/tag/:tags
+  param: {module: intervention, action: tag}
+
+# Top des députés par interventions, présences ou amendements
 top_interventions:
   url: /top/intervention
   param: {module: intervention, action: top}
-
-intervention:
-  url: /intervention/id/:id
-  param: {module: intervention, action: show}
-
 top_presences:
   url: /top/presence
   param: {module: presence, action: top}
+top_amendements:
+  url: /top/amendement
+  param: {module: amendement, action: top}
 
+# Plot des présences
+plot_parlementaire_presences:
+  url: /plot/presence/:slug
+  param: {module: presence, action: plotParlementaire}
+
+# Gestion des utilisateurs
 list_utilisateurs:
   url: /citoyens
   param: {module: utilisateur, action: index}
-
 utilisateur:
   url: /citoyen/:slug
   param: {module: utilisateur, action: show}
-
 edit_utilisateur:
   url: /citoyen/:slug/edition
   param: {module: utilisateur, action: edit}
-
 update_utilisateur:
   url: /citoyen/:slug/edition
   param: {module: utilisateur, action: update}
-
 delete_utilisateur:
   url: /citoyen/:slug/edition
   param: {module: utilisateur, action: delete}
-
 new_utilisateur:
-  url: /citoyens/inscription
+  url: /citoyen/inscription
   param: {module: utilisateur, action: new}
-
 create_utilisateur:
-  url: /citoyens/inscription
+  url: /citoyen/inscription
   param: {module: utilisateur, action: create}
+# Add include user's module to get same circonscription?

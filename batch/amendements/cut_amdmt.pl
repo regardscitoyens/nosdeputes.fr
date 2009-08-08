@@ -203,7 +203,7 @@ foreach $line (split /\n/, $string)
 	    }
 	} elsif ($identiques == 1 && $line =~ /\<div\>.*(\d+).*\<\/div\>/) {
 	    identiques();
-	} elsif ($texte == 1 && $line =~ /\<div\>(.*)\<\/div\>/) {
+	} elsif ($texte >= 1 && $line =~ /\<div\>(.*)\<\/div\>/) {
 	    $line = $1;
 	    texte();
 	}
