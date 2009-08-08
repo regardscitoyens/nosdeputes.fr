@@ -40,6 +40,7 @@ class loadHemicyleTask extends sfBaseTask
 		$type = 'question';
 	      else
 		$type = 'loi';
+	      $intervention->date = $json->date;
 	      $intervention->setSeance($type, $json->date, $json->heure, $json->session);
 	      $intervention->setSource($json->source);
 	      $intervention->setTimestamp($json->timestamp);
@@ -57,12 +58,12 @@ class loadHemicyleTask extends sfBaseTask
 		  ->findOneByUrlAn($json->intervenant_url);
 		if ($p) {
 		  $intervention->setParlementaire($p);
+		  $intervention->setFonction($json->fonction);
 		}
 	      }
 	      if (!$p) {
-		$intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);		
+		$intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);
 	      }
-
 	    }
 	    $intervention->save();
 	    if (!isset($sections[$intervention->getSection()->id]))

@@ -23,36 +23,26 @@ if (isset($highlight)) {
 }else{
   $p_inter = truncate_text($inter, 400);
 }
-
-$persos = $intervention->getAllPersonnalitesAndFonctions(); 
-  
-if (count($persos)) {
+if ($intervention->hasIntervenant()) {
+  $perso = $intervention->getIntervenant();
   $didascalie = 0;
-  foreach ($persos as $perso) {
-    if ($perso[0]->getPageLink()) {
-      
-      if ($perso[0]->getPhoto()) {
-	echo '<a href="'.url_for($perso[0]->getPageLink()).'"><img alt="Photo de '.$perso[0]->nom.'" src="'.$perso[0]->getPhoto().'" /></a>';
-      }
-      echo '<span class="perso"><a href="'.url_for($perso[0]->getPageLink()).'">';
-      echo $perso[0]->nom;
-      
-      if (isset($perso[1])) {
-	echo ', '.$perso[1];
-      }
-      echo '</a>&nbsp;:</span>';
+  echo '<span class="source"><a href="'.$intervention->getSource().'">source</a> - <a href="'.url_for("@interventions_seance?seance=$intervention->seance_id").'#'.$intervention->getId().'">permalink</a></span>';
+  if ($perso->getPageLink()) {
+    
+    if ($perso->getPhoto()) {
+      echo '<img width="50" height="64" alt="'.$perso->nom.'" src="'.$perso->getPhoto().'" />';
     }
-    else {
-      echo '<span class="perso">'.$perso[0]->nom;
-      
-      if (isset($perso[1])) {
-	echo ', '.$perso[1];
-      }
-      echo '</span>';
-    }
+    echo '<a href="'.url_for($perso->getPageLink()).'">';
+    echo $perso->nom;
+    
+    echo '</a>&nbsp;:';
+  }
+  else {
+    echo '<span class="perso">'.$perso->nom;    
+    echo '</span>';
   }
  }
-echo '<p>'.$p_inter.'</p>';
+  echo '<p>'.$p_inter.'</p>';
 ?></div>
     <div class="plus">
       3 commentaires - <a href="<?php echo url_for('@interventions_seance?seance='.$intervention->getSeance()->id); ?>#inter_<?php echo $intervention->getMd5(); ?>">Voir l'intervention dans son contexte</a>

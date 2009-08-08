@@ -13,6 +13,7 @@ Personnalite:
     sexe: 
       type: enum
       values: ['H', 'F']
+
 Parlementaire:
   columns:     
     nom_circo: string(255)
@@ -106,6 +107,7 @@ Presence:
     parlementaire_id: integer
     seance_id: integer
     nb_preuves: integer
+    date: date
   relations:
     Parlementaire:
       foreignAlias: Presences
@@ -163,39 +165,25 @@ Intervention:
     type:
       type: enum
       values: ['commission', 'question', 'loi']
+    date: date
+    personnalite_id: integer
+    parlementaire_id: integer
+    fonction: string(512)
   relations:
     Section:
       foreignAlias: Interventions
     Seance:
       foreignAlias: Interventions
-    Personnalites:
+    Personnalite:
       class: Personnalite
-      refClass: PersonnaliteIntervention
       foreignAlias: Interventions
-    Parlementaires:
+    Parlementaire:
       class: Parlementaire
-      refClass: PersonnaliteIntervention
       foreignAlias: Interventions
   indexes:
     ft_intervention:
       fields: [intervention]
       type: fulltext
-
-PersonnaliteIntervention:
-  actAs:
-    Timestampable:
-  columns:
-    personnalite_id: integer
-    parlementaire_id: integer
-    intervention_id: integer
-    fonction: string(512)
-  relations:
-    Personnalite:
-      foreignAlias: PersonnaliteInterventions
-    Parlementaire:
-      foreignAlias: PersonnaliteInterventions
-    Intervention:
-      foreignAlias: PersonnaliteInterventions
 
 Amendement:
   actAs:

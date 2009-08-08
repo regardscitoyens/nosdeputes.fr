@@ -44,7 +44,7 @@ class tagSeanceTask extends sfBaseTask
     // your code here
     $manager = new sfDatabaseManager($this->configuration);    
     $q = Doctrine_Query::create();
-    $q->select('intervention')->from('Intervention i')->leftJoin('i.PersonnaliteInterventions pi')->where('pi.personnalite_id IS NOT NULL');
+    $q->select('intervention')->from('Intervention i')->where('i.parlementaire_id IS NOT NULL');
     echo "count:\n\t";
     echo $q->count()."\n";
     $array = $q->fetchArray();
@@ -52,9 +52,14 @@ class tagSeanceTask extends sfBaseTask
     $cpt = 0;
     $tot = count($words);
 
+    $exclude = array('lecture'=>1, 'séance'=>1, 'alinéa'=>1, 'résolution'=>1, 'adoption'=>1, 'collègue'=>1, 'cher'=>1, 'collègues'=>1, 'chers'=>1,'bis'=>1, '1er'=>1, 'rectifié'=>1);
+    $include = array('télévision' => 1, 'dimanche'=>1, 'internet'=>1, 'outre-mer'=>1, 'logement'=>1, 'militaire'=>1, 'taxe'=>1, 'médecin'=>1, 'hôpital'=>1);
+
     foreach(array_keys($words) as $k) {
-      $exclude[$k] = 1;
-      if ($words[$k]*100/$tot < 0.7)
+      if (!$include[$k])
+	$exclude[$k] = 1;
+      echo $k.': '.$words[$k]*100/$tot."\n";
+      if ($words[$k]*100/$tot < 3)
 	break;
     }
 
@@ -72,7 +77,7 @@ class tagSeanceTask extends sfBaseTask
 
       //Recherche toutes les interventions pour cette séance
       $q = Doctrine_Query::create();
-      $q->select('intervention, id')->from('Intervention i')->leftJoin('i.PersonnaliteInterventions pi')->where('seance_id = ?', $s['id'])->andWhere('(pi.fonction IS NULL OR pi.fonction NOT LIKE ? )', 'président%');
+      $q->select('intervention, id')->from('Intervention i')->where('seance_id = ?', $s['id'])->andWhere('i.parlementaire_id IS NOT NULL');//->andWhere('(i.fonction IS NULL OR i.fonction NOT LIKE ? )', 'président%');
 
       $array = $q->fetchArray();
       if (!count($array))
@@ -108,35 +113,31 @@ class tagSeanceTask extends sfBaseTask
 	  }
 	}
       }
-      if (!$sentences || !count($sentences))
-	continue;
       //asort($sentences);
 
       //Si les groupes de mots ont une certernaines popularité, on les garde
       //Au dessus de 70% d'utilisation le tag contenu est supprimé
       $debut_bani = 'à|de|la|ainsi|ensuite';
-
-      foreach (array_keys($sentences) as $sent) {
-
-	if  (preg_match("/^($debut_bani)/i", $sent) || preg_match("/($debut_bani)$/i", $sent) || preg_match('/\d|amendement|rapporteur|commision|collègue/i', $sent) ) 
-	  continue;
-
-	if (preg_match('/^[A-Z][a-z]/', $sent)) {
-	  unset($tags[$sent2word[$sent]]);	  
-	  continue;
-	}
-
-	if (preg_match('/^([a-z]{2} |[A-Z]+)/', $sent) || preg_match('/ [a-z]$/i', $sent)) {
-	  continue;
-	}
-
-	if (($sentences[$sent]*100/$tot > 0.8 || $sentences[$sent]*100/$words[$sent2word[$sent]] > 70)&& $words[$sent2word[$sent]] > 5) {
-	  echo $sent2word[$sent]." ";
-	  echo $sentences[$sent]*100/$tot." > 0.8 || ".$sentences[$sent]*100/$words[$sent2word[$sent]]." > 70)&& ".$words[$sent2word[$sent]]."\n";
-	  echo "$sent added\n";
-	  $tags[$sent] = strlen($sent);
-	  if ($sentences[$sent]*100/$words[$sent2word[$sent]] > 70)
-	    unset($tags[$sent2word[$sent]]);
+      if (count($sentences)) {
+	foreach (array_keys($sentences) as $sent) {
+	  
+	  if  (preg_match("/^($debut_bani)/i", $sent) || preg_match("/($debut_bani)$/i", $sent) || preg_match('/\d|amendement|rapporteur|commision|collègue/i', $sent) ) 
+	    continue;
+	  
+	  if (preg_match('/^[A-Z][a-z]/', $sent)) {
+	    unset($tags[$sent2word[$sent]]);	  
+	    continue;
+	  }
+	  
+	  if (preg_match('/^([a-z]{2} |[A-Z]+)/', $sent) || preg_match('/ [a-z]$/i', $sent)) {
+	    continue;
+	  }
+	  
+	  if (($sentences[$sent]*100/$tot > 0.8 || $sentences[$sent]*100/$words[$sent2word[$sent]] > 70)&& $words[$sent2word[$sent]] > 5) {
+	    $tags[$sent] = strlen($sent);
+	    if ($sentences[$sent]*100/$words[$sent2word[$sent]] > 70)
+	      unset($tags[$sent2word[$sent]]);
+	  }
 	}
       }
 

@@ -10,9 +10,9 @@ class Personnalite extends BasePersonnalite
     return parent::save($conn);
     }*/
   public function getPageLink() {
-    return "";
+    return null;
   }
   public function getPhoto() {
-    return "";
+    return null;
   }
 }

@@ -17,12 +17,15 @@ class Intervention extends BaseIntervention
   }
   public function setPersonnaliteByNom($nom, $fonction = null) 
   {
-    $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
-    if (!$personne) {
-      $personne = Doctrine::getTable('Parlementaire')->similarTo($nom);
-    }
-    if ($personne) {
-      return $this->setParlementaire($personne, $fonction);
+    $this->setFonction($fonction);
+    if (!preg_match('/ministre|secretaire .*tat|commissaire/i', $fonction)) { 
+      $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
+      if (!$personne) {
+	$personne = Doctrine::getTable('Parlementaire')->similarTo($nom);
+      }
+      if ($personne) {
+	return $this->setParlementaire($personne);
+      }
     }
     $personne = Doctrine::getTable('Personnalite')->findOneByNom($nom);
     if (!$personne) {
@@ -37,44 +40,41 @@ class Intervention extends BaseIntervention
       return $this->setPersonnalite($personne,$fonction);
     }
   }
-  public function setParlementaire($parlementaire, $fonction = null) {
-    foreach($this->getParlementaires() as $par) {
-      if ($par == $parlementaire)
-	return false;
+  public function setParlementaire($parlementaire, $from_db = null) {
+    if (isset($parlementaire->id)) {
+      $this->_set('parlementaire_id', $parlementaire->id);
+      if (!$from_db)
+	$this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);
     }
-    $ip = new PersonnaliteIntervention();
-    $ip->setParlementaire($parlementaire);
-
-    $ip->setIntervention($this);
-    if ($fonction)
-      $ip->setFonction($fonction);
-    $this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);
-
-    return $ip->save();
   }
-  public function setPersonnalite($perso, $fonction = null) {
-    foreach($this->getPersonnalites() as $per) {
-      if ($per == $perso)
-	return false;
+
+  public function hasIntervenant() {
+    if ($this->parlementaire_id) {
+      return true;
     }
-    $ip = new PersonnaliteIntervention();
-    $ip->setPersonnalite($perso);
-    $ip->setIntervention($this);
-    if ($fonction)
-      $ip->setFonction($fonction);
-    return $ip->save();
+    if ($this->personnalite_id) {
+      return true;
+    }
+    return false;
   }
-  public function getAllPersonnalitesAndFonctions() {
-    $pis = $this->getPersonnaliteInterventions();
-    $res = array();
-    foreach($pis as $pi){
-      $p = $pi->getParlementaire();
-      if (!$p) 
-	$p = $pi->getPersonnalite();
-      array_push($res, array($p, $pi->fonction));
+
+  public function getIntervenant() {
+    $perso = $this->Parlementaire;
+    if (!$perso->id)
+      $perso = $this->Personnalite;
+    return $perso;
+  }
+
+  public function getNomAndFonction() {
+    $res = null;
+    if ($this->hasIntervenant()) {
+      $res = $this->getIntervenant()->getNom();
+      if ($this->getFonction())
+	$res .= ', '.$this->getFonction();
     }
     return $res;
   }
+
   public function setContexte($context, $date = null, $timestamp = null) {
     return $this->setSection(doctrine::getTable('Section')->findOneByContexteOrCreateIt($context, $date, $timestamp));
   }

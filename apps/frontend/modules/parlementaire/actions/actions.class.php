@@ -20,8 +20,7 @@ class parlementaireActions extends sfActions
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->qtag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t, Intervention i')
-      ->leftJoin('i.PersonnaliteInterventions pi')
-      ->where('pi.parlementaire_id = ?', $this->parlementaire->id)
+      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('i.id = tg.taggable_id');
 
     $this->textes = doctrine_query::create()
@@ -30,8 +29,7 @@ class parlementaireActions extends sfActions
       ->where('s.section_id = sp.id')
       ->leftJoin('s.Section sp')
       ->leftJoin('s.Interventions i')
-      ->leftJoin('i.PersonnaliteIntervention pi')
-      ->andWhere('pi.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('i.nb_mots > 20')
       ->groupBy('s.section_id')
       ->orderBy('nb DESC')

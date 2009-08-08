@@ -18,6 +18,7 @@ class Seance extends BaseSeance
       $presence = new Presence();
       $presence->Parlementaire = $parlementaire;
       $presence->Seance = $this;
+      $presence->date = $this->date;
       $presence->save();
     }
     $res = $presence->addPreuve($type, $source);

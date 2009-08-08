@@ -30,8 +30,7 @@ class sectionActions extends sfActions
     $this->forward404Unless($this->section);
 
     $this->qinterventions = doctrine::getTable('Intervention')->createQuery('i')
-      ->leftJoin('i.PersonnaliteInterventions pi')
-      ->where('pi.parlementaire_id = ?', $this->parlementaire->id)
+      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('i.Section s')
       ->andWhere('(s.section_id = ? OR s.id = ?)', array($this->section->id, $this->section->id))
       ->andWhere('i.nb_mots > 20');
@@ -65,9 +64,9 @@ class sectionActions extends sfActions
     
     $this->ptag = Doctrine_Query::create()
       ->from('Parlementaire p')
-      ->leftJoin('p.PersonnaliteIntervention pi')
-      ->whereIn('pi.intervention_id', $interventions)
-      ->andWhere('((pi.fonction != ? AND pi.fonction != ? ) OR pi.fonction IS NULL)', array('président', 'présidente'))
+      ->leftJoin('p.Interventions i')
+      ->whereIn('i.id', $interventions)
+      ->andWhere('((i.fonction != ? AND i.fonction != ? ) OR i.fonction IS NULL)', array('président', 'présidente'))
       ->groupBy('p.id')
       ;
   }
