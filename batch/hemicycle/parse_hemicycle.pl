@@ -222,7 +222,7 @@ foreach $line (split /\n/, $string)
     #recherche amendements
     if ($line =~ /\<\!\-\- AMEND_/) {
 	@pre_amendements = ();
-	while ($line =~ /\<\!\-\- AMEND_(\d+) /g) {
+	while ($line =~ /\<\!\-\- AMEND_(\d+)\D/g) {
 	    push @pre_amendements, $1;
 	}
     }
