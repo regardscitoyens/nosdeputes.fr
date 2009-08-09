@@ -39,9 +39,6 @@ parlementaire_presences:
 preuve_presence_seance:
   url: /parlementaire/:slug/presence/:seance
   param: {module: presence, action: preuve}
-plot_parlementaire_presences:
-  url: /parlementaire/:slug/presence/plot
-  param: {module: presence, action: plotParlementaire}
 
 # Sommaire des textes ou du travail d'un texte par sections et pour un parlementaire donné
 sections:

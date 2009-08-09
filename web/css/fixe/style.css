@@ -1,4 +1,4 @@
-/* Style général */
+/* Style gï¿½nï¿½ral */
 body {
   margin: 0;
   padding: 0;
@@ -90,7 +90,7 @@ img {
   float: left;
   padding-top: 22px;
 }
-/* Début menu */
+/* Dï¿½but menu */
 .conteneur_menu {
   width: 100%;
   height: 31px;
@@ -219,9 +219,9 @@ img {
   margin: 0;
   margin-left: 5px;
 }
-/* Fin style général */
+/* Fin style gï¿½nï¿½ral */
 
-/* Carte des députés */
+/* Carte des dï¿½putï¿½s */
 .conteneur_resultat_dep  {
   float: left;
   width: 435px;
@@ -235,7 +235,7 @@ img {
   float:right;
   border : 1px solid #BFBFBF;
 }
-/* Début fiche député */
+/* Dï¿½but fiche dï¿½putï¿½ */
 .fiche_depute {
   width: 938px;
   border: 1px solid #BFBFBF;
@@ -271,7 +271,7 @@ img {
   height: 150px;
 }
 .graph_depute img {
-  width: 820px;
+  width: 400px;
   height: 150px;
 }
 .graph_depute h1 {
@@ -592,9 +592,9 @@ img {
   margin-left: 0;
   padding-left: 0;
 }
-/* Fin fiche député */
+/* Fin fiche dï¿½putï¿½ */
 
-/* Séances */
+/* Sï¿½ances */
 .titre_int_et_seance {
   min-height: 70px;
   background-color: #fff;
