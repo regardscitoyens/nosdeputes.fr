@@ -651,6 +651,8 @@ img {
   float: right;
 }
 .perso {
-  text-transform: capitalize;
   font-weight: bold;
+}
+.perso:first-letter {
+  text-transform: uppercase;
 }
