@@ -1,6 +1,6 @@
 <div class="amendement" id="<?php echo $amendement->getSource(); ?>">
   <h2>Projet/Proposition de loi N° <?php echo $amendement->getTexteloi_id(); ?> : //titre//</h2>
-<h1><?php echo $amendement->getTitre(); if (count($identiques)) echo ' (ou identiques)';?></h1>
+<h1><?php echo $amendement->getTitre(); if (count($identiques) > 1 )echo ' (ou identiques)';?></h1>
   <p class="source"><a href="<?php echo $amendement->getLink(); ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></p>
   <div class="signataires">
   <p>Déposé le <?php echo $amendement->date; ?> par : <?php echo $amendement->signataires; ?>.</p>

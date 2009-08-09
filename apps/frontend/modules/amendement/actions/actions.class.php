@@ -16,6 +16,11 @@ class amendementActions extends sfActions
        ->where('content_md5 = ?', $this->amendement->content_md5)
        ->execute();
 
+     if (count($this->identiques) < 2) {
+       $this->identiques = array();
+     }
+
+
      $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$this->amendement->texteloi_id, 'loi:amendement='.$this->amendement->numero));
      $query->select('Intervention.id, Intervention.date, Intervention.seance_id, Intervention.md5')
        ->groupBy('Intervention.date')
