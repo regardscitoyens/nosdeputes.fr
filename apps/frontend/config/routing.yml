@@ -3,27 +3,6 @@ homepage:
   url: /
   param: {module: parlementaire, action: index}
 
-parlementaire_tags:
-  url: /parlementaire/tag
-  param: {module: parlementaire, action: tag}
-
-tag_result_parlementaires:
-  url: /parlementaire/tag/:tags
-  param: {module: parlementaire, action: tag}
-
-parlementaire_interventions:
-  url: /parlementaire/:slug/interventions
-  param: {module: intervention, action: parlementaire}
-
-parlementaire_amendements:
-  url: /parlementaire/:slug/amendements
-  param: {module: amendement, action: parlementaire}
-
-# Fiche parlementaire
-parlementaire:
-  url: /parlementaire/:slug
-  param: {module: parlementaire, action: show}
-
 # Liste de tous les parlementaires ou par catégorie
 list_parlementaires:
   url: /parlementaire
@@ -38,6 +17,32 @@ list_parlementaires_profession:
   url: /profession/:profession
   param: {module: parlementaire, action: listProfession}
 
+# Fiche parlementaire et affichages de ses travaux
+parlementaire:
+  url: /parlementaire/:slug
+  param: {module: parlementaire, action: show}
+parlementaire_interventions:
+  url: /parlementaire/:slug/interventions
+  param: {module: intervention, action: parlementaire}
+parlementaire_textes:
+  url: /parlementaire/:slug/textes
+  param: {module: section, action: parlementaire}
+parlementaire_texte:
+  url: /parlementaire/:slug/texte/:id
+  param: {module: section, action: parlementaireSection}
+parlementaire_amendements:
+  url: /parlementaire/:slug/amendements
+  param: {module: amendement, action: parlementaire}
+parlementaire_presences:
+  url: /parlementaire/:slug/presence
+  param: {module: presence, action: parlementaire}
+preuve_presence_seance:
+  url: /parlementaire/:slug/presence/:seance
+  param: {module: presence, action: preuve}
+plot_parlementaire_presences:
+  url: /parlementaire/:slug/presence/plot
+  param: {module: presence, action: plotParlementaire}
+
 # Sommaire des textes ou du travail d'un texte par sections et pour un parlementaire donné
 sections:
   url: /section
@@ -45,33 +50,15 @@ sections:
 section:
   url: /section/:id
   param: {module: section, action: show}
-parlementaire_textes:
-  url: /textes/:slug
-  param: {module: section, action: parlementaire}
-parlementaire_texte:
-  url: /textes/:slug/:id
-  param: {module: section, action: parlementaireSection}
-
-# Interventions par parlementaire ou séance
 intervention:
   url: /intervention/:id
   param: {module: intervention, action: show}
 interventions_seance:
   url: /seance/:seance
   param: {module: intervention, action: seance}
-
-# Présences d'un parlementaire ou lors d'une séance
-parlementaire_presences:
-  url: /presence/:slug
-  param: {module: presence, action: parlementaire}
 presents_seance:
-  url: /presence/seance/:seance
+  url: /seance/:seance/presents
   param: {module: presence, action: seance}
-preuve_presence_seance:
-  url: /presence/:slug/:seance
-  param: {module: presence, action: preuve}
-
-# Amendements d'un parlementaire
 amendement:
   url: /amendement/:id
   param: {module: amendement, action: show}
@@ -123,11 +110,6 @@ top_presences:
 top_amendements:
   url: /top/amendement
   param: {module: amendement, action: top}
-
-# Plot des présences
-plot_parlementaire_presences:
-  url: /plot/presence/:slug
-  param: {module: presence, action: plotParlementaire}
 
 # Gestion des utilisateurs
 list_utilisateurs:

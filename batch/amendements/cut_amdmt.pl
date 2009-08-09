@@ -3,10 +3,8 @@
 $file = shift;
 use HTML::TokeParser;
 
-if ($file =~ /http\:__www.assemblee-nationale.fr_(.*).asp/) {
-    $source = $1;
-    $source =~ s/_/\//g;
-}
+$source = $file;
+$source =~ s/_/\//g;
 	
 open(FILE, $file) ;
 @string = <FILE>;
