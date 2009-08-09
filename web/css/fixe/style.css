@@ -8,8 +8,8 @@ body {
 }
 .temp {
   font-size: 1.1em;
-	height: auto;
-	padding: 15px;
+  height: auto;
+  padding: 15px;
   background-color: #fff;
   border : 1px solid #BFBFBF;
 }
@@ -18,6 +18,7 @@ body {
 }
 #contenu {
   padding: 15px;
+  font-size: 1.1em;
 }
 .haut_droite {
   float: right;
@@ -186,7 +187,7 @@ img {
 }
 .menu2 {
   width: 970px;
-  height: 200px;
+  height: 130px;
   margin: auto;
   padding: 0;
   background-color: #BFBFBF;
@@ -197,7 +198,7 @@ img {
 }
 .conteneur_menu_suite {
   width: 100%;
-  height: 200px;
+  height: 130px;
 }
 .up {
   float: right;
@@ -265,12 +266,21 @@ img {
 }
 .graph_depute {
   float: left;
+  position: relative;
   width: 820px;
   height: 150px;
 }
 .graph_depute img {
   width: 820px;
   height: 150px;
+}
+.graph_depute h1 {
+  font-size: 1.5em;
+}
+.info_depute {
+  position: absolute;
+  top: 0;
+  left: 10px;
 }
 .barre_activite {
   float: left;
@@ -325,7 +335,6 @@ img {
 #b1 {
   float: left;
   width: 459px;
-  border-right: 1px dashed #BFBFBF;
 }
 #b1 h2{
   color: #000;
@@ -338,21 +347,19 @@ img {
 #b2 {
   float: left;
   width: 416px;
+  border-left: 1px dashed #BFBFBF;
   border-bottom: 1px dashed #BFBFBF;
 }
 #b3 {
   float: left;
   width: 416px;
+  border-left: 1px dashed #BFBFBF;
   border-bottom: 1px dashed #BFBFBF;
 }
 #b4 {
   float: left;
   width: 416px;
-  border-bottom: 1px dashed #BFBFBF;
-}
-#b5 {
-  float: left;
-  width: 416px;
+  border-left: 1px dashed #BFBFBF;
 }
 /**/
 .mot_dep {
@@ -616,7 +623,6 @@ img {
   border: 1px solid #DFDFDF;
   border-top: none;
   padding: 15px;
-  font-size: 1.1em;
 }
 .interventions a {
   font-weight: bold;
