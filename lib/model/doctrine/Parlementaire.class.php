@@ -244,9 +244,10 @@ class Parlementaire extends BaseParlementaire
     $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {
       if ($po->type == 'parlementaire') 
-	array_push($res, $po);
+	$res[sprintf('%04d',abs(100-$po->importance)).$po->nom]=$po;
     }
-    return $res;
+    ksort($res);
+    return array_values($res);
   }
   public function getPhoto() {
     $id_an = $this->getIdAN();

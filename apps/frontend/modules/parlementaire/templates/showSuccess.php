@@ -35,10 +35,10 @@
     <ul>
       <li>Groupe politique : <?php echo link_to($parlementaire->getGroupe()->getNom(), '@list_parlementaires_organisme?slug='.$parlementaire->getGroupe()->getSlug()); ?> (<?php echo $parlementaire->getGroupe()->getFonction(); ?>)</li>
       <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, '@list_parlementaires_profession?profession='.$parlementaire->profession); else : ?>Non communiquée<?php endif; ?></li>
-      <li><?php echo link_to('Fiche sur le site de l\'Assemblée Nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'onclick' => 'window.open(this.href); return false;')); ?></li>
+      <li><?php echo link_to('Fiche sur le site de l\'Assemblée Nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'target' => '_blank')); ?></li>
       <li><a href="http://fr.wikipedia.org/wiki/<?php echo $parlementaire->nom; ?>">Page sur Wikipédia</a></li>
       <?php if ($parlementaire->site_web) : ?>
-      <li><?php echo link_to('Site web', $parlementaire->site_web, array('title' => 'Lien externe', 'onclick' => 'window.open(this.href); return false;')); ?></li>
+      <li><?php echo link_to('Site web', $parlementaire->site_web, array('title' => 'Lien externe', 'target' => '_blank')); ?></li>
       <?php endif; ?>
     </ul>
       <h3>Responsabilités</h3>
@@ -67,7 +67,7 @@
       Téléphone : <a href="callto:0033549021575">05 49 02 15 75</a><br />
       Télécopie : 05 49 02 15 76
       </p>
-      <p>Source : <a href="http://www.assembleenationale.fr/" onclick="window.open(this.href); return false;">Assemblée Nationale</a></p>
+      <p>Source : <a href="http://www.assembleenationale.fr/" target='_blank'>Assemblée Nationale</a></p>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>

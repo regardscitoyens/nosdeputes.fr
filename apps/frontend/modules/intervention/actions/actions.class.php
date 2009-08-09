@@ -131,6 +131,5 @@ public function executeSearch(sfWebRequest $request)
 	->leftJoin('i.Section si');
     }
     $this->query->orderBy('date DESC');
-    //    echo($request->getUri());
   }
 }

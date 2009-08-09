@@ -28,7 +28,7 @@ if (isset($highlight)) {
 if ($intervention->hasIntervenant()) {
   $perso = $intervention->getIntervenant();
   $didascalie = 0;
-  echo '<span class="source"><a href="'.$intervention->getSource().'">source</a> - <a href="'.url_for("@interventions_seance?seance=$intervention->seance_id").'#'.$intervention->getId().'">permalink</a></span>';
+  echo '<span class="source"><a href="'.$intervention->getSource().'">source</a> - <a href="'.url_for("@interventions_seance?seance=$intervention->seance_id").'#inter_'.$intervention->getMd5().'">permalink</a></span>';
   if ($perso->getPageLink()) {
     
     if ($perso->getPhoto()) {
