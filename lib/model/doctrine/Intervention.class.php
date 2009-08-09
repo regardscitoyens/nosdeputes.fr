@@ -102,16 +102,20 @@ class Intervention extends BaseIntervention
 
   public function getIntervention($args = array()) {
     $inter = $this->_get('intervention');
-    if (isset($args['linkify_amendements'])) {
+    if (isset($args['linkify_amendements']) && $link = $args['linkify_amendements']) {
       if (preg_match_all('/(amendements?[,\s]+(identiques?)?[,\s]*)((n[°os\s]*|\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
 	$lois = implode(',', $this->getTags(array('is_triple' => true,
 						  'namespace' => 'loi',
 						  'key' => 'numero',
 						  'return'    => 'value')));
+	$link = str_replace('LLL', urlencode($lois), $link);
 	for ($i = 0 ; $i < count($match[0]) ; $i++) {
-	  $replace= $match[1][$i];
-	  $replace .= preg_replace('/\s*([\d\s\à]+rectifiés?|[\d\s\à]+)(,\s*|\s*et\s*)*/', ' <a href="#&lois='.$lois.'&amendements=\1">\1</a>\2 ', $match[3][$i]);
-	  $inter = preg_replace('/'.$match[1][$i].$match[3][$i].'/', $replace, $inter);
+	  if (preg_match('/\s*(\d[\d\s\à]+rectifiés?|\d[\d\s\à]+)(,\s*|\s*et\s*)*/', $match[3][$i], $amend)) {
+	    $link = str_replace('AAA', urlencode($amend[1]), $link);
+	    $replace= $match[1][$i];
+	    $replace .= preg_replace('/\s*(\d[\d\s\à]+rectifié+s?|\d[\d\s\à]+)(,\s*|\s*et\s*)*/', ' <a href="'.$link.'">\1</a>\2 ', $match[3][$i]);
+	    $inter = preg_replace('/'.$match[1][$i].$match[3][$i].'/', $replace, $inter);
+	  }
 	}
       }
     }

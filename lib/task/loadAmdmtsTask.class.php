@@ -36,7 +36,7 @@ class loadAmdmtsTask extends sfBaseTask {
               $amdmt->source = $json->source;
               $amdmt->legislature = $json->legislature;
               $amdmt->texteloi_id = $json->loi;
-              $amdmt->addTag('loi:numero_loi='.$amdmt->texteloi_id);
+              $amdmt->addTag('loi:numero='.$amdmt->texteloi_id);
               $amdmt->numero = $json->numero;
             } elseif ($amdmt->rectif == $json->rectif && $amdmt->date == $json->date) {
               $modif = false;

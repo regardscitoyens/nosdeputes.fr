@@ -26,7 +26,26 @@
     <h3>Exposé Sommaire :</h3>
     <?php echo $amendement->getExpose(); ?>
   </div>
-  <div class="commentaires">
+ <?php if (count($identiques) > 1) { ?>
+<h3>Amendements identiques</h3>
+<ul>
+<?php foreach($identiques as $identique) { ?>
+<?php if ($identique->numero != $amendement->numero) { ?>
+<li><?php echo link_to($identique->numero, '@amendement?id='.$identique->id); ?></li>
+<?php } }?>
+</ul>
+<?php }?>
+<?php if ($seances) : ?>
+<div>
+<h3>En séance</h3>
+<ul>
+<?php foreach($seances as $s) : ?>
+<li><a href="<?php echo url_for('@interventions_seance?seance='.$s['seance_id']); ?>#inter_<?php echo $s['md5']; ?>"><?php echo $s['date']; ?></a></li>
+<?php endforeach ?>
+</ul>
+</div>
+<?php endif; ?>
+ <div class="commentaires">
     3 commentaires dont celui de zouze :
     Cet amendement tue des gnous !
   </div>

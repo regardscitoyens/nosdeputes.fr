@@ -52,7 +52,7 @@
   }
   ?></div>
     <div class="texte_intervention">
-    <?php echo $intervention->getIntervention(array('linkify_amendements'=>1)); ?>
+    <?php echo $intervention->getIntervention(array('linkify_amendements'=>url_for('@search_amendements_by_loi_and_numero?loi=LLL&numero=AAA'))); ?>
     </div>
   <?php if (!$didascalie) : ?>
     <div class="commentaires">

@@ -3,6 +3,22 @@ homepage:
   url: /
   param: {module: parlementaire, action: index}
 
+parlementaire_tags:
+  url: /parlementaire/tag
+  param: {module: parlementaire, action: tag}
+
+tag_result_parlementaires:
+  url: /parlementaire/tag/:tags
+  param: {module: parlementaire, action: tag}
+
+parlementaire_interventions:
+  url: /parlementaire/:slug/interventions
+  param: {module: intervention, action: parlementaire}
+
+parlementaire_amendements:
+  url: /parlementaire/:slug/amendements
+  param: {module: amendement, action: parlementaire}
+
 # Fiche parlementaire
 parlementaire:
   url: /parlementaire/:slug
@@ -40,9 +56,6 @@ parlementaire_texte:
 intervention:
   url: /intervention/:id
   param: {module: intervention, action: show}
-parlementaire_interventions:
-  url: /interventions/:slug
-  param: {module: intervention, action: parlementaire}
 interventions_seance:
   url: /seance/:seance
   param: {module: intervention, action: seance}
@@ -60,11 +73,11 @@ preuve_presence_seance:
 
 # Amendements d'un parlementaire
 amendement:
-  url: /amendement/id/:id
+  url: /amendement/:id
   param: {module: amendement, action: show}
-parlementaire_amendements:
-  url: /amendements/:slug
-  param: {module: amendement, action: parlementaire}
+search_amendements_by_loi_and_numero:
+  url: /amendements/:loi/:numero
+  param: {module: amendement, action: find}
 
 # Recherche lexicale d'interventions ou d'amendements
 search:

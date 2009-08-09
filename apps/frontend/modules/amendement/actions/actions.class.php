@@ -8,7 +8,19 @@ class amendementActions extends sfActions
         ->where('a.id = ?', $request->getParameter('id'))
         ->leftJoin('a.ParlementaireAmendement pa')
         ->leftJoin('pa.Parlementaire p');
+
      $this->amendement = $query->fetchOne();
+     $this->forward404Unless($this->amendement);
+
+     $this->identiques = doctrine::getTable('Amendement')->createQuery('a')
+       ->where('content_md5 = ?', $this->amendement->content_md5)
+       ->execute();
+
+     $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$this->amendement->texteloi_id, 'loi:amendement='.$this->amendement->numero));
+     $query->select('Intervention.id, Intervention.date, Intervention.seance_id, Intervention.md5')
+       ->groupBy('Intervention.date')
+       ->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
+     $this->seances = $query->fetchArray();
   }
 
   public function executeParlementaire(sfWebRequest $request)
@@ -88,4 +100,40 @@ class amendementActions extends sfActions
     }
     $this->query->orderBy('date DESC');
   }
+
+  public function executeFind(sfWebRequest $request)
+  {
+    $lois = split(',', $request->getParameter('loi'));
+    $amdt = $request->getParameter('numero');
+    $numeros = array();
+    if (preg_match('/(\d+)\s*à\s*(\d+)/', $amdt, $match)) {
+      for($cpt = 0 ; $cpt < 10 ; $cpt++) {
+	if ($match[1]+$cpt > $match[2])
+	  break;
+	array_push($numeros, $match[1]+$cpt);
+      }
+    }else{
+      preg_match_all('/\D*(\d+)\D*/', $amdt, $match);
+      $numeros = $match[1];
+    }
+    $amendements = array();
+    foreach($lois as $loi) {
+      foreach($numeros as $numero) {
+	$query = doctrine::getTable('Amendement')->createQuery('a')
+	  ->where('texteloi_id = ?', $loi)
+	  ->andwhere('numero = ?', $numero);
+	$res = $query->fetchOne();
+	if ($res) {
+	  $amendements[$res->id] = $res;
+	}
+      }
+    }
+    if (count($amendements) == 1) {
+      $a = array_keys($amendements);
+      $this->redirect('@amendement?id='.$a[0]);
+    }
+    $this->amendements = array_values($amendements);
+  }
+
+
 }
