@@ -114,9 +114,8 @@ class amendementActions extends sfActions
     $amendements = array();
     foreach($lois as $loi) {
       foreach($numeros as $numero) {
-	$query = doctrine::getTable('Amendement')->createQuery('a')
-	  ->where('texteloi_id = ?', $loi)
-	  ->andwhere('numero = ?', $numero);
+	$query = PluginTagTable::getObjectTaggedWithQuery('Amendement', array('loi:amendement='.$numero));
+	$query->andWhere('texteloi_id = ?', $loi);
 	$res = $query->fetchOne();
 	if ($res) {
 	  $amendements[$res->id] = $res;
