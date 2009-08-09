@@ -213,6 +213,10 @@ Amendement:
       class: Parlementaire
       refClass: ParlementaireAmendement
       foreignAlias: Amendements
+  indexes:
+    ft_amendements:
+      fields: [sujet, texte, expose]
+      type: fulltext
 
 ParlementaireAmendement:
   actAs:

@@ -67,15 +67,10 @@ class amendementActions extends sfActions
       $this->high[] = preg_replace('/^[+-]"?([^"]*)"?$/', '\\1', $m);
     }
 
-    $sql = 'SELECT a.id FROM amendement a WHERE MATCH (a.texte) AGAINST (\''.implode(' ', $mcle).'\' IN BOOLEAN MODE)';
-    $search0 = Doctrine_Manager::connection()
+    $sql = 'SELECT a.id FROM amendement a WHERE MATCH (a.texte,a.expose) AGAINST (\''.implode(' ', $mcle).'\' IN BOOLEAN MODE)';
+    $search = Doctrine_Manager::connection()
       ->getDbh()
       ->query($sql)->fetchAll();
-    $sql = 'SELECT a.id FROM amendement a WHERE MATCH (a.expose) AGAINST (\''.implode(' ', $mcle).'\' IN BOOLEAN MODE)';
-    $search1 = Doctrine_Manager::connection()
-      ->getDbh()
-      ->query($sql)->fetchAll();
-    $search = array_merge($search0, $search1);
     $ids = array();
     foreach($search as $s)
       $ids[] = $s['id'];

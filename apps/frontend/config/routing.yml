@@ -75,7 +75,7 @@ preuve_presence_seance:
 amendement:
   url: /amendement/:id
   param: {module: amendement, action: show}
-search_amendements_by_loi_and_numero:
+find_amendements_by_loi_and_numero:
   url: /amendements/:loi/:numero
   param: {module: amendement, action: find}
 
