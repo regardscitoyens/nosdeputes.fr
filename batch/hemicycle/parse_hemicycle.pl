@@ -174,6 +174,11 @@ sub setIntervenant {
 	    return $2;
 	}
 	$conv = $fonction2inter{$intervenant};
+	if (!$conv) {
+	    $tmp = $intervenant;
+	    $tmp =~ s/[^a-z]+/ /gi;
+	    $conv = $fonction2inter{$tmp};
+	}
 #	print "conv: '$conv' '$intervenant'\n";
 	if ($conv) {
 	    $intervenant = $conv;
@@ -245,6 +250,7 @@ foreach $line (split /\n/, $string)
     if ($line =~ /<h[1-9]+/i || $line =~ /"(sompresidence|sstitreinfo)"/) {
 	if ($line =~ /présidence de (M[^<]+)</i) {
 	    $prez = $1;
+#	    print "Présidence de $prez\n";
 	    if ($prez =~ /^Mm/) {
 		setFonction('présidente', $prez);
 	    }else {
