@@ -46,11 +46,11 @@ class loadHemicyleTask extends sfBaseTask
 	      $intervention->setTimestamp($json->timestamp);
 	      if ($json->timestamp)
 		$intervention->setContexte($json->contexte, $json->date.$json->heure, $json->timestamp);
-	      if ($json->numeros_loi)
-		$intervention->setLois($json->numeros_loi);
-	      if ($json->amendements)
-		$intervention->setAmendements($json->amendements);
 	    }
+	    if ($json->numeros_loi)
+	      $intervention->setLois($json->numeros_loi);
+	    if ($json->amendements)
+	      $intervention->setAmendements($json->amendements);
 	    if ($json->intervenant) {
 	      $p = null;
 	      if ($json->intervenant_url) {

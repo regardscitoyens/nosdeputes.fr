@@ -3,6 +3,16 @@ homepage:
   url: /
   param: {module: parlementaire, action: index}
 
+
+parlementaire_tags:
+  url: /parlementaire/tag
+  param: {module: parlementaire, action: tag}
+
+tag_result_parlementaires:
+  url: /parlementaire/tag/:tags
+  param: {module: parlementaire, action: tag}
+
+
 # Fiche parlementaire
 parlementaire:
   url: /parlementaire/:slug

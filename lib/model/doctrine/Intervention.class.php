@@ -85,7 +85,6 @@ class Intervention extends BaseIntervention
     foreach($amends as $amend) {
       $tag = 'loi:amendement='.$amend;
       $this->addTag($tag);
-      //      $this->getSection()->addTag('amendement:'.$amend);
     }
   }
   public function setLois($tlois) {
@@ -94,7 +93,6 @@ class Intervention extends BaseIntervention
     foreach($lois as $loi) {
       $tag = 'loi:numero='.$loi;
       $this->addTag($tag);
-      //      $this->getSection()->addTag('loi:'.$loi);
     }
   }
   public function setIntervention($s) {

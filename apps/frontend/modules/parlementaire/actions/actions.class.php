@@ -87,6 +87,24 @@ class parlementaireActions extends sfActions
     $query2 = Doctrine::getTable('Organisme')->createQuery('o');
     $query2->where('o.slug = ?', $orga);
     $this->orga = $query2->fetchOne();
+  }
 
+  public function executeTag(sfWebRequest $request) 
+  {
+    $this->tquery = null;
+    if ($this->tag = $request->getParameter('tags')) {
+      $tags = split(',', $this->tag);
+
+      $this->parlementaires = Doctrine::getTable('Parlementaire')
+	->createQuery('p')
+	->select('p.*, count(i.id) as nb')
+	->addFrom('p.Interventions i, Tagging tg, Tag t')
+	->where('tg.taggable_id = i.id AND t.id = tg.tag_id')
+	->andWhere('tg.taggable_model = ?', 'Intervention')
+	->andWhereIn('t.name', $tags)
+	->groupBy('p.id')
+	->orderBy('nb DESC')
+	->execute();
+    }
   }
 }

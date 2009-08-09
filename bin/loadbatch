@@ -25,8 +25,8 @@ echo Parse commission
 echo > /tmp/load_commission.log
 while ls batch/commission/out | grep [a-z] > /dev/null ; 
 do
-	php symfony load:Commission >> /tmp/load_commission.log
 	php symfony cc
+	php symfony load:Commission >> /tmp/load_commission.log
 done
 
 echo Parse Hemicycle
@@ -35,12 +35,13 @@ cd batch/hemicycle
 bash compute_hemicycle.sh
 cd -
 while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do 
-	php symfony load:Hemicycle >> /tmp/load_hemicycle.log
 	php symfony cc
+	php symfony load:Hemicycle >> /tmp/load_hemicycle.log
 done
 
 echo Tag Séances
 echo > /tmp/tag_seance.log
+php symfony cc
 while ! php symfony tag:Seance >> /tmp/tag_seance.log ; do
 	php symfony cc
 done; 

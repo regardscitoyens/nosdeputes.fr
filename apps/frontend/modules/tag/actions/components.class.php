@@ -3,7 +3,7 @@
 class tagComponents extends sfComponents 
 {
   public function executeTagcloud() {
-    $this->tags = PluginTagTable::getAllTagNameWithCount($this->tagquery, array('model' => $this->model, 'triple' => false, 'min_tags_count' => $this->min_tag));
+    $this->tags = PluginTagTable::getAllTagNameWithCount($this->tagquery, array('model' => $this->model, 'triple' => false, 'min_tags_count' => $this->min_tag, 'limit'=> $this->limit));
 
     asort($this->tags);
 
@@ -15,13 +15,14 @@ class tagComponents extends sfComponents
 	foreach (array_keys($sound[$sex]) as $word) {
 	  $words = preg_split('/\|/', $word);
 	  similar_text($tag, $words[0], $pc);
-	  if ($pc >= 75) {
+	  if ($pc >= 80) {
 	    $ntag = $tag.'|'.$word;
-	    $this->tags[$ntag] = $this->tags[$tag] + $this->word[$word];
+	    if (isset($this->word[$word]))
+	      $this->tags[$ntag] = $this->tags[$tag] + $this->word[$word];
 	    unset($this->tags[$tag]);
 	    unset($this->tags[$word]);
 	    unset($sound[$sex][$tag]);
-	    unset($sound[$sex][$word]);
+ 	    unset($sound[$sex][$word]);
 	    $sound[$sex][$ntag] = 1;
 	    continue;
 	  }
