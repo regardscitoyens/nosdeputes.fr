@@ -53,12 +53,44 @@ class Amendement extends BaseAmendement {
     } else return false;
   }
 
+  public function getSignataires() {
+    return preg_replace("/M\s+/", "M. ", $this->_get('signataires'));
+  }
+
+  public function getTitre() {
+    $parent = 0;
+    $pluriel = "";
+ //   if hastag sous_amendement de
+ //     $parent =
+//      $titre = "Sous-Amendement";
+//    else
+      $titre = "Amendement";
+    $numeros = $this->numero;
+    // if hastags autres amendements {
+    //    foreach ($tags as $tag)
+    //      $numeros .= ", "$tag->numero;
+    //  $pluriel = "s";
+    // }
+    $titre .= $pluriel." N° ".$numeros;
+    if ($this->rectif == 1)
+      $titre .= " rectifié";
+    elseif($this->rectif > 1)
+      $titre .= " ".$this->rectif."ème rectif.";
+    $titre .= $pluriel;
+    if ($parent != 0)
+      $titre .= " à l'amendement N° ".link_to($parent, 'amendement/id/'.$parent->id);
+    return "$titre";
+  }
+
+  public function getTitreNoLink() {
+    return preg_replace('/\<a href.*\<\/a\>/', '', $this->getTitre());
+  }
   public function getLink() {
     return "http://www.assemblee-nationale.fr/".$this->source.".asp";
   }
 
   public function getLinkPDF() {
-    $id = preg_replace('/\/amendement', '\/pdf\/amendement', $this->source);
+    $id = preg_replace('/\/amendement/', '/pdf/amendement', $this->source);
     return "http://www.assemblee-nationale.fr/".$id.".pdf";
   }
 }

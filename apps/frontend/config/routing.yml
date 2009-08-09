@@ -3,16 +3,6 @@ homepage:
   url: /
   param: {module: parlementaire, action: index}
 
-
-parlementaire_tags:
-  url: /parlementaire/tag
-  param: {module: parlementaire, action: tag}
-
-tag_result_parlementaires:
-  url: /parlementaire/tag/:tags
-  param: {module: parlementaire, action: tag}
-
-
 # Fiche parlementaire
 parlementaire:
   url: /parlementaire/:slug
@@ -68,9 +58,9 @@ preuve_presence_seance:
   url: /presence/:slug/:seance
   param: {module: presence, action: preuve}
 
-# Tags d'une intervention, d'une section ou d'un parlementaire, d'une section ou  ou lors d'une séance
+# Amendements d'un parlementaire
 amendement:
-  url: /amendement/:id
+  url: /amendement/id/:id
   param: {module: amendement, action: show}
 parlementaire_amendements:
   url: /amendements/:slug
@@ -103,6 +93,12 @@ tag_section_interventions:
 tag_parlementaire_interventions:
   url: /parlementaire/:parlementaire/tag/:tags
   param: {module: intervention, action: tag}
+parlementaire_tags:
+  url: /parlementaire/tag
+  param: {module: parlementaire, action: tag}
+tag_result_parlementaires:
+  url: /parlementaire/tag/:tags
+  param: {module: parlementaire, action: tag}
 
 # Top des députés par interventions, présences ou amendements
 top_interventions:
