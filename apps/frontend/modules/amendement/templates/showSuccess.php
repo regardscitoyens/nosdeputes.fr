@@ -40,7 +40,7 @@
 <h3>En séance</h3>
 <ul>
 <?php foreach($seances as $s) : ?>
-<li><a href="<?php echo url_for('@interventions_seance?seance='.$s['seance_id']); ?>#inter_<?php echo $s['md5']; ?>"><?php echo $s['date']; ?></a></li>
+<li><a href="<?php echo url_for('@interventions_seance?seance='.$s['seance_id']); ?>#amend_<?php echo $amendement->numero; ?>"><?php echo $s['date']; ?></a></li>
 <?php endforeach ?>
 </ul>
 </div>
