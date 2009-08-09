@@ -75,12 +75,12 @@ class interventionActions extends sfActions
     $this->query = $query;
   }
 
-  public function executeSearch(sfWebRequest $request)
+public function executeSearch(sfWebRequest $request)
   {
     $this->mots = $request->getParameter('search');
     $mots = $this->mots;
     $mcle = array();
-    
+
     if (preg_match_all('/("[^"]+")/', $mots, $quotes)) {
       foreach(array_values($quotes[0]) as $q)
 	$mcle[] = '+'.$q;
@@ -107,7 +107,7 @@ class interventionActions extends sfActions
     foreach($search as $s) {
       $ids[] = $s['id'];
     }
-    
+
     $this->query = doctrine::getTable('Intervention')->createQuery('i');
     if (count($ids))
       $this->query->whereIn('i.id', $ids);
@@ -130,6 +130,7 @@ class interventionActions extends sfActions
       $this->query->andWhere('(Intervention.section_id = ? OR si.section_id = ?)', array($section, $section))
 	->leftJoin('i.Section si');
     }
+    $this->query->orderBy('date DESC');
     //    echo($request->getUri());
   }
 }

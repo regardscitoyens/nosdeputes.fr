@@ -100,7 +100,7 @@
     <div class="b_d_cont">
       <div class="b_d_infos">
       <h2>Interventions</h2>
-      <h3><?php echo link_to("Présences actives",'@parlementaire_presences?slug='.$parlementaire->getSlug()); ?></h3>
+      <h3><?php echo link_to("Présence en séances de commission et d'hémicycle",'@parlementaire_presences?slug='.$parlementaire->getSlug()); ?></h3>
       <h3><?php echo link_to("Toutes ses interventions",'@parlementaire_interventions?slug='.$parlementaire->getSlug()); ?></h3>
       <h3>Tags</h3>
 <div style="text-align: justify">

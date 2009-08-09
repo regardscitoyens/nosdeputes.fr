@@ -20,6 +20,8 @@ if (isset($highlight)) {
   foreach ($highlight as $h) {
     $p_inter = highlight_text($p_inter, $h);
   }
+  if ($p_inter == '')
+    $p_inter = $inter;
 }else{
   $p_inter = truncate_text($inter, 400);
 }
