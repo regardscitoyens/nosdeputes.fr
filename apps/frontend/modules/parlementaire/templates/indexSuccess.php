@@ -1,10 +1,5 @@
 <div class="temp">
-<?php
-$i = new Intervention();
-$i->setIntervention('test');
-$i->addTag('test:test=1');
-$i->save();
-?><ul>
+<ul>
 <li><?php echo link_to('tous les députés','@list_parlementaires')?></li>
 <li><?php echo link_to('les députés par tag','@parlementaire_tags')?></li>
 <li><?php echo link_to('tous les textes','@sections')?></li>

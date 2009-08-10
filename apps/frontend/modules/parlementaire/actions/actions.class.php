@@ -36,7 +36,13 @@ class parlementaireActions extends sfActions
       ->fetchArray();
   }
 
-  public function executeList(sfWebRequest $request)
+  public function executePlotTest(sfWebRequest $request)
+  {
+    $slug = $request->getParameter('slug');
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+  }
+
+public function executeList(sfWebRequest $request)
   {
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
     $this->search = $request->getParameter('search');
@@ -61,6 +67,7 @@ class parlementaireActions extends sfActions
     $query->leftJoin('p.ParlementaireOrganisme po')->leftJoin('po.Organisme o')->andWhere('o.type = "groupe"');
     $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
   }
+  
   public function executeListProfession(sfWebRequest $request) 
   {
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
