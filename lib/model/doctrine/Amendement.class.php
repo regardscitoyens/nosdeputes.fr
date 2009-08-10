@@ -91,7 +91,7 @@ class Amendement extends BaseAmendement {
   }
 
   public function getTexte() {
-    return preg_replace('/\<p\>\s*«\s*(.*)\s*»\s*\<\/p\>/', '<p class="texte_legi">« \1 »</p>', $this->_get('texte'));
+    return preg_replace('/\<p\>\s*«\s*([^»]+)\s+»(\W*)\<\/p\>/', '<p class="indent_guillemets">«&nbsp;\1&nbsp;»\2</p>', $this->_get('texte'));
   }
 
 public function getTitreNoLink() {

@@ -12,19 +12,17 @@
     </div>
     <div class="texte_intervention"><?php 
 $inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $intervention->getIntervention()); 
+$p_inter = '';
 if (isset($highlight)) {
-  $p_inter = '';
   foreach ($highlight as $h) {
     $p_inter .= excerpt_text($inter, $h, 400/count($highlight));
   }
   foreach ($highlight as $h) {
     $p_inter = highlight_text($p_inter, $h);
   }
-  if ($p_inter == '')
-    $p_inter = $inter;
-}else{
-  $p_inter = truncate_text($inter, 400);
 }
+if ($p_inter == '')
+    $p_inter = truncate_text($inter, 400);
 if ($intervention->hasIntervenant()) {
   $perso = $intervention->getIntervenant();
   $didascalie = 0;

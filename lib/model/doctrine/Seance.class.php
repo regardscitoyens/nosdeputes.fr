@@ -48,8 +48,15 @@ class Seance extends BaseSeance
     if (!$this->_set('date', $date))
       return false;
     $date = strtotime($date);
-    $this->_set('annee', date('Y', $date));
-    $this->_set('numero_semaine', date('W', $date));
+    $annee = date('Y', $date);
+    $semaine = date('W', $date);
+    if ($semaine == 53) {
+      $annee++;
+      $semaine = 1;
+    }
+    echo "test";
+    $this->_set('annee', $annee);
+    $this->_set('numero_semaine', $semaine);
     return true;
   }
   public function getInterventions() {
