@@ -5,4 +5,7 @@
 <?php echo '<li>Profession/Occupation : '.$Utilisateur->profession.'</li>'; ?>
 <?php echo '<li>Circonscription : '.$Utilisateur->circo.' '.$Utilisateur->circo_num.'</li>'; ?>
 </ul>
+<p>
+<a href="<?php echo url_for('utilisateur/edit?slug='.$Utilisateur->slug) ?>">Modifier votre profil</a>
+</p>
 </div>

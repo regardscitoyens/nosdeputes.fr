@@ -12,7 +12,7 @@
   <tbody>
     <?php foreach ($utilisateur_list as $utilisateur): ?>
     <tr>
-      <td><a href="<?php echo url_for('utilisateur/edit?slug='.$utilisateur->getSlug()) ?>"><?php echo $utilisateur->getLogin() ?></a></td>
+      <td><a href="<?php echo url_for('utilisateur/show?slug='.$utilisateur->getSlug()) ?>"><?php echo $utilisateur->getLogin() ?></a></td>
       <td><?php echo $utilisateur->getProfession() ?></td>
       <td><?php echo $utilisateur->getCirco().' '.$utilisateur->getCircoNum() ?></td>
     </tr>

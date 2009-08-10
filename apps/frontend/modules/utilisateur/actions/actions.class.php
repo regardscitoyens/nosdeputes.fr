@@ -20,20 +20,29 @@ class utilisateurActions extends sfActions
     $this->utilisateur_list = Doctrine::getTable('Utilisateur')
       ->createQuery('a')
       ->execute();
-		$response = $this->getResponse();
-		$response->setTitle('Liste des utilisateurs'); 
+    $response = $this->getResponse();
+    $response->setTitle('Liste des utilisateurs'); 
   }
-	
-	public function executeNew(sfWebRequest $request)
+  
+  public function executeNew(sfWebRequest $request)
   {
-    $this->form = new UtilisateurForm();
-		$response = $this->getResponse();
-		$response->setTitle('Inscription'); 
+    $form = new UtilisateurForm();
+    
+    if ($request->isMethod('post') || $request->isMethod('put')) // If HTTP method is POST
+    {
+      $form->bind($request->getParameter('utilisateur'));
+      $this->executeCreate($request, $this->form);
+    }
+    // Publish form instance to the view
+    $this->form = $form;
+    // le titre
+    $response = $this->getResponse();
+    $response->setTitle('Formulaire d\'inscription'); 
   }
-	
-	public function executeCreate(sfWebRequest $request)
+  
+  public function executeCreate(sfWebRequest $request)
   {
-    $this->forward404Unless($request->isMethod('post'));
+    $this->forward404Unless($request->isMethod('post') || $request->isMethod('put'));
 
     $this->form = new UtilisateurForm();
 
@@ -41,77 +50,87 @@ class utilisateurActions extends sfActions
 
     $this->setTemplate('new');
   }
-	
-	public function executeEdit(sfWebRequest $request)
+  
+  public function executeEdit(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
-		$this->forward404Unless($utilisateur = Doctrine::getTable('Utilisateur')->findOneBySlug($slug));
+    $this->forward404Unless($utilisateur = Doctrine::getTable('Utilisateur')->findOneBySlug($slug));
     $this->form = new UtilisateurForm($utilisateur);
-		$response = $this->getResponse();
-		$response->setTitle('Edition de votre profil'); 
+    $response = $this->getResponse();
+    $response->setTitle('Edition de votre profil'); 
   }
-	
-	public function executeUpdate(sfWebRequest $request)
+  
+  public function executeUpdate(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
     $this->forward404Unless($request->isMethod('post') || $request->isMethod('put'));
-		$this->forward404Unless($utilisateur = Doctrine::getTable('Utilisateur')->findOneBySlug($slug));
+    $this->forward404Unless($utilisateur = Doctrine::getTable('Utilisateur')->findOneBySlug($slug));
     $this->form = new UtilisateurForm($utilisateur);
 
     $this->processForm($request, $this->form);
 
     $this->setTemplate('edit');
-		$response = $this->getResponse();
-		$response->setTitle('Edition de votre profil'); 
+    $response = $this->getResponse();
+    $response->setTitle('Update de votre profil'); 
   }
-	
-	public function executeDelete(sfWebRequest $request)
+  
+  public function executeDelete(sfWebRequest $request)
   {
     $request->checkCSRFProtection();
 
     $slug = $request->getParameter('slug');
-		$this->forward404Unless($utilisateur = Doctrine::getTable('Utilisateur')->findOneBySlug($slug));
+    $this->forward404Unless($utilisateur = Doctrine::getTable('Utilisateur')->findOneBySlug($slug));
     $utilisateur->delete();
 
-    $this->redirect('utilisateur');
+    $this->redirect('@homepage');
   }
-	
-	protected function processForm(sfWebRequest $request, sfForm $form)
+  
+  protected function processForm(sfWebRequest $request, sfForm $form)
   {
-		$id = $request->getParameter('id');
-		$login = $request->getParameter('login');
-		$pass = $request->getParameter('pass');
-		$sexe = $request->getParameter('sexe');
-		$naissance = $request->getParameter('naissance');
-		$profession = $request->getParameter('profession');
-		$parlementaire_id = $request->getParameter('parlementaire_id');
-		$mail = $request->getParameter('mail');
-		$activation_id = $request->getParameter('activation_id');
-		$activation = $request->getParameter('activation');
-		$circo = $request->getParameter('circo');
-		$circo_num = $request->getParameter('circo_num');
-		$photo = $request->getParameter('photo');
-		$created_at = $request->getParameter('created_at');
-		$updated_at = $request->getParameter('updated_at');
-		$slug = $request->getParameter('slug');
-		
-		$form->bind($request->getParameter($form->getName()));
-    if ($form->isValid())
+    // Bind submitted values to the inscription form instance
+    $form->bind($request->getParameter('utilisateur'));
+      
+    // Validate the form
+    if ($form->isValid()) 
     {
-      $utilisateur = $form->save();
-
-      $this->redirect('utilisateur/'.$utilisateur->getSlug());
+      // on récupère les valeurs
+      $values = $this->form->getValues();
+      // pour inserer les autres
+      $id = '';  
+      $naissance= $values['naissance']['year'] .'-'. $values['naissance']['month'].'-'.$values['naissance']['day'];
+      $activation_id = time();  
+      $activation = false;
+      $slug = strtolower($values['login']);
+      $slug = preg_replace("/ /", "-", $slug);
+      $created_at = '';
+      $updated_at = '';
+      
+      $request->setAttribute('utilisateur["id"]', $id);
+      $request->setAttribute('utilisateur["naissance"]', $naissance);
+      $request->setAttribute('utilisateur["activation_id"]', $activation_id);
+      $request->setAttribute('utilisateur["activation"]', $activation);
+      $request->setAttribute('utilisateur["slug"]', $slug);
+      $request->setAttribute('utilisateur["created_at"]', $created_at);
+      $request->setAttribute('utilisateur["updated_at"]', $updated_at);
+      
+      // on sauve
+      $form = $this->form->save();
+      // message
+      $this->getUser()->setFlash('notice', 'Création de votre profil ok');
+      echo $form;
+      $this->redirect('@list_utilisateurs');
+      #$this->redirect("/citoyen/:$slug");
     }
   }
-	
-	public function executeShow(sfWebRequest $request)
+  
+  public function executeShow(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
     $this->Utilisateur = Doctrine::getTable('Utilisateur')->findOneBySlug($slug);
-		$response = $this->getResponse();
-		$response->setTitle('Mini blog de '.$this->Utilisateur->login); 
+    $response = $this->getResponse();
+    $response->setTitle('Mini blog de '.$this->Utilisateur->login); 
   }
-	
+  
   public function executeList(sfWebRequest $request)
   {
     
