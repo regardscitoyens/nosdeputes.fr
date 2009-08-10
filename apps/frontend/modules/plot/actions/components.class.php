@@ -10,8 +10,8 @@ class plotComponents extends sfComponents
     if ($sem == 53) { $annee++; $sem = 1; }
     $last_year = $date - 31536000;
     if ($this->parlementaire->debut_mandat > date('Y-m-d', $last_year)) {
-      $last_year = $this->parlementaire->debut_mandat;
-      $date_debut = strtotime($this->parlementaire->debut_mandat);
+      $date_debut = $this->parlementaire->debut_mandat;
+      $last_year = strtotime($this->parlementaire->debut_mandat);
     } else
       $date_debut = date('Y-m-d', $last_year);
     $annee_debut = date('Y', $last_year);
@@ -35,10 +35,7 @@ class plotComponents extends sfComponents
     $this->n_presences_commission = array_fill(1, $n_weeks, 0);
     $this->n_presences_hemicycle = array_fill(1, $n_weeks, 0);
     foreach ($presences as $presence) {
-      $a = $presence['Seance']['annee'];
-      $s = $presence['Seance']['numero_semaine'];
-      if ($s == 53) { $a++; $s = 1; }
-      $n = ($a - $annee_debut)*52 + $s - $sem_debut + 1;
+      $n = ($presence['Seance']['annee'] - $annee_debut)*52 + $presence['Seance']['numero_semaine'] - $sem_debut + 1;
       if ($presence['Seance']['type'] == 'hemicycle')
         $this->n_presences_hemicycle[$n] += $presence['nombre'];
       else $this->n_presences_commission[$n] += $presence['nombre'];
@@ -50,7 +47,6 @@ class plotComponents extends sfComponents
       ->where('s.date > ?', $date_debut)
       ->leftJoin('s.Interventions i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.fonction NOT LIKE ?', 'president')
       ->andWhere('i.nb_mots > ?', $seuil_invective)
       ->addGroupBy('s.type')
       ->addGroupBy('s.annee')
@@ -62,10 +58,7 @@ class plotComponents extends sfComponents
     $this->n_mots_commission = array_fill(1, $n_weeks, 0);
     $this->n_mots_hemicycle = array_fill(1, $n_weeks, 0);
     foreach ($participations as $participation) {
-      $a = $participation['annee'];
-      $s = $participation['numero_semaine'];
-      if ($s == 53) { $a++; $s = 1; }
-      $n = ($a - $annee_debut)*52 + $s - $sem_debut + 1;
+      $n = ($participation['annee'] - $annee_debut)*52 + $participation['numero_semaine'] - $sem_debut + 1;
       if ($participation['type'] == 'hemicycle') {
         $this->n_participations_hemicycle[$n] += $participation['nombre'];
         $this->n_mots_hemicycle[$n] += $participation['mots']/1000;
@@ -73,6 +66,14 @@ class plotComponents extends sfComponents
         $this->n_participations_commission[$n] += $participation['nombre'];
         $this->n_mots_commission[$n] += $participation['mots']/1000;
       }
+    }
+    $vacances = Doctrine_Query::create()->select('v.value')->from('VariableGlobale v')
+      ->where('v.champ = ?', 'vacances')->fetchOne();
+    $this->n_vacances = array_fill(1, $n_weeks, 0);
+    foreach (unserialize($vacances->value) as $vacance) {
+      $n = ($vacance['annee'] - $annee_debut)*52 + $vacance['semaine'] - $sem_debut + 1;
+      if ($n > 0 && $n <= $n_weeks)
+        $this->n_vacances[$n] = 10000;
     }
   }
 

@@ -202,7 +202,7 @@ Amendement:
       type: enum
       values: ['Indéfini', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non soutenu', 'Retiré avant séance']
     date: date
-    signataires: blob
+    signataires: string
     texte: 
       type: string
     expose: 
@@ -261,3 +261,10 @@ Utilisateur:
     photo:
       type: boolean
       default: 0
+
+VariableGlobale:
+  actAs:
+    Timestampable:
+  columns:
+    champ: string(32)
+    value: blob
