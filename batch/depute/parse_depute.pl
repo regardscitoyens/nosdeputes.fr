@@ -223,7 +223,7 @@ foreach $k (keys %depute) {
 print "</Depute>\n";
 exit;
 } 
-print " { ";
+print "{ ";
 foreach $k (keys %depute) {
     next if ($k =~ /suppléant/i);
     if (ref($depute{$k}) =~ /HASH/) {

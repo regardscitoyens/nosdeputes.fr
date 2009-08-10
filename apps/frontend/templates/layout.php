@@ -51,7 +51,7 @@
           <div class="search_box">
             <form action="<?php echo url_for('@search'); ?>" method="get">
             <p>
-              <input class="rechercher" name="search" type="text" size="15" value="rechercher"/>
+              <input class="rechercher" name="search" type="text" size="15" value="<?php if (isset($_GET['search'])) echo $_GET['search']; ?>"/>
               <select class="type_recherche" name="type">
                 <option value="depute">Députés</option>
                 <option value="intervention">Interventions</option>

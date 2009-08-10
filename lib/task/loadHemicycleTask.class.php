@@ -30,7 +30,7 @@ class loadHemicyleTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
-	    $id = md5($json->intervention.$json->date.$json->heure.'hemicyle'.$json->context.substr($json->timestamp, 2));
+	    $id = md5($json->intervention.$json->date.$json->heure.'hemicyle'.$json->context.$json->timestamp);
 	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
 	    if(!$intervention) {
 	      $intervention = new Intervention();

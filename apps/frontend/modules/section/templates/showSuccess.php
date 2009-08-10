@@ -12,9 +12,10 @@ echo $section->titre;
 <div>
 Voici l'organisation du projet :
 <ul>
-<?php foreach($section->getSubSections() as $subsection) : ?>
+<?php foreach($section->getSubSections() as $subsection) :
+if ($subsection->nb_interventions && $subsection->id != $section->id) : ?>
 <li><?php echo link_to($subsection->titre, '@section?id='.$subsection->id); ?></li>
-<?php endforeach; ?>
+<?php endif; endforeach;?>
 </ul>
 </div>
 

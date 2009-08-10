@@ -17,11 +17,10 @@ class interventionActions extends sfActions
   }
   public function executeShow(sfWebRequest $request)
   {
-    $query = doctrine::getTable('Intervention')->createquery('i')
-        ->where('i.id = ?', $request->getParameter('id'))
-        ->leftJoin('i.Personnalite pe')
-        ->leftJoin('i.Parlementaire pa');
-     $this->intervention = $query->fetchOne();
+    $this->intervention = doctrine::getTable('Intervention')->createquery('i')
+      ->where('i.id = ?', $request->getParameter('id'))
+      ->fetchOne();
+    $this->forward404Unless($this->intervention);
   }
   public function executeTop(sfWebRequest $request)
   {
