@@ -90,7 +90,11 @@ class Amendement extends BaseAmendement {
     return "$titre";
   }
 
-  public function getTitreNoLink() {
+  public function getTexte() {
+    return preg_replace('/\<p\>\s*«\s*(.*)\s*»\s*\<\/p\>/', '<p class="texte_legi">« \1 »</p>', $this->_get('texte'));
+  }
+
+public function getTitreNoLink() {
     return preg_replace('/\<a href.*\<\/a\>/', '', $this->getTitre());
   }
 
