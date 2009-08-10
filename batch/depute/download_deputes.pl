@@ -3,20 +3,41 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
-$a = WWW::Mechanize->new();
-$a->get("http://www.assemblee-nationale.fr/13/tribun/xml/liste_alpha.asp");
-
-$content = $a->content;
-$p = HTML::TokeParser->new(\$content);
-
-while ($t = $p->get_tag('a')) {
-    if ($t->[1]{class} eq 'dep2') {
-	$uri = $file = $t->[1]{href};
+sub download_fiche {
+	$uri = $file = shift;
 	$file =~ s/^.*\/([^\/]+)/$1/;
 	print "$file\n";
 	$a->get($uri);
 	open FILE, ">:utf8", "html/$file";
 	print FILE $a->content;
 	close FILE;
+	return $file;
+}
+
+$a = WWW::Mechanize->new();
+#$a->get("http://www.assemblee-nationale.fr/13/tribun/xml/liste_alpha.asp");
+#$content = $a->content;
+#$p = HTML::TokeParser->new(\$content);
+#while ($t = $p->get_tag('a')) {
+#    if ($t->[1]{class} eq 'dep2') {
+#	download_fiche($t->[1]{href});
+#    }
+#}
+$a->get("http://www.assembleenationale.fr/13/tribun/xml/liste_mandats_clos.asp");
+$content = $a->content;
+$p = HTML::TokeParser->new(\$content);
+open PM, ">finmandats.pm";
+while ($t = $p->get_tag('td')) {
+    if ($t->[1]{class} eq 'denom') {
+	$t = $p->get_tag('a');
+	if ($t->[1]{href}) {
+	    $id = download_fiche($t->[1]{href});
+	    $t = $p->get_tag('td');
+	    $t = $p->get_tag('td');
+	    $t = $p->get_tag('td');
+	    $t = $p->get_text('/td');
+	    $t =~ s/[^\d\/]//g;
+	    print PM "\$fin_mandat{'$id'} = '$t';\n";
+	}
     }
 }

@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 use HTML::TokeParser;
+require "finmandats.pm";
 
 $file = shift;
 $xml = shift || 0;
@@ -13,6 +14,8 @@ my %depute;
 if ($file =~ /(\d+)/) {
     $depute{'id_an'} = $1;
     $depute{'url_an'} = "http://www.assembleenationale.fr/13/tribun/fiches_id/$1.asp";
+    print "$1.asp\n";
+    $depute{'Fin_Mandat'} = $fin_mandat{"$1.asp"};
 }
 
 sub infosgene {
@@ -95,7 +98,12 @@ sub mandat {
 			$deb = $1;
 		    }
 		}
-		${$depute{'Fonctions'}}{lc($orga)." / ".lc($fonction)." / ".$deb} = 1;
+		if ($fonction =~ /reprise de l'exercice/i) {
+		    $orga =~ /(\d{2}\/\d{2}\/\d+)/;
+		    $depute{'Debut_Mandat'} = $1;
+		}else {
+		    ${$depute{'Fonctions'}}{lc($orga)." / ".lc($fonction)." / ".$deb} = 1;
+		}
 		$p->get_tag('/li');
 	    }
 	}
@@ -157,13 +165,15 @@ while($p->get_tag("h1")) {
 }
 
 #On récupère le nom de famille à partir des emails
-@noms = split / /, $depute{'Nom'};
+$nomdep = $depute{'Nom'};
+$nomdep =~ s/[éèêë]+/e/ig;
+@noms = split / /, $nomdep;
 if ((join " ", keys %{$depute{'Mails'}}) =~ /(\S+)\@assemblee/) {
     $login = $1;
     while ($login = substr($login, 1)) {
 	for($i = 0 ; $i <= $#noms ; $i++) {
 	    if ($noms[$i] =~ /$login/i)  {
-		if ($depute{'Nom'} =~ /(\S*$login.*)/i) {
+		if ($nomdep =~ /(\S*$login.*)/i) {
 		    $depute{'Nom_de_famille'} = $1;
 		    last;
 		}
@@ -213,16 +223,17 @@ foreach $k (keys %depute) {
 print "</Depute>\n";
 exit;
 } 
-print "  depute_".$depute{'id_an'}.":\n";
+print " { ";
 foreach $k (keys %depute) {
     next if ($k =~ /suppléant/i);
     if (ref($depute{$k}) =~ /HASH/) {
-	print "    ".lc($k).":\n";
+	print '"'.lc($k).'" : [';
 	foreach $i (keys %{$depute{$k}}) {
-	    print "      - $i\n";
+	    print '"'.$i.'",';
 	}
+	print '"" ], ';
     }else {
-	print "    ".lc($k).": ".$depute{$k}."\n";
+	print '"'.lc($k).'" : "'.$depute{$k}.'", ';
     }
 }
-print "    type: depute\n";
+print "\"type\" : \"depute\" }\n";
