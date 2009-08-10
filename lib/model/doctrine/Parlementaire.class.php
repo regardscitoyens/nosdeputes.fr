@@ -178,6 +178,8 @@ class Parlementaire extends BaseParlementaire
 	$orga->type = $type;
 	$orga->save();
       }
+      if ($type == 'groupe')
+        $this->groupe_acronyme = $orga->getSmallNomGroupe();
       $po = new ParlementaireOrganisme();
       $po->setParlementaire($this);
       $po->setOrganisme($orga);

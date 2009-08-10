@@ -29,6 +29,7 @@ Parlementaire:
     type:
       type:	enum
       values:	['depute', 'senateur']
+    groupe_acronyme: string(8)
   inheritance:
     extends: Personnalite
     type: concrete
