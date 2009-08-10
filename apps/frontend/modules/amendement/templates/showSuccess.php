@@ -1,6 +1,6 @@
 <div class="amendement" id="L<?php echo $amendement->texteloi_id; ?>A<?php echo $amendement->numero; ?>">
-  <h2>Projet/Proposition de loi N° <?php echo $amendement->texteloi_id; ?> : //titre//</h2>
-<h1><?php echo $amendement->getTitre(); if (count($identiques) > 1 )echo ' (ou identiques)';?></h1>
+  <h2>Texte de loi N° <?php echo $amendement->texteloi_id; ?> : //titre//</h2>
+<h1><?php echo $amendement->getTitre(); ?></h1>
   <p class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></p>
   <div class="signataires">
   <p>Déposé le <?php echo $amendement->date; ?> par : <?php echo $amendement->signataires; ?>.</p>
@@ -16,6 +16,13 @@
   <div class="sort">
     <p>Sort en séance : <?php echo $amendement->getSort(); ?></p>
   </div>
+  <div class="identiques">
+  <?php if (count($identiques) > 1) : ?>
+  <?php if (count($identiques) > 2) { $ident_titre = "( Amendements identiques : "; } else { $ident_titre = "( Amendement identique : "; } ?>
+  <p><em><?php echo $ident_titre; foreach($identiques as $identique) { if ($identique->numero != $amendement->numero) {
+      echo link_to($identique->numero, '@amendement?id='.$identique->id)." "; } } ?>)</em></p>
+  <?php endif; ?>
+  </div>
   <div class="sujet">
     <h2><?php echo $amendement->getSujet(); ?></h2>
   </div>
@@ -26,15 +33,6 @@
     <h3>Exposé Sommaire :</h3>
     <?php echo $amendement->getExpose(); ?>
   </div>
- <?php if (count($identiques) > 1) { ?>
-<h3>Amendements identiques</h3>
-<ul>
-<?php foreach($identiques as $identique) { ?>
-<?php if ($identique->numero != $amendement->numero) { ?>
-<li><?php echo link_to($identique->numero, '@amendement?id='.$identique->id); ?></li>
-<?php } }?>
-</ul>
-<?php }?>
 <?php if ($seances) : ?>
 <div>
 <h3>En séance</h3>

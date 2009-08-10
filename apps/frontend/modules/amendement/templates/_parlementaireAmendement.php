@@ -1,7 +1,8 @@
 <?php use_helper('Text') ?>
   <div class="amendement" id="<?php echo $amendement->id; ?>">
     <div class="info">
-    <?php echo $amendement->date; ?> <strong>Loi N° <?php echo $amendement->texteloi_id; ?> : <?php echo link_to($amendement->getTitreNoLink(), 'amendement/show?id='.$amendement->id); ?></strong> de <?php echo $amendement->getSignataires(); ?> (<?php echo $amendement->sort; ?>)
+    <p><?php echo $amendement->date; ?> <strong>Loi N° <?php echo $amendement->texteloi_id; ?> : <?php echo link_to($amendement->getTitreNoLink(), 'amendement/show?id='.$amendement->id); ?></strong> (<?php echo $amendement->sort; ?>)<br>
+    <?php echo $amendement->getSignataires(); ?></p>
     <p class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></p>
     </div>
     <div class="texte_amendement"><?php

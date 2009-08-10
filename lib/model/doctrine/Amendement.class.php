@@ -60,37 +60,41 @@ class Amendement extends BaseAmendement {
   public function getTitre() {
     $parent = 0;
     $pluriel = "";
- //   if hastag sous_amendement de
- //     $parent =
-//      $titre = "Sous-Amendement";
-//    else
+    $parent = $this->getTags(array('is_triple' => true,
+	  'namespace' => 'loi',
+	  'key' => 'sous_amendement_de',
+	  'return'    => 'value'));
+    if (count($parent) == 1)
+      $titre = "Sous-Amendement";
+    else {
+      $parent = "";
       $titre = "Amendement";
+    }
     $numeros = $this->numero;
-    // if hastags autres amendements {
-    //    foreach ($tags as $tag)
-    //      $numeros .= ", "$tag->numero;
-    //  $pluriel = "s";
-    // }
+    $ident = $this->getTags(array('is_triple' => true,
+	  'namespace' => 'loi',
+	  'key' => 'amendement',
+	  'return'    => 'value'));
+    if (count($ident) > 1) {
+      sort($ident);
+      $numeros = implode(', ', $ident);
+      $pluriel = "s";
+    }
     $titre .= $pluriel." N° ".$numeros;
     if ($this->rectif == 1)
-      $titre .= " rectifié";
+      $titre .= " rectifié".$pluriel;
     elseif($this->rectif > 1)
       $titre .= " ".$this->rectif."ème rectif.";
-    $titre .= $pluriel;
     if ($parent != 0)
-      $titre .= " à l'amendement N° ".link_to($parent, 'amendement/id/'.$parent->id);
+      $titre .= " à l'amendement N° ".link_to($parent[0], '@find_amendements_by_loi_and_numero?loi='.$this->texteloi_id.'&numero='.$parent[0]);
     return "$titre";
   }
 
   public function getTitreNoLink() {
     return preg_replace('/\<a href.*\<\/a\>/', '', $this->getTitre());
   }
-  public function getLink() {
-    return "http://www.assemblee-nationale.fr/".$this->source.".asp";
-  }
 
   public function getLinkPDF() {
-    $id = preg_replace('/\/amendement/', '/pdf/amendement', $this->source);
-    return "http://www.assemblee-nationale.fr/".$id.".pdf";
+    return preg_replace('/\/amendement/', '/pdf/amendement', preg_replace('/\.asp(.*)$/', '\.pdf', $this->source));
   }
 }

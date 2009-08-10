@@ -14,6 +14,7 @@ class amendementActions extends sfActions
 
      $this->identiques = doctrine::getTable('Amendement')->createQuery('a')
        ->where('content_md5 = ?', $this->amendement->content_md5)
+       ->orderBy('numero')
        ->execute();
 
      if (count($this->identiques) < 2) {
