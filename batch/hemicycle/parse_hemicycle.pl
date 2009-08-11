@@ -258,7 +258,7 @@ foreach $line (split /\n/, $string)
 	    }
 	}elsif($line =~ /h2 class="titre[23]"><*([^<\(]+)\s*/ || $line =~ /class="sstitreinfo">\/([^\/]+)\//) {
 	    checkout();
-	    if ($1 =~ /demande/i && ($1 !~ /suspension/ && $1 !~ /séance/)) {
+	    if (($1 !~ /suspension/ && $1 !~ /séance/) || $1 =~ /demande/i){
 		$titre2 = $1;
 	    }
 	    $titre2 =~ s/\s+$//;
