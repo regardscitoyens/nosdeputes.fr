@@ -12,3 +12,4 @@ php symfony doctrine:build-all-reload --no-confirmation
 cat /tmp/delete.sql | mysql $MYSQLID cpc
 rm /tmp/tables.sql /tmp/drop.sql /tmp/create.sql /tmp/delete.sql
 zcat data/sql/data.sql.gz | grep -v '`blog`' | grep -v '`tag_template`' | mysql $MYSQLID cpc
+php symfony set:Vacances
