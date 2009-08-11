@@ -67,10 +67,9 @@ class plotComponents extends sfComponents
         $this->n_mots_commission[$n] += $participation['mots']/1000;
       }
     }
-    $vacances = Doctrine_Query::create()->select('v.value')->from('VariableGlobale v')
-      ->where('v.champ = ?', 'vacances')->fetchOne();
+    $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
     $this->n_vacances = array_fill(1, $n_weeks, 0);
-    foreach (unserialize($vacances->value) as $vacance) {
+    if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
       $n = ($vacance['annee'] - $annee_debut)*52 + $vacance['semaine'] - $sem_debut + 1;
       if ($n > 0 && $n <= $n_weeks)
         $this->n_vacances[$n] = 10000;

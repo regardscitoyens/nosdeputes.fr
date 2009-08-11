@@ -44,11 +44,9 @@ class setVacancesTask extends sfBaseTask {
       $option = new VariableGlobale();
       $option->setChamp('vacances');
       $option->setValue(serialize($semaines));
-    } else $option->value = serialize($semaines);
+    } else $option->setValue(serialize($semaines));
     $option->save();
     $option->free();
-    $option = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
-    echo unserialize($option);
   }
 }
 
