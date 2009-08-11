@@ -54,7 +54,6 @@ class Seance extends BaseSeance
       $annee++;
       $semaine = 1;
     }
-    echo "test";
     $this->_set('annee', $annee);
     $this->_set('numero_semaine', $semaine);
     return true;
