@@ -104,12 +104,14 @@ class tagSeanceTask extends sfBaseTask
 	$i = null;
 	foreach (array_keys($tags) as $tag) {
 	  if (preg_match('/([^\s\,\.\:\>\;\(\)]*[^\,\.\:\>\;\(\)]{6}'.$tag.'[^\s\,\.\:\<\&\(\)]*)/i', $inter['intervention'], $match)) {
-	      $sentences[$match[1]]++;
-	      $sent2word[$match[1]] = $tag;
+	    $sent = strtolower($match[1]);
+	    $sentences[$sent]++;
+	    $sent2word[$sent] = $tag;
 	  }
 	  if (preg_match('/([^\s\,\.\:\>\;\)\)]*'.$tag.'[^\,\.\:\<\&\(\)]{6}[^\s\,\.\:\<\&\(\)]*)/i', $inter['intervention'], $match)) {
-	    $sentences[$match[1]]++;
-	    $sent2word[$match[1]] = $tag;
+	    $sent = strtolower($match[1]);
+	    $sentences[$sent]++;
+	    $sent2word[$sent] = $tag;
 	  }
 	}
       }
