@@ -5,37 +5,32 @@ class plotComponents extends sfComponents
   public function executeParlementairePresenceLastYear() {
     static $seuil_invective = 20;
     $date = time();
-    $annee = date('Y', $date);
-    $sem = date('W', $date);
-    if ($sem == 53) { $annee++; $sem = 1; }
+    $annee = date('Y', $date); $sem = date('W', $date); if ($sem == 53) { $annee++; $sem = 1; }
     $last_year = $date - 31536000;
     if ($this->parlementaire->debut_mandat > date('Y-m-d', $last_year)) {
       $date_debut = $this->parlementaire->debut_mandat;
       $last_year = strtotime($this->parlementaire->debut_mandat);
     } else
       $date_debut = date('Y-m-d', $last_year);
-    $annee_debut = date('Y', $last_year);
-    $sem_debut = date('W', $last_year);
-    if ($sem_debut == 53) { $annee_debut++; $sem_debut = 1; }
-    $n_weeks = ($annee - $annee_debut)*52 + $sem - $sem_debut + 1;
-    $this->semaines = range(1, $n_weeks);
+    $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year); if ($sem0 == 53) { $annee0++; $sem0 = 1; }
+    $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
+    
+    $this->labels = $this->getLabelsSemaines($n_weeks, $annee0, $sem0);
+    $this->vacances = $this->getVacances($n_weeks, $annee0, $sem0);
 
     $query = Doctrine_Query::create()
-      ->select('COUNT(*) as nombre, p.*')
-      ->from('Presence p')
+      ->select('COUNT(*) as nombre, p.*')->from('Presence p')
       ->where('p.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('p.Seance s')
-      ->addSelect('s.type, s.annee, s.numero_semaine')
       ->andWhere('s.date > ?', $date_debut)
-      ->groupBy('s.type')
-      ->groupBy('s.annee')
-      ->addGroupBy('s.numero_semaine');
+      ->addSelect('s.type, s.annee, s.numero_semaine')
+      ->groupBy('s.type, s.annee, s.numero_semaine');
     $presences = $query->fetchArray();
 
     $this->n_presences_commission = array_fill(1, $n_weeks, 0);
     $this->n_presences_hemicycle = array_fill(1, $n_weeks, 0);
     foreach ($presences as $presence) {
-      $n = ($presence['Seance']['annee'] - $annee_debut)*52 + $presence['Seance']['numero_semaine'] - $sem_debut + 1;
+      $n = ($presence['Seance']['annee'] - $annee0)*52 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
       if ($presence['Seance']['type'] == 'hemicycle')
         $this->n_presences_hemicycle[$n] += $presence['nombre'];
       else $this->n_presences_commission[$n] += $presence['nombre'];
@@ -48,9 +43,7 @@ class plotComponents extends sfComponents
       ->leftJoin('s.Interventions i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('i.nb_mots > ?', $seuil_invective)
-      ->addGroupBy('s.type')
-      ->addGroupBy('s.annee')
-      ->addGroupBy('s.numero_semaine');
+      ->groupBy('s.type, s.annee, s.numero_semaine');
     $participations = $query2->fetchArray();
 
     $this->n_participations_commission = array_fill(1, $n_weeks, 0);
@@ -58,7 +51,7 @@ class plotComponents extends sfComponents
     $this->n_mots_commission = array_fill(1, $n_weeks, 0);
     $this->n_mots_hemicycle = array_fill(1, $n_weeks, 0);
     foreach ($participations as $participation) {
-      $n = ($participation['annee'] - $annee_debut)*52 + $participation['numero_semaine'] - $sem_debut + 1;
+      $n = ($participation['annee'] - $annee0)*52 + $participation['numero_semaine'] - $sem0 + 1;
       if ($participation['type'] == 'hemicycle') {
         $this->n_participations_hemicycle[$n] += $participation['nombre'];
         $this->n_mots_hemicycle[$n] += $participation['mots']/1000;
@@ -67,14 +60,34 @@ class plotComponents extends sfComponents
         $this->n_mots_commission[$n] += $participation['mots']/1000;
       }
     }
-    $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
-    $this->n_vacances = array_fill(1, $n_weeks, 0);
-    if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
-      $n = ($vacance['annee'] - $annee_debut)*52 + $vacance['semaine'] - $sem_debut + 1;
-      if ($n > 0 && $n <= $n_weeks)
-        $this->n_vacances[$n] = 10000;
-    }
+
   }
+
+  public static function getVacances($n_weeks, $annee0, $sem0) {
+    $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
+    $n_vacances = array_fill(1, $n_weeks, 0);
+    if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
+      $n = ($vacance['annee'] - $annee0)*52 + $vacance['semaine'] - $sem0 + 1;
+      if ($n > 0 && $n <= $n_weeks)
+        $n_vacances[$n] = 10000;
+    }
+    return $n_vacances;
+ }
+
+ public static function getLabelsSemaines($n_weeks, $annee0, $sem0) {
+    $annee = $annee0 + 1;
+    $hashmap = array( 3  => "JAN ".$annee, 7  => " FEV", '11' => " MAR", '16' => "AVR ",
+                      '20' => "MAI ", '24' => " JUIN", '28' => "JUIL", '33' => " AOUT",
+                      '37' => " SEP", '42' => "OCT ", '46' => " NOV", '50' => " DEC" );
+    $labels = array_fill(1, $n_weeks, "");
+    if ($sem0 < 3) $labels[0] = "Jan ".$annee0;
+    else for ($i = 1; $i <= $n_weeks; $i++) {
+      $index = $i + $sem0; if ($index > 52) $index -= 52;
+      if (isset($hashmap[$index]) && !(($index == 3) && ($sem0 < 3))) $labels[$i] = $hashmap[$index];
+    }
+    return $labels;
+  }
+
 
   public function executeParlementairePresenceCommissionBySession() {
     $query = Doctrine_Query::create()
