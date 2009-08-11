@@ -240,6 +240,7 @@ Utilisateur:
     login:
       type: string(255)
       unique: true
+      notnull: true
     pass:
       type: string(40)
       notnull: true
@@ -256,7 +257,6 @@ Utilisateur:
     activation:
       type: boolean
       default: 0
-      notnull: true
     circo: string(255)
     circo_num: integer
     photo:
