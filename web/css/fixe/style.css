@@ -395,6 +395,9 @@ img {
   cursor: pointer;
   background: #fff url("images/fond_titre_adresses.png") no-repeat top right;
 }
+#tab_adresse_1 p { z-index: 3; }
+#tab_adresse_2 p { z-index: 2; }
+#tab_adresse_3 p { z-index: 1; }
 
 #tab_adresse_1:hover p, 
 #tab_adresse_1:focus p, 
