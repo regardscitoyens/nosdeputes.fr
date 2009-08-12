@@ -256,6 +256,9 @@ img {
   float: left;
 }
 .photo_depute {
+	position: relative;
+	top: 0;
+	left: 0;
   height: 150px;
   width: 117px;
   border-right: 1px solid #BFBFBF;
@@ -263,6 +266,11 @@ img {
 .photo_fiche {
   height: 150px;
   width: 117px;
+}
+.logo_parti {
+	position: absolute;
+	bottom: 0;
+	right: 0;
 }
 .graph_depute {
   float: left;
@@ -312,9 +320,6 @@ img {
 }
 .barre_date {
   margin-left: 25px;
-}
-.logo_parti {
-  float: right;
 }
 .contenu_depute {
   width: 938px;

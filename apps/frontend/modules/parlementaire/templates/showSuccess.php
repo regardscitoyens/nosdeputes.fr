@@ -3,6 +3,7 @@
   <div class="depute_gauche">
     <div class="photo_depute">
     <?php if ($parlementaire->getPhoto()) { echo image_tag($parlementaire->getPhoto(), 'class="photo_fiche" alt=Photo de '.$parlementaire->nom); } ?>
+		<span class="logo_parti"><?php if ($parlementaire->getGroupe()) echo image_tag($parlementaire->getGroupe()->getNom().'.gif', 'alt="Logo '.$parlementaire->getGroupe()->getNom().' "'); ?></span>
     </div>
   </div>
   <div class="graph_depute">
@@ -22,7 +23,6 @@
       <li title="Questions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/question.png', 'alt="Questions"'); ?>   : 50</a></li>
       <li><span class="barre_date">Depuis le : <?php echo $parlementaire->debut_mandat; ?></span></li>
     </ul>
-      <span class="logo_parti"><?php if ($parlementaire->getGroupe()) echo image_tag($parlementaire->getGroupe()->getNom().'.gif', 'alt="Logo '.$parlementaire->getGroupe()->getNom().' "'); ?></span>
   </div>
   <div class="stopfloat"></div>
 </div>

@@ -30,6 +30,6 @@ Voici la liste des séances pour cette section :
 </div>
 <div>
 Voici la liste des principaux orateurs pour cette section :
-<? echo include_component('parlementaire', 'list', array('parlementairequery' => $ptag, 'route'=>'@parlementaire_texte?id='.$section->id.'&slug=')); ?>
+<?php echo include_component('parlementaire', 'list', array('parlementairequery' => $ptag, 'route'=>'@parlementaire_texte?id='.$section->id.'&slug=')); ?>
 </div>
 </div>
