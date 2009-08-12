@@ -1,9 +1,4 @@
 <?php
-  //Le template plante pour un député qui n'a jamais siégé (boutin, Jégo, 
-  //Je n'arrive pas à le sécuriser
-  //Je le désactive donc en attendant une solution
-return;
-
 
 // Dataset definition
 $president = false;

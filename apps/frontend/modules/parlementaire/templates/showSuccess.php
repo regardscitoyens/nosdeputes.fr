@@ -10,7 +10,7 @@
     <div class="info_depute">
       <h1><?php echo $parlementaire->nom.', '.$parlementaire->getLongStatut(); ?></h1>
     </div>
-      <?php echo include_component('plot', 'parlementairePresenceLastYear', array('parlementaire' => $parlementaire)); ?>
+      <?php //echo include_component('plot', 'parlementairePresenceLastYear', array('parlementaire' => $parlementaire)); ?>
     <?php //echo include_component('plot', 'parlementairePresenceCommissionBySession', array('parlementaire' => $parlementaire)); ?>
   </div>
   <div class="barre_activite">
