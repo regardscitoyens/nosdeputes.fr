@@ -262,6 +262,7 @@ img {
   height: 150px;
   width: 117px;
   border-right: 1px solid #BFBFBF;
+  background: #D0D0D0 url("images/cadre_depute.png") no-repeat 0 0;
 }
 .photo_fiche {
   height: 150px;
