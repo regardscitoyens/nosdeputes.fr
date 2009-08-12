@@ -54,10 +54,10 @@ class plotComponents extends sfComponents
       $n = ($participation['annee'] - $annee0)*52 + $participation['numero_semaine'] - $sem0 + 1;
       if ($participation['type'] == 'hemicycle') {
         $this->n_participations_hemicycle[$n] += $participation['nombre'];
-        $this->n_mots_hemicycle[$n] += $participation['mots']/1000;
+        $this->n_mots_hemicycle[$n] += $participation['mots']/10000;
       } else {
         $this->n_participations_commission[$n] += $participation['nombre'];
-        $this->n_mots_commission[$n] += $participation['mots']/1000;
+        $this->n_mots_commission[$n] += $participation['mots']/10000;
       }
     }
 
@@ -69,7 +69,7 @@ class plotComponents extends sfComponents
     if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
       $n = ($vacance['annee'] - $annee0)*52 + $vacance['semaine'] - $sem0 + 1;
       if ($n > 0 && $n <= $n_weeks)
-        $n_vacances[$n] = 10000;
+        $n_vacances[$n] = 14;
     }
     return $n_vacances;
  }
