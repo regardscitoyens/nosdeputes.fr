@@ -368,9 +368,56 @@ img {
   border-left: 1px dashed #BFBFBF;
 }
 /**/
-.mot_dep {
-  text-align: justify;
+/* Tabs adresses */
+.adresses {
+	position: relative;
+	left: 0;
 }
+.tab_adresse p{
+	position: absolute;
+	top: 37px;
+	left: 0;
+	width: 425px;
+	padding: 15px;
+  background-color: #fff;
+  border: 1px dashed #BFBFBF;
+}
+.tab_adresse h4 {
+	display: inline;
+	float: left;
+	padding: 0;
+	margin: 0;
+	padding-left: 5px;
+	padding-right: 15px;
+  border-left: 1px solid #BFBFBF;
+	height: 20px;
+	line-height: 20px;
+	cursor: pointer;
+  background: #fff url("images/fond_titre_adresses.png") no-repeat top right;
+}
+
+#tab_adresse_1:hover p, 
+#tab_adresse_1:focus p, 
+#tab_adresse_2:hover p, 
+#tab_adresse_2:focus p, 
+#tab_adresse_3:hover p, 
+#tab_adresse_3:focus p
+{
+	z-index: 10;
+  background-color: #efefef;
+}
+
+#tab_adresse_1:hover h4, 
+#tab_adresse_1:focus h4, 
+#tab_adresse_2:hover h4, 
+#tab_adresse_2:focus h4, 
+#tab_adresse_3:hover h4, 
+#tab_adresse_3:focus h4
+{
+	z-index: 10;
+  background-color: #DFEEFF;
+}
+/**/
 .bas_depute {
   clear: both;
   margin-top: 15px;
