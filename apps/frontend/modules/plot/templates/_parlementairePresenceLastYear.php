@@ -1,14 +1,15 @@
 <?php
-for ($i = 0; $i < count($n_presences_hemicycle); $i ++) if ($n_presences_hemicycle[$i] != 0) $n_presences_hemicycle[$i] += .1;
+if (isset($options['plot'])) $plot = $options['plot'];
+else $plot = "";
+$str_options = $plot;
 // Dataset definition
-$president = false;
 $DataSet = new xsPData();
 $DataSet->AddPoint($labels, "Serie1");
-$DataSet->AddPoint($n_presences_hemicycle, "Serie2");
+$DataSet->AddPoint($n_presences['hemicycle'], "Serie2");
 $DataSet->SetSerieName("Présences", "Serie2");
-$DataSet->AddPoint($n_participations_hemicycle, "Serie3");
+$DataSet->AddPoint($n_participations['hemicycle'], "Serie3");
 $DataSet->SetSerieName("Participations", "Serie3");
-$DataSet->AddPoint($n_mots_hemicycle, "Serie4");
+$DataSet->AddPoint($n_mots['hemicycle'], "Serie4");
 $DataSet->SetSerieName("10 000 mots", "Serie4");
 $DataSet->AddSerie("Serie2");
 $DataSet->AddSerie("Serie3");
@@ -40,25 +41,27 @@ $Test->drawTreshold(0.8,255,0,0,FALSE,FALSE,8);
 $Test->drawTreshold(4,255,255,0,FALSE,FALSE,8);
 $Test->setColorPalette(0,50,50,50);
 $Test->drawOverlayBarGraph($Data2,$DataDescr2,30);
-if ($president == true) {
-  $Test->setColorPalette(0,255,255,0);
+if ($fonctions == 1) {
+  $Test->setColorPalette(0,255,120,0);
 } else $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,255,255,0);
-$Test->setColorPalette(2,0,0,255);
+$Test->setColorPalette(2,0,255,0);
 $Test->xsSetFontProperties("tahoma.ttf",12);
 $Test->drawLegend(105,65,$DataDescr,255,255,255);
-$Test->drawFilledLineGraph($Data,$DataDescr,80);
-//$Test->drawOverlayBarGraph($Data,$DataDescr,75);
-$Test->setColorPalette(0,150,150,150);
-$Test->setColorPalette(1,150,150,150);
-$Test->setColorPalette(2,150,150,150);
-$Test->drawLineGraph($Data,$DataDescr);
-$Test->drawPlotGraph($Data,$DataDescr,1,1,128,128,128);
+if ($plot == "histogram") $Test->drawOverlayBarGraph($Data,$DataDescr,75);
+else {
+  $Test->drawFilledLineGraph($Data,$DataDescr,90);
+  $Test->setColorPalette(0,255,0,0);
+  $Test->setColorPalette(1,255,0,0);
+  $Test->setColorPalette(2,255,255,0);
+  $Test->drawLineGraph($Data,$DataDescr);
+}
+//$Test->drawPlotGraph($Data,$DataDescr,1,1,0,0,0);
 $Test->xsSetFontProperties("tahoma.ttf",16);
 $Test->drawTitle(270,30,"Assiduité en hémicycle au cours de l'année passée",50,50,50,585);
-$Test->xsRender('presence-hemicycle-annee-'.$parlementaire->slug.'.png');
+$Test->xsRender('presence-hemicycle-annee-'.$str_options.$parlementaire->slug.'.png');
 
-echo image_tag('tmp/xspchart/presence-hemicycle-annee-'.$parlementaire->slug.'.png', 'alt="Assiduité en hémicycle de '.$parlementaire->nom.'"');
+echo image_tag('tmp/xspchart/presence-hemicycle-annee-'.$str_options.$parlementaire->slug.'.png', 'alt="Assiduité en hémicycle de '.$parlementaire->nom.'"');
 /*
 // Dataset definition
 $DataSet = new xsPData();
