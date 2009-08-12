@@ -256,9 +256,9 @@ img {
   float: left;
 }
 .photo_depute {
-	position: relative;
-	top: 0;
-	left: 0;
+  position: relative;
+  top: 0;
+  left: 0;
   height: 150px;
   width: 117px;
   border-right: 1px solid #BFBFBF;
@@ -269,9 +269,9 @@ img {
   width: 117px;
 }
 .logo_parti {
-	position: absolute;
-	bottom: 0;
-	right: 0;
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }
 .graph_depute {
   float: left;
@@ -370,29 +370,29 @@ img {
 /**/
 /* Tabs adresses */
 .adresses {
-	position: relative;
-	left: 0;
+  position: relative;
+  left: 0;
 }
 .tab_adresse p{
-	position: absolute;
-	top: 37px;
-	left: 0;
-	width: 425px;
-	padding: 15px;
+  position: absolute;
+  top: 37px;
+  left: 0;
+  width: 425px;
+  padding: 15px;
   background-color: #fff;
   border: 1px dashed #BFBFBF;
 }
 .tab_adresse h4 {
-	display: inline;
-	float: left;
-	padding: 0;
-	margin: 0;
-	padding-left: 5px;
-	padding-right: 15px;
+  display: inline;
+  float: left;  
+  padding: 0;
+  margin: 0;
+  padding-left: 5px;
+  padding-right: 15px;
   border-left: 1px solid #BFBFBF;
-	height: 20px;
-	line-height: 20px;
-	cursor: pointer;
+  height: 20px;
+  line-height: 20px;
+  cursor: pointer;
   background: #fff url("images/fond_titre_adresses.png") no-repeat top right;
 }
 
@@ -403,7 +403,7 @@ img {
 #tab_adresse_3:hover p, 
 #tab_adresse_3:focus p
 {
-	z-index: 10;
+  z-index: 10;
   background-color: #efefef;
 }
 
@@ -414,7 +414,7 @@ img {
 #tab_adresse_3:hover h4, 
 #tab_adresse_3:focus h4
 {
-	z-index: 10;
+  z-index: 10;
   background-color: #DFEEFF;
 }
 /**/

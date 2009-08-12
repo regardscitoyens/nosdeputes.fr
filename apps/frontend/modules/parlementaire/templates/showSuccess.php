@@ -3,7 +3,7 @@
   <div class="depute_gauche">
     <div class="photo_depute">
     <?php if ($parlementaire->getPhoto()) { echo image_tag($parlementaire->getPhoto(), 'class="photo_fiche" alt=Photo de '.$parlementaire->nom); } ?>
-		<span class="logo_parti"><?php if ($parlementaire->getGroupe()) echo image_tag($parlementaire->getGroupe()->getNom().'.gif', 'alt="Logo '.$parlementaire->getGroupe()->getNom().' "'); ?></span>
+    <span class="logo_parti"><?php if ($parlementaire->getGroupe()) echo image_tag($parlementaire->getGroupe()->getNom().'.gif', 'alt="Logo '.$parlementaire->getGroupe()->getNom().' "'); ?></span>
     </div>
   </div>
   <div class="graph_depute">
@@ -42,7 +42,7 @@
       <li><a href="http://fr.wikipedia.org/wiki/<?php echo $parlementaire->nom; ?>">Page sur Wikipédia</a></li>
       <?php if ($parlementaire->site_web) : ?>
       <li><?php echo link_to('Site web', $parlementaire->site_web, array('title' => 'Lien externe', 'target' => '_blank')); ?></li>
-      <?php endif; ?>
+      <?php endif; ?>  
     </ul>
       <h3>Responsabilités</h3>
       <ul>
@@ -64,32 +64,32 @@
         </li>
       </ul>
       <div class ="adresses">
-			<h3>Adresses</h3>
-				<div class="tab_adresse" id="tab_adresse_1">
-				<h4>Adresse 1</h4>
-				<p>12 Boulevard Machin<br />
-				92100 Machin sur Truc<br />
-				Téléphone : <a href="callto:0033549021575">05 49 02 15 75</a><br />
-				Télécopie : 05 49 02 15 76
-				</p>
-				</div>
-				<div class="tab_adresse" id="tab_adresse_2">
-				<h4>Adresse 2</h4>
-				<p>10 Rue du truc<br />
-				21100 Truc sur Machin<br />
-				Téléphone : <a href="callto:0033549021575">05 49 02 15 75</a><br />
-				Télécopie : 05 49 02 15 76
-				</p>
-				</div>
-				<div class="tab_adresse" id="tab_adresse_3">
-				<h4>Permanence parlementaire</h4>
-				<p>102 Boulevard Blossac<br />
-				86100 Châtellerault<br />
-				Téléphone : <a href="callto:0033549021575">05 49 02 15 75</a><br />
-				Télécopie : 05 49 02 15 76
-				</p>
-				</div>
-			</div>
+      <h3>Adresses</h3>
+        <div class="tab_adresse" id="tab_adresse_1">
+        <h4>Adresse 1</h4>
+        <p>12 Boulevard Machin<br />
+        92100 Machin sur Truc<br />
+        Téléphone : <a href="callto:0033549021575">05 49 02 15 75</a><br />
+        Télécopie : 05 49 02 15 76
+        </p>
+        </div>
+        <div class="tab_adresse" id="tab_adresse_2">
+        <h4>Adresse 2</h4>
+        <p>10 Rue du truc<br />
+        21100 Truc sur Machin<br />
+        Téléphone : <a href="callto:0033549021575">05 49 02 15 75</a><br />
+        Télécopie : 05 49 02 15 76
+        </p>
+        </div>
+        <div class="tab_adresse" id="tab_adresse_3">
+        <h4>Permanence parlementaire</h4>
+        <p>102 Boulevard Blossac<br />
+        86100 Châtellerault<br />
+        Téléphone : <a href="callto:0033549021575">05 49 02 15 75</a><br />
+        Télécopie : 05 49 02 15 76
+        </p>
+        </div>
+      </div>
       <p style="margin-top:130px;">Source : <a href="http://www.assembleenationale.fr/" target='_blank'>Assemblée Nationale</a></p>
       </div>
     </div>
