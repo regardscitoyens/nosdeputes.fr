@@ -14,7 +14,6 @@ my %depute;
 if ($file =~ /(\d+)/) {
     $depute{'id_an'} = $1;
     $depute{'url_an'} = "http://www.assembleenationale.fr/13/tribun/fiches_id/$1.asp";
-    print "$1.asp\n";
     $depute{'Fin_Mandat'} = $fin_mandat{"$1.asp"};
 }
 
@@ -223,6 +222,29 @@ foreach $k (keys %depute) {
 print "</Depute>\n";
 exit;
 } 
+
+
+if (1 || $yml) {
+    
+    print "  depute_".$depute{'id_an'}.":\n"; 
+    foreach $k (keys %depute) { 
+	next if ($k =~ /supplÃ©ant/i); 
+	if (ref($depute{$k}) =~ /HASH/) { 
+	    print "    ".lc($k).":\n"; 
+	    foreach $i (keys %{$depute{$k}}) { 
+		print "      - $i\n"; 
+	    } 
+	}else { 
+	    if ($k !~ /suppléant/i) {
+		print "    ".lc($k).": ".$depute{$k}."\n"; 
+	    }
+	} 
+    } 
+    print "    type: depute\n"; 
+    
+    exit;
+}
+
 print "{ ";
 foreach $k (keys %depute) {
     next if ($k =~ /suppléant/i);

@@ -7,7 +7,7 @@ class Section extends BaseSection
 {
   public function setTitreComplet($titre) {
     $this->_set('titre_complet', $titre);
-    $this->id = md5($titre);
+    $this->md5 = md5($titre);
     $titres = preg_split('/\s*>\s*/', $titre);
     $parent = null;
     if (count($titres) > 1) {
@@ -15,6 +15,7 @@ class Section extends BaseSection
       $parent = doctrine::getTable('Section')->findOneByContexteOrCreateIt($parent_titre);
     }
     $this->_set('titre', $titres[0]);
+    $this->save();
     if (!$parent)
       $parent = $this;
     $this->section_id = $parent->id;

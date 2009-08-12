@@ -7,9 +7,9 @@
   </div>
   <div class="graph_depute">
     <div class="info_depute">
-      <h1><?php echo $parlementaire->nom.' '.$parlementaire->getLongStatut(); ?></h1>
+      <h1><?php echo $parlementaire->nom.', '.$parlementaire->getLongStatut(); ?></h1>
     </div>
-    <?php echo include_component('plot', 'parlementairePresenceLastYear', array('parlementaire' => $parlementaire)); ?>
+      <?php echo include_component('plot', 'parlementairePresenceLastYear', array('parlementaire' => $parlementaire)); ?>
     <?php //echo include_component('plot', 'parlementairePresenceCommissionBySession', array('parlementaire' => $parlementaire)); ?>
   </div>
   <div class="barre_activite">
@@ -22,7 +22,7 @@
       <li title="Questions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/question.png', 'alt="Questions"'); ?>   : 50</a></li>
       <li><span class="barre_date">Depuis le : <?php echo $parlementaire->debut_mandat; ?></span></li>
     </ul>
-  <span class="logo_parti"><?php echo image_tag($parlementaire->getGroupe()->getNom().'.gif', 'alt="Logo '.$parlementaire->getGroupe()->getNom().' "'); ?></span>
+      <span class="logo_parti"><?php if ($parlementaire->getGroupe()) echo image_tag($parlementaire->getGroupe()->getNom().'.gif', 'alt="Logo '.$parlementaire->getGroupe()->getNom().' "'); ?></span>
   </div>
   <div class="stopfloat"></div>
 </div>
@@ -34,7 +34,9 @@
       <div class="b_d_infos">
     <p>Né le ... (... ans) à ... (...)</p>
     <ul>
-      <li>Groupe politique : <?php echo link_to($parlementaire->getGroupe()->getNom(), '@list_parlementaires_organisme?slug='.$parlementaire->getGroupe()->getSlug()); ?> (<?php echo $parlementaire->getGroupe()->getFonction(); ?>)</li>
+<?php $groupe = $parlementaire->getGroupe(); if ($groupe) : ?>
+      <li>Groupe politique : <?php echo link_to($groupe->getNom(), '@list_parlementaires_organisme?slug='.$groupe->getSlug()); ?> (<?php echo $groupe->getFonction(); ?>)</li>
+<?php endif; ?>
       <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, '@list_parlementaires_profession?profession='.$parlementaire->profession); else : ?>Non communiquée<?php endif; ?></li>
       <li><?php echo link_to('Fiche sur le site de l\'Assemblée Nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'target' => '_blank')); ?></li>
       <li><a href="http://fr.wikipedia.org/wiki/<?php echo $parlementaire->nom; ?>">Page sur Wikipédia</a></li>

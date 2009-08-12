@@ -18,7 +18,7 @@ class Intervention extends BaseIntervention
   public function setPersonnaliteByNom($nom, $fonction = null) 
   {
     $this->setFonction($fonction);
-    if (!preg_match('/ministre|secretaire .*tat|commissaire/i', $fonction)) { 
+    if (!preg_match('/ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux/i', $fonction)) { 
       $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
       if (!$personne) {
 	$personne = Doctrine::getTable('Parlementaire')->similarTo($nom);
@@ -85,6 +85,9 @@ class Intervention extends BaseIntervention
     foreach($amends as $amend) {
       $tag = 'loi:amendement='.$amend;
       $this->addTag($tag);
+      if ($this->Section->section_id && $this->Section->Section->id) {
+	$this->Section->Section->addTag($tag);
+      }
     }
   }
   public function setLois($tlois) {
@@ -93,7 +96,10 @@ class Intervention extends BaseIntervention
     foreach($lois as $loi) {
       $tag = 'loi:numero='.$loi;
       $this->addTag($tag);
-      //      $this->section->addTag($tag);
+      $this->Section->addTag($tag);
+      if ($this->Section->section_id && $this->Section->Section->id) {
+	$this->Section->Section->addTag($tag);
+      }
     }
   }
   public function setIntervention($s) {
@@ -113,7 +119,8 @@ class Intervention extends BaseIntervention
 	  if (preg_match_all('/\s*(\d[\d\s\à]*rectifiés?|\d[\d\s\à]*)(,\s*|\s*et\s*)*/', $match[3][$i], $amends)) {
 	    $replace = $match[3][$i];
 	    foreach($amends[1] as $amend) {
-	      $am = preg_replace('/[^\dà]+/', '',$amend);
+	      $amend = preg_replace('/à/', 'a', $amend);
+	      $am = preg_replace('/[^\da]+/', '',$amend);
 	      $link = str_replace('LLL', urlencode($lois), $linko);
 	      $link = str_replace('AAA', urlencode($am), $link);
 	      $replace = preg_replace('/'.$amend.'/', ' <a name="amend_'.$am.'" href="'.$link.'">'.$amend.'</a> ', $replace);

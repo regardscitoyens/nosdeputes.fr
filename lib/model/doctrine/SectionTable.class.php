@@ -8,8 +8,10 @@ class SectionTable extends Doctrine_Table
     $contexte = preg_replace('/[\/\|\)\(«]/', '', strtolower($contexte));
     $contexte = preg_replace('/\&\#8217\;/', '\'', $contexte);
     $contexte = preg_replace('/\&\#\d+\;/', '', $contexte);
+    $contexte = preg_replace('/\,/', ' ', $contexte);  
     $contexte = preg_replace('/\s+/', ' ', $contexte);
-    $section = $this->find(md5($contexte));
+    $contexte = preg_replace('/\s+$/', '', preg_replace('/^\s+/', '', $contexte));
+    $section = $this->findOneByMd5(md5($contexte));
     if (!$section) {
       $section = new Section();
       $section->setTitreComplet($contexte);

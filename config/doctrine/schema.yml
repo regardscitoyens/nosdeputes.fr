@@ -20,6 +20,7 @@ Parlementaire:
     num_circo: integer
     site_web: string(255)
     debut_mandat: date
+    fin_mandat: date
     place_hemicycle:	integer
     url_an:	string(255)
     profession:	string(255)
@@ -130,14 +131,15 @@ PreuvePresence:
 
 Section:
   actAs:
-    Timestampable
+    Timestampable: ~
+    Taggable: ~
   columns:
-    id:
+    md5:
       type: string(36)
-      primary: true
+      unique: true
     titre: string(256)
     titre_complet: string(512)
-    section_id: string(36)
+    section_id: integer
     min_date: string(15)
     timestamp: integer
     nb_interventions: integer
@@ -146,7 +148,7 @@ Section:
       foreignAlias: SubSections
 
 Intervention:
-  actAs: 
+  actAs:
     Timestampable: ~
     Taggable: ~
   columns:
@@ -162,7 +164,7 @@ Intervention:
     timestamp: integer
     source: string(128)
     seance_id: integer
-    section_id: string(36)
+    section_id: integer
     type:
       type: enum
       values: ['commission', 'question', 'loi']

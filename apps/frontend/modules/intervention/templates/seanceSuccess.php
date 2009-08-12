@@ -9,7 +9,7 @@
 <ul>
 <?php foreach($seance->getTableMatiere() as $table) : if (!$table['titre']) {continue;} ;?>
 <?php if ($table['section_id'] != $table['id']) echo '<ul>'; ?>
-<li><a href="#table_<?php echo $table['id']; ?>"><?php echo $table['titre']; ?></a> (<?php echo link_to('voir le dossier', '@section?id='.$table['id']); ?>)</li>
+<li><a href="#table_<?php echo $table['id']; ?>"><?php echo $table['titre']; ?></a> <?php if ($table['nb_interventions']) echo '('.link_to('voir le dossier', '@section?id='.$table['id']).') '; ?></li>
 <?php if ($table['section_id'] != $table['id']) echo '</ul>'; ?>
 <?php endforeach; ?>
 </ul>
@@ -55,9 +55,10 @@
     <?php echo $intervention->getIntervention(array('linkify_amendements'=>url_for('@find_amendements_by_loi_and_numero?loi=LLL&numero=AAA'))); ?>
     </div>
   <?php if (!$didascalie) : ?>
-    <div class="commentaires">
-      3 commentaires dont celui de toto :
-      Cette intervention c'est de la balle !
+    <div class="commentaires" style="clear: both;">
+       <span><?php echo $intervention->Section->titre; ?></span> - 
+      <span><a href="#">Lire les 3 commentaires</a></span> - 
+      <span><a href="#">Laisser un commentaire</a></span>
     </div>
   <?php endif; ?>
   </div>

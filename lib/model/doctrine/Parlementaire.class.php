@@ -149,12 +149,20 @@ class Parlementaire extends BaseParlementaire
   }
   
   public function getLongStatut() {
-    return $this->getStatut().' '.$this->getGroupe()->getNom().' de la '.$this->getNumCircoString().' '.$this->getCirconscription();
+    if ($this->getGroupe()) {
+      return $this->getStatut().' '.$this->getGroupe()->getNom().' de la '.$this->getNumCircoString().' '.$this->getCirconscription();
+    }
+      return $this->getStatut().' de la '.$this->getNumCircoString().' '.$this->getCirconscription();
   }
 
   public function setDebutMandat($str) {
     if (preg_match('/(\d{2})\/(\d{2})\/(\d{4})/', $str, $m)) {
       $this->_set('debut_mandat', $m[3].'-'.$m[2].'-'.$m[1]);
+    }
+  }
+  public function setFinMandat($str) {
+    if (preg_match('/(\d{2})\/(\d{2})\/(\d{4})/', $str, $m)) {
+      $this->_set('fin_mandat', $m[3].'-'.$m[2].'-'.$m[1]);
     }
   }
   public function setFonctions($array) {
