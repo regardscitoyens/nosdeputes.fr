@@ -261,6 +261,7 @@ foreach $line (split /\n/, $string)
 	    if (($1 !~ /suspension/ && $1 !~ /séance/) || $1 =~ /demande/i){
 		$titre2 = $1;
 	    }
+	    $titre2 =~ s/a href[^>]+>//g;
 	    $titre2 =~ s/\s+$//;
 	    $amendements = @pre_amendements = ();
 	    $line = "<p>|$titre2|</p>";
