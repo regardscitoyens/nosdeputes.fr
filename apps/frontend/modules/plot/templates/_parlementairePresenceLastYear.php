@@ -39,7 +39,7 @@ $Test->drawGrid(0,TRUE,0,0,0,3);
 $Test->drawTreshold(0.8,255,0,0,FALSE,FALSE,8);
 $Test->drawTreshold(4,255,255,0,FALSE,FALSE,8);
 $Test->setColorPalette(0,250,250,250);
-$Test->drawOverlayBarGraph($Data2,$DataDescr2,50);
+$Test->drawOverlayBarGraph($Data2,$DataDescr2,30);
 if ($president == true) {
   $Test->setColorPalette(0,0,255,0);
 } else $Test->setColorPalette(0,255,255,0);
