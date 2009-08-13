@@ -29,7 +29,7 @@ $DataDescr2 = $DataSet2->GetDataDescription();
 
 $Test = new xsPChart(700,230);
 $Test = new xsPChart(800,300);
-$Test->setGraphArea(70,40,780,265);
+$Test->setGraphArea(70,40,780,260);
 $Test->drawFilledRoundedRectangle(7,7,793,293,5,240,240,240);
 $Test->drawRoundedRectangle(5,5,795,395,5,230,230,230);
 $Test->drawGraphArea(230,230,230,FALSE);
@@ -41,14 +41,12 @@ $Test->drawTreshold(0.8,255,0,0,FALSE,FALSE,8);
 $Test->drawTreshold(4,255,255,0,FALSE,FALSE,8);
 $Test->setColorPalette(0,50,50,50);
 $Test->drawOverlayBarGraph($Data2,$DataDescr2,30);
-if ($fonctions == 1) {
-  $Test->setColorPalette(0,255,120,0);
-} else $Test->setColorPalette(0,255,0,0);
+$Test->setColorPalette(0,255,60*$fonctions,0);
 $Test->setColorPalette(1,255,255,0);
 $Test->setColorPalette(2,0,255,0);
 $Test->xsSetFontProperties("tahoma.ttf",12);
 $Test->drawLegend(105,65,$DataDescr,255,255,255);
-if ($plot == "histogram") $Test->drawOverlayBarGraph($Data,$DataDescr,75);
+if ($plot == "histogram") $Test->drawOverlayBarGraph($Data,$DataDescr,90);
 else {
   $Test->drawFilledLineGraph($Data,$DataDescr,90);
   $Test->setColorPalette(0,255,0,0);

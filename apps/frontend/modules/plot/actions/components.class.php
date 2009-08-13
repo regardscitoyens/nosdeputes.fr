@@ -56,8 +56,7 @@ class plotComponents extends sfComponents
       $this->n_mots[$participation['type']][$n] += $participation['mots']/10000;
       if ($participation['Interventions'][0]['fonction'] != "") $fonctions[$participation['type']] += $participation['nombre'];
     }
-    if ($fonctions['hemicycle'] > ((array_sum($this->n_participations['hemicycle'])+0.12*$n_weeks)*2/3))
-      $this->fonctions = 1; else $this->fonctions = 0;
+    $this->fonctions = (int)(3*($fonctions['hemicycle'])/(0.12*$n_weeks+array_sum($this->n_participations['hemicycle'])));
   }
 
   public static function getVacances($n_weeks, $annee0, $sem0) {
