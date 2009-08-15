@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo Parse commission
+echo > /tmp/load_commission.log
+while ls batch/commission/out | grep [a-z] > /dev/null ; 
+do
+	php symfony cc
+	php symfony load:Commission >> /tmp/load_commission.log
+done

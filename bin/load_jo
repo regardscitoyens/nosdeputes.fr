@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo Parse JO
+cd batch/jo
+cd -
+for an in 2009 2008 2007 ; do cd - ; rm xml/* ; perl compute_year.sh $an 1 ; cd - ; php symfony load:JO   > /tmp/load_jo_$an.log ; done  ; 
+cd batch/commission/
+bash compute_commission.sh
+cd -
