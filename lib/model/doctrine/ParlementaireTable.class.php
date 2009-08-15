@@ -27,7 +27,7 @@ class ParlementaireTable extends PersonnaliteTable
         $procheGroupe = array();
         if (count($memeSexe) == 0) $memeSexe = $memeNom;
         foreach ($memeSexe as $de) {
-          $groupe2 = $de->getGroupe()->getNom();
+          $groupe2 = $de->groupe_acronyme;
           if ($groupe2 == $groupe) array_push($memeGroupe, $de);
           elseif (($groupe2 == "UMP" && $groupe == "NC") || ($groupe2 == "NC" && $groupe == "UMP")) array_push($procheGroupe, $de);
           elseif (($groupe2 == "SRC" && $groupe == "GDR") || ($groupe2 == "GDR" && $groupe == "SRC")) array_push($procheGroupe, $de);

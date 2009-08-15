@@ -44,6 +44,7 @@ class loadCommissionTask extends sfBaseTask
 	      $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);
 	    }
 	    $intervention->save();
+        $intervention->free();
 	  }
 	  unlink($dir.$file);
 	}

@@ -31,7 +31,7 @@ class Amendement extends BaseAmendement {
       $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupe($nom, $sexe, $groupe, $this);
       if (!$depute) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$groupe."\n";
       else {
-        if (!$groupe) $groupe = $depute->getGroupe()->getNom();
+        if (!$groupe && $depute->groupe_acronyme != "") $groupe = $depute->groupe_acronyme;
         $this->addParlementaire($depute);
         $depute->free();
       }

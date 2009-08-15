@@ -10,10 +10,13 @@ class Intervention extends BaseIntervention
     if ($type == 'commission') {
       $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commission, 'parlementaire');
       $seance = $commission->getSeanceByDateAndMomentOrCreateIt($date, $heure, $session);
-    }else{
+      $commission->free();
+    } else{
       $seance = Doctrine::getTable('Seance')->findOneOrCreateIt('hemicycle', $date, $heure, $session);
     }
-    return $this->_set('seance_id', $seance->id);
+    $id = $this->_set('seance_id', $seance->id);
+    $seance->free();
+    return $id;
   }
   public function setPersonnaliteByNom($nom, $fonction = null) 
   {
@@ -44,8 +47,9 @@ class Intervention extends BaseIntervention
     if (isset($parlementaire->id)) {
       $this->_set('parlementaire_id', $parlementaire->id);
       if (!$from_db)
-	$this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);
+        $this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);
     }
+    $parlementaire->free();
   }
 
   public function hasIntervenant() {
@@ -86,7 +90,7 @@ class Intervention extends BaseIntervention
       $tag = 'loi:amendement='.$amend;
       $this->addTag($tag);
       if ($this->Section->section_id && $this->Section->Section->id) {
-	$this->Section->Section->addTag($tag);
+        $this->Section->Section->addTag($tag);
       }
     }
   }

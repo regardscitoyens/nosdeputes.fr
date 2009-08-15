@@ -57,12 +57,12 @@ class tagSeanceTask extends sfBaseTask
 
     foreach(array_keys($words) as $k) {
       if (!$include[$k])
-	$exclude[$k] = 1;
+        $exclude[$k] = 1;
       echo $k.': '.$words[$k]*100/$tot."\n";
       if ($words[$k]*100/$tot < 3)
-	break;
+        break;
     }
-
+    unset($words);
     $q = Doctrine_Query::create();
     $q->select('nom as intervention')->from('Parlementaire o');
     $array = $q->fetchArray();
@@ -70,6 +70,7 @@ class tagSeanceTask extends sfBaseTask
     foreach(array_keys($words) as $k) {
       $exclude[$k] = 1;
     }
+    unset($words);
 
     $qs = doctrine::getTable('Seance')->createQuery()->select('id')->where('tagged IS NULL');
 
@@ -81,39 +82,39 @@ class tagSeanceTask extends sfBaseTask
 
       $array = $q->fetchArray();
       if (!count($array))
-	continue;
+        continue;
       $words = $this->count($array, 1);
       $cpt = 0;
       $tot = count($words);
       $tags = array();
       //Pour les mots le plus populaires non exclus on les gardes
       foreach(array_keys($words) as $k) {
-	if (!$exclude[$k]) {
-	  $cpt++;
-	  $pc = $words[$k]*100/$tot;
-	  if ($pc < 0.8)
-	    break;
-	  $tags[$k] = strlen($k);
-	}
+        if (!$exclude[$k]) {
+          $cpt++;
+          $pc = $words[$k]*100/$tot;
+          if ($pc < 0.8)
+            break;
+          $tags[$k] = strlen($k);
+        }
       }
 
       $sentences = null;
       $sent2word = null;
       //On cherche des groupes de mots commums à partir des tags trouvés
       foreach ($array as $inter) {
-	$i = null;
-	foreach (array_keys($tags) as $tag) {
-	  if (preg_match('/([^\s\,\.\:\>\;\(\)]*[^\,\.\:\>\;\(\)]{6}'.$tag.'[^\s\,\.\:\<\&\(\)]*)/i', $inter['intervention'], $match)) {
-	    $sent = strtolower($match[1]);
-	    $sentences[$sent]++;
-	    $sent2word[$sent] = $tag;
-	  }
-	  if (preg_match('/([^\s\,\.\:\>\;\)\)]*'.$tag.'[^\,\.\:\<\&\(\)]{6}[^\s\,\.\:\<\&\(\)]*)/i', $inter['intervention'], $match)) {
-	    $sent = strtolower($match[1]);
-	    $sentences[$sent]++;
-	    $sent2word[$sent] = $tag;
-	  }
-	}
+        $i = null;
+        foreach (array_keys($tags) as $tag) {
+          if (preg_match('/([^\s\,\.\:\>\;\(\)]*[^\,\.\:\>\;\(\)]{6}'.$tag.'[^\s\,\.\:\<\&\(\)]*)/i', $inter['intervention'], $match)) {
+            $sent = strtolower($match[1]);
+            $sentences[$sent]++;
+            $sent2word[$sent] = $tag;
+          }
+          if (preg_match('/([^\s\,\.\:\>\;\)\)]*'.$tag.'[^\,\.\:\<\&\(\)]{6}[^\s\,\.\:\<\&\(\)]*)/i', $inter['intervention'], $match)) {
+            $sent = strtolower($match[1]);
+            $sentences[$sent]++;
+            $sent2word[$sent] = $tag;
+          }
+        }
       }
       //asort($sentences);
 
@@ -121,46 +122,58 @@ class tagSeanceTask extends sfBaseTask
       //Au dessus de 70% d'utilisation le tag contenu est supprimé
       $debut_bani = 'à|de|la|ainsi|ensuite';
       if (count($sentences)) {
-	foreach (array_keys($sentences) as $sent) {
+        foreach (array_keys($sentences) as $sent) {
 	  
-	  if  (preg_match("/^($debut_bani)/i", $sent) || preg_match("/($debut_bani)$/i", $sent) || preg_match('/\d|amendement|rapporteur|commision|collègue/i', $sent) ) 
-	    continue;
+          if  (preg_match("/^($debut_bani)/i", $sent) || preg_match("/($debut_bani)$/i", $sent) || preg_match('/\d|amendement|rapporteur|commision|collègue/i', $sent) )
+            continue;
 	  
-	  if (preg_match('/^[A-Z][a-z]/', $sent)) {
-	    unset($tags[$sent2word[$sent]]);	  
-	    continue;
-	  }
+          if (preg_match('/^[A-Z][a-z]/', $sent)) {
+            unset($tags[$sent2word[$sent]]);
+            continue;
+          }
 	  
-	  if (preg_match('/^([a-z]{2} |[A-Z]+)/', $sent) || preg_match('/ [a-z]$/i', $sent)) {
-	    continue;
-	  }
+          if (preg_match('/^([a-z]{2} |[A-Z]+)/', $sent) || preg_match('/ [a-z]$/i', $sent)) {
+            continue;
+          }
 	  
-	  if (($sentences[$sent]*100/$tot > 0.8 || $sentences[$sent]*100/$words[$sent2word[$sent]] > 70)&& $words[$sent2word[$sent]] > 5) {
-	    $tags[$sent] = strlen($sent);
-	    if ($sentences[$sent]*100/$words[$sent2word[$sent]] > 70)
-	      unset($tags[$sent2word[$sent]]);
-	  }
-	}
+          if (($sentences[$sent]*100/$tot > 0.8 || $sentences[$sent]*100/$words[$sent2word[$sent]] > 70)&& $words[$sent2word[$sent]] > 5) {
+            $tags[$sent] = strlen($sent);
+            if ($sentences[$sent]*100/$words[$sent2word[$sent]] > 70)
+              unset($tags[$sent2word[$sent]]);
+          }
+        }
       }
+      unset($words);
+      unset($sentences);
+      unset($sent2word);
 
       //On cherche maintenant les tags dans les interventions pour les associer
       arsort($tags);
+      $tagged = 0;
       foreach ($array as $inter) {
-	$i = null;
-	foreach (array_keys($tags) as $tag) {
-	  if (preg_match('/'.$tag.'/i', $inter['intervention'])) {
-	    if (!$i) 
-	      $i = doctrine::getTable('Intervention')->find($inter['id']);
-	    $i->addTag($tag);
-	  }
-	}
-	if ($i) {
-	  $i->getSeance()->tagged = 1;
-	  $i->getSeance()->save();
-	  $i->save();
-	}
+        $i = null;
+        foreach (array_keys($tags) as $tag) {
+    	  if (preg_match('/'.$tag.'/i', $inter['intervention'])) {
+            if (!$i)
+              $i = doctrine::getTable('Intervention')->find($inter['id']);
+            $i->addTag($tag);
+          }
+        }
+        if ($i) {
+          $tagged = 1;
+          $i->getSeance()->tagged = 1;
+          $i->getSeance()->save();
+          $i->save();
+          $i->free();
+        }
       }
-      echo $s['id']." seance done\n";
+      unset($tags);
+      unset($array);
+      echo "Seance ".$s['id']." done.";
+      unset($s);
+      if ($tagged == 0)
+        echo " WARNING: No tag found.\n";
+      echo "\n";
     }
   }
 }

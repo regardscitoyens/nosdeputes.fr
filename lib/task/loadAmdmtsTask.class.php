@@ -14,7 +14,7 @@ class loadAmdmtsTask extends sfBaseTask {
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
-        while (($file = readdir($dh)) !== false) {
+        while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == ".") continue;
           print "$dir$file\n";
           $ct_lines = 0;

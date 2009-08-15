@@ -37,15 +37,15 @@ class loadHemicyleTask extends sfBaseTask
 	      $intervention->md5 = $id;
 	      $intervention->setIntervention($json->intervention);
 	      if (preg_match('/question/i', $json->contexte))
-		$type = 'question';
+    		$type = 'question';
 	      else
-		$type = 'loi';
+        	$type = 'loi';
 	      $intervention->date = $json->date;
 	      $intervention->setSeance($type, $json->date, $json->heure, $json->session);
 	      $intervention->setSource($json->source);
 	      $intervention->setTimestamp($json->timestamp);
-	      if ($json->timestamp)
-		$intervention->setContexte($json->contexte, $json->date.$json->heure, $json->timestamp);
+          if ($json->timestamp)
+            $intervention->setContexte($json->contexte, $json->date.$json->heure, $json->timestamp);
 	    }
 	    if ($json->numeros_loi)
 	      $intervention->setLois($json->numeros_loi);
@@ -54,23 +54,26 @@ class loadHemicyleTask extends sfBaseTask
 	    if ($json->intervenant) {
 	      $p = null;
 	      if ($json->intervenant_url) {
-		$p = doctrine::getTable('Parlementaire')
-		  ->findOneByUrlAn($json->intervenant_url);
-		if ($p) {
-		  $intervention->setParlementaire($p);
-		  $intervention->setFonction($json->fonction);
-		}
+            $p = doctrine::getTable('Parlementaire')
+                  ->findOneByUrlAn($json->intervenant_url);
+            if ($p) {
+              $intervention->setParlementaire($p);
+              $intervention->setFonction($json->fonction);
+            }
 	      }
 	      if (!$p) {
-		$intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);
-	      }
+            $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);
+	      } else $p->free();
 	    }
 	    $intervention->save();
-	    if (!isset($sections[$intervention->getSection()->id]))
+        if (!isset($sections[$intervention->getSection()->id]))
 	      $sections[$intervention->getSection()->id] = $intervention->getSection();
+        $intervention->free();
 	  }
 	  foreach(array_values($sections) as $section)
 	    $section->updateNbInterventions();
+        $section->free();
+      unset($sections);
 	  unlink($dir.$file);
 	}
         closedir($dh);
