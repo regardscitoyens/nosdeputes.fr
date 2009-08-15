@@ -4,6 +4,7 @@ $file = shift;
 use HTML::TokeParser;
 
 $source = $file;
+$source =~ s/html\///;
 $source =~ s/_/\//g;
 	
 open(FILE, $file) ;
