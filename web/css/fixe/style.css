@@ -703,6 +703,11 @@ img {
 .indent_guillemets {
   padding-left: 20px;
 }
+.carte_departement {
+  float: right;
+  padding-top: 2px;
+  padding-right: 2px;
+}
 .commentaires {
   margin-bottom: 10px;
 }

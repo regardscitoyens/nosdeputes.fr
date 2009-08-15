@@ -7,15 +7,18 @@ homepage:
 list_parlementaires:
   url: /parlementaire
   param: {module: parlementaire, action: list}
+list_parlementaires_circo:
+  url: /circonscription
+  param: {module: parlementaire, action: listCirco}
+list_parlementaires_profession:
+  url: /profession
+  param: {module: parlementaire, action: listProfession}
+list_parlementaires_groupe:
+  url: /groupe/:acro
+  param: {module: parlementaire, action: listGroupe}
 list_parlementaires_organisme:
   url: /organisme/:slug
   param: {module: parlementaire, action: listOrganisme}
-list_parlementaires_circo:
-  url: /circonscription/:nom_circo
-  param: {module: parlementaire, action: listCirco}
-list_parlementaires_profession:
-  url: /profession/:profession
-  param: {module: parlementaire, action: listProfession}
 
 parlementaire_tags:
   url: /parlementaire/tag

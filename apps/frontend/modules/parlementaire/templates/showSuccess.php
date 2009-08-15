@@ -3,15 +3,16 @@
   <div class="depute_gauche">
     <div class="photo_depute">
     <?php if ($parlementaire->getPhoto()) { echo image_tag($parlementaire->getPhoto(), 'class="photo_fiche" alt=Photo de '.$parlementaire->nom); } ?>
-    <span class="logo_parti"><?php if ($parlementaire->getGroupe()) echo image_tag($parlementaire->getGroupe()->getNom().'.gif', 'alt="Logo '.$parlementaire->getGroupe()->getNom().' "'); ?></span>
+    <span class="logo_parti"><?php if ($parlementaire->groupe_acronyme != "") echo image_tag($parlementaire->groupe_acronyme.'.gif', 'alt="Logo '.$parlementaire->groupe_acronyme.' "'); ?></span>
     </div>
   </div>
   <div class="graph_depute">
     <div class="info_depute">
-      <h1><?php echo $parlementaire->nom.', '.$parlementaire->getLongStatut(); ?></h1>
+      <h1><?php echo $parlementaire->nom.', '.$parlementaire->getLongStatut(1); ?></h1>
     </div>
-      <?php //echo include_component('plot', 'parlementairePresenceLastYear', array('parlementaire' => $parlementaire)); ?>
-    <?php //echo include_component('plot', 'parlementairePresenceCommissionBySession', array('parlementaire' => $parlementaire)); ?>
+      <?php echo include_component('plot', 'parlementairePresenceLastYear', array('parlementaire' => $parlementaire)); ?>
+      <?php echo include_component('plot', 'parlementairePresenceLastYear', array('parlementaire' => $parlementaire, 'options' => array('plot' => "histogram"))); ?>
+      <?php //echo include_component('plot', 'parlementairePresenceCommissionBySession', array('parlementaire' => $parlementaire)); ?>
   </div>
   <div class="barre_activite">
     <h2>Activité parlementaire : </h2>
@@ -21,7 +22,7 @@
       <li title="Rapports"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Rapports"'); ?> : 2</a></li>
       <li title="Propositions de loi (auteur)"><a href="#"><?php echo image_tag('../css/'.$style.'/images/balance.png', 'alt="Propositions de loi (auteur)"'); ?> : 0</a></li>
       <li title="Questions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/question.png', 'alt="Questions"'); ?>   : 50</a></li>
-      <li><span class="barre_date">Depuis le : <?php echo $parlementaire->debut_mandat; ?></span></li>
+      <li><span class="barre_date"><?php if ($parlementaire->fin_mandat == null) echo "Depuis le"; else echo "Mandat terminé"; ?>&nbsp;: <?php echo $parlementaire->debut_mandat; if ($parlementaire->fin_mandat != null) echo " - ".$parlementaire->fin_mandat; ?></span></li>
     </ul>
   </div>
   <div class="stopfloat"></div>
@@ -34,22 +35,23 @@
       <div class="b_d_infos">
     <p>Né le ... (... ans) à ... (...)</p>
     <ul>
-<?php $groupe = $parlementaire->getGroupe(); if ($groupe) : ?>
-      <li>Groupe politique : <?php echo link_to($groupe->getNom(), '@list_parlementaires_organisme?slug='.$groupe->getSlug()); ?> (<?php echo $groupe->getFonction(); ?>)</li>
+<?php if ($parlementaire->groupe_acronyme != "") : ?>
+      <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getgroupe()->getFonction(); ?>)</li>
 <?php endif; ?>
-      <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, '@list_parlementaires_profession?profession='.$parlementaire->profession); else : ?>Non communiquée<?php endif; ?></li>
+      <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, '@list_parlementaires_profession?search='.$parlementaire->profession); else : ?>Non communiquée<?php endif; ?></li>
       <li><?php echo link_to('Fiche sur le site de l\'Assemblée Nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'target' => '_blank')); ?></li>
       <li><a href="http://fr.wikipedia.org/wiki/<?php echo $parlementaire->nom; ?>">Page sur Wikipédia</a></li>
       <?php if ($parlementaire->site_web) : ?>
       <li><?php echo link_to('Site web', $parlementaire->site_web, array('title' => 'Lien externe', 'target' => '_blank')); ?></li>
       <?php endif; ?>  
     </ul>
+    <?php if ($parlementaire->fin_mandat == null) : ?>
       <h3>Responsabilités</h3>
       <ul>
         <li>Parlementaires :
           <ul>
             <?php foreach ($parlementaire->getResponsabilites() as $resp) { ?>
-            <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo '('.$resp->getFonction().')'; ?></li>
+            <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().')'; ?></li>
             <?php } ?>
           </ul>
         </li>
@@ -63,6 +65,7 @@
           <?php } ?>
         </li>
       </ul>
+      <?php endif; ?> <!-- else : ajouter les infos venant de parsing ancien (anciennes responsabilités) et avant les respon actuelles de ministre machin via les personnalites get fonctions? -->
       <div class ="adresses">
       <h3>Adresses</h3>
         <div class="tab_adresse" id="tab_adresse_1">
@@ -90,7 +93,7 @@
         </p>
         </div>
       </div>
-      <p style="margin-top:130px;">Source : <a href="http://www.assembleenationale.fr/" target='_blank'>Assemblée Nationale</a></p>
+      <p style="margin-top:130px;">Source : <a href="<?php echo $parlementaire->url_an; ?>" target='_blank'>Assemblée Nationale</a></p>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>

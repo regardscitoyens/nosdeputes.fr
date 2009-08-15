@@ -1,23 +1,17 @@
 <div class="temp">
-<p><?php echo $circo; ?> : <?php $nResults = $pager->getNbResults(); echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?></p>
+<?php if ($num != 0) : ?>
+  <img class="carte_departement" src="http://www.assemblee-nationale.fr/13/qui/circonscriptions/<?php printf('%03d-%03d', $num, $num); ?>-1.gif" alt="$circo"/>
+<?php endif; ?>
+<?php
+  $nResults = count($parlementaires);
+  if ($nResults == 0) : ?>
+<p>Aucune circonscription trouvée pour <em>"<?php echo $circo; ?>"</em></p>
+  <?php else : ?>
+<p><?php echo $circo; ?><?php if ($num != 0) echo " (".$num.")&nbsp;: ".$n_circo." circonscriptions et "; else echo "&nbsp;: "; echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?></p>
+<?php endif; ?>
 <ul>
-<?php foreach($pager->getResults() as $parlementaire) : ?>
-<li><?php echo $parlementaire->getNumCircoString(); ?> : <?php echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php echo $parlementaire->getStatut(); ?> <?php echo link_to($parlementaire->getGroupe()->getNom(), '@list_parlementaires_organisme?slug='.$parlementaire->getGroupe()->getSlug()); ?>)</li>
+<?php foreach($parlementaires as $parlementaire) : ?>
+<li><?php if ($num == 0) {echo $parlementaire->getNomNumCirco()." -"; } echo $parlementaire->getNumCircoString(1); ?>&nbsp;: <?php echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php echo $parlementaire->getStatut(1); ?>)</li>
 <?php endforeach ; ?>
 </ul>
-<?php if ($pager->haveToPaginate()) : ?>
-<div class="pagination">
-    <?php echo link_to('<<', '@list_parlementaires_circo?nom_circo='.$circo.'&page=1'); ?>
-    <?php echo link_to('<', '@list_parlementaires_circo?nom_circo='.$circo.'&page='.$pager->getPreviousPage()); ?>
-    <?php foreach ($pager->getLinks() as $page): ?>
-      <?php if ($page == $pager->getPage()): ?>
-        <?php echo $page ?>
-      <?php else: ?>
-        <?php echo link_to($page, '@list_parlementaires_circo?nom_circo='.$circo.'&page='.$page); ?>
-      <?php endif; ?>
-    <?php endforeach; ?>
-    <?php echo link_to('>', '@list_parlementaires_circo?nom_circo='.$circo.'&page='.$pager->getNextPage()); ?>
-    <?php echo link_to('>>', '@list_parlementaires_circo?nom_circo='.$circo.'&page='.$pager->getLastPage()); ?>
-</div>
-<?php endif; ?>
 </div>

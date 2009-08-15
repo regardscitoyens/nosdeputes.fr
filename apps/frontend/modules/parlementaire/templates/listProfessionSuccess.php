@@ -1,22 +1,13 @@
 <div class="temp">
-<p><?php $nResults = $pager->getNbResults(); echo $nResults; ?> parlementaire<?php if ($nResults > 1) echo 's'; ?> exerçant la profession de <em>"<?php echo $prof; ?>"</em></p>
-<ul>
-<?php foreach($pager->getResults() as $parlementaire) : ?>
-<li><?php echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php echo $parlementaire->getStatut(); ?> <?php echo link_to($parlementaire->getGroupe()->getNom(), '@list_parlementaires_organisme?slug='.$parlementaire->getGroupe()->getSlug()); ?>, <?php echo link_to($parlementaire->nom_circo, '@list_parlementaires_circo?nom_circo='.$parlementaire->nom_circo); ?>)</li><?php endforeach ; ?>
-</ul>
-<?php if ($pager->haveToPaginate()) : ?>
-<div class="pagination">
-    <?php echo link_to('<< ', '@list_parlementaires_profession?profession='.$prof.'&page=1'); ?>
-    <?php echo link_to('< ', '@list_parlementaires_profession?profession='.$prof.'&page='.$pager->getPreviousPage()); ?>
-    <?php foreach ($pager->getLinks() as $page): ?>
-      <?php if ($page == $pager->getPage()): ?>
-        <?php echo $page ?>
-      <?php else: ?>
-        <?php echo link_to($page, '@list_parlementaires_profession?profession='.$prof.'&page='.$page); ?>
-      <?php endif; ?>
-    <?php endforeach; ?>
-    <?php echo link_to('> ', '@list_parlementaires_profession?profession='.$prof.'&page='.$pager->getNextPage()); ?>
-    <?php echo link_to('>> ', '@list_parlementaires_profession?profession='.$prof.'&page='.$pager->getLastPage()); ?>
-</div>
+<?php
+  $nResults = count($parlementaires);
+  if ($exact == 1) : ?>
+<p><?php echo $nResults; ?> <em>"<?php if ($nResults > 1) $prof = preg_replace('/s?$/','s', $prof); echo $prof; ?>"</em> parmi les parlementaires (et les citoyens, à venir)</p>
+<?php else : ?>
+<p><?php echo $nResults; ?> parlementaire<?php if ($nResults > 1) echo 's'; ?> (et citoyens a venir) exerçant une profession comme <em>"<?php echo $prof; ?>"</em></p>
 <?php endif; ?>
+<ul>
+<?php foreach($parlementaires as $parlementaire) : ?>
+<li><?php if ($exact == 0) echo ucfirst($parlementaire->profession)."&nbsp;: "; echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php echo $parlementaire->getStatut(1); ?>, <?php echo link_to($parlementaire->nom_circo, '@list_parlementaires_circo?search='.$parlementaire->nom_circo); ?>)</li><?php endforeach ; ?>
+</ul>
 </div>

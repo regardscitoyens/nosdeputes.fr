@@ -1,15 +1,11 @@
 <div class="temp">
-<div class="amendements">
-<?php $nResults = $pager->getNbResults(); echo $nResults; ?> résultat<?php if ($nResults > 1) echo 's'; ?>
-</div>
-<div class="amendements">
-<?php foreach($pager->getResults() as $i) {
-  $args = array('amendement' => $i);
-  if (isset($highlight))
-    $args['highlight'] = $highlight;
-  echo include_component('amendement', 'parlementaireAmendement', $args);
-  }
-?></div>
+<?php $nResults = $pager->getNbResults(); ?>
+<h1><?php echo $orga->getNom(); ?> (<?php echo $orga->getSmallNomGroupe(); ?>) : <?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?></h1>
+<ul>
+<?php foreach($pager->getResults() as $parlementaire) : ?>
+<li><?php echo $parlementaire->getPOrganisme($orga->getNom())->getFonction(); ?> : <?php echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php echo link_to($parlementaire->nom_circo, '@list_parlementaires_circo?search='.$parlementaire->nom_circo); ?>)</li>
+<?php endforeach ; ?>
+</ul>
 <?php if ($pager->haveToPaginate()) :
 
 $uri = $sf_request->getUri();

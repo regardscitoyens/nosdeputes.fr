@@ -17,7 +17,20 @@ class Organisme extends BaseOrganisme
     );
     return $hashmap[$this->getNom()];
   }
-
+  public static function getNomByAcro($acro) {
+    $acro = strtolower($acro);
+    if (preg_match('/^(ump|src|gdr|ni|nc)$/i', $acro)) {
+      $hashmap = array(
+         "ump" => "Union pour un mouvement populaire",
+         "src" => "Socialiste, radical, citoyen et divers gauche",
+         "gdr" => "Gauche démocrate et républicaine",
+         "ni" => "Députés n'appartenant à aucun groupe",
+         "nc" => "Nouveau centre" );
+      return $hashmap["$acro"];
+    } else {
+      return false;
+    }
+  }
   public function getSeanceByDateAndMomentOrCreateIt($date, $moment, $session = null) {
     $seance = $this->getSeanceByDateAndMoment($date, $moment);
     if (!$seance) {

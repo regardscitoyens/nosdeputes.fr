@@ -52,10 +52,24 @@
             <form action="<?php echo url_for('@search'); ?>" method="get">
             <p>
               <input class="rechercher" name="search" type="text" size="15" value="<?php if (isset($_GET['search'])) echo $_GET['search']; ?>"/>
+              <?php
+                if (isset($_GET['search']) && preg_match('/parlementaire/', $_SERVER['REQUEST_URI'])) $selectdepute = ' selected="selected"';
+                else $selectdepute = "";
+                if (isset($_GET['search']) && preg_match('/circonscription/', $_SERVER['REQUEST_URI'])) $selectcirco = ' selected="selected"';
+                else $selectcirco = "";
+                if (isset($_GET['search']) && preg_match('/profession/', $_SERVER['REQUEST_URI'])) $selectprof = ' selected="selected"';
+                else $selectprof = "";
+                if (isset($_GET['search']) && preg_match('/intervention/', $_SERVER['REQUEST_URI'])) $selectinterv = ' selected="selected"';
+                else $selectinterv = "";
+                if (isset($_GET['search']) && preg_match('/amendement/', $_SERVER['REQUEST_URI'])) $selectamdmt = ' selected="selected"';
+                else $selectamdmt = "";
+              ?>
               <select class="type_recherche" name="type">
-                <option value="depute">Députés</option>
-                <option value="intervention">Interventions</option>
-                <option value="amendement">Amendements</option>
+                <option value="depute"<?php echo $selectdepute; ?>>Députés</option>
+                <option value="departement"<?php echo $selectcirco; ?>>Départements</option>
+                <option value="profession"<?php echo $selectprof; ?>>Profession</option>
+                <option value="intervention"<?php echo $selectinterv; ?>>Interventions</option>
+                <option value="amendement"<?php echo $selectamdmt; ?>>Amendements</option>
               </select>
               <input class="bouton_ok" type="submit" value="ok"/>
             </p>

@@ -1,3 +1,4 @@
+<div class="temp">
 <div class="amendement" id="L<?php echo $amendement->texteloi_id; ?>A<?php echo $amendement->numero; ?>">
   <h2>Texte de loi N° <?php echo $amendement->texteloi_id; ?> : //titre//</h2>
 <h1><?php echo $amendement->getTitre(); ?></h1>
@@ -8,7 +9,7 @@
   $deputes = $amendement->getParlementaires();
   echo '<p align-style="center">';
   foreach ($deputes as $depute) {
-    $titre = $depute->nom.', '.$depute->getGroupe()->getNom();
+    $titre = $depute->nom.', '.$depute->groupe_acronyme;
     echo '<a href="'.url_for($depute->getPageLink()).'"><img width="50" height="64" title="'.$titre.'" alt="'.$titre.'" src="'.$depute->getPhoto().'" /></a>&nbsp;';
   }
   echo '</p>';
@@ -47,4 +48,5 @@
     3 commentaires dont celui de zouze :
     Cet amendement tue des gnous !
   </div>
+</div>
 </div>
