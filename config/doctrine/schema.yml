@@ -221,6 +221,30 @@ Amendement:
       fields: [sujet, texte, expose]
       type: fulltext
 
+QuestionEcrite:
+  actAs:
+    Timestampable: ~
+    Taggable: ~
+  columns:
+    source:
+      type: string(255)
+      unique: true
+    legislature: integer
+    numero: integer
+    date: date
+    ministere: string
+    themes: string
+    question:
+      type: string
+    reponse:
+      type: string
+    content_md5: string(36)
+    parlementaire_id: integer
+  relations:
+    Parlementaire:
+      class: Parlementaire
+      foreignAlias: QuestionEcrites
+
 ParlementaireAmendement:
   actAs:
     Timestampable:

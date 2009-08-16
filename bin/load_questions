@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo Parse Questions
+echo > /tmp/load_questions.log
+cd batch/questions
+# rm -f xml/*
+# perl parse_quest.pl >> /tmp/load_questions.log
+cd -
+php symfony cc
+for file in $(ls batch/questions/xml)
+do
+    echo $file
+    cp batch/questions/xml/$file batch/questions/input/
+    php symfony load:Questions >> /tmp/load_questions.log
+    php symfony cc
+done

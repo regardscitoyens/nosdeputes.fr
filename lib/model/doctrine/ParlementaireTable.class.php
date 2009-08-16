@@ -4,7 +4,7 @@
  */
 class ParlementaireTable extends PersonnaliteTable
 {
-  public function findOneByNomSexeGroupe($nom, $sexe, $groupe, $amendement = null) {
+  public function findOneByNomSexeGroupe($nom, $sexe = null, $groupe = null, $amendement = null) {
     $depute = null;
     $memeNom = $this->findByNom($nom);
     if (count($memeNom) == 0) {
