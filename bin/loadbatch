@@ -1,9 +1,9 @@
 #!/bin/bash
 
-bash load_amendements
-bash load_jo
-bash load_commission
-bash load_hemicycle
-bash tag_seance
+bash bin/load_amendements
+bash bin/load_jo
+bash bin/load_commission
+bash bin/load_hemicycle
+bash bin/tag_seance
 php symfony set:Vacances
 
