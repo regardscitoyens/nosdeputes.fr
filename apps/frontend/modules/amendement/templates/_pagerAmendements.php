@@ -1,6 +1,15 @@
 <div class="temp">
 <div class="amendements">
-<?php $nResults = $pager->getNbResults(); echo $nResults; ?> résultat<?php if ($nResults > 1) echo 's'; ?>
+<?php
+  if (isset($_GET['search']))
+    $mots = trim($_GET['search']);
+  else $mots = "";
+  $nResults = $pager->getNbResults();
+  if ($mots == "") : ?>
+<p>Les 5000 derniers amendements en date&nbsp;:</p>
+<?php else : ?>
+<p><?php echo $nResults; ?> amendement<?php if ($nResults > 1) echo 's'; ?> trouvé<?php if ($nResults > 1) echo 's'; ?> pour la recherche sur <em>"<?php echo $mots; ?>"</em></p>
+<?php endif; ?>
 </div>
 <div class="amendements">
 <?php foreach($pager->getResults() as $i) {

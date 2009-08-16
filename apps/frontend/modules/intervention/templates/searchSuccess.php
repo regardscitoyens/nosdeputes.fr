@@ -1,3 +1,3 @@
 <?php
-echo include_component('intervention', 'pagerInterventions', array('intervention_query' => $query, 'highlight' => $high));
+echo include_component('intervention', 'pagerInterventions', array('intervention_query' => $query, 'highlight' => $high, 'mots' => $mots));
 ?>

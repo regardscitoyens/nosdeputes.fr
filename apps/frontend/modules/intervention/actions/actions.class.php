@@ -96,7 +96,9 @@ public function executeSearch(sfWebRequest $request)
       $this->high[] = preg_replace('/^[+-]"?([^"]*)"?$/', '\\1', $m);
     }
 
-    $sql = 'SELECT i.id FROM intervention i WHERE MATCH (i.intervention) AGAINST (\''.implode(' ', $mcle).'\' IN BOOLEAN MODE)';
+    if (count($mcle) == 0) {
+      $sql = 'SELECT i.id FROM intervention i LIMIT 5000';
+    } else $sql = 'SELECT i.id FROM intervention i WHERE MATCH (i.intervention) AGAINST (\''.implode(' ', $mcle).'\' IN BOOLEAN MODE)';
 
     $search = Doctrine_Manager::connection()
       ->getDbh()
