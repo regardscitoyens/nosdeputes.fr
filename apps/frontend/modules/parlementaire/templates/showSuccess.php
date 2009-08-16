@@ -10,8 +10,8 @@
     <div class="info_depute">
       <h1><?php echo $parlementaire->nom.', '.$parlementaire->getLongStatut(1); ?></h1>
     </div>
-      <?php echo include_component('plot', 'parlementairePresenceLastYear', array('parlementaire' => $parlementaire)); ?>
-      <?php echo include_component('plot', 'parlementairePresenceLastYear', array('parlementaire' => $parlementaire, 'options' => array('plot' => "histogram"))); ?>
+      <?php echo include_component('plot', 'parlementairePresenceLastYear', array('parlementaire' => $parlementaire, 'options' => array('plot' => "both"))); ?>
+      <?php //echo include_component('plot', 'parlementairePresenceLastYear', array('parlementaire' => $parlementaire, 'options' => array('plot' => "histogram"))); ?>
       <?php //echo include_component('plot', 'parlementairePresenceCommissionBySession', array('parlementaire' => $parlementaire)); ?>
   </div>
   <div class="barre_activite">
@@ -104,7 +104,7 @@
     <div class="b_d_cont">
       <div class="b_d_infos">
       <h2>Implication dans un projet de loi</h2>
-<?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit'=>5)); ?>
+<?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit'=>5, 'textes' => $textes)); ?>
 <?php echo link_to('suite', '@parlementaire_textes?slug='.$parlementaire->slug); ?>
       </div>
     </div>

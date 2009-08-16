@@ -17,10 +17,13 @@ class parlementaireActions extends sfActions
   public function executeShow(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->createQuery('p')
+      ->where('p.slug = ?', $slug)
+      ->leftJoin('p.ParlementaireOrganisme po')
+      ->leftJoin('po.Organisme o')
+      ->fetchOne();
     $this->qtag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t, Intervention i')
-      ->leftJoin('ParlementaireOrganisme po')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('i.id = tg.taggable_id');
 

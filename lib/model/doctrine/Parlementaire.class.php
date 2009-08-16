@@ -109,18 +109,21 @@ class Parlementaire extends BaseParlementaire
 
   private function getPOFromJoinIf($field, $value) {
     $p = $this->toArray();
-    if (isset($p['ParlementaireOrganisme']) &&
-	isset($p['ParlementaireOrganisme'][0]) &&
-	$p['ParlementaireOrganisme'][0]['Organisme'][$field] == $value)  {
-      $po = new ParlementaireOrganisme();
-      $o = new Organisme();
-      $o->fromArray($p['ParlementaireOrganisme'][0]['Organisme']);
-      $po->setFonction($p['ParlementaireOrganisme'][0]['fonction']);
-      $po->setParlementaire($this);
-      $po->setOrganisme($o);
-      return $po;
-    }
-    return NULL;
+    if (isset($p['ParlementaireOrganisme']))
+      $i = 0;
+      while (isset($p['ParlementaireOrganisme'][$i])) {
+        if ($p['ParlementaireOrganisme'][$i]['Organisme'][$field] == $value) {
+          $po = new ParlementaireOrganisme();
+          $o = new Organisme();
+          $o->fromArray($p['ParlementaireOrganisme'][$i]['Organisme']);
+          $po->setFonction($p['ParlementaireOrganisme'][$i]['fonction']);
+          $po->setParlementaire($this);
+          $po->setOrganisme($o);
+          return $po;
+       }
+       $i++;
+     }
+     return NULL;
   }
 
   public function getPOrganisme($str) {
