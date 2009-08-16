@@ -1,5 +1,5 @@
 <div class="temp">
-<?php if ($search) : ?>
+<?php if ($search != "") : ?>
 <p><?php $nResults = $pager->getNbResults(); echo $nResults; ?> résultat<?php if ($nResults > 1) echo 's'; ?> pour <em>"<?php echo $search; ?>"</em></p>
 <?php else : ?>
 <p>Les <?php $nResults = $pager->getNbResults(); echo $nResults; ?> députés de la législature (577 en activité)&nbsp;:</p>

@@ -5,9 +5,8 @@ if (!$tag) {
  echo "</div>";
  return;
  }
-
-foreach($parlementaires as $p) {
-  echo '<li>'.link_to($p['nom'], '@tag_parlementaire_interventions?parlementaire='.$p['slug'].'&tags='.$tag).'('.$p['nb'].')</li>';
+foreach($parlementaires as $inter) {
+  echo '<li>'.link_to($inter['Parlementaire']['nom'], '@tag_parlementaire_interventions?parlementaire='.$inter['Parlementaire']['slug'].'&tags='.$tag).'('.$inter['nb'].')</li>';
 }
 ?>
 </div>

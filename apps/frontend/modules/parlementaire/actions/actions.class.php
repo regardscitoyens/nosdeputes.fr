@@ -157,16 +157,17 @@ public function executeList(sfWebRequest $request)
     if ($this->tag = $request->getParameter('tags')) {
       $tags = split(',', $this->tag);
 
-      $this->parlementaires = Doctrine::getTable('Parlementaire')
-	->createQuery('p')
-	->select('p.*, count(i.id) as nb')
-    ->addFrom('p.Interventions i, Tagging tg, Tag t')
-	->where('tg.taggable_id = i.id AND t.id = tg.tag_id')
+      $this->parlementaires = Doctrine::getTable('Intervention')
+	->createQuery('i')
+	->select('i.id, p.*, count(i.id) as nb')
+    ->addFrom('i.Parlementaire p, Tagging tg, Tag t')
+    ->where('p.id IS NOT NULL')
+	->andWhere('tg.taggable_id = i.id AND t.id = tg.tag_id')
 	->andWhere('tg.taggable_model = ?', 'Intervention')
 	->andWhereIn('t.name', $tags)
 	->groupBy('p.id')
 	->orderBy('nb DESC')
-	->execute();
+	->fetchArray();
     }
   }
 }

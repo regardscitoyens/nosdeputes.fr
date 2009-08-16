@@ -63,8 +63,9 @@ class sectionActions extends sfActions
     
     
     $this->ptag = Doctrine_Query::create()
-      ->from('Parlementaire p')
-      ->leftJoin('p.Interventions i')
+      ->from('Intervention i')
+      ->leftJoin('i.Parlementaire p')
+      ->where('p.id IS NOT NULL')
       ->whereIn('i.id', $interventions)
       ->andWhere('((i.fonction != ? AND i.fonction != ? ) OR i.fonction IS NULL)', array('président', 'présidente'))
       ->groupBy('p.id')
