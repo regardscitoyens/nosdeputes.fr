@@ -9,7 +9,7 @@ class ParlementaireTable extends PersonnaliteTable
     $memeNom = $this->findByNom($nom);
     if (count($memeNom) == 0) {
       $query = $this->createQuery('p')
-        ->where('p.nom_de_famille LIKE ?' , '%'.$nom.'%');
+        ->where('p.nom_de_famille = ?' , $nom);
       if ($amendement) $query->andWhere('p.fin_mandat is null or p.fin_mandat > ?', $amendement->getDate());
       $memeNom = $query->execute();
     }

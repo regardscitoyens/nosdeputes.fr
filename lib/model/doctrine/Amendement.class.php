@@ -13,7 +13,7 @@ class Amendement extends BaseAmendement {
       $groupe = preg_replace("/^\s*(de la|de l'|du)\s*/", "", $match[3]);
       if (preg_match('/(union.*mouvement.*populaire|UMP)/i',$groupe)) $groupe = "UMP";
       elseif (preg_match('/(socialiste.*radical|SRC)/i',$groupe)) $groupe = "SRC";
-	  elseif (preg_match('/(gauche.*démocrate|GDR)/i',$groupe)) $groupe = "GDR";
+      elseif (preg_match('/(gauche.*démocrate|GDR)/i',$groupe)) $groupe = "GDR";
       elseif (preg_match('/(nouveau.*centre|NC)/i',$groupe)) $groupe = "NC";
       else $groupe = null;
     }
