@@ -61,11 +61,14 @@ sub auteurs {
 }
 
 sub texte {
-    $line =~ s/\s*\<\/?[^\>]+\>//g;
-    $output = 'texte';
-    if ($texte == 2) { $output = 'expose'; }
-    if (!$amdmt{$output}) { $amdmt{$output} = "<p>".$line."</p>"; }
-    else { $amdmt{$output} = $amdmt{$output}."<p>".$line."</p>"; }
+    $line2 = $line;
+    $line2 =~ s/\s*\<\/?[^\>]+\>//g;
+    if (!($line2 =~ /\s*Adt\s+n°\s*$/)) {
+    	$output = 'texte';
+    	if ($texte == 2) { $output = 'expose'; }
+    	if (!$amdmt{$output}) { $amdmt{$output} = "<p>".$line2."</p>"; }
+    	else { $amdmt{$output} = $amdmt{$output}."<p>".$line2."</p>"; }
+    }
 }
 
 sub sortseance {
@@ -87,8 +90,8 @@ sub sortseance {
 }
 
 sub identiques {
-    if ($line =~ /\<div\>\s*(de|M[\s\.Mml])\s+(.*)\s*\<\/div\>/) {
-	$line = $1;
+    if ($line =~ /\<div\>\s*(de)?\s*(M[\s\.Mml].*)\s*\<\/div\>/) {
+	$line = $2;
 	if ($amdmt{'numero'} != $num_ident) {
 	    auteurs();
 	}
@@ -106,6 +109,22 @@ sub identiques {
 	    }
 	    if ($num > $num_ident + 1) {
 		$amdmt{'serie'} = $amdmt{'serie'}.$num_ident.",".$num."-";
+	    }
+	    $num_ident = $num;
+	} elsif ($line =~ /^\s*(\d+)\s*$/) {
+    	    $num = $1;
+	    if ($num_ident == -1) {
+		$num_ident = $num;
+		$amdmt{'serie'} = $num_ident."-";
+	    }
+	    if ($num > $num_ident + 1) {
+		$amdmt{'serie'} = $amdmt{'serie'}.$num_ident.",".$num."-";
+	    }
+	    $num_ident = $num;
+	} elsif ($line =~ /^\s*de\s+(M.*)\s*$/) {
+    	    $line = $1;
+	    if ($amdmt{'numero'} != $num) {
+		auteurs();
 	    }
 	    $num_ident = $num;
 	}
@@ -201,13 +220,15 @@ foreach $line (split /\n/, $string)
 		auteurs();
 	    }
 	} elsif ($identiques == 1 && $line =~ /\<div\>.*(\d+).*\<\/div\>/) {
-	    identiques();
+		identiques();
 	} elsif ($texte >= 1 && $line =~ /\<div\>(.*)\<\/div\>/) {
 	    $line = $1;
 	    texte();
 	}
     } elsif (!$amdt{'sort'} && $line =~ /\<div.*id="sort"/i) {
 	sortseance();
+    } elsif ($identiques == 1 && $line =~ /\<p style=".*text-align:.*\>.*M[\.Mml]/i) {
+	identiques();
     } elsif ($line =~ /class="presente"/i) {
 	if ($line =~ /amendement/) {
 	    $line =~ /(\d+)/;

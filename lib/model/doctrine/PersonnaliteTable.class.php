@@ -6,8 +6,10 @@ class PersonnaliteTable extends Doctrine_Table
 {
   static $changed = 0;
   static $all = null;
-  public function similarTo($str)
+  public function similarTo($str, $sexe = null)
   {
+    if (preg_match('/^\s*$/', $str))
+      return null;
     $str = preg_replace('/\(.*\)/', '', $str);
     $word = preg_replace('/^.*\s(\S+)\s*$/i', '\\1', $str);
     $q = $this->createQuery('p')->where('nom LIKE ?', '% '.$word.'%');
@@ -26,22 +28,27 @@ class PersonnaliteTable extends Doctrine_Table
 
     $closest = null;
     $closest_res = -1;
+    $best_res = -1;
     $champ = 'nom';
     if (!preg_match('/ /', $str))
       $champ = 'nom_de_famille';
     //Compare each parlementaire with the string and keep the best
     foreach ($this->all as $parl) {
+      if ($sexe && $sexe != $parl['sexe'])
+        continue;
       $res = similar_text(preg_replace('/[^a-z]+/i', ' ', $parl[$champ]), preg_replace('/[^a-z]+/i', ' ', $str), $pc);
-      if ($res > 0 && $pc > $closest_res) {
-	$closest = $parl;
-	$closest_res = (strlen($str) - $res < 3) ? 90 : $pc;
+      if ($res > 0 && $pc >= $closest_res && $res >= $bestres) {
+        $closest = $parl;
+        $best_res = max($res, $best_res);
+        $closest_res = max($pc, $closest_res);
       }
     }
 
 #    echo "$str "; echo $closest['nom'];    echo " $closest_res\n";
-
+    if (strlen($str) < 8) $seuil = 65;
+    else $seuil = 85;
     //If more than 85% similarities, it is the best
-    if ($closest_res > 85)
+    if ($closest_res > $seuil)
       return $this->find($closest['id']);
     //If str is the end of the best parlementaire, it is OK (remove non alpha car to avoid preg pb)
     if (preg_match('/'.preg_replace('/[^a-z]/i', '', $str).'$/', preg_replace('/[^a-z]/i', '', $closest['nom'])))

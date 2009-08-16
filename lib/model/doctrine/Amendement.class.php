@@ -27,7 +27,7 @@ class Amendement extends BaseAmendement {
           if (preg_match('/M[ml]/', $match[1]))
             $sexe = 'F';
           else $sexe = 'H';
-      } else $nom = preg_replace("/^\s*(.*)\s*$/", "\1", $depute);
+      } else $nom = preg_replace("/^\s*(.*)\s*$/", "\\1", $depute);
       $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupe($nom, $sexe, $groupe, $this);
       if (!$depute) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$groupe."\n";
       else {

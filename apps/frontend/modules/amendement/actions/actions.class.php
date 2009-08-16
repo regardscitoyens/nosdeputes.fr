@@ -42,10 +42,9 @@ class amendementActions extends sfActions
   public function executeTop(sfWebRequest $request)
   {
     $q = Doctrine_Query::create()
-      ->select('p.*, count(a.id) as nb')
-      ->from('Parlementaire p')
-      ->leftJoin('p.ParlementaireAmendement pa')
-      ->leftJoin('pa.Amendement a')
+      ->select('pa.id, p.*, count(pa.amendement_id) as nb')
+      ->from('ParlementaireAmendement pa')
+      ->leftJoin('pa.Parlementaire p')
       ->groupBy('p.id')
       ->orderBy('nb DESC');
     $this->top = $q->fetchArray();

@@ -4,15 +4,20 @@
  */
 class ParlementaireTable extends PersonnaliteTable
 {
-  public function findOneByNomSexeGroupe($nom, $sexe, $groupe) {
+  public function findOneByNomSexeGroupe($nom, $sexe, $groupe, $amendement = null) {
     $depute = null;
     $memeNom = $this->findByNom($nom);
-    if (count($memeNom) == 0) $memeNom = $this->findByNomDeFamille($nom);
+    if (count($memeNom) == 0) {
+      $query = $this->createQuery('p')
+        ->where('p.nom_de_famille LIKE ?' , '%'.$nom.'%');
+      if ($amendement) $query->andWhere('p.fin_mandat is null or p.fin_mandat > ?', $amendement->getDate());
+      $memeNom = $query->execute();
+    }
     if (count($memeNom) == 0 && preg_match('/([A-Z].*) ([A-Z].*)/', $nom, $match)) {
       $revert_nom = $match[2]." ".$match[1];
       $memeNom = $this->findByNom($revert_nom);
     }
-    if (count($memeNom) == 0) $depute = $this->similarTo($nom);
+    if (count($memeNom) == 0) $depute = $this->similarTo($nom, $sexe);
     elseif (count($memeNom) == 1) $depute = $memeNom[0];
     else {
       $memeSexe = array();
