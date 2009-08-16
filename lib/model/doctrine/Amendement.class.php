@@ -90,8 +90,10 @@ class Amendement extends BaseAmendement {
     return "$titre";
   }
 
-  public function getTexte() {
-    return preg_replace('/\<p\>\s*«\s*([^»]+)\s+»(\W*)\<\/p\>/', '<p class="indent_guillemets">«&nbsp;\1&nbsp;»\2</p>', $this->_get('texte'));
+  public function getTexte($style=1) {
+    if ($style == 1)
+      return preg_replace('/\<p\>\s*«\s*([^»]+)\s+»(\W*)\<\/p\>/', '<p class="indent_guillemets">«&nbsp;\1&nbsp;»\2</p>', $this->_get('texte'));
+    else return $this->_get('texte');
   }
 
 public function getTitreNoLink() {
@@ -99,6 +101,6 @@ public function getTitreNoLink() {
   }
 
   public function getLinkPDF() {
-    return preg_replace('/\/amendement/', '/pdf/amendement', preg_replace('/\.asp(.*)$/', '\.pdf', $this->source));
+    return preg_replace('/\/amendement/', '/pdf/amendement', preg_replace('/\.asp(.*)$/', '.pdf', $this->source));
   }
 }

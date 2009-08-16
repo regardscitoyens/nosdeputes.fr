@@ -2,11 +2,11 @@
   <div class="amendement" id="<?php echo $amendement->id; ?>">
     <div class="info">
     <p><?php echo $amendement->date; ?> <strong>Loi N° <?php echo $amendement->texteloi_id; ?> : <?php echo link_to($amendement->getTitreNoLink(), 'amendement/show?id='.$amendement->id); ?></strong> (<?php echo $amendement->sort; ?>)<br>
-    <?php echo $amendement->getSignataires(); ?></p>
+    <?php echo truncate_text($amendement->getSignataires(), 120); ?></p>
     <p class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></p>
     </div>
     <div class="texte_amendement"><?php
-$amdmt = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $amendement->getTexte()." Exposé sommaire : ".$amendement->getExpose());
+$amdmt = preg_replace('/<br\/?>|<\/?p>|\&[^\;]+\;/i', ' ', $amendement->getTexte(0)." Exposé sommaire : ".$amendement->getExpose());
 $p_amdmt = '';
 if (isset($highlight)) {
   foreach ($highlight as $h) {
