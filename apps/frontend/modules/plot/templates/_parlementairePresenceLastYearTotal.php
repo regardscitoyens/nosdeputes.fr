@@ -56,8 +56,10 @@ $Test->drawGrid(0,TRUE,0,0,0,100);
 $Test->setColorPalette(0,50,50,50);
 $Test->drawOverlayBarGraph($Data2,$DataDescr2,30,100);
 if (isset($fonctions)) {
-  $fonction = (int)(4*($fonctions['hemicycle']+$fonctions['commission'])/(array_sum($participations)));
-  $Test->setColorPalette(0,255,30*$fonction,0);
+  $total = array_sum($presences);
+  if ($total != 0) $fonction = (int)(4*($fonctions['hemicycle']+$fonctions['commission'])/$total);
+  else $fonction = 0;
+  $Test->setColorPalette(0,255,35*$fonction,0);
 } else $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,255,255,0);
 $Test->setColorPalette(2,0,255,0);

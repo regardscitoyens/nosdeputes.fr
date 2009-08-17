@@ -75,7 +75,7 @@ class plotComponents extends sfComponents
         ->from('Intervention i')
         ->where('i.parlementaire_id = ?', $this->parlementaire->id)
         ->andWhere('i.type = ?', 'question')
-        ->andWhere('i.nb_mots > ?', 3*$seuil_invective)
+        ->andWhere('i.nb_mots > ?', 5*$seuil_invective)
         ->leftJoin('i.Seance s')
         ->andWhere('s.date > ?', $date_debut)
         ->groupBy('s.annee, s.numero_semaine');
@@ -105,11 +105,11 @@ class plotComponents extends sfComponents
 
  public static function getLabelsSemaines($n_weeks, $annee0, $sem0) {
     $annee = $annee0 + 1;
-    $hashmap = array( 3  => "JAN ".$annee, 7  => " FEV", '11' => " MAR", '16' => "AVR ",
-                      '20' => "MAI ", '24' => " JUIN", '28' => "JUIL", '33' => " AOUT",
-                      '37' => " SEP", '42' => "OCT ", '46' => " NOV", '50' => " DEC" );
+    $hashmap = array( '4'  => "JAN ".sprintf('%02d', $annee-2000), '9'  => "FEV ", '13' => "MAR", '17' => "AVR ",
+                      '21' => "MAI ", '25' => " JUIN", '29' => " JUIL", '34' => "AOUT",
+                      '38' => " SEP", '43' => "OCT ", '47' => " NOV", '51' => " DEC" );
     $labels = array_fill(1, $n_weeks, "");
-    if ($sem0 < 3) $labels[0] = "Jan ".$annee0;
+    if ($sem0 < 3) $labels[0] = "Jan ".sprintf('%02d', $annee0-2000);
     else for ($i = 1; $i <= $n_weeks; $i++) {
       $index = $i + $sem0; if ($index > 52) $index -= 52;
       if (isset($hashmap[$index]) && !(($index == 3) && ($sem0 < 3))) $labels[$i] = $hashmap[$index];
