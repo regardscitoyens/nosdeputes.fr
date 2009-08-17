@@ -50,9 +50,9 @@ class plotComponents extends sfComponents
       ->groupBy('i.type, s.annee, s.numero_semaine');
     $participations = $query2->fetchArray();
 
-    $this->n_participations = array('commission' => array_fill(1, $n_weeks, -0.35),
-                                    'loi' => array_fill(1, $n_weeks, -0.35),
-                                    'question' => array_fill(1, $n_weeks, -0.35));
+    $this->n_participations = array('commission' => array_fill(1, $n_weeks, -0.2),
+                                    'loi' => array_fill(1, $n_weeks, -0.2),
+                                    'question' => array_fill(1, $n_weeks, 0));
     $this->n_mots = array('commission' => array_fill(1, $n_weeks, 0),
                           'hemicycle' => array_fill(1, $n_weeks, 0));
     $this->fonctions = array('commission' => 0, 'hemicycle' => 0);
