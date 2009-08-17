@@ -1268,7 +1268,7 @@
     }
 
    /* This function draw a bar graph */
-   function drawOverlayBarGraph(&$Data,&$DataDescription,$Alpha=50)
+   function drawOverlayBarGraph(&$Data,&$DataDescription,$Alpha=50,$Width=50)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawOverlayBarGraph",$DataDescription);
@@ -1290,7 +1290,7 @@
        imagefilledrectangle($this->Layers[$GraphID],0,0,$LayerWidth,$LayerHeight,$C_White);
        imagecolortransparent($this->Layers[$GraphID],$C_White);
 
-       $XWidth = $this->DivisionWidth / 2;
+       $XWidth = $Width/200*$this->DivisionWidth;
        $XPos   = $this->GAreaXOffset;
        $YZero  = $LayerHeight - ((0-$this->VMin) * $this->DivisionRatio);
        $XLast  = -1; $PointsCount = 2;
