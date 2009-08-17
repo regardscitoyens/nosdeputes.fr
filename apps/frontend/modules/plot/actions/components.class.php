@@ -25,11 +25,11 @@ class plotComponents extends sfComponents
     $this->vacances = $this->getVacances($n_weeks, $annee0, $sem0);
 
     $query = Doctrine_Query::create()
-      ->select('COUNT(*) as nombre, p.*')->from('Presence p')
+      ->select('COUNT(p.id) as nombre, p.id,s.type, s.annee, s.numero_semaine')
+      ->from('Presence p')
       ->where('p.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('p.Seance s')
       ->andWhere('s.date > ?', $date_debut)
-      ->addSelect('s.type, s.annee, s.numero_semaine')
       ->groupBy('s.type, s.annee, s.numero_semaine');
     $presences = $query->fetchArray();
 
@@ -37,30 +37,58 @@ class plotComponents extends sfComponents
                                'hemicycle' => array_fill(1, $n_weeks, 0));
     foreach ($presences as $presence) {
       $n = ($presence['Seance']['annee'] - $annee0)*52 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
+      if ($this->n_presences[$presence['Seance']['type']] == 0)
+        $this->n_presences[$presence['Seance']['type']][$n] += 0.15;
       $this->n_presences[$presence['Seance']['type']][$n] += $presence['nombre'];
     }
+    unset($presences);
 
     $query2 = Doctrine_Query::create()
-      ->select('count(distinct id) as nombre, sum(i.nb_mots) as mots, s.type, s.annee, s.numero_semaine, i.type, i.fonction')
-      ->from('Seance s')
-      ->where('s.date > ?', $date_debut)
-      ->leftJoin('s.Interventions i')
+      ->select('count(distinct s.id) as nombre, sum(i.nb_mots) as mots, count(i.id) as interv, s.type, s.annee, s.numero_semaine, i.fonction')
+      ->from('Intervention i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.nb_mots > ?', $seuil_invective)
-      ->groupBy('i.type, s.annee, s.numero_semaine');
+      ->leftJoin('i.Seance s')
+      ->andWhere('s.date > ?', $date_debut)
+      ->groupBy('s.type, s.annee, s.numero_semaine');
     $participations = $query2->fetchArray();
 
-    $this->n_participations = array('commission' => array_fill(1, $n_weeks, -0.2),
-                                    'loi' => array_fill(1, $n_weeks, -0.2),
-                                    'question' => array_fill(1, $n_weeks, 0));
+    $this->n_participations = array('commission' => array_fill(1, $n_weeks, 0),
+                                    'hemicycle' => array_fill(1, $n_weeks, 0));
     $this->n_mots = array('commission' => array_fill(1, $n_weeks, 0),
                           'hemicycle' => array_fill(1, $n_weeks, 0));
     $this->fonctions = array('commission' => 0, 'hemicycle' => 0);
     foreach ($participations as $participation) {
-      $n = ($participation['annee'] - $annee0)*52 + $participation['numero_semaine'] - $sem0 + 1;
-      $this->n_participations[$participation['Interventions'][0]['type']][$n] += $participation['nombre'];
-      $this->n_mots[$participation['type']][$n] += $participation['mots']/10000;
-      if ($participation['Interventions'][0]['fonction'] != "") $this->fonctions[$participation['type']] += $participation['nombre'];
+      $n = ($participation['Seance']['annee'] - $annee0)*52 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
+      if ($participation['mots']/$participation['interv'] > $seuil_invective) {
+        if ($this->n_participations[$participation['Seance']['type']][$n] == 0)
+            $this->n_participations[$participation['Seance']['type']][$n] -= 0.1;
+        $this->n_participations[$participation['Seance']['type']][$n] += $participation['nombre'];
+      }
+      $this->n_mots[$participation['Seance']['type']][$n] += $participation['mots']/10000;
+      if ($participation['fonction'] != "") $this->fonctions[$participation['Seance']['type']] += $participation['nombre'];
+    }
+    unset($participations);
+    
+   if (isset($this->options['questions'])) {
+      $query3 = Doctrine_Query::create()
+        ->select('count(distinct s.id) as nombre, i.id, s.annee, s.numero_semaine')
+        ->from('Intervention i')
+        ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+        ->andWhere('i.type = ?', 'question')
+        ->andWhere('i.nb_mots > ?', 3*$seuil_invective)
+        ->leftJoin('i.Seance s')
+        ->andWhere('s.date > ?', $date_debut)
+        ->groupBy('s.annee, s.numero_semaine');
+      $questionsorales = $query3->fetchArray();
+
+      $this->n_questions = array_fill(1, $n_weeks, 0);
+      foreach ($questionsorales as $question) {
+        $n = ($question['Seance']['annee'] - $annee0)*52 + $question['Seance']['numero_semaine'] - $sem0 + 1;
+        if ($this->n_questions[$n] == 0)
+          $this->n_questions[$n] -= 0.2;
+        $this->n_questions[$n] += $question['nombre'];
+      }
+      unset($questionsorales);
     }
   }
 

@@ -2,9 +2,11 @@
 $n = count($labels);
 $presences = array_fill(1, $n, 0);
 $participations = array_fill(1, $n, 0);
+$mots = array_fill(1, $n, 0);
 for ($i = 1; $i < $n; $i++) {
   $presences[$i] = $n_presences['hemicycle'][$i] + $n_presences['commission'][$i];
-  $participations[$i] = $n_participations['loi'][$i] + $n_participations['commission'][$i] + $n_participations['question'][$i];
+  $participations[$i] = $n_participations['hemicycle'][$i] + $n_participations['commission'][$i];
+  $mots[$i] = $n_mots['hemicycle'][$i] + $n_mots['commission'][$i];
 }
 $DataSet = new xsPData();
 $DataSet->AddPoint($labels, "Serie1");
@@ -12,7 +14,7 @@ $DataSet->AddPoint($presences, "Serie2");
 $DataSet->SetSerieName("Présences relevées", "Serie2");
 $DataSet->AddPoint($participations, "Serie3");
 $DataSet->SetSerieName("Participations", "Serie3");
-$DataSet->AddPoint($n_mots['hemicycle'], "Serie4");
+$DataSet->AddPoint($mots, "Serie4");
 $DataSet->SetSerieName("Nombre de mots (x10000)", "Serie4");
 $DataSet->AddSerie("Serie2");
 $DataSet->AddSerie("Serie3");
@@ -26,10 +28,10 @@ $DataSet2->AddPoint($vacances, "Serie5");
 $DataSet2->AddSerie("Serie5");
 $DataSet2->SetAbsciseLabelSerie("Serie1");
 
-if (isset($questions)) {
+if (isset($n_questions)) {
   $DataSet3 = new xsPData();
   $DataSet3->AddPoint($labels, "Serie1");
-  $DataSet3->AddPoint($n_participations['question'], "Serie6");
+  $DataSet3->AddPoint($n_questions, "Serie6");
   $DataSet3->SetSerieName("Questions orales", "Serie6");
   $DataSet3->AddSerie("Serie6");
   $DataSet3->SetAbsciseLabelSerie("Serie1");
@@ -53,15 +55,18 @@ $Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,TRUE,0,0,TRUE,1,TRUE);
 $Test->drawGrid(0,TRUE,0,0,0,100);
 $Test->setColorPalette(0,50,50,50);
 $Test->drawOverlayBarGraph($Data2,$DataDescr2,30,100);
-$Test->setColorPalette(0,255,0,0);
+if (isset($fonctions)) {
+  $fonction = (int)(4*($fonctions['hemicycle']+$fonctions['commission'])/(array_sum($participations)));
+  $Test->setColorPalette(0,255,30*$fonction,0);
+} else $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,255,255,0);
 $Test->setColorPalette(2,0,255,0);
 $Test->drawFilledLineGraph($Data,$DataDescr,90);
 $Test->xsSetFontProperties("tahoma.ttf",12);
 $Test->drawLegend(85,55,$DataDescr,255,255,255);
-if (isset($questions)) {
+if (isset($n_questions)) {
   $Test->setColorPalette(0,0,0,255);
-  $Test->drawOverlayBarGraph($Data3,$DataDescr3,70,25);
+  $Test->drawOverlayBarGraph($Data3,$DataDescr3,85,25);
   $Test->drawLegend(85,108,$DataDescr3,255,255,255);
 }
 $Test->drawTreshold(0.01,0,0,0,FALSE,FALSE,0);

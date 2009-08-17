@@ -36,7 +36,7 @@ $Test->drawGrid(0,TRUE,0,0,0,100);
 $Test->setColorPalette(0,50,50,50);
 $Test->drawOverlayBarGraph($Data2,$DataDescr2,30,100);
 if (isset($fonctions)) {
-  $fonction = (int)(3*($fonctions['commission'])/(array_sum($n_participations['commission'])));
+  $fonction = (int)(4*($fonctions['commission'])/(array_sum($n_participations['commission'])));
   $Test->setColorPalette(0,255,30*$fonction,0);
 } else $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,255,255,0);

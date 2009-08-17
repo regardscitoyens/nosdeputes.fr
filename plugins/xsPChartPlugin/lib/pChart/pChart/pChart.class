@@ -1290,7 +1290,7 @@
        imagefilledrectangle($this->Layers[$GraphID],0,0,$LayerWidth,$LayerHeight,$C_White);
        imagecolortransparent($this->Layers[$GraphID],$C_White);
 
-       $XWidth = $Width/200*$this->DivisionWidth;
+       $XWidth = $this->DivisionWidth * $Width / 200;
        $XPos   = $this->GAreaXOffset;
        $YZero  = $LayerHeight - ((0-$this->VMin) * $this->DivisionRatio);
        $XLast  = -1; $PointsCount = 2;
