@@ -75,7 +75,8 @@ class tagSeanceTask extends sfBaseTask
     $qs = doctrine::getTable('Seance')->createQuery()->select('id')->where('tagged IS NULL');
 
     foreach($qs->fetchArray() as $s) {
-
+      echo "Seance ".$s['id']." ..";
+      
       //Recherche toutes les interventions pour cette séance
       $q = Doctrine_Query::create();
       $q->select('intervention, id')->from('Intervention i')->where('seance_id = ?', $s['id'])->andWhere('i.parlementaire_id IS NOT NULL');//->andWhere('(i.fonction IS NULL OR i.fonction NOT LIKE ? )', 'président%');
@@ -161,18 +162,25 @@ class tagSeanceTask extends sfBaseTask
         }
         if ($i) {
           $tagged = 1;
+          // retirer les 2 lignes suivantes
           $i->getSeance()->tagged = 1;
           $i->getSeance()->save();
           $i->save();
           $i->free();
         }
       }
+      // if ($tagged == 1) {
+      //   $seance = doctrine::getTable('Seance')->find($s['id']);
+      //   $seance->tagged = 1;
+      //   $seance->save()
+      //   $seance->free;
+      // }
       unset($tags);
       unset($array);
-      echo "Seance ".$s['id']." done.";
+      echo " done.";
       unset($s);
       if ($tagged == 0)
-        echo " WARNING: No tag found.\n";
+        echo " WARNING: No tag found !";
       echo "\n";
     }
   }
