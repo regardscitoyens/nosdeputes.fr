@@ -40,12 +40,6 @@ class parlementaireActions extends sfActions
       ->fetchArray();
   }
 
-  public function executePlotTest(sfWebRequest $request)
-  {
-    $slug = $request->getParameter('slug');
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
-  }
-
 public function executeList(sfWebRequest $request)
   {
     $this->search = $request->getParameter('search');
@@ -172,5 +166,11 @@ public function executeList(sfWebRequest $request)
 	->orderBy('nb DESC')
 	->fetchArray();
     }
+  }
+
+  public function executePlotPresences(sfWebRequest $request)
+  {
+    $slug = $request->getParameter('slug');
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
   }
 }

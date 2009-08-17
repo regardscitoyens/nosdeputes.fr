@@ -2,6 +2,12 @@
 
 class plotComponents extends sfComponents
 {
+  public function executeParlementairePresenceLastYearTotal() {
+  }
+  public function executeParlementairePresenceLastYearHemicycle() {
+  }
+  public function executeParlementairePresenceLastYearCommission() {
+  }
   public function executeParlementairePresenceLastYear() {
     static $seuil_invective = 20;
     if (!isset($this->options)) $this->options = array();
@@ -11,8 +17,7 @@ class plotComponents extends sfComponents
     if ($this->parlementaire->debut_mandat > date('Y-m-d', $last_year)) {
       $date_debut = $this->parlementaire->debut_mandat;
       $last_year = strtotime($this->parlementaire->debut_mandat);
-    } else
-      $date_debut = date('Y-m-d', $last_year);
+    } else $date_debut = date('Y-m-d', $last_year);
     $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year); if ($sem0 == 53) { $annee0++; $sem0 = 1; }
     $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
     
@@ -36,27 +41,27 @@ class plotComponents extends sfComponents
     }
 
     $query2 = Doctrine_Query::create()
-      ->select('count(distinct id) as nombre, sum(i.nb_mots) as mots, s.type, s.annee, s.numero_semaine, i.fonction')
+      ->select('count(distinct id) as nombre, sum(i.nb_mots) as mots, s.type, s.annee, s.numero_semaine, i.type, i.fonction')
       ->from('Seance s')
       ->where('s.date > ?', $date_debut)
       ->leftJoin('s.Interventions i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('i.nb_mots > ?', $seuil_invective)
-      ->groupBy('s.type, s.annee, s.numero_semaine');
+      ->groupBy('i.type, s.annee, s.numero_semaine');
     $participations = $query2->fetchArray();
 
-    $this->n_participations = array('commission' => array_fill(1, $n_weeks, -0.12),
-                                    'hemicycle' => array_fill(1, $n_weeks, -0.12));
+    $this->n_participations = array('commission' => array_fill(1, $n_weeks, -0.35),
+                                    'loi' => array_fill(1, $n_weeks, -0.35),
+                                    'question' => array_fill(1, $n_weeks, -0.35));
     $this->n_mots = array('commission' => array_fill(1, $n_weeks, 0),
                           'hemicycle' => array_fill(1, $n_weeks, 0));
-    $fonctions = array('commission' => 0, 'hemicycle' => 0);
+    $this->fonctions = array('commission' => 0, 'hemicycle' => 0);
     foreach ($participations as $participation) {
       $n = ($participation['annee'] - $annee0)*52 + $participation['numero_semaine'] - $sem0 + 1;
-      $this->n_participations[$participation['type']][$n] += $participation['nombre'];
+      $this->n_participations[$participation['Interventions'][0]['type']][$n] += $participation['nombre'];
       $this->n_mots[$participation['type']][$n] += $participation['mots']/10000;
-      if ($participation['Interventions'][0]['fonction'] != "") $fonctions[$participation['type']] += $participation['nombre'];
+      if ($participation['Interventions'][0]['fonction'] != "") $this->fonctions[$participation['type']] += $participation['nombre'];
     }
-    $this->fonctions = (int)(3*($fonctions['hemicycle'])/(0.12*$n_weeks+array_sum($this->n_participations['hemicycle'])));
   }
 
   public static function getVacances($n_weeks, $annee0, $sem0) {
@@ -65,7 +70,7 @@ class plotComponents extends sfComponents
     if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
       $n = ($vacance['annee'] - $annee0)*52 + $vacance['semaine'] - $sem0 + 1;
       if ($n > 0 && $n <= $n_weeks)
-        $n_vacances[$n] = 14;
+        $n_vacances[$n] = 20;
     }
     return $n_vacances;
  }
