@@ -162,19 +162,14 @@ class tagSeanceTask extends sfBaseTask
         }
         if ($i) {
           $tagged = 1;
-          // retirer les 2 lignes suivantes
-          $i->getSeance()->tagged = 1;
-          $i->getSeance()->save();
-          $i->save();
+	  $i->save();
           $i->free();
         }
       }
-      // if ($tagged == 1) {
-      //   $seance = doctrine::getTable('Seance')->find($s['id']);
-      //   $seance->tagged = 1;
-      //   $seance->save()
-      //   $seance->free;
-      // }
+      if ($tagged == 1) {
+	$s->tagged = 1;
+	$s->save();
+      }
       unset($tags);
       unset($array);
       echo " done.";
