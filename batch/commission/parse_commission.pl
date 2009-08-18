@@ -157,23 +157,7 @@ $string =~ s/<br>\n//gi;
 #on vire les paragraphes contenus et on didascalise
 
 
-@uls = split /<ul>/, $string ;
-$string = shift @uls;
-foreach $ul (@uls) {
-    $ul = "<ul>$ul";
-    while ($ul =~ s/(<ul>.*)\n/$1/gi) {
-	if ($1 =~ /<\/ul/) {
-	    $ul =~ s/<\/ul>/<\/ul>\n/gi;
-	    last;
-	}
-    }
-    if ($ul =~ s/\s*<ul>(.*)<\/ul>\s*/-----/) {
-	$changed = $1;
-	$changed =~ s/<\/?p>//gi;
-	$ul =~ s/\-\-\-\-\-/<p>\/$changed\/<\/p>\n/;
-    }
-    $string .= $ul;
-}
+$string =~ s/<\/?ul>//gi;
 
 #print $string; exit;
 
