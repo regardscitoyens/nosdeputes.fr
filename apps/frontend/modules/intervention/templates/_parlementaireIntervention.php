@@ -30,7 +30,7 @@ if ($intervention->hasIntervenant()) {
   if ($perso->getPageLink()) {
     
     if ($perso->getPhoto()) {
-      echo '<img width="50" height="64" alt="'.$perso->nom.'" src="'.$perso->getPhoto().'" />';
+      echo '<a href="'.url_for($perso->getPageLink()).'"><img width="50" height="64" alt="'.$perso->nom.'" src="'.$perso->getPhoto().'" /></a>';
     }
     echo '<a href="'.url_for($perso->getPageLink()).'">';
     echo $perso->nom;

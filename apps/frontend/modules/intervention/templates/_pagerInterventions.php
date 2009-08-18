@@ -1,14 +1,13 @@
 <div class="interventions">
 <?php
-  if (isset($_GET['search']))
-    $mots = trim($_GET['search']);
-  else $mots = "";
   $nResults = $pager->getNbResults();
-  if ($mots == "") : ?>
-<p>Les 5000 dernières interventions en date&nbsp;:</p>
-<?php else : ?>
+  if (isset($_GET['search'])) {
+    $mots = trim($_GET['search']);
+    if ($mots != "") { ?>
 <p><?php echo $nResults; ?> intervention<?php if ($nResults > 1) echo 's'; ?> trouvée<?php if ($nResults > 1) echo 's'; ?> pour la recherche sur <em>"<?php echo $mots; ?>"</em></p>
-<?php endif; ?>
+<?php } } else { ?>
+<p><?php echo $nResults; ?> résultat<?php if ($nResults > 1) echo 's'; ?> trouvé<?php if ($nResults > 1) echo 's'; ?>.</p>
+<?php } ?>
 </div>
 <div class="interventions">
 <?php foreach($pager->getResults() as $i) {
