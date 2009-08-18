@@ -1,0 +1,39 @@
+xsPChart plugin
+===================
+
+Info
+----
+xsPChart is wrapper for pChart (http://pchart.sourceforge.net/) graph library for symfony framework.
+
+* pChart version 1.27d
+* instead of pChart, pData, pCache - xsPChart, xsPData, xsPCache
+* additional:
+  * added predefined directory for temporary graphs (and method use that)
+* added a few extending additional methods for existing ones:
+  * xsSetFontProperties - (setFontProperties) with predefined path to 'Fonts' directory
+  * xsRender - (Render) read graphics files direct from predefined temporary directory
+* additional methods:
+  * xsClearTmpDir - clear content of temporary directory or just single file
+* added helper:
+  * xspchart_image_tag - read given graph's file from temporary dir
+
+Installation
+------------
+
+* Install the plugin
+
+
+* Clear the cache to enable the autoloading to find the new class
+        $ symfony cc
+
+Examples
+--------
+* module/action: 'xsPChart/test'
+
+TODO
+----
+
+Changelog
+---------
+### 2009-02-09
+  * Initial release (alpha)

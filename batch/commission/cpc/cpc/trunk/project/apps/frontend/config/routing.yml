@@ -1,0 +1,60 @@
+# default rules
+parlementaire:
+  url: /parlementaire/:slug
+  param: {module: parlementaire, action: show}
+
+parlementaires:
+  url: /parlementaire
+  param: {module: parlementaire, action: list}
+
+list_parlementaires_circo:
+  url: /circo/:nom_circo
+  param: {module: parlementaire, action: listCirco}
+
+list_parlementaires_profession:
+  url: /parlementaire/profession/:profession
+  param: {module: parlementaire, action: listProfession}
+
+list_parlementaires_organisme:
+  url: /organisme/:slug
+  param: {module: parlementaire, action: listOrganisme}
+
+search_parlementaire:
+  url: /parlementaire
+  param: {module: parlementaire, action: list}
+
+interventions_seance:
+  url: /seance/:seance
+  param: {module: intervention, action: seance}
+
+parlementaire_interventions:
+  url: /intervention/:slug
+  param: {module: intervention, action: parlementaire}
+
+top_interventions:
+  url: /top/intervention
+  param: {module: intervention, action: top}
+
+top_presences:
+  url: /top/presence
+  param: {module: presence, action: top}
+
+parlementaire_presences:
+  url: /presence/:slug
+  param: {module: presence, action: parlementaire}
+
+plot_parlementaire_presences:
+  url: /presence/plot/:slug
+  param: {module: presence, action: plotParlementaire}
+
+presents_seance:
+  url: /presence/:seance
+  param: {module: presence, action: seance}
+
+preuve_presence_seance:
+  url: /preuve/:slug/:seance
+  param: {module: presence, action: preuve}
+
+homepage:
+  url:   /
+  param: { module: parlementaire, action: index }

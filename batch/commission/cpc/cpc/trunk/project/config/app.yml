@@ -1,0 +1,4 @@
+# default values
+all:
+  sfDoctrineActAsTaggablePlugin:
+    triple_distinct:   true

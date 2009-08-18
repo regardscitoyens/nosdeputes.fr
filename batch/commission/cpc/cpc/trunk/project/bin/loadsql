@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "SET FOREIGN_KEY_CHECKS = 0;" > /tmp/delete.sql
+echo "SHOW TABLES" | mysql -u root cpc  | grep -v Tables_ | sed 's/^/DELETE FROM /' | sed 's/$/;/'  >> /tmp/delete.sql
+cat /tmp/delete.sql | mysql -u root cpc
+rm /tmp/delete.sql
+zcat data/sql/data.sql.gz | mysql -u root cpc

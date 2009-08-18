@@ -1,0 +1,7 @@
+all:
+  doctrine:
+    class: sfDoctrineDatabase
+    param:
+      dsn: 'mysql:host=my.cpc.tangui.eu.org;dbname=cpc'
+      username: cpc
+      password: M_O_T__D_E__P_A_S_S_E

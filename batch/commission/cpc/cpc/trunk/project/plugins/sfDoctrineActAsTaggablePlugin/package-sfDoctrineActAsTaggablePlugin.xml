@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.4.1" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0 http://pear.php.net/dtd/tasks-1.0.xsd http://pear.php.net/dtd/package-2.0 http://pear.php.net/dtd/package-2.0.xsd">
+    <name>[automatic]</name>
+    <channel>pear.symfony-project.com</channel>
+    <summary>sfDoctrineActAsTaggable Plugin</summary>
+    <description>A port of sfPropelActAsTaggle plugin. As Doctrine wont support tagging very soon and there is more than database tagging in this project</description>
+    <lead>
+        <name>Mickael Kurmann</name>
+        <user>Mickael.Kurmann</user>
+        <email>mickael.kurmann@gmail.com</email>
+        <active>yes</active>
+
+        <name>Klemens Ullmann</name>
+        <user>klemens_u</user>
+        <email>klemens.ullmann@ull.at</email>
+        <active>yes</active>
+    </lead>
+    <date>[automatic]</date>
+    <version>
+        <release>0.0.3</release>
+        <api>1.0.0</api>
+    </version>
+    <stability>
+        <release>beta</release>
+        <api>stable</api>
+    </stability>
+    <license uri="http://www.symfony-project.com/license">MIT license</license>
+    <notes>-</notes>
+    <contents>[automatic]</contents>
+
+    <dependencies>
+        <required>
+            <php>
+                <min>5.1.0</min>
+            </php>
+            <pearinstaller>
+                <min>1.4.1</min>
+            </pearinstaller>
+            <package>
+                <name>symfony</name>
+                <channel>pear.symfony-project.com</channel>
+                <min>1.0.0</min>
+                <max>1.2.0</max>
+            </package>
+        </required>
+    </dependencies>
+
+    <phprelease>
+    </phprelease>
+ 
+    <changelog>
+        <release>
+            <version>
+                <release>0.0.3</release>
+                <api>1.0.0</api>
+            </version>
+            <stability>
+                <release>stable</release>
+                <api>stable</api>
+            </stability>
+            <license uri="http://www.symfony-project.com/license">MIT license</license>
+            <date>2009-01-13</date>
+            <license>MIT</license>
+            <notes>
+                * Package compatible with sf1.2 and with last svn version
+                * made all failing unit-tests green
+                * fixed relation in schema (klemens)
+                * beautified schema (klemens)
+                * removed schema.xml (klemens)
+                * updated schema: don't export constraints to database for Tagging. This is necessary because multiple models can join Tagging->taggable_id (klemens)
+                * fixed missing "from" part in tags removal (klemens)
+                * added option for min tag occurence in selectAllTagWithCount (mickael)
+                * various additional fixes for symfony 1.2 upgrade (new included doctrine version) (klemens)
+            </notes>
+        </release>
+    <release>
+        <version>
+            <release>0.0.2</release>
+            <api>1.0.0</api>
+        </version>
+        <stability>
+            <release>stable</release>
+            <api>stable</api>
+        </stability>
+        <license uri="http://www.symfony-project.com/license">MIT license</license>
+        <date>2008-09-22</date>
+        <license>MIT</license>
+        <notes>
+            * Organisation of svn, documentation update (Klemens)
+            * Added .xml file for plugin-manager (Mickael)
+        </notes>
+    </release>
+    <release>
+        <version>
+            <release>0.0.1</release>
+            <api>1.0.0</api>
+        </version>
+        <stability>
+            <release>stable</release>
+            <api>stable</api>
+        </stability>
+        <license uri="http://www.symfony-project.com/license">MIT license</license>
+        <date>2008-09-22</date>
+        <license>MIT</license>
+        <notes>
+            * Initial public release. Features tags attachment to heterogene Doctrine objects, and includes tag-clouds generation. Some bug still remaining
+        </notes>
+    </release>
+    </changelog>
+</package>
