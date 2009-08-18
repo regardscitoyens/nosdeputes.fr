@@ -268,6 +268,7 @@ $amdmt{'auteurs'} =~ s/\s*[,]?\s*les\s+[cC]ommissaires.*$//g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà\-']*M(.*)/, M\1/g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà']*//g;
 $amdmt{'auteurs'} =~ s/(,\s*,|,+)/,/g;
+$amdmt{'auteurs'} =~ s/,+/,/g;
 $amdmt{'auteurs'} =~ s/^\s*,\s*//g;
 $amdmt{'auteurs'} =~ s/\s*,\s*$//g;
 

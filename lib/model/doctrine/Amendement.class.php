@@ -8,29 +8,41 @@ class Amendement extends BaseAmendement {
   public function setAuteurs($auteurs) {
     $groupe = null;
     $sexe = null;
-    if (preg_match('/^\s*(.*),+\s*les\s+(.*\s+[gG]roupe|membres)\s+(.*)\s*$/' ,$auteurs, $match)) {
+    if (preg_match('/^\s*(.*),+\s*les\s+(.*\s+[gG]roupe|membres|députés)\s+(.*)\s*$/' ,$auteurs, $match)) {
       $auteurs = $match[1];
       $groupe = preg_replace("/^\s*(de la|de l'|du)\s*/", "", $match[3]);
+      if (preg_match('/^(.*)(et|,)\s+(M[\s\.ml].*)$/' ,$groupe, $match2)) {
+        $groupe = $match2[1];
+        $auteurs .= ", ".$match2[3];
+      }
       if (preg_match('/(union.*mouvement.*populaire|UMP)/i',$groupe)) $groupe = "UMP";
       elseif (preg_match('/(socialiste.*radical|SRC)/i',$groupe)) $groupe = "SRC";
       elseif (preg_match('/(gauche.*démocrate|GDR)/i',$groupe)) $groupe = "GDR";
       elseif (preg_match('/(nouveau.*centre|NC)/i',$groupe)) $groupe = "NC";
       else $groupe = null;
     }
+    if ($debug) echo $auteurs." // ".$groupe."\n";
     $arr = preg_split('/,/', $auteurs);
     foreach ($arr as $depute) {
+      if (preg_match('/^(.*)\((.*)\)/', $depute, $match)) {
+        $depute = trim($match[1]);
+        $circo = preg_replace('/\s/', '-', ucfirst(trim($match[2])));
+      } else $circo = null;
       if (preg_match('/(gouvernement|président|rapporteur|commission|questeur)/i', $depute)) {
         if ($debug) print "WARN: Skip auteur ".$depute." for ".$this->source."\n";
         continue;
-      } elseif (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([dA-Z].*)\s*$/', $depute, $match)) {
+      } elseif (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([a-zA-Z].*)\s*$/', $depute, $match)) {
           $nom = $match[2];
           if (preg_match('/M[ml]/', $match[1]))
             $sexe = 'F';
           else $sexe = 'H';
       } else $nom = preg_replace("/^\s*(.*)\s*$/", "\\1", $depute);
-      $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupe($nom, $sexe, $groupe, $this);
+      $nom = ucfirst($nom);
+      if ($debug) echo $nom."//".$sexe."//".$groupe."//".$circo." => ";
+      $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe, $groupe, $circo, $this);
       if (!$depute) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$groupe."\n";
       else {
+        if ($debug) echo $depute->nom."\n";
         if (!$groupe && $depute->groupe_acronyme != "") $groupe = $depute->groupe_acronyme;
         $this->addParlementaire($depute);
         $depute->free();

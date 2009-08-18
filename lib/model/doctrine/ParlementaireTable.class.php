@@ -4,9 +4,24 @@
  */
 class ParlementaireTable extends PersonnaliteTable
 {
-  public function findOneByNomSexeGroupe($nom, $sexe = null, $groupe = null, $amendement = null) {
+  public function findOneByNomSexeGroupeCirco($nom, $sexe = null, $groupe = null, $circo = null, $amendement = null) {
     $depute = null;
     $memeNom = $this->findByNom($nom);
+    if (count($memeNom) != 1 && ($circo)) {
+      $query = $this->createQuery('p')
+        ->where('p.nom_de_famille = ?', $nom)
+        ->andWhere('p.nom_circo LIKE ?', $circo);
+      $memeNom = $query->execute();
+    }
+    if (count($memeNom) == 0 && ($circo)) {
+      $query = $this->createQuery('p')
+        ->where('p.nom = ?', $nom)
+        ->andWhere('p.nom_circo LIKE ?', $circo);
+      $memeNom = $query->execute();
+    }
+    if (count($memeNom) == 0 && ($circo)) {
+      $memeNom = $this->findByNom($circo." ".$nom);
+    }
     if (count($memeNom) == 0) {
       $query = $this->createQuery('p')
         ->where('p.nom_de_famille = ?' , $nom);
@@ -17,14 +32,13 @@ class ParlementaireTable extends PersonnaliteTable
       $revert_nom = $match[2]." ".$match[1];
       $memeNom = $this->findByNom($revert_nom);
     }
-    if (count($memeNom) == 0) $depute = $this->similarTo($nom, $sexe);
+    if (count($memeNom) == 0) $depute = $this->similarTo(preg_replace('/^\s*(de |du |la )+\s*/i', '', $nom), $sexe);
     elseif (count($memeNom) == 1) $depute = $memeNom[0];
     else {
       $memeSexe = array();
       if ($sexe) {
-        foreach ($memeNom as $de) {
+        foreach ($memeNom as $de)
           if ($de->sexe == $sexe) array_push($memeSexe, $de);
-        }
         if (count($memeSexe) == 1) $depute = $memeSexe[0];
       }
       if (!$depute && $groupe) {
