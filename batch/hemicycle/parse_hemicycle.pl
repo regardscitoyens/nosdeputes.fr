@@ -68,7 +68,7 @@ $string =~ s/<\/?sup>//g;
 $string =~ s/<!--[^A-Z]+-->//g;
 #Recherche des numéros de  de loi
 while($string =~ /ordre du jour([^<]+\Wloi\W[^<]+)\(n\D+(\d+[^\)]+)\)/ig) {
-    print "$1 $2\n";
+#    print "$1 $2\n";
     $no = $2;
     if ($no) {
 	$titre = lc $1;
