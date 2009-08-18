@@ -79,11 +79,13 @@ class tagSeanceTask extends sfBaseTask
       
       //Recherche toutes les interventions pour cette séance
       $q = Doctrine_Query::create();
-      $q->select('intervention, id')->from('Intervention i')->where('seance_id = ?', $s['id'])->andWhere('i.parlementaire_id IS NOT NULL');//->andWhere('(i.fonction IS NULL OR i.fonction NOT LIKE ? )', 'président%');
+      $q->select('intervention, id, parlementaire_id')->from('Intervention i')->where('seance_id = ?', $s['id'])->andWhere('( i.parlementaire_id IS NOT NULL OR i.personnalite_id IS NOT NULL )');//->andWhere('(i.fonction IS NULL OR i.fonction NOT LIKE ? )', 'président%');
 
       $array = $q->fetchArray();
-      if (!count($array))
+      if (!count($array)) {
+	echo " pas d'intervention trouvée\n";
         continue;
+      }
       $words = $this->count($array, 1);
       $cpt = 0;
       $tot = count($words);
@@ -148,17 +150,22 @@ class tagSeanceTask extends sfBaseTask
       unset($sentences);
       unset($sent2word);
 
+      print_r($tags);
+
       //On cherche maintenant les tags dans les interventions pour les associer
       arsort($tags);
       $tagged = 0;
       foreach ($array as $inter) {
+	if (!$inter['parlementaire_id'])
+	  continue;
+
         $i = null;
         foreach (array_keys($tags) as $tag) {
     	  if (preg_match('/'.$tag.'/i', $inter['intervention'])) {
             if (!$i)
               $i = doctrine::getTable('Intervention')->find($inter['id']);
             $i->addTag($tag);
-          }
+	  }
         }
         if ($i) {
           $tagged = 1;
@@ -167,8 +174,10 @@ class tagSeanceTask extends sfBaseTask
         }
       }
       if ($tagged == 1) {
-	$s->tagged = 1;
-	$s->save();
+	$seance = doctrine::getTable('Seance')->find($s['id']);
+	$seance->tagged = 1;
+	$seance->save();
+	$seance->free();
       }
       unset($tags);
       unset($array);
