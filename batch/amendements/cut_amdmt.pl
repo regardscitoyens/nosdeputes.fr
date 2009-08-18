@@ -57,7 +57,9 @@ sub auteurs {
     $line =~ s/\s+e{1,2}t\s+/, /g;
     $line =~ s/^et\s+/, /g;
     $line =~ s/\s*EXPOSÉ SOMMAIRE\s*//g;
-    $amdmt{'auteurs'} = $amdmt{'auteurs'}.", ".$line;
+    if (!$line =~ /^$/) {
+	$amdmt{'auteurs'} = $amdmt{'auteurs'}.", ".$line;
+    }
 }
 
 sub texte {
@@ -263,7 +265,7 @@ if ($num_ident > 0) {
 
 $amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
 $amdmt{'auteurs'} =~ s/([a-z])\s+(M[\.Mml])/\1, \2/g;
-$amdmt{'auteurs'} =~ s/M\./M /g;
+$amdmt{'auteurs'} =~ s/,\s*M[\s\.mle]+\s*,/,/g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*les\s+[cC]ommissaires.*$//g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà\-']*M(.*)/, M\1/g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà']*//g;
