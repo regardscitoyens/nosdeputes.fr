@@ -1,4 +1,0 @@
-all:
-  .settings:
-    # images/tmp/xspchart
-    xspchart_web_tmp_dir: <?php echo DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'tmp'  . DIRECTORY_SEPARATOR . 'xspchart' ?>
