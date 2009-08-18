@@ -65,8 +65,10 @@ if ($string =~ /ouverte[^\.]+à ([^\.]+) heures?\s*([^\.]*)\./) {
 }
 
 $string =~ s/<\/?sup>//g;
+$string =~ s/<!--[^A-Z]+-->//g;
 #Recherche des numéros de  de loi
 while($string =~ /ordre du jour([^<]+\Wloi\W[^<]+)\(n\D+(\d+[^\)]+)\)/ig) {
+    print "$1 $2\n";
     $no = $2;
     if ($no) {
 	$titre = lc $1;
@@ -210,6 +212,8 @@ sub setIntervenant {
 
 $string =~ s/\r//g;
 $string =~ s/&nbsp;/ /g;
+$string =~ s/&#339;|œ+/oe/g;
+$string =~ s/&#8217;/'/g;
 $string =~ s/\|(\W+)\|/$1/g;
 $majIntervenant = 0;
 $debut = 0;

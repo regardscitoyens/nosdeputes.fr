@@ -145,6 +145,8 @@ sub rapporteur
 
 $string =~ s/\r//g;
 $string =~ s/&nbsp;/ /g;
+$string =~ s/&#8217;/'/g;
+$string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
 $majIntervenant = 0;
 $body = 0;
@@ -153,6 +155,7 @@ $string =~ s/<br>\n//gi;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention : 
 #on vire les paragraphes contenus et on didascalise
+
 
 @uls = split /<ul>/, $string ;
 $string = shift @uls;
@@ -171,6 +174,8 @@ foreach $ul (@uls) {
     }
     $string .= $ul;
 }
+
+#print $string; exit;
 
 foreach $line (split /\n/, $string)
 {
