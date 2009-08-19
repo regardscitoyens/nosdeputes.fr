@@ -88,6 +88,7 @@ foreach (split /\n/, $lines) {
 		    if ($d =~ s/ (\S)\.//) {
 			$d = $1.' '.$d;
 		    }
+		    $d =~ s/\([^\)]+\)//;
 		    print '{ ';
 		    print '"reunion": "'.$reunion.'",';
 		    print '"session": "'.$session.'",';
