@@ -61,7 +61,7 @@ $lines =~ s/(\d[erm]+ r|R)éunion /\n$1éunion /gi;
 $lines =~ s/\. / /g;
 
 foreach (split /\n/, $lines) {
-    if (/comité|commission|mission/i && !/Ordre du jour/ && !/(réunion|séance)/i) {
+    if (/comité|commission|mission/i && !/Ordre du jour/ && !/(réunion|séance)/i && !/Membres/i && !/\(/) {
 	$commission = $_;
 	$commission =~ s/.*(Comité|Commission|Mission)/$1/;
 	$on = 0;
