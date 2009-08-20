@@ -2,11 +2,7 @@
 
 class plotComponents extends sfComponents
 {
-  public function executeParlementairePresenceLastYearTotal() {
-  }
-  public function executeParlementairePresenceLastYearHemicycle() {
-  }
-  public function executeParlementairePresenceLastYearCommission() {
+  public function executePlotParlementairePresence() {
   }
   public function executeParlementairePresenceLastYear() {
     static $seuil_invective = 20;
@@ -37,8 +33,6 @@ class plotComponents extends sfComponents
                                'hemicycle' => array_fill(1, $n_weeks, 0));
     foreach ($presences as $presence) {
       $n = ($presence['Seance']['annee'] - $annee0)*52 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($this->n_presences[$presence['Seance']['type']] == 0)
-        $this->n_presences[$presence['Seance']['type']][$n] += 0.15;
       $this->n_presences[$presence['Seance']['type']][$n] += $presence['nombre'];
     }
     unset($presences);
@@ -60,8 +54,6 @@ class plotComponents extends sfComponents
     foreach ($participations as $participation) {
       $n = ($participation['Seance']['annee'] - $annee0)*52 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
       if ($participation['mots']/$participation['interv'] > $seuil_invective) {
-        if ($this->n_participations[$participation['Seance']['type']][$n] == 0)
-            $this->n_participations[$participation['Seance']['type']][$n] -= 0.1;
         $this->n_participations[$participation['Seance']['type']][$n] += $participation['nombre'];
       }
       $this->n_mots[$participation['Seance']['type']][$n] += $participation['mots']/10000;
@@ -105,9 +97,9 @@ class plotComponents extends sfComponents
 
  public static function getLabelsSemaines($n_weeks, $annee0, $sem0) {
     $annee = $annee0 + 1;
-    $hashmap = array( '4'  => "JAN ".sprintf('%02d', $annee-2000), '9'  => "FEV ", '13' => "MAR", '17' => "AVR ",
-                      '21' => "MAI ", '25' => " JUIN", '29' => " JUIL", '34' => "AOUT",
-                      '38' => " SEP", '43' => "OCT ", '47' => " NOV", '51' => " DEC" );
+    $hashmap = array( '4'  => "Jan ".sprintf('%02d', $annee-2000), '9'  => "Fév ", '13' => "Mar", '17' => "Avr ",
+                      '21' => "Mai ", '25' => " Juin", '29' => " Juil", '34' => "Août",
+                      '38' => " Sept", '43' => "Oct ", '47' => " Nov", '51' => " Déc" );
     $labels = array_fill(1, $n_weeks, "");
     if ($sem0 < 3) $labels[0] = "Jan ".sprintf('%02d', $annee0-2000);
     else for ($i = 1; $i <= $n_weeks; $i++) {
