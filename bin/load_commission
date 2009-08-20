@@ -2,6 +2,9 @@
 
 echo Parse commission
 echo > /tmp/load_commission.log
+cd batch/commission/
+bash compute_commission.sh
+cd -
 while ls batch/commission/out | grep [a-z] > /dev/null ; 
 do
 	php symfony cc

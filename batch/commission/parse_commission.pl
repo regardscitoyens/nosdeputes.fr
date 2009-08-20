@@ -226,7 +226,7 @@ foreach $line (split /\n/, $string)
 		$heure = sprintf("%02d:%02d", $1, $2 || "00");
 	    }
 	}elsif(!$commission && $line =~ /commission/i) {
-	    if ($line =~ /\>\|?(Comm[^\>\|]+)[\<\|]/) {
+	    if ($line =~ /\>\|?((Comm|Miss|Délé)[^\>\|]+)[\<\|]/) {
 		$commission = $1;
 	    }
 	}elsif($line =~ /SOMnumcr/i) {

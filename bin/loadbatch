@@ -1,9 +1,8 @@
 #!/bin/bash
-
+bash bin/load_hemicycle
 bash bin/load_amendements
 bash bin/load_jo
 bash bin/load_commission
-bash bin/load_hemicycle
 bash bin/tag_seance
 php symfony set:Vacances
 

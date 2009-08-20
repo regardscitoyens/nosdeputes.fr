@@ -29,6 +29,12 @@ class loadCommissionTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
+
+	    if (strlen($json->commission) > 255) {
+	      $json->commission = preg_replace('/ \S+$/', '', substr($json->commission, 0, 255));
+	    }
+
+
 	    $id = md5($json->intervention.$json->date.$json->heure.$json->commission);
 	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
 	    if(!$intervention) {

@@ -98,7 +98,7 @@ public function executeSearch(sfWebRequest $request)
 
     if (count($mcle) == 0) {
       $sql = 'SELECT i.id FROM intervention i LIMIT 5000';
-    } else $sql = 'SELECT i.id FROM intervention i WHERE MATCH (i.intervention) AGAINST (\''.implode(' ', $mcle).'\' IN BOOLEAN MODE)';
+    } else $sql = 'SELECT i.id FROM intervention i WHERE MATCH (i.intervention) AGAINST (\''.str_replace("'", "\\'", implode(' ', $mcle)).'\' IN BOOLEAN MODE)';
 
     $search = Doctrine_Manager::connection()
       ->getDbh()

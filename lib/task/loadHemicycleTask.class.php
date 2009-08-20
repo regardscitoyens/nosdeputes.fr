@@ -66,14 +66,16 @@ class loadHemicyleTask extends sfBaseTask
 	      } else $p->free();
 	    }
 	    $intervention->save();
-        if (!isset($sections[$intervention->getSection()->id]))
+	    if (!isset($sections[$intervention->getSection()->id]))
 	      $sections[$intervention->getSection()->id] = $intervention->getSection();
-        $intervention->free();
+	    $intervention->free();
 	  }
 	  foreach(array_values($sections) as $section)
 	    $section->updateNbInterventions();
-        $section->free();
-      unset($sections);
+	  if ($section) {
+	    $section->free();
+	  }
+	  unset($sections);
 	  unlink($dir.$file);
 	}
         closedir($dh);

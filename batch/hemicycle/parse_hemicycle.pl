@@ -60,6 +60,9 @@ $heure{'quinze'} = '15';
 $heure{'zéro'} = '00';
 $heure{''} = '00';
 
+if ($string =~ /ance est ouverte/i) {
+    $heure = '09:30';
+}
 if ($string =~ /ouverte[^\.]+à ([^\.]+) heures?\s*([^\.]*)\./) {
     $heure = $heure{$1}.':'.$heure{$2};
 }
@@ -67,9 +70,9 @@ if ($string =~ /ouverte[^\.]+à ([^\.]+) heures?\s*([^\.]*)\./) {
 $string =~ s/<\/?sup>//g;
 $string =~ s/<!--[^A-Z]+-->//g;
 #Recherche des numéros de  de loi
-while($string =~ /ordre du jour([^<]+\Wloi\W[^<]+)\(n\D+(\d+[^\)]+)\)/ig) {
-#    print "$1 $2\n";
-    $no = $2;
+while($string =~ /ordre du jour([^<]+\W(proposition|loi)\W[^<]+)\(n\D+(\d+[^\)]+)\)/ig) {
+#    print "$1 $2 $3\n";
+    $no = $3;
     if ($no) {
 	$titre = lc $1;
 	$titre =~ s/[^<]+ loi //;
@@ -283,7 +286,7 @@ foreach $line (split /\n/, $string)
 	    $amendements = @pre_amendements = ();
 	    $line = "<p>|$titre1|</p>";
 	}elsif($line =~ /h1 class="seance"/) {
-	    if ($line =~ /(\d{1,2})[ermd]*\s+([a-zéù]+)\s+(\d{4})/) {
+	    if ($line =~ /(\d{1,2})[ermd]*\s+([a-zéùû]+)\s+(\d{4})/) {
 		$date = $3.'-'.$mois{$2}.'-'.sprintf('%02d', $1);
 	    }
 	}elsif($line =~ /h5 class="numencad"/) {
