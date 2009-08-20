@@ -18,22 +18,24 @@ $DataSet->SetYAxisName("Séances par semaine");
 $DataSetBordure = new xsPData();
 $DataSetBordure->AddPoint($labels, "Serie1");
 $DataSetBordure->AddPoint($presences, "Serie2");
+$DataSetBordure->AddPoint(array_fill(1, count($labels), 0), "Serie5");
 $DataSetBordure->AddSerie("Serie2");
+$DataSetBordure->AddSerie("Serie5");
 $DataSetBordure->SetAbsciseLabelSerie("Serie1");
 
 $DataSet2 = new xsPData();
 $DataSet2->AddPoint($labels, "Serie1");
-$DataSet2->AddPoint($vacances, "Serie5");
-$DataSet2->AddSerie("Serie5");
+$DataSet2->AddPoint($vacances, "Serie6");
+$DataSet2->AddSerie("Serie6");
 $DataSet2->SetAbsciseLabelSerie("Serie1");
 
 if (isset($n_questions) && $type != 'commission') {
   $questions = 1;
   $DataSet3 = new xsPData();
   $DataSet3->AddPoint($labels, "Serie1");
-  $DataSet3->AddPoint($n_questions, "Serie6");
-  $DataSet3->SetSerieName("Questions orales", "Serie6");
-  $DataSet3->AddSerie("Serie6");
+  $DataSet3->AddPoint($n_questions, "Serie7");
+  $DataSet3->SetSerieName("Questions orales", "Serie7");
+  $DataSet3->AddSerie("Serie7");
   $DataSet3->SetAbsciseLabelSerie("Serie1");
   $Data3 = $DataSet3->GetData();
   $DataDescr3 = $DataSet3->GetDataDescription();
@@ -77,6 +79,7 @@ $Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,TRUE,0,0,FALSE,1,TRUE);
 $Test->drawGrid(0,TRUE,0,0,0,100);
 $Test->setColorPalette(0,50,50,50);
 $Test->drawOverlayBarGraph($Data2,$DataDescr2,30,100);
+$fonction = 0;
 if (isset($fonctions)) {
   $total = array_sum($presences);
   if ($total != 0) {
@@ -86,21 +89,22 @@ if (isset($fonctions)) {
       $totalfonctions = $fonctions[$type];
     }
     $fonction = (int)(4*$totalfonctions/$total);
-  } else $fonction = 0;
-  $Test->setColorPalette(0,255,35*$fonction,0);
-} else $Test->setColorPalette(0,255,0,0);
+  }
+} 
+$Test->setColorPalette(0,255,35*$fonction,0);
 $Test->setColorPalette(1,255,255,0);
 $Test->setColorPalette(2,0,255,0);
 $Test->drawFilledLineGraph($Data,$DataDescr,75);
-$Test->drawLineGraph($DataBordure,$DataDescrBordure);
 $Test->xsSetFontProperties("tahoma.ttf",$font);
 $Test->drawLegend(10+5*$font,2+3*$font,$DataDescr,255,255,255);
 if ($questions == 1) {
   $Test->setColorPalette(0,0,0,255);
   $Test->drawOverlayBarGraph($Data3,$DataDescr3,85,25);
-  $Test->drawLegend(10+5*$font,8*$font-2,$DataDescr3,255,255,255);
+  $Test->drawLegend(10+5*$font,9+7*$font,$DataDescr3,255,255,255);
 }
-$Test->drawTreshold(0.01,0,0,0,FALSE,FALSE,0);
+$Test->setColorPalette(0,255,35*$fonction,0);
+$Test->setColorPalette(1,0,0,0);
+$Test->drawLineGraph($DataBordure,$DataDescrBordure);
 $Test->xsSetFontProperties("tahoma.ttf",$font + 3);
 if ($type == 'total') {
   $Test->drawTitle(240,3 + 2*$font,"Participation globale au cours de l'année passée (hémicycle et commissions)",50,50,50,585);
@@ -108,7 +112,7 @@ if ($type == 'total') {
 } else {
   $titre = $type;
   if ($type == 'commission') $titre .= 's';
-  $Test->drawTitle(270,3 + 2*$font,"Participation en '.$titre.' au cours de l'année passée",50,50,50,585);
+  $Test->drawTitle(270,3 + 2*$font,"Participation en ".$titre." au cours de l'année passée",50,50,50,585);
 }
 $Test->xsRender('participation-'.$titre.'-'.$parlementaire->slug.'.png');
 

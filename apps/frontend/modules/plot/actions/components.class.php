@@ -54,6 +54,8 @@ class plotComponents extends sfComponents
     foreach ($participations as $participation) {
       $n = ($participation['Seance']['annee'] - $annee0)*52 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
       if ($participation['mots']/$participation['interv'] > $seuil_invective) {
+        if ($this->n_participations[$participation['Seance']['type']][$n] = 0)
+          $this->n_participations[$participation['Seance']['type']][$n] -= -0.1;
         $this->n_participations[$participation['Seance']['type']][$n] += $participation['nombre'];
       }
       $this->n_mots[$participation['Seance']['type']][$n] += $participation['mots']/10000;
