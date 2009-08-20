@@ -7,7 +7,9 @@ class plotComponents extends sfComponents
   public function executeParlementairePresenceLastYear() {
     static $seuil_invective = 20;
     if (!isset($this->options)) $this->options = array();
-    $date = time();
+    if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat)
+      $date = strtotime($this->parlementaire->fin_mandat);
+    else $date = time();
     $annee = date('Y', $date); $sem = date('W', $date); if ($sem == 53) { $annee++; $sem = 1; }
     $last_year = $date - 31536000;
     if ($this->parlementaire->debut_mandat > date('Y-m-d', $last_year)) {
@@ -33,7 +35,7 @@ class plotComponents extends sfComponents
                                'hemicycle' => array_fill(1, $n_weeks, 0));
     foreach ($presences as $presence) {
       $n = ($presence['Seance']['annee'] - $annee0)*52 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
-      $this->n_presences[$presence['Seance']['type']][$n] += $presence['nombre'];
+      if ($n <= $n_weeks) $this->n_presences[$presence['Seance']['type']][$n] += $presence['nombre'];
     }
     unset($presences);
 
@@ -53,13 +55,15 @@ class plotComponents extends sfComponents
     $this->fonctions = array('commission' => 0, 'hemicycle' => 0);
     foreach ($participations as $participation) {
       $n = ($participation['Seance']['annee'] - $annee0)*52 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($participation['mots']/$participation['interv'] > $seuil_invective) {
-        if ($this->n_participations[$participation['Seance']['type']][$n] = 0)
-          $this->n_participations[$participation['Seance']['type']][$n] -= -0.1;
-        $this->n_participations[$participation['Seance']['type']][$n] += $participation['nombre'];
+      if ($n <= $n_weeks) {
+        if ($participation['mots']/$participation['interv'] > $seuil_invective) {
+          if ($this->n_participations[$participation['Seance']['type']][$n] = 0)
+            $this->n_participations[$participation['Seance']['type']][$n] -= -0.1;
+          $this->n_participations[$participation['Seance']['type']][$n] += $participation['nombre'];
+        }
+        $this->n_mots[$participation['Seance']['type']][$n] += $participation['mots']/10000;
+        if ($participation['fonction'] != "") $this->fonctions[$participation['Seance']['type']] += $participation['nombre'];
       }
-      $this->n_mots[$participation['Seance']['type']][$n] += $participation['mots']/10000;
-      if ($participation['fonction'] != "") $this->fonctions[$participation['Seance']['type']] += $participation['nombre'];
     }
     unset($participations);
     
@@ -78,9 +82,11 @@ class plotComponents extends sfComponents
       $this->n_questions = array_fill(1, $n_weeks, 0);
       foreach ($questionsorales as $question) {
         $n = ($question['Seance']['annee'] - $annee0)*52 + $question['Seance']['numero_semaine'] - $sem0 + 1;
-        if ($this->n_questions[$n] == 0)
-          $this->n_questions[$n] -= 0.2;
-        $this->n_questions[$n] += $question['nombre'];
+        if ($n <= $n_weeks) {
+          if ($this->n_questions[$n] == 0)
+            $this->n_questions[$n] -= 0.2;
+          $this->n_questions[$n] += $question['nombre'];
+        }
       }
       unset($questionsorales);
     }
