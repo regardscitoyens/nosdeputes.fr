@@ -10,6 +10,53 @@
  */
 class parlementaireActions extends sfActions
 {
+  public function executePhoto(sfWebRequest $request)
+  {
+    $slug = $request->getParameter('slug');
+    $parlementaires = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->fetchArray();
+    $this->forward404Unless($parlementaires[0]);
+    $this->getResponse()->setHttpHeader('content-type', 'image/png');
+    $this->setLayout(false);
+    $file = tempnam('/tmp/', 'Parl');
+    $fh = fopen($file, 'w');
+    fwrite($fh ,$parlementaires[0]['photo']);
+    fclose($fh);
+    list($width, $height, $image_type) = getimagesize($file);
+    $image = imagecreatefromjpeg($file);
+
+    $newheight = $request->getParameter('height', 0);
+    $rayon = 20;
+
+    if ($newheight) {
+      $newwidth = $newheight*$width/$height;
+      $ih = imagecreatetruecolor($newwidth, $newheight);
+      imagecopyresized($ih, $image, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+      //      imagedestroy($image);
+      $rayon = $rayon*$newheight/$height;
+      $height = $newheight;
+      $width = $newwidth;
+    }else{
+      $ih = $image;
+    }
+
+
+    $groupe = $parlementaires[0]['groupe_acronyme'];
+    if ($groupe == 'GDR') {
+      imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 45, 225, imagecolorallocate($ih, 0, 170, 0), IMG_ARC_EDGED);
+      imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 225, 45, imagecolorallocate($ih, 240, 0, 0), IMG_ARC_EDGED);
+    }else if ($groupe == 'SRC') {
+      imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 255, 20, 160));
+    }else if ($groupe == 'UMP') {
+      imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 0, 0, 170));
+    }else if ($groupe == 'NC') {
+      imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 0, 160, 255));
+    }else{
+      imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 255, 255, 255));
+    }
+
+    $this->image = $ih;
+  }
+
   public function executeIndex(sfWebRequest $request)
   {
   }
@@ -17,11 +64,13 @@ class parlementaireActions extends sfActions
   public function executeShow(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->createQuery('p')
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    $this->forward404Unless($this->parlementaire);
+      /*->createQuery('p')
       ->where('p.slug = ?', $slug)
       ->leftJoin('p.ParlementaireOrganisme po')
       ->leftJoin('po.Organisme o')
-      ->fetchOne();
+      ->fetchOne();*/
     $this->qtag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t, Intervention i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)

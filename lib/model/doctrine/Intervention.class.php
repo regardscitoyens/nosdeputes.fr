@@ -123,8 +123,8 @@ class Intervention extends BaseIntervention
 	  if (preg_match_all('/\s*(\d[\d\s\à]*rectifiés?|\d[\d\s\à]*)(,\s*|\s*et\s*)*/', $match[3][$i], $amends)) {
 	    $replace = $match[3][$i];
 	    foreach($amends[1] as $amend) {
-	      $amend = preg_replace('/à/', 'a', $amend);
-	      $am = preg_replace('/[^\da]+/', '',$amend);
+	      $am = preg_replace('/[^\dà]+/', '',$amend);
+	      $am = preg_replace('/à+/', '-', $am);
 	      $link = str_replace('LLL', urlencode($lois), $linko);
 	      $link = str_replace('AAA', urlencode($am), $link);
 	      $replace = preg_replace('/'.$amend.'/', ' <a name="amend_'.$am.'" href="'.$link.'">'.$amend.'</a> ', $replace);

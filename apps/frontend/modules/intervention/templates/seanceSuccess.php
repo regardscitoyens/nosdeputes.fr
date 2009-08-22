@@ -34,8 +34,8 @@
     $perso = $intervention->getIntervenant();
 
     if ($perso->getPageLink()) {	
-      if ($photo = $perso->getPhoto()) {
-	echo '<a href="'.$photo.'"><img alt="Photo de '.$perso->nom.'" src="'.$perso->getPhoto().'" /></a>';
+      if ($photo = $perso->hasPhoto()) {
+	echo '<a href="'.$photo.'"><img alt="Photo de '.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a>';
       }
       echo '<span class="perso"><a href="'.url_for($perso->getPageLink()).'">';
       echo $intervention->getNomAndFonction();

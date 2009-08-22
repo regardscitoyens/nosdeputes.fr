@@ -146,7 +146,17 @@ sub place {
     }
 }
 
-while($p->get_tag("h1")) {
+while($t = $p->get_tag("h1", "img")) {
+    if ($t->[0] eq 'img') {
+	if (! $depute{'photo'} && $t->[1]{'src'} =~ /photo/) {
+	    $img = $t->[1]{'src'};
+	    if ($img !~ /^http/) {
+		$img = 'http://www.assemblee-nationale.fr'.$img;
+	    }
+	    $depute{'photo'} = $img;
+	}
+	next;
+    }
     $_ = $p->get_text('/h1');
     if (/Informations générales/) {
 	infosgene($p);
@@ -174,6 +184,7 @@ if ((join " ", keys %{$depute{'Mails'}}) =~ /(\S+)\@assemblee/) {
 	    if ($noms[$i] =~ /$login/i)  {
 		if ($nomdep =~ /(\S*$login.*)/i) {
 		    $depute{'Nom_de_famille'} = $1;
+		    $depute{'Nom_de_famille'} =~ s/[^a-z]//gi;
 		    last;
 		}
 	    }
@@ -224,7 +235,7 @@ exit;
 } 
 
 
-if (1 || $yml) {
+if ($yml) {
     
     print "  depute_".$depute{'id_an'}.":\n"; 
     foreach $k (keys %depute) { 
@@ -251,10 +262,12 @@ foreach $k (keys %depute) {
     if (ref($depute{$k}) =~ /HASH/) {
 	print '"'.lc($k).'" : [';
 	foreach $i (keys %{$depute{$k}}) {
+	    $i =~ s/"//g;
 	    print '"'.$i.'",';
 	}
 	print '"" ], ';
     }else {
+	$depute{$k} =~ s/"//g;
 	print '"'.lc($k).'" : "'.$depute{$k}.'", ';
     }
 }

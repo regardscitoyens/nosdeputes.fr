@@ -7,15 +7,15 @@ then
     cd $DIR
 fi
 
-if [ ! -d xml ] || [ ! -d html ]
+if [ ! -d out ] || [ ! -d html ]
 then
     tar zxvf last_data.tgz
     exit;
 fi
 
-for d in $(ls html/*) ; 
+for d in html/* ; 
 do
     ID=$(echo $d | sed 's/html\///' | sed 's/.asp//')
     echo $ID;
-    perl parse_depute.pl html/$ID.asp > xml/$ID.xml
+    perl parse_depute.pl html/$ID.asp > out/$ID.xml
 done

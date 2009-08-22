@@ -2,8 +2,7 @@
 <div class="fiche_depute">
   <div class="depute_gauche">
     <div class="photo_depute">
-    <?php if ($parlementaire->getPhoto()) { echo image_tag($parlementaire->getPhoto(), 'class="photo_fiche" alt=Photo de '.$parlementaire->nom); } ?>
-    <span class="logo_parti"><?php if ($parlementaire->groupe_acronyme != "") echo image_tag($parlementaire->groupe_acronyme.'.gif', 'alt="Logo '.$parlementaire->groupe_acronyme.' "'); ?></span>
+<?php    echo '<img src="'.url_for('@resized_photo_parlementaire?height=150&slug='.$parlementaire->slug).'" class="photo_fiche" alt="Photo de '.$parlementaire->nom.'"/>'; ?>
     </div>
   </div>
   <div class="graph_depute">

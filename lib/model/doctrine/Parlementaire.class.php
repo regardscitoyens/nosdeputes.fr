@@ -80,6 +80,8 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function setPOrganisme($type, $array) {
+    if (!$array)
+      return;
     $orgas = $this->getParlementaireOrganismes();
     foreach ($array as $item) {
       $args = preg_split('/\s+\/\s*/', $item);
@@ -109,7 +111,7 @@ class Parlementaire extends BaseParlementaire
 
   private function getPOFromJoinIf($field, $value) {
     $p = $this->toArray();
-    if (isset($p['ParlementaireOrganisme']))
+    if (isset($p['ParlementaireOrganisme'])) {
       $i = 0;
       while (isset($p['ParlementaireOrganisme'][$i])) {
         if ($p['ParlementaireOrganisme'][$i]['Organisme'][$field] == $value) {
@@ -120,10 +122,11 @@ class Parlementaire extends BaseParlementaire
           $po->setParlementaire($this);
           $po->setOrganisme($o);
           return $po;
-       }
-       $i++;
-     }
-     return NULL;
+	}
+	$i++;
+      }
+      return NULL;
+    }
   }
 
   public function getPOrganisme($str) {
@@ -166,9 +169,19 @@ class Parlementaire extends BaseParlementaire
     ksort($res);
     return array_values($res);
   }
-  public function getPhoto() {
-    $id_an = $this->getIdAN();
-    return 'http://www.palais-bourbon.fr/13/tribun/photos/'.$id_an.'.jpg';
+  public function hasPhoto() 
+  {
+    return (strlen($this->_get('photo')) > 0) ;
+    return true;
+  }
+  public function setPhoto($s) {
+    if (preg_match('/^http/', $s)) {
+      if ($this->_get('photo'))
+	$s = file_get_contents($s);
+      if (!$s)
+	return false;
+    }
+    $this->_set('photo', $s);
   }
   public function getPageLink() {
     return '@parlementaire?slug='.$this->slug;

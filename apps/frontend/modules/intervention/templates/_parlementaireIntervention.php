@@ -29,8 +29,8 @@ if ($intervention->hasIntervenant()) {
   echo '<span class="source"><a href="'.$intervention->getSource().'">source</a> - <a href="'.url_for("@interventions_seance?seance=$intervention->seance_id").'#inter_'.$intervention->getMd5().'">permalink</a></span>';
   if ($perso->getPageLink()) {
     
-    if ($perso->getPhoto()) {
-      echo '<a href="'.url_for($perso->getPageLink()).'"><img width="50" height="64" alt="'.$perso->nom.'" src="'.$perso->getPhoto().'" /></a>';
+    if ($perso->hasPhoto()) {
+      echo '<a href="'.url_for($perso->getPageLink()).'"><img width="50" height="70" alt="'.$perso->nom.'" src="'.link_for('@resized_photo_parlementaire?height=64&slug='.$perso->slug).'" /></a>';
     }
     echo '<a href="'.url_for($perso->getPageLink()).'">';
     echo $perso->nom;

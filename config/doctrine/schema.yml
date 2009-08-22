@@ -24,6 +24,7 @@ Parlementaire:
     place_hemicycle:	integer
     url_an:	string(255)
     profession:	string(255)
+    photo: blob
     id_an:
       type:	integer
       unique:	true

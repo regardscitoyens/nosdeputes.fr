@@ -26,6 +26,12 @@ parlementaire_tags:
 tag_result_parlementaires:
   url: /parlementaire/tag/:tags
   param: {module: parlementaire, action: tag}
+photo_parlementaire:
+  url: /parlementaire/photo/:slug
+  param: {module: parlementaire, action: photo}
+resized_photo_parlementaire:
+  url: /parlementaire/photo/:slug/:height
+  param: {module: parlementaire, action: photo}
 
 # Fiche parlementaire et affichages de ses travaux
 parlementaire:
