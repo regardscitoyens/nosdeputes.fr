@@ -32,8 +32,8 @@ class parlementaireActions extends sfActions
     if ($newheight) {
       $newwidth = $newheight*$width/$height;
       $ih = imagecreatetruecolor($newwidth, $newheight);
-      imagecopyresized($ih, $image, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-      //      imagedestroy($image);
+      imagecopyresampled($ih, $image, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+      imagedestroy($image);
       $rayon = $rayon*$newheight/$height;
       $height = $newheight;
       $width = $newwidth;
