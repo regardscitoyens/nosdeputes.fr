@@ -171,13 +171,15 @@ class Parlementaire extends BaseParlementaire
   }
   public function hasPhoto() 
   {
-    return (strlen($this->_get('photo')) > 0) ;
-    return true;
+    $photo = $this->_get('photo');
+    return (strlen($photo) > 0) ;
   }
   public function setPhoto($s) {
-    if (preg_match('/^http/', $s)) {
-      if ($this->_get('photo'))
+    if (preg_match('/http/', $s)) {
+      if (strlen($this->_get('photo')) < 150) {
 	$s = file_get_contents($s);
+      }else
+	return true;
       if (!$s)
 	return false;
     }

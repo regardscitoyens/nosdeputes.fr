@@ -23,6 +23,8 @@ class parlementaireActions extends sfActions
     fclose($fh);
     list($width, $height, $image_type) = getimagesize($file);
     $image = imagecreatefromjpeg($file);
+    unlink($file);
+
 
     $newheight = $request->getParameter('height', 0);
     $rayon = 20;

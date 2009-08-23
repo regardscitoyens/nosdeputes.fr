@@ -1,8 +1,8 @@
 <div class="titre_int_et_seance">
 <h1>Les interventions de <?php 
 echo $parlementaire->nom.' '; 
-if ($parlementaire->getPhoto()) { 
-  echo image_tag($parlementaire->getPhoto(), ' alt=Photo de '.$parlementaire->nom); 
+if ($parlementaire->hasPhoto()) { 
+  echo '<img src="'.url_for('@resized_photo_parlementaire?height=150&slug='.$parlementaire->slug).'" alt="Photo de '.$parlementaire->nom.'" />'; 
 } ?></h1>
 
 </div>
