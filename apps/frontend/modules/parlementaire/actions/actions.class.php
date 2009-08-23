@@ -21,7 +21,7 @@ class parlementaireActions extends sfActions
     $this->forward404Unless($parlementaires[0]);
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
-    $file = tempnam('/tmp/', 'Parl');
+    $file = tempnam(sys_get_temp_dir(), 'Parl');
     $fh = fopen($file, 'w');
     fwrite($fh ,$parlementaires[0]['photo']);
     fclose($fh);
