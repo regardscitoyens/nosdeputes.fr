@@ -46,6 +46,7 @@ class plotComponents extends sfComponents
       ->leftJoin('i.Seance s')
       ->andWhere('s.date > ?', $date_debut)
       ->groupBy('s.type, s.annee, s.numero_semaine');
+
     $participations = $query2->fetchArray();
 
     $this->n_participations = array('commission' => array_fill(1, $n_weeks, 0),

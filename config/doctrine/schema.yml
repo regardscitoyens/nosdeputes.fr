@@ -32,6 +32,10 @@ Parlementaire:
       type:	enum
       values:	['depute', 'senateur']
     groupe_acronyme: string(8)
+    adresses: string
+    autres_mandats: string
+    mails: string
+    top: string
   inheritance:
     extends: Personnalite
     type: concrete

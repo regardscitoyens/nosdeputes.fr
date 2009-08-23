@@ -83,8 +83,12 @@ class Parlementaire extends BaseParlementaire
     if (!$array)
       return;
     $orgas = $this->getParlementaireOrganismes();
-    foreach ($array as $item) {
-      $args = preg_split('/\s+\/\s*/', $item);
+    foreach($orgas->getKeys() as $key) {
+      $o = $orgas->get($key);
+      if ($o->type == $type)
+	$orgas->remove($key);
+    }
+    foreach ($array as $args) {
       $orga = Doctrine::getTable('Organisme')->findOneByNom($args[0]);
       if (!$orga) {
 	$orga = new Organisme();
@@ -137,12 +141,14 @@ class Parlementaire extends BaseParlementaire
 	return $po;
     }
   }
-  public function setAutresmandats($array) {
-
+  public function setAutresMandats($array) {
+    $this->_set('autres_mandats', serialize($array));
   }
   public function setMails($array) {
+    $this->_set('mails', serialize($array));
   }
   public function setAdresses($array) {
+    $this->_set('adresses', serialize($array));
   }
   public function getGroupe() {
     if($po = $this->getPOFromJoinIf('type', 'groupe'))
@@ -176,7 +182,8 @@ class Parlementaire extends BaseParlementaire
   }
   public function setPhoto($s) {
     if (preg_match('/http/', $s)) {
-      if (strlen($this->_get('photo')) < 150) {
+      $len = strlen($this->_get('photo'));
+      if ($len < 150) {
 	$s = file_get_contents($s);
       }else
 	return true;

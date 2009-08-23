@@ -15,14 +15,15 @@ sub download_fiche {
 }
 
 $a = WWW::Mechanize->new();
-#$a->get("http://www.assemblee-nationale.fr/13/tribun/xml/liste_alpha.asp");
-#$content = $a->content;
-#$p = HTML::TokeParser->new(\$content);
-#while ($t = $p->get_tag('a')) {
-#    if ($t->[1]{class} eq 'dep2') {
-#	download_fiche($t->[1]{href});
-#    }
-#}
+$a->get("http://www.assemblee-nationale.fr/13/tribun/xml/liste_alpha.asp");
+$content = $a->content;
+$p = HTML::TokeParser->new(\$content);
+while ($t = $p->get_tag('a')) {
+    if ($t->[1]{class} eq 'dep2') {
+	download_fiche($t->[1]{href});
+    }
+}
+
 $a->get("http://www.assembleenationale.fr/13/tribun/xml/liste_mandats_clos.asp");
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
