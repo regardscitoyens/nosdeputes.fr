@@ -12,6 +12,10 @@ class parlementaireActions extends sfActions
 {
   public function executePhoto(sfWebRequest $request)
   {
+    $rayon = 50; //pour la vignette
+    $bordure = 10;
+    $work_height = 500; //pour éviter des sentiments d'antialiasing
+
     $slug = $request->getParameter('slug');
     $parlementaires = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->fetchArray();
     $this->forward404Unless($parlementaires[0]);
@@ -23,24 +27,22 @@ class parlementaireActions extends sfActions
     fclose($fh);
     list($width, $height, $image_type) = getimagesize($file);
     $newheight = ceil($request->getParameter('height', $height)/10)*10;
+    if ($newheight > 250)
+      $newheight = 250;
 
     $iorig = imagecreatefromjpeg($file);
-    $ih = imagecreatetruecolor(500*$width/$height, 500);
-    imagecopyresampled($ih, $iorig, 0, 0, 0, 0, 500*$width/$height, 500, $width, $height);
-    $width = 500*$width/$height;
-    $height = 500;
+    $ih = imagecreatetruecolor($work_height*$width/$height, $work_height);
+    imagecopyresampled($ih, $iorig, 0, 0, 0, 0, $work_height*$width/$height, $work_height, $width, $height);
+    $width = $work_height*$width/$height;
+    $height = $work_height;
     imagedestroy($iorig);
 
     unlink($file);
 
 
-    $rayon = 50;
-
-
-
     $groupe = $parlementaires[0]['groupe_acronyme'];
     if ($groupe) {
-      imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon+10, $rayon+10, imagecolorallocate($ih, 255, 255, 255));
+      imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon+$bordure, $rayon+$bordure, imagecolorallocate($ih, 255, 255, 255));
     }
     if ($groupe == 'GDR') {
       imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 45, 225, imagecolorallocate($ih, 0, 170, 0), IMG_ARC_EDGED);
