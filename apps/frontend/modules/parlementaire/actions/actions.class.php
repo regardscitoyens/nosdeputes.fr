@@ -22,27 +22,26 @@ class parlementaireActions extends sfActions
     fwrite($fh ,$parlementaires[0]['photo']);
     fclose($fh);
     list($width, $height, $image_type) = getimagesize($file);
-    $image = imagecreatefromjpeg($file);
+    $newheight = ceil($request->getParameter('height', $height)/10)*10;
+
+    $iorig = imagecreatefromjpeg($file);
+    $ih = imagecreatetruecolor(500*$width/$height, 500);
+    imagecopyresampled($ih, $iorig, 0, 0, 0, 0, 500*$width/$height, 500, $width, $height);
+    $width = 500*$width/$height;
+    $height = 500;
+    imagedestroy($iorig);
+
     unlink($file);
 
 
-    $newheight = $request->getParameter('height', 0);
-    $rayon = 20;
+    $rayon = 50;
 
-    if ($newheight) {
-      $newwidth = $newheight*$width/$height;
-      $ih = imagecreatetruecolor($newwidth, $newheight);
-      imagecopyresampled($ih, $image, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-      imagedestroy($image);
-      $rayon = $rayon*$newheight/$height;
-      $height = $newheight;
-      $width = $newwidth;
-    }else{
-      $ih = $image;
-    }
 
 
     $groupe = $parlementaires[0]['groupe_acronyme'];
+    if ($groupe) {
+      imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon+10, $rayon+10, imagecolorallocate($ih, 255, 255, 255));
+    }
     if ($groupe == 'GDR') {
       imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 45, 225, imagecolorallocate($ih, 0, 170, 0), IMG_ARC_EDGED);
       imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 225, 45, imagecolorallocate($ih, 240, 0, 0), IMG_ARC_EDGED);
@@ -52,10 +51,17 @@ class parlementaireActions extends sfActions
       imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 0, 0, 170));
     }else if ($groupe == 'NC') {
       imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 0, 160, 255));
-    }else{
+    }else if ($groupe == 'NI') {
       imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 255, 255, 255));
     }
 
+    if ($newheight) {
+      $newwidth = $newheight*$width/$height;
+      $image = imagecreatetruecolor($newwidth, $newheight);
+      imagecopyresampled($image, $ih, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
+      imagedestroy($ih);
+      $ih = $image;
+    }
     $this->image = $ih;
   }
 
