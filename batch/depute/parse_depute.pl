@@ -35,7 +35,6 @@ sub infosgene {
 	    if ($txt =~ s/apparenté //i) {
 		$fonction = 'apparenté';
 	    }
-	    print "groupe $txt \n";
 	    ${$depute{'Groupe'}}{lc($txt)." / $fonction"} = 1;
 	    next;
 	}
