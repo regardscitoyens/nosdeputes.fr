@@ -14,8 +14,9 @@ class tagSeanceTask extends sfBaseTask
       $i = preg_replace('/\([^\)]+\)/', '', $i);
       $i = preg_replace('/&#339;/', 'oe', $i['intervention']);
       foreach(preg_split('/[\s\,\;\.\:\_\(\)\&\#\<\>\']+/i', $i) as $w) {
-	$w = strtolower($w);
-	if (strlen($w)>1 && preg_match('/[a-z]/', $w)) {
+	if (!preg_match('/^[A-Z]+$/', $w))
+	  $w = strtolower($w);
+	if (strlen($w)>1 && preg_match('/[a-z]/i', $w)) {
 	  //	  $s = soundex($w);
 	  $s = $w;
 	  $words[$s]++;
@@ -52,8 +53,9 @@ class tagSeanceTask extends sfBaseTask
     $cpt = 0;
     $tot = count($words);
 
-    $exclude = array('lecture'=>1, 'séance'=>1, 'alinéa'=>1, 'résolution'=>1, 'adoption'=>1, 'collègue'=>1, 'cher'=>1, 'collègues'=>1, 'chers'=>1,'bis'=>1, '1er'=>1, 'rectifié'=>1, 'question'=>1, 'rédactionnel'=>1, 'scrutin'=>1, 'exposer'=>1, 'identiques'=>1, 'identique'=>1, 'commission'=>1, 'adopte'=>1, 'rejette' => 1, 'additionnel' => 1, 'tendant' => 1);
+    $exclude = array('lecture'=>1, 'séance'=>1, 'alinéa'=>1, 'résolution'=>1, 'adoption'=>1, 'collègue'=>1, 'cher'=>1, 'collègues'=>1, 'chers'=>1,'bis'=>1, '1er'=>1, 'rectifié'=>1, 'question'=>1, 'rédactionnel'=>1, 'scrutin'=>1, 'exposer'=>1, 'identiques'=>1, 'identique'=>1, 'commission'=>1, 'adopte'=>1, 'rejette' => 1, 'additionnel' => 1, 'tendant' => 1, 'examiné' => 1, 'examine' => 1, 'rejeté'=> 1, 'avis' => 1, 'suivant'=>1);
     $include = array('télévision' => 1, 'dimanche'=>1, 'internet'=>1, 'outre-mer'=>1, 'logement'=>1, 'militaire'=>1, 'taxe'=>1, 'médecin'=>1, 'hôpital'=>1);
+    $exclude_sentence = array('garde des sceaux'=>1, 'haut-commissaire' => 1, 'monsieur' => 1, 'madame'=>1);
 
     foreach(array_keys($words) as $k) {
       if (!$include[$k])
@@ -140,7 +142,15 @@ class tagSeanceTask extends sfBaseTask
           }
 	  
           if (($sentences[$sent]*100/$tot > 0.8 || $sentences[$sent]*100/$words[$sent2word[$sent]] > 70)&& $words[$sent2word[$sent]] > 5) {
-            $tags[$sent] = strlen($sent);
+	    $ok = 1;
+	    foreach($exclude_sentences as $s) {
+	      if (preg_match('/'.$s.'/', $sent)) {
+		$ok = 0;
+		break;
+	      }
+	    }
+	    if ($ok)
+	      $tags[$sent] = strlen($sent);
             if ($sentences[$sent]*100/$words[$sent2word[$sent]] > 70)
               unset($tags[$sent2word[$sent]]);
           }
