@@ -10,10 +10,12 @@ class topDeputesTask extends sfBaseTask
   }
  
   protected function orderDeputes($type, $reverse = 1) {
+    $tot = 0;
     foreach(array_keys($this->deputes) as $id) {
       if (!isset($this->deputes[$id][$type]['value'])) 
 	$this->deputes[$id][$type]['value'] = 0;
       $ordered[$id] = $this->deputes[$id][$type]['value'];
+      $tot++;
     }
     if ($reverse)
       arsort($ordered);
@@ -21,9 +23,15 @@ class topDeputesTask extends sfBaseTask
       asort($ordered);
       
     $cpt = 0;
+    $last_value = 0;
+    $last_cpt = 0;
     foreach(array_keys($ordered) as $id) {
       $cpt++;
-      $this->deputes[$id][$type]['rank'] = $cpt;
+      if ($last_value != $this->deputes[$id][$type]['value'])
+	$last_cpt = $cpt;
+      $this->deputes[$id][$type]['rank'] = $last_cpt;
+      $this->deputes[$id][$type]['max_rank'] = $tot;
+      $last_value = $this->deputes[$id][$type]['rank'];
     }
   }
 
@@ -139,9 +147,10 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('a.sort = ?', 'Adopté')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_adoptes']['value'] = $p['count'];
+      $this->deputes[$p['id']]['amendements_ratio_adoptes']['value'] = $p['count'] 
+	* 100 / $this->deputes[$p['id']]['amendements_signes']['value'];
     }
-    $this->orderDeputes('amendements_adoptes');
+    $this->orderDeputes('amendements_ratio_adoptes');
 
     $parlementaires = Doctrine_Query::create()
       ->select('p.id, count(a.id)')
@@ -152,9 +161,10 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('a.sort = ?', 'Rejeté')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_rejetes']['value'] = $p['count'];
+      $this->deputes[$p['id']]['amendements_ratio_rejetes']['value'] = $p['count']
+	* 100 / $this->deputes[$p['id']]['amendements_signes']['value'];
     }
-    $this->orderDeputes('amendements_rejetes');
+    $this->orderDeputes('amendements_ratio_rejetes', 0);
 
     $parlementaires = Doctrine_Query::create()
       ->select('p.id, count(a.id)')
@@ -165,9 +175,11 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('(a.sort = ? OR a.sort = ?)', array('Retiré', 'Non soutenu'))
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_retires']['value'] = $p['count'];
+      $this->deputes[$p['id']]['amendements_ratio_retires']['value'] = $p['count']
+	* 100 / $this->deputes[$p['id']]['amendements_signes']['value'];
+
     }
-    $this->orderDeputes('amendements_retires');
+    $this->orderDeputes('amendements_ratio_retires', 0);
 
 
     foreach(array_keys($this->deputes) as $id) {
