@@ -130,6 +130,7 @@
 <ul>
 <?php
       $top = unserialize($parlementaire->top);
+if ($top) :
 foreach(array_keys($top) as $k) {
   echo '<li style="';
   if ($top[$k]['rank'] <= 150) 
@@ -138,6 +139,7 @@ foreach(array_keys($top) as $k) {
     echo 'color: red';
   echo '">'.$k.' : '.$top[$k]['value'].' ('.$top[$k]['rank'].'ème/'.$top[$k]['max_rank'].')</li>';
 }?></ul>
+<?php endif; ?>
       <h3>Tags</h3>
 <div style="text-align: justify">
 <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'min_tag' => 2, 'route' => '@tag_parlementaire_interventions?parlementaire='.$parlementaire->slug.'&')); ?>
