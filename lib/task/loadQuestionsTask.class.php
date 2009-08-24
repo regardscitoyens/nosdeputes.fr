@@ -50,7 +50,7 @@ class loadQuestionsTask extends sfBaseTask {
               $quest->themes = $json->rubrique." / ".$json->tete_analyse." / ".$json->analyse;
               $quest->question = $json->question;
               $quest->reponse = $json->reponse;
-              $amdmt->content_md5 = md5($json->legislature.$json->question);
+              $quest->content_md5 = md5($json->legislature.$json->question);
             }
             $quest->save();
             $quest->free();

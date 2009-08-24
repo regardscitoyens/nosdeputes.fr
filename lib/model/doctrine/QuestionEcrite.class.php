@@ -6,7 +6,7 @@
 class QuestionEcrite extends BaseQuestionEcrite
 {
 
-  public function setAuteur($auteur) {
+  public function setAuteur($depute) {
     $sexe = null;
     if (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([dA-Z].*)\s*$/', $depute, $match)) {
         $nom = $match[2];
@@ -14,7 +14,7 @@ class QuestionEcrite extends BaseQuestionEcrite
           $sexe = 'F';
         else $sexe = 'H';
     } else $nom = preg_replace("/^\s*(.*)\s*$/", "\\1", $depute);
-    $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupe($nom, $sexe);
+    $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe);
     if (!$depute) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe."\n";
     else {
       $this->_set('Parlementaire', $depute);

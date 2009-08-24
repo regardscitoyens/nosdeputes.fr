@@ -34,7 +34,7 @@ for ($i = 0; $i <= $n_pages; $i++) {
 
 $start = $i*50+1;
 $url = $url0."&ResultCount=50&ResultStart=".$start;
-$file = "xmlt/questions_13_trimestre_".$trimestre."_".$i.".xml";
+$file = "input/questions_13_trimestre_".$trimestre."_".$i.".xml";
 print $url." > ".$file."\n";
 	
 $a = WWW::Mechanize->new();
