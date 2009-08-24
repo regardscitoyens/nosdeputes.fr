@@ -1,4 +1,7 @@
 # default values
 all:
+  sf_guard_plugin:
+    profile_class:      Citoyen
+    profile_field_name: sf_guard_user_id
   sfDoctrineActAsTaggablePlugin:
     triple_distinct:   true

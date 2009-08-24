@@ -30,9 +30,18 @@
             <div class="boite_util">
               <div class="b_u_h"><div class="b_u_hg"></div><div class="b_u_hd"></div></div>
               <div class="b_u_cont">
-                <input type="text" value="nom" size="10" />
-                <input type="password" value="password" size="10" />
-                <input type="submit" value="Go" />
+                <?php 
+								if($sf_user->isAuthenticated()) { 
+									if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend_dev.php/sf_guard_user">Backend</a> - '; }
+								?>
+								Connecté en tant que <?php echo $sf_user; ?> - <a href="<?php echo url_for('@sf_guard_signout');?>">Déconnexion</a>
+								<?php
+								}
+								else { ?>
+								<a href="<?php echo url_for('@sf_guard_signin');?>">Connexion</a> - <a href="<?php echo url_for('@inscription');?>">S'inscrire</a> - <a href="<?php echo url_for('@sf_guard_password');?>">Mot de passe oublié ?</a>
+								<?php
+								}
+								?>
               </div>
               <div class="b_u_b"><div class="b_u_bg"></div><div class="b_u_bd"></div></div>
             </div>
@@ -45,7 +54,7 @@
             <li class="neuf"><a href="<?php echo url_for('@homepage'); ?>">Accueil</a></li>
             <li class="douze"><a href="<?php echo url_for('@list_parlementaires'); ?>">Les Députés</a></li>
             <li class="neuf"><a href="<?php echo url_for('@sections')?>">Les Lois</a></li>
-            <li class="treize"><a href="<?php echo url_for('@list_utilisateurs')?>">Les Citoyens</a></li>
+            <li class="treize"><a href="<?php echo url_for('@list_citoyens')?>">Les Citoyens</a></li>
             <li class="douze"><a href="http://www.assemblee-nationale.fr/">L'Assemblée</a></li>
           </ul>
           <div class="search_box">

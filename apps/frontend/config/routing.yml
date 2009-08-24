@@ -121,26 +121,41 @@ top_amendements:
   url: /top/amendement
   param: {module: amendement, action: top}
 
+# SfGuard
+sf_guard_signin:
+  url:   /login
+  param: { module: sfGuardAuth, action: signin }
+
+sf_guard_signout:
+  url:   /logout
+  param: { module: sfGuardAuth, action: signout }
+
+sf_guard_password:
+  url:   /request_password
+  param: { module: sfGuardAuth, action: password }
+
 # Gestion des utilisateurs
-list_utilisateurs:
+inscription:
+  url: /citoyens/inscription
+  param: {module: citoyen, action: new}
+
+list_citoyens:
   url: /citoyens
-  param: {module: utilisateur, action: index}
-utilisateur:
+  param: {module: citoyen, action: index}
+
+citoyen:
   url: /citoyen/:slug
-  param: {module: utilisateur, action: show}
-edit_utilisateur:
-  url: /citoyen/:slug/edition
-  param: {module: utilisateur, action: edit}
-update_utilisateur:
-  url: /citoyen/:slug/edition
-  param: {module: utilisateur, action: update}
-delete_utilisateur:
-  url: /citoyen/:slug/edition
-  param: {module: utilisateur, action: delete}
-new_utilisateur:
-  url: /citoyens/inscription
-  param: {module: utilisateur, action: new}
-create_utilisateur:
-  url: /citoyens/inscription
-  param: {module: utilisateur, action: create}
+  param: {module: citoyen, action: show}
+
+edit_citoyen:
+  url: /profil/edition
+  param: {module: citoyen, action: edit}
+
+delete_citoyen:
+  url: /profil/suppression
+  param: {module: citoyen, action: delete}
+
+activation_citoyen:
+  url: /citoyens/activation/:activation_id
+  param: {module: citoyen, action: activation}
 # Add include user's module to get same circonscription?

@@ -1,6 +1,6 @@
 rendering: ~
-security:  ~
-
+security:
+  class: sfGuardBasicSecurityFilter
 # insert your own filters here
 
 cache:     ~

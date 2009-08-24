@@ -262,37 +262,44 @@ ParlementaireAmendement:
     Amendement:
       foreignAlias: ParlementaireAmendements
 
-Utilisateur:
+Citoyen:
   actAs:
-    Timestampable:
+    Timestampable: ~
     Sluggable:
-      fields: [login]
-  columns:
-    login:
-      type: string(255)
+      fields: [username]
       unique: true
+  columns:
+    sf_guard_user_id:
+      type: integer(11)
       notnull: true
-    pass:
-      type: string(40)
-      notnull: true
-    sexe: 
-      type: enum
-      values: ['H', 'F']
-    naissance: date
-    profession: string(255)
-    parlementaire_id: integer
-    mail: 
+    username:
+      type: string(128)
+      unique: true
+    email:
       type: string(255)
       notnull: true
-    activation_id: string(32)
-    activation:
+    profession: string(255)
+    employe_an:
       type: boolean
       default: 0
-    circo: string(255)
-    circo_num: integer
+    travail_pour: integer
+    naissance: date
+    sexe: 
+      type: enum
+      values: [null, 'H', 'F']
+    nom_circo: string(255)
+    num_circo: integer
+    activation_id: string(32)
     photo:
       type: boolean
       default: 0
+  relations:
+    User:
+      class: sfGuardUser
+      foreign: id
+      local: sf_guard_user_id
+      onDelete: CASCADE
+      foreignType: one
 
 VariableGlobale:
   actAs:

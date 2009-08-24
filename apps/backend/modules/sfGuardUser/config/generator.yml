@@ -1,0 +1,9 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    config:
+      form:
+        class: sfGuardUserAdminForm
+        display:
+          "NONE":                   [username, password, password_again, Citoyen]
+          "Permissions and groups": [is_active, is_super_admin, groups_list, permissions_list]

@@ -1,0 +1,44 @@
+-- phpMyAdmin SQL Dump
+-- version 2.11.6
+-- http://www.phpmyadmin.net
+--
+-- Serveur: localhost
+-- Généré le : Lun 24 Août 2009 à 20:14
+-- Version du serveur: 5.0.51
+-- Version de PHP: 5.2.6
+
+SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+
+--
+-- Base de données: `cpc`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `sf_guard_group`
+--
+
+CREATE TABLE IF NOT EXISTS `sf_guard_group` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` varchar(255) default NULL,
+  `description` text,
+  `created_at` datetime default NULL,
+  `updated_at` datetime default NULL,
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `sf_guard_group`
+--
+
+INSERT INTO `sf_guard_group` (`id`, `name`, `description`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'Groupe des administrateurs', '2009-08-24 18:16:43', '2009-08-24 18:16:43'),
+(2, 'membre', 'Groupe des membres', '2009-08-24 18:16:57', '2009-08-24 18:16:57');

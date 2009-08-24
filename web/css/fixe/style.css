@@ -1,4 +1,4 @@
-/* Style g�n�ral */
+/* Style général */
 body {
   margin: 0;
   padding: 0;
@@ -22,7 +22,19 @@ body {
 }
 .haut_droite {
   float: right;
+  font-size: 1.1em;
+	font-weight: bold;
+	color: #fff;
 }
+.haut_droite a {
+  font-size: 1.1em;
+	font-weight: bold;
+}
+.haut_droite a:link { color: #6F6F6F; text-decoration: none; }
+.haut_droite a:hover { color: #fff; text-decoration: none; }
+.haut_droite a:active { color: #fff; text-decoration: none; }
+.haut_droite a:visited { color: #fff; text-decoration: none; }
+
 .haut_droite input {
   color: #fff;
   background-color: gray;
@@ -90,7 +102,7 @@ img {
   float: left;
   padding-top: 22px;
 }
-/* D�but menu */
+/* Début menu */
 .conteneur_menu {
   width: 100%;
   height: 31px;
@@ -111,6 +123,7 @@ img {
   padding: 0;
   list-style-type: none;
   display: inline;
+	text-shadow:0 0 3px #000000;
 }
 .menu li { /* element du menu */
   height: 31px;
@@ -219,9 +232,9 @@ img {
   margin: 0;
   margin-left: 5px;
 }
-/* Fin style g�n�ral */
+/* Fin style général */
 
-/* Carte des d�put�s */
+/* Carte des députés */
 .conteneur_resultat_dep  {
   float: left;
   width: 435px;
@@ -235,7 +248,7 @@ img {
   float:right;
   border : 1px solid #BFBFBF;
 }
-/* D�but fiche d�put� */
+/* Début fiche député */
 .fiche_depute {
   width: 938px;
   border: 1px solid #BFBFBF;
@@ -648,9 +661,9 @@ img {
   margin-left: 0;
   padding-left: 0;
 }
-/* Fin fiche d�put� */
+/* Fin fiche député */
 
-/* S�ances */
+/* Séances */
 .titre_int_et_seance {
   min-height: 70px;
   background-color: #fff;
