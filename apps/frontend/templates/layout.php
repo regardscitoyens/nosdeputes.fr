@@ -32,7 +32,7 @@
               <div class="b_u_cont">
                 <?php 
 								if($sf_user->isAuthenticated()) { 
-									if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend_dev.php/sf_guard_user">Backend</a> - '; }
+									if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend.php/sf_guard_user">Backend</a> - '; }
 								?>
 								Connecté en tant que <?php echo $sf_user; ?> - <a href="<?php echo url_for('@sf_guard_signout');?>">Déconnexion</a>
 								<?php
