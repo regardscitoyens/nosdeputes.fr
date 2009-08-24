@@ -69,7 +69,7 @@ class sfGuardSecurityUser extends sfBasicSecurityUser
     $this->addCredentials($user->getAllPermissionNames());
 
     // save last login
-    $user->setLastLogin(date('Y-m-d H:i:s'));
+    $user->setLastLogin(date('Y-m-d h:i:s'));
     $user->save($con);
 
     // remember?

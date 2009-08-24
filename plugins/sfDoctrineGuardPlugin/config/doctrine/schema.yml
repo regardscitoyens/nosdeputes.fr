@@ -71,7 +71,7 @@ sfGuardUser:
     password: string(128)
     is_active:
       type: boolean
-      default: 0
+      default: 1
     is_super_admin:
       type: boolean
       default: 0

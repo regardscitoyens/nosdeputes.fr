@@ -21,7 +21,7 @@ test:
 
 all:
   .settings:
-    enabled_modules:      [default, sfGuardAuth]
+    enabled_modules:      [default, sfGuardAuth, sfGuardUser]
     login_module:           sfGuardAuth
     login_action:           signin
 
