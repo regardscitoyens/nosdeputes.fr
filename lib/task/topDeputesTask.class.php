@@ -107,7 +107,7 @@ class topDeputesTask extends sfBaseTask
       ->where('i.date > ?', date('Y-m-d', time()-60*60*24*365))
       ->andWhere('fin_mandat IS NULL')
       ->andWhere('s.type = ?', 'hemicycle')
-      ->andWhere('i.nb_mots < 20')
+      ->andWhere('i.nb_mots <= 20')
       ->fetchArray();
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['hemicycle_invectives']['value'] = $p['count'];
