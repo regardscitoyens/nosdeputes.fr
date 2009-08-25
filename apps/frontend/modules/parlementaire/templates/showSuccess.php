@@ -126,11 +126,12 @@
       <h3><?php echo link_to("Présence en séances de commission et d'hémicycle",'@parlementaire_presences?slug='.$parlementaire->getSlug()); ?></h3>
       <h3><?php echo link_to("Toutes ses interventions",'@parlementaire_interventions?slug='.$parlementaire->getSlug()); ?></h3>
       <h3><?php echo link_to("Tous ses amendements",'@parlementaire_amendements?slug='.$parlementaire->getSlug()); ?></h3>
+<?php
+      $top = unserialize($parlementaire->top);
+if ($top) : ?>
       <h3>Best/Worst (sur 12 derniers mois)</h3>
 <ul>
 <?php
-      $top = unserialize($parlementaire->top);
-if ($top) :
 foreach(array_keys($top) as $k) {
   echo '<li style="';
   if ($top[$k]['rank'] <= 150) 
