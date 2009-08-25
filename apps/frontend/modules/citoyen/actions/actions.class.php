@@ -34,16 +34,24 @@ class citoyenActions extends sfActions
 	
   public function executeNew(sfWebRequest $request)
   {
-    $this->form = new InscriptionForm();
-    if ($request->isMethod('post'))
-    {
-      $this->form->bind($request->getParameter('sf_guard_user'));
-      
-      if ($this->form->isValid())
-      {
-        $this->processForm($request, $this->form);
-      }  
-    }
+    if (!$this->getUser()->isAuthenticated()) {
+			$this->form = new InscriptionForm();
+			if ($request->isMethod('post'))
+			{
+				$this->form->bind($request->getParameter('sf_guard_user'));
+				
+				if ($this->form->isValid())
+				{
+					$this->processForm($request, $this->form);
+				}  
+			}
+		}
+		else
+		{
+			$user = $this->getUser()->getGuardUser();
+			$this->getUser()->setFlash('notice', 'Vous etes deja inscrit');
+			$this->redirect('@citoyen?slug='.$user->Citoyen->slug);
+		}
   }
 	
 	public function executeEdit(sfWebRequest $request)
