@@ -68,6 +68,9 @@ class Parlementaire extends BaseParlementaire
     if (preg_match('/(\d{2})\/(\d{2})\/(\d{4})/', $str, $m)) {
       $this->_set('fin_mandat', $m[3].'-'.$m[2].'-'.$m[1]);
     }
+    if (!$str) {
+      $this->_set('fin_mandat', NULL);
+    }
   }
   public function setFonctions($array) {
     return $this->setPOrganisme('parlementaire', $array);

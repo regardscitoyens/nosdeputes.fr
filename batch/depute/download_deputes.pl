@@ -13,8 +13,8 @@ sub download_fiche {
 	close FILE;
 	return $file;
 }
-
 $a = WWW::Mechanize->new();
+
 $a->get("http://www.assemblee-nationale.fr/13/tribun/xml/liste_alpha.asp");
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
@@ -33,12 +33,15 @@ while ($t = $p->get_tag('td')) {
 	$t = $p->get_tag('a');
 	if ($t->[1]{href}) {
 	    $id = download_fiche($t->[1]{href});
-	    $t = $p->get_tag('td');
-	    $t = $p->get_tag('td');
-	    $t = $p->get_tag('td');
-	    $t = $p->get_text('/td');
-	    $t =~ s/[^\d\/]//g;
-	    print PM "\$fin_mandat{'$id'} = '$t';\n";
+	    $ret = system("grep -i 'mandat est clos' html/$id > /dev/null");
+	    if (! $ret) {
+		$t = $p->get_tag('td');
+		$t = $p->get_tag('td');
+		$t = $p->get_tag('td');
+		$t = $p->get_text('/td');
+		$t =~ s/[^\d\/]//g;
+		print PM "\$fin_mandat{'$id'} = '$t';\n";
+	    }
 	}
     }
 }
