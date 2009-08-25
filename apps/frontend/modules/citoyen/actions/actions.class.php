@@ -122,7 +122,7 @@ class citoyenActions extends sfActions
     
     $user_id = Doctrine::getTable('sfGuardUser')->findOneByUsername($values["username"]);
     $id = $user_id->getId();
-    $activation_id = md5(time());
+    $activation_id = md5(time()*rand());
 
     $citoyen = new Citoyen();
     $citoyen->setsfGuardUserId($id);
