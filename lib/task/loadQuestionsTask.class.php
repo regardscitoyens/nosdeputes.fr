@@ -24,7 +24,26 @@ class loadQuestionsTask extends sfBaseTask {
             $ct_lines++;
             $json = json_decode($line);
             if (!$json || !$json->source || !$json->legislature || !$json->numero || !$json->date || !$json->auteur || !$json->type || !$json->question) {
-              echo "ERROR json : $line\n";
+	      if (!$json) {
+		echo "ERROR json : $line\n";		
+	      }else{
+		if (!$json->source)
+		  $missing = 'sourece';
+		if (!$json->legislature)
+		  $missing = 'legislature';
+		if (!$json->numero)
+		  $missing = 'numero';
+		if (!$json->date)
+		  $missing ='date';
+		if (!$json->auteur)
+		  $missing = 'auteur';
+		if (!$json->type)
+		  $missing = 'type';
+		if (!$json->question)
+		  $missing = 'question';
+		    
+		echo "ERROR json ($missing argument missing) : $line\n";		
+	      }
               continue;
             }
             if (!$json->ministere_interroge || !$json->ministere_attributaire || !$json->rubrique || !$json->tete_analyse || !$json->analyse) {

@@ -56,9 +56,12 @@
     </div>
   <?php if (!$didascalie) : ?>
     <div class="commentaires" style="clear: both;">
-       <span><?php echo $intervention->Section->titre; ?></span> - 
-      <span><a href="#">Lire les 3 commentaires</a></span> - 
-      <span><a href="#">Laisser un commentaire</a></span>
+       <div>
+<?php if ($intervention->Section->section_id) : ?>
+<span><?php echo $intervention->Section->Section->titre; ?></span>&nbsp;-&nbsp;<?php endif; ?><span><?php echo $intervention->Section->titre; ?></span>
+</div>
+      <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Lire les 3 commentaires</a></span> - 
+      <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
   <?php endif; ?>
   </div>
