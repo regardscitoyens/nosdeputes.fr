@@ -18,6 +18,13 @@ class EditUserForm extends sfGuardUserForm
       $this['algorithm']
     );
 		
+		// Les labels du sfguarduser
+		$this->widgetSchema->setLabels(array(
+      'username' => 'Nom d\'utilisateur',
+      'password' => 'Mot de passe',
+      'password_confirmation' => 'Répétez le mot de passe',
+    ));
+		
 		// inclus le formulaire Citoyen
 		parent::configure();
    
@@ -35,11 +42,22 @@ class EditUserForm extends sfGuardUserForm
 			$citoyenForm['photo'],  
 			$citoyenForm['created_at'], 
 			$citoyenForm['updated_at'], 
-			$citoyenForm['slug']);
+			$citoyenForm['slug']
+		);
 		
-		/* $citoyenForm->setValidators(array(
-      'email'   => new sfValidatorEmail()
-    )); */
+		$annees = range(1920, date('Y')); // array des dates depuis 1920
+		$liste_annees = array_combine($annees, $annees); // array clés et valeurs des dates
+			
+		$citoyenForm->widgetSchema['naissance'] = new sfWidgetFormDate(array('years' => $liste_annees));
+		
+		// Les labels du citoyen
+		$citoyenForm->widgetSchema->setLabels(array(
+			'citoyen' => '',
+			'profession' => 'Profession/Occupation',
+			'naissance' => 'Date de naissance'
+		));
+		
+		$citoyenForm->validatorSchema['email'] = new sfValidatorEmail();
 
     $this->embedForm('Citoyen', $citoyenForm);
   }

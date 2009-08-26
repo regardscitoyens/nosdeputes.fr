@@ -26,6 +26,13 @@ class sfGuardUserAdminForm extends BasesfGuardUserAdminForm
       $citoyenForm['created_at'], 
       $citoyenForm['updated_at']
 	    );
+		
+		$annees = range(1920, date('Y')); // array des dates depuis 1920
+		$liste_annees = array_combine($annees, $annees); // array clés et valeurs des dates
+			
+		$citoyenForm->widgetSchema['naissance'] = new sfWidgetFormDate(array('years' => $liste_annees));
+		$citoyenForm->validatorSchema['email'] = new sfValidatorEmail();
+		
     $this->embedForm('Citoyen', $citoyenForm);
   }
 }
