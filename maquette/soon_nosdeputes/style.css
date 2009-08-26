@@ -1,7 +1,3 @@
-/* Code css pas très propre (abus de margin + transparence inutile -bug ie- je corrige ça ce soir */ 
-/* Code css pas très propre (abus de margin + transparence inutile -bug ie- je corrige ça ce soir */ 
-/* Code css pas très propre (abus de margin + transparence inutile -bug ie- je corrige ça ce soir */ 
-
 body {
 	background-color:#fbfbfb;
 	background-image:url(images/mosaique.gif);
@@ -44,23 +40,26 @@ body {
 }
 
 .regardscitoyens { 	
-	width:264px;
+	width:264x;
 	height:91px;
 	padding-left:160px;
 	margin-top:22px;
 }
 
-h1 {
-	font-size:13px;
-	text-align:center;
-	color: #564b47;
+.chapo h2 {
 	border: 1px dotted #90897a;
+}
+
+h2 {
+	font-size: 13px;
+	text-align: center;
+	color: #564b47;
 	font-family:Arial, Helvetica, SunSans-Regular, Sans-Serif;
 	padding:10px 10px 10px 10px;
 	margin:0;
 }
 
-h2 {
+h3 {
 	font-size: 11px;
 	text-transform:uppercase;
 	text-align: left;
