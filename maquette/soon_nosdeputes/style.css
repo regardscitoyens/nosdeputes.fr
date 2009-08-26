@@ -1,6 +1,5 @@
 body {
-	background-color:#fbfbfb;
-	background-image:url(images/mosaique.gif);
+	background: #fbfbfb url(images/mosaique.gif);
 	font-size:12px;
 	font-family:Verdana, Arial, Helvetica, SunSans-Regular, Sans-Serif;
 	text-align:justify;
@@ -9,72 +8,51 @@ body {
 	margin:0px;
 }
 
-.content { 	
-	position:absolute;
+.haut { 	
 	width:614px;
-	height:768px; 
-	left:50%;
-	margin:0px 0px 0px -307px;
-	background-image:url(images/fond.png);
+	height:400px; 
+	margin-left:auto;
+	margin-right:auto;
+	background-image:url(images/head.png);
 	background-repeat:no-repeat;
 }
 
-.titre { 	
-	width:372px;
-	height:67px;
-	padding-left:130px;
-	margin-top:190px;
+.content { 	
+	width:614px;
+	height:259px; 
+	margin-left:auto;
+	margin-right:auto;
+	background-image:url(images/content.png);
+	background-repeat:no-repeat;
 }
 
-.chapo { 	
-	width:370px;
-	padding-left:120px;
-	margin-top:150px;
+.bottom { 	
+	width:614px;
+	height:109px; 
+	margin-left:auto;
+	margin-right:auto;
+	background-image:url(images/bottom.png);
+	background-repeat:no-repeat;
 }
 
-.texte { 	
-	width:340px;
-	height:144px;
-	padding-left:130px;
-	margin-top:30px;
-}
-
-.regardscitoyens { 	
-	width:264x;
-	height:91px;
-	padding-left:160px;
-	margin-top:22px;
-}
-
-.chapo h2 {
-	border: 1px dotted #90897a;
-}
-
-h2 {
-	font-size: 13px;
-	text-align: center;
-	color: #564b47;
+.content h1 {
+	width:350px;
+	font-size:13px;
+	text-align:center;
 	font-family:Arial, Helvetica, SunSans-Regular, Sans-Serif;
+	border: 1px dotted #90897a;
 	padding:10px 10px 10px 10px;
-	margin:0;
+	margin:0px 0px 0px 120px;
 }
 
-h3 {
-	font-size: 11px;
-	text-transform:uppercase;
-	text-align: left;
-	color: #564b47;
-	background-color: #90897a;
-	margin:0;
+.content h2 {
+	width:300px;
+	font-size:13px;
+	margin:30px 0px 0px 173px;
+	font-family:Arial, Helvetica, SunSans-Regular, Sans-Serif;
 }
 
-a { 
-	color: #564b47;
-	font-size: 11px;
-	background-color:transparent;
-	text-decoration: none; 
-}
-
-img {
+.bottom img {
+	margin:0px 0px 0px 161px;
 	border-style:none;
 }
