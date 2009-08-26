@@ -307,3 +307,35 @@ VariableGlobale:
   columns:
     champ: string(32)
     value: blob
+
+Commentaire:
+  actAs:
+    Timestampable:
+  columns:
+    citoyen_id: integer
+    commentaire: string
+    is_public: boolean
+    rate: integer
+    object_type: string(64)
+    object_id: integer
+  relations:
+    Citoyen:
+      foreignAlias: Commentaires
+  indexes:
+    commentable:
+      fields: [object_type, object_id]
+
+RateCommentaire:
+  actAs:
+    Timestampable:
+  columns:
+    commentaire_id: integer
+    rate: integer
+    citoyen_id: integer
+  relations:
+    Citoyen:
+      foreignAlias: Rates
+    Commentaire:
+      foreignAlias: Rates
+    
+  

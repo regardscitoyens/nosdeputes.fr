@@ -2,6 +2,11 @@
 homepage:
   url: /
   param: {module: parlementaire, action: index}
+# Les commentaires 
+commentaire_post:
+  url: /commentaire/:type/:id
+  param: {module: commentaire, action: post}
+
 
 # Liste de tous les parlementaires ou par catégorie
 list_parlementaires:
