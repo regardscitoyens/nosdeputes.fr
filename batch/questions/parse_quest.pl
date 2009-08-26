@@ -70,5 +70,5 @@ foreach $url0 (@urls) {
 	}
     }
 }    
-print $total_quest." amendements parsés\n";
+print $total_quest." questions parsées\n";
 
