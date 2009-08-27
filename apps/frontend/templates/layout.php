@@ -31,17 +31,17 @@
               <div class="b_u_h"><div class="b_u_hg"></div><div class="b_u_hd"></div></div>
               <div class="b_u_cont">
                 <?php 
-								if($sf_user->isAuthenticated()) { 
-									if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend.php/sf_guard_user">Backend</a> - '; }
-								?>
-								Connecté en tant que <?php echo $sf_user; ?> - <a href="<?php echo url_for('@sf_guard_signout');?>">Déconnexion</a>
-								<?php
-								}
-								else { ?>
-								<a href="<?php echo url_for('@sf_guard_signin');?>">Connexion</a> - <a href="<?php echo url_for('@inscription');?>">S'inscrire</a> - <a href="<?php echo url_for('@sf_guard_password');?>">Mot de passe oublié ?</a>
-								<?php
-								}
-								?>
+                if($sf_user->isAuthenticated()) { 
+                  if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend.php/sf_guard_user">Backend</a> - '; }
+                ?>
+                Connecté en tant que <?php echo $sf_user; ?> - <a href="<?php echo url_for('@sf_guard_signout');?>">Déconnexion</a>
+                <?php
+                }
+                else { ?>
+                <a href="<?php echo url_for('@sf_guard_signin');?>">Connexion</a> - <a href="<?php echo url_for('@inscription');?>">S'inscrire</a> - <a href="<?php echo url_for('@sf_guard_password');?>">Mot de passe oublié ?</a>
+                <?php
+                }
+                ?>
               </div>
               <div class="b_u_b"><div class="b_u_bg"></div><div class="b_u_bd"></div></div>
             </div>

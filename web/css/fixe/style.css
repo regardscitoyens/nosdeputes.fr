@@ -23,12 +23,12 @@ body {
 .haut_droite {
   float: right;
   font-size: 1.1em;
-	font-weight: bold;
-	color: #fff;
+  font-weight: bold;
+  color: #fff;
 }
 .haut_droite a {
   font-size: 1.1em;
-	font-weight: bold;
+  font-weight: bold;
 }
 .haut_droite a:link { color: #6F6F6F; text-decoration: none; }
 .haut_droite a:hover { color: #fff; text-decoration: none; }
@@ -123,7 +123,7 @@ img {
   padding: 0;
   list-style-type: none;
   display: inline;
-	text-shadow:0 0 3px #000000;
+  text-shadow:0 0 3px #000000;
 }
 .menu li { /* element du menu */
   height: 31px;

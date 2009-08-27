@@ -21,16 +21,16 @@ Parlementaire:
     site_web: string(255)
     debut_mandat: date
     fin_mandat: date
-    place_hemicycle:	integer
-    url_an:	string(255)
-    profession:	string(255)
+    place_hemicycle: integer
+    url_an: string(255)
+    profession: string(255)
     photo: blob
     id_an:
-      type:	integer
-      unique:	true
+      type: integer
+      unique: true
     type:
-      type:	enum
-      values:	['depute', 'senateur']
+      type: enum
+      values: ['depute', 'senateur']
     groupe_acronyme: string(8)
     adresses: string
     autres_mandats: string
@@ -262,7 +262,7 @@ ParlementaireAmendement:
     Amendement:
       foreignAlias: ParlementaireAmendements
 
-Citoyen:
+sfGuardUserProfile:
   actAs:
     Timestampable: ~
     Sluggable:
@@ -270,7 +270,7 @@ Citoyen:
       unique: true
   columns:
     sf_guard_user_id:
-      type: integer(11)
+      type: integer(4)
       notnull: true
     username:
       type: string(128)
@@ -296,10 +296,12 @@ Citoyen:
   relations:
     User:
       class: sfGuardUser
-      foreign: id
       local: sf_guard_user_id
-      onDelete: CASCADE
+      foreign: id
+      type: one
       foreignType: one
+      foreignAlias: Profile
+      onDelete: cascade
 
 VariableGlobale:
   actAs:
@@ -319,7 +321,7 @@ Commentaire:
     object_type: string(64)
     object_id: integer
   relations:
-    Citoyen:
+    Profile:
       foreignAlias: Commentaires
   indexes:
     commentable:
@@ -333,9 +335,7 @@ RateCommentaire:
     rate: integer
     citoyen_id: integer
   relations:
-    Citoyen:
+    Profile:
       foreignAlias: Rates
     Commentaire:
       foreignAlias: Rates
-    
-  

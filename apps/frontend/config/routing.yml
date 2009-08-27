@@ -164,6 +164,10 @@ edit_citoyen:
   url: /profil/edition
   param: {module: citoyen, action: edit}
 
+add_circo_citoyen:
+  url: /profil/circo/:nom_circo/:num_circo
+  param: {module: citoyen, action: circo}
+
 delete_citoyen:
   url: /profil/suppression
   param: {module: citoyen, action: delete}

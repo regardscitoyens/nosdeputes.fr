@@ -12,9 +12,10 @@
 if($sf_user->isAuthenticated() and ($sf_user->getGuardUser()->id == $Citoyen->sf_guard_user_id))
 {
 ?>
-	<p>
-	<a href="<?php echo url_for('@edit_citoyen') ?>">Modifier votre profil</a><br />
-	</p>
+  <p>
+  <a href="<?php echo url_for('@edit_citoyen') ?>">Modifier votre profil</a><br />
+  <a href="<?php echo url_for('@delete_citoyen') ?>">Supprimer votre profil</a>
+  </p>
 <?php
 }
 ?>

@@ -15,136 +15,159 @@ class citoyenActions extends sfActions
   *
   * @param sfRequest $request A request object
   */
-	public function executeIndex(sfWebRequest $request)
+  public function executeIndex(sfWebRequest $request)
   {
-    $this->citoyens_list = Doctrine::getTable('Citoyen')
+    $this->citoyens_list = Doctrine::getTable('sfGuardUserProfile')
       ->createQuery('a')
       ->execute();
     $response = $this->getResponse();
     $response->setTitle('Liste des citoyens inscrits'); 
   }
-	
-	public function executeShow(sfWebRequest $request)
+  
+  public function executeShow(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
-    $this->Citoyen = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
+    $this->Citoyen = Doctrine::getTable('sfGuardUserProfile')->findOneBySlug($slug);
     $response = $this->getResponse();
     $response->setTitle('Mini blog de '.$this->Citoyen->username); 
   }
-	
+  
   public function executeNew(sfWebRequest $request)
   {
     if (!$this->getUser()->isAuthenticated()) {
-			$this->form = new InscriptionForm();
-			if ($request->isMethod('post'))
-			{
-				$this->form->bind($request->getParameter('sf_guard_user'));
-				
-				if ($this->form->isValid())
-				{
-					$this->processForm($request, $this->form);
-				}  
-			}
-		}
-		else
-		{
-			$user = $this->getUser()->getGuardUser();
-			$this->getUser()->setFlash('notice', 'Vous etes deja inscrit');
-			$this->redirect('@citoyen?slug='.$user->Citoyen->slug);
-		}
+      $this->form = new InscriptionForm();
+      if ($request->isMethod('post'))
+      {
+        $activation_id = md5(time()*rand());
+        
+        $values = $request->getParameter('sf_guard_user');
+        $values['Profile']['username'] = $values['username'];
+        
+        $this->form->bind($values);
+        
+        if ($this->form->isValid())
+        {
+          $this->form->save();
+          
+          $this->getUser()->signIn($this->form->getObject());
+          $user = $this->getUser()->getGuardUser();
+					$user->Profile->activation_id = $activation_id;
+					$user->is_active = false;
+					$user->save();
+          $slug = $user->Profile->slug;
+          
+          #$message = link_to("@activation_citoyen?activation_id=".$activation_id);
+          $this->getUser()->setFlash('notice', 'Votre compte a ete cree avec succes');
+          $this->redirect('@citoyen?slug='.$slug);
+        }  
+      }
+    }
+    else
+    {
+      $user = $this->getUser()->getGuardUser();
+      $this->getUser()->setFlash('notice', 'Vous etes deja inscrit');
+      $this->redirect('@citoyen?slug='.$user->Profile->slug);
+    }
   }
-	
-	public function executeEdit(sfWebRequest $request)
+  
+  public function executeEdit(sfWebRequest $request)
   {
-		if ($this->getUser()->isAuthenticated()) {
-		$user = $this->getUser()->getGuardUser();
-		
-			$this->form = new EditUserForm($user);
-			
-			if ($request->isMethod('put'))
-			{
-				$this->form->bind($request->getParameter('sf_guard_user'));
-				
-				if ($this->form->isValid())
-				{
-					$this->form->save();
-					$this->getUser()->setFlash('notice', 'Votre modification a reussi');
-					$this->redirect('@citoyen?slug='.$user->Citoyen->slug);
-				}  
-			}
-		}
-		else { $this->redirect('@list_citoyens'); } 
+    if ($this->getUser()->isAuthenticated()) {
+    $user = $this->getUser()->getGuardUser();
+    
+    $this->form = new EditUserForm($user);
+      
+      if ($request->isMethod('put'))
+      {
+        $this->form->bind($request->getParameter('sf_guard_user'));
+        
+        if ($this->form->isValid())
+        {
+          $this->form->save();
+          $this->getUser()->setFlash('notice', 'Votre modification a reussi');
+          $this->redirect('@citoyen?slug='.$user->Profile->slug);
+        }  
+      }
+    }
+    else { $this->redirect('@list_citoyens'); } 
   }
-	
-	public function executeActivation(sfWebRequest $request)
+  
+  public function executeActivation(sfWebRequest $request)
   {
     $activation_id = $request->getParameter('activation_id');
-		if (Doctrine::getTable('Citoyen')->findOneByActivationId($activation_id))
-		{
-			$this->user_activation_id = Doctrine::getTable('Citoyen')->findOneByActivationId($activation_id);
-			#$slug = $this->user_activation_id->getSlug;
-			$this->user_edit = Doctrine::getTable('sfGuardUser')->findOneById($this->user_activation_id->getsfGuardUserId());
-			if (!$this->user_edit->getIsActive())
-			{
-				$this->user_edit->setIsActive(true);
-				$this->user_edit->addGroupByName('membre');
-				$this->user_edit->save();
-				$this->getUser()->setFlash('notice', 'Votre compte a ete active avec succes');
-				$this->redirect('@activation_citoyen');
-			}
-			else
-			{
-				$this->getUser()->setFlash('notice', 'Ce compte est deja active');
-				$this->redirect('@activation_citoyen');
-			}
-		}
-		else
-		{
-			$this->redirect('@list_citoyens');
-			$this->getUser()->setFlash('notice', 'Ce compte n\'existe pas');
-		}
-  }
-	
-	public function executeDelete()
-  {
-    
-  }
-	
-  protected function processForm(sfWebRequest $request, sfForm $form)
-  {
-    $values = $request->getParameter('sf_guard_user');
 		
-    $user = new sfGuardUser();       
-    $user->setUsername($values["username"]);
-    $user->setPassword($values["password"]);
-    #$user->addGroupByName('membre');
-    $user->save();
-    
-    $user_id = Doctrine::getTable('sfGuardUser')->findOneByUsername($values["username"]);
-    $id = $user_id->getId();
-    $activation_id = md5(time()*rand());
-
-    $citoyen = new Citoyen();
-    $citoyen->setsfGuardUserId($id);
-    $citoyen->setUsername($values["username"]);
-    $citoyen->setEmail($values["Citoyen"]["email"]);
-    if (!empty($values["Citoyen"]["profession"])) {
-      $citoyen->setProfession($values["Citoyen"]["profession"]);
+    if ($this->getUser()->isAuthenticated()) {
+      
+      $user = $this->getUser()->getGuardUser();
+      
+      if (Doctrine::getTable('sfGuardUserProfile')->findOneByActivationId($activation_id))
+      {
+        $this->user_a_activer = Doctrine::getTable('sfGuardUserProfile')->findOneByActivationId($activation_id);
+        
+        if ($this->user_a_activer->sf_guard_user_id == $user->id)
+        {
+          if ($user->is_active = false)
+          {
+            $user->is_active = true;
+            $user->addGroupByName('membre');
+            $user->save();
+            $this->getUser()->setFlash('notice', 'Votre compte a ete active avec succes');
+            $this->redirect('@activation_citoyen');
+          }
+          else
+          {
+            $this->getUser()->setFlash('notice', 'Votre compte est deja active');
+            $this->redirect('@activation_citoyen');
+          }
+        }
+        else
+        {
+          $this->getUser()->setFlash('notice', 'Ce compte n\'est pas le votre');
+          $this->redirect('@list_citoyens');
+        }
+      }
+      else
+      {
+        $this->redirect('@list_citoyens');
+        $this->getUser()->setFlash('notice', 'Ce compte n\'existe pas');
+      }
     }
-    if (!empty($values["Citoyen"]["naissance"]["year"])) {
-      $naissance= $values["Citoyen"]["naissance"]["year"] .'-'. $values["Citoyen"]["naissance"]["month"].'-'.$values["Citoyen"]["naissance"]["day"];
-      $citoyen->setNaissance($naissance);
+		else
+    {
+      $this->redirect('@sf_guard_signin');
+      $this->getUser()->setFlash('notice', 'Veuillez vous identifier');
     }
-    if (!empty($values["Citoyen"]["sexe"])) {
-      $citoyen->setSexe($values["Citoyen"]["sexe"]);
-    }
-    $citoyen->setActivationId($activation_id);
-    $citoyen->save();
-		$slug = $citoyen->getSlug();
-
-    $this->getUser()->signIn($user);
-    $this->getUser()->setFlash('notice', 'Un email de confirmation vient de vous etre envoye');
-    $this->redirect('@citoyen?slug='.$slug);
   }
-
+  
+  public function executeCirco()
+  {
+    if ($this->getUser()->isAuthenticated())
+    {
+      $nom_circo = $request->getParameter('nom_circo');
+      $num_circo = $request->getParameter('num_circo');
+      $user = $this->getUser()->getGuardUser();
+      $user->Profile->nom_circo = $nom_circo;
+      $user->Profile->num_circo = $num_circo;
+      $user->save();
+    }
+    else
+    {
+      $this->redirect('@sf_guard_signin');
+    }
+  }
+  
+  public function executeDelete()
+  {
+    if ($this->getUser()->isAuthenticated())
+    {
+      $user = $this->getUser()->getGuardUser();
+      $user->delete();
+      $this->getUser()->signOut();
+      $this->getUser()->setFlash('notice', 'Votre compte a ete supprime avec succes');
+    }
+    else
+    {
+      $this->redirect('@sf_guard_signin');
+    }
+  }
 }
