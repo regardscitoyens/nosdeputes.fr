@@ -40,6 +40,15 @@ class topDeputesTask extends sfBaseTask
     $manager = new sfDatabaseManager($this->configuration);
     
     $this->deputes = array();
+    
+    $deputes = Doctrine::getTable('Parlementaire')->createQuery()
+      ->where('type = ?', 'depute')
+      ->andWhere('fin_mandat IS NULL') 
+      ->fetchArray();
+    foreach($deputes as $d) {
+      $this->deputes[$d['id']] = array();
+    }
+
 
     $semaines = Doctrine_Query::create()
       ->select('p.id, s.numero_semaine, pr.id, count(s.id)')
@@ -180,6 +189,32 @@ class topDeputesTask extends sfBaseTask
 
     }
     $this->orderDeputes('amendements_ratio_retires', 0);
+
+    $parlementaires = Doctrine_Query::create()
+      ->select('p.id, count(q.id)')
+      ->from('Parlementaire p, p.QuestionEcrites q')
+      ->groupBy('p.id')
+      ->where('q.date > ?', date('Y-m-d', time()-60*60*24*365))
+      ->andWhere('fin_mandat IS NULL')
+      ->fetchArray();
+    foreach ($parlementaires as $p) {
+      $this->deputes[$p['id']]['questions_ecrites']['value'] = $p['count'];
+    }
+    $this->orderDeputes('questions_ecrites');
+
+    $questions = Doctrine_Query::create()
+      ->select('p.id, count(DISTINCT i.seance_id) as count')
+      ->from('Parlementaire p, p.Interventions i')
+      ->groupBy('p.id')
+      ->where('i.type = ?', 'question')
+      ->andWhere('i.nb_mots > 20')
+      ->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365))
+      ->andWhere('fin_mandat IS NULL')
+      ->fetchArray();
+    foreach ($questions as $q) {
+      $this->deputes[$q['id']]['questions_orales']['value'] = $q['count'];
+    }
+    $this->orderDeputes('questions_orales');
 
 
     foreach(array_keys($this->deputes) as $id) {

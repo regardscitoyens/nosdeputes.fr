@@ -255,7 +255,7 @@ foreach $line (split /\n/, $string)
     }
 
     if ($line =~ /<h[1-9]+/i || $line =~ /"(sompresidence|sstitreinfo)"/) {
-	if ($line =~ /présidence de (M[^<]+)</i) {
+	if ($line =~ /pr..?sidence de (M[^<]+)</i) {
 	    $prez = $1;
 #	    print "Présidence de $prez\n";
 	    if ($prez =~ /^Mm/) {
@@ -273,9 +273,11 @@ foreach $line (split /\n/, $string)
 	    $amendements = @pre_amendements = ();
 	    $line = "<p>|$titre2|</p>";
 	    $donetitre1 = 0;
-	}elsif(!$donetitre1 && $line =~ /h2 class="titre1"><*([^<]+)/) {
+	}elsif(!$donetitre1 && $line =~ /h2 class="titre1">(.*)<\/h2/i) {
 	    checkout();
 	    $titre = $1;
+	    $titre =~ s/<\/?[^>]+>//g;
+	    $titre =~ s/<//g;
 	    $titre =~ s/[\(\/][^\)\/]+[\)\/]//;
 	    if ($titre =~ /^[\/\s]*[\wéè]+ \s*partie[\/\s]*(suite[\/\s]*|)$/i) {
 		next

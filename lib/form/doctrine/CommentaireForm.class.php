@@ -21,7 +21,5 @@ class CommentaireForm extends BaseCommentaireForm
 	  $this['object_id']
 	  );
     $this->validatorSchema['commentaire']->setOption('required', true);
-    $this->widgetSchema->setFormFormatterName('table');
-
   }
 }

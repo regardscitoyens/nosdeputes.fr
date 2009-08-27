@@ -1,17 +1,21 @@
 #!/usr/bin/perl
 
 $file = shift;
+$utf8_encode = shift;
+
 use HTML::TokeParser;
 
 $source = $file;
 $source =~ s/_/\//g;
-$source =~ s/html\/?//g;
-	
+$source =~ s/(html|wget)\/?//g;
+
 open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
 close FILE;
-#utf8::encode($string);
+if ($utf8_encode) {
+    utf8::encode($string);
+}
 $string =~ s/\n//g;
 $string =~ s/\r//g;
 $string =~ s/\<!--.+?--\>//sig;
@@ -41,12 +45,12 @@ $tana = $1
     if ($string =~ /\<TANA\>\s*([^<]+)\s*\<\/TANA\>/i);
 $ana = $1
     if ($string =~ /\<ANA\>\s*([^<]+)\s*\<\/ANA\>/i);
-
 $question = $1 
-    if ($string =~ /\<QUEST\>\s*([^<]+\S)\s*\<\/QUEST\>/i);
-#On vire les sauts de ligne même pour windows
+    if ($string =~ /<QUEST>\s*(.+)\s*<\/QUEST>/i);
+$question =~ s/<\/?[^>]+>//;
 $question = '<p>'.$question.'</p>'
     if ($question);
+
 #comme dans le champ <AUT> le nom n'est pas dans le bon ordre, on s'en sert pour le repérer dans la question
 $pre_auteur = $1
     if ($string =~ /<AUT>\s*(Le\s\S+)/);
@@ -58,7 +62,7 @@ $auteur = $1
     if ($question =~ /^[^M]*(M[me\.]+.+$pre_auteur\S*)\s[^M\.\,]+\s+M/);
 $auteur =~ s/\s[^A-Z]+$//;
 #Si on n'a pas trouvé l'auteur, on tente d'enlever les caractères spéciaux
-if (!$auteur) {
+if (!$auteur || $auteur !~ /^\S+\s+\S+/) {
     $pre_auteur =~ s/[^a-z]/ /g;
     $pre_auteur =~ s/.* ([a-z]+)$/$1/g;
     $pre_auteur =~ s/\s+//g;
@@ -67,14 +71,18 @@ if (!$auteur) {
     $auteur =~ s/\s[^A-Z]+$//;
 }
 #Sinon on choisi tout de même le champ AUT
-if (!$auteur || length($auteur) > 30) {
+if (!$auteur  || $auteur !~ /^\S+\s+\S+/ || length($auteur) > 30) {
     $auteur = $1
 	if ($string =~ /<AUT>\s*([^<]+\S)\s*</);
 }
 $reponse = $1 
-    if ($string =~ /\<REP\>\s*([^<]+\S)\s*\<\/REP\>/i);
+    if ($string =~ /\<REP\>\s*(.+\S)\s*\<\/REP\>/i);
 $reponse = '<p>'.$reponse.'</p>'
     if ($reponse) ;
+
+if ($source =~ /^13/) {
+    $source = 'q13/'.$source;
+}
 
 $date =~ s/^(\d+)\/(\d+)\/(\d+)$/\3-\2-\1/g;
 print '{"source": "http://questions.assemblee-nationale.fr/'.$source.'", "legislature": "'.$legislature.'", "numero": "'.$id.'", "date": "'.$date.'", "auteur": "'.$auteur.'", "ministere_interroge": "'.$mini.'", "ministere_attributaire": "'.$mina.'", "rubrique":"'.$rubrique.'", "tete_analyse": "'.$tana.'", "analyse": "'.$ana.'", "question": "'. $question .'", "reponse": "'.$reponse.'", "type": "'.$type.'" } '."\n";
