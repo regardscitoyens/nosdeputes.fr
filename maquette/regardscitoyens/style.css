@@ -20,6 +20,7 @@ body {
 	background-color: #fffbee;
 	border: 1px dashed #000000;
 	padding:10px 10px 10px 10px;
+	height: 163px;
 }
 
 .content h1 {
@@ -69,4 +70,5 @@ p{
 	background-color: #fdf5da;
 	font-size:10px;
 	text-align:center;
+	height: 15px;
 }
