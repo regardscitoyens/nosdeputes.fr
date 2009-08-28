@@ -10,15 +10,18 @@
  */
 class commentaireActions extends sfActions
 {
- /**
-  * Executes index action
-  *
-  * @param sfRequest $request A request object
-  */
+  public function executeParlementaire(sfWebRequest $request) 
+  {
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->q_commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
+      ->leftJoin('c.CommentaireParlementaires cp')
+      ->where('cp.parlementaire_id = ?', $this->parlementaire->id)
+      ->orderBy('c.created_at DESC');
+  }
   public function executePost(sfWebRequest $request)
   {
     $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement?id=', 'QuestionEcrite' => '@question?id=');
-
+    $about = array('Intervention' => "A propos d'une intervention du ", 'Amendement' => "A propos d'un amendement déposé le ", 'QuestionEcrite' => "A propos d'une question ecrite du ");
 
     $this->forward404Unless($request->isMethod('post'));
     $this->type = $request->getParameter('type');
@@ -43,8 +46,11 @@ class commentaireActions extends sfActions
       $commentaire->object_type = $this->type;
       $commentaire->object_id = $this->id;
       $commentaire->is_public = 0;
-      $commentaire->save();
+      $commentaire->lien = $redirect_url[$this->type].$this->id;
       $object = doctrine::getTable($this->type)->find($this->id);
+      $commentaire->presentation = $about[$this->type].date('d/m/Y', time($object->date));
+      $commentaire->save();
+
       if (isset($object->parlementaire_id)) {
 	$commentaire->addParlementaire($object->parlementaire_id);
       }else
@@ -56,7 +62,7 @@ class commentaireActions extends sfActions
 
       $this->getUser()->setFlash('notice', 'Votre commentaire a été enregistré');
       $this->getUser()->getAttributeHolder()->remove('commentaire_'.$this->type.'_'.$this->id);
-      return $this->redirect($redirect_url[$this->type].$this->id);
+      return $this->redirect($commentaire->lien);
     }
   }
 }

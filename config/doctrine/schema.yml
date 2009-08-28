@@ -310,10 +310,14 @@ Commentaire:
     rate: integer
     object_type: string(64)
     object_id: integer
+    lien: string(128)
+    presentation: string(512)
   relations:
     Citoyen:
       foreignAlias: Commentaires
     Parlementaires:
+      class: Parlementaire
+      refClass: CommentaireParlementaires
       foreignAlias: Commentaires
   indexes:
     commentable:
@@ -323,6 +327,9 @@ CommentaireParlementaires:
  columns:
    parlementaire_id: integer
    commentaire_id: integer
+ relations:
+   Parlementaire:
+   Commentaire:
  indexes:
    unique:
      fields: [parlementaire_id, commentaire_id]
@@ -336,7 +343,7 @@ RateCommentaire:
     rate: integer
     citoyen_id: integer
   relations:
-    Profile:
+    Citoyen:
       foreignAlias: Rates
     Commentaire:
       foreignAlias: Rates

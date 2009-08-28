@@ -45,6 +45,9 @@ parlementaire:
 parlementaire_interventions:
   url: /parlementaire/:slug/interventions
   param: {module: intervention, action: parlementaire}
+parlementaire_commentaires:
+  url: /parlementaire/:slug/commentaires
+  param: {module: commentaire, action: parlementaire}
 parlementaire_textes:
   url: /parlementaire/:slug/textes
   param: {module: section, action: parlementaire}

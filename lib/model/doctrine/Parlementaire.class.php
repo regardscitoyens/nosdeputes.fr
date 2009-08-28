@@ -546,4 +546,8 @@ class Parlementaire extends BaseParlementaire
     if (isset($hashmap[$nom])) return $numero = $hashmap[$nom];
     else return false;
   }
+
+  public function getLastCommentaires($limit = 5)  {
+    return doctrine::getTable('Commentaire')->createQuery('c')->leftJoin('c.CommentaireParlementaires cp')->where('cp.parlementaire_id = ?', $this->id)->orderBy('c.created_at DESC')->limit($limit)->execute();
+  }
 }

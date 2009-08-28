@@ -151,9 +151,10 @@ foreach(array_keys($top) as $k) {
   
   <div class="bas_depute">
     <div class="bas_depute_g">
+      <!-- 
       <h2>Derniers commentaires</h2>  
       <?php # var_dump( sfConfig::get('sf_escaping_strategy') ); ?>
-      <!-- <div class="boite_citoyen">
+       <div class="boite_citoyen">
         <div class="b_c_h"><div class="b_c_hg"></div><div class="b_c_hd"></div></div>
         <div class="b_c_cont">
           <div class="b_c_photo">
@@ -169,104 +170,9 @@ foreach(array_keys($top) as $k) {
       </div> -->
     </div>
     <div class="bas_depute_d">
-      <h2>Derniers articles des membres pour : <a href="#">#<?php echo $parlementaire->slug; ?></a> <span class="rss"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
-      <div class="boite_extrait_article">
-        <div class="b_e_a_h"><div class="b_e_a_hg"></div><div class="b_e_a_hd"></div></div>
-        <div class="b_e_a_cont">
-          <div class="mini_boite_citoyen">
-            <div class="m_b_c_h"><div class="m_b_c_hg"></div><div class="m_b_c_hd"></div></div>
-            <div class="m_b_c_cont">
-              <div class="m_b_c_photo">
-              
-              </div>
-              <div class="m_b_c_text">
-              <h3>Jacqueline D. <span class="note"><?php echo image_tag('../css/'.$style.'/images/mini_etoile.png', 'alt="***"'); ?></span></h3>
-              <p><a href="#">14 articles</a><br />
-              <a href="#">Voir la fiche perso</a></p>
-              </div>
-            </div>
-            <div class="m_b_c_b"><div class="m_b_c_bg"></div><div class="m_b_c_bd"></div></div>
-          </div>
-          <div class="b_e_a_article">
-            <p>
-            Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit... <span class="lire_suite"><a href="#">Lire la suite</a></span>
-            </p>
-          </div>
-        </div>
-        <div class="b_e_a_b"><div class="b_e_a_bg"></div><div class="b_e_a_bd"></div></div>
-      </div>  
-      
-      <div class="boite_extrait_article">
-        <div class="b_e_a_h"><div class="b_e_a_hg"></div><div class="b_e_a_hd"></div></div>
-        <div class="b_e_a_cont">
-          <div class="mini_boite_citoyen">
-            <div class="m_b_c_h"><div class="m_b_c_hg"></div><div class="m_b_c_hd"></div></div>
-            <div class="m_b_c_cont">
-              <div class="m_b_c_photo">
-              
-              </div>
-              <div class="m_b_c_text">
-              <h3>André F. <span class="note"><?php echo image_tag('../css/'.$style.'/images/mini_etoile.png', 'alt="***"'); ?></span></h3>
-              <p><a href="#">11 articles</a><br />
-              <a href="#">Voir la fiche perso</a></p>
-              </div>
-            </div>
-            <div class="m_b_c_b"><div class="m_b_c_bg"></div><div class="m_b_c_bd"></div></div>
-          </div>
-          <div class="b_e_a_article">
-            <p>
-            Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit... <span class="lire_suite"><a href="#">Lire la suite</a></span>
-            </p>
-          </div>
-        </div>
-        <div class="b_e_a_b"><div class="b_e_a_bg"></div><div class="b_e_a_bd"></div></div>
-      </div>
-      
-      <div class="boite_extrait_article">
-        <div class="b_e_a_h"><div class="b_e_a_hg"></div><div class="b_e_a_hd"></div></div>
-        <div class="b_e_a_cont">
-          <div class="mini_boite_citoyen">
-            <div class="m_b_c_h"><div class="m_b_c_hg"></div><div class="m_b_c_hd"></div></div>
-            <div class="m_b_c_cont">
-              <div class="m_b_c_photo">
-              
-              </div>
-              <div class="m_b_c_text">
-              <h3>Bébert G. <span class="note"><?php echo image_tag('../css/'.$style.'/images/mini_etoile.png', 'alt="***"'); ?></span></h3>
-              <p><a href="#">110 articles</a><br />
-              <a href="#">Voir la fiche perso</a></p>
-              </div>
-            </div>
-            <div class="m_b_c_b"><div class="m_b_c_bg"></div><div class="m_b_c_bd"></div></div>
-          </div>
-          <div class="b_e_a_article">
-            <p>
-            Sed ut perspiciatis, unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit... <span class="lire_suite"><a href="#">Lire la suite</a></span>
-            </p>  
-          </div>  
-        </div>
-        <div class="b_e_a_b"><div class="b_e_a_bg"></div><div class="b_e_a_bd"></div></div>
-      </div>
-      <ul class="liens_articles">
-        <li><strong>Articles pour #<?php echo $parlementaire->slug; ?> : </strong>
-          <ul>
-            <li><a href="#">- Les plus repris</a></li>
-            <li><a href="#">- Top karma</a></li>
-            <li><a href="#">- Voir tous</a></li>
-          </ul>
-        </li>
-      </ul>
-      <ul class="tags">
-        <li><strong>Tags connexes : </strong>
-          <ul>
-            <li><a href="#">#hadopi</a></li>
-            <li><a href="#">#<?php echo $parlementaire->slug; ?></a></li>
-            <li><a href="#">#vienne</a></li>
-            <li><a href="#">#maire</a></li>
-            <li><a href="#">#godillot</a></li>
-          </ul>
-        </li>
-      </ul>
+      <h2>Derniers commentaire concernant <a href="#"><?php echo $parlementaire->slug; ?></a> <span class="rss"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
+      <?php echo include_component('commentaire', 'parlementaire', array('parlementaire' => $parlementaire)); ?>
+      <?php echo link_to('Voir tous les commentaires', '@parlementaire_commentaires?slug='.$parlementaire->slug); ?>
     </div>
     <div class="stopfloat"></div>
   </div>
