@@ -323,9 +323,20 @@ Commentaire:
   relations:
     Profile:
       foreignAlias: Commentaires
+    Parlementaires:
+      foreignAlias: Commentaires
   indexes:
     commentable:
       fields: [object_type, object_id]
+
+CommentaireParlementaires:
+ columns:
+   parlementaire_id: integer
+   commentaire_id: integer
+ indexes:
+   unique:
+     fields: [parlementaire_id, commentaire_id]
+     type: unique
 
 RateCommentaire:
   actAs:

@@ -89,6 +89,9 @@
     </div>
     <div class="corps">
       <div class="contenu" id="contenu">
+<?php if ($sf_user->hasFlash('notice')) :?>
+<p class='flash_notice'><?php echo $sf_user->getFlash('notice'); ?></p>
+<?php endif;?>
         <?php echo $sf_content ?>
       </div>
     </div>

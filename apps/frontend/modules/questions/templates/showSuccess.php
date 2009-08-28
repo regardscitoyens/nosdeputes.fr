@@ -6,8 +6,9 @@
     <div id="question"><?php echo $question->question ?></div>
     <div id="reponse"><?php echo (! empty($question->reponse)) ? $question->reponse : 'Cette question n\'a pas encore de réponse.' ?></div>
  <div class="commentaires">
-    3 commentaires dont celui de zouze :
-    Cette question tue des ornithorynques !
+ <h3>Commentaires</h3>
+<?php echo include_component('commentaire', 'show', array('object' => $question)); ?>
+<?php echo include_component('commentaire', 'form', array('object' => $question)); ?>
   </div>
 </div>
 </div>

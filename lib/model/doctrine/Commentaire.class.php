@@ -12,5 +12,21 @@ class Commentaire extends BaseCommentaire
     $s = preg_replace('/\n/', '</p><p>', $s);
     return $s;
   }
-
+  public function addParlementaire($parlementaire_id) {
+    if (!$this->id) {
+      throw new Exception('no commentaire id');
+    }
+    $cp = new CommentaireParlementaires();
+    $cp->parlementaire_id = $parlementaire_id;
+    $cp->commentaire_id = $this->id;
+    $cp->save();
+  }
+  public function getHumainDateTime() {
+    return date('j F Y à G:i', strtotime($this->created_at));
+  }
+  public function getHumainUser() {
+    if (!$this->citoyen_id)
+      return 'Anonyme';
+    return '';
+  }
 }

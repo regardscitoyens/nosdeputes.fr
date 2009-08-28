@@ -45,8 +45,9 @@
 </div>
 <?php endif; ?>
  <div class="commentaires">
-    3 commentaires dont celui de zouze :
-    Cet amendement tue des gnous !
+ <h3>Commentaires</h3>
+<?php echo include_component('commentaire', 'show', array('object' => $amendement)); ?>
+<?php echo include_component('commentaire', 'form', array('object' => $amendement)); ?>
   </div>
 </div>
 </div>

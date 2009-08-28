@@ -10,7 +10,7 @@ Ce député n'a posé aucune question.
 <table><tr><th>Numéro</th><th>Ministères</th><th>Thèmes</th></tr>
 <?php foreach($questions as $question) : ?>
 <tr>
-<td><?php echo link_to($question->numero, '@parlementaire_question?id=' . $question->id) ?></td>
+<td><?php echo link_to($question->numero, '@question?id=' . $question->id) ?></td>
 <td><?php echo $question->ministere ?></td>
 <td><?php echo $question->themes ?></td>
 </tr>

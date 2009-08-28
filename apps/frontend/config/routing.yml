@@ -130,7 +130,7 @@ top_amendements:
   param: {module: amendement, action: top}
 
 # Affichage d'une question
-parlementaire_question:
+question:
   url: /question/:id
   param: {module: questions, action: show}
 
