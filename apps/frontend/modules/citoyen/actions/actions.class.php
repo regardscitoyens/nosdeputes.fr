@@ -51,12 +51,11 @@ class citoyenActions extends sfActions
           
           $this->getUser()->signIn($this->form->getObject());
           $user = $this->getUser()->getGuardUser();
-					$user->Profile->activation_id = $activation_id;
-					$user->is_active = false;
-					$user->save();
+          $user->Profile->activation_id = $activation_id;
+          $user->is_active = false;
+          $user->save();
           $slug = $user->Profile->slug;
           
-          #$message = link_to("@activation_citoyen?activation_id=".$activation_id);
           $this->getUser()->setFlash('notice', 'Votre compte a ete cree avec succes');
           $this->redirect('@citoyen?slug='.$slug);
         }  
@@ -95,7 +94,7 @@ class citoyenActions extends sfActions
   public function executeActivation(sfWebRequest $request)
   {
     $activation_id = $request->getParameter('activation_id');
-		
+    
     if ($this->getUser()->isAuthenticated()) {
       
       $user = $this->getUser()->getGuardUser();
@@ -106,18 +105,18 @@ class citoyenActions extends sfActions
         
         if ($this->user_a_activer->sf_guard_user_id == $user->id)
         {
-          if ($user->is_active = false)
+          if (!$user->is_active)
           {
             $user->is_active = true;
             $user->addGroupByName('membre');
             $user->save();
             $this->getUser()->setFlash('notice', 'Votre compte a ete active avec succes');
-            $this->redirect('@activation_citoyen');
+            $this->redirect('@citoyen?slug='.$user->Profile->slug);
           }
           else
           {
             $this->getUser()->setFlash('notice', 'Votre compte est deja active');
-            $this->redirect('@activation_citoyen');
+            $this->redirect('@citoyen?slug='.$user->Profile->slug);
           }
         }
         else
@@ -132,14 +131,14 @@ class citoyenActions extends sfActions
         $this->getUser()->setFlash('notice', 'Ce compte n\'existe pas');
       }
     }
-		else
+    else
     {
       $this->redirect('@sf_guard_signin');
-      $this->getUser()->setFlash('notice', 'Veuillez vous identifier');
+      $this->getUser()->setFlash('notice', 'Veuillez vous identifier et cliquer a nouveau sur le lien de confirmation contenu dans l\'email');
     }
   }
   
-  public function executeCirco()
+  public function executeCirco(sfWebRequest $request)
   {
     if ($this->getUser()->isAuthenticated())
     {
@@ -149,6 +148,7 @@ class citoyenActions extends sfActions
       $user->Profile->nom_circo = $nom_circo;
       $user->Profile->num_circo = $num_circo;
       $user->save();
+      $this->redirect('@citoyen?slug='.$user->Profile->slug);
     }
     else
     {
