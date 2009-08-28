@@ -262,21 +262,20 @@ ParlementaireAmendement:
     Amendement:
       foreignAlias: ParlementaireAmendements
 
-sfGuardUserProfile:
+Citoyen:
   actAs:
     Timestampable: ~
     Sluggable:
       fields: [username]
       unique: true
   columns:
-    sf_guard_user_id:
-      type: integer(4)
-      notnull: true
-    username:
+    login:
       type: string(128)
       unique: true
+    pass: string(128)
     email:
       type: string(255)
+      unique: true
       notnull: true
     profession: string(255)
     employe_an:
@@ -293,15 +292,6 @@ sfGuardUserProfile:
     photo:
       type: boolean
       default: 0
-  relations:
-    User:
-      class: sfGuardUser
-      local: sf_guard_user_id
-      foreign: id
-      type: one
-      foreignType: one
-      foreignAlias: Profile
-      onDelete: cascade
 
 VariableGlobale:
   actAs:
@@ -321,7 +311,7 @@ Commentaire:
     object_type: string(64)
     object_id: integer
   relations:
-    Profile:
+    Citoyen:
       foreignAlias: Commentaires
     Parlementaires:
       foreignAlias: Commentaires

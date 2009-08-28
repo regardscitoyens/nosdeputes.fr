@@ -32,13 +32,13 @@
               <div class="b_u_cont">
                 <?php 
                 if($sf_user->isAuthenticated()) { 
-                  if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend.php/sf_guard_user">Backend</a> - '; }
+                  if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend.php">Backend</a> - '; }
                 ?>
-                Connecté en tant que <?php echo $sf_user; ?> - <a href="<?php echo url_for('@sf_guard_signout');?>">Déconnexion</a>
+                Connecté en tant que <?php echo $sf_user; ?> - <a href="#">Déconnexion</a>
                 <?php
                 }
                 else { ?>
-                <a href="<?php echo url_for('@sf_guard_signin');?>">Connexion</a> - <a href="<?php echo url_for('@inscription');?>">S'inscrire</a> - <a href="<?php echo url_for('@sf_guard_password');?>">Mot de passe oublié ?</a>
+                <a href="#">Connexion</a> - <a href="#">S'inscrire</a> - <a href="#">Mot de passe oublié ?</a>
                 <?php
                 }
                 ?>

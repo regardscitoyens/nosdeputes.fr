@@ -1,8 +1,0 @@
-secure:
-  is_secure: off
-
-signin:
-  is_secure: off
-
-signout:
-  is_secure: off
