@@ -20,7 +20,6 @@
       <li title="Propositions de loi (auteur)"><a href="#"><?php echo image_tag('../css/'.$style.'/images/balance.png', 'alt="Propositions de loi (auteur)"'); ?> : 0</a></li>
       <li title="Questions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/question.png', 'alt="Questions"'); ?>   : 50</a></li>
       <li><span class="barre_date"><?php if ($parlementaire->fin_mandat == null) echo "Depuis le"; else echo "Mandat terminé"; ?>&nbsp;: <?php echo $parlementaire->debut_mandat; if ($parlementaire->fin_mandat != null) echo " - ".$parlementaire->fin_mandat; ?></span></li>
-      <li><a href="<?php echo url_for('@add_circo_citoyen?nom_circo='.$parlementaire->nom_circo.'&num_circo='.$parlementaire->num_circo); ?>">Définir comme mon député</a></li>
     </ul>
   </div>
   <div class="stopfloat"></div>
