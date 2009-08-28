@@ -29,13 +29,13 @@ class commentaireActions extends sfActions
     $this->commentaire = Commentaire::cleanCommentaire($request->getParameter('commentaire[commentaire]'));
     $this->unique_form = $request->getParameter('unique_form');
 
-    if ($request->getParameter('ok') && $this->form->isValid()) {
-      if ($this->getUser()->getAttribute('commentaire_'.$this->type.'_'.$this->id)
-	  != $this->unique_form) {
+    if ($this->getUser()->getAttribute('commentaire_'.$this->type.'_'.$this->id)
+	!= $this->unique_form) {
+      $this->getUser()->setFlash('error', 'Vous avez déjà posté ce commentaire...');
+      return $this->redirect($redirect_url[$this->type].$this->id);
+    }
 
-	$this->getUser()->setFlash('notice', 'Vous avez déjà posté ce commentaire...');
-	return $this->redirect($redirect_url[$this->type].$this->id);
-      }
+    if ($request->getParameter('ok') && $this->form->isValid()) {
 
       $commentaire = $this->form->getObject();
       //Pas très propre mais les formulaires ne semblent pas appeler le setCommentaire...

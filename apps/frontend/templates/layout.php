@@ -92,6 +92,9 @@
 <?php if ($sf_user->hasFlash('notice')) :?>
 <p class='flash_notice'><?php echo $sf_user->getFlash('notice'); ?></p>
 <?php endif;?>
+<?php if ($sf_user->hasFlash('error')) :?>
+<p class='flash_error'><?php echo $sf_user->getFlash('error'); ?></p>
+<?php endif;?>
         <?php echo $sf_content ?>
       </div>
     </div>
