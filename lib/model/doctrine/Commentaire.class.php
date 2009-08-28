@@ -5,6 +5,7 @@
  */
 class Commentaire extends BaseCommentaire
 {
+  protected static $mois = array('01'=>'janvier', '02'=>'février', '03'=>'mars', '04'=>'avril', '05'=>'mai', '06'=>'juin', '07'=>'juillet', '08'=>'août', '09'=>'septembre', '10'=>'octobre', '11'=>'novembre', '12'=>'décembre');
   public static function cleanCommentaire($s) {
     $s = preg_replace('/<[^>]+>/', '', $s);
     $s = preg_replace('/(http\S+)/', '<a rel="nofollow" href="\\1">\\1</a>', $s);
@@ -22,7 +23,8 @@ class Commentaire extends BaseCommentaire
     $cp->save();
   }
   public function getHumainDateTime() {
-    return date('j F Y à G:i', strtotime($this->created_at));
+    $time = strtotime($this->created_at);
+    return date('j ',$time).self::$mois[date('m', $time)].date(' Y à G:i', $time);
   }
   public function getHumainUser() {
     if (!$this->citoyen_id)
