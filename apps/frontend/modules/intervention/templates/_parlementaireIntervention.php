@@ -18,7 +18,8 @@ if (isset($highlight)) {
     $p_inter .= excerpt_text($inter, $h, 400/count($highlight));
   }
   foreach ($highlight as $h) {
-    $p_inter = highlight_text($p_inter, $h);
+    if (!preg_match('/'.$h.'/', 'strong class="highlight"/'))
+      $p_inter = highlight_text($p_inter, $h);
   }
 }
 if ($p_inter == '')
