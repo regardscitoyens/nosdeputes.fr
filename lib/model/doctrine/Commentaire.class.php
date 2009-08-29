@@ -7,8 +7,9 @@ class Commentaire extends BaseCommentaire
 {
   protected static $mois = array('01'=>'janvier', '02'=>'février', '03'=>'mars', '04'=>'avril', '05'=>'mai', '06'=>'juin', '07'=>'juillet', '08'=>'août', '09'=>'septembre', '10'=>'octobre', '11'=>'novembre', '12'=>'décembre');
   public static function cleanCommentaire($s) {
-    $s = preg_replace('/<[^>]+>/', '', $s);
-    $s = preg_replace('/(http\S+)/', '<a rel="nofollow" href="\\1">\\1</a>', $s);
+    $s = strip_tags($s, '<strong><i><b><a>');
+    $s = preg_replace('/<a /i', '<a rel="nofollow" ', $s);
+    $s = preg_replace('/(^|\s)(http\S+)/', ' <a rel="nofollow" href="\\2">\\2</a>', $s);
     $s = '<p>'.$s.'</p>'; 
     $s = preg_replace('/\n/', '</p><p>', $s);
     return $s;
@@ -24,7 +25,7 @@ class Commentaire extends BaseCommentaire
   }
   public function getHumainDateTime() {
     $time = strtotime($this->created_at);
-    return date('j ',$time).self::$mois[date('m', $time)].date(' Y à G:i', $time);
+    return date('j/m/Y à G:i', $time);
   }
   public function getHumainUser() {
     if (!$this->citoyen_id)
