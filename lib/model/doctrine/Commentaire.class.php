@@ -8,7 +8,11 @@ class Commentaire extends BaseCommentaire
   protected static $mois = array('01'=>'janvier', '02'=>'février', '03'=>'mars', '04'=>'avril', '05'=>'mai', '06'=>'juin', '07'=>'juillet', '08'=>'août', '09'=>'septembre', '10'=>'octobre', '11'=>'novembre', '12'=>'décembre');
   public static function cleanCommentaire($s) {
     $s = strip_tags($s, '<strong><i><b><a>');
+    //Protection des liens
+    $s = preg_replace('/on[^=\s]+=[^\s>]+/i', '', $s);
+    $s = preg_replace('/=[\'"]?javascript:[^\s\>]+/i', '=""', $s);
     $s = preg_replace('/<a /i', '<a rel="nofollow" ', $s);
+    //Convertion des urls en liens
     $s = preg_replace('/(^|\s)(http\S+)/', ' <a rel="nofollow" href="\\2">\\2</a>', $s);
     $s = '<p>'.$s.'</p>'; 
     $s = preg_replace('/\n/', '</p><p>', $s);
