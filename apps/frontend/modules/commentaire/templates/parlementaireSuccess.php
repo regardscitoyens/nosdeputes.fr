@@ -1,0 +1,1 @@
+<?php echo include_component('commentaire', 'pager', array('query_commentaires' => $q_commentaires));
