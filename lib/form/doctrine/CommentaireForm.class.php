@@ -18,7 +18,10 @@ class CommentaireForm extends BaseCommentaireForm
 	  $this['is_public'],
 	  $this['rate'],
 	  $this['object_type'],
-	  $this['object_id']
+	  $this['lien'],
+	  $this['presentation'],
+	  $this['object_id'],
+	  $this['parlementaires_list']
 	  );
     $this->validatorSchema['commentaire']->setOption('required', true);
   }
