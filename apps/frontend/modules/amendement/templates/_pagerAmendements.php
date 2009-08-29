@@ -6,9 +6,7 @@
     $mots = trim($_GET['search']);
     if ($mots != "") { ?>
 <p><?php echo $nResults; ?> amendement<?php if ($nResults > 1) echo 's'; ?> trouvé<?php if ($nResults > 1) echo 's'; ?> pour la recherche sur <em>"<?php echo $mots; ?>"</em></p>
-<?php } } else { ?>
-<p><?php echo $nResults; ?> résultat<?php if ($nResults > 1) echo 's'; ?> trouvé<?php if ($nResults > 1) echo 's'; ?>.</p>
-<?php } ?>
+<?php } } ?>
 </div>
 <div class="amendements">
 <?php foreach($pager->getResults() as $i) {
