@@ -27,6 +27,15 @@ class amendementActions extends sfActions
        ->groupBy('Intervention.date')
        ->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
      $this->seances = $query->fetchArray();
+     foreach($this->identiques as $a) {
+       if (count($this->seances))
+	 break;
+       $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$this->amendement->texteloi_id, 'loi:amendement='.$a->numero));
+       $query->select('Intervention.id, Intervention.date, Intervention.seance_id, Intervention.md5')
+	 ->groupBy('Intervention.date')
+	 ->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
+       $this->seances = $query->fetchArray();
+     }
   }
 
   public function executeParlementaire(sfWebRequest $request)
@@ -106,7 +115,7 @@ class amendementActions extends sfActions
     $lois = split(',', $request->getParameter('loi'));
     $amdt = $request->getParameter('numero');
     $numeros = array();
-    if (preg_match('/(\d+)\s*à\s*(\d+)/', $amdt, $match)) {
+    if (preg_match('/(\d+)-(\d+)/', $amdt, $match)) {
       for($cpt = 0 ; $cpt < 10 ; $cpt++) {
 	if ($match[1]+$cpt > $match[2])
 	  break;

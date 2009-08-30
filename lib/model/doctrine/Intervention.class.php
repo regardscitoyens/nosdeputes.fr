@@ -124,7 +124,7 @@ class Intervention extends BaseIntervention
 	    $replace = $match[3][$i];
 	    foreach($amends[1] as $amend) {
 	      $am = preg_replace('/à+/', '-', $amend);
-	      $am = preg_replace('/[^\d\-]+/', '',$amend);
+	      $am = preg_replace('/[^\d\-]+/', '',$am);
 	      $link = str_replace('LLL', urlencode($lois), $linko);
 	      $link = str_replace('AAA', urlencode($am), $link);
 	      $replace = preg_replace('/'.$amend.'/', ' <a name="amend_'.$am.'" href="'.$link.'">'.$amend.'</a> ', $replace);
