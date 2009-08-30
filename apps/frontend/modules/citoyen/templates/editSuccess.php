@@ -8,10 +8,6 @@
   echo $form->renderFormTag(url_for('citoyen/edit'));
 ?>
   <table>
-    <tr>
-      <th>Nom d'utilisateur</th>
-      <td><?php #echo $user->Username; ?></td>
-    </tr>
     <?php echo $form; ?>
   </table>
   <input type="submit" value="Valider" />

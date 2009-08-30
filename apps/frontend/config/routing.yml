@@ -143,14 +143,14 @@ question:
   url: /question/:id
   param: {module: questions, action: show}
 
-# SfGuard
-# sf_guard_signin:
-  # url:   /login
-  # param: { module: sfGuardAuth, action: signin }
+# Authentification
+signin:
+  url:   /login
+  param: { module: citoyen, action: signin }
 
-# sf_guard_signout:
-  # url:   /logout
-  # param: { module: sfGuardAuth, action: signout }
+signout:
+  url:   /logout
+  param: { module: citoyen, action: signout }
 
 # sf_guard_password:
   # url:   /request_password

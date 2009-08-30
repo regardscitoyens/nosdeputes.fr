@@ -34,11 +34,11 @@
                 if($sf_user->isAuthenticated()) { 
                   if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend.php">Backend</a> - '; }
                 ?>
-                Connecté en tant que <?php echo $sf_user; ?> - <a href="#">Déconnexion</a>
+                Connecté en tant que <?php echo $sf_user->getAttribute('login'); ?> - <a href="<?php echo url_for('@signout') ?>">Déconnexion</a>
                 <?php
                 }
                 else { ?>
-                <a href="#">Connexion</a> - <a href="#">S'inscrire</a> - <a href="#">Mot de passe oublié ?</a>
+                <a href="<?php echo url_for('@signin') ?>">Connexion</a> - <a href="<?php echo url_for('@inscription') ?>">S'inscrire</a>
                 <?php
                 }
                 ?>

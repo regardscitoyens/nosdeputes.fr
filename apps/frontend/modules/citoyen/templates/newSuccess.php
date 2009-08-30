@@ -10,4 +10,5 @@
  
   <input type="submit" name="register" value="Valider" />
 </form>
+<p>Les champs munis de * sont obligatoires</p>
 </div>

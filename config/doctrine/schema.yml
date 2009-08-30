@@ -267,18 +267,18 @@ Citoyen:
   actAs:
     Timestampable: ~
     Sluggable:
-      fields: [username]
+      fields: [login]
       unique: true
   columns:
     login:
       type: string(128)
       unique: true
-    pass: string(128)
+    pass: string(40)
     email:
       type: string(255)
       unique: true
       notnull: true
-    profession: string(255)
+    activite: string(255)
     employe_an:
       type: boolean
       default: 0
@@ -289,10 +289,23 @@ Citoyen:
       values: [null, 'H', 'F']
     nom_circo: string(255)
     num_circo: integer
-    activation_id: string(32)
     photo:
       type: boolean
       default: 0
+    activation_id: string(32)
+    is_active:
+      type: boolean
+      default: 0
+    role: 
+      type: enum
+      values: ['membre', 'moderateur', 'admin']
+      default: membre
+    last_login: timestamp
+  indexes:
+    is_active:
+      fields: [is_active]
+    role:
+      fields: [role]
 
 VariableGlobale:
   actAs:

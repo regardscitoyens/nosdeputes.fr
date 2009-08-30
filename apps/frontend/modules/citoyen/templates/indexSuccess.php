@@ -6,16 +6,16 @@
 <table>
   <thead>
     <tr>
-      <th>Login</th>
-      <th>Profession</th>
+      <th>Nom d'utilisateur</th>
+      <th>Activite</th>
       <th>Circonscription</th>
     </tr>
   </thead>
   <tbody>
     <?php foreach ($citoyens_list as $citoyen): ?>
     <tr>
-      <td><a href="<?php echo url_for('@citoyen?slug='.$citoyen->getSlug()) ?>"><?php echo $citoyen->getUsername() ?></a></td>
-      <td><?php echo $citoyen->getProfession() ?></td>
+      <td><a href="<?php echo url_for('@citoyen?slug='.$citoyen->getSlug()) ?>"><?php echo $citoyen->getLogin() ?></a></td>
+      <td><?php echo $citoyen->getActivite() ?></td>
       <td><?php echo $citoyen->getNomCirco().' '.$citoyen->getNumCirco() ?></td>
     </tr>
     <?php endforeach; ?>
