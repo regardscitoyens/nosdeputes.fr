@@ -29,7 +29,7 @@ class commentaireActions extends sfActions
 
     $this->form = new CommentaireForm();
     $this->form->bind($request->getParameter('commentaire'));
-    $this->commentaire = Commentaire::cleanCommentaire($this->form->getValue('commentaire'));
+    $this->commentaire = myTools::clearHtml($this->form->getValue('commentaire'));
     $this->unique_form = $request->getParameter('unique_form');
 
     if ($this->getUser()->getAttribute('commentaire_'.$this->type.'_'.$this->id)

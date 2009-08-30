@@ -4,8 +4,8 @@
  */
 class PersonnaliteTable extends Doctrine_Table
 {
-  static $changed = 0;
-  static $all = null;
+  protected $changed = 0;
+  protected $all = null;
   public function similarTo($str, $sexe = null)
   {
     if (preg_match('/^\s*$/', $str))
@@ -37,7 +37,7 @@ class PersonnaliteTable extends Doctrine_Table
       if ($sexe && $sexe != $parl['sexe'])
         continue;
       $res = similar_text(preg_replace('/[^a-z]+/i', ' ', $parl[$champ]), preg_replace('/[^a-z]+/i', ' ', $str), $pc);
-      if ($res > 0 && $pc >= $closest_res && $res >= $bestres) {
+      if ($res > 0 && $pc >= $closest_res && $res >= $best_res) {
         $closest = $parl;
         $best_res = max($res, $best_res);
         $closest_res = max($pc, $closest_res);

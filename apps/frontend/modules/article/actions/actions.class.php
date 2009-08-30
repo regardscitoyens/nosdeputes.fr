@@ -18,6 +18,8 @@ class articleActions extends sfActions
     $this->form->bind($farticle);
     $this->form->setParent($request->getParameter('hasParent', false));
     $this->form->setObject($request->getParameter('hasObject', false));
+    $this->form->setTitre($request->getParameter('hasTitre', true));
+    $this->article = myTools::clearHtml($this->form->getValue('corps'));
     if (!$request->isMethod('post'))
 	return ;
     if (!$request->getParameter('ok'))

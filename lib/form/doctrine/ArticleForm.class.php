@@ -15,11 +15,19 @@ class ArticleForm extends BaseArticleForm
 	  $this['updated_at'],
 	  $this['version'],
 	  $this['slug'],
-	  $this['object_id'],
 	  $this['status']
 	  ) ;
     $this->widgetSchema['categorie'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['citoyen_id'] = new sfWidgetFormInputHidden();
+  }
+
+  public function setTitre($b)
+  {
+    if (!$b) {
+      unset($this['titre']);
+      return ;
+    }
+    $this->validatorSchema['titre'] = new sfValidatorRegex(array('pattern' => '/^[^<]+$/', 'required'=>true), array('invalid' => 'tags html non authorisés', 'required' => 'titre obligatoire'));
   }
 
   public function setObject($b) {
@@ -27,6 +35,7 @@ class ArticleForm extends BaseArticleForm
       unset($this['object_id']);
       return;
     }
+
     $this->widgetSchema['object_id'] = new sfWidgetFormDoctrineChoice(array('model' => $this->getValue('categorie')));
     $this->widgetSchema['object_id']->setOption('label', $this->getValue('categorie'));
     $query = doctrine::getTable($this->getValue('categorie'))->createQuery('c')->where('c.nom IS NOT NULL')->orderBy('nom');
