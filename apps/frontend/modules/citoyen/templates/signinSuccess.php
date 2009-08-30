@@ -9,7 +9,7 @@
     <?php echo $form; ?>
   </table>
   <input type="submit" value="Ok" />
-	<a href="#">Mot de passe oublié ?</a>
+  <a href="#">Mot de passe oublié ?</a>
 </p>
 </form>
 </div>

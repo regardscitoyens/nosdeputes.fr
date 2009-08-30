@@ -26,7 +26,7 @@ class InscriptionForm extends CitoyenForm
     $this->validatorSchema['login']->setOption('required', true);
     
     // verif mot de passe avec confirmation
-		$this->widgetSchema['pass'] = new sfWidgetFormInputPassword();
+    $this->widgetSchema['pass'] = new sfWidgetFormInputPassword();
     $this->validatorSchema['pass']->setOption('required', true);
     /* $this->widgetSchema['pass_confirmation'] = new sfWidgetFormInputPassword();
     $this->validatorSchema['pass_confirmation'] = clone $this->validatorSchema['pass'];
@@ -51,7 +51,7 @@ class InscriptionForm extends CitoyenForm
       'activite' => 'Activite',
       'naissance' => 'Date de naissance'
     ));
-		
+    
     $this->widgetSchema->setNameFormat('citoyen[%s]');
   }
 }

@@ -39,16 +39,16 @@ class citoyenActions extends sfActions
       if ($request->isMethod('post'))
       {
         $values = $request->getParameter('citoyen');
-				$values['pass'] = sha1($values['pass']);
-				$email = $values['email'];
-				
-				$this->form->bind($values);
+        $values['pass'] = sha1($values['pass']);
+        $email = $values['email'];
+        
+        $this->form->bind($values);
         
         if ($this->form->isValid())
         {
           $this->form->save();
-					
-					$this->Citoyen = Doctrine::getTable('Citoyen')->findOneByEmail($email);
+          
+          $this->Citoyen = Doctrine::getTable('Citoyen')->findOneByEmail($email);
           $this->connexion($this->form->getObject());
           $this->Citoyen->activation_id = md5(time()*rand());
           $this->Citoyen->save();
@@ -69,10 +69,10 @@ class citoyenActions extends sfActions
   public function executeEdit(sfWebRequest $request)
   {
     if ($this->getUser()->isAuthenticated()) {
-		
-			$user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
     
-			$this->form = new EditUserForm($user);
+      $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
+    
+      $this->form = new EditUserForm($user);
       
       if ($request->isMethod('put'))
       {
@@ -154,36 +154,36 @@ class citoyenActions extends sfActions
     }
   }
   
-	public function executeSignin(sfWebRequest $request)
+  public function executeSignin(sfWebRequest $request)
   {
-		if (!$this->getUser()->isAuthenticated()) {
-		
-			$this->form = new SigninForm();
-			
-			if ($request->isMethod('post'))
-			{
-				$this->form->bind($request->getParameter('signin'));
-				
-				if ($this->form->isValid())
-				{
-					$user = Doctrine::getTable('Citoyen')->findOneByLogin($this->form->getValue('login'));
-					if (sha1($this->form->getValue('pass')) == $user->pass)
-					{
-						$this->connexion($user);
-			      $this->redirect('@homepage');
-					}
-				}
-			}
-		}
-		else
-		{
-			$slug = $this->getUser()->getAttribute('slug');
-			$this->getUser()->setFlash('notice', 'Vous etes deja connecte');
-			$this->redirect('@citoyen?slug='.$slug);
-		}
-	}
-	
-	public function connexion($user)
+    if (!$this->getUser()->isAuthenticated()) {
+    
+      $this->form = new SigninForm();
+      
+      if ($request->isMethod('post'))
+      {
+        $this->form->bind($request->getParameter('signin'));
+        
+        if ($this->form->isValid())
+        {
+          $user = Doctrine::getTable('Citoyen')->findOneByLogin($this->form->getValue('login'));
+          if (sha1($this->form->getValue('pass')) == $user->pass)
+          {
+            $this->connexion($user);
+            $this->redirect('@homepage');
+          }
+        }
+      }
+    }
+    else
+    {
+      $slug = $this->getUser()->getAttribute('slug');
+      $this->getUser()->setFlash('notice', 'Vous etes deja connecte');
+      $this->redirect('@citoyen?slug='.$slug);
+    }
+  }
+  
+  public function connexion($user)
   {
     // signin
     $this->getUser()->setAttribute('user_id', $user->getId());
@@ -198,19 +198,19 @@ class citoyenActions extends sfActions
     $user->save();
 
     // remember?
-		
-		
+    
+    
   }
-	
-	public function executeSignout()
+  
+  public function executeSignout()
   {
     $this->getUser()->getAttributeHolder()->clear();
     $this->getUser()->clearCredentials();
     $this->getUser()->setAuthenticated(false);
-		$this->getUser()->setFlash('notice', 'Vous etes deconnecte');
-		$this->redirect('@homepage');
+    $this->getUser()->setFlash('notice', 'Vous etes deconnecte');
+    $this->redirect('@homepage');
   }
-	
+  
   public function executeDelete()
   {
     if ($this->getUser()->isAuthenticated())
