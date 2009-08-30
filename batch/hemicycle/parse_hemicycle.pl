@@ -303,7 +303,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/<<//g;
 
 #    print "$titre1 > $titre2 : $line\n" ; next;
-
+    $line =~ s/\|\///;
     if ($line =~ /\<[p]/i) {
 	$last_href = '';
 	if ($line =~ /href=["']([^"']+)["']/) {
@@ -316,7 +316,7 @@ foreach $line (split /\n/, $string)
 	#si italique ou tout gras => commentaire
 	if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/.*\/\s$/) {
 	    checkout() if ($intervenant);
-	}elsif ($line =~ s/^\s*\|\s*(M[^\|]+)[\|]// ) {
+	}elsif ($line =~ s/^\s*\|\s*(M[^\|\/]+)[\|\/]// ) {
 	    checkout();
 	    $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
