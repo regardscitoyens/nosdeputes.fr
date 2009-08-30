@@ -7,6 +7,9 @@ require_once "myTools.class.php";
  */
 class Organisme extends BaseOrganisme
 {
+  public function __tostring() {
+    return substr($this->nom, 0, 100);
+  }
   public function getSmallNomGroupe() {
     $hashmap = array(
         "Union pour un mouvement populaire" => "UMP",

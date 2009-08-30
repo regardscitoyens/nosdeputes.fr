@@ -23,6 +23,6 @@ class CommentaireForm extends BaseCommentaireForm
 	  $this['object_id'],
 	  $this['parlementaires_list']
 	  );
-    $this->validatorSchema['commentaire']->setOption('required', true);
+    $this->validatorSchema['commentaire'] = new sfValidatorString(array('required' => true, 'min_length'=>10), array('required' => 'Ce champ est obligatoire', 'min_length' => 'Le commentaire trop court, il doit faire au moins %min_length% caractères'));
   }
 }

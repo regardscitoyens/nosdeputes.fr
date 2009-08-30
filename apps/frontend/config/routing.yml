@@ -7,6 +7,12 @@ commentaire_post:
   url: /commentaire/:type/:id
   param: {module: commentaire, action: post}
 
+doc_faq_new:
+  url: /faq/new
+  param: {module: article, action: new, categorie: Faq, hasParent: true}
+doc_organisme_new:
+  url: /organisme/new
+  param: {module: article, action: new, categorie: Organisme, hasObject: true}
 
 # Liste de tous les parlementaires ou par catégorie
 list_parlementaires:

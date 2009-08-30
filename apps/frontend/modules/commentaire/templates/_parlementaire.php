@@ -1,4 +1,5 @@
-<?php 
+<?php use_helper('Text');
+
 if (!count($commentaires)) : ?>
 <p>Le travail de ce député n'a pas encore inspiré de commentaire aux utilisateurs.</p>
 <?php else : 
@@ -23,7 +24,7 @@ if (!count($commentaires)) : ?>
           </div>
           <div class="b_e_a_article">
     <p><a href="<?php echo url_for($c->lien); ?>"><?php echo $c->presentation; ?></a></p>
-    <p><?php echo $c->commentaire; ?>
+    <p><?php echo truncate_text($c->commentaire, 150); ?>
 <span class="lire_suite"><a href="<?php echo url_for($c->lien); ?>">Lire la suite</a></span>
             </p>
           </div>

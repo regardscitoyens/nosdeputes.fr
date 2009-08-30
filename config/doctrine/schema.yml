@@ -58,6 +58,7 @@ Organisme:
     nom: 
       type: string(255)
       unique: true
+      notnull: true
     type:
       type: enum
       values: ['parlementaire', 'groupe', 'extra']
@@ -347,3 +348,38 @@ RateCommentaire:
       foreignAlias: Rates
     Commentaire:
       foreignAlias: Rates
+
+Article:
+  actAs:
+    Timestampable:
+    Versionable:
+    Sluggable:
+      fields: [titre]
+  columns:
+    titre: string(254)
+    corps: string
+    categorie: string(128)
+    citoyen_id: integer
+    article_id: integer
+    status:
+      type: enum
+      values: ['public', 'brouillon', 'offline']
+      default: 'brouillon'
+    object_id: integer
+  relations:
+    Citoyen:
+      foreignAlias: Articles
+    Article:
+      foreignAlias: SousArticles
+  indexes:
+    icategories:
+      fields: [categorie]
+    iobject:
+      fields: [categorie, object_id]
+      unique: true
+    ititre:
+      fields: [categorie, titre]
+    ititrecitoyen:
+      fields: [categorie, titre, citoyen_id]
+    iarticle:
+      fields: [article_id]
