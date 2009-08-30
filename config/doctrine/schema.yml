@@ -58,7 +58,7 @@ Organisme:
     nom: 
       type: string(255)
       unique: true
-      notnull: true
+#      notnull: true
     type:
       type: enum
       values: ['parlementaire', 'groupe', 'extra']
