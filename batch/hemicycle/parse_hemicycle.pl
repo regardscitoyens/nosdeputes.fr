@@ -222,6 +222,8 @@ $majIntervenant = 0;
 $debut = 0;
 
 $string =~ s/<br>\n*//gi;
+$string =~ s/<\/?orateur>\n*//gi;
+$string =~ s/\| et \|/ et /gi;
 
 #print "$string\n"; exit;
 
