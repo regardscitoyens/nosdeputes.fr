@@ -23,7 +23,7 @@ class topDeputesTask extends sfBaseTask
       asort($ordered);
       
     $cpt = 0;
-    $last_value = 0;
+    $last_value = -999;
     $last_cpt = 0;
     foreach(array_keys($ordered) as $id) {
       $cpt++;
@@ -31,7 +31,7 @@ class topDeputesTask extends sfBaseTask
 	$last_cpt = $cpt;
       $this->deputes[$id][$type]['rank'] = $last_cpt;
       $this->deputes[$id][$type]['max_rank'] = $tot;
-      $last_value = $this->deputes[$id][$type]['rank'];
+      $last_value = $this->deputes[$id][$type]['value'];
     }
   }
 
