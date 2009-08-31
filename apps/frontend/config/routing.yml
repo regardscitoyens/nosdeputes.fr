@@ -158,9 +158,9 @@ signout:
   url:   /logout
   param: { module: citoyen, action: signout }
 
-# sf_guard_password:
+# password:
   # url:   /request_password
-  # param: { module: sfGuardAuth, action: password }
+  # param: { module: citoyen, action: password }
 
 # Gestion des utilisateurs
 inscription:
@@ -181,7 +181,7 @@ edit_citoyen:
 
 add_circo_citoyen:
   url: /profil/circo/:nom_circo/:num_circo
-  param: {module: citoyen, action: circo}
+  param: {module: citoyen, action: addcirco}
 
 delete_citoyen:
   url: /profil/suppression

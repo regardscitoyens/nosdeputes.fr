@@ -3,7 +3,6 @@ generator:
   param:
     model_class: Citoyen
     config:
-      form:  
-        class: EditUserForm
+      edit:
         display:
-          "NONE": [login, pass]
+          NONE: [login, Pass]

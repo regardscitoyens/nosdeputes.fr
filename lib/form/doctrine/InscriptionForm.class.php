@@ -40,7 +40,7 @@ class InscriptionForm extends CitoyenForm
     
     $annees = range(1920, date('Y')); // array des dates depuis 1920
     $liste_annees = array_combine($annees, $annees); // array clés et valeurs des dates
-    $this->widgetSchema['naissance'] = new sfWidgetFormDate(array('years' => $liste_annees));
+    $this->widgetSchema['naissance'] = new sfWidgetFormDate(array('format' => '%day%/%month%/%year%', 'years' => $liste_annees));
     
     // Les labels
     $this->widgetSchema->setLabels(array(
@@ -48,7 +48,7 @@ class InscriptionForm extends CitoyenForm
       'pass' => 'Mot de passe *',
      # 'pass_confirmation' => 'Répétez le mot de passe *',
       'email' => 'Email *',
-      'activite' => 'Activite',
+      'activite' => 'Activité',
       'naissance' => 'Date de naissance'
     ));
     

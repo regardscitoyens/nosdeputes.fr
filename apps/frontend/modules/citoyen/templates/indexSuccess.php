@@ -7,7 +7,7 @@
   <thead>
     <tr>
       <th>Nom d'utilisateur</th>
-      <th>Activite</th>
+      <th>Activité</th>
       <th>Circonscription</th>
     </tr>
   </thead>

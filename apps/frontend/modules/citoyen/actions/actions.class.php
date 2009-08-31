@@ -9,7 +9,7 @@
  * @version    SVN: $Id: actions.class.php 12479 2008-10-31 10:54:40Z fabien $
  */
 class citoyenActions extends sfActions
-{
+{  
  /**
   * Executes index action
   *
@@ -52,7 +52,7 @@ class citoyenActions extends sfActions
           $this->connexion($this->form->getObject());
           $this->Citoyen->activation_id = md5(time()*rand());
           $this->Citoyen->save();
-          $this->getUser()->setFlash('notice', 'Votre compte a ete cree avec succes');
+          $this->getUser()->setFlash('notice', 'Votre compte a été crée avec succès');
           $slug = $this->Citoyen->slug;
           $this->redirect('@citoyen?slug='.$slug);
         }  
@@ -61,7 +61,7 @@ class citoyenActions extends sfActions
     else
     {
       $slug = $this->getUser()->getAttribute('slug');
-      $this->getUser()->setFlash('notice', 'Vous etes deja inscrit');
+      $this->getUser()->setFlash('notice', 'Vous êtes déja inscrit');
       $this->redirect('@citoyen?slug='.$slug);
     }
   }
@@ -81,7 +81,7 @@ class citoyenActions extends sfActions
         if ($this->form->isValid())
         {
           $this->form->save();
-          $this->getUser()->setFlash('notice', 'Votre modification a reussi');
+          $this->getUser()->setFlash('notice', 'Votre modification a réussi');
           $this->redirect('@citoyen?slug='.$user->slug);
         }
       }
@@ -93,64 +93,61 @@ class citoyenActions extends sfActions
   {
     $activation_id = $request->getParameter('activation_id');
     
-    if ($this->getUser()->isAuthenticated()) {
-      
-      $user = $this->getUser()->getGuardUser();
-      
+    if ($this->getUser()->isAuthenticated()) 
+    {
       if (Doctrine::getTable('Citoyen')->findOneByActivationId($activation_id))
       {
-        $this->user_a_activer = Doctrine::getTable('Citoyen')->findOneByActivationId($activation_id);
+        $user = Doctrine::getTable('Citoyen')->findOneByActivationId($activation_id);
         
-        if ($this->user_a_activer->sf_guard_user_id == $user->id)
+        if ($user->id == $this->getUser()->getAttribute('user_id'))
         {
           if (!$user->is_active)
           {
             $user->is_active = true;
-            $user->addGroupByName('membre');
             $user->save();
-            $this->getUser()->setFlash('notice', 'Votre compte a ete active avec succes');
-            $this->redirect('@citoyen?slug='.$user->Profile->slug);
+            $this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès');
+            $this->redirect('@citoyen?slug='.$user->slug);
           }
           else
           {
-            $this->getUser()->setFlash('notice', 'Votre compte est deja active');
-            $this->redirect('@citoyen?slug='.$user->Profile->slug);
+            $this->getUser()->setFlash('error', 'Votre compte est deja activé');
+            $this->redirect('@citoyen?slug='.$user->slug);
           }
         }
         else
         {
-          $this->getUser()->setFlash('notice', 'Ce compte n\'est pas le votre');
+          $this->getUser()->setFlash('error', 'Ce compte n\'est pas le votre');
           $this->redirect('@list_citoyens');
         }
       }
       else
       {
         $this->redirect('@list_citoyens');
-        $this->getUser()->setFlash('notice', 'Ce compte n\'existe pas');
+        $this->getUser()->setFlash('error', 'Ce compte n\'existe pas');
       }
     }
     else
     {
-      $this->redirect('@sf_guard_signin');
-      $this->getUser()->setFlash('notice', 'Veuillez vous identifier et cliquer a nouveau sur le lien de confirmation contenu dans l\'email');
+      $this->redirect('@signin');
+      $this->getUser()->setFlash('error', 'Veuillez vous identifier et cliquer a nouveau sur le lien de confirmation contenu dans l\'email');
     }
   }
   
-  public function executeCirco(sfWebRequest $request)
+  public function executeAddcirco(sfWebRequest $request)
   {
     if ($this->getUser()->isAuthenticated())
     {
       $nom_circo = $request->getParameter('nom_circo');
       $num_circo = $request->getParameter('num_circo');
-      $user = $this->getUser()->getGuardUser();
-      $user->Profile->nom_circo = $nom_circo;
-      $user->Profile->num_circo = $num_circo;
+      $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
+      $user->nom_circo = $nom_circo;
+      $user->num_circo = $num_circo;
       $user->save();
-      $this->redirect('@citoyen?slug='.$user->Profile->slug);
+      $this->redirect('@citoyen?slug='.$user->slug);
     }
     else
     {
-      $this->redirect('@sf_guard_signin');
+      $this->redirect('@signin');
     }
   }
   
@@ -166,11 +163,24 @@ class citoyenActions extends sfActions
         
         if ($this->form->isValid())
         {
-          $user = Doctrine::getTable('Citoyen')->findOneByLogin($this->form->getValue('login'));
-          if (sha1($this->form->getValue('pass')) == $user->pass)
+          if (Doctrine::getTable('Citoyen')->findOneByLogin($this->form->getValue('login')))
           {
-            $this->connexion($user);
-            $this->redirect('@homepage');
+            $user = Doctrine::getTable('Citoyen')->findOneByLogin($this->form->getValue('login'));
+            if (sha1($this->form->getValue('pass')) == $user->pass)
+            {
+              $this->connexion($user);
+              $this->redirect('@citoyen?slug='.$user->slug);
+            }
+            else
+            {
+              sleep(3);
+              $this->getUser()->setFlash('error', 'Le nom d\'utilisateur et le mot de passe ne correspondent pas.');
+            }
+          }
+          else
+          {
+            sleep(3);
+            $this->getUser()->setFlash('error', 'Ce nom d\'utilisateur n\'existe pas.');
           }
         }
       }
@@ -178,7 +188,7 @@ class citoyenActions extends sfActions
     else
     {
       $slug = $this->getUser()->getAttribute('slug');
-      $this->getUser()->setFlash('notice', 'Vous etes deja connecte');
+      $this->getUser()->setFlash('notice', 'Vous êtes déja connecté');
       $this->redirect('@citoyen?slug='.$slug);
     }
   }
@@ -204,25 +214,32 @@ class citoyenActions extends sfActions
   
   public function executeSignout()
   {
+    $this->deconnexion();
+    $this->getUser()->setFlash('notice', 'Vous avez été déconnecté avec succès');
+    $this->redirect('@homepage');
+  }
+  
+  protected function deconnexion()
+  {
     $this->getUser()->getAttributeHolder()->clear();
     $this->getUser()->clearCredentials();
     $this->getUser()->setAuthenticated(false);
-    $this->getUser()->setFlash('notice', 'Vous etes deconnecte');
-    $this->redirect('@homepage');
   }
   
   public function executeDelete()
   {
     if ($this->getUser()->isAuthenticated())
     {
-      $user = $this->getUser()->getGuardUser();
+      $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
       $user->delete();
-      $this->getUser()->signOut();
-      $this->getUser()->setFlash('notice', 'Votre compte a ete supprime avec succes');
+      $this->deconnexion();
+      $this->getUser()->setFlash('notice', 'Votre compte a ete supprimé avec succès');
+      $this->redirect('@homepage');
     }
     else
     {
-      $this->redirect('@sf_guard_signin');
+      $this->getUser()->setFlash('error', 'Vous devez être connecté pour exécuter cette action');
+      $this->redirect('@signin');
     }
   }
 }

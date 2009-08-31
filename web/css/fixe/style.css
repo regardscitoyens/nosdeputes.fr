@@ -13,6 +13,20 @@ body {
   background-color: #fff;
   border : 1px solid #BFBFBF;
 }
+.flash_notice, .flash_error {
+  font-size: 1.1em;
+  height: auto;
+  padding: 15px;
+  margin-top: 0;
+  padding-left: 55px;
+  border : 1px solid #BFBFBF;
+}
+.flash_notice {
+  background: #fff url("images/flash_notice.png") no-repeat 15px center;
+}
+.flash_error {
+  background: #fff url("images/flash_error.png") no-repeat 15px center;
+}
 #navigation {
   display: none;
 }
