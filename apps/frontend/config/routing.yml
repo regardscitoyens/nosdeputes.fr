@@ -6,13 +6,21 @@ homepage:
 commentaire_post:
   url: /commentaire/:type/:id
   param: {module: commentaire, action: post}
-
-doc_faq_new:
+faq_new:
   url: /faq/new
-  param: {module: article, action: new, categorie: Faq, hasParent: true}
+  param: {module: article, action: create, categorie: Faq, hasParent: true}
+faq_edit:
+  url: /faq/edit/:article_id
+  param: {module: article, action: update, categorie: Faq, hasParent: true}
+article_delete:
+  url: /article/delete/:article_id
+  param: {module: article, action: delete}
+faq:
+  url: /faq
+  param: {module: article, action: list, categorie: Faq, titre: "Questions fréquemments posées"}
 doc_organisme_new:
   url: /organisme/new
-  param: {module: article, action: new, categorie: Organisme, hasObject: true}
+  param: {module: article, action: create, categorie: Organisme, hasObject: true}
 
 # Liste de tous les parlementaires ou par catégorie
 list_parlementaires:

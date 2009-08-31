@@ -10,21 +10,60 @@
  */
 class articleActions extends sfActions
 {
-  public function executeNew(sfWebRequest $request)
-  {
-    $this->form = new ArticleForm();
-    $farticle = $request->getParameter('article');
-    $farticle['categorie'] = $request->getParameter('categorie');
-    $this->form->bind($farticle);
+  public function processArticle(sfWebRequest $request) {
+    if ($request->isMethod('post')) {
+      $farticle = $request->getParameter('article');
+      $farticle['categorie'] = $request->getParameter('categorie');
+      $farticle['corps'] = myTools::clearHtml($farticle['user_corps']);
+      $this->form->bind($farticle);
+    }
     $this->form->setParent($request->getParameter('hasParent', false));
     $this->form->setObject($request->getParameter('hasObject', false));
     $this->form->setTitre($request->getParameter('hasTitre', true));
-    $this->article = myTools::clearHtml($this->form->getValue('corps'));
+    $this->article = $this->form->getValue('corps');
     if (!$request->isMethod('post'))
 	return ;
     if (!$request->getParameter('ok'))
       return ;
     $this->form->save();
-    return $this->redirect('faq_new');
+    return $this->redirect('faq');
+  }
+  public function executeUpdate(sfWebRequest $request)
+  {
+    $article = Doctrine::getTable('Article')->find($request->getParameter('article_id'));
+    $this->form = new ArticleForm($article);
+    $this->processArticle($request);
+  }
+  public function executeCreate(sfWebRequest $request)
+  {
+    $this->form = new ArticleForm();
+    $this->setTemplate('update');
+    $this->processArticle($request);
+  }
+  public function executeDelete(sfWebRequest $request) 
+  {
+    $this->article = Doctrine::getTable('Article')->find($request->getParameter('article_id'));
+    $this->forward404Unless($this->article);
+
+    if (!$request->isMethod('post'))
+      return;
+    if (!$request->getParameter('confirm'))
+      return;
+    $this->article->delete();
+    return $this->redirect('faq');
+  }
+  public function executeList(sfWebRequest $request)
+  {
+    $this->articles = Doctrine::getTable('Article')->createQuery('a')
+      ->where('categorie = ?', $request->getParameter('categorie'))
+      ->andWhere('article_id IS NULL')->execute();
+
+    $this->sousarticles = array();
+    foreach($this->articles as $a) {
+      $this->sousarticles[$a->id] = Doctrine::getTable('Article')->createQuery('a')
+	->where('categorie = ?', $request->getParameter('categorie'))
+	->andWhere('article_id = ?', $a->id)->execute();
+    }
+    $this->titre = $request->getParameter('titre');
   }
 }

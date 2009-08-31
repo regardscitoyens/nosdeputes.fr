@@ -70,11 +70,6 @@ a:link {
   text-decoration: none;
   background-color: transparent;
 }
-a:hover {
-  color: #000;
-  text-decoration: underline;
-  background-color: transparent;
-}
 a:active {
   color: #000000;
   text-decoration: none;
@@ -83,6 +78,11 @@ a:active {
 a:visited {
   color: #6F6F6F;
   text-decoration: none;
+  background-color: transparent;
+}
+a:hover {
+  color: #000;
+  text-decoration: underline;
   background-color: transparent;
 }
 img {

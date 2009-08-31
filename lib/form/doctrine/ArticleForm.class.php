@@ -19,6 +19,8 @@ class ArticleForm extends BaseArticleForm
 	  ) ;
     $this->widgetSchema['categorie'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['citoyen_id'] = new sfWidgetFormInputHidden();
+    $this->widgetSchema['corps'] = new sfWidgetFormInputHidden();
+    $this->widgetSchema['user_corps']->setOption('label', 'Corps');
   }
 
   public function setTitre($b)
@@ -35,9 +37,12 @@ class ArticleForm extends BaseArticleForm
       unset($this['object_id']);
       return;
     }
-
+    $categorie = $this->getValue('categorie');
+    if (!$categorie) {
+      $categorie = $this->object->categorie;
+    }
     $this->widgetSchema['object_id'] = new sfWidgetFormDoctrineChoice(array('model' => $this->getValue('categorie')));
-    $this->widgetSchema['object_id']->setOption('label', $this->getValue('categorie'));
+    $this->widgetSchema['object_id']->setOption('label', $categorie);
     $query = doctrine::getTable($this->getValue('categorie'))->createQuery('c')->where('c.nom IS NOT NULL')->orderBy('nom');
     $this->widgetSchema['object_id']->setOption('query', $query);
     
@@ -48,8 +53,14 @@ class ArticleForm extends BaseArticleForm
       unset($this['article_id']);
       return ;
     }
-
-    $query = doctrine::getTable('Article')->createQuery('a')->where('a.article_id IS NULL')->andWhere('a.categorie = ?', $this->getValue('categorie'));
+    $categorie = $this->getValue('categorie');
+    if (!$categorie) {
+      $categorie = $this->object->categorie;
+    }
+    $query = doctrine::getTable('Article')->createQuery('a')->where('a.article_id IS NULL')->andWhere('a.categorie = ?', $categorie);
+    if ($this->object) {
+      $query->andWhere('a.id != ?', $this->object->id);
+    }
     $this->widgetSchema['article_id']->setOption('query', $query);
     $this->widgetSchema['article_id']->setOption('label', 'Article père');
   }
