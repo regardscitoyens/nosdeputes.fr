@@ -65,4 +65,11 @@ class commentaireActions extends sfActions
       return $this->redirect($commentaire->lien);
     }
   }
+  public function executeRss(sfWebRequest $request) 
+  {
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->parlementaire);
+    $this->commentaires = Doctrine::getTable('Commentaire')->createQuery('c')->leftJoin('c.CommentaireParlementaires cp')->where('cp.parlementaire_id = ?', $this->parlementaire->id)->orderBy('created_at DESC')->limit(10)->execute();
+    $this->feed = new sfRssFeed();
+  }
 }

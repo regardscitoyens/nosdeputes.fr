@@ -5,6 +5,14 @@
  */
 class Commentaire extends BaseCommentaire
 {
+  public function __toString() {
+    $str = substr($this->commentaire, 0, 250);
+    if (strlen($str) == 250) {
+      $str .= '...';
+    }
+    return $str;
+  }
+
   protected static $mois = array('01'=>'janvier', '02'=>'février', '03'=>'mars', '04'=>'avril', '05'=>'mai', '06'=>'juin', '07'=>'juillet', '08'=>'août', '09'=>'septembre', '10'=>'octobre', '11'=>'novembre', '12'=>'décembre');
 
   public function addParlementaire($parlementaire_id) {
@@ -16,11 +24,13 @@ class Commentaire extends BaseCommentaire
     $cp->commentaire_id = $this->id;
     $cp->save();
   }
-  public function getHumainDateTime() {
+
+  public function getHumanDateTime() {
     $time = strtotime($this->created_at);
     return date('j/m/Y à G:i', $time);
   }
-  public function getHumainUser() {
+
+  public function getHumanUser() {
     if (!$this->citoyen_id)
       return 'Anonyme';
     return '';

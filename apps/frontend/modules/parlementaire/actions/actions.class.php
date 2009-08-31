@@ -98,7 +98,7 @@ class parlementaireActions extends sfActions
       ->orderBy('nb DESC')
       ->fetchArray();
     $request->setParameter('rss', array(array('link' => '@parlementaire_rss?slug='.$this->parlementaire->slug, 'title'=>'L\'artivité de '.$this->parlementaire->nom),
-					array('link' => '@parlementaire_commentaires?slug='.$this->parlementaire->slug, 'title'=>'Des commentaires portant sur l\'activité de '.$this->parlementaire->nom)
+					array('link' => '@parlementaire_rss_commentaires?slug='.$this->parlementaire->slug, 'title'=>'Des commentaires portant sur l\'activité de '.$this->parlementaire->nom)
 					));
   }
 

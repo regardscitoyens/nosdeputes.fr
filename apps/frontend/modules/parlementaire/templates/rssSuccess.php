@@ -1,7 +1,7 @@
 <?php
 
 $feed->setTitle("L'activité de ".$parlementaire->nom);
-$feed->setLink(url_for('@parlementaire?slug='.$parlementaire->slug));
+$feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for('@parlementaire?slug='.$parlementaire->slug));
 $i = 0;
 for ($i = 0 ; $i < $limit ; $i++)
 {
