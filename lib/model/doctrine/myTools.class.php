@@ -15,7 +15,7 @@ class myTools {
 	$parlementaire = Doctrine::getTable('Parlementaire')->similarTo($matches[2][$i]);
 	$matches[1][$i] = preg_replace('/\//', '', $matches[1][$i]);
 	if ($parlementaire) {
-	  $s = preg_replace('/'.$matches[1][$i].'/', '<a href="'.url_for('@parlementaire?slug='.$parlementaire->slug).'"><img src="'.url_for('@photo_parlementaire?slug='.$parlementaire->slug).'" height=10/>'.$parlementaire->nom.'</a>', $s);
+	  $s = preg_replace('/'.$matches[1][$i].'/', '<a href="'.url_for('@parlementaire?slug='.$parlementaire->slug).'"><img src="'.url_for('@photo_parlementaire?slug='.$parlementaire->slug).'/20" height=20/>'.$parlementaire->nom.'</a>', $s);
 	}else{
 	  $s = preg_replace('/'.$matches[1][$i].'/', '<b class="erreur" style="color:red">'.$matches[2][$i].'</b>', $s);
 	}

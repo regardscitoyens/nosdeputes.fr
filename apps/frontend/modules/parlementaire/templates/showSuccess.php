@@ -128,7 +128,7 @@
       <h3><?php echo link_to("Tous ses amendements",'@parlementaire_amendements?slug='.$parlementaire->getSlug()); ?></h3>
       <h3><?php echo link_to("Toute ses questions écrites",'@parlementaire_questions?slug='.$parlementaire->getSlug()); ?></h3>
 <?php
-      $top = unserialize($parlementaire->top);
+      $top = $parlementaire->getTop();
 if ($top) : ?>
       <h3>Best/Worst (sur 12 derniers mois)</h3>
 <ul><?php

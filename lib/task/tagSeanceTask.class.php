@@ -53,7 +53,7 @@ class tagSeanceTask extends sfBaseTask
     $cpt = 0;
     $tot = count($words);
 
-    $exclude = array('lecture'=>1, 'séance'=>1, 'alinéa'=>1, 'résolution'=>1, 'adoption'=>1, 'collègue'=>1, 'cher'=>1, 'collègues'=>1, 'chers'=>1,'bis'=>1, '1er'=>1, 'rectifié'=>1, 'question'=>1, 'rédactionnel'=>1, 'scrutin'=>1, 'exposer'=>1, 'identiques'=>1, 'identique'=>1, 'commission'=>1, 'adopte'=>1, 'rejette' => 1, 'additionnel' => 1, 'tendant' => 1, 'examiné' => 1, 'examine' => 1, 'rejeté'=> 1, 'avis' => 1, 'suivant'=>1);
+    $exclude = array('lecture'=>1, 'séance'=>1, 'alinéa'=>1, 'résolution'=>1, 'adoption'=>1, 'collègue'=>1, 'cher'=>1, 'collègues'=>1, 'chers'=>1,'bis'=>1, '1er'=>1, 'rectifié'=>1, 'question'=>1, 'rédactionnel'=>1, 'scrutin'=>1, 'exposer'=>1, 'identiques'=>1, 'identique'=>1, 'commission'=>1, 'adopte'=>1, 'rejette' => 1, 'additionnel' => 1, 'tendant' => 1, 'examiné' => 1, 'examine' => 1, 'rejeté'=> 1, 'avis' => 1, 'suivant'=>1, 'estimé'=>1, 'déclaré'=>1);
     $include = array('télévision' => 1, 'dimanche'=>1, 'internet'=>1, 'outre-mer'=>1, 'logement'=>1, 'militaire'=>1, 'taxe'=>1, 'médecin'=>1, 'hôpital'=>1);
     $exclude_sentence = array('garde des sceaux'=>1, 'haut-commissaire' => 1, 'monsieur' => 1, 'madame'=>1);
 

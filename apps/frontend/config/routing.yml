@@ -137,6 +137,12 @@ top_presences:
 top_amendements:
   url: /top/amendement
   param: {module: amendement, action: top}
+top_organisme_global: 
+  url: /top/:organisme
+  param: {module: parlementaire, action: top}
+top_global: 
+  url: /top
+  param: {module: parlementaire, action: top}
 
 # Affichage d'une question
 question:

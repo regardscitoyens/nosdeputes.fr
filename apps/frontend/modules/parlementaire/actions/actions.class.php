@@ -232,4 +232,44 @@ public function executeList(sfWebRequest $request)
     $slug = $request->getParameter('slug');
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
   }
+
+  public static function topSort($a, $b) {
+    return $b[$_GET['sort']]['value'] - $a[$_GET['sort']]['value'];
+  }
+
+  public function executeTop(sfWebRequest $request)
+  {
+    $qp = Doctrine::getTable('Parlementaire')->createQuery('p');
+    if ($request->getParameter('organisme')) {
+      $organisme = Doctrine::getTable('Organisme')->findOneBySlug($request->getParameter('organisme'));
+      $this->forward404Unless($organisme);
+      $ids = array();
+      foreach(Doctrine::getTable('ParlementaireOrganisme')->createQuery('po')
+	      ->select('DISTINCT parlementaire_id as id')
+	      ->where('organisme_id = ?', $organisme->id)->fetchArray() as $id) {
+	$ids[] = $id['id'];
+      }
+      $qp->whereIn('id', $ids);
+    }
+    $qp->andWhere('fin_mandat IS NULL')->orderBy('nom_de_famille');
+    $parlementaires = $qp->execute();
+    $this->tops = array();
+    foreach($parlementaires as $p) {
+      $tops = $p->getTop();
+      $i = 0;
+      $this->tops[$p->id][$i++] = $p;
+      foreach(array_keys($tops) as $key) {
+	$this->tops[$p->id][$i]['value'] = $tops[$key]['value'];
+
+	$this->tops[$p->id][$i]['style'] = '';
+	if ($tops[$key]['rank'] < 151)
+	  $this->tops[$p->id][$i]['style'] = ' style="color:green" ';
+	else if ($tops[$key]['rank'] > 577 - 151)
+	  $this->tops[$p->id][$i]['style'] = ' style="color:red" ';
+	$i++;
+      }
+    }
+    if (isset($_GET['sort']))
+      usort($this->tops, 'parlementaireActions::topSort');
+  }
 }

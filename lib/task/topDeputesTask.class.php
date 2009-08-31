@@ -156,10 +156,9 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('a.sort = ?', 'Adopté')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_ratio_adoptes']['value'] = $p['count'] 
-	* 100 / $this->deputes[$p['id']]['amendements_signes']['value'];
+      $this->deputes[$p['id']]['amendements_adoptes']['value'] = $p['count'];
     }
-    $this->orderDeputes('amendements_ratio_adoptes');
+    $this->orderDeputes('amendements_adoptes');
 
     $parlementaires = Doctrine_Query::create()
       ->select('p.id, count(a.id)')
@@ -170,10 +169,9 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('a.sort = ?', 'Rejeté')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_ratio_rejetes']['value'] = $p['count']
-	* 100 / $this->deputes[$p['id']]['amendements_signes']['value'];
+      $this->deputes[$p['id']]['amendements_rejetes']['value'] = $p['count'];
     }
-    $this->orderDeputes('amendements_ratio_rejetes', 0);
+    $this->orderDeputes('amendements_rejetes', 0);
 
     $parlementaires = Doctrine_Query::create()
       ->select('p.id, count(a.id)')
@@ -184,11 +182,9 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('(a.sort = ? OR a.sort = ?)', array('Retiré', 'Non soutenu'))
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_ratio_retires']['value'] = $p['count']
-	* 100 / $this->deputes[$p['id']]['amendements_signes']['value'];
-
+      $this->deputes[$p['id']]['amendements_retires']['value'] = $p['count'];
     }
-    $this->orderDeputes('amendements_ratio_retires', 0);
+    $this->orderDeputes('amendements_retires', 0);
 
     $parlementaires = Doctrine_Query::create()
       ->select('p.id, count(q.id)')
@@ -210,6 +206,7 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('i.nb_mots > 20')
       ->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365))
       ->andWhere('fin_mandat IS NULL')
+      ->andWhere('i.fonction NOT LIKE ?', 'président%')
       ->fetchArray();
     foreach ($questions as $q) {
       $this->deputes[$q['id']]['questions_orales']['value'] = $q['count'];
