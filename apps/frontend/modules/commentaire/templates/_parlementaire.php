@@ -15,8 +15,8 @@ if (!count($commentaires)) : ?>
               
               </div>
               <div class="m_b_c_text">
-    <h3><?php echo $c->getHumainUser(); ?></h3>
-              <p><?php echo $c->getHumainDateTime(); ?></p>
+    <h3><?php echo $c->getHumanUser(); ?></h3>
+              <p><?php echo $c->getHumanDateTime(); ?></p>
 <p class="note"><img src="/css/fixe/images/mini_etoile.png" alt="***"/></p>
               </div>
             </div>

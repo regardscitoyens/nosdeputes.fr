@@ -2,7 +2,7 @@
 <?php foreach($pager->getResults() as $c) 
 { ?>
 <div class="commentaire">
-<p><a href="<?php echo url_for($c->lien); ?>#commentaire_<?php echo $c->id; ?>"><?php echo $c->getPresentation() ?>, <?php echo $c->getHumainUser(); ?> a dit le <?php echo $c->getHumainDateTime(); ?>:</a></p>
+<p><a href="<?php echo url_for($c->lien); ?>#commentaire_<?php echo $c->id; ?>"><?php echo $c->getPresentation() ?>, <?php echo $c->getHumanUser(); ?> a dit le <?php echo $c->getHumanDateTime(); ?>:</a></p>
 <p><?php echo truncate_text($c->commentaire, 500); ?></p>
 <p><a href="<?php echo url_for($c->lien); ?>#commentaire_<?php echo $c->id; ?>">Lire dans le contexte</a></p>
 </div>
