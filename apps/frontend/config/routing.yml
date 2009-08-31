@@ -54,6 +54,9 @@ parlementaire_rss:
 parlementaire_interventions:
   url: /parlementaire/:slug/interventions
   param: {module: intervention, action: parlementaire}
+parlementaire_rss_commentaires:
+  url: /parlementaire/:slug/commentaires/rss
+  param: {module: commentaire, action: rss, parlementaire: 1}
 parlementaire_commentaires:
   url: /parlementaire/:slug/commentaires
   param: {module: commentaire, action: parlementaire}

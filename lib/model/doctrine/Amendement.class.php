@@ -10,7 +10,11 @@ class Amendement extends BaseAmendement {
   }
 
   public function __toString() {
-    return strip_tags($this->expose);
+    $str = substr(strip_tags($this->expose), 0, 250);
+    if (strlen($str) == 250) {
+      $str .= '...';
+    }
+    return $str;
   }
 
   public function setAuteurs($auteurs) {

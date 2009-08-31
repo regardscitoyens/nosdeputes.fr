@@ -6,6 +6,14 @@
     <?php include_http_metas() ?>
     <?php include_metas() ?>  
     <?php include_title() ?>
+<?php
+    $rss = $sf_request->getParameter('rss');
+if ($rss) {
+  foreach($rss as $r) {
+    echo '<link rel="alternate" type="application/rss+xml" title="'.$r['title'].'" href="'.url_for($r['link']).'"/>';
+  }
+ }
+?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php echo stylesheet_tag($style.'/style'); ?>  
     <?php echo stylesheet_tag($style.'/print'); ?>

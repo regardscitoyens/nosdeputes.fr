@@ -11,7 +11,11 @@ class QuestionEcrite extends BaseQuestionEcrite
   }
 
   public function __toString() {
-    return strip_tags($this->question);
+    $str = substr(strip_tags($this->question), 0, 250);
+    if (strlen($str) == 250) {
+      $str .= '...';
+    }
+    return $str;
   }
 
   public function getTitre() {
