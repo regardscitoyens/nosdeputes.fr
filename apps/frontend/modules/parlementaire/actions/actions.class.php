@@ -272,4 +272,42 @@ public function executeList(sfWebRequest $request)
     if (isset($_GET['sort']))
       usort($this->tops, 'parlementaireActions::topSort');
   }
+
+  public static function dateSort($a, $b) {
+    return str_replace('-', '', $b->date) - str_replace('-', '', $a->date);
+  }
+  public function executeRss(sfWebRequest $request) {
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->parlementaire);
+
+    $this->limit = 20;
+
+    $news = array(); 
+    if ($request->getParameter('Intervention')) {
+	foreach(Doctrine::getTable('Intervention')->createQuery('i')
+		->where('i.parlementaire_id = ?', $this->parlementaire->id)
+		->limit($this->limit)->orderBy('date DESC')->execute()
+		as $n) 
+	  $news[] = $n;
+    }
+    if ($request->getParameter('QuestionEcrite')) {
+      foreach(Doctrine::getTable('QuestionEcrite')->createQuery('q')
+	      ->where('q.parlementaire_id = ?', $this->parlementaire->id)
+	      ->limit($this->limit)->orderBy('date DESC')->execute()
+	      as $n) 
+	$news[] = $n;
+    }
+    if ($request->getParameter('Amendement')) {
+      foreach(Doctrine::getTable('Amendement')->createQuery('a')
+	      ->leftJoin('a.ParlementaireAmendement pa')
+	      ->where('pa.parlementaire_id = ?', $this->parlementaire->id)->orderBy('date DESC')->limit($this->limit)->execute()
+	      as $n) 
+	$news[] = $n;
+    }
+    
+    usort($news, 'parlementaireActions::dateSort');
+
+    $this->news = $news;
+    $this->feed = new sfRssFeed();
+  }
 }

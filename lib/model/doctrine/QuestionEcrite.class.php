@@ -6,6 +6,19 @@
 class QuestionEcrite extends BaseQuestionEcrite
 {
 
+  public function getLink() {
+    return '@question?id='.$this->id;
+  }
+
+  public function __toString() {
+    return strip_tags($this->question);
+  }
+
+  public function getTitre() {
+    $titre = 'Question écrite du '.$this->date.' ('.preg_replace('/\s*[\/\(].*$/', '', $this->ministere).')';
+    return $titre;
+  }
+
   public function setAuteur($depute) {
     $sexe = null;
     if (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([dA-Z].*)\s*$/', $depute, $match)) {

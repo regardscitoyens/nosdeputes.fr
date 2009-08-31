@@ -5,6 +5,24 @@
  */
 class Intervention extends BaseIntervention
 {
+  public function getLink() {
+    return '@intervention?id='.$this->id;
+  }
+
+  public function __toString() {
+    return strip_tags($this->intervention);
+  }
+
+  public function getTitre() {
+    $titre = 'Intervention du '.$this->date.' ';
+    if ($this->type == 'commission') {
+      $titre .= 'en commission';
+    }else{
+      $titre .= 'en hémicycle';
+    }
+    return $titre;
+  }
+
   public function setSeance($type, $date, $heure, $session, $commission = null) {
     $this->setType($type);
     if ($type == 'commission') {

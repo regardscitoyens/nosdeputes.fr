@@ -5,6 +5,14 @@
  */
 class Amendement extends BaseAmendement {
 
+  public function getLink() {
+    return '@amendement?id='.$this->id;
+  }
+
+  public function __toString() {
+    return strip_tags($this->expose);
+  }
+
   public function setAuteurs($auteurs) {
     $groupe = null;
     $sexe = null;
