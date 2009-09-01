@@ -1,6 +1,7 @@
 <div class="temp">
 <?php $nResults = $pager->getNbResults(); ?>
-<h1><?php echo $orga->getNom(); ?>&nbsp;:</h1
+<h1><?php echo $orga->getNom(); ?></h1>
+<?php include_component('article', 'show', array('categorie'=>'Organisme', 'object_id'=>$orga->id)); ?>
 <?php if ($orga->type == 'extra') : ?>
 <h2>Organisme extra-parlementaire composé de <?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?></h2>
 <?php else : ?>

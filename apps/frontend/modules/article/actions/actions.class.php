@@ -10,19 +10,29 @@
  */
 class articleActions extends sfActions
 {
-  public function processArticle(sfWebRequest $request) {
+  public function processArticle(sfWebRequest $request, $new = 0) {
+    $categorie = $request->getParameter('categorie');
+
+    $this->form->setParent($request->getParameter('hasParent', false), $categorie);
+    $this->form->setObject($request->getParameter('hasObject', false), $categorie);
+    $this->form->setTitre($request->getParameter('hasTitre', true));
+
     if ($request->isMethod('post')) {
-      $farticle = $request->getParameter('article');
-      $farticle['categorie'] = $request->getParameter('categorie');
-      $farticle['corps'] = myTools::clearHtml($farticle['user_corps']);
+      $farticle = $request->getParameter('article', array() );
+      $farticle['categorie'] = $categorie;
+      if (isset($farticle['user_corps']))
+	$farticle['corps'] = myTools::clearHtml($farticle['user_corps']);
+      
+      $this->form->setUnique($request->getParameter('isUnique', false));
       $this->form->bind($farticle);
     }
-    $this->form->setParent($request->getParameter('hasParent', false));
-    $this->form->setObject($request->getParameter('hasObject', false));
-    $this->form->setTitre($request->getParameter('hasTitre', true));
     $this->article = $this->form->getValue('corps');
     if (!$request->isMethod('post'))
 	return ;
+    $this->post = 1;
+    if (!$this->form->isValid()) {
+      return ;
+    }
     if (!$request->getParameter('ok'))
       return ;
     $this->form->save();
@@ -38,7 +48,7 @@ class articleActions extends sfActions
   {
     $this->form = new ArticleForm();
     $this->setTemplate('update');
-    $this->processArticle($request);
+    $this->processArticle($request, 1);
   }
   public function executeDelete(sfWebRequest $request) 
   {

@@ -20,7 +20,7 @@ faq:
   param: {module: article, action: list, categorie: Faq, titre: "Questions fréquemments posées"}
 doc_organisme_new:
   url: /organisme/new
-  param: {module: article, action: create, categorie: Organisme, hasObject: true}
+  param: {module: article, action: create, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true}
 
 # Liste de tous les parlementaires ou par catégorie
 list_parlementaires:

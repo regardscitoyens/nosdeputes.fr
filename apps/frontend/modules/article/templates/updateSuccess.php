@@ -7,6 +7,9 @@
 <?php echo $form; ?>
 </table>
 <input type="submit" value="Visualiser">
-<input type="submit" name="ok" value="créer">
-<?php if ($form->getObject()) echo link_to('Supprimer', '@article_delete?article_id='.$form->getObject()->id); ?>
+<?php if (isset($post) && $post) { ?>
+<input type="submit" name="ok" value="<?php if ($form->getObject()->id) {echo 'Mettre à jour'; } else echo 'Créer'; ?>">
+<?php } 
+if ($form->getObject()->id) 
+  echo link_to('Supprimer', '@article_delete?article_id='.$form->getObject()->id); ?>
 </form>
