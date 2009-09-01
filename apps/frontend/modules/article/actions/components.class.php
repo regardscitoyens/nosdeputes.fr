@@ -8,6 +8,8 @@ class ArticleComponents extends sfComponents
       ->andWhere('object_id = ?', $this->object_id)
       ->limit(1)
       ->fetchArray();
-    $this->article = $articles[0];
+    $this->article = '';
+    if ($articles)
+      $this->article = $articles[0];
   }
 }
