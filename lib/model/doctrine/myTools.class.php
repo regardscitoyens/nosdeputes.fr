@@ -14,7 +14,6 @@ class myTools {
     $s = preg_replace('/(^|\s)(http\S+)/', ' <a rel="nofollow" href="\\2">\\2</a>', $s);
     if (preg_match_all('/(({+|<depute>)([^}<]+)(}+|<\/?depute>))/i', $s, $matches)) {
       for($i = 0 ; $i < count($matches[0]) ; $i++) {
-	print_r($matches);
 	$parlementaire = Doctrine::getTable('Parlementaire')->similarTo($matches[3][$i]);
 	$matches[1][$i] = preg_replace('/\//', '', $matches[1][$i]);
 	if ($parlementaire) {
