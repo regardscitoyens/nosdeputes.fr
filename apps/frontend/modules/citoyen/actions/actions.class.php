@@ -77,6 +77,27 @@ class citoyenActions extends sfActions
       $this->redirect('@citoyen?slug='.$slug);
     }
   }
+	
+  public function executeRenvoimailactivation(sfWebRequest $request)
+  {
+	  $id = $request->getParameter('user_id');
+		
+		$this->Citoyen = Doctrine::getTable('Citoyen')->findOneById($id);
+		
+		if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('user_id') == $id)
+		{
+		  $this->getComponent('mail', 'send', 
+		  array('action' => $this, 
+		  'subject'=>'Inscription NosDéputés.fr', 
+		  'to'=>array($email), 
+			'partial'=>'inscription', 
+			'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
+			));
+			$this->getUser()->setFlash('notice', 'Un email de confirmation vient de vous être envoyé.');
+			$this->redirect($request->getReferer());
+		}
+		else { $this->forward404(); }
+	}
   
   public function executeEdit(sfWebRequest $request)
   {
