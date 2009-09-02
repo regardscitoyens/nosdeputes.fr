@@ -1,4 +1,4 @@
-<?php
+<?php  
 
 /**
  * citoyen actions.
@@ -31,9 +31,9 @@ class citoyenActions extends sfActions
     $response = $this->getResponse();
     $response->setTitle('Mini blog de '.$this->Citoyen->login); 
   }
-	
-	// Inscription normale
-	
+  
+  // Inscription normale
+  
   public function executeNew(sfWebRequest $request)
   {
     if (!$this->getUser()->isAuthenticated()) {
@@ -67,7 +67,7 @@ class citoyenActions extends sfActions
       $this->redirect('@citoyen?slug='.$slug);
     }
   }
-	
+  
   public function executeEdit(sfWebRequest $request)
   {
     if ($this->getUser()->isAuthenticated()) {
@@ -106,7 +106,7 @@ class citoyenActions extends sfActions
           $user->is_active = true;
           $user->activation_id = null;
           $user->save();
-					$this->getUser()->setAttribute('is_active', true);
+          $this->getUser()->setAttribute('is_active', true);
           $this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès');
           $this->redirect('@citoyen?slug='.$user->slug);
         }
@@ -147,8 +147,8 @@ class citoyenActions extends sfActions
     }
   }
   
-	// Connection
-	
+  // Connection
+  
   public function executeSignin(sfWebRequest $request)
   {
     if (!$this->getUser()->isAuthenticated()) {
@@ -167,7 +167,7 @@ class citoyenActions extends sfActions
             if (sha1($this->form->getValue('pass')) == $user->pass)
             {
               $this->connexion($user);
-							$this->getUser()->setFlash('notice', 'Vous vous êtes connecté avec succès.');
+              $this->getUser()->setFlash('notice', 'Vous vous êtes connecté avec succès.');
               $this->redirect($request->getReferer());
             }
             else
@@ -191,7 +191,7 @@ class citoyenActions extends sfActions
       $this->redirect($request->getReferer());
     }
   }
-	
+  
   public function connexion($user)
   {
     // signin
@@ -243,13 +243,13 @@ class citoyenActions extends sfActions
     }
   }
   
-	public function executeSigninmail(sfWebRequest $request)
+  public function executeSigninmail(sfWebRequest $request)
   {
     if (!$this->getUser()->isAuthenticated()) {
     
       $activation_id = $request->getParameter('activation_id');
-			
-			$this->form = new SigninmailForm();
+      
+      $this->form = new SigninmailForm();
       
       if ($request->isMethod('post'))
       {
@@ -263,8 +263,8 @@ class citoyenActions extends sfActions
             if ($activation_id == $user->activation_id)
             {
               $this->connexion($user);
-							$user->activation_id = null;
-							$user->save();
+              $user->activation_id = null;
+              $user->save();
             }
             else
             {
@@ -282,30 +282,30 @@ class citoyenActions extends sfActions
     }
     else
     {
-			if ($this->getUser()->isAuthenticated())
-			{
-				$user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
-				
-				$this->form = new EditUserForm($user);
+      if ($this->getUser()->isAuthenticated())
+      {
+        $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
         
-				if ($request->isMethod('put'))
-				{
-					$this->form->bind($request->getParameter('citoyen'));
-					
-					if ($this->form->isValid())
-					{
-						$this->form->save();
-						$this->deconnexion();
-						$this->connexion($user);
-						$this->getUser()->setFlash('notice', 'Votre inscription est terminée');
-						$this->redirect('@citoyen?slug='.$this->getUser()->getAttribute('slug'));
-					}
-				}
-			}
-			else
-			{
-			  $this->redirect('@citoyen?slug='.$user->slug);
-			}
+        $this->form = new EditUserForm($user);
+        
+        if ($request->isMethod('put'))
+        {
+          $this->form->bind($request->getParameter('citoyen'));
+          
+          if ($this->form->isValid())
+          {
+            $this->form->save();
+            $this->deconnexion();
+            $this->connexion($user);
+            $this->getUser()->setFlash('notice', 'Votre inscription est terminée');
+            $this->redirect('@citoyen?slug='.$this->getUser()->getAttribute('slug'));
+          }
+        }
+      }
+      else
+      {
+        $this->redirect('@citoyen?slug='.$user->slug);
+      }
     }
   }
   

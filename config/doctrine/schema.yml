@@ -48,6 +48,7 @@ Parlementaire:
     uniq_url:
       fields: [url_an]
       type: unique
+
 Organisme:
   actAs:
     Timestampable:
@@ -273,7 +274,10 @@ Citoyen:
     login:
       type: string(128)
       unique: true
-    pass: string(40)
+      minlength: 4
+    pass:
+      type: string(40)
+      minlength: 6
     email:
       type: string(255)
       unique: true

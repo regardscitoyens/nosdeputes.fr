@@ -1,8 +1,5 @@
 <div class="temp">
 <h1>Liste des Citoyens</h1>
-<?php if ($sf_user->hasFlash('notice')): ?>
-  <p class="notice"><?php echo $sf_user->getFlash('notice') ?></p>
-<?php endif; ?>
 <table>
   <thead>
     <tr>

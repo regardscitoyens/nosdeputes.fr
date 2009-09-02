@@ -4,8 +4,8 @@ class InscriptionForm extends CitoyenForm
   public function configure()
   {
     $this->widgetSchema->setNameFormat('citoyen[%s]');
-		
-		// Enleve les widgets qu'on ne veut pas montrer
+    
+    // Enleve les widgets qu'on ne veut pas montrer
     unset(
       $this['id'], 
       $this['employe_an'],
@@ -26,8 +26,8 @@ class InscriptionForm extends CitoyenForm
     
     $this->widgetSchema['login'] = new sfWidgetFormInput();
     $this->validatorSchema['login']->setOption('required', true);
-		
-		$this->validatorSchema['email'] = new sfValidatorEmail(array(), array('invalid' => 'Adresse email invalide.'));
+    
+    $this->validatorSchema['email'] = new sfValidatorEmail(array(), array('invalid' => 'Adresse email invalide.'));
     
     $annees = range(1920, date('Y')); // array des dates depuis 1920
     $liste_annees = array_combine($annees, $annees); // array clés et valeurs des dates
@@ -43,7 +43,7 @@ class InscriptionForm extends CitoyenForm
  
     $this->mergePostValidator(new sfValidatorSchemaCompare('pass', sfValidatorSchemaCompare::EQUAL, 'pass_confirmation', array(), array('invalid' => 'Les mots de passe ne correspondent pas.')));
      */
-		// Les labels
+    // Les labels
     $this->widgetSchema->setLabels(array(
       'login' => 'Nom d\'utilisateur *',
       'pass' => 'Mot de passe *',

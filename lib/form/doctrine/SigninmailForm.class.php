@@ -4,7 +4,7 @@ class SigninmailForm extends sfForm
   public function configure()
   {
     $this->widgetSchema->setNameFormat('signinmail[%s]');
-		
+    
     $this->setWidgets(array(
       'email'    => new sfWidgetFormInput()
     ));
@@ -15,7 +15,7 @@ class SigninmailForm extends sfForm
 
     // labels
     $this->widgetSchema->setLabels(array(
-      'email' => 'Email'
+      'email' => 'Email'  
     ));
   }
 }

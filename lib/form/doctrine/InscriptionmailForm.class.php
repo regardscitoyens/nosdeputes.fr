@@ -4,8 +4,8 @@ class InscriptionmailForm extends CitoyenForm
   public function configure()
   {
     $this->widgetSchema->setNameFormat('citoyen[%s]');
-		
-		// Enleve les widgets qu'on ne veut pas montrer
+    
+    // Enleve les widgets qu'on ne veut pas montrer
     unset(
       $this['id'], 
       $this['login'],
@@ -26,8 +26,8 @@ class InscriptionmailForm extends CitoyenForm
       $this['updated_at'],
       $this['slug']
     );
-		
-		$this->validatorSchema['email'] = new sfValidatorEmail(array(), array('invalid' => 'Adresse email invalide.'));
+    
+    $this->validatorSchema['email'] = new sfValidatorEmail(array(), array('invalid' => 'Adresse email invalide.'));
 
     // labels
     $this->widgetSchema->setLabels(array(
