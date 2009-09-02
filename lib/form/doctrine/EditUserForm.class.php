@@ -7,6 +7,7 @@ class EditUserForm extends CitoyenForm
     unset(
       $this['id'], 
       $this['login'], 
+      $this['pass'], 
       $this['email'], 
       $this['employe_an'], 
       $this['travail_pour'], 
@@ -24,8 +25,6 @@ class EditUserForm extends CitoyenForm
     
     // Les labels
     $this->widgetSchema->setLabels(array(
-      'pass' => 'Mot de passe',
-     # 'pass_confirmation' => 'Répétez le mot de passe *',
       'email' => 'Email',
       'activite' => 'Activité',
       'naissance' => 'Date de naissance'

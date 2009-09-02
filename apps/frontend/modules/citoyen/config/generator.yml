@@ -1,8 +1,0 @@
-generator:
-  class: sfDoctrineGenerator
-  param:
-    model_class: Citoyen
-    config:
-      edit:
-        display:
-          NONE: [login, Pass]

@@ -8,8 +8,9 @@ else { $activite = 'non renseigné'; }
 ?>
 <?php echo '<li>Activité : '.$activite.'</li>'; ?>
 <?php
-if (!empty($Citoyen->nom_circo)) { $circonscription = $Citoyen->nom_circo.' '.$Citoyen->num_circo; }
-else { $circonscription = 'Pour ajouter cette information, naviguez jusqu\'a la page de votre député et cliquez sur ICONE '; }
+if (($sf_user->getAttribute('login') == $Citoyen->login) and empty($Citoyen->nom_circo))  { $circonscription = 'Pour ajouter cette information, naviguez jusqu\'a la page de votre député et cliquez sur ICONE '; }
+else if (!empty($Citoyen->nom_circo)) { $circonscription = $Citoyen->nom_circo.' '.$Citoyen->num_circo; }
+else { $circonscription = 'non renseigné'; }
 ?>
 <?php echo '<li>Circonscription : '.$circonscription.'</li>'; ?>
 </ul>

@@ -38,18 +38,18 @@ if ($rss) {
             <div class="boite_util">
               <div class="b_u_h"><div class="b_u_hg"></div><div class="b_u_hd"></div></div>
               <div class="b_u_cont">
-                <?php 
-                if($sf_user->isAuthenticated()) { 
-                  if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend.php">Backend</a> - '; }
-                ?>
-                Connecté en tant que <?php echo $sf_user->getAttribute('login'); ?> - <a href="<?php echo url_for('@signout') ?>">Déconnexion</a>
-                <?php
-                }
-                else { ?>
-                <a href="<?php echo url_for('@signin') ?>">Connexion</a> - <a href="<?php echo url_for('@inscription') ?>">S'inscrire</a>
-                <?php
-                }
-                ?>
+							  <?php if(!$sf_user->isAuthenticated()) { ?>
+	              <form method="post" action="<?php echo url_for('@signin'); ?>">
+                <a href="<?php echo url_for('@inscription') ?>">S'inscrire</a>
+									<input type="text" name="signin[login]" id="signin_login" size="10" class="signin" /> <input type="password" name="signin[pass]" id="signin_pass" size="10" class="signin" />
+                  <input type="submit" value="ok" class="bouton_ok" />
+                </form> <?php }
+							  if($sf_user->isAuthenticated())
+							  {
+							    if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend.php">Backend</a> - ';
+							  } ?>
+								Connecté en tant que <?php echo $sf_user->getAttribute('login'); ?> - <a href="<?php echo url_for('@signout') ?>">Déconnexion</a>
+								<?php } ?>
               </div>
               <div class="b_u_b"><div class="b_u_bg"></div><div class="b_u_bd"></div></div>
             </div>

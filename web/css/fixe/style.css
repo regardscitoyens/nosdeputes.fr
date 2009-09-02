@@ -49,10 +49,15 @@ body {
 .haut_droite a:active { color: #fff; text-decoration: none; }
 .haut_droite a:visited { color: #fff; text-decoration: none; }
 
-.haut_droite input {
+.signin {
+	height: 14px;
+  font-size: 1em;
   color: #fff;
   background-color: gray;
   border : 1px solid #BFBFBF;
+}
+.haut_droite label {
+  display: none;
 }
 .bouton_connexion {
   width: 26px;

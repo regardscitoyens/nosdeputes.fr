@@ -164,6 +164,10 @@ question:
   param: {module: questions, action: show}
 
 # Authentification
+signinmail:
+  url:   /mail/:activation_id
+  param: { module: citoyen, action: signinmail }
+
 signin:
   url:   /login
   param: { module: citoyen, action: signin }
