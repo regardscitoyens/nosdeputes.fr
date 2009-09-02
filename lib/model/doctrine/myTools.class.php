@@ -3,7 +3,7 @@ sfLoader::loadHelpers(array('Url'));
 
 class myTools {
   public static function clearHtml($s, $authorized_tags = '<strong><i><b><a><em>') {
-    if ($authorized)
+    if ($authorized_tags)
       $s = strip_tags($s, $authorized_tags.'<depute>');
 
     //Protection des liens
