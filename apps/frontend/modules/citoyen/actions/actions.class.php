@@ -28,6 +28,7 @@ class citoyenActions extends sfActions
   {
     $slug = $request->getParameter('slug');
     $this->Citoyen = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
+		$this->forward404Unless(!empty($this->Citoyen->slug));
     $response = $this->getResponse();
     $response->setTitle('Mini blog de '.$this->Citoyen->login); 
   }
