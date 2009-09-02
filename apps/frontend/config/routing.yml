@@ -1,4 +1,8 @@
 # default rules
+mail_test:
+  url: /mail
+  param: {module: mail, action: test}
+
 homepage:
   url: /
   param: {module: parlementaire, action: index}
