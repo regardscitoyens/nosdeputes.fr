@@ -30,7 +30,7 @@ class citoyenActions extends sfActions
     $this->Citoyen = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
 		$this->forward404Unless(!empty($this->Citoyen->slug));
     $response = $this->getResponse();
-    $response->setTitle('Mini blog de '.$this->Citoyen->login); 
+    $response->setTitle('Profil de '.$this->Citoyen->login); 
   }
   
   // Inscription normale
@@ -55,6 +55,15 @@ class citoyenActions extends sfActions
           $this->connexion($this->form->getObject());
           $this->Citoyen->activation_id = md5(time()*rand());
           $this->Citoyen->save();
+					
+					$this->getComponent('mail', 'send', 
+			     array('action' => $this, 
+				   'subject'=>'Inscription NosDéputés.fr', 
+				   'to'=>array($email), 
+				   'partial'=>'inscription', 
+				   'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
+				   ));
+					
           $this->getUser()->setFlash('notice', 'Votre compte a été crée avec succès');
           $slug = $this->Citoyen->slug;
           $this->redirect('@citoyen?slug='.$slug);
@@ -240,11 +249,36 @@ class citoyenActions extends sfActions
     else
     {
       $this->getUser()->setFlash('error', 'Vous devez être connecté pour exécuter cette action');
-      $this->redirect('@signin');
+      $this->redirect('@homepage');
     }
   }
-  
-  public function executeSigninmail(sfWebRequest $request)
+	
+  // Inscription par email
+	public function executeNewmail(sfWebRequest $request)
+  {
+    if (!$this->getUser()->isAuthenticated()) {
+      $this->form = new InscriptionmailForm();
+      if ($request->isMethod('post'))
+      {
+        $this->form->bind($request->getParameter('citoyen'));
+        
+        if ($this->form->isValid())
+        {
+          $this->form->save();
+          
+          $this->Citoyen = Doctrine::getTable('Citoyen')->findOneByEmail($this->form->getValue('email'));
+          $this->Citoyen->activation_id = md5(time()*rand());
+          $this->Citoyen->save();
+					
+					// envoi du mail de confirmation
+					
+          $this->getUser()->setFlash('notice', 'Votre compte a été crée avec succès, vous n\'avez plus qu\'a cliquer sur le lien contenu dans l\'email de confirmation que nous venons de vous envoyer pour l\'activer');
+        }  
+      }
+    }
+  }
+	
+  public function executeActivationmail(sfWebRequest $request)
   {
     if (!$this->getUser()->isAuthenticated()) {
     
