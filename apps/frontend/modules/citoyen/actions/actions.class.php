@@ -89,7 +89,7 @@ class citoyenActions extends sfActions
 		  $this->getComponent('mail', 'send', 
 		  array('action' => $this, 
 		  'subject'=>'Inscription NosDéputés.fr', 
-		  'to'=>array($email), 
+		  'to'=>array($this->Citoyen->email), 
 			'partial'=>'inscription', 
 			'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
 			));
