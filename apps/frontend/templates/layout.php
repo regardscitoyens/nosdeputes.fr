@@ -48,7 +48,7 @@ if ($rss) {
 							  {
 							    if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend.php">Backend</a> - ';
 							  } ?>
-								Connecté en tant que <?php echo $sf_user->getAttribute('login'); ?> - <a href="<?php echo url_for('@signout') ?>">Déconnexion</a>
+								<a href="<?php echo url_for('@citoyen?slug='.$sf_user->getAttribute('slug')); ?>">Mon Profil</a> - Connecté en tant que <?php echo $sf_user->getAttribute('login'); ?> - <a href="<?php echo url_for('@signout') ?>">Déconnexion</a>
 								<?php } ?>
               </div>
               <div class="b_u_b"><div class="b_u_bg"></div><div class="b_u_bd"></div></div>

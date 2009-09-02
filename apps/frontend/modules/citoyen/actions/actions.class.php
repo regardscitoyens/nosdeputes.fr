@@ -125,8 +125,8 @@ class citoyenActions extends sfActions
     }
     else
     {
-      $this->redirect('@signin');
-      $this->getUser()->setFlash('error', 'Veuillez vous identifier et cliquer à nouveau sur le lien de confirmation contenu dans l\'email');
+      $this->getUser()->setFlash('error', 'Vous devez vous connecter puis cliquer à nouveau sur le lien de confirmation contenu dans l\'email');
+      $this->redirect('@homepage');
     }
   }
   
