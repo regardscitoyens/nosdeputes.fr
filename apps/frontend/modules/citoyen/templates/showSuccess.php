@@ -15,7 +15,7 @@ else { $circonscription = 'non renseigné'; }
 <?php echo '<li>Circonscription : '.$circonscription.'</li>'; ?>
 </ul>
 <?php
-if ($sf_user->getAttribute('is_active') == false) {
+if (($sf_user->getAttribute('is_active') == false) and ($sf_user->getAttribute('user_id') == $Citoyen->id)) {
 ?>
 <p>
   Vous devriez avoir reçu un mail pour confirmer votre inscription, si ce n'est pas le cas d'ici 24h, veuillez cliquer sur ce lien : <br />
