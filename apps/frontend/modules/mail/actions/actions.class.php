@@ -17,7 +17,13 @@ class mailActions extends sfActions
   */
   public function executeTest(sfWebRequest $request)
   {
-    echo $this->getComponent('mail', 'send', array('action' => $this, 'subject'=>'Un test', 'to'=>array('tangui@localhost'), 'partial'=>'test', 'mailContext'=>array()));
+    echo $this->getComponent('mail', 'send', 
+			     array('action' => $this, //On a besoin de l'action courrante
+				   'subject'=>'Un test', //Sujet du mail
+				   'to'=>array('tangui@localhost'), //Destinataires
+				   'partial'=>'test', //Partial contenant le contenu du mail (stocké dans template/_<nom du partial>.php
+				   'mailContext'=>array() //Arguments passés au partial
+				   ));
     return sfView::HEADER_ONLY;
   }
 }
