@@ -3,5 +3,4 @@
 <p>
   <a href="#">Mot de passe oublié ?</a>
 </p>
-</form>  
 </div>
