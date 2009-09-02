@@ -38,7 +38,7 @@ class mailComponents extends sfComponents
       ->setTo($this->to)
 
       //Give it a body
-      ->setBody($this->action->getPartial($this->partial, $this->mailContext)
+      ->setBody($this->action->getPartial($this->partial, $this->mailContext))
       ;
 
     $result = $mailer->send($message);
