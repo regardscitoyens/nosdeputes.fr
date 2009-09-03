@@ -154,7 +154,7 @@ sub setIntervenant {
     my $intervenant = shift;
 #    print "$intervenant\n";
     $intervenant =~ s/^(M(\.|me))(\S)/$1 $2/;
-    $intervenant =~ s/[\|\/\.]//g;
+    $intervenant =~ s/[\|\/]//g;
     $intervenant =~ s/\s*\&\#8211\;\s*$//;
     $intervenant =~ s/\s*[\.\:]\s*$//;
     $intervenant =~ s/Madame/Mme/;
@@ -169,12 +169,14 @@ sub setIntervenant {
     $intervenant =~ s/^\s+//;
     $intervenant =~ s/É+/é/gi;
     $intervenant =~ s/\&\#8217\;/'/g;
+    $intervenant =~ s/([^\s\,])\s+rapporteur/$1, rapporteur/i;
+    $intervenant =~ s/M\. /M /;
     if ($intervenant =~ s/\,\s*(.*)//) {
 	setFonction($1, $intervenant);
     }
     if ($intervenant =~ /^[a-z]/) {
 	$intervenant =~ s/^l[ea]\s+//i;
-	if ($intervenant =~ /([pP]résidente?|[rR]apporteur[a-zé\s]+)\s([A-Z].*)/) { #\s([A-Z].*)/i) {
+	if ($intervenant =~ /([pP]résidente?|[rR]apporteur[a-zé\s]+)\s([A-Z].+)/) { #\s([A-Z].*)/i) {
 	    setFonction($1, $2);
 	    return $2;
 	}
@@ -257,7 +259,7 @@ foreach $line (split /\n/, $string)
     }
 
     if ($line =~ /<h[1-9]+/i || $line =~ /"(sompresidence|sstitreinfo)"/) {
-	if ($line =~ /pr..?sidence de (M[^<]+)</i) {
+	if ($line =~ /pr..?sidence de (M[^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
 	    $prez = $1;
 #	    print "Présidence de $prez\n";
 	    if ($prez =~ /^Mm/) {
@@ -316,7 +318,7 @@ foreach $line (split /\n/, $string)
 	#si italique ou tout gras => commentaire
 	if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/.*\/\s$/) {
 	    checkout() if ($intervenant);
-	}elsif ($line =~ s/^\s*\|\s*(M[^\|\/]+)[\|\/]// ) {
+	}elsif ($line =~ s/^\s*\|\s*(M[^\|\/\:]+)[\|\/\:]// ) {
 	    checkout();
 	    $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);

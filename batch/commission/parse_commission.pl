@@ -192,7 +192,7 @@ foreach $line (split /\n/, $string)
 	    checkout() if ($intervenant);	    
 	    rapporteur();
 	    $found = 1;
-	}elsif ($line =~ s/^\|(M[^\|]+)[\|]// ) {
+	}elsif ($line =~ s/^\|(M[^\|\:]+)[\|\:]// ) {
 	    checkout();
 	    $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
@@ -202,7 +202,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
 	if (!$majIntervenant && !$found) {
-	    if     ($line =~ s/^\s*(M[mes\.]+\s[^\.]+)\.//) {
+	    if     ($line =~ s/^\s*(M[mes\.]+\s[^\.:]+)[\.:]//) {
 		checkout();
 		$intervenant = setIntervenant($1);		
 	    }elsif ($line =~ s/^\s*(M[mes\.]+\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
