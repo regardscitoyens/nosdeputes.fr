@@ -36,7 +36,7 @@ class mailComponents extends sfComponents
       ->setTo($this->to)
 
       //Give it a body
-      ->setBody(get_partial($this->partial, $this->mailContext))
+      ->setBody(get_partial('mail/'.$this->partial, $this->mailContext))
       ;
 
 
