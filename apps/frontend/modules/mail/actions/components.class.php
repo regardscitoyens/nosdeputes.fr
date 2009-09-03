@@ -22,7 +22,7 @@ class mailComponents extends sfComponents
     if (isset($this->action)) 
       throw new Exception('action should not be defenied anymore');
 
-    $action = new mailActions($this->context, 'mail', 'send');
+    $this->getContext()->getConfiguration()->loadHelpers('Partial');
     
     $message = Swift_Message::newInstance()
 
@@ -36,7 +36,7 @@ class mailComponents extends sfComponents
       ->setTo($this->to)
 
       //Give it a body
-      ->setBody($action->getPartial($this->partial, $this->mailContext))
+      ->setBody(get_partial($this->partial, $this->mailContext))
       ;
 
 

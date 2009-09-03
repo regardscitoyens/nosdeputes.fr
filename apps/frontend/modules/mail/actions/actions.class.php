@@ -18,7 +18,7 @@ class mailActions extends sfActions
   public function executeTest(sfWebRequest $request)
   {
     $this->getComponent('mail', 'send', 
-			     array('action' => $this, //On a besoin de l'action courrante
+			     array(
 				   'subject'=>'Un test', //Sujet du mail
 				   'to'=>array('tangui@localhost'), //Destinataires
 				   'partial'=>'test', //Partial contenant le contenu du mail (stocké dans template/_<nom du partial>.php
