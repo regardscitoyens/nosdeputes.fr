@@ -127,19 +127,7 @@
       <h3><?php echo link_to("Toutes ses interventions",'@parlementaire_interventions?slug='.$parlementaire->getSlug()); ?></h3>
       <h3><?php echo link_to("Tous ses amendements",'@parlementaire_amendements?slug='.$parlementaire->getSlug()); ?></h3>
       <h3><?php echo link_to("Toute ses questions écrites",'@parlementaire_questions?slug='.$parlementaire->getSlug()); ?></h3>
-<?php
-      $top = $parlementaire->getTop();
-if ($top) : ?>
-      <h3>Best/Worst (sur 12 derniers mois)</h3>
-<ul><?php
-foreach(array_keys($top) as $k) {
-  echo '<li style="';
-  if ($top[$k]['rank'] <= 150) 
-    echo 'color: green';
-  if ($top[$k]['rank'] >= $top[$k]['max_rank'] - 150) 
-    echo 'color: red';
-  echo '">'.$k.' : '.$top[$k]['value'].' ('.$top[$k]['rank'].'ème/'.$top[$k]['max_rank'].')</li>';
-}?></ul><?php endif; ?>
+      <?php include_partial('top', array('parlementaire'=>$parlementaire)); ?>
       <h3>Tags</h3>
 <div style="text-align: justify">
 <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'min_tag' => 2, 'route' => '@tag_parlementaire_interventions?parlementaire='.$parlementaire->slug.'&')); ?>
