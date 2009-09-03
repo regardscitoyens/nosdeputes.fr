@@ -56,13 +56,12 @@ class citoyenActions extends sfActions
           $this->Citoyen->activation_id = md5(time()*rand());
           $this->Citoyen->save();
 					
-					$this->getComponent('mail', 'send', 
-			     array('action' => $this, 
-				   'subject'=>'Inscription NosDéputés.fr', 
-				   'to'=>array($email), 
-				   'partial'=>'inscription', 
-				   'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
-				   ));
+	  $this->getComponent('mail', 'send', 
+			      array('subject'=>'Inscription NosDéputés.fr', 
+				    'to'=>array($email), 
+				    'partial'=>'inscription', 
+				    'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
+				    ));
 					
           $this->getUser()->setFlash('notice', 'Votre compte a été crée avec succès');
           $slug = $this->Citoyen->slug;
@@ -86,15 +85,14 @@ class citoyenActions extends sfActions
 		
 		if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('user_id') == $id)
 		{
-		  $this->getComponent('mail', 'send', 
-		  array('action' => $this, 
-		  'subject'=>'Inscription NosDéputés.fr', 
-		  'to'=>array($this->Citoyen->email), 
-			'partial'=>'inscription', 
-			'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
-			));
-			$this->getUser()->setFlash('notice', 'Un email de confirmation vient de vous être envoyé.');
-			$this->redirect($request->getReferer());
+		  $this->getComponent('mail', 'send', array(
+							    'subject'=>'Inscription NosDéputés.fr', 
+							    'to'=>array($this->Citoyen->email), 
+							    'partial'=>'inscription', 
+							    'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
+							    ));
+		  $this->getUser()->setFlash('notice', 'Un email de confirmation vient de vous être envoyé.');
+		  $this->redirect($request->getReferer());
 		}
 		else { $this->forward404(); }
 	}

@@ -17,7 +17,7 @@ class mailActions extends sfActions
   */
   public function executeTest(sfWebRequest $request)
   {
-    echo $this->getComponent('mail', 'send', 
+    $this->getComponent('mail', 'send', 
 			     array('action' => $this, //On a besoin de l'action courrante
 				   'subject'=>'Un test', //Sujet du mail
 				   'to'=>array('tangui@localhost'), //Destinataires
