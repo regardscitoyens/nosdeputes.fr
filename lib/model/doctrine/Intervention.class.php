@@ -138,14 +138,15 @@ class Intervention extends BaseIntervention
 						  'key' => 'numero',
 						  'return'    => 'value')));
 	for ($i = 0 ; $i < count($match[0]) ; $i++) {
-	  if (preg_match_all('/\s*(\d[\d\s\à]*rectifiés?|\d[\d\s\à]*)(,\s*|\s*et\s*)*/', $match[3][$i], $amends)) {
-	    $replace = $match[3][$i];
+	  $match_protected = preg_replace('/(\s*)(\d[\d\s\à]*rectifiés?|\d[\d\s\à]*)(,\s*|\s*et\s*)*/', '\1%\2%\3', $match[3][$i]);
+	  if (preg_match_all('/\s*%([^%]+)%(,\s*|\s*et\s*)*/', $match_protected, $amends)) {
+	    $replace = $match_protected;
 	    foreach($amends[1] as $amend) {
 	      $am = preg_replace('/à+/', '-', $amend);
 	      $am = preg_replace('/[^\d\-]+/', '',$am);
 	      $link = str_replace('LLL', urlencode($lois), $linko);
 	      $link = str_replace('AAA', urlencode($am), $link);
-	      $replace = preg_replace('/'.$amend.'/', ' <a name="amend_'.$am.'" href="'.$link.'">'.$amend.'</a> ', $replace);
+	      $replace = preg_replace('/%'.$amend.'%/', '<a name="amend_'.$am.'" href="'.$link.'">'.$amend.'</a> ', $replace);
 	    }
 	    $inter = preg_replace('/'.$match[1][$i].$match[3][$i].'/', $match[1][$i].$replace, $inter);
 	  }
