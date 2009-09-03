@@ -1,5 +1,5 @@
 <?php
-class InscriptionmailForm extends CitoyenForm
+class InscriptioncomForm extends CitoyenForm
 {
   public function configure()
   {
@@ -8,7 +8,8 @@ class InscriptionmailForm extends CitoyenForm
     // Enleve les widgets qu'on ne veut pas montrer
     unset(
       $this['id'], 
-      $this['email'],
+      $this['login'],
+      $this['pass'],
       $this['activite'],
       $this['naissance'],
       $this['sexe'],
@@ -26,15 +27,11 @@ class InscriptionmailForm extends CitoyenForm
       $this['slug']
     );
     
-    $this->widgetSchema['login'] = new sfWidgetFormInput();
-    $this->validatorSchema['login']->setOption('required', true);
-    $this->widgetSchema['pass'] = new sfWidgetFormInputPassword();
-    $this->validatorSchema['pass']->setOption('required', true);
+    $this->validatorSchema['email'] = new sfValidatorEmail(array(), array('invalid' => 'Adresse email invalide.'));
 
-    // Les labels
+    // labels
     $this->widgetSchema->setLabels(array(
-      'login' => 'Nom d\'utilisateur *',
-      'pass' => 'Mot de passe *'
+      'email' => 'Email'
     ));
   }
 }

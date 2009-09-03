@@ -8,6 +8,8 @@ class InscriptionForm extends CitoyenForm
     // Enleve les widgets qu'on ne veut pas montrer
     unset(
       $this['id'], 
+      $this['naissance'],
+      $this['sexe'],
       $this['employe_an'],
       $this['travail_pour'],
       $this['nom_circo'],
@@ -28,10 +30,6 @@ class InscriptionForm extends CitoyenForm
     $this->validatorSchema['login']->setOption('required', true);
     
     $this->validatorSchema['email'] = new sfValidatorEmail(array(), array('invalid' => 'Adresse email invalide.'));
-    
-    $annees = range(1920, date('Y')); // array des dates depuis 1920
-    $liste_annees = array_combine($annees, $annees); // array clés et valeurs des dates
-    $this->widgetSchema['naissance'] = new sfWidgetFormDate(array('format' => '%day%/%month%/%year%', 'years' => $liste_annees));
     
     // verif mot de passe avec confirmation
     $this->widgetSchema['pass'] = new sfWidgetFormInputPassword();

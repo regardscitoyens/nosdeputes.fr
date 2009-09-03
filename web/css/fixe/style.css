@@ -50,7 +50,7 @@ body {
 .haut_droite a:visited { color: #fff; text-decoration: none; }
 
 .signin {
-	height: 14px;
+  height: 14px;
   font-size: 1em;
   color: #fff;
   background-color: gray;
@@ -201,6 +201,10 @@ img {
   color: #fff;
   font-weight: bold;
   border: 1px solid
+}
+.bouton_ok:hover, .bouton_ok:focus, .bouton_ok:active, .bouton_ok:visited {
+	background-color: gray;
+	height: 20px;
 }
 /* Fin haut */
 
