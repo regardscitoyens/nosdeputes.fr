@@ -33,15 +33,20 @@ class tagActions extends sfActions
       ->andWhere('s.session IS NOT NULL AND s.session <> ""')
       ->groupBy('s.session')->fetchArray();
 
-    if ($request->getParameter('all')) {
-      $this->all = 1;
-      return;
-    }
+    $this->session = 0;
+    $this->all = 0;
+    $this->last = 0;
+
     if ($request->getParameter('session')) {
-      $this->session = preg_replace('/^(\d{4})/', '\\1-', $request->getParameter('session'));
+      $this->session = $request->getParameter('session');
       $this->qtag->leftJoin('i.Seance s')->andWhere('s.session = ?', $request->getParameter('session'));
       return;
     }
+    if ($request->getParameter('all') || $this->parlementaire->fin_mandat) {
+      $this->all = 1;
+      return;
+    }
+    $this->last = 1;
     $this->qtag->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
   }
 }

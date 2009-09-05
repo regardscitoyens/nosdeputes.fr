@@ -71,6 +71,12 @@ class parlementaireActions extends sfActions
   {
   }
 
+  public function executeRandom(sfWebRequest $request)
+  {
+    $p = Doctrine::getTable('Parlementaire')->createQuery('p')->orderBy('rand()')->limit(1)->fetchOne();
+    return $this->redirect('@parlementaire?slug='.$p['slug']);
+  }
+
   public function executeShow(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
@@ -106,9 +112,17 @@ public function executeList(sfWebRequest $request)
       $query->where('p.nom LIKE ?' , '%'.$this->search.'%');
     $query->orderBy("p.nom_de_famille ASC");
     $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
-    if ($this->pager->getNbResults() == 1) {
-      $p = $this->pager->getResults();
-      return $this->redirect('parlementaire/show?slug='.$p[0]->slug);
+    if ($this->search) {
+      $nb = $this->pager->getNbResults();
+      if ($nb == 1) {
+	$p = $this->pager->getResults();
+	return $this->redirect('parlementaire/show?slug='.$p[0]->slug);
+      }
+      if ($nb == 0) {
+	$this->similars = Doctrine::getTable('Parlementaire')->similarTo($this->search, null, 1);
+	if (count($this->similars) == 1)
+	  return $this->redirect('parlementaire/show?slug='.$this->similars[0]['slug']);
+      }
     }
   }
 

@@ -57,6 +57,9 @@ resized_photo_parlementaire:
   param: {module: parlementaire, action: photo}
 
 # Fiche parlementaire et affichages de ses travaux
+parlementaire_random:
+  url: /parlementaire/hasard
+  param: {module: parlementaire, action: random}
 parlementaire:
   url: /parlementaire/:slug
   param: {module: parlementaire, action: show}
@@ -71,7 +74,7 @@ parlementaire_tags:
   param: {module: tag, action: parlementaire}
 parlementaire_all_tags:
   url: /parlementaire/:slug/tag/all
-  param: {module: tag, action: parlementaire}
+  param: {module: tag, action: parlementaire, all: 1}
 parlementaire_session_tags:
   url: /parlementaire/:slug/tag/:session
   param: {module: tag, action: parlementaire}

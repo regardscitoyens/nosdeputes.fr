@@ -4,6 +4,13 @@
 <?php else : ?>
 <p>Les <?php $nResults = $pager->getNbResults(); echo $nResults; ?> députés de la législature (577 en activité)&nbsp;:</p>
 <?php endif; ?>
+<?php if ($similars) {
+   echo '<p>Peut être, cherchiez vous : </p><ul>';
+   foreach($similars as $s) {
+     echo '<li>'.link_to($s['nom'], 'parlementaire/show?slug='.$s['slug']).'</li>'; 
+   }
+   echo '</ul>';
+ }?>
 <ul>
 <?php foreach($pager->getResults() as $parlementaire) : ?>
 <li><?php echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php echo $parlementaire->getStatut(1); ?>, <?php echo link_to($parlementaire->nom_circo, '@list_parlementaires_circo?search='.$parlementaire->nom_circo); ?>)</li>

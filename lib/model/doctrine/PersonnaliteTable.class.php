@@ -6,7 +6,7 @@ class PersonnaliteTable extends Doctrine_Table
 {
   protected $changed = 0;
   protected $all = null;
-  public function similarTo($str, $sexe = null)
+  public function similarTo($str, $sexe = null, $return_array = 0)
   {
     if (preg_match('/^\s*$/', $str))
       return null;
@@ -15,6 +15,8 @@ class PersonnaliteTable extends Doctrine_Table
     $q = $this->createQuery('p')->where('nom LIKE ?', '% '.$word.'%');
     $res = $q->Execute();
     if ($res->count() == 1) {
+      if ($return_array)
+	return array($res[0]);
       return $res[0];
     }
     $q->free();
@@ -32,16 +34,30 @@ class PersonnaliteTable extends Doctrine_Table
     $champ = 'nom';
     if (!preg_match('/ /', $str))
       $champ = 'nom_de_famille';
+    $similar = array();
     //Compare each parlementaire with the string and keep the best
-    foreach ($this->all as $parl) {
+    for ($i = 0 ; $i < count($this->all) ; $i++) {
+      $parl = $this->all[$i];
       if ($sexe && $sexe != $parl['sexe'])
         continue;
       $res = similar_text(preg_replace('/[^a-z]+/i', ' ', $parl[$champ]), preg_replace('/[^a-z]+/i', ' ', $str), $pc);
-      if ($res > 0 && $pc >= $closest_res && $res >= $best_res) {
-        $closest = $parl;
-        $best_res = max($res, $best_res);
-        $closest_res = max($pc, $closest_res);
+      if ($res > 0 && $pc > 65)
+	$similar[$i] = $pc;
+    }
+
+    arsort($similar);
+    $keys = array_keys($similar);
+    if (count($keys)) {
+      $closest_res = $similar[$keys[0]];
+      $closest = $this->all[$keys[0]];
+    }
+
+    if ($return_array) {
+      $res = array();
+      foreach(array_keys($similar) as $i) {
+	array_push($res, $this->all[$i]);
       }
+      return $res;
     }
 
 #    echo "$str "; echo $closest['nom'];    echo " $closest_res\n";
