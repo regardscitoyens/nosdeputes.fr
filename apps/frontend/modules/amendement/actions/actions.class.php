@@ -12,6 +12,9 @@ class amendementActions extends sfActions
      $this->amendement = $query->fetchOne();
      $this->forward404Unless($this->amendement);
 
+     $this->section = PluginTagTable::getObjectTaggedWithQuery('Section', array('loi:numero='.$this->amendement->texteloi_id))
+       ->fetchOne()->getSection(1);
+
      $this->identiques = doctrine::getTable('Amendement')->createQuery('a')
        ->where('content_md5 = ?', $this->amendement->content_md5)
        ->orderBy('numero')

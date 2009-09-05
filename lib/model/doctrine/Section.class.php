@@ -51,9 +51,10 @@ class Section extends BaseSection
     $this->save();
   }
 
-  public function getSection() {
+  public function getSection($check = 0) {
     if ($this->id == $this->section_id)
-      return NULL;
+      if ($check == 0) return NULL;
+      else return $this;
     return $this->_get('Section');
   }
 
