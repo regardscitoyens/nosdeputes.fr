@@ -117,9 +117,10 @@ if ($type == 'total') {
   $Test->drawTitle(240,3 + 2*$font,"Participation globale au cours de ".$duree." (hémicycle et commissions)",50,50,50,585);
   $titre = 'globale-'.$shortduree;;
 } else {
-  $titre = $type.'-'.$shortduree;
+  $titre = $type;
   if ($type == 'commission') $titre .= 's';
   $Test->drawTitle(270,3 + 2*$font,"Participation en ".$titre." au cours de ".$duree,50,50,50,585);
+  $titre .= '-'.$shortduree;
 }
 $Test->xsRender('participation-'.$titre.'-'.$parlementaire->slug.'.png');
 

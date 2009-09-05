@@ -1,6 +1,6 @@
 <?php if (!isset($options['plot']) || $options['plot'] != 'total') { ?>
 <div>
-<h1>Tracés de présence et participation de <?php echo $parlementaire->getNom(); ?></h1>
+<h1>Graphe d'activité de <?php echo $parlementaire->getNom(); ?></h1>
 <a href="<?php echo url_for('@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear'); ?>">Les 12 derniers mois</a><?php
    foreach ($sessions as $s) {
    echo ', <a href="'.url_for('@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time='.$s['session']).'"> la session '.preg_replace('/^(\d{4})/', '\\1-', $s['session']).'</a>';
