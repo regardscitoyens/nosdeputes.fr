@@ -13,7 +13,9 @@ class interventionActions extends sfActions
   public function executeParlementaire(sfWebRequest $request)
   {
     $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
-    $this->interventions = doctrine::getTable('Intervention')->createQuery('i')->where('i.parlementaire_id = ?', $this->parlementaire->id);
+    $this->interventions = doctrine::getTable('Intervention')->createQuery('i')
+      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+      ->orderBy('i.date DESC, i.timestamp ASC');
   }
   public function executeShow(sfWebRequest $request)
   {
@@ -129,6 +131,6 @@ public function executeSearch(sfWebRequest $request)
       $this->query->andWhere('(Intervention.section_id = ? OR si.section_id = ?)', array($section, $section))
 	->leftJoin('i.Section si');
     }
-    $this->query->orderBy('date DESC');
+    $this->query->orderBy('date DESC, timestamp ASC');
   }
 }
