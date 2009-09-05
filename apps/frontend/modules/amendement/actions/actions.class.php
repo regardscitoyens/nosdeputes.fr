@@ -83,8 +83,7 @@ class amendementActions extends sfActions
     foreach($mcle as $m) {
       $this->high[] = preg_replace('/^[+-]"?([^"]*)"?$/', '\\1', $m);
     }
-    if (count($mcle) == 0) $sql = 'SELECT a.id FROM amendement a LIMIT 5000';
-    else $sql = 'SELECT a.id FROM amendement a WHERE MATCH (a.texte,a.expose) AGAINST (\''.implode(' ', $mcle).'\' IN BOOLEAN MODE)';
+    $sql = 'SELECT a.id FROM amendement a WHERE MATCH (a.texte,a.expose) AGAINST (\''.implode(' ', $mcle).'\' IN BOOLEAN MODE)';
     $search = Doctrine_Manager::connection()
       ->getDbh()
       ->query($sql)->fetchAll();
