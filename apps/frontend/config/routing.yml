@@ -43,7 +43,7 @@ list_parlementaires_organisme:
   url: /organisme/:slug
   param: {module: parlementaire, action: listOrganisme}
 
-parlementaires_tags:
+parlementaire_tags:
   url: /parlementaire/tag
   param: {module: parlementaire, action: tag}
 tag_result_parlementaires:
@@ -70,13 +70,13 @@ parlementaire_interventions:
   url: /parlementaire/:slug/interventions
   param: {module: intervention, action: parlementaire}
 parlementaire_tags:
-  url: /parlementaire/:slug/tag
+  url: /parlementaire/:slug/tags
   param: {module: tag, action: parlementaire}
 parlementaire_all_tags:
-  url: /parlementaire/:slug/tag/all
+  url: /parlementaire/:slug/tags/all
   param: {module: tag, action: parlementaire, all: 1}
 parlementaire_session_tags:
-  url: /parlementaire/:slug/tag/:session
+  url: /parlementaire/:slug/tags/:session
   param: {module: tag, action: parlementaire}
 parlementaire_rss_commentaires:
   url: /parlementaire/:slug/commentaires/rss
