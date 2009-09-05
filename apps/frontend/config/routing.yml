@@ -66,6 +66,15 @@ parlementaire_rss:
 parlementaire_interventions:
   url: /parlementaire/:slug/interventions
   param: {module: intervention, action: parlementaire}
+parlementaire_tags:
+  url: /parlementaire/:slug/tag
+  param: {module: tag, action: parlementaire}
+parlementaire_all_tags:
+  url: /parlementaire/:slug/tag/all
+  param: {module: tag, action: parlementaire}
+parlementaire_session_tags:
+  url: /parlementaire/:slug/tag/:session
+  param: {module: tag, action: parlementaire}
 parlementaire_rss_commentaires:
   url: /parlementaire/:slug/commentaires/rss
   param: {module: commentaire, action: rss, parlementaire: 1}
