@@ -1,8 +1,10 @@
 #!/bin/bash
+bash bin/load_deputes
 bash bin/load_hemicycle
 bash bin/load_amendements
 bash bin/load_jo
 bash bin/load_commission
 bash bin/tag_seance
+bash bin/load_question
 php symfony set:Vacances
 

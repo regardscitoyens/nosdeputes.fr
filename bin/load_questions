@@ -5,6 +5,7 @@ echo > /tmp/load_questions.log
 cd batch/questions
 # rm -f xml/*
 # perl parse_quest.pl >> /tmp/load_questions.log
+sh only_parse.sh >> /tmp/load_questions.log
 cd -
 php symfony cc
 for file in $(ls batch/questions/xml)
