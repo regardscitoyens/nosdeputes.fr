@@ -2,13 +2,8 @@
 $DataSet = new xsPData();
 $DataSet->AddPoint($labels, "Serie1");
 $DataSet->AddPoint($presences, "Serie2");
-if ($type == 'commission')
-  $DataSet->SetSerieName("Présences enregistrées", "Serie2");
-else $DataSet->SetSerieName("Présences relevées", "Serie2");
 $DataSet->AddPoint($participations, "Serie3");
-$DataSet->SetSerieName("Participations", "Serie3");
 $DataSet->AddPoint($mots, "Serie4");
-$DataSet->SetSerieName("Nombre de mots (x10000)", "Serie4");
 $DataSet->AddSerie("Serie2");
 $DataSet->AddSerie("Serie3");
 $DataSet->AddSerie("Serie4");
@@ -34,7 +29,6 @@ if (isset($n_questions) && $type != 'commission') {
   $DataSet3 = new xsPData();
   $DataSet3->AddPoint($labels, "Serie1");
   $DataSet3->AddPoint($n_questions, "Serie7");
-  $DataSet3->SetSerieName("Questions orales", "Serie7");
   $DataSet3->AddSerie("Serie7");
   $DataSet3->SetAbsciseLabelSerie("Serie1");
   $Data3 = $DataSet3->GetData();
@@ -95,12 +89,9 @@ $Test->setColorPalette(0,255,35*$fonction,0);
 $Test->setColorPalette(1,255,255,0);
 $Test->setColorPalette(2,0,255,0);
 $Test->drawFilledLineGraph($Data,$DataDescr,78);
-$Test->xsSetFontProperties("tahoma.ttf",$font);
-$Test->drawLegend(10+5*$font,2+3*$font,$DataDescr,255,255,255);
 if ($questions == 1) {
   $Test->setColorPalette(0,0,0,255);
   $Test->drawOverlayBarGraph($Data3,$DataDescr3,85,25);
-  $Test->drawLegend(10+5*$font,9+7*$font,$DataDescr3,255,255,255);
 }
 $Test->setColorPalette(0,255,35*$fonction,0);
 $Test->setColorPalette(1,0,0,0);
@@ -127,4 +118,11 @@ $Test->xsRender('participation-'.$titre.'-'.$parlementaire->slug.'.png');
 if (isset($link))
   echo link_to(image_tag('tmp/xspchart/participation-'.$titre.'-'.$parlementaire->slug.'.png', 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"'), '@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear');
 else echo image_tag('tmp/xspchart/participation-'.$titre.'-'.$parlementaire->slug.'.png', 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"');
-?>
+echo "<br/><span style='background-color: rgb(255,";
+echo 35*$fonction.",0);'>&nbsp;</span> ";
+if ($type == 'commission') echo '&nbsp;Présences enregistrées&nbsp;&nbsp;&nbsp;'; else echo '&nbsp;Présences relevées&nbsp;&nbsp;&nbsp;';
+echo "<span style='background-color: rgb(255,255,0);'>&nbsp;</span>&nbsp;Participations&nbsp;&nbsp;&nbsp;";
+echo "<span style='background-color: rgb(0,255,0);'>&nbsp;</span>&nbsp;Mots prononcés (x&nbsp;10&nbsp;000)&nbsp;&nbsp;&nbsp;";
+if ($questions == 1)
+    echo "<span style='background-color: rgb(0,0,255);'>&nbsp;</span>&nbsp;Questions orales&nbsp;&nbsp;&nbsp;";
+echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires<br/><br/>"; ?>
