@@ -81,10 +81,6 @@ class parlementaireActions extends sfActions
       ->leftJoin('p.ParlementaireOrganisme po')
       ->leftJoin('po.Organisme o')
       ->fetchOne();*/
-    $this->qtag = Doctrine_Query::create()
-      ->from('Tagging tg, tg.Tag t, Intervention i')
-      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.id = tg.taggable_id');
 
     $this->textes = doctrine_query::create()
       ->from('Section s')

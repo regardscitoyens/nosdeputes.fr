@@ -51,8 +51,13 @@ class tagComponents extends sfComponents
       $this->tags[$tag]['related'] = implode('|', $related);
     }
     ksort($this->tags);
+  }
 
-
-
+  public function executeParlementaire() {
+    $this->qtag = Doctrine_Query::create()
+      ->from('Tagging tg, tg.Tag t, Intervention i')
+      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365))
+      ->andWhere('i.id = tg.taggable_id');
   }
 }

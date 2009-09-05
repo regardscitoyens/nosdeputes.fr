@@ -130,7 +130,7 @@
       <?php include_partial('top', array('parlementaire'=>$parlementaire)); ?>
       <h3>Tags</h3>
 <div style="text-align: justify">
-<?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'min_tag' => 2, 'route' => '@tag_parlementaire_interventions?parlementaire='.$parlementaire->slug.'&')); ?>
+<?php include_component('tag', 'parlementaire', array('parlementaire'=>$parlementaire)); ?>
 </div>
       </div>
     </div>
