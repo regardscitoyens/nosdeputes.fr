@@ -1,18 +1,26 @@
-<?php if (!isset($options['plot']) || $options['plot'] != 'total') { ?>
-<div>
-<h1>Graphes d'activité de <?php echo $parlementaire->getNom(); ?></h1>
-<a href="<?php echo url_for('@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear'); ?>">Les 12 derniers mois</a><?php
-   foreach ($sessions as $s) {
-   echo ', <a href="'.url_for('@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time='.$s['session']).'"> la session '.preg_replace('/^(\d{4})/', '\\1-', $s['session']).'</a>';
- }?>
-</div>
-<?php }
+<?php
 $plotarray = array('parlementaire' => $parlementaire, 'labels' => $labels, 'vacances' => $vacances, 'time' => 'lastyear');
 if (isset($options['session'])) $plotarray['time'] = $options['session'];
 if (isset($options['questions'])) $plotarray = array_merge($plotarray, array('n_questions' => $n_questions));
 if (isset($options['link'])) $plotarray = array_merge($plotarray, array('link' => $options['link']));
 if (isset($options['fonctions'])) $plotarray = array_merge($plotarray, array('fonctions' => $fonctions));
 if (!isset($options['plot'])) $options = array_merge($options, array('plot' => 'total'));
+
+if (!isset($options['plot']) || $options['plot'] != 'total') { ?>
+<div>
+<h1>Graphes d'activité de <?php echo $parlementaire->getNom(); ?></h1>
+<?php if ($plotarray['time'] != 'lastyear')
+  echo '<a href='.url_for('@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear').'">';
+  echo 'Les 12 derniers mois';
+  if ($plotarray['time'] != 'lastyear') echo '</a>';
+  foreach ($sessions as $s) {
+  echo ', ';
+  if ($plotarray['time'] != $s['session']) echo '<a href="'.url_for('@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time='.$s['session']).'">';
+  echo 'la session '.preg_replace('/^(\d{4})/', '\\1-', $s['session']);
+  if ($plotarray['time'] != $s['session']) echo '</a>';
+  } ?>
+</div>
+<?php }
 $n = count($labels);
 $presences = array_fill(1, $n, 0);
 $participations = array_fill(1, $n, 0);
