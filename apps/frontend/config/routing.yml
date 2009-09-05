@@ -43,7 +43,7 @@ list_parlementaires_organisme:
   url: /organisme/:slug
   param: {module: parlementaire, action: listOrganisme}
 
-parlementaire_tags:
+parlementaires_tags:
   url: /parlementaire/tag
   param: {module: parlementaire, action: tag}
 tag_result_parlementaires:
