@@ -55,17 +55,17 @@
       } else {
         echo '<span class="perso">'.$intervention->getNomAndFonction().'</span>';
       }
+      if ($titre != 1) echo '<span class="source"><a href="'.$intervention->getSource().'">source</a> - <a href="'.url_for("@interventions_seance?seance=$seance->id").'#inter_'.$intervention->getMd5().'">permalink</a></span>';
     } else {
       $didascalie = 1;
-       if ($titre == 0) echo '<strong>Didascalie : </strong>';
-    }
-    if ($titre != 1) echo '<span class="source"><a href="'.$intervention->getSource().'">source</a> - <a href="'.url_for("@interventions_seance?seance=$seance->id").'#inter_'.$intervention->getMd5().'">permalink</a></span>';
-?>
+    } ?>
   </div>
 <?php
   if (!($didascalie && $titre != 0)) { ?>
     <div class="texte_intervention">
+    <?php if ($didascalie) echo '<em>'; ?>
     <?php echo $intervention->getIntervention(array('linkify_amendements'=>url_for('@find_amendements_by_loi_and_numero?loi=LLL&numero=AAA'))); ?>
+    <?php if ($didascalie) echo '</em>'; ?>
     </div>
   <?php } 
   if (!$didascalie) : ?>
