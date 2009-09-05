@@ -229,6 +229,7 @@ public function executeList(sfWebRequest $request)
   public function executePlotPresences(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
+    $this->session = $request->getParameter('time');
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
   }
 
@@ -256,7 +257,14 @@ public function executeList(sfWebRequest $request)
     foreach($parlementaires as $p) {
       $tops = $p->getTop();
       $i = 0;
-      $this->tops[$p->id][$i++] = $p;
+      $this->tops[$p->id][$i++] = $p;$this->sessions = Doctrine_Query::create()
+      ->select('s.session')
+      ->from("Seance s")
+      ->leftJoin('s.Interventions i')
+      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('s.session IS NOT NULL AND s.session <> ""')
+      ->groupBy('s.session')->fetchArray();
+
       foreach(array_keys($tops) as $key) {
 	$this->tops[$p->id][$i]['value'] = $tops[$key]['value'];
 

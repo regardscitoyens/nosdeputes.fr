@@ -2,23 +2,49 @@
 
 class plotComponents extends sfComponents
 {
-  public function executePlotParlementairePresence() {
-  }
-  public function executeParlementairePresenceLastYear() {
+  public function executeParlementairePresence() {
     static $seuil_invective = 20;
     if (!isset($this->options)) $this->options = array();
-    if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat)
-      $date = strtotime($this->parlementaire->fin_mandat);
-    else $date = time();
-    $annee = date('Y', $date); $sem = date('W', $date); if ($sem == 53) { $annee++; $sem = 1; }
-    $last_year = $date - 31536000;
-    if ($this->parlementaire->debut_mandat > date('Y-m-d', $last_year)) {
-      $date_debut = $this->parlementaire->debut_mandat;
-      $last_year = strtotime($this->parlementaire->debut_mandat);
-    } else $date_debut = date('Y-m-d', $last_year);
-    $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year); if ($sem0 == 53) { $annee0++; $sem0 = 1; }
-    $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
-    
+    if (!isset($this->options['plot']) || $this->options['plot'] != 'total')
+      $this->sessions = Doctrine_Query::create()
+        ->select('s.session')
+        ->from("Seance s")
+        ->leftJoin('s.Interventions i')
+        ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+        ->andWhere('s.session IS NOT NULL AND s.session <> ""')
+        ->groupBy('s.session')->fetchArray();
+    if (!isset($this->options['session'])) $this->options['session'] = 'lastyear';
+    if ($this->options['session'] == 'lastyear') {
+      if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat)
+        $date = strtotime($this->parlementaire->fin_mandat);
+      else $date = time();
+      $annee = date('Y', $date); $sem = date('W', $date); if ($sem == 53) { $annee++; $sem = 1; }
+      $last_year = $date - 31536000;
+      if ($this->parlementaire->debut_mandat > date('Y-m-d', $last_year)) {
+        $date_debut = $this->parlementaire->debut_mandat;
+        $last_year = strtotime($this->parlementaire->debut_mandat);
+      } else $date_debut = date('Y-m-d', $last_year);
+      $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year); if ($sem0 == 53) { $annee0++; $sem0 = 1; }
+      $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
+    } else {
+      $query4 = Doctrine_Query::create()
+        ->select('s.annee, s.numero_semaine')
+        ->from('Seance s')
+        ->where('s.session = ?', $this->options['session'])
+        ->orderBy('s.date ASC');
+      $date_debut = $query4->fetchOne();
+      $annee0 = $date_debut['annee'];
+      $sem0 = $date_debut['numero_semaine'] - 1;
+      $query4 = Doctrine_Query::create()
+        ->select('s.annee, s.numero_semaine')
+        ->from('Seance s')
+        ->where('s.session = ?', $this->options['session'])
+        ->orderBy('s.date DESC');
+      $date_fin = $query4->fetchOne();
+      $annee = $date_fin['annee'];
+      $sem = $date_fin['numero_semaine'] + 1;
+      $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
+    }
     $this->labels = $this->getLabelsSemaines($n_weeks, $annee0, $sem0);
     $this->vacances = $this->getVacances($n_weeks, $annee0, $sem0);
 
@@ -26,9 +52,11 @@ class plotComponents extends sfComponents
       ->select('COUNT(p.id) as nombre, p.id,s.type, s.annee, s.numero_semaine')
       ->from('Presence p')
       ->where('p.parlementaire_id = ?', $this->parlementaire->id)
-      ->leftJoin('p.Seance s')
-      ->andWhere('s.date > ?', $date_debut)
-      ->groupBy('s.type, s.annee, s.numero_semaine');
+      ->leftJoin('p.Seance s');
+    if ($this->options['session'] == 'lastyear')
+      $query->andWhere('s.date > ?', $date_debut);
+    else $query->andWhere('s.session = ?', $this->options['session']);
+    $query->groupBy('s.type, s.annee, s.numero_semaine');
     $presences = $query->fetchArray();
 
     $this->n_presences = array('commission' => array_fill(1, $n_weeks, 0),
@@ -43,10 +71,11 @@ class plotComponents extends sfComponents
       ->select('count(distinct s.id) as nombre, sum(i.nb_mots) as mots, count(i.id) as interv, s.type, s.annee, s.numero_semaine, i.fonction')
       ->from('Intervention i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->leftJoin('i.Seance s')
-      ->andWhere('s.date > ?', $date_debut)
-      ->groupBy('s.type, s.annee, s.numero_semaine');
-
+      ->leftJoin('i.Seance s');
+    if ($this->options['session'] == 'lastyear')
+      $query2->andWhere('s.date > ?', $date_debut);
+    else $query2->andWhere('s.session = ?', $this->options['session']);
+    $query2->groupBy('s.type, s.annee, s.numero_semaine');
     $participations = $query2->fetchArray();
 
     $this->n_participations = array('commission' => array_fill(1, $n_weeks, 0),
@@ -58,8 +87,6 @@ class plotComponents extends sfComponents
       $n = ($participation['Seance']['annee'] - $annee0)*52 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
       if ($n <= $n_weeks) {
         if ($participation['mots']/$participation['interv'] > $seuil_invective) {
-          if ($this->n_participations[$participation['Seance']['type']][$n] = 0)
-            $this->n_participations[$participation['Seance']['type']][$n] -= -0.1;
           $this->n_participations[$participation['Seance']['type']][$n] += $participation['nombre'];
         }
         $this->n_mots[$participation['Seance']['type']][$n] += $participation['mots']/10000;
@@ -67,17 +94,19 @@ class plotComponents extends sfComponents
       }
     }
     unset($participations);
-    
-   if (isset($this->options['questions'])) {
+
+    if (isset($this->options['questions'])) {
       $query3 = Doctrine_Query::create()
         ->select('count(distinct s.id) as nombre, i.id, s.annee, s.numero_semaine')
         ->from('Intervention i')
         ->where('i.parlementaire_id = ?', $this->parlementaire->id)
         ->andWhere('i.type = ?', 'question')
         ->andWhere('i.nb_mots > ?', 5*$seuil_invective)
-        ->leftJoin('i.Seance s')
-        ->andWhere('s.date > ?', $date_debut)
-        ->groupBy('s.annee, s.numero_semaine');
+        ->leftJoin('i.Seance s');
+      if ($this->options['session'] == 'lastyear')
+        $query3->andWhere('s.date > ?', $date_debut);
+      else $query3->andWhere('s.session = ?', $this->options['session']);
+      $query3->groupBy('s.annee, s.numero_semaine');
       $questionsorales = $query3->fetchArray();
 
       $this->n_questions = array_fill(1, $n_weeks, 0);
@@ -85,7 +114,7 @@ class plotComponents extends sfComponents
         $n = ($question['Seance']['annee'] - $annee0)*52 + $question['Seance']['numero_semaine'] - $sem0 + 1;
         if ($n <= $n_weeks) {
           if ($this->n_questions[$n] == 0)
-            $this->n_questions[$n] -= 0.2;
+            $this->n_questions[$n] -= 0.15;
           $this->n_questions[$n] += $question['nombre'];
         }
       }
@@ -116,43 +145,5 @@ class plotComponents extends sfComponents
       if (isset($hashmap[$index]) && !(($index == 3) && ($sem0 < 3))) $labels[$i] = $hashmap[$index];
     }
     return $labels;
-  }
-
-
-  public function executeParlementairePresenceCommissionBySession() {
-    $query = Doctrine_Query::create()
-      ->select('COUNT(*) as nombre, p.*')
-      ->from('Presence p')
-      ->where('p.parlementaire_id = ?', $this->parlementaire->id)
-      ->leftJoin('p.Seance s')
-      ->andWhere('s.type = ?', 'hemicycle')
-      ->addSelect('s.session')
-      ->orderBy('s.session')
-      ->groupBy('s.session');
-    $presences = $query->fetchArray();
-
-    $n_sessions = count($presences);
-    $this->sessions = range(1, $n_sessions);
-    $this->n_presences = array_fill(1, $n_sessions, 0);
-    for ($i = 0; $i < $n_sessions; $i++) {
-      $this->n_presences[$i+1] += $presences[$i]['nombre'];
-    }
-
-    $query2 = Doctrine_Query::create()
-      ->select('count(distinct id) as nombre, s.session')
-      ->from('Seance s')
-      ->where('s.type = ?', 'commission')
-      ->leftJoin('s.Interventions i')
-      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.fonction NOT LIKE ?', 'president')
-      ->andWhere('i.type = ?', 'commission')
-      ->orderBy('s.session')
-      ->groupBy('s.session');
-    $this->participations = $query2->fetchArray();
-
-    $this->n_participations = array_fill(1, $n_sessions, 0);
-    for ($i = 0; $i < $n_sessions; $i++) {
-      $this->n_participations[$i+1] += $participations[$i]['nombre'];
-    }
   }
 }
