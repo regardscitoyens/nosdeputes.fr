@@ -4,7 +4,7 @@
 <?php else : ?>
 <p>Les <?php $nResults = $pager->getNbResults(); echo $nResults; ?> députés de la législature (577 en activité)&nbsp;:</p>
 <?php endif; ?>
-<?php if ($similars) {
+<?php if (isset($similars) && $similars) {
    echo '<p>Peut être, cherchiez vous : </p><ul>';
    foreach($similars as $s) {
      echo '<li>'.link_to($s['nom'], 'parlementaire/show?slug='.$s['slug']).'</li>'; 
