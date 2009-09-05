@@ -125,4 +125,8 @@ echo "<span style='background-color: rgb(255,255,0);'>&nbsp;</span>&nbsp;Partici
 echo "<span style='background-color: rgb(0,255,0);'>&nbsp;</span>&nbsp;Mots prononcés (x&nbsp;10&nbsp;000)&nbsp;&nbsp;&nbsp;";
 if ($questions == 1)
     echo "<span style='background-color: rgb(0,0,255);'>&nbsp;</span>&nbsp;Questions orales&nbsp;&nbsp;&nbsp;";
-echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires<br/><br/>"; ?>
+echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires";
+if (isset($link))
+  echo "&nbsp;&nbsp;&nbsp;&nbsp;".link_to('Explications', '@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear');
+echo "<br/><br/>"
+?>
