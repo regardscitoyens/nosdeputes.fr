@@ -77,6 +77,7 @@ class sectionActions extends sfActions
 
     $this->sections = doctrine::getTable('Section')->createQuery('s')
       ->where('s.id = s.section_id')
+      ->andWhere('s.nb_interventions > 5')
       ->orderBy('s.nb_interventions DESC')
       ->execute();
 
