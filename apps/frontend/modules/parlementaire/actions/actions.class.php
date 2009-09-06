@@ -75,7 +75,7 @@ class parlementaireActions extends sfActions
 
   public function executeRandom(sfWebRequest $request)
   {
-    $p = Doctrine::getTable('Parlementaire')->createQuery('p')->orderBy('rand()')->limit(1)->fetchOne();
+    $p = Doctrine::getTable('Parlementaire')->createQuery('p')->where('fin_mandat IS NULL')->orderBy('rand()')->limit(1)->fetchOne();
     return $this->redirect('@parlementaire?slug='.$p['slug']);
   }
 
@@ -278,7 +278,7 @@ public function executeList(sfWebRequest $request)
       ->select('s.session')
       ->from("Seance s")
       ->leftJoin('s.Interventions i')
-      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+      ->where('i.parlementaire_id = ?', $p->id)
       ->andWhere('s.session IS NOT NULL AND s.session <> ""')
       ->groupBy('s.session')->fetchArray();
 
