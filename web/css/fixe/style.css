@@ -295,14 +295,12 @@ img {
   position: relative;
   top: 0;
   left: 0;
-  height: 150px;
-  width: 117px;
+  height: 170px;
   border-right: 1px solid #BFBFBF;
   background: #D0D0D0 url("images/cadre_depute.png") no-repeat 0 0;
 }
 .photo_fiche {
-  height: 150px;
-  width: 117px;
+  height: 170px;
 }
 .logo_parti {
   position: absolute;
@@ -312,8 +310,8 @@ img {
 .graph_depute {
   float: left;
   position: relative;
-  width: 820px;
-  height: 150px;
+  height: 170px;
+  margin-left: 4px;
 }
 .graph_depute img {
   width: 800px;

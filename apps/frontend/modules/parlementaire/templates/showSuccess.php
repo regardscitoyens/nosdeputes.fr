@@ -1,13 +1,13 @@
 <?php $style = 'fixe'; # en attendant le style switcher ?>
 <div class="fiche_depute">
+<p><h1><?php echo $parlementaire->nom.', '.$parlementaire->getLongStatut(1); ?></h1></p>
   <div class="depute_gauche">
     <div class="photo_depute">
-<?php    echo '<img src="'.url_for('@resized_photo_parlementaire?height=150&slug='.$parlementaire->slug).'" class="photo_fiche" alt="Photo de '.$parlementaire->nom.'"/>'; ?>
+<?php    echo '<img src="'.url_for('@resized_photo_parlementaire?height=170&slug='.$parlementaire->slug).'" class="photo_fiche" alt="Photo de '.$parlementaire->nom.'"/>'; ?>
     </div>
   </div>
   <div class="graph_depute">
     <div class="info_depute">
-      <h1><?php echo $parlementaire->nom.', '.$parlementaire->getLongStatut(1); ?></h1>
     </div>
       <?php echo include_component('plot', 'parlementairePresence', array('parlementaire' => $parlementaire, 'options' => array('plot' => 'total', 'questions' => 'on', 'link' => 'on'))); ?>
   </div>
