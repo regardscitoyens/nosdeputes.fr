@@ -244,6 +244,7 @@ public function executeList(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
     $this->session = $request->getParameter('time');
+    $this->forward404Unless(preg_match('/^(lastyear|2\d{3}2\d{3})$/', $this->session));
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
   }
 
