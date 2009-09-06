@@ -12,7 +12,7 @@ $last = end($tops); $i = 0; foreach(array_keys($last[0]->getTop()) as $key) { $i
      <td<?php echo $t[$i]['style']; ?>><?php 
      if (preg_match('/\./', $t[$i]['value'])) {
        printf('%02d', $t[$i]['value']);
-     }else{
+     } else{
        echo $t[$i]['value']; 
      }
 ?></td>

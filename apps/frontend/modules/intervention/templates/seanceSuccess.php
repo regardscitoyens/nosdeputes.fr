@@ -1,10 +1,10 @@
 <div class="titre_int_et_seance" id="sommaire">
 <?php if ($seance->type == 'commission') : ?>
 <h1><?php echo $seance->getOrganisme()->getNom(); ?></h1>
-<h2>Séance du <?php echo $seance->getDate() ?> à <?php echo $seance->getMoment(); ?></h2>
+<h2>Séance du <?php echo myTools::displayDate($seance->getDate()) ?> à <?php echo $seance->getMoment(); ?></h2>
 <?php else :?>
 <h1>Séance en hémicycle</h1>
-<h2>du <?php echo $seance->getDate() ?> à <?php echo $seance->getMoment(); ?></h2>
+<h2>du <?php echo myTools::displayDate($seance->getDate()) ?> à <?php echo $seance->getMoment(); ?></h2>
 <?php endif; ?>
 <ul>
 <?php foreach($seance->getTableMatiere() as $table) : if (!$table['titre']) {continue;} ;?>

@@ -3,7 +3,7 @@
     <div class="info">
     <strong>  
     <?php 
-    echo $intervention->getSeance()->getDate().' : ';
+    echo myTools::displayDate($intervention->getSeance()->getDate()).' : ';
     
     if ($intervention->getType() == 'commission') { echo $intervention->getSeance()->getOrganisme()->getNom(); }
     else { echo $intervention->getSection()->getTitreComplet(); }

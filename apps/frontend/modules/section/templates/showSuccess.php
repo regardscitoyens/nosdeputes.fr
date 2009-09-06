@@ -24,7 +24,7 @@ if ($subsection->nb_interventions && $subsection->id != $section->id) : ?>
 Voici la liste des séances pour cette section : 
 <ul>
 <?php foreach($section->getSeances() as $seance) : ?>
-<li><?php echo link_to($seance->getDate().', '.$seance->getMoment(), '@interventions_seance?seance='.$seance->id.'#table_'.$section->id); ?></li>
+<li><?php echo link_to(myTools::displayDate($seance->getDate()).', '.$seance->getMoment(), '@interventions_seance?seance='.$seance->id.'#table_'.$section->id); ?></li>
 <?php endforeach; ?>
 </ul>
 </div>

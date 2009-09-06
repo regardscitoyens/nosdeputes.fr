@@ -1,5 +1,26 @@
 <?php
 class myTools {
+
+   static $num_mois = array(
+     "01" => "janvier",
+     "02" => "février",
+     "03" => "mars",
+     "04" => "avril",
+     "05" => "mai",
+     "06" => "juin",
+     "07" => "juillet",
+     "08" => "août",
+     "09" => "septembre",
+     "10" => "octobre",
+     "11" => "novembre",
+     "12" => "decembre");
+  public static function displayDate($date) {
+    if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $date, $match)) {
+      if ($match[3] == '1') $match[3] .= 'er';
+      return $match[3].' '.self::$num_mois[$match[2]].' '.$match[1];
+    } else return $date;
+  }
+
   public static function clearHtml($s, $authorized_tags = '<strong><i><b><a><em>') {
 	sfApplicationConfiguration::loadHelpers(array('Url'));
     if ($authorized_tags)

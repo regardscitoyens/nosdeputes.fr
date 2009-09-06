@@ -4,7 +4,7 @@
 <h1><?php echo $amendement->getTitre().' ('.$amendement->getSort().')'; ?></h1>
   <p class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></p>
   <div class="signataires">
-  <p>Déposé le <?php echo $amendement->date; ?> par : <?php echo $amendement->signataires; ?>.</p>
+  <p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo $amendement->signataires; ?>.</p>
   <?php 
   $deputes = $amendement->getParlementaires();
   echo '<p align-style="center">';
@@ -36,7 +36,7 @@
 <h3>En séance</h3>
 <ul>
 <?php foreach($seances as $s) : ?>
-<li><a href="<?php echo url_for('@interventions_seance?seance='.$s['seance_id']); ?>#amend_<?php echo $amendement->numero; ?>"><?php echo $s['date']; ?></a></li>
+<li><a href="<?php echo url_for('@interventions_seance?seance='.$s['seance_id']); ?>#amend_<?php echo $amendement->numero; ?>"><?php echo myTools::displayDate($s['date']); ?></a></li>
 <?php endforeach ?>
 </ul>
 </div>

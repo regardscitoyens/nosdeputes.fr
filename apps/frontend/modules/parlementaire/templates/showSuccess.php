@@ -19,7 +19,7 @@
       <li title="Rapports"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Rapports"'); ?> : 2</a></li>
       <li title="Propositions de loi (auteur)"><a href="#"><?php echo image_tag('../css/'.$style.'/images/balance.png', 'alt="Propositions de loi (auteur)"'); ?> : 0</a></li>
       <li title="Questions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/question.png', 'alt="Questions"'); ?>   : 50</a></li>
-      <li><span class="barre_date"><?php if ($parlementaire->fin_mandat == null) echo "Depuis le"; else echo "Mandat terminé"; ?>&nbsp;: <?php echo $parlementaire->debut_mandat; if ($parlementaire->fin_mandat != null) echo " - ".$parlementaire->fin_mandat; ?></span></li>
+      <li><span class="barre_date"><?php if ($parlementaire->fin_mandat == null) echo "Depuis le"; else echo "Mandat terminé"; ?>&nbsp;: <?php echo myTools::displayDate($parlementaire->debut_mandat); if ($parlementaire->fin_mandat != null) echo " - ".myTools::displayDate($parlementaire->fin_mandat); ?></span></li>
     </ul>
   </div>
   <div class="stopfloat"></div>
