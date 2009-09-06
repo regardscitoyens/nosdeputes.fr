@@ -33,7 +33,8 @@ class sectionActions extends sfActions
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('i.Section s')
       ->andWhere('(s.section_id = ? OR s.id = ?)', array($this->section->id, $this->section->id))
-      ->andWhere('i.nb_mots > 20');
+      ->andWhere('i.nb_mots > 20')
+      ->orderBy('i.date DESC, i.timestamp ASC');
   }
   public function executeShow(sfWebRequest $request) 
   {

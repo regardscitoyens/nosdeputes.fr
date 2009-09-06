@@ -65,7 +65,8 @@ class interventionActions extends sfActions
       $this->parlementaire = doctrine::getTable('Parlementaire')
 	->findOneBySlug($slug);
       if ($this->parlementaire)
-	$query->andWhere('Intervention.parlementaire_id = ?', $this->parlementaire->id);
+	$query->andWhere('Intervention.parlementaire_id = ?', $this->parlementaire->id)
+      ->orderBy('i.date DESC, i.timestamp ASC');
     }
 
     if ($section = $request->getParameter('section')) {
