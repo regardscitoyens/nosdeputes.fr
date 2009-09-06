@@ -8,7 +8,7 @@ class plotComponents extends sfComponents
     if (!isset($this->options['plot']) || $this->options['plot'] != 'total')
       $this->sessions = Doctrine_Query::create()
         ->select('s.session')
-        ->from("Seance s")
+        ->from('Seance s')
         ->leftJoin('s.Interventions i')
         ->where('i.parlementaire_id = ?', $this->parlementaire->id)
         ->andWhere('s.session IS NOT NULL AND s.session <> ""')
@@ -18,7 +18,7 @@ class plotComponents extends sfComponents
       if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat)
         $date = strtotime($this->parlementaire->fin_mandat);
       else $date = time();
-      $annee = date('Y', $date); $sem = date('W', $date); if ($sem == 53) { $annee++; $sem = 1; }
+      $annee = date('Y', $date); $sem = date('W', $date) - 1; if ($sem == 0) { $annee--; $sem = 52; }
       $last_year = $date - 31536000;
       if ($this->parlementaire->debut_mandat > date('Y-m-d', $last_year)) {
         $date_debut = $this->parlementaire->debut_mandat;
