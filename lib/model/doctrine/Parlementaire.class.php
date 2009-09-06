@@ -206,8 +206,7 @@ class Parlementaire extends BaseParlementaire
     return $this->_get('nom_circo')." (".$this->getNumeroDepartement($shortcirco).")";
   }
 
-  public function getPrefixeCirconscription() {
-    $hashmap = array(
+   static $dptmt_pref = array(
      "Ain" => "de l'",
      "Aisne" => "de l'",
      "Allier" => "de l'",
@@ -314,13 +313,13 @@ class Parlementaire extends BaseParlementaire
      "Yonne" => "de l'",
      "Yvelines" => "des"
     );
-    $prefixe = $hashmap[trim($this->nom_circo)];
+ public function getPrefixeCirconscription() {
+     $prefixe = self::$dptmt_pref[trim($this->nom_circo)];
     if (! preg_match("/'/", $prefixe)) $prefixe = $prefixe.' ';
     return $prefixe;
   }
 
-  public static function getNomDepartement($numero) {
-    $hashmap = array(
+   static $dptmt_nom = array(
       "1" => "Ain",
       "2" => "Aisne",
       "3" => "Allier",
@@ -428,12 +427,12 @@ class Parlementaire extends BaseParlementaire
       "986" => "Wallis-et-Futuna",
       "987" => "Polynésie Française",
       "988" => "Nouvelle-Calédonie");
-    if (isset($hashmap["$numero"])) return $numero = $hashmap["$numero"];
+  public static function getNomDepartement($numero) {
+    if ( isset(self::$dptmt_nom["$numero"]) ) return $numero = self::$dptmt_nom["$numero"];
     else return 0;
   }
 
-  public static function getNumeroDepartement($nom) {
-    $hashmap = array(
+    static $nom_dptmt = array(
       "ain" => "01",
       "aisne" => "02",
       "allier" => "03",
@@ -541,7 +540,8 @@ class Parlementaire extends BaseParlementaire
       "wallis-et-futuna" => "986",
       "polynésie-française" => "987",
       "nouvelle-calédonie" => "988");
-    if (isset($hashmap[$nom])) return $numero = $hashmap[$nom];
+  public static function getNumeroDepartement($nom) {
+    if (isset(self::$nom_dptmt[$nom])) return $numero = self::$nom_dptmt[$nom];
     else return false;
   }
 
