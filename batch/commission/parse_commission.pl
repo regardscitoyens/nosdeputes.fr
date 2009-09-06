@@ -163,7 +163,7 @@ $string =~ s/<\/?ul>//gi;
 
 foreach $line (split /\n/, $string)
 {
-    if ($line =~ /<body>/) {
+    if ($line =~ /<body[^>]*>/) {
 	$body = 1;
     }
     next unless ($body);
@@ -176,7 +176,7 @@ foreach $line (split /\n/, $string)
 	    $source = $url."#$1";
 	}elsif($line =~ /<a[^>]+>([^<]+)</) {
 	    $test = $1;
-	    if ($test =~ /Commission/) {
+	    if (!$commission && $test =~ /Commission/) {
 		$commission = $test;
 	    }
 	}
@@ -217,16 +217,16 @@ foreach $line (split /\n/, $string)
     }elsif ($line =~ /<h[1-9]+/i) {
 	rapporteur();
 #	print "$line\n";
-	if ($line =~ /SOMdate/) {
-	    if ($line =~ /\w+\s+(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/) {
+	if ($line =~ /SOMdate|\"seance\"/) {
+	    if ($line =~ /\w+\s+(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/i) {
 		$date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
 	    }
-	}elsif ($line =~ /SOMseance/i) {
+	}elsif ($line =~ /SOMseance|"souligne_cra"/i) {
 	    if ($line =~ /(\d+)\s*(h|heures?)\s*(\d+|)/i) {
 		$heure = sprintf("%02d:%02d", $1, $2 || "00");
 	    }
-	}elsif(!$commission && $line =~ /commission|mission|délégation|office/i) {
-	    if ($line =~ /\>\|?((Comm|Miss|Délé|Offic)[^\>\|]+)[\<\|]/) {
+	}elsif(!$commission && $line =~ /groupe|commission|mission|délégation|office/i) {
+	    if ($line =~ /[\>\|]\s*((Groupe|Comm|Miss|Délé|Offic)[^\>\|]+)[\<\|]/) {
 		$commission = $1;
 	    }
 	}elsif($line =~ /SOMnumcr/i) {
