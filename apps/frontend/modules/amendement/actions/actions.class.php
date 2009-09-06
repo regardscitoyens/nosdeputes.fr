@@ -48,7 +48,7 @@ class amendementActions extends sfActions
     $this->amendements = doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
-      ->orderBy('a.date DESC');
+      ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
   }
 
   public function executeTop(sfWebRequest $request)
@@ -109,7 +109,7 @@ class amendementActions extends sfActions
         $this->query->leftJoin('a.ParlementaireAmendement pa')
           ->andWhere('pa.parlementaire_id = ?', $this->parlementaire->id);
     }
-    $this->query->orderBy('date DESC');
+    $this->query->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
   }
 
   public function executeFind(sfWebRequest $request)
