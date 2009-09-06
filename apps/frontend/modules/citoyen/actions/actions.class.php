@@ -52,12 +52,12 @@ class citoyenActions extends sfActions
           $this->Citoyen->activation_id = md5(time()*rand());
           $this->Citoyen->save();
           
-          /* $this->getComponent('mail', 'send', 
+          $this->getComponent('mail', 'send', 
             array('subject'=>'Inscription NosDéputés.fr', 
             'to'=>array($email), 
             'partial'=>'inscription', 
             'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
-            )); */
+            ));
           
           $this->getUser()->setFlash('notice', 'Vous allez recevoir un email de confirmation. Pour finaliser votre inscription, veuillez cliquer sur le lien d\'activation contenu dans cet email.');
           $this->redirect('@homepage');
