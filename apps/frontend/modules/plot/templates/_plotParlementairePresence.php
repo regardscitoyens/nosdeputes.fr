@@ -118,7 +118,7 @@ $Test->xsRender('participation-'.$titre.'-'.$parlementaire->slug.'.png');
 if (isset($link))
   echo link_to(image_tag('tmp/xspchart/participation-'.$titre.'-'.$parlementaire->slug.'.png', 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"'), '@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear');
 else echo image_tag('tmp/xspchart/participation-'.$titre.'-'.$parlementaire->slug.'.png', 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"');
-echo "<br/><span style='background-color: rgb(255,";
+echo "<p><span style='background-color: rgb(255,";
 echo 35*$fonction.",0);'>&nbsp;</span> ";
 if ($type == 'commission') echo '&nbsp;Présences enregistrées&nbsp;&nbsp;&nbsp;'; else echo '&nbsp;Présences relevées&nbsp;&nbsp;&nbsp;';
 echo "<span style='background-color: rgb(255,255,0);'>&nbsp;</span>&nbsp;Participations&nbsp;&nbsp;&nbsp;";
@@ -128,5 +128,5 @@ if ($questions == 1)
 echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires";
 if (isset($link))
   echo "&nbsp;&nbsp;&nbsp;&nbsp;".link_to('Explications', '@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear');
-echo "<br/><br/>"
+echo "</p>"
 ?>
