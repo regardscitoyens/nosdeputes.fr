@@ -212,13 +212,14 @@ class topDeputesTask extends sfBaseTask
 
     $groupes = array();
     foreach(array_keys($this->deputes) as $id) {
-      $depute = Doctrine::getTable('Parlementaire')->find($id);
-      $depute->top = serialize($this->deputes[$id]);
-      $depute->save();
       foreach(array_keys($this->deputes[$id]) as $key) {
 	$groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
 	$groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
       }
+      unset($this->deputes[$id]['groupe']);
+      $depute = Doctrine::getTable('Parlementaire')->find($id);
+      $depute->top = serialize($this->deputes[$id]);
+      $depute->save();
     }
 
     $globale = doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes');
