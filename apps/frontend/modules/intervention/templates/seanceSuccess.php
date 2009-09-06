@@ -1,4 +1,4 @@
-<div class="titre_int_et_seance">
+<div class="titre_int_et_seance" id="sommaire">
 <?php if ($seance->type == 'commission') : ?>
 <h1><?php echo $seance->getOrganisme()->getNom(); ?></h1>
 <h2>Séance du <?php echo $seance->getDate() ?> à <?php echo $seance->getMoment(); ?></h2>
@@ -40,6 +40,7 @@
         echo '<h3><span class="sous-section">';
         echo ucfirst($intervention->Section->titre).'</span></h3>';
       }
+      echo '<a href="#sommaire">^ Retour au sommaire ^</a>';
     }
   } else echo '<div class="intervenant">';
     if ($intervention->hasIntervenant()) {

@@ -97,7 +97,7 @@ parlementaire_presences:
   url: /parlementaire/:slug/presence
   param: {module: presence, action: parlementaire}
 plot_parlementaire_presences:
-  url: /parlementaire/:slug/presence/plot
+  url: /parlementaire/:slug/presence/plot/:time
   param: {module: parlementaire, action: plotPresences}
 preuve_presence_seance:
   url: /parlementaire/:slug/presence/:seance
