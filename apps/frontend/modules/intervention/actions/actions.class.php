@@ -66,7 +66,7 @@ class interventionActions extends sfActions
 	->findOneBySlug($slug);
       if ($this->parlementaire)
 	$query->andWhere('Intervention.parlementaire_id = ?', $this->parlementaire->id)
-      ->orderBy('i.date DESC, i.timestamp ASC');
+      ->orderBy('date DESC, timestamp ASC');
     }
 
     if ($section = $request->getParameter('section')) {
