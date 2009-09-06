@@ -23,7 +23,7 @@ class loadCommissionTask extends sfBaseTask
 	  echo "$dir$file\n";
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
-	    if (!$json || !$json->intervention || !$json->date || !$json->heure || !$json->commission || !$json->source) {
+	    if (!$json || !$json->intervention || !$json->date || !$json->commission || !$json->source) {
 	      echo "ERROR json : ";
 	      echo $line;
 	      echo "\n";

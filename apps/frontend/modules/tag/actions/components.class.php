@@ -5,7 +5,7 @@ class tagComponents extends sfComponents
   public function executeTagcloud() {
     $this->tags = PluginTagTable::getAllTagNameWithCount($this->tagquery, array('model' => $this->model, 'triple' => false, 'min_tags_count' => $this->min_tag, 'limit'=> $this->limit));
 
-    asort($this->tags);
+//    asort($this->tags);
 
 
     //Ici on cherche à groupes les tags qui sont très similaires
@@ -47,10 +47,11 @@ class tagComponents extends sfComponents
       if (!isset($class[$count]))
 	$class[$count] = intval($cpt * 4 / $tot);
       $cpt++;
+      $this->tags[$tag]['tag'] = $tag;
       $this->tags[$tag]['class'] = $class[$count];
       $this->tags[$tag]['related'] = implode('|', $related);
     }
-    ksort($this->tags);
+    uksort($this->tags, 'strcasecmp');
   }
 
   public function executeParlementaire() {

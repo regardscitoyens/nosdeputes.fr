@@ -42,6 +42,8 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->nom_de_famille = $json->nom_de_famille;
 	      $parl->sexe = $json->sexe;
 	    }
+	    if ($json->circonscription)
+	      $parl->circonscription = $json->circonscription;
 	    if (count($json->adresses))
 	      $parl->adresses = $json->adresses;
 	    if (count($json->autresmandats))

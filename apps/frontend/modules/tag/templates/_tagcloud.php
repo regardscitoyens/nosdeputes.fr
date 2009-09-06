@@ -7,6 +7,6 @@
 <?php foreach(array_keys($tags) as $tag) : 
 ?><span class="tag_level_<?php echo $tags[$tag]['class']; ?>"><a href="<?php 
 echo url_for($route.'tags='.$tags[$tag]['related']); ?>" title="<?php echo $tags[$tag]['count']; ?>"><?php 
-$nom = preg_replace('/\s+/', '&nbsp;', $tag);
+$nom = preg_replace('/\s+/', '&nbsp;', $tags[$tag]['tag']);
 echo $nom; ?></a> <?php
 ?></span><?php endforeach; ?>

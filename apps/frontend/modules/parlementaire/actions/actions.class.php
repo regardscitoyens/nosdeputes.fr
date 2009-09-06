@@ -17,7 +17,7 @@ class parlementaireActions extends sfActions
     $work_height = 500; //pour éviter des sentiments d'antialiasing
 
     $slug = $request->getParameter('slug');
-    $parlementaires = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->fetchArray();
+    $parlementaires = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->andWhere('photo IS NOT NULL')->fetchArray();
     $this->forward404Unless($parlementaires[0]);
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
@@ -65,6 +65,8 @@ class parlementaireActions extends sfActions
       $ih = $image;
     }
     $this->image = $ih;
+    $this->getResponse()->addCacheControlHttpHeader('max_age=60');
+    $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()*2));
   }
 
   public function executeIndex(sfWebRequest $request)
@@ -229,8 +231,8 @@ public function executeList(sfWebRequest $request)
       $this->parlementaires = Doctrine::getTable('Intervention')
 	->createQuery('i')
 	->select('i.id, p.*, count(i.id) as nb')
-    ->addFrom('i.Parlementaire p, Tagging tg, Tag t')
-    ->where('p.id IS NOT NULL')
+        ->addFrom('i.Parlementaire p, Tagging tg, Tag t')
+         ->where('p.id IS NOT NULL')
 	->andWhere('tg.taggable_id = i.id AND t.id = tg.tag_id')
 	->andWhere('tg.taggable_model = ?', 'Intervention')
 	->andWhereIn('t.name', $tags)
