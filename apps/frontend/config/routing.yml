@@ -201,10 +201,6 @@ inscription:
   url: /citoyens/inscription
   param: {module: citoyen, action: new}
 
-inscription_mail:
-  url: /citoyens/inscription/mail
-  param: {module: citoyen, action: newmail}
-
 list_citoyens:
   url: /citoyens
   param: {module: citoyen, action: index}
@@ -229,11 +225,8 @@ activation_citoyen:
   url: /citoyens/activation/:activation_id
   param: {module: citoyen, action: activation}
 
-renvoi_mail_activation_citoyen:
-  url: /citoyens/activation/renvoi/:user_id
-  param: {module: citoyen, action: renvoimailactivation}
+# renvoi_mail_activation_citoyen:
+  # url: /citoyens/activation/renvoi/:user_id
+  # param: {module: citoyen, action: renvoimailactivation}
 
-activation_citoyen_mail:
-  url: /citoyens/activation/mail/:activation_id
-  param: {module: citoyen, action: activationmail}
 # Add include user's module to get same circonscription?

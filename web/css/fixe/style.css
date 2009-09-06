@@ -215,7 +215,7 @@ img {
   padding: 0;
   border-left : 1px solid #BFBFBF;
   border-right : 1px solid #BFBFBF;
-  background: #fff 0 0;
+  background-color: #fff;
 }
 /* Bas */
 .bas {

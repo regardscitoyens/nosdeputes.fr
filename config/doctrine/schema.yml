@@ -274,13 +274,14 @@ Citoyen:
     login:
       type: string(128)
       unique: true
-    pass:
+    password:
       type: string(40)
     email:
       type: string(255)
       unique: true
       notnull: true
     activite: string(255)
+    url_site: string(255)
     employe_an:
       type: boolean
       default: 0

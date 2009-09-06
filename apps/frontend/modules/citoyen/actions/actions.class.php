@@ -18,7 +18,8 @@ class citoyenActions extends sfActions
   public function executeIndex(sfWebRequest $request)
   {
     $this->citoyens_list = Doctrine::getTable('Citoyen')
-      ->createQuery('a')
+      ->createQuery('c')
+      ->where('c.is_active = ?', true)
       ->execute();
     $response = $this->getResponse();
     $response->setTitle('Liste des citoyens inscrits'); 
@@ -28,56 +29,55 @@ class citoyenActions extends sfActions
   {
     $slug = $request->getParameter('slug');
     $this->Citoyen = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
-    $this->forward404Unless(!empty($this->Citoyen->slug));
+    $this->forward404Unless($this->Citoyen->is_active);
     $response = $this->getResponse();
     $response->setTitle('Profil de '.$this->Citoyen->login); 
   }
   
-  // Inscription normale
-  
+  // Inscription
   public function executeNew(sfWebRequest $request)
   {
     if (!$this->getUser()->isAuthenticated()) {
       $this->form = new InscriptionForm();
       if ($request->isMethod('post'))
-      {
-        $values = $request->getParameter('citoyen');
-        $values['pass'] = sha1($values['pass']);
-        $email = $values['email'];
-        
-        $this->form->bind($values);
+      {        
+        $this->form->bind($request->getParameter('citoyen'));
         
         if ($this->form->isValid())
         {
           $this->form->save();
           
-          $this->Citoyen = Doctrine::getTable('Citoyen')->findOneByEmail($email);
-          $this->connexion($this->form->getObject());
+          $this->Citoyen = Doctrine::getTable('Citoyen')->findOneByEmail($this->form->getValue('email'));
+          $this->connexion($this->Citoyen);
           $this->Citoyen->activation_id = md5(time()*rand());
           $this->Citoyen->save();
           
-          $this->getComponent('mail', 'send', 
+          /* $this->getComponent('mail', 'send', 
             array('subject'=>'Inscription NosDéputés.fr', 
             'to'=>array($email), 
             'partial'=>'inscription', 
             'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
-            ));
+            )); */
           
-          $this->getUser()->setFlash('notice', 'Votre compte a été crée avec succès');
-          $slug = $this->Citoyen->slug;
-          $this->redirect('@citoyen?slug='.$slug);
-        }  
+          $this->getUser()->setFlash('notice', 'Vous allez recevoir un email de confirmation. Pour finaliser votre inscription, veuillez cliquer sur le lien d\'activation contenu dans cet email.');
+          $this->redirect('@homepage');
+        }
       }
     }
-    else
+    else if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') == true)
     {
       $slug = $this->getUser()->getAttribute('slug');
       $this->getUser()->setFlash('notice', 'Vous êtes déja inscrit');
       $this->redirect('@citoyen?slug='.$slug);
     }
+		else
+		{
+			$this->getUser()->setFlash('notice', 'Vous allez recevoir un email de confirmation. Pour finaliser votre inscription, veuillez cliquer sur le lien d\'activation contenu dans cet email.');
+			$this->redirect('@homepage');
+		}
   }
   
-  public function executeRenvoimailactivation(sfWebRequest $request)
+  /* public function executeRenvoimailactivation(sfWebRequest $request)
   {
     $id = $request->getParameter('user_id');
     
@@ -95,11 +95,11 @@ class citoyenActions extends sfActions
       $this->redirect($request->getReferer());
     }
     else { $this->forward404(); }
-  }
+  } */
   
   public function executeEdit(sfWebRequest $request)
   {
-    if ($this->getUser()->isAuthenticated()) {
+    if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') == true) {
     
       $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
     
@@ -112,7 +112,7 @@ class citoyenActions extends sfActions
         if ($this->form->isValid())
         {
           $this->form->save();
-          $this->getUser()->setFlash('notice', 'Votre modification a réussi');
+          $this->getUser()->setFlash('notice', 'Vous avez modifié votre profil avec succès');
           $this->redirect('@citoyen?slug='.$user->slug);
         }
       }
@@ -122,42 +122,61 @@ class citoyenActions extends sfActions
   
   public function executeActivation(sfWebRequest $request)
   {
-    $activation_id = $request->getParameter('activation_id');
+    $this->activation_id = $request->getParameter('activation_id');
     
-    if ($this->getUser()->isAuthenticated() and ($this->getUser()->getAttribute('is_active') == false)) 
+    if ($this->getUser()->isAuthenticated() and ($this->getUser()->getAttribute('is_active') == true)) 
     {
-      if (Doctrine::getTable('Citoyen')->findOneByActivationId($activation_id))
-      {
-        $user = Doctrine::getTable('Citoyen')->findOneByActivationId($activation_id);
-        
-        if ($user->id == $this->getUser()->getAttribute('user_id'))
-        {
-          $user->is_active = true;
-          $user->activation_id = null;
-          $user->save();
-          $this->getUser()->setAttribute('is_active', true);
-          $this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès');
-          $this->redirect('@citoyen?slug='.$user->slug);
-        }
-        else
-        {
-          $this->getUser()->setFlash('error', 'Ce compte n\'est pas le votre');
-          $this->redirect('@list_citoyens');
-        }
-      }
-      else
-      {
-        $this->redirect('@list_citoyens');
-        $this->getUser()->setFlash('error', 'Ce compte n\'existe pas');
-      }
+      $this->forward404();
     }
-    else
+		
+		if (Doctrine::getTable('Citoyen')->findOneByActivationId($this->activation_id))
     {
-      $this->getUser()->setFlash('error', 'Vous devez vous connecter puis cliquer à nouveau sur le lien de confirmation contenu dans l\'email');
-      $this->redirect('@homepage');
-    }
+			$user = Doctrine::getTable('Citoyen')->findOneByActivationId($this->activation_id);
+			
+			if (!$user->is_active == true)
+      {
+				$this->form = new MotdepasseForm($user);
+				
+				if ($request->isMethod('put'))
+				{
+					$values = $request->getParameter('citoyen');
+					$values["password"] = sha1($values["password"]);
+					$values["password_bis"] = sha1($values["password_bis"]);
+					
+					$this->form->bind($values);
+					
+					if ($this->form->isValid())
+					{
+						$this->form->save();
+						$user->is_active = true;
+						$user->activation_id = null;
+						$user->save();
+						if ($this->getUser()->isAuthenticated())
+						{
+							$this->getUser()->setAttribute('is_active', true);
+							$this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès');
+							$this->redirect('@citoyen?slug='.$user->slug);
+						}
+						else
+						{
+							$this->connexion($user);
+							$this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès');
+							$this->redirect('@citoyen?slug='.$user->slug);
+						}
+					}
+				}
+			}
+			else
+			{
+				$this->forward404();
+			}
+		}
+		else
+		{
+      $this->forward404();
+		}
   }
-  
+  /* 
   public function executeAddcirco(sfWebRequest $request)
   {
     if ($this->getUser()->isAuthenticated())
@@ -174,10 +193,9 @@ class citoyenActions extends sfActions
     {
       $this->redirect('@signin');
     }
-  }
+  } */
   
   // Connection
-  
   public function executeSignin(sfWebRequest $request)
   {
     if (!$this->getUser()->isAuthenticated()) {
@@ -193,7 +211,7 @@ class citoyenActions extends sfActions
           if (Doctrine::getTable('Citoyen')->findOneByLogin($this->form->getValue('login')))
           {
             $user = Doctrine::getTable('Citoyen')->findOneByLogin($this->form->getValue('login'));
-            if (sha1($this->form->getValue('pass')) == $user->pass)
+            if (sha1($this->form->getValue('password')) == $user->password)
             {
               $this->connexion($user);
               $this->getUser()->setFlash('notice', 'Vous vous êtes connecté avec succès.');
@@ -302,7 +320,14 @@ class citoyenActions extends sfActions
     if (!$this->getUser()->isAuthenticated()) {
     
       $activation_id = $request->getParameter('activation_id');
-      
+      if (Doctrine::getTable('Citoyen')->findOneByActivationId($activation_id))
+			{
+				$this->test = 'ok';
+			}
+			else
+			{
+				$this->test = 'pas cool';
+			}
       $this->user = Doctrine::getTable('Citoyen')->findOneByActivationId($activation_id);
       
       $this->form = new InscriptionmailForm($this->user);

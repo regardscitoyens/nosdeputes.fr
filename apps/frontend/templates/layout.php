@@ -45,14 +45,13 @@ if ($rss) {
                   <a href="<?php echo url_for('@inscription') ?>" class="bouton_ok">S'inscrire</a>
                 </form> <?php }
                 if($sf_user->isAuthenticated())
-                {
-                  if($sf_user->hasCredential('admin')) { echo '<a href="'.$sf_request->getRelativeUrlRoot().'/backend.php">Backend</a> - ';
-                  } 
-									if($sf_user->hasAttribute('login')) { ?>
-									<a href="<?php echo url_for('@citoyen?slug='.$sf_user->getAttribute('slug')); ?>">Mon Profil</a> - Connecté en tant que <?php echo $sf_user->getAttribute('login'); ?> - 
+                { 
+									if($sf_user->getAttribute('is_active') == true) { ?>
+									<a href="<?php echo url_for('@citoyen?slug='.$sf_user->getAttribute('slug')); ?>">Mon Profil</a> - 
 									<?php
 									}
 									?>
+								Connecté en tant que <?php echo $sf_user->getAttribute('login'); ?> - 
                 <a href="<?php echo url_for('@signout') ?>">Déconnexion</a>
                 <?php } ?>
               </div>
