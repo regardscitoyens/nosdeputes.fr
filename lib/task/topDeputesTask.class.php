@@ -161,9 +161,8 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('fin_mandat IS NULL') 
       ->fetchArray();
     foreach($deputes as $d) {
-      $this->deputes[$d['id']] = array();
+      $this->deputes[$d['id']]['groupe'] = $d['groupe_acronyme'];
     }
-
 
     $q = Doctrine_Query::create()->where('fin_mandat IS NULL');
  
@@ -211,11 +210,24 @@ class topDeputesTask extends sfBaseTask
     $this->orderDeputes('questions_orales');
 
 
+    $groupes = array();
     foreach(array_keys($this->deputes) as $id) {
       $depute = Doctrine::getTable('Parlementaire')->find($id);
       $depute->top = serialize($this->deputes[$id]);
       $depute->save();
+      foreach(array_keys($this->deputes[$id]) as $key) {
+	$groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
+	$groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
+      }
     }
+
+    $globale = doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes');
+    if (!$globale) {
+      $globale = new VariableGlobale();
+      $globale->champ = 'stats_groupes';
+    }
+    $globale->value = serialize($groupes);
+    $globale->save();
 
     //On fait la même chose pour les députés ayant un mandat clos.
 
