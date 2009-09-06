@@ -277,13 +277,16 @@ foreach $line (split /\n/, $string)
 	    $amendements = @pre_amendements = ();
 	    $line = "<p>|$titre2|</p>";
 	    $donetitre1 = 0;
-	}elsif(!$donetitre1 && $line =~ /h2 class="titre1">(.*)<\/h2/i) {
+	}elsif(!$donetitre1 && $line =~ /h2 class="titre1">(.+)<\/h2/i) {
 	    checkout();
 	    $titre = $1;
 	    $titre =~ s/<\/?[^>]+>//g;
 	    $titre =~ s/<//g;
 	    $titre =~ s/[\(\/][^\)\/]+[\)\/]//;
-	    if ($titre =~ /^[\/\s]*[\wéè]+ \s*partie[\/\s]*(suite[\/\s]*|)$/i) {
+	    unless ($titre) {
+		next;
+	    }
+	    if ($titre =~ /^[\/\s]*[\wéè]+ \s*partie[\/\s]*(suite[\/\s]*|)$/i || $titre =~ /^\s*[\(\/]+.*[\/\)]+\s*$/) {
 		next
 	    }
 	    $donetitre1 = 1;

@@ -5,7 +5,21 @@
  */
 class Seance extends BaseSeance
 {
+  static $debut_session = null;
+  public static function getSession($date) {
+    if (!self::$debut_session) {
+      $session = Doctrine::getTable('VariableGlobale')->findOneByChamp('session');
+      self::$debut_session = unserialize($session->value);
+    }
+    foreach(array_keys(self::$debut_session) as $session) {
+      if (strtotime($date) >= strtotime(self::$debut_session[$session]))
+	return $session;
+    }
+  }
+
   public function setSession($session) {
+    if (!$session && $this->date)
+      $session = self::getSession($this->date);
     return $this->_set('session', $session);
   }
   public function addPresence($parlementaire, $type, $source) {

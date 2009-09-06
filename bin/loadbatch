@@ -1,6 +1,7 @@
 #!/bin/bash
 bash bin/load_deputes
 bash bin/load_hemicycle
+php symfony set:Session
 bash bin/load_amendements
 bash bin/load_jo
 bash bin/load_commission
