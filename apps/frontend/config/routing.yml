@@ -108,7 +108,7 @@ parlementaire_questions:
 
 # Sommaire des textes ou du travail d'un texte par sections et pour un parlementaire donné
 sections:
-  url: /section
+  url: /sections/:order
   param: {module: section, action: list}
 section:
   url: /section/:id
