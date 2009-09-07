@@ -37,23 +37,6 @@ class Section extends BaseSection
       ->groupBy('s.id')
       ;
     return $q->execute();
-
-    $res_ids = Doctrine::getTable('Section')->createQuery('s')->select('s.id')->where('s.section_id = ? ', $this->id)->fetchArray();
-    
-    $ids = array($this->id);
-    foreach($res_ids as $id) {
-      $ids[] = $id['id'];
-    }
-
-    $q = Doctrine_Query::create()
-      ->select('s.*, i.id')
-      ->from('Intervention i, Seance s')
-      ->where('i.seance_id = s.id')
-      ->whereIn('i.section_id', $ids)
-      ->groupBy('i.seance_id')
-      ;
-
-    return $q->execute();
   }
 
   public function updateNbInterventions() {
