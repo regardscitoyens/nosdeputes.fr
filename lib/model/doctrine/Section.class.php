@@ -28,6 +28,16 @@ class Section extends BaseSection
       ;
   }
   public function getSeances() {
+    $q = doctrine_query::create()
+      ->from('Seance s, Section st, Intervention i')
+      ->select('s.*')
+      ->where('i.seance_id = s.id')
+      ->andwhere('i.section_id = st.id')
+      ->andwhere('(st.section_id = ? OR i.section_id = ? )', array($this->id, $this->id))
+      ->groupBy('s.id')
+      ;
+    return $q->execute();
+
     $res_ids = Doctrine::getTable('Section')->createQuery('s')->select('s.id')->where('s.section_id = ? ', $this->id)->fetchArray();
     
     $ids = array($this->id);
