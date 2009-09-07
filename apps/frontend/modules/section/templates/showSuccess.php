@@ -13,7 +13,7 @@ echo $section->titre;
 Voici l'organisation du projet :
 <ul>
 <?php foreach($section->getSubSections() as $subsection) :
-if ($subsection->nb_interventions && $subsection->id != $section->id) : ?>
+if ($subsection->id != $section->id) : ?>
 <li><?php echo link_to($subsection->titre, '@section?id='.$subsection->id); ?></li>
 <?php endif; endforeach;?>
 </ul>

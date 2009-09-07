@@ -28,14 +28,21 @@ class Section extends BaseSection
       ;
   }
   public function getSeances() {
-    $q = doctrine_query::create()
-      ->from('Seance s, Section st, Intervention i')
-      ->select('s.*')
+    $res_ids = Doctrine::getTable('Section')->createQuery('s')->select('s.id')->where('s.section_id = ? ', $this->id)->fetchArray();
+    
+    $ids = array($this->id);
+    foreach($res_ids as $id) {
+      $ids[] = $id['id'];
+    }
+
+    $q = Doctrine_Query::create()
+      ->select('s.*, i.id')
+      ->from('Intervention i, Seance s')
       ->where('i.seance_id = s.id')
-      ->andwhere('i.section_id = st.id')
-      ->andwhere('(st.section_id = ? OR i.section_id = ? )', array($this->id, $this->id))
-      ->groupBy('s.id')
+      ->whereIn('i.section_id', $ids)
+      ->groupBy('i.seance_id')
       ;
+
     return $q->execute();
   }
 
@@ -57,6 +64,10 @@ class Section extends BaseSection
       if ($check == 0) return NULL;
       else return $this;
     return $this->_get('Section');
+  }
+
+  public function getTitre() {
+    return preg_replace('/\s*\?$/', '', $this->_get('titre'));
   }
 
 }

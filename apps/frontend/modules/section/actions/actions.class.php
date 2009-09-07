@@ -59,18 +59,26 @@ class sectionActions extends sfActions
       
     
     $this->qtag = Doctrine_Query::create()
-      ->from('Tagging tg, tg.Tag t')
-      ->whereIn('tg.taggable_id', $interventions);
+      ->from('Tagging tg, tg.Tag t');
+    if (count($interventions))
+      $this->qtag->whereIn('tg.taggable_id', $interventions);
+    else
+      $this->qtag->where('false');
     
     
     $this->ptag = Doctrine_Query::create()
       ->from('Intervention i')
       ->leftJoin('i.Parlementaire p')
       ->where('p.id IS NOT NULL')
-      ->whereIn('i.id', $interventions)
       ->andWhere('((i.fonction != ? AND i.fonction != ? ) OR i.fonction IS NULL)', array('président', 'présidente'))
       ->groupBy('p.id')
       ;
+    if (count($interventions))
+      $this->ptag->whereIn('i.id', $interventions);
+    else
+      $this->ptag->where('false');
+
+
   }
   public function executeList(sfWebRequest $request) 
   {
