@@ -140,7 +140,6 @@ class amendementActions extends sfActions
           $query = PluginTagTable::getObjectTaggedWithQuery('Amendement', array('loi:amendement='.$numero));
           $query->andWhere('texteloi_id = ?', $loi);
           $res = $query->fetchOne();
-        print_r($res);
           if ($res) {
             $amendements[$res->id] = $res;
           }
