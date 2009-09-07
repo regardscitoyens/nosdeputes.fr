@@ -39,9 +39,10 @@ class sectionActions extends sfActions
   public function executeShow(sfWebRequest $request) 
   {
     $this->section = doctrine::getTable('Section')->find($request->getParameter('id'));
-
     $this->forward404Unless($this->section);
-      
+    
+    $lois =
+
     $inters = Doctrine_Query::create()
       ->select('i.id')
       ->from('Intervention i')
@@ -57,14 +58,12 @@ class sectionActions extends sfActions
 
     //    $this->forward404Unless(count($interventions));
       
-    
     $this->qtag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t');
     if (count($interventions))
       $this->qtag->whereIn('tg.taggable_id', $interventions);
     else
       $this->qtag->where('false');
-    
     
     $this->ptag = Doctrine_Query::create()
       ->from('Intervention i')
@@ -82,12 +81,17 @@ class sectionActions extends sfActions
   }
   public function executeList(sfWebRequest $request) 
   {
-
-    $this->sections = doctrine::getTable('Section')->createQuery('s')
+    if (!($order = $request->getParameter('order')))
+      $order = 'plus';
+    $query = doctrine::getTable('Section')->createQuery('s')
       ->where('s.id = s.section_id')
-      ->andWhere('s.nb_interventions > 5')
-      ->orderBy('s.nb_interventions DESC')
-      ->execute();
+      ->andWhere('s.nb_interventions > 5');
+    if ($order == 'date')
+      $query->orderBy('s.min_date DESC');
+    else if ($order == 'plus')
+      $query->orderBy('s.nb_interventions DESC');
+    else forward404();
+    $this->sections = $query->execute();
 
   }
 }

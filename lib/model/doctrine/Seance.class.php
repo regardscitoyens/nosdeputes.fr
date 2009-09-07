@@ -80,4 +80,18 @@ class Seance extends BaseSeance
     $q = Doctrine_Query::create()->select('s.titre, s.id, s.section_id, s.nb_interventions')->from('Section s')->leftJoin('s.Interventions i')->where('i.seance_id = ?', $this->id)->orderBy('i.timestamp ASC');
     return $q->fetchArray();
   }
+
+  public function getTitre($miniature = 0) {
+    if ($miniature == 0)
+      $titre = 'S';
+    else $titre = 's';
+    $titre .= 'éance du '.myTools::displayDate($this->getDate());
+    if ($moment = $this->getMoment()) {
+      if (preg_match('/réunion/', $moment))
+        $titre .= '&nbsp;: ';
+      else $titre .= '&nbsp;à ';
+      $titre .= $moment;
+    }
+    return $titre;
+  }
 }

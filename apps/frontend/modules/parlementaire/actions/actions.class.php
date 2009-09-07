@@ -210,6 +210,9 @@ public function executeList(sfWebRequest $request)
   public function executeListOrganisme(sfWebRequest $request) {
     $orga = $request->getParameter('slug');
     $this->forward404Unless($orga);
+    $this->orga = Doctrine::getTable('Organisme')->createQuery('o')
+      ->where('o.slug = ?', $orga)->fetchOne();
+    $this->forward404Unless($this->orga);
 
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
     $query->leftJoin('p.ParlementaireOrganisme po')
@@ -218,9 +221,11 @@ public function executeList(sfWebRequest $request)
     $query->orderBy("po.importance DESC, p.sexe ASC, p.nom_de_famille ASC");
     $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
 
-    $query2 = Doctrine::getTable('Organisme')->createQuery('o');
-    $query2->where('o.slug = ?', $orga);
-    $this->orga = $query2->fetchOne();
+    $this->seances = Doctrine::getTable('Seance')->createQuery('s')
+      ->leftJoin('s.Organisme o')
+      ->where('o.slug = ?', $orga)
+      ->orderBy('s.date DESC, s.moment DESC')
+      ->execute();
   }
 
   public function executeTag(sfWebRequest $request) {
@@ -229,16 +234,16 @@ public function executeList(sfWebRequest $request)
       $tags = split(',', $this->tag);
 
       $this->parlementaires = Doctrine::getTable('Intervention')
-	->createQuery('i')
-	->select('i.id, p.*, count(i.id) as nb')
+        ->createQuery('i')
+        ->select('i.id, p.*, count(i.id) as nb')
         ->addFrom('i.Parlementaire p, Tagging tg, Tag t')
-         ->where('p.id IS NOT NULL')
-	->andWhere('tg.taggable_id = i.id AND t.id = tg.tag_id')
-	->andWhere('tg.taggable_model = ?', 'Intervention')
-	->andWhereIn('t.name', $tags)
-	->groupBy('p.id')
-	->orderBy('nb DESC')
-	->fetchArray();
+        ->where('p.id IS NOT NULL')
+        ->andWhere('tg.taggable_id = i.id AND t.id = tg.tag_id')
+        ->andWhere('tg.taggable_model = ?', 'Intervention')
+        ->andWhereIn('t.name', $tags)
+        ->groupBy('p.id')
+        ->orderBy('nb DESC')
+        ->fetchArray();
     }
   }
 

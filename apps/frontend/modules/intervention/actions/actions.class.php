@@ -39,6 +39,7 @@ class interventionActions extends sfActions
     $seance_id = $request->getParameter('seance');
     $this->seance = doctrine::getTable('Seance')->find($seance_id);
     $this->forward404Unless($this->seance);
+    if ($this->seance->type == 'commission') $this->orga = $this->seance->getOrganisme();
     $query = doctrine::getTable('Intervention')->createquery('i')
         ->where('i.seance_id = ?', $seance_id)
         ->orderBy('i.timestamp ASC');

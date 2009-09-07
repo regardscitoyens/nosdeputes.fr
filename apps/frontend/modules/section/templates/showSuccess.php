@@ -1,8 +1,8 @@
 <div class="temp">
-<h1><?php if ($section->getSection()) 
-  echo link_to($section->getSection()->titre, '@section?id='.$section->section_id).' > '; 
-echo $section->titre;
-?></h1>
+<?php if ($section->getSection()) 
+  echo '<h1>'.link_to($section->getSection()->titre, '@section?id='.$section->section_id).'</h1>';
+echo '<h2>'.$section->titre.'</h2>';
+?>
 
 <div>
 <p>Voici la liste des mots clés pour cette section :</p>
@@ -24,7 +24,7 @@ if ($subsection->id != $section->id) : ?>
 Voici la liste des séances pour cette section : 
 <ul>
 <?php foreach($section->getSeances() as $seance) : ?>
-<li><?php echo link_to(myTools::displayDate($seance->getDate()).', '.$seance->getMoment(), '@interventions_seance?seance='.$seance->id.'#table_'.$section->id); ?></li>
+<li><?php echo link_to($seance->getTitre(), '@interventions_seance?seance='.$seance->id.'#table_'.$section->id); ?></li>
 <?php endforeach; ?>
 </ul>
 </div>

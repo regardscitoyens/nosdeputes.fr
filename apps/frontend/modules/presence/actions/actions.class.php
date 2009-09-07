@@ -10,16 +10,6 @@
  */
 class presenceActions extends sfActions
 {
-  public function executeTop(sfWebRequest $request)
-  {
-    $q = Doctrine_Query::create()
-      ->select('p.*, count(pr.id) as nb')
-      ->from('Parlementaire p')
-      ->leftJoin('p.Presences pr')
-      ->groupBy('p.id')
-      ->orderBy('nb DESC');
-    $this->top = $q->fetchArray();
-  }
 
   public function executeParlementaire(sfWebRequest $request)
   {
@@ -34,14 +24,6 @@ class presenceActions extends sfActions
       ->orderBy('p.Seance.type ASC, p.Seance.date DESC')
       ->groupBy('p.Seance.id');
     $this->presences = $query->execute();
-    $this->forward404Unless($this->presences);
-  }
-
-  public function executePlotParlementaire(sfWebRequest $request)
-  {
-    $slug = $request->getParameter('slug');
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
-    $this->forward404Unless($this->parlementaire);
   }
 
   public function executePreuve(sfWebRequest $request)
@@ -56,7 +38,18 @@ class presenceActions extends sfActions
   public function executeSeance(sfWebRequest $request)
   {
     $seance_id = $request->getParameter('seance');
-    $this->seance = doctrine::getTable('Seance')->find($seance_id);
+    $this->forward404Unless($seance_id);
+    $this->seance = doctrine::getTable('Seance')->createQuery('s')
+      ->where('s.id = ?', $seance_id)
+      ->leftJoin('s.Organisme')
+      ->fetchOne();
     $this->forward404Unless($this->seance);
+    $this->presences = doctrine::getTable('Presence')->createQuery('p')
+      ->where('p.seance_id = ?', $seance_id)
+      ->leftJoin('p.Parlementaire pa')
+      ->leftJoin('p.Preuves pr')
+      ->groupBy('pa.id')
+      ->orderBy('pa.nom_de_famille')
+      ->execute();
   }
 }

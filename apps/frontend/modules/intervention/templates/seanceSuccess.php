@@ -1,7 +1,9 @@
 <div class="titre_int_et_seance" id="sommaire">
 <?php if ($seance->type == 'commission') : ?>
-<h1><?php echo $seance->getOrganisme()->getNom(); ?></h1>
-<h2>Séance du <?php echo myTools::displayDate($seance->getDate()) ?> à <?php echo $seance->getMoment(); ?></h2>
+<h1><?php echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); ?></h1>
+<h2><?php echo $seance->getTitre(); ?></h2>
+<p><?php echo link_to('Députés Présents&nbsp;:', '@presents_seance?seance='.$seance->id); ?><br/>
+<?php echo include_component('presence', 'seance', array('seance'=>$seance->id)); ?><br/><p>
 <?php else :?>
 <h1>Séance en hémicycle</h1>
 <h2>du <?php echo myTools::displayDate($seance->getDate()) ?> à <?php echo $seance->getMoment(); ?></h2>
