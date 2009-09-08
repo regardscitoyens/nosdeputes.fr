@@ -1,3 +1,6 @@
+<?php 
+if ($titre) echo '<h1>'.$titre.'</h1>';
+?>
 <div class="preview">
    <h2><?php echo $form->getValue('titre'); ?></h2>
    <div><?php echo $article; ?></div>

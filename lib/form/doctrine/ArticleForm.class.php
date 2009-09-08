@@ -27,22 +27,26 @@ class ArticleForm extends BaseArticleForm
   public function setTitre($b)
   {
     if (!$b) {
-      unset($this['titre']);
+      $this->widgetSchema['titre'] = new sfWidgetFormInputHidden();
       return ;
     }
     $this->validatorSchema['titre'] = new sfValidatorRegex(array('pattern' => '/^[^\<]+$/', 'required'=>true), array('invalid' => 'tags html non authorisés', 'required' => 'titre obligatoire'));
   }
 
-  public function setObject($b, $categorie) {
+  public function setObject($b, $categorie, $display = true) {
     if (!$b) {
       unset($this['object_id']);
       return;
     }
 
-    $this->widgetSchema['object_id'] = new sfWidgetFormDoctrineChoice(array('model' => $this->getValue('categorie')));
-    $this->widgetSchema['object_id']->setOption('label', $categorie);
-    $query = doctrine::getTable($categorie)->createQuery('c')->where('c.nom IS NOT NULL')->orderBy('nom');
-    $this->widgetSchema['object_id']->setOption('query', $query);
+    if ($display) {
+      $this->widgetSchema['object_id'] = new sfWidgetFormDoctrineChoice(array('model' => $this->getValue('categorie')));
+      $this->widgetSchema['object_id']->setOption('label', $categorie);
+      $query = doctrine::getTable($categorie)->createQuery('c')->where('c.nom IS NOT NULL')->orderBy('nom');
+      $this->widgetSchema['object_id']->setOption('query', $query);
+    }else{
+      $this->widgetSchema['object_id'] = new sfWidgetFormInputHidden();
+    }
     
   }
 

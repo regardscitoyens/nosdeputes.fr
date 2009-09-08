@@ -26,6 +26,15 @@ doc_organisme_new:
   url: /organisme/new
   param: {module: article, action: create, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true}
 
+# Compte Renu
+
+compterendu_finseance:
+  url: /compterendu
+  param: {module: article, action: findSeance}
+compterendu_new:
+  url: /compterendu/new/:object_id
+  param: {module: article, action: create, categorie: Seance, hasObject: true, displayObject: false, hasTitre: false, isUnique: true, autoObjectTitre: 'Compte-rendu citoyen de la '}
+
 # Liste de tous les parlementaires ou par catégorie
 list_parlementaires:
   url: /parlementaire

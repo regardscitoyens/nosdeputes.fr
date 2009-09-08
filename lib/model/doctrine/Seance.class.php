@@ -5,6 +5,10 @@
  */
 class Seance extends BaseSeance
 {
+  public function __tostring() {
+    return 'séance du '.myTools::displayDate($this->date).', '.$this->moment;
+  }
+  
   static $debut_session = null;
   public static function getSession($date) {
     if (!self::$debut_session) {
