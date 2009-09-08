@@ -267,6 +267,9 @@ img {
 .resultat_dep {
   
 }
+.photos {
+  text-align: center
+}
 .image_map {
   float:right;
   border : 1px solid #BFBFBF;

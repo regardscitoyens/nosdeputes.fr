@@ -49,7 +49,7 @@ class presenceActions extends sfActions
       ->leftJoin('p.Parlementaire pa')
       ->leftJoin('p.Preuves pr')
       ->groupBy('pa.id')
-      ->orderBy('pa.nom_de_famille')
+      ->orderBy('pr.source, pa.nom_de_famille')
       ->execute();
   }
 }

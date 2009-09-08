@@ -2,8 +2,7 @@
 <?php if ($seance->type == 'commission') : ?>
 <h1><?php echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); ?></h1>
 <h2><?php echo $seance->getTitre(); ?></h2>
-<p><?php echo link_to('Députés Présents&nbsp;:', '@presents_seance?seance='.$seance->id); ?><br/>
-<?php echo include_component('presence', 'seance', array('seance'=>$seance->id)); ?><br/><p>
+<p><?php echo link_to('->Députés Présents', '@presents_seance?seance='.$seance->id); ?></p>
 <?php else :?>
 <h1><?php echo $seance->getTitre(0,1); ?></h1>
 <?php endif; ?>

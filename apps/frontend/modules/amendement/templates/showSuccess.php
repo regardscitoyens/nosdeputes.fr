@@ -13,14 +13,13 @@
   <div class="signataires">
   <p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo $amendement->signataires; ?>.</p>
   <?php 
-  $deputes = $amendement->getParlementaires();
-  echo '<p align-style="center">';
-  foreach ($deputes as $depute) {
+  $deputes = $amendement->getParlementaires(); ?>
+  <div class="photos"><p>
+  <?php foreach ($deputes as $depute) {
     $titre = $depute->nom.', '.$depute->groupe_acronyme;
     echo '<a href="'.url_for($depute->getPageLink()).'"><img width="50" height="64" title="'.$titre.'" alt="'.$titre.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$depute->slug).'" /></a>&nbsp;';
   }
-  echo '</p>';
-  ?></div>
+  ?></p></div></div>
   <div class="sujet">
     <h2><?php echo $amendement->getSujet().' de la loi N° '.myTools::getLinkLoi($amendement->texteloi_id); ?></h2>
   </div>
