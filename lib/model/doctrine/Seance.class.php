@@ -11,6 +11,8 @@ class Seance extends BaseSeance
       $session = Doctrine::getTable('VariableGlobale')->findOneByChamp('session');
       self::$debut_session = unserialize($session->value);
     }
+    if (!is_array(self::$debut_session))
+	return ;
     foreach(array_keys(self::$debut_session) as $session) {
       if (strtotime($date) >= strtotime(self::$debut_session[$session]))
 	return $session;
