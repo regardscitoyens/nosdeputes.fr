@@ -62,10 +62,10 @@ if (isset($link)) {
   }
 }
 
-$Test = new xsPChart(820,$size);
+$Test = new xsPChart(800,$size);
 $Test->setGraphArea(25+3*$font,3*$font,780,$size-10-2*$font);
-$Test->drawFilledRoundedRectangle(7,7,813,$size-7,5,240,240,240);
-$Test->drawRoundedRectangle(5,5,815,$size - 5,5,230,230,230);
+$Test->drawFilledRoundedRectangle(7,7,793,$size-7,5,240,240,240);
+$Test->drawRoundedRectangle(5,5,795,$size - 5,5,230,230,230);
 $Test->drawGraphArea(230,230,230,FALSE);
 $Test->setFixedScale(0,$scale,$scale/$ticks);
 $Test->xsSetFontProperties("tahoma.ttf",$font);

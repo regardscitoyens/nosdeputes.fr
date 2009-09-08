@@ -303,23 +303,11 @@ img {
 .photo_fiche {
   height: 170px;
 }
-.logo_parti {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
 .graph_depute {
   float: left;
   position: relative;
   height: 170px;
-  margin-left: 4px;
-}
-.graph_depute img {
-  width: 800px;
-  height: 150px;
-}
-.graph_depute h1 {
-  font-size: 1.5em;
+  margin-left: 3px;
 }
 .graph_depute p {
   text-align: center;
@@ -327,9 +315,16 @@ img {
   padding: 0px;
 }
 .info_depute {
-  position: absolute;
+  position: relative;
   top: 0;
-  left: 10px;
+}
+.info_depute h1 {
+  font-size: 1.7em;
+}
+.info_depute p {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
 }
 .barre_activite {
   float: left;
