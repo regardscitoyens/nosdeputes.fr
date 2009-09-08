@@ -378,6 +378,7 @@ Article:
     categorie: string(128)
     citoyen_id: integer
     article_id: integer
+    link: string(255)
     status:
       type: enum
       values: ['public', 'brouillon', 'offline']

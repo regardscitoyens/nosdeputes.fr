@@ -30,13 +30,18 @@ doc_organisme_new:
 compterendu_list:
   url: /compterendu
   param: {module: article, action: pager, categorie: Seance, titre: "Compte-rendus citoyens"}
-
+compterendu_list:
+  url: /compterendu
+  param: {module: article, action: pager, categorie: Seance, titre: "Compte-rendus citoyens"}
+compterendu_post:
+  url: /:citoyen/compterendu/:slug
+  param: {module: article, action: show, categorie: Seance}
 compterendu_finseance:
   url: /compterendu/new
   param: {module: article, action: findSeance}
 compterendu_new:
   url: /compterendu/new/:object_id
-  param: {module: article, action: create, categorie: Seance, hasObject: true, displayObject: false, hasTitre: false, isUnique: true, autoObjectTitre: 'Compte-rendu citoyen de la '}
+  param: {module: article, action: create, categorie: Seance, hasObject: true, displayObject: false, hasTitre: false, isUnique: true, autoObjectTitre: 'Compte-rendu citoyen de la ', link: "@compterendu_post?slug=%s&citoyen=%s"}
 
 # Liste de tous les parlementaires ou par catégorie
 list_parlementaires:

@@ -34,6 +34,7 @@ class articleActions extends sfActions
 	$farticle['object_id'] = $object_id;
       if ($this->titre)
 	$farticle['titre'] = $this->titre;
+      $farticle['link'] = null;
       if (isset($farticle['user_corps']))
 	$farticle['corps'] = myTools::clearHtml($farticle['user_corps']);
       $this->form->setUnique($request->getParameter('isUnique', false));
@@ -49,6 +50,14 @@ class articleActions extends sfActions
     if (!$request->getParameter('ok'))
       return ;
     $this->form->save();
+    if ($l = $request->getParameter('link')) {
+      $object = $this->form->getObject();
+      $slug = 'toto';
+      if ($object->citoyen_id)
+	$slug = $object->getCitoyen()->slug;
+      $object->link = sprintf($l, $object->slug, $slug);
+      $object->save();
+    }
     return $this->redirect('faq');
   }
   public function executeUpdate(sfWebRequest $request)
@@ -129,5 +138,13 @@ class articleActions extends sfActions
     $pager->init();
     $this->pager = $pager;
     $this->titre = $request->getParameter('titre', 'Il manque un titre dans le routing');
+  }
+
+  public function executeShow(sfWebRequest $request) 
+  {
+    $categorie = $request->getParameter('categorie');
+    $this->article = Doctrine::getTable('Article')->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->article);
+    $this->forward404Unless($this->article->categorie == $categorie);
   }
 }

@@ -20,6 +20,7 @@ class ArticleForm extends BaseArticleForm
     $this->widgetSchema['categorie'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['citoyen_id'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['corps'] = new sfWidgetFormInputHidden();
+    $this->widgetSchema['link'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['user_corps']->setOption('label', 'Corps');
 
   }
