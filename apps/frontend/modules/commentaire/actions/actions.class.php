@@ -27,141 +27,110 @@ class commentaireActions extends sfActions
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');
 
-    $this->form = new CommentaireForm();
-    $this->form->bind($request->getParameter('commentaire'));
-    $this->commentaire = myTools::clearHtml($this->form->getValue('commentaire'));
+    $this->commentaire = myTools::clearHtml($request->getParameter('commentaire[commentaire]'));
     $this->unique_form = $request->getParameter('unique_form');
 
-    if ($this->getUser()->getAttribute('commentaire_'.$this->type.'_'.$this->id) != $this->unique_form)
-		{
+    if ($this->getUser()->getAttribute('commentaire_'.$this->type.'_'.$this->id) != $this->unique_form) {
       $this->getUser()->setFlash('error', 'Vous avez déjà posté ce commentaire...');
       return $this->redirect($redirect_url[$this->type].$this->id);
     }
-		$values['nom'] = false;
-		$values['email'] = false;
-		$values['login'] = false;
-		$values['password'] = false;
-		
-		$values = $request->getParameter('commentaire');
+    $this->form = new CommentaireForm();
+    /* Tangui : J'ai l'impression que ces éléments ne sont pas nécessaires, ils font réécrire par le getParameter, non ? */
+    $values['nom'] = false;
+    $values['email'] = false;
+    $values['login'] = false;
+    $values['password'] = false;
+    $values = $request->getParameter('commentaire');
+    $this->form->bind($values);
 
-    if ($request->getParameter('ok') && $this->form->isValid())
-		{
-			if ($this->getUser()->isAuthenticated())
-			{
-			  $citoyen_id = $this->getUser()->getAttribute('user_id');
-				if ($this->getUser()->getAttribute('is_active') == true)
-				{
-					$is_active = true;
-				}
-				else
-				{
-					$is_active = false;
-				}
-			}
-			else if ($values['nom'] && $values['email'])
-			{
-				if (!Doctrine::getTable('Citoyen')->findOneByLogin($values['nom']))
-        {
-					if (!Doctrine::getTable('Citoyen')->findOneByEmail($values['email']))
-					{
-					  $citoyen = new Citoyen;
-						$citoyen->login = $values['nom'];
-						$citoyen->email = $values['email'];
-						$citoyen->activation_id = md5(time()*rand());
-						$citoyen->save();
-						$citoyen_id = $citoyen->getId();
-						$is_active = false;
-						$this->getComponent('citoyen', 'connexion', array('login' => $citoyen->login));
-						$this->getComponent('mail', 'send', array(
+
+    if (!$request->getParameter('ok') || !$this->form->isValid())
+      return ;
+    
+    if ($this->getUser()->isAuthenticated()) {
+      $citoyen_id = $this->getUser()->getAttribute('user_id');
+      if ($this->getUser()->getAttribute('is_active') == true) {
+	$is_active = true;
+      }	else {
+	$is_active = false;
+      }
+    } else if ($values['nom'] && $values['email']) {
+      if (Doctrine::getTable('Citoyen')->findOneByLogin($values['nom'])) {
+          $this->getUser()->setFlash('error', 'Ce nom d\'utilisateur existe déjà.');
+	  return $this->redirect($redirect_url[$this->type].$this->id);
+      }
+
+      if (Doctrine::getTable('Citoyen')->findOneByEmail($values['email'])) {
+	$this->getUser()->setFlash('error', 'Cette adresse email existe déjà.');
+	return $this->redirect($redirect_url[$this->type].$this->id);
+      }
+
+      $citoyen = new Citoyen;
+      $citoyen->login = $values['nom'];
+      $citoyen->email = $values['email'];
+      $citoyen->activation_id = md5(time()*rand());
+      $citoyen->save();
+      $citoyen_id = $citoyen->getId();
+      $is_active = false;
+      $this->getComponent('citoyen', 'connexion', array('login' => $citoyen->login));
+      $this->getComponent('mail', 'send', array(
 						'subject'=>'Inscription NosDéputés.fr', 
 						'to'=>array($citoyen->email), 
 						'partial'=>'inscriptioncom', 
 						'mailContext'=>array('activation_id' => $citoyen->activation_id) 
 						));
-					}
-					else
-					{
-						$this->getUser()->setFlash('error', 'Cette adresse email existe déjà.');
-						$this->redirect($redirect_url[$this->type].$this->id);
-						exit;
-					}
-				}
-				else
-        {
-          $this->getUser()->setFlash('error', 'Ce nom d\'utilisateur existe déjà.');
-				  $this->redirect($redirect_url[$this->type].$this->id);
-				  exit;
-        }
-			}
-			else if ($values['login'] && $values['password'])
-			{
-				if (Doctrine::getTable('Citoyen')->findOneByLogin($values['login']))
-        {
-          $user = Doctrine::getTable('Citoyen')->findOneByLogin($values['login']);
-          if (sha1($values['password']) == $user->password)
-          {
-            $this->getComponent('citoyen', 'connexion', array('login' => $user->login));
-						$citoyen_id = $user->id;
-						$is_active = true;
-          }
-          else
-          {
-            sleep(3);
-            $this->getUser()->setFlash('error', 'Le nom d\'utilisateur et le mot de passe ne correspondent pas.');
-			    	$this->redirect($redirect_url[$this->type].$this->id);
-				    exit;
-          }
-        }
-        else
-        {
-          sleep(3);
-          $this->getUser()->setFlash('error', 'Ce nom d\'utilisateur n\'existe pas.');
-				  $this->redirect($redirect_url[$this->type].$this->id);
-				  exit;
-        }
-			}
-			else
-			{
-			  $this->getUser()->setFlash('error', 'Vous devez être connecté pour poster un commentaire.');
-				$this->redirect($redirect_url[$this->type].$this->id);
-				exit;
-			}
-			
-      $commentaire = $this->form->getObject();
-      //Pas très propre mais les formulaires ne semblent pas appeler le setCommentaire...
-      $commentaire->commentaire = $this->commentaire;
-      $commentaire->object_type = $this->type;
-      $commentaire->object_id = $this->id;
-      $commentaire->lien = $redirect_url[$this->type].$this->id;
-      $object = doctrine::getTable($this->type)->find($this->id);
-      $commentaire->presentation = $about[$this->type].date('d/m/Y', time($object->date));
-      $commentaire->citoyen_id = $citoyen_id;
-      $commentaire->is_public = $is_active;
-      $commentaire->save();
-      
-      if (!$is_active)
-			{
-      $pas_confirme_mail = ', pour le rendre public, cliquez sur le lien d\'activation contenu dans l\'email que nous vous avons envoyé afin de terminer votre inscription.';
+    } else if ($values['login'] && $values['password']) {
+      /* Tangui : Il y a moyen de refactoriser cette partie dans le modèle. */
+      if (! Doctrine::getTable('Citoyen')->findOneByLogin($values['login'])) {
+	sleep(3);
+	$this->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
+	return $this->redirect($redirect_url[$this->type].$this->id);
       }
-
-      if (isset($object->parlementaire_id))
-			{
-	      $commentaire->addParlementaire($object->parlementaire_id);
+      $user = Doctrine::getTable('Citoyen')->findOneByLogin($values['login']);
+      if (sha1($values['password']) != $user->password) {
+	  sleep(3);
+	  $this->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
+	  return $this->redirect($redirect_url[$this->type].$this->id);
       }
-			else
-			{
-	      $object->Parlementaires;
-	    }
-	    if (isset($object->Parlementaires)) {
-	      foreach($object->Parlementaires as $p)
-   	    $commentaire->addParlementaire($p->id);
-    	}
-			
-      $this->getUser()->setFlash('notice', 'Votre commentaire a été enregistré'.$pas_confirme_mail);
-      $this->getUser()->getAttributeHolder()->remove('commentaire_'.$this->type.'_'.$this->id);
-      return $this->redirect($commentaire->lien);
+      $this->getComponent('citoyen', 'connexion', array('login' => $user->login));
+      $citoyen_id = $user->id;
+      $is_active = true;
+    } else { //Si pas de (login et mdp) ou (email, login)
+      $this->getUser()->setFlash('error', 'Vous devez avoir un compte et y être connecté pour poster un commentaire.<br/>Le formulaire ci-dessous vous permet de vous identifier ou de création un utilisateur sur le site.');
+      return $this->redirect($redirect_url[$this->type].$this->id);
     }
+			
+    $commentaire = $this->form->getObject();
+    //Pas trouvé d'autre moyen que de bypasser le form pour conserver la presentation htmlisée
+    $commentaire->commentaire = $this->commentaire;
+    $commentaire->object_type = $this->type;
+    $commentaire->object_id = $this->id;
+    $commentaire->lien = $redirect_url[$this->type].$this->id;
+    $object = doctrine::getTable($this->type)->find($this->id);
+    $commentaire->presentation = $about[$this->type].date('d/m/Y', time($object->date));
+    $commentaire->citoyen_id = $citoyen_id;
+    $commentaire->is_public = $is_active;
+    $commentaire->save();
+    
+    if (!$is_active) {
+      $pas_confirme_mail = ', pour le rendre public, cliquez sur le lien d\'activation contenu dans l\'email que nous vous avons envoyé afin de terminer votre inscription.';
+    }
+
+    if (isset($object->parlementaire_id)) {
+      $commentaire->addParlementaire($object->parlementaire_id);
+    }else{
+      $object->Parlementaires;
+    }
+    if (isset($object->Parlementaires)) {
+      foreach($object->Parlementaires as $p)
+	$commentaire->addParlementaire($p->id);
+    }
+			
+    $this->getUser()->setFlash('notice', 'Votre commentaire a été enregistré'.$pas_confirme_mail);
+    $this->getUser()->getAttributeHolder()->remove('commentaire_'.$this->type.'_'.$this->id);
+    return $this->redirect($commentaire->lien);
   }
+
   public function executeRss(sfWebRequest $request) 
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
