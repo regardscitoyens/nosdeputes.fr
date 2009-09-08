@@ -1,5 +1,5 @@
 <?php if (!isset($amendements))
-  echo include_component('amendement', 'pagerAmendements', array('amendement_query' => $amendements_query));
+  echo include_component('amendement', 'pagerAmendements', array('amendement_query' => $amendements_query, 'lois' => $lois));
   else { ?>
 <div class="temp">
 <?php if (!count($amendements)) { ?>

@@ -1,12 +1,20 @@
 <div class="temp">
 <div class="amendements">
 <?php $nResults = $pager->getNbResults();
-  echo $nResults; ?> amendement<?php if ($nResults > 1) echo 's'; ?> trouvé<?php if ($nResults > 1) echo 's';
+  if ($nResults == 0) echo 'Aucun'; else echo $nResults; ?> amendement<?php if ($nResults > 1) echo 's'; ?> trouvé<?php if ($nResults > 1) echo 's';
   if (isset($_GET['search'])) {
     $mots = trim($_GET['search']);
     if ($mots != "") { ?>
 <p> pour la recherche sur <em>"<?php echo $mots; ?>"</em></p>
-<?php } } ?>
+<?php } } 
+else if (isset($lois)) {
+  echo ' pour ';
+  if (count($lois) > 1) echo 'les projets de loi ';
+  else
+    echo 'le projet de loi ';
+  echo 'N° ';
+  foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ';
+} ?>
 </div>
 <div class="amendements">
 <?php foreach($pager->getResults() as $i) {

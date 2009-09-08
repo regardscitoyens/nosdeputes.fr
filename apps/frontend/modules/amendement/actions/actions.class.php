@@ -114,26 +114,20 @@ class amendementActions extends sfActions
 
   public function executeFind(sfWebRequest $request)
   {
-    $lois = split(',', $request->getParameter('loi'));
+    $this->lois = split(',', $request->getParameter('loi'));
     $amdt = $request->getParameter('numero');
-    $numeros = array();
     if ($amdt != 'all') {
+      $numeros = array();
       if (preg_match('/(\d+)-(\d+)/', $amdt, $match)) {
         for($cpt = 0 ; $cpt < 10 ; $cpt++) {
           if ($match[1]+$cpt > $match[2])
             break;
           array_push($numeros, $match[1]+$cpt);
         }
-      }else{
-      preg_match_all('/\D*(\d+)\D*/', $amdt, $match);
-      $numeros = $match[1];
+      } else{
+        preg_match_all('/\D*(\d+)\D*/', $amdt, $match);
+        $numeros = $match[1];
       }
-    }
-    if ($amdt == 'all') {
-      $this->amendements_query = doctrine::getTable('Amendement')->createQuery('a')
-        ->whereIn('a.texteloi_id', $lois)
-        ->orderBy('a.texteloi_id, a.numero');
-    } else {
       $amendements = array();
       foreach($lois as $loi) {
         foreach($numeros as $numero) {
@@ -150,6 +144,10 @@ class amendementActions extends sfActions
         $this->redirect('@amendement?id='.$a[0]);
       }
       $this->amendements = array_values($amendements);
+    } else {
+      $this->amendements_query = doctrine::getTable('Amendement')->createQuery('a')
+        ->whereIn('a.texteloi_id', $this->lois)
+        ->orderBy('a.texteloi_id, a.numero');
     }
   }
 }
