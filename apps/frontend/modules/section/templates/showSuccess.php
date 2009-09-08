@@ -1,10 +1,12 @@
 <div class="temp">
-<?php if ($section->getSection()) 
-  echo '<h1>'.link_to($section->getSection()->getTitre(), '@section?id='.$section->section_id).'</h1>';
-echo '<h2>'.$section->titre.'</h2>';
+<h1><?php if ($section->getSection()) 
+  echo link_to($section->getSection()->getTitre(), '@section?id='.$section->section_id).'</h1><h2>';
+echo $section->titre;
+if ($section->getSection()) echo '</h2>';
+else echo '</h1>';
 ?>
 <div>
-<?php if ($lois) { ?>
+<?php if ($lois && ! preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $section->titre)) { ?>
 <span>Projet<?php if (count($lois) > 1) echo 's'; ?> de loi<?php if (count($lois) > 1) echo 's'; ?> N°
 <?php foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.link_to('amdmts', '@find_amendements_by_loi_and_numero?loi='.$loi.'&numero=all').') '; ?>
 </span>
