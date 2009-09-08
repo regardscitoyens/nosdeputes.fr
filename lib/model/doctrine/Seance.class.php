@@ -81,11 +81,14 @@ class Seance extends BaseSeance
     return $q->fetchArray();
   }
 
-  public function getTitre($miniature = 0) {
+  public function getTitre($miniature = 0, $hemicycle = 0) {
     if ($miniature == 0)
       $titre = 'S';
     else $titre = 's';
-    $titre .= 'éance du '.preg_replace('/^0(\d)/', '\\1', myTools::displayDate($this->getDate()));
+    $titre .= 'éance ';
+    if ($hemicycle == 1)
+      $titre .= 'en hémicycle ';
+    $titre .= 'du '.preg_replace('/^0(\d)/', '\\1', myTools::displayDate($this->getDate()));
     if ($moment = $this->getMoment()) {
       if (preg_match('/réunion/', $moment))
         $titre .= '&nbsp;: ';

@@ -1,11 +1,11 @@
 <div class="temp">
 <div class="amendements">
-<?php
-  $nResults = $pager->getNbResults();
+<?php $nResults = $pager->getNbResults();
+  echo $nResults; ?> amendement<?php if ($nResults > 1) echo 's'; ?> trouvé<?php if ($nResults > 1) echo 's';
   if (isset($_GET['search'])) {
     $mots = trim($_GET['search']);
     if ($mots != "") { ?>
-<p><?php echo $nResults; ?> amendement<?php if ($nResults > 1) echo 's'; ?> trouvé<?php if ($nResults > 1) echo 's'; ?> pour la recherche sur <em>"<?php echo $mots; ?>"</em></p>
+<p> pour la recherche sur <em>"<?php echo $mots; ?>"</em></p>
 <?php } } ?>
 </div>
 <div class="amendements">

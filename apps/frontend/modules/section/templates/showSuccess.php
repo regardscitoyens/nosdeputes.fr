@@ -5,8 +5,9 @@ echo '<h2>'.$section->titre.'</h2>';
 ?>
 <div>
 <?php if ($lois) { ?>
-  <span>(projet<?php if (count($lois) > 1) echo 's'; ?> de lois N°&nbsp;
-    <?php foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.link_to('amdmts', '@find_amendements_by_loi_and_numero?loi='.$loi.'&numero=all').') '; ?>)</span>
+<span>Projet<?php if (count($lois) > 1) echo 's'; ?> de loi<?php if (count($lois) > 1) echo 's'; ?> N°
+<?php foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.link_to('amdmts', '@find_amendements_by_loi_and_numero?loi='.$loi.'&numero=all').') '; ?>
+</span>
 <?php } ?>
 </div>
 <div>

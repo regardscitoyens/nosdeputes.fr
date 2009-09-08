@@ -5,8 +5,7 @@
 <p><?php echo link_to('Députés Présents&nbsp;:', '@presents_seance?seance='.$seance->id); ?><br/>
 <?php echo include_component('presence', 'seance', array('seance'=>$seance->id)); ?><br/><p>
 <?php else :?>
-<h1>Séance en hémicycle</h1>
-<h2>du <?php echo myTools::displayDate($seance->getDate()) ?> à <?php echo $seance->getMoment(); ?></h2>
+<h1><?php echo $seance->getTitre(0,1); ?></h1>
 <?php endif; ?>
 <ul>
 <?php foreach($seance->getTableMatiere() as $table) : if (!$table['titre']) {continue;} ;?>

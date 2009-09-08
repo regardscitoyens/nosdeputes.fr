@@ -5,8 +5,8 @@
     <?php 
     echo myTools::displayDate($intervention->getSeance()->getDate()).' : ';
     
-    if ($intervention->getType() == 'commission') { echo $intervention->getSeance()->getOrganisme()->getNom(); }
-    else { echo $intervention->getSection()->getTitreComplet(); }
+    if ($intervention->getType() == 'commission') { $orga = $intervention->getSeance()->getOrganisme(); echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); }
+    else { $section = $intervention->getSection(); echo link_to(ucfirst($section->titre_complet), '@section?id='.$section->id); }
     ?> 
     </strong>
     </div>
