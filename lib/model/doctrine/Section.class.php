@@ -60,7 +60,7 @@ class Section extends BaseSection
   }
 
   public function getTitre() {
-    return preg_replace('/\s*\?$/', '', $this->_get('titre'));
+    return ucfirst(preg_replace('/\s*\?$/', '', $this->_get('titre')));
   }
 
 }

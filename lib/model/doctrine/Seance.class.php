@@ -85,13 +85,14 @@ class Seance extends BaseSeance
     if ($miniature == 0)
       $titre = 'S';
     else $titre = 's';
-    $titre .= 'éance du '.myTools::displayDate($this->getDate());
+    $titre .= 'éance du '.preg_replace('/^0(\d)/', '\\1', myTools::displayDate($this->getDate()));
     if ($moment = $this->getMoment()) {
       if (preg_match('/réunion/', $moment))
         $titre .= '&nbsp;: ';
       else $titre .= '&nbsp;à ';
       $titre .= $moment;
     }
+    $titre = preg_replace('/00:00/', 'minuit', $titre);
     return $titre;
   }
 }

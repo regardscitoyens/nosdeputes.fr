@@ -22,7 +22,7 @@
   echo '</p>';
   ?></div>
   <div class="sujet">
-    <h2><?php echo $amendement->getSujet().' de la loi N° '.link_to($amendement->texteloi_id, "http://recherche2.assemblee-nationale.fr/resultats-avancee.jsp?11AUTPropositions=&11AUTRap-enq=&11AUTRap-info=&11AUTRapports=&12AUTPropositions=&12AUTRap-enq=&12AUTRap-info=&12AUTRap-infoLoi=&12AUTRapports=&13AUTComptesRendusReunions=&13AUTComptesRendusReunionsDeleg=&13AUTPropositions=&13AUTRap-info=&13AUTRap-infoLoi=&13AUTRapports=&legislature=13&legisnum=&num_init_11=&num_init_12=&num_init_13=".$amendement->texteloi_id."&searchadvanced=Rechercher&searchtype=&texterecherche=&type=13ProjetsLoi"); ?></h2>
+    <h2><?php echo $amendement->getSujet().' de la loi N° '.myTools::getLinkLoi($amendement->texteloi_id); ?></h2>
   </div>
   <div class="texte_intervention">
     <?php echo $amendement->getTexte(); ?>

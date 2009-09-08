@@ -1,9 +1,14 @@
 <div class="temp">
 <?php if ($section->getSection()) 
-  echo '<h1>'.link_to($section->getSection()->titre, '@section?id='.$section->section_id).'</h1>';
+  echo '<h1>'.link_to($section->getSection()->getTitre(), '@section?id='.$section->section_id).'</h1>';
 echo '<h2>'.$section->titre.'</h2>';
 ?>
-
+<div>
+<?php if ($lois) { ?>
+  <span>(projet<?php if (count($lois) > 1) echo 's'; ?> de lois N°&nbsp;
+    <?php foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.link_to('amdmts', '@find_amendements_by_loi_and_numero?loi='.$loi.'&numero=all').') '; ?>)</span>
+<?php } ?>
+</div>
 <div>
 <p>Voici la liste des mots clés pour cette section :</p>
 <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>

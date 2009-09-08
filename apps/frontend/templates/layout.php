@@ -65,7 +65,7 @@ if ($rss) {
           <ul>
             <li class="neuf"><a href="<?php echo url_for('@homepage'); ?>">Accueil</a></li>
             <li class="douze"><a href="<?php echo url_for('@list_parlementaires'); ?>">Les Députés</a></li>
-            <li class="neuf"><a href="<?php echo url_for('@sections')?>">Les Lois</a></li>
+            <li class="neuf"><a href="<?php echo url_for('@sections?order=date')?>">Les Lois</a></li>
             <li class="treize"><a href="<?php echo url_for('@list_citoyens')?>">Les Citoyens</a></li>
             <li class="douze"><a href="http://www.assemblee-nationale.fr/">L'Assemblée</a></li>
           </ul>

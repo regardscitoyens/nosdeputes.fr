@@ -36,11 +36,11 @@
     echo '<div class="intervenant" id="table_'.$table.'">';
     if ($titre != 2) {
       if ($lasttitre != 1) {
-        echo '<h2><span class="section">'.ucfirst($intervention->Section->Section->titre).'</span></h2>';
+        echo '<h2><span class="section">'.ucfirst($intervention->Section->Section->titre).' '.link_to('->dossier','@section?id='.$intervention->Section->Section->id).'</span></h2>';
       }
       if ($intervention->Section->id != $intervention->Section->section_id) {
         echo '<h3><span class="sous-section">';
-        echo ucfirst($intervention->Section->titre).'</span></h3>';
+        echo ucfirst($intervention->Section->titre).' '.link_to('->dossier','@section?id='.$intervention->Section->id).'</span></h3>';
       }
       echo '<a href="#sommaire">^ Retour au sommaire ^</a>';
     }
