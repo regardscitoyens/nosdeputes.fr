@@ -10,6 +10,19 @@
  */
 class parlementaireActions extends sfActions
 {
+  public static function imagetograyscale($im)
+  {
+    if (imageistruecolor($im)) {
+      imagetruecolortopalette($im, false, 256);
+    }
+    
+    for ($c = 0; $c < imagecolorstotal($im); $c++) {
+      $col = imagecolorsforindex($im, $c);
+      $gray = round(0.299 * $col['red'] + 0.587 * $col['green'] + 0.114 * $col['blue']);
+      imagecolorset($im, $c, $gray, $gray, $gray);
+    }
+  }
+
   public function executePhoto(sfWebRequest $request)
   {
     $rayon = 50; //pour la vignette
@@ -32,6 +45,8 @@ class parlementaireActions extends sfActions
 
     $iorig = imagecreatefromjpeg($file);
     $ih = imagecreatetruecolor($work_height*$width/$height, $work_height);
+    if ($parlementaires[0]['fin_mandat'])
+      self::imagetograyscale($iorig);
     imagecopyresampled($ih, $iorig, 0, 0, 0, 0, $work_height*$width/$height, $work_height, $width, $height);
     $width = $work_height*$width/$height;
     $height = $work_height;
