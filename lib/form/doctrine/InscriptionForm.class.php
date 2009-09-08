@@ -30,9 +30,9 @@ class InscriptionForm extends CitoyenForm
     #$this->widgetSchema->setOption('form_formatter', 'list');
     
     $this->widgetSchema['login'] = new sfWidgetFormInput();
-    $this->validatorSchema['login'] = new sfValidatorString(array('required' => true, 'min_length' => 4, 'max_length' => 40), array('invalid' => 'Adresse email invalide.', 'required' => 'Indiquez le nom d\'utilisateur souhaité', 'min_length' => '"%value%" est trop court (%min_length% caractères minimum).', 'max_length' => '"%value%" est trop long (%max_length% caractères maximum).'));
-		
-    $this->validatorSchema['email'] = new sfValidatorEmail(array(), array('invalid' => 'Adresse email invalide.', 'required' => 'Indiquez votre adresse email', ));
+    $this->validatorSchema['login'] = new sfValidatorString(array('required' => true, 'min_length' => 4, 'max_length' => 40), array('invalid' => 'Ce nom d\'utilisateur existe déjà.', 'required' => 'Indiquez le nom d\'utilisateur souhaité', 'min_length' => '"%value%" est trop court (%min_length% caractères minimum).', 'max_length' => '"%value%" est trop long (%max_length% caractères maximum).'));
+    
+    $this->validatorSchema['email'] = new sfValidatorEmail(array('required' => true), array('invalid' => 'Adresse email invalide.', 'required' => 'Indiquez votre adresse email', ));
     
     // Les labels
     $this->widgetSchema->setLabels(array(

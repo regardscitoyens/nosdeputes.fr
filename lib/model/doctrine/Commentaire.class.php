@@ -32,7 +32,13 @@ class Commentaire extends BaseCommentaire
 
   public function getHumanUser() {
     if (!$this->citoyen_id)
+		{
       return 'Anonyme';
-    return '';
+		}
+		else
+		{
+			$user = Doctrine::getTable('Citoyen')->findOneById($this->citoyen_id);
+			return '<a href="'.url_for('@citoyen?slug='.$user->slug).'">'.$user->login.'</a>';
+		}
   }
 }

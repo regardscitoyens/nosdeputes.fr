@@ -40,7 +40,7 @@ if ($rss) {
               <div class="b_u_cont">
                 <?php if(!$sf_user->isAuthenticated()) { ?>
                 <form method="post" action="<?php echo url_for('@signin'); ?>">
-                  <input type="text" name="signin[login]" id="signin_login" size="10" class="signin" /> <input type="password" name="signin[pass]" id="signin_pass" size="10" class="signin" />
+                  <input type="text" name="signin[login]" id="signin_login" size="10" class="signin" /> <input type="password" name="signin[password]" id="signin_password" size="10" class="signin" />
                   <input type="submit" value="login" class="bouton_ok" />
                   <a href="<?php echo url_for('@inscription') ?>" class="bouton_ok">S'inscrire</a>
                 </form> <?php }

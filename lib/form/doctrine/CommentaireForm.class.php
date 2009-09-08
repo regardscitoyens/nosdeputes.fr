@@ -12,6 +12,7 @@ class CommentaireForm extends BaseCommentaireForm
   public function configure()
   {
     unset(
+    $this['id'],
     $this['citoyen_id'],
     $this['updated_at'],
     $this['created_at'],
@@ -27,9 +28,27 @@ class CommentaireForm extends BaseCommentaireForm
     
     if (!sfContext::getInstance()->getUser()->isAuthenticated()) 
     {
-      parent::configure();
-      $mailForm = new InscriptioncomForm($this->object->Citoyen);
-      $this->embedForm('Citoyen', $mailForm);
+      $this->widgetSchema['nom'] = new sfWidgetFormInput();
+      $this->widgetSchema['email'] = new sfWidgetFormInput();
+      $this->widgetSchema['login'] = new sfWidgetFormInput();
+      $this->widgetSchema['password'] = new sfWidgetFormInput();
+      
+      
+      $this->validatorSchema['nom'] = new sfValidatorString(array('required' => false, 'min_length' => 4, 'max_length' => 40), array('invalid' => 'Ce nom d\'utilisateur existe déjà.', 'min_length' => '"%value%" est trop court (%min_length% caractères minimum).', 'max_length' => '"%value%" est trop long (%max_length% caractères maximum).'));
+      
+      $this->validatorSchema['email'] = new sfValidatorEmail(array('required' => false), array('invalid' => 'Adresse email invalide.'));
+			$this->validatorSchema['login'] = new sfValidatorString(array('required' => false), array('invalid' => 'Ce nom d\'utilisateur n\'existe pas.'));
+			$this->validatorSchema['password'] = new sfValidatorString(array('required' => false), array('invalid' => 'Le mot de passe ne correspond pas.'));
+			
+			
+			
+    // labels
+    $this->widgetSchema->setLabels(array(
+      'nom' => 'Nom d\'utilisateur',
+      'email' => 'Email',
+      'login' => 'Nom d\'utilisateur',
+      'password' => 'Mot de passe'
+    ));
     }
   }
 }
