@@ -22,6 +22,16 @@ class citoyenComponents extends sfComponents
     }
   }
 
+  public function executeShortCitoyen()
+  {
+    $this->user = null;
+    if ($this->citoyen_id) {
+      return ;
+    }else{
+      $this->user = Doctrine::getTable('Citoyen')->find($this->citoyen_id);
+      return;
+    }
+  }
 }
 
 ?>

@@ -119,4 +119,15 @@ class articleActions extends sfActions
 	return $this->redirect('@compterendu_new?object_id='.$this->seances[0]['id']);
     }
   }
+  public function executePager(sfWebRequest $request)
+  {
+    $categorie = $request->getParameter('categorie');
+    $qarticles = Doctrine::getTable('Article')->createQuery('a')->where('a.categorie = ?', $categorie)->orderBy('a.created_at DESC');
+    $pager = new sfDoctrinePager('Article',20);
+    $pager->setQuery($qarticles);
+    $pager->setPage($this->request->getParameter('page', 1));
+    $pager->init();
+    $this->pager = $pager;
+    $this->titre = $request->getParameter('titre', 'Il manque un titre dans le routing');
+  }
 }

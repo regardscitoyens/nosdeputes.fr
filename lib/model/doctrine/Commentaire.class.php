@@ -24,21 +24,4 @@ class Commentaire extends BaseCommentaire
     $cp->commentaire_id = $this->id;
     $cp->save();
   }
-
-  public function getHumanDateTime() {
-    $time = strtotime($this->created_at);
-    return date('j/m/Y à G:i', $time);
-  }
-
-  public function getHumanUser() {
-    if (!$this->citoyen_id)
-		{
-      return 'Anonyme';
-		}
-		else
-		{
-			$user = Doctrine::getTable('Citoyen')->findOneById($this->citoyen_id);
-			return '<a href="'.url_for('@citoyen?slug='.$user->slug).'">'.$user->login.'</a>';
-		}
-  }
 }

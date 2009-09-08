@@ -15,8 +15,10 @@ if (!count($commentaires)) : ?>
               
               </div>
               <div class="m_b_c_text">
-    <h3><?php echo $c->getHumanUser(); ?></h3>
-              <p><?php echo $c->getHumanDateTime(); ?></p>
+    <h3><?php 
+include_component('citoyen', 'shortCitoyen', array('citoyen_id'=>$c->citoyen_id));
+ ?></h3>
+              <p><?php echo myTools::displayDate($c->created_at); ?></p>
 <p class="note"><img src="/css/fixe/images/mini_etoile.png" alt="***"/></p>
               </div>
             </div>

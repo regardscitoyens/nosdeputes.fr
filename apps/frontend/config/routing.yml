@@ -27,9 +27,12 @@ doc_organisme_new:
   param: {module: article, action: create, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true}
 
 # Compte Renu
+compterendu_list:
+  url: /compterendu
+  param: {module: article, action: pager, categorie: Seance, titre: "Compte-rendus citoyens"}
 
 compterendu_finseance:
-  url: /compterendu
+  url: /compterendu/new
   param: {module: article, action: findSeance}
 compterendu_new:
   url: /compterendu/new/:object_id
