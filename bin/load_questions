@@ -8,10 +8,10 @@ cd batch/questions
 sh only_parse.sh >> /tmp/load_questions.log
 cd -
 php symfony cc
-for file in $(ls batch/questions/xml)
+for file in $(ls batch/questions/input)
 do
     echo $file
-    cp batch/questions/xml/$file batch/questions/input/
+#    cp batch/questions/xml/$file batch/questions/input/
     php symfony load:Questions >> /tmp/load_questions.log
     php symfony cc
 done

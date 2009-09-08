@@ -149,6 +149,7 @@ $string =~ s/&#8217;/'/g;
 $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/ission d\W+information/ission d'information/gi;
+$string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $majIntervenant = 0;
 $body = 0;
 

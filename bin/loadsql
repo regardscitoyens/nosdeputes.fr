@@ -1,15 +1,17 @@
 #!/bin/bash
 MYSQLID="-u root"
+DBNAME="cpc"
+
 #echo "SET FOREIGN_KEY_CHECKS = 0;" > /tmp/drop.sql
 #echo "SET FOREIGN_KEY_CHECKS = 0;" > /tmp/delete.sql
-#echo "SHOW TABLES" | mysql $MYSQLID cpc  | grep -v Tables_  > /tmp/tables.sql
+#echo "SHOW TABLES" | mysql $MYSQLID $DBNAME  | grep -v Tables_  > /tmp/tables.sql
 #cat /tmp/tables.sql | sed 's/^/DROP TABLE /' | sed 's/$/;/'  >> /tmp/drop.sql
-#cat /tmp/drop.sql | mysql $MYSQLID cpc
+#cat /tmp/drop.sql | mysql $MYSQLID $DBNAME
 #cat /tmp/tables.sql | sed 's/^/CREATE TABLE /' | sed 's/$/;/'  > /tmp/create.sql
-#cat /tmp/create.sql | mysql $MYSQLID cpc
+#cat /tmp/create.sql | mysql $MYSQLID $DBNAME
 #cat /tmp/tables.sql | sed 's/^/DELETE FROM /' | sed 's/$/;/'  >> /tmp/delete.sql
 php symfony doctrine:build-all-reload --no-confirmation
-#cat /tmp/delete.sql | mysql $MYSQLID cpc
+#cat /tmp/delete.sql | mysql $MYSQLID $DBNAME
 #rm /tmp/tables.sql /tmp/drop.sql /tmp/create.sql /tmp/delete.sql
-zcat data/sql/data.sql.gz | grep -v '`sf_guard' | grep -v '`tag_template`' | mysql $MYSQLID cpc
+zcat data/sql/data.sql.gz | mysql $MYSQLID $DBNAME
 #php symfony set:Vacances
