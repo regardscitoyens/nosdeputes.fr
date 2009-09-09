@@ -129,7 +129,7 @@ class amendementActions extends sfActions
         $numeros = $match[1];
       }
       $amendements = array();
-      foreach($lois as $loi) {
+      foreach($this->lois as $loi) {
         foreach($numeros as $numero) {
           $query = PluginTagTable::getObjectTaggedWithQuery('Amendement', array('loi:amendement='.$numero));
           $query->andWhere('texteloi_id = ?', $loi);
