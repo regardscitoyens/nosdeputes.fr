@@ -50,7 +50,7 @@ class amendementActions extends sfActions
     $this->amendements = doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('pa.numero_signataire <= ?', $this->seuil_amdmts)
+    //  ->andWhere('pa.numero_signataire <= ?', self::$seuil_amdmts)
       ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
   }
 
