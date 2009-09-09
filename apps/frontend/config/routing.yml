@@ -114,6 +114,9 @@ parlementaire_texte:
 parlementaire_amendements:
   url: /parlementaire/:slug/amendements
   param: {module: amendement, action: parlementaire}
+parlementaire_texte_amendements:
+  url: /parlementaire/:slug/texte/:id/amendements
+  param: {module: amendement, action: parlementaireSection}
 parlementaire_presences:
   url: /parlementaire/:slug/presence
   param: {module: presence, action: parlementaire}

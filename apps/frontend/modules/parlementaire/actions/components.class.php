@@ -10,4 +10,7 @@ class parlementaireComponents extends sfComponents
       ->fetchArray();
 
   }
+  public function executeHeader()
+  {
+  }
 }

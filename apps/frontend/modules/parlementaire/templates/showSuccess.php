@@ -1,7 +1,7 @@
 <?php $style = 'fixe'; # en attendant le style switcher ?>
 <div class="fiche_depute">
   <div class="info_depute">
-<p><h1><?php echo $parlementaire->nom.', '.$parlementaire->getLongStatut(1); ?></h1></p>
+<p><h1><b><?php echo $parlementaire->nom; ?></b>, <?php echo $parlementaire->getLongStatut(1); ?></h1></p>
     </div>
   <div class="depute_gauche">
     <div class="photo_depute">

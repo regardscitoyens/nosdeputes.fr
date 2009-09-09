@@ -292,8 +292,40 @@ img {
   display: inline;
   margin-left: 0;
 }
+.info_depute {
+  position: relative;
+  top: 0;
+}
+.info_depute h1 {
+  font-size: 1.7em;
+}
+.info_depute p {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
 .depute_gauche {
   float: left;
+}
+.depute_droite {
+  float: right;
+  width: 92%;
+  position: relative;
+  height: 90px;
+}
+.depute_droite h1 {
+  font-size: 2.0em;
+  text-align: center;
+}
+.depute_droite h1 soustitre {
+  font-size: 0.8em;
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+.depute_droite h2 {
+  font-size: 1.5em;
+  text-align: center;
 }
 .photo_depute {
   position: relative;
@@ -303,9 +335,6 @@ img {
   border-right: 1px solid #BFBFBF;
   background: #D0D0D0 url("images/cadre_depute.png") no-repeat 0 0;
 }
-.photo_fiche {
-  height: 170px;
-}
 .graph_depute {
   float: left;
   position: relative;
@@ -313,18 +342,6 @@ img {
   margin-left: 3px;
 }
 .graph_depute p {
-  text-align: center;
-  margin: 0px;
-  padding: 0px;
-}
-.info_depute {
-  position: relative;
-  top: 0;
-}
-.info_depute h1 {
-  font-size: 1.7em;
-}
-.info_depute p {
   text-align: center;
   margin: 0px;
   padding: 0px;

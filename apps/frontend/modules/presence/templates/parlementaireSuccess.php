@@ -1,5 +1,8 @@
 <div class="temp">
-<h1>Présence de <?php echo $parlementaire->nom; ?></h1>
+<?php
+$titre = 'Présence en hémicycle et commissions';
+echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre));
+?>
 <p><?php $n_presences = count($presences); echo $n_presences." présences en commission depuis ".myTools::displayDate($parlementaire->debut_mandat); ?></p>
 <ul>
 <?php foreach($presences as $presence) : ?>

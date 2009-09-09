@@ -1,8 +1,8 @@
 <div class="temp">
-<div class="titre_questions_perso">
-<h1>Les questions de <a href="<?php echo url_for($parlementaire->getPageLink()); ?>"><?php echo $parlementaire->nom.' '; if ($parlementaire->getPhoto()) echo image_tag($parlementaire->getPhoto(), ' alt=Photo de '.$parlementaire->nom); ?></a></h1>
-
-</div>
+<?php
+$titre = 'Questions écrites';
+echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre));
+?>
 <div class="questions">
 <?php if(count($questions) < 1) : ?>
 Ce député n'a posé aucune question.

@@ -22,25 +22,28 @@ if (isset($highlight)) {
       $p_inter = highlight_text($p_inter, $h);
   }
 }
-if ($p_inter == '')
-    $p_inter = truncate_text($inter, 400);
+if ($p_inter == '') {
+  if (isset($complete)) $p_inter = $inter;
+  else  $p_inter = truncate_text($inter, 400);
+}
 if ($intervention->hasIntervenant()) {
   $perso = $intervention->getIntervenant();
   $didascalie = 0;
   echo '<span class="source"><a href="'.$intervention->getSource().'">source</a> - <a href="'.url_for("@interventions_seance?seance=$intervention->seance_id").'#inter_'.$intervention->getMd5().'">permalink</a></span>';
-  if ($perso->getPageLink()) {
-    
-    if ($perso->hasPhoto()) {
-      echo '<a href="'.url_for($perso->getPageLink()).'"><img width="50" height="70" alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$perso->slug).'" /></a>';
+  if (!isset($nophoto)) {
+    if ($perso->getPageLink()) {
+      if ($perso->hasPhoto()) {
+        echo '<a href="'.url_for($perso->getPageLink()).'"><img width="50" height="70" alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$perso->slug).'" /></a>';
+      }
+      echo '<a href="'.url_for($perso->getPageLink()).'">';
+      echo $perso->nom;
+
+      echo '</a>&nbsp;:';
     }
-    echo '<a href="'.url_for($perso->getPageLink()).'">';
-    echo $perso->nom;
-    
-    echo '</a>&nbsp;:';
-  }
-  else {
-    echo '<span class="perso">'.$perso->nom;    
-    echo '</span>';
+    else {
+      echo '<span class="perso">'.$perso->nom;
+      echo '</span>';
+    }
   }
  }
   echo '<p>'.$p_inter.'</p>';

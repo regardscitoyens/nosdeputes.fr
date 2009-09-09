@@ -1,5 +1,9 @@
-<div>
-<h1>Les mots les plus prononcés par <?php echo $parlementaire->getNom(); ?></h1>
+<div class="temp">
+<?php
+$titre = 'Champ lexical';
+echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre));
+?>
+  <div>
 <?php if (! $parlementaire->fin_mandat) { 
    if (!$last) 
     echo '<a href="'.url_for('@parlementaire_tags?slug='.$parlementaire->slug).'">';
@@ -23,3 +27,4 @@ foreach ($sessions as $s) {
 }?>
 </div>
    <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'min_tag' => 2, 'route' => '@tag_parlementaire_interventions?parlementaire='.$parlementaire->slug.'&', 'limit'=>1000)); ?>
+</div>

@@ -1,11 +1,9 @@
-<div class="titre_int_et_seance">
-<h1>Les interventions de <?php 
-echo $parlementaire->nom.' '; 
-if ($parlementaire->hasPhoto()) { 
-  echo '<img src="'.url_for('@resized_photo_parlementaire?height=150&slug='.$parlementaire->slug).'" alt="Photo de '.$parlementaire->nom.'" />'; 
-} ?></h1>
-
+<div class="temp">
+<?php
+$titre = "Interventions";
+echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre));
+?>
 </div>
 <div class="interventions">
-<?php  echo include_component('intervention', 'pagerInterventions', array('intervention_query' => $interventions)); ?>
+<?php  echo include_component('intervention', 'pagerInterventions', array('intervention_query' => $interventions, 'nophoto' => true)); ?>
 </div>

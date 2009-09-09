@@ -8,7 +8,6 @@ if (!isset($options['plot'])) $options = array_merge($options, array('plot' => '
 
 if (!isset($options['plot']) || $options['plot'] != 'total') { ?>
 <div>
-<h1>Graphes d'activité de <?php echo $parlementaire->getNom(); ?></h1>
 <?php if ($plotarray['time'] != 'lastyear')
   echo '<a href='.url_for('@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear').'>';
   echo 'Les 12 derniers mois';

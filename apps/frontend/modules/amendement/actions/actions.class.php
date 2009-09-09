@@ -54,6 +54,20 @@ class amendementActions extends sfActions
       ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
   }
 
+  public function executeParlementaireSection(sfWebRequest $request) 
+  {
+    $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->parlementaire);
+
+    $this->section = doctrine::getTable('Section')->find($request->getParameter('id'));
+    $this->forward404Unless($this->section);
+
+    $this->qamendements = doctrine::getTable('Amendement')->createQuery('a')
+      ->leftJoin('a.ParlementaireAmendement pa')
+      ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
+      ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
+  }
+
   public function executeSearch(sfWebRequest $request)
   {
     $this->mots = $request->getParameter('search');
