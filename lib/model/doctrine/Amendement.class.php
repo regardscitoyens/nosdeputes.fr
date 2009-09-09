@@ -35,6 +35,7 @@ class Amendement extends BaseAmendement {
     }
     if ($debug) echo $auteurs." // ".$groupe."\n";
     $arr = preg_split('/,/', $auteurs);
+    $signataireindex = 1;
     foreach ($arr as $depute) {
       if (preg_match('/^(.*)\((.*)\)/', $depute, $match)) {
         $depute = trim($match[1]);
@@ -56,13 +57,14 @@ class Amendement extends BaseAmendement {
       else {
         if ($debug) echo $depute->nom."\n";
         if (!$groupe && $depute->groupe_acronyme != "") $groupe = $depute->groupe_acronyme;
-        $this->addParlementaire($depute);
+        $this->addParlementaire($depute, $signataireindex);
         $depute->free();
       }
+      $signataireindex++;
     }
   }
 
-  public function addParlementaire($depute) {
+  public function addParlementaire($depute, $signataireindex) {
     foreach($this->getParlementaires() as $par)
       if ($par == $depute) {
         $par->free();
@@ -71,6 +73,7 @@ class Amendement extends BaseAmendement {
     $pa = new ParlementaireAmendement();
     $pa->_set('Parlementaire', $depute);
     $pa->_set('Amendement', $this);
+    $pa->numero_signataire = $signataireindex;
     if ($pa->save()) {
       $pa->free();
       return true;

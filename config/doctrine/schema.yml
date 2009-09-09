@@ -258,6 +258,7 @@ ParlementaireAmendement:
   columns:
     parlementaire_id: integer
     amendement_id: string(36)
+    numero_signataire: integer
   relations:
     Parlementaire:
       foreignAlias: ParlementaireAmendements

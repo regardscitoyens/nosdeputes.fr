@@ -2,6 +2,8 @@
 
 class amendementActions extends sfActions
 {
+  static $seuil_amdmts = 8;
+  
   public function executeShow(sfWebRequest $request)
   {
     $query = doctrine::getTable('Amendement')->createquery('a')
@@ -48,18 +50,8 @@ class amendementActions extends sfActions
     $this->amendements = doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('pa.numero_signataire <= ?', $this->seuil_amdmts)
       ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
-  }
-
-  public function executeTop(sfWebRequest $request)
-  {
-    $q = Doctrine_Query::create()
-      ->select('pa.id, p.*, count(pa.amendement_id) as nb')
-      ->from('ParlementaireAmendement pa')
-      ->leftJoin('pa.Parlementaire p')
-      ->groupBy('p.id')
-      ->orderBy('nb DESC');
-    $this->top = $q->fetchArray();
   }
 
   public function executeSearch(sfWebRequest $request)
