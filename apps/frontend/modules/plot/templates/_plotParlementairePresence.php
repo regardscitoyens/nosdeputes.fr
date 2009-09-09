@@ -113,11 +113,12 @@ if ($type == 'total') {
   $Test->drawTitle(270,3 + 2*$font,"Participation en ".$titre." au cours de ".$duree,50,50,50,585);
   $titre .= '-'.$shortduree;
 }
-$Test->xsRender('participation-'.$titre.'-'.$parlementaire->slug.isset($link).'.png');
+$filename = 'participation-'.$titre.'-'.$parlementaire->slug.isset($link).'.png';
+$Test->xsRender($filename);
 
 if (isset($link))
-  echo link_to(image_tag('tmp/xspchart/participation-'.$titre.'-'.$parlementaire->slug.'.png', 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"'), '@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear');
-else echo image_tag('tmp/xspchart/participation-'.$titre.'-'.$parlementaire->slug.'.png', 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"');
+  echo link_to(image_tag('tmp/xspchart/'.$filename, 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"'), '@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear');
+else echo image_tag('tmp/xspchart/'.$filename, 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"');
 echo "<p><span style='background-color: rgb(255,";
 echo 35*$fonction.",0);'>&nbsp;</span> ";
 if ($type == 'commission') echo '&nbsp;Présences enregistrées&nbsp;&nbsp;&nbsp;'; else echo '&nbsp;Présences relevées&nbsp;&nbsp;&nbsp;';

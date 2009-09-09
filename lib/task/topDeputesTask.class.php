@@ -94,7 +94,7 @@ class topDeputesTask extends sfBaseTask
     }
   }
 
-  protected function oldexecuteAmendementsSignes($q)
+  protected function executeAmendementsSignes($q)
   {
     $parlementaires = $q->select('p.id, count(a.id)')
       ->from('Parlementaire p, p.Amendements a')
@@ -105,7 +105,7 @@ class topDeputesTask extends sfBaseTask
     }
   }
  
-  protected function oldexecuteAmendementsAdoptes($q)
+  protected function executeAmendementsAdoptes($q)
   {
     $parlementaires = $q->select('p.id, count(a.id)')
       ->from('Parlementaire p, p.Amendements a')
@@ -117,7 +117,7 @@ class topDeputesTask extends sfBaseTask
     }
   }
 
-  protected function oldexecuteAmendementsRejetes($q)
+  protected function executeAmendementsRejetes($q)
   {
     $parlementaires = $q->select('p.id, count(a.id)')
       ->from('Parlementaire p, p.Amendements a')
@@ -129,47 +129,6 @@ class topDeputesTask extends sfBaseTask
     }
   }
   
-  static $seuil_amdmts = 8;
-  protected function executeAmendementsSignes($q)
-  {
-    $parlementaires = $q->select('parlementaire_id as pid, count(amendement_id)')
-      ->from('ParlementaireAmendement')
-      ->where('numero_signataire <= ?', $this->seuil_amdmts)
-      ->groupBy('pid')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['pid']]['amendements_signes']['value'] = $p['count'];
-    }
-  }
-  
-  protected function executeAmendementsAdoptes($q)
-  {
-    $parlementaires = $q->select('pa.parlementaire_id as pid, count(pa.amendement_id)')
-      ->from('ParlementaireAmendement pa')
-      ->leftJoin('pa.Amendement a')
-      ->where('pa.numero_signataire <= ?', $this->seuil_amdmts)
-      ->andWhere('a.sort = ?', 'Adopté')
-      ->groupBy('pid')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['pid']]['amendements_adoptes']['value'] = $p['count'];
-    }
-  }
-
-  protected function executeAmendementsRejetes($q)
-  {
-    $parlementaires = $q->select('pa.parlementaire_id as pid, count(pa.amendement_id)')
-      ->from('ParlementaireAmendement pa')
-      ->leftJoin('pa.Amendement a')
-      ->where('pa.numero_signataire <= ?', $this->seuil_amdmts)
-      ->andWhere('a.sort = ?', 'Rejeté')
-      ->groupBy('pid')
-      ->fetchArray();
-   foreach ($parlementaires as $p) {
-      $this->deputes[$p['pid']]['amendements_rejetes']['value'] = $p['count'];
-    }
-  }
-
   protected function executeQuestionsEcrites($q)
   {
     $parlementaires = $q->select('p.id, count(q.id)')
