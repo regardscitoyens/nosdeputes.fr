@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
+	<head>
+		<title>Template</title>
+		<link rel="shortcut icon" type="image/x-icon" href="favicon.gif" />
+		<link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+	</head>
+	
+	<body>
+		<div id="contenu">
+			<div id="top">
+				<div class="initiative">
+					<a href="http://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);"><img src="images/top_initiative.png" alt="Une initiative de RegardsCitoyens.fr" title="RegardsCitoyens.fr" /></a>
+				</div>
+				<div class="identification">
+					<form method="get" action="">
+					<button type="submit" name="" id="b2"></button>
+					<button type="submit" name="" id="b1"></button>
+					<input type="text" name="" value="&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;" onFocus="if(this.value=='&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;')this.value ='';" onBlur="if(this.value=='')this.value ='&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;';"/>
+					<input type="text" name="" value="Identifiant" onFocus="if(this.value=='Identifiant')this.value ='';" onBlur="if(this.value=='')this.value ='Identifiant';" />
+					</form>
+				</div>
+			</div>
+			<div id="header">
+				<a href="#"><img src="images/header_logo.png" alt="NosDeput&eacute;s.fr" title="NosDeput&eacute;s.fr" /></a>
+			</div>
+			<div id="menu">
+				<div class="menu_navigation">
+					<div id="item1"><a href="#"></a></div>
+					<div id="item2"><a href="#"></a></div>
+					<div id="item3"><a href="#"></a></div>
+					<div id="item4"><a href="#"></a></div>
+					<div id="item5"><a href="#"></a></div>
+				</div>
+				<div class="menu_recherche">
+					<form action="/rechercher" method="get">
+						<p>
+							<input class="rechercher" name="search" type="text" size="15" value=""/>
+                            <select class="type_recherche" name="type">
+								<option value="depute">Députés</option>
+								<option value="departement">Départements</option>
+								<option value="profession">Profession</option>
+								<option value="intervention">Interventions</option>
+								<option value="amendement">Amendements</option>
+							</select>
+							<input class="bouton_ok" value="" type="submit"/>
+						</p>
+					</form>
+				</div>
+			</div>
+			<div id="sous_menu">
+				<span class="elements_sous_menu"> <!-- A rendre dynamique en php -->
+
+					<ul>
+						<li><a href="#">El&eacute;ment 1</a> |</li>
+						<li><a href="#">El&eacute;ment 2</a> |</li>
+						<li><a href="#">El&eacute;ment 3</a> |</li>
+						<li><a href="#">El&eacute;ment 4</a> |</li>
+						<li><a href="#">El&eacute;ment 5</a></li>
+				</span>
+			</div>
+			<div id="corps_page">
+				<div class="contenu_page">
+					<img src="images/IMAGE_FOND_DEMO.png" alt="IMAGE FOND DEMO" title="IMAGE FOND DEMO" /> <!-- demo -->
+				</div>
+			</div>
+			<div id="bottom">
+			</div>
+		</div>
+	</body>
+</html>
