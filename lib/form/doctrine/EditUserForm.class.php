@@ -1,5 +1,5 @@
 <?php
-class EditUserForm extends CitoyenForm
+class EditUserForm extends CitoyenForm  
 {
   public function configure()
   {
@@ -22,14 +22,14 @@ class EditUserForm extends CitoyenForm
       $this['updated_at'], 
       $this['slug']
     );
-		
+    
     $annees = range(1920, date('Y')); // array des dates depuis 1920
     $liste_annees = array_combine($annees, $annees); // array clés et valeurs des dates
       
     $this->widgetSchema['naissance'] = new sfWidgetFormDate(array('format' => '%day%/%month%/%year%', 'years' => $liste_annees));
     
     $this->widgetSchema->setNameFormat('citoyen[%s]');
-		
+    
     // Les labels
     $this->widgetSchema->setLabels(array(
       'activite' => 'Activité : ', 

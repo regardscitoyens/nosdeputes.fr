@@ -37,11 +37,11 @@ class CommentaireForm extends BaseCommentaireForm
       $this->validatorSchema['nom'] = new sfValidatorString(array('required' => false, 'min_length' => 4, 'max_length' => 40), array('invalid' => 'Ce nom d\'utilisateur existe déjà.', 'min_length' => '"%value%" est trop court (%min_length% caractères minimum).', 'max_length' => '"%value%" est trop long (%max_length% caractères maximum).'));
       
       $this->validatorSchema['email'] = new sfValidatorEmail(array('required' => false), array('invalid' => 'Adresse email invalide.'));
-			$this->validatorSchema['login'] = new sfValidatorString(array('required' => false), array('invalid' => 'Ce nom d\'utilisateur n\'existe pas.'));
-			$this->validatorSchema['password'] = new sfValidatorString(array('required' => false), array('invalid' => 'Le mot de passe ne correspond pas.'));
-			
-			
-			
+      $this->validatorSchema['login'] = new sfValidatorString(array('required' => false), array('invalid' => 'Ce nom d\'utilisateur n\'existe pas.'));
+      $this->validatorSchema['password'] = new sfValidatorString(array('required' => false), array('invalid' => 'Le mot de passe ne correspond pas.'));
+      
+      
+      
     // labels
     $this->widgetSchema->setLabels(array(
       'nom' => 'Nom d\'utilisateur',

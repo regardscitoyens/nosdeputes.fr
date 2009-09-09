@@ -49,17 +49,17 @@ class commentaireActions extends sfActions
     if ($this->getUser()->isAuthenticated()) {
       $citoyen_id = $this->getUser()->getAttribute('user_id');
       if ($this->getUser()->getAttribute('is_active') == true) { $is_active = true; }
-			else { $is_active = false; }
+      else { $is_active = false; }
     }
-		else if ($values['nom'] && $values['email']) {
+    else if ($values['nom'] && $values['email']) {
       if (Doctrine::getTable('Citoyen')->findOneByLogin($values['nom'])) {
         $this->getUser()->setFlash('error', 'Ce nom d\'utilisateur existe déjà.');
-	      return;
+        return;
       }
 
       if (Doctrine::getTable('Citoyen')->findOneByEmail($values['email'])) {
-				$this->getUser()->setFlash('error', 'Cette adresse email existe déjà.');
-				return;
+        $this->getUser()->setFlash('error', 'Cette adresse email existe déjà.');
+        return;
       }
 
       $citoyen = new Citoyen;
@@ -70,35 +70,35 @@ class commentaireActions extends sfActions
       $citoyen_id = $citoyen->getId();
       $is_active = false;
       $this->getComponent('citoyen', 'connexion', array('login' => $citoyen->login));
-      $this->getComponent('mail', 'send', array(
-						'subject'=>'Inscription NosDéputés.fr', 
-						'to'=>array($citoyen->email), 
-						'partial'=>'inscriptioncom', 
-						'mailContext'=>array('activation_id' => $citoyen->activation_id) 
-						));
+      /* $this->getComponent('mail', 'send', array(
+            'subject'=>'Inscription NosDéputés.fr', 
+            'to'=>array($citoyen->email), 
+            'partial'=>'inscriptioncom', 
+            'mailContext'=>array('activation_id' => $citoyen->activation_id) 
+            )); */
     }
-		else if ($values['login'] && $values['password']) {
+    else if ($values['login'] && $values['password']) {
       /* Tangui : Il y a moyen de refactoriser cette partie dans le modèle. */
       if (! Doctrine::getTable('Citoyen')->findOneByLogin($values['login'])) {
-				sleep(3);
-				$this->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
-				return;
+        sleep(3);
+        $this->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
+        return;
       }
       $user = Doctrine::getTable('Citoyen')->findOneByLogin($values['login']);
       if (sha1($values['password']) != $user->password) {
-				sleep(3);
-				$this->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
-				return;
+        sleep(3);
+        $this->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
+        return;
       }
       $this->getComponent('citoyen', 'connexion', array('login' => $user->login));
       $citoyen_id = $user->id;
       $is_active = true;
     }
-		else { //Si pas de (login et mdp) ou (email, login)
+    else { //Si pas de (login et mdp) ou (email, login)
       $this->getUser()->setFlash('error', 'Vous devez avoir un compte et y être connecté pour poster un commentaire.<br/>Le formulaire ci-dessous vous permet de vous identifier ou de création un utilisateur sur le site.');
       return;
     }
-			
+      
     $commentaire = $this->form->getObject();
     //Pas trouvé d'autre moyen que de bypasser le form pour conserver la presentation htmlisée
     $commentaire->commentaire = $this->commentaire;
@@ -122,9 +122,9 @@ class commentaireActions extends sfActions
     }
     if (isset($object->Parlementaires)) {
       foreach($object->Parlementaires as $p)
-	    $commentaire->addParlementaire($p->id);
+      $commentaire->addParlementaire($p->id);
     }
-			
+      
     $this->getUser()->setFlash('notice', 'Votre commentaire a été enregistré'.$pas_confirme_mail);
     $this->getUser()->getAttributeHolder()->remove('commentaire_'.$this->type.'_'.$this->id);
     return $this->redirect($commentaire->lien);

@@ -163,11 +163,11 @@ class citoyenActions extends sfActions
               $this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès');
               $this->redirect('@citoyen?slug='.$user->slug);
             }
-						$q = Doctrine_Query::create()
-						->update('Commentaire')
-						->set('is_public', 'true')
-						->where('citoyen_id = '.$user->id);
-						$q->execute();
+            $q = Doctrine_Query::create()
+            ->update('Commentaire')
+            ->set('is_public', 'true')
+            ->where('citoyen_id = '.$user->id);
+            $q->execute();
           }
         }
       }
