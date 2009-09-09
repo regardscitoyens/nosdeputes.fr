@@ -39,6 +39,11 @@ class parlementaireActions extends sfActions
     fwrite($fh ,$parlementaires[0]['photo']);
     fclose($fh);
     list($width, $height, $image_type) = getimagesize($file);
+
+    if (!$width || !$height) {
+      return $this->redirect('/css/fixe/images/cadre_depute.png');
+    }
+
     $newheight = ceil($request->getParameter('height', $height)/10)*10;
     if ($newheight > 250)
       $newheight = 250;
