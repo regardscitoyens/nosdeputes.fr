@@ -31,7 +31,7 @@ class CommentaireForm extends BaseCommentaireForm
       $this->widgetSchema['nom'] = new sfWidgetFormInput();
       $this->widgetSchema['email'] = new sfWidgetFormInput();
       $this->widgetSchema['login'] = new sfWidgetFormInput();
-      $this->widgetSchema['password'] = new sfWidgetFormInput();
+      $this->widgetSchema['password'] = new sfWidgetFormInputPassword();
       
       
       $this->validatorSchema['nom'] = new sfValidatorString(array('required' => false, 'min_length' => 4, 'max_length' => 40), array('invalid' => 'Ce nom d\'utilisateur existe déjà.', 'min_length' => '"%value%" est trop court (%min_length% caractères minimum).', 'max_length' => '"%value%" est trop long (%max_length% caractères maximum).'));

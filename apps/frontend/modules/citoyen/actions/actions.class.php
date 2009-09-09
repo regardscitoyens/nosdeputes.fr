@@ -264,11 +264,11 @@ class citoyenActions extends sfActions
     
   }
   
-  public function executeSignout()
+  public function executeSignout(sfWebRequest $request)
   {
     $this->deconnexion();
     $this->getUser()->setFlash('notice', 'Vous avez été déconnecté avec succès');
-    $this->redirect('@homepage');
+    $this->redirect($request->getReferer());
   }
   
   protected function deconnexion()
