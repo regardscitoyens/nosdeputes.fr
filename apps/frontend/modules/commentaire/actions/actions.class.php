@@ -35,15 +35,10 @@ class commentaireActions extends sfActions
       return $this->redirect($redirect_url[$this->type].$this->id);
     }
     $this->form = new CommentaireForm();
-    /* Tangui : J'ai l'impression que ces éléments ne sont pas nécessaires, ils font réécrire par le getParameter, non ? */
-    $values['nom'] = false;
-    $values['email'] = false;
-    $values['login'] = false;
-    $values['password'] = false;
+		
     $values = $request->getParameter('commentaire');
     $this->form->bind($values);
-
-
+		
     if (!$request->getParameter('ok') || !$this->form->isValid())
       return ;
     if ($this->getUser()->isAuthenticated()) {
@@ -70,12 +65,12 @@ class commentaireActions extends sfActions
       $citoyen_id = $citoyen->getId();
       $is_active = false;
       $this->getComponent('citoyen', 'connexion', array('login' => $citoyen->login));
-      /* $this->getComponent('mail', 'send', array(
+      $this->getComponent('mail', 'send', array(
             'subject'=>'Inscription NosDéputés.fr', 
             'to'=>array($citoyen->email), 
             'partial'=>'inscriptioncom', 
             'mailContext'=>array('activation_id' => $citoyen->activation_id) 
-            )); */
+            ));
     }
     else if ($values['login'] && $values['password']) {
       /* Tangui : Il y a moyen de refactoriser cette partie dans le modèle. */
@@ -95,7 +90,7 @@ class commentaireActions extends sfActions
       $is_active = true;
     }
     else { //Si pas de (login et mdp) ou (email, login)
-      $this->getUser()->setFlash('error', 'Vous devez avoir un compte et y être connecté pour poster un commentaire.<br/>Le formulaire ci-dessous vous permet de vous identifier ou de création un utilisateur sur le site.');
+      $this->getUser()->setFlash('error', 'Vous devez avoir un compte et y être connecté pour poster un commentaire.<br />Le formulaire ci-dessous vous permet de vous identifier ou de vous inscrire sur le site.');
       return;
     }
       
