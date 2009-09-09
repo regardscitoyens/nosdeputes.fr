@@ -337,6 +337,9 @@ Commentaire:
       class: Parlementaire
       refClass: CommentaireParlementaires
       foreignAlias: Commentaires
+  inheritance:
+    extends: ObjectRated
+    type: concrete
   indexes:
     commentable:
       fields: [object_type, object_id]
@@ -353,18 +356,27 @@ CommentaireParlementaires:
      fields: [parlementaire_id, commentaire_id]
      type: unique
 
-RateCommentaire:
+ObjectRated:
+  columns:
+    rate: integer
+
+Rate:
   actAs:
     Timestampable:
   columns:
-    commentaire_id: integer
+    object_type: string(50)
+    object_id: integer
     rate: integer
     citoyen_id: integer
   relations:
     Citoyen:
       foreignAlias: Rates
-    Commentaire:
+    Object:
       foreignAlias: Rates
+  indexes:
+    unique:
+      fields: [object_type, object_id, citoyen_id]
+      type: unique
 
 Article:
   actAs:
@@ -385,6 +397,9 @@ Article:
       values: ['public', 'brouillon', 'offline']
       default: 'brouillon'
     object_id: integer
+  inheritance:
+    extends: ObjectRated
+    type: concrete
   relations:
     Citoyen:
       foreignAlias: Articles

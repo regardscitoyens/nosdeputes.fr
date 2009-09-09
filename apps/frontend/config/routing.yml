@@ -26,6 +26,10 @@ doc_organisme_new:
   url: /organisme/new
   param: {module: article, action: create, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true}
 
+rate_id:
+  url: /rate/:object_type/:object_id/:rate
+  param: {module: rate, action: rateIt}
+
 # Compte Renu
 compterendu_list:
   url: /compterendu
