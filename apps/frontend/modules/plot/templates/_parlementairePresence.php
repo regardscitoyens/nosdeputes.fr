@@ -3,7 +3,7 @@ $plotarray = array('parlementaire' => $parlementaire, 'labels' => $labels, 'vaca
 if (isset($options['session'])) $plotarray['time'] = $options['session'];
 if (isset($options['questions'])) $plotarray = array_merge($plotarray, array('n_questions' => $n_questions));
 if (isset($options['link'])) $plotarray = array_merge($plotarray, array('link' => $options['link']));
-if (isset($options['fonctions'])) $plotarray = array_merge($plotarray, array('fonctions' => $fonctions));
+//if (isset($options['fonctions'])) $plotarray = array_merge($plotarray, array('fonctions' => $fonctions));
 if (!isset($options['plot'])) $options = array_merge($options, array('plot' => 'total'));
 
 if (!isset($options['plot']) || $options['plot'] != 'total') { ?>

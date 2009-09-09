@@ -106,14 +106,14 @@ if ($time == 'lastyear') {
 }
 if ($type == 'total') {
   $Test->drawTitle(240,3 + 2*$font,"Participation globale au cours de ".$duree." (hémicycle et commissions)",50,50,50,585);
-  $titre = 'globale-'.$shortduree;;
+  $titre = 'globale-'.$shortduree;
 } else {
   $titre = $type;
   if ($type == 'commission') $titre .= 's';
   $Test->drawTitle(270,3 + 2*$font,"Participation en ".$titre." au cours de ".$duree,50,50,50,585);
   $titre .= '-'.$shortduree;
 }
-$Test->xsRender('participation-'.$titre.'-'.$parlementaire->slug.'.png');
+$Test->xsRender('participation-'.$titre.'-'.$parlementaire->slug.isset($link).'.png');
 
 if (isset($link))
   echo link_to(image_tag('tmp/xspchart/participation-'.$titre.'-'.$parlementaire->slug.'.png', 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"'), '@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear');
@@ -121,7 +121,7 @@ else echo image_tag('tmp/xspchart/participation-'.$titre.'-'.$parlementaire->slu
 echo "<p><span style='background-color: rgb(255,";
 echo 35*$fonction.",0);'>&nbsp;</span> ";
 if ($type == 'commission') echo '&nbsp;Présences enregistrées&nbsp;&nbsp;&nbsp;'; else echo '&nbsp;Présences relevées&nbsp;&nbsp;&nbsp;';
-echo "<span style='background-color: rgb(255,255,0);'>&nbsp;</span>&nbsp;Participations&nbsp;&nbsp;&nbsp;";
+echo "<span style='background-color: rgb(255,200,0);'>&nbsp;</span>&nbsp;Participations&nbsp;&nbsp;&nbsp;";
 echo "<span style='background-color: rgb(0,255,0);'>&nbsp;</span>&nbsp;Mots prononcés (x&nbsp;10&nbsp;000)&nbsp;&nbsp;&nbsp;";
 if ($questions == 1)
     echo "<span style='background-color: rgb(0,0,255);'>&nbsp;</span>&nbsp;Questions orales&nbsp;&nbsp;&nbsp;";
