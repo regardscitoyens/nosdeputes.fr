@@ -30,7 +30,7 @@ class parlementaireActions extends sfActions
     $work_height = 500; //pour éviter des sentiments d'antialiasing
 
     $slug = $request->getParameter('slug');
-    $parlementaires = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->andWhere('photo IS NOT NULL')->fetchArray();
+    $parlementaires = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->fetchArray();
     $this->forward404Unless($parlementaires[0]);
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
