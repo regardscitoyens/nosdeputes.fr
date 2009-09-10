@@ -2,13 +2,14 @@ prod:
   .settings:
     no_script_name:         on
     logging_enabled:        off
-#    compressed:             on 
+    compressed:             on 
     check_lock:             on 
+    cache:		    on
 dev:
   .settings:
     error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>
     web_debug:              on
-    cache:                  off
+    cache:                  on
     no_script_name:         off
     etag:                   off
 
@@ -22,9 +23,6 @@ test:
 
 all:
   .settings:
-    unavailable_module:     parlementaire
-    unavailable_action:     unavailable
-
     # Form security secret (CSRF protection)
     csrf_secret:       false     # Unique secret to enable CSRF protection or false to disable
 
@@ -33,6 +31,7 @@ all:
     escaping_method:        ESC_SPECIALCHARS # Function or helper used for escaping. Accepted values: ESC_RAW, ESC_ENTITIES, ESC_JS, ESC_JS_NO_ENTITIES, and ESC_SPECIALCHARS.
 
     # Cache settings
+    cache:	            on
     lazy_cache_key:         on        # Delays creation of a cache key until after checking whether an action or partial is 
     enabled_modules:  [default, xsPChartPlugin, sfDoctrineActAsTaggablePlugin, sfFeed2Plugin]
 #all:
