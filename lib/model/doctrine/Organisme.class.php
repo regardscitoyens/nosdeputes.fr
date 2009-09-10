@@ -49,9 +49,9 @@ class Organisme extends BaseOrganisme
   }
 
   public function getNom() {
-    $nom = $this->_get('nom');
-    $nom = ucfirst($nom);
-    return $nom;
+    if ($this->_get('nom') == 'assemblée nationale')
+      return "Bureau de l'Assemblée Nationale";
+    else return ucfirst($this->_get('nom'));
   }
 
   public function getSeanceByDateAndMoment($date, $moment) {

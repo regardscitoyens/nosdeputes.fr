@@ -35,7 +35,7 @@ class Section extends BaseSection
       ->andwhere('i.section_id = st.id')
       ->andwhere('(st.section_id = ? OR i.section_id = ? )', array($this->id, $this->id))
       ->groupBy('s.id')
-      ;
+      ->orderBy('s.date, s.moment');
     return $q->execute();
   }
 

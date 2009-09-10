@@ -52,10 +52,10 @@ class Seance extends BaseSeance
         if (preg_match('`(\d{1})`', $moment, $match)) return $match[1];
         return $moment;
     }
-    if (preg_match('`(reunion|réunion)`i', $moment)) {
-        if (preg_match('`1`', $moment)) return "1ère réunion";
-        if (preg_match('`(\d{1})`', $moment, $match)) return $match[1]."ème réunion";
-        return $moment;
+    if (preg_match('/(reunion|réunion|^\d+$)/i', $moment)) {
+      if (preg_match('/1/', $moment)) return "1ère réunion";
+      if (preg_match('/(\d+)/', $moment, $match)) return $match[1]."ème réunion";
+      return $moment;
     }
     if (preg_match('/(\d{1,2})[:h](\d{2})/', $moment, $match)) {
       $moment = sprintf("%02d:%02d", $match[1], $match[2]);
@@ -96,7 +96,7 @@ class Seance extends BaseSeance
       $titre .= 'en hémicycle ';
     $titre .= 'du '.preg_replace('/^0(\d)/', '\\1', myTools::displayDate($this->getDate()));
     if ($moment = $this->getMoment()) {
-      if (preg_match('/réunion/', $moment))
+      if (preg_match('/(réunion|^\d+$)/', $moment))
         $titre .= '&nbsp;: ';
       else $titre .= '&nbsp;à ';
       $titre .= $moment;

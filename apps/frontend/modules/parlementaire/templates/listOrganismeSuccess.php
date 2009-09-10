@@ -26,11 +26,14 @@
     <?php echo link_to('> ', '@list_parlementaires_organisme?slug='.$orga->getSlug().'&page='.$pager->getNextPage()); ?>
     <?php echo link_to('>> ', '@list_parlementaires_organisme?slug='.$orga->getSlug().'&page='.$pager->getLastPage()); ?>
 </div>
-<?php endif ?>
-<h3>Réunions de la <?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission</h3>
+<?php endif;
+if (count($seances)) { ?>
+<div><h3>Réunions de la <?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission</h3>
 <ul>
 <?php foreach($seances as $seance) { ?>
 <li><?php echo link_to($seance->getTitre(), '@interventions_seance?seance='.$seance->id); ?></li>
 <?php } ?>
 </ul>
+</div>
+<?php } ?>
 </div>
