@@ -1,11 +1,7 @@
 <div class="temp">
 <?php
-if ($type == 'question') $titre = 'Questions orales';
-else {
+  $surtitre = link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug());
   $titre = 'Interventions';
-  if ($type == 'loi') $titre .= ' en hémicycle';
-  else if ($type == 'commission') $titre .= ' en commissions';
-}
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre));
 ?>
 </div>

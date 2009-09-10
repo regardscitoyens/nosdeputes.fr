@@ -3,7 +3,7 @@
     <div class="info">
     <strong>  
     <?php 
-    echo myTools::displayDate($intervention->getSeance()->getDate()).' : ';
+    echo myTools::displayDate($intervention->getSeance()->getTitre()).' - ';
     
     if ($intervention->getType() == 'commission') { $orga = $intervention->getSeance()->getOrganisme(); echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); }
     else { $section = $intervention->getSection(); echo link_to(ucfirst($section->titre_complet), '@section?id='.$section->id); }
@@ -29,7 +29,6 @@ if ($p_inter == '') {
 if ($intervention->hasIntervenant()) {
   $perso = $intervention->getIntervenant();
   $didascalie = 0;
-  echo '<span class="source"><a href="'.$intervention->getSource().'">source</a> - <a href="'.url_for("@interventions_seance?seance=$intervention->seance_id").'#inter_'.$intervention->getMd5().'">permalink</a></span>';
   if (!isset($nophoto)) {
     if ($perso->getPageLink()) {
       if ($perso->hasPhoto()) {
@@ -48,7 +47,11 @@ if ($intervention->hasIntervenant()) {
  }
   echo '<p>'.$p_inter.'</p>';
 ?></div>
-    <div class="plus">
-      3 commentaires - <a href="<?php echo url_for('@interventions_seance?seance='.$intervention->getSeance()->id); ?>#inter_<?php echo $intervention->getMd5(); ?>">Voir l'intervention dans son contexte</a>
+  <?php if (!$didascalie) : ?>
+    <div class="commentaires" style="clear: both;">
+      <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>">Toute l'intervention</a></span> -
+      <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Les commentaires</a></span> -
+      <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
+  <?php endif; ?>
   </div>

@@ -30,7 +30,9 @@
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
-    <p>Né le ... (... ans) à ... (...)</p>
+    <p> ^  ^  ^  ^  ^  ^  ^</p>
+    <?php include_partial('top', array('parlementaire'=>$parlementaire)); ?>
+      <p>Né le ... (... ans) à ... (...)</p>
     <ul>
 <?php if ($parlementaire->groupe_acronyme != "") : ?>
       <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getgroupe()->getFonction(); ?>)</li>
@@ -48,7 +50,7 @@
         <li>Parlementaires :
           <ul>
             <?php foreach ($parlementaire->getResponsabilites() as $resp) { ?>
-            <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().')'; ?></li>
+            <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') '.link_to('-> interventions', '@parlementaire_interventions_organisme?slug='.$parlementaire->slug.'&orga='.$resp->organisme_id); ?></li>
             <?php } ?>
           </ul>
         </li>
@@ -90,7 +92,6 @@
         </p>
         </div>
       </div>
-      <p style="margin-top:130px;">Source : <a href="<?php echo $parlementaire->url_an; ?>" target='_blank'>Assemblée Nationale</a></p>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
@@ -100,10 +101,12 @@
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
-      <h2>Implication dans un projet de loi</h2>
-<?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit'=>5, 'textes' => $textes)); ?>
-<?php echo link_to('suite', '@parlementaire_textes?slug='.$parlementaire->slug); ?>
+      <h2>Champ lexical</h2>
+      <div style="text-align: justify">
+<?php include_component('tag', 'parlementaire', array('parlementaire'=>$parlementaire)); ?>
+<p><?php echo link_to('Tous les mots', '@parlementaire_tags?slug='.$parlementaire->slug); ?></p>
       </div>
+       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
   </div>
@@ -112,7 +115,9 @@
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
-      <h2>Questions écrites/orales</h2>
+    <h2>Dossiers législatifs</h2>
+<?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit'=>5, 'textes' => $textes)); ?>
+<p><?php echo link_to('Tous ses dossiers', '@parlementaire_textes?slug='.$parlementaire->slug); ?></p>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
@@ -122,21 +127,28 @@
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
-      <h2>Interventions</h2>
-      <h3><?php echo link_to("Présence en séances de commission et d'hémicycle",'@parlementaire_presences?slug='.$parlementaire->getSlug()); ?></h3>
-      <h3><?php echo link_to("Toutes ses interventions",'@parlementaire_interventions?slug='.$parlementaire->getSlug()); ?></h3>
+      <h2>Travaux législatifs</h2>
+      <h3><?php echo link_to("Toutes ses interventions",'@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=all'); ?></h3>
+      <h3><?php echo link_to("&nbsp;...&nbsp;en hémicycle",'@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=loi'); ?></h3>
+      <h3><?php echo link_to("&nbsp;...&nbsp;en commissions",'@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=commission'); ?></h3>
       <h3><?php echo link_to("Tous ses amendements",'@parlementaire_amendements?slug='.$parlementaire->getSlug()); ?></h3>
-      <h3><?php echo link_to("Toute ses questions écrites",'@parlementaire_questions?slug='.$parlementaire->getSlug()); ?></h3>
-      <?php include_partial('top', array('parlementaire'=>$parlementaire)); ?>
-      <h3>Tags</h3>
-<div style="text-align: justify">
-<?php include_component('tag', 'parlementaire', array('parlementaire'=>$parlementaire)); ?>
-</div>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
   </div>
-  
+
+  <div class="boite_depute" id="b4">
+    <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
+    <div class="b_d_cont">
+      <div class="b_d_infos">
+      <h2>Questions au gouvernement</h2>
+      <h3><?php echo link_to("Toutes ses questions orales",'@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=question'); ?></h3>
+      <h3><?php echo link_to("Toutes ses questions écrites",'@parlementaire_questions?slug='.$parlementaire->getSlug()); ?></h3>
+      </div>
+    </div>
+    <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
+  </div>
+
   <div class="bas_depute">
     <div class="bas_depute_g">
       <!-- 

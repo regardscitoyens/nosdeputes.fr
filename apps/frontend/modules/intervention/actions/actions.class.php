@@ -12,9 +12,27 @@ class interventionActions extends sfActions
 {
   public function executeParlementaire(sfWebRequest $request)
   {
+    if (!$this->type = $request->getParameter('type')) $this->type = 'all';
     $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->parlementaire);
     $this->interventions = doctrine::getTable('Intervention')->createQuery('i')
+      ->where('i.parlementaire_id = ?', $this->parlementaire->id);
+    if (preg_match('/(commission|question|loi)$/', $this->type))
+      $this->interventions->andWhere('i.type = ?', $this->type);
+//    else if ($this->type != 'all')
+  //    $this->forward404();
+    $this->interventions->orderBy('i.date DESC, i.timestamp ASC');
+  }
+  public function executeParlementaireOrganisme(sfWebRequest $request)
+  {
+    $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->parlementaire);
+    $this->orga = doctrine::getTable('Organisme')->find($request->getParameter('orga'));
+    $this->forward404Unless($this->orga);
+    $this->interventions = doctrine::getTable('Intervention')->createQuery('i')
+      ->leftJoin('i.Seance s')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('s.organisme_id = ?', $this->orga)
       ->orderBy('i.date DESC, i.timestamp ASC');
   }
   public function executeShow(sfWebRequest $request)

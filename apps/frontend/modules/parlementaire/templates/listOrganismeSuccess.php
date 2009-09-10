@@ -9,7 +9,10 @@
 <?php endif; ?>
 <ul>
 <?php foreach($pager->getResults() as $parlementaire) : ?>
-<li><?php echo $parlementaire->getPOrganisme($orga->getNom())->getFonction(); ?> : <?php echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php echo $parlementaire->getStatut(1).", ".link_to($parlementaire->nom_circo, '@list_parlementaires_circo?search='.$parlementaire->nom_circo); ?>)</li>
+<li><?php echo $parlementaire->getPOrganisme($orga->getNom())->getFonction(); ?> : <?php
+echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php
+echo $parlementaire->getStatut(1).", ".link_to($parlementaire->nom_circo, '@list_parlementaires_circo?search='.$parlementaire->nom_circo); ?>) <?php
+echo link_to('-> interventions', '@parlementaire_interventions_organisme?slug='.$parlementaire->slug.'&orga='.$orga->id); ?></li>
 <?php endforeach ; ?>
 </ul>
 <?php if ($pager->haveToPaginate()) : ?>

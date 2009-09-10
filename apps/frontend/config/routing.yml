@@ -88,8 +88,11 @@ parlementaire_rss:
   url: /parlementaire/:slug/rss
   param: {module: parlementaire, action: rss, Intervention: 1, QuestionEcrite: 1, Amendement: 1}
 parlementaire_interventions:
-  url: /parlementaire/:slug/interventions
+  url: /parlementaire/:slug/interventions/:type
   param: {module: intervention, action: parlementaire}
+parlementaire_interventions_organisme:
+  url: /parlementaire/:slug/interventions_orga/:orga
+  param: {module: intervention, action: parlementaireOrganisme}
 parlementaire_tags:
   url: /parlementaire/:slug/tags
   param: {module: tag, action: parlementaire}
