@@ -140,9 +140,6 @@ class citoyenActions extends sfActions
         if ($request->isMethod('put'))
         {
           $values = $request->getParameter('citoyen');
-          $values["password"] = sha1($values["password"]);
-          $values["password_bis"] = sha1($values["password_bis"]);
-          
           $this->form->bind($values);
           
           if ($this->form->isValid())

@@ -34,62 +34,48 @@ class commentaireActions extends sfActions
       $this->getUser()->setFlash('error', 'Vous avez déjà posté ce commentaire...');
       return $this->redirect($redirect_url[$this->type].$this->id);
     }
-    $this->form = new CommentaireForm();
 		
     $values = $request->getParameter('commentaire');
-    $this->form->bind($values);
-		
+
+    /** On logue l'utilisateur si il a donné un login et mot de passe correct sinon creation du form et template**/
+    $isAuthenticated = $this->getUser()->isAuthenticated();
+    if ($request->getParameter('commentaire[login]') && $request->getParameter('commentaire[password]')) {
+      if (!($citoyen_id = myUser::SignIn($values['login'], $values['password'], $this))) {
+	$this->form = new CommentaireForm();
+	$this->form->bind($values);
+	return ;
+      }
+      $is_active = true;
+      $isAuthenticated = 1;
+      //Pour communication avec CommentaireForm->configure()
+      $_GET['isAuthenticated'] = 1;
+      //Invalide les champs dont on a plus besoin come l'utilisateur est connecté
+      unset($values['login']);
+      unset($values['password']);
+      unset($values['email']);
+      unset($values['nom']);
+    }
+
+    /** Pas loggué on s'assure que quelqu'un n'a pas trouvé notre hack *//
+    if (!$isAuthenticated) {
+      $_GET['isAuthenticated'] = 0;
+    }
+
+    /** Creation du form et validation */
+    $this->form = new CommentaireForm();
+    $this->form->bind($values);	
     if (!$request->getParameter('ok') || !$this->form->isValid())
       return ;
-    if ($this->getUser()->isAuthenticated()) {
+
+
+    if ($isAuthenticated) {
       $citoyen_id = $this->getUser()->getAttribute('user_id');
-      if ($this->getUser()->getAttribute('is_active') == true) { $is_active = true; }
-      else { $is_active = false; }
-    }
-    else if ($values['nom'] && $values['email']) {
-      if (Doctrine::getTable('Citoyen')->findOneByLogin($values['nom'])) {
-        $this->getUser()->setFlash('error', 'Ce nom d\'utilisateur existe déjà.');
-        return;
-      }
-
-      if (Doctrine::getTable('Citoyen')->findOneByEmail($values['email'])) {
-        $this->getUser()->setFlash('error', 'Cette adresse email existe déjà.');
-        return;
-      }
-
-      $citoyen = new Citoyen;
-      $citoyen->login = $values['nom'];
-      $citoyen->email = $values['email'];
-      $citoyen->activation_id = md5(time()*rand());
-      $citoyen->save();
-      $citoyen_id = $citoyen->getId();
+      $is_active = $this->getUser()->getAttribute('is_active');
+    } else if ($values['nom'] && $values['email']) {
+      if (!($citoyen_id = myUser::CreateAccount($values['nom'], $values['email'], $this)))
+	return ;
       $is_active = false;
-      $this->getComponent('citoyen', 'connexion', array('login' => $citoyen->login));
-      $this->getComponent('mail', 'send', array(
-            'subject'=>'Inscription NosDéputés.fr', 
-            'to'=>array($citoyen->email), 
-            'partial'=>'inscriptioncom', 
-            'mailContext'=>array('activation_id' => $citoyen->activation_id) 
-            ));
-    }
-    else if ($values['login'] && $values['password']) {
-      /* Tangui : Il y a moyen de refactoriser cette partie dans le modèle. */
-      if (! Doctrine::getTable('Citoyen')->findOneByLogin($values['login'])) {
-        sleep(3);
-        $this->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
-        return;
-      }
-      $user = Doctrine::getTable('Citoyen')->findOneByLogin($values['login']);
-      if (sha1($values['password']) != $user->password) {
-        sleep(3);
-        $this->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
-        return;
-      }
-      $this->getComponent('citoyen', 'connexion', array('login' => $user->login));
-      $citoyen_id = $user->id;
-      $is_active = true;
-    }
-    else { //Si pas de (login et mdp) ou (email, login)
+    } else { //Si pas de (login et mdp) ou (email, login)
       $this->getUser()->setFlash('error', 'Vous devez avoir un compte et y être connecté pour poster un commentaire.<br />Le formulaire ci-dessous vous permet de vous identifier ou de vous inscrire sur le site.');
       return;
     }
@@ -105,10 +91,6 @@ class commentaireActions extends sfActions
     $commentaire->citoyen_id = $citoyen_id;
     $commentaire->is_public = $is_active;
     $commentaire->save();
-    
-    if (!$is_active) {
-      $pas_confirme_mail = ', pour le rendre public, cliquez sur le lien d\'activation contenu dans l\'email que nous vous avons envoyé afin de terminer votre inscription.';
-    }
 
     if (isset($object->parlementaire_id)) {
       $commentaire->addParlementaire($object->parlementaire_id);
@@ -120,8 +102,13 @@ class commentaireActions extends sfActions
       $commentaire->addParlementaire($p->id);
     }
       
+    $pas_confirme_mail = '';
+    if (!$is_active) {
+      $pas_confirme_mail = ', pour le rendre public, cliquez sur le lien d\'activation contenu dans l\'email que nous vous avons envoyé afin de terminer votre inscription.';
+    }
     $this->getUser()->setFlash('notice', 'Votre commentaire a été enregistré'.$pas_confirme_mail);
     $this->getUser()->getAttributeHolder()->remove('commentaire_'.$this->type.'_'.$this->id);
+
     return $this->redirect($commentaire->lien);
   }
 

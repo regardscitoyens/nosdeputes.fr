@@ -25,8 +25,8 @@ class CommentaireForm extends BaseCommentaireForm
     $this['parlementaires_list']
     );
     $this->validatorSchema['commentaire'] = new sfValidatorString(array('required' => true, 'min_length'=>10), array('required' => 'Ce champ est obligatoire', 'min_length' => 'Le commentaire trop court, il doit faire au moins %min_length% caractères'));
-    
-    if (!sfContext::getInstance()->getUser()->isAuthenticated()) 
+
+    if (!sfContext::getInstance()->getUser()->getAttribute('user_id'))
     {
       $this->widgetSchema['nom'] = new sfWidgetFormInput();
       $this->widgetSchema['email'] = new sfWidgetFormInput();
