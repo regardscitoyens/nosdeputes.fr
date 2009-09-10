@@ -23,7 +23,6 @@ class commentaireActions extends sfActions
     $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement?id=', 'QuestionEcrite' => '@question?id=');
     $about = array('Intervention' => "A propos d'une intervention du ", 'Amendement' => "A propos d'un amendement déposé le ", 'QuestionEcrite' => "A propos d'une question ecrite du ");
 
-    $this->forward404Unless($request->isMethod('post'));
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');
 
@@ -34,11 +33,17 @@ class commentaireActions extends sfActions
       $this->getUser()->setFlash('error', 'Vous avez déjà posté ce commentaire...');
       return $this->redirect($redirect_url[$this->type].$this->id);
     }
+    if (!$request->isMethod('post')) {
+      $this->getUser()->setFlash('error', 'Oups erreur de routage');
+      return $this->redirect($redirect_url[$this->type].$this->id);
+    }
 		
     $values = $request->getParameter('commentaire');
 
     /** On logue l'utilisateur si il a donné un login et mot de passe correct sinon creation du form et template**/
     $isAuthenticated = $this->getUser()->isAuthenticated();
+    /** Pas loggué on s'assure que quelqu'un n'a pas trouvé notre hack */
+    $_GET['isAuthenticated'] = $isAuthenticated;
     if ($request->getParameter('commentaire[login]') && $request->getParameter('commentaire[password]')) {
       if (!($citoyen_id = myUser::SignIn($values['login'], $values['password'], $this))) {
 	$this->form = new CommentaireForm();
@@ -54,11 +59,6 @@ class commentaireActions extends sfActions
       unset($values['password']);
       unset($values['email']);
       unset($values['nom']);
-    }
-
-    /** Pas loggué on s'assure que quelqu'un n'a pas trouvé notre hack */
-    if (!$isAuthenticated) {
-      $_GET['isAuthenticated'] = 0;
     }
 
     /** Creation du form et validation */

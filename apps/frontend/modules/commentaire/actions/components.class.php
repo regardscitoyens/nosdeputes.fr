@@ -3,6 +3,8 @@
 class commentaireComponents extends sfComponents
 {
   public function executeForm() {
+    /* Respect du hack de l'action */
+    $_GET['isAuthenticated'] = 1;
     if (!isset($this->form))
       $this->form = new CommentaireForm();
     
