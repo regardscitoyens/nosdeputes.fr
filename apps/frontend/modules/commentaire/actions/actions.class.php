@@ -56,7 +56,7 @@ class commentaireActions extends sfActions
       unset($values['nom']);
     }
 
-    /** Pas loggué on s'assure que quelqu'un n'a pas trouvé notre hack *//
+    /** Pas loggué on s'assure que quelqu'un n'a pas trouvé notre hack */
     if (!$isAuthenticated) {
       $_GET['isAuthenticated'] = 0;
     }
