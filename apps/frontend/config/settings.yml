@@ -2,7 +2,8 @@ prod:
   .settings:
     no_script_name:         on
     logging_enabled:        off
-
+#    compressed:             on 
+    check_lock:             on 
 dev:
   .settings:
     error_reporting:        <?php echo (E_ALL | E_STRICT)."\n" ?>
@@ -21,6 +22,9 @@ test:
 
 all:
   .settings:
+    unavailable_module:     parlementaire
+    unavailable_action:     unavailable
+
     # Form security secret (CSRF protection)
     csrf_secret:       false     # Unique secret to enable CSRF protection or false to disable
 

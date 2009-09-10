@@ -8,26 +8,47 @@ class OrganismeTable extends Doctrine_Table
     $nom = strtolower($nom);
     $nom = preg_replace('/(&#8217;|\')/', '’', $nom);
     $nom = preg_replace('/\W+$/', '', $nom);
+    $nom = preg_replace('/\([^\)]*\)/', '', $nom);
+    $nom = preg_replace('/\([^\)]*$/', '', $nom);
+    $nom = preg_replace('/^[^\)]*\)/', '', $nom);
+    $nom = preg_replace('/assemblée nationale/i', 'bureau de l\'assemblée nationale', $nom);
+    trim($nom);
+    $nom = preg_replace('/^de la /', '', $nom);
     $nom = preg_replace('/\s+/', ' ', $nom);
-    $nom = preg_replace('/assemblée nationale/', "bureau de l'assemblée nationale", $nom);
-    $org = $this->findOneByNom($nom);
-    if (!$org) {
-      $orgs = doctrine::getTable('Organisme')->createQuery('o')->where('type = ?', $type)->execute();
-      foreach($orgs as $o) {
-	$res = similar_text($o->nom, $nom, $pc);
-	if ($pc > 90) {
-	  //	  echo "$nom $pc\n".$o->nom."\n";
-	  $org = $o;
-	  break;
-	}
+    $org = $this->createQuery('o')
+      ->where('o.nom LIKE ?', $nom.'%')
+      ->orderBy('LENGTH(o.nom) DESC')
+      ->fetchOne();
+    if (strlen($org->nom) < 50)
+      $org = $this->findOneByNom($nom);
+
+    if ($org) {
+      //      echo $org->nom."- $nom (trouve)\n";
+
+      if (strlen($nom) > strlen($org->nom)) {
+	$org->nom = $nom;
+	$org->save();
+      }
+      return $org;
+    }
+    //    echo "- $nom (pas trouve)\n";
+    
+
+    $orgs = doctrine::getTable('Organisme')->createQuery('o')->where('type = ?', $type)->execute();
+    foreach($orgs as $o) {
+      $res = similar_text($o->nom, $nom, $pc);
+      if ($pc > 90) {
+	//	  echo "$nom $pc\n".$o->nom."\n";
+	$org = $o;
+	break;
       }
     }
-    if (!$org) {
-      $org = new Organisme();
-      $org->type = $type;
-      $org->nom = $nom;
-      $org->save();
-    }
+    if ($org)
+      return $org;
+    $org = new Organisme();
+    $org->type = $type;
+    $org->nom = $nom;
+    $org->save();
     return $org;
   }
 }

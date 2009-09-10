@@ -90,13 +90,7 @@ class Parlementaire extends BaseParlementaire
 	$orgas->remove($key);
     }
     foreach ($array as $args) {
-      $orga = Doctrine::getTable('Organisme')->findOneByNom($args[0]);
-      if (!$orga) {
-	$orga = new Organisme();
-	$orga->nom = $args[0];
-	$orga->type = $type;
-	$orga->save();
-      }
+      $orga = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($args[0], $type);
       if ($type == 'groupe')
         $this->groupe_acronyme = $orga->getSmallNomGroupe();
       $po = new ParlementaireOrganisme();
