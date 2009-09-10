@@ -185,15 +185,6 @@ tag_parlementaire_interventions:
   param: {module: intervention, action: tag}
 
 # Top des députés par interventions, présences ou amendements
-top_interventions:
-  url: /top/intervention
-  param: {module: intervention, action: top}
-top_presences:
-  url: /top/presence
-  param: {module: presence, action: top}
-top_amendements:
-  url: /top/amendement
-  param: {module: amendement, action: top}
 top_organisme_global: 
   url: /top/:organisme
   param: {module: parlementaire, action: top}
