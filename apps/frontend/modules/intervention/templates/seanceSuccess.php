@@ -71,7 +71,7 @@
   <?php } 
   if (!$didascalie) : ?>
     <div class="commentaires" style="clear: both;">
-      <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Lire les 3 commentaires</a></span> -
+      <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a></span> -
       <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
   <?php endif; ?>

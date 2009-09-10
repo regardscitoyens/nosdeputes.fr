@@ -3,12 +3,12 @@
     <div class="info">
     <strong>  
     <?php 
-    echo myTools::displayDate($intervention->getSeance()->getTitre()).' - ';
-    
+    echo $intervention->getSeance()->getTitre(0,0,$intervention->getMd5()).' - ';
     if ($intervention->getType() == 'commission') { $orga = $intervention->getSeance()->getOrganisme(); echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); }
     else { $section = $intervention->getSection(); echo link_to(ucfirst($section->titre_complet), '@section?id='.$section->id); }
     ?> 
     </strong>
+ <?php if (isset($complete)) echo '<span class="source"><a href="'.$intervention->getSource().'">source</a>'; ?>
     </div>
     <div class="texte_intervention"><?php 
 $inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $intervention->getIntervention()); 
@@ -23,7 +23,7 @@ if (isset($highlight)) {
   }
 }
 if ($p_inter == '') {
-  if (isset($complete)) $p_inter = $inter;
+  if (isset($complete)) $p_inter = $intervention->getIntervention(array('linkify_amendements'=>url_for('@find_amendements_by_loi_and_numero?loi=LLL&numero=AAA')));
   else  $p_inter = truncate_text($inter, 400);
 }
 if ($intervention->hasIntervenant()) {
@@ -47,11 +47,14 @@ if ($intervention->hasIntervenant()) {
  }
   echo '<p>'.$p_inter.'</p>';
 ?></div>
-  <?php if (!$didascalie) : ?>
+  <?php if (!isset($complete)) {
+    if (!$didascalie) : ?>
     <div class="commentaires" style="clear: both;">
       <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>">Toute l'intervention</a></span> -
       <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Les commentaires</a></span> -
       <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
-  <?php endif; ?>
+  <?php endif; } else { ?>
+    <p><?php echo link_to("Voir l'intervention dans son contexte", '@interventions_seance?seance='.$intervention->getSeance()->id.'#inter_'.$intervention->getMd5()); ?></p>
+  <?php } ?>
   </div>
