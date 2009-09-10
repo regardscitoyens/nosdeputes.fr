@@ -87,9 +87,9 @@ class Seance extends BaseSeance
     return $q->fetchArray();
   }
 
-  public function getTitre($miniature = 0, $hemicycle = 0, $ref = 0) {
+  public function getTitre($miniature = 0, $hemicycle = 0, $ref = '') {
     $titre = '';
-    if ($ref != 0)
+    if ($ref != '')
       $titre .= '<a href="'.url_for('@interventions_seance?seance='.$this->id).'#inter_'.$ref.'">';
     if ($miniature == 0)
       $titre .= 'S';
@@ -107,7 +107,7 @@ class Seance extends BaseSeance
     $titre = preg_replace('/00:00/', 'minuit', $titre);
     $titre = preg_replace('/0(\d:\d{2})/', '\\1', $titre);
     $titre = preg_replace('/ (\d+):(\d{2})/', ' \\1h\\2', $titre);
-    if ($ref != 0)
+    if ($ref != '')
       $titre .= '</a>';
     return $titre;
   }

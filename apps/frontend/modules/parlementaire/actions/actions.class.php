@@ -119,7 +119,7 @@ class parlementaireActions extends sfActions
       ->andWhere('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('i.nb_mots > 20')
       ->groupBy('s.section_id')
-      ->orderBy('nb DESC')
+      ->orderBy('s.min_date DESC')
       ->fetchArray();
     $request->setParameter('rss', array(array('link' => '@parlementaire_rss?slug='.$this->parlementaire->slug, 'title'=>'L\'artivité de '.$this->parlementaire->nom),
 					array('link' => '@parlementaire_rss_commentaires?slug='.$this->parlementaire->slug, 'title'=>'Des commentaires portant sur l\'activité de '.$this->parlementaire->nom)
