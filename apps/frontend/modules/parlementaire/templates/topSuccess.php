@@ -13,7 +13,7 @@ $title = array('semaine' => 'semaine',
 	       'questions_ecrites' => 'écrites',
 	       'questions_orales' => 'orales');
 $last = end($tops); $i = 0; foreach(array_keys($last[0]->getTop()) as $key) { $i++ ;?>
-  <th><a href="?sort=<?php echo $i; ?>"><?php echo $title[$key]; ?></a></th>
+<th><?php echo link_to($title[$key], $top_link.'sort='.$i); ?></a></th>
 <?php } ?></tr>
 <?php foreach($tops as $t) { ?>
 <tr><td>

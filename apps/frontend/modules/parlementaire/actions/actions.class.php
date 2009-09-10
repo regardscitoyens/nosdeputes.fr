@@ -282,8 +282,10 @@ public function executeList(sfWebRequest $request)
   public function executeTop(sfWebRequest $request)
   {
     $qp = Doctrine::getTable('Parlementaire')->createQuery('p');
-    if ($request->getParameter('organisme')) {
-      $organisme = Doctrine::getTable('Organisme')->findOneBySlug($request->getParameter('organisme'));
+    $this->top_link = '@top_global_sorted?';
+    if (($o = $request->getParameter('organisme'))) {
+      $this->top_link = '@top_organisme_global_sorted?organisme='.$o.'&';
+      $organisme = Doctrine::getTable('Organisme')->findOneBySlug($o);
       $this->forward404Unless($organisme);
       $ids = array();
       foreach(Doctrine::getTable('ParlementaireOrganisme')->createQuery('po')
@@ -299,13 +301,7 @@ public function executeList(sfWebRequest $request)
     foreach($parlementaires as $p) {
       $tops = $p->getTop();
       $i = 0;
-      $this->tops[$p->id][$i++] = $p;$this->sessions = Doctrine_Query::create()
-      ->select('s.session')
-      ->from("Seance s")
-      ->leftJoin('s.Interventions i')
-      ->where('i.parlementaire_id = ?', $p->id)
-      ->andWhere('s.session IS NOT NULL AND s.session <> ""')
-      ->groupBy('s.session')->fetchArray();
+      $this->tops[$p->id][$i++] = $p;
 
       foreach(array_keys($tops) as $key) {
 	$this->tops[$p->id][$i]['value'] = $tops[$key]['value'];

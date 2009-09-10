@@ -1,5 +1,8 @@
+all:
+  lifetime: 86400
 photo:
   enabled: on
   lifetime: 86400
 top:
   enabled: on
+
