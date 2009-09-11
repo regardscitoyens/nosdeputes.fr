@@ -49,6 +49,11 @@ class articleActions extends sfActions
     }
     if (!$request->getParameter('ok'))
       return ;
+    if (! $this->getUser()->isAuthenticated())
+    {
+      $this->getUser()->setFlash('error', 'Vous devez être connecté pour pouvoir poster un article');
+      $this->redirect('@signin');
+    }
     $this->form->save();
     if ($l = $request->getParameter('link')) {
       $object = $this->form->getObject();

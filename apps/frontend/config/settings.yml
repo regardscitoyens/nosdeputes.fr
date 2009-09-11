@@ -2,7 +2,7 @@ prod:
   .settings:
     no_script_name:         on
     logging_enabled:        off
-    compressed:             on 
+    compressed:             off 
     check_lock:             on 
     cache:		    on
 dev:
