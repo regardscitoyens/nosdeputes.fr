@@ -13,13 +13,14 @@ class OrganismeTable extends Doctrine_Table
     $nom = preg_replace('/^[^\)]*\)/', '', $nom);
     $nom = preg_replace('/assemblée nationale/i', 'bureau de l\'assemblée nationale', $nom);
     trim($nom);
-    $nom = preg_replace('/^de la /', '', $nom);
+    $nom = preg_replace('/^\s*de la /', '', $nom);
     $nom = preg_replace('/\s+/', ' ', $nom);
+    if ($type == 'parlementaire')
     $org = $this->createQuery('o')
       ->where('o.nom LIKE ?', $nom.'%')
       ->orderBy('LENGTH(o.nom) DESC')
       ->fetchOne();
-    if (strlen($org->nom) < 50)
+    if ($type != 'parlementaire' || strlen($org->nom) < 50)
       $org = $this->findOneByNom($nom);
 
     if ($org) {
@@ -31,14 +32,14 @@ class OrganismeTable extends Doctrine_Table
       }
       return $org;
     }
-    //    echo "- $nom (pas trouve)\n";
+//        echo "- $nom (pas trouve)\n";
     
 
     $orgs = doctrine::getTable('Organisme')->createQuery('o')->where('type = ?', $type)->execute();
     foreach($orgs as $o) {
       $res = similar_text($o->nom, $nom, $pc);
-      if ($pc > 90) {
-	//	  echo "$nom $pc\n".$o->nom."\n";
+      if ($pc > 95) {
+//		  echo "$nom $pc\n".$o->nom."\n";
 	$org = $o;
 	break;
       }
