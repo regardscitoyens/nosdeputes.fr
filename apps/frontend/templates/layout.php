@@ -40,18 +40,18 @@ if ($rss) {
               <div class="b_u_cont">
                 <?php if(!$sf_user->isAuthenticated()) { ?>
                 <form method="post" action="<?php echo url_for('@signin'); ?>">
-                  <input type="text" name="signin[login]" id="signin_login" size="10" class="signin" /> <input type="password" name="signin[password]" id="signin_password" size="10" class="signin" />
+                  <input type="text" name="signin[login]" id="signin_login" size="10" class="signin" /> <input type="password" name="signin[password]" id="signin_password" size="10" class="signin" /> <input type="checkbox" name="signin[remember]" id="signin_remember" title="se rappeler de moi" />
                   <input type="submit" value="login" class="bouton_ok" />
                   <a href="<?php echo url_for('@inscription') ?>" class="bouton_ok">S'inscrire</a>
                 </form> <?php }
                 if($sf_user->isAuthenticated())
                 { 
-									if($sf_user->getAttribute('is_active') == true) { ?>
-									<a href="<?php echo url_for('@citoyen?slug='.$sf_user->getAttribute('slug')); ?>">Mon Profil</a> - 
-									<?php
-									}
-									?>
-								Connecté en tant que <?php echo $sf_user->getAttribute('login'); ?> - 
+                  if($sf_user->getAttribute('is_active') == true) { ?>
+                  <a href="<?php echo url_for('@citoyen?slug='.$sf_user->getAttribute('slug')); ?>">Mon Profil</a> - 
+                  <?php
+                  }
+                  ?>
+                Connecté en tant que <?php echo $sf_user->getAttribute('login'); ?> - 
                 <a href="<?php echo url_for('@signout') ?>">Déconnexion</a>
                 <?php } ?>
               </div>

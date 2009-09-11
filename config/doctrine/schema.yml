@@ -295,9 +295,7 @@ Citoyen:
       values: [null, 'H', 'F']
     nom_circo: string(255)
     num_circo: integer
-    photo:
-      type: boolean
-      default: 0
+    photo: blob
     activation_id: string(32)
     is_active:
       type: boolean

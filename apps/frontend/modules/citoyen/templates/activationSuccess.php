@@ -1,6 +1,6 @@
 <div class="temp">
 <h1>Finaliser votre inscription</h1>
-<?php echo $form->renderFormTag(url_for('citoyen/activation?activation_id='.$activation_id)) ?>
+<?php echo $form->renderFormTag(url_for('citoyen/activation?slug='.$slug.'&activation_id='.$activation_id)) ?>
   <table>
     <?php echo $form ?>
   </table>

@@ -1,8 +1,8 @@
 <div class="temp">
 <h1><?php echo $Citoyen->login; ?></h1>
+<?php echo '<img src="'.url_for('@photo_citoyen?slug='.$Citoyen->slug).'" alt="'.$Citoyen->login.'"/>'; ?>
 <?php if ($sf_user->getAttribute('login') and ($sf_user->getAttribute('is_active') == true))
 {
-  if ($Citoyen->photo) { echo image_tag($Citoyen->slug.'.jpg', 'alt=Photo de '.$Citoyen->login); }
   if (!empty($Citoyen->activite)) { $activite = $Citoyen->activite; } else { $activite = 'non renseigné'; }
   echo '<ul><li>Activité : '.$activite.'</li>';
   if (($sf_user->getAttribute('login') == $Citoyen->login) and empty($Citoyen->nom_circo))

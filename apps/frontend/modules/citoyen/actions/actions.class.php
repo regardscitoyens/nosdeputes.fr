@@ -56,7 +56,7 @@ class citoyenActions extends sfActions
             array('subject'=>'Inscription NosDéputés.fr', 
             'to'=>array($this->form->getValue('email')), 
             'partial'=>'inscription', 
-            'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
+            'mailContext'=>array('slug' => $this->Citoyen->slug, 'activation_id' => $this->Citoyen->activation_id) 
             ));
           
           $this->getUser()->setFlash('notice', 'Vous allez recevoir un email de confirmation. Pour finaliser votre inscription, veuillez cliquer sur le lien d\'activation contenu dans cet email.');
@@ -101,9 +101,9 @@ class citoyenActions extends sfActions
   {
     if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') == true) {
     
-      $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
+      $this->user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
     
-      $this->form = new EditUserForm($user);
+      $this->form = new EditUserForm($this->user);
       
       if ($request->isMethod('put'))
       {
@@ -113,15 +113,71 @@ class citoyenActions extends sfActions
         {
           $this->form->save();
           $this->getUser()->setFlash('notice', 'Vous avez modifié votre profil avec succès');
-          $this->redirect('@citoyen?slug='.$user->slug);
+          $this->redirect('@citoyen?slug='.$this->getUser()->getAttribute('slug'));
         }
       }
     }
     else { $this->redirect('@signin'); }
   }
   
+  public function executeUploadavatar(sfWebRequest $request)
+  {
+    if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') == true) {
+    
+      $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
+    
+      $this->form = new UploadAvatarForm();
+      
+      if ($request->isMethod('post'))
+      {
+        $this->form->bind($request->getParameter('upload'), $request->getFiles('upload'));
+        
+        if ($this->form->isValid() and $this->form->getValue('photo'))
+        {
+          $file = $this->form->getValue('photo');
+          $extension = $file->getExtension($file->getOriginalExtension());
+          
+          $photo = $file->getTempName();
+          list($largeur_source, $hauteur_source) = getimagesize($photo);
+          $largeur_max = 100;
+          if ($largeur_source >= $hauteur_source) { $hauteur = round(($largeur_max / $hauteur_source) * $largeur_source); }
+          else { $hauteur = round(($largeur_max / $largeur_source) * $hauteur_source); }
+          
+          $source = imagecreatefromjpeg($photo);
+          $destination = imagecreatetruecolor($largeur_max, $hauteur);
+          
+          imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_max, $hauteur, $largeur_source, $hauteur_source);
+          
+          imagejpeg($destination, $photo);
+          $user->photo = file_get_contents($photo);
+          $user->save();
+          $this->getUser()->setFlash('notice', 'Vous avez modifié votre profil avec succès');
+          $this->redirect('@citoyen?slug='.$user->slug);
+        }
+        else
+        {
+          $this->getUser()->setFlash('error', 'Veuillez indiquer votre photo/avatar');
+        }
+      }
+    }
+    else { $this->redirect('@signin'); }
+  }
+  
+  public function executePhoto($request)
+  {
+    $slug = $request->getParameter('slug');
+    $user = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
+    $this->getResponse()->setHttpHeader('content-type', 'image/jpeg');
+    $this->setLayout(false);
+    $this->getResponse()->addCacheControlHttpHeader('max_age=60');
+    $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()*2));
+    $this->image = $user->photo;
+    #return $this->image;
+  }
+  
   public function executeActivation(sfWebRequest $request)
   {
+    $this->slug = $request->getParameter('slug');
     $this->activation_id = $request->getParameter('activation_id');
     
     if ($this->getUser()->isAuthenticated() and ($this->getUser()->getAttribute('is_active') == true)) 
@@ -129,11 +185,11 @@ class citoyenActions extends sfActions
       $this->forward404();
     }
     
-    if (Doctrine::getTable('Citoyen')->findOneByActivationId($this->activation_id))
+    if (Doctrine::getTable('Citoyen')->findOneBySlug($this->slug))
     {
-      $user = Doctrine::getTable('Citoyen')->findOneByActivationId($this->activation_id);
+      $user = Doctrine::getTable('Citoyen')->findOneBySlug($this->slug);
       
-      if (!$user->is_active == true)
+      if ($user->is_active == false and $user->activation_id == $this->activation_id)
       {
         $this->form = new MotdepasseForm($user);
         
@@ -216,6 +272,13 @@ class citoyenActions extends sfActions
             if (sha1($this->form->getValue('password')) == $user->password)
             {
               $this->connexion($user);
+              if($this->form->getValue('remember'))
+              {
+                $secret_key = sfConfig::get('app_secret_key');
+                $expiration_cookie = sfConfig::get('app_expiration_cookie');
+                $remember_key = $user->slug.'_'.sha1($secret_key.$user->slug);
+                if (sfContext::getInstance()->getResponse()->setCookie('remember', $remember_key, $expiration_cookie, '/'));
+              }
               $this->getUser()->setFlash('notice', 'Vous vous êtes connecté avec succès.');
               $this->redirect($request->getReferer());
             }
@@ -255,10 +318,6 @@ class citoyenActions extends sfActions
     // save last login
     $user->setLastLogin(date('Y-m-d H:i:s'));
     $user->save();
-
-    // remember?
-    
-    
   }
   
   public function executeSignout(sfWebRequest $request)
@@ -273,6 +332,7 @@ class citoyenActions extends sfActions
     $this->getUser()->getAttributeHolder()->clear();
     $this->getUser()->clearCredentials();
     $this->getUser()->setAuthenticated(false);
+    sfContext::getInstance()->getResponse()->setCookie('remember', '');
   }
   
   public function executeDelete()

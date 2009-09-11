@@ -9,11 +9,11 @@ class EditUserForm extends CitoyenForm
       $this['login'], 
       $this['password'], 
       $this['email'], 
+      $this['photo'], 
       $this['employe_an'], 
       $this['travail_pour'], 
       $this['nom_circo'], 
       $this['num_circo'], 
-      $this['photo'], 
       $this['is_active'], 
       $this['activation_id'], 
       $this['role'], 
@@ -28,7 +28,8 @@ class EditUserForm extends CitoyenForm
       
     $this->widgetSchema['naissance'] = new sfWidgetFormDate(array('format' => '%day%/%month%/%year%', 'years' => $liste_annees));
     
-    $this->widgetSchema->setNameFormat('citoyen[%s]');
+    $this->widgetSchema['url_site'] = new sfWidgetFormInput();
+    $this->validatorSchema['url_site'] = new sfValidatorUrl(array('required' => false), array('invalid' => 'l\'url doit être de la forme "http://www.monsite.fr"'));
     
     // Les labels
     $this->widgetSchema->setLabels(array(

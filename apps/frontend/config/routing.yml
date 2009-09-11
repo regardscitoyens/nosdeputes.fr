@@ -207,7 +207,6 @@ question:
 signin:
   url:   /login
   param: { module: citoyen, action: signin }
-
 signout:
   url:   /logout
   param: { module: citoyen, action: signout }
@@ -220,30 +219,30 @@ signout:
 inscription:
   url: /citoyens/inscription
   param: {module: citoyen, action: new}
-
+activation_citoyen:
+  url: /activation/:slug/:activation_id
+  param: {module: citoyen, action: activation}
 list_citoyens:
   url: /citoyens
   param: {module: citoyen, action: index}
-
+photo_citoyen:
+  url: /citoyen/photo/:slug
+  param: {module: citoyen, action: photo}
 citoyen:
   url: /citoyen/:slug
   param: {module: citoyen, action: show}
-
 edit_citoyen:
   url: /profil/edition
   param: {module: citoyen, action: edit}
-
+upload_avatar:
+  url: /profil/edition/upload
+  param: {module: citoyen, action: uploadavatar}
 add_circo_citoyen:
-  url: /profil/circo/:nom_circo/:num_circo
+  url: /profil/edition/circo/:nom_circo/:num_circo
   param: {module: citoyen, action: addcirco}
-
 delete_citoyen:
   url: /profil/suppression
   param: {module: citoyen, action: delete}
-
-activation_citoyen:
-  url: /citoyens/activation/:activation_id
-  param: {module: citoyen, action: activation}
 
 # renvoi_mail_activation_citoyen:
   # url: /citoyens/activation/renvoi/:user_id

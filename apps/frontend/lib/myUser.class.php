@@ -19,13 +19,14 @@ class myUser extends sfBasicSecurityUser
     $citoyen->email = $email;
     $citoyen->activation_id = md5(time()*rand());
     $citoyen->save();
+    $user = Doctrine::getTable('Citoyen')->findOneByEmail($citoyen->email);
     $action->getComponent('citoyen', 'connexion', array('login' => $citoyen->login));
     $action->getComponent('mail', 'send', array(
-					      'subject'=>'Inscription NosDéputés.fr', 
-					      'to'=>array($citoyen->email), 
-					      'partial'=>'inscriptioncom', 
-					      'mailContext'=>array('activation_id' => $citoyen->activation_id) 
-					      ));
+                'subject'=>'Inscription NosDéputés.fr', 
+                'to'=>array($citoyen->email), 
+                'partial'=>'inscriptioncom', 
+                'mailContext'=>array('slug' => $user->slug, 'activation_id' => $citoyen->activation_id) 
+                ));
     return $citoyen->getId();
   }
 
