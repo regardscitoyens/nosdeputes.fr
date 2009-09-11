@@ -13,7 +13,7 @@ $title = array('semaine' => 'Semaines en commission',
 if (!$top)
   return ;
 if (!$parlementaire->fin_mandat) {
-  echo '<h3>Le meilleur et le pire (sur 12 derniers mois)</h3>';
+  echo '<h3>Le meilleur et le pire (sur les 12 derniers mois)</h3>';
   $rank = 1;
  } else {
   $rank = 0;
