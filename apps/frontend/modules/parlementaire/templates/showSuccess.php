@@ -1,4 +1,5 @@
 <?php $style = 'fixe'; # en attendant le style switcher ?>
+<?php $top = $parlementaire->getTop() ?>
 <div class="fiche_depute">
   <div class="info_depute">
 <p><h1><b><?php echo $parlementaire->nom; ?></b>, <?php echo $parlementaire->getLongStatut(1); ?></h1></p>
@@ -14,11 +15,21 @@
   <div class="barre_activite">
     <h2>Activité parlementaire : </h2>
     <ul>
-      <li title="Interventions en séance"><a href="#"><?php echo image_tag('../css/'.$style.'/images/seance.png', 'alt="Interventions en séance"'); ?> : 7</a></li>
-      <li title="Interventions en commissions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Interventions en commissions"'); ?> : 2</a></li>
-      <li title="Rapports"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Rapports"'); ?> : 2</a></li>
-      <li title="Propositions de loi (auteur)"><a href="#"><?php echo image_tag('../css/'.$style.'/images/balance.png', 'alt="Propositions de loi (auteur)"'); ?> : 0</a></li>
-      <li title="Questions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/question.png', 'alt="Questions"'); ?>   : 50</a></li>
+      <li title="Interventions en séance"><a href="#"><?php echo image_tag('../css/'.$style.'/images/seance.png', 'alt="Interventions en séance"'); 
+      echo ' : '.($top['hemicycle_interventions']['value']+$top['hemicycle_invectives']['value']);
+      ?></a></li>
+      <li title="Interventions en commissions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Interventions en commissions"'); 
+      echo ' : '.($top['commission_interventions']['value']);
+      ?></a></li>
+      <li title="Rapports"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Rapports"'); 
+      echo ' : ?';
+      ?></a></li>
+      <li title="Propositions de loi (auteur)"><a href="#"><?php echo image_tag('../css/'.$style.'/images/balance.png', 'alt="Propositions de loi (auteur)"');
+      echo ' : ?';
+      ?></a></li>
+      <li title="Questions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/question.png', 'alt="Questions"');
+      echo ' : '.($top['questions_ecrites']['value']+$top['questions_orales']['value']);
+      ?></a></li>
       <li><span class="barre_date"><?php if ($parlementaire->fin_mandat == null) echo "Depuis le"; else echo "Mandat terminé"; ?>&nbsp;: <?php echo myTools::displayDate($parlementaire->debut_mandat); if ($parlementaire->fin_mandat != null) echo " - ".myTools::displayDate($parlementaire->fin_mandat); ?></span></li>
     </ul>
   </div>
@@ -30,7 +41,6 @@
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
-    <p> ^  ^  ^  ^  ^  ^  ^</p>
     <?php include_partial('top', array('parlementaire'=>$parlementaire)); ?>
       <p>Né le ... (... ans) à ... (...)</p>
     <ul>
