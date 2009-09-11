@@ -123,8 +123,12 @@
 
      $ID = 0;
      for($i=0;$i<=count($this->Data);$i++)
+      /* Hide the following bug:
+         http://code.google.com/p/charts4codeigniter/issues/detail?id=1
+      */
+      ini_set("display_errors", false);
       { if(isset($this->Data[$i][$Serie])) { $ID = $i+1; } }
-
+      ini_restore("display_errors");
      if ( count($Value) == 1 )
       {
        $this->Data[$ID][$Serie] = $Value;
