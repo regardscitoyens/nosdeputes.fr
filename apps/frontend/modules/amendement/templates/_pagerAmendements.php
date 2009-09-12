@@ -5,7 +5,7 @@
   if (isset($_GET['search'])) {
     $mots = trim($_GET['search']);
     if ($mots != "") { ?>
-<p> pour la recherche sur <em>"<?php echo $mots; ?>"</em></p>
+<p> pour la recherche sur <em>"<?php echo strip_tags($mots); ?>"</em></p>
 <?php } } 
 else if (isset($lois)) {
   echo ' pour ';

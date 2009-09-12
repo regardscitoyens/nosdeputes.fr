@@ -134,7 +134,7 @@ class parlementaireActions extends sfActions
 
 public function executeList(sfWebRequest $request)
   {
-    $this->search = $request->getParameter('search');
+    $this->search = strip_tags($request->getParameter('search'));
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
     if ($this->search)
       $query->where('p.nom LIKE ?' , '%'.$this->search.'%');
@@ -193,7 +193,7 @@ public function executeList(sfWebRequest $request)
   
   public function executeListProfession(sfWebRequest $request) {
     $this->exact = 0;
-    $this->prof = strtolower($request->getParameter('search'));
+    $this->prof = strip_tags(strtolower($request->getParameter('search')));
     if ($this->prof == "")
       $this->parlementaires = array();
     else {
