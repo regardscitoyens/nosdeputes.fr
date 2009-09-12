@@ -67,19 +67,21 @@ if ($rss) {
 					<div id="item4"><a href="<?php echo url_for('@list_citoyens')?>"></a></div>
 					<div id="item5"><a href="#"></a></div>
 				</div>
-                    <?php
-							if (isset($_GET['search']) && preg_match('/parlementaire/', $_SERVER['REQUEST_URI'])) $selectdepute = ' selected="selected"';
-							else $selectdepute = "";
-							if (isset($_GET['search']) && preg_match('/circonscription/', $_SERVER['REQUEST_URI'])) $selectcirco = ' selected="selected"';
-							else $selectcirco = "";
-							if (isset($_GET['search']) && preg_match('/profession/', $_SERVER['REQUEST_URI'])) $selectprof = ' selected="selected"';
-							else $selectprof = "";
-							if (isset($_GET['search']) && preg_match('/intervention/', $_SERVER['REQUEST_URI'])) $selectinterv = ' selected="selected"';
-							else $selectinterv = "";
-							if (isset($_GET['search']) && preg_match('/amendement/', $_SERVER['REQUEST_URI'])) $selectamdmt = ' selected="selected"';
-							else $selectamdmt = "";
-							if (isset($_GET['search']) && preg_match('/question/', $_SERVER['REQUEST_URI'])) $selectquestion = ' selected="selected"';
-							else $selectquestion = "";
+                    <?php       $search = strip_tags($sf_request->getParameter('search'));
+                                $uri = strip_tags($_SERVER['REQUEST_URI']);
+                                $selectdepute = "";$selectcirco = "";$selectprof = ""; echo $selectinterv = "";$selectamdmt = "";$selectquestion = "";
+                                if ( preg_match('/\/circonscription\//', $uri))
+                                  $selectcirco = ' selected="selected"';
+                                else  if ( preg_match('/\/profession\//', $uri))
+                                  $selectprof = ' selected="selected"';
+                                else if ( preg_match('/\/(interventions?|seance|dossiers?)\//',$uri))
+                                  $selectinterv = ' selected="selected"';
+                                else if ( preg_match('/\/amendement\//', $uri))
+                                  $selectamdmt = ' selected="selected"';
+                                else if ( preg_match('/\/question\//', $uri))
+                                  $selectquestion = ' selected="selected"';
+                                else $selectdepute = ' selected="selected"';
+   
 							?>
 				<div class="menu_recherche">
 					<form action="<?php echo url_for('@search'); ?>" method="get">
@@ -94,8 +96,8 @@ if ($rss) {
 							</select>
 							<?php echo image_tag($style.'/recherche_fleche.png', array('alt' => '')); ?>
 							<input class="bouton_ok" value="" type="submit"/>
-							<input class="rechercher" name="search" type="text" size="15" value="<?php if (isset($_GET['search'])) echo strip_tags($_GET['search']); ?>"/>
-						</p>
+					                <input class="rechercher" name="search" type="text" size="15" value="<?php echo $search; ?>"/>
+                                              </p>
 					</form>
 				</div>
 			</div>

@@ -116,17 +116,17 @@ find_amendements_by_loi_and_numero:
 search:
   url: /rechercher
   param: {module: search, action: index}
-search_interventions:
-  url: /rechercher/interventions
-  param: {module: intervention, action: search}
 search_interventions_mots:
   url: /rechercher/interventions/:search
   param: {module: intervention, action: search}
-search_amendements:
-  url: /rechercher/amendements
-  param: {module: amendement, action: search}
+search_interventions:
+  url: /rechercher/interventions
+  param: {module: intervention, action: search}
 search_amendements_mots:
   url: /rechercher/amendements/:search
+  param: {module: amendement, action: search}
+search_amendements:
+  url: /rechercher/amendements
   param: {module: amendement, action: search}
 search_questions_ecrites_mots:
   url: /rechercher/question/:search
