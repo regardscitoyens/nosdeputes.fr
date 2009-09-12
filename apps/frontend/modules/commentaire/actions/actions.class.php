@@ -45,7 +45,8 @@ class commentaireActions extends sfActions
     /** Pas loggué on s'assure que quelqu'un n'a pas trouvé notre hack */
     $_GET['isAuthenticated'] = $isAuthenticated;
     if ($request->getParameter('commentaire[login]') && $request->getParameter('commentaire[password]')) {
-      if (!($citoyen_id = myUser::SignIn($values['login'], $values['password'], $this))) {
+      if (!($citoyen_id = myUser::SignIn($values['login'],
+$values['password'], false, $this))) {
 	$this->form = new CommentaireForm();
 	$this->form->bind($values);
 	return ;
