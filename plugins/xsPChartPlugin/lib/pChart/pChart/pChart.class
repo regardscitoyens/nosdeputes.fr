@@ -87,6 +87,7 @@
  define("PIE_PERCENTAGE", 1);
  define("PIE_LABELS",2);
  define("PIE_NOLABEL",3);
+ define("PIE_VALUES",4);
 
  /* pChart class definition */
  class pChart
@@ -1578,7 +1579,7 @@
          if ( $Angle > 90 && $Angle <= 180 )
           { $YOffset = $Height; $XOffset = -$Width; }
 
-         if ( $Angle > 180 && $Angle <= 270 )
+         if ( $Angle > 180 && $Angle <= 260 )
           { $XOffset = -$Width; }
 
          imagettftext($this->Picture,$this->FontSize,0,$X+$XOffset,$Y+$YOffset,$C_TextColor,$this->FontName,$Label);
@@ -1780,7 +1781,7 @@
      $SplicePercent       = 100 / $PieSum;
 
      /* Calculate all polygons */
-     $Angle    = 0; $TopPlots = "";
+     $Angle    = 260; $TopPlots = "";
      foreach($iValues as $Key => $Value)
       {
        $TopPlots[$Key][] = $XPos;
@@ -1790,14 +1791,17 @@
        if ( !($DrawLabels == PIE_NOLABEL) )
         {
          $TAngle   = $Angle+($Value*$SpliceRatio/2);
+         if ($TAngle > 359) $TAngle -= 360;
          if ($DrawLabels == PIE_PERCENTAGE)
           $Caption  = (floor($Value * pow(10,$Decimals) * $SplicePercent)/pow(10,$Decimals))."%";
-         elseif ($DrawLabels == PIE_LABELS)
+         elseif ($DrawLabels == PIE_VALUES)
+          $Caption  = (floor($Value));
+	 elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
          $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius + 10)+ $XPos;
          $TY       = sin(($TAngle) * 3.1418 / 180 ) * ($Radius+ 10) + $YPos + 4;
 
-         if ( $TAngle > 90 && $TAngle < 270 )
+         if ( $TAngle > 90 && $TAngle < 260 )
           {
            $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Caption);
            $TextWidth = $Position[2]-$Position[0];
@@ -1878,7 +1882,7 @@
      $SplicePercent       = 100 / $PieSum;
 
      /* Calculate all polygons */
-     $Angle    = 0; $TopPlots = "";
+     $Angle    = 260; $TopPlots = "";
      foreach($iValues as $Key => $Value)
       {
        $XCenterPos = cos(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $XPos;
@@ -1891,14 +1895,17 @@
        if ( !($DrawLabels == PIE_NOLABEL) )
         {
          $TAngle   = $Angle+($Value*$SpliceRatio/2);
+         if ($TAngle > 359) $TAngle -= 360;
          if ($DrawLabels == PIE_PERCENTAGE)
           $Caption  = (floor($Value * pow(10,$Decimals) * $SplicePercent)/pow(10,$Decimals))."%";
+         elseif ($DrawLabels == PIE_VALUES)
+          $Caption  = (floor($Value));
          elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
          $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius+10+$SpliceDistance)+$XPos;
          $TY       = sin(($TAngle) * 3.1418 / 180 ) * ($Radius+10+$SpliceDistance) + $YPos + 4;
 
-         if ( $TAngle > 90 && $TAngle < 270 )
+         if ( $TAngle > 90 && $TAngle < 260 )
           {
            $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Caption);
            $TextWidth = $Position[2]-$Position[0];
@@ -1986,7 +1993,7 @@
           if ( isset($Data[$Key][$ColName]))
            {
             if ( $Data[$Key][$ColName] == 0 )
-             { $PieSum++; $iValues[] = 1; $rValues[] = 0; }
+             { $PieSum += 0.00001; $iValues[] = 0.00001; $rValues[] = 0; }
             else
              { $PieSum += $Data[$Key][$ColName]; $iValues[] = $Data[$Key][$ColName]; $iLabels[] = $Data[$Key][$DataDescription["Position"]]; $rValues[] = $Data[$Key][$ColName]; $rPieSum += $Data[$Key][$ColName];}
            }
@@ -2001,10 +2008,11 @@
      $SkewHeight          = ($Radius * $Skew) / 100;
      $SpliceRatio         = (360 - $SpliceDistanceRatio * count($iValues) ) / $PieSum;
      $SplicePercent       = 100 / $PieSum;
+     if ($rPieSum == 0) $rPieSum = 1;
      $rSplicePercent      = 100 / $rPieSum;
 
      /* Calculate all polygons */
-     $Angle    = 0; $TopPlots = ""; $BotPlots = ""; $CDev = 5;
+     $Angle    = 260; $TopPlots = ""; $BotPlots = ""; $CDev = 5;
      foreach($iValues as $Key => $Value)
       {
        $XCenterPos = cos(($Angle-$CDev+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $XPos;
@@ -2019,26 +2027,31 @@
        if ( !($DrawLabels == PIE_NOLABEL) )
         {
          $TAngle   = $Angle+($Value*$SpliceRatio/2);
+	 if ($TAngle > 359) $TAngle -= 360; 
          if ($DrawLabels == PIE_PERCENTAGE)
           $Caption  = (floor($rValues[$Key] * pow(10,$Decimals) * $rSplicePercent)/pow(10,$Decimals))."%";
+         elseif ($DrawLabels == PIE_VALUES)
+         if ($Value == 0) $Caption = ''; 
+         else $Caption  = (floor($Value));
          elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
 
-         $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius + 10)+ $XPos;
+         $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius + 5)+ $XPos;
 
          if ( $TAngle > 0 && $TAngle < 180 )
           $TY = sin(($TAngle) * 3.1418 / 180 ) * ($SkewHeight + 10) + $YPos + $SpliceHeight + 4;
          else
           $TY = sin(($TAngle) * 3.1418 / 180 ) * ($SkewHeight + 10) + $YPos + 4;
 
-         if ( $TAngle > 90 && $TAngle < 270 )
+         if ( $TAngle > 90 && $TAngle < 260 )
           {
            $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Caption);
            $TextWidth = $Position[2]-$Position[0];
            $TX = $TX - $TextWidth;
           }
 
-         $C_TextColor = imagecolorallocate($this->Picture,70,70,70);
+        // $C_TextColor = imagecolorallocate($this->Picture,70,70,70);
+         $C_TextColor = $this->AllocateColor($this->Picture,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"],-20);
          imagettftext($this->Picture,$this->FontSize,0,$TX,$TY,$C_TextColor,$this->FontName,$Caption);
         }
 
