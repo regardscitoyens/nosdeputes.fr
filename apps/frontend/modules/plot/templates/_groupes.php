@@ -4,11 +4,11 @@ if ($plot == 'total' || (preg_match('/seance_com/', $plot))) { $DataSet = new xs
   $DataSet->AddSerie("Serie2"); $DataSet->SetAbsciseLabelSerie("Serie1");
   $Data = $DataSet->GetData(); $DataDescr = $DataSet->GetDataDescription();
 }
-
-$DataSet2 = new xsPData();
-$DataSet2->AddPoint($labels, "Serie1"); $DataSet2->AddPoint($interventions, "Serie2");
-$DataSet2->AddSerie("Serie2"); $DataSet2->SetAbsciseLabelSerie("Serie1");
-$Data2 = $DataSet2->GetData(); $DataDescr2 = $DataSet2->GetDataDescription();
+if (array_sum($interventions) != 0) { $DataSet2 = new xsPData();
+  $DataSet2->AddPoint($labels, "Serie1"); $DataSet2->AddPoint($interventions, "Serie2");
+  $DataSet2->AddSerie("Serie2"); $DataSet2->SetAbsciseLabelSerie("Serie1");
+  $Data2 = $DataSet2->GetData(); $DataDescr2 = $DataSet2->GetDataDescription();
+}
 if ($plot == 'total') { $DataSetBis = new xsPData();
   $DataSetBis->AddPoint($labels, "Serie1"); $DataSetBis->AddPoint($presences_moy, "Serie2");
   $DataSetBis->AddSerie("Serie2"); $DataSetBis->SetAbsciseLabelSerie("Serie1");
@@ -17,7 +17,7 @@ if ($plot == 'total') { $DataSetBis = new xsPData();
   $DataSet2Bis->AddPoint($labels, "Serie1"); $DataSet2Bis->AddPoint($interventions_moy, "Serie2");
   $DataSet2Bis->AddSerie("Serie2"); $DataSet2Bis->SetAbsciseLabelSerie("Serie1");
   $Data2Bis = $DataSet2Bis->GetData(); $DataDescr2Bis = $DataSet2Bis->GetDataDescription();
-} else { $DataSet3 = new xsPData();
+} else if (array_sum($interventions) != 0) { $DataSet3 = new xsPData();
   $DataSet3->AddPoint($labels, "Serie1"); $DataSet3->AddPoint($temps, "Serie2");
   $DataSet3->AddSerie("Serie2"); $DataSet3->SetAbsciseLabelSerie("Serie1");
   $Data3 = $DataSet3->GetData(); $DataDescr3 = $DataSet3->GetDataDescription();
@@ -30,24 +30,28 @@ foreach($labels as $groupe) {
 $DataDescrLegend = $DataSetLegend->GetDataDescription();
 
 $filename = 'repartition-groupes';
-$xsize = 360;
+$xsize = 390;
 if ($plot == 'total') {
-  $xtitre = 15; $ysize = 350; $ylegend = 145; $x0 = 130; $y0 = 110;
+  $xtitre = 25; $ysize = 360; $ylegend = 145; $x0 = 140; $y0 = 115;
   $duree = "l'année passée";
   $shortduree = 'annee';
   $filename .= '-'.$shortduree.'.png';
   $titre = 'du travail parlementaire par groupe';
 } else {
-  $xtitre = 25; $ysize = 180; $ylegend = 50; $x0 = 140; $y0 = 85;
+  $xtitre = 35; $ysize = 190; $ylegend = 50; $x0 = 155; $y0 = 85;
   $filename .= '-'.$plot.'.png';
-  $xsize = 360;
   $titre = 'par groupe du travail en séance';
   if (preg_match('/section/', $plot)) {
-    $xtitre = 18;
+    $xtitre = 28; $xtitre = 38;
     $titre = 'par groupe du travail sur le dossier';
   } else if (preg_match('/com/', $plot)) {
-    $xsize = 500;
-    $titre .= ' de commission';
+    if (array_sum($interventions) == 0) {
+      $xsize = 250;  $xtitre = 48;
+      $titre = 'des présents';
+    } else {
+      $xsize = 550; $xtitre = 60;
+      $titre .= ' de commission';
+    }
   }
 }
 $Test = new xsPChart($xsize,$ysize);
@@ -62,42 +66,43 @@ $Test->xsSetFontProperties("tahoma.ttf",7);
 if (isset($Data)) {
   $Test->drawPieGraph($Data,$DataDescr,$x0,$y0,55,PIE_VALUES,TRUE,65,15);
 if ($plot == 'total') $Test->drawPieGraph($DataBis,$DataDescrBis,130,260,55,PIE_VALUES,TRUE,65,15);
-  $x0 += 140;
+  $x0 += 150;
 }
-$Test->drawPieGraph($Data2,$DataDescr2,$x0,$y0,55,PIE_VALUES,TRUE,65,15);
+if (isset($Data2))
+  $Test->drawPieGraph($Data2,$DataDescr2,$x0,$y0,55,PIE_VALUES,TRUE,65,15);
 if ($plot == 'total') $Test->drawPieGraph($Data2Bis,$DataDescr2Bis,270,260,55,PIE_VALUES,TRUE,65,15);
-$x0 += 140;
+$x0 += 150;
 if (isset($Data3))
   $Test->drawPieGraph($Data3,$DataDescr3,$x0,$y0,55,PIE_PERCENTAGE,TRUE,65,15);
 $Test->xsSetFontProperties("tahoma.ttf",9);
-$Test->drawLegend(9,$ylegend,$DataDescrLegend,255,255,255);
+$Test->drawLegend(15,$ylegend,$DataDescrLegend,255,255,255);
 
 $Test->xsSetFontProperties("tahoma.ttf",12);
 $Test->drawTitle($xtitre,25,'Répartition '.$titre,50,50,50);
 if ($plot == 'total')
-  $Test->drawTitle(80,40,'au cours de '.$duree,50,50,50);
+  $Test->drawTitle(90,40,'au cours de '.$duree,50,50,50);
 $Test->xsSetFontProperties("tahoma.ttf",9);
 if ($plot == 'total') {
   $Test->drawTitle(97,190,'Semaines de',50,50,50);
   $Test->drawTitle(107,202,'présence',50,50,50);
-  $Test->drawTitle(238,190,'Interventions',50,50,50);
-  $Test->drawTitle(248,202,'en séance',50,50,50);
+  $Test->drawTitle(248,190,'Interventions',50,50,50);
+  $Test->drawTitle(258,202,'en séance',50,50,50);
 } else {
   $Test->xsSetFontProperties("tahoma.ttf",8);
   if (preg_match('/(section|seance_hemi)/', $plot)) {
-    $Test->drawTitle(110,166,'Interventions',50,50,50);
-    $Test->drawTitle(245,158,'Temps de parole',50,50,50);
-    $Test->drawTitle(243,172,'(mots prononcés)',50,50,50);
+    $Test->drawTitle(120,166,'Interventions',50,50,50);
+    $Test->drawTitle(268,158,'Temps de parole',50,50,50);
+    $Test->drawTitle(268,172,'(mots prononcés)',50,50,50);
   } else if (preg_match('/seance_com/', $plot)) {
-    $Test->drawTitle(115,166,'Présents',50,50,50);
-    $Test->drawTitle(245,166,'Interventions',50,50,50);
-    $Test->drawTitle(378,158,'Temps de parole',50,50,50);
-    $Test->drawTitle(378,172,'(mots prononcés)',50,50,50);
+    $Test->drawTitle(135,166,'Présents',50,50,50);
+    $Test->drawTitle(275,166,'Interventions',50,50,50);
+    $Test->drawTitle(415,158,'Temps de parole',50,50,50);
+    $Test->drawTitle(415,172,'(mots prononcés)',50,50,50);
   }
 }
 if ($plot == 'total') {
   $Test->xsSetFontProperties("tahoma.ttf",11);
-  $Test->drawTitle(10,340,"Travail moyen d'un député par groupe parlementaire",50,50,50);
+  $Test->drawTitle(20,340,"Travail moyen d'un député par groupe parlementaire",50,50,50);
 }
 $Test->xsRender($filename);
 if ($plot == 'total')
