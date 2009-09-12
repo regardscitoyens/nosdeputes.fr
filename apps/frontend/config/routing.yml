@@ -40,7 +40,7 @@ compterendu_list:
   url: /compterendu
   param: {module: article, action: pager, categorie: Seance, titre: "Compte-rendus citoyens"}
 compterendu_post:
-  url: /:citoyen/compterendu/:slug
+  url: /compterendu/:citoyen/:slug
   param: {module: article, action: show, categorie: Seance}
 compterendu_finseance:
   url: /compterendu/new
@@ -54,7 +54,7 @@ compterendu_edit:
 
 # Liste de tous les parlementaires ou par catégorie
 list_parlementaires:
-  url: /parlementaire
+  url: /deputes
   param: {module: parlementaire, action: list}
 list_parlementaires_circo:
   url: /circonscription
@@ -70,80 +70,28 @@ list_parlementaires_organisme:
   param: {module: parlementaire, action: listOrganisme}
 
 parlementaires_tags:
-  url: /parlementaire/tag
+  url: /deputes/tags
   param: {module: parlementaire, action: tag}
 tag_result_parlementaires:
-  url: /parlementaire/tag/:tags
+  url: /deputes/tags/:tags
   param: {module: parlementaire, action: tag}
 photo_parlementaire:
-  url: /parlementaire/photo/:slug
+  url: /depute/photo/:slug
   param: {module: parlementaire, action: photo}
 resized_photo_parlementaire:
-  url: /parlementaire/photo/:slug/:height
+  url: /depute/photo/:slug/:height
   param: {module: parlementaire, action: photo}
 
 # Fiche parlementaire et affichages de ses travaux
 parlementaire_random:
-  url: /parlementaire/hasard
+  url: /depute_du_jour
   param: {module: parlementaire, action: random}
-parlementaire:
-  url: /parlementaire/:slug
-  param: {module: parlementaire, action: show}
-parlementaire_rss:
-  url: /parlementaire/:slug/rss
-  param: {module: parlementaire, action: rss, Intervention: 1, QuestionEcrite: 1, Amendement: 1}
-parlementaire_interventions:
-  url: /parlementaire/:slug/interventions/:type
-  param: {module: intervention, action: parlementaire}
-parlementaire_interventions_organisme:
-  url: /parlementaire/:slug/interventions_orga/:orga
-  param: {module: intervention, action: parlementaireOrganisme}
-parlementaire_tags:
-  url: /parlementaire/:slug/tags
-  param: {module: tag, action: parlementaire}
-parlementaire_all_tags:
-  url: /parlementaire/:slug/tags/all
-  param: {module: tag, action: parlementaire, all: 1}
-parlementaire_session_tags:
-  url: /parlementaire/:slug/tags/:session
-  param: {module: tag, action: parlementaire}
-parlementaire_rss_commentaires:
-  url: /parlementaire/:slug/commentaires/rss
-  param: {module: commentaire, action: rss, parlementaire: 1}
-parlementaire_commentaires:
-  url: /parlementaire/:slug/commentaires
-  param: {module: commentaire, action: parlementaire}
-parlementaire_textes:
-  url: /parlementaire/:slug/textes
-  param: {module: section, action: parlementaire}
-parlementaire_texte:
-  url: /parlementaire/:slug/texte/:id
-  param: {module: section, action: parlementaireSection}
-parlementaire_amendements:
-  url: /parlementaire/:slug/amendements
-  param: {module: amendement, action: parlementaire}
-parlementaire_texte_amendements:
-  url: /parlementaire/:slug/texte/:id/amendements
-  param: {module: amendement, action: parlementaireSection}
-parlementaire_presences:
-  url: /parlementaire/:slug/presence
-  param: {module: presence, action: parlementaire}
-parlementaire_plot:
-  url: /parlementaire/:slug/graphes/:time
-  param: {module: parlementaire, action: plot}
-preuve_presence_seance:
-  url: /parlementaire/:slug/presence/:seance
-  param: {module: presence, action: preuve}
-parlementaire_questions:
-  url: /parlementaire/:slug/questions
-  param: {module: questions, action: parlementaire}
-
 # Sommaire des textes ou du travail d'un texte par sections et pour un parlementaire donné
 sections:
-  url: /sections/:order
+  url: /dossiers/:order
   param: {module: section, action: list}
 section:
-  url: /section/:id
+  url: /dossier/:id
   param: {module: section, action: show}
 intervention:
   url: /intervention/:id
@@ -166,16 +114,16 @@ search:
   url: /rechercher
   param: {module: search, action: index}
 search_interventions:
-  url: /rechercher/intervention
+  url: /rechercher/interventions
   param: {module: intervention, action: search}
 search_interventions_mots:
-  url: /rechercher/intervention/:search
+  url: /rechercher/interventions/:search
   param: {module: intervention, action: search}
 search_amendements:
-  url: /rechercher/amendement
+  url: /rechercher/amendements
   param: {module: amendement, action: search}
 search_amendements_mots:
-  url: /rechercher/amendement/:search
+  url: /rechercher/amendements/:search
   param: {module: amendement, action: search}
 
 # Tags d'une intervention, d'une section ou d'un parlementaire, d'une section ou  ou lors d'une séance
@@ -183,29 +131,25 @@ tag_interventions:
   url: /tag/:tags
   param: {module: intervention, action: tag}
 tag_section_interventions:
-  url: /section/:section/tag/:tags
+  url: /dossier/:section/tag/:tags
   param: {module: intervention, action: tag}
 tag_parlementaire_interventions:
   url: /parlementaire/:parlementaire/tag/:tags
   param: {module: intervention, action: tag}
 
 # Top des députés par interventions, présences ou amendements
-top_organisme_global_sorted: 
-  url: /top/:organisme/sort/:sort
+top_organisme_global_sorted:
+  url: /synthese/:organisme/tri/:sort
   param: {module: parlementaire, action: top}
 top_organisme_global: 
-  url: /top/:organisme
+  url: /synthese/:organisme
   param: {module: parlementaire, action: top}
 top_global_sorted: 
-  url: /top/sort/:sort
+  url: /synthese/tri/:sort
   param: {module: parlementaire, action: top}
 top_global: 
-  url: /top
+  url: /synthese
   param: {module: parlementaire, action: top}
-
-groupes_plot:
-  url: /groupes/plot/:time
-  param: {module: plot, action: groupes}
 
 # Affichage d'une question
 question:
@@ -253,8 +197,62 @@ delete_citoyen:
   url: /profil/suppression
   param: {module: citoyen, action: delete}
 
+
 # renvoi_mail_activation_citoyen:
   # url: /citoyens/activation/renvoi/:user_id
   # param: {module: citoyen, action: renvoimailactivation}
 
 # Add include user's module to get same circonscription?
+
+
+parlementaire:
+  url: /:slug
+  param: {module: parlementaire, action: show}
+parlementaire_rss:
+  url: /:slug/rss
+  param: {module: parlementaire, action: rss, Intervention: 1, QuestionEcrite: 1, Amendement: 1}
+parlementaire_interventions:
+  url: /:slug/interventions/:type
+  param: {module: intervention, action: parlementaire}
+parlementaire_interventions_organisme:
+  url: /:slug/organisme/:orga/interventions/
+  param: {module: intervention, action: parlementaireOrganisme}
+parlementaire_tags:
+  url: /:slug/tags
+  param: {module: tag, action: parlementaire}
+parlementaire_all_tags:
+  url: /:slug/tags/all
+  param: {module: tag, action: parlementaire, all: 1}
+parlementaire_session_tags:
+  url: /:slug/tags/:session
+  param: {module: tag, action: parlementaire}
+parlementaire_rss_commentaires:
+  url: /:slug/commentaires/rss
+  param: {module: commentaire, action: rss, parlementaire: 1}
+parlementaire_commentaires:
+  url: /:slug/commentaires
+  param: {module: commentaire, action: parlementaire}
+parlementaire_textes:
+  url: /:slug/dossiers
+  param: {module: section, action: parlementaire}
+parlementaire_texte_amendements:
+  url: /:slug/dossier/:id/amendements
+  param: {module: amendement, action: parlementaireSection}
+parlementaire_texte:
+  url: /:slug/dossier/:id
+  param: {module: section, action: parlementaireSection}
+parlementaire_amendements:
+  url: /:slug/amendements
+  param: {module: amendement, action: parlementaire}
+parlementaire_presences:
+  url: /:slug/presences
+  param: {module: presence, action: parlementaire}
+parlementaire_plot:
+  url: /:slug/graphes/:time
+  param: {module: parlementaire, action: plot}
+preuve_presence_seance:
+  url: /:slug/seance/:seance
+  param: {module: presence, action: preuve}
+parlementaire_questions:
+  url: /:slug/questions
+  param: {module: questions, action: parlementaire}

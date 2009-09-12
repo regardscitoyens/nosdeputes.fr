@@ -153,10 +153,8 @@ class plotComponents extends sfComponents
     $this->interventions = array();
     if ($this->plot == 'total') {
       $this->presences = array();
-      $this->amendements = array();
       $this->interventions_moy = array();
       $this->presences_moy = array();
-      $this->amendements_moy = array();
       $groupes = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
       $this->time = 'lastyear';
       foreach($this->labels as $groupe) {
@@ -164,8 +162,6 @@ class plotComponents extends sfComponents
         $this->presences_moy[] = $groupes[$groupe]['semaine']['somme']/$groupes[$groupe]['groupe']['nb'];
         $this->interventions[] = $groupes[$groupe]['hemicycle_interventions']['somme'];
         $this->interventions_moy[] = $groupes[$groupe]['hemicycle_interventions']['somme']/$groupes[$groupe]['groupe']['nb'];
-        $this->amendements[] = $groupes[$groupe]['amendements_adoptes']['somme'];
-        $this->amendements_moy[] = $groupes[$groupe]['amendements_adoptes']['somme']/$groupes[$groupe]['groupe']['nb'];
       }
     } else {
       $groupes = array();

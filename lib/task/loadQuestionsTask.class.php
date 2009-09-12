@@ -24,11 +24,11 @@ class loadQuestionsTask extends sfBaseTask {
             $ct_lines++;
             $json = json_decode($line);
             if (!$json || !$json->source || !$json->legislature || !$json->numero || !$json->date || !$json->auteur || !$json->type || !$json->question) {
-	      if (!$json) {
-		echo "ERROR json : $line\n";		
-	      }else{
+              if (!$json)
+                echo "ERROR json : $line\n";
+              else {
 		if (!$json->source)
-		  $missing = 'sourece';
+		  $missing = 'source';
 		if (!$json->legislature)
 		  $missing = 'legislature';
 		if (!$json->numero)
