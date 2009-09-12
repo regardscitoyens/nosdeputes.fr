@@ -38,8 +38,7 @@ class MotdepasseForm extends CitoyenForm
       'password_bis' => 'Confirmation : '
     ));
     
-    $this->validatorSchema['password']     = new sfValidatorString(array('required' => true, 'min_length' => 6), array('min_length' => '"%value%" est trop court (%min_length% lettres minimum).', 'required' => 'Champ obligatoire.'));
-    $this->validatorSchema['password_bis'] = new sfValidatorString(array('required' => true, 'min_length' => 6), array('min_length' => '"%value%" est trop court (%min_length% lettres minimum).', 'required' => 'Champ obligatoire.'));
+    $this->validatorSchema['password'] = new sfValidatorString(array('required' => true, 'min_length' => 6), array('min_length' => "Votre mot de passe est trop court, veuillez employer au moins 6 caractères s'il vous plaît.", 'required' => 'Champ obligatoire.'));
     
     $this->mergePostValidator(new sfValidatorSchemaCompare(
       'password',
