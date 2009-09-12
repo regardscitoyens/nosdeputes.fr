@@ -213,6 +213,11 @@ class plotComponents extends sfComponents
             else $groupes[$groupe['groupe_acronyme']]['presences'] += $groupe['count'];
         }
       } else throw new Exception('wrong plot argument');
+      $this->empty = 0;
+      if (!count($interventions) && (!isset($presence) || !count($presences))) {
+	$this->empty = 1;
+	return ;
+      }
       foreach ($interventions as $groupe)
         if (!isset($groupes[$groupe['groupe_acronyme']]['interventions']))
           $groupes[$groupe['groupe_acronyme']]['interventions'] = $groupe['count'];

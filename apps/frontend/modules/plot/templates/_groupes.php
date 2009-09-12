@@ -1,4 +1,6 @@
 <?php
+if ($empty)
+  return ;
 if ($plot == 'total' || (preg_match('/seance_com/', $plot))) { $DataSet = new xsPData();
   $DataSet->AddPoint($labels, "Serie1"); $DataSet->AddPoint($presences, "Serie2");
   $DataSet->AddSerie("Serie2"); $DataSet->SetAbsciseLabelSerie("Serie1");
