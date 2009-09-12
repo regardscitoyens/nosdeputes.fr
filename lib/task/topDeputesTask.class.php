@@ -116,21 +116,6 @@ class topDeputesTask extends sfBaseTask
       $this->deputes[$p['id']]['amendements_adoptes']['value'] = $p['count'];
     }
   }
- protected function executeAmendementsAdoptesUniques($q) {
-    $parlementaires = $q->select('p.id, count(a.id)')
-      ->from('Parlementaire p, p.ParlementaireAmendements pa, pa.Amendement a')
-      ->groupBy('p.id')
-      ->where('a.sort = ?', 'Adopté');
-    if ($limite_signataires > 0) {
-      $parlementaires->andWhere('pa.numero_signataire <= ?', $limite_signataires);
-    }
-    $parlementaires->fetchArray();
-    print $champ;
-    print_r($parlementaires);
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_adoptes_uniques']['value'] = $p['count'];
-    }
-  }
 
   protected function executeAmendementsRejetes($q)
   {
@@ -215,9 +200,6 @@ class topDeputesTask extends sfBaseTask
     $this->executeAmendementsAdoptes(clone $qa);
     $this->orderDeputes('amendements_adoptes');
 
-    $this->executeAmendementsAdoptes(clone $qa, 1);
-    $this->orderDeputes('amendements_adoptes_uniques');
-
     $this->executeAmendementsRejetes(clone $qa);
     $this->orderDeputes('amendements_rejetes', 0);
 
@@ -237,7 +219,6 @@ class topDeputesTask extends sfBaseTask
 	$groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
       }
       unset($this->deputes[$id]['groupe']);
-      unset($this->deputes[$id]['amendements_adoptes_uniques']);
       $depute = Doctrine::getTable('Parlementaire')->find($id);
       $depute->top = serialize($this->deputes[$id]);
       $depute->save();
