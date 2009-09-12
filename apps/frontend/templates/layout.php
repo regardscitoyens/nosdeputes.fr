@@ -132,7 +132,7 @@ if ($rss) {
   </body>
 <script>
 $(document).ready(function() {
-    if (additional_load)
+    if (typeof additional_load != 'undefined')
       additional_load();
     if (!$('#header_login').attr('value')) {
       $('#header_login').attr('value', 'Identifiant');
