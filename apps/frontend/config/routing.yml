@@ -125,6 +125,9 @@ search_amendements:
 search_amendements_mots:
   url: /rechercher/amendements/:search
   param: {module: amendement, action: search}
+search_questions_ecrites:
+  url: /rechercher/question/:search
+  param: {module: questions, action: search}
 
 # Tags d'une intervention, d'une section ou d'un parlementaire, d'une section ou  ou lors d'une séance
 tag_interventions:
