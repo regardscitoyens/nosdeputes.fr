@@ -110,6 +110,12 @@ class parlementaireActions extends sfActions
       ->leftJoin('po.Organisme o')
       ->fetchOne();*/
 
+    $this->questions = doctrine::getTable('QuestionEcrite')->createQuery('a')
+      ->where('a.parlementaire_id = ?', $this->parlementaire->id)
+      ->orderBy('a.updated_at DESC')
+      ->limit(5)
+      ->execute();
+
     $this->textes = doctrine_query::create()
       ->from('Section s')
       ->select('s.section_id, sp.titre, count(i.id) as nb')

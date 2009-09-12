@@ -5,6 +5,9 @@ class InterventionComponents extends sfComponents
   public function executeParlementaireIntervention()
   {
   }
+  public function executeParlementaireQuestion()
+  {
+  }
   public function executePagerInterventions()
   {
     if (!$this->intervention_query)
