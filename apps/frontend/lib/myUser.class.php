@@ -24,7 +24,7 @@ class myUser extends sfBasicSecurityUser
       'subject'=>'Inscription NosDéputés.fr', 
       'to'=>array($citoyen->email), 
       'partial'=>'inscriptioncom', 
-      'mailContext'=>array('slug' => $citoyen->slug, 'activation_id' => $citoyen->activation_id) 
+      'mailContext'=>array('slug' => sfContext::getInstance()->getUser()->getAttribute('slug'), 'activation_id' => $citoyen->activation_id) 
       ));
     return $citoyen->getId();
   }
@@ -48,7 +48,10 @@ class myUser extends sfBasicSecurityUser
       $secret_key = sfConfig::get('app_secret_key');
       $expiration_cookie = sfConfig::get('app_expiration_cookie');
       $remember_key = $user->slug.'_'.sha1($secret_key.$user->slug);
-      if (sfContext::getInstance()->getResponse()->setCookie('remember', $remember_key, $expiration_cookie, '/'));
+      if (!sfContext::getInstance()->getResponse()->setCookie('remember', $remember_key, $expiration_cookie, '/'))
+			{
+				$action->getUser()->setFlash('error', 'Vous devez activer les cookies.pour utiliser la fonction "se rappeler de moi".');
+			}
     }
     return $user->id;
   }
