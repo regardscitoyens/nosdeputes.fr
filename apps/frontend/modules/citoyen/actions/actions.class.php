@@ -51,20 +51,7 @@ class citoyenActions extends sfActions
         
         if ($this->form->isValid())
         {
-          $this->form->save();
-          
-          $this->Citoyen = Doctrine::getTable('Citoyen')->findOneByEmail($this->form->getValue('email'));
-          $this->connexion($this->Citoyen);
-          $this->Citoyen->activation_id = md5(time()*rand());
-          $this->Citoyen->save();
-          
-          $this->getComponent('mail', 'send', 
-            array('subject'=>'Inscription NosDéputés.fr', 
-            'to'=>array($this->form->getValue('email')), 
-            'partial'=>'inscription', 
-            'mailContext'=>array('slug' => $this->Citoyen->slug, 'activation_id' => $this->Citoyen->activation_id) 
-            ));
-          
+          myUser::CreateAccount($this->form->getValue('login'), $this->form->getValue('email'), $this);
           $this->getUser()->setFlash('notice', 'Vous allez recevoir un email de confirmation. Pour finaliser votre inscription, veuillez cliquer sur le lien d\'activation contenu dans cet email.');
           $this->redirect('@homepage');
         }
@@ -272,33 +259,9 @@ class citoyenActions extends sfActions
         
         if ($this->form->isValid())
         {
-          if (Doctrine::getTable('Citoyen')->findOneByLogin($this->form->getValue('login')))
-          {
-            $user = Doctrine::getTable('Citoyen')->findOneByLogin($this->form->getValue('login'));
-            if (sha1($this->form->getValue('password')) == $user->password)
-            {
-              $this->connexion($user);
-              if($this->form->getValue('remember'))
-              {
-                $secret_key = sfConfig::get('app_secret_key');
-                $expiration_cookie = sfConfig::get('app_expiration_cookie');
-                $remember_key = $user->slug.'_'.sha1($secret_key.$user->slug);
-                if (sfContext::getInstance()->getResponse()->setCookie('remember', $remember_key, $expiration_cookie, '/'));
-              }
-              $this->getUser()->setFlash('notice', 'Vous vous êtes connecté avec succès.');
-              $this->redirect($request->getReferer());
-            }
-            else
-            {
-              sleep(3);
-              $this->getUser()->setFlash('error', 'Le nom d\'utilisateur et le mot de passe ne correspondent pas.');
-            }
-          }
-          else
-          {
-            sleep(3);
-            $this->getUser()->setFlash('error', 'Ce nom d\'utilisateur n\'existe pas.');
-          }
+          myUser::SignIn($this->form->getValue('login'), $this->form->getValue('password'), $this->form->getValue('remember'), $this);
+          $this->getUser()->setFlash('notice', 'Vous vous êtes connecté avec succès.');
+          $this->redirect($request->getReferer());
         }
       }
     }

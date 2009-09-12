@@ -19,18 +19,17 @@ class myUser extends sfBasicSecurityUser
     $citoyen->email = $email;
     $citoyen->activation_id = md5(time()*rand());
     $citoyen->save();
-    $user = Doctrine::getTable('Citoyen')->findOneByEmail($citoyen->email);
     $action->getComponent('citoyen', 'connexion', array('login' => $citoyen->login));
     $action->getComponent('mail', 'send', array(
-                'subject'=>'Inscription NosDéputés.fr', 
-                'to'=>array($citoyen->email), 
-                'partial'=>'inscriptioncom', 
-                'mailContext'=>array('slug' => $user->slug, 'activation_id' => $citoyen->activation_id) 
-                ));
+      'subject'=>'Inscription NosDéputés.fr', 
+      'to'=>array($citoyen->email), 
+      'partial'=>'inscriptioncom', 
+      'mailContext'=>array('slug' => $citoyen->slug, 'activation_id' => $citoyen->activation_id) 
+      ));
     return $citoyen->getId();
   }
 
-  public static function SignIn($login, $password, $action) 
+  public static function SignIn($login, $password, $remember, $action) 
   {
     if (! Doctrine::getTable('Citoyen')->findOneByLogin($login)) {
       sleep(3);
@@ -44,6 +43,13 @@ class myUser extends sfBasicSecurityUser
       return;
     }
     $action->getComponent('citoyen', 'connexion', array('login' => $user->login));
+    if($remember)
+    {
+      $secret_key = sfConfig::get('app_secret_key');
+      $expiration_cookie = sfConfig::get('app_expiration_cookie');
+      $remember_key = $user->slug.'_'.sha1($secret_key.$user->slug);
+      if (sfContext::getInstance()->getResponse()->setCookie('remember', $remember_key, $expiration_cookie, '/'));
+    }
     return $user->id;
   }
 
