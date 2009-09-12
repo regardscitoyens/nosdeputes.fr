@@ -128,9 +128,9 @@ parlementaire_texte_amendements:
 parlementaire_presences:
   url: /parlementaire/:slug/presence
   param: {module: presence, action: parlementaire}
-plot_parlementaire_presences:
-  url: /parlementaire/:slug/presence/plot/:time
-  param: {module: parlementaire, action: plotPresences}
+parlementaire_plot:
+  url: /parlementaire/:slug/graphes/:time
+  param: {module: parlementaire, action: plot}
 preuve_presence_seance:
   url: /parlementaire/:slug/presence/:seance
   param: {module: presence, action: preuve}
@@ -202,6 +202,10 @@ top_global_sorted:
 top_global: 
   url: /top
   param: {module: parlementaire, action: top}
+
+groupes_plot:
+  url: /groupes/plot/:time
+  param: {module: plot, action: groupes}
 
 # Affichage d'une question
 question:

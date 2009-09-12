@@ -84,7 +84,7 @@ if (isset($fonctions)) {
     }
     $fonction = (int)(4*$totalfonctions/$total);
   }
-} 
+}
 $Test->setColorPalette(0,255,35*$fonction,0);
 $Test->setColorPalette(1,255,255,0);
 $Test->setColorPalette(2,0,255,0);
@@ -117,7 +117,7 @@ $filename = 'participation-'.$titre.'-'.$parlementaire->slug.isset($link).'.png'
 $Test->xsRender($filename);
 
 if (isset($link))
-  echo link_to(image_tag('tmp/xspchart/'.$filename, 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"'), '@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear');
+  echo link_to(image_tag('tmp/xspchart/'.$filename, 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"'), '@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear');
 else echo image_tag('tmp/xspchart/'.$filename, 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"');
 echo "<p><span style='background-color: rgb(255,";
 echo 35*$fonction.",0);'>&nbsp;</span> ";
@@ -128,6 +128,6 @@ if ($questions == 1)
     echo "<span style='background-color: rgb(0,0,255);'>&nbsp;</span>&nbsp;Questions orales&nbsp;&nbsp;&nbsp;";
 echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires";
 if (isset($link))
-  echo "&nbsp;&nbsp;&nbsp;&nbsp;".link_to('Explications', '@plot_parlementaire_presences?slug='.$parlementaire->slug.'&time=lastyear#explications');
+  echo "&nbsp;&nbsp;&nbsp;&nbsp;".link_to('Explications', '@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear#explications');
 echo "</p>"
 ?>

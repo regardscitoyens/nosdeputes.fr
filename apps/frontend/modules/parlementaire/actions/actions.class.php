@@ -267,7 +267,7 @@ public function executeList(sfWebRequest $request)
     }
   }
 
-  public function executePlotPresences(sfWebRequest $request)
+  public function executePlot(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
     $this->session = $request->getParameter('time');

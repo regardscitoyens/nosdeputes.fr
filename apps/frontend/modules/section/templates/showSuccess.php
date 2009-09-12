@@ -12,6 +12,7 @@ else echo '</h1>';
 </span>
 <?php } ?>
 </div>
+<?php echo include_component('plot', 'groupes', array('plot' => 'section_'.$section->id)); ?>
 <div>
 <p>Voici la liste des mots clés pour cette section :</p>
 <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>

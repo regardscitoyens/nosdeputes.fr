@@ -7,4 +7,5 @@
 <li><?php echo link_to('tous les textes ordre chrono','@sections?order=date')?></li>
 <li><?php echo link_to('Synthèse globale','@top_global')?></li>
 </ul>
+<?php echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
 </div>
