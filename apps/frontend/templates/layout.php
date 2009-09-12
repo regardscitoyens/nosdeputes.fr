@@ -36,7 +36,7 @@ if ($rss) {
 				     <?php if(!$sf_user->isAuthenticated()) { ?>
 					<form method="post" action="<?php echo url_for('@signin'); ?>">
 					<p>
-					<a href="<?php echo url_for('@inscription') ?>"><button type="submit"  id="bt2"></button></a>
+					<a href="<?php echo url_for('@inscription') ?>"><button id="bt2"></button></a>
 					<button type="submit" value="login" id="bt1"></button>
 					<input type="text" name="signin[password]" value="&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;" onfocus="if(this.value=='&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;')this.value ='';" onblur="if(this.value=='')this.value ='&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;';"/>
 					<input type="text" name="signin[login]" value="Identifiant" onfocus="if(this.value=='Identifiant')this.value ='';" onblur="if(this.value=='')this.value ='Identifiant';" />
