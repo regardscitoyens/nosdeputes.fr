@@ -16,7 +16,7 @@ class ArticleForm extends BaseArticleForm
 	  $this['version'],
 	  $this['slug'],
 	  $this['citoyen_id'],
-	  $this['rate'],
+	  $this['rate']
 	  ) ;
     $this->widgetSchema['categorie'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['corps'] = new sfWidgetFormInputHidden();
