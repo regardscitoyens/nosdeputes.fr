@@ -148,8 +148,6 @@ public function executeList(sfWebRequest $request)
       }
       if ($nb == 0) {
 	$this->similars = Doctrine::getTable('Parlementaire')->similarTo($this->search, null, 1);
-	if (count($this->similars) == 1)
-	  return $this->redirect('parlementaire/show?slug='.$this->similars[0]['slug']);
       }
     }
   }
