@@ -117,6 +117,6 @@ if ($plot == 'total') {
 }
 $Test->xsRender($filename);
 if ($plot == 'total')
-  echo link_to(image_tag('tmp/xspchart/'.$filename, 'alt="Répartition par groupe du travail '.$titre), '@top_global');
-else echo image_tag('tmp/xspchart/'.$filename, 'alt="Répartition par groupe du travail '.$titre);
+  echo link_to(image_tag('tmp/xspchart/'.$filename, 'alt="Répartition par groupe du travail '.$titre.'"'), '@top_global');
+else echo image_tag('tmp/xspchart/'.$filename, 'alt="Répartition par groupe du travail '.$titre.'"');
 ?>
