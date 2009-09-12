@@ -43,15 +43,13 @@ class myUser extends sfBasicSecurityUser
       return;
     }
     $action->getComponent('citoyen', 'connexion', array('login' => $user->login));
+    $action->getUser()->setFlash('notice', 'Vous vous êtes connecté avec succès.');
     if($remember)
     {
       $secret_key = sfConfig::get('app_secret_key');
       $expiration_cookie = sfConfig::get('app_expiration_cookie');
       $remember_key = $user->slug.'_'.sha1($secret_key.$user->slug);
-      if (!sfContext::getInstance()->getResponse()->setCookie('remember', $remember_key, $expiration_cookie, '/'))
-			{
-				$action->getUser()->setFlash('error', 'Vous devez activer les cookies.pour utiliser la fonction "se rappeler de moi".');
-			}
+      sfContext::getInstance()->getResponse()->setCookie('remember', $remember_key, $expiration_cookie, '/');
     }
     return $user->id;
   }

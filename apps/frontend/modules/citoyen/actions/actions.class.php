@@ -260,7 +260,6 @@ class citoyenActions extends sfActions
         if ($this->form->isValid())
         {
           myUser::SignIn($this->form->getValue('login'), $this->form->getValue('password'), $this->form->getValue('remember'), $this);
-          $this->getUser()->setFlash('notice', 'Vous vous êtes connecté avec succès.');
           $this->redirect($request->getReferer());
         }
       }
