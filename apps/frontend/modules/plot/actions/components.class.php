@@ -164,8 +164,8 @@ class plotComponents extends sfComponents
         $this->presences_moy[] = $groupes[$groupe]['semaine']['somme']/$groupes[$groupe]['groupe']['nb'];
         $this->interventions[] = $groupes[$groupe]['hemicycle_interventions']['somme'];
         $this->interventions_moy[] = $groupes[$groupe]['hemicycle_interventions']['somme']/$groupes[$groupe]['groupe']['nb'];
-        $this->amendements[] = $groupes[$groupe]['amendements_adoptes_uniques']['somme'];
-        $this->amendements_moy[] = $groupes[$groupe]['amendements_adoptes_uniques']['somme']/$groupes[$groupe]['groupe']['nb'];
+        $this->amendements[] = $groupes[$groupe]['amendements_adoptes']['somme'];
+        $this->amendements_moy[] = $groupes[$groupe]['amendements_adoptes']['somme']/$groupes[$groupe]['groupe']['nb'];
       }
     } else {
       $groupes = array();
