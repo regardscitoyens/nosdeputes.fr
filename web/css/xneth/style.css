@@ -148,56 +148,79 @@ a:hover {
 
 #menu {
 	width: 1060px;
-	height:39px;
+	height:35px;
 	background: url('images/menu.png') no-repeat;
 	overflow:hidden;
 }
 
 .menu_navigation {
 	float:left;
-	height:39px;
+	height:35px;
 	width:682px;
 	overflow:hidden;
 	padding-left:45px;
 }
 
-.menu_navigation a{
+.menu_navigation a {
 	display:block;
-	height:39px;
+	height:35px;
+	font: 13pt Georgia, Tahoma, Geneva, Arial, Sans-serif;
+	padding-top:5px;
+	text-decoration:none;
+	text-align:center;
+}
+
+.gris { 	
+	color:#3c3c3c;
+}
+
+.vert {
+	color:#8aa915;
+}
+
+.orange {
+	color:#d4963e;
+}
+
+.bleu {
+	color:#12a8d2;
 }
 
 #item1 a {
 	float:left;
 	background: url('images/menu_item1.png') no-repeat 0 0;
-	width:128px;
+	width:89px;
 }
 
 #item2  a {
 	float:left;
 	background: url('images/menu_item2.png') no-repeat 0 0;
-	width:153px;
+	width:166px;
 }
 
 #item3  a {
 	float:left;
 	background: url('images/menu_item3.png') no-repeat 0 0;
-	width:153px;
+	width:166px;
 }
 
 #item4 a {
 	float:left;
 	background: url('images/menu_item4.png') no-repeat 0 0;
-	width:153px;
+	width:166px;
 }
 
 #item5  a {
 	float:left;
 	background: url('images/menu_item5.png') no-repeat 0 0;
-	width:95px;
+	width:74px;
+	padding-top:10px;
+	font-size: 8pt;
+	font-weight:bold;
 }
 
-#item1 a:hover,  #item1 a:focus, #item2 a:hover, #item2 a:focus, #item3 a:hover, #item3 a:focus, #item4 a:hover, #item4 a:focus, #item5 a:hover, #item5 a:focus {
-   background-position: 0 -39px;
+#item1 a:hover, #item1 a:focus, #item2 a:hover, #item2 a:focus, #item3 a:hover, #item3 a:focus, #item4 a:hover, #item4 a:focus {
+   background-position: 0 -35px;
 }
 
 .menu_recherche {
@@ -258,17 +281,18 @@ a:hover {
 	overflow:hidden;
 }
 
-.elements_sous_menu {
-	width:660px;
-	float:left;
+	.elements_sous_menu {
+	width:600px;
+	padding-top:3px;
+	position:absolute;
 }
 
-.elements_sous_menu  a {
+	.elements_sous_menu  a {
 	text-decoration:none;
 	letter-spacing:1.4pt;
 	color:black;
 }
-.elements_sous_menu ul {
+	.elements_sous_menu ul {
 	float:right;
 	padding:0;
 	margin:0;
@@ -276,13 +300,35 @@ a:hover {
 	font-family: Tahoma, Arial, Helvetica, sans-serif;
 	}
 		
-.elements_sous_menu   li{
+	.elements_sous_menu   li{
 	display: block ;
 	float:left;
 	padding:0;
 	margin:0;
 	margin-left:4px;
 	}
+	
+	#sous_menu_1 {
+	float:left;
+	width:1060px;
+	height:21px;
+	background: url('images/sous_menu_1.png');
+	}
+	
+	#sous_menu_2 {
+	float:left;
+	width:1060px;
+	height:21px;
+	background: url('images/sous_menu_2.png');
+	}
+	
+	#sous_menu_3 {
+	float:left;
+	width:1060px;
+	height:21px;
+	background: url('images/sous_menu_3.png');
+	}
+
 
 
 /* corps de page */

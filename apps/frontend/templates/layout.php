@@ -59,10 +59,10 @@ if ($rss) {
   			<div id="menu">
 				<div class="menu_navigation">
 					<div id="item1"><a href="<?php echo url_for('@homepage'); ?>"></a></div>
-					<div id="item2"><a href="<?php echo url_for('@list_parlementaires'); ?>"></a></div>
-					<div id="item3"><a href="<?php echo url_for('@sections?order=date')?>"></a></div>
-					<div id="item4"><a href="<?php echo url_for('@list_citoyens')?>"></a></div>
-					<div id="item5"><a href="#"></a></div>
+					<div id="item2"><a href="<?php echo url_for('@list_parlementaires'); ?>"><span class="gris">Les</span> <span class="vert">D</span><span class="gris">&eacute;put&eacute;s</span></a></div>
+					<div id="item3"><a href="<?php echo url_for('@sections?order=date')?>"><span class="gris">Les</span> <span class="orange">D</span><span class="gris">ossiers</span></a></div>
+					<div id="item4"><a href="<?php echo url_for('@list_citoyens')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
+					<div id="item5"><a href="#"><span class="gris">FAQ</span></a></div>
 				</div>
                     <?php       $search = strip_tags($sf_request->getParameter('search'));
                                 $uri = strip_tags($_SERVER['REQUEST_URI']);
@@ -99,7 +99,10 @@ if ($rss) {
 				</div>
 			</div>
 			<div id="sous_menu">
-				<div class="elements_sous_menu"> <!-- A rendre dynamique en php -->
+				<div id="sous_menu_1" style="display:inline"></div>
+				<div id="sous_menu_2" style="display:none"></div>
+				<div id="sous_menu_3" style="display:none"></div>
+				<div class="elements_sous_menu"><!-- A rendre dynamique en php -->
 					<ul>
 						<li><a href="#">El&eacute;ment 1</a> |</li>
 						<li><a href="#">El&eacute;ment 2</a> |</li>
