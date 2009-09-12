@@ -66,20 +66,7 @@ if ($rss) {
 					<div id="item4"><a href="<?php echo url_for('@list_citoyens')?>"></a></div>
 					<div id="item5"><a href="#"></a></div>
 				</div>
-				<div class="menu_recherche">
-					<form action="<?php echo url_for('@search'); ?>" method="get">
-						<p>
-                            <select class="type_recherche" name="type">
-								<option value="depute"<?php echo $selectdepute; ?>>Députés</option>
-								<option value="departement"<?php echo $selectcirco; ?>>Départements</option>
-								<option value="profession"<?php echo $selectprof; ?>>Profession</option>
-								<option value="intervention"<?php echo $selectinterv; ?>>Interventions</option>
-								<option value="amendement"<?php echo $selectamdmt; ?>>Amendements</option>
-							</select>
-							<img src="images/recherche_fleche.png" alt="" title="" />
-							<input class="bouton_ok" value="" type="submit"/>
-							<input class="rechercher" name="search" type="text" size="15" value="<?php if (isset($_GET['search'])) echo $_GET['search']; ?>"/>
-							 <?php
+                    <?php
 							if (isset($_GET['search']) && preg_match('/parlementaire/', $_SERVER['REQUEST_URI'])) $selectdepute = ' selected="selected"';
 							else $selectdepute = "";
 							if (isset($_GET['search']) && preg_match('/circonscription/', $_SERVER['REQUEST_URI'])) $selectcirco = ' selected="selected"';
@@ -90,7 +77,23 @@ if ($rss) {
 							else $selectinterv = "";
 							if (isset($_GET['search']) && preg_match('/amendement/', $_SERVER['REQUEST_URI'])) $selectamdmt = ' selected="selected"';
 							else $selectamdmt = "";
+							if (isset($_GET['search']) && preg_match('/question/', $_SERVER['REQUEST_URI'])) $selectquestion = ' selected="selected"';
+							else $selectquestion = "";
 							?>
+				<div class="menu_recherche">
+					<form action="<?php echo url_for('@search'); ?>" method="get">
+						<p>
+                            <select class="type_recherche" name="type">
+								<option value="depute"<?php echo $selectdepute; ?>>Députés</option>
+								<option value="departement"<?php echo $selectcirco; ?>>Départements</option>
+								<option value="profession"<?php echo $selectprof; ?>>Profession</option>
+								<option value="intervention"<?php echo $selectinterv; ?>>Interventions</option>
+								<option value="question"<?php echo $selectquestion; ?>>Questions écrites</option>
+								<option value="amendement"<?php echo $selectamdmt; ?>>Amendements</option>
+							</select>
+							<img src="images/recherche_fleche.png" alt="" title="" />
+							<input class="bouton_ok" value="" type="submit"/>
+							<input class="rechercher" name="search" type="text" size="15" value="<?php if (isset($_GET['search'])) echo $_GET['search']; ?>"/>
 						</p>
 					</form>
 				</div>

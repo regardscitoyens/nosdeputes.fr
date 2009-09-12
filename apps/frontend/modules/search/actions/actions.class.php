@@ -15,7 +15,9 @@ class searchActions extends sfActions
       return $this->redirect('intervention/search?search='.$search);
     elseif ($type == 'amendement')
       return $this->redirect('amendement/search?search='.$search);
-    else forward404();
+    elseif ($type == 'question')
+      return $this->redirect('questions/search?search='.$search);
+    else $this->forward404();
   }
 
 }
