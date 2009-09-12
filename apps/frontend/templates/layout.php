@@ -46,14 +46,11 @@ if ($rss) {
 					</form> <?php }
 					if($sf_user->isAuthenticated())
 					{ 
-					if($sf_user->getAttribute('is_active') == true) { ?>
-					<a href="<?php echo url_for('@citoyen?slug='.$sf_user->getAttribute('slug')); ?>">Mon Profil</a> - 
-					<?php
-					}
-					?>
-					<?php echo link_to($sf_user->getAttribute('login'),'@citoyen?slug='.$sf_user->getAttribute('slug')); ?> -
-					<a href="<?php echo url_for('@signout') ?>">Déconnexion</a>
-					<?php } ?>
+					  if($sf_user->getAttribute('is_active') == true) { 
+					    echo link_to($sf_user->getAttribute('login'),'@citoyen?slug='.$sf_user->getAttribute('slug')).' - ';
+					  }
+						echo link_to('Déconnexion','@signout');
+					} ?>
 				</div>
 			</div>
 			<div id="header">
