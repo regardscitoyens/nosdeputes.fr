@@ -65,12 +65,12 @@ $Test->setColorPalette(4,255,30,30);
 $Test->xsSetFontProperties("tahoma.ttf",7);
 if (isset($Data)) {
   $Test->drawPieGraph($Data,$DataDescr,$x0,$y0,55,PIE_VALUES,TRUE,65,15);
-if ($plot == 'total') $Test->drawPieGraph($DataBis,$DataDescrBis,130,260,55,PIE_VALUES,TRUE,65,15);
+if ($plot == 'total') $Test->drawPieGraph($DataBis,$DataDescrBis,$x0,260,55,PIE_VALUES,TRUE,65,15);
   $x0 += 150;
 }
 if (isset($Data2))
   $Test->drawPieGraph($Data2,$DataDescr2,$x0,$y0,55,PIE_VALUES,TRUE,65,15);
-if ($plot == 'total') $Test->drawPieGraph($Data2Bis,$DataDescr2Bis,270,260,55,PIE_VALUES,TRUE,65,15);
+if ($plot == 'total') $Test->drawPieGraph($Data2Bis,$DataDescr2Bis,$x0,260,55,PIE_VALUES,TRUE,65,15);
 $x0 += 150;
 if (isset($Data3))
   $Test->drawPieGraph($Data3,$DataDescr3,$x0,$y0,55,PIE_PERCENTAGE,TRUE,65,15);
