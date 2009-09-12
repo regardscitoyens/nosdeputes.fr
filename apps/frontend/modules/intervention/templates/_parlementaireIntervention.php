@@ -3,13 +3,26 @@
     <div class="info">
     <strong>  
     <?php 
-    echo $intervention->getSeance()->getTitre(0,0,$intervention->getMd5()).' - ';
+    echo $intervention->getSeance()->getTitre(0,0,$intervention->getMd5()).' &mdash; ';
     if ($intervention->getType() == 'commission') { $orga = $intervention->getSeance()->getOrganisme(); echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); }
     else { $section = $intervention->getSection(); 
 	    if ($section->getSection()) 
 		    echo link_to(ucfirst($section->getSection()->getTitre()),
 				    '@section?id='.$section->section_id).' > ';
-	    echo link_to(ucfirst($section->titre), '@section?id='.$section->id); }
+	    echo link_to(ucfirst($section->titre), '@section?id='.$section->id);
+	    $lois = $intervention->getTags(array('is_triple' => true,                         
+				    'namespace' => 'loi',
+				    'key' => 'numero',
+				    'return'    => 'value'));
+	    $amdmt = $intervention->getTags(array('is_triple' => true,                         
+				    'namespace' => 'loi',
+				    'key' => 'amendement',
+				    'return'    => 'value'));
+	    if(count($amdmt) == 1)
+		    echo ', amendement '.
+			    link_to(($amdmt[0]),
+					    '/amendements/'.(implode(',',$lois).'/'.$amdmt[0])); 
+    }
     ?> 
     </strong>
  <?php if (isset($complete)) echo '<span class="source"><a href="'.$intervention->getSource().'">source</a>'; ?>
