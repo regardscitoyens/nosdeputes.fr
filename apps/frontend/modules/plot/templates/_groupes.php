@@ -32,7 +32,7 @@ $DataDescrLegend = $DataSetLegend->GetDataDescription();
 $filename = 'repartition-groupes';
 $xsize = 360;
 if ($plot == 'total') {
-  $xtitre = 35; $ysize = 350; $ylegend = 145; $x0 = 130; $y0 = 110;
+  $xtitre = 15; $ysize = 350; $ylegend = 145; $x0 = 130; $y0 = 110;
   $duree = "l'année passée";
   $shortduree = 'annee';
   $filename .= '-'.$shortduree.'.png';
@@ -75,14 +75,15 @@ $Test->drawLegend(9,$ylegend,$DataDescrLegend,255,255,255);
 $Test->xsSetFontProperties("tahoma.ttf",12);
 $Test->drawTitle($xtitre,25,'Répartition '.$titre,50,50,50);
 if ($plot == 'total')
-  $Test->drawTitle(155,40,'au cours de '.$duree,50,50,50);
-$Test->xsSetFontProperties("tahoma.ttf",8);
+  $Test->drawTitle(80,40,'au cours de '.$duree,50,50,50);
+$Test->xsSetFontProperties("tahoma.ttf",9);
 if ($plot == 'total') {
-  $Test->drawTitle(100,192,'Semaines de',50,50,50);
-  $Test->drawTitle(107,204,'présence',50,50,50);
-  $Test->drawTitle(240,192,'Interventions',50,50,50);
-  $Test->drawTitle(250,204,'en séance',50,50,50);
+  $Test->drawTitle(97,190,'Semaines de',50,50,50);
+  $Test->drawTitle(107,202,'présence',50,50,50);
+  $Test->drawTitle(238,190,'Interventions',50,50,50);
+  $Test->drawTitle(248,202,'en séance',50,50,50);
 } else {
+  $Test->xsSetFontProperties("tahoma.ttf",8);
   if (preg_match('/(section|seance_hemi)/', $plot)) {
     $Test->drawTitle(110,166,'Interventions',50,50,50);
     $Test->drawTitle(245,158,'Temps de parole',50,50,50);
@@ -96,7 +97,7 @@ if ($plot == 'total') {
 }
 if ($plot == 'total') {
   $Test->xsSetFontProperties("tahoma.ttf",11);
-  $Test->drawTitle(75,340,"Travail moyen d'un député par groupe parlementaire",50,50,50);
+  $Test->drawTitle(10,340,"Travail moyen d'un député par groupe parlementaire",50,50,50);
 }
 $Test->xsRender($filename);
 if ($plot == 'total')
