@@ -62,9 +62,11 @@ class questionsActions extends sfActions
     if (count($ids))
       $this->query->whereIn('i.id', $ids);
     else if (count($mcle))
-      foreach($mcle as $m)
+      foreach($mcle as $m) {
 	$this->query->andWhere('i.question LIKE ?', '% '.$m.' %');
-    else {
+	$this->query->orWhere('i.reponse LIKE ?', '% '.$m.' %');
+	$this->query->orWhere('i.themes LIKE ?', '% '.$m.' %');
+      } else {
       $this->query->where('0');
       return ;
     }

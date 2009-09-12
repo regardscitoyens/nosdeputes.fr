@@ -8,7 +8,7 @@
  <?php echo '<span class="source"><a href="'.$question->getSource().'">source</a>'; ?>
     </div>
     <div class="texte_question"><?php 
-$inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $question->getQuestion()); 
+$inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $question->getQuestion().' '.$question->getReponse().' Thèmes : '.$question->getThemes());
 $p_inter = '';
 if (isset($highlight)) {
   foreach ($highlight as $h) {
@@ -21,4 +21,5 @@ if (isset($highlight)) {
 }
 echo $p_inter;
 ?>
+    </div>
   </div>

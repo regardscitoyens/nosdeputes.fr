@@ -83,9 +83,9 @@ if ($plot == 'total')
   $Test->drawTitle(90,40,'au cours de '.$duree,50,50,50);
 $Test->xsSetFontProperties("tahoma.ttf",9);
 if ($plot == 'total') {
-  $Test->drawTitle(97,190,'Semaines de',50,50,50);
-  $Test->drawTitle(107,202,'présence',50,50,50);
-  $Test->drawTitle(248,190,'Interventions',50,50,50);
+  $Test->drawTitle(105,190,'Semaines de',50,50,50);
+  $Test->drawTitle(113,202,'présence',50,50,50);
+  $Test->drawTitle(251,190,'Interventions',50,50,50);
   $Test->drawTitle(258,202,'en séance',50,50,50);
 } else {
   $Test->xsSetFontProperties("tahoma.ttf",8);

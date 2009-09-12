@@ -51,7 +51,7 @@ if ($rss) {
 					<?php
 					}
 					?>
-					Connecté en tant que <?php echo $sf_user->getAttribute('login'); ?> - 
+					<?php echo link_to($sf_user->getAttribute('login'),'@citoyen&slug='.$sf_user->getSlug()); ?> -
 					<a href="<?php echo url_for('@signout') ?>">Déconnexion</a>
 					<?php } ?>
 				</div>
