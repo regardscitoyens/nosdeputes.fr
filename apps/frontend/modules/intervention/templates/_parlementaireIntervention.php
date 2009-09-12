@@ -5,7 +5,11 @@
     <?php 
     echo $intervention->getSeance()->getTitre(0,0,$intervention->getMd5()).' - ';
     if ($intervention->getType() == 'commission') { $orga = $intervention->getSeance()->getOrganisme(); echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); }
-    else { $section = $intervention->getSection(); echo link_to(ucfirst($section->titre_complet), '@section?id='.$section->id); }
+    else { $section = $intervention->getSection(); 
+	    if ($section->getSection()) 
+		    echo link_to(ucfirst($section->getSection()->getTitre()),
+				    '@section?id='.$section->section_id).' > ';
+	    echo link_to(ucfirst($section->titre), '@section?id='.$section->id); }
     ?> 
     </strong>
  <?php if (isset($complete)) echo '<span class="source"><a href="'.$intervention->getSource().'">source</a>'; ?>
