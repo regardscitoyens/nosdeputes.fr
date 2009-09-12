@@ -102,6 +102,9 @@ interventions_seance:
 presents_seance:
   url: /seance/:seance/presents
   param: {module: presence, action: seance}
+seance_commentaires_json:
+  url: /seance/:seance/commentaires
+  param: {module: commentaire, action: seance}
 amendement:
   url: /amendement/:id
   param: {module: amendement, action: show}

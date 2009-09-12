@@ -93,6 +93,9 @@ $values['password'], false, $this))) {
     $commentaire->is_public = $is_active;
     $commentaire->save();
 
+    $object->updateNbCommentaires();
+    $object->save();
+
     if (isset($object->parlementaire_id)) {
       $commentaire->addParlementaire($object->parlementaire_id);
     }else{
@@ -119,5 +122,12 @@ $values['password'], false, $this))) {
     $this->forward404Unless($this->parlementaire);
     $this->commentaires = Doctrine::getTable('Commentaire')->createQuery('c')->leftJoin('c.CommentaireParlementaires cp')->where('cp.parlementaire_id = ?', $this->parlementaire->id)->orderBy('created_at DESC')->limit(10)->execute();
     $this->feed = new sfRssFeed();
+  }
+  public function executeSeance(sfWebRequest $request)
+  {
+    $this->setLayout(false);
+    $seance_id = $request->getParameter('seance');
+    $this->forward404Unless($seance_id);
+    $this->commentaires = Doctrine::getTable('Intervention')->createQuery('i')->select('i.id, i.nb_commentaires')->where('seance_id = ?', $seance_id)->fetchArray();
   }
 }

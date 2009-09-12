@@ -19,8 +19,8 @@ class myUser extends sfBasicSecurityUser
     $citoyen->email = $email;
     $citoyen->activation_id = md5(time()*rand());
     $citoyen->save();
-    $action->getComponent('citoyen', 'connexion', array('login' => $citoyen->login));
-    $action->getComponent('mail', 'send', array(
+    echo $action->getComponent('citoyen', 'connexion', array('login' => $citoyen->login));
+    echo $action->getComponent('mail', 'send', array(
       'subject'=>'Inscription NosDéputés.fr', 
       'to'=>array($citoyen->email), 
       'partial'=>'inscriptioncom', 

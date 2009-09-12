@@ -192,6 +192,9 @@ Intervention:
     Parlementaire:
       class: Parlementaire
       foreignAlias: Interventions
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
   indexes:
     ft_intervention:
       fields: [intervention]
@@ -225,6 +228,9 @@ Amendement:
       class: Parlementaire
       refClass: ParlementaireAmendement
       foreignAlias: Amendements
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
   indexes:
     ft_amendements:
       fields: [sujet, texte, expose]
@@ -249,6 +255,9 @@ QuestionEcrite:
       type: string
     content_md5: string(36)
     parlementaire_id: integer
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
   relations:
     Parlementaire:
       class: Parlementaire
@@ -360,6 +369,10 @@ ObjectRated:
   columns:
     rate: integer
 
+ObjectCommentable:
+  columns:
+    nb_commentaires: integer
+
 Rate:
   actAs:
     Timestampable:
@@ -399,6 +412,9 @@ Article:
     object_id: integer
   inheritance:
     extends: ObjectRated
+    type: concrete
+  inheritance:
+    extends: ObjectCommentable
     type: concrete
   relations:
     Citoyen:
