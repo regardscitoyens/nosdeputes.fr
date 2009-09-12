@@ -66,12 +66,6 @@ class articleActions extends sfActions
   }
 
   public function protect($user_id = '') {
-    $role = $this->getParameter('role', -1);
-    if ($role == -1)
-      throw new Exception('for security reason, you should affect role parameter in routing.yml');
-    $exclude = $this->getParameter('exclude', -1);
-    if ($exclude == -1)
-      throw new Exception('for security reason, you should affect exclude parameter in routing.yml');
 
     if (!$this->getUser()->isAuthenticated()) {
       $this->getUser()->setFlash('notice', 'Vous devez être identifié pour avoir accès à cette page');
