@@ -16,7 +16,6 @@ class Organisme extends BaseOrganisme
         "Socialiste, radical, citoyen et divers gauche" => "SRC",
         "Gauche démocrate et républicaine" => "GDR",
         "Députés n'appartenant à aucun groupe" => "NI",
-        "Députés non-inscrits" => "NI",
         "Nouveau centre" => "NC"
     );
     return $hashmap[$this->getNom()];
@@ -29,7 +28,6 @@ class Organisme extends BaseOrganisme
          "src" => "Socialiste, radical, citoyen et divers gauche",
          "gdr" => "Gauche démocrate et républicaine",
          "ni" => "Députés n'appartenant à aucun groupe",
-         "ni" => "Députés non-inscrits",
          "nc" => "Nouveau centre" );
       return $hashmap["$acro"];
     } else {
