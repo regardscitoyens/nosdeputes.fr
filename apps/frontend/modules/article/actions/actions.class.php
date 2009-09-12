@@ -34,7 +34,6 @@ class articleActions extends sfActions
 	$farticle['object_id'] = $object_id;
       if ($this->titre)
 	$farticle['titre'] = $this->titre;
-      $farticle['link'] = null;
       if (isset($farticle['user_corps']))
 	$farticle['corps'] = myTools::clearHtml($farticle['user_corps']);
       $this->form->setUnique($request->getParameter('isUnique', false));
@@ -55,6 +54,8 @@ class articleActions extends sfActions
       $object->citoyen_id = $this->getUser()->getAttribute('user_id');
       $object->save();
     }
+
+    $this->getUser()->setFlash('notice', 'Votre article a été enregistré');
     if ($l = $request->getParameter('link')) {
       $slug = 'toto';
       if ($object->citoyen_id)
@@ -62,7 +63,9 @@ class articleActions extends sfActions
       $object->link = sprintf($l, $object->slug, $slug);
       $object->save();
     }
-    return $this->redirect($link);
+    if ($object->link)
+      return $this->redirect($object->link);
+    return $this->redirect("@home");
   }
 
   public function protect($request, $user_id = '') {
@@ -94,8 +97,9 @@ class articleActions extends sfActions
   public function executeUpdate(sfWebRequest $request)
   {
     $article = Doctrine::getTable('Article')->find($request->getParameter('article_id'));
+    $this->forward404Unless($article);
+    $this->protect($request, $article->citoyen_id);
     $this->form = new ArticleForm($article);
-    $this->protect($request, $this->form->getObject()->citoyen_id);
     $this->processArticle($request);
   }
   public function executeCreate(sfWebRequest $request)
@@ -114,20 +118,26 @@ class articleActions extends sfActions
     if (!$request->isMethod('post'))
       return;
     if (!$request->getParameter('confirm'))
-      return;
+      return $this->redirect($this->article->link);
+    $this->getUser()->setFlash('notice', 'Votre article a été supprimé');
+    $id = $this->article->id;
+    Doctrine_Query::create()->update('Article')->set('article_id', 'NULL')->where('article_id = '.$id)->execute();
     $this->article->delete();
-    return $this->redirect('faq');
+    return $this->redirect('@homepage');
   }
   public function executeList(sfWebRequest $request)
   {
     $this->articles = Doctrine::getTable('Article')->createQuery('a')
       ->where('categorie = ?', $request->getParameter('categorie'))
-      ->andWhere('article_id IS NULL')->execute();
+      ->andWhere('article_id IS NULL')
+      ->andWhere('status = ?', 'public')
+      ->execute();
 
     $this->sousarticles = array();
     foreach($this->articles as $a) {
       $this->sousarticles[$a->id] = Doctrine::getTable('Article')->createQuery('a')
 	->where('categorie = ?', $request->getParameter('categorie'))
+	->andWhere('status = ?', 'public')
 	->andWhere('article_id = ?', $a->id)->execute();
     }
     $this->titre = $request->getParameter('titre');
@@ -165,7 +175,10 @@ class articleActions extends sfActions
   public function executePager(sfWebRequest $request)
   {
     $categorie = $request->getParameter('categorie');
-    $qarticles = Doctrine::getTable('Article')->createQuery('a')->where('a.categorie = ?', $categorie)->orderBy('a.created_at DESC');
+    $qarticles = Doctrine::getTable('Article')->createQuery('a')
+      ->where('a.categorie = ?', $categorie)
+      ->andWhere('status = ?', 'public')
+      ->orderBy('a.created_at DESC');
     $pager = new sfDoctrinePager('Article',20);
     $pager->setQuery($qarticles);
     $pager->setPage($this->request->getParameter('page', 1));
@@ -179,6 +192,7 @@ class articleActions extends sfActions
     $categorie = $request->getParameter('categorie');
     $this->article = Doctrine::getTable('Article')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->article);
+    $this->forward404Unless($this->article->status == 'public');
     $this->forward404Unless($this->article->categorie == $categorie);
   }
 }

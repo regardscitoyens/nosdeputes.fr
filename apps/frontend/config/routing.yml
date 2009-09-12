@@ -18,13 +18,13 @@ faq_edit:
   param: {module: article, action: update, categorie: Faq, hasParent: true, role: "membre", exclude: 1}
 article_delete:
   url: /article/delete/:article_id
-  param: {module: article, action: delete}
+  param: {module: article, action: delete, role: "membre", exclude: 1}
 faq:
   url: /faq
   param: {module: article, action: list, categorie: Faq, titre: "Questions fréquemments posées"}
 doc_organisme_new:
   url: /organisme/new
-  param: {module: article, action: create, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true, role: "membre", exclude: 1, link: "@home"}
+  param: {module: article, action: create, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true, role: "membre", exclude: 1, link: "@list_parlementaires_organisme?slug=%s"}
 doc_organisme_edit:
   url: /organisme/edit/:article_id
   param: {module: article, action: edit, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true, role: "membre", exclude: 1}
