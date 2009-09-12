@@ -132,6 +132,7 @@ class Intervention extends BaseIntervention
   public function getIntervention($args = array()) {
     $inter = $this->_get('intervention');
     if (isset($args['linkify_amendements']) && $linko = $args['linkify_amendements']) {
+      $inter = preg_replace('/\(([^\)]+)\)/', '(<i>\\1</i>)', $inter);
       if (preg_match_all('/(amendements?[,\s]+(identiques?)?[,\s]*)((n[°os\s]*|\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
 	$lois = implode(',', $this->getTags(array('is_triple' => true,
 						  'namespace' => 'loi',
