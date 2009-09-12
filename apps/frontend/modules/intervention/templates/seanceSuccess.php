@@ -74,8 +74,8 @@
     </div>
   <?php } 
   if (!$didascalie) : ?>
-    <div class="commentaires" style="clear: both;">
-      <span id='com_<?php echo $intervention->id; ?>'><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> - </span><span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
+    <div class="commentaires" id='com_<?php echo $intervention->id; ?>' style="clear: both;">
+      <span id="com_link_<?php echo $intervention->id; ?>"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> - </span><span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
   <?php endif; ?>
   </div>
@@ -89,15 +89,23 @@ $(document).ready(function() {
 	  ids = eval('(' +html+')');
 	  for(i in ids) {
 	    if (ids[i] == 0) {
-	      $('#com_'+i).text('');
+	      $('#com_link_'+i).text('');
 	    }else if (ids[i] == 1) {
-	      $('#com_'+i+' a').text("Voir le commentaire");
+	      $('#com_link_'+i+' a').text("Voir le commentaire");
 	    }else {
-	      $('#com_'+i+' a').text("Voir les "+ids[i]+" commentaires");
+	      $('#com_link_'+i+' a').text("Voir les "+ids[i]+" commentaires");
 	    }
 	  }
   }
 });
-
+    $(".commentaires a").bind('click', function() {
+	var c = $(this).parent().parent();
+	c.html('<p class="loading"> &nbsp; </p>');
+	id = c.attr('id').replace('com_', '');
+	c.load("<?php echo url_for('@intervention_commentaires?id=XXX'); ?>".replace('XXX', id), null, function() {
+	    $('#com_ajax_'+id).slideDown("slow");
+	  });
+	return false;
+      });
   })
 </script>

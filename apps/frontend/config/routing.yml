@@ -96,6 +96,9 @@ section:
 intervention:
   url: /intervention/:id
   param: {module: intervention, action: show}
+intervention_commentaires:
+  url: /intervention/:id/commentaires
+  param: {module: commentaire, action: showSeance}
 interventions_seance:
   url: /seance/:seance
   param: {module: intervention, action: seance}

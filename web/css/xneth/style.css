@@ -833,3 +833,6 @@ a:hover {
 .perso:first-letter {
   text-transform: uppercase;
 }
+.loading{
+	background: transparent url(/images/loading.gif) no-repeat scroll 0 0
+}

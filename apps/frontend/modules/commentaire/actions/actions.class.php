@@ -130,4 +130,17 @@ $values['password'], false, $this))) {
     $this->forward404Unless($seance_id);
     $this->commentaires = Doctrine::getTable('Intervention')->createQuery('i')->select('i.id, i.nb_commentaires')->where('seance_id = ?', $seance_id)->fetchArray();
   }
+  public function executeShowSeance(sfWebRequest $request)
+  {
+    $this->setLayout(false);
+    $this->id = $request->getParameter('id');
+    $this->forward404Unless($this->id);
+    $this->comments = Doctrine::getTable('Commentaire')->createQuery('c')
+      ->where('object_id = ?', $this->id)
+      ->andWhere('object_type = ?', 'Intervention')
+      ->andWhere('is_public = 1')
+      ->orderBy('updated_at DESC')
+      ->limit(3)
+      ->execute();    
+  }
 }
