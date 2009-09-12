@@ -204,7 +204,7 @@ add_circo_citoyen:
   url: /profil/edition/circo/:nom_circo/:num_circo
   param: {module: citoyen, action: addcirco}
 delete_citoyen:
-  url: /profil/suppression
+  url: /profil/suppression/:token
   param: {module: citoyen, action: delete}
 
 

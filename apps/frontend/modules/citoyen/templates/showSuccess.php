@@ -24,7 +24,7 @@ if ($sf_user->getAttribute('user_id') == $Citoyen->id)
   <?php if ($sf_user->getAttribute('is_active') == true) { ?>
   <a href="<?php echo url_for('@edit_citoyen'); ?>">Modifier votre profil</a><br />
   <?php } ?>
-  <a href="<?php echo url_for('@delete_citoyen') ?>">Supprimer votre compte</a>
+  <a href="<?php echo url_for('@delete_citoyen?token=' . $sf_user->getAttribute('token')) ?>">Supprimer votre compte</a>
   </p>
 <?php
 } ?>

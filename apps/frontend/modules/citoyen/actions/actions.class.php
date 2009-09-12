@@ -38,6 +38,7 @@ class citoyenActions extends sfActions
     $this->forward404Unless($this->Citoyen->is_active);
     $response = $this->getResponse();
     $response->setTitle('Profil de '.$this->Citoyen->login); 
+    $this->getUser()->setAttribute('token', md5(microtime(true) . mt_rand(0,10000)));
   }
   
   // Inscription
@@ -303,21 +304,23 @@ class citoyenActions extends sfActions
     sfContext::getInstance()->getResponse()->setCookie('remember', '');
   }
   
-  public function executeDelete()
+  public function executeDelete(sfWebRequest $request)
   {
     if ($this->getUser()->isAuthenticated())
     {
-      $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
-      $user->delete();
-      $this->deconnexion();
-      $this->getUser()->setFlash('notice', 'Votre compte a été supprimé avec succès');
-      $this->redirect('@homepage');
+      if($this->getUser()->getAttribute('token') != $request->getParameter('token'))
+        $this->getUser()->setFlash('error','Jeton incorrect. Essayez de recharger la page d\'ou vous venez.');
+      else
+      {
+        $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
+        $user->delete();
+        $this->deconnexion();
+        $this->getUser()->setFlash('notice', 'Votre compte a été supprimé avec succès');
+      }
     }
     else
-    {
       $this->getUser()->setFlash('error', 'Vous devez être connecté pour exécuter cette action');
-      $this->redirect('@homepage');
-    }
+    $this->redirect('@homepage');
   }
   
 }
