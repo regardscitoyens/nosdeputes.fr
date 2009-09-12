@@ -320,8 +320,9 @@ public function executeList(sfWebRequest $request)
 	$i++;
       }
     }
-    if ($this->getRequestParameter('sort'))
+    if (($_GET['sort'] = $this->getRequestParameter('sort'))) {
       usort($this->tops, 'parlementaireActions::topSort');
+    }
   }
 
   public static function dateSort($a, $b) {
