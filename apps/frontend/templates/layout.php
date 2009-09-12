@@ -35,15 +35,16 @@ if ($rss) {
 				</div>
 				<div class="identification">
 				     <?php if(!$sf_user->isAuthenticated()) { ?>
-					<form method="post" action="<?php echo url_for('@signin'); ?>">
+					<form method="post" id="form_header_login" action="<?php echo url_for('@signin'); ?>">
 					<p>
-					<input type="text" name="signin[login]" value="Identifiant" onfocus="if(this.value=='Identifiant')this.value ='';" onblur="if(this.value=='')this.value ='Identifiant';" />
-					<input type="password" name="signin[password]" value="&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;" onfocus="if(this.value=='&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;')this.value ='';" onblur="if(this.value=='')this.value ='&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;';"/>
+					<input type="text" name="signin[login]" id='header_login' value="" onfocus="if(this.value=='Identifiant')this.value ='';" onblur="if(this.value=='')this.value ='Identifiant';" />
+					<input type="password" name="signin[password]" id='header_pass' value="" onfocus="if(this.value=='______________')this.value ='';" onblur="if(this.value=='')this.value ='______________';"/>
 					<button type="submit" value="login" id="bt1"></button>
 					<a href="<?php echo url_for('@inscription') ?>"><button id="bt2"></button></a>
 					<!-- <input type="checkbox" name="signin[remember]" id="signin_remember" title="se rappeler de moi" /> --> 
 					</p>
-					</form> <?php }
+					</form> 
+<?php }
 					if($sf_user->isAuthenticated())
 					{ 
 					  if($sf_user->getAttribute('is_active') == true) { 
@@ -129,4 +130,16 @@ if ($rss) {
 			</div>
     </div>
   </body>
+<script>
+$(document).ready(function() {
+    if (additional_load)
+      additional_load();
+    if (!$('#header_login').attr('value')) {
+      $('#header_login').attr('value', 'Identifiant');
+    }
+    if (!$('#header_pass').attr('value')) {
+      $('#header_pass').attr('value', '______________');
+    }
+  });
+</script>
 </html>

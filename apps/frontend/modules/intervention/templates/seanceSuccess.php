@@ -82,7 +82,7 @@
   <?php endforeach; ?>
 </div>
 <script>
-$(document).ready(function() {
+additional_load = function() {
     $.ajax({
       url: "<?php echo url_for('@seance_commentaires_json?seance='.$seance->id); ?>",
       success: function(html){
@@ -97,7 +97,7 @@ $(document).ready(function() {
 	    }
 	  }
   }
-});
+      });
     $(".commentaires a").bind('click', function() {
 	var c = $(this).parent().parent();
 	c.html('<p class="loading"> &nbsp; </p>');
@@ -107,5 +107,5 @@ $(document).ready(function() {
 	  });
 	return false;
       });
-  })
+  };
 </script>
