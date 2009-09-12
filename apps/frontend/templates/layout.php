@@ -51,7 +51,7 @@ if ($rss) {
 					<?php
 					}
 					?>
-					<?php echo link_to($sf_user->getAttribute('login'),'@citoyen&slug='.$sf_user->getSlug()); ?> -
+					<?php echo link_to($sf_user->getAttribute('login'),'@citoyen?slug='.$sf_user->getAttribute('slug')); ?> -
 					<a href="<?php echo url_for('@signout') ?>">Déconnexion</a>
 					<?php } ?>
 				</div>
