@@ -5,7 +5,7 @@
   if (isset($_GET['search'])) {
     $mots = trim($_GET['search']);
     if ($mots != "") { ?>
-<p><?php echo $nResults; ?> intervention<?php if ($nResults > 1) echo 's'; ?> trouvée<?php if ($nResults > 1) echo 's'; ?> pour la recherche sur <em>"<?php echo $mots; ?>"</em></p>
+<p><?php echo $nResults; ?> intervention<?php if ($nResults > 1) echo 's'; ?> trouvée<?php if ($nResults > 1) echo 's'; ?> pour la recherche sur <em>"<?php echo strip_tags($mots); ?>"</em></p>
 <?php } } else { ?>
 <p><?php echo $nResults; ?> intervention<?php if ($nResults > 1) echo 's'; ?> trouvée<?php if ($nResults > 1) echo 's'; ?>.</p>
 <?php } ?>

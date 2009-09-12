@@ -94,7 +94,7 @@ if ($rss) {
 							</select>
 							<?php echo image_tag($style.'/recherche_fleche.png', array('alt' => '')); ?>
 							<input class="bouton_ok" value="" type="submit"/>
-							<input class="rechercher" name="search" type="text" size="15" value="<?php if (isset($_GET['search'])) echo $_GET['search']; ?>"/>
+							<input class="rechercher" name="search" type="text" size="15" value="<?php if (isset($_GET['search'])) echo strip_tags($_GET['search']); ?>"/>
 						</p>
 					</form>
 				</div>
