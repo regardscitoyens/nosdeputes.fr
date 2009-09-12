@@ -12,7 +12,7 @@ class updateDeputesTask extends sfBaseTask
   protected function splitArrayJson($json) {
     $res = array();
     foreach($json as $j) {
-      if ($j)
+      if ($j) 
 	array_push($res, explode(' / ', $j));
     }
     return $res;
@@ -48,12 +48,12 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->adresses = $json->adresses;
 	    if (count($json->autresmandats))
 	      $parl->autres_mandats = $json->autresmandats;
+	    if ($json->groupe)
+	      $parl->groupe = $this->splitArrayJson($json->groupe);
 	    if (count($json->extras))
 	      $parl->extras = $this->splitArrayJson($json->extras);
 	    if (count($json->fonctions))
 	      $parl->fonctions = $this->splitArrayJson($json->fonctions);
-	    if ($json->groupe)
-	      $parl->groupe = $this->splitArrayJson($json->groupe);
 	    $parl->debut_mandat = $json->debut_mandat;
 	    $parl->fin_mandat = $json->fin_mandat;
 	    if ($json->id_an)
