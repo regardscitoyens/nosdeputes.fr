@@ -49,30 +49,58 @@ class articleActions extends sfActions
     }
     if (!$request->getParameter('ok'))
       return ;
-    if (! $this->getUser()->isAuthenticated())
-    {
-      $this->getUser()->setFlash('error', 'Vous devez être connecté pour pouvoir poster un article');
-      $this->redirect('@signin');
-    }
     $this->form->save();
+    $object = $this->form->getObject();
+    if (!$object->citoyen_id) {
+      $object->citoyen_id = $this->getUser()->getAttribute('user_id');
+      $object->save();
+    }
     if ($l = $request->getParameter('link')) {
-      $object = $this->form->getObject();
       $slug = 'toto';
       if ($object->citoyen_id)
 	$slug = $object->getCitoyen()->slug;
       $object->link = sprintf($l, $object->slug, $slug);
       $object->save();
     }
-    return $this->redirect('faq');
+    return $this->redirect($link);
   }
+
+  public function protect($user_id = '') {
+    $role = $this->getParameter('role', -1);
+    if ($role == -1)
+      throw new Exception('for security reason, you should affect role parameter in routing.yml');
+    $exclude = $this->getParameter('exclude', -1);
+    if ($exclude == -1)
+      throw new Exception('for security reason, you should affect exclude parameter in routing.yml');
+
+    if (!$this->getUser()->isAuthenticated()) {
+      $this->getUser()->setFlash('notice', 'Vous devez être identifié pour avoir accès à cette page');
+      $this->getResponse()->setStatusCode(401);
+      return $this->forward('citoyen', 'signin');
+    }
+    if (!$this->getUser()->hasCredential('membre')) {
+      $_GET['moderateur'] = 1;
+    }
+    if ($user_id == $this->getUser()->getAttribute('user_id'))
+      return ;
+    if ($role) {
+      if ($exclude && $this->getUser()->hasCredential($role))
+	return $this->forward('citoyen', 'notauthorized');
+      if (!$exclude && !$this->getUser()->hasCredential($role))
+	return $this->forward('citoyen', 'notauthorized');
+    }
+  }
+
   public function executeUpdate(sfWebRequest $request)
   {
     $article = Doctrine::getTable('Article')->find($request->getParameter('article_id'));
     $this->form = new ArticleForm($article);
+    $this->protect($this->form->getObject()->citoyen_id);
     $this->processArticle($request);
   }
   public function executeCreate(sfWebRequest $request)
   {
+    $this->protect();
     $this->form = new ArticleForm();
     $this->setTemplate('update');
     $this->processArticle($request, 1);
@@ -82,6 +110,7 @@ class articleActions extends sfActions
     $this->article = Doctrine::getTable('Article')->find($request->getParameter('article_id'));
     $this->forward404Unless($this->article);
 
+    $this->protect($this->article->citoyen_id);
     if (!$request->isMethod('post'))
       return;
     if (!$request->getParameter('confirm'))

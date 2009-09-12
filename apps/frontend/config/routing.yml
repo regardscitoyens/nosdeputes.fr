@@ -12,10 +12,10 @@ commentaire_post:
   param: {module: commentaire, action: post}
 faq_new:
   url: /faq/new
-  param: {module: article, action: create, categorie: Faq, hasParent: true}
+  param: {module: article, action: create, categorie: Faq, hasParent: true, role: "membre", exclude: 1, link: "@faq"}
 faq_edit:
   url: /faq/edit/:article_id
-  param: {module: article, action: update, categorie: Faq, hasParent: true}
+  param: {module: article, action: update, categorie: Faq, hasParent: true, role: "membre", exclude: 1}
 article_delete:
   url: /article/delete/:article_id
   param: {module: article, action: delete}
@@ -24,8 +24,10 @@ faq:
   param: {module: article, action: list, categorie: Faq, titre: "Questions fréquemments posées"}
 doc_organisme_new:
   url: /organisme/new
-  param: {module: article, action: create, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true}
-
+  param: {module: article, action: create, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true, role: "membre", exclude: 1, link: "@home"}
+doc_organisme_edit:
+  url: /organisme/edit/:article_id
+  param: {module: article, action: edit, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true, role: "membre", exclude: 1}
 rate_id:
   url: /rate/:object_type/:object_id/:rate
   param: {module: rate, action: rateIt}
@@ -45,7 +47,10 @@ compterendu_finseance:
   param: {module: article, action: findSeance}
 compterendu_new:
   url: /compterendu/new/:object_id
-  param: {module: article, action: create, categorie: Seance, hasObject: true, displayObject: false, hasTitre: false, isUnique: true, autoObjectTitre: 'Compte-rendu citoyen de la ', link: "@compterendu_post?slug=%s&citoyen=%s"}
+  param: {module: article, action: create, categorie: Seance, hasObject: true, displayObject: false, hasTitre: false, isUnique: false, autoObjectTitre: 'Compte-rendu citoyen de la ', link: "@compterendu_post?slug=%s&citoyen=%s", role: "", exclude: 0}
+compterendu_edit:
+  url: /compterendu/edit/:article_id
+  param: {module: article, action: edit, categorie: Seance, hasObject: true, displayObject: false, isUnique: false, role: "", exclude: 0}
 
 # Liste de tous les parlementaires ou par catégorie
 list_parlementaires:

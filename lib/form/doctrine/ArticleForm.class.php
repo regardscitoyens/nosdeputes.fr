@@ -15,14 +15,15 @@ class ArticleForm extends BaseArticleForm
 	  $this['updated_at'],
 	  $this['version'],
 	  $this['slug'],
-	  $this['status']
+	  $this['citoyen_id'],
+	  $this['rate'],
 	  ) ;
     $this->widgetSchema['categorie'] = new sfWidgetFormInputHidden();
-    $this->widgetSchema['citoyen_id'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['corps'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['link'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['user_corps']->setOption('label', 'Corps');
-
+    if (!isset($_GET['moderateur']) || !$_GET['moderateur'])
+      unset($this['status']);
   }
 
   public function setTitre($b)

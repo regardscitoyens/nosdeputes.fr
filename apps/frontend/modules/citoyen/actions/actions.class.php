@@ -25,6 +25,12 @@ class citoyenActions extends sfActions
     $response->setTitle('Liste des citoyens inscrits'); 
   }
   
+  public function executeNotauthorized(sfWebRequest $request) 
+  {
+    $this->getUser()->setFlash('notice', 'Vous ne pouvez pas accéder à cette page');
+    $this->getResponse()->setStatusCode(403);
+  }
+
   public function executeShow(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
