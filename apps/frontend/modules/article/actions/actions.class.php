@@ -65,7 +65,13 @@ class articleActions extends sfActions
     return $this->redirect($link);
   }
 
-  public function protect($user_id = '') {
+  public function protect($request, $user_id = '') {
+    $role = $request->getParameter('role', -1);
+    if ($role == -1)
+      throw new Exception('for security reason, you should affect role parameter in routing.yml');
+    $exclude = $request->getParameter('exclude', -1);
+    if ($exclude == -1)
+      throw new Exception('for security reason, you should affect exclude parameter in routing.yml');
 
     if (!$this->getUser()->isAuthenticated()) {
       $this->getUser()->setFlash('notice', 'Vous devez être identifié pour avoir accès à cette page');
@@ -89,12 +95,12 @@ class articleActions extends sfActions
   {
     $article = Doctrine::getTable('Article')->find($request->getParameter('article_id'));
     $this->form = new ArticleForm($article);
-    $this->protect($this->form->getObject()->citoyen_id);
+    $this->protect($request, $this->form->getObject()->citoyen_id);
     $this->processArticle($request);
   }
   public function executeCreate(sfWebRequest $request)
   {
-    $this->protect();
+    $this->protect($request);
     $this->form = new ArticleForm();
     $this->setTemplate('update');
     $this->processArticle($request, 1);
@@ -104,7 +110,7 @@ class articleActions extends sfActions
     $this->article = Doctrine::getTable('Article')->find($request->getParameter('article_id'));
     $this->forward404Unless($this->article);
 
-    $this->protect($this->article->citoyen_id);
+    $this->protect($request, $this->article->citoyen_id);
     if (!$request->isMethod('post'))
       return;
     if (!$request->getParameter('confirm'))
