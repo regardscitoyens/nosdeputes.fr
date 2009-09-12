@@ -7,8 +7,8 @@ body {
 }
 
 .temp {
-  font-size: 1.1em;
-  height: auto;
+	font-size: 1.1em;
+	height: auto;
 }
 
 #contenu {
@@ -20,25 +20,25 @@ img {
 	border:0;
 	}
 	
-	a:link {
+a:link {
 	color: #6F6F6F;
 	text-decoration: none;
 	background-color: transparent;
 }
 
-	a:active {
+a:active {
 	color: #000000;
 	text-decoration: none;
 	background-color: transparent;
 }
 
-	a:visited {
+a:visited {
 	color: #6F6F6F;
 	text-decoration: none;
 	background-color: transparent;
 }
 
-	a:hover {
+a:hover {
 	color: #000;
 	text-decoration: underline;
 	background-color: transparent;
@@ -48,7 +48,7 @@ img {
 	clear: both;
 }
 
-	.flash_notice, .flash_error {
+.flash_notice, .flash_error {
 	font-size: 1.1em;
 	height: auto;
 	padding: 15px;
@@ -57,11 +57,11 @@ img {
 	border : 1px solid #BFBFBF;
 }
 
-	.flash_notice {
+.flash_notice {
 	background: #fff url("images/flash_notice.png") no-repeat 15px center;
 }
 
-	.flash_error {
+.flash_error {
 	background: #fff url("images/flash_error.png") no-repeat 15px center;
 }
 
@@ -94,7 +94,7 @@ img {
 }
 
 .identification input {
-	float:right;
+	float:left;
 	width:120px;
 	height:20px;
 	border:0;
@@ -106,7 +106,7 @@ img {
 }
 
 #bt2 {
-	float:right;
+	float:left;
 	width: 80px;
 	height:20px;
 	border:0;
@@ -116,13 +116,17 @@ img {
 }
 
 #bt1 {
-	float:right;
+	float:left;
 	width: 28px;
 	height:20px;
 	border:0;
 	margin:0 10px 0 0;
 	background: url('images/top_button1.png') no-repeat;
 	cursor:pointer;
+}
+
+.loggued {
+	float:left;
 }
 
 /* header - logo */
@@ -223,7 +227,7 @@ img {
 
 .rechercher {
 	float:right;
-	width:127px;
+	width:111px;
 	height:20px;
 	border:0;
 	margin:0;
@@ -254,17 +258,17 @@ img {
 	overflow:hidden;
 }
 
-	.elements_sous_menu {
+.elements_sous_menu {
 	width:660px;
 	float:left;
 }
 
-	.elements_sous_menu  a {
+.elements_sous_menu  a {
 	text-decoration:none;
 	letter-spacing:1.4pt;
 	color:black;
 }
-	.elements_sous_menu ul {
+.elements_sous_menu ul {
 	float:right;
 	padding:0;
 	margin:0;
@@ -272,7 +276,7 @@ img {
 	font-family: Tahoma, Arial, Helvetica, sans-serif;
 	}
 		
-	.elements_sous_menu   li{
+.elements_sous_menu   li{
 	display: block ;
 	float:left;
 	padding:0;
@@ -289,6 +293,7 @@ img {
 }
 
 .contenu_page {
+	min-height:400px;
 	width:920px;
 	margin-left:auto;
 	margin-right:auto;

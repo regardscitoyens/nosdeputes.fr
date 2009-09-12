@@ -36,10 +36,10 @@ if ($rss) {
 				     <?php if(!$sf_user->isAuthenticated()) { ?>
 					<form method="post" action="<?php echo url_for('@signin'); ?>">
 					<p>
-					<a href="<?php echo url_for('@inscription') ?>"><button id="bt2"></button></a>
-					<button type="submit" value="login" id="bt1"></button>
-					<input type="text" name="signin[password]" value="&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;" onfocus="if(this.value=='&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;')this.value ='';" onblur="if(this.value=='')this.value ='&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;';"/>
 					<input type="text" name="signin[login]" value="Identifiant" onfocus="if(this.value=='Identifiant')this.value ='';" onblur="if(this.value=='')this.value ='Identifiant';" />
+					<input type="text" name="signin[password]" value="&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;" onfocus="if(this.value=='&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;')this.value ='';" onblur="if(this.value=='')this.value ='&#149;&#149;&#149;&#149;&#149;&#149;&#149;&#149;';"/>
+					<button type="submit" value="login" id="bt1"></button>
+					<a href="<?php echo url_for('@inscription') ?>"><button id="bt2"></button></a>
 					<!-- <input type="checkbox" name="signin[remember]" id="signin_remember" title="se rappeler de moi" /> --> 
 					</p>
 					</form> <?php }
@@ -91,7 +91,7 @@ if ($rss) {
 								<option value="question"<?php echo $selectquestion; ?>>Questions écrites</option>
 								<option value="amendement"<?php echo $selectamdmt; ?>>Amendements</option>
 							</select>
-							<img src="images/recherche_fleche.png" alt="" title="" />
+							<?php echo image_tag($style.'/recherche_fleche.png', array('alt' => '')); ?>
 							<input class="bouton_ok" value="" type="submit"/>
 							<input class="rechercher" name="search" type="text" size="15" value="<?php if (isset($_GET['search'])) echo $_GET['search']; ?>"/>
 						</p>
