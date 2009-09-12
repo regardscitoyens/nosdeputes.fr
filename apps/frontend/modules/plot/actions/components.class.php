@@ -148,6 +148,7 @@ class plotComponents extends sfComponents
   }
 
   public function executeGroupes() {
+    $this->empty = 0;
     if (!isset($this->plot)) $this->plot = 'total';
     $this->labels = array('NI','UMP','NC','SRC','GDR');
     $this->interventions = array();
@@ -213,7 +214,6 @@ class plotComponents extends sfComponents
             else $groupes[$groupe['groupe_acronyme']]['presences'] += $groupe['count'];
         }
       } else throw new Exception('wrong plot argument');
-      $this->empty = 0;
       if (!count($interventions) && (!isset($presence) || !count($presences))) {
 	$this->empty = 1;
 	return ;
