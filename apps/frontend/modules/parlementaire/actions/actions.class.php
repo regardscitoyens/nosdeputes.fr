@@ -155,7 +155,7 @@ public function executeList(sfWebRequest $request)
   }
 
   public function executeListCirco(sfWebRequest $request) {
-    $departmt = trim(strtolower($request->getParameter('search')));
+    $departmt = strip_tags(trim(strtolower($request->getParameter('search'))));
     if (preg_match('/\d+/', $departmt, $match)) {
       $this->num = preg_replace('/^0+/', '', $match[0]);
     } else {
