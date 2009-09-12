@@ -19,7 +19,7 @@ else echo '</h1>';
 </div>
 
 <div>
-Voici l'organisation du projet :
+Organisation du dossier :
 <ul>
 <?php foreach($section->getSubSections() as $subsection) :
 if ($subsection->id != $section->id) : ?>
@@ -30,7 +30,7 @@ if ($subsection->id != $section->id) : ?>
 
 
 <div>
-Voici la liste des séances pour cette section : 
+Toutes les séances consacrées à ce dossier :
 <ul>
 <?php foreach($section->getSeances() as $seance) : ?>
 <li><?php echo link_to($seance->getTitre(), '@interventions_seance?seance='.$seance->id.'#table_'.$section->id); ?></li>
@@ -38,7 +38,7 @@ Voici la liste des séances pour cette section :
 </ul>
 </div>
 <div>
-Voici la liste des principaux orateurs pour cette section :
+Tous les orateurs sur ce dossier :
 <?php echo include_component('parlementaire', 'list', array('parlementairequery' => $ptag, 'route'=>'@parlementaire_texte?id='.$section->id.'&slug=')); ?>
 </div>
 </div>
