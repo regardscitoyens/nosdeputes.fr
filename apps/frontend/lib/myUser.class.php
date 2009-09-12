@@ -19,7 +19,9 @@ class myUser extends sfBasicSecurityUser
     $citoyen->email = $email;
     $citoyen->activation_id = md5(time()*rand());
     $citoyen->save();
-    echo $action->getComponent('citoyen', 'connexion', array('login' => $citoyen->login));
+		
+    self::connexion($citoyen, $action);
+    
     echo $action->getComponent('mail', 'send', array(
       'subject'=>'Inscription NosDéputés.fr', 
       'to'=>array($citoyen->email), 
@@ -42,8 +44,11 @@ class myUser extends sfBasicSecurityUser
       $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
       return;
     }
-    $action->getComponent('citoyen', 'connexion', array('login' => $user->login));
+		
+    self::connexion($user, $action);
+		
     $action->getUser()->setFlash('notice', 'Vous vous êtes connecté avec succès.');
+		
     if($remember)
     {
       $secret_key = sfConfig::get('app_secret_key');
@@ -53,5 +58,20 @@ class myUser extends sfBasicSecurityUser
     }
     return $user->id;
   }
+	
+	protected static function connexion($user, $action)
+	{
+	  // signin
+		$action->getUser()->setAttribute('user_id', $user->getId());
+    $action->getUser()->setAttribute('is_active', $user->getIsActive());
+    $action->getUser()->setAttribute('login', $user->getLogin());
+    $action->getUser()->setAttribute('slug', $user->getSlug());
+    $action->getUser()->setAuthenticated(true);
+    $action->getUser()->clearCredentials();
+    $action->getUser()->addCredentials($user->getRole());
+    // save last login
+    $user->setLastLogin(date('Y-m-d H:i:s'));
+    $user->save();
+	}
 
 }
