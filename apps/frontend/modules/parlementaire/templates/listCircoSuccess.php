@@ -1,11 +1,11 @@
 <div class="temp">
 <?php if (isset($circos)) : ?>
 <p>Toutes les circonscriptions électorales</p>
-<table width="100%">
-<tr><td><ul>
+<table>
+<tr><td width="23%"><ul>
 <?php $div = floor(count($circos)/4)+1; $ct = 0; foreach($circos as $num => $circo) : $ct++?>
 <li><?php echo link_to($circo, '@list_parlementaires_circo?search='.$num).' ('.$num.')'; ?></li>
-<?php if ($ct == $div || $ct == (2*$div) || $ct == (3*$div)) echo '</ul></td><td><ul>'; ?>
+<?php if ($ct == $div || $ct == (2*$div) || $ct == (3*$div)) echo '</ul></td><td width="23%"><ul>'; ?>
 <?php endforeach ?>
 </ul></td></tr>
 </table>
