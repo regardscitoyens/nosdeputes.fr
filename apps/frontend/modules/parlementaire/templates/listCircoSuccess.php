@@ -1,4 +1,5 @@
 <div class="temp">
+<div class="liste_deputes">
 <?php if (isset($circos)) : ?>
 <p>Toutes les circonscriptions électorales</p>
 <table>
@@ -26,4 +27,5 @@
 <?php endforeach ; ?>
 </ul>
 <?php endif; ?>
+</div>
 </div>
