@@ -1,9 +1,9 @@
-<div class="temp">
-  <h2> Recherche par profession : <?php echo $prof; ?></h2>
+<?php $sf_response->setTitle('La liste des députés "'.$prof.'"'); ?>
+<h1>Liste des députés "<i><?php echo $prof; ?></i>"</h1>
 <?php
   $nResults = count($parlementaires);
   if ($exact == 1) : ?>
-<p><?php echo $nResults; ?> <em>"<?php if ($nResults > 1) $prof_parl = preg_replace('/s?$/','s', $prof); echo $prof_parl; ?>"</em> parmi les parlementaires</p>
+    <p><?php echo $nResults; ?> trouvé<?php if ($nResults > 1) echo 's'; ?> parmi les parlementaires</p>
 <?php else : ?>
 <p><?php echo $nResults; ?> parlementaire<?php if ($nResults > 1) echo 's'; ?> exerçant une profession comme <em>"<?php echo $prof; ?>"</em></p>
 <?php endif; ?>
