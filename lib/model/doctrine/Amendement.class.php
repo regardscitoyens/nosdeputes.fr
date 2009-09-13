@@ -80,8 +80,11 @@ class Amendement extends BaseAmendement {
     } else return false;
   }
 
-  public function getSignataires() {
-    return preg_replace("/M\s+/", "M. ", $this->_get('signataires'));
+  public function getSignataires($link = 0) {
+    $signa = preg_replace("/M\s+/", "M. ", $this->_get('signataires'));
+    if ($link)
+      $signa = preg_replace('/(M[\.mle]+)\s([\wàéëêèïîôöûüÉ\s-]+)\s*(,\s*|$)/', '<a href="/parlementaire/list?search=\\2">\\1 \\2</a>\\3', $signa);
+    return $signa;
   }
 
   public function getTitre() {

@@ -26,20 +26,19 @@ class amendementActions extends sfActions
        $this->identiques = array();
      }
 
-
      $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$this->amendement->texteloi_id, 'loi:amendement='.$this->amendement->numero));
      $query->select('Intervention.id, Intervention.date, Intervention.seance_id, Intervention.md5')
        ->groupBy('Intervention.date')
        ->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
-     $this->seances = $query->fetchArray();
+     $this->seance = $query->fetchOne();
      foreach($this->identiques as $a) {
-       if (count($this->seances))
-	 break;
+       if ($this->seance)
+         break;
        $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$this->amendement->texteloi_id, 'loi:amendement='.$a->numero));
        $query->select('Intervention.id, Intervention.date, Intervention.seance_id, Intervention.md5')
-	 ->groupBy('Intervention.date')
-	 ->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
-       $this->seances = $query->fetchArray();
+         ->groupBy('Intervention.date')
+         ->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
+       $this->seance = $query->fetchOne();
      }
   }
 
@@ -47,6 +46,7 @@ class amendementActions extends sfActions
   {
     $this->parlementaire = doctrine::getTable('Parlementaire')
       ->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->parlementaires);
     $this->amendements = doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
