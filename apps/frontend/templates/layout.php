@@ -13,6 +13,7 @@ if ($rss) {
     echo '<link rel="alternate" type="application/rss+xml" title="'.$r['title'].'" href="'.url_for($r['link']).'"/>';
   }
  }
+$uri = strip_tags($_SERVER['REQUEST_URI']);
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php echo stylesheet_tag($style.'/style'); ?>  
@@ -66,8 +67,7 @@ if ($rss) {
 					<div id="item5"><a href="#"><span class="gris">FAQ</span></a></div>
 				</div>
                     <?php       $search = strip_tags($sf_request->getParameter('search'));
-                                $uri = strip_tags($_SERVER['REQUEST_URI']);
-                                $selectdepute = "";$selectcirco = "";$selectprof = ""; echo $selectinterv = "";$selectamdmt = "";$selectquestion = "";
+$selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selectamdmt = "";$selectquestion = ""; $selectcitoyen = '';
                                 if ( preg_match('/\/circonscription\//', $uri))
                                   $selectcirco = ' selected="selected"';
                                 else  if ( preg_match('/\/profession\//', $uri))
@@ -78,7 +78,10 @@ if ($rss) {
                                   $selectamdmt = ' selected="selected"';
                                 else if ( preg_match('/\/question\//', $uri))
                                   $selectquestion = ' selected="selected"';
-                                else $selectdepute = ' selected="selected"';
+				else if (preg_match('/(\/citoyens?\/?|\/compterendu)/', $uri))
+				  $selectcitoyen = 1;
+                                else if ( !preg_match('/\/$/', $uri)) 
+				  $selectdepute = ' selected="selected"';
    
 							?>
 				<div class="menu_recherche">
@@ -100,17 +103,34 @@ if ($rss) {
 				</div>
 			</div>
 			<div id="sous_menu">
-				<div id="sous_menu_1" style="display:inline"></div>
-				<div id="sous_menu_2" style="display:none"></div>
-				<div id="sous_menu_3" style="display:none"></div>
-				<div class="elements_sous_menu"><!-- A rendre dynamique en php -->
+				<div id="sous_menu_1" style="display:<?php if ($selectquestion || $selectdepute || $selectprof || $selectcirco) echo 'block'; else echo 'none'; ?>">
+				<div class="elements_sous_menu">
 					<ul>
-						<li><a href="#">El&eacute;ment 1</a> |</li>
-						<li><a href="#">El&eacute;ment 2</a> |</li>
-						<li><a href="#">El&eacute;ment 3</a> |</li>
-						<li><a href="#">El&eacute;ment 4</a> |</li>
-						<li><a href="#">El&eacute;ment 5</a></li>
+						<li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> |</li>
+						<li><a href="<?php echo url_for('@list_parlementaires_circo'); ?>">Par cirsconscription</a> |</li>
+						<li><a href="<?php echo url_for('@parlementaires_tags'); ?>">Par mots clés</a> |</li>
+						<li><a href="<?php echo url_for('@top_global'); ?>">Synthèse</a> |</li>
+						<li><a href="<?php echo url_for('@parlementaire_random'); ?>">Au hasard</a></li>
 					</ul>
+				</div>
+				</div>
+				<div id="sous_menu_2" style="display:<?php if ($selectinterv || $selectamdmt) echo 'block'; else echo 'none'; ?>">
+			        <div class="elements_sous_menu">
+					<ul>
+						<li><a href="<?php echo url_for('@sections?order=date'); ?>">Les derniers dossiers</a> |</li>
+						<li><a href="<?php echo url_for('@sections?order=plus'); ?>">Les dossiers les plus discutés</a></li>
+					</ul>
+				</div>
+				</div>
+				
+				<div id="sous_menu_3" style="display:<?php if ($selectcitoyen) echo 'block'; else echo 'none'; ?>">
+			        <div class="elements_sous_menu">
+					<ul>
+						<li><a href="<?php echo url_for('@list_citoyens'); ?>">Tous les citoyens</a> |</li>
+						<li><a href="<?php //echo url_for('@commentaires_list'); ?>">Les derniers commentaires</a> |</li>
+						<li><a href="<?php echo url_for('@compterendu_list'); ?>">Les comptes rendus citoyens</a></li>
+					</ul>
+				</div>
 				</div>
 			</div>
 			<div id="corps_page">

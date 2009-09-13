@@ -295,12 +295,20 @@ h2 {
 	overflow:hidden;
 }
 
-	.elements_sous_menu {
-	width:600px;
-	padding-top:3px;
+.elements_sous_menu {
+	padding-top:4px;
 	position:absolute;
 }
 
+#sous_menu_1 .elements_sous_menu {
+	     padding-left: 132px;
+}
+#sous_menu_2 .elements_sous_menu {
+	     padding-left: 220px;
+}
+#sous_menu_3 .elements_sous_menu {
+	     padding-left: 145px;
+}
 	.elements_sous_menu  a {
 	text-decoration:none;
 	letter-spacing:1.4pt;
