@@ -196,6 +196,8 @@ Intervention:
     extends: ObjectCommentable
     type: concrete
   indexes:
+    date_intervention:
+      fields: [date]
     ft_intervention:
       fields: [intervention]
       type: fulltext

@@ -61,4 +61,18 @@ class tagComponents extends sfComponents
       ->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365))
       ->andWhere('i.id = tg.taggable_id');
   }
+
+  public function executeGlobalActivite() {
+    $inter = Doctrine::getTable('Intervention')->createQuery('i')
+      ->orderBy('i.date DESC')
+      ->limit(5000)->fetchArray();
+    $ids = array();
+    foreach($inter as $i) {
+      $ids[] = $i['id'];
+    }
+    $this->itag = Doctrine_Query::create()
+      ->from('Tagging tg, tg.Tag t')
+      ->andwhere('tg.taggable_model = ?', 'Intervention')
+      ->whereIn('tg.taggable_id', $ids);
+  }
 }

@@ -91,6 +91,7 @@ class parlementaireActions extends sfActions
 
   public function executeIndex(sfWebRequest $request)
   {
+      //      ->where('i.date > ?', date('Y-m-d', time()-60*60*24*31*3));
   }
 
   public function executeRandom(sfWebRequest $request)
