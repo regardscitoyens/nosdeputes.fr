@@ -110,7 +110,7 @@ $menu_citoyen = $selectcitoyen;
 				<div class="elements_sous_menu">
 					<ul>
 						<li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> |</li>
-						<li><a href="<?php echo url_for('@list_parlementaires_circo'); ?>">Par cirsconscription</a> |</li>
+						<li><a href="<?php echo url_for('@list_parlementaires_circo'); ?>">Par circonscription</a> |</li>
 						<li><a href="<?php echo url_for('@parlementaires_tags'); ?>">Par mots clés</a> |</li>
 						<li><a href="<?php echo url_for('@top_global'); ?>">Synthèse</a> |</li>
 						<li><a href="<?php echo url_for('@parlementaire_random'); ?>">Au hasard</a></li>
