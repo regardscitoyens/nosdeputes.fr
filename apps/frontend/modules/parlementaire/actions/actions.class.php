@@ -121,12 +121,6 @@ class parlementaireActions extends sfActions
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
 
-    $this->questions = doctrine::getTable('QuestionEcrite')->createQuery('a')
-      ->where('a.parlementaire_id = ?', $this->parlementaire->id)
-      ->orderBy('a.updated_at DESC')
-      ->limit(5)
-      ->execute();
-
     $this->textes = doctrine_query::create()
       ->from('Section s')
       ->select('s.section_id, sp.titre, count(i.id) as nb')

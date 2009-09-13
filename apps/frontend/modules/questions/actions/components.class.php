@@ -4,6 +4,10 @@ class QuestionsComponents extends sfComponents
 {
   public function executeParlementaire()
   {
+    $this->questions = Doctrine::getTable('QuestionEcrite')->createQuery('q')
+      ->where('q.parlementaire_id = ?', $this->parlementaire->id)
+      ->orderBy('q.updated_at DESC')
+      ->execute();
   }
   public function executeSearch(){}
   public function executePagerQuestions()

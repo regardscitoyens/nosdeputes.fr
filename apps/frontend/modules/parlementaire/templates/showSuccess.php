@@ -130,7 +130,7 @@
        <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 5)); ?>
       <p><?php echo link_to('Toutes ses questions orales','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=question'); ?></p>
       <h3>Ses dernières questions écrites</h3>
-       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 5, 'questions' => $questions, 'order' => 'date')); ?>
+       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 5)); ?>
       <p><?php echo link_to('Toutes ses questions écrites','@parlementaire_questions?slug='.$parlementaire->getSlug()); ?></p>
       </div>
     </div>

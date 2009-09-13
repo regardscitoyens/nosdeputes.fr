@@ -13,10 +13,11 @@ class myTools {
      "09" => "septembre",
      "10" => "octobre",
      "11" => "novembre",
-     "12" => "decembre");
+     "12" => "décembre");
   
   public static function displayDate($date) {
     if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $date, $match)) {
+      $match[3] = preg_replace('/^0(\d)/', '\\1', $match[3]);
       if ($match[3] == '1') $match[3] .= 'er';
       return $match[3].' '.self::$num_mois[$match[2]].' '.$match[1];
     } else return $date;
