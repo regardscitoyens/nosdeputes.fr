@@ -1,7 +1,7 @@
 <?php if ($pager->haveToPaginate()) : ?>
 <div class="pagination">
-    <?php echo link_to('<< ', $link.'page=1'); ?>
-    <?php echo link_to('< ', $link.'page='.$pager->getPreviousPage()); ?>
+   <?php if ($pager->getPage() != 1) echo link_to('<< ', $link.'page=1'); ?>
+    <?php if ($pager->getPage() != 1)  echo link_to('< ', $link.'page='.$pager->getPreviousPage()); ?>
     <?php foreach ($pager->getLinks() as $page): ?>
       <?php if ($page == $pager->getPage()): ?>
         <?php echo $page ?>
