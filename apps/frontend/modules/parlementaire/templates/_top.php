@@ -36,8 +36,17 @@ $top = $parlementaire->getTop();
 if (!$top)
   return ;
 if (!$parlementaire->fin_mandat) {
-  echo '<h2>Activité parlementaire <small>(12 derniers mois) :</small></h3>';
-  $rank = 1;
+  $mois = floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30));
+  if($mois < 6) {
+    echo '<h2>Activité parlementaire <small>('.$mois.' premier';
+    if ($mois > 1) 
+      echo's'; 
+    echo ' mois de mandat) :</small></h3>';
+    $rank = 0;
+  }else {
+    echo '<h2>Activité parlementaire <small>(12 derniers mois) :</small></h3>';
+    $rank = 1;
+  }
  } else {
   $rank = 0;
   $weeks = (strtotime($parlementaire->fin_mandat) - strtotime($parlementaire->debut_mandat))/(60*60*24*7);
