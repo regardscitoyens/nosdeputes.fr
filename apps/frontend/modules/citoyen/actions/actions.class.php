@@ -72,26 +72,6 @@ class citoyenActions extends sfActions
     }
   }
   
-  /* public function executeRenvoimailactivation(sfWebRequest $request)
-  {
-    $id = $request->getParameter('user_id');
-    
-    $this->Citoyen = Doctrine::getTable('Citoyen')->findOneById($id);
-    
-    if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('user_id') == $id)
-    {
-      $this->getComponent('mail', 'send', array(
-                  'subject'=>'Inscription NosDéputés.fr', 
-                  'to'=>array($this->Citoyen->email), 
-                  'partial'=>'inscription', 
-                  'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
-                  ));
-      $this->getUser()->setFlash('notice', 'Un email de confirmation vient de vous être envoyé.');
-      $this->redirect($request->getReferer());
-    }
-    else { $this->forward404(); }
-  } */
-  
   public function executeEdit(sfWebRequest $request)
   {
     if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') == true) {
@@ -142,61 +122,6 @@ class citoyenActions extends sfActions
       }
     }
     else { $this->redirect('@signin'); }
-  }
-  
-  public function executeUploadavatar(sfWebRequest $request)
-  {
-    if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') == true) {
-    
-      $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
-    
-      $this->form = new UploadAvatarForm();
-      
-      if ($request->isMethod('post'))
-      {
-        $this->form->bind($request->getParameter('upload'), $request->getFiles('upload'));
-        
-        if ($this->form->isValid() and $this->form->getValue('photo'))
-        {
-          $file = $this->form->getValue('photo');
-          $extension = $file->getExtension($file->getOriginalExtension());
-          
-          $photo = $file->getTempName();
-          list($largeur_source, $hauteur_source) = getimagesize($photo);
-          $largeur_max = 100;
-          if ($largeur_source >= $hauteur_source) { $hauteur = round(($largeur_max / $hauteur_source) * $largeur_source); }
-          else { $hauteur = round(($largeur_max / $largeur_source) * $hauteur_source); }
-          
-          $source = imagecreatefromjpeg($photo);
-          $destination = imagecreatetruecolor($largeur_max, $hauteur);
-          
-          imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_max, $hauteur, $largeur_source, $hauteur_source);
-          
-          imagejpeg($destination, $photo);
-          $user->photo = file_get_contents($photo);
-          $user->save();
-          $this->getUser()->setFlash('notice', 'Vous avez modifié votre profil avec succès');
-          $this->redirect('@citoyen?slug='.$user->slug);
-        }
-        else
-        {
-          $this->getUser()->setFlash('error', 'Veuillez indiquer votre photo/avatar');
-        }
-      }
-    }
-    else { $this->redirect('@signin'); }
-  }
-  
-  public function executePhoto($request)
-  {
-    $slug = $request->getParameter('slug');
-    $user = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
-    $this->getResponse()->setHttpHeader('content-type', 'image/jpeg');
-    $this->setLayout(false);
-    $this->getResponse()->addCacheControlHttpHeader('max_age=60');
-    $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()*2));
-    $this->image = $user->photo;
-    #return $this->image;
   }
   
   public function executeActivation(sfWebRequest $request)
@@ -262,24 +187,6 @@ class citoyenActions extends sfActions
       $this->forward404();
     }
   }
-  /* 
-  public function executeAddcirco(sfWebRequest $request)
-  {
-    if ($this->getUser()->isAuthenticated())
-    {
-      $nom_circo = $request->getParameter('nom_circo');
-      $num_circo = $request->getParameter('num_circo');
-      $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
-      $user->nom_circo = $nom_circo;
-      $user->num_circo = $num_circo;
-      $user->save();
-      $this->redirect('@citoyen?slug='.$user->slug);
-    }
-    else
-    {
-      $this->redirect('@signin');
-    }
-  } */
   
   // Connection
   public function executeSignin(sfWebRequest $request)
@@ -340,5 +247,107 @@ class citoyenActions extends sfActions
       $this->getUser()->setFlash('error', 'Vous devez être connecté pour exécuter cette action');
     $this->redirect('@homepage');
   }
+  
+  public function executeUploadavatar(sfWebRequest $request)
+  {
+    if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') == true) {
+    
+      $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
+    
+      $this->form = new UploadAvatarForm();
+      
+      if ($request->isMethod('post'))
+      {
+        $this->form->bind($request->getParameter('upload'), $request->getFiles('upload'));
+        
+        if ($this->form->isValid() and $this->form->getValue('photo'))
+        {
+          $file = $this->form->getValue('photo');
+          $extension = $file->getExtension($file->getOriginalExtension());
+          
+          $photo1 = $file->getTempName();
+          $photo = tempnam(sys_get_temp_dir(), 'ava');
+          $handle = fopen($photo, "wb");
+          fwrite($handle, file_get_contents($photo1));
+          fclose($handle);
+          list($largeur_source, $hauteur_source, $type) = getimagesize($photo);
+          echo 'L : '.$largeur_source.' x H :'.$hauteur_source.' Type : '.$type;
+          $largeur_max = 100;
+          if ($largeur_source >= $hauteur_source) { $hauteur = round(($largeur_max / $hauteur_source) * $largeur_source); }
+          else { $hauteur = round(($largeur_max / $largeur_source) * $hauteur_source); }
+          
+          $source = imagecreatefromjpeg($photo);
+          $destination = imagecreatetruecolor($largeur_max, $hauteur);
+          
+          imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_max, $hauteur, $largeur_source, $hauteur_source);
+          
+          imagejpeg($destination, $photo);
+          $user->photo = file_get_contents($photo);
+          $user->save();
+          #unlink($photo);
+          #unlink($photo1);
+          $this->getUser()->setFlash('notice', 'Vous avez modifié votre profil avec succès');
+          #$this->redirect('@citoyen?slug='.$user->slug);
+        }
+        else
+        {
+          $this->getUser()->setFlash('error', 'Veuillez indiquer votre photo/avatar');
+        }
+      }
+    }
+    else { $this->redirect('@signin'); }
+  }
+  
+  public function executePhoto($request)
+  {
+    $slug = $request->getParameter('slug');
+    $user = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
+    $this->getResponse()->setHttpHeader('content-type', 'image/jpeg');
+    $this->setLayout(false);
+    $this->getResponse()->addCacheControlHttpHeader('max_age=60');
+    $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()*2));
+    $this->image = $user->photo;
+    #return $this->image;
+  }
+  
+  
+  /* public function executeRenvoimailactivation(sfWebRequest $request)
+  {
+    $id = $request->getParameter('user_id');
+    
+    $this->Citoyen = Doctrine::getTable('Citoyen')->findOneById($id);
+    
+    if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('user_id') == $id)
+    {
+      $this->getComponent('mail', 'send', array(
+                  'subject'=>'Inscription NosDéputés.fr', 
+                  'to'=>array($this->Citoyen->email), 
+                  'partial'=>'inscription', 
+                  'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
+                  ));
+      $this->getUser()->setFlash('notice', 'Un email de confirmation vient de vous être envoyé.');
+      $this->redirect($request->getReferer());
+    }
+    else { $this->forward404(); }
+  } */
+  
+  /* 
+  public function executeAddcirco(sfWebRequest $request)
+  {
+    if ($this->getUser()->isAuthenticated())
+    {
+      $nom_circo = $request->getParameter('nom_circo');
+      $num_circo = $request->getParameter('num_circo');
+      $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
+      $user->nom_circo = $nom_circo;
+      $user->num_circo = $num_circo;
+      $user->save();
+      $this->redirect('@citoyen?slug='.$user->slug);
+    }
+    else
+    {
+      $this->redirect('@signin');
+    }
+  } */
   
 }
