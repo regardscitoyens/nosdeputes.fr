@@ -110,10 +110,10 @@ $menu_citoyen = $selectcitoyen;
 				<div id="sous_menu_1" style="display:<?php if ($menu_depute) echo 'block'; else echo 'none'; ?>">
 				<div class="elements_sous_menu">
 					<ul>
-						<li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> |</li>
-						<li><a href="<?php echo url_for('@list_parlementaires_circo'); ?>">Par circonscription</a> |</li>
-						<li><a href="<?php echo url_for('@parlementaires_tags'); ?>">Par mots clés</a> |</li>
-						<li><a href="<?php echo url_for('@top_global'); ?>">Synthèse</a> |</li>
+						<li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> <strong>|</strong></li>
+						<li><a href="<?php echo url_for('@list_parlementaires_circo'); ?>">Par circonscription</a> <strong>|</strong></li>
+						<li><a href="<?php echo url_for('@parlementaires_tags'); ?>">Par mots clés</a> <strong>|</strong></li>
+						<li><a href="<?php echo url_for('@top_global'); ?>">Synthèse</a> <strong>|</strong></li>
 						<li><a href="<?php echo url_for('@parlementaire_random'); ?>">Au hasard</a></li>
 					</ul>
 				</div>
@@ -121,7 +121,7 @@ $menu_citoyen = $selectcitoyen;
 				<div id="sous_menu_2" style="display:<?php if ($menu_dossier) echo 'block'; else echo 'none'; ?>">
 			        <div class="elements_sous_menu">
 					<ul>
-						<li><a href="<?php echo url_for('@sections?order=date'); ?>">Les derniers dossiers</a> |</li>
+						<li><a href="<?php echo url_for('@sections?order=date'); ?>">Les derniers dossiers</a> <strong>|</strong></li>
 						<li><a href="<?php echo url_for('@sections?order=plus'); ?>">Les dossiers les plus discutés</a></li>
 					</ul>
 				</div>
@@ -130,8 +130,8 @@ $menu_citoyen = $selectcitoyen;
 				<div id="sous_menu_3" style="display:<?php if ($menu_citoyen) echo 'block'; else echo 'none'; ?>">
 			        <div class="elements_sous_menu">
 					<ul>
-						<li><a href="<?php echo url_for('@list_citoyens'); ?>">Tous les citoyens</a> |</li>
-						<li><a href="<?php //echo url_for('@commentaires_list'); ?>">Les derniers commentaires</a> |</li>
+						<li><a href="<?php echo url_for('@list_citoyens'); ?>">Tous les citoyens</a> <strong>|</strong></li>
+						<li><a href="<?php //echo url_for('@commentaires_list'); ?>">Les derniers commentaires</a> <strong>|</strong></li>
 						<li><a href="<?php echo url_for('@compterendu_list'); ?>">Les comptes rendus citoyens</a></li>
 					</ul>
 				</div>

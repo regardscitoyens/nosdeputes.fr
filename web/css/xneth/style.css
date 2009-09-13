@@ -311,26 +311,33 @@ h2 {
 }
 
 .elements_sous_menu {
-	padding-top:4px;
+	padding-top:3px;
 	position:absolute;
 }
 
 #sous_menu_1 .elements_sous_menu {
-	     padding-left: 132px;
+	padding-left: 160px;
 }
 #sous_menu_2 .elements_sous_menu {
-	     padding-left: 220px;
+	padding-left: 260px;
 }
 #sous_menu_3 .elements_sous_menu {
-	     padding-left: 145px;
+	padding-left: 180px;
 }
-	.elements_sous_menu  a {
+	.elements_sous_menu  a, a:visited {
 	text-decoration:none;
-	letter-spacing:1.4pt;
+	letter-spacing:0.7pt;
 	color:black;
 }
+
+	.elements_sous_menu  a:hover {
+	text-decoration:underline;
+	letter-spacing:0.7pt;
+	color:black;
+	background-color:#eee;
+}
 	.elements_sous_menu ul {
-	float:right;
+	float:left;
 	padding:0;
 	margin:0;
 	font-size: 8pt;
