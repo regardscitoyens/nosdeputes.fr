@@ -80,7 +80,16 @@ $values['password'], false, $this))) {
       $this->getUser()->setFlash('error', 'Vous devez avoir un compte et y être connecté pour poster un commentaire.<br />Le formulaire ci-dessous vous permet de vous identifier ou de vous inscrire sur le site.');
       return;
     }
-      
+    $ip = '';
+    if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+	    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+    $ip = $ip . ',';
+    if(isset($_SERVER['HTTP_CLIENT_IP'])) 
+	    $ip = $ip . $_SERVER['HTTP_CLIENT_IP'];
+    $ip = $ip . ',';
+    if(isset($_SERVER['REMOTE_ADDR'])) 
+	    $ip = $ip . $_SERVER['REMOTE_ADDR']; 
+  
     $commentaire = $this->form->getObject();
     //Pas trouvé d'autre moyen que de bypasser le form pour conserver la presentation htmlisée
     $commentaire->commentaire = $this->commentaire;
@@ -91,6 +100,7 @@ $values['password'], false, $this))) {
     $commentaire->presentation = $about[$this->type].date('d/m/Y', time($object->date));
     $commentaire->citoyen_id = $citoyen_id;
     $commentaire->is_public = $is_active;
+    $commentaire->ip_address = $ip;
     $commentaire->save();
 
     $object->updateNbCommentaires();

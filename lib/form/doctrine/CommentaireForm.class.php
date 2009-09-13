@@ -17,6 +17,7 @@ class CommentaireForm extends BaseCommentaireForm
 	  $this['updated_at'],
 	  $this['created_at'],
 	  $this['is_public'],
+          $this['ip_address'],
 	  $this['rate'],
 	  $this['object_type'],
 	  $this['lien'],

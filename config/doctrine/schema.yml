@@ -334,6 +334,7 @@ Commentaire:
     citoyen_id: integer
     commentaire: string
     is_public: boolean
+    ip_address: string(512)
     rate: integer
     object_type: string(64)
     object_id: integer
