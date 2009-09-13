@@ -1,7 +1,10 @@
+<?php $titre1 = $amendement->getTitre().' ('.$amendement->getSort().')';
+      $titre2 = link_to(ucfirst($section->titre), '@section?id='.$section->id)?>
+<?php $sf_response->setTitle(strip_tags($titre2.' - '.$titre1)); ?>
 <div class="amendement" id="L<?php echo $amendement->texteloi_id; ?>A<?php echo $amendement->numero; ?>">
 <div class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></div>
-<h1><?php echo $amendement->getTitre().' ('.$amendement->getSort().')'; ?></h1>
-<h2><?php echo link_to(ucfirst($section->titre), '@section?id='.$section->id); ?></h2>
+<h1><?php echo $titre1; ?></h1>
+<h2><?php echo $titre2; ?></h2>
 <div class="identiques">
   
 </div>
