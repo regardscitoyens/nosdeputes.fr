@@ -1,5 +1,10 @@
+<?php if ($search) { ?>
 <h1>Recherche de députés</h1>
-<?php $sf_response->setTitle('Recherche de députes "'.$search.'"'); ?>
+<?php $sf_response->setTitle('Recherche de députes "'.$search.'"');
+ } else { ?>
+<h1>La liste de tous les députés</h1>
+<?php $sf_response->setTitle('La liste de tous les députés'); ?>
+<?php } ?>
 <div class="liste_deputes">
 <?php if ($search != "") : ?>
 <p><?php $nResults = $pager->getNbResults(); echo $nResults; ?> résultat<?php if ($nResults > 1) echo 's'; ?> pour <em>"<?php echo $search; ?>"</em></p>

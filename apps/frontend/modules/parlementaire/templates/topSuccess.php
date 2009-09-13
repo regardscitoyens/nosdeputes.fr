@@ -1,4 +1,7 @@
+<h1>Synthèse générale des députés</h1>
+<h2 style="text-align: center">ayant au moins 6 mois de mandat<br/>(sur les 12 derniers mois)</h2>
 <?php 
+$sf_response->setTitle('Synthèse générale des députés');
 $title = array('semaine' => 'd\'activité',
 	       'commission_presences' => 'séances',
 	       'commission_interventions'=> 'interventions',
@@ -38,8 +41,6 @@ th,td {border-right: 1px #FFFFFF solid;}
 .tr_odd td { border-right: 1px #999999 solid;}
 .tr_odd td.qo { border-right: 0px #999999 solid;}
 </style>
-<h1>Synthèse générale des députés ayant au moins 6 mois de mandat</h1>
-<h2>sur les 12 derniers mois</h2>
 <div class="synthese">
 <table><tr><th class="<?php echo $class['parl']; ?>">&nbsp;</th><th class="<?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', $top_link.'sort=1'); ?></th><th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th><th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th><th colspan="3" class="<?php if ($sort == 6 || $sort == 7 || $sort == 8) echo 'tr_odd';?>">Amendements</th><th colspan="2" class="<?php if ($sort == 9 || $sort == 10) echo 'tr_odd';?>">Questions</th></tr><tr><th class="<?php echo $class['parl']; ?>">&nbsp;</th><?php
 $ktop = array('');
@@ -54,5 +55,18 @@ $last = end($tops); $i = 0; foreach(array_keys($last[0]->getTop()) as $key) { $i
      }
 ?></td><?php } ?></tr><?php }?></table>
 </div>
+<div>
+<h3>Explications :</h3>
+<ul>
+<li><strong>Semaines d'activité</strong> : Nombre de semaines où le député a été relevé présent en commission ou ayant pris la parole (même brievement) en hémicycle</li>
+<li><strong>Commission séances</strong> : Nombre de séances de commission où le député a été relevé présent</li>
+<li><strong>Commission interventions</strong> : Nombre d'interventions prononcés par le députés en commission</li>
+<li><strong>Hémicycle Interventions longues</strong> : Nombre d'interventions de plus de 20 mots prononcés par le député en hémicycle</li>
+<li><strong>Hémicycle Interventions courtes</strong> : Nombre d'interventions de moins de 20 mots prononcés par le député en hémicycle</li>
+<li><strong>Amendements signés</strong> : Nombre d'amendements signés ou co-signés par le député</li>
+<li><strong>Amendements adoptés</strong> : Nombre d'amendements adoptés qui ont été signés ou co-signés par le député</li>
+<li><strong>Amendements rejetés</strong> : Nombre d'amendements rejetés qui ont été signés ou co-signés par le député</li>
+<li><strong>Questions écrites</strong> : Nombre de questions écrites envoyées par le député</li>
+<li><strong>Questions orales</strong> : Nombre de questions orales posées par le député</li>
 </div>
 </div>
