@@ -1227,3 +1227,9 @@ width: 50%;
 	padding:10px;
 	border : 1px dashed #cecdc2;
 }
+
+.accueil_nuage_tags   h2 {
+	background-color:#dbd5c8;
+	font-size: 1.2em;
+	margin:0 0 10px 0;
+}

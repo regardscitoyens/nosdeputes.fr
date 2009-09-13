@@ -26,6 +26,7 @@
 </div>
 
 <div class="accueil_nuage_tags">
+	<h2>Mots clés les plus prononcés :</h2>
 	<?php echo include_component('tag', 'globalActivite'); ?>
 </div>
 </div>
