@@ -1,7 +1,6 @@
-<div class="temp">
 <div class="liste_deputes">
 <?php if (isset($circos)) : ?>
-<p>Toutes les circonscriptions électorales</p>
+<h1>Toutes les circonscriptions électorales</h1><?php $sf_response->setTitle('Toutes les circonscriptions électorales'); ?>
 <table>
 <tr><td width="23%"><ul>
 <?php $div = floor(count($circos)/4)+1; $ct = 0; foreach($circos as $num => $circo) : $ct++?>
@@ -14,7 +13,9 @@
 <?php if ($num != 0) : ?>
   <img class="carte_departement" src="http://www.assemblee-nationale.fr/13/qui/circonscriptions/<?php printf('%03d-%03d', $num, $num); ?>-1.gif" alt="$circo"/>
 <?php endif; ?>
+<h1>Les députés par circonscriptions</h1>
 <?php
+$sf_response->setTitle('Les députés par circonscriptions');
   $nResults = count($parlementaires);
   if ($nResults == 0) : ?>
 <p>Aucune circonscription trouvée pour <em>"<?php echo $circo; ?>"</em></p>
@@ -27,5 +28,4 @@
 <?php endforeach ; ?>
 </ul>
 <?php endif; ?>
-</div>
 </div>

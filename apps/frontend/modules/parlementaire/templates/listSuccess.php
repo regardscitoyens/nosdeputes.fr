@@ -1,5 +1,6 @@
-<div class="temp">
-	<div class="liste_deputes">
+<h1>Recherche de députés</h1>
+<?php $sf_response->setTitle('Recherche de députes "'.$search.'"'); ?>
+<div class="liste_deputes">
 <?php if ($search != "") : ?>
 <p><?php $nResults = $pager->getNbResults(); echo $nResults; ?> résultat<?php if ($nResults > 1) echo 's'; ?> pour <em>"<?php echo $search; ?>"</em></p>
 <?php else : ?>
@@ -33,4 +34,3 @@
 </div>
 <?php endif; ?>
 	</div>
-</div>
