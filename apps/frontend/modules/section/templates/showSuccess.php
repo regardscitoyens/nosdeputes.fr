@@ -19,7 +19,7 @@ else echo '</h1>';
 </div>
 
 <div class="nuage_de_tags">
-<p>Voici la liste des mots clés pour cette section :</p>
+<p>Mots-clés de cette section :</p>
 <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>
 </div>
 
