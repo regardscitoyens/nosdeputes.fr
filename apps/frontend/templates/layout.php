@@ -148,8 +148,7 @@ $menu_citoyen = $selectcitoyen;
 				</div>
 			</div>
 			<div id="bottom">
-				<a href=""><?php echo image_tag($style.'/bottom_plansite.png', array('alt' => 'Plan du site')); ?></a>
-				<a href=""><?php echo image_tag($style.'/bottom_qui.png', array('alt' => 'Qui sommes-nous')); ?></a>
+				<a href="<?php echo url_for('@faq')?>"><?php echo image_tag($style.'/bottom_qui.png', array('alt' => 'Qui sommes-nous')); ?></a>
 			</div>
     </div>
   </body>
