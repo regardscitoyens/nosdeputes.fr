@@ -66,12 +66,12 @@ if ($intervention->hasIntervenant()) {
 ?></div>
   <?php if (!isset($complete)) {
     if (!$didascalie) : ?>
-    <div class="commentaires" style="clear: both;">
+    <div class="commentaires">
       <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>">Toute l'intervention</a></span> -
       <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Les commentaires</a></span> -
       <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
   <?php endif; } else { ?>
-    <p><?php echo link_to("Voir l'intervention dans son contexte", '@interventions_seance?seance='.$intervention->getSeance()->id.'#inter_'.$intervention->getMd5()); ?></p>
-  <?php } ?>
+    <div class="contexte"><p><?php echo link_to("Voir l'intervention dans son contexte", '@interventions_seance?seance='.$intervention->getSeance()->id.'#inter_'.$intervention->getMd5()); ?></p>
+  <?php } ?></div>
   </div>
