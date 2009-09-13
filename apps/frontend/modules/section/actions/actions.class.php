@@ -90,11 +90,15 @@ class sectionActions extends sfActions
     $query = doctrine::getTable('Section')->createQuery('s')
       ->where('s.id = s.section_id')
       ->andWhere('s.nb_interventions > 5');
-    if ($order == 'date')
+    if ($order == 'date') {
       $query->orderBy('s.min_date DESC');
-    else if ($order == 'plus')
+      $this->titre = 'Les derniers dossiers parlementaires';
+    } else if ($order == 'plus') {
       $query->orderBy('s.nb_interventions DESC');
+      $this->titre = 'Les dossiers parlementaires les plus discutés';
+    }
     else forward404();
+    $this->getResponse()->setTitle($this->titre);
     $this->sections = $query->execute();
 
   }

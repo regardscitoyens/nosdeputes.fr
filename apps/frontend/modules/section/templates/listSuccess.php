@@ -1,6 +1,6 @@
 <div class="temp">
 <div class="travaux_parlementaires">
-<p>Travaux parlementaires :</p>
+<h1><?php echo $titre; ?></h1>
 <ul>
 <?php foreach($sections as $s) if ($s->titre) {
 if (preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $s->titre)) continue;
