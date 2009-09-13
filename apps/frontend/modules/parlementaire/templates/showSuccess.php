@@ -30,7 +30,7 @@
       <li title="Questions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/question.png', 'alt="Questions"');
       echo ' : '.($top['questions_ecrites']['value']+$top['questions_orales']['value']);
       ?></a></li>
-      <li><span class="barre_date"><?php if ($parlementaire->fin_mandat == null) echo "Depuis le"; else echo "Mandat terminé"; ?>&nbsp;: <?php echo myTools::displayDate($parlementaire->debut_mandat); if ($parlementaire->fin_mandat != null) echo " - ".myTools::displayDate($parlementaire->fin_mandat); ?></span></li>
+      <li><span class="barre_date"><?php if ($parlementaire->fin_mandat == null) echo "Depuis le&nbsp;:"; else echo "Mandat clos accompli du"; ?> <?php echo myTools::displayDate($parlementaire->debut_mandat); if ($parlementaire->fin_mandat != null) echo " au ".myTools::displayDate($parlementaire->fin_mandat); ?></span></li>
     </ul>
   </div>
   <div class="stopfloat"></div>
