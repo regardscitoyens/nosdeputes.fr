@@ -324,7 +324,7 @@ h2 {
 #sous_menu_3 .elements_sous_menu {
 	padding-left: 180px;
 }
-	.elements_sous_menu  a, a:visited {
+	.elements_sous_menu  a, .elements_sous_menu a:visited {
 	text-decoration:none;
 	letter-spacing:0.7pt;
 	color:black;
