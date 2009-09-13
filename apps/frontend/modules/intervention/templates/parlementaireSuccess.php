@@ -1,4 +1,3 @@
-<div class="temp">
 <?php
 if ($type == 'question') $titre = 'Questions orales';
 else {
@@ -8,5 +7,4 @@ else {
 }
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre));
 ?>
-</div>
 <?php  echo include_component('intervention', 'pagerInterventions', array('intervention_query' => $interventions, 'nophoto' => true)); ?>

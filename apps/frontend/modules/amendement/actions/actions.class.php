@@ -46,7 +46,7 @@ class amendementActions extends sfActions
   {
     $this->parlementaire = doctrine::getTable('Parlementaire')
       ->findOneBySlug($request->getParameter('slug'));
-    $this->forward404Unless($this->parlementaires);
+    $this->forward404Unless($this->parlementaire);
     $this->amendements = doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
