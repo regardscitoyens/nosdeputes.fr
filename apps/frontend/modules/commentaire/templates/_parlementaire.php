@@ -12,7 +12,7 @@ if (!count($commentaires)) : ?>
             <div class="m_b_c_h"><div class="m_b_c_hg"></div><div class="m_b_c_hd"></div></div>
             <div class="m_b_c_cont">
               <div class="m_b_c_photo">
-              
+                    <?php include_component('citoyen','avatarCitoyen', array('citoyen_id'=>$c->citoyen_id)); ?>
               </div>
               <div class="m_b_c_text">
     <h3><?php 
