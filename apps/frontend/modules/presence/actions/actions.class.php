@@ -13,8 +13,7 @@ class presenceActions extends sfActions
 
   public function executeParlementaire(sfWebRequest $request)
   {
-    $slug = $request->getParameter('slug');
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
 
     $query = Doctrine::getTable('Presence')->createQuery('p');
@@ -28,11 +27,15 @@ class presenceActions extends sfActions
 
   public function executePreuve(sfWebRequest $request)
   {
-    $slug = $request->getParameter('slug');
-    $parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    $parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($parlementaire);
     $seance_id = $request->getParameter('seance');
-    $this->preuves = doctrine::getTable('PreuvePresence')->createQuery('pp')->leftJoin('pp.Presence p')->where('p.seance_id = ?', $seance_id)->andWhere('p.parlementaire_id = ?', $parlementaire->id)->execute();
+    $this->preuves = doctrine::getTable('PreuvePresence')
+      ->createQuery('pp')
+      ->leftJoin('pp.Presence p')
+      ->where('p.seance_id = ?', $seance_id)
+      ->andWhere('p.parlementaire_id = ?', $parlementaire->id)
+      ->execute();
   }
 
   public function executeSeance(sfWebRequest $request)

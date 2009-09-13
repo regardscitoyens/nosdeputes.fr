@@ -13,12 +13,15 @@ class questionsActions extends sfActions
   public function executeShow(sfWebRequest $request)
   {
     $this->question = doctrine::getTable('QuestionEcrite')->find($request->getParameter('id'));
+    $this->forward404Unless($this->question);
     $this->parlementaire = doctrine::getTable('Parlementaire')->find($this->question->parlementaire_id);
+    $this->forward404Unless($this->parlementaire);
   }
 
   public function executeParlementaire(sfWebRequest $request)
   {
     $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->parlementaire);
     $this->questions = doctrine::getTable('QuestionEcrite')->createQuery('a')
      ->where('a.parlementaire_id = ?', $this->parlementaire->id)
      ->orderBy('a.updated_at DESC')

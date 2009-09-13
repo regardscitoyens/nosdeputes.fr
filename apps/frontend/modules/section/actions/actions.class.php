@@ -38,16 +38,15 @@ class sectionActions extends sfActions
   }
   public function executeShow(sfWebRequest $request) 
   {
-    $section_id = $request->getParameter('id');
-    $this->forward404Unless($section_id);
-    $this->section = doctrine::getTable('Section')->find($section_id);
+    $this->section = doctrine::getTable('Section')->find($request->getParameter('id'));
     $this->forward404Unless($this->section);
 
     $this->lois = $this->section->getTags(array('is_triple' => true,
                                                 'namespace' => 'loi',
-						'key' => 'numero',
-                      				'return'    => 'value'));
+                                                'key' => 'numero',
+                                                'return'    => 'value'));
     sort($this->lois);
+
     $inters = Doctrine_Query::create()
       ->select('i.id')
       ->from('Intervention i')
