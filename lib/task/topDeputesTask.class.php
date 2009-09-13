@@ -145,7 +145,7 @@ class topDeputesTask extends sfBaseTask
       ->from('Parlementaire p, p.Interventions i')
       ->groupBy('p.id')
       ->andWhere('i.type = ?', 'question')
-      ->andWhere('i.nb_mots > 100')
+      ->andWhere('i.nb_mots > 20')
       ->andWhere('i.fonction NOT LIKE ?', 'président%')
       ->fetchArray();
     foreach ($questions as $q) {

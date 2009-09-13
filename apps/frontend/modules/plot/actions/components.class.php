@@ -102,7 +102,8 @@ class plotComponents extends sfComponents
         ->from('Intervention i')
         ->where('i.parlementaire_id = ?', $this->parlementaire->id)
         ->andWhere('i.type = ?', 'question')
-        ->andWhere('i.nb_mots > ?', 5*$seuil_invective)
+        ->andWhere('i.fonction NOT LIKE ?', 'président%')
+        ->andWhere('i.nb_mots > ?', $seuil_invective)
         ->leftJoin('i.Seance s');
       if ($this->options['session'] == 'lastyear')
         $query3->andWhere('s.date > ?', $date_debut);
@@ -173,7 +174,7 @@ class plotComponents extends sfComponents
           ->select('p.groupe_acronyme, count(i.id) as count')
           ->from('Parlementaire p, p.Interventions i, i.Section s')
           ->where('i.section_id = ? OR s.section_id = ?', array($match[1], $match[1]))
-          ->andWhere('(i.fonction != ? AND i.fonction != ?) OR i.fonction IS NULL', array('président', 'présidente'))
+          ->andWhere('i.fonction NOT LIKE ?', 'président%')
           ->andWhere('i.nb_mots > 20')
           ->groupBy('p.id')
           ->fetchArray();
@@ -181,7 +182,7 @@ class plotComponents extends sfComponents
           ->select('p.groupe_acronyme, sum(i.nb_mots) as sum')
           ->from('Parlementaire p, p.Interventions i, i.Section s')
           ->where('i.section_id = ? OR s.section_id = ?', array($match[1], $match[1]))
-          ->andWhere('(i.fonction != ? AND i.fonction != ?) OR i.fonction IS NULL', array('président', 'présidente'))
+          ->andWhere('i.fonction NOT LIKE ?', 'président%')
           ->groupBy('p.id')
           ->fetchArray();
       } else if (preg_match('/seance_(com|hemi)_(\d+)$/', $this->plot, $match)) {
@@ -189,7 +190,7 @@ class plotComponents extends sfComponents
           ->select('p.groupe_acronyme, count(i.id) as count')
           ->from('Parlementaire p, p.Interventions i, i.Section s')
           ->where('i.seance_id = ?', $match[2])
-          ->andWhere('(i.fonction != ? AND i.fonction != ?) OR i.fonction IS NULL', array('président', 'présidente'))
+          ->andWhere('i.fonction NOT LIKE ?', 'président%')
           ->andWhere('i.nb_mots > 20')
           ->groupBy('p.id')
           ->fetchArray();
@@ -197,7 +198,7 @@ class plotComponents extends sfComponents
           ->select('p.groupe_acronyme, sum(i.nb_mots) as sum')
           ->from('Parlementaire p, p.Interventions i, i.Section s')
           ->where('i.seance_id = ?', $match[2])
-          ->andWhere('(i.fonction != ? AND i.fonction != ?) OR i.fonction IS NULL', array('président', 'présidente'))
+          ->andWhere('i.fonction NOT LIKE ?', 'président%')
           ->groupBy('p.id')
           ->fetchArray();
         if ($match[1] == 'com') {

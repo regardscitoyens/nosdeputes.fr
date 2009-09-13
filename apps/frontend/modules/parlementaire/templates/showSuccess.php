@@ -127,10 +127,10 @@
       <div class="b_d_infos">
       <h2>Questions au gouvernement</h2>
       <h3>Ses dernières questions orales</h3>
-       <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit'=>5, 'textes' => $textes, 'order' => 'date')); ?>
+       <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 5, 'textes' => $textes, 'order' => 'date')); ?>
       <h3><?php echo link_to('Toutes ses questions orales','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=question'); ?></h3>
       <h3>Ses dernières questions écrites</h3>
-       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit'=>5, 'questions' => $questions, 'order' => 'date')); ?>
+       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 5, 'questions' => $questions, 'order' => 'date')); ?>
       <h3><?php echo link_to('Toutes ses questions écrites','@parlementaire_questions?slug='.$parlementaire->getSlug()); ?></h3>
       </div>
     </div>

@@ -1,27 +1,33 @@
 <?php use_helper('Text') ?>
   <div class="intervention" id="<?php echo $intervention->id; ?>">
     <div class="info">
-    <strong>  
-    <?php 
-    echo $intervention->getSeance()->getTitre(0,0,$intervention->getMd5()).' &mdash; ';
-    if ($intervention->getType() == 'commission') { $orga = $intervention->getSeance()->getOrganisme(); echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); }
-    else { $section = $intervention->getSection(); 
-	    if ($section->getSection()) 
-		    echo link_to(ucfirst($section->getSection()->getTitre()),
-				    '@section?id='.$section->section_id).' > ';
-	    echo link_to(ucfirst($section->titre), '@section?id='.$section->id);
-	    $lois = $intervention->getTags(array('is_triple' => true,                         
-				    'namespace' => 'loi',
-				    'key' => 'numero',
-				    'return'    => 'value'));
-	    $amdmt = $intervention->getTags(array('is_triple' => true,                         
-				    'namespace' => 'loi',
-				    'key' => 'amendement',
-				    'return'    => 'value'));
-	    if(count($amdmt) == 1)
-		    echo ', amendement '.
-			    link_to(($amdmt[0]),
-					    '/amendements/'.(implode(',',$lois).'/'.$amdmt[0])); 
+    <strong>
+    <?php $link_seance = url_for('@interventions_seance?seance='.$intervention->getSeance()->id).'#inter_'.$intervention->getMd5();
+      if (!isset($complete)) echo '<a href="'.$link_seance.'">'.$intervention->getSeance()->getTitre();
+      else echo $intervention->getSeance()->getTitre(0,0,$intervention->getMd5());
+      echo ' &mdash; ';
+      if ($intervention->getType() == 'commission') {
+        $orga = $intervention->getSeance()->getOrganisme();
+        if (isset($complete))
+          echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug());
+        else echo $orga->getNom().'</a>';
+      } else {
+        $section = $intervention->getSection();
+	    if ($section->getSection()) {
+          if (isset($complete))
+            echo link_to(ucfirst($section->getSection()->getTitre()), '@section?id='.$section->section_id);
+          else echo ucfirst($section->getSection()->getTitre());
+          echo '&nbsp;: ';
+        }
+        if (isset($complete)) {
+          echo link_to(ucfirst($section->getTitre()), '@section?id='.$section->id);
+          if(count($amdmts) >= 1)
+            echo ', amendement';
+            if(count($amdmts) > 1) echo 's';
+            echo ' ';
+            foreach($amdmts as $amdmt)
+              echo link_to($amdmt, '/amendements/'.(implode(',',$lois).'/'.$amdmt));
+        } else echo ucfirst($section->getTitre()).'</a>';
     }
     ?> 
     </strong>
@@ -41,17 +47,19 @@ if (isset($highlight)) {
 }
 if ($p_inter == '') {
   if (isset($complete)) $p_inter = $intervention->getIntervention(array('linkify_amendements'=>url_for('@find_amendements_by_loi_and_numero?loi=LLL&numero=AAA')));
-  else  $p_inter = truncate_text($inter, 400);
+  else $p_inter = truncate_text($inter, 350);
 }
 if ($intervention->hasIntervenant()) {
   $perso = $intervention->getIntervenant();
-  $didascalie = 0;
   if (!isset($nophoto)) {
+    if (isset($complete)) {
+      if (!($link = url_for($perso->getPageLink()))) $link = $link_seance;
+    } else $link = $link_seance;
     if ($perso->getPageLink()) {
       if ($perso->hasPhoto()) {
-        echo '<a href="'.url_for($perso->getPageLink()).'"><img width="50" height="70" alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$perso->slug).'" /></a>';
+        echo '<a href="'.$link.'"><img width="50" height="70" alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$perso->slug).'" /></a>';
       }
-      echo '<a href="'.url_for($perso->getPageLink()).'">';
+      echo '<a href="'.$link.'">';
       echo $perso->nom;
 
       echo '</a>&nbsp;:';
@@ -64,14 +72,13 @@ if ($intervention->hasIntervenant()) {
  }
   echo '<p>'.$p_inter.'</p>';
 ?></div>
-  <?php if (!isset($complete)) {
-    if (!$didascalie) : ?>
-    <div class="commentaires">
-      <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>">Toute l'intervention</a></span> -
-      <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Les commentaires</a></span> -
-      <span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
+  <?php if (isset($complete)) { ?>
+    <div class="contexte">
+      <p><?php echo link_to("Voir l'intervention dans son contexte", $link_seance); ?></p>
     </div>
-  <?php endif; } else { ?>
-    <div class="contexte"><p><?php echo link_to("Voir l'intervention dans son contexte", '@interventions_seance?seance='.$intervention->getSeance()->id.'#inter_'.$intervention->getMd5()); ?></p>
-  <?php } ?></div>
+    <?php
+    echo include_component('commentaire', 'show', array('object'=>$intervention));
+    echo include_component('commentaire', 'form', array('object'=>$intervention));
+    ?>
+  <?php } ?>
   </div>

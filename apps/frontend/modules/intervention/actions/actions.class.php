@@ -17,10 +17,14 @@ class interventionActions extends sfActions
     $this->forward404Unless($this->parlementaire);
     $this->interventions = doctrine::getTable('Intervention')->createQuery('i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id);
-    if (preg_match('/(commission|question|loi)$/', $this->type))
+    if (preg_match('/(commission|question|loi)$/', $this->type)) {
       $this->interventions->andWhere('i.type = ?', $this->type);
-//    else if ($this->type != 'all')
-  //    $this->forward404();
+      if ($this->type == 'question')
+        $this->interventions->andWhere('i.fonction NOT LIKE ?', 'président%')
+          ->andWhere('i.nb_mots > ?', 20)
+          ->groupBy('i.seance_id');
+    } else if ($this->type != 'all')
+      $this->forward404();
     $this->interventions->orderBy('i.date DESC, i.timestamp ASC');
   }
   public function executeParlementaireOrganisme(sfWebRequest $request)
@@ -41,6 +45,14 @@ class interventionActions extends sfActions
       ->where('i.id = ?', $request->getParameter('id'))
       ->fetchOne();
     $this->forward404Unless($this->intervention);
+	$this->lois = $this->intervention->getTags(array('is_triple' => true,
+				    'namespace' => 'loi',
+				    'key' => 'numero',
+				    'return'    => 'value'));
+	$this->amdmts = $this->intervention->getTags(array('is_triple' => true,
+				    'namespace' => 'loi',
+				    'key' => 'amendement',
+				    'return'    => 'value'));
   }
   
   public function executeSeance(sfWebRequest $request)
