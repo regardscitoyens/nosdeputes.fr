@@ -1152,7 +1152,7 @@ width: 50%;
 	padding:10px;
 	float:left;
 	width:400px;
-	height:600px;
+	min-height:590px;
 	background-color:#f6f6f6;
 	border : 1px dashed #cecdc2;
 }
@@ -1215,8 +1215,9 @@ width: 50%;
 
 .accueil_plot {
 	float:right;
-	width:460px;
-	margin:0 0px 20px 0;
+	width:440px;
+	margin: 0 10px 20px 10px;
+	border : 1px dashed #cecdc2;
 }
 
 #center {
@@ -1228,7 +1229,7 @@ width: 50%;
 .accueil_nuage_tags {
 	clear:both;
 	width:875px;
-	margin:20px 10px 20px 10px;
+	margin:10px 10px 20px 10px;
 	padding:10px;
 	border : 1px dashed #cecdc2;
 }
