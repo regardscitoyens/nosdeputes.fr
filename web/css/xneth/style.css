@@ -958,3 +958,13 @@ h2 {
 .orateurs_dossier p {
 	background-color:#dbd5c8;
 }
+
+/* Liste députés */
+
+.liste_deputes  {
+	margin: 20px 10px 20px 0;
+}
+
+.liste_deputes p {
+	background-color:#dbd5c8;
+}
