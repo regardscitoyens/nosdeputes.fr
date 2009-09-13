@@ -123,6 +123,11 @@ h2 {
 	font: 8pt Tahoma, Geneva, Arial, Sans-serif;
 }
 
+#loggued {
+	float:right;
+	margin:3px 20px 0 0;
+	}
+
 #signin_remember {
 	width:8px;
 	margin:0 9px 0 0;

@@ -64,7 +64,8 @@ $menu_citoyen = $selectcitoyen;
 					<a href="<?php echo url_for('@inscription') ?>"><button id="bt2"></button></a>
 					</p>
 					</form> 
-<?php }
+					<span id="loggued_top">
+					<?php }
 					if($sf_user->isAuthenticated())
 					{ 
 					  if($sf_user->getAttribute('is_active') == true) { 
@@ -72,6 +73,7 @@ $menu_citoyen = $selectcitoyen;
 					  }
 						echo link_to('Déconnexion','@signout');
 					} ?>
+					</span>
 				</div>
 			</div>
 			<div id="header">
@@ -85,8 +87,7 @@ $menu_citoyen = $selectcitoyen;
 					<div id="item4"><a <?php if ($menu_citoyen) echo 'class="selected" '; ?>href="<?php echo url_for('@list_citoyens')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
 					<div id="item5"><a href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
 				</div>
-                    <?php       $search = strip_tags($sf_request->getParameter('search'));
-?>
+                    <?php       $search = strip_tags($sf_request->getParameter('search'));?>
 				<div class="menu_recherche">
 					<form action="<?php echo url_for('@search'); ?>" method="get">
 						<p>
