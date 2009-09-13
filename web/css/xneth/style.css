@@ -967,4 +967,17 @@ h2 {
 
 .liste_deputes p {
 	background-color:#dbd5c8;
+	font-size: 1.2em;
+}
+
+/* Travaux parlementaires */
+
+.travaux_parlementaires {
+	margin: 20px 10px 20px 0;
+}
+
+.travaux_parlementaires p {
+	background-color:#dbd5c8;
+	font-size: 1.2em;
+	
 }

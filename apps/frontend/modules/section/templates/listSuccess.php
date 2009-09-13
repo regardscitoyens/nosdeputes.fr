@@ -1,5 +1,6 @@
 <div class="temp">
-<h2>Travaux parlementaires :</h2>
+<div class="travaux_parlementaires">
+<p>Travaux parlementaires :</p>
 <ul>
 <?php foreach($sections as $s) if ($s->titre) {
 if (preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $s->titre)) continue;
@@ -9,4 +10,5 @@ if (preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance
   if ($s->nb_interventions > 1) echo 's';
   echo ')</li>';
  } ?></ul>
+ </div>
 </div>
