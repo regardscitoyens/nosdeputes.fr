@@ -13,4 +13,9 @@ class parlementaireComponents extends sfComponents
   public function executeHeader()
   {
   }
+  public function executeDuJour()
+  {
+    $this->p = Doctrine::getTable('Parlementaire')->createQuery('p')->where('fin_mandat IS NULL')->orderBy('rand()')->limit(1)->fetchOne();
+    return ;
+  }
 }

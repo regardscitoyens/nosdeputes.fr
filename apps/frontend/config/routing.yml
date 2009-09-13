@@ -84,7 +84,7 @@ resized_photo_parlementaire:
 
 # Fiche parlementaire et affichages de ses travaux
 parlementaire_random:
-  url: /depute_du_jour
+  url: /au_hasard
   param: {module: parlementaire, action: random}
 # Sommaire des textes ou du travail d'un texte par sections et pour un parlementaire donné
 sections:

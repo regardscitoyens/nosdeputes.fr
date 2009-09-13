@@ -23,6 +23,19 @@ class parlementaireActions extends sfActions
     }
   }
 
+  public static function horizontalFlip(&$img) {
+    $size_x = imagesx($img);
+    $size_y = imagesy($img);
+    $temp = imagecreatetruecolor($size_x, $size_y);
+    $x = imagecopyresampled($temp, $img, 0, 0, ($size_x-1), 0, $size_x, $size_y, 0-$size_x, $size_y);
+    if ($x) {
+      $img = $temp;
+    }
+    else {
+      die("Unable to flip image");
+    }
+  }
+
   public function executePhoto(sfWebRequest $request)
   {
     $rayon = 50; //pour la vignette
@@ -56,8 +69,11 @@ class parlementaireActions extends sfActions
     $width = $work_height*$width/$height;
     $height = $work_height;
     imagedestroy($iorig);
-
     unlink($file);
+
+    if ($parlementaires[0]['autoflip'] ^= $request->getParameter('flip')) {
+      self::horizontalFlip($ih);
+    }
 
 
     $groupe = $parlementaires[0]['groupe_acronyme'];

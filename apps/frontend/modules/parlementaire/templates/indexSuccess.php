@@ -8,6 +8,9 @@
 <li><?php echo link_to('Synthèse globale','@top_global')?></li>
 </ul>
 <div>
+<?php echo include_component('parlementaire', 'duJour'); ?>
+</div>
+<div>
 <?php echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
 </div>
 <div>
