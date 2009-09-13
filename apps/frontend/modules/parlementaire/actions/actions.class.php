@@ -71,10 +71,9 @@ class parlementaireActions extends sfActions
     imagedestroy($iorig);
     unlink($file);
 
-    if ($parlementaires[0]['autoflip'] XOR $request->getParameter('flip')) {
+    if ((isset($parlementaires[0]['autoflip']) && $parlementaires[0]['autoflip']) XOR $request->getParameter('flip')) {
       self::horizontalFlip($ih);
     }
-
 
     $groupe = $parlementaires[0]['groupe_acronyme'];
     if ($groupe && !$parlementaires[0]['fin_mandat']) {
