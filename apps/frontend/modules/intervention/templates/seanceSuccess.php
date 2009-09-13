@@ -6,23 +6,29 @@
 <h1><?php echo $seance->getTitre(0,1); ?></h1>
 <?php $plot = 'seance_hemi_'; endif; ?>
 <div class="orga_dossier">
-<p>Sommaire :</p>
+<h2>Sommaire</h2>
 <ul><?php foreach($seance->getTableMatiere() as $table) : if (!$table['titre']) {continue;} ;?>
 <?php if ($table['section_id'] != $table['id']) echo '<ul>'; ?>
-<li><a href="#table_<?php echo $table['id']; ?>"><?php echo ucfirst($table['titre']); ?></a> <?php if ($table['nb_interventions']) echo '('.link_to('voir le dossier', '@section?id='.$table['id']).') '; ?></li>
+<li><a href="#table_<?php echo $table['id']; ?>"><?php echo ucfirst($table['titre']); ?></a> <?php if ($table['nb_interventions']) echo '<span class="dossier">('.link_to('voir le dossier', '@section?id='.$table['id']).')</span>'; ?></li>
 <?php if ($table['section_id'] != $table['id']) echo '</ul>'; ?>
 <?php endforeach; ?>
 </ul>
 </div>
+<div class="resume">
+<h2>Résumé de la séance</h2>
 <div class="nuage_de_tags">
-<p>Voici la liste des mots clés pour cette séance :</p>
+<strong>Les mots clés de cette séance</strong>
 <ul><?php foreach(array_keys($tags) as $tag) echo "<li>$tag</li>"; ?></ul>
 </div>
+<div class="plot_seance">
 <?php echo include_component('plot', 'groupes', array('plot' => $plot.$seance->id));
  if ($seance->type == 'commission') { ?>
+</div>
+</div>
 <p><?php echo link_to('Voir les députés présents', '@presents_seance?seance='.$seance->id); ?></p>
 <?php } ?>
 </div>
+<h2>La séance</h2>
 <div class="interventions">
   <?php $table = ''; $titre = 0; foreach($interventions as $intervention) : ?>
   <div class="intervention" id="inter_<?php echo $intervention->getMd5(); ?>">
@@ -34,25 +40,25 @@
     $table = $intervention->getSectionId();
   } else $titre = 0;
   if ($titre != 0) {
-    echo '<div class="intervenant" id="table_'.$table.'">';
+    echo '<div id="table_'.$table.'">';
+    echo '<span class="source"><a href="#sommaire">Retour au sommaire</a>&nbsp;-&nbsp<a href="#table_'.$intervention->section_id.'">Permalien</a></span><br/>';
     if ($titre != 2) {
       if ($lasttitre != 1) {
         echo '<h2 class="section">'.link_to(ucfirst($intervention->Section->Section->titre),'@section?id='.$intervention->Section->Section->id);
-	echo '<a href="#sommaire">^^</a>';
 	echo '</h2>';
       }
       if ($intervention->Section->id != $intervention->Section->section_id) {
         echo '<h3 class="sous-section">';
         echo link_to(ucfirst($intervention->Section->titre),'@section?id='.$intervention->Section->id);
-	echo '<a href="#sommaire">^^</a>';
-	echo '</h3>';
+	echo '</h3><br/>';
       }
     }
   } else echo '<div class="intervenant">';
     if ($intervention->hasIntervenant()) {
       $didascalie = 0;
       $perso = $intervention->getIntervenant();
-      if ($titre != 1) echo '<span class="source"><a href="'.url_for("@interventions_seance?seance=$seance->id").'#inter_'.$intervention->getMd5().'">permalink</a></span>';
+      if ($titre != 1) 
+	echo '<span class="source"><a href="#table_'.$intervention->section_id.'">Debut de section</a>&nbsp;-&nbsp;<a href="'.url_for("@interventions_seance?seance=$seance->id").'#inter_'.$intervention->getMd5().'">Permalien</a></span>';
       if ($perso->getPageLink()) {
         if ($photo = $perso->hasPhoto()) {
         echo '<a href="'.url_for($perso->getPageLink()).'"><img alt="Photo de '.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a>';

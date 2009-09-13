@@ -882,8 +882,6 @@ h2 {
 .titre_int_et_seance {
   min-height: 70px;
   background-color: #fff;
-  border: 1px solid #DFDFDF;
-  border-bottom: 1px dashed #DFDFDF;
   padding: 15px;
   font-size: 1.1em;
 }
@@ -896,15 +894,8 @@ h2 {
   font-size: 1.3em;
   color: #6F6F6F;
 }
-.titre_int_et_seance img {
-  float: right;
-  width: 50px;
-  height: 64px;
-  margin-bottom: 7px;
-}
 .interventions {
   background-color: #fff;
-  border: 1px solid #DFDFDF;
   border-top: none;
   padding: 15px;
 }
@@ -915,7 +906,19 @@ h2 {
   margin-bottom: 10px;
   border-bottom: 1px dashed #DFDFDF;
 }
-.intervention img {
+
+.intervention:hover .source {
+  display: block;
+}
+.intervention .source {
+  display: none;
+}
+
+.intervention .section, .intervention .sous-section{
+	      text-align: center;
+}
+
+.intervenant img {
   float: left;
   width: 50px;
   height: 64px;
@@ -938,6 +941,7 @@ h2 {
 }
 .commentaires {
   margin-bottom: 10px;
+  padding-left: 10px;
 }
 .source {
   float: right;
@@ -982,11 +986,15 @@ h2 {
 }
 
 .orga_dossier  {
-	clear:both;
-	width:800px;
-	margin:auto;
 	padding-top:20px;
 }
+
+.orga_dossier li {
+	list-style: none
+}
+
+.orga_dossier li .dossier {display: none;}
+.orga_dossier li:hover .dossier {display: inline;}
 
 .orga_dossier p {
 	background-color:#dbd5c8;
