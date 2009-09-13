@@ -14,19 +14,28 @@ class myTools {
      "10" => "octobre",
      "11" => "novembre",
      "12" => "decembre");
+  
   public static function displayDate($date) {
     if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $date, $match)) {
       if ($match[3] == '1') $match[3] .= 'er';
       return $match[3].' '.self::$num_mois[$match[2]].' '.$match[1];
     } else return $date;
   }
+  
+  public static function displayDateTime($d) { 
+    $date = substr($d,8,2)."/";        // jour 
+    $date = $date.substr($d,5,2)."/";  // mois 
+    $date = $date.substr($d,0,4). " à "; // année 
+    $date = $date.substr($d,11,5);     // heures et minutes 
+    return $date; 
+  } 
 
   public static function getLinkLoi($id) {
     return link_to($id, "http://recherche2.assemblee-nationale.fr/resultats-avancee.jsp?11AUTPropositions=&11AUTRap-enq=&11AUTRap-info=&11AUTRapports=&12AUTPropositions=&12AUTRap-enq=&12AUTRap-info=&12AUTRap-infoLoi=&12AUTRapports=&13AUTComptesRendusReunions=&13AUTComptesRendusReunionsDeleg=&13AUTPropositions=&13AUTRap-info=&13AUTRap-infoLoi=&13AUTRapports=&legislature=13&legisnum=&num_init_11=&num_init_12=&num_init_13=".$id."&searchadvanced=Rechercher&searchtype=&texterecherche=&type=13ProjetsLoi");
   }
 
   public static function clearHtml($s, $authorized_tags = '<strong><i><b><a><em>') {
-	sfLoader::loadHelpers(array('Url'));
+  sfLoader::loadHelpers(array('Url'));
     if ($authorized_tags)
       $s = strip_tags($s, $authorized_tags.'<depute>');
 
@@ -38,13 +47,13 @@ class myTools {
     $s = preg_replace('/(^|\s)(http\S+)/', ' <a rel="nofollow" href="\\2">\\2</a>', $s);
     if (preg_match_all('/(({+|\<depute\>)([^}<]+)(}+|\<\/?depute\>))/i', $s, $matches)) {
       for($i = 0 ; $i < count($matches[0]) ; $i++) {
-	$parlementaire = Doctrine::getTable('Parlementaire')->similarTo($matches[3][$i]);
-	$matches[1][$i] = preg_replace('/\//', '\/', $matches[1][$i]);
-	if ($parlementaire) {
-	  $s = preg_replace('/'.$matches[1][$i].'/', '<a href="'.url_for('@parlementaire?slug='.$parlementaire->slug).'"><img src="'.url_for('@photo_parlementaire?slug='.$parlementaire->slug).'/20" height=20/>'.$parlementaire->nom.'</a>', $s);
-	}else{
-	  $s = preg_replace('/'.$matches[1][$i].'/', '<b class="erreur" style="color:red">'.$matches[2][$i].'</b>', $s);
-	}
+  $parlementaire = Doctrine::getTable('Parlementaire')->similarTo($matches[3][$i]);
+  $matches[1][$i] = preg_replace('/\//', '\/', $matches[1][$i]);
+  if ($parlementaire) {
+    $s = preg_replace('/'.$matches[1][$i].'/', '<a href="'.url_for('@parlementaire?slug='.$parlementaire->slug).'"><img src="'.url_for('@photo_parlementaire?slug='.$parlementaire->slug).'/20" height=20/>'.$parlementaire->nom.'</a>', $s);
+  }else{
+    $s = preg_replace('/'.$matches[1][$i].'/', '<b class="erreur" style="color:red">'.$matches[2][$i].'</b>', $s);
+  }
       }
     }
     $s = '<p>'.$s.'</p>'; 

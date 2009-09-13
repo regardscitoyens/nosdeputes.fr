@@ -1,31 +1,23 @@
 <div class="temp">
 <h1><?php echo $Citoyen->login; ?></h1>
-<?php echo '<img src="'.url_for('@photo_citoyen?slug='.$Citoyen->slug).'" alt="'.$Citoyen->login.'"/>'; ?>
-<?php if ($sf_user->getAttribute('login') and ($sf_user->getAttribute('is_active') == true))
-{
-  if (!empty($Citoyen->activite)) { $activite = $Citoyen->activite; } else { $activite = 'non renseigné'; }
-  echo '<ul><li>Activité : '.$activite.'</li>';
-  if (($sf_user->getAttribute('login') == $Citoyen->login) and empty($Citoyen->nom_circo))
-  { $circonscription = 'Pour ajouter cette information, naviguez jusqu\'a la page de votre député et cliquez sur ICONE '; }
-  else if (!empty($Citoyen->nom_circo)) { $circonscription = $Citoyen->nom_circo.' '.$Citoyen->num_circo; }
-  else { $circonscription = 'non renseigné'; }
-  echo '<li>Circonscription : '.$circonscription.'</li></ul>';
-}
-if (($sf_user->getAttribute('is_active') == false) and ($sf_user->getAttribute('user_id') == $Citoyen->id)) {
-?>
-<p>Si vous ne recevez pas le mail de confirmation, veuillez cliquer sur ce lien : <br />
-<a href="<?php echo url_for('@renvoi_mail_activation_citoyen?user_id='.$Citoyen->id); ?>">Recevoir à nouveau l'email de confirmation</a>
-</p>
+<ul>
+<?php echo '<img src="'.url_for('@photo_citoyen?slug='.$Citoyen->slug).'" alt="Photo de '.$Citoyen->login.'"/>';
+if (!empty($Citoyen->activite)) { $activite = $Citoyen->activite; } else { $activite = 'non renseigné'; }
+  echo '<li>Activité : '.$activite.'</li>';
+  echo '<li>Membre depuis le : '.myTools::displayDate($Citoyen->created_at).'</li>';
+if (!empty($Citoyen->url_site)) { echo '<li><a href="'.$Citoyen->url_site.'" rel="nofollow">Site web</a></li>'; }
+?></ul>
 <?php
-}
 if ($sf_user->getAttribute('user_id') == $Citoyen->id)
 { ?>
-  <p>
-  <?php if ($sf_user->getAttribute('is_active') == true) { ?>
+<p>
   <a href="<?php echo url_for('@edit_citoyen'); ?>">Modifier votre profil</a><br />
-  <?php } ?>
   <a href="<?php echo url_for('@delete_citoyen?token=' . $sf_user->getAttribute('token')) ?>">Supprimer votre compte</a>
-  </p>
+</p>
 <?php
 } ?>
+</div>
+<div class="temp">
+<h2>Ses commentaires</h2>  
+<?php include_component('commentaire', 'showcitoyen', array('id'=>$Citoyen->id)); ?>
 </div>
