@@ -371,7 +371,8 @@ public function executeList(sfWebRequest $request)
 	$i++;
       }
     }
-    if (($_GET['sort'] = $this->getRequestParameter('sort'))) {
+    $this->sort = $this->getRequestParameter('sort');
+    if (($_GET['sort'] = $this->sort)) {
       usort($this->tops, 'parlementaireActions::topSort');
     }
   }
