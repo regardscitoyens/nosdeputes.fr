@@ -101,14 +101,8 @@ class parlementaireActions extends sfActions
 
   public function executeShow(sfWebRequest $request)
   {
-    $slug = $request->getParameter('slug');
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
-      /*->createQuery('p')
-      ->where('p.slug = ?', $slug)
-      ->leftJoin('p.ParlementaireOrganisme po')
-      ->leftJoin('po.Organisme o')
-      ->fetchOne();*/
 
     $this->questions = doctrine::getTable('QuestionEcrite')->createQuery('a')
       ->where('a.parlementaire_id = ?', $this->parlementaire->id)
@@ -127,7 +121,7 @@ class parlementaireActions extends sfActions
       ->groupBy('s.section_id')
       ->orderBy('s.min_date DESC')
       ->fetchArray();
-    $request->setParameter('rss', array(array('link' => '@parlementaire_rss?slug='.$this->parlementaire->slug, 'title'=>'L\'artivité de '.$this->parlementaire->nom),
+    $request->setParameter('rss', array(array('link' => '@parlementaire_rss?slug='.$this->parlementaire->slug, 'title'=>'L\'activité de '.$this->parlementaire->nom),
 					array('link' => '@parlementaire_rss_commentaires?slug='.$this->parlementaire->slug, 'title'=>'Des commentaires portant sur l\'activité de '.$this->parlementaire->nom)
 					));
   }
@@ -143,11 +137,11 @@ public function executeList(sfWebRequest $request)
     if ($this->search) {
       $nb = $this->pager->getNbResults();
       if ($nb == 1) {
-	$p = $this->pager->getResults();
-	return $this->redirect('parlementaire/show?slug='.$p[0]->slug);
+        $p = $this->pager->getResults();
+        return $this->redirect('parlementaire/show?slug='.$p[0]->slug);
       }
       if ($nb == 0) {
-	$this->similars = Doctrine::getTable('Parlementaire')->similarTo($this->search, null, 1);
+        $this->similars = Doctrine::getTable('Parlementaire')->similarTo($this->search, null, 1);
       }
     }
   }
@@ -192,13 +186,15 @@ public function executeList(sfWebRequest $request)
   public function executeListProfession(sfWebRequest $request) {
     $this->exact = 0;
     $this->prof = strip_tags(strtolower($request->getParameter('search')));
-    if ($this->prof == "")
+    if ($this->prof == "") {
       $this->parlementaires = array();
+      $this->citoyens = array();
+    }
     else {
       $query = Doctrine::getTable('Parlementaire')->createQuery('p')
         ->addSelect('p.fin_mandat')
         ->where('p.profession LIKE ?', $this->prof)
-        ->orderBy("p.nom_de_famille ASC");
+        ->orderBy('p.nom_de_famille ASC');
       $this->parlementaires = $query->execute();
       if (count($this->parlementaires) > 0)
         $this->exact = 1;
@@ -206,10 +202,16 @@ public function executeList(sfWebRequest $request)
         $query = Doctrine::getTable('Parlementaire')->createQuery('p')
           ->addSelect('p.fin_mandat')
           ->where('p.profession LIKE ?', '%'.$this->prof.'%')
-          ->orderBy("p.profession ASC")
-          ->addOrderBy("p.nom_de_famille ASC");
+          ->orderBy('p.profession ASC')
+          ->addOrderBy('p.nom_de_famille ASC');
         $this->parlementaires = $query->execute();
       }
+      $query = Doctrine::getTable('Citoyen')->createQuery('c')
+        ->where('c.is_active = true')
+        ->andWhere('c.activite LIKE ?', '%'.$this->prof.'%')
+        ->orderBy('c.activite ASC')
+        ->addOrderBy('c.login');
+      $this->citoyens = $query->execute();
     }
   }
   public function executeListGroupe(sfWebRequest $request) {
