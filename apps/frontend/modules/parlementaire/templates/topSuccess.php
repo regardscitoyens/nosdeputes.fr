@@ -1,3 +1,5 @@
+<div class="liste_deputes">
+<p>Synthèse générale</p>
 <table>
 <tr><th></th><th></th><th colspan="2">Commission</th><th colspan="2">Hémicycle</th><th colspan="3">Amendements</th><th colspan="2">Questions</th></tr>
 <tr><th></th>
@@ -30,3 +32,4 @@ $last = end($tops); $i = 0; foreach(array_keys($last[0]->getTop()) as $key) { $i
 <?php } ?>
 <?php } ?>
 </table>
+</div>
