@@ -19,15 +19,20 @@ class myUser extends sfBasicSecurityUser
     $citoyen->email = $email;
     $citoyen->activation_id = md5(time()*rand());
     $citoyen->save();
-		
+
+    $partial = $action->getUser()->getAttribute('partial');
+
     self::connexion($citoyen, $action);
-    
+
     echo $action->getComponent('mail', 'send', array(
       'subject'=>'Inscription NosDéputés.fr', 
       'to'=>array($citoyen->email), 
-      'partial'=>'inscriptioncom', 
-      'mailContext'=>array('slug' => sfContext::getInstance()->getUser()->getAttribute('slug'), 'activation_id' => $citoyen->activation_id) 
+      'partial'=>$partial, 
+      'mailContext'=>array('slug' => $citoyen->slug, 'activation_id' => $citoyen->activation_id) 
       ));
+
+    $action->getUser()->getAttributeHolder()->remove('partial');
+    $action->getUser()->setFlash('notice', 'Vous allez recevoir un email de confirmation. Pour finaliser votre inscription, veuillez cliquer sur le lien d\'activation contenu dans cet email.');
     return $citoyen->getId();
   }
 
@@ -67,7 +72,6 @@ class myUser extends sfBasicSecurityUser
     $action->getUser()->setAttribute('login', $user->getLogin());
     $action->getUser()->setAttribute('slug', $user->getSlug());
     $action->getUser()->setAuthenticated(true);
-    $action->getUser()->clearCredentials();
     $action->getUser()->addCredentials($user->getRole());
     // save last login
     $user->setLastLogin(date('Y-m-d H:i:s'));

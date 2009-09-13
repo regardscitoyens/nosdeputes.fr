@@ -52,8 +52,9 @@ class citoyenActions extends sfActions
         
         if ($this->form->isValid())
         {
-          myUser::CreateAccount($this->form->getValue('login'), $this->form->getValue('email'), $this);
-          $this->getUser()->setFlash('notice', 'Vous allez recevoir un email de confirmation. Pour finaliser votre inscription, veuillez cliquer sur le lien d\'activation contenu dans cet email.');
+          $this->getUser()->setAttribute('partial', 'inscription');
+          if (!myUser::CreateAccount($this->form->getValue('login'), $this->form->getValue('email'), $this))
+          { return;}
           $this->redirect('@homepage');
         }
       }
@@ -260,7 +261,8 @@ class citoyenActions extends sfActions
         
         if ($this->form->isValid())
         {
-          myUser::SignIn($this->form->getValue('login'), $this->form->getValue('password'), $this->form->getValue('remember'), $this);
+		      $this->partial = 'inscription';
+					myUser::SignIn($this->form->getValue('login'), $this->form->getValue('password'), $this->form->getValue('remember'), $this);
           $this->redirect($request->getReferer());
         }
       }

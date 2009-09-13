@@ -73,6 +73,7 @@ $values['password'], false, $this))) {
       $citoyen_id = $this->getUser()->getAttribute('user_id');
       $is_active = $this->getUser()->getAttribute('is_active');
     } else if ($values['nom'] && $values['email']) {
+      $this->getUser()->setAttribute('partial', 'inscriptioncom');
       if (!($citoyen_id = myUser::CreateAccount($values['nom'], $values['email'], $this)))
 	return ;
       $is_active = false;
