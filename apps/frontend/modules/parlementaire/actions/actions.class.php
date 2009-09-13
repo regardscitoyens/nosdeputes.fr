@@ -71,7 +71,7 @@ class parlementaireActions extends sfActions
     imagedestroy($iorig);
     unlink($file);
 
-    if ($parlementaires[0]['autoflip'] ^= $request->getParameter('flip')) {
+    if ($parlementaires[0]['autoflip'] XOR $request->getParameter('flip')) {
       self::horizontalFlip($ih);
     }
 

@@ -13,25 +13,7 @@
       <?php echo include_component('plot', 'parlementaire', array('parlementaire' => $parlementaire, 'options' => array('plot' => 'total', 'questions' => 'on', 'link' => 'on'))); ?>
   </div>
   <div class="barre_activite">
-    <h2>Activité parlementaire : </h2>
-    <ul>
-      <li title="Interventions en séance"><a href="#"><?php echo image_tag('../css/'.$style.'/images/seance.png', 'alt="Interventions en séance"'); 
-      echo ' : '.($top['hemicycle_interventions']['value']+$top['hemicycle_invectives']['value']);
-      ?></a></li>
-      <li title="Interventions en commissions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Interventions en commissions"'); 
-      echo ' : '.($top['commission_interventions']['value']);
-      ?></a></li>
-      <li title="Rapports"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rapport.png', 'alt="Rapports"'); 
-      echo ' : ?';
-      ?></a></li>
-      <li title="Propositions de loi (auteur)"><a href="#"><?php echo image_tag('../css/'.$style.'/images/balance.png', 'alt="Propositions de loi (auteur)"');
-      echo ' : ?';
-      ?></a></li>
-      <li title="Questions"><a href="#"><?php echo image_tag('../css/'.$style.'/images/question.png', 'alt="Questions"');
-      echo ' : '.($top['questions_ecrites']['value']+$top['questions_orales']['value']);
-      ?></a></li>
-      <li><span class="barre_date"><?php if ($parlementaire->fin_mandat == null) echo "Depuis le&nbsp;:"; else echo "Mandat clos accompli du"; ?> <?php echo myTools::displayDate($parlementaire->debut_mandat); if ($parlementaire->fin_mandat != null) echo " au ".myTools::displayDate($parlementaire->fin_mandat); ?></span></li>
-    </ul>
+ <?php include_partial('top', array('parlementaire'=>$parlementaire)); ?>
   </div>
   <div class="stopfloat"></div>
 </div>
@@ -42,10 +24,8 @@
     <div class="b_d_cont">
       <div class="b_d_infos">
 		<div class="meilleur_pire">
-		<?php include_partial('top', array('parlementaire'=>$parlementaire)); ?>
 		</div>
 		<br /><h3> Informations :</h3>
-      <p><br />Né le ... (... ans) à ... (...)</p>
     <ul>
 <?php if ($parlementaire->groupe_acronyme != "") : ?>
       <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getgroupe()->getFonction(); ?>)</li>
