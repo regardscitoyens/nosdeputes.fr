@@ -1144,3 +1144,86 @@ width: 50%;
 .internal_tag_cloud{
   margin: auto;
 }
+
+/* accueil */
+
+.texte_presentation_gauche {
+	margin: 20px 10px 20px 10px;
+	padding:10px;
+	float:left;
+	width:400px;
+	height:600px;
+	background-color:#f6f6f6;
+	border : 1px dashed #cecdc2;
+}
+
+.menu_accueil_droite {
+	margin: 20px 10px 20px 10px;
+	float:right;
+	width:430px;
+	border : 1px dashed #cecdc2;
+	padding:5px;
+}
+
+.accueil_liste_liens {
+	float:left;
+	width:200px;
+	margin:0 20px 20px 0;
+	}
+	
+.accueil_liste_liens  ul {
+	margin:0;
+	padding:0;
+	list-style-type:none;
+	list-style:url('images/right.png');
+}
+	
+.accueil_liste_liens  li{
+	padding:7px 0 7px 5px;
+	margin:0 0 0 20px;
+}
+	#couleur1 {
+	background-color:#eee;
+	}
+	
+	#couleur2 {
+	background-color:#f7f7f7;
+	}
+	
+.accueil_liste_liens  h2 {
+	background-color:#dbd5c8;
+	font-size: 1.2em;
+	margin:0 0 10px 0;
+}
+
+.accueil_deputes_jour  h3 {
+	background-color:#dbd5c8;
+	font-size: 1.2em;
+	margin:0 0 10px 0;
+}
+
+.accueil_deputes_jour {
+	float:left;
+	width:210px;
+	text-align:center;
+	background:#eee;
+}
+
+.accueil_plot {
+	float:right;
+	width:460px;
+	margin:0 0px 20px 0;
+}
+
+#center {
+	width:390px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+.accueil_nuage_tags {
+	clear:both;
+	margin:20px;
+	padding:10px;
+	border : 1px dashed #cecdc2;
+}
