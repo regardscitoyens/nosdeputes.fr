@@ -49,11 +49,11 @@ class myUser extends sfBasicSecurityUser
       $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
       return;
     }
-		
+    
     self::connexion($user, $action);
-		
+    
     $action->getUser()->setFlash('notice', 'Vous vous êtes connecté avec succès.');
-		
+    
     if($remember)
     {
       $secret_key = sfConfig::get('app_secret_key');
@@ -63,11 +63,11 @@ class myUser extends sfBasicSecurityUser
     }
     return $user->id;
   }
-	
-	protected static function connexion($user, $action)
-	{
-	  // signin
-		$action->getUser()->setAttribute('user_id', $user->getId());
+  
+  protected static function connexion($user, $action)
+  {
+    // signin
+    $action->getUser()->setAttribute('user_id', $user->getId());
     $action->getUser()->setAttribute('is_active', $user->getIsActive());
     $action->getUser()->setAttribute('login', $user->getLogin());
     $action->getUser()->setAttribute('slug', $user->getSlug());
@@ -76,6 +76,6 @@ class myUser extends sfBasicSecurityUser
     // save last login
     $user->setLastLogin(date('Y-m-d H:i:s'));
     $user->save();
-	}
+  }
 
 }

@@ -1,34 +1,10 @@
 <?php
-class MotdepasseForm extends CitoyenForm
+class MotdepasseForm extends sfForm
 {
   public function configure()
   {
     $this->widgetSchema->setNameFormat('citoyen[%s]');
     
-    // Enleve les widgets qu'on ne veut pas montrer
-    unset(
-      $this['id'], 
-      $this['login'], 
-      $this['email'], 
-      $this['activite'], 
-      $this['url_site'], 
-      $this['naissance'], 
-      $this['sexe'], 
-      $this['employe_an'], 
-      $this['travail_pour'], 
-      $this['nom_circo'], 
-      $this['num_circo'], 
-      $this['photo'], 
-      $this['is_active'], 
-      $this['activation_id'], 
-      $this['role'], 
-      $this['last_login'], 
-      $this['created_at'], 
-      $this['updated_at'], 
-      $this['slug']
-    );
-    
-    // verif mot de passe avec confirmation
     $this->widgetSchema['password'] = new sfWidgetFormInputPassword();
     $this->widgetSchema['password_bis'] = new sfWidgetFormInputPassword();
     

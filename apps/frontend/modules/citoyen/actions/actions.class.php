@@ -115,6 +115,35 @@ class citoyenActions extends sfActions
     else { $this->redirect('@signin'); }
   }
   
+  public function executeEditpassword(sfWebRequest $request)
+  {
+    if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') == true) {
+    
+      $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
+    
+      $this->form = new MotdepasseForm();
+      
+      if ($request->isMethod('post'))
+      {
+        $this->form->bind($request->getParameter('citoyen'));
+        
+        if ($this->form->isValid())
+        {
+          if ($this->form->getvalue('password') != $this->form->getvalue('password_bis'))
+          {
+            $this->getUser()->setFlash('error', 'Les 2 champs doivent être identiques');
+            return;
+          }
+          $user->password = $this->form->getvalue('password');
+          $user->save();
+          $this->getUser()->setFlash('notice', 'Vous avez modifié votre mot de passe avec succès');
+          $this->redirect('@citoyen?slug='.$this->getUser()->getAttribute('slug'));
+        }
+      }
+    }
+    else { $this->redirect('@signin'); }
+  }
+  
   public function executeUploadavatar(sfWebRequest $request)
   {
     if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') == true) {
@@ -186,12 +215,11 @@ class citoyenActions extends sfActions
       
       if ($user->is_active == false and $user->activation_id == $this->activation_id)
       {
-        $this->form = new MotdepasseForm($user);
+        $this->form = new MotdepasseForm();
         
-        if ($request->isMethod('put'))
+        if ($request->isMethod('post'))
         {
-          $values = $request->getParameter('citoyen');
-          $this->form->bind($values);
+          $this->form->bind($request->getParameter('citoyen'));
           
           if ($this->form->isValid())
           {
@@ -200,7 +228,7 @@ class citoyenActions extends sfActions
               $this->getUser()->setFlash('error', 'Les 2 champs doivent être identiques');
               return;
             }
-            $user->password = sha1($this->form->getvalue('password'));
+            $user->password = $this->form->getvalue('password');
             $user->is_active = true;
             $user->activation_id = null;
             $user->save();
@@ -217,7 +245,7 @@ class citoyenActions extends sfActions
             }
             else
             {
-              myUser::SignIn($this->getUser()->getAttribute('login'), $user->password, false, $this) ;
+              myUser::SignIn($user->getLogin(), $this->form->getvalue('password'), false, $this) ;
               $this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès');
               $this->redirect('@citoyen?slug='.$user->slug);
             }
@@ -266,7 +294,7 @@ class citoyenActions extends sfActions
         
         if ($this->form->isValid())
         {
-					myUser::SignIn($this->form->getValue('login'), $this->form->getValue('password'), $this->form->getValue('remember'), $this);
+          myUser::SignIn($this->form->getValue('login'), $this->form->getValue('password'), $this->form->getValue('remember'), $this);
           $this->redirect($request->getReferer());
         }
       }

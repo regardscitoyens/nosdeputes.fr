@@ -200,6 +200,9 @@ citoyen:
 edit_citoyen:
   url: /profil/edition
   param: {module: citoyen, action: edit}
+editpassword_citoyen:
+  url: /profil/edition/password
+  param: {module: citoyen, action: editpassword}
 upload_avatar:
   url: /profil/edition/upload
   param: {module: citoyen, action: uploadavatar}
