@@ -7,6 +7,14 @@ class InterventionComponents extends sfComponents
   }
   public function executeParlementaireQuestion()
   {
+    $this->questions = doctrine::getTable('Intervention')->createQuery('i')
+      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('i.type = ?', 'question')
+      ->andWhere('i.fonction NOT LIKE ?', 'président%')
+      ->andWhere('i.nb_mots > ?', 20)
+      ->groupBy('i.seance_id')
+      ->orderBy('i.date DESC, i.timestamp ASC')
+      ->execute();
   }
   public function executePagerInterventions()
   {

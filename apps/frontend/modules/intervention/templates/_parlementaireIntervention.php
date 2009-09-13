@@ -72,13 +72,13 @@ if ($intervention->hasIntervenant()) {
  }
   echo '<p>'.$p_inter.'</p>';
 ?></div>
-  <?php if (isset($complete)) { ?>
     <div class="contexte">
-      <p><?php echo link_to("Voir l'intervention dans son contexte", $link_seance); ?></p>
+      <p><?php echo link_to("Voir dans le contexte", $link_seance); ?><?php if (!isset($complete)) echo ' &mdash; '.link_to('Voir les commentaires', '/intervention/'.$intervention->id.'#commentaires'); ?></p>
     </div>
-    <?php
-    echo include_component('commentaire', 'show', array('object'=>$intervention));
-    echo include_component('commentaire', 'form', array('object'=>$intervention));
-    ?>
+    <?php if (isset($complete)) { ?>
+    <div id="commentaires">
+<?php echo include_component('commentaire', 'show', array('object'=>$intervention));
+      echo include_component('commentaire', 'form', array('object'=>$intervention)); ?>
+    </div>
   <?php } ?>
   </div>
