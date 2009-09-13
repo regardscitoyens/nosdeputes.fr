@@ -266,7 +266,6 @@ class citoyenActions extends sfActions
         
         if ($this->form->isValid())
         {
-		      $this->partial = 'inscription';
 					myUser::SignIn($this->form->getValue('login'), $this->form->getValue('password'), $this->form->getValue('remember'), $this);
           $this->redirect($request->getReferer());
         }
