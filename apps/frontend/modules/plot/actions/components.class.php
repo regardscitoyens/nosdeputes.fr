@@ -158,7 +158,7 @@ class plotComponents extends sfComponents
       $this->presences_moy = array();
       $groupes = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
       $this->time = 'lastyear';
-      foreach($this->labels as $groupe) {
+      foreach($this->labels as $groupe) if ($groupes[$groupe]) {
         $this->presences[] = $groupes[$groupe]['semaine']['somme'];
         $this->presences_moy[] = $groupes[$groupe]['semaine']['somme']/$groupes[$groupe]['groupe']['nb'];
         $this->interventions[] = $groupes[$groupe]['hemicycle_interventions']['somme'];
