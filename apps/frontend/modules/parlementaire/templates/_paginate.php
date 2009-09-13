@@ -9,7 +9,7 @@
         <?php echo link_to($page, $link.'page='.$page); ?>
       <?php endif; ?>
     <?php endforeach; ?>
-    <?php echo link_to('> ', $link.'page='.$pager->getNextPage()); ?>
-    <?php echo link_to('>> ', $link.'page='.$pager->getLastPage()); ?>
+    <?php if ($pager->getPage() != $pager->getLastPage()) echo link_to('> ', $link.'page='.$pager->getNextPage()); ?>
+    <?php if ($pager->getPage() != $pager->getLastPage()) echo link_to('>> ', $link.'page='.$pager->getLastPage()); ?>
 </div>
 <?php endif; ?>
