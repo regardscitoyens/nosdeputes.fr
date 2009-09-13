@@ -1,7 +1,13 @@
 <div class="temp">
-<h1><?php if ($section->getSection()) 
+   <h1><?php 
+   $titre = '';
+if ($section->getSection()) {
   echo link_to($section->getSection()->getTitre(), '@section?id='.$section->section_id).'</h1><h2>';
+  $titre = ', '.$section->getSection()->getTitre();
+ }
 echo $section->titre;
+$titre = $section->titre.$titre;
+$sf_response->setTitle($titre);
 if ($section->getSection()) echo '</h2>';
 else echo '</h1>';
 ?>
@@ -13,20 +19,24 @@ else echo '</h1>';
 </span>
 <?php } ?>
 </div>
-
-<div class="camembert">
+<div class="resume">
+<div class="right">
+<div class="nuage_de_tags">
+<h3>Mots-clés de cette section</h3>
+  <?php echo include_component('tag', 'tagcloud', array('hide'=>1, 'tagquery' => $qtag, 'model' => 'Intervention', 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>
+</div>
+</div>
+<div class="left">
+<div class="plot_section">
 <?php echo include_component('plot', 'groupes', array('plot' => 'section_'.$section->id)); ?>
 </div>
-
-<div class="nuage_de_tags">
-<p>Mots-clés de cette section :</p>
-<?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>
+</div>
 </div>
 
 <?php $sommaire = $section->getSubSections();
 if (count($sommaire)) { ?>
-<div class="orga_dossier">
-<p>Organisation du dossier :</p>
+<div class="orga_dossier right">
+<h2>Organisation du dossier</h2>
 <ul>
 <?php foreach($section->getSubSections() as $subsection) :
 if ($subsection->id != $section->id) : ?>
@@ -35,17 +45,18 @@ if ($subsection->id != $section->id) : ?>
 </ul>
 </div>
 <?php } ?>
+<div class="left">
 <div class="seances_dossier">
-<p>Toutes les séances consacrées à ce dossier :</p>
+<h2>Toutes les séances consacrées à ce dossier</h2>
 <ul>
 <?php foreach($section->getSeances() as $seance) : ?>
 <li><?php echo link_to($seance->getTitre(), '@interventions_seance?seance='.$seance->id.'#table_'.$section->id); ?></li>
 <?php endforeach; ?>
 </ul>
 </div>
-
 <div class="orateurs_dossier">
-<p>Tous les orateurs sur ce dossier :</p>
+<h2>Tous les orateurs sur ce dossier :</h2>
 <?php echo include_component('parlementaire', 'list', array('parlementairequery' => $ptag, 'route'=>'@parlementaire_texte?id='.$section->id.'&slug=')); ?>
+</div>
 </div>
 </div>

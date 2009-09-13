@@ -19,7 +19,7 @@
 <div class="resume">
 <h2>Résumé de la séance</h2>
 <div class="nuage_de_tags">
-<strong>Les mots clés de cette séance</strong>
+<h3>Les mots clés de cette séance</h3>
 <ul><?php foreach(array_keys($tags) as $tag) echo "<li>$tag</li>"; ?></ul>
 </div>
 <div class="plot_seance">

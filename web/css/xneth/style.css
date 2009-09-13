@@ -953,15 +953,11 @@ h2 {
 	margin:20px 50px 20px 30px;
 }
 
-.camembert {
+.titre_int_et_seance .nuage_de_tags {
 	float:right;
-	width:400px;
-	margin-right:40px;
-	overflow:hidden;
 }
 
 .nuage_de_tags {
-	float:left;
 	width:260px;
 	min-height:172px;
 	margin:5px 0 0 40px;
@@ -970,10 +966,20 @@ h2 {
 	background-color: #f7f7f7;
 	border: 1px solid #9a9a9a;
 }
+.nuage_de_tags .hide {
+	       color: #f7f7f7;
+	       font-size: 6px;
+}
+.nuage_de_tags h3 {
+	padding: 0px;
+	margin: 0 0 10px;
+}
 
-.plot_seance {
-	padding-right: 300px;
+.plot_section, .plot_seance {
 	text-align: center;
+}
+.titre_int_et_seance .plot_section, .titre_int_et_seance .plot_seance {
+	padding-right: 300px;
 }
 .nuage_de_tags p{
 	background-color:#dbd5c8;
@@ -996,7 +1002,6 @@ h2 {
 
 .seances_dossier {
 	clear:both;
-	width:800px;
 	margin:auto;
 	padding-top:15px;
 }
@@ -1007,7 +1012,6 @@ h2 {
 
 .orateurs_dossier  {
 	clear:both;
-	width:800px;
 	margin:auto;
 	padding-top:10px;
 	padding-bottom:20px;
@@ -1077,3 +1081,15 @@ h2 {
 	background-color: #f7f7f7;
 }
 .synthese td, .synthese th { padding: 0px; margin: 0px; text-align: center}
+
+.left {
+width: 50%;
+float: left;
+}
+.right{
+float: right;
+width: 50%;
+}
+.internal_tag_cloud{
+	margin: auto;
+}
