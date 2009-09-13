@@ -963,18 +963,18 @@ h2 {
 	margin:20px 50px 20px 30px;
 }
 
-.camenbert {
-	float:left;
+.camembert {
+	float:right;
 	width:400px;
-	margin-left:30px;
+	margin-right:40px;
 	overflow:hidden;
 }
 
 .nuage_de_tags {
-	float:right;
+	float:left;
 	width:382px;
 	min-height:172px;
-	margin:5px 50px 0 0;
+	margin:5px 0 0 40px;
 	padding:5px;
 	text-align:justify;
 	background-color: #f7f7f7;
