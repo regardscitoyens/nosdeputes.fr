@@ -25,6 +25,8 @@ if ($plot == 'total') { $DataSetBis = new xsPData();
   $Data3 = $DataSet3->GetData(); $DataDescr3 = $DataSet3->GetDataDescription();
 }
 $DataSetLegend = new xsPData();
+$DataSetLegend->AddPoint(array(), " ");
+$DataSetLegend->AddSerie(" ");
 foreach($labels as $groupe) {
   $DataSetLegend->AddPoint(array(), $groupe);
   $DataSetLegend->AddSerie($groupe);
@@ -34,11 +36,11 @@ $DataDescrLegend = $DataSetLegend->GetDataDescription();
 $filename = 'repartition-groupes';
 $xsize = 390;
 if ($plot == 'total') {
-  $xtitre = 25; $ysize = 360; $ylegend = 145; $x0 = 140; $y0 = 115;
+  $xtitre = 68; $ysize = 360; $ylegend = 145; $x0 = 140; $y0 = 112;
   $duree = "l'année passée";
   $shortduree = 'annee';
   $filename .= '-'.$shortduree.'.png';
-  $titre = 'du travail parlementaire par groupe';
+  $titre = 'du travail parlementaire';
 } else {
   $xtitre = 25; $ysize = 190; $ylegend = 50; $x0 = 155; $y0 = 85;
   $filename .= '-'.$plot.'.png';
@@ -77,12 +79,20 @@ $x0 += 150;
 if (isset($Data3))
   $Test->drawPieGraph($Data3,$DataDescr3,$x0,$y0,55,PIE_PERCENTAGE,TRUE,65,15);
 $Test->xsSetFontProperties("tahoma.ttf",9);
+$Test->setColorPalette(0,255,255,255);
+$Test->setColorPalette(1,200,200,200);
+$Test->setColorPalette(2,30,30,200);
+$Test->setColorPalette(3,30,190,255);
+$Test->setColorPalette(4,255,50,190);
+$Test->setColorPalette(5,255,30,30);
 $Test->drawLegend(15,$ylegend,$DataDescrLegend,255,255,255);
+$Test->xsSetFontProperties("tahoma.ttf",10);
+$Test->drawTitle(20,$ylegend+13,'Groupes',0,0,0);
 
 $Test->xsSetFontProperties("tahoma.ttf",12);
 $Test->drawTitle($xtitre,25,'Répartition '.$titre,50,50,50);
 if ($plot == 'total')
-  $Test->drawTitle(90,40,'au cours de '.$duree,50,50,50);
+  $Test->drawTitle(95,46,'au cours de '.$duree,50,50,50);
 $Test->xsSetFontProperties("tahoma.ttf",9);
 if ($plot == 'total') {
   $Test->drawTitle(105,190,'Semaines de',50,50,50);
@@ -104,7 +114,7 @@ if ($plot == 'total') {
 }
 if ($plot == 'total') {
   $Test->xsSetFontProperties("tahoma.ttf",11);
-  $Test->drawTitle(20,340,"Travail moyen d'un député par groupe parlementaire",50,50,50);
+  $Test->drawTitle(120,340,"Travail moyen d'un député",50,50,50);
 }
 $Test->xsRender($filename);
 if ($plot == 'total')
