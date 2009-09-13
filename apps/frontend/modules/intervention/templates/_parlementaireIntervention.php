@@ -73,7 +73,7 @@ if ($intervention->hasIntervenant()) {
   echo '<p>'.$p_inter.'</p>';
 ?></div>
     <div class="contexte">
-      <p><?php echo link_to("Voir dans le contexte", $link_seance); ?><?php if (!isset($complete)) echo ' &mdash; '.link_to('Voir les commentaires', '/intervention/'.$intervention->id.'#commentaires'); ?></p>
+    <p><?php echo link_to("Voir dans le contexte", $link_seance); ?><?php if (!isset($complete) && $intervention->nb_commentaires) echo ' &mdash; '.link_to('Voir les commentaires', '/intervention/'.$intervention->id.'#commentaires'); ?></p>
     </div>
     <?php if (isset($complete)) { ?>
     <div id="commentaires">
