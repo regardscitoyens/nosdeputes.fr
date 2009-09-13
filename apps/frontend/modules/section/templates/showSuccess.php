@@ -14,7 +14,7 @@ else echo '</h1>';
 <?php } ?>
 </div>
 
-<div class="camenbert">
+<div class="camembert">
 <?php echo include_component('plot', 'groupes', array('plot' => 'section_'.$section->id)); ?>
 </div>
 
@@ -23,6 +23,8 @@ else echo '</h1>';
 <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>
 </div>
 
+<?php $sommaire = $section->getSubSections();
+if (count($sommaire)) { ?>
 <div class="orga_dossier">
 <p>Organisation du dossier :</p>
 <ul>
@@ -32,7 +34,7 @@ if ($subsection->id != $section->id) : ?>
 <?php endif; endforeach;?>
 </ul>
 </div>
-
+<?php } ?>
 <div class="seances_dossier">
 <p>Toutes les séances consacrées à ce dossier :</p>
 <ul>
