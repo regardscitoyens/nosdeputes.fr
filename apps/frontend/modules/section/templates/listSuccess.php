@@ -1,4 +1,3 @@
-<div class="temp">
 <div class="travaux_parlementaires">
 <h1><?php echo $titre; ?></h1>
 <ul>
@@ -11,4 +10,3 @@ if (preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance
   echo ')</li>';
  } ?></ul>
  </div>
-</div>
