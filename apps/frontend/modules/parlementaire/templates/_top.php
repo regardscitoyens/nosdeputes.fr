@@ -52,18 +52,23 @@ if ($parlementaire->fin_mandat)
 <ul><?php
 foreach(array_keys($images) as $k) {
   $couleur = 'gris';
-  if ($rank && $top[$k]['rank'] <= 150) 
+  $titre = $titres[$k];
+  if ($rank && $top[$k]['rank'] <= 150) {
     $couleur = 'vert';
-  else if ($rank && $top[$k]['rank'] >= $top[$k]['max_rank'] - 150) 
+    $titre .=' (fait partie des 150 premiers)';
+  }
+  else if ($rank && $top[$k]['rank'] >= $top[$k]['max_rank'] - 150) {
     $couleur = 'rouge';
+    $titre .= ' (fait partie des 150 derniers)';
+  }
   echo '<li';
   echo $couleur2style[$couleur];
   echo'>';
   if ($rank)
-    echo '<a href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug).'">';
+    echo '<a title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug).'">';
   echo '<img src="/images/xneth/';
   printf($images[$k], $couleur);
-  echo '" alt="'.$titres[$k].'">';
+  echo '" alt="'.$titre.'" title="'.$titre.'">';
   echo ' : ';
   if (isset($top[$k]['value']))
     echo $top[$k]['value'];
