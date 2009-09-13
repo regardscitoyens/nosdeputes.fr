@@ -15,17 +15,17 @@ if ($rss) {
  }
 $uri = strip_tags($_SERVER['REQUEST_URI']);
 $selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selectamdmt = "";$selectquestion = ""; $selectcitoyen = '';
-if ( preg_match('/\/circonscription\//', $uri))
+if ( preg_match('/\/circonscription[\/\?]/', $uri))
   $selectcirco = ' selected="selected"';
- else  if ( preg_match('/\/profession\//', $uri))
+ else  if ( preg_match('/\/profession[\/\?]/', $uri))
    $selectprof = ' selected="selected"';
- else if ( preg_match('/\/(interventions?|seance|dossiers?)\//',$uri))
+ else if ( preg_match('/\/(interventions?|seance|dossiers?)[\/\?]/',$uri))
    $selectinterv = ' selected="selected"';
- else if ( preg_match('/\/amendement\//', $uri))
+ else if ( preg_match('/\/amendements?[\/\?]/', $uri))
    $selectamdmt = ' selected="selected"';
- else if ( preg_match('/\/question\//', $uri))
+ else if ( preg_match('/\/question[\/\?]/', $uri))
    $selectquestion = ' selected="selected"';
- else if (preg_match('/(\/citoyens?\/?|\/compterendu)/', $uri))
+ else if (preg_match('/(\/citoyens?[\/\?]?|\/compterendu)/', $uri))
    $selectcitoyen = 1;
  else if ( !preg_match('/\/(faq|$)/i', $uri)) 
    $selectdepute = ' selected="selected"';
