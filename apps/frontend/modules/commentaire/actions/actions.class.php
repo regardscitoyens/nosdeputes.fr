@@ -34,7 +34,7 @@ class commentaireActions extends sfActions
       return $this->redirect($redirect_url[$this->type].$this->id);
     }
     if (!$request->isMethod('post')) {
-      $this->getUser()->setFlash('error', 'Oups erreur de routage');
+      $this->getUser()->setFlash('error', 'Un problème technique est survenu');
       return $this->redirect($redirect_url[$this->type].$this->id);
     }
 		
