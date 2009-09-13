@@ -36,7 +36,7 @@ $top = $parlementaire->getTop();
 if (!$top)
   return ;
 if (!$parlementaire->fin_mandat) {
-  echo '<h2>Activités parlementaires <small>(12 derniers mois) :</small></h3>';
+  echo '<h2>Activité parlementaire <small>(12 derniers mois) :</small></h3>';
   $rank = 1;
  } else {
   $rank = 0;
