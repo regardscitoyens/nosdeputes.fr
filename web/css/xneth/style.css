@@ -968,6 +968,7 @@ h2 {
 	min-height:172px;
 	margin:5px 50px 0 0;
 	padding:5px;
+	text-align:justify;
 	background-color: #f7f7f7;
 	border: 1px solid #9a9a9a;
 }
