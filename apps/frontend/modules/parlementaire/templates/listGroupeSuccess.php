@@ -18,3 +18,4 @@ if (!preg_match('/[\&\?]$/', $uri)) {
   }
 }
 include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>$uri));
+endif;
