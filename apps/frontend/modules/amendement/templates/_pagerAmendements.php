@@ -1,5 +1,4 @@
-<div class="temp">
-<div class="amendements">
+<div class="interventions">
 <?php $nResults = $pager->getNbResults();
   if ($nResults == 0) echo 'Aucun'; else echo $nResults; ?> amendement<?php if ($nResults > 1) echo 's'; ?> trouvé<?php if ($nResults > 1) echo 's';
   if (isset($_GET['search'])) {
@@ -16,7 +15,7 @@ else if (isset($lois)) {
   foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ';
 } ?>
 </div>
-<div class="amendements">
+<div class="interventions">
 <?php foreach($pager->getResults() as $i) {
   $args = array('amendement' => $i);
   if (isset($highlight))
@@ -51,4 +50,3 @@ if (!preg_match('/[\&\?]$/', $uri)) {
     <?php echo link_to('>> ', $uri.'page='.$pager->getLastPage()); ?>
 </div>
 <?php endif; ?>
-</div>

@@ -1,9 +1,9 @@
 <?php use_helper('Text') ?>
   <div class="amendement" id="<?php echo $amendement->id; ?>">
     <div class="info">
-    <p><?php echo myTools::displayDate($amendement->date); ?> <strong>Loi N° <?php echo $amendement->texteloi_id; ?> : <?php echo link_to($amendement->getTitreNoLink(), 'amendement/show?id='.$amendement->id); ?></strong> (<?php echo $amendement->sort; ?>)<br>
-    <?php echo truncate_text($amendement->getSignataires(), 120); ?></p>
-    <p class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></p>
+    <strong>
+    <p><?php echo link_to(myTools::displayDate($amendement->date).' &mdash; Texte de loi N° '.$amendement->texteloi_id.'&nbsp;: '.$amendement->getTitreNoLink().' ('.$amendement->sort.')', 'amendement/show?id='.$amendement->id); ?><br>
+    <?php echo truncate_text($amendement->getSignataires(), 120); ?></p></strong>
     </div>
     <div class="texte_amendement"><?php
 $amdmt = preg_replace('/<br\/?>|<\/?p>|\&[^\;]+\;/i', ' ', $amendement->getTexte(0)." Exposé sommaire : ".$amendement->getExpose());
