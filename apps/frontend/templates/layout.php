@@ -64,7 +64,7 @@ $menu_citoyen = $selectcitoyen;
 					<a href="<?php echo url_for('@inscription') ?>"><button id="bt2"></button></a>
 					</p>
 					</form> 
-					<span id="loggued_top">
+					<div id="loggued_top">
 					<?php }
 					if($sf_user->isAuthenticated())
 					{ 
@@ -73,7 +73,7 @@ $menu_citoyen = $selectcitoyen;
 					  }
 						echo link_to('Déconnexion','@signout');
 					} ?>
-					</span>
+					</div>
 				</div>
 			</div>
 			<div id="header">

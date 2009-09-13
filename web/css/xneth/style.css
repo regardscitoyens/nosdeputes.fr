@@ -126,6 +126,7 @@ h2 {
 #loggued_top {
 	float:right;
 	margin:3px 20px 0 0;
+	padding-right:10px;
 	}
 
 #signin_remember {

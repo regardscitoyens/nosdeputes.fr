@@ -1,4 +1,4 @@
-<div class="liste_deputes">
+<div class="liste_deputes_tags">
 <p>Synthèse générale</p>
 <table>
 <tr><th></th><th></th><th colspan="2">Commission</th><th colspan="2">Hémicycle</th><th colspan="3">Amendements</th><th colspan="2">Questions</th></tr>
