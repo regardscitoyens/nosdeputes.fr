@@ -402,7 +402,7 @@ h2 {
 	float:right;
 }
 
-/* Carte des députés */
+/* Carte des dï¿½putï¿½s */
 .conteneur_resultat_dep  {
   float: left;
   width: 435px;
@@ -421,7 +421,7 @@ h2 {
 }
 
 
-/* Début fiche député */
+/* Dï¿½but fiche dï¿½putï¿½ */
 .fiche_depute {
   width: 938px;
   overflow:hidden;
@@ -871,9 +871,9 @@ h2 {
   margin-left: 0;
   padding-left: 0;
 }
-/* Fin fiche député */
+/* Fin fiche dï¿½putï¿½ */
 
-/* Séances */
+/* Sï¿½ances */
 .titre_int_et_seance {
   min-height: 70px;
   background-color: #fff;
@@ -947,7 +947,7 @@ h2 {
 	background: transparent url(/images/loading.gif) no-repeat scroll 0 0
 }
 
-/* Dossiers législatifs */
+/* Dossiers lï¿½gislatifs */
 
 .numeros_textes {
 	border-bottom: 1px solid #b3aea4;
@@ -1010,7 +1010,7 @@ h2 {
 	background-color:#dbd5c8;
 }
 
-/* Liste députés */
+/* Liste dï¿½putï¿½s */
 
 .liste_deputes  {
 	margin: 20px 10px 20px 0;
@@ -1021,7 +1021,7 @@ h2 {
 	font-size: 1.2em;
 }
 
-/* Liste députés */
+/* Liste dï¿½putï¿½s */
 
 .liste_deputes_tags  {
 	margin: 20px 10px 30px 0;
@@ -1067,6 +1067,6 @@ h2 {
 }
 
 .tr_odd{
-	background-color: #fafafa;
+	background-color: #f7f7f7;
 }
 .synthese td, .synthese th { padding: 0px; margin: 0px; text-align: center}

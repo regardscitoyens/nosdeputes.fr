@@ -39,7 +39,7 @@ th,td {border-right: 1px #FFFFFF solid;}
 .tr_odd td.qo { border-right: 0px #999999 solid;}
 </style>
 <h1>Synthèse générale des députés ayant au moins 6 mois de mandat</h1>
-<h2>Sur les 12 derniers</h2>
+<h2>sur les 12 derniers mois</h2>
 <div class="synthese">
 <table><tr><th class="<?php echo $class['parl']; ?>">&nbsp;</th><th class="<?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', $top_link.'sort=1'); ?></th><th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th><th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th><th colspan="3" class="<?php if ($sort == 6 || $sort == 7 || $sort == 8) echo 'tr_odd';?>">Amendements</th><th colspan="2" class="<?php if ($sort == 9 || $sort == 10) echo 'tr_odd';?>">Questions</th></tr><tr><th class="<?php echo $class['parl']; ?>">&nbsp;</th><?php
 $ktop = array('');

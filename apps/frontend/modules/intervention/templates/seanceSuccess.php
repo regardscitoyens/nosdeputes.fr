@@ -2,7 +2,6 @@
 <?php if ($seance->type == 'commission') : ?>
 <h1><?php echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); ?></h1>
 <h2><?php echo $seance->getTitre(); ?></h2>
-<p><?php echo link_to('->Députés Présents', '@presents_seance?seance='.$seance->id); ?></p>
 <?php $plot = 'seance_com_'; else :?>
 <h1><?php echo $seance->getTitre(0,1); ?></h1>
 <?php $plot = 'seance_hemi_'; endif; ?>
@@ -20,7 +19,10 @@
  }
 ?></ul>
 </div>
-<?php echo include_component('plot', 'groupes', array('plot' => $plot.$seance->id)); ?>
+<?php if ($seance->type == 'commission') {
+  echo include_component('plot', 'groupes', array('plot' => $plot.$seance->id)); ?>
+<p><?php echo link_to('Voir les députés présents', '@presents_seance?seance='.$seance->id); ?></p>
+<?php } ?>
 <div class="interventions">
   <?php $table = ''; $titre = 0; foreach($interventions as $intervention) : ?>
   <div class="intervention" id="inter_<?php echo $intervention->getMd5(); ?>">
