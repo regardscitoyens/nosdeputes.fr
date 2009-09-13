@@ -33,5 +33,5 @@ if (!preg_match('/[\&\?]$/', $uri)) {
   }
 }
 ?>
-<?php include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>$uri)); ?>
-<?php endif; ?>
+<?php include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>$uri));
+
