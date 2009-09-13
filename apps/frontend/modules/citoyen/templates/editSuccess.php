@@ -7,7 +7,7 @@
 ?>
   <table>
     <?php echo $form; ?>
-<tr><td>Votre Avatar</td><td><img src="<?php echo url_for('@photo_citoyen?slug='.$user->slug); ?>"/><br/><a href="<?php echo url_for('@upload_avatar'); ?>">Changer d'avatar</a></td></tr>
+<tr><td>Votre Avatar</td><td><a href="<?php echo url_for('@upload_avatar'); ?>"><img src="<?php echo url_for('@photo_citoyen?slug='.$user->slug); ?>"/><br/>Changer d'avatar</a></td></tr>
 <tr><td>Votre mot de passe</td><td><a href="<?php echo url_for('@editpassword_citoyen'); ?>">Le changer</a></td></tr>
   </table>
   <input type="submit" value="Valider" />

@@ -266,17 +266,17 @@ class citoyenActions extends sfActions
           $extension = $file->getExtension($file->getOriginalExtension());
           
           $photo = $file->getTempName();
-          list($largeur_source, $hauteur_source, $type) = getimagesize($photo);
+          list($largeur_source, $hauteur_source) = getimagesize($photo);
 
-          $largeur_max = 100;
-          if ($largeur_source >= $hauteur_source) { $hauteur = round(($largeur_max / $hauteur_source) * $largeur_source); }
-          else { $hauteur = round(($largeur_max / $largeur_source) * $hauteur_source); }
+          $largeur = $hauteur = 100;
+          if ($largeur_source >= $hauteur_source) { $hauteur = round($hauteur_source * $largeur/ $largeur_source); }
+          else { $largeur = round($largeur_source * $hauteur / $hauteur_source); }
           
 	  $source = imagecreatefromstring(file_get_contents($photo));
-          $destination = imagecreatetruecolor($largeur_max, $hauteur);
-	  $white = imagecolorallocate($im, 255, 255, 255);
-	  imagefilledrectangle($im, 0, 0, $largeur_max, $hauteur, $black);
-          imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_max, $hauteur, $largeur_source, $hauteur_source);
+          $destination = imagecreatetruecolor(100, 100);
+	  $white = imagecolorallocate($destination, 255, 255, 255);
+	  imagefilledrectangle($destination, 0, 0, 100, 100, $white);
+          imagecopyresampled($destination, $source, (100-$largeur)/2, (100-$hauteur)/2, 0, 0, $largeur, $hauteur, $largeur_source, $hauteur_source);
           
           imagejpeg($destination, $photo);
           $user->photo = file_get_contents($photo);
