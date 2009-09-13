@@ -100,8 +100,8 @@ class Seance extends BaseSeance
     $titre .= 'du '.preg_replace('/^0(\d)/', '\\1', myTools::displayDate($this->getDate()));
     if ($moment = $this->getMoment()) {
       if (preg_match('/(réunion|^\d+$)/', $moment))
-        $titre .= '&nbsp;: ';
-      else $titre .= '&nbsp;à ';
+        $titre .= ' : ';
+      else $titre .= ' à ';
       $titre .= $moment;
     }
     $titre = preg_replace('/00:00/', 'minuit', $titre);

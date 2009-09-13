@@ -1,19 +1,21 @@
 <div class="titre_int_et_seance" id="sommaire">
 <?php if ($seance->type == 'commission') : ?>
 <h1><?php echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); ?></h1>
-<h2><?php echo $seance->getTitre(); ?></h2>
+<h1><?php echo $seance->getTitre(); ?></h1>
+<?php $sf_response->setTitle($orga->getNom().' : '.$seance->getTitre().' : NosDeputes.fr'); ?>
 <?php $plot = 'seance_com_'; else :?>
-<h1><?php echo $seance->getTitre(0,1); ?></h1>
+<h1><?php echo $seance->getTitre(0,1); $sf_response->setTitle($seance->getTitre(0,1).' : NosDeputes.fr'); ?></h1>
 <?php $plot = 'seance_hemi_'; endif; ?>
+<?php $table_m = $seance->getTableMatiere(); if (count($table_m)) {?>
 <div class="orga_dossier">
 <h2>Sommaire</h2>
-<ul><?php foreach($seance->getTableMatiere() as $table) : if (!$table['titre']) {continue;} ;?>
+<ul><?php foreach($table_m as $table) : if (!$table['titre']) {continue;} ;?>
 <?php if ($table['section_id'] != $table['id']) echo '<ul>'; ?>
 <li><a href="#table_<?php echo $table['id']; ?>"><?php echo ucfirst($table['titre']); ?></a> <?php if ($table['nb_interventions']) echo '<span class="dossier">('.link_to('voir le dossier', '@section?id='.$table['id']).')</span>'; ?></li>
 <?php if ($table['section_id'] != $table['id']) echo '</ul>'; ?>
 <?php endforeach; ?>
 </ul>
-</div>
+</div><?php } ?>
 <div class="resume">
 <h2>Résumé de la séance</h2>
 <div class="nuage_de_tags">
@@ -39,6 +41,9 @@
     else $titre = 1;
     $table = $intervention->getSectionId();
   } else $titre = 0;
+if ($intervention->getSectionId() && !$intervention->Section->titre) {
+  $titre = 0;
+ }
   if ($titre != 0) {
     echo '<div id="table_'.$table.'">';
     echo '<span class="source"><a href="#sommaire">Retour au sommaire</a>&nbsp;-&nbsp<a href="#table_'.$intervention->section_id.'">Permalien</a></span><br/>';

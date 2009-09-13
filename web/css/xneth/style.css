@@ -50,18 +50,13 @@ a:hover {
 }
 
 h1 {
-	font: 2.5em Verdana, Tahoma, Geneva, Arial, Sans-serif;
+  font-size: 1.6em;
+  color: #6F6F6F;
+  font-family: Verdana, Tahoma, Geneva, Arial, Sans-serif;
 	margin-top:20px;
 	margin-bottom:10px;
+	text-align: center;
 }
-
-
-h2 {
-	font: 2.1em Verdana, Tahoma, Geneva, Arial, Sans-serif;
-	margin-top:20px;
-	margin-bottom:20px;
-}
-
 
 .stopfloat {
 	clear: both;
@@ -885,14 +880,10 @@ h2 {
   padding: 15px;
   font-size: 1.1em;
 }
-.titre_int_et_seance h1 {
-  font-size: 1.6em;
-  color: #6F6F6F;
-  margin-top: 0;
-}
-.titre_int_et_seance h2 {
+h2 {
   font-size: 1.3em;
   color: #6F6F6F;
+  padding-top: 10px;
 }
 .interventions {
   background-color: #fff;
@@ -972,7 +963,7 @@ h2 {
 
 .nuage_de_tags {
 	float:left;
-	width:382px;
+	width:260px;
 	min-height:172px;
 	margin:5px 0 0 40px;
 	padding:5px;
@@ -981,6 +972,10 @@ h2 {
 	border: 1px solid #9a9a9a;
 }
 
+.plot_seance {
+	padding-right: 300px;
+	text-align: center;
+}
 .nuage_de_tags p{
 	background-color:#dbd5c8;
 }
