@@ -60,7 +60,7 @@ foreach(array_keys($images) as $k) {
   echo $couleur2style[$couleur];
   echo'>';
   if ($rank)
-    echo '<a href="'.url_for('@top_global_sorted?sort='.$sort[$k]).'">';
+    echo '<a href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug).'">';
   echo '<img src="/images/xneth/';
   printf($images[$k], $couleur);
   echo '" alt="'.$titres[$k].'">';

@@ -1065,3 +1065,8 @@ h2 {
 .contexte {
 	margin:20px;
 }
+
+.tr_odd{
+	background-color: #fafafa;
+}
+.synthese td, .synthese th { padding: 0px; margin: 0px; text-align: center}
