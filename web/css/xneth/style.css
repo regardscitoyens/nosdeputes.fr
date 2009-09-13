@@ -1209,6 +1209,10 @@ width: 50%;
 	background:#eee;
 }
 
+.accueil_deputes_jour img {
+	border:1px solid #727272;
+}
+
 .accueil_plot {
 	float:right;
 	width:460px;
