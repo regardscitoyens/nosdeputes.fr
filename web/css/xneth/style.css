@@ -820,15 +820,14 @@ h1 {
 }
 .m_b_c_photo {
   float: left;
-  width: 52px;
-  height: 52px;
+  width: 46px;
+  height: 46px;
   margin-left: 8px;
-  background: #D0D0D0 url("images/mini_cadre_citoyen.png") no-repeat 0 0;
 }
 .m_b_c_photo img {
   width: 46px;
   height: 46px;
-  margin: 4px;
+  border: 1px solid #e3e0d8;
   overflow: hidden;
 }
 .m_b_c_text {
