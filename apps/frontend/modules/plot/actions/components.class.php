@@ -15,9 +15,10 @@ class plotComponents extends sfComponents
         ->groupBy('s.session')->fetchArray();
     if (!isset($this->options['session'])) $this->options['session'] = 'lastyear';
     if ($this->options['session'] == 'lastyear') {
-      if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat)
+      if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {
         $date = strtotime($this->parlementaire->fin_mandat);
-      else $date = time();
+        $this->mandat_clos = true;
+      } else $date = time();
       $annee = date('Y', $date); $sem = date('W', $date) - 1; if ($sem == 0) { $annee--; $sem = 52; }
       $last_year = $date - 31536000;
       if ($this->parlementaire->debut_mandat > date('Y-m-d', $last_year)) {

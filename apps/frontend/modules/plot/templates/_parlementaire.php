@@ -1,5 +1,6 @@
 <?php
 $plotarray = array('parlementaire' => $parlementaire, 'labels' => $labels, 'vacances' => $vacances, 'time' => 'lastyear');
+if (isset($mandat_clos)) $plotarray = array_merge($plotarray, array('mandat_clos' => true));
 if (isset($options['session'])) $plotarray['time'] = $options['session'];
 if (isset($options['questions'])) $plotarray = array_merge($plotarray, array('n_questions' => $n_questions));
 if (isset($options['link'])) $plotarray = array_merge($plotarray, array('link' => $options['link']));
