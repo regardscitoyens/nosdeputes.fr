@@ -1,7 +1,5 @@
 <div class="temp">
 <h1>Edition de votre profil</h1>
-<p><a href="<?php echo url_for('@upload_avatar'); ?>">Ajouter/modifier votre Avatar</a></p>
-<p><a href="<?php echo url_for('@editpassword_citoyen'); ?>">Changer votre mot de passe</a></p>
 <h2>Modifier vos infos</h2>
 <p>
 <?php 
@@ -9,6 +7,8 @@
 ?>
   <table>
     <?php echo $form; ?>
+<tr><td>Votre Avatar</td><td><img src="<?php echo url_for('@photo_citoyen?slug='.$user->slug); ?>"/><br/><a href="<?php echo url_for('@upload_avatar'); ?>">Changer d'avatar</a></td></tr>
+<tr><td>Votre mot de passe</td><td><a href="<?php echo url_for('@editpassword_citoyen'); ?>">Le changer</a></td></tr>
   </table>
   <input type="submit" value="Valider" />
 </p>

@@ -8,10 +8,10 @@ class UploadAvatarForm extends sfForm
 		$this->widgetSchema['photo'] = new sfWidgetFormInputFile();
     $this->validatorSchema['photo'] = new sfValidatorFile(array(
 		'required' => false, 
-    'mime_types' => array('image/jpeg', 'image/pjpeg')
+		'mime_types' => array('image/jpeg', 'image/pjpeg', 'image/png', 'image/bmp')
 		), array(
 		'invalid' => 'Fichier invalide', 
-    'mime_types' => 'L\'image doit être de type JPG.', 
+    'mime_types' => 'L\'image doit &ecirc;tre de type JPG/PNG/BMP.', 
 		'max_size' => '2Mo maxi'
 		));
 		

@@ -265,29 +265,24 @@ class citoyenActions extends sfActions
           $file = $this->form->getValue('photo');
           $extension = $file->getExtension($file->getOriginalExtension());
           
-          $photo1 = $file->getTempName();
-          $photo = tempnam(sys_get_temp_dir(), 'ava');
-          $handle = fopen($photo, "wb");
-          fwrite($handle, file_get_contents($photo1));
-          fclose($handle);
+          $photo = $file->getTempName();
           list($largeur_source, $hauteur_source, $type) = getimagesize($photo);
-          echo 'L : '.$largeur_source.' x H :'.$hauteur_source.' Type : '.$type;
+
           $largeur_max = 100;
           if ($largeur_source >= $hauteur_source) { $hauteur = round(($largeur_max / $hauteur_source) * $largeur_source); }
           else { $hauteur = round(($largeur_max / $largeur_source) * $hauteur_source); }
           
-          $source = imagecreatefromjpeg($photo);
+	  $source = imagecreatefromstring(file_get_contents($photo));
           $destination = imagecreatetruecolor($largeur_max, $hauteur);
-          
+	  $white = imagecolorallocate($im, 255, 255, 255);
+	  imagefilledrectangle($im, 0, 0, $largeur_max, $hauteur, $black);
           imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_max, $hauteur, $largeur_source, $hauteur_source);
           
           imagejpeg($destination, $photo);
           $user->photo = file_get_contents($photo);
           $user->save();
-          #unlink($photo);
-          #unlink($photo1);
           $this->getUser()->setFlash('notice', 'Vous avez modifié votre profil avec succès');
-          #$this->redirect('@citoyen?slug='.$user->slug);
+          return $this->redirect('@edit_citoyen?slug='.$user->slug);
         }
         else
         {
@@ -301,12 +296,11 @@ class citoyenActions extends sfActions
   public function executePhoto($request)
   {
     $slug = $request->getParameter('slug');
-    $user = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
-    $this->getResponse()->setHttpHeader('content-type', 'image/jpeg');
+    $this->user = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
     $this->setLayout(false);
+    $this->getResponse()->setHttpHeader('content-type', 'image/jpeg');
     $this->getResponse()->addCacheControlHttpHeader('max_age=60');
     $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()*2));
-    $this->image = $user->photo;
     #return $this->image;
   }
   

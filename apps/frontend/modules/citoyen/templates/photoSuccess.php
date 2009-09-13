@@ -1,3 +1,2 @@
 <?php
-imagejpeg($image);
-imagedestroy($image);
+echo $user->photo;
