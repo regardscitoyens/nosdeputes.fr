@@ -5,7 +5,6 @@
 include_component('citoyen', 'shortCitoyen', array('citoyen_id'=>$c->citoyen_id));
 ?> a dit :</p>
 <p><?php echo $c->commentaire; ?></p>
-<p><?php echo link_to('Permalink', $c->lien.'#commentaire_'.$c->id); ?></p>
-<p>Vous trouvez ce commentaire constructif : <?php include_component('rate', 'show', array('object' => $c)); ?> </p>
+<p><?php echo link_to('Voir le commentaire dans son contexte', $c->lien.'#commentaire_'.$c->id); ?></p>
 </div>
 <?php } ?>

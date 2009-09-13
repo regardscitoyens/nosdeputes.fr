@@ -1,6 +1,7 @@
 <?php foreach($pager->getResults() as $c) 
-{ ?>
-<?php include_partial('showCommentaire', array('c' => $c)); ?>
+{
+$nomPartial = (isset($partial)) ? 'show'.ucfirst($partial).'Commentaire' : 'showCommentaire';
+include_partial($nomPartial, array('c' => $c)); ?>
 <?php } ?>
 <?php if ($pager->haveToPaginate()) :
 
