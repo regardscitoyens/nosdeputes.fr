@@ -13,20 +13,7 @@ echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slu
 echo $parlementaire->getStatut(1).", ".link_to($parlementaire->nom_circo, '@list_parlementaires_circo?search='.$parlementaire->nom_circo); ?>)</li>
 <?php endforeach ; ?>
 </ul>
-<?php if ($pager->haveToPaginate()) : ?>
-<div class="pagination">
-    <?php echo link_to('<< ', '@list_parlementaires_organisme?slug='.$orga->getSlug().'&page=1'); ?>
-    <?php echo link_to('< ', '@list_parlementaires_organisme?slug='.$orga->getSlug().'&page='.$pager->getPreviousPage()); ?>
-    <?php foreach ($pager->getLinks() as $page): ?>
-      <?php if ($page == $pager->getPage()): ?>
-        <?php echo $page ?>
-      <?php else: ?>
-        <?php echo link_to($page, '@list_parlementaires_organisme?slug='.$orga->getSlug().'&page='.$page); ?>
-      <?php endif; ?>
-    <?php endforeach; ?>
-    <?php echo link_to('> ', '@list_parlementaires_organisme?slug='.$orga->getSlug().'&page='.$pager->getNextPage()); ?>
-    <?php echo link_to('>> ', '@list_parlementaires_organisme?slug='.$orga->getSlug().'&page='.$pager->getLastPage()); ?>
-</div>
+<?php include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>'@list_parlementaires_organisme?slug='.$orga->getSlug().'&'); ?>
 <?php endif;
 if (count($seances)) { ?>
 <div><h3>Les dernières réunions de la <?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission</h3>
