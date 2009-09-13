@@ -1,7 +1,7 @@
 <?php use_helper('Text') ?>
   <div class="intervention" id="<?php echo $intervention->id; ?>">
-    <div class="info">
-    <strong>
+    <div>
+    <h3>
     <?php $link_seance = url_for('@interventions_seance?seance='.$intervention->getSeance()->id).'#inter_'.$intervention->getMd5();
       if (!isset($complete)) echo '<a href="'.$link_seance.'">'.$intervention->getSeance()->getTitre();
       else echo $intervention->getSeance()->getTitre(0,0,$intervention->getMd5());
@@ -30,7 +30,7 @@
         } else echo ucfirst($section->getTitre()).'</a>';
     }
     ?> 
-    </strong>
+    </h3>
  <?php if (isset($complete)) echo '<span class="source"><a href="'.$intervention->getSource().'">source</a>'; ?>
     </div>
     <div class="texte_intervention"><?php 
