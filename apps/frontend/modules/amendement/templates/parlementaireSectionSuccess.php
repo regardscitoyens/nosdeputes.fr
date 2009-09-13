@@ -1,4 +1,3 @@
-<div class="temp">
 <?php
 if ($section->getSection())
   $surtitre = link_to($section->getSection()->getTitre(), '@section?id='.$section->section_id).'<br><soustitre>('.link_to($section->titre, '@section?id='.$section->id).')</soustitre>';
@@ -10,4 +9,3 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
 <?php
   echo include_component('amendement', 'pagerAmendements', array('amendement_query' => $qamendements));
 ?>
-</div>

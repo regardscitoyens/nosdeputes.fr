@@ -22,10 +22,10 @@
   <?php 
   $deputes = $amendement->getParlementaires(); ?>
   <div class="photos"><p>
-  <?php $line = floor(count($deputes)/(floor(count($deputes)/16) + 1)); $ct = 0; foreach ($deputes as $depute) {
-    if ($ct != 0 && !($ct % $line)) echo '<br/>'; $ct++;
+  <?php $n_auteurs = count($deputes); $line = floor($n_auteurs/(floor($n_auteurs/16)+1)); $ct = 0; foreach ($deputes as $depute) {
     $titre = $depute->nom.', '.$depute->groupe_acronyme;
     echo '<a href="'.url_for($depute->getPageLink()).'"><img width="50" height="64" title="'.$titre.'" alt="'.$titre.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$depute->slug).'" /></a>&nbsp;';
+    if ($ct != 0 && !($ct % $line)) echo '<br/>'; $ct++;
   } ?></p></div>
 </div>
 <div class="sujet">
@@ -38,7 +38,7 @@
   <h3>Exposé Sommaire :</h3>
   <?php echo $amendement->getExpose(); ?>
 </div>
-<div class="commentaires">
+<div class="commentaires" id="commentaires">
  <h3>Commentaires</h3>
 <?php echo include_component('commentaire', 'show', array('object' => $amendement)); ?>
 <?php echo include_component('commentaire', 'form', array('object' => $amendement)); ?>
