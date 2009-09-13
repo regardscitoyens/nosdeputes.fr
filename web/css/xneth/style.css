@@ -44,6 +44,17 @@ a:hover {
 	background-color: transparent;
 }
 
+h1 {
+	font: 2.5em Verdana, Tahoma, Geneva, Arial, Sans-serif;
+	margin-top:20px;
+	margin-bottom:10px;
+}
+
+
+h2 {
+}
+
+
 .stopfloat {
 	clear: both;
 }
@@ -881,4 +892,66 @@ a:hover {
 }
 .loading{
 	background: transparent url(/images/loading.gif) no-repeat scroll 0 0
+}
+
+/* Dossiers législatifs */
+
+.numeros_textes {
+	border-bottom: 1px solid #b3aea4;
+	margin:20px 50px 20px 30px;
+}
+
+.camenbert {
+	float:left;
+	width:400px;
+	margin-left:30px;
+	overflow:hidden;
+}
+
+.nuage_de_tags {
+	float:right;
+	width:382px;
+	min-height:172px;
+	margin:5px 50px 0 0;
+	padding:5px;
+	background-color: #f7f7f7;
+	border: 1px solid #9a9a9a;
+}
+
+.nuage_de_tags p{
+	background-color:#dbd5c8;
+}
+
+.orga_dossier  {
+	clear:both;
+	width:800px;
+	margin:auto;
+	padding-top:20px;
+}
+
+.orga_dossier p {
+	background-color:#dbd5c8;
+}
+
+.seances_dossier {
+	clear:both;
+	width:800px;
+	margin:auto;
+	padding-top:15px;
+}
+
+.seances_dossier p {
+	background-color:#dbd5c8;
+}
+
+.orateurs_dossier  {
+	clear:both;
+	width:800px;
+	margin:auto;
+	padding-top:10px;
+	padding-bottom:20px;
+}
+
+.orateurs_dossier p {
+	background-color:#dbd5c8;
 }
