@@ -870,13 +870,12 @@ h1 {
   margin-left: 0;
   padding-left: 0;
 }
-/* Fin fiche d�put� */
+/* Fin fiche depute */
 
-/* S�ances */
+/* Seances */
 .titre_int_et_seance {
   min-height: 70px;
   background-color: #fff;
-  padding: 15px;
   font-size: 1.1em;
 }
 h2 {

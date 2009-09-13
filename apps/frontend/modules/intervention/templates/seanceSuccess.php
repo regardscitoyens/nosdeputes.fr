@@ -23,12 +23,12 @@
 <ul><?php foreach(array_keys($tags) as $tag) echo "<li>$tag</li>"; ?></ul>
 </div>
 <div class="plot_seance">
-<?php echo include_component('plot', 'groupes', array('plot' => $plot.$seance->id));
- if ($seance->type == 'commission') { ?>
+<?php if ($seance->type == 'commission') { ?>
+<a href="<?php echo url_for('@presents_seance?seance='.$seance->id); ?>">
+<?php } else echo '<a>'; ?>
+<?php echo include_component('plot', 'groupes', array('plot' => $plot.$seance->id)); ?></a>
 </div>
 </div>
-<p><?php echo link_to('Voir les députés présents', '@presents_seance?seance='.$seance->id); ?></p>
-<?php } ?>
 </div>
 <h2>La séance</h2>
 <div class="interventions">
