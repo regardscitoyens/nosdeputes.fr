@@ -14,6 +14,25 @@ if ($rss) {
   }
  }
 $uri = strip_tags($_SERVER['REQUEST_URI']);
+$selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selectamdmt = "";$selectquestion = ""; $selectcitoyen = '';
+if ( preg_match('/\/circonscription\//', $uri))
+  $selectcirco = ' selected="selected"';
+ else  if ( preg_match('/\/profession\//', $uri))
+   $selectprof = ' selected="selected"';
+ else if ( preg_match('/\/(interventions?|seance|dossiers?)\//',$uri))
+   $selectinterv = ' selected="selected"';
+ else if ( preg_match('/\/amendement\//', $uri))
+   $selectamdmt = ' selected="selected"';
+ else if ( preg_match('/\/question\//', $uri))
+   $selectquestion = ' selected="selected"';
+ else if (preg_match('/(\/citoyens?\/?|\/compterendu)/', $uri))
+   $selectcitoyen = 1;
+ else if ( !preg_match('/\/(faq|$)/i', $uri)) 
+   $selectdepute = ' selected="selected"';
+
+$menu_depute = $selectquestion || $selectdepute || $selectprof || $selectcirco;
+$menu_dossier = $selectinterv || $selectamdmt;
+$menu_citoyen = $selectcitoyen;
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php echo stylesheet_tag($style.'/style'); ?>  
@@ -60,30 +79,14 @@ $uri = strip_tags($_SERVER['REQUEST_URI']);
 			</div>
   			<div id="menu">
 				<div class="menu_navigation">
-					<div id="item1"><a href="<?php echo url_for('@homepage'); ?>"></a></div>
-					<div id="item2"><a href="<?php echo url_for('@list_parlementaires'); ?>"><span class="gris">Les</span> <span class="vert">D</span><span class="gris">&eacute;put&eacute;s</span></a></div>
-					<div id="item3"><a href="<?php echo url_for('@sections?order=date')?>"><span class="gris">Les</span> <span class="orange">D</span><span class="gris">ossiers</span></a></div>
-					<div id="item4"><a href="<?php echo url_for('@list_citoyens')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
+					  <div id="item1"><a href="<?php echo url_for('@homepage'); ?>"></a></div>
+					<div id="item2"><a <?php if ($menu_depute) echo 'class="selected" '; ?>href="<?php echo url_for('@list_parlementaires'); ?>"><span class="gris">Les</span> <span class="vert">D</span><span class="gris">&eacute;put&eacute;s</span></a></div>
+					<div id="item3"><a <?php if ($menu_dossier) echo 'class="selected" '; ?>href="<?php echo url_for('@sections?order=date')?>"><span class="gris">Les</span> <span class="orange">D</span><span class="gris">ossiers</span></a></div>
+					<div id="item4"><a <?php if ($menu_citoyen) echo 'class="selected" '; ?>href="<?php echo url_for('@list_citoyens')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
 					<div id="item5"><a href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
 				</div>
                     <?php       $search = strip_tags($sf_request->getParameter('search'));
-$selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selectamdmt = "";$selectquestion = ""; $selectcitoyen = '';
-                                if ( preg_match('/\/circonscription\//', $uri))
-                                  $selectcirco = ' selected="selected"';
-                                else  if ( preg_match('/\/profession\//', $uri))
-                                  $selectprof = ' selected="selected"';
-                                else if ( preg_match('/\/(interventions?|seance|dossiers?)\//',$uri))
-                                  $selectinterv = ' selected="selected"';
-                                else if ( preg_match('/\/amendement\//', $uri))
-                                  $selectamdmt = ' selected="selected"';
-                                else if ( preg_match('/\/question\//', $uri))
-                                  $selectquestion = ' selected="selected"';
-				else if (preg_match('/(\/citoyens?\/?|\/compterendu)/', $uri))
-				  $selectcitoyen = 1;
-                                else if ( !preg_match('/\/(faq|$)/i', $uri)) 
-				  $selectdepute = ' selected="selected"';
-   
-							?>
+?>
 				<div class="menu_recherche">
 					<form action="<?php echo url_for('@search'); ?>" method="get">
 						<p>
@@ -103,7 +106,7 @@ $selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selec
 				</div>
 			</div>
 			<div id="sous_menu">
-				<div id="sous_menu_1" style="display:<?php if ($selectquestion || $selectdepute || $selectprof || $selectcirco) echo 'block'; else echo 'none'; ?>">
+				<div id="sous_menu_1" style="display:<?php if ($menu_depute) echo 'block'; else echo 'none'; ?>">
 				<div class="elements_sous_menu">
 					<ul>
 						<li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> |</li>
@@ -114,7 +117,7 @@ $selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selec
 					</ul>
 				</div>
 				</div>
-				<div id="sous_menu_2" style="display:<?php if ($selectinterv || $selectamdmt) echo 'block'; else echo 'none'; ?>">
+				<div id="sous_menu_2" style="display:<?php if ($menu_dossier) echo 'block'; else echo 'none'; ?>">
 			        <div class="elements_sous_menu">
 					<ul>
 						<li><a href="<?php echo url_for('@sections?order=date'); ?>">Les derniers dossiers</a> |</li>
@@ -123,7 +126,7 @@ $selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selec
 				</div>
 				</div>
 				
-				<div id="sous_menu_3" style="display:<?php if ($selectcitoyen) echo 'block'; else echo 'none'; ?>">
+				<div id="sous_menu_3" style="display:<?php if ($menu_citoyen) echo 'block'; else echo 'none'; ?>">
 			        <div class="elements_sous_menu">
 					<ul>
 						<li><a href="<?php echo url_for('@list_citoyens'); ?>">Tous les citoyens</a> |</li>

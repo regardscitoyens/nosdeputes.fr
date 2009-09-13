@@ -233,7 +233,7 @@ h2 {
 	font-weight:bold;
 }
 
-#item1 a:hover, #item1 a:focus, #item2 a:hover, #item2 a:focus, #item3 a:hover, #item3 a:focus, #item4 a:hover, #item4 a:focus {
+#item1 a.selected, #item2 a.selected, #item3 a.selected, #item4 a.selected, #item1 a:hover, #item1 a:focus, #item2 a:hover, #item2 a:focus, #item3 a:hover, #item3 a:focus, #item4 a:hover, #item4 a:focus {
    background-position: 0 -35px;
 }
 
