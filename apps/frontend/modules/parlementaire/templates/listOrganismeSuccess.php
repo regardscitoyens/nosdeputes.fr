@@ -14,7 +14,7 @@ echo $parlementaire->getStatut(1).", ".link_to($parlementaire->nom_circo, '@list
 <?php endforeach ; ?>
 </ul>
 <?php include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>'@list_parlementaires_organisme?slug='.$orga->getSlug().'&'));
-if (count($seances) && (!isset($page) || ($page < 2)) ) { ?>
+if (count($seances) && ($pager->getPage() < 2) ) { ?>
 <div><h3>Les dernières réunions de la <?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission</h3>
 <ul>
 <?php $cpt = 0; foreach($seances as $seance) { $cpt++;?>
