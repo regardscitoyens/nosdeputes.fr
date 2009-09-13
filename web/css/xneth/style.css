@@ -70,7 +70,8 @@ h2 {
 	font-size: 1.1em;
 	height: auto;
 	padding: 15px;
-	margin-top: 0;
+	margin-top: 15px;
+	margin-right: 8px;
 	padding-left: 55px;
 	border : 1px solid #BFBFBF;
 }
