@@ -64,7 +64,7 @@ $uri = strip_tags($_SERVER['REQUEST_URI']);
 					<div id="item2"><a href="<?php echo url_for('@list_parlementaires'); ?>"><span class="gris">Les</span> <span class="vert">D</span><span class="gris">&eacute;put&eacute;s</span></a></div>
 					<div id="item3"><a href="<?php echo url_for('@sections?order=date')?>"><span class="gris">Les</span> <span class="orange">D</span><span class="gris">ossiers</span></a></div>
 					<div id="item4"><a href="<?php echo url_for('@list_citoyens')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
-					<div id="item5"><a href="#"><span class="gris">FAQ</span></a></div>
+					<div id="item5"><a href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
 				</div>
                     <?php       $search = strip_tags($sf_request->getParameter('search'));
 $selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selectamdmt = "";$selectquestion = ""; $selectcitoyen = '';
