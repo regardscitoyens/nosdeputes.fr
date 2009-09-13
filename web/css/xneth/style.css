@@ -20,6 +20,10 @@ img {
 	border:0;
 	}
 	
+strong {
+	font-weight: bold ;
+	}
+	
 a:link {
 	color: #6F6F6F;
 	text-decoration: none;
@@ -402,12 +406,12 @@ h2 {
 /* Début fiche député */
 .fiche_depute {
   width: 938px;
-  border: 1px solid #BFBFBF;
-  background-color: #fff;
+  overflow:hidden;
 }
 .fiche_depute h1 {
   line-height: 10px;
   text-align: center;
+  margin:30px 0 20px 0;
 }
 .fiche_depute h2 {
   padding-left: 5px;
@@ -456,8 +460,9 @@ h2 {
   position: relative;
   top: 0;
   left: 0;
-  height: 170px;
-  border-right: 1px solid #BFBFBF;
+  height:160px;
+  width:125px;
+  border: 2px solid #dcd6ca;
   background: #D0D0D0 url("images/cadre_depute.png") no-repeat 0 0;
 }
 .graph_depute {
@@ -473,7 +478,8 @@ h2 {
 }
 .barre_activite {
   float: left;
-  width: 100%;
+  width: 920px;
+  margin-top:10px;
   padding-top: 3px;
   background: #8F8F8F url("images/fond_bas.gif") repeat-x 0 0;
 }
@@ -503,9 +509,10 @@ h2 {
   margin-left: 25px;
 }
 .contenu_depute {
-  width: 938px;
-  background-color: #fff;
-  border: 1px solid #BFBFBF;
+  width: 918px;
+  overflow:hidden;
+  border: 1px solid #d6d6d6;
+  margin-bottom:20px;
 }
 .boite_depute {
   padding: 15px;
@@ -515,12 +522,12 @@ h2 {
   margin-top: 0;
   padding-left: 5px;
   color: #6F6F6F;
-  background-color: #EFEFEF;
+  background-color: #dbd5c8;
 }
 /* les boites principales */
 #b1 {
   float: left;
-  width: 459px;
+  width: 440px;
 }
 #b1 h2{
   color: #000;
@@ -532,32 +539,45 @@ h2 {
 }
 #b2 {
   float: left;
-  width: 416px;
+  width: 414px;
   border-left: 1px dashed #BFBFBF;
   border-bottom: 1px dashed #BFBFBF;
 }
 #b3 {
   float: left;
-  width: 416px;
+  width: 414px;
   border-left: 1px dashed #BFBFBF;
   border-bottom: 1px dashed #BFBFBF;
 }
 #b4 {
-  float: left;
-  width: 416px;
+  float: right;
+  width: 414px;
   border-left: 1px dashed #BFBFBF;
 }
 /**/
 /* Tabs adresses */
+.meilleur_pire {
+	padding-bottom:10px;
+	border-bottom:1px dashed  #BFBFBF;
+}
+
+.meilleur_pire h3 {
+	background-color: #ebebeb;
+}
+
+.b_d_infos  h3{
+	background-color: #ebebeb;
+}
+
 .adresses {
-  position: relative;
-  left: 0;
+	position: relative;
+	left: 0;
 }
 .tab_adresse p{
   position: absolute;
   top: 37px;
   left: 0;
-  width: 425px;
+  width: 410px;
   padding: 15px;
   background-color: #fff;
   border: 1px dashed #BFBFBF;
@@ -687,8 +707,13 @@ h2 {
 }
 /**/
 .bas_depute_d {
-  float: right;
+  float: left;
 }
+
+.bas_depute_d img {
+  padding-left:10px;;
+}
+
 .rss {
   float: right;
   margin: 0;

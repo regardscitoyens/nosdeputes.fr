@@ -6,7 +6,7 @@
     </div>
   <div class="depute_gauche">
     <div class="photo_depute">
-<?php    echo '<img src="'.url_for('@resized_photo_parlementaire?height=170&slug='.$parlementaire->slug).'" class="photo_fiche" alt="Photo de '.$parlementaire->nom.'"/>'; ?>
+<?php    echo '<img src="'.url_for('@resized_photo_parlementaire?height=160&slug='.$parlementaire->slug).'" class="photo_fiche" alt="Photo de '.$parlementaire->nom.'"/>'; ?>
     </div>
   </div>
   <div class="graph_depute">
@@ -41,8 +41,11 @@
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
-    <?php include_partial('top', array('parlementaire'=>$parlementaire)); ?>
-      <p>Né le ... (... ans) à ... (...)</p>
+		<div class="meilleur_pire">
+		<?php include_partial('top', array('parlementaire'=>$parlementaire)); ?>
+		</div>
+		<br /><h3> Informations :</h3>
+      <p><br />Né le ... (... ans) à ... (...)</p>
     <ul>
 <?php if ($parlementaire->groupe_acronyme != "") : ?>
       <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getgroupe()->getFonction(); ?>)</li>
@@ -55,7 +58,7 @@
       <?php endif; ?>  
     </ul>
     <?php if ($parlementaire->fin_mandat == null) : ?>
-      <h3>Responsabilités</h3>
+      <br /><h3>Responsabilités</h3>
       <ul>
         <li>Parlementaires :
           <ul>
