@@ -80,7 +80,7 @@ $selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selec
                                   $selectquestion = ' selected="selected"';
 				else if (preg_match('/(\/citoyens?\/?|\/compterendu)/', $uri))
 				  $selectcitoyen = 1;
-                                else if ( !preg_match('/\/$/', $uri)) 
+                                else if ( !preg_match('/\/(faq|$)/i', $uri)) 
 				  $selectdepute = ' selected="selected"';
    
 							?>
