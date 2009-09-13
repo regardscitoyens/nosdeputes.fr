@@ -1,6 +1,5 @@
-<div class="temp">
 <?php $nResults = $pager->getNbResults(); ?>
-<h1><?php echo $orga->getNom(); ?> (<?php echo $orga->getSmallNomGroupe(); ?>) : <?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?></h1>
+<h1>Composition du groupe "<?php echo $orga->getNom(); $sf_response->setTitle('Composition du groupe "'.$orga->getNom().'"'); ?>" (<?php echo $orga->getSmallNomGroupe(); ?>)</h1><h2><?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?>&nbsp;:</h2>
 <ul>
 <?php foreach($pager->getResults() as $parlementaire) : ?>
 <li><?php echo $parlementaire->getPOrganisme($orga->getNom())->getFonction(); ?> : <?php echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php echo link_to($parlementaire->nom_circo, '@list_parlementaires_circo?search='.$parlementaire->nom_circo); ?>)</li>
@@ -33,4 +32,3 @@ if (!preg_match('/[\&\?]$/', $uri)) {
     <?php echo link_to('>> ', $uri.'page='.$pager->getLastPage()); ?>
 </div>
 <?php endif; ?>
-</div>

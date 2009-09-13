@@ -57,7 +57,7 @@ if ($intervention->hasIntervenant()) {
     } else $link = $link_seance;
     if ($perso->getPageLink()) {
       if ($perso->hasPhoto()) {
-        echo '<a href="'.$link.'"><img width="50" height="70" alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$perso->slug).'" /></a>';
+        echo '<a href="'.$link.'" class="intervenant"><img width="50" height="70" alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$perso->slug).'" /></a>';
       }
       echo '<a href="'.$link.'">';
       echo $perso->nom;
