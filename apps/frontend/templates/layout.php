@@ -61,7 +61,7 @@ $menu_citoyen = $selectcitoyen;
 					<input type="password" name="signin[password]" id='header_pass' value="" onfocus="if(this.value=='______________')this.value ='';" onblur="if(this.value=='')this.value ='______________';"/>
 					<input type="checkbox" name="signin[remember]" id="signin_remember" title="se rappeler de moi" />
 					<button type="submit" value="login" id="bt1"></button>
-					<a href="<?php echo url_for('@inscription') ?>"><button id="bt2"></button></a>
+					<a href="<?php echo url_for('@inscription') ?>"><span id="bt2"></span></a>
 					</p>
 					</form> 
 					<?php }

@@ -131,9 +131,11 @@ h2 {
 	}
 
 #signin_remember {
-	width:8px;
-	margin:0 9px 0 0;
+	float:left;
+	width:14px;
+	margin:1px 9px 0 0;
 	padding:0;
+	background:none;
 }
 
 #bt2 {
