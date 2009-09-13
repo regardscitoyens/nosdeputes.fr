@@ -1,18 +1,16 @@
-<div class="temp">
 <?php $nResults = $pager->getNbResults(); ?>
-<h1><?php echo $orga->getNom(); ?></h1>
+<h1><?php echo $orga->getNom(); $sf_response->setTitle($orga->getNom()); ?></h1>
 <?php include_component('article', 'show', array('categorie'=>'Organisme', 'object_id'=>$orga->id)); ?>
-<?php if ($orga->type == 'extra') : ?>
+<?php if ($nResults) {if ($orga->type == 'extra') : ?>
 <h2>Organisme extra-parlementaire composé de <?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?>&nbsp;:</h2>
 <?php else : ?>
 <h2><?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission parlementaire composée de <?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?>&nbsp;:</h2>
-<?php endif; ?>
+<?php endif; }?>
 <ul>
 <?php foreach($pager->getResults() as $parlementaire) : ?>
 <li><?php echo $parlementaire->getPOrganisme($orga->getNom())->getFonction(); ?> : <?php
 echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php
-echo $parlementaire->getStatut(1).", ".link_to($parlementaire->nom_circo, '@list_parlementaires_circo?search='.$parlementaire->nom_circo); ?>) <?php
-echo link_to('-> interventions', '@parlementaire_interventions_organisme?slug='.$parlementaire->slug.'&orga='.$orga->id); ?></li>
+echo $parlementaire->getStatut(1).", ".link_to($parlementaire->nom_circo, '@list_parlementaires_circo?search='.$parlementaire->nom_circo); ?>)</li>
 <?php endforeach ; ?>
 </ul>
 <?php if ($pager->haveToPaginate()) : ?>
@@ -31,12 +29,11 @@ echo link_to('-> interventions', '@parlementaire_interventions_organisme?slug='.
 </div>
 <?php endif;
 if (count($seances)) { ?>
-<div><h3>Réunions de la <?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission</h3>
+<div><h3>Les dernières réunions de la <?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission</h3>
 <ul>
-<?php foreach($seances as $seance) { ?>
+<?php $cpt = 0; foreach($seances as $seance) { $cpt++;?>
 <li><?php echo link_to($seance->getTitre(), '@interventions_seance?seance='.$seance->id); ?></li>
-<?php } ?>
+<?php if ($cpt > 10) break;} ?>
 </ul>
 </div>
 <?php } ?>
-</div>
