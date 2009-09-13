@@ -195,7 +195,12 @@ class citoyenActions extends sfActions
           
           if ($this->form->isValid())
           {
-            $this->form->save();
+            if ($this->form->getvalue('password') != $this->form->getvalue('password_bis'))
+            {
+              $this->getUser()->setFlash('error', 'Les 2 champs doivent être identiques');
+              return;
+            }
+            $user->password = sha1($this->form->getvalue('password'));
             $user->is_active = true;
             $user->activation_id = null;
             $user->save();
@@ -212,7 +217,7 @@ class citoyenActions extends sfActions
             }
             else
             {
-              $this->connexion($user);
+              myUser::SignIn($this->getUser()->getAttribute('login'), $user->password, false, $this) ;
               $this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès');
               $this->redirect('@citoyen?slug='.$user->slug);
             }
