@@ -1,37 +1,41 @@
 <?php use_helper('Text') ?>
   <div class="intervention" id="<?php echo $intervention->id; ?>">
     <div>
-    <h3>
-    <?php $link_seance = url_for('@interventions_seance?seance='.$intervention->getSeance()->id).'#inter_'.$intervention->getMd5();
-      if (!isset($complete)) echo '<a href="'.$link_seance.'">'.$intervention->getSeance()->getTitre();
-      else echo $intervention->getSeance()->getTitre(0,0,$intervention->getMd5());
-      echo ' &mdash; ';
+    <?php $titre1 = 'Intervention de '.$intervention->getParlementaire()->nom;
+      if (isset($complete)) { ?>
+      <h1><?php echo $titre1; ?></h1>
+    <?php }
+      $link_seance = url_for('@interventions_seance?seance='.$intervention->getSeance()->id).'#inter_'.$intervention->getMd5();
+      if (!isset($complete)) $titre2 = '<a href="'.$link_seance.'">'.$intervention->getSeance()->getTitre();
+      else $titre2 = $intervention->getSeance()->getTitre(0,0,$intervention->getMd5());
+      $titre2 .= ' &mdash; ';
       if ($intervention->getType() == 'commission') {
         $orga = $intervention->getSeance()->getOrganisme();
         if (isset($complete))
-          echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug());
-        else echo $orga->getNom().'</a>';
+          $titre2 .= link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug());
+        else $titre2 .= $orga->getNom().'</a>';
       } else {
         $section = $intervention->getSection();
 	    if ($section->getSection()) {
           if (isset($complete))
-            echo link_to(ucfirst($section->getSection()->getTitre()), '@section?id='.$section->section_id);
-          else echo ucfirst($section->getSection()->getTitre());
-          echo '&nbsp;: ';
+            $titre2 .= link_to(ucfirst($section->getSection()->getTitre()), '@section?id='.$section->section_id);
+          else $titre2 .=  ucfirst($section->getSection()->getTitre());
+          $titre2 .= '&nbsp;: ';
         }
         if (isset($complete)) {
-          echo link_to(ucfirst($section->getTitre()), '@section?id='.$section->id);
+          $titre2 .= link_to(ucfirst($section->getTitre()), '@section?id='.$section->id);
           if(count($amdmts) >= 1)
-            echo ', amendement';
-            if(count($amdmts) > 1) echo 's';
-            echo ' ';
+            $titre2 .= ', amendement';
+            if(count($amdmts) > 1) $titre2 .= 's';
+            $titre2 .= ' ';
             foreach($amdmts as $amdmt)
-              echo link_to($amdmt, '/amendements/'.(implode(',',$lois).'/'.$amdmt));
-        } else echo ucfirst($section->getTitre()).'</a>';
+              $titre2 .= link_to($amdmt, '/amendements/'.(implode(',',$lois).'/'.$amdmt));
+        } else $titre2 .= ucfirst($section->getTitre()).'</a>';
     }
     ?> 
-    </h3>
- <?php if (isset($complete)) echo '<span class="source"><a href="'.$intervention->getSource().'">source</a>'; ?>
+      <h3><?php echo $titre2; ?></h3>
+<?php if (isset($complete)) $sf_response->setTitle($titre1.' - '.$titre2);
+  if (isset($complete)) echo '<span class="source"><a href="'.$intervention->getSource().'">source</a>'; ?>
     </div>
     <div class="texte_intervention"><?php 
 $inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $intervention->getIntervention()); 

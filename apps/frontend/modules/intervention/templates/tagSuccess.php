@@ -1,4 +1,3 @@
-<div class="temp">
 <?php 
 $options = array('intervention_query' => $query, 'highlight' => $tags);
 if (isset($parlementaire)) {
@@ -7,4 +6,4 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
 $options = array_merge($options, array('nophoto' => true)); 
 } ?>
 <?php echo include_component('intervention', 'pagerInterventions', $options); ?>
-</div>
+

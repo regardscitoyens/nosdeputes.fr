@@ -2,7 +2,7 @@
 <?php if ($seance->type == 'commission') : ?>
 <h1><?php echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); ?></h1>
 <h1><?php echo $seance->getTitre(); ?></h1>
-<?php $sf_response->setTitle($orga->getNom().' : '.$seance->getTitre().' : NosDeputes.fr'); ?>
+<?php $sf_response->setTitle($orga->getNom().' : '.$seance->getTitre()); ?>
 <?php $plot = 'seance_com_'; else :?>
 <h1><?php echo $seance->getTitre(0,1); $sf_response->setTitle($seance->getTitre(0,1).' : NosDeputes.fr'); ?></h1>
 <?php $plot = 'seance_hemi_'; endif; ?>
