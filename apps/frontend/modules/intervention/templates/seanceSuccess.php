@@ -5,24 +5,24 @@
 <?php $plot = 'seance_com_'; else :?>
 <h1><?php echo $seance->getTitre(0,1); ?></h1>
 <?php $plot = 'seance_hemi_'; endif; ?>
-<ul>
-<?php foreach($seance->getTableMatiere() as $table) : if (!$table['titre']) {continue;} ;?>
+<div class="orga_dossier">
+<p>Sommaire :</p>
+<ul><?php foreach($seance->getTableMatiere() as $table) : if (!$table['titre']) {continue;} ;?>
 <?php if ($table['section_id'] != $table['id']) echo '<ul>'; ?>
 <li><a href="#table_<?php echo $table['id']; ?>"><?php echo ucfirst($table['titre']); ?></a> <?php if ($table['nb_interventions']) echo '('.link_to('voir le dossier', '@section?id='.$table['id']).') '; ?></li>
 <?php if ($table['section_id'] != $table['id']) echo '</ul>'; ?>
 <?php endforeach; ?>
 </ul>
-<ul>
-<?php
-   foreach(array_keys($tags) as $tag) {
-   echo "<li>$tag</li>";
- }
-?></ul>
 </div>
-<?php if ($seance->type == 'commission') {
-  echo include_component('plot', 'groupes', array('plot' => $plot.$seance->id)); ?>
+<div class="nuage_de_tags">
+<p>Voici la liste des mots clés pour cette séance :</p>
+<ul><?php foreach(array_keys($tags) as $tag) echo "<li>$tag</li>"; ?></ul>
+</div>
+<?php echo include_component('plot', 'groupes', array('plot' => $plot.$seance->id));
+ if ($seance->type == 'commission') { ?>
 <p><?php echo link_to('Voir les députés présents', '@presents_seance?seance='.$seance->id); ?></p>
 <?php } ?>
+</div>
 <div class="interventions">
   <?php $table = ''; $titre = 0; foreach($interventions as $intervention) : ?>
   <div class="intervention" id="inter_<?php echo $intervention->getMd5(); ?>">
