@@ -1020,6 +1020,20 @@ h2 {
 	font-size: 1.2em;
 }
 
+/* Liste députés */
+
+.liste_deputes_tags  {
+	margin: 20px 10px 30px 0;
+	padding:5px 20px 20px 20px;
+	border: 1px dashed #aeaeae;
+	text-align:justify;
+}
+
+.liste_deputes_tags p {
+	background-color:#dbd5c8;
+	font-size: 1.2em;
+}
+
 /* Travaux parlementaires */
 
 .travaux_parlementaires {
