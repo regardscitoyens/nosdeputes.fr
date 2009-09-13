@@ -19,6 +19,16 @@ $images = array('semaine' => 'ico_sem_%s.png',
 		//	       'amendements_rejetes' => 'ico_amendmt_ref_%s.png',
 	       'questions_ecrites' => 'ico_quest_ecrit_%s.png',
 	       'questions_orales' => 'ico_quest_oral_%s.png');
+$sort = array('semaine' => '1',
+	       'commission_presences' => '2',
+	       'commission_interventions'=> '3',
+	       'hemicycle_interventions'=>'4',
+	       'hemicycle_invectives'=>'5',
+	       'amendements_signes' => '6',
+		'amendements_adoptes'=>'7',
+		'amendements_rejetes' => '8',
+	       'questions_ecrites' => '9',
+	       'questions_orales' => '10');
 $couleur2style = array('vert' => ' style="color: green"',
 	       'gris' => '',
 	       'rouge' => ' style="color: red"');
@@ -34,9 +44,9 @@ if (!$parlementaire->fin_mandat) {
   echo '<h2>';
 if ($parlementaire->fin_mandat) 
 {
-  echo "<strong>Mandat clos</strong> : ";
+  echo "<strong>Mandat clos</strong> ";
  }
-  echo 'Bilan des '.$weeks.' semaines de mandat :</h2>';
+ printf('Bilan de ses %d semaines de mandat :</h2>', $weeks);
  }
 ?>
 <ul><?php
@@ -48,9 +58,17 @@ foreach(array_keys($images) as $k) {
     $couleur = 'rouge';
   echo '<li';
   echo $couleur2style[$couleur];
-  echo'><img src="/images/xneth/';
+  echo'>';
+  if ($rank)
+    echo '<a href="'.url_for('@top_global_sorted?sort='.$sort[$k]).'">';
+  echo '<img src="/images/xneth/';
   printf($images[$k], $couleur);
   echo '" alt="'.$titres[$k].'">';
-  echo ' : '.$top[$k]['value'];
+  echo ' : ';
+  if (isset($top[$k]['value']))
+    echo $top[$k]['value'];
+  else echo '0';
+  if ($rank)
+    echo '</a>';
   echo '</li>';
 }?></ul>
