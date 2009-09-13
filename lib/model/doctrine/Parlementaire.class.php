@@ -313,7 +313,7 @@ class Parlementaire extends BaseParlementaire
     return $prefixe;
   }
 
-   static $dptmt_nom = array(
+ public static $dptmt_nom = array(
       "1" => "Ain",
       "2" => "Aisne",
       "3" => "Allier",
@@ -485,12 +485,12 @@ class Parlementaire extends BaseParlementaire
       "meuse" => "55",
       "morbihan" => "56",
       "moselle" => "57",
-      "nièvre" => "58",
+      "nievre" => "58",
       "nord" => "59",
       "oise" => "60",
       "orne" => "61",
       "pas-de-calais" => "62",
-      "puy-de-dôme" => "63",
+      "puy-de-dome" => "63",
       "pyrenees-atlantiques" => "64",
       "hautes-pyrenees" => "65",
       "pyrenees-orientales" => "66",
@@ -512,7 +512,7 @@ class Parlementaire extends BaseParlementaire
       "tarn-et-garonne" => "82",
       "var" => "83",
       "vaucluse" => "84",
-      "vendée" => "85",
+      "vendee" => "85",
       "vienne" => "86",
       "haute-vienne" => "87",
       "vosges" => "88",
@@ -533,7 +533,7 @@ class Parlementaire extends BaseParlementaire
       "saint-martin" => "978",
       "wallis-et-futuna" => "986",
       "polynésie-française" => "987",
-      "nouvelle-calédonie" => "988");
+      "nouvelle-caledonie" => "988");
   public static function getNumeroDepartement($nom) {
     if (isset(self::$nom_dptmt[$nom])) return $numero = self::$nom_dptmt[$nom];
     else return false;
