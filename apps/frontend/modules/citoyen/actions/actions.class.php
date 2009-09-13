@@ -101,19 +101,25 @@ class citoyenActions extends sfActions
     
       $user = Doctrine::getTable('Citoyen')->findOneById($this->getUser()->getAttribute('user_id'));
     
-      $this->form = new MotdepasseForm();
+      $this->form = new ChangeMotdepasseForm();
       
       if ($request->isMethod('post'))
       {
         $this->form->bind($request->getParameter('citoyen'));
         
-        if ($this->form->isValid())
+        if ($this->form->isValid())  
         {
+          if (sha1($this->form->getvalue('ancienpassword')) != $user->password)
+          { 
+            $this->getUser()->setFlash('error', 'Veuillez indiquer votre ancien mot de passe');
+            return;
+          }
           if ($this->form->getvalue('password') != $this->form->getvalue('password_bis'))
           {
             $this->getUser()->setFlash('error', 'Les 2 champs doivent être identiques');
             return;
           }
+          #sleep(2);
           $user->password = $this->form->getvalue('password');
           $user->save();
           $this->getUser()->setFlash('notice', 'Vous avez modifié votre mot de passe avec succès');
@@ -272,10 +278,10 @@ class citoyenActions extends sfActions
           if ($largeur_source >= $hauteur_source) { $hauteur = round($hauteur_source * $largeur/ $largeur_source); }
           else { $largeur = round($largeur_source * $hauteur / $hauteur_source); }
           
-	  $source = imagecreatefromstring(file_get_contents($photo));
+    $source = imagecreatefromstring(file_get_contents($photo));
           $destination = imagecreatetruecolor(100, 100);
-	  $white = imagecolorallocate($destination, 255, 255, 255);
-	  imagefilledrectangle($destination, 0, 0, 100, 100, $white);
+    $white = imagecolorallocate($destination, 255, 255, 255);
+    imagefilledrectangle($destination, 0, 0, 100, 100, $white);
           imagecopyresampled($destination, $source, (100-$largeur)/2, (100-$hauteur)/2, 0, 0, $largeur, $hauteur, $largeur_source, $hauteur_source);
           
           imagejpeg($destination, $photo);
