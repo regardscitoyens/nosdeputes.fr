@@ -1157,6 +1157,23 @@ width: 50%;
 	border : 1px dashed #cecdc2;
 }
 
+.texte_presentation_gauche h1 {
+	margin: 10px 0 40px 0;
+}
+
+#texte_a_ecrire {
+	text-align:justify;
+}
+
+
+#illustration {
+	float:left;
+	width:100px;
+	height:90px;
+	margin:5px;
+	background-image:url('images/minilogo_nosdeputes.png');
+}
+
 .menu_accueil_droite {
 	margin: 20px 10px 20px 10px;
 	float:right;

@@ -1,5 +1,20 @@
 <div class="temp">
 <div class="texte_presentation_gauche">
+	<h1>Bienvenue</h1>
+	<span id="illustration">
+	</span>
+	<div id="texte_a_ecrire">
+	Texte texte Texte t exte Texte tex te Texte   texte Texte t exte T exte texte Text e texte Texte texte Texte texte 
+	Texte texte Te xte texte Te xte texte Texte texte Texte texte Texte texte Texte texte Texte texte Texte texte
+	Tex te t ex te Texte texte Texte  texte Te xte texte T exte texte Text e te xte Text e texte Text e te te Texte texte 
+	Te xte tex te  Texte  texte Texte tex te Texte texte T exte texte Texte  texte Texte texte  Texte tex te Texte texte 
+	Texte tex te Texte texte Texte text e Texte texte Text e texte Tex te texte Texte te xte Texte tex te Texte texte 
+	Texte texte Texte t exte Texte tex te Texte   texte Texte t exte T exte texte Text e texte Texte texte Texte texte 
+	Texte texte Te xte texte Te xte texte Texte texte Texte texte Texte texte Texte texte Texte texte Texte texte
+	Tex te t ex te Texte texte Texte  texte Te xte texte T exte texte Text e te xte Text e texte Text e te te Texte texte 
+	Te xte tex te  Texte  texte Texte tex te Texte texte T exte texte Texte  texte Texte texte  Texte tex te Texte texte 
+	Texte tex te Texte texte Texte text e Texte texte Text e texte Tex te texte Texte te xte Texte tex te Texte texte 
+	</div>
 </div>
 
 <div class="menu_accueil_droite">
