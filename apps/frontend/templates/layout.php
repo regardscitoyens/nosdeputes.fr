@@ -67,10 +67,11 @@ $menu_citoyen = $selectcitoyen;
 					<?php }
 					if($sf_user->isAuthenticated())
 					{ 
-					  if($sf_user->getAttribute('is_active') == true) { 
+					  echo '<span id="loggued_top">';
+						if($sf_user->getAttribute('is_active') == true) { 
 					    echo link_to($sf_user->getAttribute('login'),'@citoyen?slug='.$sf_user->getAttribute('slug')).' - ';
 					  }
-						echo link_to('Déconnexion','@signout');
+						echo link_to('Déconnexion','@signout'); echo '</span>';
 					} ?>
 				</div>
 			</div>
