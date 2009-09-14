@@ -1283,3 +1283,10 @@ width: 49%;
 a:hover img {
   text-decoration: none;
 }
+
+.error_list {
+	    color: red;
+}
+.error_list li {
+  list-style-type: none;
+}
