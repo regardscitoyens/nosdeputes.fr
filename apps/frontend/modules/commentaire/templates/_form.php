@@ -35,6 +35,7 @@
     </tr>
     </table>
   </div>
+  <div id="connexion">
   <div class="tab_form" id="tab_form_2">
     <h4>Connexion</h4>
     <table>
@@ -55,7 +56,7 @@
     </td>
     </tr>
     </table>
-  </div>
+  </div></div>
 </div>
 </div>
 <?php } ?>

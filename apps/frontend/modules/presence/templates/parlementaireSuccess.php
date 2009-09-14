@@ -1,4 +1,3 @@
-<div class="temp">
 <?php
 $titre = 'Présence en hémicycle et commissions';
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre));

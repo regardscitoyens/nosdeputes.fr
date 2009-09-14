@@ -5,7 +5,7 @@
    echo link_to('Lire tous les commentaires', '@intervention?id='.$id.'#lire_commentaire');
  }
 ?>
-<div><b>Ecrire un commentaire</b></div><?php
+<?php
 include_component('commentaire', 'form', array('type'=>'Intervention', 'id'=>$id));
 ?></div><?php
 exit;

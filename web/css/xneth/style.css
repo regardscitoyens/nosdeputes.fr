@@ -18,7 +18,7 @@ body {
   position: absolute;
   top: 20px;
   left: 0;
-  width: 280px;
+  width: 300px;
   padding: 5px;
   background-color: #fff;
   border: 1px solid #BFBFBF;
@@ -44,7 +44,8 @@ body {
 #tab_form_1:hover table, 
 #tab_form_1:focus table, 
 #tab_form_2:hover table, 
-#tab_form_2:focus table
+#tab_form_2:focus table,
+#connexion:target table
 {
   z-index: 10;
   background-color: #EFEFEF;  
@@ -53,7 +54,8 @@ body {
 #tab_form_1:hover h4, 
 #tab_form_1:focus h4, 
 #tab_form_2:hover h4, 
-#tab_form_2:focus h4
+#tab_form_2:focus h4,
+#connexion:target h4
 {
   z-index: 10;
   background-color: #DBD5C8;
