@@ -275,13 +275,14 @@ h1 {
   margin-bottom: 0;
 }
 
-.menu_recherche  img{
+.menu_recherche  img {
   float:left;
-  margin-left:10px;
+  margin-left:5px;
+  margin-right:4px;
 }
 
 .rechercher {
-  float:right;
+  float:left;
   width:111px;
   height:20px;
   border:0;
@@ -294,7 +295,7 @@ h1 {
 }
 
 .bouton_ok {
-  float:right;
+  float:left;
   width: 29px;
   height:20px;
   border:0;

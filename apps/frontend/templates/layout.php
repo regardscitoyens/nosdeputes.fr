@@ -94,9 +94,9 @@ $menu_citoyen = $selectcitoyen;
 								<option value="amendement"<?php echo $selectamdmt; ?>>Amendements</option>
 							</select>
 							<?php echo image_tag($style.'/recherche_fleche.png', array('alt' => '')); ?>
+					        <input class="rechercher" name="search" type="text" size="15" value="<?php echo $search; ?>"/>
 							<input class="bouton_ok" value="" type="submit"/>
-					                <input class="rechercher" name="search" type="text" size="15" value="<?php echo $search; ?>"/>
-                                              </p>
+                        </p>
 					</form>
 				</div>
 			</div>
