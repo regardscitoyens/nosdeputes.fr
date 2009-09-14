@@ -14,7 +14,7 @@ foreach($sousarticles[$a->id] as $sa) { ?>
 <div>
 <?php foreach($articles as $a) { ?>
   <h2><a name="post_<?php echo $a->id; ?>"></a><?php echo $a->titre;
-   if ($sf_user->isAuthenticated() && !$sf_user->hasCredential('membre'))
+   if (0 && $sf_user->isAuthenticated() && !$sf_user->hasCredential('membre'))
     echo '<span>('.link_to('Editer', '@faq_edit?article_id='.$a->id).')</span>'; 
 ?></h2>
 <p><?php echo $a->corps; ?></p>
