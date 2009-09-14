@@ -1134,12 +1134,12 @@ h2 {
 .synthese td, .synthese th { padding: 0px; margin: 0px; text-align: center}
 
 .left {
-width: 50%;
+width: 49%;
 float: left;
 }
 .right{
 float: right;
-width: 50%;
+width: 49%;
 }
 .internal_tag_cloud{
   margin: auto;
@@ -1175,11 +1175,6 @@ width: 50%;
 }
 
 .menu_accueil_droite {
-	margin: 20px 10px 20px 10px;
-	float:right;
-	width:430px;
-	border : 1px dashed #cecdc2;
-	padding:5px;
 }
 
 .accueil_liste_liens {
@@ -1214,27 +1209,32 @@ width: 50%;
 }
 
 .accueil_deputes_jour  h3 {
-	background-color:#dbd5c8;
+//	background-color:#dbd5c8;
 	font-size: 1.2em;
 	margin:0 0 10px 0;
 }
 
 .accueil_deputes_jour {
-	float:left;
+	float:right;
 	width:210px;
 	text-align:center;
 	background:#eee;
 }
-
+.clear {
+       clear: both;
+}
 .accueil_deputes_jour img {
 	border:1px solid #727272;
 }
 
+.accueil_message {
+	float: left;
+	margin-left:40px;
+	width: 600px;
+	font-size: 12px;
+}
+
 .accueil_plot {
-	float:right;
-	width:440px;
-	margin: 0 10px 20px 10px;
-	border : 1px dashed #cecdc2;
 }
 
 #center {
@@ -1243,22 +1243,25 @@ width: 50%;
 	margin-right:auto;
 }
 
-.accueil_nuage_tags {
-	clear:both;
-	width:875px;
-	margin:10px 10px 20px 10px;
-	padding:10px;
-	border : 1px dashed #cecdc2;
+.accueil .nuage_de_tags {
+	 margin: 0;
+	 border: 0;
+}
+.accueil .nuage_de_tags h2{
+	 text-align: center;
 }
 
-.accueil_nuage_tags   h2 {
-	background-color:#dbd5c8;
-	font-size: 1.2em;
-	margin:0 0 10px 0;
+.separateur{
+	margin: 20px;
+	clear: both;
 }
+
 .pagination span {
 
 }
 .pagination img {
 
+}
+a:hover img {
+	text-decoration: none;
 }

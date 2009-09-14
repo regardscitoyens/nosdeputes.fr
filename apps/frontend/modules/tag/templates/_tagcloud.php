@@ -1,8 +1,11 @@
 <style>
+a:link {color:#9F9F9F;}
 .tag_level_0 {font-size: 0.8em;}
 .tag_level_1 {font-size: 0.9em;}
 .tag_level_2 {font-size: 1em;}
 .tag_level_3 {font-size: 1.5em;}
+.tag_level_4 {font-size: 1.7em;}
+.tag_level_4 a {color: #6F6F6F6;}
 </style>
 <div class="internal_tag_cloud">
 <?php $keys = array_keys($tags);

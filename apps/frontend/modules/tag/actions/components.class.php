@@ -45,7 +45,7 @@ class tagComponents extends sfComponents
       $this->tags[$tag] = array();
       $this->tags[$tag]['count'] = $count;
       if (!isset($class[$count]))
-	$class[$count] = intval($cpt * 4 / $tot);
+	$class[$count] = intval($cpt * 5 / $tot);
       $cpt++;
       $this->tags[$tag]['tag'] = $tag;
       $this->tags[$tag]['class'] = $class[$count];
