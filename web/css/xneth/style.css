@@ -727,6 +727,7 @@ h1 {
 .rss {
   margin: 0;
   padding: 0;
+  padding-left: 5px;
 }
 /* Boite extrait article */
 .boite_extrait_article {

@@ -409,4 +409,6 @@ public function executeList(sfWebRequest $request)
     $this->news = $news;
     $this->feed = new sfRssFeed();
   }
+  public function executeError404() {
+  }
 }
