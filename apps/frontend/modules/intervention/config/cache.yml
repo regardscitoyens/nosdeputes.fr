@@ -1,0 +1,5 @@
+all:
+  enabled: on
+  lifetime: 86400
+show:
+  enabled: off
