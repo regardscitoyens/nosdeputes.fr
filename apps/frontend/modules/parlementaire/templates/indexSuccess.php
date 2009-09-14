@@ -9,7 +9,7 @@
     <p>Conçu comme une plateforme de médiation entre citoyens et députés, le site propose à chacun de participer et de s'exprimer sur les débats parlementaires. Au travers de leurs commentaires, les utilisateurs sont invités à créer le débat en partageant leur expertise lorsque cela leur semble utile. Peut-être pourront-ils ainsi nourrir le travail de leurs élus ?</p>
   </div>
   <div class="accueil_message_signature">
-    <p>Toute l'équipe du collectif <a href="htttp://www.regardscitoyens.org/">RegardsCitoyens.org</a>.</p>
+    <p>Toute l'équipe du collectif <a href="http://www.regardscitoyens.org/">RegardsCitoyens.org</a>.</p>
   </div>
 </div>
 
