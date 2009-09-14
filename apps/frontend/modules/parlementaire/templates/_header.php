@@ -16,4 +16,5 @@ echo $titre;
   </div></div>
 </div>
 <div class="stopfloat"></div>
-<br/><?php $sf_response->setTitle(strip_tags($titre.' '.$surtitre)); 
+<br/><?php if ($surtitre) $titre .= $surtitre;
+  $sf_response->setTitle(strip_tags($titre.' '.$surtitre)); ?>
