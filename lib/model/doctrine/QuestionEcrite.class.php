@@ -38,4 +38,20 @@ class QuestionEcrite extends BaseQuestionEcrite
       $depute->free();
     }
   }
+  public function uniqueMinistere() 
+  {
+    $ministere = 'Ministère d';
+    $ministre = preg_replace('/^.*\/\s*([\wàéëêèïîôöûüÉ]+)$/', '\\1', $this->ministere);
+    $ministre = preg_replace('/^([\wàéëêèïîôöûüÉ]+)[,\s].*$/', '\\1', $ministre);
+    if (preg_match('/^[AEÉIOU]/', $ministre)) $ministere .= 'e l\'';
+    else $ministere .= 'u ';
+    $ministere .= $ministre;
+    return $ministere;
+  }
+  public function firstTheme()
+  {
+    $theme = preg_replace('/^\s*([\wàéëêèïîôöûüÉ\s]+)*[,\/].*$/', '\\1', $this->themes);
+    $theme = preg_replace('/^(.*)\s+$/', '\\1', $theme);
+    return $theme;
+  }
 }

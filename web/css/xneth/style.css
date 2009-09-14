@@ -983,8 +983,8 @@ h2 {
   padding-right: 2px;
 }
 .commentaires {
+  clear:both;
   margin-bottom: 10px;
-  padding-left: 10px;
 }
 .source {
   float: right;
@@ -1119,11 +1119,6 @@ h2 {
 
 .texte_intervention {
   margin:20px;
-}
-
-.commentaires {
-  margin:10px;
-  clear:both;
 }
 
 .contexte {

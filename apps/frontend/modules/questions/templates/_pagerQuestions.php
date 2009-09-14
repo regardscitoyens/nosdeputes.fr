@@ -1,5 +1,9 @@
 <div class="questions">
+<?php if (isset($mots) && $mots) { ?>
+<h1>Recherche de questions parlant de "<?php echo $mots; ?>"</h1>
 <?php
+   $sf_response->setTitle('Recherche de questions parlant de "'.$mots.'"');
+ }
   $nResults = $pager->getNbResults();
   if ($nResults == 0) $nResults = 'Aucune';
   if (isset($_GET['search'])) {
