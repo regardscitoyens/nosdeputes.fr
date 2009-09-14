@@ -30,7 +30,8 @@ h1 a:link {
 }
   
 a:link {
-  color: #6F6F6F;
+  color: inherit;
+//  color: #6F6F6F;
   text-decoration: none;
   background-color: transparent;
 }
@@ -530,6 +531,9 @@ h1 {
 }
 .barre_date {
   margin-left: 25px;
+}
+.contenu_depute li{
+	list-style-type: none;
 }
 .contenu_depute {
   width: 918px;
