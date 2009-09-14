@@ -16,13 +16,13 @@
         else $titre2 .= $orga->getNom().'</a>';
       } else {
         $section = $intervention->getSection();
-	    if ($section->getSection()) {
-          if (isset($complete))
-	    if ($section->getSection()->getTitre())
-	      $titre2 .= link_to(ucfirst($section->getSection()->getTitre()), '@section?id='.$section->section_id);
-          else $titre2 .=  ucfirst($section->getSection()->getTitre());
-          $titre2 .= '&nbsp;: ';
-        }
+	    if ($section->getSection())
+          if ($section->getSection()->getTitre()) {
+            if (isset($complete))
+              $titre2 .= link_to(ucfirst($section->getSection()->getTitre()), '@section?id='.$section->section_id);
+            else $titre2 .=  ucfirst($section->getSection()->getTitre());
+            $titre2 .= '&nbsp;: ';
+          }
         if (isset($complete)) {
 	  if ($section->getTitre())
 	    $titre2 .= link_to(ucfirst($section->getTitre()), '@section?id='.$section->id);
