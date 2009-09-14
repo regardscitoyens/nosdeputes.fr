@@ -3,7 +3,7 @@
       $sf_response->setTitle($parlementaire->nom); ?>
 <div class="fiche_depute">
   <div class="info_depute">
-<p><h1><b><?php echo $parlementaire->nom; ?></b>, <?php echo $parlementaire->getLongStatut(1); ?></h1></p>
+<p><h1><b><?php echo $parlementaire->nom; ?></b>, <?php echo $parlementaire->getLongStatut(1); ?><span class="rss"><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag('../css/'.$style.'/images/rss.png', 'alt="Flux rss"'); ?></a></span></h1></p>
     </div>
   <div class="depute_gauche">
     <div class="photo_depute">
@@ -24,7 +24,7 @@
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
-      <h3> Informations :</h3>
+      <h2> Informations</h2>
     <ul>
 <?php if ($parlementaire->groupe_acronyme != "") : ?>
       <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getgroupe()->getFonction(); ?>)</li>
@@ -37,7 +37,7 @@
       <?php endif; ?>  
     </ul>
     <?php if ($parlementaire->fin_mandat == null) : ?>
-      <br /><h3>Responsabilités</h3>
+      <br /><h2>Responsabilités</h2>
       <ul>
         <li>Parlementaires :
           <ul>
@@ -57,6 +57,19 @@
         </li>
       </ul>
       <?php endif; ?> <!-- else : ajouter les infos venant de parsing ancien (anciennes responsabilités) et avant les respon actuelles de ministre machin via les personnalites get fonctions? -->
+      </div>
+    </div>
+    <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
+    <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
+    <div class="b_d_cont">
+      <div class="b_d_infos">
+      <h2>Questions au gouvernement</h2>
+      <h3>Ses dernières questions orales</h3>
+       <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 5)); ?>
+      <p class="suivant"><?php echo link_to('Toutes ses questions orales','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=question'); ?></p>
+      <h3>Ses dernières questions écrites</h3>
+       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 5)); ?>
+      <p class="suivant"><?php echo link_to('Toutes ses questions écrites','@parlementaire_questions?slug='.$parlementaire->getSlug()); ?></p>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
@@ -94,43 +107,10 @@
   </div>
 
   <div class="boite_depute" id="b4">
-    <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
-    <div class="b_d_cont">
-      <div class="b_d_infos">
-      <h2>Questions au gouvernement</h2>
-      <h3>Ses dernières questions orales</h3>
-       <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 5)); ?>
-      <p><?php echo link_to('Toutes ses questions orales','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=question'); ?></p>
-      <h3>Ses dernières questions écrites</h3>
-       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 5)); ?>
-      <p><?php echo link_to('Toutes ses questions écrites','@parlementaire_questions?slug='.$parlementaire->getSlug()); ?></p>
-      </div>
-    </div>
-    <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
   </div>
 
   <div class="bas_depute">
-    <div class="bas_depute_g">
-      <!-- 
-      <h2>Derniers commentaires</h2>  
-      <?php # var_dump( sfConfig::get('sf_escaping_strategy') ); ?>
-       <div class="boite_citoyen">
-        <div class="b_c_h"><div class="b_c_hg"></div><div class="b_c_hd"></div></div>
-        <div class="b_c_cont">
-          <div class="b_c_photo">
-          
-          </div>
-          <div class="b_c_text">
-            <h3>Jojo C. <span class="note"><?php echo image_tag('../css/'.$style.'/images/etoile.png', 'alt="***"'); ?></span></h3>
-            <p><a href="#">23 articles</a></p>
-            <p><a href="#">Voir la fiche perso</a></p>
-          </div>
-        </div>
-        <div class="b_c_b"><div class="b_c_bg"></div><div class="b_c_bd"></div></div>
-      </div> -->
-    </div>
-    <div class="bas_depute_d">
-      <h2>Derniers commentaire concernant <a href="#"><?php echo $parlementaire->slug; ?></a> <span class="rss"><a href="#"><?php echo image_tag('../css/'.$style.'/images/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
+      <h2>Derniers commentaire concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag('../css/'.$style.'/images/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
       <?php echo include_component('commentaire', 'parlementaire', array('parlementaire' => $parlementaire)); ?>
       <?php echo link_to('Voir tous les commentaires', '@parlementaire_commentaires?slug='.$parlementaire->slug); ?>
     </div>

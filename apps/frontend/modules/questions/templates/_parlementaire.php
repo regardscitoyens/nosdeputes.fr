@@ -1,3 +1,6 @@
+<?php if (!count($questions)) { ?>
+    <i>Désolé, le député n'a pas posé de question dans les derniers mois</i>
+<?php return ;}?>
 <ul>
 <?php $cpt = 0; foreach($questions as $question) :
 $cpt ++;

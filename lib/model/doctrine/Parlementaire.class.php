@@ -540,7 +540,7 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function getLastCommentaires($limit = 5)  {
-    return doctrine::getTable('Commentaire')->createQuery('c')->leftJoin('c.CommentaireParlementaires cp')->where('cp.parlementaire_id = ?', $this->id)->orderBy('c.created_at DESC')->limit($limit)->execute();
+    return doctrine::getTable('Commentaire')->createQuery('c')->leftJoin('c.CommentaireParlementaires cp')->where('cp.parlementaire_id = ?', $this->id)->andWhere('is_public = 1')->orderBy('c.created_at DESC')->limit($limit)->execute();
   }
   public function getTop() {
     return unserialize($this->_get('top'));

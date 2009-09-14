@@ -163,11 +163,15 @@ class citoyenActions extends sfActions
             $user->is_active = true;
             $user->activation_id = null;
             $user->save();
-            Doctrine_Query::create()  
-            ->update('Commentaire')
-            ->set('is_public', '?', true)
-            ->where('citoyen_id = ?', $user->id)
-            ->execute();
+	    $commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
+	      ->where('is_public != 1')
+	      ->andWhere('citoyen_id = ?', $user->id)
+	      ->execute();
+	    foreach ($commentaires as $c) {
+	      $c->is_public = 1;
+	      $c->save();
+	      $c->updateNbCommentaires();
+	    }
             if ($this->getUser()->isAuthenticated())
             {
               $this->getUser()->setAttribute('is_active', true);

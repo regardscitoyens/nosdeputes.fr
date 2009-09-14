@@ -552,30 +552,17 @@ h1 {
   float: left;
   width: 440px;
 }
-#b1 h2{
-  color: #000;
-  background-color: #fff;
-  font-size: 1.5em;
-}
-#b1 h1{
-  font-size: 1.6em;
-}
 #b2 {
   float: left;
   width: 414px;
-  border-left: 1px dashed #BFBFBF;
-  border-bottom: 1px dashed #BFBFBF;
 }
 #b3 {
   float: left;
   width: 414px;
-  border-left: 1px dashed #BFBFBF;
-  border-bottom: 1px dashed #BFBFBF;
 }
 #b4 {
   float: right;
   width: 414px;
-  border-left: 1px dashed #BFBFBF;
 }
 /**/
 .meilleur_pire {
@@ -588,7 +575,7 @@ h1 {
 }
 
 .b_d_infos  h3{
-  background-color: #ebebeb;
+//  background-color: #ebebeb;
 }
 
 /* Tabs adresses */
@@ -738,7 +725,6 @@ h1 {
 }
 
 .rss {
-  float: right;
   margin: 0;
   padding: 0;
 }
@@ -901,11 +887,12 @@ h2 {
   margin-bottom: 10px;
   border-bottom: 1px dashed #DFDFDF;
 }
-.intervention .source, .intervention .source a:link, .intervention .source a:visited {
-  color: #F0F0F0;
+
+.intervention .source {
+	      display: none;
 }
-.intervention .source a:hover, .intervention .source a:hover {
-  color: #000000;
+.intervention:hover .source {
+    display: inline;
 }
 
 .intervention .section, .intervention .sous-section{

@@ -1,3 +1,8 @@
+options:
+    type: MyISAM
+    collate: latin1_swedish_ci
+    charset: latin1
+
 Tag:
   columns:
 #    id:

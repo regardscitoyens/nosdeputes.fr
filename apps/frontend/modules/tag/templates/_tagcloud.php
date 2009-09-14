@@ -1,5 +1,5 @@
 <style>
-a:link {color:#9F9F9F;}
+.internal_tag_cloud a:link {color:#9F9F9F;}
 .tag_level_0 {font-size: 0.8em;}
 .tag_level_1 {font-size: 0.9em;}
 .tag_level_2 {font-size: 1em;}

@@ -16,6 +16,7 @@ class commentaireActions extends sfActions
     $this->q_commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
       ->leftJoin('c.CommentaireParlementaires cp')
       ->where('cp.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('c.is_public = 1')
       ->orderBy('c.created_at DESC');
   }
   public function executePost(sfWebRequest $request)
@@ -131,7 +132,12 @@ $values['password'], false, $this))) {
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
-    $this->commentaires = Doctrine::getTable('Commentaire')->createQuery('c')->leftJoin('c.CommentaireParlementaires cp')->where('cp.parlementaire_id = ?', $this->parlementaire->id)->orderBy('created_at DESC')->limit(10)->execute();
+    $this->commentaires = Doctrine::getTable('Commentaire')
+      ->createQuery('c')
+      ->leftJoin('c.CommentaireParlementaires cp')
+      ->where('cp.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('c.is_public = 1')
+      ->orderBy('created_at DESC')->limit(10)->execute();
     $this->feed = new sfRssFeed();
   }
   public function executeSeance(sfWebRequest $request)
