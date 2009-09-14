@@ -27,14 +27,16 @@ class presenceActions extends sfActions
 
   public function executePreuve(sfWebRequest $request)
   {
-    $parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
-    $this->forward404Unless($parlementaire);
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->parlementaire);
     $seance_id = $request->getParameter('seance');
+    $this->seance = Doctrine::getTable('Seance')->findOneById($seance_id);
+    $this->forward404Unless($this->seance);
     $this->preuves = doctrine::getTable('PreuvePresence')
       ->createQuery('pp')
       ->leftJoin('pp.Presence p')
       ->where('p.seance_id = ?', $seance_id)
-      ->andWhere('p.parlementaire_id = ?', $parlementaire->id)
+      ->andWhere('p.parlementaire_id = ?', $this->parlementaire->id)
       ->execute();
   }
 
