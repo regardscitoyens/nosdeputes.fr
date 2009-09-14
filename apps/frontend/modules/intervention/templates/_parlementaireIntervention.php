@@ -20,7 +20,7 @@
           if ($section->getSection()->getTitre()) {
             if (isset($complete))
               $titre2 .= link_to(ucfirst($section->getSection()->getTitre()), '@section?id='.$section->section_id);
-            else $titre2 .=  ucfirst($section->getSection()->getTitre());
+            else $titre2 .= ucfirst($section->getSection()->getTitre());
             $titre2 .= '&nbsp;: ';
           }
         if (isset($complete)) {
@@ -31,7 +31,7 @@
             if(count($amdmts) > 1) $titre2 .= 's';
             $titre2 .= ' ';
             foreach($amdmts as $amdmt)
-              $titre2 .= link_to($amdmt, '/amendements/'.(implode(',',$lois).'/'.$amdmt));
+              $titre2 .= link_to($amdmt, '/amendements/'.(implode(',',$lois).'/'.$amdmt)).' ';
         } else $titre2 .= ucfirst($section->getTitre()).'</a>';
     }
     ?> 
@@ -79,7 +79,11 @@ if ($intervention->hasIntervenant()) {
   echo '<p>'.$p_inter.'</p>';
 ?></div>
     <div class="contexte">
-    <p><?php echo link_to("Voir dans le contexte", $link_seance); ?><?php if (!isset($complete) && $intervention->nb_commentaires) echo ' &mdash; '.link_to('Voir les '.$intervention->nb_commentaires.' commentaires', '/intervention/'.$intervention->id.'#commentaires'); ?></p>
+    <p><?php echo link_to("Voir dans le contexte", $link_seance);
+    if (!isset($complete) && $intervention->nb_commentaires) {
+      if ($intervention->nb_commentaires == 1) $commenttitre = 'Voir le commentaire';
+      else $commenttitre = 'Voir les commentaires';
+      echo ' &mdash; '.link_to($commenttitre, '/intervention/'.$intervention->id.'#commentaires'); } ?></p>
     </div>
     <?php if (isset($complete)) { ?>
     <div id="commentaires">

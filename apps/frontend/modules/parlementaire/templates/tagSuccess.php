@@ -1,12 +1,13 @@
-<?php if (!$tag) { ?>
-<h1>Tous les députés par mots-clés prononcés</h1>
+<?php if (!$tag) {
+   $titre = 'Trouver un député par mots-clés prononcés'; ?>
+<h1><?php echo $titre; ?></h1>
 <div class="liste_deputes_tags">
-<?php $sf_response->setTitle('Trouver un député par mots-clés prononcés');
- echo include_component('tag', 'tagcloud', array('querytag'=>$tquery,'route'=>'@tag_result_parlementaires?', 'limit'=>500)); 
+<?php echo include_component('tag', 'tagcloud', array('querytag'=>$tquery,'route'=>'@tag_result_parlementaires?', 'limit'=>500)); 
  echo "</div>";
  return;
- }?>
-<h1>Les députés spécialistes de "<?php echo $tag; ?>"</h1>
+ } else  $titre = 'Les députés spécialistes de "'.$tag.'"';?>
+<h1><?php echo $titre; ?></h1>
+<?php $sf_response->getTitle($titre); ?>
 <div><ul>
 <?php $sf_response->setTitle('Les députés spécialistes de "'.$tag.'"');
 foreach($parlementaires as $inter) {

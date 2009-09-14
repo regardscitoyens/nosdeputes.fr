@@ -2,7 +2,7 @@
 $titre = 'Champ lexical';
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre));
 ?>
-  <div>
+  <div class="annualisation"><p>
 <?php if (! $parlementaire->fin_mandat) { 
    if (!$last) 
     echo '<a href="'.url_for('@parlementaire_tags?slug='.$parlementaire->slug).'">';

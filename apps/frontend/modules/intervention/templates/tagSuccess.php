@@ -2,7 +2,6 @@
 $options = array('intervention_query' => $query, 'highlight' => $tags);
 $titre = 'Interventions sur <em>"'.implode(', ', $tags).'"</em>';
 if (isset($parlementaire)) {
-$titre .= ' de '.link_to($parlementaire->nom, 'parlementaire/'.$parlementaire->slug);
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre));
 $options = array_merge($options, array('nophoto' => true)); 
 } else {
