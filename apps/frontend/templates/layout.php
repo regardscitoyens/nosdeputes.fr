@@ -39,11 +39,6 @@ $menu_citoyen = $selectcitoyen;
     <?php echo stylesheet_tag($style.'/print'); ?>
     <!--[if lte IE 6]>
     <?php echo stylesheet_tag($style.'/ie6'); ?>
-    <script type="text/javascript" src="/js/fixe/fonctions_ie.js"></script>
-    <script type="text/javascript" src="/includes/iepngfix/iepngfix_tilebg.js"></script>  
-    <style type="text/css">
-      img, div { behavior: url('includes/iepngfix/iepngfix.php') }
-    </style>
     <![endif]-->
     <script type="text/javascript" src="/js/jquery-1.3.2.min.js"></script>
   </head>
