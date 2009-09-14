@@ -3,3 +3,5 @@ all:
   lifetime: 86400
 show:
   enabled: off
+_pagerIntervention:
+  enabled: off
