@@ -303,6 +303,9 @@ class citoyenActions extends sfActions
   {
     $slug = $request->getParameter('slug');
     $this->user = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
+    if (!$this->user || !$this->user->photo) {
+      return $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/images/xneth/avatar_citoyen.png');
+    }
     $this->setLayout(false);
     $this->getResponse()->setHttpHeader('content-type', 'image/jpeg');
     $this->getResponse()->addCacheControlHttpHeader('max_age=60');

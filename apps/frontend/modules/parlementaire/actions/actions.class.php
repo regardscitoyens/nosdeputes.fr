@@ -45,18 +45,20 @@ class parlementaireActions extends sfActions
     $slug = $request->getParameter('slug');
     $parlementaires = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->fetchArray();
     $this->forward404Unless($parlementaires[0]);
-    $this->getResponse()->setHttpHeader('content-type', 'image/png');
-    $this->setLayout(false);
+    if (!$parlementaires[0]['photo']) {
+      return $this->redirect('/images/xneth/avatar_depute.png');
+    }
     $file = tempnam(sys_get_temp_dir(), 'Parl');
     $fh = fopen($file, 'w');
     fwrite($fh ,$parlementaires[0]['photo']);
     fclose($fh);
     list($width, $height, $image_type) = getimagesize($file);
-
     if (!$width || !$height) {
-      return $this->redirect('/css/fixe/images/cadre_depute.png');
+      return $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/images/xneth/avatar_depute.png');
     }
 
+    $this->getResponse()->setHttpHeader('content-type', 'image/png');
+    $this->setLayout(false);
     $newheight = ceil($request->getParameter('height', $height)/10)*10;
     if ($newheight > 250)
       $newheight = 250;
