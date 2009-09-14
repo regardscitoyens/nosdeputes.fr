@@ -1255,6 +1255,12 @@ width: 49%;
   width: 600px;
   font-size: 12px;
 }
+.accueil_message_content {
+  text-align: justify;
+}
+.accueil_message_signature {
+  text-align: right;
+}
 
 .accueil_plot {
 }

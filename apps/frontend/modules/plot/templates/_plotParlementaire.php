@@ -97,10 +97,10 @@ $Test->setColorPalette(0,255,35*$fonction,0);
 $Test->setColorPalette(1,0,0,0);
 $Test->drawLineGraph($DataBordure,$DataDescrBordure);
 $Test->xsSetFontProperties("tahoma.ttf",$font + 3);
-$postitre = 240;
+$pos_titre = 240;
 if ($time == 'lastyear') {
   if (isset($mandat_clos)) {
-    $postitre = 210;
+    $pos_titre = 210;
     $duree = 'sa dernière année de mandat';
   } else $duree = 'l\'année passée';
   $shortduree = 'annee';
@@ -109,7 +109,7 @@ if ($time == 'lastyear') {
   $shortduree = $time;
 }
 if ($type == 'total') {
-  $Test->drawTitle($postitre,3 + 2*$font,"Participation globale au cours de ".$duree." (hémicycle et commissions)",50,50,50,585);
+  $Test->drawTitle($pos_titre,3 + 2*$font,"Participation globale au cours de ".$duree." (hémicycle et commissions)",50,50,50,585);
   $titre = 'globale-'.$shortduree;
 } else {
   $titre = $type;
