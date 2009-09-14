@@ -14,7 +14,9 @@ foreach($sousarticles[$a->id] as $sa) { ?>
 <div>
 <?php foreach($articles as $a) { ?>
   <h2><a name="post_<?php echo $a->id; ?>"></a><?php echo $a->titre;
-    echo '<span>('.link_to('Editer', '@faq_edit?article_id='.$a->id).')</span>'; ?></h2>
+   if (!$sf_user->hasCredential('membre'))
+    echo '<span>('.link_to('Editer', '@faq_edit?article_id='.$a->id).')</span>'; 
+?></h2>
 <p><?php echo $a->corps; ?></p>
 <?php if (count($sousarticles[$a->id])) { ?><ul><?php
 foreach($sousarticles[$a->id] as $sa) { ?>
