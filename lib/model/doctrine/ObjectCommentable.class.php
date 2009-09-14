@@ -10,6 +10,7 @@ class ObjectCommentable extends BaseObjectCommentable
       ->select('count(*) as nb')
       ->where('object_type = ?', get_class($this))
       ->andWhere('object_id = ?', $this->id)
+      ->andWhere('is_public = ?')
       ->fetchArray();
     if (isset($res[0]['nb']))
       $this->nb_commentaires = $res[0]['nb'];

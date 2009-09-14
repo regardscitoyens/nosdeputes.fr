@@ -164,7 +164,7 @@ class citoyenActions extends sfActions
             $user->activation_id = null;
             $user->save();
 	    $commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
-	      ->where('is_public != 1')
+	      ->where('is_public <> 1')
 	      ->andWhere('citoyen_id = ?', $user->id)
 	      ->execute();
 	    foreach ($commentaires as $c) {

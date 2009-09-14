@@ -24,6 +24,7 @@ class Commentaire extends BaseCommentaire
     $cp->commentaire_id = $this->id;
     $cp->save();
   }
+
   public function updateNbCommentaires() {
     $o = Doctrine::getTable($this->object_type)->find($this->object_id);
     return $o->updateNbCommentaires();

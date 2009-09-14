@@ -42,7 +42,7 @@
         <li>Parlementaires :
           <ul>
             <?php foreach ($parlementaire->getResponsabilites() as $resp) { ?>
-            <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') '.link_to('-> interventions', '@parlementaire_interventions_organisme?slug='.$parlementaire->slug.'&orga='.$resp->organisme_id); ?></li>
+            <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') '; ?></li>
             <?php } ?>
           </ul>
         </li>
@@ -113,7 +113,6 @@
       <h2>Derniers commentaire concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag('../css/'.$style.'/images/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
       <?php echo include_component('commentaire', 'parlementaire', array('parlementaire' => $parlementaire)); ?>
       <?php echo link_to('Voir tous les commentaires', '@parlementaire_commentaires?slug='.$parlementaire->slug); ?>
-    </div>
     <div class="stopfloat"></div>
   </div>
 </div>
