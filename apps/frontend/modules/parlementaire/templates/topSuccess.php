@@ -53,7 +53,7 @@ $last = end($tops); $i = 0; foreach(array_keys($last[0]->getTop()) as $key) { $i
      } else{
        echo $t[$i]['value']; 
      }
-?></td><?php } ?></tr><?php break; }?></table>
+?></td><?php } ?></tr><?php }?></table>
 </div>
 <div>
 <h3>Explications :</h3>
