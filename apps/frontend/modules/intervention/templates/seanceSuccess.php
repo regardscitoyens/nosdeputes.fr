@@ -18,10 +18,12 @@
 </div><?php } ?>
 <div class="resume">
 <h2>Résumé de la séance</h2>
+<?php if (count($tags)) { ?>
 <div class="nuage_de_tags">
 <h3>Les mots clés de cette séance</h3>
 <ul><?php foreach(array_keys($tags) as $tag) echo "<li>$tag</li>"; ?></ul>
 </div>
+<?php } ?>
 <div class="plot_seance">
 <?php if ($seance->type == 'commission') { ?>
 <a href="<?php echo url_for('@presents_seance?seance='.$seance->id); ?>">
@@ -32,7 +34,9 @@
 </div>
 <h2>La séance</h2>
 <div class="interventions">
-  <?php $table = ''; $titre = 0; foreach($interventions as $intervention) : ?>
+  <?php if (!count($interventions)) { ?>
+  <p><em>Nous n'avons pas encore pu récupérer le contenu de cette séance, veuillez nous en excuser</em></p>
+  <?php } else { $table = ''; $titre = 0; foreach($interventions as $intervention) : ?>
   <div class="intervention" id="inter_<?php echo $intervention->getMd5(); ?>">
   <?php
   $lasttitre = $titre;
@@ -77,7 +81,6 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
     } else {
       $didascalie = 1;
     } ?>
-  </div>
 <?php
   if (!($didascalie && $titre != 0)) { ?>
     <div class="texte_intervention">
@@ -85,14 +88,14 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
     <?php echo $intervention->getIntervention(array('linkify_amendements'=>url_for('@find_amendements_by_loi_and_numero?loi=LLL&numero=AAA'))); ?>
     <?php if ($didascalie) echo '</em>'; ?>
     </div>
-  <?php } 
-  if (!$didascalie) : ?>
+  <?php } ?>
+<?php if (!$didascalie) : ?>
     <div class="commentaires" id='com_<?php echo $intervention->id; ?>' style="clear: both;">
       <span id="com_link_<?php echo $intervention->id; ?>"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> - </span><span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
   <?php endif; ?>
   </div>
-  <?php endforeach; ?>
+  <?php endforeach; } ?>
 </div>
 <script>
 additional_load = function() {
