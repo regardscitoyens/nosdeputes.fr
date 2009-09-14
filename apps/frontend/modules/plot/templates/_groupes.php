@@ -36,7 +36,7 @@ $DataDescrLegend = $DataSetLegend->GetDataDescription();
 $filename = 'repartition-groupes';
 $xsize = 390;
 if ($plot == 'total') {
-  $xtitre = 68; $ysize = 360; $ylegend = 145; $x0 = 140; $y0 = 112;
+  $xtitre = 80; $ysize = 360; $ylegend = 145; $x0 = 140; $y0 = 112;
   $duree = "l'année passée";
   $shortduree = 'annee';
   $filename .= '-'.$shortduree.'.png';
@@ -92,7 +92,7 @@ $Test->drawTitle(20,$ylegend+13,'Groupes',0,0,0);
 $Test->xsSetFontProperties("tahoma.ttf",12);
 $Test->drawTitle($xtitre,25,'Répartition '.$titre,50,50,50);
 if ($plot == 'total')
-  $Test->drawTitle(95,46,'au cours de '.$duree,50,50,50);
+  $Test->drawTitle(107,46,'au cours de '.$duree,50,50,50);
 $Test->xsSetFontProperties("tahoma.ttf",9);
 if ($plot == 'total') {
   $Test->drawTitle(105,190,'Semaines de',50,50,50);
@@ -114,7 +114,7 @@ if ($plot == 'total') {
 }
 if ($plot == 'total') {
   $Test->xsSetFontProperties("tahoma.ttf",11);
-  $Test->drawTitle(120,340,"Travail moyen d'un député",50,50,50);
+  $Test->drawTitle(110,340,"Activité moyenne d'un député",50,50,50);
 }
 $Test->xsRender($filename);
 if ($plot == 'total')
