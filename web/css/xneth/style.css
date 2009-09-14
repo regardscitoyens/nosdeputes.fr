@@ -902,11 +902,8 @@ h2 {
   border-bottom: 1px dashed #DFDFDF;
 }
 
-.intervention:hover .source {
-  display: block;
-}
-.intervention .source {
-  display: none;
+.intervention .source a:link, .intervention .source a:visited {
+  color: $F0F0F0;
 }
 
 .intervention .section, .intervention .sous-section{

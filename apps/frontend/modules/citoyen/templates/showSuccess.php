@@ -1,8 +1,8 @@
 <div class="temp">
 <h1><?php echo $Citoyen->login; ?></h1>
+<?php echo '<img src="'.url_for('@photo_citoyen?slug='.$Citoyen->slug).'" alt="Photo de '.$Citoyen->login.'"/>'; ?>
 <ul>
-<?php echo '<img src="'.url_for('@photo_citoyen?slug='.$Citoyen->slug).'" alt="Photo de '.$Citoyen->login.'"/>';
-if (!empty($Citoyen->activite)) { $activite = $Citoyen->activite; } else { $activite = 'non renseigné'; }
+<?php if (!empty($Citoyen->activite)) { $activite = $Citoyen->activite; } else { $activite = 'non renseigné'; }
   echo '<li>Activité : '.$activite.'</li>';
   echo '<li>Membre depuis le : '.myTools::displayDate($Citoyen->created_at).'</li>';
 if (!empty($Citoyen->url_site)) { echo '<li><a href="'.$Citoyen->url_site.'" rel="nofollow">Site web</a></li>'; }

@@ -98,7 +98,7 @@ $values['password'], false, $this))) {
     $commentaire->object_id = $this->id;
     $commentaire->lien = $redirect_url[$this->type].$this->id;
     $object = doctrine::getTable($this->type)->find($this->id);
-    $commentaire->presentation = $about[$this->type].date('d/m/Y', time($object->date));
+    $commentaire->presentation = $about[$this->type].date('d/m/Y', strtotime($object->date));
     $commentaire->citoyen_id = $citoyen_id;
     $commentaire->is_public = $is_active;
     $commentaire->ip_address = $ip;

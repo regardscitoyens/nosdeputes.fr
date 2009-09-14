@@ -20,13 +20,16 @@ class commentaireComponents extends sfComponents
     $id = $this->object->id;
     $type = get_class($this->object);
     $this->commentaires = Doctrine::getTable('Commentaire')->createQuery()
-      ->where('(object_type = ? AND object_id = ?)', array($type, $id))->execute();
+      ->where('(object_type = ? AND object_id = ?)', array($type, $id))
+      ->execute();
   }
   
   public function executeShowcitoyen() {
     $id = $this->id;
     $this->commentaires = Doctrine::getTable('Commentaire')->createQuery()
-      ->where('citoyen_id = ? ', $id)->execute();
+      ->where('citoyen_id = ? ', $id)
+      ->orderBy('created_at DESC')
+      ->execute();
   }
   
   public function executeParlementaire() {
