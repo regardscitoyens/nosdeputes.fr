@@ -1,12 +1,16 @@
-<div class="temp">
 <h1><?php if ($orga = $seance->getOrganisme()) echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); ?></h1>
 <h2>Députés présents à la <?php echo link_to($seance->getTitre(1), '@interventions_seance?seance='.$seance->id); ?>&nbsp;:</h2>
+<div class="plot_seance">
+<?php if ($seance->type == 'commission') 
+  echo include_component('plot', 'groupes', array('plot' => $plot.$seance->id)); ?>
+</div>
 <div class="photos"><p>
 <?php foreach ($presences as $presence) {
     $depute = $presence->getParlementaire();
     $titre = $depute->getNom().', '.$depute->groupe_acronyme;
     echo '<a href="'.url_for($depute->getPageLink()).'"><img width="50" height="64" title="'.$titre.'" alt="'.$titre.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$depute->slug).'" /></a>&nbsp;';
   } ?></div>
+
 <ul>
 <?php $titre = 0; foreach($presences as $presence) : ?>
 <?php $p = $presence->getParlementaire(); ?>
@@ -26,4 +30,3 @@
 <?php endforeach;
   if ($titre == 2) echo '</ul>'; ?>
 </ul>
-</div>
