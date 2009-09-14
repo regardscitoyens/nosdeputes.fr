@@ -901,9 +901,11 @@ h2 {
   margin-bottom: 10px;
   border-bottom: 1px dashed #DFDFDF;
 }
-
-.intervention .source a:link, .intervention .source a:visited {
-  color: $F0F0F0;
+.intervention .source, .intervention .source a:link, .intervention .source a:visited {
+  color: #F0F0F0;
+}
+.intervention .source a:hover, .intervention .source a:hover {
+  color: #000000;
 }
 
 .intervention .section, .intervention .sous-section{

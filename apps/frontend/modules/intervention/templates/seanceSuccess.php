@@ -94,7 +94,7 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
       <span id="com_link_<?php echo $intervention->id; ?>"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> - </span><span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
   <?php endif; ?>
-  </div>
+  </div></div>
   <?php endforeach; } ?>
 </div>
 <script>
