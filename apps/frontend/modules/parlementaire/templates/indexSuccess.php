@@ -1,4 +1,4 @@
-<div class="temp">
+<?php $sf_response->setTitle('NosDéputés.fr : Observatoire citoyen de l\'activité parlementaire'); ?>
 <div class="texte_presentation_gauche">
 	<h1>Bienvenue</h1>
 	<span id="illustration">
@@ -43,5 +43,4 @@
 <div class="accueil_nuage_tags">
 	<h2>Mots clés les plus prononcés :</h2>
 	<?php echo include_component('tag', 'globalActivite'); ?>
-</div>
 </div>

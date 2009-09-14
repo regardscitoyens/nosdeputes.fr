@@ -1,5 +1,6 @@
 <?php $style = 'fixe'; # en attendant le style switcher ?>
-<?php $top = $parlementaire->getTop() ?>
+<?php $top = $parlementaire->getTop();
+      $sf_response->setTitle($parlementaire->nom); ?>
 <div class="fiche_depute">
   <div class="info_depute">
 <p><h1><b><?php echo $parlementaire->nom; ?></b>, <?php echo $parlementaire->getLongStatut(1); ?></h1></p>
