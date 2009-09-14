@@ -348,21 +348,22 @@ public function executeList(sfWebRequest $request)
       $qp->whereIn('id', $ids);
     }
     $qp->andWhere('fin_mandat IS NULL')->andWhere('debut_mandat < ?', date('Y-m-d', time()-60*60*24*365/2))->orderBy('nom_de_famille');
-    $parlementaires = $qp->execute();
+    $parlementaires = $qp->fetchArray();
     $this->tops = array();
     foreach($parlementaires as $p) {
-      $tops = $p->getTop();
+      $tops = unserialize($p['top']);
+      $id = $p['id'];
       $i = 0;
-      $this->tops[$p->id][$i++] = $p;
+      $this->tops[$id][$i++] = $p;
 
       foreach(array_keys($tops) as $key) {
-	$this->tops[$p->id][$i]['value'] = $tops[$key]['value'];
+	$this->tops[$id][$i]['value'] = $tops[$key]['value'];
 
-	$this->tops[$p->id][$i]['style'] = '';
+	$this->tops[$id][$i]['style'] = '';
 	if ($tops[$key]['rank'] < 151)
-	  $this->tops[$p->id][$i]['style'] = ' style="color:green" ';
+	  $this->tops[$id][$i]['style'] = ' style="color:green" ';
 	else if ($tops[$key]['rank'] > 577 - 151)
-	  $this->tops[$p->id][$i]['style'] = ' style="color:red" ';
+	  $this->tops[$id][$i]['style'] = ' style="color:red" ';
 	$i++;
       }
     }
