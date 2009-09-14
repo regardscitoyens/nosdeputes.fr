@@ -46,7 +46,7 @@ th,td {border-right: 1px #FFFFFF solid;}
 $ktop = array('');
 $last = end($tops); $i = 0; foreach(array_keys($last[0]->getTop()) as $key) { $i++ ; array_push($ktop, $key);?><th class="<?php echo $class[$key]; if ($sort == $i) echo ' tr_odd'?>"><?php echo link_to($title[$key], $top_link.'sort='.$i); ?></a></th><?php } ?></tr></table>
 <div height="500px" style="height: 500px;overflow: scroll; overflow: auto;">
-<table><?php $cpt = 0; foreach($tops as $t) { $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>><td class="<?php echo $class['parl']; ?>"><a name="<?php echo $t[0]->slug; ?>" href="<?php echo url_for('@parlementaire?slug='.$t[0]->slug); ?>"><img src="<?php echo url_for('@photo_parlementaire?slug='.$t[0]->slug);?>/30" width='23' height='30'/></a><br/>
+<table><?php $cpt = 0; foreach($tops as $t) { $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>><td class="<?php echo $class['parl']; ?>"><a name="<?php echo $t[0]->slug; ?>" href="<?php echo url_for('@parlementaire?slug='.$t[0]->slug); ?>"></a><br/>
 <? echo link_to($t[0]->nom, '@parlementaire?slug='.$t[0]->slug); ?></td><?php for($i = 1 ; $i < count($t) ; $i++) { ?><td<?php echo $t[$i]['style']; ?> class="<?php echo $class[$ktop[$i]]; ?>"><?php 
      if (preg_match('/\./', $t[$i]['value'])) {
        printf('%02d', $t[$i]['value']);
