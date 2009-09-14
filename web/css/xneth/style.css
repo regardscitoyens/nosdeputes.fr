@@ -1036,7 +1036,7 @@ h2 {
 }
 
 .nuage_de_tags {
-  width:260px;
+//  width:260px;
   min-height:172px;
   margin:5px 0 0 40px;
   padding:5px;
@@ -1103,6 +1103,10 @@ h2 {
 
 .liste_deputes  {
   margin: 20px 10px 20px 0;
+}
+
+.suivant {
+	 text-align: right;
 }
 
 .liste_deputes p {

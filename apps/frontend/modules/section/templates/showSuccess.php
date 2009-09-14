@@ -22,7 +22,7 @@ else echo '</h1>';
 <div class="right">
 <div class="nuage_de_tags">
 <h3>Mots-clés de cette section</h3>
-  <?php echo include_component('tag', 'tagcloud', array('hide'=>1, 'tagquery' => $qtag, 'model' => 'Intervention', 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>
+  <?php echo include_component('tag', 'tagcloud', array('hide'=>1, 'tagquery' => $qtag, 'model' => 'Intervention', 'limit'=>40, 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>
 </div>
 </div>
 <div class="left">
