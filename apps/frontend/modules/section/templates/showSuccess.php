@@ -1,4 +1,3 @@
-<div class="temp">
    <h1><?php 
    $titre = '';
 if ($section->getSection()) {
@@ -57,6 +56,5 @@ if ($subsection->id != $section->id) : ?>
 <div class="orateurs_dossier">
 <h2>Tous les orateurs sur ce dossier :</h2>
 <?php echo include_component('parlementaire', 'list', array('parlementairequery' => $ptag, 'route'=>'@parlementaire_texte?id='.$section->id.'&slug=')); ?>
-</div>
 </div>
 </div>
