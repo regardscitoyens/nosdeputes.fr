@@ -78,6 +78,10 @@ img {
 strong {
   font-weight: bold ;
   }
+
+h1 a:link {
+  color: inherit;
+}
   
 a:link {
   color: #6F6F6F;
@@ -86,13 +90,12 @@ a:link {
 }
 
 a:active {
-  color: #000000;
   text-decoration: none;
   background-color: transparent;
 }
 
 a:visited {
-  color: #6F6F6F;
+  color: inherit;
   text-decoration: none;
   background-color: transparent;
 }
@@ -1084,7 +1087,6 @@ h2 {
 }
 
 .liste_deputes p {
-  background-color:#dbd5c8;
   font-size: 1.2em;
 }
 

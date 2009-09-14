@@ -59,33 +59,6 @@
         </li>
       </ul>
       <?php endif; ?> <!-- else : ajouter les infos venant de parsing ancien (anciennes responsabilités) et avant les respon actuelles de ministre machin via les personnalites get fonctions? -->
-      <div class ="adresses">
-      <h3>Adresses</h3>
-        <div class="tab_adresse" id="tab_adresse_1">
-        <h4>Adresse 1</h4>
-        <p>12 Boulevard Machin<br />
-        92100 Machin sur Truc<br />
-        Téléphone : <a href="callto:0033549021575">05 49 02 15 75</a><br />
-        Télécopie : 05 49 02 15 76
-        </p>
-        </div>
-        <div class="tab_adresse" id="tab_adresse_2">
-        <h4>Adresse 2</h4>
-        <p>10 Rue du truc<br />
-        21100 Truc sur Machin<br />
-        Téléphone : <a href="callto:0033549021575">05 49 02 15 75</a><br />
-        Télécopie : 05 49 02 15 76
-        </p>
-        </div>
-        <div class="tab_adresse" id="tab_adresse_3">
-        <h4>Permanence parlementaire</h4>
-        <p>102 Boulevard Blossac<br />
-        86100 Châtellerault<br />
-        Téléphone : <a href="callto:0033549021575">05 49 02 15 75</a><br />
-        Télécopie : 05 49 02 15 76
-        </p>
-        </div>
-      </div>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
