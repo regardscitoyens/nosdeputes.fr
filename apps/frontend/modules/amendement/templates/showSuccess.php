@@ -10,7 +10,7 @@
 </div>
 <?php if ($seance || count($identiques) > 1) { ?>
 <div class="seance_amendements">
-  <h3><?php if ($seance) echo 'Discuté en '.link_to('séance le '.myTools::displayDate($seance['date']), '@interventions_seance?seance='.$seance['id'].'#amend_'.$amendement->numero);
+  <h3><?php if ($seance) echo 'Discuté en '.link_to('séance le '.myTools::displayDate($seance['date']), '@interventions_seance?seance='.$seance['seance_id'].'#amend_'.$amendement->numero);
   if (count($identiques) > 1) {
     if (count($identiques) > 2)
       $ident_titre = " ( amendements identiques : ";
