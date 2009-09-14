@@ -18,12 +18,14 @@
         $section = $intervention->getSection();
 	    if ($section->getSection()) {
           if (isset($complete))
-            $titre2 .= link_to(ucfirst($section->getSection()->getTitre()), '@section?id='.$section->section_id);
+	    if ($section->getSection()->getTitre())
+	      $titre2 .= link_to(ucfirst($section->getSection()->getTitre()), '@section?id='.$section->section_id);
           else $titre2 .=  ucfirst($section->getSection()->getTitre());
           $titre2 .= '&nbsp;: ';
         }
         if (isset($complete)) {
-          $titre2 .= link_to(ucfirst($section->getTitre()), '@section?id='.$section->id);
+	  if ($section->getTitre())
+	    $titre2 .= link_to(ucfirst($section->getTitre()), '@section?id='.$section->id);
           if(count($amdmts) >= 1)
             $titre2 .= ', amendement';
             if(count($amdmts) > 1) $titre2 .= 's';
