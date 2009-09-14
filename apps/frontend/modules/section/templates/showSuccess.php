@@ -43,8 +43,8 @@ if ($subsection->id != $section->id) : ?>
 <?php endif; endforeach;?>
 </ul>
 </div>
-<?php } ?>
 <div class="left">
+<?php } else echo '<div>'; ?>
 <div class="seances_dossier">
 <h2>Toutes les séances consacrées à ce dossier</h2>
 <ul>
