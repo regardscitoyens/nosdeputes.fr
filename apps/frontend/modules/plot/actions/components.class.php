@@ -18,7 +18,7 @@ class plotComponents extends sfComponents
       if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {
         $date = strtotime($this->parlementaire->fin_mandat);
         $this->mandat_clos = true;
-      } else $date = time() - 8*60*60*24;
+      } else $date = time() - 7*60*60*24;
       $annee = date('Y', $date); $sem = date('W', $date); if ($sem == 53) { $annee++; $sem = 1; }
       $last_year = $date - 31536000;
       if ($this->parlementaire->debut_mandat > date('Y-m-d', $last_year)) {
@@ -129,7 +129,7 @@ class plotComponents extends sfComponents
     $n_vacances = array_fill(1, $n_weeks, 0);
     if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
       $n = ($vacance['annee'] - $annee0)*52 + $vacance['semaine'] - $sem0 + 1;
-      if ($n > 0 && $n <= $n_weeks)
+      if ($n > 0 && $n < $n_weeks)
         $n_vacances[$n] = 20;
     }
     return $n_vacances;
