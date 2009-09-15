@@ -349,6 +349,7 @@ public function executeList(sfWebRequest $request)
     }
     $qp->andWhere('fin_mandat IS NULL')->andWhere('debut_mandat < ?', date('Y-m-d', time()-60*60*24*365/2))->orderBy('nom_de_famille');
     $parlementaires = $qp->fetchArray();
+    unset($qp);
     $this->tops = array();
     foreach($parlementaires as $p) {
       $tops = unserialize($p['top']);
@@ -367,6 +368,7 @@ public function executeList(sfWebRequest $request)
 	$i++;
       }
     }
+    $this->ktop = array_keys($tops);
     $this->sort = $this->getRequestParameter('sort');
     if (($_GET['sort'] = $this->sort)) {
       usort($this->tops, 'parlementaireActions::topSort');

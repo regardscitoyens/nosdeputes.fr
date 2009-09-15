@@ -43,8 +43,14 @@ th,td {border-right: 1px #FFFFFF solid;}
 </style>
 <div class="synthese">
 <table><tr><th class="<?php echo $class['parl']; ?>">&nbsp;</th><th class="<?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', $top_link.'sort=1'); ?></th><th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th><th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th><th colspan="3" class="<?php if ($sort == 6 || $sort == 7 || $sort == 8) echo 'tr_odd';?>">Amendements</th><th colspan="2" class="<?php if ($sort == 9 || $sort == 10) echo 'tr_odd';?>">Questions</th></tr><tr><th class="<?php echo $class['parl']; ?>">&nbsp;</th><?php
-$ktop = array('');
-$last = end($tops); $i = 0; foreach(array_keys(unserialize($last[0]['top'])) as $key) { $i++ ; array_push($ktop, $key);?><th class="<?php echo $class[$key]; if ($sort == $i) echo ' tr_odd'?>"><?php echo link_to($title[$key], $top_link.'sort='.$i); ?></a></th><?php } ?></tr></table>
+$last = end($tops); $i = 0; 
+foreach($ktop as $key) { 
+  $i++ ; 
+?><th class="<?php 
+echo $class[$key]; if ($sort == $i) echo ' tr_odd'?>"><?php 
+echo link_to($title[$key], $top_link.'sort='.$i); ?></a></th><?php 
+} ?></tr></table>
+<?php array_unshift($ktop, ''); ?>
 <div height="500px" style="height: 500px;overflow: scroll; overflow: auto;">
 <table><?php $cpt = 0; foreach($tops as $t) { $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>><td class="<?php echo $class['parl']; ?>"><a name="<?php echo $t[0]['slug']; ?>" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"></a><br/>
 <? echo link_to($t[0]['nom'], '@parlementaire?slug='.$t[0]['slug']); ?></td><?php for($i = 1 ; $i < count($t) ; $i++) { ?><td<?php echo $t[$i]['style']; ?> class="<?php echo $class[$ktop[$i]]; ?>"><?php 

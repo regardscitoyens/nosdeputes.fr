@@ -98,10 +98,8 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
   <?php endforeach; } ?>
 </div>
 <script>
-additional_load = function() {
-    $.ajax({
-      url: "<?php echo url_for('@seance_commentaires_json?seance='.$seance->id); ?>",
-      success: function(html){
+
+nbCommentairesCB = function(html){
 	  ids = eval('(' +html+')');
 	  for(i in ids) {
 	    if (ids[i] == 0) {
@@ -111,16 +109,26 @@ additional_load = function() {
 	    }else {
 	      $('#com_link_'+i+' a').text("Voir les "+ids[i]+" commentaires");
 	    }
-	  }
-  }
+	  }};
+
+additional_load = function() {
+    $.ajax({
+      url: "<?php echo url_for('@seance_commentaires_json?seance='.$seance->id); ?>",
+      success: nbCommentairesCB,
+      error: nbCommentairesCB
       });
     $(".commentaires a").bind('click', function() {
 	var c = $(this).parent().parent();
 	c.html('<p class="loading"> &nbsp; </p>');
 	id = c.attr('id').replace('com_', '');
-	c.load("<?php echo url_for('@intervention_commentaires?id=XXX'); ?>".replace('XXX', id), null, function() {
-	    $('#com_ajax_'+id).slideDown("slow");
-	  });
+        showcommentaire = function(html) {
+            c.html(html);
+	    setTimeout(function() {$('#com_ajax_'+id).slideDown("slow")}, 100);
+	  };
+        commentaireUrl = "<?php echo url_for('@intervention_commentaires?id=XXX'); ?>".replace('XXX', id);
+	$.ajax({url: commentaireUrl,
+               success: showcommentaire,
+               error: showcommentaire});
 	return false;
       });
   };
