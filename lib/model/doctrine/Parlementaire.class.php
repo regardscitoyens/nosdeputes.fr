@@ -333,8 +333,8 @@ class Parlementaire extends BaseParlementaire
       "17" => "Charente-Maritime",
       "18" => "Cher",
       "19" => "Corrèze",
-      "2A" => "Corse-du-Sud",
-      "2B" => "Haute-Corse",
+      '2a' => "Corse-du-Sud",
+      '2b' => "Haute-Corse",
       "21" => "Côte-d'Or",
       "22" => "Côtes-d'Armor",
       "23" => "Creuse",
@@ -422,8 +422,9 @@ class Parlementaire extends BaseParlementaire
       "987" => "Polynésie Française",
       "988" => "Nouvelle-Calédonie");
   public static function getNomDepartement($numero) {
-    if ( isset(self::$dptmt_nom["$numero"]) ) return $numero = self::$dptmt_nom["$numero"];
-    else return 0;
+    $numero = strtolower($numero);
+    if ( isset(self::$dptmt_nom["$numero"]) ) return $nom = self::$dptmt_nom["$numero"];
+    else return false;
   }
 
     static $nom_dptmt = array(
@@ -536,7 +537,7 @@ class Parlementaire extends BaseParlementaire
       "nouvelle-caledonie" => "988");
   public static function getNumeroDepartement($nom) {
     if (isset(self::$nom_dptmt[$nom])) return $numero = self::$nom_dptmt[$nom];
-    else return false;
+    else return 0;
   }
 
   public function getLastCommentaires($limit = 5)  {

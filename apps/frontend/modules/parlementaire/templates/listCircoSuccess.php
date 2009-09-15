@@ -10,15 +10,15 @@
 </ul></td></tr>
 </table>
 <?php else : ?>
-<?php if ($num != 0) : ?>
-  <img class="carte_departement" src="http://www.assemblee-nationale.fr/13/qui/circonscriptions/<?php printf('%03d-%03d', $num, $num); ?>-1.gif" alt="$circo"/>
+<?php $nResults = count($parlementaires);
+ if ($num != 0 && $nResults != 0) : ?>
+  <img class="carte_departement" src="http://www.assemblee-nationale.fr/13/qui/circonscriptions/<?php if (preg_match('/^(\d+)(\w+)$/', $num, $match)) printf ('%02d%s-%02d%s', $match[1], $match[2], $match[1], $match[2]); else printf('%03d-%03d', $num, $num); ?>-1.gif" alt="$circo"/>
 <?php endif; ?>
 <h1>Les députés par circonscriptions</h1>
 <?php
 $sf_response->setTitle('Les députés par circonscriptions');
-  $nResults = count($parlementaires);
   if ($nResults == 0) : ?>
-<p>Aucune circonscription trouvée pour <em>"<?php echo $circo; ?>"</em></p>
+<p>Aucune circonscription trouvée pour <em>"<?php if ($circo != '') echo $circo; else echo $num; ?>"</em></p>
   <?php else : ?>
 <p><?php echo $circo; ?><?php if ($num != 0) echo ' ('.$num.')'; ?>&nbsp;: <?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; if ($num != 0) echo ' pour '.$n_circo.' circonscriptions'; ?></p>
 <?php endif; ?>

@@ -163,8 +163,8 @@ public function executeList(sfWebRequest $request)
     if (!$departmt) {
       $this->circos = Parlementaire::$dptmt_nom;
     } else {
-      if (preg_match('/\d+/', $departmt, $match)) {
-        $this->num = preg_replace('/^0+/', '', $match[0]);
+      if (preg_match('/^(\d+\w?)$/', $departmt, $match)) {
+        $this->num = preg_replace('/^0+/', '', $match[1]);
       } else {
         $dpt = preg_replace('/\s+/','-', $departmt);
         $dpt = preg_replace('/\-st\-/','saint', $dpt);
@@ -176,7 +176,7 @@ public function executeList(sfWebRequest $request)
       if (preg_match('/(polynesie|polynésie)/i', $departmt)) {
         $this->circo = "Polynésie Française";
         $this->num = 987;
-      } else if ($this->num > 0) {
+      } else if ($this->num > 0 || preg_match('/\w/', $this->num)) {
         $this->circo = Parlementaire::getNomDepartement($this->num);
       } else $this->circo = $departmt;
       $query = Doctrine::getTable('Parlementaire')->createQuery('p');
@@ -192,8 +192,8 @@ public function executeList(sfWebRequest $request)
       }
       $query->addOrderBy('p.num_circo');
       $this->parlementaires = $query->execute();
-      if (preg_match('/\d+/', $departmt, $match)) {
-        $this->num = preg_replace('/^0+/', '', $match[0]);
+      if (preg_match('/^(\d+\w?)$/', $departmt, $match)) {
+        $this->num = preg_replace('/^0+/', '', $match[1]);
       } else {
         $dpt = preg_replace('/\s+/','-', $departmt);
         $dpt = preg_replace('/\-st\-/','saint', $dpt);
