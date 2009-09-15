@@ -1,7 +1,7 @@
 <?php
 if (!$user or !$user->photo)
 {
-  echo image_tag('xneth/avatar_citoyen.png', array('alt' => 'Avatar par d"faut'));
+  echo image_tag('xneth/avatar_citoyen.png', array('alt' => 'Avatar par défaut'));
 }
 else
 {
