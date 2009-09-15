@@ -38,9 +38,10 @@ if (!$top)
 if (!$parlementaire->fin_mandat) {
   $mois = floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30));
   if($mois < 6) {
-    echo '<h2>Activité parlementaire <small>('.$mois.' premier';
-    if ($mois > 1) 
-      echo's'; 
+    echo '<h2>Activité parlementaire <small>(';
+    if ($mois == 1) echo 'premier';
+    else
+      echo $mois.' premiers';
     echo ' mois de mandat) :</small></h3>';
     $rank = 0;
   }else {
@@ -51,11 +52,7 @@ if (!$parlementaire->fin_mandat) {
   $rank = 0;
   $weeks = (strtotime($parlementaire->fin_mandat) - strtotime($parlementaire->debut_mandat))/(60*60*24*7);
   echo '<h2>';
-if ($parlementaire->fin_mandat) 
-{
-  echo "<strong>Mandat clos</strong> ";
- }
- printf('Bilan de ses %d semaines de mandat :</h2>', $weeks);
+  printf('Bilan de ses %d semaines de mandat :</h2>', $weeks);
  }
 ?>
 <ul><?php
