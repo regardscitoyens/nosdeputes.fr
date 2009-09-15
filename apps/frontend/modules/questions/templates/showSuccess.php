@@ -1,7 +1,8 @@
-<?php
-$sf_response->setTitle('Question écrite N°'.$question->numero.' de '.$parlementaire->nom.' au '.$question->uniqueMinistere()); ?>
 <div class="question" id="question<?php echo $question->numero ?>">
-   <h1>Question N° <?php echo $question->numero; ?> de <?php echo link_to($parlementaire->nom, '@parlementaire?slug='.$parlementaire->slug) ?> au <?php echo $question->uniqueMinistere(); ?></h1>
+<?php
+  $titre = 'Question N° '.$question->numero.' au '.$question->uniqueMinistere();
+echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre, 'deputefirst' => true));
+?>
   <div class="source"><a href="<?php echo $question->source; ?>">source</a></div>
   <p>Soumise le <?php echo myTools::displayDate($question->date) ?></p>
     <div id="question">

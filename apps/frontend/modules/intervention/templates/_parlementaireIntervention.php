@@ -71,7 +71,7 @@ if ($intervention->hasIntervenant()) {
       echo '</a>&nbsp;:';
     }
     else {
-      echo '<span class="perso">'.$perso->nom;
+      echo '<span class="perso">'.$perso->nom.'&nbsp;:';
       echo '</span>';
     }
   }

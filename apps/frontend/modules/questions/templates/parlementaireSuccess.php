@@ -4,7 +4,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
 ?>
 <div class="questions">
 <?php 
-  echo include_component('questions', 'pagerQuestions', array('question_query' => $questions, 'mots'=>''));
+  echo include_component('questions', 'pagerQuestions', array('question_query' => $questions, 'mots'=>'', 'nophoto' => true));
 
 
 if(count($questions) < 1) : ?>

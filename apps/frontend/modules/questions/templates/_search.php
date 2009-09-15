@@ -1,11 +1,16 @@
 <?php use_helper('Text') ?>
   <div class="question" id="<?php echo $question->id; ?>">
-  <h2><?php echo link_to($question['titre'], '@question?id='.$question->id); ?></h2>
-    <div class="texte_question"><?php 
-$inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $question->getQuestion().' '.$question->getReponse().' Thèmes : '.$question->getThemes());
-$p_inter = '';
+    <div>
+<?php $parlementaire = $question->getParlementaire(); ?>
+  <h2><?php echo link_to($parlementaire->nom.'&nbsp;: '.$question['titre'], '@question?id='.$question->id); ?></h2>
+    </div>
+  <div class="texte_question"><?php
+  if (!isset($nophoto))
+    echo '<a href="/question/'.$question->id.'" class="intervenant"><img width="50" height="70" alt="'.$parlementaire->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$parlementaire->slug).'" /></a>';
+  $inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $question->getQuestion().' '.$question->getReponse().' Thèmes : '.$question->getThemes());
+  $p_inter = '';
 if (isset($highlight)) {
-  foreach ($highlight as $h) {
+    foreach ($highlight as $h) {
     $p_inter .= excerpt_text($inter, $h, 400/count($highlight));
   }
   foreach ($highlight as $h) {
@@ -17,6 +22,7 @@ if (isset($highlight)) {
  }
 echo $p_inter;
 ?>
-<div><a href="<?php echo url_for('@question?id='.$question->id); ?>">Lire la suite de la question</a></div>
-    </div>
+  <div class="contexte">
+    <a href="<?php echo url_for('@question?id='.$question->id); ?>">Lire la suite de la question</a></div>
+  </div>
   </div>

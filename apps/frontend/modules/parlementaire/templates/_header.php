@@ -10,9 +10,16 @@ if (!isset($surtitre)) $surtitre = ''; ?>
 <h1><?php if ($surtitre) { ?>
     <?php echo $surtitre; ?></h1><h2>
 <?php } ?>
-  <?php $titre.=' '; if (preg_match('/^(A|E|É|I|O|U|Y)/', $parlementaire->nom)) $titre.= "d'"; else $titre.= 'de '; $titre.= '<a href="'.url_for($parlementaire->getPageLink()).'">'.$parlementaire->nom.'</a>';
+  <?php if (isset($deputefirst)) $titre = $parlementaire->nom.' <br/>'.$titre;
+  else {
+    $titre .=' ';
+    if (preg_match('/^(A|E|É|I|O|U|Y)/', $parlementaire->nom))
+      $titre.= "d'";
+    else $titre.= 'de ';
+    $titre.= '<a href="'.url_for($parlementaire->getPageLink()).'">'.$parlementaire->nom.'</a>';
+  }
 echo $titre;
-  if ($surtitre) echo '</h1>'; else echo '</h2>'; ?>
+  if ($surtitre) echo '</h2>'; else echo '</h1>'; ?>
   </div></div>
 </div>
 <div class="stopfloat"></div>

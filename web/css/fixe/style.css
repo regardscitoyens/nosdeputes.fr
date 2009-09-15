@@ -749,10 +749,35 @@ img {
   margin-right: 7px;
   margin-bottom: 7px;
 }
+
+.questions {
+  background-color: #fff;
+  border: 1px solid #DFDFDF;
+  border-top: none;
+  padding: 15px;
+}
+.questions a {
+  font-weight: bold;
+}
+.question {
+  margin-bottom: 10px;
+  border-bottom: 1px dashed #DFDFDF;
+}
+.question img {
+  float: left;
+  width: 50px;
+  height: 64px;
+  margin-right: 7px;
+  margin-bottom: 7px;
+}
+
 .intervenant {
   
 }
 .texte_intervention {
+
+}
+.texte_question {
 
 }
 .indent_guillemets {

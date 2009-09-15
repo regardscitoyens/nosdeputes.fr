@@ -78,7 +78,7 @@ class questionsActions extends sfActions
 	->findOneBySlug($slug);
       if ($this->parlementaire)
 	$this->query->andWhere('i.parlementaire_id = ?', $this->parlementaire->id);
-    }
+    } else $this->query->leftJoin('i.Parlementaire p');
 
     $this->query->orderBy('date DESC');
   }
