@@ -8,4 +8,3 @@ foreach($commentaires as $c)
 }
 
   ?> "":""}
-<?php exit; 

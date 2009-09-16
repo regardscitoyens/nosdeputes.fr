@@ -7,5 +7,4 @@
 ?>
 <?php
 include_component('commentaire', 'form', array('type'=>'Intervention', 'id'=>$id));
-?></div><?php
-exit;
+?></div>

@@ -146,6 +146,7 @@ $values['password'], false, $this))) {
     $seance_id = $request->getParameter('seance');
     $this->forward404Unless($seance_id);
     $this->commentaires = Doctrine::getTable('Intervention')->createQuery('i')->select('i.id, i.nb_commentaires')->where('seance_id = ?', $seance_id)->fetchArray();
+    $this->getResponse()->setHttpHeader('content-type', 'text/plain');
   }
   public function executeShowSeance(sfWebRequest $request)
   {
@@ -159,5 +160,6 @@ $values['password'], false, $this))) {
       ->orderBy('updated_at DESC')
       ->limit(3)
       ->execute();    
+    $this->getResponse()->setHttpHeader('content-type', 'text/plain');
   }
 }
