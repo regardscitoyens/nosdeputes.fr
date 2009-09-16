@@ -72,7 +72,7 @@ foreach(array_keys($images) as $k) {
   echo'>';
   if ($rank)
     echo '<a title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug).'">';
-  echo '<img height="16" width="16" src="/images/xneth/';
+  echo '<img height="16" width="16" src="'.$sf_request->getRelativeUrlRoot().'/images/xneth/';
   printf($images[$k], $couleur);
   echo '" alt="'.$titre.'" title="'.$titre.'">';
   echo ' : ';
