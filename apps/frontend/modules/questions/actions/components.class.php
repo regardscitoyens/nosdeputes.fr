@@ -6,7 +6,7 @@ class QuestionsComponents extends sfComponents
   {
     $this->questions = Doctrine::getTable('QuestionEcrite')->createQuery('q')
       ->where('q.parlementaire_id = ?', $this->parlementaire->id)
-      ->orderBy('q.updated_at DESC')
+      ->orderBy('q.date DESC')
       ->execute();
   }
   public function executeSearch(){}
