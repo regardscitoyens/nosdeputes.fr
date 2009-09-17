@@ -11,7 +11,7 @@
 class rateActions extends sfActions
 {
 
-  static $rate_conversion = array('0' => 0, '1' => 0.5, '2' => 1);
+  static $rate_conversion = array('0' => 0, '1' => 1, '2' => 2);
  /**
   * Executes index action
   *
@@ -38,7 +38,7 @@ class rateActions extends sfActions
     try {
       $rate->save();
     }catch(Exception $e) {
-      $this->getUser()->setFlash('error', 'Vous ne pouvez donner votre avis qu\'une seule fois');
+      $this->getUser()->setFlash('error', 'Vous ne pouvez donner votre avis qu\'une seule fois'.$e);
       return $this->redirect($request->getReferer());
     }
 

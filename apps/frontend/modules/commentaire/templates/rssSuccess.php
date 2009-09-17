@@ -1,7 +1,12 @@
 <?php
 
-$feed->setTitle("Les commentaires portant sur l'activité de ".$parlementaire->nom);
-$feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for('@parlementaire_commentaires?slug='.$parlementaire->slug));
+if (isset($parlementaire)) {
+  $feed->setTitle("Les commentaires portant sur l'activité de ".$parlementaire->nom);
+  $feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for('@parlementaire_commentaires?slug='.$parlementaire->slug));
+ }else {
+  $feed->setTitle("Les derniers commentaires de NosDeputes.fr");
+  $feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for('@commentaires_rss'));
+ }  
 foreach($commentaires as $c)
 {
   $item = new sfFeedItem();

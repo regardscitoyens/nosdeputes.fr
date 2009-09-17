@@ -1000,6 +1000,7 @@ h2 {
 .commentaire {
   clear:both;
   padding: 15px;
+  padding-top: 0px;
   margin-bottom: 15px;
   border: 1px dashed #E0E0DD;
 }
@@ -1296,4 +1297,10 @@ a:hover img {
 }
 .error_list li {
   list-style-type: none;
+}
+.last_commentaires {
+		   margin-top: 30px;
+}
+.last_commentaires .commentaire {
+		   border: 0px;
 }

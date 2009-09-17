@@ -220,6 +220,14 @@ delete_citoyen:
 
 # Add include user's module to get same circonscription?
 
+commentaires:
+  url: /commentaires
+  param: {module: commentaire, action: list}
+
+commentaires_rss:
+  url: /commentaires/rss
+  param: {module: commentaire, action: rss}
+
 
 parlementaire:
   url: /:slug

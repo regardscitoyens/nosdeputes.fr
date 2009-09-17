@@ -130,14 +130,17 @@ $values['password'], false, $this))) {
 
   public function executeRss(sfWebRequest $request) 
   {
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
-    $this->forward404Unless($this->parlementaire);
-    $this->commentaires = Doctrine::getTable('Commentaire')
+    $query = Doctrine::getTable('Commentaire')
       ->createQuery('c')
       ->leftJoin('c.CommentaireParlementaires cp')
-      ->where('cp.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('c.is_public = ?', 1)
-      ->orderBy('created_at DESC')->limit(10)->execute();
+      ->orderBy('created_at DESC')->limit(10);
+    if (($slug = $request->getParameter('slug'))) { 
+      $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+      $this->forward404Unless($this->parlementaire);
+      $query->andWhere('cp.parlementaire_id = ?', $this->parlementaire->id);
+    }
+    $this->commentaires = $query->execute();
     $this->feed = new sfRssFeed();
   }
   public function executeSeance(sfWebRequest $request)
@@ -157,9 +160,18 @@ $values['password'], false, $this))) {
       ->where('object_id = ?', $this->id)
       ->andWhere('object_type = ?', 'Intervention')
       ->andWhere('is_public = ?', 1)
-      ->orderBy('updated_at DESC')
+      ->orderBy('created_at DESC')
       ->limit(3)
       ->execute();    
     $this->getResponse()->setHttpHeader('content-type', 'text/plain');
+  }
+
+  public function executeList(sfWebRequest $request)
+  {
+    $request->setParameter('rss', array(array('link' => '@commentaires_rss', 'title'=>'Les derniers commentaires en RSS')));
+
+    $this->comments = Doctrine::getTable('Commentaire')->createQuery('c')
+      ->andWhere('is_public = ?', 1)
+      ->orderBy('created_at DESC');
   }
 }
