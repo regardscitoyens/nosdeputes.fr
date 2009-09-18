@@ -1154,12 +1154,12 @@ h2 {
 .synthese td, .synthese th { padding: 0px; margin: 0px; text-align: center}
 
 .left {
-width: 49%;
+width: 48%;
 float: left;
 }
 .right{
 float: right;
-width: 49%;
+width: 50%;
 }
 .internal_tag_cloud{
   margin: auto;
