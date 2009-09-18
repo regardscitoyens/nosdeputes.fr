@@ -38,7 +38,7 @@ class rateActions extends sfActions
     try {
       $rate->save();
     }catch(Exception $e) {
-      $this->getUser()->setFlash('error', 'Vous ne pouvez donner votre avis qu\'une seule fois'.$e);
+      $this->getUser()->setFlash('error', 'Vous ne pouvez donner votre avis qu\'une seule fois');
       return $this->redirect($request->getReferer());
     }
 
