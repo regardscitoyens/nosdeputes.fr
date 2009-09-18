@@ -81,6 +81,9 @@ photo_parlementaire:
 resized_photo_parlementaire:
   url: /depute/photo/:slug/:height
   param: {module: parlementaire, action: photo}
+flip_resized_photo_parlementaire:
+  url: /depute/photo/:slug/:height/flip
+  param: {module: parlementaire, action: photo, flip: 1}
 
 # Fiche parlementaire et affichages de ses travaux
 parlementaire_random:
@@ -152,13 +155,13 @@ tag_parlementaire_interventions:
 
 # Top des députés par interventions, présences ou amendements
 top_organisme_global_sorted:
-  url: /synthese/:organisme/tri/:sort
+  url: /syntheseo/:organisme/tri/:sort
   param: {module: parlementaire, action: top}
 top_organisme_global: 
-  url: /synthese/:organisme
+  url: /syntheseo/:organisme
   param: {module: parlementaire, action: top}
 top_global_sorted: 
-  url: /synthese/tri/:sort
+  url: /synthesetri/:sort
   param: {module: parlementaire, action: top}
 top_global: 
   url: /synthese
