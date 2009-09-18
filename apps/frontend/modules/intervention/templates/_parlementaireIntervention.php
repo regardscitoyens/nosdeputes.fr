@@ -3,7 +3,7 @@
   <div>
   <?php
   $link_seance = url_for('@interventions_seance?seance='.$intervention->getSeance()->id).'#inter_'.$intervention->getMd5();
-  if (!isset($complete)) {
+  if (!isset($complete)) { //Si on vient d'une recherche et non d'un page intervention
     $section = $intervention->getSection();
     $titre2 = '<a href="'.$link_seance.'">'.$intervention->getSeance()->getTitre().' ';
     if ($intervention->getType() == 'commission') {
@@ -53,7 +53,6 @@ if ($intervention->hasIntervenant()) {
       }
       echo '<a href="'.$link.'">';
       echo $perso->nom;
-
       echo '</a>&nbsp;:';
     }
     else {

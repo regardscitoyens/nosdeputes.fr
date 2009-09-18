@@ -22,9 +22,9 @@ class questionsActions extends sfActions
   {
     $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
-    $this->questions = doctrine::getTable('QuestionEcrite')->createQuery('a')
-      ->where('a.parlementaire_id = ?', $this->parlementaire->id)
-      ->orderBy('a.updated_at DESC');
+    $this->questions = doctrine::getTable('QuestionEcrite')->createQuery('q')
+      ->where('q.parlementaire_id = ?', $this->parlementaire->id)
+      ->orderBy('q.date DESC');
   }
 
   public function executeSearch(sfWebRequest $request)
