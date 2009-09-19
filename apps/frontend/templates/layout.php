@@ -3,7 +3,6 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
   <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <?php include_http_metas() ?>
     <?php include_metas() ?>  
     <?php include_title() ?>
@@ -44,7 +43,7 @@ $menu_citoyen = $selectcitoyen;
     img, div { behavior: url('iepngfix/iepngfix.htc') }
     </style> 
     <![endif]-->
-    <script type="text/javascript" src="/js/jquery-1.3.2.min.js"></script>
+		<?php echo javascript_include_tag('jquery-1.3.2.min'); ?>
   </head>
   <body>
   <div id="contenu">
@@ -85,7 +84,7 @@ $menu_citoyen = $selectcitoyen;
           <div id="item4"><a <?php if ($menu_citoyen) echo 'class="selected" '; ?>href="<?php echo url_for('@list_citoyens')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
           <div id="item5"><a href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
         </div>
-                    <?php       $search = strip_tags($sf_request->getParameter('search'));?>
+                    <?php $search = strip_tags($sf_request->getParameter('search'));?>
         <div class="menu_recherche">
           <form action="<?php echo url_for('@search'); ?>" method="get">
             <p>
@@ -150,8 +149,7 @@ $menu_citoyen = $selectcitoyen;
         <a href="<?php echo url_for('@faq')?>"><?php echo image_tag($style.'/bottom_qui.png', array('alt' => 'Qui sommes-nous')); ?></a>
       </div>
     </div>
-  </body>
-<script>
+<script type="text/javascript">
 $(document).ready(function() {
     if (typeof additional_load != 'undefined')
       additional_load();
@@ -172,4 +170,5 @@ try {
 var pageTracker = _gat._getTracker("UA-10423931-2");
 pageTracker._trackPageview();
 } catch(err) {}</script>
+  </body>
 </html>

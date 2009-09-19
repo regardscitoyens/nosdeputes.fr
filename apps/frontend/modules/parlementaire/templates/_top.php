@@ -45,7 +45,7 @@ if (!$parlementaire->fin_mandat) {
     echo ' mois de mandat) :</small></h3>';
     $rank = 0;
   }else {
-    echo '<h2>Activité parlementaire <small>(12 derniers mois) :</small></h3>';
+    echo '<h2>Activité parlementaire <small>(12 derniers mois) :</small></h2>';
     $rank = 1;
   }
  } else {
@@ -74,7 +74,7 @@ foreach(array_keys($images) as $k) {
     echo '<a title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug).'">';
   echo '<img height="16" width="16" src="'.$sf_request->getRelativeUrlRoot().'/images/xneth/';
   printf($images[$k], $couleur);
-  echo '" alt="'.$titre.'" title="'.$titre.'">';
+  echo '" alt="'.$titre.'" title="'.$titre.'" />';
   echo ' : ';
   if (isset($top[$k]['value']))
     echo $top[$k]['value'];
