@@ -24,7 +24,9 @@ class PersonnaliteTable extends Doctrine_Table
 
     //load parlementaires only once
     if (!$this->all) {
-      $this->all = $this->createQuery('p')->fetchArray();
+      $this->all = $this->createQuery('p')
+	->select('id, nom, nom_de_famille, sexe, slug')
+	->fetchArray();
       $this->changed = 0;
     }
 
