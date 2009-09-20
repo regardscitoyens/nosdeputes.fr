@@ -52,7 +52,7 @@ if ($intervention->hasIntervenant()) {
         echo '<a href="'.$link.'" class="intervenant"><img width="50" height="70" alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$perso->slug).'" /></a>';
       }
       echo '<a href="'.$link.'">';
-      echo $perso->nom;
+      echo $intervention->getNomAndFonction();
       echo '</a>&nbsp;:';
     }
     else {

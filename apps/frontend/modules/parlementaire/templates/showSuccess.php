@@ -115,7 +115,7 @@
   </div>
 
   <div class="bas_depute">
-      <h2>Derniers commentaire concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/'.$style.'/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
+      <h2>Derniers commentaires concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/'.$style.'/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
       <?php echo include_component('commentaire', 'parlementaire', array('parlementaire' => $parlementaire)); ?>
       <p class="suivant"><?php echo link_to('Voir tous les commentaires', '@parlementaire_commentaires?slug='.$parlementaire->slug); ?></p>
     <div class="stopfloat"></div>
