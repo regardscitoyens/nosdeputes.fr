@@ -25,7 +25,7 @@ $class = array('parl' => 'p',
 	       'questions_orales' => 'qo');
 ?><div class="liste_deputes_tags">
 <style>
-  td, tr{padding: 0px; margin: 0px, border: 0px;}
+  td, tr{padding: 0px; margin: 0px, border: 0px; height: 25px;}
 .p{width: 140px;}
 .w{width: 70px;}
 .cp{width: 75px;}
@@ -52,7 +52,7 @@ echo link_to($title[$key], $top_link.'sort='.$i); ?></a></th><?php
 } ?></tr></table>
 <?php array_unshift($ktop, ''); ?>
 <div height="500px" style="height: 500px;overflow: scroll; overflow: auto;">
-<table><?php $cpt = 0; foreach($tops as $t) { $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>><td class="<?php echo $class['parl']; ?>"><a name="<?php echo $t[0]['slug']; ?>" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"></a><br/>
+<table><?php $cpt = 0; foreach($tops as $t) { $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>><td class="<?php echo $class['parl']; ?>"><a name="<?php echo $t[0]['slug']; ?>" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"></a>
 <? echo link_to($t[0]['nom'], '@parlementaire?slug='.$t[0]['slug']); ?></td><?php for($i = 1 ; $i < count($t) ; $i++) { ?><td<?php echo $t[$i]['style']; ?> class="<?php echo $class[$ktop[$i]]; ?>"><?php 
      if (preg_match('/\./', $t[$i]['value'])) {
        printf('%02d', $t[$i]['value']);

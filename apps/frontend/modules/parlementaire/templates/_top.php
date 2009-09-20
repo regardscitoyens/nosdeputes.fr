@@ -1,5 +1,5 @@
 <?php
-$titres = array('semaine' => 'Semaines',
+$titres = array('semaine' => 'Semaines d\'activité',
 	       'commission_presences' => 'Présences en commission',
 	       'commission_interventions'=> 'Interventions en commission',
 	       'hemicycle_interventions'=>'Interventions longues en hémicycle',
