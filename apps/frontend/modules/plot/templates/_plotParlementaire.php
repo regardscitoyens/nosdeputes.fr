@@ -122,7 +122,7 @@ $Test->xsRender($filename);
 
 if (isset($link))
   echo link_to(image_tag('tmp/xspchart/'.$filename, 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"'), '@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear');
-else echo image_tag('tmp/xspchart/'.$filename, 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"');
+else echo '<div class="par_session">'.image_tag('tmp/xspchart/'.$filename, 'alt="Participation '.$titre.' de '.$parlementaire->nom.'"');
 echo "<p><span style='background-color: rgb(255,";
 echo 35*$fonction.",0);'>&nbsp;</span> ";
 if ($type == 'commission') echo '&nbsp;Présences enregistrées&nbsp;&nbsp;&nbsp;'; else echo '&nbsp;Présences relevées&nbsp;&nbsp;&nbsp;';
@@ -132,6 +132,6 @@ if ($questions == 1)
     echo "<span style='background-color: rgb(0,0,255);'>&nbsp;</span>&nbsp;Questions orales&nbsp;&nbsp;&nbsp;";
 echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires";
 if (isset($link))
-  echo "&nbsp;&nbsp;&nbsp;&nbsp;".link_to('Explications', '@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear#explications');
-echo "</p>"
+  echo "&nbsp;&nbsp;&nbsp;&nbsp;".link_to('Explications', '@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear#explications').'</p>';
+  else echo '</p></div>'
 ?>
