@@ -20,6 +20,7 @@ class citoyenActions extends sfActions
     $this->citoyens_list = Doctrine::getTable('Citoyen')
       ->createQuery('c')
       ->where('c.is_active = ?', true)
+      ->orderBy('c.created_at DESC')
       ->execute();
     $response = $this->getResponse();
     $response->setTitle('Liste des citoyens inscrits'); 

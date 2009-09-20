@@ -1,16 +1,22 @@
-<?php if ($search) { ?>
+<?php if (!preg_match('/^[A-ZÉ]$/', $search)) { ?>
 <h1>Recherche de députés</h1>
-<?php $sf_response->setTitle('Recherche de députes "'.$search.'"');
- } else { ?>
-<h1>La liste de tous les députés</h1>
+<?php $sf_response->setTitle('Recherche de députés "'.$search.'"'); ?>
+<p><?php $nResults = $pager->getNbResults(); echo $nResults; ?> résultat<?php if ($nResults > 1) echo 's'; ?> pour <em>"<?php echo $search; ?>"</em></p>
+<?php } else { ?>
+<h1>La liste de tous les députés par ordre alphabétique</h1>
 <?php $sf_response->setTitle('La liste de tous les députés'); ?>
+<p>Les <?php echo $total; ?> députés de la législature (<?php echo $actifs; ?> en activité)&nbsp;:</p>
 <?php } ?>
 <div class="liste_deputes">
-<?php if ($search != "") : ?>
-<p><?php $nResults = $pager->getNbResults(); echo $nResults; ?> résultat<?php if ($nResults > 1) echo 's'; ?> pour <em>"<?php echo $search; ?>"</em></p>
-<?php else : ?>
-<p>Les <?php $nResults = $pager->getNbResults(); echo $nResults; ?> députés de la législature (577 en activité)&nbsp;:</p>
-<?php endif; ?>
+<?php if (preg_match('/^[A-ZÉ]$/', $search)) { ?>
+<div class="par_session">
+<?php foreach(range('A','Z') as $i) {
+  if ($i != $search) echo link_to($i ,'@list_parlementaires?search='.$i);
+  else echo $i;
+  echo '&nbsp;&nbsp;';
+} ?>
+</div>
+<?php } ?>
 <?php if (isset($similars) && $similars) {
    echo '<p>Peut être, cherchiez vous : </p><ul>';
    foreach($similars as $s) {
