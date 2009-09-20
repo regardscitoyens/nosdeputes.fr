@@ -1274,6 +1274,12 @@ width: 50%;
   padding: 0px;
 }
 
+.par_session {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+
 #center {
   width:390px;
   margin-left:auto;

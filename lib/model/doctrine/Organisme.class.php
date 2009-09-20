@@ -20,6 +20,17 @@ class Organisme extends BaseOrganisme
     );
     return $hashmap[$this->getNom()];
   }
+
+  public function getCouleur() {
+    $hashmap = array(
+        "Union pour un mouvement populaire" => "30,30,200",
+        "Socialiste, radical, citoyen et divers gauche" => "255,50,190",
+        "Gauche démocrate et républicaine" => "255,30,30",
+        "Députés n'appartenant à aucun groupe" => "200,200,200",
+        "Nouveau centre" => "30,190,255"
+    );
+    return '<span style=\'background-color: rgb('.$hashmap[$this->getNom()].');\'>&nbsp;&nbsp;</span>';
+  }
   public static function getNomByAcro($acro) {
     $acro = strtolower($acro);
     if (preg_match('/^(ump|src|gdr|ni|nc)$/i', $acro)) {
