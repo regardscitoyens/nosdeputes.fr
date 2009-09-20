@@ -1269,6 +1269,9 @@ width: 50%;
 }
 
 .accueil_plot {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
 }
 
 #center {
