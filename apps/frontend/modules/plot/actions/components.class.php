@@ -186,6 +186,7 @@ class plotComponents extends sfComponents
           ->groupBy('p.id')
           ->fetchArray();
       } else if (preg_match('/seance_(com|hemi)_(\d+)$/', $this->plot, $match)) {
+        if (preg_match('/com/', $this->plot)) $this->seance = $match[2];
         $interventions = Doctrine_Query::create()
           ->select('p.groupe_acronyme, count(i.id) as count')
           ->from('Parlementaire p, p.Interventions i, i.Section s')

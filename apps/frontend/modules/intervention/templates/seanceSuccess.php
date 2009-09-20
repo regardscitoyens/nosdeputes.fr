@@ -6,6 +6,19 @@
 <?php $plot = 'seance_com_'; else :?>
 <h1><?php echo $seance->getTitre(0,1); $sf_response->setTitle($seance->getTitre(0,1).' : NosDeputes.fr'); ?></h1>
 <?php $plot = 'seance_hemi_'; endif; ?>
+<div class="resume">
+<h2>Résumé de la séance</h2>
+<?php if (count($tags)) { ?>
+<div class="nuage_de_tags">
+<h3>Les mots clés de cette séance</h3>
+<ul><?php foreach(array_keys($tags) as $tag) echo "<li>$tag</li>"; ?></ul>
+</div>
+<?php } ?>
+<div class="plot_seance">
+<?php echo include_component('plot', 'groupes', array('plot' => $plot.$seance->id)); ?>
+</div>
+</div>
+</div>
 <?php $table_m = $seance->getTableMatiere(); if (count($table_m)) {?>
 <div class="orga_dossier">
 <h2>Sommaire</h2>
@@ -16,22 +29,6 @@
 <?php endforeach; ?>
 </ul>
 </div><?php } ?>
-<div class="resume">
-<h2>Résumé de la séance</h2>
-<?php if (count($tags)) { ?>
-<div class="nuage_de_tags">
-<h3>Les mots clés de cette séance</h3>
-<ul><?php foreach(array_keys($tags) as $tag) echo "<li>$tag</li>"; ?></ul>
-</div>
-<?php } ?>
-<div class="plot_seance">
-<?php if ($seance->type == 'commission') { ?>
-<a href="<?php echo url_for('@presents_seance?seance='.$seance->id); ?>">
-<?php } else echo '<a>'; ?>
-<?php echo include_component('plot', 'groupes', array('plot' => $plot.$seance->id)); ?></a>
-</div>
-</div>
-</div>
 <h2>La séance</h2>
 <div class="interventions">
   <?php if (!count($interventions)) { ?>

@@ -5,14 +5,14 @@
 if (isset($orga)) $titre = $orga->getNom().$titre;
 $sf_response->setTitle($titre);
 if ($seance->type == 'commission') 
-  echo include_component('plot', 'groupes', array('plot' => 'seance_com_'.$seance->id)); ?>
+  echo include_component('plot', 'groupes', array('plot' => 'seance_com_'.$seance->id, 'nolink' => true)); ?>
 </div>
   <div class="photos"><p>
   <?php $ntot = count($presences); $line = floor($ntot/(floor($ntot/16)+1)); $ct = 0; foreach ($presences as $presence) {
     $depute = $presence->getParlementaire();
     $titre = $depute->nom.', '.$depute->groupe_acronyme;
+    if ($ct != 0 && $ct != $ntot-1 && !($ct % $line)) echo '<br/>'; $ct++;
     echo '<a href="'.url_for($depute->getPageLink()).'"><img width="50" height="64" title="'.$titre.'" alt="'.$titre.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$depute->slug).'" /></a>&nbsp;';
-    if ($ct != 0 && !($ct % $line)) echo '<br/>'; $ct++;
   } ?></p></div>
 
 <ul>

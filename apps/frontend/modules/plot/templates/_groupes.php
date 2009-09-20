@@ -119,6 +119,8 @@ if ($plot == 'total') {
 $Test->xsRender($filename);
 if ($plot == 'total')
   echo link_to(image_tag('tmp/xspchart/'.$filename, 'alt="Répartition '.$titre.'"'), '@top_global');
+else if (preg_match('/com/', $plot) && !isset($nolink))
+  echo link_to(image_tag('tmp/xspchart/'.$filename, 'alt="Répartition '.$titre.'"'), '@presents_seance?seance='.$seance);
 else echo image_tag('tmp/xspchart/'.$filename, 'alt="Répartition '.$titre.'"');
 
 echo '<br/><span style=\'background-color: rgb(200,200,200);\'>&nbsp;</span>&nbsp;'.link_to('Non-Inscrits (Modem, div.)', '@list_parlementaires_groupe?acro=NI').'&nbsp;&nbsp;';
