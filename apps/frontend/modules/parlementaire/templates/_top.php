@@ -42,7 +42,7 @@ if (!$parlementaire->fin_mandat) {
     if ($mois == 1) echo 'premier';
     else
       echo $mois.' premiers';
-    echo ' mois de mandat) :</small></h3>';
+    echo ' mois de mandat) :</small></h2>';
     $rank = 0;
   }else {
     echo '<h2>Activité parlementaire <small>(12 derniers mois) :</small></h2>';
