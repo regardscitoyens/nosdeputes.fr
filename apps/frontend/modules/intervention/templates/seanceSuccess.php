@@ -24,7 +24,13 @@
 <h2>Sommaire</h2>
 <ul><?php foreach($table_m as $table) : if (!$table['titre']) {continue;} ;?>
 <?php if ($table['section_id'] != $table['id']) echo '<ul>'; ?>
-<li><a href="#table_<?php echo $table['id']; ?>"><?php echo ucfirst($table['titre']); ?></a> <?php if ($table['nb_interventions']) echo '<span class="dossier">('.link_to('voir le dossier', '@section?id='.$table['id']).')</span>'; ?></li>
+<li><?php if (isset($table['id']) && $table['id']) { ?>
+<a href="#table_<?php 
+echo $table['id']; 
+?>"><?php 
+echo ucfirst($table['titre']); 
+?></a> <?php }
+if ($table['nb_interventions']) echo '<span class="dossier">('.link_to('voir le dossier', '@section?id='.$table['id']).')</span>'; ?></li>
 <?php if ($table['section_id'] != $table['id']) echo '</ul>'; ?>
 <?php endforeach; ?>
 </ul>
@@ -33,7 +39,13 @@
 <div class="interventions">
   <?php if (!count($interventions)) { ?>
   <p><em>Nous n'avons pas encore pu récupérer le contenu de cette séance, veuillez nous en excuser</em></p>
-  <?php } else { $table = ''; $titre = 0; foreach($interventions as $intervention) : ?>
+  <?php } else { $table = ''; $titre = 0; $source_displayed = 0; 
+foreach($interventions as $intervention) : 	
+if (! $source_displayed) {
+	echo '<p class="source"><a href="'.$intervention->source.'" rel="nofollow">Source</a></p><div class="clear"></div>';
+	$source_displayed = 1;
+}
+?>
   <div class="intervention" id="inter_<?php echo $intervention->getMd5(); ?>">
   <?php
   $lasttitre = $titre;

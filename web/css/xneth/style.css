@@ -892,6 +892,7 @@ h2 {
   background-color: #fff;
   border-top: none;
   padding: 15px;
+  padding-top: 0px;
 }
 .interventions a {
   font-weight: bold;
@@ -1015,6 +1016,7 @@ h2 {
 
 .source {
   float: right;
+  margin-top: 0px;
 }
 .perso {
   font-weight: bold;
