@@ -100,7 +100,7 @@
       <div class="b_d_infos">
       <h2>Travaux législatifs</h2>
       <h3>Ses derniers dossiers</h3>
-      <?php #echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 5, 'textes' => $textes, 'order' => 'date')); ?>
+      <?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 5, 'textes' => $textes, 'order' => 'date')); ?>
       <p class="suivant"><?php echo link_to('Tous ses dossiers', '@parlementaire_textes?slug='.$parlementaire->slug); ?></p>
       <h3><?php echo link_to('Travaux en commissions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=commission'); ?></h3>
       <h3><?php echo link_to('Travaux en hémicycle','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=loi'); ?></h3>
