@@ -1,6 +1,6 @@
 <?php if (!count($textes)) { ?>
     <i>Désolé, ce député n'est intervenu sur aucun dossier dans les 12 derniers mois</i>
-<? return ;} ?>
+<?php return ;} ?>
 <ul>
 <?php $cpt = 0; foreach($textes as $texte) : 
 if (preg_match('/questions?\s/', $texte['Section']['titre'])) continue;
