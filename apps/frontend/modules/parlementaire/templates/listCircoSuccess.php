@@ -3,7 +3,7 @@
 <h1>Toutes les circonscriptions électorales</h1><?php $sf_response->setTitle('Toutes les circonscriptions électorales'); ?>
 <table>
 <tr><td style="width:23%;"><ul>
-<?php $div = floor(count($circos)/4)+1; $ct = 0; foreach($circos as $num => $circo) : $ct++?>
+<?php $div = floor(count($circos)/4)+1; $ct = 0; foreach($circos as $num => $circo) : $ct++ ; $num = sprintf("%02d",$num) ?>
 <li><?php echo link_to($circo, '@list_parlementaires_circo?search='.$num).' ('.$num.')'; ?></li>
 <?php if ($ct == $div || $ct == (2*$div) || $ct == (3*$div)) echo '</ul></td><td style="width:23%;"><ul>'; ?>
 <?php endforeach; ?>
@@ -20,7 +20,7 @@ $sf_response->setTitle('Les députés par circonscriptions');
   if ($nResults == 0) : ?>
 <p>Aucune circonscription trouvée pour <em>"<?php if ($circo != '') echo $circo; else echo $num; ?>"</em></p>
   <?php else : ?>
-<p><?php echo $circo; ?><?php if ($num != 0) echo ' ('.$num.')'; ?>&nbsp;: <?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; if ($num != 0) echo ' pour '.$n_circo.' circonscriptions'; ?></p>
+<p><?php echo $circo; ?><?php if ($num != 0) echo ' ('.sprintf("%02d",$num).')'; ?>&nbsp;: <?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; if ($num != 0) echo ' pour '.$n_circo.' circonscriptions'; ?></p>
 <?php endif; ?>
 <ul>
 <?php foreach($parlementaires as $parlementaire) : ?>
