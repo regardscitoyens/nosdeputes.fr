@@ -4,7 +4,7 @@ Pour finaliser votre inscription et publier votre/vos commentaire(s), cliquez su
 <?php  echo url_for('@activation_citoyen?slug='.$slug.'&activation_id='.$activation_id, true); ?>
   
 
-Merci de votre intéret et à très bientôt sur le site !
+Merci de votre intérêt et à très bientôt sur le site !
 
 L'équipe de
 NosDéputés.fr

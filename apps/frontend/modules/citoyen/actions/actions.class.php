@@ -120,7 +120,6 @@ class citoyenActions extends sfActions
             $this->getUser()->setFlash('error', 'Les 2 champs doivent être identiques');
             return;
           }
-          #sleep(2);
           $user->password = $this->form->getvalue('password');
           $user->save();
           $this->getUser()->setFlash('notice', 'Vous avez modifié votre mot de passe avec succès');
@@ -164,15 +163,15 @@ class citoyenActions extends sfActions
             $user->is_active = true;
             $user->activation_id = null;
             $user->save();
-	    $commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
-	      ->where('is_public <> 1')
-	      ->andWhere('citoyen_id = ?', $user->id)
-	      ->execute();
-	    foreach ($commentaires as $c) {
-	      $c->is_public = 1;
-	      $c->save();
-	      $c->updateNbCommentaires();
-	    }
+      $commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
+        ->where('is_public <> 1')
+        ->andWhere('citoyen_id = ?', $user->id)
+        ->execute();
+      foreach ($commentaires as $c) {
+        $c->is_public = 1;
+        $c->save();
+        $c->updateNbCommentaires();
+      }
             if ($this->getUser()->isAuthenticated())
             {
               $this->getUser()->setAttribute('is_active', true);
@@ -242,7 +241,7 @@ class citoyenActions extends sfActions
   
   public function executeDelete(sfWebRequest $request)
   {
-    if ($this->getUser()->isAuthenticated())
+    if ($this->getUser()->isAuthenticated())  
     {
       if($this->getUser()->getAttribute('token') != $request->getParameter('token'))
         $this->getUser()->setFlash('error','Jeton incorrect. Essayez de recharger la page d\'ou vous venez.');
@@ -274,19 +273,18 @@ class citoyenActions extends sfActions
         if ($this->form->isValid() and $this->form->getValue('photo'))
         {
           $file = $this->form->getValue('photo');
-          $extension = $file->getExtension($file->getOriginalExtension());
           
           $photo = $file->getTempName();
           list($largeur_source, $hauteur_source) = getimagesize($photo);
 
           $largeur = $hauteur = 100;
-          if ($largeur_source >= $hauteur_source) { $hauteur = round($hauteur_source * $largeur/ $largeur_source); }
+          if ($largeur_source >= $hauteur_source) { $hauteur = round($hauteur_source * $largeur / $largeur_source); }
           else { $largeur = round($largeur_source * $hauteur / $hauteur_source); }
           
-    $source = imagecreatefromstring(file_get_contents($photo));
+          $source = imagecreatefromstring(file_get_contents($photo));
           $destination = imagecreatetruecolor(100, 100);
-    $white = imagecolorallocate($destination, 255, 255, 255);
-    imagefilledrectangle($destination, 0, 0, 100, 100, $white);
+          $white = imagecolorallocate($destination, 255, 255, 255);
+          imagefilledrectangle($destination, 0, 0, 100, 100, $white);
           imagecopyresampled($destination, $source, (100-$largeur)/2, (100-$hauteur)/2, 0, 0, $largeur, $hauteur, $largeur_source, $hauteur_source);
           
           imagejpeg($destination, $photo);
@@ -315,29 +313,123 @@ class citoyenActions extends sfActions
     $this->getResponse()->setHttpHeader('content-type', 'image/jpeg');
     $this->getResponse()->addCacheControlHttpHeader('max_age=60');
     $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()*2));
-    #return $this->image;
   }
   
   
-  /* public function executeRenvoimailactivation(sfWebRequest $request)
+  public function executeResetmotdepasse(sfWebRequest $request)
   {
-    $id = $request->getParameter('user_id');
-    
-    $this->Citoyen = Doctrine::getTable('Citoyen')->findOneById($id);
-    
-    if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('user_id') == $id)
+    if ($this->getUser()->hasAttribute('resetmdp'))
     {
-      $this->getComponent('mail', 'send', array(
-                  'subject'=>'Inscription NosDéputés.fr', 
-                  'to'=>array($this->Citoyen->email), 
-                  'partial'=>'inscription', 
-                  'mailContext'=>array('activation_id' => $this->Citoyen->activation_id) 
-                  ));
-      $this->getUser()->setFlash('notice', 'Un email de confirmation vient de vous être envoyé.');
-      $this->redirect($request->getReferer());
+      $this->slug = $request->getParameter('slug');
+      $this->token = $request->getParameter('token');
+      
+      if ($this->token == $this->getUser()->getAttribute('resetmdp') and $this->slug == $this->getUser()->getAttribute('slug'))
+      {
+        $user = Doctrine::getTable('Citoyen')->findOneBySlug($this->getUser()->getAttribute('slug'));
+        $this->form = new MotdepasseForm();
+        
+        if ($request->isMethod('post'))
+        {
+          $this->form->bind($request->getParameter('citoyen'));
+          
+          if ($this->form->isValid())
+          {
+            if ($this->form->getvalue('password') != $this->form->getvalue('password_bis'))
+            {
+              $this->getUser()->setFlash('error', 'Les 2 champs doivent être identiques');
+              return;
+            }
+            $user->password = $this->form->getvalue('password');
+            $user->save();
+            $this->getUser()->getAttributeHolder()->remove('resetmdp');
+            if (!$this->getUser()->isAuthenticated())
+            {
+              myUser::SignIn($user->getLogin(), $this->form->getvalue('password'), false, $this) ;
+            }
+            $this->getUser()->setFlash('notice', 'Votre mot de passe a été réinitialisé avec succès.');
+            $this->redirect('@citoyen?slug='.$user->slug);
+          }
+        }
+      }
+      else
+      {
+        $this->getUser()->getAttributeHolder()->remove('resetmdp');
+        sleep(3);
+        $this->getUser()->setFlash('error', 'Votre session a expiré, veuillez recommencer la procédure de mot de passe oublié.<br />Vous ne devez pas fermer votre navigateur durant ce processus.');
+        $this->redirect('@homepage');
+      }
     }
-    else { $this->forward404(); }
-  } */
+    else if ($this->getUser()->isAuthenticated())
+    {
+      $user = Doctrine::getTable('Citoyen')->findOneBySlug($this->getUser()->getAttribute('slug'));
+      $token = md5(time()*rand());
+      $this->getUser()->setAttribute('resetmdp', $token);
+       
+      $this->getComponent('mail', 'send', array(
+      'subject'=>'Réinitialisation de votre mot de passe - NosDéputés.fr', 
+      'to'=>array($user->email), 
+      'partial'=>'resetmotdepasse', 
+      'mailContext'=>array('token' => $token, 'slug' => $user->slug)
+      ));
+      $this->getUser()->setFlash('notice', 'Un email de réinitialisation de mot de passe vient de vous être envoyé.<br />Si vous rencontrez un problème lors de cette procédure veuillez nous contacter par email à l\'adresse contact[at]regardscitoyens.org.');  
+      $this->redirect('@citoyen?slug='.$user->slug);
+    }
+    else
+    {
+      $this->form = new ResetMotdepasseForm();
+        
+      if ($request->isMethod('post'))
+      {
+        $this->form->bind($request->getParameter('reset'));
+        
+        if ($this->form->isValid())
+        {
+          $login = $this->form->getValue('login');
+          if ($login)
+          {
+            if (Doctrine::getTable('Citoyen')->findOneByEmail($login))
+            {
+              $user = Doctrine::getTable('Citoyen')->findOneByEmail($login);
+              $token = md5(time()*rand());
+              $slug = $user->slug;
+              $this->getUser()->setAttribute('resetmdp', $token);
+              $this->getUser()->setAttribute('slug', $slug);
+            }
+            else if (Doctrine::getTable('Citoyen')->findOneByLogin($login))
+            {
+              $user = Doctrine::getTable('Citoyen')->findOneByLogin($login);
+              $token = md5(time()*rand());
+              $slug = $user->slug;
+              $this->getUser()->setAttribute('resetmdp', $token);
+              $this->getUser()->setAttribute('slug', $slug);
+            }
+            else
+            {
+              $this->getUser()->setFlash('error', 'Aucun utilisateur enregistré ne correspond');
+              sleep(3);
+              return;
+            }
+          }
+          else
+          {
+            $this->getUser()->setFlash('error', 'Veuillez indiquer votre nom d\'utilisateur <strong>ou</strong> votre email');
+            sleep(3);
+            return;
+          }
+          
+          $this->getComponent('mail', 'send', array(
+          'subject'=>'Réinitialisation de votre mot de passe - NosDéputés.fr', 
+          'to'=>array($user->email), 
+          'partial'=>'resetmotdepasse', 
+          'mailContext'=>array('token' => $token, 'slug' => $user->slug)
+          ));
+        }
+        
+        $this->getUser()->setFlash('notice', 'Un email de réinitialisation de mot de passe vient de vous être envoyé.<br />Si vous rencontrez un problème lors de cette procédure veuillez nous contacter par email à l\'adresse contact[at]regardscitoyens.org.');
+        $this->redirect('@homepage');
+      }
+    }
+  }
   
   /* 
   public function executeAddcirco(sfWebRequest $request)

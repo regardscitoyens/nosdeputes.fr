@@ -541,7 +541,7 @@ h1 {
   margin-left: 25px;
 }
 .contenu_depute li{
-	list-style-type: none;
+  list-style-type: none;
 }
 .contenu_depute {
   width: 918px;
@@ -903,7 +903,7 @@ h2 {
 }
 
 .intervention .source {
-	      display: none;
+        display: none;
 }
 .intervention:hover .source {
     display: inline;
@@ -1110,7 +1110,7 @@ h2 {
 }
 
 .suivant {
-	 text-align: right;
+   text-align: right;
 }
 
 .liste_deputes p {
@@ -1310,17 +1310,17 @@ a:hover img {
   text-decoration: none;
 }
 .flash_notice {
-	color: green;
+  color: green;
 }
 .error_list, .flash_error {
-	color: red;
+  color: red;
 }
 .error_list li {
   list-style-type: none;
 }
 .last_commentaires {
-		   margin-top: 30px;
+  margin-top: 30px;
 }
 .last_commentaires .commentaire {
-		   border: 0px;
+  border: 0px;
 }

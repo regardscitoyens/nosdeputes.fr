@@ -180,9 +180,13 @@ signout:
   url:   /logout
   param: { module: citoyen, action: signout }
 
-# password:
-  # url:   /request_password
-  # param: { module: citoyen, action: password }
+# Reset password:
+reset_mdp:
+  url: /reset_password
+  param: {module: citoyen, action: resetmotdepasse}
+reset_mdp_2:
+  url: /reset_password/:slug/:token
+  param: {module: citoyen, action: resetmotdepasse}
 
 # Gestion des utilisateurs
 inscription:

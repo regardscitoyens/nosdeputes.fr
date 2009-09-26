@@ -10,5 +10,5 @@
   <input type="submit" value="Valider" />
 </p>
 </form>
-<p><a href="#">mot de passe oublié ?</a></p>
+<p><a href="<?php echo url_for('@reset_mdp') ?>">mot de passe oublié ?</a></p>
 </div>

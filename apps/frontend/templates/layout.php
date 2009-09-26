@@ -43,7 +43,7 @@ $menu_citoyen = $selectcitoyen;
     img, div { behavior: url('iepngfix/iepngfix.htc') }
     </style> 
     <![endif]-->
-		<?php echo javascript_include_tag('jquery-1.3.2.min'); ?>
+    <?php echo javascript_include_tag('jquery-1.3.2.min'); ?>
   </head>
   <body>
   <div id="contenu">
