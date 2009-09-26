@@ -38,12 +38,20 @@ class myUser extends sfBasicSecurityUser
 
   public static function SignIn($login, $password, $remember, $action) 
   {
-    if (! Doctrine::getTable('Citoyen')->findOneByLogin($login)) {
-      sleep(3);
-      $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
-      return;
+    if (Doctrine::getTable('Citoyen')->findOneByLogin($login))
+		{
+      $user = Doctrine::getTable('Citoyen')->findOneByLogin($login);
     }
-    $user = Doctrine::getTable('Citoyen')->findOneByLogin($login);
+		else if (Doctrine::getTable('Citoyen')->findOneByEmail($login))
+		{
+		  $user = Doctrine::getTable('Citoyen')->findOneByEmail($login);
+		}
+		else
+		{
+			sleep(3);
+      $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
+			return;
+		}
     if (!$user->isPasswordCorrect($password)) {
       sleep(3);
       $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');

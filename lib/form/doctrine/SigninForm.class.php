@@ -19,7 +19,7 @@ class SigninForm extends sfForm
 
     // labels
     $this->widgetSchema->setLabels(array(
-      'login' => 'Nom d\'utilisateur : ', 
+      'login' => 'Nom d\'utilisateur ou Email : ', 
       'password' => 'Mot de passe : ', 
       'remember' => 'Se rappeler de moi : '
     ));
