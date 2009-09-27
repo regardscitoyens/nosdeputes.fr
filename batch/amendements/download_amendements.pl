@@ -33,6 +33,7 @@ while ($t = $p->get_tag('a')) {
 	next if ($htmfile =~ /(index|javascript)/);
         $count++;
 	$a->get($htmfile);
+	$htmfile =~ s/^\s+//gi;
 	$htmfile =~ s/\//_/gi;
 	$htmfile =~ s/\#.*//;
 	print "  $htmfile ... ";
@@ -52,6 +53,7 @@ close FILE;
 
 foreach $line (split /\n/, $string) {
     $htmfile = $line;
+    $htmfile =~ s/^\s+//gi;
     next if ($htmfile =~ /source/);
     $count2++;
     $a->get($line);
