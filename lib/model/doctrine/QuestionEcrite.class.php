@@ -43,11 +43,12 @@ class QuestionEcrite extends BaseQuestionEcrite
     $ministere = 'Ministère d';
     $ministre = preg_replace('/^.*\/\s*([\wàéëêèïîôöûüÉ]+)$/', '\\1', $this->ministere);
     $ministre = preg_replace('/^([\wàéëêèïîôöûüÉ]+)[,\s].*$/', '\\1', $ministre);
-    if (preg_match('/^[AEÉIOU]/', $ministre)) $ministere .= 'e l\'';
+    if (preg_match('/^(Affaires|Sports|Transports|Solidarités)/', $ministre)) $ministere .= 'es ';
+    else if (preg_match('/^[AEÉIOU]/', $ministre)) $ministere .= 'e l\'';
     else if (preg_match('/^(Santé|Culture|Défense|Justice|Consommation|Solidarité)/', $ministre)) $ministere .= 'e la ';
-    else if (preg_match('/^(Affaires|Sports|Transports)/', $ministre)) $ministere .= 'es ';
     else $ministere .= 'u ';
-    $ministere .= $ministre;
+    if (preg_match('/^Premier/', $ministre)) $ministere = 'Premier Ministre';
+    else $ministere .= $ministre;
     return $ministere;
   }
   public function firstTheme()
