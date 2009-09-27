@@ -2,16 +2,16 @@
 echo Parse Amendements
 echo > /tmp/load_amendements.log
 cd batch/amendements
-tar xf lastdata.tar.gz
-tar xf html.tar.gz
-# rm -f xml/*
-# perl parse_amendements.pl >> /tmp/load_amendements.log
+# rm -f html/*
+# bash download_amendements.sh >> /tmp/load_amendements.log
+# rm -f json/*
+# bash parse_amendements.sh >> /tmp/load_amendements.log
 cd -
 php symfony cc
-for file in $(ls batch/amendements/xml)
+for file in $(ls batch/amendements/json)
 do
     echo $file
-    cp batch/amendements/xml/$file batch/amendements/input/
+    cp batch/amendements/json/$file batch/amendements/input/
     php symfony load:Amdmts >> /tmp/load_amendements.log
     php symfony cc
 done
