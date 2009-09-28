@@ -45,7 +45,7 @@ class CommentaireForm extends BaseCommentaireForm
       'commentaire' => 'Ecrire un commentaire',
       'nom' => 'Nom d\'utilisateur',
       'email' => 'Email',
-      'login' => 'Identifiant/Email',
+      'login' => 'Nom d\'utilisateur ou Email',
       'password' => 'Mot de passe',
     ));
     }
