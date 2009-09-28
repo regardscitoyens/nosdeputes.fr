@@ -23,7 +23,7 @@
               <?php echo $form['password_bis']; ?>
             </td>
           </tr>
-          <tr class="cel1">
+          <tr class="cel2">
             <td colspan="2"><input type="submit" value="Valider" style="float:right;" /></td>
           </tr>
           <tr class="cel1">
