@@ -202,7 +202,7 @@ class citoyenActions extends sfActions
   public function executeSignin(sfWebRequest $request)
   {
     if (!$this->getUser()->isAuthenticated()) {
-    
+		
       $this->form = new SigninForm();
       
       if ($request->isMethod('post'))
@@ -219,8 +219,8 @@ class citoyenActions extends sfActions
     else
     {
       $slug = $this->getUser()->getAttribute('slug');
-      $this->getUser()->setFlash('notice', 'Vous êtes déja connecté');
-      $this->redirect($request->getReferer());
+      $this->getUser()->setFlash('notice', 'Vous êtes connecté');
+      $this->redirect('@citoyen?slug='.$slug);
     }
   }
   
