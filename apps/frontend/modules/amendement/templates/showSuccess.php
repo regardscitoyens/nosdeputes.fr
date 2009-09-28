@@ -1,6 +1,7 @@
 <?php $titre1 = $amendement->getTitre().' ('.$amendement->getSort().')';
-      $titre2 = link_to(ucfirst($section->titre), '@section?id='.$section->id)?>
-<?php $sf_response->setTitle(strip_tags($titre2.' - '.$titre1)); ?>
+      if ($section) $titre2 = link_to(ucfirst($section->titre), '@section?id='.$section->id);
+      else $titre2=""; ?>
+<?php $sf_response->setTitle(strip_tags($titre2.'  '.$titre1)); ?>
 <div class="amendement" id="L<?php echo $amendement->texteloi_id; ?>A<?php echo $amendement->numero; ?>">
 <div class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></div>
 <h1><?php echo $titre1; ?></h1>
@@ -27,7 +28,7 @@
   <div class="photos"><p>
   <?php $n_auteurs = count($deputes); $line = floor($n_auteurs/(floor($n_auteurs/16)+1)); $ct = 0; foreach ($deputes as $depute) {
     $titre = $depute->nom.', '.$depute->groupe_acronyme;
-    if ($ct != 0 && $ct != $ntot-1 && !($ct % $line)) echo '<br/>'; $ct++;
+    if ($ct != 0 && $ct != $n_auteurs-1 && !($ct % $line)) echo '<br/>'; $ct++;
     echo '<a href="'.url_for($depute->getPageLink()).'"><img width="50" height="64" title="'.$titre.'" alt="'.$titre.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$depute->slug).'" /></a>&nbsp;';
   } ?></p></div>
 </div>
