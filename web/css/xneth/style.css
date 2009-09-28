@@ -5,6 +5,134 @@ body {
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
+/* Formulaires inscription et connexion */
+.boite_form {
+  width: 550px;
+  min-width: 550px;
+  margin: auto;
+  margin-top: 35px;
+  margin-bottom: 35px;
+  background: #fff url('images/minilogo_nosdeputes_fond.png') no-repeat 95% 15%;
+}
+.b_f_h {
+  height: 21px;
+  background: #FCFBFB url('images/barres_form.png') repeat-x 0 0;
+}
+.b_f_hg {
+  float: left;
+  height: 21px;
+  width: 21px;
+  background: url('images/coins_form.png') no-repeat 0 0;
+}
+.b_f_hd {
+  float: right;
+  height: 21px;
+  width: 21px;
+  background: url('images/coins_form.png') no-repeat -21px 0;
+}
+.b_f_cont {
+  padding-left: 15px;
+  padding-right: 15px;
+  border-left: 1px solid #E8E7E4;
+  border-right: 1px solid #E8E7E4;
+}
+.b_f_cont table {
+  text-align: left;
+  border-collapse: collapse;
+}
+.b_f_cont td, .b_f_cont th {
+  padding: 10px;
+  border-bottom: 1px dashed #E8E7E4;
+}
+.bf_cont h1 {
+  margin: 0;
+}
+.b_f_text {
+  
+}
+.b_f_b {  
+  height: 21px;
+  background: #FCFBFB url('images/barres_form.png') repeat-x 0 -21px;
+}
+.b_f_bg {
+  float: left;
+  height: 21px;
+  width: 21px;
+  background: url('images/coins_form.png') no-repeat 0 -21px;
+}
+.b_f_bd {
+  float: right;
+  height: 21px;
+  width: 21px;
+  background: url('images/coins_form.png') no-repeat -21px -21px;
+}
+.cel1 {
+  /* background-color: #EFEAE0; */
+}
+.cel2 {
+  /* background-color: #EFEFEF; */
+}
+
+/* Boite citoyen b_c = initiales; h = haut, b = bas, hg = haut gauche, etc... */
+.boite_citoyen {
+  float: left;
+  width: 100%;
+  margin-top: 15px;
+  background-color: #FFFDFE;
+}
+.b_c_h {
+  width: 100%;
+  height: 10px;
+  background: url('images/barres_citoyen.png') repeat-x 0 0;
+}
+.b_c_hg {
+  float: left;
+  width: 10px;
+  height: 10px;
+  background: url('images/coins_citoyen.png') no-repeat 0 0;
+}
+.b_c_hd {
+  float: right;
+  width: 10px;
+  height: 10px;
+  background: url('images/coins_citoyen.png') no-repeat -10px 0;
+}
+.b_c_cont {
+  float: left;
+  width: 99.8%;
+  border-left: 1px solid #E8E7E4;
+  border-right: 1px solid #E8E7E4;
+}
+.b_c_photo {
+  float: left;
+  padding: 14px;
+}
+.b_c_photo img {
+
+}
+.b_c_text {
+  float: left;
+}
+.b_c_b {
+  float: left;
+  width: 100%;
+  height: 10px;
+  background: url('images/barres_citoyen.png') repeat-x 0 -10px;
+}
+.b_c_bg {
+  float: left;
+  width: 10px;
+  height: 10px;
+  background: url('images/coins_citoyen.png') no-repeat 0 -10px;
+}
+.b_c_bd {
+  float: right;
+  width: 10px;
+  height: 10px;
+  background: url('images/coins_citoyen.png') no-repeat -10px -10px;
+}
+/**/
+
 /* Tags */
 .internal_tag_cloud a:link {color:#6F6F6F;}
 .tag_level_0 {font-size: 0.8em;}
@@ -12,8 +140,9 @@ body {
 .tag_level_2 {font-size: 1em;}
 .tag_level_3 {font-size: 1.5em;}
 .tag_level_4 {font-size: 1.7em;}
-.tag_level_4 a {color: #FFFFFFF;}
+.tag_level_4 a {color: #FFF;}
 /**/
+
 .temp {
   font-size: 1.1em;
 }
@@ -25,21 +154,12 @@ body {
   padding:0;
 }
 
-img {
-  border:0;
-  }
-  
-strong {
-  font-weight: bold ;
-  }
+img { border:0; }
 
-h1 a:link {
-  color: inherit;
-}
+h1 a:link { color: inherit; }
   
 a:link {
   color: inherit;
-//  color: #6F6F6F;
   text-decoration: none;
   background-color: transparent;
 }
@@ -135,7 +255,7 @@ h1 {
 #loggued_top {
   float:right;
   margin:6px 20px 0 0;
-  }
+}
 
 #signin_remember {
   float:left;
@@ -260,7 +380,7 @@ h1 {
 }
 
 #item1 a.selected, #item2 a.selected, #item3 a.selected, #item4 a.selected, #item1 a:hover, #item1 a:focus, #item2 a:hover, #item2 a:focus, #item3 a:hover, #item3 a:focus, #item4 a:hover, #item4 a:focus {
-   background-position: 0 -35px;
+  background-position: 0 -35px;
 }
 
 .menu_recherche {
@@ -311,7 +431,6 @@ h1 {
   background: url('images/recherche.png') top right no-repeat;
   cursor:pointer;
 }
-
 
 /* sous menu  */
 
@@ -385,8 +504,6 @@ h1 {
   background: url('images/sous_menu_3.png');
   }
 
-
-
 /* corps de page */
 
 #corps_page {
@@ -400,7 +517,6 @@ h1 {
   overflow:hidden;
   margin-left:auto;
   margin-right:auto;
-  
 }
 
 /* bottom - pied de page */
@@ -590,59 +706,6 @@ h1 {
 //  background-color: #ebebeb;
 }
 
-/* Tabs adresses */
-.adresses {
-  position: relative;
-  left: 0;
-}
-.tab_adresse p{
-  position: absolute;
-  top: 37px;
-  left: 0;
-  width: 410px;
-  padding: 15px;
-  background-color: #fff;
-  border: 1px dashed #BFBFBF;
-}
-.tab_adresse h4 {
-  display: inline;
-  float: left;  
-  padding: 0;
-  margin: 0;
-  padding-left: 5px;
-  padding-right: 15px;
-  border-left: 1px solid #BFBFBF;
-  height: 20px;
-  line-height: 20px;
-  cursor: pointer;
-  background: #fff url("images/fond_titre_adresses.png") no-repeat top right;
-}
-#tab_adresse_1 p { z-index: 3; }
-#tab_adresse_2 p { z-index: 2; }
-#tab_adresse_3 p { z-index: 1; }
-
-#tab_adresse_1:hover p, 
-#tab_adresse_1:focus p, 
-#tab_adresse_2:hover p, 
-#tab_adresse_2:focus p, 
-#tab_adresse_3:hover p, 
-#tab_adresse_3:focus p
-{
-  z-index: 10;
-  background-color: #efefef;
-}
-
-#tab_adresse_1:hover h4, 
-#tab_adresse_1:focus h4, 
-#tab_adresse_2:hover h4, 
-#tab_adresse_2:focus h4, 
-#tab_adresse_3:hover h4, 
-#tab_adresse_3:focus h4
-{
-  z-index: 10;
-  background-color: #DFEEFF;
-}
-/**/
 .bas_depute {
   clear: both;
   margin-top: 15px;
@@ -663,71 +726,6 @@ h1 {
   color: red;
 }
 
-/* Boite citoyen b_c = initiales; h = haut, b = bas, hg = haut gauche, etc... */
-.boite_citoyen {
-  width: 300px;
-  height: 100px;
-  padding-bottom: 5px;
-  margin-bottom: 10px;
-  background-color: #F5F5F5;
-  border: 1px solid #BFBFBF;
-}
-.boite_citoyen:hover, .boite_citoyen:focus {
-  background-color: #DFDFDF;
-}
-.b_c_h {
-  height: 8px;
-}
-.b_c_hg {
-  float: left;
-  height: 8px;
-  width: 8px;
-}
-.b_c_hd {
-  float: right;
-  height: 8px;
-  width: 8px;
-}
-.b_c_cont {
-  
-}
-.b_c_photo {
-  float: left;
-  width: 87px;
-  height: 87px;
-  margin-left: 8px;
-  background: #D0D0D0 url("images/cadre_citoyen.png") no-repeat 0 0;
-}
-.b_c_photo img {
-  width: 75px;
-  height: 75px;
-  margin: 6px;
-  overflow: hidden;
-}
-.b_c_text {
-  float: left;
-  width: 188px;
-  margin-left: 8px;
-  margin-right: 8px;
-}
-.note {
-  float: right;
-}
-.b_c_b {
-  clear: both;
-  height: 8px;
-}
-.b_c_bg {
-  float: left;
-  height: 8px;
-  width: 8px;
-}
-.b_c_bd {
-  float: right;
-  height: 8px;
-  width: 8px;
-}
-/**/
 .bas_depute_d {
   float: left;
 }
@@ -741,129 +739,7 @@ h1 {
   padding: 0;
   padding-left: 5px;
 }
-/* Boite extrait article */
-.boite_extrait_article {
-  width: 580px;
-  margin-bottom: 10px;
-  background-color: #fbfbfb;
-  border: 1px solid #BFBFBF;
-  
-}
-.b_e_a_h {
-  height: 8px;
-}
-.b_e_a_hg {
-  float: left;
-  height: 8px;
-  width: 8px;
-}
-.b_e_a_hd {
-  float: right;
-  height: 8px;
-  width: 8px;
-}
-.b_e_a_cont {
-  clear: both;
-}
-.b_e_a_article {
-  float: left;
-  width: 354px;
-  text-align: justify;
-}
-.b_e_a_article a {
-  font-weight: bold;
-}
-.b_e_a_article p {
-  margin-top: 0;
-  margin-bottom: 0;
-}
-.lire_suite {
-  float: right;
-  color: green;
-}
-.b_e_a_b {
-  clear: both;
-  height: 8px;
-}
-.b_e_a_bg {
-  float: left;
-  height: 8px;
-  width: 8px;
-}
-.b_e_a_bd {
-  float: right;
-  height: 8px;
-  width: 8px;
-}
-/* Mini boite citoyen */
-.mini_boite_citoyen {
-  float: left;
-  width: 200px;
-  margin-left: 8px;
-  margin-right: 8px;
-  background-color: #F5F5F5;
-  border: 1px solid #EFEFEF;
-}
-.mini_boite_citoyen:hover, .mini_boite_citoyen:focus {
-  background-color: #DFDFDF;
-}
-.m_b_c_h {
-  height: 8px;
-}
-.m_b_c_hg {
-  float: left;
-  height: 8px;
-  width: 8px;
-}
-.m_b_c_hd {
-  float: right;
-  height: 8px;
-  width: 8px;
-}
-.m_b_c_cont {
-  
-}
-.m_b_c_photo {
-  float: left;
-  width: 46px;
-  height: 46px;
-  margin-left: 8px;
-}
-.m_b_c_photo img {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #e3e0d8;
-  overflow: hidden;
-}
-.m_b_c_text {
-  float: left;
-  width: 124px;
-  margin-left: 8px;
-  margin-right: 8px;
-}
-.m_b_c_text h3 {
-  font-size: 1em;
-  margin: 0;
-}
-.m_b_c_text p {
-  margin: 0;
-  margin-top: 5px;
-}
-.m_b_c_b {
-  clear: both;
-  height: 8px;
-}
-.m_b_c_bg {
-  float: left;
-  height: 8px;
-  width: 8px;
-}
-.m_b_c_bd {
-  float: right;
-  height: 8px;
-  width: 8px;
-}
-/**/
+
 .liens_articles, .tags {
   list-style-type: none;
   font-size: 1.2em;
@@ -988,6 +864,7 @@ h2 {
   z-index: 10;
   background-color: #DBD5C8;
 }
+
 /* commentaires */
 .commentaires {
   clear:both;
@@ -1007,6 +884,7 @@ h2 {
 }
 .commentaire {
   clear:both;
+  min-height: 104px;
   padding: 15px;
   padding-top: 0px;
   padding-bottom: 0px;
@@ -1049,8 +927,8 @@ h2 {
   border: 1px solid #9a9a9a;
 }
 .nuage_de_tags .hide {
-         color: #f7f7f7;
-         font-size: 6px;
+  color: #f7f7f7;
+  font-size: 6px;
 }
 .nuage_de_tags h3 {
   padding: 0px;
@@ -1110,7 +988,7 @@ h2 {
 }
 
 .suivant {
-   text-align: right;
+  text-align: right;
 }
 
 .liste_deputes p {

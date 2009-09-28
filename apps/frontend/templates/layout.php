@@ -157,7 +157,7 @@ $(document).ready(function() {
       $('#header_login').attr('value', 'Identifiant');
     }
     if (!$('#header_pass').attr('value')) {
-      $('#header_pass').attr('value', '______________');
+      $('#header_pass').attr('value', '__________');
     }
   });
 </script>
