@@ -25,6 +25,15 @@ class interventionActions extends sfActions
           ->groupBy('i.seance_id');
     } else if ($this->type != 'all')
       $this->forward404();
+    if ($this->type == 'question') $this->titre = 'Questions orales';
+    else {
+      $this->titre = 'Interventions';
+      if ($this->type == 'loi') 
+	$this->titre .= ' en hémicycle';
+      else if ($this->type == 'commission') 
+	$this->titre .= ' en commissions';
+    }
+    $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom);
     $this->interventions->orderBy('i.date DESC, i.timestamp ASC');
   }
   public function executeParlementaireOrganisme(sfWebRequest $request)
@@ -38,6 +47,9 @@ class interventionActions extends sfActions
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('s.organisme_id = ?', $this->orga)
       ->orderBy('i.date DESC, i.timestamp ASC');
+    $this->surtitre = link_to($this->orga->getNom(), '@list_parlementaires_organisme?slug='.$this->orga->getSlug());
+    $this->titre = 'Interventions';
+    $this->response->setTitle($this->titre.' en '.$this->orga->nom.' de '.$this->parlementaire->nom);
   }
   public function executeShow(sfWebRequest $request)
   {
@@ -45,14 +57,16 @@ class interventionActions extends sfActions
       ->where('i.id = ?', $request->getParameter('id'))
       ->fetchOne();
     $this->forward404Unless($this->intervention);
-	$this->lois = $this->intervention->getTags(array('is_triple' => true,
-				    'namespace' => 'loi',
-				    'key' => 'numero',
-				    'return'    => 'value'));
-	$this->amdmts = $this->intervention->getTags(array('is_triple' => true,
-				    'namespace' => 'loi',
-				    'key' => 'amendement',
-				    'return'    => 'value'));
+    $this->lois = $this->intervention->getTags(array('is_triple' => true,
+						     'namespace' => 'loi',
+						     'key' => 'numero',
+						     'return'    => 'value'));
+    $this->amdmts = $this->intervention->getTags(array('is_triple' => true,
+						       'namespace' => 'loi',
+						       'key' => 'amendement',
+						       'return'    => 'value'));
+    $this->response->setTitle('Intervention de '.$this->intervention->getParlementaire()->nom);
+    //    $this->response->setDescription($this->intervention->intervention);
   }
   
   public function executeSeance(sfWebRequest $request)

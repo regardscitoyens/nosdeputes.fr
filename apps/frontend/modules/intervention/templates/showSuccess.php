@@ -7,8 +7,10 @@ if ($intervention->getType() == 'commission') {
   $orga = $intervention->getSeance()->getOrganisme();
   $titre2 .= link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug());
  }
-$titre2 .= link_to(ucfirst($section->getSection()->getTitre()), '@section?id='.$section->section_id);
-$titre2 .= ' &nbsp; ';
+if ($section->getSection()) {
+  $titre2 .= link_to(ucfirst($section->getSection()->getTitre()), '@section?id='.$section->section_id);
+  $titre2 .= ' &nbsp; ';
+ }
 if ($section->getTitre())
   $titre2 .= link_to(ucfirst($section->getTitre()), '@section?id='.$section->id);
 if(count($amdmts) >= 1)

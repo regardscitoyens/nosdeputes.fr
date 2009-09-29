@@ -55,6 +55,7 @@ class amendementActions extends sfActions
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
     //  ->andWhere('pa.numero_signataire <= ?', self::$seuil_amdmts)
       ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
+    //    $this->response->setTitle('Les amendements de '.$this->parlementaire->nom);
   }
 
   public function executeParlementaireSection(sfWebRequest $request) 

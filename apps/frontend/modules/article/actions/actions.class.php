@@ -141,6 +141,7 @@ class articleActions extends sfActions
 	->andWhere('article_id = ?', $a->id)->execute();
     }
     $this->titre = $request->getParameter('titre');
+    $this->response->setTitle($this->titre);
   }
 
   public function executeFindSeance(sfWebRequest $request)

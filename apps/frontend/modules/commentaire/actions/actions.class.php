@@ -173,5 +173,6 @@ $values['password'], false, $this))) {
     $this->comments = Doctrine::getTable('Commentaire')->createQuery('c')
       ->andWhere('is_public = ?', 1)
       ->orderBy('created_at DESC');
+    $this->response->setTitle('Tous les commentaires citoyens');
   }
 }

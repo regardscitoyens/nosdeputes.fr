@@ -301,6 +301,7 @@ public function executeList(sfWebRequest $request)
         ->orderBy('nb DESC')
         ->fetchArray();
     }
+    $this->response->setTitle('Les parlementaires par tag');
   }
 
   public function executePlot(sfWebRequest $request)

@@ -1,5 +1,6 @@
 <?php
 $titre = "Amendements";
+$sf_response->setTitle('Les amendements de '.$parlementaire->nom);
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre));
 ?>
 <div class="amendements">

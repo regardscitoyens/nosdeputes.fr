@@ -1,5 +1,6 @@
 <?php
 $titre = 'Questions écrites';
+$sf_response->setTitle('Questions écrite de '.$parlementaire->nom);
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre));
 ?>
 <div class="questions">
