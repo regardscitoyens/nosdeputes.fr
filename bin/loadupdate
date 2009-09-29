@@ -1,0 +1,16 @@
+#!/bin/bash
+
+bash bin/load_deputes
+
+#Récupération et création des JSON
+cd batch/jo ; perl compute_latest.pl ; cd -
+cd batch/hemicycle ; bash compute_latest.sh ; cd -
+cd batch/commission ; bash compute_latest.sh ; cd -
+
+#Vérification des JSON
+
+#changement via tasks
+
+php symfony load:JO
+php symfony load:hemicycle
+php symfony load:commission

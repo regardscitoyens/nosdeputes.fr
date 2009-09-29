@@ -9,7 +9,7 @@ $pdf_file = shift || "/tmp/jo.pdf";
 my $agent = WWW::Mechanize->new();
 $agent->get("http://www.journal-officiel.gouv.fr/users.php?date_jo=$date");
 if ($agent->{content} !~ /(publi.*pdf.sig)/) {
-    exit;
+    exit 1;
 }
 
 #Telecharge le sommaire html
@@ -26,7 +26,7 @@ $agent->get($url_html);
 $doc = $agent->{content};
 $doc =~ s/\n/ /g;
 if ($doc !~ /class="rubrique_02">Assembl&eacute;e nationale<\/p>(.*)(COMMISSIONS|S&eacute;nat)/) {
-    exit;
+    exit 1;
 }
 
 $doc = $1;
@@ -38,7 +38,7 @@ if ($doc =~ /(.*)COMMISSIONS/) {
 #Puis l'url vers le pdf
 
 if ($doc !~ /(joe_[\d_]+.pdf.sig)\W+$/) {
-    exit;
+    exit 1;
 }
 $pdf = $1;
 $url =~ s/joe.*/$pdf/;

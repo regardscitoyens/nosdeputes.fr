@@ -21,7 +21,7 @@ while ($ok) {
 	    $file =~ s/\//_/gi;
 	    $file =~ s/\#.*//;
 	    print "$file\n";
-	    next if -e "html/$file";
+	    exit if -e "html/$file";
 	    $a->get($t->[1]{href});
 	    open FILE, ">:utf8", "html/$file.tmp";
 	    print FILE $a->content;
