@@ -63,7 +63,7 @@
   </td>
   </tr>
   <tr>
-    <td colspan="2">
+    <td colspan="2" style="height:40px;">
       <input type="hidden" name="unique_form" value="<?php echo $unique_form; ?>"/>
       <input type='submit' value='Prévisualiser'/>
       <?php if (isset($sendButton)) : ?>
