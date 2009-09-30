@@ -175,6 +175,7 @@ public function executeList(sfWebRequest $request)
   }
 
   public function executeListCirco(sfWebRequest $request) {
+    $this->num_circo = 0;
     $departmt = strip_tags(trim(strtolower($request->getParameter('search'))));
     if (!$departmt || $departmt == "") {
       $this->circos = Parlementaire::$dptmt_nom;
@@ -229,6 +230,8 @@ public function executeList(sfWebRequest $request)
       }
       $query->addOrderBy('p.num_circo');
       $this->parlementaires = $query->execute();
+      if (count($this->parlementaires) == 1)
+              return $this->redirect('@parlementaire?slug='.$this->parlementaires[0]['slug']);
     }
   }
   
