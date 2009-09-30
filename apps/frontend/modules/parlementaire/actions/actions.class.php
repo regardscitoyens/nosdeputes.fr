@@ -183,6 +183,10 @@ public function executeList(sfWebRequest $request)
         $this->num = 987;
         $this->circo = "Polynésie Française";
       } else {
+        if (preg_match('/^(\d+\w?)-(\d+)$/', $departmt, $match)) {
+          $this->num = preg_replace('/^0+/', '', $match[1]);
+          $this->num_circo = preg_replace('/^0+/', '', $match[2]);
+        } else
         if (preg_match('/^(\d+\w?)$/', $departmt, $match)) {
           $this->num = preg_replace('/^0+/', '', $match[1]);
         } else {
@@ -202,7 +206,12 @@ public function executeList(sfWebRequest $request)
         ->where('p.nom_circo LIKE ?',  '%'.$this->circo.'%')
         ->orderBy('p.nom_circo');
       else {
-        $query->where('p.nom_circo = ?', $this->circo);
+        if($this->num_circo == 0)
+                $query->where('p.nom_circo = ?', $this->circo);
+        else
+                $query
+                ->where('p.nom_circo = ?', $this->circo)
+                ->andwhere('p.num_circo = ?', $this->num_circo);
         $query2 = Doctrine_Query::create()
           ->select('count(distinct num_circo) as nombre')->from('Parlementaire p')
           ->where('p.nom_circo = ?', $this->circo)->fetchOne();
