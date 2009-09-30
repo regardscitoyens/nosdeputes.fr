@@ -206,15 +206,25 @@ public function executeList(sfWebRequest $request)
         ->where('p.nom_circo LIKE ?',  '%'.$this->circo.'%')
         ->orderBy('p.nom_circo');
       else {
-        if($this->num_circo == 0)
+        if($this->num_circo == 0) {
                 $query->where('p.nom_circo = ?', $this->circo);
-        else
+                $query2 = Doctrine_Query::create()
+                        ->select('count(distinct num_circo) as nombre')
+                        ->from('Parlementaire p')
+                        ->where('p.nom_circo = ?', $this->circo)
+                        ->fetchOne();
+        }
+        else {
                 $query
                 ->where('p.nom_circo = ?', $this->circo)
                 ->andwhere('p.num_circo = ?', $this->num_circo);
-        $query2 = Doctrine_Query::create()
-          ->select('count(distinct num_circo) as nombre')->from('Parlementaire p')
-          ->where('p.nom_circo = ?', $this->circo)->fetchOne();
+                $query2 = Doctrine_Query::create()
+                        ->select('count(distinct num_circo) as nombre')
+                        ->from('Parlementaire p')
+                        ->where('p.nom_circo = ?', $this->circo)
+                        ->andwhere('p.num_circo = ?', $this->num_circo)
+                        ->fetchOne();
+        }
         $this->n_circo = $query2['nombre'];
       }
       $query->addOrderBy('p.num_circo');
