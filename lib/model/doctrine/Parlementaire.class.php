@@ -200,6 +200,15 @@ class Parlementaire extends BaseParlementaire
     return $this->_get('nom_circo')." (".$this->getNumeroDepartement($shortcirco).")";
   }
 
+  public function getNumDepartement() {
+    $shortcirco = trim(strtolower($this->_get('nom_circo')));
+    $shortcirco = preg_replace('/\s+/','-', $shortcirco);
+    $shortcirco = preg_replace('/(é|è|e)/','e', $shortcirco);
+    $shortcirco = preg_replace('/à/','a', $shortcirco);
+    $shortcirco = preg_replace('/ô/','o', $shortcirco);
+    return $this->getNumeroDepartement($shortcirco);
+  }
+
    static $dptmt_pref = array(
      "Ain" => "de l'",
      "Aisne" => "de l'",
