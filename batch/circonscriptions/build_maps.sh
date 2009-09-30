@@ -1,12 +1,19 @@
 #!/bin/sh -e
 mkdir -p png svg html
 rm -f png/* svg/* html/* cartes.html
+echo "Génération des svg et png par département"
 xargs -l1  --arg-file=sources/circo.txt ./script/svgedit.py sources/circo.svg
 cp sources/circo.svg svg/france.svg
-inkscape -e png/france.png svg/france.svg
+inkscape -w 900 -h 990 -e png/france.png svg/france.svg
 cd svg
 for i in *.svg; do
+ echo "Calcul de l'image map pour" $i
+ if [ $i = "france.svg" ]
+ then
+ ../script/svg2imagemap.py $i 900 990 circonscriptions
+ else
  ../script/svg2imagemap.py $i 0 0 circonscriptions
+ fi
  done
 mv *.html ../html
 cd ..
