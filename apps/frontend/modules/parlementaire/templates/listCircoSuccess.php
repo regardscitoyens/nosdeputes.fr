@@ -3,8 +3,8 @@
 <h1>Toutes les circonscriptions électorales</h1><?php $sf_response->setTitle('Toutes les circonscriptions électorales'); ?>
 <table>
 <tr><td style="width:23%;"><ul>
-<?php $div = floor(count($circos)/4)+1; $ct = 0; foreach($circos as $num => $circo) : $ct++ ; $num = sprintf("%02d",$num) ?>
-<li><?php echo link_to($circo, '@list_parlementaires_circo?search='.$num).' ('.$num.')'; ?></li>
+<?php $div = floor(count($circos)/4)+1; $ct = 0; foreach($circos as $num => $circo) : $ct++ ; if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num); ?>
+<li><?php echo link_to($circo, '@list_parlementaires_circo?search='.$num).' ('.strtoupper($num).')'; ?></li>
 <?php if ($ct == $div || $ct == (2*$div) || $ct == (3*$div)) echo '</ul></td><td style="width:23%;"><ul>'; ?>
 <?php endforeach; ?>
 </ul></td></tr>
@@ -13,7 +13,8 @@
 <?php else : ?>
 <?php $nResults = count($parlementaires);
  if ($num != 0 && $nResults != 0) : ?>
- <?php include 'circonscriptions/'.sprintf("%03d",$num).'.html'; ?>
+ <?php if (!preg_match('/{\d}3/', $num)) $fixednum = '0'.$num; else $fixednum = $num;
+  include 'circonscriptions/'.$fixednum.'.html'; ?>
 <?php endif; ?>
 <h1>Les députés par circonscriptions</h1>
 <?php
@@ -36,16 +37,14 @@ if ($num != 0 && $num_circo == 0) echo ' pour '.$n_circo.' circonscriptions';
 <ul>
 <?php foreach($parlementaires as $parlementaire) : ?>
 <li><?php
-if ($num == 0) {echo $parlementaire->getNomNumCirco()." - "; } 
-echo link_to($parlementaire->getNumCircoString(1),
-        '@list_parlementaires_circo?search='.
-        $parlementaire->getNumDepartement().'-'.$parlementaire->num_circo) ;
-?>
+if ($num == 0)
+  echo link_to($parlementaire->getNomNumCirco(), '@list_parlementaires_circo?search='.$parlementaire->getNumDepartement())." - ";
+echo $parlementaire->getNumCircoString(1); ?>
 &nbsp;:
 <?php
 echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); 
 ?>
-(<?php echo $parlementaire->getStatut(1); ?>)</li>
+&nbsp;(<?php echo $parlementaire->getStatut(1); ?>)</li>
 <?php endforeach ; ?>
 </ul>
 <?php endif; ?>
