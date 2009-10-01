@@ -65,7 +65,7 @@ class interventionActions extends sfActions
 						       'namespace' => 'loi',
 						       'key' => 'amendement',
 						       'return'    => 'value'));
-    $this->response->setTitle('Intervention de '.$this->intervention->getParlementaire()->nom);
+    $this->response->setTitle('Intervention de '.$this->intervention->getIntervenant()->nom);
     //    $this->response->setDescription($this->intervention->intervention);
   }
   
