@@ -1,4 +1,4 @@
-<h1>Intervention de <?php echo $intervention->getParlementaire()->nom; ?></h1>
+<h1>Intervention de <?php echo $intervention->getIntervenant()->nom; ?></h1>
 <?php 
 $section = $intervention->getSection();
 $titre2 = $intervention->getSeance()->getTitre(0,0,$intervention->getMd5());
@@ -9,7 +9,7 @@ if ($intervention->getType() == 'commission') {
  }
 if ($section->getSection()) {
   $titre2 .= link_to(ucfirst($section->getSection()->getTitre()), '@section?id='.$section->section_id);
-  $titre2 .= ' &nbsp; ';
+  $titre2 .= '&nbsp;- ';
  }
 if ($section->getTitre())
   $titre2 .= link_to(ucfirst($section->getTitre()), '@section?id='.$section->id);
