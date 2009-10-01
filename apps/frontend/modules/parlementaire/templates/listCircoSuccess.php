@@ -13,7 +13,7 @@
 <?php else : ?>
 <?php $nResults = count($parlementaires);
  if ($num != 0 && $nResults != 0) : ?>
- <?php if (!preg_match('/{\d}3/', $num)) $fixednum = '0'.$num; else $fixednum = $num;
+ <?php if (preg_match('/\d[a-z]/i', $num)) $fixednum = '0'.$num; else $fixednum = sprintf('%03d',$num);
   include 'circonscriptions/'.$fixednum.'.html'; ?>
 <?php endif; ?>
 <h1>Les députés par circonscriptions</h1>
@@ -24,7 +24,7 @@ $sf_response->setTitle('Les députés par circonscriptions');
   <?php else : ?>
 <p>
 <?php echo $circo; ?>
-<?php if ($num != 0) echo ' ('.sprintf("%02d",$num).')'; 
+<?php if ($num != 0) echo ' ('.strtoupper($fixednum).')'; 
 if ($num_circo > 0) echo  ', '.$parlementaires[0]->getNumCircoString(1).':';
 else echo '&nbsp;:';
 ?>
