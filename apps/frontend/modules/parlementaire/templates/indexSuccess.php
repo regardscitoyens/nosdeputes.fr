@@ -27,7 +27,7 @@
 </div>
 
 <div class="nuage_de_tags right">
-	<h2>En ce moment à l'Assemblée Nationale</h2>
+	<h2><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
 	<?php echo include_component('tag', 'globalActivite'); ?>
 </div>
 </div>
