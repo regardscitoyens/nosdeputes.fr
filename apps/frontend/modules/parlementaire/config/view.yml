@@ -1,3 +1,3 @@
 listCircoSuccess:
-   javascripts: [maphilight]
+   javascripts: [jquery.maphilight.min.js]
 
