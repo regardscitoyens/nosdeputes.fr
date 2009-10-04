@@ -9,7 +9,7 @@ class loadQuestionsTask extends sfBaseTask {
 
   protected function execute($arguments = array(), $options = array()) {
   // your code here
-    $dir = dirname(__FILE__).'/../../batch/questions/input/';
+    $dir = dirname(__FILE__).'/../../batch/questions/json/';
     $manager = new sfDatabaseManager($this->configuration);
 
     if (is_dir($dir)) {

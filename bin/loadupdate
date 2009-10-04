@@ -11,6 +11,7 @@ echo > /tmp/load_JO.log
 echo > /tmp/load_hemicycle.log
 echo > /tmp/load_commissions.log
 echo > /tmp/load_amendements.log
+echo > /tmp/load_questions.log
 echo > /tmp/process_data.log
 
 
@@ -23,6 +24,7 @@ cd batch/jo ; perl compute_latest.pl >> /tmp/load_JO.log ; cd -
 cd batch/hemicycle ; bash compute_latest.sh >> /tmp/load_hemicycle.log ; cd -
 cd batch/commission ; bash compute_latest.sh >> /tmp/load_commissions.log ; cd -
 cd batch/amendements ; bash compute_latest.sh >> /tmp/load_amendements.log ; cd -
+cd batch/questions ; bash compute_latest.sh >> /tmp/load_questions.log ; cd -
 
 
 # Vérification des JSON
@@ -47,6 +49,11 @@ done;
 while ls batch/amendements/json | grep [a-z] > /dev/null ; do
 	php symfony cc
 	php symfony load:Amdmts >> /tmp/load_amendements.log
+done;
+
+while ls batch/questions/json | grep [a-z] > /dev/null ; do
+	php symfony cc
+	php symfony load:Questions >> /tmp/load_questions.log
 done;
 
 
