@@ -1,18 +1,16 @@
 <?php 
-if ($sf_user->hasAttribute('resetmdp'))
+if (!$first)
 {
-  $route = 'citoyen/resetmotdepasse?slug='.$slug.'&token='.$token;
-  $titre = 'Choisissez un nouveau mot de passe';
 ?>
 <div class="boite_form">
   <div class="b_f_h"><div class="b_f_hg"></div><div class="b_f_hd"></div></div>
     <div class="b_f_cont">
       <div class="b_f_text">
-        <?php echo $form->renderFormTag(url_for($route)); ?>
+        <?php echo $form->renderFormTag(url_for('citoyen/resetmotdepasse?slug='.$slug.'&activation_id='.$activation_id)); ?>
         <table>
           <tr class="cel1">
             <th colspan="2">
-              <h1><?php echo $titre; ?></h1>
+              <h1>Choisissez un nouveau mot de passe</h1>
             </th>
           </tr>
           <tr class="cel2">
@@ -46,18 +44,16 @@ if ($sf_user->hasAttribute('resetmdp'))
 }
 else
 {
-  $route = 'citoyen/resetmotdepasse';
-  $titre = 'Mot de passe oublié';
 ?>
 <div class="boite_form">
   <div class="b_f_h"><div class="b_f_hg"></div><div class="b_f_hd"></div></div>
     <div class="b_f_cont">
       <div class="b_f_text">
-        <?php echo $form->renderFormTag(url_for($route)); ?>
+        <?php echo $form->renderFormTag(url_for('citoyen/resetmotdepasse')); ?>
         <table>
           <tr class="cel1">
             <th colspan="2">
-              <h1><?php echo $titre; ?></h1>
+              <h1>Mot de passe oublié</h1>
             </th>
           </tr>
           <tr class="cel2">

@@ -185,7 +185,7 @@ reset_mdp:
   url: /reset_password
   param: {module: citoyen, action: resetmotdepasse}
 reset_mdp_2:
-  url: /reset_password/:slug/:token
+  url: /reset_password/:slug/:activation_id
   param: {module: citoyen, action: resetmotdepasse}
 
 # Gestion des utilisateurs

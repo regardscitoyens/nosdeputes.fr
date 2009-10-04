@@ -5,6 +5,25 @@ body {
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
+/* Formulaires classiques */
+.form {
+  height: auto;
+  min-height: 200px;
+  text-align: left;
+  background: #fff url('images/logo_nosdeputes_fond.png') no-repeat 85% center;
+}
+.form table {
+  width: 50%;
+  border-collapse: collapse;
+}
+.form td, .form th {
+  padding: 10px;
+  border-bottom: 1px dashed #E8E7E4;
+}
+.form td {
+  text-align: right;
+}
+
 /* Formulaires inscription et connexion */
 .boite_form {
   width: 550px;
@@ -70,7 +89,7 @@ body {
   /* background-color: #EFEAE0; */
 }
 .cel2 {
-  /* background-color: #EFEFEF; */
+  background-color: #FCFCFC;
 }
 
 /* Boite citoyen b_c = initiales; h = haut, b = bas, hg = haut gauche, etc... */
@@ -78,7 +97,7 @@ body {
   float: left;
   width: 100%;
   margin-top: 15px;
-  background-color: #FFFDFE;
+  background-color: #FFFFFD;
 }
 .b_c_h {
   width: 100%;
@@ -112,6 +131,12 @@ body {
 }
 .b_c_text {
   float: left;
+}
+.b_c_text ul {
+  padding-left: 15px;
+}
+.b_c_text h1 {
+  margin-top: 12px;
 }
 .b_c_b {
   float: left;
@@ -257,7 +282,7 @@ h1 {
   margin:6px 20px 0 0;
 }
 
-#signin_remember {
+#header_remember {
   float:left;
   width:14px;
   margin:1px 9px 0 0;
@@ -703,7 +728,7 @@ h1 {
 }
 
 .b_d_infos  h3{
-//  background-color: #ebebeb;
+  
 }
 
 .bas_depute {
@@ -919,7 +944,6 @@ h2 {
 }
 
 .nuage_de_tags {
-//  width:260px;
   min-height:172px;
   margin:5px 0 0 40px;
   padding:5px;
@@ -1117,7 +1141,6 @@ width: 50%;
 }
 
 .accueil_deputes_jour  h3 {
-//  background-color:#dbd5c8;
   font-size: 1.2em;
   margin:0 0 10px 0;
 }

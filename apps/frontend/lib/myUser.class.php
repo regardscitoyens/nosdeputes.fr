@@ -4,12 +4,12 @@ class myUser extends sfBasicSecurityUser
 {
   public static function CreateAccount($nom, $email, $action)
   {
-    if (Doctrine::getTable('Citoyen')->findOneByLogin($nom)) {
+    if(Doctrine::getTable('Citoyen')->findOneByLogin($nom)) {
       $action->getUser()->setFlash('error', 'Ce nom d\'utilisateur existe déjà.');
       return false;
     }
 
-    if (Doctrine::getTable('Citoyen')->findOneByEmail($email)) {
+    if(Doctrine::getTable('Citoyen')->findOneByEmail($email)) {
       $action->getUser()->setFlash('error', 'Cette adresse email existe déjà.');
       return false;
     }
@@ -38,24 +38,28 @@ class myUser extends sfBasicSecurityUser
 
   public static function SignIn($login, $password, $remember, $action) 
   {
-    if (Doctrine::getTable('Citoyen')->findOneByLogin($login))
-		{
+    if(Doctrine::getTable('Citoyen')->findOneByLogin($login))
+    {
       $user = Doctrine::getTable('Citoyen')->findOneByLogin($login);
     }
-		else if (Doctrine::getTable('Citoyen')->findOneByEmail($login))
-		{
-		  $user = Doctrine::getTable('Citoyen')->findOneByEmail($login);
-		}
-		else
-		{
-			sleep(3);
-      $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
-			return;
-		}
-    if (!$user->isPasswordCorrect($password)) {
-      sleep(3);
+    else if(Doctrine::getTable('Citoyen')->findOneByEmail($login))
+    {
+      $user = Doctrine::getTable('Citoyen')->findOneByEmail($login);
+    }
+    else
+    {
       $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
       return;
+    }
+    if (!$user->isPasswordCorrect($password)) {
+      $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
+      return;
+    }
+    
+    if($user->activation_id != null)
+    {
+      $user->activation_id = null;
+      $user->save();
     }
     
     self::connexion($user, $action);

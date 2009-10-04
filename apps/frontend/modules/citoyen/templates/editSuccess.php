@@ -1,12 +1,31 @@
-<div class="boite_form">
-  <div class="b_f_h"><div class="b_f_hg"></div><div class="b_f_hd"></div></div>
-    <div class="b_f_cont">
-      <div class="b_f_text">
-        <?php echo $form->renderFormTag(url_for('citoyen/edit')); ?>
+<div class="boite_citoyen">
+  <div class="b_c_h"><div class="b_c_hg"></div><div class="b_c_hd"></div></div>
+    <div class="b_c_cont">
+      <div class="b_c_photo">
+        <?php echo '<img src="'.url_for('@photo_citoyen?slug='.$user->slug).'" alt="Photo de '.htmlentities($user->login).'"/>'; ?>
+      </div>
+      <div class="b_c_text">
+        <h1 style="text-align:left;"><?php echo htmlentities($user->login); ?></h1>
+        <ul>
+<?php if (!empty($user->activite)) { $activite = htmlentities($user->activite); } else { $activite = 'non renseigné'; }
+  echo '<li>Activité : '.$activite.'</li>';
+  echo '<li>Statut : '.ucfirst($user->role).'</li>';
+  echo '<li>Inscrit depuis le '.myTools::displayDate($user->created_at).'</li>';
+if (!empty($user->url_site)) { echo '<li><a href="'.$user->url_site.'" rel="nofollow">Site web</a></li>'; }
+?>
+        </ul>
+      </div>
+    </div>
+  <div class="b_c_b"><div class="b_c_bg"></div><div class="b_c_bd"></div></div>
+</div>
+<div class="stopfloat"></div>
+      <div class="form">
+        <form method="post" action="<?php echo url_for('citoyen/edit'); ?>">
         <table>
           <tr class="cel1">
             <th colspan="2">
-              <h1>Edition de votre profil</h1>
+              <h2>Edition de votre profil</h2>
+              <input type="hidden" name="sf_method" value="put" />
             </th>
           </tr>
           <tr class="cel2">
@@ -24,7 +43,7 @@
             </td>
           </tr>
           <tr class="cel2">
-            <th style="text-align:left;"><?php echo $form['naissance']->renderLabel() ?></th>
+            <th>Date de naissance : </th>
             <td>
               <?php echo $form['naissance']->renderError(); ?>
               <?php echo $form['naissance']; ?>
@@ -40,7 +59,7 @@
           <tr class="cel2">
             <th>Votre Avatar</th>
             <td>
-              <a href="<?php echo url_for('@upload_avatar'); ?>"><img src="<?php echo url_for('@photo_citoyen?slug='.$user->slug); ?>"/><br/>Changer d'avatar</a>
+              <a href="<?php echo url_for('@upload_avatar'); ?>"><img src="<?php echo url_for('@photo_citoyen?slug='.$user->slug); ?>" alt="Votre photo" /><br/>Changer d'avatar</a>
             </td>
           </tr>
           <tr class="cel1">
@@ -48,20 +67,17 @@
             <td><a href="<?php echo url_for('@editpassword_citoyen'); ?>">Changer</a></td>
           </tr>
           <tr class="cel2">
+            <td colspan="2"><input type="submit" value="Valider" style="float:right;" /></td>
+          </tr>
+          <tr class="cel1">
             <th colspan="2">
               <a href="<?php echo url_for('@delete_citoyen?token=' . $sf_user->getAttribute('token')) ?>" onclick="javascript:if(!confirm('Supprimer votre compte ?')) return false;">Supprimer votre compte</a>
             </th>
           </tr>
-          <tr class="cel1">
-            <th colspan="2"><a href="<?php echo url_for('@citoyen?slug=' . $sf_user->getAttribute('slug')) ?>">Annuler</a></th>
-          </tr>
           <tr class="cel2">
-            <td colspan="2"><input type="submit" value="Valider" style="float:right;" /></td>
+            <th colspan="2"><a href="<?php echo url_for('@citoyen?slug=' . $sf_user->getAttribute('slug')) ?>">Annuler</a></th>
           </tr>
         </table>
         </form>
         <br />
       </div>
-    </div>
-  <div class="b_f_b"><div class="b_f_bg"></div><div class="b_f_bd"></div></div>
-</div>
