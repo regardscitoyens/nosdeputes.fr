@@ -7,7 +7,7 @@ cat liste_sans_reponse.sql | mysql $MYSQLID $DBNAME | grep -v source > liste_san
 rm -f html/*
 perl download_questions.pl
 rm -f json/*
-for file in html/*; do
+for for file in `grep -L "The page cannot be found" html/*`; do
 	fileout=$(echo $file | sed 's/html/json/' | sed 's/\.htm/\.xml/')
 	perl cut_quest.pl $file > $fileout
 done;
