@@ -1,16 +1,59 @@
 #!/bin/bash
 
+
+# Mis là temporairement pour rappel: à runner une fois pour toutes pour éviter de retélécharger inutilement 2000 amendements à chaque fois (OGM et HADOPI)
+# php symfony set:AmdmtsTombes 819 
+# php symfony set:AmdmtsTombes 1296
+
+
+# Init logs
+echo > /tmp/load_JO.log
+echo > /tmp/load_hemicycle.log
+echo > /tmp/load_commissions.log
+echo > /tmp/load_amendements.log
+echo > /tmp/process_data.log
+
+
+# Mise à jur de la liste des députés
 bash bin/load_deputes
 
-#Récupération et création des JSON
-cd batch/jo ; perl compute_latest.pl ; cd -
-cd batch/hemicycle ; bash compute_latest.sh ; cd -
-cd batch/commission ; bash compute_latest.sh ; cd -
 
-#Vérification des JSON
+# Récupération et création des JSON
+cd batch/jo ; perl compute_latest.pl >> /tmp/load_JO.log ; cd -
+cd batch/hemicycle ; bash compute_latest.sh >> /tmp/load_hemicycle.log ; cd -
+cd batch/commission ; bash compute_latest.sh >> /tmp/load_commissions.log ; cd -
+cd batch/amendements ; bash compute_latest.sh >> /tmp/load_amendements.log ; cd -
 
-#changement via tasks
 
-php symfony load:JO
-php symfony load:hemicycle
-php symfony load:commission
+# Vérification des JSON
+
+
+
+# Chargement via tasks
+while ! php symfony load:JO >> /tmp/load_JO.log ; do
+        php symfony cc
+done;
+
+while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do 
+	php symfony cc
+	php symfony load:Hemicycle >> /tmp/load_hemicycle.log
+done;
+
+while ls batch/commission/out | grep [a-z] > /dev/null ; do
+	php symfony cc
+	php symfony load:Commission >> /tmp/load_commissions.log
+done;
+
+while ls batch/amendements/json | grep [a-z] > /dev/null ; do
+	php symfony cc
+	php symfony load:Amdmts >> /tmp/load_amendements.log
+done;
+
+
+# Postprocessings
+bash bin/tag_seance
+php symfony set:Session >> /tmp/process_data.log
+php symfony set:Vacances >> /tmp/process_data.log
+php symfony top:Deputes >> /tmp/process_data.log
+
+

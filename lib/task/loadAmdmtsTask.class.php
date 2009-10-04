@@ -9,7 +9,7 @@ class loadAmdmtsTask extends sfBaseTask {
 
   protected function execute($arguments = array(), $options = array()) {
   // your code here
-    $dir = dirname(__FILE__).'/../../batch/amendements/input/';
+    $dir = dirname(__FILE__).'/../../batch/amendements/json/';
     $manager = new sfDatabaseManager($this->configuration);
 
     if (is_dir($dir)) {
