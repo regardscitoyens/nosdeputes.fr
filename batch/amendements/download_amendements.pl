@@ -44,7 +44,7 @@ while ($t = $p->get_tag('a')) {
 	$a->back();
     }
 }
-print $count." amendements pour les deux dernières semaines";
+print $count." amendements pour les deux dernières semaines\n";
 
 open(FILE, 'liste_sort_indefini.txt') ;
 @string = <FILE>;
@@ -67,6 +67,6 @@ foreach $line (split /\n/, $string) {
     $a->back();
 }
 
-print $count2." amendements au sort encore indéfini";
-print $count+$count2." amendements téléchargés";
+print $count2." amendements au sort encore indéfini\n";
+print $count+$count2." amendements téléchargés\n";
 

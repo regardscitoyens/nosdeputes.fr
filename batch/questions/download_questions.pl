@@ -40,7 +40,7 @@ for ($cpt = $last_record-100 ; $cpt < $last_number+100 ; $cpt++) {
     print "downloaded.\n";
     $a->back();
 }
-print $count." questions récentes";
+print $count." questions récentes\n";
 
 open(FILE, 'liste_sans_reponse.txt') ;
 @string = <FILE>;
@@ -63,6 +63,6 @@ foreach $line (split /\n/, $string) {
     $a->back();
 }
 
-print $count2." questions encore sans réponse";
-print $count+$count2." questions téléchargées";
+print $count2." questions encore sans réponse\n";
+print $count+$count2." questions téléchargées\n";
 
