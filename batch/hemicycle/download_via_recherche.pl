@@ -15,7 +15,7 @@ while ($ok) {
     
     while ($t = $p->get_tag('a')) {
 	$txt = $p->get_text('/a');
-	if ($txt =~ /compte rendu|ance du /i) {
+	if ($txt =~ /compte rendu|ance (unique )?du /i) {
 	    $ok = 1;
 	    $file = $t->[1]{href};
 	    $file =~ s/\//_/gi;
