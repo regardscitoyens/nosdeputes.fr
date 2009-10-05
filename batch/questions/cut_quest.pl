@@ -85,4 +85,4 @@ if ($source =~ /^13/) {
 }
 
 $date =~ s/^(\d+)\/(\d+)\/(\d+)$/\3-\2-\1/g;
-print '{"source": "http://questions.assemblee-nationale.fr/'.$source.'", "legislature": "'.$legislature.'", "numero": "'.$id.'", "date": "'.$date.'", "auteur": "'.$auteur.'", "ministere_interroge": "'.$mini.'", "ministere_attributaire": "'.$mina.'", "rubrique":"'.$rubrique.'", "tete_analyse": "'.$tana.'", "analyse": "'.$ana.'", "question": "'. $question .'", "reponse": "'.$reponse.'", "type": "'.$type.'" } '."\n";
+print '{"source": "'.$source.'", "legislature": "'.$legislature.'", "numero": "'.$id.'", "date": "'.$date.'", "auteur": "'.$auteur.'", "ministere_interroge": "'.$mini.'", "ministere_attributaire": "'.$mina.'", "rubrique":"'.$rubrique.'", "tete_analyse": "'.$tana.'", "analyse": "'.$ana.'", "question": "'. $question .'", "reponse": "'.$reponse.'", "type": "'.$type.'" } '."\n";
