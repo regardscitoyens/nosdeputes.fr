@@ -4,29 +4,29 @@
       <div class="b_f_text">
         <?php echo $form->renderFormTag(url_for('citoyen/activation?slug='.$slug.'&activation_id='.$activation_id)) ?>
         <table>
-          <tr class="cel1">
+          <tr>
             <th colspan="2">
               <h1>Choisissez un mot de passe pour<br />finaliser votre inscription</h1>
             </th>
           </tr>
-          <tr class="cel2">
+          <tr>
             <th><?php echo $form['password']->renderLabel(); ?></th>
             <td>
               <?php echo $form['password']->renderError(); ?>
               <?php echo $form['password']; ?>
             </td>
           </tr>
-          <tr class="cel1">
+          <tr>
             <th><?php echo $form['password_bis']->renderLabel(); ?></th>
             <td>
               <?php echo $form['password_bis']->renderError(); ?>
               <?php echo $form['password_bis']; ?>
             </td>
           </tr>
-          <tr class="cel2">
+          <tr>
             <td colspan="2"><input type="submit" value="Valider" style="float:right;" /></td>
           </tr>
-          <tr class="cel1">
+          <tr>
             <th colspan="2"><a href="<?php echo url_for('@homepage') ?>">Annuler</a></th>
           </tr>
         </table>

@@ -4,37 +4,37 @@
       <div class="b_f_text">
         <?php echo $form->renderFormTag(url_for('citoyen/signin')); ?>
         <table>
-          <tr class="cel1">
+          <tr>
             <th colspan="2">
               <h1>Connexion</h1>
             </th>
           </tr>
-          <tr class="cel2">
+          <tr>
             <th style="text-align:left;"><?php echo $form['login']->renderLabel() ?></th>
             <td>
               <?php echo $form['login']->renderError(); ?>
               <?php echo $form['login']; ?>
             </td>
           </tr>
-          <tr class="cel1">
+          <tr>
             <th><?php echo $form['password']->renderLabel(); ?></th>
             <td>
               <?php echo $form['password']->renderError(); ?>
               <?php echo $form['password']; ?>
             </td>
           </tr>
-          <tr class="cel2">
+          <tr>
             <th><?php echo $form['remember']->renderLabel(); ?></th>
             <td>
               <?php echo $form['remember']->renderError(); ?>
               <?php echo $form['remember']; ?>
             </td>
           </tr>
-          <tr class="cel1">
+          <tr>
             <th></th>
             <td><input type="submit" value="ok" style="float:right;" /></td>
           </tr>
-          <tr class="cel2">
+          <tr>
             <th colspan="2">
               <a href="<?php echo url_for('@reset_mdp') ?>">Vous avez oublié votre mot de passe ?</a><br />
               <a href="<?php echo url_for('@inscription') ?>">Vous inscrire</a>

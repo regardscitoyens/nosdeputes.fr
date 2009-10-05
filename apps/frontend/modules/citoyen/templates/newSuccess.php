@@ -4,26 +4,26 @@
       <div class="b_f_text">
         <?php echo $form->renderFormTag(url_for('citoyen/new')) ?>
         <table>
-          <tr class="cel1">
+          <tr>
             <th colspan="2">
               <h1>Inscription</h1>
             </th>
           </tr>
-          <tr class="cel2">
+          <tr>
             <th style="text-align:left;"><?php echo $form['login']->renderLabel() ?></th>
             <td>
               <?php echo $form['login']->renderError(); ?>
               <?php echo $form['login']; ?>
             </td>
           </tr>
-          <tr class="cel1">
+          <tr>
             <th><?php echo $form['email']->renderLabel(); ?></th>
             <td>
               <?php echo $form['email']->renderError(); ?>
               <?php echo $form['email']; ?>
             </td>
           </tr>
-          <tr class="cel2">
+          <tr>
             <th></th>
             <td><input type="submit" value="Valider" style="float:right;" /></td>
           </tr>
