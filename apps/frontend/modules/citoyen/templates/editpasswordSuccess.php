@@ -49,13 +49,10 @@ if (!empty($user->url_site)) { echo '<li><a href="'.$user->url_site.'" rel="nofo
       </td>
     </tr>
     <tr class="cel1">
-      <td colspan="2"><input type="submit" value="Valider" style="float:right;" /></td>
+      <td colspan="2"><a href="<?php echo url_for('@edit_citoyen') ?>">Annuler</a> <input type="submit" value="Valider" /></td>
     </tr>
     <tr class="cel2">
       <th colspan="2"><a href="<?php echo url_for('@reset_mdp'); ?>" onclick="javascript:if(!confirm('Recevoir un email de réinitialisation de mot de passe ?')) return false;">Mot de passe oublié ?</a></th>
-    </tr>
-    <tr class="cel1">
-      <th colspan="2"><a href="<?php echo url_for('@edit_citoyen') ?>">Annuler</a></th>
     </tr>
   </table>
   </form>

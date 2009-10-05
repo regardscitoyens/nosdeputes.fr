@@ -25,7 +25,7 @@
           </tr>
           <tr>
             <th></th>
-            <td><input type="submit" value="Valider" style="float:right;" /></td>
+            <td><input type="submit" value="Valider" /></td>
           </tr>
         </table>
         </form>

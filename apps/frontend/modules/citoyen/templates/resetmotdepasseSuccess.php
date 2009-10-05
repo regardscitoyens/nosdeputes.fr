@@ -28,10 +28,7 @@ if (!$first)
             </td>
           </tr>
           <tr>  
-            <td colspan="2"><input type="submit" value="Valider" style="float:right;" /></td>
-          </tr>
-          <tr>
-            <th colspan="2"><a href="<?php echo url_for('@homepage') ?>">Annuler</a></th>
+            <td colspan="2"><a href="<?php echo url_for('@homepage') ?>">Annuler</a> <input type="submit" value="Valider" style="float:right;" /></td>
           </tr>
         </table>
         </form>

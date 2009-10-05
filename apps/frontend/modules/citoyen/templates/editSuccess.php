@@ -67,15 +67,12 @@ if (!empty($user->url_site)) { echo '<li><a href="'.$user->url_site.'" rel="nofo
             <td><a href="<?php echo url_for('@editpassword_citoyen'); ?>">Changer</a></td>
           </tr>
           <tr class="cel2">
-            <td colspan="2"><input type="submit" value="Valider" style="float:right;" /></td>
+            <td colspan="2"><a href="<?php echo url_for('@citoyen?slug=' . $sf_user->getAttribute('slug')) ?>">Annuler</a> <input type="submit" value="Valider" /></td>
           </tr>
           <tr class="cel1">
             <th colspan="2">
               <a href="<?php echo url_for('@delete_citoyen?token=' . $sf_user->getAttribute('token')) ?>" onclick="javascript:if(!confirm('Supprimer votre compte ?')) return false;">Supprimer votre compte</a>
             </th>
-          </tr>
-          <tr class="cel2">
-            <th colspan="2"><a href="<?php echo url_for('@citoyen?slug=' . $sf_user->getAttribute('slug')) ?>">Annuler</a></th>
           </tr>
         </table>
         </form>

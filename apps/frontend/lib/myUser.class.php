@@ -38,6 +38,9 @@ class myUser extends sfBasicSecurityUser
 
   public static function SignIn($login, $password, $remember, $action) 
   {
+    sfLoader::loadHelpers(array('Url'));
+    $reset_mdp = '<a href="'.url_for('@reset_mdp').'">Mot de passe oublié ?</a>';
+    
     if(Doctrine::getTable('Citoyen')->findOneByLogin($login))
     {
       $user = Doctrine::getTable('Citoyen')->findOneByLogin($login);
@@ -48,11 +51,11 @@ class myUser extends sfBasicSecurityUser
     }
     else
     {
-      $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
+      $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect<br />'.$reset_mdp);
       return;
     }
     if (!$user->isPasswordCorrect($password)) {
-      $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect');
+      $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect<br />'.$reset_mdp);
       return;
     }
     

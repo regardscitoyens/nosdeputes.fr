@@ -398,7 +398,7 @@ class citoyenActions extends sfActions
         {
           $login = $this->form->getValue('login');
           if ($login)
-          {
+          {  
             if (Doctrine::getTable('Citoyen')->findOneByEmail($login))
             {
               $user = Doctrine::getTable('Citoyen')->findOneByEmail($login);
@@ -429,10 +429,10 @@ class citoyenActions extends sfActions
           'partial'=>'resetmotdepasse', 
           'mailContext'=>array('activation_id' => $activation_id, 'slug' => $user->slug)
           ));
+          
+          $this->getUser()->setFlash('notice', 'Un email de réinitialisation de mot de passe vient de vous être envoyé.<br />Si vous rencontrez un problème lors de cette procédure veuillez nous contacter par email à l\'adresse contact[at]regardscitoyens.org.');
+          $this->redirect('@homepage');
         }
-        
-        $this->getUser()->setFlash('notice', 'Un email de réinitialisation de mot de passe vient de vous être envoyé.<br />Si vous rencontrez un problème lors de cette procédure veuillez nous contacter par email à l\'adresse contact[at]regardscitoyens.org.');
-        $this->redirect('@homepage');
       }
     }
   }
