@@ -32,6 +32,8 @@ import xml.dom.minidom
 
 import parse_path
 
+dpi_factor = 1
+
 if len(sys.argv) == 1:
     sys.exit("svn2imagemap.py FILENAME [x y [group1 group2 ... groupN]]")
 if not os.path.exists(sys.argv[1]):
@@ -40,8 +42,9 @@ x, y, groups = None, None, None
 if len(sys.argv) >= 3:
     x = float(sys.argv[2])
     y = float(sys.argv[3])
-    if len(sys.argv) > 3:
-        groups = sys.argv[4:]
+    dpi_factor = float(sys.argv[4])
+    if len(sys.argv) > 4:
+        groups = sys.argv[5:]
 
 svg_file = xml.dom.minidom.parse(sys.argv[1])
 svg = svg_file.getElementsByTagName('svg')[0]
@@ -49,9 +52,9 @@ svg = svg_file.getElementsByTagName('svg')[0]
 raw_width = float(svg.getAttribute('width'))
 raw_height = float(svg.getAttribute('height'))
 if x == None or x == 0:
-    x = raw_width
+    x = raw_width * dpi_factor
 if y == None or y == 0:
-    y = raw_height
+    y = raw_height * dpi_factor
 width_ratio = (x / raw_width) or 1
 height_ratio = (y / raw_height) or 1
 

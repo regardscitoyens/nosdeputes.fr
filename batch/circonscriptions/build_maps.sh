@@ -3,16 +3,20 @@ mkdir -p png svg html
 rm -f png/* svg/* html/* cartes.html
 echo "Génération des svg et png par département"
 xargs -l1  --arg-file=sources/circo.txt ./script/svgedit.py sources/circo.svg
+echo "Image de la carte de France"
 cp sources/circo.svg svg/france.svg
 inkscape -w 900 -h 990 -e png/france.png svg/france.svg
+echo "Carte de France par couleur politique"
+script/colors.py svg/france
+inkscape -w 900 -h 900 -e png/france-colors.png svg/france-colors.svg
 cd svg
 for i in *.svg; do
  echo "Calcul de l'image map pour" $i
- if [ $i = "france.svg" ]
+ if [ $i = "france.svg" ] || [ $i = "france-colors.svg" ]
  then
- ../script/svg2imagemap.py $i 900 990 circonscriptions
+ ../script/svg2imagemap.py $i 900 990 1 circonscriptions
  else
- ../script/svg2imagemap.py $i 0 0 circonscriptions
+ ../script/svg2imagemap.py $i 0 0 1.5 circonscriptions
  fi
  done
 mv *.html ../html
@@ -48,3 +52,4 @@ $.fn.maphilight.defaults = {
 EOF
 cat html/*.html|sed 's/\/images\/circonscriptions/png/' >> cartes.html
 echo "</body>" >> cartes.html
+

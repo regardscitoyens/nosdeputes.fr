@@ -35,7 +35,7 @@ for e in elements:
                 x_shift = float(transform[1])
                 y_shift = float(transform[2])
     for path in e.getElementsByTagName('path'):
-        if re.match(string.join([sys.argv[2], "\d\d"],'-'), path.attributes['id'].value) == None:
+        if re.match(sys.argv[2]+"-\d\d", path.attributes['id'].value) == None:
             path.parentNode.removeChild(path)
         else: 
             (x0, y0, x1, y1) = parse_path.get_limits(path.getAttribute('d'))
@@ -67,5 +67,5 @@ outfile = open("svg/"+sys.argv[2]+".svg", 'w')
 outfile.write(svg_file.toxml().encode('utf-8'))
 outfile.close()
 
-os.system ("inkscape -e png/" + sys.argv[2] + ".png " 
+os.system ("inkscape -d 135 -e png/" + sys.argv[2] + ".png " 
 + " " +"svg/"+sys.argv[2]+".svg")
