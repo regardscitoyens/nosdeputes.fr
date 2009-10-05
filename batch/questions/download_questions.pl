@@ -24,7 +24,7 @@ while ($t = $p->get_tag('span')) {
     }
 }
 
-print "Download questions écrites numéro ".($last_record-100)." à ".($last_number+100);
+print "Download questions écrites numéro ".($last_record-100)." à ".($last_number+100).'\n\n';
 
 for ($cpt = $last_record-100 ; $cpt < $last_number+100 ; $cpt++) {
     $htmfile = "http://questions.assemblee-nationale.fr/q13/13-".$cpt."QE.htm";
@@ -40,7 +40,7 @@ for ($cpt = $last_record-100 ; $cpt < $last_number+100 ; $cpt++) {
     print "downloaded.\n";
     $a->back();
 }
-print $count." questions récentes\n";
+print $count." questions récentes\n\n";
 
 open(FILE, 'liste_sans_reponse.txt') ;
 @string = <FILE>;
@@ -63,6 +63,6 @@ foreach $line (split /\n/, $string) {
     $a->back();
 }
 
-print $count2." questions encore sans réponse\n";
+print $count2." questions encore sans réponse\n\n";
 print $count+$count2." questions téléchargées\n";
 
