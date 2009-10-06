@@ -1,8 +1,7 @@
 #!/bin/bash
-echo > /tmp/load_deputes.log
 cd batch/depute
-perl download_deputes.pl >> /tmp/load_deputes.log
-sh parse_tous.sh >> /tmp/load_deputes.log
+perl download_deputes.pl 
+sh parse_tous.sh 
 cd -
-php symfony update:Deputes >> /tmp/load_deputes.log
+php symfony update:Deputes 
 
