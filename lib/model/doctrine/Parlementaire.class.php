@@ -195,18 +195,12 @@ class Parlementaire extends BaseParlementaire
   public function getNomNumCirco() {
     $shortcirco = trim(strtolower($this->_get('nom_circo')));
     $shortcirco = preg_replace('/\s+/','-', $shortcirco);
-    $shortcirco = preg_replace('/(é|è|e)/','e', $shortcirco);
-    $shortcirco = preg_replace('/à/','a', $shortcirco);
-    $shortcirco = preg_replace('/ô/','o', $shortcirco);
     return $this->_get('nom_circo')." (".$this->getNumeroDepartement($shortcirco).")";
   }
 
   public function getNumDepartement() {
     $shortcirco = trim(strtolower($this->_get('nom_circo')));
     $shortcirco = preg_replace('/\s+/','-', $shortcirco);
-    $shortcirco = preg_replace('/(é|è|e)/','e', $shortcirco);
-    $shortcirco = preg_replace('/à/','a', $shortcirco);
-    $shortcirco = preg_replace('/ô/','o', $shortcirco);
     return $this->getNumeroDepartement($shortcirco);
   }
 
@@ -543,7 +537,7 @@ class Parlementaire extends BaseParlementaire
       "saint-barthélémy" => "977",
       "saint-martin" => "978",
       "wallis-et-futuna" => "986",
-      "polynésie-française" => "987",
+      "polynésie française" => "987",
       "nouvelle-calédonie" => "988");
   public static function getNumeroDepartement($nom) {
     $nom = strtolower($nom);

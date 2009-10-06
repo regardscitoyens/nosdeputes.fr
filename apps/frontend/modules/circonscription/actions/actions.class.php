@@ -40,6 +40,9 @@ class circonscriptionActions extends sfActions
     if (preg_match('/(polyn[eé]sie)/i', $departmt)) {
       return $this->redirect('@list_parlementaires_departement?departement=Polyn%C3%A9sie_Fran%C3%A7aise');
     } else {
+      $departmt = preg_replace('/\s+/', '-', $departmt);
+      if ($this->circo = Parlementaire::getNomDepartement(Parlementaire::getNumeroDepartement($departmt)))
+        return $this->redirect('@list_parlementaires_departement?departement='.$this->circo);
       if (preg_match('/^(\d+\w?)$/', $departmt, $match)) {
 	$num = preg_replace('/^0+/', '', $match[1]);
         $this->circo = Parlementaire::getNomDepartement($num); 
@@ -47,6 +50,13 @@ class circonscriptionActions extends sfActions
 	  return $this->redirect('@list_parlementaires_departement?departement='.$this->circo);
       }
       $this->circo = $departmt;
+      $ctquery = Doctrine_Query::create()
+        ->from('Parlementaire p')
+        ->select('count(distinct p.nom_circo) as ct, p.nom_circo')
+        ->where('nom_circo LIKE ?', '%'.$this->circo.'%')
+        ->fetchOne();
+      if ($ctquery['ct'] == 1)
+        return $this->redirect('@list_parlementaires_departement?departement='.$ctquery['nom_circo']);
       $this->query_parlementaires = Doctrine::getTable('Parlementaire')
         ->createQuery('p')
         ->where('nom_circo LIKE ?', '%'.$this->circo.'%')

@@ -3,7 +3,7 @@
 <p><?php $cpt = $query_parlementaires->count(); echo $cpt ; ?> député<?php if ($cpt > 1) echo 's' ; ?> trouvé<?php if ($cpt > 1) echo 's' ; ?> pour "<i><?php echo $search; ?></i>":</p>
 <ul>
 <?php foreach($query_parlementaires->execute() as $parlementaire) : ?>
-<li><a href="<?php echo url_for('circonscription/show?departement='.$parlementaire->nom_circo); ?>"><?php echo $parlementaire->getNomNumCirco() ; ?>, <?php echo $parlementaire->getNumCircoString(1); ?></a>
+<li><a href="<?php echo url_for('circonscription/show?departement='.$parlementaire->nom_circo); ?>"><?php echo $parlementaire->getNomNumCirco() ; ?></a>, <?php echo $parlementaire->getNumCircoString(1); ?>
 &nbsp;:
 <?php
 echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); 
