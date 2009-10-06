@@ -191,7 +191,9 @@ signin:
 signout:
   url:   /logout
   param: { module: citoyen, action: signout }
-
+identification_ajax:
+  url:	/ajax/identification
+  param: {module: citoyen, action: connected}
 # Reset password:
 reset_mdp:
   url: /reset_password

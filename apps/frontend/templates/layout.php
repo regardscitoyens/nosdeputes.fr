@@ -50,27 +50,15 @@ $menu_citoyen = $selectcitoyen;
         <div class="initiative">
           <a href="http://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);"><?php echo image_tag($style.'/top_initiative.png', array('alt' => 'Une initiative de RegardsCitoyens.fr')); ?></a>
         </div>
-        <div class="identification">
-             <?php if(!$sf_user->isAuthenticated()) { ?>
-          <form method="post" id="form_header_login" action="<?php echo url_for('@signin'); ?>">
-          <p>
-          <input type="text" name="signin[login]" id='header_login' value="" onfocus="if(this.value=='Identifiant')this.value ='';" onblur="if(this.value=='')this.value ='Identifiant';" />
-          <input type="password" name="signin[password]" id='header_pass' value="" onfocus="if(this.value=='______________')this.value ='';" onblur="if(this.value=='')this.value ='______________';"/>
-          <input type="checkbox" name="signin[remember]" id="header_remember" title="se rappeler de moi" />
-          <button type="submit" value="login" id="bt1"></button>
-          <a href="<?php echo url_for('@inscription') ?>"><span id="bt2"></span></a>
-          </p>
-          </form> 
-          <?php }
-          if($sf_user->isAuthenticated())
-          { 
-            echo '<span id="loggued_top">';
-            if($sf_user->getAttribute('is_active') == true) { 
-              echo link_to($sf_user->getAttribute('login'),'@citoyen?slug='.$sf_user->getAttribute('slug')).' - ';
-            }
-            echo link_to('Déconnexion','@signout'); echo '</span>';
-          } ?>
-        </div>
+<div id="connected" class="identification">
+<p id="loggued_top">
+<a href="/login">Se connecter</a> - 
+<a href="/login">Mon compte</a>
+</p>
+</div>
+  <script><!-- 
+  //  $('#connected').load("<?php echo url_for('@identification_ajax'); ?>"); 
+--></script>
       </div>
       <div id="header">
         <a href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo.png', array('alt' => 'NosDeput&eacute;s.fr')); ?></a>
@@ -156,7 +144,7 @@ $(document).ready(function() {
       $('#header_login').attr('value', 'Identifiant');
     }
     if (!$('#header_pass').attr('value')) {
-      $('#header_pass').attr('value', '__________');
+      $('#header_pass').attr('value', '______________');
     }
   });
 </script>

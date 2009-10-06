@@ -436,6 +436,12 @@ class citoyenActions extends sfActions
       }
     }
   }
+
+  public function executeConnected(sfWebRequest $request)
+  {
+    $this->setLayout(false);
+    $this->getResponse()->setHttpHeader('content-type', 'text/plain');
+  }
   
   /* 
   public function executeAddcirco(sfWebRequest $request)
