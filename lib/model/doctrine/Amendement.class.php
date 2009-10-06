@@ -122,7 +122,7 @@ class Amendement extends BaseAmendement {
 
   public function getTexte($style=1) {
     if ($style == 1)
-      return preg_replace('/\<p\>\s*«\s*([^»]+)\s+»(\W*)\<\/p\>/', '<blockquote>«&nbsp;\1&nbsp;»\2</blockquote>', $this->_get('texte'));
+      return preg_replace('/\<p\>\s*«\s*([^»]+)(\s+»)?(\W*)\<\/p\>/', '<blockquote>«&nbsp;\1&nbsp;»\2</blockquote>', $this->_get('texte'));
     else return $this->_get('texte');
   }
 
