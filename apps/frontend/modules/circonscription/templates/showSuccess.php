@@ -1,5 +1,5 @@
 <h1>Les députés par circonscriptions</h1>
-<h2><?php echo $circo; ?></h2>
+<h2><?php echo $circo.' ('.$departement_num.')'; ?></h2>
 <?php $sf_response->setTitle($circo.' ('.$departement_num.') : Les députés par circonscriptions'); ?>
 <?php include_partial('map', array('num'=>$departement_num)); ?>
 <p><?php echo $total; ?> députés trouvés :</p>
