@@ -174,67 +174,6 @@ public function executeList(sfWebRequest $request)
     }
   }
 
-  public function executeListCirco(sfWebRequest $request) {
-    $this->num_circo = 0;
-    $departmt = strip_tags(trim(strtolower($request->getParameter('search'))));
-    if (!$departmt || $departmt == "") {
-      $this->circos = Parlementaire::$dptmt_nom;
-    } else {
-      if (preg_match('/(polyn[eé]sie)/i', $departmt)) {
-        $this->num = 987;
-        $this->circo = "Polynésie Française";
-      } else {
-        if (preg_match('/^(\d+\w?)-(\d+)$/', $departmt, $match)) {
-          $this->num = preg_replace('/^0+/', '', $match[1]);
-          $this->num_circo = preg_replace('/^0+/', '', $match[2]);
-        } else
-        if (preg_match('/^(\d+\w?)$/', $departmt, $match)) {
-          $this->num = preg_replace('/^0+/', '', $match[1]);
-        } else {
-          $dpt = preg_replace('/\s+/','-', $departmt);
-          $dpt = preg_replace('/\-st\-/','saint', $dpt);
-          $dpt = preg_replace('/(é|è|ê)/','e', $dpt);
-          $dpt = preg_replace('/à/','a', $dpt);
-          $dpt = preg_replace('/ô/','o', $dpt);
-          $this->num = Parlementaire::getNumeroDepartement($dpt);
-        }
-        if ($this->num == 0)
-          $this->circo = $departmt;
-        else $this->circo = Parlementaire::getNomDepartement($this->num);
-      }
-      $query = Doctrine::getTable('Parlementaire')->createQuery('p');
-      if ($this->num == 0) $query
-        ->where('p.nom_circo LIKE ?',  '%'.$this->circo.'%')
-        ->orderBy('p.nom_circo');
-      else {
-        if($this->num_circo == 0) {
-                $query->where('p.nom_circo = ?', $this->circo);
-                $query2 = Doctrine_Query::create()
-                        ->select('count(distinct num_circo) as nombre')
-                        ->from('Parlementaire p')
-                        ->where('p.nom_circo = ?', $this->circo)
-                        ->fetchOne();
-        }
-        else {
-                $query
-                ->where('p.nom_circo = ?', $this->circo)
-                ->andwhere('p.num_circo = ?', $this->num_circo);
-                $query2 = Doctrine_Query::create()
-                        ->select('count(distinct num_circo) as nombre')
-                        ->from('Parlementaire p')
-                        ->where('p.nom_circo = ?', $this->circo)
-                        ->andwhere('p.num_circo = ?', $this->num_circo)
-                        ->fetchOne();
-        }
-        $this->n_circo = $query2['nombre'];
-      }
-      $query->addOrderBy('p.num_circo');
-      $this->parlementaires = $query->execute();
-      if (count($this->parlementaires) == 1)
-              return $this->redirect('@parlementaire?slug='.$this->parlementaires[0]['slug']);
-    }
-  }
-  
   public function executeListProfession(sfWebRequest $request) {
     $this->exact = 0;
     $this->prof = strip_tags(strtolower($request->getParameter('search')));

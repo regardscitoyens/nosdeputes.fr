@@ -58,7 +58,19 @@ list_parlementaires:
   param: {module: parlementaire, action: list}
 list_parlementaires_circo:
   url: /circonscription
-  param: {module: parlementaire, action: listCirco}
+  param: {module: circonscription, action: list}
+list_parlementaires_departement:
+  url: /circonscription/departement/:departement
+  param: {module: circonscription, action: show}
+list_parlementaires_circo_search:
+  url: /circonscription/search/:search
+  param: {module: circonscription, action: search}
+list_parlementaires_circo_france:
+  url: /circonscription/carte
+  param: {module: circonscription, action: map}
+redirect_parlementaires_circo:
+  url: /circonscription/:code
+  param: {module: circonscription, action: redirect}
 list_parlementaires_profession:
   url: /profession
   param: {module: parlementaire, action: listProfession}

@@ -8,7 +8,7 @@ class searchActions extends sfActions
     if ($type == 'depute')
       return $this->redirect('parlementaire/list?search='.$search);
     elseif ($type == 'departement')
-      return $this->redirect('parlementaire/listCirco?search='.$search);
+      return $this->redirect('circonscription/search?search='.$search);
     elseif ($type == 'profession')
       return $this->redirect('parlementaire/listProfession?search='.$search);
     elseif ($type == 'intervention')

@@ -1,0 +1,3 @@
+all:
+   javascripts: [jquery.maphilight.min.js]
+
