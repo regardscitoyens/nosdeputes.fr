@@ -10,17 +10,17 @@ $day = time2str("%d", time);
 $month = time2str("%m", time);
 $year = time2str("%Y", time);
 $datefin = "01%2F01%2F".($year+1);
-if ($day > 14) { $day -= 14; }
+if ($day > 7) { $day -= 7; }
 else {
-    $day += 14;
+    $day += 21;
     if ($month == 1) { $month = 12; $year--; }
     else { $month--; }
 }
 $datedebut = sprintf('%02d', $day)."%2F".sprintf('%02d', $month)."%2F".$year;
 
-#$url = "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=5000&LEGISLATURE=13Amendements&NUM_INIT=&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&DELIBERATION=&SORT_EN_SEANCE=&NUM_PARTIE=&DateDebut=".$datedebut."&DateFin=".$datefin."&periode=&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Desc&format=HTML&ResultCount=5000&ResultStart=1&QueryText=&typeEcran=";
+$url = "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=5000&LEGISLATURE=13Amendements&NUM_INIT=&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&DELIBERATION=&SORT_EN_SEANCE=&NUM_PARTIE=&DateDebut=".$datedebut."&DateFin=".$datefin."&periode=&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Desc&format=HTML&ResultCount=5000&ResultStart=1&QueryText=&typeEcran=";
 
-$url = "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=5000&LEGISLATURE=13Amendements&NUM_INIT=&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&DELIBERATION=&SORT_EN_SEANCE=&NUM_PARTIE=&DateDebut=01%2F07%2F2009&DateFin=01%2F01%2F2011&periode=&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Desc&format=HTML&ResultCount=5000&ResultStart=1&QueryText=&typeEcran=";
+#$url = "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?ResultMaxDocs=5000&LEGISLATURE=13Amendements&NUM_INIT=&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&DELIBERATION=&SORT_EN_SEANCE=&NUM_PARTIE=&DateDebut=01%2F07%2F2009&DateFin=01%2F01%2F2011&periode=&Scope=TEXTEINTEGRAL&SortField=DATE&SortOrder=Desc&format=HTML&ResultCount=5000&ResultStart=1&QueryText=&typeEcran=";
 
 $a = WWW::Mechanize->new();
 $a->get($url);
