@@ -52,8 +52,9 @@ class Parlementaire extends BaseParlementaire
   
   public function getLongStatut($link = 0) {
     $circo = $this->nom_circo;
-    if ($link == 1)
-      $circo = link_to($this->nom_circo, '@list_parlementaires_circo?search='.$this->nom_circo);
+    if ($link == 1) {
+      $circo = link_to($this->nom_circo, '@list_parlementaires_departement?departement='.$circo);
+    }
     return $this->getStatut($link).' de la '.$this->getNumCircoString().' '.$this->getPrefixeCirconscription().$circo;
   }
 
@@ -545,6 +546,7 @@ class Parlementaire extends BaseParlementaire
       "polynésie-française" => "987",
       "nouvelle-caledonie" => "988");
   public static function getNumeroDepartement($nom) {
+    $nom = strtolower($nom);
     if (isset(self::$nom_dptmt[$nom])) return $numero = self::$nom_dptmt[$nom];
     else return 0;
   }
