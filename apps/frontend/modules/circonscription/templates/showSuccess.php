@@ -2,7 +2,7 @@
 <h2><?php echo $circo; ?></h2>
 <?php $sf_response->setTitle($circo.' ('.$departement_num.') : Les députés par circonscriptions'); ?>
 <?php include_partial('map', array('num'=>$departement_num)); ?>
-<p><?php echo count($parlementaires); ?> députés trouvés :</p>
+<p><?php echo $total; ?> députés trouvés :</p>
 <ul>
 <?php foreach($parlementaires as $parlementaire) : ?>
 <li><?php

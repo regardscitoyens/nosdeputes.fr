@@ -38,24 +38,19 @@ class circonscriptionActions extends sfActions
     $this->search = $request->getParameter('search');
     $departmt = strip_tags(trim(strtolower($this->search)));
     if (preg_match('/(polyn[eé]sie)/i', $departmt)) {
-      $this->num = 987;
-      $this->circo = "Polynésie Française";
+      return $this->redirect('@list_parlementaires_departement?departement=Polyn%C3%A9sie_Fran%C3%A7aise');
     } else {
       if (preg_match('/^(\d+\w?)$/', $departmt, $match)) {
-	$this->num = preg_replace('/^0+/', '', $match[1]);
+	$num = preg_replace('/^0+/', '', $match[1]);
+        $this->circo = Parlementaire::getNomDepartement($num); 
+        if ($this->circo)
+	  return $this->redirect('@list_parlementaires_departement?departement='.$this->circo);
       }
-      if (! $this->num )
-	$this->circo = $departmt;
-      else 
-	$this->circo = Parlementaire::getNomDepartement($this->num);
-      
-      $this->query_parlementaires = Doctrine::getTable('Parlementaire')->createQuery('p');
-      if ($this->num) {
-	$this->query_parlementaires->where('num_circo = ?', $this->num);
-      }else{
-	$this->query_parlementaires->where('nom_circo LIKE ?', '%'.$this->circo.'%');
-      }
-      $this->query_parlementaires->addOrderBy('nom_circo, num_circo');
+      $this->circo = $departmt;
+      $this->query_parlementaires = Doctrine::getTable('Parlementaire')
+        ->createQuery('p')
+        ->where('nom_circo LIKE ?', '%'.$this->circo.'%')
+        ->addOrderBy('nom_circo, num_circo');
     }
   }
   public function executeRedirect(sfWebRequest $request) 
@@ -70,6 +65,7 @@ class circonscriptionActions extends sfActions
     $parlementaire = Doctrine::getTable('Parlementaire')->createQuery('p')
       ->where('num_circo = ?', $num)
       ->andWhere('nom_circo = ?', parlementaire::getNomDepartement($departement))
+      ->andWhere('fin_mandat IS NULL')
       ->fetchOne();
     if (!$parlementaire) {
       return $this->redirect('circonscription/list?departement='.$departement);
