@@ -57,7 +57,7 @@ $menu_citoyen = $selectcitoyen;
 </p>
 </div>
   <script><!-- 
-  //  $('#connected').load("<?php echo url_for('@identification_ajax'); ?>"); 
+  $('#connected').load("<?php echo url_for('@identification_ajax'); ?>"); 
 --></script>
       </div>
       <div id="header">
