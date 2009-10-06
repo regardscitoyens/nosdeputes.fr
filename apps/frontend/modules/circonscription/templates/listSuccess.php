@@ -6,6 +6,7 @@ $sf_response->setTitle('Toutes les circonscriptions électorales'); ?>
 foreach($circos as $num => $circo) 
 {
   $ct++ ; 
+  if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
   echo '<li>'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).' ('.strtoupper($num).')</li>';
   if ($ct == $div || $ct == (2*$div) || $ct == (3*$div)) 
     echo '</ul></td><td style="width:23%;"><ul>'; 

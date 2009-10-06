@@ -20,13 +20,18 @@ class circonscriptionActions extends sfActions
   }
   public function executeShow(sfWebRequest $request) 
   {
-    $this->circo = $request->getParameter('departement');
+    $this->circo = preg_replace('/_/', ' ', $request->getParameter('departement'));
     $this->forward404Unless($this->circo);
     $this->departement_num = Parlementaire::getNumeroDepartement($this->circo);
 
-    $this->query_parlementaires = Doctrine::getTable('Parlementaire')->createQuery('p')
+    $this->parlementaires = Doctrine::getTable('Parlementaire')->createQuery('p')
       ->where('p.nom_circo = ?', $this->circo)
-      ->addOrderBy('p.num_circo');
+      ->addOrderBy('p.num_circo')
+      ->execute();
+    $this->total = count($this->parlementaires);
+    $this->forward404Unless($this->total);
+    if ($this->total == 1) 
+        return $this->redirect('@parlementaire?slug='.$this->parlementaires[0]['slug']); 
   }
   public function executeSearch(sfWebRequest $request) 
   {

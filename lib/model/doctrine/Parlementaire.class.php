@@ -426,8 +426,8 @@ class Parlementaire extends BaseParlementaire
       "974" => "Réunion",
       "975" => "Saint-Pierre-et-Miquelon",
       "976" => "Mayotte",
-      "977" => "Saint-Barthélémy",
-      "978" => "Saint-Martin",
+    //  "977" => "Saint-Barthélémy",
+    //  "978" => "Saint-Martin",
       "986" => "Wallis-et-Futuna",
       "987" => "Polynésie Française",
       "988" => "Nouvelle-Calédonie");
