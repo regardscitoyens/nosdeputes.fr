@@ -3,10 +3,12 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
+$verbose = shift || 0;
+
 sub download_fiche {
 	$uri = $file = shift;
 	$file =~ s/^.*\/([^\/]+)/$1/;
-	print "$file\n";
+	print "$file\n" if ($verbose);
 	$a->get($uri);
 	open FILE, ">:utf8", "html/$file";
 	print FILE $a->content;

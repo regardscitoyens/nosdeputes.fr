@@ -16,6 +16,8 @@ fi
 for d in html/* ; 
 do
     ID=$(echo $d | sed 's/html\///' | sed 's/.asp//')
-    echo $ID;
+    if test -n "$1"; then
+	    echo $ID;
+    fi
     perl parse_depute.pl html/$ID.asp > out/$ID.xml
 done
