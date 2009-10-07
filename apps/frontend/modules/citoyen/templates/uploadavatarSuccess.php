@@ -41,4 +41,4 @@ if (!empty($user->url_site)) { echo '<li><a href="'.$user->url_site.'" rel="nofo
         </table>
         </form>
         <br />
-      </div>
+      </div> 

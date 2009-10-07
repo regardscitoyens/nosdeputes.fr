@@ -9,4 +9,4 @@
 <?php if($citoyen->getActivite()) { echo '('.htmlentities($citoyen->getActivite()).')'; } ?>
 <br/>
 <?php endforeach; ?>
-</p>
+</p>  

@@ -3,4 +3,4 @@
 <?php if ($sf_user->hasFlash('notice')): ?>
   <p class="notice"><?php echo $sf_user->getFlash('notice') ?></p>
 <?php endif; ?>
-</div>
+</div> 

@@ -16,4 +16,4 @@
 	  }
 	  echo link_to('Déconnexion','@signout'); echo '</span>';
 	}
-  
+   
