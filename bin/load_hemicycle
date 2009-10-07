@@ -6,6 +6,6 @@ cd batch/hemicycle
 bash compute_hemicycle.sh
 cd -
 while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do 
-	php symfony cc
+	php symfony cc --env=test
 	php symfony load:Hemicycle >> /tmp/load_hemicycle.log
 done

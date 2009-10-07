@@ -7,7 +7,7 @@ tar xf html.tar.gz
 # rm -f xml/* 
 # perl parse_amendements.pl >> /tmp/load_amendements.log 
 cd -
-php symfony cc
+php symfony cc --env=test
 for file in $(ls batch/amendements/xml)
 do
     echo $file

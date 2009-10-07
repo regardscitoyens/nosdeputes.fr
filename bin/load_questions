@@ -7,11 +7,11 @@ cd batch/questions
 # perl parse_quest.pl >> /tmp/load_questions.log
 sh only_parse.sh >> /tmp/load_questions.log
 cd -
-php symfony cc
+php symfony cc --env=test
 for file in $(ls batch/questions/xml)
 do
     echo $file
     cp batch/questions/xml/$file batch/questions/json/
     php symfony load:Questions >> /tmp/load_questions.log
-    php symfony cc
+    php symfony cc --env=test
 done

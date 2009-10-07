@@ -17,13 +17,13 @@ bash bin/load_deputes >> /tmp/log_firstload
 echo Load Amendements >> /tmp/log_firstload
 echo ======================= >> /tmp/log_firstload
 while ls batch/amendements/json | grep [a-z] > /dev/null ; do
-      php symfony cc > /dev/null
+      php symfony cc --env=test > /dev/null
       php symfony load:Amdmts >> /tmp/log_firstload 
 done;
 echo Load Questions >> /tmp/log_firstload
 echo ======================= >> /tmp/log_firstload
 while ls batch/questions/json | grep [a-z] > /dev/null ; do
-	php symfony cc > /dev/null
+	php symfony cc --env=test > /dev/null
 	php symfony load:Questions >> /tmp/log_firstload 
 done;
 

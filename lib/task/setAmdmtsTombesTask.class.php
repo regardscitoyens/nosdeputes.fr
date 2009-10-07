@@ -6,6 +6,7 @@ class setAmdmtsTombesTask extends sfBaseTask {
     $this->name = 'AmdmtsTombes';
     $this->briefDescription = 'Set Amendements Tombés pour lois zappées';
     $this->addArgument('numero_loi', sfCommandArgument::REQUIRED, 'Numéro de loi zappée'); 
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
  }
 
   protected function execute($arguments = array(), $options = array()) {

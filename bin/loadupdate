@@ -38,31 +38,31 @@ cd batch/questions ; bash compute_latest.sh ; cd -
 echo load JO
 echo =======================
 while ! php symfony load:JO ; do
-        php symfony cc > /dev/null
+        php symfony cc --env=test > /dev/null
 done;
 
 echo Load Hemicycle
 echo =======================
 while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do 
-	php symfony cc > /dev/null
+	php symfony cc --env=test > /dev/null
 	php symfony load:Hemicycle 
 done;
 echo Load commission
 echo =======================
 while ls batch/commission/out | grep [a-z] > /dev/null ; do
-	php symfony cc > /dev/null
+	php symfony cc --env=test > /dev/null
 	php symfony load:Commission 
 done;
 echo Load Amendements
 echo =======================
 while ls batch/amendements/json | grep [a-z] > /dev/null ; do
-	php symfony cc > /dev/null
+	php symfony cc --env=test > /dev/null
 	php symfony load:Amdmts 
 done;
 echo Load Question
 echo =======================
 while ls batch/questions/json | grep [a-z] > /dev/null ; do
-	php symfony cc > /dev/null
+	php symfony cc --env=test > /dev/null
 	php symfony load:Questions 
 done;
 

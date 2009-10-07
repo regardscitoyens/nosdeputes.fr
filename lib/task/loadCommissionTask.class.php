@@ -7,6 +7,7 @@ class loadCommissionTask extends sfBaseTask
     $this->namespace = 'load';
     $this->name = 'Commission';
     $this->briefDescription = 'Load Commission data';
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
   }
  
   protected function execute($arguments = array(), $options = array())

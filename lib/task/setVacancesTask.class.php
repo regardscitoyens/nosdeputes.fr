@@ -5,6 +5,7 @@ class setVacancesTask extends sfBaseTask {
     $this->namespace = 'set';
     $this->name = 'Vacances';
     $this->briefDescription = 'Load Vacances from Seances';
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
   }
 
   protected function execute($arguments = array(), $options = array()) {
