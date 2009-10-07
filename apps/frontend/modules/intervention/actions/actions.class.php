@@ -21,7 +21,7 @@ class interventionActions extends sfActions
       $this->interventions->andWhere('i.type = ?', $this->type);
       if ($this->type == 'question')
         $this->interventions->andWhere('i.fonction NOT LIKE ?', 'président%')
-          ->andWhere('i.nb_mots > ?', 20)
+          ->andWhere('i.nb_mots > ?', 40)
           ->groupBy('i.seance_id');
     } else if ($this->type != 'all')
       $this->forward404();

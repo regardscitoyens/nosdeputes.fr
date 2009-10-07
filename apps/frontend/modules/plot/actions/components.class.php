@@ -72,6 +72,7 @@ class plotComponents extends sfComponents
       ->select('count(distinct s.id) as nombre, sum(i.nb_mots) as mots, count(i.id) as interv, s.type, s.annee, s.numero_semaine, i.fonction')
       ->from('Intervention i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('i.nb_mots > ?', $seuil_invective)
       ->leftJoin('i.Seance s');
     if ($this->options['session'] == 'lastyear')
       $query2->andWhere('s.date > ?', $date_debut);
@@ -87,9 +88,7 @@ class plotComponents extends sfComponents
     foreach ($participations as $participation) {
       $n = ($participation['Seance']['annee'] - $annee0)*52 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
       if ($n <= $n_weeks) {
-        if ($participation['mots']/$participation['interv'] > $seuil_invective) {
-          $this->n_participations[$participation['Seance']['type']][$n] += $participation['nombre'];
-        }
+        $this->n_participations[$participation['Seance']['type']][$n] += $participation['nombre'];
         $this->n_mots[$participation['Seance']['type']][$n] += $participation['mots']/10000;
         if ($participation['fonction'] != "") $this->fonctions[$participation['Seance']['type']] += $participation['nombre'];
       }
@@ -103,7 +102,7 @@ class plotComponents extends sfComponents
         ->where('i.parlementaire_id = ?', $this->parlementaire->id)
         ->andWhere('i.type = ?', 'question')
         ->andWhere('i.fonction NOT LIKE ?', 'président%')
-        ->andWhere('i.nb_mots > ?', $seuil_invective)
+        ->andWhere('i.nb_mots > ?', 2*$seuil_invective)
         ->leftJoin('i.Seance s');
       if ($this->options['session'] == 'lastyear')
         $query3->andWhere('s.date > ?', $date_debut);
