@@ -16,6 +16,9 @@ class InscriptionForm extends sfForm
     $this->widgetSchema['email'] = new sfWidgetFormInput();
     $this->validatorSchema['email'] = new sfValidatorEmail(array('required' => true), array('invalid' => 'Adresse email invalide.', 'required' => 'Indiquez votre adresse email', ));
     
+    $this->validatorSchema['activite'] = new sfValidatorRegex(array('pattern' => '/^[^<\"]+$/'), array('invalid'=>'Seul du texte est autorisé pour ce champ'));
+    $this->validatorSchema['login'] = new sfValidatorRegex(array('pattern' => '/^[^<\"]+$/'), array('invalid'=>'Seul du texte est autorisé pour ce champ'));
+
     // Les labels
     $this->widgetSchema->setLabels(array(
       'login' => 'Nom d\'utilisateur',

@@ -2,12 +2,12 @@
   <div class="b_c_h"><div class="b_c_hg"></div><div class="b_c_hd"></div></div>
     <div class="b_c_cont">
       <div class="b_c_photo">  
-        <?php echo '<img src="'.url_for('@photo_citoyen?slug='.$user->slug).'" alt="Photo de '.htmlentities($user->login).'"/>'; ?>
+        <?php echo '<img src="'.url_for('@photo_citoyen?slug='.$user->slug).'" alt="Photo de '.$user->login.'"/>'; ?>
       </div>
       <div class="b_c_text">
-        <h1 style="text-align:left;"><?php echo htmlentities($user->login); ?></h1>
+        <h1 style="text-align:left;"><?php echo $user->login; ?></h1>
         <ul>
-<?php if (!empty($user->activite)) { $activite = htmlentities($user->activite); } else { $activite = 'non renseigné'; }
+<?php if (!empty($user->activite)) { $activite = $user->activite; } else { $activite = 'non renseigné'; }
   echo '<li>Activité : '.$activite.'</li>';
   echo '<li>Statut : '.ucfirst($user->role).'</li>';
   echo '<li>Inscrit depuis le '.myTools::displayDate($user->created_at).'</li>';
@@ -57,4 +57,4 @@ if (!empty($user->url_site)) { echo '<li><a href="'.$user->url_site.'" rel="nofo
   </table>
   </form>
   <br />
-</div> 
+</div>

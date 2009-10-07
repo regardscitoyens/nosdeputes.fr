@@ -31,6 +31,8 @@ class EditUserForm extends CitoyenForm
     $this->widgetSchema['url_site'] = new sfWidgetFormInput();
     $this->validatorSchema['url_site'] = new sfValidatorUrl(array('required' => false), array('invalid' => 'l\'url doit être de la forme "http://www.monsite.fr"'));
     
+    $this->validatorSchema['activite'] = new sfValidatorRegex(array('pattern' => '/^[^<\"]+$/'), array('invalid'=>'Seul du texte est autorisé pour ce champ'));
+    
     // Les labels
     $this->widgetSchema->setLabels(array(
       'activite' => 'Activité : ', 

@@ -6,7 +6,7 @@
  <?php foreach ($citoyens_list as $citoyen): ?>
 <a href="<?php echo url_for('@citoyen?slug='.$citoyen->getSlug()); ?>">
 <?php echo $citoyen->getLogin(); ?></a> 
-<?php if($citoyen->getActivite()) { echo '('.htmlentities($citoyen->getActivite()).')'; } ?>
+<?php if($citoyen->getActivite()) { echo '('.$citoyen->getActivite().')'; } ?>
 <br/>
 <?php endforeach; ?>
-</p>  
+</p>
