@@ -58,6 +58,7 @@ $heure{'trente'} = '30';
 $heure{'trente-cinq'} = '35';
 $heure{'quinze'} = '15';
 $heure{'zéro'} = '00';
+$heure{'cinq'} = '00';
 $heure{''} = '00';
 
 if ($string =~ /ance est ouverte/i) {
