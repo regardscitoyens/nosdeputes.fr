@@ -1225,3 +1225,14 @@ a:hover img {
 .last_commentaires .commentaire {
   border: 0px;
 }
+
+#circo_table {
+   margin: auto;
+}
+#circo_table table {
+  width: 100%;
+}
+#circo_table td {
+   width: 25%;
+   vertical-align: top;
+}

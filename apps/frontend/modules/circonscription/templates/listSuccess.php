@@ -3,8 +3,9 @@ $sf_response->setTitle('Toutes les circonscriptions électorales'); ?>
 <h2>Carte des circonscriptions</h2>
 <p><?php include 'circonscriptions/france.html' ?></p>
 <h2>Liste des départements</h2>
+<div id="circo_table">
 <table>
-<tr><td style="width:23%;"><ul>
+<tr><td><ul>
 <?php $div = floor(count($circos)/4)+1; $ct = 0; 
 foreach($circos as $num => $circo) 
 {
@@ -17,5 +18,4 @@ foreach($circos as $num => $circo)
 } ?>
 </ul></td></tr>
 </table>
-
-
+</div>
