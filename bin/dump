@@ -1,5 +1,5 @@
 #!/bin/bash
-MYSQLID="-u root"
-path="/home/roux/dev/cpc/project"
+. bin/db.inc
+path="/home/nosdeputes/prod"
 
-mysqldump $MYSQLID cpc -q --single-transaction --add-drop-table -R -t --disable-keys --complete-insert | gzip > ${path}/data/sql/data.sql.gz
+mysqldump $MYSQLID $DBNAME -q --single-transaction --add-drop-table -R -t --disable-keys --complete-insert | gzip > ${path}/data/sql/data.dump.sql.gz
