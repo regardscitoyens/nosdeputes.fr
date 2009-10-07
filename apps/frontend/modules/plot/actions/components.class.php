@@ -18,7 +18,7 @@ class plotComponents extends sfComponents
       if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {
         $date = strtotime($this->parlementaire->fin_mandat);
         $this->mandat_clos = true;
-      } else $date = time() - 7*60*60*24;
+      } else $date = time();
       $annee = date('Y', $date); $sem = date('W', $date); if ($sem == 53) { $annee++; $sem = 1; }
       $last_year = $date - 31536000;
       if ($this->parlementaire->debut_mandat > date('Y-m-d', $last_year)) {

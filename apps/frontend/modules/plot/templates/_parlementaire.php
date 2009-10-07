@@ -26,7 +26,7 @@ $participations = array_fill(1, $n, 0);
 $mots = array_fill(1, $n, 0);
 if ($options['plot'] == 'all' || $options['plot'] == 'total') {
   $plotarray = array_merge($plotarray, array('type' => 'total'));
-  for ($i = 1; $i < $n; $i++) {
+  for ($i = 1; $i <= $n; $i++) {
     $presences[$i] = $n_presences['hemicycle'][$i] + $n_presences['commission'][$i];
     $participations[$i] = $n_participations['hemicycle'][$i] + $n_participations['commission'][$i];
     $mots[$i] = $n_mots['hemicycle'][$i] + $n_mots['commission'][$i];
