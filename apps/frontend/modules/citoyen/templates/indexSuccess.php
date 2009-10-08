@@ -8,5 +8,5 @@
 <?php echo $citoyen->getLogin(); ?></a> 
 <?php if($citoyen->getActivite()) { echo '('.$citoyen->getActivite().')'; } ?>
 <br/>
-<?php endforeach; #é ?>
+<?php endforeach; ?>
 </p>
