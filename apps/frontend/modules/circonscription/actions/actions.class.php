@@ -54,6 +54,7 @@ class circonscriptionActions extends sfActions
         ->from('Parlementaire p')
         ->select('count(distinct p.nom_circo) as ct, p.nom_circo')
         ->where('nom_circo LIKE ?', '%'.$this->circo.'%')
+        ->groupBy('nom_circo')
         ->fetchOne();
       if ($ctquery['ct'] == 1)
         return $this->redirect('@list_parlementaires_departement?departement='.$ctquery['nom_circo']);
