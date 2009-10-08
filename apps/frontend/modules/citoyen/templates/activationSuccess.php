@@ -2,7 +2,7 @@
   <div class="b_f_h"><div class="b_f_hg"></div><div class="b_f_hd"></div></div>
     <div class="b_f_cont">
       <div class="b_f_text">
-        <?php echo $form->renderFormTag(url_for('citoyen/activation?slug='.$slug.'&activation_id='.$activation_id)) ?>
+        <?php echo $form->renderFormTag(url_for('citoyen/activation?slug='.$slug.'&activation_id='.$activation_id)) #é?>
         <table>
           <tr>
             <th colspan="2">
