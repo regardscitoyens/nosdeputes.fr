@@ -52,7 +52,7 @@ class circonscriptionActions extends sfActions
       $this->circo = $departmt;
       $ctquery = Doctrine_Query::create()
         ->from('Parlementaire p')
-        ->select('count(distinct p.nom_circo) as ct, p.nom_circo')
+        ->select('count(*) as ct, p.nom_circo')
         ->where('nom_circo LIKE ?', '%'.$this->circo.'%')
         ->groupBy('nom_circo')
         ->fetchOne();
