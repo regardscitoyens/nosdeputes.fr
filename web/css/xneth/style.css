@@ -5,6 +5,37 @@ body {
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
+
+/* Captcha */
+.captcha {
+  width: 325px;
+  padding: 5px;
+  background-color: #EFEEEE;
+  border: 1px solid #AFAFAF;
+}
+.image_captcha {
+  float: left;
+}
+.image_captcha img {
+  height: 54px;
+  width: 134px;
+  border: 1px solid #AAA9AD;
+}
+.images_fonctions {
+  float: left;
+  width: 30px;
+  border-right: 1px solid #AFAFAF;
+}
+.images_fonctions img {
+  float: left;
+  margin: 3px;
+}
+.entrer_code {
+  float: right;
+  line-height: 25px;
+  text-align: center;
+}
+
 /* Formulaires classiques */
 .form {
   height: auto;

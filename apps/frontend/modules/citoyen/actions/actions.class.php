@@ -397,6 +397,13 @@ class citoyenActions extends sfActions
         if ($this->form->isValid())
         {
           $login = $this->form->getValue('login');
+      
+      if($this->form->getValue('code') != $this->getUser()->getAttribute('codesecu'))
+      {
+        $this->getUser()->setFlash('error', 'Le code de sécurité ne correspond pas');
+            return;
+      }
+      
           if ($login)
           {  
             if (Doctrine::getTable('Citoyen')->findOneByEmail($login))

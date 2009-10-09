@@ -184,15 +184,23 @@ question:
   url: /question/:id
   param: {module: questions, action: show}
 
+# Captcha
+captcha_image:
+  url: /captcha_image
+  param: {module: captcha, action: getcaptcha}
+captcha_sonore:
+  url: /captcha_sonore
+  param: {module: captcha, action: getcaptchasonore}
+
 # Authentification
 signin:
-  url:   /login
+  url: /login
   param: { module: citoyen, action: signin }
 signout:
-  url:   /logout
+  url: /logout
   param: { module: citoyen, action: signout }
 identification_ajax:
-  url:	/ajax/identification
+  url: /ajax/identification
   param: {module: citoyen, action: connected}
 # Reset password:
 reset_mdp:
@@ -234,21 +242,13 @@ delete_citoyen:
   url: /profil/suppression/:token
   param: {module: citoyen, action: delete}
 
-
-# renvoi_mail_activation_citoyen:
-  # url: /citoyens/activation/renvoi/:user_id
-  # param: {module: citoyen, action: renvoimailactivation}
-
-# Add include user's module to get same circonscription?
-
+# Commentaires
 commentaires:
   url: /commentaires
   param: {module: commentaire, action: list}
-
 commentaires_rss:
   url: /commentaires/rss
   param: {module: commentaire, action: rss}
-
 
 parlementaire:
   url: /:slug

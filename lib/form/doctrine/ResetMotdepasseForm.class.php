@@ -7,6 +7,9 @@ class ResetMotdepasseForm extends sfForm
     
     $this->widgetSchema['login'] = new sfWidgetFormInput();
     $this->validatorSchema['login'] = new sfValidatorString(array('required' => false));
+  
+    $this->widgetSchema['code'] = new sfWidgetFormInput();
+    $this->validatorSchema['code'] = new sfValidatorString(array('required' => true), array('required' => 'Vous devez recopier le code de sécurité'));
     
     // label
     $this->widgetSchema->setLabels(array(

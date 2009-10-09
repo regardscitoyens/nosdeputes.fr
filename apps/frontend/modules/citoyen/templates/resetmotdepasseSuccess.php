@@ -62,21 +62,22 @@ else
           </tr>
           <tr>
             <th colspan="2">
-							<div class="captcha">
-							  <div class="image_captcha">
-									<img src="<?php echo url_for('@captcha'); ?>" alt="Code" id="code" style="border: 1px solid #E8E7E4;" />
-								</div>
-								<div class="images_fonctions">
-									<a href="<?php echo url_for('@captcha_sonore'); ?>"><?php echo image_tag('xneth/sound.png', array('alt' => 'écouter le captcha', 'title' => 'écouter le captcha')); ?></a>
-									<a href="#" onclick="document.getElementById('code').src='<?php echo url_for('@captcha'); ?>?re=' + Math.random(); return false"><?php echo image_tag('xneth/reload.png', array('alt' => 'Obtenir une nouvelle image', 'title' => 'Obtenir une nouvelle image')); ?></a>
-								</div>
-								<div class="entrer_code">
-									Code de sécurité : <br />
-									<input type="text" />
-								</div>
-								<div class="stopfloat"></div>
-							</div>
-						</th>
+              <?php echo $form['code']->renderError(); ?>
+              <div class="captcha">
+                <div class="image_captcha">
+                  <img src="<?php echo url_for('@captcha_image'); ?>" alt="Code" id="codesecu" />
+                </div>
+                <div class="images_fonctions">
+                  <a href="<?php echo url_for('@captcha_sonore'); ?>"><?php echo image_tag('xneth/sound.png', array('alt' => 'écouter le captcha', 'title' => 'écouter le captcha')); ?></a>
+                  <a href="#" onclick="document.getElementById('codesecu').src='<?php echo url_for('@captcha_image'); ?>?re=' + Math.random(); return false"><?php echo image_tag('xneth/reload.png', array('alt' => 'Obtenir une nouvelle image', 'title' => 'Obtenir une nouvelle image')); ?></a>
+                </div>
+                <div class="entrer_code">
+                  Code de sécurité : <br />
+                  <?php echo $form['code']; ?>
+                </div>
+                <div class="stopfloat"></div>
+              </div>
+            </th>
           </tr>
           <tr>
             <td colspan="2"><input type="submit" value="Valider" style="float:right;" /></td>
