@@ -102,7 +102,7 @@ class interventionActions extends sfActions
 	->findOneBySlug($slug);
       if ($this->parlementaire)
 	$query->andWhere('Intervention.parlementaire_id = ?', $this->parlementaire->id)
-      ->orderBy('date DESC, timestamp ASC');
+      ;
     }
 
     if ($section = $request->getParameter('section')) {
@@ -110,6 +110,7 @@ class interventionActions extends sfActions
 	->leftJoin('Intervention.Section si');
     }
 
+    $query->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
     $this->query = $query;
   }
 
