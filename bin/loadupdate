@@ -80,6 +80,8 @@ echo =======================
 php symfony set:Vacances 
 echo Top
 echo =======================
-php symfony top:Deputes 
-
+php symfony top:Deputes
+echo Hard cache
+echo =======================
+bash bin/update_hardcache
 
