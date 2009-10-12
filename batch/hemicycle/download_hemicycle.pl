@@ -16,7 +16,7 @@ foreach $url (@url) {
     $cpt = 0; 
     while ($t = $p->get_tag('a')) {
 	$txt = $p->get_text('/a');
-	if ($txt =~ /\d+[\Serm]+\s+\S+ance/i) {
+	if ($txt =~ /(\d+[\Serm]+\s+\S+ance|S\S+ance uniq)/i) {
 	    $a->get($t->[1]{href});
 	    $file = $a->uri();
 	    $file =~ s/\//_/gi;
