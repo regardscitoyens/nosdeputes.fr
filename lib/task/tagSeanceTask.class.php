@@ -8,6 +8,7 @@ class tagSeanceTask extends sfBaseTask
     $this->name = 'Seance';
     $this->briefDescription = 'Tag Seance';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
+    $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
   protected function count($array, $excludeS = 0) {

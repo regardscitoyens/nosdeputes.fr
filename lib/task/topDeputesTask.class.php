@@ -8,6 +8,7 @@ class topDeputesTask extends sfBaseTask
     $this->name = 'Deputes';
     $this->briefDescription = 'Top Deputes';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
+    $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
   protected function orderDeputes($type, $reverse = 1) {

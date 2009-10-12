@@ -6,6 +6,7 @@ class loadQuestionsTask extends sfBaseTask {
     $this->name = 'Questions';
     $this->briefDescription = 'Load Questions data';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
+    $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
 
   protected function execute($arguments = array(), $options = array()) {
