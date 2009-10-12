@@ -7,6 +7,6 @@ bash compute_commission.sh
 cd -
 while ls batch/commission/out | grep [a-z] > /dev/null ; 
 do
-	php symfony cc --env=test
+	php symfony cc --env=test  --app=frontend
 	php symfony load:Commission >> /tmp/load_commission.log
 done

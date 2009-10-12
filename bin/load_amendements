@@ -7,11 +7,11 @@ tar xf html.tar.gz
 # rm -f xml/* 
 # perl parse_amendements.pl >> /tmp/load_amendements.log 
 cd -
-php symfony cc --env=test
+php symfony cc --env=test --app=frontend 
 for file in $(ls batch/amendements/xml)
 do
     echo $file
     cp batch/amendements/xml/$file batch/amendements/json/ 
     php symfony load:Amdmts >> /tmp/load_amendements.log
-    php symfony cc
+    php symfony cc --env=test --app=frontend
 done
