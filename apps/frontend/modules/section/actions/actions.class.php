@@ -46,7 +46,7 @@ class sectionActions extends sfActions
     $this->lois = $this->section->getTags(array('is_triple' => true,
                                                 'namespace' => 'loi',
                                                 'key' => 'numero',
-                                                'return'    => 'value'));
+                                                'return' => 'value'));
     sort($this->lois);
 
     $inters = Doctrine_Query::create()

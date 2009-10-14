@@ -13,8 +13,10 @@ else echo '</h1>';
 
 <div class="numeros_textes">
 <?php if ($lois && ! preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $section->titre)) { ?>
-<span>Projet<?php if (count($lois) > 1) echo 's'; ?> de loi<?php if (count($lois) > 1) echo 's'; ?> N°
-<?php foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.link_to('amdmts', '@find_amendements_by_loi_and_numero?loi='.$loi.'&numero=all').') '; ?>
+<span>Texte<?php if (count($lois) > 1) echo 's'; ?> de loi<?php if (count($lois) > 1) echo 's'; ?> N°
+<?php foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' '; ?>
+<br/>
+<?php echo link_to('Tous les amendements à ce dossier', '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois)).'&numero=all'); ?>
 </span>
 <?php } ?>
 </div>

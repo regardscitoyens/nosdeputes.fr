@@ -116,18 +116,18 @@ class Amendement extends BaseAmendement {
     elseif($this->rectif > 1)
       $titre .= " ".$this->rectif."ème rectif.";
     if ($parent != 0)
-      $titre .= " à l'amendement N° ".link_to($parent[0], '@find_amendements_by_loi_and_numero?loi='.$this->texteloi_id.'&numero='.$parent[0]);
+      $titre .= ' à l\'amendement N° <a href="/amendements/'.$this->texteloi_id.'/'.$parent[0].'">'.$parent[0].'</a>';
     return "$titre";
   }
 
   public function getTexte($style=1) {
-    if ($style == 1)
-      return preg_replace('/\<p\>\s*«\s*([^»]+)(\s+»)?(\W*)\<\/p\>/', '<blockquote>«&nbsp;\1&nbsp;»\2</blockquote>', $this->_get('texte'));
-    else return $this->_get('texte');
+    if ($style == 1) {
+      return preg_replace('/\<p\>\s*«\s*([^»]+)\s+»?(\W*)\<\/p\>/', '<blockquote>«&nbsp;\1&nbsp;»\3</blockquote>', $this->_get('texte')); 
+    } else return $this->_get('texte');
   }
 
 public function getTitreNoLink() {
-    return preg_replace('/\<a href.*\<\/a\>/', '', $this->getTitre());
+    return preg_replace('/\<a href.*\>(.*)<\/a\>/', '\1', $this->getTitre());
   }
 
   public function getLinkPDF() {

@@ -7,12 +7,12 @@
 <p> pour la recherche sur <em>"<?php echo strip_tags($mots); ?>"</em></p>
 <?php } } 
 else if (isset($lois)) {
-  echo ' pour ';
+  echo ' portant sur ';
   if (count($lois) > 1) echo 'les projets de loi ';
   else
     echo 'le projet de loi ';
   echo 'N° ';
-  foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ';
+  foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' (liasse PDF dans l\'ordre du texte : '.myTools::getLiasseLoiAN($loi).' ) ';
 } ?>
 </div>
 <div class="interventions">

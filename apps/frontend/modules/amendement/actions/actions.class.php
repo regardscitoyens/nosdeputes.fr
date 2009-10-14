@@ -66,10 +66,16 @@ class amendementActions extends sfActions
     $this->section = doctrine::getTable('Section')->find($request->getParameter('id'));
     $this->forward404Unless($this->section);
 
+    $lois = $this->section->getTags(array('is_triple' => true,
+                                          'namespace' => 'loi',
+                                          'key' => 'numero',
+                                          'return' => 'value'));
+
     $this->qamendements = doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
-      ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
+      ->andWhereIn('a.texteloi_id', $lois)
+      ->orderBy('a.texteloi_id DESC, a.date DESC, a.numero DESC');
   }
 
   public function executeSearch(sfWebRequest $request)
