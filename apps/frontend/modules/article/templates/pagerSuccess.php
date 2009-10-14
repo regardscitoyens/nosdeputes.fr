@@ -1,5 +1,6 @@
 <?php use_helper('Text') ?>
 <h1><?php echo $titre; ?></h1>
+<p>A venir prochainement...</p>
 <?php foreach ($pager->getResults() as $article) : ?>
 <div class="article">
     <h3><?php echo link_to($article->getTitre(), $article->link); ?></h3>
