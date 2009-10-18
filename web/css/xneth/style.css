@@ -8,7 +8,7 @@ body {
 
 /* Captcha */
 .captcha {
-  background-color: #EFEADA;
+  background-color: #fff;
 }
 .image_captcha {
   float: left;
@@ -26,7 +26,7 @@ body {
   float: left;
   width: 30px;
   height: 76px;
-  background-color: #F2F2E6;
+  background-color: #EFEFEF;
   border: 1px solid #AFAFAF;
 }
 .images_fonctions img {
@@ -45,8 +45,6 @@ body {
   height: 54px;
   text-align: center;
   line-height: 22px;
-  background-color: #FFFEFA;
-  border: 1px solid #AFAFAF;
   margin: 10px;
 }
 
