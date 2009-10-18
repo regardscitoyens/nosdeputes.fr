@@ -8,6 +8,7 @@ body {
 
 /* Captcha */
 .captcha {
+  width: 346px;
   background-color: #fff;
 }
 .image_captcha {
@@ -81,7 +82,7 @@ body {
 }
 .b_f_h {
   height: 21px;
-  background: #FCFBFB url('images/barres_form.png') repeat-x 0 0;
+  background: #FCFCFC url('images/barres_form.png') repeat-x 0 0;
 }
 .b_f_hg {
   float: left;
@@ -98,8 +99,8 @@ body {
 .b_f_cont {
   padding-left: 15px;
   padding-right: 15px;
-  border-left: 1px solid #E8E7E4;
-  border-right: 1px solid #E8E7E4;
+  border-left: 1px solid #C2C2BF;
+  border-right: 1px solid #C2C2BF;
 }
 .b_f_cont table {
   text-align: left;
@@ -123,7 +124,7 @@ body {
 }
 .b_f_b {  
   height: 21px;
-  background: #FCFBFB url('images/barres_form.png') repeat-x 0 -21px;
+  background: #FCFCFC url('images/barres_form.png') repeat-x 0 -21px;
 }
 .b_f_bg {
   float: left;

@@ -61,7 +61,7 @@ else
             </td>
           </tr>
           <tr>
-            <th colspan="2">
+            <th colspan="2" style="text-align:center;">
               <?php echo $form['code']->renderError(); ?>
               <div class="captcha">
                 <div class="image_captcha">
@@ -74,7 +74,7 @@ else
                 <div class="cont_code">
           <div class="entrer_code">
                   Code de sécurité<br />
-                  <?php echo $form['code']->render(array('size' => 15, 'title' => 'Recopiez les caractères')); ?>
+                  <?php echo $form['code']->render(array('size' => 14, 'title' => 'Recopiez les caractères')); ?>
           </div>
                 </div>
                 <div class="stopfloat"></div>
