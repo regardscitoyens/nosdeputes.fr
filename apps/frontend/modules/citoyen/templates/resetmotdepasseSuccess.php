@@ -53,7 +53,7 @@ else
               <h1>Mot de passe oublié</h1>
             </th>
           </tr>
-          <tr>
+          <tr class="cel2">
             <th><?php echo $form['login']->renderLabel() ?></th>
             <td>
               <?php echo $form['login']->renderError(); ?>
@@ -68,22 +68,21 @@ else
                   <img src="<?php echo url_for('@captcha_image'); ?>" alt="Code" id="codesecu" />
                 </div>
                 <div class="images_fonctions">
-                  <a href="<?php echo url_for('@captcha_sonore'); ?>"><?php echo image_tag('xneth/sound.png', array('alt' => 'écouter le captcha', 'title' => 'écouter le captcha')); ?></a>
-                  <a href="#" onclick="document.getElementById('codesecu').src='<?php echo url_for('@captcha_image'); ?>?re=' + Math.random(); return false"><?php echo image_tag('xneth/reload.png', array('alt' => 'Obtenir une nouvelle image', 'title' => 'Obtenir une nouvelle image')); ?></a>
+                  <a href="<?php echo url_for('@captcha_sonore'); ?>"><?php echo image_tag('xneth/sound.png', array('alt' => 'écouter le code de sécurité', 'title' => 'écouter le code de sécurité')); ?></a>
+                  <a href="#" onclick="document.getElementById('codesecu').src='<?php echo url_for('@captcha_image'); ?>?re=' + Math.random(); return false"><?php echo image_tag('xneth/reload.png', array('alt' => 'Obtenir un nouveau code de sécurité', 'title' => 'Obtenir un nouveau code de sécurité')); ?></a>
                 </div>
-                <div class="entrer_code">
-                  Code de sécurité : <br />
-                  <?php echo $form['code']; ?>
+                <div class="cont_code">
+          <div class="entrer_code">
+                  Code de sécurité<br />
+                  <?php echo $form['code']->render(array('size' => 15, 'title' => 'Recopiez les caractères')); ?>
+          </div>
                 </div>
                 <div class="stopfloat"></div>
               </div>
             </th>
           </tr>
-          <tr>
-            <td colspan="2"><input type="submit" value="Valider" style="float:right;" /></td>
-          </tr>
-          <tr>
-            <th colspan="2"><a href="<?php echo url_for('@homepage') ?>">Annuler</a></th>
+          <tr class="cel2">
+            <td colspan="2"><a href="<?php echo url_for('@homepage') ?>">Annuler</a> <input type="submit" value="Valider" /></td>
           </tr>
         </table>
         </form>

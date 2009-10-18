@@ -22,13 +22,13 @@ class captchaActions extends sfActions
   
   private function nombre($n)
   {
-    return str_pad(mt_rand(0,pow(10,$n)-1),$n,'0',STR_PAD_LEFT);
+    return str_pad(mt_rand(0,pow(10,$n)-1),$n,'0',STR_PAD_BOTH);
   }
   
   private function image($mot)
   {
     $size = 30;
-    $marge = 20;
+    $marge = 10;
   
   /* Polices disponibles : GorriSans.ttf, CHOPS___.TTF, VeraSeBd.ttf, VeraSe.ttf, LiberationSerif-Regular.ttf,
   LiberationSerif-Italic.ttf, LiberationSerif-BoldItalic.ttf, LiberationSerif-Italic.ttf */

@@ -8,32 +8,46 @@ body {
 
 /* Captcha */
 .captcha {
-  width: 325px;
-  padding: 5px;
-  background-color: #EFEEEE;
-  border: 1px solid #AFAFAF;
+  background-color: #EFEADA;
 }
 .image_captcha {
   float: left;
+  width: 157px;
+  height: 78px;
+  background: url('images/captcha_fond.png') no-repeat 0 0;
 }
 .image_captcha img {
   height: 54px;
   width: 134px;
   border: 1px solid #AAA9AD;
+  margin: 10px;
 }
 .images_fonctions {
   float: left;
   width: 30px;
-  border-right: 1px solid #AFAFAF;
+  height: 76px;
+  background-color: #F2F2E6;
+  border: 1px solid #AFAFAF;
 }
 .images_fonctions img {
   float: left;
-  margin: 3px;
+  padding-top: 10px;
+  padding-left: 3px;
+}
+.cont_code {
+  float: right;
+  width: 157px;
+  height: 78px;
+  background: url('images/captcha_fond.png') no-repeat -8px 0;
 }
 .entrer_code {
-  float: right;
-  line-height: 25px;
+  width: 134px;
+  height: 54px;
   text-align: center;
+  line-height: 22px;
+  background-color: #FFFEFA;
+  border: 1px solid #AFAFAF;
+  margin: 10px;
 }
 
 /* Formulaires classiques */
@@ -51,6 +65,9 @@ body {
   padding: 10px;
   border-bottom: 1px dashed #E8E7E4;
 }
+.form th {
+  text-align: left;
+}
 .form td {
   text-align: right;
 }
@@ -62,7 +79,7 @@ body {
   margin: auto;
   margin-top: 35px;
   margin-bottom: 35px;
-  background: #fff url('images/minilogo_nosdeputes_fond.png') no-repeat 95% 15%;
+  background: #fff url('images/minilogo_nosdeputes_fond.png') no-repeat 95% 60px;
 }
 .b_f_h {
   height: 21px;
@@ -93,6 +110,12 @@ body {
 .b_f_cont td, .b_f_cont th {
   padding: 10px;
   border-bottom: 1px dashed #E8E7E4;
+}
+.b_f_cont th {
+  text-align: left;
+}
+.b_f_cont td {
+  text-align: right;
 }
 .bf_cont h1 {
   margin: 0;
