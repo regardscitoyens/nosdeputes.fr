@@ -888,61 +888,17 @@ h2 {
   padding-right: 2px;
 }
 /* form commentaires */
-.cont_multiform {
-  margin-top: 15px;
-  height: 100px;
+.inscription {
+  border: 1px solid #E8E7E4;
 }
-.multiform {
-  position: relative;
+.connexion {
+  float: right;
+  border: 1px solid #E8E7E4;
 }
-.tab_form table{
-  position: absolute;
-  top: 20px;
-  left: 0;
-  width: 350px;
-  height: 80px;
-  padding: 5px;
-  background-color: #fff;
-  border: 1px solid #BFBFBF;
+.inscription td, .connexion td, .inscription th, .connexion th {
+  padding: 10px;
+  border-bottom: 1px dashed #E8E7E4;
 }
-.tab_form h4 {
-  display: inline;
-  float: left;  
-  padding: 0;
-  margin: 0;
-  padding-left: 5px;
-  padding-right: 15px;
-  border-left: 1px solid #BFBFBF;
-  height: 20px;
-  line-height: 20px;
-  cursor: pointer;
-  background: #F5F0E2 url("images/fond_titre_multiform.png") no-repeat top right;
-}
-#tab_form_1 table { z-index: 2; }
-#tab_form_2 table { z-index: 1; }
-
-#tab_form_1 h4 { background-color: #DBD5C8; }
-
-#tab_form_1:hover table, 
-#tab_form_1:focus table, 
-#tab_form_2:hover table, 
-#tab_form_2:focus table,
-#connexion:target table
-{
-  z-index: 10;
-  background-color: #EFEFEF;  
-}
-
-#tab_form_1:hover h4, 
-#tab_form_1:focus h4, 
-#tab_form_2:hover h4, 
-#tab_form_2:focus h4,
-#connexion:target h4  
-{
-  z-index: 10;
-  background-color: #DBD5C8;
-}
-
 /* commentaires */
 .commentaires {
   clear:both;

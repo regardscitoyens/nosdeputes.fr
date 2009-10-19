@@ -56,7 +56,7 @@ $menu_citoyen = $selectcitoyen;
 <a href="/login">Mon compte</a>
 </p>
 </div>
-  <script><!-- 
+  <script type="text/javascript"><!-- 
   $('#connected').load("<?php echo url_for('@identification_ajax'); ?>"); 
 --></script>
       </div>
