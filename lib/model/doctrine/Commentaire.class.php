@@ -25,8 +25,14 @@ class Commentaire extends BaseCommentaire
     $cp->save();
   }
 
-  public function updateNbCommentaires() {
+  public function updateNbCommentaires($inc = 0) {
     $o = Doctrine::getTable($this->object_type)->find($this->object_id);
-    return $o->updateNbCommentaires();
+    return $o->updateNbCommentaires($inc);
+  }
+  public function setIsPublic($b) {
+    $this->_set('is_public', $b);
+    if ($this->id) {
+      $this->updateNbCommentaires(($b) ? 1 : -1);
+    }
   }
 }

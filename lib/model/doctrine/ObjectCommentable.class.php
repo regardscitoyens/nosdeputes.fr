@@ -5,7 +5,8 @@
  */
 class ObjectCommentable extends BaseObjectCommentable
 {
-  public function updateNbCommentaires() {
+  //Sometimes the comment is not saved, we need to simulate it with $inc
+  public function updateNbCommentaires($inc = 0) {
     $res = Doctrine::getTable('Commentaire')->createQuery('c')
       ->select('count(*) as nb')
       ->where('object_type = ?', get_class($this))
@@ -13,6 +14,6 @@ class ObjectCommentable extends BaseObjectCommentable
       ->andWhere('is_public = ?', 1)
       ->fetchArray();
     if (isset($res[0]['nb']))
-      $this->nb_commentaires = $res[0]['nb'];
+      $this->nb_commentaires = $res[0]['nb'] + $inc;
   }
 }
