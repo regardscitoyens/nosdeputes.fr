@@ -31,7 +31,7 @@ class updateDeputesTask extends sfBaseTask
 	  $sections = array();
 	  if (preg_match('/^\./', $file))
 	    continue;
-	  echo "$dir$file\n";
+	  //echo "$dir$file\n";
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
 	    if (!$json->nom)

@@ -18,7 +18,6 @@ class loadAmdmtsTask extends sfBaseTask {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == ".") continue;
-          print "$dir$file\n";
           $ct_lines = 0;
           $ct_lus = 0;
           $ct_crees = 0;
@@ -86,7 +85,7 @@ class loadAmdmtsTask extends sfBaseTask {
             $amdmt->save();
             $amdmt->free();
           }
-          print $ct_lines." amendements lus : ".$ct_lus." écrits dont ".$ct_crees." nouveaux.\n";
+          if ($ct_crees) print "$dir$file\n".$ct_lines." amendements lus : ".$ct_lus." écrits dont ".$ct_crees." nouveaux.\n";
           unlink($dir.$file);
         }
         closedir($dh);
