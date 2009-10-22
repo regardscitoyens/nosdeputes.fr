@@ -18,7 +18,6 @@ class loadQuestionsTask extends sfBaseTask {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == ".") continue;
-          print "$dir$file\n";
           $ct_lines = 0;
           $ct_lus = 0;
           $ct_crees = 0;
@@ -61,10 +60,10 @@ class loadQuestionsTask extends sfBaseTask {
               $quest->source = $json->source;
               $quest->legislature = $json->legislature;
               $quest->numero = $json->numero;
-              $quest->setAuteur($json->auteur);
             } elseif ($quest->date == $json->date && $quest->reponse != null) {
               $modif = false;
             }
+            $quest->setAuteur($json->auteur);
             if ($modif) {
               $quest->date = $json->date;
               $quest->ministere = $json->ministere_interroge." / ".$json->ministere_attributaire;
@@ -76,7 +75,7 @@ class loadQuestionsTask extends sfBaseTask {
             $quest->save();
             $quest->free();
           }
-          print $ct_lines." questions lues : ".$ct_lus." écrites dont ".$ct_crees." nouvelles.\n";
+          if ($ct_crees) print "$dir$file\n".$ct_lines." questions lues : ".$ct_lus." écrites dont ".$ct_crees." nouvelles.\n";
           unlink($dir.$file);
         }
         closedir($dh);

@@ -26,6 +26,7 @@ $string =~ s/&#8217;/'/g;
 $string =~ s/&#339;/oe/g;
 $string =~ s/"//g;
 $string =~ s/&#8211;/-/g;
+$string =~ s/&nbsp;/ /g;
 
 $legislature = $1
     if  ($string =~ /\<LEG\>(\d+).+\<\/LEG\>/);
@@ -55,8 +56,8 @@ $question = '<p>'.$question.'</p>'
 $pre_auteur = $1
     if ($string =~ /<AUT>\s*(Le\s\S+)/);
 if (!$pre_auteur) {
-    $pre_auteur = $1
-	if ($string =~ /<AUT>\s*(\S+)/);
+    $pre_auteur = $1.$2
+	if ($string =~ /<AUT>\s*(Des |des |de La |de la |de l\'|de |du )?(\S+)/);
 }
 $auteur = $1
     if ($question =~ /^[^M]*(M[me\.]+.+$pre_auteur\S*)\s[^M\.\,]+\s+M/);
