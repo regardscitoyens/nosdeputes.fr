@@ -43,6 +43,15 @@ class amendementActions extends sfActions
          ->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
        $this->seance = $query->fetchOne();
      }
+    $this->sous_admts = Doctrine_Query::create()
+      ->select('a.id, a.numero')
+      ->from('Amendement a, Tagging tg, tg.Tag t')
+      ->where('a.texteloi_id = ?', $this->amendement->texteloi_id)
+      ->andWhere('a.id = tg.taggable_id')
+      ->andWhere('t.name LIKE ?', 'loi:sous_amendement_de=%')
+      ->andWhere('t.triple_value = ?', $this->amendement->numero)
+      ->orderBy('a.numero')
+      ->fetchArray();
   }
 
   public function executeParlementaire(sfWebRequest $request)

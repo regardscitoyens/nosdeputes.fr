@@ -21,6 +21,10 @@
   <?php } ?></h3>
 </div>
 <?php } ?>
+<?php if ($sous_admts) { ?>
+<p>Sous-amendements associés&nbsp: <?php foreach($sous_admts as $sous)
+ echo link_to($sous['numero'], '@amendement?id='.$sous['id']).' '; ?></p>
+<?php } ?>
 <div class="signataires">
   <p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo $amendement->getSignataires(1); ?>.</p>
   <?php 
