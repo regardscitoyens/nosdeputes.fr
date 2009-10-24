@@ -12,7 +12,7 @@ else if (isset($lois)) {
   else
     echo 'le projet de loi ';
   echo 'N° ';
-foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.myTools::getLiasseLoiImpr($loi).', '.myTools::getLiasseLoiAN($loi).') '; } ?>
+foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.myTools::getLiasseLoiAN($loi).') '; } ?>
 </div>
 <div class="interventions">
 <?php foreach($pager->getResults() as $i) {
