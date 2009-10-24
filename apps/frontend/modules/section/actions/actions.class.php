@@ -47,8 +47,13 @@ class sectionActions extends sfActions
                                                 'namespace' => 'loi',
                                                 'key' => 'numero',
                                                 'return' => 'value'));
+    $amdmts_lois = Doctrine_Query::create()->select('distinct(a.texteloi_id)')->from('Amendement a')->whereIn('a.texteloi_id', $this->lois)->fetchArray();
+    $this->lois_amendees = array();
+    foreach($amdmts_lois as $loi)
+      array_push($this->lois_amendees, $loi['distinct']); 
     sort($this->lois);
-
+    sort($this->lois_amendees);
+    
     $inters = Doctrine_Query::create()
       ->select('i.id')
       ->from('Intervention i')
@@ -87,15 +92,15 @@ class sectionActions extends sfActions
   }
   public function executeList(sfWebRequest $request) 
   {
-    if (!($order = $request->getParameter('order')))
-      $order = 'plus';
+    if (!($this->order = $request->getParameter('order')))
+      $this->order = 'plus';
     $query = doctrine::getTable('Section')->createQuery('s')
       ->where('s.id = s.section_id')
       ->andWhere('s.nb_interventions > 5');
-    if ($order == 'date') {
+    if ($this->order == 'date') {
       $query->orderBy('s.min_date DESC');
       $this->titre = 'Les derniers dossiers parlementaires';
-    } else if ($order == 'plus') {
+    } else if ($this->order == 'plus') {
       $query->orderBy('s.nb_interventions DESC');
       $this->titre = 'Les dossiers parlementaires les plus discutés';
     }

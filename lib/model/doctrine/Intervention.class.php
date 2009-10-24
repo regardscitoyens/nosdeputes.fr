@@ -137,7 +137,7 @@ class Intervention extends BaseIntervention
 	$lois = implode(',', $this->getTags(array('is_triple' => true,
 						  'namespace' => 'loi',
 						  'key' => 'numero',
-						  'return'    => 'value')));
+						  'return' => 'value')));
 	for ($i = 0 ; $i < count($match[0]) ; $i++) {
 	  $match_protected = preg_replace('/(\s*)(\d[\d\s\à]*rectifiés?|\d[\d\s\à]*)(,\s*|\s*et\s*)*/', '\1%\2%\3', $match[3][$i]);
 	  if (preg_match_all('/\s*%([^%]+)%(,\s*|\s*et\s*)*/', $match_protected, $amends)) {

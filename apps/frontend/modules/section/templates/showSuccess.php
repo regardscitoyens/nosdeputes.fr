@@ -16,7 +16,8 @@ else echo '</h1>';
 <span>Texte<?php if (count($lois) > 1) echo 's'; ?> de loi<?php if (count($lois) > 1) echo 's'; ?> N°
 <?php foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' '; ?>
 <br/>
-<?php echo link_to('Tous les amendements à ce dossier', '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois)).'&numero=all'); ?>
+<?php echo link_to('Tous les amendements à ce dossier',  '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois_amendees)).'&numero=all').'&nbsp;: ';
+foreach ($lois_amendees as $loi) echo link_to('loi N°'.$loi, '@find_amendements_by_loi_and_numero?loi='.$loi.'&numero=all').' ('.myTools::getLiasseLoiImpr($loi).', '.myTools::getLiasseLoiAN($loi).') '; ?>
 </span>
 <?php } ?>
 </div>
@@ -41,7 +42,7 @@ if (count($sommaire)) { ?>
 <ul>
 <?php foreach($section->getSubSections() as $subsection) :
 if ($subsection->id != $section->id) : ?>
-<li><?php echo link_to($subsection->titre, '@section?id='.$subsection->id); ?></li>
+<li><?php echo link_to($subsection->titre, '@interventions_seance?seance='.$subsection->getFirstSeance().'#table_'.$subsection->id); ?></li>
 <?php endif; endforeach;?>
 </ul>
 </div>

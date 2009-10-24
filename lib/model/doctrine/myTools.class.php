@@ -22,7 +22,13 @@ class myTools {
       return $match[3].' '.self::$num_mois[$match[2]].' '.$match[1];
     } else return $date;
   }
-  
+
+  public static function displayDateMoisAnnee($date) {
+    if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $date, $match)) {
+      return self::$num_mois[$match[2]].' '.$match[1];
+    } else return $date;
+  } 
+ 
   public static function displayDateTime($d) { 
     $date = substr($d,8,2)."/";        // jour 
     $date = $date.substr($d,5,2)."/";  // mois 
@@ -36,11 +42,11 @@ class myTools {
   }
 
   public static function getLiasseLoiAN($id) {
-    return link_to('AN', "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?typeEcran=avance&chercherDateParNumero=non&NUM_INIT=".$id."&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&SORT_EN_SEANCE=&DELIBERATION=&NUM_PARTIE=&DateDebut=&DateFin=&periode=&LEGISLATURE=13Amendements&QueryText=&Scope=TEXTEINTEGRAL&SortField=ORDRE_TEXTE&SortOrder=Asc&format=PDF&searchadvanced=Rechercher");
+    return link_to('liasse Assemblée', "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?typeEcran=avance&chercherDateParNumero=non&NUM_INIT=".$id."&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&SORT_EN_SEANCE=&DELIBERATION=&NUM_PARTIE=&DateDebut=&DateFin=&periode=&LEGISLATURE=13Amendements&QueryText=&Scope=TEXTEINTEGRAL&SortField=ORDRE_TEXTE&SortOrder=Asc&format=PDF&searchadvanced=Rechercher");
   }
 
   public static function getLiasseLoiImpr($id) {
-    return link_to('imprimable', "/liasses/liasse_".$id.".pdf");
+    return link_to('liasse imprimable', "/liasses/liasse_".$id.".pdf");
   }
 
   public static function clearHtml($s, $authorized_tags = '<strong><i><b><a><em>') {

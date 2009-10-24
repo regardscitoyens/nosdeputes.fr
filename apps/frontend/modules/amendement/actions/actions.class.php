@@ -163,7 +163,7 @@ class amendementActions extends sfActions
     } else {
       $this->amendements_query = doctrine::getTable('Amendement')->createQuery('a')
         ->whereIn('a.texteloi_id', $this->lois)
-        ->orderBy('a.texteloi_id, a.numero');
+        ->orderBy('a.texteloi_id DESC, a.numero');
     }
   }
 }

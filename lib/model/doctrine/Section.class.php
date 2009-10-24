@@ -24,8 +24,18 @@ class Section extends BaseSection
   public function getSubSections() {
     return $q = doctrine::getTable('Section')->createQuery('s')
       ->where('s.section_id = ?', $this->id)
-      ->orderBy('s.min_date ASC, s.timestamp ASC')->execute()
-      ;
+      ->orderBy('s.min_date ASC, s.timestamp ASC')->execute();
+  }
+  public function getFirstSeance() {
+    $q = doctrine_query::create()
+      ->from('Seance s, Section st, Intervention i')
+      ->select('s.id')
+      ->where('i.seance_id = s.id')
+      ->andwhere('i.section_id = st.id')
+      ->andWhere('(st.section_id = ? OR i.section_id = ? )', array($this->id, $this->id))
+      ->groupBy('s.id')
+      ->orderBy('st.min_date ASC, st.timestamp ASC')->fetchOne();
+    return $q->id;
   }
   public function getSeances() {
     $q = doctrine_query::create()
