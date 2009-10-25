@@ -275,7 +275,9 @@ public function executeList(sfWebRequest $request)
   }
 
   public static function topSort($a, $b) {
-    return $b[$_GET['sort']]['value'] - $a[$_GET['sort']]['value'];
+    if ($b[$_GET['sort']]['value'] == $a[$_GET['sort']]['value'])
+      return strcmp($a[0]['nom_de_famille'], $b[0]['nom_de_famille']);
+    else return $b[$_GET['sort']]['value'] - $a[$_GET['sort']]['value'];
   }
 
   public function executeTop(sfWebRequest $request)
