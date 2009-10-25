@@ -13,6 +13,8 @@
 	  echo '<span id="loggued_top">';
 	  if($sf_user->getAttribute('is_active') == true) { 
 	    echo link_to($sf_user->getAttribute('login'),'@citoyen?slug='.$sf_user->getAttribute('slug')).' - ';
-	  }
+	  } else {
+            echo $sf_user->getAttribute('login').' (e-mail non-validé) - ';
+          }
 	  echo link_to('Déconnexion','@signout'); echo '</span>';
 	}
