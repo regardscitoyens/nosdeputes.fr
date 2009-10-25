@@ -35,7 +35,7 @@ $menu_dossier = $selectinterv || $selectamdmt;
 $menu_citoyen = $selectcitoyen;
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <?php echo stylesheet_tag($style.'/style'); ?>
+    <?php echo stylesheet_tag($style.'/style.v.2.css'); ?>
     <?php echo stylesheet_tag($style.'/print'); ?>
     <!--[if lte IE 6]>
     <?php echo stylesheet_tag($style.'/ie6'); ?>
@@ -43,6 +43,7 @@ $menu_citoyen = $selectcitoyen;
     img, div { behavior: url('iepngfix/iepngfix.htc') }
     </style> 
     <![endif]-->
+		<?php echo javascript_include_tag('jquery-1.3.2.min.js'); ?>
   </head>
   <body>
   <div id="contenu">
@@ -133,7 +134,7 @@ $menu_citoyen = $selectcitoyen;
         </div>
       </div>
       <div id="bottom">
-        <a href="<?php echo url_for('@faq')?>"><?php echo image_tag($style.'/bottom_qui.png', array('alt' => 'Qui sommes-nous')); ?></a>
+        <a href="http://www.regardscitoyens.org"><?php echo image_tag($style.'/bottom_qui.png', array('alt' => 'Qui sommes-nous')); ?></a>
       </div>
     </div>
 <script type="text/javascript">
