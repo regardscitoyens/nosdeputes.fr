@@ -272,6 +272,13 @@ public function executeList(sfWebRequest $request)
     $this->forward404Unless(preg_match('/^(lastyear|2\d{3}2\d{3})$/', $this->session));
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->forward404Unless($this->parlementaire);
+    $this->sessions = Doctrine_Query::create()
+      ->select('s.session')
+      ->from('Seance s')
+      ->leftJoin('s.Presences p')
+      ->where('p.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('s.session IS NOT NULL AND s.session <> ""')
+      ->groupBy('s.session')->fetchArray();
   }
 
   public static function topSort($a, $b) {

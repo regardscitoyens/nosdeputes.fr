@@ -5,14 +5,6 @@ class plotComponents extends sfComponents
   public function executeParlementaire() {
     static $seuil_invective = 20;
     if (!isset($this->options)) $this->options = array();
-    if (!isset($this->options['plot']) || $this->options['plot'] != 'total')
-      $this->sessions = Doctrine_Query::create()
-        ->select('s.session')
-        ->from('Seance s')
-        ->leftJoin('s.Presences p')
-        ->where('p.parlementaire_id = ?', $this->parlementaire->id)
-        ->andWhere('s.session IS NOT NULL AND s.session <> ""')
-        ->groupBy('s.session')->fetchArray();
     if (!isset($this->options['session'])) $this->options['session'] = 'lastyear';
     if ($this->options['session'] == 'lastyear') {
       if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {

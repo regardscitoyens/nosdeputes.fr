@@ -1,5 +1,6 @@
-<?php $nResults = $pager->getNbResults(); ?>
-<h1>Composition du groupe "<?php echo $orga->getNom(); $sf_response->setTitle('Composition du groupe "'.$orga->getNom().'"'); ?>" (<?php echo $orga->getSmallNomGroupe(); ?>) <?php echo $orga->getCouleur(); ?></h1>
+<?php $nResults = $pager->getNbResults(); 
+$title = "Composition du groupe ".$orga->getNom()." (".$orga->getSmallNomGroupe().")"; ?>
+<h1><?php echo $title." ".$orga->getCouleur(); $sf_response->setTitle($title); ?></h1>
 <h2><?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?>&nbsp;:</h2>
 <ul>
 <?php foreach($pager->getResults() as $parlementaire) : ?>

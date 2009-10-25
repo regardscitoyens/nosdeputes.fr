@@ -6,20 +6,6 @@ if (isset($options['questions'])) $plotarray = array_merge($plotarray, array('n_
 if (isset($options['link'])) $plotarray = array_merge($plotarray, array('link' => $options['link']));
 //if (isset($options['fonctions'])) $plotarray = array_merge($plotarray, array('fonctions' => $fonctions));
 
-if (!isset($options['plot']) || $options['plot'] != 'total') { ?>
-<div class="par_session"><p>
-<?php if ($plotarray['time'] != 'lastyear')
-  echo '<a href='.url_for('@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear').'>';
-  echo 'Les 12 derniers mois';
-  if ($plotarray['time'] != 'lastyear') echo '</a>';
-  foreach ($sessions as $s) {
-  echo ', ';
-  if ($plotarray['time'] != $s['session']) echo '<a href="'.url_for('@parlementaire_plot?slug='.$parlementaire->slug.'&time='.$s['session']).'">';
-  echo 'la session '.preg_replace('/^(\d{4})/', '\\1-', $s['session']);
-  if ($plotarray['time'] != $s['session']) echo '</a>';
-  } ?>
-</p></div>
-<?php }
 $n = count($labels);
 $presences = array_fill(1, $n, 0);
 $participations = array_fill(1, $n, 0);
