@@ -9,8 +9,8 @@ class plotComponents extends sfComponents
       $this->sessions = Doctrine_Query::create()
         ->select('s.session')
         ->from('Seance s')
-        ->leftJoin('s.Interventions i')
-        ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+        ->leftJoin('s.Presences p')
+        ->where('p.parlementaire_id = ?', $this->parlementaire->id)
         ->andWhere('s.session IS NOT NULL AND s.session <> ""')
         ->groupBy('s.session')->fetchArray();
     if (!isset($this->options['session'])) $this->options['session'] = 'lastyear';
@@ -19,12 +19,9 @@ class plotComponents extends sfComponents
         $date = strtotime($this->parlementaire->fin_mandat);
         $this->mandat_clos = true;
       } else $date = time();
-      $annee = date('Y', $date); $sem = date('W', $date); if ($sem == 53) { $annee++; $sem = 1; }
+      $annee = date('Y', $date); $sem = date('W', $date) + 1; if ($sem >= 53) { $annee++; $sem -= 52; }
       $last_year = $date - 31536000;
-      if ($this->parlementaire->debut_mandat > date('Y-m-d', $last_year)) {
-        $date_debut = $this->parlementaire->debut_mandat;
-        $last_year = strtotime($this->parlementaire->debut_mandat);
-      } else $date_debut = date('Y-m-d', $last_year);
+      $date_debut = date('Y-m-d', $last_year);
       $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year); if ($sem0 == 53) { $annee0++; $sem0 = 1; }
       $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
     } else {
@@ -35,7 +32,7 @@ class plotComponents extends sfComponents
         ->orderBy('s.date ASC');
       $date_debut = $query4->fetchOne();
       $annee0 = $date_debut['annee'];
-      $sem0 = $date_debut['numero_semaine'] - 1;
+      $sem0 = $date_debut['numero_semaine'];
       $query4 = Doctrine_Query::create()
         ->select('s.annee, s.numero_semaine')
         ->from('Seance s')
@@ -43,11 +40,11 @@ class plotComponents extends sfComponents
         ->orderBy('s.date DESC');
       $date_fin = $query4->fetchOne();
       $annee = $date_fin['annee'];
-      $sem = $date_fin['numero_semaine'] + 1;
+      $sem = $date_fin['numero_semaine'];
       $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
     }
     $this->labels = $this->getLabelsSemaines($n_weeks, $annee0, $sem0);
-    $this->vacances = $this->getVacances($n_weeks, $annee0, $sem0);
+    $this->vacances = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
 
     $query = Doctrine_Query::create()
       ->select('COUNT(p.id) as nombre, p.id,s.type, s.annee, s.numero_semaine')
@@ -123,9 +120,16 @@ class plotComponents extends sfComponents
     }
   }
 
-  public static function getVacances($n_weeks, $annee0, $sem0) {
-    $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
+  public static function getVacances($n_weeks, $annee0, $sem0, $debut_mandat) {
     $n_vacances = array_fill(1, $n_weeks, 0);
+    $mandat_an0 = date('Y', $debut_mandat);
+    $mandat_sem0 = date('W', $debut_mandat);
+    if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
+    $week0 = ($mandat_an0 - $annee0)*52 + $mandat_sem0 - $sem0 + 1;
+    for ($n = 0; $n < $week0 ; $n++) 
+      $n_vacances[$n] = 20;
+
+    $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
     if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
       $n = ($vacance['annee'] - $annee0)*52 + $vacance['semaine'] - $sem0 + 1;
       if ($n > 0 && $n < $n_weeks)
