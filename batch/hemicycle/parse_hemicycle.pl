@@ -110,7 +110,7 @@ sub checkout {
 	$contexte .= ' > '.$titre2;
     }
     $out =  '{"contexte": "'.$contexte.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
-    if ($ploi = getProjetLoi($titre1)) {
+    if ($ploi = getProjetLoi($titre1) && $contexte !~ /questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement/i) {
 	$out .= "\"numeros_loi\": \"$ploi\", ";
     }
     if ($amendements) {
