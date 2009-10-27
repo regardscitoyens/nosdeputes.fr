@@ -57,13 +57,15 @@ sub contact {
 	    }
 	}elsif (/Site internet/) {
 	    $a = $p->get_tag('a');
-	    $depute{'Site_Web'} = $a->[1]->{'href'};
+	    $site = $a->[1]->{'href'};
+            $site =~ s/\s+//g;
+            $depute{'Site_Web'} = $site;
 	}elsif (/Adresses/){
 	    while ($t = $p->get_tag('li', '/ul')) {
 		last if ($t->[0] =~ /^\//);
 		$text = $p->get_text('/li');
 		$text =~ s/^\s+//;
-		if ($text =~ /^\S+\@/) {
+                if ($text =~ /^\S+\@/) {
 		    while ($text =~ /(\S+)/g) {
 			${$depute{'Mails'}}{$1} = 1;
 		    }
