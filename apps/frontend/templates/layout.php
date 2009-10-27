@@ -35,7 +35,7 @@ $menu_dossier = $selectinterv || $selectamdmt;
 $menu_citoyen = $selectcitoyen;
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <?php echo stylesheet_tag($style.'/style.v.2.css'); ?>
+    <?php echo stylesheet_tag($style.'/style.css'); ?>
     <?php echo stylesheet_tag($style.'/print'); ?>
     <!--[if lte IE 6]>
     <?php echo stylesheet_tag($style.'/ie6'); ?>
