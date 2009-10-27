@@ -79,7 +79,8 @@ while($string =~ /ordre du jour([^<]+\W(proposition|loi)\W[^<]+)\(n\D+(\d+[^\)]+
     @no = split(/,/, $no);
     $no = '';
     foreach (@no) {
-	s/(\d{4})(\d+)/$1,$2/g;
+	s/(\d{4})(\d{4})/$1,$2/g;
+        s/(\d{3})(\d{3})/$1,$2/g;
 	s/^0+//;
 	s/,0+//;
 	$no .= $_.',';
