@@ -72,12 +72,22 @@ $string =~ s/<\/?sup>//g;
 $string =~ s/<!--[^A-Z]+-->//g;
 #Recherche des numéros de  de loi
 while($string =~ /ordre du jour([^<]+\W(proposition|loi)\W[^<]+)\(n\D+(\d+[^\)]+)\)/ig) {
-#    print "$1 $2 $3\n";
+#    print "$1 - $2 - $3\n";
+    $titre = lc $1;
     $no = $3;
+    $no =~ s/[^\d,]//g;
+    @no = split(/,/, $no);
+    $no = '';
+    foreach (@no) {
+	s/(\d{4})(\d+)/$1,$2/g;
+	s/^0+//;
+	s/,0+//;
+	$no .= $_.',';
+    }
+    chop $no;
     if ($no) {
-	$titre = lc $1;
 	$titre =~ s/[^<]+ loi //;
-	$ploi{$titre} = $no
+	$ploi{$titre} = $no;
     }	
 }
 
@@ -110,7 +120,7 @@ sub checkout {
 	$contexte .= ' > '.$titre2;
     }
     $out =  '{"contexte": "'.$contexte.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
-    if ($ploi = getProjetLoi($titre1) && $contexte !~ /questions?\sau|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement/i) {
+    if (($ploi = getProjetLoi($titre1)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement/i) {
 	$out .= "\"numeros_loi\": \"$ploi\", ";
     }
     if ($amendements) {
@@ -274,6 +284,7 @@ foreach $line (split /\n/, $string)
 		$titre2 = $1;
 	    }
 	    $titre2 =~ s/a href[^>]+>//g;
+	    $titre2 =~ s/\///g;
 	    $titre2 =~ s/\s+$//;
 	    $amendements = @pre_amendements = ();
 	    $line = "<p>|$titre2|</p>";
@@ -284,6 +295,8 @@ foreach $line (split /\n/, $string)
 	    $titre =~ s/<\/?[^>]+>//g;
 	    $titre =~ s/<//g;
 	    $titre =~ s/[\(\/][^\)\/]+[\)\/]//;
+	    $titre =~ s/\///g;
+	    $titre =~ s/\s+$//;
 	    unless ($titre) {
 		next;
 	    }
