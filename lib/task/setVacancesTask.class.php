@@ -34,7 +34,10 @@ class setVacancesTask extends sfBaseTask {
     $date = time();
     $last_annee = date('Y', $date);
     $last_sem = date('W', $date);
+    $day = date('w', $date);
+    if ($day < 3) $last_sem--;
     if ($last_sem == 53) { $last_annee++; $last_sem = 1; }
+    if ($last_sem == 0) { $last_annee--; $last_sem = 53; }
     while (($annee < $last_annee) || ($annee == $last_annee && $sem <= $last_sem)) {
       array_push($semaines, array("annee" => $annee, "semaine" => $sem));
       if ($sem == 52) { $annee++; $sem = 1; }

@@ -11,7 +11,7 @@ class plotComponents extends sfComponents
         $date = strtotime($this->parlementaire->fin_mandat);
         $this->mandat_clos = true;
       } else $date = time();
-      $annee = date('Y', $date); $sem = date('W', $date) + 1; if ($sem >= 53) { $annee++; $sem -= 52; }
+      $annee = date('Y', $date); $sem = date('W', $date); if ($sem >= 53) { $annee++; $sem -= 52; }
       $last_year = $date - 31536000;
       $date_debut = date('Y-m-d', $last_year);
       $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year); if ($sem0 == 53) { $annee0++; $sem0 = 1; }
