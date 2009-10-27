@@ -184,7 +184,10 @@ foreach $line (split /\n/, $string)
 	    } elsif ($line =~ /\<\/num_partie\>\s*-\s*(.*)\<\/p\>/i) {
 		$line = $1;
 		numero();
-	    } 
+	    }
+        } elsif (!$amdmt{'serie'} && ($line =~ /class="numamendement".*à\s+(\d+)\W/i)) {
+          $num_ident = $1;
+          $amdmt{'serie'} = ($amdmt{'numero'}+1).'-';
 	} elsif (!$amdmt{'loi'} && $line =~ /class="titreinitiative"/i) {
 	    if ($line =~ /\<num_init\>\s*(\d+)\s*\<\/num_init\>/i) {
 		$amdmt{'loi'} = $1;
