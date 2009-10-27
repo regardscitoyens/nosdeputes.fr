@@ -13,7 +13,7 @@ foreach $url (@url) {
     $a->get($url);
     $content = $a->content;
     $p = HTML::TokeParser->new(\$content);
-    $cpt = 0; 
+    $cpt = 0;
     while ($t = $p->get_tag('a')) {
 	$txt = $p->get_text('/a');
 	if ($txt =~ /(\d+[\Serm]+\s+\S+ance|S\S+ance uniq)/i && $t->[1]{href} !~ /provisoire/) {
@@ -23,10 +23,11 @@ foreach $url (@url) {
 	    $file =~ s/\#.*//;
 	    #on ne peut pas quitter dès le premier, seulement au bout de 
 	    #trois fois on est sur qu'il n'y a pas de nouveaux fichiers
-	    if (-s "html/$file") {
+	    $size = -s "html/$file";
+	    if ($size) {
 		$cpt++;
 		exit if ($cpt > 3);
-		break;
+		next;
 	    }
 	    $cpt = 0;
 	    print "$file\n";
