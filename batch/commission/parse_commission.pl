@@ -227,9 +227,10 @@ foreach $line (split /\n/, $string)
 	    if ($line =~ /(\d+)\s*(h|heures?)\s*(\d+|)/i) {
 		$heure = sprintf("%02d:%02d", $1, $2 || "00");
 	    }
-	}elsif(!$commission && $line =~ /groupe|commission|mission|délégation|office/i) {
-	    if ($line =~ /[\>\|]\s*((Groupe|Comm|Miss|Délé|Offic)[^\>\|]+)[\<\|]/) {
+	}elsif(!$commission && $line =~ /groupe|commission|mission|délégation|office|comité/i) {
+	    if ($line =~ /[\>\|]\s*((Groupe|Com|Miss|Délé|Offic)[^\>\|]+)[\<\|]/) {
 		$commission = $1;
+		$commission =~ s/\s*$//;
 	    }
 	}elsif($line =~ /SOMnumcr/i) {
 	    if ($line =~ /\s0*(\d+)/ && $1 > 1) {
