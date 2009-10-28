@@ -9,14 +9,10 @@ do
   mv TMPFILE web/$url.html
 done;
 
-for (( seance_id = $(echo "select id from seance order by id DESC limit 1 " | mysql $MYSQLID $DBNAME | tail -n 1) ; seance_id > 0 ; seance_id-- ))
+for seance_id in $(echo "select DISTINCT seance_id from presence where updated_at > (NOW() - 60*60*24)" | mysql $MYSQLID $DBNAME )
 do
-  if ! ls web/seance/$seance_id.html > /dev/null 2>&1 || test -z web/seance/$seance_id.html ;
-  then
 	echo $seance_id
 	rm web/seance/$seance_id.html 2> /dev/null
 	curl -q http://www.nosdeputes.fr/seance/$seance_id > TMPFILE
 	mv TMPFILE web/seance/$seance_id.html
-  fi
 done
-
