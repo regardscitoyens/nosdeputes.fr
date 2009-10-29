@@ -28,6 +28,20 @@ class myTools {
       return self::$num_mois[$match[2]].' '.$match[1];
     } else return $date;
   } 
+
+  static $day_week = array(
+     "0" => "Lundi",
+     "1" => "Mardi",
+     "2" => "Mercredi",
+     "3" => "Jeudi",
+     "4" => "Vendredi",
+     "5" => "Samedi",
+     "6" => "Dimanche");
+
+  public static function displayDateSemaine($date) {
+    $day = self::$day_week[date('w', strtotime($date))];
+    return $day.' '.self::displayDate($date); 
+  }
  
   public static function displayDateTime($d) { 
     $date = substr($d,8,2)."/";        // jour 

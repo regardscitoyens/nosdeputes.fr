@@ -87,6 +87,11 @@ class Seance extends BaseSeance
     return $q->fetchArray();
   }
 
+  public function getTypeOrga() {
+    if ($this->type == 'hemicycle') return "Hémicycle";
+    return $this->getOrganisme()->getNom();
+  }
+
   public function getTitre($miniature = 0, $hemicycle = 0, $ref = '') {
     $titre = '';
     if ($ref != '')
