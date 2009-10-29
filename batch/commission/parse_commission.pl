@@ -219,9 +219,11 @@ foreach $line (split /\n/, $string)
     }elsif ($line =~ /<h[1-9]+/i) {
 	rapporteur();
 #	print "$line\n";
-	if ($line =~ /SOMdate|\"seance\"/) {
-	    if ($line =~ /\w+\s+(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/i) {
+	if (!$date && $line =~ /SOMdate|\"seance\"|h2/) {
+	    if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/) {
+	      if ($line =~ /\w+\s+(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/i) {
 		$date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
+	      }
 	    }
 	}elsif ($line =~ /SOMseance|"souligne_cra"/i) {
 	    if ($line =~ /(\d+)\s*(h|heures?)\s*(\d+|)/i) {

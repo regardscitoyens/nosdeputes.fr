@@ -13,7 +13,6 @@ while ($ok) {
     $a->get('http://recherche2.assemblee-nationale.fr/resultats_generique.jsp?texterecherche=*&typedoc=crreunions&auteurid=&legislatureNum=13&categoryid=&ResultCount='.$count.'&ResultStart='.$start);
     $content = $a->content;
     $p = HTML::TokeParser->new(\$content);
-    
     while ($t = $p->get_tag('a')) {
 	$txt = $p->get_text('/a');
 	if ($txt =~ /compte rendu|e nationale \~/i) {
@@ -37,10 +36,11 @@ while ($ok) {
 }
 
 @url = keys %url;
-
+push(@url, "http://www.assemblee-nationale.fr/13/budget/plf2010/commissions_elargies/cr/");
 $a = WWW::Mechanize->new();
 
 foreach $url (@url) {
+
     $a->get($url);
     $content = $a->content;
     $p = HTML::TokeParser->new(\$content);
@@ -49,7 +49,7 @@ foreach $url (@url) {
     
     while ($t = $p->get_tag('a')) {
 	$txt = $p->get_text('/a');
-	if ($txt =~ /compte rendu/i) {
+	if ($txt =~ /compte rendu|mission/i && $t->[1]{href} =~ /\d\.asp/) {
 	    $a->get($t->[1]{href});
 	    $file = $a->uri();
 	    $file =~ s/\//_/gi;
