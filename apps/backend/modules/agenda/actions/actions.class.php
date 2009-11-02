@@ -5,7 +5,6 @@ class agendaActions extends sfActions
 
   public function executeSemaine(sfWebRequest $request)
   {
-    if (!($this->getUser()->isAuthenticated() && !$this->getUser()->hasCredential('membre'))) $this->forward404();
     $this->annee = $request->getParameter('annee');
     if (!$this->annee) $this->annee = date('Y', time());
     $this->semaine = $request->getParameter('semaine');
@@ -18,5 +17,4 @@ class agendaActions extends sfActions
       ->orderBy('s.date, s.type, o.nom, s.moment');
     $this->seances = $query->execute();
   }
-
 }
