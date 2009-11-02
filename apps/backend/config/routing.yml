@@ -25,5 +25,11 @@ default_index:
   url:   /:module
   param: { action: index }
 
+agenda:
+  url: /semaine/:annee/:semaine
+  param: {module: agenda, action: semaine}
+
+
+
 default:
   url:   /:module/:action/*

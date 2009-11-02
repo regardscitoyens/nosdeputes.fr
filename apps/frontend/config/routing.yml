@@ -3,10 +3,6 @@ mail_test:
   url: /mail
   param: {module: mail, action: test}
 
-agenda:
-  url: /semaine/:annee/:semaine
-  param: {module: agenda, action: semaine}
-
 homepage:
   url: /
   param: {module: parlementaire, action: index}
