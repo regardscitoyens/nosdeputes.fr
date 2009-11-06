@@ -1,7 +1,7 @@
 <h1>Toutes les circonscriptions électorales</h1><?php 
 $sf_response->setTitle('Toutes les circonscriptions électorales'); ?>
 <h2>Carte des circonscriptions</h2>
-<p><?php include 'circonscriptions/france.html' ?></p>
+<p><?php CirconscriptionActions::echoCircoMap("full", 900, 0); ?></p>
 <h2>Liste des départements</h2>
 <div id="circo_table">
 <table>

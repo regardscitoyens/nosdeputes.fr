@@ -11,4 +11,4 @@ if (preg_match('/\d[a-z]/i', $num))
  else 
    $fixednum = sprintf('%03d',$num);
 
-include 'circonscriptions/'.$fixednum.'.html';
+CirconscriptionActions::echoCircoMap($fixednum, 250, 0);

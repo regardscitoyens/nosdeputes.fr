@@ -68,6 +68,9 @@ list_parlementaires_circo_search:
 list_parlementaires_circo_france:
   url: /circonscription/carte
   param: {module: circonscription, action: map}
+circo_image_png:
+  url: /circonscription/image/:circo/:w/:h
+  param: {module: circonscription, action: getCircoimagepng}
 redirect_parlementaires_circo:
   url: /circonscription/:code
   param: {module: circonscription, action: redirect}
