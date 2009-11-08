@@ -11,5 +11,5 @@ if(!$c->is_public)
   validation par email. Les autres utilisateurs ne peuvent pas le
   voir.</strong></p>";
 ?>
-<p class="clear">Vous trouvez ce commentaire constructif : <?php include_component('rate', 'show', array('object' => $c)); ?> </p>
+<p class="clear" align="right">Vous trouvez ce commentaire constructif : <?php include_component('rate', 'show', array('object' => $c)); ?> </p>
 </div>

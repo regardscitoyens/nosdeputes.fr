@@ -22,7 +22,7 @@ class commentaireActions extends sfActions
   public function executePost(sfWebRequest $request)
   {
     $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement?id=', 'QuestionEcrite' => '@question?id=');
-    $about = array('Intervention' => "A propos d'une intervention du ", 'Amendement' => "A propos d'un amendement déposé le ", 'QuestionEcrite' => "A propos d'une question ecrite du ");
+    $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "A propos d'une question écrite d");
 
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');
@@ -99,7 +99,25 @@ $values['password'], false, $this))) {
     $commentaire->object_id = $this->id;
     $commentaire->lien = $redirect_url[$this->type].$this->id;
     $object = doctrine::getTable($this->type)->find($this->id);
-    $commentaire->presentation = $about[$this->type].date('d/m/Y', strtotime($object->date));
+
+    if ($this->type != 'QuestionEcrite') {
+      $section = $object->getSection();
+      if ($section)
+        $present = $section->getSection(1)->getTitre();
+      else if ($this->type == 'Intervention' && $object->type == 'commission')
+        $present = $object->getSeance()->getOrganisme()->getNom();    
+    }
+    if (isset($present)) $present .= ' - ';   
+    else $present = '';
+    $present .= $about[$this->type];
+    if (isset($object->parlementaire_id)) {
+      $nom = $object->getParlementaire()->nom;
+      if (preg_match('/^[AEIOUYÉÈÊ]/', $nom)) $nom = '\''.$nom;
+      else $nom = 'e '.$nom;
+      $present .= $nom;
+    }
+    $present .= ' le '.date('d/m/Y', strtotime($object->date));
+    $commentaire->presentation = $present;
     $commentaire->citoyen_id = $citoyen_id;
     $commentaire->is_public = $is_active;
     $commentaire->ip_address = $ip;

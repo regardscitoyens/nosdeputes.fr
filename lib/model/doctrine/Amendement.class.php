@@ -87,6 +87,10 @@ class Amendement extends BaseAmendement {
     return $signa;
   }
 
+  public function getSection() {
+    return PluginTagTable::getObjectTaggedWithQuery('Section', array('loi:numero='.$this->texteloi_id))->fetchOne();
+  }
+
   public function getTitre() {
     $parent = 0;
     $pluriel = "";

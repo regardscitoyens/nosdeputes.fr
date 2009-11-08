@@ -14,9 +14,7 @@ class amendementActions extends sfActions
      $this->amendement = $query->fetchOne();
      $this->forward404Unless($this->amendement);
 
-     $section = PluginTagTable::getObjectTaggedWithQuery('Section', array('loi:numero='.$this->amendement->texteloi_id))
-       ->fetchOne();
-     if (!$section)
+     if (!($section = $this->amendement->getSection()))
        $this->section = NULL;
      else $this->section = $section->getSection(1);
 
