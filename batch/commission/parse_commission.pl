@@ -194,10 +194,10 @@ foreach $line (split /\n/, $string)
 	    checkout() if ($intervenant);	    
 	    rapporteur();
 	    $found = 1;
-	}elsif ($line =~ s/^\|(M[^\|\:]+)[\|\:]// ) {
+	}elsif ($line =~ s/^\|(M[^\|\:]+)[\|\:](\/[^\/]+\/)?// ) {
 	    checkout();
 	    $majIntervenant = 1;
-	    $intervenant = setIntervenant($1);
+	    $intervenant = setIntervenant($1.$2);
 	    $found = 1;
 	}
 	$line =~ s/^\s+//;
@@ -220,7 +220,7 @@ foreach $line (split /\n/, $string)
 	rapporteur();
 #	print "$line\n";
 	if (!$date && $line =~ /SOMdate|\"seance\"|h2/) {
-	    if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/) {
+	    if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
 	      if ($line =~ /\w+\s+(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/i) {
 		$date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
 	      }
