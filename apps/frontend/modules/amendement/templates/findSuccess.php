@@ -11,7 +11,7 @@
   echo $total;?> amendement<?php if ($total>1) echo 's'; ?> trouvé<?php if ($total>1) echo 's'; ?>&nbsp;:</p>
 <ul>
 <?php foreach($amendements as $a) :?>
-<li><?php echo link_to('Amendement n°'.$a->numero.' portant sur le texte de loi n°'.$a->texteloi_id.', '.$a->sujet, '@amendement?id='.$a->id); ?></li>
+<li><?php echo link_to('Amendement n°'.$a->numero.' portant sur le texte de loi n°'.$a->texteloi_id.$a->getLettreLoi(1).', '.$a->sujet, '@amendement?id='.$a->id); ?></li>
 <?php endforeach; ?>
 </ul>
 <?php } } ?>

@@ -156,9 +156,9 @@ class amendementActions extends sfActions
         foreach($numeros as $numero) {
           $query = PluginTagTable::getObjectTaggedWithQuery('Amendement', array('loi:amendement='.$numero));
           $query->andWhere('texteloi_id = ?', $loi);
-          $res = $query->fetchOne();
-          if ($res) {
-            $amendements[$res->id] = $res;
+          $res = $query->execute();
+          if (count($res)) foreach ($res as $amd) {
+            $amendements[$amd->id] = $amd;
           }
         }
       }
@@ -170,7 +170,7 @@ class amendementActions extends sfActions
     } else {
       $this->amendements_query = doctrine::getTable('Amendement')->createQuery('a')
         ->whereIn('a.texteloi_id', $this->lois)
-        ->orderBy('a.texteloi_id DESC, a.numero');
+        ->orderBy('a.texteloi_id DESC, a.numero, a.source');
     }
   }
 }

@@ -2,7 +2,7 @@
       if ($section) $titre2 = link_to(ucfirst($section->titre), '@section?id='.$section->id);
       else $titre2=""; ?>
 <?php $sf_response->setTitle(strip_tags($titre2.'  '.$titre1)); ?>
-<div class="amendement" id="L<?php echo $amendement->texteloi_id; ?>A<?php echo $amendement->numero; ?>">
+<div class="amendement" id="L<?php echo $amendement->texteloi_id.$amendement->getLettreLoi(); ?>-A<?php echo $amendement->numero; ?>">
 <div class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></div>
 <h1><?php echo $titre1; ?></h1>
 <h2><?php echo $titre2; ?></h2>
@@ -37,7 +37,7 @@
   } ?></p></div>
 </div>
 <div class="sujet">
-  <h3><?php echo $amendement->getSujet().' de la loi N° '.myTools::getLinkLoi($amendement->texteloi_id); ?></h3>
+  <h3><?php echo $amendement->getSujet().' de la loi N° '.myTools::getLinkLoi($amendement->texteloi_id).$amendement->getLettreLoi(1); ?></h3>
 </div>
 <div class="texte_intervention">
   <?php echo $amendement->getTexte(); ?>
