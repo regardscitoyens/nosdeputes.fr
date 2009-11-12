@@ -132,7 +132,7 @@ class Amendement extends BaseAmendement {
   }
 
   public function getLettreLoi($parentheses=0) {
-    if (preg_match('/([ABCDEFGH])0/', $this->source, $match)) {
+    if (preg_match('/\d{4}([A-Z])\d{4}/', $this->source, $match)) {
       if ($parentheses == 1) return ' ('.$match[1].')';
       else return $match[1];
     } else return '';
