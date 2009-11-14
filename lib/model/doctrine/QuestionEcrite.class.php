@@ -41,11 +41,14 @@ class QuestionEcrite extends BaseQuestionEcrite
   public function uniqueMinistere() 
   {
     $ministere = 'Ministère d';
-    $ministre = preg_replace('/^.*\/\s*([\wàéëêèïîôöûüÉ]+)$/', '\\1', $this->ministere);
-    $ministre = preg_replace('/^([\wàéëêèïîôöûüÉ]+)[,\s].*$/', '\\1', $ministre);
+    if (preg_match('/(Affaires\s+[\wàéëêèïîôöûüÉ]+)/', $this->ministere, $match)) $ministre = $match[1];
+    else {
+      $ministre = preg_replace('/^.*\/\s*([\wàéëêèïîôöûüÉ]+)$/', '\\1', $this->ministere);
+      $ministre = preg_replace('/^([\wàéëêèïîôöûüÉ]+)[,\s].*$/', '\\1', $ministre);
+    }
     if (preg_match('/^(Affaires|Sports|Transports|Solidarités)/', $ministre)) $ministere .= 'es ';
     else if (preg_match('/^[AEÉIOU]/', $ministre)) $ministere .= 'e l\'';
-    else if (preg_match('/^(Santé|Culture|Défense|Justice|Consommation|Solidarité)/', $ministre)) $ministere .= 'e la ';
+    else if (preg_match('/^(Santé|Coopération|Culture|Défense|Justice|Consommation|Solidarité)/', $ministre)) $ministere .= 'e la ';
     else $ministere .= 'u ';
     if (preg_match('/^Premier/', $ministre)) $ministere = 'Premier Ministre';
     else $ministere .= $ministre;
