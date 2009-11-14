@@ -10,7 +10,9 @@ if (isset($parlementaire)) {
 foreach($commentaires as $c)
 {
   $item = new sfFeedItem();
-  $item->setTitle($c->getPresentation());
+  if (isset($parlementaire))
+    $item->setTitle($c->getShortPresentation('noauteur', 'novirgule'));
+  else $item->setTitle($c->getPresentation());
   $item->setLink('http://'.$_SERVER['HTTP_HOST'].url_for($c->getLien()));
   $item->setAuthorName($c->getCitoyen()->login);
   $item->setPubdate(strtotime($c->created_at));

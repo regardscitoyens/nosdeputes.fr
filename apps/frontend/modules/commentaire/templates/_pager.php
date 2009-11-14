@@ -1,7 +1,9 @@
 <?php foreach($pager->getResults() as $c) 
 {
 $nomPartial = (isset($partial)) ? 'show'.ucfirst($partial).'Commentaire' : 'showCommentaire';
-include_partial($nomPartial, array('c' => $c)); ?>
+$options = array('c' => $c);
+if (isset($presentation)) $options = array_merge($options, array('presentation' => $presentation));
+include_partial($nomPartial, $options); ?>
 <?php } ?>
 <?php if ($pager->haveToPaginate()) :
 
