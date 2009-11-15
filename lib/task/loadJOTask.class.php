@@ -20,6 +20,8 @@ class loadJOTask extends sfBaseTask
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) !== false) {
+	  if (! is_file($dir.$file))
+	     continue;
 	  foreach(file($dir.$file) as $line) {
 	    $jo = json_decode($line);
 	    if (!$jo) {
@@ -61,6 +63,7 @@ class loadJOTask extends sfBaseTask
 	    $commission->free();
 	    $depute->free();
 	  }
+	  unlink($dir.$file);
 	}
         closedir($dh);
       }

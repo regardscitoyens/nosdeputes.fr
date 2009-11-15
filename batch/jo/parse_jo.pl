@@ -24,7 +24,7 @@ while(<FILE>) {
 	s/<br>/ /g;
 	$lines .= $_;
     }
-    if (/Membres présents ou excusés/) {
+    if (/Membres? présents? ou excusés?/) {
 	$on = 1;
     }
 }
