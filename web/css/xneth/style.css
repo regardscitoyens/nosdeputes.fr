@@ -473,6 +473,7 @@ h1 {
   font: 8pt Tahoma, Geneva, Arial, Sans-serif;
   float:left;
   margin-top:0px;
+  max-width: 115px;
 }
 
 .menu_recherche p {
