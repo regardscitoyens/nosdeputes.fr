@@ -81,5 +81,9 @@ class questionsActions extends sfActions
     } else $this->query->leftJoin('i.Parlementaire p');
 
     $this->query->orderBy('date DESC');
+    if ($request->getParameter('rss')) {
+      $this->setTemplate('rss');
+      $this->feed = new sfRssFeed();
+    }
   }
 }

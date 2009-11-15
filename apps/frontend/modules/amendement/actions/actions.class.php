@@ -133,6 +133,10 @@ class amendementActions extends sfActions
           ->andWhere('pa.parlementaire_id = ?', $this->parlementaire->id);
     }
     $this->query->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
+    if ($request->getParameter('rss')) {
+      $this->setTemplate('rss');
+      $this->feed = new sfRssFeed();
+    }
   }
 
   public function executeFind(sfWebRequest $request)

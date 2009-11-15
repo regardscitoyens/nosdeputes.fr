@@ -170,5 +170,9 @@ public function executeSearch(sfWebRequest $request)
 	->leftJoin('i.Section si');
     }
     $this->query->orderBy('date DESC, timestamp ASC');
+    if ($request->getParameter('rss')) {
+      $this->setTemplate('rss');
+      $this->feed = new sfRssFeed();
+    }
   }
 }

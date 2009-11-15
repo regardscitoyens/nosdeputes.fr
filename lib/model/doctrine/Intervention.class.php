@@ -10,7 +10,9 @@ class Intervention extends BaseIntervention
   }
 
   public function __toString() {
-    return strip_tags($this->intervention);
+    if (strlen($this->intervention) > 1024)
+      return substr($this->intervention, 0, 512).'...';
+    return $this->intervention;
   }
 
   public function getTitre() {
