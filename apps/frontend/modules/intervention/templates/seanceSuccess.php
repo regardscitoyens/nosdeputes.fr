@@ -100,7 +100,7 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
   <?php } ?>
 <?php if (!$didascalie) : ?>
     <div class="commentaires" id='com_<?php echo $intervention->id; ?>' style="clear: both;">
-      <span id="com_link_<?php echo $intervention->id; ?>"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> - </span><span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
+      <span class="com_link" id="com_link_<?php echo $intervention->id; ?>"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> - </span><span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
   <?php endif; ?>
   </div></div>
@@ -110,7 +110,10 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
 
 nbCommentairesCB = function(html){
 	  ids = eval('(' +html+')');
+          $('.com_link').hide();
 	  for(i in ids) {
+            if (i < 0)
+               continue;
 	    if (ids[i] == 0) {
 	      $('#com_link_'+i).text('');
 	    }else if (ids[i] == 1) {
@@ -118,6 +121,7 @@ nbCommentairesCB = function(html){
 	    }else {
 	      $('#com_link_'+i+' a').text("Voir les "+ids[i]+" commentaires");
 	    }
+            $('#com_link_'+i).show();
 	  }};
 
 additional_load = function() {
