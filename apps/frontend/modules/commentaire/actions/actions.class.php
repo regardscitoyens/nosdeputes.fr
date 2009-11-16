@@ -99,15 +99,14 @@ $values['password'], false, $this))) {
     $commentaire->object_id = $this->id;
     $commentaire->lien = $redirect_url[$this->type].$this->id;
     $object = doctrine::getTable($this->type)->find($this->id);
-
+    $present = '';
     if ($this->type != 'QuestionEcrite') {
-      $section = $object->getSection();
-      if ($section)
+      if ($section = $object->getSection())
         $present = $section->getSection(1)->getTitre();
-      else if ($this->type == 'Intervention' && $object->type == 'commission')
+      if ($present == '' && $this->type == 'Intervention' && $object->type == 'commission')
         $present = $object->getSeance()->getOrganisme()->getNom();    
     }
-    if (isset($present)) $present .= ' - ';   
+    if ($present != '') $present .= ' - ';   
     else $present = '';
     $present .= $about[$this->type];
     if (isset($object->parlementaire_id)) {
