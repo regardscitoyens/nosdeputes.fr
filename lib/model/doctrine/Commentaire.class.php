@@ -15,14 +15,22 @@ class Commentaire extends BaseCommentaire
 
   protected static $mois = array('01'=>'janvier', '02'=>'février', '03'=>'mars', '04'=>'avril', '05'=>'mai', '06'=>'juin', '07'=>'juillet', '08'=>'août', '09'=>'septembre', '10'=>'octobre', '11'=>'novembre', '12'=>'décembre');
 
-  public function getShortPresentation($presentation, $novirgule = null) {
-   if ($presentation == 'none') return '';
-   else if ($presentation == 'noauteur') {
-     $present = preg_replace('/\sd(\'|e\s)[A-ZÉÈÊ][\wàéëêèïîôöûüÉ\s]+\sle\s(\d)/', ' du \2', $this->getPresentation());
-     $present = preg_replace('/Suite aux/', 'Suite à ses', $present);
-     if ($novirgule) return $present;
-     else return $present.', ';
-   } else return $this->getPresentation().', ';
+ /**
+  * Overrides getPresentation from corresponding column
+  * if $format is set to specific strings, returns a modified version :
+  *   'none' => empty string
+  *   'noauteur' => presentation without the author information
+  * if $virgule is set to 1, adds a ', ' at the end of the string
+  */
+  public function getPresentation($format = '', $virgule = 0) {
+    if ($format == 'none') return '';
+    else $present = $this->_get('presentation');
+    if ($format == 'noauteur') {
+      $present = preg_replace('/\sd(\'|e\s)[A-ZÉÈÊ][\wàéëêèïîôöûüÉ\s]+\sle\s(\d)/', ' du \2', $present);
+      $present = preg_replace('/Suite aux/', 'Suite à ses', $present);
+    }
+    if ($virgule == 1) return $present.', ';
+    else return $present;
   }
 
   public function addParlementaire($parlementaire_id) {

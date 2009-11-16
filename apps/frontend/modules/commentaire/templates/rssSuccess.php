@@ -11,7 +11,7 @@ foreach($commentaires as $c)
 {
   $item = new sfFeedItem();
   if (isset($parlementaire))
-    $item->setTitle($c->getShortPresentation('noauteur', 'novirgule'));
+    $item->setTitle($c->getPresentation('noauteur'));
   else $item->setTitle($c->getPresentation());
   $item->setLink('http://'.$_SERVER['HTTP_HOST'].url_for($c->getLien()));
   $item->setAuthorName($c->getCitoyen()->login);
