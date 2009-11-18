@@ -13,7 +13,7 @@ IEPNGFix.data = IEPNGFix.data || {};
 
 // This must be a path to a blank image, relative to the HTML document(s).
 // In production use I suggest '/images/blank.gif' or similar. That's all!
-IEPNGFix.blankImg = '/blank.gif';
+IEPNGFix.blankImg = '/iepngfix/blank.gif';
 
 
 IEPNGFix.fix = function(elm, src, t) {
