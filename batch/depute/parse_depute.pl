@@ -182,11 +182,11 @@ $nomdep =~ s/[éèêë]+/e/ig;
 if ((join " ", keys %{$depute{'Mails'}}) =~ /(\S+)\@assemblee/) {
     $login = $1;
     while ($login = substr($login, 1)) {
-	for($i = 0 ; $i <= $#noms ; $i++) {
+        for($i = 0 ; $i <= $#noms ; $i++) {
 	    if ($noms[$i] =~ /$login/i)  {
-		if ($nomdep =~ /(\S*$login.*)/i) {
-		    $depute{'Nom_de_famille'} = $1;
-		    $depute{'Nom_de_famille'} =~ s/[^a-z]//gi;
+		if ($nomdep =~ /(\S*l[ea]\s)?(\S*$login.*$)/i) {
+		    $depute{'Nom_de_famille'} = $1.$2;
+		    $depute{'Nom_de_famille'} =~ s/[^a-z\s]//gi;
 		    last;
 		}
 	    }
