@@ -165,6 +165,17 @@ $string =~ s/<\/?ul>//gi;
 
 foreach $line (split /\n/, $string)
 {
+    if ($line =~ /<h[1-9]+/i || $line =~ /"presidence"/) {
+      if ($line =~ /pr..?sidence de (M[^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
+        $prez = $1;
+#       print "Présidence de $prez\n";
+        if ($prez =~ /^Mm/) {
+          setFonction('présidente', $prez);
+        }else {
+          setFonction('président', $prez);
+        }
+      }
+    }
     if ($line =~ /<body[^>]*>/) {
 	$body = 1;
     }
