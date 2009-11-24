@@ -135,65 +135,69 @@ class citoyenActions extends sfActions
     $this->slug = $request->getParameter('slug');
     $this->activation_id = $request->getParameter('activation_id');
     
-    if ($this->getUser()->isAuthenticated() and ($this->getUser()->getAttribute('is_active') == true)) 
+    if ($this->getUser()->isAuthenticated() and ($this->getUser()->getAttribute('is_active') != 0))
     {
       $this->forward404();
     }
     
     if (Doctrine::getTable('Citoyen')->findOneBySlug($this->slug))
     {
-      $user = Doctrine::getTable('Citoyen')->findOneBySlug($this->slug);
-      
-      if ($user->is_active == false and $user->activation_id == $this->activation_id)
-      {
-        $this->form = new MotdepasseForm();
-        
-        if ($request->isMethod('post'))
-        {
-          $this->form->bind($request->getParameter('citoyen'));
-          
-          if ($this->form->isValid())
-          {
-            if ($this->form->getvalue('password') != $this->form->getvalue('password_bis'))
-            {
-              $this->getUser()->setFlash('error', 'Les 2 champs doivent être identiques');
-              return;
-            }
-            $user->password = $this->form->getvalue('password');
-            $user->is_active = true;
-            $user->activation_id = null;
-            $user->save();
-            $commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
-            ->where('is_public <> 1')
-            ->andWhere('citoyen_id = ?', $user->id)
-            ->execute();
-            foreach ($commentaires as $c) {
-              $c->is_public = 1;
-              $c->save();
-              $c->updateNbCommentaires();
-            }
-            if ($this->getUser()->isAuthenticated())
-            {
-              $this->getUser()->setAttribute('is_active', true);
-              $this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès');
-              $this->redirect('@citoyen?slug='.$user->slug);
-            }
-            else
-            {
-              myUser::SignIn($user->getLogin(), $this->form->getvalue('password'), false, $this) ;
-              $this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès');
-              $this->redirect('@citoyen?slug='.$user->slug);
-            }
-          }
-        }
-      }
-      else
-      {
-        $this->forward404();
-      }
+	  self::setmotdepasse($this, $request);
+	  $this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès.');
+	  $this->redirect('@citoyen?slug='.$user->slug);
     }
     else
     {
+      $this->forward404();
+    }
+  }
+  
+  private function setmotdepasse($action, $request)
+  {
+    $user = Doctrine::getTable('Citoyen')->findOneBySlug($action->slug);
+      
+    if ($user->activation_id == $action->activation_id)
+    {
+      $action->form = new MotdepasseForm();
+      
+      if ($request->isMethod('post'))
+      {
+        $action->form->bind($request->getParameter('citoyen'));
+        
+        if ($action->form->isValid())
+        {
+          if ($action->form->getvalue('password') != $action->form->getvalue('password_bis'))
+          {
+            $action->getUser()->setFlash('error', 'Les 2 champs doivent être identiques');
+            return;
+          }
+          $user->password = $action->form->getvalue('password');
+          if ($user->is_active == 0) { $user->is_active = true; }
+          $user->activation_id = null;
+          $user->save();
+		  
+          $commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
+          ->where('is_public = 0')
+          ->andWhere('citoyen_id = ?', $user->id)
+          ->execute();
+          foreach ($commentaires as $c)
+		  {
+            $c->is_public = 1;
+            $c->save();
+            $c->updateNbCommentaires();
+          }
+		  if ($action->getUser()->isAuthenticated()) { $action->getUser()->setAttribute('is_active', $user->is_active); }
+		  else { myUser::SignIn($user->getLogin(), $action->form->getvalue('password'), false, $action); }
+        }
+      }
+    }
+	else
+    {
+      if($user->activation_id != null)
+      {
+        $user->activation_id = null;
+        $user->save();
+      }
       $this->forward404();
     }
   }
@@ -324,50 +328,10 @@ class citoyenActions extends sfActions
     {
       if (Doctrine::getTable('Citoyen')->findOneBySlug($this->slug))
       {
-        $user = Doctrine::getTable('Citoyen')->findOneBySlug($this->slug);
-        
-        if ($this->activation_id == $user->activation_id)
-        {
-          $this->first = false;
-          $this->form = new MotdepasseForm();
-          
-          if ($request->isMethod('post'))
-          {
-            $this->form->bind($request->getParameter('citoyen'));
-            
-            if ($this->form->isValid())
-            {
-              if ($this->form->getvalue('password') != $this->form->getvalue('password_bis'))
-              {
-                $this->getUser()->setFlash('error', 'Les 2 champs doivent être identiques');
-                return;
-              }
-              $user->password = $this->form->getvalue('password');
-              $user->save();
-              
-              if (!$this->getUser()->isAuthenticated())
-              {
-                myUser::SignIn($user->getLogin(), $this->form->getvalue('password'), false, $this) ;
-              }
-              $this->getUser()->setFlash('notice', 'Votre mot de passe a été réinitialisé avec succès.');
-              $this->redirect('@citoyen?slug='.$user->slug);
-            }
-          }
-        }
-        else
-        {
-          if($user->activation_id != null)
-          {
-            $user->activation_id = null;
-            $user->save();
-          }
-          $this->forward404();
-        }
-      }
-      else
-      {
-        $this->forward404();
-      }
+        self::setmotdepasse($this, $request);
+        $this->getUser()->setFlash('notice', 'Votre mot de passe a été réinitialisé avec succès.');
+        $this->redirect('@citoyen?slug='.$user->slug);
+	  }
     }
     else if ($this->getUser()->isAuthenticated())
     {
@@ -398,11 +362,11 @@ class citoyenActions extends sfActions
         {
           $login = $this->form->getValue('login');
       
-      if($this->form->getValue('code') != $this->getUser()->getAttribute('codesecu'))
-      {
-        $this->getUser()->setFlash('error', 'Le code de sécurité ne correspond pas');
+          if($this->form->getValue('code') != $this->getUser()->getAttribute('codesecu'))
+          {
+            $this->getUser()->setFlash('error', 'Le code de sécurité ne correspond pas');
             return;
-      }
+          }
       
           if ($login)
           {  

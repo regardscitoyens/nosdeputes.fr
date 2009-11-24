@@ -24,7 +24,7 @@
             </td>
           </tr>
           <tr>
-            <td colspan="2"><a href="<?php echo url_for('@homepage') ?>">Annuler</a> <input type="submit" value="Valider" style="float:right;" /></td>
+            <td colspan="2"><a href="<?php echo url_for('@homepage') ?>">Annuler</a> <input type="submit" value="Valider" /></td>
           </tr>
         </table>
         </form>
