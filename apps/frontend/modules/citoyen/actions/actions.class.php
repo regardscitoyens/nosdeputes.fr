@@ -185,10 +185,10 @@ class citoyenActions extends sfActions
             $c->save();
             $c->updateNbCommentaires();
           }
-      if ($action->getUser()->isAuthenticated()) { $action->getUser()->setAttribute('is_active', $user->is_active); }
-      else { myUser::SignIn($user->getLogin(), $action->form->getvalue('password'), false, $action); }
+          if ($action->getUser()->isAuthenticated()) { $action->getUser()->setAttribute('is_active', $user->is_active); }
+          else { myUser::SignIn($user->getLogin(), $action->form->getvalue('password'), false, $action); }
           $action->getUser()->setFlash('notice', 'Votre mot de passe a été réinitialisé avec succès.');
-          $this->redirect('@citoyen?slug='.$this->slug);
+          $action->redirect('@citoyen?slug='.$action->slug);
         }
       }
     }
