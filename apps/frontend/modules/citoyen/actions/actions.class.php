@@ -144,7 +144,7 @@ class citoyenActions extends sfActions
     {
 	  self::setmotdepasse($this, $request);
 	  $this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès.');
-	  $this->redirect('@citoyen?slug='.$user->slug);
+	  $this->redirect('@citoyen?slug='.$this->getUser()->getAttribute('slug'));
     }
     else
     {
@@ -330,7 +330,7 @@ class citoyenActions extends sfActions
       {
         self::setmotdepasse($this, $request);
         $this->getUser()->setFlash('notice', 'Votre mot de passe a été réinitialisé avec succès.');
-        $this->redirect('@citoyen?slug='.$user->slug);
+        $this->redirect('@citoyen?slug='.$this->getUser()->getAttribute('slug'));
 	  }
     }
     else if ($this->getUser()->isAuthenticated())
