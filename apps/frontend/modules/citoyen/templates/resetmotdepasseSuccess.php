@@ -1,5 +1,5 @@
 <?php 
-if (!$first)
+if (!isset($first))
 {
 ?>
 <div class="boite_form">
@@ -10,7 +10,7 @@ if (!$first)
         <table>
           <tr>
             <th colspan="2">
-              <h1>Choisissez un nouveau mot de passe</h1>
+              <h1>Choisissez un mot de passe</h1>
             </th>
           </tr>
           <tr>
@@ -28,7 +28,7 @@ if (!$first)
             </td>
           </tr>
           <tr>  
-            <td colspan="2"><a href="<?php echo url_for('@homepage') ?>">Annuler</a> <input type="submit" value="Valider" style="float:right;" /></td>
+            <td colspan="2"><a href="<?php echo url_for('@homepage') ?>">Annuler</a> <input type="submit" value="Valider" /></td>
           </tr>
         </table>
         </form>
@@ -50,7 +50,7 @@ else
         <table>
           <tr>
             <th colspan="2">
-              <h1>Mot de passe oublié</h1>
+              <h1>Demande de mot de passe</h1>
             </th>
           </tr>
           <tr class="cel2">

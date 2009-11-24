@@ -142,9 +142,7 @@ class citoyenActions extends sfActions
     
     if (Doctrine::getTable('Citoyen')->findOneBySlug($this->slug))
     {
-	  self::setmotdepasse($this, $request);
-	  $this->getUser()->setFlash('notice', 'Votre compte a été activé avec succès.');
-	  $this->redirect('@citoyen?slug='.$this->getUser()->getAttribute('slug'));
+    self::setmotdepasse($this, $request);
     }
     else
     {
@@ -172,26 +170,29 @@ class citoyenActions extends sfActions
             return;
           }
           $user->password = $action->form->getvalue('password');
-          if ($user->is_active == 0) { $user->is_active = true; }
+          if ($user->is_active == 0) { $user->is_active = true; $msg = 'Votre compte a été activé avec succès.'; } 
+      else { $msg = 'Votre mot de passe a été réinitialisé avec succès.'; }
           $user->activation_id = null;
           $user->save();
-		  
+      
           $commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
           ->where('is_public = 0')
           ->andWhere('citoyen_id = ?', $user->id)
           ->execute();
           foreach ($commentaires as $c)
-		  {
+          {
             $c->is_public = 1;
             $c->save();
             $c->updateNbCommentaires();
           }
-		  if ($action->getUser()->isAuthenticated()) { $action->getUser()->setAttribute('is_active', $user->is_active); }
-		  else { myUser::SignIn($user->getLogin(), $action->form->getvalue('password'), false, $action); }
+      if ($action->getUser()->isAuthenticated()) { $action->getUser()->setAttribute('is_active', $user->is_active); }
+      else { myUser::SignIn($user->getLogin(), $action->form->getvalue('password'), false, $action); }
+          $action->getUser()->setFlash('notice', 'Votre mot de passe a été réinitialisé avec succès.');
+          $this->redirect('@citoyen?slug='.$this->slug);
         }
       }
     }
-	else
+  else
     {
       if($user->activation_id != null)
       {
@@ -324,16 +325,8 @@ class citoyenActions extends sfActions
     $this->slug = $request->getParameter('slug');
     $this->activation_id = $request->getParameter('activation_id');
     
-    if($this->slug and $this->activation_id)
-    {
-      if (Doctrine::getTable('Citoyen')->findOneBySlug($this->slug))
-      {
-        self::setmotdepasse($this, $request);
-        $this->getUser()->setFlash('notice', 'Votre mot de passe a été réinitialisé avec succès.');
-        $this->redirect('@citoyen?slug='.$this->getUser()->getAttribute('slug'));
-	  }
-    }
-    else if ($this->getUser()->isAuthenticated())
+    
+    if ($this->getUser()->isAuthenticated())
     {
       $user = Doctrine::getTable('Citoyen')->findOneBySlug($this->getUser()->getAttribute('slug'));
       $activation_id = md5(time()*rand());
@@ -348,6 +341,13 @@ class citoyenActions extends sfActions
       ));
       $this->getUser()->setFlash('notice', 'Un email de réinitialisation de mot de passe vient de vous être envoyé.<br />Si vous rencontrez un problème lors de cette procédure veuillez nous contacter par email à l\'adresse contact[at]regardscitoyens.org.');  
       $this->redirect('@citoyen?slug='.$user->slug);
+    }
+  else if ($this->slug and $this->activation_id)
+    {
+      if (Doctrine::getTable('Citoyen')->findOneBySlug($this->slug))
+      {
+        self::setmotdepasse($this, $request);
+    }
     }
     else
     {
