@@ -57,17 +57,17 @@ if (!empty($user->url_site)) { echo '<li><a href="'.$user->url_site.'" rel="nofo
             </td>
           </tr>
           <tr class="cel2">
+            <td colspan="2"><a href="<?php echo url_for('@citoyen?slug=' . $sf_user->getAttribute('slug')) ?>">Annuler</a> <input type="submit" value="Valider" /></td>
+          </tr>
+		  <tr class="cel1">
             <th>Votre Avatar</th>
             <td>
               <a href="<?php echo url_for('@upload_avatar'); ?>"><img src="<?php echo url_for('@photo_citoyen?slug='.$user->slug); ?>" alt="Votre photo" /><br/>Changer d'avatar</a>
             </td>
           </tr>
-          <tr class="cel1">
+          <tr class="cel2">
             <th>Votre mot de passe</th>
             <td><a href="<?php echo url_for('@editpassword_citoyen'); ?>">Changer</a></td>
-          </tr>
-          <tr class="cel2">
-            <td colspan="2"><a href="<?php echo url_for('@citoyen?slug=' . $sf_user->getAttribute('slug')) ?>">Annuler</a> <input type="submit" value="Valider" /></td>
           </tr>
           <tr class="cel1">
             <th colspan="2">

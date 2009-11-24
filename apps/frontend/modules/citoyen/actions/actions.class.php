@@ -171,7 +171,7 @@ class citoyenActions extends sfActions
           }
           $user->password = $action->form->getvalue('password');
           if ($user->is_active == 0) { $user->is_active = true; $msg = 'Votre compte a été activé avec succès.'; } 
-      else { $msg = 'Votre mot de passe a été réinitialisé avec succès.'; }
+          else { $msg = 'Votre mot de passe a été réinitialisé avec succès.'; }
           $user->activation_id = null;
           $user->save();
       
@@ -187,12 +187,12 @@ class citoyenActions extends sfActions
           }
           if ($action->getUser()->isAuthenticated()) { $action->getUser()->setAttribute('is_active', $user->is_active); }
           else { myUser::SignIn($user->getLogin(), $action->form->getvalue('password'), false, $action); }
-          $action->getUser()->setFlash('notice', 'Votre mot de passe a été réinitialisé avec succès.');
+          $action->getUser()->setFlash('notice', $msg);
           $action->redirect('@citoyen?slug='.$action->slug);
         }
       }
     }
-  else
+    else
     {
       if($user->activation_id != null)
       {

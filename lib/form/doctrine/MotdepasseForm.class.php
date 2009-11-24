@@ -14,8 +14,8 @@ class MotdepasseForm extends sfForm
       'password_bis' => 'Confirmation : '
     ));
     
-    $this->validatorSchema['password'] = new sfValidatorString(array('required' => true, 'min_length' => 6), array('min_length' => "Votre mot de passe est trop court, veuillez employer au moins 6 caractères s'il vous plaît.", 'required' => 'Champ obligatoire.'));
-    $this->validatorSchema['password_bis'] = new sfValidatorString();
+    $this->validatorSchema['password'] = new sfValidatorString(array('required' => true, 'min_length' => 6), array('min_length' => "Votre mot de passe est trop court, veuillez employer au moins 6 caractères s'il vous plaît.", 'required' => 'Champ obligatoire'));
+    $this->validatorSchema['password_bis'] = new sfValidatorString(array('required' => true), array('required' => 'Champ obligatoire'));
   }
 }
 ?>
