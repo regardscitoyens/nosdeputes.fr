@@ -325,29 +325,17 @@ class citoyenActions extends sfActions
     $this->slug = $request->getParameter('slug');
     $this->activation_id = $request->getParameter('activation_id');
     
-    
     if ($this->getUser()->isAuthenticated())
     {
       $user = Doctrine::getTable('Citoyen')->findOneBySlug($this->getUser()->getAttribute('slug'));
-      $activation_id = md5(time()*rand());
-      $user->activation_id = $activation_id;
-      $user->save();
-       
-      $this->getComponent('mail', 'send', array(
-      'subject'=>'Réinitialisation de votre mot de passe - NosDéputés.fr', 
-      'to'=>array($user->email), 
-      'partial'=>'resetmotdepasse', 
-      'mailContext'=>array('activation_id' => $activation_id, 'slug' => $user->slug)
-      ));
-      $this->getUser()->setFlash('notice', 'Un email de réinitialisation de mot de passe vient de vous être envoyé.<br />Si vous rencontrez un problème lors de cette procédure veuillez nous contacter par email à l\'adresse contact[at]regardscitoyens.org.');  
-      $this->redirect('@citoyen?slug='.$user->slug);
+      self::sendmailresetmotdepasse($user, $this);
     }
-  else if ($this->slug and $this->activation_id)
+    else if ($this->slug and $this->activation_id)
     {
       if (Doctrine::getTable('Citoyen')->findOneBySlug($this->slug))
       {
         self::setmotdepasse($this, $request);
-    }
+      }
     }
     else
     {
@@ -369,7 +357,7 @@ class citoyenActions extends sfActions
           }
       
           if ($login)
-          {  
+          {
             if (Doctrine::getTable('Citoyen')->findOneByEmail($login))
             {
               $user = Doctrine::getTable('Citoyen')->findOneByEmail($login);
@@ -389,23 +377,27 @@ class citoyenActions extends sfActions
             $this->getUser()->setFlash('error', 'Veuillez indiquer votre nom d\'utilisateur <strong>ou</strong> votre email');
             return;
           }
-          
-          $activation_id = md5(time()*rand());
-          $user->activation_id = $activation_id;
-          $user->save();
-          
-          $this->getComponent('mail', 'send', array(
-          'subject'=>'Réinitialisation de votre mot de passe - NosDéputés.fr', 
-          'to'=>array($user->email), 
-          'partial'=>'resetmotdepasse', 
-          'mailContext'=>array('activation_id' => $activation_id, 'slug' => $user->slug)
-          ));
-          
-          $this->getUser()->setFlash('notice', 'Un email de réinitialisation de mot de passe vient de vous être envoyé.<br />Si vous rencontrez un problème lors de cette procédure veuillez nous contacter par email à l\'adresse contact[at]regardscitoyens.org.');
-          $this->redirect('@homepage');
+          self::sendmailresetmotdepasse($user, $this);
         }
       }
     }
+  }
+  
+  private function sendmailresetmotdepasse($user, $action)
+  {
+    $activation_id = md5(time()*rand());
+    $user->activation_id = $activation_id;
+    $user->save();
+	
+    $action->getComponent('mail', 'send', array(
+    'subject'=>'Réinitialisation de votre mot de passe - NosDéputés.fr', 
+    'to'=>array($user->email), 
+    'partial'=>'resetmotdepasse', 
+    'mailContext'=>array('activation_id' => $activation_id, 'slug' => $user->slug)
+    ));
+    
+    $action->getUser()->setFlash('notice', 'Un email de réinitialisation de mot de passe vient de vous être envoyé.<br />Si vous rencontrez un problème lors de cette procédure veuillez nous contacter par email à l\'adresse contact[at]regardscitoyens.org.');
+    $action->redirect('@homepage');
   }
 
   public function executeConnected(sfWebRequest $request)
