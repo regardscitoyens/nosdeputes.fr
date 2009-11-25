@@ -13,19 +13,19 @@
             <th style="text-align:left;"><?php echo $form['login']->renderLabel() ?></th>
             <td>
               <?php echo $form['login']->renderError(); ?>
-              <?php echo $form['login']; ?>
+              <?php echo $form['login']->render(array('tabindex' => '10')); ?>
             </td>
           </tr>
           <tr>
             <th><?php echo $form['email']->renderLabel(); ?></th>
             <td>
               <?php echo $form['email']->renderError(); ?>
-              <?php echo $form['email']; ?>
+              <?php echo $form['email']->render(array('tabindex' => '20')); ?>
             </td>
           </tr>
           <tr>
             <th></th>
-            <td><input type="submit" value="Valider" /></td>
+            <td><input type="submit" value="Valider" tabindex="30" /></td>
           </tr>
         </table>
         </form>

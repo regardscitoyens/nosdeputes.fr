@@ -17,18 +17,18 @@ if (!isset($first))
             <th><?php echo $form['password']->renderLabel() ?></th>
             <td>
               <?php echo $form['password']->renderError(); ?>
-              <?php echo $form['password']; ?>
+              <?php echo $form['password']->render(array('tabindex' => '10')); ?>
             </td>
           </tr>
           <tr>
             <th><?php echo $form['password_bis']->renderLabel() ?></th>
             <td>
               <?php echo $form['password_bis']->renderError(); ?>
-              <?php echo $form['password_bis']; ?>
+              <?php echo $form['password_bis']->render(array('tabindex' => '20')); ?>
             </td>
           </tr>
           <tr>  
-            <td colspan="2"><a href="<?php echo url_for('@homepage') ?>">Annuler</a> <input type="submit" value="Valider" /></td>
+            <td colspan="2"><a href="<?php echo url_for('@homepage') ?>" tabindex="40">Annuler</a> <input type="submit" tabindex="30" value="Valider" /></td>
           </tr>
         </table>
         </form>
@@ -57,7 +57,8 @@ else
             <th><?php echo $form['login']->renderLabel() ?></th>
             <td>
               <?php echo $form['login']->renderError(); ?>
-              <?php echo $form['login']; ?>
+
+              <?php echo $form['login']->render(array('tabindex' => '10')); ?>
             </td>
           </tr>
           <tr>
@@ -74,7 +75,7 @@ else
                 <div class="cont_code">
           <div class="entrer_code">
                   Code de sécurité<br />
-                  <?php echo $form['code']->render(array('size' => 14, 'title' => 'Recopiez les caractères')); ?>
+                  <?php echo $form['code']->render(array('size' => 14, 'title' => 'Recopiez les caractères', 'tabindex' => '20')); ?>
           </div>
                 </div>
                 <div class="stopfloat"></div>
@@ -82,7 +83,7 @@ else
             </th>
           </tr>
           <tr class="cel2">
-            <td colspan="2"><a href="<?php echo url_for('@homepage') ?>">Annuler</a> <input type="submit" value="Valider" /></td>
+            <td colspan="2"><a href="<?php echo url_for('@homepage') ?>" tabindex="40" >Annuler</a> <input type="submit" value="Valider" tabindex="30" /></td>
           </tr>
         </table>
         </form>

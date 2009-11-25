@@ -13,31 +13,31 @@
             <th style="text-align:left;"><?php echo $form['login']->renderLabel() ?></th>
             <td>
               <?php echo $form['login']->renderError(); ?>
-              <?php echo $form['login']; ?>
+              <?php echo $form['login']->render(array('tabindex' => '10')); ?>
             </td>
           </tr>
           <tr>
             <th><?php echo $form['password']->renderLabel(); ?></th>
             <td>
               <?php echo $form['password']->renderError(); ?>
-              <?php echo $form['password']; ?>
+              <?php echo $form['password']->render(array('tabindex' => '20')); ?>
             </td>
           </tr>
           <tr>
             <th><?php echo $form['remember']->renderLabel(); ?></th>
             <td>
               <?php echo $form['remember']->renderError(); ?>
-              <?php echo $form['remember']; ?>
+              <?php echo $form['remember']->render(array('tabindex' => '30')); ?>
             </td>
           </tr>
           <tr>
             <th></th>
-            <td><input type="submit" value="ok" style="float:right;" /></td>
+            <td><input type="submit" value="ok" tabindex="40" style="float:right;" /></td>
           </tr>
           <tr>
             <th colspan="2">
-              <a href="<?php echo url_for('@reset_mdp') ?>">Vous avez oublié votre mot de passe ?</a><br />
-              <a href="<?php echo url_for('@inscription') ?>">Vous inscrire</a>
+              <a href="<?php echo url_for('@reset_mdp') ?>" tabindex="50">Vous avez oublié votre mot de passe ?</a><br />
+              <a href="<?php echo url_for('@inscription') ?>" tabindex="60">Vous inscrire</a>
             </th>
           </tr>
         </table>

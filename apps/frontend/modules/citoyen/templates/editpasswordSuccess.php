@@ -31,28 +31,28 @@ if (!empty($user->url_site)) { echo '<li><a href="'.$user->url_site.'" rel="nofo
       <th style="text-align:left;"><?php echo $form['ancienpassword']->renderLabel() ?></th>
       <td>
         <?php echo $form['ancienpassword']->renderError(); ?>
-        <?php echo $form['ancienpassword']; ?>
+        <?php echo $form['ancienpassword']->render(array('tabindex' => '10')); ?>
       </td>
     </tr>
     <tr class="cel1">
       <th><?php echo $form['password']->renderLabel(); ?></th>
       <td>
         <?php echo $form['password']->renderError(); ?>
-        <?php echo $form['password']; ?>
+        <?php echo $form['password']->render(array('tabindex' => '20')); ?>
       </td>
     </tr>
     <tr class="cel2">
       <th><?php echo $form['password_bis']->renderLabel(); ?></th>
       <td>
         <?php echo $form['password_bis']->renderError(); ?>
-        <?php echo $form['password_bis']; ?>
+        <?php echo $form['password_bis']->render(array('tabindex' => '30')); ?>
       </td>
     </tr>
     <tr class="cel1">
-      <td colspan="2"><a href="<?php echo url_for('@edit_citoyen') ?>">Annuler</a> <input type="submit" value="Valider" /></td>
+      <td colspan="2"><a href="<?php echo url_for('@edit_citoyen') ?>" tabindex="50" >Annuler</a> <input type="submit" value="Valider" tabindex="40" /></td>
     </tr>
     <tr class="cel2">
-      <th colspan="2"><a href="<?php echo url_for('@reset_mdp'); ?>" onclick="javascript:if(!confirm('Recevoir un email de réinitialisation de mot de passe ?')) return false;">Mot de passe oublié ?</a></th>
+      <th colspan="2"><a href="<?php echo url_for('@reset_mdp'); ?>" tabindex="60" onclick="javascript:if(!confirm('Recevoir un email de réinitialisation de mot de passe ?')) return false;">Mot de passe oublié ?</a></th>
     </tr>
   </table>
   </form>

@@ -32,46 +32,46 @@ if (!empty($user->url_site)) { echo '<li><a href="'.$user->url_site.'" rel="nofo
             <th style="text-align:left;"><?php echo $form['activite']->renderLabel() ?></th>
             <td>
               <?php echo $form['activite']->renderError(); ?>
-              <?php echo $form['activite']; ?>
+              <?php echo $form['activite']->render(array('tabindex' => '10')); ?>
             </td>
           </tr>
           <tr class="cel1">
             <th><?php echo $form['url_site']->renderLabel(); ?></th>
             <td>
               <?php echo $form['url_site']->renderError(); ?>
-              <?php echo $form['url_site']; ?>
+              <?php echo $form['url_site']->render(array('tabindex' => '20')); ?>
             </td>
           </tr>
           <tr class="cel2">
             <th>Date de naissance : </th>
             <td>
               <?php echo $form['naissance']->renderError(); ?>
-              <?php echo $form['naissance']; ?>
+              <?php echo $form['naissance']->render(array('tabindex' => '30')); ?>
             </td>
           </tr>
           <tr class="cel1">
             <th style="text-align:left;"><?php echo $form['sexe']->renderLabel() ?></th>
             <td>
               <?php echo $form['sexe']->renderError(); ?>
-              <?php echo $form['sexe']; ?>
+              <?php echo $form['sexe']->render(array('tabindex' => '40')); ?>
             </td>
           </tr>
           <tr class="cel2">
-            <td colspan="2"><a href="<?php echo url_for('@citoyen?slug=' . $sf_user->getAttribute('slug')) ?>">Annuler</a> <input type="submit" value="Valider" /></td>
+            <td colspan="2"><a href="<?php echo url_for('@citoyen?slug=' . $sf_user->getAttribute('slug')) ?>" tabindex="60">Annuler</a> <input type="submit" value="Valider" tabindex="50" /></td>
           </tr>
 		  <tr class="cel1">
             <th>Votre Avatar</th>
             <td>
-              <a href="<?php echo url_for('@upload_avatar'); ?>"><img src="<?php echo url_for('@photo_citoyen?slug='.$user->slug); ?>" alt="Votre photo" /><br/>Changer d'avatar</a>
+              <a href="<?php echo url_for('@upload_avatar'); ?>" tabindex="70"><img src="<?php echo url_for('@photo_citoyen?slug='.$user->slug); ?>" alt="Votre photo" /><br/>Changer d'avatar</a>
             </td>
           </tr>
           <tr class="cel2">
             <th>Votre mot de passe</th>
-            <td><a href="<?php echo url_for('@editpassword_citoyen'); ?>">Changer</a></td>
+            <td><a href="<?php echo url_for('@editpassword_citoyen'); ?>" tabindex="80">Changer</a></td>
           </tr>
           <tr class="cel1">
             <th colspan="2">
-              <a href="<?php echo url_for('@delete_citoyen?token=' . $sf_user->getAttribute('token')) ?>" onclick="javascript:if(!confirm('Supprimer votre compte ?')) return false;">Supprimer votre compte</a>
+              <a href="<?php echo url_for('@delete_citoyen?token=' . $sf_user->getAttribute('token')) ?>" tabindex="90" onclick="javascript:if(!confirm('Supprimer votre compte ?')) return false;">Supprimer votre compte</a>
             </th>
           </tr>
         </table>
