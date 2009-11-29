@@ -1,0 +1,112 @@
+html {
+  background-color: #fff;
+}
+body {
+  padding: 0;
+  margin: 0;
+}
+#header {
+  height: 94px;
+  background: #3A2E1B url("images/header_logo.png") no-repeat;
+}
+#barre_tri {
+}
+#sf_admin_bar {
+  display: none;
+  position: fixed;
+  top: 0;
+  right: 15px;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  overflow: auto;
+  border: 1px solid gray;
+  background-color: #fff;
+  z-index: 10;
+}
+#sf_admin_filter {
+  margin: 0;
+}
+#open_sf_admin_bar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 15px;
+  height: 100%;
+  opacity: 0.5; 
+  cursor: pointer;
+  background: gray url("images/open.png");
+  z-index: 10;
+}
+#open_sf_admin_bar:hover {
+  background: gray url("images/open.png") -15px 0;
+}
+.sf_admin_list, .sf_admin_list table {
+  width: 100%;
+  overflow: auto;
+}
+.sf_admin_pagination {
+  margin-right: 20px;
+}
+#sf_admin_container h1 {
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  color: #fff;
+  text-shadow:0 0 3px #000;
+  background-color: #AF9F96;
+  border-bottom: 1px solid #000;
+}
+#sf_admin_container th {
+  background-color:#CFC5C0;
+}
+/* MENU */
+#menu {
+  margin: 0;
+  padding: 0;
+  height: 31px;
+  line-height: 31px;
+  background: url("images/fond_menu.gif")
+}
+#menu ul, #menu li {
+  display: inline;
+  margin: 0;
+  height: 31px;
+  line-height: 31px;
+}
+#menu li {
+  float: left;
+  display: block;
+  padding-left: 8px;
+  padding-right: 8px;
+  font-size: 1em;
+  text-shadow:0 0 3px #000;
+  border-right: 1px solid #3A2E1B;
+  background: url("images/fond_bouton.gif");
+}
+#menu li:hover {
+  background: url("images/fond_bouton.gif") 0 -31px;
+}
+#menu a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  color: #fff;
+  font-weight: bold;
+  text-decoration: none;
+}
+#corps_page {
+  margin-bottom: 34px;
+}
+#bottom {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 34px;
+  background: #7E6243 url("images/fond_bas.png") no-repeat bottom right;
+}
+.arrow {
+  float: right;
+  margin-right: 20px;
+}

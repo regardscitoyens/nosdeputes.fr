@@ -1,9 +1,28 @@
-organisme:
+citoyen:
   class: sfDoctrineRouteCollection
   options:
-    model:                Organisme
-    module:               organisme
-    prefix_path:          organisme
+    model:                Citoyen
+    module:               citoyen
+    prefix_path:          citoyen
+    column:               id
+    with_wildcard_routes: true
+    order:                1
+
+commentaire:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Commentaire
+    module:               commentaire
+    prefix_path:          commentaire
+    column:               id
+    with_wildcard_routes: true
+
+rate:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Rate
+    module:               rate
+    prefix_path:          rate
     column:               id
     with_wildcard_routes: true
 
@@ -16,10 +35,91 @@ parlementaire:
     column:               id
     with_wildcard_routes: true
 
+presence:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Presence
+    module:               presence
+    prefix_path:          presence
+    column:               id
+    with_wildcard_routes: true
+
+intervention:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Intervention
+    module:               intervention
+    prefix_path:          intervention
+    column:               id
+    with_wildcard_routes: true
+
+seance:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Seance
+    module:               seance
+    prefix_path:          seance
+    column:               id
+    with_wildcard_routes: true
+
+section:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Section
+    module:               section
+    prefix_path:          section
+    column:               id
+    with_wildcard_routes: true
+
+amendement:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Amendement
+    module:               amendement
+    prefix_path:          amendement
+    column:               id
+    with_wildcard_routes: true
+
+tag:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Tag
+    module:               tag
+    prefix_path:          tag
+    column:               id
+    with_wildcard_routes: true
+
+organisme:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Organisme
+    module:               organisme
+    prefix_path:          organisme
+    column:               id
+    with_wildcard_routes: true
+
+personnalite:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Personnalite
+    module:               personnalite
+    prefix_path:          personnalite
+    column:               id
+    with_wildcard_routes: true
+
+article:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Article
+    module:               article
+    prefix_path:          article
+    column:               id
+    with_wildcard_routes: true
+
 # default rules
 homepage:
   url:   /
-  param: { module: default, action: index }
+  param: { module: main, action: index }
 
 default_index:
   url:   /:module
