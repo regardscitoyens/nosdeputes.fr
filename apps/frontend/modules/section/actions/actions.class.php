@@ -87,9 +87,10 @@ class sectionActions extends sfActions
       $this->ptag->whereIn('i.id', $interventions);
     else
       $this->ptag->where('false');
-
-
+    
+    $request->setParameter('rss', array(array('link' => '@section_rss_commentaires?id='.$this->section->id, 'title'=>'Les commentaires sur '.$this->section->titre)));
   }
+
   public function executeList(sfWebRequest $request) 
   {
     if (!($this->order = $request->getParameter('order')))

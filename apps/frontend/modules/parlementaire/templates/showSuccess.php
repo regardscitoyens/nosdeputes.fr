@@ -116,8 +116,11 @@
 
   <div class="bas_depute">
       <h2>Derniers commentaires concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/'.$style.'/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
-      <?php echo include_component('commentaire', 'parlementaire', array('parlementaire' => $parlementaire)); ?>
-      <p class="suivant"><?php echo link_to('Voir tous les commentaires', '@parlementaire_commentaires?slug='.$parlementaire->slug); ?></p>
-    <div class="stopfloat"></div>
+      <?php if ($parlementaire->nb_commentaires == 0) echo '<p>Le travail de ce député n\'a pas encore inspiré de commentaire aux utilisateurs.</p>';
+        else {
+          echo include_component('commentaire', 'lastObject', array('object' => $parlementaire, 'presentation' => 'noauteur'));
+          if ($parlementaire->nb_commentaires > 4)
+            echo '<p class="suivant">'.link_to('Voir les '.$parlementaire->nb_commentaires.' commentaires', '@parlementaire_commentaires?slug='.$parlementaire->slug).'</p><div class="stopfloat"></div>'; ?>
+     <?php } ?>
   </div>
 </div>

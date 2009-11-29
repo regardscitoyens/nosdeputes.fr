@@ -13,6 +13,8 @@ foreach($sections as $s) if ($s->titre) {
   echo '<li>'.link_to(ucfirst($s->titre), '@section?id='.$s->id);
   echo ' ('.$s->nb_interventions.' intervention';
   if ($s->nb_interventions > 1) echo 's';
+  if ($s->nb_commentaires > 0) echo ', '.$s->nb_commentaires.' commentaire';
+  if ($s->nb_commentaires > 1) echo 's';
   if ($order == 'plus') echo ', '.$moisactuel;
   echo ')</li>';
  }

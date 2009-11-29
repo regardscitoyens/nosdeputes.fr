@@ -20,33 +20,60 @@ class Commentaire extends BaseCommentaire
   * if $format is set to specific strings, returns a modified version :
   *   'none' => empty string
   *   'noauteur' => presentation without the author information
+  *   'nodossier' => presentation without the section information
+  *   'noloi' => presentation without the name of the law
+  *   'noarticle' => presentation without the name of the law nor the article's
   * if $virgule is set to 1, adds a ', ' at the end of the string
   */
   public function getPresentation($format = '', $virgule = 0) {
     if ($format == 'none') return '';
     else $present = $this->_get('presentation');
     if ($format == 'noauteur') {
-      $present = preg_replace('/\sd(\'|e\s)[A-ZÉÈÊ][\wàéëêèïîôöûüÉ\s]+\sle\s(\d)/', ' du \2', $present);
+      $present = preg_replace('/\sd(\'|e\s)[A-ZÉÈÊ][\wçàéëêèïîôöûüÉ\s]+\sle\s(\d)/', ' du \2', $present);
       $present = preg_replace('/Suite aux/', 'Suite à ses', $present);
+    } else if ($format == 'nodossier') {
+      $present = preg_replace('/^.* - (Suite aux|Au sujet)/', '\1', $present);
+    } else if ($format == 'noloi' || $format == 'noarticle') {
+      $present = preg_replace('/^.* - /', '', $present);
     }
-    if ($virgule == 1) return $present.', ';
+    if ($format == 'noarticle') {
+      $present = preg_replace('/article\s\d+\s/', '', $present);
+      $present = preg_replace('/A propos de l\'article\s\d+/', '', $present);
+    }
+    if ($virgule == 1 && $present != '') return $present.', ';
     else return $present;
   }
 
-  public function addParlementaire($parlementaire_id) {
+  public function addObject($object_type, $object_id) {
     if (!$this->id) {
       throw new Exception('no commentaire id');
     }
-    $cp = new CommentaireParlementaires();
-    $cp->parlementaire_id = $parlementaire_id;
-    $cp->commentaire_id = $this->id;
-    $cp->save();
+    $object = Doctrine::getTable($object_type)->find($object_id);
+    if ($object) {
+      Doctrine::getTable('CommentaireObject')->findUniqueOrCreate($object_type, $object_id, $this->id);
+      $object->updateNbCommentaires();
+      if ($object_type == 'Section' && $object->id != $object->section_id)
+        $this->addObject($object_type, $object->section_id);
+      else if ($object_type == 'TitreLoi') {
+        if ($object->id != $object->titre_loi_id)
+          $this->addObject($object_type, $object->titre_loi_id);
+        if ($object->parlementaire_id)
+          $this->addObject('Parlementaire', $object->parlementaire_id);
+      } else if ($object_type == 'ArticleLoi' && $object->titre_loi_id)
+        $this->addObject('TitreLoi', $object->titre_loi_id);
+    }
   }
 
   public function updateNbCommentaires($inc = 0) {
     $o = Doctrine::getTable($this->object_type)->find($this->object_id);
-    return $o->updateNbCommentaires($inc);
+    $o->updateNbCommentaires($inc);
+    foreach ($this->getObjects() as $object) {
+      $o = Doctrine::getTable($object->object_type)->find($object->object_id);
+      if (isset($o))
+        $o->updateNbCommentaires($inc);
+    }
   }
+
   public function setIsPublic($b) {
     $this->_set('is_public', $b);
     if ($this->id) {

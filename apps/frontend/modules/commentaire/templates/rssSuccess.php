@@ -1,17 +1,14 @@
 <?php
 
-if (isset($parlementaire)) {
-  $feed->setTitle("Les commentaires portant sur l'activité de ".$parlementaire->nom);
-  $feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for('@parlementaire_commentaires?slug='.$parlementaire->slug));
- }else {
-  $feed->setTitle("Les derniers commentaires de NosDeputes.fr");
-  $feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for('@commentaires_rss'));
- }  
-foreach($commentaires as $c)
+if ($type == 'Parlementaire')
+  $feed->setTitle($titre." de ".$object->nom);
+else $feed->setTitle($titre);
+$feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for(preg_replace('/_rss/', '', $linkrss)));
+foreach($comments as $c)
 {
   $item = new sfFeedItem();
-  if (isset($parlementaire))
-    $item->setTitle($c->getPresentation('noauteur'));
+  if (isset($presentation))
+    $item->setTitle($c->getPresentation($presentation));
   else $item->setTitle($c->getPresentation());
   $item->setLink('http://'.$_SERVER['HTTP_HOST'].url_for($c->getLien()));
   $item->setAuthorName($c->getCitoyen()->login);

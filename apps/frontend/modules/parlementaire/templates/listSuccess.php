@@ -11,7 +11,7 @@
 <?php if (preg_match('/^[A-ZÉ]$/', $search)) { ?>
 <div class="par_session">
 <?php foreach(range('A','Z') as $i) {
-  if ($i != $search) echo link_to($i ,'@list_parlementaires?search='.$i);
+  if ($i != $search) echo link_to($i ,'@list_parlementaires_alpha?search='.$i);
   else echo $i;
   echo '&nbsp;&nbsp;';
 } ?>

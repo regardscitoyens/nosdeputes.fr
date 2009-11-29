@@ -26,5 +26,5 @@ if ($sf_user->getAttribute('user_id') == $user->id)
   <div class="b_c_b"><div class="b_c_bg"></div><div class="b_c_bd"></div></div>
 </div>
 <div class="stopfloat"></div>
-<h2>Ses commentaires</h2>  
-<?php include_component('commentaire', 'showcitoyen', array('id'=>$user->id)); ?>
+<h2>Ses commentaires</h2> 
+<?php include_component('commentaire', 'showAllCitoyen', array('id'=>$user->id)); ?>

@@ -3,6 +3,49 @@ mail_test:
   url: /mail
   param: {module: mail, action: test}
 
+loi_alinea:
+  url: /loi/:loi/article/:article/:alinea
+  param: {module: loi, action alinea}
+
+loi_alinea_id:
+  url: /loi/alinea/:id
+  param: {module: loi, action alinea}
+
+loi_alinea_commentaires:
+  url: /loi/alinea/:id/commentaires
+  param: {module: commentaire, action: showAjax, alinea: 1}
+
+loi_article:
+  url: /loi/:loi/article/:article
+  param: {module: loi, action: article}
+
+loi_article_id:
+  url: /loi/article/:id
+  param: {module: loi, action article}
+
+loi_article_commentaires_json:
+  url: /loi/article/:article/commentaires
+  param: {module: commentaire, action: json}
+
+loi_section:
+  url: /loi/:loi/section/:chapitre/:section
+  param: {module: loi, action: section}
+
+loi_chapitre:
+  url: /loi/:loi/section/:chapitre
+  param: {module: loi, action: section, section: "0"}
+
+loi_rss_commentaires:
+  url: /loi/:loi/commentaires/rss
+  param: {module: commentaire, action: list, rss: 1}
+
+loi_commentaires:
+  url: /loi/:loi/commentaires
+  param: {module: commentaire, action: list}
+loi:
+  url: /loi/:loi
+  param: {module: loi, action: loi}
+
 homepage:
   url: /
   param: {module: parlementaire, action: index}
@@ -53,6 +96,21 @@ compterendu_edit:
   param: {module: article, action: edit, categorie: Seance, hasObject: true, displayObject: false, isUnique: false, role: "", exclude: 0}
 
 # Liste de tous les parlementaires ou par catégorie
+parlementaires_tags:
+  url: /deputes/tags
+  param: {module: parlementaire, action: tag}
+tag_result_parlementaires:
+  url: /deputes/tags/:tags
+  param: {module: parlementaire, action: tag}
+list_parlementaires_search:
+  url: /deputes/rechercher/:search
+  param: {module: parlementaire, action: list}
+list_parlementaires_search_empty:
+  url: /deputes/rechercher/
+  param: {module: parlementaire, action: list}
+list_parlementaires_alpha:
+  url: /deputes/:search
+  param: {module: parlementaire, action: list}
 list_parlementaires:
   url: /deputes
   param: {module: parlementaire, action: list}
@@ -63,8 +121,11 @@ list_parlementaires_departement:
   url: /circonscription/departement/:departement
   param: {module: circonscription, action: show}
 list_parlementaires_circo_search:
-  url: /circonscription/search/:search
+  url: /circonscription/rechercher/:search
   param: {module: circonscription, action: search}
+list_parlementaires_circo_search_empty:
+  url: /circonscription/rechercher/
+  param: {module: circonscription, action: list}
 list_parlementaires_circo_france:
   url: /circonscription/carte
   param: {module: circonscription, action: map}
@@ -75,7 +136,10 @@ redirect_parlementaires_circo:
   url: /circonscription/:code
   param: {module: circonscription, action: redirect}
 list_parlementaires_profession:
-  url: /profession
+  url: /profession/:search
+  param: {module: parlementaire, action: listProfession}
+list_parlementaires_profession_empty:
+  url: /profession/
   param: {module: parlementaire, action: listProfession}
 list_parlementaires_groupe:
   url: /groupe/:acro
@@ -84,12 +148,6 @@ list_parlementaires_organisme:
   url: /organisme/:slug
   param: {module: parlementaire, action: listOrganisme}
 
-parlementaires_tags:
-  url: /deputes/tags
-  param: {module: parlementaire, action: tag}
-tag_result_parlementaires:
-  url: /deputes/tags/:tags
-  param: {module: parlementaire, action: tag}
 photo_parlementaire:
   url: /depute/photo/:slug
   param: {module: parlementaire, action: photo}
@@ -108,6 +166,12 @@ parlementaire_random:
 sections:
   url: /dossiers/:order
   param: {module: section, action: list}
+section_rss_commentaires:
+  url: /dossier/:id/commentaires/rss
+  param: {module: commentaire, action: list, rss: 1}
+section_commentaires:
+  url: /dossier/:id/commentaires
+  param: {module: commentaire, action: list}
 section:
   url: /dossier/:id
   param: {module: section, action: show}
@@ -116,7 +180,7 @@ intervention:
   param: {module: intervention, action: show}
 intervention_commentaires:
   url: /intervention/:id/commentaires
-  param: {module: commentaire, action: showSeance}
+  param: {module: commentaire, action: showAjax, intervention: 1, limit: 4}
 interventions_seance:
   url: /seance/:seance
   param: {module: intervention, action: seance}
@@ -125,7 +189,7 @@ presents_seance:
   param: {module: presence, action: seance}
 seance_commentaires_json:
   url: /seance/:seance/commentaires
-  param: {module: commentaire, action: seance}
+  param: {module: commentaire, action: json}
 amendement:
   url: /amendement/:id
   param: {module: amendement, action: show}
@@ -144,7 +208,7 @@ search_interventions_mots:
   url: /rechercher/interventions/:search
   param: {module: intervention, action: search}
 search_interventions:
-  url: /rechercher/interventions
+  url: /rechercher/interventions/
   param: {module: intervention, action: search}
 search_amendements_mots_rss:
   url: /rechercher/amendements/:search/rss
@@ -153,16 +217,16 @@ search_amendements_mots:
   url: /rechercher/amendements/:search
   param: {module: amendement, action: search}
 search_amendements:
-  url: /rechercher/amendements
+  url: /rechercher/amendements/
   param: {module: amendement, action: search}
 search_questions_ecrites_mots_rss:
-  url: /rechercher/question/:search/rss
+  url: /rechercher/questions/:search/rss
   param: {module: questions, action: search, rss: 1}
 search_questions_ecrites_mots:
-  url: /rechercher/question/:search
+  url: /rechercher/questions/:search
   param: {module: questions, action: search}
 search_questions_ecrites:
-  url: /rechercher/question
+  url: /rechercher/questions/
   param: {module: questions, action: search}
 
 
@@ -261,7 +325,7 @@ commentaires:
   param: {module: commentaire, action: list}
 commentaires_rss:
   url: /commentaires/rss
-  param: {module: commentaire, action: rss}
+  param: {module: commentaire, action: list, rss: 1}
 
 parlementaire:
   url: /:slug
@@ -286,10 +350,10 @@ parlementaire_session_tags:
   param: {module: tag, action: parlementaire}
 parlementaire_rss_commentaires:
   url: /:slug/commentaires/rss
-  param: {module: commentaire, action: rss, parlementaire: 1}
+  param: {module: commentaire, action: list, rss: 1}
 parlementaire_commentaires:
   url: /:slug/commentaires
-  param: {module: commentaire, action: parlementaire}
+  param: {module: commentaire, action: list}
 parlementaire_textes:
   url: /:slug/dossiers
   param: {module: section, action: parlementaire}

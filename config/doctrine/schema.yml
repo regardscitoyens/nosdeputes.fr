@@ -15,6 +15,9 @@ Personnalite:
     sexe: 
       type: enum
       values: ['H', 'F']
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
 
 Parlementaire:
   columns:     
@@ -98,6 +101,9 @@ Seance:
     organisme_id: integer
     tagged: boolean
     session: string(10)
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
   relations:
     Organisme:
       foreignAlias: Seances
@@ -153,6 +159,9 @@ Section:
     min_date: string(15)
     timestamp: integer
     nb_interventions: integer
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
   relations:
     Section:
       foreignAlias: SubSections
@@ -346,10 +355,6 @@ Commentaire:
   relations:
     Citoyen:
       foreignAlias: Commentaires
-    Parlementaires:
-      class: Parlementaire
-      refClass: CommentaireParlementaires
-      foreignAlias: Commentaires
   inheritance:
     extends: ObjectRated
     type: concrete
@@ -357,16 +362,17 @@ Commentaire:
     commentable:
       fields: [object_type, object_id]
 
-CommentaireParlementaires:
+CommentaireObject:
  columns:
-   parlementaire_id: integer
+   object_type: string(64)
+   object_id: integer
    commentaire_id: integer
  relations:
-   Parlementaire:
    Commentaire:
+     foreignAlias: Objects
  indexes:
    unique:
-     fields: [parlementaire_id, commentaire_id]
+     fields: [object_type, object_id, commentaire_id]
      type: unique
 
 ObjectRated:
@@ -437,3 +443,76 @@ Article:
       fields: [categorie, titre, citoyen_id]
     iarticle:
       fields: [article_id]
+
+ArticleLoi:
+  actAs:
+    Sluggable:
+      fields: [texteloi_id, numero]
+      unique: true
+  columns:
+    texteloi_id: integer
+    numero: integer
+    expose:
+      type: string
+    titre_loi_id: integer
+  relations:
+    TitreLoi:
+      class: TitreLoi
+      foreignAlias: Articles
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  indexes:
+    iloiarticle:
+      fields: [texteloi_id, numero]
+
+Alinea:
+  actAs:
+    Timestampable:
+    Versionable:
+  columns:
+    texteloi_id: integer
+    article_loi_id: integer
+    numero: integer
+    texte:
+      type: string
+    ref_loi: string(100)
+    ref_art: string(100)
+  relations:
+    Article:
+      class: ArticleLoi
+      foreignAlias: Alineas
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  indexes:
+    iarticleloinumero:
+      fields: [texteloi_id, article_loi_id, numero]
+
+TitreLoi:
+  actAs:
+    Timestampable:
+  columns:
+    texteloi_id: integer
+    chapitre: integer
+    section: integer
+    titre: string(512)
+    expose:
+      type: string
+    parlementaire_id: integer
+    date: date
+    source:
+      type: string(128)
+      unique: true
+    nb_articles: integer
+    titre_loi_id: integer
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  relations:
+    Parlementaire:
+      class: Parlementaire
+      foreignAlias: Propositions
+    TitreLoi:
+      foreignAlias: SousSections
+

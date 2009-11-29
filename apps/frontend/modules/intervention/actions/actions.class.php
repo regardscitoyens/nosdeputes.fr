@@ -36,8 +36,8 @@ class interventionActions extends sfActions
     $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom);
     $this->interventions->orderBy('i.date DESC, i.timestamp ASC');
   }
-  public function executeParlementaireOrganisme(sfWebRequest $request)
-  {
+  
+  public function executeParlementaireOrganisme(sfWebRequest $request) {
     $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
     $this->orga = doctrine::getTable('Organisme')->find($request->getParameter('orga'));
@@ -51,8 +51,8 @@ class interventionActions extends sfActions
     $this->titre = 'Interventions';
     $this->response->setTitle($this->titre.' en '.$this->orga->nom.' de '.$this->parlementaire->nom);
   }
-  public function executeShow(sfWebRequest $request)
-  {
+
+  public function executeShow(sfWebRequest $request) {
     $this->intervention = doctrine::getTable('Intervention')->createquery('i')
       ->where('i.id = ?', $request->getParameter('id'))
       ->fetchOne();
@@ -69,8 +69,7 @@ class interventionActions extends sfActions
     //    $this->response->setDescription($this->intervention->intervention);
   }
   
-  public function executeSeance(sfWebRequest $request)
-  {
+  public function executeSeance(sfWebRequest $request) {
     $seance_id = $request->getParameter('seance');
     $this->seance = doctrine::getTable('Seance')->find($seance_id);
     $this->forward404Unless($this->seance);
@@ -87,8 +86,7 @@ class interventionActions extends sfActions
     $this->interventions = $query->execute();
   }
 
-  public function executeTag(sfWebRequest $request) 
-  {
+  public function executeTag(sfWebRequest $request) {
     $this->tags = split('\|', $request->getParameter('tags'));
     
     if (doctrine::getTable('Tag')->findOneByName($this->tags[0]))
@@ -114,8 +112,7 @@ class interventionActions extends sfActions
     $this->query = $query;
   }
 
-public function executeSearch(sfWebRequest $request)
-  {
+  public function executeSearch(sfWebRequest $request) {
     $this->mots = $request->getParameter('search');
     $mots = $this->mots;
     $mcle = array();
@@ -173,6 +170,7 @@ public function executeSearch(sfWebRequest $request)
     if ($request->getParameter('rss')) {
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
-    }
+    } else $request->setParameter('rss', array(array('link' => '@search_interventions_mots_rss?search='.$this->mots, 'title'=>'Les dernières interventions sur '.$this->mots.' en RSS')));
+    
   }
 }

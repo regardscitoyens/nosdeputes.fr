@@ -91,6 +91,14 @@ class Amendement extends BaseAmendement {
     return PluginTagTable::getObjectTaggedWithQuery('Section', array('loi:numero='.$this->texteloi_id))->fetchOne();
   }
 
+  public function getIntervention($num_admt) {
+    $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$this->texteloi_id, 'loi:amendement='.$num_admt));
+    $query->select('Intervention.id, Intervention.date, Intervention.seance_id, Intervention.md5')
+      ->groupBy('Intervention.date')
+      ->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
+    return $query->fetchOne();
+  }
+
   public function getTitre() {
     $parent = 0;
     $pluriel = "";

@@ -18,7 +18,13 @@ if (count($seances) && ($pager->getPage() < 2) ) { ?>
 <div><h3>Les dernières réunions de la <?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission</h3>
 <ul>
 <?php $cpt = 0; foreach($seances as $seance) { $cpt++;?>
-<li><?php echo link_to($seance->getTitre(), '@interventions_seance?seance='.$seance->id); ?></li>
+<li><?php $subtitre = $seance->getTitre();
+  if ($seance->nb_commentaires > 0) {
+    $subtitre .= ' ('.$seance->nb_commentaires.' commentaire';
+    if ($seance->nb_commentaires > 1) $subtitre .= 's';
+    $subtitre .= ')';
+  }
+  echo link_to($subtitre, '@interventions_seance?seance='.$seance->id); ?></li>
 <?php if ($cpt > 10) break;} ?>
 </ul>
 </div>

@@ -924,10 +924,64 @@ h2 {
   border: 1px dashed #E0E0DD;
 }
 
+.commentaires com_link {
+  float: right;
+}
+
 .source {
   float: right;
   margin-top: 0px;
 }
+.auteurloi {
+  float: right;
+}
+
+.loi h2 {
+  text-align: center;
+}
+
+.loi h3 {
+  text-align: center;
+}
+
+.pagerloi {
+  font-size: 0.8em;
+}
+
+.pagerloi precedent {
+  float: left;
+}
+
+.pagerloi suivant {
+  float: right;
+  text-align: right;
+}
+.loi tr {
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  vertical-align: center;
+}
+.alinea_select td {
+  font-weight: bold;
+}
+.alineanumero {
+  width: 50px;
+  text-align: center;
+  font-size: 0.7em;
+}
+.alineatexte {
+  width: 870px;
+  text-align: left;
+}
+.alineatexte commentaires {
+  float: right;
+  text-align: right;
+}
+.alineatexte .commentaires a {
+  font-weight: bold;
+}
+
 .perso {
   font-weight: bold;
 }

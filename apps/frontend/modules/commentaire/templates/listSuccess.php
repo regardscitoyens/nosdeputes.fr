@@ -1,4 +1,16 @@
-<h1>Les derniers commentaires<span class="rss"><a href="<?php echo url_for('@commentaires_rss'); ?>"><img src="/images/xneth/rss.png" alt="Flux rss"/></a></span></h1>
+<?php if ($type == 'Parlementaire')
+  echo include_component('parlementaire', 'header', array('parlementaire' => $object, 'titre' => $titre, 'rss' => $linkrss));
+else { ?>
+<h1><?if (isset($titre)) echo $titre; ?><span class="rss"><a href="<?php echo url_for($linkrss); ?>"><img src="/images/xneth/rss.png" alt="Les derniers commentaires en RSS"/></a></span></h1>
+<?php } ?>
 <div class="last_commentaires">
-<?php echo include_component('commentaire', 'pager', array('query_commentaires' => $comments, 'partial' => 'Trunc'));  ?>
+<p><?php if (isset($object)) {
+  if ($object->nb_commentaires > 0) {
+    echo $object->nb_commentaires.' commentaire';
+    if ($object->nb_commentaires > 1) echo 's';
+  } else echo 'Aucun commentaire n\'a encore été formulé';
+} ?></p>
+<?php $options = array('query_commentaires' => $commentaires, 'partial' => 'Trunc');
+if (isset($presentation)) $options = array_merge($options, array('presentation' => $presentation));
+echo include_component('commentaire', 'pager', $options);  ?>
 </div>

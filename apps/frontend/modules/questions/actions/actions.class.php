@@ -84,6 +84,6 @@ class questionsActions extends sfActions
     if ($request->getParameter('rss')) {
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
-    }
+    } else $request->setParameter('rss', array(array('link' => '@search_questions_ecrites_mots_rss?search='.$this->mots, 'title'=>'Les dernières questions écrites sur '.$this->mots.' en RSS')));
   }
 }

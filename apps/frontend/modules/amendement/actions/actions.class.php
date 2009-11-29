@@ -26,30 +26,23 @@ class amendementActions extends sfActions
      if (count($this->identiques) < 2) {
        $this->identiques = array();
      }
-
-     $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$this->amendement->texteloi_id, 'loi:amendement='.$this->amendement->numero));
-     $query->select('Intervention.id, Intervention.date, Intervention.seance_id, Intervention.md5')
-       ->groupBy('Intervention.date')
-       ->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
-     $this->seance = $query->fetchOne();
+     
+     $this->seance = $this->amendement->getIntervention($this->amendement->numero);
      foreach($this->identiques as $a) {
        if ($this->seance)
          break;
-       $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$this->amendement->texteloi_id, 'loi:amendement='.$a->numero));
-       $query->select('Intervention.id, Intervention.date, Intervention.seance_id, Intervention.md5')
-         ->groupBy('Intervention.date')
-         ->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
-       $this->seance = $query->fetchOne();
+       $this->seance = $this->amendement->getIntervention($a->numero);
      }
-    $this->sous_admts = Doctrine_Query::create()
-      ->select('a.id, a.numero')
-      ->from('Amendement a, Tagging tg, tg.Tag t')
-      ->where('a.texteloi_id = ?', $this->amendement->texteloi_id)
-      ->andWhere('a.id = tg.taggable_id')
-      ->andWhere('t.name LIKE ?', 'loi:sous_amendement_de=%')
-      ->andWhere('t.triple_value = ?', $this->amendement->numero)
-      ->orderBy('a.numero')
-      ->fetchArray();
+
+     $this->sous_admts = Doctrine_Query::create()
+       ->select('a.id, a.numero')
+       ->from('Amendement a, Tagging tg, tg.Tag t')
+       ->where('a.texteloi_id = ?', $this->amendement->texteloi_id)
+       ->andWhere('a.id = tg.taggable_id')
+       ->andWhere('t.name LIKE ?', 'loi:sous_amendement_de=%')
+       ->andWhere('t.triple_value = ?', $this->amendement->numero)
+       ->orderBy('a.numero')
+       ->fetchArray();
   }
 
   public function executeParlementaire(sfWebRequest $request)
@@ -136,7 +129,8 @@ class amendementActions extends sfActions
     if ($request->getParameter('rss')) {
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
-    }
+    } else $request->setParameter('rss', array(array('link' => '@search_amendements_mots_rss?search='.$this->mots, 'title'=>'Les derniers amendements sur '.$this->mots.' en RSS')));
+
   }
 
   public function executeFind(sfWebRequest $request)

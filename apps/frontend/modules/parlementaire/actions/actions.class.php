@@ -134,12 +134,11 @@ class parlementaireActions extends sfActions
       ->orderBy('s.min_date DESC')
       ->fetchArray();
     $request->setParameter('rss', array(array('link' => '@parlementaire_rss?slug='.$this->parlementaire->slug, 'title'=>'L\'activité de '.$this->parlementaire->nom),
-					array('link' => '@parlementaire_rss_commentaires?slug='.$this->parlementaire->slug, 'title'=>'Des commentaires portant sur l\'activité de '.$this->parlementaire->nom)
+					array('link' => '@parlementaire_rss_commentaires?slug='.$this->parlementaire->slug, 'title'=>'Les derniers commentaires portant sur l\'activité de '.$this->parlementaire->nom)
 					));
   }
 
-public function executeList(sfWebRequest $request)
-  {
+  public function executeList(sfWebRequest $request) {
     $this->search = strip_tags($request->getParameter('search'));
     if (!$this->search) $this->search = 'A';
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');

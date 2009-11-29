@@ -7,13 +7,27 @@ class ObjectCommentable extends BaseObjectCommentable
 {
   //Sometimes the comment is not saved, we need to simulate it with $inc
   public function updateNbCommentaires($inc = 0) {
-    $res = Doctrine::getTable('Commentaire')->createQuery('c')
+    $res1 = Doctrine::getTable('Commentaire')->createQuery('c')
       ->select('count(*) as nb')
       ->where('object_type = ?', get_class($this))
       ->andWhere('object_id = ?', $this->id)
       ->andWhere('is_public = ?', 1)
       ->fetchArray();
-    if (isset($res[0]['nb']))
-      $this->nb_commentaires = $res[0]['nb'] + $inc;
+    $res2 = Doctrine::getTable('CommentaireObject')->createQuery('co')
+      ->select('count(co.id) as nb')
+      ->leftJoin('co.Commentaire c')
+      ->where('co.object_type = ?', get_class($this))
+      ->andWhere('co.object_id = ?', $this->id)
+      ->andWhere('c.is_public = ?', 1)
+      ->fetchArray();
+    $res = 0;
+    if (isset($res1[0]['nb']))
+      $res += $res1[0]['nb'];
+    if (isset($res2[0]['nb']))
+      $res += $res2[0]['nb'];
+    if ($res) {
+      $this->nb_commentaires = $res + $inc;
+      $this->save();
+    }
   }
 }

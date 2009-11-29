@@ -16,24 +16,41 @@ class commentaireComponents extends sfComponents
     $this->getUser()->setAttribute('commentaire_'.$this->type.'_'.$this->id, $this->unique_form);
   }
 
-  public function executeShow() {
+  public function executeShowAll() {
     $id = $this->object->id;
     $type = get_class($this->object);
-    $this->commentaires = Doctrine::getTable('Commentaire')->createQuery()
-      ->where('(object_type = ? AND object_id = ?)', array($type, $id))
-      ->execute();
+    $query = Doctrine::getTable('Commentaire')
+      ->createQuery('c')
+      ->where('(c.object_type = ? AND c.object_id = ?)', array($type, $id));
+    if ($type == 'ArticleLoi')
+      $query->leftJoin('c.Objects co')
+        ->orWhere('(co.object_type = "ArticleLoi" AND co.object_id = ?)', $id);
+    $query->orderBy('created_at');
+    $this->commentaires = $query->execute();
   }
   
-  public function executeShowcitoyen() {
+  public function executeShowAllCitoyen() {
     $id = $this->id;
-    $this->commentaires = Doctrine::getTable('Commentaire')->createQuery()
-      ->where('citoyen_id = ? ', $id)
-      ->orderBy('created_at DESC')
-      ->execute();
+    $query = Doctrine::getTable('Commentaire')
+      ->createQuery()
+      ->where('citoyen_id = ? ', $id);
+    if ($id != $this->getUser()->getAttribute('user_id'))
+      $query->andWhere('is_public = ?', 1);
+    $query->orderBy('created_at DESC');
+    $this->commentaires = $query->execute();
   }
-  
-  public function executeParlementaire() {
-    $this->commentaires = $this->parlementaire->getLastCommentaires();
+ 
+  public function executeLastObject() {
+    $id = $this->object->id;
+    $type = get_class($this->object);
+    $query = doctrine::getTable('Commentaire')->createQuery('c')
+      ->leftJoin('c.Objects co')
+      ->where('co.object_type = ?', $type)
+      ->andWhere('co.object_id = ?', $id)
+      ->andWhere('is_public = 1')
+      ->orderBy('c.created_at DESC')
+      ->limit(4);
+    $this->commentaires = $query->execute();
   }
 
   public function executePager() {

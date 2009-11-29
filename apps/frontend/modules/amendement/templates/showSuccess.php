@@ -47,8 +47,9 @@
   <?php echo $amendement->getExpose(); ?>
 </div>
 <div class="commentaires" id="commentaires">
- <h3>Commentaires</h3>
-<?php echo include_component('commentaire', 'show', array('object' => $amendement)); ?>
-<?php echo include_component('commentaire', 'form', array('object' => $amendement)); ?>
+<?php if ($amendement->nb_commentaires == 0)
+  echo '<h3>Aucun commentaire n\'a encore été formulé sur cet amendement</h3>';
+else echo include_component('commentaire', 'showAll', array('object' => $amendement));
+echo include_component('commentaire', 'form', array('object' => $amendement)); ?>
 </div>
 </div>

@@ -106,8 +106,8 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
   </div></div>
   <?php endforeach; } ?>
 </div>
-<script>
 
+<script>
 nbCommentairesCB = function(html){
 	  ids = eval('(' +html+')');
           $('.com_link').hide();
@@ -123,7 +123,6 @@ nbCommentairesCB = function(html){
 	    }
             $('#com_link_'+i).show();
 	  }};
-
 additional_load = function() {
     $.ajax({
       url: "<?php echo url_for('@seance_commentaires_json?seance='.$seance->id); ?>",

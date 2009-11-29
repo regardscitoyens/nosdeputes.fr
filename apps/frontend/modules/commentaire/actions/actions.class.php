@@ -10,18 +10,10 @@
  */
 class commentaireActions extends sfActions
 {
-  public function executeParlementaire(sfWebRequest $request) 
-  {
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
-    $this->q_commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
-      ->leftJoin('c.CommentaireParlementaires cp')
-      ->where('cp.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('c.is_public = ?', 1)
-      ->orderBy('c.created_at DESC');
-  }
+  
   public function executePost(sfWebRequest $request)
   {
-    $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement?id=', 'QuestionEcrite' => '@question?id=');
+    $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement?id=', 'QuestionEcrite' => '@question?id=', 'ArticleLoi' => '@loi_article_id?id=', 'Alinea'=> '@loi_alinea_id?id=');
     $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "A propos d'une question écrite d");
 
     $this->type = $request->getParameter('type');
@@ -99,23 +91,40 @@ $values['password'], false, $this))) {
     $commentaire->object_id = $this->id;
     $commentaire->lien = $redirect_url[$this->type].$this->id;
     $object = doctrine::getTable($this->type)->find($this->id);
-    $present = '';
-    if ($this->type != 'QuestionEcrite') {
-      if ($section = $object->getSection())
-        $present = $section->getSection(1)->getTitre();
-      if ($present == '' && $this->type == 'Intervention' && $object->type == 'commission')
-        $present = $object->getSeance()->getOrganisme()->getNom();    
+    if (isset($object->texteloi_id) && $this->type != 'Amendement') {
+      $loi = doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
+      $present = $loi['titre'].' - A propos de l\'article ';
+      if ($this->type == 'Alinea') {
+        $article = doctrine::getTable('ArticleLoi')->createQuery('numero')
+          ->where('texteloi_id = ?', $object->texteloi_id)
+          ->andWhere('id = ?', $object->article_loi_id)
+          ->fetchOne();
+        $present .= $article.' alinéa ';
+      }
+      $present .= $object->numero;
+    } else {
+      $present = '';
+      if ($this->type != 'QuestionEcrite') {
+        if ($section = $object->getSection())
+          $present = $section->getSection(1)->getTitre();
+        if ($present == '' && $this->type == 'Intervention' && $object->type == 'commission')
+          $present = $object->getSeance()->getOrganisme()->getNom();
+      }
+      if ($present != '') $present .= ' - ';   
+      else $present = '';
+      $present .= $about[$this->type];
+      $nom = '';
+      if ($this->type == 'QuestionEcrite')
+        $nom = $object->getParlementaire()->nom;
+      else if ($this->type == 'Intervention')
+        $nom = $object->getIntervenant()->nom;
+      if ($nom != '') {
+        if (preg_match('/^[AEIOUYÉÈÊ]/', $nom)) $nom = '\''.$nom;
+        else $nom = 'e '.$nom;
+        $present .= $nom;
+      }
+      $present .= ' le '.date('d/m/Y', strtotime($object->date));
     }
-    if ($present != '') $present .= ' - ';   
-    else $present = '';
-    $present .= $about[$this->type];
-    if (isset($object->parlementaire_id)) {
-      $nom = $object->getParlementaire()->nom;
-      if (preg_match('/^[AEIOUYÉÈÊ]/', $nom)) $nom = '\''.$nom;
-      else $nom = 'e '.$nom;
-      $present .= $nom;
-    }
-    $present .= ' le '.date('d/m/Y', strtotime($object->date));
     $commentaire->presentation = $present;
     $commentaire->citoyen_id = $citoyen_id;
     $commentaire->is_public = $is_active;
@@ -126,13 +135,41 @@ $values['password'], false, $this))) {
     $object->save();
 
     if (isset($object->parlementaire_id)) {
-      $commentaire->addParlementaire($object->parlementaire_id);
-    }else{
+      if ($object->parlementaire_id)
+        $commentaire->addObject('Parlementaire', $object->parlementaire_id);
+    } else if ($this->type == 'Amendement') {
       $object->Parlementaires;
+      if (isset($object->Parlementaires)) foreach($object->Parlementaires as $p)
+        $commentaire->addObject('Parlementaire', $p->id);
+      if ($section = $object->getSection())
+        $commentaire->addObject('Section', $section->getSection(1)->id);
+      if (!($seance = $object->getIntervention($object->numero))) {
+        $identiques = doctrine::getTable('Amendement')->createQuery('a')
+          ->where('content_md5 = ?', $object->content_md5)
+          ->orderBy('numero')->execute();
+        foreach($identiques as $a) {
+          if ($seance) break;
+          $seance = $object->getIntervention($a->numero);
+        }    
+      }
+      if ($seance)
+          $commentaire->addObject('Seance', $seance['seance_id']);
     }
-    if (isset($object->Parlementaires)) {
-      foreach($object->Parlementaires as $p)
-      $commentaire->addParlementaire($p->id);
+    if (isset($object->seance_id)) {
+      if ($object->seance_id)
+        $commentaire->addObject('Seance', $object->seance_id);
+    }
+    if (isset($object->section_id)) {
+      if ($object->section_id)
+        $commentaire->addObject('Section', $object->section_id);
+    }
+    if (isset($object->article_loi_id)) {
+      if ($object->article_loi_id)
+        $commentaire->addObject('ArticleLoi', $object->article_loi_id);
+    }
+    if (isset($object->titre_loi_id)) {
+      if ($object->titre_loi_id)
+        $commentaire->addObject('TitreLoi', $object->titre_loi_id);
     }
       
     $pas_confirme_mail = '';
@@ -145,51 +182,89 @@ $values['password'], false, $this))) {
     return $this->redirect($commentaire->lien);
   }
 
-  public function executeRss(sfWebRequest $request) 
-  {
-    $query = Doctrine::getTable('Commentaire')
-      ->createQuery('c')
-      ->leftJoin('c.CommentaireParlementaires cp')
-      ->andWhere('c.is_public = ?', 1)
-      ->orderBy('created_at DESC')->limit(10);
-    if (($slug = $request->getParameter('slug'))) { 
-      $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
-      $this->forward404Unless($this->parlementaire);
-      $query->andWhere('cp.parlementaire_id = ?', $this->parlementaire->id);
-    }
-    $this->commentaires = $query->execute();
-    $this->feed = new sfRssFeed();
-  }
-  public function executeSeance(sfWebRequest $request)
-  {
+  public function executeJson(sfWebRequest $request) {
     $this->setLayout(false);
-    $seance_id = $request->getParameter('seance');
-    $this->forward404Unless($seance_id);
-    $this->commentaires = Doctrine::getTable('Intervention')->createQuery('i')->select('i.id, i.nb_commentaires')->where('seance_id = ?', $seance_id)->fetchArray();
+    if ($seance_id = $request->getParameter('seance'))
+      $query = Doctrine::getTable('Intervention')->createQuery('i');
+    else if ($article_id = $request->getParameter('article'))
+      $query = Doctrine::getTable('Alinea')->createQuery('i');
+    else $this->forward404();
+    $query->select('i.id, i.nb_commentaires');
+    if ($seance_id)
+      $query->where('seance_id = ?', $seance_id);
+    else $query->where('article_loi_id = ?', $article_id);
+    $this->commentaires = $query->fetchArray();
     $this->getResponse()->setHttpHeader('content-type', 'text/plain');
   }
-  public function executeShowSeance(sfWebRequest $request)
-  {
+
+  public function executeShowAjax(sfWebRequest $request) {
     $this->setLayout(false);
     $this->id = $request->getParameter('id');
     $this->forward404Unless($this->id);
-    $this->comments = Doctrine::getTable('Commentaire')->createQuery('c')
+    $query = Doctrine::getTable('Commentaire')->createQuery('c')
       ->where('object_id = ?', $this->id)
-      ->andWhere('object_type = ?', 'Intervention')
-      ->andWhere('is_public = ?', 1)
-      ->orderBy('created_at DESC')
-      ->limit(3)
-      ->execute();    
+      ->andWhere('is_public = ?', 1);
+    if ($request->getParameter('intervention')) {
+      $query->andWhere('object_type = ?', 'Intervention');
+      $this->type = 'Intervention';
+    } else if ($request->getParameter('alinea')) {
+      $query->andWhere('object_type = ?', 'Alinea');
+      $this->type = 'Alinea';
+    } else $this->forward404();
+    if ($this->limit = $request->getParameter('limit'))
+      $query->orderBy('created_at DESC')
+        ->limit($this->limit);
+    else $query->orderBy('created_at');
+    $this->comments = $query->execute();
     $this->getResponse()->setHttpHeader('content-type', 'text/plain');
   }
 
-  public function executeList(sfWebRequest $request)
-  {
-    $request->setParameter('rss', array(array('link' => '@commentaires_rss', 'title'=>'Les derniers commentaires en RSS')));
-
-    $this->comments = Doctrine::getTable('Commentaire')->createQuery('c')
-      ->andWhere('is_public = ?', 1)
+  public function executeList(sfWebRequest $request) {
+    $this->commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
+      ->leftJoin('c.Objects co')
+      ->andWhere('is_public = 1')
       ->orderBy('created_at DESC');
-    $this->response->setTitle('Tous les commentaires citoyens');
+    $this->titre = 'Les derniers commentaires';
+    if ($slug = $request->getParameter('slug')) {
+      $this->type = 'Parlementaire';
+      $this->object = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+      $this->presentation = 'noauteur';
+      $this->linkrss = '@parlementaire_rss_commentaires?slug='.$slug;
+    } else if ($id = $request->getParameter('id')) {
+      $this->type = 'Section';
+      $this->object = Doctrine::getTable('Section')->find($id);
+      $this->presentation = 'nodossier';
+      $this->linkrss = '@section_rss_commentaires?id='.$id;
+    } else if ($loi = $request->getParameter('loi')) {
+      $this->type = 'TitreLoi';
+      $this->object = Doctrine::getTable('TitreLoi')->findLoi($loi);
+      $this->presentation = 'noloi';
+      $this->linkrss = '@loi_rss_commentaires?loi='.$loi;
+    } else {
+      $this->type = 'all';
+      $this->linkrss = '@commentaires_rss';
+      $this->presentation = '';
+    }
+    if ($this->type != 'all') {
+      $this->forward404Unless($this->object);
+      if ($this->type == 'Parlementaire')
+        $this->titre .= ' sur l\'activité';
+      else $this->titre .= ' sur '.$this->object->titre;
+      $this->commentaires->andWhere('co.object_type = ?', $this->type)
+        ->andWhere('co.object_id = ?', $this->object->id);
+    }
+    if ($request->getParameter('rss')) {
+      if ($this->type == 'all') $this->titre .= ' de NosDéputés.fr';
+      $this->comments = $this->commentaires->limit(10)->execute();
+      $this->setTemplate('rss');
+      $this->feed = new sfRssFeed();
+    } else {
+      $request->setParameter('rss', array(array('link' => $this->link, 'title'=>'Les derniers commentaires en RSS')));
+      if ($this->type == 'Parlementaire')
+        $this->response->setTitle($this->titre.' de '.$this->object->nom);
+      else $this->response->setTitle($this->titre);
+    }
+
   }
+
 }

@@ -1,4 +1,4 @@
-<?php echo $form->renderFormTag(url_for('@commentaire_post?type='.$type.'&id='.$id)); ?>
+<div id="ecrire"></div><?php echo $form->renderFormTag(url_for('@commentaire_post?type='.$type.'&id='.$id)); ?>
 <table>
   <tr>
     <th colspan="3" style="text-align:left;"><?php echo $form['commentaire']->renderLabel() ?></th>

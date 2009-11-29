@@ -72,8 +72,10 @@ if ($intervention->hasIntervenant()) {
     </div>
       <?php if (isset($complete)) { ?>
     <div id="commentaires">
-<?php echo include_component('commentaire', 'show', array('object'=>$intervention));
-      echo include_component('commentaire', 'form', array('object'=>$intervention)); ?>
+<?php if ($intervention->nb_commentaires == 0)
+  echo '<h3>Aucun commentaire n\'a encore été formulé sur cette intervention</h3>';
+else echo include_component('commentaire', 'showAll', array('object'=>$intervention));
+echo include_component('commentaire', 'form', array('object'=>$intervention)); ?>
     </div>
   <?php } ?>
   </div>

@@ -41,7 +41,13 @@ if (count($sommaire)) { ?>
 <ul>
 <?php foreach($section->getSubSections() as $subsection) :
 if ($subsection->id != $section->id) : ?>
-<li><?php echo link_to($subsection->titre, '@interventions_seance?seance='.$subsection->getFirstSeance().'#table_'.$subsection->id); ?></li>
+<li><?php $subtitre = $subsection->titre;
+  if ($subsection->nb_commentaires > 0) {
+    $subtitre .= ' ('.$subsection->nb_commentaires.' commentaire';
+    if ($subsection->nb_commentaires > 1) $subtitre .= 's';
+    $subtitre .= ')';
+  }
+  echo link_to($subtitre, '@interventions_seance?seance='.$subsection->getFirstSeance().'#table_'.$subsection->id); ?></li>
 <?php endif; endforeach;?>
 </ul>
 </div>
@@ -51,7 +57,13 @@ if ($subsection->id != $section->id) : ?>
 <h2>Toutes les séances consacrées à ce dossier</h2>
 <ul>
 <?php foreach($section->getSeances() as $seance) : ?>
-<li><?php echo link_to($seance->getTitre(), '@interventions_seance?seance='.$seance->id.'#table_'.$section->id); ?></li>
+<li><?php $subtitre = $seance->getTitre();
+  if ($seance->nb_commentaires > 0) {
+    $subtitre .= ' ('.$seance->nb_commentaires.' commentaire';
+    if ($seance->nb_commentaires > 1) $subtitre .= 's';
+    $subtitre .= ')';
+  }
+  echo link_to($subtitre, '@interventions_seance?seance='.$seance->id.'#table_'.$section->id); ?></li>
 <?php endforeach; ?>
 </ul>
 </div>
@@ -60,3 +72,12 @@ if ($subsection->id != $section->id) : ?>
 <?php echo include_component('parlementaire', 'list', array('parlementairequery' => $ptag, 'route'=>'@parlementaire_texte?id='.$section->id.'&slug=')); ?>
 </div>
 </div>
+<?php if ($section->nb_commentaires != 0) { ?>
+  <div class="stopfloat"></div>
+  <div class="commentaires">
+    <h2>Derniers commentaires sur <?php echo $section->titre; ?> <span class="rss"><a href="<?php echo url_for('@section_rss_commentaires?id='.$section->id); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
+<?php echo include_component('commentaire', 'lastObject', array('object' => $section, 'presentation' => 'nodossier'));
+    if ($section->nb_commentaires > 4)
+      echo '<p class="suivant">'.link_to('Voir les '.$section->nb_commentaires.' commentaires', '@section_commentaires?id='.$section->id).'</p><div class="stopfloat"></div>'; ?>
+</div>
+<?php } ?>

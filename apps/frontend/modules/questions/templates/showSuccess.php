@@ -16,8 +16,9 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
         echo  $question->reponse;
       else echo 'Cette question n\'a pas encore de réponse.' ?></div>
     <div class="commentaires">
-      <h3>Commentaires</h3>
-<?php echo include_component('commentaire', 'show', array('object' => $question)); ?>
-<?php echo include_component('commentaire', 'form', array('object' => $question)); ?>
+<?php if ($question->nb_commentaires == 0)
+  echo '<h3>Aucun commentaire n\'a encore été formulé sur cette question</h3>';
+else echo include_component('commentaire', 'showAll', array('object' => $question));
+echo include_component('commentaire', 'form', array('object' => $question)); ?>
     </div>
 </div>
