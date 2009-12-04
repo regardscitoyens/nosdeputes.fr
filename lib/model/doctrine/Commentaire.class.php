@@ -29,7 +29,7 @@ class Commentaire extends BaseCommentaire
     if ($format == 'none') return '';
     else $present = $this->_get('presentation');
     if ($format == 'noauteur') {
-      $present = preg_replace('/\sd(\'|e\s)[A-ZÉÈÊ][\wçàéëêèïîôöûüÉ\s]+\sle\s(\d)/', ' du \2', $present);
+      $present = preg_replace('/\sd(\'|e\s)[A-ZÉÈÊ][\wçàéëêèïîôöûüÉ\s\-]+\sle\s(\d)/', ' du \2', $present);
       $present = preg_replace('/Suite aux/', 'Suite à ses', $present);
     } else if ($format == 'nodossier') {
       $present = preg_replace('/^.* - (Suite aux|Au sujet)/', '\1', $present);
