@@ -18,6 +18,7 @@ class loadLoiTask extends sfBaseTask {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
           $precedent = '';
+          $refcode = '';
           if ($file == ".." || $file == ".") continue;
           foreach(file($dir.$file) as $line) {
             $json = json_decode($line);
@@ -59,7 +60,9 @@ class loadLoiTask extends sfBaseTask {
               } else $art->save();
             } else if ($json->type == 'alinea') {
               $ali = Doctrine::getTable('Alinea')->findOrCreate($json->loi, $json->article, $json->alinea, $json->chapitre, $json->section);
-              if ($json->texte) $ali->texte = $json->texte;
+              if ($json->alinea == 1)
+                $refcode = '';
+              if ($json->texte) $refcode = $ali->setTexteCode($json->texte, $refcode);
               $ali->save();
             } else {
               echo "ERROR type : $line\n";

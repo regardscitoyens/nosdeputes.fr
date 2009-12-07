@@ -18,8 +18,8 @@ class Alinea extends BaseAlinea
      "code du cinéma et de l'image animée" => "LEGITEXT000020908868",
      "code civil" => "LEGITEXT000006070721",
      "code de commerce" => "LEGITEXT000005634379",
-     "code des communes" => "LEGITEXT000006070162",
      "code des communes de la Nouvelle-Calédonie" => "LEGITEXT000006070300",
+     "code des communes" => "LEGITEXT000006070162",
      "code de la consommation" => "LEGITEXT000006069565",
      "code de la construction et de l'habitation" => "LEGITEXT000006074096",
      "code de la défense" => "LEGITEXT000006071307",
@@ -28,19 +28,19 @@ class Alinea extends BaseAlinea
      "code de déontologie des architectes" => "LEGITEXT000006074232",
      "code de déontologie des professionnels de l'expertise comptable" => "LEGITEXT000006074510",
      "code disciplinaire et pénal de la marine marchande" => "LEGITEXT000006071188",
-     "code du domaine de l'état" => "LEGITEXT000006070208",
      "code du domaine de l'état et des collectivités publiques applicable à la collectivité territoriale de mayotte" => "LEGITEXT000006074235",
+     "code du domaine de l'état" => "LEGITEXT000006070208",
      "code du domaine public fluvial et de la navigation intérieure" => "LEGITEXT000006074237",
-     "code des douanes" => "LEGITEXT000006071570",
      "code des douanes de mayotte" => "LEGITEXT000006071645",
+     "code des douanes" => "LEGITEXT000006071570",
      "code de l'éducation" => "LEGITEXT000006071191",
      "code électoral" => "LEGITEXT000006070239",
      "code de l'entrée et du séjour des étrangers et du droit d'asile" => "LEGITEXT000006070158",
      "code de l'environnement" => "LEGITEXT000006074220",
      "code de l'expropriation pour cause d'utilité publique" => "LEGITEXT000006074224",
      "code de la famille et de l'aide sociale" => "LEGITEXT000006072637",
-     "code forestier" => "LEGITEXT000006071514",
      "code forestier de mayotte" => "LEGITEXT000006071556",
+     "code forestier" => "LEGITEXT000006071514",
      "code général de la propriété des personnes publiques" => "LEGITEXT000006070299",
      "code général des collectivités territoriales" => "LEGITEXT000006070633",
      "code général des impôts" => "LEGITEXT000006069577",
@@ -48,6 +48,7 @@ class Alinea extends BaseAlinea
      "code général des impôts, annexe 2" => "LEGITEXT000006069569",
      "code général des impôts, annexe 3" => "LEGITEXT000006069574",
      "code général des impôts, annexe 4" => "LEGITEXT000006069576",
+     "code général des impôts" => "LEGITEXT000006069577",
      "code de l'industrie cinématographique" => "LEGITEXT000006070882",
      "code des instruments monétaires et des médailles" => "LEGITEXT000006070666",
      "code des juridictions financières" => "LEGITEXT000006070249",
@@ -78,13 +79,14 @@ class Alinea extends BaseAlinea
      "code du service national" => "LEGITEXT000006071335",
      "code du sport" => "LEGITEXT000006071318",
      "code du tourisme" => "LEGITEXT000006074073",
-     "code du travail" => "LEGITEXT000006072050",
      "code du travail applicable à mayotte" => "LEGITEXT000006072052",
      "code du travail maritime" => "LEGITEXT000006072051",
+     "code du travail" => "LEGITEXT000006072050",
      "code de l'urbanisme" => "LEGITEXT000006074075",
      "code de la voirie routière" => "LEGITEXT000006070667"
     );
-  public function getTexte() {
+
+  public function getTextePresentation() {
 //  $code = $this->_get('texte');
 //  $legif = self::$code_legif[lc($code)];
 //  $article = 
@@ -94,5 +96,23 @@ class Alinea extends BaseAlinea
     return preg_replace('/(«|\-)\s+/', '\1&nbsp;', $texte);
   }
 
+  public function setTexteCode($texte, $refcode = '') {
+    $this->texte = $texte;
+    $texte = strtolower(preg_replace('/\<\/?[a-z]+\>/i', '', $texte));
+    $texte = trim(preg_replace('/\s+/', ' ', $texte));
+    foreach (self::$code_legif as $code => $legif) if (preg_match('/'.$code.'/', $texte)) {
+      $this->ref_loi = $code;
+      return $code;
+    }
+    if (preg_match('/(loi\sn°\s?[\d\-]+\sdu\s\d+e?r?\s[a-zéû]+\s\d{4})/', $texte, $match)) {
+      $this->ref_loi = $match[1];
+      return $match[1];
+    }
+    if ($refcode != '') {
+      $this->ref_loi = $refcode;
+      return $refcode;
+    }
+    return '';
+  }
 
 }

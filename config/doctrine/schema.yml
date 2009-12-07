@@ -480,6 +480,7 @@ Alinea:
     numero: integer
     texte:
       type: string
+    ref_loi: string(255)
   relations:
     Article:
       class: ArticleLoi
