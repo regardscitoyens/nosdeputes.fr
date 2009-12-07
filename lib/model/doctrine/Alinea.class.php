@@ -90,7 +90,8 @@ class Alinea extends BaseAlinea
 //  $article = 
 //  $link = '<a href="http://www.legifrance.gouv.fr/rechCodeArticle.do?champCode='.$legif.'&champNumArticle='.$article.'">';
 //  return preg_replace('/(Code)/', $link.'\1</a>', $this->_get('texte'));
-    return $this->_get('texte');
+    $texte = preg_replace('/\s+(:|;|!|\?|»|\-)/', '&nbsp;\1', $this->_get('texte'));
+    return preg_replace('/(«|\-)\s+/', '\1&nbsp;', $texte);
   }
 
 

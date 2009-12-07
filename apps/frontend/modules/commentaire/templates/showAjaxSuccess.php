@@ -1,4 +1,4 @@
-<div id='com_ajax_<?php echo $id; ?>' style="display: none"><?php if ($ct = count($comments)) { ?>
+<div class="com_ajax" id='com_ajax_<?php echo $id; ?>' style="display: none"><?php if ($ct = count($comments)) { ?>
 <div><strong><?php if (isset($limit)) echo 'Les derniers commentaires';
   else {
     echo $ct.' commentaire';

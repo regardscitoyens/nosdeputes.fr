@@ -968,6 +968,7 @@ h2 {
   vertical-align: super;
   text-align: left;
 }
+
 .loi .commentaires tr {
   vertical-align: middle;
 }
@@ -1001,8 +1002,17 @@ h2 {
   margin-right: 20px;
 }
 
+.alineatexte .commentaires {
+//  height: 12px;
+}
+
+.alineatexte .commentaires .com_ajax {
+  margin-top: 8px;
+}
+
 .alineatexte .commentaires a {
   font-weight: bold;
+  height: 12px;
 }
 
 .alineatexte:hover span {
