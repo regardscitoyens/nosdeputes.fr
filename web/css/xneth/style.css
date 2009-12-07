@@ -898,6 +898,9 @@ h2 {
   border-bottom: 1px dashed #E8E7E4;
 }
 /* commentaires */
+.link_comment {
+	height: 12px;
+}
 .commentaires {
   clear:both;
   margin-bottom: 15px;
@@ -994,7 +997,7 @@ h2 {
   margin-top: 7px;
   margin-bottom: 0px;
 }
-.alineatexte span {
+.alineatexte .com_link {
   display: none;
   float: right;
   margin-top: 1px;
@@ -1002,8 +1005,8 @@ h2 {
   margin-right: 20px;
 }
 
-.alineatexte .commentaires {
-//  height: 12px;
+.alineatexte .commentaires .com_link {
+  height: 12px;
 }
 
 .alineatexte .commentaires .com_ajax {
