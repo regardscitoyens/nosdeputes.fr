@@ -899,7 +899,10 @@ h2 {
 }
 /* commentaires */
 .link_comment {
-	height: 12px;
+  height: 11px;
+  float: right;
+  margin-top: 0px;
+  margin-bottom: 11px;
 }
 .commentaires {
   clear:both;
@@ -1000,13 +1003,10 @@ h2 {
 .alineatexte .com_link {
   display: none;
   float: right;
-  margin-top: 1px;
-  margin-bottom: 13px;
+  margin-top: 0px;
+  margin-bottom: 11px;
   margin-right: 20px;
-}
-
-.alineatexte .commentaires .com_link {
-  height: 12px;
+  height: 11px;
 }
 
 .alineatexte .commentaires .com_ajax {
@@ -1015,7 +1015,6 @@ h2 {
 
 .alineatexte .commentaires a {
   font-weight: bold;
-  height: 12px;
 }
 
 .alineatexte:hover span {
