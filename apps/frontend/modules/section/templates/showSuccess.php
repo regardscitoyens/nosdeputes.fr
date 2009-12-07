@@ -10,7 +10,9 @@ $sf_response->setTitle($titre);
 if ($section->getSection()) echo '</h2>';
 else echo '</h1>';
 ?>
-
+<?php if ($section->nb_commentaires) { ?>
+<div class="source"><a href="#commentaires">Voir le<?php if ($section->nb_commentaires > 1) echo 's '.$section->nb_commentaires; ?> commentaire<?php if ($section->nb_commentaires > 1) echo 's'; ?></a></div>
+<?php } ?>
 <div class="numeros_textes">
 <?php if ($lois && ! preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $section->titre)) { ?>
 <span>Texte<?php if (count($lois) > 1) echo 's'; ?> de loi<?php if (count($lois) > 1) echo 's'; ?> N°
@@ -74,7 +76,7 @@ if ($subsection->id != $section->id) : ?>
 </div>
 <?php if ($section->nb_commentaires != 0) { ?>
   <div class="stopfloat"></div>
-  <div class="commentaires">
+  <div class="commentaires" id="commentaires">
     <h2>Derniers commentaires sur <?php echo $section->titre; ?> <span class="rss"><a href="<?php echo url_for('@section_rss_commentaires?id='.$section->id); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
 <?php echo include_component('commentaire', 'lastObject', array('object' => $section, 'presentation' => 'nodossier'));
     if ($section->nb_commentaires > 4)
