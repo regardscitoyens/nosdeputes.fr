@@ -968,6 +968,9 @@ h2 {
   vertical-align: super;
   text-align: left;
 }
+.loi .commentaires tr {
+  vertical-align: middle;
+}
 
 .alineas p {
   margin-bottom: 2px;
