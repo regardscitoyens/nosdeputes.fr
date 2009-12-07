@@ -13,15 +13,15 @@ class TitreLoiTable extends Doctrine_Table
       ->andWhere('t.chapitre IS NULL')
       ->andWhere('t.section IS NULL')
       ->fetchOne();
-     if (!$loiarr) return null;
-     else {
+    if (!$loiarr) return null;
+    else {
        $loi = new TitreLoi();
        $loi->titre = $loiarr['titre'];
        $loi->nb_articles = $loiarr['nb_articles'];
        $loi->texteloi_id = $id;
        return $loi;
-     }
-   }
+    }
+  }
 
   public function findLoi($numero) {
     $query = $this->createQuery('t')

@@ -1,14 +1,15 @@
 <div class="loi">
-<h1><?php echo link_to('Article '.$n_article, '@loi_article_id?id='.$article_id); ?> - Alinéa <?php echo $alinea->numero; ?></h1>
+<h1><?php echo link_to('Article '.$titre_article, '@loi_article?loi='.$alinea->texteloi_id.'&article='.$slug_article); ?> - Alinéa <?php echo $alinea->numero; ?></h1>
 <br/>
-<table>
+<table class="alineas">
 <?php foreach ($alineas as $a) {
   echo '<tr class="alinea';
   if ($a->numero == $alinea->numero) echo '_select';
-  echo '" id="alinea_'.$a->texteloi_id.'-'.$n_article.'-'.$a->numero.'"><td class="alineanumero">'.$a->numero.'.</td><td class="alineatexte">'.$a->texte.'</td></tr>';
+  else $a->texte = preg_replace('/\<\/?b\>/', '', $a->texte);
+  echo '" id="alinea_'.$a->texteloi_id.'-'.$slug_article.'-'.$a->numero.'"><td class="alineanumero"><p>'.$a->numero.'.</p></td><td>'.$a->texte.'</td></tr>';
 } ?>
 </table>
-<p class="suivant"><b><a href="<?php echo url_for('@loi_article_id?id='.$article_id); ?>">Voir tout l'article</a></b></p>
+<p class="suivant"><b><a href="<?php echo url_for('@loi_article?loi='.$alinea->texteloi_id.'&article='.$slug_article); ?>">Voir tout l'article</a></b></p>
 </div>
 <div class="commentaires" id="commentaires">
 <?php if ($alinea->nb_commentaires == 0)

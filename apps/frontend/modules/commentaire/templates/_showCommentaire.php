@@ -3,6 +3,7 @@
 <p><span class="titre_commentaire"><?php $pres = ""; if (isset($presentation)) $pres .= $c->getPresentation($presentation, 1); echo $pres; if ($pres != '') echo 'le'; else echo 'Le'; ?> <a href="#commentaire_<?php echo $c->id;?>"><?php echo myTools::displayDateTime($c->created_at); ?></a>, <?php
 include_component('citoyen', 'shortCitoyen', array('citoyen_id'=>$c->citoyen_id));
 ?> a dit :</span></p>
+<div class="clear"></div>
 <div class="commentaire_avatar"><?php include_component('citoyen','avatarCitoyen', array('citoyen_id'=>$c->citoyen_id)); ?></div>
 <p><?php echo $c->commentaire; ?></p>
 <?php

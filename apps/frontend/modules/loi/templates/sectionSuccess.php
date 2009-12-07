@@ -53,9 +53,9 @@ foreach ($articles as $a) {
     echo '<ul>';
     $changesec = 0;
   }
-  $nart = $a->numero;
-  echo '<li><a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->numero).'">';
-  echo '<b>Article '.$nart;
+  $nart = $a->ordre;
+  echo '<li><a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'">';
+  echo '<b>Article '.$a->titre;
   if ($a->nb_commentaires > 0) {
     echo ' ('.$a->nb_commentaires.' commentaire';
       if ($a->nb_commentaires > 1) echo 's';

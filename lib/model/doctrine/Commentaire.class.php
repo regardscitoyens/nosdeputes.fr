@@ -37,8 +37,8 @@ class Commentaire extends BaseCommentaire
       $present = preg_replace('/^.* - /', '', $present);
     }
     if ($format == 'noarticle') {
-      $present = preg_replace('/article\s\d+\s/', '', $present);
-      $present = preg_replace('/A propos de l\'article\s\d+/', '', $present);
+      $present = preg_replace('/(A propos de l\')article\s.*\s(alinéa\s\d+)/', '\1\2', $present);
+      $present = preg_replace('/A propos de l\'article\s.*$/', '', $present);
     }
     if ($virgule == 1 && $present != '') return $present.', ';
     else return $present;

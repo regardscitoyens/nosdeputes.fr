@@ -10,22 +10,20 @@
 }
 echo $titre; ?></h2>
 <div class="pagerloi">
-<?php if ($n_article > 1) {
-  $precedent = $n_article - 1;
-  echo '<div class="precedent">'.link_to('Article '.$precedent, '@loi_article?loi='.$loi->texteloi_id.'&article='.$precedent).'</div>';
+<?php if ($article->precedent) {
+  echo '<div class="precedent">'.link_to('Article précédent', '@loi_article?loi='.$loi->texteloi_id.'&article='.$article->precedent).'</div>';
 }
-if ($n_article < $loi->nb_articles) {
-    $suivant = $n_article + 1;
-    echo '<div class="suivant">'.link_to('Article '.$suivant, '@loi_article?loi='.$loi->texteloi_id.'&article='.$suivant).'</div>';
+if ($article->suivant) {
+    echo '<div class="suivant">'.link_to('Article suivant', '@loi_article?loi='.$loi->texteloi_id.'&article='.$article->suivant).'</div>';
   } ?>
 </div>
 <br/>
-<?php if (isset($expose)) echo $expose; ?> 
+<?php if (isset($expose)) echo $expose.'<div class="suivant"><a href="#commentaires">Commenter</a></div>'; ?> 
 <br/>
 <table>
 <?php foreach ($alineas as $a) {
-  echo '<tr class="alinea" id="alinea_'.$a->texteloi_id.'-'.$n_article.'-'.$a->numero.'"><td class="alineanumero">'.$a->numero.'.</td><td class="alineatexte">'.$a->texte; ?>
-  <div class="commentaires" id='com_<?php echo $a->id; ?>'><span class="com_link" id="com_link_<?php echo $a->id; ?>"><a href="<?php echo url_for('@loi_alinea_id?id='.$a->id); ?>#commentaires">Voir tous les commentaires</a> - </span><span><a href="<?php echo url_for('@loi_alinea_id?id='.$a->id); ?>#ecrire">Laisser un commentaire</a></span></td></tr>
+  echo '<tr class="alinea" id="alinea_'.$a->texteloi_id.'-'.$article->slug.'-'.$a->numero.'"><td class="alineanumero"><p>'.$a->numero.'.</p></td><td class="alineatexte">'.$a->texte; ?>
+  <div class="commentaires" id='com_<?php echo $a->id; ?>'><span class="com_link" id="com_link_<?php echo $a->id; ?>"><a href="<?php echo url_for('@loi_alinea?id='.$a->id); ?>#ecrire">Voir tous les commentaires - Laisser un commentaire</a></span></div></td></tr>
 <?php } ?>
 </table>
 </div>
@@ -40,18 +38,15 @@ echo include_component('commentaire', 'form', array('object' => $article));
 <script>
 nbCommentairesCB = function(html){
           ids = eval('(' +html+')');
-          $('.com_link').hide();
+          $('.com_link a').text("Laisser un commentaire");
           for(i in ids) {
             if (i < 0)
-               continue;
-            if (ids[i] == 0) {
-              $('#com_link_'+i).text('');
-            }else if (ids[i] == 1) {
-              $('#com_link_'+i+' a').text("Voir le commentaire");
+              continue;
+            if (ids[i] == 1) {
+              $('#com_link_'+i+' a').text("Voir le commentaire - Laisser un commentaire");
             }else {
-              $('#com_link_'+i+' a').text("Voir les "+ids[i]+" commentaires");
+              $('#com_link_'+i+' a').text("Voir les "+ids[i]+" commentaires - Laisser un commentaire");
             }
-            $('#com_link_'+i).show();
           }};
 additional_load = function() {
     $.ajax({

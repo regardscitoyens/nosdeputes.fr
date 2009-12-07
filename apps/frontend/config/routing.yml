@@ -4,10 +4,6 @@ mail_test:
   param: {module: mail, action: test}
 
 loi_alinea:
-  url: /loi/:loi/article/:article/:alinea
-  param: {module: loi, action alinea}
-
-loi_alinea_id:
   url: /loi/alinea/:id
   param: {module: loi, action alinea}
 
@@ -42,6 +38,7 @@ loi_rss_commentaires:
 loi_commentaires:
   url: /loi/:loi/commentaires
   param: {module: commentaire, action: list}
+
 loi:
   url: /loi/:loi
   param: {module: loi, action: loi}

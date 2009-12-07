@@ -17,6 +17,7 @@ class loadLoiTask extends sfBaseTask {
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
+          $precedent = '';
           if ($file == ".." || $file == ".") continue;
           foreach(file($dir.$file) as $line) {
             $json = json_decode($line);
@@ -29,7 +30,7 @@ class loadLoiTask extends sfBaseTask {
               $loi = Doctrine::getTable('TitreLoi')->findLoiOrCreate($json->loi);
               if ($json->source) $loi->source = $json->source;
               if ($json->titre) $loi->titre = $json->titre;
-              if ($json->expose) $loi->expose = $json->expose;
+              if ($json->expose) $loi->expose = preg_replace("/<a\shref='([^']+)'>/", '<a href="\1">', $json->expose);
               if ($json->date) $loi->date = $json->date;
               if ($json->auteur) $loi->setAuteur($json->auteur);
               $loi->save();
@@ -45,13 +46,20 @@ class loadLoiTask extends sfBaseTask {
               $sec->save();
             } else if ($json->type == 'article') {
               $art = Doctrine::getTable('ArticleLoi')->findOrCreate($json->loi, $json->article, $json->chapitre, $json->section);
-              if ($json->expose) $art->expose = $json->expose;
-              $art->save();
+              if ($json->expose && $json->expose != '') $art->expose = $json->expose;
+              if ($json->ordre && $json->ordre != '') {
+                $art->ordre = $json->ordre;
+                if (isset($oldart)) {
+                  $oldart->suivant = $art->slug;
+                  $oldart->save();
+                  $art->precedent = $oldart->slug;
+                }
+                $art->save();
+                $oldart = $art;
+              } else $art->save();
             } else if ($json->type == 'alinea') {
               $ali = Doctrine::getTable('Alinea')->findOrCreate($json->loi, $json->article, $json->alinea, $json->chapitre, $json->section);
               if ($json->texte) $ali->texte = $json->texte;
-              if ($json->ref_loi) $ali->ref_loi = $json->ref_loi;
-              if ($json->ref_art) $ali->ref_art = $json->ref_art;
               $ali->save();
             } else {
               echo "ERROR type : $line\n";

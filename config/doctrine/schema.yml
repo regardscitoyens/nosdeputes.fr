@@ -447,11 +447,13 @@ Article:
 ArticleLoi:
   actAs:
     Sluggable:
-      fields: [texteloi_id, numero]
-      unique: true
+      fields: [titre]
   columns:
-    texteloi_id: integer
-    numero: integer
+    texteloi_id: string(8)
+    titre: string(16)
+    ordre: integer
+    precedent: string(16)
+    suivant: string(16)
     expose:
       type: string
     titre_loi_id: integer
@@ -463,21 +465,21 @@ ArticleLoi:
     extends: ObjectCommentable
     type: concrete
   indexes:
+    iloititre:
+      fields: [texteloi_id, titre]
+      type: unique
     iloiarticle:
-      fields: [texteloi_id, numero]
+      fields: [texteloi_id, ordre]
 
 Alinea:
   actAs:
     Timestampable:
-    Versionable:
   columns:
-    texteloi_id: integer
+    texteloi_id: string(8)
     article_loi_id: integer
     numero: integer
     texte:
       type: string
-    ref_loi: string(100)
-    ref_art: string(100)
   relations:
     Article:
       class: ArticleLoi
@@ -488,12 +490,13 @@ Alinea:
   indexes:
     iarticleloinumero:
       fields: [texteloi_id, article_loi_id, numero]
+      type: unique
 
 TitreLoi:
   actAs:
     Timestampable:
   columns:
-    texteloi_id: integer
+    texteloi_id: string(8)
     chapitre: integer
     section: integer
     titre: string(512)

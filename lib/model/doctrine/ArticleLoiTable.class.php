@@ -5,20 +5,27 @@
 class ArticleLoiTable extends Doctrine_Table
 {
 
-  public function findOneByLoiNum($loi, $numero) {
+  public function findOneByLoiSlug($loi, $slug) {
     $query = $this->createQuery('a')
       ->where('a.texteloi_id = ?', $loi)
-      ->andWhere('a.numero = ?', $numero);
+      ->andWhere('a.slug = ?', $slug);
     return $query->fetchOne();
   }
 
+  public function findOneByLoiTitre($loi, $titre) {
+    $query = $this->createQuery('a')
+      ->where('a.texteloi_id = ?', $loi)
+      ->andWhere('a.titre = ?', $titre);
+    return $query->fetchOne();
+  }
 
   public function findOrCreate($loi, $article, $chapitre = 0, $section = 0) {
-    $art = $this->findOneByLoiNum($loi, $article);
+    $art = $this->findOneByLoiTitre($loi, $article);
     if (!$art) {
       $art = new ArticleLoi();
       $art->texteloi_id = $loi;
-      $art->numero = $article;
+      $art->titre = $article;
+      $art->ordre = 0;
       $loiobj = Doctrine::getTable('TitreLoi')->findLoiOrCreate($loi);
       $loiobj->nb_articles += 1;
       $loiobj->save();
@@ -37,10 +44,9 @@ class ArticleLoiTable extends Doctrine_Table
       } else {
         $art->setTitreLoi($loiobj);
       }
+      $art->save();
     }
-    $art->save();
     return $art;
   }
-
 
 }

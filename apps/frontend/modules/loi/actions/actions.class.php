@@ -15,13 +15,13 @@ class loiActions extends sfActions
     $loi_id = $this->getLoi($request);
     $this->soussections = doctrine::getTable('TitreLoi')->createquery('t')
       ->where('t.texteloi_id = ?', $loi_id)
-      ->andWhere('t.date IS NULL')
+      ->andWhere('t.id != t.titre_loi_id')
       ->orderBy('t.chapitre, t.section')
       ->execute();
     if (!$this->soussections) {
       $this->articles = doctrine::getTable('ArticleLoi')->createquery('a')
         ->where('a.texteloi_id = ?', $loi_id)
-        ->orderBy('a.numero')
+        ->orderBy('a.ordre')
         ->execute();
     }
     $this->response->setTitle($this->loi->titre);
@@ -54,10 +54,10 @@ class loiActions extends sfActions
       $artquery->whereIn('a.titre_loi_id', $ids);
     }
     $artquery->andWhere('a.texteloi_id = ?', $loi_id)
-      ->orderBy('a.numero');
+      ->orderBy('a.ordre');
     $this->articles = $artquery->execute();
     if (count($this->articles) == 1)
-      $this->redirect('@loi_article?loi='.$loi_id.'&article='.$this->articles[0]->numero);
+      $this->redirect('@loi_article?loi='.$loi_id.'&article='.$this->articles[0]->slug);
     if (isset($this->section)) {
       $titre = $this->section->getLargeTitre();
       if (doctrine::getTable('TitreLoi')->findSection($loi_id, $n_chapitre, $n_section+1))
@@ -89,25 +89,22 @@ class loiActions extends sfActions
       ->orderBy('a.numero')
       ->execute();
     $this->forward404Unless(count($this->alineas));
-    $this->n_article = $article->numero;
-    $this->article_id = $article->id;
-    $this->titre = 'Article '.$this->n_article.' - Alinea '.$this->alinea->numero;
+    $this->titre_article = $article->titre;
+    $this->slug_article = $article->slug;
+    $this->titre = 'Article '.$this->titre_article.' - Alinea '.$this->alinea->numero;
     $this->response->setTitle($this->titre);
   }
-
-
 
   public function executeArticle(sfWebRequest $request) {
     if ($id = $request->getParameter('id'))
       $this->article = doctrine::getTable('ArticleLoi')->find($id);
     else {
       $loi_id = $this->getLoi($request, 1);
-      $this->n_article = $request->getParameter('article');
-      $this->article = doctrine::getTable('ArticleLoi')->findOneByLoiNum($loi_id, $this->n_article);
+      $slug_article = $request->getParameter('article');
+      $this->article = doctrine::getTable('ArticleLoi')->findOneByLoiSlug($loi_id, $slug_article);
     }
     $this->forward404Unless($this->article);
-    if (!(isset($this->n_article))) {
-      $this->n_article = $this->article->numero;
+    if (!(isset($slug_article))) {
       $this->loi = doctrine::getTable('TitreLoi')->findLightLoi($this->article->texteloi_id);
       $loi_id = $this->loi->texteloi_id;
     }
@@ -118,7 +115,7 @@ class loiActions extends sfActions
       ->execute();
     $this->forward404Unless(count($this->alineas));
     $this->section = $this->article->getTitreLoi();
-    $this->titre = 'Article '.$this->n_article;
+    $this->titre = 'Article '.$this->article->titre;
     if (isset($this->section->chapitre) && $this->section->chapitre != 0)
       $this->titre .= ' ('.$this->section->getLargeTitre().')';
     $this->response->setTitle($this->loi->titre.' - '.strip_tags($this->titre));

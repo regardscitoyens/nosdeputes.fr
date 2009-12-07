@@ -1,20 +1,21 @@
 <h1><?php echo $loi->titre; ?></h1>
-<?php if (isset($loi->source)) echo '<p class="source"><a href="'.$loi->source.'" rel="nofollow">Source</a></p><div class="clear">'; ?>
-<?php if (isset($loi->expose)) {
-  if (isset($loi->parlementaire_id)) {
+<div class="headerloi">
+<?php if ($loi->source) echo '<p class="source"><a href="'.$loi->source.'" rel="nofollow">Source</a></p><div class="clear"></div>'; ?>
+<?php if ($loi->expose) {
+  if ($loi->parlementaire_id) {
     echo '<div class="intervenant">';
     $perso = $loi->getParlementaire();
     if ($perso->getPageLink() && $photo = $perso->hasPhoto())
       echo '<a href="'.url_for($perso->getPageLink()).'"><img alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a>';
     echo '</div>';
   }
-  echo $loi->expose;
+  echo $loi->expose.'</div>';
   if (isset($loi->parlementaire_id))
     echo '<div class="auteurloi"><a href="'.url_for($perso->getPageLink()).'">'.$perso->nom.'</a></div>'; 
-}
-echo '<br/>';
-echo '<div class="sommaireloi">';
-if (isset($soussections)) {
+} ?>
+<br/>
+<div class="sommaireloi">
+<?php if (isset($soussections)) {
   $chapitre = 0;
   $section = 0;
   foreach ($soussections as $ss) {
@@ -50,9 +51,9 @@ if (isset($soussections)) {
   foreach ($articles as $a) {
     if ($nart != 0) echo '</li>';
     else echo '<ul>';
-    $nart = $a->numero;
-    echo '<li><a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->numero).'">';
-    echo 'Article '.$nart;
+    $nart = $a->ordre;
+    echo '<li><a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'">';
+    echo 'Article '.$a->titre;
     if (isset($a->expose)) echo '&nbsp;:'.truncate_text(preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $a->expose), 120);
     echo '</a>';
   }

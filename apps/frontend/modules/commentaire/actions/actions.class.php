@@ -13,7 +13,7 @@ class commentaireActions extends sfActions
   
   public function executePost(sfWebRequest $request)
   {
-    $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement?id=', 'QuestionEcrite' => '@question?id=', 'ArticleLoi' => '@loi_article_id?id=', 'Alinea'=> '@loi_alinea_id?id=');
+    $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement?id=', 'QuestionEcrite' => '@question?id=', 'ArticleLoi' => '@loi_article_id?id=', 'Alinea'=> '@loi_alinea?id=');
     $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "A propos d'une question écrite d");
 
     $this->type = $request->getParameter('type');
@@ -95,13 +95,13 @@ $values['password'], false, $this))) {
       $loi = doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
       $present = $loi['titre'].' - A propos de l\'article ';
       if ($this->type == 'Alinea') {
-        $article = doctrine::getTable('ArticleLoi')->createQuery('numero')
+        $article = doctrine::getTable('ArticleLoi')->createQuery('a')
+          ->select('titre')
           ->where('texteloi_id = ?', $object->texteloi_id)
           ->andWhere('id = ?', $object->article_loi_id)
           ->fetchOne();
-        $present .= $article.' alinéa ';
-      }
-      $present .= $object->numero;
+        $present .= $article['titre'].' alinéa '.$object->numero;
+      } else $present .= $object->titre;
     } else {
       $present = '';
       if ($this->type != 'QuestionEcrite') {

@@ -932,6 +932,11 @@ h2 {
   float: right;
   margin-top: 0px;
 }
+
+.headerloi a {
+  text-decoration: underline;
+}
+
 .auteurloi {
   float: right;
 }
@@ -960,26 +965,50 @@ h2 {
   padding: 0px;
   margin: 0px;
   border: 0px;
-  vertical-align: center;
+  vertical-align: super;
+  text-align: left;
 }
+
+.alineas p {
+  margin-bottom: 2px;
+}
+.alineas .alineanumero p {
+  margin-top: 10px;
+}
+
 .alinea_select td {
   font-weight: bold;
 }
 .alineanumero {
-  width: 50px;
-  text-align: center;
-  font-size: 0.7em;
+  width: 30px;
+  font-size: 0.8em;
 }
 .alineatexte {
   width: 870px;
-  text-align: left;
 }
-.alineatexte commentaires {
+.alineatexte p {
+  margin-top: 7px;
+  margin-bottom: 0px;
+}
+.alineatexte span {
+  display: none;
   float: right;
-  text-align: right;
+  margin-top: 1px;
+  margin-bottom: 13px;
+  margin-right: 20px;
 }
+
 .alineatexte .commentaires a {
   font-weight: bold;
+}
+
+.alineatexte:hover span {
+  display: inline;
+}
+
+.alineatexte .commentaire span {
+  float: left;
+  display: inline;
 }
 
 .perso {
