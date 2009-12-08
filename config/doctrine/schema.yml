@@ -448,6 +448,7 @@ ArticleLoi:
   actAs:
     Sluggable:
       fields: [titre]
+      unique: false
   columns:
     texteloi_id: string(8)
     titre: string(16)
