@@ -136,6 +136,9 @@ class parlementaireActions extends sfActions
     $request->setParameter('rss', array(array('link' => '@parlementaire_rss?slug='.$this->parlementaire->slug, 'title'=>'L\'activité de '.$this->parlementaire->nom),
 					array('link' => '@parlementaire_rss_commentaires?slug='.$this->parlementaire->slug, 'title'=>'Les derniers commentaires portant sur l\'activité de '.$this->parlementaire->nom)
 					));
+    $this->response->addMeta('keywords', $this->parlementaire->nom.' '.$this->parlementaire->nom_circo.' '.$this->parlementaire->type.' '.$this->parlementaire->groupe_acronyme.' Assemblée nationale');
+    $this->response->addMeta('description', 'Pour tout connaître de l\'activité de '.$this->parlementaire->nom.' à l\'Assemblée Nationale. '.$this->parlementaire->nom.' est '.$this->parlementaire->getLongStatut().' à l\'Assemblée Nationale.');
+
   }
 
   public function executeList(sfWebRequest $request) {

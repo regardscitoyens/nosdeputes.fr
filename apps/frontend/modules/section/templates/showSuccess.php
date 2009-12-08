@@ -6,15 +6,15 @@ if ($section->getSection()) {
  }
 echo $section->titre;
 $titre = $section->titre.$titre;
-$sf_response->setTitle($titre);
+$sf_response->setTitle($titre.' - NosDéputés.fr');
 if ($section->getSection()) echo '</h2>';
 else echo '</h1>';
 ?>
+<div class="numeros_textes">
 <?php if ($section->nb_commentaires) { ?>
 <div class="source"><a href="#commentaires">Voir le<?php if ($section->nb_commentaires > 1) echo 's '.$section->nb_commentaires; ?> commentaire<?php if ($section->nb_commentaires > 1) echo 's'; ?></a></div>
-<?php } ?>
-<div class="numeros_textes">
-<?php if ($lois && ! preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $section->titre)) { ?>
+<?php }
+  if ($lois && ! preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $section->titre)) { ?>
 <span>Texte<?php if (count($lois) > 1) echo 's'; ?> de loi<?php if (count($lois) > 1) echo 's'; ?> N°
 <?php foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ';
 echo '('.link_to('tous les amendements à ce dossier',  '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois_amendees)).'&numero=all').')';

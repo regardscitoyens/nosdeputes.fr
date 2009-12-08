@@ -24,7 +24,7 @@ class loiActions extends sfActions
         ->orderBy('a.ordre')
         ->execute();
     }
-    $this->response->setTitle($this->loi->titre);
+    $this->response->setTitle($this->loi->titre.' - NosDéputés.fr');
     $request->setParameter('rss', array(array('link' => '@loi_rss_commentaires?loi='.$loi_id, 'title'=>'Les commentaires sur '.$this->loi->titre)));
 
   }

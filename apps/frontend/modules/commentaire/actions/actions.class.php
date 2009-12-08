@@ -261,8 +261,8 @@ $values['password'], false, $this))) {
     } else {
       $request->setParameter('rss', array(array('link' => $this->link, 'title'=>'Les derniers commentaires en RSS')));
       if ($this->type == 'Parlementaire')
-        $this->response->setTitle($this->titre.' de '.$this->object->nom);
-      else $this->response->setTitle($this->titre);
+        $this->response->setTitle($this->titre.' de '.$this->object->nom.' - NosDéputés.fr');
+      else $this->response->setTitle($this->titre.' - NosDéputés.fr');
     }
 
   }
