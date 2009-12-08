@@ -514,7 +514,7 @@ h1 {
 
 #sous_menu {
   width:1060px;
-  height:21px;
+  height:50px;
   background: url('images/sous_menu.png') no-repeat;
   overflow:hidden;
 }
