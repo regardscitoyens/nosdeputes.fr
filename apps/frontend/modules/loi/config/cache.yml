@@ -1,3 +1,7 @@
 all:
   enabled: on
   lifetime: 86400
+loi:
+  enabled: off
+section:
+  enabled: off
