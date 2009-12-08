@@ -3,9 +3,17 @@ mail_test:
   url: /mail
   param: {module: mail, action: test}
 
+loi_redirect_article:
+  url: /redirect/loi/:loi/:article
+  param: {module: loi, action: redirect}
+
+loi_redirect:
+  url: /redirect/loi/:loi
+  param: {module: loi, action: redirect}
+
 loi_alinea:
   url: /loi/alinea/:id
-  param: {module: loi, action alinea}
+  param: {module: loi, action: alinea}
 
 loi_alinea_commentaires:
   url: /loi/alinea/:id/commentaires
@@ -17,7 +25,7 @@ loi_article:
 
 loi_article_id:
   url: /loi/article/:id
-  param: {module: loi, action article}
+  param: {module: loi, action: article}
 
 loi_article_commentaires_json:
   url: /loi/article/:article/commentaires
