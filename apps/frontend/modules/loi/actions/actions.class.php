@@ -132,4 +132,22 @@ class loiActions extends sfActions
     return $loi_id;
   }
 
+  public function executeRedirect(sfWebRequest $request) {
+	$loi = $request->getParameter('loi');
+	$article = $request->getParameter('article');
+	if (preg_match('/^n°/', $loi)) {
+		$loi = 'loi '.$loi;
+	}else if (!preg_match('/^(code|loi|libre)/', $loi)) {
+		$loi ='code '.$loi;
+	}
+	if (preg_match('/^(code|livre)/', $loi) && $article) {
+    		foreach (Alinea::$code_legif as $code => $legif) if (preg_match('/'.$code.'/', $loi)) {
+			$l = 'L';
+			if (preg_match('/impôt/', $code)) $l = '';
+      			return $this->redirect('http://www.legifrance.gouv.fr/rechCodeArticle.do?champCode='.$legif.'&champNumArticle='.$l.$article);
+    		}
+	}
+	return $this->redirect('http://www.google.fr/search?btnI=1&q=site%3Alegifrance.gouv.fr+'.urlencode($loi.' article '.$article));
+  }
+
 }

@@ -996,6 +996,10 @@ h2 {
 .alineatexte {
   width: 870px;
 }
+.alineatexte a, .alineatexte a:link, .alineatexte a:hover {
+	text-decoration: underline;
+}
+
 .alineatexte p {
   margin-top: 7px;
   margin-bottom: 0px;

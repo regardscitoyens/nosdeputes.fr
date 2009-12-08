@@ -22,9 +22,8 @@ if ($article->suivant) {
 <br/>
 <table>
 <?php foreach ($alineas as $a) {
-  echo '<tr class="alinea" id="alinea_'.$a->texteloi_id.'-'.$article->slug.'-'.$a->numero.'"><td class="alineanumero"><p>'.$a->numero.'.</p></td><td class="alineatexte">'.$a->texte; ?>
-  <div class="commentaires" id='com_<?php echo $a->id; ?>'><span class="link_comment">&nbsp;</span><span class="com_link" id="com_link_<?php echo $a->id; ?>"><a href="<?php echo url_for('@loi_alinea?id='.$a->id); ?>#ecrire">Voir tous les commentaires - Laisser un commentaire</a></span></div></td></tr>
-<?php } ?>
+  include_partial('alinea', array('a'=>$a, 'slug_article'=>$article->slug, 'comment' => 1)); 
+ } ?>
 </table>
 </div>
 <div class="commentaires" id="commentaires">

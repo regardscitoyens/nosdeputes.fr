@@ -3,10 +3,7 @@
 <br/>
 <table class="alineas">
 <?php foreach ($alineas as $a) {
-  echo '<tr class="alinea';
-  if ($a->numero == $alinea->numero) echo '_select';
-  else $a->texte = preg_replace('/\<\/?b\>/', '', $a->texte);
-  echo '" id="alinea_'.$a->texteloi_id.'-'.$slug_article.'-'.$a->numero.'"><td class="alineanumero"><p>'.$a->numero.'.</p></td><td>'.$a->texte.'</td></tr>';
+  echo include_partial('alinea', array('a'=>$a, 'alinea' => $alinea, 'slug_article'=>$slug_article));
 } ?>
 </table>
 <p class="suivant"><b><a href="<?php echo url_for('@loi_article?loi='.$alinea->texteloi_id.'&article='.$slug_article); ?>">Voir tout l'article</a></b></p>

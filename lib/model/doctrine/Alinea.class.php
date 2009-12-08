@@ -86,16 +86,6 @@ class Alinea extends BaseAlinea
      "code de la voirie routière" => "LEGITEXT000006070667"
     );
 
-  public function getTextePresentation() {
-//  $code = $this->_get('texte');
-//  $legif = self::$code_legif[lc($code)];
-//  $article = 
-//  $link = '<a href="http://www.legifrance.gouv.fr/rechCodeArticle.do?champCode='.$legif.'&champNumArticle='.$article.'">';
-//  return preg_replace('/(Code)/', $link.'\1</a>', $this->_get('texte'));
-    $texte = preg_replace('/\s+(:|;|!|\?|»|\-)/', '&nbsp;\1', $this->_get('texte'));
-    return preg_replace('/(«|\-)\s+/', '\1&nbsp;', $texte);
-  }
-
   public function setTexteCode($texte, $refcode = '') {
     $this->texte = $texte;
     $texte = strtolower(preg_replace('/\<\/?[a-z]+\>/i', '', $texte));
