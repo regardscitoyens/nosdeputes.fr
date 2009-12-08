@@ -142,9 +142,7 @@ class loiActions extends sfActions
 	}
 	if (preg_match('/^(code|livre)/', $loi) && $article) {
     		foreach (Alinea::$code_legif as $code => $legif) if (preg_match('/'.$code.'/', $loi)) {
-			$l = 'L';
-			if (preg_match('/impôt/', $code)) $l = '';
-      			return $this->redirect('http://www.legifrance.gouv.fr/rechCodeArticle.do?champCode='.$legif.'&champNumArticle='.$l.$article);
+      			return $this->redirect('http://www.legifrance.gouv.fr/rechCodeArticle.do?champCode='.$legif.'&champNumArticle='.$article);
     		}
 	}
 	return $this->redirect('http://www.google.fr/search?btnI=1&q=site%3Alegifrance.gouv.fr+'.urlencode($loi.' article '.$article));
