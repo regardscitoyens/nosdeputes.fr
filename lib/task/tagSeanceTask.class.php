@@ -145,8 +145,8 @@ class tagSeanceTask extends sfBaseTask
 	  
           if (($sentences[$sent]*100/$tot > 0.8 || $sentences[$sent]*100/$words[$sent2word[$sent]] > 70)&& $words[$sent2word[$sent]] > 5) {
 	    $ok = 1;
-	    foreach($exclude_sentences as $s) {
-	      if (preg_match('/'.$s.'/', $sent)) {
+	    foreach($exclude_sentences as $excl_sent) {
+	      if (preg_match('/'.$excl_sent.'/', $sent)) {
 		$ok = 0;
 		break;
 	      }
