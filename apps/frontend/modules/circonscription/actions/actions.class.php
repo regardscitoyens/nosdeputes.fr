@@ -359,9 +359,9 @@ class circonscriptionActions extends sfActions
     $departement = $request->getParameter('departement');
     $num = $request->getParameter('numero');
     $code = $request->getParameter('code');
-    if (preg_match('/0*([^0]\d*)\-0*([^0]\d*)/', $code, $match)) {
+    if (preg_match('/0*([^0]\d*[ab]?)\-0*([^0]\d*)/', $code, $match)) {
       $departement = $match[1];
-      $num = $match[2];      
+      $num = $match[2];
     }
     $parlementaire = Doctrine::getTable('Parlementaire')->createQuery('p')
       ->where('num_circo = ?', $num)
