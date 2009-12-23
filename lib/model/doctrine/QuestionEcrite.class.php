@@ -41,7 +41,7 @@ class QuestionEcrite extends BaseQuestionEcrite
   public function uniqueMinistere() 
   {
     $ministere = 'Ministère d';
-    if (preg_match('/(Affaires\s+[\wàéëêèïîôöûüÉ]+)/', $this->ministere, $match)) $ministre = $match[1];
+    if (preg_match('/(Affaires|Espace)(\s+[\wàéëêèïîôöûüÉ]+)/', $this->ministere, $match)) $ministre = $match[1].$match[2];
     else {
       $ministre = preg_replace('/^.*\/\s*([\wàéëêèïîôöûüÉ]+)$/', '\\1', $this->ministere);
       $ministre = preg_replace('/^([\wàéëêèïîôöûüÉ]+)[,\s].*$/', '\\1', $ministre);
