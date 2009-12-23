@@ -121,18 +121,6 @@ class parlementaireActions extends sfActions
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
-
-    $this->textes = doctrine_query::create()
-      ->from('Section s')
-      ->select('s.section_id, sp.titre, count(i.id) as nb')
-      ->where('s.section_id = sp.id')
-      ->leftJoin('s.Section sp')
-      ->leftJoin('s.Interventions i')
-      ->andWhere('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.nb_mots > 20')
-      ->groupBy('s.section_id')
-      ->orderBy('s.min_date DESC')
-      ->fetchArray();
     $request->setParameter('rss', array(array('link' => '@parlementaire_rss?slug='.$this->parlementaire->slug, 'title'=>'L\'activité de '.$this->parlementaire->nom),
 					array('link' => '@parlementaire_rss_commentaires?slug='.$this->parlementaire->slug, 'title'=>'Les derniers commentaires portant sur l\'activité de '.$this->parlementaire->nom)
 					));
