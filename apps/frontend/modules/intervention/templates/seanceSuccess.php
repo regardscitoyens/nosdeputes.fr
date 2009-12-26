@@ -81,9 +81,9 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
         if ($photo = $perso->hasPhoto()) {
         echo '<a href="'.url_for($perso->getPageLink()).'"><img alt="Photo de '.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a>';
         }
-        echo '<span class="perso"><a href="'.url_for($perso->getPageLink()).'">';
+        echo '<div class="perso"><span><a href="'.url_for($perso->getPageLink()).'">';
         echo $intervention->getNomAndFonction();
-        echo '</a></span>';
+        echo '</a></span></div>';
       } else {
         echo '<span class="perso">'.$intervention->getNomAndFonction().'</span>';
       }

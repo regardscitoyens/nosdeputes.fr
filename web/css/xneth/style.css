@@ -1032,6 +1032,7 @@ h2 {
 
 .perso {
   font-weight: bold;
+  width: 670px;
 }
 .perso:first-letter {
   text-transform: uppercase;
