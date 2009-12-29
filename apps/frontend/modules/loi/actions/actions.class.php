@@ -24,7 +24,7 @@ class loiActions extends sfActions
         ->orderBy('a.ordre')
         ->execute();
     }
-    $this->response->setTitle($this->loi->titre.' - NosDéputés.fr');
+    $this->response->setTitle(strip_tags($this->loi->titre).' - NosDéputés.fr');
     $request->setParameter('rss', array(array('link' => '@loi_rss_commentaires?loi='.$loi_id, 'title'=>'Les commentaires sur '.$this->loi->titre)));
 
   }
@@ -67,7 +67,7 @@ class loiActions extends sfActions
       if (doctrine::getTable('TitreLoi')->findChapitre($loi_id, $n_chapitre+1))
         $this->suivant = $n_chapitre + 1; 
     }
-    $this->response->setTitle($this->loi->titre.' - '.strip_tags($titre));
+    $this->response->setTitle(strip_tags($this->loi->titre.' - '.$titre));
   }
 
  public function executeAlinea(sfWebRequest $request) {
@@ -118,7 +118,7 @@ class loiActions extends sfActions
     $this->titre = 'Article '.$this->article->titre;
     if (isset($this->section->chapitre) && $this->section->chapitre != 0)
       $this->titre .= ' ('.$this->section->getLargeTitre().')';
-    $this->response->setTitle($this->loi->titre.' - '.strip_tags($this->titre));
+    $this->response->setTitle(strip_tags($this->loi->titre.' - '.$this->titre));
     if (isset($this->article->expose) && $this->article->expose != "") $this->expose = $this->article->expose;
     else $this->expose = $this->section->expose;
   }

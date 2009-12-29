@@ -93,7 +93,7 @@ $values['password'], false, $this))) {
     $object = doctrine::getTable($this->type)->find($this->id);
     if (isset($object->texteloi_id) && $this->type != 'Amendement') {
       $loi = doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
-      $present = $loi['titre'].' - A propos de l\'article ';
+      $present = preg_replace('/<br\/>.*$/', '', $loi['titre']).' - A propos de l\'article ';
       if ($this->type == 'Alinea') {
         $article = doctrine::getTable('ArticleLoi')->createQuery('a')
           ->select('titre')

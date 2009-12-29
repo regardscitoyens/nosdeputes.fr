@@ -991,6 +991,10 @@ h2 {
   vertical-align: middle;
 }
 
+.alineanumero p {
+  padding-right: 7px;
+}
+
 .alineas p {
   margin-bottom: 2px;
 }
