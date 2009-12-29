@@ -1,19 +1,15 @@
 <h1><?php echo $loi->titre; ?></h1>
-<div class="headerloi">
-<?php if ($loi->source) echo '<p class="source"><a href="'.$loi->source.'" rel="nofollow">Source</a></p><div class="clear"></div>'; ?>
-<?php if ($loi->expose) {
-  if ($loi->parlementaire_id) {
-    echo '<div class="intervenant">';
-    $perso = $loi->getParlementaire();
-    if ($perso->getPageLink() && $photo = $perso->hasPhoto())
-      echo '<a href="'.url_for($perso->getPageLink()).'"><img alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a>';
-    echo '</div>';
-  }
-  echo $loi->expose.'</div>';
-  if (isset($loi->parlementaire_id))
-    echo '<div class="auteurloi"><a href="'.url_for($perso->getPageLink()).'">'.$perso->nom.'</a></div>'; 
+<?php if ($loi->source) echo '<p class="source"><a href="'.$loi->source.'" rel="nofollow">Source</a></p><div class="clear"></div>';
+if ($loi->parlementaire_id && $loi->expose) { ?>
+  <div class="loi">
+  <div class="intervenant">
+  <?php $perso = $loi->getParlementaire();
+  if ($perso->getPageLink() && $photo = $perso->hasPhoto())
+    echo '<a href="'.url_for($perso->getPageLink()).'"><img alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a>';
+  echo '</div>';
+  echo preg_replace('/\s+(:|;|\?|!)/', '&nbsp;\1', $loi->expose);
+  echo '<div class="auteurloi"><a href="'.url_for($perso->getPageLink()).'">'.$perso->nom.'</a></div></div><br/>';
 } ?>
-<br/>
 <div class="sommaireloi">
 <?php if (isset($soussections)) {
   $chapitre = 0;
@@ -59,6 +55,8 @@
   }
 } ?>
 </div>
+<br/>
+<?php if (!$loi->parlementaire_id && $loi->expose) echo '<div class="loi">'.preg_replace('/\s+(:|;|\?|!)/', '&nbsp;\1', $loi->expose).'</div><br/>'; ?>
 <div class="commentaires">
   <h3>Derniers commentaires sur <?php echo $loi->titre; ?> <span class="rss"><a href="<?php echo url_for('@loi_rss_commentaires?loi='.$loi->texteloi_id); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h3>
 <?php if ($loi->nb_commentaires == 0) echo '<p>Cette loi n\'a pas encore inspiré de commentaire aux utilisateurs.</p>';

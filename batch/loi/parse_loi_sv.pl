@@ -18,6 +18,7 @@ open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
 $string =~ s/<br>\s*\n//gi;
+#$string =~ s/\<br\>.*\n//g;
 $string =~ s/&nbsp;/ /gi;
 $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/&#8217;/'/g;
@@ -25,7 +26,7 @@ $string =~ s/&#8211;/-/g;
 $string =~ s/&#8230;/\.\.\./g;
 $string =~ s/<\/?u>//gi;
 $string =~ s/<\/?sup>//gi;
-$string =~ s/<\/?span( style=[^>]+)?>//gi;
+$string =~ s/<span style=[^>]+>(<[a-z]>)?([^<]+)(<\/[a-z]>)?<\/span>/\1\2\3/gi;
 $string =~ s/<!\-\-\w*\-\->//ig;
 $string =~ s/<a name="[^"]*">[^<]*<\/a>//gi;
 $string =~ s/\s*<[a-z]+>\s*\(nouveau\)\s*<\/[a-z]+>//gi;
@@ -35,9 +36,6 @@ $string =~ s/\|(\W+)\|/$1/g;
 close FILE;
 
 sub checkout_loi {
-  $expose =~ s/<p>\s*<a href/<p>&nbsp;<a href/i;
-  $expose =~ s/<ul>/<\/p><ul>/gi;
-  $expose =~ s/<\/ul><\/p>/<\/ul>/gi;
   print '{"type": "loi", "loi": "'.$loi.'", "titre": "'.$titreloi.'", "expose": "'.$expose.'", "auteur": "'.$auteur.'", "date": "'.$date.'", "source": "'.$source."\"}\n";
   $expose = "";
 }
@@ -66,11 +64,7 @@ sub checkout_section {
 }
 
 sub checkout_present_article {
-  while ($exposearticle =~ /<a href=["'][^"']*;[^"']*["']>/i) {
-    $exposearticle =~ s/<a href=["']([^"']*);([^"']*)["']>/<a href='\1.\2'>/gi;
-  }
-  if ($chapitre != 0 && $num_article != 0) { if (!(($loi == 1890 && ($chapitre == 5 || $num_article == 101)) || ($loi == 1697 && ($chapitre == 3 && $section >= 2 && $num_article == 9) ))) {
-   if (!($exposearticle =~ /^$/)) {
+  if ($chapitre != 0 && $num_article != 0) { if (!($loi == 1890 && ($chapitre == 5 || $num_article == 101))) { if (!($exposearticle =~ /^$/)) {
     $exposearticle =~ s/\s*$/<\/p>/;
     if ($num_article == 1) {
       $num_article_titre = "1er";
@@ -78,7 +72,7 @@ sub checkout_present_article {
       $num_article_titre = $num_article;
     }
     print '{"type": "article", "loi": "'.$loi.'", "chapitre": "'.$chapitre.'", "section": "'.$section.'", "article": "'.$num_article_titre.'", "ordre": "", "expose": "'.$exposearticle."\"}\n";
-   } } $exposearticle = "";
+    } } $exposearticle = "";
   }
 }
 
@@ -184,18 +178,9 @@ foreach $line (split /\n/, $string) {
     $content = $2;
 
     if ($content =~ /(PRO.*DE\s+LOI|EXPOS.*MOTIF)/) {
-      if ($zone == 2) {
-        if ($chapitre == 0) {
-          checkout_loi();
-          $titre = "";
-        } elsif ($loi == 1697) {
-          while ($num_article < 47) {
-            $tmp_expose = $exposearticle;
-            checkout_present_article();
-            $num_article ++;
-            $exposearticle = $tmp_expose;
-          }
-        }
+      if ($zone == 2 && $chapitre == 0) {
+        checkout_loi();
+        $titre = "";
       }
       reset_vars();
       $zone++;
@@ -211,7 +196,7 @@ foreach $line (split /\n/, $string) {
         $check = 1;
         next;
       }
-      if ($check == 1 && $content =~ /(chap|t)itre\s+(premier|[IVX]+[eE]?[rR]?),?(<|\s+)/) {
+      if ($check == 1 && $content =~ /(chap|t)itre\s+(premier|[IVX]+(ER)?),?\s+/) {
         if ($chapitre == 0) {
           checkout_loi();
         }
@@ -227,20 +212,14 @@ foreach $line (split /\n/, $string) {
           } elsif ($num_article == 101) {
             $num_article = 135;
           }
-        } elsif ($loi == 1697) {
-          if ($num_article == 4) {
-            $num_article = 8;
-          } elsif ($num_article == 9) {
-            $num_article = 18;
-          }
         }
-      } elsif ($content =~ /la(\s+|\s*<[a-z]*>\s*)?section\s+(\d+)/i && ($section + 1 == $2)) {
+      } elsif ($content =~ /la\s+section\s+(\d+)/i && ($section + 1 == $1)) {
         if ($section != 0) {
           checkout_present_article();
           checkout_section();
         }
        # $exposesection = '<p>'.$content.'</p>';
-        $section = $2;
+        $section = $1;
       }
 
       if ($chapitre == 0) {
@@ -248,10 +227,6 @@ foreach $line (split /\n/, $string) {
       } else {
         if ($content =~ /article/i) {
           $content =~ s/M\./M /g;
-          $texteassemble = '';
-          while ($content =~ /<(a\s+href=["'][^"']*\.[^"']*["'])>/i) {
-            $content =~ s/<a\s+href=["']([^"']*)\.([^"']*)["']>/<a href='\1;\2'>/gi;
-          }
           foreach $phrase (split /\.\s*/, $content) {
             if ($phrase =~ /la\s+section\s+(\d+)/i) {
               $exposesection = '<p>'.$phrase.'.</p>';
@@ -264,11 +239,11 @@ foreach $line (split /\n/, $string) {
               $num_article = $1;
             }
             if ($num_article != 0) {
-              $texteassemble .= $phrase.'. ';
+              if ($exposearticle =~ /^$/) {
+                $exposearticle = '<p>';
+              }
+              $exposearticle .= $phrase.'. ';
             }
-          }
-          if (!$texteassemble =~ /^$/) {
-            $exposearticle .= '<p>'.$texteassemble.'</p>';
           }
           if (!($exposearticle =~ /article\s+($num_article)/)) {
             if ($section != 0 && !($exposesection =~ /$content/)) {
@@ -282,8 +257,6 @@ foreach $line (split /\n/, $string) {
           $exposesection .= '<p>'.$content.'</p>';
         } elsif (!($exposearticle =~ /article\s+($num_article)/) && !($exposechapitre =~ /$content/)) {
           $exposechapitre .= '<p>'.$content.'</p>';
-        } elsif (!$exposearticle =~ /^$/) {
-          $exposearticle .= '<p>'.$content.'</p>';
         }
       }
     } elsif ($zone == 3) {

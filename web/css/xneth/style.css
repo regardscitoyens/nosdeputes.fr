@@ -937,9 +937,24 @@ h2 {
 .source {
   float: right;
   margin-top: 0px;
+  text-decoration: underline;
 }
 
-.headerloi a {
+.loi p {
+  text-align: justify;
+}
+
+.loi p:first-letter {
+  padding-left: 20px;
+}
+.loi li {
+  margin-left: -15px;
+}
+.loi blockquote {
+  margin-left: 8px;
+}
+
+.loi p a {
   text-decoration: underline;
 }
 
@@ -947,12 +962,9 @@ h2 {
   float: right;
 }
 
-.loi h2 {
+.loi h2, .loi h3 {
   text-align: center;
-}
-
-.loi h3 {
-  text-align: center;
+  text-decoration: none;
 }
 
 .pagerloi {
@@ -985,7 +997,6 @@ h2 {
 .alineas .alineanumero p {
   margin-top: 10px;
 }
-
 .alinea_select td {
   font-weight: bold;
 }
@@ -996,8 +1007,11 @@ h2 {
 .alineatexte {
   width: 870px;
 }
+.alineatexte p:first-letter {
+  padding-left: 0px;
+}
 .alineatexte a, .alineatexte a:link, .alineatexte a:hover {
-	text-decoration: underline;
+  text-decoration: underline;
 }
 
 .alineatexte p {
