@@ -902,7 +902,7 @@ h2 {
   height: 11px;
   float: right;
   margin-top: 0px;
-  margin-bottom: 11px;
+  margin-bottom: 13px;
 }
 .commentaires {
   clear:both;
@@ -1019,15 +1019,15 @@ h2 {
 }
 
 .alineatexte p {
-  margin-top: 7px;
-  margin-bottom: 0px;
+  margin-top: 0px;
+  margin-bottom: -15px;
 }
 .alineatexte .com_link {
   display: none;
   float: right;
-  margin-top: 0px;
-  margin-bottom: 11px;
-  margin-right: 20px;
+  margin-top: 13px;
+  margin-bottom: 0px;
+  margin-right: 25px;
   height: 11px;
 }
 
