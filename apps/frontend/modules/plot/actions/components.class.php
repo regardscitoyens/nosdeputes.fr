@@ -11,10 +11,13 @@ class plotComponents extends sfComponents
         $date = strtotime($this->parlementaire->fin_mandat);
         $this->mandat_clos = true;
       } else $date = time();
-      $annee = date('Y', $date); $sem = date('W', $date); if ($sem >= 53) { $annee++; $sem -= 52; }
+      $annee = date('Y', $date); $sem = date('W', $date);
+      $annee0 = $annee - 1;
+      $sem0 = $sem;
+      if ($sem == 1) { $annee0--; $sem0 = 53; }
+      if ($sem >= 53) { $annee++; $sem = 1; $sem0 = 53; }
       $last_year = $date - 31536000;
       $date_debut = date('Y-m-d', $last_year);
-      $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year); if ($sem0 == 53) { $annee0++; $sem0 = 1; }
       $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
     } else {
       $query4 = Doctrine_Query::create()
@@ -35,7 +38,7 @@ class plotComponents extends sfComponents
       $sem = $date_fin['numero_semaine'];
       $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
     }
-    $this->labels = $this->getLabelsSemaines($n_weeks, $annee0, $sem0);
+    $this->labels = $this->getLabelsSemaines($n_weeks, $annee, $sem0);
     $this->vacances = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
 
     $query = Doctrine_Query::create()
@@ -130,17 +133,18 @@ class plotComponents extends sfComponents
     return $n_vacances;
  }
 
- public static function getLabelsSemaines($n_weeks, $annee0, $sem0) {
-    $annee = $annee0 + 1;
-    $hashmap = array( '4'  => "Jan ".sprintf('%02d', $annee-2000), '9'  => "Fév ", '13' => "Mar", '17' => "Avr ",
+ public static function getLabelsSemaines($n_weeks, $annee, $sem0) {
+    if ($sem0 <= 3 || $sem0 > 52) $an = $annee - 1;
+    else $an = $annee;
+    $hashmap = array( '4'  => "Jan ".sprintf('%02d', $an-2000), '9'  => "Fév ", '13' => "Mar", '17' => "Avr ",
                       '21' => "Mai ", '25' => " Juin", '29' => " Juil", '34' => "Août",
                       '38' => " Sept", '43' => "Oct ", '47' => " Nov", '51' => " Déc" );
     $labels = array_fill(1, $n_weeks, "");
-    if ($sem0 < 3) $labels[0] = "Jan ".sprintf('%02d', $annee0-2000);
-    else for ($i = 1; $i <= $n_weeks; $i++) {
+    for ($i = 1; $i <= $n_weeks; $i++) {
       $index = $i + $sem0; if ($index > 52) $index -= 52;
       if (isset($hashmap[$index]) && !(($index == 3) && ($sem0 < 3))) $labels[$i] = $hashmap[$index];
     }
+    if ($sem0 == 3) $labels[53] = "Jan ".sprintf('%02d', $an-1999);
     return $labels;
   }
 
