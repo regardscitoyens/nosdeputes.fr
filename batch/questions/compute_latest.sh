@@ -1,9 +1,14 @@
 #!/bin/bash
 
+if [[ $1 != "liste_sans_reponse_recent.sql" && $1 != "liste_sans_reponse.sql" ]]; then
+  echo "usage: compute_latest.sh liste_sans_reponse_recent.sql / liste_sans_reponse.sql"
+  exit 1
+fi
+
 . ../../bin/db.inc
 
 cat dernier_numero.sql | mysql $MYSQLID $DBNAME | grep -v numero > dernier_numero.txt
-cat liste_sans_reponse.sql | mysql $MYSQLID $DBNAME | grep -v source > liste_sans_reponse.txt
+cat $1 | mysql $MYSQLID $DBNAME | grep -v source > liste_sans_reponse.txt
 
 rm -f html/*
 

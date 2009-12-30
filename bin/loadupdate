@@ -1,33 +1,72 @@
 #!/bin/bash
 
+# Gestion des options
+jo=1
+questions=1
+while getopts "hjqo-:" option
+do
+  if [ $option = "-" ]; then
+    case $OPTARG in
+      help) option="h";;
+      nojo) option="j";;
+      noquestions) option="q";;
+      oldquestions) option="o";;
+    esac
+  fi  
+  case $option in
+    j) jo=0;;
+    q) if [[ $questions -ne 1 ]]; then
+         echo "options noquestions et oldquestions incompatibles"
+         exit 1
+       fi
+       questions=0;;
+    o) if [[ $questions -ne 1 ]]; then
+         echo "options noquestions et oldquestions incompatibles"
+         exit 1
+       fi
+       questions=2;;
+    h) echo "syntaxe : loadupdate [-h|--help  /  [-j|--nojo] [-q|-noquestions / -o|--oldquestions] ]"
+       echo "  -h ( --help )         : affiche cette aide"
+       echo "  -j ( --nojo )         : pas de mise-à-jour des séances de commission listées au Journal Officiel"
+       echo "  -q ( --noquestions )  : pas de mise-à-jour des questions écrites au gouvernement"
+       echo "  -o ( --oldquestions ) : mise-à-jour des questions depuis le début de la législature"
+       exit 1;;
+  esac
+done
 
-# Mis là temporairement pour rappel: à runner une fois pour toutes pour éviter de retélécharger inutilement 2000 amendements à chaque fois (OGM et HADOPI)
-# php symfony set:AmdmtsTombes 819 
-# php symfony set:AmdmtsTombes 1296
 
-
-# Mise à jur de la liste des députés
-echo MaJ Deputes
+echo Mise-à-jour députés
 echo =======================
 bash bin/load_deputes
 
 
 # Récupération et création des JSON
-echo JO
-echo =======================
-cd batch/jo ; perl compute_latest.pl ; cd -
-echo Hemicycle
+
+if [[ $jo -eq 1 ]]; then
+  echo JO
+  echo =======================
+  cd batch/jo ; perl compute_latest.pl ; cd -
+fi
+echo Hemicycles
 echo =======================
 cd batch/hemicycle ; bash compute_latest.sh ; cd -
-echo Commission
+echo Commissions
 echo =======================
 cd batch/commission ; bash compute_latest.sh ; cd -
 echo Amendements
 echo =======================
 cd batch/amendements ; bash compute_latest.sh ; cd -
-echo Questions
-echo =======================
-cd batch/questions ; bash compute_latest.sh ; cd -
+if [[ $questions -ne 0 ]]; then
+  echo Questions
+  echo =======================
+  cd batch/questions
+  if [[ $questions -eq 1 ]]; then
+    bash compute_latest.sh liste_sans_reponse_recent.sql
+  else
+    bash compute_latest.sh liste_sans_reponse.sql
+  fi
+  cd -
+fi
 
 
 # Vérification des JSON
@@ -35,19 +74,21 @@ cd batch/questions ; bash compute_latest.sh ; cd -
 
 
 # Chargement via tasks
-echo load JO
-echo =======================
-while ! php symfony load:JO ; do
-        php symfony cc --env=test  --app=frontend > /dev/null
-done;
 
-echo Load Hemicycle
+if [[ $jo -eq 1 ]]; then
+  echo load JO
+  echo =======================
+  while ! php symfony load:JO ; do
+        php symfony cc --env=test  --app=frontend > /dev/null
+  done;
+fi
+echo Load Hemicycles
 echo =======================
 while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do 
 	php symfony cc --env=test  --app=frontend > /dev/null
 	php symfony load:Hemicycle 
 done;
-echo Load commission
+echo Load Commissions
 echo =======================
 while ls batch/commission/out | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
@@ -59,29 +100,31 @@ while ls batch/amendements/json | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
 	php symfony load:Amdmts 
 done;
-echo Load Question
-echo =======================
-while ls batch/questions/json | grep [a-z] > /dev/null ; do
+if [[ $questions -ne 0 ]]; then
+  echo Load Questions
+  echo =======================
+  while ls batch/questions/json | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
 	php symfony load:Questions 
-done;
+  done;
+fi
 
-echo Post
-echo =======================
+
 # Postprocessings
-echo Tags
+
+echo Tags séances
 echo =======================
 bash bin/tag_seance
-echo Session
+echo Update sessions
 echo =======================
 php symfony set:Session 
-echo Vacances
+echo Update vacances
 echo =======================
 php symfony set:Vacances 
-echo Top
+echo Update tops députés
 echo =======================
 php symfony top:Deputes
-echo Hard cache
+echo Update hardcache html
 echo =======================
 bash bin/update_hardcache
 
