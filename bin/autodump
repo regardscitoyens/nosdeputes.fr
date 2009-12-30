@@ -1,0 +1,36 @@
+#!/bin/bash
+source bin/db.inc
+
+mysqldump $MYSQLID $DBNAME -q --single-transaction --add-drop-table -R -t --disable-keys --complete-insert | gzip > data/sql/dumps/nosdeputes.$(date +%y%m%d).sql.gz
+
+# On archive tous les 1er du mois et tous les dimanches
+if [[ $(date +%-w) -eq 0 || $(date +%-d) -eq 1 ]]; then
+  cp data/sql/dumps/nosdeputes.$(date +%y%m%d).sql.gz data/sql/dumps/archives/
+fi
+
+# On efface tous les mois les archives hebdomadaires vieilles de plus d'un mois mais on garde l'archive mensuelle
+if [[ $(date +%-d) -eq 1 ]]; then
+  if [[ $(date +%-m) -le 2 ]]; then
+    year0=`expr $(date +%y) - 1`
+    month0=`expr $(date +%m) + 10`
+  else
+    year0=`expr $(date +%y) + 0`
+    month0=`expr $(date +%m) - 2`
+  fi
+  ym=`printf "%02d%02d" $year0 $month0`
+  rm -f `ls data/sql/dumps/archives/nosdeputes.${ym}*.sql.gz | grep -v nosdeputes.${ym}01.sql.gz`
+fi
+
+# On efface les dumps vieux de plus d'une semaine
+if [[ $(date +%-d) -le 7 ]]; then
+  day0=`expr $(date +%d) + 21`
+else
+  day0=`expr $(date +%d) - 7`
+fi
+rm -f data/sql/dumps/nosdeputes.*`printf "%02d" $day0`.sql.gz
+if [[ $(date +%-d) -eq 8 ]]; then
+  rm -f data/sql/dumps/nosdeputes.*29.sql.gz
+  rm -f data/sql/dumps/nosdeputes.*30.sql.gz
+  rm -f data/sql/dumps/nosdeputes.*31.sql.gz
+fi
+
