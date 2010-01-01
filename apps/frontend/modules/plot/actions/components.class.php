@@ -14,11 +14,13 @@ class plotComponents extends sfComponents
       $annee = date('Y', $date); $sem = date('W', $date);
       $annee0 = $annee - 1;
       $sem0 = $sem;
-      if ($sem == 1) { $annee0--; $sem0 = 53; }
-      if ($sem >= 53) { $annee++; $sem = 1; $sem0 = 53; }
-      $last_year = $date - 31536000;
+      if ($sem == 53 && date('n', $date) == 1) {
+        $annee0--;
+        $sem = 0;
+      }
+      $last_year = $date - 32054400;
       $date_debut = date('Y-m-d', $last_year);
-      $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
+      $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     } else {
       $query4 = Doctrine_Query::create()
         ->select('s.annee, s.numero_semaine')
@@ -36,9 +38,9 @@ class plotComponents extends sfComponents
       $date_fin = $query4->fetchOne();
       $annee = $date_fin['annee'];
       $sem = $date_fin['numero_semaine'];
-      $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
+      $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     }
-    $this->labels = $this->getLabelsSemaines($n_weeks, $annee, $sem0);
+    $this->labels = $this->getLabelsSemaines($n_weeks, $annee, $sem);
     $this->vacances = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
 
     $query = Doctrine_Query::create()
@@ -55,7 +57,7 @@ class plotComponents extends sfComponents
     $this->n_presences = array('commission' => array_fill(1, $n_weeks, 0),
                                'hemicycle' => array_fill(1, $n_weeks, 0));
     foreach ($presences as $presence) {
-      $n = ($presence['Seance']['annee'] - $annee0)*52 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
+      $n = ($presence['Seance']['annee'] - $annee0)*53 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
       if ($n <= $n_weeks) $this->n_presences[$presence['Seance']['type']][$n] += $presence['nombre'];
     }
     unset($presences);
@@ -78,7 +80,7 @@ class plotComponents extends sfComponents
                           'hemicycle' => array_fill(1, $n_weeks, 0));
     $this->fonctions = array('commission' => 0, 'hemicycle' => 0);
     foreach ($participations as $participation) {
-      $n = ($participation['Seance']['annee'] - $annee0)*52 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
+      $n = ($participation['Seance']['annee'] - $annee0)*53 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
       if ($n <= $n_weeks) {
         $this->n_participations[$participation['Seance']['type']][$n] += $participation['nombre'];
         $this->n_mots[$participation['Seance']['type']][$n] += $participation['mots']/10000;
@@ -104,7 +106,7 @@ class plotComponents extends sfComponents
 
       $this->n_questions = array_fill(1, $n_weeks, 0);
       foreach ($questionsorales as $question) {
-        $n = ($question['Seance']['annee'] - $annee0)*52 + $question['Seance']['numero_semaine'] - $sem0 + 1;
+        $n = ($question['Seance']['annee'] - $annee0)*53 + $question['Seance']['numero_semaine'] - $sem0 + 1;
         if ($n <= $n_weeks) {
           if ($this->n_questions[$n] == 0)
             $this->n_questions[$n] -= 0.15;
@@ -120,31 +122,31 @@ class plotComponents extends sfComponents
     $mandat_an0 = date('Y', $debut_mandat);
     $mandat_sem0 = date('W', $debut_mandat);
     if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
-    $week0 = ($mandat_an0 - $annee0)*52 + $mandat_sem0 - $sem0 + 1;
+    $week0 = ($mandat_an0 - $annee0)*53 + $mandat_sem0 - $sem0 + 1;
     for ($n = 0; $n < $week0 ; $n++) 
       $n_vacances[$n] = 20;
 
     $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
     if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
-      $n = ($vacance['annee'] - $annee0)*52 + $vacance['semaine'] - $sem0 + 1;
+      $n = ($vacance['annee'] - $annee0)*53 + $vacance['semaine'] - $sem0 + 1;
       if ($n > 0 && $n < $n_weeks)
         $n_vacances[$n] = 20;
     }
     return $n_vacances;
  }
 
- public static function getLabelsSemaines($n_weeks, $annee, $sem0) {
-    if ($sem0 <= 3 || $sem0 > 52) $an = $annee - 1;
+ public static function getLabelsSemaines($n_weeks, $annee, $sem) {
+    if ($sem <= 1) $an = $annee - 1;
     else $an = $annee;
-    $hashmap = array( '4'  => "Jan ".sprintf('%02d', $an-2000), '9'  => "Fév ", '13' => "Mar", '17' => "Avr ",
-                      '21' => "Mai ", '25' => " Juin", '29' => " Juil", '34' => "Août",
-                      '38' => " Sept", '43' => "Oct ", '47' => " Nov", '51' => " Déc" );
+    $hashmap = array( '3'  => "Jan ".sprintf('%02d', $an-2000), '6'  => " Fév", '10' => " Mar", '15' => "Avr",
+                      '19' => " Mai", '24' => "Juin", '28' => "Juil", '33' => "Août",
+                      '38' => "Sept", '42' => " Oct", '47' => "Nov", '52' => "Déc");
     $labels = array_fill(1, $n_weeks, "");
     for ($i = 1; $i <= $n_weeks; $i++) {
-      $index = $i + $sem0; if ($index > 52) $index -= 52;
-      if (isset($hashmap[$index]) && !(($index == 3) && ($sem0 < 3))) $labels[$i] = $hashmap[$index];
+      $index = $i + $sem; if ($index > 53) $index -= 53;
+      if (isset($hashmap[$index]) && !(($index == 3) && ($sem < 3 && $sem > 1))) $labels[$i] = $hashmap[$index];
     }
-    if ($sem0 == 3) $labels[53] = "Jan ".sprintf('%02d', $an-1999);
+    if ($sem < 3 && $sem != 0) $labels[54] = "Jan";
     return $labels;
   }
 
