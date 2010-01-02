@@ -9,9 +9,9 @@
     if ($intervention->getType() == 'commission') {
       $orga = $intervention->getSeance()->getOrganisme();
       if (!isset($complete))
-	$titre2 .= $orga->getNom().'</a>';
+	$titre2 .= "&nbsp;&mdash; ".$orga->getNom().'</a>';
     } else {
-      $titre2 .= "&nbsp;: ";
+      $titre2 .= "&nbsp;&mdash; ";
       if ($section->getSection())
 	if ($section->getSection()->getTitre()) {
 	  $titre2 .= ucfirst($section->getSection()->getTitre());
