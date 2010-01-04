@@ -10,7 +10,7 @@ class Seance extends BaseSeance
   }
   
   static $debut_session = null;
-  public static function getSession($date) {
+  public static function identifySession($date) {
     if (!self::$debut_session) {
       $session = Doctrine::getTable('VariableGlobale')->findOneByChamp('session');
       self::$debut_session = unserialize($session->value);
@@ -25,7 +25,7 @@ class Seance extends BaseSeance
 
   public function setSession($session) {
     if (!$session && $this->date)
-      $session = self::getSession($this->date);
+      $session = self::identifySession($this->date);
     return $this->_set('session', $session);
   }
   public function addPresence($parlementaire, $type, $source) {
@@ -45,7 +45,26 @@ class Seance extends BaseSeance
     $presence->free();
     return $res;
   }
-  
+ 
+  public function addPresenceLight($parlementaire_id, $type, $source) {
+    $q = Doctrine::getTable('Presence')->createQuery('p');
+    $q->where('parlementaire_id = ?', $parlementaire_id)->andWhere('seance_id = ?', $this->id);
+    $presence = $q->execute()->getFirst();
+    $q->free();
+    unset($q);
+    if (!$presence) {
+      $presence = new Presence();
+      $presence->_set('parlementaire_id', $parlementaire_id);
+      $presence->Seance = $this;
+      $presence->date = $this->date;
+      $presence->save();
+    }
+    $res = $presence->addPreuve($type, $source);
+    $presence->free();
+    return $res;
+  }
+
+ 
   public static function convertMoment($moment) {
     if (preg_match('`(seance|séance)`i', $moment)) {
         if (preg_match('`1`', $moment)) return "1ère séance";
@@ -79,7 +98,7 @@ class Seance extends BaseSeance
     return true;
   }
   public function getInterventions() {
-    $q = doctrine::getTable('Intervention')->createQuery('i')->where('seance_id = ?', $this->id)->leftJoin('i.Personnalites p')->leftJoin('i.Parlementaires pa')->orderBy('i.timestamp ASC');
+    $q = doctrine::getTable('Intervention')->createQuery('i')->where('seance_id = ?', $this->id)->leftJoin('i.Personnalite p')->leftJoin('i.Parlementaire pa')->orderBy('i.timestamp ASC');
     return $q->execute();
   }
   public function getTableMatiere() {

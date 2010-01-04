@@ -68,8 +68,8 @@ class Intervention extends BaseIntervention
       $this->_set('parlementaire_id', $parlementaire->id);
       if (!$from_db)
         $this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);
+      $parlementaire->free();
     }
-    $parlementaire->free();
   }
 
   public function hasIntervenant() {

@@ -22,7 +22,7 @@
     
       <div id="menu">
         <ul>
-          <li><a href="<?php echo url_for('main/index'); ?>">Accueil</a></li>
+          <li><a href="<?php echo url_for('main/index'); ?>">Home</a></li>
 		  <?php $appRoutingFile = sfConfig::get("sf_root_dir").DIRECTORY_SEPARATOR.'apps'.DIRECTORY_SEPARATOR.'backend'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'routing.yml' ;
 		$yml = sfYaml::load($appRoutingFile) ;
 		foreach($yml as $element)
@@ -33,7 +33,7 @@
 		  }
         }
 		?>
-          <li><a href="#">Outils</a></li>
+          <li><a href="<?php echo url_for('@list_commissions'); ?>">Commissions</a></li>
         </ul>
       </div>
         

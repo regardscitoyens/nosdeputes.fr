@@ -116,6 +116,67 @@ article:
     column:               id
     with_wildcard_routes: true
 
+commission_fuse_seances:
+  url: /commission/seance/:id/fuse/result/:result
+  param: {module: organisme, action: commission}
+
+fuse_seances:
+  url: /commission/seance/:id/fuse/:bad/:good
+  param: {module: organisme, action: fuse, type: 'seance', ok: 1}
+
+seance_suppr_ok:
+  url: /commission/seance/:id/suppr_ok
+  param: {module: seance, action: suppr, ok: 1}
+
+list_commissions_suppr_seance:
+  url: /commissions/seance/:id/suppr/:pre/:prp
+  param: {module: organisme, action: listCommissions, suppr: 'seance'}
+
+commission_suppr_seance:
+  url: /commission/seance/:id/suppr/:seance/:pre/:prp
+  param: {module: organisme, action: commission, suppr: 2}
+
+seance_suppr:
+  url: /commission/seance/:id/suppr
+  param: {module: seance, action: suppr}
+
+list_commissions_fuse:
+  url: /commissions/fuse/result/:result
+  param: {module: organisme, action: listCommissions}
+
+fuse_commissions:
+  url: /commissions/fuse/:bad/:good
+  param: {module: organisme, action: fuse, type: 'commission', ok: 1}
+
+commission_suppr_ok:
+  url: /commission/:id/suppr_ok
+  param: {module: organisme, action: commission, suppr: 1, ok: 1}
+
+list_commissions_suppr:
+  url: /commissions/:id/suppr/:sea/:dep/:art
+  param: {module: organisme, action: listCommissions, suppr: 'commission'}
+
+commission_suppr:
+  url: /commission/:id/suppr
+  param: {module: organisme, action: commission, suppr: 1}
+
+commission:
+  url: /commission/:id
+  param: {module: organisme, action: commission}
+
+fuse:
+  url: /commissions/fuse
+  param: {module: organisme, action: fuse}
+
+list_commissions:
+  url: /commissions
+  param: {module: organisme, action: listCommissions}
+
+agenda:
+  url: /semaine/:annee/:semaine
+  param: {module: agenda, action: semaine}
+
+
 # default rules
 homepage:
   url:   /
@@ -124,12 +185,6 @@ homepage:
 default_index:
   url:   /:module
   param: { action: index }
-
-agenda:
-  url: /semaine/:annee/:semaine
-  param: {module: agenda, action: semaine}
-
-
 
 default:
   url:   /:module/:action/*

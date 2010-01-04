@@ -10,7 +10,7 @@ class backendConfiguration extends sfApplicationConfiguration
  
   public function generateFrontendUrl($name, $parameters = array())
   {
-    return 'http://www.nosdeputes.fr'.$this->getFrontendRouting()->generate($name, $parameters);
+    return $this->getFrontendRouting()->generate($name, $parameters);
   }
  
   public function getFrontendRouting()

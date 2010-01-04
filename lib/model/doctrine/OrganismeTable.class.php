@@ -47,6 +47,13 @@ class OrganismeTable extends Doctrine_Table
     }
     if ($org)
       return $org;
+
+    if ($option = Doctrine::getTable('VariableGlobale')->findOneByChamp('commissions')) {
+      $commissions = unserialize($option->getValue());
+      if (isset($commissions[$nom]) && $org = $this->findOneByNom($commissions[$nom]))
+        return $org;
+    }
+
     $org = new Organisme();
     $org->type = $type;
     $org->nom = $nom;
