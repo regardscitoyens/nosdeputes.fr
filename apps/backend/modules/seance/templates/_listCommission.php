@@ -20,13 +20,18 @@
   </tr>
 </thead>
 <tbody>
-  <?php $n_date = 0; $row = 0; $date0 = ""; $n_seance = 0; foreach ($seances as $seance) { $n_seance++; ?>
-    <tr class="sf_admin_row <?php if ($row == 0) { $row++; echo 'odd'; } else { $row--; echo 'even'; } ?>">
+  <?php $n_date = 0; $date0 = ""; $row = 0; $n_seance = 0; foreach ($seances as $seance) {
+    $n_seance++;
+    if ($date0 != $seance['date']) {
+      $n_date++;
+      if ($row == 0) $row++;
+      else $row--;
+    } ?>
+    <tr class="sf_admin_row <?php if ($row == 0) echo 'odd'; else echo 'even'; ?>">
       <td class="sf_admin_text"><a href="<?php echo link_tof('interventions_seance', array('seance' => $seance['id'])); ?>"><?php echo $seance['id']; ?></a></td>
       <td class="sf_admin_date">
         <?php if ($date0 != $seance['date']) {
           $date0 = $seance['date'];
-          $n_date++;
           echo '<a href="'.link_tof('interventions_seance', array('seance' => $seance['id'])).'">'.myTools::displayDateSemaine($seance['date']).'</a>';
         } else echo '<span style="padding-left:20px;">"</span></td>'; ?>
       <td class="sf_admin_text"><a href="<?php echo link_tof('interventions_seance', array('seance' => $seance['id'])); ?>"><?php echo $seance['moment']; ?></a></td>
