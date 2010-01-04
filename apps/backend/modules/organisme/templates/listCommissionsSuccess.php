@@ -53,8 +53,8 @@
               <?php if ($orga['deputes'] == 0) echo '<li class="sf_admin_action_delete">'.link_to('Supprimer', '@commission_suppr?id='.$orga['id']).'</li>'; ?>
             </ul></td>
             <td>
-              <?php if ($orga['deputes'] == 0) echo '<input type="radio" name="bad" value="'.$orga['id'].'" /> -> ';
-              else echo '&nbsp;&nbsp;-> <input type="radio" name="good" value="'.$orga['id'].'" />'; ?>
+              <?php if ($orga['deputes'] == 0) echo '<input type="radio" name="bad" value="'.$orga['id'].'" />';
+              echo '&nbsp;&nbsp;-> <input type="radio" name="good" value="'.$orga['id'].'" />'; ?>
             </td>
           </tr>
         <?php } ?>
