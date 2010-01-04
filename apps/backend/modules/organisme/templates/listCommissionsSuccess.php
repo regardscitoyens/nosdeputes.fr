@@ -21,6 +21,7 @@
       if ($result == "wrong") echo "ATTENTION : Vous ne pouvez pas faire fusionner une commission ayant des inscrits";
       else if ($result == "wrongart") echo "ATTENTION : Fusion impossible, les deux commissions ont un article associé";
       else if ($result == "fail") echo "ATTENTION : Echec de la fusion des deux commissions";
+      else if ($result == "wrongform") echo "ATTENTION : Vous devez avoir sélectionné des séances avant de les supprimer ou fusionner";
       else echo "Fusion des commissions réussie";
     } ?></p>
     <div class="sf_admin_list">
@@ -52,8 +53,9 @@
               <?php if ($orga['deputes'] == 0) echo '<li class="sf_admin_action_delete">'.link_to('Supprimer', '@commission_suppr?id='.$orga['id']).'</li>'; ?>
             </ul></td>
             <td>
-              <input type="radio" name="bad" value="<?php echo $orga['id']; ?>" /> -> 
-              <input type="radio" name="good" value="<?php echo $orga['id']; ?>" /></td>
+              <?php if ($orga['deputes'] == 0) echo '<input type="radio" name="bad" value="'.$orga['id'].'" /> -> ';
+              else echo '&nbsp;&nbsp;-> <input type="radio" name="good" value="'.$orga['id'].'" />'; ?>
+            </td>
           </tr>
         <?php } ?>
       </tbody>

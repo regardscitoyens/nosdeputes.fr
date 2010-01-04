@@ -164,6 +164,10 @@ commission:
   url: /commission/:id
   param: {module: organisme, action: commission}
 
+fuse_nseances:
+  url: /commissions/seances/fuse
+  param: {module: seance, action: fuse}
+
 fuse:
   url: /commissions/fuse
   param: {module: organisme, action: fuse}

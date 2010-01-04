@@ -26,7 +26,7 @@ class organismeActions extends autoOrganismeActions
     $this->orgas = $query->fetchArray(); 
 
     $this->seances = Doctrine_Query::create()
-      ->select('id, date, moment, session, tagged, nb_commentaires, i.seance_id, count(distinct(i.id)) as n_interventions, p.seance_id, count(distinct(p.parlementaire_id)) as presents, count(distinct(pr.type)) as sources')
+      ->select('id, date, moment, session, organisme_id, tagged, nb_commentaires, i.seance_id, count(distinct(i.id)) as n_interventions, p.seance_id, count(distinct(p.parlementaire_id)) as presents, count(distinct(pr.type)) as sources')
       ->from('Seance s')
       ->where('s.type = "commission"')
       ->andWhere('(s.organisme_id IS NULL) OR (s.organisme_id = 0)')
@@ -41,7 +41,7 @@ class organismeActions extends autoOrganismeActions
       if ($suppr == 'commission')
         $this->delcom = array('id' => $request->getParameter('id'), 'art' => $request->getParameter('art'), 'dep' => $request->getParameter('dep'), 'sea' => $request->getParameter('sea'));
       else if ($suppr == 'seance')
-        $this->delsea = array('id' => $request->getParameter('id'), 'pre' => $request->getParameter('pre'), 'prp' => $request->getParameter('prp'));
+        $this->delsea = array('id' => $request->getParameter('seance'), 'pre' => $request->getParameter('pre'), 'prp' => $request->getParameter('prp'));
     } else if ($request->getParameter('result'))
       $this->result = $request->getParameter('result');
   }
@@ -61,7 +61,7 @@ class organismeActions extends autoOrganismeActions
       ->fetchArray();
  
     $this->seances = Doctrine_Query::create()
-      ->select('id, date, moment, session, tagged, nb_commentaires, i.seance_id, count(distinct(i.id)) as n_interventions, p.seance_id, count(distinct(p.parlementaire_id)) as presents, count(distinct(pr.type)) as sources')
+      ->select('id, date, moment, session, organisme_id, tagged, nb_commentaires, i.seance_id, count(distinct(i.id)) as n_interventions, p.seance_id, count(distinct(p.parlementaire_id)) as presents, count(distinct(pr.type)) as sources')
       ->from('Seance s')
       ->where('s.organisme_id = ?', $orga)
       ->leftJoin('s.Interventions i')
@@ -101,7 +101,7 @@ class organismeActions extends autoOrganismeActions
           $this->redirect('@list_commissions_suppr?id='.$orga.'&sea='.$sea.'&dep='.$dep.'&art='.$art);
         else $this->redirect('@list_commissions_suppr?id=0&sea='.$sea.'&dep='.$dep.'&art='.$art);
       } else if ($this->suppr == 2) {
-        $this->delsea = array('id' => $request->getParameter('id'), 'pre' => $request->getParameter('pre'), 'prp' => $request->getParameter('prp'));
+        $this->delsea = array('id' => $request->getParameter('seance'), 'pre' => $request->getParameter('pre'), 'prp' => $request->getParameter('prp'));
       }
     } else if ($request->getParameter('result'))
       $this->result = $request->getParameter('result');
@@ -111,34 +111,52 @@ class organismeActions extends autoOrganismeActions
 
     $this->type = $request->getParameter('type');
     $this->forward404Unless($this->type && preg_match('/^(commission|seance)$/', $this->type));
-    $this->bad = $request->getParameter('bad');
-    $this->good = $request->getParameter('good');
-    $this->forward404Unless($this->bad && $this->good && ($this->bad != $this->good));
-    if ($this->type == "commission")
-      $query = Doctrine::getTable('Organisme')->createQuery('o');
-    else $query = Doctrine::getTable('Seance')->createQuery('s');
-    $objs = $query->whereIn('id', array($this->bad, $this->good))
-      ->execute();
-    $this->forward404Unless(count($objs) == 2);
+    $this->bads = $request->getParameter('bad');
+    $this->goods = $request->getParameter('good');
+    $this->forward404Unless($this->bads && $this->goods && ($this->bads != $this->goods));
 
     if ($this->type == "seance") {
       $this->orga = $request->getParameter('id');
       $this->forward404Unless($this->orga);
       $ref_seance = 's.id';
-      $result_link = '@commission_fuse_seances?id='.$this->orga.'&result=';
-      if ($objs[0]->date != $objs[1]->date)
-        $this->redirect($result_link.'wrongdate');
+      if (preg_match('/^(\d+),(\d+)$/', $this->orga, $match))
+        $result_link = '@fuse?type=commission&bad='.$match[1].'&good='.$match[2].'&result=';
+      else $result_link = '@commission_fuse_seances?id='.$this->orga.'&result=';
+      $this->bads_arr = explode(',', $this->bads);
+      $this->goods_arr = explode(',', $this->goods);
+      $obj_ids = array_merge($this->bads_arr, $this->goods_arr);
+      $n_dates = count($this->bads_arr);
+      if ($n_dates == 0) $this->redirect($result_link.'wrongdate');
+      $objs_arr = array();
+      for ($i=0; $i<$n_dates; $i++) {
+        $objects = Doctrine::getTable('Seance')
+          ->createQuery('s')
+          ->whereIn('id', array($this->bads_arr[$i], $this->goods_arr[$i]))
+          ->execute();
+        $this->forward404Unless(count($objects) == 2);
+        if ($objects[0]->date != $objects[1]->date)
+          $this->redirect($result_link.'wrongdate');
+        $objs_arr[$i] = $objects;
+      }
       $query = Doctrine_Query::create()
         ->select('count(id) as ct')
         ->from('Intervention i')
-        ->where('i.seance_id = ?', $this->bad);
+        ->whereIn('i.seance_id', $this->bads_arr);
     } else {
       $ref_seance = 's.organisme_id';
       $result_link = '@list_commissions_fuse?result=';
+      $this->bad = $this->bads;
+      $this->good = $this->goods;
+      $obj_ids = array($this->bad, $this->good);
+      $objs = Doctrine::getTable('Organisme')
+        ->createQuery('o')
+        ->whereIn('id', $obj_ids)
+        ->execute();
+      $this->forward404Unless(count($objs) == 2);
       $articles = Doctrine::getTable('Article')
         ->createQuery('a')
         ->where('categorie = "Organisme"')
-        ->andWhereIn('object_id', array($this->bad, $this->good))
+        ->andWhereIn('object_id', $obj_ids)
         ->execute();
       $n_art = count($articles);
       if ($n_art == 0)
@@ -146,10 +164,19 @@ class organismeActions extends autoOrganismeActions
       else if ($n_art == 1)
         $this->article = $articles[0];
       else $this->redirect($result_link.'wrongart');
+
+      $doublons = Doctrine_Query::create()
+        ->select('count(id) as ct')
+        ->from('Seance s')
+        ->whereIn($ref_seance, $obj_ids)
+        ->groupBy('s.date, s.moment')
+        ->fetchArray();
+      $this->doublons = 0;
+      if ($doublons) foreach($doublons as $doublon) if ($this->doublons < $doublon['ct']) $this->doublons = $doublon['ct'];
       $query = Doctrine_Query::create()
         ->select('count(distinct(parlementaire_id)) as ct')
-      ->from('ParlementaireOrganisme p')
-      ->where('p.organisme_id = ?', $this->bad);
+        ->from('ParlementaireOrganisme p')
+        ->where('p.organisme_id = ?', $this->bad);
     }
 
   // Interdit la fusion d'une commission ayant des parlementaires ou d'une séance ayant des interventions
@@ -158,11 +185,13 @@ class organismeActions extends autoOrganismeActions
       $this->redirect($result_link.'wrong');
 
     if (!$request->getParameter('ok')) {
+      if ($request->getParameter('result'))
+        $this->result = $request->getParameter('result');
 
       $this->seances = Doctrine_Query::create()
-        ->select('id, date, moment, session, tagged, nb_commentaires, i.seance_id, count(distinct(i.id)) as n_interventions, p.seance_id, count(distinct(p.parlementaire_id)) as presents, count(distinct(pr.type)) as sources')
+        ->select('id, date, moment, session, organisme_id, tagged, nb_commentaires, i.seance_id, count(distinct(i.id)) as n_interventions, p.seance_id, count(distinct(p.parlementaire_id)) as presents, count(distinct(pr.type)) as sources')
         ->from('Seance s')
-        ->whereIn($ref_seance, array($this->bad, $this->good))
+        ->whereIn($ref_seance, $obj_ids)
         ->leftJoin('s.Interventions i')
         ->leftJoin('s.Presences p')
         ->leftJoin('p.Preuves pr')
@@ -170,23 +199,21 @@ class organismeActions extends autoOrganismeActions
         ->orderBy('s.date, s.moment')
         ->fetchArray();
 
-      if ($this->type == "commission") $this->deputes = Doctrine_Query::create()
-        ->select('nom, slug')
-        ->from('Parlementaire p')
-        ->leftJoin('p.ParlementaireOrganisme po')
-        ->whereIn('po.organisme_id', array($this->bad, $this->good))
-        ->orderBy('po.importance DESC, p.sexe ASC, p.nom_de_famille ASC')
-        ->fetchArray();
+      if ($this->type == "commission")
+         $this->deputes = Doctrine_Query::create()
+          ->select('nom, slug')
+          ->from('Parlementaire p')
+          ->leftJoin('p.ParlementaireOrganisme po')
+          ->whereIn('po.organisme_id', $obj_ids)
+          ->orderBy('po.importance DESC, p.sexe ASC, p.nom_de_famille ASC')
+          ->fetchArray();
 
     } else {
-
-      foreach ($objs as $obj)
-        if ($obj->id == $this->bad)
-          $bad = $obj;
-        else $good = $obj;
-
       if ($this->type == "commission") {
-
+        foreach ($objs as $obj)
+          if ($obj->id == $this->bad)
+            $bad = $obj;
+          else $good = $obj;
         $corresp = array(strtolower($bad->nom) => strtolower($good->nom));
         $option = Doctrine::getTable('VariableGlobale')->findOneByChamp('commissions');
         if (!$option) {
@@ -201,8 +228,6 @@ class organismeActions extends autoOrganismeActions
           $this->article->save();
         }
         
-        $dbh = Doctrine_Manager::getInstance()->connection();
-        $dbh->execute("UPDATE seance SET moment = CONCAT(moment,'.',id) WHERE organisme_id = ".$this->bad);
         $query = Doctrine_Query::create()
           ->update('Seance')
           ->set('organisme_id', $this->good)
@@ -210,17 +235,32 @@ class organismeActions extends autoOrganismeActions
           ->execute();
 
         $query = Doctrine_Query::create()
-          ->delete('Organisme a');
-      } else {
-
+          ->delete('Organisme o')
+          ->where('o.id = ?', $this->bad);
+        if ($query->execute())
+          $results = 'good';
+        else $results = 'fail';
+      } else for ($i=0; $i<$n_dates; $i++) {
+        $this->bad = $this->bads_arr[$i];
+        $this->good = $this->goods_arr[$i];
+        foreach ($objs_arr[$i] as $obj)
+          if ($obj->id == $this->bad)
+            $bad = $obj;
+          else $good = $obj;
         $this->presences = array();
         foreach (Doctrine_Query::create()->select('id, type, source, pr.parlementaire_id as depute')->from('PreuvePresence p')
           ->leftJoin('p.Presence pr')->where('pr.seance_id = ?', $this->bad)->fetchArray() as $presence) {
           $this->presences[] = $presence['id'];
           $good->addPresenceLight($presence['depute'], $presence['type'], $presence['source']);
         }
-        if (preg_match('/^(\d{2}:\d{2})/', $bad->moment, $match))
-          $good->setMoment($match[1].'.'.$this->good);
+        if (preg_match('/^(\d{2}:\d{2})/', $bad->moment, $match)) {
+          $goodmom = $match[1];
+          if (!($good->moment == $goodmom)) {
+            if ($bad->moment == $goodmom && $good->organisme_id == $bad->organisme_id)
+              $goodmom .= '.'.$this->good;
+            $good->setMoment($goodmom);
+          }
+        }
         $good->save();
 
         if (count($this->presences)) {
@@ -235,12 +275,14 @@ class organismeActions extends autoOrganismeActions
         }
 
         $query = Doctrine_Query::create()
-          ->delete('Seance a');
+          ->delete('Seance s')
+          ->where('s.id = ?', $this->bad);
+        if (! $query->execute()) {
+          $results = 'fail';
+          break;
+        } else $results = 'good';
       }
-      if ($query->where('a.id = ?', $this->bad)->execute())
-        $result = "good";
-      else $result = "fail";
-      $this->redirect($result_link.$result);
+      $this->redirect($result_link.$results);
     }
   }
 }
