@@ -16,6 +16,13 @@ class OrganismeTable extends Doctrine_Table
     trim($nom);
     $nom = preg_replace('/^\s*de la /', '', $nom);
     $nom = preg_replace('/\s+/', ' ', $nom);
+
+    if ($option = Doctrine::getTable('VariableGlobale')->findOneByChamp('commissions')) {
+      $commissions = unserialize($option->getValue());
+      if (isset($commissions[$nom]) && $org = $this->findOneByNom($commissions[$nom]))
+        return $org;
+    }
+
     if ($type == 'parlementaire')
     $org = $this->createQuery('o')
       ->where('o.nom LIKE ?', $nom.'%')
@@ -47,12 +54,6 @@ class OrganismeTable extends Doctrine_Table
     }
     if ($org)
       return $org;
-
-    if ($option = Doctrine::getTable('VariableGlobale')->findOneByChamp('commissions')) {
-      $commissions = unserialize($option->getValue());
-      if (isset($commissions[$nom]) && $org = $this->findOneByNom($commissions[$nom]))
-        return $org;
-    }
 
     $org = new Organisme();
     $org->type = $type;
