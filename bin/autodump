@@ -1,5 +1,9 @@
 #!/bin/bash
+if [ -z "$1" ] ; then
 source bin/db.inc
+else
+source $1
+fi
 
 mysqldump $MYSQLID $DBNAME -q --single-transaction --add-drop-table -R -t --disable-keys --complete-insert | gzip > $DUMPDIR/$DBNAME.$(date +%y%m%d).sql.gz
 
