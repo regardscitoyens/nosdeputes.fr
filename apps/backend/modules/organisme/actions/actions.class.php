@@ -256,8 +256,10 @@ class organismeActions extends autoOrganismeActions
         if (preg_match('/^(\d{2}:\d{2})/', $bad->moment, $match)) {
           $goodmom = $match[1];
           if (!($good->moment == $goodmom)) {
-            if ($bad->moment == $goodmom && $good->organisme_id == $bad->organisme_id)
-              $goodmom .= '.'.$this->good;
+            if ($bad->moment == $goodmom && $good->organisme_id == $bad->organisme_id) {
+              $bad->moment = $goodmom.'temp';
+              $bad->save();
+            }
             $good->setMoment($goodmom);
           }
         }
