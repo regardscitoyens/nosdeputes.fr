@@ -138,6 +138,8 @@ class organismeActions extends autoOrganismeActions
           $this->redirect($result_link.'wrongdate');
         $objs_arr[$i] = $objects;
       }
+      if ($request->getParameter('doublons'))
+        $this->doublons = 1;
       $query = Doctrine_Query::create()
         ->select('count(id) as ct')
         ->from('Intervention i')
@@ -164,15 +166,42 @@ class organismeActions extends autoOrganismeActions
       else if ($n_art == 1)
         $this->article = $articles[0];
       else $this->redirect($result_link.'wrongart');
-
-      $doublons = Doctrine_Query::create()
-        ->select('count(id) as ct')
+      $doublons_q = Doctrine_Query::create()
+        ->select('id, date, moment, i.seance_id, count(distinct(i.id)) as n_interventions')
         ->from('Seance s')
         ->whereIn($ref_seance, $obj_ids)
-        ->groupBy('s.date, s.moment')
+        ->leftJoin('s.Interventions i')
+        ->groupBy('s.id')
+        ->orderBy('s.date, s.moment')
         ->fetchArray();
-      $this->doublons = 0;
-      if ($doublons) foreach($doublons as $doublon) if ($this->doublons < $doublon['ct']) $this->doublons = $doublon['ct'];
+      if ($doublons_q) {
+        $tmpstr = "";
+        $doublons_bad = "";
+        $doublons_good = "";
+        foreach($doublons_q as $doublon) {
+          if ($tmpstr != $doublon['date'].$doublon['moment']) {
+            $tmpstr = $doublon['date'].$doublon['moment'];
+            $tmpid = $doublon['id'];
+          } else {
+            if ($doublon['n_interventions'] == 0) {
+              $bd = $doublon['id'];
+              $gd = $tmpid;
+            } else {
+              $gd = $doublon['id'];
+              $bd = $tmpid;
+            }
+            if ($doublons_bad == "") {
+              $doublons_bad .= $bd;
+              $doublons_good .= $gd;
+            } else {
+              $doublons_bad .= ','.$bd;
+              $doublons_good .= ','.$gd;
+            }
+          }  
+        }
+        if ($doublons_bad != "" && $doublons_good != "" && ($doublons_bad != $doublons_good))
+          $this->redirect('@fuse?type=seance&id='.$this->bad.','.$this->good.'&bad='.$doublons_bad.'&good='.$doublons_good.'&doublons=1');
+      }
       $query = Doctrine_Query::create()
         ->select('count(distinct(parlementaire_id)) as ct')
         ->from('ParlementaireOrganisme p')
