@@ -25,6 +25,7 @@ class sectionComponents extends sfComponents
       for ($i=0; $i<count($this->textes); $i++) {
         if (isset($done[$this->textes[$i]['section_id']])) {
           $this->textes[$done[$this->textes[$i]['section_id']]]['nb'] += $this->textes[$i]['nb'];
+          unset($this->textes[$i]);
         } else $done[$this->textes[$i]['section_id']] = $i;
       }
     }
