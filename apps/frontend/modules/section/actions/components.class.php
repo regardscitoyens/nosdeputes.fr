@@ -20,5 +20,13 @@ class sectionComponents extends sfComponents
       $sql->orderBy('nb DESC');
     }
     $this->textes = $sql->fetchArray();
+    if (isset($this->order) && $this->order == 'date') {
+      $done = array();
+      for ($i=0; $i<count($this->textes); $i++) {
+        if (isset($done[$this->textes[$i]['section_id']])) {
+          $this->textes[$done[$this->textes[$i]['section_id']]]['nb'] += $this->textes[$i]['nb'];
+        } else $done[$this->textes[$i]['section_id']] = $i;
+      }
+    }
   }
 }
