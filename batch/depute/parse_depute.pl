@@ -52,7 +52,7 @@ sub contact {
 	$_ = $p->get_text('/u');
 	if (/Mél/) {
 	    $_ = $p->get_text('/li');
-	    if (/MAILTO:([^_]+)_(\w+)/) {
+	    if (/MAILTO:([^_]+)_(\w+)/i) {
 		${$depute{'Mails'}}{$1.$2.'@assemblee-nationale.fr'} = 1;
 	    }
 	}elsif (/Site internet/) {
@@ -65,11 +65,14 @@ sub contact {
 		last if ($t->[0] =~ /^\//);
 		$text = $p->get_text('/li');
 		$text =~ s/^\s+//;
-                if ($text =~ /^\S+\@/) {
-		    while ($text =~ /(\S+)/g) {
-			${$depute{'Mails'}}{$1} = 1;
-		    }
-		}else {
+		if ($text =~ /\@/) {
+			print "$text\n";
+	                if ($text =~ /\S+\@/) {
+			    while ($text =~ /(\S+@\S+)/g) {
+				${$depute{'Mails'}}{$1} = 1;
+		 	    }
+			}
+		} else {
 		    ${$depute{'Adresses'}}{$text} = 1
 			if ($text);
 		}
