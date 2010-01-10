@@ -66,7 +66,6 @@ sub contact {
 		$text = $p->get_text('/li');
 		$text =~ s/^\s+//;
 		if ($text =~ /\@/) {
-			print "$text\n";
 	                if ($text =~ /\S+\@/) {
 			    while ($text =~ /(\S+@\S+)/g) {
 				${$depute{'Mails'}}{$1} = 1;
