@@ -8,13 +8,21 @@ echo include_component("parlementaire", "header", array("parlementaire" => $parl
   echo '<ul>';
   $seance0 = $presences[0]->getSeance();
   $date0 = $seance0->date;
-  echo "<li><h4>".myTools::displayDateSemaine($date0)."</h4><ul>";
+  if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $date0, $match))
+    $month0 = 'date_'.$match[1].'_'.$match[2];
+  else $month0 = "";
+  echo '<li id="'.$month0.'"><h4>'.myTools::displayDateSemaine($date0).'</h4><ul>';
   foreach($presences as $presence) {
     $seance = $presence->getSeance();
     $date = $seance->date;
     if ($date0 != $date) {
+      echo '</ul></li><li';
+      if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $date, $match) && $month0 != 'date_'.$match[1].'_'.$match[2]) {
+        $month0 = 'date_'.$match[1].'_'.$match[2];
+        echo ' id="'.$month0.'"';
+      }
       $date0 = $date;
-      echo "</ul></li><li><h4>".myTools::displayDateSemaine($date)."</h4><ul>";
+      echo "><h4>".myTools::displayDateSemaine($date)."</h4><ul>";
     }
     echo '<li><a href="'.url_for('@interventions_seance?seance='.$seance->id).'">';
     if ($type != "hemicycle") {
