@@ -24,10 +24,10 @@ class setVacancesTask extends sfBaseTask {
     foreach ($seances as $seance) {
       while (($annee < $seance['annee']) || ($annee == $seance['annee'] && $sem < $seance['numero_semaine'])) {
         array_push($semaines, array("annee" => $annee, "semaine" => $sem));
-        if ($sem == 52) { $annee++; $sem = 1; }
+        if ($sem > 53) { $annee++; $sem = 1; }
         else $sem++;
       }
-      if ($seance['numero_semaine'] == 52) { $annee = $seance['annee'] + 1 ; $sem = 1; }
+      if ($seance['numero_semaine'] > 53) { $annee = $seance['annee'] + 1 ; $sem = 1; }
       else { $annee = $seance['annee']; $sem = $seance['numero_semaine'] + 1; }
     }
 
@@ -36,11 +36,11 @@ class setVacancesTask extends sfBaseTask {
     $last_sem = date('W', $date);
     $day = date('w', $date);
     if ($day < 3) $last_sem--;
-    if ($last_sem == 53) { $last_annee++; $last_sem = 1; }
+    if ($last_sem > 53) { $last_annee++; $last_sem = 1; }
     if ($last_sem == 0) { $last_annee--; $last_sem = 53; }
     while (($annee < $last_annee) || ($annee == $last_annee && $sem <= $last_sem)) {
       array_push($semaines, array("annee" => $annee, "semaine" => $sem));
-      if ($sem == 52) { $annee++; $sem = 1; }
+      if ($sem > 53) { $annee++; $sem = 1; }
       else $sem++;
     }
 
