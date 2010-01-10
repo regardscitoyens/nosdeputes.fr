@@ -15,13 +15,18 @@ class presenceActions extends sfActions
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
-
-    $query = Doctrine::getTable('Presence')->createQuery('p');
-    $query->where('p.parlementaire_id = ?', $this->parlementaire->id);
-    $query->leftJoin('p.Seance.Organisme o')
+    if ($this->type = $request->getParameter('type'))
+      $this->forward404Unless(preg_match('/(hemicycle|commission)/', $this->type));
+    else $this->type = "all";
+    $query = Doctrine::getTable('Presence')->createQuery('p')
+      ->where('p.parlementaire_id = ?', $this->parlementaire->id)
+      ->leftJoin('p.Seance s')
+      ->leftJoin('s.Organisme o')
       ->leftJoin('p.Preuves pr')
-      ->orderBy('p.Seance.type ASC, p.Seance.date DESC')
+      ->orderBy('s.date DESC, s.type ASC, s.moment ASC')
       ->groupBy('p.Seance.id');
+    if ($this->type != "all")
+      $query->andWhere('s.type = ?', $this->type);
     $this->presences = $query->execute();
   }
 

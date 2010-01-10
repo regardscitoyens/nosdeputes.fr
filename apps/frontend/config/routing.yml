@@ -371,6 +371,9 @@ parlementaire_texte:
 parlementaire_amendements:
   url: /:slug/amendements
   param: {module: amendement, action: parlementaire}
+parlementaire_presences_type:
+  url: /:slug/presences/:type
+  param: {module: presence, action: parlementaire}
 parlementaire_presences:
   url: /:slug/presences
   param: {module: presence, action: parlementaire}
