@@ -169,7 +169,9 @@ while($t = $p->get_tag("h1", "img")) {
     }elsif (/Organismes extra-parlementaires/) {
 	extra($p);	
     }elsif (/^Mandats (locaux|intercommunaux)/) {
-	autre_mandat($p);	
+	autre_mandat($p);
+    }elsif (/^Fonctions dans les instances internationales ou judiciaires/) {
+	extra($p);
     }elsif (/Place dans l'hémicycle/) {
 	place($p);
     }
