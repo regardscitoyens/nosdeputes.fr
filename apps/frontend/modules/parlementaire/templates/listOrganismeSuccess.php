@@ -25,7 +25,7 @@ if (count($seances) && ($pager->getPage() < 2) ) { ?>
     $subtitre .= ')';
   }
   echo link_to($subtitre, '@interventions_seance?seance='.$seance->id); ?></li>
-<?php if ($cpt > 10) break;} ?>
+<?php if ($cpt > 40) break;} ?>
 </ul>
 </div>
 <?php } ?>

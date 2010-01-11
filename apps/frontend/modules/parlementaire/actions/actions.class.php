@@ -231,7 +231,7 @@ class parlementaireActions extends sfActions
     $this->seances = Doctrine::getTable('Seance')->createQuery('s')
       ->leftJoin('s.Organisme o')
       ->where('o.slug = ?', $orga)
-      ->orderBy('s.date DESC, s.moment DESC')
+      ->orderBy('s.date DESC, s.moment ASC')
       ->execute();
   }
 

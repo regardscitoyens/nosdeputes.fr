@@ -33,8 +33,8 @@ echo include_component("parlementaire", "header", array("parlementaire" => $parl
     }
     echo $seance->getTitre().'</a>';
     $nbpreuves = $presence->getNbPreuves();
-    if ($nbpreuves > 1) $preuves_str = $nbpreuves." preuves";
-    else $preuves_str = "1 preuve";
+    if ($nbpreuves > 1) $preuves_str = $nbpreuves."&nbsp;preuves";
+    else $preuves_str = "1&nbsp;preuve";
     echo " <em>(".link_to($preuves_str, "@preuve_presence_seance?seance=".$seance->id."&slug=".$parlementaire->slug).")</em>";
     if ($seance->type == "hemicycle") {
       echo "<ul>";
