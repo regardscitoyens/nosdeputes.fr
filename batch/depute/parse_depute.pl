@@ -119,11 +119,11 @@ sub extra {
 	last if ($t->[0] eq 'a');
 	my $text, $fonction, $orga;
 	$text = $p->get_text('/li');
-	if  ($text =~ /^(\S+\s*\S*)( du | de la | de l')\s*(.*)/) {
+	if  ($text =~ /^(\S+\s*\S*\s*\S*)( du | de la | de l')\s*(.*)/) {
 	    $fonction = $1;
 	    $orga = $3;
+	    ${$depute{'Extras'}}{lc($orga)." / ".lc($fonction)} = 1;
 	}
-	${$depute{'Extras'}}{lc($orga)." / ".lc($fonction)} = 1;
     }
 }
 
