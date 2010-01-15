@@ -12,9 +12,8 @@ for ($i = 0 ; $i < $limit ; $i++)
   $item->setAuthorName($parlementaire->nom);
   $item->setPubdate(strtotime($new->date));
   $item->setUniqueId(get_class($new).$new->id);
-  $item->setDescription($new);
+  $item->setDescription(utf8_encode(utf8_decode(strip_tags($new))));
   $feed->addItem($item);
 }
-
 decorate_with(false);
 echo $feed->asXml();
