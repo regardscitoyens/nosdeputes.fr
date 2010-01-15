@@ -12,7 +12,7 @@ class OrganismeTable extends Doctrine_Table
     $nom = preg_replace('/\([^\)]*$/', '', $nom);
     $nom = preg_replace('/^[^\)]*\)/', '', $nom);
     $nom = preg_replace('/’/', '\'', $nom);
-    $nom = preg_replace('/assemblée nationale/i', 'bureau de l\'assemblée nationale', $nom);
+    $nom = preg_replace('/^\s*assemblée\s+nationale\s*$/i', 'bureau de l\'assemblée nationale', $nom);
     trim($nom);
     $nom = preg_replace('/^\s*de la /', '', $nom);
     $nom = preg_replace('/\s+/', ' ', $nom);
