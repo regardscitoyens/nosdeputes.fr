@@ -13,7 +13,7 @@ foreach($query->execute() as $a)
   $item->setLink('http://'.$_SERVER['HTTP_HOST'].url_for($a->getLink()));
   $item->setPubdate(strtotime($a->date));
   $item->setUniqueId(get_class($a).$a->id);
-  $item->setDescription($a);
+  $item->setDescription(utf8_encode(utf8_decode(strip_tags($a))));
   $feed->addItem($item);
 }
 

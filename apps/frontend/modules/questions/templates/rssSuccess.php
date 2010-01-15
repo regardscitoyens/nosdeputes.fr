@@ -13,7 +13,7 @@ foreach($query->execute() as $q)
   $item->setAuthorName($q->Parlementaire->nom);
   $item->setPubdate(strtotime($q->date));
   $item->setUniqueId(get_class($q).$q->id);
-  $item->setDescription($q);
+  $item->setDescription(utf8_encode(utf8_decode(strip_tags($q))));
   $feed->addItem($item);
 }
 decorate_with(false);

@@ -14,7 +14,7 @@ foreach($comments as $c)
   $item->setAuthorName($c->getCitoyen()->login);
   $item->setPubdate(strtotime($c->created_at));
   $item->setUniqueId('Commentaire'.$c->id);
-  $item->setDescription($c);
+  $item->setDescription(utf8_encode(utf8_decode(strip_tags($c))));
   $feed->addItem($item);
 }
 
