@@ -1,19 +1,22 @@
 #!/bin/bash
 
 # Gestion des options
+deputes=1
 jo=1
 questions=1
-while getopts "hjqo-:" option
+while getopts "hdjqo-:" option
 do
   if [ $option = "-" ]; then
     case $OPTARG in
       help) option="h";;
+      nodeputes) option="d";;
       nojo) option="j";;
       noquestions) option="q";;
       oldquestions) option="o";;
     esac
   fi  
   case $option in
+    d) deputes=0;;
     j) jo=0;;
     q) if [[ $questions -ne 1 ]]; then
          echo "options noquestions et oldquestions incompatibles"
@@ -27,6 +30,7 @@ do
        questions=2;;
     h) echo "syntaxe : loadupdate [-h|--help  /  [-j|--nojo] [-q|-noquestions / -o|--oldquestions] ]"
        echo "  -h ( --help )         : affiche cette aide"
+       echo "  -d ( --nodeputes )    : pas de mise-à-jour de la liste des députés et de leurs commissions
        echo "  -j ( --nojo )         : pas de mise-à-jour des séances de commission listées au Journal Officiel"
        echo "  -q ( --noquestions )  : pas de mise-à-jour des questions écrites au gouvernement"
        echo "  -o ( --oldquestions ) : mise-à-jour des questions depuis le début de la législature"
@@ -34,11 +38,11 @@ do
   esac
 done
 
-
-echo Mise-à-jour députés
-echo =======================
-bash bin/load_deputes
-
+if [[ $deputes -eq 1 ]]; then
+  echo Mise-à-jour députés
+  echo =======================
+  bash bin/load_deputes
+fi
 
 # Récupération et création des JSON
 

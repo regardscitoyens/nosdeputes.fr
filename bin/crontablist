@@ -1,6 +1,8 @@
-05 05 * * * /home/nosdeputes/prod/bin/autodump
+*/15 * * * * /home/nosdeputes/bin/svn_update
+*    * * * * /home/nosdeputes/bin/check_home.sh
+05 05 * * * /home/nosdeputes/bin/backup
 O5 06 * * * /home/nosdeputes/prod/bin/loadupdate --nojo --noquestions
-05 10,18 * * * /home/nosdeputes/prod/bin/loadupdate --noquestions
-05 14 * * 0 /home/nosdeputes/prod/bin/loadupdate --nojo --oldquestions
-05 14 * * 1,4,5,6 /home/nosdeputes/prod/bin/loadupdate --nojo --noquestions
-05 14 * * 2,3 /home/nosdeputes/prod/bin/loadupdate --nojo
+05 10,18 * * * /home/nosdeputes/prod/bin/loadupdate --nodeputes --noquestions
+05 14 * * 0 /home/nosdeputes/prod/bin/loadupdate --nodeputes --nojo --oldquestions
+05 14 * * 1,4,5,6 /home/nosdeputes/prod/bin/loadupdate --nodeputes --nojo --noquestions
+05 14 * * 2,3 /home/nosdeputes/prod/bin/loadupdate --nodeputes --nojo
