@@ -4,6 +4,7 @@ $file = $source = shift;
 
 $source =~ s/^[^\/]+\///;
 $source =~ s/html\///;
+$source =~ s/http(.?)-/http\1:/;
 $source =~ s/_/\//g;
 $loi = $source;
 $loi =~ s/^http\:\/\/.*\/(pl|pion)0*(\d+)\.asp$/\2/;

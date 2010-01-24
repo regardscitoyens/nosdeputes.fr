@@ -17,6 +17,7 @@ $a->get($link_loi);
 $htmfile = $link_loi; 
 $htmfile =~ s/^\s+//gi;
 $htmfile =~ s/\//_/gi;
+$htmfile =~ s/:/-/gi;
 $htmfile =~ s/\#.*//;
 print 'in html/'.$htmfile;
 open FILE, ">:utf8", "html/$htmfile";

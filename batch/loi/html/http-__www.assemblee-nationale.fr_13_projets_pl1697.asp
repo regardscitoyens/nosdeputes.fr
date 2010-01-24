@@ -109,6 +109,10 @@ top.location.href=location.href
 <br>
 
 
+<!-- Contenu -->
+
+
+
 
 
 <p style="text-align: center"></p>
@@ -153,13 +157,29 @@ et des collectivités territoriales.</span></p>
 
 <p style="text-align: justify">Pour autant, la sécurité demeure l&#8217;une des préoccupations majeures de nos concitoyens. La préparation d&#8217;une nouvelle loi d&#8217;orientation et de programmation pour la performance de la sécurité figure à ce titre parmi les objectifs fixés par le Président de la République au ministre de l&#8217;intérieur, de l&#8217;outre-mer et des collectivités territoriales dans sa lettre de mission.</p>
 
-<p style="text-align: justify">Le Livre blanc sur la défense et la sécurité nationale acte la fin du clivage traditionnel entre sécurité intérieure et sécurité extérieure. Il dépasse le cadre strict des questions de défense. Il élargit la réflexion à une sécurité nationale qui intègre désormais des dimensions importantes de la politique de sécurité intérieure. Le Livre blanc a également mis en exergue la nécessité d&#8217;une politique d&#8217;anticipation constamment actualisée pour renforcer la lutte contre les menaces dans un environnement complexe, incertain et toujours plus instable. Les menaces naturelles sont à ce titre prises en compte.</p>
+<p style="text-align: justify">Le Livre blanc sur la défense et la sécurité nationale acte la fin du clivage traditionnel entre sécurité intérieure et sécurité extérieure. Il dépasse le cadre strict des questions de défense. Il élargit la réflexion à une sécurité nationale qui intègre désormais des dimensions importantes de la politique de sécurité intérieure. </p>
 
-<p style="text-align: justify">En conséquence, la nouvelle loi d&#8217;orientation et de programmation n&#8217;est plus limitée à la police et la gendarmerie nationale&nbsp;; elle intègre aussi la sécurité civile. Le Livre blanc a ainsi conforté la responsabilité du ministère de l&#8217;intérieur dans la préparation et l&#8217;exécution des politiques de sécurité intérieure et de sécurité civile qui concourent à la sécurité nationale.</p>
+<p style="text-align: justify">Le Livre blanc a également mis en exergue la nécessité d&#8217;une politique d&#8217;anticipation constamment actualisée pour renforcer la lutte contre les menaces dans un environnement complexe, incertain et toujours plus instable. Les menaces naturelles sont à ce titre prises en compte.</p>
+
+<p style="text-align: justify">En conséquence, la nouvelle loi d&#8217;orientation et de programmation n&#8217;est plus limitée à la police et la gendarmerie nationale&nbsp;; elle intègre aussi la sécurité civile.</p>
+
+<p style="text-align: justify">Le Livre blanc a ainsi conforté la responsabilité du ministère de l&#8217;intérieur dans la préparation et l&#8217;exécution des politiques de sécurité intérieure et de sécurité civile qui concourent à la sécurité nationale.</p>
 
 <p style="text-align: justify">La nouvelle loi d&#8217;orientation et de programmation doit donc permettre au ministère de l&#8217;intérieur de renforcer ses capacités dans l&#8217;anticipation, la prévention, la protection, la lutte et l&#8217;intervention contre les menaces et les risques susceptibles de porter atteinte aux institutions, à la cohésion nationale, à l&#8217;ordre public, aux personnes et aux biens, aux installations et ressources d&#8217;intérêt général sur le territoire de la République.</p>
 
-<p style="text-align: justify">Plus précisément, les objectifs opérationnels prioritaires définis pour les années 2009-2013 concernent&nbsp;:<ul><li>les menaces terroristes qui portent atteinte aux principes fondateurs de la République, à l&#8217;intégrité du territoire national et aux intérêts supérieurs du pays&nbsp;;</li><li>les mouvements et actes qui nuisent à la cohésion nationale, qu&#8217;il s&#8217;agisse des différentes formes de radicalisation favorables au développement de la xénophobie, du racisme et de l&#8217;antisémitisme ou aux trafics et violences urbaines qui menacent la tranquillité de quartiers et de leurs habitants&nbsp;;</li><li>la criminalité organisée, notamment celle favorisée par les développements technologiques (cybercriminalité), et l&#8217;évolution des rapports géostratégiques (trafics de matières à haute valeur marchande, émigration irrégulière et clandestine, flux économiques souterrains)&nbsp;;</li><li>les violences infra-familiales&nbsp;;</li><li>la délinquance routière&nbsp;;</li><li>les crises de santé publique ou environnementales.</li></ul></p>
+<p style="text-align: justify">Plus précisément, les objectifs opérationnels prioritaires définis pour les années 2009-2013 concernent&nbsp;:</p>
+
+<p style="text-align: justify">&#8211;&nbsp;les menaces terroristes qui portent atteinte aux principes fondateurs de la République, à l&#8217;intégrité du territoire national et aux intérêts supérieurs du pays&nbsp;;</p>
+
+<p style="text-align: justify">&#8211;&nbsp;les mouvements et actes qui nuisent à la cohésion nationale, qu&#8217;il s&#8217;agisse des différentes formes de radicalisation favorables au développement de la xénophobie, du racisme et de l&#8217;antisémitisme ou aux trafics et violences urbaines qui menacent la tranquillité de quartiers et de leurs habitants&nbsp;;</p>
+
+<p style="text-align: justify">&#8211;&nbsp;la criminalité organisée, notamment celle favorisée par les développements technologiques (cybercriminalité), et l&#8217;évolution des rapports géostratégiques (trafics de matières à haute valeur marchande, émigration irrégulière et clandestine, flux économiques souterrains)&nbsp;;</p>
+
+<p style="text-align: justify">&#8211;&nbsp;les violences infra-familiales&nbsp;;</p>
+
+<p style="text-align: justify">&#8211;&nbsp;la délinquance routière&nbsp;;</p>
+
+<p style="text-align: justify">&#8211;&nbsp;les crises de santé publique ou environnementales.</p>
 
 <p style="text-align: justify">La mise en <!--<span style="font-family: 'Times New Roman'; font-size: 14pt">&#339;</span>-->&#339;uvre de ces objectifs conduira le ministère de l&#8217;intérieur à une évolution souvent majeure de son organisation et de ses moyens. À cet égard, méritent d&#8217;être soulignées les conséquences des nouvelles missions outre-mer du ministère à compter de 2012, du fait des retraits, proposés par le Livre blanc et retenus par la loi de programmation militaire, des trois&nbsp;armées. Ces missions, exercées en priorité par la gendarmerie nationale et la sécurité civile, doivent assurer la même protection qu&#8217;antérieurement aux territoires et populations outre-mer.</p>
 
@@ -175,29 +195,37 @@ et des collectivités territoriales.</span></p>
 
 <p style="text-align: justify">Cette obligation reflète les contraintes qui pèsent sur les finances publiques du pays. Elle s&#8217;inscrit dans le cadre des objectifs quantitatifs fixés en 2007 aux forces de sécurité intérieure (diminution en deux&nbsp;ans de&nbsp;5&nbsp;% de la délinquance générale et de 10&nbsp;% de la délinquance de proximité). Elle traduit le service public que rendent ces forces à la population, tout particulièrement aux victimes. L&#8217;amélioration de leur accueil, comme celui des autres usagers, et le soutien qui leur est apporté doivent constituer des priorités permanentes pour les policiers et les gendarmes. Tant que le taux d&#8217;élucidation n&#8217;aura pas dépassé 50&nbsp;%, délinquants et criminels bénéficieront de fait d&#8217;un avantage par rapport aux victimes.</p>
 
-<p style="text-align: justify">Telle que détaillée dans le <a href='http://www.assemblee-nationale.fr/13/projets/pl1697.asp#P660_130778'>rapport sur les moyens de la LOPPSI (annexe)</a>, cette recherche de performance contribue <i>in fine</i> à mieux définir les responsabilités de tous les acteurs participant à la politique nationale&nbsp;: collectivités territoriales (notamment à travers les polices municipales et les services départementaux d&#8217;incendie et de secours)&nbsp;; entreprises de surveillance, de gardiennage et de transports de fonds&nbsp;; agents privés de recherche&nbsp;; acteurs du secteur de l&#8217;«&nbsp;intelligence économique&nbsp;».</p>
+<p style="text-align: justify">Tel que détaillée dans le rapport sur les moyens de la LOPPSI (annexe), cette recherche de performance contribue <i>in fine</i> à mieux définir les responsabilités de tous les acteurs participant à la politique nationale&nbsp;: collectivités territoriales (notamment à travers les polices municipales et les services départementaux d&#8217;incendie et de secours)&nbsp;; entreprises de surveillance, de gardiennage et de transports de fonds&nbsp;; agents privés de recherche&nbsp;; acteurs du secteur de l&#8217;«&nbsp;intelligence économique&nbsp;».</p>
 
 <p style="text-align: justify">La sécurité intérieure ne peut plus ni commencer ni s&#8217;achever aux frontières de la métropole et des territoires ultra-marins. La continuité de fait entre sécurité intérieure et sécurité extérieure mise en avant par le Livre blanc sur la défense et la sécurité nationale a formalisé une réalité connue depuis de nombreuses années par les praticiens de la lutte anti-terroriste. </p>
 
 <p style="text-align: justify">Cet effacement des frontières et l&#8217;internationalisation qu&#8217;elle entraine pour les forces de sécurité intérieure ne se limitent pas d&#8217;ailleurs à la lutte anti-terroriste. Sans prétendre à l&#8217;exhaustivité, des caractéristiques comparables se retrouvent en matière de cybercriminalité, des principaux trafics en particulier de drogue, des risques naturels et environnementaux, de l&#8217;ingérence économique susceptible de nuire aux entreprises et aux centres de recherche nationaux, ainsi que d&#8217;immigration clandestine.</p>
 
-<p style="text-align: justify">Dans ces différents domaines, la présente loi d&#8217;orientation et de programmation conduira les forces de sécurité intérieure à développer leurs actions internationales et leur coopération avec leurs partenaires étrangers, à l&#8217;instar de la création, en 2007, du Centre maritime d&#8217;analyse et d&#8217;organisation-stupéfiants (MAOC-N) à Lisbonne et du Centre commun de lutte anti-drogue en Méditerranée (CECLADM) contre les filières de trafic de drogues en Méditerranée. À ce titre, peuvent être cités&nbsp;:<ul><li>la création d&#8217;une base de données contre la menace NRBC auprès d&#8217;Europol&nbsp;;</li><li>la création et l&#8217;hébergement à Europol d&#8217;une plate-forme européenne contre la cybercriminalité, centralisant et explicitant les informations fournies par les plates-formes nationales&nbsp;;</li><li>la promotion d&#8217;une assistance mutuelle européenne en matière de sécurité civile, de nature à renforcer le mécanisme actuel de soutien par un système garantissant la couverture des principaux risques et structurant l&#8217;emploi de moyens projetables à court terme.</li></ul></p>
+<p style="text-align: justify">Dans ces différents domaines, la présente loi d&#8217;orientation et de programmation conduira les forces de sécurité intérieure à développer leurs actions internationales et leur coopération avec leurs partenaires étrangers, à l&#8217;instar de la création, en 2007, du Centre maritime d&#8217;analyse et d&#8217;organisation-stupéfiants (MAOC-N) à Lisbonne et du Centre commun de lutte anti-drogue en Méditerranée (CECLADM) contre les filières de trafic de drogues en Méditerranée. À ce titre, peuvent être cités&nbsp;:</p>
 
-<p style="text-align: justify">Au-delà de ces actions, l&#8217;engagement européen et international de la politique de sécurité intérieure sera assuré par&nbsp;:<ul><li>une présence accrue dans la gouvernance européenne des questions de sécurité&nbsp;: participation renforcée dans les agences (Europol, Frontex, Cepol) et les mécanismes de coopération&nbsp;; la promotion d&#8217;instruments juridiques adaptés à la coopération transfrontalière, en particulier dans les départements et collectivités d&#8217;outre-mer (DOM-COM)&nbsp;;</li><li>une réorganisation du réseau des attachés de sécurité intérieure au profit des pays identifiés comme prioritaires, prévoyant la mise en place de coordonnateurs régionaux et de plates-formes de coopération avec nos principaux partenaires européens&nbsp;;</li><li>une internationalisation des carrières et des systèmes de formation, à la fois pour apporter, en particulier aux cadres de la police, de la gendarmerie et de la sécurité civile, un complément d&#8217;expérience professionnelle et pour accueillir dans nos écoles, jusqu&#8217;à 20&nbsp;% d&#8217;élèves venant des pays représentant des enjeux géostratégiques pour la France.</li></ul></p>
+<p style="text-align: justify">&#8211;&nbsp;la création d&#8217;une base de données contre la menace NRBC auprès d&#8217;Europol&nbsp;;</p>
+
+<p style="text-align: justify">&#8211;&nbsp;la création et l&#8217;hébergement à Europol d&#8217;une plate-forme européenne contre la cybercriminalité, centralisant et explicitant les informations fournies par les plates-formes nationales&nbsp;;</p>
+
+<p style="text-align: justify">&#8211;&nbsp;la promotion d&#8217;une assistance mutuelle européenne en matière de sécurité civile, de nature à renforcer le mécanisme actuel de soutien par un système garantissant la couverture des principaux risques et structurant l&#8217;emploi de moyens projetables à court terme.</p>
+
+<p style="text-align: justify">Au-delà de ces actions, l&#8217;engagement européen et international de la politique de sécurité intérieure sera assuré par&nbsp;:</p>
+
+<p style="text-align: justify">&#8211;&nbsp;une présence accrue dans la gouvernance européenne des questions de sécurité&nbsp;: participation renforcée dans les agences (Europol, Frontex, Cepol) et les mécanismes de coopération&nbsp;; la promotion d&#8217;instruments juridiques adaptés à la coopération transfrontalière, en particulier dans les départements et collectivités d&#8217;outre-mer (DOM-COM)&nbsp;;</p>
+
+<p style="text-align: justify">&#8211;&nbsp;une réorganisation du réseau des attachés de sécurité intérieure au profit des pays identifiés comme prioritaires, prévoyant la mise en place de coordonnateurs régionaux et de plates-formes de coopération avec nos principaux partenaires européens&nbsp;;</p>
+
+<p style="text-align: justify">&#8211;&nbsp;une internationalisation des carrières et des systèmes de formation, à la fois pour apporter, en particulier aux cadres de la police, de la gendarmerie et de la sécurité civile, un complément d&#8217;expérience professionnelle et pour accueillir dans nos écoles, jusqu&#8217;à 20&nbsp;% d&#8217;élèves venant des pays représentant des enjeux géostratégiques pour la France.</p>
 
 <p style="text-align: justify">Enfin, la politique mise en <!--<span style="font-family: 'Times New Roman'; font-size: 14pt">&#339;</span>-->&#339;uvre par le ministère de l&#8217;intérieur, de l&#8217;outre-mer et des collectivités territoriales à l&#8217;occasion de la présente loi de programmation et d&#8217;orientation ne saurait ignorer les enjeux que représentent les marchés étrangers de la sécurité intérieure pour les entreprises françaises. Ces marchés, étatiques ou privés selon les pays, représentent une réalité économique et commerciale croissante. La responsabilité du ministère et de ses services est d&#8217;examiner les modalités susceptibles de favoriser la pénétration de ces marchés par les entreprises françaises.</p>
 
-<p style="text-align: justify">La nécessité d&#8217;offrir aux Français une protection toujours plus importante, dans un environnement de plus en plus complexe et instable, justifie la nouvelle loi d&#8217;orientation et de programmation pour les cinq&nbsp;prochaines années (2009-2013). Tel est l&#8217;objet du présent projet de loi qui contribuera à ancrer dans la durée l&#8217;amélioration de la sécurité de nos concitoyens.</p>
-
-<p style="text-align: justify">&nbsp;<a href='http://www.assemblee-nationale.fr/13/pdf/projets/pl1697.pdf'><i>L&#8217;étude d&#8217;impact de ce projet est disponible au format PDF.</i></a></p>
+<p style="text-align: justify">La nécessité d&#8217;offrir aux Français une protection toujours plus importante, dans un environnement de plus en plus complexe et instable, justifie la nouvelle loi d&#8217;orientation et de programmation pour les cinq&nbsp;prochaines années (2009-2013).</p>
 
 <p style="text-align: center">***</p>
 
 <p style="text-align: justify">Le <b>chapitre&nbsp;I<sup>er</sup></b> concerne les objectifs et les moyens de la politique de la sécurité intérieure. </p>
 
-<p style="text-align: justify">L&#8217;<b>article&nbsp;1<sup>er</sup></b> approuve le <a href='http://www.assemblee-nationale.fr/13/projets/pl1697.asp#P660_130778'>rapport sur les objectifs et les moyens de la police, de la gendarmerie et de la sécurité civile</a> annexé au projet de loi. Ce rapport décrit les modalités d&#8217;emploi, au sein des missions «&nbsp;sécurité&nbsp;» et «&nbsp;sécurité civile&nbsp;», des enveloppes de moyens supplémentaires ouvertes chaque année entre 2009 et 2013.</p>
-
-<p style="text-align: center">***</p>
+<p style="text-align: justify">L&#8217;<b>article&nbsp;1<sup>er</sup></b> approuve le rapport sur les objectifs et les moyens de la police, de la gendarmerie et de la sécurité civile annexé au projet de loi. Ce rapport décrit les modalités d&#8217;emploi, au sein des missions «&nbsp;sécurité&nbsp;» et «&nbsp;sécurité civile&nbsp;», des enveloppes de moyens supplémentaires ouvertes chaque année entre 2009 et 2013.</p>
 
 <p style="text-align: justify">Le <b>chapitre&nbsp;II</b> comporte les dispositions relatives à la lutte contre la cybercriminalité.</p>
 
@@ -223,17 +251,15 @@ et des collectivités territoriales.</span></p>
 
 <p style="text-align: justify">Un décret viendra préciser les modalités d&#8217;application de ce texte dont l&#8217;économie générale a été définie en concertation avec le <i>Forum des droits sur l&#8217;Internet</i> (association de la loi de 1901 composée notamment de juristes, de parlementaires, d&#8217;utilisateurs et de fournisseurs d&#8217;accès à Internet).</p>
 
-<p style="text-align: center">***</p>
-
 <p style="text-align: justify">Le <b>chapitre&nbsp;III</b> adapte les moyens d&#8217;enquête aux nouvelles technologies.</p>
 
-<p style="text-align: justify">La <b>section&nbsp;1</b> prévoit la possibilité pour les services de police, en dehors du cadre des procédures de recherche des causes de la mort et de disparition suspecte, de procéder à des investigations techniques et scientifiques sur des cadavres anonymes afin de permettre leur identification et de répondre ainsi à l&#8217;attente des familles.</p>
+<p style="text-align: justify">Les <b>articles&nbsp;5, 6, 7 </b>et&nbsp;<b>8</b> prévoient la possibilité pour les services de police, en dehors du cadre des procédures de recherche des causes de la mort et de disparition suspecte, de procéder à des investigations techniques et scientifiques sur des cadavres anonymes afin de permettre leur identification et de répondre ainsi à l&#8217;attente des familles.</p>
 
 <p style="text-align: justify">Il sera désormais sursis à l&#8217;inhumation d&#8217;un cadavre non identifié afin de procéder, sous l&#8217;autorité du procureur de la République, au recueil des indices scientifiques (éléments d&#8217;odontologie, empreintes digitales et génétiques) permettant l&#8217;identification du défunt avant son inhumation. Cette identification se fera en particulier par comparaison avec les données contenues dans le fichier national des empreintes génétiques (FNAEG), le fichier automatisé des empreintes digitales (FAED) et le fichier des personnes recherchées (FPR).</p>
 
 <p style="text-align: justify">L&#8217;<b>article&nbsp;9</b> simplifie les procédures d&#8217;alimentation du fichier national automatisé des empreintes génétiques (FNAEG) pour que les agents du corps des personnels scientifiques de la police nationale puissent procéder, sous le contrôle des officiers de police judiciaire, aux opérations de vérification, de prélèvement et d&#8217;enregistrement.</p>
 
-<p style="text-align: justify">La <b>section&nbsp;2</b> codifie et adapte le cadre légal des fichiers d&#8217;antécédents et d&#8217;analyse sérielle.</p>
+<p style="text-align: justify">Les <b>articles&nbsp;10 </b>et&nbsp;<b>11 </b>codifient et adaptent le cadre légal des fichiers d&#8217;antécédents et d&#8217;analyse sérielle.</p>
 
 <p style="text-align: justify">D&#8217;un point de vue formel, ces articles procèdent à la codification, dans le code de procédure pénale, des articles&nbsp;21, 21-1 et du&nbsp;I de l&#8217;article&nbsp;23 de la loi n°&nbsp;2003-239 du 18&nbsp;mars 2003 pour la sécurité intérieure (LSI). Est ainsi créé un chapitre exclusivement réservé aux fichiers de police judiciaire. La dispersion du droit des fichiers est donc réduite.</p>
 
@@ -249,13 +275,13 @@ et des collectivités territoriales.</span></p>
 
 <p style="text-align: justify">Ces modifications sont accompagnées d&#8217;un renforcement des garanties puisque corrélativement et afin de respecter les équilibres constitutionnels, est créé un magistrat référent qui sera en charge du contrôle des fichiers d&#8217;antécédents et d&#8217;analyse sérielle.</p>
 
-<p style="text-align: justify">La <b>section&nbsp;3</b> améliore les procédures d&#8217;enregistrement et de contrôle des délinquants sexuels enregistrés au fichier national automatisé des auteurs d&#8217;infractions sexuelles ou violentes (FIJAIS).</p>
+<p style="text-align: justify">Les <b>articles&nbsp;12</b>, <b>13</b>, <b>14</b>, <b>15</b> et&nbsp;<b>16</b> améliorent les procédures d&#8217;enregistrement et de contrôle des délinquants sexuels enregistrés au fichier national automatisé des auteurs d&#8217;infractions sexuelles ou violentes (FIJAIS).</p>
 
 <p style="text-align: justify">Ce fichier, créé par la loi du 9&nbsp;mars 2004, a pour finalité de prévenir le renouvellement des infractions de nature sexuelle ou violente et de faciliter l&#8217;identification de leurs auteurs. Grâce aux informations enregistrées, et notamment à l&#8217;identité des personnes inscrites et à leurs adresses, ce fichier contribue à la localisation rapide des auteurs d&#8217;infraction à caractère sexuel, au contrôle par les préfectures de l&#8217;accès des intéressés à des professions à risque et enfin au suivi post-sentenciel. L&#8217;article améliore la rapidité de mise à jour du fichier, en élargit l&#8217;accès, notamment au greffe des établissements pénitentiaires, et prévoit des sanctions en cas de méconnaissance de ses obligations par la personne inscrite.</p>
 
-<p style="text-align: justify">La <b>section&nbsp;4</b> aménage le régime juridique de la vidéoprotection. Il s&#8217;agit de favoriser la réalisation du plan de triplement des caméras installées sur le territoire et de renforcer les garanties de nature à assurer le respect de la vie privée des personnes filmées.</p>
+<p style="text-align: justify">Les <b>articles&nbsp;17</b> et <b>18</b> aménagent le régime juridique de la vidéoprotection. Il s&#8217;agit de favoriser la réalisation du plan de triplement des caméras installées sur le territoire et de renforcer les garanties de nature à assurer le respect de la vie privée des personnes filmées.</p>
 
-<p style="text-align: justify">Les <b>articles&nbsp;17</b> et <b>18</b> étendent les finalités pour lesquelles il peut être recouru à la vidéoprotection. Actuellement, les personnes privées ne peuvent installer un système de vidéoprotection dans des lieux ouverts au public que si ces lieux sont susceptibles d&#8217;être exposés à des actes de terrorisme. Dans ce cas, ils ne peuvent visionner la voie publique que pour assurer la sécurité des abords immédiats de leurs bâtiments et installations. Les dispositions nouvelles leur permettent d&#8217;installer des systèmes de vidéoprotection filmant notamment les abords de leurs bâtiments afin de prévenir des atteintes à la sécurité des personnes et des biens dans des lieux particulièrement exposés à des risques d&#8217;agression ou de vol.</p>
+<p style="text-align: justify">Ils étendent les finalités pour lesquelles il peut être recouru à la vidéoprotection. Actuellement, les personnes privées ne peuvent installer un système de vidéoprotection dans des lieux ouverts au public que si ces lieux sont susceptibles d&#8217;être exposés à des actes de terrorisme. Dans ce cas, ils ne peuvent visionner la voie publique que pour assurer la sécurité des abords immédiats de leurs bâtiments et installations. Les dispositions nouvelles leur permettent d&#8217;installer des systèmes de vidéoprotection filmant notamment les abords de leurs bâtiments afin de prévenir des atteintes à la sécurité des personnes et des biens dans des lieux particulièrement exposés à des risques d&#8217;agression ou de vol.</p>
 
 <p style="text-align: justify">Le délai de conservation des images, qui reste plafonné à un&nbsp;mois, pourra désormais faire l&#8217;objet d&#8217;une durée minimale fixée par le préfet, afin de permettre l&#8217;exploitation des images lorsqu&#8217;une infraction a été commise dans le champ de vision des caméras. </p>
 
@@ -266,8 +292,6 @@ et des collectivités territoriales.</span></p>
 <p style="text-align: justify">Parallèlement, le préfet reçoit un pouvoir de sanction de nature à préserver les libertés publiques, en vertu duquel il peut décider la fermeture temporaire des établissements où fonctionne un système de vidéoprotection non autorisé.</p>
 
 <p style="text-align: justify">Enfin, la loi n°&nbsp;2006-64 du 23&nbsp;janvier 2006 relative à la lutte contre le terrorisme avait décidé que les autorisations délivrées avant sa publication et qui n&#8217;étaient jusqu&#8217;alors assorties d&#8217;aucune condition de durée, arriveraient toutes à échéance le 24&nbsp;janvier 2011. Pour éviter le blocage des commissions départementales chargées d&#8217;émettre un avis sur les demandes de renouvellement et des services de préfecture chargés de les instruire, le projet module les durées de validité des autorisations en cours, en étalant leurs échéances de janvier 2010 à janvier 2012.</p>
-
-<p style="text-align: center">***</p>
 
 <p style="text-align: justify">Le <b>chapitre&nbsp;IV</b> améliore la protection des intérêts fondamentaux de la nation.</p>
 
@@ -295,8 +319,6 @@ et des collectivités territoriales.</span></p>
 
 <p style="text-align: justify">Il prévoit également une interdiction pour les anciens fonctionnaires de police ou officiers et sous-officiers de la gendarmerie nationale, ainsi que les agents travaillant dans certains services de renseignements, d&#8217;exercer cette activité, dans un délai de trois ans après la cessation de leurs fonctions, sauf s&#8217;ils obtiennent une autorisation écrite du ministre dont ils relèvent.</p>
 
-<p style="text-align: center">***</p>
-
 <p style="text-align: justify">Le <b>chapitre&nbsp;V</b> renforce la lutte contre la criminalité et l&#8217;efficacité des moyens de répression.</p>
 
 <p style="text-align: justify">L&#8217;<b>article&nbsp;22</b> prévoit l&#8217;allongement de quinze&nbsp;jours de la durée des interceptions téléphoniques pour les infractions relevant de la criminalité organisée. Désormais, les écoutes pourront durer un&nbsp;mois renouvelable une fois.</p>
@@ -320,8 +342,6 @@ et des collectivités territoriales.</span></p>
 <p style="text-align: justify">Le projet aggrave également la sanction applicable en cas de méconnaissance de l&#8217;obligation de pointage en la portant à un maximum d&#8217;un&nbsp;an d&#8217;emprisonnement.</p>
 
 <p style="text-align: justify">Il est à noter que ces différentes sanctions, inscrites conformément au code du sport au fichier national des interdits de stade, peuvent être communiquées à nos partenaires européens, en vertu d&#8217;une action commune du Conseil de l&#8217;Union européenne de 1997 et d&#8217;une résolution du 6&nbsp;décembre 2001.</p>
-
-<p style="text-align: center">***</p>
 
 <p style="text-align: justify">Le <b>chapitre&nbsp;VI</b> renforce la lutte contre l&#8217;insécurité routière.</p>
 
@@ -355,8 +375,6 @@ et des collectivités territoriales.</span></p>
 
 <p style="text-align: justify">L&#8217;<b>article&nbsp;31</b> est une disposition générale qui permet de préserver les droits du créancier gagiste en cas de confiscation du véhicule qui a servi pour commettre une infraction.</p>
 
-<p style="text-align: center">***</p>
-
 <p style="text-align: justify">Le <b>chapitre&nbsp;VII</b> contient les dispositions relatives aux compétences du préfet de police et des préfets de département.</p>
 
 <p style="text-align: justify">L&#8217;<b>article&nbsp;32</b> modifie les modalités de conduite des missions de maintien de l&#8217;ordre public dans certains départements, notamment en région Île-de-France. </p>
@@ -375,8 +393,6 @@ et des collectivités territoriales.</span></p>
 
 <p style="text-align: justify">S&#8217;agissant de la deuxième série de dispositions, elle renvoie à un décret en Conseil d&#8217;État la possibilité de déroger à l&#8217;organisation actuelle des compétences préfectorales en matière de maintien de l&#8217;ordre, en vertu de laquelle chaque préfet ne peut exercer cette mission que sur le territoire de son département. Pour l&#8217;heure, la stricte délimitation territoriale des compétences de maintien de l&#8217;ordre n&#8217;apparaît pas toujours la mieux adaptée et elle peut, dans certains cas, nuire à l&#8217;efficacité d&#8217;opérations de maintien de l&#8217;ordre.</p>
 
-<p style="text-align: center">***</p>
-
 <p style="text-align: justify">Le <b>chapitre&nbsp;VIII </b>est consacré aux moyens matériels des services.</p>
 
 <p style="text-align: justify">L&#8217;<b>article&nbsp;33</b> pérennise le dispositif du bail emphytéotique administratif institué par la loi n°&nbsp;2002-1094 du 29&nbsp;août 2002 d&#8217;orientation et de programmation pour la sécurité intérieure et codifié au sein du code général des collectivités territoriales. Son utilité, constatée depuis cinq ans dans la réalisation des opérations d&#8217;investissement, justifie son maintien. </p>
@@ -388,8 +404,6 @@ et des collectivités territoriales.</span></p>
 <p style="text-align: justify">L&#8217;expérimentation a montré que le recours à des prestataires privés permettait une réelle économie pour le budget de l&#8217;État sans nuire à la sécurité, à l&#8217;intégrité ou à la dignité des personnes transportées, ni à celle des agents publics et privés concernés.</p>
 
 <p style="text-align: justify">L&#8217;<b>article&nbsp;35</b> <a name="P151_41865"></a>complète les articles&nbsp;99-2 du code de procédure pénale et L.&nbsp;2222-9 du code général de la propriété des personnes publiques afin de permettre que le juge d&#8217;instruction ordonne, sous réserve des droits des tiers, de remettre au service des domaines, en vue de leur affectation à titre gratuit par décision de l&#8217;autorité administrative compétente, les biens saisis qui ne sont plus nécessaires à la manifestation de la vérité. Cette mesure interviendra sans attendre une décision de justice définitive qui est souvent rendue plusieurs années après la saisie des biens. </p>
-
-<p style="text-align: center">***</p>
 
 <p style="text-align: justify">Le <b>chapitre&nbsp;IX</b> regroupe des dispositions diverses.</p>
 
@@ -403,6 +417,8 @@ L&#8217;<b>article&nbsp;38</b> est un article de coordination. Il abroge les art
 <p style="text-align: justify">Les <b>articles&nbsp;39</b> à&nbsp;<b>46</b> regroupent les dispositions d&#8217;application outre-mer. Le projet est expressément rendu applicable sur l&#8217;ensemble du territoire de la République, sous réserve des adaptations nécessaires pour prendre en compte les compétences propres de chaque collectivité.</p>
 
 <p style="text-align: justify">Seules ne sont pas étendues les dispositions qui modifient ou font référence à des textes non applicables dans les collectivités concernées (code des ports maritimes, code monétaire et financier, code des sports, code de la route, code général des collectivités territoriales, loi n°&nbsp;2002-1094 du 29&nbsp;août 2002, loi n°&nbsp;83-629 du 12&nbsp;juillet 1983, code de l&#8217;entrée et du séjour des étrangers et du droit d&#8217;asile, code général de la propriété des personnes publiques).</p>
+
+<p style="text-align: justify">Tel est l&#8217;objet du présent projet de loi qui contribuera à ancrer dans la durée l&#8217;amélioration de la sécurité de nos concitoyens.</p>
 
 <p style="text-align: center">PROJET DE LOI</p>
 
@@ -422,7 +438,7 @@ L&#8217;<b>article&nbsp;38</b> est un article de coordination. Il abroge les art
 
 <p style="text-align: center"><b><span style="font-family: 'Times New Roman'; font-size: 14pt">Article 1<sup>er</sup> </span></b></p>
 
-<p style="text-align: justify">Le <a href='http://www.assemblee-nationale.fr/13/projets/pl1697.asp#P660_130778'>rapport annexé</a> sur les objectifs et les moyens de la police nationale, de la gendarmerie nationale et de la sécurité civile est approuvé.</p>
+<p style="text-align: justify">Le rapport annexé sur les objectifs et les moyens de la police nationale, de la gendarmerie nationale et de la sécurité civile est approuvé.</p>
 
 <p style="text-align: center">Chapitre II</p>
 
@@ -789,7 +805,7 @@ des auteurs d&#8217;infractions sexuelles ou violentes</b></p>
 
 <p style="text-align: justify">«&nbsp;Un décret en Conseil d&#8217;État précise la composition et fixe les modalités de l&#8217;organisation et du fonctionnement de la commission.&nbsp;»</p>
 
-<p style="text-align: center">Chapitre IV</p>
+<p style="text-align: center">Chapitre iv</p>
 
 <p style="text-align: center"><span style="font-family: 'Times New Roman'; font-size: 14pt"><b>Protection des intérêts fondamentaux de la nation</b></span></p>
 
