@@ -48,7 +48,7 @@ class QuestionEcrite extends BaseQuestionEcrite
     }
     if (preg_match('/^(Affaires|Sports|Transports|Solidarités)/', $ministre)) $ministere .= 'es ';
     else if (preg_match('/^[AEÉIOU]/', $ministre)) $ministere .= 'e l\'';
-    else if (preg_match('/^(Santé|Coopération|Culture|Défense|Justice|Consommation|Solidarité)/', $ministre)) $ministere .= 'e la ';
+    else if (preg_match('/^(Famille|Santé|Coopération|Culture|Défense|Justice|Consommation|Solidarité)/', $ministre)) $ministere .= 'e la ';
     else $ministere .= 'u ';
     if (preg_match('/^Premier/', $ministre)) $ministere = 'Premier Ministre';
     else $ministere .= $ministre;
