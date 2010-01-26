@@ -2,7 +2,7 @@
 
 . ../../bin/db.inc
 
-cat liste_sort_indefini.sql | mysql $MYSQLID $DBNAME | grep -v source > liste_sort_indefini.txt
+echo 'SELECT source FROM amendement WHERE sort LIKE "Ind%" AND date > DATE_SUB(CURDATE() , INTERVAL 1 YEAR)' | mysql $MYSQLID $DBNAME | grep -v source > liste_sort_indefini.txt
 
 rm -f html/*
 

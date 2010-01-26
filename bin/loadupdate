@@ -65,9 +65,9 @@ if [[ $questions -ne 0 ]]; then
   echo =======================
   cd batch/questions
   if [[ $questions -eq 1 ]]; then
-    bash compute_latest.sh liste_sans_reponse_recent.sql
+    bash compute_latest.sh recent
   else
-    bash compute_latest.sh liste_sans_reponse.sql
+    bash compute_latest.sh all
   fi
   cd -
 fi

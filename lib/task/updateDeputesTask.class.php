@@ -31,11 +31,12 @@ class updateDeputesTask extends sfBaseTask
 	  $sections = array();
 	  if (preg_match('/^\./', $file))
 	    continue;
-	  //echo "$dir$file\n";
+//	  echo "$dir$file\n";
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
-	    if (!$json->nom)
+	    if (!isset($json->nom) || !$json->nom)
 	      next;
+//	    echo "-".$json->nom." ".$json->id_an."\n";
 	    $parl = doctrine::getTable('Parlementaire')->findOneByNom($json->nom);
 	    if (!$parl) {
 	      $parl = new Parlementaire();

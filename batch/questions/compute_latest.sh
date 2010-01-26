@@ -1,14 +1,20 @@
 #!/bin/bash
 
-if [[ $1 != "liste_sans_reponse_recent.sql" && $1 != "liste_sans_reponse.sql" ]]; then
-  echo "usage: compute_latest.sh liste_sans_reponse_recent.sql / liste_sans_reponse.sql"
+if [[ $1 != "all" && $1 != "recent" ]]; then
+  echo "usage: compute_latest.sh all/recent"
   exit 1
 fi
 
 . ../../bin/db.inc
 
-cat dernier_numero.sql | mysql $MYSQLID $DBNAME | grep -v numero > dernier_numero.txt
-cat $1 | mysql $MYSQLID $DBNAME | grep -v source > liste_sans_reponse.txt
+echo "SELECT numero FROM question_ecrite order by numero DESC limit 1" | mysql $MYSQLID $DBNAME | grep -v numero > dernier_numero.txt
+
+if [[ $1 -eq "all" ]]; then
+  sql_string='SELECT source FROM question_ecrite WHERE reponse = ""'
+else
+  sql_string='SELECT source FROM question_ecrite WHERE reponse = "" AND date > DATE_SUB(CURDATE(), INTERVAL 75 DAY)'
+fi
+echo $sql_string | mysql $MYSQLID $DBNAME | grep -v source > liste_sans_reponse.txt
 
 rm -f html/*
 

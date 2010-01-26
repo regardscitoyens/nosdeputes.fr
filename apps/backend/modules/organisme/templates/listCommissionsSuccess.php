@@ -45,7 +45,7 @@
           <tr class="sf_admin_row <?php if ($row == 0) { $row++; echo 'odd'; } else { $row--; echo 'even'; } ?>">
             <td class="sf_admin_text"><b><a href="<?php echo link_tof('list_parlementaires_organisme', array('slug' => $orga['slug'])); ?>"><?php echo $orga['id']; ?></a></b></td>
             <td class="sf_admin_text"><?php echo link_to($orga['nom'], '@commission?id='.$orga['id']); ?></td>
-            <td class="sf_admin_text"><?php echo link_to($orga['slug'], '@commission?id='.$orga['id']); ?></td>
+            <td class="sf_admin_text"><?php echo link_to(preg_replace('/-/', '- ', $orga['slug']), '@commission?id='.$orga['id']); ?></td>
             <td class="sf_admin_text"><?php echo $orga['deputes']; ?></td>
             <td class="sf_admin_text"><?php echo $orga['seances']; if ($orga['tags']) { echo ' ('; if ($orga['deputes'] > 1) echo $orga['tags']/$orga['deputes']; else echo $orga['tags']; echo ')'; } ?></td>
             <td><ul class="sf_admin_td_actions">
