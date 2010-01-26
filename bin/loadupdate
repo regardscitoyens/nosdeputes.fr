@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd /home/nosdeputes/prod
+
 # Gestion des options
 deputes=1
 jo=1
@@ -30,7 +32,7 @@ do
        questions=2;;
     h) echo "syntaxe : loadupdate [-h|--help  /  [-j|--nojo] [-q|-noquestions / -o|--oldquestions] ]"
        echo "  -h ( --help )         : affiche cette aide"
-       echo "  -d ( --nodeputes )    : pas de mise-à-jour de la liste des députés et de leurs commissions
+       echo "  -d ( --nodeputes )    : pas de mise-à-jour de la liste des députés et de leurs commissions"
        echo "  -j ( --nojo )         : pas de mise-à-jour des séances de commission listées au Journal Officiel"
        echo "  -q ( --noquestions )  : pas de mise-à-jour des questions écrites au gouvernement"
        echo "  -o ( --oldquestions ) : mise-à-jour des questions depuis le début de la législature"
