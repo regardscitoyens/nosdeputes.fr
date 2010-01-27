@@ -11,7 +11,7 @@ done;
 
 for seance_id in $(echo "select DISTINCT seance_id from presence where updated_at > (NOW() - 60*60*24)" | mysql $MYSQLID $DBNAME )
 do
-	echo $seance_id
+	echo "http://www.nosdeputes.fr/seance/$seance_id"
 	rm web/seance/$seance_id.html 2> /dev/null
 	curl -q http://www.nosdeputes.fr/seance/$seance_id > TMPFILE
 	mv TMPFILE web/seance/$seance_id.html
