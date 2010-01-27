@@ -1,7 +1,5 @@
 #!/bin/bash
 
-cd /home/nosdeputes/prod
-
 # Gestion des options
 deputes=1
 jo=1
@@ -94,7 +92,7 @@ while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
 	php symfony load:Hemicycle 
 done;
-echo Load Commissions
+echo "Load Commissions : http://www.nosdeputes.fr/backend.php/commissions"
 echo =======================
 while ls batch/commission/out | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
