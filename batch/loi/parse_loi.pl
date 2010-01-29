@@ -7,9 +7,10 @@ $source =~ s/html\///;
 $source =~ s/http(.?)-/http\1:/;
 $source =~ s/_/\//g;
 $loi = $source;
+$loi =~ s/^http\:\/\/.*r0*(\d+)-a0\.asp$/\1/;
 $loi =~ s/^http\:\/\/.*\/(pl|pion)0*(\d+)\.asp$/\2/;
 $loi =~ s/^http\:\/\/.*\/ta\/ta0*(\d+)\.asp$/ta\1/;
-if ($loi =~ /ta/) {
+if ($loi =~ /ta/ || $source =~ /rapports.*-a0/i) {
   $present = 0;
 } else {
   $present = 1;

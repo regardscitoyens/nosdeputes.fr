@@ -5,10 +5,10 @@ use WWW::Mechanize;
 use HTML::TokeParser;
 $link_loi = shift;
 
-if ($link_loi =~ /^http\:\/\/.*[a-z](\d+)\.asp$/) {
+if ($link_loi =~ /^http\:\/\/.*[a-z](\d+)-a0\.asp$/ || $link_loi =~ /^http\:\/\/.*[a-z](\d+)\.asp$/ ) {
   print 'Download loi N°'.$1.' ...';
 } else {
-  print 'ERROR link';
+  print "ERROR link\n";
   exit;
 }
 
@@ -19,7 +19,7 @@ $htmfile =~ s/^\s+//gi;
 $htmfile =~ s/\//_/gi;
 $htmfile =~ s/:/-/gi;
 $htmfile =~ s/\#.*//;
-print 'in html/'.$htmfile;
+print 'in html/'.$htmfile."\n";
 open FILE, ">:utf8", "html/$htmfile";
 print FILE $a->content;
 close FILE;
