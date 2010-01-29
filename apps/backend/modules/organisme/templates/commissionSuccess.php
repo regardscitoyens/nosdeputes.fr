@@ -1,4 +1,5 @@
-<?php function link_tof($name, $parameters) { return sfProjectConfiguration::getActive()->generateFrontendUrl($name, $parameters); } ?>
+<?php $sf_response->setTitle($orga->nom);
+function link_tof($name, $parameters) { return sfProjectConfiguration::getActive()->generateFrontendUrl($name, $parameters); } ?>
 <div id="sf_admin_container">
   <h1><?php echo link_to($orga->nom, '@commission?id='.$orga->id); ?> (<a href="<?php echo link_tof('list_parlementaires_organisme', array('slug' => $orga['slug'])); ?>">lien frontend</a>)</h1>
   <p style="text-align:center;"><a href="<?php echo url_for('@list_commissions'); ?>">Retour à la liste des commissions</a></p>

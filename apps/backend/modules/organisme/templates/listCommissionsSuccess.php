@@ -1,4 +1,5 @@
-<?php function link_tof($name, $parameters) { return sfProjectConfiguration::getActive()->generateFrontendUrl($name, $parameters); } ?>
+<?php $sf_response->setTitle('Commissions');
+function link_tof($name, $parameters) { return sfProjectConfiguration::getActive()->generateFrontendUrl($name, $parameters); } ?>
 <div id="sf_admin_container">
   <h1>Commissions (Organismes de type "parlementaire")</h1>
   <div id="sf_admin_header"> </div>

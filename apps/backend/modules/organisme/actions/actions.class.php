@@ -68,7 +68,7 @@ class organismeActions extends autoOrganismeActions
       ->leftJoin('s.Presences p')
       ->leftJoin('p.Preuves pr')
       ->groupBy('s.id')
-      ->orderBy('s.date, s.moment')
+      ->orderBy('s.date DESC, s.moment ASC')
       ->fetchArray();
 
     $this->article = Doctrine::getTable('Article')
