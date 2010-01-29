@@ -885,6 +885,9 @@ h2 {
   padding-top: 2px;
   padding-right: 2px;
 }
+.didascalie {
+  font-style: oblique;
+}
 /* form commentaires */
 .inscription {
   border: 1px solid #E8E7E4;
