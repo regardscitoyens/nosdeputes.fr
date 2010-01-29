@@ -9,7 +9,7 @@ do
   mv TMPFILE web/$url.html
 done;
 
-for seance_id in $(echo "select DISTINCT seance_id from presence where updated_at > (NOW() - 60*60*24)" | mysql $MYSQLID $DBNAME )
+for seance_id in $(echo "select DISTINCT seance_id from presence where updated_at > (NOW() - 60*60*24)" | mysql $MYSQLID $DBNAME | grep -v seance_id )
 do
 	echo "http://www.nosdeputes.fr/seance/$seance_id"
 	rm web/seance/$seance_id.html 2> /dev/null
@@ -17,4 +17,5 @@ do
 	mv TMPFILE web/seance/$seance_id.html
 done
 rm cache/frontend/prod/template/www_nosdeputes_fr/all/intervention/seance/seance/*
+rm cache/frontend/prod/template/www_nosdeputes_fr/all/sf_cache_partial/plot/_groupes/sf_cache_key/*
 
