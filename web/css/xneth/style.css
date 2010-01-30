@@ -1048,6 +1048,7 @@ h2 {
 }
 
 .alineatexte .commentaires a {
+  text-decoration: none;
   font-weight: bold;
 }
 
