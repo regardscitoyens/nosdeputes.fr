@@ -1035,7 +1035,16 @@ h2 {
 }
 
 .alineatexte .commentaires .com_ajax {
-  margin-top: 8px;
+  margin-top: 22px;
+  margin-left: 10px;
+}
+.alineatexte .commentaires {
+  clear: both;
+  margin: auto;
+}
+
+.alineatexte .commentaire_avatar img {
+  margin: 6px;
 }
 
 .alineatexte .commentaires a {
@@ -1049,6 +1058,19 @@ h2 {
 .alineatexte .commentaire span {
   float: left;
   display: inline;
+}
+
+.alineatexte .commentaire p {
+  margin: 6px;
+  text-align: left;
+}
+
+.alineatexte .commentaire .clear {
+  text-align: right;
+}
+
+.alineatexte .commentaires com_link {
+  float: right;
 }
 
 .perso {
