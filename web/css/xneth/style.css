@@ -1047,13 +1047,14 @@ h2 {
   margin: 6px;
 }
 
-.alineatexte .commentaires a {
+.loi .alineatexte .commentaire a {
   text-decoration: none;
   font-weight: bold;
 }
 
 .alineatexte:hover span {
   display: inline;
+  font-weight: bold;
 }
 
 .alineatexte .commentaire span {
