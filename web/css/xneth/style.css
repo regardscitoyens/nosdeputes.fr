@@ -943,8 +943,12 @@ h2 {
   text-decoration: underline;
 }
 
-.loi p {
+.question,.loi p {
   text-align: justify;
+}
+
+.question p:first-letter {
+  padding-left: 20px;
 }
 
 .loi p:first-letter {
