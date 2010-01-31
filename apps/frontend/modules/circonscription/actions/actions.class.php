@@ -82,7 +82,7 @@ class circonscriptionActions extends sfActions
      * Bezier curves are converted to polygons following the control
      * points --- yes, this is VERY ugly.
      */
-    if (preg_match("/[^\sMCLz\d.,]/",$data)) {
+    if (preg_match("/[^\sMCLz\d.,-]/",$data)) {
       trigger_error("Unsupported path data attribute: ". $data,
           E_USER_ERROR);
       return NULL;
@@ -109,7 +109,7 @@ class circonscriptionActions extends sfActions
   private static function path_minmax($data, $cs)
   {
     /* Same limitations as convert_path */
-    if (preg_match("/[^\sMCLz\d.,]/",$data)) {
+    if (preg_match("/[^\sMCLz\d.,-]/",$data)) {
       trigger_error("Unsupported path data attribute: ". $data,
           E_USER_ERROR);
       return NULL;
