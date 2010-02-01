@@ -934,6 +934,7 @@ h2 {
 }
 
 .commentaire a {
+  font-weight: bold;
   text-decoration: underline;
 }
 
