@@ -933,6 +933,18 @@ h2 {
   border: 1px dashed #E0E0DD;
 }
 
+.commentaire a {
+  text-decoration: underline;
+}
+
+.commentaire span a {
+  text-decoration: none;
+}
+
+.commentaire span a:hover {
+  text-decoration: underline;
+}
+
 .commentaires com_link {
   float: right;
 }
