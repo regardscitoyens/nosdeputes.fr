@@ -21,8 +21,7 @@ if (isset($section)) {
   }
 } else {
   echo '<div class="pagerloi">';
-  if ($chapitre->chapitre > 1) {
-    $precedent = $chapitre->chapitre - 1;
+  if (isset($precedent)) {
     echo '<div class="precedent">'.link_to('Chapitre '.$precedent, '@loi_chapitre?loi='.$loi->texteloi_id.'&chapitre='.$precedent).'</div>';
   }
   if (isset($suivant))

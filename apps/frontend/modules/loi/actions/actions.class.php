@@ -64,8 +64,37 @@ class loiActions extends sfActions
         $this->suivant = $n_section + 1;
     } else {
       $titre = $this->chapitre->getLargeTitre();
-      if (doctrine::getTable('TitreLoi')->findChapitre($loi_id, $n_chapitre+1))
-        $this->suivant = $n_chapitre + 1; 
+      if (preg_match('/^(\d+)\s+bis$/',$n_chapitre, $match)) {
+        $this->precedent = $match[1];
+         if (doctrine::getTable('TitreLoi')->findChapitre($loi_id, $match[1]+1)) $this->suivant = $match[1]+1;
+      } else {
+        $pre = $n_chapitre - 1;
+        $voisins = doctrine::getTable('TitreLoi')->createQuery('c')
+          ->select('c.chapitre')
+          ->where('c.texteloi_id = ?', $loi_id)
+          ->andWhere('c.section is NULL')
+          ->andWhereIn('c.chapitre', array($pre, $pre." bis", $n_chapitre." bis", $n_chapitre+1))
+          ->orderBy('c.chapitre')
+          ->fetchArray();
+        $ct = count($voisins);
+        if ($ct == 1) {
+          if ($n_chapitre == 1) $this->suivant = $voisins[0]['chapitre'];
+          else $this->precedent = $voisins[0]['chapitre'];
+        } else if ($ct == 2) {
+          $this->precedent = $voisins[0]['chapitre'];
+          $this->suivant = $voisins[1]['chapitre'];
+        } else if ($ct > 2) {
+          if (preg_match('/bis/', $voisins[1]['chapitre']) && preg_match('/bis/', $voisins[2]['chapitre'])) {
+            $this->precedent = $voisins[1]['chapitre'];
+            $this->suivant = $voisins[2]['chapitre'];
+          } else {
+            $this->precedent = $voisins[0]['chapitre'];
+            if (preg_match('/'.$n_chapitre.'/', $voisins[1]['chapitre']))
+              $this->suivant = $voisins[1]['chapitre'];
+            else $this->suivant = $voisins[2]['chapitre'];
+          }
+        }
+      }
     }
     $this->response->setTitle(strip_tags($this->loi->titre.' - '.$titre));
   }
