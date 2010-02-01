@@ -978,6 +978,10 @@ h2 {
   text-decoration: underline;
 }
 
+.loi .connexion th, .loi .inscription th {
+  text-align:center;
+}
+
 .auteurloi {
   float: right;
 }
