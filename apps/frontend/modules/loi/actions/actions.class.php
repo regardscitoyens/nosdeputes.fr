@@ -89,9 +89,13 @@ class loiActions extends sfActions
             $this->suivant = $voisins[2]['chapitre'];
           } else {
             $this->precedent = $voisins[0]['chapitre'];
-            if (preg_match('/'.$n_chapitre.'/', $voisins[1]['chapitre']))
+            if (preg_match('/'.$n_chapitre.'/', $voisins[1]['chapitre'])) {
+              $this->precedent = $voisins[0]['chapitre'];
               $this->suivant = $voisins[1]['chapitre'];
-            else $this->suivant = $voisins[2]['chapitre'];
+            } else {
+              $this->precedent = $voisins[1]['chapitre'];
+              $this->suivant = $voisins[2]['chapitre'];
+            }
           }
         }
       }
