@@ -1011,21 +1011,18 @@ h2 {
   vertical-align: middle;
 }
 
-.alineanumero p {
-  padding-right: 7px;
-}
-
 .alineas p {
   margin-bottom: 2px;
 }
-.alineas .alineanumero p {
-  margin-top: 10px;
-}
+
 .alinea_select td {
   font-weight: bold;
 }
+
 .alineanumero {
-  width: 30px;
+  margin-left: 5px;
+  text-decoration: underline;
+  width: 25px;
   font-size: 0.8em;
 }
 .alineatexte {

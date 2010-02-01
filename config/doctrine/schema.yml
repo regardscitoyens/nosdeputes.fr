@@ -499,7 +499,7 @@ TitreLoi:
     Timestampable:
   columns:
     texteloi_id: string(8)
-    chapitre: integer
+    chapitre: string(8)
     section: integer
     titre: string(512)
     expose:

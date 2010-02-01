@@ -5,7 +5,7 @@ if (isset($alinea) && $a->numero == $alinea->numero)
 	echo '_select';
 else 
 	$a->texte = preg_replace('/\<\/?b\>/', '', $a->texte);
-echo '" id="alinea_'.$a->numero.'"><td class="alineanumero"><p>&nbsp;<a href="#alinea_'.$a->numero.'">'.$a->numero.'.</a></p></td><td class="alineatexte">';
+echo '" id="alinea_'.$a->numero.'"><td class="alineanumero"><a href="#alinea_'.$a->numero.'">'.$a->numero.'.</a></td><td class="alineatexte">';
 $s = $a->texte;
 $s = preg_replace('/(articles? (L?)\.? ?([0-9.\-a-z]+)) (de la loi (n° *[\d\-]+ du \d+e?r? \S+ \d{4}))/i', '<a href="/redirect/loi/\\5/\\2\\3">\\1</a> \\4', $s);
 $s = preg_replace('/(articles? (L?)\.? ?([0-9.\-a-z]+)( <i>([^<]*)<\/i>)?) de (l[^ ]*(ordonnance n° *[\d\-]+ du \d+e?r? \S+ \d{4}))/i', '<a href="/redirect/loi/\\7/\\2\\3\\5">\\1</a> \\6', $s);
