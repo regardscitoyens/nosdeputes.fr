@@ -225,21 +225,25 @@ $values['password'], false, $this))) {
       ->andWhere('is_public = 1')
       ->orderBy('created_at DESC');
     $this->titre = 'Les derniers commentaires';
+    $this->url_link = '';
     if ($slug = $request->getParameter('slug')) {
       $this->type = 'Parlementaire';
       $this->object = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
       $this->presentation = 'noauteur';
       $this->linkrss = '@parlementaire_rss_commentaires?slug='.$slug;
+      $this->titre .= ' sur l\'activité';
     } else if ($id = $request->getParameter('id')) {
       $this->type = 'Section';
       $this->object = Doctrine::getTable('Section')->find($id);
       $this->presentation = 'nodossier';
       $this->linkrss = '@section_rss_commentaires?id='.$id;
+      $this->url_link = '@section?id=';
     } else if ($loi = $request->getParameter('loi')) {
       $this->type = 'TitreLoi';
       $this->object = Doctrine::getTable('TitreLoi')->findLoi($loi);
       $this->presentation = 'noloi';
       $this->linkrss = '@loi_rss_commentaires?loi='.$loi;
+      $this->url_link = '@loi?loi=';
     } else {
       $this->type = 'all';
       $this->linkrss = '@commentaires_rss';
@@ -247,9 +251,13 @@ $values['password'], false, $this))) {
     }
     if ($this->type != 'all') {
       $this->forward404Unless($this->object);
-      if ($this->type == 'Parlementaire')
-        $this->titre .= ' sur l\'activité';
-      else $this->titre .= ' sur '.$this->object->titre;
+      if ($this->type != 'Parlementaire') {
+        $this->titre .= ' sur '.$this->object->titre;
+        if ($this->type == 'Section')
+          $this->url_link .= $this->object->id;
+        else if ($this->type == 'TitreLoi')
+          $this->url_link .= $this->object->texteloi_id;
+      }
       $this->commentaires->andWhere('co.object_type = ?', $this->type)
         ->andWhere('co.object_id = ?', $this->object->id);
     }
@@ -262,7 +270,7 @@ $values['password'], false, $this))) {
       $request->setParameter('rss', array(array('link' => $this->link, 'title'=>'Les derniers commentaires en RSS')));
       if ($this->type == 'Parlementaire')
         $this->response->setTitle($this->titre.' de '.$this->object->nom.' - NosDéputés.fr');
-      else $this->response->setTitle($this->titre.' - NosDéputés.fr');
+      else $this->response->setTitle(strip_tags($this->titre).' - NosDéputés.fr');
     }
 
   }
