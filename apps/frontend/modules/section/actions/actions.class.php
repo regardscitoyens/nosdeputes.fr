@@ -100,10 +100,10 @@ class sectionActions extends sfActions
       ->andWhere('s.nb_interventions > 5');
     if ($this->order == 'date') {
       $query->orderBy('s.min_date DESC');
-      $this->titre = 'Les derniers dossiers parlementaires';
+      $this->titre = 'Les derniers dossiers à l\'Assemblée';
     } else if ($this->order == 'plus') {
       $query->orderBy('s.nb_interventions DESC');
-      $this->titre = 'Les dossiers parlementaires les plus discutés';
+      $this->titre = 'Les dossiers les plus discutés à l\'Assemblée';
     }
     else forward404();
     $this->getResponse()->setTitle($this->titre);

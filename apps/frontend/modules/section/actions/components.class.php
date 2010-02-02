@@ -2,6 +2,11 @@
 
 class sectionComponents extends sfComponents
 {
+  public function executeSimplifions()
+  {
+	$this->lois = doctrine::getTable('TitreLoi')->createQuery('l')->where('l.chapitre IS NULL')->andWhere('l.section IS NULL')->orderBy('l.date DESC')->execute();
+  }
+
   public function executeParlementaire()
   {
     $sql = doctrine_query::create()
