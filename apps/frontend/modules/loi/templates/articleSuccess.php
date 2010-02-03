@@ -21,7 +21,7 @@ if ($article->suivant) {
 <?php if (isset($expose)) echo $expose.'<div class="suivant"><a href="#commentaires">Commenter</a></div>'; ?> 
 <br/>
 <table>
-<?php foreach ($alineas as $a) {
+<?php foreach ($alineas as $a) { 
   include_partial('alinea', array('a'=>$a, 'slug_article'=>$article->slug, 'comment' => 1)); 
  } ?>
 </table>
@@ -43,8 +43,16 @@ nbCommentairesCB = function(html){
               continue;
             if (ids[i] == 1) {
               $('#com_link_'+i+' a').text("Voir le commentaire - Laisser un commentaire");
+			  var a = $('#com_link_'+i+' a').parent().parent().parent().parent();
+	          var p = $(a);
+              var offset_alinea = p.offset();
+              $('body').after('<div id="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-10)+'px; left:'+(Math.round(offset_alinea.left)-35)+'px;">1</div>');
             }else {
               $('#com_link_'+i+' a').text("Voir les "+ids[i]+" commentaires - Laisser un commentaire");
+			  var a = $('#com_link_'+i+' a').parent().parent().parent().parent();
+	          var p = $(a);
+              var offset_alinea = p.offset();
+              $('body').after('<div id="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-10)+'px; left:'+(Math.round(offset_alinea.left)-35)+'px;">'+ids[i]+'</div>');
             }
           }};
 additional_load = function() {

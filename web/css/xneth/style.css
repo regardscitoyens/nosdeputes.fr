@@ -5,7 +5,16 @@ body {
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
-
+#coms {
+  width: 25px;
+  height: 25px;
+  font-family: verdana;
+  text-align: center;
+  color: green;
+  font-size: 0.8em;
+  font-weight: bold;
+  background: url('images/coms.png') no-repeat 0 0;
+}
 /* Captcha */
 .captcha {
   width: 346px;
