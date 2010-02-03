@@ -4,7 +4,7 @@ class sectionComponents extends sfComponents
 {
   public function executeSimplifions()
   {
-	$this->lois = doctrine::getTable('TitreLoi')->createQuery('l')->where('l.chapitre IS NULL')->andWhere('l.section IS NULL')->orderBy('l.date DESC')->execute();
+	$this->lois = doctrine::getTable('TitreLoi')->createQuery('l')->select('l.texteloi_id, l.titre, l.nb_commentaires')->where('l.chapitre IS NULL')->andWhere('l.section IS NULL')->orderBy('l.date DESC')->fetchArray();
   }
 
   public function executeParlementaire()
