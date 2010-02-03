@@ -72,11 +72,12 @@ additional_load = function() {
         showcommentaire = function(html) {
             c.html(html);
             setTimeout(function() {$('#com_ajax_'+id).slideDown("slow")}, 100);
+			setTimeout(function() {
 			$.ajax({
             url: "<?php echo url_for('@loi_article_commentaires_json?article='.$article->id); ?>",
             success: nbCommentairesCB,
             error: nbCommentairesCB
-            });
+            });}, 100);
           };
         commentaireUrl = "<?php echo url_for('@loi_alinea_commentaires?id=XXX'); ?>".replace('XXX', id);
         $.ajax({url: commentaireUrl,
