@@ -35,6 +35,9 @@ echo include_component('commentaire', 'form', array('object' => $article));
 </div>
 
 <script>
+function fetch_reload(link) {
+$('#'+link+' a').click();
+};
 nbCommentairesCB = function(html){
           ids = eval('(' +html+')');
           $('.com_link a').text("Laisser un commentaire");
@@ -46,13 +49,13 @@ nbCommentairesCB = function(html){
 			  var a = $('#com_link_'+i+' a').parent().parent().parent().parent();
 	          var p = $(a);
               var offset_alinea = p.offset();
-              $('body').after('<div id="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-10)+'px; left:'+(Math.round(offset_alinea.left)-35)+'px;">1</div>');
+              $('body').after('<div class="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-10)+'px; left:'+(Math.round(offset_alinea.left)-35)+'px;"><a href="javascript:fetch_reload(\'com_link_'+i+'\')">1</a></div>');
             }else {
               $('#com_link_'+i+' a').text("Voir les "+ids[i]+" commentaires - Laisser un commentaire");
 			  var a = $('#com_link_'+i+' a').parent().parent().parent().parent();
 	          var p = $(a);
               var offset_alinea = p.offset();
-              $('body').after('<div id="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-10)+'px; left:'+(Math.round(offset_alinea.left)-35)+'px;">'+ids[i]+'</div>');
+              $('body').after('<div class="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-10)+'px; left:'+(Math.round(offset_alinea.left)-35)+'px;"><a href="javascript:fetch_reload(\'com_link_'+i+'\')">'+ids[i]+'</a></div>');
             }
           }};
 additional_load = function() {
@@ -62,17 +65,23 @@ additional_load = function() {
       error: nbCommentairesCB
       });
     $("table .commentaires a").bind('click', function() {
+		$('.coms').remove();
         var c = $(this).parent().parent();
         c.html('<p class="loading"> &nbsp; </p>');
         id = c.attr('id').replace('com_', '');
         showcommentaire = function(html) {
             c.html(html);
             setTimeout(function() {$('#com_ajax_'+id).slideDown("slow")}, 100);
+			$.ajax({
+            url: "<?php echo url_for('@loi_article_commentaires_json?article='.$article->id); ?>",
+            success: nbCommentairesCB,
+            error: nbCommentairesCB
+            });
           };
         commentaireUrl = "<?php echo url_for('@loi_alinea_commentaires?id=XXX'); ?>".replace('XXX', id);
         $.ajax({url: commentaireUrl,
-               success: showcommentaire,
-               error: showcommentaire});
+               success: showcommentaire ,
+               error: showcommentaire });
         return false;
       });
   };
