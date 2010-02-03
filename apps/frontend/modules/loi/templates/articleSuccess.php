@@ -77,7 +77,7 @@ additional_load = function() {
             url: "<?php echo url_for('@loi_article_commentaires_json?article='.$article->id); ?>",
             success: nbCommentairesCB,
             error: nbCommentairesCB
-            });}, 100);
+            });}, 1000);
           };
         commentaireUrl = "<?php echo url_for('@loi_alinea_commentaires?id=XXX'); ?>".replace('XXX', id);
         $.ajax({url: commentaireUrl,
