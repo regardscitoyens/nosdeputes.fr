@@ -34,56 +34,56 @@ echo include_component('commentaire', 'form', array('object' => $article));
 ?>
 </div>
 
-<script>
-function fetch_reload(link) {
-$('#'+link+' a').click();
+<script type="text/javascript">
+function fetch_reload(linkId) {
+$('#'+linkId+' a').click();
 };
+function highlight_coms(linkIdNum, nbComs) {
+  var a = $('#com_link_'+linkIdNum+' a').parent().parent().parent().parent();
+  var p = $(a);
+  var offset_alinea = p.offset();
+  $('body').after('<div class="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-10)+'px; left:'+(Math.round(offset_alinea.left)-35)+'px;"><a href="javascript:fetch_reload(\'com_link_'+linkIdNum+'\')">'+nbComs+'</a></div>');
+}
 nbCommentairesCB = function(html){
-          ids = eval('(' +html+')');
-          $('.com_link a').text("Laisser un commentaire");
-          for(i in ids) {
-            if (i < 0)
-              continue;
-            if (ids[i] == 1) {
-              $('#com_link_'+i+' a').text("Voir le commentaire - Laisser un commentaire");
-			  var a = $('#com_link_'+i+' a').parent().parent().parent().parent();
-	          var p = $(a);
-              var offset_alinea = p.offset();
-              $('body').after('<div class="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-10)+'px; left:'+(Math.round(offset_alinea.left)-35)+'px;"><a href="javascript:fetch_reload(\'com_link_'+i+'\')">1</a></div>');
-            }else {
-              $('#com_link_'+i+' a').text("Voir les "+ids[i]+" commentaires - Laisser un commentaire");
-			  var a = $('#com_link_'+i+' a').parent().parent().parent().parent();
-	          var p = $(a);
-              var offset_alinea = p.offset();
-              $('body').after('<div class="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-10)+'px; left:'+(Math.round(offset_alinea.left)-35)+'px;"><a href="javascript:fetch_reload(\'com_link_'+i+'\')">'+ids[i]+'</a></div>');
-            }
-          }};
+  ids = eval('(' +html+')');
+  $('.com_link a').text("Laisser un commentaire");
+  for(i in ids) {
+    if (i < 0)
+      continue;
+    if (ids[i] == 1) {
+      $('#com_link_'+i+' a').text("Voir le commentaire - Laisser un commentaire");
+      highlight_coms(i, ids[i]);
+    }else {
+      $('#com_link_'+i+' a').text("Voir les "+ids[i]+" commentaires - Laisser un commentaire");
+	  highlight_coms(i, ids[i]);
+    }
+  }
+};
 additional_load = function() {
-    $.ajax({
+  $.ajax({
+  url: "<?php echo url_for('@loi_article_commentaires_json?article='.$article->id); ?>",
+  success: nbCommentairesCB,
+  error: nbCommentairesCB
+  });
+  $("table .commentaires a").bind('click', function() {
+    $('.coms').remove();
+    var c = $(this).parent().parent();
+    c.html('<p class="loading"> &nbsp; </p>');
+    id = c.attr('id').replace('com_', '');
+    showcommentaire = function(html) {
+      c.html(html);
+      setTimeout(function() {$('#com_ajax_'+id).slideDown("slow", function() {
+      $.ajax({
       url: "<?php echo url_for('@loi_article_commentaires_json?article='.$article->id); ?>",
       success: nbCommentairesCB,
       error: nbCommentairesCB
-      });
-    $("table .commentaires a").bind('click', function() {
-		$('.coms').remove();
-        var c = $(this).parent().parent();
-        c.html('<p class="loading"> &nbsp; </p>');
-        id = c.attr('id').replace('com_', '');
-        showcommentaire = function(html) {
-            c.html(html);
-            setTimeout(function() {$('#com_ajax_'+id).slideDown("slow")}, 100);
-			setTimeout(function() {
-			$.ajax({
-            url: "<?php echo url_for('@loi_article_commentaires_json?article='.$article->id); ?>",
-            success: nbCommentairesCB,
-            error: nbCommentairesCB
-            });}, 1000);
-          };
-        commentaireUrl = "<?php echo url_for('@loi_alinea_commentaires?id=XXX'); ?>".replace('XXX', id);
-        $.ajax({url: commentaireUrl,
-               success: showcommentaire ,
-               error: showcommentaire });
-        return false;
-      });
-  };
+      });})}, 100);
+    };
+    commentaireUrl = "<?php echo url_for('@loi_alinea_commentaires?id=XXX'); ?>".replace('XXX', id);
+    $.ajax({url: commentaireUrl,
+    success: showcommentaire ,
+    error: showcommentaire });
+    return false;
+    });
+};
 </script>
