@@ -35,6 +35,13 @@ echo include_component('commentaire', 'form', array('object' => $article));
 </div>
 
 <script type="text/javascript">
+function link_n_count_it() {
+  $.ajax({
+  url: "<?php echo url_for('@loi_article_commentaires_json?article='.$article->id); ?>",
+  success: nbCommentairesCB,
+  error: nbCommentairesCB
+  });
+}
 function fetch_reload(linkId) {
 $('#'+linkId+' a').click();
 };
@@ -60,11 +67,7 @@ nbCommentairesCB = function(html){
   }
 };
 additional_load = function() {
-  $.ajax({
-  url: "<?php echo url_for('@loi_article_commentaires_json?article='.$article->id); ?>",
-  success: nbCommentairesCB,
-  error: nbCommentairesCB
-  });
+  link_n_count_it();
   $("table .commentaires a").bind('click', function() {
     $('.coms').remove();
     var c = $(this).parent().parent();
@@ -73,11 +76,7 @@ additional_load = function() {
     showcommentaire = function(html) {
       c.html(html);
       setTimeout(function() {$('#com_ajax_'+id).slideDown("slow", function() {
-      $.ajax({
-      url: "<?php echo url_for('@loi_article_commentaires_json?article='.$article->id); ?>",
-      success: nbCommentairesCB,
-      error: nbCommentairesCB
-      });})}, 100);
+      link_n_count_it();})}, 100);
     };
     commentaireUrl = "<?php echo url_for('@loi_alinea_commentaires?id=XXX'); ?>".replace('XXX', id);
     $.ajax({url: commentaireUrl,
@@ -85,5 +84,9 @@ additional_load = function() {
     error: showcommentaire });
     return false;
     });
+  $(window).resize(function() {
+	$('.coms').remove();
+    link_n_count_it();
+  });
 };
 </script>
