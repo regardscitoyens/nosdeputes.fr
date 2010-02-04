@@ -107,41 +107,64 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
   <?php endforeach; } ?>
 </div>
 
-<script>
+<script type="text/javascript">
+function link_n_count_it() {
+  $.ajax({
+  url: "<?php echo url_for('@seance_commentaires_json?seance='.$seance->id); ?>",
+  success: nbCommentairesCB,
+  error: nbCommentairesCB
+  });
+}
+function fetch_reload(linkId) {
+$('#'+linkId+' a').click();
+};
+function highlight_coms(linkIdNum, nbComs) {
+  var a = $('#com_link_'+linkIdNum+' a').parent().parent();
+  var p = $(a);
+  var offset_alinea = p.offset();
+  $('body').after('<div class="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-5)+'px; left:'+(Math.round(offset_alinea.left)-50)+'px;"><a href="javascript:fetch_reload(\'com_link_'+linkIdNum+'\')">'+nbComs+'</a></div>');
+}
 nbCommentairesCB = function(html){
-	  ids = eval('(' +html+')');
-          $('.com_link').hide();
-	  for(i in ids) {
-            if (i < 0)
-               continue;
-	    if (ids[i] == 0) {
-	      $('#com_link_'+i).text('');
-	    }else if (ids[i] == 1) {
-	      $('#com_link_'+i+' a').text("Voir le commentaire");
-	    }else {
-	      $('#com_link_'+i+' a').text("Voir les "+ids[i]+" commentaires");
-	    }
-            $('#com_link_'+i).show();
-	  }};
+  ids = eval('(' +html+')');
+  $('.com_link').hide();
+  for(i in ids) {
+    if (i < 0)
+      continue;
+    if (ids[i] == 0) {
+      $('#com_link_'+i).text('');
+	}else if (ids[i] == 1) {
+      $('#com_link_'+i+' a').text("Voir le commentaire");
+      highlight_coms(i, ids[i]);
+    }else {
+      $('#com_link_'+i+' a').text("Voir les "+ids[i]+" commentaires");
+      highlight_coms(i, ids[i]);
+    }
+    $('#com_link_'+i).show();
+  }
+};
 additional_load = function() {
-    $.ajax({
-      url: "<?php echo url_for('@seance_commentaires_json?seance='.$seance->id); ?>",
-      success: nbCommentairesCB,
-      error: nbCommentairesCB
-      });
-    $(".commentaires a").bind('click', function() {
-	var c = $(this).parent().parent();
-	c.html('<p class="loading"> &nbsp; </p>');
-	id = c.attr('id').replace('com_', '');
-        showcommentaire = function(html) {
-            c.html(html);
-	    setTimeout(function() {$('#com_ajax_'+id).slideDown("slow")}, 100);
-	  };
-        commentaireUrl = "<?php echo url_for('@intervention_commentaires?id=XXX'); ?>".replace('XXX', id);
-	$.ajax({url: commentaireUrl,
-               success: showcommentaire,
-               error: showcommentaire});
-	return false;
-      });
+  link_n_count_it();
+  $(".commentaires a").bind('click', function() {
+  $('.coms').remove();
+  var c = $(this).parent().parent();
+  c.html('<p class="loading"> &nbsp; </p>');
+  id = c.attr('id').replace('com_', '');
+  showcommentaire = function(html) {
+    c.html(html);
+    setTimeout(function() {$('#com_ajax_'+id).slideDown("slow", function() {
+    link_n_count_it();})}, 100);
   };
+  commentaireUrl = "<?php echo url_for('@intervention_commentaires?id=XXX'); ?>".replace('XXX', id);
+  $.ajax({
+    url: commentaireUrl,
+    success: showcommentaire,
+    error: showcommentaire
+  });
+  return false;
+  });
+  $(window).resize(function() {
+	$('.coms').remove();
+    link_n_count_it();
+  });
+};
 </script>
