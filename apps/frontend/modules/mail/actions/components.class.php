@@ -30,7 +30,7 @@ class mailComponents extends sfComponents
       ->setSubject($this->subject)
 
       //Set the From address with an associative array
-      ->setFrom(array('devnull@nosdeputes.fr' => '"Nos Deputes (Ne pas repondre)"'))
+      ->setFrom(array('contact@nosdeputes.fr' => '"Nos Deputes (Ne pas repondre)"'))
 
       //Set the To addresses with an associative array
       ->setTo($this->to)
