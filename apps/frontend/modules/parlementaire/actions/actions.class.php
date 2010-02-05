@@ -54,6 +54,7 @@ class parlementaireActions extends sfActions
     fclose($fh);
     list($width, $height, $image_type) = getimagesize($file);
     if (!$width || !$height) {
+      unlink($file);
       return $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/images/xneth/avatar_depute.png');
     }
 
