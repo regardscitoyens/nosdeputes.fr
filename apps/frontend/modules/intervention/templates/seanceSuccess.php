@@ -119,8 +119,6 @@ function fetch_reload(linkId) {
 $('#'+linkId+' a').click();
 };
 function highlight_coms(linkIdNum, nbComs) {
-  /* var a = $('#com_link_'+linkIdNum+' a').parent().parent();
-  var p = $(a); */
   var offset_alinea = $('#com_link_'+linkIdNum+' a').parent().parent().offset();
   $('body').after('<div class="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-8)+'px; left:'+(Math.round(offset_alinea.left)-50)+'px;"><a href="javascript:fetch_reload(\'com_link_'+linkIdNum+'\')">'+nbComs+'</a></div>');
 }
