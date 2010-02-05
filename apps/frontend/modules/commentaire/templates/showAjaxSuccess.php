@@ -1,9 +1,9 @@
 <div class="com_ajax" id='com_ajax_<?php echo $id; ?>' style="display: none"><?php if ($ct = count($comments)) { ?>
-<div><strong><?php if (isset($limit)) echo 'Les derniers commentaires';
+<div><h4><?php if (isset($limit)) echo 'Les derniers commentaires';
   else {
     echo $ct.' commentaire';
     if ($ct > 1) echo 's';
-  } ?></strong></div>
+  } ?></h4></div>
 <?php foreach($comments as $c) 
     include_partial('showCommentaire', array('c'=>$c));
   if (isset($limit)) {

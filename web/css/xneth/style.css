@@ -1061,9 +1061,12 @@ h2 {
   height: 11px;
 }
 
-.alineatexte .commentaires .com_ajax {
+.alineatexte .commentaires {
   margin-top: 22px;
   margin-left: 10px;
+}
+.com_ajax {
+  margin-top: 30px;
 }
 .alineatexte .commentaires {
   clear: both;
@@ -1110,7 +1113,7 @@ h2 {
   text-transform: uppercase;
 }
 .loading{
-  background: transparent url(/images/loading.gif) no-repeat scroll 0 0
+  background: transparent url("/images/loading.gif") no-repeat scroll 0 0
 }
 
 /* Dossiers législatifs */
