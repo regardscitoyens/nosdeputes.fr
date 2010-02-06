@@ -14,6 +14,19 @@ else if (isset($lois)) {
   echo 'N° ';
 foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.myTools::getLiasseLoiAN($loi).') '; } ?>
 </div>
+<?php if ($pager->haveToPaginate()) {
+  $uri = $sf_request->getUri();
+  $uri = preg_replace('/page=\d+\&?/', '', $uri);
+  if (!preg_match('/[\&\?]$/', $uri)) {
+    if (preg_match('/\?/', $uri)) {
+      $uri .= '&';
+    } else{
+      $uri .= '?';
+    }
+  }
+  echo '<br/>';
+  include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>$uri));
+} ?>
 <div class="interventions">
 <?php foreach($pager->getResults() as $i) {
   $args = array('amendement' => $i);
@@ -22,17 +35,4 @@ foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.myTools::getLiasseLo
   echo include_component('amendement', 'parlementaireAmendement', $args);
   }
 ?></div>
-<?php if ($pager->haveToPaginate()) :
-
-$uri = $sf_request->getUri();
-$uri = preg_replace('/page=\d+\&?/', '', $uri);
-
-if (!preg_match('/[\&\?]$/', $uri)) {
-  if (preg_match('/\?/', $uri)) {
-    $uri .= '&';
-  }else{
-    $uri .= '?';
-  }
-}
-include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>$uri));
-endif;
+<?php if ($pager->haveToPaginate()) include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>$uri)); ?>
