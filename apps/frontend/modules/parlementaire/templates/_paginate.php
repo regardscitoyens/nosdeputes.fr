@@ -4,7 +4,7 @@
     <?php if ($pager->getPage() != 1)  echo link_to('<img src="/images/xneth/left.png"/>&nbsp; ', $link.'page='.$pager->getPreviousPage()); ?>
     <?php foreach ($pager->getLinks() as $page): ?>
       <?php if ($page == $pager->getPage()): ?>
-        <span><?php echo $page ?></span>
+        <span><b><?php echo $page ?></b></span>
       <?php else: ?>
         <span><?php echo link_to($page, $link.'page='.$page); ?></span>
       <?php endif; ?>
