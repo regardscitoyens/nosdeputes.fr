@@ -11,7 +11,7 @@
 class loiActions extends sfActions
 {
 
-  private function getAmendements($loi, $articles = 'all') {
+  private function getAmendements($loi, $articles = 'all', $alineas = 0) {
     $amendements = array();
     $admts = doctrine::getTable('Amendement')->createquery('a')
       ->where('a.texteloi_id = ?', $loi)
@@ -28,8 +28,14 @@ class loiActions extends sfActions
     foreach ($admts->fetchArray() as $adt) {
       $art = preg_replace('/premier/', '1er', strtolower($adt['sujet']));
       $art = preg_replace("/(l'\s?)?article\s/", '', $art);
-      if (isset($amendements[$art])) $amendements[$art] = array_merge($amendements[$art], array($adt['numero']));
-        else $amendements[$art] = array($adt['numero']);
+      $add = array($adt['numero']);
+      if (isset($amendements[$art])) $amendements[$art] = array_merge($amendements[$art], $add);
+      else $amendements[$art] = $add;
+      if ($alineas && !preg_match('/(avant|après)/', $art) && preg_match('/alin(e|é)a\s*(\d+)[^\d]/', $adt['texte'], $match)) {
+        $al = $art.'-'.$match[2];
+        if (isset($amendements[$al])) $amendements[$al] = array_merge($amendements[$al], $add);
+        else $amendements[$al] = $add;
+      }
     }
     return $amendements;
   }
@@ -174,7 +180,7 @@ class loiActions extends sfActions
       ->where('a.article_loi_id = ?', $this->article->id)
       ->orderBy('a.numero')
       ->execute();
-    $this->amendements = $this->getAmendements($loi_id, array($this->article));
+    $this->amendements = $this->getAmendements($loi_id, array($this->article), 1);
     $this->forward404Unless(count($this->alineas));
     $this->section = $this->article->getTitreLoi();
     $this->titre = 'Article '.$this->article->titre;

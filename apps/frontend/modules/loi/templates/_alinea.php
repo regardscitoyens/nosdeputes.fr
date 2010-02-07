@@ -19,6 +19,21 @@ $s = preg_replace('/('.$a->ref_loi.')([^"\/])/', '<a href="/redirect/loi/\\1">\\
 $s = preg_replace('/\s+(:|;|!|\?|»|\-)/', '&nbsp;\1', $s);
 $s = preg_replace('/(«|\-)\s+/', '\1&nbsp;', $s);
 $s = preg_replace('/\<a href="([^"]+)\.">/', '<a href="\1">', $s);
+if (isset($amendements)) {
+  $string = '<br/><small>';
+  $ct = count($amendements);
+  $string .= $ct;
+  $string .= ' amendement';
+  if ($ct > 1) $string .= 's';
+  $string .= ' déposé';
+  if ($ct > 1) $string .= 's';
+  $string .= ' sur cet alinéa&nbsp;: ';
+  foreach ($amendements as $adt) $string .= link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi.'&numero='.$adt).' ';
+  $string .= '</small></p>';
+  $s = preg_replace('/<\/p>$/', $string.'</p>', $s);
+}
 echo $s;
-?><div class="commentaires" id='com_<?php echo $a->id; ?>'><span class="link_comment">&nbsp;</span><span class="com_link" id="com_link_<?php echo $a->id; ?>"><a href="<?php echo url_for('@loi_alinea?id='.$a->id); ?>#ecrire">Voir tous les commentaires - Laisser un commentaire</a></span></div>
+?>
+<div class="commentaires" id='com_<?php echo $a->id; ?>'>
+<span class="link_comment">&nbsp;</span><span class="com_link" id="com_link_<?php echo $a->id; ?>"><a href="<?php echo url_for('@loi_alinea?id='.$a->id); ?>#ecrire">Voir tous les commentaires - Laisser un commentaire</a></span></div>
 </td></tr>

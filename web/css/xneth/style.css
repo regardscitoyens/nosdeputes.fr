@@ -883,9 +883,6 @@ h2 {
 .intervenant {
   
 }
-.texte_intervention {
-
-}
 .indent_guillemets {
   padding-left: 20px;
 }
@@ -1238,6 +1235,9 @@ h2 {
 
 .texte_intervention {
   margin:20px;
+}
+.texte_intervention a {
+  text-decoration: underline;
 }
 
 .contexte {

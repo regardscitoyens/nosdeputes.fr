@@ -28,14 +28,23 @@ if ($article->suivant) {
 if (isset($expose)) echo $expose.'<div class="suivant"><a href="#commentaires">Commenter</a></div>'; ?>
 <br/>
 <table>
-<?php foreach ($alineas as $a) { 
-  include_partial('alinea', array('a'=>$a, 'slug_article'=>$article->slug, 'comment' => 1)); 
+<?php foreach ($alineas as $a) {
+  $options = array('a'=>$a, 'slug_article'=>$article->slug, 'comment' => 1);
+  $al = $article->titre.'-'.$a->numero;
+  if (isset($amendements[$al])) $options = array_merge($options, array('amendements' => $amendements[$al], 'loi' => $loi->texteloi_id));
+  include_partial('alinea', $options);
  } ?>
 </table>
 <?php if (isset($amendements[$article->titre])) {
-  echo '<p><b>Amendement';
-  if (count($amendements[$article->titre]) > 1) echo 's';
-  echo ' déposés sur cet article&nbsp;:</b> ';
+  echo '<p><b>';
+  $ct = count($amendements[$article->titre]);
+  if ($ct > 1) echo 'Tous les a';
+  else echo 'A';
+  echo 'mendement';
+  if ($ct > 1) echo 's';
+  echo ' déposé';
+  if ($ct > 1) echo 's';
+  echo ' sur cet article&nbsp;:</b> ';
   foreach ($amendements[$article->titre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.$adt).' ';
   echo '</p>';
 }

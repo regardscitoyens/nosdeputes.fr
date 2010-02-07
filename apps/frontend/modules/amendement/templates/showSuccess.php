@@ -47,7 +47,10 @@
     else echo 'de la loi N° '.myTools::getLinkLoi($amendement->texteloi_id).$amendement->getLettreLoi(1); ?></h3>
 </div>
 <div class="texte_intervention">
-  <?php echo $amendement->getTexte(); ?>
+  <?php if ($loi && preg_match('/alin(e|é)a\s*(\d+)[^\d]/', $amendement->getTexte(), $match)) {
+    $link = link_to('alinéa '.$match[2], '@loi_article?loi='.$loi->texteloi_id.'&article='.$art.'#alinea_'.$match[2]);
+    echo preg_replace('/(alin(e|é)a\s*\d+)([^\d])/', $link.'\3', $amendement->getTexte());
+  } else echo $amendement->getTexte() ?>
 </div>
 <div class="expose_amendement">
   <h3>Exposé Sommaire :</h3>
