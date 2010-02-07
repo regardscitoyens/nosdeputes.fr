@@ -39,6 +39,7 @@ if (isset($soussections)) {
   }
   unset($soussections);
 }
+
 $nart = 0;
 $changesec = 0;
 if (isset($sections)) $nsec = 0;
@@ -63,22 +64,44 @@ foreach ($articles as $a) {
     echo '<ul>';
     $changesec = 0;
   }
+  if (isset($amendements['avant '.$a->titre])) {
+    echo '<li><b>Amendement';
+    if (count($amendements['avant '.$a->titre]) > 1) echo 's';
+    echo ' proposant un article additionel avant l\'article '.$a->titre.'&nbsp;:</b> ';
+    foreach ($amendements['avant '.$a->titre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.$adt).' ';
+    echo '</li>';
+  }
   $nart = $a->ordre;
   echo '<li><a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'">';
-  echo '<b>Article '.$a->titre;
+  echo '<b>Article '.$a->titre.'</b></a>';
+  if ($a->nb_commentaires > 0 || isset($amendements[$a->titre])) echo ' (';
   if ($a->nb_commentaires > 0) {
-    echo ' ('.$a->nb_commentaires.' commentaire';
-      if ($a->nb_commentaires > 1) echo 's';
-    echo ')';
+    echo $a->nb_commentaires.' commentaire';
+    if ($a->nb_commentaires > 1) echo 's';
   }
+  if ($a->nb_commentaires > 0 && isset($amendements[$a->titre])) echo ', ';
+  if (isset($amendements[$a->titre])) {
+    $ct = count($amendements[$a->titre]);
+    echo $ct.' amendement';
+    if ($ct > 1) echo 's';
+    echo '&nbsp;: ';
+    foreach ($amendements[$a->titre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.$adt).' ';
+      echo '<a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'">';
+  }
+  if ($a->nb_commentaires > 0 || isset($amendements[$a->titre])) echo ')';
   if (isset($a->expose) && $a->expose != "") {
     $tmpexpo = truncate_text(preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $a->expose), 250);
     if ($expose == '' || !(truncate_text($expose, 200) === truncate_text($tmpexpo, 200))) {
       $expose = $tmpexpo;
-      echo '&nbsp;:</b><blockquote>'.$expose.'</blockquote>';
-    } else echo '</b>';
-  } else echo '</b>';
-  echo '</a>';
+      echo '<a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'"><blockquote>'.$expose.'</blockquote></a>';
+    }
+  }
+  if (isset($amendements['après '.$a->titre])) {
+    echo '</li><li><b>Amendement';
+    if (count($amendements['après '.$a->titre]) > 1) echo 's'; 
+    echo ' proposant un article additionel après l\'article '.$a->titre.'&nbsp;:</b> ';
+    foreach ($amendements['après '.$a->titre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.$adt).' ';
+  }
 } 
 if ($nart != 0) echo '</ul>'; ?>
 </div>

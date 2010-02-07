@@ -10,8 +10,32 @@
  */
 class loiActions extends sfActions
 {
-  public function executeLoi(sfWebRequest $request)
-  {
+
+  private function getAmendements($loi, $articles = 'all') {
+    $amendements = array();
+    $admts = doctrine::getTable('Amendement')->createquery('a')
+      ->where('a.texteloi_id = ?', $loi)
+      ->orderBy('a.numero');
+    if ($articles != 'all') {
+      $likestr = '';
+      foreach ($articles as $article) {
+        $like = 'a.sujet LIKE "%article '.preg_replace('/1.?er/', 'premier', $article->titre).'"';
+        if ($likestr == '') $likestr = $like;
+        else $likestr .= ' OR '.$like;
+      }
+      $admts->andWhere($likestr);
+    }
+    foreach ($admts->fetchArray() as $adt) {
+      $art = preg_replace('/premier/', '1er', strtolower($adt['sujet']));
+      $art = preg_replace("/(l'\s?)?article\s/", '', $art);
+      if (isset($amendements[$art])) $amendements[$art] = array_merge($amendements[$art], array($adt['numero']));
+        else $amendements[$art] = array($adt['numero']);
+    }
+    return $amendements;
+  }
+
+ 
+  public function executeLoi(sfWebRequest $request) {
     $loi_id = $this->getLoi($request);
     $this->soussections = doctrine::getTable('TitreLoi')->createquery('t')
       ->where('t.texteloi_id = ?', $loi_id)
@@ -23,7 +47,10 @@ class loiActions extends sfActions
         ->where('a.texteloi_id = ?', $loi_id)
         ->orderBy('a.ordre')
         ->execute();
-    }
+      $this->amendements = $this->getAmendements($loi_id);
+    } else $this->amendements = count(doctrine::getTable('Amendement')->createquery('a')
+        ->where('a.texteloi_id = ?', $loi_id)->execute());
+    
     $this->response->setTitle(strip_tags($this->loi->titre).' - NosDéputés.fr');
     $request->setParameter('rss', array(array('link' => '@loi_rss_commentaires?loi='.$loi_id, 'title'=>'Les commentaires sur '.$this->loi->titre)));
 
@@ -58,6 +85,7 @@ class loiActions extends sfActions
     $this->articles = $artquery->execute();
     if (count($this->articles) == 1)
       $this->redirect('@loi_article?loi='.$loi_id.'&article='.$this->articles[0]->slug);
+    $this->amendements = $this->getAmendements($loi_id, $this->articles);
     if (isset($this->section)) {
       $titre = $this->section->getLargeTitre();
       if (doctrine::getTable('TitreLoi')->findSection($loi_id, $n_chapitre, $n_section+1))
@@ -146,6 +174,7 @@ class loiActions extends sfActions
       ->where('a.article_loi_id = ?', $this->article->id)
       ->orderBy('a.numero')
       ->execute();
+    $this->amendements = $this->getAmendements($loi_id, array($this->article));
     $this->forward404Unless(count($this->alineas));
     $this->section = $this->article->getTitreLoi();
     $this->titre = 'Article '.$this->article->titre;

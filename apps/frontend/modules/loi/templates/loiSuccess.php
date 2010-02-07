@@ -42,6 +42,11 @@ if ($loi->parlementaire_id && $loi->expose) { ?>
   }
   if ($section != 0) echo '</li></ul>';
   if ($chapitre != 0) echo '</li></ul>';
+  if ($amendements) {
+    echo '<p class="suivant">'.link_to('Voir les '.$amendements.' amendements déposés sur ce texte', '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero=all');
+    if (file_exists('liasses/liasse_'.$loi->texteloi_id.'.pdf')) echo '<br/>(<a href="/liasses/liasse_'.$loi->texteloi_id.'.pdf">version imprimable</a>)';
+    echo '</p>';
+  }
 } else {
   $nart = 0;
   foreach ($articles as $a) {

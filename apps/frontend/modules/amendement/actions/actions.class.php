@@ -43,6 +43,8 @@ class amendementActions extends sfActions
        ->andWhere('t.triple_value = ?', $this->amendement->numero)
        ->orderBy('a.numero')
        ->fetchArray();
+   
+     $this->loi = doctrine::getTable('TitreLoi')->findLightLoi($this->amendement->texteloi_id);
   }
 
   public function executeParlementaire(sfWebRequest $request)
