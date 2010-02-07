@@ -10,10 +10,10 @@ body {
   height: 25px;
   font-family: verdana;
   text-align: center;
-  color: green;
+  color: grey;
   font-size: 0.8em;
   font-weight: bold;
-  background: url('images/bulle_blanche.png') no-repeat 0 0;
+  background: url('images/bulle_bleu_citoyen.png') no-repeat 0 0;
 }
 /* Captcha */
 .captcha {
