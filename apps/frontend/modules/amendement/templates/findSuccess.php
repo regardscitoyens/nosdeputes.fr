@@ -12,7 +12,7 @@
 	echo " - ";
 	echo link_to("date de dépôt", "@find_amendements_by_loi_and_numero?loi=".implode(',', $lois)."&numero=new");
 	}
-	echo "</p>
+	echo "</p>";
     }
     echo include_component('amendement', 'pagerAmendements', array('amendement_query' => $amendements_query, 'lois' => $lois));
   }
