@@ -1,5 +1,5 @@
 <?php use_helper('Text');
-if ($loi) $titre = preg_replace('/Simplifions la loi 2\.0 : (.*)\s*<br.*$/', '\1', $loi->titre);
+if (isset($loi)) $titre = preg_replace('/Simplifions la loi 2\.0 : (.*)\s*<br.*$/', '\1', $loi->titre);
   else $titre = 'Texte de loi N° '.$amendement->texteloi_id; ?>
   <div class="amendement" id="<?php echo $amendement->id; ?>">
     <strong><h3><?php echo link_to(myTools::displayDate($amendement->date).' &mdash; '.$titre.' '.$amendement->sujet.' : '.$amendement->getTitreNoLink().' ('.preg_replace('/indéfini/i', 'Sort indéfini', $amendement->getSort()).')', 'amendement/show?id='.$amendement->id); ?><br/>
@@ -20,6 +20,14 @@ if ($p_amdmt == '')
 echo '<p>'.$p_amdmt.'</p>';
 ?></div>
     <div class="contexte">
-      <p><?php echo link_to("Voir tout l'amendement", 'amendement/show?id='.$amendement->id); ?><?php if ($amendement->nb_commentaires) echo ' &mdash; '.link_to('Voir les '.$amendement->nb_commentaires.' commentaires', 'amendement/show?id='.$amendement->id.'#commentaires'); ?></p>
+      <p><?php echo link_to("Voir tout l'amendement", 'amendement/show?id='.$amendement->id);
+        if ($amendement->nb_commentaires) {
+          echo ' &mdash; ';
+          $titre = 'Voir le';
+          if ($amendement->nb_commentaires > 1) $titre .= 's '.$amendement->nb_commentaires;
+          $titre .= ' commentaire';
+          if ($amendement->nb_commentaires > 1) $titre .= 's';
+          echo link_to($titre, 'amendement/show?id='.$amendement->id.'#commentaires');
+        } ?></p>
     </div>
   </div>
