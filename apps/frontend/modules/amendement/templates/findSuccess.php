@@ -14,7 +14,9 @@
 	}
 	echo "</p>";
     }
-    echo include_component('amendement', 'pagerAmendements', array('amendement_query' => $amendements_query, 'lois' => $lois));
+    $options = array('amendement_query' => $amendements_query, 'lois' => $lois);
+    if (isset($loi)) $options = array_merge($options, array('loi' => $loi));
+    echo include_component('amendement', 'pagerAmendements', $options);
   }
   else { ?>
 <?php if (!count($amendements)) { ?>

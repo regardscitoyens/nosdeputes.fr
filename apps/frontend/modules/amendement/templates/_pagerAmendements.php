@@ -6,7 +6,9 @@
     if ($mots != "") { ?>
 <p> pour la recherche sur <em>"<?php echo strip_tags($mots); ?>"</em></p>
 <?php } } 
-else if (isset($lois)) {
+else if (isset($loi)) {
+  echo ' sur '.link_to(preg_replace('/Simplifions la loi 2\.0 : (.*)\s*<br.*$/', '\1', $loi->titre), '@loi?loi='.$loi->texteloi_id).' ('.myTools::getLiasseLoiAN($loi).', '.myTools::getLiasseLoiImpr($loi->texteloi_id).')';
+} else if (isset($lois)) {
   echo ' portant sur ';
   if (count($lois) > 1) echo 'les projets de loi ';
   else

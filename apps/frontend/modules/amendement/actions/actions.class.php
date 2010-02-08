@@ -140,6 +140,7 @@ class amendementActions extends sfActions
     $this->lois = split(',', $request->getParameter('loi'));
     $amdt = $request->getParameter('numero');
     if ($amdt == 'all' || $amdt == 'new' ) {
+        if (count($this->lois) == 1) $this->loi = doctrine::getTable('TitreLoi')->findLightLoi($this->lois[0]);
 	$this->amendements_query = doctrine::getTable('Amendement')->createQuery('a')
         ->whereIn('a.texteloi_id', $this->lois);
 	if ($amdt == 'new') {
