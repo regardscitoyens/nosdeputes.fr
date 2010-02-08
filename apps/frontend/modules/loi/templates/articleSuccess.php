@@ -18,11 +18,12 @@ if ($article->suivant) {
   } ?>
 </div>
 <br/>
-<?php if (isset($amendements['avant '.$article->titre])) {
+<?php $arttitre = strtolower($article->titre);
+  if (isset($amendements['avant '.$arttitre])) {
   echo '<p><b>Amendement';
-  if (count($amendements['avant '.$article->titre]) > 1) echo 's';
+  if (count($amendements['avant '.$arttitre]) > 1) echo 's';
   echo ' proposant un article additionel avant l\'article '.$article->titre.'&nbsp;:</b> ';
-  foreach ($amendements['avant '.$article->titre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(.*)\s+\(adopté\)$/', '\1', $adt)).' ';
+  foreach ($amendements['avant '.$arttitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(.*)\s+\(adopté\)$/', '\1', $adt)).' ';
   echo '</p>';
 }
 if (isset($expose)) echo $expose.'<div class="suivant"><a href="#commentaires">Commenter</a></div>'; ?>
@@ -30,14 +31,14 @@ if (isset($expose)) echo $expose.'<div class="suivant"><a href="#commentaires">C
 <table>
 <?php foreach ($alineas as $a) {
   $options = array('a'=>$a, 'slug_article'=>$article->slug, 'comment' => 1);
-  $al = $article->titre.'-'.$a->numero;
+  $al = $arttitre.'-'.$a->numero;
   if (isset($amendements[$al])) $options = array_merge($options, array('amendements' => $amendements[$al], 'loi' => $loi->texteloi_id));
   include_partial('alinea', $options);
  } ?>
 </table>
-<?php if (isset($amendements[$article->titre])) {
+<?php if (isset($amendements[$arttitre])) {
   echo '<p><b>';
-  $ct = count($amendements[$article->titre]);
+  $ct = count($amendements[$arttitre]);
   if ($ct > 1) echo 'Tous les a';
   else echo 'A';
   echo 'mendement';
@@ -45,14 +46,14 @@ if (isset($expose)) echo $expose.'<div class="suivant"><a href="#commentaires">C
   echo ' déposé';
   if ($ct > 1) echo 's';
   echo ' sur cet article&nbsp;:</b> ';
-  foreach ($amendements[$article->titre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(.*)\s+\(adopté\)$/', '\1', $adt)).' ';
+  foreach ($amendements[$arttitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(.*)\s+\(adopté\)$/', '\1', $adt)).' ';
   echo '</p>';
 }
-if (isset($amendements['après '.$article->titre])) {
+if (isset($amendements['après '.$arttitre])) {
   echo '<p><b>Amendement';
-  if (count($amendements['après '.$article->titre]) > 1) echo 's';
+  if (count($amendements['après '.$arttitre]) > 1) echo 's';
   echo ' proposant un article additionel après l\'article '.$article->titre.'&nbsp;:</b> ';
-  foreach ($amendements['après '.$article->titre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(.*)\s+\(adopté\)$/', '\1', $adt)).' ';
+  foreach ($amendements['après '.$arttitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(.*)\s+\(adopté\)$/', '\1', $adt)).' ';
   echo '</p>';
 } ?>
 </div>
