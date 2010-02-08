@@ -139,7 +139,15 @@ class amendementActions extends sfActions
   {
     $this->lois = split(',', $request->getParameter('loi'));
     $amdt = $request->getParameter('numero');
-    if ($amdt != 'all') {
+    if ($amdt == 'all' || $amdt == 'new' ) {
+	$this->amendements_query = doctrine::getTable('Amendement')->createQuery('a')
+        ->whereIn('a.texteloi_id', $this->lois);
+	if ($amdt == 'new') {
+                $this->amendements_query->orderBy('a.texteloi_id DESC, a.created_at DESC, a.source');
+	}else 
+	        $this->amendements_query->orderBy('a.texteloi_id DESC, a.numero, a.source');	
+	return ;
+    }
       $numeros = array();
       if (preg_match('/(\d+)-(\d+)/', $amdt, $match)) {
         for($cpt = 0 ; $cpt < 10 ; $cpt++) {
@@ -167,10 +175,5 @@ class amendementActions extends sfActions
         $this->redirect('@amendement?id='.$a[0]);
       }
       $this->amendements = array_values($amendements);
-    } else {
-      $this->amendements_query = doctrine::getTable('Amendement')->createQuery('a')
-        ->whereIn('a.texteloi_id', $this->lois)
-        ->orderBy('a.texteloi_id DESC, a.numero, a.source');
-    }
   }
 }
