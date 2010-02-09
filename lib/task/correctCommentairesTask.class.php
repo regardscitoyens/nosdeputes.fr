@@ -13,19 +13,27 @@ class correctCommentairesTask extends sfBaseTask {
     $manager = new sfDatabaseManager($this->configuration);
     $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "A propos d'une question écrite d");
     $comments = doctrine::getTable('Commentaire')->findAll();
+    $loi = '';
     foreach($comments as $comment) {
+      unset($loi);
       $object = doctrine::getTable($comment->object_type)->find($comment->object_id);
-      if (isset($object->texteloi_id) && $comment->object_type != 'Amendement') {
+      if (isset($object->texteloi_id)) {
         $loi = doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
-        $present = $loi['titre'].' - A propos de l\'article ';
-        if ($comment->object_type == 'Alinea') {
-          $article = doctrine::getTable('ArticleLoi')->createQuery('a')
-            ->select('titre')
-            ->where('texteloi_id = ?', $object->texteloi_id)
-            ->andWhere('id = ?', $object->article_loi_id)
-            ->fetchOne();
-          $present .= $article['titre'].' alinéa '.$object->numero;
-        } else $present .= $object->titre;
+        if ($comment->object_type != 'Amendement') {
+          $present = preg_replace('/<br\/>.*$/', '', $loi['titre']).' - A propos de l\'article ';
+          if ($comment->object_type == 'Alinea') {
+            $article = doctrine::getTable('ArticleLoi')->createQuery('a')
+              ->select('titre')
+              ->where('texteloi_id = ?', $object->texteloi_id)
+              ->andWhere('id = ?', $object->article_loi_id)
+              ->fetchOne();
+            $present .= $article['titre'].' alinéa '.$object->numero;
+          } else $present .= $object->titre;
+        } else {
+          if ($loi)
+            $present = preg_replace('/<br\/>.*$/', '', $loi['titre']).' - A propos de l\'amendement n°'.$object->numero;
+          else $present = $about[$comment->object_type].' le '.date('d/m/Y', strtotime($object->date));
+        }
       } else {
         $present = '';
         if ($comment->object_type != 'QuestionEcrite') {
@@ -56,7 +64,7 @@ class correctCommentairesTask extends sfBaseTask {
       if (isset($object->parlementaire_id)) {
         if ($object->parlementaire_id)
           $comment->addObject('Parlementaire', $object->parlementaire_id);
-      } else if ($this->type == 'Amendement') {
+      } else if ($comment->object_type == 'Amendement') {
         $object->Parlementaires;
         if (isset($object->Parlementaires)) foreach($object->Parlementaires as $p)
           $comment->addObject('Parlementaire', $p->id);
@@ -73,6 +81,13 @@ class correctCommentairesTask extends sfBaseTask {
         }
         if ($seance)
           $comment->addObject('Seance', $seance['seance_id']);
+        if ($loi) {
+          if (preg_match('/^Article\s+(.*)$/', $object->sujet, $match)) {
+            $art = preg_replace('/premier/i', '1er', $match[1]);
+            if ($art_obj = doctrine::getTable('ArticleLoi')->findOneByLoiTitre($object->texteloi_id,$art))
+              $comment->addObject('ArticleLoi', $art_obj->id);
+          } else $comment->addObject('TitreLoi', $loi->id);
+        }
       }
       if (isset($object->seance_id)) {
         if ($object->seance_id)

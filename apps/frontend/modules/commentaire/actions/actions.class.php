@@ -91,17 +91,23 @@ $values['password'], false, $this))) {
     $commentaire->object_id = $this->id;
     $commentaire->lien = $redirect_url[$this->type].$this->id;
     $object = doctrine::getTable($this->type)->find($this->id);
-    if (isset($object->texteloi_id) && $this->type != 'Amendement') {
+    if (isset($object->texteloi_id)) {
       $loi = doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
-      $present = preg_replace('/<br\/>.*$/', '', $loi['titre']).' - A propos de l\'article ';
-      if ($this->type == 'Alinea') {
-        $article = doctrine::getTable('ArticleLoi')->createQuery('a')
-          ->select('titre')
-          ->where('texteloi_id = ?', $object->texteloi_id)
-          ->andWhere('id = ?', $object->article_loi_id)
-          ->fetchOne();
-        $present .= $article['titre'].' alinéa '.$object->numero;
-      } else $present .= $object->titre;
+      if ($this->type != 'Amendement') {
+        $present = preg_replace('/<br\/>.*$/', '', $loi['titre']).' - A propos de l\'article ';
+        if ($this->type == 'Alinea') {
+          $article = doctrine::getTable('ArticleLoi')->createQuery('a')
+            ->select('titre')
+            ->where('texteloi_id = ?', $object->texteloi_id)
+            ->andWhere('id = ?', $object->article_loi_id)
+            ->fetchOne();
+          $present .= $article['titre'].' alinéa '.$object->numero;
+        } else $present .= $object->titre;
+      } else {
+        if ($loi)
+          $present = preg_replace('/<br\/>.*$/', '', $loi['titre']).' - A propos de l\'amendement n°'.$object->numero;
+        else $present = $about[$this->type].' le '.date('d/m/Y', strtotime($object->date));
+      }
     } else {
       $present = '';
       if ($this->type != 'QuestionEcrite') {
@@ -153,7 +159,14 @@ $values['password'], false, $this))) {
         }    
       }
       if ($seance)
-          $commentaire->addObject('Seance', $seance['seance_id']);
+        $commentaire->addObject('Seance', $seance['seance_id']);
+      if ($loi) {
+        if (preg_match('/^Article\s+(.*)$/', $object->sujet, $match)) {
+          $art = preg_replace('/premier/i', '1er', $match[1]);
+          if ($art_obj = doctrine::getTable('ArticleLoi')->findOneByLoiTitre($object->texteloi_id,$art))
+            $commentaire->addObject('ArticleLoi', $art_obj->id);
+        } else $commentaire->addObject('TitreLoi', $loi->id);
+      }
     }
     if (isset($object->seance_id)) {
       if ($object->seance_id)

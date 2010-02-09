@@ -7,7 +7,7 @@ class TitreLoiTable extends Doctrine_Table
 
   public function findLightLoi($id) {
     $loiarr = Doctrine_Query::create()
-      ->select('t.titre, t.nb_articles')
+      ->select('t.titre, t.nb_articles, t.id')
       ->from('TitreLoi t')
       ->where('t.texteloi_id = ?', $id)
       ->andWhere('t.chapitre IS NULL')
@@ -19,6 +19,7 @@ class TitreLoiTable extends Doctrine_Table
        $loi->titre = $loiarr['titre'];
        $loi->nb_articles = $loiarr['nb_articles'];
        $loi->texteloi_id = $id;
+       $loi->id = $loiarr['id'];
        return $loi;
     }
   }
