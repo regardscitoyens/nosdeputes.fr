@@ -42,11 +42,16 @@ class myTools {
     $day = self::$day_week[date('w', strtotime($date))];
     return $day.' '.self::displayDate($date); 
   }
+
+  public static function displayShortDate($d) {
+    $date = substr($d,8,2)."/";        // jour
+    $date = $date.substr($d,5,2)."/";  // mois
+    $date = $date.substr($d,0,4);      // année
+    return $date;
+  }
  
   public static function displayDateTime($d) { 
-    $date = substr($d,8,2)."/";        // jour 
-    $date = $date.substr($d,5,2)."/";  // mois 
-    $date = $date.substr($d,0,4). " à "; // année 
+    $date = self::displayShortDate($d)." à "; 
     $date = $date.substr($d,11,5);     // heures et minutes 
     return $date; 
   } 
