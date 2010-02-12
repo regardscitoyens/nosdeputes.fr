@@ -28,7 +28,7 @@ class loiActions extends sfActions
     foreach ($admts->fetchArray() as $adt) {
       $art = preg_replace('/premier/', '1er', strtolower($adt['sujet']));
       $art = preg_replace("/(l'\s?)?article\s/", '', $art);
-      if (preg_match('/adopt/i', $adt['sort'])) $add = array($adt['numero'].' (adopté)');
+      if (preg_match('/adopt/i', $adt['sort'])) $add = array($adt['numero'].' <b>adopté</b>');
       else $add = array($adt['numero']);
       if (isset($amendements[$art])) $amendements[$art] = array_merge($amendements[$art], $add);
       else $amendements[$art] = $add;
