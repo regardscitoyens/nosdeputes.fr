@@ -69,7 +69,7 @@ foreach ($articles as $a) {
     echo '<li><b>Amendement';
     if (count($amendements['avant '.$atitre]) > 1) echo 's';
     echo ' proposant un article additionel avant l\'article '.$a->titre.'&nbsp;:</b> ';
-    foreach ($amendements['avant '.$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(.*)\s+\(adopté\)$/', '\1', $adt)).' ';
+    foreach ($amendements['avant '.$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(\d+)\s+.*$/', '\1', $adt.",")).' ';
     echo '</li>';
   }
   $nart = $a->ordre;
@@ -86,7 +86,7 @@ foreach ($articles as $a) {
     echo $ct.' amendement';
     if ($ct > 1) echo 's';
     echo '&nbsp;: ';
-    foreach ($amendements[$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(.*)\s+\(adopté\)$/', '\1', $adt)).' ';
+    foreach ($amendements[$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(\d+)\s+.*$/', '\1', $adt)).' ';
       echo '<a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'">';
   }
   if ($a->nb_commentaires > 0 || isset($amendements[$atitre])) echo ')';
@@ -101,7 +101,7 @@ foreach ($articles as $a) {
     echo '</li><li><b>Amendement';
     if (count($amendements['après '.$atitre]) > 1) echo 's'; 
     echo ' proposant un article additionel après l\'article '.$a->titre.'&nbsp;:</b> ';
-    foreach ($amendements['après '.$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(.*)\s+\(adopté\)$/', '\1', $adt)).' ';
+    foreach ($amendements['après '.$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^(\d+)\s+.*$/', '\1', $adt)).' ';
   }
 } 
 if ($nart != 0) echo '</ul>'; ?>
