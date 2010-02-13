@@ -40,7 +40,7 @@
   <h3><?php $sujet = $amendement->getSujet();
     if ($loi && preg_match('/^(.*)?(article\s*)((\d+|premier).*)$/i', $sujet, $match)) {
       $art = preg_replace('/premier/i', '1er', $match[3]);
-      $art = preg_replace('/\s+/', '-', $match[3]);
+      $art = preg_replace('/\s+/', '-', $art);
       $sujet = $match[1].link_to($match[2].$match[3], '@loi_article?loi='.$loi->texteloi_id.'&article='.$art);
     }
     echo $sujet.' ';
