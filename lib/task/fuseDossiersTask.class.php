@@ -63,7 +63,7 @@ class fuseDossiersTask extends sfBaseTask {
   
     $this->updateTags($bad, $good);
     $this->updateInterv($bad, $good, $n_itv);
-    $this->updateComments($bad, $good, n_com);
+    $this->updateComments($bad, $good, $n_com);
     $this->updateMinDate($bad, $good);
  
     $corresp = array(strtolower($bad->titre) => strtolower($good->titre));
