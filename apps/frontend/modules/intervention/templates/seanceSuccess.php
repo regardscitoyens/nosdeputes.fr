@@ -19,7 +19,7 @@
 </div>
 </div>
 </div>
-<?php $table_m = $seance->getTableMatiere(); if (count($table_m)) {?>
+<?php $table_m = $seance->getTableMatiere(); $ct = count($table_m); if ($ct) {?>
 <div class="orga_dossier">
 <h2>Sommaire</h2>
 <ul><?php foreach($table_m as $table) : if (!$table['titre']) {continue;} ;?>
@@ -75,8 +75,11 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
     if ($intervention->hasIntervenant()) {
       $didascalie = 0;
       $perso = $intervention->getIntervenant();
-      if ($titre != 1) 
-	echo '<span class="source"><a href="#table_'.$intervention->section_id.'">Debut de section</a>&nbsp;-&nbsp;<a href="'.url_for("@interventions_seance?seance=$seance->id").'#inter_'.$intervention->getMd5().'">Permalien</a></span>';
+      if ($titre != 1) {
+	echo '<span class="source">';
+        if ($ct) echo '<a href="#table_'.$intervention->section_id.'">Debut de section</a>&nbsp;-&nbsp;';
+        echo '<a href="'.url_for("@interventions_seance?seance=$seance->id").'#inter_'.$intervention->getMd5().'">Permalien</a></span>';
+      }
       if ($perso->getPageLink()) {
         if ($photo = $perso->hasPhoto()) {
         echo '<a href="'.url_for($perso->getPageLink()).'"><img alt="Photo de '.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a>';
