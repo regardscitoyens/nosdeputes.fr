@@ -19,9 +19,11 @@ if (isset($soussections)) {
     if (($section != 0 || $chapitre != 0) && ($ss->chapitre != $chapitre || $ss->section > 1)) {
       echo '<br/> &nbsp; Article';
       if ($nbart > 1) echo 's';
-      echo ' &nbsp;';
-      for ($i=$nart;$i<$nart+$nbart;$i++)
-        echo link_to($articles[$i]['titre'], '@loi_article?loi='.$loi->texteloi_id.'&article='.$articles[$i]['slug']).' &nbsp;';
+      echo '&nbsp;: ';
+      for ($i=$nart;$i<$nart+$nbart;$i++) {
+        echo link_to($articles[$i]['titre'], '@loi_article?loi='.$loi->texteloi_id.'&article='.$articles[$i]['slug']);
+        if ($i != $nart+$nbart-1) echo ', ';
+      }
       $nart += $nbart;
     }
     $nbart = $ss->nb_articles;
@@ -52,9 +54,11 @@ if (isset($soussections)) {
   }
   echo '<br/> &nbsp; Article';
   if ($nbart > 1) echo 's';
-  echo ' ';
-  for ($i=$nart;$i<$nart+$nbart;$i++)
-    echo link_to($articles[$i]['titre'], '@loi_article?loi='.$loi->texteloi_id.'&article='.$articles[$i]['slug']).' &nbsp;';
+  echo '&nbsp;: ';
+  for ($i=$nart;$i<$nart+$nbart;$i++) {
+    echo link_to($articles[$i]['titre'], '@loi_article?loi='.$loi->texteloi_id.'&article='.$articles[$i]['slug']);
+    if ($i != $nart+$nbart-1) echo ', ';
+  }
   if ($section != 0) echo '</li></ul>';
   if ($chapitre != 0) echo '</li></ul>';
   if ($amendements) {
