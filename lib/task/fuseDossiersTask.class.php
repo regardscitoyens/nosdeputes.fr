@@ -53,7 +53,7 @@ class fuseDossiersTask extends sfBaseTask {
 
       } else {
         print "      change le titre et le numéro de section mère\n";
-        $sub->titre_complet = str_replace($sub->titre, $good->titre, $sub->titre_complet);
+        $sub->setTitreComplet(str_replace($sub->titre, $good->titre, $sub->titre_complet));
         $sub->section_id = $good->id;
         $sub->save();
         $n_itv += $sub->nb_interventions;
