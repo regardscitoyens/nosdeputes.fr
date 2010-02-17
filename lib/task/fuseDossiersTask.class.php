@@ -30,7 +30,6 @@ class fuseDossiersTask extends sfBaseTask {
 
     print " - Gère les sous-sections\n";
     $n_itv = 0;
-    $n_com = 0;
     foreach ($bad->SubSections as $sub) {
       if ($sub->id == $bad->id) continue;
       print "   + ".$sub->titre_complet."\n";
@@ -40,7 +39,7 @@ class fuseDossiersTask extends sfBaseTask {
 
         $this->updateTags($sub, $exist);
         $n_itv += $this->updateInterv($sub, $exist);
-        $n_com += $this->updateComments($sub, $exist);
+        $this->updateComments($sub, $exist);
         $this->updateMinDate($sub, $exist);
 
         $query = Doctrine_Query::create()
@@ -57,13 +56,13 @@ class fuseDossiersTask extends sfBaseTask {
         $sub->section_id = $good->id;
         $sub->save();
         $n_itv += $sub->nb_interventions;
-        $n_com += $sub->nb_commentaires;
+        $sub->nb_commentaires;
       }
     }
   
     $this->updateTags($bad, $good);
     $this->updateInterv($bad, $good, $n_itv);
-    $this->updateComments($bad, $good, $n_com);
+    $this->updateComments($bad, $good);
     $this->updateMinDate($bad, $good);
  
     $corresp = array(strtolower($bad->titre) => strtolower($good->titre));
@@ -121,28 +120,28 @@ class fuseDossiersTask extends sfBaseTask {
         ->where('id = ?', $g->id)
         ->execute();
     }
-    print "\n";
+    print " / total : ".$ct."\n";
     return $ct;
   }
 
-  private static function updateComments($b, $g, $base = 0) {
+  private static function updateComments($b, $g) {
     print "      Gère les commentaires\n";
     $ct = 0;
     foreach(Doctrine::getTable('CommentaireObject')->createQuery('c')->where('c.object_type = ?', 'Section')->andWhere('c.object_id = ?', $b->id)->execute() as $com) {
       print $com->id." ";
       $com->object_id = $g->id;
       $com->save();
-      $ct++;
+      $comment = $com->getCommentaire();
+      if ($comment->is_public == 1) $ct++;
     }
     if ($ct != 0) {
       $query = Doctrine_Query::create()
         ->update('Section')
-        ->set('nb_commentaires', $g->nb_commentaires + $ct + $base)
+        ->set('nb_commentaires', $g->nb_commentaires + $ct)
         ->where('id = ?', $g->id)
         ->execute();
     }
     print "\n";
-    return $ct;
   }
 
   private static function updateMinDate($b, $g) {
