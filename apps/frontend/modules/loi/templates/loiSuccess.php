@@ -11,7 +11,8 @@ if ($loi->parlementaire_id && $loi->expose) { ?>
   echo '<div class="auteurloi"><a href="'.url_for($perso->getPageLink()).'">'.$perso->nom.'</a></div></div><br/>';
 } ?>
 <div class="sommaireloi">
-<?php if (isset($soussections)) {
+<?php $nart = 0;
+if (isset($soussections)) {
   $chapitre = 0;
   $section = 0;
   foreach ($soussections as $ss) {
@@ -39,6 +40,13 @@ if ($loi->parlementaire_id && $loi->expose) { ?>
       if ($ss->nb_commentaires > 1) echo 's';
     }
     echo ')';
+    echo '<br/> &nbsp; Article';
+    if ($ss->nb_articles > 1) echo 's';
+    echo ' ';
+    for ($i=$nart;$i<$nart+$ss->nb_articles;$i++) {
+      echo link_to($articles[$i]['titre'], '@loi_article?loi='.$loi->texteloi_id.'&article='.$articles[$i]['slug']).' &nbsp;';;
+    }
+    $nart += $ss->nb_articles;
   }
   if ($section != 0) echo '</li></ul>';
   if ($chapitre != 0) echo '</li></ul>';
@@ -48,7 +56,6 @@ if ($loi->parlementaire_id && $loi->expose) { ?>
     echo '</p>';
   }
 } else {
-  $nart = 0;
   foreach ($articles as $a) {
     if ($nart != 0) echo '</li>';
     else echo '<ul>';

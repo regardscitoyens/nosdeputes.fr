@@ -49,13 +49,11 @@ class loiActions extends sfActions
       ->andWhere('t.id != t.titre_loi_id')
       ->orderBy('t.chapitre, t.section')
       ->execute();
-    if (!$this->soussections) {
-      $this->articles = doctrine::getTable('ArticleLoi')->createquery('a')
+    $this->articles = doctrine::getTable('ArticleLoi')->createquery('a')
         ->where('a.texteloi_id = ?', $loi_id)
         ->orderBy('a.ordre')
-        ->execute();
-      $this->amendements = $this->getAmendements($loi_id);
-    } else $this->amendements = count(doctrine::getTable('Amendement')->createquery('a')
+        ->fetchArray();
+    $this->amendements = count(doctrine::getTable('Amendement')->createquery('a')
         ->where('a.texteloi_id = ?', $loi_id)->execute());
     
     $this->response->setTitle(strip_tags($this->loi->titre).' - NosDéputés.fr');
