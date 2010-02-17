@@ -11,11 +11,20 @@ if ($loi->parlementaire_id && $loi->expose) { ?>
   echo '<div class="auteurloi"><a href="'.url_for($perso->getPageLink()).'">'.$perso->nom.'</a></div></div><br/>';
 } ?>
 <div class="sommaireloi">
-<?php $nart = 0;
+<?php $nart = 0; $nbart = 0;
 if (isset($soussections)) {
   $chapitre = 0;
   $section = 0;
   foreach ($soussections as $ss) {
+    if (($section != 0 || $chapitre != 0) && ($ss->chapitre != $chapitre || $ss->section > 1)) {
+      echo '<br/> &nbsp; Article';
+      if ($nbart > 1) echo 's';
+      echo ' &nbsp;';
+      for ($i=$nart;$i<$nart+$nbart;$i++)
+        echo link_to($articles[$i]['titre'], '@loi_article?loi='.$loi->texteloi_id.'&article='.$articles[$i]['slug']).' &nbsp;';
+      $nart += $nbart;
+    }
+    $nbart = $ss->nb_articles;
     if (isset($ss->chapitre) && $ss->chapitre != $chapitre && (!($ss->section) || $ss->section == 0)) {
       if ($section != 0) echo '</li></ul>';
       $section = 0;
@@ -40,14 +49,12 @@ if (isset($soussections)) {
       if ($ss->nb_commentaires > 1) echo 's';
     }
     echo ')';
-    echo '<br/> &nbsp; Article';
-    if ($ss->nb_articles > 1) echo 's';
-    echo ' ';
-    for ($i=$nart;$i<$nart+$ss->nb_articles;$i++) {
-      echo link_to($articles[$i]['titre'], '@loi_article?loi='.$loi->texteloi_id.'&article='.$articles[$i]['slug']).' &nbsp;';;
-    }
-    $nart += $ss->nb_articles;
   }
+  echo '<br/> &nbsp; Article';
+  if ($nbart > 1) echo 's';
+  echo ' ';
+  for ($i=$nart;$i<$nart+$nbart;$i++)
+    echo link_to($articles[$i]['titre'], '@loi_article?loi='.$loi->texteloi_id.'&article='.$articles[$i]['slug']).' &nbsp;';
   if ($section != 0) echo '</li></ul>';
   if ($chapitre != 0) echo '</li></ul>';
   if ($amendements) {
