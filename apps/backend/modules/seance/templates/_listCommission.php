@@ -40,7 +40,7 @@
       <td class="sf_admin_boolean"> <?php if ($seance['tagged']) echo '<img src="/sfDoctrinePlugin/images/tick.png" title="Checked" alt="Checked"/>'; ?> </td>
       <td class="sf_admin_text"><?php echo $seance['nb_commentaires']; ?></td>
       <td class="sf_admin_text"><?php echo $seance['n_interventions']; ?></td>
-      <td class="sf_admin_text"><a href="<?php echo link_tof('presents_seance', array('seance' => $seance['id'])); ?>"><?php echo $seance['presents']; ?> (<?php if ($seance['n_interventions'] <= $seance['presents']) echo '2'; else echo $seance['sources']; ?>)</a></td>
+      <td class="sf_admin_text"><a href="<?php echo link_tof('presents_seance', array('seance' => $seance['id'])); ?>"><?php echo $seance['presents']; ?> (<?php if ($seance['n_interventions'] <= $seance['presents'] && $seance['n_interventions'] > 0) echo '2'; else echo $seance['sources']; ?>)</a></td>
       <td><ul class="sf_admin_td_actions">
         <li class="sf_admin_action_edit"><a href="/backend_dev.php/seance/<?php echo $seance['id']; ?>/edit">Edit</a></li>
         <?php if ($seance['n_interventions'] == 0 && !isset($nofuse)) echo '<li class="sf_admin_action_delete">'.link_to('Supprimer', '@seance_suppr?id='.$seance['id']).'&nbsp;<input type="checkbox" name="suppr'.$n_seance.'" value="'.$seance['id'].'" /></li>'; ?>
