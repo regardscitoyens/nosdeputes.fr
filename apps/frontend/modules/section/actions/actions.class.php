@@ -51,9 +51,12 @@ class sectionActions extends sfActions
     $this->lois_amendees = array();
     foreach($amdmts_lois as $loi)
       array_push($this->lois_amendees, $loi['distinct']); 
-    sort($this->lois);
     sort($this->lois_amendees);
-    
+   
+    $this->textes_loi = Doctrine_Query::create()->select('t.texteloi_id, t.titre')->from('TitreLoi t')->whereIn('t.texteloi_id', $this->lois)->andWhere('t.chapitre IS NULL')->andWhere('t.section is NULL')->orderBy('t.texteloi_id')->fetchArray();
+    sort($this->lois);
+    sort($this->textes_loi);
+   
     $inters = Doctrine_Query::create()
       ->select('i.id')
       ->from('Intervention i')
