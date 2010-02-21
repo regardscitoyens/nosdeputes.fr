@@ -15,7 +15,7 @@ else echo '</h1>';
 <div class="source"><a href="#commentaires">Voir le<?php if ($section->nb_commentaires > 1) echo 's '.$section->nb_commentaires; ?> commentaire<?php if ($section->nb_commentaires > 1) echo 's'; ?></a></div>
 <?php }
   if ($lois && ! preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $section->titre)) { ?>
-<span><?php if (count($textes_loi)) foreach ($textes_loi as $texte) echo link_to(strip_tags($texte['titre']), '@loi?loi='.$texte['texteloi_id']); else { echo 'Texte'; if (count($lois) > 1) echo 's'; echo 'de loi'; if (count($lois) > 1) echo 's'; echo 'N°'; foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' '; echo '('.link_to('tous les amendements à ce dossier',  '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois_amendees)).'&numero=all').')'; } ?></span>
+<span><?php if (count($textes_loi)) foreach ($textes_loi as $texte) echo link_to(strip_tags($texte['titre']), '@loi?loi='.$texte['texteloi_id']); else { echo 'Texte'; if (count($lois) > 1) echo 's'; echo ' N°'; foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' '; echo '('.link_to('tous les amendements à ce dossier',  '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois_amendees)).'&numero=all').')'; } ?></span>
 <?php } ?>
 </div>
 <div class="resume">
