@@ -100,6 +100,12 @@ compterendu_edit:
   url: /compterendu/edit/:article_id
   param: {module: article, action: edit, categorie: Seance, hasObject: true, displayObject: false, isUnique: false, role: "", exclude: 0}
 
+depute_id:
+  url: /id/:id
+  param: {module: parlementaire, action: id}
+parlementaire_id:
+  url: /parlementaire/id/:id
+  param: {module: parlementaire, action: id}
 # Liste de tous les parlementaires ou par catégorie
 parlementaires_tags:
   url: /deputes/tags

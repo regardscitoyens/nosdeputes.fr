@@ -127,7 +127,16 @@ class parlementaireActions extends sfActions
 					));
     $this->response->addMeta('keywords', $this->parlementaire->nom.' '.$this->parlementaire->nom_circo.' '.$this->parlementaire->type.' '.$this->parlementaire->groupe_acronyme.' Assemblée nationale');
     $this->response->addMeta('description', 'Pour tout connaître de l\'activité de '.$this->parlementaire->nom.' à l\'Assemblée Nationale. '.$this->parlementaire->nom.' est '.$this->parlementaire->getLongStatut().' à l\'Assemblée Nationale.');
+    $this->response->addMeta('parlementaire_id', 'd'.$this->parlementaire->id);
+    $this->response->addMeta('parlementaire_id_url', 'http://www.nosdeputes.fr/id/'.'d'.$this->parlementaire->id);
 
+  }
+
+  public function executeId(sfWebRequest $request)
+  {
+    $id = preg_replace('/^d/', '', $request->getParameter('id'));
+    $p = Doctrine::getTable('Parlementaire')->find($id);
+    return $this->redirect('@parlementaire?slug='.$p->slug);
   }
 
   public function executeList(sfWebRequest $request) {
