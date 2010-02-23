@@ -80,4 +80,7 @@ class Commentaire extends BaseCommentaire
       $this->updateNbCommentaires(($b) ? 1 : -1);
     }
   }
+  public function getLien() {
+    return preg_replace('/@amendement\?id=/', '@amendement_redirect?id=', $this->_get('lien'));
+  }
 }

@@ -7,9 +7,10 @@ class amendementActions extends sfActions
   public function executeShow(sfWebRequest $request)
   {
     $query = doctrine::getTable('Amendement')->createquery('a')
-        ->where('a.id = ?', $request->getParameter('id'))
-        ->leftJoin('a.ParlementaireAmendement pa')
-        ->leftJoin('pa.Parlementaire p');
+      ->where('a.texteloi_id = ?', $request->getParameter('loi'))
+      ->andWhere('a.numero = ?', $request->getParameter('numero'))
+      ->leftJoin('a.ParlementaireAmendement pa')
+      ->leftJoin('pa.Parlementaire p');
 
      $this->amendement = $query->fetchOne();
      $this->forward404Unless($this->amendement);
@@ -137,44 +138,15 @@ class amendementActions extends sfActions
 
   public function executeFind(sfWebRequest $request)
   {
-    $this->lois = split(',', $request->getParameter('loi'));
-    $amdt = $request->getParameter('numero');
-    if ($amdt == 'all' || $amdt == 'new' ) {
-        if (count($this->lois) == 1) $this->loi = doctrine::getTable('TitreLoi')->findLightLoi($this->lois[0]);
-	$this->amendements_query = doctrine::getTable('Amendement')->createQuery('a')
-        ->whereIn('a.texteloi_id', $this->lois);
-	if ($amdt == 'new') {
-                $this->amendements_query->orderBy('a.texteloi_id DESC, a.created_at DESC, a.source');
-	}else 
-	        $this->amendements_query->orderBy('a.texteloi_id DESC, a.numero, a.source');	
-	return ;
-    }
-      $numeros = array();
-      if (preg_match('/(\d+)-(\d+)/', $amdt, $match)) {
-        for($cpt = 0 ; $cpt < 10 ; $cpt++) {
-          if ($match[1]+$cpt > $match[2])
-            break;
-          array_push($numeros, $match[1]+$cpt);
-        }
-      } else{
-        preg_match_all('/\D*(\d+)\D*/', $amdt, $match);
-        $numeros = $match[1];
-      }
-      $amendements = array();
-      foreach($this->lois as $loi) {
-        foreach($numeros as $numero) {
-          $query = PluginTagTable::getObjectTaggedWithQuery('Amendement', array('loi:amendement='.$numero));
-          $query->andWhere('texteloi_id = ?', $loi);
-          $res = $query->execute();
-          if (count($res)) foreach ($res as $amd) {
-            $amendements[$amd->id] = $amd;
-          }
-        }
-      }
-      if (count($amendements) == 1) {
-        $a = array_keys($amendements);
-        $this->redirect('@amendement?id='.$a[0]);
-      }
-      $this->amendements = array_values($amendements);
+    $loi = $request->getParameter('loi');
+    $num = $request->getParamter('numero');
+    $this->redirect('@amendement?loi='.$loi.'&numero='.$numero);
+  }
+
+  public function executeRedirect(sfWebRequest $request)
+  {
+    $id = $request->getParameter('id');
+    $a = Doctrine::getTable('Amendement')->find($id);
+    $this->redirect('@amendement?loi='.$a->texteloi_id.'&numero='.$a->numero);
   }
 }

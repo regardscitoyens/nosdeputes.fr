@@ -2,7 +2,7 @@
       if ($section) $titre2 = link_to(ucfirst($section->titre), '@section?id='.$section->id);
       else $titre2=""; ?>
 <?php $sf_response->setTitle(strip_tags($titre2.'  '.$titre1)); ?>
-<div class="amendement" id="L<?php echo $amendement->texteloi_id.$amendement->getLettreLoi(); ?>-A<?php echo $amendement->numero; ?>">
+<div class="amendement" id="L<?php echo $amendement->texteloi_id; ?>-A<?php echo $amendement->numero; ?>">
 <div class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></div>
 <h1><?php echo $titre1; ?></h1>
 <h2><?php echo $titre2; ?></h2>
@@ -17,13 +17,13 @@
       $ident_titre = " ( amendements identiques : ";
     else $ident_titre = " ( amendement identique : "; ?>
   <em><?php echo $ident_titre; foreach($identiques as $identique) if ($identique->numero != $amendement->numero)
-      echo link_to($identique->numero, '@amendement?id='.$identique->id)." "; ?>)</em>
+      echo link_to($identique->numero, '@amendement?loi='.$identique->texteloi_id.'&numero='.$identique->numero)." "; ?>)</em>
   <?php } ?></h3>
 </div>
 <?php } ?>
 <?php if ($sous_admts) { ?>
 <p>Sous-amendements associés&nbsp: <?php foreach($sous_admts as $sous)
- echo link_to($sous['numero'], '@amendement?id='.$sous['id']).' '; ?></p>
+ echo link_to($sous['numero'], '@amendement?loi='.$sous['texteloi_id'].'&numero='.$sous['numero']).' '; ?></p>
 <?php } ?>
 <div class="signataires">
   <p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo $amendement->getSignataires(1); ?>.</p>
@@ -45,7 +45,8 @@
     }
     echo $sujet.' ';
     if ($loi) echo '&mdash; '.link_to(preg_replace('/Simplifions la loi 2\.0 : (.*)\s*<br.*$/', '\1', $loi->titre), '@loi?loi='.$loi->texteloi_id);
-    else echo 'de la loi N° '.myTools::getLinkLoi($amendement->texteloi_id).$amendement->getLettreLoi(1); ?></h3>
+    else echo 'de la loi N° '.myTools::getLinkLoi($amendement->texteloi_id);
+	if ($l = $amendement->getLettreLoi()) echo "($l)"; ?></h3>
 </div>
 <div class="texte_intervention">
   <?php $texte = $amendement->getTexte();

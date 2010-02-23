@@ -195,12 +195,17 @@ presents_seance:
 seance_commentaires_json:
   url: /seance/:seance/commentaires
   param: {module: commentaire, action: json}
-amendement:
+amendement_redirect:
   url: /amendement/:id
+  param: {module: amendement, action: redirect}
+
+amendement:
+  url: /amendement/:loi/:numero
   param: {module: amendement, action: show}
+
 find_amendements_by_loi_and_numero:
   url: /amendements/:loi/:numero
-  param: {module: amendement, action: find}
+  param: {module: amendement, action: redirect}
 
 # Recherche lexicale d'interventions ou d'amendements
 search:

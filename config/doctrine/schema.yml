@@ -221,8 +221,8 @@ Amendement:
       type: string(255)
       unique: true
     legislature: integer
-    texteloi_id: integer
-    numero: integer
+    texteloi_id: string(8)
+    numero: string(8)
     rectif: integer
     sujet: string(100)
     sort:
@@ -247,6 +247,9 @@ Amendement:
     ft_amendements:
       fields: [sujet, texte, expose]
       type: fulltext
+    uniq_loi_num:
+      fields: [texteloi_id, numero]
+      type: unique
 
 QuestionEcrite:
   actAs:

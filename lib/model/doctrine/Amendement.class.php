@@ -123,7 +123,6 @@ class Amendement extends BaseAmendement {
       $pluriel = "s";
     }
     $titre .= $pluriel." N° ".$numeros;
-    $titre .= $this->getLettreLoi();
     if ($this->rectif == 1)
       $titre .= " rectifié".$pluriel;
     elseif($this->rectif > 1)
@@ -139,17 +138,17 @@ class Amendement extends BaseAmendement {
     } else return $this->_get('texte');
   }
 
-  public function getLettreLoi($parentheses=0) {
-    if (preg_match('/\d{4}([A-Z])\d{4}/', $this->source, $match)) {
-      if ($parentheses == 1) return ' ('.$match[1].')';
-      else return $match[1];
-    } else return '';
+  public function getLettreLoi() {
+    if (preg_match('/([A-Z])/', $this->numero, $match)) {
+      return $match[1];
+    }
+    return;
   }
 
-public function getTitreNoLink() {
+  public function getTitreNoLink() {
     return preg_replace('/\<a href.*\>(.*)<\/a\>/', '\1', $this->getTitre());
   }
-
+  
   public function getLinkPDF() {
     return preg_replace('/\/amendement/', '/pdf/amendement', preg_replace('/\.asp(.*)$/', '.pdf', $this->source));
   }
