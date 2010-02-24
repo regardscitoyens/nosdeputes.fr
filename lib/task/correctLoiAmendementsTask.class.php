@@ -41,6 +41,7 @@ class correctLoiAmendementsTask extends sfBaseTask
     $manager = new sfDatabaseManager($this->configuration);    
     $ids = Doctrine_Query::create()->from('Amendement a')
       ->where("a.source REGEXP 'amendements.*[A-Z].*asp'")
+      ->orWhere("a.source NOT REGEXP CONCAT('amendements.0{0,3}',a.texteloi_id)")
       ->select('a.id, a.texteloi_id, a.numero')
       ;
     $this->changeAmendement($ids);
