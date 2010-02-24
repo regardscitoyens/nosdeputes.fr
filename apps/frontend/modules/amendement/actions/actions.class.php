@@ -138,9 +138,48 @@ class amendementActions extends sfActions
 
   public function executeFind(sfWebRequest $request)
   {
-    $loi = $request->getParameter('loi');
-    $num = $request->getParamter('numero');
-    $this->redirect('@amendement?loi='.$loi.'&numero='.$numero);
+    $this->lois = split(',', $request->getParameter('loi'));
+    $amdt = $request->getParameter('numero');
+    if ($amdt == 'all' || $amdt == 'new' ) {
+      if (count($this->lois) == 1)
+        $this->loi = doctrine::getTable('TitreLoi')->findLightLoi($this->lois[0]);
+      $this->amendements_query = doctrine::getTable('Amendement')
+        ->createQuery('a')
+        ->whereIn('a.texteloi_id', $this->lois);
+      if ($amdt == 'new')
+        $this->amendements_query->orderBy('a.texteloi_id DESC, a.created_at DESC, a.source');
+      else $this->amendements_query->orderBy('a.texteloi_id DESC, a.source');
+      return ;
+    }
+    $numeros = array();
+    if (count($this->lois) == 1 && preg_match('/^(\d+)([A-Z])$/i', $amdt, $match)) {
+      $numero = ($match[1]+0).strtoupper($match[2]);
+      $this->redirect('@amendement?loi='.$this->lois[0].'&numero='.$numero);
+    } else if (preg_match('/(\d+[A-Z]?)-(\d+[A-Z]?)/i', $amdt, $match)) {
+      if (preg_match('/^(\d+)[A-Z]$/i', $match[1], $match2)) $numsta = $match2[1];
+      else $numsta = $match[1];
+      if (preg_match('/^(\d+)[A-Z]$/i', $match[2], $match2)) $numsto = $match2[1];
+      else $numsto = $match[2];
+      for($cpt = $numsta ; $cpt <= $numsto ; $cpt++)
+        array_push($numeros, $cpt);
+    } else {
+      preg_match_all('/\D*(\d+)[A-Z]?\D*/i', $amdt, $match);
+      $numeros = $match[1];
+    }
+    $amendements = array();
+    foreach($this->lois as $loi) foreach($numeros as $numero) {
+      $query = PluginTagTable::getObjectTaggedWithQuery('Amendement', array('loi:amendement='.$numero));
+      $query->andWhere('texteloi_id = ?', $loi);
+      $res = $query->execute();
+      if (count($res)) foreach ($res as $amd) {
+        $amendements[$amd->id] = $amd;
+      }
+    }
+    if (count($amendements) == 1) {
+      $a = array_keys($amendements);
+      $this->redirect('@amendement_redirect?id='.$a[0]);
+    }
+    $this->amendements = array_values($amendements);
   }
 
   public function executeRedirect(sfWebRequest $request)

@@ -34,7 +34,7 @@ foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.myTools::getLiasseLo
   $args = array('amendement' => $i);
   if (isset($highlight))
     $args['highlight'] = $highlight;
-  if (isset($loi)) $args['loi'] = $loi->titre;
+  if (isset($loi->titre)) $args['loi'] = $loi->titre;
   echo include_component('amendement', 'parlementaireAmendement', $args);
   }
 ?></div>

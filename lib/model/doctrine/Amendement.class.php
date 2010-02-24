@@ -113,12 +113,14 @@ class Amendement extends BaseAmendement {
       $titre = "Amendement";
     }
     $numeros = $this->numero;
+    $lettre = $this->getLettreLoi();
     $ident = $this->getTags(array('is_triple' => true,
 	  'namespace' => 'loi',
 	  'key' => 'amendement',
 	  'return'    => 'value'));
     if (count($ident) > 1) {
       sort($ident);
+      if ($lettre) foreach ($ident as $iden) $iden .= $lettre;
       $numeros = implode(', ', $ident);
       $pluriel = "s";
     }
@@ -128,7 +130,7 @@ class Amendement extends BaseAmendement {
     elseif($this->rectif > 1)
       $titre .= " ".$this->rectif."ème rectif.";
     if ($parent != 0)
-      $titre .= ' à l\'amendement N° <a href="/amendements/'.$this->texteloi_id.'/'.$parent[0].'">'.$parent[0].'</a>';
+      $titre .= ' à l\'amendement N° <a href="/amendements/'.$this->texteloi_id.'/'.$parent[0].'">'.$parent[0].$lettre.'</a>';
     return "$titre";
   }
 
