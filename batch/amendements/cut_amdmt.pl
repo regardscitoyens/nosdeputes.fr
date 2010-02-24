@@ -4,7 +4,7 @@ $file = shift;
 use HTML::TokeParser;
 
 $source = $file;
-$source =~ s/html\///;
+$source =~ s/^.*(http.*)$/\1/i;
 $source =~ s/_/\//g;
 	
 open(FILE, $file) ;
@@ -276,5 +276,23 @@ $amdmt{'auteurs'} =~ s/(,\s*,|,+)/,/g;
 $amdmt{'auteurs'} =~ s/,+/,/g;
 $amdmt{'auteurs'} =~ s/^\s*,\s*//g;
 $amdmt{'auteurs'} =~ s/\s*,\s*$//g;
+
+# Récupération des informations identifiantes à partir de l'url plus sure :
+if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
+  $amdmt{'legislature'} = $1;
+  if ($2-$3 == 0) {
+    $amdmt{'loi'} = $3+0
+  } else {
+    print 'ERROR : wrong format of url for '.$file."\n";
+    exit;
+  }
+  $num = $5+0;
+  $lettre = $4;
+  if ($lettre =~ /[a-z]/i) {
+    $amdmt{'numero'} = $num.uc($lettre);
+  } else {
+    $amdmt{'numero'} = (10000*$lettre+$num);
+  }
+}
 
 print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
