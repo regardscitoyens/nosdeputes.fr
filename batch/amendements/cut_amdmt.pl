@@ -3,10 +3,27 @@
 $file = shift;
 use HTML::TokeParser;
 
+my %amdmt;
+
 $source = $file;
 $source =~ s/^.*(http.*)$/\1/i;
 $source =~ s/_/\//g;
-	
+
+# Récupération des informations identifiantes à partir de l'url plus sure :
+if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
+  $amdmt{'legislature'} = $1;
+  if ($2-$3 == 0) {
+    $amdmt{'loi'} = $3+0
+  }
+  $num = $5+0;
+  $lettre = $4;
+  if ($lettre =~ /[a-z]/i) {
+    $amdmt{'numero'} = $num.uc($lettre);
+  } else {
+    $amdmt{'numero'} = (10000*$lettre+$num);
+  }
+}
+
 open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
@@ -18,7 +35,6 @@ $string =~ s/&#339;/oe/g;
 $string =~ s/&#8211;/-/g;
 close FILE;
 
-my %amdmt;
 my $presente = 0;
 my $texte = 0;
 my $identiques = 0;
@@ -29,7 +45,7 @@ sub numero {
     $line =~ s/".*$//;
     $line =~ s/[\(\)]//g;
     if ($line =~ /^\s*(\d+)\s+([1-9a-zA-Z].*)$/i) {
-	$amdmt{'numero'} = $1;
+      # $amdmt{'numero'} = $1;
 	$suite = $2;
 	if (!$suite =~ /rect/i) {
 	    $amdmt{'rectif'} = 0;
@@ -45,7 +61,7 @@ sub numero {
      	}
      } else {
 	$line =~ /(\d+)/;
-        $amdmt{'numero'} = $1;
+     #  $amdmt{'numero'} = $1;
 	$amdmt{'rectif'} = 0;
      }
 }
@@ -141,11 +157,7 @@ $string =~ s/\|(\W+)\|/$1/g;
 foreach $line (split /\n/, $string)
 {
     if ($line =~ /meta.*content=/) {
-	if ($line =~ /name="LEGISLATURE"/i) { 
-	    $line =~ s/^.*content="//i; 
-	    $line =~ s/".*$//;
-	    $amdmt{'legislature'} = $line;
-	} elsif ($line =~ /name="DATE_BADAGE"/i) { 
+	if ($line =~ /name="DATE_BADAGE"/i) { 
 	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
 	    if ($line =~ /(\d{1,2})\/(\d{2})\/(\d{4})/) {
@@ -159,10 +171,6 @@ foreach $line (split /\n/, $string)
 	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
 	    sortseance();
-	} elsif ($line =~ /name="NUM_INITG"/i) { 
-	    $line =~ s/^.*content="//i; 
-	    $line =~ s/".*$//;
-	    $amdmt{'loi'} = $line;
 	} elsif ($line =~ /name="NUM_AMENDG"/i) { 
 	    numero();
 	}
@@ -188,12 +196,6 @@ foreach $line (split /\n/, $string)
         } elsif (!$amdmt{'serie'} && ($line =~ /class="numamendement".*à\s+(\d+)\W/i)) {
           $num_ident = $1;
           $amdmt{'serie'} = ($amdmt{'numero'}+1).'-';
-	} elsif (!$amdmt{'loi'} && $line =~ /class="titreinitiative"/i) {
-	    if ($line =~ /\<num_init\>\s*(\d+)\s*\<\/num_init\>/i) {
-		$amdmt{'loi'} = $1;
-	    } elsif ($line =~ /\(\s*n.*(\d+).*\)/) {
-		$amdmt{'loi'} = $1;
-	    }
 	} elsif ($line =~ /class="presente"/i) {
 	    if ($line =~ /amendement/) {
 		$line =~ /(\d+)/;
@@ -276,23 +278,5 @@ $amdmt{'auteurs'} =~ s/(,\s*,|,+)/,/g;
 $amdmt{'auteurs'} =~ s/,+/,/g;
 $amdmt{'auteurs'} =~ s/^\s*,\s*//g;
 $amdmt{'auteurs'} =~ s/\s*,\s*$//g;
-
-# Récupération des informations identifiantes à partir de l'url plus sure :
-if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
-  $amdmt{'legislature'} = $1;
-  if ($2-$3 == 0) {
-    $amdmt{'loi'} = $3+0
-  } else {
-    print 'ERROR : wrong format of url for '.$file."\n";
-    exit;
-  }
-  $num = $5+0;
-  $lettre = $4;
-  if ($lettre =~ /[a-z]/i) {
-    $amdmt{'numero'} = $num.uc($lettre);
-  } else {
-    $amdmt{'numero'} = (10000*$lettre+$num);
-  }
-}
 
 print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
