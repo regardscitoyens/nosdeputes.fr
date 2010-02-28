@@ -23,6 +23,7 @@ perl download_questions.pl > /tmp/download_questions.log
 
 for file in `grep -L "The page cannot be found" html/*`; do
 	fileout=$(echo $file | sed 's/html/json/' | sed 's/\.htm/\.xml/')
-	perl cut_quest.pl $file > $fileout
+#	perl cut_quest.pl $file > $fileout
+	python parse.py $file > $fileout
 done;
 

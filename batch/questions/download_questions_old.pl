@@ -6,6 +6,7 @@ use HTML::TokeParser;
 $count = 0;
 $count2 = 0;
 
+
 open(FILE, 'dernier_numero.txt') ;
 @last_record = <FILE>;
 $last_record = "@last_record";
@@ -34,9 +35,7 @@ for ($cpt = $last_record-100 ; $cpt < $last_number+100 ; $cpt++) {
     $htmfile =~ s/\#.*//;
     print "  $htmfile ... ";
     open FILE, ">:utf8", "html/$htmfile";
-    $content = $a->content;
-    utf8::decode($content);
-    print FILE $content;
+    print FILE $a->content;
     close FILE;
     print "downloaded.\n";
     $a->back();
@@ -58,9 +57,7 @@ foreach $line (split /\n/, $string) {
     $htmfile =~ s/\#.*//;
     print "  $htmfile ... ";
     open FILE, ">:utf8", "html/$htmfile";
-    $content = $a->content;
-    utf8::decode($content);
-    print FILE $content;
+    print FILE $a->content;
     close FILE;
     print "downloaded.\n";
     $a->back();
