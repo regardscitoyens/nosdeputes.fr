@@ -24,7 +24,7 @@ class loadQuestionsTask extends sfBaseTask {
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
             $json = json_decode($line);
-            if (!$json || !$json->source || !$json->legislature || !$json->numero || !$json->date || !$json->auteur || !$json->type || !$json->question) {
+            if (!$json || !$json->source || !$json->legislature || !$json->numero || !$json->date_question || !$json->auteur || !$json->type || !$json->question) {
               if (!$json)
                 echo "ERROR json : $line\n";
               else {
@@ -34,7 +34,7 @@ class loadQuestionsTask extends sfBaseTask {
 		  $missing = 'legislature';
 		if (!$json->numero)
 		  $missing = 'numero';
-		if (!$json->date)
+		if (!$json->date_question)
 		  $missing ='date';
 		if (!$json->auteur)
 		  $missing = 'auteur';
@@ -42,17 +42,15 @@ class loadQuestionsTask extends sfBaseTask {
 		  $missing = 'type';
 		if (!$json->question)
 		  $missing = 'question';
-		    
-		echo "ERROR json ($missing argument missing) : $line\n";		
+		echo "ERROR json ($missing argument missing) : $line\n";
 	      }
               continue;
             }
-            if (!$json->ministere_interroge || !$json->ministere_attributaire || !$json->rubrique || !$json->tete_analyse || !$json->analyse) {
+            if (!$json->ministere_interroge || !$json->ministere_attribue || !$json->rubrique || !$json->tete_analyse || !$json->analyse) {
               echo "ERROR json facu : $line\n";
               continue;
             }
             $ct_lus++;
-            $modif = true;
             $quest = Doctrine::getTable('QuestionEcrite')->findOneBySource($json->source);
             if (!$quest) {
               $ct_crees++;
@@ -60,17 +58,22 @@ class loadQuestionsTask extends sfBaseTask {
               $quest->source = $json->source;
               $quest->legislature = $json->legislature;
               $quest->numero = $json->numero;
-            } elseif ($quest->date == $json->date && $quest->reponse != null) {
-              $modif = false;
+              $quest->setAuteur($json->auteur);
             }
-            $quest->setAuteur($json->auteur);
-            if ($modif) {
-              $quest->date = $json->date;
-              $quest->ministere = $json->ministere_interroge." / ".$json->ministere_attributaire;
+            if ($quest->date_cloture == null) {
+              $quest->date = $json->date_question;
+              $quest->ministere = $json->ministere_interroge." / ".$json->ministere_attribue;
               $quest->themes = $json->rubrique." / ".$json->tete_analyse." / ".$json->analyse;
               $quest->question = $json->question;
               $quest->reponse = $json->reponse;
               $quest->content_md5 = md5($json->legislature.$json->question);
+              if ($json->date_retrait) {
+                $quest->date_cloture = $json->date_retrait;
+                if ($json->motif_retrait)
+                  $quest->motif_retrait = $json->motif_retrait;
+              } else if ($json->date_reponse) {
+                $quest->date_cloture = $json->date_reponse;
+              }
             }
             $quest->save();
             $quest->free();

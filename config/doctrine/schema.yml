@@ -262,11 +262,14 @@ QuestionEcrite:
     legislature: integer
     numero: integer
     date: date
+    date_cloture: date
     ministere: string
     themes: string
     question:
       type: string
     reponse:
+      type: string
+    motif_retrait:
       type: string
     content_md5: string(36)
     parlementaire_id: integer
@@ -277,6 +280,10 @@ QuestionEcrite:
     Parlementaire:
       class: Parlementaire
       foreignAlias: QuestionEcrites
+  indexes:
+    uniq_num:
+      fields: [legislature, numero]
+      type: unique
 
 ParlementaireAmendement:
   actAs:
