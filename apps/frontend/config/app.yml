@@ -3,5 +3,7 @@ all:
   sfDoctrineActAsTaggablePlugin:
     triple_distinct:   true
   secret_key: _______PUT_YOUR_KEY_HERE________
+  legislature: 13
+
   expiration_cookie: <?php echo time()+86400*15; ?>
   # 15 jours

@@ -2,11 +2,11 @@
   <div class="question" id="<?php echo $question->id; ?>">
     <div>
 <?php $parlementaire = $question->getParlementaire(); ?>
-  <h2><?php echo link_to($parlementaire->nom.'&nbsp;: '.$question->getTitre(), '@question?id=QE'.$question->numero); ?></h2>
+  <h2><?php echo link_to($parlementaire->nom.'&nbsp;: '.$question->getTitre(), '@question_numero?numero='.$question->numero); ?></h2>
     </div>
   <div class="texte_question"><?php
   if (!isset($nophoto))
-    echo '<a href="'.url_for('@question?id=QE'.$question->numero).'" class="intervenant"><img width="50" height="70" alt="'.$parlementaire->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$parlementaire->slug).'" /></a>';
+    echo '<a href="'.url_for('@question_nuemro?numero='.$question->numero).'" class="intervenant"><img width="50" height="70" alt="'.$parlementaire->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$parlementaire->slug).'" /></a>';
   $inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $question->getQuestion().' '.$question->getReponse().' Thèmes : '.$question->getThemes());
   $p_inter = '';
   if (isset($highlight)) {
@@ -20,6 +20,6 @@
   echo $p_inter;
 ?>
   <div class="contexte">
-    <a href="<?php echo url_for('@question?id=QE'.$question->numero); ?>">Lire la suite de la question</a></div>
+    <a href="<?php echo url_for('@question_numero?numero='.$question->numero); ?>">Lire la suite de la question</a></div>
   </div>
   </div>

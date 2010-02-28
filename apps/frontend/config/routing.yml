@@ -272,9 +272,15 @@ top_global:
   param: {module: parlementaire, action: top}
 
 # Affichage d'une question
-question:
-  url: /question/:id
+question_numero:
+  url: /question/QE/:numero
   param: {module: questions, action: show}
+question:
+  url: /question/id/:id
+  param: {module: questions, action: redirect}
+question_id:
+  url: /question/:id
+  param: {module: questions, action: redirect}
 
 # Captcha
 captcha_image:
