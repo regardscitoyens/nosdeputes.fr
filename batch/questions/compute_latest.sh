@@ -10,9 +10,9 @@ fi
 echo "SELECT numero FROM question_ecrite order by numero DESC limit 1" | mysql $MYSQLID $DBNAME | grep -v numero > dernier_numero.txt
 
 if [[ $1 -eq "all" ]]; then
-  sql_string='SELECT source FROM question_ecrite WHERE reponse = ""'
+  sql_string='SELECT source FROM question_ecrite WHERE reponse = "" AND motif_retrait IS NULL'
 else
-  sql_string='SELECT source FROM question_ecrite WHERE reponse = "" AND date > DATE_SUB(CURDATE(), INTERVAL 75 DAY)'
+  sql_string='SELECT source FROM question_ecrite WHERE reponse = "" AND motif_retrait IS NULL AND date > DATE_SUB(CURDATE(), INTERVAL 75 DAY)'
 fi
 echo $sql_string | mysql $MYSQLID $DBNAME | grep -v source > liste_sans_reponse.txt
 
