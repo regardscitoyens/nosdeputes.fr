@@ -20,7 +20,7 @@ class questionsActions extends sfActions
   }
   public function executeShow(sfWebRequest $request)
   {
-    $numero = $request->getParameter('numero'));
+    $numero = $request->getParameter('numero');
     $this->question = doctrine::getTable('QuestionEcrite')
       ->createquery('q')
       ->where('q.numero = ?', $numero)
