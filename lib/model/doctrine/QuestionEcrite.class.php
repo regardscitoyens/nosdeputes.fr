@@ -20,7 +20,7 @@ class QuestionEcrite extends BaseQuestionEcrite
 
   public function getTitre() {
     $titre = 'Question N° '.$this->numero.' du '.myTools::displayShortDate($this->date).' ('.preg_replace('/\s*[\/\(].*$/', '', $this->ministere).')';
-    if ($date_cloture && !$reponse) $titre .= ' (retirée)';
+    if ($this->date_cloture && !$this->reponse) $titre .= ' (retirée)';
     else if (!$this->reponse) $titre .= ' (sans réponse)';
     return $titre;
   }

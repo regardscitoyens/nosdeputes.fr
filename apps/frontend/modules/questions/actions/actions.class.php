@@ -12,10 +12,20 @@ class questionsActions extends sfActions
 {
   public function executeShow(sfWebRequest $request)
   {
-    $this->question = doctrine::getTable('QuestionEcrite')->find($request->getParameter('id'));
-    $this->forward404Unless($this->question);
-    $this->parlementaire = doctrine::getTable('Parlementaire')->find($this->question->parlementaire_id);
-    $this->forward404Unless($this->parlementaire);
+    $id = $request->getParameter('id');
+    if (preg_match('/^(\d+)$/' , $id)) {
+      $question = doctrine::getTable('QuestionEcrite')->find($id);
+      $this->forward404Unless($question);
+      $this->redirect('@question?id=QE'.$question->numero);
+    } else if (preg_match('/^QE(\d+)$/' , $id, $match)) {
+      $this->question = doctrine::getTable('QuestionEcrite')
+        ->createquery('q')
+       ->where('q.numero = ?', $match[1])
+        ->fetchOne();
+      $this->forward404Unless($this->question);
+      $this->parlementaire = doctrine::getTable('Parlementaire')->find($this->question->parlementaire_id);
+      $this->forward404Unless($this->parlementaire);
+    } else $this->forward404();
   }
 
   public function executeParlementaire(sfWebRequest $request)

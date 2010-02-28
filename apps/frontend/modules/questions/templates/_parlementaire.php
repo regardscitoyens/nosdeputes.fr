@@ -8,6 +8,6 @@ $titre = myTools::displayDate($question->date).'&nbsp;: '.$question->uniqueMinis
 if ($theme = $question->firstTheme())
   $titre .= '&nbsp;('.$theme.')';
 ?>
-  <li><?php echo link_to($titre, url_for('@question?id='.$question->id)); ?></li>
+  <li><?php echo link_to($titre, url_for('@question?id=QE'.$question->numero)); ?></li>
 <?php if (isset($limit) && $cpt >= $limit) break; endforeach; ?>
 </ul>
