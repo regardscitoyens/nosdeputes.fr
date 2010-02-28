@@ -81,6 +81,6 @@ class Commentaire extends BaseCommentaire
     }
   }
   public function getLien() {
-    return preg_replace('/@amendement\?id=/', '@amendement_redirect?id=', $this->_get('lien'));
+    return preg_replace('/@amendement\?id=/', '@amendement_id?id=', $this->_get('lien'));
   }
 }

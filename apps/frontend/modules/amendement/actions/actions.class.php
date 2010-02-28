@@ -183,7 +183,7 @@ class amendementActions extends sfActions
     }
     if (count($amendements) == 1) {
       $a = array_keys($amendements);
-      $this->redirect('@amendement_redirect?id='.$a[0]);
+      $this->redirect('@amendement_id?id='.$a[0]);
     }
     $this->amendements = array_values($amendements);
   }

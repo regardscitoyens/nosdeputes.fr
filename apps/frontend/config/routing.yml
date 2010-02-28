@@ -201,7 +201,7 @@ presents_seance:
 seance_commentaires_json:
   url: /seance/:seance/commentaires
   param: {module: commentaire, action: json}
-amendement_redirect:
+amendement_id:
   url: /amendement/:id
   param: {module: amendement, action: redirect}
 
