@@ -211,7 +211,7 @@ amendement:
 
 find_amendements_by_loi_and_numero:
   url: /amendements/:loi/:numero
-  param: {module: amendement, action: redirect}
+  param: {module: amendement, action: find}
 
 # Recherche lexicale d'interventions ou d'amendements
 search:
