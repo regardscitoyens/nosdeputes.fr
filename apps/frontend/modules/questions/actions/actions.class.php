@@ -37,7 +37,7 @@ class questionsActions extends sfActions
     $this->forward404Unless($this->parlementaire);
     $this->questions = doctrine::getTable('QuestionEcrite')->createQuery('q')
       ->where('q.parlementaire_id = ?', $this->parlementaire->id)
-      ->orderBy('q.date DESC');
+      ->orderBy('q.date DESC, q.numero DESC');
   }
 
   public function executeSearch(sfWebRequest $request)
