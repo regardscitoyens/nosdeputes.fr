@@ -8,6 +8,10 @@ from BeautifulSoup import BeautifulSoup, BeautifulStoneSoup, NavigableString, Ta
 #start_url = 'http://recherche2.assemblee-nationale.fr/questions/resultats-questions.jsp?NumLegislature=13Questions&C1=QE&C2=QG&C3=QOSD&C4=RET&C5=AR&C6=SR&C7=NR'
 # SortField=NAT&SortOrder=ASC&ResultCount=25
 
+def convertdate(s):
+    d, m, y = s.split('/')
+    return '-'.join((y, m, d))
+
 fn = sys.argv[1]
 url = 'http://questions.assemblee-nationale.fr/q13/13-%sQE.htm'
 
@@ -42,9 +46,11 @@ _clean_html_re = re.compile("<.*?>")
 def clean_html(s):
     return _clean_html_re.sub('', s)
 
+lastbr_re = re.compile('\s*<br\s*/?>$', re.U|re.M)
 def extracttext(t):
     div = t.parent.findNextSibling('div', attrs={'class': 'contenutexte'})
-    return div.decodeContents()
+    text = div.decodeContents().strip()
+    return lastbr_re.sub('', text)
 
 def extractspan(t):
     span = t.findNextSibling('span', attrs={'class': 'contenu'})
@@ -96,7 +102,12 @@ for l in dates:
         continue
     for m in xre.finditer(clean_html(l)):
         for k, v in pubdict[m.group('type')]:
-            d[v] = m.group(k)
+            value = m.group(k)
+            if value is None:
+                value = ''
+            if k == 'date':
+                value = convertdate(value)
+            d[v] = value
 
 # pour les questions au gvt, avec dates identiques
 if 'date_reponse' in d and not 'date_question' in d:
@@ -121,6 +132,7 @@ if d.get('date_reponse'):
     d['reponse'] = extracttext(r)
 
 d['source'] = url % d['numero']
+d['motif_retrait'] = d['motif_retrait'].lower()
 
 for k, v in d.iteritems():
     d[k] = v.encode('utf8').replace('\\', '\\\\').replace('"', '\\"')
