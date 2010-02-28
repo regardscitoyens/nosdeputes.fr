@@ -42,6 +42,10 @@ while ($t = $p->get_tag('td')) {
 		$t = $p->get_tag('td');
 		$t = $p->get_text('/td');
 		$t =~ s/[^\d\/]//g;
+# Cas Estrosi dont la fin de mandat n'est pas mise à jour sur la page de l'AN
+                if ($id == 1263) {
+                  $t = '23/07/2009';
+                }
 		print PM "\$fin_mandat{'$id'} = '$t';\n";
 	    }
 	}
