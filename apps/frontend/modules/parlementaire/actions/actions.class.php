@@ -360,7 +360,9 @@ class parlementaireActions extends sfActions
     if ($request->getParameter('Amendement')) {
       foreach(Doctrine::getTable('Amendement')->createQuery('a')
 	      ->leftJoin('a.ParlementaireAmendement pa')
-	      ->where('pa.parlementaire_id = ?', $this->parlementaire->id)->orderBy('date DESC')->limit($this->limit)->execute()
+	      ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
+              ->andWhere('a.sort <> ?', 'Rectifié')
+              ->orderBy('date DESC')->limit($this->limit)->execute()
 	      as $n) 
 	$news[] = $n;
     }

@@ -5,4 +5,14 @@
 class AmendementTable extends Doctrine_Table
 {
 
+  public function findOneByLegisLoiNumRect($legis, $loi, $numero, $rect) {
+    $query = $this->createQuery('a')
+      ->where('a.legislature = ?', $legis)
+      ->andWhere('a.texteloi_id = ?', $loi)
+      ->andWhere('a.numero = ?', $numero)
+      ->andWhere('a.rectif = ?', $rect);
+    return $query->fetchOne();
+  }
+
+
 }

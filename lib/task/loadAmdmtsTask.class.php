@@ -24,13 +24,20 @@ class loadAmdmtsTask extends sfBaseTask {
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
             $json = json_decode($line);
-            if (!$json || !$json->source || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->texte) {
+            if (!$json || !$json->source || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->texte || !$json->date || !isset($json->rectif)) {
               echo "ERROR json : $line\n";
               continue;
             }
             $ct_lus++;
             $modif = true;
-            $amdmt = Doctrine::getTable('Amendement')->findOneBySource($json->source);
+            $amdmt = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
+            if ($json->rectif > 0) foreach(Doctrine::getTable('Amendement')->findBySource($json->source) as $rect) {
+             if ($rect->rectif < $json->rectif) {
+              $rect->sort = "Rectifié";
+              $rect->save();
+             }
+            }
+            
             if (!$amdmt) {
               $ct_crees++;
               $amdmt = new Amendement();
@@ -39,49 +46,47 @@ class loadAmdmtsTask extends sfBaseTask {
               $amdmt->texteloi_id = $json->loi;
               $amdmt->addTag('loi:numero='.$amdmt->texteloi_id);
               $amdmt->numero = $json->numero;
-            } elseif ($amdmt->rectif == $json->rectif && $amdmt->date == $json->date) {
+              $amdmt->rectif = $json->rectif;
+            } elseif ($amdmt->signataires == $json->auteurs && $amdmt->date == $json->date) {
               $modif = false;
             }
             if ($modif) {
-              $amdmt->rectif = $json->rectif;
-              if ($json->date)
-                $amdmt->date = $json->date;
+              $amdmt->date = $json->date;
+              $lettre = $amdmt->getLettreLoi();
               if ($json->serie) {
                 if (preg_match('/,/', $json->serie)) {
                   $arr = preg_split('/,/', $json->serie);
                   foreach ($arr as $gap_stri) {
                     $gap = preg_split('/-/', $gap_stri);
                     for ($n = $gap[0]; $n <= $gap[1]; $n++) 
-                      $amdmt->addTag('loi:amendement='.$n);
+                      $amdmt->addTag('loi:amendement='.$n.$lettre);
                   }
                 } else {
                   $gap = preg_split('/-/', $json->serie);
                   for ($n = $gap[0]; $n <= $gap[1]; $n++)
-                    $amdmt->addTag('loi:amendement='.$n);
+                    $amdmt->addTag('loi:amendement='.$n.$lettre);
                 }
               } else $amdmt->addTag('loi:amendement='.$amdmt->numero);
               if ($json->parent)
-                $amdmt->addTag('loi:sous_amendement_de='.$json->parent);
+                $amdmt->addTag('loi:sous_amendement_de='.$json->parent.$lettre);
               $amdmt->sujet = $json->sujet;
               $amdmt->texte = $json->texte;
               if ($json->expose)
                 $amdmt->expose = $json->expose;
               $amdmt->content_md5 = md5($json->legislature.$json->loi.$json->sujet.$json->texte);
-            }
-            if ($json->sort)
-              $amdmt->sort = $json->sort;
-            elseif (!$amdmt->sort)
-                $amdmt->sort = "Indéfini";
-            if ($json->auteurs) { /// remettre dans modif?
-              $amdmt->signataires = $json->auteurs;
-              $amdmt->setAuteurs($json->auteurs);
-            } else {
-              if (!$json->sort || !preg_match('/(irrecevable|retir)/i', $json->sort)) {
+              if ($json->auteurs) {
+                $amdmt->signataires = $json->auteurs;
+                $amdmt->setAuteurs($json->auteurs);
+              } else if (!$json->sort || !preg_match('/(irrecevable|retir)/i', $json->sort)) {
                 echo "ERROR json auteurs missing : $line\n";
                 $amdmt->free();
                 continue;
               }
             }
+            if ($json->sort)
+              $amdmt->sort = $json->sort;
+            elseif (!$amdmt->sort)
+              $amdmt->sort = "Indéfini";
             $amdmt->save();
             $amdmt->free();
           }

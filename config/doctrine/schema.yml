@@ -219,7 +219,6 @@ Amendement:
   columns:
     source:
       type: string(255)
-      unique: true
     legislature: integer
     texteloi_id: string(8)
     numero: string(8)
@@ -227,7 +226,7 @@ Amendement:
     sujet: string(100)
     sort:
       type: enum
-      values: ['Indéfini', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non soutenu', 'Retiré avant séance']
+      values: ['Indéfini', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non soutenu', 'Retiré avant séance', 'Rectifié']
     date: date
     signataires: string
     texte: 
@@ -248,7 +247,7 @@ Amendement:
       fields: [sujet, texte, expose]
       type: fulltext
     uniq_loi_num:
-      fields: [texteloi_id, numero]
+      fields: [legislature, texteloi_id, numero, rectif]
       type: unique
 
 QuestionEcrite:

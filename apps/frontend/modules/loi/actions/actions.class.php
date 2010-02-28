@@ -15,6 +15,7 @@ class loiActions extends sfActions
     $amendements = array();
     $admts = doctrine::getTable('Amendement')->createquery('a')
       ->where('a.texteloi_id = ?', $loi)
+      ->andWhere('a.sort <> ?', 'Rectifié')
       ->orderBy('a.numero');
     if ($articles != 'all') {
       $likestr = '';
@@ -50,11 +51,13 @@ class loiActions extends sfActions
       ->orderBy('t.chapitre, t.section')
       ->execute();
     $this->articles = doctrine::getTable('ArticleLoi')->createquery('a')
-        ->where('a.texteloi_id = ?', $loi_id)
-        ->orderBy('a.ordre')
-        ->fetchArray();
+      ->where('a.texteloi_id = ?', $loi_id)
+      ->orderBy('a.ordre')
+      ->fetchArray();
     $this->amendements = count(doctrine::getTable('Amendement')->createquery('a')
-        ->where('a.texteloi_id = ?', $loi_id)->execute());
+      ->where('a.texteloi_id = ?', $loi_id)
+      ->andWhere('a.sort <> ?', 'Rectifié')
+      ->execute());
     
     $this->response->setTitle(strip_tags($this->loi->titre).' - NosDéputés.fr');
     $request->setParameter('rss', array(array('link' => '@loi_rss_commentaires?loi='.$loi_id, 'title'=>'Les commentaires sur '.$this->loi->titre)));

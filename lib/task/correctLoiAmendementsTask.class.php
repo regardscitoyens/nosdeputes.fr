@@ -27,7 +27,8 @@ class correctLoiAmendementsTask extends sfBaseTask
 	  echo $a->texteloi_id.' '.$a->numero." => ";
 	  $a->texteloi_id = $match[2]+0;
 	  $a->numero = ($match[4] + 0).$match[3];
-	  echo $a->texteloi_id.' '.$a->numero."\n";
+	  echo $a->texteloi_id.' '.$a->numero." | ";
+          $a->addTag('loi:amendement='.$a->numero);
 	  $a->save();
 	}
       }
@@ -55,5 +56,6 @@ class correctLoiAmendementsTask extends sfBaseTask
       if(!$this->changeAmendement($ids))
 	break;
     }
+    echo "\n";
   }
 }

@@ -9,6 +9,7 @@ class amendementActions extends sfActions
     $query = doctrine::getTable('Amendement')->createquery('a')
       ->where('a.texteloi_id = ?', $request->getParameter('loi'))
       ->andWhere('a.numero = ?', $request->getParameter('numero'))
+      ->andWhere('a.sort <> ?', 'Rectifié')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->leftJoin('pa.Parlementaire p');
 
@@ -39,6 +40,7 @@ class amendementActions extends sfActions
        ->select('a.id, a.numero')
        ->from('Amendement a, Tagging tg, tg.Tag t')
        ->where('a.texteloi_id = ?', $this->amendement->texteloi_id)
+       ->andWhere('a.sort <> ?', 'Rectifié')
        ->andWhere('a.id = tg.taggable_id')
        ->andWhere('t.name LIKE ?', 'loi:sous_amendement_de=%')
        ->andWhere('t.triple_value = ?', $this->amendement->numero)
@@ -56,6 +58,7 @@ class amendementActions extends sfActions
     $this->amendements = doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('a.sort <> ?', 'Rectifié')
     //  ->andWhere('pa.numero_signataire <= ?', self::$seuil_amdmts)
       ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
     //    $this->response->setTitle('Les amendements de '.$this->parlementaire->nom);
@@ -77,6 +80,7 @@ class amendementActions extends sfActions
     $this->qamendements = doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('a.sort <> ?', 'Rectifié')
       ->andWhereIn('a.texteloi_id', $lois)
       ->orderBy('a.texteloi_id DESC, a.date DESC, a.numero DESC');
   }
@@ -145,7 +149,8 @@ class amendementActions extends sfActions
         $this->loi = doctrine::getTable('TitreLoi')->findLightLoi($this->lois[0]);
       $this->amendements_query = doctrine::getTable('Amendement')
         ->createQuery('a')
-        ->whereIn('a.texteloi_id', $this->lois);
+        ->whereIn('a.texteloi_id', $this->lois)
+        ->andWhere('a.sort <> ?', 'Rectifié');
       if ($amdt == 'new')
         $this->amendements_query->orderBy('a.texteloi_id DESC, a.created_at DESC, a.source');
       else $this->amendements_query->orderBy('a.texteloi_id DESC, a.source');
@@ -169,7 +174,8 @@ class amendementActions extends sfActions
     $amendements = array();
     foreach($this->lois as $loi) foreach($numeros as $numero) {
       $query = PluginTagTable::getObjectTaggedWithQuery('Amendement', array('loi:amendement='.$numero));
-      $query->andWhere('texteloi_id = ?', $loi);
+      $query->andWhere('texteloi_id = ?', $loi)
+        ->andWhere('sort <> ?', 'Rectifié');
       $res = $query->execute();
       if (count($res)) foreach ($res as $amd) {
         $amendements[$amd->id] = $amd;
@@ -186,6 +192,7 @@ class amendementActions extends sfActions
   {
     $id = $request->getParameter('id');
     $a = Doctrine::getTable('Amendement')->find($id);
+    $this->forward404Unless($a);
     $this->redirect('@amendement?loi='.$a->texteloi_id.'&numero='.$a->numero);
   }
 }
