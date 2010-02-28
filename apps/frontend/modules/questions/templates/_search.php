@@ -6,7 +6,7 @@
     </div>
   <div class="texte_question"><?php
   if (!isset($nophoto))
-    echo '<a href="'.url_for('@question_nuemro?numero='.$question->numero).'" class="intervenant"><img width="50" height="70" alt="'.$parlementaire->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$parlementaire->slug).'" /></a>';
+    echo '<a href="'.url_for('@question_numero?numero='.$question->numero).'" class="intervenant"><img width="50" height="70" alt="'.$parlementaire->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$parlementaire->slug).'" /></a>';
   $inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $question->getQuestion().' '.$question->getReponse().' Thèmes : '.$question->getThemes());
   $p_inter = '';
   if (isset($highlight)) {
