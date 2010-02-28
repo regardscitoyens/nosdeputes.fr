@@ -1,20 +1,28 @@
 <div class="question" id="question<?php echo $question->numero ?>">
 <?php
   $titre = 'Question N° '.$question->numero.' au '.$question->uniqueMinistere();
-$sf_response->setTitle($parlementaire->nom.' : '.$titre);
-echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre, 'deputefirst' => true));
+  if ($question->date_cloture && !$question->reponse) $titre .= ' (retirée)';
+  $sf_response->setTitle($parlementaire->nom.' : '.$titre);
+  echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre, 'deputefirst' => true));
 ?>
   <div class="source"><a href="<?php echo $question->source; ?>">source</a></div>
-  <p>Soumise le <?php echo myTools::displayDate($question->date) ?></p>
   <div id="question">
-    <h2>Question</h2>
-    <?php echo $question->question ?>
+    <h2>Question soumise le <?php echo myTools::displayDate($question->date) ?></h2>
+    <?php echo '<p>'.$question->question.'</p>' ?>
   </div>
   <div id="reponse">
-    <h2>Réponse</h2>
-    <?php if (! empty($question->reponse))
-      echo  $question->reponse;
-    else echo 'Cette question n\'a pas encore de réponse.' ?>
+    <?php if ($question->date_cloture && !$question->reponse) {
+      echo '<h3>Retirée le '.myTools::displayDate($question->date_cloture);
+      if ($question->motif_retrait) echo ' ('.$question->motif_retrait.')';
+      echo '</h3>';
+    } else {
+      echo '<h2>Réponse';
+      if ($question->date_cloture) echo ' émise le '.myTools::displayDate($question->date_cloture);
+      echo '</h2>';
+      if ($question->reponse)
+        echo '<p>'.$question->reponse.'</p>';
+      else echo '<p>Cette question n\'a pas encore de réponse.</p>';
+    } ?>
   </div>
 </div>
 <div class="commentaires">
