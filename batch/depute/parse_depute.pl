@@ -188,7 +188,7 @@ if ((join " ", keys %{$depute{'Mails'}}) =~ /(\S+)\@assemblee/) {
     while ($login = substr($login, 1)) {
         for($i = 0 ; $i <= $#noms ; $i++) {
 	    if ($noms[$i] =~ /$login/i)  {
-		if ($nomdep =~ /(\S*l[ea]\s)?(\S*$login.*$)/i) {
+		if ($nomdep =~ /(\sl[ea]s?\s)?(\S*$login.*$)/i) {
 		    $depute{'Nom_de_famille'} = $1.$2;
 		    $depute{'Nom_de_famille'} =~ s/[^a-z\s]//gi;
 		    last;
@@ -202,8 +202,8 @@ if ((join " ", keys %{$depute{'Mails'}}) =~ /(\S+)\@assemblee/) {
 }
 #Si pas de nom de famille, on le récupère par le nom
 if (!$depute{'Nom_de_famille'}) {
-    if ($depute{'Nom'} =~ /\S (.*)$/) {
-	$depute{'Nom_de_famille'} = $1;
+    if ($depute{'Nom'} =~ /\S (des? )?(.*)$/i) {
+	$depute{'Nom_de_famille'} = $2;
     }
 }
 
