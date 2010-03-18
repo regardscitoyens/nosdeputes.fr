@@ -6,7 +6,7 @@
 class Amendement extends BaseAmendement {
 
   public function getLink() {
-    return '@amendement?id='.$this->id;
+    return '@amendement_id?id='.$this->id;
   }
 
   public function __toString() {
