@@ -28,7 +28,7 @@ if (isset($amendements)) {
   $string .= ' déposé';
   if ($ct > 1) $string .= 's';
   $string .= ' sur cet alinéa&nbsp;: ';
-  foreach ($amendements as $adt) $string .= link_to('n°&nbsp;'.$adt, '@find_amendements_by_loi_and_numero?loi='.$loi.'&numero='.preg_replace('/^(\d+)\s+.*$/', '\1', $adt)).' ';
+  foreach ($amendements as $adt) $string .= link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
   $string .= '</small></p>';
   $s = preg_replace('/<\/p>$/', $string.'</p>', $s);
 }

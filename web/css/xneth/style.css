@@ -999,13 +999,14 @@ h2 {
 
 .pagerloi {
   font-size: 0.8em;
+  padding-bottom: 10px;
 }
 
-.pagerloi precedent {
+.pagerloi .precedent {
   float: left;
 }
 
-.pagerloi suivant {
+.pagerloi .suivant {
   float: right;
   text-align: right;
 }

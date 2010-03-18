@@ -36,6 +36,10 @@ $string =~ s/\r//g;
 $string =~ s/\|(\W+)\|/$1/g;
 close FILE;
 
+if ($string =~ /adopt.+\spar\sle\ss.+nat/i) {
+  $present = 0;
+} 
+
 sub checkout_loi {
   $expose =~ s/<p>\s*<a href/<p>&nbsp;<a href/i;
   $expose =~ s/<ul>/<\/p><ul>/gi;
@@ -116,7 +120,8 @@ sub handle_text {
       if ($content =~ /(Fait|Délibéré\s+en\s+séance)(\s+publique)?,?\s+à\s+Paris,\s*le\s*\d+/) {
         exit;
       }
-      if (!($content =~ /^(<[a-z]+>)?\(?(suppressions?\s+conformes?|supprimés?|dispositions?\s+déclarées?\s+irrecevables?\s+au\s+regard\s+de\s+l'article\s+\d+\s+de\s+la\s+constitution|division)(\s+et\s+intitulé)?(\s+nouveaux|nouvelle)?\)?(<\/[a-z]+>)?/i)) {
+      if (!($content =~ /^(<[a-z]+>)?\[?\(?(suppressions?\s+conformes?|supprimés?|dispositions?\s+déclarées?\s+irrecevables?\s+au\s+regard\s+de\s+l'article\s+\d+\s+de\s+la\s+constitution|division)(\s+et\s+intitulé)?(\s+nouveaux|nouvelle)?\)?\]?(<\/[a-z]+>)?/i)) {
+
         if ($num_alinea == 0) {
           $num_article++;
           checkout_article();

@@ -19,6 +19,7 @@ class loadLoiTask extends sfBaseTask {
         while (($file = readdir($dh)) != false) {
           $precedent = '';
           $refcode = '';
+          if (isset($oldart)) unset($oldart);
           if ($file == ".." || $file == ".") continue;
           foreach(file($dir.$file) as $line) {
             $json = json_decode($line);

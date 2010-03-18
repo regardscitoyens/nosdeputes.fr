@@ -29,7 +29,7 @@ class loiActions extends sfActions
     foreach ($admts->fetchArray() as $adt) {
       $art = preg_replace('/premier/', '1er', strtolower($adt['sujet']));
       $art = preg_replace("/(l'\s?)?article\s/", '', $art);
-      if (preg_match('/adopt/i', $adt['sort'])) $add = array($adt['numero'].' <b>adopté</b>');
+      if (preg_match('/(adopté|favorable)/i', $adt['sort'], $match)) $add = array($adt['numero'].' <b>'.strtolower($match[1]).'</b>');
       else $add = array($adt['numero']);
       if (isset($amendements[$art])) $amendements[$art] = array_merge($amendements[$art], $add);
       else $amendements[$art] = $add;
@@ -102,7 +102,7 @@ class loiActions extends sfActions
       $titre = $this->chapitre->getLargeTitre();
       if (preg_match('/^(\d+)\s+bis$/',$n_chapitre, $match)) {
         $this->precedent = $match[1];
-         if (doctrine::getTable('TitreLoi')->findChapitre($loi_id, $match[1]+1)) $this->suivant = $match[1]+1;
+        if (doctrine::getTable('TitreLoi')->findChapitre($loi_id, $match[1]+1)) $this->suivant = $match[1]+1;
       } else {
         $pre = $n_chapitre - 1;
         $voisins = doctrine::getTable('TitreLoi')->createQuery('c')
@@ -117,8 +117,14 @@ class loiActions extends sfActions
           if ($n_chapitre == 1) $this->suivant = $voisins[0]['chapitre'];
           else $this->precedent = $voisins[0]['chapitre'];
         } else if ($ct == 2) {
-          $this->precedent = $voisins[0]['chapitre'];
-          $this->suivant = $voisins[1]['chapitre'];
+          if ($n_chapitre == 1)
+            $this->suivant = $voisins[0]['chapitre'];
+          else if (preg_match('/^(\d+)\s+bis$/', $voisins[1]['chapitre'], $match) && $match[1] < $n_chapitre)
+            $this->precedent = $voisins[1]['chapitre'];
+          else {
+            $this->precedent = $voisins[0]['chapitre'];
+            $this->suivant = $voisins[1]['chapitre'];
+          }
         } else if ($ct > 2) {
           if (preg_match('/bis/', $voisins[1]['chapitre']) && preg_match('/bis/', $voisins[2]['chapitre'])) {
             $this->precedent = $voisins[1]['chapitre'];

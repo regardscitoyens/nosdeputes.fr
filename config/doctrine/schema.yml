@@ -226,7 +226,7 @@ Amendement:
     sujet: string(100)
     sort:
       type: enum
-      values: ['Indéfini', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non soutenu', 'Retiré avant séance', 'Rectifié']
+      values: ['Indéfini', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non soutenu', 'Retiré avant séance', 'Rectifié', 'Favorable']
     date: date
     signataires: string
     texte: 

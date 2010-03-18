@@ -58,13 +58,15 @@
   }
   echo $texte; ?>
 </div>
-<div class="expose_amendement">
-  <h3>Exposé Sommaire :</h3>
-  <?php $expose = $amendement->getExpose();
-  $expose = preg_replace('/\s+(:|;|!|\?|»|\-)/', '&nbsp;\1', $expose);
-  $expose = preg_replace('/(«|\-)\s+/', '\1&nbsp;', $expose);
-  echo $expose; ?>
-</div>
+<?php if (isset($amendement->expose)) { ?>
+  <div class="expose_amendement">
+    <h3>Exposé Sommaire :</h3>
+    <?php $expose = $amendement->getExpose();
+    $expose = preg_replace('/\s+(:|;|!|\?|»|\-)/', '&nbsp;\1', $expose);
+    $expose = preg_replace('/(«|\-)\s+/', '\1&nbsp;', $expose);
+    echo $expose; ?>
+  </div>
+<?php } ?>
 <div class="commentaires" id="commentaires">
 <?php if ($amendement->nb_commentaires == 0)
   echo '<h3>Aucun commentaire n\'a encore été formulé sur cet amendement</h3>';
