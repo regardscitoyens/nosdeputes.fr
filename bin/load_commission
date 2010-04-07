@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "Obsolete";
+
+exit;
 echo Parse commission
 echo > /tmp/load_commission.log
 cd batch/commission/
