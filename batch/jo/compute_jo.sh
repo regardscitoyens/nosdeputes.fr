@@ -11,7 +11,7 @@ rm jo.html  jo_ind.html  jo.pdf  jos.html 2> /dev/null
 
 if [ ! -s pdf/$FILE.pdf ] && [ -z $NOPDF ]
 then
-    echo $FILE donwload
+    echo $FILE download
     perl download_jo.pl $DATE jo.pdf
     if [ ! -e jo.pdf ] ; then echo "ERROR jo.pdf" ; exit; fi
     ln jo.pdf pdf/$FILE.pdf
