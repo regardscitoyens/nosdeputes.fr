@@ -302,13 +302,18 @@ class Taggable extends Doctrine_Template
             }
             else
             {
-                $q = Doctrine_Query::create()
-                  ->select('t.name')
-                  ->from('Tag t INDEXBY t.name, t.Tagging tg')
-                  ->where('tg.taggable_id = ?', $this->getInvoker()->id)
+	        $q1 = Doctrine::getTable('Tagging')->createQuery('tg')
+		  ->select('tg.tag_id')
+		  ->where('tg.taggable_id = ?', $this->getInvoker()->id)
                   ->addWhere('tg.taggable_model = ?', get_class($this->getInvoker()))
                 ;
-
+		$ids = array();
+		foreach($q1->execute(array(), Doctrine::HYDRATE_ARRAY) as $i ){
+			$ids[] = $i['id'];
+		}
+		$q = Doctrine::getTable('Tag')->createQuery('t')
+		  ->select('t.name')
+		  ->whereIn('t.id', $ids); 
                 $saved_tags = $q->execute(array(), Doctrine::HYDRATE_ARRAY);
                 $tags = array();
                 

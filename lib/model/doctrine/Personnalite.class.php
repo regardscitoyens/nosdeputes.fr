@@ -5,6 +5,10 @@
  */
 class Personnalite extends BasePersonnalite
 {
+  public function __tostring() {
+    return $this->getNom();
+  }
+
   /*  public function save(Doctrine_Connection $conn = null) {
     Doctrinue::getTable('Personnalite')->hasChanged();
     return parent::save($conn);

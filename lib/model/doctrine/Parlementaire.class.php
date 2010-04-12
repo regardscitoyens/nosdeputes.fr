@@ -6,6 +6,10 @@
 class Parlementaire extends BaseParlementaire
 {
 
+  public function __tostring() {
+    return $this->getNom();
+  }
+
   /*  public function save() {
     Doctrine::getTable('Personnalite')->hasChanged();
     return parent::save($conn);

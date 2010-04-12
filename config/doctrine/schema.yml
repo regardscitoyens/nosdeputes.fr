@@ -20,6 +20,10 @@ Personnalite:
     type: concrete
 
 Parlementaire:
+  actAs:
+    Solrable:
+      title: nom
+      extra_weight: 1.5
   columns:     
     nom_circo: string(255)
     num_circo: integer
@@ -170,6 +174,11 @@ Intervention:
   actAs:
     Timestampable: ~
     Taggable: ~
+    Solrable:
+      description: [Parlementaire, Personnalite, Intervention]
+      moretags: [Parlementaire, Personnalite, type]
+      devaluate_if_wordcount_under: 100
+      date: date
   columns:
 #    id:
 #      type: string(36)
@@ -216,6 +225,10 @@ Amendement:
   actAs:
     Timestampable: ~
     Taggable: ~
+    Solrable:
+      description: [expose, texte, signataires]
+      moretags: [signataires, sort]
+      date: date
   columns:
     source:
       type: string(255)
@@ -254,6 +267,10 @@ QuestionEcrite:
   actAs:
     Timestampable: ~
     Taggable: ~
+    Solrable:
+      description: [Parlementaire, question, ministere, reponse, themes]
+      moretags: [Parlementaire, ministere, motif_retrait, numero, themes]
+      date: date
   columns:
     source:
       type: string(255)
@@ -351,6 +368,11 @@ VariableGlobale:
 Commentaire:
   actAs:
     Timestampable:
+    Solrable:
+      description: [Citoyen, commentaire]
+      moretags: [Citoyen, object_type, object_id]
+      date: date
+      index_if: is_public
   columns:
     citoyen_id: integer
     commentaire: string

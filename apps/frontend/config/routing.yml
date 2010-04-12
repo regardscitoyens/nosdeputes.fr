@@ -3,6 +3,12 @@ mail_test:
   url: /mail
   param: {module: mail, action: test}
 
+#Solr Search
+solr:
+  url: /solr/:query
+  param: {module: solr, action: search, query: ''}
+
+
 loi_redirect_article:
   url: /redirect/loi/:loi/:article
   param: {module: loi, action: redirect}
