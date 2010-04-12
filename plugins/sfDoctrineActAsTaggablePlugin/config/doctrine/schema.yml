@@ -1,0 +1,55 @@
+Tag:
+  columns:
+#    id:
+#      type: integer(4)
+#      primary: true
+#      autoincrement: true
+    name:
+      type:           string(100)
+    is_triple:        
+      type:           boolean
+    triple_namespace: 
+      type:           string(100)
+    triple_key:       
+      type:           string(100)
+    triple_value:     
+      type:           string(100)
+  indexes:
+    name:
+      # boutell: this needs to be an array not just a string.
+      # The Doctrine MySQL driver was either honoring or ignoring it.
+      # The SQLite driver throws an exception, and justly so. Same for
+      # the other three indexes here. The indexes on Tagging were
+      # set up correctly
+      fields: [name]
+    triple1:
+      fields: [triple_namespace]
+    triple2:
+      fields: [triple_key]
+    triple3:
+      fields: [triple_value]
+        
+Tagging:
+  columns:
+#    id:
+#      type: integer(4)
+#      primary: true
+#      autoincrement: true
+    tag_id:           
+      type:           integer
+      notnull:        true
+    taggable_model:   
+      type:           string(30)
+    taggable_id:      
+      type:           integer
+  relations:
+    Tag:
+  indexes:
+    tag:
+      fields: [tag_id]
+    taggable:
+      fields: [taggable_model, taggable_id]
+  attributes:
+    # don't export constraints. This is necessary because multiple models can 
+    #  join Tagging on taggable_id
+    export: [ all, constraints ] 
