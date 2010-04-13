@@ -77,7 +77,6 @@ class SolrConnector
     if (isset($this->_options['devaluate_if_wordcount_under']) && ($wclimit = $this->_options['devaluate_if_wordcount_under'])) {
        if ($wclimit > $wordcount)
 	 $extra_weight *= ($wordcount*0.5) / $wclimit + 0.5 ;
-      echo $wordcount." ".$extra_weight."\n";
     }
     
     // On donne un poids plus important au titre
