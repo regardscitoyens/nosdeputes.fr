@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 $file = $source = shift;
+$titre_chap = shift;
 
 $source =~ s/^[^\/]+\///;
 $source =~ s/html\///;
@@ -77,7 +78,7 @@ sub checkout_present_article {
   }
   if ($chapitre != 0 && $num_article != 0) { if (!(($loi == 1890 && ($chapitre == 5 || $num_article == 101)) || ($loi == 1697 && ($chapitre == 3 && $section >= 2 && $num_article == 9) ))) {
    if (!($exposearticle =~ /^$/)) {
-    $exposearticle =~ s/\s*$/<\/p>/;
+#    $exposearticle =~ s/\s*$/<\/p>/;
     if ($num_article == 1) {
       $num_article_titre = "1er";
     } else {
@@ -101,18 +102,20 @@ sub checkout_alinea {
 
 sub handle_text {
   if ($deftitre =~ /^none$/) {
-    if ($content =~ /^\s*(T|CHAP|Chap)(itre|ITRE)\s+(\d+|[IVX]+)(ER|er)?/) {
+    if (($titre_chap =~ /^titre$/ && $content =~ /^\s*(T|t)(itre|ITRE)\s+(\d+|[IVX]+)(ER|er)?/) || (!($titre_chap =~ /^titre$/) && $content =~ /^\s*(T|CHAP|Chap)(itre|ITRE)\s+(\d+|[IVX]+)(ER|er)?/)) {
       $chapitre++;
       $section = 0;
       $deftitre = 'chapitre';
-    } elsif ($content =~ /^\s*section\s+\d+/i) {
+    } elsif (($titre_chap =~ /^titre$/ && $content =~ /^\s*(C|c)(HAPITRE|hapitre)\s+(\d+|[IVX]+)(ER|er)?/) || (!($titre_chap =~ /^titre$/) && $content =~ /^\s*section\s+\d+/i)) {
       $section++;
       $deftitre = 'section';
     } elsif ($align =~ /center/ && $content =~ /<b>\s*Article/) {
       $content_art = $content;
       $content_art =~ s/<\/?(i|em)>//gi;
-      if ($content_art =~ /<b>\s*Article\s+(\d+)(er|\s+)?(un|duo|tre|)?(bis|qua|quint|sex|oct|nov|dec)?(ter|ies)?(\s*[A-Z]+)?/i) {
+      $content_art =~ s/<\/b>\s+<b>/ /gi;
+      if ($content_art =~ /<b>\s*Article\s+(\d+)(er|\s+)?(un|duo|tre|)?(bis|qua|quint|quinqu|sex|oct|nov|non|dec)?(ter|ies)?(\s*[A-Z]+)?/i) {
         $titre_article = $1.$2.$3.$4.$5.$6;
+        $titre_article =~ s/\s+$//;
         $num_alinea = 0;
         $texte = "";
       }
@@ -120,7 +123,7 @@ sub handle_text {
       if ($content =~ /(Fait|Délibéré\s+en\s+séance)(\s+publique)?,?\s+à\s+Paris,\s*le\s*\d+/) {
         exit;
       }
-      if (!($content =~ /^(<[a-z]+>)?\[?\(?(suppressions?\s+conformes?|supprimés?|dispositions?\s+déclarées?\s+irrecevables?\s+au\s+regard\s+de\s+l'article\s+\d+\s+de\s+la\s+constitution|division)(\s+et\s+intitulé)?(\s+nouveaux|nouvelle)?\)?\]?(<\/[a-z]+>)?/i)) {
+      if (!($content =~ /^(<[a-z]+>)?\[?\(?(non\smodifié|suppressions?\s+(conform|maintenu)es?|supprimés?|dispositions?\s+déclarées?\s+irrecevables?\s+au\s+regard\s+de\s+l'article\s+\d+\s+de\s+la\s+constitution|division)(\s+et\s+intitulé)?(\s+nouveaux|nouvelle)?\)?\]?(<\/[a-z]+>)?/i)) {
 
         if ($num_alinea == 0) {
           $num_article++;
