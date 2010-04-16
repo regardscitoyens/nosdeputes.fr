@@ -531,7 +531,7 @@ TitreLoi:
   columns:
     texteloi_id: string(8)
     chapitre: string(8)
-    section: integer
+    section: string(8)
     titre: string(512)
     expose:
       type: string

@@ -96,8 +96,48 @@ class loiActions extends sfActions
     $this->amendements = $this->getAmendements($loi_id, $this->articles);
     if (isset($this->section)) {
       $titre = $this->section->getLargeTitre();
-      if (doctrine::getTable('TitreLoi')->findSection($loi_id, $n_chapitre, $n_section+1))
-        $this->suivant = $n_section + 1;
+      if (preg_match('/^(\d+)\s+bis$/',$n_section, $match)) {
+        $this->precedent = $match[1];
+        if (doctrine::getTable('TitreLoi')->findSection($loi_id, $n_chapitre, $match[1]+1))
+          $this->suivant = $match[1] + 1;
+      } else {
+        $pre = $n_section - 1;
+        $voisins = doctrine::getTable('TitreLoi')->createQuery('c')
+          ->select('c.section')
+          ->where('c.texteloi_id = ?', $loi_id)
+          ->andWhere('c.chapitre = ?', $n_chapitre)
+          ->andWhereIn('c.section', array($pre, $pre." bis", $n_section." bis", $n_section+1))
+          ->orderBy('c.section')
+          ->fetchArray();
+        $ct = count($voisins);
+        if ($ct == 1) {
+          if ($n_section == 1) $this->suivant = $voisins[0]['section'];
+          else $this->precedent = $voisins[0]['section'];
+        } else if ($ct == 2) {
+          if ($n_section == 1)
+            $this->suivant = $voisins[0]['section'];
+          else if (preg_match('/^(\d+)\s+bis$/', $voisins[1]['section'], $match) && $match[1] < $n_section)
+            $this->precedent = $voisins[1]['section'];
+          else {
+            $this->precedent = $voisins[0]['section'];
+            $this->suivant = $voisins[1]['section'];
+          }
+        } else if ($ct > 2) {
+          if (preg_match('/bis/', $voisins[1]['section']) && preg_match('/bis/', $voisins[2]['section'])) {
+            $this->precedent = $voisins[1]['section'];
+            $this->suivant = $voisins[2]['section'];
+          } else {
+            $this->precedent = $voisins[0]['section'];
+            if (preg_match('/'.$n_section.'/', $voisins[1]['section'])) {
+              $this->precedent = $voisins[0]['section'];
+              $this->suivant = $voisins[1]['section'];
+            } else {
+              $this->precedent = $voisins[1]['section'];
+              $this->suivant = $voisins[2]['section'];
+            }
+          }
+        }
+      }
     } else {
       $titre = $this->chapitre->getLargeTitre();
       if (preg_match('/^(\d+)\s+bis$/',$n_chapitre, $match)) {

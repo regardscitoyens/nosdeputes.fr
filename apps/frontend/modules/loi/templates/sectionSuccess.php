@@ -8,8 +8,7 @@ if (isset($section)) echo '</a>'; ?></h2>
 if (isset($section)) {
   echo '<h3>Section '.$section->section.'&nbsp;: '.$section->titre.'</h3>';
   echo '<div class="pagerloi">';
-  if ($section->section > 1) {
-    $precedent = $section->section - 1;
+  if (isset($precedent)) {
     echo '<div class="precedent">'.link_to('Section '.$precedent, '@loi_section?loi='.$loi->texteloi_id.'&chapitre='.$chapitre->chapitre.'&section='.$precedent).'</div>';
   }
   if (isset($suivant))
