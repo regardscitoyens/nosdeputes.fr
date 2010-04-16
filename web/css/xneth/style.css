@@ -966,6 +966,10 @@ h2 {
   text-align: justify;
 }
 
+.loi .center {
+  text-align: center;
+}
+
 .question p:first-letter {
   padding-left: 20px;
 }
