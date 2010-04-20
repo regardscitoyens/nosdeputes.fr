@@ -48,10 +48,10 @@ if (isset($soussections)) {
     echo ' ('.$ss->nb_articles.' article';
     if ($ss->nb_articles > 1) echo 's';
     if ($ss->nb_commentaires > 0) {
-      echo ', '.$ss->nb_commentaires.' commentaire';
+      echo ', <span style="color:#697F0F;">'.$ss->nb_commentaires.' commentaire';
       if ($ss->nb_commentaires > 1) echo 's';
     }
-    echo ')';
+    echo '</span>)';
   }
   echo '<br/><small> &nbsp; Article';
   if ($nbart > 1) echo 's';
