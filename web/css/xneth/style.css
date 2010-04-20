@@ -5,6 +5,9 @@ body {
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
+.coms_loi_txt {
+  color: #4F5F0C;
+}
 .coms {
   width: 25px;
   height: 25px;

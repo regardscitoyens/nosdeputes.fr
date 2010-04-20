@@ -48,7 +48,7 @@ if (isset($soussections)) {
     echo ' ('.$ss->nb_articles.' article';
     if ($ss->nb_articles > 1) echo 's';
     if ($ss->nb_commentaires > 0) {
-      echo ', <span style="color:#697F0F;">'.$ss->nb_commentaires.' commentaire';
+      echo ', <span class="coms_loi_txt">'.$ss->nb_commentaires.' commentaire';
       if ($ss->nb_commentaires > 1) echo 's';
     }
     echo '</span>)';
