@@ -76,8 +76,9 @@ foreach ($articles as $a) {
   echo '<b>Article '.$a->titre.'</b></a>';
   if ($a->nb_commentaires > 0 || isset($amendements[$atitre])) echo ' (';
   if ($a->nb_commentaires > 0) {
-    echo $a->nb_commentaires.' commentaire';
+    echo '<span class="coms_loi_txt">'.$a->nb_commentaires.' commentaire';
     if ($a->nb_commentaires > 1) echo 's';
+	echo '</span>';
   }
   if ($a->nb_commentaires > 0 && isset($amendements[$atitre])) echo ', ';
   if (isset($amendements[$atitre])) {
