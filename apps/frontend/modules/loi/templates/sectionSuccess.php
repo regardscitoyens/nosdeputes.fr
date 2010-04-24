@@ -53,7 +53,7 @@ foreach ($articles as $a) {
       echo '<li><b><a href="'.url_for('@loi_section?loi='.$loi->texteloi_id.'&chapitre='.$chapitre->chapitre.'&section='.$nsec).'">';
       echo 'Section '.$nsec.'&nbsp;: '.$section['titre'];
       if (isset($section['expose']) && $section['expose'] != "") {
-        $expose = truncate_text(preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $section['expose']), 250);
+        $expose = truncate_text(preg_replace('/<\/?p>/i', ' ', $section['expose']), 250);
         echo '</b><blockquote>'.$expose.'</blockquote></a>';
       } else echo '</b></a>';
     }
@@ -91,7 +91,7 @@ foreach ($articles as $a) {
   }
   if ($a->nb_commentaires > 0 || isset($amendements[$atitre])) echo ')';
   if (isset($a->expose) && $a->expose != "") {
-    $tmpexpo = truncate_text(preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $a->expose), 250);
+    $tmpexpo = truncate_text(preg_replace('/<\/?p>/i', ' ', $a->expose), 250);
     if ($expose == '' || !(truncate_text($expose, 200) === truncate_text($tmpexpo, 200))) {
       $expose = $tmpexpo;
       echo '<a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'"><blockquote>'.$expose.'</blockquote></a>';
