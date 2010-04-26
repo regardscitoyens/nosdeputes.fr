@@ -65,7 +65,6 @@ class loadQuestionsTask extends sfBaseTask {
               $quest->ministere = $json->ministere_interroge." / ".$json->ministere_attribue;
               $quest->themes = $json->rubrique." / ".$json->tete_analyse." / ".$json->analyse;
               $quest->question = $json->question;
-              $quest->reponse = $json->reponse;
               $quest->content_md5 = md5($json->legislature.$json->question);
               if ($json->date_retrait) {
                 $quest->date_cloture = $json->date_retrait;
@@ -75,6 +74,7 @@ class loadQuestionsTask extends sfBaseTask {
                 $quest->date_cloture = $json->date_reponse;
               }
             }
+            $quest->reponse = $json->reponse;
             $quest->save();
             $quest->free();
           }
