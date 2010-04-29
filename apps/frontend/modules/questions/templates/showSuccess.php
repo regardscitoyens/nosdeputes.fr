@@ -11,13 +11,17 @@
     <?php echo '<p>'.$question->question.'</p>' ?>
   </div>
   <div id="reponse">
-    <?php if ($question->date_cloture && !$question->reponse) {
+    <?php if ($question->date_cloture && !$question->reponse && date("Y-m-d") > $question->date_cloture) {
       echo '<h3>Retirée le '.myTools::displayDate($question->date_cloture);
       if ($question->motif_retrait) echo ' ('.$question->motif_retrait.')';
       echo '</h3>';
     } else {
       echo '<h2>Réponse';
-      if ($question->date_cloture) echo ' émise le '.myTools::displayDate($question->date_cloture);
+      if ($question->date_cloture) {
+        if ($question->reponse) echo ' émise';
+        else echo ' à venir';
+        echo ' le '.myTools::displayDate($question->date_cloture);
+      }
       echo '</h2>';
       if ($question->reponse)
         echo '<p>'.$question->reponse.'</p>';
