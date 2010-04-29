@@ -44,7 +44,7 @@
       $sujet = $match[1].link_to($match[2].$match[3], '@loi_article?loi='.$loi->texteloi_id.'&article='.$art);
     }
     echo $sujet.' ';
-    if ($loi) echo '&mdash; '.link_to(preg_replace('/Simplifions la loi 2\.0 : (.*)\s*<br.*$/', '\1', $loi->titre), '@loi?loi='.$loi->texteloi_id);
+    if ($loi) echo '&mdash; '.link_to(preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $loi->titre), '@loi?loi='.$loi->texteloi_id);
     else echo 'de la loi N° '.myTools::getLinkLoi($amendement->texteloi_id);
 	if ($l = $amendement->getLettreLoi()) echo "($l)"; ?></h3>
 </div>
