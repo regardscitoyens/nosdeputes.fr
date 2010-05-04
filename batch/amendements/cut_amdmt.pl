@@ -163,7 +163,7 @@ foreach $line (split /\n/, $string)
 	    if ($line =~ /(\d{1,2})\/(\d{2})\/(\d{4})/) {
 		$amdmt{'date'} = $3.'-'.$2.'-'.sprintf('%02d', $1);
 	    }
-	} elsif ($line =~ /name="DESIGNATION_ARTICLE"/i) {
+	} elsif ($line =~ /name="DESIGNATION_ARTICLE"/i && !$amdmt{'sujet'}) {
 	    $line =~ s/^.*content="//i; 
 	    $line =~ s/"\s*(name|\>).*$//;
 	    $amdmt{'sujet'} = $line;
@@ -174,8 +174,12 @@ foreach $line (split /\n/, $string)
 	} elsif ($line =~ /name="NUM_AMENDG"/i) { 
 	    numero();
 	}
-    }
-    if ($line =~ /class="presente"/i) {
+    } elsif ($line =~ /date_amend.(\d{1,2}) avril (\d{4})\D/i && !$amdmt{'date'}) {
+           $amdmt{'date'} = $2.'-04-'.sprintf('%02d', $1);
+    } elsif ($line =~ /class="amddispotitre"/i && !$amdmt{'sujet'}) {
+            $line =~ s/<[^>]+>//g;
+            $amdmt{'sujet'} = $line;
+    } elsif ($line =~ /class="presente"/i) {
 	if ($presente == 0) {
 	    $presente = 1;
 	} elsif ($texte >= 1 && $line =~ /font-style: italic/i) {
