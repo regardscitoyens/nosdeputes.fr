@@ -68,7 +68,7 @@ foreach ($articles as $a) {
     echo '<li><b>Amendement';
     if (count($amendements['avant '.$atitre]) > 1) echo 's';
     echo ' proposant un article additionel avant l\'article '.$a->titre.'&nbsp;:</b> ';
-    foreach ($amendements['avant '.$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt.",")).' ';
+    foreach ($amendements['avant '.$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
     echo '</li>';
   }
   $nart = $a->ordre;
