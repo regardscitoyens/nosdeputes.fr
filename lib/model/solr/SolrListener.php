@@ -1,9 +1,14 @@
 <?php
 
-class SolrConnector
+class SolrConnector extends sfLogger
 {
   private $solr = NULL;
   private $_options = NULL;
+
+  protected function doLog($message, $priority)
+  {
+    error_log(sprintf('%s (%s)', $message, sfLogger::getPriorityName($priority)));
+  }
 
   public function __construct( $listener_options = NULL)
   {
@@ -12,8 +17,10 @@ class SolrConnector
     $url = sfConfig::get('app_solr_url', '/solr');
     $this->solr = new Apache_Solr_Service($host, $port, $url);
     
-    if(!$this->solr->ping())
+    if(!$this->solr->ping()) {
       throw new Exception('Search is not available right now.');
+//	$this->doLog('SolrConnector: Arg, Search is not available right now', sfLogger::ERR);
+    }
     
     $this->_options = $listener_options;
 
@@ -56,7 +63,8 @@ class SolrConnector
 
   public function updateLuceneRecord($obj)
   {
-    if ($t = $this->_options['index_if'] && $obj->get($t))
+    $t = NULL;
+    if ($t = $this->_options['index_if'] && $t && $obj->get($t))
       return ;
     $document = new Apache_Solr_Document();
     $document->addField('id', $this->getLuceneObjId($obj));
@@ -80,7 +88,7 @@ class SolrConnector
     }
     
     // On donne un poids plus important au titre
-    if ($t = $this->_options['title']) {
+    if (isset($this->_options['title']) && $t = $this->_options['title']) {
       $document->addField('title', $this->getObjFieldsValue($obj, $t), 1.2 * $extra_weight);
     }
     // La description
@@ -157,9 +165,9 @@ class SolrListener extends Doctrine_Record_Listener
 
     protected $solr = NULL;
     protected function getSolrConnector() {
-      if (!$solr)
-	$solr = new SolrConnector($this->_options);
-      return $solr;
+      if (!$this->solr)
+	$this->solr = new SolrConnector($this->_options);
+      return $this->solr;
     }
     
     // Réindexation après une création / modification
