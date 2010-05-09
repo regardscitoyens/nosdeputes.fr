@@ -1,7 +1,7 @@
 <?php if ($type == 'Parlementaire')
   echo include_component('parlementaire', 'header', array('parlementaire' => $object, 'titre' => $titre, 'rss' => $linkrss));
 else { ?>
-<h1><?if (isset($titre)) echo preg_replace('/^Les derniers commentaires sur (.*)$/', 'Les derniers commentaires sur <a href="'.url_for($url_link).'">\1</a>', $titre); ?><span class="rss"><a href="<?php echo url_for($linkrss); ?>"><img src="/images/xneth/rss.png" alt="Les derniers commentaires en RSS"/></a></span></h1>
+<h1><?php if (isset($titre)) echo preg_replace('/^Les derniers commentaires sur (.*)$/', 'Les derniers commentaires sur <a href="'.url_for($url_link).'">\1</a>', $titre); ?><span class="rss"><a href="<?php echo url_for($linkrss); ?>"><img src="/images/xneth/rss.png" alt="Les derniers commentaires en RSS"/></a></span></h1>
 <?php } ?>
 <div class="last_commentaires">
 <p><?php if (isset($object)) {
