@@ -100,7 +100,7 @@ class Amendement extends BaseAmendement {
   }
 
   public function getTitre() {
-    return 'Projet de loi N° '.$this->texteloi_id.' - '.$this->sujet.' : '.$this->getShortTitre();
+    return 'Projet de loi N° '.$this->texteloi_id.' : '.$this->sujet.' - '.$this->getShortTitre();
   }
 
   public function getShortTitre() {
