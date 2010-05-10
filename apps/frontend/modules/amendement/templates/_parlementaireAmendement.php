@@ -1,8 +1,11 @@
 <?php use_helper('Text');
-if (isset($loi)) $titre = preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $loi);
-else $titre = 'Projet de loi N°&nbsp;'.$amendement->texteloi_id; ?>
+$titre = $amendement->getTitre();
+if (isset($loi)) {
+  $loi = preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $loi);
+  $titre = str_replace('Projet de loi N° '.$this->texteloi_id, $loi, $titre);
+} ?>
   <div class="amendement" id="<?php echo $amendement->id; ?>">
-    <strong><h3><?php echo link_to(myTools::displayShortDate($amendement->date).' &mdash; '.$titre.' - '.$amendement->sujet.' : '.$amendement->getTitreNoLink().' ('.preg_replace('/indéfini/i', 'Sort indéfini', $amendement->getSort()).')', '@amendement?loi='.$amendement->texteloi_id.'&numero='.$amendement->numero); ?><br/>
+    <strong><h3><?php echo link_to(myTools::displayShortDate($amendement->date).' &mdash; '.$titre, '@amendement?loi='.$amendement->texteloi_id.'&numero='.$amendement->numero); ?><br/>
     <?php echo link_to(truncate_text($amendement->getSignataires(), 120), '@amendement?loi='.$amendement->texteloi_id.'&numero='.$amendement->numero); ?></h3></strong>
     <div class="texte_amendement"><?php
 $amdmt = preg_replace('/<br\/?>|<\/?p>|\&[^\;]+\;/i', ' ', $amendement->getTexte(0)." Exposé sommaire : ".$amendement->getExpose());

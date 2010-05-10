@@ -2,11 +2,9 @@
 
 $feed->setTitle("Les dernières interventions portant sur \"".$mots."\"");
 $feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for('@search_interventions_mots?search='.$mots));
-$i = 0;
-/*
-for ($i = 0 ; $i < $limit ; $i++)
-*/
-$query->limit(10);
+
+$query->limit(20);
+
 foreach($query->execute() as $i)
 {
   $item = new sfFeedItem();

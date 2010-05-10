@@ -334,40 +334,44 @@ class parlementaireActions extends sfActions
   }
 
   public static function dateSort($a, $b) {
-    return str_replace('-', '', $b->date) - str_replace('-', '', $a->date);
+    return str_replace('-', '', $b->updated_at) - str_replace('-', '', $a->updated_at);
   }
   public function executeRss(sfWebRequest $request) {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
 
-    $this->limit = 20;
+    $this->limit = 30;
 
-    $news = array(); 
+    $news = array();
+    $elements = 0;
     if ($request->getParameter('Intervention')) {
-	foreach(Doctrine::getTable('Intervention')->createQuery('i')
+      $elements++;  
+      foreach(Doctrine::getTable('Intervention')->createQuery('i')
 		->where('i.parlementaire_id = ?', $this->parlementaire->id)
-		->limit($this->limit)->orderBy('date DESC')->execute()
+		->limit($this->limit)->orderBy('updated_at DESC')->execute()
 		as $n) 
-	  $news[] = $n;
+        $news[] = $n;
     }
     if ($request->getParameter('QuestionEcrite')) {
+      $elements++;  
       foreach(Doctrine::getTable('QuestionEcrite')->createQuery('q')
 	      ->where('q.parlementaire_id = ?', $this->parlementaire->id)
-	      ->limit($this->limit)->orderBy('date DESC')->execute()
+	      ->limit($this->limit)->orderBy('updated_at DESC')->execute()
 	      as $n) 
 	$news[] = $n;
     }
     if ($request->getParameter('Amendement')) {
+      $elements++;  
       foreach(Doctrine::getTable('Amendement')->createQuery('a')
 	      ->leftJoin('a.ParlementaireAmendement pa')
 	      ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
               ->andWhere('a.sort <> ?', 'Rectifié')
-              ->orderBy('date DESC')->limit($this->limit)->execute()
+              ->orderBy('updated_at DESC')->limit($this->limit)->execute()
 	      as $n) 
 	$news[] = $n;
     }
     
-    usort($news, 'parlementaireActions::dateSort');
+    if ($elements > 1) usort($news, 'parlementaireActions::dateSort');
 
     $this->news = $news;
     $this->feed = new sfRssFeed();

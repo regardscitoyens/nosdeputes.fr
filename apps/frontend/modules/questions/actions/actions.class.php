@@ -38,6 +38,9 @@ class questionsActions extends sfActions
     $this->questions = doctrine::getTable('QuestionEcrite')->createQuery('q')
       ->where('q.parlementaire_id = ?', $this->parlementaire->id)
       ->orderBy('q.date DESC, q.numero DESC');
+
+    $request->setParameter('rss', array(array('link' => '@parlementaire_questions_rss?slug='.$this->parlementaire->slug, 'title'=>'Les dernières questions écrites de '.$this->parlementaire->nom.' en RSS')));
+
   }
 
   public function executeSearch(sfWebRequest $request)

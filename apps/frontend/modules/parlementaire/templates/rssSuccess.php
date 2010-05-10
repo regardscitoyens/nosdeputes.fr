@@ -7,7 +7,7 @@ for ($i = 0 ; $i < $limit ; $i++)
 {
   $new = $news[$i];
   $item = new sfFeedItem();
-  $item->setTitle($new->getTitre());
+  $item->setTitle(strip_tags($new->getTitre()));
   $item->setLink('http://'.$_SERVER['HTTP_HOST'].url_for($new->getLink()));
   $item->setAuthorName($parlementaire->nom);
   $item->setPubdate(strtotime($new->date));

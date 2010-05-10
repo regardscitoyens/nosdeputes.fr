@@ -1,4 +1,4 @@
-<?php $titre1 = $amendement->getTitre().' ('.preg_replace('/indéfini/i', 'Sort indéfini', $amendement->getSort()).')';
+<?php $titre1 = $amendement->getShortTitre();
       if ($section) $titre2 = link_to(ucfirst($section->titre), '@section?id='.$section->id);
       else $titre2=""; ?>
 <?php $sf_response->setTitle(strip_tags($titre2.'  '.$titre1)); ?>

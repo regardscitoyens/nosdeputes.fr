@@ -2,9 +2,9 @@
 
 $feed->setTitle("Les dernières questions écrites portant sur \"".$mots."\"");
 $feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for('@search_questions_ecrites_mots?search='.$mots));
-$i = 0;
 
-$query->limit(10);
+$query->limit(20);
+
 foreach($query->execute() as $q)
 {
   $item = new sfFeedItem();

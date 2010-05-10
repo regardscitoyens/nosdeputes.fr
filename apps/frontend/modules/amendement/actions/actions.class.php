@@ -62,6 +62,8 @@ class amendementActions extends sfActions
     //  ->andWhere('pa.numero_signataire <= ?', self::$seuil_amdmts)
       ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
     //    $this->response->setTitle('Les amendements de '.$this->parlementaire->nom);
+
+    $request->setParameter('rss', array(array('link' => '@parlementaire_amendements_rss?slug='.$this->parlementaire->slug, 'title'=>'Les derniers amendements de '.$this->parlementaire->nom.' en RSS')));
   }
 
   public function executeParlementaireSection(sfWebRequest $request) 
