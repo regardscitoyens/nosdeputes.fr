@@ -16,7 +16,7 @@
       if (!preg_match('/'.$h.'/', 'strong class="highlight"/'))
         $p_inter = highlight_text($p_inter, $h);
     }
-  } else $p_inter = truncate_text($inter, 400);
+  } else $p_inter = truncate_text(html_entity_decode(strip_tags($inter),ENT_NOQUOTES, "UTF-8"), 400);
   echo $p_inter;
 ?>
   <div class="contexte">
