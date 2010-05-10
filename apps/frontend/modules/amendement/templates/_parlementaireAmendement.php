@@ -2,7 +2,7 @@
 $titre = $amendement->getTitre();
 if (isset($loi)) {
   $loi = preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $loi);
-  $titre = str_replace('Projet de loi N° '.$this->texteloi_id, $loi, $titre);
+  $titre = str_replace('Projet de loi N° '.$amendement->texteloi_id, $loi, $titre);
 } ?>
   <div class="amendement" id="<?php echo $amendement->id; ?>">
     <strong><h3><?php echo link_to(myTools::displayShortDate($amendement->date).' &mdash; '.$titre, '@amendement?loi='.$amendement->texteloi_id.'&numero='.$amendement->numero); ?><br/>
