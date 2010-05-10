@@ -14,7 +14,7 @@ class QuestionEcrite extends BaseQuestionEcrite
     $str = substr(strip_tags($this->question), 0, 250);
     if (strlen($str) == 250) {
       $str .= '...';
-    }
+    } else if (!$str) $str = "";
     return $str;
   }
 
