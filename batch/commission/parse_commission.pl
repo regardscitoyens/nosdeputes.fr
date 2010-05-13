@@ -189,7 +189,9 @@ foreach $line (split /\n/, $string)
 	    $source = $url."#$1";
 	}elsif($line =~ /<a[^>]+>([^<]+)</) {
 	    $test = $1;
-	    if (!$commission && $test =~ /Commission/) {
+	    if (!$commission && $test =~ /Commission|mission/) {
+		$test =~ s/ Les comptes rendus de la m/M/;
+		$test =~ s/^ +//;
 		$commission = $test;
 	    }
 	}
