@@ -1,7 +1,8 @@
 options:
     type: MyISAM
-    collate: latin1_swedish_ci
-    charset: latin1
+    collate: utf8_unicode_ci
+    charset: utf8
+
 
 Personnalite:
   actAs:
@@ -469,9 +470,9 @@ Article:
       fields: [categorie, object_id]
       unique: true
     ititre:
-      fields: [categorie, titre]
+      fields: [categorie, titre(200)]
     ititrecitoyen:
-      fields: [categorie, titre, citoyen_id]
+      fields: [categorie, titre(200), citoyen_id]
     iarticle:
       fields: [article_id]
 
