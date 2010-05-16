@@ -372,7 +372,7 @@ Commentaire:
     Solrable:
       description: [Citoyen, commentaire]
       moretags: [Citoyen, object_type, object_id]
-      date: date
+      date: created_at
       index_if: is_public
   columns:
     citoyen_id: integer
