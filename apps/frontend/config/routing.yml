@@ -276,6 +276,9 @@ top_global_sorted:
 top_global: 
   url: /synthese
   param: {module: parlementaire, action: top}
+api_synthese:
+  url: /synthese/:date/:type
+  param: {module: api, action: top}
 
 # Affichage d'une question
 question_numero:

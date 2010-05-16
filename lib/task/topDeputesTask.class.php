@@ -7,10 +7,14 @@ class topDeputesTask extends sfBaseTask
     $this->namespace = 'top';
     $this->name = 'Deputes';
     $this->briefDescription = 'Top Deputes';
+    $this->addArgument('month', sfCommandArgument::OPTIONAL, 'First day of the month you want to add in db', '2009-01-01');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
+  /**
+   * Ordonne la hash table des députés sur une entre ($type) pour en calculer le classement
+   **/
   protected function orderDeputes($type, $reverse = 1) {
     $tot = 0;
     foreach(array_keys($this->deputes) as $id) {
@@ -62,14 +66,14 @@ class topDeputesTask extends sfBaseTask
   }
   protected function executeCommissionInterventions($q)
   {
-      $parlementaires = $q->select('p.id, count(i.id)')
-	->from('Parlementaire p, p.Interventions i')
-	->groupBy('p.id')
-	->andWhere('i.type = ?', 'commission')
-	->fetchArray();
-      foreach ($parlementaires as $p) {
-	$this->deputes[$p['id']]['commission_interventions']['value'] = $p['count'];
-      }
+    $q->select('p.id, count(i.id)')
+      ->from('Parlementaire p, p.Interventions i')
+      ->groupBy('p.id')
+      ->andWhere('i.type = ?', 'commission');
+    $parlementaires = $q->fetchArray();
+    foreach ($parlementaires as $p) {
+      $this->deputes[$p['id']]['commission_interventions']['value'] = $p['count'];
+    }
   }
   protected function executeHemicycleInvectives($q) 
   {
@@ -80,7 +84,7 @@ class topDeputesTask extends sfBaseTask
 	->andWhere('i.nb_mots <= 20')
 	->fetchArray();
       foreach ($parlementaires as $p) {
-	$this->deputes[$p['id']]['hemicycle_invectives']['value'] = $p['count'];
+	$this->deputes[$p['id']]['hemicycle_interventions_courtes']['value'] = $p['count'];
       }
   }
   protected function executeHemicycleInterventions($q)
@@ -154,11 +158,72 @@ class topDeputesTask extends sfBaseTask
       $this->deputes[$q['id']]['questions_orales']['value'] = $q['count'];
     }
   }
+
+  protected function executeMonth($date) {
+    $q = Doctrine_Query::create();
+
+    print "$date ";
+    print date('Y-m-d', strtotime("$date +1month"));
+    print "\n";
+
+    $qs = clone $q;
+    $qs->where('s.date >= ?', date('Y-m-d', strtotime($date)));
+    $qs->andWhere('s.date < ?', date('Y-m-d', strtotime("$date +1month")));
+    $this->executePresence(clone $qs);
+    $this->executeCommissionPresence(clone $qs);
+
+    print "Presence DONE\n";
+
+    $qi = clone $q;
+    $qi->where('i.date >= ?', date('Y-m-d', strtotime($date)));
+    $qi->andWhere('i.date < ?', date('Y-m-d', strtotime("$date +1month")));
+    $this->executeCommissionInterventions(clone $qi);
+    $this->executeHemicycleInterventions(clone $qi);
+    $this->executeHemicycleInvectives(clone $qi);
+    $this->executeQuestionsOrales(clone $qi);
+    
+    print "Intervention DONE\n";
+
+    $qa = clone $q;
+    $qa->where('a.date >= ?', date('Y-m-d', strtotime($date)));
+    $qa->andWhere('a.date < ?', date('Y-m-d', strtotime("$date +1month")));
+    $this->executeAmendementsSignes(clone $qa);
+    $this->executeAmendementsAdoptes(clone $qa);
+    $this->executeAmendementsRejetes(clone $qa);
+
+    print "Amendements DONE\n";
+
+    $qq = clone $q;
+    $qq->where('q.date >= ?', date('Y-m-d', strtotime($date)));
+    $qq->andWhere('q.date < ?', date('Y-m-d', strtotime("$date +1month")));
+    $this->executeQuestionsEcrites($qq);
+    
+    print "Question DONE\n";
+
+    return ;
+  }
+
   protected function execute($arguments = array(), $options = array())
   {
     $manager = new sfDatabaseManager($this->configuration);
 
     $this->deputes = array();
+
+    if (isset($arguments['month']) && preg_match('/(\d{4})-(\d{2})-01/', $arguments['month'], $m)) {
+      $this->executeMonth($arguments['month']);
+      $globale = doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month');
+      if (!$globale) {
+	$globale = new VariableGlobale();
+	$globale->champ = 'stats_month';
+	$globale->value = serialize(array());
+      }
+      $topMonth = unserialize($globale->value);
+      $topMonth[$m[1].$m[2]] = $this->deputes;
+      $globale->value = serialize($topMonth);
+      $globale->save();
+      return;
+    }
+
     
     $deputes = Doctrine::getTable('Parlementaire')->createQuery()
       ->where('type = ?', 'depute')
@@ -192,7 +257,7 @@ class topDeputesTask extends sfBaseTask
     
 
     $this->executeHemicycleInvectives(clone $qi);
-    $this->orderDeputes('hemicycle_invectives');
+    $this->orderDeputes('hemicycle_interventions_courtes');
     
     $qa = clone $q;
     $qa->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
