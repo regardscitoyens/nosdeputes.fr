@@ -73,6 +73,7 @@ sub auteurs {
     $line =~ s/\s+e{1,2}t\s+/, /g;
     $line =~ s/^et\s+/, /g;
     $line =~ s/\s*EXPOSÉ SOMMAIRE\s*//g;
+    $line =~ s/\s+,/,/g;
     if (!$line =~ /^$/) {
 	$amdmt{'auteurs'} = $amdmt{'auteurs'}.", ".$line;
     }
