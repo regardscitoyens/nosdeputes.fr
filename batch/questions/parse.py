@@ -78,6 +78,7 @@ pubdict = {
     u'R\xe9ponse publi\xe9e au JO le': (('date', 'date_reponse'), ('page', 'page_reponse')),
     u"Date de changement d'attribution": (('date', 'date_cht_attr'),),
     u'Date de signalement': (('date', 'date_signalement'),),
+    u'Date de renouvellement': (('date', 'date_signalement'),),
     u'Erratum de la r\xe9ponse publi\xe9 au JO le': (('date', 'date_erratum_reponse'), ('page', 'page_erratum_reponse')),
     u'Erratum de la question publi\xe9 au JO le': (('date', 'date_erratum_question'), ('page', 'page_erratum_question')),
 }
