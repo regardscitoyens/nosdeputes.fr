@@ -364,6 +364,15 @@ parlementaire:
 parlementaire_rss:
   url: /:slug/rss
   param: {module: parlementaire, action: rss, Intervention: 1, QuestionEcrite: 1, Amendement: 1}
+parlementaire_api_xml:
+  url: /:slug/xml
+  param: {module: api, action: parlementaire, type: xml}
+parlementaire_api_json:
+  url: /:slug/json
+  param: {module: api, action: parlementaire, type: json}
+parlementaire_api_csv:
+  url: /:slug/csv
+  param: {module: api, action: parlementaire, type: csv}
 parlementaire_interventions:
   url: /:slug/interventions/:type
   param: {module: intervention, action: parlementaire}

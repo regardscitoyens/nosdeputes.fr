@@ -159,6 +159,14 @@ class topDeputesTask extends sfBaseTask
     }
   }
 
+  protected function executeDeputesInfo() {
+    foreach (array_keys($this->deputes) as $id) {
+      $dep = doctrine::getTable('Parlementaire')->find($id);
+      $this->deputes[$id]['nom']['value'] = $dep->nom;
+      $this->deputes[$id]['groupe']['value'] = $dep->groupe_acronyme;
+    }
+  }
+
   protected function executeMonth($date) {
     $q = Doctrine_Query::create();
 
@@ -200,6 +208,9 @@ class topDeputesTask extends sfBaseTask
     
     print "Question DONE\n";
 
+    $this->executeDeputesInfo();
+
+    print "Info Deputes DONE\n";
     return ;
   }
 

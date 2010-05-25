@@ -5,6 +5,9 @@
  */
 class ParlementaireOrganisme extends BaseParlementaireOrganisme
 {
+  public function __tostring() {
+    return $this->getNom().' ('.$this->getFonction().')';
+  }
     public static function defImportance($fonction) {
       if (preg_match('`^(président|président)`i', $fonction)) return 100;
       if (preg_match('`(président|président)`i', $fonction)) return 90;
