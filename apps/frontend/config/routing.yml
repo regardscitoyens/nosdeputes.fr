@@ -125,6 +125,15 @@ list_parlementaires_search:
 list_parlementaires_search_empty:
   url: /deputes/rechercher/
   param: {module: parlementaire, action: list}
+list_parlementaires_json:
+  url: /deputes/json
+  param: {module: api, action: listParlementaires, type: json}
+list_parlementaires_xml:
+  url: /deputes/xml
+  param: {module: api, action: listParlementaires, type: xml}
+list_parlementaires_csv:
+  url: /deputes/csv
+  param: {module: api, action: listParlementaires, type: csv}
 list_parlementaires_alpha:
   url: /deputes/:search
   param: {module: parlementaire, action: list}

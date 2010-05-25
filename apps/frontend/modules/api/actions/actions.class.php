@@ -66,6 +66,35 @@ class apiActions extends sfActions
     return $hash;
   }
 
+  public function executeListParlementaires(sfWebRequest $request) 
+  {
+    $deputes = doctrine::getTable('Parlementaire')->createQuery('p')->execute();
+    $this->res = array('deputes' => array());
+    $this->champs = array();
+    $this->breakline = 'depute';
+    sfLoader::loadHelpers('Url');
+    foreach($deputes as $dep) {
+      $depute = array();
+      $depute['id'] = $dep->id;
+      $this->champs['id'] = 1;
+      $depute['nom'] = $dep->nom;
+      $this->champs['nom'] = 1;
+      if ($dep->fin_mandat) 
+	$depute['ancien_depute'] = 1;
+      else if ($request->getParameter('type') == 'csv')
+	$depute['ancien_depute'] = 0;
+      $this->champs['ancien_depute'] = 1;
+      $depute['mandat_debut'] = $dep->debut_mandat;
+      $this->champs['mandat_debut'] = 1;
+      if ($request->getParameter('type') == 'csv' && $dep->fin_mandat)
+	$depute['mandat_fin'] = $dep->fin_mandat;
+      $this->champs['mandat_fin'] = 1;
+      $depute['api_url'] = 'http://'.$_SERVER['HTTP_HOST'].url_for('api/parlementaire?type='.$request->getParameter('type').'&slug='.$dep->slug);
+      $this->champs['api_url'] = 1;
+      $this->res['deputes'][] = array('depute' => $depute);
+    }
+    $this->templatize($request, 'nosdeputes.fr_deputes');
+  }
   public function executeParlementaire(sfWebRequest $request) 
   {
     $slug = $request->getParameter('slug');
@@ -80,9 +109,9 @@ class apiActions extends sfActions
     $this->res['depute']['nom_de_famille'] = $depute->nom_de_famille;
     $this->res['depute']['nom_circo'] = $depute->nom_circo;
     $this->res['depute']['num_circo'] = $depute->num_circo;
-    $this->res['depute']['debut_mandat'] = $depute->debut_mandat;
+    $this->res['depute']['mandat_debut'] = $depute->debut_mandat;
     if ($depute->fin_mandat)
-      $this->res['depute']['fin_mandat'] = $depute->fin_mandat;
+      $this->res['depute']['mandat_fin'] = $depute->fin_mandat;
     $this->res['depute']['groupe'] = $depute->getGroupe();
     $this->res['depute']['groupe_sigle'] = $depute->groupe_acronyme;
     $this->res['depute']['responsabilites'] = $this->array2hash($depute->getResponsabilites(), 'responsabilite');
