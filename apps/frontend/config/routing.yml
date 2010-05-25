@@ -109,8 +109,14 @@ compterendu_edit:
 depute_id:
   url: /id/:id
   param: {module: parlementaire, action: id}
+depute_id_type:
+  url: /id/:id/:type
+  param: {module: parlementaire, action: id}
 parlementaire_id:
   url: /parlementaire/id/:id
+  param: {module: parlementaire, action: id}
+parlementaire_id_type:
+  url: /parlementaire/id/:id/:type
   param: {module: parlementaire, action: id}
 # Liste de tous les parlementaires ou par catégorie
 parlementaires_tags:

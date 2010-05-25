@@ -136,6 +136,9 @@ class parlementaireActions extends sfActions
   {
     $id = preg_replace('/^d/', '', $request->getParameter('id'));
     $p = Doctrine::getTable('Parlementaire')->find($id);
+    if ($type = $request->getParameter('type')) {
+      return $this->redirect('api/parlementaire?type='.$type.'&slug='.$p->slug);
+    }
     return $this->redirect('@parlementaire?slug='.$p->slug);
   }
 
