@@ -93,8 +93,9 @@ class apiActions extends sfActions
     $this->multi['responsabilite'] = 1;
     $this->champ = 'depute';
     $this->breakline = '';
-
-    $this->templatize($request, 'nosdeputes.fr_'.$slug);
+    $date = $depute->updated_at.'';
+    $date = preg_replace('/[- :]/', '', $date);
+    $this->templatize($request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
   }
 
   private function templatize($request, $filename) {
