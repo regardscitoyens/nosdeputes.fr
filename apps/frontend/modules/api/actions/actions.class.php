@@ -78,8 +78,16 @@ class apiActions extends sfActions
     $this->res['depute']['id'] = $depute->id;
     $this->res['depute']['nom'] = $depute->nom;
     $this->res['depute']['nom_de_famille'] = $depute->nom_de_famille;
+    $this->res['depute']['nom_circo'] = $depute->nom_circo;
+    $this->res['depute']['num_circo'] = $depute->num_circo;
+    $this->res['depute']['debut_mandat'] = $depute->debut_mandat;
+    if ($depute->fin_mandat)
+      $this->res['depute']['fin_mandat'] = $depute->fin_mandat;
     $this->res['depute']['groupe'] = $depute->getGroupe();
     $this->res['depute']['groupe_sigle'] = $depute->groupe_acronyme;
+    $this->res['depute']['responsabilites'] = $this->array2hash($depute->getResponsabilites(), 'responsabilite');
+    $this->res['depute']['responsabilites_extra_parlementaires'] = $this->array2hash($depute->getExtras(), 'responsabilite');
+    $this->multi['responsabilite'] = 1;
     $this->res['depute']['site_web'] = $depute->site_web;
     $this->res['depute']['url_an'] = 'http://www.assembleenationale.fr/13/tribun/fiches_id/'.$depute->id_an.'.asp';
     $this->res['depute']['emails'] = $this->array2hash(unserialize($depute->mails), 'email');
@@ -88,9 +96,9 @@ class apiActions extends sfActions
     $this->multi['adresse'] = 1;
     $this->res['depute']['autres_mandats'] = $this->array2hash(unserialize($depute->autres_mandats), 'mandat');
     $this->multi['mandat'] = 1;
-    $this->res['depute']['responsabilites'] = $this->array2hash($depute->getResponsabilites(), 'responsabilite');
-    $this->res['depute']['responsabilites_extra_parlementaires'] = $this->array2hash($depute->getExtras(), 'responsabilite');
-    $this->multi['responsabilite'] = 1;
+    $this->res['depute']['profession'] = $depute->profession;
+    $this->res['depute']['place_en_hemicycle'] = $depute->place_hemicycle;
+    $this->res['depute']['sexe'] = $depute->sexe;
     $this->champ = 'depute';
     $this->breakline = '';
     $date = $depute->updated_at.'';
