@@ -86,7 +86,7 @@ class apiActions extends sfActions
       $this->champs['ancien_depute'] = 1;
       $depute['mandat_debut'] = $dep->debut_mandat;
       $this->champs['mandat_debut'] = 1;
-      if ($request->getParameter('type') == 'csv' && $dep->fin_mandat)
+      if ($request->getParameter('type') == 'csv' || $dep->fin_mandat)
 	$depute['mandat_fin'] = $dep->fin_mandat;
       $this->champs['mandat_fin'] = 1;
       $depute['api_url'] = 'http://'.$_SERVER['HTTP_HOST'].url_for('api/parlementaire?type='.$request->getParameter('type').'&slug='.$dep->slug);
