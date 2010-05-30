@@ -164,6 +164,16 @@ class topDeputesTask extends sfBaseTask
       $dep = doctrine::getTable('Parlementaire')->find($id);
       $this->deputes[$id]['nom']['value'] = $dep->nom;
       $this->deputes[$id]['groupe']['value'] = $dep->groupe_acronyme;
+      $this->deputes[$id]['semaine']['value'] += 0;
+      $this->deputes[$id]['questions_orales']['value'] += 0;
+      $this->deputes[$id]['questions_ecrites']['value'] += 0;
+      $this->deputes[$id]['amendements_rejetes']['value'] += 0;
+      $this->deputes[$id]['amendements_signes']['value'] += 0;
+      $this->deputes[$id]['amendements_adoptes']['value'] += 0;
+      $this->deputes[$id]['commission_presences']['value'] += 0;
+      $this->deputes[$id]['commission_interventions']['value'] +=  0;
+      $this->deputes[$id]['hemicycle_interventions_courtes']['value'] += 0;
+      $this->deputes[$id]['hemicycle_interventions']['value'] += 0;
     }
   }
 
