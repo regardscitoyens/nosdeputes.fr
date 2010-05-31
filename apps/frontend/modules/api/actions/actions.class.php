@@ -22,7 +22,8 @@ class apiActions extends sfActions
   public function executeTop(sfWebRequest $request)
   {
     $date = $request->getParameter('date');
-    $vg = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month');
+    $this->forward404Unless(preg_match('/(\d{4})\d{2}/', $date, $d));
+    $vg = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$d[1]);
     $top = unserialize($vg->value);
 
     $this->forward404Unless(isset($top[$date]));
@@ -34,8 +35,10 @@ class apiActions extends sfActions
       $this->champs['id'] = 1;
 
       foreach (array_keys($top[$date][$id]) as $k) {
-	$depute[$k] = $top[$date][$id][$k]['value'];
-	$this->champs[$k] = 1;
+	//Gestion de l'ordre des parametres
+	$kfinal = preg_replace('/^\d*_/', '', $k);
+	$depute[$kfinal] = $top[$date][$id][$k]['value'];
+	$this->champs[$kfinal] = 1;
       }
       $this->res["deputes"][] = array('depute' => $depute);
     }
