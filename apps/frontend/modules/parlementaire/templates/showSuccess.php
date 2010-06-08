@@ -1,5 +1,5 @@
 <?php $top = $parlementaire->getTop();
-      $sf_response->setTitle($parlementaire->nom.' - Son activité de député à l\'Assemblée Nationale'); ?>
+      $sf_response->setTitle($parlementaire->nom.' - Son activité de député à l\'Assemblée Nationale - NosDéputés.fr'); ?>
 <div class="fiche_depute">
   <div class="info_depute">
 <h1><?php echo $parlementaire->nom; ?>, <?php echo $parlementaire->getLongStatut(1); ?><span class="rss"><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h1>
