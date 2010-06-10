@@ -50,7 +50,7 @@ $menu_citoyen = $selectcitoyen;
   <div id="contenu">
       <div id="top">
         <div class="initiative">
-          <a href="http://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);"><?php echo image_tag($style.'/top_initiative.png', array('alt' => 'Une initiative de RegardsCitoyens.fr')); ?></a>
+          <a href="http://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);"><?php echo image_tag($style.'/top_initiative.png', array('alt' => 'Une initiative de RegardsCitoyens.org')); ?></a>
         </div>
 <div id="connected" class="identification">
 <p id="loggued_top">
