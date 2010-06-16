@@ -7,7 +7,7 @@ class topDeputesTask extends sfBaseTask
     $this->namespace = 'top';
     $this->name = 'Deputes';
     $this->briefDescription = 'Top Deputes';
-    $this->addArgument('month', sfCommandArgument::OPTIONAL, 'First day of the month you want to add in db', '2009-01-01');
+    $this->addArgument('month', sfCommandArgument::OPTIONAL, 'First day of the month you want to add in db', '');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
