@@ -1,8 +1,4 @@
 # default rules
-mail_test:
-  url: /mail
-  param: {module: mail, action: test}
-
 #Solr Search
 solr:
   url: /solr/:query
