@@ -7,7 +7,7 @@
   <div class="texte_question"><?php
   if (!isset($nophoto))
     echo '<a href="'.url_for('@question_numero?numero='.$question->numero).'" class="intervenant"><img width="50" height="70" alt="'.$parlementaire->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$parlementaire->slug).'" /></a>';
-  $inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $question->getQuestion().' '.$question->getReponse().' Thèmes : '.$question->getThemes());
+  $inter = preg_replace('/<\/?[a-z]*>|\&[^\;]+\;/i', ' ', $question->getQuestion().' '.$question->getReponse().' Thèmes : '.$question->getThemes());
   $p_inter = '';
   if (isset($highlight)) {
     foreach ($highlight as $h)
