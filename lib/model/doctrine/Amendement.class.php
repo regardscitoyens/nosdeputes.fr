@@ -66,7 +66,7 @@ class Amendement extends BaseAmendement {
 
   public function addParlementaire($depute, $signataireindex) {
     foreach($this->getParlementaires() as $par)
-      if ($par == $depute) {
+      if ($par->id == $depute->id) {
         $par->free();
         return true;
       }
