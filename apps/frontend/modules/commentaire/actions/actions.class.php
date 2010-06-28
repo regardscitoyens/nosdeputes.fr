@@ -26,6 +26,7 @@ class commentaireActions extends sfActions
       $this->getUser()->setFlash('error', 'Vous avez déjà posté ce commentaire...');
       return $this->redirect($redirect_url[$this->type].$this->id);
     }
+
     if (!$request->isMethod('post')) {
       $this->getUser()->setFlash('error', 'Un problème technique est survenu');
       return $this->redirect($redirect_url[$this->type].$this->id);
@@ -83,6 +84,19 @@ $values['password'], false, $this))) {
     $ip = $ip . ',';
     if(isset($_SERVER['REMOTE_ADDR'])) 
 	    $ip = $ip . $_SERVER['REMOTE_ADDR']; 
+
+  // On teste l'existence préalable du même commentaire
+    if ($existing = doctrine::getTable('Commentaire')->createQuery('c')
+      ->select('created_at')
+      ->where('citoyen_id = ?', $this->getUser()->getAttribute('user_id'))
+      ->andWhere('commentaire LIKE ?', $this->commentaire)
+      ->andWhere('object_type = ?', $this->type)
+      ->andWhere('object_id = ?', $this->id)
+      ->fetchArray()) {
+      $this->getUser()->setFlash('error', 'Vous avez déjà posté ce même commentaire le '.myTools::displayShortDate($existing[0]['created_at']));
+      return;
+    }
+
   
     $commentaire = $this->form->getObject();
     //Pas trouvé d'autre moyen que de bypasser le form pour conserver la presentation htmlisée
