@@ -65,11 +65,8 @@ class Amendement extends BaseAmendement {
   }
 
   public function addParlementaire($depute, $signataireindex) {
-    foreach($this->getParlementaires() as $par)
-      if ($par->id == $depute->id) {
-        $par->free();
-        return true;
-      }
+    foreach(doctrine::getTable('ParlementaireAmendement')->createQuery('pa')->select('parlementaire_id')->where('amendement_id = ?', $this->id)->fetchArray() as $parlamdt) if ($parlamdt['parlementaire_id'] == $depute->id) return true;
+    
     $pa = new ParlementaireAmendement();
     $pa->_set('Parlementaire', $depute);
     $pa->_set('Amendement', $this);
