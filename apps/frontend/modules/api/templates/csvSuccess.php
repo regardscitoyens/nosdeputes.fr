@@ -29,7 +29,10 @@ function depile_assoc($asso, $breakline, $multi) {
 function depile($res, $breakline, $multi, $comma = 0) {
   if (is_array($res)) {
     if (!isset($res[0])) {
-      return depile_assoc($res, $breakline, $multi);
+      if (array_keys($res)) 
+	return depile_assoc($res, $breakline, $multi);
+      echo ";";
+      return;
     }
     foreach($res as $r) {
       $semi = depile($r, $breakline, $multi);
