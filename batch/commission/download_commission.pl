@@ -36,7 +36,7 @@ while ($ok) {
 }
 
 @url = keys %url;
-push(@url, "http://www.assemblee-nationale.fr/13/budget/plf2010/commissions_elargies/cr/");
+push(@url, "http://www.assemblee-nationale.fr/13/budget/plf2010/commissions_elargies/cr/", "http://www.assemblee-nationale.fr/13/cr-mec/09-10/index.asp");
 $a = WWW::Mechanize->new();
 
 foreach $url (@url) {
