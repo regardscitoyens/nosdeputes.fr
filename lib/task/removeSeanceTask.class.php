@@ -11,12 +11,6 @@ class removeSeanceTask extends sfBaseTask {
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
  }
 
-  function __destruct() {
-    if ($this->transaction)
-      echo $this->transaction->rollback();
-    echo "deletet\n";
-  }
-
   protected function execute($arguments = array(), $options = array()) {
     $manager = new sfDatabaseManager($this->configuration);
 
@@ -56,7 +50,7 @@ class removeSeanceTask extends sfBaseTask {
     if (count($presences)) {
       $query = Doctrine_Query::create($this->conn)
 	->delete('PreuvePresence p')
-	->whereIn('p.presence_id IN', $presences);
+	->whereIn('p.presence_id', $presences);
       
       $query->execute();
       
