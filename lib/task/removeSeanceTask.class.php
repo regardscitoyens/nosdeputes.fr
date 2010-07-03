@@ -1,6 +1,7 @@
 <?php
 
 class removeSeanceTask extends sfBaseTask {
+  protected $transaction = false;
   protected function configure() {
     $this->namespace = 'remove';
     $this->name = 'Seance';
@@ -10,62 +11,89 @@ class removeSeanceTask extends sfBaseTask {
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
  }
 
+  function __destruct() {
+    if ($this->transaction)
+      echo $this->transaction->rollback();
+    echo "deletet\n";
+  }
+
   protected function execute($arguments = array(), $options = array()) {
     $manager = new sfDatabaseManager($this->configuration);
+
+
+    $this->conn = Doctrine_Manager::connection();
+
+    try {
+      $this->conn->beginTransaction();
+      $this->executeIntern($arguments, $option);
+      $this->conn->commit();
+    }catch(Exception $e) {
+      print "Rollback due to ".$e->getMessage()."\n";
+      $this->conn->rollback();
+    }
+  }
+
+  private function executeIntern($arguments = array(), $options = array()) {
     $seance = Doctrine::getTable('Seance')->find($arguments['id']);
     if (!$seance) {
       print "Séance inexistante\n";
-      return;
+      throw new Exception('Séance inexistante');
+      return ;
     }
     $id = $seance->id;
-    print $id;
+    print "Séance n° $id :\n";
+
+
     if (Doctrine::getTable('Commentaire')->createQuery('c')->where('c.object_type = ?', 'Intervention')->andWhere('c.object_id = ?', $id)->fetchOne()) {
       print "Un ou plusieurs commentaires sont associés à cette séance, veillez à corriger cela en premier lieu\n";
+      throw new Exception('commentaire');
       return;
     }
 
     print " - Gère les présences\n";
-    foreach (Doctrine_Query::create()->select('id')->from('Presence')->where('seance_id = ?', $id)->fetchArray() as $presence) {
-      $pres = $presence[id];
-      print $pres."//";
-      $query = Doctrine_Query::create()
-        ->delete('PreuvePresence p')
-        ->where('p.presence_id = ?', $pres)
-        ->execute();
-      $query = Doctrine_Query::create()
-        ->delete('Presence p')
-        ->where('p.id = ?', $pres);
-      if (! $query->execute()) {
-        print 'Suppression impossible de la présence N°'.$pres."\n";
-        return;
-      }
-    }
+    $presences = Doctrine_Query::create($this->conn)->select('id')->from('Presence')->where('seance_id = ?', $id)->fetchArray();
+    print "    ".count($presences)." à supprimer\n";
+    if (count($presences)) {
+      $query = Doctrine_Query::create($this->conn)
+	->delete('PreuvePresence p')
+	->whereIn('p.presence_id IN', $presences);
+      
+      $query->execute();
+      
+      $query = Doctrine_Query::create($this->conn)
+	->delete('Presence p')
+      ->whereIn('p.id', $presences);
+      
+      $query->execute();
 
-    print "\n - Gère les interventions et leurs tags\n";
-    foreach (Doctrine_Query::create()->select('id')->from('Intervention')->where('seance_id = ?', $id)->fetchArray() as $intervention) {
-      $inter = $intervention[id];
-      print $inter."//";
-      $query = Doctrine_Query::create()
-        ->delete('Tagging t')
-        ->where('t.taggable_model = ?', 'Intervention')
-        ->andWhere('t.taggable_id = ?', $inter)
-        ->execute();
-      $query = Doctrine_Query::create()
-        ->delete('Intervention i')
-        ->where('i.id = ?', $inter);
-      if (! $query->execute()) {
-        print 'Suppression impossible de l\'intervention N°'.$inter."\n";
-        return;
-      }
     }
-    print "\n";
-    $query = Doctrine_Query::create()
+    print "    DONE\n";
+
+    print " - Gère les interventions et leurs tags\n";
+    $interventions = Doctrine_Query::create($this->conn)->select('id')->from('Intervention')->where('seance_id = ?', $id)->fetchArray();
+    print "    ".count($interventions)." à supprimer\n";
+    if (count($interventions)) {
+      $query = Doctrine_Query::create($this->conn)
+	->delete('Tagging t')
+	->whereIn('t.taggable_id', $interventions)
+	->andWhere('t.taggable_model = ?', 'Intervention');
+      $query->execute();
+      
+      $query = Doctrine_Query::create($this->conn)
+	->delete('Intervention i')
+	->whereIn('i.id', $interventions);
+      $query->execute();
+
+    }
+    print "    DONE\n";
+
+    //    throw new Exception('test');
+
+    $query = Doctrine_Query::create($this->conn)
       ->delete('Seance s')
       ->where('s.id = ?', $id);
-    if (! $query->execute()) {
-      print 'Suppression impossible de la séance '.$id."\n";
-      return;
-    }
+    $query->execute();
+
     print "Séance ".$id." supprimée avec ses dépendances\n";
   }
 }
