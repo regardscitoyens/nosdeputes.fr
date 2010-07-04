@@ -121,7 +121,6 @@ foreach $line (split /\n/, $string)
 	$line =~ s/M[me\.]+ //gi;
 	if ($line =~ s/\/?(Présents|Assistaient également à la réunion)\W+//) {
 	    push @presents, split /, /, $line; #/
-            print join('/', @presents);
 	}
     }
     if ($line =~ /Membres présents ou excusés/) {
