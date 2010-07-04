@@ -49,6 +49,7 @@ sub checkout {
 	return ;
     }
     foreach $depute (@presents) {
+	$depute =~ s/[\/<\|]//g;
 	$depute =~ s/^\s*M[me\.]+\s+//;
 	$depute =~ s/\s+$//;
 	print '{"reunion": "'.$date.'", "session": "'.$heure.'", "commission": "'.$commission.'", "depute": "'.$depute.'", "source": "'.$source.'"}'."\n";
@@ -118,11 +119,11 @@ foreach $line (split /\n/, $string)
     if ($present) {
 	$line =~ s/<[^>]+>//gi;
 	$line =~ s/&[^;]*;/ /gi;
-	if ($line =~ s/\/?(Présents|Assistaient également à la réunion)\W+//) {
+	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion)\W+//) {
 	    push @presents, split /, /, $line; #/
 	}
     }
-    if ($line =~ /Membres présents ou excusés/) {
+    if ($line =~ /[>\|\/](Membres? présents? ou excusés?|Présences? en réunion)[<\|\/]/) {
 	$present = 1;
     }
 }
