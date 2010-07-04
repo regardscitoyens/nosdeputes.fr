@@ -44,26 +44,15 @@ $mois{'décembre'} = '12';
 #exit;
 $cpt = 0;
 sub checkout {
+    if ($#presents <= 0) {
+	print STDERR "$source: Pas de présent trouvé\n";
+	return ;
+    }
     foreach $depute (@presents) {
 	$depute =~ s/^\s+//;
 	$depute =~ s/\s+$//;
 	print '{"reunion": "'.$date.'", "session": "'.$heure.'", "commission": "'.$commission.'", "depute": "'.$depute.'", "source": "'.$source.'"}'."\n";
     }
-    return ;
-    $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
-    if ($intervenant) {
-	if ($intervenant =~ s/ et M[mes\.]* (.*)//) {
-	    print $out.'"intervenant": "'.$1."\"}\n";
-	}
-	print $out.'"intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}."\"}\n";
-    }elsif($intervention) {
-	print $out.'"intervenant":"'."\"}\n";
-    }else {
-	return ;
-    }
-    $commentaire = "";
-    $intervenant = "";
-    $intervention = "";
 }
 
 $string =~ s/\r//g;
