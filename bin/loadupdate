@@ -98,6 +98,12 @@ while ls batch/commission/out | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
 	php symfony load:Commission 
 done;
+echo "Load Présences en Commissions"
+echo =======================
+while ls batch/commission/presents | grep [a-z] > /dev/null ; do
+        php symfony cc --env=test  --app=frontend > /dev/null
+        php symfony load:JO --source=cri
+done;
 echo Load Amendements
 echo =======================
 while ls batch/amendements/json | grep [a-z] > /dev/null ; do
