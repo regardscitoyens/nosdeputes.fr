@@ -16,10 +16,10 @@ class loadJOTask extends sfBaseTask
   {
     if ($options['source'] === "jo") {
       $workdir = "jo/xml";
-      $sourceformat = "";
+      $typesource = "jo";
     } else if ($options['source'] === "cri") {
       $workdir = "commission/presents";
-      $sourceformat = "Liste des présents en bas de ";
+      $typesource = "compte-rendu";
     } else {
       echo "Error wrong value for option --source, choose cri or jo";
       return;
@@ -68,7 +68,7 @@ class loadJOTask extends sfBaseTask
 	      continue;
 	    }
 	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->reunion, $jo->session);
-	    $seance->addPresence($depute, 'jo', $sourceformat.$jo->source);
+	    $seance->addPresence($depute, $typesource, $jo->source);
 	    $seance->free();
 	    $commission->free();
 	    $depute->free();
