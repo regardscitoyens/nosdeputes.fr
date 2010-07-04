@@ -6,15 +6,25 @@ class loadJOTask extends sfBaseTask
   {
     $this->namespace = 'load';
     $this->name = 'JO';
-    $this->briefDescription = 'Load JO data';
+    $this->briefDescription = 'Load Présences from JO data or CRI';
+    $this->addOption('source', null, sfCommandOption::PARAMETER_OPTIONAL, 'Define the source to load: jo or cri', 'jo');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
   protected function execute($arguments = array(), $options = array())
   {
-    // your code here
-    $dir = dirname(__FILE__).'/../../batch/jo/xml/';
+    if ($options['source'] === "jo") {
+      $workdir = "jo/xml";
+      $sourceformat = "";
+    } else if ($options['source'] === "cri") {
+      $workdir = "commission/presents";
+      $sourceformat = "Liste des présents en bas de ";
+    } else {
+      echo "Error wrong value for option --source, choose cri or jo";
+      return;
+    }
+    $dir = dirname(__FILE__).'/../../batch/'.$workdir.'/';
     $manager = new sfDatabaseManager($this->configuration);    
 
     if (is_dir($dir)) {
@@ -58,7 +68,7 @@ class loadJOTask extends sfBaseTask
 	      continue;
 	    }
 	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->reunion, $jo->session);
-	    $seance->addPresence($depute, 'jo', $jo->source);
+	    $seance->addPresence($depute, 'jo', $sourceformat.$jo->source);
 	    $seance->free();
 	    $commission->free();
 	    $depute->free();
