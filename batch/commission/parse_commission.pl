@@ -191,9 +191,11 @@ foreach $line (split /\n/, $string)
 	}elsif($line =~ /<a[^>]+>([^<]+)</) {
 	    $test = $1;
 	    if (!$commission && $test =~ /Commission|mission/) {
-		$test =~ s/ Les comptes rendus de la m/M/;
+		$test =~ s/\s*Les comptes rendus de la //;
 		$test =~ s/^ +//;
-		$commission = $test;
+		if ($test !~ /spéciale$/i) {
+			$commission = $test;
+		}
 	    }
 	}
     }
