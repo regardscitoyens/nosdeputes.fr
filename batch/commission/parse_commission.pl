@@ -146,6 +146,7 @@ sub rapporteur
 $string =~ s/\r//g;
 $string =~ s/&nbsp;/ /g;
 $string =~ s/&#8217;/'/g;
+$string =~ s/d\W+évaluation/d'évaluation/g;
 $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/ission d\W+information/ission d'information/gi;
