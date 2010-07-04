@@ -125,7 +125,7 @@ foreach $line (split /\n/, $string)
 	    push @presents, split /, /, $line; #/
 	}
     }
-    if ($line =~ /[>\|\/](Membres? présents? ou excusés?|Présences? en réunion)[<\|\/]/) {
+    if ($line =~ /[>\|\/](Membres? présents? ou excusés?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/) {
 	$present = 1;
     }
 }
