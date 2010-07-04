@@ -26,7 +26,7 @@ class removeSeanceTask extends sfBaseTask {
 
     print " - Gère les présences\n";
     foreach (Doctrine_Query::create()->select('id')->from('Presence')->where('seance_id = ?', $id)->fetchArray() as $presence) {
-      $pres = $presence[id];
+      $pres = $presence['id'];
       print $pres."//";
       $query = Doctrine_Query::create()
         ->delete('PreuvePresence p')
@@ -43,7 +43,7 @@ class removeSeanceTask extends sfBaseTask {
 
     print "\n - Gère les interventions et leurs tags\n";
     foreach (Doctrine_Query::create()->select('id')->from('Intervention')->where('seance_id = ?', $id)->fetchArray() as $intervention) {
-      $inter = $intervention[id];
+      $inter = $intervention['id'];
       print $inter."//";
       $query = Doctrine_Query::create()
         ->delete('Tagging t')
