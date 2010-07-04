@@ -144,7 +144,7 @@ PreuvePresence:
     presence_id: integer
     type:
       type: enum
-      values: ['jo', 'intervention']
+      values: ['jo', 'intervention', 'compte-rendu']
     source: string(200)
   relations:
     Presence:
