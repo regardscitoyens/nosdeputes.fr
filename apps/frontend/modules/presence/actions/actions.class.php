@@ -54,12 +54,20 @@ class presenceActions extends sfActions
       ->leftJoin('s.Organisme')
       ->fetchOne();
     $this->forward404Unless($this->seance);
-    $this->presences = doctrine::getTable('Presence')->createQuery('p')
+    $this->intervenants = doctrine::getTable('Presence')->createQuery('p')      
+      ->leftJoin('p.Parlementaire pa')
+      ->leftJoin('p.Preuves pr')
+      ->where('p.seance_id = ?', $seance_id)
+      ->andWhere('pr.type = ?', 'intervention')
+      ->groupBy('pa.id')
+      ->orderBy('pa.nom_de_famille')
+      ->execute();
+    $this->presents = doctrine::getTable('Presence')->createQuery('p')
       ->where('p.seance_id = ?', $seance_id)
       ->leftJoin('p.Parlementaire pa')
       ->leftJoin('p.Preuves pr')
       ->groupBy('pa.id')
-      ->orderBy('p.nb_preuves DESC, pa.nom_de_famille ASC')
+      ->orderBy('pa.nom_de_famille ASC')
       ->execute();
   }
 }

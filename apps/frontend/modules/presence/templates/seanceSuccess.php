@@ -9,7 +9,7 @@ if ($seance->type == 'commission')
   echo include_component('plot', 'groupes', array('plot' => 'seance_com_'.$seance->id, 'nolink' => true)); ?>
 </div>
   <div class="photos"><p>
-  <?php $ntot = count($presences); $line = floor($ntot/(floor($ntot/16)+1)); $ct = 0; foreach ($presences as $presence) {
+  <?php $ntot = count($presents); $line = floor($ntot/(floor($ntot/16)+1)); $ct = 0; foreach ($presents as $presence) {
     $depute = $presence->getParlementaire();
     $titre = $depute->nom.', '.$depute->groupe_acronyme;
     if ($ct != 0 && $ct != $ntot-1 && !($ct % $line)) echo '<br/>'; $ct++;
@@ -17,21 +17,28 @@ if ($seance->type == 'commission')
   } ?></p></div>
 
 <ul>
-<?php $titre = 0; foreach($presences as $presence) : ?>
-<?php $p = $presence->getParlementaire(); ?>
-<?php $nbpreuves = $presence->getNbPreuves(); 
-    if ($titre == 0) {
-      if ($nbpreuves == 1)
-        $titre = -1;
-      else {
-        $titre++;
-        echo '<li>Participants&nbsp;:<ul>';
-      }
-    } else if ($titre == 1 && $nbpreuves == 1) {
-      $titre++;
-      echo '</ul><li>Non-participants&nbsp;:<ul>';
-    } ?>
-<li><?php echo link_to($p->nom, '@parlementaire?slug='.$p->getSlug()).', '.$p->getLongStatut(1); ?> <em><a href="<?php echo url_for('@preuve_presence_seance?seance='.$seance->id.'&slug='.$p->slug); ?>">(<?php echo ($nbpreuves>1) ? "$nbpreuves preuves" : "1 preuve"; ?>)</a></em></li>
-<?php endforeach;
-  if ($titre == 2) echo '</ul>'; ?>
+<?php $nb = count($intervenants);
+$interv = array();
+if ($nb > 0) {
+  echo '<li>'; if ($nb == 1) echo 'Es'; else echo 'Son'; echo 't intervenu'; if ($nb > 1) echo 's'; echo '&nbsp;:<ul>';
+  foreach($intervenants as $presence) {
+    $p = $presence->getParlementaire();
+    $interv[$p->id] = 1;
+    $nbpreuves = $presence->getNbPreuves(); 
+    echo '<li>'.link_to($p->nom, '@parlementaire?slug='.$p->getSlug()).', '.$p->getLongStatut(1).'<em><a href="'.url_for('@preuve_presence_seance?seance='.$seance->id.'&slug='.$p->slug).'"> ('; if ($nbpreuves > 1) echo "$nbpreuves preuves"; else echo "1 preuve"; echo ')</a></em></li>';
+  }
+  echo '</ul></li>';
+}
+$nb2 = $ntot - $nb;
+if ($nb2 > 0) {
+  echo '<li>Assistai'; if ($nb2 > 1) echo 'en'; echo 't à la séance&nbsp;:<ul>';
+  foreach($presents as $presence) {
+    $p = $presence->getParlementaire();
+    if (isset($interv[$p->id])) continue;
+    $nbpreuves = $presence->getNbPreuves();  
+    echo '<li>'.link_to($p->nom, '@parlementaire?slug='.$p->getSlug()).', '.$p->getLongStatut(1).'<em><a href="'.url_for('@preuve_presence_seance?seance='.$seance->id.'&slug='.$p->slug).'"> ('; if ($nbpreuves > 1) echo "$nbpreuves preuves"; else echo "1 preuve"; echo ')</a></em></li>';
+  }
+  echo '</ul></li>';
+}
+?>
 </ul>
