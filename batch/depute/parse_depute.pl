@@ -52,7 +52,7 @@ sub contact {
 	$_ = $p->get_text('/u');
 	if (/Mél/) {
 	    $_ = $p->get_text('/li');
-	    if (/MAILTO:([^_]+)_(\w+)/i) {
+	    if (/MAILTO:([^_]+)_([\w\-]+)/i) {
 		${$depute{'Mails'}}{$1.$2.'@assemblee-nationale.fr'} = 1;
 	    }
 	}elsif (/Site internet/) {
