@@ -83,7 +83,7 @@ if (isset($soussections)) {
 <br/>
 <?php if ((!$loi->parlementaire_id && $loi->expose) || $loi->texteloi_id == 2760) {
   echo '<h2>Exposé des motifs&nbsp;:</h2>';
-  if ($loi->parlementaire_id && $perso = $loi->getParlementaire() && $perso->getPageLink() && $photo = $perso->hasPhoto())
+  if ($loi->parlementaire_id && $perso = $loi->getParlementaire()) if ($perso->getPageLink() && $photo = $perso->hasPhoto())
     echo '<div class="intervenant"><a href="'.url_for($perso->getPageLink()).'"><img alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a></div>';
   echo '<div class="loi">'.preg_replace('/\s+(:|;|\?|!)/', '&nbsp;\1', $loi->expose).'</div><br/>';
 } ?>

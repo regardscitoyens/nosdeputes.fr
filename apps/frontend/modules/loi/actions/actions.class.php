@@ -24,7 +24,7 @@ class loiActions extends sfActions
         if ($likestr == '') $likestr = $like;
         else $likestr .= ' OR '.$like;
       }
-      $admts->andWhere($likestr);
+      if (!$likestr === '') $admts->andWhere($likestr);
     }
     foreach ($admts->fetchArray() as $adt) {
       $art = preg_replace('/premier/', '1er', strtolower($adt['sujet']));
