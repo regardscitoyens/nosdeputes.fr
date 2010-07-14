@@ -1,6 +1,6 @@
 <h1><?php echo $loi->titre; ?></h1>
 <?php if ($loi->source) echo '<p class="source"><a href="'.$loi->source.'" rel="nofollow">Source</a></p><div class="clear"></div>';
-if ($loi->parlementaire_id && $loi->expose) { ?>
+if ($loi->parlementaire_id && $loi->expose && !($loi->texteloi_id == 2760)) { ?>
   <div class="loi">
   <div class="intervenant">
   <?php $perso = $loi->getParlementaire();
@@ -81,7 +81,12 @@ if (isset($soussections)) {
 } ?>
 </div>
 <br/>
-<?php if (!$loi->parlementaire_id && $loi->expose) echo '<h2>Exposé des motifs&nbsp;:</h2><div class="loi">'.preg_replace('/\s+(:|;|\?|!)/', '&nbsp;\1', $loi->expose).'</div><br/>'; ?>
+<?php if ((!$loi->parlementaire_id && $loi->expose) || $loi->texteloi_id == 2760) {
+  echo '<h2>Exposé des motifs&nbsp;:</h2>';
+  if ($loi->parlementaire_id && $perso = $loi->getParlementaire() && $perso->getPageLink() && $photo = $perso->hasPhoto())
+    echo '<div class="intervenant"><a href="'.url_for($perso->getPageLink()).'"><img alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a></div>';
+  echo '<div class="loi">'.preg_replace('/\s+(:|;|\?|!)/', '&nbsp;\1', $loi->expose).'</div><br/>';
+} ?>
 <div class="commentaires">
   <h3>Derniers commentaires sur <?php echo preg_replace('/<br\/>.*$/', '', $loi->titre); ?> <span class="rss"><a href="<?php echo url_for('@loi_rss_commentaires?loi='.$loi->texteloi_id); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h3>
 <?php if ($loi->nb_commentaires == 0) echo '<p>Cette loi n\'a pas encore inspiré de commentaire aux utilisateurs.</p>';
