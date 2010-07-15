@@ -29,6 +29,7 @@ class loadLoiTask extends sfBaseTask {
               continue;
             }
             if ($json->expose) $json->expose = preg_replace("/<a\shref='([^']+)'>/", '<a href="\1">', $json->expose);
+            if ($json->texte) $json->texte = preg_replace("/<a\shref='([^']+)'>/", '<a href="\1">', $json->texte);
             if ($json->type == 'loi') {
               $loi = Doctrine::getTable('TitreLoi')->findLoiOrCreate($json->loi);
               if ($json->source) $loi->source = $json->source;
