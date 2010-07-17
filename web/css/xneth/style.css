@@ -1082,6 +1082,10 @@ h2 {
   margin: 6px;
 }
 
+.loi, .sommaireloi {
+  font-size: 13px;
+}
+
 .loi .alineatexte .commentaire a {
   text-decoration: none;
   font-weight: bold;
