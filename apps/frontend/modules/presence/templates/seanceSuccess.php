@@ -36,7 +36,7 @@ if ($nb2 > 0) {
     $p = $presence->getParlementaire();
     if (isset($interv[$p->id])) continue;
     $nbpreuves = $presence->getNbPreuves();  
-    echo '<li>'.link_to($p->nom, '@parlementaire?slug='.$p->getSlug()).', '.$p->getLongStatut(1).'<em><a href="'.url_for('@preuve_presence_seance?seance='.$seance->id.'&slug='.$p->slug).'"> ('; if ($nbpreuves > 1) echo "$nbpreuves preuves"; else echo "1 preuve"; echo ')</a></em></li>';
+    echo '<li>'.link_to($p->nom, '@parlementaire?slug='.$p->getSlug()).', '.$p->getLongStatut(1).'<em><a href="'.url_for('@preuve_presence_seance?seance='.$seance->id.'&slug='.$p->slug).'">'; if ($nbpreuves != 0) {echo ' ('; if ($nbpreuves > 1) echo "$nbpreuves preuves"; else echo "1 preuve"; echo ')</a></em></li>'; }
   }
   echo '</ul></li>';
 }
