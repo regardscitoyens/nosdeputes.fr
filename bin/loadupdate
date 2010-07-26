@@ -1,5 +1,14 @@
 #!/bin/bash
 
+#LOCK
+if test -e /tmp/loadupdate.lock ;
+then
+	echo Script locké par $(cat /tmp/loadupdate.lock) : /tmp/loadupdate.lock
+	exit 1;
+fi
+
+echo $$ > /tmp/loadupdate.lock
+
 # Gestion des options
 deputes=1
 jo=1
@@ -34,6 +43,7 @@ do
        echo "  -j ( --nojo )         : pas de mise-à-jour des séances de commission listées au Journal Officiel"
        echo "  -q ( --noquestions )  : pas de mise-à-jour des questions écrites au gouvernement"
        echo "  -o ( --oldquestions ) : mise-à-jour des questions depuis le début de la législature"
+	rm /tmp/loadupdate.lock
        exit 1;;
   esac
 done
@@ -138,3 +148,4 @@ echo Update hardcache html
 echo =======================
 bash bin/update_hardcache
 
+rm /tmp/loadupdate.lock
