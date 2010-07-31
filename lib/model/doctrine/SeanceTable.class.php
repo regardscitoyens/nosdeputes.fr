@@ -18,4 +18,14 @@ class SeanceTable extends Doctrine_Table
     }
     return $s;
   }
+
+  public function getPager($request, $query = NULL)
+  {
+    $pager = new sfDoctrinePager('Seance',30);
+    $pager->setQuery($query);
+    $pager->setPage($request->getParameter('pages', 1));
+    $pager->init();
+    return $pager;
+  }
+
 }

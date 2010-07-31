@@ -234,13 +234,18 @@ class parlementaireActions extends sfActions
       ->where('o.slug = ?', $orga)->fetchOne();
     $this->forward404Unless($this->orga);
 
-    $query = Doctrine::getTable('Parlementaire')->createQuery('p');
-    $query->leftJoin('p.ParlementaireOrganisme po')
+    $query = Doctrine::getTable('Parlementaire')->createQuery('p')
+      ->leftJoin('p.ParlementaireOrganisme po')
       ->leftJoin('po.Organisme o')
-      ->where('o.slug = ?', $orga);
-    $query->orderBy("po.importance DESC, p.sexe ASC, p.nom_de_famille ASC");
+      ->where('o.slug = ?', $orga)
+      ->orderBy("po.importance DESC, p.sexe ASC, p.nom_de_famille ASC");
     $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
 
+    $query2 = Doctrine::getTable('Seance')->createQuery('s')
+      ->leftJoin('s.Organisme o')
+      ->where('o.slug = ?', $orga)
+      ->orderBy('s.date DESC, s.moment ASC');
+    $this->pagerSeances = Doctrine::getTable('Seance')->getPager($request, $query2);
     $this->seances = Doctrine::getTable('Seance')->createQuery('s')
       ->leftJoin('s.Organisme o')
       ->where('o.slug = ?', $orga)
