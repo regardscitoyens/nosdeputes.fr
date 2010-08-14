@@ -2,7 +2,10 @@
   <div class="b_c_h"><div class="b_c_hg"></div><div class="b_c_hd"></div></div>
     <div class="b_c_cont">
       <div class="b_c_photo">
-        <?php echo '<img src="'.url_for('@photo_citoyen?slug='.$user->slug).'" alt="Photo de '.$user->login.'"/>'; ?>
+<?php   if (!$user->photo)
+          echo image_tag('xneth/avatar_citoyen.png', array('alt' => 'Photo de '.$user->login));
+        else echo '<img src="'.url_for('@photo_citoyen?slug='.$user->slug).'" alt="Photo de '.$user->login.'" />';
+?>
       </div>
       <div class="b_c_text">
         <h1 style="text-align:left;"><?php echo $user->login; ?></h1>

@@ -73,7 +73,7 @@ if ($subsection->id != $section->id) : ?>
 <?php if ($section->nb_commentaires != 0) { ?>
   <div class="stopfloat"></div>
   <div class="commentaires" id="commentaires">
-    <h2>Derniers commentaires sur <?php echo $section->titre; ?> <span class="rss"><a href="<?php echo url_for('@section_rss_commentaires?id='.$section->id); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
+    <h2>Derniers commentaires sur <?php echo $section->titre; ?> <span class="rss"><a href="<?php echo url_for('@section_rss_commentaires?id='.$section->id); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
 <?php echo include_component('commentaire', 'lastObject', array('object' => $section, 'presentation' => 'nodossier'));
     if ($section->nb_commentaires > 4)
       echo '<p class="suivant">'.link_to('Voir les '.$section->nb_commentaires.' commentaires', '@section_commentaires?id='.$section->id).'</p><div class="stopfloat"></div>'; ?>

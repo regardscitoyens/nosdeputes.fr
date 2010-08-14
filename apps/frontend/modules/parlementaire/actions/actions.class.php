@@ -45,17 +45,18 @@ class parlementaireActions extends sfActions
     $slug = $request->getParameter('slug');
     $parlementaires = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->fetchArray();
     $this->forward404Unless($parlementaires[0]);
-    if (!$parlementaires[0]['photo']) {
-      return $this->redirect('/images/xneth/avatar_depute.png');
-    }
     $file = tempnam(sys_get_temp_dir(), 'Parl');
-    $fh = fopen($file, 'w');
-    fwrite($fh ,$parlementaires[0]['photo']);
-    fclose($fh);
+    if (!$parlementaires[0]['photo']) {
+      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_depute.jpg', $file); 
+    } else {
+      $fh = fopen($file, 'w');
+      fwrite($fh ,$parlementaires[0]['photo']);
+      fclose($fh);
+    }
     list($width, $height, $image_type) = getimagesize($file);
     if (!$width || !$height) {
-      unlink($file);
-      return $this->redirect('http://'.$_SERVER['HTTP_HOST'].'/images/xneth/avatar_depute.png');
+      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_depute.jpg', $file);
+      list($width, $height, $image_type) = getimagesize($file);
     }
 
     $this->getResponse()->setHttpHeader('content-type', 'image/png');

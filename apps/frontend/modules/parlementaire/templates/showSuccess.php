@@ -2,7 +2,7 @@
       $sf_response->setTitle($parlementaire->nom.' - Son activité de député à l\'Assemblée Nationale - NosDéputés.fr'); ?>
 <div class="fiche_depute">
   <div class="info_depute">
-<h1><?php echo $parlementaire->nom; ?>, <?php echo $parlementaire->getLongStatut(1); ?><span class="rss"><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h1>
+<h1><?php echo $parlementaire->nom; ?>, <?php echo $parlementaire->getLongStatut(1); ?><span class="rss"><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h1>
     </div>
   <div class="depute_gauche">
     <div class="photo_depute">
@@ -114,7 +114,7 @@
   </div>
 
   <div class="bas_depute">
-      <h2>Derniers commentaires concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
+      <h2>Derniers commentaires concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
       <?php if ($parlementaire->nb_commentaires == 0) echo '<p>Le travail de ce député n\'a pas encore inspiré de commentaire aux utilisateurs.</p>';
         else {
           echo include_component('commentaire', 'lastObject', array('object' => $parlementaire, 'presentation' => 'noauteur'));

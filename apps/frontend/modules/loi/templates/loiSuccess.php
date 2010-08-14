@@ -87,7 +87,7 @@ if (isset($soussections)) {
   echo preg_replace('/\s+(:|;|\?|!)/', '&nbsp;\1', $loi->expose).'</div><br/>';
 } ?>
 <div class="commentaires">
-  <h3>Derniers commentaires sur <?php echo preg_replace('/<br\/>.*$/', '', $loi->titre); ?> <span class="rss"><a href="<?php echo url_for('@loi_rss_commentaires?loi='.$loi->texteloi_id); ?>"><?php echo image_tag($sf_request->getRelativeUrlRoot().'/images/xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h3>
+  <h3>Derniers commentaires sur <?php echo preg_replace('/<br\/>.*$/', '', $loi->titre); ?> <span class="rss"><a href="<?php echo url_for('@loi_rss_commentaires?loi='.$loi->texteloi_id); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h3>
 <?php if ($loi->nb_commentaires == 0) echo '<p>Cette loi n\'a pas encore inspiré de commentaire aux utilisateurs.</p>';
 else {
   echo include_component('commentaire', 'lastObject', array('object' => $loi, 'presentation' => 'noloi'));
