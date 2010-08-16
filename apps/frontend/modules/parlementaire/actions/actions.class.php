@@ -145,20 +145,33 @@ class parlementaireActions extends sfActions
 
   public function executeList(sfWebRequest $request) {
     $this->search = strip_tags($request->getParameter('search'));
-    if (!$this->search) $this->search = 'A';
+    if (!$this->search) $this->search = 'all';
+    if (preg_match('/^[A-Z]$/', $this->search))
+      return $this->redirect('@list_parlementaires#'.$this->search);
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
-    if (preg_match('/^[A-Z]$/', $this->search)) {
-      $query->where('p.nom_de_famille LIKE ?' , $this->search.'%');
-      if (preg_match('/^[E]$/', $this->search))
-        $query->orWhere('p.nom_de_famille LIKE ?' , 'É%');
-    } else $query->where('p.nom LIKE ?' , '%'.$this->search.'%');
+    if ($this->search != 'all') {
+      $searchs = explode(' ', preg_replace('/\W/', ' ', $this->search));
+      $ns = count($searchs);
+      for ($i=0; $i<$ns; $i++)
+        $searchs[$i] = '%'.$searchs[$i].'%';
+      $likes = 'p.nom LIKE ?';
+      for ($i=1; $i<$ns; $i++)
+        $likes .= ' AND p.nom LIKE ?';
+      $query->where($likes, $searchs);
+    }
     $query->orderBy('p.nom_de_famille ASC');
-    $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
-    if (!preg_match('/^[A-ZÉ]$/', $this->search)) {
-      $nb = $this->pager->getNbResults();
+    if ($this->search == 'all') {
+      $this->parlementaires = array();
+      foreach ($query->execute() as $depute) {
+        $lettre = $depute->nom_de_famille[0];
+        if (isset($this->parlementaires[$lettre])) $this->parlementaires[$lettre][] = $depute;
+        else $this->parlementaires[$lettre] = array($depute);
+      }
+    } else $this->parlementaires = $query->execute();
+    if (!preg_match('/^([A-ZÉ]|all)$/', $this->search)) {
+      $nb = count($this->parlementaires);
       if ($nb == 1) {
-        $p = $this->pager->getResults();
-        return $this->redirect('parlementaire/show?slug='.$p[0]->slug);
+        return $this->redirect('@parlementaire?slug='.$this->parlementaires[0]->slug);
       }
       if ($nb == 0) {
         $this->similars = Doctrine::getTable('Parlementaire')->similarTo($this->search, null, 1);
@@ -173,6 +186,7 @@ class parlementaireActions extends sfActions
         ->from('Parlementaire p')
         ->select('count(distinct p.id) as ct')
         ->where('p.fin_mandat IS NULL')
+        ->orWhere('p.fin_mandat < p.debut_mandat')
         ->fetchOne();
       $this->actifs = $ctquery['ct'];
     }
@@ -247,11 +261,6 @@ class parlementaireActions extends sfActions
       ->where('o.slug = ?', $orga)
       ->orderBy('s.date DESC, s.moment ASC');
     $this->pagerSeances = Doctrine::getTable('Seance')->getPager($request, $query2);
-    $this->seances = Doctrine::getTable('Seance')->createQuery('s')
-      ->leftJoin('s.Organisme o')
-      ->where('o.slug = ?', $orga)
-      ->orderBy('s.date DESC, s.moment ASC')
-      ->execute();
   }
 
   public function executeTag(sfWebRequest $request) {

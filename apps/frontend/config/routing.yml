@@ -337,7 +337,7 @@ activation_citoyen:
   url: /activation/:slug/:activation_id
   param: {module: citoyen, action: activation}
 list_citoyens:
-  url: /citoyens
+  url: /citoyens/:order
   param: {module: citoyen, action: index}
 photo_citoyen:
   url: /citoyen/photo/:slug

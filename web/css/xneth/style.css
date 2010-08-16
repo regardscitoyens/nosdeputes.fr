@@ -1201,7 +1201,7 @@ h2 {
 
 /* Liste d�put�s */
 
-.liste_deputes  {
+.liste  {
   margin: 20px 10px 20px 0;
 }
 
@@ -1209,7 +1209,7 @@ h2 {
   text-align: right;
 }
 
-.liste_deputes p {
+.liste p {
   font-size: 1.2em;
 }
 
@@ -1434,3 +1434,84 @@ a:hover img {
    width: 25%;
    vertical-align: top;
 }
+.list_choix {
+  text-align: center;
+  font-size: 1.4em;
+  padding: 15px;
+}
+.list_table {
+  margin: auto;
+  margin-bottom: 30px;
+}
+.list_table table {
+  width: 100%;
+}
+.list_table td {
+  width: 31%;
+  padding: 3px;
+  vertical-align: top;
+  font-size: 10px;
+}
+.list_borderleft {
+  border-left: thin solid;
+}
+.list_cit {
+  margin: 8px;
+  height: 60px;
+}
+.list_cit:hover {
+  color: #000;
+  background-color: rgb(81, 202, 235);
+  opacity: 0.8;
+}
+.list_dep {
+  margin: 10px;
+  height: 32px;
+}
+.list_dep:hover {
+  color: #000;
+  background-color: rgb(198,229,81);
+  opacity: 0.8;
+}
+.couleur_ump {
+  color: rgb(30,30,200);
+}
+.couleur_src {
+  color: rgb(255,50,90);
+}
+.couleur_gdr {
+  color: rgb(255,30,30);
+}
+.couleur_nc {
+  color: rgb(30,190,255);
+}
+.couleur_ni {
+  color: rgb(130,130,130);
+}
+.list_img_left {
+  float:left;
+  margin: 4px;
+}
+.list_left {
+  float: left;
+  padding-left: 4px;
+}
+.list_nom {
+  font-size: 12px;
+}
+.list_details {
+  font-size: 9px;
+  text-align: right;
+  padding-top: 4px;
+  padding-right: 4px;
+}
+.list_link {
+  vertical-align: bottom;
+  font-size: 9px;
+  text-align: center;
+}
+.list_com {
+  color: #158EAF;
+}
+
+

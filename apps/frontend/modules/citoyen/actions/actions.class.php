@@ -17,13 +17,39 @@ class citoyenActions extends sfActions
   */
   public function executeIndex(sfWebRequest $request)
   {
-    $this->citoyens_list = Doctrine::getTable('Citoyen')
+    $this->order = $request->getParameter('order');
+    if (!$this->order || !(preg_match('/^(alpha|comm|date|last)$/', $this->order)))
+      $this->order = 'date';
+    $datecom = "";
+    if ($this->order === "last")
+      $datecom = ", max(co.created_at) as date";
+    $query = Doctrine::getTable('Citoyen')
       ->createQuery('c')
+      ->select('c.*, count(distinct(co.id)) as nb_comment'.$datecom)
+      ->leftJoin('c.Commentaires co')
       ->where('c.is_active = ?', true)
-      ->orderBy('c.created_at DESC')
-      ->execute();
-    $response = $this->getResponse();
-    $response->setTitle('Liste des citoyens inscrits'); 
+      ->groupBy('c.id');
+    if ($this->order === "date") {
+      $this->title = 'Les derniers citoyens inscrits';
+      $query->orderBy('c.created_at DESC');
+    } else if ($this->order === "comm") {
+      $this->title = 'Les citoyens ayant le plus commenté';
+      $query->orderBy('nb_comment DESC');
+    } else if ($this->order === "alpha") {
+      $this->title = 'Les citoyens inscrits';
+      $query->orderBy('c.login');
+    } else if ($this->order === "last") {
+      $this->title = 'Les derniers citoyens ayant commenté';
+      $query->orderBy('date desc');
+    }
+    $this->pager = Doctrine::getTable('Citoyen')->getPager($request, $query);
+    $this->citoyens = $query->execute();
+    $this->getResponse()->setTitle($this->title." sur NosDéputés.fr");
+    $this->comments = Doctrine_Query::create()
+      ->select('count(distinct(citoyen_id)) as auteurs, count(distinct(id)) as comments')
+      ->from('Commentaire')
+      ->where('is_public = 1')
+      ->fetchOne();
   }
   
   public function executeNotauthorized(sfWebRequest $request) 

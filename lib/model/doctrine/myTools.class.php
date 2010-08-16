@@ -49,12 +49,29 @@ class myTools {
     $date = $date.substr($d,0,4);      // année
     return $date;
   }
+
+  public static function displayVeryShortDate($d) {
+    $date = substr($d,8,2)."/";        // jour
+    $date = $date.substr($d,5,2)."/";  // mois
+    $date = $date.substr($d,2,2);      // année
+    return $date;
+  }
  
   public static function displayDateTime($d) { 
     $date = self::displayShortDate($d)." à "; 
     $date = $date.substr($d,11,5);     // heures et minutes 
     return $date; 
   } 
+
+  public static function getAge($dob) {
+    list($year,$month,$day) = explode("-",$dob);
+    $year_diff  = date("Y") - $year;
+    $month_diff = date("m") - $month;
+    $day_diff   = date("d") - $day;
+    if (($month_diff == 0 && $day_diff < 0) || $month_diff < 0)
+      $year_diff--;
+    return $year_diff;
+  }	
 
   public static function getLinkLoi($id) {
     return link_to($id, "http://recherche2.assemblee-nationale.fr/resultats-avancee.jsp?11AUTPropositions=&11AUTRap-enq=&11AUTRap-info=&11AUTRapports=&12AUTPropositions=&12AUTRap-enq=&12AUTRap-info=&12AUTRap-infoLoi=&12AUTRapports=&13AUTComptesRendusReunions=&13AUTComptesRendusReunionsDeleg=&13AUTPropositions=&13AUTRap-info=&13AUTRap-infoLoi=&13AUTRapports=&legislature=13&legisnum=&num_init_11=&num_init_12=&num_init_13=".$id."&searchadvanced=Rechercher&searchtype=&texterecherche=&type=13ProjetsLoi");

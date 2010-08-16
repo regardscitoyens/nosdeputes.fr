@@ -4,5 +4,11 @@
  */
 class CitoyenTable extends Doctrine_Table
 {
-
+  public function getPager($request, $query = NULL) {
+    $pager = new sfDoctrinePager('Citoyen', 60);
+    $pager->setQuery($query);
+    $pager->setPage($request->getParameter('page', 1));
+    $pager->init();
+    return $pager;
+  }
 }

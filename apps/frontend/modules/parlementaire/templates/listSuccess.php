@@ -1,33 +1,27 @@
-<?php if (!preg_match('/^[A-ZÉ]$/', $search)) { ?>
-<h1>Recherche de députés</h1>
-<?php $sf_response->setTitle('Recherche de députés "'.$search.'"'); ?>
-<p><?php $nResults = $pager->getNbResults(); echo $nResults; ?> résultat<?php if ($nResults > 1) echo 's'; ?> pour <em>"<?php echo $search; ?>"</em></p>
+<?php if (!preg_match('/^([A-ZÉ]|all)$/', $search)) { ?>
+  <h1>Recherche de députés</h1>
+  <?php $sf_response->setTitle('Recherche de députés "'.$search.'"'); ?>
+  <p><?php $nResults = count($parlementaires); echo $nResults; ?> parlementaire<?php if ($nResults > 1) echo 's'; ?> trouvé<?php if ($nResults > 1) echo 's'; ?> pour <em>"<?php echo $search; ?>"</em></p>
 <?php } else { ?>
-<h1>La liste de tous les députés par ordre alphabétique</h1>
-<?php $sf_response->setTitle('La liste de tous les députés'); ?>
-<p>Les <?php echo $total; ?> députés de la législature (<?php echo $actifs; ?> en activité)&nbsp;:</p>
+  <h1>La liste de tous les députés par ordre alphabétique</h1>
+  <?php $sf_response->setTitle('La liste de tous les députés'); ?>
+  <p>Les <?php echo $total; ?> députés de la législature (<?php echo $actifs; ?> en cours de mandat)&nbsp;:</p>
 <?php } ?>
-<div class="liste_deputes">
-<?php if (preg_match('/^[A-ZÉ]$/', $search)) { ?>
-<div class="par_session">
-<?php foreach(range('A','Z') as $i) {
-  if ($i != $search) echo link_to($i ,'@list_parlementaires_alpha?search='.$i);
-  else echo $i;
-  echo '&nbsp;&nbsp;';
+
+<div class="liste">
+<?php if (isset($similars) && $similars) {
+  echo '<p>Peut être, cherchiez vous : </p><ul>';
+  foreach($similars as $s) {
+    echo '<li>'.link_to($s['nom'], 'parlementaire/show?slug='.$s['slug']).'</li>'; 
+  }
+  echo '</ul>';  
+} else {
+  if ($search === "all") {
+    $listlettres = array_keys($parlementaires);
+    foreach($listlettres as $i) 
+      include_partial('parlementaire/table', array('lettre' => $i, 'deputes' => $parlementaires[$i], 'listlettres' => $listlettres));
+  } else
+    include_partial('parlementaire/table', array('deputes' => $parlementaires));
 } ?>
 </div>
-<?php } ?>
-<?php if (isset($similars) && $similars) {
-   echo '<p>Peut être, cherchiez vous : </p><ul>';
-   foreach($similars as $s) {
-     echo '<li>'.link_to($s['nom'], 'parlementaire/show?slug='.$s['slug']).'</li>'; 
-   }
-   echo '</ul>';
- }?>
-<ul>
-<?php foreach($pager->getResults() as $parlementaire) : ?>
-<li><?php echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php echo $parlementaire->getStatut(1); ?>, <?php echo link_to($parlementaire->nom_circo, '@list_parlementaires_circo?search='.$parlementaire->nom_circo); ?>)</li>
-<?php endforeach ; ?>
-</ul>
-<?php include_partial('parlementaire/paginate', array('pager' => $pager, 'link' => '@list_parlementaires?search='.$search.'&')); ?>
-</div>
+

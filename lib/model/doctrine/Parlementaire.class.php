@@ -32,6 +32,18 @@ class Parlementaire extends BaseParlementaire
     return $string;
   }
 
+  public function getNomPrenom() {
+    $weird = array('é' => 'e', 'è' => 'e', 'ë' => 'e', 'Le ' => 'Le', 'La ' => 'La');
+    $beg_name = " ".substr($this->nom_de_famille, 0, 3);
+    $ct = strpos($this->nom, $beg_name);
+    if (!$ct) foreach ($weird as $good => $bad)
+        if ($ct = strpos($this->nom, preg_replace("/".$bad."/", $good, $beg_name)))
+           break;
+    $nom = substr($this->nom, $ct+1);
+    $prenom = substr($this->nom, 0, strpos($this->nom, $nom)-1);
+    return $nom.", ".$prenom;
+  }
+
   public function getStatut($link = 0) {
     if ($this->type == 'depute') {
         if ($this->sexe == 'F') $type = 'députée';
@@ -175,6 +187,7 @@ class Parlementaire extends BaseParlementaire
     ksort($res);
     return array_values($res);
   }
+
   public function hasPhoto() 
   {
     $photo = $this->_get('photo');
