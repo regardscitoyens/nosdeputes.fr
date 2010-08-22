@@ -65,7 +65,7 @@ class solrActions extends sfActions
     for($i = 0 ; $i < count($this->results['docs']) ; $i++) {
       $res = $this->results['docs'][$i];
       $this->results['docs'][$i]['highlighting'] = implode('...', $results['highlighting'][$res['id']]['text']);
-      //      $this->results['docs'][$i]['object'] = doctrine::getTable($res['object_name'])->find($res['object_id']);
+      //      $this->results['docs'][$i]['object'] = Doctrine::getTable($res['object_name'])->find($res['object_id']);
     }
     $this->results['end'] = $deb + $nb;
     $this->results['page'] = $deb/$nb + 1;

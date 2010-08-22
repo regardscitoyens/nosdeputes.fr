@@ -71,7 +71,7 @@ class apiActions extends sfActions
 
   public function executeListParlementaires(sfWebRequest $request) 
   {
-    $deputes = doctrine::getTable('Parlementaire')->createQuery('p')->execute();
+    $deputes = Doctrine::getTable('Parlementaire')->createQuery('p')->execute();
     $this->res = array('deputes' => array());
     $this->champs = array();
     $this->breakline = 'depute';
@@ -103,7 +103,7 @@ class apiActions extends sfActions
     $slug = $request->getParameter('slug');
     $this->forward404Unless($slug);
 
-    $depute = doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    $depute = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->res = array();
     $this->multi = array();
     $this->res['depute'] = array();

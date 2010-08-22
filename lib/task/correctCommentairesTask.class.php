@@ -12,17 +12,17 @@ class correctCommentairesTask extends sfBaseTask {
   protected function execute($arguments = array(), $options = array()) {
     $manager = new sfDatabaseManager($this->configuration);
     $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "A propos d'une question écrite d");
-    $comments = doctrine::getTable('Commentaire')->findAll();
+    $comments = Doctrine::getTable('Commentaire')->findAll();
     $loi = '';
     foreach($comments as $comment) {
       unset($loi);
-      $object = doctrine::getTable($comment->object_type)->find($comment->object_id);
+      $object = Doctrine::getTable($comment->object_type)->find($comment->object_id);
       if (isset($object->texteloi_id)) {
-        $loi = doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
+        $loi = Doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
         if ($comment->object_type != 'Amendement') {
           $present = preg_replace('/<br\/>.*$/', '', $loi['titre']).' - A propos de l\'article ';
           if ($comment->object_type == 'Alinea') {
-            $article = doctrine::getTable('ArticleLoi')->createQuery('a')
+            $article = Doctrine::getTable('ArticleLoi')->createQuery('a')
               ->select('titre')
               ->where('texteloi_id = ?', $object->texteloi_id)
               ->andWhere('id = ?', $object->article_loi_id)
@@ -71,7 +71,7 @@ class correctCommentairesTask extends sfBaseTask {
         if ($section = $object->getSection())
           $comment->addObject('Section', $section->getSection(1)->id);
         if (!($seance = $object->getIntervention($object->numero))) {
-          $identiques = doctrine::getTable('Amendement')->createQuery('a')
+          $identiques = Doctrine::getTable('Amendement')->createQuery('a')
             ->where('content_md5 = ?', $object->content_md5)
             ->orderBy('numero')->execute();
           foreach($identiques as $a) {
@@ -84,7 +84,7 @@ class correctCommentairesTask extends sfBaseTask {
         if ($loi) {
           if (preg_match('/^Article\s+(.*)$/', $object->sujet, $match)) {
             $art = preg_replace('/premier/i', '1er', $match[1]);
-            if ($art_obj = doctrine::getTable('ArticleLoi')->findOneByLoiTitre($object->texteloi_id,$art))
+            if ($art_obj = Doctrine::getTable('ArticleLoi')->findOneByLoiTitre($object->texteloi_id,$art))
               $comment->addObject('ArticleLoi', $art_obj->id);
           } else $comment->addObject('TitreLoi', $loi->id);
         }

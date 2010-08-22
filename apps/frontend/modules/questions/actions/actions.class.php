@@ -14,28 +14,28 @@ class questionsActions extends sfActions
   {
     //respect de l'existant : il est possible d'appeler les questions ecrites par leur id
     //Mais lorsque c'est le cas on redirige vers une url plus parlante utilisant le numéro définit par l'AN
-    $question = doctrine::getTable('QuestionEcrite')->find($request->getParameter('id'));
+    $question = Doctrine::getTable('QuestionEcrite')->find($request->getParameter('id'));
     $this->forward404Unless($question);
     return $this->redirect('@question_numero?numero='.$question->numero);
   }
   public function executeShow(sfWebRequest $request)
   {
     $numero = $request->getParameter('numero');
-    $this->question = doctrine::getTable('QuestionEcrite')
+    $this->question = Doctrine::getTable('QuestionEcrite')
       ->createquery('q')
       ->where('q.numero = ?', $numero)
       ->andWhere('q.legislature = ?', sfConfig::get('app_legislature', 13))
       ->fetchOne();
     $this->forward404Unless($this->question);
-    $this->parlementaire = doctrine::getTable('Parlementaire')->find($this->question->parlementaire_id);
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->find($this->question->parlementaire_id);
     $this->forward404Unless($this->parlementaire);
   }
 
   public function executeParlementaire(sfWebRequest $request)
   {
-    $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
-    $this->questions = doctrine::getTable('QuestionEcrite')->createQuery('q')
+    $this->questions = Doctrine::getTable('QuestionEcrite')->createQuery('q')
       ->where('q.parlementaire_id = ?', $this->parlementaire->id)
       ->orderBy('q.date DESC, q.numero DESC');
 
@@ -76,7 +76,7 @@ class questionsActions extends sfActions
       $ids[] = $s['id'];
     }
 
-    $this->query = doctrine::getTable('QuestionEcrite')->createQuery('i');
+    $this->query = Doctrine::getTable('QuestionEcrite')->createQuery('i');
     if (count($ids))
       $this->query->whereIn('i.id', $ids);
     else if (count($mcle))
@@ -90,7 +90,7 @@ class questionsActions extends sfActions
     }
 
     if ($slug = $request->getParameter('parlementaire')) {
-      $this->parlementaire = doctrine::getTable('Parlementaire')
+      $this->parlementaire = Doctrine::getTable('Parlementaire')
 	->findOneBySlug($slug);
       if ($this->parlementaire)
 	$this->query->andWhere('i.parlementaire_id = ?', $this->parlementaire->id);
@@ -103,3 +103,4 @@ class questionsActions extends sfActions
     } else $request->setParameter('rss', array(array('link' => '@search_questions_ecrites_mots_rss?search='.$this->mots, 'title'=>'Les dernières questions écrites sur '.$this->mots.' en RSS')));
   }
 }
+?>

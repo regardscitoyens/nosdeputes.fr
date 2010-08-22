@@ -98,7 +98,7 @@ class Seance extends BaseSeance
     return true;
   }
   public function getInterventions() {
-    $q = doctrine::getTable('Intervention')->createQuery('i')->where('seance_id = ?', $this->id)->leftJoin('i.Personnalite p')->leftJoin('i.Parlementaire pa')->orderBy('i.timestamp ASC');
+    $q = Doctrine::getTable('Intervention')->createQuery('i')->where('seance_id = ?', $this->id)->leftJoin('i.Personnalite p')->leftJoin('i.Parlementaire pa')->orderBy('i.timestamp ASC');
     return $q->execute();
   }
   public function getTableMatiere() {

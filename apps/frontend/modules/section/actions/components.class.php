@@ -8,7 +8,7 @@ class sectionComponents extends sfComponents
 
   public function executeParlementaire()
   {
-    $sql = doctrine_query::create()
+    $sql = Doctrine_Query::create()
       ->from('Section s')
       ->select('s.section_id, sp.titre, count(i.id) as nb')
       ->where('s.section_id = sp.id')

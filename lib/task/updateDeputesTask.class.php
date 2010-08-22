@@ -37,7 +37,7 @@ class updateDeputesTask extends sfBaseTask
 	    if (!isset($json->nom) || !$json->nom)
 	      next;
 //	    echo "-".$json->nom." ".$json->id_an."\n";
-	    $parl = doctrine::getTable('Parlementaire')->findOneByNom($json->nom);
+	    $parl = Doctrine::getTable('Parlementaire')->findOneByNom($json->nom);
 	    if (!$parl) {
 	      $parl = new Parlementaire();
 	      $parl->type = 'depute';

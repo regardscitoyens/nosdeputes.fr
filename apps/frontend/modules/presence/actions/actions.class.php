@@ -37,7 +37,7 @@ class presenceActions extends sfActions
     $seance_id = $request->getParameter('seance');
     $this->seance = Doctrine::getTable('Seance')->findOneById($seance_id);
     $this->forward404Unless($this->seance);
-    $this->preuves = doctrine::getTable('PreuvePresence')
+    $this->preuves = Doctrine::getTable('PreuvePresence')
       ->createQuery('pp')
       ->leftJoin('pp.Presence p')
       ->where('p.seance_id = ?', $seance_id)
@@ -49,12 +49,12 @@ class presenceActions extends sfActions
   {
     $seance_id = $request->getParameter('seance');
     $this->forward404Unless($seance_id);
-    $this->seance = doctrine::getTable('Seance')->createQuery('s')
+    $this->seance = Doctrine::getTable('Seance')->createQuery('s')
       ->where('s.id = ?', $seance_id)
       ->leftJoin('s.Organisme')
       ->fetchOne();
     $this->forward404Unless($this->seance);
-    $this->intervenants = doctrine::getTable('Presence')->createQuery('p')      
+    $this->intervenants = Doctrine::getTable('Presence')->createQuery('p')      
       ->leftJoin('p.Parlementaire pa')
       ->leftJoin('p.Preuves pr')
       ->where('p.seance_id = ?', $seance_id)
@@ -62,7 +62,7 @@ class presenceActions extends sfActions
       ->groupBy('pa.id')
       ->orderBy('pa.nom_de_famille')
       ->execute();
-    $this->presents = doctrine::getTable('Presence')->createQuery('p')
+    $this->presents = Doctrine::getTable('Presence')->createQuery('p')
       ->where('p.seance_id = ?', $seance_id)
       ->leftJoin('p.Parlementaire pa')
       ->leftJoin('p.Preuves pr')

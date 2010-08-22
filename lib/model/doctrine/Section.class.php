@@ -12,7 +12,7 @@ class Section extends BaseSection
     $parent = null;
     if (count($titres) > 1) {
       $parent_titre = array_shift($titres);
-      $parent = doctrine::getTable('Section')->findOneByContexteOrCreateIt($parent_titre);
+      $parent = Doctrine::getTable('Section')->findOneByContexteOrCreateIt($parent_titre);
     }
     $this->_set('titre', $titres[0]);
     $this->save();
@@ -22,12 +22,12 @@ class Section extends BaseSection
     $this->save();
   }
   public function getSubSections() {
-    return $q = doctrine::getTable('Section')->createQuery('s')
+    return $q = Doctrine::getTable('Section')->createQuery('s')
       ->where('s.section_id = ?', $this->id)
       ->orderBy('s.min_date ASC, s.timestamp ASC')->execute();
   }
   public function getFirstSeance() {
-    $q = doctrine_query::create()
+    $q = Doctrine_Query::create()
       ->from('Seance s, Section st, Intervention i')
       ->select('s.id')
       ->where('i.seance_id = s.id')
@@ -38,7 +38,7 @@ class Section extends BaseSection
     return $q->id;
   }
   public function getSeances() {
-    $q = doctrine_query::create()
+    $q = Doctrine_Query::create()
       ->from('Seance s, Section st, Intervention i')
       ->select('s.*')
       ->where('i.seance_id = s.id')

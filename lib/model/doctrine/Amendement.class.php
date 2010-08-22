@@ -53,7 +53,7 @@ class Amendement extends BaseAmendement {
       $nom = ucfirst($nom);
       if ($debug) echo $nom."//".$sexe."//".$groupe."//".$circo." => ";
       $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe, $groupe, $circo, $this);
-      if (!$depute) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$groupe."\n";
+      if (!$depute) print "ERROR: Auteur introuvable in ".$this->source."/".$this->numero." : ".$nom." // ".$sexe." // ".$groupe."\n";
       else {
         if ($debug) echo $depute->nom."\n";
         if (!$groupe && $depute->groupe_acronyme != "") $groupe = $depute->groupe_acronyme;
@@ -65,7 +65,7 @@ class Amendement extends BaseAmendement {
   }
 
   public function addParlementaire($depute, $signataireindex) {
-    foreach(doctrine::getTable('ParlementaireAmendement')->createQuery('pa')->select('parlementaire_id')->where('amendement_id = ?', $this->id)->fetchArray() as $parlamdt) if ($parlamdt['parlementaire_id'] == $depute->id) return true;
+    foreach(Doctrine::getTable('ParlementaireAmendement')->createQuery('pa')->select('parlementaire_id')->where('amendement_id = ?', $this->id)->fetchArray() as $parlamdt) if ($parlamdt['parlementaire_id'] == $depute->id) return true;
     
     $pa = new ParlementaireAmendement();
     $pa->_set('Parlementaire', $depute);

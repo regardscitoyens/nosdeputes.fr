@@ -161,7 +161,7 @@ class topDeputesTask extends sfBaseTask
 
   protected function executeDeputesInfo() {
     foreach (array_keys($this->deputes) as $id) {
-      $dep = doctrine::getTable('Parlementaire')->find($id);
+      $dep = Doctrine::getTable('Parlementaire')->find($id);
       //Bidouille pour avoir les paramètres dans le bon ordre
       $this->deputes[$id]['01_nom']['value'] = $dep->nom;
       $this->deputes[$id]['02_groupe']['value'] = $dep->groupe_acronyme;
@@ -234,7 +234,7 @@ class topDeputesTask extends sfBaseTask
 
     if (isset($arguments['month']) && preg_match('/(\d{4})-(\d{2})-01/', $arguments['month'], $m)) {
       $this->executeMonth($arguments['month']);
-      $globale = doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$m[1]);
+      $globale = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$m[1]);
       if (!$globale) {
 	$globale = new VariableGlobale();
 	$globale->champ = 'stats_month_'.$m[1];
@@ -314,7 +314,7 @@ class topDeputesTask extends sfBaseTask
       $depute->save();
     }
 
-    $globale = doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes');
+    $globale = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes');
     if (!$globale) {
       $globale = new VariableGlobale();
       $globale->champ = 'stats_groupes';

@@ -13,7 +13,7 @@ class loiActions extends sfActions
 
   private function getAmendements($loi, $articles = 'all', $alineas = 0) {
     $amendements = array();
-    $admts = doctrine::getTable('Amendement')->createquery('a')
+    $admts = Doctrine::getTable('Amendement')->createquery('a')
       ->where('a.texteloi_id = ?', $loi)
       ->andWhere('a.sort <> ?', 'Rectifié')
       ->orderBy('a.numero');
@@ -45,16 +45,16 @@ class loiActions extends sfActions
  
   public function executeLoi(sfWebRequest $request) {
     $loi_id = $this->getLoi($request);
-    $this->soussections = doctrine::getTable('TitreLoi')->createquery('t')
+    $this->soussections = Doctrine::getTable('TitreLoi')->createquery('t')
       ->where('t.texteloi_id = ?', $loi_id)
       ->andWhere('t.id != t.titre_loi_id')
       ->orderBy('t.chapitre, t.section')
       ->execute();
-    $this->articles = doctrine::getTable('ArticleLoi')->createquery('a')
+    $this->articles = Doctrine::getTable('ArticleLoi')->createquery('a')
       ->where('a.texteloi_id = ?', $loi_id)
       ->orderBy('a.ordre')
       ->fetchArray();
-    $this->amendements = count(doctrine::getTable('Amendement')->createquery('a')
+    $this->amendements = count(Doctrine::getTable('Amendement')->createquery('a')
       ->where('a.texteloi_id = ?', $loi_id)
       ->andWhere('a.sort <> ?', 'Rectifié')
       ->execute());
@@ -68,16 +68,16 @@ class loiActions extends sfActions
   {
     $loi_id = $this->getLoi($request, 1);
     $n_chapitre = $request->getParameter('chapitre');
-    $this->chapitre = doctrine::getTable('TitreLoi')->findChapitre($loi_id, $n_chapitre);
+    $this->chapitre = Doctrine::getTable('TitreLoi')->findChapitre($loi_id, $n_chapitre);
     $this->forward404Unless($this->chapitre);
     $n_section = $request->getParameter('section');
-    $artquery = doctrine::getTable('ArticleLoi')->createquery('a');
+    $artquery = Doctrine::getTable('ArticleLoi')->createquery('a');
     if ($n_section && $n_section != 0) {
-      $this->section = doctrine::getTable('TitreLoi')->findSection($loi_id, $n_chapitre, $n_section);
+      $this->section = Doctrine::getTable('TitreLoi')->findSection($loi_id, $n_chapitre, $n_section);
       $this->forward404Unless($this->section);
       $artquery->where('a.titre_loi_id = ?', $this->section->id);
     } else {
-      $this->soussections = doctrine::getTable('TitreLoi')->createquery('t')
+      $this->soussections = Doctrine::getTable('TitreLoi')->createquery('t')
         ->where('t.texteloi_id = ?', $loi_id)
         ->andWhere('t.chapitre = ?', $n_chapitre)
         ->andWhere('t.section IS NOT NULL')
@@ -98,11 +98,11 @@ class loiActions extends sfActions
       $titre = $this->section->getLargeTitre();
       if (preg_match('/^(\d+)\s+bis$/',$n_section, $match)) {
         $this->precedent = $match[1];
-        if (doctrine::getTable('TitreLoi')->findSection($loi_id, $n_chapitre, $match[1]+1))
+        if (Doctrine::getTable('TitreLoi')->findSection($loi_id, $n_chapitre, $match[1]+1))
           $this->suivant = $match[1] + 1;
       } else {
         $pre = $n_section - 1;
-        $voisins = doctrine::getTable('TitreLoi')->createQuery('c')
+        $voisins = Doctrine::getTable('TitreLoi')->createQuery('c')
           ->select('c.section')
           ->where('c.texteloi_id = ?', $loi_id)
           ->andWhere('c.chapitre = ?', $n_chapitre)
@@ -142,10 +142,10 @@ class loiActions extends sfActions
       $titre = $this->chapitre->getLargeTitre();
       if (preg_match('/^(\d+)\s+bis$/',$n_chapitre, $match)) {
         $this->precedent = $match[1];
-        if (doctrine::getTable('TitreLoi')->findChapitre($loi_id, $match[1]+1)) $this->suivant = $match[1]+1;
+        if (Doctrine::getTable('TitreLoi')->findChapitre($loi_id, $match[1]+1)) $this->suivant = $match[1]+1;
       } else {
         $pre = $n_chapitre - 1;
-        $voisins = doctrine::getTable('TitreLoi')->createQuery('c')
+        $voisins = Doctrine::getTable('TitreLoi')->createQuery('c')
           ->select('c.chapitre')
           ->where('c.texteloi_id = ?', $loi_id)
           ->andWhere('c.section is NULL')
@@ -187,17 +187,17 @@ class loiActions extends sfActions
 
  public function executeAlinea(sfWebRequest $request) {
     $id = $request->getParameter('id');
-    $this->alinea = doctrine::getTable('Alinea')->find($id);
+    $this->alinea = Doctrine::getTable('Alinea')->find($id);
     $this->forward404Unless($this->alinea);
     $article = $this->alinea->getArticle();
     $this->forward404Unless($article);
-    $this->loi = doctrine::getTable('TitreLoi')->findLightLoi($article->texteloi_id);
+    $this->loi = Doctrine::getTable('TitreLoi')->findLightLoi($article->texteloi_id);
     $loi_id = $this->loi->texteloi_id;
     $index = array();
     for ($i = $this->alinea->numero - 3; $i < $this->alinea->numero + 4; $i++) {
       if ($i > 0) $index[] = $i;
     }
-    $this->alineas = doctrine::getTable('Alinea')
+    $this->alineas = Doctrine::getTable('Alinea')
       ->createquery('a')
       ->where('a.article_loi_id = ?', $article->id)
       ->andWhereIn('a.numero', $index) 
@@ -212,18 +212,18 @@ class loiActions extends sfActions
 
   public function executeArticle(sfWebRequest $request) {
     if ($id = $request->getParameter('id'))
-      $this->article = doctrine::getTable('ArticleLoi')->find($id);
+      $this->article = Doctrine::getTable('ArticleLoi')->find($id);
     else {
       $loi_id = $this->getLoi($request, 1);
       $slug_article = $request->getParameter('article');
-      $this->article = doctrine::getTable('ArticleLoi')->findOneByLoiSlug($loi_id, $slug_article);
+      $this->article = Doctrine::getTable('ArticleLoi')->findOneByLoiSlug($loi_id, $slug_article);
     }
     $this->forward404Unless($this->article);
     if (!(isset($slug_article))) {
-      $this->loi = doctrine::getTable('TitreLoi')->findLightLoi($this->article->texteloi_id);
+      $this->loi = Doctrine::getTable('TitreLoi')->findLightLoi($this->article->texteloi_id);
       $loi_id = $this->loi->texteloi_id;
     }
-    $this->alineas = doctrine::getTable('Alinea')
+    $this->alineas = Doctrine::getTable('Alinea')
       ->createquery('a')
       ->where('a.article_loi_id = ?', $this->article->id)
       ->orderBy('a.numero')
@@ -242,8 +242,8 @@ class loiActions extends sfActions
   public function getLoi($request, $light = 0) {
     $loi_id = $request->getParameter('loi');
     if ($light)
-      $this->loi = doctrine::getTable('TitreLoi')->findLightLoi($loi_id);
-    else $this->loi = doctrine::getTable('TitreLoi')->findLoi($loi_id);
+      $this->loi = Doctrine::getTable('TitreLoi')->findLightLoi($loi_id);
+    else $this->loi = Doctrine::getTable('TitreLoi')->findLoi($loi_id);
     $this->forward404Unless($this->loi);
     return $loi_id;
   }

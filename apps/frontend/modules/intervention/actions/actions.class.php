@@ -13,9 +13,9 @@ class interventionActions extends sfActions
   public function executeParlementaire(sfWebRequest $request)
   {
     if (!$this->type = $request->getParameter('type')) $this->type = 'all';
-    $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
-    $this->interventions = doctrine::getTable('Intervention')->createQuery('i')
+    $this->interventions = Doctrine::getTable('Intervention')->createQuery('i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id);
     if (preg_match('/(commission|question|loi)$/', $this->type)) {
       $this->interventions->andWhere('i.type = ?', $this->type);
@@ -38,11 +38,11 @@ class interventionActions extends sfActions
   }
   
   public function executeParlementaireOrganisme(sfWebRequest $request) {
-    $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
-    $this->orga = doctrine::getTable('Organisme')->find($request->getParameter('orga'));
+    $this->orga = Doctrine::getTable('Organisme')->find($request->getParameter('orga'));
     $this->forward404Unless($this->orga);
-    $this->interventions = doctrine::getTable('Intervention')->createQuery('i')
+    $this->interventions = Doctrine::getTable('Intervention')->createQuery('i')
       ->leftJoin('i.Seance s')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('s.organisme_id = ?', $this->orga)
@@ -53,7 +53,7 @@ class interventionActions extends sfActions
   }
 
   public function executeShow(sfWebRequest $request) {
-    $this->intervention = doctrine::getTable('Intervention')->createquery('i')
+    $this->intervention = Doctrine::getTable('Intervention')->createquery('i')
       ->where('i.id = ?', $request->getParameter('id'))
       ->fetchOne();
     $this->forward404Unless($this->intervention);
@@ -71,10 +71,10 @@ class interventionActions extends sfActions
   
   public function executeSeance(sfWebRequest $request) {
     $seance_id = $request->getParameter('seance');
-    $this->seance = doctrine::getTable('Seance')->find($seance_id);
+    $this->seance = Doctrine::getTable('Seance')->find($seance_id);
     $this->forward404Unless($this->seance);
     if ($this->seance->type == 'commission') $this->orga = $this->seance->getOrganisme();
-    $query = doctrine::getTable('Intervention')->createquery('i')
+    $query = Doctrine::getTable('Intervention')->createquery('i')
         ->where('i.seance_id = ?', $seance_id)
         ->orderBy('i.timestamp ASC');
     $qtag = Doctrine_Query::create();
@@ -89,14 +89,14 @@ class interventionActions extends sfActions
   public function executeTag(sfWebRequest $request) {
     $this->tags = split('\|', $request->getParameter('tags'));
     
-    if (doctrine::getTable('Tag')->findOneByName($this->tags[0]))
+    if (Doctrine::getTable('Tag')->findOneByName($this->tags[0]))
       $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', $this->tags);
     else
-      $query = doctrine::getTable('Intervention')
+      $query = Doctrine::getTable('Intervention')
 	->createQuery('Intervention')->where('0');
 
     if ($slug = $request->getParameter('parlementaire')) {
-      $this->parlementaire = doctrine::getTable('Parlementaire')
+      $this->parlementaire = Doctrine::getTable('Parlementaire')
 	->findOneBySlug($slug);
       if ($this->parlementaire)
 	$query->andWhere('Intervention.parlementaire_id = ?', $this->parlementaire->id)
@@ -144,7 +144,7 @@ class interventionActions extends sfActions
       $ids[] = $s['id'];
     }
 
-    $this->query = doctrine::getTable('Intervention')->createQuery('i');
+    $this->query = Doctrine::getTable('Intervention')->createQuery('i');
     if (count($ids))
       $this->query->whereIn('i.id', $ids);
     else if (count($mcle))
@@ -156,7 +156,7 @@ class interventionActions extends sfActions
     }
 
     if ($slug = $request->getParameter('parlementaire')) {
-      $this->parlementaire = doctrine::getTable('Parlementaire')
+      $this->parlementaire = Doctrine::getTable('Parlementaire')
 	->findOneBySlug($slug);
       if ($this->parlementaire)
 	$this->query->andWhere('i.parlementaire_id = ?', $this->parlementaire->id);

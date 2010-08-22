@@ -17,7 +17,7 @@ class sectionActions extends sfActions
   */
   public function executeParlementaire(sfWebRequest $request)
   {
-    $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
     $this->titre = 'Dossiers parlementaires';
     $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom);
@@ -25,13 +25,13 @@ class sectionActions extends sfActions
 
   public function executeParlementaireSection(sfWebRequest $request) 
   {
-    $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
 
-    $this->section = doctrine::getTable('Section')->find($request->getParameter('id'));
+    $this->section = Doctrine::getTable('Section')->find($request->getParameter('id'));
     $this->forward404Unless($this->section);
 
-    $this->qinterventions = doctrine::getTable('Intervention')->createQuery('i')
+    $this->qinterventions = Doctrine::getTable('Intervention')->createQuery('i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('i.Section s')
       ->andWhere('(s.section_id = ? OR s.id = ?)', array($this->section->id, $this->section->id))
@@ -40,7 +40,7 @@ class sectionActions extends sfActions
   }
   public function executeShow(sfWebRequest $request) 
   {
-    $this->section = doctrine::getTable('Section')->find($request->getParameter('id'));
+    $this->section = Doctrine::getTable('Section')->find($request->getParameter('id'));
     $this->forward404Unless($this->section);
 
     $this->lois = $this->section->getTags(array('is_triple' => true,
@@ -98,7 +98,7 @@ class sectionActions extends sfActions
   {
     if (!($this->order = $request->getParameter('order')))
       $this->order = 'plus';
-    $query = doctrine::getTable('Section')->createQuery('s')
+    $query = Doctrine::getTable('Section')->createQuery('s')
       ->where('s.id = s.section_id')
       ->andWhere('s.nb_interventions > 5');
     if ($this->order == 'date') {

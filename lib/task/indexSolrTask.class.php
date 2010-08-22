@@ -36,7 +36,7 @@ class indexSolrTask extends sfBaseTask
 
     foreach(array("Parlementaire", "QuestionEcrite", "Amendement", "Intervention") as $table) {
       while (1) {
-	$q = doctrine::getTable($table)
+	$q = Doctrine::getTable($table)
 	  ->createQuery('o')
 	  ->orderBy('o.id ASC');
 	if ($this->state[$table]) {

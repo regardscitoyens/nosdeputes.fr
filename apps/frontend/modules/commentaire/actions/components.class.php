@@ -44,7 +44,7 @@ class commentaireComponents extends sfComponents
   public function executeLastObject() {
     $id = $this->object->id;
     $type = get_class($this->object);
-    $query = doctrine::getTable('Commentaire')->createQuery('c')
+    $query = Doctrine::getTable('Commentaire')->createQuery('c')
       ->leftJoin('c.Objects co')
       ->where('co.object_type = ?', $type)
       ->andWhere('co.object_id = ?', $id)

@@ -85,7 +85,7 @@ $values['password'], false, $this))) {
 	    $ip = $ip . $_SERVER['REMOTE_ADDR']; 
 
   // On teste l'existence préalable du même commentaire
-    if ($existing = doctrine::getTable('Commentaire')->createQuery('c')
+    if ($existing = Doctrine::getTable('Commentaire')->createQuery('c')
       ->select('created_at')
       ->where('citoyen_id = ?', $this->getUser()->getAttribute('user_id'))
       ->andWhere('commentaire LIKE ?', $this->commentaire)
@@ -103,13 +103,13 @@ $values['password'], false, $this))) {
     $commentaire->object_type = $this->type;
     $commentaire->object_id = $this->id;
     $commentaire->lien = $redirect_url[$this->type].$this->id;
-    $object = doctrine::getTable($this->type)->find($this->id);
+    $object = Doctrine::getTable($this->type)->find($this->id);
     if (isset($object->texteloi_id)) {
-      $loi = doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
+      $loi = Doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
       if ($this->type != 'Amendement') {
         $present = preg_replace('/<br\/>.*$/', '', $loi['titre']).' - A propos de l\'article ';
         if ($this->type == 'Alinea') {
-          $article = doctrine::getTable('ArticleLoi')->createQuery('a')
+          $article = Doctrine::getTable('ArticleLoi')->createQuery('a')
             ->select('titre')
             ->where('texteloi_id = ?', $object->texteloi_id)
             ->andWhere('id = ?', $object->article_loi_id)
@@ -163,7 +163,7 @@ $values['password'], false, $this))) {
       if ($section = $object->getSection())
         $commentaire->addObject('Section', $section->getSection(1)->id);
       if (!($seance = $object->getIntervention($object->numero))) {
-        $identiques = doctrine::getTable('Amendement')->createQuery('a')
+        $identiques = Doctrine::getTable('Amendement')->createQuery('a')
           ->where('content_md5 = ?', $object->content_md5)
           ->orderBy('numero')->execute();
         foreach($identiques as $a) {
@@ -176,7 +176,7 @@ $values['password'], false, $this))) {
       if ($loi) {
         if (preg_match('/^Article\s+(.*)$/', $object->sujet, $match)) {
           $art = preg_replace('/premier/i', '1er', $match[1]);
-          if ($art_obj = doctrine::getTable('ArticleLoi')->findOneByLoiTitre($object->texteloi_id,$art))
+          if ($art_obj = Doctrine::getTable('ArticleLoi')->findOneByLoiTitre($object->texteloi_id,$art))
             $commentaire->addObject('ArticleLoi', $art_obj->id);
         } else $commentaire->addObject('TitreLoi', $loi->id);
       }

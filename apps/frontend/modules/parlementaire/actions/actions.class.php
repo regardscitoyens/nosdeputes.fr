@@ -177,12 +177,12 @@ class parlementaireActions extends sfActions
         $this->similars = Doctrine::getTable('Parlementaire')->similarTo($this->search, null, 1);
       }
     } else {
-      $ctquery = doctrine_query::create()
+      $ctquery = Doctrine_Query::create()
         ->from('Parlementaire p')
         ->select('count(distinct p.id) as ct')
         ->fetchOne();
       $this->total = $ctquery['ct'];
-      $ctquery = doctrine_query::create()
+      $ctquery = Doctrine_Query::create()
         ->from('Parlementaire p')
         ->select('count(distinct p.id) as ct')
         ->where('p.fin_mandat IS NULL')

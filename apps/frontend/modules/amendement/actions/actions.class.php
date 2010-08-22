@@ -6,7 +6,7 @@ class amendementActions extends sfActions
   
   public function executeShow(sfWebRequest $request)
   {
-    $query = doctrine::getTable('Amendement')->createquery('a')
+    $query = Doctrine::getTable('Amendement')->createquery('a')
       ->where('a.texteloi_id = ?', $request->getParameter('loi'))
       ->andWhere('a.numero = ?', $request->getParameter('numero'))
       ->andWhere('a.sort <> ?', 'Rectifié')
@@ -20,7 +20,7 @@ class amendementActions extends sfActions
        $this->section = NULL;
      else $this->section = $section->getSection(1);
 
-     $this->identiques = doctrine::getTable('Amendement')->createQuery('a')
+     $this->identiques = Doctrine::getTable('Amendement')->createQuery('a')
        ->where('content_md5 = ?', $this->amendement->content_md5)
        ->orderBy('numero')
        ->execute();
@@ -47,15 +47,15 @@ class amendementActions extends sfActions
        ->orderBy('a.numero')
        ->fetchArray();
    
-     $this->loi = doctrine::getTable('TitreLoi')->findLightLoi($this->amendement->texteloi_id);
+     $this->loi = Doctrine::getTable('TitreLoi')->findLightLoi($this->amendement->texteloi_id);
   }
 
   public function executeParlementaire(sfWebRequest $request)
   {
-    $this->parlementaire = doctrine::getTable('Parlementaire')
+    $this->parlementaire = Doctrine::getTable('Parlementaire')
       ->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
-    $this->amendements = doctrine::getTable('Amendement')->createQuery('a')
+    $this->amendements = Doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('a.sort <> ?', 'Rectifié')
@@ -68,10 +68,10 @@ class amendementActions extends sfActions
 
   public function executeParlementaireSection(sfWebRequest $request) 
   {
-    $this->parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
 
-    $this->section = doctrine::getTable('Section')->find($request->getParameter('id'));
+    $this->section = Doctrine::getTable('Section')->find($request->getParameter('id'));
     $this->forward404Unless($this->section);
 
     $lois = $this->section->getTags(array('is_triple' => true,
@@ -79,7 +79,7 @@ class amendementActions extends sfActions
                                           'key' => 'numero',
                                           'return' => 'value'));
 
-    $this->qamendements = doctrine::getTable('Amendement')->createQuery('a')
+    $this->qamendements = Doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('a.sort <> ?', 'Rectifié')
@@ -116,7 +116,7 @@ class amendementActions extends sfActions
     foreach($search as $s)
       $ids[] = $s['id'];
     
-    $this->query = doctrine::getTable('Amendement')->createQuery('a');
+    $this->query = Doctrine::getTable('Amendement')->createQuery('a');
     if (count($ids))
       $this->query->whereIn('a.id', $ids);
     else if (count($mcle)) foreach($mcle as $m) {
@@ -128,7 +128,7 @@ class amendementActions extends sfActions
     }
 
     if ($slug = $request->getParameter('parlementaire')) {
-      $this->parlementaire = doctrine::getTable('Parlementaire')
+      $this->parlementaire = Doctrine::getTable('Parlementaire')
         ->findOneBySlug($slug);
       if ($this->parlementaire)
         $this->query->leftJoin('a.ParlementaireAmendement pa')
@@ -148,8 +148,8 @@ class amendementActions extends sfActions
     $amdt = $request->getParameter('numero');
     if ($amdt == 'all' || $amdt == 'new' ) {
       if (count($this->lois) == 1)
-        $this->loi = doctrine::getTable('TitreLoi')->findLightLoi($this->lois[0]);
-      $this->amendements_query = doctrine::getTable('Amendement')
+        $this->loi = Doctrine::getTable('TitreLoi')->findLightLoi($this->lois[0]);
+      $this->amendements_query = Doctrine::getTable('Amendement')
         ->createQuery('a')
         ->whereIn('a.texteloi_id', $this->lois)
         ->andWhere('a.sort <> ?', 'Rectifié');

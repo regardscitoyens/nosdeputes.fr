@@ -56,7 +56,7 @@ class loadHemicyleTask extends sfBaseTask
 	    if ($json->intervenant) {
 	      $p = null;
 	      if ($json->intervenant_url) {
-            $p = doctrine::getTable('Parlementaire')
+            $p = Doctrine::getTable('Parlementaire')
                   ->findOneByUrlAn($json->intervenant_url);
             if ($p) {
               $intervention->setParlementaire($p);

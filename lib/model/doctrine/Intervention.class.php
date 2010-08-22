@@ -100,7 +100,7 @@ class Intervention extends BaseIntervention
   }
 
   public function setContexte($context, $date = null, $timestamp = null) {
-    return $this->setSection(doctrine::getTable('Section')->findOneByContexteOrCreateIt($context, $date, $timestamp));
+    return $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($context, $date, $timestamp));
   }
 
   public function setAmendements($tamendements) {

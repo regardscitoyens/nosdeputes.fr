@@ -43,7 +43,7 @@ class OrganismeTable extends Doctrine_Table
 //        echo "- $nom (pas trouve)\n";
     
 
-    $orgs = doctrine::getTable('Organisme')->createQuery('o')->where('type = ?', $type)->execute();
+    $orgs = Doctrine::getTable('Organisme')->createQuery('o')->where('type = ?', $type)->execute();
     foreach($orgs as $o) {
       $res = similar_text($o->nom, $nom, $pc);
       if ($pc > 95) {

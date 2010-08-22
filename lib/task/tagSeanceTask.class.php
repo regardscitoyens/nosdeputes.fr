@@ -76,7 +76,7 @@ class tagSeanceTask extends sfBaseTask
     }
     unset($words);
 
-    $qs = doctrine::getTable('Seance')->createQuery()->select('id')->where('tagged IS NULL');
+    $qs = Doctrine::getTable('Seance')->createQuery()->select('id')->where('tagged IS NULL');
 
     foreach($qs->fetchArray() as $s) {
       echo "Seance ".$s['id']." ..";
@@ -175,7 +175,7 @@ class tagSeanceTask extends sfBaseTask
         foreach (array_keys($tags) as $tag) {
     	  if (preg_match('/'.$tag.'/i', $inter['intervention'])) {
             if (!$i)
-              $i = doctrine::getTable('Intervention')->find($inter['id']);
+              $i = Doctrine::getTable('Intervention')->find($inter['id']);
             $i->addTag($tag);
 	  }
         }
@@ -186,7 +186,7 @@ class tagSeanceTask extends sfBaseTask
         }
       }
       if ($tagged == 1) {
-	$seance = doctrine::getTable('Seance')->find($s['id']);
+	$seance = Doctrine::getTable('Seance')->find($s['id']);
 	$seance->tagged = 1;
 	$seance->save();
 	$seance->free();
