@@ -35,9 +35,16 @@ Unit tests are available in the SVN repository.
 
 == Installation ==
 
-  * Install the plugin
+Installation of the plugin differs on the version of symfony you are using.
+
+  * Install the plugin (symfony 1.0):
 {{{
 $ symfony plugin-install http://plugins.symfony-project.com/sfFeed2Plugin
+}}}
+
+  * Install the plugin (symfony 1.1+):
+{{{
+$ symfony plugin:install sfFeed2Plugin
 }}}
 
   * Alternatively, if you don't have PEAR installed, you can download the latest package attached to this plugin's wiki page and extract it under your project's `plugins/` directory
@@ -196,7 +203,7 @@ At the end of the action, the `$feed` variable contains a `sfAtom1Feed` object w
 
 {{{
 <?php decorate_with(false) ?>
-<?php echo $feed->asXml() ?>
+<?php echo $feed->asXml(ESC_RAW) ?>
 }}}
 
 The content type is automatically set by the `asXML()` method, depending on the feed format (Atom1 in this example).
@@ -452,6 +459,21 @@ public function executeLastPosts()
   $this->feed = sfFeedPeer::aggregate(array($feed1, $feed2), array('limit' => 10));
 }
 }}}
+
+By default, the aggregator sorts all items in reverse chronological order. If you wish to sort them in chronological order instead, add 'sort' => 'chronological' to the parameters array.
+
+=== Adding an image to the feed ===
+
+To add an image to the feed, use the sfFeedImage class
+
+{{{
+$feed = new sfRss201Feed();
+
+$feedImage = new sfFeedImage();
+$feedImage->setLink('http://www.example.org/images/feed-image.png');
+$feedImage->setTitle('My Title');
+$feed->setImage($feedImage)
+}}}}
 
 == TODO ==
 

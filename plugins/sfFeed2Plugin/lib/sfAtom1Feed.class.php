@@ -293,7 +293,7 @@ class sfAtom1Feed extends sfFeed
       // content
       if ($item->getContent())
       {
-        $xml[] = sprintf('  <content type="text/html"><![CDATA[%s]]></content>', $item->getContent());
+        $xml[] = sprintf('  <content type="html"><![CDATA[%s]]></content>', $item->getContent());
       }
 
       // enclosure

@@ -140,7 +140,7 @@ class sfFeedPeer
     {
       foreach($feed->getItems() as $item)
       {
-        $index = is_integer($item->getPubDate()) ?  $item->getPubDate() : 0;
+        $index = is_integer($item->getPubDate()) || ctype_digit($item->getPubDate()) ?  $item->getPubDate() : 0;
         while(isset($feed_items[$index]))
         {
           $index++;
@@ -149,9 +149,17 @@ class sfFeedPeer
       }
     }
 
-    // sort in reverse chronological order
-    krsort($feed_items);
-
+    // when specified, sort items chronologically instead of reverse
+    if (isset($parameters['sort']) && 'chronological' == $parameters['sort'])
+    {
+      ksort($feed_items);
+    }
+    else 
+    {
+      // default behaviour: sort in reverse chronological order 
+      krsort($feed_items);
+    }
+    
     // limit the number of feed items to be added
     if(isset($parameters['limit']))
     {
@@ -292,9 +300,18 @@ class sfFeedPeer
       {
         $routes = sfContext::getInstance()->getRouting()->getRoutes();
         $route = $routes[substr($routeName, 1)];
-        $url = $route[0];
-        $paramNames = array_keys($route[2]);
-        $defaults = $route[3];
+        if($route instanceof sfRoute)
+        {
+          $url = $route->getPattern();
+          $paramNames = array_keys($route->getVariables());
+          $defaults = $route->getDefaults();
+        }
+        else
+        {
+          $url = $route[0];
+          $paramNames = array_keys($route[2]);
+          $defaults = $route[3];
+        }
       }
 
       // we get all parameters
