@@ -1,12 +1,8 @@
 <?php
-
-require_once sfConfig::get('sf_lib_dir').'/vendor/swift/swift_init.php'; 
-
 class mailComponents extends sfComponents
 {
   public function executeSend()
   {
-
     if (!isset($this->subject))
       throw new Exception('subject needed');
 
@@ -20,31 +16,17 @@ class mailComponents extends sfComponents
       throw new Exception('mailContext needed');
 
     if (isset($this->action)) 
-      throw new Exception('action should not be defenied anymore');
+      throw new Exception('action should not be defined anymore');
 
     $this->getContext()->getConfiguration()->loadHelpers('Partial');
     
-    $message = Swift_Message::newInstance()
-
-      //Give the message a subject
-      ->setSubject($this->subject)
-
-      //Set the From address with an associative array
-      ->setFrom(array('contact@nosdeputes.fr' => '"Nos Deputes (Ne pas repondre)"'))
-
-      //Set the To addresses with an associative array
-      ->setTo($this->to)
-
-      //Give it a body
-      ->setBody(get_partial('mail/'.$this->partial, $this->mailContext))
-      ;
-
-
-    $transport = Swift_SmtpTransport::newInstance();
-
-    $mailer = Swift_Mailer::newInstance($transport);
-
-    $result = $mailer->send($message);
-
+    $message = $this->getMailer()->compose(array('contact@nosdeputes.fr' => '"Nos Deputes (Ne pas repondre)"'),
+		                                         $this->to,
+												 $this->subject,
+												 get_partial('mail/'.$this->partial, $this->mailContext)
+										   );
+    $this->getMailer()->send($message);
   }
 }
+
+?>
