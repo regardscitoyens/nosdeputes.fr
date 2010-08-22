@@ -1,6 +1,6 @@
 <?php
 
-class DateForm extends sfForm
+class DateForm extends BaseForm
 {
   public function configure()
   {

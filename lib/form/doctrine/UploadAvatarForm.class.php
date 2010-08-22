@@ -1,5 +1,5 @@
 <?php
-class UploadAvatarForm extends sfForm
+class UploadAvatarForm extends BaseForm
 {
   public function configure()
   {

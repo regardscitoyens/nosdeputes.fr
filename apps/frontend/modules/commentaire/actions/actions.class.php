@@ -15,11 +15,12 @@ class commentaireActions extends sfActions
   {
     $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement_id?id=', 'QuestionEcrite' => '@question_id?id=', 'ArticleLoi' => '@loi_article_id?id=', 'Alinea'=> '@loi_alinea?id=');
     $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "A propos d'une question écrite d");
-
+	
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');
-
-    $this->commentaire = myTools::clearHtml($request->getParameter('commentaire[commentaire]'));
+    
+	$values = $request->getParameter('commentaire');
+	$this->commentaire = myTools::clearHtml($values['commentaire']);
     $this->unique_form = $request->getParameter('unique_form');
 
     if ($this->getUser()->getAttribute('commentaire_'.$this->type.'_'.$this->id) != $this->unique_form) {
@@ -31,14 +32,12 @@ class commentaireActions extends sfActions
       $this->getUser()->setFlash('error', 'Un problème technique est survenu');
       return $this->redirect($redirect_url[$this->type].$this->id);
     }
-		
-    $values = $request->getParameter('commentaire');
 
     /** On logue l'utilisateur si il a donné un login et mot de passe correct sinon creation du form et template**/
     $isAuthenticated = $this->getUser()->isAuthenticated();
     /** Pas loggué on s'assure que quelqu'un n'a pas trouvé notre hack */
     $_GET['isAuthenticated'] = $isAuthenticated;
-    if ($request->getParameter('commentaire[login]') && $request->getParameter('commentaire[password]')) {
+    if (isset($values['login']) && isset($values['password'])) {
       if (!($citoyen_id = myUser::SignIn($values['login'],
 $values['password'], false, $this))) {
 	$this->form = new CommentaireForm();

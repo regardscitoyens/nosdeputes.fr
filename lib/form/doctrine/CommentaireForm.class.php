@@ -29,9 +29,9 @@ class CommentaireForm extends BaseCommentaireForm
     
     if (!sfContext::getInstance()->getUser()->isAuthenticated() || !$_GET['isAuthenticated']) 
     {
-      $this->widgetSchema['nom'] = new sfWidgetFormInput();
-      $this->widgetSchema['email'] = new sfWidgetFormInput();
-      $this->widgetSchema['login'] = new sfWidgetFormInput();
+      $this->widgetSchema['nom'] = new sfWidgetFormInputText();
+      $this->widgetSchema['email'] = new sfWidgetFormInputText();
+      $this->widgetSchema['login'] = new sfWidgetFormInputText();
       $this->widgetSchema['password'] = new sfWidgetFormInputPassword();
       
       

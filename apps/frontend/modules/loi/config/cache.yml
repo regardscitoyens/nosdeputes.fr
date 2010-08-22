@@ -1,7 +1,7 @@
 all:
-  enabled: on
+  enabled: true
   lifetime: 86400
 loi:
-  enabled: off
+  enabled: false
 section:
-  enabled: off
+  enabled: false

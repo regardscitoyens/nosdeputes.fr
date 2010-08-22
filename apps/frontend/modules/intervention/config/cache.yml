@@ -1,7 +1,7 @@
 all:
-  enabled: on
+  enabled: true
   lifetime: 86400
 show:
-  enabled: off
+  enabled: false
 _pagerInterventions:
-  enabled: off
+  enabled: false

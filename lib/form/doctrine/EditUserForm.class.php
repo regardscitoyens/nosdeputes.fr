@@ -28,7 +28,7 @@ class EditUserForm extends CitoyenForm
       
     $this->widgetSchema['naissance'] = new sfWidgetFormDate(array('format' => '%day%/%month%/%year%', 'years' => $liste_annees));
     
-    $this->widgetSchema['url_site'] = new sfWidgetFormInput();
+    $this->widgetSchema['url_site'] = new sfWidgetFormInputText();
     $this->validatorSchema['url_site'] = new sfValidatorUrl(array('required' => false), array('invalid' => 'l\'url doit être de la forme "http://www.monsite.fr"'));
     
     $this->validatorSchema['activite'] = new sfValidatorRegex(array('pattern' => '/^[^<\"]+$/'), array('invalid'=>'Seul du texte est autorisé pour ce champ'));

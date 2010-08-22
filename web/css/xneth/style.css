@@ -5,6 +5,7 @@ body {
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
+/* Bulle ajax commentaires */
 .coms_loi_txt {
   color: #158EAF;
 }

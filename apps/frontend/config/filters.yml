@@ -6,5 +6,6 @@ rememberFilter:
   class: rememberFilter
 
 cache:     ~
-common:    ~
+common:
+  class: sfCommonFilter
 execution: ~

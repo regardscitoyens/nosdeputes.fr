@@ -1,14 +1,14 @@
 <?php
-class ResetMotdepasseForm extends sfForm
+class ResetMotdepasseForm extends BaseForm
 {
   public function configure()
   {
     $this->widgetSchema->setNameFormat('reset[%s]');
     
-    $this->widgetSchema['login'] = new sfWidgetFormInput();
+    $this->widgetSchema['login'] = new sfWidgetFormInputText();
     $this->validatorSchema['login'] = new sfValidatorString(array('required' => true), array('required' => 'Champ obligatoire'));
   
-    $this->widgetSchema['code'] = new sfWidgetFormInput();
+    $this->widgetSchema['code'] = new sfWidgetFormInputText();
     $this->validatorSchema['code'] = new sfValidatorString(array('required' => true), array('required' => 'Vous devez recopier le code de sécurité'));
     
     // label

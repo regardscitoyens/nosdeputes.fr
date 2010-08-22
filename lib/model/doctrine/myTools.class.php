@@ -86,7 +86,8 @@ class myTools {
   }
 
   public static function clearHtml($s, $authorized_tags = '<strong><i><b><a><em>') {
-  sfLoader::loadHelpers(array('Url'));
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+	
     if ($authorized_tags)
       $s = strip_tags($s, $authorized_tags.'<depute>');
 

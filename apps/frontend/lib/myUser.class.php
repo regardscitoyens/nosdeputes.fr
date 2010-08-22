@@ -38,7 +38,8 @@ class myUser extends sfBasicSecurityUser
 
   public static function SignIn($login, $password, $remember, $action) 
   {
-    sfLoader::loadHelpers(array('Url'));
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+	
     $reset_mdp = '<a href="'.url_for('@reset_mdp').'">Mot de passe oublié ?</a>';
     
     if(Doctrine::getTable('Citoyen')->findOneByLogin($login))

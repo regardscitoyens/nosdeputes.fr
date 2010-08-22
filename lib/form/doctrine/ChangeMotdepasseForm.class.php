@@ -1,5 +1,5 @@
 <?php
-class ChangeMotdepasseForm extends sfForm
+class ChangeMotdepasseForm extends BaseForm
 {
   public function configure()
   {

@@ -1,5 +1,5 @@
 all:
-   enabled: on
+   enabled: true
    lifetime: 86400
 _pagerAmendements:
-   enabled: off
+   enabled: false

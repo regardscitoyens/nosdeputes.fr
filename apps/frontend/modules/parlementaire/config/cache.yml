@@ -1,6 +1,6 @@
 all:
   lifetime: 86400
-  enabled: on
+  enabled: false
 rss:
   lifetime: 3600
 
