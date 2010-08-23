@@ -4,4 +4,4 @@ autoload:
     name:           project
     path:           %SF_LIB_DIR%/vendor
     recursive:      true
-    exclude:        [symfony, backup-symfony-1.4, symfony-externals-1.4]
+    exclude:        [symfony, symfony-externals-1.4.6, symfony-externals-1.4]
