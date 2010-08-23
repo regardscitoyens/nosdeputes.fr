@@ -1,16 +1,18 @@
 <?php
+$ct = 0;
 if (isset($list)) {
-  echo '<table><tr><td>';
+  echo '<table><tr>';
   $totaldep = count($deputes);
   $div = floor($totaldep/3)+1;
   if ($div > 1 && $totaldep % 3 == 0)
     $div--;
   $td = 0;
-}
-$ct = 0;
-if (isset($imp) && $imp == 100 && count($deputes) == 1) {
-  echo '</td><td>';
-  $td++;
+  if ($totaldep == 1) {
+    echo '<td/><td>';
+    $td++;
+  } else if ($totaldep == 2 || $totaldep == 4)
+    echo '<td class="list_td_small"/><td>';
+  else echo '<td>';
 }
 foreach($deputes as $depute) {
   $ct++; ?>
@@ -52,7 +54,9 @@ foreach($deputes as $depute) {
 }
 if (isset($list)) {
   echo '</td>';
-  while ($td < 2) {
+  if ($totaldep == 2 || $totaldep == 4)
+    echo '<td class="list_td_small"/>';
+  else while ($td < 2) {
     $td++;
     echo '<td/>';
   }

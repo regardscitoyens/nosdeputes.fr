@@ -1480,6 +1480,9 @@ a:hover img {
 .list_table table {
   width: 100%;
 }
+.list_table .list_td_small {
+  width: 16%;
+}
 .list_table td {
   width: 31%;
   padding: 3px;
@@ -1499,7 +1502,8 @@ a:hover img {
   opacity: 0.8;
 }
 .list_dep {
-  margin: 10px;
+  margin: 5px;
+  padding: 5px;
   height: 32px;
 }
 .list_dep:hover {
