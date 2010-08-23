@@ -230,10 +230,11 @@ class parlementaireActions extends sfActions
 
     $query = Doctrine::getTable('Parlementaire')->createQuery('p')
       ->select('p.*, po.fonction as fonction, po.importance as imp')
-      ->where('p.groupe_acronyme = ?', $acro)
       ->leftJoin('p.ParlementaireOrganisme po')
       ->leftJoin('po.Organisme o')
-      ->where('o.type = ?', 'groupe')
+      ->where('p.fin_mandat IS NULL')
+      ->andWhere('p.groupe_acronyme = ?', $acro)
+      ->andWhere('o.type = ?', 'groupe')
       ->andWhere('o.nom = ?', $nom);
     $query->orderBy("imp DESC, p.nom_de_famille ASC");
     $this->parlementaires = array();
@@ -261,6 +262,7 @@ class parlementaireActions extends sfActions
       ->leftJoin('p.ParlementaireOrganisme po')
       ->leftJoin('po.Organisme o')
       ->where('o.slug = ?', $orga)
+      ->andWhere('p.fin_mandat IS NULL')
       ->orderBy("po.importance DESC, p.nom_de_famille ASC");
     $this->parlementaires = array();
     $this->total = 0;
