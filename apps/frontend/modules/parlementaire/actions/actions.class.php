@@ -229,14 +229,21 @@ class parlementaireActions extends sfActions
     $this->forward404Unless($nom);
 
     $query = Doctrine::getTable('Parlementaire')->createQuery('p')
+      ->select('p.*, po.fonction as fonction, po.importance as imp')
       ->where('p.groupe_acronyme = ?', $acro)
       ->leftJoin('p.ParlementaireOrganisme po')
       ->leftJoin('po.Organisme o')
       ->where('o.type = ?', 'groupe')
       ->andWhere('o.nom = ?', $nom);
-    $query->orderBy("po.importance DESC, p.sexe ASC, p.nom_de_famille ASC");
-    $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
-
+    $query->orderBy("imp DESC, p.nom_de_famille ASC");
+    $this->parlementaires = array();
+    $this->total = 0;
+    foreach ($query->execute() as $depute) {
+      $this->total++;
+      $imp = $depute->imp;
+      if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
+      else $this->parlementaires[$imp] = array($depute);
+    }
     $query2 = Doctrine::getTable('Organisme')->createQuery('o');
     $query2->where('o.nom = ?', $nom);
     $this->orga = $query2->fetchOne();
@@ -250,12 +257,19 @@ class parlementaireActions extends sfActions
     $this->forward404Unless($this->orga);
 
     $query = Doctrine::getTable('Parlementaire')->createQuery('p')
+      ->select('p.*, po.fonction as fonction, po.importance as imp')
       ->leftJoin('p.ParlementaireOrganisme po')
       ->leftJoin('po.Organisme o')
       ->where('o.slug = ?', $orga)
-      ->orderBy("po.importance DESC, p.sexe ASC, p.nom_de_famille ASC");
-    $this->pager = Doctrine::getTable('Parlementaire')->getPager($request, $query);
-
+      ->orderBy("po.importance DESC, p.nom_de_famille ASC");
+    $this->parlementaires = array();
+    $this->total = 0;
+    foreach ($query->execute() as $depute) {
+      $this->total++;
+      $imp = $depute->imp;
+      if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
+      else $this->parlementaires[$imp] = array($depute);
+    }
     $query2 = Doctrine::getTable('Seance')->createQuery('s')
       ->leftJoin('s.Organisme o')
       ->where('o.slug = ?', $orga)

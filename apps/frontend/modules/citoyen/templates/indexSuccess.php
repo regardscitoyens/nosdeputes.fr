@@ -23,23 +23,29 @@
   foreach($pager->getResults() as $citoyen) {
     $ct++; ?>
     <td><a href="<?php echo url_for('@citoyen?slug='.$citoyen->slug); ?>"><div class="list_cit">
-      <div class="list_img_left">
-      <?php if (!$citoyen->photo)
-        echo ''.image_tag('xneth/avatar_citoyen.png', array('alt' => 'Avatar par défaut', 'height' => '50px'));
-      else echo '<img src="'.url_for('@photo_citoyen?slug='.$citoyen->slug).'" alt="avatar de '.$citoyen->login.'" height="50px"/>'; ?>
-      </div><div class="left">
-      <span class="list_nom"><?php echo $citoyen->login; ?></span>
-      <?php if (!empty($citoyen->activite)) echo '<br/><i>'.truncate_text(html_entity_decode(strip_tags($citoyen->activite), ENT_NOQUOTES, "UTF-8"), 40).' </i>'; if ($citoyen->naissance) echo ' ('.myTools::getAge($citoyen->naissance).'&nbsp;ans)'; ?>
+      <div class="list_img_left"><?php
+        if (!$citoyen->photo) echo ''.image_tag('xneth/avatar_citoyen.png', array('alt' => 'Avatar par défaut', 'height' => '50px'));
+        else echo '<img src="'.url_for('@photo_citoyen?slug='.$citoyen->slug).'" alt="avatar de '.$citoyen->login.'" height="50px"/>';
+      ?></div>
+      <div class="list_nom">
+        <?php echo $citoyen->login; ?>
       </div>
-      <div class="list_details">
-        <?php echo preg_replace('/membre/', 'inscrit', $citoyen->role).'&nbsp;&nbsp;<br/>le '.myTools::displayVeryShortDate($citoyen->created_at);
-        if ($citoyen->nb_comment > 0) {
-          echo '<br/><span class="list_com">'.$citoyen->nb_comment.'&nbsp;commentaire';
+      <div class="list_right">
+        <?php echo preg_replace('/membre/', 'inscrit', $citoyen->role).($citoyen->sexe === "F" ? "e" : "").'&nbsp;&nbsp;<br/>le '.myTools::displayVeryShortDate($citoyen->created_at); ?>
+      </div>
+      <div class="list_left"><?php
+        if (!empty($citoyen->activite))
+          echo '<i>'.truncate_text(html_entity_decode(strip_tags($citoyen->activite), ENT_NOQUOTES, "UTF-8"), 25).'</i>';
+      ?></div>
+      <div class="list_right"><?php
+        if (!$citoyen->nb_comment)
+          echo "0&nbsp;commentaire";
+        else {
+          echo '<span class="list_com">'.$citoyen->nb_comment.'&nbsp;commentaire';
           if ($citoyen->nb_comment > 1) echo 's';
           echo '</span>';
-        } else echo '<br/>'; ?>
-      </div>
-      <?php if (!empty($citoyen->url_site)) echo '<div class="list_link">'.truncate_text(html_entity_decode(strip_tags($citoyen->url_site), ENT_NOQUOTES, "UTF-8"), 40).'</div>'; ?>
+        }
+      ?></div>
     </div></a></td>
     <?php if ($ct % 3 == 0 && $ct != $total) echo '</tr><tr>';
   } ?>

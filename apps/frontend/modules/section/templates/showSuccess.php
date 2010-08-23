@@ -12,7 +12,7 @@ else echo '</h1>';
 ?>
 <div class="numeros_textes">
 <?php if ($section->nb_commentaires) { ?>
-<div class="source"><a href="#commentaires">Voir le<?php if ($section->nb_commentaires > 1) echo 's '.$section->nb_commentaires; ?> commentaire<?php if ($section->nb_commentaires > 1) echo 's'; ?></a></div>
+<div class="source"><span class="list_com"><a href="#commentaires">Voir le<?php if ($section->nb_commentaires > 1) echo 's '.$section->nb_commentaires; ?> commentaire<?php if ($section->nb_commentaires > 1) echo 's'; ?></a></span></div>
 <?php }
   if ($lois && ! preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $section->titre)) { ?>
 <span><?php if (count($textes_loi)) foreach ($textes_loi as $texte) echo link_to(strip_tags($texte['titre']), '@loi?loi='.$texte['texteloi_id']); else { echo 'Texte'; if (count($lois) > 1) echo 's'; echo ' N°'; foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' '; echo '('.link_to('tous les amendements à ce dossier',  '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois_amendees)).'&numero=all').')'; } ?></span>
@@ -41,9 +41,9 @@ if (count($sommaire)) { ?>
 if ($subsection->id != $section->id) : ?>
 <li><?php $subtitre = $subsection->titre;
   if ($subsection->nb_commentaires > 0) {
-    $subtitre .= ' ('.$subsection->nb_commentaires.' commentaire';
+    $subtitre .= ' (<span class="list_com">'.$subsection->nb_commentaires.' commentaire';
     if ($subsection->nb_commentaires > 1) $subtitre .= 's';
-    $subtitre .= ')';
+    $subtitre .= '</span>)';
   }
   echo link_to($subtitre, '@interventions_seance?seance='.$subsection->getFirstSeance().'#table_'.$subsection->id); ?></li>
 <?php endif; endforeach;?>
@@ -57,9 +57,9 @@ if ($subsection->id != $section->id) : ?>
 <?php foreach($section->getSeances() as $seance) : ?>
 <li><?php $subtitre = $seance->getTitre();
   if ($seance->nb_commentaires > 0) {
-    $subtitre .= ' ('.$seance->nb_commentaires.' commentaire';
+    $subtitre .= ' (<span class="list_com">'.$seance->nb_commentaires.' commentaire';
     if ($seance->nb_commentaires > 1) $subtitre .= 's';
-    $subtitre .= ')';
+    $subtitre .= '</span>)';
   }
   echo link_to($subtitre, '@interventions_seance?seance='.$seance->id.'#table_'.$section->id); ?></li>
 <?php endforeach; ?>

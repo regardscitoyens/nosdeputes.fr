@@ -33,15 +33,15 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function getNomPrenom() {
-    $weird = array('é' => 'e', 'è' => 'e', 'ë' => 'e', 'Le ' => 'Le', 'La ' => 'La');
+    $weird = array('é' => 'e', 'è' => 'e', 'ë' => 'e', 'Le ' => 'Le', 'La ' => 'La', '\'' => '^ ');
     $beg_name = " ".substr($this->nom_de_famille, 0, 3);
     $ct = strpos($this->nom, $beg_name);
     if (!$ct) foreach ($weird as $good => $bad)
         if ($ct = strpos($this->nom, preg_replace("/".$bad."/", $good, $beg_name)))
            break;
     $nom = substr($this->nom, $ct+1);
-    $prenom = substr($this->nom, 0, strpos($this->nom, $nom)-1);
-    return $nom.", ".$prenom;
+    $prenom = substr($this->nom, 0, strpos($this->nom, $nom));
+    return $nom.", ".preg_replace('/\s$/', '', $prenom);
   }
 
   public function getStatut($link = 0) {
@@ -166,7 +166,7 @@ class Parlementaire extends BaseParlementaire
     if($po = $this->getPOFromJoinIf('type', 'groupe'))
       return $po;
     foreach($this->getParlementaireOrganismes() as $po) {
-      if ($po->type == 'groupe') 
+      if ($po->type === 'groupe') 
 	return $po;
     }
   }

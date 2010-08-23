@@ -18,10 +18,22 @@
 } else {
   if ($search === "all") {
     $listlettres = array_keys($parlementaires);
-    foreach($listlettres as $i) 
-      include_partial('parlementaire/table', array('lettre' => $i, 'deputes' => $parlementaires[$i], 'listlettres' => $listlettres));
-  } else
-    include_partial('parlementaire/table', array('deputes' => $parlementaires));
+    foreach($listlettres as $i) {
+      echo '<div class="list_choix" id="'.$i.'">';
+      foreach($listlettres as $l) {
+        if ($l != $i) echo link_to($l , '@list_parlementaires#'.$l);
+        else echo '<big><strong>'.$l.'</strong></big>';
+        echo '&nbsp;&nbsp;';
+      }
+      echo '</div><div class="list_table">';
+      include_partial('parlementaire/table', array('deputes' => $parlementaires[$i], 'list' => 1));
+      echo '</div><div class="suivant"><a href="#">Haut de page</a></div>';
+    }
+  } else {
+    echo '<div class="list_table">';
+    include_partial('parlementaire/table', array('deputes' => $parlementaires, 'list' => 1));
+    echo '</div>';
+  }
 } ?>
 </div>
 

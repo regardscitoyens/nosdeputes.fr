@@ -1,20 +1,21 @@
-<?php $nResults = $pager->getNbResults(); ?>
 <h1><?php echo $orga->getNom(); $sf_response->setTitle($orga->getNom()); ?></h1>
 <?php include_component('article', 'show', array('categorie'=>'Organisme', 'object_id'=>$orga->id)); ?>
-<?php if ($nResults && $pagerSeances->getPage() < 2) {
+<?php if ($total && $pagerSeances->getPage() < 2) {
   if ($orga->type == 'extra') : ?>
-<h2>Organisme extra-parlementaire composé de <?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?>&nbsp;:</h2>
+<h2>Organisme extra-parlementaire composé de <?php echo $total; ?> député<?php if ($total > 1) echo 's'; ?>&nbsp;:</h2>
 <?php else : ?>
-<h2><?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission parlementaire composée de <?php echo $nResults; ?> député<?php if ($nResults > 1) echo 's'; ?>&nbsp;:</h2>
+<h2><?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission parlementaire composée de <?php echo $total; ?> député<?php if ($total > 1) echo 's'; ?>&nbsp;:</h2>
 <?php endif; ?>
-<ul>
-<?php foreach($pager->getResults() as $parlementaire) : ?>
-<li><?php echo $parlementaire->getPOrganisme($orga->getNom())->getFonction(); ?> : <?php echo link_to($parlementaire->nom, 'parlementaire/show?slug='.$parlementaire->slug); ?> (<?php echo $parlementaire->getStatut(1).", ".link_to($parlementaire->nom_circo, '@list_parlementaires_circo?search='.$parlementaire->nom_circo); ?>)</li>
-<?php endforeach ; ?>
-</ul>
-<?php include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>'@list_parlementaires_organisme?slug='.$orga->getSlug().'&'));
-} ?>
-<?php if ($pagerSeances->getNbResults() && $pager->getPage() < 2) : ?>
+<div class="liste">
+<?php $listimp = array_keys($parlementaires);
+  foreach($listimp as $i) {
+    echo '<div class="list_table">';
+    include_partial('parlementaire/table', array('deputes' => $parlementaires[$i], 'list' => 1, 'imp' => $i));
+    echo '</div>';
+  } 
+  echo '</div>';
+} 
+if ($pagerSeances->getNbResults()) : ?>
 <div><h3>Les dernières réunions de la <?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission</h3>
 <ul>
 <?php foreach($pagerSeances->getResults() as $seance) : ?>
