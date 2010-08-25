@@ -1,5 +1,8 @@
 #!/bin/bash
 
+echo "OBSOLETE"
+exit
+
 source ./bin/db.inc
 
 php symfony cc

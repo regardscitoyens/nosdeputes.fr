@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "OBSOLETE"
+exit
+
+
 source ./bin/db.inc
 
 rm lib/filter/doctrine/CommentaireParlementairesFormFilter.class.php

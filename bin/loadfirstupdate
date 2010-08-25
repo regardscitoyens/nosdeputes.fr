@@ -1,5 +1,7 @@
 #!/bin/bash
 
+echo "OBSOLETE"
+exit
 
 echo > /tmp/log_firstload
 # Mis là temporairement pour rappel: à runner une fois pour toutes pour éviter de retélécharger inutilement 2000 amendements à chaque fois (OGM et HADOPI)
