@@ -1,5 +1,8 @@
 #!/bin/bash
 
+if [ ! -d html ] ; then mkdir html; fi
+if [ ! -d out ] ; then mkdir out; fi
+
 #SCRIPT=download_via_recherche.pl
 SCRIPT=download_hemicycle.pl
 

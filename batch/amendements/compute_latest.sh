@@ -2,6 +2,9 @@
 
 . ../../bin/db.inc
 
+if [ ! -d html ] ; then mkdir html; fi
+if [ ! -d json ] ; then mkdir json; fi
+
 echo 'SELECT source FROM amendement WHERE sort LIKE "Ind%" AND date > DATE_SUB(CURDATE() , INTERVAL 1 YEAR)' | mysql $MYSQLID $DBNAME | grep -v source > liste_sort_indefini.txt
 
 rm -f html/*

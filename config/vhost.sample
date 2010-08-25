@@ -1,5 +1,5 @@
     <VirtualHost *:80>
-      ServerName my.cpc.tangui.eu.org
+      ServerName my.cpc.server
       DocumentRoot "/home/cpc/project/web"
       DirectoryIndex index.php
       <Directory "/home/cpc/project/web">

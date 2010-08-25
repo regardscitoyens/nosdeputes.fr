@@ -1,5 +1,8 @@
 #!/bin/bash
 
+if [ ! -d html ] ; then mkdir html; fi
+if [ ! -d json ] ; then mkdir json; fi
+
 if [[ $1 != "all" && $1 != "recent" ]]; then
   echo "usage: compute_latest.sh all/recent"
   exit 1

@@ -7,11 +7,7 @@ then
     cd $DIR
 fi
 
-if [ ! -d out ] || [ ! -d html ]
-then
-    tar zxvf last_data.tgz
-    exit;
-fi
+if [ ! -d out ] ; then mkdir out; fi
 
 for d in html/* ; 
 do
