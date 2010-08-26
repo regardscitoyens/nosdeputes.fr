@@ -186,7 +186,7 @@ class citoyenActions extends sfActions
   private function setmotdepasse($action, $request)
   {
     $user = Doctrine::getTable('Citoyen')->findOneBySlug($action->slug);
-      
+    if (!$user) $action->forward404();
     if ($user->activation_id == $action->activation_id)
     {
       $action->form = new MotdepasseForm();
@@ -231,8 +231,10 @@ class citoyenActions extends sfActions
       {
         $user->activation_id = null;
         $user->save();
-      }
-      $this->forward404();
+        $action->getUser()->setFlash('notice', 'Une erreur s\'est produite');
+      } else
+        $action->getUser()->setFlash('notice', 'Ce compte a déjà été activé');
+      $action->redirect('@citoyen?slug='.$action->slug);
     }
   }
   
