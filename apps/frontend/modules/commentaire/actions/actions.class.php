@@ -19,8 +19,8 @@ class commentaireActions extends sfActions
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');
     
-	$values = $request->getParameter('commentaire');
-	$this->commentaire = myTools::clearHtml($values['commentaire']);
+    $values = $request->getParameter('commentaire');
+    $this->commentaire = myTools::clearHtml($values['commentaire']);
     $this->unique_form = $request->getParameter('unique_form');
 
     if ($this->getUser()->getAttribute('commentaire_'.$this->type.'_'.$this->id) != $this->unique_form) {
@@ -37,9 +37,8 @@ class commentaireActions extends sfActions
     $isAuthenticated = $this->getUser()->isAuthenticated();
     /** Pas loggué on s'assure que quelqu'un n'a pas trouvé notre hack */
     $_GET['isAuthenticated'] = $isAuthenticated;
-    if (isset($values['login']) && isset($values['password'])) {
-      if (!($citoyen_id = myUser::SignIn($values['login'],
-$values['password'], false, $this))) {
+    if (isset($values['login']) && isset($values['password']) && $values['login'] != "" && $values['password'] != "") {
+      if (!($citoyen_id = myUser::SignIn($values['login'], $values['password'], false, $this))) {
 	$this->form = new CommentaireForm();
 	$this->form->bind($values);
 	return ;

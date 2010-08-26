@@ -161,9 +161,16 @@ class citoyenActions extends sfActions
     $this->slug = $request->getParameter('slug');
     $this->activation_id = $request->getParameter('activation_id');
     
-    if ($this->getUser()->isAuthenticated() and ($this->getUser()->getAttribute('is_active') != 0))
+    if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') != 0)
     {
-      $this->forward404();
+      $userslug = $this->getUser()->getAttribute('slug');
+      if ($userslug === $this->slug)
+        $this->getUser()->setFlash('notice', 'Vous avez déjà activé votre compte.');
+      else {
+        sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+        $this->getUser()->setFlash('notice', 'Vous êtes déjà connecté en tant que '.$this->getUser()->getAttribute('login').'. Pour activer le compte '.$this->slug.', veuillez d\'abord <a href="'.url_for('@signout').'">vous déconnecter</a>, puis cliquer de nouveau sur le lien dans l\'e-mail que vous avez reçu.');
+      }
+      $this->redirect('@citoyen?slug='.$userslug);
     }
     
     if (Doctrine::getTable('Citoyen')->findOneBySlug($this->slug))
