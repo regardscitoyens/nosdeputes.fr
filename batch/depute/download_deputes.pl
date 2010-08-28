@@ -10,6 +10,7 @@ sub download_fiche {
 	$file =~ s/^.*\/([^\/]+)/$1/;
 	print "$file\n" if ($verbose);
 	$a->get($uri);
+	mkdir html unless -e "html/" ;
 	open FILE, ">:utf8", "html/$file";
 	print FILE $a->content;
 	close FILE;

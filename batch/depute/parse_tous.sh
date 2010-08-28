@@ -8,6 +8,7 @@ then
 fi
 
 if [ ! -d out ] ; then mkdir out; fi
+if [ ! -d html ] ; then mkdir html; fi
 
 for d in html/* ; 
 do
