@@ -68,28 +68,45 @@ if ($string =~ /ouverte[^\.]+à ([^\.]+) heures?\s*([^\.]*)\./) {
     $heure = $heure{$1}.':'.$heure{$2};
 }
 
-$string =~ s/<\/?sup>//g;
-$string =~ s/<!--[^A-Z]+-->//g;
-#Recherche des numéros de  de loi
-while($string =~ /ordre du jour([^<]+\W(proposition|loi)\W[^<]+)\(n\D+(\d+[^\)]+)\)/ig) {
-#    print "$1 - $2 - $3\n";
-    $titre = lc $1;
-    $no = $3;
+sub savepLoi() {
+    $no =~ s/&nbsp;/ /g;
+    $no =~ s/\s*et\s*/,/g;
     $no =~ s/[^\d,]//g;
     @no = split(/,/, $no);
     $no = '';
     foreach (@no) {
-	s/(\d{4})(\d{4})/$1,$2/g;
+        s/(\d{4})(\d{4})/$1,$2/g;
         s/(\d{3})(\d{3})/$1,$2/g;
-	s/^0+//;
-	s/,0+//;
-	$no .= $_.',';
+        s/^0+//;
+        s/,0+//;
+        $no .= $_.',';
     }
     chop $no;
     if ($no) {
-	$titre =~ s/[^<]+ loi //;
-	$ploi{$titre} = $no;
-    }	
+#        print "TEST3 $titre -_- $no\n";
+        $ploi{$titre} = $no;
+    }
+}
+
+$string =~ s/&#8217;/'/g;
+$string =~ s/<\/?sup>//g;
+$string =~ s/<!--[^A-Z]+-->//g;
+#Recherche des numéros de  de loi
+while($string =~ /#item#\d+\.?\s*([^#]+)\(n\D+(\d+[^\)]+)\)\s*#\/item#/ig) {
+#    print "TEST1 $1 -_- $2 \n";
+    $titre = lc $1;
+    $no = $2;
+    savepLoi();
+}
+while($string =~ /ordre du jour([^<]+\W(proposition|loi)\W[^<]+)\(n\D+(\d+[^\)]+)\)/ig) {
+    if ($1 =~ /#item#/i) {
+      next;
+    }
+#    print "TEST2 $1 -_- $2 -_- $3\n";
+    $titre = lc $1;
+    $no = $3;
+    $titre =~ s/[^<]+ loi,? //;
+    savepLoi();
 }
 
 sub getProjetLoi {
