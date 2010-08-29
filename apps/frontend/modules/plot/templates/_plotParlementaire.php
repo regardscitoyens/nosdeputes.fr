@@ -101,20 +101,20 @@ $pos_titre = 240;
 if ($time == 'lastyear') {
   if (isset($mandat_clos)) {
     $pos_titre = 210;
-    $duree = 'sa dernière année de mandat';
-  } else $duree = 'l\'année passée';
+    $duree = ' sa dernière année de mandat';
+  } else $duree = 's 12 derniers mois';
   $shortduree = 'annee';
 } else {
-  $duree = "la session ".preg_replace('/^(\d{4})/', '\\1-', $time);
+  $duree = " la session ".preg_replace('/^(\d{4})/', '\\1-', $time);
   $shortduree = $time;
 }
 if ($type == 'total') {
-  $Test->drawTitle($pos_titre,3 + 2*$font,"Participation globale au cours de ".$duree." (hémicycle et commissions)",50,50,50,585);
+  $Test->drawTitle($pos_titre,3 + 2*$font,"Participation globale au cours de".$duree." (hémicycle et commissions)",50,50,50,585);
   $titre = 'globale-'.$shortduree;
 } else {
   $titre = $type;
   if ($type == 'commission') $titre .= 's';
-  $Test->drawTitle($pos_titre+30,3 + 2*$font,"Participation en ".$titre." au cours de ".$duree,50,50,50,585);
+  $Test->drawTitle($pos_titre+30,3 + 2*$font,"Participation en ".$titre." au cours de".$duree,50,50,50,585);
   $titre .= '-'.$shortduree;
 }
 $filename = 'participation-'.$titre.'-'.$parlementaire->slug.isset($link).'.png';
