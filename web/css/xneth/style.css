@@ -5,6 +5,23 @@ body {
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
+/* Synthèse */
+.tableau_synthese { height: 500px; overflow: auto; }
+.synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
+.p { width: 140px; }
+.w { width: 70px; }
+.cp { width: 75px; }
+.ci { width: 85px; }
+.hl { width: 85px; }
+.hc { width: 85px; }
+.as { width: 51px; }
+.aa { width: 61px; }
+.ar { width: 51px; }
+.qe { width: 51px; }
+.qo { width: 51px; }
+.synthese th, .synthese td { border-right: 1px #FFFFFF solid; }
+.tr_odd td { border-right: 1px #999999 solid; }
+.tr_odd td.qo { border-right: 0px #999999 solid; }
 /* Bulle ajax commentaires */
 .coms_loi_txt {
   color: #158EAF;
@@ -535,7 +552,7 @@ h1 {
   border:0;
   margin:0;
   background: url('images/recherche.png') top left no-repeat;
-  padding: 3px 0 0 10px;
+  padding: 0 0 0 10px;
   color: #656565;
   font: 8pt Tahoma, Geneva, Arial, Sans-serif;
   color: #484848;
