@@ -205,7 +205,6 @@ class SolrListener extends Doctrine_Record_Listener
     public function __construct($options)
     {
       $this->_options = $options;
-      $this->command = self::getFileCommand();
     }
 
     protected $solr = NULL;
@@ -216,7 +215,7 @@ class SolrListener extends Doctrine_Record_Listener
     }
 
     private function sendCommand($status, $obj) {
-      $this->command->log($status.': '.get_class($obj).'/'.$obj->id);
+      self::getFileCommand()->log($status.': '.get_class($obj).'/'.$obj->id);
     }
     
     // Réindexation après une création / modification
