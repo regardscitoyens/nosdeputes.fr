@@ -7,7 +7,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
 ?>
 <div class="par_session"><p>
 <?php if ($session != 'lastyear')
-  echo '<a href='.url_for('@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear').'>';
+  echo '<a href="'.url_for('@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear').'">';
   else echo '<b>';
   echo 'Les 12 derniers mois';
   if ($session != 'lastyear') echo '</a>';
