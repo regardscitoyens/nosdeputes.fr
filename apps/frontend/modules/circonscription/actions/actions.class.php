@@ -260,7 +260,7 @@ class circonscriptionActions extends sfActions
     $src = url_for("@circo_image_png?circo=$circo&w=$w&h=$h");
 
     echo "<img class=\"carte_departement\" src=\"$src\" usemap=\"#$circo\" ";
-    echo "width=\"$w\" height=\"$h\" />";
+    echo 'style="width:'.$w.'px; height:'.$h.'px;" />';
     echo "<map name=\"$circo\">";
     echo $r['areas'];
     echo "</map>";
