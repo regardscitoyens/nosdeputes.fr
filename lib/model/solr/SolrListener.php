@@ -1,9 +1,14 @@
 <?php
 
+
 class SolrConnector extends sfLogger
 {
   private $solr = NULL;
   private $_options = NULL;
+
+  public static function getFileCommands() {
+    return sfConfig::get('sf_log_dir').'/solr/commands.log';
+  }
 
   protected function doLog($message, $priority)
   {
@@ -27,6 +32,28 @@ class SolrConnector extends sfLogger
     return $this->solr;
   }
   
+
+  public function updateFromCommands() {
+    if (!file_exists(self::getFileCommands().'.lock') && file_exists(self::getFileCommands()))
+      rename(self::getFileCommands(), self::getFileCommands().'.lock');
+    if (!file_exists(self::getFileCommands().'.lock'))
+      return ;
+    foreach(file(self::getFileCommands().'.lock') as $line) {
+      if (preg_match('/(UPDATE|REMOVE): ([^\/]+)\/(\d+)/', $line, $matches)) {
+	if ($matches[1] == 'UPDATE') {
+	  $obj = Doctrine::getTable($matches[2])->find($matches[3]);
+	  if ($obj)
+	    $this->updateLuceneRecord($obj);
+	  else
+	    echo $matches[2].'/'.$matches[3]." not found\n";
+	}else{
+	  $this->solr->deleteById($matches[2].'/'.$matches[3]);
+	}
+      }
+    }
+    unlink(self::getFileCommands().'.lock');
+  }
+
   private function get_and_strip($obj, $field) {
     $f = $obj->get($field);
     if ($f) {
@@ -91,6 +118,7 @@ class SolrConnector extends sfLogger
     if (isset($this->_options['title']) && $t = $this->_options['title']) {
       $document->addField('title', $this->getObjFieldsValue($obj, $t), 1.2 * $extra_weight);
     }
+
     // La description
       if (isset($content)) {
       $document->addField('description', $content, $extra_weight);
@@ -152,6 +180,22 @@ class SolrListener extends Doctrine_Record_Listener
      * @var string
      */
     protected $_options = array();
+
+    protected static $fileCommand = null;
+    protected static $fileDispatcher = null;
+
+    protected static function getFileCommand() {
+      if (!self::$fileDispatcher) {
+	self::$fileDispatcher = new sfEventDispatcher();
+      }
+      if (!self::$fileCommand) {
+	self::$fileCommand = new sfFileLogger(self::$fileDispatcher, array('file' => SolrConnector::getFileCommands()));
+      }
+      return self::$fileCommand;
+    }
+
+    private $command = null;
+
     /**
      * __construct
      *
@@ -161,6 +205,7 @@ class SolrListener extends Doctrine_Record_Listener
     public function __construct($options)
     {
       $this->_options = $options;
+      $this->command = self::getFileCommand();
     }
 
     protected $solr = NULL;
@@ -169,18 +214,25 @@ class SolrListener extends Doctrine_Record_Listener
 	$this->solr = new SolrConnector($this->_options);
       return $this->solr;
     }
+
+    private function sendCommand($status, $obj) {
+      $this->command->log($status.': '.get_class($obj).'/'.$obj->id);
+    }
     
     // Réindexation après une création / modification
     public function postSave(Doctrine_Event $event)
     {
       $obj = $event->getInvoker();
-      $this->getSolrConnector()->updateLuceneRecord($obj);
+      //      $this->getSolrConnector()->updateLuceneRecord($obj);
+      $this->sendCommand('UPDATE', $obj);
     }
     
     // Désindexation après une suppression
     public function postDelete(Doctrine_Event $event)
     {
-      $this->getSolrConnector()->deleteLuceneRecord($event->getInvoker());
+      $obj = $event->getInvoker();
+      //      $this->getSolrConnector()->deleteLuceneRecord($obj);
+      $this->sendCommand('DELETE', $obj);
     }
     
 }
