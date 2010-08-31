@@ -25,13 +25,14 @@ $i->save();
 $s->updateFromCommands();
 $id = "Intervention/".$i->id;
 $a = $s->search("id:$id");
-print_r($a);
+
 $t->is(count($a['response']['docs']), 1, "L'intervention a été ajoutée");
 $a = $s->search("bonjour id:$id");
-print_r($a);
 $t->is($a['response']['docs'][0]['id'], $id, "L'intervention est trouvable");
+
 $a = $s->search("salut id:$id");
 $t->is(count($a['response']['docs']), 0, "L'intervention n'est pas retournée sur des mots non indexé");
+
 $i->intervention = $inter." salut";
 $i->save();
 $s->updateFromCommands();

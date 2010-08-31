@@ -39,7 +39,7 @@ class SolrConnector extends sfLogger
     if (!file_exists(self::getFileCommands().'.lock'))
       return ;
     foreach(file(self::getFileCommands().'.lock') as $line) {
-      if (preg_match('/(UPDATE|REMOVE): ([^\/]+)\/(\d+)/', $line, $matches)) {
+      if (preg_match('/\] (UPDATE|REMOVE): (.+)/', $line, $matches)) {
 	if ($matches[1] == 'UPDATE') {
 	  $obj = Doctrine::getTable($matches[2])->find($matches[3]);
 	  if ($obj)
@@ -54,33 +54,7 @@ class SolrConnector extends sfLogger
     unlink(self::getFileCommands().'.lock');
   }
 
-  private function get_and_strip($obj, $field) {
-    $f = $obj->get($field);
-    if ($f) {
-      if (get_class($f) && ! $f->id)
-	return ;
-      return strip_tags($f);
-    }
-    return ;
-  }
 
-  private function getObjFieldsValue($obj, $fields)
-  {
-    if (!is_array($fields)) {
-      return $this->get_and_strip($obj, $fields);
-    }
-    $s = '';
-    foreach($fields as $f) {
-      $s .= $this->get_and_strip($obj, $f).' ';
-    }
-    return $s;
-  }
-  
-  private function getLuceneObjId($obj) 
-  {
-    return get_class($obj).'/'.$obj->getId();
-  }
-  
   public function deleteLuceneRecord($obj)
   {
     if($this->solr->deleteById($this->getLuceneObjId($obj))) 
@@ -91,68 +65,10 @@ class SolrConnector extends sfLogger
   public function updateLuceneRecord($obj)
   {
     $t = NULL;
-    if ($t = $this->_options['index_if'] && $t && $obj->get($t))
-      return ;
-    $document = new Apache_Solr_Document();
-    $document->addField('id', $this->getLuceneObjId($obj));
-    $document->addField('object_id', $obj->getId());
-    $document->addField('object_name', get_class($obj));
+    $obj_options = $obj->getListener()->getOptions();
 
-
-    if ($t = $this->_options['description']) {
-      $content = $this->getObjFieldsValue($obj, $t);
-      $wordcount = str_word_count($content);
-    }
-
-    if (isset($this->_options['extra_weight'])) 
-      $extra_weight = $this->_options['extra_weight'];
-    else
-      $extra_weight = 1;
-
-    if (isset($this->_options['devaluate_if_wordcount_under']) && ($wclimit = $this->_options['devaluate_if_wordcount_under'])) {
-       if ($wclimit > $wordcount)
-	 $extra_weight *= ($wordcount*0.5) / $wclimit + 0.5 ;
-    }
-    
-    // On donne un poids plus important au titre
-    if (isset($this->_options['title']) && $t = $this->_options['title']) {
-      $document->addField('title', $this->getObjFieldsValue($obj, $t), 1.2 * $extra_weight);
-    }
-
-    // La description
-      if (isset($content)) {
-      $document->addField('description', $content, $extra_weight);
-      $document->addField('wordcount', $wordcount);
-    }
-    
-    // par default la date est la created_at
-    if ( !($t = $this->_options['date'])) {
-      $t = 'created_at';
-    }
-    $d = preg_replace('/\+.*/', 'Z', date('c', strtotime($this->getObjFieldsValue($obj, $t))));
-    $document->addField('date', $d, $extra_weight);
-    
-    try {
-      foreach($obj->getTags() as $tag) if ($tag)  {
-	$document->setMultiValue('tag', preg_replace('/:/', '=', $tag), $extra_weight);
-      }
-    }catch (Exception $e) {}
-    
-    if ($t = $this->_options['moretags']) {
-      if (!is_array($t)) {
-	$s = $this->get_and_strip($obj, $t);
-	if ($s)
-	  $document->setMultiValue('tag', $t.'='.$s, $extra_weight);
-      }else{
-	foreach ($t as $i) {
-	  $s = $this->get_and_strip($obj, $i);
-	  if (strlen($s)) {
-	    $s = strip_tags($s);
-	    $document->setMultiValue('tag', $i.'='.$s, $extra_weight);
-	  }
-	}
-      }
-    }
+    print_r($obj->getOptions());
+    exit;
     
     $this->solr->addDocument($document);
     $this->solr->commit();
@@ -214,16 +130,116 @@ class SolrListener extends Doctrine_Record_Listener
       return $this->solr;
     }
 
-    private function sendCommand($status, $obj) {
-      self::getFileCommand()->log($status.': '.get_class($obj).'/'.$obj->id);
+    private function sendCommand($status, $json) {
+      self::getFileCommand()->log($status.': '.json_encode($json));
     }
     
+  private function get_and_strip($obj, $field) {
+    $f = $obj->get($field);
+    if ($f) {
+      if (get_class($f) && ! $f->id)
+	return ;
+      return strip_tags($f);
+    }
+    return ;
+  }
+
+  private function getObjFieldsValue($obj, $fields)
+  {
+    if (!is_array($fields)) {
+      return $this->get_and_strip($obj, $fields);
+    }
+    $s = '';
+    foreach($fields as $f) {
+      $s .= $this->get_and_strip($obj, $f).' ';
+    }
+    return $s;
+  }
+  
+  private function getLuceneObjId($obj) 
+  {
+    return get_class($obj).'/'.$obj->getId();
+  }
+  
     // Réindexation après une création / modification
     public function postSave(Doctrine_Event $event)
     {
       $obj = $event->getInvoker();
       //      $this->getSolrConnector()->updateLuceneRecord($obj);
-      $this->sendCommand('UPDATE', $obj);
+
+      if ($t = $this->_options['index_if'] && $t && $obj->get($t))
+	return ;
+      
+      $json = array();
+      $json['id'] = $this->getLuceneObjId($obj);
+      $json['object_id'] =  $obj->getId();
+      $json['object_name'] = get_class($obj);
+      
+
+    if ($t = $this->_options['description']) {
+      $content = $this->getObjFieldsValue($obj, $t);
+      $wordcount = str_word_count($content);
+    }
+
+    if (isset($this->_options['extra_weight'])) 
+      $extra_weight = $this->_options['extra_weight'];
+    else
+      $extra_weight = 1;
+
+    if (isset($this->_options['devaluate_if_wordcount_under']) && ($wclimit = $this->_options['devaluate_if_wordcount_under'])) {
+       if ($wclimit > $wordcount)
+	 $extra_weight *= ($wordcount*0.5) / $wclimit + 0.5 ;
+    }
+    
+    // On donne un poids plus important au titre
+    if (isset($this->_options['title']) && $t = $this->_options['title']) {
+      $json['title']['content'] = $this->getObjFieldsValue($obj, $t);
+      $json['title']['weight'] =  1.2 * $extra_weight;
+    }
+    
+    // La description
+    if (isset($content)) {
+      $json['description']['content'] = $content;
+      $json['description']['weight'] = $extra_weight;
+      $json['wordcount'] = $wordcount;
+    }
+      
+    // par default la date est la created_at
+    if ( !($t = $this->_options['date'])) {
+      $t = 'created_at';
+    }
+    $d = preg_replace('/\+.*/', 'Z', date('c', strtotime($this->getObjFieldsValue($obj, $t))));
+    $json['date']['content'] = $d;
+    $json['date']['weight'] = $extra_weight;
+    
+
+    $json['tags']['content'] = array();
+    try {
+      foreach($obj->getTags() as $tag) if ($tag)  {
+	$json['tags']['content'][] =  preg_replace('/:/', '=', $tag);
+      }
+    }catch (Exception $e) {}
+    
+    if ($t = $this->_options['moretags']) {
+      if (!is_array($t)) {
+	$s = $this->get_and_strip($obj, $t);
+	if ($s)
+	  $json['tags']['content'][] = $t.'='.$s;
+      }else{
+	foreach ($t as $i) {
+	  $s = $this->get_and_strip($obj, $i);
+	  if (strlen($s)) {
+	    $s = strip_tags($s);
+	    $json['tags']['content'][] = $i.'='.$s;
+	  }
+	}
+      }
+    }
+    
+    $json['tags']['weight'] = $extra_weight;
+
+    
+    $this->sendCommand('UPDATE', $json);
     }
     
     // Désindexation après une suppression
@@ -231,7 +247,9 @@ class SolrListener extends Doctrine_Record_Listener
     {
       $obj = $event->getInvoker();
       //      $this->getSolrConnector()->deleteLuceneRecord($obj);
-      $this->sendCommand('DELETE', $obj);
+      $json = new stdClass();
+      $json->id = $this->getLuceneObjId($obj);
+      $this->sendCommand('DELETE', $json);
     }
     
 }
