@@ -176,7 +176,7 @@ Intervention:
     Timestampable: ~
     Taggable: ~
     Solrable:
-      description: [Parlementaire, Personnalite, Intervention]
+      description: [Parlementaire, Personnalite, intervention]
       moretags: [Parlementaire, Personnalite, type]
       devaluate_if_wordcount_under: 100
       date: date

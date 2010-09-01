@@ -34,20 +34,24 @@ class SolrConnector extends sfLogger
   
 
   public function updateFromCommands() {
-    if (!file_exists(self::getFileCommands().'.lock') && file_exists(self::getFileCommands()))
+    echo "UpdateFromCommands\n";
+    echo file_exists(self::getFileCommands())."\n";
+    if (!file_exists(self::getFileCommands().'.lock') && file_exists(self::getFileCommands())) {
+      echo "rename \n";
       rename(self::getFileCommands(), self::getFileCommands().'.lock');
-    if (!file_exists(self::getFileCommands().'.lock'))
+    }
+    if (!file_exists(self::getFileCommands().'.lock')) {
+      echo "No lock\n";
       return ;
+    }
     foreach(file(self::getFileCommands().'.lock') as $line) {
       if (preg_match('/\] (UPDATE|REMOVE): (.+)/', $line, $matches)) {
+	echo $matches[1]." ".$matches[2]."\n";
+	$obj = json_decode($matches[2]);
 	if ($matches[1] == 'UPDATE') {
-	  $obj = Doctrine::getTable($matches[2])->find($matches[3]);
-	  if ($obj)
-	    $this->updateLuceneRecord($obj);
-	  else
-	    echo $matches[2].'/'.$matches[3]." not found\n";
+	  $this->updateLuceneRecord($obj);
 	}else{
-	  $this->solr->deleteById($matches[2].'/'.$matches[3]);
+	  $this->solr->deleteById($obj->id);
 	}
       }
     }
@@ -55,23 +59,29 @@ class SolrConnector extends sfLogger
   }
 
 
-  public function deleteLuceneRecord($obj)
+  public function deleteLuceneRecord($id)
   {
-    if($this->solr->deleteById($this->getLuceneObjId($obj))) 
+    if($this->solr->deleteById($id) )
       return $this->solr->commit();
     return false;
   }
 
   public function updateLuceneRecord($obj)
   {
-    $t = NULL;
-    $obj_options = $obj->getListener()->getOptions();
-
-    print_r($obj->getOptions());
-    exit;
-    
-    $this->solr->addDocument($document);
-    $this->solr->commit();
+     $document = new Apache_Solr_Document(); 
+     $document->addField('id', $obj->id); 
+     $document->addField('object_id', $obj->object_id); 
+     $document->addField('object_name', $obj->object_name); 
+     if (isset($obj->wordcount))
+       $document->addField('wordcount', $obj->wordcount); 
+     if (isset($obj->title))
+       $document->addField('title', $obj->title->content, $obj->title->weight); 
+     if (isset($obj->description))
+       $document->addField('description', $obj->description->content, $obj->description->weight); 
+     if (isset($obj->date))
+       $document->addField('date', $obj->date->content, $obj->date->weight); 
+     $this->solr->addDocument($document);
+     $this->solr->commit();
   }
 
   public function deleteAll() {

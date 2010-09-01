@@ -37,6 +37,7 @@ $i->intervention = $inter." salut";
 $i->save();
 $s->updateFromCommands();
 $a = $s->search("salut id:$id");
+print_r($a);
 $t->is($a['response']['docs'][0]['id'], $id, "L'intervention retournée sur des mots reindexés");
 
 $p = new Parlementaire();
