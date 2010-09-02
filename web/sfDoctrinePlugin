@@ -1,1 +1,1 @@
-../../symfony-1.2.7/lib/plugins/sfDoctrinePlugin/web
+../lib/vendor/symfony/lib/plugins/sfDoctrinePlugin/web
