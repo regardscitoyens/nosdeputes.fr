@@ -83,7 +83,7 @@ sub savepLoi() {
     }
     chop $no;
     if ($no) {
-#        print "TEST3 $titre -_- $no\n";
+        #print "TEST3 $titre -_- $no\n";
         $ploi{$titre} = $no;
     }
 }
@@ -91,26 +91,35 @@ sub savepLoi() {
 $string =~ s/&#8217;/'/g;
 $string =~ s/<\/?sup>//g;
 $string =~ s/<!--[^A-Z]+-->//g;
-#Recherche des numéros de  de loi
-while($string =~ /#item#\d+\.?\s*([^#]+)\(n\D+(\d+[^\)]+)\)\s*#\/item#/ig) {
-#    print "TEST1 $1 -_- $2 \n";
-    $titre = lc $1;
-    $no = $2;
-    savepLoi();
-}
+#Recherche des numéros de loi
 while($string =~ /ordre du jour([^<]+\W(proposition|loi)\W[^<]+)\(n\D+(\d+[^\)]+)\)/ig) {
     if ($1 =~ /#item#/i) {
       next;
     }
-#    print "TEST2 $1 -_- $2 -_- $3\n";
+    #print "TEST2 $1 -_- $2 -_- $3\n";
     $titre = lc $1;
     $no = $3;
     $titre =~ s/[^<]+ loi,? //;
     savepLoi();
 }
+while($string =~ /#item#\d+\.?\s*([^#]+)\(n\D+(\d+[^\)]+)\)\s*#\/item#/ig) {
+    #print "TEST1 $1 -_- $2 \n";
+    $titre = lc $1;
+    $no = $2;
+    savepLoi();
+}
 
 sub getProjetLoi {
     $titre_cleaned = $titre = lc shift;
+    return unless ($titre);
+    return $ploi{$titre} if (defined($ploi{$titre}));
+    $intervention = lc shift;
+    foreach $k (keys %ploi) {
+        if ($intervention =~ /$k/i) {
+            $ploi{$titre} = $ploi{$k};
+            return $ploi{$k};
+        }
+    }
     return unless ($titre);
     return $ploi{$titre} if (defined($ploi{$titre}));
     $titre_cleaned =~ s/[^a-z]+/ /g;
@@ -138,7 +147,7 @@ sub checkout {
 	$contexte .= ' > '.$titre2;
     }
     $out =  '{"contexte": "'.$contexte.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
-    if (($ploi = getProjetLoi($titre1)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement/i) {
+    if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement/i) {
 	$out .= "\"numeros_loi\": \"$ploi\", ";
     }
     if ($amendements) {
