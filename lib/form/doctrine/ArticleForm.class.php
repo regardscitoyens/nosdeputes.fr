@@ -46,7 +46,7 @@ class ArticleForm extends BaseArticleForm
     if ($display) {
       $this->widgetSchema['object_id'] = new sfWidgetFormDoctrineChoice(array('model' => $this->getValue('categorie')));
       $this->widgetSchema['object_id']->setOption('label', $categorie);
-      $query = doctrine::getTable($categorie)->createQuery('c')->where('c.nom IS NOT NULL')->orderBy('nom');
+      $query = Doctrine::getTable($categorie)->createQuery('c')->where('c.nom IS NOT NULL')->orderBy('nom');
       $this->widgetSchema['object_id']->setOption('query', $query);
     }else{
       $this->widgetSchema['object_id'] = new sfWidgetFormInputHidden();
@@ -66,7 +66,7 @@ class ArticleForm extends BaseArticleForm
       return ;
     }
 
-    $query = doctrine::getTable('Article')->createQuery('a')->where('a.article_id IS NULL')->andWhere('a.categorie = ?', $categorie);
+    $query = Doctrine::getTable('Article')->createQuery('a')->where('a.article_id IS NULL')->andWhere('a.categorie = ?', $categorie);
     if ($this->object && $this->object->id) {
       $query->andWhere('a.id != ?', $this->object->id);
     }
