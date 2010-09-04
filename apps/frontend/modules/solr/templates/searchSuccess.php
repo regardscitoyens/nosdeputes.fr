@@ -11,6 +11,7 @@ function link_search($text, $query, $args)
   return link_to($text, $url.$extra);
 }
 ?>
+<div class="solr">
 <div class="searchbox">
 <form>
     <input name="search" value="<?php echo $query; ?>" />
@@ -18,9 +19,12 @@ function link_search($text, $query, $args)
 </form>
 </div>
 <div class="nb_results">
-<p>Résultats <?php echo $results['start']+1; ?> à <?php echo $results['end']-1; ?> sur <?php echo $results['numFound']; ?></p>
+    <p>Résultats <?php echo $results['start']+1; ?> à <?php echo $results['end']-1; ?> sur <?php echo $results['numFound']; ?> triés par <?php echo $sort_type; ?></p>
 </div>
 <div class="facets">
+<div class="tri">
+Tier par <a href="">date</a>
+</div>
 <?php   foreach(array_keys($facet) as $k) { if (isset($facet[$k]['values']) && count($facet[$k]['values'])) : ?>
 <div class="<?php echo $k; ?>">
 <p><?php echo $facet[$k]['name']; ?></p>
@@ -57,11 +61,15 @@ echo link_search($value,
 <?php endforeach; ?>
 </ul>
 </div>
+</div>
 <div class="results">
 <?php foreach ($results['docs'] as $record) : ?>
 <div class="item">
-   <h4><?php echo $record['id']; ?></h4>
-   <p class="content"><?php echo $record['highlighting']; ?></p>
+      <h4><a href="<?php echo $record['link']; ?>"><?php echo $record['titre']; ?></a></h4>
+      <p class="photo"><a href="<?php echo $record['link']; ?>" rel="nofollow"><img height=67 width=53 src="<?php echo $record['photo']; ?>"/></a></p>
+      <p class="intervenant"><a href="<?php echo $record['link']; ?>" rel="nofollow"><?php echo $record['personne']; ?></a></p>
+      <p class="content"><?php echo $record['highlighting']; ?></p>
+      <p class="more"><a href="<?php echo $record['link']; ?>">Lire dans son contexte</a></p>
 </div>
 <div class="record">
 </div>
@@ -91,5 +99,6 @@ if ($results['page'] > 1) {
 		   $newargs); 
  }
 ?>
+</div>
 </div>
 </div>

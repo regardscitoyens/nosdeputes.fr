@@ -1245,7 +1245,7 @@ h2 {
   background-color:#dbd5c8;
 }
 
-/* Liste d�put�s */
+/* Liste députés */
 
 .liste  {
   margin: 20px 10px 20px 0;
@@ -1259,7 +1259,7 @@ h2 {
   font-size: 1.2em;
 }
 
-/* Liste d�put�s */
+/* Liste députés */
 
 .liste_deputes_tags  {
   margin: 20px 10px 30px 0;
@@ -1566,4 +1566,39 @@ a:hover img {
 }
 .list_com {
   color: #158EAF;
+}
+
+.solr .facets 
+{
+    border-left:1px solid #BBBBBB;
+    float:right;
+    margin-left:20px;
+    padding-left:20px;
+}
+
+.solr li {
+    list-style: none inside url(/images/xneth/add.png)
+}
+
+.solr li.selected {
+    list-style: none inside url(/images/xneth/remove.png)
+}
+
+.solr .photo {
+    float: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+}
+.solr .item {
+    clear: left;
+}
+
+.solr .item h4 {
+    margin-bottom: 5px;
+}
+
+.solr .intervenant {
+    font-weight: bold;
+    margin-top: 5px;
 }

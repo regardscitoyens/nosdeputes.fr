@@ -10,6 +10,54 @@
  */
 class solrActions extends sfActions
 {
+
+  private function getLink($obj) {
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    switch(get_class($obj)) {
+    case 'Intervention':
+      return url_for('@interventions_seance?seance='.$obj->getSeance()->id).'#inter_'.$obj->getMd5();
+    case 'QuestionEcrite':
+      return url_for('@question_numero?numero='.$obj->numero);
+    case 'Amendement':
+      return url_for('@amendement?loi='.$obj->loi.'&numero='.$obj->numero);
+    case 'Parlementaire':
+      return url_for('@parlementaire?slug='.$obj->slug);
+    case 'Commentaire':
+      return $obj->lien;
+    }
+  }
+  private function getPersonne($obj) {
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    switch(get_class($obj)) {
+    case 'Intervention':
+      return $obj->getIntervenant()->getNom();
+    case 'QuestionEcrite':
+      return $obj->getParlementaire()->getNom();
+    case 'Amendement':
+      return '';
+    case 'Parlementaire':
+      return '';
+    case 'Commentaire':
+      return $obj->getCitoyen()->getLogin();
+    }
+  }
+  private function getPhoto($obj) {
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    switch(get_class($obj)) {
+    case 'Intervention':
+      if ($obj->getParlementaire())
+	return url_for('@resized_photo_parlementaire?height=70&slug='.$obj->getIntervenant()->getSlug());
+      return '';
+    case 'QuestionEcrite':
+      return url_for('@resized_photo_parlementaire?height=70&slug='.$obj->getParlementaire()->getSlug());
+    case 'Amendement':
+      return '';
+    case 'Parlementaire':
+      return url_for('@resized_photo_parlementaire?height=70&slug='.$obj->getSlug());
+    case 'Commentaire':
+      return url_for('@photo_citoyen?slug='.$obj->getCitoyen()->getSlug());
+    }
+  }
  /**
   * Executes index action
   *
@@ -47,6 +95,11 @@ class solrActions extends sfActions
     //Récupère les résultats auprès de SolR
     $s = new SolrConnector();
     $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>"2007-05-01T00:00:00Z", "facet.date.end"=>"NOW", "facet.date.gap"=>"+1MONTH", 'fq' => $fq);
+    $this->sort_type = 'pertinence';
+    if ($request->getParameter('sort')) {
+      $params['sort'] = "date desc";
+      $this->sort_type = 'date';
+    }
     if ($date = $request->getParameter('date')) {
       $dates = explode(',', $date);
       $date = array_pop($dates);
@@ -64,8 +117,13 @@ class solrActions extends sfActions
     $this->results = $results['response'];
     for($i = 0 ; $i < count($this->results['docs']) ; $i++) {
       $res = $this->results['docs'][$i];
-      $this->results['docs'][$i]['highlighting'] = implode('...', $results['highlighting'][$res['id']]['text']);
-      //      $this->results['docs'][$i]['object'] = Doctrine::getTable($res['object_name'])->find($res['object_id']);
+      $obj = Doctrine::getTable($res['object_name'])->find($res['object_id']);
+      $this->results['docs'][$i]['link'] = $this->getLink($obj);
+      $this->results['docs'][$i]['photo'] = $this->getPhoto($obj);
+      $this->results['docs'][$i]['titre'] = $obj->getTitre();
+      $this->results['docs'][$i]['personne'] = $this->getPersonne($obj);
+      $this->results['docs'][$i]['highlighting'] = preg_replace('/^'.$this->results['docs'][$i]['personne'].'/', '', implode('...', $results['highlighting'][$res['id']]['text']));
+      
     }
     $this->results['end'] = $deb + $nb;
     $this->results['page'] = $deb/$nb + 1;
@@ -74,6 +132,10 @@ class solrActions extends sfActions
     }
 
     //Prépare les facets
+    $this->facet['parlementaire']['prefix'] = 'parlementaire=';
+    $this->facet['parlementaire']['facet_field'] = 'tag';
+    $this->facet['parlementaire']['name'] = 'Parlementaire';
+
     $this->facet['type']['prefix'] = '';
     $this->facet['type']['facet_field'] = 'object_name';
     $this->facet['type']['name'] = 'Types';
@@ -83,9 +145,6 @@ class solrActions extends sfActions
     $this->facet['tag']['prefix'] = '';
     $this->facet['tag']['facet_field'] = 'tag';
     $this->facet['tag']['name'] = 'Tags';
-    $this->facet['parlementaire']['prefix'] = 'parlementaire=';
-    $this->facet['parlementaire']['facet_field'] = 'tag';
-    $this->facet['parlementaire']['name'] = 'Parlementaire';
     foreach($tags as $tag => $nb ) {
       if (!$nb)
 	continue;
@@ -95,7 +154,9 @@ class solrActions extends sfActions
 	$this->facet['parlementaire']['values'][$matches[1]] = $nb;
       }
     }
-    if ($results['response']['numFound']) {
+    if (!$results['response']['numFound']) {
+      $this->setTemplate('noresults');
+    }else{
       $this->fdates = array();
       $this->fdates['max'] = 1;
       foreach($results['facet_counts']['facet_dates']['date'] as $date => $nb) {

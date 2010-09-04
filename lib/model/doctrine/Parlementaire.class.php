@@ -6,6 +6,10 @@
 class Parlementaire extends BaseParlementaire
 {
 
+  public function getTitre() {
+    return $this->getNom();
+  }
+
   public function __tostring() {
     return $this->getNom();
   }
