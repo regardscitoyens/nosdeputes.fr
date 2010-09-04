@@ -3,16 +3,9 @@
 include(dirname(__FILE__).'/../bootstrap/unit.php');
  
 new sfDatabaseManager(ProjectConfiguration::getApplicationConfiguration('frontend', 'test', true));
-$t = new lime_test(14, new lime_output_color());
-
-/* MaJ Rapide pour test sur intervention courtes
-foreach(array('303216', '42266', '191828', '303217', '42284', '110633', '111801', '148718', '152067', '168027', '247354', '259956', '348273', '213423', '87153') as $id) {
-   Doctrine::getTable('Intervention')->find($id)->save();
-}
-*/
+$t = new lime_test(13);
 
 $s = new SolrConnector();
-//$s->deleteAll();
 
 $i = new Intervention();
 $inter = "bonjour les amis comment allez vous ?";
@@ -37,7 +30,6 @@ $i->intervention = $inter." salut";
 $i->save();
 $s->updateFromCommands();
 $a = $s->search("salut id:$id");
-print_r($a);
 $t->is($a['response']['docs'][0]['id'], $id, "L'intervention retournée sur des mots reindexés");
 
 $p = new Parlementaire();
@@ -49,8 +41,10 @@ $a = $s->search("id:$id");
 $t->is(count($a['response']['docs']), 1, "Le parlementaire a été ajouté");
 $a = $s->search("ooghe id:$id");
 $t->is($a['response']['docs'][0]['id'], $id, "Le parlementaire est trouvable");
-$a = $s->search("oogue object_name:Parlementaire");
+/*
+$a = $s->search("oghe object_name:Parlementaire");
 $t->is($a['response']['docs'][0]['id'], $id, "Le parlementaire avec des fautes");
+*/
 
 $q = new QuestionEcrite();
 $q->question = "Ca va après les régionales ?";
@@ -66,29 +60,33 @@ $a = $s->search("régionales id:$id");
 $t->is($a['response']['docs'][0]['id'], $id, "La question est trouvable");
 
 
-$a = Doctrine::getTable('Amendement')->find(2);
+$a = Doctrine::getTable('Amendement')->find(3);
 $a->save();
 $s->updateFromCommands();
 
 $id = "Amendement/".$a->id;
 $r = $s->search("id:$id");
 $t->is(count($r['response']['docs']), 1, "L'amendement a été ajoutée");
-$s->deleteLuceneRecord($a);
+$s->deleteLuceneRecord($id);
+$s->updateFromCommands();
 $r = $s->search("id:$id");
 $t->is(count($r['response']['docs']), 0, "L'amendement a été supprimé dans lucene");
 
 $id = "Intervention/".$i->id;
 $i->delete();
+$s->updateFromCommands();
 $r = $s->search("id:$id");
 $t->is(count($r['response']['docs']), 0, "L'intervention a été supprimée");
 
 $id = "Parlementaire/".$p->id;
 $p->delete();
+$s->updateFromCommands();
 $r = $s->search("id:$id");
 $t->is(count($r['response']['docs']), 0, "Le parlementaire a été supprimée");
 
 $id = "QuestionEcrite/".$q->id;
 $q->delete();
+$s->updateFromCommands();
 $r = $s->search("id:$id");
 $t->is(count($r['response']['docs']), 0, "La question ecrite a été supprimée");
 
