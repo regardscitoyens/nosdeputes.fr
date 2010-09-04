@@ -5,8 +5,11 @@ function link_search($text, $query, $args)
   $extra = '';
   $url = "solr/search?query=".$query;
   foreach($args as $k => $v) {
-    if (count($v))
-      $extra .= '&'.$k.'='.implode(',', array_keys($v));
+    if (is_array($v)) {
+      if (count($v))
+	$extra .= '&'.$k.'='.implode(',', array_keys($v));
+    }    else
+      $extra .= '&'.$k.'='.$v;
   }
   return link_to($text, $url.$extra);
 }
@@ -23,7 +26,15 @@ function link_search($text, $query, $args)
 </div>
 <div class="facets">
 <div class="tri">
-Tier par <a href="">date</a>
+    <?php 
+    $newargs = $selected;
+    if ($sort)
+      echo link_search('Tier par pertinence', $query, $newargs); 
+    else {
+      $newargs['sort'] = 1;
+      echo link_search('Tier par date', $query, $newargs); 
+    }
+?>
 </div>
 <?php   foreach(array_keys($facet) as $k) { if (isset($facet[$k]['values']) && count($facet[$k]['values'])) : ?>
 <div class="<?php echo $k; ?>">

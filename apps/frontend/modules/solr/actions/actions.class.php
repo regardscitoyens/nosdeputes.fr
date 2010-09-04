@@ -96,7 +96,7 @@ class solrActions extends sfActions
     $s = new SolrConnector();
     $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>"2007-05-01T00:00:00Z", "facet.date.end"=>"NOW", "facet.date.gap"=>"+1MONTH", 'fq' => $fq);
     $this->sort_type = 'pertinence';
-    if ($request->getParameter('sort')) {
+    if ($this->sort = $request->getParameter('sort')) {
       $params['sort'] = "date desc";
       $this->sort_type = 'date';
     }
