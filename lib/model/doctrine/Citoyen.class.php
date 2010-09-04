@@ -5,6 +5,10 @@
  */
 class Citoyen extends BaseCitoyen
 {
+  public function __toString() {
+    return $this->getLogin();
+  }
+
   public function isPasswordCorrect($password) {
     return ($this->password == sha1($password));
   }

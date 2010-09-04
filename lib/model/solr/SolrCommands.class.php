@@ -21,7 +21,7 @@ class SolrCommands
     if (! self::$file) {
       self::$file = fopen(self::getFileCommands(), 'w');
     }
-    $str = $status.' : '.json_encode($json);
+    $str = $status.' : '.json_encode($json)."\n";
     fwrite(self::$file, $str, strlen($str));
     sem_release(self::getSemaphore());
   }

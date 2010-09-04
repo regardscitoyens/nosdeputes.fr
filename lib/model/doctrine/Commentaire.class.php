@@ -5,6 +5,10 @@
  */
 class Commentaire extends BaseCommentaire
 {
+  public function getTitre() {
+    return $this->getPresentation();
+  }
+
   public function __toString() {
     $str = substr($this->commentaire, 0, 250);
     if (strlen($str) == 250) {

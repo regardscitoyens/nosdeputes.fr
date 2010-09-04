@@ -33,8 +33,9 @@ class indexSolrTask extends sfBaseTask
 
     $solr = new SolrConnector();
 
+    $solr->deleteAll();
 
-    foreach(array("Parlementaire", "QuestionEcrite", "Amendement", "Intervention") as $table) {
+    foreach(array("Parlementaire", "Commentaire", "QuestionEcrite", "Amendement", "Intervention") as $table) {
       while (1) {
 	$q = Doctrine::getTable($table)
 	  ->createQuery('o')
@@ -53,8 +54,11 @@ class indexSolrTask extends sfBaseTask
 	  $o->Save();
 	  $this->state[$table] = $o->id;
 	}
+	$solr->updateFromCommands();
 	$this->writeState();
       }
     }
+    unlink($this->file_conf);
   }
+  
 }
