@@ -11,36 +11,6 @@
 class solrActions extends sfActions
 {
 
-  private function getLink($obj) {
-    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-    switch(get_class($obj)) {
-    case 'Intervention':
-      return url_for('@interventions_seance?seance='.$obj->getSeance()->id).'#inter_'.$obj->getMd5();
-    case 'QuestionEcrite':
-      return url_for('@question_numero?numero='.$obj->numero);
-    case 'Amendement':
-      return url_for('@amendement?loi='.$obj->texteloi_id.'&numero='.$obj->numero);
-    case 'Parlementaire':
-      return url_for('@parlementaire?slug='.$obj->slug);
-    case 'Commentaire':
-      return $obj->lien;
-    }
-  }
-  private function getPersonne($obj) {
-    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-    switch(get_class($obj)) {
-    case 'Intervention':
-      return $obj->getIntervenant()->getNom();
-    case 'QuestionEcrite':
-      return $obj->getParlementaire()->getNom();
-    case 'Amendement':
-      return '';
-    case 'Parlementaire':
-      return '';
-    case 'Commentaire':
-      return $obj->getCitoyen()->getLogin();
-    }
-  }
   private function getPhoto($obj) {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     switch(get_class($obj)) {
@@ -117,17 +87,17 @@ class solrActions extends sfActions
     $this->results = $results['response'];
     for($i = 0 ; $i < count($this->results['docs']) ; $i++) {
       $res = $this->results['docs'][$i];
-      $obj = Doctrine::getTable($res['object_name'])->find($res['object_id']);
-      $this->results['docs'][$i]['link'] = $this->getLink($obj);
+      $obj = $res['object'];
+      $this->results['docs'][$i]['link'] = $obj->getLink();
       $this->results['docs'][$i]['photo'] = $this->getPhoto($obj);
       $this->results['docs'][$i]['titre'] = $obj->getTitre();
-      $this->results['docs'][$i]['personne'] = $this->getPersonne($obj);
+      $this->results['docs'][$i]['personne'] = $obj->getPersonne();
       $this->results['docs'][$i]['highlighting'] = preg_replace('/^'.$this->results['docs'][$i]['personne'].'/', '', implode('...', $results['highlighting'][$res['id']]['text']));
       
     }
     $this->results['end'] = $deb + $nb;
     $this->results['page'] = $deb/$nb + 1;
-    if ($this->results['end'] > $this->results['numFound']) {
+    if ($this->results['end'] > $this->results['numFound'] && $this->results['numFound']) {
       $this->results['end'] = $this->results['numFound'] + 1;
     }
 

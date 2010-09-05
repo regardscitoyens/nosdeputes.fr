@@ -5,6 +5,12 @@
  */
 class Commentaire extends BaseCommentaire
 {
+  public function getLink() {
+    return $this->lien;
+  }
+  public function getPersonne() {
+    return $this->citoyen->getLogin();
+  }
   public function getTitre() {
     return $this->getPresentation();
   }

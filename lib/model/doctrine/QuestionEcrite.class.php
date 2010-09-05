@@ -7,7 +7,11 @@ class QuestionEcrite extends BaseQuestionEcrite
 {
 
   public function getLink() {
-    return '@question?id='.$this->id;
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    return url_for('@question_numero?numero='.$this->numero);
+  }
+  public function getPersonne() {
+    return $this->getParlementaire()->getNom();
   }
 
   public function __toString() {

@@ -6,7 +6,11 @@
 class Amendement extends BaseAmendement {
 
   public function getLink() {
-    return '@amendement_id?id='.$this->id;
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    return url_for('@amendement?loi='.$this->texteloi_id.'&numero='.$this->numero);
+  }
+  public function getPersonne($obj) {
+    return '';
   }
 
   public function __toString() {

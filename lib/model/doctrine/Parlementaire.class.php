@@ -5,11 +5,16 @@
  */
 class Parlementaire extends BaseParlementaire
 {
-
+  public function getLink() {
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    return url_for('@parlementaire?slug='.$this->slug);
+  }
   public function getTitre() {
     return $this->getNom();
   }
-
+  public function getPersonne() {
+    return '';
+  }
   public function __tostring() {
     return $this->getNom();
   }

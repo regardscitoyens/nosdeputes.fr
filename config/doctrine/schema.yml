@@ -553,3 +553,24 @@ TitreLoi:
     TitreLoi:
       foreignAlias: SousSections
 
+Alerte:
+  actAs:
+    Timestampable:
+  columns:
+    email: string(128)
+    query: string(128)
+    titre: string
+    confirmed: boolean
+    period: 
+      type: enum
+      values: ['HOUR', 'DAY', 'WEEK', 'MONTH']
+    next_mail: datetime
+    last_mail: datetime
+    citoyen_id: integer
+    verif: string(128)
+  relations:
+    Citoyen:
+      class: Citoyen
+      foreignAlias: Alertes
+    
+    

@@ -6,7 +6,13 @@
 class Intervention extends BaseIntervention
 {
   public function getLink() {
-    return '@intervention?id='.$this->id;
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    return url_for('@interventions_seance?seance='.$this->getSeance()->id).'#inter_'.$this->getMd5();
+  }
+
+  public function getPersonne() {
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    return $this->getIntervenant()->getNom();
   }
 
   public function __toString() {
