@@ -94,7 +94,7 @@ class SolrListener extends Doctrine_Record_Listener
 
     if (isset($this->_options['devaluate_if_wordcount_under']) && ($wclimit = $this->_options['devaluate_if_wordcount_under'])) {
        if ($wclimit > $wordcount)
-	 $extra_weight *= ($wordcount*0.5) / $wclimit + 0.5 ;
+	 $extra_weight *=  0.5 ;
     }
     
     // On donne un poids plus important au titre

@@ -178,7 +178,7 @@ Intervention:
     Solrable:
       description: [Parlementaire, Personnalite, intervention]
       moretags: [Parlementaire, Personnalite, type]
-      devaluate_if_wordcount_under: 100
+      devaluate_if_wordcount_under: 200
       date: date
   columns:
 #    id:
