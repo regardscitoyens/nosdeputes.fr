@@ -52,13 +52,16 @@ $q->reponse = "On pourait aller mieux";
 $q->parlementaire_id = 2;
 $q->ministere = "Ministere de la crise et du déficit";
 $q->save();
+
+$i = Doctrine::getTable('Intervention')->find(392980);
+$i->save();
+
 $s->updateFromCommands();
 $id = "QuestionEcrite/".$q->id;
 $a = $s->search("id:$id");
 $t->is(count($a['response']['docs']), 1, "La question a été ajoutée");
 $a = $s->search("régionales id:$id");
 $t->is($a['response']['docs'][0]['id'], $id, "La question est trouvable");
-
 
 $a = Doctrine::getTable('Amendement')->find(3);
 $a->save();

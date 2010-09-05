@@ -19,7 +19,7 @@ class SolrCommands
   public static function addCommand($status, $json) {
     sem_acquire(self::getSemaphore());
     if (! self::$file) {
-      self::$file = fopen(self::getFileCommands(), 'w');
+      self::$file = fopen(self::getFileCommands(), 'a+');
     }
     $str = $status.' : '.json_encode($json)."\n";
     fwrite(self::$file, $str, strlen($str));
