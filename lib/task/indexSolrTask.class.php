@@ -33,8 +33,6 @@ class indexSolrTask extends sfBaseTask
 
     $solr = new SolrConnector();
 
-    $solr->deleteAll();
-
     foreach(array("Parlementaire", "Commentaire", "QuestionEcrite", "Amendement", "Intervention") as $table) {
       while (1) {
 	$q = Doctrine::getTable($table)
