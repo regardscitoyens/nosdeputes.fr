@@ -1,5 +1,5 @@
     <VirtualHost *:80>
-      ServerName my.cpc.server
+      ServerName my.cpc.regardscitoyens.org
       DocumentRoot "/home/cpc/project/web"
       DirectoryIndex index.php
       <Directory "/home/cpc/project/web">
