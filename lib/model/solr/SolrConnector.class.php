@@ -65,6 +65,11 @@ class SolrConnector extends sfLogger
        $document->addField('description', $obj->description->content, $obj->description->weight); 
      if (isset($obj->date))
        $document->addField('date', $obj->date->content, $obj->date->weight); 
+     if (isset($obj->tags)) {
+        foreach($obj->tags->content as $tag) if ($tag)  {
+	  $document->setMultiValue('tag', $tag, $obj->tags->weight);
+	}
+     }
      $this->solr->addDocument($document);
      $this->solr->commit();
   }
