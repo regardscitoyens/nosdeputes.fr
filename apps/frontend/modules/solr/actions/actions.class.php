@@ -19,7 +19,7 @@ class solrActions extends sfActions
     case 'QuestionEcrite':
       return url_for('@question_numero?numero='.$obj->numero);
     case 'Amendement':
-      return url_for('@amendement?loi='.$obj->textloi_id.'&numero='.$obj->numero);
+      return url_for('@amendement?loi='.$obj->texteloi_id.'&numero='.$obj->numero);
     case 'Parlementaire':
       return url_for('@parlementaire?slug='.$obj->slug);
     case 'Commentaire':
