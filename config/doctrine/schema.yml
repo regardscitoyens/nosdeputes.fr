@@ -353,6 +353,7 @@ Citoyen:
       values: ['membre', 'moderateur', 'admin']
       default: membre
     last_login: timestamp
+    parametres: string
   indexes:
     is_active:
       fields: [is_active]
