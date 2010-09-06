@@ -88,6 +88,7 @@ class solrActions extends sfActions
     for($i = 0 ; $i < count($this->results['docs']) ; $i++) {
       $res = $this->results['docs'][$i];
       $obj = $res['object'];
+
       $this->results['docs'][$i]['link'] = $obj->getLink();
       $this->results['docs'][$i]['photo'] = $this->getPhoto($obj);
       $this->results['docs'][$i]['titre'] = $obj->getTitre();

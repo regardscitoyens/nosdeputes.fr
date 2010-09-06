@@ -9,7 +9,7 @@ class Commentaire extends BaseCommentaire
     return $this->lien;
   }
   public function getPersonne() {
-    return $this->citoyen->getLogin();
+    return $this->getCitoyen()->getLogin();
   }
   public function getTitre() {
     return $this->getPresentation();

@@ -84,10 +84,17 @@ class SolrConnector extends sfLogger
         $maxHits = sfConfig::get('app_solr_max_hits', 256);
     $response = $this->solr->search($queryString, $offset, $maxHits, $params);
     $results = unserialize($response->getRawResponse());
+    $unset = array();
     for ($i = 0 ; $i < count($results['response']['docs']); $i++) {
       $res = $results['response']['docs'][$i];
       $results['response']['docs'][$i]['object'] = Doctrine::getTable($res['object_name'])->find($res['object_id']);
+      if (!$results['response']['docs'][$i]['object'])
+	$unset[] = $i;
     }
+    foreach ($unset as $i) {
+      unset($results['response']['docs'][$i]);
+    }
+    $results['response']['docs'] = array_values($results['response']['docs']);
     return $results;
   }
   
