@@ -53,8 +53,8 @@ $q->parlementaire_id = 2;
 $q->ministere = "Ministere de la crise et du déficit";
 $q->save();
 
-$i = Doctrine::getTable('Intervention')->find(392980);
-$i->save();
+$iexists = Doctrine::getTable('Intervention')->find(3);
+$iexists->save();
 
 $s->updateFromCommands();
 $id = "QuestionEcrite/".$q->id;

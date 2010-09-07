@@ -6,47 +6,58 @@ class SolrCommands
     return sfConfig::get('sf_log_dir').'/solr/commands.log';
   }
 
-  protected static $semaphore = null;
-  protected static $file = null; 
+  protected $semaphore = null;
+  protected $file = null; 
 
-  protected static function getSemaphore() {
-    if (! self::$semaphore) {
-      self::$semaphore = sem_get(rand());
+  protected static $instance = null;
+  protected static $semaphore_id = "99999910823498202340982340982340981678";
+  public static function getInstance() {
+    if (!self::$instance) {
+      self::$instance = new SolrCommands();
     }
-    return self::$semaphore;
+    return self::$instance;
   }
 
-  public static function addCommand($status, $json) {
-    sem_acquire(self::getSemaphore());
-    if (! self::$file) {
-      self::$file = fopen(self::getFileCommands(), 'a+');
+  public function __construct() {
+    $this->semaphore = sem_get(self::$semaphore_id);
+  }
+
+  public function __destruct() {
+    sem_remove($this->semaphore);
+    $this->semaphore = null;
+  }
+
+  public function addCommand($status, $json) {
+    sem_acquire($this->semaphore);
+    if (! $this->file) {
+      $this->file = fopen($this->getFileCommands(), 'a+');
     }
     $str = $status.' : '.json_encode($json)."\n";
-    fwrite(self::$file, $str, strlen($str));
-    sem_release(self::getSemaphore());
+    fwrite($this->file, $str, strlen($str));
+    sem_release($this->semaphore);
   }
 
-  public static function getCommandContent() {
-    $lockfile = self::getFileCommands().'.lock';
+  public  function getCommandContent() {
+    $lockfile = $this->getFileCommands().'.lock';
     if (file_exists($lockfile)) {
       return $lockfile;
     }
-    sem_acquire(self::getSemaphore());
-    if (!self::$file) {
+    sem_acquire($this->semaphore);
+    if (!$this->file) {
       touch($lockfile);
-      sem_release(self::getSemaphore());
+      sem_release($this->semaphore);
       return $lockfile;
     }
-    fclose(self::$file);
-    self::$file = null;
-    rename(self::getFileCommands(), self::getFileCommands().'.lock');
-    sem_release(self::getSemaphore());
+    fclose($this->file);
+    $this->file = null;
+    rename($this->getFileCommands(), $this->getFileCommands().'.lock');
+    sem_release($this->semaphore);
     return $lockfile;
   }
-  public static function releaseCommandContent() {
-    sem_acquire(self::getSemaphore());
-    unlink(self::getFileCommands().'.lock');
-    sem_release(self::getSemaphore());
+  public  function releaseCommandContent() {
+    sem_acquire($this->semaphore);
+    unlink($this->getFileCommands().'.lock');
+    sem_release($this->semaphore);
   }
 }
 

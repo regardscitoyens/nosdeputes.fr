@@ -9,19 +9,6 @@ class SolrListener extends Doctrine_Record_Listener
      */
     protected $_options = array();
 
-    protected static $fileCommand = null;
-    protected static $fileDispatcher = null;
-
-    protected static function getFileCommand() {
-      if (!self::$fileDispatcher) {
-	self::$fileDispatcher = new sfEventDispatcher();
-      }
-      if (!self::$fileCommand) {
-	self::$fileCommand = new sfFileLogger(self::$fileDispatcher, array('file' => SolrConnector::getFileCommands()));
-      }
-      return self::$fileCommand;
-    }
-
     private $command = null;
 
     /**
@@ -144,7 +131,7 @@ class SolrListener extends Doctrine_Record_Listener
     
     $json['tags']['weight'] = $extra_weight;
     
-    SolrCommands::addCommand('UPDATE', $json);
+    SolrCommands::getInstance()->addCommand('UPDATE', $json);
   }
   
   // Désindexation après une suppression
@@ -153,7 +140,7 @@ class SolrListener extends Doctrine_Record_Listener
     $obj = $event->getInvoker();
     $json = new stdClass();
     $json->id = $this->getLuceneObjId($obj);
-    SolrCommands::addCommand('DELETE', $json);
+    SolrCommands::getInstance()->addCommand('DELETE', $json);
   }
   
 }
