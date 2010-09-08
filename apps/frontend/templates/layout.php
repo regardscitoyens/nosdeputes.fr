@@ -150,6 +150,38 @@ $(document).ready(function() {
     if (!$('#header_pass').attr('value')) {
       $('#header_pass').attr('value', '______________');
     }
+	// Menu
+	selected = $("a[class='selected']").parent().attr("id");
+	retourMenu = 0;
+	delayRetourMenu = 100;
+
+	$(".menu_navigation a").mouseover(function() {
+	  if(retourMenu) { window.clearTimeout(retourMenu); }
+	  $(".menu_navigation a").removeClass("selected");
+	  for (i=1; i<=3; i++) { $('#sous_menu_'+i).css("display", "none"); }
+	  if ($(this).parent().attr("id") == "item2") { $(this).attr("class", "selected"); $('#sous_menu_1').css("display", "block"); }
+	  if ($(this).parent().attr("id") == "item3") { $(this).attr("class", "selected"); $('#sous_menu_2').css("display", "block"); }
+	  if ($(this).parent().attr("id") == "item4") { $(this).attr("class", "selected"); $('#sous_menu_3').css("display", "block"); }
+	});
+	
+	function setOriginalMenu() {
+	  $(".menu_navigation a").removeClass("selected");
+	  for (i=1; i<=3; i++) { $('#sous_menu_'+i).css("display", "none"); }
+	  if (selected == "item2") { $("#item2 a").attr("class", "selected"); $('#sous_menu_1').css("display", "block"); }
+	  if (selected == "item3") { $("#item3 a").attr("class", "selected"); $('#sous_menu_2').css("display", "block"); }
+	  if (selected == "item4") { $("#item4 a").attr("class", "selected"); $('#sous_menu_3').css("display", "block"); }
+	}
+	
+	$("#sous_menu_1, #sous_menu_2, #sous_menu_3").mouseover(function() {
+	  if(retourMenu) { window.clearTimeout(retourMenu); }
+	});
+		
+	$(".menu_navigation a, #sous_menu_1, #sous_menu_2, #sous_menu_3").mouseout(function() {
+	  if(retourMenu) { window.clearTimeout(retourMenu); }
+	  retourMenu = window.setTimeout(setOriginalMenu, delayRetourMenu);
+	});
+	// fin menu
+	
   });
 </script>
 <script type="text/javascript">

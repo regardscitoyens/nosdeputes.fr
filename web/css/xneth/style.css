@@ -457,13 +457,12 @@ h1 {
 
 .menu_navigation a {
   display:block;
-  height:35px;
+  height:30px;
   font: 13pt Georgia, Tahoma, Geneva, Arial, Sans-serif;
   padding-top:5px;
   text-decoration:none;
   text-align:center;
 }
-
 .gris {   
   color:#3c3c3c;
 }
@@ -622,21 +621,21 @@ h1 {
   float:left;
   width:1060px;
   height:21px;
-  background: url('images/sous_menu_1.png');
+  background: url('images/sous_menu_combined.png');
   }
   
   #sous_menu_2 {
   float:left;
   width:1060px;
   height:21px;
-  background: url('images/sous_menu_2.png');
+  background: url('images/sous_menu_combined.png') 0 -21px;
   }
   
   #sous_menu_3 {
   float:left;
   width:1060px;
   height:21px;
-  background: url('images/sous_menu_3.png');
+  background: url('images/sous_menu_combined.png') 0 -42px;
   }
 
 /* corps de page */
