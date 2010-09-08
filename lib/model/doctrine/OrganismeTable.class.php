@@ -5,17 +5,7 @@
 class OrganismeTable extends Doctrine_Table
 {
   public function findOneByNomType($nom, $type) {
-    $nom = strtolower($nom);
-    $nom = preg_replace('/(&#8217;|\')/', '’', $nom);
-    $nom = preg_replace('/\W+$/', '', $nom);
-    $nom = preg_replace('/\([^\)]*\)/', '', $nom);
-    $nom = preg_replace('/\([^\)]*$/', '', $nom);
-    $nom = preg_replace('/^[^\)]*\)/', '', $nom);
-    $nom = preg_replace('/’/', '\'', $nom);
-    $nom = preg_replace('/^\s*assemblée\s+nationale\s*$/i', 'bureau de l\'assemblée nationale', $nom);
-    trim($nom);
-    $nom = preg_replace('/^\s*de la /', '', $nom);
-    $nom = preg_replace('/\s+/', ' ', $nom);
+    $nom = self::cleanNom($nom);
 
     if ($option = Doctrine::getTable('VariableGlobale')->findOneByChamp('commissions')) {
       $commissions = unserialize($option->getValue());
@@ -63,8 +53,23 @@ class OrganismeTable extends Doctrine_Table
       return $org;
     $org = new Organisme();
     $org->type = $type;
-    $org->nom = $nom;
+    $org->nom = self::cleanNom($nom);
     $org->save();
     return $org;
+  }
+  
+  private static function cleanNom($nom) {
+    $nom = strtolower($nom);
+    $nom = preg_replace('/(&#8217;|\')/', '’', $nom);
+    $nom = preg_replace('/\W+$/', '', $nom);
+    $nom = preg_replace('/\([^\)]*\)/', '', $nom);
+    $nom = preg_replace('/\([^\)]*$/', '', $nom);
+    $nom = preg_replace('/^[^\)]*\)/', '', $nom);
+    $nom = preg_replace('/’/', '\'', $nom);
+    $nom = preg_replace('/^\s*assemblée\s+nationale\s*$/i', 'bureau de l\'assemblée nationale', $nom);
+    trim($nom);
+    $nom = preg_replace('/^\s*de la /', '', $nom);
+    $nom = preg_replace('/\s+/', ' ', $nom);
+    return $nom;
   }
 }
