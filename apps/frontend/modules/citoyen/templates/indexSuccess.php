@@ -1,5 +1,5 @@
 <?php use_helper('Text') ?>
-<h1><?php echo $title; ?></h1>
+<h1 class="list_com"><?php echo $title; ?></h1>
 <?php $total = $pager->getNbResults();
       $ct = 0; 
       $types = array("date"  => "date d'inscription",

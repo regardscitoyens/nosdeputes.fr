@@ -105,8 +105,85 @@ class Intervention extends BaseIntervention
     return $res;
   }
 
-  public function setContexte($context, $date = null, $timestamp = null) {
-    return $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($context, $date, $timestamp));
+  public function setContexte($contexte, $date = null, $timestamp = null, $tlois = null, $debug = 0) {
+    $tlois = preg_replace('/[^,\d]+/', '', $tlois);
+    $tlois = preg_replace('/\s+,/', ',', $tlois);
+    $tlois = preg_replace('/,\s+/', ',', $tlois);
+    $lois = explode(',', $tlois);
+    $loisstring = "";
+    foreach($lois as $loi) if ($loi) {
+      $tag = 'loi:numero='.$loi;
+      $this->addTag($tag);
+      if ($loisstring == "") $loisstring = "t.numero = $loi";
+      else $loisstring .= " OR t.numero = $loi";
+    }
+    if ($lois[0]) {
+      $urls = Doctrine_Query::create()
+        ->select('distinct(t.url_an)')
+        ->from('Texteloi t')
+        ->where('t.type = ? OR t.type = ? OR t.type = ? OR t.type = ?', array("Proposition de loi", "Proposition de résolution", "Projet de loi", "Texte de la commission"))
+        ->andWhere($loisstring)
+        ->fetchArray();
+      $ct = count($urls);
+      if ($ct == 0) $urls = Doctrine_Query::create()
+        ->select('distinct(t.url_an)')
+        ->from('Texteloi t')
+        ->where($loisstring)
+        ->fetchArray();
+      $ct = count($urls);
+      if ($ct > 1) {
+        $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
+        if ($debug) {
+          print "WARNING : Intervention $this->id has tags lois corresponding to multiple url_ans : ";
+          foreach ($urls as $url)
+            print $url['distinct']." ; ";
+          print " => Saving to section $this->Section->id\n";
+          $debug = 0;
+        }
+        return $debug;
+      }
+      if ($ct == 0) $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
+      else if ($ct == 1) {
+        $section1 = Doctrine::getTable('Section')->findOneByContexte($contexte);
+        $section2 = Doctrine::getTable('Section')->findOneByUrlAn($urls[0]['distinct']);
+        if ($section2) {
+          if (!$section1)
+            $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt(str_replace(trim(preg_replace('/^([^>])(>.*)?$/', '\\1', $contexte)), $section2->titre, $contexte), $date, $timestamp));
+          else if ($section1->section_id == $section2->id)
+            $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($section1->titre_complet, $date, $timestamp));
+          else {
+            $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
+            if ($debug) {
+              print "WARNING : Intervention $this->id has tags lois corresponding to another section $section2->id";
+              print " => Saving to section $this->Section->id\n";
+              $debug = 0;
+            }
+            return $debug;
+          }
+        }
+        else {
+          $section1 = Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp);
+          $this->setSection($section1);
+          $section1->setUrlAn($urls[0]['distinct']);
+          $section1->save();
+        }
+      }
+      if ($this->section_id != 1) {
+        $titre = $this->Section->Section->getTitre();
+        if (!(preg_match('/(cloture|ouverture|question|ordre du jour|calendrier|élection.*nouveau|démission|cessation.*mandat|proclamation|souhaits)/i', $titre))) {
+          foreach($lois as $loi) {
+            $tag = 'loi:numero='.$loi;
+            $this->Section->addTag($tag);
+            if ($this->Section->section_id && $this->Section->Section->id && $this->Section->section_id != $this->section_id)
+              $this->Section->Section->addTag($tag);
+          }
+        }
+      }
+      return $debug;
+    } else {
+      $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
+      return $debug;
+    }
   }
 
   public function setAmendements($tamendements) {
@@ -115,23 +192,9 @@ class Intervention extends BaseIntervention
     foreach($amends as $amend) {
       $tag = 'loi:amendement='.$amend;
       $this->addTag($tag);
-      if ($this->Section->section_id && $this->Section->Section->id) {
-        $this->Section->Section->addTag($tag);
-      }
     }
   }
-  public function setLois($tlois) {
-    $tlois = preg_replace('/[^,\d]+/', '', $tlois);
-    $lois = preg_split('/\s*,\s*/', $tlois);
-    foreach($lois as $loi) {
-      $tag = 'loi:numero='.$loi;
-      $this->addTag($tag);
-      $this->Section->addTag($tag);
-      if ($this->Section->section_id && $this->Section->Section->id) {
-	$this->Section->Section->addTag($tag);
-      }
-    }
-  }
+  
   public function setIntervention($s) {
     $this->_set('nb_mots', str_word_count($s));
     return $this->_set('intervention', $s);

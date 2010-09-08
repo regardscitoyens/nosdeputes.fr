@@ -73,6 +73,10 @@ class myTools {
     return $year_diff;
   }	
 
+  public static function getLinkDossier($urlan) {
+    return link_to('Dossier sur le site de l\'Assemblée', "http://www.assemblee-nationale.fr/13/dossiers/".$urlan.".asp");
+  }
+
   public static function getLinkLoi($id) {
     return link_to($id, "http://recherche2.assemblee-nationale.fr/resultats-avancee.jsp?11AUTPropositions=&11AUTRap-enq=&11AUTRap-info=&11AUTRapports=&12AUTPropositions=&12AUTRap-enq=&12AUTRap-info=&12AUTRap-infoLoi=&12AUTRapports=&13AUTComptesRendusReunions=&13AUTComptesRendusReunionsDeleg=&13AUTPropositions=&13AUTRap-info=&13AUTRap-infoLoi=&13AUTRapports=&legislature=13&legisnum=&num_init_11=&num_init_12=&num_init_13=".$id."&searchadvanced=Rechercher&searchtype=&texterecherche=&type=13ProjetsLoi");
   }

@@ -4,7 +4,7 @@
  */
 class ParlementaireTable extends PersonnaliteTable
 {
-  public function findOneByNomSexeGroupeCirco($nom, $sexe = null, $groupe = null, $circo = null, $amendement = null) {
+  public function findOneByNomSexeGroupeCirco($nom, $sexe = null, $groupe = null, $circo = null, $document = null) {
     $depute = null;
     $memeNom = $this->findByNom($nom);
     if (count($memeNom) != 1 && ($circo)) {
@@ -25,7 +25,7 @@ class ParlementaireTable extends PersonnaliteTable
     if (count($memeNom) == 0) {
       $query = $this->createQuery('p')
         ->where('p.nom_de_famille = ?' , $nom);
-      if ($amendement) $query->andWhere('p.fin_mandat is null or p.fin_mandat > ?', $amendement->getDate());
+      if ($document) $query->andWhere('p.fin_mandat is null or p.fin_mandat > ?', $document->getDate());
       $memeNom = $query->execute();
     }
     if (count($memeNom) == 0 && preg_match('/(Des |des |de La |de la |de l\'|de |du )?([A-ZÉ].*) ([A-ZÉ].*)/', $nom, $match)) {

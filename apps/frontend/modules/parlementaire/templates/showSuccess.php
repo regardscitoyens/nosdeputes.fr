@@ -101,9 +101,9 @@
       <h3>Ses derniers dossiers</h3>
       <?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 5, 'order' => 'date')); ?>
       <p class="suivant"><?php echo link_to('Tous ses dossiers', '@parlementaire_textes?slug='.$parlementaire->slug); ?></p>
-      <h3><?php echo link_to('Travaux en commissions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=commission'); ?></h3>
-      <h3><?php echo link_to('Travaux en hémicycle','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=loi'); ?></h3>
-      <h3><?php echo link_to('Toutes ses interventions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=all'); ?></h3>
+      <h3 class="list_inter"><?php echo link_to('Travaux en commissions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=commission'); ?></h3>
+      <h3 class="list_inter"><?php echo link_to('Travaux en hémicycle','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=loi'); ?></h3>
+      <h3 class="list_inter"><?php echo link_to('Toutes ses interventions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=all'); ?></h3>
       <h3><?php echo link_to('Tous ses amendements','@parlementaire_amendements?slug='.$parlementaire->getSlug()); ?></h3>
       </div>
     </div>
@@ -114,7 +114,7 @@
   </div>
 
   <div class="bas_depute">
-      <h2>Derniers commentaires concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
+      <h2 class="list_com">Derniers commentaires concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
       <?php if ($parlementaire->nb_commentaires == 0) echo '<p>Le travail de ce député n\'a pas encore inspiré de commentaire aux utilisateurs.</p>';
         else {
           echo include_component('commentaire', 'lastObject', array('object' => $parlementaire, 'presentation' => 'noauteur'));

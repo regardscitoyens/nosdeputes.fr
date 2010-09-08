@@ -73,4 +73,16 @@ class Section extends BaseSection
     return ucfirst(preg_replace('/\s*\?$/', '', $this->_get('titre')));
   }
 
+  public function getOrigTitre() {
+    return $this->_get('titre');
+  }
+
+  public function setMaxDate($date) {
+    if ($this->max_date && $date <= $this->max_date)
+      return;
+    $this->_set('max_date', $date);
+    $this->save();
+  }
+
 }
+?>

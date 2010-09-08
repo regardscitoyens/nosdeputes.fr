@@ -28,14 +28,14 @@ class fuseDossiersTask extends sfBaseTask {
       return;
     }
 
-    print " - Gère les sous-sections\n";
+    #print " - Gère les sous-sections\n";
     $n_itv = 0;
     foreach ($bad->SubSections as $sub) {
       if ($sub->id == $bad->id) continue;
-      print "   + ".$sub->titre_complet."\n";
-      $exist = Doctrine::getTable('Section')->createQuery('s')->where('s.section_id = ?', $good->id)->andWhere('s.titre = ?', $sub->titre)->fetchOne();
+      print "\n + $sub->titre_complet";
+      $exist = Doctrine::getTable('Section')->createQuery('s')->where('s.section_id = ?', $good->id)->andWhere('s.titre = ?', $sub->getOrigTitre())->fetchOne();
       if (isset($exist->section_id)) {
-        print "      existe déjà pour la section d'accueil, met-à-jour\n";
+        #print " existe déjà pour la section d'accueil, met-à-jour\n";
 
         $this->updateTags($sub, $exist);
         $n_itv += $this->updateInterv($sub, $exist);
@@ -46,14 +46,14 @@ class fuseDossiersTask extends sfBaseTask {
           ->delete('Section s')
           ->where('s.id = ?', $sub->id);
         if (! $query->execute()) {
-          print 'Suppression impossible de la sous-section '.$sub->id."\n";
+          print "\n  -> Suppression impossible de la sous-section $sub->id\n";
           return;
-        } else print "      Ancienne sous-section fusionnée et supprimée\n";
+        } #else print " fusionnée et supprimée\n";
 
       } else {
-        print "      change le titre et le numéro de section mère\n";
-        $sub->setTitreComplet(str_replace($sub->titre, $good->titre, $sub->titre_complet));
+        $sub->setTitreComplet(str_replace($bad->getOrigTitre(), $good->getOrigTitre(), $sub->titre_complet));
         $sub->section_id = $good->id;
+        print " -> $sub->titre_complet";
         $sub->save();
         $n_itv += $sub->nb_interventions;
         $sub->nb_commentaires;
@@ -65,8 +65,8 @@ class fuseDossiersTask extends sfBaseTask {
     $this->updateComments($bad, $good);
     $this->updateMinDate($bad, $good);
  
-    $corresp = array(strtolower($bad->titre) => strtolower($good->titre));
-    print "Enregistre la correspondance en base :\n";
+    $corresp = array(strtolower($bad->getOrigTitre()) => strtolower($good->getOrigTitre()));
+    print "\nEnregistre la correspondance en base :\n";
     $option = Doctrine::getTable('VariableGlobale')->findOneByChamp('dossiers');
     if (!$option) {
       $option = new VariableGlobale();
@@ -74,22 +74,34 @@ class fuseDossiersTask extends sfBaseTask {
       $option->setValue(serialize($corresp));
     } else $option->setValue(serialize(array_merge(unserialize($option->getValue()), $corresp)));
     $option->save();
-    print_r(unserialize($option->getValue()));
-    print "\n";
+    print_r($corresp);
+    print "  ";
+    $option = Doctrine::getTable('VariableGlobale')->findOneByChamp('linkdossiers');
+    if (!$option) {
+      $option = new VariableGlobale();
+      $option->setChamp('linkdossiers');
+      $option->setValue(serialize(array("$bad->id" => "$good->id")));
+    } else {
+      $value = unserialize($option->getValue());
+      $value["$bad->id"] = "$good->id";
+      $option->setValue(serialize($value));
+    }
+    $option->save();
+    print "$bad->id => $good->id\n";
 
     $query = Doctrine_Query::create()
       ->delete('Section s')
       ->where('s.id = ?', $bad->id);
     if (! $query->execute()) {
       print 'Suppression impossible de la section '.$bad->id."\n";
-    } else print "Done\n";
+    }
   }
 
   private static function updateTags($b, $g) {
-    print "      Gère les tags\n";
+    #print "      Gère les tags\n";
     foreach(Doctrine::getTable('Tagging')->createQuery('t')->where('t.taggable_model = ?', 'Section')->andWhere('t.taggable_id = ?', $b->id)->execute() as $tag) {
-      print $tag->tag_id." ";
-      if (Doctrine::getTable('Tagging')->createQuery('t')->where('t.taggable_model = ?', 'Section')->andWhere('t.taggable_id = ?', $g->id)->andWhere('t.tag_id = ?', $tag->tag_id)) {
+      #print $tag->tag_id." ";
+      if (count(Doctrine::getTable('Tagging')->createQuery('t')->where('t.taggable_model = ?', 'Section')->andWhere('t.taggable_id = ?', $g->id)->andWhere('t.tag_id = ?', $tag->tag_id)->execute()) > 0) {
          $query = Doctrine_Query::create()
            ->delete('Tagging t')
            ->where('t.id = ?', $tag->id);
@@ -101,14 +113,13 @@ class fuseDossiersTask extends sfBaseTask {
         $tag->save();
       }
     }
-    print "\n";
   }
 
   private static function updateInterv($b, $g, $base = 0) {
-    print "      Gère les interventions\n";
+    #print "      Gère les interventions\n";
     $ct = 0;
     foreach(Doctrine::getTable('Intervention')->createQuery('i')->where('i.section_id = ?', $b->id)->execute() as $itv) {
-      print $itv->id." ";
+      #print $itv->id." ";
       $itv->section_id = $g->id;
       $itv->save();
       $ct++;
@@ -120,15 +131,15 @@ class fuseDossiersTask extends sfBaseTask {
         ->where('id = ?', $g->id)
         ->execute();
     }
-    print " / total : ".$ct."\n";
+    #print " / total : ".$ct."\n";
     return $ct;
   }
 
   private static function updateComments($b, $g) {
-    print "      Gère les commentaires\n";
+    #print "      Gère les commentaires\n";
     $ct = 0;
     foreach(Doctrine::getTable('CommentaireObject')->createQuery('c')->where('c.object_type = ?', 'Section')->andWhere('c.object_id = ?', $b->id)->execute() as $com) {
-      print $com->id." ";
+      #print $com->id." ";
       $com->object_id = $g->id;
       $com->save();
       $comment = $com->getCommentaire();
@@ -141,7 +152,7 @@ class fuseDossiersTask extends sfBaseTask {
         ->where('id = ?', $g->id)
         ->execute();
     }
-    print "\n";
+    #print "\n";
   }
 
   private static function updateMinDate($b, $g) {

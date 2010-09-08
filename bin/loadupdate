@@ -81,6 +81,9 @@ if [[ $questions -ne 0 ]]; then
   fi
   cd -
 fi
+echo Rapports et Textes de lois
+echo ==========================
+cd batch/documents ; bash compute_latest.sh ; cd -
 
 
 # Vérification des JSON
@@ -128,6 +131,13 @@ if [[ $questions -ne 0 ]]; then
 	php symfony load:Questions 
   done;
 fi
+echo Load Documents
+echo =======================
+while ls batch/documents/out | grep [a-z] > /dev/null ; do
+        php symfony cc --env=test  --app=frontend > /dev/null
+        php symfony load:Documents
+done;
+
 
 
 # Postprocessings

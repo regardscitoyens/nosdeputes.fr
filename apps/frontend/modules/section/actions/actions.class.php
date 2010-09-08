@@ -40,22 +40,54 @@ class sectionActions extends sfActions
   }
   public function executeShow(sfWebRequest $request) 
   {
-    $this->section = Doctrine::getTable('Section')->find($request->getParameter('id'));
+    $secid = $request->getParameter('id');
+    $this->forward404Unless($secid);
+    if ($option = Doctrine::getTable('VariableGlobale')->findOneByChamp('linkdossiers')) {
+      $links = unserialize($option->getValue());
+      if (isset($links[$secid]))
+        $secid = $links[$secid];
+    }
+    $this->section = Doctrine::getTable('Section')->find($secid);
     $this->forward404Unless($this->section);
 
-    $this->lois = $this->section->getTags(array('is_triple' => true,
-                                                'namespace' => 'loi',
-                                                'key' => 'numero',
-                                                'return' => 'value'));
-    $amdmts_lois = Doctrine_Query::create()->select('distinct(a.texteloi_id)')->from('Amendement a')->whereIn('a.texteloi_id', $this->lois)->fetchArray();
+    $lois = $this->section->getTags(array('is_triple' => true,
+                                          'namespace' => 'loi',
+                                          'key' => 'numero',
+                                          'return' => 'value'));
+    $qtextes = Doctrine_Query::create()
+      ->select('t.id, t.type, t.type_details, t.titre')
+      ->from('Texteloi t')
+      ->whereIn('t.numero', $lois);
+    if ($this->section->url_an)
+      $qtextes->orWhere('t.url_an = ?', $this->section->url_an);
+    $qtextes->orderBy('t.numero, t.annexe');
+    $textes = $qtextes->fetchArray();
+
+    $textes_loi = Doctrine_Query::create()
+      ->select('t.texteloi_id, t.titre')
+      ->from('TitreLoi t')
+      ->whereIn('t.texteloi_id', $lois)
+      ->andWhere('t.chapitre IS NULL')
+      ->andWhere('t.section is NULL')
+      ->orderBy('t.texteloi_id')
+      ->fetchArray();
+    
+    $this->docs = array();
+    foreach ($textes_loi as $doc)
+      $this->docs[$doc['texteloi_id']] = $doc;
+    foreach ($textes as $texte)
+      $this->docs[$texte['id']] = $texte;
+    foreach ($lois as $loi) {
+      $loi = sprintf("%04d", $loi);
+      if (!isset($this->docs["$loi"]))
+        $this->docs["$loi"] = null;
+    }
+    
+    $amdmts_lois = Doctrine_Query::create()->select('distinct(a.texteloi_id)')->from('Amendement a')->whereIn('a.texteloi_id', $lois)->fetchArray();
     $this->lois_amendees = array();
     foreach($amdmts_lois as $loi)
       array_push($this->lois_amendees, $loi['distinct']); 
     sort($this->lois_amendees);
-   
-    $this->textes_loi = Doctrine_Query::create()->select('t.texteloi_id, t.titre')->from('TitreLoi t')->whereIn('t.texteloi_id', $this->lois)->andWhere('t.chapitre IS NULL')->andWhere('t.section is NULL')->orderBy('t.texteloi_id')->fetchArray();
-    sort($this->lois);
-    sort($this->textes_loi);
    
     $inters = Doctrine_Query::create()
       ->select('i.id')
@@ -85,7 +117,7 @@ class sectionActions extends sfActions
       ->where('p.id IS NOT NULL')
       ->andWhere('((i.fonction != ? AND i.fonction != ? ) OR i.fonction IS NULL)', array('président', 'présidente'))
       ->groupBy('p.id')
-      ;
+      ->limit(30);
     if (count($interventions))
       $this->ptag->whereIn('i.id', $interventions);
     else
@@ -102,14 +134,16 @@ class sectionActions extends sfActions
       ->where('s.id = s.section_id')
       ->andWhere('s.nb_interventions > 5');
     if ($this->order == 'date') {
-      $query->orderBy('s.min_date DESC');
+      $query->orderBy('s.max_date DESC');
       $this->titre = 'Les derniers dossiers à l\'Assemblée';
     } else if ($this->order == 'plus') {
       $query->orderBy('s.nb_interventions DESC');
       $this->titre = 'Les dossiers les plus discutés à l\'Assemblée';
-    }
-    else forward404();
-    $this->getResponse()->setTitle($this->titre);
+    } else if ($this->order == 'coms') {
+      $query->orderBy('s.nb_commentaires DESC');
+      $this->titre = 'Les dossiers de l\'Assemblée les plus commentés par les citoyens';
+    } else $this->forward404();
+    $this->getResponse()->setTitle(str_replace('Assemblée', 'Assemblée nationale', $this->titre)." - NosDéputés.fr");
     $this->sections = $query->execute();
 
   }

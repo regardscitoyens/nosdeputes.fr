@@ -1,4 +1,4 @@
-<h1>Toutes les circonscriptions électorales</h1><?php 
+<h1 class="list_inter">Toutes les circonscriptions électorales</h1><?php 
 $sf_response->setTitle('Toutes les circonscriptions électorales'); ?>
 <h2>Carte des circonscriptions</h2>
 <p><?php CirconscriptionActions::echoCircoMap("full", 900, 0); ?></p>

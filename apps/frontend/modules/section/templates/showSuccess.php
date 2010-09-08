@@ -1,4 +1,4 @@
-   <h1><?php 
+<h1 class="orange"><?php 
    $titre = '';
 if ($section->getSection()) {
   echo link_to($section->getSection()->getTitre(), '@section?id='.$section->section_id).'</h1><h2>';
@@ -10,13 +10,28 @@ $sf_response->setTitle($titre.' - NosDéputés.fr');
 if ($section->getSection()) echo '</h2>';
 else echo '</h1>';
 ?>
+<?php if ($section->url_an) echo '<span class="source">'.myTools::getLinkDossier($section->url_an)."</span>"; ?>
 <div class="numeros_textes">
 <?php if ($section->nb_commentaires) { ?>
 <div class="source"><span class="list_com"><a href="#commentaires">Voir le<?php if ($section->nb_commentaires > 1) echo 's '.$section->nb_commentaires; ?> commentaire<?php if ($section->nb_commentaires > 1) echo 's'; ?></a></span></div>
-<?php }
-  if ($lois && ! preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $section->titre)) { ?>
-<span><?php if (count($textes_loi)) foreach ($textes_loi as $texte) echo link_to(strip_tags($texte['titre']), '@loi?loi='.$texte['texteloi_id']); else { echo 'Texte'; if (count($lois) > 1) echo 's'; echo ' N°'; foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' '; echo '('.link_to('tous les amendements à ce dossier',  '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois_amendees)).'&numero=all').')'; } ?></span>
 <?php } ?>
+<p>
+<?php $curid = 0;
+  if ($docs) foreach ($docs as $id => $doc) {
+    $shortid = preg_replace('/^(\d{4}).*$/', '\\1', $id);
+    if ($curid != $shortid) {
+      $curid = $shortid;
+      if (isset($doc['texteloi_id'])) 
+        echo link_to(strip_tags($doc['titre']), '@loi?loi='.$doc['id']);
+      else if (isset($doc['id']))
+        echo $doc['type']." ".$doc['type_details']." ".$doc['titre']." (".$doc['id'].")";
+      else
+        echo 'Texte N°&nbsp;'.myTools::getLinkLoi($doc);
+      echo "<br/>";
+    }
+  }
+  echo link_to('Tous les amendements à ce dossier',  '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois_amendees)).'&numero=all')."</p>";
+?>
 </div>
 <div class="resume">
 <div class="right">
@@ -31,7 +46,7 @@ else echo '</h1>';
 </div>
 </div>
 </div>
-
+<div class="clear"/>
 <?php $sommaire = $section->getSubSections();
 if (count($sommaire)) { ?>
 <div class="orga_dossier right">
@@ -66,14 +81,14 @@ if ($subsection->id != $section->id) : ?>
 </ul>
 </div>
 <div class="orateurs_dossier">
-<h2>Tous les orateurs sur ce dossier :</h2>
+<h2>Les principaux orateurs sur ce dossier :</h2>
 <?php echo include_component('parlementaire', 'list', array('parlementairequery' => $ptag, 'route'=>'@parlementaire_texte?id='.$section->id.'&slug=')); ?>
 </div>
 </div>
 <?php if ($section->nb_commentaires != 0) { ?>
   <div class="stopfloat"></div>
   <div class="commentaires" id="commentaires">
-    <h2>Derniers commentaires sur <?php echo $section->titre; ?> <span class="rss"><a href="<?php echo url_for('@section_rss_commentaires?id='.$section->id); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
+    <h2 class="list_com">Derniers commentaires sur <?php echo $section->titre; ?> <span class="rss"><a href="<?php echo url_for('@section_rss_commentaires?id='.$section->id); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
 <?php echo include_component('commentaire', 'lastObject', array('object' => $section, 'presentation' => 'nodossier'));
     if ($section->nb_commentaires > 4)
       echo '<p class="suivant">'.link_to('Voir les '.$section->nb_commentaires.' commentaires', '@section_commentaires?id='.$section->id).'</p><div class="stopfloat"></div>'; ?>

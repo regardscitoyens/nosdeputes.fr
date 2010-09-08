@@ -4,7 +4,7 @@
  */
 class OrganismeTable extends Doctrine_Table
 {
-  public function findOneByNomOrCreateIt($nom, $type) {
+  public function findOneByNomType($nom, $type) {
     $nom = strtolower($nom);
     $nom = preg_replace('/(&#8217;|\')/', '’', $nom);
     $nom = preg_replace('/\W+$/', '', $nom);
@@ -54,7 +54,13 @@ class OrganismeTable extends Doctrine_Table
     }
     if ($org)
       return $org;
-
+    return null;
+  }
+ 
+  public function findOneByNomOrCreateIt($nom, $type) {
+    $org = $this->findOneByNomType($nom, $type);
+    if ($org)
+      return $org;
     $org = new Organisme();
     $org->type = $type;
     $org->nom = $nom;
