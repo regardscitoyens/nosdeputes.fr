@@ -18,6 +18,7 @@ class indexSolrTask extends sfBaseTask
     $this->briefDescription = 'Index db value on solr';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('removeAll', null, sfCommandOption::PARAMETER_OPTIONAL, 'Drop solr database (=no|yes no default)', 'no');
 
     $this->file_conf = sys_get_temp_dir().DIRECTORY_SEPARATOR."reindex_slor.db";
     $this->state = array();
@@ -32,6 +33,10 @@ class indexSolrTask extends sfBaseTask
     $manager = new sfDatabaseManager($this->configuration);    
 
     $solr = new SolrConnector();
+
+    if ($options['removeAll'] == 'yes') {
+      $solr->deleteAll();
+    }
 
     foreach(array("Parlementaire", "Commentaire", "QuestionEcrite", "Amendement", "Intervention") as $table) {
       while (1) {
