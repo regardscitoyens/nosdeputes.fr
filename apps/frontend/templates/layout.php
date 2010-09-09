@@ -45,6 +45,7 @@ $menu_citoyen = $selectcitoyen;
     </style> 
     <![endif]-->
 		<?php echo javascript_include_tag('jquery-1.4.2.min.js'); ?>
+		<?php echo javascript_include_tag('fonctions.js'); ?>
   </head>
   <body>
   <div id="contenu">
