@@ -369,7 +369,7 @@ VariableGlobale:
     Timestampable:
   columns:
     champ: string(32)
-    value: blob
+    value: string
 
 Commentaire:
   actAs:
