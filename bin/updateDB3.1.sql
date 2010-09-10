@@ -1,5 +1,5 @@
 
-ALTER TABLE `variable_globale3` CHANGE `value` `value` TEXT NULL DEFAULT NULL;
+ALTER TABLE `variable_globale` CHANGE `value` `value` TEXT NULL DEFAULT NULL;
 
 UPDATE intervention SET section_id = 1 WHERE id IN (395528,395529,395530);
 UPDATE intervention SET section_id = 1 WHERE id IN (49344,49345);
