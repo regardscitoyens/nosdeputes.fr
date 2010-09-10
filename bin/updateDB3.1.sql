@@ -1,8 +1,11 @@
 
+ALTER TABLE `variable_globale3` CHANGE `value` `value` TEXT NULL DEFAULT NULL;
+
 UPDATE intervention SET section_id = 1 WHERE id IN (395528,395529,395530);
 UPDATE intervention SET section_id = 1 WHERE id IN (49344,49345);
 UPDATE intervention SET section_id = 1 WHERE id IN (21725,21726);
 UPDATE intervention SET section_id = 1 WHERE id IN (161761,161762,161763);
+UPDATE intervention SET section_id = 1 WHERE id IN (457894,457895,457896);
 
 
 DELETE ta FROM `tagging` ta join tag t on t.id = ta.tag_id join intervention i on i.id = ta.taggable_id where taggable_model = "Intervention" and t.triple_key = "numero" and i.seance_id = 9;
