@@ -75,7 +75,7 @@ class apiActions extends sfActions
     $this->res = array('deputes' => array());
     $this->champs = array();
     $this->breakline = 'depute';
-    sfLoader::loadHelpers('Url');
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     foreach($deputes as $dep) {
       $depute = array();
       $depute['id'] = $dep->id;
