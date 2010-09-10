@@ -24,8 +24,12 @@ class loadAmdmtsTask extends sfBaseTask {
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
             $json = json_decode($line);
-            if (!$json || !$json->source || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->texte || !$json->date || !isset($json->rectif)) {
-              echo "ERROR json : $line\n";
+            if (!$json) {
+		echo "ERROR json : $line";
+		continue;
+	    }
+	    if (!$json->source || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->texte || !$json->date || !isset($json->rectif)) {
+              echo "ERROR mandatory arg missing (source|legis|numero|loi|sujet|texte|date|rectif): $line\n";
               continue;
             }
             $ct_lus++;
