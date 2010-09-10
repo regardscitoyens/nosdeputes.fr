@@ -29,7 +29,6 @@ class indexSolrTask extends sfBaseTask
  
   protected function execute($arguments = array(), $options = array())
   {
-    $dir = dirname(__FILE__).'/../../batch/commission/out/';
     $manager = new sfDatabaseManager($this->configuration);    
 
     $solr = new SolrConnector();
