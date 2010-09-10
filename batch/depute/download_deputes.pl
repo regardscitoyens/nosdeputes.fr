@@ -47,6 +47,10 @@ while ($t = $p->get_tag('td')) {
                 if ($id == 1263) {
                   $t = '23/07/2009';
                 }
+# Cas Poisson dont la fin de mandat n'est pas mise à jour sur la page de l'AN
+                if ($id == 345937) {
+                  $t = '20/05/2010';
+                }
 		print PM "\$fin_mandat{'$id'} = '$t';\n";
 	    }
 	}

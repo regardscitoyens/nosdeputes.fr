@@ -4,6 +4,8 @@ use WWW::Mechanize;
 use HTML::TokeParser;
 
 @url = (
+    "http://www.assemblee-nationale.fr/13/cri/2009-2010-extra2/",
+    "http://www.assemblee-nationale.fr/13/cri/2009-2010-extra/",
     "http://www.assemblee-nationale.fr/13/cri/2009-2010/",
 );
 
@@ -17,8 +19,9 @@ foreach $url (@url) {
     while ($t = $p->get_tag('a')) {
 	$txt = $p->get_text('/a');
 	if ($txt =~ /(\d+[\Serm]+\s+\S+ance|S\S+ance uniq)/i && $t->[1]{href} !~ /provisoire/) {
-	    $a->get($t->[1]{href});
-	    $file = $a->uri();
+          $a->get($t->[1]{href});
+          $file = $a->uri();
+          if ($file !~ /provisoire/) {
 	    $file =~ s/\//_/gi;
 	    $file =~ s/\#.*//;
 	    #on ne peut pas quitter dès le premier, seulement au bout de 
@@ -34,7 +37,8 @@ foreach $url (@url) {
 	    open FILE, ">:utf8", "html/$file";
 	    print FILE $a->content;
 	    close FILE;
-	    $a->back();
+          }
+	  $a->back();
 	}
     }
 }
