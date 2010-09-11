@@ -54,33 +54,35 @@ class sectionActions extends sfActions
                                           'namespace' => 'loi',
                                           'key' => 'numero',
                                           'return' => 'value'));
-    $qtextes = Doctrine_Query::create()
-      ->select('t.id, t.type, t.type_details, t.titre')
-      ->from('Texteloi t')
-      ->whereIn('t.numero', $lois);
-    if ($this->section->url_an)
-      $qtextes->orWhere('t.url_an = ?', $this->section->url_an);
-    $qtextes->orderBy('t.numero, t.annexe');
-    $textes = $qtextes->fetchArray();
-
-    $textes_loi = Doctrine_Query::create()
-      ->select('t.texteloi_id, t.titre')
-      ->from('TitreLoi t')
-      ->whereIn('t.texteloi_id', $lois)
-      ->andWhere('t.chapitre IS NULL')
-      ->andWhere('t.section is NULL')
-      ->orderBy('t.texteloi_id')
-      ->fetchArray();
-    
     $this->docs = array();
-    foreach ($textes_loi as $doc)
-      $this->docs[$doc['texteloi_id']] = $doc;
-    foreach ($textes as $texte)
-      $this->docs[$texte['id']] = $texte;
-    foreach ($lois as $loi) {
-      $loi = sprintf("%04d", $loi);
-      if (!isset($this->docs["$loi"]))
-        $this->docs["$loi"] = null;
+    if ($this->section->url_an || $lois) {
+      $qtextes = Doctrine_Query::create()
+        ->select('t.id, t.type, t.type_details, t.titre')
+        ->from('Texteloi t')
+        ->whereIn('t.numero', $lois);
+      if ($this->section->url_an)
+        $qtextes->orWhere('t.url_an = ?', $this->section->url_an);
+      $qtextes->orderBy('t.numero, t.annexe');
+      $textes = $qtextes->fetchArray();
+
+      $textes_loi = Doctrine_Query::create()
+        ->select('t.texteloi_id, t.titre')
+        ->from('TitreLoi t')
+        ->whereIn('t.texteloi_id', $lois)
+        ->andWhere('t.chapitre IS NULL')
+        ->andWhere('t.section is NULL')
+        ->orderBy('t.texteloi_id')
+        ->fetchArray();
+    
+      foreach ($textes_loi as $doc)
+        $this->docs[$doc['texteloi_id']] = $doc;
+      foreach ($textes as $texte)
+        $this->docs[$texte['id']] = $texte;
+      foreach ($lois as $loi) {
+        $loi = sprintf("%04d", $loi);
+        if (!isset($this->docs["$loi"]))
+          $this->docs["$loi"] = null;
+      }
     }
     
     $amdmts_lois = Doctrine_Query::create()->select('distinct(a.texteloi_id)')->from('Amendement a')->whereIn('a.texteloi_id', $lois)->fetchArray();
