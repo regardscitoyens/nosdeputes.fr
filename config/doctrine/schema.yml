@@ -598,6 +598,16 @@ Texteloi:
   inheritance:
     extends: ObjectCommentable
     type: concrete
+  indexes:
+    index_url:
+      fields: [url_an]
+    index_alpha:
+      fields: [numero, annexe]
+      type: unique
+    index_type:
+      fields: [type(30), type_details(200)]
+    index_date:
+      fields: [date]
 
 ParlementaireTexteloi:
   actAs:
