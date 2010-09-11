@@ -56,7 +56,7 @@ if ($intervention->hasIntervenant()) {
       echo '</a>&nbsp;:';
     }
     else {
-      echo '<span class="perso">'.$perso->nom.'&nbsp;:';
+      echo '<span class="perso">'.$intervention->getNomAndFonction().'&nbsp;:';
       echo '</span>';
     }
   }

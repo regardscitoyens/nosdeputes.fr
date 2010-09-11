@@ -57,6 +57,19 @@ class interventionActions extends sfActions
       ->where('i.id = ?', $request->getParameter('id'))
       ->fetchOne();
     $this->forward404Unless($this->intervention);
+
+    $titre = "";
+    $this->section = $this->intervention->getSection();
+    $this->secparent = $this->section->getSection();
+    $this->seance = $this->intervention->getSeance();
+    if ($this->intervention->getType() == 'commission') {
+      $this->orga = $this->seance->getOrganisme();
+      $titre .= $this->orga->getNom();
+    } else if ($this->secparent && !(preg_match('/questions/i', $this->secparent->getTitre())))
+      $titre .= $this->secparent->getTitre();
+    else 
+      $titre .= $this->section->getTitre();
+    $titre .= " - ".$this->seance->getTitre();
     $this->lois = $this->intervention->getTags(array('is_triple' => true,
 						     'namespace' => 'loi',
 						     'key' => 'numero',
@@ -65,7 +78,7 @@ class interventionActions extends sfActions
 						       'namespace' => 'loi',
 						       'key' => 'amendement',
 						       'return'    => 'value'));
-    $this->response->setTitle('Intervention de '.$this->intervention->getIntervenant()->nom);
+    $this->response->setTitle($titre.' - Intervention de '.$this->intervention->getIntervenant()->nom." - NosDéputés.fr");
     //    $this->response->setDescription($this->intervention->intervention);
   }
   
