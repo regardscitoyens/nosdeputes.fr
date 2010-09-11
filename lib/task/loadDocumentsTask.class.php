@@ -48,7 +48,9 @@ class loadDocumentsTask extends sfBaseTask {
               $doc->categorie = strtolower($json->categorie);
             if ($json->auteurs)
               $doc->setAuteurs($json->auteurs);
-           //mots-clés as tags?
+            if ($json->motscles)
+              foreach (explode('.', $json->motscles) as $tag)
+                $doc->addTag($tag);
             $doc->save();
             $doc->free();
           }

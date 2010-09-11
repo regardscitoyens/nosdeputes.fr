@@ -33,6 +33,7 @@ $string =~ s/, +/,/g;
 $string =~ s/,/, /g;
 $string =~ s/ +/ /g;
 $string =~ s/\s+/ /g;
+$string =~ s/&quot;//g;
 if ($dir == "rap") {
   $string =~ s/L\W\W([AÀEÈÉÊIOUYH])/L'\1/g;
   $string =~ s/D\W\W([AÀEÈÉÊIOUYH])/D'\1/g;
@@ -114,22 +115,38 @@ if ($string =~ /<meta name="SOUS_RUBRIQUE"([^>]+)>/) {
   $line =~ s/^.*content="([^"]+)".*$/\1/;
   $keywords .= $line.".";
 }
-if ($string =~ /<meta name="MOTS_CLES"([^>]+)>/ && !$categorie) {
+if ($string =~ /<meta name="MOTS_CLES"([^>]+)>/) {
   $line = $1;
   $line =~ s/^.*content="([^"]+)".*$/\1/;
   $keywords .= $line.".";
 }
 
 $keywords = lc $keywords;
+$keywords =~ s/^\s+//;
+$keywords =~ s/\s+$//;
+$keywords =~ s/À/à/g;
+$keywords =~ s/É/é/g;
+$keywords =~ s/È/è/g;
+$keywords =~ s/Ê/ê/g;
+$keywords =~ s/Î/î/g;
+$keywords =~ s/Ï/ï/g;
+$keywords =~ s/Ô/ô/g;
+$keywords =~ s/Ù/ù/g;
+$keywords =~ s/Ç/ç/g;
 $keywords =~ s/ +\././g;
 $keywords =~ s/\. +/./g;
-$keywords =~ s/.+/./g;
-$keywords =~ s/^.+$//g;
+$keywords =~ s/\.+/./g;
+$keywords =~ s/^\.+//g;
+$keywords =~ s/\.+$//g;
+$keywords =~ s/([\s\(,\.])l\./\1L/gi;
+
 if ($categorie =~ /Texte de la commission/i && $id =~ /-a0/) {
   $categorie = "";
   $type0 = "Texte de la commission";
 }
 $categorie = lc $categorie;
+$categorie =~ s/^\s+//;
+$categorie =~ s/\s+$//;
 $categorie =~ s/À/à/g;
 $categorie =~ s/É/é/g;
 $categorie =~ s/È/è/g;
@@ -138,6 +155,7 @@ $categorie =~ s/Î/î/g;
 $categorie =~ s/Ï/ï/g;
 $categorie =~ s/Ô/ô/g;
 $categorie =~ s/Ù/ù/g;
+$categorie =~ s/Ç/ç/g;
 
 
 #print "\n";

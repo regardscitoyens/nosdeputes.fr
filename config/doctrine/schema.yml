@@ -566,7 +566,8 @@ TitreLoi:
 
 Texteloi:
   actAs:
-    Timestampable:
+    Timestampable: ~
+    Taggable: ~
   columns:
     id:
       type: string(12)
