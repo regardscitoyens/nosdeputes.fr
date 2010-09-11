@@ -5,6 +5,8 @@ body {
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
+/* Widget page d'accueil */
+
 /* Bas page d'accueil */
 .box_repartition {
   float: left;
@@ -40,7 +42,7 @@ body {
 #loupe {
   position: fixed;
   display: none;
-  font-size: 2.4em;
+  font-size: 2em;
   text-align: center;
   padding: 3px 5px 3px 5px;
   background-color: #fff;
