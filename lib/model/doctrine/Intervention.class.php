@@ -147,15 +147,15 @@ class Intervention extends BaseIntervention
         $section1 = Doctrine::getTable('Section')->findOneByContexte($contexte);
         $section2 = Doctrine::getTable('Section')->findOneByUrlAn($urls[0]['distinct']);
         if ($section2) {
-          if (!$section1)
-            $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt(str_replace(trim(preg_replace('/^([^>])(>.*)?$/', '\\1', $contexte)), $section2->titre, $contexte), $date, $timestamp));
+          if (!$section1) 
+            $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt(str_replace(trim(preg_replace('/^([^>]+)(>.*)?$/', '\\1', $contexte)), $section2->titre, $contexte), $date, $timestamp));
           else if ($section1->section_id == $section2->id)
             $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($section1->titre_complet, $date, $timestamp));
           else {
             $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
             if ($debug) {
               print "WARNING : Intervention $this->id has tags lois corresponding to another section $section2->id";
-              print " => Saving to section $this->Section->id\n";
+              print " => Saving to section ".$this->Section->id."\n";
               $debug = 0;
             }
             return $debug;

@@ -7,9 +7,10 @@ $source =~ s/http(.?)-/http\1:/;
 $source =~ s/_/\//g;
 $id = $source;
 $id =~ s/^http\:\/\/.*(\d{4})(-[at].*)?\.asp$/\1\2/i;
+$id =~ s/^0+//;
 $num = $annexe = $id;
-$num =~ s/^0*(\d+)(-[at].*)?$/\1/i;
-$annexe =~ s/^0*\d+(-[at])?(.*)?$/\2/i;
+$num =~ s/^(\d+)(-[at].*)?$/\1/i;
+$annexe =~ s/^\d+(-[at])?(.*)?$/\2/i;
 
 open(FILE, $file) ;
 @string = <FILE>;

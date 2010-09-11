@@ -13,9 +13,31 @@
 class TexteLoi extends BaseTexteLoi
 {
 
+  public function getAmendements() {
+    if (!preg_match('/(Projet de loi|Proposition de loi|Proposition de résolution|Texte de la commission)/', $this->type))
+      return 0;
+    $res = count(Doctrine::getTable('Amendement')->createQuery('a')
+      ->where('texteloi_id = ?', $this->numero)
+      ->fetchArray());
+    return $res;
+  }
+
+  public function getDossier() {
+    $section = Doctrine::getTable('Section')->findOneByUrlAn($this->url_an);
+    if (!$section) $section = Doctrine_Query::create()
+      ->select('s.id')
+      ->from('Section s, Tagging ta, Tag t')
+      ->where('s.section_id = s.id')
+      ->andWhere('ta.taggable_id = s.id')
+      ->andWhere('ta.tag_id = t.id')
+      ->andWhere('ta.taggable_model = ?', "Section")
+      ->andWhere('t.name = ?', "loi:numero=".$this->numero)
+      ->fetchOne();
+    return $section;
+  }
+
   public function setDossier($urldossier) {
     $this->url_an = $urldossier;
-   //find by url_an if not find by tag_loi if Projet de loi, Proposition de loi, TA, => save url_an
     $section = Doctrine::getTable('Section')->findOneByUrlAn($urldossier);
     if ($section) {
    # cela parait plus cohérent que les dossiers apparaissent comme récemment modifiés uniquement s'ils sont discutés et pas si un nouveau rapport vient les compléter je pense mais on peut envisager de le mettre tout de même si c utile pour solr par exemple
@@ -108,7 +130,7 @@ class TexteLoi extends BaseTexteLoi
   }
 
   public function addParlementaire($depute, $fonction, $organisme = 0) {
-    //foreach(Doctrine::getTable('ParlementaireTexteloi')->createQuery('pa')->select('parlementaire_id')->where('texteloi_id = ?', $this->id)->fetchArray() as $parldt) if ($parldt['parlementaire_id'] == $depute->id) return true;
+    foreach(Doctrine::getTable('ParlementaireTexteloi')->createQuery('pa')->select('parlementaire_id')->where('texteloi_id = ?', $this->id)->fetchArray() as $parldt) if ($parldt['parlementaire_id'] == $depute->id) return true;
 
     $pd = new ParlementaireTexteloi();
     $pd->_set('Parlementaire', $depute);
@@ -137,5 +159,45 @@ class TexteLoi extends BaseTexteLoi
     } else return false;
   }
 
+  public function getTypeString() {
+    $str = "ce";
+    if (preg_match('/(propos|lettre)/', $this->type))
+      $str .= "tte";
+    $str .= " ".strtolower($this->type);
+    return $str;
+  }
 
+  public function getAuteursString() {
+    if ($this->type === "Texte de la commission")
+      return $this->signataires;
+    return $this->signataires;
+  }
+
+  public function getCommission() {
+    if ($this->type === "Texte de la commission") {
+      $rap = Doctrine::getTable('Texteloi')->find("$this->numero");
+      return $rap->getOrganisme();
+    }
+    return $this->getOrganisme();
+  }
+
+  public function getTitreComplet() {
+    $str = "";
+    if ($this->annexe && preg_match('/a/', $this->id)) {
+      $str .= "Annexe N°&nbsp;".$annexe." ";
+      if ($this->type === "Avis")
+        $str .= "à l'";
+      else $str .=  "au ";
+    }
+    $str .= $this->type;
+    if (!preg_match('/^,/', $this->type_details))
+      $str .= " ";
+    $str .= $this->type_details;
+    if (!preg_match('/^,/', $this->titre))
+      $str .=  " ";
+    $str .= $this->titre;
+    if ($this->annexe && preg_match('/t/', $this->id))
+      $str .= " (Tome $annexe)";
+    return $str;
+  }
 }
