@@ -27,9 +27,6 @@ body {
 .internal_tag_cloud span {
   padding-right: 4px;
 }
-.internal_tag_cloud {
-  text-align: center;
-}
 .box_repartition h2, .box_tags h2 {
   background-color: #DFDACF;
   background-image:url("images/fond_translucide.png");
@@ -39,6 +36,28 @@ body {
   padding-left:5px;
   text-align:left;
   text-shadow:0 0 4px #FFFFFF;
+}
+#loupe {
+  position: fixed;
+  display: none;
+  font-size: 2.4em;
+  text-align: center;
+  padding: 3px 5px 3px 5px;
+  background-color: #fff;
+  border: 1px solid #dddddd;
+}
+/* Tags */
+.internal_tag_cloud a:link {color:#D4963E;}
+.tag_level_0 {font-size: 0.8em;}
+.tag_level_1 {font-size: 0.9em;}
+.tag_level_2 {font-size: 1em;}
+.tag_level_3 {font-size: 1.5em;}
+.tag_level_4 {font-size: 1.7em;}
+
+.internal_tag_cloud {
+  position: relative;
+  text-align: center;
+  margin: auto;
 }
 /* Synthèse */
 .tableau_synthese { height: 500px; overflow: auto; }
@@ -303,17 +322,6 @@ body {
   height: 10px;
   background: url('images/coins_citoyen.png') no-repeat -10px -10px;
 }
-/**/
-
-/* Tags */
-.internal_tag_cloud a:link {color:#D4963E;}
-.tag_level_0 {font-size: 0.8em;}
-.tag_level_1 {font-size: 0.9em;}
-.tag_level_2 {font-size: 1em;}
-.tag_level_3 {font-size: 1.5em;}
-.tag_level_4 {font-size: 1.7em;}
-/**/
-
 .temp {
   font-size: 1.1em;
 }
@@ -1352,19 +1360,6 @@ float: left;
 .right{
 float: right;
 width: 50%;
-}
-.internal_tag_cloud{
-  position: relative;
-  margin: auto;
-}
-#loupe {
-  position: fixed;
-  display: none;
-  font-size: 3em;
-  text-align: center;
-  padding: 3px 5px 3px 5px; /* top right bottom left */
-  background-color: #fff;
-  border: 1px solid #dddddd;
 }
 /* accueil */
 

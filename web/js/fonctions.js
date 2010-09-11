@@ -53,14 +53,14 @@ $(document).ready(function() {
 	  }
 	);
 	$(".internal_tag_cloud").mousemove(function(e) {
-	  $("#loupe").css({ left: e.pageX - 150, top: e.pageY - 155});
+	  milieu = $("#loupe").width() / 2;
+	  $("#loupe").css({left: e.clientX - milieu, top: e.clientY + 20});
 	});
 	
-	$(".internal_tag_cloud a").mouseout(function() {
+	$(".internal_tag_cloud").mouseout(function() {
 	  $("#loupe").css("display", "none");
 	});
-	
-	
+
   }); // fin document ready
 
 // Google
