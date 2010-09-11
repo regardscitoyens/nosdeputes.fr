@@ -18,8 +18,6 @@ $nom = preg_replace('/^iZ/', 'î', $nom);
 $nom = preg_replace('/^IZ/', 'Î', $nom);
 echo $nom; ?></a> <?php
 		 ?></span><?php endforeach; 
-if(isset($hide) && $hide) 
-  echo '<span class="hide">finfinfinfinfinfinfinfinfinfinfinfinfinfinfinf</span>';
- } else { ?>
+} else { ?>
 <span><em>Désolé, aucun mot-clé pertinent trouvé</em></span>
 <?php } ?></div>

@@ -170,7 +170,7 @@ class Intervention extends BaseIntervention
       }
       if ($this->section_id != 1) {
         $titre = $this->Section->Section->getTitre();
-        if (!(preg_match('/(cloture|ouverture|question|ordre du jour|calendrier|élection.*nouveau|démission|cessation.*mandat|proclamation|souhaits)/i', $titre))) {
+        if (!(preg_match('/(cloture|ouverture|question|ordre du jour|calendrier|élection.*nouveau|démission|reprise|examen simplifié|cessation.*mandat|proclamation|souhaits)/i', $titre))) {
           foreach($lois as $loi) {
             $tag = 'loi:numero='.$loi;
             $this->Section->addTag($tag);

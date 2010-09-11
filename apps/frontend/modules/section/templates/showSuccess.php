@@ -1,7 +1,8 @@
+<?php if ($section->url_an) echo '<span class="source">'.myTools::getLinkDossier($section->url_an)."</span>"; ?>
 <h1 class="orange"><?php 
    $titre = '';
 if ($section->getSection()) {
-  echo link_to($section->getSection()->getTitre(), '@section?id='.$section->section_id).'</h1><h2>';
+  echo link_to($section->getSection()->getTitre(), '@section?id='.$section->section_id).'</h1><h2 class="aligncenter">';
   $titre = ', '.$section->getSection()->getTitre();
  }
 echo $section->titre;
@@ -10,7 +11,6 @@ $sf_response->setTitle($titre.' - NosDéputés.fr');
 if ($section->getSection()) echo '</h2>';
 else echo '</h1>';
 ?>
-<?php if ($section->url_an) echo '<span class="source">'.myTools::getLinkDossier($section->url_an)."</span>"; ?>
 <div class="numeros_textes">
 <?php if ($section->nb_commentaires) { ?>
 <div class="source"><span class="list_com"><a href="#commentaires">Voir le<?php if ($section->nb_commentaires > 1) echo 's '.$section->nb_commentaires; ?> commentaire<?php if ($section->nb_commentaires > 1) echo 's'; ?></a></span></div>

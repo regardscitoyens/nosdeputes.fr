@@ -1,5 +1,5 @@
 <?php if (!$tag) {
-   $titre = 'Trouver un député par mots-clés prononcés'; ?>
+   $titre = 'Trouver un député par mots-clés prononcé'; ?>
 <h1><?php echo $titre; ?></h1>
 <div class="liste_deputes_tags">
 <?php echo include_component('tag', 'tagcloud', array('querytag'=>$tquery,'route'=>'@tag_result_parlementaires?', 'limit'=>500)); 

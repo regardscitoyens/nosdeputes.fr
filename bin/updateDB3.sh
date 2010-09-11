@@ -6,7 +6,7 @@ php symfony cc
 #php symfony doctrine:build --all-classes
 #cat bin/updateDB3.model.sql | mysql $MYSQLID $DBNAME
 php symfony doctrine:build --all --no-confirmation
-zcat ../prod/data/sql/dumps/nosdeputes_prod.100910.sql.gz | mysql --default-character-set=utf8 $MYSQLID $DBNAME
+zcat data/sql/dumps/nosdeputes_prod.100910.sql.gz | mysql --default-character-set=utf8 $MYSQLID $DBNAME
 
 cat bin/updateDB3.1.sql | mysql $MYSQLID $DBNAME
 
@@ -46,6 +46,7 @@ php symfony move:Seance 48 621 1380
 php symfony move:Seance 348 4185 2
 php symfony move:Seance 2903 7751 7573
 php symfony move:Seance 3639 10334 2
+php symfony move:Seance 3473 1213 2
 
 cat bin/updateDB3.2.sql | mysql $MYSQLID $DBNAME
 

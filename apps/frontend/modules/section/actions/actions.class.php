@@ -133,11 +133,10 @@ class sectionActions extends sfActions
     if (!($this->order = $request->getParameter('order')))
       $this->order = 'plus';
     $query = Doctrine::getTable('Section')->createQuery('s')
-      ->where('s.id = s.section_id')
-      ->andWhere('s.nb_interventions > 5');
+      ->where('s.id = s.section_id');
     if ($this->order == 'date') {
       $query->orderBy('s.max_date DESC');
-      $this->titre = 'Les derniers dossiers à l\'Assemblée';
+      $this->titre = 'Les derniers dossiers traités à l\'Assemblée';
     } else if ($this->order == 'plus') {
       $query->orderBy('s.nb_interventions DESC');
       $this->titre = 'Les dossiers les plus discutés à l\'Assemblée';

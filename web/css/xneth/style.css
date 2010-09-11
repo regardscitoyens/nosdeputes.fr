@@ -1049,6 +1049,10 @@ h2 {
   text-align: justify;
 }
 
+.aligncenter {
+  text-align: center;
+}
+
 .alineatexte .center {
   text-align: center;
 }

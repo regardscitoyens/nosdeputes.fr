@@ -5,6 +5,7 @@ UPDATE intervention SET section_id = 5039 WHERE id IN (243124, 243125, 243126);
 UPDATE intervention SET section_id = 621 WHERE id IN (21725,21726);
 UPDATE intervention SET section_id = 4185 WHERE id IN (161761,161762,161763);
 UPDATE intervention SET section_id = 10334 WHERE id IN (457894,457895,457896);
+UPDATE intervention SET section_id = 1213 WHERE id IN (436326,436327,436328);
 
 
 DELETE s FROM `section` s where id in (3362,7751);
