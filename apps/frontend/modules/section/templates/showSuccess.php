@@ -30,7 +30,7 @@ else echo '</h1>';
       echo "<br/>";
     }
   }
-  echo link_to('Tous les amendements à ce dossier',  '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois_amendees)).'&numero=all')."</p>";
+  if (isset($lois_amendees)) echo link_to('Tous les amendements à ce dossier',  '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois_amendees)).'&numero=all')."</p>";
 ?>
 </div>
 <div class="resume">

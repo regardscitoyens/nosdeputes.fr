@@ -83,14 +83,14 @@ class sectionActions extends sfActions
         if (!isset($this->docs["$loi"]))
           $this->docs["$loi"] = null;
       }
-    }
     
-    $amdmts_lois = Doctrine_Query::create()->select('distinct(a.texteloi_id)')->from('Amendement a')->whereIn('a.texteloi_id', $lois)->fetchArray();
-    $this->lois_amendees = array();
-    foreach($amdmts_lois as $loi)
-      array_push($this->lois_amendees, $loi['distinct']); 
-    sort($this->lois_amendees);
-   
+      $amdmts_lois = Doctrine_Query::create()->select('distinct(a.texteloi_id)')->from('Amendement a')->whereIn('a.texteloi_id', $lois)->fetchArray();
+      $this->lois_amendees = array();
+      foreach($amdmts_lois as $loi)
+        array_push($this->lois_amendees, $loi['distinct']); 
+      sort($this->lois_amendees);
+    }   
+
     $inters = Doctrine_Query::create()
       ->select('i.id')
       ->from('Intervention i')
