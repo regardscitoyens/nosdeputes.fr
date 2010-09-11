@@ -97,7 +97,7 @@ class TexteLoi extends BaseTexteLoi
         $nom = ucfirst($nom);
         if ($debug) echo $nom."//".$sexe."//".$orga."//".$circo."//".$fonction." => ";
         $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe, null, $circo, $this);
-        if (!$depute) print "WARNING: Auteur introuvable in ".$this->source."/".$this->id." : ".$nom." // ".$sexe." // ".$orga."//".$fonction."\n";
+        if (!$depute) print "WARNING: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$orga."//".$fonction."\n";
         else {
           if ($debug) echo $depute->nom."\n";
           $this->addParlementaire($depute, $fonction, $orga);
