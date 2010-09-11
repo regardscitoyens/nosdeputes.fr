@@ -20,10 +20,15 @@ body {
   width: 463px;
   height: 377px;
   border: 1px solid #DBDBDB;
-  text-align: justify;
 }
 .box_tags .internal_tag_cloud {
   padding: 7px;
+}
+.internal_tag_cloud span {
+  padding-right: 4px;
+}
+.internal_tag_cloud {
+  text-align: center;
 }
 .box_repartition h2, .box_tags h2 {
   background-color: #DFDACF;
