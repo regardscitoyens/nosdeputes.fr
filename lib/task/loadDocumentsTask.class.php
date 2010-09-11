@@ -31,7 +31,7 @@ class loadDocumentsTask extends sfBaseTask {
               $doc->source = $json->source;
               $doc->legislature = $json->legislature;
               $doc->numero = $json->numero;
-              if ($json->annexe)
+              if ($json->annexe != "")
                 $doc->annexe = $json->annexe;
               $doc->date = $json->date_depot;
               $doc->type = $json->type;
