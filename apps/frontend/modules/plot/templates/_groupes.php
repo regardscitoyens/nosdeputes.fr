@@ -36,7 +36,7 @@ $DataDescrLegend = $DataSetLegend->GetDataDescription();
 $filename = 'repartition-groupes';
 $xsize = 390;
 if ($plot == 'total') {
-  $xtitre = 80; $ysize = 360; $ylegend = 145; $x0 = 140; $y0 = 112;
+  $xtitre = 80; $ysize = 300; $ylegend = 145; $x0 = 140; $y0 = 112;
   $duree = "l'année passée";
   $shortduree = 'annee';
   $filename .= '-'.$shortduree.'.png';
@@ -59,8 +59,8 @@ if ($plot == 'total') {
   }
 }
 $Test = new xsPChart($xsize,$ysize);
-$Test->drawFilledRoundedRectangle(7,7,$xsize-7,$ysize-7,5,240,240,240);
-$Test->drawRoundedRectangle(5,5,$xsize-5,$ysize-5,5,230,230,230);
+if ($plot != 'total') { $Test->drawFilledRoundedRectangle(7,7,$xsize-7,$ysize-7,5,240,240,240); }
+if ($plot != 'total') { $Test->drawRoundedRectangle(5,5,$xsize-5,$ysize-5,5,230,230,230); }
 $Test->setColorPalette(0,200,200,200);
 $Test->setColorPalette(1,30,30,200);
 $Test->setColorPalette(2,30,190,255);
@@ -90,9 +90,10 @@ $Test->xsSetFontProperties("tahoma.ttf",10);
 $Test->drawTitle(20,$ylegend+13,'Groupes',0,0,0);
 
 $Test->xsSetFontProperties("tahoma.ttf",12);
+if ($plot != 'total')
 $Test->drawTitle($xtitre,25,'Répartition '.$titre,50,50,50);
-if ($plot == 'total')
-  $Test->drawTitle(107,46,'au cours de '.$duree,50,50,50);
+#if ($plot == 'total')
+#  $Test->drawTitle(107,46,'au cours de '.$duree,50,50,50);
 $Test->xsSetFontProperties("tahoma.ttf",9);
 if ($plot == 'total') {
   $Test->drawTitle(105,190,'Semaines de',50,50,50);
@@ -123,9 +124,9 @@ else if (preg_match('/com/', $plot) && !isset($nolink))
   echo link_to(image_tag('tmp/xspchart/'.$filename, 'alt="Répartition '.$titre.'"'), '@presents_seance?seance='.$seance);
 else echo image_tag('tmp/xspchart/'.$filename, 'alt="Répartition '.$titre.'"');
 
-echo '<br/><span style=\'background-color: rgb(200,200,200);\'>&nbsp;</span>&nbsp;'.link_to('Non-Inscrits (Modem, div.)', '@list_parlementaires_groupe?acro=NI').'&nbsp;&nbsp;';
+echo '<p style="text-align: center;"><span style=\'background-color: rgb(200,200,200);\'>&nbsp;</span>&nbsp;'.link_to('Non-Inscrits (Modem, div.)', '@list_parlementaires_groupe?acro=NI').'&nbsp;&nbsp;';
 echo '<span style=\'background-color: rgb(30,30,200);\'>&nbsp;</span>&nbsp;'.link_to('UMP et ratt.', '@list_parlementaires_groupe?acro=UMP').'&nbsp;&nbsp;';
 echo '<span style=\'background-color: rgb(30,190,255);\'>&nbsp;</span>&nbsp;'.link_to('Nouveau Centre', '@list_parlementaires_groupe?acro=NC').'<br/>';
 echo '<span style=\'background-color: rgb(255,50,190);\'>&nbsp;</span>&nbsp;'.link_to('Socialistes (PS, MRC, PRG et ratt)', '@list_parlementaires_groupe?acro=SRC').'&nbsp;&nbsp;';
-echo '<span style=\'background-color: rgb(255,30,30);\'>&nbsp;</span>&nbsp;'.link_to('PCF, Verts et ratt', '@list_parlementaires_groupe?acro=GDR');
+echo '<span style=\'background-color: rgb(255,30,30);\'>&nbsp;</span>&nbsp;'.link_to('PCF, Verts et ratt', '@list_parlementaires_groupe?acro=GDR').'</p>';
 ?>

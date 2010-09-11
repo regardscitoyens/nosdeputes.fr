@@ -1,6 +1,7 @@
 $(document).ready(function() {
     if (typeof additional_load != 'undefined')
       additional_load();
+    // Ajax login
     if (!$('#header_login').attr('value')) {
       $('#header_login').attr('value', 'Identifiant');
     }
@@ -37,13 +38,30 @@ $(document).ready(function() {
 	  if(retourMenu) { window.clearTimeout(retourMenu); }
 	  retourMenu = window.setTimeout(setOriginalMenu, delayRetourMenu);
 	});
-	// fin menu
 	
-  });
-
-$("internal_tag_cloud span").mouseover(function() {
-  $(this).css("font-size", "200%");
-});
+	// Effet survol tagcloud
+	$(".internal_tag_cloud").prepend("<div id=\"loupe\"></div>");
+	
+	$(".internal_tag_cloud a").each(
+	  function() { 
+	    $(this).attr("alt", $(this).attr('title'));
+	    $(this).removeAttr('title');
+	    $(this).mouseover(function() { 
+	      $("#loupe").text($(this).text()+" ("+$(this).attr("alt")+")");
+	      $("#loupe").css("display", "block");
+	    });
+	  }
+	);
+	$(".internal_tag_cloud").mousemove(function(e) {
+	  $("#loupe").css({ left: e.pageX - 150, top: e.pageY - 155});
+	});
+	
+	$(".internal_tag_cloud a").mouseout(function() {
+	  $("#loupe").css("display", "none");
+	});
+	
+	
+  }); // fin document ready
 
 // Google
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

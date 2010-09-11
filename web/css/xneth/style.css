@@ -5,6 +5,36 @@ body {
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
+/* Bas page d'accueil */
+.box_repartition {
+  float: left;
+  width: 433px;
+  height: 377px;
+  border: 1px solid #DBDBDB;
+  background-color: #FAFAFA;
+  margin-bottom: 16px;
+}
+.box_tags {
+  float: right;
+  margin-right: 4px;
+  width: 463px;
+  height: 377px;
+  border: 1px solid #DBDBDB;
+  text-align: justify;
+}
+.box_tags .internal_tag_cloud {
+  padding: 7px;
+}
+.box_repartition h2, .box_tags h2 {
+  background-color: #DFDACF;
+  background-image:url("images/fond_translucide.png");
+  font-size:1.4em;
+  line-height:1.4em;
+  margin:0;
+  padding-left:5px;
+  text-align:left;
+  text-shadow:0 0 4px #FFFFFF;
+}
 /* Synthèse */
 .tableau_synthese { height: 500px; overflow: auto; }
 .synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
@@ -22,6 +52,7 @@ body {
 .synthese th, .synthese td { border-right: 1px #FFFFFF solid; }
 .tr_odd td { border-right: 1px #999999 solid; }
 .tr_odd td.qo { border-right: 0px #999999 solid; }
+
 /* Bulle ajax commentaires */
 .coms_loi_txt {
   color: #158EAF;
@@ -1314,9 +1345,18 @@ float: right;
 width: 50%;
 }
 .internal_tag_cloud{
+  position: relative;
   margin: auto;
 }
-
+#loupe {
+  position: fixed;
+  display: none;
+  font-size: 3em;
+  text-align: center;
+  padding: 3px 5px 3px 5px; /* top right bottom left */
+  background-color: #fff;
+  border: 1px solid #dddddd;
+}
 /* accueil */
 
 .texte_presentation_gauche {

@@ -20,14 +20,23 @@
 <div class="clear"></div>
 <div class="separateur"></div>
 <div class="clear accueil">
-<div class="accueil_plot left">
+  <div class="box_repartition">
+  <h2><span style="margin-right: 5px;"><img alt="" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_graph.png"></span>Répartition du travail parlementaire l'an passé</h2>
+  <?php echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
+  </div>
+  <div class="box_tags">
+  <h2><span style="margin-right: 5px;"><img alt="" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png"></span><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
+  <?php echo include_component('tag', 'globalActivite'); ?>
+  </div>
+</div>
+
+<!-- <div class="accueil_plot left">
 	<div id="center">
-	<?php echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
+	<?php #echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
 	</div>
 </div>
 
 <div class="nuage_de_tags right">
-	<h2><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
-	<?php echo include_component('tag', 'globalActivite'); ?>
-</div>
-</div>
+	<h2><?php #echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
+	<?php #echo include_component('tag', 'globalActivite'); ?>
+</div> -->

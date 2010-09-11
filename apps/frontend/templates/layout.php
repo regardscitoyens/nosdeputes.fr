@@ -44,8 +44,11 @@ $menu_citoyen = $selectcitoyen;
     img, div { behavior: url('<?php echo $sf_request->getRelativeUrlRoot(); ?>/iepngfix/iepngfix.php') }
     </style> 
     <![endif]-->
-		<?php echo javascript_include_tag('jquery-1.4.2.min.js'); ?>
-		<?php echo javascript_include_tag('fonctions.js'); ?>
+	<?php echo javascript_include_tag('jquery-1.4.2.min.js'); ?>
+	<script type="text/javascript">
+	$('<img />').attr('src', '<?php echo $sf_request->getRelativeUrlRoot()."/css/".$style."/sous_menu_combined.png"; ?>'); // preload img fond sous-menu
+	</script>
+	<?php echo javascript_include_tag('fonctions.js'); ?>
   </head>
   <body>
   <div id="contenu">
