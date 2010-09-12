@@ -159,6 +159,7 @@ $string =~ s/<[^>]*>//gi;
 $string =~ s/"//gi;
 $string =~ s/[\n\t]/ /gi;
 $string =~ s/  +/ /gi;
+$string =~ s/\\/-/gi;
 
 $string =~ s/if \(window!= top\) top\.location\.href=location\.href//i;
 $string =~ s/Recherche \| Aide \| Plan du site Accueil \&gt\; Documents parlementaires \&gt\; Les rapports législatifs//i;
