@@ -20,10 +20,25 @@ class loadDocumentsTask extends sfBaseTask {
 //print $file."\n";
           foreach(file($dir.$file) as $line) {
             $json = json_decode($line);
-            if (!$json || !$json->source || !$json->legislature || !$json->id || !$json->numero || !$json->date_depot || !$json->dossier || !$json->type) {
-              echo "ERROR json : $line\n";
+            if (!$json )
+	    {
+              echo "ERROR json : $dir$file\n";
               continue;
             }
+	    if (!$json->source)
+	      {echo "source missing\n"; continue;}
+	    if (!$json->legislature)
+	      {echo "legislature missing\n"; continue;}
+	    if (!$json->id)
+	      {echo "source id\n"; continue;}
+	    if (!$json->numero)
+	      {echo "source numero\n"; continue;}
+	    if(!$json->date_depot)
+	      {echo "source date_depot\n"; continue;}
+	    if (!$json->dossier)
+	      {echo "source dossier\n"; continue;}
+	    if (!$json->type)
+	      {echo "source type\n"; continue;}
             $doc = Doctrine::getTable('TexteLoi')->find($json->id);
             if (!$doc) {
               $doc = new TexteLoi();
@@ -51,10 +66,13 @@ class loadDocumentsTask extends sfBaseTask {
             if ($json->motscles)
               foreach (explode('.', $json->motscles) as $tag)
                 $doc->addTag($tag);
+	    if ($json->contenu)
+	      $doc->setContenu($json->contenu);
             $doc->save();
             $doc->free();
+	    echo "$dir$file DONE\n";
           }
-          unlink($dir.$file);
+	  //	  unlink($dir.$file);
         }
         closedir($dh);
       }

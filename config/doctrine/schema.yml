@@ -568,6 +568,11 @@ Texteloi:
   actAs:
     Timestampable: ~
     Taggable: ~
+    Solrable:
+      title: [titre]
+      description: [contenu, annexe, signataires]
+      moretags: [Parlementaires, categorie, type, Organisme]
+      date: date
   columns:
     id:
       type: string(12)
@@ -588,6 +593,7 @@ Texteloi:
       unique: true
     organisme_id: integer
     signataires: string
+    contenu: string
   relations:
     Parlementaires:
       class: Parlementaire

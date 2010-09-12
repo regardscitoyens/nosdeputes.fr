@@ -167,6 +167,7 @@ class TexteLoi extends BaseTexteLoi
     return $str;
   }
 
+
   public function getAuteursString() {
     if ($this->type === "Texte de la commission")
       return $this->signataires;
@@ -199,5 +200,23 @@ class TexteLoi extends BaseTexteLoi
     if ($this->annexe && preg_match('/t/', $this->id))
       $str .= " (Tome $annexe)";
     return $str;
+  }
+
+  public function getContenu() {
+    $c = $this->_get('contenu');
+    return gzinflate(base64_decode($c));
+  }
+
+  public function setContenu($c) {
+    return $this->_set('contenu', base64_encode(gzdeflate($c)));
+  }
+
+  public function getLink() {
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    return url_for('@homepage');
+  }
+
+  public function getPersonne() {
+    return '';
   }
 }

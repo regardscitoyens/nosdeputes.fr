@@ -43,14 +43,11 @@ class SolrCommands
       return $lockfile;
     }
     sem_acquire($this->semaphore);
-    if (!$this->file) {
-      touch($lockfile);
-      sem_release($this->semaphore);
-      return $lockfile;
+    if ($this->file) {
+      fclose($this->file);
+      $this->file = null;
     }
-    fclose($this->file);
-    $this->file = null;
-    rename($this->getFileCommands(), $this->getFileCommands().'.lock');
+    rename($this->getFileCommands(), $lockfile);
     sem_release($this->semaphore);
     return $lockfile;
   }
