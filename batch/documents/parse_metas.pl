@@ -35,10 +35,7 @@ $string =~ s/,/, /g;
 $string =~ s/ +/ /g;
 $string =~ s/\s+/ /g;
 $string =~ s/&quot;//g;
-if ($dir == "rap") {
-  $string =~ s/L\W\W([AÀEÈÉÊIOUYH])/L'\1/g;
-  $string =~ s/D\W\W([AÀEÈÉÊIOUYH])/D'\1/g;
-}
+
 $keywords = "";
 #print $string."\n";
 if ($string =~ /<meta name="LEGISLATURE_SESSION"([^>]+)>/) {
@@ -158,8 +155,14 @@ $categorie =~ s/Ô/ô/g;
 $categorie =~ s/Ù/ù/g;
 $categorie =~ s/Ç/ç/g;
 
+$string =~ s/<[^>]*>//gi;
+$string =~ s/"//gi;
+$string =~ s/[\n\t]/ /gi;
+$string =~ s/  +/ /gi;
 
+$string =~ s/if \(window!= top\) top\.location\.href=location\.href//i;
+$string =~ s/Recherche \| Aide \| Plan du site Accueil \&gt\; Documents parlementaires \&gt\; Les rapports législatifs//i;
+$string =~ s/_____ ASSEMBL'E NATIONALE CONSTITUTION DU 4 OCTOBRE 1958 TREIZIÈME LÉGISLATURE//i;
+$string =~ s/__*//i;
 #print "\n";
-print '{"source": "'.$source.'", "legislature": "'.$legislature.'", "id": "'.$id.'", "numero": "'.$num.'", "annexe": "'.$annexe.'", "date_depot": "'.$date0.'", "date_publi": "'.$date1.'", "auteurs": "'.$auteurs.'", "dossier": "'.$dossier.'", "type": "'.$type0.'", "type_details": "'.$type1.'", "titre": "'.$titre.'", "categorie": "'.$categorie.'", "motscles": "'.$keywords.'"}'."\n";
-
-
+print '{"source": "'.$source.'", "legislature": "'.$legislature.'", "id": "'.$id.'", "numero": "'.$num.'", "annexe": "'.$annexe.'", "date_depot": "'.$date0.'", "date_publi": "'.$date1.'", "auteurs": "'.$auteurs.'", "dossier": "'.$dossier.'", "type": "'.$type0.'", "type_details": "'.$type1.'", "titre": "'.$titre.'", "categorie": "'.$categorie.'", "motscles": "'.$keywords.'", "contenu": "'.$string.'"}'."\n";
