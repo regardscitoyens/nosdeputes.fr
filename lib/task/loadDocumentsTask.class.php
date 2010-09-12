@@ -18,6 +18,7 @@ class loadDocumentsTask extends sfBaseTask {
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == "." || $file == ".svn") continue;
           foreach(file($dir.$file) as $line) {
+	    echo "try $dir$file :\n";
             $json = json_decode($line);
             if (!$json )
 	    {
@@ -49,7 +50,7 @@ class loadDocumentsTask extends sfBaseTask {
                 $doc->annexe = $json->annexe;
               $doc->date = $json->date_depot;
               $doc->type = $json->type;
-              $doc->save();
+	      //	      $doc->save();
             }
             if ($json->date_publi)
               $doc->date = $json->date_publi;
@@ -69,7 +70,6 @@ class loadDocumentsTask extends sfBaseTask {
 	    if ($json->contenu)
 	      $doc->setContenu($json->contenu);
             $doc->save();
-            $doc->free();
 	    echo "$dir$file DONE\n";
           }
 	  unlink($dir.$file);

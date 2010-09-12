@@ -63,7 +63,7 @@ $t->is(count($a['response']['docs']), 1, "La question a été ajoutée");
 $a = $s->search("régionales id:$id");
 $t->is($a['response']['docs'][0]['id'], $id, "La question est trouvable");
 
-$a = Doctrine::getTable('Amendement')->find(3);
+$a = Doctrine::getTable('Amendement')->find(7);
 $a->save();
 $s->updateFromCommands();
 

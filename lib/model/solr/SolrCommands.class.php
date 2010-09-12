@@ -3,7 +3,7 @@
 class SolrCommands 
 {
   public static function getFileCommands() {
-    umask(0002);
+    umask(0000);
     if (!file_exists(sfConfig::get('sf_log_dir').'/solr/')) {
       mkdir (sfConfig::get('sf_log_dir').'/solr/');
     }

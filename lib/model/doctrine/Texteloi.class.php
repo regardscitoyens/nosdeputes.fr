@@ -13,6 +13,8 @@
 class Texteloi extends BaseTexteloi
 {
 
+  protected $cpt = 0;
+
   public function getLink() {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@document?id='.$this->id);
@@ -88,7 +90,8 @@ class Texteloi extends BaseTexteloi
     }
   }
 
-  public function setAuteurs($signataires) {    //$debug=1;
+  public function setAuteurs($signataires) {    
+    //$debug=1;
     $this->signataires = $signataires;
    //Set signatires, auteurs via PArlemnaitreTexteDocu et Organisme
     $orga = null;
@@ -122,7 +125,6 @@ class Texteloi extends BaseTexteloi
             $orga = " pour le groupe ".$orga;
           }
         }
-        $this->save();
         break;
       }
     }
@@ -262,5 +264,4 @@ class Texteloi extends BaseTexteloi
   public function setContenu($c) {
     return $this->_set('contenu', base64_encode(gzdeflate($c)));
   }
-
 }

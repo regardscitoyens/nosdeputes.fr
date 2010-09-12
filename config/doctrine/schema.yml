@@ -25,6 +25,8 @@ Parlementaire:
     Solrable:
       title: nom
       extra_weight: 1.5
+      description: [num_circo, nom_circo]
+      moretags: [profession, nom_circo]
   columns:     
     nom_circo: string(255)
     num_circo: integer
@@ -230,7 +232,7 @@ Amendement:
     Taggable: ~
     Solrable:
       description: [expose, texte, signataires]
-      moretags: [signataires, sort]
+      moretags: [Parlementaires, sort]
       date: date
   columns:
     source:
@@ -571,7 +573,7 @@ Texteloi:
     Solrable:
       title: [titre]
       description: [contenu, annexe, signataires]
-      moretags: [Parlementaires, categorie, type, Organisme]
+      moretags: [categorie, type, Organisme, Parlementaires]
       date: date
   columns:
     id:

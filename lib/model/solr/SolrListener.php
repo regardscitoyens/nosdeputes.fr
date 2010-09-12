@@ -30,23 +30,32 @@ class SolrListener extends Doctrine_Record_Listener
     }
 
     private function get_and_strip($obj, $field) {
+      if (!$obj || !get_class($obj))
+	return array();
       $f = $obj->get($field);
       if ($f) {
-      if (get_class($f) && ! $f->id)
-	return ;
-      return strip_tags($f);
+	if (is_array($f) || (get_class($f) == 'Doctrine_Collection')) {
+	  $res = array();
+	  foreach($f as $i) {
+	    $res[] = $i.'';
+	  }
+	  return $res;
+	}
+	if (get_class($f) && ! $f->id)
+	  return array();
+	return array(strip_tags($f));
+      }
+      return array();
     }
-    return ;
-  }
 
   private function getObjFieldsValue($obj, $fields)
   {
     if (!is_array($fields)) {
-      return $this->get_and_strip($obj, $fields);
+      return implode(' ',$this->get_and_strip($obj, $fields));
     }
     $s = '';
     foreach($fields as $f) {
-      $s .= $this->get_and_strip($obj, $f).' ';
+      $s .= implode(' ', $this->get_and_strip($obj, $f)).' ';
     }
     return $s;
   }
@@ -102,7 +111,8 @@ class SolrListener extends Doctrine_Record_Listener
     if (!isset($this->_options['date']) || !($t = $this->_options['date'])) {
       $t = 'created_at';
     }
-    $d = preg_replace('/\+.*/', 'Z', date('c', strtotime($this->getObjFieldsValue($obj, $t))));
+    $date = $this->getObjFieldsValue($obj, $t);
+    $d = preg_replace('/\+.*/', 'Z', date('c', strtotime($date)));
     $json['date']['content'] = $d;
     $json['date']['weight'] = $extra_weight;
     
@@ -116,12 +126,16 @@ class SolrListener extends Doctrine_Record_Listener
     
     if (isset($this->_options['moretags']) && $t = $this->_options['moretags']) {
       if (!is_array($t)) {
-	$s = $this->get_and_strip($obj, $t);
-	if ($s)
-	  $json['tags']['content'][] = $t.'='.$s;
-      }else{
-	foreach ($t as $i) {
-	  $s = $this->get_and_strip($obj, $i);
+	$t = array($t);
+      }
+      foreach ($t as $i) {
+	$content = $this->get_and_strip($obj, $i);
+	$i = preg_replace('/([A-Z].*)s$/', '\1', $i);
+	foreach($content as $c) {
+	  if (get_class($c)) {
+	      echo $c->nom."\n";
+	  }
+	  $s = $c;
 	  if (strlen($s)) {
 	    $s = strip_tags($s);
 	    $json['tags']['content'][] = $i.'='.$s;
