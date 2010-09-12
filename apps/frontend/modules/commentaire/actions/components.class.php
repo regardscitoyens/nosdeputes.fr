@@ -21,9 +21,9 @@ class commentaireComponents extends sfComponents
     $type = get_class($this->object);
     $query = Doctrine::getTable('Commentaire')
       ->createQuery('c');
-    if ($type == 'ArticleLoi')
+    if ($type === 'ArticleLoi' || $type === 'Texteloi')
       $query->leftJoin('c.Objects co')
-      ->where('(c.object_type = ? AND c.object_id = ?) OR (co.object_type = "ArticleLoi" AND co.object_id = ?)', array($type, $id, $id));
+        ->where('(c.object_type = ? AND c.object_id = ?) OR (co.object_type = "'.$type.'" AND co.object_id = ?)', array($type, $id, $id));
     else $query->where('(c.object_type = ? AND c.object_id = ?)', array($type, $id));
     if ($citid = $this->getUser()->getAttribute('user_id'))
       $query->andWhere('is_public = 1 OR citoyen_id = ?', $citid);

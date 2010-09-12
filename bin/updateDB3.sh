@@ -6,7 +6,7 @@ php symfony cc
 #php symfony doctrine:build --all-classes
 #cat bin/updateDB3.model.sql | mysql $MYSQLID $DBNAME
 php symfony doctrine:build --all --no-confirmation
-zcat data/sql/dumps/nosdeputes_prod.100910.sql.gz | mysql --default-character-set=utf8 $MYSQLID $DBNAME
+zcat data/sql/dumps/nosdeputes_prod.100911.sql.gz | mysql --default-character-set=utf8 $MYSQLID $DBNAME
 
 cat bin/updateDB3.1.sql | mysql $MYSQLID $DBNAME
 

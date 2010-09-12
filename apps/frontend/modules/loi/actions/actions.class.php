@@ -58,7 +58,16 @@ class loiActions extends sfActions
       ->where('a.texteloi_id = ?', $loi_id)
       ->andWhere('a.sort <> ?', 'Rectifié')
       ->execute());
-    
+    $this->dossier = Doctrine_Query::create()
+      ->select('s.id')
+      ->from('Section s, Tagging ta, Tag t')
+      ->where('s.section_id = s.id')
+      ->andWhere('ta.taggable_id = s.id')
+      ->andWhere('ta.tag_id = t.id')
+      ->andWhere('ta.taggable_model = ?', "Section")
+      ->andWhere('t.name = ?', "loi:numero=".preg_replace('/^(\d+)-.*/', '\\1', $loi_id))
+      ->fetchOne();
+
     $this->response->setTitle(strip_tags($this->loi->titre).' - NosDéputés.fr');
     $request->setParameter('rss', array(array('link' => '@loi_rss_commentaires?loi='.$loi_id, 'title'=>'Les commentaires sur '.$this->loi->titre)));
 

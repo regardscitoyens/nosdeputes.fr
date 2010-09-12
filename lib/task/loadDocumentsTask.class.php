@@ -17,7 +17,6 @@ class loadDocumentsTask extends sfBaseTask {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == "." || $file == ".svn") continue;
-//print $file."\n";
           foreach(file($dir.$file) as $line) {
             $json = json_decode($line);
             if (!$json )
@@ -26,22 +25,22 @@ class loadDocumentsTask extends sfBaseTask {
               continue;
             }
 	    if (!$json->source)
-	      {echo "source missing\n"; continue;}
+	      {echo "ERROR source : $dir$file\n"; continue;}
 	    if (!$json->legislature)
-	      {echo "legislature missing\n"; continue;}
+	      {echo "ERROR legislature : $dir$file\n"; continue;}
 	    if (!$json->id)
-	      {echo "source id\n"; continue;}
+	      {echo "ERROR id : $dir$file\n"; continue;}
 	    if (!$json->numero)
-	      {echo "source numero\n"; continue;}
+	      {echo "ERROR numero : $dir$file\n"; continue;}
 	    if(!$json->date_depot)
-	      {echo "source date_depot\n"; continue;}
+	      {echo "ERROR date_depot : $dir$file\n"; continue;}
 	    if (!$json->dossier)
-	      {echo "source dossier\n"; continue;}
+	      {echo "ERROR dossier : $dir$file\n"; continue;}
 	    if (!$json->type)
-	      {echo "source type\n"; continue;}
-            $doc = Doctrine::getTable('TexteLoi')->find($json->id);
+	      {echo "ERROR type : $dir$file\n"; continue;}
+            $doc = Doctrine::getTable('Texteloi')->find($json->id);
             if (!$doc) {
-              $doc = new TexteLoi();
+              $doc = new Texteloi();
               $doc->id = $json->id;
               $doc->source = $json->source;
               $doc->legislature = $json->legislature;
@@ -60,19 +59,20 @@ class loadDocumentsTask extends sfBaseTask {
             if ($json->titre)
               $doc->titre = $json->titre;
             if ($json->categorie)
-              $doc->categorie = strtolower($json->categorie);
+              $doc->categorie = $json->categorie;
             if ($json->auteurs)
               $doc->setAuteurs($json->auteurs);
             if ($json->motscles)
               foreach (explode('.', $json->motscles) as $tag)
-                $doc->addTag($tag);
+                if (strlen($tag) < 100)
+                  $doc->addTag($tag);
 	    if ($json->contenu)
 	      $doc->setContenu($json->contenu);
             $doc->save();
             $doc->free();
 	    echo "$dir$file DONE\n";
           }
-	  //	  unlink($dir.$file);
+	  unlink($dir.$file);
         }
         closedir($dh);
       }

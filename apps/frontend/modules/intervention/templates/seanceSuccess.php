@@ -38,7 +38,7 @@ if ($table['nb_interventions']) echo '<span class="dossier">('.link_to('voir le 
 <h2>La séance</h2>
 <div class="interventions">
   <?php if (!count($interventions)) { ?>
-  <p><em>Nous n'avons pas encore pu récupérer le contenu de cette séance, veuillez nous en excuser</em></p>
+  <p><em>Le contenu de cette séance n'a pas encore été rendu public par les services de l'Assemblée nationale.</em></p>
   <?php } else { $table = ''; $titre = 0; $source_displayed = 0; 
 foreach($interventions as $intervention) : 	
 if (! $source_displayed) {
@@ -103,7 +103,7 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
   <?php } ?>
 <?php if (!$didascalie) : ?>
     <div class="commentaires" id='com_<?php echo $intervention->id; ?>' style="clear: both;">
-      <span class="com_link" id="com_link_<?php echo $intervention->id; ?>"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> - </span><span><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
+      <span class="com_link list_com" id="com_link_<?php echo $intervention->id; ?>"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> - </span><span class="list_com"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
   <?php endif; ?>
   </div></div>

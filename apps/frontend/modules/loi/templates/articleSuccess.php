@@ -26,7 +26,7 @@ if ($article->suivant) {
   foreach ($amendements['avant '.$arttitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
   echo '</p>';
 }
-if (isset($expose)) echo $expose.'<div class="suivant"><a href="#commentaires">Commenter</a></div>'; ?>
+if (isset($expose)) echo $expose.'<div class="suivant list_com"><a href="#commentaires">Commenter</a></div>'; ?>
 <br/>
 <table>
 <?php foreach ($alineas as $a) {
@@ -58,7 +58,7 @@ if (isset($amendements['après '.$arttitre])) {
 } ?>
 </div>
 <div class="commentaires" id="commentaires">
-<h3><?php if ($article->nb_commentaires == 0)
+<h3 class="list_com"><?php if ($article->nb_commentaires == 0)
   echo 'Aucun commentaire n\'a encore été formulé sur cet article</h3>';
 else echo include_component('commentaire', 'showAll', array('object' => $article, 'presentation' => 'noarticle'));
 echo include_component('commentaire', 'form', array('object' => $article));

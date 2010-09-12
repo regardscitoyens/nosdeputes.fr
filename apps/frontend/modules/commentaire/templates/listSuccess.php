@@ -4,7 +4,7 @@ else { ?>
 <h1><?php if (isset($titre)) echo preg_replace('/^Les derniers commentaires sur (.*)$/', 'Les derniers commentaires sur <a href="'.url_for($url_link).'">\1</a>', $titre); ?><span class="rss"><a href="<?php echo url_for($linkrss); ?>"><img src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/rss.png" alt="Les derniers commentaires en RSS"/></a></span></h1>
 <?php } ?>
 <div class="last_commentaires">
-<p><?php if (isset($object)) {
+<p class="list_com"><?php if (isset($object)) {
   if ($object->nb_commentaires > 0) {
     echo $object->nb_commentaires.' commentaire';
     if ($object->nb_commentaires > 1) echo 's';

@@ -55,6 +55,7 @@ body {
 .tag_level_2 {font-size: 1em;}
 .tag_level_3 {font-size: 1.5em;}
 .tag_level_4 {font-size: 1.7em;}
+.tag_level_3 {color: #D4963E;}
 
 .internal_tag_cloud {
   position: relative;
@@ -722,7 +723,10 @@ h1 {
   
 }
 .photos {
-  text-align: center
+  text-align: center;
+}
+.photos img{
+  padding: 2px;
 }
 .image_map {
   float:right;
@@ -1253,12 +1257,16 @@ h2 {
 .titre_int_et_seance .plot_section, .titre_int_et_seance .plot_seance {
   padding-right: 300px;
 }
-.nuage_de_tags p{
-  background-color:#dbd5c8;
+.nuage_de_tags p {
+  background-color: #dbd5c8;
 }
 
-.orga_dossier  {
-  padding-top:20px;
+.document {
+  padding: 10px;
+}
+
+.documents, .orga_dossier {
+  padding-top: 20px;
 }
 
 .orga_dossier li {

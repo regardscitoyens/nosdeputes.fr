@@ -71,6 +71,8 @@ class Commentaire extends BaseCommentaire
           $this->addObject('Parlementaire', $object->parlementaire_id);
       } else if ($object_type == 'ArticleLoi' && $object->titre_loi_id)
         $this->addObject('TitreLoi', $object->titre_loi_id);
+      else if ($object_type == 'Texteloi' && $section = $object->getSection())
+        $this->addObject('Section', $section->id);
     }
   }
 

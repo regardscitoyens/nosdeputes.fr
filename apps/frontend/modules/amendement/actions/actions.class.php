@@ -47,7 +47,8 @@ class amendementActions extends sfActions
        ->orderBy('a.numero')
        ->fetchArray();
    
-     $this->loi = Doctrine::getTable('TitreLoi')->findLightLoi($this->amendement->texteloi_id);
+     $this->titreloi = Doctrine::getTable('TitreLoi')->findLightLoi($this->amendement->texteloi_id);
+     $this->loi = Doctrine::getTable('Texteloi')->findLoi($this->amendement->texteloi_id);
   }
 
   public function executeParlementaire(sfWebRequest $request)
@@ -146,13 +147,18 @@ class amendementActions extends sfActions
   {
     $this->lois = split(',', $request->getParameter('loi'));
     $amdt = $request->getParameter('numero');
+    $this->forward404Unless(count($this->lois) && $amdt);
     if ($amdt == 'all' || $amdt == 'new' ) {
-      if (count($this->lois) == 1)
+      if (count($this->lois) == 1) {
         $this->loi = Doctrine::getTable('TitreLoi')->findLightLoi($this->lois[0]);
+        if (!$this->loi)
+          $this->loi = Doctrine::getTable('Texteloi')->findLoi($this->lois[0]);
+      }
       $this->amendements_query = Doctrine::getTable('Amendement')
         ->createQuery('a')
-        ->whereIn('a.texteloi_id', $this->lois)
-        ->andWhere('a.sort <> ?', 'Rectifié');
+        ->where('a.sort <> ?', 'Rectifié');
+      for ($ct=0;$ct<count($this->lois);$ct++)
+        $this->amendements_query->andWhere('a.texteloi_id = ?', $this->lois[$ct]);
       if ($amdt == 'new')
         $this->amendements_query->orderBy('a.texteloi_id DESC, a.created_at DESC, a.source');
       else $this->amendements_query->orderBy('a.texteloi_id DESC, a.source');

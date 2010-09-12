@@ -68,12 +68,12 @@ if ($intervention->hasIntervenant()) {
     if (!isset($complete) && $intervention->nb_commentaires) {
       if ($intervention->nb_commentaires == 1) $commenttitre = 'Voir le commentaire';
       else $commenttitre = 'Voir les commentaires';
-      echo ' &mdash; '.link_to($commenttitre, '/intervention/'.$intervention->id.'#commentaires'); } ?></p>
+      echo ' &mdash; <span class="list_com">'.link_to($commenttitre, '/intervention/'.$intervention->id.'#commentaires').'</span>'; } ?></p>
     </div>
       <?php if (isset($complete)) { ?>
     <div id="commentaires">
 <?php if ($intervention->nb_commentaires == 0)
-  echo '<h3>Aucun commentaire n\'a encore été formulé sur cette intervention</h3>';
+  echo '<h3 class="list_com">Aucun commentaire n\'a encore été formulé sur cette intervention</h3>';
 else echo include_component('commentaire', 'showAll', array('object'=>$intervention));
 echo include_component('commentaire', 'form', array('object'=>$intervention)); ?>
     </div>

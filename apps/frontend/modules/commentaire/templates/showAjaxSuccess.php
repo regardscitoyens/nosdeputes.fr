@@ -1,5 +1,5 @@
 <div class="com_ajax" id='com_ajax_<?php echo $id; ?>' style="display: none"><?php if ($ct = count($comments)) { ?>
-<div><h4><?php if (isset($limit)) echo 'Les derniers commentaires';
+<div><h4 class="list_com"><?php if (isset($limit)) echo 'Les derniers commentaires</span>';
   else {
     echo $ct.' commentaire';
     if ($ct > 1) echo 's';

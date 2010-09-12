@@ -25,27 +25,23 @@
 <p>Sous-amendements associés&nbsp: <?php foreach($sous_admts as $sous)
  echo link_to($sous['numero'], '@amendement?loi='.$sous['texteloi_id'].'&numero='.$sous['numero']).' '; ?></p>
 <?php } ?>
+<p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo $amendement->getSignataires(1); ?>.</p>
 <div class="signataires">
-  <p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo $amendement->getSignataires(1); ?>.</p>
-  <?php 
-  $deputes = $amendement->getParlementaires(); ?>
   <div class="photos"><p>
-  <?php $n_auteurs = count($deputes); $line = floor($n_auteurs/(floor($n_auteurs/16)+1)); $ct = 0; foreach ($deputes as $depute) {
-    $titre = $depute->nom.', '.$depute->groupe_acronyme;
-    if ($ct != 0 && $ct != $n_auteurs-1 && !($ct % $line)) echo '<br/>'; $ct++;
-    echo '<a href="'.url_for($depute->getPageLink()).'"><img width="50" height="64" title="'.$titre.'" alt="'.$titre.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$depute->slug).'" /></a>&nbsp;';
-  } ?></p></div>
+<?php $deputes = $amendement->Parlementaires;
+  include_partial('parlementaire/photos', array("deputes" => $deputes)); ?>
+  </p></div>
 </div>
 <div class="sujet">
   <h3><?php $sujet = $amendement->getSujet();
-    if ($loi && preg_match('/^(.*)?(article\s*)((\d+|premier).*)$/i', $sujet, $match)) {
+    if ($titreloi && preg_match('/^(.*)?(article\s*)((\d+|premier).*)$/i', $sujet, $match)) {
       $art = preg_replace('/premier/i', '1er', $match[3]);
       $art = preg_replace('/\s+/', '-', $art);
       $sujet = $match[1].link_to($match[2].$match[3], '@loi_article?loi='.$loi->texteloi_id.'&article='.$art);
     }
     echo $sujet.' ';
-    if ($loi) echo '&mdash; '.link_to(preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $loi->titre), '@loi?loi='.$loi->texteloi_id);
-    else echo 'de la loi N° '.myTools::getLinkLoi($amendement->texteloi_id);
+    if ($titreloi) echo '&mdash; '.link_to(preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $loi->titre), '@loi?loi='.$loi->texteloi_id);
+    else if ($loi) echo 'du '.link_to($loi->getTitre(), '@document?id='.$loi->id);
 	if ($l = $amendement->getLettreLoi()) echo "($l)"; ?></h3>
 </div>
 <div class="texte_intervention">
@@ -69,7 +65,7 @@
 <?php } ?>
 <div class="commentaires" id="commentaires">
 <?php if ($amendement->nb_commentaires == 0)
-  echo '<h3>Aucun commentaire n\'a encore été formulé sur cet amendement</h3>';
+  echo '<h3 class="list_com">Aucun commentaire n\'a encore été formulé sur cet amendement</h3>';
 else echo include_component('commentaire', 'showAll', array('object' => $amendement));
 echo include_component('commentaire', 'form', array('object' => $amendement)); ?>
 </div>

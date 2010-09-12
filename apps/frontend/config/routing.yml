@@ -2,8 +2,11 @@
 #Solr Search
 recherche_solr:
   url: /solr/:query
-  param: {module: solr, action: search, query: ''}
+  param: {module: solr, action: search, query: ""}
 
+document:
+  url: /document/:id
+  param: {module: documents, action: show}
 
 loi_redirect_article:
   url: /redirect/loi/:loi/:article

@@ -57,7 +57,7 @@ class sectionActions extends sfActions
     $this->docs = array();
     if ($this->section->url_an || $lois) {
       $qtextes = Doctrine_Query::create()
-        ->select('t.id, t.type, t.type_details, t.titre')
+        ->select('t.id, t.type, t.type_details, t.titre, t.signataires')
         ->from('Texteloi t')
         ->whereIn('t.numero', $lois);
       if ($this->section->url_an)
@@ -66,29 +66,21 @@ class sectionActions extends sfActions
       $textes = $qtextes->fetchArray();
 
       $textes_loi = Doctrine_Query::create()
-        ->select('t.texteloi_id, t.titre')
+        ->select('t.texteloi_id, t.titre, t.nb_commentaires')
         ->from('TitreLoi t')
         ->whereIn('t.texteloi_id', $lois)
         ->andWhere('t.chapitre IS NULL')
         ->andWhere('t.section is NULL')
         ->orderBy('t.texteloi_id')
         ->fetchArray();
-    
-      foreach ($textes_loi as $doc)
-        $this->docs[$doc['texteloi_id']] = $doc;
+
       foreach ($textes as $texte)
         $this->docs[$texte['id']] = $texte;
-      foreach ($lois as $loi) {
-        $loi = sprintf("%04d", $loi);
+      foreach ($textes_loi as $texte)
+        $this->docs[$texte['texteloi_id']] = $texte;
+      foreach ($lois as $loi)
         if (!isset($this->docs["$loi"]))
-          $this->docs["$loi"] = null;
-      }
-    
-      $amdmts_lois = Doctrine_Query::create()->select('distinct(a.texteloi_id)')->from('Amendement a')->whereIn('a.texteloi_id', $lois)->fetchArray();
-      $this->lois_amendees = array();
-      foreach($amdmts_lois as $loi)
-        array_push($this->lois_amendees, $loi['distinct']); 
-      sort($this->lois_amendees);
+          $this->docs["$loi"] = 1;
     }   
 
     $inters = Doctrine_Query::create()

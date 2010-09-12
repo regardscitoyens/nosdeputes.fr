@@ -11,33 +11,14 @@ $sf_response->setTitle($titre.' - NosDéputés.fr');
 if ($section->getSection()) echo '</h2>';
 else echo '</h1>';
 ?>
-<div class="numeros_textes">
 <?php if ($section->nb_commentaires) { ?>
-<div class="source"><span class="list_com"><a href="#commentaires">Voir le<?php if ($section->nb_commentaires > 1) echo 's '.$section->nb_commentaires; ?> commentaire<?php if ($section->nb_commentaires > 1) echo 's'; ?></a></span></div>
+<div class="source"><span class="list_com"><a href="#commentaires">Voir le<?php if ($section->nb_commentaires > 1) echo 's '.$section->nb_commentaires; ?>&nbsp;commentaire<?php if ($section->nb_commentaires > 1) echo 's'; ?></a></span></div><div class="clear"></div>
 <?php } ?>
-<p>
-<?php $curid = 0;
-  if ($docs) foreach ($docs as $id => $doc) {
-    $shortid = preg_replace('/^(\d{4}).*$/', '\\1', $id);
-    if ($curid != $shortid) {
-      $curid = $shortid;
-      if (isset($doc['texteloi_id'])) 
-        echo link_to(strip_tags($doc['titre']), '@loi?loi='.$doc['id']);
-      else if (isset($doc['id']))
-        echo $doc['type']." ".$doc['type_details']." ".$doc['titre']." (".$doc['id'].")";
-      else
-        echo 'Texte N°&nbsp;'.myTools::getLinkLoi($doc);
-      echo "<br/>";
-    }
-  }
-  if (isset($lois_amendees)) echo link_to('Tous les amendements à ce dossier',  '@find_amendements_by_loi_and_numero?loi='.urlencode(implode(',',$lois_amendees)).'&numero=all')."</p>";
-?>
-</div>
 <div class="resume">
 <div class="right">
 <div class="nuage_de_tags">
 <h3>Mots-clés de cette section</h3>
-  <?php echo include_component('tag', 'tagcloud', array('hide'=>1, 'tagquery' => $qtag, 'model' => 'Intervention', 'limit'=>40, 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>
+<?php echo include_component('tag', 'tagcloud', array('hide'=>1, 'tagquery' => $qtag, 'model' => 'Intervention', 'limit'=>40, 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>
 </div>
 </div>
 <div class="left">
@@ -46,7 +27,7 @@ else echo '</h1>';
 </div>
 </div>
 </div>
-<div class="clear"/>
+<div class="clear"></div>
 <?php $sommaire = $section->getSubSections();
 if (count($sommaire)) { ?>
 <div class="orga_dossier right">
@@ -56,7 +37,7 @@ if (count($sommaire)) { ?>
 if ($subsection->id != $section->id) : ?>
 <li><?php $subtitre = $subsection->titre;
   if ($subsection->nb_commentaires > 0) {
-    $subtitre .= ' (<span class="list_com">'.$subsection->nb_commentaires.' commentaire';
+    $subtitre .= ' (<span class="list_com">'.$subsection->nb_commentaires.'&nbsp;commentaire';
     if ($subsection->nb_commentaires > 1) $subtitre .= 's';
     $subtitre .= '</span>)';
   }
@@ -64,8 +45,58 @@ if ($subsection->id != $section->id) : ?>
 <?php endif; endforeach;?>
 </ul>
 </div>
+<?php } ?>
 <div class="left">
-<?php } else echo '<div>'; ?>
+<?php if ($docs) { 
+  echo '<div class="documents"><h2>Documents législatifs</h2><ul>';
+  $curid = 0;
+  foreach ($docs as $id => $doc) {
+    $shortid = preg_replace('/-[at].*$/', '', $id);
+    if ($curid != $shortid) {
+      echo "<li>";
+      $curid = $shortid;
+      if (isset($doc['texteloi_id'])) {
+        $doctitre = "N°$curid en débat sur NosDéputés.fr&nbsp;: ".strip_tags($doc['titre']);
+        if ($doc['nb_commentaires'])
+          $doctitre .= " (".$doc['nb_commentaires']."&nbsp;commentaire";
+        if ($doc['nb_commentaires'] > 1)
+          $doctitre .= "s";
+        if ($doc['nb_commentaires'])
+          $doctitre .= ")";
+        echo '<span class="list_com">'.link_to($doctitre, '@loi?loi='.$doc['texteloi_id']).'</span>';
+      } else if (isset($doc['id'])) {
+        $amendements = Texteloi::getAmdmts($doc['type'], $curid, 1);
+        $doctitre = $doc['type']." N° $curid";
+        if (!preg_match('/^,/', $doc['type_details']))
+          $doctitre .= " ";
+        $doctitre .= $doc['type_details'];
+        if (preg_match('/mixte paritaire/', $doc['signataires']))
+          $doctitre .= " de la Commission mixte paritaire";
+        if ($doc->nb_commentaires)
+          $doctitre .= ' (<span class="list_com">'.$doc->nb_commentaires.'&nbsp;commentaire';
+        if ($doc->nb_commentaires > 1)
+          $doctitre .= "s";
+        if ($doc->nb_commentaires) {
+          $doctitre .= "</span>";
+          if ($amendements)
+            $doctitre .= ", ";
+          else $doctitre .= ")";
+        } else if ($amendements)
+          $doctitre .= " (";
+        if ($amendements) 
+          $doctitre .= $amendements.'&nbsp;amendement';
+        if ($amendements > 1)
+          $doctitre .= "s";
+        if ($amendements) 
+          $doctitre .= ")";
+        echo link_to($doctitre, '@document?id='.$curid);
+      } else
+        echo 'Texte N°&nbsp;'.myTools::getLinkLoi($doc);
+      echo '</li>';
+    }
+  }
+  echo '</ul></div>';
+} ?>
 <div class="seances_dossier">
 <h2>Toutes les séances consacrées à ce dossier</h2>
 <ul>

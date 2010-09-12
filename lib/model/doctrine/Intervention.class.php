@@ -11,7 +11,6 @@ class Intervention extends BaseIntervention
   }
 
   public function getPersonne() {
-    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return $this->getIntervenant()->getNom();
   }
 
@@ -223,6 +222,11 @@ class Intervention extends BaseIntervention
 	    $inter = preg_replace('/'.$match[1][$i].$match[3][$i].'/', $match[1][$i].$replace, $inter);
 	  }
 	}
+      }
+      if (preg_match('/<i>n[°os\s]*([\d,\set]+)<\/i>/', $inter, $match)) {
+        sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+        foreach (explode(',', preg_replace('/\s+/', '', $match[1])) as $loi)
+          $inter = preg_replace('/'.$loi.'/', '<a href="'.url_for('@document?id='.$loi).'">'.$loi.'</a>', $inter);
       }
     }
     return $inter;

@@ -1,7 +1,6 @@
 <?php use_helper('Text');
 $titre = $amendement->getTitre();
 if (isset($loi)) {
-  $loi = preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $loi);
   $titre = str_replace('Projet de loi N° '.$amendement->texteloi_id, $loi, $titre);
 } ?>
   <div class="amendement" id="<?php echo $amendement->id; ?>">

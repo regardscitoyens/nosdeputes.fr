@@ -27,7 +27,7 @@
 <ul>
 <?php foreach($amendements as $a) :?>
 <li><?php 
-echo link_to('Amendement n°'.$a->numero.' portant sur le texte de loi n°'.$a->texteloi_id.', '.$a->sujet, '@amendement?loi='.$a->texteloi_id.'&numero='.$a->numero); ?></li>
+echo link_to('Amendement n°'.$a->numero.' portant sur le texte n°'.$a->texteloi_id.', '.$a->sujet, '@amendement?loi='.$a->texteloi_id.'&numero='.$a->numero); ?></li>
 <?php endforeach; ?>
 </ul>
 <?php } } ?>

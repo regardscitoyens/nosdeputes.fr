@@ -58,7 +58,9 @@ class tagComponents extends sfComponents
 	$class[$count] = intval($cpt * 5 / $tot);
       $cpt++;
       $this->tags[$tag]['tag'] = $tag;
-      $this->tags[$tag]['class'] = $class[$count];
+      if (isset($this->fixlevel))
+        $this->tags[$tag]['class'] = 3;
+      else $this->tags[$tag]['class'] = $class[$count];
       $this->tags[$tag]['related'] = implode('|', $related);
     }
     uksort($this->tags, 'strcasecmp');

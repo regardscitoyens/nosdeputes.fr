@@ -6,15 +6,15 @@
     if ($mots != "") { ?>
 <p> pour la recherche sur <em>"<?php echo strip_tags($mots); ?>"</em></p>
 <?php } } 
-else if (isset($loi)) {
-  echo ' sur '.link_to(preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $loi->titre), '@loi?loi='.$loi->texteloi_id).' ('.myTools::getLiasseLoiAN($loi->texteloi_id).', '.myTools::getLiasseLoiImpr($loi->texteloi_id).')';
-} else if (isset($lois)) {
+else if (isset($loi))
+  echo ' sur '.link_to($loi->getTitre(), "@document?id=".$loi->id).' ('.myTools::getLiasseLoiAN($loi->id).')';
+else if (isset($lois)) {
   echo ' portant sur ';
   if (count($lois) > 1) echo 'les projets de loi ';
   else
     echo 'le projet de loi ';
   echo 'N° ';
-foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.myTools::getLiasseLoiAN($loi).') '; } ?>
+foreach ($lois as $loi) echo link_to($loi, '@document?id='.$loi).' ('.myTools::getLiasseLoiAN($loi).') '; } ?>
 </div>
 <?php if ($pager->haveToPaginate()) {
   $uri = $sf_request->getUri();
@@ -34,7 +34,7 @@ foreach ($lois as $loi) echo myTools::getLinkLoi($loi).' ('.myTools::getLiasseLo
   $args = array('amendement' => $i);
   if (isset($highlight))
     $args['highlight'] = $highlight;
-  if (isset($loi->titre)) $args['loi'] = $loi->titre;
+  if (isset($loi)) $args['loi'] = $loi->getTitre();
   echo include_component('amendement', 'parlementaireAmendement', $args);
   }
 ?></div>

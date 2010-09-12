@@ -11,6 +11,12 @@ class OrganismeTable extends Doctrine_Table
       $commissions = unserialize($option->getValue());
       if (isset($commissions[$nom]) && $org = $this->findOneByNom($commissions[$nom]))
         return $org;
+      $comcor = str_replace('’', '\'', $nom);
+      if (isset($commissions[$comcor]) && $org = $this->findOneByNom($commissions[$comcor]))
+        return $org;
+      $comcor = str_replace('\'', '’', $nom);
+      if (isset($commissions[$comcor]) && $org = $this->findOneByNom($commissions[$comcor]))
+        return $org;
     }
 
     if ($type == 'parlementaire')
@@ -22,22 +28,21 @@ class OrganismeTable extends Doctrine_Table
       $org = $this->findOneByNom($nom);
 
     if ($org) {
-      //      echo $org->nom."- $nom (trouve)\n";
-
+     // echo $org->nom."- $nom (trouve)\n";
       if (strlen($nom) > strlen($org->nom)) {
 	$org->nom = $nom;
 	$org->save();
       }
       return $org;
     }
-//        echo "- $nom (pas trouve)\n";
+   // echo "- $nom (pas trouve)\n";
     
 
     $orgs = Doctrine::getTable('Organisme')->createQuery('o')->where('type = ?', $type)->execute();
     foreach($orgs as $o) {
       $res = similar_text($o->nom, $nom, $pc);
       if ($pc > 95) {
-//		  echo "$nom $pc\n".$o->nom."\n";
+       // echo "$nom $pc\n".$o->nom."\n";
 	$org = $o;
 	break;
       }

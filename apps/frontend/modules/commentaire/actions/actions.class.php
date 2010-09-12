@@ -13,7 +13,7 @@ class commentaireActions extends sfActions
   
   public function executePost(sfWebRequest $request)
   {
-    $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement_id?id=', 'QuestionEcrite' => '@question_id?id=', 'ArticleLoi' => '@loi_article_id?id=', 'Alinea'=> '@loi_alinea?id=');
+    $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement_id?id=', 'QuestionEcrite' => '@question_id?id=', 'ArticleLoi' => '@loi_article_id?id=', 'Alinea' => '@loi_alinea?id=', 'Texteloi' => '@document?id=');
     $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "A propos d'une question écrite d");
 	
     $this->type = $request->getParameter('type');
@@ -103,10 +103,16 @@ class commentaireActions extends sfActions
     $commentaire->object_id = $this->id;
     $commentaire->lien = $redirect_url[$this->type].$this->id;
     $object = Doctrine::getTable($this->type)->find($this->id);
-    if (isset($object->texteloi_id)) {
-      $loi = Doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
+    if ($this->type === 'Texteloi') 
+      $present = $object->getShortTitre();
+    else if (isset($object->texteloi_id)) {
+      $titreloi = Doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
+      $loi = Doctrine::getTable('Texteloi')->findLoi($object->texteloi_id);
       if ($this->type != 'Amendement') {
-        $present = preg_replace('/<br\/>.*$/', '', $loi['titre']).' - A propos de l\'article ';
+        if ($titreloi)
+          $present = preg_replace('/<br\/>.*$/', '', $titreloi['titre']).' - A propos de l\'article ';
+        else if($loi)
+          $present = $loi->getTitre().' - A propos de l\'article n°'.$object->numero;
         if ($this->type == 'Alinea') {
           $article = Doctrine::getTable('ArticleLoi')->createQuery('a')
             ->select('titre')
@@ -116,8 +122,10 @@ class commentaireActions extends sfActions
           $present .= $article['titre'].' alinéa '.$object->numero;
         } else $present .= $object->titre;
       } else {
-        if ($loi)
-          $present = preg_replace('/<br\/>.*$/', '', $loi['titre']).' - A propos de l\'amendement n°'.$object->numero;
+        if ($titreloi)
+          $present = preg_replace('/<br\/>.*$/', '', $titreloi['titre']).' - A propos de l\'amendement n°'.$object->numero;
+        else if ($loi)
+          $present = $loi->getShortTitre().' - A propos de l\'amendement n°'.$object->numero;
         else $present = $about[$this->type].' le '.date('d/m/Y', strtotime($object->date));
       }
     } else {
@@ -155,29 +163,30 @@ class commentaireActions extends sfActions
     if (isset($object->parlementaire_id)) {
       if ($object->parlementaire_id)
         $commentaire->addObject('Parlementaire', $object->parlementaire_id);
-    } else if ($this->type == 'Amendement') {
+    } else if ($this->type === 'Amendement' || $this->type === 'Texteloi') {
       $object->Parlementaires;
       if (isset($object->Parlementaires)) foreach($object->Parlementaires as $p)
         $commentaire->addObject('Parlementaire', $p->id);
       if ($section = $object->getSection())
         $commentaire->addObject('Section', $section->getSection(1)->id);
-      if (!($seance = $object->getIntervention($object->numero))) {
+      if ($this->type === 'Amendement' && !($seance = $object->getIntervention($object->numero))) {
         $identiques = Doctrine::getTable('Amendement')->createQuery('a')
           ->where('content_md5 = ?', $object->content_md5)
           ->orderBy('numero')->execute();
         foreach($identiques as $a) {
           if ($seance) break;
           $seance = $object->getIntervention($a->numero);
-        }    
+        }
       }
-      if ($seance)
+      if (isset($seance))
         $commentaire->addObject('Seance', $seance['seance_id']);
-      if ($loi) {
+      if (isset($titreloi)) {
         if (preg_match('/^Article\s+(.*)$/', $object->sujet, $match)) {
           $art = preg_replace('/premier/i', '1er', $match[1]);
           if ($art_obj = Doctrine::getTable('ArticleLoi')->findOneByLoiTitre($object->texteloi_id,$art))
             $commentaire->addObject('ArticleLoi', $art_obj->id);
-        } else $commentaire->addObject('TitreLoi', $loi->id);
+        } else $commentaire->addObject('TitreLoi', $titreloi->id);
+        $commentaire->addObject('Texteloi', $titreloi->texteloi_id);
       }
     }
     if (isset($object->seance_id)) {
@@ -196,6 +205,11 @@ class commentaireActions extends sfActions
       if ($object->titre_loi_id)
         $commentaire->addObject('TitreLoi', $object->titre_loi_id);
     }
+    if (isset($object->texteloi_id)) {
+      if ($object->texteloi_id)
+        $commentaire->addObject('Texteloi', $object->texteloi_id);
+    }
+
       
     $pas_confirme_mail = '';
     if (!$is_active) {

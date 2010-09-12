@@ -20,7 +20,7 @@ foreach($sections as $s) if ($s->titre) {
     if ($s->nb_commentaires > 0) echo ', <span class="list_com">'.$s->nb_commentaires.'&nbsp;commentaire';
     if ($s->nb_commentaires > 1) echo 's';
     if ($s->nb_commentaires > 0) echo '</span>';
-    if ($order == 'plus') echo ', '.$moisactuel;
+    if ($order != 'date') echo ', '.$moisactuel;
     echo ')';
   }
   echo '</li>';
