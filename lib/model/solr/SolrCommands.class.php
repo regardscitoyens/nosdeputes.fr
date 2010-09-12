@@ -3,6 +3,10 @@
 class SolrCommands 
 {
   public static function getFileCommands() {
+    umask(0002);
+    if (!file_exists(sfConfig::get('sf_log_dir').'/solr/')) {
+      mkdir (sfConfig::get('sf_log_dir').'/solr/');
+    }
     return sfConfig::get('sf_log_dir').'/solr/commands.log';
   }
 
@@ -47,6 +51,8 @@ class SolrCommands
       fclose($this->file);
       $this->file = null;
     }
+    if (!file_exists($this->getFileCommands()))
+      touch($this->getFileCommands());
     rename($this->getFileCommands(), $lockfile);
     sem_release($this->semaphore);
     return $lockfile;

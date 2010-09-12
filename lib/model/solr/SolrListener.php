@@ -60,8 +60,9 @@ class SolrListener extends Doctrine_Record_Listener
   public function postSave(Doctrine_Event $event)
   {
     $obj = $event->getInvoker();
-    
-    if ($t = $this->_options['index_if'] && $t && $obj->get($t))
+
+    $t = null;
+    if (isset( $this->_options['index_if']) && $t = $this->_options['index_if'] && $t && !$obj->get($t))
       return ;
     
     $json = array();
@@ -69,7 +70,7 @@ class SolrListener extends Doctrine_Record_Listener
     $json['object_id'] =  $obj->getId();
     $json['object_name'] = get_class($obj);
     
-    if ($t = $this->_options['description']) {
+    if (isset($this->_options['description']) && $t = $this->_options['description']) {
       $content = $this->getObjFieldsValue($obj, $t);
       $wordcount = str_word_count($content);
     }
@@ -98,7 +99,7 @@ class SolrListener extends Doctrine_Record_Listener
     }
       
     // par default la date est la created_at
-    if ( !($t = $this->_options['date'])) {
+    if (!isset($this->_options['date']) || !($t = $this->_options['date'])) {
       $t = 'created_at';
     }
     $d = preg_replace('/\+.*/', 'Z', date('c', strtotime($this->getObjFieldsValue($obj, $t))));
@@ -113,7 +114,7 @@ class SolrListener extends Doctrine_Record_Listener
       }
     }catch (Exception $e) {}
     
-    if ($t = $this->_options['moretags']) {
+    if (isset($this->_options['moretags']) && $t = $this->_options['moretags']) {
       if (!is_array($t)) {
 	$s = $this->get_and_strip($obj, $t);
 	if ($s)
