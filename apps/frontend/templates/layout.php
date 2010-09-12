@@ -79,18 +79,9 @@ $menu_citoyen = $selectcitoyen;
         </div>
                     <?php $search = strip_tags($sf_request->getParameter('search'));?>
         <div class="menu_recherche">
-          <form action="<?php echo url_for('@search'); ?>" method="get">
+          <form action="<?php echo url_for('@recherche_solr'); ?>" method="get">
             <p>
-                            <select class="type_recherche" name="type">
-                <option value="depute"<?php echo $selectdepute; ?>>Députés</option>
-                <option value="departement"<?php echo $selectcirco; ?>>Départements</option>
-                <option value="profession"<?php echo $selectprof; ?>>Profession</option>
-                <option value="intervention"<?php echo $selectinterv; ?>>Interventions</option>
-                <option value="question"<?php echo $selectquestion; ?>>Questions écrites</option>
-                <option value="amendement"<?php echo $selectamdmt; ?>>Amendements</option>
-              </select>
-              <?php echo image_tag($style.'/recherche_fleche.png', array('alt' => '')); ?>
-                  <input class="rechercher" name="search" type="text" size="15" value="<?php echo $search; ?>"/>
+              <input class="rechercher" name="search" type="text" size="15" value="<?php echo $search; ?>"/>
               <input class="bouton_ok" value="" type="submit"/>
                         </p>
           </form>
