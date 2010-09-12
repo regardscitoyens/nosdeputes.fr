@@ -5,3 +5,5 @@ loi:
   enabled: false
 section:
   enabled: false
+alinea:
+  enabled: false
