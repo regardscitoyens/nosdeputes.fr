@@ -9,7 +9,7 @@ foreach($query->execute() as $q)
 {
   $item = new sfFeedItem();
   $item->setTitle($q->getTitre());
-  $item->setLink('http://'.$_SERVER['HTTP_HOST'].url_for($q->getLink()));
+  $item->setLink('http://'.$_SERVER['HTTP_HOST'].$q->getLink());
   $item->setAuthorName($q->Parlementaire->nom);
   $item->setPubdate(strtotime($q->date));
   $item->setUniqueId(get_class($q).$q->id);

@@ -11,7 +11,7 @@ foreach($comments as $c)
   if (isset($presentation))
     $item->setTitle($c->getPresentation($presentation).', '.$auteur.' a dit');
   else $item->setTitle($c->getPresentation());
-  $item->setLink('http://'.$_SERVER['HTTP_HOST'].url_for($c->getLien()).'#commentaire_'.$c->id);
+  $item->setLink('http://'.$_SERVER['HTTP_HOST'].$c->getLien().'#commentaire_'.$c->id);
   $item->setAuthorName($auteur);
   $item->setPubdate(strtotime($c->created_at));
   $item->setUniqueId('Commentaire'.$c->id);

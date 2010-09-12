@@ -6,7 +6,8 @@
 class Commentaire extends BaseCommentaire
 {
   public function getLink() {
-    return $this->lien;
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    return url_for($this->lien);
   }
   public function getPersonne() {
     return $this->getCitoyen()->getLogin();
