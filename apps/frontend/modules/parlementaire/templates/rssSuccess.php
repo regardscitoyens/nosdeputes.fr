@@ -5,6 +5,8 @@ $feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for('@parlementaire?slug='.$p
 $i = 0;
 for ($i = 0 ; $i < $limit ; $i++)
 {
+  if (!isset($news[$i]))
+    break;
   $new = $news[$i];
   $item = new sfFeedItem();
   $item->setTitle(strip_tags($new->getTitre()));
