@@ -10,7 +10,7 @@ $rel = preg_replace('/^eZ/', 'é', $rel);
 $rel = preg_replace('/^EZ/', 'É', $rel);
 $rel = preg_replace('/^iZ/', 'î', $rel);
 $rel = preg_replace('/^IZ/', 'Î', $rel);
-echo url_for($route.'tags='.$rel); ?>" title="<?php echo $tags[$tag]['count']; ?>"><?
+echo url_for($route.'tags='.$rel); ?>" title="<?php echo $tags[$tag]['count']; ?>"><?php
 } else if ($ct % 2 == 0) echo '<br/>';
 $nom = preg_replace('/\s+/', '&nbsp;', $tags[$tag]['tag']);
 $nom = preg_replace('/^aZ/', 'â', $nom);
