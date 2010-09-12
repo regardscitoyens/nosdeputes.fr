@@ -16,7 +16,9 @@ class Parlementaire extends BaseParlementaire
     return '';
   }
   public function __tostring() {
-    return $this->getNom();
+    if($nom = $this->getNom())
+      return $nom;
+    return "";
   }
 
   /*  public function save() {

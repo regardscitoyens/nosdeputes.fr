@@ -35,4 +35,17 @@ class TitreLoi extends BaseTitreLoi
     return $titre;
   }
 
+  public function getDossier() {
+    $section = Doctrine_Query::create()
+      ->select('s.id')
+      ->from('Section s, Tagging ta, Tag t')
+      ->where('s.section_id = s.id')
+      ->andWhere('ta.taggable_id = s.id')
+      ->andWhere('ta.tag_id = t.id')
+      ->andWhere('ta.taggable_model = ?', "Section")
+      ->andWhere('t.name = ?', "loi:numero=".preg_replace('/^(\d+)-.*/', '\\1', $this->texteloi_id))
+      ->fetchOne();
+    return Doctrine::getTable('Section')->find($section);
+  }
+
 }

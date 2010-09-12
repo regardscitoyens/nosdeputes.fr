@@ -121,13 +121,11 @@ class commentaireActions extends sfActions
             ->fetchOne();
           $present .= $article['titre'].' alinéa '.$object->numero;
         } else $present .= $object->titre;
-      } else {
-        if ($titreloi)
-          $present = preg_replace('/<br\/>.*$/', '', $titreloi['titre']).' - A propos de l\'amendement n°'.$object->numero;
-        else if ($loi)
-          $present = $loi->getShortTitre().' - A propos de l\'amendement n°'.$object->numero;
-        else $present = $about[$this->type].' le '.date('d/m/Y', strtotime($object->date));
-      }
+      } else if ($titreloi)
+        $present = preg_replace('/<br\/>.*$/', '', $titreloi['titre']).' - A propos de l\'amendement n°'.$object->numero;
+      else if ($loi)
+        $present = $loi->getShortTitre().' - A propos de l\'amendement n°'.$object->numero;
+      else $present = $about[$this->type].' le '.date('d/m/Y', strtotime($object->date));
     } else {
       $present = '';
       if ($this->type != 'QuestionEcrite') {
@@ -167,28 +165,28 @@ class commentaireActions extends sfActions
       $object->Parlementaires;
       if (isset($object->Parlementaires)) foreach($object->Parlementaires as $p)
         $commentaire->addObject('Parlementaire', $p->id);
-      if ($section = $object->getSection())
-        $commentaire->addObject('Section', $section->getSection(1)->id);
-      if ($this->type === 'Amendement' && !($seance = $object->getIntervention($object->numero))) {
-        $identiques = Doctrine::getTable('Amendement')->createQuery('a')
-          ->where('content_md5 = ?', $object->content_md5)
-          ->orderBy('numero')->execute();
-        foreach($identiques as $a) {
-          if ($seance) break;
-          $seance = $object->getIntervention($a->numero);
-        }
-      }
-      if (isset($seance))
-        $commentaire->addObject('Seance', $seance['seance_id']);
-      if (isset($titreloi)) {
-        if (preg_match('/^Article\s+(.*)$/', $object->sujet, $match)) {
-          $art = preg_replace('/premier/i', '1er', $match[1]);
-          if ($art_obj = Doctrine::getTable('ArticleLoi')->findOneByLoiTitre($object->texteloi_id,$art))
-            $commentaire->addObject('ArticleLoi', $art_obj->id);
-        } else $commentaire->addObject('TitreLoi', $titreloi->id);
-        $commentaire->addObject('Texteloi', $titreloi->texteloi_id);
+    }
+    if ($this->type === 'Amendement' && !($seance = $object->getIntervention($object->numero))) {
+      $identiques = Doctrine::getTable('Amendement')->createQuery('a')
+        ->where('content_md5 = ?', $object->content_md5)
+        ->orderBy('numero')->execute();
+      foreach($identiques as $a) {
+        if ($seance) break;
+        $seance = $object->getIntervention($a->numero);
       }
     }
+    if (isset($seance))
+      $commentaire->addObject('Seance', $seance['seance_id']);
+    if ($this->type === 'Amendement' && isset($titreloi)) {
+      if (preg_match('/^Article\s+(.*)$/', $object->sujet, $match)) {
+        $art = preg_replace('/premier/i', '1er', $match[1]);
+        if ($art_obj = Doctrine::getTable('ArticleLoi')->findOneByLoiTitre($object->texteloi_id,$art))
+          $commentaire->addObject('ArticleLoi', $art_obj->id);
+      } else $commentaire->addObject('TitreLoi', $titreloi->id);
+      $commentaire->addObject('Texteloi', $titreloi->texteloi_id);
+    }
+    if (($this->type === "Titreloi" && $section = $object->getDossier()) || (($this->type === "TexteLoi" || $this->type === "Amendement") && $section = $object->getSection()))
+      $commentaire->addObject('Section', $section->getSection(1)->id);
     if (isset($object->seance_id)) {
       if ($object->seance_id)
         $commentaire->addObject('Seance', $object->seance_id);

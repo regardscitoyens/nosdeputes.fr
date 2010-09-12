@@ -36,5 +36,5 @@ if (isset($amendements)) {
 echo $s;
 ?>
 <div class="commentaires" id='com_<?php echo $a->id; ?>'>
-<span class="link_comment">&nbsp;</span><span class="com_link" id="com_link_<?php echo $a->id; ?>"><a href="<?php echo url_for('@loi_alinea?id='.$a->id); ?>#ecrire">Voir tous les commentaires - Laisser un commentaire</a></span></div>
+<span class="link_comment list_com">&nbsp;</span><span class="com_link list_com" id="com_link_<?php echo $a->id; ?>"><a href="<?php echo url_for('@loi_alinea?id='.$a->id); ?>#ecrire">Voir tous les commentaires - Laisser un commentaire</a></span></div>
 </td></tr>

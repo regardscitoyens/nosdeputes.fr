@@ -1,4 +1,4 @@
-<?php if ($dossier) echo '<div class="source">'.link_to('Dossier relatif', '@section?id='.$dossier->id)."</div>"; ?>
+<?php if ($dossier) echo '<div class="source">'.link_to('Dossier relatif', '@section?id='.$dossier)."</div>"; ?>
 <div class="loi"><h1><?php echo $loi->titre; ?></h1></div>
 <?php if ($loi->source) echo '<p class="source"><a href="'.$loi->source.'" rel="nofollow">Source</a></p><div class="clear"></div>';
 if ($loi->parlementaire_id && $loi->expose && !($loi->texteloi_id == 2760)) { ?>
