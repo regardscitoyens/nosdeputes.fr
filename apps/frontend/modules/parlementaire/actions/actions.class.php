@@ -369,7 +369,13 @@ class parlementaireActions extends sfActions
   }
 
   public static function dateSort($a, $b) {
-    return str_replace('-', '', $b->updated_at) - str_replace('-', '', $a->updated_at);
+    $datea = $a->updated_at;
+    $dateb = $b->updated_at;
+    if (get_class($a) === 'Texteloi')
+      $datea = $a->date;
+    if (get_class($b) === 'Texteloi')
+      $datea = $b->date;
+    return str_replace('-', '', $dateb) - str_replace('-', '', $datea);
   }
   public function executeRss(sfWebRequest $request) {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
