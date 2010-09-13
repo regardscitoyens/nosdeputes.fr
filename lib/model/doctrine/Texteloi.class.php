@@ -20,6 +20,14 @@ class Texteloi extends BaseTexteloi
     return url_for('@document?id='.$this->id);
   }
 
+  public function __toString() {
+    $str = substr(strip_tags($this->contenu), 0, 250);
+    if (strlen($str) == 250) {
+      $str .= '...';
+    } else if (!$str) $str = "";
+    return $str;
+  }
+
   public function getPersonne() {
     $auteurs = $this->getAuteurs();
     if (!$auteurs) return "";
@@ -168,6 +176,7 @@ class Texteloi extends BaseTexteloi
       $pd->_set('importance', 3);
     else if ($fonction === "Cosignataire")
       $pd->_set('importance', 5);
+    else print "ERREUR: fonction mauvaise pour ".$depute->nom." : ".$fonction;
     if ($organisme && $fonction != "Cosignataire") {
       if (!(preg_match('/^ pour le groupe/', $organisme))) {
         $fonction .= " pour l";
@@ -245,12 +254,11 @@ class Texteloi extends BaseTexteloi
 
   public function getTitre() {
     $str = $this->getShortTitre();
-    if (!preg_match('/^,/', $this->type_details))
-      $str .= " ";
-    $str .= $this->type_details;
-    if (!preg_match('/^,/', $this->_get('titre')))
-      $str .=  " ";
-    $str .= $this->_get('titre');
+    if ($this->type_details && !preg_match('/'.$this->type_details.'/', $this->_get('titre')))
+      $str .= " ".$this->type_details;
+    if ($this->_get('titre'))
+      $str .= " ".$this->_get('titre');
+    $str = preg_replace('/\s*,\s*/', ', ', $str);
     if ($this->annexe && preg_match('/t/', $this->id))
       $str .= " (Tome ".$this->annexe.")";
     return $str;

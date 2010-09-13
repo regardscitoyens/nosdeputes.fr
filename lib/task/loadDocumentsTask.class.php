@@ -18,27 +18,27 @@ class loadDocumentsTask extends sfBaseTask {
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == "." || $file == ".svn") continue;
           foreach(file($dir.$file) as $line) {
-	    echo "try $dir$file :\n";
+	    echo "\n$dir$file ... ";
             $json = json_decode($line);
             if (!$json )
 	    {
-              echo "ERROR json : $dir$file\n";
+              echo "ERROR json : \n";
               continue;
             }
 	    if (!$json->source)
-	      {echo "ERROR source : $dir$file\n"; continue;}
+	      {echo "ERROR source : \n"; continue;}
 	    if (!$json->legislature)
-	      {echo "ERROR legislature : $dir$file\n"; continue;}
+	      {echo "ERROR legislature : \n"; continue;}
 	    if (!$json->id)
-	      {echo "ERROR id : $dir$file\n"; continue;}
+	      {echo "ERROR id : \n"; continue;}
 	    if (!$json->numero)
-	      {echo "ERROR numero : $dir$file\n"; continue;}
+	      {echo "ERROR numero : \n"; continue;}
 	    if(!$json->date_depot)
-	      {echo "ERROR date_depot : $dir$file\n"; continue;}
+	      {echo "ERROR date_depot : \n"; continue;}
 	    if (!$json->dossier)
-	      {echo "ERROR dossier : $dir$file\n"; continue;}
+	      {echo "ERROR dossier : \n"; continue;}
 	    if (!$json->type)
-	      {echo "ERROR type : $dir$file\n"; continue;}
+	      {echo "ERROR type : \n"; continue;}
             $doc = Doctrine::getTable('Texteloi')->find($json->id);
             if (!$doc) {
               $doc = new Texteloi();
@@ -70,11 +70,12 @@ class loadDocumentsTask extends sfBaseTask {
 	    if ($json->contenu)
 	      $doc->setContenu($json->contenu);
             $doc->save();
-	    echo "$dir$file DONE\n";
+	    echo " DONE";
           }
 	  unlink($dir.$file);
         }
         closedir($dh);
+        echo "\n";
       }
     }
   }

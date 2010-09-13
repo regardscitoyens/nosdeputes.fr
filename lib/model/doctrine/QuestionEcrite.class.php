@@ -62,7 +62,7 @@ class QuestionEcrite extends BaseQuestionEcrite
   }
   public function firstTheme()
   {
-    $theme = preg_replace('/^\s*([\wàéëêèïîôöûüÉ\s]+)*[,\/:].*$/', '\\1', $this->themes);
+    $theme = preg_replace('/^\s*([\w\-àéëêèïîôöûüÉ\s]+)*[,\/:].*$/', '\\1', $this->themes);
     $theme = preg_replace('/^(.*)\s+$/', '\\1', $theme);
     return $theme;
   }
