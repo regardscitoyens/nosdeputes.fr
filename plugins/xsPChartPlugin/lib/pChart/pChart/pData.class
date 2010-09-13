@@ -44,7 +44,6 @@
  */
 
  /* pData class definition */
-error_reporting(0);
  class pData
   {
    var $Data;

@@ -1,3 +1,4 @@
 all:
+  enabled: true
   lifetime: 86400
-  enabled: false
+
