@@ -1,16 +1,15 @@
 <?php
 
 /**
- * intervention actions.
+ * documents actions.
  *
  * @package    cpc
- * @subpackage loi
+ * @subpackage documents
  * @author     Your name here
  * @version    SVN: $Id: actions.class.php 12479 2008-10-31 10:54:40Z fabien $
  */
 class documentsActions extends sfActions
 {
-
 
   public function executeShow(sfWebRequest $request) {
    $id = $request->getParameter('id');
@@ -41,7 +40,33 @@ class documentsActions extends sfActions
      ->orderBy('annexe')
      ->fetchArray();
    $this->response->setTitle($this->doc->getTitre().' - NosDéputés.fr');
-
   }
 
+  public function executeParlementaire(sfWebRequest $request) {
+    $this->type = $request->getParameter('type');
+    $this->forward404Unless(preg_match('/^(loi|rap)$/', $this->type));
+    $this->parlementaire = Doctrine::getTable('Parlementaire')
+      ->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->parlementaire);
+    $this->typetitre = "rapports";
+    $this->feminin = "";
+    if ($this->type === "loi") {
+      $this->typetitre = "propositions de loi";
+      $this->feminin = "e";
+    }
+    $this->docs = Doctrine::getTable('Texteloi')->createQuery('t')
+      ->select('t.*, p.fonction as fonction')
+      ->leftJoin('t.ParlementaireTexteloi p')
+      ->where('p.parlementaire_id = ?', $this->parlementaire->id);
+    $lois = array('Proposition de loi', 'Proposition de résolution');
+    if ($this->type === "loi")
+      $this->docs->andWhere('(t.type = ? OR t.type = ?)', $lois);
+    else if ($this->type === "rap")
+      $this->docs->andWhere('t.type != ? AND t.type != ?', $lois);
+    $this->docs->orderBy('t.date DESC');
+  
+    $this->response->setTitle('Les '.$this->typetitre.' de '.$this->parlementaire->nom.' - NosDéputés.fr');
+    $request->setParameter('rss', array(array('link' => '@parlementaire_documents_rss?slug='.$this->parlementaire->slug.'&type='.$this->type, 'title'=>'Les dernier'.$this->feminin.'s '.$this->typetitre.' de '.$this->parlementaire->nom.' en RSS')));
+
+  }
 }

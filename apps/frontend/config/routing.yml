@@ -377,7 +377,7 @@ parlementaire:
   param: {module: parlementaire, action: show}
 parlementaire_rss:
   url: /:slug/rss
-  param: {module: parlementaire, action: rss, Intervention: 1, QuestionEcrite: 1, Amendement: 1}
+  param: {module: parlementaire, action: rss, Intervention: 1, QuestionEcrite: 1, Amendement: 1, Document: 1}
 parlementaire_api_xml:
   url: /:slug/xml
   param: {module: api, action: parlementaire, type: xml}
@@ -441,4 +441,10 @@ parlementaire_questions:
 parlementaire_questions_rss:
   url: /:slug/questions/rss
   param: {module: parlementaire, action: rss, QuestionEcrite: 1}
+parlementaire_documents:
+  url: /:slug/documents/:type
+  param: {module: documents, action: parlementaire}
+parlementaire_documents_rss:
+  url: /:slug/documents/:type/rss
+  param: {module: parlementaire, action: rss, Document: 1}
 

@@ -1,10 +1,10 @@
-<div class="amendements">
+<div class="amendements"><p>
 <?php $nResults = $pager->getNbResults();
   if ($nResults == 0) echo 'Aucun'; else echo $nResults; ?> amendement<?php if ($nResults > 1) echo 's'; ?> trouvé<?php if ($nResults > 1) echo 's';
   if (isset($_GET['search'])) {
     $mots = trim($_GET['search']);
     if ($mots != "") { ?>
-<p> pour la recherche sur <em>"<?php echo strip_tags($mots); ?>"</em></p>
+pour la recherche sur <em>"<?php echo strip_tags($mots); ?>"</em>
 <?php } } 
 else if (isset($loi))
   echo ' sur '.link_to($loi->getTitre(), "@document?id=".$loi->id).' ('.myTools::getLiasseLoiAN($loi->id).')';
@@ -14,17 +14,16 @@ else if (isset($lois)) {
   else
     echo 'le projet de loi ';
   echo 'N° ';
-foreach ($lois as $loi) echo link_to($loi, '@document?id='.$loi).' ('.myTools::getLiasseLoiAN($loi).') '; } ?>
+foreach ($lois as $loi) echo link_to($loi, '@document?id='.$loi).' ('.myTools::getLiasseLoiAN($loi).') '; } ?></p>
 </div>
 <?php if ($pager->haveToPaginate()) {
   $uri = $sf_request->getUri();
   $uri = preg_replace('/page=\d+\&?/', '', $uri);
   if (!preg_match('/[\&\?]$/', $uri)) {
-    if (preg_match('/\?/', $uri)) {
+    if (preg_match('/\?/', $uri))
       $uri .= '&';
-    } else{
+    else
       $uri .= '?';
-    }
   }
   echo '<br/>';
   include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>$uri));

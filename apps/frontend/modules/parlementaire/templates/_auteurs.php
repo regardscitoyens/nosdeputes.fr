@@ -8,9 +8,9 @@
         $fonction = preg_replace('/commission.*$/i', link_to($orga->nom, '@list_parlementaires_organisme?slug='.$orga->slug), $fonction);
       if ($fonction) echo " ".$fonction;
     }
-    if (isset($orga) || $ct == $total - 1) echo '<br/>';
-    else if ($ct < $total - 2) echo ", ";
-    else if ($ct > 0 && $ct == $total - 2) echo " &&nbsp;";
+    if ((isset($orga) && $orga->id) || $ct == $total - 1) echo '<br/>';
+    else if ($ct == $total - 2) echo " &&nbsp;";
+    else echo ", ";
   } 
 ?>
 

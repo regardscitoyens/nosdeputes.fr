@@ -41,7 +41,7 @@
       <?php endif; ?>  
     </ul>
     <?php if ($parlementaire->fin_mandat == null) : ?>
-      <br /><h2>Responsabilités</h2>
+      <h2>Responsabilités</h2>
       <ul>
         <li>Parlementaires :
           <ul>
@@ -67,12 +67,19 @@
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
+      <h2>Travaux législatifs</h2>
+      <h3>Ses derniers dossiers</h3>
+      <?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 5, 'order' => 'date')); ?>
+      <p class="suivant"><?php echo link_to('Tous ses dossiers', '@parlementaire_textes?slug='.$parlementaire->slug); ?></p>
+      <h3><?php echo link_to('Travaux en commissions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=commission'); ?></h3>
+      <h3><?php echo link_to('Travaux en hémicycle','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=loi'); ?></h3>
+      <h3><?php echo link_to('Toutes ses interventions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=all'); ?></h3>
       <h2>Questions au gouvernement</h2>
       <h3>Ses dernières questions orales</h3>
-       <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 5)); ?>
+       <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 6)); ?>
       <p class="suivant"><?php echo link_to('Toutes ses questions orales','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=question'); ?></p>
       <h3>Ses dernières questions écrites</h3>
-       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 5)); ?>
+       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 6)); ?>
       <p class="suivant"><?php echo link_to('Toutes ses questions écrites','@parlementaire_questions?slug='.$parlementaire->getSlug()); ?></p>
       </div>
     </div>
@@ -97,13 +104,13 @@
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
-      <h2>Travaux législatifs</h2>
-      <h3>Ses derniers dossiers</h3>
-      <?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 5, 'order' => 'date')); ?>
-      <p class="suivant"><?php echo link_to('Tous ses dossiers', '@parlementaire_textes?slug='.$parlementaire->slug); ?></p>
-      <h3 class="list_inter"><?php echo link_to('Travaux en commissions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=commission'); ?></h3>
-      <h3 class="list_inter"><?php echo link_to('Travaux en hémicycle','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=loi'); ?></h3>
-      <h3 class="list_inter"><?php echo link_to('Toutes ses interventions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=all'); ?></h3>
+      <h2>Productions parlementaires</h2>
+      <h3>Ses derniers rapports</h3>
+      <?php echo include_component('documents', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'type' => 'rap')); ?>
+      <p class="suivant"><?php echo link_to('Tous ses rapports', '@parlementaire_documents?slug='.$parlementaire->slug.'&type=rap'); ?></p>
+      <h3>Ses dernières propositions de loi</h3>
+      <?php echo include_component('documents', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'type' => 'loi')); ?>
+      <p class="suivant"><?php echo link_to('Toutes ses propositions de loi cosignées', '@parlementaire_documents?slug='.$parlementaire->slug.'&type=loi'); ?></p>
       <h3><?php echo link_to('Tous ses amendements','@parlementaire_amendements?slug='.$parlementaire->getSlug()); ?></h3>
       </div>
     </div>
@@ -119,7 +126,7 @@
         else {
           echo include_component('commentaire', 'lastObject', array('object' => $parlementaire, 'presentation' => 'noauteur'));
           if ($parlementaire->nb_commentaires > 4)
-            echo '<p class="suivant">'.link_to('Voir les '.$parlementaire->nb_commentaires.' commentaires', '@parlementaire_commentaires?slug='.$parlementaire->slug).'</p><div class="stopfloat"></div>'; ?>
+            echo '<p class="suivant list_com">'.link_to('Voir les '.$parlementaire->nb_commentaires.' commentaires', '@parlementaire_commentaires?slug='.$parlementaire->slug).'</p><div class="stopfloat"></div>'; ?>
      <?php } ?>
   </div>
 </div>

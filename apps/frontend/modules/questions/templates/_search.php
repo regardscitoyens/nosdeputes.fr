@@ -1,9 +1,11 @@
 <?php use_helper('Text') ?>
   <div class="question" id="<?php echo $question->id; ?>">
     <div>
-<?php $parlementaire = $question->getParlementaire(); ?>
-  <h2><?php echo link_to($parlementaire->nom.'&nbsp;: '.$question->getTitre(), '@question_numero?numero='.$question->numero); ?></h2>
-    </div>
+<?php if (!isset($nophoto)) {
+  $parlementaire = $question->getParlementaire();
+  echo '<h2>'.link_to($parlementaire->nom.'&nbsp;: '.$question->getTitre(), '@question_numero?numero='.$question->numero)."</h2>";
+} else echo '<h2>'.link_to($question->getTitre(), '@question_numero?numero='.$question->numero)."</h2>"; ?>
+</div>
   <div class="texte_question"><?php
   if (!isset($nophoto))
     echo '<a href="'.url_for('@question_numero?numero='.$question->numero).'" class="intervenant"><img width="50" height="70" alt="'.$parlementaire->nom.'" src="'.url_for('@resized_photo_parlementaire?height=64&slug='.$parlementaire->slug).'" /></a>';

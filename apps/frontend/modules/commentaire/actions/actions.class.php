@@ -162,8 +162,8 @@ class commentaireActions extends sfActions
       if ($object->parlementaire_id)
         $commentaire->addObject('Parlementaire', $object->parlementaire_id);
     } else if ($this->type === 'Amendement' || $this->type === 'Texteloi') {
-      $object->Parlementaires;
-      if (isset($object->Parlementaires)) foreach($object->Parlementaires as $p)
+      $parlementaires = $object->getParlementaires();
+      if ($parlementaires) foreach($parlementaires as $p)
         $commentaire->addObject('Parlementaire', $p->id);
     }
     if ($this->type === 'Amendement' && !($seance = $object->getIntervention($object->numero))) {

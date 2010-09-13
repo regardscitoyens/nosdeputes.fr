@@ -20,7 +20,7 @@ class sectionActions extends sfActions
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
     $this->titre = 'Dossiers parlementaires';
-    $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom);
+    $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom.' - NosDéputés.fr');
   }
 
   public function executeParlementaireSection(sfWebRequest $request) 

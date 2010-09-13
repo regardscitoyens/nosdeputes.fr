@@ -405,7 +405,24 @@ class parlementaireActions extends sfActions
 	      as $n) 
 	$news[] = $n;
     }
-    
+    if ($request->getParameter('Document')) {
+      $elements++;
+      $docquery = Doctrine::getTable('Texteloi')->createQuery('t')
+        ->leftJoin('t.ParlementaireTexteloi pt')
+        ->where('pt.parlementaire_id = ?', $this->parlementaire->id);
+      $type = $request->getParameter('type');
+      if ($type) {
+        $lois = array('Proposition de loi', 'Proposition de résolution');
+        if ($type === "loi")
+          $docquery->andWhere('t.type = ? OR t.type = ?', $lois);
+        else if ($type === "rap")
+          $docquery->andWhere('t.type != ? AND t.type != ?', $lois);
+      }
+      foreach($docquery->orderBy('date DESC')->limit($this->limit)->execute()
+              as $n)
+        $news[] = $n;
+    }
+ 
     if ($elements > 1) usort($news, 'parlementaireActions::dateSort');
 
     $this->news = $news;

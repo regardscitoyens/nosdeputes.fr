@@ -22,17 +22,17 @@ function link_search($text, $query, $args)
 </form>
 </div>
 <div class="nb_results">
-    <p>Résultats <?php echo $results['start']+1; ?> à <?php echo $results['end']-1; ?> sur <?php echo $results['numFound']; ?> triés par <?php echo $sort_type; ?></p>
+    <p>Résultats <?php echo $results['start']+1; ?> à <?php echo $results['end']; ?> sur <?php echo $results['numFound']; ?> triés par <?php echo $sort_type; ?></p>
 </div>
 <div class="facets">
 <div class="tri">
     <?php 
     $newargs = $selected;
     if ($sort)
-      echo link_search('Tier par pertinence', $query, $newargs); 
+      echo link_search('Trier par pertinence', $query, $newargs); 
     else {
       $newargs['sort'] = 1;
-      echo link_search('Tier par date', $query, $newargs); 
+      echo link_search('Trier par date', $query, $newargs); 
     }
 ?>
 </div>
