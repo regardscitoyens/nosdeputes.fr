@@ -5,6 +5,7 @@ UPDATE intervention SET section_id = 1 WHERE id IN (21725,21726);
 UPDATE intervention SET section_id = 1 WHERE id IN (161761,161762,161763);
 UPDATE intervention SET section_id = 1 WHERE id IN (457894,457895,457896);
 UPDATE intervention SET section_id = 1 WHERE id IN (436326,436327,436328);
+UPDATE intervention SET section_id = 1 WHERE id IN (404257,404258,404259);
 
 
 DELETE ta FROM `tagging` ta join tag t on t.id = ta.tag_id join intervention i on i.id = ta.taggable_id where taggable_model = "Intervention" and t.triple_key = "numero" and i.seance_id = 9;

@@ -47,6 +47,7 @@ php symfony move:Seance 348 4185 2
 php symfony move:Seance 2903 7751 7573
 php symfony move:Seance 3639 10334 2
 php symfony move:Seance 3473 1213 2
+php symfony move:Seance 3264 8874 2
 
 cat bin/updateDB3.2.sql | mysql $MYSQLID $DBNAME
 
