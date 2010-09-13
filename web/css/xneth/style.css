@@ -1269,6 +1269,11 @@ h2 {
   padding: 10px;
 }
 
+.documentlist {
+  padding: 3px;
+  text-align: justify;
+}
+
 .documents, .orga_dossier {
   padding-top: 20px;
 }

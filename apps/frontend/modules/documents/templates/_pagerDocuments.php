@@ -1,5 +1,4 @@
 <?php use_helper('Text') ?>
-<div class="documents">
 <?php $results = $pager->getNbResults();
 if ($results == 0) $results = 'Aucun'.$feminin;
 $results .= ' '.$typetitre;
@@ -13,7 +12,6 @@ if ($results > 1)
   $results .= 's';
 echo '<p>'.$results.'</p>';
 ?>
-</div>
 <?php if ($pager->haveToPaginate()) {
  $uri = $sf_request->getUri();
   $uri = preg_replace('/page=\d+\&?/', '', $uri);
@@ -25,9 +23,8 @@ echo '<p>'.$results.'</p>';
   }
   include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>$uri));
 } ?>
-<div class="interventions">
 <?php foreach($pager->getResults() as $d) {
-  echo '<div class="document" id="document'.$d->id.'">';
+  echo '<div class="documentlist" id="document'.$d->id.'">';
   echo '<h3>'.link_to(myTools::displayShortDate($d->date)."&nbsp;&mdash; ".$d->getTitre(), '@document?id='.$d->id)."</h3>";
   echo '<a class="contexte" href="'.url_for('@document?id='.$d->id).'">';
  //$d->fonction
@@ -41,5 +38,4 @@ echo $d->fonction;
   echo '</a></div>';
   }
 ?>
-</div>
 <?php if ($pager->haveToPaginate()) include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>$uri)); ?>
