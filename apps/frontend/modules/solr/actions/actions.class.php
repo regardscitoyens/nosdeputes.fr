@@ -93,7 +93,7 @@ class solrActions extends sfActions
       $this->results['docs'][$i]['photo'] = $this->getPhoto($obj);
       $this->results['docs'][$i]['titre'] = $obj->getTitre();
       $this->results['docs'][$i]['personne'] = $obj->getPersonne();
-      $this->results['docs'][$i]['highlighting'] = preg_replace('/^'.$this->results['docs'][$i]['personne'].'/', '', implode('...', $results['highlighting'][$res['id']]['text']));
+      $this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $results['highlighting'][$res['id']]['text']));
       
     }
     $this->results['end'] = $deb + $nb;
