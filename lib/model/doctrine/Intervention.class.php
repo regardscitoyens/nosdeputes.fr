@@ -11,7 +11,7 @@ class Intervention extends BaseIntervention
   }
 
   public function getPersonne() {
-    return $this->getIntervenant()->getNom();
+    return $this->getNomAndFonction();
   }
 
   public function __toString() {
