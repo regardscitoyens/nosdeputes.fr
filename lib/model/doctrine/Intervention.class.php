@@ -22,13 +22,21 @@ class Intervention extends BaseIntervention
 
   public function getTitre() {
     if ($this->type === 'question')
-      $titre = 'Question orale';
-    else $titre = 'Intervention';
-    if ($this->type === 'commission')
-      $titre .= ' en commission';
-    else
-      $titre .= ' en hémicycle';
-    return $titre.' le '.myTools::displayShortDate($this->date);
+      $titre = 'Question orale du ';
+    else {
+      $titre = 'Intervention';
+      if ($this->type === 'commission')
+        $titre .= ' en commission';
+      else
+        $titre .= ' en hémicycle';
+      $titre .= ' le ';
+    }
+    $titre .= myTools::displayShortDate($this->date);
+    if ($this->type === 'question')      
+      $titre .= ' : '.ucfirst($this->Section->getTitre());
+    else if ($this->type === 'loi')
+      $titre .= ' : '.ucfirst($this->Section->Section->getTitreComplet());
+    return $titre;
   }
 
   public function setSeance($type, $date, $heure, $session, $commission = null) {
