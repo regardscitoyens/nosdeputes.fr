@@ -45,16 +45,13 @@ $menu_citoyen = $selectcitoyen;
     </style> 
     <![endif]-->
 	<?php echo javascript_include_tag('jquery-1.4.2.min.js'); ?>
-	<script type="text/javascript">
-	$('<img />').attr('src', '<?php echo $sf_request->getRelativeUrlRoot()."/css/".$style."/sous_menu_combined.png"; ?>'); // preload img fond sous-menu
-	</script>
 	<?php echo javascript_include_tag('fonctions.js'); ?>
   </head>
   <body>
   <div id="contenu">
       <div id="top">
         <div class="initiative">
-          <a href="http://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);"><?php echo image_tag($style.'/top_initiative.png', array('alt' => 'Une initiative de RegardsCitoyens.org')); ?></a>
+          <a href="http://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);">Une initiative de RegardsCitoyens.org</a>
         </div>
 <div id="connected" class="identification">
 <p id="loggued_top">
@@ -132,7 +129,9 @@ $menu_citoyen = $selectcitoyen;
         </div>
       </div>
       <div id="bottom">
-        <a href="http://www.regardscitoyens.org"><?php echo image_tag($style.'/bottom_qui.png', array('alt' => 'Qui sommes-nous')); ?></a>
+        <div class="regardscitoyens">
+		<a href="http://www.regardscitoyens.org"><span class="RC">R</span>egards<span class="RC">C</span><span style="color: #C1272D;">i</span>toyens.org</a>
+		</div>
       </div>
     </div>
   </body>

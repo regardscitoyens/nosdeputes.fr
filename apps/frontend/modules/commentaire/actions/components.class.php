@@ -67,4 +67,12 @@ class commentaireComponents extends sfComponents
 
     $this->pager = $pager;
   }
+  
+  public function executeShowWidget() {
+    $query = Doctrine::getTable('Commentaire')->createQuery('c')
+      ->where('is_public = 1')
+      ->orderBy('c.created_at DESC')
+      ->limit(5);
+    $this->commentaires = $query->execute();
+  }
 }

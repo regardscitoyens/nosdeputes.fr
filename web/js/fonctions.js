@@ -61,7 +61,21 @@ $(document).ready(function() {
 	  $("#loupe").css("display", "none");
 	});
 
-  }); // fin document ready
+}); // fin document ready
+
+function uniqueArray(array) {
+  if ($.isArray(array)){
+	var duplique = {}; var len, i;
+	for (i = 0, len = array.length; i < len; i++){
+	  var test = array[i].toString();
+	  if (duplique[test]) { array.splice(i,1); len--; i--; } else { duplique[test] = true; }
+    }
+  }
+  else {
+	alert(array+" n'est pas un array");
+  }
+  return(array);
+}
 
 // Google
 var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");

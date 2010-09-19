@@ -311,5 +311,8 @@ class commentaireActions extends sfActions
     }
 
   }
+  public function executeWidget() {
+    $this->setLayout(false);
+  }
 
 }
