@@ -35,7 +35,7 @@ if ($cosign) {
 </div>
 </div>
 <div class="left">
-<?php if ((isset($texte) && $texte > 0) || count($annexes)) { ?>
+<?php if ((isset($texte) && $texte > 0) || count($annexes) || $amendements) { ?>
 <h3>Documents associés</h3><ul>
 <?php if (isset($texte) && $texte > 0)
   echo '<li>'.link_to('Voir le rapport de la commission', '@document?id='.$doc->numero).'</li>';

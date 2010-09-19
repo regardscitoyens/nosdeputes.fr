@@ -16,37 +16,38 @@ if (isset($list)) {
 }
 foreach($deputes as $depute) {
   $ct++; ?>
-  <a href="<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>"><div class="list_dep">
-    <div class="list_nom">
-      <?php echo $depute->getNomPrenom(); ?>
-    </div>
-    <div class="list_right"><?php
+  <div class="list_dep" onclick="document.location='<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>'">
+    <span class="list_nom">
+      <a href="<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>"><?php echo $depute->getNomPrenom(); ?></a>
+    </span>
+    <span class="list_right"><a href="<?php echo url_for('@list_parlementaires_departement?departement='.$depute->nom_circo); ?>"><?php
       if (isset($circo)) {
         echo '<span class="list_num_circo">';
         $string = preg_replace('/(è[rm]e)/', '<sup>\1</sup>', $depute->getNumCircoString());
         if (isset($dept))
           $string = $depute->getNumDepartement().'&nbsp;&mdash;&nbsp;'.preg_replace("/nscription/", "", $string);
-        echo $string.'</span>';
+        echo $string.'</span></a>';
       } else echo $depute->nom_circo; 
-    ?></div><div class="clear"/>
-    <div class="list_left">
+    ?></a></span><br/>
+    <span class="list_left">
       <?php if (isset($imp)) {
           echo ' '.$depute->fonction;
           if (!isset($nogroupe))
-            echo '&nbsp;&mdash;&nbsp;<span class="couleur_'.strtolower($depute->getGroupeAcronyme()).'">'.$depute->getGroupeAcronyme().'</span>';
+            echo '&nbsp;&mdash;&nbsp;<a href="'.url_for('@list_parlementaires_groupe?acro='.$depute->groupe_acronyme).'"><span class="couleur_'.strtolower($depute->getGroupeAcronyme()).'">'.$depute->getGroupeAcronyme().'</span></a>';
         } else
-          echo preg_replace('/\s([A-Z]+)$/', ' <span class="couleur_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span>", $depute->getStatut()); ?>
-    </div>
-    <div class="list_right"><?php
+          echo preg_replace('/\s([A-Z]+)$/', ' <a href="'.url_for('@list_parlementaires_groupe?acro='.$depute->groupe_acronyme).'"><span class="couleur_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
+    </span>
+    <span class="list_right"><?php
       if (!$depute->nb_commentaires)
         echo "0&nbsp;commentaire";
       else {
-        echo '<span class="list_com">'.$depute->nb_commentaires.'&nbsp;commentaire';
-        if ($depute->nb_commentaires > 1) echo 's'; echo '</span>';
+        echo '<a href="'.url_for('@parlementaire_commentaires?slug='.$depute->slug).'"><span class="list_com">'.$depute->nb_commentaires.'&nbsp;commentaire';
+        if ($depute->nb_commentaires > 1) echo 's';
+        echo '</span></a>';
       }
-    ?></div>
-    </div>
-  </div></a>
+    ?>
+    </span><br/>
+  </div>
   <?php if (isset($list) && $ct % $div == 0 && $ct != $totaldep && $totaldep != 1) {
     $td++;
     echo '</td><td class="list_borderleft">';
