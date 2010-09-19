@@ -121,19 +121,27 @@ body {
   margin: auto;
 }
 /* Synthèse */
+.liste_deputes_top  {
+  margin: 20px 0px 30px 0;
+  padding:5px 5px 20px 5px;
+  border: 1px dashed #aeaeae;
+  text-align:justify;
+}
 .tableau_synthese { height: 500px; overflow: auto; }
 .synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
-.p { width: 140px; }
+.p { width: 112px; }
 .w { width: 70px; }
-.cp { width: 75px; }
-.ci { width: 85px; }
-.hl { width: 85px; }
-.hc { width: 85px; }
-.as { width: 51px; }
-.aa { width: 61px; }
-.ar { width: 51px; }
-.qe { width: 51px; }
-.qo { width: 51px; }
+.cp { width: 63px; }
+.ci { width: 63px; }
+.hl { width: 63px; }
+.hc { width: 63px; }
+.as { width: 63px; }
+.aa { width: 63px; }
+.ra { width: 63px; }
+.pe { width: 63px; }
+.ps { width: 63px; }
+.qe { width: 63px; }
+.qo { width: 63px; }
 .synthese th, .synthese td { border-right: 1px #FFFFFF solid; }
 .tr_odd td { border-right: 1px #999999 solid; }
 .tr_odd td.qo { border-right: 0px #999999 solid; }

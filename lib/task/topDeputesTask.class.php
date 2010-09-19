@@ -2,6 +2,9 @@
 
 class topDeputesTask extends sfBaseTask
 {
+
+  static $lois = array('Proposition de loi', 'Proposition de résolution');
+  
   protected function configure()
   {
     $this->namespace = 'top';
@@ -49,7 +52,7 @@ class topDeputesTask extends sfBaseTask
       ->fetchArray();
     foreach ($semaines as $p) {
       foreach($p['Presences'] as $pr) {
-	$this->deputes[$p['id']]['semaine']['value']++;
+	$this->deputes[$p['id']]['semaines_presence']['value']++;
       }
     }
   }
@@ -158,6 +161,41 @@ class topDeputesTask extends sfBaseTask
       $this->deputes[$q['id']]['questions_orales']['value'] = $q['count'];
     }
   }
+  protected function executeRapports($q)
+  {
+    $parlementaires = $q->select('p.id, count(t.id)')
+      ->from('Parlementaire p, p.Textelois t')
+      ->andWhere('t.type != ? AND t.type != ?', self::$lois)
+      ->groupBy('p.id')
+      ->fetchArray();
+    foreach ($parlementaires as $p) {
+      $this->deputes[$p['id']]['rapports']['value'] = $p['count'];
+    }
+  }
+  protected function executePropositionsEcrites($q)
+  {
+    $parlementaires = $q->select('p.id, count(t.id)')
+      ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
+      ->andWhere('t.type = ? OR t.type = ?', self::$lois)
+      ->andWhere('pt.importance < ?', 4)
+      ->groupBy('p.id')
+      ->fetchArray();
+    foreach ($parlementaires as $p) {
+      $this->deputes[$p['id']]['propositions_ecrites']['value'] = $p['count'];
+    }
+  }
+  protected function executePropositionsSignees($q)
+  {
+    $parlementaires = $q->select('p.id, count(t.id)')
+      ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
+      ->andWhere('t.type = ? OR t.type = ?', self::$lois)
+      ->groupBy('p.id')
+      ->fetchArray();
+    foreach ($parlementaires as $p) {
+      $this->deputes[$p['id']]['propositions_signees']['value'] = $p['count'];
+    } 
+  }   
+
 
   protected function executeDeputesInfo() {
     foreach (array_keys($this->deputes) as $id) {
@@ -165,12 +203,15 @@ class topDeputesTask extends sfBaseTask
       //Bidouille pour avoir les paramètres dans le bon ordre
       $this->deputes[$id]['01_nom']['value'] = $dep->nom;
       $this->deputes[$id]['02_groupe']['value'] = $dep->groupe_acronyme;
-      $this->deputes[$id]['semaine']['value'] += 0;
+      $this->deputes[$id]['semaines_presence']['value'] += 0;
       $this->deputes[$id]['questions_orales']['value'] += 0;
       $this->deputes[$id]['questions_ecrites']['value'] += 0;
-      $this->deputes[$id]['amendements_rejetes']['value'] += 0;
+//      $this->deputes[$id]['amendements_rejetes']['value'] += 0;
       $this->deputes[$id]['amendements_signes']['value'] += 0;
       $this->deputes[$id]['amendements_adoptes']['value'] += 0;
+      $this->deputes[$id]['rapports']['value'] += 0;
+      $this->deputes[$id]['propositions_ecrites']['value'] += 0;
+      $this->deputes[$id]['propositions_signees']['value'] += 0;
       $this->deputes[$id]['commission_presences']['value'] += 0;
       $this->deputes[$id]['commission_interventions']['value'] +=  0;
       $this->deputes[$id]['hemicycle_interventions_courtes']['value'] += 0;
@@ -209,7 +250,7 @@ class topDeputesTask extends sfBaseTask
     $qa->andWhere('a.date < ?', date('Y-m-d', strtotime("$date +1month")));
     $this->executeAmendementsSignes(clone $qa);
     $this->executeAmendementsAdoptes(clone $qa);
-    $this->executeAmendementsRejetes(clone $qa);
+//    $this->executeAmendementsRejetes(clone $qa);
 
     print "Amendements DONE\n";
 
@@ -219,6 +260,15 @@ class topDeputesTask extends sfBaseTask
     $this->executeQuestionsEcrites($qq);
     
     print "Question DONE\n";
+
+    $qd = clone $q;
+    $qd->where('t.date >= ?', date('Y-m-d', strtotime($date)));
+    $qd->andWhere('t.date < ?', date('Y-m-d', strtotime("$date +1month")));
+    $this->executePropositionsEcrites(clone $qd);
+    $this->executePropositionsSignees(clone $qd);
+    $this->executeRapports(clone $qd);
+
+    print "Documents DONE\n";
 
     $this->executeDeputesInfo();
 
@@ -264,7 +314,7 @@ class topDeputesTask extends sfBaseTask
     
      
     $this->executePresence(clone $qs);
-    $this->orderDeputes('semaine');
+    $this->orderDeputes('semaines_presence');
     
     $this->executeCommissionPresence(clone $qs);
     $this->orderDeputes('commission_presences');
@@ -290,8 +340,19 @@ class topDeputesTask extends sfBaseTask
     $this->executeAmendementsAdoptes(clone $qa);
     $this->orderDeputes('amendements_adoptes');
 
-    $this->executeAmendementsRejetes(clone $qa);
-    $this->orderDeputes('amendements_rejetes', 0);
+//    $this->executeAmendementsRejetes(clone $qa);
+//    $this->orderDeputes('amendements_rejetes', 0);
+
+    $qd = clone $q;
+    $qd->where('t.date > ?', date('Y-m-d', time()-60*60*24*365));
+    $this->executeRapports(clone $qd);
+    $this->orderDeputes('rapports');
+
+    $this->executePropositionsEcrites(clone $qd);
+    $this->orderDeputes('propositions_ecrites');
+
+    $this->executePropositionsSignees(clone $qd);
+    $this->orderDeputes('propositions_signees');
 
     $qq = clone $q;
     $qq->where('q.date > ?', date('Y-m-d', time()-60*60*24*365));
@@ -359,7 +420,7 @@ class topDeputesTask extends sfBaseTask
       
       $this->executeAmendementsAdoptes(clone $qa);
       
-      $this->executeAmendementsRejetes(clone $qa);
+//      $this->executeAmendementsRejetes(clone $qa);
       
       $qq = clone $q;
       $qq->andWhere('(q.date > ? AND q.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)), 
@@ -368,6 +429,13 @@ class topDeputesTask extends sfBaseTask
       $this->executeQuestionsEcrites($qq);
       
       $this->executeQuestionsOrales(clone $qi);
+
+      $qd = clone $q;
+      $qd->andWhere('(t.date > ? AND t.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
+                                                         date('Y-m-d', strtotime($p->fin_mandat)), ));
+      $this->executePropositionsEcrites(clone $qd);
+      $this->executePropositionsSignees(clone $qd);
+      $this->executeRapports(clone $qd);
 
       if (count($this->deputes[$p->id])) {
 	$p->top = serialize($this->deputes[$p->id]);

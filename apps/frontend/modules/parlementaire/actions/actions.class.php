@@ -344,8 +344,7 @@ class parlementaireActions extends sfActions
     unset($qp);
     $this->tops = array();
     foreach($parlementaires as $p) {
-      //A supprimer lorsque les tops seront unifiés (cf. lib modele parlementaire)
-      $tops = unserialize(preg_replace('/s:20:"hemicycle_invectives/', 's:31:"hemicycle_interventions_courtes', $p['top']));
+      $tops = unserialize($p['top']);
       $id = $p['id'];
       $i = 0;
       $this->tops[$id][$i++] = $p;
