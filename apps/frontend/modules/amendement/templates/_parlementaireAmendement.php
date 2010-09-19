@@ -1,8 +1,6 @@
 <?php use_helper('Text');
 $titre = $amendement->getTitre();
-if (isset($loi)) {
-  $titre = str_replace('Projet de loi N° '.$amendement->texteloi_id, $loi, $titre);
-} ?>
+?>
   <div class="amendement" id="<?php echo $amendement->id; ?>">
     <h3><?php echo link_to(myTools::displayShortDate($amendement->date).' &mdash; '.$titre, '@amendement?loi='.$amendement->texteloi_id.'&numero='.$amendement->numero); ?><br/>
     <?php echo link_to(truncate_text($amendement->getSignataires(), 120), '@amendement?loi='.$amendement->texteloi_id.'&numero='.$amendement->numero); ?></h3>

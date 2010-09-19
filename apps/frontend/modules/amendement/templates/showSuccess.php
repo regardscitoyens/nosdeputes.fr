@@ -1,4 +1,4 @@
-<?php $titre1 = $amendement->getShortTitre();
+<?php $titre1 = $amendement->getShortTitre(1);
       if ($section) $titre2 = link_to(ucfirst($section->titre), '@section?id='.$section->id);
       else $titre2=""; ?>
 <?php $sf_response->setTitle(strip_tags($titre2.'  '.$titre1)); ?>
@@ -23,7 +23,7 @@
 <?php } ?>
 <?php if ($sous_admts) { ?>
 <p>Sous-amendements associés&nbsp: <?php foreach($sous_admts as $sous)
- echo link_to($sous['numero'], '@amendement?loi='.$sous['texteloi_id'].'&numero='.$sous['numero']).' '; ?></p>
+ echo link_to($sous['numero'], '@amendement?loi='.$amendement->texteloi_id.'&numero='.$sous['numero']).' '; ?></p>
 <?php } ?>
 <p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo $amendement->getSignataires(1); ?>.</p>
 <div class="signataires">

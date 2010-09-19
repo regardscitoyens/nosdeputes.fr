@@ -100,15 +100,15 @@ class Amendement extends BaseAmendement {
     return $query->fetchOne();
   }
 
-  public function getTitre() {
-    return $this->getPresentTitre().' au texte N° '.$this->texteloi_id.' - '.$this->sujet.' ('.$this->getPresentSort().')';
+  public function getTitre($link = 0) {
+    return $this->getPresentTitre($link).' au texte N° '.$this->texteloi_id.' - '.$this->sujet.' ('.$this->getPresentSort().')';
   }
 
-  public function getShortTitre() {
-    return $this->getPresentTitre().' ('.$this->getPresentSort().')';
+  public function getShortTitre($link = 0) {
+    return $this->getPresentTitre($link).' ('.$this->getPresentSort().')';
   }
 
-  public function getPresentTitre() {
+  public function getPresentTitre($link = 0) {
     $parent = 0;
     $pluriel = "";
     $parent = $this->getTags(array('is_triple' => true,
@@ -138,8 +138,13 @@ class Amendement extends BaseAmendement {
       $titre .= " rectifié".$pluriel;
     elseif($this->rectif > 1)
       $titre .= " ".$this->rectif."ème rectif.";
-    if ($parent != 0)
-      $titre .= ' à l\'amendement N° <a href="/amendements/'.$this->texteloi_id.'/'.$parent[0].'">'.$parent[0].$lettre.'</a>';
+    if ($parent != 0) {
+      sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+      $titre .= ' à l\'amendement N° ';
+      if ($link) $titre .= '<a href="'.url_for('@amendement?loi='.$this->texteloi_id.'&numero='.$parent[0]).'">';
+      $titre .= $parent[0].$lettre;
+      if ($link) $titre .= '</a>';
+    }
     return $titre;
   }
 
