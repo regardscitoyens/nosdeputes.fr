@@ -27,13 +27,13 @@ echo ', '.link_to('derniers commentaires', '@commentaires');
     if ($ct % 3 == 1 && $ct != 1) echo '</tr><tr>'; ?>
 <td onclick="document.location='<?php echo url_for('@citoyen?slug='.$citoyen->slug); ?>'">
 <div class="list_cit"><span class="list_img_left"><a href="<?php echo url_for('@citoyen?slug='.$citoyen->slug); ?>"><?php
-if (!$citoyen->photo) echo ''.image_tag('xneth/avatar_citoyen.png', array('alt' => 'Avatar par défaut', 'height' => '50px'));
-else echo '<img src="'.url_for('@photo_citoyen?slug='.$citoyen->slug).'" alt="avatar de '.$citoyen->login.'" height="50px"/>';
+if (!$citoyen->photo) echo ''.image_tag('xneth/avatar_citoyen.png', array('alt' => 'Avatar par défaut'));
+else echo '<img src="'.url_for('@photo_citoyen?slug='.$citoyen->slug).'" alt="avatar de '.$citoyen->login.'"/>';
 ?></a></span>
 <span class="list_nom"><a href="<?php echo url_for('@citoyen?slug='.$citoyen->slug); ?>">
 <?php echo truncate_text($citoyen->login, 26);
 if (!empty($citoyen->activite))
-  echo '</a><br/><small><i><a href="'.url_for('@citoyen?slug='.$citoyen->slug).'">'.truncate_text(html_entity_decode(strip_tags($citoyen->activite), ENT_NOQUOTES, "UTF-8"), 25).'</a>i</i></small>';
+  echo '</a><br/><small><i><a href="'.url_for('@citoyen?slug='.$citoyen->slug).'">'.truncate_text(html_entity_decode(strip_tags($citoyen->activite), ENT_NOQUOTES, "UTF-8"), 25).'</a></i></small>';
 else echo '</a>';?>
 </span>
 <span class="list_right"><a href="<?php echo url_for('@citoyen?slug='.$citoyen->slug); ?>">

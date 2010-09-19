@@ -55,6 +55,7 @@ if ($amendements) echo '<li>'.link_to("Voir les ".$amendements." amendement".($a
 echo '</ul>';
 } ?>
 <h3><a href="<?php echo $doc->source; ?>">Consulter le document complet sur le site de l'Assemblée</a></h3>
+<p class="aligncenter">(<?php echo link_to('version pdf', preg_replace('/asp$/', 'pdf', $doc->source)); ?>)</p>
 </div>
 </div>
 <div class="commentaires document">
