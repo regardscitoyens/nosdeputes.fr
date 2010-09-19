@@ -39,17 +39,20 @@
       $art = preg_replace('/\s+/', '-', $art);
       $sujet = $match[1].link_to($match[2].$match[3], '@loi_article?loi='.$loi->texteloi_id.'&article='.$art);
     }
-    echo $sujet.' ';
-    if ($titreloi) echo '&mdash; '.link_to(preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $loi->titre), '@loi?loi='.$loi->texteloi_id);
-    else if ($loi) echo 'du '.link_to($loi->getTitre(), '@document?id='.$loi->id);
-	if ($l = $amendement->getLettreLoi()) echo "($l)"; ?></h3>
+    if ($titreloi)
+      echo link_to(preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $titreloi->titre), '@loi?loi='.$titreloi->texteloi_id);
+    else if ($loi)
+      echo link_to($loi->getTitre(), '@document?id='.$loi->id);
+    else echo 'Texte de loi N°&nbsp;'.$amendement->texteloi_id;
+    echo '</h3><h3>'.$sujet;
+    if ($l = $amendement->getLettreLoi()) echo "($l)"; ?></h3>
 </div>
 <div class="texte_intervention">
   <?php $texte = $amendement->getTexte();
   $texte = preg_replace('/\s+(:|;|!|\?|»|\-)/', '&nbsp;\1', $texte);
   $texte = preg_replace('/(«|\-)\s+/', '\1&nbsp;', $texte);
-  if ($loi && preg_match('/alin(e|é)a\s*(\d+)[^\d]/', $texte, $match)) {
-    $link = link_to('alinéa '.$match[2], '@loi_article?loi='.$loi->texteloi_id.'&article='.$art.'#alinea_'.$match[2]);
+  if ($titreloi && preg_match('/alin(e|é)a\s*(\d+)[^\d]/', $texte, $match)) {
+    $link = link_to('alinéa '.$match[2], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art.'#alinea_'.$match[2]);
     $texte = preg_replace('/(alin(e|é)a\s*\d+)([^\d])/', $link.'\3', $texte);
   }
   echo $texte; ?>

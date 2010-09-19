@@ -80,7 +80,7 @@ echo link_search($value,
       <p class="photo"><a href="<?php echo $record['link']; ?>" rel="nofollow"><img height=67 width=53 src="<?php echo $record['photo']; ?>"/></a></p>
       <p class="intervenant"><a href="<?php echo $record['link']; ?>" rel="nofollow"><?php echo $record['personne']; ?></a></p>
       <p class="content"><?php echo $record['highlighting']; ?></p>
-      <p class="more"><a href="<?php echo $record['link']; ?>">Lire dans son contexte</a></p>
+      <p class="more"><a href="<?php echo $record['link']; ?>">Consulter</a></p>
 </div>
 <div class="record">
 </div>

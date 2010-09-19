@@ -101,10 +101,14 @@ class Amendement extends BaseAmendement {
   }
 
   public function getTitre() {
-    return 'Projet de loi N° '.$this->texteloi_id.' : '.$this->sujet.' - '.$this->getShortTitre();
+    return $this->getPresentTitre().' au texte N° '.$this->texteloi_id.' - '.$this->sujet.' ('.$this->getPresentSort().')';
   }
 
   public function getShortTitre() {
+    return $this->getPresentTitre().' ('.$this->getPresentSort().')';
+  }
+
+  public function getPresentTitre() {
     $parent = 0;
     $pluriel = "";
     $parent = $this->getTags(array('is_triple' => true,
@@ -136,7 +140,11 @@ class Amendement extends BaseAmendement {
       $titre .= " ".$this->rectif."ème rectif.";
     if ($parent != 0)
       $titre .= ' à l\'amendement N° <a href="/amendements/'.$this->texteloi_id.'/'.$parent[0].'">'.$parent[0].$lettre.'</a>';
-    return "$titre".' ('.preg_replace('/indéfini/i', 'Sort indéfini', $this->getSort()).')';
+    return $titre;
+  }
+
+  public function getPresentSort() {
+    return preg_replace('/indéfini/i', 'Sort indéfini', $this->getSort());
   }
 
   public function getTexte($style=1) {

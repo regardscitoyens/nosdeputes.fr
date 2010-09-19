@@ -373,7 +373,7 @@ commentaires_rss:
   param: {module: commentaire, action: list, rss: 1}
 commentaires_widget:
   url: /commentaires/widget
-  param: {module: commentaire, action: Widget}
+  param: {module: commentaire, action: widget}
 
 parlementaire:
   url: /:slug

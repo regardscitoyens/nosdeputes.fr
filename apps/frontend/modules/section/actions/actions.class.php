@@ -57,7 +57,7 @@ class sectionActions extends sfActions
     $this->docs = array();
     if ($this->section->url_an || $lois) {
       $qtextes = Doctrine_Query::create()
-        ->select('t.id, t.type, t.type_details, t.titre, t.signataires')
+        ->select('t.id, t.type, t.type_details, t.titre, t.signataires, t.nb_commentaires')
         ->from('Texteloi t')
         ->whereIn('t.numero', $lois);
       if ($this->section->url_an)

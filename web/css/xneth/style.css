@@ -22,6 +22,8 @@ body {
   border: 1px solid #DBDBDB;
   background-color: #FAFAFA;
   margin-bottom: 16px;
+}
+#coms_widget {
   overflow: auto;
 }
 .commentaire_widget {
@@ -955,6 +957,9 @@ h1 {
   padding-left: 5px;
   color: #6F6F6F;
   background-color: #dbd5c8;
+  margin-top: 18px; 
+  padding-top: 2px; 
+  padding-bottom: 2px; 
 }
 /* les boites principales */
 #b1 {
@@ -983,7 +988,7 @@ h1 {
   background-color: #ebebeb;
 }
 
-.b_d_infos  h3{
+.b_d_infos h3{
   
 }
 
@@ -1111,6 +1116,7 @@ h2 {
   margin-bottom: 13px;
 }
 .commentaires {
+  padding-top: 5px;
   clear:both;
   margin-bottom: 15px;
 }
@@ -1335,7 +1341,7 @@ h2 {
 }
 
 .nuage_de_tags {
-  min-height:172px;
+  min-height:92px;
   margin:5px 0 0 40px;
   padding:5px;
   text-align:justify;
@@ -1362,8 +1368,13 @@ h2 {
 }
 
 .document {
-  padding: 10px;
+  padding: 6px;
 }
+
+.documentlist { 
+  padding: 3px; 
+  text-align: justify; 
+} 
 
 .documents, .orga_dossier {
   padding-top: 20px;
@@ -1525,17 +1536,17 @@ width: 50%;
   background-color:#f7f7f7;
   }
   
-.accueil_liste_liens  h2 {
+.accueil_liste_liens h2 {
   background-color:#dbd5c8;
   font-size: 1.2em;
   margin:0 0 10px 0;
 }
 
-.accueil_deputes_jour  h3 {
+.accueil_deputes_jour h2 {
   font-size: 1.4em;
   color: #6F6F6F;
   text-shadow: 0 0 4px #FFFFFF;
-  margin: 11px 0;
+  margin: 0;
   background: #dbea9e url("images/fond_translucide.png");
   border-top: 1px solid #DDDDDD;
   border-bottom: 1px solid #DDDDDD;
@@ -1560,6 +1571,7 @@ width: 50%;
 .accueil_message {
   float: left;
   width: 662px;
+  height: 223px;
   font-size: 12px;
   border: 1px dashed #dddddd;
   margin: 16px 0;

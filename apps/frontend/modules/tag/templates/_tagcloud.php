@@ -20,7 +20,7 @@ $nom = preg_replace('/^iZ/', 'î', $nom);
 $nom = preg_replace('/^IZ/', 'Î', $nom);
 echo $nom;
 if (isset($route)) { ?></a> <?php } 
-		 ?></span><?php $ct++; endforeach; 
+		 ?></span> <?php $ct++; endforeach; 
 } else { ?>
 <span><em>Aucun mot-clé trouvé</em></span>
 <?php } ?></div>

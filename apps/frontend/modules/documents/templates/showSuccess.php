@@ -1,5 +1,6 @@
 <div class="source"><?php if ($section) echo link_to('Dossier relatif', '@section?id='.$section->id); else echo '<a href="'.$doc->url_an.'">Dossier sur le site de l\'Assemblée</a>'; ?></div>
-<h1 class="orange"><?php echo $doc->getTitre(); ?></h1>
+<h1 class="orange"><?php echo preg_replace('/(N°\s\d+[,\s])/', '\\1<br/>', $doc->getTitre()); ?></h1>
+<h3 class="aligncenter"><?php echo myTools::displayDate($doc->date); ?></h3>
 <div class="document">
 <?php $feminin = "";
 if (preg_match('/(propos|lettre)/i', $doc->type))

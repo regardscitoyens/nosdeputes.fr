@@ -72,11 +72,11 @@ if ($subsection->id != $section->id) : ?>
         $doctitre .= $doc['type_details'];
         if (preg_match('/mixte paritaire/', $doc['signataires']))
           $doctitre .= " de la Commission mixte paritaire";
-        if ($doc->nb_commentaires)
-          $doctitre .= ' (<span class="list_com">'.$doc->nb_commentaires.'&nbsp;commentaire';
-        if ($doc->nb_commentaires > 1)
+        if ($doc['nb_commentaires'])
+          $doctitre .= ' (<span class="list_com">'.$doc['nb_commentaires'].'&nbsp;commentaire';
+        if ($doc['nb_commentaires'] > 1)
           $doctitre .= "s";
-        if ($doc->nb_commentaires) {
+        if ($doc['nb_commentaires']) {
           $doctitre .= "</span>";
           if ($amendements)
             $doctitre .= ", ";

@@ -21,13 +21,14 @@ class Intervention extends BaseIntervention
   }
 
   public function getTitre() {
-    $titre = 'Intervention du '.$this->date.' ';
-    if ($this->type == 'commission') {
-      $titre .= 'en commission';
-    }else{
-      $titre .= 'en hémicycle';
-    }
-    return $titre;
+    if ($this->type === 'question')
+      $titre = 'Question orale';
+    else $titre = 'Intervention';
+    if ($this->type === 'commission')
+      $titre .= ' en commission';
+    else
+      $titre .= ' en hémicycle';
+    return $titre.' le '.myTools::displayShortDate($this->date);
   }
 
   public function setSeance($type, $date, $heure, $session, $commission = null) {
@@ -208,7 +209,7 @@ class Intervention extends BaseIntervention
 						  'namespace' => 'loi',
 						  'key' => 'numero',
 						  'return' => 'value')));
-	for ($i = 0 ; $i < count($match[0]) ; $i++) {
+	if ($lois) for ($i = 0 ; $i < count($match[0]) ; $i++) {
 	  $match_protected = preg_replace('/(\s*)(\d[\d\s\à]*rectifiés?|\d[\d\s\à]*)(,\s*|\s*et\s*)*/', '\1%\2%\3', $match[3][$i]);
 	  if (preg_match_all('/\s*%([^%]+)%(,\s*|\s*et\s*)*/', $match_protected, $amends)) {
 	    $replace = $match_protected;

@@ -10,7 +10,7 @@ class Parlementaire extends BaseParlementaire
     return url_for('@parlementaire?slug='.$this->slug);
   }
   public function getTitre() {
-    return $this->getNom();
+    return $this->getStatut();
   }
   public function getPersonne() {
     return '';

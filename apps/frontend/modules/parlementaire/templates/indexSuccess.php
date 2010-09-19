@@ -154,17 +154,17 @@
 <div class="clear"></div>
 <div class="clear accueil">
   <div class="box_news">
-  <h2><span style="margin-right: 5px;"><img alt="" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png"></span>Notre actualité</h2>
+  <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png"></span>Notre actualité</h2>
     <div class="cont_box_news">
-    <h3>Étude sur la présence : 243 000 € de sanctions prévues par le règlement</h3>
-    <p><img style="float: left; margin-right: 7px; width: 257px;" src="http://www.nosdeputes.fr/confiseurs/presence-moyenne.png" alt="moyenne des présences" />Regards Citoyens a mené une étude à partir des données de NosDeputes.fr visant à évaluer l'incidence des modifications du règlement sur la participation des députés aux travaux de l'Assemblée, notamment aux réunions des commissions.</p>
+    <h3><a href="http://www.nosdeputes.fr/confiseurs/">Étude sur la présence : 243 000 € de sanctions prévues par le règlement</a></h3>
+    <p><a href="http://www.nosdeputes.fr/confiseurs/"><img style="float: left; margin-right: 7px; width: 257px;" src="http://www.nosdeputes.fr/confiseurs/presence-moyenne.png" alt="moyenne des présences" /></a>Regards Citoyens a mené une étude à partir des données de NosDeputes.fr visant à évaluer l'incidence des modifications du règlement sur la participation des députés aux travaux de l'Assemblée, notamment aux réunions des commissions.</p>
 	<p>Le règlement impose en effet avec ses articles 43 et 159 des sanctions financières sur l'indemnité de fonction des députés manifestant des absences répétées aux réunions de leur commission permanente le mercredi matin ou aux scrutins solennels en hémicycle.</p>
     <p>La somme de ces sanctions pour la session ordinaire 2009 — 2010 représenterait 243 737,33 € d'économie possible pour l'Assemblée.</p>
     <p style="text-align: right;"><a href="http://www.nosdeputes.fr/confiseurs/index.php">Lire l'étude</a></p>
     </div>
   </div>
   <div class="box_widget">
-    <h2><span style="margin-right: 5px;"><img alt="" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_comment.png"></span><a href="javascript:getWidget();">Les derniers commentaires</a></h2>
+    <h2><span style="margin-right: 5px;"><img alt="comments" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_comment.png"></span><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a></h2>
     <div id="coms_widget">
       <noscript>
       <?php include_component('commentaire', 'showWidget'); ?>
@@ -173,11 +173,11 @@
     <div style="display: hidden;" id="coms_widget_update"></div>
   </div>
   <div class="box_repartition">
-  <h2><span style="margin-right: 5px;"><img alt="" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_graph.png"></span>Travail parlementaire des 12 derniers mois</h2>
+  <h2><span style="margin-right: 5px;"><img alt="activite" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_graph.png"></span><a href="<?php echo url_for('@top_global'); ?>">Travail parlementaire des 12 derniers mois</a></h2>
   <?php echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
   </div>
   <div class="box_tags">
-  <h2><span style="margin-right: 5px;"><img alt="" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png"></span><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
+  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png"></span><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
   <?php echo include_component('tag', 'globalActivite'); ?>
   </div>
 </div>
