@@ -6,7 +6,7 @@ $sf_response->setTitle('Toutes les circonscriptions électorales par départemen
 foreach($circos as $num => $circo) {
   $ct++;
   if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.$num.'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
+  echo '<p onmouseover="document.getElementById(\'d'.strtoupper($num).'\').className+=\' maphilighted\'; document.getElementById(\'d'.strtoupper($num).'\').class+=\' maphilighted\'; document.getElementById(\'d'.strtoupper($num).'\').maphilight();" onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
   if ($ct == 27)
     break; 
 } ?>
@@ -19,7 +19,7 @@ foreach($circos as $num => $circo) {
   if ($ct <= 27)
     continue;
   if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.$num.'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
+  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
   if ($ct == 55)
     break; 
 } ?>
@@ -31,7 +31,7 @@ foreach($circos as $num => $circo) {
   if ($ct <= 55)
     continue;
   if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.$num.'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
+  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
   if ($ct == 66)
     break;
 } ?>
@@ -43,7 +43,7 @@ foreach($circos as $num => $circo) {
   if ($ct <= 66)
     continue;
   if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.$num.'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
+  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
   if ($ct == 77)
     break;
 } ?>
@@ -55,7 +55,7 @@ foreach($circos as $num => $circo) {
   if ($ct <= 77)
     continue;
   if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.$num.'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
+  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
   if ($ct == 88)
     break;
 } ?>
@@ -67,7 +67,7 @@ foreach($circos as $num => $circo) {
   if ($ct <= 88)
     continue;
   if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.$num.'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
+  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
   if ($ct == 96)
     break;
 } ?>
@@ -80,7 +80,7 @@ foreach($circos as $num => $circo) {
   if ($ct <= 96)
     continue;
   if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.$num.'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
+  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
  } ?>
 </div>
 
