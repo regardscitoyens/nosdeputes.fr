@@ -1098,8 +1098,8 @@ h2 {
 }
 .carte_departement {
   float: right;
-  padding-top: 2px;
-  padding-right: 2px;
+  margin-top: 10px;
+  margin-right: 35px;
 }
 .didascalie {
   font-style: oblique;
@@ -1667,9 +1667,19 @@ a:hover img {
 }
 .list_circo {
   float: left;
-  margin-bottom: 30px;
-  width: 33%;
+  margin-left: 15px;
+  width: 12%;
+  font-size: 12px;
+  text-align: center;
 }
+.dept {
+  padding: 2px;
+  text-align: center;
+}
+.dept:hover {
+  background-color: rgb(198,229,81);
+}
+
 .list_choix {
   text-align: center;
   font-size: 1.4em;

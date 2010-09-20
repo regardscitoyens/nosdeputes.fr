@@ -128,18 +128,7 @@ while ls batch/documents/out | grep [a-z] > /dev/null ; do
 done;
 
 php symfony top:Deputes
-for month in 06 07 08 09 10 11 12; do
-  php symfony top:Deputes 2007-$month-01
-done
-for year in 2008 2009; do
-  for month in 01 02 03 04 05 06 07 08 09 10 11 12; do
-    php symfony top:Deputes $year-$month-01
-  done
-done
-for month in 01 02 03 04 05 06 07 08 09; do
-  php symfony top:Deputes 2010-$month-01
-done
-
+bash bin/update_tops
 
 #bash bin/update_hardcache_all
 

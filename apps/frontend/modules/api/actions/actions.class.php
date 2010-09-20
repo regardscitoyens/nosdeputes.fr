@@ -22,7 +22,10 @@ class apiActions extends sfActions
   public function executeTop(sfWebRequest $request)
   {
     $date = $request->getParameter('date');
-    $this->forward404Unless(preg_match('/(\d{4})\d{2}/', $date, $d));
+    $this->forward404Unless(preg_match('/(\d{2,4})-?\d{2}/', $date, $d));
+    $date = preg_replace('/-/', '', $date);
+    $date = preg_replace('/^(\d{2})(\d{2})$/', '20\\1\\2', $date);
+    $d[1] = preg_replace('/^(\d{2})$/', '20\\1', $d[1]);
     $vg = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$d[1]);
     $top = unserialize($vg->value);
 
