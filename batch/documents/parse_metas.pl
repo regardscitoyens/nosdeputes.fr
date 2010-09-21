@@ -6,11 +6,50 @@ $source =~ s/^[^\/]+\///;
 $source =~ s/http(.?)-/http\1:/;
 $source =~ s/_/\//g;
 $id = $source;
-$id =~ s/^http\:\/\/.*(\d{4})(-[at].*)?\.asp$/\1\2/i;
+$plflettre = '';
+if ($id =~ /plf\d{4}\/([a-z])\d{4}/i) {
+  $plflettre = uc($1);
+}
+$id =~ s/^http\:\/\/.*(\d{4})(-[at].*)?\.asp$/\1$plflettre\2/i;
 $id =~ s/^0+//;
 $num = $annexe = $id;
-$num =~ s/^(\d+)(-[at].*)?$/\1/i;
-$annexe =~ s/^\d+(-[at])?(.*)?$/\2/i;
+$num =~ s/^(\d+)([^\d].*)?$/\1/i;
+$annexe =~ s/^\d+([^\d].*)?$/\1/i;
+$annexe =~ s/-//g;
+if ($annexe =~ /t\d([av]\d+)?$/) {
+  $annexe =~ s/t/t0/;
+}
+if ($annexe =~ /v\d$/) {
+  $annexe =~ s/v/v0/;
+}
+if ($annexe =~ /a\d$/) {
+  $annexe =~ s/a/a0/;
+}
+if ($annexe =~ /t([IVX]+)([av].*)?$/) {
+  $ro = $1;
+  $rom{'I'} = '01';
+  $rom{'II'} = '02';
+  $rom{'III'} = '03';
+  $rom{'IV'} = '04';
+  $rom{'V'} = '05';
+  $rom{'VI'} = '06';
+  $rom{'VII'} = '07';
+  $rom{'VIII'} = '08';
+  $rom{'IX'} = '09';
+  $rom{'X'} = '10';
+  $rom{'XI'} = '11';
+  $rom{'XII'} = '12';
+  $rom{'XIII'} = '13';
+  $rom{'XIV'} = '14';
+  $rom{'XV'} = '15';
+  $rom{'XVI'} = '16';
+  $rom{'XVII'} = '17';
+  $rom{'XVIII'} = '18';
+  $rom{'XVIII'} = '19';
+  $rom{'XVIII'} = '20';
+  $ro = $rom{$ro};
+  $annexe =~ s/t([IVX]+)([a-v].*)?$/t$ro\2/;
+}
 
 open(FILE, $file) ;
 @string = <FILE>;

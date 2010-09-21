@@ -16,7 +16,10 @@ foreach $baseurl ("http://www.assemblee-nationale.fr/13/documents/index-depots.a
                   "http://www.assemblee-nationale.fr/13/documents/index-territoire.asp",
                   "http://www.assemblee-nationale.fr/13/documents/index-femmes.asp",
                   "http://www.assemblee-nationale.fr/13/documents/index-information-comper.asp",
-                  "http://www.assemblee-nationale.fr/13/documents/index-enquete-rapports.asp") {
+                  "http://www.assemblee-nationale.fr/13/documents/index-enquete-rapports.asp",
+                  "http://www.assemblee-nationale.fr/13/budget/plf2008/rapporteurs.asp",
+                  "http://www.assemblee-nationale.fr/13/budget/plf2009/rapporteurs.asp",
+                  "http://www.assemblee-nationale.fr/13/budget/plf2010/rapporteurs.asp") {
   $ct = 0;
   $a->get($baseurl);
   $content = $a->content;

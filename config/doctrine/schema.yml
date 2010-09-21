@@ -238,7 +238,7 @@ Amendement:
     source:
       type: string(255)
     legislature: integer
-    texteloi_id: string(12)
+    texteloi_id: string(16)
     numero: string(8)
     rectif: integer
     sujet: string(100)
@@ -489,7 +489,7 @@ ArticleLoi:
       fields: [titre]
       unique: false
   columns:
-    texteloi_id: string(12)
+    texteloi_id: string(16)
     titre: string(16)
     ordre: integer
     precedent: string(16)
@@ -517,7 +517,7 @@ Alinea:
   actAs:
     Timestampable:
   columns:
-    texteloi_id: string(12)
+    texteloi_id: string(16)
     article_loi_id: integer
     numero: integer
     texte:
@@ -541,7 +541,7 @@ TitreLoi:
   actAs:
     Timestampable:
   columns:
-    texteloi_id: string(12)
+    texteloi_id: string(16)
     chapitre: string(8)
     section: string(8)
     titre: string(512)
@@ -577,7 +577,7 @@ Texteloi:
       date: date
   columns:
     id:
-      type: string(12)
+      type: string(16)
       unique: true
     legislature: integer
     numero: integer
@@ -622,7 +622,7 @@ ParlementaireTexteloi:
     Timestampable:
   columns:
     parlementaire_id: integer
-    texteloi_id: string(12)
+    texteloi_id: string(16)
     importance: integer
     fonction: string(255)
   relations:
