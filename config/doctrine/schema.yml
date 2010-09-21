@@ -25,9 +25,9 @@ Parlementaire:
     Solrable:
       title: nom
       extra_weight: 1.5
-      description: [num_circo, nom_circo]
+      description: [num_circo, nom_circo, villes]
       moretags: [profession, nom_circo]
-  columns:     
+  columns:
     nom_circo: string(255)
     num_circo: integer
     site_web: string(255)
@@ -49,6 +49,7 @@ Parlementaire:
     autres_mandats: string
     mails: string
     top: string
+    villes: string
   inheritance:
     extends: Personnalite
     type: concrete
@@ -61,6 +62,12 @@ Parlementaire:
     uniq_url:
       fields: [url_an]
       type: unique
+
+ParlementairePhoto:
+  columns:
+    slug: string(255)
+    photo: blob
+        
 
 Organisme:
   actAs:

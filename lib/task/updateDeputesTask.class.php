@@ -25,6 +25,8 @@ class updateDeputesTask extends sfBaseTask
     $dir = dirname(__FILE__).'/../../batch/depute/out/';
     $manager = new sfDatabaseManager($this->configuration);    
 
+    $villes = json_decode(file_get_contents($dir.'../static/villes.json'));
+
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) !== false) {
@@ -73,6 +75,7 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->site_web = $json->site_web;
 	    if ($json->url_an)
 	      $parl->url_an = $json->url_an;
+	    $parl->villes = $villes->{$parl->getNumDepartement()}->{$parl->num_circo};
 	    $parl->save();
 	  }
 	}

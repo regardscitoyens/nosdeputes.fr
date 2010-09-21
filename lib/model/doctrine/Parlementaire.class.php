@@ -199,23 +199,6 @@ class Parlementaire extends BaseParlementaire
     return array_values($res);
   }
 
-  public function hasPhoto() 
-  {
-    $photo = $this->_get('photo');
-    return (strlen($photo) > 0) ;
-  }
-  public function setPhoto($s) {
-    if (preg_match('/http/', $s)) {
-      $len = strlen($this->_get('photo'));
-      if ($len < 5200) {
-	$s = file_get_contents($s);
-      }else
-	return true;
-      if (!$s)
-	return false;
-    }
-    $this->_set('photo', $s);
-  }
   public function getPageLink() {
     return '@parlementaire?slug='.$this->slug;
   }
@@ -573,10 +556,59 @@ class Parlementaire extends BaseParlementaire
     else return 0;
   }
 
+  public function addVille($ville) {
+    if (!isset($this->array_villes) || !$this->array_villes) {
+      $villes = $this->getVille();
+      $this->array_villes = explode(', ', $villes);
+    }
+    array_push($this->array_villes, $ville);
+    return $this->_set('villes', implode(', ', $this->array_villes));
+  }
+
+  public function setVille($ville) {
+    $this->array_villes = null;
+    return parent::setVille($ville);
+  }
+
   public function getTop() {
     //A supprimer lorsque les top seront unifiés (cf. parlementaire action)
     $s = preg_replace('/s:20:"hemicycle_invectives/', 's:31:"hemicycle_interventions_courtes', $this->_get('top'));
     return unserialize($s);
   }
 
+  private function setInternalPhoto($photo) {
+    if (!isset($this->photo) || !$this->photo)
+      $this->photo = doctrine::getTable('ParlementairePhoto')->findOrAdd($this->id, $this->slug);
+    return $this->photo->setPhoto($photo);
+  }
+  private function getInternalPhoto() {
+    if (!isset($this->photo) || !$this->photo)
+      $this->photo = doctrine::getTable('ParlementairePhoto')->find($this->id);
+    if (!$this->photo)
+      return null;
+    return $this->photo->getPhoto();
+  }
+
+  public function hasPhoto() 
+  {
+    $photo = $this->getInternalPhoto('photo');
+    return (strlen($photo) > 0) ;
+  }
+  public function setPhoto($s) {
+    if (preg_match('/http/', $s)) {
+      $len = strlen($this->_get('photo'));
+      if ($len < 5200) {
+	$s = file_get_contents($s);
+      }else
+	return true;
+      if (!$s)
+	return false;
+    }
+    $this->setInternalPhoto($s);
+  }
+  public function save($c = null) {
+    if (isset($this->photo) && $this->photo)
+      $this->photo->save();
+    return parent::save($c);
+  }
 }
