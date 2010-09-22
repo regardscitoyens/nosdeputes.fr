@@ -25,6 +25,7 @@ body {
 }
 #coms_widget {
   overflow: auto;
+  max-height: 230px;
 }
 .commentaire_widget {
   clear:both;
