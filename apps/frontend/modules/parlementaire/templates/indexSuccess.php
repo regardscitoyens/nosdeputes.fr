@@ -86,16 +86,16 @@
 		success: function(html){
 		  if ($.browser.msie == true) {
 		    obj = document.getElementById("coms_widget_update");
-			obj.innerHTML = html;
+			  obj.innerHTML = html;
 		  }
 		  else {
 		    $("#coms_widget_update").text("");
-			$("#coms_widget_update").append(html);
+			  $("#coms_widget_update").append(html);
 		  }
+		  reorderWidget();
 		},
 		complete: function() {
-		  reorderWidget();
-	      $("#chargement_widget").remove();
+	    $("#chargement_widget").remove();
 		  $("#coms_widget").text("");
 		  $(".commentaire_widget").css("display", "none");
 		  i = 0;
@@ -114,8 +114,9 @@
 		$("#"+commentaires_update[q]).css("display", "none");
 		q++;
 	  });
-	  commentaires = commentaires_update;
-	  commentaires_update = null;
+    commentaires = commentaires_update;
+	  commentaires_update = new Array ();
+    
 	  /* $.merge(commentaires, commentaires_update);
 	  commentaires_update = null;
 	  commentaires_temp = uniqueArray(commentaires);
@@ -129,12 +130,12 @@
 	  commentaires_temp = null; */
 	}
 	
-    function clearTimer() {
+  function clearTimer() {
 	  clearTimeout(timerWidget);
 	}
 
 </script>
-<div class="clear">
+<div class="clear"> 
 <div class ="accueil_message">
 <div class="accueil_message_content">
     <h1>Bienvenue sur NosDéputés.fr</h1>
