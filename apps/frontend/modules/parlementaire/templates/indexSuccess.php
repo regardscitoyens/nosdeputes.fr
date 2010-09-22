@@ -10,6 +10,7 @@
 	disparait = 300;
 	change = 7000;
 	update = 60000;
+	reprends_a = 0;
 	timerWidget = null;
 	i = 0;
 	
@@ -133,6 +134,17 @@
   function clearTimer() {
 	  clearTimeout(timerWidget);
 	}
+	
+	$(".commentaire_widget").live("mouseover", function() {
+	  clearInterval(timerUpdate);
+	  clearTimeout(timerWidget);
+	  reprends_a = i;
+	});
+	
+	$(".commentaire_widget").live("mouseout", function() {
+	  timerUpdate = setInterval(function(){updateWidget();}, update);
+	  timerWidget = setTimeout(function(){changeCommentaire(reprends_a);}, 1000);
+	});
 
 </script>
 <div class="clear"> 
