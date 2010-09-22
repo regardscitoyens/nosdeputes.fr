@@ -9,21 +9,21 @@ class ParlementaireOrganisme extends BaseParlementaireOrganisme
     return $this->getNom().' ('.$this->getFonction().')';
   }
     public static function defImportance($fonction) {
-      if (preg_match('`^(président|président)`i', $fonction)) return 100;
-      else if (preg_match('`rapporteur général`i`', $fonction)) return 95;
-      else if (preg_match('`(président|président)`i', $fonction)) return 90;
-      else if (preg_match('`questeur`i', $fonction)) {
-          if (preg_match('`membre`i', $fonction)) return 80;
+      if (preg_match('/^(président|président)/i', $fonction)) return 100;
+      else if (preg_match('/rapporteur général/i/', $fonction)) return 95;
+      else if (preg_match('/(président|président)/i', $fonction)) return 90;
+      else if (preg_match('/questeur/i', $fonction)) {
+          if (preg_match('/membre/i', $fonction)) return 80;
           return 70;
       }
-      else if (preg_match('`(rapporteur|secretaire|secrétaire)`i', $fonction)) return 60;
-      else if (preg_match('`membre`i', $fonction)) {
-          if (preg_match('`(suppleant|suppléant)`i', $fonction)) return 30;
+      else if (preg_match('/(rapporteur|secretaire|secrétaire)/i', $fonction)) return 60;
+      else if (preg_match('/membre/i', $fonction)) {
+          if (preg_match('/(suppleant|suppléant)/i', $fonction)) return 30;
           if ($fonction == "membre") return 40;
           return 50;
       }
-      else if (preg_match('`apparent`i', $fonction)) return 20;
-      else if (preg_match('`reprise`i', $fonction)) return 10;
+      else if (preg_match('/apparent/i', $fonction)) return 20;
+      else if (preg_match('/reprise/i', $fonction)) return 10;
       else return 0;
   }
 
