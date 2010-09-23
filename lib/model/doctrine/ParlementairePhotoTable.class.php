@@ -9,7 +9,7 @@ class ParlementairePhotoTable extends Doctrine_Table
         return Doctrine_Core::getTable('ParlementairePhoto');
     }
 
-    public findOrCreate($id, $slug) {
+    public function findOrCreate($id, $slug) {
       $p = $this->find($id);
       if (!$p) {
 	$p = new ParlementairePhoto();

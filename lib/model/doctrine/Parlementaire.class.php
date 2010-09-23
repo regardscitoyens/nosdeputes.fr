@@ -577,22 +577,28 @@ class Parlementaire extends BaseParlementaire
   }
 
   private function setInternalPhoto($photo) {
-    if (!isset($this->photo) || !$this->photo)
-      $this->photo = doctrine::getTable('ParlementairePhoto')->findOrAdd($this->id, $this->slug);
-    return $this->photo->setPhoto($photo);
+    $this->photo = $photo;
+    return true;
   }
   private function getInternalPhoto() {
-    if (!isset($this->photo) || !$this->photo)
-      $this->photo = doctrine::getTable('ParlementairePhoto')->find($this->id);
+    if (!isset($this->photo) || !$this->photo) {
+      $this->photo = null;
+      $pphoto = doctrine::getTable('ParlementairePhoto')->find($this->id);
+      if ($pphoto)
+	$this->photo = $pphoto->photo;
+    }
     if (!$this->photo)
       return null;
-    return $this->photo->getPhoto();
+    return $this->photo;
   }
 
   public function hasPhoto() 
   {
     $photo = $this->getInternalPhoto('photo');
     return (strlen($photo) > 0) ;
+  }
+  public function getPhoto() {
+    return $this->getInternalPhoto();
   }
   public function setPhoto($s) {
     if (preg_match('/http/', $s)) {
@@ -606,9 +612,13 @@ class Parlementaire extends BaseParlementaire
     }
     $this->setInternalPhoto($s);
   }
-  public function save($c = null) {
-    if (isset($this->photo) && $this->photo)
-      $this->photo->save();
-    return parent::save($c);
+  public function save(Doctrine_Connection $c = null) {
+    parent::save($c);
+    if (isset($this->photo) && $this->photo) {
+      $pphoto = doctrine::getTable('ParlementairePhoto')->findOrCreate($this->id, $this->slug);
+      $pphoto->setPhoto($this->photo);
+      $pphoto->save($c);
+    }
+    return true;
   }
 }

@@ -25,4 +25,10 @@ ALTER TABLE amendement ADD CONSTRAINT amendement_texteloi_id_texteloi_id FOREIGN
 ALTER TABLE article_loi ADD CONSTRAINT article_loi_texteloi_id_texteloi_id FOREIGN KEY (texteloi_id) REFERENCES texteloi(id);
 ALTER TABLE titre_loi ADD CONSTRAINT titre_loi_texteloi_id_texteloi_id FOREIGN KEY (texteloi_id) REFERENCES texteloi(id);
 
+CREATE TABLE `parlementaire_photo` (
+`id` INT NOT NULL ,
+`slug` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+`photo` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL ,
+PRIMARY KEY ( `id` )
+) ;
 

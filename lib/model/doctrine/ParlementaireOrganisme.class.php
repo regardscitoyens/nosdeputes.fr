@@ -10,7 +10,7 @@ class ParlementaireOrganisme extends BaseParlementaireOrganisme
   }
     public static function defImportance($fonction) {
       if (preg_match('/^(président|président)/i', $fonction)) return 100;
-      else if (preg_match('/rapporteur général/i/', $fonction)) return 95;
+      else if (preg_match('/rapporteur général/i', $fonction)) return 95;
       else if (preg_match('/(président|président)/i', $fonction)) return 90;
       else if (preg_match('/questeur/i', $fonction)) {
           if (preg_match('/membre/i', $fonction)) return 80;

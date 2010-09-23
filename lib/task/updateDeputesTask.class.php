@@ -36,9 +36,10 @@ class updateDeputesTask extends sfBaseTask
 //	  echo "$dir$file\n";
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
-	    if (!isset($json->nom) || !$json->nom)
-	      next;
-//	    echo "-".$json->nom." ".$json->id_an."\n";
+	    $json->nom = trim($json->nom);
+	    if (!isset($json->nom) || !strlen($json->nom))
+	      continue;
+	    //	    echo "-".$json->nom.strlen($json->nom)." ".$json->id_an."\n";
 	    $parl = Doctrine::getTable('Parlementaire')->findOneByNom($json->nom);
 	    if (!$parl) {
 	      $parl = new Parlementaire();
