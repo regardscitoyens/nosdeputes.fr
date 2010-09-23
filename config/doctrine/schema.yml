@@ -23,9 +23,9 @@ Personnalite:
 Parlementaire:
   actAs:
     Solrable:
-      title: nom
+      title: [nom, long_statut]
       extra_weight: 1.5
-      description: [num_circo, nom_circo, villes]
+      description: [villes]
       moretags: [profession, nom_circo]
   columns:
     nom_circo: string(255)

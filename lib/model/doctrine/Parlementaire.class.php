@@ -10,7 +10,7 @@ class Parlementaire extends BaseParlementaire
     return url_for('@parlementaire?slug='.$this->slug);
   }
   public function getTitre() {
-    return $this->getNom().', '.$this->getStatut();
+    return $this->getNom().', '.$this->getLongStatut();
   }
   public function getPersonne() {
     return '';
@@ -20,11 +20,6 @@ class Parlementaire extends BaseParlementaire
       return $nom;
     return "";
   }
-
-  /*  public function save() {
-    Doctrine::getTable('Personnalite')->hasChanged();
-    return parent::save($conn);
-    }*/
 
   public function setCirconscription($str) {
     if (preg_match('/(.*)\((\d+)/', $str, $match)) {
@@ -70,7 +65,7 @@ class Parlementaire extends BaseParlementaire
     }
     $groupe = "";
     if ($this->groupe_acronyme != "") {
-      if ($link == 1)
+      if ($link && function_exists('link_to'))
         $groupe = " ".link_to($this->groupe_acronyme, '@list_parlementaires_groupe?acro='.$this->groupe_acronyme);
       else $groupe = " ".$this->groupe_acronyme;
     }
@@ -79,7 +74,7 @@ class Parlementaire extends BaseParlementaire
   
   public function getLongStatut($link = 0) {
     $circo = $this->nom_circo;
-    if ($link == 1) {
+    if ($link && function_exists('link_to')) {
       $circo = link_to($this->nom_circo, '@list_parlementaires_departement?departement='.$circo);
     }
     return $this->getStatut($link).' de la '.$this->getNumCircoString().' '.$this->getPrefixeCirconscription().$circo;

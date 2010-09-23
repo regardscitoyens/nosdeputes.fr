@@ -30,7 +30,6 @@ class SolrConnector extends sfLogger
   public function updateFromCommands() {
     $file = SolrCommands::getInstance()->getCommandContent();
     foreach(file($file) as $line) {
-      echo "$line\n";
       if (preg_match('/(UPDATE|DELETE) : (.+)/', $line, $matches)) {
 	$obj = json_decode($matches[2]);
 	if ($matches[1] == 'UPDATE') {

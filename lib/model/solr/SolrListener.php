@@ -132,9 +132,6 @@ class SolrListener extends Doctrine_Record_Listener
 	$content = $this->get_and_strip($obj, $i);
 	$i = preg_replace('/([A-Z].*)s$/', '\1', $i);
 	foreach($content as $c) {
-	  if (get_class($c)) {
-	      echo $c->nom."\n";
-	  }
 	  $s = $c;
 	  if (strlen($s)) {
 	    $s = strip_tags($s);
