@@ -1668,7 +1668,12 @@ a:hover img {
 }
 .list_circo {
   float: left;
-  margin-left: 15px;
+  margin-bottom: 30px; 
+  width: 40%; 
+} 
+.list_deptmts {
+  float: left;
+  margin: 10px 9px 25px 9px;
   width: 12%;
   font-size: 12px;
   text-align: center;

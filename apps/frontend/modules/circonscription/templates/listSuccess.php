@@ -1,86 +1,24 @@
 <h1>Toutes les circonscriptions par département</h1><?php 
 $sf_response->setTitle('Toutes les circonscriptions électorales par département - NosDéputés.fr'); ?>
 <?php // CirconscriptionActions::echoCircoMap("full", 900, 0); ?>
-<div class="list_circo">
-<?php $div = floor(count($circos)/6)+1; $ct = 0; 
-foreach($circos as $num => $circo) {
-  $ct++;
-  if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onmouseover="document.getElementById(\'d'.strtoupper($num).'\').className+=\' maphilighted\'; document.getElementById(\'d'.strtoupper($num).'\').class+=\' maphilighted\'; document.getElementById(\'d'.strtoupper($num).'\').maphilight();" onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
-  if ($ct == 27)
-    break; 
-} ?>
-</div>
 <?php CirconscriptionActions::echoDeptmtsMap(600, 546); ?>
-<div class="list_circo borderleft">
-<?php $ct = 0;
-foreach($circos as $num => $circo) {
+<div class="list_deptmts">
+<?php $iters = array("0" => 27, "27" => 55, "55" => 65, "65" => 75, "75" => 86, "86" => 96, "96" => 120);
+$div = floor(count($circos)/6)+1;
+foreach ($iters as $iter1 => $iter2) {
+ $ct = 0;
+ if ($iter1 != 0)
+   echo '</div><div class="list_deptmts">';
+ if ($iter2 == 120)
+   echo '<h3 class="align_center">DOM-TOMs&nbsp;:</h3>';
+ foreach($circos as $num => $circo) {
   $ct++;
-  if ($ct <= 27)
+  if ($ct <= $iter1)
     continue;
   if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
   echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
-  if ($ct == 55)
+  if ($ct == $iter2)
     break; 
+ }
 } ?>
 </div>
-<div class="list_circo borderleft">
-<?php $ct = 0;
-foreach($circos as $num => $circo) {
-  $ct++;
-  if ($ct <= 55)
-    continue;
-  if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
-  if ($ct == 66)
-    break;
-} ?>
-</div>
-<div class="list_circo borderleft">
-<?php $ct = 0;
-foreach($circos as $num => $circo) {
-  $ct++;
-  if ($ct <= 66)
-    continue;
-  if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
-  if ($ct == 77)
-    break;
-} ?>
-</div>
-<div class="list_circo borderleft">
-<?php $ct = 0;
-foreach($circos as $num => $circo) {
-  $ct++;
-  if ($ct <= 77)
-    continue;
-  if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
-  if ($ct == 88)
-    break;
-} ?>
-</div>
-<div class="list_circo borderleft">
-<?php $ct = 0;
-foreach($circos as $num => $circo) {
-  $ct++;
-  if ($ct <= 88)
-    continue;
-  if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
-  if ($ct == 96)
-    break;
-} ?>
-</div>
-<div class="list_circo borderleft">
-<h3 class="align_center">DOM-TOMs&nbsp;:</h3>
-<?php $ct = 0;
-foreach($circos as $num => $circo) {
-  $ct++;
-  if ($ct <= 96)
-    continue;
-  if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
- } ?>
-</div>
-

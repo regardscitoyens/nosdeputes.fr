@@ -251,7 +251,7 @@ class circonscriptionActions extends sfActions
 
     $src = url_for("@deptmts_image_png?w=$w&h=$h");
 
-    echo "<img class=\"carte_departement\" src=\"$src\" usemap=\"#deptmts\" ";
+    echo "<img alt=\"Carte issue de Wikipedia : Départements et régions de France par Bayo (sous licence GFDL)\" class=\"carte_departement\" src=\"$src\" usemap=\"#deptmts\" ";
     echo 'style="width:'.$w.'px; height:'.$h.'px;" />';
     echo "<map name=\"deptmts\">";
     echo $r['areas'];

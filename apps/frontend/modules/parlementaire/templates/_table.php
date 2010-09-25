@@ -20,7 +20,7 @@ foreach($deputes as $depute) {
     <span class="list_nom">
       <a href="<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>"><?php echo $depute->getNomPrenom(); ?></a>
     </span>
-    <span class="list_right"><a href="<?php echo url_for('@list_parlementaires_departement?departement='.$depute->nom_circo); ?>"><?php
+    <span class="list_right"><a href="<?php if (!isset($circo)) echo url_for('@list_parlementaires_departement?departement='.$depute->nom_circo); else echo url_for('@parlementaire?slug='.$depute->slug); ?>"><?php
       if (isset($circo)) {
         echo '<span class="list_num_circo">';
         $string = preg_replace('/(è[rm]e)/', '<sup>\1</sup>', $depute->getNumCircoString());
