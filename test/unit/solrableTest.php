@@ -3,7 +3,7 @@
 include(dirname(__FILE__).'/../bootstrap/unit.php');
  
 new sfDatabaseManager(ProjectConfiguration::getApplicationConfiguration('frontend', 'test', true));
-$t = new lime_test(13);
+$t = new lime_test(17);
 
 $s = new SolrConnector();
 
@@ -93,3 +93,34 @@ $s->updateFromCommands();
 $r = $s->search("id:$id");
 $t->is(count($r['response']['docs']), 0, "La question ecrite a été supprimée");
 
+$c = new Commentaire();
+$c->commentaire = "commentaire test";
+$c->is_public = 0;
+$c->object_type = "Parlementaire";
+$c->object_id = "1";
+$c->citoyen_id = 2;
+
+$c->save();
+$s->updateFromCommands();
+$id = $c->id;
+$r = $s->search("id:Commentaire/$id");
+$t->is(count($r['response']['docs']), 0, "Le commentaire n'est pas trouvable car is_public = 0");
+
+$c = Doctrine::getTable('Commentaire')->find($id);
+$c->is_public = 1;
+$c->save();
+$s->updateFromCommands();
+$r = $s->search("id:Commentaire/$id");
+$t->is(count($r['response']['docs']), 1, "Le commentaire est trouvable car is_public = 1");
+
+$c = Doctrine::getTable('Commentaire')->find($id);
+$c->is_public = 0;
+$c->save();
+$s->updateFromCommands();
+$r = $s->search("id:Commentaire/$id");
+$t->is(count($r['response']['docs']), 0, "Le commentaire n'est pas trouvable car is_public = 0");
+
+$c->delete();
+$s->updateFromCommands();
+$r = $s->search("id:Commentaire/$id");
+$t->is(count($r['response']['docs']), 0, "Le commentaire n'est pas trouvable car il est supprimé");
