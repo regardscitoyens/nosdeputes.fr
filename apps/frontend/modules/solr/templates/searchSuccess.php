@@ -17,7 +17,7 @@ function link_search($text, $query, $args)
 <div class="solr">
 <div class="searchbox">
 <form>
-    <input name="search" value="<?php echo $query; ?>" />
+    <input name="search" value="<?php echo htmlentities($query, ENT_QUOTES); ?>" />
     <input type="submit" value="Rechercher"/>
 </form>
 </div>

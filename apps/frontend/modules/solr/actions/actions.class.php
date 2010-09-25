@@ -81,6 +81,14 @@ class solrActions extends sfActions
       $params['facet.date.start']=$date;
       $params['facet.date.end'] = $date.'+1'.$period;
       $params['facet.date.gap'] = '+1DAY';
+    }else {
+      if ($from = $request->getParameter('from')) {
+	$to = $request->getParameter('to', 'NOW');
+	$query .= ' date:['.$from.' TO '.$to.']';
+	$params['facet.date.start']=$from;
+	$params['facet.date.end'] = $to;
+	$params['facet.date.gap'] = '+1MONTH';
+      }
     }
     $results = $s->search($query, $params, $deb, $nb);
     //Reconstitut les résultats
