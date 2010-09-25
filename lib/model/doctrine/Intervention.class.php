@@ -66,9 +66,6 @@ class Intervention extends BaseIntervention
     }
     $personne = Doctrine::getTable('Personnalite')->findOneByNom($nom);
     if (!$personne) {
-      $personne = Doctrine::getTable('Personnalite')->similarTo($nom);
-    }
-    if (!$personne) {
       $personne = new Personnalite();
       $personne->setNom($nom);
       $personne->save();
