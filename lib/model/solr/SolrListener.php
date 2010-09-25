@@ -71,14 +71,16 @@ class SolrListener extends Doctrine_Record_Listener
     $obj = $event->getInvoker();
 
     $t = null;
-    if (isset( $this->_options['index_if']) && $t = $this->_options['index_if'] && $t && !$obj->get($t))
-      return ;
+    if (isset( $this->_options['index_if']) && $t = $this->_options['index_if']) {
+      if (!($obj->get($t))) {
+	return $this->postDelete($event);
+      }
+    }
     
     $json = array();
     $json['id'] = $this->getLuceneObjId($obj);
     $json['object_id'] =  $obj->getId();
     $json['object_name'] = get_class($obj);
-    
     if (isset($this->_options['description']) && $t = $this->_options['description']) {
       $content = $this->getObjFieldsValue($obj, $t);
       $wordcount = str_word_count($content);

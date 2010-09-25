@@ -10,7 +10,9 @@ class Commentaire extends BaseCommentaire
     return url_for($this->lien);
   }
   public function getPersonne() {
-    return $this->getCitoyen()->getLogin();
+    if ($this->getCitoyen())
+      return $this->getCitoyen()->getLogin();
+    return '';
   }
   public function getTitre() {
     return $this->getPresentation();
@@ -79,8 +81,10 @@ class Commentaire extends BaseCommentaire
   }
 
   public function updateNbCommentaires($inc = 0) {
-    $o = Doctrine::getTable($this->object_type)->find($this->object_id);
-    $o->updateNbCommentaires($inc);
+    if ($this->object_type) {
+      $o = Doctrine::getTable($this->object_type)->find($this->object_id);
+      $o->updateNbCommentaires($inc);
+    }
     foreach ($this->getObjects() as $object) {
       $o = Doctrine::getTable($object->object_type)->find($object->object_id);
       if (isset($o))
@@ -88,13 +92,13 @@ class Commentaire extends BaseCommentaire
     }
   }
 
-  public function setIsPublic($b) {
-    $this->_set('is_public', $b);
-    if ($this->id) {
-      $this->updateNbCommentaires(($b) ? 1 : -1);
-    }
-  }
   public function getLien() {
     return preg_replace('/@amendement\?id=/', '@amendement_id?id=', $this->_get('lien'));
+  }
+
+  public function save(Doctrine_Connection $c = null) {
+    parent::save($c);
+    $b = $this->is_public;
+    $this->updateNbCommentaires(($b) ? 1 : -1);
   }
 }
