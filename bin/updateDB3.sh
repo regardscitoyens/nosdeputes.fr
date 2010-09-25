@@ -6,9 +6,16 @@ php symfony cc
 #php symfony doctrine:build --all-classes
 #cat bin/updateDB3.model.sql | mysql $MYSQLID $DBNAME
 php symfony doctrine:build --all --no-confirmation
-zcat data/sql/dumps/nosdeputes_prod.100912.sql.gz | mysql --default-character-set=utf8 $MYSQLID $DBNAME
+
+echo "ALTER TABLE `parlementaire` ADD `photo` LONGBLOB NULL AFTER `profession`;" | mysql $MYSQLID $DBNAME
+
+zcat data/sql/dumps/nosdeputes_prod.100925.sql.gz | mysql --default-character-set=utf8 $MYSQLID $DBNAME
+
+echo "ALTER TABLE `parlementaire` DROP `photo`;" | mysql $MYSQLID $DBNAME
 
 cat bin/updateDB3.1.sql | mysql $MYSQLID $DBNAME
+
+php symfony update:Deputes
 
 cd batch/hemicycle
 perl parse_hemicycle.pl html/http\:__www.assemblee-nationale.fr_13_cri_2007-2008_20080120.asp > out/out1
@@ -128,7 +135,7 @@ while ls batch/documents/out | grep [a-z] > /dev/null ; do
 done;
 
 php symfony top:Deputes
-bash bin/update_tops
+bash bin/update_tops.sh
 
 #bash bin/update_hardcache_all
 

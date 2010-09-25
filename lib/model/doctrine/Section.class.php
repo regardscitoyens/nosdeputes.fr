@@ -69,6 +69,12 @@ class Section extends BaseSection
     return $this->_get('Section');
   }
 
+  public function isParent() {
+    if ($this->section_id == $this->id && !preg_match('/questions/i', $this->titre))
+      return true;
+    return false;
+  }
+
   public function getTitre() {
     return ucfirst(preg_replace('/\s*\?$/', '', $this->_get('titre')));
   }

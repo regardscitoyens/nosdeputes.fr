@@ -22,6 +22,12 @@ class QuestionEcrite extends BaseQuestionEcrite
     return $str;
   }
 
+  public function getLastDate() {
+    if ($this->date_cloture)
+      return $this->date_cloture;
+    return $this->date;
+  }
+
   public function getTitre() {
     $titre = 'Question N° '.$this->numero.' du '.myTools::displayShortDate($this->date).' ('.preg_replace('/\s*[\/\(].*$/', '', $this->ministere).')';
     if ($this->date_cloture && !$this->reponse && date("Y-m-d") > $this->date_cloture) $titre .= ' (Retirée)';
