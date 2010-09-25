@@ -12,4 +12,13 @@
  */
 class ParlementairePhoto extends BaseParlementairePhoto
 {
+  public function setPhoto($p) {
+    return $this->_set('photo', base64_encode($p));
+  }
+  public function getPhoto() {
+    return base64_decode($this->_get('photo'));
+  }
+  public function save(Doctrine_Connection $c = null) {
+    return parent::save($c);
+  }
 }

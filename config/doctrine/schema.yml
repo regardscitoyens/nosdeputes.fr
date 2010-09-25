@@ -36,7 +36,6 @@ Parlementaire:
     place_hemicycle: integer
     url_an: string(255)
     profession: string(255)
-    photo: blob
     autoflip: boolean
     id_an:
       type: integer
@@ -66,7 +65,7 @@ Parlementaire:
 ParlementairePhoto:
   columns:
     slug: string(255)
-    photo: blob
+    photo: text
         
 
 Organisme:

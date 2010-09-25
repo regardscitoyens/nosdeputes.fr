@@ -5,6 +5,9 @@
  */
 class Parlementaire extends BaseParlementaire
 {
+
+  private $photo;
+
   public function getLink() {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@parlementaire?slug='.$this->slug);
@@ -597,7 +600,7 @@ class Parlementaire extends BaseParlementaire
   }
   public function setPhoto($s) {
     if (preg_match('/http/', $s)) {
-      $len = strlen($this->_get('photo'));
+      $len = strlen($this->getInternalPhoto());
       if ($len < 5200) {
 	$s = file_get_contents($s);
       }else

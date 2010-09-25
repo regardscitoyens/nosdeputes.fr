@@ -43,14 +43,15 @@ class parlementaireActions extends sfActions
     $work_height = 500; //pour éviter des sentiments d'antialiasing
 
     $slug = $request->getParameter('slug');
-    $parlementaires = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->fetchArray();
-    $this->forward404Unless($parlementaires[0]);
+    $parlementaire = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->fetchOne();
+    $this->forward404Unless($parlementaire);
     $file = tempnam(sys_get_temp_dir(), 'Parl');
-    if (!$parlementaires[0]['photo']) {
+    $photo = $parlementaire->photo;
+    if (!strlen($photo)) {
       copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_depute.jpg', $file); 
     } else {
       $fh = fopen($file, 'w');
-      fwrite($fh ,$parlementaires[0]['photo']);
+      fwrite($fh ,$photo);
       fclose($fh);
     }
     list($width, $height, $image_type) = getimagesize($file);
@@ -67,7 +68,7 @@ class parlementaireActions extends sfActions
 
     $iorig = imagecreatefromjpeg($file);
     $ih = imagecreatetruecolor($work_height*$width/$height, $work_height);
-    if ($parlementaires[0]['fin_mandat'])
+    if ($parlementaire->fin_mandat)
       self::imagetograyscale($iorig);
     imagecopyresampled($ih, $iorig, 0, 0, 0, 0, $work_height*$width/$height, $work_height, $width, $height);
     $width = $work_height*$width/$height;
@@ -75,12 +76,12 @@ class parlementaireActions extends sfActions
     imagedestroy($iorig);
     unlink($file);
 
-    if ((isset($parlementaires[0]['autoflip']) && $parlementaires[0]['autoflip']) XOR $request->getParameter('flip')) {
+    if ((isset($parlementaire->autoflip) && $parlementaire->autoflip) XOR $request->getParameter('flip')) {
       self::horizontalFlip($ih);
     }
 
-    $groupe = $parlementaires[0]['groupe_acronyme'];
-    if ($groupe && !$parlementaires[0]['fin_mandat']) {
+    $groupe = $parlementaire->groupe_acronyme;
+    if ($groupe && !$parlementaire->fin_mandat) {
       imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon+$bordure, $rayon+$bordure, imagecolorallocate($ih, 255, 255, 255));
       if ($groupe == 'GDR') {
 	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 45, 225, imagecolorallocate($ih, 0, 170, 0), IMG_ARC_EDGED);
