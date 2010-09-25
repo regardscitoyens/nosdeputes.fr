@@ -476,20 +476,20 @@ h1 {
 .initiative a {
   display: block;
   height: 28px;
-  width: 226px;
-  padding-right: 8px;
+  padding-right: 10px;
+  padding-left: 50px;
   text-align: right;
   line-height: 27px;
   font-family: Tahoma;
   font-size: 1em;
   color: #7E7E7E;
   border-right: 1px solid #CFCFCF;
-  background: url("images/top_initiative.png") no-repeat 16px -1px;
+  background: url("images/top_initiative.png") no-repeat 20px -1px;
 }
 .initiative a:hover, .initiative a:focus {
   color: #6F6F6F;
   text-decoration : none;
-  background: url("images/top_initiative.png") no-repeat 16px -29px;
+  background: url("images/top_initiative.png") no-repeat 20px -29px;
 }
 .regardscitoyens {
   float: right;
