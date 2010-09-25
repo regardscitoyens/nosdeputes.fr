@@ -64,13 +64,29 @@ class solrActions extends sfActions
     }
     //Récupère les résultats auprès de SolR
     $s = new SolrConnector();
-    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>"2007-05-01T00:00:00Z", "facet.date.end"=>"NOW", "facet.date.gap"=>"+1MONTH", 'fq' => $fq);
+    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>"2007-05-01T00:00:00Z", "facet.date.end"=>"NOW", "facet.date.gap"=>"+1MONTH", 'fq' => $fq);
     $this->sort_type = 'pertinence';
-    if ($this->sort = $request->getParameter('sort')) {
+
+    $this->sort = $request->getParameter('sort');
+    $date = $request->getParameter('date');
+    $from = $request->getParameter('from');
+    $rss = $request->getParameter('rss');
+
+    if ($rss) {
+      $this->setTemplate('rss');
+      $this->feed = new sfRssFeed();
+      $this->feed->setLanguage('fr');
+      $this->sort = 1;
+      $date = null;
+      $from = null;
+    }
+
+    if ($this->sort) {
+      $this->selected['sort'] = 1;
       $params['sort'] = "date desc";
       $this->sort_type = 'date';
     }
-    if ($date = $request->getParameter('date')) {
+    if ($date) {
       $dates = explode(',', $date);
       $date = array_pop($dates);
       $period = 'MONTH';
@@ -82,7 +98,7 @@ class solrActions extends sfActions
       $params['facet.date.end'] = $date.'+1'.$period;
       $params['facet.date.gap'] = '+1DAY';
     }else {
-      if ($from = $request->getParameter('from')) {
+      if ($from) {
 	$to = $request->getParameter('to', 'NOW');
 	$query .= ' date:['.$from.' TO '.$to.']';
 	$params['facet.date.start']=$from;
@@ -96,13 +112,11 @@ class solrActions extends sfActions
     for($i = 0 ; $i < count($this->results['docs']) ; $i++) {
       $res = $this->results['docs'][$i];
       $obj = $res['object'];
-
       $this->results['docs'][$i]['link'] = $obj->getLink();
       $this->results['docs'][$i]['photo'] = $this->getPhoto($obj);
       $this->results['docs'][$i]['titre'] = $obj->getTitre();
       $this->results['docs'][$i]['personne'] = $obj->getPersonne();
       $this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $results['highlighting'][$res['id']]['text']));
-      
     }
     $this->results['end'] = $deb + $nb;
     $this->results['page'] = $deb/$nb + 1;
