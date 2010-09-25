@@ -183,6 +183,7 @@ class interventionActions extends sfActions
     if ($request->getParameter('rss')) {
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
+      $this->feed->setLanguage('fr');
     } else $request->setParameter('rss', array(array('link' => '@search_interventions_mots_rss?search='.$this->mots, 'title'=>'Les dernières interventions sur '.$this->mots.' en RSS')));
     
   }

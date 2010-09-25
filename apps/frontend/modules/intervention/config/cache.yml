@@ -5,3 +5,5 @@ show:
   enabled: false
 _pagerInterventions:
   enabled: false
+_parlementaireIntervention:
+  enabled: false
