@@ -148,7 +148,7 @@ class circonscriptionActions extends sfActions
    * selects the nodes to include in the image map (based on their id).
    * If only one of $w and $h is given, preserve the svg ratio.
    */
-  private static function compute_areas($dom, $w, $h, $regexp)
+  private static function compute_areas($dom, $w, $h, $regexp, $deptitle = 0)
   {
     $areas = "";
 
@@ -176,9 +176,16 @@ class circonscriptionActions extends sfActions
       if (preg_match($regexp, $path->getAttribute('id'))) {
         $cs = self::compose_transform($path);
         $points = self::convert_path($path->getAttribute('d'), $cs, $ratio_w, $ratio_h);
-        $title = self::get_title($path);
-        $href = url_for("@redirect_parlementaires_circo?code=".$path->getAttribute('id'));
-        $areas .= "<area href=\"".$href."\" title=\"".$title."\" ".
+        if ($deptitle) {
+          $title = $path->getAttribute('title');
+          $id = preg_replace('/d/', '', $path->getAttribute('id'));
+          $href = url_for("@list_parlementaires_circo_search?search=$id");
+        } else {
+          $id = $path->getAttribute('id');
+          $title = self::get_title($path);
+          $href = url_for("@redirect_parlementaires_circo?code=".$path->getAttribute('id'));
+        }
+        $areas .= "<area id=\"map$id\" href=\"".$href."\" title=\"".$title."\" ".
           "shape=\"poly\" coords=\"".$points."\"></area>\n";
       }
     return array('areas' => $areas, 'w' => $w, 'h' => $h);
@@ -228,6 +235,44 @@ class circonscriptionActions extends sfActions
     $svg->setAttribute('transform', "translate(".-$x_min.",".-$y_min.")");
   }
 
+  private static function generateSvgDep($w, $h) {
+    $dom = new DOMDocument();
+    $dom->preserveWhiteSpace = FALSE;
+    // FIXME Use loadXML to load from a string instead (database)
+    $dom->load("france_deptmts.svg");
+    return $dom;
+  }
+
+  public static function echoDeptmtsMap($w, $h) {
+    $dom = self::generateSvgDep($w, $h);
+    $r = self::compute_areas($dom, $w, $h, '/^d\d+/', 1);
+    $w = $r['w'];
+    $h = $r['h'];
+
+    $src = url_for("@deptmts_image_png?w=$w&h=$h");
+
+    echo "<img class=\"carte_departement\" src=\"$src\" usemap=\"#deptmts\" ";
+    echo 'style="width:'.$w.'px; height:'.$h.'px;" />';
+    echo "<map name=\"deptmts\">";
+    echo $r['areas'];
+    echo "</map>";
+  }
+
+  private static function echoDeptmtsImage($w, $h) {
+    $dom = self::generateSvgDep($w, $h);
+
+    $im = new Imagick();
+    $im->readImageBlob($dom->saveXML());
+    $res = $im->getImageResolution();
+    $x_ratio = $res['x'] / $im->getImageWidth();
+    $y_ratio = $res['y'] / $im->getImageHeight();
+    $im->removeImage();
+    $im->setResolution($w * $x_ratio, $h * $y_ratio);
+    $im->readImageBlob($dom->saveXML());
+
+    $im->setImageFormat("png");
+    echo $im;
+  }
 
   private static function generateSvgDom($circo, $w, $h)
   {
@@ -289,6 +334,14 @@ class circonscriptionActions extends sfActions
 
     $im->setImageFormat("png");
     echo $im;
+  }
+
+  public function executeGetDeptmtsimagepng(sfWebRequest $request) {
+    $w = $request->getParameter('w');
+    $h = $request->getParameter('h');
+    header("Content-type: image/png");
+    self::echoDeptmtsImage($w, $h);
+    return sfView::NONE;
   }
 
   public function executeGetCircoimagepng(sfWebRequest $request)

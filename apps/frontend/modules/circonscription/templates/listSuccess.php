@@ -1,4 +1,4 @@
-<h1 class="list_inter">Toutes les circonscriptions par département</h1><?php 
+<h1>Toutes les circonscriptions par département</h1><?php 
 $sf_response->setTitle('Toutes les circonscriptions électorales par département - NosDéputés.fr'); ?>
 <?php // CirconscriptionActions::echoCircoMap("full", 900, 0); ?>
 <div class="list_circo">
@@ -11,7 +11,7 @@ foreach($circos as $num => $circo) {
     break; 
 } ?>
 </div>
-<?php echo include_partial('circonscription/mapDeptmts', array()); ?>
+<?php CirconscriptionActions::echoDeptmtsMap(600, 546); ?>
 <div class="list_circo borderleft">
 <?php $ct = 0;
 foreach($circos as $num => $circo) {

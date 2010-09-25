@@ -61,7 +61,7 @@ if (!$parlementaire->fin_mandat) {
   $rank = 0;
   $weeks = (strtotime($parlementaire->fin_mandat) - strtotime($parlementaire->debut_mandat))/(60*60*24*7);
   echo '<h2>';
-  printf('Bilan de ses %d semaines de mandat :</h2>', $weeks);
+  printf('Activité sur %d semaines :</h2>', $weeks);
  }
 ?>
 <ul><?php
