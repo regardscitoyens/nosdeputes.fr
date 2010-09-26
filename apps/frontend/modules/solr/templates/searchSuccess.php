@@ -1,3 +1,15 @@
+<!-- Mal placé pour éviter conflit avec la layout en cours --->
+<div class="mail">
+<?php 
+    $args = '';
+foreach(array_keys($selected) as $k) {
+  if ($args)
+    $args .= '&';
+  $args.= "$k=".implode(',', array_keys($selected[$k]));
+}
+echo link_to('Etre alerté par mail lorsque de nouveaux résoltats sont publiés', 'alerte/create?filter='.urlencode($args).'&query='.urlencode($query));
+?>
+</div>
 <?php
 
 function link_search($text, $query, $args) 

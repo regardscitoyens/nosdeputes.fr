@@ -659,7 +659,8 @@ Alerte:
     Timestampable:
   columns:
     email: string(128)
-    query: string(128)
+    query: string
+    filter: string
     titre: string 
     confirmed: boolean
     no_human_query: boolean

@@ -34,6 +34,8 @@ class alerteActions extends sfActions
     if ($citoyen_id = $this->getUser()->getAttribute('user_id')) {
       $alerte->citoyen_id = $citoyen_id;
     }
+    $alerte->query = $request->getParameter('query');
+    $alerte->filter = $request->getParameter('filter');
     $this->form = new AlerteForm($alerte);
     $this->submit = 'Créer';
     $this->processForm($request, $this->form);

@@ -32,8 +32,9 @@ class AlerteForm extends BaseAlerteForm
     unset($this->validatorSchema['citoyen_id']);
     unset($this->validatorSchema['no_human_query']);
 
-    $this->widgetSchema['period'] = new sfWidgetFormChoice(array('choices' => array('HOUR' => 'Une fois par heure', 'DAY' => 'Une fois par jour', 'WEEK' => 'Une fois par semaine', 'MONTH' => 'Une fois par mois')));
+    $this->widgetSchema['filter'] = new sfWidgetFormInputHidden();
 
+    $this->widgetSchema['period'] = new sfWidgetFormChoice(array('choices' => array('HOUR' => 'Une fois par heure', 'DAY' => 'Une fois par jour', 'WEEK' => 'Une fois par semaine', 'MONTH' => 'Une fois par mois')));
     $this->setDefault('period', 'WEEK');
 
     $this->widgetSchema->setLabels(array(
@@ -47,7 +48,7 @@ class AlerteForm extends BaseAlerteForm
     $this->validatorSchema['id'] = new sfValidatorDoctrineChoice(array('model' => 'Alerte', 'column' => 'id', 'required' => false));
 
     if ($this->getObject()->no_human_query) {
-      $this->widgetSchema['query']->setHidden(true);
+      $this->widgetSchema['query'] = new sfWidgetFormInputHidden();
     }
 
     if ($this->getObject()->citoyen_id) {
