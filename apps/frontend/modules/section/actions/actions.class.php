@@ -55,13 +55,13 @@ class sectionActions extends sfActions
                                           'key' => 'numero',
                                           'return' => 'value'));
     $this->docs = array();
-    if ($this->section->url_an || $lois) {
+    if ($this->section->id_dossier_an || $lois) {
       $qtextes = Doctrine_Query::create()
         ->select('t.id, t.type, t.type_details, t.titre, t.signataires, t.nb_commentaires')
         ->from('Texteloi t')
         ->whereIn('t.numero', $lois);
-      if ($this->section->url_an)
-        $qtextes->orWhere('t.url_an = ?', $this->section->url_an);
+      if ($this->section->id_dossier_an)
+        $qtextes->orWhere('t.id_dossier_an = ?', $this->section->id_dossier_an);
       $qtextes->orderBy('t.numero, t.annexe');
       $textes = $qtextes->fetchArray();
 

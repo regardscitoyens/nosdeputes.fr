@@ -124,14 +124,14 @@ class Intervention extends BaseIntervention
     }
     if ($lois[0]) {
       $urls = Doctrine_Query::create()
-        ->select('distinct(t.url_an)')
+        ->select('distinct(t.id_dossier_an)')
         ->from('Texteloi t')
         ->where('t.type = ? OR t.type = ? OR t.type = ? OR t.type = ?', array("Proposition de loi", "Proposition de résolution", "Projet de loi", "Texte de la commission"))
         ->andWhere($loisstring)
         ->fetchArray();
       $ct = count($urls);
       if ($ct == 0) $urls = Doctrine_Query::create()
-        ->select('distinct(t.url_an)')
+        ->select('distinct(t.id_dossier_an)')
         ->from('Texteloi t')
         ->where($loisstring)
         ->fetchArray();
@@ -139,7 +139,7 @@ class Intervention extends BaseIntervention
       if ($ct > 1) {
         $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
         if ($debug) {
-          print "WARNING : Intervention $this->id has tags lois corresponding to multiple url_ans : ";
+          print "WARNING : Intervention $this->id has tags lois corresponding to multiple id_dossier_ans : ";
           foreach ($urls as $url)
             print $url['distinct']." ; ";
           print " => Saving to section $this->Section->id\n";

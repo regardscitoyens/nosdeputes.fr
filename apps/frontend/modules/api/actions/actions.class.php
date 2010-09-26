@@ -14,6 +14,23 @@ class apiActions extends sfActions
   {
     
   }
+  public function executeDocument(sfWebRequest $request)
+  {
+    $class = $request->getParameter('class');
+    $type = $request->getParameter('type');
+    $id = $request->getParameter('id');
+    $this->forward404Unless($class);
+    $o = doctrine::getTable($class)->find($id);
+    if ($class == 'Parlementaire') {
+      return $this->redirect('api/parlementaire?slug='.$o->slug.'&type='.$type);
+    }
+    $slug = $class.'_'.$id;
+    $date = $o->updated_at; 
+    $this->res = array();
+    $this->res[strtolower($class)] = $o->toArray();
+    $this->templatize($request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
+    $this->breakline = '';
+  }
  /**
   * Executes index action
   *
@@ -124,7 +141,7 @@ class apiActions extends sfActions
     $this->res['depute']['responsabilites_extra_parlementaires'] = $this->array2hash($depute->getExtras(), 'responsabilite');
     $this->multi['responsabilite'] = 1;
     $this->res['depute']['site_web'] = $depute->site_web;
-    $this->res['depute']['url_an'] = 'http://www.assembleenationale.fr/13/tribun/fiches_id/'.$depute->id_an.'.asp';
+    $this->res['depute']['url_an'] = 'http://www.assembleenationale.fr/13/tribun/fiches_id/'.$depute->url_an.'.asp';
     $this->res['depute']['emails'] = $this->array2hash(unserialize($depute->mails), 'email');
     $this->multi['email'] = 1;
     $this->res['depute']['adresses'] = $this->array2hash(unserialize($depute->adresses), 'adresse');

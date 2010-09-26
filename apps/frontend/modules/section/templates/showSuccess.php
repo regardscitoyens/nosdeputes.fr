@@ -1,4 +1,4 @@
-<?php if ($section->url_an) echo '<span class="source">'.myTools::getLinkDossier($section->url_an)."</span>"; ?>
+<?php if ($section->id_dossier_an) echo '<span class="source">'.myTools::getLinkDossier($section->id_dossier_an)."</span>"; ?>
 <h1><?php 
    $titre = '';
 if ($section->getSection()) {

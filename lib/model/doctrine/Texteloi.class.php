@@ -48,7 +48,7 @@ class Texteloi extends BaseTexteloi
   }
 
   public function getSection() {
-    $section = Doctrine::getTable('Section')->findOneByUrlAn($this->url_an);
+    $section = Doctrine::getTable('Section')->findOneByIdDossierAn($this->id_dossier_an);
     if (!$section) $section = Doctrine_Query::create()
       ->select('s.id')
       ->from('Section s, Tagging ta, Tag t')
@@ -62,13 +62,13 @@ class Texteloi extends BaseTexteloi
   }
 
   public function setDossier($urldossier) {
-    $this->url_an = $urldossier;
+    $this->id_dossier_an = $urldossier;
     $section = Doctrine::getTable('Section')->findOneByUrlAn($urldossier);
     if ($section) {
    # cela parait plus cohérent que les dossiers apparaissent comme récemment modifiés uniquement s'ils sont discutés et pas si un nouveau rapport vient les compléter je pense mais on peut envisager de le mettre tout de même si c utile pour solr par exemple
    #   $section->setMaxDate($this->date);
    #   $section->save();
- #print "$section->id, $this->url_an\n";
+ #print "$section->id, $this->id_dossier_an\n";
       return true;
     }
     $sections = Doctrine_Query::create()
@@ -86,11 +86,11 @@ class Texteloi extends BaseTexteloi
      return false;
     } else if ($res == 1) {
       $section = Doctrine::getTable('Section')->find($sections[0]['id']);
-      $section->url_an = $urldossier;
+      $section->id_dossier_an = $urldossier;
    # voir plus haut
    #  $section->setMaxDate($this->date);
       $section->save();
-     #print "$section->id, $this->url_an\n";
+     #print "$section->id, $this->id_dossier_an\n";
       return true;
     } else {
      echo "$this->source : Plusieurs dossiers trouvés pour le texte $this->id de type $this->type\n";
