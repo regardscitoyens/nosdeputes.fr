@@ -30,6 +30,7 @@
       RemoveSerie($SerieName="Serie1")
       SetAbsciseLabelSerie($SerieName = "Name")
       SetSerieName($Name,$SerieName="Serie1")
+  +   SetSerieSymbol($Name,$Symbol)
       SetXAxisName($Name="X Axis")
       SetYAxisName($Name="Y Axis")
       SetXAxisFormat($Format="number")
@@ -124,6 +125,7 @@
      $ID = 0;
      for($i=0;$i<=count($this->Data);$i++)
       { if(isset($this->Data[$i][$Serie])) { $ID = $i+1; } }
+
      if ( count($Value) == 1 )
       {
        $this->Data[$ID][$Serie] = $Value;
@@ -226,6 +228,11 @@
    function SetYAxisUnit($Unit="")
     {
      $this->DataDescription["Unit"]["Y"] = $Unit;
+    }
+
+   function SetSerieSymbol($Name,$Symbol)
+    {
+     $this->DataDescription["Symbol"][$Name] = $Symbol;
     }
 
    function removeSerieName($SerieName)

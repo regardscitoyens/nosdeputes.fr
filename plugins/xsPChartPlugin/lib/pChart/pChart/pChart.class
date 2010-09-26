@@ -2,7 +2,7 @@
  /*
      pChart - a PHP class to build charts!
      Copyright (C) 2008 Jean-Damien POGOLOTTI
-     Version  1.27 last updated on 08/17/08
+     Version  1.27b last updated on 08/21/08
 
      http://pchart.sourceforge.net
 
@@ -38,15 +38,18 @@
       drawFromGIF($FileName,$X,$Y,$Alpha=100)
       drawFromJPG($FileName,$X,$Y,$Alpha=100)
      Graph setup methods :
+      addBorder($Width=3,$R=0,$G=0,$B=0)
       drawGraphArea($R,$G,$B,$Stripe=FALSE)
       drawScale(&$Data,&$DataDescription,$ScaleMode,$R,$G,$B,$DrawTicks=TRUE,$Angle=0,$Decimals=1,$WithMargin=FALSE,$SkipLabels=1)
       drawGrid($LineWidth,$Mosaic=TRUE,$R=220,$G=220,$B=220,$Alpha=100)
-      drawLegend($XPos,$YPos,&$DataDescription,$R,$G,$B)
+      drawLegend($XPos,$YPos,&$DataDescription,$R,$G,$B,$Rs=-1,$Gs=-1,$Bs=-1)
       drawPieLegend($XPos,$YPos,$Data,$DataDescription,$R,$G,$B)
       drawTitle($XPos,$YPos,$Value,$R,$G,$B,$XPos2=-1,$YPos2=-1)
-      drawTreshold($Value,$R,$G,$B,$ShowLabel=FALSE,$ShowOnRight=FALSE,$TickWidth=4)
+      drawTreshold($Value,$R,$G,$B,$ShowLabel=FALSE,$ShowOnRight=FALSE,$TickWidth=4,$FreeText=NULL)
       drawArea(&$Data,$Serie1,$Serie2,$R,$G,$B,$Alpha = 50)
       drawRadarAxis(&$Data,&$DataDescription,$Mosaic=TRUE,$BorderOffset=10,$A_R=60,$A_G=60,$A_B=60,$S_R=200,$S_G=200,$S_B=200,$MaxValue=-1)
+      drawGraphAreaGradient($R,$G,$B,$Decay,$Target=TARGET_GRAPHAREA)
+      drawTextBox($X1,$Y1,$X2,$Y2,$Text,$Angle=0,$R=255,$G=255,$B=255,$Align=ALIGN_LEFT,$Shadow=TRUE,$BgR=-1,$BgG=-1,$BgB=-1,$Alpha=100)
       getLegendBoxSize($DataDescription)
       loadColorPalette($FileName,$Delimiter=",")
       reportWarnings($Interface="CLI")
@@ -75,6 +78,8 @@
       drawFlatPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$SpliceDistance=0,$Decimals = 0)
       drawPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$EnhanceColors=TRUE,$Skew=60,$SpliceHeight=20,$SpliceDistance=0,$Decimals=0)
      Other methods :
+      setImageMap($Mode=TRUE,$GraphID="MyGraph")
+      getImageMap($MapName,$Flush=TRUE)
       Render($FileName)
       Stroke()
  */
@@ -87,6 +92,17 @@
  define("PIE_PERCENTAGE", 1);
  define("PIE_LABELS",2);
  define("PIE_NOLABEL",3);
+ define("TARGET_GRAPHAREA",1);
+ define("TARGET_BACKGROUND",2);
+ define("ALIGN_TOP_LEFT",1);
+ define("ALIGN_TOP_CENTER",2);
+ define("ALIGN_TOP_RIGHT",3);
+ define("ALIGN_LEFT",4);
+ define("ALIGN_CENTER",5);
+ define("ALIGN_RIGHT",6);
+ define("ALIGN_BOTTOM_LEFT",7);
+ define("ALIGN_BOTTOM_CENTER",8);
+ define("ALIGN_BOTTOM_RIGHT",9);
  define("PIE_VALUES",4);
 
  /* pChart class definition */
@@ -106,6 +122,7 @@
    var $XSize          = NULL;
    var $YSize          = NULL;
    var $Picture        = NULL;
+   var $ImageMap       = NULL;
 
    /* Error management */
    var $ErrorReporting = FALSE;
@@ -143,6 +160,12 @@
 
    /* Set antialias quality : 0 is maximum, 100 minimum*/
    var $AntialiasQuality = 10;
+
+   /* Image Map settings */
+   var $BuildMap         = FALSE;
+   var $MapFunction      = NULL;
+   var $tmpFolder        = "tmp/";
+   var $MapID            = NULL;
 
    /* This function create the background picture */
    function pChart($XSize,$YSize)
@@ -560,10 +583,11 @@
      $MaxWidth = 0; $MaxHeight = 8;
      foreach($DataDescription["Description"] as $Key => $Value)
       {
-       $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Value);
-       $TextWidth = $Position[2]-$Position[0];
+       $Position   = imageftbbox($this->FontSize,0,$this->FontName,$Value);
+       $TextWidth  = $Position[2]-$Position[0];
+       $TextHeight = $Position[1]-$Position[7];
        if ( $TextWidth > $MaxWidth) { $MaxWidth = $TextWidth; }
-       $MaxHeight = $MaxHeight + ( $this->FontSize + 6 );
+       $MaxHeight = $MaxHeight + $TextHeight + 4;
       }
      $MaxHeight = $MaxHeight - 3;
      $MaxWidth  = $MaxWidth + 32;
@@ -572,7 +596,7 @@
     }
 
    /* Draw the data legends */
-   function drawLegend($XPos,$YPos,&$DataDescription,$R,$G,$B)
+   function drawLegend($XPos,$YPos,&$DataDescription,$R,$G,$B,$Rs=-1,$Gs=-1,$Bs=-1)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawLegend",$DataDescription);
@@ -586,24 +610,31 @@
      $MaxWidth = 0; $MaxHeight = 8;
      foreach($DataDescription["Description"] as $Key => $Value)
       {
-       $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Value);
-       $TextWidth = $Position[2]-$Position[0];
+       $Position   = imageftbbox($this->FontSize,0,$this->FontName,$Value);
+       $TextWidth  = $Position[2]-$Position[0];
+       $TextHeight = $Position[1]-$Position[7];
        if ( $TextWidth > $MaxWidth) { $MaxWidth = $TextWidth; }
-       $MaxHeight = $MaxHeight + ( $this->FontSize + 6 );
+       $MaxHeight = $MaxHeight + $TextHeight + 4;
       }
      $MaxHeight = $MaxHeight - 5;
      $MaxWidth  = $MaxWidth + 32;
 
-     $this->drawFilledRoundedRectangle($XPos+1,$YPos+1,$XPos+$MaxWidth+1,$YPos+$MaxHeight+1,5,$R-30,$G-30,$B-30);
+     if ( $Rs == -1 || $Gs == -1 || $Bs == -1 )
+      { $Rs = $R-30; $Gs = $G-30; $Bs = $B-30; }
+
+     $this->drawFilledRoundedRectangle($XPos+1,$YPos+1,$XPos+$MaxWidth+1,$YPos+$MaxHeight+1,5,$Rs,$Gs,$Bs);
      $this->drawFilledRoundedRectangle($XPos,$YPos,$XPos+$MaxWidth,$YPos+$MaxHeight,5,$R,$G,$B);
 
      $YOffset = 4 + $this->FontSize; $ID = 0;
      foreach($DataDescription["Description"] as $Key => $Value)
       {
        $this->drawFilledRoundedRectangle($XPos+10,$YPos+$YOffset-4,$XPos+14,$YPos+$YOffset-4,2,$this->Palette[$ID]["R"],$this->Palette[$ID]["G"],$this->Palette[$ID]["B"]);
-
        imagettftext($this->Picture,$this->FontSize,0,$XPos+22,$YPos+$YOffset,$C_TextColor,$this->FontName,$Value);
-       $YOffset = $YOffset + ( $this->FontSize + 6 );
+
+       $Position   = imageftbbox($this->FontSize,0,$this->FontName,$Value);
+       $TextHeight = $Position[1]-$Position[7];
+
+       $YOffset = $YOffset + $TextHeight + 4;
        $ID++;
       }
     }
@@ -627,8 +658,10 @@
        $Value2 = $Value[$DataDescription["Position"]];
        $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Value2);
        $TextWidth = $Position[2]-$Position[0];
+       $TextHeight = $Position[1]-$Position[7];
        if ( $TextWidth > $MaxWidth) { $MaxWidth = $TextWidth; }
-       $MaxHeight = $MaxHeight + ( $this->FontSize + 6 );
+
+       $MaxHeight = $MaxHeight + $TextHeight + 4;
       }
      $MaxHeight = $MaxHeight - 3;
      $MaxWidth  = $MaxWidth + 32;
@@ -639,12 +672,13 @@
      $YOffset = 4 + $this->FontSize; $ID = 0;
      foreach($Data as $Key => $Value)
       {
-       $Value2 = $Value[$DataDescription["Position"]];
-
+       $Value2     = $Value[$DataDescription["Position"]];
+       $Position   = imageftbbox($this->FontSize,0,$this->FontName,$Value2);
+       $TextHeight = $Position[1]-$Position[7];
        $this->drawFilledRectangle($XPos+10,$YPos+$YOffset-6,$XPos+14,$YPos+$YOffset-2,$this->Palette[$ID]["R"],$this->Palette[$ID]["G"],$this->Palette[$ID]["B"]);
 
        imagettftext($this->Picture,$this->FontSize,0,$XPos+22,$YPos+$YOffset,$C_TextColor,$this->FontName,$Value2);
-       $YOffset = $YOffset + ( $this->FontSize + 6 );
+       $YOffset = $YOffset + $TextHeight + 4;
        $ID++;
       }
     }
@@ -671,8 +705,38 @@
      imagettftext($this->Picture,$this->FontSize,0,$XPos,$YPos,$C_TextColor,$this->FontName,$Value);     
     }
 
+   /* Draw a text box with text align & alpha properties */
+   function drawTextBox($X1,$Y1,$X2,$Y2,$Text,$Angle=0,$R=255,$G=255,$B=255,$Align=ALIGN_LEFT,$Shadow=TRUE,$BgR=-1,$BgG=-1,$BgB=-1,$Alpha=100)
+    {
+     $Position   = imageftbbox($this->FontSize,$Angle,$this->FontName,$Text);
+     $TextWidth  = $Position[2]-$Position[0];
+     $TextHeight = $Position[5]-$Position[3];
+     $AreaWidth  = $X2 - $X1;
+     $AreaHeight = $Y2 - $Y1;
+
+     if ( $BgR != -1 && $BgG != -1 && $BgB != -1 )
+      $this->drawFilledRectangle($X1,$Y1,$X2,$Y2,$BgR,$BgG,$BgB,FALSE,$Alpha);
+
+     if ( $Align == ALIGN_TOP_LEFT )      { $X = $X1+1; $Y = $Y1+$this->FontSize+1; }
+     if ( $Align == ALIGN_TOP_CENTER )    { $X = $X1+($AreaWidth/2)-($TextWidth/2); $Y = $Y1+$this->FontSize+1; }
+     if ( $Align == ALIGN_TOP_RIGHT )     { $X = $X2-$TextWidth-1; $Y = $Y1+$this->FontSize+1; }
+     if ( $Align == ALIGN_LEFT )          { $X = $X1+1; $Y = $Y1+($AreaHeight/2)-($TextHeight/2); }
+     if ( $Align == ALIGN_CENTER )        { $X = $X1+($AreaWidth/2)-($TextWidth/2); $Y = $Y1+($AreaHeight/2)-($TextHeight/2); }
+     if ( $Align == ALIGN_RIGHT )         { $X = $X2-$TextWidth-1; $Y = $Y1+($AreaHeight/2)-($TextHeight/2); }
+     if ( $Align == ALIGN_BOTTOM_LEFT )   { $X = $X1+1; $Y = $Y2-1; }
+     if ( $Align == ALIGN_BOTTOM_CENTER ) { $X = $X1+($AreaWidth/2)-($TextWidth/2); $Y = $Y2-1; }
+     if ( $Align == ALIGN_BOTTOM_RIGHT )  { $X = $X2-$TextWidth-1; $Y = $Y2-1; }
+
+     $C_TextColor   = imagecolorallocate($this->Picture,$R,$G,$B);
+     $C_ShadowColor = imagecolorallocate($this->Picture,0,0,0);
+     if ( $Shadow )
+      imagettftext($this->Picture,$this->FontSize,$Angle,$X+1,$Y+1,$C_ShadowColor,$this->FontName,$Text);     
+
+     imagettftext($this->Picture,$this->FontSize,$Angle,$X,$Y,$C_TextColor,$this->FontName,$Text);     
+    }
+
    /* Compute and draw the scale */
-   function drawTreshold($Value,$R,$G,$B,$ShowLabel=FALSE,$ShowOnRight=FALSE,$TickWidth=4)
+   function drawTreshold($Value,$R,$G,$B,$ShowLabel=FALSE,$ShowOnRight=FALSE,$TickWidth=4,$FreeText=NULL)
     {
      if ( $R < 0 ) { $R = 0; } if ( $R > 255 ) { $R = 255; }
      if ( $G < 0 ) { $G = 0; } if ( $G > 255 ) { $G = 255; }
@@ -691,10 +755,13 @@
 
      if ( $ShowLabel )
       {
+       if ( $Text == NULL )
+        { $Label = $Value; } else { $Label = $FreeText; }
+
        if ( $ShowOnRight )
-        imagettftext($this->Picture,$this->FontSize,0,$this->GArea_X2+2,$Y+($this->FontSize/2),$C_TextColor,$this->FontName,$Value);
+        imagettftext($this->Picture,$this->FontSize,0,$this->GArea_X2+2,$Y+($this->FontSize/2),$C_TextColor,$this->FontName,$Label);
        else
-        imagettftext($this->Picture,$this->FontSize,0,$this->GArea_X1+2,$Y-($this->FontSize/2),$C_TextColor,$this->FontName,$Value);
+        imagettftext($this->Picture,$this->FontSize,0,$this->GArea_X1+2,$Y-($this->FontSize/2),$C_TextColor,$this->FontName,$Label);
       }
     }
 
@@ -758,28 +825,51 @@
        foreach ( $DataDescription["Description"] as $keyI => $ValueI )
         { if ( $keyI == $ColName ) { $ColorID = $ID; }; $ID++; }
 
-       $XPos   = $this->GArea_X1 + $this->GAreaXOffset;
+       $R = $this->Palette[$ColorID]["R"];
+       $G = $this->Palette[$ColorID]["G"];
+       $B = $this->Palette[$ColorID]["B"];
+
+       if ( isset($DataDescription["Symbol"][$ColName]) )
+        {
+         $Is_Alpha = ((ord ( file_get_contents ($DataDescription["Symbol"][$ColName], false, null, 25, 1)) & 6) & 4) == 4;
+
+         $Infos       = getimagesize($DataDescription["Symbol"][$ColName]);
+         $ImageWidth  = $Infos[0];
+         $ImageHeight = $Infos[1];
+         $Symbol      = imagecreatefromgif($DataDescription["Symbol"][$ColName]);
+        }
+
+       $XPos  = $this->GArea_X1 + $this->GAreaXOffset;
+       $Hsize = round($BigRadius/2);
        foreach ( $Data as $Key => $Values )
         {
          $Value = $Data[$Key][$ColName];
-         $YPos = $this->GArea_Y2 - (($Value-$this->VMin) * $this->DivisionRatio);
+         $YPos  = $this->GArea_Y2 - (($Value-$this->VMin) * $this->DivisionRatio);
+
+         /* Save point into the image map if option activated */
+         if ( $this->BuildMap )
+          $this->addToImageMap($XPos-$Hsize,$YPos-$Hsize,$XPos+1+$Hsize,$YPos+$Hsize+1,$DataDescription["Description"][$ColName],$Data[$Key][$ColName].$DataDescription["Unit"]["Y"],"Plot");
 
          if ( is_numeric($Value) )
           {
-           $R = $this->Palette[$ColorID]["R"];
-           $G = $this->Palette[$ColorID]["G"];
-           $B = $this->Palette[$ColorID]["B"];
-           $this->drawFilledCircle($XPos+1,$YPos+1,$BigRadius,$R,$G,$B);
+           if ( !isset($DataDescription["Symbol"][$ColName]) )
+            {
+             $this->drawFilledCircle($XPos+1,$YPos+1,$BigRadius,$R,$G,$B);
 
-           if ( $R2 !=-1 && $G2 !=-1 && $B2 !=-1 )
-            $this->drawFilledCircle($XPos+1,$YPos+1,$SmallRadius,$R2,$G2,$B2);
+             if ( $R2 !=-1 && $G2 !=-1 && $B2 !=-1 )
+              $this->drawFilledCircle($XPos+1,$YPos+1,$SmallRadius,$R2,$G2,$B2);
+             else
+              {
+               $R = $this->Palette[$ColorID]["R"]-5; if ( $R < 0 ) { $R = 0; }
+               $G = $this->Palette[$ColorID]["G"]-5; if ( $G < 0 ) { $G = 0; }
+               $B = $this->Palette[$ColorID]["B"]-5; if ( $B < 0 ) { $B = 0; }
+
+               $this->drawFilledCircle($XPos+1,$YPos+1,$SmallRadius,$R,$G,$B);
+              }
+            }
            else
             {
-             $R = $this->Palette[$ColorID]["R"]-5; if ( $R < 0 ) { $R = 0; }
-             $G = $this->Palette[$ColorID]["G"]-5; if ( $G < 0 ) { $G = 0; }
-             $B = $this->Palette[$ColorID]["B"]-5; if ( $B < 0 ) { $B = 0; }
-
-             $this->drawFilledCircle($XPos+1,$YPos+1,$SmallRadius,$R,$G,$B);
+             imagecopymerge($this->Picture,$Symbol,$XPos+1-$ImageWidth/2,$YPos+1-$ImageHeight/2,0,0,$ImageWidth,$ImageHeight,100);
             }
           }
 
@@ -899,6 +989,10 @@
             {
              $Value = $Data[$Key][$ColName];
              $YPos = $this->GArea_Y2 - (($Value-$this->VMin) * $this->DivisionRatio);
+
+             /* Save point into the image map if option activated */
+             if ( $this->BuildMap )
+              $this->addToImageMap($XPos-3,$YPos-3,$XPos+3,$YPos+3,$DataDescription["Description"][$ColName],$Data[$Key][$ColName].$DataDescription["Unit"]["Y"],"Line");
 
              if (!is_numeric($Value)) { $XLast = -1; }
              if ( $XLast != -1 )
@@ -1216,6 +1310,10 @@
          $Value = $Data[$Key][$ColName];
          $YPos = $LayerHeight - (($Value-$this->VMin) * $this->DivisionRatio);
 
+         /* Save point into the image map if option activated */
+         if ( $this->BuildMap )
+          $this->addToImageMap($XPos-3,$YPos-3,$XPos+3,$YPos+3,$DataDescription["Description"][$ColName],$Data[$Key][$ColName].$DataDescription["Unit"]["Y"],"FLine");
+
          if ( !is_numeric($Value) )
           {
            $PointsCount++;
@@ -1291,6 +1389,7 @@
        imagefilledrectangle($this->Layers[$GraphID],0,0,$LayerWidth,$LayerHeight,$C_White);
        imagecolortransparent($this->Layers[$GraphID],$C_White);
 
+       //$XWidth = $this->DivisionWidth / 4;
        $XWidth = $this->DivisionWidth * $Width / 200;
        $XPos   = $this->GAreaXOffset;
        $YZero  = $LayerHeight - ((0-$this->VMin) * $this->DivisionRatio);
@@ -1307,9 +1406,14 @@
              imagefilledrectangle($this->Layers[$GraphID],$XPos-$XWidth,$YPos,$XPos+$XWidth,$YZero,$C_Graph);
 
              $X1 = floor($XPos - $XWidth + $this->GArea_X1); $Y1 = floor($YPos+$this->GArea_Y1) + .2;
-             $X2 = floor($XPos + $XWidth + $this->GArea_X1);
+             $X2 = floor($XPos + $XWidth + $this->GArea_X1); 
+// $Y2 = $this->GArea_Y2 - ((0-$this->VMin) * $this->DivisionRatio);
              if ( $X1 <= $this->GArea_X1 ) { $X1 = $this->GArea_X1 + 1; }
              if ( $X2 >= $this->GArea_X2 ) { $X2 = $this->GArea_X2 - 1; }
+
+             /* Save point into the image map if option activated */
+             if ( $this->BuildMap )
+              $this->addToImageMap($X1,min($Y1,$Y2),$X2,max($Y1,$Y2),$DataDescription["Description"][$ColName],$Data[$Key][$ColName].$DataDescription["Unit"]["Y"],"oBar");
 
              $this->drawLine($X1,$Y1,$X2,$Y1,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"],TRUE);
             }
@@ -1359,6 +1463,12 @@
             {
              $Value = $Data[$Key][$ColName];
              $YPos = $this->GArea_Y2 - (($Value-$this->VMin) * $this->DivisionRatio);
+
+             /* Save point into the image map if option activated */
+             if ( $this->BuildMap )
+              {
+               $this->addToImageMap($XPos+1,min($YZero,$YPos),$XPos+$SeriesWidth-1,max($YZero,$YPos),$DataDescription["Description"][$ColName],$Data[$Key][$ColName].$DataDescription["Unit"]["Y"],"Bar");
+              }
            
              if ( $Shadow && $Alpha == 100 )
               $this->drawRectangle($XPos+1,$YZero,$XPos+$SeriesWidth-1,$YPos,25,25,25,TRUE,$Alpha);
@@ -1415,6 +1525,11 @@
                $YBottom = $YZero;
                $LastValue[$Key] = $Value;
               }
+
+             /* Save point into the image map if option activated */
+             if ( $this->BuildMap )
+              $this->addToImageMap($XPos+1,min($YBottom,$YPos),$XPos+$SeriesWidth-1,max($YBottom,$YPos),$DataDescription["Description"][$ColName],$Data[$Key][$ColName].$DataDescription["Unit"]["Y"],"sBar");
+
              $this->drawFilledRectangle($XPos+1,$YBottom,$XPos+$SeriesWidth-1,$YPos,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"],TRUE,$Alpha);
             }
           }
@@ -1579,6 +1694,7 @@
          if ( $Angle > 90 && $Angle <= 180 )
           { $YOffset = $Height; $XOffset = -$Width; }
 
+         //if ( $Angle > 180 && $Angle <= 270 )
          if ( $Angle > 180 && $Angle <= 260 )
           { $XOffset = -$Width; }
 
@@ -1781,6 +1897,7 @@
      $SplicePercent       = 100 / $PieSum;
 
      /* Calculate all polygons */
+     //$Angle    = 0; $TopPlots = "";
      $Angle    = 260; $TopPlots = "";
      foreach($iValues as $Key => $Value)
       {
@@ -1793,14 +1910,16 @@
          $TAngle   = $Angle+($Value*$SpliceRatio/2);
          if ($TAngle > 359) $TAngle -= 360;
          if ($DrawLabels == PIE_PERCENTAGE)
+       //   $Caption  = (round($Value * pow(10,$Decimals) * $SplicePercent)/pow(10,$Decimals))."%";
           $Caption  = (floor($Value * pow(10,$Decimals) * $SplicePercent)/pow(10,$Decimals))."%";
-         elseif ($DrawLabels == PIE_VALUES)
-          $Caption  = (floor($Value));
-	 elseif ($DrawLabels == PIE_LABELS)
+          elseif ($DrawLabels == PIE_VALUES)
+           $Caption  = (floor($Value));
+         elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
          $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius + 10)+ $XPos;
          $TY       = sin(($TAngle) * 3.1418 / 180 ) * ($Radius+ 10) + $YPos + 4;
 
+        // if ( $TAngle > 90 && $TAngle < 270 )
          if ( $TAngle > 90 && $TAngle < 260 )
           {
            $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Caption);
@@ -1882,6 +2001,7 @@
      $SplicePercent       = 100 / $PieSum;
 
      /* Calculate all polygons */
+     // $Angle    = 0; $TopPlots = "";
      $Angle    = 260; $TopPlots = "";
      foreach($iValues as $Key => $Value)
       {
@@ -1897,14 +2017,16 @@
          $TAngle   = $Angle+($Value*$SpliceRatio/2);
          if ($TAngle > 359) $TAngle -= 360;
          if ($DrawLabels == PIE_PERCENTAGE)
+        //  $Caption  = (round($Value * pow(10,$Decimals) * $SplicePercent)/pow(10,$Decimals))."%";
           $Caption  = (floor($Value * pow(10,$Decimals) * $SplicePercent)/pow(10,$Decimals))."%";
-         elseif ($DrawLabels == PIE_VALUES)
-          $Caption  = (floor($Value));
+          elseif ($DrawLabels == PIE_VALUES)
+           $Caption  = (floor($Value));
          elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
          $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius+10+$SpliceDistance)+$XPos;
          $TY       = sin(($TAngle) * 3.1418 / 180 ) * ($Radius+10+$SpliceDistance) + $YPos + 4;
 
+//         if ( $TAngle > 90 && $TAngle < 270 )
          if ( $TAngle > 90 && $TAngle < 260 )
           {
            $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Caption);
@@ -1993,6 +2115,7 @@
           if ( isset($Data[$Key][$ColName]))
            {
             if ( $Data[$Key][$ColName] == 0 )
+           //  { $PieSum++; $iValues[] = 1; $rValues[] = 0; }
              { $PieSum += 0.00001; $iValues[] = 0.00001; $rValues[] = 0; }
             else
              { $PieSum += $Data[$Key][$ColName]; $iValues[] = $Data[$Key][$ColName]; $iLabels[] = $Data[$Key][$DataDescription["Position"]]; $rValues[] = $Data[$Key][$ColName]; $rPieSum += $Data[$Key][$ColName];}
@@ -2012,6 +2135,7 @@
      $rSplicePercent      = 100 / $rPieSum;
 
      /* Calculate all polygons */
+   // $Angle    = 0; $TopPlots = ""; $BotPlots = ""; $CDev = 5;
      $Angle    = 260; $TopPlots = ""; $BotPlots = ""; $CDev = 5;
      foreach($iValues as $Key => $Value)
       {
@@ -2027,15 +2151,17 @@
        if ( !($DrawLabels == PIE_NOLABEL) )
         {
          $TAngle   = $Angle+($Value*$SpliceRatio/2);
-	 if ($TAngle > 359) $TAngle -= 360; 
+         if ($TAngle > 359) $TAngle -= 360;
          if ($DrawLabels == PIE_PERCENTAGE)
+        //  $Caption  = (round($rValues[$Key] * pow(10,$Decimals) * $rSplicePercent)/pow(10,$Decimals))."%";
           $Caption  = (floor($rValues[$Key] * pow(10,$Decimals) * $rSplicePercent)/pow(10,$Decimals))."%";
-         elseif ($DrawLabels == PIE_VALUES)
-         if ($Value == 0) $Caption = ''; 
-         else $Caption  = (floor($Value));
-         elseif ($DrawLabels == PIE_LABELS)
+         elseif ($DrawLabels == PIE_VALUES) {
+          if ($Value == 0) $Caption = '';
+          else $Caption  = (floor($Value));
+         } elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
 
+        // $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius + 10)+ $XPos;
          $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius + 5)+ $XPos;
 
          if ( $TAngle > 0 && $TAngle < 180 )
@@ -2043,6 +2169,7 @@
          else
           $TY = sin(($TAngle) * 3.1418 / 180 ) * ($SkewHeight + 10) + $YPos + 4;
 
+        // if ( $TAngle > 90 && $TAngle < 270 )
          if ( $TAngle > 90 && $TAngle < 260 )
           {
            $Position  = imageftbbox($this->FontSize,0,$this->FontName,$Caption);
@@ -2130,6 +2257,29 @@
      imagefilledrectangle($this->Picture,0,0,$this->XSize,$this->YSize,$C_Background);
     }
 
+   /* This function can be used to set the background color */
+   function drawGraphAreaGradient($R,$G,$B,$Decay,$Target=TARGET_GRAPHAREA)
+    {
+     if ( $R < 0 ) { $R = 0; } if ( $R > 255 ) { $R = 255; }
+     if ( $G < 0 ) { $G = 0; } if ( $G > 255 ) { $G = 255; }
+     if ( $B < 0 ) { $B = 0; } if ( $B > 255 ) { $B = 255; }
+
+     if ( $Target == TARGET_GRAPHAREA )  { $X1 = $this->GArea_X1+1; $X2 = $this->GArea_X2-1; $Y1 = $this->GArea_Y1+1; $Y2 = $this->GArea_Y2; }
+     if ( $Target == TARGET_BACKGROUND ) { $X1 = 0; $X2 = $this->XSize; $Y1 = 0; $Y2 = $this->YSize; }
+
+     $YStep = ($Y2 - $Y1 - 2) / $Decay;
+     for($i=0;$i<=$Decay;$i++)
+      {
+       $R-=1;$G-=1;$B-=1;
+       $Yi1 = $Y1 + ( $i * $YStep );
+       $Yi2 = ceil( $Yi1 + ( $i * $YStep ) + $YStep );
+       if ( $Yi2 >= $Yi2 ) { $Yi2 = $Y2-1; }
+
+       $C_Background = $this->AllocateColor($this->Picture,$R,$G,$B);
+       imagefilledrectangle($this->Picture,$X1,$Yi1,$X2,$Yi2,$C_Background);
+      }
+    }
+
    /* This function create a rectangle with antialias */
    function drawRectangle($X1,$Y1,$X2,$Y2,$R,$G,$B)
     {
@@ -2150,6 +2300,9 @@
    /* This function create a filled rectangle with antialias */
    function drawFilledRectangle($X1,$Y1,$X2,$Y2,$R,$G,$B,$DrawBorder=TRUE,$Alpha=100)
     {
+     if ( $X2 > $X1 ) { list($X1, $X2) = array($X2, $X1); }
+     if ( $Y2 > $Y1 ) { list($Y1, $Y2) = array($Y2, $Y1); }
+
      if ( $R < 0 ) { $R = 0; } if ( $R > 255 ) { $R = 255; }
      if ( $G < 0 ) { $G = 0; } if ( $G > 255 ) { $G = 255; }
      if ( $B < 0 ) { $B = 0; } if ( $B > 255 ) { $B = 255; }
@@ -2458,11 +2611,38 @@
      return(imagecolorallocate($Picture,$R,$G,$B));
     }
 
+   /* Add a border to the picture */
+   function addBorder($Size=3,$R=0,$G=0,$B=0)
+    {
+     $Width  = $this->XSize+2*$Size;
+     $Height = $this->YSize+2*$Size;
+
+     $Resampled    = imagecreatetruecolor($Width,$Height);
+     $C_Background = imagecolorallocate($Resampled,$R,$G,$B);
+     imagefilledrectangle($Resampled,0,0,$Width,$Height,$C_Background);
+
+     imagecopy($Resampled,$this->Picture,$Size,$Size,0,0,$this->XSize,$this->YSize);
+     imagedestroy($this->Picture);
+
+     $this->XSize = $Width;
+     $this->YSize = $Height;
+
+     $this->Picture = imagecreatetruecolor($this->XSize,$this->YSize);
+     $C_White = imagecolorallocate($this->Picture,255,255,255);
+     imagefilledrectangle($this->Picture,0,0,$this->XSize,$this->YSize,$C_White);
+     imagecolortransparent($this->Picture,$C_White);
+     imagecopy($this->Picture,$Resampled,0,0,0,0,$this->XSize,$this->YSize);
+    }
+
    /* Render the current picture to a file */
    function Render($FileName)
     {
      if ( $this->ErrorReporting )
       $this->printErrors($this->ErrorInterface);
+
+     /* Save image map if requested */
+     if ( $this->BuildMap )
+      $this->SaveImageMap();
 
      imagepng($this->Picture,$FileName);
     }
@@ -2472,6 +2652,10 @@
     {
      if ( $this->ErrorReporting )
       $this->printErrors("GD");
+
+     /* Save image map if requested */
+     if ( $this->BuildMap )
+      $this->SaveImageMap();
 
      header('Content-type: image/png');
      imagepng($this->Picture);
@@ -2602,6 +2786,75 @@
          $YPos = $YPos + ($this->ErrorFontSize + 4);
         }
       }
+    }
+
+   /* Activate the image map creation process */
+   function setImageMap($Mode=TRUE,$GraphID="MyGraph")
+    {
+     $this->BuildMap = $Mode;
+     $this->MapID    = $GraphID;
+    }
+
+   /* Add a box into the image map */
+   function addToImageMap($X1,$Y1,$X2,$Y2,$SerieName,$Value,$CallerFunction)
+    {
+     if ( $this->MapFunction == NULL || $this->MapFunction == $CallerFunction )
+      {
+       $this->ImageMap[]  = round($X1).",".round($Y1).",".round($X2).",".round($Y2).",".$SerieName.",".$Value;
+       $this->MapFunction = $CallerFunction;
+      }
+    }
+
+   /* Load and cleanup the image map from disk */
+   function getImageMap($MapName,$Flush=TRUE)
+    {
+     /* Strip HTML query strings */
+     $Values   = $this->tmpFolder.$MapName;
+     $Value    = split("\?",$Values);
+     $FileName = $Value[0];
+
+     if ( file_exists($FileName) )
+      {
+       $Handle     = fopen($FileName, "r");
+       $MapContent = fread($Handle, filesize($FileName));
+       fclose($Handle);
+       echo $MapContent;
+
+       if ( $Flush )
+        unlink($FileName);
+
+       exit();
+      }
+     else
+      {
+       header("HTTP/1.0 404 Not Found");
+       exit();
+      }
+    }
+
+   /* Save the image map to the disk */
+   function SaveImageMap()
+    {
+     if ( !$this->BuildMap ) { return(-1); }
+
+     if ( $this->ImageMap == NULL )
+      {
+       $this->Errors[] = "[Warning] SaveImageMap - Image map is empty.";
+       return(-1);
+      }
+
+     $Handle = fopen($this->tmpFolder.$this->MapID, 'w');
+     if ( !$Handle )
+      {
+       $this->Errors[] = "[Warning] SaveImageMap - Cannot save the image map.";
+       return(-1);
+      }
+     else
+      {
+       foreach($this->ImageMap as $Key => $Value)
+        fwrite($Handle, htmlentities($Value)."\r");
+      }
+     fclose ($Handle);
     }
 
    /* Convert seconds to a time format string */
