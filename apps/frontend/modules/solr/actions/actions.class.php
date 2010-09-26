@@ -74,8 +74,10 @@ class solrActions extends sfActions
     $from = $request->getParameter('from');
     $type = $request->getParameter('type');
 
+    $this->tags = 0;
     if ($type) {
       sfConfig::set('sf_web_debug', false);
+      $this->tags = $request->getParameter('tags');
     }
 
     if ($type == 'rss') {
@@ -100,7 +102,8 @@ class solrActions extends sfActions
     }
 
     if ($type == 'csv') {
-      $this->getResponse()->setContentType('application/csv; charset=utf-8');
+      //      $this->getResponse()->setContentType('application/csv; charset=utf-8');
+      $this->getResponse()->setContentType('text/plain; charset=utf-8');
       $this->setTemplate('csv');
       $this->setLayout(false);
     }
