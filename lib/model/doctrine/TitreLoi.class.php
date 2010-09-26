@@ -45,7 +45,7 @@ class TitreLoi extends BaseTitreLoi
       ->andWhere('ta.taggable_model = ?', "Section")
       ->andWhere('t.name = ?', "loi:numero=".preg_replace('/^(\d+)-.*/', '\\1', $this->texteloi_id))
       ->fetchOne();
-    return Doctrine::getTable('Section')->find($section);
+    return $section;
   }
 
 }
