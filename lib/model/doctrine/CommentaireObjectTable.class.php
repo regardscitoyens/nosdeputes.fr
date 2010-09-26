@@ -29,7 +29,8 @@ class CommentaireObjectTable extends Doctrine_Table
     foreach ($pids as $id) {
       array_push($ids, $id['object_id']);
     }
-    print_r($ids);
-    return Doctrine::getTable('Parlementaire')->createQuery('p')->whereIn('p.id', $ids)->execute();
+    if (count($ids))
+      return Doctrine::getTable('Parlementaire')->createQuery('p')->whereIn('p.id', $ids)->execute();
+    return ;
   }
 }
