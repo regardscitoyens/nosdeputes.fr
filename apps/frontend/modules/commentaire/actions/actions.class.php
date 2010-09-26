@@ -18,6 +18,7 @@ class commentaireActions extends sfActions
 	
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');
+    $this->follow_talk = $request->getParameter('follow_talk');
     
     $values = $request->getParameter('commentaire');
     $this->commentaire = myTools::clearHtml($values['commentaire']);
@@ -154,6 +155,14 @@ class commentaireActions extends sfActions
     $commentaire->is_public = $is_active;
     $commentaire->ip_address = $ip;
     $commentaire->save();
+
+    $alerte = new Alerte();
+    $alerte->citoyen_id = $citoyen_id;
+    $alerte->query = "object_name:Commentaire tag:object_type=".$commentaire->object_type." tag:object_id=".$commentaire->object_id;
+    $alerte->no_human_query = 1;
+    $alerte->period = 'HOUR';
+    $alerte->titre = "Suivre votre conversation sur $present";
+    $alerte->save();
 
     $object->updateNbCommentaires();
     $object->save();

@@ -56,6 +56,7 @@
 	</td>
   </tr>
   <?php } ?>
+  <tr><td><input type="checkbox" name="follow_talk" id="follow_talk"<?php if  ($follow_talk) echo " checked"; ?>/><label for="follow_talk">M'alerter par email lorsque quelqu'un réagit à mon commentaire</label></td></tr>
   <tr>
     <td colspan="3" style="height:40px;">
       <input type="hidden" name="unique_form" value="<?php echo $unique_form; ?>"/>

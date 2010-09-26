@@ -378,6 +378,9 @@ commentaires_widget:
   url: /commentaires/widget
   param: {module: commentaire, action: widget}
 
+alerte_parlementaire:
+  url: /alerte/parlementaire/:slug
+  param: {module: alerte, action: parlementaire}
 alerte_create:
   url: /alerte/create
   param: {module: alerte, action: create}

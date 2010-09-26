@@ -14,8 +14,15 @@ class alerteActions extends sfActions
   {
     $slug = $request->getParameter('slug');
     $this->forward404Unless($slug);
-    $parlementaire = doctrine::getTable('Parlementaire')->findBySlug($slug);
-    $this->forward404Unless($parlementaire);    
+    $parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    $this->forward404Unless($parlementaire);
+    $alerte = new Alerte();
+    $alerte->query = 'Parlemenaire='.urlencode($parlementaire);
+    $alerte->no_human_query = 1;
+    $alerte->titre = 'Recherche relative aux travaux de '.$parlementaire->nom;
+    $this->submit = 'Créer';
+    $this->form = $this->processForm($request, $alerte);
+    $this->setTemplate('form');
   }
 
   public function executeList(sfWebRequest $request) {
@@ -31,14 +38,10 @@ class alerteActions extends sfActions
   public function executeCreate(sfWebRequest $request) 
   {
     $alerte = new Alerte();
-    if ($citoyen_id = $this->getUser()->getAttribute('user_id')) {
-      $alerte->citoyen_id = $citoyen_id;
-    }
     $alerte->query = $request->getParameter('query');
     $alerte->filter = $request->getParameter('filter');
-    $this->form = new AlerteForm($alerte);
     $this->submit = 'Créer';
-    $this->processForm($request, $this->form);
+    $this->form = $this->processForm($request, $alerte);
     $this->setTemplate('form');
   }
   public function executeDelete(sfWebRequest $request) 
@@ -57,8 +60,7 @@ class alerteActions extends sfActions
   public function executeEdit(sfWebRequest $request) 
   {
     $this->forward404Unless($alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
-    $this->form = new AlerteForm($alerte);
-    $this->processForm($request, $this->form);
+    $this->form =  $this->processForm($request, $alerte);
     $this->submit = 'Éditer';
     $this->setTemplate('form');
   }
@@ -72,7 +74,11 @@ class alerteActions extends sfActions
       return $this->redirect('@homepage');
   }
 
-  private function processForm($request, $form) {
+  private function processForm($request, $alerte) {
+    if ($citoyen_id = $this->getUser()->getAttribute('user_id')) {
+      $alerte->citoyen_id = $citoyen_id;
+    }
+    $form = new AlerteForm($alerte);
     if ($request->isMethod('post')) {
       $form->bind($request->getParameter($form->getName()));
       if ($form->isValid()) {
@@ -85,5 +91,6 @@ class alerteActions extends sfActions
 	return $this->redirectPostSave($form->getObject()->id);
       }
     }
+    return $form;
   }
 }

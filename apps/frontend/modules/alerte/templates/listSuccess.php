@@ -23,7 +23,8 @@ foreach($alertes as $a)
     echo ($f = $a->getFilter()) ? preg_replace('/[&,] ?/', ', ', preg_replace('/[^=\&\,]+=/i', '', urldecode(strtolower($f)))) : " - ";
     echo "</td><td>";
   }
-  echo "une fois par ".$period[$a->getPeriod()]."</td><td>".$a->getLastMail();
+  echo "une fois par ".$period[$a->getPeriod()]."</td><td>";
+  echo ($a->getNextMail()) ? $a->getLastMail() : " - ";
   echo "</td><td>";
   echo link_to('<img src="/images/xneth/remove.png"/>', 'alerte/delete?verif='.$a->verif);
   echo"</td></tr>";

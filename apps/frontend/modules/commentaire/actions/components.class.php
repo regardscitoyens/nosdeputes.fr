@@ -13,6 +13,8 @@ class commentaireComponents extends sfComponents
       $this->type = get_class($this->object);
     }
     $this->unique_form = md5(rand());
+    if (!isset($this->follow_talk))
+      $this->follow_talk = 0;
     $this->getUser()->setAttribute('commentaire_'.$this->type.'_'.$this->id, $this->unique_form);
   }
 

@@ -68,7 +68,7 @@ class Parlementaire extends BaseParlementaire
     }
     $groupe = "";
     if ($this->groupe_acronyme != "") {
-      if ($link && function_exists('link_to'))
+      if ($link && function_exists('_parse_attributes') && function_exists('link_to'))
         $groupe = " ".link_to($this->groupe_acronyme, '@list_parlementaires_groupe?acro='.$this->groupe_acronyme);
       else $groupe = " ".$this->groupe_acronyme;
     }
@@ -77,7 +77,7 @@ class Parlementaire extends BaseParlementaire
   
   public function getLongStatut($link = 0) {
     $circo = $this->nom_circo;
-    if ($link && function_exists('link_to')) {
+    if ($link && function_exists('_parse_attributes') && function_exists('link_to')) {
       $circo = link_to($this->nom_circo, '@list_parlementaires_departement?departement='.$circo);
     }
     return $this->getStatut($link).' de la '.$this->getNumCircoString().' '.$this->getPrefixeCirconscription().$circo;
