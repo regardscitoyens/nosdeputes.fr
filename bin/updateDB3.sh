@@ -7,15 +7,15 @@ php symfony cc
 #cat bin/updateDB3.model.sql | mysql $MYSQLID $DBNAME
 php symfony doctrine:build --all --no-confirmation
 
-echo "ALTER TABLE `parlementaire` ADD `photo` LONGBLOB NULL AFTER `profession`;" | mysql $MYSQLID $DBNAME
+echo "ALTER TABLE parlementaire ADD photo LONGBLOB NULL AFTER profession" | mysql $MYSQLID $DBNAME
 
 zcat data/sql/dumps/nosdeputes_prod.100925.sql.gz | mysql --default-character-set=utf8 $MYSQLID $DBNAME
 
-echo "ALTER TABLE `parlementaire` DROP `photo`;" | mysql $MYSQLID $DBNAME
+echo "ALTER TABLE parlementaire DROP photo" | mysql $MYSQLID $DBNAME
 
 cat bin/updateDB3.1.sql | mysql $MYSQLID $DBNAME
 
-php symfony update:Deputes
+bash bin/load_deputes
 
 cd batch/hemicycle
 perl parse_hemicycle.pl html/http\:__www.assemblee-nationale.fr_13_cri_2007-2008_20080120.asp > out/out1

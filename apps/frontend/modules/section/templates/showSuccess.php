@@ -1,5 +1,5 @@
 <?php if ($section->url_an) echo '<span class="source">'.myTools::getLinkDossier($section->url_an)."</span>"; ?>
-<h1 class="orange"><?php 
+<h1><?php 
    $titre = '';
 if ($section->getSection()) {
   echo link_to($section->getSection()->getTitre(), '@section?id='.$section->section_id).'</h1><h2 class="aligncenter">';
@@ -51,7 +51,7 @@ if ($subsection->id != $section->id) : ?>
   echo '<div class="documents"><h2>Documents législatifs</h2><ul>';
   $curid = 0;
   foreach ($docs as $id => $doc) {
-    $shortid = preg_replace('/-[at].*$/', '', $id);
+    $shortid = preg_replace('/-[atv].*$/', '', preg_replace('/[A-Z]/', '', $id));
     if ($curid != $shortid) {
       echo "<li>";
       $curid = $shortid;

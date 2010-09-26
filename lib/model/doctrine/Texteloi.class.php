@@ -21,7 +21,7 @@ class Texteloi extends BaseTexteloi
   }
 
   public function __toString() {
-    $str = substr(strip_tags($this->contenu), 0, 250);
+    $str = substr($this->getExtract(), 0, 250);
     if (strlen($str) == 250) {
       $str .= '...';
     } else if (!$str) $str = "";
@@ -242,25 +242,39 @@ class Texteloi extends BaseTexteloi
 
   public function getShortTitre() {
     $str = "";
-    if ($this->annexe && preg_match('/a/', $this->id)) {
-      $str .= "Annexe N° ".$this->annexe." ";
+    if ($this->annexe && preg_match('/a([1-9]\d*)/', $this->id, $ann)) {
+      $str .= "Annexe N° ".$ann[1]." ";
       if ($this->type === "Avis")
         $str .= "à l'";
       else $str .=  "au ";
     }
-    $str .= $this->type." N° ".$this->numero;
+    $str .= $this->type;
+    if ($this->annexe && $this->annexe === "a00")
+      $str .= " annexé au Rapport";
+    $str .= " N° ".$this->numero;
+    if ($this->annexe && preg_match('/t([\dIVX]+)/', $this->id, $tom)) {
+      $str .= " (Tome ".$tom[1];
+      if ($this->annexe && preg_match('/v(\d+)/', $this->id, $vol))
+        $str .= " - volume ".$vol[1];
+      $str .= ")";
+    }
     return $str;
   }
 
   public function getTitre() {
-    $str = $this->getShortTitre();
+    $str = $this->getDetailsTitre();
+    if ($str)
+      return $this->getShortTitre()." ".$str;
+    return $this->getShortTitre();
+  }
+
+  public function getDetailsTitre() {
+    $str = "";
     if ($this->type_details && !preg_match('/'.$this->type_details.'/', $this->_get('titre')))
       $str .= " ".$this->type_details;
     if ($this->_get('titre'))
       $str .= " ".$this->_get('titre');
-    $str = preg_replace('/\s*,\s*/', ', ', $str);
-    if ($this->annexe && preg_match('/t/', $this->id))
-      $str .= " (Tome ".$this->annexe.")";
+    $str = preg_replace('/^,\s*/', '', preg_replace('/\s*,\s*/', ', ', $str));
     return $str;
   }
 
@@ -272,4 +286,20 @@ class Texteloi extends BaseTexteloi
   public function setContenu($c) {
     return $this->_set('contenu', base64_encode(gzdeflate($c)));
   }
+
+  public function getExtract() {
+    $sub = substr(strip_tags($this->contenu), 0, 30000);
+    $str = preg_replace('/^.*(mesdames)/i', '\\1', $sub);
+    if (!preg_match('/^mesdames/i', $str)) {
+      if (preg_match('/^.*introduction(.*)$/i', $sub, $match))
+        $str = $match[1];
+      else return null;
+    }
+    $str2 = substr($str, 0, 1000);
+    if (strlen($str) != 1000) {
+      $str2 .= '...';
+    } else if (!$str) $str2 = "";
+    return $str2;
+  }
+
 }

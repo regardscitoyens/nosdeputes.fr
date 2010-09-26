@@ -16,10 +16,10 @@ class documentsActions extends sfActions
    if ($loi = Doctrine::getTable('Titreloi')->findLightLoi("$id"))
      $this->redirect('@loi?loi='.$id);
    $this->doc = Doctrine::getTable('Texteloi')->find("$id");
-   if (!$this->doc)
+   if (!$this->doc && preg_match('/(\d+)/', $id, $match))
      $this->doc = Doctrine::getTable('Texteloi')->createQuery('t')
-       ->where('numero = ?', $id)
-       ->andWhere('annexe = 1')
+       ->where('numero = ?', $match[1])
+       ->orderBy('annexe')
        ->fetchOne();
    $this->forward404Unless($this->doc);
 
@@ -29,7 +29,7 @@ class documentsActions extends sfActions
       ->from('Tagging tg, tg.Tag t')
       ->where('tg.taggable_id = ?', $this->doc->id);
    $this->section = $this->doc->getSection();
-   $this->amendements = $this->doc->getAmendements();
+   $this->amendements = $this->doc->getAmendements(1);
    $this->orga = $this->doc->getCommission();
    if (preg_match('/^(\d+)-[at]/', $id, $match))
      $this->texte = count(Doctrine::getTable('Texteloi')->find($match[1]));

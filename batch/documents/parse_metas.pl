@@ -74,6 +74,7 @@ $string =~ s/,/, /g;
 $string =~ s/ +/ /g;
 $string =~ s/\s+/ /g;
 $string =~ s/&quot;//g;
+$string =~ s/Premier ministrePremier ministre/Premier ministre/g;
 
 $keywords = "";
 #print $string."\n";

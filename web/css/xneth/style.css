@@ -1178,6 +1178,14 @@ h2 {
   text-align: justify;
 }
 
+.justify {
+  text-align: justify;
+}
+
+.tabulation:first-letter {
+  padding-left: 20px;
+}
+
 .aligncenter {
   text-align: center;
 }
@@ -1222,7 +1230,7 @@ h2 {
   padding-bottom: 10px;
 }
 
-.pagerloi .precedent {
+.precedent {
   float: left;
 }
 
@@ -1378,6 +1386,10 @@ h2 {
 
 .document {
   padding: 6px;
+}
+
+.annexes {
+  padding: 10px 5px 20px 40px;
 }
 
 .documentlist { 
