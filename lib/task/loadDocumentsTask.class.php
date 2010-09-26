@@ -65,7 +65,7 @@ class loadDocumentsTask extends sfBaseTask {
               $doc->setAuteurs($json->auteurs);
             if ($json->motscles)
               foreach (explode('.', $json->motscles) as $tag)
-                if (strlen($tag) < 100)
+                if (strlen($tag) <= 50)
                   $doc->addTag($tag);
 	    if ($json->contenu)
 	      $doc->setContenu($json->contenu);
