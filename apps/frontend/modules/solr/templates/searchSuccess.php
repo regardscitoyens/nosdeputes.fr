@@ -37,7 +37,7 @@ function link_search($text, $query, $args)
 </form>
 </div>
 <div class="nb_results">
-    <p>Résultats <?php echo $results['start']+1; ?> à <?php echo $results['end']; ?> sur <?php echo $results['numFound']; ?> triés par <?php echo $sort_type; ?></p>
+    <p>Résultats <?php echo $results['start']+1; ?> à <?php echo $results['end']; ?> sur <?php echo $results['numFound'] - 1; ?> triés par <?php echo $sort_type; ?></p>
 </div>
 <div class="facets">
 <div class="tri">

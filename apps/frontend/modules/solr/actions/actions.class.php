@@ -72,15 +72,37 @@ class solrActions extends sfActions
     $this->sort = $request->getParameter('sort');
     $date = $request->getParameter('date');
     $from = $request->getParameter('from');
-    $rss = $request->getParameter('rss');
+    $type = $request->getParameter('type');
 
-    if ($rss) {
+    if ($type) {
+      sfConfig::set('sf_web_debug', false);
+    }
+
+    if ($type == 'rss') {
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
       $this->feed->setLanguage('fr');
       $this->sort = 1;
       $date = null;
       $from = null;
+    }
+
+    if ($type == 'json') {
+      $this->getResponse()->setContentType('text/plain; charset=utf-8');
+      $this->setTemplate('json');
+      $this->setLayout(false);
+    }
+
+    if ($type == 'xml') {
+      $this->getResponse()->setContentType('text/xml; charset=utf-8');
+      $this->setTemplate('xml');
+      $this->setLayout(false);
+    }
+
+    if ($type == 'csv') {
+      $this->getResponse()->setContentType('application/csv; charset=utf-8');
+      $this->setTemplate('csv');
+      $this->setLayout(false);
     }
 
     if ($this->sort) {
