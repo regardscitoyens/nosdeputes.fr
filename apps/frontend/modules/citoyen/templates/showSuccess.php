@@ -20,9 +20,10 @@
           echo '<div class="b_c_link"><a href="'.$url.'">'.$url.'</a></div>';
         } ?>
       </div>
-      <?php if ($sf_user->getAttribute('user_id') == $user->id)
-        echo '<div class="b_c_edit"><a href="'.url_for('alerte/list').'">Gérer mes alertes</a> - ';
-        echo '<a href="'.url_for('@edit_citoyen').'">Modifier votre profil</a></div>';
+      <?php if ($sf_user->getAttribute('user_id') == $user->id) {
+	    echo '<div class="b_c_edit"><a href="'.url_for('alerte/list').'">Gérer mes alertes</a> - ';
+	    echo '<a href="'.url_for('@edit_citoyen').'">Modifier votre profil</a></div>';
+	  }
         ?>
     </div>
   <div class="b_c_b"><div class="b_c_bg"></div><div class="b_c_bd"></div></div>
