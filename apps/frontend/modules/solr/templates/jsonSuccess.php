@@ -9,7 +9,7 @@ foreach ($results['docs'] as $record)
     $nb = 1;
   echo "[document_type:\"".get_class($record['object'])."\",";
   echo "document_id:".$record['object']->id.",";
-  echo "document_url:\"\"]";
+  echo "document_url:\"".sfConfig('app_baseurl').url_for('@api_document?type='.get_class($record['object']).'&id='.$record['object']->id)."\"]";
 }
 ?> }}<?php return;
 endif;

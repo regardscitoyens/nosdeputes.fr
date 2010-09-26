@@ -297,6 +297,10 @@ api_synthese:
   url: /synthese/:date/:type
   param: {module: api, action: top}
 
+api_document:
+  url: /api/document/:class/:id/:type
+  param: {module: api, action: document}
+
 # Affichage d'une question
 question_numero:
   url: /question/QE/:numero

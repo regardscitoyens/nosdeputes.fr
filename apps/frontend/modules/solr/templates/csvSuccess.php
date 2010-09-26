@@ -8,6 +8,7 @@ foreach ($results['docs'] as $record)
   echo get_class($record['object']);
   echo ";";
   echo $record['object']->id;
+  echo url_for('@api_document?type='.get_class($record['object']).'&id='.$record['object']->id)."\n";
   echo ";\n";
 }
 return;

@@ -78,6 +78,7 @@ class solrActions extends sfActions
     if ($type) {
       sfConfig::set('sf_web_debug', false);
       $this->tags = $request->getParameter('tags');
+      $this->type = $type;
     }
 
     if ($type == 'rss') {
