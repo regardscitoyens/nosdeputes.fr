@@ -27,7 +27,6 @@ class sendAlertTask extends sfBaseTask
       $query = $alerte->query." date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d').'T'.date('H:i:s')."Z]";
       $results = $solr->search($query, array('sort' => 'date desc', 'hl' => 'yes', 'hl.fragsize'=>500));
       $alerte->next_mail = date('Y-m-d H:i:s', time() + self::$period[$alerte->period]);
-      echo $alerte->next_mail." $query\n";
       if (! $results['response']['numFound']) {
 	$alerte->save();
 	continue;

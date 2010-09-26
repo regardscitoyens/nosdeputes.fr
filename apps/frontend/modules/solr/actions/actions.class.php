@@ -26,6 +26,8 @@ class solrActions extends sfActions
       return url_for('@resized_photo_parlementaire?height=70&slug='.$obj->getSlug());
     case 'Commentaire':
       return url_for('@photo_citoyen?slug='.$obj->getCitoyen()->getSlug());
+    case 'Citoyen':
+      return url_for('@photo_citoyen?slug='.$obj->getSlug());
     }
   }
  /**
@@ -116,9 +118,14 @@ class solrActions extends sfActions
       $this->results['docs'][$i]['photo'] = $this->getPhoto($obj);
       $this->results['docs'][$i]['titre'] = $obj->getTitre();
       $this->results['docs'][$i]['personne'] = $obj->getPersonne();
-      if (isset($results['highlighting'][$res['id']]['text']))
-	$this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $results['highlighting'][$res['id']]['text']));
-      else
+      if (isset($results['highlighting'][$res['id']]['text'])) {
+	$high_res = array();
+	foreach($results['highlighting'][$res['id']]['text'] as $h) {
+	  if (!preg_match('/=/', $h)) 
+	    array_push($high_res, $h);
+	}
+	$this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
+      }else
 	$this->results['docs'][$i]['highlighting'] = '';
     }
     $this->results['end'] = $deb + $nb;

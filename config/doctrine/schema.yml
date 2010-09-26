@@ -275,7 +275,7 @@ Amendement:
       refClass: ParlementaireAmendement
       foreignAlias: Amendements
     Texteloi:
-      foreignAlias: Texteloi
+      foreignAlias: Amendements
   inheritance:
     extends: ObjectCommentable
     type: concrete
@@ -293,7 +293,7 @@ QuestionEcrite:
     Taggable: ~
     Solrable:
       description: [Parlementaire, question, ministere, reponse, themes]
-      moretags: [Parlementaire, ministere, motif_retrait, numero, themes]
+      moretags: [Parlementaire, ministere, motif_retrait, themes]
       date: last_date
   columns:
     source:
@@ -525,7 +525,7 @@ ArticleLoi:
       class: TitreLoi
       foreignAlias: Articles
     Texteloi:
-      foreignAlias: Texteloi
+      foreignAlias: ArticleLois
   inheritance:
     extends: ObjectCommentable
     type: concrete
@@ -551,7 +551,7 @@ Alinea:
       class: ArticleLoi
       foreignAlias: Alineas
     Texteloi:
-      foreignAlias: Texteloi
+      foreignAlias: Alineas
   inheritance:
     extends: ObjectCommentable
     type: concrete
@@ -587,7 +587,7 @@ TitreLoi:
     TitreLoi:
       foreignAlias: SousSections
     Texteloi:
-      foreignAlias: Texteloi
+      foreignAlias: TitreLois
 
 Texteloi:
   actAs:
