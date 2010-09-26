@@ -139,12 +139,13 @@ class Amendement extends BaseAmendement {
     elseif($this->rectif > 1)
       $titre .= " ".$this->rectif."ème rectif.";
     if ($parent != 0) {
-      $titre .= ' à l\'amendement N° ';
+      $titre .= ' à ';
       if ($link && function_exists('url_for')) {
-	$link = 0;
 	$titre .= '<a href="'.url_for('@amendement?loi='.$this->texteloi_id.'&numero='.$parent[0]).'">';
+      }else{
+	$link = 0;
       }
-      $titre .= $parent[0].$lettre;
+      $titre .= 'l\'amendement N° '.$parent[0].$lettre;
       if ($link) $titre .= '</a>';
     }
     return $titre;
