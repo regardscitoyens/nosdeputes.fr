@@ -76,7 +76,7 @@ Organisme:
       unique: true
     Solrable:
       title: [titre]
-      extra_weight: 1.1
+      extra_weight: 1.6
       moretags: [type]
       index_if: is_to_index
   columns:
