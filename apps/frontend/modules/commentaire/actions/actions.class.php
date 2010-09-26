@@ -161,7 +161,7 @@ class commentaireActions extends sfActions
     $alerte->query = "object_name:Commentaire tag:object_type=".$commentaire->object_type." tag:object_id=".$commentaire->object_id;
     $alerte->no_human_query = 1;
     $alerte->period = 'HOUR';
-    $alerte->titre = "Suivre votre conversation sur $present";
+    $alerte->titre = "Suivi de votre conversation sur $present";
     $alerte->save();
 
     $object->updateNbCommentaires();

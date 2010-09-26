@@ -7,7 +7,7 @@ class sendAlertTask extends sfBaseTask
     $this->namespace = 'send';
     $this->name = 'Alert';
     $this->briefDescription = 'send alerts';
-    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
@@ -16,13 +16,13 @@ class sendAlertTask extends sfBaseTask
     $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['dev'], true);
     $manager = new sfDatabaseManager($this->configuration);
     $context = sfContext::createInstance($this->configuration);
-    $this->configuration->loadHelpers('Partial');
+    $this->configuration->loadHelpers(array('Partial', 'Url'));
     
     $solr = new SolrConnector();
     $query = Doctrine::getTable('Alerte')->createQuery('a')->where('next_mail < NOW()');
     foreach($query->execute() as $alerte) {
-      $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")+1-3600;
-      $query = $alerte->query." date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO NOW]";
+      $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")-3600*2;
+      $query = $alerte->query." date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d').'T'.date('H:i:s')."Z]";
       $results = $solr->search($query, array('sort' => 'date desc', 'hl' => 'yes', 'hl.fragsize'=>500));
       echo "$query\n";
       if (! $results['response']['numFound'])

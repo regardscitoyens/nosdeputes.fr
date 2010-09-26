@@ -12,6 +12,13 @@
  */
 class Alerte extends BaseAlerte
 {
+  public function getEmail() {
+    if ($c = $this->Citoyen) {
+      return $c->email;
+    }
+    return $this->_get('email');
+  }
+
   public function generateVerif() {
     $v = md5(rand(1, 999999999999));
     $this->_set('verif', $v);
