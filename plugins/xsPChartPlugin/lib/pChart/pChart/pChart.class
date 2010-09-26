@@ -164,7 +164,7 @@
    /* Image Map settings */
    var $BuildMap         = FALSE;
    var $MapFunction      = NULL;
-   var $tmpFolder        = "tmp/";
+   var $tmpFolder        = "/tmp";
    var $MapID            = NULL;
 
    /* This function create the background picture */
@@ -1406,8 +1406,7 @@
              imagefilledrectangle($this->Layers[$GraphID],$XPos-$XWidth,$YPos,$XPos+$XWidth,$YZero,$C_Graph);
 
              $X1 = floor($XPos - $XWidth + $this->GArea_X1); $Y1 = floor($YPos+$this->GArea_Y1) + .2;
-             $X2 = floor($XPos + $XWidth + $this->GArea_X1); 
-// $Y2 = $this->GArea_Y2 - ((0-$this->VMin) * $this->DivisionRatio);
+             $X2 = floor($XPos + $XWidth + $this->GArea_X1); $Y2 = $this->GArea_Y2 - ((0-$this->VMin) * $this->DivisionRatio);
              if ( $X1 <= $this->GArea_X1 ) { $X1 = $this->GArea_X1 + 1; }
              if ( $X2 >= $this->GArea_X2 ) { $X2 = $this->GArea_X2 - 1; }
 
@@ -2809,7 +2808,7 @@
    function getImageMap($MapName,$Flush=TRUE)
     {
      /* Strip HTML query strings */
-     $Values   = $this->tmpFolder.$MapName;
+     $Values   = $this->tmpFolder.DIRECTORY_SEPARATOR.$MapName;
      $Value    = split("\?",$Values);
      $FileName = $Value[0];
 
@@ -2842,8 +2841,7 @@
        $this->Errors[] = "[Warning] SaveImageMap - Image map is empty.";
        return(-1);
       }
-
-     $Handle = fopen($this->tmpFolder.$this->MapID, 'w');
+     $Handle = fopen($this->tmpFolder.DIRECTORY_SEPARATOR.$this->MapID, 'w');
      if ( !$Handle )
       {
        $this->Errors[] = "[Warning] SaveImageMap - Cannot save the image map.";

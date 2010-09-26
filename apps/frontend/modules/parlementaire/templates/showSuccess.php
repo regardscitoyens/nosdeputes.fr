@@ -10,7 +10,7 @@
     </div>
   </div>
   <div class="graph_depute">
-      <?php echo include_component('plot', 'parlementaire', array('parlementaire' => $parlementaire, 'options' => array('plot' => 'total', 'questions' => 'on', 'link' => 'on'))); ?>
+      <?php echo include_component('plot', 'parlementaire', array('parlementaire' => $parlementaire, 'options' => array('plot' => 'total', 'questions' => 'true', 'link' => 'true'))); ?>
   </div>
   <div class="barre_activite">
  <?php include_partial('top', array('parlementaire'=>$parlementaire)); ?>

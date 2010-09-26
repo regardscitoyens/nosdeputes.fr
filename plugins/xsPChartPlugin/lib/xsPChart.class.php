@@ -72,7 +72,26 @@ class xsPChart extends pChart
   {
     parent::Render(sfConfig::get('sf_web_dir') . sfConfig::get('sf_xspchart_web_tmp_dir') . DIRECTORY_SEPARATOR . $fileName);
   } // xsRender()
-} // pChart
+
+  /**
+   *  xsStroke
+   *
+   * @author roux
+   * @version  2010-09-26
+   */
+  public function xsStroke()
+  {
+   if ( $this->ErrorReporting )
+    $this->printErrors("GD");
+
+   /* Save image map if requested */
+   if ( $this->BuildMap )
+    $this->SaveImageMap();
+   imagepng($this->Picture);
+  } // xsStroke()
+
+}
+ // pChart
 
 /**
  * xsPData

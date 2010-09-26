@@ -1379,6 +1379,11 @@ h2 {
 .plot_section, .plot_seance {
   text-align: center;
 }
+#overDiv {
+  position:absolute;
+  visibility:hidden;
+  z-index:1000
+}
 .titre_int_et_seance .plot_section, .titre_int_et_seance .plot_seance {
   padding-right: 300px;
 }

@@ -454,6 +454,9 @@ parlementaire_presences:
 parlementaire_plot:
   url: /:slug/graphes/:time
   param: {module: parlementaire, action: plot}
+parlementaire_plot_graph:
+  url: /:slug/graphes/:time/:type
+  param: {module: plot, action: generatePlotParlementaire}
 preuve_presence_seance:
   url: /:slug/seance/:seance
   param: {module: presence, action: preuve}

@@ -3,13 +3,17 @@
 class plotComponents extends sfComponents
 {
   public function executeParlementaire() {
+  }
+ 
+  public function executeGetParlData() {
     static $seuil_invective = 20;
+    $this->data = array();
     if (!isset($this->options)) $this->options = array();
     if (!isset($this->options['session'])) $this->options['session'] = 'lastyear';
     if ($this->options['session'] == 'lastyear') {
       if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {
         $date = strtotime($this->parlementaire->fin_mandat);
-        $this->mandat_clos = true;
+        $this->data['mandat_clos'] = true;
       } else $date = time();
       $annee = date('Y', $date); $sem = date('W', $date);
       $annee0 = $annee - 1;
@@ -40,8 +44,8 @@ class plotComponents extends sfComponents
       $sem = $date_fin['numero_semaine'];
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     }
-    $this->labels = $this->getLabelsSemaines($n_weeks, $annee, $sem);
-    $this->vacances = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
+    $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee, $sem);
+    $this->data['vacances'] = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
 
     $query = Doctrine_Query::create()
       ->select('COUNT(p.id) as nombre, p.id,s.type, s.annee, s.numero_semaine')
@@ -54,11 +58,11 @@ class plotComponents extends sfComponents
     $query->groupBy('s.type, s.annee, s.numero_semaine');
     $presences = $query->fetchArray();
 
-    $this->n_presences = array('commission' => array_fill(1, $n_weeks, 0),
+    $this->data['n_presences'] = array('commission' => array_fill(1, $n_weeks, 0),
                                'hemicycle' => array_fill(1, $n_weeks, 0));
     foreach ($presences as $presence) {
       $n = ($presence['Seance']['annee'] - $annee0)*53 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($n <= $n_weeks) $this->n_presences[$presence['Seance']['type']][$n] += $presence['nombre'];
+      if ($n <= $n_weeks) $this->data['n_presences'][$presence['Seance']['type']][$n] += $presence['nombre'];
     }
     unset($presences);
 
@@ -74,47 +78,43 @@ class plotComponents extends sfComponents
     $query2->groupBy('s.type, s.annee, s.numero_semaine');
     $participations = $query2->fetchArray();
 
-    $this->n_participations = array('commission' => array_fill(1, $n_weeks, 0),
+    $this->data['n_participations'] = array('commission' => array_fill(1, $n_weeks, 0),
                                     'hemicycle' => array_fill(1, $n_weeks, 0));
-    $this->n_mots = array('commission' => array_fill(1, $n_weeks, 0),
+    $this->data['n_mots'] = array('commission' => array_fill(1, $n_weeks, 0),
                           'hemicycle' => array_fill(1, $n_weeks, 0));
-    $this->fonctions = array('commission' => 0, 'hemicycle' => 0);
     foreach ($participations as $participation) {
       $n = ($participation['Seance']['annee'] - $annee0)*53 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
       if ($n <= $n_weeks) {
-        $this->n_participations[$participation['Seance']['type']][$n] += $participation['nombre'];
-        $this->n_mots[$participation['Seance']['type']][$n] += $participation['mots']/10000;
-        if ($participation['fonction'] != "") $this->fonctions[$participation['Seance']['type']] += $participation['nombre'];
+        $this->data['n_participations'][$participation['Seance']['type']][$n] += $participation['nombre'];
+        $this->data['n_mots'][$participation['Seance']['type']][$n] += $participation['mots']/10000;
       }
     }
     unset($participations);
 
-    if (isset($this->options['questions'])) {
-      $query3 = Doctrine_Query::create()
-        ->select('count(distinct s.id) as nombre, i.id, s.annee, s.numero_semaine')
-        ->from('Intervention i')
-        ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-        ->andWhere('i.type = ?', 'question')
-        ->andWhere('i.fonction NOT LIKE ?', 'président%')
-        ->andWhere('i.nb_mots > ?', 2*$seuil_invective)
-        ->leftJoin('i.Seance s');
-      if ($this->options['session'] == 'lastyear')
-        $query3->andWhere('s.date > ?', $date_debut);
-      else $query3->andWhere('s.session = ?', $this->options['session']);
-      $query3->groupBy('s.annee, s.numero_semaine');
-      $questionsorales = $query3->fetchArray();
+    $query3 = Doctrine_Query::create()
+      ->select('count(distinct s.id) as nombre, i.id, s.annee, s.numero_semaine')
+      ->from('Intervention i')
+      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('i.type = ?', 'question')
+      ->andWhere('i.fonction NOT LIKE ?', 'président%')
+      ->andWhere('i.nb_mots > ?', 2*$seuil_invective)
+      ->leftJoin('i.Seance s');
+    if ($this->options['session'] == 'lastyear')
+      $query3->andWhere('s.date > ?', $date_debut);
+    else $query3->andWhere('s.session = ?', $this->options['session']);
+    $query3->groupBy('s.annee, s.numero_semaine');
+    $questionsorales = $query3->fetchArray();
 
-      $this->n_questions = array_fill(1, $n_weeks, 0);
-      foreach ($questionsorales as $question) {
-        $n = ($question['Seance']['annee'] - $annee0)*53 + $question['Seance']['numero_semaine'] - $sem0 + 1;
-        if ($n <= $n_weeks) {
-          if ($this->n_questions[$n] == 0)
-            $this->n_questions[$n] -= 0.15;
-          $this->n_questions[$n] += $question['nombre'];
-        }
+    $this->data['n_questions'] = array_fill(1, $n_weeks, 0);
+    foreach ($questionsorales as $question) {
+      $n = ($question['Seance']['annee'] - $annee0)*53 + $question['Seance']['numero_semaine'] - $sem0 + 1;
+      if ($n <= $n_weeks) {
+        if ($this->data['n_questions'][$n] == 0)
+          $this->data['n_questions'][$n] -= 0.15;
+        $this->data['n_questions'][$n] += $question['nombre'];
       }
-      unset($questionsorales);
     }
+    unset($questionsorales);
   }
 
   public static function getVacances($n_weeks, $annee0, $sem0, $debut_mandat) {
