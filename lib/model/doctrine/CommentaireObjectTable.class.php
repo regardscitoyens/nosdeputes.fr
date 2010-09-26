@@ -23,4 +23,13 @@ class CommentaireObjectTable extends Doctrine_Table
     }
   }
 
+  public function getParlementaires($commentaire_id) {
+    $pids = $this->createQuery('c')->select('object_id')->where('object_type = "Parlementaire"')->andWhere('commentaire_id = ?', $commentaire_id)->fetchArray();
+    $ids = array();
+    foreach ($pids as $id) {
+      array_push($ids, $id['object_id']);
+    }
+    print_r($ids);
+    return Doctrine::getTable('Parlementaire')->createQuery('p')->whereIn('p.id', $ids)->execute();
+  }
 }

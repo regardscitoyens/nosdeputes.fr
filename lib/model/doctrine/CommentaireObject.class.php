@@ -5,5 +5,4 @@
  */
 class CommentaireObject extends BaseCommentaireObject
 {
-
 }

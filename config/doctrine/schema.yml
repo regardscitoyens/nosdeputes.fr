@@ -401,7 +401,7 @@ Commentaire:
     Timestampable:
     Solrable:
       description: [Citoyen, commentaire]
-      moretags: [Citoyen, object_type, object_id]
+      moretags: [Citoyen, object_type, object_id, Parlementaires]
       date: created_at
       index_if: is_public
   columns:
