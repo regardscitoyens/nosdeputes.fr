@@ -1,4 +1,11 @@
+<?php if ($submit == 'Créer') : ?>
 <h1>Création d'une alerte email</h2>
+<?php $sf_response->setTitle('Création d\'une alerte email');
+else :?>
+<h1>Modification d'une alerte email</h2>
+<?php $sf_response->setTitle('Modification d\'une alerte email');
+endif;
+?>
 <form method="POST">
 <table><?php
 if ($form->getObject()->citoyen_id) {

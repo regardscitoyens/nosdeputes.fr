@@ -32,6 +32,7 @@ class AlerteForm extends BaseAlerteForm
     unset($this->validatorSchema['citoyen_id']);
     unset($this->validatorSchema['no_human_query']);
 
+    $this->widgetSchema['query'] = new sfWidgetFormInput();
     $this->widgetSchema['filter'] = new sfWidgetFormInputHidden();
 
     $this->widgetSchema['period'] = new sfWidgetFormChoice(array('choices' => array('HOUR' => 'Une fois par heure', 'DAY' => 'Une fois par jour', 'WEEK' => 'Une fois par semaine', 'MONTH' => 'Une fois par mois')));

@@ -1,3 +1,4 @@
+<?php $sf_response->setTitle("Recherche de $query");  $style = "xneth"; ?>
 <!-- Mal placé pour éviter conflit avec la layout en cours --->
 <div class="mail">
 <?php 
