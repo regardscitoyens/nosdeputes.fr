@@ -26,7 +26,7 @@ Parlementaire:
       title: [nom, long_statut]
       extra_weight: 1.5
       description: [villes]
-      moretags: [profession, nom_circo]
+      moretags: [Organismes, profession, nom_circo]
   columns:
     nom_circo: string(255)
     num_circo: integer
@@ -74,6 +74,11 @@ Organisme:
     Sluggable:
       fields: [nom]
       unique: true
+    Solrable:
+      title: [titre]
+      extra_weight: 1.1
+      moretags: [type]
+      index_if: is_to_index
   columns:
     nom: 
       type: string(255)

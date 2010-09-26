@@ -7,8 +7,20 @@ require_once "myTools.class.php";
  */
 class Organisme extends BaseOrganisme
 {
+  public function getLink() {
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    return url_for('@list_parlementaires_organisme?slug='.$this->slug);
+  }
+  public function getTitre() {
+    if ($this->type === "groupe")
+      return $this->getNom().' ('.$this->getSmallNomGroupe().')';
+    else return $this->getNom();
+  }
+  public function getPersonne() {
+    return '';
+  }
   public function __tostring() {
-    return substr($this->nom, 0, 100);
+    return substr($this->getTitre(), 0, 100);
   }
   public function getSmallNomGroupe() {
     $hashmap = array(
@@ -18,7 +30,9 @@ class Organisme extends BaseOrganisme
         "Députés n'appartenant à aucun groupe" => "NI",
         "Nouveau centre" => "NC"
     );
-    return $hashmap[$this->getNom()];
+    if (isset($hashmap[$this->getNom()]))
+      return $hashmap[$this->getNom()];
+    return "";
   }
 
   public function getCouleur() {
@@ -85,5 +99,11 @@ class Organisme extends BaseOrganisme
       unset($q);
     }
     return $res;
+  }
+
+  public function getIsToIndex() {
+    if ($this->type === "extra")
+      return false;
+    return true;
   }
 }

@@ -5,6 +5,16 @@
  */
 class Citoyen extends BaseCitoyen
 {
+  public function getLink() {
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    return url_for('@citoyen?slug='.$this->slug);
+  }
+  public function getTitre() {
+    return $this->getLogin();
+  }
+  public function getPersonne() {
+    return '';
+  }
   public function __toString() {
     return $this->getLogin();
   }

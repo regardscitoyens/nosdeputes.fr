@@ -5,6 +5,19 @@
  */
 class Section extends BaseSection
 {
+  public function getLink() {
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    return url_for('@section?id='.$this->id);
+  }
+  public function getPersonne() {
+    return '';
+  }
+  public function __tostring() {
+    if ($str = $this->_get('titre_complet'))
+      return $str;
+    return "";
+  }
+
   public function setTitreComplet($titre) {
     $this->_set('titre_complet', $titre);
     $this->md5 = md5($titre);
@@ -69,7 +82,7 @@ class Section extends BaseSection
     return $this->_get('Section');
   }
 
-  public function isParent() {
+  public function getIsParent() {
     if ($this->section_id == $this->id && !preg_match('/questions/i', $this->titre))
       return true;
     return false;
