@@ -40,18 +40,22 @@
       <li><?php echo link_to('Site web', $parlementaire->site_web, array('title' => 'Lien externe', 'rel'=>'nofollow')); ?></li>
       <?php endif; ?>  
     </ul>
-    <?php if ($parlementaire->fin_mandat == null) : ?>
+    <?php if ($parlementaire->fin_mandat == null) :
+    $resps = $parlementaire->getResponsabilites(); ?>
       <h2>Responsabilités</h2>
       <ul>
-        <li>Parlementaires :
+        <li>Commission permanente : <?php foreach ($resps as $resp) if (in_array($resp->organisme_id, array(2, 11, 13, 22, 204, 211, 212, 237))) { echo link_to(ucfirst(str_replace('Commission des ', '', $resp->getNom())), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') '; break; } ?></li>
+        <li>Missions parlementaires :
           <ul>
-            <?php foreach ($parlementaire->getResponsabilites() as $resp) { ?>
+            <?php $resps = $parlementaire->getResponsabilites();
+            
+            foreach ($resps as $resp) if (!in_array($resp->organisme_id, array(2, 11, 13, 22, 204, 211, 212, 237))) { ?>
             <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') '; ?></li>
             <?php } ?>
           </ul>
         </li>
         <?php if ($parlementaire->getExtras()) { ?>
-        <li>Extra-parlementaires :
+        <li>Fonctions extra-parlementaires :
           <ul>
             <?php foreach ($parlementaire->getExtras() as $extra) { ?>
             <li><?php echo link_to($extra->getNom(),'@list_parlementaires_organisme?slug='.$extra->getSlug() ); ?> (<?php echo $extra->getFonction(); ?>)</li>
