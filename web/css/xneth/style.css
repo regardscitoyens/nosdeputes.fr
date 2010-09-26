@@ -366,12 +366,14 @@ body {
   text-align: right;
   padding-right: 20px;
 }
+.b_c_edit a, .b_c_edit a:visited {
+  text-decoration: underline
+}
 .b_c_edit {
   float: right;
   padding-right: 25px;
   margin-top: 70px;
   color: #CB1414;
-  text-decoration: underline
 }
 .b_c_b {
   float: left;
@@ -1823,4 +1825,11 @@ a:hover img {
 .solr .intervenant {
     font-weight: bold;
     margin-top: 5px;
+}
+
+table.list {
+    margin: auto;
+}
+table.list td {
+    text-align: center;
 }

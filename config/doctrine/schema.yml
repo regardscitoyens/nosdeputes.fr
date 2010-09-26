@@ -660,8 +660,9 @@ Alerte:
   columns:
     email: string(128)
     query: string(128)
-    titre: string
+    titre: string 
     confirmed: boolean
+    no_human_query: boolean
     period: 
       type: enum
       values: ['HOUR', 'DAY', 'WEEK', 'MONTH']

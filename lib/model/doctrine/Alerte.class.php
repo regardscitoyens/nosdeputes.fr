@@ -12,12 +12,22 @@
  */
 class Alerte extends BaseAlerte
 {
-  public function giveVerif() {
-    $v = $this->get('verif');
-    if (!$v) {
-      $v = md5(rand(1, 999999999999));
-      $this->setVerif($v);
-    }
+  public function generateVerif() {
+    $v = md5(rand(1, 999999999999));
+    $this->_set('verif', $v);
     return $v;
+  }
+  public function getTitre() {
+    if (!$this->_get('titre'))
+      return "Recherche correspondant aux mots clés « ".$this->query." »";
+    return $this->_get('titre');
+  }
+
+  public function save(Doctrine_Connection $c = null) {
+    if (!$this->last_mail)
+      $this->last_mail = date('Y-m-d H:i:s');
+    if (!$this->verif)
+      $this->generateVerif();
+    return parent::save($c);
   }
 }

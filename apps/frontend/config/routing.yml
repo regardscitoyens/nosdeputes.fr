@@ -378,6 +378,19 @@ commentaires_widget:
   url: /commentaires/widget
   param: {module: commentaire, action: widget}
 
+alerte_create:
+  url: /alerte/create
+  param: {module: alerte, action: create}
+alerte_list:
+  url: /alerte/list
+  param: {module: alerte, action: list}
+alerte_edit:
+  url: /alerte/edit/:verif
+  param: {module: alerte, action: edit}
+alerte_delete:
+  url: /alerte/delete/:verif
+  param: {module: alerte, action: delete}
+
 parlementaire:
   url: /:slug
   param: {module: parlementaire, action: show}
