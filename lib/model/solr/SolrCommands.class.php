@@ -27,7 +27,7 @@ class SolrCommands
   }
 
   public function __destruct() {
-    sem_remove($this->semaphore);
+    //    sem_remove($this->semaphore); //semble supprimer non seulement notre instance mais le semaphore global :(
     $this->semaphore = null;
   }
 
