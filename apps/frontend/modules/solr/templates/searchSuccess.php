@@ -3,10 +3,11 @@
 <?php 
     $args = '';
 foreach(array_keys($selected) as $k) {
+  if (!is_array($selected[$k])) 
+    continue;
   if ($args)
     $args .= '&';
-  if (is_array($selected[$k]))
-    $args.= "$k=".implode(',', array_keys($selected[$k]));
+  $args.= "$k=".implode(',', array_keys($selected[$k]));
 }
 echo link_to('Etre alerté par mail lorsque de nouveaux résoltats sont publiés', 'alerte/create?filter='.urlencode($args).'&query='.urlencode($query));
 ?>
