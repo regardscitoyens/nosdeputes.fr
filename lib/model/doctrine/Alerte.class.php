@@ -13,8 +13,8 @@
 class Alerte extends BaseAlerte
 {
   public function getEmail() {
-    if ($c = $this->Citoyen) {
-      return $c->email;
+    if ($this->citoyen_id) {
+      return $this->getCitoyen()->email;
     }
     return $this->_get('email');
   }
@@ -30,11 +30,13 @@ class Alerte extends BaseAlerte
     return $this->_get('titre');
   }
 
-  public function save(Doctrine_Connection $c = null) {
+   public function save(Doctrine_Connection $c = null) {
     if (!$this->last_mail)
       $this->last_mail = date('Y-m-d H:i:s');
     if (!$this->verif)
       $this->generateVerif();
+    if ($this->citoyen_id)
+      $this->confirmed = 1;
     return parent::save($c);
   }
 }

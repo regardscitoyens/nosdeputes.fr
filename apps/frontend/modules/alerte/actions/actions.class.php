@@ -65,11 +65,19 @@ class alerteActions extends sfActions
     $this->setTemplate('form');
   }
 
+  public function executeConfirmation(sfWebRequest $request) 
+  {
+    $this->forward404Unless($alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
+    $alerte->confirmed = 1;
+    $alerte->save();
+    $this->getUser()->setFlash('notice', 'Merci d\'avoir confirmé votre alerte');
+    return $this->redirect("@homepage");
+  }
   private function redirectPostSave($alerte = null) {
     if ($citoyen_id = $this->getUser()->getAttribute('user_id'))
       return $this->redirect('alerte/list');
-    else if ($alerte_id)
-      return $this->redirect('alerte/edit?id='.$alerte_id);
+    else if ($alerte)
+      return $this->redirect('alerte/edit?verif='.$alerte->verif);
     else
       return $this->redirect('@homepage');
   }
@@ -82,15 +90,39 @@ class alerteActions extends sfActions
     if ($request->isMethod('post')) {
       $form->bind($request->getParameter($form->getName()));
       if ($form->isValid()) {
-	$form->save();
+	try {
+	  if (!$form->save()) {
+	    throw new Exception();
+	  }
+	}catch(Exception $e) {
+	  $this->getUser()->setFlash('error', 'Désolé nous n\'avons pu créer votre alerte, vous y étiez sans doute déjà abonné');
+	  return $this->redirect('@homepage');
+	}
 	if ($this->submit == 'Créer') {
-	  $this->getUser()->setFlash('notice', 'Votre alerte email a été créée');
+	  if ($alerte->confirmed)
+	    $this->getUser()->setFlash('notice', 'Votre alerte email a été créée');
+	  else {
+	    $this->confirmeAlerte($alerte);
+	    $this->getUser()->setFlash('notice', 'Votre alerte email a été créée, merci de confirmer votre abonnement par email');
+	  }
 	}else {
 	  $this->getUser()->setFlash('notice', 'Votre alerte email a été modifiée');
 	}
-	return $this->redirectPostSave($form->getObject()->id);
+	return $this->redirectPostSave($form->getObject());
       }
     }
     return $form;
+  }
+  private function confirmeAlerte($alerte) {
+    $message = $this->getMailer()->compose(array('no-reply@nosdeputes.fr' => 'Regards Citoyens (ne pas répondre)'), 
+					   $alerte->email,
+					   '[NosDeputes.fr] Confirmation d\'Alerte email - '.$alerte->titre);
+    $text = $this->getPartial('mail/sendConfirmationAlerte', array('alerte' => $alerte));
+    $message->setBody($text, 'text/plain');
+    try {
+      $this->getMailer()->send($message);
+    }catch(Exception $e) {
+      echo "Oups could not send email ($text)\n";
+    }
   }
 }

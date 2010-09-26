@@ -673,6 +673,9 @@ Alerte:
     verif: string(128)
   relations:
     Citoyen:
-      class: Citoyen
       foreignAlias: Alertes
+  indexes:
+    index_uniq:
+      fields: [email, citoyen_id, query, filter]
+      type: unique
     

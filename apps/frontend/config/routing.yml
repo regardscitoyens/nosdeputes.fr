@@ -393,6 +393,9 @@ alerte_edit:
 alerte_delete:
   url: /alerte/delete/:verif
   param: {module: alerte, action: delete}
+alerte_confirmation:
+  url: /alerte/confirmation/:verif
+  param: {module: alerte, action: confirmation}
 
 parlementaire:
   url: /:slug
