@@ -15,7 +15,7 @@ fi
 
 echo $$ > $LOCK
 
-while ! php symfony index:Solr $option do
+while ! php symfony index:Solr $option ; do
 sleep 1
 done
 
