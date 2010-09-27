@@ -44,7 +44,7 @@
     $resps = $parlementaire->getResponsabilites(); ?>
       <h2>Responsabilités</h2>
       <ul>
-        <li>Commission permanente : <?php foreach ($resps as $resp) if (in_array($resp->organisme_id, array(2, 11, 13, 22, 204, 211, 212, 237))) { echo link_to(ucfirst(str_replace('Commission des ', '', str_replace(' et de l\'', ' et ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') '; break; } ?></li>
+        <li>Commission permanente : <?php foreach ($resps as $resp) if (in_array($resp->organisme_id, array(2, 11, 13, 22, 204, 211, 212, 237))) { echo link_to(ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/', '\\1 ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') '; break; } ?></li>
         <li>Missions parlementaires :
           <ul>
             <?php $resps = $parlementaire->getResponsabilites();
