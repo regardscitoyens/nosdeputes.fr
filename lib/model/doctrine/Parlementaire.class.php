@@ -154,6 +154,10 @@ class Parlementaire extends BaseParlementaire
     }
   }
 
+  public function getOrganismes() {
+    return doctrine::getTable('Organisme')->createQuery('o')->leftJoin('o.Parlementaires p')->where('p.id = ?', $this->id)->execute();
+  }
+
   public function getPOrganisme($str) {
     if($po = $this->getPOFromJoinIf('nom', $str))
       return $po;
