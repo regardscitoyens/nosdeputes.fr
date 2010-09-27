@@ -150,7 +150,7 @@ class Intervention extends BaseIntervention
       if ($ct == 0) $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
       else if ($ct == 1) {
         $section1 = Doctrine::getTable('Section')->findOneByContexte($contexte);
-        $section2 = Doctrine::getTable('Section')->findOneByUrlAn($urls[0]['distinct']);
+        $section2 = Doctrine::getTable('Section')->findOneByIdDossierAn($urls[0]['distinct']);
         if ($section2) {
           if (!$section1) 
             $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt(str_replace(trim(preg_replace('/^([^>]+)(>.*)?$/', '\\1', $contexte)), $section2->titre, $contexte), $date, $timestamp));
@@ -169,7 +169,7 @@ class Intervention extends BaseIntervention
         else {
           $section1 = Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp);
           $this->setSection($section1);
-          $section1->setUrlAn($urls[0]['distinct']);
+          $section1->setIdDossierAn($urls[0]['distinct']);
           $section1->save();
         }
       }

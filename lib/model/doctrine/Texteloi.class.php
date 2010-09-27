@@ -63,7 +63,7 @@ class Texteloi extends BaseTexteloi
 
   public function setDossier($urldossier) {
     $this->id_dossier_an = $urldossier;
-    $section = Doctrine::getTable('Section')->findOneByUrlAn($urldossier);
+    $section = Doctrine::getTable('Section')->findOneByIdDossierAn($urldossier);
     if ($section) {
    # cela parait plus cohérent que les dossiers apparaissent comme récemment modifiés uniquement s'ils sont discutés et pas si un nouveau rapport vient les compléter je pense mais on peut envisager de le mettre tout de même si c utile pour solr par exemple
    #   $section->setMaxDate($this->date);
