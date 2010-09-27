@@ -21,6 +21,7 @@ class AlerteForm extends BaseAlerteForm
     unset($this->widgetSchema['titre']);
     unset($this->widgetSchema['citoyen_id']);
     unset($this->widgetSchema['no_human_query']);
+    unset($this->widgetSchema['query_md5']);
 
     unset($this->validatorSchema['confirmed']);
     unset($this->validatorSchema['next_mail']);
@@ -31,6 +32,7 @@ class AlerteForm extends BaseAlerteForm
     unset($this->validatorSchema['titre']);
     unset($this->validatorSchema['citoyen_id']);
     unset($this->validatorSchema['no_human_query']);
+    unset($this->validatorSchema['query_md5']);
 
     $this->widgetSchema['query'] = new sfWidgetFormInput();
     $this->widgetSchema['filter'] = new sfWidgetFormInputHidden();
