@@ -1,0 +1,22 @@
+#!/bin/bash
+
+#LOCK
+LOCK="/tmp/indexSolr.bash.lock"
+if test -e $LOCK ;
+then
+	echo Script locké par $(cat $LOCK) : $LOCK
+	exit 1;
+fi
+
+option=''
+if test "$1" = "all"; then 
+   option="--all=yes"
+fi
+
+echo $$ > $LOCK
+
+while ! php symfony index:Solr $option do
+sleep 1
+done
+
+rm $LOCK ;
