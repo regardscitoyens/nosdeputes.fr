@@ -661,6 +661,7 @@ Alerte:
     email: string(128)
     query: string
     filter: string
+    query_md5: string(32)
     titre: string 
     confirmed: boolean
     no_human_query: boolean
@@ -676,6 +677,6 @@ Alerte:
       foreignAlias: Alertes
   indexes:
     index_uniq:
-      fields: [email, citoyen_id, query, filter]
+      fields: [email, citoyen_id, query_md5]
       type: unique
     

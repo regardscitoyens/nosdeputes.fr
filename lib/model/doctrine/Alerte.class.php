@@ -37,6 +37,7 @@ class Alerte extends BaseAlerte
       $this->generateVerif();
     if ($this->citoyen_id)
       $this->confirmed = 1;
+    $this->query_md5 = md5($this->query.$this->filter);
     return parent::save($c);
   }
 }
