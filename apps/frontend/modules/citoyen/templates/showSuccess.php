@@ -21,8 +21,8 @@
         } ?>
       </div>
       <?php if ($sf_user->getAttribute('user_id') == $user->id) {
-	    echo '<div class="b_c_edit"><a href="'.url_for('alerte/list').'">Gérer mes alertes</a> - ';
-	    echo '<a href="'.url_for('@edit_citoyen').'">Modifier votre profil</a></div>';
+	    echo '<div class="b_c_edit"><a href="'.url_for('alerte/list').'">Gérer mes alertes</a> &mdash; ';
+	    echo '<a href="'.url_for('@edit_citoyen').'">Modifier mon profil</a></div>';
 	  }
         ?>
     </div>
