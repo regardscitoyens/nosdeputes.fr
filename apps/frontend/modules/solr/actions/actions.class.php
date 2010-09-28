@@ -121,11 +121,11 @@ class solrActions extends sfActions
       $params['facet.date.start']=$from;
       $params['facet.date.end'] = $to;
       $params['facet.date.gap'] = '+1MONTH';
-      $this->selected['from'][$from] = 1;
-      $this->selected['to'][$to] = 1;
+      $this->selected['from'][$from] = $from;
+      $this->selected['to'][$to] = $to;
     }
     if ($date) {
-      $this->selected['date'][$date] = 1;
+      $this->selected['date'][$date] = $date;
       if (!$from) {
 	$dates = explode(',', $date);
 	$date = array_pop($dates);

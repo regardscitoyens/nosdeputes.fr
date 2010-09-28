@@ -1,1 +1,3 @@
-Nous n'avons pas trouvé de résultat pout votre recherche
+<p>Désolé, nous n'avons pas trouvé de résultat pout votre recherche.</p>
+
+<?php include_component('parlementaire', 'search', array('query' => $query, 'msg'=>"Peut être recherchiez vous l'un de ces députés :")); ?>

@@ -1,7 +1,7 @@
 <?php 
 $sf_response->setTitle("Recherche de $query");  $style = "xneth";
 
-function link_search($text, $query, $args, $options) 
+function url_search($query, $args) 
 {
   $extra = '';
   $url = "solr/search?query=".$query;
@@ -12,8 +12,15 @@ function link_search($text, $query, $args, $options)
     }    else
       $extra .= '&'.$k.'='.$v;
   }
-  if($options) { return link_to($text, $url.$extra, $options); }
-  else { return link_to($text, $url.$extra); }
+  return $url.$extra;
+}
+
+function link_search($text, $query, $args, $options) 
+{
+  if($options) { 
+    return link_to($text, url_search($query, $args), $options); 
+  }
+  return link_to($text, url_search($query, $args));
 }
 
 $recherche = preg_replace('/"/', '&quot;', $query);

@@ -155,52 +155,26 @@ class parlementaireActions extends sfActions
   }
 
   public function executeList(sfWebRequest $request) {
-    $this->search = strip_tags($request->getParameter('search'));
-    if (!$this->search) $this->search = 'all';
-    if (preg_match('/^[A-Z]$/', $this->search))
-      return $this->redirect('@list_parlementaires#'.$this->search);
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
-    if ($this->search != 'all') {
-      $searchs = explode(' ', preg_replace('/\W/', ' ', $this->search));
-      $ns = count($searchs);
-      for ($i=0; $i<$ns; $i++)
-        $searchs[$i] = '%'.$searchs[$i].'%';
-      $likes = 'p.nom LIKE ?';
-      for ($i=1; $i<$ns; $i++)
-        $likes .= ' AND p.nom LIKE ?';
-      $query->where($likes, $searchs);
-    }
     $query->orderBy('p.nom_de_famille ASC');
-    if ($this->search == 'all') {
-      $this->parlementaires = array();
-      foreach ($query->execute() as $depute) {
-        $lettre = $depute->nom_de_famille[0];
-        if (isset($this->parlementaires[$lettre])) $this->parlementaires[$lettre][] = $depute;
-        else $this->parlementaires[$lettre] = array($depute);
-      }
-    } else $this->parlementaires = $query->execute();
-    if (!preg_match('/^([A-ZÉ]|all)$/', $this->search)) {
-      $nb = count($this->parlementaires);
-      if ($nb == 1) {
-        return $this->redirect('@parlementaire?slug='.$this->parlementaires[0]->slug);
-      }
-      if ($nb == 0) {
-        $this->similars = Doctrine::getTable('Parlementaire')->similarTo($this->search, null, 1);
-      }
-    } else {
-      $ctquery = Doctrine_Query::create()
-        ->from('Parlementaire p')
-        ->select('count(distinct p.id) as ct')
-        ->fetchOne();
-      $this->total = $ctquery['ct'];
-      $ctquery = Doctrine_Query::create()
-        ->from('Parlementaire p')
-        ->select('count(distinct p.id) as ct')
-        ->where('p.fin_mandat IS NULL')
-        ->orWhere('p.fin_mandat < p.debut_mandat')
-        ->fetchOne();
-      $this->actifs = $ctquery['ct'];
+    $this->parlementaires = array();
+    foreach ($query->execute() as $depute) {
+      $lettre = $depute->nom_de_famille[0];
+      if (isset($this->parlementaires[$lettre])) $this->parlementaires[$lettre][] = $depute;
+      else $this->parlementaires[$lettre] = array($depute);
     }
+    $ctquery = Doctrine_Query::create()
+      ->from('Parlementaire p')
+      ->select('count(distinct p.id) as ct')
+      ->fetchOne();
+    $this->total = $ctquery['ct'];
+    $ctquery = Doctrine_Query::create()
+      ->from('Parlementaire p')
+      ->select('count(distinct p.id) as ct')
+      ->where('p.fin_mandat IS NULL')
+      ->orWhere('p.fin_mandat < p.debut_mandat')
+      ->fetchOne();
+    $this->actifs = $ctquery['ct'];
   }
 
   public function executeListProfession(sfWebRequest $request) {
