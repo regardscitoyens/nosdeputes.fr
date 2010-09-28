@@ -47,6 +47,7 @@ $(document).ready(function() {
     date_li = $(this).find('a').attr("title").split(':');
     date_href[nb_li] = $(this).find('a').attr("href"); /* ajouter onclick haut colonnes */
     $(this).find("#hover_graph").attr("onclick", "document.location.replace('http://"+location.host+date_href[nb_li]+"')");
+    $(this).find("#hover_graph").css("cursor", "pointer");
     periode[nb_li] = date_li[0];
     nb_li++;
   });
