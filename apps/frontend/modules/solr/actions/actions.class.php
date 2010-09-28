@@ -15,8 +15,9 @@ class solrActions extends sfActions
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     switch(get_class($obj)) {
     case 'Intervention':
-      if ($obj->getParlementaire())
-	return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj->getIntervenant(), 'height'=>70));
+      if ($obj->getParlementaire()->__toString()) {
+	return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj->getParlementaire(), 'height'=>70));
+      }
     case 'QuestionEcrite':
       return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj->getParlementaire(), 'height'=>70));
     case 'Amendement':
