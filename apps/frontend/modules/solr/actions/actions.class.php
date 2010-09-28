@@ -153,8 +153,8 @@ class solrActions extends sfActions
       if (isset($results['highlighting'][$res['id']]['text'])) {
 	$high_res = array();
 	foreach($results['highlighting'][$res['id']]['text'] as $h) {
-	  if (!preg_match('/=/', $h)) 
-	    array_push($high_res, $h);
+	  $h = preg_replace('/.*=/', '', $h); 
+	  array_push($high_res, $h);
 	}
 	$this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
       }else
@@ -190,17 +190,18 @@ class solrActions extends sfActions
       }
     }
     if (!$results['response']['numFound']) {
-      $this->setTemplate('noresults');
-    }else{
-      $this->fdates = array();
-      $this->fdates['max'] = 1;
-      foreach($results['facet_counts']['facet_dates']['date'] as $date => $nb) {
-	if (preg_match('/^20/', $date)) {
-	  $pc = $nb/$results['response']['numFound'];
-	  $this->fdates['values'][$date] = array('nb' => $nb, 'pc' => $pc);
-	  if ($this->fdates['max'] < $pc) {
-	    $this->fdates['max'] = $pc;
-	  }
+      if ($format)
+	return ;
+      return $this->setTemplate('noresults');
+    }
+    $this->fdates = array();
+    $this->fdates['max'] = 1;
+    foreach($results['facet_counts']['facet_dates']['date'] as $date => $nb) {
+      if (preg_match('/^20/', $date)) {
+	$pc = $nb/$results['response']['numFound'];
+	$this->fdates['values'][$date] = array('nb' => $nb, 'pc' => $pc);
+	if ($this->fdates['max'] < $pc) {
+	  $this->fdates['max'] = $pc;
 	}
       }
     }
