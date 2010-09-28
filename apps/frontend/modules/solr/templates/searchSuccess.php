@@ -170,9 +170,11 @@ else {
 <span class="tri">
 <?php 
   $newargs = $selected;
-  if ($sort)
+  if ($sort) {
+    if (isset($newargs['sort']))
+      $newargs['sort'] = 0;
     echo link_search('trier par pertinence', $query, $newargs, 0); 
-  else {
+  } else {
     $newargs['sort'] = 1;
     echo link_search('trier par date', $query, $newargs, 0); 
   }
