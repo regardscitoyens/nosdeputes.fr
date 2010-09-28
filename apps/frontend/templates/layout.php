@@ -35,6 +35,7 @@ $menu_dossier = $selectinterv || $selectamdmt;
 $menu_citoyen = $selectcitoyen;
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
+    <?php echo stylesheet_tag($style.'/jquery-ui-1.8.5.custom.css'); ?>
     <?php echo stylesheet_tag($style.'/style.css'); ?>
     <?php echo stylesheet_tag($style.'/print', array('media' => 'print')); ?>
     <!--[if lte IE 6]>
@@ -45,6 +46,7 @@ $menu_citoyen = $selectcitoyen;
     </style> 
     <![endif]-->
 	<?php echo javascript_include_tag('jquery-1.4.2.min.js'); ?>
+	<?php echo javascript_include_tag('jquery-ui-1.8.5.custom.min.js'); ?>
 	<?php echo javascript_include_tag('fonctions.js'); ?>
   </head>
   <body>
