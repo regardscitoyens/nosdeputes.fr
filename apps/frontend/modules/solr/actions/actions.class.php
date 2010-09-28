@@ -65,7 +65,6 @@ class solrActions extends sfActions
       }
     }
     //Récupère les résultats auprès de SolR
-    $s = new SolrConnector();
     $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>"2007-05-01T00:00:00Z", "facet.date.end"=>"NOW", "facet.date.gap"=>"+1MONTH", 'fq' => $fq);
     $this->sort_type = 'pertinence';
 
@@ -144,8 +143,14 @@ class solrActions extends sfActions
     $this->start = $params['facet.date.start'];
     $this->end = $params['facet.date.end'];
     $this->interval = $params['facet.date.gap'];
-    
-    $results = $s->search($query, $params, $deb, $nb);
+
+    try {
+      $s = new SolrConnector();
+      $results = $s->search($query, $params, $deb, $nb);
+    }catch(Exception $e) {
+      $results = array('response' => array('docs' => array(), 'numFound' => 0));
+      $this->getUser()->setFlash('error', 'Désolé, le moteur de recherche est indisponible pour le moment');
+    }
     //Reconstitut les résultats
     $this->results = $results['response'];
     for($i = 0 ; $i < count($this->results['docs']) ; $i++) {
@@ -176,22 +181,24 @@ class solrActions extends sfActions
     $this->facet['parlementaire']['facet_field'] = 'tag';
     $this->facet['parlementaire']['name'] = 'Parlementaire';
 
-    $this->facet['type']['prefix'] = '';
-    $this->facet['type']['facet_field'] = 'object_name';
-    $this->facet['type']['name'] = 'Types';
-    $this->facet['type']['values'] = $results['facet_counts']['facet_fields']['object_name'];
-
-    $tags = $results['facet_counts']['facet_fields']['tag'];
-    $this->facet['tag']['prefix'] = '';
-    $this->facet['tag']['facet_field'] = 'tag';
-    $this->facet['tag']['name'] = 'Tags';
-    foreach($tags as $tag => $nb ) {
-      if (!$nb)
-	continue;
-      if (!preg_match('/=/', $tag))
-	$this->facet['tag']['values'][$tag] = $nb;
-      if (preg_match('/^parlementaire=(.*)/', $tag, $matches)) {
-	$this->facet['parlementaire']['values'][$matches[1]] = $nb;
+    if (isset($results['facet_counts'])) {
+      $this->facet['type']['prefix'] = '';
+      $this->facet['type']['facet_field'] = 'object_name';
+      $this->facet['type']['name'] = 'Types';
+      $this->facet['type']['values'] = $results['facet_counts']['facet_fields']['object_name'];
+      
+      $tags = $results['facet_counts']['facet_fields']['tag'];
+      $this->facet['tag']['prefix'] = '';
+      $this->facet['tag']['facet_field'] = 'tag';
+      $this->facet['tag']['name'] = 'Tags';
+      foreach($tags as $tag => $nb ) {
+	if (!$nb)
+	  continue;
+	if (!preg_match('/=/', $tag))
+	  $this->facet['tag']['values'][$tag] = $nb;
+	if (preg_match('/^parlementaire=(.*)/', $tag, $matches)) {
+	  $this->facet['parlementaire']['values'][$matches[1]] = $nb;
+	}
       }
     }
     if (!$results['response']['numFound']) {
