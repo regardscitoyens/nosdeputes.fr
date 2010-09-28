@@ -66,8 +66,12 @@ if (!$parlementaire->fin_mandat) {
 ?>
 <ul><?php
 foreach(array_keys($images) as $k) {
+  if (isset($top[$k]['value']))
+    $value = $top[$k]['value'];
+  else
+    $value = 0;
   $couleur = 'gris';
-  $titre = $titres[$k];
+  $titre = $value.' '.$titres[$k];
   if ($rank && $top[$k]['rank'] <= 150) {
     $couleur = 'vert';
     $titre .=' (fait partie des 150 premiers)';
@@ -80,15 +84,13 @@ foreach(array_keys($images) as $k) {
   echo $couleur2style[$couleur];
   echo'>';
   if ($rank)
-    echo '<a title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug).'">';
+    echo '<a class="jstitle" title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug).'">';
   echo '<img height="16" width="16" src="'.$sf_request->getRelativeUrlRoot().'/images/xneth/';
   printf($images[$k], $couleur);
-  echo '" alt="'.$titre.'" title="'.$titre.'" />';
-  echo ' : ';
-  if (isset($top[$k]['value']))
-    echo $top[$k]['value'];
-  else echo '0';
+  echo '" alt="'.$titre.'" />';
+  echo ' : '.$value;
   if ($rank)
     echo '</a>';
   echo '</li>';
 }?></ul>
+<script  type="text/javascript" src="/js/jstitle.js"></script>
