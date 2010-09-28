@@ -228,7 +228,7 @@ echo link_search($value,
 <?php foreach ($results['docs'] as $record) : ?>
 <div class="item">
       <h4><a href="<?php echo $record['link']; ?>"><?php echo $record['titre']; ?></a></h4>
-      <?php if ($record['photo']) { ?><p class="photo"><a href="<?php echo $record['link']; ?>" rel="nofollow"><img width="53" src="<?php echo $record['photo']; ?>"/></a></p><?php } ?>
+      <?php if ($record['photo']) { ?><p class="photo"><a href="<?php echo $record['link']; ?>" rel="nofollow"><?php echo $record['photo']; ?></a></p><?php } ?>
       <p class="intervenant"><a href="<?php echo $record['link']; ?>" rel="nofollow"><?php echo $record['personne']; ?></a></p>
       <p class="content"><?php echo $record['highlighting']; ?></p>
       <p class="more"><a href="<?php echo $record['link']; ?>">Consulter</a></p>

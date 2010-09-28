@@ -16,18 +16,17 @@ class solrActions extends sfActions
     switch(get_class($obj)) {
     case 'Intervention':
       if ($obj->getParlementaire())
-	return url_for('@resized_photo_parlementaire?height=70&slug='.$obj->getIntervenant()->getSlug());
-      return '';
+	return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj->getIntervenant(), 'height'=>70));
     case 'QuestionEcrite':
-      return url_for('@resized_photo_parlementaire?height=70&slug='.$obj->getParlementaire()->getSlug());
+      return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj->getParlementaire(), 'height'=>70));
     case 'Amendement':
       return '';
     case 'Parlementaire':
-      return url_for('@resized_photo_parlementaire?height=70&slug='.$obj->getSlug());
+      return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj, 'height'=>70));
     case 'Commentaire':
-      return url_for('@photo_citoyen?slug='.$obj->getCitoyen()->getSlug());
+      return '<img width="53" src="'.url_for('@photo_citoyen?slug='.$obj->getCitoyen()->getSlug()).'"/>';
     case 'Citoyen':
-      return url_for('@photo_citoyen?slug='.$obj->getSlug());
+      return '<img width="53" src="'.url_for('@photo_citoyen?slug='.$obj->getSlug()).'"/>';
     }
   }
  /**
@@ -114,24 +113,27 @@ class solrActions extends sfActions
       $params['sort'] = "date desc";
       $this->sort_type = 'date';
     }
+    if ($from) {
+      $to = $request->getParameter('to', 'NOW');
+      $query .= ' date:['.$from.' TO '.$to.']';
+      $params['facet.date.start']=$from;
+      $params['facet.date.end'] = $to;
+      $params['facet.date.gap'] = '+1MONTH';
+      $this->selected['from'][$from] = 1;
+      $this->selected['to'][$to] = 1;
+    }
     if ($date) {
-      $dates = explode(',', $date);
-      $date = array_pop($dates);
-      $period = 'MONTH';
-      if (count($dates) == 1)
-	    $period = 'DAY';
-      $query .= ' date:['.$date.' TO '.$date.'+1'.$period.']';
       $this->selected['date'][$date] = 1;
-      $params['facet.date.start']=$date;
-      $params['facet.date.end'] = $date.'+1'.$period;
-      $params['facet.date.gap'] = '+1DAY';
-    }else {
-      if ($from) {
-	      $to = $request->getParameter('to', 'NOW');
-	      $query .= ' date:['.$from.' TO '.$to.']';
-      	$params['facet.date.start']=$from;
-	      $params['facet.date.end'] = $to;
-	      $params['facet.date.gap'] = '+1MONTH';
+      if (!$from) {
+	$dates = explode(',', $date);
+	$date = array_pop($dates);
+	$period = 'MONTH';
+	if (count($dates) == 1)
+	  $period = 'DAY';
+	$query .= ' date:['.$date.' TO '.$date.'+1'.$period.']';
+	$params['facet.date.start']=$date;
+	$params['facet.date.end'] = $date.'+1'.$period;
+	$params['facet.date.gap'] = '+1DAY';
       }
     }
     
