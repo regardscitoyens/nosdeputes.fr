@@ -56,6 +56,12 @@ class myTools {
     $date = $date.substr($d,2,2);      // année
     return $date;
   }
+  
+  public static function displayMoisAnnee($d) {
+    $date = self::$num_mois[substr($d,5,2)].' ';  // mois txt
+    $date = $date.substr($d,0,4);      // année num
+    return $date;
+  }
  
   public static function displayDateTime($d) { 
     $date = self::displayShortDate($d)." à "; 

@@ -119,7 +119,7 @@ class solrActions extends sfActions
       $date = array_pop($dates);
       $period = 'MONTH';
       if (count($dates) == 1)
-	$period = 'DAY';
+	    $period = 'DAY';
       $query .= ' date:['.$date.' TO '.$date.'+1'.$period.']';
       $this->selected['date'][$date] = 1;
       $params['facet.date.start']=$date;
@@ -127,13 +127,19 @@ class solrActions extends sfActions
       $params['facet.date.gap'] = '+1DAY';
     }else {
       if ($from) {
-	$to = $request->getParameter('to', 'NOW');
-	$query .= ' date:['.$from.' TO '.$to.']';
-	$params['facet.date.start']=$from;
-	$params['facet.date.end'] = $to;
-	$params['facet.date.gap'] = '+1MONTH';
+	      $to = $request->getParameter('to', 'NOW');
+	      $query .= ' date:['.$from.' TO '.$to.']';
+      	$params['facet.date.start']=$from;
+	      $params['facet.date.end'] = $to;
+	      $params['facet.date.gap'] = '+1MONTH';
       }
     }
+    
+    $this->date_en_cours = $date;
+    $this->start = $params['facet.date.start'];
+    $this->end = $params['facet.date.end'];
+    $this->interval = $params['facet.date.gap'];
+    
     $results = $s->search($query, $params, $deb, $nb);
     //Reconstitut les résultats
     $this->results = $results['response'];

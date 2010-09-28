@@ -100,7 +100,7 @@ class interventionActions extends sfActions
   }
 
   public function executeTag(sfWebRequest $request) {
-    $this->tags = split('\|', $request->getParameter('tags'));
+    $this->tags = explode('\|', $request->getParameter('tags'));
     
     if (Doctrine::getTable('Tag')->findOneByName($this->tags[0]))
       $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', $this->tags);

@@ -8,8 +8,6 @@ body {
 /* Recherches */
 .cont_date_graph {
   margin-right: 4px;
-  padding-left: 7px;
-  padding-right: 7px;
 }
 .date {
 	border-bottom: 1px solid #E0E0DD;
@@ -17,10 +15,17 @@ body {
 	height: 200px;
 	margin: 0;
 	padding: 0;
+  margin-left: 7px;
+  margin-right: 7px;
 	position: relative;
   background-color: #fff;
-	overflow-y: hidden;
-	overflow-x: auto;
+	overflow: hidden;
+}
+#slider_date_graph {
+  width: 870px;
+  margin-top: 7px;
+  margin-left: 20px;
+  margin-right: 6px;
 }
 .date li {
 	border: 1px solid #E0E0DD;
@@ -50,11 +55,6 @@ body {
 }
 #text_graph a{
   color: transparent;
-}
-#slider_date_graph {
-  width: 900px;
-  margin-top: 7px;
-  margin-right: 7px;
 }
 .searchbox {
   padding-top: 15px;
