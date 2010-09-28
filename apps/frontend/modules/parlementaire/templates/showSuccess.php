@@ -42,6 +42,14 @@
     </ul>
     <?php if ($parlementaire->fin_mandat == null) :
     $resps = $parlementaire->getResponsabilites(); ?>
+    <h2>Suivre l'activité du député</h2>
+    <ul><li>
+    <p>Si vous souhaitez être averti des activités futures <?php if ($parlementaire->sexe == 'H') {echo 'du député';}else{ echo 'de la députée';} ?> ou des commentaires portant sur son travail, vous pouvez vous abonner :</p>
+    <ul>
+       <li><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>"><img src="/images/xneth/email.png" alt="Email"> par email, et ainsi recevoir les mises à jour dans votre boite de réception ;</a></li>
+       <li><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><img src="/images/xneth/rss_obliq.png" alt="Flux rss"> par RSS, et être alerté des mises à jour via votre lecteur RSS.</a></li>
+    </ul>
+    </li></ul>
       <h2>Responsabilités</h2>
       <ul>
         <li>Commission permanente : <?php foreach ($resps as $resp) if (in_array($resp->organisme_id, array(2, 11, 13, 22, 204, 211, 212, 237))) { echo link_to(ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/', '\\1 ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') '; break; } ?></li>
