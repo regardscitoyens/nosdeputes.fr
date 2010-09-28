@@ -132,6 +132,16 @@ class parlementaireActions extends sfActions
     $this->response->addMeta('parlementaire_id', 'd'.$this->parlementaire->id);
     $this->response->addMeta('parlementaire_id_url', 'http://www.nosdeputes.fr/id/'.'d'.$this->parlementaire->id);
 
+    $this->commissions_permanentes = array();
+    $this->missions = array();
+
+    foreach ($this->parlementaire->getResponsabilites() as $resp) {
+      if (in_array($resp->organisme_id, array(2, 11, 13, 22, 204, 211, 212, 237))) {
+	array_push($this->commissions_permanentes, $resp);
+      }else{
+	array_push($this->missions, $resp);
+      }
+    }
   }
 
   public function executeId(sfWebRequest $request)

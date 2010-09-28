@@ -40,8 +40,7 @@
       <li><?php echo link_to('Site web', $parlementaire->site_web, array('title' => 'Lien externe', 'rel'=>'nofollow')); ?></li>
       <?php endif; ?>  
     </ul>
-    <?php if ($parlementaire->fin_mandat == null) :
-    $resps = $parlementaire->getResponsabilites(); ?>
+    <?php if ($parlementaire->fin_mandat == null) : ?>
     <h2>Suivre l'activité du député</h2>
     <ul><li>
     <p>Si vous souhaitez être averti des activités futures <?php if ($parlementaire->sexe == 'H') {echo 'du député';}else{ echo 'de la députée';} ?> ou des commentaires portant sur son travail, vous pouvez vous abonner :</p>
@@ -52,16 +51,17 @@
     </li></ul>
       <h2>Responsabilités</h2>
       <ul>
-        <li>Commission permanente : <?php foreach ($resps as $resp) if (in_array($resp->organisme_id, array(2, 11, 13, 22, 204, 211, 212, 237))) { echo link_to(ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/', '\\1 ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') '; break; } ?></li>
+        <li>Commission permanente : <ul><?php foreach ($commissions_permanentes as $resp) { echo '<li>'.link_to(ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/', '\\1 ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') </li>'; break; } ?></ul></li>
+<?php if (count($missions)) : ?>
         <li>Missions parlementaires :
           <ul>
-            <?php $resps = $parlementaire->getResponsabilites();
-            
-            foreach ($resps as $resp) if (!in_array($resp->organisme_id, array(2, 11, 13, 22, 204, 211, 212, 237))) { ?>
+            <?php 
+            foreach ($missions as $resp) { ?>
             <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') '; ?></li>
             <?php } ?>
           </ul>
         </li>
+<?php endif; ?>
         <?php if ($parlementaire->getExtras()) { ?>
         <li>Fonctions extra-parlementaires :
           <ul>
