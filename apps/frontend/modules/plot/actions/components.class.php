@@ -150,6 +150,52 @@ class plotComponents extends sfComponents
     return $labels;
   }
 
+  public function executeNewGroupes() {
+  }
+
+  public function executeGetGroupesData() {
+    $this->data = array();
+    $this->data['groupes'] = array('UMP' => array(),'NC' => array(),'SRC' => array(),'GDR' => array(), 'NI' => array());
+    $this->data['titres'] = array("Députés", "Interventions", "Amendements", "Propositions", "Quest. Orales", "Quest. Écrites");
+    $n = count($this->data['titres']);
+    $stats = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
+    $amdmts = Doctrine_Query::create()
+      ->select('p.groupe_acronyme, count(DISTINCT(a.id)) as ct')
+      ->from('Parlementaire p, p.ParlementaireAmendements pa, pa.Amendement a')
+      ->where('a.date > ?', date('Y-m-d', time()-60*60*24*365))
+      ->groupBy('p.groupe_acronyme')
+      ->fetchArray();
+    $props = Doctrine_Query::create()
+      ->select('p.groupe_acronyme, count(DISTINCT(t.id)) as ct')
+      ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
+      ->where('t.date > ?', date('Y-m-d', time()-60*60*24*365))
+      ->andWhere('pt.importance = 1')
+      ->andWhere('t.type LIKE ?', "proposition%")
+      ->groupBy('p.groupe_acronyme')
+      ->fetchArray();
+    foreach ($this->data['groupes'] as $groupe => $arr) if ($stats[$groupe]) {
+      $this->data['groupes'][$groupe][] = $stats[$groupe]['groupe']['nb'];
+      $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme']+$stats[$groupe]['commission_interventions']['somme'];
+    }
+    foreach ($amdmts as $amdt)
+      $this->data['groupes'][$amdt['groupe_acronyme']][] = $amdt['ct'];
+    foreach ($props as $pro)
+      $this->data['groupes'][$pro['groupe_acronyme']][] = $pro['ct'];
+    foreach ($this->data['groupes'] as $groupe => $arr) if ($stats[$groupe]) {
+      $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_ecrites']['somme'];
+      $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_orales']['somme'];
+    }
+    $this->data['totaux'] = array();
+    for ($i=0;$i<$n;$i++)
+      $this->data['totaux'][] = 0;
+    foreach ($this->data['groupes'] as $groupe => $arr)
+      for ($i=0;$i<$n;$i++)
+        $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
+    foreach ($this->data['groupes'] as $groupe => $arr)
+      for ($i=0;$i<$n;$i++)
+        $this->data['groupes'][$groupe][$i] = $this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 100;
+  }
+
   public function executeGroupes() {
     $this->empty = 0;
     if (!isset($this->plot)) $this->plot = 'total';
@@ -162,8 +208,8 @@ class plotComponents extends sfComponents
       $groupes = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
       $this->time = 'lastyear';
       foreach($this->labels as $groupe) if ($groupes[$groupe]) {
-        $this->presences[] = $groupes[$groupe]['semaine']['somme'];
-        $this->presences_moy[] = $groupes[$groupe]['semaine']['somme']/$groupes[$groupe]['groupe']['nb'];
+        $this->presences[] = $groupes[$groupe]['semaines_presence']['somme'];
+        $this->presences_moy[] = $groupes[$groupe]['semaines_presence']['somme']/$groupes[$groupe]['groupe']['nb'];
         $this->interventions[] = $groupes[$groupe]['hemicycle_interventions']['somme'];
         $this->interventions_moy[] = $groupes[$groupe]['hemicycle_interventions']['somme']/$groupes[$groupe]['groupe']['nb'];
       }

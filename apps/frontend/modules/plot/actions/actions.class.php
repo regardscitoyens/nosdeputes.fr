@@ -31,5 +31,15 @@ class plotActions extends sfActions {
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
   }
+
+  public function executeGeneratePlotGroupes(sfWebRequest $request) {
+    $this->drawAction = $request->getParameter('drawAction');
+    if (!$this->drawAction)
+      $this->drawAction = "draw";
+    $this->mapId = $request->getParameter('mapId');
+    $this->forward404Unless($this->mapId);
+    $this->getResponse()->setHttpHeader('content-type', 'image/png');
+    $this->setLayout(false);
+  }
   
 }
