@@ -1,6 +1,15 @@
+<?php $keys = array_keys($tags);
+$tot = count($keys);
+if (!isset($nozerodisplay))
+  $nozerodisplay = false;
+if (!$nozerodisplay || $tot > 0) {
+if ($nozerodisplay) { ?>
+<div class="nuage_de_tags">
+<h3>Mots-clés</h3>
+<?php } ?>
 <div class="internal_tag_cloud">
 <?php $ct = 1; $keys = array_keys($tags);
-if (count($keys)) { foreach($keys as $tag) : ?>
+if ($tot > 0) { foreach($keys as $tag) : ?>
 <span class="tag_level_<?php echo $tags[$tag]['class']; ?>"><?php if (isset($route)) {
 echo '<a href="'; 
 $rel = $tags[$tag]['related'];
@@ -24,3 +33,8 @@ if (isset($route)) { ?></a> <?php }
 } else { ?>
 <span><em>Aucun mot-clé trouvé</em></span>
 <?php } ?></div>
+<?php if ($nozerodisplay) { ?>
+</div>
+<?php }
+} ?>
+

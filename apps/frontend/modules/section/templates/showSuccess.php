@@ -16,10 +16,7 @@ else echo '</h1>';
 <?php } ?>
 <div class="resume">
 <div class="right">
-<div class="nuage_de_tags">
-<h3>Mots-clés de cette section</h3>
-<?php echo include_component('tag', 'tagcloud', array('hide'=>1, 'tagquery' => $qtag, 'model' => 'Intervention', 'limit'=>40, 'route' => '@tag_section_interventions?section='.$section->id.'&')); ?>
-</div>
+<?php echo include_component('tag', 'tagcloud', array('hide'=>1, 'tagquery' => $qtag, 'model' => 'Intervention', 'limit'=>40, 'route' => '@tag_section_interventions?section='.$section->id.'&', 'nozerodisplay' => true)); ?>
 </div>
 <div class="left">
 <div class="plot_section">

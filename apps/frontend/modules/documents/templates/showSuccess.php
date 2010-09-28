@@ -38,10 +38,7 @@ if ($cosign) {
 <p class="aligncenter">(<?php echo link_to('version pdf', preg_replace('/asp$/', 'pdf', preg_replace('/13\//', '13/pdf/', $doc->source))); ?>)</p>
 </div>
 <div class="right">
-<div class="nuage_de_tags">
-<h3>Mots-clés</h3>
-  <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Texteloi', 'limit' => 40, 'fixlevel' => 1)); ?>
-</div>
+  <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Texteloi', 'limit' => 40, 'fixlevel' => 1, 'nozerodisplay' => true)); ?>
 <?php if ((isset($texte) && $texte > 0) || count($annexes) || $amendements) { ?>
   <div class="annexes">
   <h3>Documents associés</h3><ul>
