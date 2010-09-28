@@ -289,7 +289,7 @@
     }
 
    /* Compute and draw the scale */
-   function drawScale(&$Data,&$DataDescription,$ScaleMode,$R,$G,$B,$DrawTicks=TRUE,$Angle=0,$Decimals=1,$WithMargin=FALSE,$SkipLabels=1)
+   function drawScale(&$Data,&$DataDescription,$ScaleMode,$R,$G,$B,$DrawTicks=TRUE,$Angle=0,$Decimals=1,$WithMargin=FALSE,$SkipLabels=1,$TopAxis=FALSE)
     {
      /* Validate the Data and DataDescription array */
      $this->validateData("drawScale",$Data);
@@ -297,7 +297,9 @@
      $C_TextColor         = imagecolorallocate($this->Picture,$R,$G,$B);
 
      $this->drawLine($this->GArea_X1,$this->GArea_Y1,$this->GArea_X1,$this->GArea_Y2,$R,$G,$B);
-     $this->drawLine($this->GArea_X1,$this->GArea_Y2,$this->GArea_X2,$this->GArea_Y2,$R,$G,$B);
+     if ($TopAxis == FALSE)
+       $this->drawLine($this->GArea_X1,$this->GArea_Y2,$this->GArea_X2,$this->GArea_Y2,$R,$G,$B);
+     else $this->drawLine($this->GArea_X1,$this->GArea_Y1,$this->GArea_X2,$this->GArea_Y1,$R,$G,$B);
 
      if ( $this->VMin == NULL && $this->VMax == NULL)
       {
@@ -466,11 +468,20 @@
      /* Horizontal Axis */
      $XPos = $this->GArea_X1 + $this->GAreaXOffset;
      $ID = 1; $YMax = NULL;
+     if ($TopAxis == FALSE) {
+      $YAxisPos = $this->GArea_Y2;
+      $YAxisOrt = 1;
+      $YLegShift = 10;
+     } else {
+      $YAxisPos = $this->GArea_Y1;
+      $YAxisOrt = -1;
+      $YLegShift = 7;
+     }
      foreach ( $Data as $Key => $Values )
       {
        if ( $ID % $SkipLabels == 0 )
         {
-         $this->drawLine(floor($XPos),$this->GArea_Y2,floor($XPos),$this->GArea_Y2+5,$R,$G,$B);
+         $this->drawLine(floor($XPos),$YAxisPos,floor($XPos),$YAxisPos+$YAxisOrt*5,$R,$G,$B);
          $Value      = $Data[$Key][$DataDescription["Position"]];
          if ( $DataDescription["Format"]["X"] == "number" )
           $Value = $Value.$DataDescription["Unit"]["X"];
@@ -487,14 +498,14 @@
 
          if ( $Angle == 0 )
           {
-           $YPos = $this->GArea_Y2+18;
+           $YPos = $YAxisPos+$YAxisOrt*18;
            imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-floor($TextWidth/2),$YPos,$C_TextColor,$this->FontName,$Value);
           }
          else
           {
-           $YPos = $this->GArea_Y2+10+$TextHeight;
+           $YPos = $YAxisPos+$YLegShift+$YAxisOrt*($TextHeight);
            if ( $Angle <= 90 )
-            imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-$TextWidth+5,$YPos,$C_TextColor,$this->FontName,$Value);
+            imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-$TextWidth/2+5,$YPos,$C_TextColor,$this->FontName,$Value);
            else
             imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)+$TextWidth+5,$YPos,$C_TextColor,$this->FontName,$Value);
           }

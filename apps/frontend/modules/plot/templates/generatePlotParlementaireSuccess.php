@@ -102,7 +102,7 @@ $Test->drawRoundedRectangle(5,5,795,$size - 5,5,230,230,230);
 $Test->drawGraphArea(230,230,230,FALSE);
 $Test->setFixedScale(0,$scale,$scale/$ticks);
 $Test->xsSetFontProperties("tahoma.ttf",$font);
-$Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,TRUE,0,0,FALSE,1,TRUE);
+$Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,TRUE,0,0,FALSE,1,FALSE);
 if ($link === 'true') {
   $Test->setColorPalette(0,255,255,255);
   $Test->setColorPalette(1,255,255,255);

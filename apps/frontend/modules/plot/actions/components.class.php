@@ -156,7 +156,7 @@ class plotComponents extends sfComponents
   public function executeGetGroupesData() {
     $this->data = array();
     $this->data['groupes'] = array('UMP' => array(),'NC' => array(),'SRC' => array(),'GDR' => array(), 'NI' => array());
-    $this->data['titres'] = array("Députés", "Interventions", "Amendements", "Propositions", "Quest. Orales", "Quest. Écrites");
+    $this->data['titres'] = array(" Députés", "Interventions", "Amendements", "Propositions", "Quest. Orales", "Quest. Écrites");
     $n = count($this->data['titres']);
     $stats = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
     $amdmts = Doctrine_Query::create()
@@ -192,8 +192,12 @@ class plotComponents extends sfComponents
       for ($i=0;$i<$n;$i++)
         $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
     foreach ($this->data['groupes'] as $groupe => $arr)
-      for ($i=0;$i<$n;$i++)
-        $this->data['groupes'][$groupe][$i] = $this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 100;
+      for ($i=0;$i<$n;$i++) {
+        $tmp = round($this->data['groupes'][$groupe][$i]  / $this->data['totaux'][$i] * 1000)/10;
+        $this->data['groupes'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
+      }
+    for ($i=0;$i<$n;$i++)
+      $this->data['totaux'][$i] = preg_replace('/(\d)(\d{3})$/', '\\1 \\2', $this->data['totaux'][$i]);
   }
 
   public function executeGroupes() {
