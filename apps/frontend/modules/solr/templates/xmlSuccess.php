@@ -10,7 +10,7 @@ foreach ($results['docs'] as $record)
   echo "<result>";
   echo "<document_type>".get_class($record['object'])."</document_type>";
   echo "<document_id>".$record['object']->id."</document_id>";
-  echo "<document_url>".sfConfig::get('app_base_url').url_for('@api_document?type='.$type.'&class='.get_class($record['object']).'&id='.$record['object']->id)."</document_url>";
+  echo "<document_url>".sfConfig::get('app_base_url').url_for('@api_document?format='.$format.'&class='.get_class($record['object']).'&id='.$record['object']->id)."</document_url>";
   echo "</result>\n";
 }
 ?></results></search>

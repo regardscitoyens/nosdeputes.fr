@@ -108,14 +108,14 @@ compterendu_edit:
 depute_id:
   url: /id/:id
   param: {module: parlementaire, action: id}
-depute_id_type:
-  url: /id/:id/:type
+depute_id_format:
+  url: /id/:id/:format
   param: {module: parlementaire, action: id}
 parlementaire_id:
   url: /parlementaire/id/:id
   param: {module: parlementaire, action: id}
-parlementaire_id_type:
-  url: /parlementaire/id/:id/:type
+parlementaire_id_format:
+  url: /parlementaire/id/:id/:format
   param: {module: parlementaire, action: id}
 # Liste de tous les parlementaires ou par catégorie
 parlementaires_tags:
@@ -125,23 +125,20 @@ tag_result_parlementaires:
   url: /deputes/tags/:tags
   param: {module: parlementaire, action: tag}
 list_parlementaires_search:
-  url: /deputes/rechercher/:search
-  param: {module: parlementaire, action: list}
-list_parlementaires_search_empty:
-  url: /deputes/rechercher/
-  param: {module: parlementaire, action: list}
+  url: /deputes/rechercher/:query
+  param: {module: solr, action: redirect, object_name: Parlementaire}
 list_parlementaires_json:
   url: /deputes/json
-  param: {module: api, action: listParlementaires, type: json}
+  param: {module: api, action: listParlementaires, format: json}
 list_parlementaires_xml:
   url: /deputes/xml
-  param: {module: api, action: listParlementaires, type: xml}
+  param: {module: api, action: listParlementaires, format: xml}
 list_parlementaires_csv:
   url: /deputes/csv
-  param: {module: api, action: listParlementaires, type: csv}
+  param: {module: api, action: listParlementaires, format: csv}
 list_parlementaires_alpha:
-  url: /deputes/:search
-  param: {module: parlementaire, action: list}
+  url: /deputes/:query
+  param: {module: solr, action: redirect, object_name: Parlementaire}
 list_parlementaires:
   url: /deputes
   param: {module: parlementaire, action: list}
@@ -237,36 +234,33 @@ find_amendements_by_loi_and_numero:
   param: {module: amendement, action: find}
 
 # Recherche lexicale d'interventions ou d'amendements
-search:
-  url: /rechercher
-  param: {module: search, action: index}
 search_interventions_mots_rss:
-  url: /rechercher/interventions/:search/rss
-  param: {module: intervention, action: search, rss: 1}
+  url: /rechercher/interventions/:query/rss
+  param: {module: solr, action: redirect, object_name: Intervention, format: rss}
 search_interventions_mots:
-  url: /rechercher/interventions/:search
-  param: {module: intervention, action: search}
+  url: /rechercher/interventions/:query
+  param: {module: solr, action: redirect, object_name: Intervention}
 search_interventions:
   url: /rechercher/interventions/
-  param: {module: intervention, action: search}
+  param: {module: solr, action: redirect, object_name: Intervention}
 search_amendements_mots_rss:
-  url: /rechercher/amendements/:search/rss
-  param: {module: amendement, action: search, rss: 1}
+  url: /rechercher/amendements/:query/rss
+  param: {module: solr, action: redirect, object_name: Amendement, format: rss}
 search_amendements_mots:
-  url: /rechercher/amendements/:search
-  param: {module: amendement, action: search}
+  url: /rechercher/amendements/:query
+  param: {module: solr, action: redirect, object_name: Amendement, action: search}
 search_amendements:
   url: /rechercher/amendements/
-  param: {module: amendement, action: search}
+  param: {module: solr, action: redirect, object_name: Amendement}
 search_questions_ecrites_mots_rss:
-  url: /rechercher/questions/:search/rss
-  param: {module: questions, action: search, rss: 1}
+  url: /rechercher/questions/:query/rss
+  param: {module: solr, action: redirect, object_name: QuestionEcrite, format: rss}
 search_questions_ecrites_mots:
-  url: /rechercher/questions/:search
-  param: {module: questions, action: search}
+  url: /rechercher/questions/:query
+  param: {module: solr, action: redirect, object_name: QuestionEcrite}
 search_questions_ecrites:
   url: /rechercher/questions/
-  param: {module: questions, action: search}
+  param: {module: solr, action: redirect, object_name: QuestionEcrite}
 
 
 # Tags d'une intervention, d'une section ou d'un parlementaire, d'une section ou  ou lors d'une séance
@@ -294,11 +288,11 @@ top_global:
   url: /synthese
   param: {module: parlementaire, action: top}
 api_synthese:
-  url: /synthese/:date/:type
+  url: /synthese/:date/:format
   param: {module: api, action: top}
 
 api_document:
-  url: /api/document/:class/:id/:type
+  url: /api/document/:class/:id/:format
   param: {module: api, action: document}
 
 # Affichage d'une question
@@ -409,16 +403,16 @@ parlementaire_rss:
   param: {module: parlementaire, action: rss, Intervention: 1, QuestionEcrite: 1, Amendement: 1, Document: 1}
 parlementaire_api_xml:
   url: /:slug/xml
-  param: {module: api, action: parlementaire, type: xml}
+  param: {module: api, action: parlementaire, format: xml}
 parlementaire_api_json:
   url: /:slug/json
-  param: {module: api, action: parlementaire, type: json}
+  param: {module: api, action: parlementaire, format: json}
 parlementaire_api_csv:
   url: /:slug/csv
-  param: {module: api, action: parlementaire, type: csv}
+  param: {module: api, action: parlementaire, format: csv}
 parlementaire_interventions:
   url: /:slug/interventions/:type
-  param: {module: intervention, action: parlementaire}
+  param: {module: intervention, action: parlementaire, type: all}
 parlementaire_interventions_organisme:
   url: /:slug/organisme/:orga/interventions/
   param: {module: intervention, action: parlementaireOrganisme}
@@ -433,7 +427,7 @@ parlementaire_session_tags:
   param: {module: tag, action: parlementaire}
 parlementaire_rss_commentaires:
   url: /:slug/commentaires/rss
-  param: {module: commentaire, action: list, rss: 1}
+  param: {module: solr, action: redirect, object_name: Commentaire, format: rss}
 parlementaire_commentaires:
   url: /:slug/commentaires
   param: {module: commentaire, action: list}

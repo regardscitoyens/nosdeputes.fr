@@ -17,12 +17,12 @@ class apiActions extends sfActions
   public function executeDocument(sfWebRequest $request)
   {
     $class = $request->getParameter('class');
-    $type = $request->getParameter('type');
+    $format = $request->getParameter('format');
     $id = $request->getParameter('id');
     $this->forward404Unless($class);
     $o = doctrine::getTable($class)->find($id);
     if ($class == 'Parlementaire') {
-      return $this->redirect('api/parlementaire?slug='.$o->slug.'&type='.$type);
+      return $this->redirect('api/parlementaire?slug='.$o->slug.'&format='.$format);
     }
     $slug = $class.'_'.$id;
     $date = $o->updated_at; 
@@ -104,15 +104,15 @@ class apiActions extends sfActions
       $this->champs['nom'] = 1;
       if ($dep->fin_mandat) 
 	$depute['ancien_depute'] = 1;
-      else if ($request->getParameter('type') == 'csv')
+      else if ($request->getParameter('format') == 'csv')
 	$depute['ancien_depute'] = 0;
       $this->champs['ancien_depute'] = 1;
       $depute['mandat_debut'] = $dep->debut_mandat;
       $this->champs['mandat_debut'] = 1;
-      if ($request->getParameter('type') == 'csv' || $dep->fin_mandat)
+      if ($request->getParameter('format') == 'csv' || $dep->fin_mandat)
 	$depute['mandat_fin'] = $dep->fin_mandat;
       $this->champs['mandat_fin'] = 1;
-      $depute['api_url'] = 'http://'.$_SERVER['HTTP_HOST'].url_for('api/parlementaire?type='.$request->getParameter('type').'&slug='.$dep->slug);
+      $depute['api_url'] = 'http://'.$_SERVER['HTTP_HOST'].url_for('api/parlementaire?format='.$request->getParameter('format').'&slug='.$dep->slug);
       $this->champs['api_url'] = 1;
       $this->res['deputes'][] = array('depute' => $depute);
     }
@@ -160,7 +160,7 @@ class apiActions extends sfActions
 
   private function templatize($request, $filename) {
     $this->setLayout(false);
-    switch($request->getParameter('type')) {
+    switch($request->getParameter('format')) {
       case 'json':
 	$this->setTemplate('json');
 	if (!$request->getParameter('textplain')) {

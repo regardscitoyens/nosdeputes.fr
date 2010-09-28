@@ -72,16 +72,16 @@ class solrActions extends sfActions
     $this->sort = $request->getParameter('sort');
     $date = $request->getParameter('date');
     $from = $request->getParameter('from');
-    $type = $request->getParameter('type');
+    $format = $request->getParameter('format');
 
     $this->tags = 0;
-    if ($type) {
+    if ($format) {
       sfConfig::set('sf_web_debug', false);
       $this->tags = $request->getParameter('tags');
-      $this->type = $type;
+      $this->format = $format;
     }
 
-    if ($type == 'rss') {
+    if ($format == 'rss') {
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
       $this->feed->setLanguage('fr');
@@ -90,19 +90,19 @@ class solrActions extends sfActions
       $from = null;
     }
 
-    if ($type == 'json') {
+    if ($format == 'json') {
       $this->getResponse()->setContentType('text/plain; charset=utf-8');
       $this->setTemplate('json');
       $this->setLayout(false);
     }
 
-    if ($type == 'xml') {
+    if ($format == 'xml') {
       $this->getResponse()->setContentType('text/xml; charset=utf-8');
       $this->setTemplate('xml');
       $this->setLayout(false);
     }
 
-    if ($type == 'csv') {
+    if ($format == 'csv') {
       //      $this->getResponse()->setContentType('application/csv; charset=utf-8');
       $this->getResponse()->setContentType('text/plain; charset=utf-8');
       $this->setTemplate('csv');
@@ -198,5 +198,19 @@ class solrActions extends sfActions
 	}
       }
     }
+  }
+  public function executeRedirect(sfWebRequest $request)
+  {
+    $add = '';
+    if ($p = $request->getParameter('format')) {
+      $add .= '&format='.$p;
+    }
+    if ($p = $request->getParameter('object_name')) {
+      $add .= '&object_name='.$p;
+    }
+    if ($p = $request->getParameter('slug')) {
+      $add .= '&tag=parlementaire='.preg_replace('/\-/', '+', $p);
+    }
+    return $this->redirect('solr/search?query='.$request->getParameter('query').$add);
   }
 }
