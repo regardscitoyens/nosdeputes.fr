@@ -1,3 +1,6 @@
+<h1 class="list_inter">La liste de tous les députés par ordre alphabétique</h1> 
+<?php $sf_response->setTitle('La liste de tous les députés'); ?> 
+<p>Les <?php echo $total; ?> députés de la législature (<?php echo $actifs; ?> en cours de mandat)&nbsp;:</p> 
 <div class="liste"><?php 
 $listlettres = array_keys($parlementaires);
 foreach($listlettres as $i) {
