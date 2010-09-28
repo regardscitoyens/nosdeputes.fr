@@ -1,6 +1,6 @@
 $('.jstitle').mousemove(function(e) {
     if ($('#jstitle').length == 0) {
-      $('body').append('<div id="jstitle" style="display: none; position: absolute; z-index: 888; border: 1px solid black;padding: 5px;"></div>')
+      $('body').append('<div id="jstitle" style="text-align: center; display: none; position: absolute; z-index: 888; border: 1px solid black;padding: 5px;"></div>')
     }
     if ($(this).attr('title')) {
       $(this).attr('jstitle', $(this).attr('title'));

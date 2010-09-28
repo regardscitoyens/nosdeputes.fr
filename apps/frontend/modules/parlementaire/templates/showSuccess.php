@@ -6,7 +6,7 @@
     </div>
   <div class="depute_gauche">
     <div class="photo_depute">
-    <?php echo '<img src="'.url_for('@resized_photo_parlementaire?height=160&slug='.$parlementaire->slug).'" class="photo_fiche" alt="Photo de '.$parlementaire->nom.'"/>'; ?>
+	<?php include_partial('parlementaire/photoParlementaire', array('parlementaire' => $parlementaire, 'height' => 160)); ?>
     </div>
   </div>
   <div class="graph_depute">

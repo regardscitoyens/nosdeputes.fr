@@ -4,8 +4,11 @@
 if ($loi->parlementaire_id && $loi->expose && !($loi->texteloi_id == 2760)) { ?>
   <div class="loi"><div class="intervenant">
   <?php $perso = $loi->getParlementaire();
-  if ($perso->getPageLink() && $photo = $perso->hasPhoto())
-    echo '<a href="'.url_for($perso->getPageLink()).'"><img alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a>';
+  if ($perso->getPageLink() && $photo = $perso->hasPhoto()) {
+    echo '<a href="'.url_for($perso->getPageLink()).'">';
+    include_partial('parlementaire/photoParlementaire', array('parlementaire' => $perso, 'height' => 70));
+    echo '</a>';
+  }
   echo '</div>';
   echo preg_replace('/\s+(:|;|\?|!)/', '&nbsp;\1', $loi->expose);
   echo '<div class="auteurloi"><a href="'.url_for($perso->getPageLink()).'">'.$perso->nom.'</a></div></div><br/>';
@@ -83,8 +86,12 @@ if (isset($soussections)) {
 <br/>
 <?php if ((!$loi->parlementaire_id && $loi->expose) || $loi->texteloi_id == 2760) {
   echo '<div class="loi"><h2>Exposé des motifs&nbsp;:</h2>';
-  if ($loi->parlementaire_id && $perso = $loi->getParlementaire()) if ($perso->getPageLink() && $photo = $perso->hasPhoto())
-    echo '<div class="intervenant"><a href="'.url_for($perso->getPageLink()).'"><img alt="'.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a></div>';
+  if ($loi->parlementaire_id && $perso = $loi->getParlementaire()) 
+    if ($perso->getPageLink() && $photo = $perso->hasPhoto()) {
+      echo '<div class="intervenant"><a href="'.url_for($perso->getPageLink()).'">';
+      include_partial('parlementaire/photoParlementaire', array('parlementaire' => $perso, 'height' => 70));
+      echo '</a></div>';
+    }
   echo preg_replace('/\s+(:|;|\?|!)/', '&nbsp;\1', $loi->expose).'</div><br/>';
 } ?>
 <div class="commentaires">

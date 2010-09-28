@@ -82,7 +82,9 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
       }
       if ($perso->getPageLink()) {
         if ($photo = $perso->hasPhoto()) {
-        echo '<a href="'.url_for($perso->getPageLink()).'"><img alt="Photo de '.$perso->nom.'" src="'.url_for('@resized_photo_parlementaire?height=70&slug='.$perso->slug).'" /></a>';
+	  echo '<a href="'.url_for($perso->getPageLink()).'">';
+	  include_partial('parlementaire/photoParlementaire', array('parlementaire' => $perso, 'height' => 70));
+	  echo '</a>';
         }
         echo '<div class="perso"><span><a href="'.url_for($perso->getPageLink()).'">';
         echo $intervention->getNomAndFonction();

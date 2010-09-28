@@ -3,7 +3,9 @@ if (!isset($surtitre)) $surtitre = ''; ?>
 <div class="info_depute">
   <div class="depute_gauche">
 <?php if ($parlementaire->hasPhoto()) {
-    echo '<a href="'.url_for($parlementaire->getPageLink()).'"><img alt="'.$parlementaire->nom.'" src="'.url_for('@resized_photo_parlementaire?height=90&slug='.$parlementaire->slug).'" /></a>';
+    echo '<a href="'.url_for($parlementaire->getPageLink()).'">';
+    include_partial('parlementaire/photoParlementaire', array('parlementaire' => $parlementaire, 'height' => 90));
+    echo '</a>';
 } ?>
   </div>
   <div class="depute_droite"><div>

@@ -7,7 +7,7 @@ class parlementaireComponents extends sfComponents
       ->select('p.*, i.id, count(i.id) as nb')
       ->groupBy('p.id')
       ->orderBy('nb DESC')
-      ->fetchArray();
+      ->execute();
 
   }
   public function executeHeader()
@@ -15,7 +15,7 @@ class parlementaireComponents extends sfComponents
   }
   public function executeDuJour()
   {
-    $this->p = Doctrine::getTable('Parlementaire')->createQuery('p')->where('fin_mandat IS NULL')->orderBy('rand()')->limit(1)->fetchOne();
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->createQuery('p')->where('fin_mandat IS NULL')->orderBy('rand()')->fetchOne();
     return ;
   }
 }

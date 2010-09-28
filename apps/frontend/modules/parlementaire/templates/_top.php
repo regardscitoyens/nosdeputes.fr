@@ -93,4 +93,3 @@ foreach(array_keys($images) as $k) {
     echo '</a>';
   echo '</li>';
 }?></ul>
-<script  type="text/javascript" src="/js/jstitle.js"></script>
