@@ -38,13 +38,15 @@ date_href = new Array();
 nb_li = 0;
 bh = 0;
 nh = 0;
-parametre = urlParams(location.search.substring(1).split('&'));
+if(location.search.substring(1)) { parametre = urlParams(location.search.substring(1).split('&')); }
+else { parametre = new Object(); }
 
 $(document).ready(function() {
   $(".date li").each(function() {
     if($(this).height() > bh) { bh = $(this).height(); }
     date_li = $(this).find('a').attr("title").split(':');
-    date_href[nb_li] = $(this).find('a').attr("href");
+    date_href[nb_li] = $(this).find('a').attr("href"); /* ajouter onclick haut colonnes */
+    $(this).find("#hover_graph").attr("onclick", "document.location.replace('http://"+location.host+date_href[nb_li]+"')");
     periode[nb_li] = date_li[0];
     nb_li++;
   });
@@ -74,7 +76,9 @@ $(document).ready(function() {
 			  
 			  if(parametre.date != undefined) { delete(parametre.date); }
 			  lien = "?";
-			  if(ui.values[0] == ui.values[1]) { lien = lien+"date="+parametre.from; }
+			  if(ui.values[0] == ui.values[1]) { 
+			    lien = lien+"date="+parametre.from; 
+			  }
 			  else {
 			    if(parametre.from != undefined) { lien = lien+"from="+parametre.from; }
 			    if(parametre.to != undefined) { lien = lien+"&to="+parametre.to; }
@@ -83,7 +87,13 @@ $(document).ready(function() {
 			  if(parametre.object_name != undefined) { lien = lien+"&object_name="+parametre.object_name; }
 			  if(parametre.tag != undefined) { lien = lien+"&tag="+parametre.tag; }
 			  /* parlementaire object_name tag date to from */
-			  texte_periode = '<a href="'+lien+'">entre '+periode[ui.values[0]]+' et '+ periode[ui.values[1]]+'</a>';
+			  <?php if($par == 'mois') { echo "en = 'en';"; } else { echo "en = 'le';"; } ?>
+			  if(ui.values[0] == ui.values[1]) { 
+			    texte_periode = '<a href="'+lien+'">'+en+' '+periode[ui.values[0]]+'</a>';
+			  }
+			  else { 
+			    texte_periode = '<a href="'+lien+'">entre '+periode[ui.values[0]]+' et '+ periode[ui.values[1]]+'</a>';
+			  }
 			  
 			  $("#periode").text("");
 				$("#periode").append(texte_periode);
