@@ -80,6 +80,8 @@ class solrActions extends sfActions
       $this->format = $format;
     }
 
+    $this->title = $request->getParameter('title');
+
     if ($format == 'rss') {
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();

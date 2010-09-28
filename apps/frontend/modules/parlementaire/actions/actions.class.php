@@ -392,6 +392,8 @@ class parlementaireActions extends sfActions
     $this->forward404Unless($this->parlementaire);
 
     $request->setParameter('query', 'tag=parlementaire='.$this->parlementaire);
+    $request->setParameter('title', preg_replace('/%/', $this->parlementaire->nom, $request->getParameter('title')));
+
     if ($o = $request->getParameter('object_type'))
       $request->setParameter('query', $request->getParameter('query').' object_type='.$o);
     $request->setParameter('format', 'rss');
