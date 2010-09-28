@@ -6,3 +6,6 @@ showSuccess:
    javascripts: [overlib.js, pMap.js]
 plotSuccess:
    javascripts: [overlib.js, pMap.js]
+topSuccess:
+   javascripts: [overlib.js, pMap.js]
+

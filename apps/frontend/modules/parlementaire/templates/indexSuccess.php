@@ -176,6 +176,15 @@
     <p style="text-align: right;"><a href="http://www.nosdeputes.fr/confiseurs/index.php">Lire l'étude</a></p>
     </div>
   </div>
+  <div class="box_repartition">
+  <h2><span style="margin-right: 5px;"><img alt="activite" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_graph.png"></span><a href="<?php echo url_for('@top_global'); ?>">Activité parlementaire des 12 derniers mois</a></h2>
+  <?php echo include_component('plot', 'newGroupes', array('type' => 'home')); ?>
+  <?php // echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
+  </div>
+  <div class="box_tags">
+  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png"></span><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
+  <?php echo include_component('tag', 'globalActivite'); ?>
+  </div>
   <div class="box_widget">
     <h2><span style="margin-right: 5px;"><img alt="comments" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_comment.png"></span><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a></h2>
     <div id="coms_widget">
@@ -184,14 +193,5 @@
       </noscript>
     </div>
     <div style="display: hidden;" id="coms_widget_update"></div>
-  </div>
-  <div class="box_repartition">
-  <h2><span style="margin-right: 5px;"><img alt="activite" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_graph.png"></span><a href="<?php echo url_for('@top_global'); ?>">Activité parlementaire des 12 derniers mois</a></h2>
-  <?php echo include_component('plot', 'newGroupes'); ?> 
-  <?php // echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
-  </div>
-  <div class="box_tags">
-  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png"></span><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
-  <?php echo include_component('tag', 'globalActivite'); ?>
   </div>
 </div>

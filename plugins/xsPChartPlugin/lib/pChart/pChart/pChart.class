@@ -498,7 +498,7 @@
 
          if ( $Angle == 0 )
           {
-           $YPos = $YAxisPos+$YAxisOrt*18;
+           $YPos = $YAxisPos+$YAxisOrt*(2*$YLegShift-2);
            imagettftext($this->Picture,$this->FontSize,$Angle,floor($XPos)-floor($TextWidth/2),$YPos,$C_TextColor,$this->FontName,$Value);
           }
          else

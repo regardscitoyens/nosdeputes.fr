@@ -459,7 +459,7 @@ parlementaire_plot_graph:
   url: /:slug/graphes/:time/:type
   param: {module: plot, action: generatePlotParlementaire}
 groupes_plot_graph:
-  url: /graphes/groupes/lastyear
+  url: /graphes/groupes/:type
   param: {module: plot, action: generatePlotGroupes}
 preuve_presence_seance:
   url: /:slug/seance/:seance

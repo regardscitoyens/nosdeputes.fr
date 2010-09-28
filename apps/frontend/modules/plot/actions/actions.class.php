@@ -38,6 +38,7 @@ class plotActions extends sfActions {
       $this->drawAction = "draw";
     $this->mapId = $request->getParameter('mapId');
     $this->forward404Unless($this->mapId);
+    $this->type = $request->getParameter('type');
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
   }

@@ -74,6 +74,7 @@ $class = array('parl' => 'p',
 </table>
 </div>
 <div>
+<div class="aligncenter"><?php echo include_component('plot', 'newGroupes', array('type' => 'all')); ?></div>
 <h3>Explications :</h3>
 <ul>
   <li><strong>Semaines d'activité</strong> : Nombre de semaines où le député a été relevé présent en commission ou a pris la parole (même brièvement) en hémicycle</li>

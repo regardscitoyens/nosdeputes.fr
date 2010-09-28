@@ -250,7 +250,11 @@ body {
   border: 1px dashed #aeaeae;
   text-align:justify;
 }
-.tableau_synthese { height: 500px; overflow: auto; }
+.tableau_synthese {
+  height: 500px;
+  overflow: auto;
+  margin-bottom: 25px;
+}
 .synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
 .p { width: 112px; }
 .w { width: 70px; }

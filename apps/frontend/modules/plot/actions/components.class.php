@@ -155,16 +155,26 @@ class plotComponents extends sfComponents
 
   public function executeGetGroupesData() {
     $this->data = array();
+    if (!isset($this->type) || $this->type != "all")
+      $this->type = "home";
     $this->data['groupes'] = array('UMP' => array(),'NC' => array(),'SRC' => array(),'GDR' => array(), 'NI' => array());
-    $this->data['titres'] = array(" Députés", "Interventions", "Amendements", "Propositions", "Quest. Orales", "Quest. Écrites");
+    if ($this->type === "home")
+      $this->data['titres'] = array("Députés", "Interventions", "Amendements", "Propositions", "Quest. Écrites");
+    else $this->data['titres'] = array("", "Interventions", "Longues", "Courtes", "Déposés", "Adoptés", "de Lois", "Écrites", "Orales");
     $n = count($this->data['titres']);
     $stats = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
-    $amdmts = Doctrine_Query::create()
+    $query = Doctrine_Query::create()
       ->select('p.groupe_acronyme, count(DISTINCT(a.id)) as ct')
       ->from('Parlementaire p, p.ParlementaireAmendements pa, pa.Amendement a')
       ->where('a.date > ?', date('Y-m-d', time()-60*60*24*365))
-      ->groupBy('p.groupe_acronyme')
-      ->fetchArray();
+      ->groupBy('p.groupe_acronyme');
+    $qamdmts = clone($query);
+    $amdmts = $qamdmts->fetchArray();
+    if ($this->type === "all") {
+      $qamdmts2 = clone($query);
+      $amdmts2 = $qamdmts2->andWhere('a.sort = ?', "Adopté")
+        ->fetchArray();
+    }
     $props = Doctrine_Query::create()
       ->select('p.groupe_acronyme, count(DISTINCT(t.id)) as ct')
       ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
@@ -175,15 +185,23 @@ class plotComponents extends sfComponents
       ->fetchArray();
     foreach ($this->data['groupes'] as $groupe => $arr) if ($stats[$groupe]) {
       $this->data['groupes'][$groupe][] = $stats[$groupe]['groupe']['nb'];
-      $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme']+$stats[$groupe]['commission_interventions']['somme'];
+      if ($this->type === "all") {
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['commission_interventions']['somme'];
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme'];
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions_courtes']['somme'];
+      } else $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme']+$stats[$groupe]['commission_interventions']['somme'];
     }
     foreach ($amdmts as $amdt)
       $this->data['groupes'][$amdt['groupe_acronyme']][] = $amdt['ct'];
+    if ($this->type === "all")
+      foreach ($amdmts2 as $amdt)
+        $this->data['groupes'][$amdt['groupe_acronyme']][] = $amdt['ct'];
     foreach ($props as $pro)
       $this->data['groupes'][$pro['groupe_acronyme']][] = $pro['ct'];
     foreach ($this->data['groupes'] as $groupe => $arr) if ($stats[$groupe]) {
       $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_ecrites']['somme'];
-      $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_orales']['somme'];
+      if ($this->type === "all")
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_orales']['somme'];
     }
     $this->data['totaux'] = array();
     for ($i=0;$i<$n;$i++)

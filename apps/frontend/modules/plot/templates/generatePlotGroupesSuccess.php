@@ -1,7 +1,15 @@
 <?php
 
-$data = unserialize(get_component('plot', 'getGroupesData'));
-$xsize = 433; $ysize = 300 ; $font = 8;
+$data = unserialize(get_component('plot', 'getGroupesData', array('type' => $type)));
+if ($type === "home")
+  $xsize = 433;
+else $xsize = 720;
+$yadd = 0;
+if ($type === "all")
+ $yadd = 40;
+$ydefsize = 300;
+$ysize = $ydefsize + $yadd;
+$font = 8;
 
 if ($drawAction === "map") {  
   $Test = new xsPChart($xsize,$ysize);  
@@ -32,16 +40,26 @@ $Data2 = $DataSet2->getData();
 $DataDescr2 = $DataSet2->GetDataDescription();
 
 $Test = new xsPChart($xsize,$ysize);
-$Test->setGraphArea(40+2*$font,15+4*$font,$xsize-20,$ysize-4*$font);
+$Test->setGraphArea(40+2*$font,15+3*$font+$yadd,$xsize-20,$ysize-4*$font);
 $Test->drawFilledRectangle(7,7,$xsize-7,$ysize-7,240,240,240);
 $Test->drawGraphArea(190,190,190,FALSE);
 $Test->setFixedScale(0,100.7,4);
 $Test->xsSetFontProperties("tahoma.ttf",$font);
 $Test->drawScale($Data2,$DataDescr2,SCALE_NORMAL,50,50,50,TRUE,0,0,TRUE,1,FALSE);
-$Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,TRUE,16,0,TRUE,1,TRUE);
+$Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,TRUE,0,0,TRUE,1,TRUE);
 $Test->xsSetFontProperties("tahoma.ttf",$font+1);
 $Test->drawTitle(4+2*$font,$ysize-4*$font+18, "TOTAL :",50,50,50);
-$Test->drawGrid(4,TRUE,0,0,0,40);
+if ($type === "all") {
+  $Test->drawTitle(70,52,"Députés",50,50,50);
+  $Test->drawTitle(130,52,"Commission",50,50,50);
+  $Test->drawTitle(208,52,"Hémicycle interventions",50,50,50);
+  $Test->drawTitle(376,52,"Amendements",50,50,50); 
+  $Test->drawTitle(490,52,"Propositions",50,50,50); 
+  $Test->drawTitle(600,52,"Questions",50,50,50);
+  $Test->xsSetFontProperties("tahoma.ttf",$font+5);
+  $Test->drawTitle(60,30,"Répartition de l'activité des députés sur les 12 derniers mois par groupe politique",25,25,25);
+}
+$Test->drawGrid(4,TRUE,0,0,0,30);
 $Test->setColorPalette(0,30,30,200);
 $Test->setColorPalette(1,30,190,255);
 $Test->setColorPalette(2,255,50,190);
