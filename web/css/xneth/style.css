@@ -1473,7 +1473,7 @@ h2 {
   padding: 6px;
 }
 .annexes {
-  padding: 10px 5px 20px 40px;
+  padding: 0px 5px 20px 40px;
 }
 .documentlist { 
   padding: 3px; 
@@ -1678,11 +1678,14 @@ width: 50%;
   margin-right:auto;
 }
 .accueil .nuage_de_tags {
-   margin: 0;
-   border: 0;
+  margin: 0;
+  border: 0;
+}
+.nuage_discret {
+  margin-bottom: 30px;
 }
 .accueil .nuage_de_tags h2{
-   text-align: center;
+  text-align: center;
 }
 .separateur{
   margin: 20px;

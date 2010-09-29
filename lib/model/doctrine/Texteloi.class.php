@@ -213,7 +213,7 @@ class Texteloi extends BaseTexteloi
       ->where('pt.importance < 4')
       ->andWhere('pt.texteloi_id = ?', $this->id)
       ->orderBy('pt.importance, p.sexe, p.nom')
-      ->fetchArray();
+      ->execute();
   }
 
   public function getCosignataires() {
@@ -224,7 +224,7 @@ class Texteloi extends BaseTexteloi
       ->where('pt.importance >= 4')
       ->andWhere('pt.texteloi_id = ?', $this->id)
       ->orderBy('pt.importance, p.sexe, p.nom')
-      ->fetchArray();
+      ->execute();
   }
 
   public function getSignatairesString() {

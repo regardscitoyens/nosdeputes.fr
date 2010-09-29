@@ -7,7 +7,7 @@
 if (preg_match('/(propos|lettre)/i', $doc->type))
   $feminin = "e";
 
-if ($auteurs) {
+if (count($auteurs)) {
   echo '<div class="photos"><h3 class="aligncenter">écrit'.$feminin." par ";
   include_partial('parlementaire/auteurs', array("deputes" => $auteurs, "orga" => $orga));
   include_partial('parlementaire/photos', array("deputes" => $auteurs));
@@ -19,7 +19,7 @@ if ($auteurs) {
   else echo $doc->getAuteursString();
   echo '</h3>';
 } else echo '<h3 class="aligncenter">'.$doc->getSignatairesString().'</h3>';
-if ($cosign) {
+if (count($cosign)) {
   echo '<div class="photos"><p class="aligncenter">cosigné'.$feminin." par ";
   include_partial('parlementaire/auteurs', array("deputes" => $cosign));
   include_partial('parlementaire/photos', array("deputes" => $cosign));

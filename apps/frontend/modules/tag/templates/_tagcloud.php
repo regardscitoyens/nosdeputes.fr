@@ -4,7 +4,7 @@ if (!isset($nozerodisplay))
   $nozerodisplay = false;
 if (!$nozerodisplay || $tot > 0) {
 if ($nozerodisplay) { ?>
-<div class="nuage_de_tags">
+<div class="nuage_de_tags nuage_discret">
 <h3>Mots-clés</h3>
 <?php } ?>
 <div class="internal_tag_cloud">
