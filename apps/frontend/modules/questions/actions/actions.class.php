@@ -36,8 +36,9 @@ class questionsActions extends sfActions
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
     $this->questions = Doctrine::getTable('QuestionEcrite')->createQuery('q')
+      ->select('q.*, if(q.date_cloture is not null,q.date_cloture,q.date) as date2')
       ->where('q.parlementaire_id = ?', $this->parlementaire->id)
-      ->orderBy('q.date DESC, q.numero DESC');
+      ->orderBy('date2 DESC, q.numero DESC');
 
     $request->setParameter('rss', array(array('link' => '@parlementaire_questions_rss?slug='.$this->parlementaire->slug, 'title'=>'Les dernières questions écrites de '.$this->parlementaire->nom.' en RSS')));
 
@@ -76,7 +77,8 @@ class questionsActions extends sfActions
       $ids[] = $s['id'];
     }
 
-    $this->query = Doctrine::getTable('QuestionEcrite')->createQuery('i');
+    $this->query = Doctrine::getTable('QuestionEcrite')->createQuery('i')
+      ->select('q.*, if(q.date_cloture is not null,q.date_cloture,q.date) as date2');
     if (count($ids))
       $this->query->whereIn('i.id', $ids);
     else if (count($mcle))
@@ -96,7 +98,7 @@ class questionsActions extends sfActions
 	$this->query->andWhere('i.parlementaire_id = ?', $this->parlementaire->id);
     } else $this->query->leftJoin('i.Parlementaire p');
 
-    $this->query->orderBy('date DESC');
+    $this->query->orderBy('date2 DESC');
     if ($request->getParameter('rss')) {
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
