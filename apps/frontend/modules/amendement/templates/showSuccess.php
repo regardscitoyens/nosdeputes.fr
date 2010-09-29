@@ -22,8 +22,11 @@
 </div>
 <?php } ?>
 <?php if ($sous_admts) { ?>
-<p>Sous-amendements associés&nbsp: <?php foreach($sous_admts as $sous)
- echo link_to($sous['numero'], '@amendement?loi='.$amendement->texteloi_id.'&numero='.$sous['numero']).' '; ?></p>
+<p>Sous-amendements associés&nbsp: <?php foreach($sous_admts as $sous) {
+    if ($sous['sort'] === 'Adopté') echo '<strong>';
+    echo link_to($sous['numero'], '@amendement?loi='.$amendement->texteloi_id.'&numero='.$sous['numero']).' ';
+    if ($sous['sort'] === 'Adopté') echo '(Adopté)</strong> ';
+  } ?></p>
 <?php } ?>
 <p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo $amendement->getSignataires(1); ?>.</p>
 <div class="signataires">

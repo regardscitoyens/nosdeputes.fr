@@ -37,7 +37,7 @@ class amendementActions extends sfActions
      }
 
      $this->sous_admts = Doctrine_Query::create()
-       ->select('a.id, a.numero')
+       ->select('a.id, a.numero, a.sort')
        ->from('Amendement a, Tagging tg, tg.Tag t')
        ->where('a.texteloi_id = ?', $this->amendement->texteloi_id)
        ->andWhere('a.sort <> ?', 'Rectifié')
