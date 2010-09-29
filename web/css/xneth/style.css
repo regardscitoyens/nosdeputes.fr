@@ -13,7 +13,7 @@ body {
 	border-bottom: 1px solid #E0E0DD;
 	width: 900px;
 	max-height: 200px;
-        min-height: 120px;
+        min-height: 60px;
 	margin: 0;
 	padding: 0;
   margin-left: 7px;
@@ -1544,8 +1544,9 @@ h2 {
   margin:20px;
   background-color:#dbd5c8;
 }
-.texte_intervention {
+.texte_intervention, .expose_amendement {
   margin:20px;
+  text-align: justify;
 }
 .texte_intervention a {
   text-decoration: underline;

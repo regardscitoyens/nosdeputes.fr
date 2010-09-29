@@ -28,7 +28,7 @@
     if ($sous['sort'] === 'Adopté') echo '(Adopté)</strong> ';
   } ?></p>
 <?php } ?>
-<p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo $amendement->getSignataires(1); ?>.</p>
+<p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo preg_replace('/(M[.mle]+)\s+/', '\\1&nbsp;', $amendement->getSignataires(1)); ?>.</p>
 <div class="signataires">
   <div class="photos"><p>
 <?php $deputes = $amendement->Parlementaires;
@@ -40,7 +40,7 @@
     if ($titreloi && preg_match('/^(.*)?(article\s*)((\d+|premier).*)$/i', $sujet, $match)) {
       $art = preg_replace('/premier/i', '1er', $match[3]);
       $art = preg_replace('/\s+/', '-', $art);
-      $sujet = $match[1].link_to($match[2].$match[3], '@loi_article?loi='.$loi->texteloi_id.'&article='.$art);
+      $sujet = $match[1].link_to($match[2].$match[3], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art);
     }
     if ($titreloi)
       echo link_to(preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $titreloi->titre), '@loi?loi='.$titreloi->texteloi_id);
@@ -61,8 +61,8 @@
   echo $texte; ?>
 </div>
 <?php if (isset($amendement->expose)) { ?>
+  <h3>Exposé Sommaire :</h3>
   <div class="expose_amendement">
-    <h3>Exposé Sommaire :</h3>
     <?php $expose = $amendement->getExpose();
     $expose = preg_replace('/\s+(:|;|!|\?|»|\-)/', '&nbsp;\1', $expose);
     $expose = preg_replace('/(«|\-)\s+/', '\1&nbsp;', $expose);
