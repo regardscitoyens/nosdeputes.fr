@@ -130,9 +130,10 @@ class solrActions extends sfActions
 	$dates = explode(',', $date);
 	$date = array_pop($dates);
 	$period = 'MONTH';
-	if (count($dates) == 1)
+	if (count($dates) == 1) {
 	  $period = 'DAY';
-	$query .= ' date:['.$date.' TO '.$date.'+1'.$period.']';
+          $query .= ' date:['.$date.' TO '.$date.']';
+	} else $query .= ' date:['.$date.' TO '.$date.'+1'.$period.']';
 	$params['facet.date.start']=$date;
 	$params['facet.date.end'] = $date.'+1'.$period;
 	$params['facet.date.gap'] = '+1DAY';
