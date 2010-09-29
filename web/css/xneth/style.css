@@ -1744,6 +1744,11 @@ a:hover img {
 .dept:hover {
   background-color: rgb(198,229,81);
 }
+.dept a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 .list_choix {
   text-align: center;
   font-size: 1.4em;

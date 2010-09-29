@@ -16,9 +16,29 @@ foreach ($iters as $iter1 => $iter2) {
   if ($ct <= $iter1)
     continue;
   if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p title="'.strtoupper($num).'" onclick="document.location=\''.url_for('@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'\'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
+  echo '<p title="'.strtoupper($num).'" class="dept" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
   if ($ct == $iter2)
     break; 
  }
 } ?>
 </div>
+<script type="text/javascript">
+/* survol du txt */
+$(".dept").live("mouseover", function() {
+  dep = $(this).attr("id").substring(3);
+  $("#map"+dep).mouseover();
+})
+$(".dept").live("mouseout", function() {
+  dep = $(this).attr("id").substring(3);
+  $("#map"+dep).mouseout();
+})
+/* survol de la map */
+$("area").live("mouseover", function() {
+  dep = $(this).attr("id").substring(3);
+  $("#dep"+dep).css("background-color", "#D1EA74");
+})
+$("area").live("mouseout", function() {
+  dep = $(this).attr("id").substring(3);
+  $("#dep"+dep).css("background-color", "#fff");
+})
+</script>
