@@ -12,7 +12,8 @@
       include_partial('parlementaire/photoParlementaire', array('parlementaire' => $parlementaire, 'height' => 70));
       echo '</a>';
     }
-  $inter = preg_replace('/<\/?[a-z]*>|\&[^\;]+\;/i', ' ', $question->getQuestion().' '.$question->getReponse().' Thèmes : '.$question->getThemes());
+   echo '<p>Thèmes : '.str_replace('/', ';', $question->getThemes()).'</p>';
+  $inter = preg_replace('/<\/?[a-z]*>|\&[^\;]+\;/i', ' ', $question->getQuestion());
   $p_inter = '';
   if (isset($highlight)) {
     foreach ($highlight as $h)

@@ -33,4 +33,4 @@
   }
 ?>
 </div>
-<?php include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>$uri)); ?>
+<?php if ($pager->haveToPaginate()) include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>$uri)); ?>
