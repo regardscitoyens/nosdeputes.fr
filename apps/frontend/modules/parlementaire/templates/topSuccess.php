@@ -30,10 +30,10 @@ $class = array('parl' => 'p',
 	       'questions_orales' => 'qo');
 $bulles = array("Députés",
                "Semaines d'activité -- Nombre de semaines où le député a été relevé présent en commission ou a pris la parole (même brièvement) en hémicycle</li>",
-               "Commission séances -- Nombre de séances de commission où le député a été relevé présent",
-               "Commission interventions -- Nombre d'interventions prononcées par le député en commissions",
-               "Hémicycle interventions longues -- Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle",
-               "Hémicycle interventions courtes -- Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle",
+               "Séances de Commission -- Nombre de séances de commission où le député a été relevé présent",
+               "Interventions en Commission -- Nombre d'interventions prononcées par le député en commissions",
+               "Interventions longues en Hémicycle -- Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle",
+               "interventions courtes en Hémicycle -- Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle",
                "Amendements signés -- Nombre d'amendements signés ou co-signés par le député",
                "Amendements adoptés -- Nombre d'amendements adoptés qui ont été signés ou cosignés par le député",
                "Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur",
@@ -74,9 +74,9 @@ $bulles = array("Députés",
   $cpt = 0; 
   foreach($tops as $t) {
     $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
-    <td class="jstitle <?php echo $class['parl']; ?>"><a name="<?php echo $t[0]['slug']; ?>" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"></a><?php echo link_to($t[0]['nom'], '@parlementaire?slug='.$t[0]['slug']); ?></td>
+    <td title="<?php echo $t[0]['nom']; ?> -- Député<?php if ($t[0]['sexe'] === "F") echo 'e'; ?> <?php echo $t[0]['groupe_acronyme'].' '.preg_replace('/([^\'])$/', '\\1 ', Parlementaire::$dptmt_pref[trim($t[0]['nom_circo'])]).$t[0]['nom_circo']; ?>" class="jstitle couleur_<?php echo strtolower($t[0]['groupe_acronyme']); ?> <?php echo $class['parl']; ?>"><a name="<?php echo $t[0]['slug']; ?>" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"></a><?php echo link_to($t[0]['nom'], '@parlementaire?slug='.$t[0]['slug']); ?></td>
     <?php for($i = 1 ; $i < count($t) ; $i++) { ?>
-      <td title="<?php echo $bulles[$i]; ?>" <?php echo $t[$i]['style']; ?> class="jstitle <?php echo $class[$ktop[$i]]; ?>">
+      <td title="<?php echo $t[$i]['value'].' '.$bulles[$i]; ?>" <?php echo $t[$i]['style']; ?> class="jstitle <?php echo $class[$ktop[$i]]; ?>">
       <?php if (preg_match('/\./', $t[$i]['value']))
         printf('%02d', $t[$i]['value']);
       else echo $t[$i]['value']; ?>

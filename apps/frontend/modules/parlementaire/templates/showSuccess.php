@@ -107,9 +107,6 @@
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
-  </div>
- 
-  <div class="boite_depute" id="b3">
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
