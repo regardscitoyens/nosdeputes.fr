@@ -6,7 +6,7 @@ if ($type === "home")
 else $xsize = 720;
 $yadd = 0;
 if ($type === "all")
- $yadd = 40;
+ $yadd = 16;
 $ydefsize = 300;
 $ysize = $ydefsize + $yadd;
 $font = 8;
@@ -50,14 +50,14 @@ $Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,TRUE,0,0,TRUE,1,TRUE);
 $Test->xsSetFontProperties("tahoma.ttf",$font+1);
 $Test->drawTitle(4+2*$font,$ysize-4*$font+18, "TOTAL :",50,50,50);
 if ($type === "all") {
-  $Test->drawTitle(70,52,"Députés",50,50,50);
-  $Test->drawTitle(130,52,"Commission",50,50,50);
-  $Test->drawTitle(208,52,"Hémicycle interventions",50,50,50);
-  $Test->drawTitle(376,52,"Amendements",50,50,50); 
-  $Test->drawTitle(490,52,"Propositions",50,50,50); 
-  $Test->drawTitle(600,52,"Questions",50,50,50);
+  $Test->drawTitle(70,28,"Députés",50,50,50);
+  $Test->drawTitle(130,28,"Commission",50,50,50);
+  $Test->drawTitle(208,28,"Hémicycle interventions",50,50,50);
+  $Test->drawTitle(376,28,"Amendements",50,50,50); 
+  $Test->drawTitle(490,28,"Propositions",50,50,50); 
+  $Test->drawTitle(600,28,"Questions",50,50,50);
   $Test->xsSetFontProperties("tahoma.ttf",$font+5);
-  $Test->drawTitle(60,30,"Répartition de l'activité des députés sur les 12 derniers mois par groupe politique",25,25,25);
+//  $Test->drawTitle(60,30,"Répartition de l'activité des députés sur les 12 derniers mois par groupe politique",25,25,25);
 }
 $Test->drawGrid(4,TRUE,0,0,0,30);
 $Test->setColorPalette(0,30,30,200);

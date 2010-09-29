@@ -60,7 +60,7 @@ if ($subsection->id != $section->id) : ?>
           $doctitre .= "s";
         if ($doc['nb_commentaires'])
           $doctitre .= ")";
-        echo '<span class="list_com">'.link_to($doctitre, '@loi?loi='.$doc['texteloi_id']).'</span>';
+        echo link_to($doctitre, '@loi?loi='.$doc['texteloi_id']);
       } else if (isset($doc['id'])) {
         $amendements = Texteloi::getAmdmts($doc['type'], $curid, 1);
         $doctitre = $doc['type']." N° $curid";

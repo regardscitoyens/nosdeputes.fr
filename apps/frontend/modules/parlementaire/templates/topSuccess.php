@@ -1,5 +1,5 @@
-<h1>Synthèse générale des députés ayant au moins 6 mois de mandat</h1>
-<h2 style="text-align: center">(sur les 12 derniers mois)</h2>
+<h1>Synthèse générale de l'activité parlemmentaire<br/><small>(sur les 12 derniers mois)</small></h1>
+<h2>Activité de tous les députés ayant au moins 6 mois de mandat :</h2>
 <?php 
 $sf_response->setTitle('Synthèse générale des députés');
 $title = array('semaines_presence' => 'd\'activité',
@@ -28,19 +28,32 @@ $class = array('parl' => 'p',
 	       // 'amendements_rejetes' => 'ar',
 	       'questions_ecrites' => 'qe',
 	       'questions_orales' => 'qo');
+$bulles = array("Députés",
+               "Semaines d'activité -- Nombre de semaines où le député a été relevé présent en commission ou a pris la parole (même brièvement) en hémicycle</li>",
+               "Commission séances -- Nombre de séances de commission où le député a été relevé présent",
+               "Commission interventions -- Nombre d'interventions prononcées par le député en commissions",
+               "Hémicycle interventions longues -- Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle",
+               "Hémicycle interventions courtes -- Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle",
+               "Amendements signés -- Nombre d'amendements signés ou co-signés par le député",
+               "Amendements adoptés -- Nombre d'amendements adoptés qui ont été signés ou cosignés par le député",
+               "Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur",
+               "Propositions écrites -- Nombre de propositions de loi ou de résolution dont le député est l'auteur",
+               "Propositions signées -- Nombre de propositions de loi ou de résolution dont le député est cosignataire",
+               "Questions écrites -- Nombre de questions écrites soumises par le député",
+               "Questions orales -- Nombre de questions orales posées par le député");
 ?>
 <div class="liste_deputes_top">
 <div class="synthese">
 <table>
   <tr>
-    <th class="<?php echo $class['parl']; ?>">&nbsp;</th>
-    <th class="<?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', $top_link.'sort=1'); ?></th>
-    <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
-    <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
-    <th colspan="2" class="<?php if ($sort == 6 || $sort == 7) echo 'tr_odd';?>">Amendements</th>
-    <th class="<?php if ($sort == 8) echo 'tr_odd';?>"><?php echo link_to('Rapports', $top_link.'sort=8'); ?></th>
-    <th colspan="2" class="<?php if ($sort == 9 || $sort == 10) echo 'tr_odd';?>">Propositions</th>
-    <th colspan="2" class="<?php if ($sort == 11 || $sort == 12) echo 'tr_odd';?>">Questions</th>
+    <th title="Députés" class="jstitle <?php echo $class['parl']; ?>">&nbsp;</th>
+    <th title="Semaines d'activité -- Nombre de semaines où le député a été relevé présent en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', $top_link.'sort=1'); ?></th>
+    <th title="Commission -- Nombre de séances de commission auxquelles le député a participé" colspan="2" class="jstitle <?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
+    <th title="Hémicycle -- Nombre d'interventions du député en séances d'hémicycle" colspan="2" class="jstitle <?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
+    <th title="Amendements -- Nombre d'amendements signés par le député" colspan="2" class="jstitle <?php if ($sort == 6 || $sort == 7) echo 'tr_odd';?>">Amendements</th>
+    <th title="Rapports -- Nombre de rapports ou avis dont le député est l'auteur"class="jstitle <?php if ($sort == 8) echo 'tr_odd';?>"><?php echo link_to('Rapports', $top_link.'sort=8'); ?></th>
+    <th title="Nombre de propositions de loi ou de résolution dont le député est signataire" colspan="2" class="jstitle <?php if ($sort == 9 || $sort == 10) echo 'tr_odd';?>">Propositions</th>
+    <th title="Nombre de questions au gouvernement formulées par le député" colspan="2" class="jstitle <?php if ($sort == 11 || $sort == 12) echo 'tr_odd';?>">Questions</th>
   </tr>
   <tr>
     <th class="<?php echo $class['parl']; ?>">&nbsp;</th><?php
@@ -48,7 +61,7 @@ $class = array('parl' => 'p',
     foreach($ktop as $key) { 
       $i++ ; 
     ?>
-    <th class="<?php echo $class[$key]; if ($sort == $i) echo ' tr_odd'?>"><?php echo link_to($title[$key], $top_link.'sort='.$i); ?></th>
+    <th title="<?php echo $bulles[$i]; ?>" class="jstitle <?php echo $class[$key]; if ($sort == $i) echo ' tr_odd'?>"><?php echo link_to($title[$key], $top_link.'sort='.$i); ?></th>
 	<?php 
 	} ?>
     <th style="width:10px;"/>
@@ -61,9 +74,9 @@ $class = array('parl' => 'p',
   $cpt = 0; 
   foreach($tops as $t) {
     $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
-    <td class="<?php echo $class['parl']; ?>"><a name="<?php echo $t[0]['slug']; ?>" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"></a><?php echo link_to($t[0]['nom'], '@parlementaire?slug='.$t[0]['slug']); ?></td>
+    <td class="jstitle <?php echo $class['parl']; ?>"><a name="<?php echo $t[0]['slug']; ?>" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"></a><?php echo link_to($t[0]['nom'], '@parlementaire?slug='.$t[0]['slug']); ?></td>
     <?php for($i = 1 ; $i < count($t) ; $i++) { ?>
-      <td<?php echo $t[$i]['style']; ?> class="<?php echo $class[$ktop[$i]]; ?>">
+      <td title="<?php echo $bulles[$i]; ?>" <?php echo $t[$i]['style']; ?> class="jstitle <?php echo $class[$ktop[$i]]; ?>">
       <?php if (preg_match('/\./', $t[$i]['value']))
         printf('%02d', $t[$i]['value']);
       else echo $t[$i]['value']; ?>
@@ -73,9 +86,14 @@ $class = array('parl' => 'p',
 <?php } ?>
 </table>
 </div>
-<div>
+</div>
+</div>
+<div class="synthese_div">
+<h2>Répartition de l'activité des députés sur les 12 derniers mois par groupe politique :</h2>
 <div class="aligncenter"><?php echo include_component('plot', 'newGroupes', array('type' => 'all')); ?></div>
-<h3>Explications :</h3>
+</div>
+<div class="synthese_div">
+<h2>Explications :</h2>
 <ul>
   <li><strong>Semaines d'activité</strong> : Nombre de semaines où le député a été relevé présent en commission ou a pris la parole (même brièvement) en hémicycle</li>
   <li><strong>Commission séances</strong> : Nombre de séances de commission où le député a été relevé présent</li>
@@ -87,9 +105,8 @@ $class = array('parl' => 'p',
   <li><strong>Rapports écrits</strong> : Nombre de rapports ou avis dont le député est l'auteur</li>
   <li><strong>Propositions écrites</strong> : Nombre de propositions de loi ou de résolution dont le député est l'auteur</li>
   <li><strong>Propositions signées</strong> : Nombre de propositions de loi ou de résolution dont le député est cosignataire</li>
-  <li><strong>Questions écrites</strong> : Nombre de questions écrites soumises par le député</li>
-  <li><strong>Questions orales</strong> : Nombre de questions orales posées par le député</li>
+  <li><strong>Questions écrites</strong> : Nombre de questions au gouvernement écrites soumises par le député</li>
+  <li><strong>Questions orales</strong> : Nombre de questions au gouvernement orales posées par le député</li>
 </ul>
-</div>
-</div>
+<p><a href="<?php echo url_for('@faq'); ?>">Lire notre FAQ pour plus d'explications</a></p>
 </div>
