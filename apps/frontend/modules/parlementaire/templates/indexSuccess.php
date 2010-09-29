@@ -185,6 +185,7 @@
   <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png"></span><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
   <?php echo include_component('tag', 'globalActivite'); ?>
   </div>
+  <div class="clear"></div>
   <div class="box_widget">
     <h2><span style="margin-right: 5px;"><img alt="comments" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_comment.png"></span><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a></h2>
     <div id="coms_widget">
