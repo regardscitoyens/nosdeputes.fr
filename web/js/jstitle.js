@@ -7,7 +7,7 @@ $('.jstitle').mousemove(function(e) {
       $(this).attr('title', '');
     }
     title = $(this).attr('jstitle');
-    $('#jstitle').html(title.replace(/ \-\- /, '<br/>'));
+    $('#jstitle').html(title.replace(/ \-\- /g, '<br/>'));
     $('#jstitle').css('background-color', "white");
     $('#jstitle').css('top', e.pageY+10);
     $('#jstitle').css('left', e.pageX+10);

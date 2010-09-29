@@ -217,7 +217,7 @@ class Parlementaire extends BaseParlementaire
     return $this->getNumeroDepartement($shortcirco);
   }
 
-   static $dptmt_pref = array(
+  public static $dptmt_pref = array(
      "Ain" => "de l'",
      "Aisne" => "de l'",
      "Allier" => "de l'",
