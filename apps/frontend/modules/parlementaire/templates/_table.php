@@ -16,7 +16,7 @@ if (isset($list)) {
 }
 foreach($deputes as $depute) {
   $ct++; ?>
-  <div class="list_dep" onclick="document.location='<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>'">
+  <div <?php if (isset($circo) && $depute->fin_mandat == null) echo 'id="dep'.preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo).'" '; ?>class="list_dep" onclick="document.location='<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>'">
     <span class="list_nom">
       <a href="<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>"><?php echo $depute->getNomPrenom(); ?></a>
     </span>
