@@ -12,7 +12,8 @@ body {
 .date {
 	border-bottom: 1px solid #E0E0DD;
 	width: 900px;
-	height: 200px;
+	max-height: 200px;
+        min-height: 120px;
 	margin: 0;
 	padding: 0;
   margin-left: 7px;
