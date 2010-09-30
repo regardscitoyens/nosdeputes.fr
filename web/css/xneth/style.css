@@ -113,6 +113,9 @@ body {
 .solr .item {
   clear: left;
 }
+.solr .content em {
+  font-weight: bold;
+}
 
 .solr .item h4 {
   margin-bottom: 5px;
