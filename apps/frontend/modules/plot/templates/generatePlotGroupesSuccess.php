@@ -3,7 +3,7 @@
 $data = unserialize(get_component('plot', 'getGroupesData', array('type' => $type)));
 if ($type === "home") {
   $xsize = 433;
-  $ydefsize = 220;
+  $ydefsize = 260;
   $yadd = 0;
 } else {
   $xsize = 720;

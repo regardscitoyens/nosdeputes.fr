@@ -184,16 +184,20 @@ body {
 .box_repartition {
   float: left;
   width: 433px;
-  height: 290px;
+  height: 330px;
   border: 1px solid #DBDBDB;
   background-color: #FAFAFA;
   margin-bottom: 16px;
+}
+.legende {
+  margin-top: 2px;
+  text-align: center;
 }
 .box_tags {
   float: right;
   margin-right: 4px;
   width: 463px;
-  height: 290px;
+  height: 330px;
   border: 1px solid #DBDBDB;
 }
 .box_tags .internal_tag_cloud {
