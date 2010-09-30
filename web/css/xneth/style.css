@@ -1793,19 +1793,19 @@ a:hover img {
   opacity: 0.8;
 }
 .couleur_ump {
-  color: rgb(30,30,200);
+  border-left: 5px solid rgb(30,30,200);
 }
 .couleur_src {
-  color: rgb(255,50,90);
+  border-left: 5px solid rgb(255,50,90);
 }
 .couleur_gdr {
-  color: rgb(255,30,30);
+  border-left: 5px solid rgb(255,30,30);
 }
 .couleur_nc {
-  color: rgb(30,190,255);
+  border-left: 5px solid rgb(30,190,255);
 }
 .couleur_ni {
-  color: rgb(130,130,130);
+  border-left: 5px solid rgb(130,130,130);
 }
 .list_img_left {
   float:left;
