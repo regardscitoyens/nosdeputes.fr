@@ -1793,19 +1793,39 @@ a:hover img {
   opacity: 0.8;
 }
 .couleur_ump {
-  border-left: 5px solid rgb(30,30,200);
+  color: rgb(30,30,200);
 }
 .couleur_src {
-  border-left: 5px solid rgb(255,50,90);
+  color: rgb(255,50,90);
 }
 .couleur_gdr {
-  border-left: 5px solid rgb(255,30,30);
+  color: rgb(255,30,30);
 }
 .couleur_nc {
-  border-left: 5px solid rgb(30,190,255);
+  color: rgb(30,190,255);
 }
 .couleur_ni {
+  color: rgb(130,130,130);
+}
+.synthese .couleur_ump {
+  border-left: 5px solid rgb(30,30,200);
+  color: #6F6F6F;
+}
+.synthese .couleur_src {
+  border-left: 5px solid rgb(255,50,90);
+  color: #6F6F6F;
+}
+.synthese .couleur_gdr {
+  border-left: 5px solid rgb(255,30,30);
+  color: #6F6F6F;
+}
+.synthese .couleur_nc {
+  border-left: 5px solid rgb(30,190,255);
+  color: #6F6F6F;
+}
+.synthese .couleur_ni {
   border-left: 5px solid rgb(130,130,130);
+  color: #6F6F6F;
 }
 .list_img_left {
   float:left;
