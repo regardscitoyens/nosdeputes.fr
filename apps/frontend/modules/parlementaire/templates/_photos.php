@@ -1,6 +1,6 @@
 <?php
   $n_auteurs = count($deputes);
-  $line = floor($n_auteurs/(floor($n_auteurs/16)+1));
+  $line = floor($n_auteurs/(floor($n_auteurs/15)+1));
   $ct = 0;
   foreach ($deputes as $depute) {
     $titre = $depute['nom'].', '.$depute['groupe_acronyme'];

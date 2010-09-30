@@ -22,7 +22,7 @@ if (count($auteurs)) {
 if (count($cosign)) {
   echo '<div class="photos"><p class="aligncenter">cosigné'.$feminin." par ";
   include_partial('parlementaire/auteurs', array("deputes" => $cosign));
-  include_partial('parlementaire/photos', array("deputes" => $cosign));
+  if (count($cosign) < 16) include_partial('parlementaire/photos', array("deputes" => $cosign));
   echo '</p></div>';
 }
 
