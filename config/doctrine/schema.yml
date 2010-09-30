@@ -24,9 +24,9 @@ Parlementaire:
   actAs:
     Solrable:
       title: [nom, long_statut]
-      extra_weight: 1.5
+      extra_weight: 1.4
       description: [villes]
-      moretags: [Organismes, profession, nom_circo]
+      moretags: [profession]
   columns:
     nom_circo: string(255)
     num_circo: integer
@@ -65,7 +65,7 @@ Parlementaire:
 ParlementairePhoto:
   columns:
     slug: string(255)
-    photo: text
+    photo: clob 
         
 
 Organisme:
@@ -78,7 +78,6 @@ Organisme:
       title: [titre]
       extra_weight: 1.6
       moretags: [type]
-      index_if: is_to_index
   columns:
     nom: 
       type: string(255)
@@ -169,7 +168,7 @@ Section:
     Taggable: ~
     Solrable:
       title: [titre_complet]
-      extra_weight: 1.3
+      extra_weight: 1.2
       index_if: is_parent
       date: max_date
   columns:
