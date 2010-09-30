@@ -280,11 +280,27 @@ class Texteloi extends BaseTexteloi
 
   public function getContenu() {
     $c = $this->_get('contenu');
-    return gzinflate(base64_decode($c));
+    $t = base64_decode($c);
+    $c = '';
+    $file = tempnam(sys_get_temp_dir(), 'textloi');
+    $temp = fopen($file, 'w');
+    fwrite($temp, $t);
+    fclose($temp);
+    $temp = gzopen($file, 'r');
+    $z = gzgets($temp, memory_get_usage(true)*2/3);
+    gzclose($temp);
+    unlink($file);
+    return $z;
   }
 
   public function setContenu($c) {
-    return $this->_set('contenu', base64_encode(gzdeflate($c)));
+    $file = tempnam(sys_get_temp_dir(), 'textloi');
+    $temp = gzopen($file, 'w');
+    gzwrite($temp, $c);
+    gzclose($temp);
+    $ret = $this->_set('contenu', base64_encode(file_get_contents($file)));
+    unlink($file);
+    return $ret;
   }
 
   public function getExtract() {
