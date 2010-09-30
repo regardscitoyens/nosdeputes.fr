@@ -267,7 +267,7 @@ body {
   font-size: 14px;
 }
 .synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
-.p { width: 112px; }
+.p { width: 112px; border-left: 8px solid #FFF; }
 .w { width: 70px; }
 .cp { width: 63px; }
 .ci { width: 63px; }
