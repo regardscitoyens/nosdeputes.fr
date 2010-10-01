@@ -58,6 +58,27 @@ if (count($cosign)) {
       echo '<li>'.link_to("Annexe N°&nbsp;".$ann[1], '@document?id='.$annexe['id']).'</li>';
   } 
   echo '</ul></div>';
+}
+if (count($relatifs) || $section) { ?>
+  <div class="annexes">
+  <h3>Documents relatifs</h3><ul>
+  <?php if ($section) echo '<li>'.link_to('Dossier : '.$section->titre, '@section?id='.$section->id).'</li>';
+  $curid = 0;
+  foreach ($relatifs as $rel) {
+    $shortid = preg_replace('/-[atv].*$/', '', preg_replace('/[A-Z]/', '', $rel['id']));
+    if ($curid != $shortid) {
+      echo '<li>';
+      $curid = $shortid;
+      $doctitre = $rel['type']." N° $curid";
+      if (!preg_match('/^,/', $rel['type_details']))
+        $doctitre .= " ";
+      $doctitre .= $rel['type_details'];
+      if (preg_match('/mixte paritaire/', $rel['signataires']))
+        $doctitre .= " de la Commission mixte paritaire";
+      echo link_to($doctitre, '@document?id='.$curid).'</li>';
+    }
+  }
+  echo '</ul></div>';
 } ?>
 </div>
 </div>
