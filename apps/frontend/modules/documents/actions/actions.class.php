@@ -43,6 +43,7 @@ class documentsActions extends sfActions
      ->select('t.id, t.type, t.type_details, t.titre, t.signataires')
      ->from('Texteloi t')
      ->where('t.id_dossier_an = ?', $this->doc->id_dossier_an)
+     ->andWhere('t.id <> ?', $this->doc->id)
      ->orderBy('t.numero, t.annexe')
      ->fetchArray();
    $this->response->setTitle($this->doc->getTitre().' - NosDéputés.fr');
