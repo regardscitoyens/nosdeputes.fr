@@ -147,13 +147,17 @@ else {
 <span>Affiner par date :</span> <span id="periode"></span>
 <div class="date" style="width: <?php echo $width_date ?>px;">
 <ul>
-   <?php $i = 0; foreach($fdates['values'] as $date => $nb) : 
+   <?php $i = 0; foreach($fdates['values'] as $date => $nb) :
+    $i++;
     $height = round($nb['pc']*100/($fdates['max']) * 2);
     $padding = 200-$height; ?>
     <li<?php echo ' style="list-style-image: none; width: '.$width.'px; height: '.$height.'px; left: '.$left.'px;">'; 
-    $left = $left + $width; if($i < (count($fdates['values']) - 1)) { $left = $left + $espacement; }
+    $left = $left + $width; if($i < (count($fdates['values']))) { $left = $left + $espacement; }
     $newargs = $selected;
     $newargs['date'][$date] = 1;
+    if ($par != "mois" && preg_match('/01T00/', $date))
+      $newargs['date'][$date."#"] = 1;
+    else $newargs['date'][$date] = 1;
     $title_date = explode("T", $date);
     if($par == "mois") {
       $title_date = ucfirst(myTools::displayMoisAnnee($title_date[0])).' : '.$nb['nb'].' résultats';
@@ -173,7 +177,7 @@ else {
 </div>
 <?php } else { echo '<h1>Résultats pour "<em>'.$recherche.'</em>" le '.strtolower(myTools::displayDateSemaine($date_en_cours)).'</h1>'; } ?>
 <div class="nb_results">
-    <h2>Résultats <?php echo $results['start']+1; ?> à <?php echo $results['end']-1; ?> sur <?php echo $results['numFound']; ?> <strong>triés par <?php echo $sort_type; ?></strong> - 
+    <h2>Résultats <?php echo $results['start']+1; ?> à <?php echo min($results['end'],$results['numFound']); ?> sur <?php echo $results['numFound']; ?> <strong>triés par <?php echo $sort_type; ?></strong> - 
 <span class="tri">
 <?php 
   $newargs = $selected;
