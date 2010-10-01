@@ -60,6 +60,7 @@ $DataSetLegend->AddSerie("Serie2");
 $DataSetLegend->AddSerie("Serie3");
 $DataSetLegend->SetSerieName(utf8_decode('Présences'),"Serie2");
 $DataSetLegend->SetSerieName("Participations","Serie3");
+$DataSetLegend->SetYAxisUnit(utf8_decode(" séances cette semaine"));
 $DataSetLegend->SetAbsciseLabelSerie("Serie1");
 
 $DataSetBordure = new xsPData();
