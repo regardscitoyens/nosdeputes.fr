@@ -201,6 +201,10 @@ class circonscriptionActions extends sfActions
     $svg = $dom->getElementsByTagName('svg')->item(0);
 
     $toRemove = array();
+    $minx = array();
+    $maxx = array();
+    $miny = array();
+    $maxy = array();
 
     foreach($tags as $tag) {
       $paths = $dom->getElementsByTagName($tag);
@@ -224,7 +228,8 @@ class circonscriptionActions extends sfActions
     foreach($toRemove as $node) {
       $node->parentNode->removeChild($node);
     }
-
+ 
+    if (!count($minx)) return;
     $x_min = min($minx) - $margin;
     $x_max = max($maxx) + $margin;
     $y_min = min($miny) - $margin;
