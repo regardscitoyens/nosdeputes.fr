@@ -116,7 +116,7 @@ class solrActions extends sfActions
       $this->sort_type = 'date';
     }
     
-    $this->vue = 'par mois';
+    $this->vue = 'par_mois';
     
     if ($date) {
       $this->selected['date'][$date] = $date;
@@ -124,33 +124,32 @@ class solrActions extends sfActions
       list($from, $to) = $dates;
       
       $nbjours = round((strtotime($to) - strtotime($from))/(60*60*24)-1);
-      $jours_max = 90; // Seuil en nb de jours qui détermine l'affichage par jour ou par mois 
+      $jours_max = 90; // Seuil en nb de jours qui détermine l'affichage par jour ou par mois d'une période
       
       $comp_date_from = explode("T", $from);
       $comp_date_from = explode("-", $comp_date_from[0]);
       $comp_date_from = mktime(0, 0, 0, $comp_date_from[1] + 1, $comp_date_from[2], $comp_date_from[0]);
       $comp_date_from = date("Y-m-d", $comp_date_from).'T00:00:00Z';
       
-      // Affichage d'un jour
-      if($from == $to) {
-        $period = 'DAY';  
-        $this->vue = 'ce jour'; 
-      }
-      // Affichage d'un mois
-      if($comp_date_from == $to) {
-        $period = 'DAY';
-        $this->vue = 'le mois de';
-      }
       // Affichage d'une période
       if(($nbjours < $jours_max) and ($from != $to) and ($comp_date_from != $to)) { 
         $period = 'DAY';
-        $to = $to.'+1DAY';
-        $this->vue = 'par jour';
+        $this->vue = 'par_jour';
       } 
       if($nbjours > $jours_max) { 
         $period = 'MONTH';
         $to = $to.'+1MONTH';
-        $this->vue = 'par mois';
+        $this->vue = 'par_mois';
+      }
+      // Affichage d'un jour
+      if($from == $to) {
+        $period = 'DAY';
+        $this->vue = 'jour'; 
+      }
+      // Affichage d'un mois
+      if($comp_date_from == $to) {
+        $period = 'DAY';
+        $this->vue = 'mois';
       }
       
       $query .= ' date:['.$from.' TO '.$to.']';
