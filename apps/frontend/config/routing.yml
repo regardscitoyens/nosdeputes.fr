@@ -1,7 +1,7 @@
 # default rules
 #Solr Search
 recherche_solr:
-  url: /solr/:query
+  url: /recherche/:query
   param: {module: solr, action: search, query: ""}
 
 document:
