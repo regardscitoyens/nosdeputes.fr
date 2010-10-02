@@ -1566,12 +1566,20 @@ h2 {
 }
 .synthese td, .synthese th { padding: 0px; margin: 0px; text-align: center}
 .left {
-width: 48%;
-float: left;
+  width: 48%;
+  float: left;
 }
-.right{
-float: right;
-width: 50%;
+.right {
+  float: right;
+  width: 50%;
+}
+.listeleft {
+  float: left;
+  width: 64%;
+}
+.listeright {
+  float: right;
+  width: 35%;
 }
 
 /* accueil */
@@ -1764,6 +1772,10 @@ a:hover img {
 .list_table {
   margin: auto;
   margin-bottom: 30px;
+}
+.list_table h3 {
+  margin-top: 0px;
+  margin-bottom: 5px;
 }
 .list_table table {
   width: 100%;

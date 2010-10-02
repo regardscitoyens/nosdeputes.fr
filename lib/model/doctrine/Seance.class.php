@@ -82,7 +82,11 @@ class Seance extends BaseSeance
     }
     return $moment;
   }
-  
+ 
+  public function getShortMoment() {
+    return preg_replace('/^0/', '', str_replace('00', '', str_replace(':', 'h', $this->moment)));
+  }
+ 
   public function setDate($date) {
     if (!$this->_set('date', $date))
       return false;

@@ -1,34 +1,77 @@
+<?php use_helper('Text') ?>
 <h1><?php echo $orga->getNom(); $sf_response->setTitle($orga->getNom()); ?></h1>
-<?php include_component('article', 'show', array('categorie'=>'Organisme', 'object_id'=>$orga->id)); ?>
-<?php if ($total && $pagerSeances->getPage() < 2) {
-  if ($orga->type == 'extra') : ?>
-<h2>Organisme extra-parlementaire composé de <?php echo $total; ?> député<?php if ($total > 1) echo 's'; ?>&nbsp;:</h2>
-<?php else : ?>
-<h2><?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission parlementaire composée de <?php echo $total; ?> député<?php if ($total > 1) echo 's'; ?>&nbsp;:</h2>
-<?php endif; ?>
-<div class="liste">
-<?php $listimp = array_keys($parlementaires);
-  foreach($listimp as $i) {
-    echo '<div class="list_table">';
-    include_partial('parlementaire/table', array('deputes' => $parlementaires[$i], 'list' => 1, 'imp' => $i));
-    echo '</div>';
-  } 
-  echo '</div>';
-} 
-if ($pagerSeances->getNbResults()) : ?>
-<div><h3>Les dernières réunions de la <?php if (preg_match('/commission/i', $orga->getNom())) echo 'Comm'; else echo 'M'; ?>ission</h3>
-<ul>
-<?php foreach($pagerSeances->getResults() as $seance) : ?>
-<li><?php $subtitre = $seance->getTitre();
-  if ($seance->nb_commentaires > 0) {
-    $subtitre .= ' ('.$seance->nb_commentaires.' commentaire';
-    if ($seance->nb_commentaires > 1) $subtitre .= 's';
-    $subtitre .= ')';
+<?php $nrap = $pagerRapports->getNbResults();
+$nse = $pagerSeances->getNbResults();
+if ($page === "home") {
+  include_component('article', 'show', array('categorie'=>'Organisme', 'object_id'=>$orga->id));
+  $divclass = "";
+  $colonnes = 3;
+  if ($nse || $nrap) {
+    $divclass = '<div class="listeleft">';
+    $colonnes = 2;
   }
-  echo link_to($subtitre, '@interventions_seance?seance='.$seance->id); ?></li>
-<?php endforeach ; ?>
-</ul>
-<?php include_partial('intervention/paginate', array('pager'=>$pagerSeances, 'link'=>'@list_parlementaires_organisme?slug='.$orga->getSlug().'&')); ?>
+  if ($total && $pagerSeances->getPage() == 1 && ($pagerRapports->getPage() == 1)) {
+    if ($orga->type == 'extra')
+      echo '<h2>Organisme extra-parlementaire composé de '.$total.' député'.($total > 1 ? 's' : '').'&nbsp;:</h2>';
+    else echo '<h2>'.(preg_match('/commission/i', $orga->getNom()) ? 'Comm' : 'M').'ission parlementaire composée de '.$total.' député'.($total > 1 ? 's' : '').'&nbsp;:</h2>';
+  }
+  echo $divclass.'<div class="liste">';
+  $listimp = array_keys($parlementaires);
+  foreach ($listimp as $i) {
+    echo '<div class="list_table">';
+    include_partial('parlementaire/table', array('deputes' => $parlementaires[$i], 'list' => 1, 'colonnes' => $colonnes, 'imp' => $i));
+    echo '</div>';
+  }
+  echo '</div>';
+}
+if ($page === "home" && ($nse || $nrap))
+  echo '</div><div class="listeright">';
+else echo '<div>';
+if ($page != "seances" && $nrap) {
+  echo '<h3>';
+  if ($page === "home")
+    echo 'Ses derniers rapports';
+  else echo 'Rapports de la '.(preg_match('/commission/i', $orga->getNom()) ? 'comm' : 'm').'ission';
+  echo '&nbsp;:</h3><ul>';
+  $curid = 0;
+  foreach($pagerRapports->getResults() as $rap) {
+    $shortid = preg_replace('/-[atv].*$/', '', preg_replace('/[A-Z]/', '', $rap->id));
+    if ($curid != $shortid) {
+      echo '<li>';
+      $curid = $shortid;
+      $doctitre = preg_replace('/ (de|pour|par) l[ea\'\s]+ '.$orga->nom.'/i', '', $rap->getTitreCommission());
+      if ($pagerRapports->getPage() == 1) $doctitre = truncate_text($doctitre, 120);
+      echo link_to($doctitre, '@document?id='.$curid).'</li>';
+    }
+  }
+  echo '</ul>';
+  include_partial('parlementaire/paginate', array('pager'=>$pagerRapports, 'link'=>'@list_parlementaires_organisme?slug='.$orga->getSlug().'&'));
+}
+if ($page != "rapports" && $nse) {
+  echo '<h3>';
+  if ($page === "home")
+    echo 'Ses dernières réunions';
+  else echo 'Réunions de la '.(preg_match('/commission/i', $orga->getNom()) ? 'comm' : 'm').'ission';
+  echo '&nbsp;:</h3><ul>';
+  $curdate = "";
+  foreach($pagerSeances->getResults() as $seance) {
+    $newdate = myTools::displayDate($seance->date);
+    if ($curdate != $newdate) {
+      if ($curdate != "")
+        echo '</li>';
+      $curdate = $newdate;
+      echo '<li>'.$newdate.'&nbsp;: ';
+    } else echo '&nbsp;&mdash; ';
+    $subtitre = $seance->getShortMoment();
+    if ($seance->nb_commentaires > 0) {
+      $subtitre .= ' (<span class="list_com">'.$seance->nb_commentaires.' commentaire';
+      if ($seance->nb_commentaires > 1) $subtitre .= 's';
+      $subtitre .= '</span>)';
+    }
+    echo link_to($subtitre, '@interventions_seance?seance='.$seance->id);
+  }
+  echo '</ul>';
+  include_partial('intervention/paginate', array('pager'=>$pagerSeances, 'link'=>'@list_parlementaires_organisme?slug='.$orga->getSlug().'&')); 
+} ?>
 </div>
-<?php endif; ?>
-<br/>
+<?php if ($page != "home") echo '<h3 class="aligncenter">'.link_to('Voir la composition de la commission', '@list_parlementaires_organisme?slug='.$orga->slug).'</h3>'; ?>

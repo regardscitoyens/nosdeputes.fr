@@ -278,6 +278,14 @@ class Texteloi extends BaseTexteloi
     return $str;
   }
 
+  public function getTitreCommission() {
+    $str = $this->getShortTitre();
+    if ($this->_get('titre'))
+      $str .= " ".$this->_get('titre');
+    $str = preg_replace('/^,\s*/', '', preg_replace('/\s*,\s*/', ', ', $str));
+    return $str;
+  }
+
   public function getContenu() {
     $c = $this->_get('contenu');
     $t = base64_decode($c);

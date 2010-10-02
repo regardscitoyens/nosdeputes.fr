@@ -1,18 +1,24 @@
 <?php
 $ct = 0;
 if (isset($list)) {
+  if (!isset($colonnes))
+    $colonnes = 3;
+  if (isset($imp))
+    echo '<h3 class="aligncenter">'.ucfirst($deputes[0]->fonction).(count($deputes) > 1 ? 's' : '').'</h3>';
   echo '<table><tr>';
   $totaldep = count($deputes);
-  $div = floor($totaldep/3)+1;
-  if ($div > 1 && $totaldep % 3 == 0)
+  $div = floor($totaldep/$colonnes)+1;
+  if ($div > 1 && $totaldep % $colonnes == 0)
     $div--;
   $td = 0;
   if ($totaldep == 1) {
-    echo '<td/><td>';
+    if ($colonnes == 2)
+      echo '<td class="list_td_small"/>';
+    else echo '<td/>';
     $td++;
-  } else if ($totaldep == 2 || $totaldep == 4)
-    echo '<td class="list_td_small"/><td>';
-  else echo '<td>';
+  } else if ($colonnes != 2 && ($totaldep == 2 || $totaldep == 4))
+    echo '<td class="list_td_small"/>';
+  echo '<td>';
 }
 foreach($deputes as $depute) {
   $ct++; ?>
@@ -30,12 +36,7 @@ foreach($deputes as $depute) {
       } else echo $depute->nom_circo; 
     ?></a></span><br/>
     <span class="list_left">
-      <?php if (isset($imp)) {
-          echo ' '.$depute->fonction;
-          if (!isset($nogroupe))
-            echo '&nbsp;&mdash;&nbsp;<a href="'.url_for('@list_parlementaires_groupe?acro='.$depute->groupe_acronyme).'"><span class="couleur_'.strtolower($depute->getGroupeAcronyme()).'">'.$depute->getGroupeAcronyme().'</span></a>';
-        } else
-          echo preg_replace('/\s([A-Z]+)$/', ' <a href="'.url_for('@list_parlementaires_groupe?acro='.$depute->groupe_acronyme).'"><span class="couleur_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
+      <?php echo preg_replace('/\s([A-Z]+)$/', ' <a href="'.url_for('@list_parlementaires_groupe?acro='.$depute->groupe_acronyme).'"><span class="couleur_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
     </span>
     <span class="list_right"><?php
       if (!$depute->nb_commentaires)
@@ -55,9 +56,9 @@ foreach($deputes as $depute) {
 }
 if (isset($list)) {
   echo '</td>';
-  if ($totaldep == 2 || $totaldep == 4)
+  if (($colonnes == 2 && $totaldep == 1) || ($colonnes != 2 && ($totaldep == 2 || $totaldep == 4)))
     echo '<td class="list_td_small"/>';
-  else while ($td < 2) {
+  else while ($td < $colonnes - 1) {
     $td++;
     echo '<td/>';
   }

@@ -242,26 +242,47 @@ class parlementaireActions extends sfActions
       ->where('o.slug = ?', $orga)->fetchOne();
     $this->forward404Unless($this->orga);
 
-    $query = Doctrine::getTable('Parlementaire')->createQuery('p')
-      ->select('p.*, po.fonction as fonction, po.importance as imp')
-      ->leftJoin('p.ParlementaireOrganisme po')
-      ->leftJoin('po.Organisme o')
-      ->where('o.slug = ?', $orga)
-      ->andWhere('p.fin_mandat IS NULL')
-      ->orderBy("po.importance DESC, p.nom_de_famille ASC");
-    $this->parlementaires = array();
-    $this->total = 0;
-    foreach ($query->execute() as $depute) {
-      $this->total++;
-      $imp = $depute->imp;
-      if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
-      else $this->parlementaires[$imp] = array($depute);
+    $pageS = $request->getParameter('pages', 1);
+    $pageR = $request->getParameter('page', 1);
+    if ($pageS == 1) {
+      if ($pageR == 1)
+        $this->page = "home";
+      else $this->page = "rapports";
+    } else $this->page = "seances";
+    if ($this->page === "home") {
+      $query = Doctrine::getTable('Parlementaire')->createQuery('p')
+        ->select('p.*, po.fonction as fonction, po.importance as imp')
+        ->leftJoin('p.ParlementaireOrganisme po')
+        ->leftJoin('po.Organisme o')
+        ->where('o.slug = ?', $orga)
+        ->andWhere('p.fin_mandat IS NULL')
+        ->orderBy("po.importance DESC, p.nom_de_famille ASC");
+      $this->parlementaires = array();
+      $this->total = 0;
+      foreach ($query->execute() as $depute) {
+        $this->total++;
+        $imp = $depute->imp;
+        if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
+        else $this->parlementaires[$imp] = array($depute);
+      }
     }
-    $query2 = Doctrine::getTable('Seance')->createQuery('s')
-      ->leftJoin('s.Organisme o')
-      ->where('o.slug = ?', $orga)
-      ->orderBy('s.date DESC, s.moment ASC');
-    $this->pagerSeances = Doctrine::getTable('Seance')->getPager($request, $query2);
+    if ($this->page === "home" || $this->page === "seances") {
+      $query2 = Doctrine::getTable('Seance')->createQuery('s')
+        ->leftJoin('s.Organisme o')
+        ->where('o.slug = ?', $orga)
+        ->orderBy('s.date DESC, s.moment ASC');
+      $this->pagerSeances = Doctrine::getTable('Seance')->getPager($request, $query2);
+    }
+    if ($this->page === "home" || $this->page === "rapports") {
+      $query3 =  Doctrine::getTable('Texteloi')->createQuery('t')
+        ->leftJoin('t.Organisme o')
+        ->where('o.slug = ?', $orga)
+        ->orderBy('t.numero DESC, t.annexe ASC');
+      $this->pagerRapports = new sfDoctrinePager('Texteloi',10);
+      $this->pagerRapports->setQuery($query3);
+      $this->pagerRapports->setPage($pageR);
+      $this->pagerRapports->init();
+    }
   }
 
   public function executeTag(sfWebRequest $request) {
