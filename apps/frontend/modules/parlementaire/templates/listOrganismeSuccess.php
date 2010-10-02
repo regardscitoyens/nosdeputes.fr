@@ -1,7 +1,9 @@
 <?php use_helper('Text') ?>
 <h1><?php echo $orga->getNom(); $sf_response->setTitle($orga->getNom()); ?></h1>
-<?php $nrap = $pagerRapports->getNbResults();
-$nse = $pagerSeances->getNbResults();
+<?php if (isset($pagerRapports)) $nrap = $pagerRapports->getNbResults();
+else $nrap = 0;
+if (isset($pagerSeances)) $nse = $pagerSeances->getNbResults();
+else $nse = 0;
 if ($page === "home") {
   include_component('article', 'show', array('categorie'=>'Organisme', 'object_id'=>$orga->id));
   $divclass = "";
