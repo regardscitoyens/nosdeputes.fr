@@ -60,8 +60,8 @@ class solrActions extends sfActions
     }
     if ($tags = $request->getParameter('tag')) {
       foreach(explode(',', $tags) as $tag) {
-	$this->selected['tag'][$tag] = 1;
-	$fq .= ' tag:"'.$tag.'"';
+	      $this->selected['tag'][$tag] = 1;
+	      $fq .= ' tag:"'.$tag.'"';
       }
     }
     //Récupère les résultats auprès de SolR
@@ -115,43 +115,59 @@ class solrActions extends sfActions
       $params['sort'] = "date desc";
       $this->sort_type = 'date';
     }
-    if ($from) {
-      $to = $request->getParameter('to', 'NOW');
-      $query .= ' date:['.$from.' TO '.$to.']';
-      $params['facet.date.start']=$from;
-      $params['facet.date.end'] = $to;
-      $params['facet.date.gap'] = '+1MONTH';
-      $this->selected['from'][$from] = $from;
-      $this->selected['to'][$to] = $to;
-    }
+    
+    $this->vue = 'par mois';
+    
     if ($date) {
       $this->selected['date'][$date] = $date;
-      if (!$from) {
-	$dates = explode(',', $date);
-	$date = array_pop($dates);
-	$period = 'MONTH';
-	if (count($dates) == 1) {
-	  $period = 'DAY';
-          $query .= ' date:['.$date.' TO '.$date.']';
-	} else $query .= ' date:['.$date.' TO '.$date.'+1'.$period.']';
-	$params['facet.date.start']=$date;
-	$params['facet.date.end'] = $date.'+1'.$period;
-	$params['facet.date.gap'] = '+1DAY';
+      $dates = explode(',', $date);
+      list($from, $to) = $dates;
+      
+      $nbjours = round((strtotime($to) - strtotime($from))/(60*60*24)-1);
+      
+      $comp_date_from = explode("T", $from);
+      $comp_date_from = explode("-", $comp_date_from[0]);
+      $comp_date_from = mktime(0, 0, 0, $comp_date_from[1] + 1, $comp_date_from[2], $comp_date_from[0]);
+      $comp_date_from = date("Y-m-d", $comp_date_from);
+      
+      $period = 'DAY'; 
+      $this->vue = 'par jour';
+      $this->limit = $to;
+      
+      // Affichage d'un mois
+      if($comp_date_from.'T00:00:00Z' == $to) {
+        $period = 'DAY';
+        $this->vue = 'le mois de';
       }
+      // Affichage d'une période
+      else if(($nbjours > 90) and ($from != $to)) { 
+        $period = 'MONTH'; 
+        $this->vue = 'par mois';
+      } 
+      // Affichage d'un jour
+      if($from == $to) {
+        $period = 'DAY';  
+        $this->vue = 'ce jour'; 
+      }
+      
+      $query .= ' date:['.$from.' TO '.$to.']';
+      $params['facet.date.start'] = $from;
+	    $params['facet.date.end'] = $to;
+      $params['facet.date.gap'] = '+1'.$period;
     }
     
-    $this->date_en_cours = $date;
     $this->start = $params['facet.date.start'];
     $this->end = $params['facet.date.end'];
-    $this->interval = $params['facet.date.gap'];
 
     try {
       $s = new SolrConnector();
       $results = $s->search($query, $params, $deb, $nb);
-    }catch(Exception $e) {
+    }
+    catch(Exception $e) {
       $results = array('response' => array('docs' => array(), 'numFound' => 0));
       $this->getUser()->setFlash('error', 'Désolé, le moteur de recherche est indisponible pour le moment');
     }
+    
     //Reconstitut les résultats
     $this->results = $results['response'];
     for($i = 0 ; $i < count($this->results['docs']) ; $i++) {
@@ -162,15 +178,16 @@ class solrActions extends sfActions
       $this->results['docs'][$i]['titre'] = $obj->getTitre();
       $this->results['docs'][$i]['personne'] = $obj->getPersonne();
       if (isset($results['highlighting'][$res['id']]['text'])) {
-	$high_res = array();
-	foreach($results['highlighting'][$res['id']]['text'] as $h) {
-	  $h = preg_replace('/.*=/', '', $h); 
-	  array_push($high_res, $h);
-	}
-	$this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
-      }else
-	$this->results['docs'][$i]['highlighting'] = '';
+	      $high_res = array();
+	      foreach($results['highlighting'][$res['id']]['text'] as $h) {
+	        $h = preg_replace('/.*=/', '', $h); 
+	        array_push($high_res, $h);
+	      }
+	      $this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
+      } 
+      else $this->results['docs'][$i]['highlighting'] = '';
     }
+    
     $this->results['end'] = $deb + $nb;
     $this->results['page'] = $deb/$nb + 1;
     if ($this->results['end'] > $this->results['numFound'] && $this->results['numFound']) {
@@ -193,32 +210,34 @@ class solrActions extends sfActions
       $this->facet['tag']['facet_field'] = 'tag';
       $this->facet['tag']['name'] = 'Tags';
       foreach($tags as $tag => $nb ) {
-	if (!$nb)
-	  continue;
-	if (!preg_match('/=/', $tag))
-	  $this->facet['tag']['values'][$tag] = $nb;
-	if (preg_match('/^parlementaire=(.*)/', $tag, $matches)) {
-	  $this->facet['parlementaire']['values'][$matches[1]] = $nb;
-	}
+	      if (!$nb)
+	      continue;
+	      if (!preg_match('/=/', $tag))
+	        $this->facet['tag']['values'][$tag] = $nb;
+	      if (preg_match('/^parlementaire=(.*)/', $tag, $matches)) {
+	        $this->facet['parlementaire']['values'][$matches[1]] = $nb;
+	      }
       }
     }
+    
     if (!$results['response']['numFound']) {
       if ($format)
-	return ;
+	    return ;
       return $this->setTemplate('noresults');
     }
     $this->fdates = array();
     $this->fdates['max'] = 1;
     foreach($results['facet_counts']['facet_dates']['date'] as $date => $nb) {
       if (preg_match('/^20/', $date)) {
-	$pc = $nb/$results['response']['numFound'];
-	$this->fdates['values'][$date] = array('nb' => $nb, 'pc' => $pc);
-	if ($this->fdates['max'] < $pc) {
-	  $this->fdates['max'] = $pc;
-	}
+	      $pc = $nb/$results['response']['numFound'];
+	      $this->fdates['values'][$date] = array('nb' => $nb, 'pc' => $pc);
+	      if ($this->fdates['max'] < $pc) {
+	        $this->fdates['max'] = $pc;
+	      }
       }
     }
   }
+  
   public function executeRedirect(sfWebRequest $request)
   {
     $add = '';
