@@ -1580,6 +1580,7 @@ h2 {
 .listeright {
   float: right;
   width: 35%;
+  margin-bottom: 30px;
 }
 
 /* accueil */
