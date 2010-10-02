@@ -87,7 +87,11 @@ class SolrConnector extends sfLogger
     $unset = array();
     for ($i = 0 ; $i < count($results['response']['docs']); $i++) {
       $res = $results['response']['docs'][$i];
-      $results['response']['docs'][$i]['object'] = Doctrine::getTable($res['object_name'])->find($res['object_id']);
+      if ($res['object_name'] == 'NonObjectPage') {
+	$results['response']['docs'][$i]['object'] = NonObjectPage::find($res['object_id']);
+      }else{
+	$results['response']['docs'][$i]['object'] = Doctrine::getTable($res['object_name'])->find($res['object_id']);
+      }
       if (!$results['response']['docs'][$i]['object'])
 	$unset[] = $i;
     }
