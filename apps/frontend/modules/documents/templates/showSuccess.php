@@ -28,8 +28,9 @@ if (count($cosign)) {
 
 ?>
 </div>
+<?php $tags = get_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Texteloi', 'limit' => 40, 'fixlevel' => 1, 'nozerodisplay' => true)); ?>
 <div class="document">
-<div class="left">
+<div<?php if ($tags != "" || (isset($texte) && $texte > 0) || count($annexes) || $amendements || count($relatifs) || $section) echo ' class="left"'; ?>>
 <?php if ($txt = $doc->getExtract()) { ?>
 <h3>Extrait</h3>
 <p class="justify tabulation"><?php echo preg_replace('/([a-z])\. ([^"»])/', '\\1.</p><p class="justify tabulation">\\2', $doc->getExtract()); ?></p>
@@ -38,8 +39,8 @@ if (count($cosign)) {
 <p class="aligncenter">(<?php echo link_to('version pdf', preg_replace('/asp$/', 'pdf', preg_replace('/13\//', '13/pdf/', $doc->source))); ?>)</p>
 </div>
 <div class="right">
-  <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Texteloi', 'limit' => 40, 'fixlevel' => 1, 'nozerodisplay' => true)); ?>
-<?php if ((isset($texte) && $texte > 0) || count($annexes) || $amendements) { ?>
+<?php print $tags;
+if ((isset($texte) && $texte > 0) || count($annexes) || $amendements) { ?>
   <div class="annexes">
   <h3>Documents associés</h3><ul>
   <?php if ($amendements) echo '<li>'.link_to("Voir les ".$amendements." amendement".($amendements > 1 ? "s" : "")." déposé".($amendements > 1 ? "s" : "")." sur ce texte", '@find_amendements_by_loi_and_numero?loi='.$doc->numero.'&numero=all').'</li>';
