@@ -40,6 +40,8 @@ if ($page != "seances" && $nrap) {
       echo '<li>';
       $curid = $shortid;
       $doctitre = preg_replace('/ (de|pour|par) l[ea\'\s]+ '.$orga->nom.'/i', '', $rap->getTitreCommission());
+      $doctitre = preg_replace('/ (de|pour|par) l[ea\'\s]+ '.preg_replace('/\'\s*/', '’', $orga->nom).'/i', '', $rap->getTitreCommission());
+      $doctitre = preg_replace('/ (de|pour|par) l[ea\'\s]+ '.preg_replace('/’\s*/', '\'', $orga->nom).'/i', '', $rap->getTitreCommission());
       if ($pagerRapports->getPage() == 1) $doctitre = truncate_text($doctitre, 120);
       echo link_to($doctitre, '@document?id='.$curid).'</li>';
     }
