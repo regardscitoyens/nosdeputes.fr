@@ -3,8 +3,14 @@ $ct = 0;
 if (isset($list)) {
   if (!isset($colonnes))
     $colonnes = 3;
-  if (isset($imp))
-    echo '<h3 class="aligncenter">'.ucfirst($deputes[0]->fonction).(count($deputes) > 1 ? 's' : '').'</h3>';
+  if (isset($imp)) {
+    $fonction = $deputes[0]->fonction;
+    foreach ($deputes as $depute) if ($depute->sexe === "H") {
+      $fonction = $depute->fonction;
+       break;
+    }
+    echo '<h3 class="aligncenter">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', preg_replace('/(,)? /', 's\\1 ', $fonction))).(count($deputes) > 1 && !preg_match('/(droit|bureau)$/', $fonction) ? 's' : '').'</h3>';
+  }
   echo '<table><tr>';
   $totaldep = count($deputes);
   $div = floor($totaldep/$colonnes)+1;
