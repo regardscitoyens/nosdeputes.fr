@@ -12,11 +12,11 @@ class solrActions extends sfActions
 {
 
   private function getPhoto($obj) {
-    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));  
     switch(get_class($obj)) {
     case 'Intervention':
       if ($obj->getParlementaire()->__toString()) {
-	return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj->getParlementaire(), 'height'=>70));
+        return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj->getParlementaire(), 'height'=>70));
       }
     case 'QuestionEcrite':
       return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj->getParlementaire(), 'height'=>70));
@@ -60,8 +60,8 @@ class solrActions extends sfActions
     }
     if ($tags = $request->getParameter('tag')) {
       foreach(explode(',', $tags) as $tag) {
-	      $this->selected['tag'][$tag] = 1;
-	      $fq .= ' tag:"'.$tag.'"';
+        $this->selected['tag'][$tag] = 1;
+        $fq .= ' tag:"'.$tag.'"';
       }
     }
     //Récupère les résultats auprès de SolR
@@ -104,7 +104,7 @@ class solrActions extends sfActions
     }
 
     if ($format == 'csv') {
-      //      $this->getResponse()->setContentType('application/csv; charset=utf-8');
+      // $this->getResponse()->setContentType('application/csv; charset=utf-8');
       $this->getResponse()->setContentType('text/plain; charset=utf-8');
       $this->setTemplate('csv');
       $this->setLayout(false);
@@ -124,35 +124,38 @@ class solrActions extends sfActions
       list($from, $to) = $dates;
       
       $nbjours = round((strtotime($to) - strtotime($from))/(60*60*24)-1);
+      $jours_max = 90; // Seuil en nb de jours qui détermine l'affichage par jour ou par mois 
       
       $comp_date_from = explode("T", $from);
       $comp_date_from = explode("-", $comp_date_from[0]);
       $comp_date_from = mktime(0, 0, 0, $comp_date_from[1] + 1, $comp_date_from[2], $comp_date_from[0]);
-      $comp_date_from = date("Y-m-d", $comp_date_from);
+      $comp_date_from = date("Y-m-d", $comp_date_from).'T00:00:00Z';
       
-      $period = 'DAY'; 
-      $this->vue = 'par jour';
-      $this->limit = $to;
-      
-      // Affichage d'un mois
-      if($comp_date_from.'T00:00:00Z' == $to) {
-        $period = 'DAY';
-        $this->vue = 'le mois de';
-      }
-      // Affichage d'une période
-      else if(($nbjours > 90) and ($from != $to)) { 
-        $period = 'MONTH'; 
-        $this->vue = 'par mois';
-      } 
       // Affichage d'un jour
       if($from == $to) {
         $period = 'DAY';  
         $this->vue = 'ce jour'; 
       }
+      // Affichage d'un mois
+      if($comp_date_from == $to) {
+        $period = 'DAY';
+        $this->vue = 'le mois de';
+      }
+      // Affichage d'une période
+      if(($nbjours < $jours_max) and ($from != $to) and ($comp_date_from != $to)) { 
+        $period = 'DAY';
+        $to = $to.'+1DAY';
+        $this->vue = 'par jour';
+      } 
+      if($nbjours > $jours_max) { 
+        $period = 'MONTH';
+        $to = $to.'+1MONTH';
+        $this->vue = 'par mois';
+      }
       
       $query .= ' date:['.$from.' TO '.$to.']';
       $params['facet.date.start'] = $from;
-	    $params['facet.date.end'] = $to;
+      $params['facet.date.end'] = $to;
       $params['facet.date.gap'] = '+1'.$period;
     }
     
@@ -178,12 +181,12 @@ class solrActions extends sfActions
       $this->results['docs'][$i]['titre'] = $obj->getTitre();
       $this->results['docs'][$i]['personne'] = $obj->getPersonne();
       if (isset($results['highlighting'][$res['id']]['text'])) {
-	      $high_res = array();
-	      foreach($results['highlighting'][$res['id']]['text'] as $h) {
-	        $h = preg_replace('/.*=/', '', $h); 
-	        array_push($high_res, $h);
-	      }
-	      $this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
+        $high_res = array();
+        foreach($results['highlighting'][$res['id']]['text'] as $h) {
+          $h = preg_replace('/.*=/', '', $h); 
+          array_push($high_res, $h);
+        }
+        $this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
       } 
       else $this->results['docs'][$i]['highlighting'] = '';
     }
@@ -210,30 +213,30 @@ class solrActions extends sfActions
       $this->facet['tag']['facet_field'] = 'tag';
       $this->facet['tag']['name'] = 'Tags';
       foreach($tags as $tag => $nb ) {
-	      if (!$nb)
-	      continue;
-	      if (!preg_match('/=/', $tag))
-	        $this->facet['tag']['values'][$tag] = $nb;
-	      if (preg_match('/^parlementaire=(.*)/', $tag, $matches)) {
-	        $this->facet['parlementaire']['values'][$matches[1]] = $nb;
-	      }
+        if (!$nb)
+        continue;
+        if (!preg_match('/=/', $tag))
+          $this->facet['tag']['values'][$tag] = $nb;
+        if (preg_match('/^parlementaire=(.*)/', $tag, $matches)) {
+          $this->facet['parlementaire']['values'][$matches[1]] = $nb;
+        }
       }
     }
     
     if (!$results['response']['numFound']) {
       if ($format)
-	    return ;
+      return ;
       return $this->setTemplate('noresults');
     }
     $this->fdates = array();
     $this->fdates['max'] = 1;
     foreach($results['facet_counts']['facet_dates']['date'] as $date => $nb) {
       if (preg_match('/^20/', $date)) {
-	      $pc = $nb/$results['response']['numFound'];
-	      $this->fdates['values'][$date] = array('nb' => $nb, 'pc' => $pc);
-	      if ($this->fdates['max'] < $pc) {
-	        $this->fdates['max'] = $pc;
-	      }
+        $pc = $nb/$results['response']['numFound'];
+        $this->fdates['values'][$date] = array('nb' => $nb, 'pc' => $pc);
+        if ($this->fdates['max'] < $pc) {
+          $this->fdates['max'] = $pc;
+        }
       }
     }
   }
