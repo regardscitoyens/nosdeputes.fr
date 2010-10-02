@@ -23,6 +23,9 @@ class SolrCommands
     return self::$instance;
   }
 
+  private function __construct() {
+  }
+
   public function __destruct() {
     if ($this->semaphore)
       $this->unprotect();
