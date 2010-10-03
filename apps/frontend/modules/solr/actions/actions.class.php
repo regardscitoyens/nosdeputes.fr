@@ -188,6 +188,10 @@ class solrActions extends sfActions
       $this->getUser()->setFlash('error', 'Désolé, le moteur de recherche est indisponible pour le moment');
     }
     
+    if  (!$format && count($results['response']['docs']) == 1 && $results['response']['docs'][0]['object_name'] == 'Parlementaire') {
+      return $this->redirect($results['response']['docs'][0]['object']->getLink());
+    }
+
     //Reconstitut les résultats
     $this->results = $results['response'];
     for($i = 0 ; $i < count($this->results['docs']) ; $i++) {
@@ -221,9 +225,9 @@ class solrActions extends sfActions
       $this->facet['type']['values'] = $results['facet_counts']['facet_fields']['object_name'];
       
       //Prépare les facets des parlementaires
-      $this->facet['parlementaire']['prefix'] = 'parlementaire=';
-      $this->facet['parlementaire']['facet_field'] = 'tag';
-      $this->facet['parlementaire']['name'] = 'Parlementaire';
+      $this->facet['parlementaires']['prefix'] = 'parlementaire=';
+      $this->facet['parlementaires']['facet_field'] = 'tag';
+      $this->facet['parlementaires']['name'] = 'Parlementaire';
       
       $tags = $results['facet_counts']['facet_fields']['tag'];
       $this->facet['tag']['prefix'] = '';
@@ -235,7 +239,7 @@ class solrActions extends sfActions
         if (!preg_match('/=/', $tag))
           $this->facet['tag']['values'][$tag] = $nb;
         if (preg_match('/^parlementaire=(.*)/', $tag, $matches)) {
-          $this->facet['parlementaire']['values'][$matches[1]] = $nb;
+          $this->facet['parlementaires']['values'][$matches[1]] = $nb;
         }
       }
     }

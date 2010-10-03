@@ -261,7 +261,8 @@ endif;
 
 global $facetName2HumanName;
 $facetName2HumanName = array(
-			     'Parlementaire' => 'Filtrer par Parlementaire',
+			     'Parlementaires' => 'Filtrer par député',
+			     'Parlementaire' => 'Députés',
 			     'Types' => 'Filtrer par type de document',
 			     'Tags' => 'Filtrer par tags',
 			     'Texteloi' => 'Documents parlementaires',
