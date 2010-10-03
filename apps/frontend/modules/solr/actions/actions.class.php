@@ -71,6 +71,7 @@ class solrActions extends sfActions
     $this->sort_type = 'pertinence';
 
     $this->sort = $request->getParameter('sort');
+    $this->ajax = $request->getParameter('ajax');
     $date = $request->getParameter('date');
     $format = $request->getParameter('format');
 
@@ -170,9 +171,13 @@ class solrActions extends sfActions
     
     $this->start = $params['facet.date.start'];
     if ($period == 'DAY') {
-      $this->start = date ('Y-m-d', strtotime($this->start)+1).'T00:00:00Z';
+      $this->start = date ('Ymd', strtotime($this->start)+1);
     }
     $this->end = $params['facet.date.end'];
+    if($this->end == 'NOW') { 
+      $this->end = date("Ymd"); 
+    }
+
 
     try {
       $s = new SolrConnector();

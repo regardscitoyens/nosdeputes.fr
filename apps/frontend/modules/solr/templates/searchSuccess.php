@@ -35,6 +35,37 @@ function addToDate($date, $interval) {
 }
 
 $recherche = preg_replace('/"/', '&quot;', $query);
+
+switch ($vue) {
+  case "jour":
+    $periode_text = 'le '.myTools::displayShortDate($start);
+    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
+    $graph = 0;
+    break;
+  case "mois":
+    $periode_text = 'en '.myTools::displayMoisAnnee($start);
+    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
+    $graph = 1;
+    break;
+  case "par_jour":
+    $periode_text = 'entre le '.myTools::displayShortDate($start).' et le '.myTools::displayShortDate($end);
+    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
+    $graph = 1;
+    break;
+  case "par_mois":
+    $periode_text = 'entre '.myTools::displayMoisAnnee($start).' et '.myTools::displayMoisAnnee($end);
+    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
+    $graph = 1;
+    break;
+  default:
+    $periode_text = "supprimer les critère de dates";
+    $intitule_resultats = 'Recherche de "<em>'.$recherche.'</em>';
+    $graph = 1;
+}
+
+//////////////////// DEBUT SANS AJAX /////////////////////
+//////////////////////////////////////////////////////////
+if (!$ajax) :
 ?>
 <script type="text/javascript">
 function urlParams(params) {
@@ -59,6 +90,22 @@ bh = 0;
 nh = 0;
 if(location.search.substring(1)) { parametre = urlParams(location.search.substring(1).split('&')); }
 else { parametre = new Object(); }
+
+timer4update = null;
+function realAjaxUpdate(lien) {
+  url = document.location+'';
+  url = url.replace(/\?.*/, '');
+  lien = url+lien+'&ajax=1';
+  $('#results_container').load(lien, function() {$('#results_container').css('opacity', '1');});
+}
+function ajaxUpdateFor(lien) {
+  if (timer4update) {
+    clearTimeout(timer4update);
+    timer4update = null;
+  }
+  $('#results_container').css('opacity', '0.5');
+  timer4update = setTimeout('realAjaxUpdate("'+lien+'")', 5000);
+}
 
 $(document).ready(function() {
   $(".date li").each(function() {
@@ -105,7 +152,7 @@ $(document).ready(function() {
 			  else { 
 			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>entre '+periode[ui.values[0]]+' et '+ periode[ui.values[1]]+'</strong></a>';
 			  }
-			  
+			  ajaxUpdateFor(lien);
 			  $("#periode").text("");
 				$("#periode").append(texte_periode);
 			}
@@ -124,37 +171,7 @@ $(document).ready(function() {
   </p>
   </form>
 </div>
-<?php 
-  if($end == 'NOW') { $end = date("Ymd");; }
-?>
-<h1><?php
-switch ($vue) {
-  case "jour":
-    $periode_text = 'le '.myTools::displayShortDate($start);
-    echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
-    $graph = 0;
-    break;
-  case "mois":
-    $periode_text = 'en '.myTools::displayMoisAnnee($start);
-    echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
-    $graph = 1;
-    break;
-  case "par_jour":
-    $periode_text = 'entre le '.myTools::displayShortDate($start).' et le '.myTools::displayShortDate($end);
-    echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
-    $graph = 1;
-    break;
-  case "par_mois":
-    $periode_text = 'entre '.myTools::displayMoisAnnee($start).' et '.myTools::displayMoisAnnee($end);
-    echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
-    $graph = 1;
-    break;
-  default:
-    $periode_text = "supprimer les critère de dates";
-    echo 'Recherche de "<em>'.$recherche.'</em>';
-    $graph = 1;
-}
-?></h1>
+<h1><?php echo $intitule_resultats; ?></h1>
 <?php 
 if($graph) { 
   $width_date = 900;
@@ -197,6 +214,11 @@ if($graph) {
   <div id="slider_date_graph"></div>
 </div>
 <?php } ?>
+<div id="results_container">
+<?php 
+endif; 
+///////////////////// FIN SANS AJAX /////////////////////
+?>
 <div class="nb_results">
   <h2>Résultats <?php echo $results['start']+1; ?> à <?php echo min($results['end'],$results['numFound']); ?> sur <?php echo $results['numFound']; ?> <strong>triés par <?php echo $sort_type; ?></strong> - 
   <span class="tri">
@@ -314,3 +336,6 @@ function facet2Human($id) {
   </div>
 </div>
 </div>
+<?php if (!$ajax) : ?>
+</div>
+<?php endif; ?>
