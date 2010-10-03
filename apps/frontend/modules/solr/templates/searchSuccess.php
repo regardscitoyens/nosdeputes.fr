@@ -259,6 +259,7 @@ $facetName2HumanName = array(
 			     'Types' => 'Filtrer par type de document',
 			     'Tags' => 'Filtrer par tags',
 			     'Texteloi' => 'Documents parlementaires',
+			     'NonObjectPage' => 'Départements',
 			     'QuestionEcrite' => 'Questions écrites',
 			     'Tags' => 'Filtrer par tags'
 );
