@@ -140,12 +140,14 @@ $(document).ready(function() {
 			  to = to["date"].split('%2C');
 			  parametre["date"] = from[0]+'%2C'+to[0];
 			  
-			  lien = "?date="+parametre["date"];
-			  if(parametre["sort"] != undefined) { lien = lien+"&amp;sort="+parametre["sort"]; }
-			  if(parametre["parlementaire"] != undefined) { lien = lien+"&amp;parlementaire="+parametre["parlementaire"]; }
-			  if(parametre["object_name"] != undefined) { lien = lien+"&amp;object_name="+parametre["object_name"]; }
-			  if(parametre["tag"] != undefined) { lien = lien+"&amp;tag="+parametre["tag"]; }
-			  /* date sort parlementaire object_name tag */
+			  lien = document.location+'';
+			  lien = lien.replace(/date=[^&]+/, '');
+			  if (!lien.match(/\?/))
+			    lien += '?';
+			  else
+			    lien += '&';
+			  lien += 'date='+parametre['date'];
+
 			  if(ui.values[0] == ui.values[1]) { 
 			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>'+periode[ui.values[0]]+'</strong></a>';
 			  }
