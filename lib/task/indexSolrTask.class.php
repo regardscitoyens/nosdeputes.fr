@@ -21,6 +21,7 @@ class indexSolrTask extends sfBaseTask
     $this->addOption('removeAll', null, sfCommandOption::PARAMETER_OPTIONAL, 'Drop solr database (=no|yes no default)', 'no');
     $this->addOption('all', null, sfCommandOption::PARAMETER_OPTIONAL, 'Reindex all the database (=no|yes no default)', 'no');
     $this->addOption('pages', null, sfCommandOption::PARAMETER_OPTIONAL, 'Index static pages (=no|yes no default)', 'no');
+    $this->addOption('removePages', null, sfCommandOption::PARAMETER_OPTIONAL, 'remove indexed static pages(=no|yes no default)', 'no');
 
     $this->file_conf = sys_get_temp_dir().DIRECTORY_SEPARATOR."reindex_slor.db";
     $this->state = array();
@@ -29,6 +30,12 @@ class indexSolrTask extends sfBaseTask
     }
   }
 
+  protected function removeNonObjectPages($solr) {
+    $array = NonObjectPage::getElements();
+    foreach ($array as $k => $v) {
+      $solr->deleteLuceneRecord('NonObjectPage/'.$k);
+    }
+  }
   protected function indexNonObjectPages($solr) {
     $array = NonObjectPage::getElements();
     foreach ($array as $k => $v) {
@@ -58,6 +65,11 @@ class indexSolrTask extends sfBaseTask
 
     if ($options['removeAll'] == 'yes') {
       $solr->deleteAll();
+    }
+
+    if ($options['removePages'] == 'yes') {
+      $this->removeNonObjectPages($solr);
+      return ;
     }
 
     if ($options['pages'] == 'yes') {

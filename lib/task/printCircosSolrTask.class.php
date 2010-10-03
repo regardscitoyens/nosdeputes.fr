@@ -11,11 +11,7 @@ class printCircosSolrTask extends sfBaseTask {
 
   protected function execute($arguments = array(), $options = array()) {
     $manager = new sfDatabaseManager($this->configuration);
-    $ct = 1;
     foreach (Parlementaire::$dptmt_pref as $dep => $pref) {
-      echo "url$ct:\n";
-      echo "  url: \"/circonscription/departement/".str_replace(' ', '_', $dep)."\"\n";
-      echo "  title: \"Les députés ".$pref.(!preg_match("/'/", $pref) ? ' ' : '').$dep.' ('.Parlementaire::getNumeroDepartement($dep).')"'."\n";
       $num = Parlementaire::getNumeroDepartement($dep);
       if (preg_match('/^\d$/', $num))
         $num = sprintf("%02d",$num);
@@ -23,9 +19,11 @@ class printCircosSolrTask extends sfBaseTask {
         $fixednum = '0'.strtolower($num);
       else 
 	$fixednum = sprintf('%03d',$num);
-      echo "  image: \"<img width='53' class='jstitle' title='".$dep." (".$num.")' alt='".$dep." (".$num.")' src='/circonscription/image/".$fixednum."/53/0'/>\"\n";
+      echo "circo$num:\n";
+      echo "  url: \"/circonscription/departement/".str_replace(' ', '_', $dep)."\"\n";
+      echo "  title: \"Les députés ".$pref.(!preg_match("/'/", $pref) ? ' ' : '').$dep.' ('.Parlementaire::getNumeroDepartement($dep).')"'."\n";
+      echo "  image: \"<img width='53' class='jstitle' title=q'".$dep." (".$num.")' alt='".$dep." (".$num.")' src='/circonscription/image/".$fixednum."/53/0'/>\"\n";
       echo "  weight: 10\n";
-      $ct++;
     }
   }
 }
