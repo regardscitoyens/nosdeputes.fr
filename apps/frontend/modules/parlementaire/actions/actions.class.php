@@ -385,7 +385,7 @@ class parlementaireActions extends sfActions
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
 
-    $request->setParameter('query', 'parlementaire="'.$this->parlementaire.'"');
+    $request->setParameter('query', 'tag:"Parlementaire='.$this->parlementaire.'"');
     $request->setParameter('title', preg_replace('/%/', $this->parlementaire->nom, $request->getParameter('title')));
 
     if ($o = $request->getParameter('object_type'))
