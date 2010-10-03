@@ -171,10 +171,10 @@
   <div class="carte">
   <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png" /></span>Touver son député</h2>
     <div class="cont_box_news">
-	  <p><?php include_partial('circonscription/map', array('circo' => "full", 'width'=>400, 'height'=>0)); ?></p>
+	  <p><?php include_partial('circonscription/map', array('circo' => "full", 'width'=>200, 'height'=>0)); ?></p>
 	  </div>
 	  <div class="message">
-	  <p>Pour savoir consulter la fiche de votre député, saisissez son nom. Si vous ne le connaissez pas indiquez votre code postal ou le nom de votre ville, nous essayerons de le trouver pour vous:</p>
+	  <p>Pour consulter la fiche de votre député, saisissez son nom. Si vous ne le connaissez pas, indiquez votre code postal ou le nom de votre ville, nous essayerons de le trouver pour vous&nbsp;:</p>
 	  <form action="<?php echo url_for('solr/search?object_name=Parlementaire'); ?>">
 	  <input name="search"/><input type="submit" value="Rechercher"/>
 	  </form>

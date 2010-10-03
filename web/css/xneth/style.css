@@ -1617,7 +1617,8 @@ h2 {
   background-image:url('images/minilogo_nosdeputes.png');
 }
 .accueil .carte {
-    width: 250px;
+    height: 250px;
+    font-size: 12px;
 }
 .accueil .carte .message {
     margin-left: 300px;
