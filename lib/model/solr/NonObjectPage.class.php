@@ -41,4 +41,8 @@ class NonObjectPage
   public function getPersonne() {
     return $this->getElement('personne');
   }
+
+  public function getImage() {
+    return $this->getElement('image');
+  }
 }
