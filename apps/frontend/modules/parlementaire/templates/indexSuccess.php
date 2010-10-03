@@ -1,5 +1,6 @@
 <?php $sf_response->setTitle('NosDéputés.fr : Observatoire citoyen de l\'activité parlementaire');  $style = "xneth"; ?>
 <script type="text/javascript">
+<!--
 	// preload img fond sous-menu
 	$('<img />').attr('src', '<?php echo $sf_request->getRelativeUrlRoot()."/css/".$style."/sous_menu_combined.png"; ?>');
 	
@@ -31,7 +32,7 @@
 		  $(".box_widget").css("overflow", "hidden");
 		  $("#coms_widget").css("overflow", "hidden");
 		  $("#coms_widget").css("display", "none");
-		  $(".box_widget h2").append('<div id="chargement_widget"></div>');
+		  $(".box_widget h2").append('<div id="chargement_widget"><\/div>');
 		},
 		success: function(html){
 		  if ($.browser.msie == true) {
@@ -82,7 +83,7 @@
 		beforeSend: function(xhr) {
 		  xhr.setRequestHeader("If-Modified-Since","0");
 		  clearTimer();
-		  $(".box_widget h2").append('<div id="chargement_widget"></div>');
+		  $(".box_widget h2").append('<div id="chargement_widget"><\/div>');
 		},
 		success: function(html){
 		  if ($.browser.msie == true) {
@@ -145,7 +146,7 @@
 	  timerUpdate = setInterval(function(){updateWidget();}, update);
 	  timerWidget = setTimeout(function(){changeCommentaire(reprends_a);}, 1000);
 	});
-
+//-->
 </script>
 <div class="clear"> 
 <div class ="accueil_message">
@@ -167,7 +168,7 @@
 <div class="clear"></div>
 <div class="clear accueil">
   <div class="box_news">
-  <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png"></span>Notre actualité</h2>
+  <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png" /></span>Notre actualité</h2>
     <div class="cont_box_news">
     <h3><a href="http://www.nosdeputes.fr/confiseurs/">Étude sur la présence : 243 000 € de sanctions prévues par le règlement</a></h3>
     <p><a href="http://www.nosdeputes.fr/confiseurs/"><img style="float: left; margin-right: 7px; width: 257px;" src="http://www.nosdeputes.fr/confiseurs/presence-moyenne.png" alt="moyenne des présences" /></a>Regards Citoyens a mené une étude à partir des données de NosDeputes.fr visant à évaluer l'incidence des modifications du règlement sur la participation des députés aux travaux de l'Assemblée, notamment aux réunions des commissions.</p>
@@ -178,19 +179,19 @@
   </div>
 <div class="box_container">
   <div class="box_repartition aligncenter"><div style="margin: auto;">
-  <h2><span style="margin-right: 5px;"><img alt="activite" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_graph.png"></span><a href="<?php echo url_for('@top_global'); ?>">Activité parlementaire des 12 derniers mois</a></h2>
+  <h2><span style="margin-right: 5px;"><img alt="activite" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_graph.png" /></span><a href="<?php echo url_for('@top_global'); ?>">Activité parlementaire des 12 derniers mois</a></h2>
   <?php echo include_component('plot', 'newGroupes', array('type' => 'home')); ?>
   <?php // echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
   </div></div>
   <div class="table_sep">&nbsp;</div>
   <div class="box_tags">
-  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png"></span><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
+  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png" /></span><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
   <?php echo include_component('tag', 'globalActivite'); ?>
   </div>
 </div>
   <div class="clear"></div>
   <div class="box_widget">
-    <h2><span style="margin-right: 5px;"><img alt="comments" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_comment.png"></span><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a></h2>
+    <h2><span style="margin-right: 5px;"><img alt="comments" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_comment.png" /></span><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a></h2>
     <div id="coms_widget">
       <noscript>
       <?php include_component('commentaire', 'showWidget'); ?>
