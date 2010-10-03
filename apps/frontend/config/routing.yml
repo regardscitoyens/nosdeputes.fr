@@ -445,7 +445,7 @@ parlementaire_amendements:
   param: {module: amendement, action: parlementaire}
 parlementaire_amendements_rss:
   url: /:slug/amendements/rss
-  param: {module: parlementaire, action: rss, object_type: Amendement, title: "Tous les amendements signé par %"}
+  param: {module: parlementaire, action: rss, object_type: Amendement, title: "Tous les amendements signés par %"}
 parlementaire_presences_type:
   url: /:slug/presences/:type
   param: {module: presence, action: parlementaire}
