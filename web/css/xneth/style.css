@@ -211,7 +211,7 @@ a:hover {
 }
 .cont_box_news {
   font-size: 12px;
-  padding: 0 10px 10px;
+  padding: 0 10px 0;
   text-align: justify;
 }
 .legende {
@@ -952,7 +952,7 @@ h1 {
   background: url('images/corps_page.png');
 }
 .contenu_page {
-  min-height:400px;
+  min-height:520px;
   width:920px;
   overflow:hidden;
   margin-left:auto;

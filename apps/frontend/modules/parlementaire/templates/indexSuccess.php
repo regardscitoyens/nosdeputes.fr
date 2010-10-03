@@ -169,12 +169,13 @@
 <div class="clear accueil">
   <div class="box_news">
   <div class="carte">
-  <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png" /></span>Touver son député</h2>
+  <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png" /></span>Trouver son député</h2>
     <div class="cont_box_news">
-	  <p><?php include_partial('circonscription/mapDepartement', array('circo' => "full", 'width'=>200, 'height'=>0)); ?></p>
+	  <p><a href="<?php echo url_for('@list_parlementaires_circo'); ?>"><?php include_partial('circonscription/mapDepartement', array('circo' => "full", 'width'=>200, 'height'=>0)); ?></a></p>
 	  </div>
 	  <div class="message">
-	  <p>Pour consulter la fiche de votre député, saisissez son nom. Si vous ne le connaissez pas, indiquez votre code postal ou le nom de votre ville, nous essayerons de le trouver pour vous&nbsp;:</p>
+	  <p>Pour retrouver votre député sur le site, vous pouvez saisir son nom.</p>
+          <p>Si vous ne le connaissez pas, indiquez votre code postal ou le nom de votre commune, et nous essaierons de le trouver pour vous&nbsp;:</p>
 	  <form action="<?php echo url_for('solr/search?object_name=Parlementaire'); ?>">
 	  <input name="search"/><input type="submit" value="Rechercher"/>
 	  </form>
