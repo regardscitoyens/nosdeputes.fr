@@ -177,7 +177,7 @@
 	  <p>Pour retrouver votre député sur le site, vous pouvez saisir son nom.</p>
           <p>Si vous ne le connaissez pas, indiquez votre code postal ou le nom de votre commune, et nous essaierons de le trouver pour vous&nbsp;:</p>
 	  <form action="<?php echo url_for('solr/search?object_name=Parlementaire'); ?>">
-	  <input name="search"/><input type="submit" value="Rechercher"/>
+	  <input name="search"/><input type="hidden" name="object_name" value="Parlementaire"/><input type="submit" value="Rechercher"/>
 	  </form>
 	  </div>
     </div>

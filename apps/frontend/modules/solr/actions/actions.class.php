@@ -40,7 +40,9 @@ class solrActions extends sfActions
   public function executeSearch(sfWebRequest $request)
   {
     if ($search = $request->getParameter('search')) {
-      return $this->redirect('solr/search?query='.$search);
+      if ($ob = $request->getParameter('object_name'))
+	$ob = '&object_name='.$ob;
+      return $this->redirect('solr/search?query='.$search.$ob);
     }
     $this->query = $request->getParameter('query');
     
