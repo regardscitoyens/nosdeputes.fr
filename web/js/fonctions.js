@@ -61,6 +61,21 @@ $(document).ready(function() {
 	  $("#loupe").css("display", "none");
 	});
 
+	$("input.examplevalue").focus(function() {
+		if (!$(this).attr('default')) {
+		    $(this).attr('default', $(this).val());
+		}
+		if ($(this).attr('default') == $(this).val())
+		    $(this).val('');
+	    });
+	$("input.examplevalue").blur(function() {
+		if (!$(this).val()) {
+		    $(this).val($(this).attr('default'));
+		}
+	    });
+
+	
+
 }); // fin document ready
 
 function uniqueArray(array) {

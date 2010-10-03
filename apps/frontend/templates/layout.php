@@ -76,11 +76,13 @@ $menu_citoyen = $selectcitoyen;
           <div id="item4"><a <?php if ($menu_citoyen) echo 'class="selected" '; ?>href="<?php echo url_for('@list_citoyens?order=date')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
           <div id="item5"><a href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
         </div>
-                    <?php $search = strip_tags($sf_request->getParameter('search')); if (!$search) $search = "Rechercher..."; ?>
+        <?php $search = strip_tags($sf_request->getParameter('search')); 
+              $extraclass = '' ; 
+              if (!$search) {$extraclass="examplevalue"; $search = "Rechercher...";} ?>
         <div class="menu_recherche">
           <form action="<?php echo url_for('@recherche_solr'); ?>" method="get">
             <p>
-              <input class="rechercher" name="search" type="text" size="25" value="<?php echo $search; ?>"/>
+              <input class="rechercher <?php echo $extraclass; ?>" name="search" type="text" size="25" value="<?php echo $search; ?>"/>
               <input class="bouton_ok" value="" type="submit"/>
                         </p>
           </form>
