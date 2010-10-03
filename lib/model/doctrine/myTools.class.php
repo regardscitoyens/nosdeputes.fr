@@ -44,26 +44,30 @@ class myTools {
   }
 
   public static function displayShortDate($d) {
-    $date = substr($d,8,2)."/";        // jour
-    $date = $date.substr($d,5,2)."/";  // mois
+    $d = preg_replace ('/\-/', '', $d);
+    $date = substr($d,6,2)."/";        // jour
+    $date = $date.substr($d,4,2)."/";  // mois
     $date = $date.substr($d,0,4);      // année
     return $date;
   }
 
   public static function displayVeryShortDate($d) {
-    $date = substr($d,8,2)."/";        // jour
-    $date = $date.substr($d,5,2)."/";  // mois
+    $d = preg_replace ('/\-/', '', $d);
+    $date = substr($d,6,2)."/";        // jour
+    $date = $date.substr($d,4,2)."/";  // mois
     $date = $date.substr($d,2,2);      // année
     return $date;
   }
   
   public static function displayMoisAnnee($d) {
-    $date = self::$num_mois[substr($d,5,2)].' ';  // mois txt
+    $d = preg_replace ('/\-/', '', $d);
+    $date = self::$num_mois[substr($d,4,2)].' ';  // mois txt
     $date = $date.substr($d,0,4);      // année num
     return $date;
   }
  
   public static function displayDateTime($d) { 
+    $d = preg_replace ('/\-/', '', $d);
     $date = self::displayShortDate($d)." à "; 
     $date = $date.substr($d,11,5);     // heures et minutes 
     return $date; 

@@ -72,7 +72,6 @@ class solrActions extends sfActions
 
     $this->sort = $request->getParameter('sort');
     $date = $request->getParameter('date');
-    $from = $request->getParameter('from');
     $format = $request->getParameter('format');
 
     $this->tags = 0;
@@ -124,6 +123,9 @@ class solrActions extends sfActions
 
     if ($date) {
       $this->selected['date'][$date] = $date;
+      if (preg_match('/\d{8}/',$date)) {
+	$date = preg_replace('/(\d{4})(\d{2})(\d{2})/', '\1-\2-\3T00:00:00Z', $date);
+      }
       $dates = explode(',', $date);
       list($from, $to) = $dates;
       
@@ -242,7 +244,9 @@ class solrActions extends sfActions
     $this->fdates['max'] = 1;
     foreach($results['facet_counts']['facet_dates']['date'] as $date => $nb) {
       if ($period == 'DAY') {
-	$date = date ('Y-m-d', strtotime($date)+1).'T00:00:00Z';      
+	$date = date ('Ymd', strtotime($date)+1);
+      }else{
+	$date = date ('Ymd', strtotime($date));
       }
       if (preg_match('/^20/', $date)) {
         $pc = $nb/$results['response']['numFound'];

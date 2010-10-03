@@ -21,14 +21,16 @@ function link_search($text, $query, $args, $options)
 }
 
 function addToDate($date, $interval) {
-  $date = explode("T", $date); 
-  $date = explode("-", $date[0]);
+  $date = preg_replace('/\-/', '', $date);
+  $annee = substr($date, 0, 4);
+  $mois = substr($date, 4, 2);
+  $jour = substr($date, 6, 2);
   if($interval == 'mois') {
-    $date = mktime(0, 0, 0, $date[1] + 1, $date[2], $date[0]); 
+    $date = mktime(0, 0, 0, $mois + 1, $jour, $annee); 
     #int mktime  ("H","m","s","M","j","Y", -1)
   }
-  else { $date = mktime(0, 0, 0, $date[1], $date[2] - 1, $date[0]); }
-  $date = date("Y-m-d", $date).'T00%3A00%3A00Z';
+  else { $date = mktime(0, 0, 0, $mois, $jour - 1, $annee); }
+  $date = date("Ymd", $date);
   return $date;
 }
 
@@ -123,29 +125,27 @@ $(document).ready(function() {
   </form>
 </div>
 <?php 
-$start = explode("T", $start);
-if($end == 'NOW') { $end = date("Y-m-d").'T00%3A00%3A00Z'; }
-$end =  explode("T", $end);
+  if($end == 'NOW') { $end = date("Ymd");; }
 ?>
 <h1><?php
 switch ($vue) {
   case "jour":
-    $periode_text = 'le '.myTools::displayShortDate($start[0]);
+    $periode_text = 'le '.myTools::displayShortDate($start);
     echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
     $graph = 0;
     break;
   case "mois":
-    $periode_text = 'en '.myTools::displayMoisAnnee($start[0]);
+    $periode_text = 'en '.myTools::displayMoisAnnee($start);
     echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
     $graph = 1;
     break;
   case "par_jour":
-    $periode_text = 'entre le '.myTools::displayShortDate($start[0]).' et le '.myTools::displayShortDate($end[0]);
+    $periode_text = 'entre le '.myTools::displayShortDate($start).' et le '.myTools::displayShortDate($end);
     echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
     $graph = 1;
     break;
   case "par_mois":
-    $periode_text = 'entre '.myTools::displayMoisAnnee($start[0]).' et '.myTools::displayMoisAnnee($end[0]);
+    $periode_text = 'entre '.myTools::displayMoisAnnee($start).' et '.myTools::displayMoisAnnee($end);
     echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
     $graph = 1;
     break;
@@ -174,15 +174,13 @@ if($graph) {
     $left = $left + $width; if($i < (count($fdates['values']))) { $left = $left + $espacement; }
     $newargs = $selected;
     
-    $title_date = explode("T", $date);
-    
     $newargs['date'] = $date.'%2C'.$date;
     
     if(($vue == 'jour') or ($vue == 'par_jour') or ($vue == 'mois')){ 
-      $title_date = myTools::displayShortDate($title_date[0]).' : '.$nb['nb'].' résultats';
+      $title_date = myTools::displayShortDate($date).' : '.$nb['nb'].' résultats';
     }
     if($vue == 'par_mois') { 
-      $title_date = ucfirst(myTools::displayMoisAnnee($title_date[0])).' : '.$nb['nb'].' résultats';
+      $title_date = ucfirst(myTools::displayMoisAnnee($date)).' : '.$nb['nb'].' résultats';
     }
     if($vue == 'par_mois') { 
       $newargs['date'] = $date.'%2C'.addToDate($date, 'mois');
