@@ -97,10 +97,10 @@ $(document).ready(function() {
 			  if(parametre.tag != undefined) { lien = lien+"&tag="+parametre.tag; }
 			  /* date parlementaire object_name tag */
 			  if(ui.values[0] == ui.values[1]) { 
-			    texte_periode = '<a href="'+lien+'">'+periode[ui.values[0]]+'</a>';
+			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>'+periode[ui.values[0]]+'</strong></a>';
 			  }
 			  else { 
-			    texte_periode = '<a href="'+lien+'">entre '+periode[ui.values[0]]+' et '+ periode[ui.values[1]]+'</a>';
+			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>entre '+periode[ui.values[0]]+' et '+ periode[ui.values[1]]+'</strong></a>';
 			  }
 			  
 			  $("#periode").text("");
