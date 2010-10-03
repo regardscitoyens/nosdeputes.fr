@@ -156,17 +156,17 @@ $(document).ready(function() {
 			  document.location = '#date='+parametre['date'];
 
 			  if(ui.values[0] == ui.values[1]) { 
-			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>'+periode[ui.values[0]]+'<\/strong><\/a>';
+			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>'+periode[ui.values[0]].toLowerCase()+'<`\/strong><\/a>';
 			  }
 			  else { 
-			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>entre '+periode[ui.values[0]]+' et '+ periode[ui.values[1]]+'<\/strong><\/a>';
+			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>entre '+periode[ui.values[0]].toLowerCase()+' et '+ periode[ui.values[1]].toLowerCase()+'<\/strong><\/a>';
 			  }
 			  ajaxUpdateFor(lien);
 			  $("#periode").text("");
 				$("#periode").append(texte_periode);
 			}
 		});
-		$("#periode").text('entre ' + periode[$("#slider_date_graph").slider("values", 0)] + ' et ' + periode[$("#slider_date_graph").slider("values", 1)]);
+		$("#periode").text('entre ' + periode[$("#slider_date_graph").slider("values", 0)].toLowerCase() + ' et ' + periode[$("#slider_date_graph").slider("values", 1)].toLowerCase());
 	});
 });
 //-->
