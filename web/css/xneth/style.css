@@ -689,11 +689,11 @@ h1 {
 .identification input {
   float:left;
   width:120px;
-  height:20px;
+  height:14px;
   border:0;
   margin:0;
   background: url('images/top_input.png') no-repeat;
-  padding: 0 0 0 10px;
+  padding: 3px 0 3px 10px;
   color: #656565;
   font: 8pt Tahoma, Geneva, Arial, Sans-serif;
 }
@@ -858,11 +858,11 @@ h1 {
 .rechercher {
   float:left;
   width:230px;
-  height:20px;
+  height:14px;
   border:0;
   margin:0;
   background: url('images/recherche.png') top left no-repeat;
-  padding: 0 0 0 10px;
+  padding: 3px 0 3px 10px;
   color: #656565;
   font: 8pt Tahoma, Geneva, Arial, Sans-serif;
   color: #484848;
