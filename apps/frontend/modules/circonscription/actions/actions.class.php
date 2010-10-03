@@ -186,8 +186,8 @@ class circonscriptionActions extends sfActions
           $title = self::get_title($path);
           $href = url_for("@redirect_parlementaires_circo?code=".$path->getAttribute('id'));
         }
-        $areas .= "<area id=\"map$id\" href=\"".$href."\" title=\"".$title."\" ".
-          "shape=\"poly\" coords=\"".$points."\"></area>\n";
+        $areas .= "<area id=\"map$id\" href=\"".$href."\" title=\"".$title."\" alt=\"".$title."\" ".
+          "shape=\"poly\" coords=\"".$points."\" />\n";
       }
     return array('areas' => $areas, 'w' => $w, 'h' => $h);
   }
@@ -259,7 +259,7 @@ class circonscriptionActions extends sfActions
 
     echo "<img alt=\"Carte issue de Wikipedia : Départements et régions de France par Bayo (sous licence GFDL)\" class=\"carte_departement\" src=\"$src\" usemap=\"#deptmts\" ";
     echo 'style="width:'.$w.'px; height:'.$h.'px;" />';
-    echo "<map name=\"deptmts\">";
+    echo "<map name=\"deptmts\" id=\"deptmts\">";
     echo $r['areas'];
     echo "</map>";
   }
