@@ -17,7 +17,7 @@
           if ($user->naissance) echo '<br/>'.myTools::getAge($user->naissance).'&nbsp;ans'; ?></p>
         <?php if (!empty($user->url_site)) {
           $url = html_entity_decode(strip_tags($user->url_site), ENT_NOQUOTES, "UTF-8");
-          echo '<div class="b_c_link"><a href="'.$url.'">'.$url.'</a></div>';
+          echo '<div class="b_c_link"><a href="'.$url.'" rel="nofollow">'.$url.'</a></div>';
         } ?>
       </div>
       <?php if ($sf_user->getAttribute('user_id') == $user->id) {
