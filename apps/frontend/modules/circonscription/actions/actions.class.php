@@ -171,6 +171,7 @@ class circonscriptionActions extends sfActions
     $ratio_h = $h / $svg_h;
 
     $paths = $dom->getElementsByTagName('path');
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
 
     foreach ($paths as $path)
       if (preg_match($regexp, $path->getAttribute('id'))) {
@@ -293,8 +294,7 @@ class circonscriptionActions extends sfActions
 
   }
 
-  /* $circo is a three digits string, or "full" for the full map */
-  public static function echoCircoMap($circo, $w, $h)
+  private static function prepareMap($circo, $w, $h)
   {
     $dom = self::generateSvgDom($circo, $w, $h);
 
@@ -303,7 +303,14 @@ class circonscriptionActions extends sfActions
     else
       $regexp = "/^$circo-(0[1-9]|[1-9]\d)$/";
 
-    $r = self::compute_areas($dom, $w, $h, $regexp);
+    return array($dom, self::compute_areas($dom, $w, $h, $regexp));
+  }
+
+  /* $circo is a three digits string, or "full" for the full map */
+  public static function echoCircoMap($circo, $w, $h)
+  {
+    $arr = self::prepareMap($circo, $w, $h);
+    $r = $arr[1];
     $w = $r['w'];
     $h = $r['h'];
 
@@ -325,8 +332,11 @@ class circonscriptionActions extends sfActions
      * this
      * http://www.php.net/manual/en/function.imagick-setresolution.php
      */
-
-    $dom = self::generateSvgDom($circo, $w, $h);
+    $arr = self::prepareMap($circo, $w, $h);
+    $dom = $arr[0];
+    $r = $arr[1];
+    $w = $r['w'];
+    $h = $r['h'];
 
     $im = new Imagick();
     $im->readImageBlob($dom->saveXML());
