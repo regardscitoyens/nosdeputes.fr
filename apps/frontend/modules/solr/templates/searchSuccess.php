@@ -251,7 +251,7 @@ endif;
   <?php 
   $args = '';
   foreach(array_keys($selected) as $k) {
-    if (!is_array($selected[$k])) 
+    if (!is_array($selected[$k]) || $k == 'date') 
       continue;
     if ($args)
       $args .= '&';
