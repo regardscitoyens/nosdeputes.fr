@@ -15,7 +15,7 @@ $title = array('semaines_presence' => 'd\'activité',
 	       'questions_ecrites' => 'écrites',
 	       'questions_orales' => 'orales');
 $class = array('parl' => 'p',
-	       'semaines_presence' => 'w',
+	       'semaines_presence' => 'we',
 	       'commission_presences' => 'cp',
 	       'commission_interventions'=> 'ci',
 	       'hemicycle_interventions'=>'hl',
@@ -28,7 +28,7 @@ $class = array('parl' => 'p',
 	       // 'amendements_rejetes' => 'ar',
 	       'questions_ecrites' => 'qe',
 	       'questions_orales' => 'qo');
-$bulles = array("Députés",
+$bulles = array("",
                "Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle</li>",
                "Séances de Commission -- Nombre de séances de commission où le député a été relevé présent",
                "Interventions en Commission -- Nombre d'interventions prononcées par le député en commissions",
@@ -46,7 +46,7 @@ $bulles = array("Députés",
 <div class="synthese">
 <table>
   <tr>
-    <th title="Députés" class="jstitle <?php echo $class['parl']; ?>">&nbsp;</th>
+    <th class="<?php echo $class['parl']; ?>">&nbsp;</th>
     <th title="Trier par : Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', $top_link.'sort=1'); ?></th>
     <th title="Commission -- Nombre de séances de commission auxquelles le député a participé" colspan="2" class="jstitle <?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
     <th title="Hémicycle -- Nombre d'interventions du député en séances d'hémicycle" colspan="2" class="jstitle <?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
@@ -54,6 +54,7 @@ $bulles = array("Députés",
     <th title="Trier par : Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur"class="jstitle <?php if ($sort == 8) echo 'tr_odd';?>"><?php echo link_to('Rapports', $top_link.'sort=8'); ?></th>
     <th title="Propositions de loi -- Nombre de propositions de loi ou de résolution dont le député est signataire" colspan="2" class="jstitle <?php if ($sort == 9 || $sort == 10) echo 'tr_odd';?>">Propositions</th>
     <th title="Questions -- Nombre de questions au gouvernement formulées par le député" colspan="2" class="jstitle <?php if ($sort == 11 || $sort == 12) echo 'tr_odd';?>">Questions</th>
+    <th style="width:10px;"/>
   </tr>
   <tr>
     <th class="<?php echo $class['parl']; ?>">&nbsp;</th><?php
