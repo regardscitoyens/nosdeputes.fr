@@ -107,10 +107,22 @@ function ajaxUpdateFor(lien) {
   timer4update = setTimeout('realAjaxUpdate("'+lien+'")', 2500);
 }
 
+function constructLien(date) {
+  lien = document.location+'';
+  lien = lien.replace(/\??date=[^&]+/, '');
+  lien = lien.replace(/#.*/, '');
+  if (!lien.match(/\?/))
+    lien += '?';
+  else
+    lien += '&';
+  lien += 'date='+date;
+  return lien;
+}
+
 $(document).ready(function() {
   $(".date li").each(function() {
     if($(this).height() > bh) { bh = $(this).height(); }
-    date_li = $(this).find('a').attr("title").split(':');
+    date_li = $(this).attr("title").split('--');
     date_href[nb_li] = $(this).find('a').attr("href");
     $(this).find(".hover_graph").attr("onclick", "document.location.replace('http://"+location.host+date_href[nb_li]+"')");
     $(this).find(".hover_graph").css("cursor", "pointer");
@@ -139,14 +151,9 @@ $(document).ready(function() {
 			  to = urlParams(to[1].split('&'));
 			  to = to["date"].split('%2C');
 			  parametre["date"] = from[0]+'%2C'+to[0];
-			  
-			  lien = document.location+'';
-			  lien = lien.replace(/date=[^&]+/, '');
-			  if (!lien.match(/\?/))
-			    lien += '?';
-			  else
-			    lien += '&';
-			  lien += 'date='+parametre['date'];
+
+			  lien = constructLien(parametre['date']);
+			  document.location = '#date='+parametre['date'];
 
 			  if(ui.values[0] == ui.values[1]) { 
 			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>'+periode[ui.values[0]]+'<\/strong><\/a>';
@@ -189,24 +196,24 @@ if($graph) {
     <?php $i = 0; foreach($fdates['values'] as $date => $nb) :
     $i++;
     $height = round($nb['pc']*100/($fdates['max']) * 2);
-    $padding = 200-$height; ?>
-    <li<?php echo ' style="list-style-image: none; width: '.$width.'px; height: '.$height.'px; left: '.$left.'px;">'; 
+    $padding = 200-$height; 
     $left = $left + $width; if($i < (count($fdates['values']))) { $left = $left + $espacement; }
     $newargs = $selected;
     
     $newargs['date'] = $date.'%2C'.$date;
     
     if(($vue == 'jour') or ($vue == 'par_jour') or ($vue == 'mois')){ 
-      $title_date = myTools::displayShortDate($date).' : '.$nb['nb'].' résultats';
+      $title_date = myTools::displayShortDate($date).' -- '.$nb['nb'].' résultats';
     }
     if($vue == 'par_mois') { 
-      $title_date = ucfirst(myTools::displayMoisAnnee($date)).' : '.$nb['nb'].' résultats';
+      $title_date = ucfirst(myTools::displayMoisAnnee($date)).' -- '.$nb['nb'].' résultats';
     }
     if($vue == 'par_mois') { 
       $newargs['date'] = $date.'%2C'.addToDate($date, 'mois');
     }
     
-    echo '<div class="hover_graph" title="'.$title_date.'" style="width: '.$width.'px; height: '.$padding.'px;	bottom: '.$height.'px;"></div><span class="text_graph">'.link_search($nb['nb'], $query, $newargs, array('title' => $title_date)).'</span>'; 
+    echo '<li title="'.$title_date.'" class="jstitle" style="list-style-image: none; width: '.$width.'px; height: '.$height.'px; left: '.$left.'px;">'; 
+    echo '<div class="hover_graph" title="'.$title_date.'" style="width: '.$width.'px; height: '.$padding.'px;	bottom: '.$height.'px;"></div><span class="text_graph">'.link_search($nb['nb'], $query, $newargs, array()).'</span>'; 
     
     # echo ' '.$nb['nb'].' résultats ('; printf('%02d', $nb['pc']*100/($fdates['max'])); echo '%)';
     ?>

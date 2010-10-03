@@ -75,6 +75,11 @@ $(document).ready(function() {
     $(this).attr('title', $(this).attr('jstitle'));
     $('#jstitle').css('display', 'none');
   });
+  //Redirection d'un lien envoyé depuis une page ajax
+  url = document.location+'';
+  if (url.match(/#date=/) && constructLien) {
+      document.location = constructLien(url.replace(/.*#date=/, ''));
+  }
 
 }); // fin document ready
 
