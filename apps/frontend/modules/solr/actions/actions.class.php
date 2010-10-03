@@ -25,17 +25,18 @@ class solrActions extends sfActions
     case 'Parlementaire':
       return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj, 'height'=>70));
     case 'Commentaire':
-      return '<img width="53" src="'.url_for('@photo_citoyen?slug='.$obj->getCitoyen()->getSlug()).'"/>';
+      return '<img width="53" class="jstitle" title="'.$obj->getCitoyen()->getLogin().'" alt="'.$obj->getCitoyen()->getLogin().'" src="'.url_for('@photo_citoyen?slug='.$obj->getCitoyen()->getSlug()).'"/>';
     case 'Citoyen':
-      return '<img width="53" src="'.url_for('@photo_citoyen?slug='.$obj->getSlug()).'"/>';
+      return '<img width="53" class="jstitle" title="'.$obj->getLogin().'" alt="'.$obj->getLogin().'" src="'.url_for('@photo_citoyen?slug='.$obj->getSlug()).'"/>';
     case 'NonObjectPage':
-      $num = strtolower(Parlementaire::getNumeroDepartement(str_replace(' ', '_', preg_replace('/^.*\/([^\/]+)$/', '\\1', $obj->getLink()))));
+      $dep = preg_replace('/^.*\/([^\/]+)$/', '\\1', $obj->getLink());
+      $num = strtolower(Parlementaire::getNumeroDepartement(str_replace(' ', '_', $dep)));
       if (preg_match('/^\d$/', $num))
         $num = sprintf("%02d",$num);
       if (preg_match('/\d[a-z]/i', $num))
         $fixednum = '0'.$num;
       else $fixednum = sprintf('%03d',$num);
-      return '<img width="53" src="'.url_for("@circo_image_png?circo=".$fixednum."&w=53&h=0").'"/>';
+      return '<img width="53" class="jstitle" title="'.$dep.' ('.$num.')" alt="'.$dep.' ('.$num.')" src="'.url_for("@circo_image_png?circo=".$fixednum."&w=53&h=0").'"/>';
     }
   }
  /**
