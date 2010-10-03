@@ -74,6 +74,10 @@ class Parlementaire extends BaseParlementaire
     }
     return $statut.$type.$groupe;
   }
+
+  public function getMoyenStatut() {
+    return $this->getStatut().' '.$this->getPrefixeCirconscription().$this->nom_circo;
+  }
   
   public function getLongStatut($link = 0) {
     $circo = $this->nom_circo;
