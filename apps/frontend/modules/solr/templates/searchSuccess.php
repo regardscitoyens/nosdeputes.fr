@@ -130,27 +130,27 @@ $end =  explode("T", $end);
 switch ($vue) {
   case "jour":
     $periode_text = 'le '.myTools::displayShortDate($start[0]);
-    echo 'Résultats pour "'.$recherche.'" '.$periode_text;
+    echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
     $graph = 0;
     break;
   case "mois":
     $periode_text = 'en '.myTools::displayMoisAnnee($start[0]);
-    echo 'Résultats pour "'.$recherche.'" '.$periode_text;
+    echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
     $graph = 1;
     break;
   case "par_jour":
     $periode_text = 'entre le '.myTools::displayShortDate($start[0]).' et le '.myTools::displayShortDate($end[0]);
-    echo 'Résultats pour "'.$recherche.'" '.$periode_text;
+    echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
     $graph = 1;
     break;
   case "par_mois":
     $periode_text = 'entre '.myTools::displayMoisAnnee($start[0]).' et '.myTools::displayMoisAnnee($end[0]);
-    echo 'Résultats pour "'.$recherche.'" '.$periode_text;
+    echo 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
     $graph = 1;
     break;
   default:
     $periode_text = "supprimer les critère de dates";
-    echo 'Recherche de "'.$recherche;
+    echo 'Recherche de "<em>'.$recherche.'</em>';
     $graph = 1;
 }
 ?></h1>
