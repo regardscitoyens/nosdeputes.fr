@@ -63,8 +63,8 @@ $(document).ready(function() {
     if($(this).height() > bh) { bh = $(this).height(); }
     date_li = $(this).find('a').attr("title").split(':');
     date_href[nb_li] = $(this).find('a').attr("href");
-    $(this).find("#hover_graph").attr("onclick", "document.location.replace('http://"+location.host+date_href[nb_li]+"')");
-    $(this).find("#hover_graph").css("cursor", "pointer");
+    $(this).find(".hover_graph").attr("onclick", "document.location.replace('http://"+location.host+date_href[nb_li]+"')");
+    $(this).find(".hover_graph").css("cursor", "pointer");
     periode[nb_li] = date_li[0];
     nb_li++;
   });
@@ -115,7 +115,7 @@ $(document).ready(function() {
 
 <div class="solr">
   <div class="searchbox">
-  <form>
+  <form action="">
   <p>
     <input name="search" value="<?php echo $recherche; ?>" />
     <input type="submit" value="Rechercher"/>
@@ -188,7 +188,7 @@ if($graph) {
       $newargs['date'] = $date.'%2C'.addToDate($date, 'mois');
     }
     
-    echo '<div id="hover_graph" title="'.$title_date.'" style="width: '.$width.'px; height: '.$padding.'px;	bottom: '.$height.'px;"></div><span id="text_graph">'.link_search($nb['nb'], $query, $newargs, array('title' => $title_date)).'</span>'; 
+    echo '<div class="hover_graph" title="'.$title_date.'" style="width: '.$width.'px; height: '.$padding.'px;	bottom: '.$height.'px;"></div><span class="text_graph">'.link_search($nb['nb'], $query, $newargs, array('title' => $title_date)).'</span>'; 
     
     # echo ' '.$nb['nb'].' résultats ('; printf('%02d', $nb['pc']*100/($fdates['max'])); echo '%)';
     ?>

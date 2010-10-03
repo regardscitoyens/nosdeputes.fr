@@ -5,6 +5,32 @@ body {
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
+img { border:0; }
+
+h1 a:link { color: inherit; }
+  
+a:link {
+  color: inherit;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:active {
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:visited {
+  color: inherit;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:hover {
+  color: #000;
+  text-decoration: underline;
+  background-color: transparent;
+}
 /* Recherches */
 .cont_date_graph {
   margin-right: 4px;
@@ -50,11 +76,11 @@ body {
 	width: 100%;
 	height: 100%;
 }
-#hover_graph {
+.hover_graph {
   position: absolute;
 	text-align: center;
 }
-#text_graph a{
+.text_graph a{
   color: transparent;
 }
 .searchbox {
@@ -553,33 +579,6 @@ body {
   overflow:hidden;
   margin: 0 auto;
   padding:0;
-}
-
-img { border:0; }
-
-h1 a:link { color: inherit; }
-  
-a:link {
-  color: inherit;
-  text-decoration: none;
-  background-color: transparent;
-}
-
-a:active {
-  text-decoration: none;
-  background-color: transparent;
-}
-
-a:visited {
-  color: inherit;
-  text-decoration: none;
-  background-color: transparent;
-}
-
-a:hover {
-  color: #000;
-  text-decoration: underline;
-  background-color: transparent;
 }
 
 h1 {
