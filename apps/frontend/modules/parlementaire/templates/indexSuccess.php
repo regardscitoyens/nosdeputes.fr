@@ -2,7 +2,7 @@
 <script type="text/javascript">
 <!--
 	// preload img fond sous-menu
-	$('<img />').attr('src', '<?php echo $sf_request->getRelativeUrlRoot()."/css/".$style."/sous_menu_combined.png"; ?>');
+	$('<img />').attr('src', '<?php echo $sf_request->getRelativeUrlRoot()."/css/".$style."/images/sous_menu_combined.png"; ?>');
 	
      // Widget page d'accueil
 	commentaires = new Array ();
@@ -183,7 +183,6 @@
   <?php echo include_component('plot', 'newGroupes', array('type' => 'home')); ?>
   <?php // echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
   </div></div>
-  <div class="table_sep">&nbsp;</div>
   <div class="box_tags">
   <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png" /></span><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
   <?php echo include_component('tag', 'globalActivite'); ?>

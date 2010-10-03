@@ -28,7 +28,7 @@ if (isset($list)) {
 }
 foreach($deputes as $depute) {
   $ct++; ?>
-  <div class="list_dep<?php if (isset($circo) && $depute->fin_mandat == null) echo ' dep_map" id="dep'.preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo); ?>" onclick="document.location='<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>'"><span title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>" class="jstitle phototitle"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>"></a>
+  <div class="list_dep<?php if (isset($circo) && $depute->fin_mandat == null) echo ' dep_map" id="dep'.preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo); ?>" onclick="document.location='<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>'"><span title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>" class="jstitle phototitle block"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>"></a>
     <span class="list_nom">
       <a href="<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>"><?php echo $depute->getNomPrenom(); ?></a>
     </span>
