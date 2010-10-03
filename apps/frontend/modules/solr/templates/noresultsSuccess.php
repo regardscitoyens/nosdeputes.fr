@@ -1,4 +1,4 @@
-<div class="solr">
+<div>
 <?php include_partial('solr/searchbox'); ?>
 <p>Désolé, nous n'avons pas trouvé de résultat pour votre recherche.</p>
 
