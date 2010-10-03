@@ -279,20 +279,20 @@ body {
 .synthese_div p {
   font-size: 14px;
 }
-.synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
-.p { width: 112px; border-left: 13px solid #FFF; }
-.w { width: 70px; }
-.cp { width: 63px; }
-.ci { width: 63px; }
-.hl { width: 63px; }
-.hc { width: 63px; }
-.as { width: 63px; }
-.aa { width: 63px; }
-.ra { width: 63px; }
-.pe { width: 63px; }
-.ps { width: 63px; }
-.qe { width: 63px; }
-.qo { width: 63px; }
+.synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; min-height: 25px; }
+.synthese .p { width: 112px; border-left: 23px solid #FFF; }
+.synthese .w { width: 70px; }.
+.synthese .cp { width: 63px; }
+.synthese .ci { width: 63px; }
+.synthese .hl { width: 63px; }
+.synthese .hc { width: 63px; }
+.synthese .as { width: 63px; }
+.synthese .aa { width: 63px; }
+.synthese .ra { width: 63px; }
+.synthese .pe { width: 63px; }
+.synthese .ps { width: 63px; }
+.synthese .qe { width: 63px; }
+.synthese .qo { width: 63px; }
 .synthese th, .synthese td { border-right: 1px #FFFFFF solid; }
 .tr_odd td { border-right: 1px #999999 solid; }
 .tr_odd td.qo { border-right: 0px #999999 solid; }
