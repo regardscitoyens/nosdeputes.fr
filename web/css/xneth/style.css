@@ -86,6 +86,10 @@ a:hover {
 .searchbox {
   padding-top: 15px;
 }
+.searchbox #search {
+  width: 350px;
+}
+
 .solr h1 {
   text-align: left;
   font-size: 1.3em;

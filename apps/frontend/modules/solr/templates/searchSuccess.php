@@ -173,14 +173,7 @@ $(document).ready(function() {
 </script>
 
 <div class="solr">
-  <div class="searchbox">
-  <form action="">
-  <p>
-    <input name="search" value="<?php echo $recherche; ?>" />
-    <input type="submit" value="Rechercher"/>
-  </p>
-  </form>
-</div>
+  <?php include_partial('solr/searchbox'); ?>
 <h1><?php echo $intitule_resultats; ?></h1>
 <?php 
 if($graph) { 
