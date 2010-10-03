@@ -149,7 +149,8 @@ switch ($vue) {
     $graph = 1;
 }
 ?></h1>
-<?php if($graph) { 
+<?php 
+if($graph) { 
   $width_date = 900;
   $left = 2;
   $espacement = 4;
@@ -204,6 +205,11 @@ switch ($vue) {
   else {
     $newargs['sort'] = 1;
     echo link_search('trier par date', $query, $newargs, 0); 
+  }
+  if(isset($newargs['date'])) {
+    $args_sans_date = $newargs;
+    unset($args_sans_date['date']);
+    echo ' - '.link_search('résultats sans contrainte de temps', $query, $args_sans_date, 0);
   }
   ?>
   </span></h2>
