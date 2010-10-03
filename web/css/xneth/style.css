@@ -245,6 +245,7 @@ body {
   background-color: #fff;
   border: 1px solid #dddddd;
   color: #1010108;
+  z-index: 100;
 }
 /* Tags */
 .internal_tag_cloud a:link {color:#484848;}
