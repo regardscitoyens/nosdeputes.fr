@@ -1881,3 +1881,6 @@ a:hover img {
 .list_inter {
   color: #7AA925;
 }
+.phototitle {
+  display: block;
+}
