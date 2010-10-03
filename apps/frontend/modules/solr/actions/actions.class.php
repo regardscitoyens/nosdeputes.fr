@@ -67,7 +67,7 @@ class solrActions extends sfActions
       }
     }
     //Récupère les résultats auprès de SolR
-    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>"2007-05-01T00:00:00Z", "facet.date.end"=>"NOW", "facet.date.gap"=>"+1MONTH", 'fq' => $fq);
+    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>"2007-05-01T00:00:00Z", "facet.date.end"=>"NOW", "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge");
     $this->sort_type = 'pertinence';
 
     $this->sort = $request->getParameter('sort');
@@ -120,6 +120,8 @@ class solrActions extends sfActions
     
     $this->vue = 'par_mois';
     
+    $period = '';
+
     if ($date) {
       $this->selected['date'][$date] = $date;
       $dates = explode(',', $date);
@@ -154,6 +156,10 @@ class solrActions extends sfActions
         $this->vue = 'mois';
       }
       
+      if ($period == 'DAY') {
+	$from = date ('Y-m-d', strtotime($from)-(3600*2+1)).'T23:59:59Z';
+      }
+
       $query .= ' date:['.$from.' TO '.$to.']';
       $params['facet.date.start'] = $from;
       $params['facet.date.end'] = $to;
@@ -161,6 +167,9 @@ class solrActions extends sfActions
     }
     
     $this->start = $params['facet.date.start'];
+    if ($period == 'DAY') {
+      $this->start = date ('Y-m-d', strtotime($this->start)+1).'T00:00:00Z';
+    }
     $this->end = $params['facet.date.end'];
 
     try {
@@ -232,6 +241,9 @@ class solrActions extends sfActions
     $this->fdates = array();
     $this->fdates['max'] = 1;
     foreach($results['facet_counts']['facet_dates']['date'] as $date => $nb) {
+      if ($period == 'DAY') {
+	$date = date ('Y-m-d', strtotime($date)+1).'T00:00:00Z';      
+      }
       if (preg_match('/^20/', $date)) {
         $pc = $nb/$results['response']['numFound'];
         $this->fdates['values'][$date] = array('nb' => $nb, 'pc' => $pc);
