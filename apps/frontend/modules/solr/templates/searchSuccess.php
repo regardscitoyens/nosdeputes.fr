@@ -250,7 +250,7 @@ function facet2Human($id) {
   <h3>Affiner la recherche</h3>
   <?php foreach(array_keys($facet) as $k) { if (isset($facet[$k]['values']) && count($facet[$k]['values'])) : ?>
     <div class="<?php echo $k; ?>">
-       <p><?php echo facet2Human($facet[$k]['name']); ?></p>
+       <p><strong><?php echo facet2Human($facet[$k]['name']); ?></strong></p>
     <ul>
     <?php foreach($facet[$k]['values'] as $value => $nb) : if ($nb) :
       $is_selected = isset($selected[$facet[$k]['facet_field']][$facet[$k]['prefix'].$value]) && 
