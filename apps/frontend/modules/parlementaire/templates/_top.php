@@ -82,14 +82,16 @@ foreach(array_keys($images) as $k) {
   }
   echo '<li';
   echo $couleur2style[$couleur];
-  echo'>';
+  echo'><';
   if ($rank)
-    echo '<a class="jstitle" title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug).'">';
-  echo '<img height="16" width="16" src="'.$sf_request->getRelativeUrlRoot().'/images/xneth/';
+    echo 'a';
+  else echo 'span';
+  echo ' class="jstitle" title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug).'"><img height="16" width="16" src="'.$sf_request->getRelativeUrlRoot().'/images/xneth/';
   printf($images[$k], $couleur);
   echo '" alt="'.$titre.'" />';
-  echo ' : '.$value;
+  echo ' : '.$value.'</';
   if ($rank)
-    echo '</a>';
-  echo '</li>';
+    echo 'a';
+  else echo 'span';
+  echo '></li>';
 }?></ul>
