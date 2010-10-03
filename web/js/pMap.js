@@ -89,7 +89,10 @@
      {
       if (xmlhttp.status == 404)
        {
-        if ( pMap_Tries == pMap_MaxTries ) { alert("Failed to load image map"); return(0); }
+        if ( pMap_Tries == pMap_MaxTries ) { 
+          // alert("Failed to load image map");
+          return(0);
+        }
 
         pMap_Tries++;
         setTimeout("AjaxLoad()",1000);
