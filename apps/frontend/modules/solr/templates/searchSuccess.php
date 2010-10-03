@@ -129,22 +129,27 @@ $end =  explode("T", $end);
 <h1><?php
 switch ($vue) {
   case "jour":
-    echo 'Résultats pour "'.$recherche.'" le '.myTools::displayShortDate($start[0]);
+    $periode_text = 'le '.myTools::displayShortDate($start[0]);
+    echo 'Résultats pour "'.$recherche.'" '.$periode_text;
     $graph = 0;
     break;
   case "mois":
-    echo 'Résultats pour "'.$recherche.'" en '.myTools::displayMoisAnnee($start[0]);
+    $periode_text = 'en '.myTools::displayMoisAnnee($start[0]);
+    echo 'Résultats pour "'.$recherche.'" '.$periode_text;
     $graph = 1;
     break;
   case "par_jour":
-    echo 'Résultats pour "'.$recherche.'" entre le '.myTools::displayShortDate($start[0]).' et le '.myTools::displayShortDate($end[0]);
+    $periode_text = 'entre le '.myTools::displayShortDate($start[0]).' et le '.myTools::displayShortDate($end[0]);
+    echo 'Résultats pour "'.$recherche.'" '.$periode_text;
     $graph = 1;
     break;
   case "par_mois":
-    echo 'Résultats pour "'.$recherche.'" entre '.myTools::displayMoisAnnee($start[0]).' et '.myTools::displayMoisAnnee($end[0]);
+    $periode_text = 'entre '.myTools::displayMoisAnnee($start[0]).' et '.myTools::displayMoisAnnee($end[0]);
+    echo 'Résultats pour "'.$recherche.'" '.$periode_text;
     $graph = 1;
     break;
   default:
+    $periode_text = "supprimer les critère de dates";
     echo 'Recherche de "'.$recherche;
     $graph = 1;
 }
@@ -206,11 +211,6 @@ if($graph) {
     $newargs['sort'] = 1;
     echo link_search('trier par date', $query, $newargs, 0); 
   }
-  if(isset($newargs['date'])) {
-    $args_sans_date = $newargs;
-    unset($args_sans_date['date']);
-    echo ' - '.link_search('résultats sans contrainte de temps', $query, $args_sans_date, 0);
-  }
   ?>
   </span></h2>
 </div>
@@ -248,7 +248,14 @@ function facet2Human($id) {
   </div>
   <div class="facets">
   <h3>Affiner la recherche</h3>
-  <?php foreach(array_keys($facet) as $k) { if (isset($facet[$k]['values']) && count($facet[$k]['values'])) : ?>
+  <?php 
+  if(isset($newargs['date'])) {
+    $args_sans_date = $newargs;
+    unset($args_sans_date['date']);
+    echo '<p><strong>Filtrer par dates</strong></p><ul><li class="selected">'.link_search($periode_text, $query, $args_sans_date, 0).'</li></ul>';
+  }
+  
+  foreach(array_keys($facet) as $k) { if (isset($facet[$k]['values']) && count($facet[$k]['values'])) : ?>
     <div class="<?php echo $k; ?>">
        <p><strong><?php echo facet2Human($facet[$k]['name']); ?></strong></p>
     <ul>
