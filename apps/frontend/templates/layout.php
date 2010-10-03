@@ -82,7 +82,7 @@ $menu_citoyen = $selectcitoyen;
         <div class="menu_recherche">
           <form action="<?php echo url_for('@recherche_solr'); ?>" method="get">
             <p>
-              <input class="rechercher <?php echo $extraclass; ?>" name="search" type="text" size="25" value="<?php echo $search; ?>"/>
+              <input class="rechercher <?php echo $extraclass; ?>" name="search" type="text" size="25" value="<?php echo str_replace('"', '&quot;', $search); ?>"/>
               <input class="bouton_ok" value="" type="submit"/>
                         </p>
           </form>
