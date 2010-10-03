@@ -168,15 +168,20 @@
 <div class="clear"></div>
 <div class="clear accueil">
   <div class="box_news">
-  <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png" /></span>Notre actualité</h2>
+  <div class="carte">
+  <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png" /></span>Touver son député</h2>
     <div class="cont_box_news">
-    <h3><a href="http://www.nosdeputes.fr/confiseurs/">Étude sur la présence : 243 000 € de sanctions prévues par le règlement</a></h3>
-    <p><a href="http://www.nosdeputes.fr/confiseurs/"><img style="float: left; margin-right: 7px; width: 257px;" src="http://www.nosdeputes.fr/confiseurs/presence-moyenne.png" alt="moyenne des présences" /></a>Regards Citoyens a mené une étude à partir des données de NosDeputes.fr visant à évaluer l'incidence des modifications du règlement sur la participation des députés aux travaux de l'Assemblée, notamment aux réunions des commissions.</p>
-	<p>Le règlement impose en effet avec ses articles 43 et 159 des sanctions financières sur l'indemnité de fonction des députés manifestant des absences répétées aux réunions de leur commission permanente le mercredi matin ou aux scrutins solennels en hémicycle.</p>
-    <p>La somme de ces sanctions pour la session ordinaire 2009 — 2010 représenterait 243 737,33 € d'économie possible pour l'Assemblée.</p>
-    <p style="text-align: right;"><a href="http://www.nosdeputes.fr/confiseurs/index.php">Lire l'étude</a></p>
+	  <p><?php include_partial('circonscription/map', array('circo' => "full", 'width'=>400, 'height'=>0)); ?></p>
+	  </div>
+	  <div class="message">
+	  <p>Pour savoir consulter la fiche de votre député, saisissez son nom. Si vous ne le connaissez pas indiquez votre code postal ou le nom de votre ville, nous essayerons de le trouver pour vous:</p>
+	  <form action="<?php echo url_for('solr/search?object_name=Parlementaire'); ?>">
+	  <input name="search"/><input type="submit" value="Rechercher"/>
+	  </form>
+	  </div>
     </div>
   </div>
+  <div class="clear"></div>
 <div class="box_container">
   <div class="box_repartition aligncenter"><div style="margin: auto;">
   <h2><span style="margin-right: 5px;"><img alt="activite" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_graph.png" /></span><a href="<?php echo url_for('@top_global'); ?>">Activité parlementaire des 12 derniers mois</a></h2>

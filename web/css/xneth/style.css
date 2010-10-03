@@ -1231,7 +1231,7 @@ h2 {
 .indent_guillemets {
   padding-left: 20px;
 }
-.carte_departement {
+#carte_circo .carte_departement {
   float: right;
   margin-top: 10px;
   margin-right: 35px;
@@ -1615,6 +1615,20 @@ h2 {
   height:90px;
   margin:5px;
   background-image:url('images/minilogo_nosdeputes.png');
+}
+.accueil .carte {
+    width: 250px;
+}
+.accueil .carte .message {
+    margin-left: 300px;
+    padding: 30px;
+}
+.accueil .carte .message form {
+    text-align: center;
+}
+.accueil .carte_departement{
+    height: 250px;
+    float: left;
 }
 .accueil_liste_liens {
   float:left;

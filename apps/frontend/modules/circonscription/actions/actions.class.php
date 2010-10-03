@@ -373,9 +373,7 @@ class circonscriptionActions extends sfActions
   {
     $this->circos = Parlementaire::$dptmt_nom;
   }
-  public function executeMap(sfWebRequest $request) 
-  {
-  }
+
   public function executeShow(sfWebRequest $request) 
   {
     $this->circo = preg_replace('/_/', ' ', $request->getParameter('departement'));
