@@ -221,13 +221,30 @@ switch ($vue) {
     $args.= "$k=".implode(',', array_keys($selected[$k]));
   }
   echo link_to('Recevoir un email lorsque de nouveaux résultats seront publiés pour cette recherche', 'alerte/create?filter='.urlencode($args).'&query='.urlencode($query));
+
+global $facetName2HumanName;
+$facetName2HumanName = array(
+			     'Parlementaire' => 'Filtrer par Parlementaire',
+			     'Types' => 'Filtrer par type de document',
+			     'Tags' => 'Filtrer par tags',
+			     'TexteLoi' => 'Document parlementaires',
+			     'QuestionEcrite' => 'Questions ecrites',
+			     'Tags' => 'Filtrer par tags'
+);
+function facet2Human($id) {
+  global $facetName2HumanName;
+  if (!isset($facetName2HumanName[$id])) {
+    return $id;
+  }
+  return $facetName2HumanName[$id];
+}
   ?>
   </div>
   <div class="facets">
-  <h3>Filtres supplémentaires</h3>
+  <h3>Affiner la recherche</h3>
   <?php foreach(array_keys($facet) as $k) { if (isset($facet[$k]['values']) && count($facet[$k]['values'])) : ?>
     <div class="<?php echo $k; ?>">
-    <p><?php echo $facet[$k]['name']; ?></p>
+       <p><?php echo facet2Human($facet[$k]['name']); ?></p>
     <ul>
     <?php foreach($facet[$k]['values'] as $value => $nb) : if ($nb) :
       $is_selected = isset($selected[$facet[$k]['facet_field']][$facet[$k]['prefix'].$value]) && 
@@ -239,7 +256,7 @@ switch ($vue) {
         unset($newargs[$facet[$k]['facet_field']][$facet[$k]['prefix'].$value]);
       else			      
         $newargs[$facet[$k]['facet_field']][$facet[$k]['prefix'].$value] = 1;
-      echo link_search($value, $query, $newargs, 0); ?>(<?php echo $nb; ?>)
+      echo link_search(facet2Human($value), $query, $newargs, 0); ?>&nbsp;(<?php echo $nb; ?>)
       </li>
     <?php endif; endforeach; ?>
     </ul>
