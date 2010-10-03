@@ -220,18 +220,18 @@ a:hover {
 }
 .box_tags {
   border: 1px solid #DBDBDB;
-  float: right;
-  margin-right: 4px;
   width: 463px;
   height: 370px;
   background-color: #FAFAFA;
+  float: left;
 }
 
 .box_repartition {
   border: 1px solid #DBDBDB;
   background-color: #FAFAFA;
   margin-bottom: 16px;
-  float: left;
+  float: right;
+  margin-right: 5px;
   height: 370px
 }
 
