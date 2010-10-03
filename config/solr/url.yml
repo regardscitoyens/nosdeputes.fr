@@ -1,420 +1,420 @@
 url1:
   url: "/circonscription/departement/Ain"
-  title: "Les députés de l'Ain"
+  title: "Les députés de l'Ain (01)"
   weight: 10
 url2:
   url: "/circonscription/departement/Aisne"
-  title: "Les députés de l'Aisne"
+  title: "Les députés de l'Aisne (02)"
   weight: 10
 url3:
   url: "/circonscription/departement/Allier"
-  title: "Les députés de l'Allier"
+  title: "Les députés de l'Allier (03)"
   weight: 10
 url4:
   url: "/circonscription/departement/Alpes-de-Haute-Provence"
-  title: "Les députés des Alpes-de-Haute-Provence"
+  title: "Les députés des Alpes-de-Haute-Provence (04)"
   weight: 10
 url5:
   url: "/circonscription/departement/Alpes-Maritimes"
-  title: "Les députés des Alpes-Maritimes"
+  title: "Les députés des Alpes-Maritimes (06)"
   weight: 10
 url6:
   url: "/circonscription/departement/Ardèche"
-  title: "Les députés de l'Ardèche"
+  title: "Les députés de l'Ardèche (07)"
   weight: 10
 url7:
   url: "/circonscription/departement/Ardennes"
-  title: "Les députés des Ardennes"
+  title: "Les députés des Ardennes (08)"
   weight: 10
 url8:
   url: "/circonscription/departement/Ariège"
-  title: "Les députés d'Ariège"
+  title: "Les députés d'Ariège (09)"
   weight: 10
 url9:
   url: "/circonscription/departement/Aube"
-  title: "Les députés de l'Aube"
+  title: "Les députés de l'Aube (10)"
   weight: 10
 url10:
   url: "/circonscription/departement/Aude"
-  title: "Les députés de l'Aude"
+  title: "Les députés de l'Aude (11)"
   weight: 10
 url11:
   url: "/circonscription/departement/Aveyron"
-  title: "Les députés de l'Aveyron"
+  title: "Les députés de l'Aveyron (12)"
   weight: 10
 url12:
   url: "/circonscription/departement/Bas-Rhin"
-  title: "Les députés du Bas-Rhin"
+  title: "Les députés du Bas-Rhin (67)"
   weight: 10
 url13:
   url: "/circonscription/departement/Bouches-du-Rhône"
-  title: "Les députés des Bouches-du-Rhône"
+  title: "Les députés des Bouches-du-Rhône (13)"
   weight: 10
 url14:
   url: "/circonscription/departement/Calvados"
-  title: "Les députés du Calvados"
+  title: "Les députés du Calvados (14)"
   weight: 10
 url15:
   url: "/circonscription/departement/Cantal"
-  title: "Les députés du Cantal"
+  title: "Les députés du Cantal (15)"
   weight: 10
 url16:
   url: "/circonscription/departement/Charente"
-  title: "Les députés de Charente"
+  title: "Les députés de Charente (16)"
   weight: 10
 url17:
   url: "/circonscription/departement/Charente-Maritime"
-  title: "Les députés de Charente-Maritime"
+  title: "Les députés de Charente-Maritime (17)"
   weight: 10
 url18:
   url: "/circonscription/departement/Cher"
-  title: "Les députés du Cher"
+  title: "Les députés du Cher (18)"
   weight: 10
 url19:
   url: "/circonscription/departement/Corrèze"
-  title: "Les députés de Corrèze"
+  title: "Les députés de Corrèze (19)"
   weight: 10
 url20:
   url: "/circonscription/departement/Corse-du-Sud"
-  title: "Les députés de Corse-du-Sud"
+  title: "Les députés de Corse-du-Sud (2A)"
   weight: 10
 url21:
   url: "/circonscription/departement/Côte-d'Or"
-  title: "Les députés de Côte-d'Or"
+  title: "Les députés de Côte-d'Or (21)"
   weight: 10
 url22:
   url: "/circonscription/departement/Côtes-d'Armor"
-  title: "Les députés des Côtes-d'Armor"
+  title: "Les députés des Côtes-d'Armor (22)"
   weight: 10
 url23:
   url: "/circonscription/departement/Creuse"
-  title: "Les députés de la Creuse"
+  title: "Les députés de la Creuse (23)"
   weight: 10
 url24:
   url: "/circonscription/departement/Deux-Sèvres"
-  title: "Les députés des Deux-Sèvres"
+  title: "Les députés des Deux-Sèvres (79)"
   weight: 10
 url25:
   url: "/circonscription/departement/Dordogne"
-  title: "Les députés de la Dordogne"
+  title: "Les députés de la Dordogne (24)"
   weight: 10
 url26:
   url: "/circonscription/departement/Doubs"
-  title: "Les députés du Doubs"
+  title: "Les députés du Doubs (25)"
   weight: 10
 url27:
   url: "/circonscription/departement/Drôme"
-  title: "Les députés de la Drôme"
+  title: "Les députés de la Drôme (26)"
   weight: 10
 url28:
   url: "/circonscription/departement/Essonne"
-  title: "Les députés de l'Essonne"
+  title: "Les députés de l'Essonne (91)"
   weight: 10
 url29:
   url: "/circonscription/departement/Eure"
-  title: "Les députés de l'Eure"
+  title: "Les députés de l'Eure (27)"
   weight: 10
 url30:
   url: "/circonscription/departement/Eure-et-Loir"
-  title: "Les députés d'Eure-et-Loir"
+  title: "Les députés d'Eure-et-Loir (28)"
   weight: 10
 url31:
   url: "/circonscription/departement/Finistère"
-  title: "Les députés du Finistère"
+  title: "Les députés du Finistère (29)"
   weight: 10
 url32:
   url: "/circonscription/departement/Gard"
-  title: "Les députés du Gard"
+  title: "Les députés du Gard (30)"
   weight: 10
 url33:
   url: "/circonscription/departement/Gers"
-  title: "Les députés du Gers"
+  title: "Les députés du Gers (32)"
   weight: 10
 url34:
   url: "/circonscription/departement/Gironde"
-  title: "Les députés de la Gironde"
+  title: "Les députés de la Gironde (33)"
   weight: 10
 url35:
   url: "/circonscription/departement/Guadeloupe"
-  title: "Les députés de Guadeloupe"
+  title: "Les députés de Guadeloupe (971)"
   weight: 10
 url36:
   url: "/circonscription/departement/Guyane"
-  title: "Les députés de Guyane"
+  title: "Les députés de Guyane (973)"
   weight: 10
 url37:
   url: "/circonscription/departement/Haut-Rhin"
-  title: "Les députés du Haut-Rhin"
+  title: "Les députés du Haut-Rhin (68)"
   weight: 10
 url38:
   url: "/circonscription/departement/Haute-Corse"
-  title: "Les députés de Haute-Corse"
+  title: "Les députés de Haute-Corse (2B)"
   weight: 10
 url39:
   url: "/circonscription/departement/Haute-Garonne"
-  title: "Les députés de la Haute-Garonne"
+  title: "Les députés de la Haute-Garonne (31)"
   weight: 10
 url40:
   url: "/circonscription/departement/Haute-Loire"
-  title: "Les députés de la Haute-Loire"
+  title: "Les députés de la Haute-Loire (43)"
   weight: 10
 url41:
   url: "/circonscription/departement/Haute-Marne"
-  title: "Les députés de la Haute-Marne"
+  title: "Les députés de la Haute-Marne (52)"
   weight: 10
 url42:
   url: "/circonscription/departement/Haute-Saône"
-  title: "Les députés de la Haute-Saône"
+  title: "Les députés de la Haute-Saône (70)"
   weight: 10
 url43:
   url: "/circonscription/departement/Haute-Savoie"
-  title: "Les députés de Haute-Savoie"
+  title: "Les députés de Haute-Savoie (74)"
   weight: 10
 url44:
   url: "/circonscription/departement/Haute-Vienne"
-  title: "Les députés de la Haute-Vienne"
+  title: "Les députés de la Haute-Vienne (87)"
   weight: 10
 url45:
   url: "/circonscription/departement/Hautes-Alpes"
-  title: "Les députés des Hautes-Alpes"
+  title: "Les députés des Hautes-Alpes (05)"
   weight: 10
 url46:
   url: "/circonscription/departement/Hautes-Pyrénées"
-  title: "Les députés des Hautes-Pyrénées"
+  title: "Les députés des Hautes-Pyrénées (65)"
   weight: 10
 url47:
   url: "/circonscription/departement/Hauts-de-Seine"
-  title: "Les députés des Hauts-de-Seine"
+  title: "Les députés des Hauts-de-Seine (92)"
   weight: 10
 url48:
   url: "/circonscription/departement/Hérault"
-  title: "Les députés de l'Hérault"
+  title: "Les députés de l'Hérault (34)"
   weight: 10
 url49:
   url: "/circonscription/departement/Ille-et-Vilaine"
-  title: "Les députés d'Ille-et-Vilaine"
+  title: "Les députés d'Ille-et-Vilaine (35)"
   weight: 10
 url50:
   url: "/circonscription/departement/Indre"
-  title: "Les députés de l'Indre"
+  title: "Les députés de l'Indre (36)"
   weight: 10
 url51:
   url: "/circonscription/departement/Indre-et-Loire"
-  title: "Les députés de l'Indre-et-Loire"
+  title: "Les députés de l'Indre-et-Loire (37)"
   weight: 10
 url52:
   url: "/circonscription/departement/Isère"
-  title: "Les députés de l'Isère"
+  title: "Les députés de l'Isère (38)"
   weight: 10
 url53:
   url: "/circonscription/departement/Jura"
-  title: "Les députés du Jura"
+  title: "Les députés du Jura (39)"
   weight: 10
 url54:
   url: "/circonscription/departement/Landes"
-  title: "Les députés des Landes"
+  title: "Les députés des Landes (40)"
   weight: 10
 url55:
   url: "/circonscription/departement/Loir-et-Cher"
-  title: "Les députés du Loir-et-Cher"
+  title: "Les députés du Loir-et-Cher (41)"
   weight: 10
 url56:
   url: "/circonscription/departement/Loire"
-  title: "Les députés de la Loire"
+  title: "Les députés de la Loire (42)"
   weight: 10
 url57:
   url: "/circonscription/departement/Loire-Atlantique"
-  title: "Les députés de Loire-Atlantique"
+  title: "Les députés de Loire-Atlantique (44)"
   weight: 10
 url58:
   url: "/circonscription/departement/Loiret"
-  title: "Les députés du Loiret"
+  title: "Les députés du Loiret (45)"
   weight: 10
 url59:
   url: "/circonscription/departement/Lot"
-  title: "Les députés du Lot"
+  title: "Les députés du Lot (46)"
   weight: 10
 url60:
   url: "/circonscription/departement/Lot-et-Garonne"
-  title: "Les députés du Lot-et-Garonne"
+  title: "Les députés du Lot-et-Garonne (47)"
   weight: 10
 url61:
   url: "/circonscription/departement/Lozère"
-  title: "Les députés de la Lozère"
+  title: "Les députés de la Lozère (48)"
   weight: 10
 url62:
   url: "/circonscription/departement/Maine-et-Loire"
-  title: "Les députés du Maine-et-Loire"
+  title: "Les députés du Maine-et-Loire (49)"
   weight: 10
 url63:
   url: "/circonscription/departement/Manche"
-  title: "Les députés de la Manche"
+  title: "Les députés de la Manche (50)"
   weight: 10
 url64:
   url: "/circonscription/departement/Marne"
-  title: "Les députés de la Marne"
+  title: "Les députés de la Marne (51)"
   weight: 10
 url65:
   url: "/circonscription/departement/Martinique"
-  title: "Les députés de Martinique"
+  title: "Les députés de Martinique (972)"
   weight: 10
 url66:
   url: "/circonscription/departement/Mayenne"
-  title: "Les députés de la Mayenne"
+  title: "Les députés de la Mayenne (53)"
   weight: 10
 url67:
   url: "/circonscription/departement/Mayotte"
-  title: "Les députés de Mayotte"
+  title: "Les députés de Mayotte (976)"
   weight: 10
 url68:
   url: "/circonscription/departement/Meurthe-et-Moselle"
-  title: "Les députés de Meurthe-et-Moselle"
+  title: "Les députés de Meurthe-et-Moselle (54)"
   weight: 10
 url69:
   url: "/circonscription/departement/Meuse"
-  title: "Les députés de la Meuse"
+  title: "Les députés de la Meuse (55)"
   weight: 10
 url70:
   url: "/circonscription/departement/Morbihan"
-  title: "Les députés du Morbihan"
+  title: "Les députés du Morbihan (56)"
   weight: 10
 url71:
   url: "/circonscription/departement/Moselle"
-  title: "Les députés de la Moselle"
+  title: "Les députés de la Moselle (57)"
   weight: 10
 url72:
   url: "/circonscription/departement/Nièvre"
-  title: "Les députés de la Nièvre"
+  title: "Les députés de la Nièvre (58)"
   weight: 10
 url73:
   url: "/circonscription/departement/Nord"
-  title: "Les députés du Nord"
+  title: "Les députés du Nord (59)"
   weight: 10
 url74:
   url: "/circonscription/departement/Nouvelle-Calédonie"
-  title: "Les députés de la Nouvelle-Calédonie"
+  title: "Les députés de la Nouvelle-Calédonie (988)"
   weight: 10
 url75:
   url: "/circonscription/departement/Oise"
-  title: "Les députés de l'Oise"
+  title: "Les députés de l'Oise (60)"
   weight: 10
 url76:
   url: "/circonscription/departement/Orne"
-  title: "Les députés de l'Orne"
+  title: "Les députés de l'Orne (61)"
   weight: 10
 url77:
   url: "/circonscription/departement/Paris"
-  title: "Les députés de Paris"
+  title: "Les députés de Paris (75)"
   weight: 10
 url78:
   url: "/circonscription/departement/Pas-de-Calais"
-  title: "Les députés du Pas-de-Calais"
+  title: "Les députés du Pas-de-Calais (62)"
   weight: 10
 url79:
   url: "/circonscription/departement/Polynésie_Française"
-  title: "Les députés de la Polynésie Française"
+  title: "Les députés de la Polynésie Française (987)"
   weight: 10
 url80:
   url: "/circonscription/departement/Puy-de-Dôme"
-  title: "Les députés du Puy-de-Dôme"
+  title: "Les députés du Puy-de-Dôme (63)"
   weight: 10
 url81:
   url: "/circonscription/departement/Pyrénées-Atlantiques"
-  title: "Les députés des Pyrénées-Atlantiques"
+  title: "Les députés des Pyrénées-Atlantiques (64)"
   weight: 10
 url82:
   url: "/circonscription/departement/Pyrénées-Orientales"
-  title: "Les députés des Pyrénées-Orientales"
+  title: "Les députés des Pyrénées-Orientales (66)"
   weight: 10
 url83:
   url: "/circonscription/departement/Réunion"
-  title: "Les députés de la Réunion"
+  title: "Les députés de la Réunion (974)"
   weight: 10
 url84:
   url: "/circonscription/departement/Rhône"
-  title: "Les députés du Rhône"
+  title: "Les députés du Rhône (69)"
   weight: 10
 url85:
   url: "/circonscription/departement/Saint-Pierre-et-Miquelon"
-  title: "Les députés de Saint-Pierre-et-Miquelon"
+  title: "Les députés de Saint-Pierre-et-Miquelon (975)"
   weight: 10
 url86:
   url: "/circonscription/departement/Saône-et-Loire"
-  title: "Les députés de Saône-et-Loire"
+  title: "Les députés de Saône-et-Loire (71)"
   weight: 10
 url87:
   url: "/circonscription/departement/Sarthe"
-  title: "Les députés de la Sarthe"
+  title: "Les députés de la Sarthe (72)"
   weight: 10
 url88:
   url: "/circonscription/departement/Savoie"
-  title: "Les députés de Savoie"
+  title: "Les députés de Savoie (73)"
   weight: 10
 url89:
   url: "/circonscription/departement/Seine-et-Marne"
-  title: "Les députés de Seine-et-Marne"
+  title: "Les députés de Seine-et-Marne (77)"
   weight: 10
 url90:
   url: "/circonscription/departement/Seine-Maritime"
-  title: "Les députés de Seine-Maritime"
+  title: "Les députés de Seine-Maritime (76)"
   weight: 10
 url91:
   url: "/circonscription/departement/Seine-Saint-Denis"
-  title: "Les députés de Seine-Saint-Denis"
+  title: "Les députés de Seine-Saint-Denis (93)"
   weight: 10
 url92:
   url: "/circonscription/departement/Somme"
-  title: "Les députés de la Somme"
+  title: "Les députés de la Somme (80)"
   weight: 10
 url93:
   url: "/circonscription/departement/Tarn"
-  title: "Les députés du Tarn"
+  title: "Les députés du Tarn (81)"
   weight: 10
 url94:
   url: "/circonscription/departement/Tarn-et-Garonne"
-  title: "Les députés du Tarn-et-Garonne"
+  title: "Les députés du Tarn-et-Garonne (82)"
   weight: 10
 url95:
   url: "/circonscription/departement/Territoire-de-Belfort"
-  title: "Les députés du Territoire-de-Belfort"
+  title: "Les députés du Territoire-de-Belfort (90)"
   weight: 10
 url96:
   url: "/circonscription/departement/Val-d'Oise"
-  title: "Les députés du Val-d'Oise"
+  title: "Les députés du Val-d'Oise (95)"
   weight: 10
 url97:
   url: "/circonscription/departement/Val-de-Marne"
-  title: "Les députés du Val-de-Marne"
+  title: "Les députés du Val-de-Marne (94)"
   weight: 10
 url98:
   url: "/circonscription/departement/Var"
-  title: "Les députés du Var"
+  title: "Les députés du Var (83)"
   weight: 10
 url99:
   url: "/circonscription/departement/Vaucluse"
-  title: "Les députés du Vaucluse"
+  title: "Les députés du Vaucluse (84)"
   weight: 10
 url100:
   url: "/circonscription/departement/Vendée"
-  title: "Les députés de Vendée"
+  title: "Les députés de Vendée (85)"
   weight: 10
 url101:
   url: "/circonscription/departement/Vienne"
-  title: "Les députés de la Vienne"
+  title: "Les députés de la Vienne (86)"
   weight: 10
 url102:
   url: "/circonscription/departement/Vosges"
-  title: "Les députés des Vosges"
+  title: "Les députés des Vosges (88)"
   weight: 10
 url103:
   url: "/circonscription/departement/Wallis-et-Futuna"
-  title: "Les députés de Wallis-et-Futuna"
+  title: "Les députés de Wallis-et-Futuna (986)"
   weight: 10
 url104:
   url: "/circonscription/departement/Yonne"
-  title: "Les députés de l'Yonne"
+  title: "Les députés de l'Yonne (89)"
   weight: 10
 url105:
   url: "/circonscription/departement/Yvelines"
-  title: "Les députés des Yvelines"
+  title: "Les députés des Yvelines (78)"
   weight: 10

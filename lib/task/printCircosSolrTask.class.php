@@ -15,7 +15,7 @@ class printCircosSolrTask extends sfBaseTask {
     foreach (Parlementaire::$dptmt_pref as $dep => $pref) {
       echo "url$ct:\n";
       echo "  url: \"/circonscription/departement/".str_replace(' ', '_', $dep)."\"\n";
-      echo "  title: \"Les députés ".$pref.(!preg_match("/'/", $pref) ? ' ' : '').$dep."\"\n";
+      echo "  title: \"Les députés ".$pref.(!preg_match("/'/", $pref) ? ' ' : '').$dep.' ('.Parlementaire::getNumeroDepartement($dep).')"'."\n";
       echo "  weight: 10\n";
       $ct++;
     }
