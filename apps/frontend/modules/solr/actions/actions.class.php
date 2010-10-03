@@ -227,7 +227,7 @@ class solrActions extends sfActions
       //Prépare les facets des parlementaires
       $this->facet['parlementaires']['prefix'] = 'parlementaire=';
       $this->facet['parlementaires']['facet_field'] = 'tag';
-      $this->facet['parlementaires']['name'] = 'Parlementaire';
+      $this->facet['parlementaires']['name'] = 'Parlementaires';
       
       $tags = $results['facet_counts']['facet_fields']['tag'];
       $this->facet['tag']['prefix'] = '';
