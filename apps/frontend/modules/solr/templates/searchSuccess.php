@@ -264,8 +264,8 @@ $facetName2HumanName = array(
 			     'Parlementaire' => 'Filtrer par Parlementaire',
 			     'Types' => 'Filtrer par type de document',
 			     'Tags' => 'Filtrer par tags',
-			     'TexteLoi' => 'Document parlementaires',
-			     'QuestionEcrite' => 'Questions ecrites',
+			     'Texteloi' => 'Documents parlementaires',
+			     'QuestionEcrite' => 'Questions écrites',
 			     'Tags' => 'Filtrer par tags'
 );
 function facet2Human($id) {

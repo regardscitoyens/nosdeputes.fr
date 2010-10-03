@@ -214,16 +214,16 @@ class solrActions extends sfActions
       $this->results['end'] = $this->results['numFound'] + 1;
     }
 
-    //Prépare les facets
-    $this->facet['parlementaire']['prefix'] = 'parlementaire=';
-    $this->facet['parlementaire']['facet_field'] = 'tag';
-    $this->facet['parlementaire']['name'] = 'Parlementaire';
-
     if (isset($results['facet_counts'])) {
       $this->facet['type']['prefix'] = '';
       $this->facet['type']['facet_field'] = 'object_name';
       $this->facet['type']['name'] = 'Types';
       $this->facet['type']['values'] = $results['facet_counts']['facet_fields']['object_name'];
+      
+      //Prépare les facets des parlementaires
+      $this->facet['parlementaire']['prefix'] = 'parlementaire=';
+      $this->facet['parlementaire']['facet_field'] = 'tag';
+      $this->facet['parlementaire']['name'] = 'Parlementaire';
       
       $tags = $results['facet_counts']['facet_fields']['tag'];
       $this->facet['tag']['prefix'] = '';
