@@ -190,7 +190,7 @@
 </div>
   <div class="clear"></div>
   <div class="box_widget">
-    <h2><span style="margin-right: 5px;"><img alt="comments" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_comment.png" /></span><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a></h2>
+    <h2><span style="margin-right: 5px;"><img alt="comments" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_comment.png" /></span><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a><span class="rss"><a href="<?php echo url_for('@commentaires_rss'); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
     <div id="coms_widget">
       <noscript>
       <?php include_component('commentaire', 'showWidget'); ?>

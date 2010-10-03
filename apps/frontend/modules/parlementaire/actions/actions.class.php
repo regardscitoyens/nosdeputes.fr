@@ -109,9 +109,8 @@ class parlementaireActions extends sfActions
     $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()*2));
   }
 
-  public function executeIndex(sfWebRequest $request)
-  {
-      //      ->where('i.date > ?', date('Y-m-d', time()-60*60*24*31*3));
+  public function executeIndex(sfWebRequest $request) {
+    $request->setParameter('rss', array(array('link' => '@commentaires_rss', 'title'=>'Les derniers commentaires sur NosDéputés.fr')));
   }
 
   public function executeRandom(sfWebRequest $request)
