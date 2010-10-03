@@ -213,7 +213,7 @@ if($graph) {
     }
     
     echo '<li title="'.$title_date.'" class="jstitle" style="list-style-image: none; width: '.$width.'px; height: '.$height.'px; left: '.$left.'px;">'; 
-    echo '<div class="hover_graph" title="'.$title_date.'" style="width: '.$width.'px; height: '.$padding.'px;	bottom: '.$height.'px;"></div><span class="text_graph">'.link_search($nb['nb'], $query, $newargs, array()).'</span>'; 
+    echo '<div class="hover_graph" style="width: '.$width.'px; height: '.$padding.'px;	bottom: '.$height.'px;"></div><span class="text_graph">'.link_search($nb['nb'], $query, $newargs, array()).'</span>'; 
     
     # echo ' '.$nb['nb'].' résultats ('; printf('%02d', $nb['pc']*100/($fdates['max'])); echo '%)';
     ?>
