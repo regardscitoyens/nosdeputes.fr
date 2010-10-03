@@ -11,7 +11,7 @@ if (isset($list)) {
     }
     echo '<h3 class="aligncenter">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', preg_replace('/(,)? /', 's\\1 ', $fonction))).(count($deputes) > 1 && !preg_match('/(droit|bureau)$/', $fonction) ? 's' : '').'</h3>';
   }
-  echo '<table summary="Députés dont le nom commence par '.$lettre.'"><tr>';
+  echo '<table summary="Députés'.(isset($lettre) ? ' dont le nom commence par '.$lettre : '').'"><tr>';
   $totaldep = count($deputes);
   $div = floor($totaldep/$colonnes)+1;
   if ($div > 1 && $totaldep % $colonnes == 0)
