@@ -184,7 +184,7 @@
   <?php // echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
   </div></div>
   <div class="box_tags">
-  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png" /></span><?php echo link_to('En ce moment à l\'Assemblée Nationale', '@parlementaires_tags'); ?></h2>
+  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png" /></span><?php echo link_to('En ce moment à l\'Assemblée nationale', '@parlementaires_tags'); ?></h2>
   <?php echo include_component('tag', 'globalActivite'); ?>
   </div>
 </div>

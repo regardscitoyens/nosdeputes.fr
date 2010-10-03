@@ -224,6 +224,7 @@ a:hover {
   margin-right: 4px;
   width: 463px;
   height: 370px;
+  background-color: #FAFAFA;
 }
 
 .box_repartition {
@@ -239,7 +240,6 @@ a:hover {
 }
 
 .box_tags .internal_tag_cloud {
-  height: 100%;
   padding: 7px;
 }
 .internal_tag_cloud span {
