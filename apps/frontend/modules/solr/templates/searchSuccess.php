@@ -68,6 +68,7 @@ switch ($vue) {
 if (!$ajax) :
 ?>
 <script type="text/javascript">
+<!--
 function urlParams(params) {
 	param = new Object();
 	if(jQuery.isArray(params)) {
@@ -93,7 +94,7 @@ else { parametre = new Object(); }
 
 timer4update = null;
 function realAjaxUpdate(lien) {
-  lien += '&ajax=1';
+  lien += '&amp;ajax=1';
   $('#results_container').load(lien, function() {$('#results_container').fadeIn(200);});
 }
 function ajaxUpdateFor(lien) {
@@ -147,10 +148,10 @@ $(document).ready(function() {
 			  lien += 'date='+parametre['date'];
 
 			  if(ui.values[0] == ui.values[1]) { 
-			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>'+periode[ui.values[0]]+'</strong></a>';
+			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>'+periode[ui.values[0]]+'<\/strong><\/a>';
 			  }
 			  else { 
-			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>entre '+periode[ui.values[0]]+' et '+ periode[ui.values[1]]+'</strong></a>';
+			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>entre '+periode[ui.values[0]]+' et '+ periode[ui.values[1]]+'<\/strong><\/a>';
 			  }
 			  ajaxUpdateFor(lien);
 			  $("#periode").text("");
@@ -160,6 +161,7 @@ $(document).ready(function() {
 		$("#periode").text('entre ' + periode[$("#slider_date_graph").slider("values", 0)] + ' et ' + periode[$("#slider_date_graph").slider("values", 1)]);
 	});
 });
+//-->
 </script>
 
 <div class="solr">
