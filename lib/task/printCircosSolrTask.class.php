@@ -22,7 +22,7 @@ class printCircosSolrTask extends sfBaseTask {
       echo "circo$num:\n";
       echo "  url: \"/circonscription/departement/".str_replace(' ', '_', $dep)."\"\n";
       echo "  title: \"Les députés ".$pref.(!preg_match("/'/", $pref) ? ' ' : '').$dep.' ('.Parlementaire::getNumeroDepartement($dep).')"'."\n";
-      echo "  image: \"<img width='53' class='jstitle' title=q'".$dep." (".$num.")' alt='".$dep." (".$num.")' src='/circonscription/image/".$fixednum."/53/0'/>\"\n";
+      echo "  image: \"<img width='53' class='jstitle' title='".$dep." (".$num.")' alt='".$dep." (".$num.")' src='/circonscription/image/".$fixednum."/53/0'/>\"\n";
       echo "  weight: 10\n";
     }
   }
