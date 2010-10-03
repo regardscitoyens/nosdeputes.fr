@@ -1,7 +1,7 @@
 <div id="carte_circo">
 <h1>Toutes les circonscriptions par département</h1><?php 
 $sf_response->setTitle('Toutes les circonscriptions électorales par département - NosDéputés.fr'); ?>
-<?php include_partial('circonscription/map', array('circo'=>'full', 'height'=>600, 'width'=>546)); ?>
+<?php include_partial('circonscription/mapDepartement', array('circo'=>'full', 'height'=>600, 'width'=>546)); ?>
 <div class="list_deptmts">
 <?php $iters = array("0" => 27, "27" => 55, "55" => 65, "65" => 75, "75" => 86, "86" => 96, "96" => 120);
 $div = floor(count($circos)/6)+1;
