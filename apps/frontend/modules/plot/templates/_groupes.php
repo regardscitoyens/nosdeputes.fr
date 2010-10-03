@@ -36,18 +36,18 @@ $DataDescrLegend = $DataSetLegend->GetDataDescription();
 $filename = 'repartition-groupes';
 $xsize = 390;
 if ($plot == 'total') {
-  $xtitre = 80; $ysize = 300; $ylegend = 145; $x0 = 140; $y0 = 112;
+  $xtitre = 80; $ysize = 360; $ylegend = 145; $x0 = 140; $y0 = 112;
   $duree = "l'année passée";
   $shortduree = 'annee';
   $filename .= '-'.$shortduree.'.png';
   $titre = 'du travail parlementaire';
 } else {
-  $xtitre = 25; $ysize = 190; $ylegend = 50; $x0 = 155; $y0 = 85;
+  $xtitre = 25; $ysize = 190; $ylegend = 60; $x0 = 155; $y0 = 85;
   $filename .= '-'.$plot.'.png';
   $titre = 'par groupe du travail de cette séance';
   if (preg_match('/section/', $plot)) {
     $xtitre = 28; $xtitre = 38;
-    $titre = 'par groupe du travail sur le dossier';
+    $titre = 'par groupe du travail sur ce dossier';
   } else if (preg_match('/com/', $plot)) {
     if (array_sum($interventions) == 0) {
       $xsize = 250;  $xtitre = 48;
@@ -59,8 +59,8 @@ if ($plot == 'total') {
   }
 }
 $Test = new xsPChart($xsize,$ysize);
-if ($plot != 'total') { $Test->drawFilledRoundedRectangle(7,7,$xsize-7,$ysize-7,5,240,240,240); }
-if ($plot != 'total') { $Test->drawRoundedRectangle(5,5,$xsize-5,$ysize-5,5,230,230,230); }
+$Test->drawFilledRoundedRectangle(7,7,$xsize-7,$ysize-7,5,240,240,240);
+$Test->drawRoundedRectangle(5,5,$xsize-5,$ysize-5,5,230,230,230);
 $Test->setColorPalette(0,200,200,200);
 $Test->setColorPalette(1,30,30,200);
 $Test->setColorPalette(2,30,190,255);
@@ -85,9 +85,10 @@ $Test->setColorPalette(2,30,30,200);
 $Test->setColorPalette(3,30,190,255);
 $Test->setColorPalette(4,255,50,190);
 $Test->setColorPalette(5,255,30,30);
+$Test->drawFilledRoundedRectangle(15,$ylegend-14,72,$ylegend+5,5,255,255,255);
 $Test->drawLegend(15,$ylegend,$DataDescrLegend,255,255,255);
 $Test->xsSetFontProperties("tahoma.ttf",10);
-$Test->drawTitle(20,$ylegend+13,'Groupes',0,0,0);
+$Test->drawTitle(20,$ylegend,'Groupes',0,0,0);
 
 $Test->xsSetFontProperties("tahoma.ttf",12);
 if ($plot != 'total')
