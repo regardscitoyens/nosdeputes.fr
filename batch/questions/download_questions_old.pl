@@ -42,7 +42,7 @@ for ($cpt = $last_record-100 ; $cpt < $last_number+100 ; $cpt++) {
 }
 print $count." questions récentes\n\n";
 
-open(FILE, 'liste_sans_reponse.txt') ;
+open(FILE, 'liste_sans_reponse.txt');
 @string = <FILE>;
 $string = "@string";
 close FILE;

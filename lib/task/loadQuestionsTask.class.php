@@ -60,7 +60,7 @@ class loadQuestionsTask extends sfBaseTask {
               $quest->numero = $json->numero;
               $quest->setAuteur($json->auteur);
             }
-            if ($quest->reponse === "") {
+            if (!$quest->reponse || $quest->reponse === "") {
               $quest->date = $json->date_question;
               $quest->ministere = $json->ministere_interroge." / ".$json->ministere_attribue;
               $quest->themes = $json->rubrique." / ".$json->tete_analyse." / ".$json->analyse;

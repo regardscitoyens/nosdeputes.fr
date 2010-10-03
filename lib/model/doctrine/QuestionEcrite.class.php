@@ -47,7 +47,7 @@ class QuestionEcrite extends BaseQuestionEcrite
     $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe);
     if (!$depute) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe."\n";
     else {
-      $this->_set('Parlementaire', $depute);
+      $this->_set('parlementaire_id', $depute->id);
       $depute->free();
     }
   }
@@ -59,7 +59,7 @@ class QuestionEcrite extends BaseQuestionEcrite
       $ministre = preg_replace('/^.*\/\s*([\wàéëêèïîôöûüÉ]+)$/', '\\1', $this->ministere);
       $ministre = preg_replace('/^([\wàéëêèïîôöûüÉ]+)[,\s].*$/', '\\1', $ministre);
     }
-    if (preg_match('/^(Affaires|Sports|Transports|Solidarités)/', $ministre)) $ministere .= 'es ';
+    if (preg_match('/^(Aînés|Affaires|Sports|Transports|Solidarités)/', $ministre)) $ministere .= 'es ';
     else if (preg_match('/^[AEÉIOU]/', $ministre)) $ministere .= 'e l\'';
     else if (preg_match('/^(Famille|Santé|Coopération|Culture|Défense|Justice|Consommation|Solidarité)/', $ministre)) $ministere .= 'e la ';
     else $ministere .= 'u ';
