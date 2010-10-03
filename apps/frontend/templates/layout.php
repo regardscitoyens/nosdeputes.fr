@@ -139,5 +139,4 @@ $menu_citoyen = $selectcitoyen;
       </div>
     </div>
   </body>
-<script  type="text/javascript" src="/js/jstitle.js"></script>
 </html>
