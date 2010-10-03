@@ -215,30 +215,27 @@ a:hover {
   text-align: center;
 }
 .box_tags {
-  width: 463px;
   border: 1px solid #DBDBDB;
-  display: table-cell;
+  float: right;
+  margin-right: 4px;
+  width: 463px;
+  height: 370px;
 }
 
 .box_repartition {
-  width: 433px;
   border: 1px solid #DBDBDB;
   background-color: #FAFAFA;
   margin-bottom: 16px;
-  display: table-cell;
-}
-
-.table_sep{
-    display: table-cell;
-    width: 15px;
+  float: left;
+  height: 370px
 }
 
 .box_container {
-    display: table;
-    margin-bottom: 16px;
+  margin-bottom: 16px;
 }
 
 .box_tags .internal_tag_cloud {
+  height: 100%;
   padding: 7px;
 }
 .internal_tag_cloud span {
@@ -306,7 +303,7 @@ a:hover {
   font-size: 14px;
 }
 .synthese th, .synthese td { border-right: 1px #FFFFFF solid; }
-.synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; min-height: 25px; }
+.synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
 .synthese td.p { width: 112px; }
 .synthese th.p { width: 122px; border-left: 13px solid #FFF; }
 .synthese .we { width: 70px; }
@@ -1891,5 +1888,8 @@ a:hover img {
   color: #7AA925;
 }
 .phototitle {
+  vertical-align: middle;
+}
+.block {
   display: block;
 }
