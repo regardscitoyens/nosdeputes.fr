@@ -28,6 +28,8 @@ class solrActions extends sfActions
       return '<img width="53" src="'.url_for('@photo_citoyen?slug='.$obj->getCitoyen()->getSlug()).'"/>';
     case 'Citoyen':
       return '<img width="53" src="'.url_for('@photo_citoyen?slug='.$obj->getSlug()).'"/>';
+    case 'NonObjectPage':
+      return '<img width="53" src="'.url_for("@circo_image_png?circo=".strtolower(Parlementaire::getNumeroDepartement(str_replace(' ', '_', preg_replace('/^.*\/([^\/]+)$/', '\\1', $obj->getLink()))))."&w=53&h=0").'"/>';
     }
   }
  /**
