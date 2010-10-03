@@ -93,18 +93,16 @@ else { parametre = new Object(); }
 
 timer4update = null;
 function realAjaxUpdate(lien) {
-  url = document.location+'';
-  url = url.replace(/\?.*/, '');
-  lien = url+lien+'&ajax=1';
-  $('#results_container').load(lien, function() {$('#results_container').css('opacity', '1');});
+  lien += '&ajax=1';
+  $('#results_container').load(lien, function() {$('#results_container').fadeIn(200);});
 }
 function ajaxUpdateFor(lien) {
   if (timer4update) {
     clearTimeout(timer4update);
     timer4update = null;
   }
-  $('#results_container').css('opacity', '0.5');
-  timer4update = setTimeout('realAjaxUpdate("'+lien+'")', 5000);
+  $('#results_container').fadeTo(1000, 0.5);
+  timer4update = setTimeout('realAjaxUpdate("'+lien+'")', 2500);
 }
 
 $(document).ready(function() {
