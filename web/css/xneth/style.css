@@ -184,25 +184,34 @@ body {
   padding: 0 10px 10px;
   text-align: justify;
 }
-.box_repartition {
-  float: left;
-  width: 433px;
-  height: 330px;
-  border: 1px solid #DBDBDB;
-  background-color: #FAFAFA;
-  margin-bottom: 16px;
-}
 .legende {
   margin-top: 2px;
   text-align: center;
 }
 .box_tags {
-  float: right;
-  margin-right: 4px;
   width: 463px;
-  height: 330px;
   border: 1px solid #DBDBDB;
+  display: table-cell;
 }
+
+.box_repartition {
+  width: 433px;
+  border: 1px solid #DBDBDB;
+  background-color: #FAFAFA;
+  margin-bottom: 16px;
+  display: table-cell;
+}
+
+.table_sep{
+    display: table-cell;
+    width: 15px;
+}
+
+.box_container {
+    display: table;
+    margin-bottom: 10px;
+}
+
 .box_tags .internal_tag_cloud {
   padding: 7px;
 }
