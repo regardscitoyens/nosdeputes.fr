@@ -50,7 +50,10 @@ foreach $baseurl ("http://www.assemblee-nationale.fr/13/documents/index-depots.a
       $type = "ta";
     }
     if (-e "$type/$file") {
-      next;
+      system("grep -e 'pas encore édité' $type/$file > /dev/null");
+      if ($? != 0) {
+        next;
+      }
     }
     if (!($type =~ /(^$)/)) {
       $res = $a->get($url);
@@ -58,8 +61,13 @@ foreach $baseurl ("http://www.assemblee-nationale.fr/13/documents/index-depots.a
         open FILE, ">:utf8", "$type/$file.tmp";
         print FILE $a->content;
         close FILE;
-        rename "$type/$file.tmp", "$type/$file";
-        print "$type/$file\n";
+        system("grep -e 'pas encore édité' $type/$file.tmp > /dev/null");
+        if ($? != 0 || !(-e "$type/$file")) {
+          rename "$type/$file.tmp", "$type/$file";
+          print "$type/$file\n";
+        } else {
+          unlink("/$type/$file.tmp");
+        }
       }
       $a->back();
     }
