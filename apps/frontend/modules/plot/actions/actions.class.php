@@ -27,7 +27,8 @@ class plotActions extends sfActions {
     if (!$this->drawAction)
       $this->drawAction = "draw";
     $this->mapId = $request->getParameter('mapId');
-    $this->forward404Unless($this->mapId);
+    $this->forward404Unless($this->mapId && preg_match('/^Map_\d+\.map$/', $this->mapId));
+    sfConfig::set('sf_web_debug', false);
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
   }
@@ -37,7 +38,7 @@ class plotActions extends sfActions {
     if (!$this->drawAction)
       $this->drawAction = "draw";
     $this->mapId = $request->getParameter('mapId');
-    $this->forward404Unless($this->mapId);
+    $this->forward404Unless($this->mapId && preg_match('/^Map_\d+\.map$/', $this->mapId));
     $this->type = $request->getParameter('type');
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);

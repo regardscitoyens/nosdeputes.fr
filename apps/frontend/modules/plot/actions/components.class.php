@@ -8,9 +8,8 @@ class plotComponents extends sfComponents
   public function executeGetParlData() {
     static $seuil_invective = 20;
     $this->data = array();
-    if (!isset($this->options)) $this->options = array();
-    if (!isset($this->options['session'])) $this->options['session'] = 'lastyear';
-    if ($this->options['session'] == 'lastyear') {
+    if (!isset($this->session)) $this->session = 'lastyear';
+    if ($this->session === 'lastyear') {
       if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {
         $date = strtotime($this->parlementaire->fin_mandat);
         $this->data['mandat_clos'] = true;
@@ -29,7 +28,7 @@ class plotComponents extends sfComponents
       $query4 = Doctrine_Query::create()
         ->select('s.annee, s.numero_semaine')
         ->from('Seance s')
-        ->where('s.session = ?', $this->options['session'])
+        ->where('s.session = ?', $this->session)
         ->orderBy('s.date ASC');
       $date_debut = $query4->fetchOne();
       $annee0 = $date_debut['annee'];
@@ -37,7 +36,7 @@ class plotComponents extends sfComponents
       $query4 = Doctrine_Query::create()
         ->select('s.annee, s.numero_semaine')
         ->from('Seance s')
-        ->where('s.session = ?', $this->options['session'])
+        ->where('s.session = ?', $this->session)
         ->orderBy('s.date DESC');
       $date_fin = $query4->fetchOne();
       $annee = $date_fin['annee'];
@@ -52,9 +51,9 @@ class plotComponents extends sfComponents
       ->from('Presence p')
       ->where('p.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('p.Seance s');
-    if ($this->options['session'] == 'lastyear')
+    if ($this->session === 'lastyear')
       $query->andWhere('s.date > ?', $date_debut);
-    else $query->andWhere('s.session = ?', $this->options['session']);
+    else $query->andWhere('s.session = ?', $this->session);
     $query->groupBy('s.type, s.annee, s.numero_semaine');
     $presences = $query->fetchArray();
 
@@ -72,9 +71,9 @@ class plotComponents extends sfComponents
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('i.nb_mots > ?', $seuil_invective)
       ->leftJoin('i.Seance s');
-    if ($this->options['session'] == 'lastyear')
+    if ($this->session === 'lastyear')
       $query2->andWhere('s.date > ?', $date_debut);
-    else $query2->andWhere('s.session = ?', $this->options['session']);
+    else $query2->andWhere('s.session = ?', $this->session);
     $query2->groupBy('s.type, s.annee, s.numero_semaine');
     $participations = $query2->fetchArray();
 
@@ -99,9 +98,9 @@ class plotComponents extends sfComponents
       ->andWhere('i.fonction NOT LIKE ?', 'président%')
       ->andWhere('i.nb_mots > ?', 2*$seuil_invective)
       ->leftJoin('i.Seance s');
-    if ($this->options['session'] == 'lastyear')
+    if ($this->session === 'lastyear')
       $query3->andWhere('s.date > ?', $date_debut);
-    else $query3->andWhere('s.session = ?', $this->options['session']);
+    else $query3->andWhere('s.session = ?', $this->session);
     $query3->groupBy('s.annee, s.numero_semaine');
     $questionsorales = $query3->fetchArray();
 
