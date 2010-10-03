@@ -8,9 +8,8 @@ $(document).ready(function() {
     if (!$('#header_pass').attr('value')) {
       $('#header_pass').attr('value', '______________');
     }
+    
 	// Menu
-	selected = $("a[class='selected']").parent().attr("id");
-
 	$(".menu_navigation a").mouseover(function() {
 	  $(".menu_navigation a").removeClass("selected");
 	  for (i=1; i<=3; i++) { $('#sous_menu_'+i).css("display", "none"); }
@@ -18,15 +17,7 @@ $(document).ready(function() {
 	  if ($(this).parent().attr("id") == "item3") { $(this).attr("class", "selected"); $('#sous_menu_2').css("display", "block"); }
 	  if ($(this).parent().attr("id") == "item4") { $(this).attr("class", "selected"); $('#sous_menu_3').css("display", "block"); }
 	});
-	
-	function setOriginalMenu() {
-	  $(".menu_navigation a").removeClass("selected");
-	  for (i=1; i<=3; i++) { $('#sous_menu_'+i).css("display", "none"); }
-	  if (selected == "item2") { $("#item2 a").attr("class", "selected"); $('#sous_menu_1').css("display", "block"); }
-	  if (selected == "item3") { $("#item3 a").attr("class", "selected"); $('#sous_menu_2').css("display", "block"); }
-	  if (selected == "item4") { $("#item4 a").attr("class", "selected"); $('#sous_menu_3').css("display", "block"); }
-	}
-	
+		
 	// Effet survol tagcloud
 	$(".internal_tag_cloud").prepend("<div id=\"loupe\"></div>");
 	
