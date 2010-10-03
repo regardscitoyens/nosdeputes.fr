@@ -11,7 +11,7 @@ foreach($listlettres as $i) {
     echo '&nbsp;&nbsp;';
   }
   echo '</div><div class="list_table">';
-  include_partial('parlementaire/table', array('deputes' => $parlementaires[$i], 'list' => 1));
+  include_partial('parlementaire/table', array('deputes' => $parlementaires[$i], 'list' => 1, 'lettre' => $i));
   echo '</div><div class="suivant"><a href="#">Haut de page</a></div>';
 }
 
