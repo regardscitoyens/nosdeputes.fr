@@ -44,17 +44,17 @@ switch ($vue) {
     break;
   case "mois":
     $periode_text = 'en '.myTools::displayMoisAnnee($start);
-    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
+    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" ';
     $graph = 1;
     break;
   case "par_jour":
     $periode_text = 'entre le '.myTools::displayShortDate($start).' et le '.myTools::displayShortDate($end);
-    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
+    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" ';
     $graph = 1;
     break;
   case "par_mois":
     $periode_text = 'entre '.myTools::displayMoisAnnee($start).' et '.myTools::displayMoisAnnee($end);
-    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
+    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" ';
     $graph = 1;
     break;
   default:
@@ -65,6 +65,7 @@ switch ($vue) {
 
 //////////////////// DEBUT SANS AJAX /////////////////////
 //////////////////////////////////////////////////////////
+
 if (!$ajax) :
 ?>
 <script type="text/javascript">
@@ -94,15 +95,15 @@ else { parametre = new Object(); }
 
 timer4update = null;
 function realAjaxUpdate(lien) {
-  lien += '&amp;ajax=1';
-  $('#results_container').load(lien, function() {$('#results_container').fadeIn(200);});
+  lien += '&ajax=1';
+  $('#results_container').load(lien, function() {$('#results_container').fadeTo(100,1);});
 }
 function ajaxUpdateFor(lien) {
   if (timer4update) {
     clearTimeout(timer4update);
     timer4update = null;
   }
-  $('#results_container').fadeTo(1000, 0.5);
+  $('#results_container').css('opacity', 0.5);
   timer4update = setTimeout('realAjaxUpdate("'+lien+'")', 2500);
 }
 
@@ -182,7 +183,7 @@ if($graph) {
   $width = (($width_date - $left) / count($fdates['values'])) - $espacement;
 ?>
 <div class="cont_date_graph">
-  <span>Affiner par date :</span> <span id="periode"></span>
+   <span>Affiner par date :</span> <span id="periode"><?php echo $periode_text; ?></span>
   <div class="date" style="width: <?php echo $width_date ?>px;">
   <ul>
     <?php $i = 0; foreach($fdates['values'] as $date => $nb) :
