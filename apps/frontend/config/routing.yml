@@ -248,7 +248,7 @@ search_amendements_mots_rss:
   param: {module: solr, action: redirect, object_name: Amendement, format: rss}
 search_amendements_mots:
   url: /rechercher/amendements/:query
-  param: {module: solr, action: redirect, object_name: Amendement, action: search}
+  param: {module: solr, action: redirect, object_name: Amendement}
 search_amendements:
   url: /rechercher/amendements/
   param: {module: solr, action: redirect, object_name: Amendement}

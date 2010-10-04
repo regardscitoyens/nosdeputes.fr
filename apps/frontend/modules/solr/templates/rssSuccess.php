@@ -1,5 +1,6 @@
 <?php
-
+if (isset($rsstitle))
+  $title = $rsstitle;
 if ($title)
   $feed->setTitle("NosDeputes.fr : $title");
  else
