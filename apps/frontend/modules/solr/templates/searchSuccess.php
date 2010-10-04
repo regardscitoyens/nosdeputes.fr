@@ -333,7 +333,7 @@ function facet2Human($id, $facet = "") {
   if ($results['page'] > 1) {
     if (isset($newargs['page'][1]))
     unset($newargs['page'][1]);
-    echo link_search('page précédente', $query, $newargs, 0); 
+    echo link_search('<img src="/images/xneth/left.png" alt="fleche gauche"/> page précédente', $query, $newargs, 0); 
   }
   ?>
   </span>
@@ -342,7 +342,7 @@ function facet2Human($id, $facet = "") {
   if ($results['end']-1 != $results['numFound']) {
     $newargs = $selected;
     $newargs['page'][$results['page'] + 1] = 1;
-    echo link_search('page suivante', $query, $newargs, 0); 
+    echo link_search('page suivante <img src="/images/xneth/right.png" alt="fleche droite"/>', $query, $newargs, 0); 
   }
   ?>
   </span>
