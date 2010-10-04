@@ -69,7 +69,7 @@ class solrActions extends sfActions
       }
     }
     //Récupère les résultats auprès de SolR
-    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>"2007-05-01T00:00:00Z", "facet.date.end"=>"NOW", "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge");
+    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date,description', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>"2007-05-01T00:00:00Z", "facet.date.end"=>"NOW", "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge");
     $this->sort_type = 'pertinence';
 
     $this->sort = $request->getParameter('sort');
@@ -211,7 +211,7 @@ class solrActions extends sfActions
         }
         $this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
       } 
-      else $this->results['docs'][$i]['highlighting'] = '';
+      else $this->results['docs'][$i]['highlighting'] = $this->results['docs'][$i]['description'];
     }
     
     $this->results['end'] = $deb + $nb;

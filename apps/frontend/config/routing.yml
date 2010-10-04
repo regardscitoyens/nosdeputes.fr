@@ -445,7 +445,7 @@ parlementaire_amendements:
   param: {module: amendement, action: parlementaire}
 parlementaire_amendements_rss:
   url: /:slug/amendements/rss
-  param: {module: parlementaire, action: rss, object_type: Amendement, title: "Tous les amendements signés par %"}
+  param: {module: parlementaire, action: rss, object_name: Amendement, title: "Tous les amendements signés par %"}
 parlementaire_presences_type:
   url: /:slug/presences/:type
   param: {module: presence, action: parlementaire}
@@ -469,11 +469,11 @@ parlementaire_questions:
   param: {module: questions, action: parlementaire}
 parlementaire_questions_rss:
   url: /:slug/questions/rss
-  param: {module: parlementaire, action: rss, object_type: QuestionEcrite, title: "Toutes les questions écrites de %"}
+  param: {module: parlementaire, action: rss, object_name: QuestionEcrite, title: "Toutes les questions écrites de %"}
 parlementaire_documents:
   url: /:slug/documents/:type
   param: {module: documents, action: parlementaire}
 parlementaire_documents_rss:
   url: /:slug/documents/:type/rss
-  param: {module: parlementaire, action: rss, object_type: Document, title: "Tous les documents parlementaires de %"}
+  param: {module: parlementaire, action: rss, object_name: Document, title: "Tous les documents parlementaires de %"}
 
