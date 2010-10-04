@@ -57,7 +57,7 @@
                 <div class="menu_recherche">
           <form action="/recherche" method="get">
             <p>
-              <input class="rechercher " name="search" type="text" size="25" value="informatique"/>
+              <input class="rechercher " name="search" type="text" size="25" value=""/>
               <input class="bouton_ok" value="" type="submit"/>
                         </p>
 
