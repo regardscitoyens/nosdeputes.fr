@@ -35,6 +35,10 @@ class interventionActions extends sfActions
     }
     $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom);
     $this->interventions->orderBy('i.date DESC, i.timestamp ASC');
+    if ($this->type === "all") {
+      $this->rss = true;
+      $request->setParameter('rss', array(array('link' => '@parlementaire_interventions_rss?slug='.$this->parlementaire->slug, 'title'=>'Les dernières interventions de '.$this->parlementaire->nom.' en RSS')));
+    }
   }
   
   public function executeParlementaireOrganisme(sfWebRequest $request) {

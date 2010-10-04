@@ -73,7 +73,7 @@ class documentsActions extends sfActions
     $this->docs->orderBy('t.date DESC');
   
     $this->response->setTitle('Les '.$this->typetitre.' de '.$this->parlementaire->nom.' - NosDéputés.fr');
-    $request->setParameter('rss', array(array('link' => '@parlementaire_documents_rss?slug='.$this->parlementaire->slug.'&type='.$this->type, 'title'=>'Les dernier'.$this->feminin.'s '.$this->typetitre.' de '.$this->parlementaire->nom.' en RSS')));
-
+//    $request->setParameter('rss', array(array('link' => '@parlementaire_documents_rss?slug='.$this->parlementaire->slug.'&type='.$this->type, 'title'=>'Les dernier'.$this->feminin.'s '.$this->typetitre.' de '.$this->parlementaire->nom.' en RSS')));
+    $request->setParameter('rss', array(array('link' => '@parlementaire_documents_rss?slug='.$this->parlementaire->slug.'&type='.$this->type, 'title'=>'Les derniers documents parlementaires de '.$this->parlementaire->nom.' en RSS')));
   }
 }
