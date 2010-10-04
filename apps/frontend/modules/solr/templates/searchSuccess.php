@@ -240,32 +240,39 @@ endif;
 </div>
 <div class="options">
   <div class="mail">
-  <h3>Alerte email</h3>
-  <?php 
-  $args = '';
+  <h3 class="aligncenter">S'abonner aux résultats<br/>de cette recherche</h3>
+<?php $args = '';
   foreach(array_keys($selected) as $k) {
-    if (!is_array($selected[$k]) || $k == 'date') 
+    if (!is_array($selected[$k]) || $k == 'date')
       continue;
     if ($args)
       $args .= '&';
     $args.= "$k=".implode(',', array_keys($selected[$k]));
-  }
-  echo link_to('Recevoir un email lorsque de nouveaux résultats seront publiés pour cette recherche', 'alerte/create?filter='.urlencode($args).'&query='.urlencode($query));
-
+  } ?>
+<table width=100% style="text-align: center"><tr>
+       <td><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>"><?php echo image_tag('xneth/email.png', 'alt="Email"'); ?></a><br/><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>">par email</a></td>
+       <td><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query).'&format=rsss'); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>">par RSS</a></td>
+</tr></table>
+<?php
 global $facetName2HumanName;
 $facetName2HumanName = array(
 			     'Parlementaires' => 'Filtrer par député',
 			     'Parlementaire' => 'Députés',
-			     'Types' => 'Filtrer par type de document',
-			     'Tags' => 'Filtrer par tags',
+			     'Types' => 'Filtrer par type de résultat',
+			     'Tags' => 'Filtrer par mot-clé',
 			     'Texteloi' => 'Documents parlementaires',
 			     'NonObjectPage' => 'Départements',
 			     'QuestionEcrite' => 'Questions écrites',
-			     'Tags' => 'Filtrer par tags'
+			     'Tags' => 'Filtrer par tags',
+                             'Intervention' => 'Interventions',
+                             'Amendement' => 'Amendements',
+                             'Commentaire' => 'Commentaires'
 );
-function facet2Human($id) {
+function facet2Human($id, $facet = "") {
   global $facetName2HumanName;
   if (!isset($facetName2HumanName[$id])) {
+    if ($facet === "Parlementaires")
+      return ucwords($id);
     return $id;
   }
   return $facetName2HumanName[$id];
@@ -273,12 +280,12 @@ function facet2Human($id) {
   ?>
   </div>
   <div class="facets">
-  <h3>Affiner la recherche</h3>
+  <h3 class="aligncenter">Affiner la recherche</h3>
   <?php 
   if(isset($newargs['date'])) {
     $args_sans_date = $newargs;
     unset($args_sans_date['date']);
-    echo '<p><strong>Filtrer par dates</strong></p><ul><li class="selected">'.link_search($periode_text, $query, $args_sans_date, 0).'</li></ul>';
+    echo '<p><strong>'.link_search('Réinitialiser les dates', $query, $args_sans_date, 0).'</strong></ul>';
   }
   
   foreach(array_keys($facet) as $k) { if (isset($facet[$k]['values']) && count($facet[$k]['values'])) : ?>
@@ -295,7 +302,7 @@ function facet2Human($id) {
         unset($newargs[$facet[$k]['facet_field']][$facet[$k]['prefix'].$value]);
       else			      
         $newargs[$facet[$k]['facet_field']][$facet[$k]['prefix'].$value] = 1;
-      echo link_search(facet2Human($value), $query, $newargs, 0); ?>&nbsp;(<?php echo $nb; ?>)
+      echo link_search(facet2Human($value, $facet[$k]['name']), $query, $newargs, 0); ?>&nbsp;(<?php echo $nb; ?>)
       </li>
     <?php endif; endforeach; ?>
     </ul>
