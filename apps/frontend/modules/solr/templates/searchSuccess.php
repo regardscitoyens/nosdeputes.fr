@@ -223,7 +223,7 @@ endif;
 ///////////////////// FIN SANS AJAX /////////////////////
 ?>
 <div class="nb_results">
-  <h2>Résultats <?php echo $results['start']+1; ?> à <?php echo min($results['end'],$results['numFound']); ?> sur <?php echo $results['numFound']; ?> <strong>triés par <?php echo $sort_type; ?></strong> - 
+  <h2>Résultats <?php echo $results['start']+1; ?> à <?php echo min($results['end'],$results['numFound']); ?> sur <?php echo $results['numFound']; ?> <strong>triés par <?php echo $sort_type; ?></strong>&nbsp;&mdash; 
   <span class="tri">
   <?php 
   $newargs = $selected;
@@ -250,8 +250,8 @@ endif;
     $args.= "$k=".implode(',', array_keys($selected[$k]));
   } ?>
 <table width=100% style="text-align: center"><tr>
-       <td><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>"><?php echo image_tag('xneth/email.png', 'alt="Email"'); ?></a><br/><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>">par email</a></td>
-       <td><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query).'&format=rsss'); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>">par RSS</a></td>
+       <td><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>"><?php echo image_tag('xneth/email.png', 'alt="Email"'); ?></a><br/><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>">par email</a></td>
+       <td><a href="<?php $newargs = $selected; $newargs['format']['rss'] = 'rss'; echo url_for(url_search($query, $newargs)); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for(url_search($query, $newargs)); ?>">par RSS</a></td>
 </tr></table>
 <?php
 global $facetName2HumanName;
