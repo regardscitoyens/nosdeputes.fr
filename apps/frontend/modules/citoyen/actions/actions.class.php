@@ -25,7 +25,7 @@ class citoyenActions extends sfActions
       $datecom = ", max(co.created_at) as date";
     $query = Doctrine::getTable('Citoyen')
       ->createQuery('c')
-      ->select('c.*, count(distinct(co.id)) as nb_comment'.$datecom)
+      ->select('c.*, sum(co.is_public) as nb_comment'.$datecom)
       ->leftJoin('c.Commentaires co')
       ->where('c.is_active = ?', true)
       ->groupBy('c.id');
