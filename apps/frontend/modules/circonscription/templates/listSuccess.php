@@ -16,7 +16,7 @@ foreach ($iters as $iter1 => $iter2) {
   if ($ct <= $iter1)
     continue;
   if (preg_match('/^\d$/', $num)) $num = sprintf("%02d",$num);
-  echo '<p title="'.strtoupper($num).'" class="dept dep_map" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
+  echo '<p title="'.strtoupper($num).'" class="dept dep_map jstitle" id="dep'.strtoupper($num).'">'.link_to($circo, '@list_parlementaires_departement?departement='.preg_replace('/ /', '_', $circo)).'</p>';
   if ($ct == $iter2)
     break; 
  }

@@ -186,7 +186,7 @@ class circonscriptionActions extends sfActions
           $title = self::get_title($path);
           $href = url_for("@redirect_parlementaires_circo?code=".$path->getAttribute('id'));
         }
-        $areas .= "<area id=\"map$id\" href=\"".$href."\" title=\"".$title."\" alt=\"".$title."\" ".
+        $areas .= "<area id=\"map$id\" href=\"".$href."\" class=\"jstitle\" title=\"".str_replace('&mdash;', '--', $title)."\" alt=\"".$title."\" ".
           "shape=\"poly\" coords=\"".$points."\" />\n";
       }
     return array('areas' => $areas, 'w' => $w, 'h' => $h);
