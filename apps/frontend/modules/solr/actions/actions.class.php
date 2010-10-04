@@ -68,6 +68,7 @@ class solrActions extends sfActions
         $fq .= ' tag:"'.$tag.'"';
       }
     }
+
     //Récupère les résultats auprès de SolR
     $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date,description', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>"2007-05-01T00:00:00Z", "facet.date.end"=>"NOW", "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge");
     $this->sort_type = 'pertinence';
@@ -279,7 +280,8 @@ class solrActions extends sfActions
       $add .= '&object_name='.$p;
     }
     if ($p = $request->getParameter('slug')) {
-      $add .= '&tag=parlementaire='.preg_replace('/\-/', '+', $p);
+      $parlementaire = Doctrine::getTable('Parlementaire')->findBySlug($p);
+      $add .= '&tag=parlementaire='.$parlementaire;
     }
     return $this->redirect('solr/search?query='.$request->getParameter('query').$add);
   }
