@@ -125,7 +125,10 @@ a:hover {
   padding-top: 0;
   width:210px;
 }
-
+.solr .options h3 {
+  text-align: center;
+  padding: 3px;
+}
 .solr li {
   list-style: none inside url(/images/xneth/add.png)
 }
