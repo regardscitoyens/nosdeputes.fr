@@ -20,7 +20,7 @@ echo ', '.link_to('derniers commentaires', '@commentaires');
 
 <div class="liste">
 <?php if ($pager->haveToPaginate()) include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>'@list_citoyens?order='.$order.'&')); ?>
-<div class="list_table"><table><tr>
+<div class="list_table"><table summary="Liste des citoyens inscrits"><tr>
 <?php $ct = 0;
   foreach($pager->getResults() as $citoyen) {
     $ct++;
