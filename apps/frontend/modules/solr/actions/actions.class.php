@@ -272,17 +272,11 @@ class solrActions extends sfActions
   
   public function executeRedirect(sfWebRequest $request)
   {
-    $add = '';
-    if ($p = $request->getParameter('format')) {
-      $add .= '&format='.$p;
-    }
-    if ($p = $request->getParameter('object_name')) {
-      $add .= '&object_name='.$p;
-    }
     if ($p = $request->getParameter('slug')) {
-      $parlementaire = Doctrine::getTable('Parlementaire')->findBySlug($p);
-      $add .= '&tag=parlementaire='.$parlementaire;
+      $parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($p);
+      $request->setParameter('tag', 'parlementaire='.$parlementaire);
     }
-    return $this->redirect('solr/search?query='.$request->getParameter('query').$add);
+
+    return $this->forward('solr', 'search');
   }
 }
