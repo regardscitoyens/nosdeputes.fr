@@ -36,7 +36,7 @@ $menu_citoyen = $selectcitoyen;
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <?php echo stylesheet_tag($style.'/jquery-ui-1.8.5.custom.css'); ?>
-    <?php echo stylesheet_tag($style.'/style.css'); ?>
+    <?php echo stylesheet_tag($style.'/style.v.1660.css'); ?>
     <?php echo stylesheet_tag($style.'/print', array('media' => 'print')); ?>
     <!--[if lte IE 6]>
     <?php echo stylesheet_tag($style.'/ie6'); ?>
@@ -139,4 +139,13 @@ $menu_citoyen = $selectcitoyen;
       </div>
     </div>
   </body>
+<script>
+// Google
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+try {
+  var pageTracker = _gat._getTracker("UA-10423931-2");
+  pageTracker._trackPageview();
+} catch(err) {}
+</script>
 </html>
