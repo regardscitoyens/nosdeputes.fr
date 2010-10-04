@@ -291,7 +291,7 @@ QuestionEcrite:
     Timestampable: ~
     Taggable: ~
     Solrable:
-      description: [Parlementaire, question, ministere, reponse, themes]
+      description: [question, ministere, reponse, themes]
       moretags: [Parlementaire, ministere, motif_retrait, themes]
       date: last_date
   columns:
