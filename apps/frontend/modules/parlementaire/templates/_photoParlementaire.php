@@ -1,4 +1,5 @@
 <?php 
+$add='';
 if (isset($flip) && $flip)
   $add = '&flip='.$flip;
 if ($parlementaire->slug)
