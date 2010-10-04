@@ -23,8 +23,8 @@ Personnalite:
 Parlementaire:
   actAs:
     Solrable:
-      title: [nom, long_statut]
-      extra_weight: 2
+      title: [nom, statut]
+      extra_weight: 3
       description: [villes]
       moretags: [profession]
   columns:
