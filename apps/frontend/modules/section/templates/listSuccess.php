@@ -29,7 +29,7 @@ foreach($sections as $s) if ($s->titre) {
     echo 's';
   if ($s->nb_commentaires > 0)
     echo '</span>';
-  if ($order != 'date' && $s->nb_interventions > 0)
+  if ($order != 'date' && ($s->nb_interventions > 0 || $s->nb_commentaires > 0))
     echo ', ';
   if ($order != 'date')
     echo $moisactuel;
