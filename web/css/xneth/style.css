@@ -224,7 +224,7 @@ a:hover {
 .box_tags {
   border: 1px solid #DBDBDB;
   width: 463px;
-  height: 370px;
+  height: 400px;
   background-color: #FAFAFA;
   float: left;
 }
@@ -235,7 +235,7 @@ a:hover {
   margin-bottom: 16px;
   float: right;
   margin-right: 5px;
-  height: 370px
+  height: 400px
 }
 
 .box_container {
