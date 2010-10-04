@@ -82,7 +82,7 @@
    if (!xmlhttp && window.createRequest)
     { try { xmlhttp = window.createRequest(); } catch (e) { xmlhttp=false; } }
 
-   xmlhttp.open("GET", pMap_URL + "?Seed=" + Math.random(),true);
+   xmlhttp.open("GET", pMap_URL, true);
    xmlhttp.onreadystatechange=function() {
 
     if (xmlhttp.readyState==4)
