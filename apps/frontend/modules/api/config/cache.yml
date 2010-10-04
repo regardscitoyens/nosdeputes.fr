@@ -1,0 +1,3 @@
+all:
+   enabled: true
+   lifetime: 86000
