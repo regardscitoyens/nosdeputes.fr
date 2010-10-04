@@ -108,7 +108,7 @@ class Organisme extends BaseOrganisme
   }
 
   public function getHasParlementaires() {
-    if ($this->getParlementaires())
+    if (count($this->getParlementaires()))
       return true;
     return false;
   }
