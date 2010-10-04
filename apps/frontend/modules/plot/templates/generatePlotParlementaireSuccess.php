@@ -38,7 +38,7 @@ if ($link === 'true') {
 
 if ($drawAction === "map" ) {  
   $Test = new xsPChart(800,$size);  
-  $Test->getImageMap($mapId);
+  $Test->getImageMap($mapId, FALSE);
 }
 
 $DataSet = new xsPData();

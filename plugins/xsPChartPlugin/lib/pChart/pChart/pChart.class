@@ -2831,7 +2831,7 @@
        echo $MapContent;
 
        if ( $Flush )
-     //   unlink($FileName);
+        unlink($FileName);
 
        exit();
       }
