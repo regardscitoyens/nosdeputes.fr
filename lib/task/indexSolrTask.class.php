@@ -16,7 +16,7 @@ class indexSolrTask extends sfBaseTask
     $this->namespace = 'index';
     $this->name = 'Solr';
     $this->briefDescription = 'Index db value on solr';
-    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
     $this->addOption('removeAll', null, sfCommandOption::PARAMETER_OPTIONAL, 'Drop solr database (=no|yes no default)', 'no');
     $this->addOption('all', null, sfCommandOption::PARAMETER_OPTIONAL, 'Reindex all the database (=no|yes no default)', 'no');
@@ -59,6 +59,7 @@ class indexSolrTask extends sfBaseTask
  
   protected function execute($arguments = array(), $options = array())
   {
+    $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['dev'], true);
     $manager = new sfDatabaseManager($this->configuration);    
 
     $solr = new SolrConnector();
