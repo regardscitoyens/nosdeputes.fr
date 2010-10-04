@@ -37,7 +37,7 @@ class Citoyen extends BaseCitoyen
   }
 
   public function getParametres() {
-    $a = unserialize($this->_get('parameters'));
+    $a = unserialize($this->_get('parametres'));
     if (!is_array($a)) {
       $a = array();
     }
