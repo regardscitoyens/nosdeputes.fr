@@ -67,7 +67,6 @@ class myTools {
   }
  
   public static function displayDateTime($d) { 
-    $d = preg_replace ('/\-/', '', $d);
     $date = self::displayShortDate($d)." à "; 
     $date = $date.substr($d,11,5);     // heures et minutes 
     return $date; 
