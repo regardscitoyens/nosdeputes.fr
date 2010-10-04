@@ -1,0 +1,17 @@
+#!/bin/bash
+
+#LOCK
+LOCK="/tmp/sendAlert.bash.lock"
+if test -e $LOCK ;
+then
+	echo Script locké par $(cat $LOCK) : $LOCK
+	exit 1;
+fi
+
+echo $$ > $LOCK
+
+while ! php symfony send:Alert ; do
+sleep 1
+done
+
+rm $LOCK ;
