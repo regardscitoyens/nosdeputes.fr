@@ -175,4 +175,11 @@ class Amendement extends BaseAmendement {
   public function getLinkPDF() {
     return preg_replace('/\/amendement/', '/pdf/amendement', preg_replace('/\.asp(.*)$/', '.pdf', $this->source));
   }
+
+  public function getIsLastVersion() {
+    if ($this->sort === "Rectifié")
+      return false;
+    return true;
+  }
+
 }

@@ -250,6 +250,7 @@ Amendement:
       description: [expose, texte, signataires]
       moretags: [Parlementaires, sort]
       date: date
+      index_if: is_last_version
   columns:
     source:
       type: string(255)
