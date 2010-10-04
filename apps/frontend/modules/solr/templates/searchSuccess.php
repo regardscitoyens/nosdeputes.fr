@@ -266,7 +266,8 @@ $facetName2HumanName = array(
 			     'Tags' => 'Filtrer par tags',
                              'Intervention' => 'Interventions',
                              'Amendement' => 'Amendements',
-                             'Commentaire' => 'Commentaires'
+                             'Commentaire' => 'Commentaires',
+                             'Section' => 'Dossiers'
 );
 function facet2Human($id, $facet = "") {
   global $facetName2HumanName;
