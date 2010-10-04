@@ -326,16 +326,7 @@ function facet2Human($id, $facet = "") {
   <?php endforeach; ?>
 </div>
 <div class="pager">
-  <div class="next">
-  <?php
-  if ($results['end']-1 != $results['numFound']) {
-    $newargs = $selected;
-    $newargs['page'][$results['page'] + 1] = 1;
-    echo link_search('page suivante', $query, $newargs, 0); 
-  }
-  ?>
-  </div>
-  <div class="last">
+  <span class="last">
   <?php
   $newargs = $selected;
   $newargs['page'][$results['page'] - 1] = 1;
@@ -345,7 +336,16 @@ function facet2Human($id, $facet = "") {
     echo link_search('page précédente', $query, $newargs, 0); 
   }
   ?>
-  </div>
+  </span>
+  <span class="next">
+  <?php
+  if ($results['end']-1 != $results['numFound']) {
+    $newargs = $selected;
+    $newargs['page'][$results['page'] + 1] = 1;
+    echo link_search('page suivante', $query, $newargs, 0); 
+  }
+  ?>
+  </span>
 </div>
 </div>
 <?php if (!$ajax) : ?>

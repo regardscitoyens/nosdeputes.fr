@@ -1,10 +1,4 @@
-_groupes:
-  enabled: true
-  lifetime: 86400
-_getParlData:
-  enabled: true
-  lifetime: 86400
-_getGroupesData:
+all:
   enabled: true
   lifetime: 86400
 
