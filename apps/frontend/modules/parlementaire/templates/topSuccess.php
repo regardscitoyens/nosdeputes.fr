@@ -48,12 +48,12 @@ $bulles = array("",
   <tr>
     <th class="<?php echo $class['parl']; ?>">&nbsp;</th>
     <th title="Trier par : Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', $top_link.'sort=1'); ?></th>
-    <th title="Commission -- Nombre de séances de commission auxquelles le député a participé" colspan="2" class="jstitle <?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
-    <th title="Hémicycle -- Nombre d'interventions du député en séances d'hémicycle" colspan="2" class="jstitle <?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
-    <th title="Amendements -- Nombre d'amendements signés par le député" colspan="2" class="jstitle <?php if ($sort == 6 || $sort == 7) echo 'tr_odd';?>">Amendements</th>
-    <th title="Trier par : Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur"class="jstitle <?php if ($sort == 8) echo 'tr_odd';?>"><?php echo link_to('Rapports', $top_link.'sort=8'); ?></th>
-    <th title="Propositions de loi -- Nombre de propositions de loi ou de résolution dont le député est signataire" colspan="2" class="jstitle <?php if ($sort == 9 || $sort == 10) echo 'tr_odd';?>">Propositions</th>
-    <th title="Questions -- Nombre de questions au gouvernement formulées par le député" colspan="2" class="jstitle <?php if ($sort == 11 || $sort == 12) echo 'tr_odd';?>">Questions</th>
+    <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
+    <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
+    <th colspan="2" class="<?php if ($sort == 6 || $sort == 7) echo 'tr_odd';?>">Amendements</th>
+    <th title="Trier par : Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur" class="jstitle <?php if ($sort == 8) echo 'tr_odd';?>"><?php echo link_to('Rapports', $top_link.'sort=8'); ?></th>
+    <th colspan="2" class="<?php if ($sort == 9 || $sort == 10) echo 'tr_odd';?>">Propositions</th>
+    <th colspan="2" class="<?php if ($sort == 11 || $sort == 12) echo 'tr_odd';?>">Questions</th>
     <th style="width:10px;"/>
   </tr>
   <tr>
