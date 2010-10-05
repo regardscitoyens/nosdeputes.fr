@@ -186,13 +186,12 @@ if($graph) {
    <span>Affiner par date :</span> <span id="periode"><?php echo $periode_text; ?></span>
   <div class="date" style="width: <?php echo $width_date ?>px;">
   <ul>
-    <?php $i = 0; foreach($fdates['values'] as $date => $nb) :
-    $i++;
+    <?php $i = 0; foreach($fdates['values'] as $date => $nb) :    
     $height = round($nb['pc']*100/($fdates['max']) * 2);
     $padding = 200-$height; 
-    $left = $left + $width; if($i < (count($fdates['values']))) { $left = $left + $espacement; }
-    $newargs = $selected;
+    if($i != 0) { $left = $left + $width; } if($i < (count($fdates['values']))) { $left = $left + $espacement; }
     
+    $newargs = $selected;
     $newargs['date'] = $date.'%2C'.$date;
     
     if(($vue == 'jour') or ($vue == 'par_jour') or ($vue == 'mois')){ 
@@ -208,7 +207,7 @@ if($graph) {
     echo '<li title="'.$title_date.'" class="jstitle" style="list-style-image: none; width: '.$width.'px; height: '.$height.'px; left: '.$left.'px;">'; 
     echo '<div class="hover_graph" style="width: '.$width.'px; height: '.$padding.'px;	bottom: '.$height.'px;"></div><span class="text_graph">'.link_search($nb['nb'], $query, $newargs, array()).'</span>'; 
     
-    # echo ' '.$nb['nb'].' résultats ('; printf('%02d', $nb['pc']*100/($fdates['max'])); echo '%)';
+    $i++;
     ?>
     </li>
     <?php endforeach; ?>
