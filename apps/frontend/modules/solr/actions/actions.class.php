@@ -205,6 +205,8 @@ class solrActions extends sfActions
       $res = $this->results['docs'][$i];
       $obj = $res['object'];
       $this->results['docs'][$i]['link'] = $obj->getLink();
+      if (get_class($obj) === 'Commentaire')
+        $this->results['docs'][$i]['link'] .= "#commentaire_".$obj->id;
       $this->results['docs'][$i]['photo'] = $this->getPhoto($obj);
       $this->results['docs'][$i]['titre'] = $obj->getTitre();
       switch(get_class($obj)) {
