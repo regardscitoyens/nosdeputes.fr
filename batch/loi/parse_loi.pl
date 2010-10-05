@@ -205,6 +205,9 @@ foreach $line (split /\n/, $string) {
             $num_article ++;
             $exposearticle = $tmp_expose;
           }
+        } elsif ($loi == 2760) {
+          checkout_present_article();
+          checkout_chapitre();
         }
       }
       reset_vars();
@@ -214,21 +217,21 @@ foreach $line (split /\n/, $string) {
     
     if ($zone == 2) {
 
-      if ($content =~ /\*\*\*/) {
+      if ($content =~ /(\*\*\*|<b>.*(chap|t)itre\s+(premier|[IVX]+[eE]?[rR]?).*<\/b>)/) {
         checkout_present_article();
         checkout_section();
         checkout_chapitre();
         $check = 1;
-        next;
+        if ($content =~ /\*\*\*/) {
+          next;
+        }
       }
       if ($check == 1 && $content =~ /(chap|t)itre\s+(premier|[IVX]+[eE]?[rR]?),?(<|\s+)/) {
         if ($chapitre == 0) {
           checkout_loi();
         }
         $chapitre++;
-        if ($chapitre != 4 && $chapitre != 2) {
-          $exposechapitre .= '<p>'.$content.'</p>';
-        }
+        $exposechapitre .= '<p>'.$content.'</p>';
         $section = 0;
         $check = 0;
         if ($loi == 1890) {
@@ -256,7 +259,7 @@ foreach $line (split /\n/, $string) {
       if ($chapitre == 0) {
         $expose .= '<p>'.$content.'</p>';
       } else {
-        if ($content =~ /article/i) {
+        if ($content =~ /<b>.*article.*<\/b>/i) {
           $content =~ s/M\./M /g;
           $texteassemble = '';
           while ($content =~ /<(a\s+href=["'][^"']*\.[^"']*["'])>/i) {
@@ -269,9 +272,12 @@ foreach $line (split /\n/, $string) {
                 next;
               }
             }
-            if ($phrase =~ /articles?\s+(\d+)/i && ($num_article + 1 == $1)) {
+            if ($phrase =~ /<b>.*articles?\s+(\d+).*<\/b>/i && (($num_article + 1 == $1) || ($loi == 2760 && $num_article == 6))) {
               checkout_present_article();
               $num_article = $1;
+              if ($loi == 2760 && $num_article == 6) {
+                $num_article = 7;
+              }
             }
             if ($num_article != 0) {
               $texteassemble .= $phrase.'. ';
@@ -280,18 +286,18 @@ foreach $line (split /\n/, $string) {
           if (!$texteassemble =~ /^$/) {
             $exposearticle .= '<p>'.$texteassemble.'</p>';
           }
-          if (!($exposearticle =~ /article\s+($num_article)/)) {
-            if ($section != 0 && !($exposesection =~ /$content/)) {
-              $exposesection .= '<p>'.$content.'</p>';
-            }
-            elsif (!($exposechapitre =~ /$content/)) {
-              $exposechapitre .= '<p>'.$content.'</p>';
-            }
-          }
+  #        if (!($exposearticle =~ /article\s+($num_article)/)) {
+  #          if ($section != 0 && !($exposesection =~ /$content/)) {
+  #            $exposesection .= '<p>'.$content.'</p>';
+  #          }
+  #          elsif (!($exposechapitre =~ /$content/)) {
+  #            $exposechapitre .= '<p>'.$content.'</p>';
+  #          }
+  #        }
         } elsif ($section != 0 && !($exposesection =~ /$content/)) {
           $exposesection .= '<p>'.$content.'</p>';
-        } elsif (!($exposearticle =~ /article\s+($num_article)/) && !($exposechapitre =~ /$content/)) {
-          $exposechapitre .= '<p>'.$content.'</p>';
+#        } elsif (!($exposearticle =~ /article\s+($num_article)/) && !($exposechapitre =~ /$content/)) {
+#          $exposechapitre .= '<p>'.$content.'</p>';
         } elsif (!$exposearticle =~ /^$/) {
           $exposearticle .= '<p>'.$content.'</p>';
         }

@@ -590,7 +590,7 @@ Texteloi:
     Taggable: ~
     Solrable:
       title: [titre]
-      description: [contenu, annexe, signataires]
+      description: [contenu, id]
       moretags: [categorie, type, Organisme, Parlementaires]
       date: date
   columns:

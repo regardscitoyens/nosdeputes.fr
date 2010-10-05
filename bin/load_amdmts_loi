@@ -2,7 +2,7 @@
 
 loi=$1
 
-cd /home/nosdeputes/prod
+cd /home/nosdeputes/project
 
 # Récupération et création des JSON
 

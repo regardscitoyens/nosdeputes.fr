@@ -4,6 +4,16 @@ prod:
     param:
       level:   err
       loggers: ~
+  view_cache:
+    class: sfMemcacheCache
+    param:
+      lifetime:                  86400
+      prefix:                    some_prefix
+      persistent:       false
+      servers:
+        server_01:
+          host: localhost
+          post: 11211
 
   mailer:
     param:

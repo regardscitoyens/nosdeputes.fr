@@ -207,6 +207,12 @@ class solrActions extends sfActions
       $this->results['docs'][$i]['link'] = $obj->getLink();
       $this->results['docs'][$i]['photo'] = $this->getPhoto($obj);
       $this->results['docs'][$i]['titre'] = $obj->getTitre();
+      switch(get_class($obj)) {
+        case 'Section':
+          $this->results['docs'][$i]['titre'] = "Dossier : ".$this->results['docs'][$i]['titre'];
+        case 'Commentaire':
+          $this->results['docs'][$i]['titre'] = "Commentaire ".preg_replace('/^./', strtolower($this->results['docs'][$i]['titre']{0}), $this->results['docs'][$i]['titre']);
+      }
       $this->results['docs'][$i]['personne'] = $obj->getPersonne();
       if (isset($results['highlighting'][$res['id']]['text'])) {
         $high_res = array();

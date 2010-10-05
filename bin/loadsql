@@ -12,5 +12,5 @@
 php symfony doctrine:build-all-reload --no-confirmation
 #cat /tmp/delete.sql | mysql $MYSQLID $DBNAME
 #rm /tmp/tables.sql /tmp/drop.sql /tmp/create.sql /tmp/delete.sql
-zcat data/sql/data.sql.gz | mysql $MYSQLID $DBNAME
+zcat data/sql/data.sql.gz | grep -v 'rate_commentaire' | mysql $MYSQLID $DBNAME
 #php symfony set:Vacances
