@@ -232,7 +232,7 @@ endif;
   } ?>
 <table width=100% style="text-align: center"><tr>
        <td><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>"><?php echo image_tag('xneth/email.png', 'alt="Email"'); ?></a><br/><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>">par email</a></td>
-       <td><a href="<?php $newargs_rss = $selected; $newargs_rss['format']['rss'] = 'rss'; if (isset($newargs_rss['date'])) unset($newargs_rss['date']); echo url_for(url_search($query, $newargs_rss)); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for(url_search($query, $newargs_rss)); ?>">par RSS</a></td>
+       <td><a href="<?php $newargs_rss = $selected; $newargs_rss['format']['rss'] = 'rss'; if (isset($newargs_rss['date'])) unset($newargs_rss['date']); if (isset($newargs_rss['sort'])) unset($newargs_rss['sort']); echo url_for(url_search($query, $newargs_rss)); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for(url_search($query, $newargs_rss)); ?>">par RSS</a></td>
 </tr></table></div></div>
 <?php
 global $facetName2HumanName;
