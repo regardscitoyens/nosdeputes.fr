@@ -204,17 +204,16 @@ class solrActions extends sfActions
     for($i = 0 ; $i < count($this->results['docs']) ; $i++) {
       $res = $this->results['docs'][$i];
       $obj = $res['object'];
+      $objclass = get_class($obj);
       $this->results['docs'][$i]['link'] = $obj->getLink();
-      if (get_class($obj) === 'Commentaire')
+      if ($objclass === 'Commentaire')
         $this->results['docs'][$i]['link'] .= "#commentaire_".$obj->id;
       $this->results['docs'][$i]['photo'] = $this->getPhoto($obj);
       $this->results['docs'][$i]['titre'] = $obj->getTitre();
-      switch(get_class($obj)) {
-        case 'Section':
-          $this->results['docs'][$i]['titre'] = "Dossier : ".$this->results['docs'][$i]['titre'];
-        case 'Commentaire':
-          $this->results['docs'][$i]['titre'] = "Commentaire ".preg_replace('/^./', strtolower($this->results['docs'][$i]['titre']{0}), $this->results['docs'][$i]['titre']);
-      }
+      if ($objclass === 'Section')
+        $this->results['docs'][$i]['titre'] = "Dossier : ".$this->results['docs'][$i]['titre'];
+      else if ($objclass === 'Commentaire')
+        $this->results['docs'][$i]['titre'] = "Commentaire ".preg_replace('/^./', strtolower($this->results['docs'][$i]['titre']{0}), $this->results['docs'][$i]['titre']);
       $this->results['docs'][$i]['personne'] = $obj->getPersonne();
       if (isset($results['highlighting'][$res['id']]['text'])) {
         $high_res = array();

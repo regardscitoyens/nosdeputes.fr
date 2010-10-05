@@ -38,8 +38,8 @@ a:hover {
 .date {
 	border-bottom: 1px solid #E0E0DD;
 	width: 650px;
-	max-height: 200px;
-        min-height: 80px;
+	max-height: 80px;
+        min-height: 70px;
 	margin: 0;
 	padding: 0;
   margin-left: 7px;
