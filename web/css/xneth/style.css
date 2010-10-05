@@ -1631,8 +1631,9 @@ h2 {
     margin-left: 300px;
     padding: 30px;
 }
-.accueil .carte .message form {
-    text-align: center;
+.accueil .carte .message form input,small {
+    margin-left: 12px;
+    color: grey;
 }
 .accueil .carte_departement{
     height: 250px;

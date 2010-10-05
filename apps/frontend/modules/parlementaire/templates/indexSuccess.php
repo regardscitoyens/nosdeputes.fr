@@ -171,13 +171,14 @@
   <div class="carte">
   <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png" /></span>Trouver son député</h2>
     <div class="cont_box_news">
-	  <p><a href="<?php echo url_for('@list_parlementaires_circo'); ?>"><?php include_partial('circonscription/mapDepartement', array('circo' => "full", 'width'=>200, 'height'=>0)); ?></a></p>
+	  <?php include_partial('circonscription/mapDepartement', array('width'=>0, 'height'=>200, 'link' => true)); ?>
 	  </div>
 	  <div class="message">
 	  <p>Pour retrouver votre député sur le site, vous pouvez saisir son nom.</p>
           <p>Si vous ne le connaissez pas, indiquez votre code postal ou le nom de votre commune, et nous essaierons de le trouver pour vous&nbsp;:</p>
 	  <form action="<?php echo url_for('solr/search?object_name=Parlementaire'); ?>">
-	  <input name="search"/><input type="hidden" name="object_name" value="Parlementaire"/><input type="submit" value="Trouver mon député"/>
+	  <input size="38" name="search"/><input type="hidden" name="object_name" value="Parlementaire"/><input type="submit" value="Trouver mon député"/>
+          <div><small><em>Exemples : patrick, 77840, saint-herblain, trois rivières, ...</em></small></div>
 	  </form>
 	  </div>
     </div>

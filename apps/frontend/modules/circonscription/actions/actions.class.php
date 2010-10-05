@@ -249,16 +249,18 @@ class circonscriptionActions extends sfActions
     return $dom;
   }
 
-  public static function echoDeptmtsMap($w, $h) {
+  public static function echoDeptmtsMap($w, $h, $link) {
     $dom = self::generateSvgDep($w, $h);
     $r = self::compute_areas($dom, $w, $h, '/^d\d+/', 1);
     $w = $r['w'];
     $h = $r['h'];
 
     $src = url_for("@deptmts_image_png?w=$w&h=$h");
-
+    
+    if ($link) echo '<a href="'.url_for('@list_parlementaires_circo').'">';
     echo "<img alt=\"Carte issue de Wikipedia : Départements et régions de France par Bayo (sous licence GFDL)\" class=\"carte_departement\" src=\"$src\" usemap=\"#deptmts\" ";
     echo 'style="width:'.$w.'px; height:'.$h.'px;" />';
+    if ($link) echo '</a>';
     echo "<map name=\"deptmts\" id=\"deptmts\">";
     echo $r['areas'];
     echo "</map>";
