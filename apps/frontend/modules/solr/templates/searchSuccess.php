@@ -196,7 +196,7 @@ if($graph) {
     $newargs['date'] = $date.'%2C'.$date;
     
     if(($vue == 'jour') or ($vue == 'par_jour') or ($vue == 'mois')){ 
-      $title_date = myTools::displayShortDate($date).' -- '.$nb['nb'].' résultats';
+      $title_date = myTools::$day_week[date('w', strtotime($date))]." ".myTools::displayShortDate($date).' -- '.$nb['nb'].' résultats';
     }
     if($vue == 'par_mois') { 
       $title_date = ucfirst(myTools::displayMoisAnnee($date)).' -- '.$nb['nb'].' résultats';
