@@ -174,10 +174,11 @@ $(document).ready(function() {
 
 <div class="solr">
   <?php include_partial('solr/searchbox'); ?>
+<div class="solrleft">
 <h1><?php echo $intitule_resultats; ?></h1>
 <?php 
 if($graph) { 
-  $width_date = 900;
+  $width_date = 650;
   $left = 2;
   $espacement = 4;
   $width = (($width_date - $left) / count($fdates['values'])) - $espacement;
@@ -215,27 +216,6 @@ if($graph) {
   </div>
   <div id="slider_date_graph"></div>
 </div>
-<?php } ?>
-<div id="results_container">
-<?php 
-endif; 
-///////////////////// FIN SANS AJAX /////////////////////
-?>
-<div class="nb_results">
-  <h2>Résultats <?php echo $results['start']+1; ?> à <?php echo min($results['end'],$results['numFound']); ?> sur <?php echo $results['numFound']; ?> <strong>triés par <?php echo $sort_type; ?></strong>&nbsp;&mdash; 
-  <span class="tri">
-  <?php 
-  $newargs = $selected;
-  if ($sort) {
-    if (isset($newargs['sort'])) { $newargs['sort'] = 0; }
-    echo link_search('trier par pertinence', $query, $newargs, 0); 
-  } 
-  else {
-    $newargs['sort'] = 1;
-    echo link_search('trier par date', $query, $newargs, 0); 
-  }
-  ?>
-  </span></h2>
 </div>
 <div class="options">
   <div class="mail">
@@ -250,9 +230,12 @@ endif;
   } ?>
 <table width=100% style="text-align: center"><tr>
        <td><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>"><?php echo image_tag('xneth/email.png', 'alt="Email"'); ?></a><br/><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>">par email</a></td>
-       <td><a href="<?php $newargs_rss = $selected; $newargs_rss['format']['rss'] = 'rss'; echo url_for(url_search($query, $newargs_rss)); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for(url_search($query, $newargs_rss)); ?>">par RSS</a></td>
-</tr></table>
-<?php
+       <td><a href="<?php $newargs_rss = $selected; $newargs_rss['format']['rss'] = 'rss'; if (isset($newargs_rss['date'])) unset($newargs_rss['date']); echo url_for(url_search($query, $newargs_rss)); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for(url_search($query, $newargs_rss)); ?>">par RSS</a></td>
+</tr></table></div></div>
+<?php }
+endif;
+///////////////////// FIN SANS AJAX /////////////////////
+
 global $facetName2HumanName;
 $facetName2HumanName = array(
 			     'Parlementaires' => 'Filtrer par député',
@@ -278,7 +261,8 @@ function facet2Human($id, $facet = "") {
   return $facetName2HumanName[$id];
 }
   ?>
-  </div>
+<div id="results_container">
+<div class="options">
   <div class="facets">
   <h3 class="aligncenter">Affiner la recherche</h3>
   <?php 
@@ -309,6 +293,22 @@ function facet2Human($id, $facet = "") {
     </div>
   <?php endif; } ?>
   </div>
+</div>
+<div class="nb_results">
+  <h2>Résultats <?php echo $results['start']+1; ?> à <?php echo min($results['end'],$results['numFound']); ?> sur <?php echo $results['numFound']; ?> <strong>triés par <?php echo $sort_type; ?></strong>&nbsp;&mdash;
+  <span class="tri">
+  <?php
+  $newargs = $selected;
+  if ($sort) {
+    if (isset($newargs['sort'])) { $newargs['sort'] = 0; }
+    echo link_search('trier par pertinence', $query, $newargs, 0);
+  }
+  else {
+    $newargs['sort'] = 1;
+    echo link_search('trier par date', $query, $newargs, 0);
+  }
+  ?>
+  </span></h2>
 </div>
 <div class="results">
   <?php foreach ($results['docs'] as $record) : ?>
