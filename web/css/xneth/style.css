@@ -1631,7 +1631,10 @@ h2 {
     margin-left: 300px;
     padding: 30px;
 }
-.accueil .carte .message form input,small {
+.accueil .carte .message input {
+    margin-left: 12px;
+}
+.accueil .carte .message form small {
     margin-left: 12px;
     color: grey;
 }

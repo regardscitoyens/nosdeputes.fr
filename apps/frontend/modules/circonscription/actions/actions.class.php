@@ -257,7 +257,7 @@ class circonscriptionActions extends sfActions
 
     $src = url_for("@deptmts_image_png?w=$w&h=$h");
     
-    if ($link) echo '<a href="'.url_for('@list_parlementaires_circo').'">';
+    if ($link) echo '<a class="jstitle" title="Tous les départements français" href="'.url_for('@list_parlementaires_circo').'">';
     echo "<img alt=\"Carte issue de Wikipedia : Départements et régions de France par Bayo (sous licence GFDL)\" class=\"carte_departement\" src=\"$src\" usemap=\"#deptmts\" ";
     echo 'style="width:'.$w.'px; height:'.$h.'px;" />';
     if ($link) echo '</a>';
