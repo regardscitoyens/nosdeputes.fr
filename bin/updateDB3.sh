@@ -9,7 +9,7 @@ php symfony doctrine:build --all --no-confirmation
 
 echo "ALTER TABLE parlementaire ADD photo LONGBLOB NULL AFTER profession" | mysql $MYSQLID $DBNAME
 
-zcat ../prod/data/sql/dumps/nosdeputes_prod.100927.sql.gz | mysql --default-character-set=utf8 $MYSQLID $DBNAME
+zcat data/sql/dumps/nosdeputes_prod.100925.sql.gz | mysql --default-character-set=utf8 $MYSQLID $DBNAME
 
 echo "ALTER TABLE parlementaire DROP photo" | mysql $MYSQLID $DBNAME
 

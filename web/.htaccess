@@ -5,16 +5,12 @@ Options +FollowSymLinks +ExecCGI
 
   # uncomment the following line, if you are having trouble
   # getting no_script_name to work
-  RewriteBase /
+  #RewriteBase /
 
   # we skip all files with .something
   #RewriteCond %{REQUEST_URI} \..+$
   #RewriteCond %{REQUEST_URI} !\.html$
   #RewriteRule .* - [L]
-
-  RewriteRule ^simplifions /loi/ta376 [R,L]
-  RewriteRule ^simplifions-la-loi /loi/ta376 [R,L]
-  RewriteRule ^Simplifions-la-loi-2.0 /loi/ta376 [R,L]
 
   # we check if the .html version is here (caching)
   RewriteRule ^$ index.html [QSA]
