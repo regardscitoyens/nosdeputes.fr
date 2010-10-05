@@ -200,8 +200,6 @@ if($graph) {
     }
     if($vue == 'par_mois') { 
       $title_date = ucfirst(myTools::displayMoisAnnee($date)).' -- '.$nb['nb'].' résultats';
-    }
-    if($vue == 'par_mois') { 
       $newargs['date'] = $date.'%2C'.addToDate($date, 'mois');
     }
     
@@ -216,6 +214,10 @@ if($graph) {
   </div>
   <div id="slider_date_graph"></div>
 </div>
+<?php } 
+endif;
+///////////////////// FIN SANS AJAX /////////////////////
+?>
 </div>
 <div class="options">
   <div class="mail">
@@ -232,10 +234,7 @@ if($graph) {
        <td><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>"><?php echo image_tag('xneth/email.png', 'alt="Email"'); ?></a><br/><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>">par email</a></td>
        <td><a href="<?php $newargs_rss = $selected; $newargs_rss['format']['rss'] = 'rss'; if (isset($newargs_rss['date'])) unset($newargs_rss['date']); echo url_for(url_search($query, $newargs_rss)); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for(url_search($query, $newargs_rss)); ?>">par RSS</a></td>
 </tr></table></div></div>
-<?php }
-endif;
-///////////////////// FIN SANS AJAX /////////////////////
-
+<?php
 global $facetName2HumanName;
 $facetName2HumanName = array(
 			     'Parlementaires' => 'Filtrer par député',
@@ -261,13 +260,14 @@ function facet2Human($id, $facet = "") {
   return $facetName2HumanName[$id];
 }
   ?>
+<div class="clear"></div>
 <div id="results_container">
 <div class="options">
   <div class="facets">
   <h3 class="aligncenter">Affiner la recherche</h3>
   <?php 
-  if(isset($newargs['date'])) {
-    $args_sans_date = $newargs;
+  if(isset($selected['date'])) {
+    $args_sans_date = $selected;
     unset($args_sans_date['date']);
     echo '<p><strong>'.link_search('Réinitialiser les dates', $query, $args_sans_date, 0).'</strong></ul>';
   }
