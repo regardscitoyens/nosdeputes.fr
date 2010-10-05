@@ -250,7 +250,7 @@ endif;
   } ?>
 <table width=100% style="text-align: center"><tr>
        <td><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>"><?php echo image_tag('xneth/email.png', 'alt="Email"'); ?></a><br/><a href="<?php echo url_for('alerte/create?filter='.urlencode($args).'&query='.urlencode($query)); ?>">par email</a></td>
-       <td><a href="<?php $newargs = $selected; $newargs['format']['rss'] = 'rss'; echo url_for(url_search($query, $newargs)); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for(url_search($query, $newargs)); ?>">par RSS</a></td>
+       <td><a href="<?php $newargs_rss = $selected; $newargs_rss['format']['rss'] = 'rss'; echo url_for(url_search($query, $newargs_rss)); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for(url_search($query, $newargs_rss)); ?>">par RSS</a></td>
 </tr></table>
 <?php
 global $facetName2HumanName;
