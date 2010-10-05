@@ -385,14 +385,16 @@ class parlementaireActions extends sfActions
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
 
-    $request->setParameter('query', 'tag:"Parlementaire='.$this->parlementaire.'"');
-    $request->setParameter('title', preg_replace('/%/', $this->parlementaire->nom, $request->getParameter('title')));
 
-    if ($o = $request->getParameter('object_type'))
-      $request->setParameter('query', $request->getParameter('query').' object_type='.$o);
-    $request->setParameter('format', 'rss');
-    return $this->forward('solr', 'search');
-
+    if (!$request->getParameter('Document')) {
+      $request->setParameter('query', 'tag:"Parlementaire='.$this->parlementaire.'"');
+      $request->setParameter('title', preg_replace('/%/', $this->parlementaire->nom, $request->getParameter('title')));
+      
+      if ($o = $request->getParameter('object_type'))
+	$request->setParameter('query', $request->getParameter('query').' object_type='.$o);
+      $request->setParameter('format', 'rss');
+      return $this->forward('solr', 'search');
+    }
 
     $this->limit = 30;
 

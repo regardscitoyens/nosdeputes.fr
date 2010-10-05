@@ -474,8 +474,8 @@ parlementaire_questions_rss:
   url: /:slug/questions/rss
   param: {module: parlementaire, action: rss, object_name: QuestionEcrite, title: "Les dernières questions écrites de %"}
 parlementaire_documents_rss:
-  url: /:slug/documents/rss
-  param: {module: parlementaire, action: rss, object_name: Texteloi, title: "Les derniers documents parlementaires signés par %"}
+  url: /:slug/documents/:type/rss
+  param: {module: parlementaire, action: rss, Document: 1}
 parlementaire_documents:
   url: /:slug/documents/:type
   param: {module: documents, action: parlementaire}
