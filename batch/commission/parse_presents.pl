@@ -85,7 +85,7 @@ foreach $line (split /\n/, $string)
     if ($line =~ /\<[a]/i) {
 	if ($line =~ /<a name=["']([^"']+)["']/) {
 	    $source = $url."#$1";
-	}elsif($line =~ /<a[^>]+>([^<]+)</) {
+	}elsif($line =~/class="menu"/ && $line =~ /<a[^>]+>([^<]+)</) {
 	    $test = $1;
 	    if (!$commission && $test =~ /Commission|mission/) {
 		$test =~ s/ Les comptes rendus de la //;
