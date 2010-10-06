@@ -23,9 +23,9 @@ sub infosgene {
     $depute{'Nom'} = $p->get_text("/li");
     $depute{'Sexe'} = ($depute{'Nom'} =~ /M[ml]/) ? 'F' : 'H';
     $depute{'Nom'} =~ s/^\s*M\S+\s//;
-    while($t = $p->get_tag('u', '/div')) {
+    while($t = $p->get_tag('span', '/div')) {
 	return if ($t->[0] eq '/div');
-	$txt = $p->get_text('/u');
+	$txt = $p->get_text('/span');
 	$txt =~ /^(\S+)\s*/;
 	$e = $1;
 	$p->get_tag('td');
@@ -47,9 +47,9 @@ sub infosgene {
 
 sub contact {
     $p = shift;
-    while($p->get_tag('u', '/div')) {
+    while($p->get_tag('span', '/div')) {
 	last if ($t->[0] =~ /^\//);
-	$_ = $p->get_text('/u');
+	$_ = $p->get_text('/span');
 	if (/Mél/) {
 	    $_ = $p->get_text('/li');
 	    if (/MAILTO:([^_]+)_([\w\-]+)/i) {
@@ -82,9 +82,9 @@ sub contact {
 
 sub mandat {
     $p = shift;
-    while ($t = $p->get_tag('u', '/div')) {
+    while ($t = $p->get_tag('span', '/div')) {
 	last if ($t->[0] =~ /^\//);
-	$_ = $p->get_text('/u');
+	$_ = $p->get_text('/span');
 	if (/Mandat|Commission|Mission/) {
 	    $text = $p->get_text('ul');
 	    if ($text =~ /Date de début de mandat : ([\d\/]+) /) {
@@ -150,7 +150,7 @@ sub place {
     }
 }
 
-while($t = $p->get_tag("h1", "img")) {
+while($t = $p->get_tag("h2", "img")) {
     if ($t->[0] eq 'img') {
 	if (! $depute{'photo'} && $t->[1]{'src'} =~ /photo/) {
 	    $img = $t->[1]{'src'};
@@ -161,7 +161,7 @@ while($t = $p->get_tag("h1", "img")) {
 	}
 	next;
     }
-    $_ = $p->get_text('/h1');
+    $_ = $p->get_text('/h2');
     if (/Informations générales/) {
 	infosgene($p);
     }elsif (/Contacts et site internet/) {
