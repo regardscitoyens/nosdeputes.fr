@@ -57,7 +57,7 @@ class Intervention extends BaseIntervention
     $this->setFonction($fonction);
     if (!preg_match('/ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux/i', $fonction)) { 
       $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
-      if (!$personne && ($this->type != "commission" || $fonction == null || preg_match('/(rapporteur|président)/i', $fonction))) {
+      if (!$personne && ($this->type != "commission" || $fonction == null || preg_match('/(rapporteur|présidente?$)/i', $fonction))) {
 	$personne = Doctrine::getTable('Parlementaire')->similarTo($nom);
       }
       if ($personne) {
