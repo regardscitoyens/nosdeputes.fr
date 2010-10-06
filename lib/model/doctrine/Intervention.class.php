@@ -71,15 +71,22 @@ class Intervention extends BaseIntervention
       $personne->save();
     }
     if ($personne) {
-      return $this->setPersonnalite($personne,$fonction);
+      return $this->setPersonnalite($personne);
     }
   }
   public function setParlementaire($parlementaire, $from_db = null) {
     if (isset($parlementaire->id)) {
       $this->_set('parlementaire_id', $parlementaire->id);
+      $this->_set('personnalite_id', null);
       if (!$from_db)
         $this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);
       $parlementaire->free();
+    }
+  }
+  public function setPersonnalite($personne) {
+    if (isset($personne->id)) {
+      $this->_set('parlementaire_id', null);
+      $this->_set('personnalite_id', $personne->id);
     }
   }
 
