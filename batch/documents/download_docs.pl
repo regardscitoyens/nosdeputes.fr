@@ -33,6 +33,7 @@ foreach $baseurl ("http://www.assemblee-nationale.fr/13/documents/index-depots.a
     next if $url =~ /(dossiers|i0562.asp)/i;
     next if $url =~ /\.pdf$/i;
     next if !($url =~ /nale\.fr\/13\//);
+    next if $url =~ /app\.readspeaker\.com/i;
     $ct++;
     $file = $url;
     $file =~ s/\//_/gi;
