@@ -67,7 +67,7 @@ foreach $baseurl ("http://www.assemblee-nationale.fr/13/documents/index-depots.a
           rename "$type/$file.tmp", "$type/$file";
           print "$type/$file\n";
         } else {
-          unlink("/$type/$file.tmp");
+          unlink("$type/$file.tmp");
         }
       }
       $a->back();
