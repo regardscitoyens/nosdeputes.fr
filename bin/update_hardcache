@@ -17,5 +17,5 @@ do
 	mv TMPFILE web/seance/$seance_id.html
 done
 rm cache/frontend/prod/template/www_nosdeputes_fr/all/intervention/seance/seance/*
-rm cache/frontend/prod/template/www_nosdeputes_fr/all/sf_cache_partial/plot/_groupes/sf_cache_key/*
+rm cache/frontend/prod/template/www_nosdeputes_fr/all/sf_cache_partial/plot/__groupes/sf_cache_key/*
 
