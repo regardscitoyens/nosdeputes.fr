@@ -4,6 +4,7 @@ use WWW::Mechanize;
 use HTML::TokeParser;
 
 @url = (
+    "http://www.assemblee-nationale.fr/13/cri/2010-2011/",
     "http://www.assemblee-nationale.fr/13/cri/2009-2010-extra2/",
     "http://www.assemblee-nationale.fr/13/cri/2009-2010-extra/",
     "http://www.assemblee-nationale.fr/13/cri/2009-2010/",
