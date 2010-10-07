@@ -48,10 +48,6 @@ class solrActions extends sfActions
     
     $query = preg_replace('/\*/', '', $this->query);
 
-    if (!strlen($query)) {
-      $query = '*';
-    }
-
     $nb = 20;
     $deb = ($request->getParameter('page', 1) - 1) * $nb ;
     $fq = '';
@@ -67,6 +63,10 @@ class solrActions extends sfActions
         $this->selected['tag'][$tag] = 1;
         $fq .= ' tag:"'.$tag.'"';
       }
+    }
+
+    if (!strlen($fq)) {
+      $fq = '*';
     }
 
     //Récupère les résultats auprès de SolR
@@ -196,7 +196,7 @@ class solrActions extends sfActions
     }
     catch(Exception $e) {
       $results = array('response' => array('docs' => array(), 'numFound' => 0));
-      $this->getUser()->setFlash('error', 'Désolé, le moteur de recherche est indisponible pour le moment');
+      $this->getUser()->setFlash('error', 'Désolé, le moteur de recherche est indisponible pour le moment. <!-- '.$query." $e".' -->');
     }
     
     if  (!$format && count($results['response']['docs']) == 1 && $results['response']['docs'][0]['object_name'] == 'Parlementaire') {
@@ -219,7 +219,7 @@ class solrActions extends sfActions
       else if ($objclass === 'Commentaire')
         $this->results['docs'][$i]['titre'] = "Commentaire ".preg_replace('/^./', strtolower($this->results['docs'][$i]['titre']{0}), $this->results['docs'][$i]['titre']);
       $this->results['docs'][$i]['personne'] = $obj->getPersonne();
-      if (isset($results['highlighting'][$res['id']]['text'])) {
+      if ($this->query && isset($results['highlighting'][$res['id']]['text'])) {
         $high_res = array();
         foreach($results['highlighting'][$res['id']]['text'] as $h) {
           $h = preg_replace('/.*=/', '', $h); 
