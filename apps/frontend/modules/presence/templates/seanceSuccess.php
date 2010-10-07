@@ -9,15 +9,15 @@ if ($seance->type == 'commission')
   echo include_component('plot', 'groupes', array('plot' => 'seance_com_'.$seance->id, 'nolink' => true)); ?>
 </div>
   <div class="photos"><p>
-  <?php $ntot = count($presents); $line = floor($ntot/(floor($ntot/16)+1)); $ct = 0; foreach ($presents as $presence) {
-    $depute = $presence->getParlementaire();
-    $titre = $depute->nom.', '.$depute->groupe_acronyme;
-    //    if ($ct != 0 && $ct != $ntot-1 && !($ct % $line)) echo '<br/>'; $ct++;
-    echo '<a href="'.url_for($depute->getPageLink()).'">';
-    include_partial('parlementaire/photoParlementaire', array('parlementaire' => $depute, 'height' => 64));
-    echo '</a>&nbsp;';
-  } ?></p></div>
-
+  <?php $deputes = array();
+    $ntot = 0;
+    foreach ($presents as $presence) {
+      $ntot++;
+      $deputes[] = $presence->getParlementaire();
+    }
+    include_partial('parlementaire/photos', array('deputes' => $deputes));
+  ?>
+  </p></div>
 <ul>
 <?php $nb = count($intervenants);
 $interv = array();
