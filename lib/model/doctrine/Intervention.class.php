@@ -14,6 +14,23 @@ class Intervention extends BaseIntervention
     return $this->getNomAndFonction();
   }
 
+  public function getFullDate() {
+    $datetime = strtotime($this->date);
+    $moment = $this->Seance->moment;
+    $heuretime = "10:00";
+    if (preg_match('/\d:\d/', $moment))
+      $heuretime = $moment;
+    else if (preg_match('/^(\d)/', $moment, $match))
+      $heuretime = sprintf('%02d', 10+4*($match[1]-1)).':00';
+    $datetime += strtotime($heuretime) - strtotime(today);
+    $timestamp = $this->timestamp;
+    $len = strlen($timestamp);
+    if ($len > 6)
+      $timestamp = substr($timestamp, $len-6, 6) + 0;
+    $datetime += $timestamp;
+    return date('Y-m-d H:i:s', $datetime);
+  }
+
   public function __toString() {
     if (strlen($this->intervention) > 1024)
       return substr($this->intervention, 0, 512).'...';

@@ -199,7 +199,7 @@ Intervention:
       description: [Parlementaire, Personnalite, intervention]
       moretags: [Parlementaire, Personnalite, type]
       devaluate_if_wordcount_under: 200
-      date: date
+      date: full_date
   columns:
 #    id:
 #      type: string(36)
