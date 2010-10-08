@@ -35,32 +35,26 @@ function addToDate($date, $interval) {
 }
 
 $recherche = preg_replace('/"/', '&quot;', $query);
-
+$graph = 1;
+$intitule_resultats = 'Résultats pour «&nbsp;<em>'.$recherche.'</em>&nbsp;» ';
 switch ($vue) {
   case "jour":
     $periode_text = 'le '.myTools::displayShortDate($start);
-    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" '.$periode_text;
+    $intitule_resultats .= $periode_text;
     $graph = 0;
     break;
   case "mois":
     $periode_text = 'en '.myTools::displayMoisAnnee($start);
-    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" ';
-    $graph = 1;
     break;
   case "par_jour":
     $periode_text = 'entre le '.myTools::displayShortDate($start).' et le '.myTools::displayShortDate($end);
-    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" ';
-    $graph = 1;
     break;
   case "par_mois":
     $periode_text = 'entre '.myTools::displayMoisAnnee($start).' et '.myTools::displayMoisAnnee($end);
-    $intitule_resultats = 'Résultats pour "<em>'.$recherche.'</em>" ';
-    $graph = 1;
     break;
   default:
     $periode_text = "supprimer les critère de dates";
-    $intitule_resultats = 'Recherche de "<em>'.$recherche.'</em>';
-    $graph = 1;
+    $intitule_resultats = 'Recherche de «&nbsp;<em>'.$recherche.'</em>&nbsp;» ';
 }
 
 //////////////////// DEBUT SANS AJAX /////////////////////
@@ -339,7 +333,7 @@ function facet2Human($id, $facet = "") {
   </span>
   <span class="next">
   <?php
-  if ($results['end']-1 != $results['numFound']) {
+  if ($results['end'] != $results['numFound']) {
     $newargs = $selected;
     $newargs['page'][$results['page'] + 1] = 1;
     echo link_search('page suivante <img src="/images/xneth/right.png" alt="fleche droite"/>', $query, $newargs, 0); 
