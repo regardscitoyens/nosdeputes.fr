@@ -76,6 +76,8 @@ class moveSeanceTask extends sfBaseTask {
       }
       $nc += $coms;
       $ni++;
+      if (preg_match('/^question/i', $itv->Section->titre_complet))
+        $itv->type = "question";
       $itv->save();
     }
     if (isset($goodsub->section_id) && $nigoodsub > 0) {
