@@ -6,7 +6,7 @@
   <tr>
     <td colspan="3">
       <?php echo $form['commentaire']->renderError(); ?>
-      <?php echo $form['commentaire']->render(array('cols' => '100%')); ?>
+      <?php echo $form['commentaire']->render(array('style' => 'width:73.5em')); ?>
     </td>
   </tr>
   <?php if (!$sf_user->isAuthenticated()) { ?>
@@ -68,3 +68,11 @@
   </tr>
 </table>
 </form>
+<script type="text/javascript">
+<!-- 
+$('textarea').scroll(function() {
+  textarea_height = $(this).height();
+  $(this).height(textarea_height + 10);
+});
+-->
+</script>

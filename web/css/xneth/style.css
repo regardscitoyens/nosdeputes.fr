@@ -1250,16 +1250,18 @@ h2 {
 /* form commentaires */
 .inscription {
   border: 1px solid #E8E7E4;
+  margin-top: 10px;
 }
 .connexion {
   float: right;
   border: 1px solid #E8E7E4;
+  margin-top: 10px;
 }
 .inscription td, .connexion td, .inscription th, .connexion th {
   padding: 10px;
   border-bottom: 1px dashed #E8E7E4;
 }
-
+.inscription input, .connexion input { width: 20em; }
 /* commentaires */
 .link_comment {
   height: 11px;
