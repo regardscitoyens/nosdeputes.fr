@@ -44,8 +44,9 @@ class Citoyen extends BaseCitoyen
     return $a;
   }
   public function setParametres($array) {
-    if (!is_array($array))
-      throw new Exception('Paramtres requires an array');
-    return $this->_set('parametres', serialize($array));
+    if (!empty($array) && !is_array($array)) {
+      throw new Exception('Parametres requires an array');
+    }
+    if(is_array($array)) { return $this->_set('parametres', serialize($array)); }
   }
 }
