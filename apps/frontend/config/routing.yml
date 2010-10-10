@@ -1,8 +1,14 @@
 # default rules
 #Solr Search
+recherche_home:
+  url: /recherche/
+  param: {module: solr, action: search, query: ""}
+
 recherche_solr:
   url: /recherche/:query
   param: {module: solr, action: search, query: ""}
+  options:
+    segment_separators: [/]
 
 document:
   url: /document/:id

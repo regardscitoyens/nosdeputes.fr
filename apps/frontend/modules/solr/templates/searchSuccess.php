@@ -1,5 +1,8 @@
 <?php 
-$sf_response->setTitle("Recherche de $query");  $style = "xneth";
+if ($query === "")
+  $sf_response->setTitle("Recherche sur NosDéputés.fr");
+else $sf_response->setTitle("Recherche de $query");
+$style = "xneth";
 
 function url_search($query, $args) 
 {
@@ -56,6 +59,8 @@ switch ($vue) {
     $periode_text = "supprimer les critère de dates";
     $intitule_resultats = 'Recherche de «&nbsp;<em>'.$recherche.'</em>&nbsp;» ';
 }
+if ($query === "")
+  $intitule_resultats = 'Tous les résultats';
 
 //////////////////// DEBUT SANS AJAX /////////////////////
 //////////////////////////////////////////////////////////
