@@ -47,6 +47,7 @@ class solrActions extends sfActions
     $this->query = $request->getParameter('query');
     
     $query = preg_replace('/\*/', '', $this->query);
+    $query = preg_replace('/\.\.+/', '', $query);
 
     $nb = 20;
     $deb = ($request->getParameter('page', 1) - 1) * $nb ;
@@ -75,6 +76,7 @@ class solrActions extends sfActions
 
     if (!$this->query) {
 	$params['hl'] = 'false';
+        $query = "*";
     }
 
     $this->sort = $request->getParameter('sort');
@@ -227,7 +229,7 @@ class solrActions extends sfActions
         }
         $this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
       } 
-      else {
+      else if ($this->query != "") {
 	$this->results['docs'][$i]['highlighting'] = $this->results['docs'][$i]['description'];
       	if (strlen($this->results['docs'][$i]['highlighting']) > 700) 
     	   $this->results['docs'][$i]['highlighting'] = preg_replace('/[^ ]*$/', '', substr($this->results['docs'][$i]['description'], 0, 700)).'...';

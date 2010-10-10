@@ -1,3 +1,4 @@
+<?php $sf_response->setTitle("NosDéputés.fr - Aucun résultat pour votre recherche"); ?>
 <div class="solr">
 <?php include_partial('solr/follow', array('query' => $query, 'selected' => array(), 'norss' => true, 'zero' => true)); ?>
 <?php include_partial('solr/searchbox'); ?>
