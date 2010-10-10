@@ -68,11 +68,3 @@
   </tr>
 </table>
 </form>
-<script type="text/javascript">
-<!-- 
-$('textarea').scroll(function() {
-  textarea_height = $(this).height();
-  $(this).height(textarea_height + 10);
-});
--->
-</script>

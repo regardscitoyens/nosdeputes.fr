@@ -80,6 +80,11 @@ $(document).ready(function() {
   if (url.match(/#date=/) && constructLien) {
       document.location = constructLien(url.replace(/.*#date=/, ''));
   }
+  // Redimensionnement automatique des textareas
+  $('textarea').scroll(function() {
+    textarea_height = $(this).height();
+    $(this).height(textarea_height + 10);
+  });
 
 }); // fin document ready
 
