@@ -1,6 +1,6 @@
 <?php
 
-class moveSeanceTask extends sfBaseTask {
+class fixTypeQuestionsTask extends sfBaseTask {
 
   protected function configure() {
     $this->namespace = 'fix';
