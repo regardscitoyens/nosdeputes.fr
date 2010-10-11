@@ -108,9 +108,8 @@ function ajaxUpdateFor(lien) {
 
 function constructLien(date) {
   lien = document.location+'';
-  lien = lien.replace(/\??date=[^&]+/, '');
+  lien = lien.replace(/[\?&]?date=[^&]+/, '');
   lien = lien.replace(/#.*/, '');
-  lien = lien.replace(/&mois=1/, '');
   if (!lien.match(/\?/))
     lien += '?';
   else
