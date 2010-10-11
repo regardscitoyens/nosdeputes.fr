@@ -173,6 +173,7 @@ class solrActions extends sfActions
       }
       
       if ($period == 'DAY') {
+        $from = date ('Y-m-d', strtotime($from)-(3600*2+1)).'T23:59:59Z';
         $to = date ('Y-m-d', strtotime($to)).'T23:59:59Z';
       }
       $query .= ' date:['.$from.' TO '.$to.']';
