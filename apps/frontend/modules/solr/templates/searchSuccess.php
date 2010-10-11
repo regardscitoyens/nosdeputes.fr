@@ -324,7 +324,7 @@ function facet2Human($id, $facet = "") {
   </span>
   <span class="next">
   <?php
-  if ($results['end'] != $results['numFound']) {
+  if ($results['end'] < $results['numFound']) {
     $newargs = $selected;
     $newargs['page'][$results['page'] + 1] = 1;
     echo link_search('page suivante <img src="/images/xneth/right.png" alt="fleche droite"/>', $query, $newargs, 0); 
