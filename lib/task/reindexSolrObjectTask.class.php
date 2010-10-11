@@ -19,6 +19,11 @@ class reindexSolrObjectTask extends sfBaseTask {
       echo "ERREUR : $class n'est pas une classe d'objet indexé dans Solr\n";
       return;
     }
+    $id = $arguments['id'];
+    if (!($id >= 0)) {
+      echo "ERREUR : $id n'a pas l'air d'une id correcte";
+      return;
+    }
     $obj = Doctrine::getTable($class)->find($id);
     if (!$obj) {
       $json = new stdClass();
