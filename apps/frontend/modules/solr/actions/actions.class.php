@@ -91,6 +91,7 @@ class solrActions extends sfActions
     }
 
     $this->title = $request->getParameter('title');
+    $vue_actuelle = $request->getParameter('mois');
 
     if ($format == 'rss') {
       $ob = $request->getParameter('object_name');
@@ -142,7 +143,7 @@ class solrActions extends sfActions
       $dates = explode(',', $date);
       list($from, $to) = $dates;
       
-      $nbjours = round((strtotime($to) - strtotime($from))/(60*60*24)-1);
+      $nbjours = round((strtotime($to) - strtotime($from))/(60*60*24)+1);
       $jours_max = 90; // Seuil en nb de jours qui détermine l'affichage par jour ou par mois d'une période
       
       $comp_date_from = explode("T", $from);
@@ -155,13 +156,13 @@ class solrActions extends sfActions
         $period = 'DAY';
         $this->vue = 'par_jour';
       } 
-      if($nbjours > $jours_max) { 
+      if($nbjours >= $jours_max || $vue_actuelle) { 
         $period = 'MONTH';
         $to = $to.'+1MONTH';
         $this->vue = 'par_mois';
       }
       // Affichage d'un jour
-      if($from == $to) {
+      else if($from == $to) {
         $period = 'DAY';
         $this->vue = 'jour'; 
       }
@@ -172,9 +173,8 @@ class solrActions extends sfActions
       }
       
       if ($period == 'DAY') {
-	$from = date ('Y-m-d', strtotime($from)-(3600*2+1)).'T23:59:59Z';
+        $to = date ('Y-m-d', strtotime($to)).'T23:59:59Z';
       }
-
       $query .= ' date:['.$from.' TO '.$to.']';
       $params['facet.date.start'] = $from;
       $params['facet.date.end'] = $to;
