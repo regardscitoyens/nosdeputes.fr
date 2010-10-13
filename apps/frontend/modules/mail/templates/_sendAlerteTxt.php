@@ -21,7 +21,7 @@ foreach ($results['docs'] as $res)
   }
   $text = preg_replace('/ *\n+ */', ' ', implode('...', $printable));
   if (strlen($text) > 700) {
-	$text = substr($text, 0, 700).'...';
+	$text = preg_replace('/[^ ]*$/', '', substr($text, 0, 700)).'...';
   }
   $text = str_replace($titre, '', $text);
   echo "$text\n";
@@ -36,5 +36,7 @@ Pour éditer cette alerte :
 Pour supprimer cette alerte :
 <?php echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('alerte/delete?verif='.$alerte->getVerif())); ?>
 
+<?php if ($alerte->citoyen_id) : ?>
 L'interface vous permettant de gérer vos alertes :
 <?php echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('alerte/list')); ?>
+<?php endif; ?>
