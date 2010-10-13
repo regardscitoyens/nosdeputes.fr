@@ -86,11 +86,11 @@ sub mandat {
 	last if ($t->[0] =~ /^\//);
 	$_ = $p->get_text('/span');
 	if (/Mandat|Commission|Mission/) {
-	    $text = $p->get_text('ul');
+	    $text = $p->get_text('ul', '/ul');
 	    if ($text =~ /Date de début de mandat : ([\d\/]+) /) {
 		$depute{'Debut_Mandat'} = $1;
 	    }
-	    while ($t = $p->get_tag('li', '/li')) {
+	    while ($t = $p->get_tag('li', '/li', '/ul')) {
 		last if ($t->[0] =~ /^\//);
 		$text = $p->get_text('/li');
 		if  ($text =~ /^(\S+\s*\S*\s*\S*)( du | de la | de l')\s*(.*)/) {
@@ -166,7 +166,7 @@ while($t = $p->get_tag("h2", "img")) {
 	infosgene($p);
     }elsif (/Contacts et site internet/) {
 	contact($p);
-    }elsif (/Mandats et fonctions à l'Assemblée nationale/) {
+    }elsif (/Mandats et fonctions à l'Assemblée nationale/ && ! /Anciens/) {
 	mandat($p);
     }elsif (/Organismes extra-parlementaires/) {
 	extra($p);	
