@@ -1,3 +1,4 @@
+<?php if (isset($alertes)) { ?>
 <h1>Liste de mes alertes</h1>
 <?php $sf_response->setTitle('Liste de mes alertes mails');
 ?><p>Les alertes emails permettent d'être tenu informé dès leur publication sur NosDeputes.Fr des documents parlementaires contenant des mots clés précis. Voici la liste des alertes auxquelles vous êtes abonné(e). Cette interface vous permet de les éditer et les supprimer</p>
@@ -36,3 +37,6 @@ foreach($alertes as $a)
 <p>Vous n'avez pas d'alerte définie</p>
 <?php endif; ?>
 <p><?php echo link_to('Créer une nouvelle alerte', 'alerte/create'); ?></p>
+<?php } else { ?>
+<p>Vous n'êtes pas connecté à votre compte de citoyen, vous pouvez le faire en haut à droite de chaque page ou <a href="<?php echo url_for('@signin'); ?>">en cliquant sur ce lien</a>.</p>
+<?php } ?>

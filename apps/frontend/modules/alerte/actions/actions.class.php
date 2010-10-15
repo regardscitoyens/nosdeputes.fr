@@ -27,11 +27,12 @@ class alerteActions extends sfActions
 
   public function executeList(sfWebRequest $request) {
     $citoyen_id = $this->getUser()->getAttribute('user_id');
-    $this->forward404Unless($citoyen_id);
-    $citoyen = doctrine::getTable('Citoyen')->find($citoyen_id);
-    $this->forward404Unless($citoyen);
-    $sql = doctrine::getTable('Alerte')->createQuery('a')->where('a.citoyen_id = ?', $citoyen_id)->orWhere('a.email = ?', $citoyen->getEmail());
-    $this->alertes = $sql->execute();
+    if ($citoyen_id)
+      $citoyen = doctrine::getTable('Citoyen')->find($citoyen_id);
+    if (isset($citoyen) && $citoyen) {
+      $sql = doctrine::getTable('Alerte')->createQuery('a')->where('a.citoyen_id = ?', $citoyen_id)->orWhere('a.email = ?', $citoyen->getEmail());
+      $this->alertes = $sql->execute();
+    }
   }
 
 
