@@ -35,6 +35,7 @@ $menu_dossier = $selectinterv || $selectamdmt;
 $menu_citoyen = $selectcitoyen;
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
+    <link href="/nosdeputesfr.xml" rel="search" title="NosDéputés.fr" type="application/opensearchdescription+xml" />
     <?php echo stylesheet_tag($style.'/jquery-ui-1.8.5.custom.css'); ?>
     <?php echo stylesheet_tag($style.'/style.css'); ?>
     <?php echo stylesheet_tag($style.'/print', array('media' => 'print')); ?>

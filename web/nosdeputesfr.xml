@@ -1,0 +1,9 @@
+<SearchPlugin xmlns="http://www.mozilla.org/2006/browser/search/" xmlns:os="http://a9.com/-/spec/opensearch/1.1/">
+<os:ShortName>NosDéputés.fr</os:ShortName>
+<os:Description>par RegardsCitoyens.org</os:Description>
+<os:InputEncoding>UTF-8</os:InputEncoding>
+<os:Image width="16" height="16">data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEwAACxMBAJqcGAAAAAd0SU1FB9oKERIyC7hkR1UAAAKtSURBVDjLhZJdSFNhGMef9z3nbLr5sakjzI9ZwhRKhEhtQt50Y2lJEPh5IUmBFGVIIN2EBBp0IRQRUX7cdGMXgdVFZZliIGURlKhnQkMbOjfn5s7O2fl437eLMpwx+189z8Pz/8Hz5+EgiVqa21xOZ1G3q6QkTRQXF5PtoZ3N5UtXnF6vtwtjfJ4QkgEIGGIIUUYjlNJBXdeG3r4bn0sAtDS3OgTB3ClJUkc8rhQihNhu8LYMwwBCSNAwjMc+38qA6BHXcTyuda3513ujklKIEAJKGdI1AE1nwBiAocZBj2MKwIDneeAoybJarT0uV6n/7wnjg22NB3Llq2kgnJ1eQA3BUs/Dcn/Bk8+R9VmpanjAFjjxY9N3u72ns22qb+qTfKOmwvJPBt439UxRsGTiqWVW3YwGNdCxPZwTC5VLsuO6kFmUaw7NvA+DObWp91zDq20f3i7uPHI4EUJphGIwPuZ1aTFkyEsOn0C/PePoVmxzZmKLd7r8O80JgPujw8tyjHjNJoJb+0dHkEmftBwM5U1ePN5tEDqSWlyWEX76oH13sHxCxxAo0T9MxiFgAPvcEQvSVKJRA4R0u2k3ACf4GVWtNgIAAJTpKqUAhI9yRAoTwBiKVgLmPQEAoG+s/R5hDgxD4cCar9qIpqmAOQDRY9kTYE+nh2UDe/oaTx6hwMqUgCmSXhyu5jKzD9HwhrR281ZtUkBd1en86BYjTFbGL3SaaxmQo5FVbtpeILsZ5twbE8+HSExqSApoOiZX64DmIqva/Ox3vSPFboASxh84k3qKyynMkxe+jvH2nNx2gIQgOQCAyorK/dlFWXfnl1HK1JIgOBxczZc5BP7lDL9qoIqAqEPw52pQj0XdIZvt2qIo9id8Yn3dmXuMsSBCCP4nxhhDCM28eDn2GgDgF7BwRo7YEotdAAAAAElFTkSuQmCC</os:Image>
+<SearchForm>http://www.nosdeputes.fr/recherche/</SearchForm>
+<os:Url type="text/html" method="GET" template="http://www.nosdeputes.fr/recherche/?search={searchTerms}&amp;sourceid=mozilla-search">
+</os:Url>
+</SearchPlugin>
