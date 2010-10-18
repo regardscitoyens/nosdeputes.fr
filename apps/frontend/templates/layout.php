@@ -35,20 +35,20 @@ $menu_dossier = $selectinterv || $selectamdmt;
 $menu_citoyen = $selectcitoyen;
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <link href="/nosdeputesfr.xml" rel="search" title="Rechercher sur NosDéputés.fr" type="application/opensearchdescription+xml" />
+    <link rel="search" href="<?php echo $sf_request->getRelativeUrlRoot(); ?>/nosdeputesfr.xml" title="Rechercher sur NosDéputés.fr" type="application/opensearchdescription+xml" />
     <?php echo stylesheet_tag($style.'/jquery-ui-1.8.5.custom.css'); ?>
     <?php echo stylesheet_tag($style.'/style.css'); ?>
     <?php echo stylesheet_tag($style.'/print', array('media' => 'print')); ?>
     <!--[if lte IE 6]>
     <?php echo stylesheet_tag($style.'/ie6'); ?>
-	<script type="text/javascript" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/iepngfix/iepngfix_tilebg.js"></script>
+	  <script type="text/javascript" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/iepngfix/iepngfix_tilebg.js"></script>
     <style type="text/css">
     img, div { behavior: url('<?php echo $sf_request->getRelativeUrlRoot(); ?>/iepngfix/iepngfix.php') }
     </style> 
     <![endif]-->
-	<?php echo javascript_include_tag('jquery-1.4.2.min.js'); ?>
-	<?php echo javascript_include_tag('jquery-ui-1.8.5.custom.min.js'); ?>
-	<?php echo javascript_include_tag('fonctions.js'); ?>
+	  <?php echo javascript_include_tag('jquery-1.4.2.min.js'); ?>
+	  <?php echo javascript_include_tag('jquery-ui-1.8.5.custom.min.js'); ?>
+	  <?php echo javascript_include_tag('fonctions.js'); ?>
   </head>
   <body>
   <div id="contenu">
