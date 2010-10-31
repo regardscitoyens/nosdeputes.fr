@@ -221,7 +221,7 @@ if($graph) {
 ///////////////////// FIN SANS AJAX /////////////////////
 ?>
 </div>
-<?php include_partial('solr/follow', array('query' => $query, 'selected' => $selected)); ?>
+<?php include_partial('solr/follow', array('query' => $query, 'selected' => $selected, 'opendiv' => ($vue === 'jour' ? true : false))); ?>
 <?php endif;
 global $facetName2HumanName;
 $facetName2HumanName = array(
@@ -248,9 +248,11 @@ function facet2Human($id, $facet = "") {
   return $facetName2HumanName[$id];
 }
   ?>
+<?php if ($vue != "jour") { ?>
 <div class="clear"></div>
 <div id="results_container">
 <div class="options">
+<?php } ?>
   <div class="facets">
   <h3 class="aligncenter">Affiner la recherche</h3>
   <?php 
@@ -335,7 +337,7 @@ function facet2Human($id, $facet = "") {
   ?>
   </span>
 </div>
-</div>
+<?php if ($vue != "jour") echo '</div>'; ?>
 <?php if (!$ajax) : ?>
 </div>
 <?php endif; ?>
