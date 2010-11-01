@@ -412,12 +412,16 @@ a:hover {
 
 /* Formulaires inscription et connexion */
 .boite_form {
-  width: 550px;
-  min-width: 550px;
+  width: 600px;
+  min-width: 600px;
   margin: auto;
   margin-top: 35px;
   margin-bottom: 35px;
   background: #fff url('images/minilogo_nosdeputes_fond.png') no-repeat 95% 60px;
+}
+.large_boite_form {
+  width: 750px;
+  min-width: 750px;
 }
 .b_f_h {
   height: 21px;

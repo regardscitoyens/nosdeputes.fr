@@ -1,3 +1,4 @@
+<?php $sf_response->setTitle('Connexion sur NosDéputés.fr'); ?>
 <div class="boite_form">
   <div class="b_f_h"><div class="b_f_hg"></div><div class="b_f_hd"></div></div>
     <div class="b_f_cont">
@@ -32,7 +33,7 @@
           </tr>
           <tr>
             <th></th>
-            <td><input type="submit" value="ok" tabindex="40" style="float:right;" /></td>
+            <td><input type="submit" value="Valider" tabindex="40" style="float:right;" /></td>
           </tr>
           <tr>
             <th colspan="2">

@@ -1,3 +1,4 @@
+<?php $sf_response->setTitle('Changement de mot de passe - NosDéputés.fr'); ?>
 <?php 
 if (!isset($first))
 {
@@ -62,7 +63,7 @@ else
             </td>
           </tr>
           <tr>
-            <th colspan="2" style="text-align:center;">
+            <th colspan="2" style="text-align:center;padding-left:40px;">
               <?php echo $form['code']->renderError(); ?>
               <div class="captcha">
                 <div class="image_captcha">
@@ -75,7 +76,7 @@ else
                 <div class="cont_code">
           <div class="entrer_code">
                   Code de sécurité<br />
-                  <?php echo $form['code']->render(array('size' => 14, 'title' => 'Recopiez les caractères', 'tabindex' => '20')); ?>
+                  <?php echo $form['code']->render(array('size' => 8, 'title' => 'Recopiez les caractères', 'tabindex' => '20')); ?>
           </div>
                 </div>
                 <div class="stopfloat"></div>
@@ -83,7 +84,7 @@ else
             </th>
           </tr>
           <tr class="cel2">
-            <td colspan="2"><a href="<?php echo url_for('@homepage') ?>" tabindex="40" >Annuler</a> <input type="submit" value="Valider" tabindex="30" /></td>
+            <td colspan="2" style="text-align:center;"><a href="<?php echo url_for('@homepage') ?>" tabindex="40" >Annuler</a> <input type="submit" value="Valider" tabindex="30" /></td>
           </tr>
         </table>
         </form>
