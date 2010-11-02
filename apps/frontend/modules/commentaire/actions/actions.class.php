@@ -156,14 +156,15 @@ class commentaireActions extends sfActions
     $commentaire->ip_address = $ip;
     $commentaire->save();
 
-    $alerte = new Alerte();
-    $alerte->citoyen_id = $citoyen_id;
-    $alerte->query = "object_name:Commentaire tag:object_type=".$commentaire->object_type." tag:object_id=".$commentaire->object_id;
-    $alerte->no_human_query = 1;
-    $alerte->period = 'HOUR';
-    $alerte->titre = "Suivi de votre conversation sur $present";
-    $alerte->save();
-
+    if ($this->follow_talk) {
+	$alerte = new Alerte();
+	$alerte->citoyen_id = $citoyen_id;
+    	$alerte->query = "object_name:Commentaire tag:object_type=".$commentaire->object_type." tag:object_id=".$commentaire->object_id;
+    	$alerte->no_human_query = 1;
+    	$alerte->period = 'HOUR';
+    	$alerte->titre = "Suivi de votre conversation sur $present";
+    	$alerte->save();
+    }
     $object->updateNbCommentaires();
     $object->save();
 

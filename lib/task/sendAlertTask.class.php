@@ -23,7 +23,7 @@ class sendAlertTask extends sfBaseTask
     $solr = new SolrConnector();
     $query = Doctrine::getTable('Alerte')->createQuery('a')->where('next_mail < NOW()')->andWhere('confirmed = 1');
     foreach($query->execute() as $alerte) {
-      $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")-3600*2+1;
+      $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")+1;
       $query = $alerte->query." date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d').'T'.date('H:i:s')."Z]";
       $results = $solr->search($query, array('sort' => 'date desc', 'hl' => 'yes', 'hl.fragsize'=>500));
       $alerte->next_mail = date('Y-m-d H:i:s', time() + self::$period[$alerte->period]);
@@ -32,15 +32,17 @@ class sendAlertTask extends sfBaseTask
 	continue;
       }
       echo "sending mail to : ".$alerte->email."\n";
-      $message = $this->getMailer()->compose(array('no-reply@nosdeputes.fr' => 'Regards Citoyens (ne pas répondre)'), 
+      $message = $this->getMailer()->compose(array('contact@regardscitoyens.org' => '"Regards Citoyens"'), 
 					     $alerte->email,
 					     '[NosDeputes.fr] Alerte - '.$alerte->titre);
+
       echo $alerte->titre."\n";
       $text = get_partial('mail/sendAlerteTxt', array('alerte' => $alerte, 'results' => $results['response']));
+//      echo "$text\n";
       $message->setBody($text, 'text/plain');
       try {
 	$this->getMailer()->send($message);
-	$alerte->last_mail = preg_replace('/T/', ' ', preg_replace('/Z/', '', $results['response']['docs'][$results['response']['numFound'] -1]['date']));
+	$alerte->last_mail = preg_replace('/T/', ' ', preg_replace('/Z/', '', $results['response']['docs'][0]['date']));
 	$alerte->save();
       }catch(Exception $e) {
 	echo "ERROR: mail could not be sent ($text)\n";
