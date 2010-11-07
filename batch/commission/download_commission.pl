@@ -36,7 +36,7 @@ while ($ok) {
 }
 
 @url = keys %url;
-push(@url, "http://www.assemblee-nationale.fr/13/budget/plf2010/commissions_elargies/cr/", "http://www.assemblee-nationale.fr/13/cr-mec/07-08/index.asp", "http://www.assemblee-nationale.fr/13/cr-mec/08-09/index.asp", "http://www.assemblee-nationale.fr/13/cr-mec/09-10/index.asp");
+push(@url, "http://www.assemblee-nationale.fr/13/budget/plf2011/commissions_elargies/cr/", "http://www.assemblee-nationale.fr/13/budget/plf2010/commissions_elargies/cr/", "http://www.assemblee-nationale.fr/13/cr-mec/07-08/index.asp", "http://www.assemblee-nationale.fr/13/cr-mec/08-09/index.asp", "http://www.assemblee-nationale.fr/13/cr-mec/09-10/index.asp", "http://www.assemblee-nationale.fr/13/cr-mec/10-11/index.asp");
 $a = WWW::Mechanize->new();
 
 foreach $url (@url) {
@@ -54,6 +54,7 @@ foreach $url (@url) {
 	    $file = $a->uri();
 	    $file =~ s/\//_/gi;
 	    $file =~ s/\#.*//;
+            $file =~ s/commissions_elargies_cr_c/commissions_elargies_cr_C/;
 	    $size = -s "html/$file";
             if ($size) {
                 $cpt++;
