@@ -33,8 +33,7 @@ class sendAlertTask extends sfBaseTask
       }
       echo "sending mail to : ".$alerte->email."\n";
       $message = $this->getMailer()->compose(array('contact@regardscitoyens.org' => '"Regards Citoyens"'), 
-//					     $alerte->email,
-'tanguim@gmail.com',
+					     $alerte->email,
 					     '[NosDeputes.fr] Alerte - '.$alerte->titre);
 
       echo $alerte->titre."\n";
@@ -44,7 +43,7 @@ class sendAlertTask extends sfBaseTask
       try {
 	$this->getMailer()->send($message);
 	$alerte->last_mail = preg_replace('/T/', ' ', preg_replace('/Z/', '', $results['response']['docs'][0]['date']));
-//	$alerte->save();
+	$alerte->save();
       }catch(Exception $e) {
 	echo "ERROR: mail could not be sent ($text)\n";
       }
