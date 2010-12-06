@@ -11,14 +11,14 @@ sub download_fiche {
 	print "$file\n" if ($verbose);
 	$a->get($uri);
 	mkdir html unless -e "html/" ;
-	open FILE, ">:utf8", "html/$file";
+	open FILE, ">", "html/$file";
 	print FILE $a->content;
 	close FILE;
 	return $file;
 }
 $a = WWW::Mechanize->new();
 
-$a->get("http://www.assemblee-nationale.fr/13/tribun/xml/liste_alpha.asp");
+$a->get("http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=13");
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 while ($t = $p->get_tag('a')) {
