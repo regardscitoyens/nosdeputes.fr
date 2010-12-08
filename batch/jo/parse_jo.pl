@@ -28,6 +28,7 @@ while(<FILE>) {
 	$on = 1;
     }
 }
+$lines =~s/&nbsp;<b>/ /g;
 $lines =~ s/&nbsp;/ /g;
 $lines =~ s/<\/b> *<b>/ /g;
 $lines =~ s/<\/b>/<\/b>\n/g;
