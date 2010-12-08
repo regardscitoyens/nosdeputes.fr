@@ -57,7 +57,7 @@ $bulles = array("",
     <th style="width:10px;"/>
   </tr>
   <tr>
-    <th class="<?php echo $class['parl']; ?>">&nbsp;</th><?php
+    <th title="Trier par : Nom de famille" class="jstitle <?php echo $class['parl']; ?>"><?php echo link_to('Nom', '@top_global'); ?></th><?php
     $last = end($tops); $i = 0; 
     foreach($ktop as $key) { 
       $i++ ; 
