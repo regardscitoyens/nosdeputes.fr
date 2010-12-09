@@ -24,7 +24,7 @@ class Amendement extends BaseAmendement {
   public function setAuteurs($auteurs) {
     $groupe = null;
     $sexe = null;
-    if (preg_match('/^\s*(.*),+\s*les\s+(.*\s+[gG]roupe|membres|députés)\s+(.*)\s*$/' ,$auteurs, $match)) {
+    if (preg_match('/^\s*(.*),+\s*[dl]es\s+(.*\s+[gG]roupe|membres|députés)\s+(.*)\s*$/' ,$auteurs, $match)) {
       $auteurs = $match[1];
       $groupe = preg_replace("/^\s*(de la|de l'|du)\s*/", "", $match[3]);
       if (preg_match('/^(.*)(et|,)\s+(M[\s\.ml].*)$/' ,$groupe, $match2)) {
