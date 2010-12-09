@@ -85,12 +85,13 @@ sub mandat {
     while ($t = $p->get_tag('span', '/div')) {
 	last if ($t->[0] =~ /^\//);
 	$_ = $p->get_text('/span');
-	if (/Mandat|Commission|Mission/) {
+	if (/Mandat|Commission|Mission|Office|Délégation/) {
 	    $text = $p->get_text('ul', '/ul');
 	    if ($text =~ /Date de début de mandat : ([\d\/]+) /) {
 		$depute{'Debut_Mandat'} = $1;
 	    }
 	    while ($t = $p->get_tag('li', '/li', '/ul')) {
+print $t->[0];
 		last if ($t->[0] =~ /^\//);
 		$text = $p->get_text('/li');
 		if  ($text =~ /^(\S+\s*\S*\s*\S*)( du | de la | de l')\s*(.*)/) {
