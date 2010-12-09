@@ -91,7 +91,6 @@ sub mandat {
 		$depute{'Debut_Mandat'} = $1;
 	    }
 	    while ($t = $p->get_tag('li', '/li', '/ul')) {
-print $t->[0];
 		last if ($t->[0] =~ /^\//);
 		$text = $p->get_text('/li');
 		if  ($text =~ /^(\S+\s*\S*\s*\S*)( du | de la | de l')\s*(.*)/) {
