@@ -96,6 +96,7 @@ sub mandat {
 		if  ($text =~ /^(\S+\s*\S*\s*\S*)( du | de la | de l')\s*(.*)/) {
 		    $fonction = $1;
 		    $orga = $3;
+		    $orga =~ s/\s+$//;
 		    $deb = "";
 		    if ($orga =~ s/ depuis le : ([\d\/]+)//) {
 			$deb = $1;
@@ -104,7 +105,7 @@ sub mandat {
 		if ($fonction =~ /reprise de l'exercice/i) {
 		    $orga =~ /(\d{2}\/\d{2}\/\d+)/;
 		    $depute{'Debut_Mandat'} = $1;
-		}else {
+		}elsif ($orga !~ /^\s*$/) {
 		    ${$depute{'Fonctions'}}{lc($orga)." / ".lc($fonction)." / ".$deb} = 1;
 		}
 		$p->get_tag('/li');
