@@ -55,6 +55,10 @@ foreach $baseurl ("http://www.assemblee-nationale.fr/13/documents/index-depots.a
       if ($? != 0) {
         next;
       }
+      system("grep -e 'DOCUMENT_DISTRIBUE" content="N">' $type/$file > /dev/null");
+      if ($? != 0) {
+        next;
+      }
     }
     if (!($type =~ /(^$)/)) {
       $res = $a->get($url);
