@@ -168,7 +168,7 @@
 <div class="clear"></div>
 <div class="clear accueil">
   <div class="box_news">
-  <div class="carte">
+  <div class="carte" id="cartedeputes">
   <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png" /></span>Trouver son député</h2>
     <div class="cont_box_news">
 	  <?php include_partial('circonscription/mapDepartement', array('width'=>0, 'height'=>200, 'link' => true)); ?>
