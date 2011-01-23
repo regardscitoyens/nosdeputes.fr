@@ -1,5 +1,10 @@
 #!/bin/bash
 
+#Récupère le fichier de configuration pour notre environnement
+. $(echo $0 | sed 's/[^\/]*$//')db.inc
+
+cd $PATH_APP
+
 #LOCK
 if test -e /tmp/loadupdate.lock ;
 then
