@@ -9,7 +9,7 @@ mysqldump $MYSQLID $DBNAME -q --single-transaction --add-drop-table -R -t --disa
 
 # On archive tous les 1er du mois et tous les dimanches
 if [[ $(date +%-w) -eq 0 || $(date +%-d) -eq 1 ]]; then
-  cp $DUMPDIR/$DBNAME.$(date +%y%m%d).sql.gz $DUMPDIR/archives/
+  cp $DUMPDIR/*.$(date +%y%m%d).s*.gz $DUMPDIR/archives/
 fi
 
 # On efface tous les mois les archives hebdomadaires vieilles de plus d'un mois mais on garde l'archive mensuelle
@@ -22,7 +22,7 @@ if [[ $(date +%-d) -eq 1 ]]; then
     month0=`expr $(date +%m) - 2`
   fi
   ym=`printf "%02d%02d" $year0 $month0`
-  rm -f `ls $DUMPDIR/archives/$DBNAME.${ym}*.sql.gz | grep -v $DBNAME.${ym}01.sql.gz`
+  rm -f `ls $DUMPDIR/archives/*.${ym}*.s*.gz | grep -v .${ym}01.sql.gz`
 fi
 
 # On efface les dumps vieux de plus d'une semaine
@@ -31,10 +31,10 @@ if [[ $(date +%-d) -le 7 ]]; then
 else
   day0=`expr $(date +%d) - 7`
 fi
-rm -f $DUMPDIR/$DBNAME.*`printf "%02d" $day0`.sql.gz
+rm -f $DUMPDIR/*.*`printf "%02d" $day0`.s*.gz
 if [[ $(date +%-d) -eq 8 ]]; then
-  rm -f $DUMPDIR/$DBNAME.*29.sql.gz
-  rm -f $DUMPDIR/$DBNAME.*30.sql.gz
-  rm -f $DUMPDIR/$DBNAME.*31.sql.gz
+  rm -f $DUMPDIR/*.*29.s*.gz
+  rm -f $DUMPDIR/*.*30.s*.gz
+  rm -f $DUMPDIR/*.*31.s*.gz
 fi
 
