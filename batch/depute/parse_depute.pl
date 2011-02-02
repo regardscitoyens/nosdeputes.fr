@@ -85,18 +85,25 @@ sub mandat {
     while ($t = $p->get_tag('span', '/div')) {
 	last if ($t->[0] =~ /^\//);
 	$_ = $p->get_text('/span');
-	if (/Mandat|Commission|Mission|Office|DÃ©lÃ©gation/) {
+	if (/Mandat|Commission|Mission|Office|D.l.gation/) {
 	    $text = $p->get_text('ul', '/ul');
 	    if ($text =~ /Date de dÃ©but de mandat : ([\d\/]+) /) {
 		$depute{'Debut_Mandat'} = $1;
 	    }
-	    while ($t = $p->get_tag('li', '/li', '/ul')) {
-		last if ($t->[0] =~ /^\//);
+	    while ($t = $p->get_tag('li', '/li')) {
+		last if ($t->[0] =~ /^\/li/);
 		$text = $p->get_text('/li');
-		if  ($text =~ /^(\S+\s*\S*\s*\S*)( du | de la | de l')\s*(.*)/) {
+		if  ($text =~ /^([^(]\S+\s*\S*\s*(\S\S\S+\s*\S*\s*\S*|))( du | de la | de l')\s*([^:]*)/) {
 		    $fonction = $1;
-		    $orga = $3;
+		    next if ($fonction =~ /Mandat/);
+		    $orga = $4;
+		    next if ($orga =~ /mandat/);
+		    $fonction =~ s/ au nom//;
+		    $fonction =~ s/ par les groupes//;
+		    $fonction =~ s/ du bureau//;
+		    $orga =~ s/depuis le//;
 		    $orga =~ s/\s+$//;
+		    $orga =~ s/Assemblée Nationale/Bureau de l'Assemblée Nationale/;
 		    $deb = "";
 		    if ($orga =~ s/ depuis le : ([\d\/]+)//) {
 			$deb = $1;
