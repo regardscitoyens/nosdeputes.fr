@@ -2,7 +2,7 @@
       $sf_response->setTitle($parlementaire->nom.' - Son activité de député à l\'Assemblée nationale - NosDéputés.fr'); ?>
 <div class="fiche_depute">
   <div class="info_depute">
-<h1><?php echo $parlementaire->nom; ?>, <?php echo $parlementaire->getLongStatut(1); ?><span class="rss"><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h1>
+<h1><?php echo $parlementaire->nom; ?></h1><h2>, <?php echo $parlementaire->getLongStatut(1); ?><span class="rss"><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
     </div>
   <div class="depute_gauche">
     <div class="photo_depute">
