@@ -47,21 +47,21 @@ if (!$top)
 if (!$parlementaire->fin_mandat) {
   $mois = floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30));
   if($mois < 6) {
-    echo '<h2>Activité <small>(';
+    echo '<h3>Activité <small>(';
     if ($mois == 1) echo 'premier';
     else
       echo $mois.' premiers';
-    echo ' mois de mandat)</small> :</h2>';
+    echo ' mois de mandat)</small> :</h3>';
     $rank = 0;
   }else {
-    echo '<h2>Activité <small>(12 derniers mois)</small> :</h2>';
+    echo '<h3>Activité <small>(12 derniers mois)</small> :</h3>';
     $rank = 1;
   }
  } else {
   $rank = 0;
   $weeks = (strtotime($parlementaire->fin_mandat) - strtotime($parlementaire->debut_mandat))/(60*60*24*7);
-  echo '<h2>';
-  printf('Activité sur %d semaines :</h2>', $weeks);
+  echo '<h3>';
+  printf('Activité sur %d semaines :</h3>', $weeks);
  }
 ?>
 <ul><?php
