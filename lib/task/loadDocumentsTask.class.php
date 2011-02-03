@@ -46,8 +46,11 @@ class loadDocumentsTask extends sfBaseTask {
               $doc->source = $json->source;
               $doc->legislature = $json->legislature;
               $doc->numero = $json->numero;
-              if ($json->annexe != "")
+              if ($json->annexe != "") {
+                if (Doctrine::getTable('Texteloi')->findByNumAnnexe($json->numero,$json->annexe))
+                  {echo "ERROR numero + annexe déjà existant avec url différente : \n"; continue;}
                 $doc->annexe = $json->annexe;
+              }
               $doc->date = $json->date_depot;
               $doc->type = $json->type;
 	      //	      $doc->save();
