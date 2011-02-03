@@ -34,7 +34,7 @@
         </li>
 <?php endif; ?>
         <?php if ($parlementaire->getExtras()) { ?>
-        <li>Fonctions extra-parlementaires ou une institution internationale :
+        <li>Fonctions judiciaires, internationales ou extra-parlementaires&nbsp;:
           <ul>
             <?php foreach ($parlementaire->getExtras() as $extra) { ?>
             <li><?php echo link_to($extra->getNom(),'@list_parlementaires_organisme?slug='.$extra->getSlug() ); ?> (<?php echo $extra->getFonction(); ?>)</li>
