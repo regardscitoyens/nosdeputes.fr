@@ -42,7 +42,7 @@ if ($plot == 'total') {
   $filename .= '-'.$shortduree.'.png';
   $titre = 'du travail parlementaire';
 } else {
-  $xtitre = 25; $ysize = 190; $ylegend = 60; $x0 = 155; $y0 = 85;
+  $xtitre = 25; $ysize = 190; $ylegend = 60; $x0 = 155; $y0 = 110;
   $filename .= '-'.$plot.'.png';
   $titre = 'par groupe du travail de cette séance';
   if (preg_match('/section/', $plot)) {
@@ -61,30 +61,43 @@ if ($plot == 'total') {
 $Test = new xsPChart($xsize,$ysize);
 $Test->drawFilledRoundedRectangle(7,7,$xsize-7,$ysize-7,5,240,240,240);
 $Test->drawRoundedRectangle(5,5,$xsize-5,$ysize-5,5,230,230,230);
-$Test->setColorPalette(0,200,200,200);
-$Test->setColorPalette(1,30,30,200);
+$Test->setColorPalette(0,255,30,30);
+$Test->setColorPalette(1,255,50,190);
 $Test->setColorPalette(2,30,190,255);
-$Test->setColorPalette(3,255,50,190);
-$Test->setColorPalette(4,255,30,30);
+$Test->setColorPalette(3,30,30,200);
+$Test->setColorPalette(4,200,200,200);
+$Test->setColorPalette(5,240,240,240);
 $Test->xsSetFontProperties("tahoma.ttf",7);
 if (isset($Data)) {
-  $Test->drawPieGraph($Data,$DataDescr,$x0,$y0,55,PIE_VALUES,TRUE,65,15);
-if ($plot == 'total') $Test->drawPieGraph($DataBis,$DataDescrBis,$x0,260,55,PIE_VALUES,TRUE,65,15);
+  $Test->drawFlatPieGraph($Data,$DataDescr,$x0,$y0,50,PIE_VALUES,0,0,150);
+  $Test->drawFilledCircle($x0,$y0+2,12,240,240,240);
+  if ($plot == 'total') {
+    $Test->drawFlatPieGraph($DataBis,$DataDescrBis,$x0,260,50,PIE_VALUES,0,0,150);
+    $Test->drawFilledCircle($x0,262,12,240,240,240);
+  }
   $x0 += 150;
 }
-if (isset($Data2))
-  $Test->drawPieGraph($Data2,$DataDescr2,$x0,$y0,55,PIE_VALUES,TRUE,65,15);
-if ($plot == 'total') $Test->drawPieGraph($Data2Bis,$DataDescr2Bis,$x0,260,55,PIE_VALUES,TRUE,65,15);
+if (isset($Data2)) {
+  $Test->drawFlatPieGraph($Data2,$DataDescr2,$x0,$y0,50,PIE_VALUES,0,0,150);
+  $Test->drawFilledCircle($x0,$y0+2,12,240,240,240);
+}
+if ($plot == 'total') {
+  $Test->drawFlatPieGraph($Data2Bis,$DataDescr2Bis,$x0,260,50,PIE_VALUES,0,0,150);
+  $Test->drawFilledCircle($x0,262,12,240,240,240);
+}
 $x0 += 150;
-if (isset($Data3))
-  $Test->drawPieGraph($Data3,$DataDescr3,$x0,$y0,55,PIE_PERCENTAGE,TRUE,65,15);
+if (isset($Data3)) {
+  $Test->drawFlatPieGraph($Data3,$DataDescr3,$x0,$y0,50,PIE_PERCENTAGE,0,0,150);
+  $Test->drawFilledCircle($x0,$y0+2,12,240,240,240);
+}
 $Test->xsSetFontProperties("tahoma.ttf",9);
 $Test->setColorPalette(0,255,255,255);
-$Test->setColorPalette(1,200,200,200);
-$Test->setColorPalette(2,30,30,200);
+$Test->setColorPalette(1,255,30,30);
+$Test->setColorPalette(2,255,50,190);
 $Test->setColorPalette(3,30,190,255);
-$Test->setColorPalette(4,255,50,190);
-$Test->setColorPalette(5,255,30,30);
+$Test->setColorPalette(4,30,30,200);
+$Test->setColorPalette(5,200,200,200);
+$Test->setColorPalette(6,255,255,255);
 $Test->drawFilledRoundedRectangle(15,$ylegend-14,72,$ylegend+5,5,255,255,255);
 $Test->drawLegend(15,$ylegend,$DataDescrLegend,255,255,255);
 $Test->xsSetFontProperties("tahoma.ttf",10);

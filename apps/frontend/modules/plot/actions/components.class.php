@@ -156,7 +156,7 @@ class plotComponents extends sfComponents
     $this->data = array();
     if (!isset($this->type) || $this->type != "all")
       $this->type = "home";
-    $this->data['groupes'] = array('UMP' => array(),'NC' => array(),'SRC' => array(),'GDR' => array(), 'NI' => array());
+    $this->data['groupes'] = array('GDR' => array(),'SRC' => array(),'NC' => array(),'UMP' => array(), 'NI' => array());
     if ($this->type === "home")
       $this->data['titres'] = array("Députés", "Interventions", "Amendements", "Propositions", "Quest. Écrites");
     else $this->data['titres'] = array("", "Interventions", "Longues", "Courtes", "Déposés", "Adoptés", "de Lois", "Écrites", "Orales");
@@ -220,7 +220,7 @@ class plotComponents extends sfComponents
   public function executeGroupes() {
     $this->empty = 0;
     if (!isset($this->plot)) $this->plot = 'total';
-    $this->labels = array('NI','UMP','NC','SRC','GDR');
+    $this->labels = array('GDR','SRC','NC','UMP','NI');
     $this->interventions = array();
     if ($this->plot == 'total') {
       $this->presences = array();
@@ -311,6 +311,12 @@ class plotComponents extends sfComponents
           else $this->presences[] = $groupes[$groupe]['presences'];
         }
       }
+      $this->labels[] = "";
+      $this->interventions[] = array_sum($this->interventions)/2;
+      $this->temps[] = array_sum($this->temps)/2;
+      if (isset($presences))
+        $this->presences[] = array_sum($this->presences)/2;
+
     }
   }
   

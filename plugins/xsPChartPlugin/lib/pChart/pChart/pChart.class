@@ -74,9 +74,9 @@
       drawLimitsGraph(&$Data,&$DataDescription,$R=0,$G=0,$B=0)
       drawRadar(&$Data,&$DataDescription,$BorderOffset=10,$MaxValue=-1)
       drawFilledRadar(&$Data,&$DataDescription,$Alpha=50,$BorderOffset=10,$MaxValue=-1)
-      drawBasicPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$R=255,$G=255,$B=255,$Decimals=0)
-      drawFlatPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$SpliceDistance=0,$Decimals = 0)
-      drawPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$EnhanceColors=TRUE,$Skew=60,$SpliceHeight=20,$SpliceDistance=0,$Decimals=0)
+      drawBasicPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$R=255,$G=255,$B=255,$Decimals=0,$Angle=0)
+      drawFlatPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$SpliceDistance=0,$Decimals = 0,$Angle=0)
+      drawPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$EnhanceColors=TRUE,$Skew=60,$SpliceHeight=20,$SpliceDistance=0,$Decimals=0,$Angle=0)
      Other methods :
       setImageMap($Mode=TRUE,$GraphID="MyGraph")
       getImageMap($MapName,$Flush=TRUE)
@@ -1878,7 +1878,7 @@
     }
 
    /* This function draw a flat pie chart */
-   function drawBasicPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$R=255,$G=255,$B=255,$Decimals=0)
+   function drawBasicPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$R=255,$G=255,$B=255,$Decimals=0,$Angle=0)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawBasicPieGraph",$DataDescription,FALSE);
@@ -1908,7 +1908,7 @@
 
      /* Calculate all polygons */
      //$Angle    = 0; $TopPlots = "";
-     $Angle    = 260; $TopPlots = "";
+     $TopPlots = "";
      foreach($iValues as $Key => $Value)
       {
        $TopPlots[$Key][] = $XPos;
@@ -1981,7 +1981,7 @@
     }
 
    /* This function draw a flat pie chart */
-   function drawFlatPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$SpliceDistance=0,$Decimals = 0)
+   function drawFlatPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$SpliceDistance=0,$Decimals = 0,$Angle=0)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawFlatPieGraph",$DataDescription,FALSE);
@@ -2012,7 +2012,7 @@
 
      /* Calculate all polygons */
      // $Angle    = 0; $TopPlots = "";
-     $Angle    = 260; $TopPlots = "";
+     $TopPlots = "";
      foreach($iValues as $Key => $Value)
       {
        $XCenterPos = cos(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $XPos;
@@ -2044,7 +2044,8 @@
            $TX = $TX - $TextWidth;
           }
 
-         $C_TextColor = imagecolorallocate($this->Picture,70,70,70);
+//         $C_TextColor = imagecolorallocate($this->Picture,70,70,70);
+         $C_TextColor = $this->AllocateColor($this->Picture,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"],0);
          imagettftext($this->Picture,$this->FontSize,0,$TX,$TY,$C_TextColor,$this->FontName,$Caption);
         }
 
@@ -2108,7 +2109,7 @@
     }
 
    /* This function draw a pseudo-3D pie chart */
-   function drawPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$EnhanceColors=TRUE,$Skew=60,$SpliceHeight=20,$SpliceDistance=0,$Decimals=0)
+   function drawPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$EnhanceColors=TRUE,$Skew=60,$SpliceHeight=20,$SpliceDistance=0,$Decimals=0,$Angle=0)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawPieGraph",$DataDescription,FALSE);
@@ -2146,7 +2147,7 @@
 
      /* Calculate all polygons */
    // $Angle    = 0; $TopPlots = ""; $BotPlots = ""; $CDev = 5;
-     $Angle    = 260; $TopPlots = ""; $BotPlots = ""; $CDev = 5;
+     $TopPlots = ""; $BotPlots = ""; $CDev = 5;
      foreach($iValues as $Key => $Value)
       {
        $XCenterPos = cos(($Angle-$CDev+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $XPos;
