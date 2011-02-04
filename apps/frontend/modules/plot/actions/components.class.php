@@ -156,7 +156,7 @@ class plotComponents extends sfComponents
     $this->data = array();
     if (!isset($this->type) || $this->type != "all")
       $this->type = "home";
-    $this->data['groupes'] = array('GDR' => array(),'SRC' => array(),'NC' => array(),'UMP' => array(), 'NI' => array());
+    $this->data['groupes'] = array('UMP' => array(),'NC' => array(),'SRC' => array(),'GDR' => array(), 'NI' => array());
     if ($this->type === "home")
       $this->data['titres'] = array("Députés", "Interventions", "Amendements", "Propositions", "Quest. Écrites");
     else $this->data['titres'] = array("", "Interventions", "Longues", "Courtes", "Déposés", "Adoptés", "de Lois", "Écrites", "Orales");
