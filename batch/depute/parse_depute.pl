@@ -19,7 +19,7 @@ if ($file =~ /(\d+)/) {
 
 sub infosgene {
     $p = shift;
-print $p;
+#print $p;
     $t = $p->get_tag("li");
     $depute{'Nom'} = $p->get_text("/li");
     $depute{'Sexe'} = ($depute{'Nom'} =~ /M[ml]/) ? 'F' : 'H';
@@ -114,11 +114,15 @@ sub mandat {
 		    $orga =~ /(\d{2}\/\d{2}\/\d+)/;
 		    $depute{'Debut_Mandat'} = $1;
 		}elsif ($orga !~ /^\s*$/) {
-		    ${$depute{'Fonctions'}}{lc($orga)." / ".lc($fonction)." / ".$deb} = 1;
+#		    ${$depute{'Fonctions'}}{lc($orga)." / ".lc($fonction)." / ".$deb} = 1;
+                    $fonctions{lc($orga)} = lc($orga)." / ".lc($fonction)." / ".$deb;
 		}
 		$p->get_tag('/li');
 	    }
 	}
+    }
+    foreach $orga (keys %fonctions) {
+	${$depute{'Fonctions'}}{$fonctions{$orga}} = 1;
     }
 }
 
