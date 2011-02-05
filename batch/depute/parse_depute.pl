@@ -19,6 +19,7 @@ if ($file =~ /(\d+)/) {
 
 sub infosgene {
     $p = shift;
+print $p;
     $t = $p->get_tag("li");
     $depute{'Nom'} = $p->get_text("/li");
     $depute{'Sexe'} = ($depute{'Nom'} =~ /M[ml]/) ? 'F' : 'H';
@@ -93,7 +94,7 @@ sub mandat {
 	    while ($t = $p->get_tag('li', '/li')) {
 		last if ($t->[0] =~ /^\/li/);
 		$text = $p->get_text('/li');
-		if  ($text =~ /^([^(]\S+\s*\S*\s*(\S\S\S+\s*\S*\s*\S*|))( du | de la | de l')\s*([^:]*)/) {
+		if  ($text =~ /^([^(]\S+\s*\S*\s*(\S\S\S+\s*\S*\s*\S*|))( du | de la | de l')\s*(.*)/) {
 		    $fonction = $1;
 		    next if ($fonction =~ /Mandat/);
 		    $orga = $4;
@@ -101,13 +102,13 @@ sub mandat {
 		    $fonction =~ s/ au nom//;
 		    $fonction =~ s/ par les groupes//;
 		    $fonction =~ s/ du bureau//;
-		    $orga =~ s/depuis le//;
 		    $orga =~ s/\s+$//;
 		    $orga =~ s/Assemblée Nationale/Bureau de l'Assemblée Nationale/;
 		    $deb = "";
 		    if ($orga =~ s/ depuis le : ([\d\/]+)//) {
 			$deb = $1;
 		    }
+		    $orga =~ s/ :.*//;
 		}
 		if ($fonction =~ /reprise de l'exercice/i) {
 		    $orga =~ /(\d{2}\/\d{2}\/\d+)/;
