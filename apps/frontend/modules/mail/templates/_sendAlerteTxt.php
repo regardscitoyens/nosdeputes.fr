@@ -33,6 +33,7 @@ foreach ($results['response']['docs'] as $res)
 
   $text = html_entity_decode($text);
   $text = preg_replace('/\&\#[0-9]+\;/', '', $text);
+  $text = preg_replace('/\&nbsp\;/', ' ', $text);
 
   if (strlen($text) > 700) {
 	$text = preg_replace('/[^ ]*$/', '', substr($text, 0, 700)).'...';
