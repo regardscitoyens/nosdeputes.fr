@@ -9,7 +9,7 @@ if (isset($list)) {
       $fonction = $depute->fonction;
        break;
     }
-    echo '<h3 class="aligncenter">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', preg_replace('/(,)? /', 's\\1 ', $fonction))).(count($deputes) > 1 && !preg_match('/(droit|bureau)$/', $fonction) ? 's' : '').'</h3>';
+    echo '<h3 class="aligncenter">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', (count($deputes) > 1 ? preg_replace('/(,)? /', 's\\1 ', (preg_match('/(spécial|général)/i', $fonction) ? preg_replace('/al$/', 'aux', $fonction) : $fonction)) : $fonction))).(count($deputes) > 1 && !preg_match('/(spécial|général|droit|bureau)$/i', $fonction) ? 's' : '').'</h3>';
   }
   echo '<table summary="Députés'.(isset($lettre) ? ' dont le nom commence par '.$lettre : '').'"><tr>';
   $totaldep = count($deputes);

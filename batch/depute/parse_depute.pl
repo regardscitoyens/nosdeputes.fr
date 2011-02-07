@@ -94,27 +94,26 @@ sub mandat {
 	    while ($t = $p->get_tag('li', '/li')) {
 		last if ($t->[0] =~ /^\/li/);
 		$text = $p->get_text('/li');
-		if  ($text =~ /^([^(]\S+\s*\S*\s*(\S\S\S+\s*\S*\s*\S*|))( du | de la | de l')\s*(.*)/) {
+		if  ($text =~ /^\(?(\S+\s*\S*\s*(\S\S\S+\s*\S*\s*\S*\)?|))( du | de la | de l')\s*(.*)/) {
 		    $fonction = $1;
 		    next if ($fonction =~ /Mandat/);
 		    $orga = $4;
-		    next if ($orga =~ /mandat/);
 		    $fonction =~ s/ au nom//;
 		    $fonction =~ s/ par les groupes//;
 		    $fonction =~ s/ du bureau//;
 		    $orga =~ s/\s+$//;
 		    $orga =~ s/Assemblée Nationale/Bureau de l'Assemblée Nationale/;
+		    $orga =~ s/^commission.*\)( du | de la | de l')//i;
 		    $deb = "";
-		    if ($orga =~ s/ depuis le : ([\d\/]+)//) {
-			$deb = $1;
+		    if ($orga =~ s/( depuis)? le : ([\d\/]+)//) {
+			$deb = $2;
 		    }
-		    $orga =~ s/ :.*//;
-		}
-		if ($fonction =~ /reprise de l'exercice/i) {
-		    $orga =~ /(\d{2}\/\d{2}\/\d+)/;
-		    $depute{'Debut_Mandat'} = $1;
-		}elsif ($orga !~ /^\s*$/) {
-#		    ${$depute{'Fonctions'}}{lc($orga)." / ".lc($fonction)." / ".$deb} = 1;
+		    $orga =~ s/\s?:.*//;
+		    $orga =~ s/(commission des finances) sur.*/\1/i;
+                }
+		if ($fonction =~ /reprise de l'exercice/i && $deb) {
+		    $depute{'Debut_Mandat'} = $deb;
+		}elsif ($orga !~ /^\s*$/ && (!($fonctions{lc($orga)}) || $fonctions{lc($orga)} =~ /membre/)) {
                     $fonctions{lc($orga)} = lc($orga)." / ".lc($fonction)." / ".$deb;
 		}
 		$p->get_tag('/li');
