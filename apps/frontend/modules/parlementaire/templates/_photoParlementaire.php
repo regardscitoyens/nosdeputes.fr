@@ -2,7 +2,7 @@
 $add='';
 if (isset($flip) && $flip)
   $add = '&flip='.$flip;
-if ($parlementaire->fin_mandat != null)
+if ($parlementaire->fin_mandat != null && $parlementaire->fin_mandat > $parlementaire->debut_mandat)
   $groupe = "ancien".($parlementaire->sexe == "F" ? "ne" : "")." député".($parlementaire->sexe == "F" ? "e" : "");
 else $groupe = "Groupe parlementaire : ".$parlementaire->groupe_acronyme;
 if ($parlementaire->slug)

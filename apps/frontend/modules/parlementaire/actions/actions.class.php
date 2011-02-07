@@ -68,7 +68,7 @@ class parlementaireActions extends sfActions
 
     $iorig = imagecreatefromjpeg($file);
     $ih = imagecreatetruecolor($work_height*$width/$height, $work_height);
-    if ($parlementaire->fin_mandat)
+    if ($parlementaire->fin_mandat > $parlementaire->debut_mandat)
       self::imagetograyscale($iorig);
     imagecopyresampled($ih, $iorig, 0, 0, 0, 0, $work_height*$width/$height, $work_height, $width, $height);
     $width = $work_height*$width/$height;
@@ -81,7 +81,7 @@ class parlementaireActions extends sfActions
     }
 
     $groupe = $parlementaire->groupe_acronyme;
-    if ($groupe && !$parlementaire->fin_mandat) {
+  if ($groupe) {
       imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon+$bordure, $rayon+$bordure, imagecolorallocate($ih, 255, 255, 255));
       if ($groupe == 'GDR') {
 	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 45, 225, imagecolorallocate($ih, 0, 170, 0), IMG_ARC_EDGED);
