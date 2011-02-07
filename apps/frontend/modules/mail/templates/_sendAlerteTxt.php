@@ -24,7 +24,7 @@ foreach ($results['response']['docs'] as $res)
 
   $text = '';
   if (!isset($nohuman) || !$nohuman) {
-    $text = preg_replace('/^[^a-z]/i', '...', strip_tags(preg_replace('/ *\n+ */', ' ', implode('...', $results['highlighting'][$res['id']]['text']))));
+    $text = preg_replace('/^[^a-z]/i', '...', strip_tags(preg_replace('/<\/?em>/', '*', preg_replace('/ *\n+ */', ' ', implode('...', $results['highlighting'][$res['id']]['text'])))));
   }
 
   if (!$text) {
@@ -33,7 +33,7 @@ foreach ($results['response']['docs'] as $res)
 
   $text = html_entity_decode($text);
   $text = preg_replace('/\&\#[0-9]+\;/', '', $text);
-  $text = preg_replace('/\&nbsp\;/', ' ', $text);
+  $text = preg_replace('/\«\W/', ' " ', $text);
 
   if (strlen($text) > 700) {
 	$text = preg_replace('/[^ ]*$/', '', substr($text, 0, 700)).'...';
@@ -47,8 +47,16 @@ foreach ($results['response']['docs'] as $res)
 
 ?>
 ===============================================
+<?php
+if (!isset($nohuman) || !nohuman) {
+echo "Visualiser cette alerte sur le site :\n";
+echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('@recherche_solr?sort=1&query='.$alerte->query))."\n";
+}
+?>
 Pour éditer cette alerte :
-<?php echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('alerte/edit?verif='.$alerte->getVerif())); ?>
+<?php 
+echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('alerte/edit?verif='.$alerte->getVerif()));
+?>
 
 Pour supprimer cette alerte :
 <?php echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('alerte/delete?verif='.$alerte->getVerif())); ?>
