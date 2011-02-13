@@ -6,8 +6,8 @@ source $1
 fi
 
 mysqldump $MYSQLID $DBNAME -q --single-transaction --add-drop-table -R -t --disable-keys --complete-insert | gzip > $DUMPDIR/$DBNAME.$(date +%y%m%d).sql.gz
-if test -n $SOLR_DATA_PATH ; then
-	tar zcvf $DUMPDIR/$DBNAME.$(date +%y%m%d).solr.tar.gz $SOLR_DATA_PATH
+if test -n "$SOLR_DATA_PATH" ; then
+	tar zcf $DUMPDIR/$DBNAME.$(date +%y%m%d).solr.tar.gz $SOLR_DATA_PATH
 fi
 
 # On archive tous les 1er du mois et tous les dimanches
