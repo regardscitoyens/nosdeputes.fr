@@ -108,6 +108,7 @@ class topDeputesTask extends sfBaseTask
     $parlementaires = $q->select('p.id, count(a.id)')
       ->from('Parlementaire p, p.Amendements a')
       ->groupBy('p.id')
+      ->andWhere('a.sort != ?', 'Rectifié')
       ->fetchArray();
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['amendements_signes']['value'] = $p['count'];
