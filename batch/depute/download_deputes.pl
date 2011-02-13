@@ -59,10 +59,6 @@ while ($t = $p->get_tag('td')) {
                 if ($id == 267680) {
                   $t = '13/12/2010';
                 }
-# Cas Boutin dont la reprise de mandat n'est que d'un jour symbolique
-                if ($id == 632) {
-                  $t = '19/07/2007';
-                }
 		print PM "\$fin_mandat{'$id'} = '$t';\n";
 	    }
 	}
