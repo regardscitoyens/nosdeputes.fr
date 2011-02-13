@@ -53,7 +53,7 @@ while ($t = $p->get_tag('td')) {
                 }
 # Cas Bertrand dont la fin de mandat n'est pas mise à jour sur la page de l'AN
                 if ($id == 267080) {
-                  $t = '14/11/2010';
+                  $t = '14/12/2010';
                 }
 # Cas Ginesy dont la fin de mandat n'est pas mise à jour sur la page de l'AN
                 if ($id == 267680) {
