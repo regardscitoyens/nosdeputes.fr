@@ -23,6 +23,7 @@ class ArticleForm extends BaseArticleForm
     $this->widgetSchema['categorie'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['corps'] = new sfWidgetFormInputHidden();
     $this->widgetSchema['user_corps']->setOption('label', 'Corps');
+    $this->widgetSchema['user_corps']->setAttribute('style', 'width:65em');
     if (!isset($_GET['moderateur']) || !$_GET['moderateur']) {
       unset($this['status']);
     }

@@ -86,7 +86,7 @@ doc_organisme_new:
   param: {module: article, action: create, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true, role: "membre", exclude: 1, link: "@list_parlementaires_organisme?slug=%s"}
 doc_organisme_edit:
   url: /organisme/edit/:article_id
-  param: {module: article, action: edit, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true, role: "membre", exclude: 1}
+  param: {module: article, action: update, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true, role: "membre", exclude: 1}
 rate_id:
   url: /rate/:object_type/:object_id/:rate
   param: {module: rate, action: rateIt}
