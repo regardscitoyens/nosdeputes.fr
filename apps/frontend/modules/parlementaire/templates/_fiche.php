@@ -4,7 +4,7 @@
       <div class="b_d_infos">
       <h2> Informations</h2>
     <ul>
-<?php if ($parlementaire->fin_mandat) : ?>
+<?php if ($parlementaire->fin_mandat && $parlementaire->fin_mandat >= $parlementaire->debut_mandat) : ?>
       <li>Mandat clos rempli du <?php echo myTools::displayDate($parlementaire->debut_mandat); ?> au <?php echo myTools::displayDate($parlementaire->fin_mandat); ?></li>
 <?php else : ?>
       <li>Mandat en cours depuis le <?php echo myTools::displayDate($parlementaire->debut_mandat); ?></li>
@@ -19,7 +19,7 @@
       <li><?php echo link_to('Site web', $parlementaire->site_web, array('title' => 'Lien externe', 'rel'=>'nofollow')); ?></li>
       <?php endif; ?>  
     </ul>
-    <?php if ($parlementaire->fin_mandat == null) : ?>
+    <?php if ($parlementaire->fin_mandat == null || $parlementaire->fin_mandat < $parlementaire->debut_mandat) : ?>
       <h2>Responsabilités</h2>
       <ul>
         <li>Commission permanente : <ul><?php foreach ($commissions_permanentes as $resp) { echo '<li>'.link_to(ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/', '\\1 ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') </li>'; break; } ?></ul></li>

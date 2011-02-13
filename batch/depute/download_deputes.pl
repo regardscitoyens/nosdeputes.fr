@@ -51,6 +51,18 @@ while ($t = $p->get_tag('td')) {
                 if ($id == 345937) {
                   $t = '20/05/2010';
                 }
+# Cas Bertrand dont la fin de mandat n'est pas mise à jour sur la page de l'AN
+                if ($id == 267080) {
+                  $t = '14/11/2010';
+                }
+# Cas Ginesy dont la fin de mandat n'est pas mise à jour sur la page de l'AN
+                if ($id == 267680) {
+                  $t = '13/12/2010';
+                }
+# Cas Boutin dont la reprise de mandat n'est que d'un jour symbolique
+                if ($id == 632) {
+                  $t = '19/07/2007';
+                }
 		print PM "\$fin_mandat{'$id'} = '$t';\n";
 	    }
 	}
