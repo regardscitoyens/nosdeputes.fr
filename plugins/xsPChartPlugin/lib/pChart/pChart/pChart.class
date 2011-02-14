@@ -1981,7 +1981,7 @@
     }
 
    /* This function draw a flat pie chart */
-   function drawFlatPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$SpliceDistance=0,$Decimals = 0,$Angle=0)
+   function drawFlatPieGraph(&$Data,&$DataDescription,$XPos,$YPos,$Radius=100,$DrawLabels=PIE_NOLABEL,$SpliceDistance=0,$Decimals = 0,$Angle=0,$TotalPercents=100)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawFlatPieGraph",$DataDescription,FALSE);
@@ -2008,7 +2008,8 @@
 
      $SpliceDistanceRatio = $SpliceDistance;
      $SpliceRatio         = (360 - $SpliceDistanceRatio * count($iValues) ) / $PieSum;
-     $SplicePercent       = 100 / $PieSum;
+//   $SplicePercent       = 100 / $PieSum;
+     $SplicePercent       = $TotalPercents / $PieSum;
 
      /* Calculate all polygons */
      // $Angle    = 0; $TopPlots = "";
