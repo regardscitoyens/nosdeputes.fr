@@ -4,6 +4,6 @@ Si vous êtes bien à l'origine de cette demande, merci de confirmer en cliquant
 
 <?php echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/confirmation?verif='.$alerte->getVerif())); ?>
 
-Si ce n'est pas le cas, vous pouvez ignorer cet mail et nous vous prions de nous excuser pour la gêne occasionnée.
+Si ce n'est pas le cas, vous pouvez ignorer cet e-mail et nous vous prions de nous excuser pour la gêne occasionnée.
 
 L'équipe de Regards Citoyens, l'association à l'initiative de NosDeputes.fr
