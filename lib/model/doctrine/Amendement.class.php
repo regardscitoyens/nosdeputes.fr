@@ -83,7 +83,7 @@ class Amendement extends BaseAmendement {
 
   public function getSignataires($link = 0) {
     $signa = preg_replace("/M\s+/", "M. ", $this->_get('signataires'));
-    if ($link)
+    if ($link && !preg_match('/gouvernement/i',$signa))
       $signa = preg_replace('/(M+[\.mles\s]+)?([\wàéëêèïîôöûüÉ\s-]+)\s*(,\s*|$)/', '<a href="/deputes?search=\\2">\\1\\2</a>\\3', $signa);
     return $signa;
   }
