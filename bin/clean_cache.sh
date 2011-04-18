@@ -7,5 +7,5 @@ cd $PATH_APP
 
 cd cache
 mv frontend frontend-old
-rm -rf frontend-old
+nice -n 19 rm -rf frontend-old
 
