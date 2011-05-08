@@ -58,8 +58,8 @@ class loadQuestionsTask extends sfBaseTask {
               $quest->source = $json->source;
               $quest->legislature = $json->legislature;
               $quest->numero = $json->numero;
-              $quest->setAuteur($json->auteur);
             }
+            $quest->setAuteur($json->auteur);  // déplacé de la zone de création de nouvelles questions ci-dessus pour permettre correction de l'auteur au besoin, potentiellement lourd, à revert si besoin
             if (!$quest->reponse || $quest->reponse === "") {
               $quest->date = $json->date_question;
               $quest->ministere = $json->ministere_interroge." / ".$json->ministere_attribue;
