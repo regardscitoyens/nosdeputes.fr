@@ -94,6 +94,7 @@ sub mandat {
 	    while ($t = $p->get_tag('li', '/li')) {
 		last if ($t->[0] =~ /^\/li/);
 		$text = $p->get_text('/li');
+		next if ($text =~ /table nominative/i);
 		if  ($text =~ /^\(?(\S+\s*\S*\s*(\S\S\S+\s*\S*\s*\S*\)?|))( du | de la | de l')\s*(.*)/) {
 		    $fonction = $1;
 		    next if ($fonction =~ /Mandat/);
