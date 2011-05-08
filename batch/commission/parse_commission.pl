@@ -299,7 +299,7 @@ foreach $line (split /\n/, $string)
 	    }
 	}
 	$intervention .= "<p>$line</p>";
-	if ($line =~ /séance est levée|Informations? relatives? à la Commission/i) {
+	if ($line =~ /séance est levée/i) {
 	    last;
 	}
     }
