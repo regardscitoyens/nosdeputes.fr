@@ -88,15 +88,6 @@ class sectionActions extends sfActions
     $inters = Doctrine_Query::create()
       ->select('i.id')
       ->from('Intervention i')
-      ->where('(i.section_id = ?)', $this->section->id)
-      ->andWhere('i.nb_mots > 20')
-      ->fetchArray();    
-    foreach($inters as $i) {
-      $interventions[] = $i['id'];
-    }
-    $inters = Doctrine_Query::create()
-      ->select('i.id')
-      ->from('Intervention i')
       ->leftJoin('i.Section s')
       ->where('s.section_id = ?', $this->section->id)
       ->andWhere('i.nb_mots > 20')

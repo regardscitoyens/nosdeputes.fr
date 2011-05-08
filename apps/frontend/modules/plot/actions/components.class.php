@@ -239,37 +239,20 @@ class plotComponents extends sfComponents
       $this->temps = array();
       if (preg_match('/section_(\d+)$/', $this->plot, $match)) {
         $interventions = Doctrine_Query::create()
-          ->select('p.groupe_acronyme, count(i.id) as count')
-          ->from('Parlementaire p, p.Interventions i')
-          ->where('i.section_id = ?', $match[1])
-          ->andWhere('i.fonction NOT LIKE ?', 'président%')
-          ->andWhere('i.nb_mots > 20')
-          ->groupBy('p.id')
-          ->fetchArray();
-        $interventions = array_merge($interventions, Doctrine_Query::create()
-				     ->select('p.groupe_acronyme, count(i.id) as count')
-				     ->from('Parlementaire p, p.Interventions i, i.Section s')
-				     ->where('s.section_id = ?', $match[1])
-				     ->andWhere('i.fonction NOT LIKE ?', 'président%')
-				     ->andWhere('i.nb_mots > 20')
-				     ->groupBy('p.id')
-				     ->fetchArray()
-				     );
+	  ->select('p.groupe_acronyme, count(i.id) as count')
+	  ->from('Parlementaire p, p.Interventions i, i.Section s')
+	  ->where('s.section_id = ?', $match[1])
+	  ->andWhere('i.fonction NOT LIKE ?', 'président%')
+	  ->andWhere('i.nb_mots > 20')
+	  ->groupBy('p.id')
+	  ->fetchArray();
         $mots = Doctrine_Query::create()
-          ->select('p.groupe_acronyme, sum(i.nb_mots) as sum')
-          ->from('Parlementaire p, p.Interventions i, i.Section s')
-          ->where('i.section_id = ?', $match[1])
-          ->andWhere('i.fonction NOT LIKE ?', 'président%')
-          ->groupBy('p.id')
-          ->fetchArray();
-        $mots = array_merge($mots, Doctrine_Query::create()
-			    ->select('p.groupe_acronyme, sum(i.nb_mots) as sum')
-			    ->from('Parlementaire p, p.Interventions i, i.Section s')
-			    ->where('s.section_id = ?', $match[1])
-			    ->andWhere('i.fonction NOT LIKE ?', 'président%')
-			    ->groupBy('p.id')
-			    ->fetchArray()
-			    );
+	  ->select('p.groupe_acronyme, sum(i.nb_mots) as sum')
+	  ->from('Parlementaire p, p.Interventions i, i.Section s')
+	  ->where('s.section_id = ?', $match[1])
+	  ->andWhere('i.fonction NOT LIKE ?', 'président%')
+	  ->groupBy('p.id')
+	  ->fetchArray();
       } else if (preg_match('/seance_(com|hemi)_(\d+)$/', $this->plot, $match)) {
         if (preg_match('/com/', $this->plot)) $this->seance = $match[2];
         $interventions = Doctrine_Query::create()
