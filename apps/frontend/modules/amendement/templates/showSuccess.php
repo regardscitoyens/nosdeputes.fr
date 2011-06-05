@@ -7,7 +7,7 @@
 <h1><?php echo $titre1; ?></h1>
 <h2><?php echo $titre2; ?></h2>
 <div class="identiques">
-  
+
 </div>
 <?php if ($seance || count($identiques) > 1) { ?>
 <div class="seance_amendements">
@@ -28,7 +28,7 @@
     if ($sous['sort'] === 'Adopté') echo '(Adopté)</strong> ';
   } ?></p>
 <?php } ?>
-<p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo preg_replace('/(M[.mle]+)\s+/', '\\1&nbsp;', $amendement->getSignataires(1)); ?>.</p>
+<p id="liste_deputes">Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo preg_replace('/(M[.mle]+)\s+/', '\\1&nbsp;', $amendement->getSignataires(1)); ?>.</p>
 <div class="signataires">
   <div class="photos"><p>
 <?php $deputes = $amendement->Parlementaires;
@@ -76,3 +76,14 @@ else echo include_component('commentaire', 'showAll', array('object' => $amendem
 echo include_component('commentaire', 'form', array('object' => $amendement)); ?>
 </div>
 </div>
+<script type="text/javascript">
+<!--
+$('#liste_deputes a').live('mouseover', function() {
+ nom = $(this).attr('href').split('='); $('.photo_fiche[alt*="'+nom[1]+'"]').css('opacity', '1');
+});
+$('#liste_deputes').bind('mouseover mouseout', function(event) {
+ if (event.type == "mouseover") { $('.photo_fiche').css('opacity', '0.3'); $("#liste_deputes").die("mouseover"); }
+ else { $('.photo_fiche').css('opacity', '1'); $("#liste_deputes").die("mouseout"); }
+});
+// -->
+</script>
