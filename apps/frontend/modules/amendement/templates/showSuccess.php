@@ -28,7 +28,7 @@
     if ($sous['sort'] === 'Adopté') echo '(Adopté)</strong> ';
   } ?></p>
 <?php } ?>
-<p id="liste_deputes">Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <?php echo preg_replace('/(M[.mle]+)\s+/', '\\1&nbsp;', $amendement->getSignataires(1)); ?>.</p>
+<p>Déposé le <?php echo myTools::displayDate($amendement->date); ?> par : <span id="liste_deputes"><?php echo preg_replace('/(M[.mle]+)\s+/', '\\1&nbsp;', $amendement->getSignataires(1)); ?>.</span></p>
 <div class="signataires">
   <div class="photos"><p>
 <?php $deputes = $amendement->Parlementaires;
