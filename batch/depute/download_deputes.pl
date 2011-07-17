@@ -36,7 +36,7 @@ while ($t = $p->get_tag('td')) {
 	$t = $p->get_tag('a');
 	if ($t->[1]{href}) {
 	    $id = download_fiche($t->[1]{href});
-	    $ret = system("grep -i 'mandat est clos' html/$id > /dev/null");
+	    $ret = system("grep -i 'class=\"mandat_clos\"' html/$id > /dev/null");
 	    if (! $ret) {
 		$t = $p->get_tag('td');
 		$t = $p->get_tag('td');
