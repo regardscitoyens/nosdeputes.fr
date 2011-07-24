@@ -47,7 +47,7 @@ do
        echo "  -d ( --nodeputes )    : pas de mise-à-jour de la liste des députés et de leurs commissions"
        echo "  -j ( --nojo )         : pas de mise-à-jour des séances de commission listées au Journal Officiel"
        echo "  -q ( --noquestions )  : pas de mise-à-jour des questions écrites au gouvernement"
-       echo "  -o ( --oldquestions ) : mise-à-jour des questions depuis le début de la législature"
+       echo "  -o ( --oldquestions ) : mise-à-jour des questions depuis le début de la législature et reload des ppl des 3 derniers mois"
 	rm /tmp/loadupdate.lock
        exit 1;;
   esac
@@ -88,7 +88,12 @@ if [[ $questions -ne 0 ]]; then
 fi
 echo Rapports et Textes de lois
 echo ==========================
-cd batch/documents ; bash compute_latest.sh ; cd -
+cd batch/documents
+if [[ $questions -eq 2 ]]; then
+  bash reload_latest_ppl.sh
+fi
+bash compute_latest.sh
+cd -
 
 
 # Vérification des JSON
