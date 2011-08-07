@@ -125,28 +125,28 @@ parlementaire_id_format:
   param: {module: parlementaire, action: id}
 # Liste de tous les parlementaires ou par catégorie
 parlementaires_tags:
-  url: /deputes/tags
+  url: /senateurs/tags
   param: {module: parlementaire, action: tag}
 tag_result_parlementaires:
-  url: /deputes/tags/:tags
+  url: /senateurs/tags/:tags
   param: {module: parlementaire, action: tag}
 list_parlementaires_search:
-  url: /deputes/rechercher/:query
+  url: /senateurs/rechercher/:query
   param: {module: solr, action: redirect, object_name: Parlementaire}
 list_parlementaires_json:
-  url: /deputes/json
+  url: /senateurs/json
   param: {module: api, action: listParlementaires, format: json}
 list_parlementaires_xml:
-  url: /deputes/xml
+  url: /senateurs/xml
   param: {module: api, action: listParlementaires, format: xml}
 list_parlementaires_csv:
-  url: /deputes/csv
+  url: /senateurs/csv
   param: {module: api, action: listParlementaires, format: csv}
 list_parlementaires_alpha:
-  url: /deputes/:query
+  url: /senateurs/:query
   param: {module: solr, action: redirect, object_name: Parlementaire}
 list_parlementaires:
-  url: /deputes
+  url: /senateurs
   param: {module: parlementaire, action: list}
 list_parlementaires_circo:
   url: /circonscription

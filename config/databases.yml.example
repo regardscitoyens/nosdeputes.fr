@@ -2,6 +2,6 @@ all:
   doctrine:
     class: sfDoctrineDatabase
     param:
-      dsn: 'mysql:host=localhost;dbname=cpc'
-      username: cpc
+      dsn: 'mysql:host=localhost;dbname=senat'
+      username: senat
       password: MOT_DE_PASSE

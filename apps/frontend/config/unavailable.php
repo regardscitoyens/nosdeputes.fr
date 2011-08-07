@@ -42,13 +42,13 @@
 --></script>
       </div>
       <div id="header">
-        <a href="/"><img alt="NosDeput&eacute;s.fr" src="/images/xneth/header_logo.png" /></a>
+        <a href="/"><img alt="NosS&eacute;nateurs.fr" src="/images/xneth/header_logo.png" /></a>
       </div>
         <div id="menu">
         <div class="menu_navigation">
 
             <div id="item1"><a href="/" title="Accueil"></a></div>
-          <div id="item2"><a class="selected" href="/deputes"><span class="gris">Les</span> <span class="vert">D</span><span class="gris">&eacute;put&eacute;s</span></a></div>
+          <div id="item2"><a class="selected" href="/senateurs"><span class="gris">Les</span> <span class="vert">S</span><span class="gris">&eacute;nateurs</span></a></div>
           <div id="item3"><a href="/dossiers/date"><span class="gris">Les</span> <span class="orange">D</span><span class="gris">ossiers</span></a></div>
           <div id="item4"><a href="/citoyens/date"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
 
@@ -68,10 +68,10 @@
         <div id="sous_menu_1" style="display:block">
         <div class="elements_sous_menu">
           <ul>
-            <li><a href="/deputes">Par ordre alphabétique</a> <strong>|</strong></li>
+            <li><a href="/senateurs">Par ordre alphabétique</a> <strong>|</strong></li>
 
             <li><a href="/circonscription">Par circonscription</a> <strong>|</strong></li>
-            <li><a href="/deputes/tags">Par mots clés</a> <strong>|</strong></li>
+            <li><a href="/senateurs/tags">Par mots clés</a> <strong>|</strong></li>
             <li><a href="/synthese">Synthèse</a> <strong>|</strong></li>
             <li><a href="/hasard">Au hasard</a></li>
 

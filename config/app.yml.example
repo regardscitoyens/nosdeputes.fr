@@ -1,8 +1,8 @@
 # default values
 all:
-  base_url: http://www.nosdeputes.fr/
+  base_url: http://www.nossenateurs.fr/
   secret_key: _______PUT_YOUR_KEY_HERE________
-  legislature: 13
+#  legislature: 13
 
   sfDoctrineActAsTaggablePlugin:
     triple_distinct:   true

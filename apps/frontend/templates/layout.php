@@ -14,7 +14,7 @@ if ($rss) {
   }
  }
 $uri = strip_tags($_SERVER['REQUEST_URI']);
-$selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selectamdmt = "";$selectquestion = ""; $selectcitoyen = '';
+$selectsenateur = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selectamdmt = "";$selectquestion = ""; $selectcitoyen = '';
 if ( preg_match('/\/circonscription[\/\?]/', $uri))
   $selectcirco = ' selected="selected"';
  else  if ( preg_match('/\/profession[\/\?]/', $uri))
@@ -28,14 +28,14 @@ if ( preg_match('/\/circonscription[\/\?]/', $uri))
  else if (preg_match('/(\/citoyens?[\/\?]?|\/compterendu|\/commentaires?)/', $uri))
    $selectcitoyen = 1;
  else if ( !preg_match('/\/(faq|$)/i', $uri)) 
-   $selectdepute = ' selected="selected"';  
+   $selectsenateur = ' selected="selected"';  
 
-$menu_depute = $selectquestion || $selectdepute || $selectprof || $selectcirco;
+$menu_senateur = $selectquestion || $selectsenateur || $selectprof || $selectcirco;
 $menu_dossier = $selectinterv || $selectamdmt;
 $menu_citoyen = $selectcitoyen;
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="search" href="<?php echo $sf_request->getRelativeUrlRoot(); ?>/nosdeputesfr.xml" title="Rechercher sur NosDéputés.fr" type="application/opensearchdescription+xml" />
+    <link rel="search" href="<?php echo $sf_request->getRelativeUrlRoot(); ?>/nossenateursfr.xml" title="Rechercher sur NosSénateurs.fr" type="application/opensearchdescription+xml" />
     <?php echo stylesheet_tag($style.'/jquery-ui-1.8.5.custom.css'); ?>
     <?php echo stylesheet_tag($style.'/style.css'); ?>
     <?php echo stylesheet_tag($style.'/print', array('media' => 'print')); ?>
@@ -67,30 +67,30 @@ $menu_citoyen = $selectcitoyen;
 --></script>
       </div>
       <div id="header">
-        <a href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo.png', array('alt' => 'NosDeput&eacute;s.fr')); ?></a>
+        <a href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo.png', array('alt' => 'NosS&eacut;enateurs.fr')); ?></a>
       </div>
         <div id="menu">
         <div class="menu_navigation">
             <div id="item1"><a href="<?php echo url_for('@homepage'); ?>" title="Accueil"></a></div>
-          <div id="item2"><a <?php if ($menu_depute) echo 'class="selected" '; ?>href="<?php echo url_for('@list_parlementaires'); ?>"><span class="gris">Les</span> <span class="vert">D</span><span class="gris">&eacute;put&eacute;s</span></a></div>
+          <div id="item2"><a <?php if ($menu_senateur) echo 'class="selected" '; ?>href="<?php echo url_for('@list_parlementaires'); ?>"><span class="gris">Les</span> <span class="vert">S</span><span class="gris">&eacute;nateurs</span></a></div>
           <div id="item3"><a <?php if ($menu_dossier) echo 'class="selected" '; ?>href="<?php echo url_for('@sections?order=date')?>"><span class="gris">Les</span> <span class="orange">D</span><span class="gris">ossiers</span></a></div>
           <div id="item4"><a <?php if ($menu_citoyen) echo 'class="selected" '; ?>href="<?php echo url_for('@list_citoyens?order=date')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
           <div id="item5"><a href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
         </div>
         <?php $search = strip_tags($sf_request->getParameter('query')); 
               $extraclass = '' ; 
-              if (!$search) {$extraclass="examplevalue"; $search = "Rechercher un député, une ville, un mot, ...";} ?>
+              if (!$search) {$extraclass="examplevalue"; $search = "Rechercher un sénateur, une ville, un mot, ...";} ?>
         <div class="menu_recherche">
           <form action="<?php echo url_for('@recherche_solr'); ?>" method="get">
             <p>
               <input class="rechercher<?php echo " ".$extraclass; ?>" name="search" type="text" size="25" value="<?php echo str_replace('"', '&quot;', $search); ?>"/>
-              <input title="Rechercher sur NosDéputés.fr" class="bouton_ok" value="" type="submit"/>
+              <input title="Rechercher sur NosSénateurs.fr" class="bouton_ok" value="" type="submit"/>
             </p>
           </form>
         </div>
       </div>
       <div id="sous_menu">
-        <div id="sous_menu_1" style="display:<?php if ($menu_depute) echo 'block'; else echo 'none'; ?>">
+        <div id="sous_menu_1" style="display:<?php if ($menu_senateur) echo 'block'; else echo 'none'; ?>">
         <div class="elements_sous_menu">
           <ul>
             <li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> <strong>|</strong></li>

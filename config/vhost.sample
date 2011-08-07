@@ -1,14 +1,14 @@
     <VirtualHost *:80>
-      ServerName my.cpc.regardscitoyens.org
-      DocumentRoot "/home/cpc/project/web"
+      ServerName my.senat.regardscitoyens.org
+      DocumentRoot "/home/senat/project/web"
       DirectoryIndex index.php
-      <Directory "/home/cpc/project/web">
+      <Directory "/home/senat/project/web">
         AllowOverride All
         Allow from All
       </Directory>
 
-      Alias /sf "/home/cpc/project/lib/vendor/symfony/data/web/sf"
-      <Directory "/home/cpc/project/lib/vendor/symfony/data/web/sf">
+      Alias /sf "/home/senat/project/lib/vendor/symfony/data/web/sf"
+      <Directory "/home/senat/project/lib/vendor/symfony/data/web/sf">
         AllowOverride All
         Allow from All
       </Directory>
