@@ -1,0 +1,15 @@
+    <VirtualHost *:80>
+      ServerName my.cpc.regardscitoyens.org
+      DocumentRoot "/home/cpc/project/web"
+      DirectoryIndex index.php
+      <Directory "/home/cpc/project/web">
+        AllowOverride All
+        Allow from All
+      </Directory>
+
+      Alias /sf "/home/cpc/project/lib/vendor/symfony/data/web/sf"
+      <Directory "/home/cpc/project/lib/vendor/symfony/data/web/sf">
+        AllowOverride All
+        Allow from All
+      </Directory>
+    </VirtualHost>

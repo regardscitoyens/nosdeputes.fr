@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo Tag Séances
+echo > /tmp/tag_seance.log
+php symfony cc --env=test  --app=frontend
+while ! php symfony tag:Seance >> /tmp/tag_seance.log ; do
+        php symfony cc --env=test  --app=frontend
+done;

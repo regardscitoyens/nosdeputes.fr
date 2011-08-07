@@ -1,0 +1,22 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Citoyen
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             false
+    singular:              ~
+    plural:                ~
+    route_prefix:          citoyen
+    with_doctrine_route:     1
+
+    config:
+      actions: ~
+      fields:  ~
+      list:
+        title: Liste des utilisateurs
+        display: [id, login, email, activite, url_site, travail_pour, naissance, sexe, is_active, role, last_login, created_at]
+      filter:  ~
+      form:    ~
+      edit:    ~
+      new:     ~

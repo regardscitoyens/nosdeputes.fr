@@ -1,0 +1,7 @@
+#!/bin/bash
+
+mkdir log cache
+chmod 777 log cache
+cp config/ProjectConfiguration.class{.example,}.php
+cp config/databases.yml{.example,}
+echo "Don't forget to adapt the configuration files : config/ProjectConfiguration.class.php config/databases.yml"

@@ -1,0 +1,7 @@
+autoload:
+  # vendor
+  vendor:
+    name:           project
+    path:           %SF_LIB_DIR%/vendor
+    recursive:      true
+    exclude:        [symfony]

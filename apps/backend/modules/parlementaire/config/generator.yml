@@ -1,0 +1,21 @@
+generator:
+  class: sfDoctrineGenerator
+  param:
+    model_class:           Parlementaire
+    theme:                 admin
+    non_verbose_templates: true
+    with_show:             true
+    singular:              ~
+    plural:                ~
+    route_prefix:          parlementaire
+    with_doctrine_route:     1
+
+    config:
+      actions: ~
+      fields:  ~
+      list:    
+        display: [=nom, circonscription]
+      filter:  ~
+      form:    ~
+      edit:    ~
+      new:     ~

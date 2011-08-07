@@ -1,0 +1,525 @@
+circo01:
+  url: "/circonscription/departement/Ain"
+  title: "Les députés de l'Ain (01)"
+  image: "<img width='53' class='jstitle' title='Ain (01)' alt='Ain (01)' src='/circonscription/image/001/53/0'/>"
+  weight: 10
+circo02:
+  url: "/circonscription/departement/Aisne"
+  title: "Les députés de l'Aisne (02)"
+  image: "<img width='53' class='jstitle' title='Aisne (02)' alt='Aisne (02)' src='/circonscription/image/002/53/0'/>"
+  weight: 10
+circo03:
+  url: "/circonscription/departement/Allier"
+  title: "Les députés de l'Allier (03)"
+  image: "<img width='53' class='jstitle' title='Allier (03)' alt='Allier (03)' src='/circonscription/image/003/53/0'/>"
+  weight: 10
+circo04:
+  url: "/circonscription/departement/Alpes-de-Haute-Provence"
+  title: "Les députés des Alpes-de-Haute-Provence (04)"
+  image: "<img width='53' class='jstitle' title='Alpes-de-Haute-Provence (04)' alt='Alpes-de-Haute-Provence (04)' src='/circonscription/image/004/53/0'/>"
+  weight: 10
+circo06:
+  url: "/circonscription/departement/Alpes-Maritimes"
+  title: "Les députés des Alpes-Maritimes (06)"
+  image: "<img width='53' class='jstitle' title='Alpes-Maritimes (06)' alt='Alpes-Maritimes (06)' src='/circonscription/image/006/53/0'/>"
+  weight: 10
+circo07:
+  url: "/circonscription/departement/Ardèche"
+  title: "Les députés de l'Ardèche (07)"
+  image: "<img width='53' class='jstitle' title='Ardèche (07)' alt='Ardèche (07)' src='/circonscription/image/007/53/0'/>"
+  weight: 10
+circo08:
+  url: "/circonscription/departement/Ardennes"
+  title: "Les députés des Ardennes (08)"
+  image: "<img width='53' class='jstitle' title='Ardennes (08)' alt='Ardennes (08)' src='/circonscription/image/008/53/0'/>"
+  weight: 10
+circo09:
+  url: "/circonscription/departement/Ariège"
+  title: "Les députés d'Ariège (09)"
+  image: "<img width='53' class='jstitle' title='Ariège (09)' alt='Ariège (09)' src='/circonscription/image/009/53/0'/>"
+  weight: 10
+circo10:
+  url: "/circonscription/departement/Aube"
+  title: "Les députés de l'Aube (10)"
+  image: "<img width='53' class='jstitle' title='Aube (10)' alt='Aube (10)' src='/circonscription/image/010/53/0'/>"
+  weight: 10
+circo11:
+  url: "/circonscription/departement/Aude"
+  title: "Les députés de l'Aude (11)"
+  image: "<img width='53' class='jstitle' title='Aude (11)' alt='Aude (11)' src='/circonscription/image/011/53/0'/>"
+  weight: 10
+circo12:
+  url: "/circonscription/departement/Aveyron"
+  title: "Les députés de l'Aveyron (12)"
+  image: "<img width='53' class='jstitle' title='Aveyron (12)' alt='Aveyron (12)' src='/circonscription/image/012/53/0'/>"
+  weight: 10
+circo67:
+  url: "/circonscription/departement/Bas-Rhin"
+  title: "Les députés du Bas-Rhin (67)"
+  image: "<img width='53' class='jstitle' title='Bas-Rhin (67)' alt='Bas-Rhin (67)' src='/circonscription/image/067/53/0'/>"
+  weight: 10
+circo13:
+  url: "/circonscription/departement/Bouches-du-Rhône"
+  title: "Les députés des Bouches-du-Rhône (13)"
+  image: "<img width='53' class='jstitle' title='Bouches-du-Rhône (13)' alt='Bouches-du-Rhône (13)' src='/circonscription/image/013/53/0'/>"
+  weight: 10
+circo14:
+  url: "/circonscription/departement/Calvados"
+  title: "Les députés du Calvados (14)"
+  image: "<img width='53' class='jstitle' title='Calvados (14)' alt='Calvados (14)' src='/circonscription/image/014/53/0'/>"
+  weight: 10
+circo15:
+  url: "/circonscription/departement/Cantal"
+  title: "Les députés du Cantal (15)"
+  image: "<img width='53' class='jstitle' title='Cantal (15)' alt='Cantal (15)' src='/circonscription/image/015/53/0'/>"
+  weight: 10
+circo16:
+  url: "/circonscription/departement/Charente"
+  title: "Les députés de Charente (16)"
+  image: "<img width='53' class='jstitle' title='Charente (16)' alt='Charente (16)' src='/circonscription/image/016/53/0'/>"
+  weight: 10
+circo17:
+  url: "/circonscription/departement/Charente-Maritime"
+  title: "Les députés de Charente-Maritime (17)"
+  image: "<img width='53' class='jstitle' title='Charente-Maritime (17)' alt='Charente-Maritime (17)' src='/circonscription/image/017/53/0'/>"
+  weight: 10
+circo18:
+  url: "/circonscription/departement/Cher"
+  title: "Les députés du Cher (18)"
+  image: "<img width='53' class='jstitle' title='Cher (18)' alt='Cher (18)' src='/circonscription/image/018/53/0'/>"
+  weight: 10
+circo19:
+  url: "/circonscription/departement/Corrèze"
+  title: "Les députés de Corrèze (19)"
+  image: "<img width='53' class='jstitle' title='Corrèze (19)' alt='Corrèze (19)' src='/circonscription/image/019/53/0'/>"
+  weight: 10
+circo2A:
+  url: "/circonscription/departement/Corse-du-Sud"
+  title: "Les députés de Corse-du-Sud (2A)"
+  image: "<img width='53' class='jstitle' title='Corse-du-Sud (2A)' alt='Corse-du-Sud (2A)' src='/circonscription/image/02a/53/0'/>"
+  weight: 10
+circo21:
+  url: "/circonscription/departement/Côte-d'Or"
+  title: "Les députés de Côte-d'Or (21)"
+  image: "<img width='53' class='jstitle' title='Côte-d'Or (21)' alt='Côte-d'Or (21)' src='/circonscription/image/021/53/0'/>"
+  weight: 10
+circo22:
+  url: "/circonscription/departement/Côtes-d'Armor"
+  title: "Les députés des Côtes-d'Armor (22)"
+  image: "<img width='53' class='jstitle' title='Côtes-d'Armor (22)' alt='Côtes-d'Armor (22)' src='/circonscription/image/022/53/0'/>"
+  weight: 10
+circo23:
+  url: "/circonscription/departement/Creuse"
+  title: "Les députés de la Creuse (23)"
+  image: "<img width='53' class='jstitle' title='Creuse (23)' alt='Creuse (23)' src='/circonscription/image/023/53/0'/>"
+  weight: 10
+circo79:
+  url: "/circonscription/departement/Deux-Sèvres"
+  title: "Les députés des Deux-Sèvres (79)"
+  image: "<img width='53' class='jstitle' title='Deux-Sèvres (79)' alt='Deux-Sèvres (79)' src='/circonscription/image/079/53/0'/>"
+  weight: 10
+circo24:
+  url: "/circonscription/departement/Dordogne"
+  title: "Les députés de la Dordogne (24)"
+  image: "<img width='53' class='jstitle' title='Dordogne (24)' alt='Dordogne (24)' src='/circonscription/image/024/53/0'/>"
+  weight: 10
+circo25:
+  url: "/circonscription/departement/Doubs"
+  title: "Les députés du Doubs (25)"
+  image: "<img width='53' class='jstitle' title='Doubs (25)' alt='Doubs (25)' src='/circonscription/image/025/53/0'/>"
+  weight: 10
+circo26:
+  url: "/circonscription/departement/Drôme"
+  title: "Les députés de la Drôme (26)"
+  image: "<img width='53' class='jstitle' title='Drôme (26)' alt='Drôme (26)' src='/circonscription/image/026/53/0'/>"
+  weight: 10
+circo91:
+  url: "/circonscription/departement/Essonne"
+  title: "Les députés de l'Essonne (91)"
+  image: "<img width='53' class='jstitle' title='Essonne (91)' alt='Essonne (91)' src='/circonscription/image/091/53/0'/>"
+  weight: 10
+circo27:
+  url: "/circonscription/departement/Eure"
+  title: "Les députés de l'Eure (27)"
+  image: "<img width='53' class='jstitle' title='Eure (27)' alt='Eure (27)' src='/circonscription/image/027/53/0'/>"
+  weight: 10
+circo28:
+  url: "/circonscription/departement/Eure-et-Loir"
+  title: "Les députés d'Eure-et-Loir (28)"
+  image: "<img width='53' class='jstitle' title='Eure-et-Loir (28)' alt='Eure-et-Loir (28)' src='/circonscription/image/028/53/0'/>"
+  weight: 10
+circo29:
+  url: "/circonscription/departement/Finistère"
+  title: "Les députés du Finistère (29)"
+  image: "<img width='53' class='jstitle' title='Finistère (29)' alt='Finistère (29)' src='/circonscription/image/029/53/0'/>"
+  weight: 10
+circo30:
+  url: "/circonscription/departement/Gard"
+  title: "Les députés du Gard (30)"
+  image: "<img width='53' class='jstitle' title='Gard (30)' alt='Gard (30)' src='/circonscription/image/030/53/0'/>"
+  weight: 10
+circo32:
+  url: "/circonscription/departement/Gers"
+  title: "Les députés du Gers (32)"
+  image: "<img width='53' class='jstitle' title='Gers (32)' alt='Gers (32)' src='/circonscription/image/032/53/0'/>"
+  weight: 10
+circo33:
+  url: "/circonscription/departement/Gironde"
+  title: "Les députés de la Gironde (33)"
+  image: "<img width='53' class='jstitle' title='Gironde (33)' alt='Gironde (33)' src='/circonscription/image/033/53/0'/>"
+  weight: 10
+circo971:
+  url: "/circonscription/departement/Guadeloupe"
+  title: "Les députés de Guadeloupe (971)"
+  image: "<img width='53' class='jstitle' title='Guadeloupe (971)' alt='Guadeloupe (971)' src='/circonscription/image/971/53/0'/>"
+  weight: 10
+circo973:
+  url: "/circonscription/departement/Guyane"
+  title: "Les députés de Guyane (973)"
+  image: "<img width='53' class='jstitle' title='Guyane (973)' alt='Guyane (973)' src='/circonscription/image/973/53/0'/>"
+  weight: 10
+circo68:
+  url: "/circonscription/departement/Haut-Rhin"
+  title: "Les députés du Haut-Rhin (68)"
+  image: "<img width='53' class='jstitle' title='Haut-Rhin (68)' alt='Haut-Rhin (68)' src='/circonscription/image/068/53/0'/>"
+  weight: 10
+circo2B:
+  url: "/circonscription/departement/Haute-Corse"
+  title: "Les députés de Haute-Corse (2B)"
+  image: "<img width='53' class='jstitle' title='Haute-Corse (2B)' alt='Haute-Corse (2B)' src='/circonscription/image/02b/53/0'/>"
+  weight: 10
+circo31:
+  url: "/circonscription/departement/Haute-Garonne"
+  title: "Les députés de la Haute-Garonne (31)"
+  image: "<img width='53' class='jstitle' title='Haute-Garonne (31)' alt='Haute-Garonne (31)' src='/circonscription/image/031/53/0'/>"
+  weight: 10
+circo43:
+  url: "/circonscription/departement/Haute-Loire"
+  title: "Les députés de la Haute-Loire (43)"
+  image: "<img width='53' class='jstitle' title='Haute-Loire (43)' alt='Haute-Loire (43)' src='/circonscription/image/043/53/0'/>"
+  weight: 10
+circo52:
+  url: "/circonscription/departement/Haute-Marne"
+  title: "Les députés de la Haute-Marne (52)"
+  image: "<img width='53' class='jstitle' title='Haute-Marne (52)' alt='Haute-Marne (52)' src='/circonscription/image/052/53/0'/>"
+  weight: 10
+circo70:
+  url: "/circonscription/departement/Haute-Saône"
+  title: "Les députés de la Haute-Saône (70)"
+  image: "<img width='53' class='jstitle' title='Haute-Saône (70)' alt='Haute-Saône (70)' src='/circonscription/image/070/53/0'/>"
+  weight: 10
+circo74:
+  url: "/circonscription/departement/Haute-Savoie"
+  title: "Les députés de Haute-Savoie (74)"
+  image: "<img width='53' class='jstitle' title='Haute-Savoie (74)' alt='Haute-Savoie (74)' src='/circonscription/image/074/53/0'/>"
+  weight: 10
+circo87:
+  url: "/circonscription/departement/Haute-Vienne"
+  title: "Les députés de la Haute-Vienne (87)"
+  image: "<img width='53' class='jstitle' title='Haute-Vienne (87)' alt='Haute-Vienne (87)' src='/circonscription/image/087/53/0'/>"
+  weight: 10
+circo05:
+  url: "/circonscription/departement/Hautes-Alpes"
+  title: "Les députés des Hautes-Alpes (05)"
+  image: "<img width='53' class='jstitle' title='Hautes-Alpes (05)' alt='Hautes-Alpes (05)' src='/circonscription/image/005/53/0'/>"
+  weight: 10
+circo65:
+  url: "/circonscription/departement/Hautes-Pyrénées"
+  title: "Les députés des Hautes-Pyrénées (65)"
+  image: "<img width='53' class='jstitle' title='Hautes-Pyrénées (65)' alt='Hautes-Pyrénées (65)' src='/circonscription/image/065/53/0'/>"
+  weight: 10
+circo92:
+  url: "/circonscription/departement/Hauts-de-Seine"
+  title: "Les députés des Hauts-de-Seine (92)"
+  image: "<img width='53' class='jstitle' title='Hauts-de-Seine (92)' alt='Hauts-de-Seine (92)' src='/circonscription/image/092/53/0'/>"
+  weight: 10
+circo34:
+  url: "/circonscription/departement/Hérault"
+  title: "Les députés de l'Hérault (34)"
+  image: "<img width='53' class='jstitle' title='Hérault (34)' alt='Hérault (34)' src='/circonscription/image/034/53/0'/>"
+  weight: 10
+circo35:
+  url: "/circonscription/departement/Ille-et-Vilaine"
+  title: "Les députés d'Ille-et-Vilaine (35)"
+  image: "<img width='53' class='jstitle' title='Ille-et-Vilaine (35)' alt='Ille-et-Vilaine (35)' src='/circonscription/image/035/53/0'/>"
+  weight: 10
+circo36:
+  url: "/circonscription/departement/Indre"
+  title: "Les députés de l'Indre (36)"
+  image: "<img width='53' class='jstitle' title='Indre (36)' alt='Indre (36)' src='/circonscription/image/036/53/0'/>"
+  weight: 10
+circo37:
+  url: "/circonscription/departement/Indre-et-Loire"
+  title: "Les députés de l'Indre-et-Loire (37)"
+  image: "<img width='53' class='jstitle' title='Indre-et-Loire (37)' alt='Indre-et-Loire (37)' src='/circonscription/image/037/53/0'/>"
+  weight: 10
+circo38:
+  url: "/circonscription/departement/Isère"
+  title: "Les députés de l'Isère (38)"
+  image: "<img width='53' class='jstitle' title='Isère (38)' alt='Isère (38)' src='/circonscription/image/038/53/0'/>"
+  weight: 10
+circo39:
+  url: "/circonscription/departement/Jura"
+  title: "Les députés du Jura (39)"
+  image: "<img width='53' class='jstitle' title='Jura (39)' alt='Jura (39)' src='/circonscription/image/039/53/0'/>"
+  weight: 10
+circo40:
+  url: "/circonscription/departement/Landes"
+  title: "Les députés des Landes (40)"
+  image: "<img width='53' class='jstitle' title='Landes (40)' alt='Landes (40)' src='/circonscription/image/040/53/0'/>"
+  weight: 10
+circo41:
+  url: "/circonscription/departement/Loir-et-Cher"
+  title: "Les députés du Loir-et-Cher (41)"
+  image: "<img width='53' class='jstitle' title='Loir-et-Cher (41)' alt='Loir-et-Cher (41)' src='/circonscription/image/041/53/0'/>"
+  weight: 10
+circo42:
+  url: "/circonscription/departement/Loire"
+  title: "Les députés de la Loire (42)"
+  image: "<img width='53' class='jstitle' title='Loire (42)' alt='Loire (42)' src='/circonscription/image/042/53/0'/>"
+  weight: 10
+circo44:
+  url: "/circonscription/departement/Loire-Atlantique"
+  title: "Les députés de Loire-Atlantique (44)"
+  image: "<img width='53' class='jstitle' title='Loire-Atlantique (44)' alt='Loire-Atlantique (44)' src='/circonscription/image/044/53/0'/>"
+  weight: 10
+circo45:
+  url: "/circonscription/departement/Loiret"
+  title: "Les députés du Loiret (45)"
+  image: "<img width='53' class='jstitle' title='Loiret (45)' alt='Loiret (45)' src='/circonscription/image/045/53/0'/>"
+  weight: 10
+circo46:
+  url: "/circonscription/departement/Lot"
+  title: "Les députés du Lot (46)"
+  image: "<img width='53' class='jstitle' title='Lot (46)' alt='Lot (46)' src='/circonscription/image/046/53/0'/>"
+  weight: 10
+circo47:
+  url: "/circonscription/departement/Lot-et-Garonne"
+  title: "Les députés du Lot-et-Garonne (47)"
+  image: "<img width='53' class='jstitle' title='Lot-et-Garonne (47)' alt='Lot-et-Garonne (47)' src='/circonscription/image/047/53/0'/>"
+  weight: 10
+circo48:
+  url: "/circonscription/departement/Lozère"
+  title: "Les députés de la Lozère (48)"
+  image: "<img width='53' class='jstitle' title='Lozère (48)' alt='Lozère (48)' src='/circonscription/image/048/53/0'/>"
+  weight: 10
+circo49:
+  url: "/circonscription/departement/Maine-et-Loire"
+  title: "Les députés du Maine-et-Loire (49)"
+  image: "<img width='53' class='jstitle' title='Maine-et-Loire (49)' alt='Maine-et-Loire (49)' src='/circonscription/image/049/53/0'/>"
+  weight: 10
+circo50:
+  url: "/circonscription/departement/Manche"
+  title: "Les députés de la Manche (50)"
+  image: "<img width='53' class='jstitle' title='Manche (50)' alt='Manche (50)' src='/circonscription/image/050/53/0'/>"
+  weight: 10
+circo51:
+  url: "/circonscription/departement/Marne"
+  title: "Les députés de la Marne (51)"
+  image: "<img width='53' class='jstitle' title='Marne (51)' alt='Marne (51)' src='/circonscription/image/051/53/0'/>"
+  weight: 10
+circo972:
+  url: "/circonscription/departement/Martinique"
+  title: "Les députés de Martinique (972)"
+  image: "<img width='53' class='jstitle' title='Martinique (972)' alt='Martinique (972)' src='/circonscription/image/972/53/0'/>"
+  weight: 10
+circo53:
+  url: "/circonscription/departement/Mayenne"
+  title: "Les députés de la Mayenne (53)"
+  image: "<img width='53' class='jstitle' title='Mayenne (53)' alt='Mayenne (53)' src='/circonscription/image/053/53/0'/>"
+  weight: 10
+circo976:
+  url: "/circonscription/departement/Mayotte"
+  title: "Les députés de Mayotte (976)"
+  image: "<img width='53' class='jstitle' title='Mayotte (976)' alt='Mayotte (976)' src='/circonscription/image/976/53/0'/>"
+  weight: 10
+circo54:
+  url: "/circonscription/departement/Meurthe-et-Moselle"
+  title: "Les députés de Meurthe-et-Moselle (54)"
+  image: "<img width='53' class='jstitle' title='Meurthe-et-Moselle (54)' alt='Meurthe-et-Moselle (54)' src='/circonscription/image/054/53/0'/>"
+  weight: 10
+circo55:
+  url: "/circonscription/departement/Meuse"
+  title: "Les députés de la Meuse (55)"
+  image: "<img width='53' class='jstitle' title='Meuse (55)' alt='Meuse (55)' src='/circonscription/image/055/53/0'/>"
+  weight: 10
+circo56:
+  url: "/circonscription/departement/Morbihan"
+  title: "Les députés du Morbihan (56)"
+  image: "<img width='53' class='jstitle' title='Morbihan (56)' alt='Morbihan (56)' src='/circonscription/image/056/53/0'/>"
+  weight: 10
+circo57:
+  url: "/circonscription/departement/Moselle"
+  title: "Les députés de la Moselle (57)"
+  image: "<img width='53' class='jstitle' title='Moselle (57)' alt='Moselle (57)' src='/circonscription/image/057/53/0'/>"
+  weight: 10
+circo58:
+  url: "/circonscription/departement/Nièvre"
+  title: "Les députés de la Nièvre (58)"
+  image: "<img width='53' class='jstitle' title='Nièvre (58)' alt='Nièvre (58)' src='/circonscription/image/058/53/0'/>"
+  weight: 10
+circo59:
+  url: "/circonscription/departement/Nord"
+  title: "Les députés du Nord (59)"
+  image: "<img width='53' class='jstitle' title='Nord (59)' alt='Nord (59)' src='/circonscription/image/059/53/0'/>"
+  weight: 10
+circo988:
+  url: "/circonscription/departement/Nouvelle-Calédonie"
+  title: "Les députés de la Nouvelle-Calédonie (988)"
+  image: "<img width='53' class='jstitle' title='Nouvelle-Calédonie (988)' alt='Nouvelle-Calédonie (988)' src='/circonscription/image/988/53/0'/>"
+  weight: 10
+circo60:
+  url: "/circonscription/departement/Oise"
+  title: "Les députés de l'Oise (60)"
+  image: "<img width='53' class='jstitle' title='Oise (60)' alt='Oise (60)' src='/circonscription/image/060/53/0'/>"
+  weight: 10
+circo61:
+  url: "/circonscription/departement/Orne"
+  title: "Les députés de l'Orne (61)"
+  image: "<img width='53' class='jstitle' title='Orne (61)' alt='Orne (61)' src='/circonscription/image/061/53/0'/>"
+  weight: 10
+circo75:
+  url: "/circonscription/departement/Paris"
+  title: "Les députés de Paris (75)"
+  image: "<img width='53' class='jstitle' title='Paris (75)' alt='Paris (75)' src='/circonscription/image/075/53/0'/>"
+  weight: 10
+circo62:
+  url: "/circonscription/departement/Pas-de-Calais"
+  title: "Les députés du Pas-de-Calais (62)"
+  image: "<img width='53' class='jstitle' title='Pas-de-Calais (62)' alt='Pas-de-Calais (62)' src='/circonscription/image/062/53/0'/>"
+  weight: 10
+circo987:
+  url: "/circonscription/departement/Polynésie_Française"
+  title: "Les députés de la Polynésie Française (987)"
+  image: "<img width='53' class='jstitle' title='Polynésie Française (987)' alt='Polynésie Française (987)' src='/circonscription/image/987/53/0'/>"
+  weight: 10
+circo63:
+  url: "/circonscription/departement/Puy-de-Dôme"
+  title: "Les députés du Puy-de-Dôme (63)"
+  image: "<img width='53' class='jstitle' title='Puy-de-Dôme (63)' alt='Puy-de-Dôme (63)' src='/circonscription/image/063/53/0'/>"
+  weight: 10
+circo64:
+  url: "/circonscription/departement/Pyrénées-Atlantiques"
+  title: "Les députés des Pyrénées-Atlantiques (64)"
+  image: "<img width='53' class='jstitle' title='Pyrénées-Atlantiques (64)' alt='Pyrénées-Atlantiques (64)' src='/circonscription/image/064/53/0'/>"
+  weight: 10
+circo66:
+  url: "/circonscription/departement/Pyrénées-Orientales"
+  title: "Les députés des Pyrénées-Orientales (66)"
+  image: "<img width='53' class='jstitle' title='Pyrénées-Orientales (66)' alt='Pyrénées-Orientales (66)' src='/circonscription/image/066/53/0'/>"
+  weight: 10
+circo974:
+  url: "/circonscription/departement/Réunion"
+  title: "Les députés de la Réunion (974)"
+  image: "<img width='53' class='jstitle' title='Réunion (974)' alt='Réunion (974)' src='/circonscription/image/974/53/0'/>"
+  weight: 10
+circo69:
+  url: "/circonscription/departement/Rhône"
+  title: "Les députés du Rhône (69)"
+  image: "<img width='53' class='jstitle' title='Rhône (69)' alt='Rhône (69)' src='/circonscription/image/069/53/0'/>"
+  weight: 10
+circo975:
+  url: "/circonscription/departement/Saint-Pierre-et-Miquelon"
+  title: "Les députés de Saint-Pierre-et-Miquelon (975)"
+  image: "<img width='53' class='jstitle' title='Saint-Pierre-et-Miquelon (975)' alt='Saint-Pierre-et-Miquelon (975)' src='/circonscription/image/975/53/0'/>"
+  weight: 10
+circo71:
+  url: "/circonscription/departement/Saône-et-Loire"
+  title: "Les députés de Saône-et-Loire (71)"
+  image: "<img width='53' class='jstitle' title='Saône-et-Loire (71)' alt='Saône-et-Loire (71)' src='/circonscription/image/071/53/0'/>"
+  weight: 10
+circo72:
+  url: "/circonscription/departement/Sarthe"
+  title: "Les députés de la Sarthe (72)"
+  image: "<img width='53' class='jstitle' title='Sarthe (72)' alt='Sarthe (72)' src='/circonscription/image/072/53/0'/>"
+  weight: 10
+circo73:
+  url: "/circonscription/departement/Savoie"
+  title: "Les députés de Savoie (73)"
+  image: "<img width='53' class='jstitle' title='Savoie (73)' alt='Savoie (73)' src='/circonscription/image/073/53/0'/>"
+  weight: 10
+circo77:
+  url: "/circonscription/departement/Seine-et-Marne"
+  title: "Les députés de Seine-et-Marne (77)"
+  image: "<img width='53' class='jstitle' title='Seine-et-Marne (77)' alt='Seine-et-Marne (77)' src='/circonscription/image/077/53/0'/>"
+  weight: 10
+circo76:
+  url: "/circonscription/departement/Seine-Maritime"
+  title: "Les députés de Seine-Maritime (76)"
+  image: "<img width='53' class='jstitle' title='Seine-Maritime (76)' alt='Seine-Maritime (76)' src='/circonscription/image/076/53/0'/>"
+  weight: 10
+circo93:
+  url: "/circonscription/departement/Seine-Saint-Denis"
+  title: "Les députés de Seine-Saint-Denis (93)"
+  image: "<img width='53' class='jstitle' title='Seine-Saint-Denis (93)' alt='Seine-Saint-Denis (93)' src='/circonscription/image/093/53/0'/>"
+  weight: 10
+circo80:
+  url: "/circonscription/departement/Somme"
+  title: "Les députés de la Somme (80)"
+  image: "<img width='53' class='jstitle' title='Somme (80)' alt='Somme (80)' src='/circonscription/image/080/53/0'/>"
+  weight: 10
+circo81:
+  url: "/circonscription/departement/Tarn"
+  title: "Les députés du Tarn (81)"
+  image: "<img width='53' class='jstitle' title='Tarn (81)' alt='Tarn (81)' src='/circonscription/image/081/53/0'/>"
+  weight: 10
+circo82:
+  url: "/circonscription/departement/Tarn-et-Garonne"
+  title: "Les députés du Tarn-et-Garonne (82)"
+  image: "<img width='53' class='jstitle' title='Tarn-et-Garonne (82)' alt='Tarn-et-Garonne (82)' src='/circonscription/image/082/53/0'/>"
+  weight: 10
+circo90:
+  url: "/circonscription/departement/Territoire-de-Belfort"
+  title: "Les députés du Territoire-de-Belfort (90)"
+  image: "<img width='53' class='jstitle' title='Territoire-de-Belfort (90)' alt='Territoire-de-Belfort (90)' src='/circonscription/image/090/53/0'/>"
+  weight: 10
+circo95:
+  url: "/circonscription/departement/Val-d'Oise"
+  title: "Les députés du Val-d'Oise (95)"
+  image: "<img width='53' class='jstitle' title='Val-d'Oise (95)' alt='Val-d'Oise (95)' src='/circonscription/image/095/53/0'/>"
+  weight: 10
+circo94:
+  url: "/circonscription/departement/Val-de-Marne"
+  title: "Les députés du Val-de-Marne (94)"
+  image: "<img width='53' class='jstitle' title='Val-de-Marne (94)' alt='Val-de-Marne (94)' src='/circonscription/image/094/53/0'/>"
+  weight: 10
+circo83:
+  url: "/circonscription/departement/Var"
+  title: "Les députés du Var (83)"
+  image: "<img width='53' class='jstitle' title='Var (83)' alt='Var (83)' src='/circonscription/image/083/53/0'/>"
+  weight: 10
+circo84:
+  url: "/circonscription/departement/Vaucluse"
+  title: "Les députés du Vaucluse (84)"
+  image: "<img width='53' class='jstitle' title='Vaucluse (84)' alt='Vaucluse (84)' src='/circonscription/image/084/53/0'/>"
+  weight: 10
+circo85:
+  url: "/circonscription/departement/Vendée"
+  title: "Les députés de Vendée (85)"
+  image: "<img width='53' class='jstitle' title='Vendée (85)' alt='Vendée (85)' src='/circonscription/image/085/53/0'/>"
+  weight: 10
+circo86:
+  url: "/circonscription/departement/Vienne"
+  title: "Les députés de la Vienne (86)"
+  image: "<img width='53' class='jstitle' title='Vienne (86)' alt='Vienne (86)' src='/circonscription/image/086/53/0'/>"
+  weight: 10
+circo88:
+  url: "/circonscription/departement/Vosges"
+  title: "Les députés des Vosges (88)"
+  image: "<img width='53' class='jstitle' title='Vosges (88)' alt='Vosges (88)' src='/circonscription/image/088/53/0'/>"
+  weight: 10
+circo986:
+  url: "/circonscription/departement/Wallis-et-Futuna"
+  title: "Les députés de Wallis-et-Futuna (986)"
+  image: "<img width='53' class='jstitle' title='Wallis-et-Futuna (986)' alt='Wallis-et-Futuna (986)' src='/circonscription/image/986/53/0'/>"
+  weight: 10
+circo89:
+  url: "/circonscription/departement/Yonne"
+  title: "Les députés de l'Yonne (89)"
+  image: "<img width='53' class='jstitle' title='Yonne (89)' alt='Yonne (89)' src='/circonscription/image/089/53/0'/>"
+  weight: 10
+circo78:
+  url: "/circonscription/departement/Yvelines"
+  title: "Les députés des Yvelines (78)"
+  image: "<img width='53' class='jstitle' title='Yvelines (78)' alt='Yvelines (78)' src='/circonscription/image/078/53/0'/>"
+  weight: 10

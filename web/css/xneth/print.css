@@ -1,0 +1,25 @@
+/* Général */
+#top, #header, #menu, #sous_menu, #bottom, .source, .commentaires {
+  display: none;
+}
+img { border: none; }
+/* Séances */
+.section { page-break-before: always; }
+.perso { font-weight: bold; }
+.perso a, .section a, .sous-section a { text-decoration: none; color: #000; }
+/* Synthèse */
+.synthese div { height: auto; overflow: visible; }
+.synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
+.p { width: 140px; }
+.w { width: 70px; }
+.cp { width: 75px; }
+.ci { width: 85px; }
+.hl { width: 85px; }
+.hc { width: 85px; }
+.as { width: 51px; }
+.aa { width: 61px; }
+.ar { width: 51px; }
+.qe { width: 51px; }
+.qo { width: 51px; }
+.synthese table { border-collapse: collapse; }
+.synthese table, .synthese td, .synthese th { border: 1px solid gray; }

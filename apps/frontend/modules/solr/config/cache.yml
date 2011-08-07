@@ -1,0 +1,7 @@
+all:
+  lifetime: 12000
+  enabled: true
+_searchbox:
+  enabled: false
+noresults:
+  enabled: false

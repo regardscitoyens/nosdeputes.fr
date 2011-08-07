@@ -1,0 +1,3 @@
+all:
+   javascripts: [overlib.js, pMap.js]
+

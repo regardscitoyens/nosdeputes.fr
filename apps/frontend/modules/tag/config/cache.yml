@@ -1,0 +1,5 @@
+all:
+   enabled: true
+   lifetime: 86400
+_tagcloud:
+   enabled: false

@@ -1,0 +1,11 @@
+listCircoSuccess:
+   javascripts: [jquery.maphilight.min.js]
+indexSuccess:
+   javascripts: [overlib.js, pMap.js]
+showSuccess:
+   javascripts: [overlib.js, pMap.js]
+plotSuccess:
+   javascripts: [overlib.js, pMap.js]
+topSuccess:
+   javascripts: [overlib.js, pMap.js]
+

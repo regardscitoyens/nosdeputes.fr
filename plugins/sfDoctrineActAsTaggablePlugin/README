@@ -1,0 +1,450 @@
+# sfDoctrineActAsTaggablePlugin #
+
+## Introduction ##
+This behavior permits to attach tags to Doctrine objects. It includes tag-clouds generation and helpers to display these clouds.
+
+[[Image(sfPropelActAsTaggableBehaviorPlugin.png)]]
+
+## Features ##
+ * add/remove tag(s) on an object
+ * multi-tags object search
+ * multi-models selection
+ * tag cloud generation
+ * related tags handling
+ * unit-tested for model
+ * [machine tags](http://www.flickr.com/groups/api/discuss/72157594497877875/) support (also called "triple tags")
+ * jQuery-based typeahead for tags (optional)
+ * easy tags fixtures loading NOT YET
+
+## Upgrade Note ##
+
+Prior to my svn commit of 2009-08-03, the typeahead support inserted nonbreaking
+spaces, which some web browsers actually submitted even though they were part
+of plaintext elements. This has been fixed.
+
+You may have existing tag databases with what appear to be duplicate tags due
+to the existence of "Bob Smith" (with a normal space) and "Bob Smith"
+(with a nonbreaking space) side by side.
+
+The following MySQL command will clean this up:
+
+    update tagging set tag_id = 
+      (select id from tag where tag.name = 
+        trim(replace((select name from tag where tag.id = tag_id), 
+      char(160), ' ')));
+
+## Philosophy of the stuff ##
+
+ * taggable models must have a primary key
+ * tags are saved when the object is saved, not before
+ * one object cannot be tagged twice with the same tag. When trying to use twice the same tag on one object, the second tagging will be ignored
+ * the tags associated to one taggable object are only loaded when necessary. Then they are cached.
+ * once created, tags never change in the Tag table. When using replaceTag(), a new tag is created if necessary, but the old one is not deleted.
+
+## Get it installed ##
+
+ * go to your project's root
+ * Install the plugin: 
+        
+        ./symfony plugin-install http://svn.symfony-project.com/plugins/sfDoctrineActAsTaggablePlugin/trunk
+ 
+ * edit your schema.yml and add 
+ 
+        templates: [Taggable] to model you want to be taggable
+ 
+ * rebuild the model: 
+ 
+        ./symfony doctrine-build-all
+ 
+ * clear cache:
+ 
+        ./symfony cc
+
+## Usage ##
+
+### Attaching tags to a taggable object ###
+
+Consider a Doctrine "Post" class:
+
+    <?php
+    $post = new Post();
+    $post->addTag('toto');
+    $post->addTag('tata, tutu');
+    $post->addTag(array('Titi', 'Gros Minet'));
+    $post->save();
+    ?>
+
+The plugin supports [machine tags](http://www.flickr.com/groups/api/discuss/72157594497877875/):
+
+    <?php
+    $post = new Post();
+    $post->addTag('iso:isbn=123456789');
+    $post->save();
+    
+    // assume City is a taggable class
+    $city = new City();
+    $city->addTag('geo:lat=47.3456');
+    $city->save();
+
+By default, the plugin will allow to attach several triple tags with the same namespaces and key for one given object. That is, you could attach the tags ``geo:lat=36.5`` and ``geo:lat=43.2`` to the same object. If this behavior doesn't make you happy, you may want to tweak the plugin''s configuration in the ``app.yml`` file of your project:
+
+    all:
+      sfDoctrineActAsTaggablePlugin:
+        triple_distinct:   true
+
+### Retrieving one object's tags ###
+It is possible to retrieve tags from a taggable object:
+
+    #!php
+    <?php
+    $post = Doctrine::getTable('Post')->find(1);
+    $tags = $post->getTags();
+
+    foreach ($tags as $tag)
+    {
+      echo $tag.'<br />';
+    }
+
+If you want to retrieve only the triple tags of a certain namespace, you can
+pass some options to the ``getTags()`` method:
+
+    #!php
+    <?php
+    $post = Doctrine::getTable('Post')->find(1);
+    $tags = $post->getTags(array('is_triple' => true,
+                                 'namespace' => 'geo',
+                                 'return'    => 'value'));
+
+    foreach ($tags as $tag)
+    {
+      echo $tag.'<br />';
+    }
+
+The getTags() method may accept up to 5 parameters:
+
+ * ``is_triple``: whether or not the returned tags should be triple tags only
+ * in case this option has been defined, the other options are available:
+    * ``namespace``: namespace of the returned triple tags
+    * ``key``: key of the returned triple tags
+    * ``value``: value of the returned triple tags
+    * ``tag``: complete triple-tag string of the returned triple tags
+    * ``return``: format of the returned result:
+        * By default, selecting triple tags will return an array of tags, in which each tag is represented by an array of the form [complete tag string, namespace, key, value].
+        * If the ``return`` option has the value ``namespace``, ``key`` or ``value``, the ``getTags()`` method will only return the namespaces, keys or values list.
+
+### Removing one object's tags ###
+Of course, tags can also be removed:
+
+    #!php
+    <?php
+    $post = Doctrine::getTable('Post')->find(1);
+    $post->removeTag('toto');
+    $post->removeTag('toto, tutu');
+    $post->removeAllTags();
+
+### Setting one object's tags ###
+All the tags of an object can be set or replaced at once, using the methode
+``setTags()``:
+
+    #!php
+    <?php
+    $post = Doctrine::getTable('Post')->find(1);
+    $post->setTags('toto, tutu');
+    $post->save();
+
+This is particularly useful when using [File Syntax fixtures](http://www.symfony-project.org/book/1_0/16-Application-Management-Tools#Fixture)
+in a project, as it permits to attach tags to the objects a pretty straight way:
+
+    Post:
+      first_post:
+        title:    My first memories
+        tags:     memories, sleeping, bed
+
+      second_post:
+        title:    Things got worse
+        tags:     death, memories, personnal
+
+### Retrieving objects, based on their tags ###
+The plugin proposes several methods for retrieving objects given their tags.
+These methods are all located in the ``PluginTagTable`` class:
+
+    #!php
+    <?php
+    // gets the list of the models that have at least one instance tagged with one
+    // or several specific tags
+    $tutu_toto_models = PluginTagTable::getModelsNameTaggedWith('tutu, toto');
+
+    // gets objects tagged with one or several specific tags
+    $tutu_toto_objects = PluginTagTable::getObjectTaggedWith('tutu, toto');
+    $tutu_toto_objects = PluginTagTable::getObjectTaggedWith('tutu, toto', array('triple' => true, 'namespace' => 'geo'));
+    $tutu_toto_objects = PluginTagTable::getObjectTaggedWith('tutu, toto', array('model' => 'Post'));
+
+    // it is als possible to select objects tagged with certain types of triple tags
+    // in this special case, the first "tags" parameter is useless. For instance,
+    // this line will return all the objects that have a triple tag in the namespace
+    // "geo":
+    $tutu_toto_objects = PluginTagTable::getObjectTaggedWith(array(), array('namespace' => 'geo'));
+
+    // gets a criteria that permits to select objects tagged with one or several
+    // specific tags
+    $criteria = PluginTagTable::getObjectTaggedWithQuery('Post', 'tutu, toto');
+    $criteria->addWhere('post.published = true');
+    $posts = $q->execute();
+
+    // gets objects that are tagged with a certain number of tags within a set of
+    // tags. For instance, the following line returns all the object tagged with at
+    // least two of the following tags: toto, tutu, tata, titi
+    $objects = PluginTagTable::getObjectTaggedWith('tutu, toto, tata, titi',
+                                      array('nb_common_tags' => 2));
+
+The methods ``PluginTagTable::getRelatedTags()``, ``PluginTagTable::getObjectTaggedWith()``, and ``PluginTagTable::getObjectTaggedWithQuery()`` accept one additional parameter, "``nb_common_tags``", that permits to select objects that share a certain number of tags in common with the given tags list. For instance:
+
+    #!php
+    <?php
+    // this will return all the objects that are at least tagged with 2 tags in the 
+    // list "tata", "titi", "tutu", and "toto".
+    $objects = PluginTagTable::getObjectTaggedWith('tata, titi, tutu, toto', array('nb_common_tags' => 2));
+
+### Tags cloud generation ###
+The plugin also proposes methods and helpers for generating tags cloud:
+
+    #!php
+    <?php
+    // gets the popular tags
+    $tags = PluginTagTable::getPopulars();
+
+    // display the tags cloud. The tags will use the route name "@tag" which tags
+    // the request parameter "tags". The %s element of the route represents the 
+    // position of the tag
+    echo tag_cloud($tags, '@tag?tags=%s');
+
+The default size of the tag cloud is 100 items, but this value might be tweaked in app.yml:
+
+    all:
+      sfDoctrineActAsTaggablePlugin:
+        limit:   50
+
+When you click on a tag in a tag cloud, you will want to get a list of objects that have been tagged with that tag. But sometimes, it happens that this tag is so popular that you can not find the resource you were searching for. Related-tags clouds are helpful for refining your request, as they provide a way to add an other tag to the request:
+
+    #!php
+    <?php
+    // get the tags related to "toto" and "tutu", for the model "Post" only
+    $tags = PluginTagTable::getRelatedTags('toto,tutu', array('model' => 'Post'));
+
+    // displays the related tags cloud, using the route "@post_tags" with the
+    // request parameter "tags". Please note that there is no %s in the route, 
+    // on the contrary to the tag_cloud() helper
+    echo related_tag_cloud($tags, '@post_tags?tags=', 'toto,tutu');
+
+This helper accepts several options:
+
+ * ``add``: text to be used, after each tag, as a link for adding this tag to the current selection
+ * ``class``: class of the tags cloud. By default, the class "tags-cloud" is used
+ 
+You might also want to display the tags of one item. The ``tag_list()`` helper is done for this:
+
+    #!php
+    <?php
+    $post = PostPeer::retrieveByPk(1);
+    $tags = $post->getTags();
+    echo tag_list($tags, '@tag?tag=');
+
+This helper accepts several options:
+
+ * ``class``: class of the tags list. By default, the class "tags-list" is used
+ * ``ordered``: by default, the helper will generate an unordered list (HTML ``<ul>...</ul>`` tag). When this option is set to true, the helper will generate an ordered list (HTML ``<ol>...</ol>`` tag).
+ * ``separator``: separator to be used between two tags. If this option is not added, no separator will be used.
+
+### Specialize your tag clouds ###
+The tag retrieval mecanism is fully based on Criterias, so it is easy to pass
+several restrictions. For instance, for retrieving popular tags over posts
+created in March 2007:
+
+    #!php
+    <?php
+    $q = new Criteria();
+    $q->addJoin(PostPeer::ID, TaggingPeer::TAGGABLE_ID);
+    $q->add(PostPeer::CREATED_AT, '2007-03%', Criteria::LIKE);
+    $tags = PluginTagTable::getPopulars($c, array('model' => 'Post'));
+    echo tag_cloud($tags, '@tag?tags=%s');
+
+The methods PluginTagTable::getPopulars, PluginTagTable::getAllTagName, etc., accept as last
+parameter an array with several keys:
+
+ * max number of returned tags:
+
+        #!php
+        <?php
+        // return a maximum of 200 tags
+        $tags = PluginTagTable::getAllTagName(null, array('limit' => 200));
+
+ * tag name restriction:
+
+        #!php
+        <?php
+        // select tags beginning with the letters "to"
+        $tags = PluginTagTable::getAllTagName(null, array('like' => 'to%'));
+
+ * whether the returned tags should be machine tags, or not:
+
+        #!php
+        <?php
+        // returns only triple tags
+        $triple_tags = PluginTagTable::getAllTagName(null, array('triple' => true));
+
+ * for triple tags, it is possible to restrict the returned tags from their namespace, key, and value:
+
+        <?php
+        // returns only triple tags from the namespace "geo"
+        $geo_tags = PluginTagTable::getAllTagName(null, array('triple' => true, 'namespace' => 'geo'));
+
+        // returns only triple tags with the key "lat"
+        $lat_tags = PluginTagTable::getAllTagName(null, array('triple' => true, 'key' => 'lat'));
+
+        // returns only triple tags with the value "12"
+        $value_tags = PluginTagTable::getAllTagName(null, array('triple' => true, 'value' => '12'));
+
+### Avoid performance problems ###
+In case you want to display a long list of taggable objects with their associated tags, you might want first to preload these objects's tags: it avoids to load tags per object, and gets all tags in a few requests.
+
+    #!php
+    <?php
+    $posts = PluginTagTable::getObjectTaggedWith('toto,tutu', array('model' => 'Post'));
+    sfPropelActAsTaggableBehavior::preloadTags($posts);
+
+    foreach ($posts as $post)
+    {
+      echo $post-getTitle();
+
+      // won't require one request at each loop, as tags have been preloaded.
+      var_dump($post-getTags());
+    }
+
+### Typeahead ###
+
+Tag typeahead support allows users to complete the current tag by pressing
+the tab key, which picks what the plugin believes to be the most likely
+tag suggestion, or by clicking on any of several suggested tags.
+
+To enable tag typeahead support:
+
+First make sure you are loading jQuery in your project, typically
+via view.yml. We recommend you stay up to date with jQuery 1.3.x.
+
+Next, enable the taggableComplete module in settings.yml. If you are
+concerned about the names of valid tags being discovered by parties who
+are not logged in, secure the taggableComplete/complete action. For
+most projects this is not a big concern.
+
+Now, give your tag input fields the CSS class tag-input. This will be
+automatically detected by the jQuery code.
+
+Fourth, enable typeahead support at the end of each template that contains
+tag fields, or just do it in your layout. You must pass the name of the action
+that provides tag completion:
+
+    <script>
+    pkTagahead(<?php echo json_encode(url_for("taggableComplete/complete")) ?>);
+    </script>
+
+(Note that this means the pkTagahead code could easily be borrowed for use
+in other frameworks and languages.)
+
+Finally, style the tag suggestions so that they line up directly beneath
+your input tags and so that only the new tag suggestions are actually visible.
+
+The tag suggestions will be in a jQuery-generated `span` 
+element containing a `ul` element containing `li` elements, with the new,
+selectable tag suggestions being in `a` elements within those. 
+
+The rest of the tags are present as non-clickable text in each `li` which makes
+it easy to reset the entire tag input field at one whack. Note that we now
+use `display: none` for the non-visible portion. 
+
+The right way to write your CSS depends on how your forms are structured.
+The important thing is to hide the tag-spacer class:
+
+.tag-suggestions.tag-spacer
+{
+  display: none;
+}
+
+We now recommend `display: none` rather than `visibility: hidden` because
+the latter works poorly if the tag string is long enough to cause an input element
+to wrap. It's better to simply display the suggestions at left below the
+input field. You might want to push `.tag-suggestions` over a bit with
+`padding-left`.
+
+### Cleaning Up Orphan Tags ###
+
+Due to the limitations of foreign key relationships and the possibility of taggings pointing to many different tables, tags which no longer have any taggings are not automatically deleted from the database. Such orphan tags can be cleaned up easily with the `taggable:clean` Symfony task:
+
+    ./symfony taggable:clean
+
+Since this task is typically run from cron, it is silent by default unless something goes wrong. However, you can request verbose output:
+
+    ./symfony taggable:clean --verbose
+
+The `application`, `env`, and `connection` options are also supported.
+
+## Plugin internals ##
+The plugin associates a parameterHolder to Propel objects, with 3 disjoin namespaces:
+
+ * '''tags''': tags that have been attached to the object, but not yet saved. Contract: tags are disjoin of (saved_tags union removed_tags)
+ * '''saved_tags''': tags that are presently saved in the database. Contract: removed_tags are disjoin of (tags union saved_tags)
+ * '''removed_tags''': tags that are presently saved in the database, but which will be removed at the next save(). Contract: removed_tags are disjoin of (tags union saved_tags)
+
+When required, the saved_tags namespace is filled with the tags previously present in the database. The tagging methods have an action on these three namespaces, which are serialized in the database after the Propel object gets saved.
+
+### What is done when adding a tag ? ###
+ * if the tag is present in the "removed_tags" namespace, the tagging request is interpreted as a tag-removal revert. The tag is then deleted front the "removed_tags" request, and brought back into "saved_tags".
+ * else, if the tag is not present in the "saved_tags" namespace, add it to the "tags" one.
+
+### What is done when removing a tag ? ###
+ * if the tag has not yet been saved, simply remove it from the "tags" namespace.
+ * if he has been saved, remove it from the "saved_tags" namespace, and add it to the "removed_tags" one.
+
+## API ##
+The behavior implement the following methods:
+
+ * '''addTag($tagname)''' - Adds one or several tags to an object.
+ * '''getTags()''' - Returns the list of the tags attached to the object.
+ * '''hasTag($tag = null)''' - Returns true if the object has a tag. If a tag ar an array of tags is passed in second parameter, checks if these tags are attached to the object.
+ * '''removeAllTags()''' - Removes all the tags of the object.
+ * '''removeTag($tagname)''' - Removes a tag or a set of tags from the object.
+ * '''replaceTag($tagname, $replacement = null)''' - Replaces a tag with an other one.
+ * '''setTags($tagname)''' - Sets the tags of the object. If previous tags were attached to the object, they are removed.
+
+The behavior class also implement the following method, which is a facility for preloading all the tags for a set of taggable objects
+
+ * '''preloadTags($objects)''' - Preload tags for a set of objects.
+
+## Unit testing ##
+The plugin has been deeply unit-tested, if not fully. The tests are located in test/unit/sfDoctrineActAsTaggableTest.php. If you want to run them:
+
+ * install the plugin
+ * configure two model for using it, for instance "Post" and "Link"
+ * edit the test file test/unit/sfPropelActAsTaggableBehaviorTest.php and modify line 21, 22 and 23:
+    > define('TEST_CLASS', 'Post');
+    > define('TEST_CLASS_2', 'Link');
+    > define('DOCTRINE_CLASS', 'Address'); # a doctrine class not taggale please :D
+ * run the tests:
+   ``
+     $ php ./plugins/sfDoctrineActAsTaggablePlugin/test/unit/sfDoctrineActAsTaggableTest.php
+   ``
+    or add a simlink to your main unit test folder
+   ``
+     cd unit/test
+     ln -s ../../plugins/sfDoctrineActAsTaggablePlugin/test/unit/sfDoctrineActAsTaggableTest.php 
+   ``
+     and run unit-test
+   ``
+     symfony test-unit sfDoctrineActAsTaggable
+   ``
+
+## License and credits ##
+This plugin has been ported from [sfPropelActAsTaggableBehaviorPlugin](http://www.symfony-project.org/plugins/sfPropelActAsTaggableBehaviorPlugin) by [Mickael Kurmann](http://www.vieuxsteak.ch/) and is licensed under the MIT license.
+
+Support for tag typeahead was contributed by Tom Boutell of 
+[P'unk Avenue](http://www.punkave.com/). 
+

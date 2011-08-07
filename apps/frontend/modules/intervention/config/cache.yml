@@ -1,0 +1,9 @@
+all:
+  enabled: true
+  lifetime: 86400
+show:
+  enabled: false
+_pagerInterventions:
+  enabled: false
+_parlementaireIntervention:
+  enabled: false

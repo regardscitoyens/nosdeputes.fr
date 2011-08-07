@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+ <ShortName>NosDéputés.fr</ShortName>
+ <Description>Rechercher sur NosDéputés.fr</Description>
+ <Tags>NosDéputés Nosdeputes parlement parlementaire assemblée députés depute france</Tags>
+ <Contact>contact@regardscitoyens.org</Contact>
+ <Url type="text/html" 
+      template="http://www.nosdeputes.fr/recherche/?search={searchTerms}"/>
+ <Url type="application/rss+xml"
+      template="http://www.nosdeputes.fr/recherche/?search={searchTerms}&amp;format=xml"/>
+ <Url type="text/json" 
+      template="http://www.nosdeputes.fr/recherche/?search={searchTerms}&amp;format=json"/>
+ <LongName>Rechercher sur NosDéputés.fr</LongName>
+ <Image height="64" width="64" type="image/png">http://www.nosdeputes.fr/search.png</Image>
+ <Image height="16" width="16" type="image/vnd.microsoft.icon">http://www.nosdeputes.fr/favicon.ico</Image>
+ <Query role="example" searchTerms="député" />
+ <Developer>Regards Citoyens Development Team</Developer>
+ <Attribution>
+  Regards Citoyens Development Team
+ </Attribution>
+ <SyndicationRight>open</SyndicationRight>
+ <AdultContent>false</AdultContent>
+ <Language>fr-FR</Language>
+ <OutputEncoding>UTF-8</OutputEncoding>
+ <InputEncoding>UTF-8</InputEncoding>
+</OpenSearchDescription>

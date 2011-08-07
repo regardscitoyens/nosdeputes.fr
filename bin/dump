@@ -1,0 +1,4 @@
+#!/bin/bash
+. bin/db.inc
+
+mysqldump $MYSQLID $DBNAME -q --single-transaction --add-drop-table -R -t --disable-keys --complete-insert | gzip > $PATH_APP/data/sql/data.dump.sql.gz

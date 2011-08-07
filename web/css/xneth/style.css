@@ -1,0 +1,1935 @@
+body {
+  margin: 0;
+  padding: 0;
+  font: 11px Verdana, Tahoma, Geneva, Arial, Sans-serif;
+  color: #484848;
+  background: #e4e4e1 url('images/mosaique.gif') repeat;
+}
+img { border:0; }
+
+h1 a:link { color: inherit; }
+  
+a:link {
+  color: inherit;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:active {
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:visited {
+  color: inherit;
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:hover {
+  color: #000;
+  text-decoration: underline;
+  background-color: transparent;
+}
+/* Recherches */
+.cont_date_graph {
+  margin-right: 4px;
+}
+.date {
+	border-bottom: 1px solid #E0E0DD;
+	width: 650px;
+	max-height: 80px;
+        min-height: 70px;
+	margin: 0;
+	padding: 0;
+  margin-left: 7px;
+  margin-right: 7px;
+	position: relative;
+  background-color: #fff;
+	overflow: hidden;
+}
+#slider_date_graph {
+  width: 628px;
+  margin-top: 7px;
+  margin-left: 20px;
+  margin-right: 6px;
+}
+.date li {
+	border: 1px solid #E0E0DD;
+  border-bottom: none;
+	bottom: 0;
+	list-style:none;
+	list-style-image:none;
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	background-color: #FBD9A8;
+}
+.date li:hover, .date li:focus {
+	background-color: #D49647;
+}
+.date li a {
+  display: block;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+	width: 100%;
+	height: 100%;
+}
+.hover_graph {
+  position: absolute;
+	text-align: center;
+}
+.text_graph a{
+  color: transparent;
+}
+.searchbox {
+  padding-top: 15px;
+}
+.searchbox #search {
+  width: 350px;
+}
+.solrleft {
+  float:left;
+  width: 650px;
+}
+.solr h1 {
+  text-align: left;
+  font-size: 1.3em;
+  width: 650px;
+}
+.solr h2 {
+  text-align: left;
+  font-size: 1.2em;
+  font-weight: normal;
+}
+.solr h3 {
+  text-align: left;
+  font-size: 1.1em;
+  font-weight: bold;
+  padding-left: 4px;
+  background-color: #dddddd;
+}
+.solr ul {
+  padding: 0;
+}
+.solr .nb_results {
+  float: left;
+  margin-top: 15px;
+}
+.solr .options {
+  float: right;
+}
+.solr .mail, .solr .facets {
+  border:1px solid #E0E0DD;
+  margin-top:15px;
+  margin-left:15px;
+  margin-right: 3px;
+  padding: 10px;
+  padding-top: 0;
+  width:210px;
+}
+.solr .options h3 {
+  text-align: center;
+  padding: 3px;
+}
+.solr li {
+  list-style: none inside url(/images/xneth/add.png)
+}
+
+.solr li.selected {
+  list-style: none inside url(/images/xneth/remove.png)
+}
+
+.solr .photo {
+  float: left;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  margin-right: 10px;
+}
+.solr .item {
+  clear: left;
+}
+.solr .content em {
+  font-weight: bold;
+}
+
+.solr .item h4 {
+  margin-bottom: 5px;
+}
+
+.solr .intervenant {
+  font-weight: bold;
+  margin-top: 5px;
+}
+.solr .pager {
+  clear:both;
+  padding-bottom:15px;
+  padding-top:15px;
+}
+
+/* Widget page d'accueil */
+.box_widget h2 {
+  background: #9CDAE1 url("images/fond_translucide.png");
+  font-size:1.4em;
+  line-height:1.4em;
+  margin:0;
+  padding-left:5px;
+  text-align:left;
+  text-shadow:0 0 4px #FFFFFF;
+}
+.box_widget {
+  position: relative;
+  width: 913px;
+  height: 252px;
+  border: 1px solid #DBDBDB;
+  background-color: #FAFAFA;
+  margin-bottom: 16px;
+}
+#coms_widget {
+  overflow: auto;
+  max-height: 230px;
+}
+.commentaire_widget {
+  clear:both;
+  height: 104px;
+  padding: 15px;
+  padding-top: 11px;
+  padding-bottom: 0px;
+  border-bottom: 1px solid #E0E0DD;
+}
+.commentaire_widget p {
+  margin-top: 0;
+}
+#chargement_widget {
+  float: right;
+  height: 16px;
+  width: 16px;
+  margin-top: 1px;
+  margin-right: 7px;
+  background-image: url("images/loading.gif");
+}
+/* Page d'accueil */
+.box_news {
+  width: 913px;
+  height: auto;
+  border: 1px solid #DBDBDB;
+  margin-bottom: 16px;
+}
+.cont_box_news {
+  font-size: 12px;
+  padding: 10px;
+  text-align: justify;
+}
+.legende {
+  margin-top: 2px;
+  text-align: center;
+}
+.box_tags {
+  border: 1px solid #DBDBDB;
+  width: 463px;
+  height: 400px;
+  background-color: #FAFAFA;
+  float: left;
+}
+
+.box_repartition {
+  border: 1px solid #DBDBDB;
+  background-color: #FAFAFA;
+  margin-bottom: 16px;
+  float: right;
+  margin-right: 5px;
+  height: 400px
+}
+
+.box_container {
+  margin-bottom: 16px;
+}
+
+.box_tags .internal_tag_cloud {
+  padding: 7px;
+}
+.internal_tag_cloud span {
+  padding-right: 4px;
+}
+.box_repartition h2 {
+  background-color: #DFDACF;
+}
+.box_tags h2 {
+  background-color: #DFDACF;
+}
+.box_news h2 {
+  background-color: #f2e2b5;
+}
+.box_repartition h2, .box_tags h2, .box_news h2 {
+  background-image:url("images/fond_translucide.png");
+  font-size:1.4em;
+  line-height:1.4em;
+  margin:0;
+  padding-left:5px;
+  text-align:left;
+  text-shadow:0 0 4px #FFFFFF;
+}
+#loupe {
+  position: fixed;
+  display: none;
+  font-size: 2em;
+  text-align: center;
+  padding: 3px 5px 3px 5px;
+  background-color: #fff;
+  border: 1px solid #dddddd;
+  color: #1010108;
+  z-index: 100;
+}
+/* Tags */
+.internal_tag_cloud a:link {color:#484848;}
+.tag_level_0 {font-size: 0.8em;}
+.tag_level_1 {font-size: 0.9em;}
+.tag_level_2 {font-size: 1em;}
+.tag_level_3 {font-size: 1.5em;}
+.tag_level_4 {font-size: 1.7em;}
+
+.internal_tag_cloud {
+  position: relative;
+  text-align: center;
+  margin: auto;
+}
+/* Synthèse */
+.liste_deputes_top  {
+  margin: 20px 0px 40px 0;
+  padding:5px;
+  border: 1px dashed #aeaeae;
+  text-align:justify;
+}
+.tableau_synthese {
+  height: 500px;
+  overflow: auto;
+  margin-bottom: 5px;
+}
+.synthese_div {
+  margin-bottom: 40px;
+}
+.synthese_div p {
+  font-size: 14px;
+}
+.synthese th, .synthese td { border-right: 1px #FFFFFF solid; }
+.synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
+.synthese td.p { width: 112px; }
+.synthese th.p { width: 122px; border-left: 13px solid #FFF; }
+.synthese .we { width: 70px; }
+.synthese .cp { width: 63px; }
+.synthese .ci { width: 63px; }
+.synthese .hl { width: 63px; }
+.synthese .hc { width: 63px; }
+.synthese .as { width: 63px; }
+.synthese .aa { width: 63px; }
+.synthese .ra { width: 63px; }
+.synthese .pe { width: 63px; }
+.synthese .ps { width: 63px; }
+.synthese .qe { width: 63px; }
+.synthese .qo { width: 63px; }
+.tr_odd td { border-right: 1px #999999 solid; }
+.tr_odd td.qo { border-right: 0px #999999 solid; }
+
+/* Bulle ajax commentaires */
+.coms_loi_txt {
+  color: #158EAF;
+}
+.coms {
+  width: 25px;
+  height: 25px;
+  font-family: verdana;
+  text-align: center;
+  color: #000;
+  font-size: 0.8em;
+  font-weight: bold;
+  background: url('images/bulle_bleu_citoyen.png') no-repeat 0 0;
+}
+/* Captcha */
+.captcha {
+  width: 346px;
+  background-color: #fff;
+}
+.image_captcha {
+  float: left;
+  width: 157px;
+  height: 78px;
+  background: url('images/captcha_fond.png') no-repeat 0 0;
+}
+.image_captcha img {
+  height: 54px;
+  width: 134px;
+  border: 1px solid #AAA9AD;
+  margin: 10px;
+}
+.images_fonctions {
+  float: left;
+  width: 30px;
+  height: 76px;
+  background-color: #EFEFEF;
+  border: 1px solid #AFAFAF;
+}
+.images_fonctions img {
+  float: left;
+  padding-top: 10px;
+  padding-left: 3px;
+}
+.cont_code {
+  float: right;
+  width: 157px;
+  height: 78px;
+  background: url('images/captcha_fond.png') no-repeat -8px 0;
+}
+.entrer_code {
+  width: 134px;
+  height: 54px;
+  text-align: center;
+  line-height: 22px;
+  margin: 10px;
+}
+
+/* Formulaires classiques */
+.form {
+  height: auto;
+  min-height: 200px;
+  text-align: left;
+  background: #fff url('images/logo_nosdeputes_fond.png') no-repeat 85% center;
+}
+.form table {
+  width: 50%;
+  border-collapse: collapse;
+}
+.form td, .form th {
+  padding: 10px;
+  border-bottom: 1px dashed #E8E7E4;
+}
+.form th {
+  text-align: left;
+}
+.form td {
+  text-align: right;
+}
+
+/* Formulaires inscription et connexion */
+.boite_form {
+  width: 600px;
+  min-width: 600px;
+  margin: auto;
+  margin-top: 35px;
+  margin-bottom: 35px;
+  background: #fff url('images/minilogo_nosdeputes_fond.png') no-repeat 95% 60px;
+}
+.large_boite_form {
+  width: 750px;
+  min-width: 750px;
+}
+.b_f_h {
+  height: 21px;
+  background: #FCFCFC url('images/barres_form.png') repeat-x 0 0;
+}
+.b_f_hg {
+  float: left;
+  height: 21px;
+  width: 21px;
+  background: url('images/coins_form.png') no-repeat 0 0;
+}
+.b_f_hd {
+  float: right;
+  height: 21px;
+  width: 21px;
+  background: url('images/coins_form.png') no-repeat -21px 0;
+}
+.b_f_cont {
+  padding-left: 15px;
+  padding-right: 15px;
+  border-left: 1px solid #C2C2BF;
+  border-right: 1px solid #C2C2BF;
+}
+.b_f_cont table {
+  text-align: left;
+  border-collapse: collapse;
+}
+.b_f_cont td, .b_f_cont th {
+  padding: 10px;
+  border-bottom: 1px dashed #E8E7E4;
+}
+.b_f_cont th {
+  text-align: left;
+}
+.b_f_cont td {
+  text-align: right;
+}
+.bf_cont h1 {
+  margin: 0;
+}
+.b_f_text {
+  
+}
+.b_f_b {  
+  height: 21px;
+  background: #FCFCFC url('images/barres_form.png') repeat-x 0 -21px;
+}
+.b_f_bg {
+  float: left;
+  height: 21px;
+  width: 21px;
+  background: url('images/coins_form.png') no-repeat 0 -21px;
+}
+.b_f_bd {
+  float: right;
+  height: 21px;
+  width: 21px;
+  background: url('images/coins_form.png') no-repeat -21px -21px;
+}
+.cel1 {
+  /* background-color: #EFEAE0; */
+}
+.cel2 {
+  background-color: #FCFCFC;
+}
+
+/* Boite citoyen b_c = initiales; h = haut, b = bas, hg = haut gauche, etc... */
+.boite_citoyen {
+  float: left;
+  width: 100%;
+  margin-top: 15px;
+  background-color: #FFFFFD;
+}
+.b_c_h {
+  width: 100%;
+  height: 10px;
+  background: url('images/barres_citoyen.png') repeat-x 0 0;
+  background-color: #FBFBFF;
+}
+.b_c_hg {
+  float: left;
+  width: 10px;
+  height: 10px;
+  background: url('images/coins_citoyen.png') no-repeat 0 0;
+}
+.b_c_hd {
+  float: right;
+  width: 10px;
+  height: 10px;
+  background: url('images/coins_citoyen.png') no-repeat -10px 0;
+}
+.b_c_cont {
+  float: left;
+  width: 99.8%;
+  font-size: 14px;
+  border-left: 1px solid #E8E7E4;
+  border-right: 1px solid #E8E7E4;
+  background-color: #FBFBFF;
+}
+.b_c_cont a {
+  text-decoration: underline;
+}
+.b_c_cont a:hover {
+  color: #CB1414;
+}
+.b_c_photo {
+  float: left;
+  padding: 14px;
+}
+.b_c_text {
+  float: left;
+  width: 65%;
+}
+.b_c_text h1 {
+  margin-top: 12px;
+  text-align: left;
+  font-size: 20px;
+}
+.b_c_text p {
+  padding-left: 5px;
+}
+.b_c_link {
+  vertical-align: bottom;
+  text-align: center;
+  text-decoration: none;
+}
+.b_c_right {
+  float: right;
+  font-size: 13px;
+  text-align: right;
+  padding-right: 20px;
+}
+.b_c_edit a, .b_c_edit a:visited {
+  text-decoration: underline
+}
+.b_c_edit {
+  float: right;
+  padding-right: 20px;
+  color: #CB1414;
+}
+.b_c_b {
+  float: left;
+  width: 100%;
+  height: 10px;
+  background: url('images/barres_citoyen.png') repeat-x 0 -10px;
+  background-color: #FBFBFF;
+}
+.b_c_bg {
+  float: left;
+  width: 10px;
+  height: 10px;
+  background: url('images/coins_citoyen.png') no-repeat 0 -10px;
+}
+.b_c_bd {
+  float: right;
+  width: 10px;
+  height: 10px;
+  background: url('images/coins_citoyen.png') no-repeat -10px -10px;
+}
+.temp {
+  font-size: 1.1em;
+}
+
+#contenu {
+  width: 1060px;
+  overflow:hidden;
+  margin: 0 auto;
+  padding:0;
+}
+
+h1 {
+  font-size: 1.5em;
+  color: #6F6F6F;
+  font-family: Verdana, Tahoma, Geneva, Arial, Sans-serif;
+  margin-top:20px;
+  margin-bottom:10px;
+  text-align: center;
+}
+
+.stopfloat {
+  clear: both;
+}
+
+.flash_notice, .flash_error {
+  font-size: 1.1em;
+  height: auto;
+  padding: 15px;
+  margin-top: 15px;
+  margin-right: 8px;
+  padding-left: 55px;
+  border : 1px solid #BFBFBF;
+}
+
+.flash_notice {
+  background: #fff url("images/flash_notice.png") no-repeat 15px center;
+}
+
+.flash_error {
+  background: #fff url("images/flash_error.png") no-repeat 15px center;
+}
+
+/* top - barre du haut */
+
+#top {
+  height:32px;
+  width: 1060px;
+  background: url('images/top.png') no-repeat;
+  overflow:hidden;
+}
+
+.initiative {
+  float:left;
+}
+.initiative a {
+  display: block;
+  height: 28px;
+  padding-right: 10px;
+  padding-left: 50px;
+  text-align: right;
+  line-height: 27px;
+  font-size: 1em;
+  color: #7E7E7E;
+  border-right: 1px solid #CFCFCF;
+  background: url("images/top_initiative.png") no-repeat 20px -1px;
+}
+.initiative a:hover, .initiative a:focus {
+  color: #6F6F6F;
+  text-decoration : none;
+  background: url("images/top_initiative.png") no-repeat 20px -29px;
+}
+.regardscitoyens {
+  float: right;
+  margin-top: 12px;
+  font-weight: bold;
+}
+.regardscitoyens a {
+  display: block;
+  height: 28px;
+  width: 166px;
+  padding-left: 10px;
+  text-align: left;
+  line-height: 29px;
+  font-family: Arial;
+  font-size: 1.1em;
+  color: #000;
+  border-left: 1px solid #CFCFCF;
+  background: url("images/top_initiative.png") no-repeat 140px -29px;
+  opacity: 0.5;
+  -moz-opacity : 0.5;
+  -ms-filter: "alpha(opacity=50)"; /* IE 8 */
+   filter : alpha(opacity=50); /* IE < 8 */ 
+}
+.regardscitoyens a:hover, .regardscitoyens a:focus {
+  opacity: 1;
+  -moz-opacity : 1;
+  -ms-filter: "alpha(opacity=100)";
+   filter : alpha(opacity=100);
+}
+.RC {
+  font-size: 1.1em;
+}
+
+.identification {
+  float:right;
+}
+
+.identification p {
+  margin:0;
+  padding:0;
+}
+
+.identification form {
+  margin:3px 0 0 0;
+}
+
+.identification input {
+  float:left;
+  width:120px;
+  height:14px;
+  border:0;
+  margin:0;
+  background: url('images/top_input.png') no-repeat;
+  padding: 3px 0 3px 10px;
+  color: #656565;
+  font: 8pt Tahoma, Geneva, Arial, Sans-serif;
+}
+
+#loggued_top {
+  margin:6px 20px 0 0;
+  font-weight: bold;
+}
+
+#header_remember {
+  float:left;
+  width:14px;
+  margin:1px 9px 0 0;
+  padding:0;
+  background:none;
+}
+
+#bt2 {
+  float:left;
+  width: 80px;
+  height:20px;
+  border:0;
+  margin:0 50px 0 0;
+  background: url('images/top_button2.png') no-repeat;
+  cursor:pointer;
+}
+
+#bt1 {
+  float:left;
+  width: 28px;
+  height:20px;
+  border:0;
+  margin:0 10px 0 0;
+  background: url('images/top_button1.png') no-repeat;
+  cursor:pointer;
+}
+
+.loggued {
+  float:left;
+}
+
+/* header - logo */
+
+#header {
+  width: 1060px;
+  height:147px;
+  background: url('images/header.png') no-repeat;
+  overflow:hidden;
+}
+
+#header img {
+  width:629px;
+  height:147px;
+  margin-left:44px;
+}
+
+/* menu - barre de navigation - champ de recherche */
+
+#menu {
+  width: 1060px;
+  height:35px;
+  background: url('images/menu.png') no-repeat;
+  overflow:hidden;
+}
+
+.menu_navigation {
+  float:left;
+  height:35px;
+  width:682px;
+  overflow:hidden;
+  padding-left:45px;
+}
+
+.menu_navigation a {
+  display:block;
+  height:30px;
+  font: 13pt Georgia, Tahoma, Geneva, Arial, Sans-serif;
+  padding-top:5px;
+  text-decoration:none;
+  text-align:center;
+}
+.gris {   
+  color:#3c3c3c;
+}
+
+.vert {
+  color:#8aa915;
+}
+
+.orange {
+  color:#d4963e;
+}
+
+.bleu {
+  color:#12a8d2;
+}
+
+#item1 a {
+  float:left;
+  background: url('images/menu_item1.png') no-repeat 0 0;
+  width:89px;
+}
+
+#item2  a {
+  float:left;
+  background: url('images/menu_item2.png') no-repeat 0 0;
+  width:166px;
+}
+
+#item3  a {
+  float:left;
+  background: url('images/menu_item3.png') no-repeat 0 0;
+  width:166px;
+}
+
+#item4 a {
+  float:left;
+  background: url('images/menu_item4.png') no-repeat 0 0;
+  width:166px;
+}
+
+#item5  a {
+  float:left;
+  background: url('images/menu_item5.png') no-repeat 0 0;
+  width:74px;
+  padding-top:10px;
+  font-size: 8pt;
+  font-weight:bold;
+}
+
+#item1 a.selected, #item2 a.selected, #item3 a.selected, #item4 a.selected, #item1 a:hover, #item1 a:focus, #item2 a:hover, #item2 a:focus, #item3 a:hover, #item3 a:focus, #item4 a:hover, #item4 a:focus {
+  background-position: 0 -35px;
+}
+
+.menu_recherche {
+  height:20px;
+  width:283px;
+  float:right;
+  margin:7px 50px 0 0;
+  overflow:hidden;
+}
+
+.type_recherche {
+  color: #484848;
+  font: 8pt Tahoma, Geneva, Arial, Sans-serif;
+  float:left;
+  margin-top:0px;
+  max-width: 115px;
+}
+
+.menu_recherche p {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.menu_recherche  img {
+  float:left;
+  margin-left:5px;
+  margin-right:4px;
+}
+
+.rechercher {
+  float:left;
+  width:230px;
+  height:14px;
+  border:0;
+  margin:0;
+  background: url('images/recherche.png') top left no-repeat;
+  padding: 3px 0 3px 10px;
+  color: #656565;
+  font: 8pt Tahoma, Geneva, Arial, Sans-serif;
+  color: #484848;
+}
+
+.bouton_ok {
+  float:left;
+  width: 29px;
+  height:20px;
+  border:0;
+  margin:0;
+  background: url('images/recherche.png') top right no-repeat;
+  cursor:pointer;
+}
+
+/* sous menu  */
+
+#sous_menu {
+  width:1060px;
+  height:50px;
+  background: url('images/sous_menu.png') no-repeat;
+  overflow:hidden;
+}
+
+.elements_sous_menu {
+  padding-top:3px;
+  position:absolute;
+}
+
+#sous_menu_1 .elements_sous_menu {
+  padding-left: 160px;
+}
+#sous_menu_2 .elements_sous_menu {
+  padding-left: 156px;
+}
+#sous_menu_3 .elements_sous_menu {
+  padding-left: 180px;
+}
+.elements_sous_menu  a, .elements_sous_menu a:visited {
+  text-decoration:none;
+  letter-spacing:0.7pt;
+  color:black;
+}
+
+.elements_sous_menu  a:hover {
+  text-decoration:underline;
+  letter-spacing:0.7pt;
+  color:black;
+  background-color:#eee;
+}
+.elements_sous_menu ul {
+  float:left;
+  padding:0;
+  margin:0;
+  font-size: 8pt;
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+.elements_sous_menu   li{
+  display: block ;
+  float:left;
+  padding:0;
+  margin:0;
+  margin-left:2px;
+}
+#sous_menu_1 {
+  float:left;
+  width:1060px;
+  height:21px;
+  background: url('images/sous_menu_combined.png');
+}
+#sous_menu_2 {
+  float:left;
+  width:1060px;
+  height:21px;
+  background: url('images/sous_menu_combined.png') 0 -21px;
+}
+#sous_menu_3 {
+  float:left;
+  width:1060px;
+  height:21px;
+  background: url('images/sous_menu_combined.png') 0 -42px;
+}
+
+/* corps de page */
+#corps_page {
+  width:1060px;
+  background: url('images/corps_page.png');
+}
+.contenu_page {
+  min-height:520px;
+  width:920px;
+  overflow:hidden;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* bottom - pied de page */
+#bottom {
+  width:1060px;
+  height:42px;
+  background: url('images/bottom.png');
+}
+
+/* Carte des députés */
+.conteneur_resultat_dep  {
+  float: left;
+  width: 435px;
+  height: 461px;
+  border : 1px solid #BFBFBF;
+}
+.resultat_dep {
+  
+}
+.photos {
+  text-align: center;
+}
+.photos img{
+  padding: 2px;
+}
+.image_map {
+  float:right;
+  border : 1px solid #BFBFBF;
+}
+
+/* Début fiche député */
+.fiche_depute {
+  width: 938px;
+  overflow:hidden;
+}
+.fiche_depute h1 {
+  text-align: center;
+  margin:30px 0 20px 0;
+}
+.fiche_depute dt, .fiche_depute dd {
+  display: inline;
+  margin-left: 0;
+}
+.info_depute {
+  position: relative;
+  top: 0;
+  text-align: center;
+  padding: 25px;
+}
+.info_depute h1 {
+  font-size: 1.5em;
+  display: inline;
+}
+.info_depute h2 {
+  font-size: 1.5em;
+  display: inline;
+}
+.info_depute p {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+.depute_gauche {
+  float: left;
+}
+.depute_droite {
+  float: right;
+  width: 90%;
+  position: relative;
+  height: 90px;
+}
+.depute_droite h1 {
+  font-size: 2.0em;
+  text-align: center;
+}
+.depute_droite h1 soustitre {
+  font-size: 0.8em;
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+.depute_droite h2 {
+  font-size: 1.5em;
+  text-align: center;
+}
+.photo_depute img{
+  width: 125px;
+}
+.photo_depute {
+  height:160px;
+  width:125px;
+  border: 2px solid #dcd6ca;
+}
+.graph_depute {
+  float: right;
+  width: 800px;
+  height: 170px;
+  margin-right: 3px;
+  text-align: center;
+}
+.graph_depute p {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+.barre_activite {
+  float: left;
+  width: 920px;
+  margin-top:10px;
+  padding-top: 3px;
+  background: #8F8F8F url("images/fond_bas.gif") repeat-x 0 0;
+}
+.barre_activite ul, .barre_activite li {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  line-height: 24px;
+  background-color: transparent;
+}
+.barre_activite h3 {
+  padding-left: 5px;
+  display: inline;
+  margin: 0;
+  font-size: 1.3em;
+  color: #6F6F6F;
+  line-height: 24px;
+  background-color: transparent;
+}
+.barre_activite li img{
+  margin-left: 25px;
+}
+.barre_activite a {
+  text-decoration: none;
+}
+.barre_date {
+  margin-left: 25px;
+}
+.contenu_depute li{
+  list-style-type: none;
+}
+.contenu_depute {
+  width: 918px;
+  overflow:hidden;
+  border: 1px solid #d6d6d6;
+  margin-bottom:20px;
+}
+.boite_depute {
+  padding: 15px;
+  background-color: #fff;
+}
+.boite_depute h2, #b1 h1 {
+  margin-top: 0;
+  padding-left: 5px;
+  color: #6F6F6F;
+  background-color: #dbd5c8;
+  margin-top: 18px; 
+  padding-top: 2px; 
+  padding-bottom: 2px; 
+}
+
+/* les boites principales */
+#b1 {
+  float: left;
+  width: 440px;
+}
+#b2 {
+  float: left;
+  width: 414px;
+}
+#b3 {
+  float: left;
+  width: 414px;
+}
+#b4 {
+  float: right;
+  width: 414px;
+}
+/**/
+.meilleur_pire {
+  padding-bottom:10px;
+  border-bottom:1px dashed  #BFBFBF;
+}
+.meilleur_pire h3 {
+  background-color: #ebebeb;
+}
+.b_d_infos h3{
+  
+}
+.bas_depute {
+  clear: both;
+  margin-top: 15px;
+  padding: 15px;
+  padding-bottom: 7px;
+  background-color: #fff;
+  border-top: 1px solid #BFBFBF;
+}
+.bas_depute h2 {
+  margin-top: 0;
+  padding-left: 5px;
+  background-color: #F5F5F5;
+}
+.bas_depute_g {
+  float: left;
+}
+.statut {
+  color: red;
+}
+.bas_depute_d {
+  float: left;
+}
+.bas_depute_d img {
+  padding-left:10px;;
+}
+.rss {
+  margin: 0;
+  padding: 0;
+  padding-left: 5px;
+}
+.liens_articles, .tags {
+  list-style-type: none;
+  font-size: 1.2em;
+  margin-left: 0;
+  padding-left: 0;
+}
+.liens_articles li, .tags li, .liens_articles ul, .tags ul   {
+  display: inline;
+  margin-left: 0;
+  padding-left: 0;
+}
+/* Fin fiche depute */
+
+/* Seances */
+.titre_int_et_seance {
+  min-height: 70px;
+  background-color: #fff;
+  font-size: 1.1em;
+}
+h2 {
+  font-size: 1.3em;
+  color: #6F6F6F;
+  margin-top: 10px;
+}
+.interventions {
+  background-color: #fff;
+  border-top: none;
+  padding: 15px;
+  padding-top: 0px;
+}
+.interventions a {
+  font-weight: bold;
+}
+.intervention {
+  margin-bottom: 10px;
+  border-bottom: 1px dashed #DFDFDF;
+}
+
+.intervention .source {
+  display: none;
+}
+.intervention:hover .source {
+  display: inline;
+}
+.intervention .section, .intervention .sous-section{
+  text-align: center;
+}
+.intervenant img {
+  float: left;
+  width: 50px;
+  height: 64px;
+  margin-right: 7px;
+  margin-bottom: 7px;
+}
+.intervenant {
+  
+}
+.indent_guillemets {
+  padding-left: 20px;
+}
+#carte_circo .carte_departement {
+  float: right;
+  margin-top: 10px;
+  margin-right: 35px;
+}
+.didascalie {
+  font-style: oblique;
+}
+
+/* form commentaires */
+.inscription {
+  border: 1px solid #E8E7E4;
+  margin-top: 10px;
+}
+.connexion {
+  float: right;
+  border: 1px solid #E8E7E4;
+  margin-top: 10px;
+}
+.inscription td, .connexion td, .inscription th, .connexion th {
+  padding: 10px;
+  border-bottom: 1px dashed #E8E7E4;
+}
+.inscription input, .connexion input { width: 20em; }
+/* commentaires */
+.link_comment {
+  height: 11px;
+  float: right;
+  margin-top: 0px;
+  margin-bottom: 13px;
+}
+.commentaires {
+  padding-top: 5px;
+  clear:both;
+  margin-bottom: 15px;
+}
+.commentaire_avatar {
+  float: left;
+  margin-right: 7px;
+  margin-bottom: 7px;
+}
+.commentaire_avatar img {
+  width: 50px;
+  height: 50px;
+}
+.titre_commentaire {
+  font-weight: bold;
+}
+.commentaire {
+  clear:both;
+  min-height: 104px;
+  padding: 15px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  margin-bottom: 15px;
+  border: 1px dashed #E0E0DD;
+}
+.commentaire a {
+  font-weight: bold;
+  text-decoration: underline;
+}
+.commentaire span a {
+  text-decoration: none;
+}
+.commentaire span a:hover {
+  text-decoration: underline;
+}
+.commentaires com_link {
+  float: right;
+}
+.source {
+  float: right;
+  margin-top: 0px;
+  text-decoration: underline;
+}
+.question,.loi p {
+  text-align: justify;
+}
+.justify {
+  text-align: justify;
+}
+.tabulation:first-letter {
+  padding-left: 20px;
+}
+.aligncenter {
+  text-align: center;
+}
+.alineatexte .center {
+  text-align: center;
+}
+.question p:first-letter {
+  padding-left: 20px;
+}
+.loi p:first-letter {
+  padding-left: 20px;
+}
+.loi li {
+  margin-left: -15px;
+}
+.loi blockquote {
+  margin-left: 8px;
+}
+.loi p a {
+  text-decoration: underline;
+}
+.loi .connexion th, .loi .inscription th {
+  text-align:center;
+}
+.auteurloi {
+  float: right;
+}
+.loi h2, .loi h3 {
+  text-align: center;
+  text-decoration: none;
+}
+.pagerloi {
+  font-size: 0.8em;
+  padding-bottom: 10px;
+}
+.precedent {
+  float: left;
+}
+.pagerloi .suivant {
+  float: right;
+  text-align: right;
+}
+.loi tr {
+  padding: 0px;
+  margin: 0px;
+  border: 0px;
+  vertical-align: super;
+  text-align: left;
+}
+.loi .commentaires tr {
+  vertical-align: middle;
+}
+.alineas p {
+  margin-bottom: 2px;
+}
+.alinea_select td {
+  font-weight: bold;
+}
+.alineanumero {
+  margin-left: 5px;
+  text-decoration: underline;
+  width: 25px;
+  font-size: 0.8em;
+}
+.alineatexte {
+  width: 870px;
+}
+.alineatexte p:first-letter {
+  padding-left: 0px;
+}
+.alineatexte a, .alineatexte a:link, .alineatexte a:hover {
+  text-decoration: underline;
+}
+.alineatexte p {
+  margin-top: 0px;
+  margin-bottom: -15px;
+}
+.alineatexte .com_link {
+  display: none;
+  float: right;
+  margin-top: 13px;
+  margin-bottom: 0px;
+  margin-right: 25px;
+  height: 11px;
+}
+.alineatexte .commentaires {
+  margin-top: 22px;
+  margin-left: 10px;
+}
+.com_ajax {
+  margin-top: 30px;
+}
+.alineatexte .commentaires {
+  clear: both;
+  margin: auto;
+}
+.alineatexte .commentaire_avatar img {
+  margin: 6px;
+}
+.loi, .sommaireloi {
+  font-size: 12px;
+}
+.loi .alineatexte .commentaire a {
+  text-decoration: none;
+  font-weight: bold;
+}
+.alineatexte:hover span {
+  display: inline;
+  font-weight: bold;
+}
+.alineatexte .commentaire span {
+  float: left;
+  display: inline;
+}
+.alineatexte .commentaire p {
+  margin: 6px;
+  text-align: left;
+}
+.alineatexte .commentaire .clear {
+  text-align: right;
+}
+.alineatexte .commentaires com_link {
+  float: right;
+}
+.perso {
+  font-weight: bold;
+  width: 670px;
+}
+.perso:first-letter {
+  text-transform: uppercase;
+}
+.loading{
+  background: transparent url("/images/loading.gif") no-repeat scroll 0 0
+}
+
+/* Dossiers législatifs */
+.numeros_textes {
+  border-bottom: 1px solid #b3aea4;
+  margin:20px 50px 20px 30px;
+}
+.titre_int_et_seance .nuage_de_tags {
+  float:right;
+}
+.nuage_de_tags {
+  min-height:92px;
+  margin:5px 0 0 40px;
+  padding:5px;
+  text-align:justify;
+  background-color: #f7f7f7;
+  border: 1px solid #9a9a9a;
+}
+.nuage_de_tags .hide {
+  color: #f7f7f7;
+  font-size: 6px;
+}
+.nuage_de_tags h3 {
+  padding: 0px;
+  margin: 0 0 10px;
+}
+.plot_section, .plot_seance {
+  text-align: center;
+}
+#overDiv {
+  position:absolute;
+  visibility:hidden;
+  z-index:1000
+}
+.titre_int_et_seance .plot_section, .titre_int_et_seance .plot_seance {
+  padding-right: 300px;
+}
+.nuage_de_tags p {
+  background-color: #dbd5c8;
+}
+.document {
+  padding: 6px;
+}
+.annexes {
+  padding: 0px 5px 20px 40px;
+}
+.documentlist { 
+  padding: 3px; 
+  text-align: justify; 
+} 
+.documents, .orga_dossier {
+  padding-top: 20px;
+}
+.orga_dossier li {
+  list-style: none
+}
+.orga_dossier li .dossier {display: none;}
+.orga_dossier li:hover .dossier {display: inline;}
+.orga_dossier p {
+  background-color:#dbd5c8;
+}
+.seances_dossier {
+  clear:both;
+  margin:auto;
+  padding-top:15px;
+}
+.seances_dossier p {
+  background-color:#dbd5c8;
+}
+.orateurs_dossier  {
+  clear:both;
+  margin:auto;
+  padding-top:10px;
+  padding-bottom:20px;
+}
+.orateurs_dossier p {
+  background-color:#dbd5c8;
+}
+
+/* Liste députés */
+.liste  {
+  margin: 20px 10px 20px 0;
+}
+.suivant {
+  text-align: right;
+}
+.liste p {
+  font-size: 1.2em;
+}
+
+/* Liste députés */
+.liste_deputes_tags  {
+  margin: 20px 10px 30px 0;
+  padding:5px 20px 20px 20px;
+  border: 1px dashed #aeaeae;
+  text-align:justify;
+}
+.liste_deputes_tags p {
+  background-color:#dbd5c8;
+  font-size: 1.2em;
+}
+
+/* Travaux parlementaires */
+.travaux_parlementaires {
+  margin: 20px 10px 20px 0;
+}
+.travaux_parlementaires p {
+  background-color:#dbd5c8;
+  font-size: 1.2em;
+}
+/* interventions */
+.info {
+  margin:20px;
+  background-color:#dbd5c8;
+}
+.texte_intervention, .expose_amendement {
+  margin:20px;
+  text-align: justify;
+}
+.texte_intervention a {
+  text-decoration: underline;
+}
+.contexte {
+  margin:20px;
+}
+.tr_odd{
+  background-color: #f7f7f7;
+}
+.synthese td, .synthese th { padding: 0px; margin: 0px; text-align: center}
+.left {
+  width: 48%;
+  float: left;
+}
+.right {
+  float: right;
+  width: 50%;
+}
+.listeleft {
+  float: left;
+  width: 64%;
+}
+.listeright {
+  float: right;
+  width: 35%;
+  margin-bottom: 30px;
+}
+
+/* accueil */
+.texte_presentation_gauche {
+  margin: 20px 10px 20px 10px;
+  padding:10px;
+  float:left;
+  width:400px;
+  min-height:590px;
+  background-color:#f6f6f6;
+  border : 1px dashed #cecdc2;
+}
+.texte_presentation_gauche h1 {
+  margin: 10px 0 40px 0;
+}
+#texte_a_ecrire {
+  text-align:justify;
+}
+#illustration {
+  float:left;
+  width:100px;
+  height:90px;
+  margin:5px;
+  background-image:url('images/minilogo_nosdeputes.png');
+}
+.accueil .carte {
+    height: 250px;
+    font-size: 12px;
+}
+.accueil .carte .message {
+    margin-left: 300px;
+    padding: 30px;
+}
+.accueil .carte .message input {
+    margin-left: 12px;
+}
+.accueil .carte .message form small {
+    margin-left: 12px;
+    color: grey;
+}
+.accueil .carte_departement{
+    height: 250px;
+    float: left;
+}
+.accueil_liste_liens {
+  float:left;
+  width:200px;
+  margin:0 20px 20px 0;
+}
+.accueil_liste_liens  ul {
+  margin:0;
+  padding:0;
+  list-style-type:none;
+  list-style:url('images/right.png');
+}
+.accueil_liste_liens  li{
+  padding:7px 0 7px 5px;
+  margin:0 0 0 20px;
+}
+#couleur1 {
+  background-color:#eee;
+}
+#couleur2 {
+  background-color:#f7f7f7;
+}
+.accueil_liste_liens h2 {
+  background-color:#dbd5c8;
+  font-size: 1.2em;
+  margin:0 0 10px 0;
+}
+.accueil_deputes_jour h2 {
+  font-size: 1.4em;
+  color: #6F6F6F;
+  text-shadow: 0 0 4px #FFFFFF;
+  margin: 0;
+  background: #dbea9e url("images/fond_translucide.png");
+  border-bottom: 1px solid #DDDDDD;
+}
+.accueil_deputes_jour {
+  float: right;
+  width: 202px;
+  height: 253px;
+  border: 1px solid #DDDDDD;
+  text-align: center;
+  background-color: #FAFAFA;
+  margin: 16px 6px;
+}
+.clear {
+  clear: both;
+}
+.accueil_deputes_jour img {
+  border:1px solid #727272;
+}
+.accueil_message {
+  float: left;
+  width: 662px;
+  height: 223px;
+  font-size: 12px;
+  border: 1px dashed #dddddd;
+  margin: 16px 0;
+  padding: 15px;
+}
+.accueil_message_content {
+  text-align: justify;
+}
+.accueil_message_content h1 {
+  text-align: left;
+  margin: 0;
+  border-bottom: 1px solid #6F6F6F;
+  font-size: 1.5em;
+}
+.accueil_message_signature {
+  text-align: right;
+}
+.accueil_plot {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+.par_session {
+  text-align: center;
+  font-size: 1.4em;
+  margin: 0px;
+  padding: 0px;
+}
+#center {
+  width:390px;
+  margin-left:auto;
+  margin-right:auto;
+}
+.accueil .nuage_de_tags {
+  margin: 0;
+  border: 0;
+}
+.nuage_discret {
+  margin-bottom: 30px;
+}
+.accueil .nuage_de_tags h2{
+  text-align: center;
+}
+.separateur{
+  margin: 20px;
+  clear: both;
+}
+.pagination span {
+
+}
+.pagination img {
+
+}
+a:hover img {
+  text-decoration: none;
+}
+.flash_notice {
+  color: green;
+}
+.error_list, .flash_error {
+  color: red;
+}
+.error_list li {
+  list-style-type: none;
+}
+.last_commentaires {
+  margin-top: 30px;
+}
+.last_commentaires .commentaire {
+  border: 0px;
+}
+#circo_table {
+   margin: auto;
+}
+#circo_table table {
+  width: 100%;
+}
+#circo_table td {
+   width: 25%;
+   vertical-align: top;
+}
+.list_circo {
+  float: left;
+  margin-bottom: 30px; 
+  width: 40%; 
+} 
+.list_deptmts {
+  float: left;
+  margin: 10px 9px 25px 9px;
+  width: 12%;
+  font-size: 12px;
+  text-align: center;
+}
+.dept {
+  padding: 2px;
+  text-align: center;
+}
+.dept:hover {
+  background-color: rgb(198,229,81);
+}
+.dept a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.list_choix {
+  text-align: center;
+  font-size: 1.4em;
+  padding: 15px;
+}
+.list_table {
+  margin: auto;
+  margin-bottom: 30px;
+}
+.list_table h3 {
+  margin-top: 0px;
+  margin-bottom: 5px;
+}
+.list_table table {
+  width: 100%;
+}
+.list_table .list_td_small {
+  width: 16%;
+}
+.list_table td {
+  width: 31%;
+  padding: 3px;
+  vertical-align: top;
+  font-size: 10px;
+}
+.list_borderleft {
+  border-left: thin solid;
+}
+.list_cit {
+  padding: 4px;
+  min-height: 58px;
+}
+.list_cit:hover {
+  color: #000;
+  background-color: rgb(81, 202, 235);
+  opacity: 0.8;
+}
+.list_dep {
+  margin: 5px;
+  padding: 5px;
+  height: 32px;
+}
+.list_dep:hover {
+  color: #000;
+  background-color: rgb(198,229,81);
+  opacity: 0.8;
+}
+.couleur_ump {
+  color: rgb(30,30,200);
+}
+.couleur_src {
+  color: rgb(255,50,90);
+}
+.couleur_gdr {
+  color: rgb(255,30,30);
+}
+.couleur_nc {
+  color: rgb(30,190,255);
+}
+.couleur_ni {
+  color: rgb(130,130,130);
+}
+
+.synthese .couleur_ump, .synthese .couleur_src, .synthese .couleur_gdr, .synthese .couleur_nc, .synthese .couleur_ni {
+  padding-left: 2px;
+  padding-right: 2px;
+  color: #6F6F6F;
+}
+.synthese .couleur_ump {
+  border-left: 5px solid rgb(30,30,200);
+}
+.synthese .couleur_src {
+  border-left: 5px solid rgb(255,50,90);
+}
+.synthese .couleur_gdr {
+  border-left: 5px solid rgb(255,30,30);
+}
+.synthese .couleur_nc {
+  border-left: 5px solid rgb(30,190,255);
+}
+.synthese .couleur_ni {
+  border-left: 5px solid rgb(130,130,130);
+}
+.list_img_left {
+  float:left;
+  margin: 4px;
+}
+.list_img_left img {
+  height: 50px;  
+}
+.list_left {
+  float: left;
+  display: block;
+  clear: both;
+  padding-left: 4px;
+}
+.list_nom {
+  float: left;
+  vertical-align: baseline;
+  font-size: 12px;
+}
+.list_right {
+  font-size: 9px;
+  float: right;
+  text-align: right;
+  padding-right: 2px;
+}
+.list_num_circo {
+  font-size: 11px;
+}
+.list_com {
+  color: #158EAF;
+}
+.list_inter {
+  color: #7AA925;
+}
+.phototitle {
+  vertical-align: middle;
+}
+.block {
+  display: block;
+}

@@ -1,0 +1,7 @@
+# default values
+all:
+  sfDoctrineActAsTaggablePlugin:
+    triple_distinct:   true
+
+  expiration_cookie: <?php echo time()+86400*15; ?>
+  # 15 jours

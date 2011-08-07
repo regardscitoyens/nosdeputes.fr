@@ -1,0 +1,33 @@
+#!/bin/bash
+
+echo "OBSOLETE"
+exit
+
+echo > /tmp/log_firstload
+# Mis là temporairement pour rappel: à runner une fois pour toutes pour éviter de retélécharger inutilement 2000 amendements à chaque fois (OGM et HADOPI)
+php symfony set:AmdmtsTombes 819 >> /tmp/log_firstload
+php symfony set:AmdmtsTombes 1296 >> /tmp/log_firstload
+
+
+# Mise à jur de la liste des députés
+echo MaJ Deputes >> /tmp/log_firstload
+echo ======================= >> /tmp/log_firstload
+bash bin/load_deputes >> /tmp/log_firstload
+
+
+
+echo Load Amendements >> /tmp/log_firstload
+echo ======================= >> /tmp/log_firstload
+while ls batch/amendements/json | grep [a-z] > /dev/null ; do
+      php symfony cc --env=test  --app=frontend > /dev/null
+      php symfony load:Amdmts >> /tmp/log_firstload 
+done;
+echo Load Questions >> /tmp/log_firstload
+echo ======================= >> /tmp/log_firstload
+while ls batch/questions/json | grep [a-z] > /dev/null ; do
+	php symfony cc  --app=frontend --env=test > /dev/null
+	php symfony load:Questions >> /tmp/log_firstload 
+done;
+
+
+

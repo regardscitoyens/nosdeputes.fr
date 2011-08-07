@@ -1,0 +1,32 @@
+Méthode à suivre pour les textes sortis de commission ou adoptés (en supposant que le texte initial a déjà été parsé, son xml va être nécessaire)
+
+dans (project|prod)/batch/loi :
+
+1) télécharger:
+	- perl download_loi.pl $url
+
+2) parser:
+	- perl parse_loi.pl html/$url_mod > json/nom_explicite_ou_non_au_choix.xml
+
+3) verifier (pour vérifier plus facilement faire des
+perl parse_loi.pl html/$url_mod | grep 'type": "loi' et chapitre/section/article à la place de loi):
+	- checker numero_loi (présent à toutes les lignes, si bon une fois ok)
+	- verifier le fichier résultant orga loi: normalement première ligne type loi avec infos sur la loi, puis chapitre et section éventuellement avec leurs descriptions et numéros, puis article et ses alinéas et ainsi de suite. vérifier individuellement les titres de sections et chapitres
+	- vérifier dans les dernières lignes les indices des derniers articles, chapitres et sections si bons par rapport à source. Attention: du fait des articles bis ter etc, le numéro d'articles est le nombre nommé ordre, qui peut etre supérieur au numéro maximum des articles
+	- vérifier sur quelques articles que le nombre d'alineas est bon.
+	- vérifier dans dernières lignes et premières lignes que du texte en trop n'a pas été pris en compte comme alinea ou autre avant ou après le contenu réel de la loi
+
+4) compléter les exposés (en éditant à la mano le fichier xml résultant dans json à partir de celui du texte initial):
+	- De façon générale, dans les exposés on peut ajouter à la mano des liens pour la présentation en utilisant la syntaxe <a href='url'>link</a> qui est gérée par le parseur et le loader.
+	- première ligne: completer si nécessaire à partir du parsing du texte original l'exposé et l'auteur, et adapter le titre en fonction de ce que l'on veut voir apparaître sur le site
+	- après la première ligne et avant la seconde qui doit etre un titre soit de chapitre soit d'article, ajouter les exposés de chapitres, sections et articles issus du parsig du texte original. Attention à retirer les lignes correspondant à des articles/sections/chapitres ayant été éventuellement supprimés entre temps.
+	- si des nouveaux articles/chapitres/sections ont été ajoutés par rapport au texte original et si on est courageux: retrouver les amendements à l'origine de ces ajouts et insérer sur le même modèle que les exposés précédents les exposés correspondants à partir de ceux des amendements.
+
+5) charger dans project/prod :
+	- vérifier dans json qu'il n'y a que le xml voulu (vu la demande en travail manuel recquise pour éviter de perdre ce travail la task de load ne supprime pas le fichier chargé, on pourrait envisager de le déplacer dans un dossier loadé je n'ai pas essayé de chercher comment faire en php, et u le peu de lois que l'on traite pour le moment le faire a la main n'est pas gênant)
+	- php symfony load:Loi
+	- vérifier en ligne: nosdeputes.fr/loi/n°loi (éventuellement pour les textes adoptés 'taN°loi' cf. simplifions)
+	- commiter pour archives le xml toujours dans batch/loi/json puis le supprimer ou déplacer ailleurs pour éviter qu'il ne soit reloadé par erreur
+	- faire un lien plus simple pour les prophanes dans le .htaccess genre nosdeputes.fr/loppsi
+
+C bon!

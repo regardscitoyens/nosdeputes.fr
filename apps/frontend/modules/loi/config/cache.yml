@@ -1,0 +1,9 @@
+all:
+  enabled: true
+  lifetime: 86400
+loi:
+  enabled: false
+section:
+  enabled: false
+alinea:
+  enabled: false

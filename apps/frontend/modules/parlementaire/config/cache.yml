@@ -1,0 +1,17 @@
+all:
+  lifetime: 300
+  enabled: true
+rss:
+  lifetime: 3600
+  enabled: true
+_duJour:
+  lifetime: 86400
+  enabled: true
+_fiche:
+  lifetime: 86400
+  enabled: true 
+list:
+  lifetime: 86400
+  enabled: true 
+show:
+  enabled: false

@@ -1,0 +1,41 @@
+#!/bin/bash
+
+#Récupère le fichier de configuration pour notre environnement (qui se trouve dans le même que ce script)
+. $(echo $0 | sed 's/[^\/]*$//')db.inc
+
+#LOCK
+LOCK="/tmp/indexSolr.bash.lock"
+if test -e $LOCK ;
+then
+    if test ! -e /proc/$(cat $LOCK) ;
+    then
+	echo "WARNING : l'indexation solr lockée alors que son processus ne tourne plus..."
+	echo "\t suppression du fichier...";
+	rm $LOCK
+	exit 1;
+    fi
+#     echo Script locké par $(cat $LOCK) : $LOCK
+#        ps aux | grep "php symfony index:Solr" | grep -v grep > /dev/null
+#        if [[ $? -eq 1 ]]; then echo "WARNING : l'indexation solr semble lockée mais ne pas tourner"; fi
+    exit 1;
+fi
+
+option=''
+if test "$1" = "all"; then 
+   option="--all=yes"
+fi
+
+echo $$ > $LOCK
+#echo Debut Indexation $option
+#date
+cd $PATH_APP
+while ! php symfony index:Solr $option ; do
+if test "$1" = "" ; then
+   exit;
+fi
+sleep 1
+done
+#echo Fin Indexation
+#date
+
+rm $LOCK ;

@@ -1,0 +1,7 @@
+all:
+   javascripts: [jquery.maphilight.min.js]
+showSuccess:
+   javascripts: [doubleHilight.js]
+listSuccess:
+   javascripts: [doubleHilight.js]
+

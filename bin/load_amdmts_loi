@@ -1,0 +1,29 @@
+#!/bin/bash
+
+loi=$1
+
+cd /home/nosdeputes/prod
+
+# Récupération et création des JSON
+
+echo Amendements
+echo =======================
+cd batch/amendements ; bash compute_latest_loi.sh $loi ; cd -
+
+# Chargement via tasks
+
+echo Load Amendements
+echo =======================
+while ls batch/amendements/json | grep [a-z] > /dev/null ; do
+        php symfony cc --env=test  --app=frontend > /dev/null
+        php symfony load:Amdmts
+done;
+
+# Postprocessings
+
+echo clean cache
+rm -r cache/frontend/prod/template/www_nosdeputes_fr/all/amendement/parlementaireSection/id/$loi
+rm -r cache/frontend/prod/template/www_nosdeputes_fr/all/amendement/parlementaire/slug/*
+rm -r cache/frontend/prod/template/www_nosdeputes_fr/all/amendement/find/loi/${loi}/numero/*
+rm cache/frontend/prod/template/www_nosdeputes_fr/all/amendement/show/loi/${loi}/numero/*
+

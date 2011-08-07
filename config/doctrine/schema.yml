@@ -1,0 +1,677 @@
+options:
+    type: MyISAM
+    collate: utf8_unicode_ci
+    charset: utf8
+
+
+Personnalite:
+  actAs:
+    Timestampable:
+    Sluggable:
+      fields: [nom]
+      unique: true
+  columns:
+    nom: string(255)
+    nom_de_famille: string(255)
+    sexe: 
+      type: enum
+      values: ['H', 'F']
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+
+Parlementaire:
+  actAs:
+    Solrable:
+      title: [nom, statut]
+      extra_weight: 3
+      description: [villes]
+      moretags: [profession]
+  columns:
+    nom_circo: string(255)
+    num_circo: integer
+    site_web: string(255)
+    debut_mandat: date
+    fin_mandat: date
+    place_hemicycle: integer
+    url_an: string(255)
+    profession: string(255)
+    autoflip: boolean
+    id_an:
+      type: integer
+      unique: true
+    type:
+      type: enum
+      values: ['depute', 'senateur']
+    groupe_acronyme: string(8)
+    adresses: string
+    autres_mandats: string
+    mails: string
+    top: string
+    villes: string
+  inheritance:
+    extends: Personnalite
+    type: concrete
+  relations:
+    Organismes:
+      class: Organisme
+      refClass: ParlementaireOrganisme
+      foreignAlias: Parlementaires
+  indexes:
+    uniq_url:
+      fields: [url_an]
+      type: unique
+
+ParlementairePhoto:
+  columns:
+    slug: string(255)
+    photo: clob 
+        
+
+Organisme:
+  actAs:
+    Timestampable:
+    Sluggable:
+      fields: [nom]
+      unique: true
+    Solrable:
+      title: [titre]
+      extra_weight: 3
+      moretags: [type]
+      index_if: has_parlementaires
+  columns:
+    nom: 
+      type: string(255)
+      unique: true
+#      notnull: true
+    type:
+      type: enum
+      values: ['parlementaire', 'groupe', 'extra']
+
+ParlementaireOrganisme:
+  columns:
+    fonction: string(512)
+    importance: integer
+    debut_fonction: date
+    organisme_id:
+      type: integer
+      primary: true
+    parlementaire_id:
+      type: integer
+      primary: true
+  relations:
+    Parlementaire:
+      foreignAlias: ParlementaireOrganismes
+    Organisme:
+      foreignAlias: ParlementaireOrganismes
+
+Seance:
+  actAs:
+    Timestampable:
+  columns:
+    date: date
+    numero_semaine: integer
+    annee: integer
+    type:
+      type: enum
+      values: ['commission', 'hemicycle']
+    moment: string(30)
+    organisme_id: integer
+    tagged: boolean
+    session: string(10)
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  relations:
+    Organisme:
+      foreignAlias: Seances
+  indexes:
+    uniq_index:
+      fields: [organisme_id, date, moment]
+      type: unique
+    index_session:
+      fields: [session]
+    index_semaine:
+      fields: [annee, numero_semaine]
+    index_annee:
+      fields: [annee]
+
+Presence:
+  actAs:
+    Timestampable:
+  columns:
+    parlementaire_id: integer
+    seance_id: integer
+    nb_preuves: integer
+    date: date
+  relations:
+    Parlementaire:
+      foreignAlias: Presences
+    Seance:
+      foreignAlias: Presences
+
+PreuvePresence:
+  actAs:
+    Timestampable:
+  columns:
+    presence_id: integer
+    type:
+      type: enum
+      values: ['jo', 'intervention', 'compte-rendu', 'autre']
+    source: string(200)
+  relations:
+    Presence:
+      foreignAlias: Preuves
+
+Section:
+  actAs:
+    Timestampable: ~
+    Taggable: ~
+    Solrable:
+      title: [titre_complet]
+      extra_weight: 1.3
+      index_if: is_parent
+      date: max_date
+  columns:
+    md5:
+      type: string(36)
+      unique: true
+    titre: string(256)
+    titre_complet: string(512)
+    section_id: integer
+    min_date: string(15)
+    max_date: date
+    timestamp: integer
+    nb_interventions: integer
+    id_dossier_an: string(255)
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  relations:
+    Section:
+      foreignAlias: SubSections
+
+Intervention:
+  actAs:
+    Timestampable: ~
+    Taggable: ~
+    Solrable:
+      description: [Parlementaire, Personnalite, intervention]
+      moretags: [Parlementaire, Personnalite, type]
+      devaluate_if_wordcount_under: 200
+      date: full_date
+  columns:
+#    id:
+#      type: string(36)
+#      primary: true
+    nb_mots: integer
+    md5: 
+      type: string(36)
+      unique: true
+    intervention: 
+      type: string
+    timestamp: integer
+    source: string(128)
+    seance_id: integer
+    section_id: integer
+    type:
+      type: enum
+      values: ['commission', 'question', 'loi']
+    date: date
+    personnalite_id: integer
+    parlementaire_id: integer
+    fonction: string(512)
+  relations:
+    Section:
+      foreignAlias: Interventions
+    Seance:
+      foreignAlias: Interventions
+    Personnalite:
+      class: Personnalite
+      foreignAlias: Interventions
+    Parlementaire:
+      class: Parlementaire
+      foreignAlias: Interventions
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  indexes:
+    date_intervention:
+      fields: [date]
+    ft_intervention:
+      fields: [intervention]
+      type: fulltext
+
+Amendement:
+  actAs:
+    Timestampable: ~
+    Taggable: ~
+    Solrable: 
+      title: [titre]
+      description: [expose, texte, signataires]
+      moretags: [Parlementaires, sort]
+      date: date
+      index_if: is_last_version
+  columns:
+    source:
+      type: string(255)
+    legislature: integer
+    texteloi_id: string(16)
+    numero: string(8)
+    rectif: integer
+    sujet: string(100)
+    sort:
+      type: enum
+      values: ['Indéfini', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non soutenu', 'Retiré avant séance', 'Rectifié', 'Favorable']
+    date: date
+    signataires: string
+    texte: 
+      type: string
+    expose: 
+      type: string
+    content_md5: string(36)
+  relations:
+    Parlementaires:
+      class: Parlementaire
+      refClass: ParlementaireAmendement
+      foreignAlias: Amendements
+    Texteloi:
+      foreignAlias: Amendements
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  indexes:
+    ft_amendements:
+      fields: [sujet, texte, expose]
+      type: fulltext
+    uniq_loi_num:
+      fields: [legislature, texteloi_id, numero, rectif]
+      type: unique
+
+QuestionEcrite:
+  actAs:
+    Timestampable: ~
+    Taggable: ~
+    Solrable:
+      description: [question, ministere, reponse, themes]
+      moretags: [Parlementaire, ministere, motif_retrait, themes]
+      date: last_date
+  columns:
+    source:
+      type: string(255)
+      unique: true
+    legislature: integer
+    numero: integer
+    date: date
+    date_cloture: date
+    ministere: string
+    themes: string
+    question:
+      type: string
+    reponse:
+      type: string
+    motif_retrait:
+      type: string
+    content_md5: string(36)
+    parlementaire_id: integer
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  relations:
+    Parlementaire:
+      class: Parlementaire
+      foreignAlias: QuestionEcrites
+  indexes:
+    uniq_num:
+      fields: [legislature, numero]
+      type: unique
+
+ParlementaireAmendement:
+  actAs:
+    Timestampable:
+  columns:
+    parlementaire_id: integer
+    amendement_id: string(36)
+    numero_signataire: integer
+  relations:
+    Parlementaire:
+      foreignAlias: ParlementaireAmendements
+    Amendement:
+      foreignAlias: ParlementaireAmendements
+
+Citoyen:
+  actAs:
+    Timestampable: ~
+    Sluggable:
+      fields: [login]
+      unique: true
+  columns:
+    login:
+      type: string(128)
+      unique: true
+    password:
+      type: string(40)
+    email:
+      type: string(255)
+      unique: true
+      notnull: true
+    activite: string(255)
+    url_site: string(255)
+    employe_an:
+      type: boolean
+      default: 0
+    travail_pour: integer
+    naissance: date
+    sexe: 
+      type: enum
+      values: [null, 'H', 'F']
+    nom_circo: string(255)
+    num_circo: integer
+    photo: blob
+    activation_id: string(32)
+    is_active:
+      type: boolean
+      default: 0
+    role: 
+      type: enum
+      values: ['membre', 'moderateur', 'admin']
+      default: membre
+    last_login: timestamp
+    parametres: string
+  indexes:
+    is_active:
+      fields: [is_active]
+    role:
+      fields: [role]
+
+VariableGlobale:
+  actAs:
+    Timestampable:
+  columns:
+    champ: string(32)
+    value: blob
+
+Commentaire:
+  actAs:
+    Timestampable:
+    Solrable:
+      description: [Citoyen, commentaire]
+      moretags: [Citoyen, object_type, object_id, Parlementaires]
+      date: created_at
+      index_if: is_public
+  columns:
+    citoyen_id: integer
+    commentaire: string
+    is_public: boolean
+    ip_address: string(512)
+    rate: integer
+    object_type: string(64)
+    object_id: string(16)
+    lien: string(128)
+    presentation: string(512)
+  relations:
+    Citoyen:
+      foreignAlias: Commentaires
+  inheritance:
+    extends: ObjectRated
+    type: concrete
+  indexes:
+    commentable:
+      fields: [object_type, object_id]
+
+CommentaireObject:
+ columns:
+   object_type: string(64)
+   object_id: integer
+   commentaire_id: integer
+ relations:
+   Commentaire:
+     foreignAlias: Objects
+ indexes:
+   unique:
+     fields: [object_type, object_id, commentaire_id]
+     type: unique
+
+ObjectRated:
+  columns:
+    rate: integer
+
+ObjectCommentable:
+  columns:
+    nb_commentaires: integer
+
+Rate:
+  actAs:
+    Timestampable:
+  columns:
+    object_type: string(50)
+    object_id: integer
+    rate: integer
+    citoyen_id: integer
+  relations:
+    Citoyen:
+      foreignAlias: Rates
+    Object:
+      foreignAlias: Rates
+  indexes:
+    unique:
+      fields: [object_type, object_id, citoyen_id]
+      type: unique
+
+Article:
+  actAs:
+    Timestampable:
+    Versionable:
+    Sluggable:
+      fields: [titre]
+  columns:
+    titre: string(254)
+    corps: string
+    user_corps: string
+    categorie: string(128)
+    citoyen_id: integer
+    article_id: integer
+    link: string(255)
+    status:
+      type: enum
+      values: ['public', 'brouillon', 'offline']
+      default: 'brouillon'
+    object_id: integer
+  inheritance:
+    extends: ObjectRated
+    type: concrete
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  relations:
+    Citoyen:
+      foreignAlias: Articles
+    Article:
+      foreignAlias: SousArticles
+  indexes:
+    icategories:
+      fields: [categorie]
+    iobject:
+      fields: [categorie, object_id]
+      unique: true
+    ititre:
+      fields: [categorie, titre(200)]
+    ititrecitoyen:
+      fields: [categorie, titre(200), citoyen_id]
+    iarticle:
+      fields: [article_id]
+
+ArticleLoi:
+  actAs:
+    Sluggable:
+      fields: [titre]
+      unique: false
+  columns:
+    texteloi_id: string(16)
+    titre: string(16)
+    ordre: integer
+    precedent: string(16)
+    suivant: string(16)
+    expose:
+      type: string
+    titre_loi_id: integer
+  relations:
+    TitreLoi:
+      class: TitreLoi
+      foreignAlias: Articles
+    Texteloi:
+      foreignAlias: ArticleLois
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  indexes:
+    iloititre:
+      fields: [texteloi_id, titre]
+      type: unique
+    iloiarticle:
+      fields: [texteloi_id, ordre]
+
+Alinea:
+  actAs:
+    Timestampable:
+  columns:
+    texteloi_id: string(16)
+    article_loi_id: integer
+    numero: integer
+    texte:
+      type: string
+    ref_loi: string(255)
+  relations:
+    Article:
+      class: ArticleLoi
+      foreignAlias: Alineas
+    Texteloi:
+      foreignAlias: Alineas
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  indexes:
+    iarticleloinumero:
+      fields: [texteloi_id, article_loi_id, numero]
+      type: unique
+
+TitreLoi:
+  actAs:
+    Timestampable:
+  columns:
+    texteloi_id: string(16)
+    chapitre: string(8)
+    section: string(8)
+    titre: string(512)
+    expose:
+      type: string
+    parlementaire_id: integer
+    date: date
+    source:
+      type: string(128)
+      unique: true
+    nb_articles: integer
+    titre_loi_id: integer
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  relations:
+    Parlementaire:
+      class: Parlementaire
+      foreignAlias: Propositions
+    TitreLoi:
+      foreignAlias: SousSections
+    Texteloi:
+      foreignAlias: TitreLois
+
+Texteloi:
+  actAs:
+    Timestampable: ~
+    Taggable: ~
+    Solrable:
+      title: [titre]
+      description: [contenu, id]
+      moretags: [categorie, type, Organisme, Parlementaires]
+      date: date
+  columns:
+    id:
+      type: string(16)
+      unique: true
+    legislature: integer
+    numero: integer
+    annexe: string(12)
+    type:
+      type: enum
+      values: ['Proposition de loi', 'Proposition de résolution', 'Projet de loi', 'Texte de la commission', 'Lettre', 'Rapport', "Rapport d'information", 'Avis']
+    type_details: string(512)
+    categorie: string(128)
+    id_dossier_an: string(255)
+    titre: string(512)
+    date: date
+    source:
+      type: string(128)
+      unique: true
+    organisme_id: integer
+    signataires: string
+    contenu: string
+  relations:
+    Parlementaires:
+      class: Parlementaire
+      refClass: ParlementaireTexteloi
+      foreignAlias: Textelois
+    Organisme:
+      foreignAlias: Textelois
+  inheritance:
+    extends: ObjectCommentable
+    type: concrete
+  indexes:
+    index_url:
+      fields: [id_dossier_an]
+    index_alpha:
+      fields: [numero, annexe]
+      type: unique
+    index_type:
+      fields: [type(30), type_details(200)]
+    index_date:
+      fields: [date]
+
+ParlementaireTexteloi:
+  actAs:
+    Timestampable:
+  columns:
+    parlementaire_id: integer
+    texteloi_id: string(16)
+    importance: integer
+    fonction: string(255)
+  relations:
+    Parlementaire:
+      foreignAlias: ParlementaireTextelois
+    Texteloi:
+      foreignAlias: ParlementaireTextelois
+
+Alerte:
+  actAs:
+    Timestampable:
+  columns:
+    email: string(128)
+    query: string
+    filter: string
+    query_md5: string(32)
+    titre: string 
+    confirmed: boolean
+    no_human_query: boolean
+    period: 
+      type: enum
+      values: ['HOUR', 'DAY', 'WEEK', 'MONTH']
+    next_mail: datetime
+    last_mail: datetime
+    citoyen_id: integer
+    verif: string(128)
+  relations:
+    Citoyen:
+      foreignAlias: Alertes
+  indexes:
+    index_uniq:
+      fields: [email, citoyen_id, query_md5]
+      type: unique
+    

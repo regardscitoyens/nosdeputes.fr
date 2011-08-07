@@ -1,0 +1,171 @@
+#!/bin/bash
+
+#Récupère le fichier de configuration pour notre environnement
+. $(echo $0 | sed 's/[^\/]*$//')db.inc
+
+cd $PATH_APP
+
+#LOCK
+if test -e /tmp/loadupdate.lock ;
+then
+	echo Script locké par $(cat /tmp/loadupdate.lock) : /tmp/loadupdate.lock
+	exit 1;
+fi
+
+echo $$ > /tmp/loadupdate.lock
+
+# Gestion des options
+deputes=1
+jo=1
+questions=1
+while getopts "hdjqo-:" option
+do
+  if [ $option = "-" ]; then
+    case $OPTARG in
+      help) option="h";;
+      nodeputes) option="d";;
+      nojo) option="j";;
+      noquestions) option="q";;
+      oldquestions) option="o";;
+    esac
+  fi  
+  case $option in
+    d) deputes=0;;
+    j) jo=0;;
+    q) if [[ $questions -ne 1 ]]; then
+         echo "options noquestions et oldquestions incompatibles"
+         exit 1
+       fi
+       questions=0;;
+    o) if [[ $questions -ne 1 ]]; then
+         echo "options noquestions et oldquestions incompatibles"
+         exit 1
+       fi
+       questions=2;;
+    h) echo "syntaxe : loadupdate [-h|--help  /  [-j|--nojo] [-q|-noquestions / -o|--oldquestions] ]"
+       echo "  -h ( --help )         : affiche cette aide"
+       echo "  -d ( --nodeputes )    : pas de mise-à-jour de la liste des députés et de leurs commissions"
+       echo "  -j ( --nojo )         : pas de mise-à-jour des séances de commission listées au Journal Officiel"
+       echo "  -q ( --noquestions )  : pas de mise-à-jour des questions écrites au gouvernement"
+       echo "  -o ( --oldquestions ) : mise-à-jour des questions depuis le début de la législature et reload des ppl des 3 derniers mois"
+	rm /tmp/loadupdate.lock
+       exit 1;;
+  esac
+done
+
+if [[ $deputes -eq 1 ]]; then
+  echo Mise-à-jour députés
+  echo =======================
+  bash bin/load_deputes
+fi
+
+# Récupération et création des JSON
+
+if [[ $jo -eq 1 ]]; then
+  echo JO
+  echo =======================
+  cd batch/jo ; perl compute_latest.pl ; cd -
+fi
+echo Hemicycles
+echo =======================
+cd batch/hemicycle ; bash compute_latest.sh ; cd -
+echo Commissions
+echo =======================
+cd batch/commission ; bash compute_latest.sh ; cd -
+echo Amendements
+echo =======================
+cd batch/amendements ; bash compute_latest.sh ; cd -
+if [[ $questions -ne 0 ]]; then
+  echo Questions
+  echo =======================
+  cd batch/questions
+  if [[ $questions -eq 1 ]]; then
+    bash compute_latest.sh recent
+  else
+    bash compute_latest.sh all
+  fi
+  cd -
+fi
+echo Rapports et Textes de lois
+echo ==========================
+cd batch/documents
+if [[ $questions -eq 2 ]]; then
+  bash reload_latest_ppl.sh
+fi
+bash compute_latest.sh
+cd -
+
+
+# Vérification des JSON
+
+
+
+# Chargement via tasks
+
+if [[ $jo -eq 1 ]]; then
+  echo load JO
+  echo =======================
+  while ! php symfony load:JO ; do
+        php symfony cc --env=test  --app=frontend > /dev/null
+  done;
+fi
+echo Load Hemicycles
+echo =======================
+while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do 
+	php symfony cc --env=test  --app=frontend > /dev/null
+	php symfony load:Hemicycle 
+done;
+echo "Load Commissions : http://www.nosdeputes.fr/backend.php/commissions"
+echo =======================
+while ls batch/commission/out | grep [a-z] > /dev/null ; do
+	php symfony cc --env=test  --app=frontend > /dev/null
+	php symfony load:Commission 
+done;
+echo "Load Présences en Commissions"
+echo =======================
+while ls batch/commission/presents | grep [a-z] > /dev/null ; do
+        php symfony cc --env=test  --app=frontend > /dev/null
+        php symfony load:JO --source=cri
+done;
+echo Load Amendements
+echo =======================
+while ls batch/amendements/json | grep [a-z] > /dev/null ; do
+	php symfony cc --env=test  --app=frontend > /dev/null
+	php symfony load:Amdmts 
+done;
+if [[ $questions -ne 0 ]]; then
+  echo Load Questions
+  echo =======================
+  while ls batch/questions/json | grep [a-z] > /dev/null ; do
+	php symfony cc --env=test  --app=frontend > /dev/null
+	php symfony load:Questions 
+  done;
+fi
+echo Load Documents
+echo =======================
+while ls batch/documents/out | grep [a-z] > /dev/null ; do
+        php symfony cc --env=test  --app=frontend > /dev/null
+        php symfony load:Documents
+done;
+
+
+
+# Postprocessings
+
+echo Tags séances
+echo =======================
+bash bin/tag_seance
+echo Update sessions
+echo =======================
+php symfony set:Session 
+echo Update vacances
+echo =======================
+php symfony set:Vacances 
+echo Update tops députés
+echo =======================
+php symfony top:Deputes
+echo Update hardcache html
+echo =======================
+bash bin/update_hardcache
+
+rm /tmp/loadupdate.lock

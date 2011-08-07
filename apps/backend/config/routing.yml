@@ -1,0 +1,194 @@
+citoyen:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Citoyen
+    module:               citoyen
+    prefix_path:          citoyen
+    column:               id
+    with_wildcard_routes: true
+    order:                1
+
+commentaire:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Commentaire
+    module:               commentaire
+    prefix_path:          commentaire
+    column:               id
+    with_wildcard_routes: true
+
+rate:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Rate
+    module:               rate
+    prefix_path:          rate
+    column:               id
+    with_wildcard_routes: true
+
+parlementaire:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Parlementaire
+    module:               parlementaire
+    prefix_path:          parlementaire
+    column:               id
+    with_wildcard_routes: true
+
+presence:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Presence
+    module:               presence
+    prefix_path:          presence
+    column:               id
+    with_wildcard_routes: true
+
+intervention:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Intervention
+    module:               intervention
+    prefix_path:          intervention
+    column:               id
+    with_wildcard_routes: true
+
+seance:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Seance
+    module:               seance
+    prefix_path:          seance
+    column:               id
+    with_wildcard_routes: true
+
+section:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Section
+    module:               section
+    prefix_path:          section
+    column:               id
+    with_wildcard_routes: true
+
+amendement:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Amendement
+    module:               amendement
+    prefix_path:          amendement
+    column:               id
+    with_wildcard_routes: true
+
+tag:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Tag
+    module:               tag
+    prefix_path:          tag
+    column:               id
+    with_wildcard_routes: true
+
+organisme:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Organisme
+    module:               organisme
+    prefix_path:          organisme
+    column:               id
+    with_wildcard_routes: true
+
+personnalite:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Personnalite
+    module:               personnalite
+    prefix_path:          personnalite
+    column:               id
+    with_wildcard_routes: true
+
+article:
+  class: sfDoctrineRouteCollection
+  options:
+    model:                Article
+    module:               article
+    prefix_path:          article
+    column:               id
+    with_wildcard_routes: true
+
+commission_fuse_seances:
+  url: /commission/seance/:id/fuse/result/:result
+  param: {module: organisme, action: commission}
+
+fuse_seances:
+  url: /commission/seance/:id/fuse/:bad/:good
+  param: {module: organisme, action: fuse, type: 'seance', ok: 1}
+
+seance_suppr_ok:
+  url: /commission/seance/:id/suppr_ok
+  param: {module: seance, action: suppr, ok: 1}
+
+list_commissions_suppr_seance:
+  url: /commissions/seance/:id/suppr/:pre/:prp
+  param: {module: organisme, action: listCommissions, suppr: 'seance'}
+
+commission_suppr_seance:
+  url: /commission/seance/:id/suppr/:seance/:pre/:prp
+  param: {module: organisme, action: commission, suppr: 2}
+
+seance_suppr:
+  url: /commission/seance/:id/suppr
+  param: {module: seance, action: suppr}
+
+list_commissions_fuse:
+  url: /commissions/fuse/result/:result
+  param: {module: organisme, action: listCommissions}
+
+fuse_commissions:
+  url: /commissions/fuse/:bad/:good
+  param: {module: organisme, action: fuse, type: 'commission', ok: 1}
+
+commission_suppr_ok:
+  url: /commission/:id/suppr_ok
+  param: {module: organisme, action: commission, suppr: 1, ok: 1}
+
+list_commissions_suppr:
+  url: /commissions/:id/suppr/:sea/:dep/:art
+  param: {module: organisme, action: listCommissions, suppr: 'commission'}
+
+commission_suppr:
+  url: /commission/:id/suppr
+  param: {module: organisme, action: commission, suppr: 1}
+
+commission:
+  url: /commission/:id
+  param: {module: organisme, action: commission}
+
+fuse_nseances:
+  url: /commissions/seances/fuse
+  param: {module: seance, action: fuse}
+
+fuse:
+  url: /commissions/fuse
+  param: {module: organisme, action: fuse}
+
+list_commissions:
+  url: /commissions
+  param: {module: organisme, action: listCommissions}
+
+agenda:
+  url: /semaine/:annee/:semaine
+  param: {module: agenda, action: semaine}
+
+
+# default rules
+homepage:
+  url:   /
+  param: { module: main, action: index }
+
+default_index:
+  url:   /:module
+  param: { action: index }
+
+default:
+  url:   /:module/:action/*
