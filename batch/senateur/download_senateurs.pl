@@ -23,7 +23,7 @@ sub download_fiche {
 	open FILE, ">:utf8", "html/$file";
 	$thecontent = $a->content;
 	$thecontent =~ s/iso-8859-1/utf8/g;
-	print FILE $thecontent if ($verbose);
+	print FILE $thecontent;
 	close FILE;
         print "DONE" if ($verbose);
 	print "\n";
