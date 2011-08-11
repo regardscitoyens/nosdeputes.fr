@@ -1,9 +1,10 @@
 #!/usr/bin/perl
-
 use WWW::Mechanize;
 use HTML::TokeParser;
 use URI::Escape;
 use Encode;
+
+$|=1;
 
 $verbose = shift || 0;
 %done = ();
@@ -15,14 +16,17 @@ sub download_fiche {
 	$file = uri_escape($a->uri());
 	return if ($done{$file});
 	$done{$file} = 1;
-        print "saving $file : " if ($verbose);
+        print "saving " if ($verbose);
+	print $file;
+	print " : " if ($verbose);
 	mkdir html unless -e "html/" ;
 	open FILE, ">:utf8", "html/$file";
 	$thecontent = $a->content;
 	$thecontent =~ s/iso-8859-1/utf8/g;
 	print FILE $thecontent if ($verbose);
 	close FILE;
-print "DONE\n";
+        print "DONE" if ($verbose);
+	print "\n";
 	return $file;
 }
 $a = WWW::Mechanize->new();
