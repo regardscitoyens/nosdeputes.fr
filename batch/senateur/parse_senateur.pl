@@ -46,6 +46,48 @@ $senateur{'Circonscription'} =~ s/^d[eus' ]*(l[a']|) *//;
 $senateur{'Circonscription'} =~ s/repr..sentant les //;
 $senateur{'Circonscription'} =~  s/ +\(.*//;
 
+sub groupefonction {
+	$str = shift;
+	$str =~ s/\n/ /g;
+	if ($str =~ /^\s*(\S+) (du|de la|de l'|au|d'une) *(\S.*)$/) {
+		return $3.' / '.$1;
+	}
+	return $str;
+}
+
+sub fonctions {
+	$autres = shift;
+	$t = $p->get_tag('ul', 'div');
+	if ($t->[0] eq 'div' && $autres) {
+		$fonction = groupefonction($p->get_text('/div'));
+		$senateur{$autres}{$fonction} = 1;
+		return;
+	}
+	while ($t = $p->get_tag('li', '/ul')) {
+		last if ($t->[0] ne "li");
+		$commission = $p->get_text('/li', '/ul');
+		$commission = groupefonction($commission);
+		if ($autres) {
+			$senateur{$autres}{$commission} = 1;
+		}elsif ($commission =~ s/groupe //) {
+			$senateur{'groupe'}{$commission} = 1;
+		} else {
+			$senateur{'fonctions'}{$commission} = 1;
+		}
+	}
+}
+
+fonctions();
+while($p->get_tag('h2')) {
+	$h2 = $p->get_text('/h2');
+	if ($h2 =~ /groupes|autres/i) {
+		fonctions('extras');
+	}elsif ($h2 =~ /mandats/i) {
+		fonctions('autresmandats');
+	}
+}
+
+
 if ($content =~ /place-hemicycle_([0-9]+)/) {
 	$senateur{'Place_hemicycle'} = $1;
 }
@@ -120,7 +162,7 @@ if ($yml) {
 		print "      - $i\n"; 
 	    } 
 	}else { 
-	    if ($k !~ /supplÃ©ant/i) {
+	    if ($k !~ /suppléant/i) {
 		print "    ".lc($k).": ".$senateur{$k}."\n"; 
 	    }
 	} 
