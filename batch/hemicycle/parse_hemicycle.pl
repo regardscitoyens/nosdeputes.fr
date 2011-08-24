@@ -65,9 +65,14 @@ $timestamp = 0;
 sub print_inter {
 	if ($heure && $intervention) {
 		$timestamp += 20;
-	print '{"contexte": "", "intervention": "'.$intervention.'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "intervenant": "'.$inter.'", "fonction": "", "intervenant_url": "'.$url_inter.'"}'."\n";
+		$context = $bigcontext;
+		$context .= ' > '.$subcontext if ($subcontext);
+	print '{"contexte": "'.$context.'", "intervention": "'.$intervention.'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "intervenant": "'.$inter.'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'"}'."\n";
 	}
 	$intervention = '';
+	$inter = '';
+	$fonction = '';
+	$url_inter = '';
 }
 
 foreach (split /\n/, $doc) {
@@ -77,33 +82,68 @@ foreach (split /\n/, $doc) {
         if (s/<span class="info_entre_parentheses">\((.*)\)\S*<\/span>//) {
                 $didasc = $1;
                 $didasc =~ s/<[^>]*>//gi;
-                if ($didasc =~ /ouverte &#224; (\S+) heures\s*(\S*)\W/) {
-                        $heure = sprintf("%02d:%02d", $heure{$1}, $heure{$2});
+		print_inter() if ($heure || $intervenant);
+                if ($didasc =~ /(ouverte|reprise) &#224; (\S+) heures\s*(\S*)\W/) {
+                        $heure = sprintf("%02d:%02d", $heure{$2}, $heure{$3});
+			$timestamp = 0;
                 }
+		$intervention .= '<p>'.$didasc.'</p>';
+		
         }
+	if (/Pr\&\#233\;sidence de (M[^<]*)/) {
+		$president = $1;
+	}
 	next if (!$heure);
 	if (/class="intervenant/) {
-		s/<a [^>]*>(.*)<\/a>//i;
-		$tmpinter = $1;
-		$tmpinter =~ /href="(\/sen[^"]+)"/i;
-		$tmpurl_inter = "http://www.senat.fr$1";
+		if (/class="orateur_nom"[^>]*>([^<]+)</) {
+			$tmpinter = $1;
+		}elsif(/<a [^>]*>(.+)<\/a>/) {
+			$tmpinter = $1;
+		}
+		$tmpfonction = '';
+		$tmpurl_inter = '';
+		if ($tmpinter =~ /Mm?e?\.? l[ae] (pr\&\#233\;sidente?)/ && $president) {
+			$tmpinter = $president;
+			$tmpfonction = $1;
+		}elsif (/class="orateur_qualite"[^>]*>([^>]*)</) {
+			$tmpfonction = $1;
+		}
+		if (/href="(\/sen[^"]+)"/i) {
+			$tmpurl_inter = "http://www.senat.fr$1";
+		}
 		$tmpinter =~ s/<[^>]*>//g;
-		$tmpinter =~ s/\.\s*$//;
+		$tmpinter =~ s/[\.,]\s*$//;
 		if ($tmpinter ne $inter) {
 			print_inter();
 			$inter = $tmpinter;
 			$url_inter = $tmpurl_inter;
+			$fonction = $tmpfonction;
 		}
 	}
 	if (/class="titre_/) {
 		if ($inter) {
                         print_inter();
-			$inter = '';
-			$url_inter = '';
 		}
 	} 
+	$iscontext = '';
+	if (/"titre_S([123][^"]*)"/ || /"mention_(article)"/) {
+		$iscontext = $1;
+		print_inter();
+	}
 	if (s/.*id="(intv_|)par_[^>]*>\s*(.*)\s*<\/p>.*/$2/i) {
 		s/(<span.*|)<\/span>\s*//i;
-		$intervention .= "<p>$_</p>";
+		s/\s+$//;
+		if ($_) {
+			if ($iscontext) {
+			if ($iscontext eq '1') {
+				$bigcontext = $_;
+				$subcontext = '';
+			}else{
+				$subcontext = $_;
+			}
+			}else{
+				$intervention .= "<p>$_</p>";
+			}
+		}
 	}
 }
