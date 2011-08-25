@@ -7,7 +7,7 @@ if ($section->getSection()) {
  }
 echo $section->titre;
 $titre = $section->titre.$titre;
-$sf_response->setTitle($titre.' - NosDéputés.fr');
+$sf_response->setTitle($titre.' - NosSénateurs.fr');
 if ($section->getSection()) echo '</h2>';
 else echo '</h1>';
 ?>
@@ -53,7 +53,7 @@ if ($subsection->id != $section->id) : ?>
       echo "<li>";
       $curid = $shortid;
       if (isset($doc['texteloi_id'])) {
-        $doctitre = "N°$curid en débat sur NosDéputés.fr&nbsp;: ".strip_tags($doc['titre']);
+        $doctitre = "N°$curid en débat sur NosSénateurs.fr&nbsp;: ".strip_tags($doc['titre']);
         if ($doc['nb_commentaires'])
           $doctitre .= " (".$doc['nb_commentaires']."&nbsp;commentaire";
         if ($doc['nb_commentaires'] > 1)

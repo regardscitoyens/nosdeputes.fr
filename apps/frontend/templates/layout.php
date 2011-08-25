@@ -25,7 +25,7 @@ if ( preg_match('/\/circonscription[\/\?]/', $uri))
    $selectamdmt = ' selected="selected"';
  else if ( preg_match('/\/question[\/\?]/', $uri))
    $selectquestion = ' selected="selected"';
- else if (preg_match('/(\/citoyens?[\/\?]?|\/compterendu|\/commentaires?)/', $uri))
+ else if (preg_match('/(\/citoyens?[\/\?]?|\/assister|\/commentaires?)/', $uri))
    $selectcitoyen = 1;
  else if ( !preg_match('/\/(faq|$)/i', $uri)) 
    $selectsenateur = ' selected="selected"';  
@@ -116,7 +116,7 @@ $menu_citoyen = $selectcitoyen;
           <ul>
             <li><a href="<?php echo url_for('@list_citoyens?order=date'); ?>">Tous les citoyens</a> <strong>|</strong></li>
             <li><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a> <strong>|</strong></li>
-            <li><a href="<?php echo url_for('@compterendu_list'); ?>">Les comptes rendus citoyens</a></li>
+            <li><a href="<?php echo url_for('@assister'); ?>">Assister aux débats</a></li>
           </ul>
         </div>
 	</div>

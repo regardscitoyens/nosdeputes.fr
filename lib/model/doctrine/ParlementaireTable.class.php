@@ -5,7 +5,7 @@
 class ParlementaireTable extends PersonnaliteTable
 {
   public function findOneByNomSexeGroupeCirco($nom, $sexe = null, $groupe = null, $circo = null, $document = null) {
-    $depute = null;
+    $senateur = null;
     $memeNom = $this->findByNom($nom);
     if (count($memeNom) != 1 && ($circo)) {
       $query = $this->createQuery('p')
@@ -32,34 +32,37 @@ class ParlementaireTable extends PersonnaliteTable
       $revert_nom = $match[3]." ".$match[1].$match[2];
       $memeNom = $this->findByNom($revert_nom);
     }
-    if (count($memeNom) == 0) $depute = $this->similarTo(preg_replace('/^\s*(de |du |la )+\s*/i', '', $nom), $sexe);
-    elseif (count($memeNom) == 1) $depute = $memeNom[0];
+    if (count($memeNom) == 0) $senateur = $this->similarTo(preg_replace('/^\s*(de |du |la )+\s*/i', '', $nom), $sexe);
+    elseif (count($memeNom) == 1) $senateur = $memeNom[0];
     else {
       $memeSexe = array();
       if ($sexe) {
         foreach ($memeNom as $de)
           if ($de->sexe == $sexe) array_push($memeSexe, $de);
-        if (count($memeSexe) == 1) $depute = $memeSexe[0];
+        if (count($memeSexe) == 1) $senateur = $memeSexe[0];
       }
-      if (!$depute && $groupe) {
+      if (!$senateur && $groupe) {
         $memeGroupe = array();
         $procheGroupe = array();
         if (count($memeSexe) == 0) $memeSexe = $memeNom;
         foreach ($memeSexe as $de) {
           $groupe2 = $de->groupe_acronyme;
           if ($groupe2 == $groupe) array_push($memeGroupe, $de);
-          elseif (($groupe2 == "UMP" && $groupe == "NC") || ($groupe2 == "NC" && $groupe == "UMP")) array_push($procheGroupe, $de);
-          elseif (($groupe2 == "SRC" && $groupe == "GDR") || ($groupe2 == "GDR" && $groupe == "SRC")) array_push($procheGroupe, $de);
+          elseif (($groupe2 == "UMP" && $groupe == "UC") || ($groupe2 == "UC" && $groupe == "UMP")) array_push($procheGroupe, $de);
+          elseif (($groupe2 == "SOC" && $groupe == "CRC-SPG") || ($groupe2 == "CRC-SPG" && $groupe == "SOC")) array_push($procheGroupe, $de);
+          elseif (($groupe2 == "SOC" && $groupe == "RDSE") || ($groupe2 == "RDSE" && $groupe == "SOC")) array_push($procheGroupe, $de);
+          elseif (($groupe2 == "CRC-SPG" && $groupe == "RDSE") || ($groupe2 == "RDSE" && $groupe == "CRC-SPG")) array_push($procheGroupe, $de);
+          elseif (($groupe2 == "UC" && $groupe == "CRC-SPG") || ($groupe2 == "CRC-SPG" && $groupe == "UC")) array_push($procheGroupe, $de);
         }
-        if (count($memeGroupe) == 1) $depute = $memeGroupe[0];
-        elseif (count($procheGroupe) == 1) $depute = $procheGroupe[0];
+        if (count($memeGroupe) == 1) $senateur = $memeGroupe[0];
+        elseif (count($procheGroupe) == 1) $senateur = $procheGroupe[0];
         unset($memeGroupe);
         unset($procheGroupe);
       }
       unset($memeSexe);
     }
     unset($memeNom);
-    return $depute;
+    return $senateur;
   }
 
   public function getPager($request, $query = NULL)

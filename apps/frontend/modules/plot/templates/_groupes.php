@@ -129,7 +129,7 @@ if ($plot == 'total') {
 }
 if ($plot == 'total') {
   $Test->xsSetFontProperties("tahoma.ttf",11);
-  $Test->drawTitle(110,340,"Activité moyenne d'un député",50,50,50);
+  $Test->drawTitle(110,340,"Activité moyenne d'un sénateur",50,50,50);
 }
 $Test->xsRender($filename);
 if ($plot == 'total')

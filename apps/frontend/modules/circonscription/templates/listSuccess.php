@@ -1,6 +1,6 @@
 <div id="carte_circo">
 <h1>Toutes les circonscriptions par département</h1><?php 
-$sf_response->setTitle('Toutes les circonscriptions électorales par département - NosDéputés.fr'); ?>
+$sf_response->setTitle('Toutes les circonscriptions électorales par département - NosSénateurs.fr'); ?>
 <?php include_partial('circonscription/mapDepartement', array('width'=>600, 'height'=>0)); ?>
 <div class="list_deptmts">
 <?php $iters = array("0" => 27, "27" => 55, "55" => 65, "65" => 75, "75" => 86, "86" => 96, "96" => 120);

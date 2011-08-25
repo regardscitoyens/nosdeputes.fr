@@ -156,9 +156,9 @@ class plotComponents extends sfComponents
     $this->data = array();
     if (!isset($this->type) || $this->type != "all")
       $this->type = "home";
-    $this->data['groupes'] = array('UMP' => array(),'NC' => array(),'SRC' => array(),'GDR' => array(), 'NI' => array());
+    $this->data['groupes'] = array('NI' => array(), 'UMP' => array(),'UC' => array(),'RDSE' => array(), 'SOC' => array(),'CRC-SPG' => array());
     if ($this->type === "home")
-      $this->data['titres'] = array("Députés", "Interventions", "Amendements", "Propositions", "Quest. Écrites");
+      $this->data['titres'] = array("Sénateurs", "Interventions", "Amendements", "Propositions", "Quest. Écrites");
     else $this->data['titres'] = array("", "Interventions", "Longues", "Courtes", "Déposés", "Adoptés", "de Lois", "Écrites", "Orales");
     $n = count($this->data['titres']);
     $stats = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
@@ -220,7 +220,7 @@ class plotComponents extends sfComponents
   public function executeGroupes() {
     $this->empty = 0;
     if (!isset($this->plot)) $this->plot = 'total';
-    $this->labels = array('GDR','SRC','NC','UMP','NI');
+    $this->labels = array('CRC-SPG','SOC','RDSE','UC','UMP','NI');
     $this->interventions = array();
     if ($this->plot == 'total') {
       $this->presences = array();

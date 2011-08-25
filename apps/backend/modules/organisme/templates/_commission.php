@@ -11,12 +11,12 @@ else {
   include_partial('seance/listCommission', $options);
 }
 echo '<h2>';
-$ct = count($deputes);
-if ($ct == 0) echo 'Aucun député associé';
+$ct = count($senateurs);
+if ($ct == 0) echo 'Aucun sénateur associé';
 else {
-  echo '<h2>'.$ct.' députés inscrits&nbsp;:</h2><p style="text-align:center;">';
+  echo '<h2>'.$ct.' sénateurs inscrits&nbsp;:</h2><p style="text-align:center;">';
   for ($i=0; $i<$ct; $i++) {
-    echo '<a href="'.link_tof('parlementaire', array('slug' => $deputes[$i]['slug'])).'">'.$deputes[$i]['nom'].'</a>';
+    echo '<a href="'.link_tof('parlementaire', array('slug' => $senateurs[$i]['slug'])).'">'.$senateurs[$i]['nom'].'</a>';
     if ($i != $ct-1) echo ' &nbsp;&mdash ';
   }
   echo '</p>';

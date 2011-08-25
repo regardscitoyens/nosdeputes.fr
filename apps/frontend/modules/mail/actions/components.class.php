@@ -20,7 +20,7 @@ class mailComponents extends sfComponents
 
     $this->getContext()->getConfiguration()->loadHelpers('Partial');
     
-    $message = $this->getMailer()->compose(array('contact@nosdeputes.fr' => '"Nos Deputes (Ne pas repondre)"'),
+    $message = $this->getMailer()->compose(array('contact@nossenateurs.fr' => '"Nos Senateurs (Ne pas repondre)"'),
 		                                         $this->to,
 												 $this->subject,
 												 get_partial('mail/'.$this->partial, $this->mailContext)

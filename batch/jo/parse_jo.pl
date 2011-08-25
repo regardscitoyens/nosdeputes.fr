@@ -95,7 +95,7 @@ foreach (split /\n/, $lines) {
 		    print '"reunion": "'.$reunion.'",';
 		    print '"session": "'.$session.'",';
 		    print '"commission": "'.$commission.'",';
-		    print '"depute": "'.$d.'",';
+		    print '"senateur": "'.$d.'",';
 		    print '"source": "Journal officiel du '.$source.'"';
 		    print " } \n";
 	    }

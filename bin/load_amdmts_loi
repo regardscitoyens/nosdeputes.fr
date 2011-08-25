@@ -2,7 +2,7 @@
 
 loi=$1
 
-cd /home/nosdeputes/prod
+cd /home/nossenateurs/prod
 
 # Récupération et création des JSON
 
@@ -22,8 +22,8 @@ done;
 # Postprocessings
 
 echo clean cache
-rm -r cache/frontend/prod/template/www_nosdeputes_fr/all/amendement/parlementaireSection/id/$loi
-rm -r cache/frontend/prod/template/www_nosdeputes_fr/all/amendement/parlementaire/slug/*
-rm -r cache/frontend/prod/template/www_nosdeputes_fr/all/amendement/find/loi/${loi}/numero/*
-rm cache/frontend/prod/template/www_nosdeputes_fr/all/amendement/show/loi/${loi}/numero/*
+rm -r cache/frontend/prod/template/www_nossenateurs_fr/all/amendement/parlementaireSection/id/$loi
+rm -r cache/frontend/prod/template/www_nossenateurs_fr/all/amendement/parlementaire/slug/*
+rm -r cache/frontend/prod/template/www_nossenateurs_fr/all/amendement/find/loi/${loi}/numero/*
+rm cache/frontend/prod/template/www_nossenateurs_fr/all/amendement/show/loi/${loi}/numero/*
 

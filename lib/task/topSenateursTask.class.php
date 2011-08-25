@@ -1,6 +1,6 @@
 <?php
 
-class topDeputesTask extends sfBaseTask
+class topSenateursTask extends sfBaseTask
 {
 
   static $lois = array('Proposition de loi', 'Proposition de résolution');
@@ -8,22 +8,22 @@ class topDeputesTask extends sfBaseTask
   protected function configure()
   {
     $this->namespace = 'top';
-    $this->name = 'Deputes';
-    $this->briefDescription = 'Top Deputes';
+    $this->name = 'Senateurs';
+    $this->briefDescription = 'Top Senateurs';
     $this->addArgument('month', sfCommandArgument::OPTIONAL, 'First day of the month you want to add in db', '');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
   /**
-   * Ordonne la hash table des députés sur une entre ($type) pour en calculer le classement
+   * Ordonne la hash table des sénateurs sur une entre ($type) pour en calculer le classement
    **/
-  protected function orderDeputes($type, $reverse = 1) {
+  protected function orderSenateurs($type, $reverse = 1) {
     $tot = 0;
-    foreach(array_keys($this->deputes) as $id) {
-      if (!isset($this->deputes[$id][$type]['value'])) 
-	$this->deputes[$id][$type]['value'] = 0;
-      $ordered[$id] = $this->deputes[$id][$type]['value'];
+    foreach(array_keys($this->senateurs) as $id) {
+      if (!isset($this->senateurs[$id][$type]['value'])) 
+	$this->senateurs[$id][$type]['value'] = 0;
+      $ordered[$id] = $this->senateurs[$id][$type]['value'];
       $tot++;
     }
     if ($reverse)
@@ -36,11 +36,11 @@ class topDeputesTask extends sfBaseTask
     $last_cpt = 0;
     foreach(array_keys($ordered) as $id) {
       $cpt++;
-      if ($last_value != $this->deputes[$id][$type]['value'])
+      if ($last_value != $this->senateurs[$id][$type]['value'])
 	$last_cpt = $cpt;
-      $this->deputes[$id][$type]['rank'] = $last_cpt;
-      $this->deputes[$id][$type]['max_rank'] = $tot;
-      $last_value = $this->deputes[$id][$type]['value'];
+      $this->senateurs[$id][$type]['rank'] = $last_cpt;
+      $this->senateurs[$id][$type]['max_rank'] = $tot;
+      $last_value = $this->senateurs[$id][$type]['value'];
     }
   }
 
@@ -52,7 +52,7 @@ class topDeputesTask extends sfBaseTask
       ->fetchArray();
     foreach ($semaines as $p) {
       foreach($p['Presences'] as $pr) {
-	$this->deputes[$p['id']]['semaines_presence']['value']++;
+	$this->senateurs[$p['id']]['semaines_presence']['value']++;
       }
     }
   }
@@ -64,7 +64,7 @@ class topDeputesTask extends sfBaseTask
 	->andWhere('s.type = ?', 'commission')
 	->fetchArray();
       foreach ($parlementaires as $p) {
-	$this->deputes[$p['id']]['commission_presences']['value'] = $p['count'];
+	$this->senateurs[$p['id']]['commission_presences']['value'] = $p['count'];
       }
   }
   protected function executeCommissionInterventions($q)
@@ -75,7 +75,7 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('i.type = ?', 'commission');
     $parlementaires = $q->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['commission_interventions']['value'] = $p['count'];
+      $this->senateurs[$p['id']]['commission_interventions']['value'] = $p['count'];
     }
   }
   protected function executeHemicycleInvectives($q) 
@@ -87,7 +87,7 @@ class topDeputesTask extends sfBaseTask
 	->andWhere('i.nb_mots <= 20')
 	->fetchArray();
       foreach ($parlementaires as $p) {
-	$this->deputes[$p['id']]['hemicycle_interventions_courtes']['value'] = $p['count'];
+	$this->senateurs[$p['id']]['hemicycle_interventions_courtes']['value'] = $p['count'];
       }
   }
   protected function executeHemicycleInterventions($q)
@@ -99,7 +99,7 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('i.nb_mots > 20')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['hemicycle_interventions']['value'] = $p['count'];
+      $this->senateurs[$p['id']]['hemicycle_interventions']['value'] = $p['count'];
     }
   }
 
@@ -111,7 +111,7 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('a.sort != ?', 'Rectifié')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_signes']['value'] = $p['count'];
+      $this->senateurs[$p['id']]['amendements_signes']['value'] = $p['count'];
     }
   }
  
@@ -123,7 +123,7 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('a.sort = ?', 'Adopté')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_adoptes']['value'] = $p['count'];
+      $this->senateurs[$p['id']]['amendements_adoptes']['value'] = $p['count'];
     }
   }
 
@@ -135,7 +135,7 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('a.sort = ?', 'Rejeté')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_rejetes']['value'] = $p['count'];
+      $this->senateurs[$p['id']]['amendements_rejetes']['value'] = $p['count'];
     }
   }
   
@@ -146,7 +146,7 @@ class topDeputesTask extends sfBaseTask
       ->groupBy('p.id')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['questions_ecrites']['value'] = $p['count'];
+      $this->senateurs[$p['id']]['questions_ecrites']['value'] = $p['count'];
     }
   }
   protected function executeQuestionsOrales($q)
@@ -159,7 +159,7 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('i.fonction NOT LIKE ?', 'président%')
       ->fetchArray();
     foreach ($questions as $q) {
-      $this->deputes[$q['id']]['questions_orales']['value'] = $q['count'];
+      $this->senateurs[$q['id']]['questions_orales']['value'] = $q['count'];
     }
   }
   protected function executeRapports($q)
@@ -170,7 +170,7 @@ class topDeputesTask extends sfBaseTask
       ->groupBy('p.id')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['rapports']['value'] = $p['count'];
+      $this->senateurs[$p['id']]['rapports']['value'] = $p['count'];
     }
   }
   protected function executePropositionsEcrites($q)
@@ -182,7 +182,7 @@ class topDeputesTask extends sfBaseTask
       ->groupBy('p.id')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['propositions_ecrites']['value'] = $p['count'];
+      $this->senateurs[$p['id']]['propositions_ecrites']['value'] = $p['count'];
     }
   }
   protected function executePropositionsSignees($q)
@@ -193,31 +193,31 @@ class topDeputesTask extends sfBaseTask
       ->groupBy('p.id')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['propositions_signees']['value'] = $p['count'];
+      $this->senateurs[$p['id']]['propositions_signees']['value'] = $p['count'];
     } 
   }   
 
 
-  protected function executeDeputesInfo() {
-    foreach (array_keys($this->deputes) as $id) {
+  protected function executeSenateursInfo() {
+    foreach (array_keys($this->senateurs) as $id) {
       $dep = Doctrine::getTable('Parlementaire')->find($id);
       //Bidouille pour avoir les paramètres dans le bon ordre
-      $this->deputes[$id]['01_nom']['value'] = $dep->nom;
-      $this->deputes[$id]['02_groupe']['value'] = $dep->groupe_acronyme;
-      $this->deputes[$id]['semaines_presence']['value'] += 0;
-      $this->deputes[$id]['questions_orales']['value'] += 0;
-      $this->deputes[$id]['questions_ecrites']['value'] += 0;
-//      $this->deputes[$id]['amendements_rejetes']['value'] += 0;
-      $this->deputes[$id]['amendements_signes']['value'] += 0;
-      $this->deputes[$id]['amendements_adoptes']['value'] += 0;
-      $this->deputes[$id]['rapports']['value'] += 0;
-      $this->deputes[$id]['propositions_ecrites']['value'] += 0;
-      $this->deputes[$id]['propositions_signees']['value'] += 0;
-      $this->deputes[$id]['commission_presences']['value'] += 0;
-      $this->deputes[$id]['commission_interventions']['value'] +=  0;
-      $this->deputes[$id]['hemicycle_interventions_courtes']['value'] += 0;
-      $this->deputes[$id]['hemicycle_interventions']['value'] += 0;
-      ksort($this->deputes[$id]);
+      $this->senateurs[$id]['01_nom']['value'] = $dep->nom;
+      $this->senateurs[$id]['02_groupe']['value'] = $dep->groupe_acronyme;
+      $this->senateurs[$id]['semaines_presence']['value'] += 0;
+      $this->senateurs[$id]['questions_orales']['value'] += 0;
+      $this->senateurs[$id]['questions_ecrites']['value'] += 0;
+//      $this->senateurs[$id]['amendements_rejetes']['value'] += 0;
+      $this->senateurs[$id]['amendements_signes']['value'] += 0;
+      $this->senateurs[$id]['amendements_adoptes']['value'] += 0;
+      $this->senateurs[$id]['rapports']['value'] += 0;
+      $this->senateurs[$id]['propositions_ecrites']['value'] += 0;
+      $this->senateurs[$id]['propositions_signees']['value'] += 0;
+      $this->senateurs[$id]['commission_presences']['value'] += 0;
+      $this->senateurs[$id]['commission_interventions']['value'] +=  0;
+      $this->senateurs[$id]['hemicycle_interventions_courtes']['value'] += 0;
+      $this->senateurs[$id]['hemicycle_interventions']['value'] += 0;
+      ksort($this->senateurs[$id]);
     }
   }
 
@@ -271,9 +271,9 @@ class topDeputesTask extends sfBaseTask
 
     print "Documents DONE\n";
 
-    $this->executeDeputesInfo();
+    $this->executeSenateursInfo();
 
-    print "Info Deputes DONE\n";
+    print "Info Sénateurs DONE\n";
     return ;
   }
 
@@ -281,7 +281,7 @@ class topDeputesTask extends sfBaseTask
   {
     $manager = new sfDatabaseManager($this->configuration);
 
-    $this->deputes = array();
+    $this->senateurs = array();
 
     if (isset($arguments['month']) && preg_match('/(\d{4})-(\d{2})-01/', $arguments['month'], $m)) {
       $this->executeMonth($arguments['month']);
@@ -292,19 +292,19 @@ class topDeputesTask extends sfBaseTask
 	$globale->value = serialize(array());
       }
       $topMonth = unserialize($globale->value);
-      $topMonth[$m[1].$m[2]] = $this->deputes;
+      $topMonth[$m[1].$m[2]] = $this->senateurs;
       $globale->value = serialize($topMonth);
       $globale->save();
       return;
     }
 
     
-    $deputes = Doctrine::getTable('Parlementaire')->createQuery()
-      ->where('type = ?', 'depute')
+    $senateurs = Doctrine::getTable('Parlementaire')->createQuery()
+      ->where('type = ?', 'senateur')
       ->andWhere('fin_mandat IS NULL') 
       ->fetchArray();
-    foreach($deputes as $d) {
-      $this->deputes[$d['id']]['groupe'] = $d['groupe_acronyme'];
+    foreach($senateurs as $d) {
+      $this->senateurs[$d['id']]['groupe'] = $d['groupe_acronyme'];
     }
 
     $q = Doctrine_Query::create()->where('fin_mandat IS NULL');
@@ -315,65 +315,65 @@ class topDeputesTask extends sfBaseTask
     
      
     $this->executePresence(clone $qs);
-    $this->orderDeputes('semaines_presence');
+    $this->orderSenateurs('semaines_presence');
     
     $this->executeCommissionPresence(clone $qs);
-    $this->orderDeputes('commission_presences');
+    $this->orderSenateurs('commission_presences');
     
     $qi = clone $q;
     $qi->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
 
     $this->executeCommissionInterventions(clone $qi);
-    $this->orderDeputes('commission_interventions');
+    $this->orderSenateurs('commission_interventions');
     
     $this->executeHemicycleInterventions(clone $qi);
-    $this->orderDeputes('hemicycle_interventions');
+    $this->orderSenateurs('hemicycle_interventions');
     
 
     $this->executeHemicycleInvectives(clone $qi);
-    $this->orderDeputes('hemicycle_interventions_courtes');
+    $this->orderSenateurs('hemicycle_interventions_courtes');
     
     $qa = clone $q;
     $qa->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
     $this->executeAmendementsSignes(clone $qa);
-    $this->orderDeputes('amendements_signes');
+    $this->orderSenateurs('amendements_signes');
     
     $this->executeAmendementsAdoptes(clone $qa);
-    $this->orderDeputes('amendements_adoptes');
+    $this->orderSenateurs('amendements_adoptes');
 
 //    $this->executeAmendementsRejetes(clone $qa);
-//    $this->orderDeputes('amendements_rejetes', 0);
+//    $this->orderSenateurs('amendements_rejetes', 0);
 
     $qd = clone $q;
     $qd->where('t.date > ?', date('Y-m-d', time()-60*60*24*365));
     $this->executeRapports(clone $qd);
-    $this->orderDeputes('rapports');
+    $this->orderSenateurs('rapports');
 
     $this->executePropositionsEcrites(clone $qd);
-    $this->orderDeputes('propositions_ecrites');
+    $this->orderSenateurs('propositions_ecrites');
 
     $this->executePropositionsSignees(clone $qd);
-    $this->orderDeputes('propositions_signees');
+    $this->orderSenateurs('propositions_signees');
 
     $qq = clone $q;
     $qq->where('q.date > ?', date('Y-m-d', time()-60*60*24*365));
     $this->executeQuestionsEcrites($qq);
-    $this->orderDeputes('questions_ecrites');
+    $this->orderSenateurs('questions_ecrites');
 
     $this->executeQuestionsOrales(clone $qi);
-    $this->orderDeputes('questions_orales');
+    $this->orderSenateurs('questions_orales');
 
 
     $groupes = array();
-    foreach(array_keys($this->deputes) as $id) {
-      foreach(array_keys($this->deputes[$id]) as $key) {
-	$groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
-	$groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
+    foreach(array_keys($this->senateurs) as $id) {
+      foreach(array_keys($this->senateurs[$id]) as $key) {
+	$groupes[$this->senateurs[$id]['groupe']][$key]['somme'] += $this->senateurs[$id][$key]['value'];
+	$groupes[$this->senateurs[$id]['groupe']][$key]['nb']++;
       }
-      unset($this->deputes[$id]['groupe']);
-      $depute = Doctrine::getTable('Parlementaire')->find($id);
-      $depute->top = serialize($this->deputes[$id]);
-      $depute->save();
+      unset($this->senateurs[$id]['groupe']);
+      $senateur = Doctrine::getTable('Parlementaire')->find($id);
+      $senateur->top = serialize($this->senateurs[$id]);
+      $senateur->save();
     }
 
     $globale = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes');
@@ -384,13 +384,13 @@ class topDeputesTask extends sfBaseTask
     $globale->value = serialize($groupes);
     $globale->save();
 
-    //On fait la même chose pour les députés ayant un mandat clos.
+    //On fait la même chose pour les sénateurs ayant un mandat clos.
 
     $parlementaires = Doctrine_Query::create()->where('fin_mandat IS NOT NULL')
       ->from('Parlementaire p')->execute();
     
     foreach ($parlementaires as $p) {
-      $this->depute = array();
+      $this->senateur = array();
       $q = Doctrine_Query::create()->where('p.id = ?', $p->id);
       
       $qs = clone $q;
@@ -438,8 +438,8 @@ class topDeputesTask extends sfBaseTask
       $this->executePropositionsSignees(clone $qd);
       $this->executeRapports(clone $qd);
 
-      if (count($this->deputes[$p->id])) {
-	$p->top = serialize($this->deputes[$p->id]);
+      if (count($this->senateurs[$p->id])) {
+	$p->top = serialize($this->senateurs[$p->id]);
 	$p->save();
       }
     }

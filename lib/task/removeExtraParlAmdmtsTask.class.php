@@ -16,7 +16,7 @@ class removeExtraParlAmdmtsTask extends sfBaseTask {
       ->groupBy('amendement_id, parlementaire_id')
       ->fetchArray();
     if ($doublons) foreach($doublons as $d) if ($d['ct'] > 1) {
-      print "\n".'Amendement '.$d['amendement_id'].' associé '.$d['ct'].' fois au député '.$d['parlementaire_id']."\n";
+      print "\n".'Amendement '.$d['amendement_id'].' associé '.$d['ct'].' fois au sénateur '.$d['parlementaire_id']."\n";
       $ids = Doctrine::getTable('ParlementaireAmendement')->createQuery('pa')
         ->select('id')
         ->where('amendement_id = ?', $d['amendement_id'])

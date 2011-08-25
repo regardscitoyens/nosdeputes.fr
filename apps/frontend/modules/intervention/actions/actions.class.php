@@ -82,7 +82,7 @@ class interventionActions extends sfActions
 						       'namespace' => 'loi',
 						       'key' => 'amendement',
 						       'return'    => 'value'));
-    $this->response->setTitle($titre.' - Intervention de '.$this->intervention->getIntervenant()->nom." - NosDéputés.fr");
+    $this->response->setTitle($titre.' - Intervention de '.$this->intervention->getIntervenant()->nom." - NosSénateurs.fr");
     //    $this->response->setDescription($this->intervention->intervention);
   }
   

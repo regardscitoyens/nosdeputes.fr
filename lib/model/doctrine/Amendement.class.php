@@ -24,7 +24,7 @@ class Amendement extends BaseAmendement {
   public function setAuteurs($auteurs) {
     $groupe = null;
     $sexe = null;
-    if (preg_match('/^\s*(.*),+\s*[dl]es\s+(.*\s+[gG]roupe|membres|députés)\s+(.*)\s*$/' ,$auteurs, $match)) {
+    if (preg_match('/^\s*(.*),+\s*[dl]es\s+(.*\s+[gG]roupe|membres|sénateurs)\s+(.*)\s*$/' ,$auteurs, $match)) {
       $auteurs = $match[1];
       $groupe = preg_replace("/^\s*(de la|de l'|du)\s*/", "", $match[3]);
       if (preg_match('/^(.*)(et|,)\s+(M[\s\.ml].*)$/' ,$groupe, $match2)) {
@@ -32,47 +32,48 @@ class Amendement extends BaseAmendement {
         $auteurs .= ", ".$match2[3];
       }
       if (preg_match('/(union.*mouvement.*populaire|UMP)/i',$groupe)) $groupe = "UMP";
-      elseif (preg_match('/(socialiste.*radical|SRC)/i',$groupe)) $groupe = "SRC";
-      elseif (preg_match('/(gauche.*démocrate|GDR)/i',$groupe)) $groupe = "GDR";
-      elseif (preg_match('/(nouveau.*centre|NC)/i',$groupe)) $groupe = "NC";
+      elseif (preg_match('/(socialiste|SOC)/i',$groupe)) $groupe = "SOC";
+      elseif (preg_match('/(communiste|gauche|CRC-SPG)/i',$groupe)) $groupe = "CRC-SPG";
+      elseif (preg_match('/(démocratique|européen|RDSE)/i',$groupe)) $groupe = "RDSE";
+      elseif (preg_match('/(centre|centriste|UC)/i',$groupe)) $groupe = "UC";
       else $groupe = null;
     }
     if ($debug) echo $auteurs." // ".$groupe."\n";
     $arr = preg_split('/,/', $auteurs);
     $signataireindex = 1;
-    foreach ($arr as $depute) {
-      if (preg_match('/^(.*)\((.*)\)/', $depute, $match)) {
-        $depute = trim($match[1]);
+    foreach ($arr as $senateur) {
+      if (preg_match('/^(.*)\((.*)\)/', $senateur, $match)) {
+        $senateur = trim($match[1]);
         $circo = preg_replace('/\s/', '-', ucfirst(trim($match[2])));
       } else $circo = null;
-      if (preg_match('/(gouvernement|président|rapporteur|commission|questeur)/i', $depute)) {
-        if ($debug) print "WARN: Skip auteur ".$depute." for ".$this->source."\n";
+      if (preg_match('/(gouvernement|président|rapporteur|commission|questeur)/i', $senateur)) {
+        if ($debug) print "WARN: Skip auteur ".$senateur." for ".$this->source."\n";
         continue;
-      } elseif (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([a-zA-Z].*)\s*$/', $depute, $match)) {
+      } elseif (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([a-zA-Z].*)\s*$/', $senateur, $match)) {
           $nom = $match[2];
           if (preg_match('/M[ml]/', $match[1]))
             $sexe = 'F';
           else $sexe = 'H';
-      } else $nom = preg_replace("/^\s*(.*)\s*$/", "\\1", $depute);
+      } else $nom = preg_replace("/^\s*(.*)\s*$/", "\\1", $senateur);
       $nom = ucfirst($nom);
       if ($debug) echo $nom."//".$sexe."//".$groupe."//".$circo." => ";
-      $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe, $groupe, $circo, $this);
-      if (!$depute) print "ERROR: Auteur introuvable in ".$this->source."/".$this->numero." : ".$nom." // ".$sexe." // ".$groupe."\n";
+      $senateur = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe, $groupe, $circo, $this);
+      if (!$senateur) print "ERROR: Auteur introuvable in ".$this->source."/".$this->numero." : ".$nom." // ".$sexe." // ".$groupe."\n";
       else {
-        if ($debug) echo $depute->nom."\n";
-        if (!$groupe && $depute->groupe_acronyme != "") $groupe = $depute->groupe_acronyme;
-        $this->addParlementaire($depute, $signataireindex);
-        $depute->free();
+        if ($debug) echo $senateur->nom."\n";
+        if (!$groupe && $senateur->groupe_acronyme != "") $groupe = $senateur->groupe_acronyme;
+        $this->addParlementaire($senateur, $signataireindex);
+        $senateur->free();
       }
       $signataireindex++;
     }
   }
 
-  public function addParlementaire($depute, $signataireindex) {
-    foreach(Doctrine::getTable('ParlementaireAmendement')->createQuery('pa')->select('parlementaire_id')->where('amendement_id = ?', $this->id)->fetchArray() as $parlamdt) if ($parlamdt['parlementaire_id'] == $depute->id) return true;
+  public function addParlementaire($senateur, $signataireindex) {
+    foreach(Doctrine::getTable('ParlementaireAmendement')->createQuery('pa')->select('parlementaire_id')->where('amendement_id = ?', $this->id)->fetchArray() as $parlamdt) if ($parlamdt['parlementaire_id'] == $senateur->id) return true;
     
     $pa = new ParlementaireAmendement();
-    $pa->_set('Parlementaire', $depute);
+    $pa->_set('Parlementaire', $senateur);
     $pa->_set('Amendement', $this);
     $pa->numero_signataire = $signataireindex;
     if ($pa->save()) {
@@ -84,7 +85,7 @@ class Amendement extends BaseAmendement {
   public function getSignataires($link = 0) {
     $signa = preg_replace("/M\s+/", "M. ", $this->_get('signataires'));
     if ($link && !preg_match('/gouvernement/i',$signa))
-      $signa = preg_replace('/(M+[\.mles\s]+)?([\wàéëêèïîôöûüÉ\s-]+)\s*(,\s*|$)/', '<a href="/deputes?search=\\2">\\1\\2</a>\\3', $signa);
+      $signa = preg_replace('/(M+[\.mles\s]+)?([\wàéëêèïîôöûüÉ\s-]+)\s*(,\s*|$)/', '<a href="/senateurs?search=\\2">\\1\\2</a>\\3', $signa);
     return $signa;
   }
 

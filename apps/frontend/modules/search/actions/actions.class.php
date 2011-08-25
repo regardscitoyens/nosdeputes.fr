@@ -5,7 +5,7 @@ class searchActions extends sfActions
   public function executeIndex(sfWebRequest $request) {
     $type = $request->getParameter('type');
     $search = strip_tags($request->getParameter('search'));
-    if ($type == 'depute')
+    if ($type == 'senateur')
       return $this->redirect('@list_parlementaires_search?search='.$search);
     elseif ($type == 'departement')
       return $this->redirect('@list_parlementaires_circo_search?search='.$search);

@@ -6,19 +6,19 @@
 class TitreLoi extends BaseTitreLoi
 {
 
-  public function setAuteur($depute) {
+  public function setAuteur($senateur) {
     $sexe = null;
-    if (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([dA-Z].*)\s*$/', $depute, $match)) {
+    if (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([dA-Z].*)\s*$/', $senateur, $match)) {
         $nom = $match[2];
         if (preg_match('/M[ml]/', $match[1]))
           $sexe = 'F';
         else $sexe = 'H';
-    } else $nom = preg_replace("/^\s*(.*)\s*$/", "\\1", $depute);
-    $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe);
-    if (!$depute) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe."\n";
+    } else $nom = preg_replace("/^\s*(.*)\s*$/", "\\1", $senateur);
+    $senateur = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe);
+    if (!$senateur) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe."\n";
     else {
-      $this->_set('Parlementaire', $depute);
-      $depute->free();
+      $this->_set('Parlementaire', $senateur);
+      $senateur->free();
     }
   }
 

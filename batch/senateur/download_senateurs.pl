@@ -22,7 +22,7 @@ sub download_fiche {
 	mkdir html unless -e "html/" ;
 	open FILE, ">:utf8", "html/$file";
 	$thecontent = $a->content;
-	$thecontent =~ s/iso-8859-1/utf8/g;
+	$thecontent =~ s/iso-8859-1/utf-8/g;
 	print FILE $thecontent;
 	close FILE;
         print "DONE" if ($verbose);
@@ -39,6 +39,7 @@ sub find_senateurs {
 	$p = HTML::TokeParser->new(\$content);
 	while ($t = $p->get_tag('a')) {
 	    if ($t->[1]{href} =~ /\/(senateur|senfic)\//) {
+		next if ($t->[1]{href} =~ /\/(lejeune_andre80024b|cheve_jacqueline08013p)/);
 		download_fiche($t->[1]{href});
 	    }
 	}
@@ -46,3 +47,10 @@ sub find_senateurs {
 
 find_senateurs("http://www.senat.fr/senateurs/senatl.html");
 find_senateurs("http://www.senat.fr/senateurs/news.html");
+find_senateurs("http://www.senat.fr/senateurs/news_2009-2010.html");
+find_senateurs("http://www.senat.fr/senateurs/news_2008-2009.html");
+find_senateurs("http://www.senat.fr/senateurs/news_2007-2008.html");
+find_senateurs("http://www.senat.fr/senateurs/news_2006-2007.html");
+find_senateurs("http://www.senat.fr/senateurs/news_2005-2006.html");
+find_senateurs("http://www.senat.fr/senateurs/news_2004-2005.html");
+

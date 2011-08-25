@@ -15,7 +15,7 @@ fi
 echo $$ > /tmp/loadupdate.lock
 
 # Gestion des options
-deputes=1
+senateurs=1
 jo=1
 questions=1
 while getopts "hdjqo-:" option
@@ -23,14 +23,14 @@ do
   if [ $option = "-" ]; then
     case $OPTARG in
       help) option="h";;
-      nodeputes) option="d";;
+      nosenateurs) option="s";;
       nojo) option="j";;
       noquestions) option="q";;
       oldquestions) option="o";;
     esac
   fi  
   case $option in
-    d) deputes=0;;
+    s) senateurs=0;;
     j) jo=0;;
     q) if [[ $questions -ne 1 ]]; then
          echo "options noquestions et oldquestions incompatibles"
@@ -44,7 +44,7 @@ do
        questions=2;;
     h) echo "syntaxe : loadupdate [-h|--help  /  [-j|--nojo] [-q|-noquestions / -o|--oldquestions] ]"
        echo "  -h ( --help )         : affiche cette aide"
-       echo "  -d ( --nodeputes )    : pas de mise-à-jour de la liste des députés et de leurs commissions"
+       echo "  -s ( --nosenateurs )  : pas de mise-à-jour de la liste des sénateurs et de leurs commissions"
        echo "  -j ( --nojo )         : pas de mise-à-jour des séances de commission listées au Journal Officiel"
        echo "  -q ( --noquestions )  : pas de mise-à-jour des questions écrites au gouvernement"
        echo "  -o ( --oldquestions ) : mise-à-jour des questions depuis le début de la législature et reload des ppl des 3 derniers mois"
@@ -53,10 +53,10 @@ do
   esac
 done
 
-if [[ $deputes -eq 1 ]]; then
-  echo Mise-à-jour députés
+if [[ $senateurs -eq 1 ]]; then
+  echo Mise-à-jour sénateurs
   echo =======================
-  bash bin/load_deputes
+  bash bin/load_senateurs
 fi
 
 # Récupération et création des JSON
@@ -115,7 +115,7 @@ while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
 	php symfony load:Hemicycle 
 done;
-echo "Load Commissions : http://www.nosdeputes.fr/backend.php/commissions"
+echo "Load Commissions : http://www.nossenateurs.fr/backend.php/commissions"
 echo =======================
 while ls batch/commission/out | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
@@ -161,9 +161,9 @@ php symfony set:Session
 echo Update vacances
 echo =======================
 php symfony set:Vacances 
-echo Update tops députés
+echo Update tops sénateurs
 echo =======================
-php symfony top:Deputes
+php symfony top:Senateurs
 echo Update hardcache html
 echo =======================
 bash bin/update_hardcache

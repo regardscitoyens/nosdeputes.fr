@@ -10,6 +10,9 @@
  */
 class parlementaireActions extends sfActions
 {
+  public function executeAssister(sfWebRequest $request) {
+  }
+
   public static function imagetograyscale($im)
   {
     if (imageistruecolor($im)) {
@@ -48,7 +51,7 @@ class parlementaireActions extends sfActions
     $file = tempnam(sys_get_temp_dir(), 'Parl');
     $photo = $parlementaire->photo;
     if (!strlen($photo)) {
-      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_depute.jpg', $file); 
+      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_senateur.jpg', $file); 
     } else {
       $fh = fopen($file, 'w');
       fwrite($fh ,$photo);
@@ -56,7 +59,7 @@ class parlementaireActions extends sfActions
     }
     list($width, $height, $image_type) = getimagesize($file);
     if (!$width || !$height) {
-      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_depute.jpg', $file);
+      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_senateur.jpg', $file);
       list($width, $height, $image_type) = getimagesize($file);
     }
 
@@ -83,15 +86,16 @@ class parlementaireActions extends sfActions
     $groupe = $parlementaire->groupe_acronyme;
   if ($groupe) {
       imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon+$bordure, $rayon+$bordure, imagecolorallocate($ih, 255, 255, 255));
-      if ($groupe == 'GDR') {
-	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 45, 225, imagecolorallocate($ih, 0, 170, 0), IMG_ARC_EDGED);
-	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 225, 45, imagecolorallocate($ih, 240, 0, 0), IMG_ARC_EDGED);
-      }else if ($groupe == 'SRC') {
+      if ($groupe == 'CRC-SPG') {
+	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 240, 0, 0));
+      }else if ($groupe == 'SOC') {
 	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 255, 20, 160));
       }else if ($groupe == 'UMP') {
 	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 0, 0, 170));
-      }else if ($groupe == 'NC') {
+      }else if ($groupe == 'UC') {
 	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 0, 160, 255));
+      }else if ($groupe == 'RDSE') {
+        imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 255, 150, 150));
       }else if ($groupe == 'NI') {
 	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 255, 255, 255));
       }
@@ -110,7 +114,7 @@ class parlementaireActions extends sfActions
   }
 
   public function executeIndex(sfWebRequest $request) {
-    $request->setParameter('rss', array(array('link' => '@commentaires_rss', 'title'=>'Les derniers commentaires sur NosDéputés.fr')));
+    $request->setParameter('rss', array(array('link' => '@commentaires_rss', 'title'=>'Les derniers commentaires sur NosSénateurs.fr')));
   }
 
   public function executeRandom(sfWebRequest $request)
@@ -126,10 +130,10 @@ class parlementaireActions extends sfActions
     $request->setParameter('rss', array(array('link' => '@parlementaire_rss?slug='.$this->parlementaire->slug, 'title'=>'L\'activité de '.$this->parlementaire->nom),
 					array('link' => '@parlementaire_rss_commentaires?slug='.$this->parlementaire->slug, 'title'=>'Les derniers commentaires portant sur l\'activité de '.$this->parlementaire->nom)
 					));
-    $this->response->addMeta('keywords', $this->parlementaire->nom.' '.$this->parlementaire->nom_circo.' '.$this->parlementaire->type.' '.$this->parlementaire->groupe_acronyme.' Assemblée nationale');
-    $this->response->addMeta('description', 'Pour tout connaître de l\'activité de '.$this->parlementaire->nom.' à l\'Assemblée Nationale. '.$this->parlementaire->nom.' est '.$this->parlementaire->getLongStatut().' à l\'Assemblée Nationale.');
+    $this->response->addMeta('keywords', $this->parlementaire->nom.' '.$this->parlementaire->nom_circo.' '.$this->parlementaire->type.' '.$this->parlementaire->groupe_acronyme.' Sénat');
+    $this->response->addMeta('description', 'Pour tout connaître de l\'activité de '.$this->parlementaire->nom.' au Sénat. '.$this->parlementaire->nom.' est '.$this->parlementaire->getLongStatut().' au Sénat Français.');
     $this->response->addMeta('parlementaire_id', 'd'.$this->parlementaire->id);
-    $this->response->addMeta('parlementaire_id_url', 'http://www.nosdeputes.fr/id/'.'d'.$this->parlementaire->id);
+    $this->response->addMeta('parlementaire_id_url', 'http://www.nossenateurs.fr/id/'.'d'.$this->parlementaire->id);
 
     $this->commissions_permanentes = array();
     $this->missions = array();
@@ -157,10 +161,11 @@ class parlementaireActions extends sfActions
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
     $query->orderBy('p.nom_de_famille ASC');
     $this->parlementaires = array();
-    foreach ($query->execute() as $depute) {
-      $lettre = $depute->nom_de_famille[0];
-      if (isset($this->parlementaires[$lettre])) $this->parlementaires[$lettre][] = $depute;
-      else $this->parlementaires[$lettre] = array($depute);
+    foreach ($query->execute() as $senateur) {
+      $lettre = ucfirst($senateur->nom_de_famille[0]);
+      $lettre = preg_replace('/[ÉÉ]/', 'E', $lettre);
+      if (isset($this->parlementaires[$lettre])) $this->parlementaires[$lettre][] = $senateur;
+      else $this->parlementaires[$lettre] = array($senateur);
     }
     $ctquery = Doctrine_Query::create()
       ->from('Parlementaire p')
@@ -223,11 +228,11 @@ class parlementaireActions extends sfActions
     $query->orderBy("imp DESC, p.nom_de_famille ASC");
     $this->parlementaires = array();
     $this->total = 0;
-    foreach ($query->execute() as $depute) {
+    foreach ($query->execute() as $senateur) {
       $this->total++;
-      $imp = $depute->imp;
-      if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
-      else $this->parlementaires[$imp] = array($depute);
+      $imp = $senateur->imp;
+      if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $senateur;
+      else $this->parlementaires[$imp] = array($senateur);
     }
     $query2 = Doctrine::getTable('Organisme')->createQuery('o');
     $query2->where('o.nom = ?', $nom);
@@ -258,11 +263,11 @@ class parlementaireActions extends sfActions
         ->orderBy("po.importance DESC, p.nom_de_famille ASC");
       $this->parlementaires = array();
       $this->total = 0;
-      foreach ($query->execute() as $depute) {
+      foreach ($query->execute() as $senateur) {
         $this->total++;
-        $imp = $depute->imp;
-        if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
-        else $this->parlementaires[$imp] = array($depute);
+        $imp = $senateur->imp;
+        if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $senateur;
+        else $this->parlementaires[$imp] = array($senateur);
       }
     }
     if ($this->page === "home" || $this->page === "seances") {

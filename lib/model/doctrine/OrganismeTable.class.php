@@ -28,21 +28,21 @@ class OrganismeTable extends Doctrine_Table
       $org = $this->findOneByNom($nom);
 
     if ($org) {
-     // echo $org->nom."- $nom (trouve)\n";
+#      echo $org->nom."- $nom (trouve)\n";
       if (strlen($nom) > strlen($org->nom)) {
 	$org->nom = $nom;
 	$org->save();
       }
       return $org;
     }
-   // echo "- $nom (pas trouve)\n";
+#    echo "- $nom (pas trouve)\n";
     
 
     $orgs = Doctrine::getTable('Organisme')->createQuery('o')->where('type = ?', $type)->execute();
     foreach($orgs as $o) {
       $res = similar_text($o->nom, $nom, $pc);
       if ($pc > 95) {
-       // echo "$nom $pc\n".$o->nom."\n";
+        #echo "$nom $pc\n".$o->nom."\n";
 	$org = $o;
 	break;
       }
@@ -64,14 +64,13 @@ class OrganismeTable extends Doctrine_Table
   }
   
   private static function cleanNom($nom) {
-    $nom = strtolower($nom);
     $nom = preg_replace('/(&#8217;|\')/', '’', $nom);
     $nom = preg_replace('/\W+$/', '', $nom);
     $nom = preg_replace('/\([^\)]*\)/', '', $nom);
     $nom = preg_replace('/\([^\)]*$/', '', $nom);
     $nom = preg_replace('/^[^\)]*\)/', '', $nom);
     $nom = preg_replace('/’/', '\'', $nom);
-    $nom = preg_replace('/^\s*assemblée\s+nationale\s*$/i', 'bureau de l\'assemblée nationale', $nom);
+    $nom = preg_replace('/\'\s+/', '\'', $nom);
     trim($nom);
     $nom = preg_replace('/^\s*de la /', '', $nom);
     $nom = preg_replace('/\s+/', ' ', $nom);

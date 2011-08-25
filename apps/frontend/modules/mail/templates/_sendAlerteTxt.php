@@ -1,4 +1,4 @@
-============ Alerte NosDeputes.fr ============
+============ Alerte NosSénateurs.fr ============
 
 Voici les dernières alertes de votre abonnement : <?php echo $alerte->titre; ?> 
 

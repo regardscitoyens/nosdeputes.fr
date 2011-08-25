@@ -1,4 +1,4 @@
-  <div class="boite_depute" id="b1">
+  <div class="boite_senateur" id="b1">
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
@@ -13,7 +13,7 @@
       <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getgroupe()->getFonction(); ?>)</li>
       <?php endif; ?>
       <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, '@list_parlementaires_profession?search='.$parlementaire->profession); else : ?>Non communiquée<?php endif; ?></li>
-      <li><?php echo link_to('Fiche sur le site de l\'Assemblée nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'rel'=>'nofollow')); ?></li>
+      <li><?php echo link_to('Fiche sur le site du Sénat', $parlementaire->url_senat, array('title' => 'Lien externe', 'rel'=>'nofollow')); ?></li>
       <li><a href="http://fr.wikipedia.org/wiki/<?php echo rawurlencode($parlementaire->nom); ?>">Page sur Wikipédia</a></li>
       <?php if ($parlementaire->site_web) : ?>
       <li><?php echo link_to('Site web', $parlementaire->site_web, array('title' => 'Lien externe', 'rel'=>'nofollow')); ?></li>
@@ -69,11 +69,11 @@
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
   </div>
     
-  <div class="boite_depute" id="b2">
+  <div class="boite_senateur" id="b2">
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
-    <h2>Suivre l'activité du député</h2>
+    <h2>Suivre l'activité du sénateur</h2>
 <table width=100% style="text-align: center"><tr>
        <td><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/email.png', 'alt="Email"'); ?></a><br/><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>">par email</a></td>
        <td><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>">par RSS</a></td>
@@ -102,6 +102,6 @@
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
   </div>
 
-  <div class="boite_depute" id="b4">
+  <div class="boite_senateur" id="b4">
   </div>
 

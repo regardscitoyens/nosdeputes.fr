@@ -20,7 +20,7 @@ class sectionActions extends sfActions
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
     $this->titre = 'Dossiers parlementaires';
-    $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom.' - NosDéputés.fr');
+    $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom.' - NosSénateurs.fr');
   }
 
   public function executeParlementaireSection(sfWebRequest $request) 
@@ -128,15 +128,15 @@ class sectionActions extends sfActions
       ->where('s.id = s.section_id');
     if ($this->order == 'date') {
       $query->orderBy('s.max_date DESC');
-      $this->titre = 'Les derniers dossiers traités à l\'Assemblée';
+      $this->titre = 'Les derniers dossiers traités au Sénat';
     } else if ($this->order == 'plus') {
       $query->orderBy('s.nb_interventions DESC');
-      $this->titre = 'Les dossiers les plus discutés à l\'Assemblée';
+      $this->titre = 'Les dossiers les plus discutés au Sénat';
     } else if ($this->order == 'coms') {
       $query->orderBy('s.nb_commentaires DESC');
-      $this->titre = 'Les dossiers de l\'Assemblée les plus commentés par les citoyens';
+      $this->titre = 'Les dossiers du Sénat les plus commentés par les citoyens';
     } else $this->forward404();
-    $this->getResponse()->setTitle(str_replace('Assemblée', 'Assemblée nationale', $this->titre)." - NosDéputés.fr");
+    $this->getResponse()->setTitle($this->titre." - NosSénateurs.fr");
     $this->sections = $query->execute();
 
   }

@@ -14,14 +14,14 @@ if ($page === "home") {
   }
   if ($total && $pagerSeances->getPage() == 1 && ($pagerRapports->getPage() == 1)) {
     if ($orga->type == 'extra')
-      echo '<h2>Organisme extra-parlementaire composé de '.$total.' député'.($total > 1 ? 's' : '').'&nbsp;:</h2>';
-    else echo '<h2>'.(preg_match('/commission/i', $orga->getNom()) ? 'Comm' : 'M').'ission parlementaire composée de '.$total.' député'.($total > 1 ? 's' : '').'&nbsp;:</h2>';
+      echo '<h2>Organisme extra-parlementaire composé de '.$total.' sénateur'.($total > 1 ? 's' : '').'&nbsp;:</h2>';
+    else echo '<h2>'.(preg_match('/commission/i', $orga->getNom()) ? 'Comm' : 'M').'ission parlementaire composée de '.$total.' sénateur'.($total > 1 ? 's' : '').'&nbsp;:</h2>';
   }
   echo $divclass.'<div class="liste">';
   $listimp = array_keys($parlementaires);
   foreach ($listimp as $i) {
     echo '<div class="list_table">';
-    include_partial('parlementaire/table', array('deputes' => $parlementaires[$i], 'list' => 1, 'colonnes' => $colonnes, 'imp' => $i));
+    include_partial('parlementaire/table', array('senateurs' => $parlementaires[$i], 'list' => 1, 'colonnes' => $colonnes, 'imp' => $i));
     echo '</div>';
   }
   echo '</div>';

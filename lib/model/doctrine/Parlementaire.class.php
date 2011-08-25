@@ -28,21 +28,13 @@ class Parlementaire extends BaseParlementaire
     if (preg_match('/(.*)\((\d+)/', $str, $match)) {
       $this->nom_circo = trim($match[1]);
       $this->num_circo = $match[2];
-    }
-  }
-
-  public function getNumCircoString($list = 0) {
-    if ($this->num_circo == 1) $string = $this->num_circo.'ère circonscription';
-    else $string = $this->num_circo.'ème circonscription';
-    if ($list == 1 && $this->num_circo < 10) {
-      $string = "&nbsp;".$string."&nbsp;";
-      if ($this->num_circo == 1) $string .= "&nbsp;";
-    }
-    return $string;
+    } else if (! preg_match("/Français/", $str))
+      $this->nom_circo = preg_replace('/\s+/', '-', $str);
+    else $this->nom_circo = $str;
   }
 
   public function getNomPrenom() {
-    $weird = array('é' => 'e', 'è' => 'e', 'ë' => 'e', 'Le ' => 'Le', 'La ' => 'La', '\'' => '^ ');
+    $weird = array('Ã©' => 'e', 'Ã¨' => 'e', 'Ãª' => 'e', 'Ã«' => 'e', 'É' => 'e', 'é' => 'e', 'è' => 'e', 'ë' => 'e', 'Le ' => 'Le', 'La ' => 'La', '\'' => '^ ');
     $beg_name = " ".substr($this->nom_de_famille, 0, 3);
     $ct = strpos($this->nom, $beg_name);
     if (!$ct) foreach ($weird as $good => $bad)
@@ -54,7 +46,7 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function getStatut($link = 0) {
-    if ($this->type == 'depute') {
+    if ($this->type == 'député') {
         if ($this->sexe == 'F') $type = 'députée';
         else $type = 'député';
     } else {
@@ -84,7 +76,7 @@ class Parlementaire extends BaseParlementaire
     if ($link && function_exists('_parse_attributes') && function_exists('link_to')) {
       $circo = link_to($this->nom_circo, '@list_parlementaires_departement?departement='.$circo);
     }
-    return $this->getStatut($link).' de la '.$this->getNumCircoString().' '.$this->getPrefixeCirconscription().$circo;
+    return $this->getStatut($link).' '.$this->getPrefixeCirconscription().$circo;
   }
 
   public function setDebutMandat($str) {
@@ -326,7 +318,8 @@ class Parlementaire extends BaseParlementaire
      "Vosges" => "des",
      "Wallis-et-Futuna" => "de",
      "Yonne" => "de l'",
-     "Yvelines" => "des"
+     "Yvelines" => "des",
+     "Français établis hors de France" => "des"
     );
  public function getPrefixeCirconscription() {
      $prefixe = self::$dptmt_pref[trim($this->nom_circo)];
@@ -441,7 +434,9 @@ class Parlementaire extends BaseParlementaire
     //  "978" => "Saint-Martin",
       "986" => "Wallis-et-Futuna",
       "987" => "Polynésie Française",
-      "988" => "Nouvelle-Calédonie");
+      "988" => "Nouvelle-Calédonie",
+      "99"  => "Français établis hors de France");
+
   public static function getNomDepartement($numero) {
     $numero = strtolower($numero);
     if ( isset(self::$dptmt_nom["$numero"]) ) return $nom = self::$dptmt_nom["$numero"];
@@ -555,7 +550,9 @@ class Parlementaire extends BaseParlementaire
       "saint-martin" => "978",
       "wallis-et-futuna" => "986",
       "polynésie française" => "987",
-      "nouvelle-calédonie" => "988");
+      "nouvelle-calédonie" => "988",
+      "francais établis hors de france" => "99");
+
   public static function getNumeroDepartement($nom) {
     $nom = strtolower($nom);
     if (isset(self::$nom_dptmt[$nom])) return $numero = self::$nom_dptmt[$nom];

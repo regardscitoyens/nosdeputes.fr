@@ -1,6 +1,6 @@
 <?php 
 if ($query === "")
-  $sf_response->setTitle("Recherche sur NosDéputés.fr");
+  $sf_response->setTitle("Recherche sur NosSénateurs.fr");
 else $sf_response->setTitle("Recherche de $query");
 $style = "xneth";
 
@@ -225,8 +225,8 @@ if($graph) {
 <?php endif;
 global $facetName2HumanName;
 $facetName2HumanName = array(
-			     'Parlementaires' => 'Filtrer par député',
-			     'Parlementaire' => 'Députés',
+			     'Parlementaires' => 'Filtrer par sénateur',
+			     'Parlementaire' => 'Sénateurs',
 			     'Types' => 'Filtrer par type de résultat',
 			     'Tags' => 'Filtrer par mot-clé',
 			     'Texteloi' => 'Documents parlementaires',

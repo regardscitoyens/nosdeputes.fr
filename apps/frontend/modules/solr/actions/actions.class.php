@@ -95,9 +95,9 @@ class solrActions extends sfActions
 
     if ($format == 'rss') {
       $ob = $request->getParameter('object_name');
-      $deputenom = $request->getParameter('deputenom');
-      if (preg_match('/commentaire/i', $ob) && $deputenom)
-        $this->rsstitle = "Les derniers commentaires sur l'activité parlementaire de ".$deputenom;
+      $senateurnom = $request->getParameter('senateurnom');
+      if (preg_match('/commentaire/i', $ob) && $senateurnom)
+        $this->rsstitle = "Les derniers commentaires sur l'activité parlementaire de ".$senateurnom;
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
       $this->feed->setLanguage('fr');
@@ -294,7 +294,7 @@ class solrActions extends sfActions
     if ($p = $request->getParameter('slug')) {
       $parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($p);
       $request->setParameter('tag', 'parlementaire='.$parlementaire);
-      $request->setParameter('deputenom', $parlementaire->getNom());
+      $request->setParameter('senateurnom', $parlementaire->getNom());
     }
 
     return $this->forward('solr', 'search');

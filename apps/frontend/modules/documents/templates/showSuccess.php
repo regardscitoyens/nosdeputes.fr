@@ -9,8 +9,8 @@ if (preg_match('/(propos|lettre)/i', $doc->type))
 
 if (count($auteurs)) {
   echo '<div class="photos"><h3 class="aligncenter">écrit'.$feminin." par ";
-  include_partial('parlementaire/auteurs', array("deputes" => $auteurs, "orga" => $orga));
-  include_partial('parlementaire/photos', array("deputes" => $auteurs));
+  include_partial('parlementaire/auteurs', array("senateurs" => $auteurs, "orga" => $orga));
+  include_partial('parlementaire/photos', array("senateurs" => $auteurs));
   echo '</p></div>';
 } else if ($orga->id) {
   echo '<h3 class="aligncenter">';
@@ -20,10 +20,10 @@ if (count($auteurs)) {
   echo '</h3>';
 } else echo '<h3 class="aligncenter">'.$doc->getSignatairesString().'</h3>';
 if (count($cosign)) {
-  echo '<div class="photos"><p class="aligncenter">cosigné'.$feminin.' par <span id="liste_deputes">';
-  include_partial('parlementaire/auteurs', array("deputes" => $cosign));
+  echo '<div class="photos"><p class="aligncenter">cosigné'.$feminin.' par <span id="liste_senateurs">';
+  include_partial('parlementaire/auteurs', array("senateurs" => $cosign));
   echo '</span>';
-  if (count($cosign) < 16) { echo '<span id="photos">'; include_partial('parlementaire/photos', array("deputes" => $cosign)); echo '</span>'; }
+  if (count($cosign) < 16) { echo '<span id="photos">'; include_partial('parlementaire/photos', array("senateurs" => $cosign)); echo '</span>'; }
   echo '</p></div>';
 }
 
@@ -95,12 +95,12 @@ if (count($cosign)) {
   if (count($cosign) < 16) { ?>
 <script type="text/javascript">
 <!--
-$('#liste_deputes a').live('mouseover', function() {
+$('#liste_senateurs a').live('mouseover', function() {
  nom = $(this).attr('href').split('/'); nom = nom.reverse(); $('.photo_fiche[src*="'+nom[0]+'"]').css('opacity', '1');
 });
-$('#liste_deputes').bind('mouseover mouseout', function(event) {
- if (event.type == "mouseover") { $('#photos .photo_fiche').css('opacity', '0.3'); $("#liste_deputes").die("mouseover"); }
- else { $('.photo_fiche').css('opacity', '1'); $("#liste_deputes").die("mouseout"); }
+$('#liste_senateurs').bind('mouseover mouseout', function(event) {
+ if (event.type == "mouseover") { $('#photos .photo_fiche').css('opacity', '0.3'); $("#liste_senateurs").die("mouseover"); }
+ else { $('.photo_fiche').css('opacity', '1'); $("#liste_senateurs").die("mouseout"); }
 });
 // -->
 </script>

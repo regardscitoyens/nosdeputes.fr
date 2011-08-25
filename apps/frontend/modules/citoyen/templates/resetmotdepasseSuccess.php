@@ -1,4 +1,4 @@
-<?php $sf_response->setTitle('Changement de mot de passe - NosDéputés.fr'); ?>
+<?php $sf_response->setTitle('Changement de mot de passe - NosSénateurs.fr'); ?>
 <?php 
 if (!isset($first))
 {

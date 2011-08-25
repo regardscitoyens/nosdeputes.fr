@@ -1,0 +1,6 @@
+#!/bin/bash
+cd batch/senateur
+bash parse_tous.sh 
+cd -
+php symfony update:Senateurs 
+

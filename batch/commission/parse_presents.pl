@@ -48,11 +48,11 @@ sub checkout {
 	print STDERR "$source: Pas de présent trouvé\n";
 	return ;
     }
-    foreach $depute (@presents) {
-	$depute =~ s/[\/<\|]//g;
-	$depute =~ s/^\s*M[me\.]+\s+//;
-	$depute =~ s/\s+$//;
-	print '{"reunion": "'.$date.'", "session": "'.$heure.'", "commission": "'.$commission.'", "depute": "'.$depute.'", "source": "'.$source.'"}'."\n";
+    foreach $senateur (@presents) {
+	$senateur =~ s/[\/<\|]//g;
+	$senateur =~ s/^\s*M[me\.]+\s+//;
+	$senateur =~ s/\s+$//;
+	print '{"reunion": "'.$date.'", "session": "'.$heure.'", "commission": "'.$commission.'", "senateur": "'.$senateur.'", "source": "'.$source.'"}'."\n";
     }
 }
 

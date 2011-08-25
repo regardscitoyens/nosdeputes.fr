@@ -1,5 +1,5 @@
-<?php $sf_response->setTitle('La liste des députés "'.$prof.'"'); ?>
-<h1>Liste des députés "<i><?php echo $prof; ?></i>"</h1>
+<?php $sf_response->setTitle('La liste des sénateurs "'.$prof.'"'); ?>
+<h1>Liste des sénateurs "<i><?php echo $prof; ?></i>"</h1>
 <?php
   $nResults = count($parlementaires);
   if ($exact == 1) : ?>
@@ -15,7 +15,7 @@
 <?php
   $nResults2 = count($citoyens);
   if ($nResults2 > 0) { ?>
-<p>Sur <?php echo link_to('NosDéputés.fr', '@homepage'); ?> il y a <?php if ($nResults > 0) echo 'également'; ?> <?php echo $nResults2.' <em>"'.$prof; if ($nResults2 > 1) echo 's'; ?>"</em> parmi les citoyens inscrits</p>
+<p>Sur <?php echo link_to('NosSénateurs.fr', '@homepage'); ?> il y a <?php if ($nResults > 0) echo 'également'; ?> <?php echo $nResults2.' <em>"'.$prof; if ($nResults2 > 1) echo 's'; ?>"</em> parmi les citoyens inscrits</p>
 <ul>
 <?php foreach($citoyens as $citoyen) : ?>
 <li><?php echo link_to($citoyen->login, '@citoyen?slug='.$citoyen->slug); ?> (<?php echo $citoyen->activite; ?>)</li>

@@ -25,8 +25,8 @@ perl parse_loi.pl html/$url_mod | grep 'type": "loi' et chapitre/section/article
 5) charger dans project/prod :
 	- vérifier dans json qu'il n'y a que le xml voulu (vu la demande en travail manuel recquise pour éviter de perdre ce travail la task de load ne supprime pas le fichier chargé, on pourrait envisager de le déplacer dans un dossier loadé je n'ai pas essayé de chercher comment faire en php, et u le peu de lois que l'on traite pour le moment le faire a la main n'est pas gênant)
 	- php symfony load:Loi
-	- vérifier en ligne: nosdeputes.fr/loi/n°loi (éventuellement pour les textes adoptés 'taN°loi' cf. simplifions)
+	- vérifier en ligne: nossenateurs.fr/loi/n°loi (éventuellement pour les textes adoptés 'taN°loi' cf. simplifions)
 	- commiter pour archives le xml toujours dans batch/loi/json puis le supprimer ou déplacer ailleurs pour éviter qu'il ne soit reloadé par erreur
-	- faire un lien plus simple pour les prophanes dans le .htaccess genre nosdeputes.fr/loppsi
+	- faire un lien plus simple pour les prophanes dans le .htaccess genre nossenateurs.fr/loppsi
 
 C bon!

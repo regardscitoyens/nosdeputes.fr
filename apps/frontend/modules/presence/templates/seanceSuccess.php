@@ -1,21 +1,21 @@
 <h1><?php if ($orga = $seance->getOrganisme()) echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); else echo "Hémicycle"?></h1>
-<h2>Députés présents à la <?php echo link_to($seance->getTitre(1), '@interventions_seance?seance='.$seance->id); ?>&nbsp;:</h2>
+<h2>Sénateurs présents à la <?php echo link_to($seance->getTitre(1), '@interventions_seance?seance='.$seance->id); ?>&nbsp;:</h2>
 <div class="plot_seance">
 <?php if (isset($orga)) $titre = $orga->getNom();
 else $titre = "Hémicycle";
-$titre = $titre.' - Députés présents à la '.$seance->getTitre(1);
+$titre = $titre.' - Sénateurs présents à la '.$seance->getTitre(1);
 $sf_response->setTitle($titre);
 if ($seance->type == 'commission') 
   echo include_component('plot', 'groupes', array('plot' => 'seance_com_'.$seance->id, 'nolink' => true)); ?>
 </div>
   <div class="photos"><p>
-  <?php $deputes = array();
+  <?php $senateurs = array();
     $ntot = 0;
     foreach ($presents as $presence) {
       $ntot++;
-      $deputes[] = $presence->getParlementaire();
+      $senateurs[] = $presence->getParlementaire();
     }
-    include_partial('parlementaire/photos', array('deputes' => $deputes));
+    include_partial('parlementaire/photos', array('senateurs' => $senateurs));
   ?>
   </p></div>
 <ul>

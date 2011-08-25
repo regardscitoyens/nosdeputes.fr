@@ -1,4 +1,4 @@
-<?php $sf_response->setTitle('Connexion sur NosDéputés.fr'); ?>
+<?php $sf_response->setTitle('Connexion sur NosSénateurs.fr'); ?>
 <div class="boite_form">
   <div class="b_f_h"><div class="b_f_hg"></div><div class="b_f_hd"></div></div>
     <div class="b_f_cont">

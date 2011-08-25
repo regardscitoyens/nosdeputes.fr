@@ -28,7 +28,7 @@ class apiActions extends sfActions
     $date = $o->updated_at; 
     $this->res = array();
     $this->res[strtolower($class)] = $o->toArray();
-    $this->templatize($request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
+    $this->templatize($request, 'nossenateurs.fr_'.'_'.$slug.'_'.$date);
     $this->breakline = '';
   }
  /**
@@ -51,28 +51,28 @@ class apiActions extends sfActions
     $this->res = array();
     $this->champs = array();
     foreach(array_keys($top[$date]) as $id) {
-      $depute['id'] = $id;
+      $senateur['id'] = $id;
       $this->champs['id'] = 1;
 
       foreach (array_keys($top[$date][$id]) as $k) {
 	//Gestion de l'ordre des parametres
 	$kfinal = preg_replace('/^\d*_/', '', $k);
-	$depute[$kfinal] = $top[$date][$id][$k]['value'];
+	$senateur[$kfinal] = $top[$date][$id][$k]['value'];
 	$this->champs[$kfinal] = 1;
       }
-      $this->res["deputes"][] = array('depute' => $depute);
+      $this->res["senateurs"][] = array('senateur' => $senateur);
     }
 
-    for($i = 0 ; $i < count($this->res["deputes"]) ; $i++) {
+    for($i = 0 ; $i < count($this->res["senateurs"]) ; $i++) {
       foreach(array_keys($this->champs) as $key) {
-	if (!isset($this->res['deputes'][$i]['depute'][$key])) {
-	  $this->res['deputes'][$i]['depute'][$key] = 0;
+	if (!isset($this->res['senateurs'][$i]['senateur'][$key])) {
+	  $this->res['senateurs'][$i]['senateur'][$key] = 0;
 	}
       }
     }
 
-    $this->breakline = 'depute';
-    $this->templatize($request, $date.'_stats_deputes');
+    $this->breakline = 'senateur';
+    $this->templatize($request, $date.'_stats_senateurs');
   }
 
   protected function array2hash($array, $hashname) {
@@ -91,71 +91,71 @@ class apiActions extends sfActions
 
   public function executeListParlementaires(sfWebRequest $request) 
   {
-    $deputes = Doctrine::getTable('Parlementaire')->createQuery('p')->execute();
-    $this->res = array('deputes' => array());
+    $senateurs = Doctrine::getTable('Parlementaire')->createQuery('p')->execute();
+    $this->res = array('senateurs' => array());
     $this->champs = array();
-    $this->breakline = 'depute';
+    $this->breakline = 'senateur';
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-    foreach($deputes as $dep) {
-      $depute = array();
-      $depute['id'] = $dep->id;
+    foreach($senateurs as $dep) {
+      $senateur = array();
+      $senateur['id'] = $dep->id;
       $this->champs['id'] = 1;
-      $depute['nom'] = $dep->nom;
+      $senateur['nom'] = $dep->nom;
       $this->champs['nom'] = 1;
       if ($dep->fin_mandat) 
-	$depute['ancien_depute'] = 1;
+	$senateur['ancien_senateur'] = 1;
       else if ($request->getParameter('format') == 'csv')
-	$depute['ancien_depute'] = 0;
-      $this->champs['ancien_depute'] = 1;
-      $depute['mandat_debut'] = $dep->debut_mandat;
+	$senateur['ancien_senateur'] = 0;
+      $this->champs['ancien_senateur'] = 1;
+      $senateur['mandat_debut'] = $dep->debut_mandat;
       $this->champs['mandat_debut'] = 1;
       if ($request->getParameter('format') == 'csv' || $dep->fin_mandat)
-	$depute['mandat_fin'] = $dep->fin_mandat;
+	$senateur['mandat_fin'] = $dep->fin_mandat;
       $this->champs['mandat_fin'] = 1;
-      $depute['api_url'] = 'http://'.$_SERVER['HTTP_HOST'].url_for('api/parlementaire?format='.$request->getParameter('format').'&slug='.$dep->slug);
+      $senateur['api_url'] = 'http://'.$_SERVER['HTTP_HOST'].url_for('api/parlementaire?format='.$request->getParameter('format').'&slug='.$dep->slug);
       $this->champs['api_url'] = 1;
-      $this->res['deputes'][] = array('depute' => $depute);
+      $this->res['senateurs'][] = array('senateur' => $senateur);
     }
-    $this->templatize($request, 'nosdeputes.fr_deputes');
+    $this->templatize($request, 'nossenateurs.fr_senateurs');
   }
   public function executeParlementaire(sfWebRequest $request) 
   {
     $slug = $request->getParameter('slug');
     $this->forward404Unless($slug);
 
-    $depute = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    $senateur = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->res = array();
     $this->multi = array();
-    $this->res['depute'] = array();
-    $this->res['depute']['id'] = $depute->id * 1;
-    $this->res['depute']['nom'] = $depute->nom;
-    $this->res['depute']['nom_de_famille'] = $depute->nom_de_famille;
-    $this->res['depute']['nom_circo'] = $depute->nom_circo;
-    $this->res['depute']['num_circo'] = $depute->num_circo * 1;
-    $this->res['depute']['mandat_debut'] = $depute->debut_mandat;
-    if ($depute->fin_mandat)
-      $this->res['depute']['mandat_fin'] = $depute->fin_mandat;
-    $this->res['depute']['groupe'] = $depute->getGroupe();
-    $this->res['depute']['groupe_sigle'] = $depute->groupe_acronyme;
-    $this->res['depute']['responsabilites'] = $this->array2hash($depute->getResponsabilites(), 'responsabilite');
-    $this->res['depute']['responsabilites_extra_parlementaires'] = $this->array2hash($depute->getExtras(), 'responsabilite');
+    $this->res['senateur'] = array();
+    $this->res['senateur']['id'] = $senateur->id * 1;
+    $this->res['senateur']['nom'] = $senateur->nom;
+    $this->res['senateur']['nom_de_famille'] = $senateur->nom_de_famille;
+    $this->res['senateur']['nom_circo'] = $senateur->nom_circo;
+    $this->res['senateur']['num_circo'] = $senateur->num_circo * 1;
+    $this->res['senateur']['mandat_debut'] = $senateur->debut_mandat;
+    if ($senateur->fin_mandat)
+      $this->res['senateur']['mandat_fin'] = $senateur->fin_mandat;
+    $this->res['senateur']['groupe'] = $senateur->getGroupe();
+    $this->res['senateur']['groupe_sigle'] = $senateur->groupe_acronyme;
+    $this->res['senateur']['responsabilites'] = $this->array2hash($senateur->getResponsabilites(), 'responsabilite');
+    $this->res['senateur']['responsabilites_extra_parlementaires'] = $this->array2hash($senateur->getExtras(), 'responsabilite');
     $this->multi['responsabilite'] = 1;
-    $this->res['depute']['site_web'] = $depute->site_web;
-    $this->res['depute']['url_an'] = 'http://www.assembleenationale.fr/13/tribun/fiches_id/'.$depute->url_an.'.asp';
-    $this->res['depute']['emails'] = $this->array2hash(unserialize($depute->mails), 'email');
+    $this->res['senateur']['site_web'] = $senateur->site_web;
+    $this->res['senateur']['url_an'] = $senateur->url_senat;
+    $this->res['senateur']['emails'] = $this->array2hash(unserialize($senateur->mails), 'email');
     $this->multi['email'] = 1;
-    $this->res['depute']['adresses'] = $this->array2hash(unserialize($depute->adresses), 'adresse');
+    $this->res['senateur']['adresses'] = $this->array2hash(unserialize($senateur->adresses), 'adresse');
     $this->multi['adresse'] = 1;
-    $this->res['depute']['autres_mandats'] = $this->array2hash(unserialize($depute->autres_mandats), 'mandat');
+    $this->res['senateur']['autres_mandats'] = $this->array2hash(unserialize($senateur->autres_mandats), 'mandat');
     $this->multi['mandat'] = 1;
-    $this->res['depute']['profession'] = $depute->profession;
-    $this->res['depute']['place_en_hemicycle'] = $depute->place_hemicycle;
-    $this->res['depute']['sexe'] = $depute->sexe;
-    $this->champ = 'depute';
+    $this->res['senateur']['profession'] = $senateur->profession;
+    $this->res['senateur']['place_en_hemicycle'] = $senateur->place_hemicycle;
+    $this->res['senateur']['sexe'] = $senateur->sexe;
+    $this->champ = 'senateur';
     $this->breakline = '';
-    $date = $depute->updated_at.'';
+    $date = $senateur->updated_at.'';
     $date = preg_replace('/[- :]/', '', $date);
-    $this->templatize($request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
+    $this->templatize($request, 'nossenateurs.fr_'.'_'.$slug.'_'.$date);
   }
 
   private function templatize($request, $filename) {

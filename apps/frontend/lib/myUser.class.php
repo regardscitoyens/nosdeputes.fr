@@ -25,7 +25,7 @@ class myUser extends sfBasicSecurityUser
     self::connexion($citoyen, $action);
 
     echo $action->getComponent('mail', 'send', array(
-      'subject'=>'Inscription NosDéputés.fr', 
+      'subject'=>'Inscription NosSénateurs.fr', 
       'to'=>array($citoyen->email), 
       'partial'=>$partial, 
       'mailContext'=>array('slug' => $citoyen->slug, 'activation_id' => $citoyen->activation_id) 

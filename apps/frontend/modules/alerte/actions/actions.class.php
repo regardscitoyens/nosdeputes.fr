@@ -115,9 +115,9 @@ class alerteActions extends sfActions
     return $form;
   }
   private function confirmeAlerte($alerte) {
-    $message = $this->getMailer()->compose(array('nosdeputes@nosdeputes.fr' => '"Regards Citoyens"'), 
+    $message = $this->getMailer()->compose(array('nossenateurs@nossenateurs.fr' => '"Regards Citoyens"'), 
 					   $alerte->email,
-					   '[NosDeputes.fr] Confirmation d\'Alerte email - '.$alerte->titre);
+					   '[NosSénateurs.fr] Confirmation d\'Alerte email - '.$alerte->titre);
     $text = $this->getPartial('mail/sendConfirmationAlerte', array('alerte' => $alerte));
     $message->setBody($text, 'text/plain');
     try {

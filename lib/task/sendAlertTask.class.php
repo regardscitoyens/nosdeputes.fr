@@ -34,7 +34,7 @@ class sendAlertTask extends sfBaseTask
       echo "sending mail to : ".$alerte->email."\n";
       $message = $this->getMailer()->compose(array('contact@regardscitoyens.org' => '"Regards Citoyens"'), 
 					     $alerte->email,
-					     '[NosDeputes.fr] Alerte - '.$alerte->titre);
+					     '[NosSénateurs.fr] Alerte - '.$alerte->titre);
 
       echo $alerte->titre."\n";
       $text = get_partial('mail/sendAlerteTxt', array('alerte' => $alerte, 'results' => $results, 'nohuman' => $alerte->no_human_query));

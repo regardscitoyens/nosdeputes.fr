@@ -60,7 +60,7 @@ class loiActions extends sfActions
       ->execute());
     $this->dossier = $this->loi->getDossier()->id;
 
-    $this->response->setTitle(strip_tags($this->loi->titre).' - NosDéputés.fr');
+    $this->response->setTitle(strip_tags($this->loi->titre).' - NosSénateurs.fr');
     $request->setParameter('rss', array(array('link' => '@loi_rss_commentaires?loi='.$loi_id, 'title'=>'Les commentaires sur '.$this->loi->titre)));
 
   }

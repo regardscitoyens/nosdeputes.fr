@@ -1,10 +1,10 @@
 #!/bin/bash
 
-cd /home/nosdeputes/prod
+cd /home/nossenateurs/prod
 
-php symfony top:Deputes
+php symfony top:Senateurs
 for month in 06 07 08 09 10 11 12; do
-  php symfony top:Deputes 2007-$month-01
+  php symfony top:Senateurs 2007-$month-01
 done
 for year in 2008 2009 2010 2011 2012; do
   if test $year -gt `date +%Y`; then
@@ -16,7 +16,7 @@ for year in 2008 2009 2010 2011 2012; do
       break
      fi
     fi
-    php symfony top:Deputes $year-$month-01
+    php symfony top:Senateurs $year-$month-01
   done
 done
 

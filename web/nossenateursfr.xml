@@ -13,7 +13,7 @@
  <LongName>Rechercher sur NosSénateurs.fr</LongName>
  <Image height="64" width="64" type="image/png">http://www.nossenateurs.fr/search.png</Image>
  <Image height="16" width="16" type="image/vnd.microsoft.icon">http://www.nossenateurs.fr/favicon.ico</Image>
- <Query role="example" searchTerms="député" />
+ <Query role="example" searchTerms="sénateur" />
  <Developer>Regards Citoyens Development Team</Developer>
  <Attribution>
   Regards Citoyens Development Team

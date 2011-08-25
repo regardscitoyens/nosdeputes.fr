@@ -25,8 +25,8 @@ function link_tof($name, $parameters) { return sfProjectConfiguration::getActive
       else echo "Fusion des séances réussie";
       echo '</p>';
     }
-    if (($suppr == 2 || $suppr == 0) && count($deputes) == 0) echo '<p style="text-align:right;">'.link_to('Supprimer cette commission', '@commission_suppr?id='.$orga['id']).'</p>';
-    include_partial('organisme/commission', array('article' => $article, 'seances' => $seances, 'deputes' => $deputes, 'orga' => $orga['id'])); ?>
+    if (($suppr == 2 || $suppr == 0) && count($senateurs) == 0) echo '<p style="text-align:right;">'.link_to('Supprimer cette commission', '@commission_suppr?id='.$orga['id']).'</p>';
+    include_partial('organisme/commission', array('article' => $article, 'seances' => $seances, 'senateurs' => $senateurs, 'orga' => $orga['id'])); ?>
     </div>
     <?php if ($suppr == 1) echo '<p id="suppr" style="text-align:center;">Attention !!! Si vous voulez vraiment supprimer cette commission et les références associées, veuillez cliquer sur le lien ci-dessous&nbsp;:</p><p style="text-align:center;"><b>'.link_to('SUPPRIMER CETTE COMMISSION', '@commission_suppr_ok?id='.$orga['id']).'</b></p>'; ?>
   </div>

@@ -91,7 +91,12 @@ rate_id:
   url: /rate/:object_type/:object_id/:rate
   param: {module: rate, action: rateIt}
 
-# Compte Renu
+# Assister aux séances
+assister:
+  url: /assister-aux-debats
+  param: {module: parlementaire, action: assister}
+
+# Compte Rendu
 compterendu_list:
   url: /compterendu
   param: {module: article, action: pager, categorie: Seance, titre: "Compte-rendus citoyens"}
@@ -111,10 +116,10 @@ compterendu_edit:
   url: /compterendu/edit/:article_id
   param: {module: article, action: edit, categorie: Seance, hasObject: true, displayObject: false, isUnique: false, role: "", exclude: 0}
 
-depute_id:
+senateur_id:
   url: /id/:id
   param: {module: parlementaire, action: id}
-depute_id_format:
+senateur_id_format:
   url: /id/:id/:format
   param: {module: parlementaire, action: id}
 parlementaire_id:
@@ -186,13 +191,13 @@ list_parlementaires_organisme:
   param: {module: parlementaire, action: listOrganisme}
 
 photo_parlementaire:
-  url: /depute/photo/:slug
+  url: /senateur/photo/:slug
   param: {module: parlementaire, action: photo}
 resized_photo_parlementaire:
-  url: /depute/photo/:slug/:height
+  url: /senateur/photo/:slug/:height
   param: {module: parlementaire, action: photo}
 flip_resized_photo_parlementaire:
-  url: /depute/photo/:slug/:height/flip
+  url: /senateur/photo/:slug/:height/flip
   param: {module: parlementaire, action: photo, flip: 1}
 
 # Fiche parlementaire et affichages de ses travaux
@@ -280,7 +285,7 @@ tag_parlementaire_interventions:
   url: /parlementaire/:parlementaire/tag/:tags
   param: {module: intervention, action: tag}
 
-# Top des députés par interventions, présences ou amendements
+# Top des sénateurs par interventions, présences ou amendements
 top_organisme_global_sorted:
   url: /syntheseo/:organisme/tri/:sort
   param: {module: parlementaire, action: top}

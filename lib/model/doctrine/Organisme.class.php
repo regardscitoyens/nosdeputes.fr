@@ -24,11 +24,12 @@ class Organisme extends BaseOrganisme
   }
   public function getSmallNomGroupe() {
     $hashmap = array(
-        "Union pour un mouvement populaire" => "UMP",
-        "Socialiste, radical, citoyen et divers gauche" => "SRC",
-        "Gauche démocrate et républicaine" => "GDR",
-        "Députés n'appartenant à aucun groupe" => "NI",
-        "Nouveau centre" => "NC"
+        "Union pour un Mouvement Populaire" => "UMP",
+        "Socialiste" => "SOC",
+        "Rassemblement Démocratique et Social Européen" => "RDSE",
+        "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche" => "CRC-SPG",
+        "Réunion administrative des Sénateurs ne figurant sur la liste d'aucun groupe politique" => "NI",
+        "Union centriste" => "UC"
     );
     if (isset($hashmap[$this->getNom()]))
       return $hashmap[$this->getNom()];
@@ -37,23 +38,25 @@ class Organisme extends BaseOrganisme
 
   public function getCouleur() {
     $hashmap = array(
-        "Union pour un mouvement populaire" => "30,30,200",
-        "Socialiste, radical, citoyen et divers gauche" => "255,50,190",
-        "Gauche démocrate et républicaine" => "255,30,30",
-        "Députés n'appartenant à aucun groupe" => "200,200,200",
-        "Nouveau centre" => "30,190,255"
+        "Union pour un Mouvement Populaire" => "30,30,200",
+        "Socialiste" => "255,50,190",
+        "Rassemblement Démocratique et Social Européen" => "255,150,150",
+        "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche" => "255,30,30",
+        "Réunion administrative des Sénateurs ne figurant sur la liste d'aucun groupe politique" => "200,200,200",
+        "Union centriste" => "30,190,255"
     );
     return '<span style=\'background-color: rgb('.$hashmap[$this->getNom()].');\'>&nbsp;&nbsp;</span>';
   }
   public static function getNomByAcro($acro) {
     $acro = strtolower($acro);
-    if (preg_match('/^(ump|src|gdr|ni|nc)$/i', $acro)) {
+    if (preg_match('/^(ump|soc|rdse|ni|uc|crc-spg)$/i', $acro)) {
       $hashmap = array(
-         "ump" => "Union pour un mouvement populaire",
-         "src" => "Socialiste, radical, citoyen et divers gauche",
-         "gdr" => "Gauche démocrate et républicaine",
-         "ni" => "Députés n'appartenant à aucun groupe",
-         "nc" => "Nouveau centre" );
+         "ump" => "Union pour un Mouvement Populaire",
+         "soc" => "Socialiste",
+         "rdse" => "Gauche démocrate et républicaine",
+         "ni" => "Réunion administrative des Sénateurs ne figurant sur la liste d'aucun groupe politique",
+         "nc" => "Union centriste",
+	 "crc-spg" => "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche" );
       return $hashmap["$acro"];
     } else {
       return false;
@@ -74,8 +77,8 @@ class Organisme extends BaseOrganisme
   }
 
   public function getNom() {
-    if ($this->_get('nom') == 'assemblée nationale')
-      return "Bureau de l'Assemblée Nationale";
+    if ($this->_get('nom') == 'Sénat')
+      return "Bureau du Sénat";
     else return ucfirst($this->_get('nom'));
   }
 

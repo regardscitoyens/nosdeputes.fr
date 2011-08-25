@@ -16,7 +16,7 @@ class organismeActions extends autoOrganismeActions
 
   public function executeListCommissions(sfWebRequest $request) {
     $query = Doctrine_Query::create()
-      ->select('id, nom, slug, po.organisme_id, count(distinct(po.parlementaire_id)) as deputes, s.organisme_id, count(distinct(s.id)) as seances, sum(s.tagged) as tags')
+      ->select('id, nom, slug, po.organisme_id, count(distinct(po.parlementaire_id)) as senateurs, s.organisme_id, count(distinct(s.id)) as seances, sum(s.tagged) as tags')
       ->from('Organisme o')
       ->where('o.type = "parlementaire"')
       ->leftJoin('o.ParlementaireOrganismes po')
@@ -52,7 +52,7 @@ class organismeActions extends autoOrganismeActions
     $this->orga = Doctrine::getTable('Organisme')->find($orga);
     $this->forward404Unless($this->orga);
 
-    $this->deputes = Doctrine_Query::create()
+    $this->senateurs = Doctrine_Query::create()
       ->select('nom, slug')
       ->from('Parlementaire p')
       ->leftJoin('p.ParlementaireOrganisme po')
@@ -229,7 +229,7 @@ class organismeActions extends autoOrganismeActions
         ->fetchArray();
 
       if ($this->type == "commission")
-         $this->deputes = Doctrine_Query::create()
+         $this->senateurs = Doctrine_Query::create()
           ->select('nom, slug')
           ->from('Parlementaire p')
           ->leftJoin('p.ParlementaireOrganisme po')
@@ -277,10 +277,10 @@ class organismeActions extends autoOrganismeActions
             $bad = $obj;
           else $good = $obj;
         $this->presences = array();
-        foreach (Doctrine_Query::create()->select('id, type, source, pr.parlementaire_id as depute')->from('PreuvePresence p')
+        foreach (Doctrine_Query::create()->select('id, type, source, pr.parlementaire_id as senateur')->from('PreuvePresence p')
           ->leftJoin('p.Presence pr')->where('pr.seance_id = ?', $this->bad)->fetchArray() as $presence) {
           $this->presences[] = $presence['id'];
-          $good->addPresenceLight($presence['depute'], $presence['type'], $presence['source']);
+          $good->addPresenceLight($presence['senateur'], $presence['type'], $presence['source']);
         }
         if (preg_match('/^(\d{2}:\d{2})/', $bad->moment, $match)) {
           $goodmom = $match[1];

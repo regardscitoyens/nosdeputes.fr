@@ -309,15 +309,15 @@ class commentaireActions extends sfActions
         ->andWhere('co.object_id = ?', $this->object->id);
     }
     if ($request->getParameter('rss')) {
-      if ($this->type == 'all') $this->titre .= ' de NosDéputés.fr';
+      if ($this->type == 'all') $this->titre .= ' de NosSénateurs.fr';
       $this->comments = $this->commentaires->limit(10)->execute();
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
     } else {
       $request->setParameter('rss', array(array('link' => $this->link, 'title'=>'Les derniers commentaires en RSS')));
       if ($this->type == 'Parlementaire')
-        $this->response->setTitle($this->titre.' de '.$this->object->nom.' - NosDéputés.fr');
-      else $this->response->setTitle(strip_tags($this->titre).' - NosDéputés.fr');
+        $this->response->setTitle($this->titre.' de '.$this->object->nom.' - NosSénateurs.fr');
+      else $this->response->setTitle(strip_tags($this->titre).' - NosSénateurs.fr');
     }
 
   }

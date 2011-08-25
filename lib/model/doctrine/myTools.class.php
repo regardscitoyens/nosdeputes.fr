@@ -102,7 +102,7 @@ class myTools {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
 	
     if ($authorized_tags)
-      $s = strip_tags($s, $authorized_tags.'<depute>');
+      $s = strip_tags($s, $authorized_tags.'<senateur>');
 
     //Protection des liens
     $s = preg_replace('/on[^=\s]+=[^\s>]+/i', '', $s);
@@ -110,7 +110,7 @@ class myTools {
     $s = preg_replace('/<a /i', '<a rel="nofollow" ', $s);
     //Convertion des urls en liens
     $s = preg_replace('/(^|\s)(http\S+)/', ' <a rel="nofollow" href="\\2">\\2</a>', $s);
-    if (preg_match_all('/(({+|\<depute\>)([^}<]+)(}+|\<\/?depute\>))/i', $s, $matches)) {
+    if (preg_match_all('/(({+|\<senateur\>)([^}<]+)(}+|\<\/?senateur\>))/i', $s, $matches)) {
       for($i = 0 ; $i < count($matches[0]) ; $i++) {
   $parlementaire = Doctrine::getTable('Parlementaire')->similarTo($matches[3][$i]);
   $matches[1][$i] = preg_replace('/\//', '\/', $matches[1][$i]);

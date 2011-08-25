@@ -8,7 +8,7 @@ function link_tof($name, $parameters) { return sfProjectConfiguration::getActive
       if ($delcom['id'] != 0)
         echo 'Commission '.$delcom['id'].' supprimée avec succès';
       else echo 'Attention, echec de la suppression de la commission';
-      echo ' avec '.$delcom['art'].' article, '.$delcom['dep'].' références à des députés et '.$delcom['sea'].' séances rendues orphelines';
+      echo ' avec '.$delcom['art'].' article, '.$delcom['dep'].' références à des sénateurs et '.$delcom['sea'].' séances rendues orphelines';
     } else if (isset($delsea)) {
       if ($delsea['id'] < 0)
         echo 'Attention : Veuillez supprimer les interventions de cette séance avant tout si vous souhaitez vraiment la supprimer';
@@ -35,7 +35,7 @@ function link_tof($name, $parameters) { return sfProjectConfiguration::getActive
           <th class="sf_admin_text">Id</th>
           <th class="sf_admin_text">Nom</th>
           <th class="sf_admin_text">Slug</th>
-          <th class="sf_admin_text">Députés</th>
+          <th class="sf_admin_text">Sénateurs</th>
           <th class="sf_admin_text">Séances<br/>(tagged)</th>
           <th id="sf_admin_list_th_actions">Actions</th>
           <th id="sf_admin_list_th_actions">Fusion<br/>bad -> good</th>
@@ -47,14 +47,14 @@ function link_tof($name, $parameters) { return sfProjectConfiguration::getActive
             <td class="sf_admin_text"><b><a href="<?php echo link_tof('list_parlementaires_organisme', array('slug' => $orga['slug'])); ?>"><?php echo $orga['id']; ?></a></b></td>
             <td class="sf_admin_text"><?php echo link_to($orga['nom'], '@commission?id='.$orga['id']); ?></td>
             <td class="sf_admin_text"><?php echo link_to(preg_replace('/-/', '- ', $orga['slug']), '@commission?id='.$orga['id']); ?></td>
-            <td class="sf_admin_text"><?php echo $orga['deputes']; ?></td>
-            <td class="sf_admin_text"><?php echo $orga['seances']; if ($orga['tags']) { echo ' ('; if ($orga['deputes'] > 1) echo $orga['tags']/$orga['deputes']; else echo $orga['tags']; echo ')'; } ?></td>
+            <td class="sf_admin_text"><?php echo $orga['senateurs']; ?></td>
+            <td class="sf_admin_text"><?php echo $orga['seances']; if ($orga['tags']) { echo ' ('; if ($orga['senateurs'] > 1) echo $orga['tags']/$orga['senateurs']; else echo $orga['tags']; echo ')'; } ?></td>
             <td><ul class="sf_admin_td_actions">
               <li class="sf_admin_action_edit"><a href="/backend_dev.php/organisme/<?php echo $orga['id']; ?>/edit">Editer</a></li>
-              <?php if ($orga['deputes'] == 0) echo '<li class="sf_admin_action_delete">'.link_to('Supprimer', '@commission_suppr?id='.$orga['id']).'</li>'; ?>
+              <?php if ($orga['senateurs'] == 0) echo '<li class="sf_admin_action_delete">'.link_to('Supprimer', '@commission_suppr?id='.$orga['id']).'</li>'; ?>
             </ul></td>
             <td>
-              <?php if ($orga['deputes'] == 0) echo '<input type="radio" name="bad" value="'.$orga['id'].'" />';
+              <?php if ($orga['senateurs'] == 0) echo '<input type="radio" name="bad" value="'.$orga['id'].'" />';
               echo '&nbsp;&nbsp;-> <input type="radio" name="good" value="'.$orga['id'].'" />'; ?>
             </td>
           </tr>

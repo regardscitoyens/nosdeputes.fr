@@ -40,26 +40,26 @@ class loadJOTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
-	    if (!$jo->depute) {
+	    if (!$jo->senateur) {
 	      echo "ERROR null : ";
 	      echo $line;
 	      echo "\n";
 	      continue;
 	    }
-	    $depute = Doctrine::getTable('Parlementaire')->findOneByNom($jo->depute);
-	    if ($jo->depute && !$depute) {
-	      $depute = Doctrine::getTable('Parlementaire')->similarTo($jo->depute);
+	    $senateur = Doctrine::getTable('Parlementaire')->findOneByNom($jo->senateur);
+	    if ($jo->senateur && !$senateur) {
+	      $senateur = Doctrine::getTable('Parlementaire')->similarTo($jo->senateur);
 	    }
-	    if (!$depute) {
-	      echo "ERROR depute : ";
+	    if (!$senateur) {
+	      echo "ERROR senateur : ";
 	      echo $line;
 	      echo "\n";
 	      continue;
 	    }
 	    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($jo->commission, 'parlementaire');
 	    if (!$jo->reunion) {
-	      $depute->clearRelated();
-	      $depute->free();
+	      $senateur->clearRelated();
+	      $senateur->free();
 	      $commission->clearRelated();
 	      $commission->free();
 	      echo "ERROR date : ";
@@ -68,10 +68,10 @@ class loadJOTask extends sfBaseTask
 	      continue;
 	    }
 	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->reunion, $jo->session);
-	    $seance->addPresence($depute, $typesource, $jo->source);
+	    $seance->addPresence($senateur, $typesource, $jo->source);
 	    $seance->free();
 	    $commission->free();
-	    $depute->free();
+	    $senateur->free();
 	  }
 	  unlink($dir.$file);
 	}

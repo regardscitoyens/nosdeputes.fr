@@ -1,6 +1,6 @@
-<h1>Tous les députés par ordre alphabétique</h1> 
-<?php $sf_response->setTitle('Liste de tous les députés à l\'Assemblée nationale - NosDéputés.fr'); ?> 
-<p>Les <?php echo $total; ?> députés de la législature (<?php echo $actifs; ?> en cours de mandat)&nbsp;:</p> 
+<h1>Tous les sénateurs par ordre alphabétique</h1> 
+<?php $sf_response->setTitle('Liste de tous les sénateurs à l\'Assemblée nationale - NosSénateurs.fr'); ?> 
+<p>Les <?php echo $total; ?> sénateurs de la législature (<?php echo $actifs; ?> en cours de mandat)&nbsp;:</p> 
 <div class="liste"><?php 
 $listlettres = array_keys($parlementaires);
 foreach($listlettres as $i) {
@@ -11,7 +11,7 @@ foreach($listlettres as $i) {
     echo '&nbsp;&nbsp;';
   }
   echo '</div><div class="list_table">';
-  include_partial('parlementaire/table', array('deputes' => $parlementaires[$i], 'list' => 1, 'lettre' => $i));
+  include_partial('parlementaire/table', array('senateurs' => $parlementaires[$i], 'list' => 1, 'lettre' => $i));
   echo '</div><div class="suivant"><a href="#">Haut de page</a></div>';
 }
 

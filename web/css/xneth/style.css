@@ -295,7 +295,7 @@ a:hover {
   margin: auto;
 }
 /* Synthèse */
-.liste_deputes_top  {
+.liste_senateurs_top  {
   margin: 20px 0px 40px 0;
   padding:5px;
   border: 1px dashed #aeaeae;
@@ -393,7 +393,7 @@ a:hover {
   height: auto;
   min-height: 200px;
   text-align: left;
-  background: #fff url('images/logo_nosdeputes_fond.png') no-repeat 85% center;
+  background: #fff url('images/logo_nossenateurs_fond.png') no-repeat 85% center;
 }
 .form table {
   width: 50%;
@@ -417,7 +417,7 @@ a:hover {
   margin: auto;
   margin-top: 35px;
   margin-bottom: 35px;
-  background: #fff url('images/minilogo_nosdeputes_fond.png') no-repeat 95% 60px;
+  background: #fff url('images/minilogo_nossenateurs_fond.png') no-repeat 95% 60px;
 }
 .large_boite_form {
   width: 750px;
@@ -977,7 +977,7 @@ h1 {
   background: url('images/bottom.png');
 }
 
-/* Carte des députés */
+/* Carte des sénateurs */
 .conteneur_resultat_dep  {
   float: left;
   width: 435px;
@@ -998,77 +998,77 @@ h1 {
   border : 1px solid #BFBFBF;
 }
 
-/* Début fiche député */
-.fiche_depute {
+/* Début fiche sénateur */
+.fiche_senateur {
   width: 938px;
   overflow:hidden;
 }
-.fiche_depute h1 {
+.fiche_senateur h1 {
   text-align: center;
   margin:30px 0 20px 0;
 }
-.fiche_depute dt, .fiche_depute dd {
+.fiche_senateur dt, .fiche_senateur dd {
   display: inline;
   margin-left: 0;
 }
-.info_depute {
+.info_senateur {
   position: relative;
   top: 0;
   text-align: center;
   padding: 25px;
 }
-.info_depute h1 {
+.info_senateur h1 {
   font-size: 1.5em;
   display: inline;
 }
-.info_depute h2 {
+.info_senateur h2 {
   font-size: 1.5em;
   display: inline;
 }
-.info_depute p {
+.info_senateur p {
   text-align: center;
   margin: 0px;
   padding: 0px;
 }
-.depute_gauche {
+.senateur_gauche {
   float: left;
 }
-.depute_droite {
+.senateur_droite {
   float: right;
   width: 90%;
   position: relative;
   height: 90px;
 }
-.depute_droite h1 {
+.senateur_droite h1 {
   font-size: 2.0em;
   text-align: center;
 }
-.depute_droite h1 soustitre {
+.senateur_droite h1 soustitre {
   font-size: 0.8em;
   text-align: center;
   margin: 0px;
   padding: 0px;
 }
-.depute_droite h2 {
+.senateur_droite h2 {
   font-size: 1.5em;
   text-align: center;
 }
-.photo_depute img{
+.photo_senateur img{
   width: 125px;
 }
-.photo_depute {
+.photo_senateur {
   height:160px;
   width:125px;
   border: 2px solid #dcd6ca;
 }
-.graph_depute {
+.graph_senateur {
   float: right;
   width: 800px;
   height: 170px;
   margin-right: 3px;
   text-align: center;
 }
-.graph_depute p {
+.graph_senateur p {
   text-align: center;
   margin: 0px;
   padding: 0px;
@@ -1106,20 +1106,20 @@ h1 {
 .barre_date {
   margin-left: 25px;
 }
-.contenu_depute li{
+.contenu_senateur li{
   list-style-type: none;
 }
-.contenu_depute {
+.contenu_senateur {
   width: 918px;
   overflow:hidden;
   border: 1px solid #d6d6d6;
   margin-bottom:20px;
 }
-.boite_depute {
+.boite_senateur {
   padding: 15px;
   background-color: #fff;
 }
-.boite_depute h2, #b1 h1 {
+.boite_senateur h2, #b1 h1 {
   margin-top: 0;
   padding-left: 5px;
   color: #6F6F6F;
@@ -1157,7 +1157,7 @@ h1 {
 .b_d_infos h3{
   
 }
-.bas_depute {
+.bas_senateur {
   clear: both;
   margin-top: 15px;
   padding: 15px;
@@ -1165,21 +1165,21 @@ h1 {
   background-color: #fff;
   border-top: 1px solid #BFBFBF;
 }
-.bas_depute h2 {
+.bas_senateur h2 {
   margin-top: 0;
   padding-left: 5px;
   background-color: #F5F5F5;
 }
-.bas_depute_g {
+.bas_senateur_g {
   float: left;
 }
 .statut {
   color: red;
 }
-.bas_depute_d {
+.bas_senateur_d {
   float: left;
 }
-.bas_depute_d img {
+.bas_senateur_d img {
   padding-left:10px;;
 }
 .rss {
@@ -1198,7 +1198,7 @@ h1 {
   margin-left: 0;
   padding-left: 0;
 }
-/* Fin fiche depute */
+/* Fin fiche senateur */
 
 /* Seances */
 .titre_int_et_seance {
@@ -1543,7 +1543,7 @@ h2 {
   background-color:#dbd5c8;
 }
 
-/* Liste députés */
+/* Liste sénateurs */
 .liste  {
   margin: 20px 10px 20px 0;
 }
@@ -1554,14 +1554,14 @@ h2 {
   font-size: 1.2em;
 }
 
-/* Liste députés */
-.liste_deputes_tags  {
+/* Liste sénateurs */
+.liste_senateurs_tags  {
   margin: 20px 10px 30px 0;
   padding:5px 20px 20px 20px;
   border: 1px dashed #aeaeae;
   text-align:justify;
 }
-.liste_deputes_tags p {
+.liste_senateurs_tags p {
   background-color:#dbd5c8;
   font-size: 1.2em;
 }
@@ -1632,7 +1632,7 @@ h2 {
   width:100px;
   height:90px;
   margin:5px;
-  background-image:url('images/minilogo_nosdeputes.png');
+  background-image:url('images/minilogo_nossenateurs.png');
 }
 .accueil .carte {
     height: 250px;
@@ -1679,7 +1679,7 @@ h2 {
   font-size: 1.2em;
   margin:0 0 10px 0;
 }
-.accueil_deputes_jour h2 {
+.accueil_senateurs_jour h2 {
   font-size: 1.4em;
   color: #6F6F6F;
   text-shadow: 0 0 4px #FFFFFF;
@@ -1687,7 +1687,7 @@ h2 {
   background: #dbea9e url("images/fond_translucide.png");
   border-bottom: 1px solid #DDDDDD;
 }
-.accueil_deputes_jour {
+.accueil_senateurs_jour {
   float: right;
   width: 202px;
   height: 253px;
@@ -1699,7 +1699,7 @@ h2 {
 .clear {
   clear: both;
 }
-.accueil_deputes_jour img {
+.accueil_senateurs_jour img {
   border:1px solid #727272;
 }
 .accueil_message {
@@ -1861,20 +1861,23 @@ a:hover img {
 .couleur_ump {
   color: rgb(30,30,200);
 }
-.couleur_src {
+.couleur_soc {
   color: rgb(255,50,90);
 }
-.couleur_gdr {
+.couleur_crc-spg {
   color: rgb(255,30,30);
 }
-.couleur_nc {
+.couleur_rdse {
+  color: rgb(255,150,150);
+}
+.couleur_uc {
   color: rgb(30,190,255);
 }
 .couleur_ni {
   color: rgb(130,130,130);
 }
 
-.synthese .couleur_ump, .synthese .couleur_src, .synthese .couleur_gdr, .synthese .couleur_nc, .synthese .couleur_ni {
+.synthese .couleur_ump, .synthese .couleur_soc, .synthese .couleur_crc-spg, .synthese .couleur_rdse, .synthese .couleur_uc, .synthese .couleur_ni {
   padding-left: 2px;
   padding-right: 2px;
   color: #6F6F6F;
@@ -1882,13 +1885,17 @@ a:hover img {
 .synthese .couleur_ump {
   border-left: 5px solid rgb(30,30,200);
 }
-.synthese .couleur_src {
+.synthese .couleur_soc {
   border-left: 5px solid rgb(255,50,90);
 }
-.synthese .couleur_gdr {
+.synthese .couleur_crc-spg {
   border-left: 5px solid rgb(255,30,30);
 }
-.synthese .couleur_nc {
+.synthese .couleur_rdse {
+  border-left: 5px solid rgb(255,150,150);
+}
+
+.synthese .couleur_uc {
   border-left: 5px solid rgb(30,190,255);
 }
 .synthese .couleur_ni {

@@ -1,12 +1,12 @@
 <?php
 
-class updateDeputesTask extends sfBaseTask
+class updateSenateursTask extends sfBaseTask
 {
   protected function configure()
   {
     $this->namespace = 'update';
-    $this->name = 'Deputes';
-    $this->briefDescription = 'Update Deputes';
+    $this->name = 'Senateurs';
+    $this->briefDescription = 'Update Senateurs';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
@@ -22,7 +22,7 @@ class updateDeputesTask extends sfBaseTask
 
   protected function execute($arguments = array(), $options = array())
   {
-    $dir = dirname(__FILE__).'/../../batch/depute/out/';
+    $dir = dirname(__FILE__).'/../../batch/senateur/out/';
     $manager = new sfDatabaseManager($this->configuration);    
 
     $villes = json_decode(file_get_contents($dir.'../static/villes.json'));
@@ -41,11 +41,11 @@ class updateDeputesTask extends sfBaseTask
 	      continue;
 	    }
 	    $json->nom = trim($json->nom);
-	    //	    echo "-".$json->nom.strlen($json->nom)." ".$json->id_an."\n";
+	    //	    echo "-".$json->nom.strlen($json->nom)." ".$json->id_senat."\n";
 	    $parl = Doctrine::getTable('Parlementaire')->findOneByNom($json->nom);
 	    if (!$parl) {
 	      $parl = new Parlementaire();
-	      $parl->type = 'depute';
+	      $parl->type = 'senateur';
 	      $parl->nom = $json->nom;
 	      $parl->nom_de_famille = $json->nom_de_famille;
 	      $parl->sexe = $json->sexe;
@@ -58,14 +58,14 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->autres_mandats = $json->autresmandats;
 	    if ($json->groupe)
 	      $parl->groupe = $this->splitArrayJson($json->groupe);
+            if (count($json->fonctions))
+              $parl->fonctions = $this->splitArrayJson($json->fonctions);
 	    if (count($json->extras))
 	      $parl->extras = $this->splitArrayJson($json->extras);
-	    if (count($json->fonctions))
-	      $parl->fonctions = $this->splitArrayJson($json->fonctions);
 	    $parl->debut_mandat = $json->debut_mandat;
 	    $parl->fin_mandat = $json->fin_mandat;
-	    if ($json->id_an)
-	      $parl->id_an = $json->id_an;
+	    if ($json->id_senat)
+	      $parl->id_senat = $json->id_senat;
 	    if (count($json->mails))
 		$parl->mails = $json->mails;
 	    if ($json->photo)
@@ -76,9 +76,9 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->profession = $json->profession;
 	    if ($json->site_web)
 	      $parl->site_web = $json->site_web;
-	    if ($json->url_an)
-	      $parl->url_an = $json->url_an;
-	    $parl->villes = $villes->{$parl->getNumDepartement()}->{$parl->num_circo};
+	    if ($json->url_senat)
+	      $parl->url_senat = $json->url_senat;
+	    #$parl->villes = $villes->{$parl->getNumDepartement()};
 	    $parl->save();
 	  }
 	}

@@ -108,10 +108,10 @@ class Texteloi extends BaseTexteloi
     $signataires = preg_replace("/(Auteur|Cosignataire|Rapporteur), /", "\\1#", $signataires);
     if ($debug) echo $this->source." : ".$signataires."\n";
     $signataires = preg_split('/#/', $signataires);
-    foreach ($signataires as $depute) {
-      if (preg_match('/^(M[\.mle]+)/', $depute, $match)) 
+    foreach ($signataires as $senateur) {
+      if (preg_match('/^(M[\.mle]+)/', $senateur, $match)) 
         continue;
-      if (preg_match('/^(.*)(\set apparentés)?\s+(Auteur|Cosignataire|Rapporteur)/', $depute, $match)) {
+      if (preg_match('/^(.*)(\set apparentés)?\s+(Auteur|Cosignataire|Rapporteur)/', $senateur, $match)) {
         $orga = trim($match[1]).$match[2];
         $organisme = Doctrine::getTable('Organisme')->findOneByNomType($orga, 'parlementaire');
         if ($organisme) {
@@ -136,8 +136,8 @@ class Texteloi extends BaseTexteloi
         break;
       }
     }
-    foreach ($signataires as $depute) {
-      if (preg_match('/^(M[\.mle]+)\s+(.*)\s+(Auteur|Cosignataire|Rapporteur)/', $depute, $match)) {
+    foreach ($signataires as $senateur) {
+      if (preg_match('/^(M[\.mle]+)\s+(.*)\s+(Auteur|Cosignataire|Rapporteur)/', $senateur, $match)) {
         if (preg_match('/M[ml]/', $match[1]))
           $sexe = 'F';
         else $sexe = 'H';
@@ -153,22 +153,22 @@ class Texteloi extends BaseTexteloi
         }
         $nom = ucfirst($nom);
         if ($debug) echo $nom."//".$sexe."//".$orga."//".$circo."//".$fonction." => ";
-        $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe, null, $circo, $this);
-        if (!$depute) print "WARNING: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$orga."//".$fonction."\n";
+        $senateur = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe, null, $circo, $this);
+        if (!$senateur) print "WARNING: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$orga."//".$fonction."\n";
         else {
-          if ($debug) echo $depute->nom."\n";
-          $this->addParlementaire($depute, $fonction, $orga);
-          $depute->free();
+          if ($debug) echo $senateur->nom."\n";
+          $this->addParlementaire($senateur, $fonction, $orga);
+          $senateur->free();
         }
       }
     }
   }
 
-  public function addParlementaire($depute, $fonction, $organisme = 0) {
-    foreach(Doctrine::getTable('ParlementaireTexteloi')->createQuery('pa')->select('parlementaire_id')->where('texteloi_id = ?', $this->id)->fetchArray() as $parldt) if ($parldt['parlementaire_id'] == $depute->id) return true;
+  public function addParlementaire($senateur, $fonction, $organisme = 0) {
+    foreach(Doctrine::getTable('ParlementaireTexteloi')->createQuery('pa')->select('parlementaire_id')->where('texteloi_id = ?', $this->id)->fetchArray() as $parldt) if ($parldt['parlementaire_id'] == $senateur->id) return true;
 
     $pd = new ParlementaireTexteloi();
-    $pd->_set('Parlementaire', $depute);
+    $pd->_set('Parlementaire', $senateur);
     $pd->_set('Texteloi', $this);
     if ($fonction === "Auteur")
       $pd->_set('importance', 1);
@@ -176,7 +176,7 @@ class Texteloi extends BaseTexteloi
       $pd->_set('importance', 3);
     else if ($fonction === "Cosignataire")
       $pd->_set('importance', 5);
-    else print "ERREUR: fonction mauvaise pour ".$depute->nom." : ".$fonction;
+    else print "ERREUR: fonction mauvaise pour ".$senateur->nom." : ".$fonction;
     if ($organisme && $fonction != "Cosignataire") {
       if (!(preg_match('/^ pour le groupe/', $organisme))) {
         $fonction .= " pour l";

@@ -1,7 +1,7 @@
 <?php if (isset($alertes)) { ?>
 <h1>Liste de mes alertes</h1>
 <?php $sf_response->setTitle('Liste de mes alertes mails');
-?><p>Les alertes emails permettent d'être tenu informé dès leur publication sur NosDeputes.Fr des documents parlementaires contenant des mots clés précis. Voici la liste des alertes auxquelles vous êtes abonné(e). Cette interface vous permet de les éditer et les supprimer</p>
+?><p>Les alertes emails permettent d'être tenu informé dès leur publication sur NosSénateurs.Fr des documents parlementaires contenant des mots clés précis. Voici la liste des alertes auxquelles vous êtes abonné(e). Cette interface vous permet de les éditer et les supprimer</p>
 <?php if (count($alertes)) : ?>
 <table class="list">
 <?php 

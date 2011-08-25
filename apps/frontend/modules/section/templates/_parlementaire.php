@@ -1,5 +1,5 @@
 <?php if (!count($textes)) { ?>
-    <i>Ce député n'est intervenu sur aucun dossier.</i>
+    <i>Ce sénateur n'est intervenu sur aucun dossier.</i>
 <?php return ;} ?>
 <ul>
 <?php $ct = 0;

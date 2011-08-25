@@ -2,11 +2,11 @@
 if (isset($rsstitle))
   $title = $rsstitle;
 if ($title)
-  $feed->setTitle("NosDeputes.fr : $title");
+  $feed->setTitle("NosSénateurs.fr : $title");
 else if ($query === "")
-  $feed->setTitle("Les derniers enregistrements sur NosDéputés.fr");
+  $feed->setTitle("Les derniers enregistrements sur NosSénateurs.fr");
 else
-  $feed->setTitle("NosDéputés.fr : Recherche sur $query");
+  $feed->setTitle("NosSénateurs.fr : Recherche sur $query");
 $feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for('@recherche_solr?query='.$query));
 
 foreach ($results['docs'] as $record)

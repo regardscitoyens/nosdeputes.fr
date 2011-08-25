@@ -34,11 +34,11 @@ Parlementaire:
     debut_mandat: date
     fin_mandat: date
     place_hemicycle: integer
-    url_an: string(255)
+    url_senat: string(255)
     profession: string(255)
     autoflip: boolean
-    id_an:
-      type: integer
+    id_senat:
+      type: string(32)
       unique: true
     type:
       type: enum
@@ -59,7 +59,7 @@ Parlementaire:
       foreignAlias: Parlementaires
   indexes:
     uniq_url:
-      fields: [url_an]
+      fields: [url_senat]
       type: unique
 
 ParlementairePhoto:

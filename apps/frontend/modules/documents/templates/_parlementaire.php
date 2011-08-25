@@ -1,6 +1,6 @@
 <?php use_helper('Text') ?>
 <?php if (!count($docs)) { ?>
-    <i>Ce député n'a déposé aucun<?php echo $feminin; ?> <?php echo $type; ?>.</i>
+    <i>Ce sénateur n'a déposé aucun<?php echo $feminin; ?> <?php echo $type; ?>.</i>
 <?php return ;}?>
 <ul>
 <?php foreach($docs as $doc) {

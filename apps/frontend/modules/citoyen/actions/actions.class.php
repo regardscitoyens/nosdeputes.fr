@@ -44,7 +44,7 @@ class citoyenActions extends sfActions
     }
     $this->pager = Doctrine::getTable('Citoyen')->getPager($request, $query);
     $this->citoyens = $query->execute();
-    $this->getResponse()->setTitle($this->title." sur NosDéputés.fr");
+    $this->getResponse()->setTitle($this->title." sur NosSénateurs.fr");
     $this->comments = Doctrine_Query::create()
       ->select('count(distinct(citoyen_id)) as auteurs, count(distinct(id)) as comments')
       ->from('Commentaire')
@@ -425,7 +425,7 @@ class citoyenActions extends sfActions
     $user->save();
 	
     $action->getComponent('mail', 'send', array(
-    'subject'=>'Réinitialisation de votre mot de passe - NosDéputés.fr', 
+    'subject'=>'Réinitialisation de votre mot de passe - NosSénateurs.fr', 
     'to'=>array($user->email), 
     'partial'=>'resetmotdepasse', 
     'mailContext'=>array('activation_id' => $activation_id, 'slug' => $user->slug)

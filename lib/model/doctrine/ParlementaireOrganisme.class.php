@@ -9,11 +9,11 @@ class ParlementaireOrganisme extends BaseParlementaireOrganisme
     return $this->getNom().' ('.$this->getFonction().')';
   }
     public static function defImportance($fonction) {
-      if (preg_match('/^(président|président)/i', $fonction)) {
+      if (preg_match('/^(president|président)/i', $fonction)) {
           if (preg_match('/droit/i', $fonction)) return 98;
           return 100;
       } else if (preg_match('/rapporteure? général/i', $fonction)) return 95;
-      else if (preg_match('/(président|président)/i', $fonction)) return 90;
+      else if (preg_match('/(president|président)/i', $fonction)) return 90;
       else if (preg_match('/questeur/i', $fonction)) {
           if (preg_match('/membre/i', $fonction)) return 80;
           return 70;
@@ -26,7 +26,9 @@ class ParlementaireOrganisme extends BaseParlementaireOrganisme
           else if ($fonction === "membre") return 40;
           else if (preg_match('/bureau/i', $fonction)) return 85;
           return 50;
-      } else if (preg_match('/apparent/i', $fonction)) return 20;
+      } else if (preg_match('/rattaché/i', $fonction)) return 20;
+      else if (preg_match('/délégué/i', $fonction)) return 85;
+      else if (preg_match('/apparenté/i', $fonction)) return 15;
       else if (preg_match('/reprise/i', $fonction)) return 10;
       else return 0;
   }

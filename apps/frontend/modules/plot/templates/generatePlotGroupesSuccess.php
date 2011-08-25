@@ -52,21 +52,22 @@ $Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,TRUE,0,0,TRUE,1,TRUE);
 $Test->xsSetFontProperties("tahoma.ttf",$font+1);
 $Test->drawTitle(4+2*$font,$ysize-4*$font+18, "TOTAL :",50,50,50);
 if ($type === "all") {
-  $Test->drawTitle(70,28,"Députés",50,50,50);
+  $Test->drawTitle(70,28,"Sénateurs",50,50,50);
   $Test->drawTitle(130,28,"Commission",50,50,50);
   $Test->drawTitle(208,28,"Hémicycle interventions",50,50,50);
   $Test->drawTitle(376,28,"Amendements",50,50,50); 
   $Test->drawTitle(490,28,"Propositions",50,50,50); 
   $Test->drawTitle(600,28,"Questions",50,50,50);
   $Test->xsSetFontProperties("tahoma.ttf",$font+5);
-//  $Test->drawTitle(60,30,"Répartition de l'activité des députés sur les 12 derniers mois par groupe politique",25,25,25);
+//  $Test->drawTitle(60,30,"Répartition de l'activité des sénateurs sur les 12 derniers mois par groupe politique",25,25,25);
 }
 $Test->drawGrid(4,TRUE,0,0,0,30);
-$Test->setColorPalette(0,30,30,200);
-$Test->setColorPalette(1,30,190,255);
-$Test->setColorPalette(2,255,50,190);
-$Test->setColorPalette(3,255,30,30);
-$Test->setColorPalette(4,130,130,130);
+$Test->setColorPalette(0,130,130,130);
+$Test->setColorPalette(1,30,30,200);
+$Test->setColorPalette(2,30,190,255);
+$Test->setColorPalette(3,255,150,150);
+$Test->setColorPalette(4,255,50,190);
+$Test->setColorPalette(5,255,30,30);
 $Test->setImageMap(TRUE,$mapId);
 $Test->drawStackedBarGraph($Data,$DataDescr,75,90);
 

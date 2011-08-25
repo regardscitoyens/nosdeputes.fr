@@ -38,7 +38,7 @@ class correctLoiAmendementsTask extends sfBaseTask
 
   protected function execute($arguments = array(), $options = array())
   {
-    $dir = dirname(__FILE__).'/../../batch/depute/out/';
+    $dir = dirname(__FILE__).'/../../batch/senateur/out/';
     $manager = new sfDatabaseManager($this->configuration);    
     $ids = Doctrine_Query::create()->from('Amendement a')
       ->where("a.source REGEXP 'amendements.*[A-Z].*asp'")
