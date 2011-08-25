@@ -141,7 +141,7 @@ class apiActions extends sfActions
     $this->res['depute']['responsabilites_extra_parlementaires'] = $this->array2hash($depute->getExtras(), 'responsabilite');
     $this->multi['responsabilite'] = 1;
     $this->res['depute']['site_web'] = $depute->site_web;
-    $this->res['depute']['url_an'] = 'http://www.assembleenationale.fr/13/tribun/fiches_id/'.$depute->url_an.'.asp';
+    $this->res['depute']['url_an'] = $depute->url_an;
     $this->res['depute']['emails'] = $this->array2hash(unserialize($depute->mails), 'email');
     $this->multi['email'] = 1;
     $this->res['depute']['adresses'] = $this->array2hash(unserialize($depute->adresses), 'adresse');
