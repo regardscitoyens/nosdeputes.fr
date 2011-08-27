@@ -3,69 +3,49 @@
 use Date::Format;
 use WWW::Mechanize;
 use HTML::TokeParser;
+use URI::Escape;
+use Encode;
+
+$verbose = shift || 0;
+$outdir = shift || "html";
+if (! $outdir =~ /(\d{4}|html)/) {
+  print "Please input a 4-digit year\n";
+  exit;
+}
 $count = 0;
-$count2 = 0;
+mkdir $outdir unless -e "$outdir/" ;
 
-open(FILE, 'dernier_numero.txt') ;
-@last_record = <FILE>;
-$last_record = "@last_record";
-close FILE;
+if ($outdir == "html") {
+  $annee = localtime(time);
+  $annee =~ s/^.*\s(\d{4})$/$1/;
+} else {
+  $annee = $outdir;
+}
+$baseurl = "http://www.senat.fr/questions/base/$annee/";
+print "Download questions from $annee : $baseurl ...\n" if ($verbose);
 
-$url = "http://recherche2.assemblee-nationale.fr/questions/resultats-questions.jsp?NumLegislature=13Questions&C1=QE&Dates=DPQ&Scope=TEXTEINTEGRAL&SortField=NUM&SortOrder=DESC&format=HTML";
 $a = WWW::Mechanize->new();
-$a->get($url);
+$a->get($baseurl);
 $content = $a->content;
-$p = HTML::TokeParser->new(\$content);
-while ($t = $p->get_tag('span')) {
-    if ($t->[1]{style} eq 'color:#C2262A; font-weight: bold;') {
-        $last_number = $p->get_text('/span');
-	break;
-    }
-}
+utf8::decode($content);
+$content =~ s/<a/\n<a/g;
 
-print "Download questions écrites numéro ".($last_record-100)." à ".($last_number+100).'\n\n';
-
-for ($cpt = $last_record-100 ; $cpt < $last_number+100 ; $cpt++) {
-    $htmfile = "http://questions.assemblee-nationale.fr/q13/13-".$cpt."QE.htm";
-    $htmfile =~ s/^\s+//gi;
+foreach $line (split /\n/, $content) {
+next if ($line !~ /1371S/);
+  if ($line =~ /<a([^>]+)?\s+href\s?=\s?['"]\s?([^'"]+questions\/base\/$annee\/qSEQ[^'"]+)['"]/) {
+    $url = $2;
     $count++;
-    $a->get($htmfile);
-    $htmfile =~ s/\//_/gi;
-    $htmfile =~ s/\#.*//;
-    print "  $htmfile ... ";
-    open FILE, ">:utf8", "html/$htmfile";
-    $content = $a->content;
-    utf8::decode($content);
-    print FILE $content;
+    $a->get($url);
+    $file = uri_escape($a->uri());
+    print " saving http://www.senat.fr$url ... " if ($verbose);
+    open FILE, ">:utf8", "$outdir/$file";
+    $thecontent = $a->content;
+    $thecontent = decode("windows-1252", $thecontent);
+    $thecontent =~ s/iso-8859-1/utf-8/g;
+    print FILE $thecontent;
     close FILE;
-    print "downloaded.\n";
-    $a->back();
+    print "downloaded.\n" if ($verbose);
+  }
 }
-print $count." questions récentes\n\n";
-
-open(FILE, 'liste_sans_reponse.txt') ;
-@string = <FILE>;
-$string = "@string";
-close FILE;
-
-foreach $line (split /\n/, $string) {
-    $htmfile = $line;
-    $htmfile =~ s/^\s+//gi;
-    next if ($htmfile =~ /source/);
-    $count2++;
-    $a->get($line);
-    $htmfile =~ s/\//_/gi;
-    $htmfile =~ s/\#.*//;
-    print "  $htmfile ... ";
-    open FILE, ">:utf8", "html/$htmfile";
-    $content = $a->content;
-    utf8::decode($content);
-    print FILE $content;
-    close FILE;
-    print "downloaded.\n";
-    $a->back();
-}
-
-print $count2." questions encore sans réponse\n\n";
-print $count+$count2." questions téléchargées\n";
+print "$count questions téléchargées\n\n" if ($verbose);
 
