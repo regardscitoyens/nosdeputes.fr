@@ -31,7 +31,7 @@ utf8::decode($content);
 $content =~ s/<a/\n<a/g;
 
 foreach $line (split /\n/, $content) {
-next if ($line !~ /1371S/);
+#next if ($line !~ /1371S/);
   if ($line =~ /<a([^>]+)?\s+href\s?=\s?['"]\s?([^'"]+questions\/base\/$annee\/qSEQ[^'"]+)['"]/) {
     $url = $2;
     $count++;

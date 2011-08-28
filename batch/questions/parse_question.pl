@@ -23,23 +23,30 @@ $string = "@string";
 close FILE;
 utf8::decode($string);
 $string = decode_entities($string);
-$string =~ s/(<[^a!]\w*)[^>]*>/$1>/g;
+$string =~ s/(<t\w+)\s*[^>]* colspan="(\d+)"[^>]*>/$1colspan$2>/g;
+$string =~ s/(<[^a!][\w]*)\s*[^>]*>/$1>/g;
 $string =~ s/<a[^>]*href=["']([^"']+)["'][^>]*>/<a href='$1'>/g;
-$string =~ s/<\/?div>//g;
+$string =~ s/colspan(\d+)/ colspan='$1'/g;
+$string =~ s/<\/?(div|center)>//g;
 $string =~ s/\r//g;
 $string =~ s/ +/ /g;
 $string =~ s/\n\s+/\n/g;
 $string =~ s/\s+\n/\n/g;
 $string =~ s/^(.*\n)*<!-- START : primary -->//;
 $string =~ s/\n<!-- END : primary -->(\n.*)*$//;
-$string =~ s/<!--[^>]*-->//g;
+$string =~ s/<![^>]*>//g;
 $string =~ s/\n([^<])/ $1/g;
 $string =~ s/<br>/<br\/>/g;
 $string =~ s/\n<\//<\//g;
 $string =~ s/> +/>/g;
 $string =~ s/(>)(<[phult1-9]+)/$1\n$2/g;
 $string =~ s/\n+/\n/;
-
+$string =~ s/\s+,/,/;
+$string =~ s/(<t[dh]>)\n?<p>/$1/g;
+$string =~ s/<\/p>\n?(<\/t[dh]>)/$1/g;
+$string =~ s/(<t[dh]>[^<]+)(<[brp\/]+>\n?)+/$1 /g;
+$string =~ s/(<[brp\/]+>\n?)+([^<]+<\/t[dh]>)/ $2/g;
+$string =~ s/(<\/t(able|r|d|h)>)\n?/$1\n/g;
 
 if ($display_text) {
   utf8::encode($string);
@@ -81,15 +88,30 @@ foreach $line (split /\n/, $string) {
         $question{'page_question'} = $question{'page_reponse'};
       }
     }
+  } elsif ($line =~ /<i>Erratum\s*:\s*JO.*\s(\d+)\/(\d+)\/(\d{4})([ \-,]+p(age|.)\s?(\d+))?</) {
+    if ($read_txt < 2) {
+      $question{'date_publi'} = sprintf("%04d-%02d-%02d",$3,$2,$1);
+      $question{'page_question'} = $6;
+    } else {
+      $question{'date_reponse'} = sprintf("%04d-%02d-%02d",$3,$2,$1);
+      $question{'page_reponse'} = $6;
+    }
   } elsif ($line =~ /<h3>Concerne le thème\s*:\s*(.*)<\/h3>/) {
-    $question{'themes'} = $1;
-  } elsif ($line =~ /<[^>]+>.*réponse du (.*)<\/[^>]+>/i) {
+#    $question{'theme'} = $1;
+  } elsif ($line =~ /<[^>]+>[^<\.]*réponse du (.*)<\/[^>]+>/i) {
     $question{'ministere'} = $1;
     $question{'ministere'} =~ s/\s*En attente.*$//;
     $read_txt++;
+  } elsif ($line =~ /<p>Transmise (au|à)( [mM]([\.mle]+|onsieur|adame) l[ea'])? ?(.*)</) {
+    $question{'ministere'} = $4;
+  } elsif ($line =~ /<p>Transformée\s?(en )?(QOSD)?(<a[^>]+>(\d+[A-Z]?)<\/a>)?/) {
+    $transformee = $4;
   } elsif ($line =~ /<h3>Rappelle la question (n°)? ?<a[^>]+>(n°)? ?(\d+[a-z]?)[^\d]/i) {
     $rappel_question = $3;
-  } elsif ($read_txt && $line =~ />(\S\s*)+</) {
+  } elsif ($read_txt && ($line =~ />(\S\s*)+</ || $line =~ /<\/?t(able|d|r|h)/ || $line !~ /^</)) {
+    if ($line =~ /^([^<].*)$/) {
+      $line = "<p>".$line."</p>";
+    }
     if ($line =~/<p>La question (a été retirée( pour cause de )?|est )(.*)?</) {
       $question{'motif_retrait'} = $3;
       if (! $question{'motif_retrait'}) {
@@ -99,9 +121,20 @@ foreach $line (split /\n/, $string) {
       next;
     }
     $texte = $line;
+    $texte =~ s/^<p>[\w\.\)]+([<M])/$1/;
+    $texte =~ s/^([^<])/<p>$1/;
+    if ($texte =~ /<t[dh]/) {
+      $texte =~ s/<br\/?>/ /g;
+    }
+    $texte =~ s/<[pbr\/]+>Voir la vidéo<[pbr\/]+>/<br\/>/g;
     $texte =~ s/(\s*<br\/?>)+/<\/p><p>/g;
+    $texte =~ s/(<p><\/?p>)+<p>/<p>/g;
     $texte =~ s/<\/p>(<\/?p><\/?p>)+/<\/p>/g;
     $texte =~ s/"([^"]*)"/« $1 »/g;
+    $texte =~ s/^<\/p>//g;
+    $texte =~ s/<p>$//g;
+    $texte =~ s/(<\/table>)<\/p>/$1/;
+    $texte =~ s/<p>(<table>)/$1/;
     if ($read_txt == 1) {
       $question{'question'} .= $texte;
     } else {
@@ -110,17 +143,48 @@ foreach $line (split /\n/, $string) {
   }
 }
 
+if (! $question{ministere} ) {
+  $question{ministere} = $question{'question'};
+  $question{ministere} =~ s/^<p>La parole([^<]+)<\/p><p>M([\.mle]+|onsieur|adame) $nom_auteur\.?[ ,]((\S+\s+)+)?[mM]a question[ ,](\S+\s+)+[mM]([\.mle]+|onsieur|adame) l[ea'] ?([^<\.]+)[\.<].*$/$7/;
+  $question{ministere} =~ s/^<p>([^<\.]+,)?M([\.mle]+|onsieur|adame) $nom_auteur (\S+\s+)+[mM]([\.mle]+|onsieur|adame) l[ea'] ?([^<\.]+)[\.<].*$/$5/;
+  $question{ministere} =~ s/^<p>.*[mM]([\.mle]+|onsieur|adame) l[ea'] ?((ministre|secrétaire|haut-commissaire)[^<\.]+)[\.<].*$/$2/;
+  $question{ministere} =~ s/[, ](sur|les termes|au sujet|à propos|de bien vouloir|quant|de lui|si|s'il|concernant|qu['les]+)[ ,].*$//;
+  $question{ministere} =~ s/^<p>//;
+  $question{ministere} =~ s/^((ministre d'[ÉEé]tat|garde ses sceaux), )?ministre/Ministère/i;
+  $question{ministere} =~ s/, porte-parole du gouvernement//i;
+  $question{ministere} =~ s/^secrétaire/Secrétariat/i;
+  $question{ministere} =~ s/^haut-commissaire/Haut-Commissariat/i;
+  $question{ministere} =~ s/^([^HMS])/ZZ - $1/;
+}
+
 if ($rappel_question) {
   $leg = $question{legislature};
   $question{'question'} =~ s/(question n°\s*)($rappel_question)/<a href='\/question\/QE\/$leg\/$2'>$1$2<\/a>/;
 }
+if ($transformee) {
+  $question{'question'} = "<p><em>Cette question a été transformée en <a href='/question/QE/$leg/$transformee'>question N°&nbsp;$transformee</a>.</em></p>".$question{'question'};
+}
 
-if (! $question{ministere} ) {
-  $question{ministere} = $question{'question'};
-  $question{ministere} =~ s/^<p>M[.mle]+ $nom_auteur (\S+\s+)+M[.mle]+ l[ea'] ?([^<\.]+)[\.<].*$/$2/;
-  $question{ministere} =~ s/(que|sur|les termes) .*$//;
-  $question{ministere} =~ s/^(ministre d'[ÉEé]tat, )?ministre/Ministère/;
-  $question{ministere} =~ s/^secrétaire/Secrétariat/;
+if ($question{'question'} =~ /^<p>[a-zéèêîôà]/) {
+  $intro = "<p>M";
+  if ($question{'auteur'} =~ / - F - /) {
+    $intro .= "me";
+  } else {
+    $intro .= ".";
+  }
+  $intro .= " $nom_auteur interroge le $question{ministere} ";
+  if (! $question{'question'} =~ /^<p>sur/) {
+    $intro .= "sur l";
+    if ($question{'question'} =~ /^<p>[aeiouyhéèêîôà]/) {
+      $intro .= "'";
+    } else {
+      $intro .= "e ";
+    }
+    if ($question{'question'} =~ /^<p>[^<]+s<\//) {
+      $intro .= "s";
+    }
+  }
+  $question{'question'} =~ s/^<p>/<p>$intro/;
 }
 
 foreach $k (keys %question) {
@@ -134,5 +198,5 @@ if ($yml) {
   exit;
 }
 
-print '{"source": "'.$question{'source'}.'", "legislature": "'.$question{'legislature'}.'", "type": "'.$question{'type'}.'", "numero": "'.$question{'numero'}.'", "date_question": "'.$question{'date_publi'}.'", "date_reponse": "'.$question{'date_reponse'}.'", "page_question": "'.$question{'page_question'}.'", "page_reponse": "'.$question{'page_reponse'}.'", "ministere": "'.$question{'ministere'}.'", "theme":"'.$question{'theme'}.'", "titre": "'.$question{'titre'}.'", "question": "'. $question{'question'}.'", "reponse": "'.$question{'reponse'}.'", "motif_retrait": "'.$question{'motif_retrait'}.'", "auteur": "'.$question{'auteur'}.'" } '."\n";
+print '{"source": "'.$question{'source'}.'", "legislature": "'.$question{'legislature'}.'", "type": "'.$question{'type'}.'", "numero": "'.$question{'numero'}.'", "date_question": "'.$question{'date_publi'}.'", "date_reponse": "'.$question{'date_reponse'}.'", "page_question": "'.$question{'page_question'}.'", "page_reponse": "'.$question{'page_reponse'}.'", "ministere": "'.$question{'ministere'}.'", "titre": "'.$question{'titre'}.'", "question": "'. $question{'question'}.'", "reponse": "'.$question{'reponse'}.'", "motif_retrait": "'.$question{'motif_retrait'}.'", "auteur": "'.$question{'auteur'}.'" } '."\n";
 
