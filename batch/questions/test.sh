@@ -1,13 +1,13 @@
 #!/bin/bash
 
 fields="source legislature type numero date_publi date_reponse page_question page_reponse ministere titre question reponse motif_retrait auteur"
-
+total=`ls json/* | wl | awk '{print $1}'`
 mkdir -p test
 
 for field in $fields; do
   grep "  $field:" json/* | sed 's/^.*\(.\)\.html:  //' | sort > test/$field.tmp
-  ntotal=`wc -l test/$field.tmp | awk '{print $1}'`
-  echo "Champ $field présent dans $ntotal questions (manque dans $((23712-$ntotal)) questions)" > test/$field.stats
+  stotal=`wc -l test/$field.tmp | awk '{print $1}'`
+  echo "Champ $field présent dans $stotal questions (manque dans $(($total-$stotal)) questions)" > test/$field.stats
   echo  >> test/$field.stats
   uniq test/$field.tmp > test/$field.uniq
   rm test/$field.tmp

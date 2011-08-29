@@ -8,6 +8,6 @@ if [ -z $dir ]; then
 fi
 
 for file in `ls $dir`; do
-  perl parse_question.pl $dir/$file $yml > out/$file
+  perl parse_question.pl $dir/$file $yml > json/$file
 done
 
