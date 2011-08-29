@@ -8,9 +8,9 @@ if [[ $1 != "all" && $1 != "recent" ]]; then
   exit 1
 fi
 
-. ../../bin/db.inc
+rm -f html/*
 
-echo "SELECT numero FROM question_ecrite order by numero DESC limit 1" | mysql $MYSQLID $DBNAME | grep -v numero > dernier_numero.txt
+source ../../bin/db.inc
 
 if [[ $1 -eq "all" ]]; then
   sql_string='SELECT source FROM question_ecrite WHERE reponse = "" AND motif_retrait IS NULL'
@@ -19,14 +19,11 @@ else
 fi
 echo $sql_string | mysql $MYSQLID $DBNAME | grep -v source > liste_sans_reponse.txt
 
-rm -f html/*
-
-#log cette partie très verbeuse
-perl download_questions.pl > /tmp/download_questions.log
+date_from=`echo "SELECT date FROM question_ecrite order by date DESC limit 1" | mysql $MYSQLID $DBNAME | grep -v date`
+perl download_questions_from_recherche.pl $date_from
 
 for file in `grep -L "The page cannot be found" html/*`; do
-	fileout=$(echo $file | sed 's/html/json/' | sed 's/\.htm/\.xml/')
-#	perl cut_quest.pl $file > $fileout
-	python parse.py $file > $fileout
+  fileout=$(echo $file | sed 's/html/json/')
+  perl parse_question.pl $file > $fileout
 done;
 

@@ -41,12 +41,12 @@ $string =~ s/\n<\//<\//g;
 $string =~ s/> +/>/g;
 $string =~ s/(>)(<[phult1-9]+)/$1\n$2/g;
 $string =~ s/\n+/\n/;
-$string =~ s/\s+,/,/;
 $string =~ s/(<t[dh]>)\n?<p>/$1/g;
 $string =~ s/<\/p>\n?(<\/t[dh]>)/$1/g;
 $string =~ s/(<t[dh]>[^<]+)(<[brp\/]+>\n?)+/$1 /g;
 $string =~ s/(<[brp\/]+>\n?)+([^<]+<\/t[dh]>)/ $2/g;
 $string =~ s/(<\/t(able|r|d|h)>)\n?/$1\n/g;
+$string =~ s/\s+,/,/;
 
 if ($display_text) {
   utf8::encode($string);
@@ -98,11 +98,11 @@ foreach $line (split /\n/, $string) {
     }
   } elsif ($line =~ /<h3>Concerne le thème\s*:\s*(.*)<\/h3>/) {
 #    $question{'theme'} = $1;
-  } elsif ($line =~ /<[^>]+>[^<\.]*réponse du (.*)<\/[^>]+>/i) {
-    $question{'ministere'} = $1;
+  } elsif ($line =~ /<[^>]+>[^<\.]*(En attente de r|R)éponse du (.*)<\/[^>]+>/) {
+    $question{'ministere'} = $2;
     $question{'ministere'} =~ s/\s*En attente.*$//;
     $read_txt++;
-  } elsif ($line =~ /<p>Transmise (au|à)( [mM]([\.mle]+|onsieur|adame) l[ea'])? ?(.*)</) {
+  } elsif (!$question{'ministere'} && $line =~ /<p>Transmise (au|à)( [mM]([\.mle]+|onsieur|adame) l[ea'])? ?(.*)</) {
     $question{'ministere'} = $4;
   } elsif ($line =~ /<p>Transformée\s?(en )?(QOSD)?(<a[^>]+>(\d+[A-Z]?)<\/a>)?/) {
     $transformee = $4;
@@ -147,18 +147,19 @@ if (! $question{ministere} ) {
   $question{ministere} = $question{'question'};
   $question{ministere} =~ s/^<p>La parole([^<]+)<\/p><p>M([\.mle]+|onsieur|adame) $nom_auteur\.?[ ,]((\S+\s+)+)?[mM]a question[ ,](\S+\s+)+[mM]([\.mle]+|onsieur|adame) l[ea'] ?([^<\.]+)[\.<].*$/$7/;
   $question{ministere} =~ s/^<p>([^<\.]+,)?M([\.mle]+|onsieur|adame) $nom_auteur (\S+\s+)+[mM]([\.mle]+|onsieur|adame) l[ea'] ?([^<\.]+)[\.<].*$/$5/;
-  $question{ministere} =~ s/^<p>.*[mM]([\.mle]+|onsieur|adame) l[ea'] ?((ministre|secrétaire|haut-commissaire)[^<\.]+)[\.<].*$/$2/;
-  $question{ministere} =~ s/[, ](sur|les termes|au sujet|à propos|de bien vouloir|quant|de lui|si|s'il|concernant|qu['les]+)[ ,].*$//;
-  $question{ministere} =~ s/^<p>//;
-  $question{ministere} =~ s/^((ministre d'[ÉEé]tat|garde ses sceaux), )?ministre/Ministère/i;
-  $question{ministere} =~ s/, porte-parole du gouvernement//i;
-  $question{ministere} =~ s/^secrétaire/Secrétariat/i;
-  $question{ministere} =~ s/^haut-commissaire/Haut-Commissariat/i;
-  $question{ministere} =~ s/^([^HMS])/ZZ - $1/;
+  $question{ministere} =~ s/^<p>.*[mM]([\.mle]+|onsieur|adame) l[ea'] ?((premier )?(ministre|secrétaire|haut[ \-]commissaire)[^<\.]+)[\.<].*$/$2/i;
+  $question{ministere} =~ s/[, ](sur|les termes|au (sujet|regard)|à propos|de bien vouloir|quant|de (lui|sa)|si|s'il|concernant|qu[ilunesax]*'?|d(e |')(s'engag|precis|expos|accord)er|sa question|dans|tou(s|te)|le cas|vise (à|au)|une?|suite (à|au)|la situation|entend)[ ,].*($sujet)?.*$//i;
 }
+$question{ministere} =~ s/^<p>//;
+$question{ministere} =~ s/^((ministre d'[ÉEé]tat|garde des sceaux), )?ministre/Ministère/ig;
+$question{ministere} =~ s/\s*,\s*porte[ \-]parole du gouvernement//i;
+$question{ministere} =~ s/^secrétaire/Secrétariat/ig;
+$question{ministere} = ucfirst(lc($question{ministere}));
+$question{ministere} =~ s/haut[\- ]commissa(ire|riat)/Haut Commissariat/ig;
+$question{ministere} =~ s/\s*,\s*$//;
 
+$leg = $question{legislature};
 if ($rappel_question) {
-  $leg = $question{legislature};
   $question{'question'} =~ s/(question n°\s*)($rappel_question)/<a href='\/question\/QE\/$leg\/$2'>$1$2<\/a>/;
 }
 if ($transformee) {

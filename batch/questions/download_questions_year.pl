@@ -1,17 +1,16 @@
 #!/usr/bin/perl
 
-use Date::Format;
 use WWW::Mechanize;
 use HTML::TokeParser;
 use URI::Escape;
 use Encode;
 
-$verbose = shift || 0;
 $outdir = shift || "html";
 if (! $outdir =~ /(\d{4}|html)/) {
   print "Please input a 4-digit year\n";
   exit;
 }
+$verbose = shift || 0;
 $count = 0;
 mkdir $outdir unless -e "$outdir/" ;
 
@@ -26,12 +25,10 @@ print "Download questions from $annee : $baseurl ...\n" if ($verbose);
 
 $a = WWW::Mechanize->new();
 $a->get($baseurl);
-$content = $a->content;
-utf8::decode($content);
+$content = decode("windows-1252", $a->content);
 $content =~ s/<a/\n<a/g;
 
 foreach $line (split /\n/, $content) {
-#next if ($line !~ /1371S/);
   if ($line =~ /<a([^>]+)?\s+href\s?=\s?['"]\s?([^'"]+questions\/base\/$annee\/qSEQ[^'"]+)['"]/) {
     $url = $2;
     $count++;
@@ -39,12 +36,12 @@ foreach $line (split /\n/, $content) {
     $file = uri_escape($a->uri());
     print " saving http://www.senat.fr$url ... " if ($verbose);
     open FILE, ">:utf8", "$outdir/$file";
-    $thecontent = $a->content;
-    $thecontent = decode("windows-1252", $thecontent);
+    $thecontent = decode("windows-1252", $a->content);
     $thecontent =~ s/iso-8859-1/utf-8/g;
     print FILE $thecontent;
     close FILE;
-    print "downloaded.\n" if ($verbose);
+    print "$file downloaded.\n" if ($verbose);
+    $a->back();
   }
 }
 print "$count questions téléchargées\n\n" if ($verbose);
