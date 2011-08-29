@@ -1,7 +1,7 @@
 #!/bin/bash
 
 fields="source legislature type numero date_publi date_reponse page_question page_reponse ministere titre question reponse motif_retrait auteur"
-total=`ls json/* | wl | awk '{print $1}'`
+total=`ls json/* | wc -l | awk '{print $1}'`
 mkdir -p test
 
 for field in $fields; do

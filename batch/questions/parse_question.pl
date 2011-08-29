@@ -121,18 +121,17 @@ foreach $line (split /\n/, $string) {
       next;
     }
     $texte = $line;
-    $texte =~ s/^<p>[\w\.\)]+([<M])/$1/;
+    $texte =~ s/^<p>[^M\w\.\)]+\s*((<[pbrr\/]+>)+)?([<M])/$3/;
     $texte =~ s/^([^<])/<p>$1/;
     if ($texte =~ /<t[dh]/) {
       $texte =~ s/<br\/?>/ /g;
     }
     $texte =~ s/<[pbr\/]+>Voir la vidéo<[pbr\/]+>/<br\/>/g;
     $texte =~ s/(\s*<br\/?>)+/<\/p><p>/g;
-    $texte =~ s/(<p><\/?p>)+<p>/<p>/g;
-    $texte =~ s/<\/p>(<\/?p><\/?p>)+/<\/p>/g;
     $texte =~ s/"([^"]*)"/« $1 »/g;
-    $texte =~ s/^<\/p>//g;
-    $texte =~ s/<p>$//g;
+    $texte =~ s/^(<\/p>)+//g;
+    $texte =~ s/(<p>)+$//g;
+    $texte =~ s/^<a/<p><a/;
     $texte =~ s/(<\/table>)<\/p>/$1/;
     $texte =~ s/<p>(<table>)/$1/;
     if ($read_txt == 1) {
@@ -143,20 +142,38 @@ foreach $line (split /\n/, $string) {
   }
 }
 
+
+sub clean_texte {
+  $txt = shift;
+  $txt =~ s/(<\/?p><\/?p>)+<p>/<p>/g;
+  $txt =~ s/<\/p>(<\/?p><\/?p>)+/<\/p>/g;
+  $txt =~ s/^<p>\s*(<\/?p>\s*)+/<p>/;
+  $txt =~ s/(\s*<\/?p>)+\s*<\/p>$/<\/p>/;
+  return $txt;
+}
+$question{'question'} = clean_texte($question{'question'});
+$question{'reponse'} = clean_texte($question{'reponse'});
+
+
 if (! $question{ministere} ) {
   $question{ministere} = $question{'question'};
-  $question{ministere} =~ s/^<p>La parole([^<]+)<\/p><p>M([\.mle]+|onsieur|adame) $nom_auteur\.?[ ,]((\S+\s+)+)?[mM]a question[ ,](\S+\s+)+[mM]([\.mle]+|onsieur|adame) l[ea'] ?([^<\.]+)[\.<].*$/$7/;
-  $question{ministere} =~ s/^<p>([^<\.]+,)?M([\.mle]+|onsieur|adame) $nom_auteur (\S+\s+)+[mM]([\.mle]+|onsieur|adame) l[ea'] ?([^<\.]+)[\.<].*$/$5/;
-  $question{ministere} =~ s/^<p>.*[mM]([\.mle]+|onsieur|adame) l[ea'] ?((premier )?(ministre|secrétaire|haut[ \-]commissaire)[^<\.]+)[\.<].*$/$2/i;
-  $question{ministere} =~ s/[, ](sur|les termes|au (sujet|regard)|à propos|de bien vouloir|quant|de (lui|sa)|si|s'il|concernant|qu[ilunesax]*'?|d(e |')(s'engag|precis|expos|accord)er|sa question|dans|tou(s|te)|le cas|vise (à|au)|une?|suite (à|au)|la situation|entend)[ ,].*($sujet)?.*$//i;
+  $question{ministere} =~ s/^<p>La parole([^<]+)<\/p><p>M([\.mle]+|onsieur|adame)\s+$nom_auteur\.?[\s,]((\S+\s+)+)?[mM]a question[\s,](\S+\s+)+[mM]([\.mle]+|onsieur|adame)\sl[ea']\s?([^<\.]+)[\.<].*$/$7/;
+  $question{ministere} =~ s/^<p>([^<\.]+,)?M([\.mle]+|onsieur|adame)\s+$nom_auteur\s+(\S+\s+)+[mM]([\.mle]+|onsieur|adame)\s+l[ea']\s?([^<\.]+)[\.<].*$/$5/;
+  $question{ministere} =~ s/^<p>.*[mM]([\.mle]+|onsieur|adame)\s+l[ea']\s?((premier\s+)?(ministre|secrétaire|haut[\s\-]commissaire)[^<\.]+)[\.<].*$/$2/i;
+  $question{ministere} =~ s/[,\s](sur|les\stermes|des\sconditions|au\s(sujet|regard)|à\spropos|de\sbien\svouloir|quant|de\s(lui|sa)|si|s'il|concernant|qu[ilunesaxà']+|d(e\s|')(s'engag|precis|expos|accord)er|sa\squestion|dans|tou(s|te)|le\scas|vise\s(à|au)|une?|suite\s(à|au)|la\ssituation|entend|l'amendement)[\s,].*($sujet)?.*$//i;
 }
+
 $question{ministere} =~ s/^<p>//;
-$question{ministere} =~ s/^((ministre d'[ÉEé]tat|garde des sceaux), )?ministre/Ministère/ig;
-$question{ministere} =~ s/\s*,\s*porte[ \-]parole du gouvernement//i;
+$question{ministere} =~ s/^(ministre\sd'[ÉEé]tat,\s)?(garde\sdes\ssceaux,\s)?ministre/Ministère/ig;
+$question{ministere} =~ s/\s*,\s*porte[\s\-]parole\sdu\sgouvernement//ig;
 $question{ministere} =~ s/^secrétaire/Secrétariat/ig;
 $question{ministere} = ucfirst(lc($question{ministere}));
-$question{ministere} =~ s/haut[\- ]commissa(ire|riat)/Haut Commissariat/ig;
-$question{ministere} =~ s/\s*,\s*$//;
+$question{ministere} =~ s/haut[\-\s]commissa(ire|riat)/Haut Commissariat/ig;
+$question{ministere} =~ s/\s*,\s*$//g;
+$question{ministere} =~ s/(technologies\svertes\set\sdes\snégo)[ct](iations)(\ssur\sle\sclimat)?$/$1c$2 sur le climat/i;
+$question{ministere} =~ s/education/éducation/ig;
+$question{ministere} =~ s/[Ée]tat/état/ig;
+
 
 $leg = $question{legislature};
 if ($rappel_question) {
@@ -167,7 +184,7 @@ if ($transformee) {
 }
 
 if ($question{'question'} =~ /^<p>[a-zéèêîôà]/) {
-  $intro = "<p>M";
+  $intro = "ZZZM";
   if ($question{'auteur'} =~ / - F - /) {
     $intro .= "me";
   } else {
