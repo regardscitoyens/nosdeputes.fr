@@ -121,7 +121,8 @@ foreach $line (split /\n/, $string) {
       next;
     }
     $texte = $line;
-    $texte =~ s/^<p>[^M\w\.\)]+\s*((<[pbrr\/]+>)+)?([<M])/$3/;
+    $texte =~ s/^<p>[Aa-z]+[\)\.\s]*<[pbr\/]+>([<M])/$1/;
+    $texte =~ s/^(<[^>]+>)[a-z]+([A-Z])/$1$2/;
     $texte =~ s/^([^<])/<p>$1/;
     if ($texte =~ /<t[dh]/) {
       $texte =~ s/<br\/?>/ /g;
@@ -158,18 +159,23 @@ $question{'reponse'} = clean_texte($question{'reponse'});
 if (! $question{ministere} ) {
   $question{ministere} = $question{'question'};
   $question{ministere} =~ s/^<p>La parole([^<]+)<\/p><p>M([\.mle]+|onsieur|adame)\s+$nom_auteur\.?[\s,]((\S+\s+)+)?[mM]a question[\s,](\S+\s+)+[mM]([\.mle]+|onsieur|adame)\sl[ea']\s?([^<\.]+)[\.<].*$/$7/;
-  $question{ministere} =~ s/^<p>([^<\.]+,)?M([\.mle]+|onsieur|adame)\s+$nom_auteur\s+(\S+\s+)+[mM]([\.mle]+|onsieur|adame)\s+l[ea']\s?([^<\.]+)[\.<].*$/$5/;
-  $question{ministere} =~ s/^<p>.*[mM]([\.mle]+|onsieur|adame)\s+l[ea']\s?((premier\s+)?(ministre|secrétaire|haut[\s\-]commissaire)[^<\.]+)[\.<].*$/$2/i;
+  $question{ministere} =~ s/^<p>([^<\.]+,)?M([\.mle]+|onsieur|adame)\s+$nom_auteur\s+(\S+\s+)+[mM]([\.mle]+|onsieur|adame)\s+l[ea']\s?([pP]remier\s[mM]inistre|([mM]inistre|[hH]aute?[\s\-][cC]ommissaire|[sS]ecr[eé]taire)\s+[aàcd][^<\.]+)[\.<].*$/$5/;
+  $question{ministere} =~ s/^<p>.*[mM]([\.mle]+|onsieur|adame)\s+l[ea']\s?(premier\s+ministre|(ministre|secr[eé]taire|haute?[\s\-]commissaire)[^<\.]+)[\.<].*$/$2/i;
   $question{ministere} =~ s/[,\s](sur|les\stermes|des\sconditions|au\s(sujet|regard)|à\spropos|de\sbien\svouloir|quant|de\s(lui|sa)|si|s'il|concernant|qu[ilunesaxà']+|d(e\s|')(s'engag|precis|expos|accord)er|sa\squestion|dans|tou(s|te)|le\scas|vise\s(à|au)|une?|suite\s(à|au)|la\ssituation|entend|l'amendement)[\s,].*($sujet)?.*$//i;
 }
 
 $question{ministere} =~ s/^<p>//;
-$question{ministere} =~ s/^(ministre\sd'[ÉEé]tat,\s)?(garde\sdes\ssceaux,\s)?ministre/Ministère/ig;
+$question{ministere} =~ s/^m([\.mle]+|onsieur|adame)\s+l[ea']\s*//ig;
+$question{ministere} =~ s/(ministre\sd'[ÉEé]tat|garde\sdes\ssceaux),\s//g;
+$question{ministere} =~ s/^ministre/Ministère/ig;
+$question{ministere} =~ s/(chargé|délégué)e/$1/ig;
 $question{ministere} =~ s/\s*,\s*porte[\s\-]parole\sdu\sgouvernement//ig;
-$question{ministere} =~ s/^secrétaire/Secrétariat/ig;
+$question{ministere} =~ s/secr[eé]taire/Secrétariat/ig;
+$question{ministere} =~ s/[Ée]tat/état/ig;
 $question{ministere} = ucfirst(lc($question{ministere}));
-$question{ministere} =~ s/haut[\-\s]commissa(ire|riat)/Haut Commissariat/ig;
-$question{ministere} =~ s/\s*,\s*$//g;
+$question{ministere} =~ s/(auprès\s)(d[eu]\s(la\s)?ministre)/$1du Ministère/i;
+$question{ministere} =~ s/haute?[\-\s]commissa(ire|riat)/Haut-Commissariat/ig;
+$question{ministere} =~ s/\s*,\s*/, /g;
 $question{ministere} =~ s/(technologies\svertes\set\sdes\snégo)[ct](iations)(\ssur\sle\sclimat)?$/$1c$2 sur le climat/i;
 $question{ministere} =~ s/education/éducation/ig;
 $question{ministere} =~ s/[Ée]tat/état/ig;
@@ -177,14 +183,18 @@ $question{ministere} =~ s/[Ée]tat/état/ig;
 
 $leg = $question{legislature};
 if ($rappel_question) {
-  $question{'question'} =~ s/(question n°\s*)($rappel_question)/<a href='\/question\/QE\/$leg\/$2'>$1$2<\/a>/;
+  $shortnum = $rappel_question;
+  $shortnum =~ s/^0+//;
+  $question{'question'} =~ s/(question )n°\s*0*($shortnum)/<a href='\/question\/QE\/$leg\/$rappel_question'>$1N°&nbsp;$2<\/a>/;
 }
 if ($transformee) {
+  $shortnum = $transformee;
+  $shortnum =~ s/^0+//;
   $question{'question'} = "<p><em>Cette question a été transformée en <a href='/question/QE/$leg/$transformee'>question N°&nbsp;$transformee</a>.</em></p>".$question{'question'};
 }
 
 if ($question{'question'} =~ /^<p>[a-zéèêîôà]/) {
-  $intro = "ZZZM";
+  $intro = "M";
   if ($question{'auteur'} =~ / - F - /) {
     $intro .= "me";
   } else {

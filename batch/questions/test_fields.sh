@@ -22,5 +22,6 @@ for field in $fields; do
   fi
   rm test/$field.uniq
 done;
+echo "Vérifier les champs dans test :"
 ls -lrth test
 

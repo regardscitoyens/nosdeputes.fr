@@ -7,6 +7,4 @@ for dir in 20*; do
 done
 if [ ! -z $yml ]; then
   bash test_fields.sh
-  echo "Vérifier les champs dans test :"
-  ls -lrth test
 fi
