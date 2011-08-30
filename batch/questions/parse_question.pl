@@ -171,7 +171,6 @@ if (! $question{ministere} ) {
 #print $question{ministere}."\n";
   $question{ministere} =~ s/[, ]+(sur|les termes|des conditions|au (sujet|regard)|à propos|de bien vouloir|quant|de (lui|sa)|si|s'il|concernant|qu[ilunesaxà']+|d(e |')(s'engag|precis|expos|accord)er|sa question|dans|tou(s|te)|le cas|vise (à|au)|une?|suite (à|au)|la situation|entend|l'amendement)[ ,].*$//i;
 }
-print $question{ministere}."\n";
 
 $question{ministere} =~ s/^<p>//;
 $question{ministere} =~ s/\s*[<>,]+$//;
