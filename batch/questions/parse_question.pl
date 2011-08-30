@@ -150,6 +150,7 @@ sub clean_texte {
   $txt =~ s/<\/p>(<\/?p><\/?p>)+/<\/p>/g;
   $txt =~ s/^<p>\s*(<\/?p>\s*)+/<p>/;
   $txt =~ s/(\s*<\/?p>)+\s*<\/p>$/<\/p>/;
+  $txt =~ s/\s+/ /g;
   return $txt;
 }
 $question{'question'} = clean_texte($question{'question'});
@@ -158,28 +159,37 @@ $question{'reponse'} = clean_texte($question{'reponse'});
 
 if (! $question{ministere} ) {
   $question{ministere} = $question{'question'};
-  $question{ministere} =~ s/^<p>La parole([^<]+)<\/p><p>M([\.mle]+|onsieur|adame)\s+$nom_auteur\.?[\s,]((\S+\s+)+)?[mM]a question[\s,](\S+\s+)+[mM]([\.mle]+|onsieur|adame)\sl[ea']\s?([^<\.]+)[\.<].*$/$7/;
-  $question{ministere} =~ s/^<p>([^<\.]+,)?M([\.mle]+|onsieur|adame)\s+$nom_auteur\s+(\S+\s+)+[mM]([\.mle]+|onsieur|adame)\s+l[ea']\s?([pP]remier\s[mM]inistre|([mM]inistre|[hH]aute?[\s\-][cC]ommissaire|[sS]ecr[eé]taire)\s+[aàcd][^<\.]+)[\.<].*$/$5/;
-  $question{ministere} =~ s/^<p>.*[mM]([\.mle]+|onsieur|adame)\s+l[ea']\s?(premier\s+ministre|(ministre|secr[eé]taire|haute?[\s\-]commissaire)[^<\.]+)[\.<].*$/$2/i;
-  $question{ministere} =~ s/[,\s](sur|les\stermes|des\sconditions|au\s(sujet|regard)|à\spropos|de\sbien\svouloir|quant|de\s(lui|sa)|si|s'il|concernant|qu[ilunesaxà']+|d(e\s|')(s'engag|precis|expos|accord)er|sa\squestion|dans|tou(s|te)|le\scas|vise\s(à|au)|une?|suite\s(à|au)|la\ssituation|entend|l'amendement)[\s,].*($sujet)?.*$//i;
+  $question{ministere} =~ s/(ministre d'état|garde des sceaux), *//ig;
+  $question{ministere} =~ s/^<p>(La parole([^<]+)<\/p><p>)?//i;
+  $question{ministere} =~ s/^[^<\.]* *(m([\.mle]+|onsieur|adame) *$nom_auteur[\. ,]+([^<\.\s]+ +)+)?m([\.mle]+|onsieur|adame) *l[ea'] *(premier ministre|(ministre|secr[eé]taire|haute?[ \-]commissaire) +[aàcd][^<\.]+[\.<]).*$/$5/i;
+  $question{ministere} =~ s/^[^<]+(m([\.mle]+|onsieur|adame) *$nom_auteur[\. ,]+([^<\.\s]+ +)+)?m([\.mle]+|onsieur|adame) *l[ea'] *(premier ministre|(ministre|secr[eé]taire|haute?[ \-]commissaire) +[aàcd][^<\.]+[\.<]).*$/$5/i;
+  $question{ministere} =~ s/^.*(m([\.mle]+|onsieur|adame) *$nom_auteur[\. ,]+([^<\.\s]+ +)+)?m([\.mle]+|onsieur|adame) *l[ea'] *(premier ministre|(ministre|secr[eé]taire|haute?[ \-]commissaire) +[aàcd][^<\.]+[\.<]).*$/$5/i;
+
+#  $question{ministere} =~ s/^M([\.mle]+|onsieur|adame) *$nom_auteur\.?[ ,]((\S+ +)+)?[mM]a question[ ,](\S+ +)+[mM]([\.mle]+|onsieur|adame) *l[ea'] ?([^<\.]+)[\.<].*$/$7/;
+#  $question{ministere} =~ s/^<p>([^<\.]+,)?M([\.mle]+|onsieur|adame) *$nom_auteur *(\S+ +)+[mM]([\.mle]+|onsieur|adame) *l[ea'] *([pP]remier *[mM]inistre|([mM]inistre|[hH]aute?[ \-][cC]ommissaire|[sS]ecr[eé]taire) +[aàcd][^<\.]+)[\.<].*$/$5/;
+#  $question{ministere} =~ s/^<p>.*[mM]([\.mle]+|onsieur|adame) +l[ea'] ?(premier +ministre|(ministre|secr[eé]taire|haute?[ \-]commissaire)[^<\.]+)[\.<].*$/$2/i;
+#print $question{ministere}."\n";
+  $question{ministere} =~ s/[, ]+(sur|les termes|des conditions|au (sujet|regard)|à propos|de bien vouloir|quant|de (lui|sa)|si|s'il|concernant|qu[ilunesaxà']+|d(e |')(s'engag|precis|expos|accord)er|sa question|dans|tou(s|te)|le cas|vise (à|au)|une?|suite (à|au)|la situation|entend|l'amendement)[ ,].*$//i;
 }
+print $question{ministere}."\n";
 
 $question{ministere} =~ s/^<p>//;
-$question{ministere} =~ s/^m([\.mle]+|onsieur|adame)\s+l[ea']\s*//ig;
-$question{ministere} =~ s/(ministre\sd'[ÉEé]tat|garde\sdes\ssceaux),\s//g;
-$question{ministere} =~ s/^ministre/Ministère/ig;
+$question{ministere} =~ s/\s*[<>,]+$//;
+$question{ministere} =~ s/^m([\.mle]+|onsieur|adame) *l[ea'] *//ig;
 $question{ministere} =~ s/(chargé|délégué)e/$1/ig;
-$question{ministere} =~ s/\s*,\s*porte[\s\-]parole\sdu\sgouvernement//ig;
-$question{ministere} =~ s/secr[eé]taire/Secrétariat/ig;
-$question{ministere} =~ s/[Ée]tat/état/ig;
+$question{ministere} =~ s/ *, *porte[ \-]parole du\sgouvernement//ig;
 $question{ministere} = ucfirst(lc($question{ministere}));
-$question{ministere} =~ s/(auprès\s)(d[eu]\s(la\s)?ministre)/$1du Ministère/i;
-$question{ministere} =~ s/haute?[\-\s]commissa(ire|riat)/Haut-Commissariat/ig;
-$question{ministere} =~ s/\s*,\s*/, /g;
-$question{ministere} =~ s/(technologies\svertes\set\sdes\snégo)[ct](iations)(\ssur\sle\sclimat)?$/$1c$2 sur le climat/i;
+$question{ministere} =~ s/[Éée]tat/État/ig;
+$question{ministere} =~ s/(ministre d'État|garde des sceaux), *//ig;
+$question{ministere} =~ s/premier ministre/Premier Ministre/i;
+$question{ministere} =~ s/(auprès )(d[eu] (la )?ministè?re)/$1du Ministère/i;
+$question{ministere} =~ s/ministè?re/Ministère/ig;
+$question{ministere} =~ s/secr[eé]taire/Secrétariat/ig;
+$question{ministere} =~ s/haute?[\- ]commissa(ire|riat)/Haut-Commissariat/ig;
+$question{ministere} =~ s/ *, */, /g;
+$question{ministere} =~ s/(technologies vertes et des négo)[ct](iations)( sur le climat)?$/$1c$2 sur le climat/i;
 $question{ministere} =~ s/education/éducation/ig;
-$question{ministere} =~ s/[Ée]tat/état/ig;
-
+$question{ministere} =~ s/(Ministère) chargé/$1/i;
 
 $leg = $question{legislature};
 if ($rappel_question) {
