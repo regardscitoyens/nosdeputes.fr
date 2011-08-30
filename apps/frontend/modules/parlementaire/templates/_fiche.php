@@ -59,11 +59,13 @@
       <h3><?php echo link_to('Toutes ses interventions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=all'); ?></h3>
       <h2>Questions au gouvernement</h2>
       <h3>Ses dernières questions orales</h3>
-       <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
-      <p class="suivant"><?php echo link_to('Toutes ses questions orales','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=question'); ?></p>
+       <?php echo include_component('questions', 'parlementaire', array('type' => 'orales', 'parlementaire' => $parlementaire, 'limit' => 4)); ?>
+       <?php // echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
+      <p class="suivant"><?php echo link_to('Toutes ses questions orales','@parlementaire_questions?type=orales&slug='.$parlementaire->getSlug());
+//echo link_to('Toutes ses questions orales','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=question'); ?></p>
       <h3>Ses dernières questions écrites</h3>
-       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
-      <p class="suivant"><?php echo link_to('Toutes ses questions écrites','@parlementaire_questions?slug='.$parlementaire->getSlug()); ?></p>
+       <?php echo include_component('questions', 'parlementaire', array('type' => 'écrites', 'parlementaire' => $parlementaire, 'limit' => 4)); ?>
+      <p class="suivant"><?php echo link_to('Toutes ses questions écrites','@parlementaire_questions?type=ecrites&slug='.$parlementaire->getSlug()); ?></p>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>

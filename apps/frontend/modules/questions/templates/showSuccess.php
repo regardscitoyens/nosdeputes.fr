@@ -1,19 +1,21 @@
-<div class="question" id="question<?php echo $question->numero ?>">
+<div class="question" id="question<?php echo $question->legislature."-".$question->numero ?>">
 <?php
-  $titre = 'Question N° '.$question->numero.' au '.$question->uniqueMinistere();
-  if ($question->date_cloture && !$question->reponse) $titre .= ' (retirée)';
-  $sf_response->setTitle($parlementaire->nom.' : '.$titre);
+  $titre = $question->type.' N° '.$question->numero.' au '.$question->uniqueMinistere().' : '.$question->titre;
+  if ($question->motif_retrait === "caduque") $titre .= ' (caduque)';
+  else if ($question->motif_retrait || ($question->date_cloture && !$question->reponse && date("Y-m-d") > $question->date_cloture) $titre .= ' (retirée)';
+  $sf_response->setTitle($parlementaire->nom.' : '.$titre." - NosDéputés.fr");
   echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre, 'senateurfirst' => true));
 ?>
   <div class="source"><a href="<?php echo $question->source; ?>">source</a></div>
   <div id="question">
     <h2>Question soumise le <?php echo myTools::displayDate($question->date) ?></h2>
-    <?php echo '<p>'.$question->question.'</p>' ?>
+    <?php echo $question->question; ?>
   </div>
   <div id="reponse">
-    <?php if ($question->date_cloture && !$question->reponse && date("Y-m-d") > $question->date_cloture) {
-      echo '<h3>Retirée le '.myTools::displayDate($question->date_cloture);
-      if ($question->motif_retrait) echo ' ('.$question->motif_retrait.')';
+    <?php if ($question->motif_retrait || ($question->date_cloture && !$question->reponse && date("Y-m-d") > $question->date_cloture)) {
+      echo '<h3>Retirée';
+      if ($question->date_cloture) echo ' le '.myTools::displayDate($question->date_cloture);
+      if ($question->motif_retrait && $question->motif_retrait != "retrait") echo ' ('.$question->motif_retrait.')';
       echo '</h3>';
     } else {
       echo '<h2>Réponse';
@@ -24,7 +26,7 @@
       }
       echo '</h2>';
       if ($question->reponse)
-        echo '<p>'.$question->reponse.'</p>';
+        echo $question->reponse;
       else echo '<p>Cette question n\'a pas encore de réponse.</p>';
     } ?>
   </div>

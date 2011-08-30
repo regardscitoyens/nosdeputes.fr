@@ -1340,6 +1340,10 @@ h2 {
 .question p:first-letter {
   padding-left: 20px;
 }
+.question table {
+  border: solid 1px collapse;
+  text-align: center;
+}
 .loi p:first-letter {
   padding-left: 20px;
 }

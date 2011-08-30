@@ -14,34 +14,43 @@ class questionsActions extends sfActions
   {
     //respect de l'existant : il est possible d'appeler les questions ecrites par leur id
     //Mais lorsque c'est le cas on redirige vers une url plus parlante utilisant le numéro définit par l'AN
-    $question = Doctrine::getTable('QuestionEcrite')->find($request->getParameter('id'));
+    $question = Doctrine::getTable('Question')->find($request->getParameter('id'));
     $this->forward404Unless($question);
-    return $this->redirect('@question_numero?numero='.$question->numero);
+    return $this->redirect('@question_numero?numero='.$question->numero.'&legi='.$question->legislature);
   }
   public function executeShow(sfWebRequest $request)
   {
-    $numero = $request->getParameter('numero');
-    $this->question = Doctrine::getTable('QuestionEcrite')
+    $numero = strtoupper($request->getParameter('numero'));
+    $this->forward404Unless(preg_match('/^([ACEGS]?)(\d+)$/i', $numero, $match));
+    if ($match[1]) $numero = $match[1].sprintf("%04d",$match[2]);
+    else $numero = sprintf("%05d",$match[2]);
+    if (! ($legi = $request->getParameter('legi') && preg_match('/\d{2}/', $legi)))
+      $legi = sfConfig::get('app_legislature', 13);
+    $this->question = Doctrine::getTable('Question')
       ->createquery('q')
       ->where('q.numero = ?', $numero)
-      ->andWhere('q.legislature = ?', sfConfig::get('app_legislature', 13))
+      ->andWhere('q.legislature = ?', $legi)
       ->fetchOne();
     $this->forward404Unless($this->question);
     $this->parlementaire = Doctrine::getTable('Parlementaire')->find($this->question->parlementaire_id);
     $this->forward404Unless($this->parlementaire);
   }
 
-  public function executeParlementaire(sfWebRequest $request)
-  {
+  public function executeParlementaire(sfWebRequest $request) {
+    $this->type = $request->getParameter('type');
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
-    $this->questions = Doctrine::getTable('QuestionEcrite')->createQuery('q')
+    $this->questions = Doctrine::getTable('Question')->createQuery('q')
       ->select('q.*, if(q.date_cloture is not null,q.date_cloture,q.date) as date2')
       ->where('q.parlementaire_id = ?', $this->parlementaire->id)
       ->orderBy('date2 DESC, q.numero DESC');
+    if ($this->type === "ecrites")
+      $this->questions->addWhere('q.type = ?', "Questions écrite");
+    if ($this->type === "orales")
+      $this->questions->addWhere('q.type != ?', "Questions écrite");
 
     $request->setParameter('rss', array(array('link' => '@parlementaire_questions_rss?slug='.$this->parlementaire->slug, 'title'=>'Les dernières questions écrites de '.$this->parlementaire->nom.' en RSS')));
-
+    $this->type = str_replace('ecrites', 'écrites', $this->type);
   }
 
   public function executeSearch(sfWebRequest $request)
@@ -66,7 +75,7 @@ class questionsActions extends sfActions
       $this->high[] = preg_replace('/^[+-]"?([^"]*)"?$/', '\\1', $m);
     }
 
-    $sql = 'SELECT i.id FROM question_ecrite i WHERE MATCH (i.question) AGAINST (\''.str_replace("'", "\\'", implode(' ', $mcle)).'\' IN BOOLEAN MODE)';
+    $sql = 'SELECT i.id FROM question i WHERE type = "Question écrite" AND MATCH (i.question) AGAINST (\''.str_replace("'", "\\'", implode(' ', $mcle)).'\' IN BOOLEAN MODE)';
 
     $search = Doctrine_Manager::connection()
       ->getDbh()
@@ -77,15 +86,14 @@ class questionsActions extends sfActions
       $ids[] = $s['id'];
     }
 
-    $this->query = Doctrine::getTable('QuestionEcrite')->createQuery('i')
+    $this->query = Doctrine::getTable('Question')->createQuery('i')
       ->select('q.*, if(q.date_cloture is not null,q.date_cloture,q.date) as date2');
     if (count($ids))
       $this->query->whereIn('i.id', $ids);
     else if (count($mcle))
       foreach($mcle as $m) {
-	$this->query->andWhere('i.question LIKE ?', '% '.$m.' %');
-	$this->query->orWhere('i.reponse LIKE ?', '% '.$m.' %');
-	$this->query->orWhere('i.themes LIKE ?', '% '.$m.' %');
+        $this->query->andWhere('i.type = ?', 'Question écrite')
+	  ->andWhere('i.question LIKE ? OR i.reponse LIKE ? OR i.titre LIKE ?', array('% '.$m.' %', '% '.$m.' %', '% '.$m.' %'));
       } else {
       $this->query->where('0');
       return ;

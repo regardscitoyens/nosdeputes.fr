@@ -130,8 +130,7 @@ class apiActions extends sfActions
     $this->res['senateur']['id'] = $senateur->id * 1;
     $this->res['senateur']['nom'] = $senateur->nom;
     $this->res['senateur']['nom_de_famille'] = $senateur->nom_de_famille;
-    $this->res['senateur']['nom_circo'] = $senateur->nom_circo;
-    $this->res['senateur']['num_circo'] = $senateur->num_circo * 1;
+    $this->res['senateur']['departement'] = $senateur->nom_circo;
     $this->res['senateur']['mandat_debut'] = $senateur->debut_mandat;
     if ($senateur->fin_mandat)
       $this->res['senateur']['mandat_fin'] = $senateur->fin_mandat;
@@ -141,7 +140,7 @@ class apiActions extends sfActions
     $this->res['senateur']['responsabilites_extra_parlementaires'] = $this->array2hash($senateur->getExtras(), 'responsabilite');
     $this->multi['responsabilite'] = 1;
     $this->res['senateur']['site_web'] = $senateur->site_web;
-    $this->res['senateur']['url_an'] = $senateur->url_senat;
+    $this->res['senateur']['url_senat'] = $senateur->url_senat;
     $this->res['senateur']['emails'] = $this->array2hash(unserialize($senateur->mails), 'email');
     $this->multi['email'] = 1;
     $this->res['senateur']['adresses'] = $this->array2hash(unserialize($senateur->adresses), 'adresse');

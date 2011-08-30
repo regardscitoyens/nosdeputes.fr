@@ -3,8 +3,9 @@
 class QuestionsComponents extends sfComponents
 {
   public function executeParlementaire() {
-    $query = Doctrine::getTable('QuestionEcrite')->createQuery('q')
+    $query = Doctrine::getTable('Question')->createQuery('q')
       ->where('q.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('q.type = ?', "Question écrite")
       ->orderBy('q.date DESC');
     if (isset($this->limit))
       $query->limit($this->limit);

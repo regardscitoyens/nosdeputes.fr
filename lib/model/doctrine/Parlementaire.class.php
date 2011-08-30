@@ -292,7 +292,7 @@ class Parlementaire extends BaseParlementaire
      "Orne" => "de l'",
      "Paris" => "de",
      "Pas-de-Calais" => "du",
-     "Polynésie Française" => "de la",
+     "Polynésie française" => "de la",
      "Puy-de-Dôme" => "du",
      "Pyrénées-Atlantiques" => "des",
      "Pyrénées-Orientales" => "des",
@@ -433,7 +433,7 @@ class Parlementaire extends BaseParlementaire
     //  "977" => "Saint-Barthélémy",
     //  "978" => "Saint-Martin",
       "986" => "Wallis-et-Futuna",
-      "987" => "Polynésie Française",
+      "987" => "Polynésie française",
       "988" => "Nouvelle-Calédonie",
       "99"  => "Français établis hors de France");
 

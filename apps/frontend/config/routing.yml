@@ -265,13 +265,13 @@ search_amendements:
   param: {module: solr, action: redirect, object_name: Amendement}
 search_questions_ecrites_mots_rss:
   url: /rechercher/questions/:query/rss
-  param: {module: solr, action: redirect, object_name: QuestionEcrite, format: rss}
+  param: {module: solr, action: redirect, object_name: Question, format: rss}
 search_questions_ecrites_mots:
   url: /rechercher/questions/:query
-  param: {module: solr, action: redirect, object_name: QuestionEcrite}
+  param: {module: solr, action: redirect, object_name: Question}
 search_questions_ecrites:
   url: /rechercher/questions/
-  param: {module: solr, action: redirect, object_name: QuestionEcrite}
+  param: {module: solr, action: redirect, object_name: Question}
 
 
 # Tags d'une intervention, d'une section ou d'un parlementaire, d'une section ou  ou lors d'une séance
@@ -307,15 +307,15 @@ api_document:
   param: {module: api, action: document}
 
 # Affichage d'une question
-question_numero:
-  url: /question/QE/:numero
-  param: {module: questions, action: show}
-question:
+question_id:
   url: /question/id/:id
   param: {module: questions, action: redirect}
-question_id:
-  url: /question/:id
-  param: {module: questions, action: redirect}
+question_numero:
+  url: /question/:legi/:numero
+  param: {module: questions, action: show}
+question:
+  url: /question/:numero
+  param: {module: questions, action: show}
 
 # Captcha
 captcha_image:
@@ -478,12 +478,15 @@ groupes_plot_graph:
 preuve_presence_seance:
   url: /:slug/seance/:seance
   param: {module: presence, action: preuve}
+parlementaire_all_questions:
+  url: /:slug/questions/
+  param: {module: questions, action: parlementaire, type:all}
 parlementaire_questions:
-  url: /:slug/questions
+  url: /:slug/questions/:type
   param: {module: questions, action: parlementaire}
 parlementaire_questions_rss:
   url: /:slug/questions/rss
-  param: {module: parlementaire, action: rss, object_name: QuestionEcrite, title: "Les dernières questions écrites de %"}
+  param: {module: parlementaire, action: rss, object_name: Question, title: "Les dernières questions de %"}
 parlementaire_documents_rss:
   url: /:slug/documents/:type/rss
   param: {module: parlementaire, action: rss, Document: 1}

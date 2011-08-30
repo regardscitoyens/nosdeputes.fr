@@ -309,8 +309,7 @@ class parlementaireActions extends sfActions
     $this->response->setTitle('Les parlementaires par tag');
   }
 
-  public function executePlot(sfWebRequest $request)
-  {
+  public function executePlot(sfWebRequest $request) {
     $slug = $request->getParameter('slug');
     $this->session = $request->getParameter('time');
     $this->forward404Unless(preg_match('/^(lastyear|2\d{3}2\d{3})$/', $this->session));
@@ -331,8 +330,7 @@ class parlementaireActions extends sfActions
     else return $b[$_GET['sort']]['value'] - $a[$_GET['sort']]['value'];
   }
 
-  public function executeTop(sfWebRequest $request)
-  {
+  public function executeTop(sfWebRequest $request) {
     $qp = Doctrine::getTable('Parlementaire')->createQuery('p');
     $this->top_link = '@top_global_sorted?';
     if (($o = $request->getParameter('organisme'))) {
@@ -395,7 +393,7 @@ class parlementaireActions extends sfActions
       $request->setParameter('query', 'tag:"Parlementaire='.$this->parlementaire.'"');
       $request->setParameter('title', preg_replace('/%/', $this->parlementaire->nom, $request->getParameter('title')));
       
-      if ($o = $request->getParameter('object_type'))
+      if ($o = $request->getParameter('object_name'))
 	$request->setParameter('query', $request->getParameter('query').' object_type='.$o);
       $request->setParameter('format', 'rss');
       return $this->forward('solr', 'search');
@@ -413,13 +411,31 @@ class parlementaireActions extends sfActions
 		as $n) 
         $news[] = $n;
     }
+    if ($request->getParameter('Question')) {
+      $elements++;
+      foreach(Doctrine::getTable('Question')->createQuery('q')
+              ->where('q.parlementaire_id = ?', $this->parlementaire->id)
+              ->limit($this->limit)->orderBy('updated_at DESC')->execute()
+              as $n)
+        $news[] = $n;
+    }
     if ($request->getParameter('QuestionEcrite')) {
       $elements++;  
-      foreach(Doctrine::getTable('QuestionEcrite')->createQuery('q')
+      foreach(Doctrine::getTable('Question')->createQuery('q')
 	      ->where('q.parlementaire_id = ?', $this->parlementaire->id)
+              ->andWhere('q.type = ? ', "Question écrite")
 	      ->limit($this->limit)->orderBy('updated_at DESC')->execute()
 	      as $n) 
 	$news[] = $n;
+    }
+    if ($request->getParameter('QuestionOrale')) {
+      $elements++;
+      foreach(Doctrine::getTable('Question')->createQuery('q')
+              ->where('q.parlementaire_id = ?', $this->parlementaire->id)
+              ->andWhere('q.type != ? ', "Question écrite")
+              ->limit($this->limit)->orderBy('updated_at DESC')->execute()
+              as $n)
+        $news[] = $n;
     }
     if ($request->getParameter('Amendement')) {
       $elements++;  

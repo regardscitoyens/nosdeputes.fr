@@ -288,24 +288,27 @@ Amendement:
       fields: [legislature, texteloi_id, numero, rectif]
       type: unique
 
-QuestionEcrite:
+Question:
   actAs:
     Timestampable: ~
     Taggable: ~
     Solrable:
-      description: [question, ministere, reponse, themes]
-      moretags: [Parlementaire, ministere, motif_retrait, themes]
+      description: [type, titre, ministere, reponse]
+      moretags: [Parlementaire, type, ministere, motif_retrait]
       date: last_date
   columns:
     source:
       type: string(255)
       unique: true
     legislature: integer
-    numero: integer
+    type:
+      type: enum
+      values: ["Question écrite", "Question d'actualité au gouvernement", "Question crible thématique", "Question orale sans débat", "Question orale avec débat", "Question orale avec débat portant sur un sujet européen"]
+    numero: string(8)
     date: date
     date_cloture: date
     ministere: string
-    themes: string
+    titre: string
     question:
       type: string
     reponse:
@@ -320,7 +323,7 @@ QuestionEcrite:
   relations:
     Parlementaire:
       class: Parlementaire
-      foreignAlias: QuestionEcrites
+      foreignAlias: Questions
   indexes:
     uniq_num:
       fields: [legislature, numero]

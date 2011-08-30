@@ -46,7 +46,7 @@ $a = $s->search("oghe object_name:Parlementaire");
 $t->is($a['response']['docs'][0]['id'], $id, "Le parlementaire avec des fautes");
 */
 
-$q = new QuestionEcrite();
+$q = new Question();
 $q->question = "Ca va après les régionales ?";
 $q->reponse = "On pourait aller mieux";
 $q->parlementaire_id = 2;
@@ -57,7 +57,7 @@ $iexists = Doctrine::getTable('Intervention')->find(3);
 $iexists->save();
 
 $s->updateFromCommands();
-$id = "QuestionEcrite/".$q->id;
+$id = "Question/".$q->id;
 $a = $s->search("id:$id");
 $t->is(count($a['response']['docs']), 1, "La question a été ajoutée");
 $a = $s->search("régionales id:$id");
@@ -87,11 +87,11 @@ $s->updateFromCommands();
 $r = $s->search("id:$id");
 $t->is(count($r['response']['docs']), 0, "Le parlementaire a été supprimée");
 
-$id = "QuestionEcrite/".$q->id;
+$id = "Question/".$q->id;
 $q->delete();
 $s->updateFromCommands();
 $r = $s->search("id:$id");
-$t->is(count($r['response']['docs']), 0, "La question ecrite a été supprimée");
+$t->is(count($r['response']['docs']), 0, "La question a été supprimée");
 
 $c = new Commentaire();
 $c->commentaire = "commentaire test";

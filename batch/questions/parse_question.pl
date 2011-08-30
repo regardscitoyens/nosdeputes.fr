@@ -58,6 +58,8 @@ $read_txt = 0;
 foreach $line (split /\n/, $string) {
   if ($line =~ /<h1>(.*)<\/h1>/) {
     $question{'titre'} = $1;
+    $question{'titre'} =~ s/"([^"]*)"/« $1 »/g;
+    $texte =~ s/"/\\"/g;
   } elsif ($line =~ /<h2>(\d+).*législature<\/h2>/) {
     $question{'legislature'} = $1;
   } elsif ($line =~ /<h2>(Question.*)\s+n°\s*(\d+[a-z]?)\s/i) {
@@ -105,9 +107,9 @@ foreach $line (split /\n/, $string) {
   } elsif (!$question{'ministere'} && $line =~ /<p>Transmise (au|à)( [mM]([\.mle]+|onsieur|adame) l[ea'])? ?(.*)</) {
     $question{'ministere'} = $4;
   } elsif ($line =~ /<p>Transformée\s?(en )?(QOSD)?(<a[^>]+>(\d+[A-Z]?)<\/a>)?/) {
-    $transformee = $4;
+    $question{'transformee_en'} = uc($4);
   } elsif ($line =~ /<h3>Rappelle la question (n°)? ?<a[^>]+>(n°)? ?(\d+[a-z]?)[^\d]/i) {
-    $rappel_question = $3;
+    $question{'rappel'}= uc($3);
   } elsif ($read_txt && ($line =~ />(\S\s*)+</ || $line =~ /<\/?t(able|d|r|h)/ || $line !~ /^</)) {
     if ($line =~ /^([^<].*)$/) {
       $line = "<p>".$line."</p>";
@@ -130,6 +132,7 @@ foreach $line (split /\n/, $string) {
     $texte =~ s/<[pbr\/]+>Voir la vidéo<[pbr\/]+>/<br\/>/g;
     $texte =~ s/(\s*<br\/?>)+/<\/p><p>/g;
     $texte =~ s/"([^"]*)"/« $1 »/g;
+    $texte =~ s/"/\\"/g;
     $texte =~ s/^(<\/p>)+//g;
     $texte =~ s/(<p>)+$//g;
     $texte =~ s/^<a/<p><a/;
@@ -190,18 +193,6 @@ $question{ministere} =~ s/(technologies vertes et des négo)[ct](iations)( sur l
 $question{ministere} =~ s/education/éducation/ig;
 $question{ministere} =~ s/(Ministère) chargé/$1/i;
 
-$leg = $question{legislature};
-if ($rappel_question) {
-  $shortnum = $rappel_question;
-  $shortnum =~ s/^0+//;
-  $question{'question'} =~ s/(question )n°\s*0*($shortnum)/<a href='\/question\/QE\/$leg\/$rappel_question'>$1N°&nbsp;$2<\/a>/;
-}
-if ($transformee) {
-  $shortnum = $transformee;
-  $shortnum =~ s/^0+//;
-  $question{'question'} = "<p><em>Cette question a été transformée en <a href='/question/QE/$leg/$transformee'>question N°&nbsp;$transformee</a>.</em></p>".$question{'question'};
-}
-
 if ($question{'question'} =~ /^<p>[a-zéèêîôà]/) {
   $intro = "M";
   if ($question{'auteur'} =~ / - F - /) {
@@ -235,5 +226,5 @@ if ($yml) {
   exit;
 }
 
-print '{"source": "'.$question{'source'}.'", "legislature": "'.$question{'legislature'}.'", "type": "'.$question{'type'}.'", "numero": "'.$question{'numero'}.'", "date_question": "'.$question{'date_publi'}.'", "date_reponse": "'.$question{'date_reponse'}.'", "page_question": "'.$question{'page_question'}.'", "page_reponse": "'.$question{'page_reponse'}.'", "ministere": "'.$question{'ministere'}.'", "titre": "'.$question{'titre'}.'", "question": "'. $question{'question'}.'", "reponse": "'.$question{'reponse'}.'", "motif_retrait": "'.$question{'motif_retrait'}.'", "auteur": "'.$question{'auteur'}.'" } '."\n";
+print '{"source": "'.$question{'source'}.'", "legislature": "'.$question{'legislature'}.'", "type": "'.$question{'type'}.'", "numero": "'.$question{'numero'}.'", "date_question": "'.$question{'date_publi'}.'", "date_reponse": "'.$question{'date_reponse'}.'", "page_question": "'.$question{'page_question'}.'", "page_reponse": "'.$question{'page_reponse'}.'", "ministere": "'.$question{'ministere'}.'", "titre": "'.$question{'titre'}.'", "question": "'. $question{'question'}.'", "reponse": "'.$question{'reponse'}.'", "motif_retrait": "'.$question{'motif_retrait'}.'", "auteur": "'.$question{'auteur'}.'", "rappel": "'.$question{'rappel'}.'", "transformee_en": "'.$question{'transformee_en'}.'" } '."\n";
 

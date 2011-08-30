@@ -13,8 +13,8 @@ class commentaireActions extends sfActions
   
   public function executePost(sfWebRequest $request)
   {
-    $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement_id?id=', 'QuestionEcrite' => '@question_id?id=', 'ArticleLoi' => '@loi_article_id?id=', 'Alinea' => '@loi_alinea?id=', 'Texteloi' => '@document?id=');
-    $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "A propos d'une question écrite d");
+    $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement_id?id=', 'Question' => '@question_id?id=', 'ArticleLoi' => '@loi_article_id?id=', 'Alinea' => '@loi_alinea?id=', 'Texteloi' => '@document?id=');
+    $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'Question' => "A propos d'une question d");
 	
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');
@@ -129,7 +129,7 @@ class commentaireActions extends sfActions
       else $present = $about[$this->type].' le '.date('d/m/Y', strtotime($object->date));
     } else {
       $present = '';
-      if ($this->type != 'QuestionEcrite') {
+      if ($this->type != 'Question') {
         if ($section = $object->getSection())
           $present = $section->getSection(1)->getTitre();
         if ($present == '' && $this->type == 'Intervention' && $object->type == 'commission')
@@ -139,7 +139,7 @@ class commentaireActions extends sfActions
       else $present = '';
       $present .= $about[$this->type];
       $nom = '';
-      if ($this->type == 'QuestionEcrite')
+      if ($this->type == 'Question')
         $nom = $object->getParlementaire()->nom;
       else if ($this->type == 'Intervention')
         $nom = $object->getIntervenant()->nom;

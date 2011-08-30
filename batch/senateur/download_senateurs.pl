@@ -21,7 +21,7 @@ sub download_fiche {
 	print " : " if ($verbose);
 	mkdir html unless -e "html/" ;
 	open FILE, ">:utf8", "html/$file";
-	$thecontent = $a->content;
+	$thecontent = decode("windwos-1252", $a->content);
 	$thecontent =~ s/iso-8859-1/utf-8/g;
 	print FILE $thecontent;
 	close FILE;

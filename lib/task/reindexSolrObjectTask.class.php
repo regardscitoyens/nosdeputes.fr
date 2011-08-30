@@ -15,7 +15,7 @@ class reindexSolrObjectTask extends sfBaseTask {
   protected function execute($arguments = array(), $options = array()) {
     $manager = new sfDatabaseManager($this->configuration);
     $class = $arguments['class'];
-    if (!preg_match('/^(Commentaire|Intervention|Amendement|QuestionEcrite|Section|Organisme|Texteloi|Parlementaire)$/', $class)) {
+    if (!preg_match('/^(Commentaire|Intervention|Amendement|Question|Section|Organisme|Texteloi|Parlementaire)$/', $class)) {
       echo "ERREUR : $class n'est pas une classe d'objet indexé dans Solr\n";
       return;
     }

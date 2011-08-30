@@ -11,7 +11,7 @@ class correctCommentairesTask extends sfBaseTask {
 
   protected function execute($arguments = array(), $options = array()) {
     $manager = new sfDatabaseManager($this->configuration);
-    $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "A propos d'une question écrite d");
+    $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'Question' => "A propos d'une question d");
     $comments = Doctrine::getTable('Commentaire')->findAll();
     $loi = '';
     foreach($comments as $comment) {
@@ -36,7 +36,7 @@ class correctCommentairesTask extends sfBaseTask {
         }
       } else {
         $present = '';
-        if ($comment->object_type != 'QuestionEcrite') {
+        if ($comment->object_type != 'Question') {
           if ($section = $object->getSection())
             $present = $section->getSection(1)->getTitre();
           if ($present == '' && $comment->object_type == 'Intervention' && $object->type == 'commission')
@@ -46,7 +46,7 @@ class correctCommentairesTask extends sfBaseTask {
         else $present = '';
         $present .= $about[$comment->object_type];
         $nom = '';
-        if ($comment->object_type == 'QuestionEcrite')
+        if ($comment->object_type == 'Question')
           $nom = $object->getParlementaire()->nom;
         else if ($comment->object_type == 'Intervention') 
           $nom = $object->getIntervenant()->nom;

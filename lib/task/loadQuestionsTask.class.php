@@ -24,7 +24,7 @@ class loadQuestionsTask extends sfBaseTask {
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
             $json = json_decode($line);
-            if (!$json || !$json->source || !$json->legislature || !$json->numero || !$json->date_question || !$json->auteur || !$json->type || !$json->question) {
+            if (!$json || !$json->source || !$json->legislature || !$json->numero || !$json->titre || !$json->date_question || !$json->auteur || !$json->type || !$json->question || !$json->ministere) {
               if (!$json)
                 echo "ERROR json : $line\n";
               else {
@@ -34,6 +34,8 @@ class loadQuestionsTask extends sfBaseTask {
 		  $missing = 'legislature';
 		if (!$json->numero)
 		  $missing = 'numero';
+                if (!$json->titre)
+                  $missing = 'titre';
 		if (!$json->date_question)
 		  $missing ='date';
 		if (!$json->auteur)
@@ -42,45 +44,46 @@ class loadQuestionsTask extends sfBaseTask {
 		  $missing = 'type';
 		if (!$json->question)
 		  $missing = 'question';
+                if (!$json->ministere)
+                  $missing = 'ministere';
 		echo "ERROR json ($missing argument missing) : $line\n";
 	      }
               continue;
             }
-            if (!$json->ministere_interroge || !$json->ministere_attribue || !$json->rubrique || !$json->tete_analyse || !$json->analyse) {
-              echo "ERROR json facu : $line\n";
-              continue;
-            }
             $ct_lus++;
-            $quest = Doctrine::getTable('QuestionEcrite')->findOneBySource($json->source);
+            $quest = Doctrine::getTable('Question')->findOneBySource($json->source);
             if (!$quest) {
               $ct_crees++;
-              $quest = new QuestionEcrite();
+              $quest = new Question();
               $quest->source = $json->source;
               $quest->legislature = $json->legislature;
+              $quest->type = $json->type;
               $quest->numero = $json->numero;
+              $quest->numero = preg_replace('/^(\d+)([a-z])$/i', '\\2\\1', $quest->numero);
             }
             $quest->setAuteur($json->auteur);  // déplacé de la zone de création de nouvelles questions ci-dessus pour permettre correction de l'auteur au besoin, potentiellement lourd, à revert si besoin
             if (!$quest->reponse || $quest->reponse === "") {
               $quest->date = $json->date_question;
-              $quest->ministere = $json->ministere_interroge." / ".$json->ministere_attribue;
-              $quest->themes = $json->rubrique." / ".$json->tete_analyse." / ".$json->analyse;
-              $quest->question = $json->question;
+              $quest->ministere = $json->ministere;
+              if (!$json->rappel)
+                $json->rappel = -1;
+              if (!$json->transformee_en)
+                $json->transformee_en = -1;
+              $quest->titre = $json->titre;
+              $quest->setQuestion($json->question, $json->rappel, $json->transformee_en);
               $quest->content_md5 = md5($json->legislature.$json->question);
-              if ($json->date_retrait) {
-                $quest->date_cloture = $json->date_retrait;
-                if ($json->motif_retrait)
-                  $quest->motif_retrait = $json->motif_retrait;
-              } else if ($json->date_reponse) {
-                $quest->date_cloture = $json->date_reponse;
-              }
+              if ($json->motif_retrait)
+                $quest->motif_retrait = $json->motif_retrait;
             }
-            $quest->reponse = $json->reponse;
+            if ($json->date_reponse)
+              $quest->date_cloture = $json->date_reponse;
+            $quest->setReponse($reponse);
             $quest->save();
             $quest->free();
           }
-          if ($ct_crees) print "$dir$file\n".$ct_lines." questions lues : ".$ct_lus." écrites dont ".$ct_crees." nouvelles.\n";
           unlink($dir.$file);
         }
+        if ($ct_crees) print "$ct_lines questions lues : $ct_lus mises-à-jour dont $ct_crees nouvelles.\n";
         closedir($dh);
       }
     }

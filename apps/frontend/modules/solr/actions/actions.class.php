@@ -18,7 +18,7 @@ class solrActions extends sfActions
       if ($obj->getParlementaire()->__toString()) {
         return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj->getParlementaire(), 'height'=>70));
       }
-    case 'QuestionEcrite':
+    case 'Question':
       return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj->getParlementaire(), 'height'=>70));
     case 'Amendement':
       return '';

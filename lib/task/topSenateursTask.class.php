@@ -142,14 +142,28 @@ class topSenateursTask extends sfBaseTask
   protected function executeQuestionsEcrites($q)
   {
     $parlementaires = $q->select('p.id, count(q.id)')
-      ->from('Parlementaire p, p.QuestionEcrites q')
+      ->from('Parlementaire p, p.Question q')
+      ->andWhere('q.type = ?', 'Question écrite')
       ->groupBy('p.id')
       ->fetchArray();
     foreach ($parlementaires as $p) {
       $this->senateurs[$p['id']]['questions_ecrites']['value'] = $p['count'];
     }
   }
+
   protected function executeQuestionsOrales($q)
+  {
+    $parlementaires = $q->select('p.id, count(q.id)')
+      ->from('Parlementaire p, p.Question q')
+      ->andWhere('q.type != ?', 'Question écrite')
+      ->groupBy('p.id')
+      ->fetchArray();
+    foreach ($parlementaires as $p) {
+      $this->senateurs[$p['id']]['questions_orales']['value'] = $p['count'];
+    }
+  }
+
+  protected function executeQuestionsOralesOld($q)
   {
     $questions = $q->select('p.id, count(DISTINCT i.seance_id) as count')
       ->from('Parlementaire p, p.Interventions i')
@@ -242,7 +256,7 @@ class topSenateursTask extends sfBaseTask
     $this->executeCommissionInterventions(clone $qi);
     $this->executeHemicycleInterventions(clone $qi);
     $this->executeHemicycleInvectives(clone $qi);
-    $this->executeQuestionsOrales(clone $qi);
+//    $this->executeQuestionsOralesOld(clone $qi);
     
     print "Intervention DONE\n";
 
@@ -259,8 +273,9 @@ class topSenateursTask extends sfBaseTask
     $qq->where('q.date >= ?', date('Y-m-d', strtotime($date)));
     $qq->andWhere('q.date < ?', date('Y-m-d', strtotime("$date +1month")));
     $this->executeQuestionsEcrites($qq);
+    $this->executeQuestionsOrales($qq);
     
-    print "Question DONE\n";
+    print "Questions DONE\n";
 
     $qd = clone $q;
     $qd->where('t.date >= ?', date('Y-m-d', strtotime($date)));
@@ -360,7 +375,8 @@ class topSenateursTask extends sfBaseTask
     $this->executeQuestionsEcrites($qq);
     $this->orderSenateurs('questions_ecrites');
 
-    $this->executeQuestionsOrales(clone $qi);
+    $this->executeQuestionsOrales(clone $qq);
+//    $this->executeQuestionsOralesOld(clone $qi);
     $this->orderSenateurs('questions_orales');
 
 
@@ -429,7 +445,9 @@ class topSenateursTask extends sfBaseTask
      
       $this->executeQuestionsEcrites($qq);
       
-      $this->executeQuestionsOrales(clone $qi);
+//      $this->executeQuestionsOralesOld(clone $qi);
+      $this->executeQuestionsOrales(clone $qq);
+
 
       $qd = clone $q;
       $qd->andWhere('(t.date > ? AND t.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),

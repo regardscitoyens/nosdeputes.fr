@@ -1,18 +1,18 @@
 <?php use_helper('Text') ?>
   <div class="question" id="<?php echo $question->id; ?>">
     <div>
-<?php if (!isset($nophoto)) {
+<?php $url = url_for('@question_numero?numero='.$question->numero.'&legi='$question->legislature);
+if (!isset($nophoto)) {
   $parlementaire = $question->getParlementaire();
-  echo '<h2>'.link_to($parlementaire->nom.'&nbsp;: '.$question->getTitre(), '@question_numero?numero='.$question->numero)."</h2>";
-} else echo '<h2>'.link_to($question->getTitre(), '@question_numero?numero='.$question->numero)."</h2>"; ?>
+  echo '<h2>'.link_to($parlementaire->nom.'&nbsp;: '.$question->getFullTitre(), $url)."</h2>";
+} else echo '<h2>'.link_to($question->getFullTitre(), $url)."</h2>"; ?>
 </div>
   <div class="texte_question"><?php
     if (!isset($nophoto)) {
-      echo '<a href="'.url_for('@question_numero?numero='.$question->numero).'" class="intervenant">';
+      echo '<a href="'.$url.'" class="intervenant">';
       include_partial('parlementaire/photoParlementaire', array('parlementaire' => $parlementaire, 'height' => 70));
       echo '</a>';
     }
-   echo '<p>Thèmes : '.str_replace('/', ';', $question->getThemes()).'</p>';
   $inter = preg_replace('/<\/?[a-z]*>|\&[^\;]+\;/i', ' ', $question->getQuestion());
   $p_inter = '';
   if (isset($highlight)) {
@@ -26,6 +26,6 @@
   echo $p_inter;
 ?>
   <div class="contexte">
-    <a href="<?php echo url_for('@question_numero?numero='.$question->numero); ?>">Lire la suite de la question</a></div>
+    <a href="<?php echo $url; ?>">Lire la suite de la question</a></div>
   </div>
   </div>
