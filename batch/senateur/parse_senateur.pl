@@ -5,6 +5,8 @@ use URI::Escape;
 use HTML::Entities;
 use Encode;
 use utf8;
+require "../common/common.pm";
+
 
 $file = shift;
 $yml = shift || 0;
@@ -17,17 +19,6 @@ $content =~ s/  / /g;
 @content = ();
 seek($fh, 0, 0);
 $p = HTML::TokeParser->new($fh);
-
-sub datize {
-	$date = shift;
-	%mois = ('janvier'=>'01', 'fvrier'=>'02', 'mars'=>'03', 'avril'=>'04', 'mai'=>'05', 'juin'=>'06', 'juillet'=>'07','aot'=>'08', 'septembre'=>'09', 'octobre'=>'10', 'novembre'=>'11', 'dcembre'=>'12');
-	$date =~ /([0-9]*) (\S*) ([0-9]*)/;
-	$jour = $1;
-	$mois = $2;
-	$annee = $3;
-	$mois =~ s/[^a-z].//;
-	return sprintf("%02d/%02d/%04d", $jour,$mois{$mois},$annee);
-}
 
 my %senateur;
 my %groupes;
@@ -128,10 +119,10 @@ sub mandats {
 		$election = $p->get_text('/li', '/ul');
 		$election =~ s/\n/ /g;
 		if ($election =~ /\s+([0-9]* \S* [0-9]{4})\s+[jusqea']+\s+([0-9]* \S* [0-9]{4})/) {
-			$date1 = datize($1);
-			$date2 = datize($2);
+			$date1 = join '/', reverse datize($1);
+			$date2 = join '/', reverse datize($2);
 		} elsif ($election =~ /\s+([0-9]* \S* [0-9]{4})/) {
-			$date1 = datize($1);
+			$date1 = join '/', reverse datize($1);
 		}
 		$suppleant_de = "";
 		if ($election =~ /\((.*)\)/) {
@@ -197,7 +188,7 @@ if ($content =~/<dt>Profession<\/dt>[^<]*<dd>([^<]+)<\/dd/) {
 }
 
 if ($content =~ /N..e? le ([0-9]* \S* [0-9]*)/) {
-	$senateur{'Naissance'} = datize($1);
+	$senateur{'Naissance'} = join '/', reverse datize($1);
 }
 
 %mails = ();
