@@ -24,7 +24,7 @@ class OrganismeTable extends Doctrine_Table
       ->where('o.nom LIKE ?', $nom.'%')
       ->orderBy('LENGTH(o.nom) DESC')
       ->fetchOne();
-    if ($type != 'parlementaire' || strlen($org->nom) < 50)
+    if ($type != 'parlementaire' || !$org || strlen($org->nom) < 50)
       $org = $this->findOneByNom($nom);
 
     if ($org) {
