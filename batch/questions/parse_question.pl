@@ -163,12 +163,12 @@ $question{'reponse'} = clean_texte($question{'reponse'});
 
 if (! $question{ministere} ) {
   $question{ministere} = $question{'question'};
-  $question{ministere} =~ s/(ministre d'état|garde des sceaux), *//ig;
+  $question{ministere} =~ s/(ministre d'état|garde des sceaux)[, ]+//ig;
   $question{ministere} =~ s/^<p>(La parole([^<]+)<\/p><p>)?//i;
   $question{ministere} =~ s/^[^<\.]* *(m([\.mle]+|onsieur|adame) *$nom_auteur[\. ,]+([^<\.\s]+ +)+)?m([\.mle]+|onsieur|adame) *l[ea'] *(premier ministre|(ministre|secr[eé]taire|haute?[ \-]commissaire) +[aàcd][^<\.]+[\.<]).*$/$5/i;
   $question{ministere} =~ s/^[^<]+(m([\.mle]+|onsieur|adame) *$nom_auteur[\. ,]+([^<\.\s]+ +)+)?m([\.mle]+|onsieur|adame) *l[ea'] *(premier ministre|(ministre|secr[eé]taire|haute?[ \-]commissaire) +[aàcd][^<\.]+[\.<]).*$/$5/i;
   $question{ministere} =~ s/^.*(m([\.mle]+|onsieur|adame) *$nom_auteur[\. ,]+([^<\.\s]+ +)+)?m([\.mle]+|onsieur|adame) *l[ea'] *(premier ministre|(ministre|secr[eé]taire|haute?[ \-]commissaire) +[aàcd][^<\.]+[\.<]).*$/$5/i;
-  $question{ministere} =~ s/[, \(]+(l'avis|le désarroi|pour savoir|la nature des|surtout|de la pratique|et lui|indiquer|de l'éclairer|les disparités|les dispositions|s'agissant|de dresser|afin|du passage|la gravité|par|en matière|les perspectives|la suite|l'importance|l'intérêt|commen?t?|l'analyse|l'état actuel|à l'instar|sur|les termes|des conditions|au (sujet|regard)|à propos|de bien|des précisions|quant|de (lui|sa)|si|s'il|concernant|qu[ilunesaxà']+|d(e |')(s'engag|precis|expos|accord)er|des modalités|pour lui|pour obtenir|de fournir|[ls]a question|dans|tou(s|te)|le cas|vise (à|au)|une?|suite (à|au)|la situation|entend|l'amendement)[ ,].*$//i;
+  $question{ministere} =~ s/[, \(]+(l'avis|le désarroi|pour savoir|la nature des|surtout|de la pratique|et lui|indiquer|de l'éclairer|les disparités|les dispositions|s'agissant|de dresser|afin|du passage|la gravité|par|en matière|les per?spectives|la suite|l'importance|l'intérêt|commen?t?|l'analyse|l'état actuel|à l'instar|sur|les termes|des conditions|au (sujet|regard)|à propos|de bien|des précisions|quant|de (lui|sa)|si|s'il|concernant|qu[ilunesaxà']+|d(e |')(s'engag|precis|expos|accord)er|des modalités|pour lui|pour obtenir|de fournir|[ls]a question|dans|tou(s|te)|le cas|vise (à|au)|une?|suite (à|au)|a pu poser|la situation|entend|l'amendement)[ ,].*$//i;
 }
 
 $question{ministere} =~ s/^<p>//;
@@ -178,7 +178,7 @@ $question{ministere} =~ s/(chargé|délégué)e/$1/ig;
 $question{ministere} =~ s/ *, *porte[ \-]parole du\sgouvernement//ig;
 $question{ministere} = ucfirst(lc($question{ministere}));
 $question{ministere} =~ s/[Éée]tat/État/ig;
-$question{ministere} =~ s/(ministre d'État|garde des sceaux), *//ig;
+$question{ministere} =~ s/(ministre d'État|garde des sceaux)[, ]+//ig;
 $question{ministere} =~ s/premier ministre/Premier Ministre/i;
 $question{ministere} =~ s/(auprès )(d[eu] (la )?ministè?re)/$1du Ministère/i;
 $question{ministere} =~ s/ministè?re/Ministère/ig;

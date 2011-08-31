@@ -55,7 +55,7 @@ class Organisme extends BaseOrganisme
          "soc" => "Socialiste",
          "rdse" => "Gauche démocrate et républicaine",
          "ni" => "Réunion administrative des Sénateurs ne figurant sur la liste d'aucun groupe politique",
-         "nc" => "Union centriste",
+         "uc" => "Union centriste",
 	 "crc-spg" => "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche" );
       return $hashmap["$acro"];
     } else {

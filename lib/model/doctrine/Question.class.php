@@ -41,11 +41,11 @@ class Question extends BaseQuestion
     return $titre;
   }
 
-  public function setAuteur($senateur) {
-    if (preg_match('/^(.*) - (.*) - (.*) - (.*)$/', $senateur, $match))
+  public function setAuteur($sen) {
+    if (preg_match('/^(.*) - (.*) - (.*) - (.*)$/', $sen, $match))
       $senateur = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($match[1], $match[2], $match[4], $match[3]);
-    else $senateur = Doctrine::getTable('Parlementaire')->findOneByNom($senateur);
-    if (!$senateur) print "ERROR: Auteur introuvable in ".$this->source." : $senateur\n";
+    else $senateur = Doctrine::getTable('Parlementaire')->findOneByNom($sen);
+    if (!$senateur) print "ERROR: Auteur introuvable in ".$this->source." : $sen\n";
     else {
       $this->_set('parlementaire_id', $senateur->id);
       $senateur->free();
@@ -67,13 +67,13 @@ class Question extends BaseQuestion
     $ministere = str_replace('délégué aux', 'des', $ministere);
     $ministere = str_replace('chargé', '', $ministere);
     $ministere = str_replace('de la mise en oeuvre', '', $ministere);
-    if (preg_match('/^(.*)(affaires|espace|fonction|collectivités|cohésion|sécurité|anciens|enseignement|éducation|commerce)( \S+)/', $ministere, $match))
-      $ministere = $match[1].$match[2].$match[3];
+    $ministere = preg_replace('/^([^,]+),.*$/', '\\1', $ministere);
+    if (preg_match('/^((Ministère|Haut-Commissariat|Secrétariat d\'État) ((à|de) l\'|(à la|au|aux|du|des|de la) ))(affaires|espace|fonction|collectivités|cohésion|sécurité|anciens|enseignement|éducation|commerce)(( *[^ ]+) +$)/', $ministere, $match))
+      $ministere = $match[1].$match[6].$match[7];
     else if (preg_match('/petites et moyennes entreprises/', $ministere))
       $ministere = preg_replace('/(petites et moyennes entreprises).*$/', '\\1', $ministere);
     else if (! preg_match('/(français de l\'étranger|plan de relance|politique de la ville|aménagement du territoire|relations avec le parlement)/', $ministere))
-      $ministere = preg_replace('/ (aux|du|des?( l[a\'])?)(\s?\S+)[\s,].*$/', ' \\1\\3', $ministere);
-print $ministere;    
+      $ministere = preg_replace('/^(Ministère|Haut-Commissariat|Secrétariat d\'État) ((à|de) l\'|(à la|au|aux|du|des|de la) )([^ ]+) +.*$/', '\\1 \\2\\5', $ministere);
     return preg_replace('/[\s,]+$/', '', $ministere);
   }
 
