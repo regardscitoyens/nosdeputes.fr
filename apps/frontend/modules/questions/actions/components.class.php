@@ -3,10 +3,14 @@
 class QuestionsComponents extends sfComponents
 {
   public function executeParlementaire() {
+    if (!$this->type)
+      throw new Exception('type parameter missing');
     $query = Doctrine::getTable('Question')->createQuery('q')
-      ->where('q.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('q.type = ?', "Question écrite")
-      ->orderBy('q.date DESC');
+      ->where('q.parlementaire_id = ?', $this->parlementaire->id);
+    if ($this->type === "écrites")
+      $query->andWhere('q.type = ?', "Question écrite");
+    else $query->andWhere('q.type != ?', "Question écrite");
+    $query->orderBy('q.date DESC');
     if (isset($this->limit))
       $query->limit($this->limit);
     $this->questions = $query->execute();
