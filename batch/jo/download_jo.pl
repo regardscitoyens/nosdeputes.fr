@@ -25,11 +25,12 @@ $agent->get($url_html);
 
 $doc = $agent->{content};
 $doc =~ s/\n/ /g;
-if ($doc !~ /class="rubrique_02">Assembl&eacute;e nationale<\/p>(.*)(COMMISSIONS|S&eacute;nat)/) {
+if ($doc !~ /class="rubrique_02">S(é|&eacute;)nat<\/p>(.*)(COMMISSIONS|S&eacute;nat)/) {
+    print STDERR "no Senat section found\n";
     exit 1;
 }
 
-$doc = $1;
+$doc = $2;
 if ($doc =~ /(.*)COMMISSIONS/) {
     $doc = $1;
 }
