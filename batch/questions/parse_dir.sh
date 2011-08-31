@@ -3,6 +3,7 @@
 dir=$1
 yml=$2
 
+if [ ! -d json ] ; then mkdir json; fi
 if [ -z $dir ]; then
   dir="html"
 fi
