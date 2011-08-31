@@ -53,7 +53,7 @@ class Question extends BaseQuestion
   }
 
   public static function shortenize($num) {
-    return preg_replace('/^\d*[a-z]/i', '', preg_replace('/^0+/', '', $num));
+    return preg_replace('/^0+/', '', preg_replace('/^\d*[a-z]/i', '', $num));
   }
 
   public function getShortNum() {
