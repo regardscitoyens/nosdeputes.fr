@@ -1,6 +1,6 @@
 <?php
 $titre = 'Questions';
-if (preg_match('/^(écrites|orales)$/', $type)) $titre .= $type.'s';
+if (preg_match('/^(écrites|orales)$/', $type)) $titre .= " ".$type;
 $sf_response->setTitle($titre.' de '.$parlementaire->nom);
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre, 'rss' => '@parlementaire_questions_rss?slug='.$parlementaire->slug));
 ?>

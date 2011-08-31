@@ -2,6 +2,8 @@
 
 use HTML::TokeParser;
 use URI::Escape;
+use HTML::Entities;
+use Encode;
 use utf8;
 
 $file = shift;

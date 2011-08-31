@@ -14,13 +14,13 @@ class loadQuestionsTask extends sfBaseTask {
     $dir = dirname(__FILE__).'/../../batch/questions/json/';
     $manager = new sfDatabaseManager($this->configuration);
 
+    $ct_lines = 0;
+    $ct_lus = 0;
+    $ct_crees = 0;
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == ".") continue;
-          $ct_lines = 0;
-          $ct_lus = 0;
-          $ct_crees = 0;
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
             $json = json_decode($line);
@@ -56,10 +56,11 @@ class loadQuestionsTask extends sfBaseTask {
               $ct_crees++;
               $quest = new Question();
               $quest->source = $json->source;
+              $annee = preg_replace('#^.*senat\.fr/questions/base/20(\d\d)/.*$#', '\\1', $quest->source);
               $quest->legislature = $json->legislature;
               $quest->type = $json->type;
               $quest->numero = $json->numero;
-              $quest->numero = preg_replace('/^(\d+)([a-z])$/i', '\\2\\1', $quest->numero);
+              $quest->numero = preg_replace('/^(\d+)([a-z])$/i', $annee.'\\2\\1', $quest->numero);
             }
             $quest->setAuteur($json->auteur);  // déplacé de la zone de création de nouvelles questions ci-dessus pour permettre correction de l'auteur au besoin, potentiellement lourd, à revert si besoin
             if (!$quest->reponse || $quest->reponse === "") {
@@ -77,7 +78,7 @@ class loadQuestionsTask extends sfBaseTask {
             }
             if ($json->date_reponse)
               $quest->date_cloture = $json->date_reponse;
-            $quest->setReponse($reponse);
+            $quest->setReponse($json->reponse);
             $quest->save();
             $quest->free();
           }

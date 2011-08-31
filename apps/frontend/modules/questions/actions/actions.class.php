@@ -21,15 +21,19 @@ class questionsActions extends sfActions
   public function executeShow(sfWebRequest $request)
   {
     $numero = strtoupper($request->getParameter('numero'));
-    $this->forward404Unless(preg_match('/^([ACEGS]?)(\d+)$/i', $numero, $match));
+    $this->forward404Unless(preg_match('/^(\d*[ACEGS])?(\d+)$/i', $numero, $match));
     if ($match[1]) $numero = $match[1].sprintf("%04d",$match[2]);
     else $numero = sprintf("%05d",$match[2]);
-    if (! ($legi = $request->getParameter('legi') && preg_match('/\d{2}/', $legi)))
-      $legi = sfConfig::get('app_legislature', 13);
-    $this->question = Doctrine::getTable('Question')
-      ->createquery('q')
-      ->where('q.numero = ?', $numero)
-      ->andWhere('q.legislature = ?', $legi)
+    if (preg_match('/^(\d{2})$/', $request->getParameter('legi'), $match))
+      $legi = $match[1];
+    else $legi = sfConfig::get('app_legislature', 13);
+    $query = Doctrine::getTable('Question')
+      ->createquery('q');
+    if (preg_match('/^[AECGS]/', $numero))
+      $query->where('q.numero LIKE ?', '%'.$numero)
+        ->orderBy('q.date DESC');
+    else $query->where('q.numero = ?', $numero);
+    $this->question = $query->andWhere('q.legislature = ?', $legi)
       ->fetchOne();
     $this->forward404Unless($this->question);
     $this->parlementaire = Doctrine::getTable('Parlementaire')->find($this->question->parlementaire_id);
@@ -45,9 +49,9 @@ class questionsActions extends sfActions
       ->where('q.parlementaire_id = ?', $this->parlementaire->id)
       ->orderBy('date2 DESC, q.numero DESC');
     if ($this->type === "ecrites")
-      $this->questions->addWhere('q.type = ?', "Questions écrite");
+      $this->questions->andWhere('q.type = ?', "Question écrite");
     if ($this->type === "orales")
-      $this->questions->addWhere('q.type != ?', "Questions écrite");
+      $this->questions->andWhere('q.type != ?', "Question écrite");
 
     $request->setParameter('rss', array(array('link' => '@parlementaire_questions_rss?slug='.$this->parlementaire->slug, 'title'=>'Les dernières questions écrites de '.$this->parlementaire->nom.' en RSS')));
     $this->type = str_replace('ecrites', 'écrites', $this->type);

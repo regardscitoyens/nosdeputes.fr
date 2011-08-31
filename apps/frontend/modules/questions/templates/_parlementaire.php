@@ -3,7 +3,7 @@
 <?php return ;}?>
 <ul>
 <?php foreach($questions as $question) {
-  $titre = $question->shortTitre();
+  $titre = $question->getShortTitre();
   if ($type === "orale")
     $titre = $question->type." : ".$titre;
   if ($question->nb_commentaires)

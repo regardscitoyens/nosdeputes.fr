@@ -47,6 +47,7 @@ $string =~ s/(<t[dh]>[^<]+)(<[brp\/]+>\n?)+/$1 /g;
 $string =~ s/(<[brp\/]+>\n?)+([^<]+<\/t[dh]>)/ $2/g;
 $string =~ s/(<\/t(able|r|d|h)>)\n?/$1\n/g;
 $string =~ s/\s+,/,/;
+$string =~ s/\\/\//g;
 
 if ($display_text) {
   utf8::encode($string);
@@ -58,8 +59,8 @@ $read_txt = 0;
 foreach $line (split /\n/, $string) {
   if ($line =~ /<h1>(.*)<\/h1>/) {
     $question{'titre'} = $1;
-    $question{'titre'} =~ s/"([^"]*)"/« $1 »/g;
-    $texte =~ s/"/\\"/g;
+    $question{'titre'} =~ s/"([^"<]*)"/« $1 »/g;
+    $question{'titre'} =~ s/"/'/g;
   } elsif ($line =~ /<h2>(\d+).*législature<\/h2>/) {
     $question{'legislature'} = $1;
   } elsif ($line =~ /<h2>(Question.*)\s+n°\s*(\d+[a-z]?)\s/i) {
@@ -106,10 +107,10 @@ foreach $line (split /\n/, $string) {
     $read_txt++;
   } elsif (!$question{'ministere'} && $line =~ /<p>Transmise (au|à)( [mM]([\.mle]+|onsieur|adame) l[ea'])? ?(.*)</) {
     $question{'ministere'} = $4;
-  } elsif ($line =~ /<p>Transformée\s?(en )?(QOSD)?(<a[^>]+>(\d+[A-Z]?)<\/a>)?/) {
+  } elsif ($line =~ /<p>Transformée\s?(en )?(QOSD)?(<a[^>]+qseq(\d+[A-Z]?)\.htm)?/i) {
     $question{'transformee_en'} = uc($4);
-  } elsif ($line =~ /<h3>Rappelle la question (n°)? ?<a[^>]+>(n°)? ?(\d+[a-z]?)[^\d]/i) {
-    $question{'rappel'}= uc($3);
+  } elsif ($line =~ /<h3>Rappelle la question (n°)? ?<a[^>]+qseq(\d+[A-Z]?)\.htm/i) {
+    $question{'rappel'} = uc($3);
   } elsif ($read_txt && ($line =~ />(\S\s*)+</ || $line =~ /<\/?t(able|d|r|h)/ || $line !~ /^</)) {
     if ($line =~ /^([^<].*)$/) {
       $line = "<p>".$line."</p>";
@@ -131,8 +132,8 @@ foreach $line (split /\n/, $string) {
     }
     $texte =~ s/<[pbr\/]+>Voir la vidéo<[pbr\/]+>/<br\/>/g;
     $texte =~ s/(\s*<br\/?>)+/<\/p><p>/g;
-    $texte =~ s/"([^"]*)"/« $1 »/g;
-    $texte =~ s/"/\\"/g;
+    $texte =~ s/"([^"<]*)"/« $1 »/g;
+    $texte =~ s/"/'/g;
     $texte =~ s/^(<\/p>)+//g;
     $texte =~ s/(<p>)+$//g;
     $texte =~ s/^<a/<p><a/;
@@ -167,12 +168,7 @@ if (! $question{ministere} ) {
   $question{ministere} =~ s/^[^<\.]* *(m([\.mle]+|onsieur|adame) *$nom_auteur[\. ,]+([^<\.\s]+ +)+)?m([\.mle]+|onsieur|adame) *l[ea'] *(premier ministre|(ministre|secr[eé]taire|haute?[ \-]commissaire) +[aàcd][^<\.]+[\.<]).*$/$5/i;
   $question{ministere} =~ s/^[^<]+(m([\.mle]+|onsieur|adame) *$nom_auteur[\. ,]+([^<\.\s]+ +)+)?m([\.mle]+|onsieur|adame) *l[ea'] *(premier ministre|(ministre|secr[eé]taire|haute?[ \-]commissaire) +[aàcd][^<\.]+[\.<]).*$/$5/i;
   $question{ministere} =~ s/^.*(m([\.mle]+|onsieur|adame) *$nom_auteur[\. ,]+([^<\.\s]+ +)+)?m([\.mle]+|onsieur|adame) *l[ea'] *(premier ministre|(ministre|secr[eé]taire|haute?[ \-]commissaire) +[aàcd][^<\.]+[\.<]).*$/$5/i;
-
-#  $question{ministere} =~ s/^M([\.mle]+|onsieur|adame) *$nom_auteur\.?[ ,]((\S+ +)+)?[mM]a question[ ,](\S+ +)+[mM]([\.mle]+|onsieur|adame) *l[ea'] ?([^<\.]+)[\.<].*$/$7/;
-#  $question{ministere} =~ s/^<p>([^<\.]+,)?M([\.mle]+|onsieur|adame) *$nom_auteur *(\S+ +)+[mM]([\.mle]+|onsieur|adame) *l[ea'] *([pP]remier *[mM]inistre|([mM]inistre|[hH]aute?[ \-][cC]ommissaire|[sS]ecr[eé]taire) +[aàcd][^<\.]+)[\.<].*$/$5/;
-#  $question{ministere} =~ s/^<p>.*[mM]([\.mle]+|onsieur|adame) +l[ea'] ?(premier +ministre|(ministre|secr[eé]taire|haute?[ \-]commissaire)[^<\.]+)[\.<].*$/$2/i;
-#print $question{ministere}."\n";
-  $question{ministere} =~ s/[, ]+(sur|les termes|des conditions|au (sujet|regard)|à propos|de bien vouloir|quant|de (lui|sa)|si|s'il|concernant|qu[ilunesaxà']+|d(e |')(s'engag|precis|expos|accord)er|sa question|dans|tou(s|te)|le cas|vise (à|au)|une?|suite (à|au)|la situation|entend|l'amendement)[ ,].*$//i;
+  $question{ministere} =~ s/[, \(]+(l'avis|le désarroi|pour savoir|la nature des|surtout|de la pratique|et lui|indiquer|de l'éclairer|les disparités|les dispositions|s'agissant|de dresser|afin|du passage|la gravité|par|en matière|les perspectives|la suite|l'importance|l'intérêt|commen?t?|l'analyse|l'état actuel|à l'instar|sur|les termes|des conditions|au (sujet|regard)|à propos|de bien|des précisions|quant|de (lui|sa)|si|s'il|concernant|qu[ilunesaxà']+|d(e |')(s'engag|precis|expos|accord)er|des modalités|pour lui|pour obtenir|de fournir|[ls]a question|dans|tou(s|te)|le cas|vise (à|au)|une?|suite (à|au)|la situation|entend|l'amendement)[ ,].*$//i;
 }
 
 $question{ministere} =~ s/^<p>//;

@@ -33,7 +33,7 @@ class Question extends BaseQuestion
   }
 
   public function getFullTitre() {
-    $titre = $this->type.' N° '.$this->numero.' du '.myTools::displayVeryShortDate($this->date).' ('.preg_replace('/\s*[\/\(].*$/', '', $this->ministere).')';
+    $titre = $this->type.' N° '.self::shortenize($this->numero).' du '.myTools::displayVeryShortDate($this->date).' ('.$this->uniqueMinistere().')';
     if ($this->motif_retrait === "caduque") $titre .= ' (Caduque)';
     else if ($this->motif_retrait || ($this->date_cloture && !$this->reponse && date("Y-m-d") > $this->date_cloture)) $titre .= ' (Retirée)';
     else if (!$this->reponse) $titre .= ' (Sans réponse)';
@@ -52,6 +52,14 @@ class Question extends BaseQuestion
     }
   }
 
+  public static function shortenize($num) {
+    return preg_replace('/^\d*[a-z]/i', '', preg_replace('/^0+/', '', $num));
+  }
+
+  public function getShortNum() {
+    return self::shortenize($this->numero);
+  }
+
   public function uniqueMinistere() {
     $ministere = str_replace('Secrétariat d\'État auprès du ', '', $this->ministere);
     $ministere = str_replace('délégué à', 'de', $ministere);
@@ -64,30 +72,39 @@ class Question extends BaseQuestion
     else if (preg_match('/petites et moyennes entreprises/', $ministere))
       $ministere = preg_replace('/(petites et moyennes entreprises).*$/', '\\1', $ministere);
     else if (! preg_match('/(français de l\'étranger|plan de relance|politique de la ville|aménagement du territoire|relations avec le parlement)/', $ministere))
-      $ministere = preg_replace('/(aux |du |de [sl](a |\')?)(\S+).*$/', '\\1\\2', $ministere);
-    return $ministere;
+      $ministere = preg_replace('/ (aux|du|des?( l[a\'])?)(\s?\S+)[\s,].*$/', ' \\1\\3', $ministere);
+print $ministere;    
+    return preg_replace('/[\s,]+$/', '', $ministere);
   }
 
   public function setQuestion($question, $rappel=-1, $transformee_en=-1) {
     $question = preg_replace("/<a href='([^']+)'>/i", '<a href="\\1">', $question);
-    if ($rappel != -1) {
-      $shortnum = preg_replace('/^0+/', '', $rappel);
-      $shortnumorder = preg_replace('/^(\d+)([a-z])$/i', '\\2\\1', $shortnum);
-      $question = preg_replace("/(question )n°\s*0*($shortnum)/i", '<a href="##Q'.preg_replace('/^(\d+)([a-z])$/i', '\\2\\1', $rappel).'##">\\1N°&nbsp;'.$shortnumorder.'</a>', $question);
+    if (preg_match('/^(\d{2})\d{2}(\d{4,5})([\dA-Z]?)$/', $rappel, $match)) {
+      $annee = $match[1]; $num = $match[2]; $lettre = $match[3];
+      $shortnum = preg_replace('/^0+/', '', $num);
+      $id = $lettre;
+      if ($lettre) $id = $annee.$lettre;
+      $shortid = $id.$shortnum;
+      $id .= $num;
+      $question = preg_replace("/(question[^<\.]+)n\s*°\s*0*($shortnum\/?$lettre)/i", '<a href="##Q'.$id.'##">\\1N°&nbsp;'.$shortid.'</a>', $question);
     }
-    if ($transformee_en) {
-      $shortnum = preg_replace('/^0+/', '', $transformee_en);
-      $shortnumorder = preg_replace('/^(\d+)([a-z])$/i', '\\2\\1', $shortnum);
-      $question = '<p><em>Cette question a été transformée en <a href="##Q'.preg_replace('/^(\d+)([a-z])$/i', '\\2\\1', $transformee_en).'##">question N°&nbsp;'.$shortnumorder.'</a>.</em></p>'.$question;
+    if (preg_match('/^(\d{2})\d{2}(\d{4,5})([\dA-Z]?)$/', $transformee_en, $match)) {
+      $annee = $match[1]; $num = $match[2]; $lettre = $match[3];
+      $shortnum = preg_replace('/^0+/', '', $num);
+      $id = $lettre;
+      if ($lettre) $id = $annee.$lettre;
+      $shortid = $id.$shortnum;
+      $id .= $num;
+      $question = '<p><em>Cette question a été transformée en <a href="##Q'.$id.'##">question N°&nbsp;'.$shortid.'</a>.</em></p>'.$question;
     }
     $this->_set('question', $question);
   }
 
-  public function getQuestion() {
- #   if (!function_exists('url_for'))
- #     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+  public function getQuestionRiche() {
+    if (!function_exists('url_for'))
+      sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     $question = $this->_get('question');
-    if (preg_match_all('/##Q([ACEGS]?\d+)##/', $question, $match)) foreach ($match[1] as $q) {
+    if (preg_match_all('/##Q(\d*[ACEGS]?\d+)##/', $question, $match)) foreach ($match[1] as $q) {
       $url = url_for('@question_numero?legi='.$this->legislature.'&numero='.$q);
       $question = str_replace('##Q'.$q.'##', $url, $question);
     }
@@ -99,11 +116,11 @@ class Question extends BaseQuestion
     $this->_set('reponse', $reponse);
   }
 
-  public function getReponse() {
-  #  if (!function_exists('url_for'))
-  #    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+  public function getReponseRiche() {
+    if (!function_exists('url_for'))
+      sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     $reponse = $this->_get('reponse');
-    if ($this->type === "Question écrite" && preg_match("/<p>([^<]+question[^<]+n\s*°\s*(\d+\/?[ACEGS]?)[^<]*)<\/p>/i", $reponse, $match)) {
+    if ($this->type === "Question écrite" && preg_match("/<p>([^<]+question[^<\.]+n\s*°\s*(\d+\/?[ACEGS]?)[^<]*)<\/p>/i", $reponse, $match)) {
       $parag = $match[1];
       $numero = $match[2];
       $shortnum = preg_replace('/\//', '', preg_replace('/^0+/', '', $numero));
@@ -116,10 +133,12 @@ class Question extends BaseQuestion
       $reponse = preg_replace("/(question[^<]+)n\s*°\s*$numero/", '<a href="'.$link.'">\\1N°&nbsp;'.$shortnum, $reponse);
     }
     if (preg_match('/[ACGSE]/', $this->numero)) {
-      if (preg_match('/<a href="([^"#]+)(#[^"]+)?">Voir le compte rendu de la séance/', $reponse, $match)) {
-        $urlseance = $match[1];
+      $reponse = preg_replace('/<p>(M[\.mle]+ [^\.]+\.)/', '<p><b>\\1</b>', $reponse);
+      if (preg_match('/<a href="[^"#]+(senat\.fr\/seances\/[^"#]+)(#[^"]+)?">Voir le compte rendu de la séance/', $reponse, $match)) {
+        $urlseance = "http://www.".$match[1];
 // $itv = SQL select seance_id, section_id from intervention where source like $urlseance
       }
+      $itv = "";
       if (!$itv) {
         $debut_reponse = $reponse;
 // SQL find seance correspondante from debut réponse et date autour date_reponse

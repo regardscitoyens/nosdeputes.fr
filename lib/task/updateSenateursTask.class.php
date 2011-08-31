@@ -42,6 +42,9 @@ class updateSenateursTask extends sfBaseTask
 	    }
 	    $json->nom = trim($json->nom);
 	    //	    echo "-".$json->nom.strlen($json->nom)." ".$json->id_senat."\n";
+	    if (preg_match('/(\d{4})$/', $json->fin_mandat, $match)) {
+              if ($match[1] < 2004) continue;
+            }
 	    $parl = Doctrine::getTable('Parlementaire')->findOneByNom($json->nom);
 	    if (!$parl) {
 	      $parl = new Parlementaire();

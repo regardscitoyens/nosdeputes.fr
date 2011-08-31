@@ -142,7 +142,7 @@ class topSenateursTask extends sfBaseTask
   protected function executeQuestionsEcrites($q)
   {
     $parlementaires = $q->select('p.id, count(q.id)')
-      ->from('Parlementaire p, p.Question q')
+      ->from('Parlementaire p, p.Questions q')
       ->andWhere('q.type = ?', 'Question écrite')
       ->groupBy('p.id')
       ->fetchArray();
@@ -154,7 +154,7 @@ class topSenateursTask extends sfBaseTask
   protected function executeQuestionsOrales($q)
   {
     $parlementaires = $q->select('p.id, count(q.id)')
-      ->from('Parlementaire p, p.Question q')
+      ->from('Parlementaire p, p.Questions q')
       ->andWhere('q.type != ?', 'Question écrite')
       ->groupBy('p.id')
       ->fetchArray();

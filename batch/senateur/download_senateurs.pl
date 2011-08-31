@@ -47,10 +47,19 @@ sub find_senateurs {
 
 find_senateurs("http://www.senat.fr/senateurs/senatl.html");
 find_senateurs("http://www.senat.fr/senateurs/news.html");
-find_senateurs("http://www.senat.fr/senateurs/news_2009-2010.html");
-find_senateurs("http://www.senat.fr/senateurs/news_2008-2009.html");
-find_senateurs("http://www.senat.fr/senateurs/news_2007-2008.html");
-find_senateurs("http://www.senat.fr/senateurs/news_2006-2007.html");
-find_senateurs("http://www.senat.fr/senateurs/news_2005-2006.html");
-find_senateurs("http://www.senat.fr/senateurs/news_2004-2005.html");
+
+#Enable below on first load
+#find_senateurs("http://www.senat.fr/senateurs/news_2009-2010.html");
+#find_senateurs("http://www.senat.fr/senateurs/news_2008-2009.html");
+#find_senateurs("http://www.senat.fr/senateurs/news_2007-2008.html");
+#find_senateurs("http://www.senat.fr/senateurs/news_2006-2007.html");
+#find_senateurs("http://www.senat.fr/senateurs/news_2005-2006.html");
+#find_senateurs("http://www.senat.fr/senateurs/news_2004-2005.html");
+#find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/senatl.html");
+#find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/rdse.html");
+#find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/ump.html");
+#find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/soc.html");
+#find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/uc.html");
+#find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/rdse.html");
+#find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/crc.html");
 

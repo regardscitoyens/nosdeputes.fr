@@ -248,7 +248,7 @@ Amendement:
     Taggable: ~
     Solrable: 
       title: [titre]
-      description: [expose, texte, signataires]
+      description: [expose, texte, signataires, source]
       moretags: [Parlementaires, sort]
       date: date
       index_if: is_last_version
@@ -293,7 +293,8 @@ Question:
     Timestampable: ~
     Taggable: ~
     Solrable:
-      description: [type, titre, ministere, reponse]
+      title: [full_titre]
+      description: [ministere, question, reponse, source]
       moretags: [Parlementaire, type, ministere, motif_retrait]
       date: last_date
   columns:
@@ -398,6 +399,7 @@ Commentaire:
   actAs:
     Timestampable:
     Solrable:
+      title: [presentation]
       description: [Citoyen, commentaire]
       moretags: [Citoyen, object_type, object_id, Parlementaires]
       date: created_at
@@ -593,7 +595,7 @@ Texteloi:
     Taggable: ~
     Solrable:
       title: [titre]
-      description: [contenu, id]
+      description: [contenu, id, source]
       moretags: [categorie, type, Organisme, Parlementaires]
       date: date
   columns:
