@@ -39,7 +39,6 @@ sub find_senateurs {
 	$p = HTML::TokeParser->new(\$content);
 	while ($t = $p->get_tag('a')) {
 	    if ($t->[1]{href} =~ /\/(senateur|senfic)\//) {
-		next if ($t->[1]{href} =~ /\/(lejeune_andre80024b|cheve_jacqueline08013p)/);
 		download_fiche($t->[1]{href});
 	    }
 	}

@@ -7,5 +7,3 @@ perl download_senateurs.pl | while read url ; do
   perl parse_senateur.pl html/$url > out/$url
 done
 
-cp hack/*.html out/
-
