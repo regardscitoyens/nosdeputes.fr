@@ -272,8 +272,8 @@ class topSenateursTask extends sfBaseTask
     $qq = clone $q;
     $qq->where('q.date >= ?', date('Y-m-d', strtotime($date)));
     $qq->andWhere('q.date < ?', date('Y-m-d', strtotime("$date +1month")));
-    $this->executeQuestionsEcrites($qq);
-    $this->executeQuestionsOrales($qq);
+    $this->executeQuestionsEcrites(clone $qq);
+    $this->executeQuestionsOrales(clone $qq);
     
     print "Questions DONE\n";
 
@@ -372,7 +372,7 @@ class topSenateursTask extends sfBaseTask
 
     $qq = clone $q;
     $qq->where('q.date > ?', date('Y-m-d', time()-60*60*24*365));
-    $this->executeQuestionsEcrites($qq);
+    $this->executeQuestionsEcrites(clone $qq);
     $this->orderSenateurs('questions_ecrites');
 
     $this->executeQuestionsOrales(clone $qq);
@@ -443,7 +443,7 @@ class topSenateursTask extends sfBaseTask
       $qq->andWhere('(q.date > ? AND q.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)), 
 							 date('Y-m-d', strtotime($p->fin_mandat)), ));
      
-      $this->executeQuestionsEcrites($qq);
+      $this->executeQuestionsEcrites(clone $qq);
       
 //      $this->executeQuestionsOralesOld(clone $qi);
       $this->executeQuestionsOrales(clone $qq);
