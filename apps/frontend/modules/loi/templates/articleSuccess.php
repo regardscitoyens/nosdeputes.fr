@@ -26,7 +26,7 @@ if ($article->suivant) {
   foreach ($amendements['avant '.$arttitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
   echo '</p>';
 }
-if (isset($expose)) echo $expose.'<div class="suivant list_com"><a href="#commentaires">Commenter</a></div>'; ?>
+if (isset($expose)) echo myTools::escape_blanks($expose).'<div class="suivant list_com"><a href="#commentaires">Commenter</a></div>'; ?>
 <br/>
 <table>
 <?php foreach ($alineas as $a) {

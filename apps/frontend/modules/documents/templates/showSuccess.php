@@ -34,7 +34,7 @@ if (count($cosign)) {
 <div<?php if ($tags != "" || (isset($texte) && $texte > 0) || count($annexes) || $amendements || count($relatifs) || $section) echo ' class="left"'; ?>>
 <?php if ($txt = $doc->getExtract()) { ?>
 <h3>Extrait</h3>
-<p class="justify tabulation"><?php echo preg_replace('/([a-z])\. ([^"»])/', '\\1.</p><p class="justify tabulation">\\2', $doc->getExtract()); ?></p>
+<p class="justify tabulation"><?php echo myTools::escape_blanks(preg_replace('/([a-z])\. ([^"»])/', '\\1.</p><p class="justify tabulation">\\2', $doc->getExtract())); ?></p>
 <?php } ?>
 <h3><a href="<?php echo $doc->source; ?>">Consulter le document complet sur le site de l'Assemblée</a></h3>
 <p class="aligncenter">(<?php echo link_to('version pdf', preg_replace('/asp$/', 'pdf', preg_replace('/13\//', '13/pdf/', $doc->source))); ?>)</p>

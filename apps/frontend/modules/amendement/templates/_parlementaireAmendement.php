@@ -17,7 +17,7 @@ if (isset($highlight)) {
 }
 if ($p_amdmt == '')
   $p_amdmt = truncate_text($amdmt, 350);
-echo '<p>'.$p_amdmt.'</p>';
+echo '<p>'.myTools::escape_blanks($p_amdmt).'</p>';
 ?></div>
     <div class="contexte">
   <p><?php echo link_to("Voir tout l'amendement",  '@amendement?loi='.$amendement->texteloi_id.'&numero='.$amendement->numero);

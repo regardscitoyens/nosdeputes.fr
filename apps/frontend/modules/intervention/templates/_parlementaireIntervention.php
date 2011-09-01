@@ -25,7 +25,7 @@
       echo '<span class="source"><a href="'.$intervention->getSource().'">source</a>'; 
 ?></div>
 <div class="texte_intervention"><?php 
-      $inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $intervention->getIntervention()); 
+$inter = preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $intervention->getIntervention()); 
 $p_inter = '';
 if (isset($highlight)) {
   foreach ($highlight as $h) {
@@ -63,7 +63,7 @@ if ($intervention->hasIntervenant()) {
     }
   }
  }
-  echo '<p>'.$p_inter.'</p>';
+  echo '<p>'.myTools::escape_blanks($p_inter).'</p>';
 ?></div>
     <div class="contexte">
     <p><?php echo link_to("Voir dans le contexte", $link_seance);

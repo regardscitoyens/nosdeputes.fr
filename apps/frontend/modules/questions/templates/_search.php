@@ -23,7 +23,7 @@ if (!isset($nophoto)) {
         $p_inter = highlight_text($p_inter, $h);
     }
   } else $p_inter = truncate_text(html_entity_decode(strip_tags($inter),ENT_NOQUOTES, "UTF-8"), 400);
-  echo '<p><b>'.$question->titre.'</b></p><p>'.$p_inter.'</p>';
+  echo myTools::escape_blanks('<p><b>'.$question->titre.'</b></p><p>'.$p_inter.'</p>');
 ?>
   <div class="contexte">
     <a href="<?php echo $url; ?>">Lire la suite de la question</a></div>

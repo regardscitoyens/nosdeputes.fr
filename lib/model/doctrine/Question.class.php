@@ -109,11 +109,11 @@ class Question extends BaseQuestion
       $question = str_replace('##Q'.$q.'##', $url, $question);
     }
     if ($this->type != "Question écrite")
-      $question = self::clean_texte_oral($question);
-    return $question;
+      $question = self::format_texte_oral($question);
+    return myTools::escape_blanks($question);
   }
 
-  public static function clean_texte_oral($txt) {
+  public static function format_texte_oral($txt) {
     $txt = preg_replace('/(\([^\)]*\)[\s\.]*)<\/p>/', '<br/><em>\\1</em></p>', $txt);
     $txt = preg_replace('/<p>(La parole[^<]+)<\/p>/', '<p><em>\\1</em></p>', $txt);
     $txt = preg_replace('/<p>(M[\.mle]+ [^\.]+\.[^<])/', '<p><b>\\1</b>', $txt);
@@ -142,7 +142,7 @@ class Question extends BaseQuestion
       $reponse = preg_replace("/(question[^<]+)n\s*°\s*$numero/", '<a href="'.$link.'">\\1N°&nbsp;'.$shortnum, $reponse);
     }
     if ($this->type != "Question écrite") {
-      $reponse = self::clean_texte_oral($reponse);
+      $reponse = self::format_texte_oral($reponse);
       if (preg_match('/<a href="[^"#]+(senat\.fr\/seances\/[^"#]+)(#[^"]+)?">Voir le compte rendu de la séance/', $reponse, $match)) {
         $urlseance = "http://www.".$match[1];
 // $itv = SQL select seance_id, section_id from intervention where source like $urlseance
@@ -153,9 +153,9 @@ class Question extends BaseQuestion
 // SQL find seance correspondante from debut réponse et date autour date_reponse
       }
       if ($itv)
-        return preg_replace('/<a[^>]+>[^<]+</a>', '<a href="'.url_for('@seance?id='.$itv->seance_id).'#table_'.$itv->section_id.'">Voir le compte rendu de la séance.</a>', $reponse);
+        $reponse = preg_replace('/<a[^>]+>[^<]+</a>', '<a href="'.url_for('@seance?id='.$itv->seance_id).'#table_'.$itv->section_id.'">Voir le compte rendu de la séance.</a>', $reponse);
     }
-    return $reponse;
+    return myTools::escape_blanks($reponse);
   }
 
 }

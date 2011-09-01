@@ -16,7 +16,7 @@ if (isset($section)) {
   echo '</div>';
   if (isset($section->expose)) {
     $expose = $section->expose;
-    echo $expose;
+    echo myTools::escape_blanks($expose);
   }
 } else {
   echo '<div class="pagerloi">';
@@ -28,7 +28,7 @@ if (isset($section)) {
   echo '</div>';
   if (isset($chapitre->expose)) {
     $expose = $chapitre->expose;
-    echo $expose;
+    echo myTools::escape_blanks($expose);
   } 
 }
 if (isset($soussections)) {
@@ -53,7 +53,7 @@ foreach ($articles as $a) {
       echo '<li><b><a href="'.url_for('@loi_section?loi='.$loi->texteloi_id.'&chapitre='.$chapitre->chapitre.'&section='.$nsec).'">';
       echo 'Section '.$nsec.'&nbsp;: '.$section['titre'];
       if (isset($section['expose']) && $section['expose'] != "") {
-        $expose = truncate_text(html_entity_decode(strip_tags($section['expose']), ENT_NOQUOTES, "UTF-8"), 250);
+        $expose = myTools::escape_blanks(truncate_text(html_entity_decode(strip_tags($section['expose']), ENT_NOQUOTES, "UTF-8"), 250));
         echo '</b><blockquote>'.$expose.'</blockquote></a>';
       } else echo '</b></a>';
     }
@@ -93,7 +93,7 @@ foreach ($articles as $a) {
   if (isset($a->expose) && $a->expose != "") {
     $tmpexpo = truncate_text(html_entity_decode(strip_tags($a->expose), ENT_NOQUOTES, "UTF-8"), 250);
     if ($expose == '' || !(truncate_text($expose, 200) === truncate_text($tmpexpo, 200))) {
-      $expose = $tmpexpo;
+      $expose = myTools::escape_blanks($tmpexpo);
       echo '<a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'"><blockquote>'.$expose.'</blockquote></a>';
     }
   }

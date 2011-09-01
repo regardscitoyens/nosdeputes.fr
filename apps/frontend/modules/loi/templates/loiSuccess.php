@@ -10,7 +10,7 @@ if ($loi->parlementaire_id && $loi->expose && !($loi->texteloi_id == 2760)) { ?>
     echo '</a>';
   }
   echo '</div>';
-  echo preg_replace('/\s+(:|;|\?|!)/', '&nbsp;\1', $loi->expose);
+  echo myTools::escape_blanks($loi->expose);
   echo '<div class="auteurloi"><a href="'.url_for($perso->getPageLink()).'">'.$perso->nom.'</a></div></div><br/>';
 } ?>
 <div class="sommaireloi">
@@ -78,7 +78,7 @@ if (isset($soussections)) {
     $nart = $a->ordre;
     echo '<li><a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'">';
     echo 'Article '.$a->titre;
-    if (isset($a->expose)) echo '&nbsp;:'.truncate_text(preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $a->expose), 120);
+    if (isset($a->expose)) echo '&nbsp;:'.myTools::escape_blanks(truncate_text(preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $a->expose), 120));
     echo '</a>';
   }
 } ?>
@@ -92,7 +92,7 @@ if (isset($soussections)) {
       include_partial('parlementaire/photoParlementaire', array('parlementaire' => $perso, 'height' => 70));
       echo '</a></div>';
     }
-  echo preg_replace('/\s+(:|;|\?|!)/', '&nbsp;\1', $loi->expose).'</div><br/>';
+  echo myTools::escape_blanks($loi->expose).'</div><br/>';
 } ?>
 <div class="commentaires">
   <h3>Derniers commentaires sur <?php echo preg_replace('/<br\/>.*$/', '', $loi->titre); ?> <span class="rss"><a href="<?php echo url_for('@loi_rss_commentaires?loi='.$loi->texteloi_id); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h3>

@@ -25,7 +25,7 @@ class updateSenateursTask extends sfBaseTask
     $dir = dirname(__FILE__).'/../../batch/senateur/out/';
     $manager = new sfDatabaseManager($this->configuration);    
 
-    $villes = json_decode(file_get_contents($dir.'../static/villes.json'));
+//    $villes = json_decode(file_get_contents($dir.'../static/villes.json'));
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {

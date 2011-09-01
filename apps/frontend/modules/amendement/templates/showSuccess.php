@@ -52,21 +52,16 @@
 </div>
 <div class="texte_intervention">
   <?php $texte = $amendement->getTexte();
-  $texte = preg_replace('/\s+(:|;|!|\?|»|\-)/', '&nbsp;\1', $texte);
-  $texte = preg_replace('/(«|\-)\s+/', '\1&nbsp;', $texte);
   if ($titreloi && preg_match('/alin(e|é)a\s*(\d+)[^\d]/', $texte, $match)) {
     $link = link_to('alinéa '.$match[2], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art.'#alinea_'.$match[2]);
     $texte = preg_replace('/(alin(e|é)a\s*\d+)([^\d])/', $link.'\3', $texte);
   }
-  echo $texte; ?>
+  echo myTools::escape_blanks($texte); ?>
 </div>
 <?php if (isset($amendement->expose)) { ?>
   <h3>Exposé Sommaire :</h3>
   <div class="expose_amendement">
-    <?php $expose = $amendement->getExpose();
-    $expose = preg_replace('/\s+(:|;|!|\?|»|\-)/', '&nbsp;\1', $expose);
-    $expose = preg_replace('/(«|\-)\s+/', '\1&nbsp;', $expose);
-    echo $expose; ?>
+    <?php echo myTools::escape_blanks($amendement->getExpose()); ?>
   </div>
 <?php } ?>
 <div class="commentaires" id="commentaires">

@@ -98,6 +98,12 @@ class myTools {
     return link_to('liasse imprimable', "/liasses/liasse_".$id.".pdf");
   }
 
+  public static function escape_blanks($txt) {
+    $txt = preg_replace('/([«\-])\s+/', '\\1&nbsp;', $txt);
+    $txt = preg_replace('/\s+([0»:;\?!\-])/', '&nbsp;\\1', $txt);
+    return $txt;
+  }
+
   public static function clearHtml($s, $authorized_tags = '<strong><i><b><a><em>') {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
 	
@@ -108,7 +114,7 @@ class myTools {
     $s = preg_replace('/on[^=\s]+=[^\s>]+/i', '', $s);
     $s = preg_replace('/=[\'"]?javascript:[^\s\>]+/i', '=""', $s);
     $s = preg_replace('/<a /i', '<a rel="nofollow" ', $s);
-    //Convertion des urls en liens
+    //Conversion des urls en liens
     $s = preg_replace('/(^|\s)(http\S+)/', ' <a rel="nofollow" href="\\2">\\2</a>', $s);
     if (preg_match_all('/(({+|\<senateur\>)([^}<]+)(}+|\<\/?senateur\>))/i', $s, $matches)) {
       for($i = 0 ; $i < count($matches[0]) ; $i++) {
