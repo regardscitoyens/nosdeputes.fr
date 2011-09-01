@@ -99,7 +99,7 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
   if (!($didascalie && $titre != 0)) { ?>
     <div class="texte_intervention">
     <?php if ($didascalie) echo '<div class="didascalie">'; ?>
-    <?php echo $intervention->getIntervention(array('linkify_amendements'=>url_for('@find_amendements_by_loi_and_numero?loi=LLL&numero=AAA'))); ?>
+    <?php echo myTools::escape_blanks($intervention->getIntervention(array('linkify_amendements'=>url_for('@find_amendements_by_loi_and_numero?loi=LLL&numero=AAA')))); ?>
     <?php if ($didascalie) echo '</div>'; ?>
     </div>
   <?php } ?>

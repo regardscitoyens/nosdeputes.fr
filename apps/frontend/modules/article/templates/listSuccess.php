@@ -17,14 +17,14 @@ foreach($sousarticles[$a->id] as $sa) { ?>
    if ($sf_user->isAuthenticated() && !$sf_user->hasCredential('membre'))
     echo ' <span>('.link_to('Éditer', '@faq_edit?article_id='.$a->id).')</span>'; 
 ?></h2>
-<p><?php echo $a->corps; ?></p>
+<p><?php echo myTools::escape_blanks($a->corps); ?></p>
 <?php if (count($sousarticles[$a->id])) { ?><ul><?php
 foreach($sousarticles[$a->id] as $sa) { ?>
 <h3><a name="post_<?php echo $sa->id; ?>"></a><?php echo $sa->titre; 
    if ($sf_user->isAuthenticated() && !$sf_user->hasCredential('membre'))
     echo ' <span>('.link_to('Éditer', '@faq_edit?article_id='.$sa->id).')</span>'; 
 ?></h3>
-<p><?php echo $sa->corps; ?></p>
+<p><?php echo myTools::escape_blanks($sa->corps); ?></p>
 <?php } //foreach ?>
 </ul><?php } //if ?>
 <?php } //foreach ?>

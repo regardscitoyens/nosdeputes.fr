@@ -23,7 +23,7 @@
         $p_inter = highlight_text($p_inter, $h);
     }
   } else $p_inter = truncate_text(html_entity_decode(strip_tags($inter),ENT_NOQUOTES, "UTF-8"), 400);
-  echo $p_inter;
+  echo '<p>'.myTools::escape_blanks($p_inter).'</p>';
 ?>
   <div class="contexte">
     <a href="<?php echo url_for('@question_numero?numero='.$question->numero); ?>">Lire la suite de la question</a></div>

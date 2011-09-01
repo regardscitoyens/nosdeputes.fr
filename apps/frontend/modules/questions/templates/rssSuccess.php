@@ -11,7 +11,7 @@ foreach($query->execute() as $q)
   $item->setTitle($q->getTitre());
   $item->setLink('http://'.$_SERVER['HTTP_HOST'].$q->getLink());
   $item->setAuthorName($q->Parlementaire->nom);
-  $item->setPubdate(strtotime($q->date));
+  $item->setPubdate(strtotime($q->getLastDate()));
   $item->setUniqueId(get_class($q).$q->id);
   $item->setDescription(utf8_encode(utf8_decode(strip_tags($q))));
   $feed->addItem($item);

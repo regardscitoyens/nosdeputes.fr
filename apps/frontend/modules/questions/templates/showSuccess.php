@@ -8,7 +8,7 @@
   <div class="source"><a href="<?php echo $question->source; ?>">source</a></div>
   <div id="question">
     <h2>Question soumise le <?php echo myTools::displayDate($question->date) ?></h2>
-    <?php echo '<p>'.$question->question.'</p>' ?>
+    <?php echo '<p>'.myTools::displayDate($question->question).'</p>' ?>
   </div>
   <div id="reponse">
     <?php if ($question->date_cloture && !$question->reponse && date("Y-m-d") > $question->date_cloture) {
@@ -24,7 +24,7 @@
       }
       echo '</h2>';
       if ($question->reponse)
-        echo '<p>'.$question->reponse.'</p>';
+        echo '<p>'.myTools::escape_blanks($question->reponse).'</p>';
       else echo '<p>Cette question n\'a pas encore de réponse.</p>';
     } ?>
   </div>

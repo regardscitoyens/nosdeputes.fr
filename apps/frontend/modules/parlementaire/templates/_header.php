@@ -12,7 +12,7 @@ if (!isset($surtitre)) $surtitre = ''; ?>
 <h1><?php if ($surtitre) { ?>
     <?php echo $surtitre; ?></h1><h2>
 <?php } ?>
-  <?php if (isset($deputefirst)) $titre = $parlementaire->nom.' <br/>'.$titre;
+  <?php if (isset($deputefirst)) $titre = '<a href="'.url_for($parlementaire->getPageLink()).'">'.$parlementaire->nom.'</a> <br/>'.$titre;
   else {
     $titre .=' ';
     if (preg_match('/^(A|E|É|I|O|U|Y)/', $parlementaire->nom))
