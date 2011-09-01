@@ -110,7 +110,7 @@ foreach $line (split /\n/, $string) {
   } elsif ($line =~ /<p>Transformée\s?(en )?(QOSD)?(<a[^>]+qseq(\d+[A-Z]?)\.htm)?/i) {
     $question{'transformee_en'} = uc($4);
   } elsif ($line =~ /<h3>Rappelle la question (n°)? ?<a[^>]+qseq(\d+[A-Z]?)\.htm/i) {
-    $question{'rappel'} = uc($3);
+    $question{'rappel'} = uc($2);
   } elsif ($read_txt && ($line =~ />(\S\s*)+</ || $line =~ /<\/?t(able|d|r|h)/ || $line !~ /^</)) {
     if ($line =~ /^([^<].*)$/) {
       $line = "<p>".$line."</p>";
