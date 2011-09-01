@@ -83,7 +83,7 @@ class myTools {
   }	
 
   public static function getLinkDossier($urlan) {
-    return link_to('Dossier sur le site de l\'Assemblée', "http://www.assemblee-nationale.fr/13/dossiers/".$urlan.".asp");
+    return link_to('Dossier sur le site de l\'Assemblée', "http://www.assemblee-nationale.fr/".sfConfig::get('app_legislature', 13)."/dossiers/".$urlan.".asp");
   }
 
   public static function getLinkLoi($id) {
