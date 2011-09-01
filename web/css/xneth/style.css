@@ -1341,8 +1341,16 @@ h2 {
   padding-left: 20px;
 }
 .question table {
-  border: solid 1px collapse;
+  border-collapse: collapse;
+}
+.question table td, .question table th {
+  border-style: solid;
+  border-width: thin;
+  padding: 4px;
   text-align: center;
+}
+.question a {
+  text-decoration: underline;
 }
 .loi p:first-letter {
   padding-left: 20px;

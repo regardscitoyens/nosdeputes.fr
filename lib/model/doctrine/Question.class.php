@@ -93,9 +93,8 @@ class Question extends BaseQuestion
       $shortnum = preg_replace('/^0+/', '', $num);
       $id = $lettre;
       if ($lettre) $id = $annee.$lettre;
-      $shortid = $id.$shortnum;
       $id .= $num;
-      $question = '<p><em>Cette question a été transformée en <a href="##Q'.$id.'##">question N°&nbsp;'.$shortid.'</a>.</em></p>'.$question;
+      $question = '<p><em>Cette question a été transformée en <a href="##Q'.$id.'##">question N°&nbsp;'.$lettre.$shortnum.'</a>.</em></p>'.$question;
     }
     $this->_set('question', $question);
   }
@@ -130,16 +129,16 @@ class Question extends BaseQuestion
       sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     $reponse = $this->_get('reponse');
     if ($this->type === "Question écrite" && preg_match("/<p>([^<]+question[^<\.]+n\s*°\s*(\d+\/?[ACEGS]?)[^<]*)<\/p>/i", $reponse, $match)) {
-      $parag = $match[1];
+      $parag = preg_replace("/é/", "e", $match[1]);
       $numero = $match[2];
       $shortnum = preg_replace('/\//', '', preg_replace('/^0+/', '', $numero));
-      if (preg_match('/([dD][ée]put[ée]|AN|[aA]ssembl[ée]\s*[nN]ationale)/', $parag))
+      if (preg_match('/ ([dD]eputee?|AN|[aA]ssemblee\s*[nN]ationale) /', $parag))
         $link = "http://www.nosdeputes.fr/question/QE/".$shortnum;
       else {
         $shortnumorder = preg_replace('/^(\d+)([a-z])$/i', '\\2\\1', $shortnum);
         $link = url_for('@question_numero?legi='.$this->legislature.'&numero='.$shortnumorder);
       }
-      $reponse = preg_replace("/(question[^<]+)n\s*°\s*$numero/", '<a href="'.$link.'">\\1N°&nbsp;'.$shortnum, $reponse);
+      $reponse = preg_replace("/ (la )?(question[^<\.]+)n\s*°\s*$numero/", ' <a href="'.$link.'">\\1\\2N°&nbsp;'.$shortnum."</a>", $reponse);
     }
     if ($this->type != "Question écrite") {
       $reponse = self::format_texte_oral($reponse);
@@ -155,6 +154,7 @@ class Question extends BaseQuestion
       if ($itv)
         $reponse = preg_replace('/<a[^>]+>[^<]+</a>', '<a href="'.url_for('@seance?id='.$itv->seance_id).'#table_'.$itv->section_id.'">Voir le compte rendu de la séance.</a>', $reponse);
     }
+    $reponse = preg_replace("/<table>/", '<table align="center">', $reponse);
     return myTools::escape_blanks($reponse);
   }
 
