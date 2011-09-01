@@ -1,5 +1,5 @@
 <div class="precedent"><?php echo myTools::displayDate($doc->date); ?></div>
-<div class="source"><?php if ($section) echo link_to('Dossier relatif', '@section?id='.$section->id); else echo '<a href="http://www.assemblee-nationale.fr/13/dossiers/'.$doc->id_dossier_an.'.asp">Dossier sur le site de l\'Assemblée</a>'; ?></div>
+<div class="source"><?php if ($section) echo link_to('Dossier relatif', '@section?id='.$section->id); else echo myTools::getLinkDossier($doc->id_dossier_senat); ?></div>
 <h1><?php echo $doc->getShortTitre(); ?></h1>
 <h2><?php echo preg_replace('/ - /', '<br/>- ', $doc->getDetailsTitre()); ?></h2>
 <div class="document">
@@ -36,7 +36,7 @@ if (count($cosign)) {
 <h3>Extrait</h3>
 <p class="justify tabulation"><?php echo myTools::escape_blanks(preg_replace('/([a-z])\. ([^"»])/', '\\1.</p><p class="justify tabulation">\\2', $doc->getExtract())); ?></p>
 <?php } ?>
-<h3><a href="<?php echo $doc->source; ?>">Consulter le document complet sur le site de l'Assemblée</a></h3>
+<h3><a href="<?php echo $doc->source; ?>">Consulter le document complet sur le site du Sénat</a></h3>
 <p class="aligncenter">(<?php echo link_to('version pdf', preg_replace('/asp$/', 'pdf', preg_replace('/13\//', '13/pdf/', $doc->source))); ?>)</p>
 </div>
 <div class="right">

@@ -152,7 +152,7 @@
 <div class ="accueil_message">
 <div class="accueil_message_content">
     <h1>Bienvenue sur NosSénateurs.fr</h1>
-    <p>NosSénateurs.fr est un site qui cherche à mettre en valeur l'activité parlementaire des sénateurs de l'Assemblée Nationale Française.</p>
+    <p>NosSénateurs.fr est un site qui cherche à mettre en valeur l'activité parlementaire des membres du Sénat Français.</p>
     <p>En synthétisant les différentes activités législatives et de contrôle du gouvernement des élus de la nation, ce site essaie de donner aux citoyens de nouveaux outils pour comprendre et analyser le travail de leurs représentants.</p>
     <p>Conçu comme une plateforme de médiation entre citoyens et sénateurs, le site propose à chacun de participer et de s'exprimer sur les débats parlementaires. Au travers de leurs commentaires, les utilisateurs sont invités à créer le débat en partageant leur expertise lorsque cela leur semble utile. Peut-être pourront-ils ainsi nourrir le travail de leurs élus ?</p>
   </div>
@@ -186,7 +186,7 @@
   <div class="clear"></div>
 <div class="box_container">
   <div class="box_tags">
-  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png" /></span><?php echo link_to('En ce moment à l\'Assemblée nationale', '@parlementaires_tags'); ?></h2>
+  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/senat.png" /></span><?php echo link_to('En ce moment au Sénat', '@parlementaires_tags'); ?></h2>
   <?php echo include_component('tag', 'globalActivite'); ?>
   </div>
   <div class="box_repartition aligncenter"><div style="margin: auto;">

@@ -183,7 +183,7 @@ Section:
     max_date: date
     timestamp: integer
     nb_interventions: integer
-    id_dossier_an: string(255)
+    id_dossier_senat: string(255)
   inheritance:
     extends: ObjectCommentable
     type: concrete
@@ -361,7 +361,7 @@ Citoyen:
       notnull: true
     activite: string(255)
     url_site: string(255)
-    employe_an:
+    employe_senat:
       type: boolean
       default: 0
     travail_pour: integer
@@ -610,7 +610,7 @@ Texteloi:
       values: ['Proposition de loi', 'Proposition de résolution', 'Projet de loi', 'Texte de la commission', 'Lettre', 'Rapport', "Rapport d'information", 'Avis']
     type_details: string(512)
     categorie: string(128)
-    id_dossier_an: string(255)
+    id_dossier_senat: string(255)
     titre: string(512)
     date: date
     source:
@@ -631,7 +631,7 @@ Texteloi:
     type: concrete
   indexes:
     index_url:
-      fields: [id_dossier_an]
+      fields: [id_dossier_senat]
     index_alpha:
       fields: [numero, annexe]
       type: unique
