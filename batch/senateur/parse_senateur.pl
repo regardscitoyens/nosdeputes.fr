@@ -200,7 +200,7 @@ delete $senateur{'Mails'}{'e-bure@u'};
 
 $senateur{'sexe'} = ($content =~ /sentation de M\. /) ? 'H' : 'F';
 
-if ($content =~ /src="([^"]+)"[^>]+Photo de M/) {
+if ($content =~ /src="([^"]+)"[^>]+Photo de M/i) {
 	$senateur{'photo'} = 'http://www.senat.fr'.$1;
 }
 
