@@ -5,8 +5,6 @@ php symfony doctrine:build --all --no-confirmation
 bash bin/load_senateurs
 
 cd batch/questions
-bash parse_all.sh 1
-cp -r json json.test
 bash parse_all.sh
 cd -
 
