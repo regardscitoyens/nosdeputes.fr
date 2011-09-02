@@ -15,9 +15,18 @@
       <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, '@list_parlementaires_profession?search='.$parlementaire->profession); else : ?>Non communiquée<?php endif; ?></li>
       <li><?php echo link_to('Fiche sur le site du Sénat', $parlementaire->url_senat, array('title' => 'Lien externe', 'rel'=>'nofollow')); ?></li>
       <li><a href="http://fr.wikipedia.org/wiki/<?php echo rawurlencode($parlementaire->nom); ?>">Page sur Wikipédia</a></li>
-      <?php if ($parlementaire->site_web) : ?>
-      <li><?php echo link_to('Site web', $parlementaire->site_web, array('title' => 'Lien externe', 'rel'=>'nofollow')); ?></li>
-      <?php endif; ?>  
+      <?php if ($parlementaire->sites_web) {
+	$moreweb = "";
+	foreach (unserialize($parlementaire->sites_web) as $site) if ($site) {
+		$nomsite = "Site web";
+		if (preg_match('/twitter/', $site)) $nomsite = "Sur Twitter";
+		else if (preg_match('/facebook/', $site)) $nomsite = "Sur Facebook";
+		$link = "<li>".link_to($nomsite, $site, array('title' => 'Lien externe', 'rel'=>'nofollow'))."</li>";
+		if (preg_match('/twitter|facebook/', $site)) $moreweb .= $link;
+		else echo $link;
+	}
+	echo $moreweb;
+      } ?>  
     </ul>
     <?php if ($parlementaire->fin_mandat == null || $parlementaire->fin_mandat < $parlementaire->debut_mandat) : ?>
       <h2>Responsabilités</h2>

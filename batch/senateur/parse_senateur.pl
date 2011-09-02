@@ -112,7 +112,7 @@ sub fonctions {
 			if ($autres && $autres ne "anciengroupe") {
 				$senateur{$autres}{$commission} = 1;
 			} elsif ($commission =~ /nateurs ne figurant sur la liste d'aucun groupe/ || $commission =~ /groupe /i) {
-				$commission =~ s/groupe (d(u |e l'))//i;
+				$commission =~ s/groupe (d(u |e l'))?//i;
 				$senateur{'groupe'}{$commission} = 1;
 				if ($autres && $autres eq "anciengroupe") {
 					$groupes{$comm} = 1;
