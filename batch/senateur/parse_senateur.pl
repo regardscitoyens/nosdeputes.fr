@@ -2,7 +2,6 @@
 
 use HTML::TokeParser;
 use URI::Escape;
-use HTML::Entities;
 use Encode;
 use utf8;
 require "../common/common.pm";
@@ -31,12 +30,20 @@ if ($file =~ /%2F([^%]+).html/) {
 
 $p->get_tag('h1');
 $senateur{'Nom'} = $p->get_text('/h1');
+utf8::decode($senateur{'Nom'});
 $senateur{'Nom'} =~ s/\n/ /;
 $senateur{'Nom'} =~ s/\s+$//;
 $senateur{'Nom'} =~ s/^\s*//;
 $senateur{'Nom'} =~ s/\s+/ /g;
-$senateur{'Nom'} =~ s/^(d('|[ue]s? ))?(.+) ([A-ZÉÃ©Ã¨ÃªÃ«][^A-ZÉ].*)$/$4 $1$3/;
-$senateur{'Nom_de_famille'} = $3;
+$senateur{'Nom'} =~ s/^([dD][eE'] )?(.+[A-ZÉË])(( [A-ZÉ][^A-ZÉ ]+)+)$/$3 $1$2/;
+$nom = $2;
+$senateur{'Nom'} =~ s/^ //;
+$nomlc = $nom;
+$nomlc =~ s/([A-ZÉ])(\w+ ?)/$1\L$2/g;
+$senateur{'Nom'} =~ s/$nom/$nomlc/;
+$senateur{'Nom_de_famille'} = $nomlc;
+utf8::encode($senateur{'Nom'});
+utf8::encode($senateur{'Nom_de_famille'});
 $p->get_tag('h2');
 $senateur{'Circonscription'} = $p->get_text('/h2', 'br', '/br');
 $senateur{'Circonscription'} =~ s/\n/ /g;
@@ -63,8 +70,9 @@ sub groupefonction {
 
 sub fonctions {
 	$autres = shift;
+	$old = shift || 0;
 	$t = $p->get_tag('ul', 'div');
-	if ($t->[0] eq 'div' && $autres) {
+	if ($t->[0] eq 'div' && $autres && $autres ne "anciengroupe") {
 		if ($autres eq "groupes") {
 			$fonction = lc(groupefonction($p->get_text('a')));
 			while ($t = $p->get_tag('a', '/div')) {
@@ -97,14 +105,18 @@ sub fonctions {
 		$comm = $commission;
 		$comm =~ s/ \/ .*$//;
 		if (! $groupes{$comm}) {
-			$groupes{$comm} = 1;
-			if ($autres) {
+			if ($autres && $autres ne "anciengroupe") {
 				$senateur{$autres}{$commission} = 1;
 			} elsif ($commission =~ /nateurs ne figurant sur la liste d'aucun groupe/ || $commission =~ s/groupe (du )?//i) {
 				$senateur{'groupe'}{$commission} = 1;
+				if ($autres && $autres eq "anciengroupe") {
+					$groupes{$comm} = 1;
+					last;
+				}
 			} else {
 				$senateur{'fonctions'}{$commission} = 1;
 			}
+			$groupes{$comm} = 1;
 		}
 	}
 }
@@ -118,13 +130,14 @@ sub mandats {
 		last if ($t->[0] ne "li");
 		$election = $p->get_text('/li', '/ul');
 		$election =~ s/\n/ /g;
-		if ($election =~ /\s+([0-9]* \S* [0-9]{4})\s+[jusqea']+\s+([0-9]* \S* [0-9]{4})/) {
+		if ($election =~ /\s+([0-9]*e?r? \S* [0-9]{4})\s+[jusqea']+\s+([0-9]*e?r? \S* [0-9]{4})/) {
 			$date1 = join '/', reverse datize($1);
-			$date2 = join '/', reverse datize($2);
-		} elsif ($election =~ /\s+([0-9]* \S* [0-9]{4})/) {
+			$date2 = join '/', reverse datize($3);
+		} elsif ($election =~ /\s+([0-9]*e?r? \S* [0-9]{4})/) {
 			$date1 = join '/', reverse datize($1);
 		}
 		$suppleant_de = "";
+                $oldcause = $cause;
 		if ($election =~ /\((.*)\)/) {
 			$oldcause = $cause;
 			$cause = lcfirst($1);
@@ -132,7 +145,7 @@ sub mandats {
 				$suppleant_de = $1;
 			}
 		} else {
-			$oldcause = "";
+			$cause = "";
 		}
 		if ($election =~ /Fin de mandat/) {
 			if ($oldcause =~ /remplacement de M[me\.] (.*),/) {
@@ -154,6 +167,9 @@ sub mandats {
 		}
 	}
 	if ($suppleant_de !~ /^$/) {
+		utf8::decode($suppleant_de);
+		$suppleant_de =~ s/([A-ZÉ])(\w+ ?)/$1\L$2/g;
+		utf8::encode($suppleant_de);
 		$senateur{'suppleant_de'} = $suppleant_de;
 	}	
 }
@@ -174,6 +190,8 @@ while($p->get_tag('h2')) {
 		fonctions('groupes');
 	}elsif ($h2 =~ /mandats|intercommunali/i && $h2 !~ /au cours de ses mandats/) {
 		fonctions('autresmandats');
+	}elsif ($h2 =~ /situation en fin de mandat/i) {
+		fonctions('anciengroupe');	
 	}
 }
 
@@ -203,6 +221,8 @@ $senateur{'sexe'} = ($content =~ /sentation de M\. /) ? 'H' : 'F';
 if ($content =~ /src="([^"]+)"[^>]+Photo de M/i) {
 	$senateur{'photo'} = 'http://www.senat.fr'.$1;
 }
+
+
 
 if ($xml) {
 print "<Senateur>\n";
