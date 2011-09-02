@@ -1349,7 +1349,7 @@ h2 {
   padding: 4px;
   text-align: center;
 }
-#question .a, #reponse .a {
+#question a, #reponse a {
   text-decoration: underline;
 }
 .loi p:first-letter {
