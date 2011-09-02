@@ -65,6 +65,8 @@ class updateSenateursTask extends sfBaseTask
               $parl->fonctions = $this->splitArrayJson($json->fonctions);
 	    if (count($json->extras))
 	      $parl->extras = $this->splitArrayJson($json->extras);
+	    #if (count($json->groupes))
+            #  $parl->groupes = $this->splitArrayJson($json->groupes);
 	    $parl->debut_mandat = $json->debut_mandat;
 	    $parl->fin_mandat = $json->fin_mandat;
 	    if ($json->id_senat)

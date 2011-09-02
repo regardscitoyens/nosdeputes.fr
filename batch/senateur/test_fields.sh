@@ -31,3 +31,12 @@ done;
 echo "Vérifier les champs dans test :"
 ls -lrth test
 
+grep -r "^    - " out.yml/ | sed 's/^.*\(.\)\.html:    - //' | sort | uniq > test/arrays
+grep "@" test/arrays > test/emails.uniq
+grep "http" test/arrays > test/sites.uniq
+grep "[0-9]\+\/[0-9]\+\/[0-9]\+ \/ " test/arrays | sed 's/^.*\/.*\/ //' | sort | uniq > test/premiersmandats.uniq
+grep -v "\(@\|http\|[0-9]\+\/[0-9]\+\/[0-9]\+ \/ \)" test/arrays > test/organismes
+cat test/organismes | awk -F " / " '{print $1}' | sort | uniq > test/organismes.uniq
+cat test/organismes | awk -F " / " '{print $2}' | sort | uniq > test/fonctions.uniq
+
+

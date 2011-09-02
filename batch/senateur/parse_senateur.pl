@@ -51,24 +51,35 @@ $senateur{'Circonscription'} =~ s/^d[eus' ]*(l[a']|) *//;
 $senateur{'Circonscription'} =~ s/repr..sentant les //;
 $senateur{'Circonscription'} =~ s/ +\(.*//;
 $senateur{'Circonscription'} =~ s/\s+puis d.*$//;
+$senateur{'Circonscription'} =~ s/^.*les Wallis/Wallis/;
+$senateur{'Circonscription'} =~ s/^La //;
+$circo = lc($senateur{'Circonscription'});
 if ($senateur{'Circonscription'} !~ /(fran.*ais)/i) {
 	$senateur{'Circonscription'} =~ s/\s+/-/g;
 }
-$senateur{'Circonscription'} =~ s/^.*les Wallis/Wallis/;
-$senateur{'Circonscription'} =~ s/^La //;
 
 sub groupefonction {
 	$str = shift;
 	$str =~ s/\n/ /g;
-	$str =~ s/\s+$//;
+	$str =~ s/\//-/g;
+	$str =~ s/[,\s]*$//;
 	$str =~ s/^\s*//;
 	$str =~ s/\s+/ /g;
-	if ($str =~ /^(membre) (à la |du |de la |de l'|au |de |d'une |d')(\S.*)$/i) {
-		return ucfirst($3).' / '.lc($1);
-	} elsif ($str =~ /^(\S+( \S+)?( [^cg]\S+)?) (à la |du |de la |de l'|au |de |d'une |d')(\S.*)$/i) {
-		return ucfirst($5).' / '.lc($1);
+	if ($str =~ /^(\S+)\s*,\s*(.*)$/) {
+		$str = "$2 / ".lc($1);
+	} elsif ($str =~ /^(charg[^\s]+ )d['une]+ (mission.*$)/i) {
+		$str = "$2 / ".lc($1)."de mission";
+	} elsif ($str =~ /^(membre|adjointe?|administrateur) (à la |du |de la |de l' ?|au |des? |d'une |d' ?)(\S.*)$/i) {
+		$str = "$3 / ".lc($1);
+	} elsif ($str =~ /^(\S+( \S+)?( [^cg]\S+)?) (à la |du |de la |de l' ?|au |des? |d'une |d' ?)(\S.*)$/i) {
+		$str = "$5 / ".lc($1);
 	}
-	$str =~ s/(à la|du|de la|de l'|au|de|d'une|d')$//;
+	$str =~ s/\s*(à la|du|de la|de l'|au|de|d'une|d')\s*$//;
+	$str =~ s/\s*$//;
+        $str =~ s/^\s*//;
+	$tmp = "président-directeur-général";
+	utf8::encode($tmp);
+	$str =~ s/ \/ pdg/ \/ $tmp/;
 	return ucfirst($str);
 }
 
@@ -78,15 +89,24 @@ sub fonctions {
 	$t = $p->get_tag('ul', 'div');
 	if ($t->[0] eq 'div' && $autres && $autres ne "anciengroupe") {
 		if ($autres eq "groupes") {
-			$fonction = lc(groupefonction($p->get_text('a')));
-			while ($t = $p->get_tag('a', '/div')) {
-		                last if ($t->[0] ne "a");
+			$fonction = groupefonction($p->get_text('a'));
+			$fonction =~ s/^.* \/ //;
+			while ($t = $p->get_tag('a', 'br', '/div')) {
+		                last if ($t->[0] ne "a" && $t->[0] ne "br");
                 		$commission = ucfirst($p->get_text('/a', '/div'));
-				$commission =~ s/\n/ /g;
+				$commission =~ s/[\n\s]+/ /g;
+                                $commission =~ s/^\s//g;
+                                $commission =~ s/\s$//g;
+				if ($commission =~ /du groupe/i) {
+					$fonction = groupefonction($commission);
+					$commission = $fonction;
+					$fonction =~ s/^.* \/ //;
+					$commission =~ s/ \/ .*$//;
+				}
 				if (! $groupes{$commission}) {
 					$groupes{$commission} = 1;
-					$commission .= ' / '.$fonction;
-					$senateur{$autres}{ucfirst($commission)} = 1;
+					$commission .= ' / '.lc($fonction);
+					$senateur{'groupes'}{ucfirst($commission)} = 1;
 				}
 			}
 		} else {
@@ -101,24 +121,25 @@ sub fonctions {
 		return;
 	}
 	while ($t = $p->get_tag('li', '/ul')) {
-		last if ($t->[0] ne "li" );
+		last if ($t->[0] ne "li");
 		$commission = $p->get_text('/li', '/a', '/ul');
 		last if ($commission =~ /ancien.*nat(eur|rice)/i);
 		$commission = groupefonction($commission);
 		$commission =~ s/^(S..?nat)/Bureau du $1/;
 		$comm = $commission;
 		$comm =~ s/ \/ .*$//;
+#print $commission."\n";
 		if (! $groupes{$comm}) {
 			if ($autres && $autres ne "anciengroupe") {
 				$senateur{$autres}{$commission} = 1;
-			} elsif ($commission =~ /nateurs ne figurant sur la liste d'aucun groupe/ || $commission =~ /groupe /i) {
-				$commission =~ s/groupe (d(u |e l'))?//i;
+			} elsif ($commission =~ /nateurs ne figurant sur la liste d'aucun groupe/ || $commission =~ /^groupe /i) {
+				$commission =~ s/^groupe (d(u |e l'))?//i;
 				$senateur{'groupe'}{$commission} = 1;
 				if ($autres && $autres eq "anciengroupe") {
 					$groupes{$comm} = 1;
 					last;
 				}
-			} elsif ($autres ne "anciengroupe") {
+			} elsif (!$autres) {
 				$senateur{'fonctions'}{$commission} = 1;
 			}
 			$groupes{$comm} = 1;
@@ -143,13 +164,20 @@ sub mandats {
 		}
 		$suppleant_de = "";
 		$oldcause = $cause;
-		if ($election =~ /\((.*)\)/) {
-			$cause = name_lowerize(lcfirst($1));
-			if ($cause =~ /remplacement de M[me\.]+ ([^,]*),/) {
-				$suppleant_de = $1;
+		$cause = "";
+		while ($election =~ /\(([^\)]+\)?)\)/g) {
+			$tmpcause = $1;
+			if ($tmpcause !~ /(paris|val-d'oise|val-de-marne|$circo)/i) {
+				$cause = name_lowerize(lcfirst($tmpcause));
+				$cause =~ s/^.(lue? )/é$1/;
+				$cause =~ s/\s+/ /g;
+				$cause =~ s/M\.\s*/M. /g;
+				$cause =~ s/\.+$//;
+				if ($cause =~ /remplacement de M[me\.]+ +([^,]*),/) {
+					$suppleant_de = $1;
+				}
+				last;
 			}
-		} else {
-			$cause = "";
 		}
 		if ($election =~ /Fin de mandat/) {
 			if ($oldcause =~ /remplacement de M[me\.]+ ([^,]*),/) {
