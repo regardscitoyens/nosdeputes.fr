@@ -202,16 +202,22 @@ if ($content =~/<dt>Profession<\/dt>[^<]*<dd>([^<]+)<\/dd/) {
 	$senateur{'Profession'} =~ s/\n/ /;
 }
 
-if ($content =~ /N..e? le ([0-9]* \S* [0-9]*)/) {
+if ($content =~ /N..e? le ([0-9]*e?r? \S* [0-9]*)/) {
 	$senateur{'Naissance'} = join '/', reverse datize($1);
 }
 
-%mails = ();
 while($content =~ />([^>\s]+\@[^<\s]+)</g) {
 	$senateur{'Mails'}{$1} = 1;
 }
 delete $senateur{'Mails'}{'notices-senateurs@senat.fr'};
 delete $senateur{'Mails'}{'e-bure@u'};
+
+if ($content =~ /Sur Internet :<\/dt>(.*)<dt>/) {
+	$sites_str = $1;
+	while($sites_str=~ /<a [^>]*href="([^"]+)"/g) {
+		$senateur{'Sites_Web'}{$1} = 1;
+	}
+}
 
 $senateur{'sexe'} = ($content =~ /sentation de M\. /) ? 'H' : 'F';
 
