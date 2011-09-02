@@ -145,8 +145,11 @@ class parlementaireActions extends sfActions
 
   public function executeId(sfWebRequest $request)
   {
-    $id = preg_replace('/^d/', '', $request->getParameter('id'));
+    $id = $request->getParameter('id');
+    if (preg_match('/^s/', $id)) $this->redirect("http://www.nossenateurs.fr/id/$id");
+    $id = preg_replace('/^d/', '', $id);
     $p = Doctrine::getTable('Parlementaire')->find($id);
+    $this->forward404Unless($p);
     if ($type = $request->getParameter('type')) {
       return $this->redirect('api/parlementaire?type='.$type.'&slug='.$p->slug.'&textplain='.$request->getParameter('textplain'));
     }
@@ -159,6 +162,7 @@ class parlementaireActions extends sfActions
     $this->parlementaires = array();
     foreach ($query->execute() as $depute) {
       $lettre = $depute->nom_de_famille[0];
+      $lettre = preg_replace('/[ÉÉ]/', 'E', $lettre);
       if (isset($this->parlementaires[$lettre])) $this->parlementaires[$lettre][] = $depute;
       else $this->parlementaires[$lettre] = array($depute);
     }
