@@ -139,7 +139,7 @@ class apiActions extends sfActions
     $this->res['senateur']['responsabilites'] = $this->array2hash($senateur->getResponsabilites(), 'responsabilite');
     $this->res['senateur']['responsabilites_extra_parlementaires'] = $this->array2hash($senateur->getExtras(), 'responsabilite');
     $this->multi['responsabilite'] = 1;
-    $this->res['senateur']['site_web'] = $senateur->site_web;
+    $this->res['senateur']['sites_web'] = $this->array2hash(unserialize($senateur->sites_web), 'sites_web');
     $this->res['senateur']['url_senat'] = $senateur->url_senat;
     $this->res['senateur']['emails'] = $this->array2hash(unserialize($senateur->mails), 'email');
     $this->multi['email'] = 1;

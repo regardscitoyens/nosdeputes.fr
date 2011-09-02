@@ -149,8 +149,11 @@ class parlementaireActions extends sfActions
 
   public function executeId(sfWebRequest $request)
   {
-    $id = preg_replace('/^d/', '', $request->getParameter('id'));
+    $id = $request->getParameter('id');
+    if (preg_match('/^d/', $id)) $this->redirect("http://www.nosdeputes.fr/id/$id");
+    $id = preg_replace('/^s/', '', $id);
     $p = Doctrine::getTable('Parlementaire')->find($id);
+    $this->forward404Unless($p);
     if ($type = $request->getParameter('type')) {
       return $this->redirect('api/parlementaire?type='.$type.'&slug='.$p->slug.'&textplain='.$request->getParameter('textplain'));
     }
