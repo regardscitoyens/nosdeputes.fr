@@ -35,9 +35,8 @@ $senateur{'Nom'} =~ s/\n/ /;
 $senateur{'Nom'} =~ s/\s+$//;
 $senateur{'Nom'} =~ s/^\s*//;
 $senateur{'Nom'} =~ s/\s+/ /g;
-$senateur{'Nom'} =~ s/^([dD][eE'] )?(.+[A-ZÉË])(( [A-ZÉ][^A-ZÉ ]+)+)$/$3 $1$2/;
+$senateur{'Nom'} =~ s/^([dD][eE'] )?(.+[A-ZÉË]) ((\s*[A-ZÉ][\L\w][^\s]*)+)$/$3 $1$2/;
 $nom = $2;
-$senateur{'Nom'} =~ s/^ //;
 $nomlc = $nom;
 $nomlc =~ s/([A-ZÉ])(\w+ ?)/$1\L$2/g;
 $senateur{'Nom'} =~ s/$nom/$nomlc/;
@@ -140,7 +139,7 @@ sub mandats {
                 $oldcause = $cause;
 		if ($election =~ /\((.*)\)/) {
 			$oldcause = $cause;
-			$cause = lcfirst($1);
+			$cause = name_lowerize(lcfirst($1));
 			if ($cause =~ /remplacement de M[me\.] (.*),/) {
 				$suppleant_de = $1;
 			}
@@ -167,9 +166,6 @@ sub mandats {
 		}
 	}
 	if ($suppleant_de !~ /^$/) {
-		utf8::decode($suppleant_de);
-		$suppleant_de =~ s/([A-ZÉ])(\w+ ?)/$1\L$2/g;
-		utf8::encode($suppleant_de);
 		$senateur{'suppleant_de'} = $suppleant_de;
 	}	
 }

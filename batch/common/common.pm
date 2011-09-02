@@ -45,4 +45,12 @@ sub sessionize {
         return ($_[1] <= 8) ? ($_[0]-1).'-'.$_[0] :  $_[0].'-'.($_[0]+1);
 }
 
-1;
+sub name_lowerize {
+	my $name = shift;
+	utf8::decode($name);
+	$name =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜ])(\w+ ?)/$1\L$2/g;
+	utf8::encode($name);
+	return $name;
+}
+
+;
