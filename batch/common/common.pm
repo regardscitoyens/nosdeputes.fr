@@ -1,3 +1,5 @@
+use HTML::Entities;
+
 %mois = ('janvier'=>'01', 'fvrier'=>'02', 'mars'=>'03', 'avril'=>'04', 'mai'=>'05', 'juin'=>'06', 'juillet'=>'07','aot'=>'08', 'septembre'=>'09', 'octobre'=>'10', 'novembre'=>'11', 'dcembre'=>'12');
 
 
@@ -48,6 +50,7 @@ sub sessionize {
 sub name_lowerize {
 	my $name = shift;
 	utf8::decode($name);
+	$name = decode_entities($name);
 	$name =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜ])(\w+ ?)/$1\L$2/g;
 	utf8::encode($name);
 	return $name;

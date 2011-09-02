@@ -35,8 +35,8 @@ $senateur{'Nom'} =~ s/\n/ /;
 $senateur{'Nom'} =~ s/\s+$//;
 $senateur{'Nom'} =~ s/^\s*//;
 $senateur{'Nom'} =~ s/\s+/ /g;
-$senateur{'Nom'} =~ s/^([dD][eE'] )?(.+[A-ZÉË]) ((\s*[A-ZÉ][\L\w][^\s]*)+)$/$3 $1$2/;
-$nom = $2;
+$senateur{'Nom'} =~ s/^([dD]([eEuU] |'))?(.+[A-ZÉË]) ((\s*[A-ZÉ][\L\w][^\s]*)+)$/$4 $1$3/;
+$nom = $3;
 $nomlc = $nom;
 $nomlc =~ s/([A-ZÉ])(\w+ ?)/$1\L$2/g;
 $senateur{'Nom'} =~ s/$nom/$nomlc/;
@@ -96,7 +96,7 @@ sub fonctions {
 		return;
 	}
 	while ($t = $p->get_tag('li', '/ul')) {
-		last if ($t->[0] ne "li");
+		last if ($t->[0] ne "li" );
 		$commission = $p->get_text('/li', '/a', '/ul');
 		last if ($commission =~ /ancien.*nat(eur|rice)/i);
 		$commission = groupefonction($commission);
@@ -106,13 +106,14 @@ sub fonctions {
 		if (! $groupes{$comm}) {
 			if ($autres && $autres ne "anciengroupe") {
 				$senateur{$autres}{$commission} = 1;
-			} elsif ($commission =~ /nateurs ne figurant sur la liste d'aucun groupe/ || $commission =~ s/groupe (du )?//i) {
+			} elsif ($commission =~ /nateurs ne figurant sur la liste d'aucun groupe/ || $commission =~ /groupe (du )?/i) {
+				$commission =~ s/groupe (du )?//i;
 				$senateur{'groupe'}{$commission} = 1;
 				if ($autres && $autres eq "anciengroupe") {
 					$groupes{$comm} = 1;
 					last;
 				}
-			} else {
+			} elsif ($autres ne "anciengroupe") {
 				$senateur{'fonctions'}{$commission} = 1;
 			}
 			$groupes{$comm} = 1;
@@ -129,25 +130,24 @@ sub mandats {
 		last if ($t->[0] ne "li");
 		$election = $p->get_text('/li', '/ul');
 		$election =~ s/\n/ /g;
-		if ($election =~ /\s+([0-9]*e?r? \S* [0-9]{4})\s+[jusqea']+\s+([0-9]*e?r? \S* [0-9]{4})/) {
+		if ($election =~ /\s+([0-9]*e?r? \S* [0-9]{4})\s+(jusqu')?au\s+([0-9]*e?r? \S* [0-9]{4})/) {
 			$date1 = join '/', reverse datize($1);
 			$date2 = join '/', reverse datize($3);
 		} elsif ($election =~ /\s+([0-9]*e?r? \S* [0-9]{4})/) {
 			$date1 = join '/', reverse datize($1);
 		}
 		$suppleant_de = "";
-                $oldcause = $cause;
+		$oldcause = $cause;
 		if ($election =~ /\((.*)\)/) {
-			$oldcause = $cause;
 			$cause = name_lowerize(lcfirst($1));
-			if ($cause =~ /remplacement de M[me\.] (.*),/) {
+			if ($cause =~ /remplacement de M[me\.]+ ([^,]*),/) {
 				$suppleant_de = $1;
 			}
 		} else {
 			$cause = "";
 		}
 		if ($election =~ /Fin de mandat/) {
-			if ($oldcause =~ /remplacement de M[me\.] (.*),/) {
+			if ($oldcause =~ /remplacement de M[me\.]+ ([^,]*),/) {
                                 $suppleant_de = $1;
                         }
 			$senateur{'fin_mandat'} = $date1;
@@ -187,7 +187,8 @@ while($p->get_tag('h2')) {
 	}elsif ($h2 =~ /mandats|intercommunali/i && $h2 !~ /au cours de ses mandats/) {
 		fonctions('autresmandats');
 	}elsif ($h2 =~ /situation en fin de mandat/i) {
-		fonctions('anciengroupe');	
+		fonctions('anciengroupe');
+		fonctions('anciengroupe');
 	}
 }
 
