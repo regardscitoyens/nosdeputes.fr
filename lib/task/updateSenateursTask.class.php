@@ -77,8 +77,8 @@ class updateSenateursTask extends sfBaseTask
 	      $parl->place_hemicycle = $json->place_hemicycle;
 	    if ($json->profession)
 	      $parl->profession = $json->profession;
-	    if ($json->site_web)
-	      $parl->site_web = $json->site_web;
+	    if (count($json->sites_web))
+	      $parl->sites_web = $json->sites_web;
 	    if ($json->url_senat)
 	      $parl->url_senat = $json->url_senat;
 	    #$parl->villes = $villes->{$parl->getNumDepartement()};

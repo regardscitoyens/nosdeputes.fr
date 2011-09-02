@@ -101,6 +101,10 @@ class Parlementaire extends BaseParlementaire
   public function setGroupe($array) {
     return $this->setPOrganisme('groupe', $array);
   }
+  public function setGroupes($array) {
+    return $this->setPOrganisme('groupes', $array);
+  }
+
 
   public function setPOrganisme($type, $array) {
     if (!$array)
@@ -108,7 +112,7 @@ class Parlementaire extends BaseParlementaire
     $orgas = $this->getParlementaireOrganismes();
     foreach($orgas->getKeys() as $key) {
       $o = $orgas->get($key);
-      if ($o->type == $type)
+      if ($o->type === $type)
 	$orgas->remove($key);
     }
     foreach ($array as $args) {
@@ -118,7 +122,7 @@ class Parlementaire extends BaseParlementaire
       $po = new ParlementaireOrganisme();
       $po->setParlementaire($this);
       $po->setOrganisme($orga);
-      $fonction = preg_replace("/\(/","",$args[1]);
+      $fonction = $args[1];
       $po->setFonction($fonction);
       $importance = ParlementaireOrganisme::defImportance($fonction);
       $po->setImportance($importance);
@@ -167,6 +171,9 @@ class Parlementaire extends BaseParlementaire
   }
   public function setMails($array) {
     $this->_set('mails', serialize($array));
+  }
+  public function setSitesWeb($array) {
+    $this->_set('sites_web', serialize($array));
   }
   public function setAdresses($array) {
     $this->_set('adresses', serialize($array));
@@ -430,8 +437,8 @@ class Parlementaire extends BaseParlementaire
       "974" => "Réunion",
       "975" => "Saint-Pierre-et-Miquelon",
       "976" => "Mayotte",
-    //  "977" => "Saint-Barthélémy",
-    //  "978" => "Saint-Martin",
+      "977" => "Saint-Barthélémy",
+      "978" => "Saint-Martin",
       "986" => "Wallis-et-Futuna",
       "987" => "Polynésie française",
       "988" => "Nouvelle-Calédonie",

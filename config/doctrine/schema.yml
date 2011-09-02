@@ -30,7 +30,7 @@ Parlementaire:
   columns:
     nom_circo: string(255)
     num_circo: integer
-    site_web: string(255)
+    sites_web: string
     debut_mandat: date
     fin_mandat: date
     place_hemicycle: integer
@@ -86,7 +86,7 @@ Organisme:
 #      notnull: true
     type:
       type: enum
-      values: ['parlementaire', 'groupe', 'extra']
+      values: ['parlementaire', 'groupe', 'extra', 'groupes']
 
 ParlementaireOrganisme:
   columns:

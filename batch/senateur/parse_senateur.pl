@@ -51,6 +51,11 @@ $senateur{'Circonscription'} =~ s/^d[eus' ]*(l[a']|) *//;
 $senateur{'Circonscription'} =~ s/repr..sentant les //;
 $senateur{'Circonscription'} =~ s/ +\(.*//;
 $senateur{'Circonscription'} =~ s/\s+puis d.*$//;
+if ($senateur{'Circonscription'} !~ /(fran.*ais)/i) {
+	$senateur{'Circonscription'} =~ s/\s+/-/g;
+}
+$senateur{'Circonscription'} =~ s/^.*les Wallis/Wallis/;
+$senateur{'Circonscription'} =~ s/^La //;
 
 sub groupefonction {
 	$str = shift;
@@ -106,8 +111,8 @@ sub fonctions {
 		if (! $groupes{$comm}) {
 			if ($autres && $autres ne "anciengroupe") {
 				$senateur{$autres}{$commission} = 1;
-			} elsif ($commission =~ /nateurs ne figurant sur la liste d'aucun groupe/ || $commission =~ /groupe (du )?/i) {
-				$commission =~ s/groupe (du )?//i;
+			} elsif ($commission =~ /nateurs ne figurant sur la liste d'aucun groupe/ || $commission =~ /groupe /i) {
+				$commission =~ s/groupe (d(u |e l'))//i;
 				$senateur{'groupe'}{$commission} = 1;
 				if ($autres && $autres eq "anciengroupe") {
 					$groupes{$comm} = 1;
