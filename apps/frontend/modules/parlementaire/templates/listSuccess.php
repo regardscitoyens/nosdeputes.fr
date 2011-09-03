@@ -1,6 +1,6 @@
 <h1>Tous les sénateurs par ordre alphabétique</h1> 
 <?php $sf_response->setTitle('Liste de tous les sénateurs à l\'Assemblée nationale - NosSénateurs.fr'); ?> 
-<p>Les <?php echo $total; ?> sénateurs élus depuis 2004 (<?php echo $actifs; ?> en cours de mandat)&nbsp;:</p> 
+<p>Les <?php echo $total; ?> sénateurs élus ou ayant exercé un mandat depuis 2004 (<?php echo $actifs; ?> en cours de mandat)&nbsp;:</p> 
 <div class="liste"><?php 
 $listlettres = array_keys($parlementaires);
 foreach($listlettres as $i) {

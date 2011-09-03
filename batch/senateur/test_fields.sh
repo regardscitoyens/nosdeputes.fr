@@ -11,7 +11,7 @@ fields=`cat out.yml/* | grep ": ." | grep -v "^    - " | sed 's/: .*$//' | sed '
 total=`ls out.yml/ | wc -l | awk '{print $1}'`
 
 for field in $fields; do
-  grep -r "  $field:" out.yml/ | sed 's/^.*\(.\)\.html:  //' | sort > test/$field.tmp
+  grep -r "  $field:" out.yml/ | sed 's/^.*\(.\)\.html:  '$field': //' | sort > test/$field.tmp
   stotal=`wc -l test/$field.tmp | awk '{print $1}'`
   echo "Champ $field présent dans $stotal fichiers (manque dans $(($total-$stotal)) fichiers)" > test/$field.stats
   echo  >> test/$field.stats
@@ -20,7 +20,7 @@ for field in $fields; do
   uniqs=`wc -l test/$field.uniq | awk '{print $1}'`
   echo "$uniqs valeurs uniques :" >> test/$field.stats
   echo  >> test/$field.stats
-  if [ $uniqs -le 100 ] &&  [ $total -ne $uniqs ]; then
+  if [ $total -ne $uniqs ]; then
     while read line; do
       echo $line | sed 's/^/'`grep -r "$line$" out.yml/ | wc -l | awk '{print $1}'`'\t\t/' >> test/$field.stats
     done < test/$field.uniq
@@ -28,8 +28,6 @@ for field in $fields; do
   fi
   rm test/$field.uniq
 done;
-echo "Vérifier les champs dans test :"
-ls -lrth test
 
 grep -r "^    - " out.yml/ | sed 's/^.*\(.\)\.html:    - //' | sort | uniq > test/arrays
 grep "@" test/arrays > test/emails.uniq
@@ -39,4 +37,6 @@ grep -v "\(@\|http\|[0-9]\+\/[0-9]\+\/[0-9]\+ \/ \)" test/arrays > test/organism
 cat test/organismes | awk -F " / " '{print $1}' | sort | uniq > test/organismes.uniq
 cat test/organismes | awk -F " / " '{print $2}' | sort | uniq > test/fonctions.uniq
 
+echo "Vérifier les champs dans test :"
+ls -lrth test
 
