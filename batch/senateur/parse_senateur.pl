@@ -187,10 +187,12 @@ sub mandats {
 			$tmpcause = $1;
 			if ($tmpcause !~ /(paris|val-d'oise|val-de-marne|$circo)/i) {
 				$cause = name_lowerize(lcfirst($tmpcause));
+				utf8::decode($cause);
 				$cause =~ s/^..?(lue? )/é$1/;
 				$cause =~ s/\s+/ /g;
 				$cause =~ s/M\.\s*/M. /g;
 				$cause =~ s/\.+$//;
+				utf8:encode($cause);
 				if ($cause =~ /remplacement de M[me\.]+ +([^,]*),/) {
 					$suppleant_de = $1;
 				}
