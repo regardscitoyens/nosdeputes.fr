@@ -192,7 +192,7 @@ sub mandats {
 				$cause =~ s/\s+/ /g;
 				$cause =~ s/M\.\s*/M. /g;
 				$cause =~ s/\.+$//;
-				utf8:encode($cause);
+				utf8::encode($cause);
 				if ($cause =~ /remplacement de M[me\.]+ +([^,]*),/) {
 					$suppleant_de = $1;
 				}
