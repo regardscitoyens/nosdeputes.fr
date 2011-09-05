@@ -67,7 +67,7 @@ sub print_inter {
 				chop($amendements);
 			}
 	$intervention =~ s/<p> +/<p>/g;
-	print '{"contexte": "'.$context.'", "intervention": "'.$intervention.'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.$inter.'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
+	print '{"contexte": "'.$context.'", "intervention": "'.$intervention.'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
 	print ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 	print ', "amendements":"'.$amendements.'"' if ($amendements);
 	print "}\n";
