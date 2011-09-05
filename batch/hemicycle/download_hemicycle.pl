@@ -19,22 +19,21 @@ my ($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
 
 $a = WWW::Mechanize->new();
 
-print "$dannee : $year\n";
-print "$dmois ; $mon\n";
-
 for($annee = $dannee ; $annee <= $year +1900 ; $annee++) {
 $lastmonth = 12;
 $lastmonth = $mon if ($year + 1900 == $annee);
 for($mois = $dmois ; $mois <= $lastmonth ; $mois++) { 
-
-    $url = "http://www.senat.fr/seances/s$annee$mois/s$annee$mois.html";
+#    print STDERR "$mois ($lastmonth) $annee ($year)\n";
+    $url = 'http://www.senat.fr/seances/s'.sprintf('%04d', $annee).sprintf('%02d', $mois).'/s'.sprintf('%04d', $annee).sprintf('%02d', $mois).'.html';
 
     print STDERR "$url\n";
 
-    $a->get($url);
+    eval {$a->get($url);};
+    next if ($a->status() == 404);
     $content = $a->content;
     $p = HTML::TokeParser->new(\$content);
     $cpt = 0;
+
     while ($t = $p->get_tag('a')) {
 	  next if ($t->[1]{href} !~ /_mono.html/);
           $a->get($t->[1]{href});

@@ -3,6 +3,7 @@
 use URI::Escape;
 require "../common/common.pm";
 
+$| = 1;
 $file = shift;
 open(FILE, $file);
 @doc = <FILE>;
