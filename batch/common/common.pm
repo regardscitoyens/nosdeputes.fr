@@ -38,8 +38,8 @@ $heure{'cinq'} = '00';
 $heure{''} = '00';
 
 sub heurize {
-	shift;
-	/(\S+) heures\s*(\S*)/;
+	my $h = shift;
+	$h =~ /(\S+) heures\s*(\S*)/;
 	return sprintf("%02d:%02d", $heure{$1}, $heure{$2});
 }
 
