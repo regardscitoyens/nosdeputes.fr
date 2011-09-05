@@ -59,6 +59,8 @@ class updateSenateursTask extends sfBaseTask
 	      $parl->adresses = $json->adresses;
 	    if (count($json->autresmandats))
 	      $parl->autres_mandats = $json->autresmandats;
+	    if (count($json->premiers_mandats))
+              $parl->anciens_mandats = $json->premiers_mandats;
 	    if ($json->groupe)
 	      $parl->groupe = $this->splitArrayJson($json->groupe);
             if (count($json->fonctions))
@@ -83,6 +85,8 @@ class updateSenateursTask extends sfBaseTask
 	      $parl->sites_web = $json->sites_web;
 	    if ($json->url_senat)
 	      $parl->url_senat = $json->url_senat;
+	    if ($json->suppleant_de)
+	      $parl->setSuppleantDe($json->suppleant_de);
 	    #$parl->villes = $villes->{$parl->getNumDepartement()};
 	    $parl->save();
 	  }

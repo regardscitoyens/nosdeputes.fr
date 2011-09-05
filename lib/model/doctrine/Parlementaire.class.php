@@ -105,7 +105,6 @@ class Parlementaire extends BaseParlementaire
     return $this->setPOrganisme('groupes', $array);
   }
 
-
   public function setPOrganisme($type, $array) {
     if (!$array)
       return;
@@ -168,6 +167,13 @@ class Parlementaire extends BaseParlementaire
   }
   public function setAutresMandats($array) {
     $this->_set('autres_mandats', serialize($array));
+  }
+  public function setAnciensMandats($array) {
+    $this->_set('anciens_mandats', serialize($array));
+  }
+  public function setSuppleantDe($nom) {
+    if ($p = doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom))
+      $this->_set('SuppleantDe', $p);
   }
   public function setMails($array) {
     $this->_set('mails', serialize($array));

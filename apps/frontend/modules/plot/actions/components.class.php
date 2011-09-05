@@ -156,7 +156,9 @@ class plotComponents extends sfComponents
     $this->data = array();
     if (!isset($this->type) || $this->type != "all")
       $this->type = "home";
-    $this->data['groupes'] = array('NI' => array(), 'UMP' => array(),'UC' => array(),'RDSE' => array(), 'SOC' => array(),'CRC-SPG' => array());
+    $this->data['groupes'] = array();
+    foreach (array_reverse(myTools::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''))) as $gpe)
+      $this->data['groupes'][$gpe] = array();
     if ($this->type === "home")
       $this->data['titres'] = array("Sénateurs", "Interventions", "Amendements", "Propositions", "Quest. Écrites");
     else $this->data['titres'] = array("", "Interventions", "Longues", "Courtes", "Déposés", "Adoptés", "de Lois", "Écrites", "Orales");
@@ -220,7 +222,7 @@ class plotComponents extends sfComponents
   public function executeGroupes() {
     $this->empty = 0;
     if (!isset($this->plot)) $this->plot = 'total';
-    $this->labels = array('CRC-SPG','SOC','RDSE','UC','UMP','NI');
+    $this->labels = myTools::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''));
     $this->interventions = array();
     if ($this->plot == 'total') {
       $this->presences = array();

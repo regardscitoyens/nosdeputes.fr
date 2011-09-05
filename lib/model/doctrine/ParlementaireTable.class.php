@@ -49,10 +49,10 @@ class ParlementaireTable extends PersonnaliteTable
           $groupe2 = $de->groupe_acronyme;
           if ($groupe2 == $groupe) array_push($memeGroupe, $de);
           elseif (($groupe2 == "UMP" && $groupe == "UC") || ($groupe2 == "UC" && $groupe == "UMP")) array_push($procheGroupe, $de);
-          elseif (($groupe2 == "SOC" && $groupe == "CRC-SPG") || ($groupe2 == "CRC-SPG" && $groupe == "SOC")) array_push($procheGroupe, $de);
+          elseif (($groupe2 == "SOC" && preg_match('/CRC/', $groupe)) || (preg_match('/CRC/', $groupe2) && $groupe == "SOC")) array_push($procheGroupe, $de);
           elseif (($groupe2 == "SOC" && $groupe == "RDSE") || ($groupe2 == "RDSE" && $groupe == "SOC")) array_push($procheGroupe, $de);
-          elseif (($groupe2 == "CRC-SPG" && $groupe == "RDSE") || ($groupe2 == "RDSE" && $groupe == "CRC-SPG")) array_push($procheGroupe, $de);
-          elseif (($groupe2 == "UC" && $groupe == "CRC-SPG") || ($groupe2 == "CRC-SPG" && $groupe == "UC")) array_push($procheGroupe, $de);
+          elseif ((preg_match('/CRC/', $groupe2) && $groupe == "RDSE") || ($groupe2 == "RDSE" && preg_match('/CRC/', $groupe))) array_push($procheGroupe, $de);
+          elseif (($groupe2 == "UC" && preg_match('/CRC/', $groupe)) || (preg_match('/CRC/', $groupe2) && $groupe == "UC")) array_push($procheGroupe, $de);
         }
         if (count($memeGroupe) == 1) $senateur = $memeGroupe[0];
         elseif (count($procheGroupe) == 1) $senateur = $procheGroupe[0];

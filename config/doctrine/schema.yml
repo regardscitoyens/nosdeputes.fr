@@ -45,6 +45,8 @@ Parlementaire:
       values: ['depute', 'senateur']
     groupe_acronyme: string(8)
     adresses: string
+    suppleant_de_id: integer
+    anciens_mandats: string
     autres_mandats: string
     mails: string
     top: string
@@ -57,6 +59,10 @@ Parlementaire:
       class: Organisme
       refClass: ParlementaireOrganisme
       foreignAlias: Parlementaires
+    SuppleantDe:
+      class: Parlementaire
+      local: suppleant_de_id
+      foreignAlias: Suppleants
   indexes:
     uniq_url:
       fields: [url_senat]

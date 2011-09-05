@@ -84,21 +84,11 @@ class parlementaireActions extends sfActions
     }
 
     $groupe = $parlementaire->groupe_acronyme;
-  if ($groupe) {
+    if ($groupe) {
       imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon+$bordure, $rayon+$bordure, imagecolorallocate($ih, 255, 255, 255));
-      if ($groupe == 'CRC-SPG') {
-	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 240, 0, 0));
-      }else if ($groupe == 'SOC') {
-	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 255, 20, 160));
-      }else if ($groupe == 'UMP') {
-	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 0, 0, 170));
-      }else if ($groupe == 'UC') {
-	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 0, 160, 255));
-      }else if ($groupe == 'RDSE') {
-        imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 255, 150, 150));
-      }else if ($groupe == 'NI') {
-	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 255, 255, 255));
-      }
+      foreach (myTools::getGroupesInfos() as $gpe)
+        if ($gpe[1] == $groupe && preg_match('/^(\d+),(\d+),(\d+)$/', $gpe[2], $match))
+         imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, $match[1], $match[2], $match[3]));
     }
 
     if ($newheight) {
