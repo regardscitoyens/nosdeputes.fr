@@ -41,7 +41,7 @@ sub print_inter {
 		$timestamp += 20;
 		$context = $bigcontext;
 		$context .= ' > '.$subcontext if ($subcontext);
-                if ($intervention =~ /\((projet n[^<]+)/) {
+                if ($intervention =~ /\(((projet)?\s*n[^<]+)/) {
                           $docs = $1;
                           $docs =~ s/&[^;]*;//g;
                           $numeros_loi = '';
@@ -80,13 +80,17 @@ sub print_inter {
 }
 
 foreach (split /\n/, $doc) {
+	s/<\/span><span[^>]*>//g;
 	if (/name="([^"]+)"/) {
 		$source = "#$1";
 	}
         if (/<span class="info_entre_parentheses">\((.*)<\/span>([\.\s\)]*)/) {
                 $didasc = $1;
                 if ($didasc =~ /(ouverte|reprise) (&#224;|à) (\S+ heures\s*\S*)\W/) {
-                        $heure = heurize($3);
+                        $h = heurize($3);
+			($htab) = split /:/, $h;
+			$heure = $h if (!$heure || ($htab >= 14 && $oldhtab < 14) || ($htab >= 20 && $oldhtab < 20)); 
+			$oldhtab = $htab;
 			$timestamp = 0;
                 }
         }
@@ -120,7 +124,9 @@ foreach (split /\n/, $doc) {
 			$fonction = $tmpfonction;
 		}
 	}
-        if (s/([^>]*)<span class="info_entre_parentheses">\((.*)<\/span>([\.\s\)]*)//) {
+        while (s/([^>]*)<span class="info_entre_parentheses">\(([^\)]*)\)?<\/span>([\.\s\)]*)//) {
+		$i = $1;
+		$i =~ s/<[^>]*>//g;
                 $intervention .= "<p>$1</p>";
                 $didasc = $2;
                 $didasc =~ s/<[^>]*>//gi;
@@ -129,12 +135,11 @@ foreach (split /\n/, $doc) {
                 $predida_urlinter = $url_inter;
                 $predida_fonction = $fonction;
                 print_inter();
-                $intervention .= '<p>'.$didasc.'</p>';
+                $intervention = '<p>'.$didasc.'</p>';
                 print_inter();
                 $inter = $predida_inter;
                 $url_inter = $predida_urlinter;
                 $fonction = $predida_fonction;
-
         }
 	if (/class="titre_/) {
 		if ($inter) {
