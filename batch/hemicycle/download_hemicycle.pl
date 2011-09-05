@@ -46,4 +46,6 @@ for($mois = $dmois ; $mois <= $lastmonth ; $mois++) {
 	  $a->back();
     }
 
-}}
+}
+$dmois = 1; 
+}
