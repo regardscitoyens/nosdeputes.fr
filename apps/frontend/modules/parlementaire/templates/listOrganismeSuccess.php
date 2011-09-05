@@ -13,9 +13,13 @@ if ($page === "home") {
     $colonnes = 2;
   }
   if ($total && $pagerSeances->getPage() == 1 && ($pagerRapports->getPage() == 1)) {
+    echo "<h2>";
     if ($orga->type == 'extra')
-      echo '<h2>Organisme extra-parlementaire composé de '.$total.' sénateur'.($total > 1 ? 's' : '').'&nbsp;:</h2>';
-    else echo '<h2>'.(preg_match('/commission/i', $orga->getNom()) ? 'Comm' : 'M').'ission parlementaire composée de '.$total.' sénateur'.($total > 1 ? 's' : '').'&nbsp;:</h2>';
+      echo 'Organisme extra-parlementaire';
+    else if ($orga->type == 'groupes')
+      echo 'Groupe parlementaire';
+    else echo (preg_match('/commission/i', $orga->getNom()) ? 'Comm' : 'M').'ission parlementaire';
+    echo ' composée de '.$total.' sénateur'.($total > 1 ? 's' : '').'&nbsp;:</h2>';
   }
   echo $divclass.'<div class="liste">';
   $listimp = array_keys($parlementaires);

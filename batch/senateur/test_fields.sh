@@ -36,6 +36,7 @@ grep "[0-9]\+\/[0-9]\+\/[0-9]\+ \/ " test/arrays | sed 's/^.*\/.*\/ //' | sort |
 grep -v "\(@\|http\|[0-9]\+\/[0-9]\+\/[0-9]\+ \/ \)" test/arrays > test/organismes
 cat test/organismes | awk -F " / " '{print $1}' | sort | uniq > test/organismes.uniq
 cat test/organismes | awk -F " / " '{print $2}' | sort | uniq > test/fonctions.uniq
+grep -r '"groupe" : \["' out/ | sed 's/^.*"groupe" : \["//' | sed 's/","" \], ".*$//' | sort | uniq > test/groupes.uniq
 
 echo "Vérifier les champs dans test :"
 ls -lrth test

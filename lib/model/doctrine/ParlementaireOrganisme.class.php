@@ -9,28 +9,33 @@ class ParlementaireOrganisme extends BaseParlementaireOrganisme
     return $this->getNom().' ('.$this->getFonction().')';
   }
     public static function defImportance($fonction) {
-      if (preg_match('/^(president|président)/i', $fonction)) {
-          if (preg_match('/droit/i', $fonction)) return 98;
-          return 100;
-      } else if (preg_match('/rapporteure? général/i', $fonction)) return 95;
-      else if (preg_match('/(president|président)/i', $fonction)) return 90;
-      else if (preg_match('/questeur/i', $fonction)) {
-          if (preg_match('/membre/i', $fonction)) return 80;
-          return 70;
-      } else if (preg_match('/(secretaire|secrétaire)/i', $fonction)) return 65;
-      else if (preg_match('/rapporteur/i', $fonction)) {
-          if (preg_match('/spécial/i', $fonction)) return 60;
-          return 55;
-      } else if (preg_match('/membre/i', $fonction)) {
-          if (preg_match('/(suppleant|suppléant)/i', $fonction)) return 30;
-          else if ($fonction === "membre") return 40;
-          else if (preg_match('/bureau/i', $fonction)) return 85;
-          return 50;
-      } else if (preg_match('/rattaché/i', $fonction)) return 20;
-      else if (preg_match('/délégué/i', $fonction)) return 85;
-      else if (preg_match('/apparenté/i', $fonction)) return 15;
-      else if (preg_match('/reprise/i', $fonction)) return 10;
-      else return 0;
+      $val = 50;
+      $fonction = preg_replace('/[eéè]/', 'e', strtolower($fonction));
+      if (preg_match('/gouverneur|maire/', $fonction)) $val += 40;
+      if (preg_match('/president/', $fonction)) $val += 35;
+      if (preg_match('/^president/', $fonction)) $val += 10;
+      if (preg_match('/presidente?$/', $fonction)) $val += 5;
+      if (preg_match('/questeur/', $fonction)) $val += 30;
+      if (preg_match('/rapporteur/', $fonction)) $val += 20;
+      if (preg_match('/general|special/', $fonction)) $val += 20;
+      if (preg_match('/charge/', $fonction)) $val += 15;
+      if (preg_match('/administrat/', $fonction)) $val += 12;
+      if (preg_match('/tresorier|secretaire/', $fonction)) $val += 10;
+      if (preg_match('/representant/', $fonction)) $val += 8;
+      if (preg_match('/responsable|titulaire|correspondant|bureau/', $fonction)) $val += 5;
+      if (preg_match('/^co-?/', $fonction)) $val += 4;
+      if (preg_match('/de droit/', $fonction)) $val += 3;
+      if (preg_match('/honneur/', $fonction)) $val += 2;
+      if (preg_match('/vice[- ]/', $fonction)) $val += 2;
+      if (preg_match('/^(1|premi)er/', $fonction)) $val += 2;
+      if (preg_match('/^(2|deuxi)eme/', $fonction)) $val += 1;
+      if (preg_match('/delegue/', $fonction)) $val -= 3;
+      if (preg_match('/arrondissement/', $fonction)) $val -= 5;
+      if (preg_match('/^ancien/', $fonction)) $val -= 10;
+      if (preg_match('/conseiller|supppleant|rattache|adjoint/', $fonction)) $val -= 10;
+      if (preg_match('/apparente/', $fonction)) $val -= 20;
+      if (preg_match('/reprise/i', $fonction)) return 10;
+      return $val;
   }
 
   public function getNom() {

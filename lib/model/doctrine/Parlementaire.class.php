@@ -194,6 +194,14 @@ class Parlementaire extends BaseParlementaire
     }
     return $res;
   }
+  public function getGroupes() {
+    $res = array();
+    foreach($this->getParlementaireOrganismes() as $po) {
+      if ($po->type == 'groupes')
+        array_push($res, $po);
+    }
+    return $res;
+  }
   public function getResponsabilites() {
     $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {

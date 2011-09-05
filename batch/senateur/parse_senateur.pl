@@ -66,11 +66,15 @@ sub groupefonction {
 	$str =~ s/[,\s]*$//;
 	$str =~ s/^\s*//;
 	$str =~ s/\s+/ /g;
-        $str =~ s/'\s/'/g;
+	$str =~ s/"//g;
+	$str =~ s/(['\(])\s/$1/g;
+	$str =~ s/¿/'/g;
 	$str =~ s/membre comité/membre du comité/i;
+	$str =~ s/admistration/administration/ig;
 	$str =~ s/membre commission/membre de la commission/i;
-	$str =~ s/de la à la /de la /i;
+	$str =~ s/de la (d'|à la )/de la /i;
 	$str =~ s/vice président/vice-président/i;
+	$str =~ s/ ([^\s]*-métropole) (communauté.*)$/ la $2 de $1/i;
 	$str =~ s/\(ancien[^\)]+\)//ig;
 	if ($str =~ /^(\S+)\s*,\s*(.*)$/) {
 		$str = "$2 / ".lc($1);
@@ -78,13 +82,19 @@ sub groupefonction {
 		$str = "$2 / ".lc($1)."de mission";
 	} elsif ($str =~ /^(.*) de[ls' ]+((association des )?(voies|maires).*)(( \(|, )président.*)$/i) {
 		$str = "$2 / ".lc($1.$5);
-        } elsif ($str =~ /^(.*) des (voies.*)(, président.*)$/i) {
-                $str = "$2 / ".lc($1.$3);
-	} elsif ($str =~ /^(membre|([viceo\s\-]+)?présidente?)( (délégué|titulair|suppléant)e?)? (du |de la |de l')((assemblée|association|délégation|communauté|commission|conseil|comité|gouvernement) .*)$/i) {
+	} elsif ($str =~ /^(.*) au sein (du |de la |de l')(.*)$/i) {
+		$str = "$3 / ".lc($1);
+	} elsif ($str =~ /^(.*) des (voies.*)(, président.*)$/i) {
+		$str = "$2 / ".lc($1.$3);
+	} elsif ($str =~ /^([^(]* (maire|conseil d'administration|conseil (génér|région|territori)al|communauté urbaine|communauté de communes|communauté d(e l)?'agglomération)) (du |de la |de l'|des |de |d')?(.+)$/i) {
+		$str = "$6 / ".lc($1);
+	} elsif ($str =~ /^(membre|([1-eèrpmvico\s\-]+)?présidente?|secrétaire)( (d'honneur|du bureau|délégué|titulair|suppléant)e?)? (du |de la |de l')((assemblée|section|association|délégation|communauté|commission|conseil|société|syndicat|comité|gouvernement) .*)$/i) {
 		$str = "$6 / ".lc($1.$3);
-        } elsif ($str =~ /^(conseiller du président( international)?|membre( du conseil d'aministration)?|adjointe?|administrateur|représentante?) (à la |du |de la |de l' ?|au |des? |d'une |d' ?)(\S.*)$/i) {
-                $str = "$5 / ".lc($1);
-	} elsif ($str =~ /^(.*) (à la |du |de la |de l'|au |des? |d'une |d')(((conseil|comité|commission|délégation|syndicat|communauté|institut|section|société|agence|association|groupe|pôle) |s[iy].*).*)$/i) {
+	} elsif ($str =~ /^(conseiller du président( international)?|membre( du conseil d'aministration)?|adjointe?|administrateur|représentante?) (à la |du |de la |de l' ?|au |des? |d'une |d' ?)(\S.*)$/i) {
+		$str = "$5 / ".lc($1);
+        } elsif ($str =~ /^(.*) (à la |du |de la |de l'|au |des? |d'une |d')(((délégation|syndicat|communauté|institut|section|société|agence|association|pôle) |s[iy].*).*)$/i) {
+		$str = "$3 / ".lc($1);
+	} elsif ($str =~ /^(.*) (à la |du |de la |de l'|au |des? |d'une |d')(((conseil|comité|commission|groupe) |s[iy].*).*)$/i) {
 		$str = "$3 / ".lc($1);
 	} elsif ($str =~ /^(.*) (à la |du |de la |de l'|au |des? |d'une |d')((union|assemblée|agglomération|pays) .*)$/i) {
 		$str = "$3 / ".lc($1);
@@ -94,8 +104,12 @@ sub groupefonction {
 	$str =~ s/\s+(à la|du|de la|de l'|au|de|d'une|d')\s*$//;
 	$str =~ s/\s*$//;
 	$str =~ s/^\s*//;
+	$str =~ s/^é/É/;
 	$str =~ s/membre conseil/membre du conseil/i;
 	$str =~ s/ \/ pdg/ \/ président directeur général/i;
+	$str =~ s/^(Assemblée parlementaire de la franco)/Section française de l'$1/i;
+	$str =~ s/^(Assemblée parlementaire de l'OTAN)/Délégation française à l'$1/i;
+	$str =~ s/Groupe Groupe/Groupe/i;
 	utf8::encode($str);
 	return ucfirst($str);
 }
@@ -152,6 +166,8 @@ sub fonctions {
 				$senateur{$autres}{$commission} = 1;
 			} elsif ($commission =~ /nateurs ne figurant sur la liste d'aucun groupe/ || $commission =~ /^groupe /i) {
 				$commission =~ s/^groupe (d(u |e l'))?//i;
+				$commission =~ s/groupe \/ /groupe politique \/ /i;
+				$commission =~ s/^union centriste.*\//Union Centriste \//i;
 				$senateur{'groupe'}{$commission} = 1;
 				if ($autres && $autres eq "anciengroupe") {
 					$groupes{$comm} = 1;
@@ -235,11 +251,12 @@ while($p->get_tag('h2')) {
 		mandats();
 	}elsif ($h2 =~ /mandats|intercommunali|locales/i && $h2 !~ /au cours de ses mandats/) {
                 fonctions('autresmandats');
-	}elsif ($h2 =~ /autres|interparl/i) {
+	}elsif ($h2 =~ /autres/i) {
 		fonctions('extras');
 	}elsif ($h2 =~ /groupes/i) {
 		fonctions('groupes');
-	}elsif ($h2 =~ /situation en fin de mandat/i) {
+	}elsif ($h2 =~ /en fin de mandat/i) {
+		fonctions('anciengroupe');
 		while ($p->get_tag('ul')) {
 			fonctions('anciengroupe');
 		}

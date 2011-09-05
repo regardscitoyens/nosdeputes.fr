@@ -50,6 +50,15 @@
             <?php } ?>
           </ul>
         </li>
+	<?php if ($parlementaire->getGroupes()) { ?>
+	<li>Groupes d'études et d'amitié interparlementaires&nbsp;
+	  <ul>
+	    <?php foreach ($parlementaire->getGroupes() as $groupe) { ?>
+            <li><?php echo link_to($groupe->getNom(),'@list_parlementaires_organisme?slug='.$groupe->getSlug() ); ?> (<?php echo $groupe->getFonction(); ?>)</li>
+            <?php } ?>
+	  </ul>
+	</li>
+	<?php } ?>
         <?php } ?>
       </ul>
       <?php endif; ?> <!-- else : ajouter les infos venant de parsing ancien (anciennes responsabilités) et avant les respon actuelles de ministre machin via les personnalites get fonctions? -->
