@@ -49,15 +49,18 @@ class loadHemicyleTask extends sfBaseTask
 	      $intervention->setSource($json->source);
 	      $intervention->setTimestamp($json->timestamp);
 	    }
-            if ($json->timestamp)
+	    if (!isset($json->numeros_loi))
+	      $json->nomeros_loi = '';
+            if ($json->timestamp) {
               $debug = $intervention->setContexte($json->contexte, $json->date.$json->heure, $json->timestamp, $json->numeros_loi, $debug);
-	    if ($json->amendements)
+	    }
+	    if (isset($json->amendements))
 	      $intervention->setAmendements($json->amendements);
 	    if ($json->intervenant) {
 	      $p = null;
 	      if ($json->intervenant_url) {
                 $p = Doctrine::getTable('Parlementaire')
-                  ->findOneByUrlAn($json->intervenant_url);
+                  ->findOneByUrlSenat($json->intervenant_url);
                 if ($p) {
                   $intervention->setParlementaire($p);
                   $intervention->setFonction($json->fonction);
