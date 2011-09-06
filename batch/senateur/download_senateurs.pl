@@ -21,8 +21,10 @@ sub download_fiche {
 	print " : " if ($verbose);
 	mkdir html unless -e "html/" ;
 	open FILE, ">:utf8", "html/$file";
-	$thecontent = decode("windows-1252", $a->content);
-	$thecontent =~ s/iso-8859-1/utf-8/g;
+	$thecontent = $a->content;
+	if ($thecontent =~ s/iso-8859-1/utf-8/ig) {
+	    $thecontent = decode("windows-1252", $thecontent);
+	}
 	print FILE $thecontent;
 	close FILE;
         print "DONE" if ($verbose);
