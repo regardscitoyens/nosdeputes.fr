@@ -50,7 +50,7 @@ class loadHemicyleTask extends sfBaseTask
 	      $intervention->setTimestamp($json->timestamp);
 	    }
 	    if (!isset($json->numeros_loi))
-	      $json->nomeros_loi = '';
+	      $json->numeros_loi = '';
             if ($json->timestamp) {
               $debug = $intervention->setContexte($json->contexte, $json->date.$json->heure, $json->timestamp, $json->numeros_loi, $debug);
 	    }
