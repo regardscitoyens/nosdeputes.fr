@@ -14,7 +14,7 @@ class myTools {
       $config = sfYaml::load(dirname(__FILE__).'/../../../config/app.yml');
       $conf = $config['all']['groupes_infos'];
     }
-    $gpes = self::convertYamlToArray(utf8_decode($conf));
+    $gpes = self::convertYamlToArray($conf);
     $res = array();
     foreach ($gpes as $gpe)
       $res[] = explode(' / ', $gpe);
