@@ -23,6 +23,7 @@ class plotComponents extends sfComponents
       }
       $last_year = $date - 32054400;
       $date_debut = date('Y-m-d', $last_year);
+      $date_fin = date('Y-m-d', $date);
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     } else {
       $query4 = Doctrine_Query::create()
@@ -90,7 +91,7 @@ class plotComponents extends sfComponents
     }
     unset($participations);
 
-    $query3 = Doctrine_Query::create()
+/*    $query3 = Doctrine_Query::create()
       ->select('count(distinct s.id) as nombre, i.id, s.annee, s.numero_semaine')
       ->from('Intervention i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
@@ -112,7 +113,28 @@ class plotComponents extends sfComponents
           $this->data['n_questions'][$n] -= 0.15;
         $this->data['n_questions'][$n] += $question['nombre'];
       }
-    }
+    } 
+*/
+    $query3 = Doctrine_Query::create()
+      ->select('COUNT(q.id) AS nombre, YEAR(q.date) as annee, WEEKOFYEAR(q.date) as numero_semaine')
+      ->from('Question q')
+      ->where('q.type != ?', 'Question écrite')
+      ->andWhere('q.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('q.reponse != ?', '')
+      ->andWhere('q.date >= ?', $date_debut)
+      ->andWhere('q.date < ?', $date_fin)
+      ->groupBy('annee, numero_semaine');
+    $questionsorales = $query3->fetchArray();
+
+    $this->data['n_questions'] = array_fill(1, $n_weeks, 0);
+    foreach ($questionsorales as $question) {
+      $n = ($question['annee'] - $annee0)*53 + $question['numero_semaine'] - $sem0 + 1;
+      if ($n <= $n_weeks) {
+        if ($this->data['n_questions'][$n] == 0)
+          $this->data['n_questions'][$n] -= 0.15;
+        $this->data['n_questions'][$n] += $question['nombre'];
+      }
+    } 
     unset($questionsorales);
   }
 

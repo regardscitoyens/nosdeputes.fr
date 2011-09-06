@@ -15,7 +15,7 @@ $font = 8;
 
 if ($drawAction === "map") {  
   $Test = new xsPChart($xsize,$ysize);  
-  $Test->getImageMap($mapId, FALSE);
+  $Test->getImageMap($mapId, TRUE);
 }
 
 $DataSet = new xsPData();

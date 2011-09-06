@@ -222,10 +222,12 @@ class Parlementaire extends BaseParlementaire
     return '@parlementaire?slug='.$this->slug;
   }
 
-  public function getNomNumCirco() {
-    $shortcirco = trim(strtolower($this->_get('nom_circo')));
+  public static function displayNomCirco($circo) {
+    $shortcirco = trim(strtolower($circo));
     $shortcirco = preg_replace('/\s+/','-', $shortcirco);
-    return $this->_get('nom_circo')." (".$this->getNumeroDepartement($shortcirco).")";
+    $circo = str_replace("Français établis hors de France", "Français à l'étranger", $circo);
+    if (preg_match('/étranger/', $circo)) return $circo;
+    else return $circo." (".self::getNumeroDepartement($shortcirco).")";
   }
 
   public function getNumDepartement() {
@@ -343,7 +345,7 @@ class Parlementaire extends BaseParlementaire
      "Français établis hors de France" => "des"
     );
  public function getPrefixeCirconscription() {
-     $prefixe = self::$dptmt_pref[trim($this->nom_circo)];
+    $prefixe = self::$dptmt_pref[trim($this->nom_circo)];
     if (! preg_match("/'/", $prefixe)) $prefixe = $prefixe.' ';
     return $prefixe;
   }

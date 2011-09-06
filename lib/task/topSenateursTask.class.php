@@ -156,6 +156,7 @@ class topSenateursTask extends sfBaseTask
     $parlementaires = $q->select('p.id, count(q.id)')
       ->from('Parlementaire p, p.Questions q')
       ->andWhere('q.type != ?', 'Question écrite')
+      ->andWhere('q.reponse != ?', '')
       ->groupBy('p.id')
       ->fetchArray();
     foreach ($parlementaires as $p) {

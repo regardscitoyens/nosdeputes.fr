@@ -34,11 +34,11 @@ foreach($senateurs as $senateur) {
     </span>
     <span class="list_right"><a href="<?php if (!isset($circo)) echo url_for('@list_parlementaires_departement?departement='.$senateur->nom_circo); else echo url_for('@parlementaire?slug='.$senateur->slug); ?>"><?php
       if (isset($circo)) {
-        echo '<span class="list_num_circo">';
+        $string = '<span class="list_num_circo">';
         if (isset($dept))
-          $string = $senateur->getNumDepartement();
+          $string .= $senateur->getNumDepartement();
         echo $string.'</span></a>';
-      } else echo $senateur->nom_circo; 
+      } else echo Parlementaire::displayNomCirco($senateur->nom_circo);
     ?></a></span><br/>
     <span class="list_left">
       <?php echo preg_replace('/\s([A-Z\-]+)$/', ' <a href="'.url_for('@list_parlementaires_groupe?acro='.$senateur->groupe_acronyme).'"><span class="c_'.strtolower($senateur->getGroupeAcronyme()).'">'."\\1</span></a>", $senateur->getStatut()); ?>

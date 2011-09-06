@@ -25,7 +25,7 @@ class updateSenateursTask extends sfBaseTask
     $dir = dirname(__FILE__).'/../../batch/senateur/out/';
     $manager = new sfDatabaseManager($this->configuration);
 
-//    $villes = json_decode(file_get_contents($dir.'../static/villes.json'));
+    $villes = json_decode(file_get_contents($dir.'../static/villes.json'));
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
@@ -87,7 +87,12 @@ class updateSenateursTask extends sfBaseTask
 	      $parl->url_senat = $json->url_senat;
 	    if ($json->suppleant_de)
 	      $parl->setSuppleantDe($json->suppleant_de);
-	    #$parl->villes = $villes->{$parl->getNumDepartement()};
+            $vi = "";
+	    if ($villes->{$parl->getNumDepartement()}) foreach(get_object_vars($villes->{$parl->getNumDepartement()}) as $v) {
+              if ($vi) $vi .= ", ";
+              $vi .= $v;
+            }
+            $parl->villes = $vi;
 	    $parl->save();
 	  }
 	}

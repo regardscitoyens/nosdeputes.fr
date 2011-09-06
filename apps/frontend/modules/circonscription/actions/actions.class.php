@@ -379,6 +379,7 @@ class circonscriptionActions extends sfActions
   public function executeShow(sfWebRequest $request) 
   {
     $this->circo = preg_replace('/_/', ' ', $request->getParameter('departement'));
+    $this->circo = preg_replace('/^.*[eé]tranger.*/', 'Français établis hors de France', $this->circo);
     $this->forward404Unless($this->circo);
     $this->departement_num = Parlementaire::getNumeroDepartement($this->circo);
 
@@ -397,6 +398,8 @@ class circonscriptionActions extends sfActions
     $departmt = strip_tags(trim(strtolower($this->search)));
     if (preg_match('/(polyn[eé]sie)/i', $departmt)) {
       return $this->redirect('@list_parlementaires_departement?departement=Polyn%C3%A9sie_Fran%C3%A7aise');
+    } else if (preg_match('/([eé]tranger)/i', $departmt)) {
+      return $this->redirect('@list_parlementaires_departement?departement=Fran%C3%A7ais_%C3%A9tablis_hors_de_France');
     } else {
       $departmt = preg_replace('/\s+/', '-', $departmt);
       if ($this->circo = Parlementaire::getNomDepartement(Parlementaire::getNumeroDepartement($departmt)))
