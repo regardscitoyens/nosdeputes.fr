@@ -42,7 +42,7 @@ foreach($deputes as $depute) {
       } else echo $depute->nom_circo; 
     ?></a></span><br/>
     <span class="list_left">
-      <?php echo preg_replace('/\s([A-Z]+)$/', ' <a href="'.url_for('@list_parlementaires_groupe?acro='.$depute->groupe_acronyme).'"><span class="couleur_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
+      <?php echo preg_replace('/\s([A-Z]+)$/', ' <a href="'.url_for('@list_parlementaires_groupe?acro='.$depute->groupe_acronyme).'"><span class="c_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
     </span>
     <span class="list_right"><?php
       if (!$depute->nb_commentaires)

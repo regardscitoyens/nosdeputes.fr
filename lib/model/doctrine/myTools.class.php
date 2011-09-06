@@ -1,6 +1,32 @@
 <?php
 class myTools {
 
+  public static function convertYamlToArray($string) {
+    $string = preg_replace('/^\s*\[\s*"\s*/', '', $string);
+    $string = preg_replace('/\s*"\s*]\s*$/', '', $string);
+    $string = preg_replace('/",\s+"/', '","', $string);
+    return explode('","', $string);
+  }
+
+  public static function getGroupesInfos() {
+    $gpes = self::convertYamlToArray(utf8_decode(sfConfig::get('app_groupes_infos', '')));
+    $res = array();
+    foreach ($gpes as $gpe)
+      $res[] = explode(' / ', $gpe);
+    return $res;
+  }
+
+  public static function getGroupesInfosOrder() {
+    $gpes = self::getGroupesInfos();
+    $map = array();
+    foreach ($gpes as $gpe)
+      $map[$gpe[1]] = $gpe;
+    $gpes = array();
+    foreach (self::convertYamlToArray(sfConfig::get('app_groupes_actuels', '')) as $gpe)
+      $gpes[] = $map[$gpe];
+    return $gpes;
+  }
+
    static $num_mois = array(
      "01" => "janvier",
      "02" => "février",

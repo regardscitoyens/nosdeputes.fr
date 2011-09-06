@@ -1,5 +1,5 @@
 <?php $title =  ($orga->getSmallNomGroupe() == "NI" ? '' : 'Groupe ').$orga->getNom()." (".$orga->getSmallNomGroupe().")"; ?>
-<h1><?php echo '<span class="couleur_'.strtolower($orga->getSmallNomGroupe()).'">'.$title.'</span>'; $sf_response->setTitle($title); ?></h1>
+<h1><?php echo '<span class="c_'.strtolower($orga->getSmallNomGroupe()).'">'.$title.'</span>'; $sf_response->setTitle($title); ?></h1>
 <h2><?php echo $total; ?> député<?php if ($total > 1) echo 's'; ?></h2>
 <div class="liste">
 <?php $listimp = array_keys($parlementaires);

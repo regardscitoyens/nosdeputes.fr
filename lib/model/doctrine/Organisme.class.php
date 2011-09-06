@@ -23,41 +23,21 @@ class Organisme extends BaseOrganisme
     return substr($this->getTitre(), 0, 100);
   }
   public function getSmallNomGroupe() {
-    $hashmap = array(
-        "Union pour un mouvement populaire" => "UMP",
-        "Socialiste, radical, citoyen et divers gauche" => "SRC",
-        "Gauche démocrate et républicaine" => "GDR",
-        "Députés n'appartenant à aucun groupe" => "NI",
-        "Nouveau centre" => "NC"
-    );
+    $hashmap = array();
+    foreach (myTools::getGroupesInfos() as $gpe)
+      $hashmap[$gpe[0]] = $gpe[1];
     if (isset($hashmap[$this->getNom()]))
       return $hashmap[$this->getNom()];
     return "";
   }
-
-  public function getCouleur() {
-    $hashmap = array(
-        "Union pour un mouvement populaire" => "30,30,200",
-        "Socialiste, radical, citoyen et divers gauche" => "255,50,190",
-        "Gauche démocrate et républicaine" => "255,30,30",
-        "Députés n'appartenant à aucun groupe" => "200,200,200",
-        "Nouveau centre" => "30,190,255"
-    );
-    return '<span style=\'background-color: rgb('.$hashmap[$this->getNom()].');\'>&nbsp;&nbsp;</span>';
-  }
   public static function getNomByAcro($acro) {
     $acro = strtolower($acro);
-    if (preg_match('/^(ump|src|gdr|ni|nc)$/i', $acro)) {
-      $hashmap = array(
-         "ump" => "Union pour un mouvement populaire",
-         "src" => "Socialiste, radical, citoyen et divers gauche",
-         "gdr" => "Gauche démocrate et républicaine",
-         "ni" => "Députés n'appartenant à aucun groupe",
-         "nc" => "Nouveau centre" );
+    $hashmap = array();
+    foreach (myTools::getGroupesInfos() as $gpe)
+      $hashmap[strtolower($gpe[1])] = $gpe[0];
+    if (preg_match('/^('.implode('|',array_keys($hashmap)).')$/i', $acro))
       return $hashmap["$acro"];
-    } else {
-      return false;
-    }
+    else return false;
   }
   public function getSeanceByDateAndMomentOrCreateIt($date, $moment, $session = null) {
     $seance = $this->getSeanceByDateAndMoment($date, $moment);

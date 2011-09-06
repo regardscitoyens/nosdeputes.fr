@@ -48,8 +48,11 @@ class ParlementaireTable extends PersonnaliteTable
         foreach ($memeSexe as $de) {
           $groupe2 = $de->groupe_acronyme;
           if ($groupe2 == $groupe) array_push($memeGroupe, $de);
-          elseif (($groupe2 == "UMP" && $groupe == "NC") || ($groupe2 == "NC" && $groupe == "UMP")) array_push($procheGroupe, $de);
-          elseif (($groupe2 == "SRC" && $groupe == "GDR") || ($groupe2 == "GDR" && $groupe == "SRC")) array_push($procheGroupe, $de);
+          else foreach(myTools::convertYamlToArray(sfConfig::get('app_groupes_proximite', '')) as $gpe) {
+            $gpes = explode(' / ', $gpe);
+            if (($groupe2 == $gpes[0] && $groupe == $gpes[1]) || ($groupe2 == $gpes[1] && $groupe == $gpe[0]))
+              array_push($procheGroupe, $de);
+          }
         }
         if (count($memeGroupe) == 1) $depute = $memeGroupe[0];
         elseif (count($procheGroupe) == 1) $depute = $procheGroupe[0];
