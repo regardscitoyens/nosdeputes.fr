@@ -9,7 +9,12 @@ class myTools {
   }
 
   public static function getGroupesInfos() {
-    $gpes = self::convertYamlToArray(utf8_decode(sfConfig::get('app_groupes_infos', '')));
+    $conf = sfConfig::get('app_groupes_infos', '');
+    if (!$conf) {
+      $config = sfYaml::load(dirname(__FILE__).'/../../../config/app.yml');
+      $conf = $config['all']['groupes_infos'];
+    }
+    $gpes = self::convertYamlToArray(utf8_decode($conf));
     $res = array();
     foreach ($gpes as $gpe)
       $res[] = explode(' / ', $gpe);

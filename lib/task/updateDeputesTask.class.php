@@ -8,7 +8,7 @@ class updateDeputesTask extends sfBaseTask
     $this->name = 'Deputes';
     $this->briefDescription = 'Update Deputes';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
-    $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
   protected function splitArrayJson($json) {
