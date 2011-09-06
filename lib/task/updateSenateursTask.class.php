@@ -8,7 +8,7 @@ class updateSenateursTask extends sfBaseTask
     $this->name = 'Senateurs';
     $this->briefDescription = 'Update Senateurs';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
-    $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
   protected function splitArrayJson($json) {
