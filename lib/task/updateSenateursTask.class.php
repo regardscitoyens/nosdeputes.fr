@@ -8,7 +8,7 @@ class updateSenateursTask extends sfBaseTask
     $this->name = 'Senateurs';
     $this->briefDescription = 'Update Senateurs';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
-    $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
   protected function splitArrayJson($json) {
@@ -23,7 +23,7 @@ class updateSenateursTask extends sfBaseTask
   protected function execute($arguments = array(), $options = array())
   {
     $dir = dirname(__FILE__).'/../../batch/senateur/out/';
-    $manager = new sfDatabaseManager($this->configuration);    
+    $manager = new sfDatabaseManager($this->configuration);
 
 //    $villes = json_decode(file_get_contents($dir.'../static/villes.json'));
 
