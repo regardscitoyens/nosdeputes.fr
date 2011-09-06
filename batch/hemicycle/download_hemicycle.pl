@@ -26,7 +26,7 @@ for($mois = $dmois ; $mois <= $lastmonth ; $mois++) {
 #    print STDERR "$mois ($lastmonth) $annee ($year)\n";
     $url = 'http://www.senat.fr/seances/s'.sprintf('%04d', $annee).sprintf('%02d', $mois).'/s'.sprintf('%04d', $annee).sprintf('%02d', $mois).'.html';
 
-    print STDERR "$url\n";
+    print STDERR "search seance in $url\n";
 
     eval {$a->get($url);};
     next if ($a->status() == 404);
@@ -36,12 +36,22 @@ for($mois = $dmois ; $mois <= $lastmonth ; $mois++) {
 
     while ($t = $p->get_tag('a')) {
 	  next if ($t->[1]{href} !~ /_mono.html/);
-          $a->get($t->[1]{href});
+	  $href = $t->[1]{href};
+          eval {$a->get($href);};
+	  if ($@) {
+	      print STDERR "error downloading $href\n";
+	      $a->back();
+	      next;
+	  }
           $file = uri_escape($a->uri());
-	  print "$file\n";
 	  open FILE, ">:utf8", "html/$file";
-	  print FILE $a->content;
+	  $thecontent = $a->content;
+	  if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
+	      $thecontent = decode("windows-1252", $thecontent);
+	  }
+	  print FILE $thecontent;
 	  close FILE;
+	  print "$file\n";
 	  $a->back();
     }
 
