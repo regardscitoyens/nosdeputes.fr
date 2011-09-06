@@ -23,9 +23,9 @@ my %senateur;
 my %groupes;
 
 if ($file =~ /%2F([^%]+).html/) {
-    $senateur{'id_senat'} = $1;
-    $senateur{'url_senat'} = uri_unescape($file);
-    $senateur{'url_senat'} =~ s/html\///;
+    $senateur{'id_institution'} = $1;
+    $senateur{'url_institution'} = uri_unescape($file);
+    $senateur{'url_institution'} =~ s/html\///;
 }
 
 $p->get_tag('h1');
@@ -333,7 +333,7 @@ exit;
 
 if ($yml) {
     
-    print "senateur_".$senateur{'id_senat'}.":\n"; 
+    print "senateur_".$senateur{'id_institution'}.":\n"; 
     foreach $k (keys %senateur) { 
 	next if ($k =~ /suppléant/i); 
 	if (ref($senateur{$k}) =~ /HASH/) { 
