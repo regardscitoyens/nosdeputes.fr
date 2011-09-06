@@ -58,7 +58,6 @@ sub print_inter {
                 if ($intervention =~ /amendements? n([^<]+)/) {
                                         $amdt = $1;
                                         $amdt =~ s/&[^;]*;//g;
-                                        print "docs: $amdt\n";
                                         $amendements = '';
                                         while ($amdt =~ /(\d+)( ?rectifi|)\D/g) {
                                                 $amendements .= "$1";
