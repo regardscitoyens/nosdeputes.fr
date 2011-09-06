@@ -209,13 +209,12 @@ class parlementaireActions extends sfActions
     $acro = strtolower($request->getParameter('acro'));
     $nom = Organisme::getNomByAcro($acro);
     $this->forward404Unless($nom);
-
     $query = Doctrine::getTable('Parlementaire')->createQuery('p')
       ->select('p.*, po.fonction as fonction, po.importance as imp')
       ->leftJoin('p.ParlementaireOrganisme po')
       ->leftJoin('po.Organisme o')
-      ->where('p.fin_mandat IS NULL')
-      ->andWhere('p.groupe_acronyme = ?', $acro)
+      ->where('p.groupe_acronyme = ?', strtoupper($acro))
+//      ->andWhere('p.fin_mandat IS NULL')
       ->andWhere('o.type = ?', 'groupe')
       ->andWhere('o.nom = ?', $nom);
     $query->orderBy("imp DESC, p.nom_de_famille ASC");

@@ -3,6 +3,21 @@ all:
   base_url: http://www.nossenateurs.fr/
   secret_key: _______PUT_YOUR_KEY_HERE________
   legislature: 13
+  groupes_actuels: >
+    ["CRC-SPG", "SOC", "RDSE", "UC", "UMP", "NI"]
+# groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
+  groupes_infos: >
+    [
+    "Communiste Républicain et Citoyen / CRC / 255,30,30 / PCF et ratt. / communiste",
+    "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche / CRC-SPG / 255,30,30 / PCF, PG et ratt. / communiste.*gauche",
+    "Socialiste / SOC / 255,50,190 / Socialistes (PS, Verts et ratt.) / socialiste",
+    "Rassemblement Démocratique et Social Européen / RDSE / 255,150,150 / Socio-Radicaux (PRG, MRC, ...) / démocratique|européen",
+    "Union Centriste / UC / 30,190,255 / Union Centriste (NC, Modem, ...) / centre|centriste",
+    "Union pour un Mouvement Populaire / UMP / 30,30,200 / UMP, RPF, RAD, et ratt. / union.*mouvement.*populaire",
+    "Réunion administrative des Sénateurs ne figurant sur la liste d'aucun groupe politique / NI / 130,130,130 / Non-Inscrits / inscrits|administrative|aucun"
+    ]
+  groupes_proximite: >
+    ["CRC / CRC-SPG", "CRC / RDSE", "CRC / SOC", "CRC-SPG / RDSE", "CRC-SPG / SOC", "SOC / RDSE", "RDSE / UC", "UC / UMP"]
 
   sfDoctrineActAsTaggablePlugin:
     triple_distinct:   true

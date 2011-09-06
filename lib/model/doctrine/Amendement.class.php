@@ -31,11 +31,10 @@ class Amendement extends BaseAmendement {
         $groupe = $match2[1];
         $auteurs .= ", ".$match2[3];
       }
-      if (preg_match('/(union.*mouvement.*populaire|UMP)/i',$groupe)) $groupe = "UMP";
-      elseif (preg_match('/(socialiste|SOC)/i',$groupe)) $groupe = "SOC";
-      elseif (preg_match('/(communiste|gauche|CRC-SPG)/i',$groupe)) $groupe = "CRC-SPG";
-      elseif (preg_match('/(démocratique|européen|RDSE)/i',$groupe)) $groupe = "RDSE";
-      elseif (preg_match('/(centre|centriste|UC)/i',$groupe)) $groupe = "UC";
+      $tmpgroupe = null;
+      foreach (myTools::getGroupesInfos() as $gpe)
+        if (preg_match('/('.$gpe[4].'|'.$gpe[1].')/i', $groupe)) $tmpgroupe = $gpe[1];
+      if ($tmpgroupe) $groupe = $tmpgroupe
       else $groupe = null;
     }
     if ($debug) echo $auteurs." // ".$groupe."\n";

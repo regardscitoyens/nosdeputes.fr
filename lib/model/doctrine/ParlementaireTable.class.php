@@ -48,11 +48,11 @@ class ParlementaireTable extends PersonnaliteTable
         foreach ($memeSexe as $de) {
           $groupe2 = $de->groupe_acronyme;
           if ($groupe2 == $groupe) array_push($memeGroupe, $de);
-          elseif (($groupe2 == "UMP" && $groupe == "UC") || ($groupe2 == "UC" && $groupe == "UMP")) array_push($procheGroupe, $de);
-          elseif (($groupe2 == "SOC" && preg_match('/CRC/', $groupe)) || (preg_match('/CRC/', $groupe2) && $groupe == "SOC")) array_push($procheGroupe, $de);
-          elseif (($groupe2 == "SOC" && $groupe == "RDSE") || ($groupe2 == "RDSE" && $groupe == "SOC")) array_push($procheGroupe, $de);
-          elseif ((preg_match('/CRC/', $groupe2) && $groupe == "RDSE") || ($groupe2 == "RDSE" && preg_match('/CRC/', $groupe))) array_push($procheGroupe, $de);
-          elseif (($groupe2 == "UC" && preg_match('/CRC/', $groupe)) || (preg_match('/CRC/', $groupe2) && $groupe == "UC")) array_push($procheGroupe, $de);
+          else foreach(myTools::convertYamlToArray(sfConfig::get('app_groupes_proximite', '')) as $gpe) {
+            $gpes = explode(' / ', $gpe);
+            if (($groupe2 == $gpes[0] && $groupe == $gpes[1]) || ($groupe2 == $gpes[1] && $groupe == $gpe[0]))
+              array_push($procheGroupe, $de);
+          }
         }
         if (count($memeGroupe) == 1) $senateur = $memeGroupe[0];
         elseif (count($procheGroupe) == 1) $senateur = $procheGroupe[0];

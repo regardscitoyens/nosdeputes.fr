@@ -1870,49 +1870,6 @@ a:hover img {
   background-color: rgb(198,229,81);
   opacity: 0.8;
 }
-.couleur_ump {
-  color: rgb(30,30,200);
-}
-.couleur_soc {
-  color: rgb(255,50,90);
-}
-.couleur_crc-spg {
-  color: rgb(255,30,30);
-}
-.couleur_rdse {
-  color: rgb(255,150,150);
-}
-.couleur_uc {
-  color: rgb(30,190,255);
-}
-.couleur_ni {
-  color: rgb(130,130,130);
-}
-
-.synthese .couleur_ump, .synthese .couleur_soc, .synthese .couleur_crc-spg, .synthese .couleur_rdse, .synthese .couleur_uc, .synthese .couleur_ni {
-  padding-left: 2px;
-  padding-right: 2px;
-  color: #6F6F6F;
-}
-.synthese .couleur_ump {
-  border-left: 5px solid rgb(30,30,200);
-}
-.synthese .couleur_soc {
-  border-left: 5px solid rgb(255,50,90);
-}
-.synthese .couleur_crc-spg {
-  border-left: 5px solid rgb(255,30,30);
-}
-.synthese .couleur_rdse {
-  border-left: 5px solid rgb(255,150,150);
-}
-
-.synthese .couleur_uc {
-  border-left: 5px solid rgb(30,190,255);
-}
-.synthese .couleur_ni {
-  border-left: 5px solid rgb(130,130,130);
-}
 .list_img_left {
   float:left;
   margin: 4px;

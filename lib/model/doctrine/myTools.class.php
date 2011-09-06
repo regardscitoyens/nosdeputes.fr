@@ -16,6 +16,17 @@ class myTools {
     return $res;
   }
 
+  public static function getGroupesInfosOrder() {
+    $gpes = self::getGroupesInfos();
+    $map = array();
+    foreach ($gpes as $gpe)
+      $map[$gpe[1]] = $gpe;
+    $gpes = array();
+    foreach (self::convertYamlToArray(sfConfig::get('app_groupes_actuels', '')) as $gpe)
+      $gpes[] = $map[$gpe];
+    return $gpes;
+  }
+
   static $num_mois = array(
      "01" => "janvier",
      "02" => "février",

@@ -23,46 +23,21 @@ class Organisme extends BaseOrganisme
     return substr($this->getTitre(), 0, 100);
   }
   public function getSmallNomGroupe() {
-    $hashmap = array(
-        "Union pour un Mouvement Populaire" => "UMP",
-        "Socialiste" => "SOC",
-        "Rassemblement Démocratique et Social Européen" => "RDSE",
-        "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche" => "CRC-SPG",
-        "Communiste, Républicain et Citoyen" => "CRC",
-        "Réunion administrative des Sénateurs ne figurant sur la liste d'aucun groupe politique" => "NI",
-        "Union centriste" => "UC"
-    );
+    $hashmap = array();
+    foreach (myTools::getGroupesInfos() as $gpe)
+      $hashmap[$gpe[0]] = $gpe[1];
     if (isset($hashmap[$this->getNom()]))
       return $hashmap[$this->getNom()];
     return "";
   }
-
-  public function getCouleur() {
-    $hashmap = array(
-        "Union pour un Mouvement Populaire" => "30,30,200",
-        "Socialiste" => "255,50,190",
-        "Rassemblement Démocratique et Social Européen" => "255,150,150",
-        "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche" => "255,30,30",
-        "Communiste, Républicain et Citoyen" => "255,30,30",
-        "Réunion administrative des Sénateurs ne figurant sur la liste d'aucun groupe politique" => "200,200,200",
-        "Union centriste" => "30,190,255"
-    );
-    return '<span style=\'background-color: rgb('.$hashmap[$this->getNom()].');\'>&nbsp;&nbsp;</span>';
-  }
   public static function getNomByAcro($acro) {
     $acro = strtolower($acro);
-    if (preg_match('/^(ump|soc|rdse|ni|uc|crc-spg)$/i', $acro)) {
-      $hashmap = array(
-         "ump" => "Union pour un Mouvement Populaire",
-         "soc" => "Socialiste",
-         "rdse" => "Gauche démocrate et républicaine",
-         "ni" => "Réunion administrative des Sénateurs ne figurant sur la liste d'aucun groupe politique",
-         "uc" => "Union centriste",
-	 "crc-spg" => "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche" );
+    $hashmap = array();
+    foreach (myTools::getGroupesInfos() as $gpe)
+      $hashmap[strtolower($gpe[1])] = $gpe[0];
+    if (preg_match('/^('.implode('|',array_keys($hashmap)).')$/i', $acro))
       return $hashmap["$acro"];
-    } else {
-      return false;
-    }
+    else return false;
   }
   public function getSeanceByDateAndMomentOrCreateIt($date, $moment, $session = null) {
     $seance = $this->getSeanceByDateAndMoment($date, $moment);

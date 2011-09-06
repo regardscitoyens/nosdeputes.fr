@@ -41,7 +41,7 @@ foreach($senateurs as $senateur) {
       } else echo $senateur->nom_circo; 
     ?></a></span><br/>
     <span class="list_left">
-      <?php echo preg_replace('/\s([A-Z\-]+)$/', ' <a href="'.url_for('@list_parlementaires_groupe?acro='.$senateur->groupe_acronyme).'"><span class="couleur_'.strtolower($senateur->getGroupeAcronyme()).'">'."\\1</span></a>", $senateur->getStatut()); ?>
+      <?php echo preg_replace('/\s([A-Z\-]+)$/', ' <a href="'.url_for('@list_parlementaires_groupe?acro='.$senateur->groupe_acronyme).'"><span class="c_'.strtolower($senateur->getGroupeAcronyme()).'">'."\\1</span></a>", $senateur->getStatut()); ?>
     </span>
     <span class="list_right"><?php
       if (!$senateur->nb_commentaires)
