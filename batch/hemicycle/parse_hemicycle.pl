@@ -66,11 +66,13 @@ sub print_inter {
 				}
 				chop($amendements);
 			}
-	$intervention =~ s/<p> +/<p>/g;
-	print '{"contexte": "'.$context.'", "intervention": "'.$intervention.'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
-	print ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
-	print ', "amendements":"'.$amendements.'"' if ($amendements);
-	print "}\n";
+		$intervention =~ s/<p> +/<p>/g;
+		$json  = '{"contexte": "'.$context.'", "intervention": "'.$intervention.'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
+		$json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
+		$json .= ', "amendements":"'.$amendements.'"' if ($amendements);
+		$json .= "}\n";
+		$json =~ s/'/\\'/g;
+		print $json;
 	}
 	$intervention = '';
 	$inter = '';
