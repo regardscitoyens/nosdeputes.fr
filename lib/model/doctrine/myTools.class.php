@@ -27,7 +27,7 @@ class myTools {
     return $gpes;
   }
 
-   static $num_mois = array(
+  static $num_mois = array(
      "01" => "janvier",
      "02" => "février",
      "03" => "mars",

@@ -86,15 +86,9 @@ class parlementaireActions extends sfActions
       if ($groupe == 'GDR') {
 	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 45, 225, imagecolorallocate($ih, 0, 170, 0), IMG_ARC_EDGED);
 	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 225, 45, imagecolorallocate($ih, 240, 0, 0), IMG_ARC_EDGED);
-      }else if ($groupe == 'SRC') {
-	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 255, 20, 160));
-      }else if ($groupe == 'UMP') {
-	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 0, 0, 170));
-      }else if ($groupe == 'NC') {
-	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 0, 160, 255));
-      }else if ($groupe == 'NI') {
-	imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, 255, 255, 255));
-      }
+      } else foreach (myTools::getGroupesInfos() as $gpe)
+        if ($gpe[1] == $groupe && preg_match('/^(\d+),(\d+),(\d+)$/', $gpe[2], $match))
+         imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, $match[1], $match[2], $match[3]));
     }
 
     if ($newheight) {

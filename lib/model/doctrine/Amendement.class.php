@@ -34,7 +34,7 @@ class Amendement extends BaseAmendement {
       $tmpgroupe = null;
       foreach (myTools::getGroupesInfos() as $gpe)
         if (preg_match('/('.$gpe[4].'|'.$gpe[1].')/i', $groupe)) $tmpgroupe = $gpe[1];
-      if ($tmpgroupe) $groupe = $tmpgroupe
+      if ($tmpgroupe) $groupe = $tmpgroupe;
       else $groupe = null;
     }
     if ($debug) echo $auteurs." // ".$groupe."\n";
