@@ -1,5 +1,5 @@
 <div class="precedent"><?php echo myTools::displayDate($doc->date); ?></div>
-<div class="source"><?php if ($section) echo link_to('Dossier relatif', '@section?id='.$section->id); else echo myTools::getLinkDossier($doc->id_dossier_senat); ?></div>
+<div class="source"><?php if ($section) echo link_to('Dossier relatif', '@section?id='.$section->id); else echo myTools::getLinkDossier($doc->id_dossier_institution); ?></div>
 <h1><?php echo $doc->getShortTitre(); ?></h1>
 <h2><?php echo preg_replace('/ - /', '<br/>- ', $doc->getDetailsTitre()); ?></h2>
 <div class="document">

@@ -10,7 +10,7 @@ class EditUserForm extends CitoyenForm
       $this['password'], 
       $this['email'], 
       $this['photo'], 
-      $this['employe_an'], 
+      $this['employe_institution'], 
       $this['travail_pour'], 
       $this['nom_circo'], 
       $this['num_circo'], 

@@ -148,14 +148,14 @@ class Intervention extends BaseIntervention
     }
     if ($lois[0]) {
       $urls = Doctrine_Query::create()
-        ->select('distinct(t.id_dossier_an)')
+        ->select('distinct(t.id_dossier_institution)')
         ->from('Texteloi t')
         ->where('t.type = ? OR t.type = ? OR t.type = ? OR t.type = ?', array("Proposition de loi", "Proposition de résolution", "Projet de loi", "Texte de la commission"))
         ->andWhere($loisstring)
         ->fetchArray();
       $ct = count($urls);
       if ($ct == 0) $urls = Doctrine_Query::create()
-        ->select('distinct(t.id_dossier_an)')
+        ->select('distinct(t.id_dossier_institution)')
         ->from('Texteloi t')
         ->where($loisstring)
         ->fetchArray();
@@ -163,7 +163,7 @@ class Intervention extends BaseIntervention
       if ($ct > 1) {
         $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
         if ($debug) {
-          print "WARNING : Intervention $this->id has tags lois corresponding to multiple id_dossier_ans : ";
+          print "WARNING : Intervention $this->id has tags lois corresponding to multiple id_dossier_institutions : ";
           foreach ($urls as $url)
             print $url['distinct']." ; ";
           print " => Saving to section $this->Section->id\n";
@@ -174,7 +174,7 @@ class Intervention extends BaseIntervention
       if ($ct == 0) $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
       else if ($ct == 1) {
         $section1 = Doctrine::getTable('Section')->findOneByContexte($contexte);
-        $section2 = Doctrine::getTable('Section')->findOneByIdDossierAn($urls[0]['distinct']);
+        $section2 = Doctrine::getTable('Section')->findOneByIdDossierInstitution($urls[0]['distinct']);
         if ($section2) {
           if (!$section1) 
             $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt(str_replace(trim(preg_replace('/^([^>]+)(>.*)?$/', '\\1', $contexte)), $section2->titre, $contexte), $date, $timestamp));
@@ -193,7 +193,7 @@ class Intervention extends BaseIntervention
         else {
           $section1 = Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp);
           $this->setSection($section1);
-          $section1->setIdDossierAn($urls[0]['distinct']);
+          $section1->setIdDossierInstitution($urls[0]['distinct']);
           $section1->save();
         }
       }

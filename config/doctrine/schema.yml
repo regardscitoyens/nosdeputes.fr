@@ -34,10 +34,10 @@ Parlementaire:
     debut_mandat: date
     fin_mandat: date
     place_hemicycle: integer
-    url_senat: string(255)
+    url_institution: string(255)
     profession: string(255)
     autoflip: boolean
-    id_senat:
+    id_institution:
       type: string(32)
       unique: true
     type:
@@ -65,7 +65,7 @@ Parlementaire:
       foreignAlias: Suppleants
   indexes:
     uniq_url:
-      fields: [url_senat]
+      fields: [url_institution]
       type: unique
 
 ParlementairePhoto:
@@ -189,7 +189,7 @@ Section:
     max_date: date
     timestamp: integer
     nb_interventions: integer
-    id_dossier_senat: string(255)
+    id_dossier_institution: string(255)
   inheritance:
     extends: ObjectCommentable
     type: concrete
@@ -367,7 +367,7 @@ Citoyen:
       notnull: true
     activite: string(255)
     url_site: string(255)
-    employe_senat:
+    employe_institution:
       type: boolean
       default: 0
     travail_pour: integer
@@ -616,7 +616,7 @@ Texteloi:
       values: ['Proposition de loi', 'Proposition de résolution', 'Projet de loi', 'Texte de la commission', 'Lettre', 'Rapport', "Rapport d'information", 'Avis']
     type_details: string(512)
     categorie: string(128)
-    id_dossier_senat: string(255)
+    id_dossier_institution: string(255)
     titre: string(512)
     date: date
     source:
@@ -637,7 +637,7 @@ Texteloi:
     type: concrete
   indexes:
     index_url:
-      fields: [id_dossier_senat]
+      fields: [id_dossier_institution]
     index_alpha:
       fields: [numero, annexe]
       type: unique

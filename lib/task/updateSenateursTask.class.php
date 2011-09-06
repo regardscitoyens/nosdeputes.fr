@@ -41,7 +41,7 @@ class updateSenateursTask extends sfBaseTask
 	      continue;
 	    }
 	    $json->nom = trim($json->nom);
-	    //	    echo "-".$json->nom.strlen($json->nom)." ".$json->id_senat."\n";
+	    //	    echo "-".$json->nom.strlen($json->nom)." ".$json->id_institution."\n";
 	    if (preg_match('/(\d{4})$/', $json->fin_mandat, $match)) {
               if ($match[1] < 2004) continue;
             }
@@ -71,8 +71,8 @@ class updateSenateursTask extends sfBaseTask
 	      $parl->groupes = $this->splitArrayJson($json->groupes);
 	    $parl->debut_mandat = $json->debut_mandat;
 	    $parl->fin_mandat = $json->fin_mandat;
-	    if ($json->id_senat)
-	      $parl->id_senat = $json->id_senat;
+	    if ($json->id_institution)
+	      $parl->id_institution = $json->id_institution;
 	    if (count($json->mails))
 		$parl->mails = $json->mails;
 	    if ($json->photo)
@@ -83,8 +83,8 @@ class updateSenateursTask extends sfBaseTask
 	      $parl->profession = $json->profession;
 	    if (count($json->sites_web))
 	      $parl->sites_web = $json->sites_web;
-	    if ($json->url_senat)
-	      $parl->url_senat = $json->url_senat;
+	    if ($json->url_institution)
+	      $parl->url_institution = $json->url_institution;
 	    if ($json->suppleant_de)
 	      $parl->setSuppleantDe($json->suppleant_de);
             $vi = "";

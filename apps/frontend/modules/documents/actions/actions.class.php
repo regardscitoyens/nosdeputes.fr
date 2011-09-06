@@ -42,7 +42,7 @@ class documentsActions extends sfActions
    $this->relatifs = Doctrine_Query::create()
      ->select('t.id, t.type, t.type_details, t.titre, t.signataires')
      ->from('Texteloi t')
-     ->where('t.id_dossier_an = ?', $this->doc->id_dossier_an)
+     ->where('t.id_dossier_institution = ?', $this->doc->id_dossier_institution)
      ->andWhere('t.id <> ?', $this->doc->id)
      ->orderBy('t.numero, t.annexe')
      ->fetchArray();
