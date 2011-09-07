@@ -61,12 +61,11 @@ if ($plot == 'total') {
 $Test = new xsPChart($xsize,$ysize);
 $Test->drawFilledRoundedRectangle(7,7,$xsize-7,$ysize-7,5,240,240,240);
 $Test->drawRoundedRectangle(5,5,$xsize-5,$ysize-5,5,230,230,230);
-$Test->setColorPalette(0,255,30,30);
-$Test->setColorPalette(1,255,50,190);
-$Test->setColorPalette(2,30,190,255);
-$Test->setColorPalette(3,30,30,200);
-$Test->setColorPalette(4,200,200,200);
-$Test->setColorPalette(5,240,240,240);
+$ct = 0;
+foreach ($couleurs as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)) {
+  $Test->setColorPalette($ct,$cols[1],$cols[2],$cols[3]);
+  $ct++;
+}
 $Test->xsSetFontProperties("tahoma.ttf",7);
 if (isset($Data)) {
   $Test->drawFlatPieGraph($Data,$DataDescr,$x0,$y0,50,PIE_VALUES,0,0,150);
@@ -92,12 +91,11 @@ if (isset($Data3)) {
 }
 $Test->xsSetFontProperties("tahoma.ttf",9);
 $Test->setColorPalette(0,255,255,255);
-$Test->setColorPalette(1,255,30,30);
-$Test->setColorPalette(2,255,50,190);
-$Test->setColorPalette(3,30,190,255);
-$Test->setColorPalette(4,30,30,200);
-$Test->setColorPalette(5,200,200,200);
-$Test->setColorPalette(6,255,255,255);
+$ct = 1;
+foreach ($couleurs as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)) {
+  $Test->setColorPalette($ct,$cols[1],$cols[2],$cols[3]);
+  $ct++;
+}
 $Test->drawFilledRoundedRectangle(15,$ylegend-14,72,$ylegend+5,5,255,255,255);
 $Test->drawLegend(15,$ylegend,$DataDescrLegend,255,255,255);
 $Test->xsSetFontProperties("tahoma.ttf",10);

@@ -62,11 +62,11 @@ if ($type === "all") {
 //  $Test->drawTitle(60,30,"Répartition de l'activité des députés sur les 12 derniers mois par groupe politique",25,25,25);
 }
 $Test->drawGrid(4,TRUE,0,0,0,30);
-$Test->setColorPalette(0,30,30,200);
-$Test->setColorPalette(1,30,190,255);
-$Test->setColorPalette(2,255,50,190);
-$Test->setColorPalette(3,255,30,30);
-$Test->setColorPalette(4,130,130,130);
+$ct = 0;
+foreach ($data['couleurs'] as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)) {
+  $Test->setColorPalette($ct,$cols[1],$cols[2],$cols[3]);
+  $ct++;
+}
 $Test->setImageMap(TRUE,$mapId);
 $Test->drawStackedBarGraph($Data,$DataDescr,75,90);
 
