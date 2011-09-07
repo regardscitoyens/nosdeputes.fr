@@ -179,8 +179,12 @@ class plotComponents extends sfComponents
     if (!isset($this->type) || $this->type != "all")
       $this->type = "home";
     $this->data['groupes'] = array();
-    foreach (array_reverse(myTools::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''))) as $gpe)
+    $this->data['couleurs'] = array();
+    $colormap = myTools::getGroupesColorMap();
+    foreach (array_reverse(myTools::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''))) as $gpe) {
       $this->data['groupes'][$gpe] = array();
+      $this->data['couleurs'][] = $colormap[$gpe];
+    }
     if ($this->type === "home")
       $this->data['titres'] = array("Sénateurs", "Interventions", "Amendements", "Propositions", "Quest. Écrites");
     else $this->data['titres'] = array("", "Interventions", "Longues", "Courtes", "Déposés", "Adoptés", "de Lois", "Écrites", "Orales");
@@ -245,6 +249,10 @@ class plotComponents extends sfComponents
     $this->empty = 0;
     if (!isset($this->plot)) $this->plot = 'total';
     $this->labels = myTools::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''));
+    $this->couleurs = array();
+    $colormap = myTools::getGroupesColorMap();
+    foreach ($this->labels as $gpe)
+      $this->couleurs[] = $colormap[$gpe];
     $this->interventions = array();
     if ($this->plot == 'total') {
       $this->presences = array();

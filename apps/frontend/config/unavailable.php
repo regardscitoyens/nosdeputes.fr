@@ -48,7 +48,7 @@
         <div class="menu_navigation">
 
             <div id="item1"><a href="/" title="Accueil"></a></div>
-          <div id="item2"><a class="selected" href="/senateurs"><span class="gris">Les</span> <span class="vert">S</span><span class="gris">&eacute;nateurs</span></a></div>
+          <div id="item2"><a class="selected" href="/senateurs"><span class="gris">Les</span> <span class="rouge">S</span><span class="gris">&eacute;nateurs</span></a></div>
           <div id="item3"><a href="/dossiers/date"><span class="gris">Les</span> <span class="orange">D</span><span class="gris">ossiers</span></a></div>
           <div id="item4"><a href="/citoyens/date"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
 

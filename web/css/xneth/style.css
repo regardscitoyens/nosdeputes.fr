@@ -802,6 +802,10 @@ h1 {
   color:#12a8d2;
 }
 
+.rouge {
+  color: rgb(210,36,59);
+}
+
 #item1 a {
   float:left;
   background: url('images/menu_item1.png') no-repeat 0 0;
@@ -1696,7 +1700,7 @@ h2 {
   color: #6F6F6F;
   text-shadow: 0 0 4px #FFFFFF;
   margin: 0;
-  background: #dbea9e url("images/fond_translucide.png");
+  background: rgb(240,150,173) url("images/fond_translucide.png");
   border-bottom: 1px solid #DDDDDD;
 }
 .accueil_senateurs_jour {

@@ -32,6 +32,13 @@ class myTools {
     return $gpes;
   }
 
+  public static function getGroupesColorMap() {
+    $colormap = array();
+    foreach (myTools::getGroupesInfos() as $gpe)
+      $colormap[$gpe[1]] = $gpe[2];
+    return $colormap;
+  }
+
   static $num_mois = array(
      "01" => "janvier",
      "02" => "février",
