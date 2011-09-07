@@ -36,8 +36,10 @@ foreach $line (split /\n/, $content) {
     $file = uri_escape($a->uri());
     print " saving http://www.senat.fr$url ... " if ($verbose);
     open FILE, ">:utf8", "$outdir/$file";
-    $thecontent = decode("windows-1252", $a->content);
-    $thecontent =~ s/iso-8859-1/utf-8/g;
+    $thecontent = $a->content;
+    if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
+      $thecontent = decode("windows-1252", $thecontent);
+    }
     print FILE $thecontent;
     close FILE;
     print "$file downloaded.\n" if ($verbose);
