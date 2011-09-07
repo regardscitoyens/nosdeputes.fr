@@ -10,9 +10,9 @@ all:
     [
     "Gauche démocrate et républicaine / GDR / 255,30,30 / PCF, Verts et ratt. / gauche.*démocrate",
     "Socialiste, radical, citoyen et divers gauche / SRC / 255,50,190 / Socialistes (PS, MRC, PRG et ratt.) / socialiste.*radical",
-    "Nouveau centre / NC / 30,190,255 / Nouveau Centre / nouveau.*centre",
+    "Nouveau centre / NC / 30,180,255 / Nouveau Centre / nouveau.*centre",
     "Union pour un mouvement populaire / UMP / 30,30,200 / UMP et ratt. / union.*mouvement.*populaire",
-    "Députés n'appartenant à aucun groupe / NI / 130,130,130 / Non-Inscrits (Modem, div.) / inscrits|aucun"
+    "Députés n'appartenant à aucun groupe / NI / 165,165,165 / Non-Inscrits (Modem, div.) / inscrits|aucun"
     ]
   groupes_proximite: >
     ["CRC / SOC", "NC / UMP"]
