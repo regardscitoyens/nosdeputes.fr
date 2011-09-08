@@ -1,39 +1,65 @@
 #!/usr/bin/perl
 
 $file = shift;
-use HTML::TokeParser;
+use HTML::Entities;
+use URI::Escape;
+use Encode;
 
 my %amdmt;
 
-$source = $file;
-$source =~ s/^.*(http.*)$/\1/i;
-$source =~ s/_/\//g;
-
-# Récupération des informations identifiantes à partir de l'url plus sure :
-if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
-  $amdmt{'legislature'} = $1;
-  if ($2-$3 == 0) {
-    $amdmt{'loi'} = $3+0
-  }
-  $num = $5+0;
-  $lettre = $4;
-  if ($lettre =~ /[a-z]/i) {
-    $amdmt{'numero'} = $num.uc($lettre);
-  } else {
-    $amdmt{'numero'} = (10000*$lettre+$num);
-  }
-}
-
-open(FILE, $file) ;
+open(FILE, $file);
 @string = <FILE>;
 $string = "@string";
-#utf8::decode($string);
-$string =~ s/(\<p class="presente".*)\s*\<br[\/]?\>\s*[\n]?\s*(.*)/\1, \2/g;
-$string =~ s/\<br\>.*\n//g;
-$string =~ s/&#8217;/'/g;
-$string =~ s/&#339;/oe/g;
-$string =~ s/&#8211;/-/g;
+utf8::decode($string);
+$string = decode_entities($string);
+$string =~ s/<br\/?>//ig;
+$string =~ s/[\s\n\r]+/ /g;
+$string =~ s/^.*<body>\s*//i;
+$string =~ s/\s*<\/body>.*$//i;
+$string =~ s/<!--/\n<!--/g;
+$string =~ s/\n(<!--\s*fin[^>]*-->)/\1\n/ig;
+$string =~ s/<br style='page-break-before:always'>/\nNEXT\n/ig;
+$string =~ s/(<t\w+)\s*[^>]* colspan="(\d+)"[^>]*>/$1colspan$2>/ig;
+$string =~ s/(<[^a!][\w]*)\s*[^>]*>/$1>/ig;
+$string =~ s/<a[^>]*href=["']([^"']+)["'][^>]*>/<a href='$1'>/ig;
+$string =~ s/colspan(\d+)/ colspan='$1'/g;
+$string =~ s/<\/?(div|center)>//ig;
+$string =~ s/> +/>/g;
+$string =~ s/(<t[dh]>)<\/?p>/$1/g;
+$string =~ s/<\/?p>(<\/t[dh]>)/$1/g;
+$string =~ s/"([^"<]*)"/« $1 »/g;
+$string =~ s/"/'/g;
+$string =~ s/\s*°\s*/° /g;
+$string =~ s/\s*,\s*/, /;
+$string =~ s/\\/\//g;
+
+
+print $string;
+
 close FILE;
+
+$file =~ s/^.*(http.*)$/\1/i;
+$file = uri_unescape($file);
+
+$com = 0;
+# Récupération des informations identifiantes à partir de l'url plus sure :
+if ($file =~ /\/amendements(\/commissions)?\/(\d{4}-\d{4})\/(\d+)\//i) {
+  $com = 1 if ($1);
+  $amdmt{'session'} = $2;
+  $amdmt{'loi'} = $3;
+  $source = $file;
+  $source =~ s/jeu_complet/Amdt_##ID##/i;
+}
+
+print $amdmt{'session'}."/".$amdmt{'loi'}."/".$source."\n";
+exit;
+
+#  $lettre = $4;
+#  if ($lettre =~ /[a-z]/i) {
+#    $amdmt{'numero'} = $num.uc($lettre);
+#  } else {
+#    $amdmt{'numero'} = (10000*$lettre+$num);
+#  }
 
 my $presente = 0;
 my $texte = 0;
