@@ -33,7 +33,7 @@ class interventionActions extends sfActions
       else if ($this->type == 'commission') 
 	$this->titre .= ' en commissions';
     }
-    $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom);
+    $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom." - NosSénateurs.fr");
     $this->interventions->orderBy('i.date DESC, i.timestamp ASC');
     if ($this->type === "all") {
       $this->rss = true;
@@ -53,7 +53,7 @@ class interventionActions extends sfActions
       ->orderBy('i.date DESC, i.timestamp ASC');
     $this->surtitre = link_to($this->orga->getNom(), '@list_parlementaires_organisme?slug='.$this->orga->getSlug());
     $this->titre = 'Interventions';
-    $this->response->setTitle($this->titre.' en '.$this->orga->nom.' de '.$this->parlementaire->nom);
+    $this->response->setTitle($this->titre.' en '.$this->orga->nom.' de '.$this->parlementaire->nom." - NosSénateurs.fr");
   }
 
   public function executeShow(sfWebRequest $request) {
