@@ -10,7 +10,7 @@ if (!isset($surtitre)) $surtitre = ''; ?>
   </div>
   <div class="depute_droite"><div>
 <h1><?php if ($surtitre) { ?>
-    <?php echo $surtitre; ?></h1><h2>
+    <?php echo $surtitre; ?></h1><br/><h2>
 <?php } ?>
   <?php if (isset($deputefirst)) $titre = '<a href="'.url_for($parlementaire->getPageLink()).'">'.$parlementaire->nom.'</a> <br/>'.$titre;
   else {
