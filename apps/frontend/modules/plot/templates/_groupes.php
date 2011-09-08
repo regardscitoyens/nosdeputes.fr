@@ -25,8 +25,6 @@ if ($plot == 'total') { $DataSetBis = new xsPData();
   $Data3 = $DataSet3->GetData(); $DataDescr3 = $DataSet3->GetDataDescription();
 }
 $DataSetLegend = new xsPData();
-$DataSetLegend->AddPoint(array(), " ");
-$DataSetLegend->AddSerie(" ");
 foreach($labels as $groupe) {
   $DataSetLegend->AddPoint(array(), $groupe);
   $DataSetLegend->AddSerie($groupe);
@@ -66,6 +64,7 @@ foreach ($couleurs as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)
   $Test->setColorPalette($ct,$cols[1],$cols[2],$cols[3]);
   $ct++;
 }
+$Test->setColorPalette($ct,240,240,240);
 $Test->xsSetFontProperties("tahoma.ttf",7);
 if (isset($Data)) {
   $Test->drawFlatPieGraph($Data,$DataDescr,$x0,$y0,50,PIE_VALUES,0,0,150);
@@ -90,8 +89,7 @@ if (isset($Data3)) {
   $Test->drawFilledCircle($x0,$y0+2,12,240,240,240);
 }
 $Test->xsSetFontProperties("tahoma.ttf",9);
-$Test->setColorPalette(0,255,255,255);
-$ct = 1;
+$ct = 0;
 foreach ($couleurs as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)) {
   $Test->setColorPalette($ct,$cols[1],$cols[2],$cols[3]);
   $ct++;
