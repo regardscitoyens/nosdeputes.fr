@@ -13,32 +13,41 @@ $string = "@string";
 utf8::decode($string);
 $string = decode_entities($string);
 $string =~ s/<br\/?>//ig;
-$string =~ s/[\s\n\r]+/ /g;
-$string =~ s/^.*<body>\s*//i;
-$string =~ s/\s*<\/body>.*$//i;
+$string =~ s/\r//g;
+$string =~ s/[\n\s]+/ /g;
+$string =~ s/^.*<body> *//i;
+$string =~ s/ *<\/body>.*$//i;
 $string =~ s/<!--/\n<!--/g;
-$string =~ s/\n(<!--\s*fin[^>]*-->)/\1\n/ig;
-$string =~ s/<br style='page-break-before:always'>/\nNEXT\n/ig;
-$string =~ s/(<t\w+)\s*[^>]* colspan="(\d+)"[^>]*>/$1colspan$2>/ig;
-$string =~ s/(<[^a!][\w]*)\s*[^>]*>/$1>/ig;
+$string =~ s/ *\n *(<!--\s*fin[^>]*-->) */$1\n/ig;
+$string =~ s/(<t\w+) *[^>]* colspan="(\d+)"[^>]*>/$1colspan$2>/ig;
+$string =~ s/(<[^aA!][\w]*) *[^>]*>/$1>/g;
 $string =~ s/<a[^>]*href=["']([^"']+)["'][^>]*>/<a href='$1'>/ig;
+$string =~ s/<br\/?>//ig;
 $string =~ s/colspan(\d+)/ colspan='$1'/g;
-$string =~ s/<\/?(div|center)>//ig;
 $string =~ s/> +/>/g;
-$string =~ s/(<t[dh]>)<\/?p>/$1/g;
-$string =~ s/<\/?p>(<\/t[dh]>)/$1/g;
+$string =~ s/ *(<t[dh]>)<\/?p>/$1/ig;
+$string =~ s/ *<\/?p>(<\/t[dh]>)/$1/ig;
 $string =~ s/"([^"<]*)"/« $1 »/g;
+$string =~ s/\n((<[^=>]+>(.|Objet)?)+\n)+/\n/g;
+$string =~ s/ *\n */\n/g;
 $string =~ s/"/'/g;
-$string =~ s/\s*°\s*/° /g;
-$string =~ s/\s*,\s*/, /;
+$string =~ s/ *, */, /g;
 $string =~ s/\\/\//g;
-
-
-print $string;
-
+$string =~ s/(position_amdt=\-?\d+ -->)/$1\nNEXT\n/ig;
+$string =~ s/<div><table><tr><td><img><\/p><p><strong>/\n<!-- contexte=/ig;
+$string =~ s/<\/strong><\/td><td><strong>[^\n]+<\/strong><\/p><p>\(/ -->\n<!-- etape_leg=/ig;
+$string =~ s/\)<\/p><p>\(n\W+/ -->\n<!-- lois=/ig;
+$string =~ s/\)<\/td><td><strong>n\W+/ -->\n<!-- numero=/ig;
+$string =~ s/<\/strong><\/p><p>/ -->\n<!-- debut_date=/ig;
+$string =~ s/<\/td><\/tr><\/table><hr><table><tr><td><\/td><td><h1>/ -->\n<!-- debut_type=/ig;
+$string =~ s/<\/h1>[^\n]*\n/ -->\n/ig;
 close FILE;
 
-$file =~ s/^.*(http.*)$/\1/i;
+utf8::encode($string);
+print $string;
+
+
+$file =~ s/^.*(http.*)$/$1/i;
 $file = uri_unescape($file);
 
 $com = 0;
@@ -51,7 +60,7 @@ if ($file =~ /\/amendements(\/commissions)?\/(\d{4}-\d{4})\/(\d+)\//i) {
   $source =~ s/jeu_complet/Amdt_##ID##/i;
 }
 
-print $amdmt{'session'}."/".$amdmt{'loi'}."/".$source."\n";
+#print $amdmt{'session'}."/".$amdmt{'loi'}."/".$source."\n";
 exit;
 
 #  $lettre = $4;
