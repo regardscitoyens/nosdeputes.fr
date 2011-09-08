@@ -44,7 +44,7 @@ sub heurize {
 }
 
 sub sessionize {
-        return ($_[1] <= 8) ? ($_[0]-1).'-'.$_[0] :  $_[0].'-'.($_[0]+1);
+	return ($_[1] <= 8) ? ($_[0]-1).$_[0] :  $_[0].($_[0]+1);
 }
 
 sub name_lowerize {
@@ -54,6 +54,14 @@ sub name_lowerize {
 	$name =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜ])(\w+ ?)/$1\L$2/g;
 	utf8::encode($name);
 	return $name;
+}
+
+sub law_numberize {
+	my $n = shift;
+	my $s = shift;
+	$n = sprintf('%03d', $n);
+	$s =~ s/^(\d{4}).*$/$1/;
+	return "$s-$n";
 }
 
 ;

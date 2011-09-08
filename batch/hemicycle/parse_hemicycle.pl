@@ -48,9 +48,9 @@ sub print_inter {
                           $numeros_loi = '';
                           while ($docs =~ /(\d+)(, (\d{4}-\d{4}|))/g) {
                                  if ($3) {
-                                          $numeros_loi .= "$1/$3,";
+                                          $numeros_loi .= law_numberize($1,$3).",";
                                  }else{
-                                          $numeros_loi .= "$1/".$session.",";
+                                          $numeros_loi .= law_numberize($1,$session).",";
                                  }
                           }
                           chop($numeros_loi);
@@ -61,7 +61,7 @@ sub print_inter {
                                         $amendements = '';
                                         while ($amdt =~ /(\d+)( ?rectifi|)\D/g) {
                                                 $amendements .= "$1";
-                                                $amendements .= " rectifié" if ($2);
+#                                                $amendements .= " rectifié" if ($2);
                                                 $amendements .= ",";
 				}
 				chop($amendements);

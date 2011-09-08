@@ -13,8 +13,6 @@ $question{'source'} = uri_unescape($file);
 $question{'source'} =~ s/^[^\/]+\///;
 if ($question{'source'} =~ /questions\/base\/(\d{4})\/qSEQ\d{4}(\d{4,5})([a-z])?.html/i) {
   $question{'numero'} = uc($2.$3);
-#  $question{'annee'} = $1;
-  $type = $3;
 }
 
 open(FILE, $file) ;

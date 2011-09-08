@@ -27,7 +27,7 @@ sub print_inter {
 			$doc =~ s/&[^;]+;//g;
 			$numeros_lois = '';
 			while ($doc =~ / n\s*(\d+) ?(\(\d+\-\d+\))/g) {
-				$numeros_loi .= "$1-$2,";
+				$numeros_loi .= law_numberize($1,$2).",";
 			}
 			$numeros_loi =~ s/[^0-9\-\,]//g;
 			chop($numeros_loi);
