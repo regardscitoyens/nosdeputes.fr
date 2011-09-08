@@ -25,7 +25,10 @@ print "Download questions from $annee : $baseurl ...\n" if ($verbose);
 
 $a = WWW::Mechanize->new();
 $a->get($baseurl);
-$content = decode("windows-1252", $a->content);
+$content = $a->content;
+if ($content =~ s/iso-8859-1/utf-8/gi) {
+  $content = decode("windows-1252", $content);
+}
 $content =~ s/<a/\n<a/g;
 
 foreach $line (split /\n/, $content) {

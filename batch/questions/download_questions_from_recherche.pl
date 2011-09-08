@@ -36,9 +36,8 @@ $count = $count2 = 0;
 mkdir "html" unless -e "html/" ;
 
 # aff = ar -> avec réponse ; sr -> sans réponse ; ens -> tous
-$baseurl = "http://www.senat.fr/basile/rechercheQuestion.do?&aff=ens&rch=qs&radio=deau&de=$date_from&au=$today&tri=da&off=";
-#$baseurl = "http://www.senat.fr/basile/rechercheQuestion.do?&aff=ar&rch=qs&radio=deau&de=$date_from&au=$today&tri=da&off=";
-#$baseurl = "http://www.senat.fr/basile/rechercheQuestion.do?&aff=sr&rch=qs&radio=deau&de=$date_from&au=$today&tri=da&off=";
+$aff = "ens";
+$baseurl = "http://www.senat.fr/basile/rechercheQuestion.do?&aff=$aff&rch=qs&radio=deau&de=$date_from&au=$today&tri=da&off=";
 
 sub download_one {
   $uri = shift;
@@ -49,7 +48,7 @@ sub download_one {
   $htmfile = uri_escape($a->uri);
   return if ($done{$htmfile});
   $done{$htmfile} = 1;
-#  print " saving $uri ... " if ($verbose);
+  print " saving $uri ... " if ($verbose);
   open FILE, ">:utf8", "html/$htmfile";
   $thecontent = $a->content;
   if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
@@ -57,7 +56,7 @@ sub download_one {
   }
   print FILE $thecontent;
   close FILE;
-#  print "$file downloaded.\n" if ($verbose);
+  print "$file downloaded.\n" if ($verbose);
   $a->back();
 }
 
@@ -68,7 +67,11 @@ sub find_questions {
   $start = shift;
   $a->get($baseurl.$start);
   print $baseurl.$start."\n" if ($verbose);
-  $content = decode_entities(decode("windows-1252", $a->content));
+  $content = $a->content;
+  if ($content =~ s/iso-8859-1/utf-8/gi) {
+    $content = decode("windows-1252", $content);
+  }
+  $content = decode_entities($content);
   $content =~ s/\s+/ /g;
   $content =~ s/<a/\n<a/g;
   $total = $1 if ($content =~ /\[(\d+) (r[^\]]+ponse|question)s?\]/);
