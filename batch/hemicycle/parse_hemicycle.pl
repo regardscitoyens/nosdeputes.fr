@@ -96,8 +96,8 @@ foreach (split /\n/, $doc) {
 			$timestamp = 0;
                 }
         }
-	if (/Pr\&\#233\;sidence de (M[^<]*)/) {
-		$president = $1;
+	if (/Pr(\&\#233\;|é|É)sidence de (M[^<]*)/i) {
+		$president = $2;
 	}
 	next if (!$heure);
 	if (/class="intervenant/) {
@@ -108,7 +108,7 @@ foreach (split /\n/, $doc) {
 		}
 		$tmpfonction = '';
 		$tmpurl_inter = '';
-		if ($tmpinter =~ /Mm?e?\.?[ &\#\;0-9]+l[ae][ &\#\;0-9]+(pr\&\#233\;sidente?)/ && $president) {
+		if ($tmpinter =~ /Mm?e?\.?[ &\#\;0-9]+l[ae][ &\#\;0-9]+(pr(\&\#233\;|é|É)sidente?)/ && $president) {
 			$tmpinter = $president;
 			$tmpfonction = $1;
 		}elsif (/class="orateur_qualite"[^>]*>([^>]*)</) {
