@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 use URI::Escape;
+use HTML::Entities;
 require "../common/common.pm";
 
 $| = 1;
@@ -67,11 +68,10 @@ sub print_inter {
 				chop($amendements);
 			}
 		$intervention =~ s/<p> +/<p>/g;
-		$json  = '{"contexte": "'.$context.'", "intervention": "'.$intervention.'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
+		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
 		$json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 		$json .= ', "amendements":"'.$amendements.'"' if ($amendements);
 		$json .= "}\n";
-		$json =~ s/'/\\'/g;
 		print $json;
 	}
 	$intervention = '';
@@ -108,7 +108,7 @@ foreach (split /\n/, $doc) {
 		}
 		$tmpfonction = '';
 		$tmpurl_inter = '';
-		if ($tmpinter =~ /Mm?e?\.? l[ae] (pr\&\#233\;sidente?)/ && $president) {
+		if ($tmpinter =~ /Mm?e?\.?[ &\#\;0-9]+l[ae][ &\#\;0-9]+(pr\&\#233\;sidente?)/ && $president) {
 			$tmpinter = $president;
 			$tmpfonction = $1;
 		}elsif (/class="orateur_qualite"[^>]*>([^>]*)</) {
@@ -158,12 +158,17 @@ foreach (split /\n/, $doc) {
 		s/\s+$//;
 		if ($_) {
 			if ($iscontext) {
+			s/<[^>]*>//g;
 			if ($iscontext eq '1') {
+			    if (!/^\s*PR(É|&#201;)SIDENCE DE /) {
 				$bigcontext = $_;
 				$subcontext = '';
+			    }
 			}else{
+				if (!/^\s*(vice-)?pr(é|&#233;)sident/) {
 				$subcontext = $_;
 				$subcontext =~ s/<[^>]+>//g;
+				}
 			}
 			}elsif(/[a-z]/i){
 				$intervention .= "<p>$_</p>";
