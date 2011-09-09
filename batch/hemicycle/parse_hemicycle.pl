@@ -114,6 +114,9 @@ foreach (split /\n/, $doc) {
 		}elsif (/class="orateur_qualite"[^>]*>([^>]*)</) {
 			$tmpfonction = $1;
 		}
+		if (!$tmpfonction && $tmpinter =~ s/,(.*)//) {
+			$tmpfonction = $1;
+		}
 		if (/href="(\/sen[^"]+)"/i) {
 			$tmpurl_inter = "http://www.senat.fr$1";
 		}
