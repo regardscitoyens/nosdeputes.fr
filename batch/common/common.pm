@@ -14,6 +14,12 @@ sub datize {
         return ($annee,$mois{$mois},$jour);
 }
 
+sub quotize {
+	my $str = shift;
+	$str =~ s/"/&quot;/g;
+	return $str;
+}
+
 $heure{'neuf'} = '09';
 $heure{'dix'} = '10';
 $heure{'onze'} = '11';
@@ -59,9 +65,8 @@ sub name_lowerize {
 sub law_numberize {
 	my $n = shift;
 	my $s = shift;
-	$n = sprintf('%03d', $n);
 	$s =~ s/^(\d{4}).*$/$1/;
-	return "$s-$n";
+	return sprintf('%04d%04d-%03d', $s, $s+1, $n);
 }
 
 ;
