@@ -84,7 +84,7 @@ foreach $line (split /\n/, $string) {
   } elsif ($line =~ /<!-- debut_sort -->(.*)<!-- fin_sort -->/i) {
     $amdmt{'sort'} = sortseance($1);
   } elsif ($line =~ /<!-- debut_subdivision -->(.*)<!-- fin_subdivision -->/i) {
-    $amdmt{'sujet'} = $1;
+    $amdmt{'sujet'} = lc($1);
   } elsif ($line =~ /<!-- debut_dispositif -->(.*)<!-- fin_dispositif -->/i) {
     $amdmt{'texte'} = $1;
   } elsif ($line =~ /<!-- debut_objet -->(.*)<!-- fin_objet -->/i) {
@@ -183,17 +183,17 @@ sub clean_auteurs {
 #  $txt =~ s/\s+M([\.mles]+)\s*,\s*/ M$1 /g;
 #  $txt =~ s/([a-z])\s+(M[\.Mml])/$1, $2/g;
 #  $txt =~ s/,\s*M[\s\.mle]+\s*,/,/g;
-#  $txt =~ s/\s+e{1,2}t\s+/, /g;
-#  $txt =~ s/^et\s+/, /g;
-#  $txt =~ s/\s+,/,/g;
+  $txt =~ s/\s+e{1,2}t\s+/, /g;
+  $txt =~ s/^et\s+/, /g;
+  $txt =~ s/\s+,/,/g;
 #  $txt =~ s/\s*[,]?\s*les\s+[cC]ommissaires.*$//g;
 #  $txt =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà\-']*M(.*)/, M\1/g;
 #  $txt =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà\-']*//g;
-#  $txt =~ s/(,\s*,|,+)/,/g;
-#  $txt =~ s/,+/,/g;
-#  $txt =~ s/^\s*,\s*//g;
-#  $txt =~ s/\s*,\s*$//g;
-#  $txt =~ s/ et(\W)/\1/g;
+  $txt =~ s/(,\s*,|,+)/,/g;
+  $txt =~ s/,+/,/g;
+  $txt =~ s/^\s*,\s*//g;
+  $txt =~ s/\s*,\s*$//g;
+  $txt =~ s/ et(\W)/\1/g;
 #  $txt =~ s/([^,\s])\s*(les\s*membres.*groupe.*)$/\1, \2/i;
   return $txt
 }
@@ -201,6 +201,7 @@ sub clean_auteurs {
 sub clean_texte {
   my $txt = shift;
   $txt =~ s/<(\/)?div>/<$1p>/ig;
+  $txt =~ s/<!--[^>]*>//g;
   $txt =~ s/^([^<])/<p>$1/i;
   $txt =~ s/<\/p>([^<])/<\/p><p>$1/ig;
   $txt =~ s/([^>])$/$1<\/p>/i;
