@@ -57,7 +57,7 @@ sub name_lowerize {
 	my $name = shift;
 	utf8::decode($name);
 	$name = decode_entities($name);
-	$name =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜ])(\w+ ?)/$1\L$2/g;
+	$name =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜÇ])(\w+ ?)/$1\L$2/g;
 	utf8::encode($name);
 	return $name;
 }
