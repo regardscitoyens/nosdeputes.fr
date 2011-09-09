@@ -135,7 +135,7 @@ class Intervention extends BaseIntervention
   }
 
   public function setContexte($contexte, $date = null, $timestamp = null, $tlois = null, $debug = 0) {
-    $tlois = preg_replace('/[^,\d]+/', '', $tlois);
+    $tlois = preg_replace('/[^,\d\-]+/', '', $tlois);
     $tlois = preg_replace('/\s+,/', ',', $tlois);
     $tlois = preg_replace('/,\s+/', ',', $tlois);
     $lois = explode(',', $tlois);

@@ -27,10 +27,24 @@ class loadHemicyleTask extends sfBaseTask
           $debug = 1;
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
-	    if (!$json || !$json->intervention || !$json->date || !$json->heure || !$json->source) {
-	      echo "ERROR json : ";
+            $error = 0;
+	    if (!$json)
+		$error = "cannot parse json";
+	    else if (!$json->intervention)
+		$error = "pas d'intervention";
+	    else if (!$json->date)
+		$error = "pas de date";
+	    else if (!$json->heure)
+		$error = "pas d'heure";
+	    else if (!$json->source) 
+		$error = "pas de source";
+	    if ($error) {
+	      echo "ERROR json ($error): ";
 	      echo $line;
-	      echo "\n";
+	      echo "\n => ";
+	      print_r($json);
+	      $contraints = get_defined_constants(true);
+	      print_r($constrants["json"]);
 	      continue;
 	    }
             $date = $json->date;
