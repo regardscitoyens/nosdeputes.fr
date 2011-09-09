@@ -102,7 +102,7 @@ class apiActions extends sfActions
       $this->champs['id'] = 1;
       $depute['nom'] = $dep->nom;
       $this->champs['nom'] = 1;
-      if ($dep->fin_mandat) 
+      if ($dep->fin_mandat && $dep->fin_mandat >= $dep->debut_mandat) 
 	$depute['ancien_depute'] = 1;
       else if ($request->getParameter('format') == 'csv')
 	$depute['ancien_depute'] = 0;
