@@ -68,11 +68,20 @@ sub print_inter {
 				chop($amendements);
 			}
 		$intervention =~ s/<p> +/<p>/g;
+		$secondinter = '';
+		$secondinter = $1 if ($inter =~ s/ et (.*)//) ;
 		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
 		$json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 		$json .= ', "amendements":"'.$amendements.'"' if ($amendements);
 		$json .= "}\n";
 		print $json;
+		if ($secondinter) {
+		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($secondinter).'", "fonction": "", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
+                $json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
+                $json .= ', "amendements":"'.$amendements.'"' if ($amendements);
+                $json .= "}\n";
+                print $json;
+		}
 	}
 	$intervention = '';
 	$inter = '';
@@ -96,7 +105,7 @@ foreach (split /\n/, $doc) {
 			$timestamp = 0;
                 }
         }
-	if (/Pr(\&\#233\;|é|É)sidence de (M[^<]*)/i) {
+	if (/>[^a-z]*Pr(\&\#[0-9]+\;|é|É)sidence de (M[^<]*)/i) {
 		$president = $2;
 	}
 	next if (!$heure);
@@ -108,20 +117,28 @@ foreach (split /\n/, $doc) {
 		}
 		$tmpfonction = '';
 		$tmpurl_inter = '';
-		if ($tmpinter =~ /Mm?e?\.?[ &\#\;0-9]+l[ae][ &\#\;0-9]+(pr(\&\#233\;|é|É)sidente?)/ && $president) {
-			$tmpinter = $president;
+		if (/class="orateur_qualite"[^>]*>([^>]*)</) {
 			$tmpfonction = $1;
-		}elsif (/class="orateur_qualite"[^>]*>([^>]*)</) {
-			$tmpfonction = $1;
+		}
+                if (/href="(\/sen[^"]+)"/i) {
+                        $tmpurl_inter = "http://www.senat.fr$1";
+                }
+                $tmpinter =~ s/<[^>]*>//g;
+                $tmpinter =~ s/[\.,]\s*$//;
+
+		#Cas mauvais formatage des interventions
+		if ($tmpinter =~ /^(.{4}[^\(]*)\./) {
+			$tmpinter = $1;
+			s/$tmpinter/$tmpinter<\/span>/;
+		}
+
+                if (($tmpinter =~ /l[ae][ &\#\;0-9]+(pr(\&\#233\;|é|É)sidente?)/i) && $tmpinter !~ /mission/i && $president) {
+                        $tmpinter = $president;
+                        $tmpfonction = $1;
 		}
 		if (!$tmpfonction && $tmpinter =~ s/,(.*)//) {
 			$tmpfonction = $1;
 		}
-		if (/href="(\/sen[^"]+)"/i) {
-			$tmpurl_inter = "http://www.senat.fr$1";
-		}
-		$tmpinter =~ s/<[^>]*>//g;
-		$tmpinter =~ s/[\.,]\s*$//;
 		if ($tmpinter ne $inter) {
 			print_inter();
 			$inter = $tmpinter;
