@@ -229,6 +229,8 @@ sub clean_auteurs {
 sub clean_texte {
   my $txt = shift;
   $txt =~ s/<(\/)?(div|span|font|object|h\d+)>/<$1p>/ig;
+  $txt =~ s/<(\/?)em>/<$1i>//gi;
+  $txt =~ s/<(\/?)strong>/<$1b>//gi;
   $txt =~ s/<!--[^>]*>//g;
   $txt =~ s/<!\[endif\]-->//ig;
   $txt =~ s/<xml>.*<\/xml>//ig;
@@ -250,6 +252,10 @@ sub clean_texte {
   $txt =~ s/^\s*(<\/?p>\s*)*<table>(\s*<\/?t[rdh][^>]*>)*\s*([^<]+<\/p><p>)/<p>$3/i;
   $txt =~ s/(<\/p><p>[^<]+)\s*(<\/?t[rdh][^>]*>\s*)*<\/table>(\s*<\/?p>)*\s*$/$1<\/p>/i;
   $txt =~ s/<p>$//i;
+  $txt =~ s/<u><\/u>//gi;
+  $txt =~ s/<b><\/b>//gi;
+  $txt =~ s/<i><\/i>//gi;
+  $txt =~ s/(<[ubi]>)<p>([^<]+)<\/p>(<\/[ubi]>)/$1$2$3/gi;
   return $txt
 }
 
