@@ -124,22 +124,26 @@ $debug = 1;
   public function getPresentTitre($link = 0) {
     $parent = 0;
     $pluriel = "";
-    if ($this->numero_pere)
-      $titre = "Sous-";
-    else $titre = "";
-    $titre .= "Amendement";
+    if (preg_match('/^motion/i', $this->type))
+      $titre = "Motion";
+    else {
+      if ($this->numero_pere)
+        $titre = "Sous-";
+      else $titre = "";
+      $titre .= "Amendement";
+    }
     $numeros = $this->numero;
     $lettre = $this->getLettreLoi();
-    $ident = $this->getTags(array('is_triple' => true,
-	  'namespace' => 'loi',
-	  'key' => 'amendement',
-	  'return'    => 'value'));
-    if (count($ident) > 1 && $lettre != "") {
-      sort($ident);
-      if ($lettre) foreach ($ident as $iden) $iden .= $lettre;
-      $numeros = implode(', ', $ident);
-      $pluriel = "s";
-    }
+#    $ident = $this->getTags(array('is_triple' => true,
+#	  'namespace' => 'loi',
+#	  'key' => 'amendement',
+#	  'return'    => 'value'));
+#    if (count($ident) > 1 && $lettre != "") {
+#      sort($ident);
+#      if ($lettre) foreach ($ident as $iden) $iden .= $lettre;
+#      $numeros = implode(', ', $ident);
+#      $pluriel = "s";
+#    }
     $titre .= $pluriel." N° ".$numeros;
     if ($this->rectif == 1)
       $titre .= " rectifié".$pluriel;
