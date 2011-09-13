@@ -229,8 +229,8 @@ sub clean_auteurs {
 sub clean_texte {
   my $txt = shift;
   $txt =~ s/<(\/)?(div|span|font|object|h\d+)>/<$1p>/ig;
-  $txt =~ s/<(\/?)em>/<$1i>//gi;
-  $txt =~ s/<(\/?)strong>/<$1b>//gi;
+  $txt =~ s/<(\/)?em>/<$1i>/gi;
+  $txt =~ s/<(\/)?strong>/<$1b>/gi;
   $txt =~ s/<!--[^>]*>//g;
   $txt =~ s/<!\[endif\]-->//ig;
   $txt =~ s/<xml>.*<\/xml>//ig;
