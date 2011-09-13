@@ -13,6 +13,7 @@ $lastyear-- if ($month[0] < 10);
 
 $year = shift;
 $year = $lastyear if (!$year);
+$yearzero = $year;
 if (! $year =~ /^\d{4}$/) {
   print STDERR "Please input a 4-digit year\n";
   exit;
@@ -70,10 +71,14 @@ sub examine_url {
   my $urls = "";
   my $outdirs = "";
   if ($lk =~ /\/(motion)?(tas|p[jp][lr])(\d\d)-(\d{3})/) {
+    $y = $3 + 2000;
+    return $lk if ($y lt $yearzero);
     $urls = "http://www.senat.fr/leg/$1$2$3-$4.html";
     $outdirs = "documents/$2";
-  } elsif ($lk =~ /\/([arl]\d\d-\d{3}\d*(-\d+)*)/) {
-    $urls = "http://www.senat.fr/rap/$1/$1_mono.html";
+  } elsif ($lk =~ /\/([arl])(\d\d)(-\d{3}\d*(-\d+)*)/) {
+    $y = $2 + 2000;
+    return $lk if ($y lt $yearzero);
+    $urls = "http://www.senat.fr/rap/$1$2$3/$1$2$3_mono.html";
     $outdirs = "documents/rap";
   }
   download_one($urls, $outdirs) if $urls;
@@ -96,7 +101,7 @@ sub find_elements {
     $line = examine_url($line);
     $urla = "";
     if ($line =~ /(\/amendements.*\/(\d{4})-.+\/)accueil\.html/) {
-      if ($2 < 2004) {
+      if ($2 lt $yearzero) {
         $a->back();
         next;
       }
