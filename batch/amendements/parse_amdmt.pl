@@ -211,7 +211,7 @@ sub clean_auteurs {
 
 sub clean_texte {
   my $txt = shift;
-  $txt =~ s/<(\/)?(div|span)>/<$1p>/ig;
+  $txt =~ s/<(\/)?(div|span|font)>/<$1p>/ig;
   $txt =~ s/<!--[^>]*>//g;
   $txt =~ s/^(<\/[^>]+>)+//g;
   $txt =~ s/^([^<])/<p>$1/i;
