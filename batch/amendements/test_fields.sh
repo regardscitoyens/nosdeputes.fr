@@ -26,7 +26,7 @@ for field in $fields; do
   echo  >> test/$field.stats
   if [ $total -ne $uniqs ] && [ $uniqs -le 500 ]; then
     while read line; do if [[ ! -z $line ]]; then
-      echo $line | sed 's/^/'`grep -r ": $line$" out.yml/ | wc -l | awk '{print $1}'`' fois\t\t/' >> test/$field.stats
+      echo $line | sed 's/^/'`grep -r "$field: $line$" out.yml/ | wc -l | awk '{print $1}'`' fois\t\t/' >> test/$field.stats
     fi; done < test/$field.uniq
   else cat test/$field.uniq >> test/$field.stats
   fi

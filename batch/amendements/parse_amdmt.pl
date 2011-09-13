@@ -94,9 +94,9 @@ foreach $line (split /\n/, $string) {
     $amdmt{'refloi'} =~ s/^[eé]tat.*$//;
     $amdmt{'refloi'} =~ s/^(division|art)[^\d]+([L\d])/Art. $2/;
     $amdmt{'refloi'} =~ s/l\.?\s*o\.\s*(\d)/L.O. $1/;
-  } elsif ($line =~ /<!-- debut_([^\>]+) -->(.*)<!-- fin_/i) {
+  } elsif ($line =~ /<!-- debut_([^\>]+) -->(.+)<!-- fin_/i) {
     $amdmt{$1} = $2;
-  } elsif ($line =~ /<!-- ([^\>]+)=\s*([^\>]*)\s+-->/i) {
+  } elsif ($line =~ /<!-- ([^\>]+)=\s*([^\>]+)\s+-->/i) {
     $amdmt{$1} = $2;
   } elsif ($line =~ /<strong>(Direction de la séance|commission de[^\<]+)<\/strong>/) {
     $amdmt{'contexte'} = $1;
@@ -136,6 +136,9 @@ sub checkout {
   $amdmt{'texte'} = clean_texte($amdmt{'texte'});
   $amdmt{'expose'} = clean_texte($amdmt{'expose'});
   $amdmt{'auteurs'} = clean_auteurs($amdmt{'auteurs'});
+  if ($amdmt{'contexte'} && $amdmt{'contexte'} ne "Direction de la séance") {
+    $amdmt{'commission'} = $amdmt{'contexte'};
+  }
   foreach $k (keys %amdmt) {
     utf8::encode($amdmt{$k});
   }
@@ -211,8 +214,11 @@ sub clean_auteurs {
 
 sub clean_texte {
   my $txt = shift;
-  $txt =~ s/<(\/)?(div|span|font)>/<$1p>/ig;
+  $txt =~ s/<(\/)?(div|span|font|object)>/<$1p>/ig;
   $txt =~ s/<!--[^>]*>//g;
+  $txt =~ s/<!\[endif\]-->//ig;
+  $txt =~ s/<xml>.*<\/xml>//ig;
+  $txt =~ s/<style>.*<\/style>//ig;
   $txt =~ s/^(<\/[^>]+>)+//g;
   $txt =~ s/^([^<])/<p>$1/i;
   $txt =~ s/<\/p>([^<])/<\/p><p>$1/ig;
@@ -221,13 +227,10 @@ sub clean_texte {
   $txt =~ s/\s*<p>(\s*<\/?p>\s*)*\s*/<p>/ig;
   $txt =~ s/\s*(\s*<\/?p>\s*)*<\/p>\s*/<\/p>/ig;
   $txt =~ s/(<\/?p>)(<\/?[^>]+>)+(<\/?p>)/$1$3/ig;
+  $txt =~ s/(<\/?p>)+(<\/?t[rdh]>)/$2/ig;
+  $txt =~ s/(<\/?t[rdh]>)(<\/?p>)+/$1/ig;
+  $txt =~ s/(<\/?p>)+(<\/table>)/$2/ig;
+  $txt =~ s/(<table>)(<\/?p>)+/$1/ig;
   return $txt
 }
 
-
-# handle identiques/series?
-#  if ($lettre =~ /[a-z]/i) {
-#    $amdmt{'numero'} = $num.uc($lettre);
-#  } else {
-#    $amdmt{'numero'} = (10000*$lettre+$num);
-#  }
