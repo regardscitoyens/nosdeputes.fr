@@ -1344,16 +1344,16 @@ h2 {
 .question p:first-letter {
   padding-left: 20px;
 }
-.question table {
+.amd_txt table, .question table {
   border-collapse: collapse;
 }
-.question table td, .question table th {
+.amd_txt table td, .amd_txt table th, .question table td, .question table th {
   border-style: solid;
   border-width: thin;
   padding: 4px;
   text-align: center;
 }
-#question a, #reponse a {
+.amd_txt a, #question a, #reponse a {
   text-decoration: underline;
 }
 .loi p:first-letter {

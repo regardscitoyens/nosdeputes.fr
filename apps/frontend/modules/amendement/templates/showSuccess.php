@@ -50,7 +50,7 @@
     echo '</h3><h3>'.$sujet;
     if ($l = $amendement->getLettreLoi()) echo "($l)"; ?></h3>
 </div>
-<div class="texte_intervention">
+<div class="texte_intervention amd_txt">
   <?php $texte = $amendement->getTexte();
   if ($titreloi && preg_match('/alin(e|é)a\s*(\d+)[^\d]/', $texte, $match)) {
     $link = link_to('alinéa '.$match[2], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art.'#alinea_'.$match[2]);
@@ -60,7 +60,7 @@
 </div>
 <?php if (isset($amendement->expose)) { ?>
   <h3>Exposé Sommaire :</h3>
-  <div class="expose_amendement">
+  <div class="expose_amendement amd_txt">
     <?php echo myTools::escape_blanks($amendement->getExpose()); ?>
   </div>
 <?php } ?>

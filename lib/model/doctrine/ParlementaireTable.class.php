@@ -28,6 +28,11 @@ class ParlementaireTable extends PersonnaliteTable
       if ($document) $query->andWhere('p.fin_mandat is null or p.fin_mandat > ?', $document->getDate());
       $memeNom = $query->execute();
     }
+    if (count($memeNom) != 1 && preg_match('/^([A-ZÉ]).*\.\s*(.*)$/', $nom, $match)) {
+      $query = $this->createQuery('p')
+        ->where('p.nom LIKE ?', $match[1]."%".$match[2]);
+      $memeNom = $query->execute();
+    }
     if (count($memeNom) == 0 && preg_match('/(Des |des |de La |de la |de l\'|de |du )?([A-ZÉ].*) ([A-ZÉ].*)/', $nom, $match)) {
       $revert_nom = $match[3]." ".$match[1].$match[2];
       $memeNom = $this->findByNom($revert_nom);

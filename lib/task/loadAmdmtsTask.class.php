@@ -28,13 +28,13 @@ class loadAmdmtsTask extends sfBaseTask {
 		echo "ERROR json : $line";
 		continue;
 	    }
-	    if (!$json->source || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->texte || !$json->date || !isset($json->rectif)) {
-              echo "ERROR mandatory arg missing (source|legis|numero|loi|sujet|texte|date|rectif): $line\n";
+	    if (!$json->source || !$json->numero || !$json->loi || !$json->sujet || !$json->texte || !$json->date || !isset($json->rectif)) {
+              echo "ERROR mandatory arg missing (source|numero|loi|sujet|texte|date|rectif): $line\n";
               continue;
             }
             $ct_lus++;
             $modif = true;
-            $amdmt = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
+            $amdmt = Doctrine::getTable('Amendement')->findOneByLoiNumRect($json->loi, $json->numero, $json->rectif);
             if ($json->rectif > 0) foreach(Doctrine::getTable('Amendement')->findBySource($json->source) as $rect) {
              if ($rect->rectif < $json->rectif && $rect->texteloi_id == $json->loi && $rect->numero == $json->numero) {
               $rect->sort = "Rectifié";
@@ -46,7 +46,6 @@ class loadAmdmtsTask extends sfBaseTask {
               $ct_crees++;
               $amdmt = new Amendement();
               $amdmt->source = $json->source;
-              $amdmt->legislature = $json->legislature;
               $amdmt->texteloi_id = $json->loi;
               $amdmt->addTag('loi:numero='.$amdmt->texteloi_id);
               $amdmt->numero = $json->numero;
@@ -57,26 +56,17 @@ class loadAmdmtsTask extends sfBaseTask {
             if ($modif) {
               $amdmt->date = $json->date;
               $lettre = $amdmt->getLettreLoi();
-              if ($json->serie) {
-                if (preg_match('/,/', $json->serie)) {
-                  $arr = preg_split('/,/', $json->serie);
-                  foreach ($arr as $gap_stri) {
-                    $gap = preg_split('/-/', $gap_stri);
-                    for ($n = $gap[0]; $n <= $gap[1]; $n++) 
-                      $amdmt->addTag('loi:amendement='.$n.$lettre);
-                  }
-                } else {
-                  $gap = preg_split('/-/', $json->serie);
-                  for ($n = $gap[0]; $n <= $gap[1]; $n++)
-                    $amdmt->addTag('loi:amendement='.$n.$lettre);
-                }
-              } else $amdmt->addTag('loi:amendement='.$amdmt->numero);
-              if ($json->parent)
+              $amdmt->addTag('loi:amendement='.$amdmt->numero);
+              if ($json->parent) {
                 $amdmt->addTag('loi:sous_amendement_de='.$json->parent.$lettre);
+                $amdmt->numero_pere = $json->parent;
+              }
               $amdmt->sujet = $json->sujet;
               $amdmt->texte = $json->texte;
               if ($json->expose)
                 $amdmt->expose = $json->expose;
+              if ($json->refloi)
+                $amdmt->ref_loi = $json->refloi;
               $amdmt->content_md5 = md5($json->legislature.$json->loi.$json->sujet.$json->texte);
               if ($json->auteurs) {
                 $amdmt->signataires = $json->auteurs;
@@ -86,6 +76,12 @@ class loadAmdmtsTask extends sfBaseTask {
                 $amdmt->free();
                 continue;
               }
+              if ($json->commission)
+                $amdmt->setCommission($json->commission);
+              if ($json->aviscomm)
+                $amdmt->avis_comm = $json->aviscomm;
+              if ($json->avisgouv)
+                $amdmt->avis_gouv = $json->avisgouv;
             }
             if ($json->sort)
               $amdmt->sort = $json->sort;

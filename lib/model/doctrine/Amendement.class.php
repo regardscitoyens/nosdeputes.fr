@@ -22,10 +22,11 @@ class Amendement extends BaseAmendement {
   }
 
   public function setAuteurs($auteurs) {
+$debug = 1;
     $groupe = null;
     $sexe = null;
     if (preg_match('/^\s*(.*),+\s*[dl]es\s+(.*\s+[gG]roupe|membres|sénateurs)\s+(.*)\s*$/' ,$auteurs, $match)) {
-      $auteurs = $match[1];
+      $auteurs = preg_replace('/,+\s*[dl]es\s+(.*\s+[gG]roupe|membres|sénateurs)\s+(.*)(,\s*M[\sMmles\.\s]+)/', '\\1', $auteurs);
       $groupe = preg_replace("/^\s*(de la|de l'|du)\s*/", "", $match[3]);
       if (preg_match('/^(.*)(et|,)\s+(M[\s\.ml].*)$/' ,$groupe, $match2)) {
         $groupe = $match2[1];
@@ -48,9 +49,9 @@ class Amendement extends BaseAmendement {
       if (preg_match('/(gouvernement|président|rapporteur|commission|questeur)/i', $senateur)) {
         if ($debug) print "WARN: Skip auteur ".$senateur." for ".$this->source."\n";
         continue;
-      } elseif (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([a-zA-Z].*)\s*$/', $senateur, $match)) {
+      } elseif (preg_match('/^\s*(M[Mmles\.\s]+)\s*(\w.*)\s*$/', $senateur, $match)) {
           $nom = $match[2];
-          if (preg_match('/M[ml]/', $match[1]))
+          if (preg_match('/[el]/', $match[1]))
             $sexe = 'F';
           else $sexe = 'H';
       } else $nom = preg_replace("/^\s*(.*)\s*$/", "\\1", $senateur);
@@ -81,10 +82,22 @@ class Amendement extends BaseAmendement {
     } else return false;
   }
 
+  public function getAmendementPere() {
+    if ($this->numero_pere && $a = doctrine::getTable('Amendement')->findLastOneByLoiNum($this->texte_loi_id, $this->numero_pere))
+      return $a;
+    return null;
+  }
+
+  public function setCommission($com) {
+    if ($c = doctrine::getTable('Organisme')->findOneByNomType($com, 'parlementaire'))
+      $this->_set('Commission', $c);
+  }
+
+
   public function getSignataires($link = 0) {
     $signa = preg_replace("/M\s+/", "M. ", $this->_get('signataires'));
     if ($link && !preg_match('/gouvernement/i',$signa))
-      $signa = preg_replace('/(M+[\.mles\s]+)?([\wàéëêèïîôöûüÉ\s-]+)\s*(,\s*|$)/', '<a href="/senateurs?search=\\2">\\1\\2</a>\\3', $signa);
+      $signa = preg_replace('/(M+[\.mles\s]+)?([A-ZÉ][^,]+)\s*(,\s*|$)/', '<a href="/senateurs/rechercher/\\2">\\1\\2</a>\\3', $signa);
     return $signa;
   }
 
@@ -111,16 +124,10 @@ class Amendement extends BaseAmendement {
   public function getPresentTitre($link = 0) {
     $parent = 0;
     $pluriel = "";
-    $parent = $this->getTags(array('is_triple' => true,
-	  'namespace' => 'loi',
-	  'key' => 'sous_amendement_de',
-	  'return'    => 'value'));
-    if (count($parent) == 1)
-      $titre = "Sous-Amendement";
-    else {
-      $parent = "";
-      $titre = "Amendement";
-    }
+    if ($this->numero_pere)
+      $titre = "Sous-";
+    else $titre = "";
+    $titre .= "Amendement";
     $numeros = $this->numero;
     $lettre = $this->getLettreLoi();
     $ident = $this->getTags(array('is_triple' => true,
@@ -138,14 +145,12 @@ class Amendement extends BaseAmendement {
       $titre .= " rectifié".$pluriel;
     elseif($this->rectif > 1)
       $titre .= " ".$this->rectif."ème rectif.";
-    if ($parent != 0) {
+    if ($this->numero_pere) {
       $titre .= ' à ';
-      if ($link && function_exists('url_for')) {
-	$titre .= '<a href="'.url_for('@amendement?loi='.$this->texteloi_id.'&numero='.$parent[0]).'">';
-      }else{
-	$link = 0;
-      }
-      $titre .= 'l\'amendement N° '.$parent[0].$lettre;
+      if ($link && function_exists('url_for'))
+	$titre .= '<a href="'.url_for('@amendement?loi='.$this->texteloi_id.'&numero='.$this->numero_pere).'">';
+      else $link = 0;
+      $titre .= 'l\'amendement N° '.$this->numero_pere.$lettre;
       if ($link) $titre .= '</a>';
     }
     return $titre;

@@ -261,20 +261,28 @@ Amendement:
   columns:
     source:
       type: string(255)
-    legislature: integer
     texteloi_id: string(16)
     numero: string(8)
     rectif: integer
     sujet: string(100)
     sort:
       type: enum
-      values: ['Indéfini', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non soutenu', 'Retiré avant séance', 'Rectifié', 'Favorable']
+      values: ['Indéfini', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non soutenu', 'Retiré avant séance', 'Rectifié', 'Satisfait']
+    avis_comm:
+      type: enum
+      values: ['Indéfini', 'Favorable', 'Défavorable', 'Demande de retrait', 'Sagesse']
+    avis_gouv:
+      type: enum
+      values: ['Indéfini', 'Favorable', 'Défavorable', 'Demande de retrait', 'Sagesse']
     date: date
     signataires: string
     texte: 
       type: string
     expose: 
       type: string
+    ref_loi: string(255)
+    organisme_id: integer
+    numero_pere: integer
     content_md5: string(36)
   relations:
     Parlementaires:
@@ -282,6 +290,10 @@ Amendement:
       refClass: ParlementaireAmendement
       foreignAlias: Amendements
     Texteloi:
+      foreignAlias: Amendements
+    Commission:
+      class: Organisme
+      local: organisme_id
       foreignAlias: Amendements
   inheritance:
     extends: ObjectCommentable
@@ -291,7 +303,7 @@ Amendement:
       fields: [sujet, texte, expose]
       type: fulltext
     uniq_loi_num:
-      fields: [legislature, texteloi_id, numero, rectif]
+      fields: [texteloi_id, numero, rectif]
       type: unique
 
 Question:

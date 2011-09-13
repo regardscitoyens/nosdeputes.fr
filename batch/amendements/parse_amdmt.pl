@@ -181,7 +181,7 @@ sub sortseance {
     $sort = 'Irrecevable';
   } elsif ($sort =~ /retir.*avant.*ance/i) {
     $sort = 'Retiré avant séance';
-  } elsif ($sort =~ /satisfait/) {
+  } elsif ($sort =~ /satisfait/i) {
     $sort = 'Satisfait';
   } elsif ($sort =~ /retir/i) {
     $sort = 'Retiré';
@@ -233,7 +233,7 @@ sub clean_texte {
   $txt =~ s/(<\/?t[rdh][^>]*>)(<\/?p>)+/$1/ig;
   $txt =~ s/(<\/?p>)+(<\/table>)/$2/ig;
   $txt =~ s/(<table>)(<\/?p>)+/$1/ig;
-  $txt =~ s/<table>(<tr>(<td><\/td>)*<\/tr>)*<\/table>//ig;
+  $txt =~ s/<table>\s*(<\/?t[rdh][^>]*>\s*)*<\/table>//ig;
   $txt =~ s/(<\/?p>)(<\/?[^>]+>)+(<\/?p>)/$1$3/ig;
   $txt =~ s/^([^<])/<p>$1/;
   $txt =~ s/([^>])$/$1<\/p>/;
