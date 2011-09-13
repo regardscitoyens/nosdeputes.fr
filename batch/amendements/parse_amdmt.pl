@@ -33,19 +33,12 @@ $string =~ s/colspan(\d+)/ colspan='$1'/g;
 $string =~ s/> +/>/g;
 $string =~ s/ *(<t[dh]>)<\/?p>/$1/ig;
 $string =~ s/ *<\/?p>(<\/t[dh]>)/$1/ig;
-$string =~ s/"/&quot;/g;
-$string =~ s/\n((<[^=>]+>(.|Objet)?)+\n)+/\n/g;
+$string =~ s/"/\&quot;/g;
+$string =~ s/\n((<[^=>]+>(.|Objet|\))?)+\n)+/\n/g;
 $string =~ s/ *\n */\n/g;
 $string =~ s/ *, */, /g;
 $string =~ s/\\/\//g;
 $string =~ s/(position_amdt=[^>]* -->)/$1\nNEXT\n/ig;
-#$string =~ s/<div><table><tr><td><img><\/p><p><strong>/\n<!-- contexte=/ig;
-#$string =~ s/<\/strong><\/td><td><strong>[^\n]+<\/strong><\/p><p>\(/ -->\n<!-- etape_leg=/ig;
-#$string =~ s/\)<\/p><p>\(n\W+/ -->\n<!-- lois=/ig;
-#$string =~ s/\)<\/td><td><strong>n\W+/ -->\n<!-- numero=/ig;
-#$string =~ s/<\/strong><\/p><p>/ -->\n<!-- debut_date=/ig;
-#$string =~ s/<\/td><\/tr><\/table><hr><table><tr><td><\/td><td><h1>/ -->\n<!-- debut_type=/ig;
-#$string =~ s/<\/h1>[^\n]*\n/ -->\n/ig;
 
 if ($display_text) {
   utf8::encode($string);
@@ -79,16 +72,28 @@ foreach $line (split /\n/, $string) {
     $amdmt{'auteurs'} .= " $1";
   } elsif ($line =~ /<!-- debut_avis_commission -->(.*)<!-- fin_avis_commission -->/i) {
     $amdmt{'aviscomm'} = $1;
+    $amdmt{'aviscomm'} =~ s/ du Sénat//;
   } elsif ($line =~ /<!-- debut_avis_gouvernement -->(.*)<!-- fin_avis_gouvernement -->/i) {
     $amdmt{'avisgouv'} = $1;
+    $amdmt{'avisgouv'} =~ s/ du Sénat//;
   } elsif ($line =~ /<!-- debut_sort -->(.*)<!-- fin_sort -->/i) {
     $amdmt{'sort'} = sortseance($1);
   } elsif ($line =~ /<!-- debut_subdivision -->(.*)<!-- fin_subdivision -->/i) {
-    $amdmt{'sujet'} = lc($1);
+    $amdmt{'sujet'} =~ s/(.)$/$1 /;
+    $amdmt{'sujet'} .= lc($1);
   } elsif ($line =~ /<!-- debut_dispositif -->(.*)<!-- fin_dispositif -->/i) {
     $amdmt{'texte'} = $1;
   } elsif ($line =~ /<!-- debut_objet -->(.*)<!-- fin_objet -->/i) {
     $amdmt{'expose'} = $1;
+  } elsif ($line =~ /<!-- debut_libelle_motion -->(.*)<!-- fin_libelle_motion -->/i) {
+    $amdmt{'sujet'} =~ s/^(.)/ $1/;
+    $amdmt{'sujet'} = "Motion ".lc($amdmt{'libelle_motion'}).$amdmt{'sujet'};
+  } elsif ($line =~ /<!-- debut_sous_subdivision -->(.*)<!-- fin_sous_subdivision -->/i) {
+    $amdmt{'refloi'} = lc($1);
+    $amdmt{'refloi'} =~ s/^\(?(rapport )?annex.*$//;
+    $amdmt{'refloi'} =~ s/^[eé]tat.*$//;
+    $amdmt{'refloi'} =~ s/^(division|art)[^\d]+([L\d])/Art. $2/;
+    $amdmt{'refloi'} =~ s/l\.?\s*o\.\s*(\d)/L.O. $1/;
   } elsif ($line =~ /<!-- debut_([^\>]+) -->(.*)<!-- fin_/i) {
     $amdmt{$1} = $2;
   } elsif ($line =~ /<!-- ([^\>]+)=\s*([^\>]*)\s+-->/i) {
@@ -101,7 +106,7 @@ foreach $line (split /\n/, $string) {
       $amdmt{'date'} = $3.'-'.$2.'-'.sprintf('%02d', $1);
     }
     if ($line =~ />\s*\(\s*n°\s*(.*)\s*\)\s*</i) {
-      $amdmt{'ref_lois'} = reflois($1);
+      $amdmt{'refnumlois'} = refnumlois($1);
     }
     if ($line =~ /<h1>(.*)<\/h1>/) {
       $amdt{'type'} = lc($1);
@@ -110,7 +115,11 @@ foreach $line (split /\n/, $string) {
     if ($line =~ /amendement.*(irrecevable|retir)/i && !$amdmt{'sort'}) {
       $amdmt{'sort'} = sortseance($line);
     }
-    $amdmt{'expose'} .= "<p>$line</p>";
+    if ($amdmt{'texte'} eq "") {
+      $amdmt{'texte'} .= "<p>$line</p>";
+    } else {
+      $amdmt{'expose'} .= "<p>$line</p>";
+    }
   }
 }
 
@@ -136,37 +145,37 @@ sub checkout {
       print "  ".lc($k).": ".$amdmt{$k}."\n";
     }
   } else {
-    print '{"source": "'.$amdmt{'source'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "commission": "'.$amdmt{'commission'}.'", "avis_comm": "'.$amdmt{'aviscomm'}.'", "avis_gouv": "'.$amdmt{'avisgouv'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
+    print '{"source": "'.$amdmt{'source'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "commission": "'.$amdmt{'commission'}.'", "aviscomm": "'.$amdmt{'aviscomm'}.'", "avisgouv": "'.$amdmt{'avisgouv'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "refloi": "'.$amdmt{'refloi'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
   }
   reset_amdmt();
 }
 
-sub reflois {
+sub refnumlois {
   my $lois = shift;
   $lois =~ s/\s*,\s*/,/g;
-  my $reflois = "";
-  while ($lois =~ /(\d+)(| rect[\s\.ifiébs]*)( \((\d{4}-\d{4})\)|)/g) {
+  my $refnumlois = "";
+  while ($lois =~ /(\d{1,2,3})(| rect[\s\.ifiébs]*)( \((\d{4}-\d{4})\)|)/g) {
     if ($4) {
-      $reflois .= law_numberize($1,$4).",";
+      $refnumlois .= law_numberize($1,$4).",";
     } else {
-      $reflois .= law_numberize($1,$session).",";
+      $refnumlois .= law_numberize($1,$session).",";
     }
   }
-  chop($numeros_loi);
-  return $reflois
+  chop($refnumlois);
+  return $refnumlois
 }
 
 sub sortseance {
   my $sort = shift;
   if ($sort =~ /irrecevab/i) {
     $sort = 'Irrecevable';
-  } elsif ($sort =~ /retiré.*séance/i) {
+  } elsif ($sort =~ /retir.*s.+ance/i) {
     $sort = 'Retiré avant séance';
-  } elsif ($sort =~ /retiré/i) {
+  } elsif ($sort =~ /retir/i) {
     $sort = 'Retiré';
-  } elsif ($sort =~ /non.*(soutenu|défendu)/i) {
+  } elsif ($sort =~ /non.*(soutenu|d.+fendu)/i) {
     $sort = 'Non soutenu';
-  } elsif ($sort =~ /tombe/i) {
+  } elsif ($sort =~ /tomb/i) {
     $sort = 'Tombe';
   } elsif ($sort =~ /rejet/i) {
     $sort = 'Rejeté';
@@ -179,6 +188,8 @@ sub sortseance {
 sub clean_auteurs {
   my $txt = shift;
   $txt =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜÇ])(\w+ ?)/$1\L$2/g;
+  $txt =~ s/Mm[. ]/MM./ig;
+  $txt =~ s/(\w) au nom d/$1, au nom d/ig;
 #  $txt =~ s/\s*\<\/?[^\>]+\>//g;
 #  $txt =~ s/\s+M([\.mles]+)\s*,\s*/ M$1 /g;
 #  $txt =~ s/([a-z])\s+(M[\.Mml])/$1, $2/g;
@@ -200,14 +211,16 @@ sub clean_auteurs {
 
 sub clean_texte {
   my $txt = shift;
-  $txt =~ s/<(\/)?div>/<$1p>/ig;
+  $txt =~ s/<(\/)?(div|span)>/<$1p>/ig;
   $txt =~ s/<!--[^>]*>//g;
+  $txt =~ s/^(<\/[^>]+>)+//g;
   $txt =~ s/^([^<])/<p>$1/i;
   $txt =~ s/<\/p>([^<])/<\/p><p>$1/ig;
   $txt =~ s/([^>])$/$1<\/p>/i;
   $txt =~ s/([^>])<p>/$1<\/p><p>/ig;
   $txt =~ s/\s*<p>(\s*<\/?p>\s*)*\s*/<p>/ig;
   $txt =~ s/\s*(\s*<\/?p>\s*)*<\/p>\s*/<\/p>/ig;
+  $txt =~ s/(<\/?p>)(<\/?[^>]+>)+(<\/?p>)/$1$3/ig;
   return $txt
 }
 
