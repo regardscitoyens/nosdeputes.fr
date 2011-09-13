@@ -28,6 +28,7 @@ $string =~ s/ *\n *(<!--\s*fin[^>]*-->) */$1\n/ig;
 $string =~ s/(<t\w+) *[^>]* colspan="(\d+)"[^>]*>/$1colspan$2>/ig;
 $string =~ s/(<[^aA!][\w]*) *[^>]*>/$1>/g;
 $string =~ s/<a[^>]*href=["']([^"']+)["'][^>]*>/<a href='$1'>/ig;
+$string =~ s/<a href='\/([^']+)'>/<a href='http:\/\/www.senat.fr\/$1'>/ig;
 $string =~ s/<br\/?>//ig;
 $string =~ s/colspan(\d+)/ colspan='$1'/g;
 $string =~ s/> +/>/g;
@@ -70,7 +71,9 @@ foreach $line (split /\n/, $string) {
   } elsif ($line =~ /<!-- debut_signataires -->(.*)<!-- fin_signataires -->/i) {
     $amdmt{'auteurs'} = $1;
   } elsif ($line =~ /<!-- debut_aunomde -->(.*)<!-- fin_aunomde -->/i) {
-    $amdmt{'auteurs'} .= " $1";
+    $amdmt{'auteurs'} .= ", $1";
+  } elsif ($line =~ /<!-- debut_accordGouv -->(.*)<!-- fin_accordGouv -->/i) {
+    $amdmt{'auteurs'} .= ", $1";
   } elsif ($line =~ /<!-- debut_avis_commission -->(.*)<!-- fin_avis_commission -->/i) {
     $amdmt{'aviscomm'} = $1;
     $amdmt{'aviscomm'} =~ s/ du Sénat//;
@@ -97,8 +100,11 @@ foreach $line (split /\n/, $string) {
       $amdmt{'sujet'} =~ s/(.)$/$1 /;
       $amdmt{'sujet'} .= $tmprefloi;
     } else {
-      $tmprefloi =~ s/^(division|art)[^\d]+([lo\.\s]*\d)/Art. $2/;
-      $tmprefloi =~ s/ l\.?\s*o\.\s*(\d)/ L.O. $1/;
+      if ($tmprefloi =~ / [lo\.\s]+\d/) {
+        $tmprefloi =~ s/^(division|art).* [lo\.\s]+(\d)/Art. L.O. $2/;
+      } else {
+        $tmprefloi =~ s/^(division|art)[^\d]+(\d)/Art. $2/;
+      }
       $amdmt{'refloi'} = ucfirst($tmprefloi);
     }
   } elsif ($line =~ /<!-- debut_([^\>]+) -->(.+)<!-- fin_/i) {
@@ -119,7 +125,7 @@ foreach $line (split /\n/, $string) {
       $amdt{'type'} = lc($1);
     }
   } else {
-    if ($line =~ /amendement.*(irrecevable|retir)/i && !$amdmt{'sort'}) {
+    if ($line =~ /(amendement.*(irrecevable|retir)|retiré avant séance)/i && (!$amdmt{'sort'} || $amdmt{'sort'} eq "Retiré")) {
       $amdmt{'sort'} = sortseance($line);
     }
     if ($amdmt{'texte'} eq "") {
@@ -201,7 +207,6 @@ sub clean_auteurs {
   my $txt = shift;
   $txt =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜÇ])(\w+ ?)/$1\L$2/g;
   $txt =~ s/Mm[. ]/MM./ig;
-  $txt =~ s/(\w) au nom d/$1, au nom d/ig;
 #  $txt =~ s/\s*\<\/?[^\>]+\>//g;
 #  $txt =~ s/\s+M([\.mles]+)\s*,\s*/ M$1 /g;
 #  $txt =~ s/([a-z])\s+(M[\.Mml])/$1, $2/g;
@@ -231,8 +236,8 @@ sub clean_texte {
   $txt =~ s/^(<\/[^>]+>)+//g;
   $txt =~ s/(<\/?p>)+(<\/?t[rdh][^>]*>)/$2/ig;
   $txt =~ s/(<\/?t[rdh][^>]*>)(<\/?p>)+/$1/ig;
-  $txt =~ s/(<\/?p>)+(<\/table>)/$2/ig;
-  $txt =~ s/(<table>)(<\/?p>)+/$1/ig;
+  $txt =~ s/\s*(<\/?p>\s*)*(<\/table>)(\s*<\/p>)*\s*/$2/ig;
+  $txt =~ s/\s*(<p>\s*)*(<table>)(\s*<\/?p>)*\s*/$2/ig;
   $txt =~ s/<table>\s*(<\/?t[rdh][^>]*>\s*)*<\/table>//ig;
   $txt =~ s/(<\/?p>)(<\/?[^>]+>)+(<\/?p>)/$1$3/ig;
   $txt =~ s/^([^<])/<p>$1/;
