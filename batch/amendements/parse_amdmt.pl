@@ -66,6 +66,7 @@ foreach $line (split /\n/, $string) {
     $amdmt{'rectif'} = $1;
   } elsif ($line =~ /<!-- numero_amdt_pere_sans_rect=\s*([^\>]+)\s+-->/i) {
     $amdmt{'parent'} = $1;
+    $amdmt{'parent'} =~ s/COM-//;
   } elsif ($line =~ /<!-- debut_signataires -->(.*)<!-- fin_signataires -->/i) {
     $amdmt{'auteurs'} = $1;
   } elsif ($line =~ /<!-- debut_aunomde -->(.*)<!-- fin_aunomde -->/i) {
@@ -79,21 +80,27 @@ foreach $line (split /\n/, $string) {
   } elsif ($line =~ /<!-- debut_sort -->(.*)<!-- fin_sort -->/i) {
     $amdmt{'sort'} = sortseance($1);
   } elsif ($line =~ /<!-- debut_subdivision -->(.*)<!-- fin_subdivision -->/i) {
+    $tmpsujet = lc($1);
     $amdmt{'sujet'} =~ s/(.)$/$1 /;
-    $amdmt{'sujet'} .= lc($1);
+    $amdmt{'sujet'} .= $tmpsujet;
   } elsif ($line =~ /<!-- debut_dispositif -->(.*)<!-- fin_dispositif -->/i) {
     $amdmt{'texte'} = $1;
   } elsif ($line =~ /<!-- debut_objet -->(.*)<!-- fin_objet -->/i) {
     $amdmt{'expose'} = $1;
   } elsif ($line =~ /<!-- debut_libelle_motion -->(.*)<!-- fin_libelle_motion -->/i) {
+    $tmplibellemotion = lc($1);
     $amdmt{'sujet'} =~ s/^(.)/ $1/;
-    $amdmt{'sujet'} = "Motion ".lc($amdmt{'libelle_motion'}).$amdmt{'sujet'};
+    $amdmt{'sujet'} = "Motion $tmplibellemotion".$amdmt{'sujet'};
   } elsif ($line =~ /<!-- debut_sous_subdivision -->(.*)<!-- fin_sous_subdivision -->/i) {
-    $amdmt{'refloi'} = lc($1);
-    $amdmt{'refloi'} =~ s/^\(?(rapport )?annex.*$//;
-    $amdmt{'refloi'} =~ s/^[eé]tat.*$//;
-    $amdmt{'refloi'} =~ s/^(division|art)[^\d]+([L\d])/Art. $2/;
-    $amdmt{'refloi'} =~ s/l\.?\s*o\.\s*(\d)/L.O. $1/;
+    $tmprefloi = lc($1);
+    if ($tmprefloi =~ /^([eé]tat|\(?(rapport )?annex)/) {
+      $amdmt{'sujet'} =~ s/(.)$/$1 /;
+      $amdmt{'sujet'} .= $tmprefloi;
+    } else {
+      $tmprefloi =~ s/^(division|art)[^\d]+([lo\.\s]*\d)/Art. $2/;
+      $tmprefloi =~ s/ l\.?\s*o\.\s*(\d)/ L.O. $1/;
+      $amdmt{'refloi'} = ucfirst($tmprefloi);
+    }
   } elsif ($line =~ /<!-- debut_([^\>]+) -->(.+)<!-- fin_/i) {
     $amdmt{$1} = $2;
   } elsif ($line =~ /<!-- ([^\>]+)=\s*([^\>]+)\s+-->/i) {
@@ -172,8 +179,10 @@ sub sortseance {
   my $sort = shift;
   if ($sort =~ /irrecevab/i) {
     $sort = 'Irrecevable';
-  } elsif ($sort =~ /retir.*s.+ance/i) {
+  } elsif ($sort =~ /retir.*avant.*ance/i) {
     $sort = 'Retiré avant séance';
+  } elsif ($sort =~ /satisfait/) {
+    $sort = 'Satisfait';
   } elsif ($sort =~ /retir/i) {
     $sort = 'Retiré';
   } elsif ($sort =~ /non.*(soutenu|d.+fendu)/i) {
@@ -214,23 +223,26 @@ sub clean_auteurs {
 
 sub clean_texte {
   my $txt = shift;
-  $txt =~ s/<(\/)?(div|span|font|object)>/<$1p>/ig;
+  $txt =~ s/<(\/)?(div|span|font|object|h\d+)>/<$1p>/ig;
   $txt =~ s/<!--[^>]*>//g;
   $txt =~ s/<!\[endif\]-->//ig;
   $txt =~ s/<xml>.*<\/xml>//ig;
   $txt =~ s/<style>.*<\/style>//ig;
   $txt =~ s/^(<\/[^>]+>)+//g;
-  $txt =~ s/^([^<])/<p>$1/i;
-  $txt =~ s/<\/p>([^<])/<\/p><p>$1/ig;
-  $txt =~ s/([^>])$/$1<\/p>/i;
-  $txt =~ s/([^>])<p>/$1<\/p><p>/ig;
-  $txt =~ s/\s*<p>(\s*<\/?p>\s*)*\s*/<p>/ig;
-  $txt =~ s/\s*(\s*<\/?p>\s*)*<\/p>\s*/<\/p>/ig;
-  $txt =~ s/(<\/?p>)(<\/?[^>]+>)+(<\/?p>)/$1$3/ig;
-  $txt =~ s/(<\/?p>)+(<\/?t[rdh]>)/$2/ig;
-  $txt =~ s/(<\/?t[rdh]>)(<\/?p>)+/$1/ig;
+  $txt =~ s/(<\/?p>)+(<\/?t[rdh][^>]*>)/$2/ig;
+  $txt =~ s/(<\/?t[rdh][^>]*>)(<\/?p>)+/$1/ig;
   $txt =~ s/(<\/?p>)+(<\/table>)/$2/ig;
   $txt =~ s/(<table>)(<\/?p>)+/$1/ig;
+  $txt =~ s/<table>(<tr>(<td><\/td>)*<\/tr>)*<\/table>//ig;
+  $txt =~ s/(<\/?p>)(<\/?[^>]+>)+(<\/?p>)/$1$3/ig;
+  $txt =~ s/^([^<])/<p>$1/;
+  $txt =~ s/([^>])$/$1<\/p>/;
+  $txt =~ s/<\/(p|table)>([^<])/<\/$1><p>$2/ig;
+  $txt =~ s/([^>])<(p|table)>/$1<\/p><$2>/ig;
+  $txt =~ s/\s*<p>(\s*<\/?p>)+\s*/<p>/ig;
+  $txt =~ s/\s*(<\/?p>\s*)+<\/p>\s*/<\/p>/ig;
+  $txt =~ s/(<\/?p>)(<\/?[^>]+>)+(<\/?p>)/$1$3/ig;
+  $txt =~ s/<p>$//i;
   return $txt
 }
 
