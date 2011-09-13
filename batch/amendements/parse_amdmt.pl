@@ -256,6 +256,8 @@ sub clean_texte {
   $txt =~ s/<b><\/b>//gi;
   $txt =~ s/<i><\/i>//gi;
   $txt =~ s/(<[ubi]>)<p>([^<]+)<\/p>(<\/[ubi]>)/$1$2$3/gi;
+  $txt =~ s/<p>\s+/<p>/gi;
+  $txt =~ s/\s+<\/p>/<\/p>/gi;
   return $txt
 }
 
