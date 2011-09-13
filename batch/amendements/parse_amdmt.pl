@@ -68,33 +68,33 @@ foreach $line (split /\n/, $string) {
   } elsif ($line =~ /<!-- numero_amdt_pere_sans_rect=\s*([^\>]+)\s+-->/i) {
     $amdmt{'parent'} = $1;
     $amdmt{'parent'} =~ s/COM-//;
-  } elsif ($line =~ /<!-- debut_signataires -->(.*)<!-- fin_signataires -->/i) {
+  } elsif ($line =~ /<!-- debut_signataires -->(.+)<!-- fin_signataires -->/i) {
     $amdmt{'auteurs'} = $1;
-  } elsif ($line =~ /<!-- debut_aunomde -->(.*)<!-- fin_aunomde -->/i) {
+  } elsif ($line =~ /<!-- debut_aunomde -->(.+)<!-- fin_aunomde -->/i) {
     $amdmt{'auteurs'} .= ", $1";
-  } elsif ($line =~ /<!-- debut_accordGouv -->(.*)<!-- fin_accordGouv -->/i) {
+  } elsif ($line =~ /<!-- debut_accordgouv -->(.+)<!-- fin_accordgouv -->/i) {
     $amdmt{'auteurs'} .= ", $1";
-  } elsif ($line =~ /<!-- debut_avis_commission -->(.*)<!-- fin_avis_commission -->/i) {
+  } elsif ($line =~ /<!-- debut_avis_commission -->(.+)<!-- fin_avis_commission -->/i) {
     $amdmt{'aviscomm'} = $1;
     $amdmt{'aviscomm'} =~ s/ du Sénat//;
-  } elsif ($line =~ /<!-- debut_avis_gouvernement -->(.*)<!-- fin_avis_gouvernement -->/i) {
+  } elsif ($line =~ /<!-- debut_avis_gouvernement -->(.+)<!-- fin_avis_gouvernement -->/i) {
     $amdmt{'avisgouv'} = $1;
     $amdmt{'avisgouv'} =~ s/ du Sénat//;
-  } elsif ($line =~ /<!-- debut_sort -->(.*)<!-- fin_sort -->/i) {
+  } elsif ($line =~ /<!-- debut_sort -->(.+)<!-- fin_sort -->/i) {
     $amdmt{'sort'} = sortseance($1);
-  } elsif ($line =~ /<!-- debut_subdivision -->(.*)<!-- fin_subdivision -->/i) {
+  } elsif ($line =~ /<!-- debut_subdivision -->(.+)<!-- fin_subdivision -->/i) {
     $tmpsujet = lc($1);
     $amdmt{'sujet'} =~ s/(.)$/$1 /;
     $amdmt{'sujet'} .= $tmpsujet;
-  } elsif ($line =~ /<!-- debut_dispositif -->(.*)<!-- fin_dispositif -->/i) {
+  } elsif ($line =~ /<!-- debut_dispositif -->(.+)<!-- fin_dispositif -->/i) {
     $amdmt{'texte'} = $1;
-  } elsif ($line =~ /<!-- debut_objet -->(.*)<!-- fin_objet -->/i) {
+  } elsif ($line =~ /<!-- debut_objet -->(.+)<!-- fin_objet -->/i) {
     $amdmt{'expose'} = $1;
-  } elsif ($line =~ /<!-- debut_libelle_motion -->(.*)<!-- fin_libelle_motion -->/i) {
+  } elsif ($line =~ /<!-- debut_libelle_motion -->(.+)<!-- fin_libelle_motion -->/i) {
     $tmplibellemotion = lc($1);
     $amdmt{'sujet'} =~ s/^(.)/ $1/;
     $amdmt{'sujet'} = "Motion $tmplibellemotion".$amdmt{'sujet'};
-  } elsif ($line =~ /<!-- debut_sous_subdivision -->(.*)<!-- fin_sous_subdivision -->/i) {
+  } elsif ($line =~ /<!-- debut_sous_subdivision -->(.+)<!-- fin_sous_subdivision -->/i) {
     $tmprefloi = lc($1);
     if ($tmprefloi =~ /^([eé]tat|\(?(rapport )?annex)/) {
       $amdmt{'sujet'} =~ s/(.)$/$1 /;
@@ -247,6 +247,8 @@ sub clean_texte {
   $txt =~ s/\s*<p>(\s*<\/?p>)+\s*/<p>/ig;
   $txt =~ s/\s*(<\/?p>\s*)+<\/p>\s*/<\/p>/ig;
   $txt =~ s/(<\/?p>)(<\/?[^>]+>)+(<\/?p>)/$1$3/ig;
+  $txt =~ s/^\s*(<\/?p>\s*)*<table>(\s*<\/?t[rdh][^>]*>)*\s*([^<]+<\/p><p>)/<p>$3/i;
+  $txt =~ s/(<\/p><p>[^<]+)\s*(<\/?t[rdh][^>]*>\s*)*<\/table>(\s*<\/?p>)*\s*$/$1<\/p>/i;
   $txt =~ s/<p>$//i;
   return $txt
 }
