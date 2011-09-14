@@ -253,10 +253,16 @@ sub clean_texte {
   $txt =~ s/^\s*(<\/?p>\s*)*<table>(\s*<\/?t[rdh][^>]*>)*\s*([^<]+<\/p><p>)/<p>$3/i;
   $txt =~ s/(<\/p><p>[^<]+)\s*(<\/?t[rdh][^>]*>\s*)*<\/table>(\s*<\/?p>)*\s*$/$1<\/p>/i;
   $txt =~ s/<p>$//i;
-  $txt =~ s/<u><\/u>//gi;
-  $txt =~ s/<b><\/b>//gi;
-  $txt =~ s/<i><\/i>//gi;
   $txt =~ s/(<[ubi]>)<p>([^<]+)<\/p>(<\/[ubi]>)/$1$2$3/gi;
+  $txt =~ s/<b><\/b>//gi;
+  $txt =~ s/<u><\/u>//gi;
+  $txt =~ s/<i><\/i>//gi;
+  $txt =~ s/(<b>)+/<b>/gi;
+  $txt =~ s/(<\/b>)+/<\/b>/gi;
+  $txt =~ s/(<u>)+/<u>/gi;
+  $txt =~ s/(<\/u>)+/<\/u>/gi;
+  $txt =~ s/(<i>)+/<i>/gi;
+  $txt =~ s/(<\/i>)+/<\/i>/gi;
   $txt =~ s/<p>\s+/<p>/gi;
   $txt =~ s/\s+<\/p>/<\/p>/gi;
   return $txt
