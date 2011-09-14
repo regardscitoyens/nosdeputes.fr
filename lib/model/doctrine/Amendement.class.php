@@ -9,6 +9,7 @@ class Amendement extends BaseAmendement {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@amendement?loi='.$this->texteloi_id.'&numero='.$this->numero);
   }
+
   public function getPersonne() {
     return '';
   }
@@ -97,7 +98,6 @@ class Amendement extends BaseAmendement {
       $this->_set('Commission', $c);
   }
 
-
   public function getSignataires($link = 0) {
     $signa = preg_replace("/M\s+/", "M. ", $this->_get('signataires'));
     if ($link && !preg_match('/gouvernement/i',$signa))
@@ -169,9 +169,9 @@ class Amendement extends BaseAmendement {
   }
 
   public function getTexte($style=1) {
-    if ($style == 1) {
+    if ($style == 1)
       return preg_replace('/\<p\>\s*«\s*([^\<]+)\<\/p\>/', '<blockquote>«&nbsp;\1</blockquote>', $this->_get('texte')); 
-    } else return $this->_get('texte');
+    return $this->_get('texte');
   }
 
   public function getLettreLoi() {
@@ -185,10 +185,6 @@ class Amendement extends BaseAmendement {
     return preg_replace('/\<a href.*\>(.*)<\/a\>/', '\1', $this->getTitre());
   }
   
-  public function getLinkPDF() {
-    return preg_replace('/\/amendement/', '/pdf/amendement', preg_replace('/\.asp(.*)$/', '.pdf', $this->source));
-  }
-
   public function getIsLastVersion() {
     if ($this->sort === "Rectifié")
       return false;

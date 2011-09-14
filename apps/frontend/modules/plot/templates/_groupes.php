@@ -34,13 +34,13 @@ $DataDescrLegend = $DataSetLegend->GetDataDescription();
 $filename = 'repartition-groupes';
 $xsize = 390;
 if ($plot == 'total') {
-  $xtitre = 80; $ysize = 360; $ylegend = 145; $x0 = 140; $y0 = 112;
+  $xtitre = 80; $ysize = 360; $ylegend = 145; $x0 = 150; $y0 = 112;
   $duree = "l'année passée";
   $shortduree = 'annee';
   $filename .= '-'.$shortduree.'.png';
   $titre = 'du travail parlementaire';
 } else {
-  $xtitre = 25; $ysize = 190; $ylegend = 60; $x0 = 155; $y0 = 110;
+  $xtitre = 25; $ysize = 190; $ylegend = 60; $x0 = 165; $y0 = 110;
   $filename .= '-'.$plot.'.png';
   $titre = 'par groupe du travail de cette séance';
   if (preg_match('/section/', $plot)) {
@@ -73,7 +73,7 @@ if (isset($Data)) {
     $Test->drawFlatPieGraph($DataBis,$DataDescrBis,$x0,260,50,PIE_VALUES,0,0,150);
     $Test->drawFilledCircle($x0,262,12,240,240,240);
   }
-  $x0 += 150;
+  $x0 += 145;
 }
 if (isset($Data2)) {
   $Test->drawFlatPieGraph($Data2,$DataDescr2,$x0,$y0,50,PIE_VALUES,0,0,150);
@@ -83,7 +83,7 @@ if ($plot == 'total') {
   $Test->drawFlatPieGraph($Data2Bis,$DataDescr2Bis,$x0,260,50,PIE_VALUES,0,0,150);
   $Test->drawFilledCircle($x0,262,12,240,240,240);
 }
-$x0 += 150;
+$x0 += 145;
 if (isset($Data3)) {
   $Test->drawFlatPieGraph($Data3,$DataDescr3,$x0,$y0,50,PIE_PERCENTAGE,0,0,150,150);
   $Test->drawFilledCircle($x0,$y0+2,12,240,240,240);
@@ -94,10 +94,10 @@ foreach ($couleurs as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)
   $Test->setColorPalette($ct,$cols[1],$cols[2],$cols[3]);
   $ct++;
 }
-$Test->drawFilledRoundedRectangle(15,$ylegend-14,72,$ylegend+5,5,255,255,255);
-$Test->drawLegend(15,$ylegend,$DataDescrLegend,255,255,255);
+$Test->drawFilledRoundedRectangle(12,$ylegend-14,94,$ylegend+5,5,255,255,255);
+$Test->drawLegend(12,$ylegend,$DataDescrLegend,255,255,255);
 $Test->xsSetFontProperties("tahoma.ttf",10);
-$Test->drawTitle(20,$ylegend,'Groupes',0,0,0);
+$Test->drawTitle(29,$ylegend-1,'Groupes',0,0,0);
 
 $Test->xsSetFontProperties("tahoma.ttf",12);
 if ($plot != 'total')
@@ -113,14 +113,14 @@ if ($plot == 'total') {
 } else {
   $Test->xsSetFontProperties("tahoma.ttf",8);
   if (preg_match('/(section|seance_hemi)/', $plot)) {
-    $Test->drawTitle(120,166,'Interventions',50,50,50);
-    $Test->drawTitle(268,158,'Temps de parole',50,50,50);
-    $Test->drawTitle(268,172,'(mots prononcés)',50,50,50);
+    $Test->drawTitle(130,166,'Interventions',50,50,50);
+    $Test->drawTitle(270,158,'Temps de parole',50,50,50);
+    $Test->drawTitle(270,172,'(mots prononcés)',50,50,50);
   } else if (preg_match('/seance_com/', $plot)) {
-    $Test->drawTitle(135,166,'Présents',50,50,50);
-    $Test->drawTitle(275,166,'Interventions',50,50,50);
-    $Test->drawTitle(415,158,'Temps de parole',50,50,50);
-    $Test->drawTitle(415,172,'(mots prononcés)',50,50,50);
+    $Test->drawTitle(145,166,'Présents',50,50,50);
+    $Test->drawTitle(280,166,'Interventions',50,50,50);
+    $Test->drawTitle(410,158,'Temps de parole',50,50,50);
+    $Test->drawTitle(410,172,'(mots prononcés)',50,50,50);
   }
 }
 if ($plot == 'total') {

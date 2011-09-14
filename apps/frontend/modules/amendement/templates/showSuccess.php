@@ -3,26 +3,27 @@
       else $titre2=""; ?>
 <?php $sf_response->setTitle(strip_tags($titre2.'  '.$titre1)); ?>
 <div class="amendement" id="L<?php echo $amendement->texteloi_id; ?>-A<?php echo $amendement->numero; ?>">
-<div class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></div>
+<div class="source"><a href="<?php echo $amendement->source; ?>">source</a></div>
 <h1><?php echo $titre1; ?></h1>
-<?php if ($com = $amendement->Commission) echo "<h2>".link_to($com->nom, '@list_parlementaires_organisme?slug='.$com->slug)."</h2>"; ?>
+<?php if ($amendement->organisme_id != null) echo "<h2>".link_to($amendement->Commission->nom, '@list_parlementaires_organisme?slug='.$amendement->Commission->slug)."</h2>"; ?>
 <h2><?php echo $titre2; ?></h2>
 <div class="identiques">
 
 </div>
 <?php if ($seance || count($identiques) > 1) { ?>
 <div class="seance_amendements">
-  <h3><?php if ($seance) echo 'Discuté en '.link_to('séance le '.myTools::displayDate($seance['date']), '@interventions_seance?seance='.$seance['seance_id'].'#amend_'.$amendement->numero);
-  if (count($identiques) > 1) {
-    if (count($identiques) > 2)
-      $ident_titre = " ( amendements identiques : ";
-    else $ident_titre = " ( amendement identique : "; ?>
-  <em><?php echo $ident_titre; foreach($identiques as $identique) if ($identique->numero != $amendement->numero)
-      echo link_to($identique->numero, '@amendement?loi='.$identique->texteloi_id.'&numero='.$identique->numero)." "; ?>)</em>
-  <?php }
+  <h3><?php if ($seance) echo 'Discuté en '.link_to('séance le '.myTools::displayDate($seance['date']), '@interventions_seance?seance='.$seance['seance_id'].'#amend_'.$amendement->numero).'<br/>';
   if ($amendement->avis_comm) echo " Avis de la Commission : ".$amendement->avis_comm;
   if ($amendement->avis_comm && $amendement->avis_gouv) echo "&nbsp;&mdash; ";
   if ($amendement->avis_gouv) echo " Avis du Gouvernement : ".$amendement->avis_gouv;
+  if (count($identiques) > 1) {
+    $ident_titre = "<br/>";
+    if (count($identiques) > 2)
+      $ident_titre .= "( amendements identiques : ";
+    else $ident_titre .= "( amendement identique : "; ?>
+  <em><?php echo $ident_titre; foreach($identiques as $identique) if ($identique->numero != $amendement->numero)
+      echo link_to($identique->numero, '@amendement?loi='.$identique->texteloi_id.'&numero='.$identique->numero)." "; ?>)</em>
+  <?php }
   ?></h3>
 </div>
 <?php } ?>
@@ -79,7 +80,9 @@ echo include_component('commentaire', 'form', array('object' => $amendement)); ?
 <script type="text/javascript">
 <!--
 $('#liste_senateurs a').live('mouseover', function() {
- nom = $(this).attr('href').split('='); $('.photo_fiche[alt*="'+nom[1]+'"]').css('opacity', '1');
+ nom = $(this).attr('href');
+ nom = nom.replace(/^.*rechercher\/([A-ZÉ][\.\s]+)*/, '');
+ $('.photo_fiche[alt*="'+nom+'"]').css('opacity', '1');
 });
 $('#liste_senateurs').bind('mouseover mouseout', function(event) {
  if (event.type == "mouseover") { $('.photo_fiche').css('opacity', '0.3'); $("#liste_senateurs").die("mouseover"); }
