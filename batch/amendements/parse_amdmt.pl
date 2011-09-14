@@ -180,7 +180,7 @@ sub refnumlois {
     }
   }
   chop($refnumlois);
-  return $refnumlois
+  return $refnumlois;
 }
 
 sub sortseance {
@@ -209,23 +209,18 @@ sub clean_auteurs {
   my $txt = shift;
   $txt =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜÇ])(\w+ ?)/$1\L$2/g;
   $txt =~ s/Mm[. ]/MM./ig;
-#  $txt =~ s/\s*\<\/?[^\>]+\>//g;
-#  $txt =~ s/\s+M([\.mles]+)\s*,\s*/ M$1 /g;
-#  $txt =~ s/([a-z])\s+(M[\.Mml])/$1, $2/g;
-#  $txt =~ s/,\s*M[\s\.mle]+\s*,/,/g;
-  $txt =~ s/\s+e{1,2}t\s+/, /g;
-  $txt =~ s/^et\s+/, /g;
+  $txt =~ s/\s+e+t\s+M/, M/g;
+  $txt =~ s/^et\s+//g;
   $txt =~ s/\s+,/,/g;
-#  $txt =~ s/\s*[,]?\s*les\s+[cC]ommissaires.*$//g;
-#  $txt =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà\-']*M(.*)/, M\1/g;
-#  $txt =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà\-']*//g;
   $txt =~ s/(,\s*,|,+)/,/g;
   $txt =~ s/,+/,/g;
   $txt =~ s/^\s*,\s*//g;
   $txt =~ s/\s*,\s*$//g;
-  $txt =~ s/ et(\W)/\1/g;
-#  $txt =~ s/([^,\s])\s*(les\s*membres.*groupe.*)$/\1, \2/i;
-  return $txt
+  $txt =~ s/president/président/ig;
+  $txt =~ s/([\s,]+)rat*a*ch[eé]*s?/$1rattachés/ig;
+  $txt =~ s/([\s,]+)ap*a*rent[eé]*s?/$1apparentés/ig;
+  $txt =~ s/([\s,]+)col*[eè]*gues?/$1collègues/ig;
+  return $txt;
 }
 
 sub clean_texte {
@@ -265,6 +260,6 @@ sub clean_texte {
   $txt =~ s/(<\/i>)+/<\/i>/gi;
   $txt =~ s/<p>\s+/<p>/gi;
   $txt =~ s/\s+<\/p>/<\/p>/gi;
-  return $txt
+  return $txt;
 }
 
