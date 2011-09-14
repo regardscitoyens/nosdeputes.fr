@@ -15,3 +15,5 @@ list:
   enabled: true 
 show:
   enabled: false
+_list:
+  enabled: false
