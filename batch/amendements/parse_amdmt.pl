@@ -23,6 +23,9 @@ $string =~ s/\r//g;
 $string =~ s/[\n\s]+/ /g;
 $string =~ s/^.*<body> *//i;
 $string =~ s/ *<\/body>.*$//i;
+$string =~ s/<![\s\-]*\[if[^\]]+\][\s\-]*>//ig;
+$string =~ s/<![\s\-]*\[endif\][\s\-]*>//ig;
+$string =~ s/<![\s\-]*\/\*[^\>]*>//g;
 $string =~ s/<!--/\n<!--/g;
 $string =~ s/ *\n *(<!--\s*fin[^>]*-->) */$1\n/ig;
 $string =~ s/(<t\w+) *[^>]* colspan="(\d+)"[^>]*>/$1colspan$2>/ig;
@@ -92,8 +95,7 @@ foreach $line (split /\n/, $string) {
     $amdmt{'expose'} = $1;
   } elsif ($line =~ /<!-- debut_libelle_motion -->(.+)<!-- fin_libelle_motion -->/i) {
     $tmplibellemotion = lc($1);
-    $amdmt{'sujet'} =~ s/^(.)/ $1/;
-    $amdmt{'sujet'} = "Motion $tmplibellemotion".$amdmt{'sujet'};
+    $amdmt{'sujet'} = "motion $tmplibellemotion".$amdmt{'sujet'};
   } elsif ($line =~ /<!-- debut_sous_subdivision -->(.+)<!-- fin_sous_subdivision -->/i) {
     $tmprefloi = lc($1);
     if ($tmprefloi =~ /^([eé]tat|\(?(rapport )?annex)/) {
@@ -121,8 +123,8 @@ foreach $line (split /\n/, $string) {
     if ($line =~ />\s*\(\s*n°\s*(.*)\s*\)\s*</i) {
       $amdmt{'refnumlois'} = refnumlois($1);
     }
-    if ($line =~ /<h1>(.*)<\/h1>/) {
-      $amdt{'type'} = lc($1);
+    if ($line =~ /<h1>(Motion .*)<\/h1>/) {
+      $amdmt{'sujet'} = lc($1);
     }
   } else {
     if ($line =~ /(amendement.*(irrecevable|retir)|retiré avant séance)/i && (!$amdmt{'sort'} || $amdmt{'sort'} eq "Retiré")) {
@@ -161,7 +163,7 @@ sub checkout {
       print "  ".lc($k).": ".$amdmt{$k}."\n";
     }
   } else {
-    print '{"source": "'.$amdmt{'source'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "commission": "'.$amdmt{'commission'}.'", "aviscomm": "'.$amdmt{'aviscomm'}.'", "avisgouv": "'.$amdmt{'avisgouv'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "refloi": "'.$amdmt{'refloi'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
+    print '{"source": "'.$amdmt{'source'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "commission": "'.$amdmt{'commission'}.'", "aviscomm": "'.$amdmt{'aviscomm'}.'", "avisgouv": "'.$amdmt{'avisgouv'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.ucfirst($amdmt{'sujet'}).'", "refloi": "'.$amdmt{'refloi'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
   }
   reset_amdmt();
 }
@@ -232,7 +234,6 @@ sub clean_texte {
   $txt =~ s/<(\/)?em>/<$1i>/gi;
   $txt =~ s/<(\/)?strong>/<$1b>/gi;
   $txt =~ s/<!--[^>]*>//g;
-  $txt =~ s/<!\[endif\]-->//ig;
   $txt =~ s/<xml>.*<\/xml>//ig;
   $txt =~ s/<style>.*<\/style>//ig;
   $txt =~ s/^(<\/[^>]+>)+//g;
