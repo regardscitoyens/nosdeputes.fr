@@ -100,9 +100,11 @@ foreach (split /\n/, $doc) {
                 if ($didasc =~ /(ouverte|reprise) (&#224;|à) (\S+ heures\s*\S*)\W/) {
                         $h = heurize($3);
 			($htab) = split /:/, $h;
-			$heure = $h if (!$heure || ($htab >= 14 && $oldhtab < 14) || ($htab >= 20 && $oldhtab < 20)); 
-			$oldhtab = $htab;
-			$timestamp = 0;
+			if (!$heure || ($htab >= 14 && $oldhtab < 14) || ($htab >= 20 && $oldhtab < 20)) {
+				$heure = $h;
+				$oldhtab = $htab;
+				$timestamp = 0;
+			}
                 }
         }
 	if (/>[^a-z]*Pr(\&\#[0-9]+\;|é|É)sidence de (M[^<]*)/i) {
@@ -149,7 +151,7 @@ foreach (split /\n/, $doc) {
         while (s/([^>]*)<span class="info_entre_parentheses">\(([^\)]*)\)?<\/span>([\.\s\)]*)//) {
 		$i = $1;
 		$i =~ s/<[^>]*>//g;
-                $intervention .= "<p>$1</p>";
+                $intervention .= "<p>".$1."</p>";
                 $didasc = $2;
                 $didasc =~ s/<[^>]*>//gi;
                 $didasc =~ s/\)//g;
@@ -183,15 +185,20 @@ foreach (split /\n/, $doc) {
 			    if (!/^\s*PR(É|&#201;)SIDENCE DE /) {
 				$bigcontext = $_;
 				$subcontext = '';
+				$intervention = "<p>$bigcontext</p>";
+				print_inter();
 			    }
 			}else{
 				if (!/^\s*(vice-)?pr(é|&#233;)sident/) {
 				$subcontext = $_;
 				$subcontext =~ s/<[^>]+>//g;
+				$intervention = "<p>$subcontext</p>";
+				print_inter();
 				}
 			}
 			}elsif(/[a-z]/i){
-				$intervention .= "<p>$_</p>";
+				s/^\. //;
+				$intervention .= "<p>".$_."</p>";
 			}
 		}
 	}
