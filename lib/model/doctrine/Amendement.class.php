@@ -124,7 +124,7 @@ $debug = 1;
   public function getPresentTitre($link = 0) {
     $parent = 0;
     $pluriel = "";
-    if (preg_match('/^motion/i', $this->type))
+    if (preg_match('/^motion/i', $this->sujet))
       $titre = "Motion";
     else {
       if ($this->numero_pere)
