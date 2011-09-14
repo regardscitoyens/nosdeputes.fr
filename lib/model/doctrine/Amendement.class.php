@@ -22,7 +22,7 @@ class Amendement extends BaseAmendement {
   }
 
   public function setAuteurs($auteurs) {
-$debug = 1;
+//$debug = 1;
     $groupe = null;
     $sexe = null;
     $regexp = array();
@@ -50,10 +50,10 @@ $debug = 1;
         if ($debug) print "WARN: Skip auteur ".$senateur." for ".$this->source."\n";
         continue;
       }
-      if (preg_match('/(gouvernement|pr[eé]sident|rapporteur|commission|questeur|ap+arent[eé]|rat+ach[ée]|col+l[eè]gue)/i', $senateur)) {
+      if (preg_match('/(gouvernement|président|rapporteur|commission|délégation|questeur|apparentés|rattachés|collègues)/i', $senateur)) {
         if ($debug) print "WARN: Skip auteur ".$senateur." for ".$this->source."\n";
         continue;
-      } elseif (preg_match('/^\s*(M[Mmles\.]+)\s+(\w.*)\s*$/', $senateur, $match)) {
+      } elseif (preg_match('/^\s*(M[Mmles]*)[\.\s]+(\w.*)\s*$/', $senateur, $match)) {
           $nom = $match[2];
           if (preg_match('/[el]/', $match[1]))
             $sexe = 'F';
