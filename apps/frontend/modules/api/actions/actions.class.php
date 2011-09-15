@@ -135,7 +135,7 @@ class apiActions extends sfActions
     $this->res['depute']['mandat_debut'] = $depute->debut_mandat;
     if ($depute->fin_mandat)
       $this->res['depute']['mandat_fin'] = $depute->fin_mandat;
-    $this->res['depute']['groupe'] = $depute->getGroupe();
+    $this->res['depute']['groupe'] = $depute->getGroupe()->__toString();
     $this->res['depute']['groupe_sigle'] = $depute->groupe_acronyme;
     $this->res['depute']['responsabilites'] = $this->array2hash($depute->getResponsabilites(), 'responsabilite');
     $this->res['depute']['responsabilites_extra_parlementaires'] = $this->array2hash($depute->getExtras(), 'responsabilite');
