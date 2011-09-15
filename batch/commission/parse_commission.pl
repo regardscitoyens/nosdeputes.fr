@@ -5,6 +5,9 @@ require "../common/common.pm";
 
 $file = shift;
 $url_source = uri_unescape($file);
+if ($url_source =~ /(\d{4})/) {
+    $url_year = $1;
+}
 $url_source =~ s/.*html.*\/http/http/;
 
 
@@ -17,6 +20,8 @@ $content =~ s/(<td[^>]*>)(\s*<\/?(a|strong|p|em)[^>]*>)+/$1/gi;
 $content =~ s/<\/?(a|strong|p|em)[^>]*>\s*<\/td>/<\/td>/gi;
 
 $content =~ s/<\/(p|h[1234]|ul|div)>/<\/$1>\n/gi;
+
+%fonctions = ();
 
 $timestamp = 0;
 $nb_seance = 0;
@@ -40,7 +45,8 @@ sub print_inter {
 			}
 		}
 		$timestamp += 20;
-		print '{"commission": "'.$commission.'", "contexte": "'.$context.'", "intervention": "'.$intervention.'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.$intervenant.'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_intervenant.'", "session":"'.$session.'"';
+		$intervenant =~ s/\&nbsp;/ /g;
+		print '{"commission": "'.$commission.'", "contexte": "'.$context.'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.$intervenant.'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_intervenant.'", "session":"'.$session.'"';
         	print ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 	        print ', "amendements":"'.$amendements.'"' if ($amendements);
 		print "}\n";
@@ -53,8 +59,8 @@ sub print_inter {
 }
 
 sub setfonction {
-	shift;
-	if (/audition de (M[^<]+)/) {
+	my $f = shift;
+	if ($f =~ /audition de (M[^<]+)/) {
 		$a = $1;
 		while ($a =~ /(M[me\.]* [^\,\.]+), ([^\,\.]+)/g) {
 			$fonctions{$1} = $2;
@@ -65,11 +71,11 @@ sub setfonction {
 $begin = 0;
 foreach (split /\n/, $content) {
 	$begin = 1 if (/name="toc1"/);
-	$commission = $1 if (/TITLE>(Commission [^:]*)&nbsp;:/);
+	$commission = $1 if (/TITLE>((Commission|Mission) [^:]*)&nbsp;:/);
 	next if (!$begin);
 #	print ;	print "\n";
 	if (/<h2>([^<]+)<\/h2>/) {
-		@date = datize($1);
+		@date = datize($1, $url_year);
 		print_inter();
 		$date = join '-', @date;
 		$session = sessionize(@date);
@@ -86,6 +92,7 @@ foreach (split /\n/, $content) {
 		$nb_seance++;
 		$heure = ($nb_seance == 1) ? '1ere' : $nb_seance.'ieme';
 		$heure .= ' séance';
+		%fonctions = ();
 		$timestamp = 0;
 		$numeros_loi = '';
 		print_inter();
@@ -95,7 +102,7 @@ foreach (split /\n/, $content) {
 	if (/<p[^>]*>(.*)<\/p>/i) {
 		$inter = $1;
 		$inter =~ s/<a[^>]*><\/a>//ig;
-print "inter: $inter\n";
+		$recointer = "(M\.m?e?|Amiral|Général|S\.E|Son |colonel)";
 		if ($inter =~ /^<(u|strong|em)>(.*)<\/(u|strong|em)>$/i) {
 			$inter = $2;
 			print_inter();
@@ -104,23 +111,29 @@ print "inter: $inter\n";
 			$intervention = '<p>'.$inter.'</p>';
 			next;
 		}
-		if ($inter =~ /<(a|strong)[^>]*>(.*)<\/(a|strong)>/i) {
+		if ($inter =~ /<(a|strong)[^>]*>($recointer.*)<\/(a|strong)>/i) {
 			$tmpintervenant = $2;
 			$tmpintervenant =~ s/<[^>]*>//g;
+			if ($tmpintervenant =~ s/^([^,]+), ([^,]*).*/$1/g) {
+				$tmpfonction = $2;
+				$tmpfonction =~ s/\W+$//;
+				$fonctions{$tmpintervenant} = $tmpfonction;
+			}else{
+				$tmpfonction = $fonctions{$tmpintervenant};
+			}
 			print_inter() if ($tmpintervenant ne $intervenant);
 			$intervenant = $tmpintervenant;
-			if ($intervenant =~ s/, (.*)//g) {
-				$fonction = $1;
-				$fonction =~ s/\W+$//;
-				$fonctions{$intervenant} = $fonction;
-			}else{
-				$fonction = $fonctions{$intervenant};
-			}
+		        $fonction = $tmpfonction;
 			$url_intervenant = $1 if ($inter =~ /href="([^"]+senfic\/[^"]+)"/i);
 		}
 		$inter =~ s/<[^>]+>//g;
-		$inter =~ s/^\W*$intervenant\W*($fonction\W*|)//;
+		$sintervenant = $intervenant;
+		$sintervenant =~ s/([\(\)\*])/\\$1/g;
+		$sfonction = $fonction;
+		$sfonction =~ s/([\(\)\*])/\\$1/g;
+		$inter =~ s/^[^\w\&]*$sintervenant[^\w\&]*($sfonction[^\w\&]*|)//;
 		$intervention .= '<p>'.$inter.'</p>' if ($inter =~ /[a-z]/i);
 	}
 #	print "$date $titre $source\n";
 }
+print_inter();
