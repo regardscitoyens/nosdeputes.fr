@@ -209,7 +209,7 @@ sub clean_auteurs {
   my $txt = shift;
   $txt =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜÇ])(\w+ ?)/$1\L$2/g;
   $txt =~ s/Mm[. ]/MM./ig;
-  $txt =~ s/\s+e+t\s+M/, M/g;
+  $txt =~ s/\s+e+t\s+([A-ZÉl])/, $1/g;
   $txt =~ s/^et\s+//g;
   $txt =~ s/\s+,/,/g;
   $txt =~ s/(,\s*,|,+)/,/g;

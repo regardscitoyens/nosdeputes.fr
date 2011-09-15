@@ -22,6 +22,7 @@ if (! $year =~ /^\d{4}$/) {
 $verbose = shift || 0;
 
 %done = ();
+%donedo = ();
 %donedl = ();
 $a = WWW::Mechanize->new();
 
@@ -90,7 +91,11 @@ sub find_elements {
   my $urla = "";
   my $outdir = "";
   $a->get($urlp);
-  $done{$a->uri} = 1;
+  if ($donedo{$a->uri}) {
+    $a->back();
+    return;
+  }
+  $donedo{$a->uri} = 1;
   print STDERR " examine dossier $urlp\n" if ($verbose);
   my $contentleg = $a->content;
   if ($contentleg =~ s/iso-8859-1/utf-8/gi) {
