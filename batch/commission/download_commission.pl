@@ -2,29 +2,28 @@
 
 use WWW::Mechanize;
 use HTML::TokeParser;
+use  URI::Escape;
+use Encode;
+
+@indexes = ("http://www.senat.fr/compte-rendu-commissions/affaires-etrangeres.html", "http://www.senat.fr/compte-rendu-commissions/affaires-etrangeres_archives.html", "http://www.senat.fr/compte-rendu-commissions/controle-de-la-securite-sociale.html", "http://www.senat.fr/compte-rendu-commissions/controle-de-la-securite-sociale_archives.html", "http://www.senat.fr/compte-rendu-commissions/affaires-sociales.html", "http://www.senat.fr/compte-rendu-commissions/affaires-sociales_archives.html", "http://www.senat.fr/compte-rendu-commissions/culture.html", "http://www.senat.fr/compte-rendu-commissions/culture_archives.html", "http://www.senat.fr/compte-rendu-commissions/economie.html", "http://www.senat.fr/compte-rendu-commissions/economie_archives.html", "http://www.senat.fr/compte-rendu-commissions/finances.html", "http://www.senat.fr/compte-rendu-commissions/finances_archives.html", "http://www.senat.fr/compte-rendu-commissions/lois.html", "http://www.senat.fr/compte-rendu-commissions/lois_archives.html");
 
 $a = WWW::Mechanize->new();
 $start = shift || '0';
 $count = 50;
 $ok = 1;
-while ($ok) {
-    $ok = 0;
-    last if ($start > 300);
-    $a->get('http://recherche2.assemblee-nationale.fr/resultats_generique.jsp?texterecherche=*&typedoc=crreunions&auteurid=&legislatureNum=13&categoryid=&ResultCount='.$count.'&ResultStart='.$start);
+foreach $index (@indexes) {
+    $a->get($index);
     $content = $a->content;
     $p = HTML::TokeParser->new(\$content);
     while ($t = $p->get_tag('a')) {
-	$txt = $p->get_text('/a');
-	if ($txt =~ /compte rendu|e nationale \~/i) {
-	    $ok = 1;
-	    $curl = $file = $t->[1]{href};
-	    $file =~ s/\//_/gi;
-	    $file =~ s/\#.*//;
-	    $curl =~ s/[^\/]+$//;
+	if ($t->[1]{href} =~ /compte-rendu-commissions/) {
+	    $curl =  $t->[1]{href};
+	    next if ($url{$curl});
             $url{$curl} = 1;
+	    $a->get($t->[1]{href});
+	    $file =  uri_escape($a->uri());
  	    next if -e "html/$file";
 	    print "$file\n";
-	    $a->get($t->[1]{href});
 	    open FILE, ">:utf8", "html/$file.tmp";
 	    print FILE $a->content;
 	    close FILE;
@@ -32,40 +31,5 @@ while ($ok) {
 	    $a->back();
 	}
     }
-    $start += $count;
 }
 
-@url = keys %url;
-push(@url, "http://www.assemblee-nationale.fr/13/budget/plf2011/commissions_elargies/cr/", "http://www.assemblee-nationale.fr/13/budget/plf2010/commissions_elargies/cr/", "http://www.assemblee-nationale.fr/13/cr-mec/07-08/index.asp", "http://www.assemblee-nationale.fr/13/cr-mec/08-09/index.asp", "http://www.assemblee-nationale.fr/13/cr-mec/09-10/index.asp", "http://www.assemblee-nationale.fr/13/cr-mec/10-11/index.asp");
-$a = WWW::Mechanize->new();
-
-foreach $url (@url) {
-
-    $a->get($url);
-    $content = $a->content;
-    $p = HTML::TokeParser->new(\$content);
-
-    $cpt = 0;
-    
-    while ($t = $p->get_tag('a')) {
-	$txt = $p->get_text('/a');
-	if ($txt =~ /compte rendu|mission/i && $t->[1]{href} =~ /\d\.asp/) {
-	    $a->get($t->[1]{href});
-	    $file = $a->uri();
-	    $file =~ s/\//_/gi;
-	    $file =~ s/\#.*//;
-            $file =~ s/commissions_elargies_cr_c/commissions_elargies_cr_C/;
-	    $size = -s "html/$file";
-            if ($size) {
-                $cpt++;
-                last if ($cpt > 3);
-                next;
-            }
-	    print "$file\n";
-	    open FILE, ">:utf8", "html/$file";
-	    print FILE $a->content;
-	    close FILE;
-	    $a->back();
-	}
-    }
-}
