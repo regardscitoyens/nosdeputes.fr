@@ -91,7 +91,9 @@ sub print_inter {
 }
 
 foreach (split /\n/, $doc) {
+    if (/<\/span><span([^>]*>)/ && $1 !~ /orateur_qualite/) {
 	s/<\/span><span[^>]*>//g;
+    }
 	if (/name="([^"]+)"/) {
 		$source = "#$1";
 	}
@@ -127,6 +129,7 @@ foreach (split /\n/, $doc) {
                 }
                 $tmpinter =~ s/<[^>]*>//g;
                 $tmpinter =~ s/[\.,]\s*$//;
+                $tmpfonction =~ s/[\.,]\s*$//;
 		#Cas mauvais formatage des interventions
 		if ($tmpinter =~ /^(.{4}[^\(]*[^M])\./) {
 			$tmpinter = $1;
