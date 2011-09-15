@@ -127,9 +127,8 @@ foreach (split /\n/, $doc) {
                 }
                 $tmpinter =~ s/<[^>]*>//g;
                 $tmpinter =~ s/[\.,]\s*$//;
-
 		#Cas mauvais formatage des interventions
-		if ($tmpinter =~ /^(.{4}[^\(]*)\./) {
+		if ($tmpinter =~ /^(.{4}[^\(]*[^M])\./) {
 			$tmpinter = $1;
 			s/$tmpinter/$tmpinter<\/span>/;
 		}
@@ -203,3 +202,4 @@ foreach (split /\n/, $doc) {
 		}
 	}
 }
+print_inter();
