@@ -134,13 +134,13 @@ class apiActions extends sfActions
     $this->res['senateur']['mandat_debut'] = $senateur->debut_mandat;
     if ($senateur->fin_mandat)
       $this->res['senateur']['mandat_fin'] = $senateur->fin_mandat;
-    $this->res['senateur']['groupe'] = $senateur->getGroupe();
+    $this->res['senateur']['groupe'] = $senateur->getGroupe()->__toString();
     $this->res['senateur']['groupe_sigle'] = $senateur->groupe_acronyme;
     $this->res['senateur']['responsabilites'] = $this->array2hash($senateur->getResponsabilites(), 'responsabilite');
     $this->res['senateur']['responsabilites_extra_parlementaires'] = $this->array2hash($senateur->getExtras(), 'responsabilite');
     $this->multi['responsabilite'] = 1;
     $this->res['senateur']['sites_web'] = $this->array2hash(unserialize($senateur->sites_web), 'sites_web');
-    $this->res['senateur']['url_institution'] = $senateur->url_intitution;
+    $this->res['senateur']['url_institution'] = $senateur->url_institution;
     $this->res['senateur']['emails'] = $this->array2hash(unserialize($senateur->mails), 'email');
     $this->multi['email'] = 1;
     $this->res['senateur']['adresses'] = $this->array2hash(unserialize($senateur->adresses), 'adresse');
