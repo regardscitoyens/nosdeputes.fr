@@ -35,7 +35,7 @@ sub download_one {
   eval {$a->get($uri);};
   if ($a->status() == 404) {
     $a->back();
-    if ($dir =~ /rap/i && $uri =~ /_mono/i) {
+    if ($dir =~ /r(ga|ap)/i && $uri =~ /_mono/i) {
       $uri =~ s/_mono//i;
       download_one($uri, $dir);
     } else {
@@ -82,6 +82,11 @@ sub examine_url {
     return $lk if ($y lt $yearzero);
     $urls = "http://www.senat.fr/rap/$1$2$3/$1$2$3_mono.html";
     $outdirs = "documents/rap";
+  } elsif ($lk =~ /\/(\d{4})\/(ga\d+)-/) {
+    $y = $1;
+    return $lk if ($y lt $yearzero);
+    $urls = "http://www.senat.fr/ga/$2/$2_mono.html";
+    $outdirs = "documents/rga";
   }
   download_one($urls, $outdirs) if $urls;
   return $lk;
@@ -127,11 +132,10 @@ sub find_elements {
 
 # urls en compte-rendu-commissions a checker si already dl?
 
-while ($year <= $lastyear) {
-  $baseurl = "http://www.senat.fr/dossiers-legislatifs/depots/depots-$year.html";
-  print STDERR "Download documents et amendements de la session $year : $baseurl ...\n" if ($verbose);
-  $a->get($baseurl);
-  $content = $a->content;
+sub explore_page {
+  my $baseurls = shift;
+  $a->get($baseurls);
+  my $content = $a->content;
   if ($content =~ s/iso-8859-1/utf-8/gi) {
     $content = decode("windows-1252", $content);
   }
@@ -145,6 +149,15 @@ while ($year <= $lastyear) {
    }
   }
   $a->back();
+}
+
+while ($year <= $lastyear) {
+  $baseurl = "http://www.senat.fr/dossiers-legislatifs/depots/depots-$year.html";
+  print STDERR "Download documents et amendements de la session $year : $baseurl ...\n" if ($verbose);
+  explore_page($baseurl);
   $year++;
 }
+
+print STDERR "Download rapports from groupes d'amitié ...\n" if ($verbose);
+explore_page("http://www.senat.fr/rapports/rapports-groupe-amitie.html");
 
