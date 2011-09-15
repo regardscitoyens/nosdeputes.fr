@@ -67,9 +67,10 @@ class OrganismeTable extends Doctrine_Table
   private static function cleanNom($nom) {
 #print "$nom -> ";
     $nom = preg_replace("/(&#8217;|’|')\s*/", "'", $nom);
-    $nom = preg_replace('/\([^\)]*\)$/', '', $nom);
-    $nom = preg_replace('/^[^\)]*\)/', '', $nom);
+    $nom = preg_replace('/\([^\)]*$/', '', $nom);
+    $nom = preg_replace('/^[^\(]*\)/', '', $nom);
     $nom = preg_replace('/\W+$/', '', $nom);
+    $nom = preg_replace('/(\([^\)]*)$/', '\\1)', $nom);
     $nom = preg_replace('/\s+/', ' ', $nom);
     $nom = preg_replace('/\s$/', '', $nom);
     $nom = preg_replace('/^\s/', '', $nom);
