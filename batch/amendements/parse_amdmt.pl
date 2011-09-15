@@ -32,7 +32,6 @@ $string =~ s/(<t\w+) *[^>]* colspan="(\d+)"[^>]*>/$1colspan$2>/ig;
 $string =~ s/(<[^aA!][\w]*) *[^>]*>/$1>/g;
 $string =~ s/<a[^>]*href=["']([^"']+)["'][^>]*>/<a href='$1'>/ig;
 $string =~ s/<a href='\/([^']+)'>/<a href='http:\/\/www.senat.fr\/$1'>/ig;
-$string =~ s/<br\/?>//ig;
 $string =~ s/colspan(\d+)/ colspan='$1'/g;
 $string =~ s/> +/>/g;
 $string =~ s/ *(<t[dh]>)<\/?p>/$1/ig;

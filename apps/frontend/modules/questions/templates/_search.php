@@ -13,7 +13,7 @@ if (!isset($nophoto)) {
       include_partial('parlementaire/photoParlementaire', array('parlementaire' => $parlementaire, 'height' => 70));
       echo '</a>';
     }
-  $inter = preg_replace('/<\/?[a-z]*>|\&[^\;]+\;/i', ' ', $question->getQuestion());
+  $inter = preg_replace('/<[^>]*>|\&[^\;]+\;/i', ' ', $question->getQuestion());
   $p_inter = '';
   if (isset($highlight)) {
     foreach ($highlight as $h)

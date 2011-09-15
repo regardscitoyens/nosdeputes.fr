@@ -10,7 +10,7 @@
 <div class="identiques">
 
 </div>
-<?php if ($seance || count($identiques) > 1) { ?>
+<?php if ($seance || $amendement->avis_comm || $amendement->avis_gouv || count($identiques) > 1) { ?>
 <div class="seance_amendements">
   <h3><?php if ($seance) echo 'Discuté en '.link_to('séance le '.myTools::displayDate($seance['date']), '@interventions_seance?seance='.$seance['seance_id'].'#amend_'.$amendement->numero).'<br/>';
   if ($amendement->avis_comm) echo " Avis de la Commission : ".$amendement->avis_comm;
@@ -64,7 +64,7 @@
   }
   echo myTools::escape_blanks($texte); ?>
 </div>
-<?php if (isset($amendement->expose)) { ?>
+<?php if (isset($amendement->expose) && $amendement->expose != "") { ?>
   <h3>Exposé Sommaire :</h3>
   <div class="expose_amendement amd_txt">
     <?php echo myTools::escape_blanks($amendement->getExpose()); ?>

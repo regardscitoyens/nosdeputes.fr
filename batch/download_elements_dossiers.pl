@@ -39,7 +39,7 @@ sub download_one {
       $uri =~ s/_mono//i;
       download_one($uri, $dir);
     } else {
-      print STDERR "ERREUR 404 sur $uri\n";
+      print "ERREUR 404 sur $uri\n";
     }
     return;
   }
