@@ -9,7 +9,7 @@ use Encode;
 $lastfile = pop(@files);
 @files = ();
 
-$dannee = "2005"; $dmois = "10";
+$dannee = "2004"; $dmois = "10";
 if ($lastfile =~ /s(\d{4})(\d{2})\d{2}_mono.html/) {
 	$dannee = $1;
 	$dmois = $2;
