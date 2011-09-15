@@ -62,7 +62,8 @@ sub download_one {
 
 sub examine_url {
   my $lk = lc(shift);
-  $lk =~ s/^.*<a([^>]+)?\s+href\s?=\s?['"]\s?([^'"#]+)['"#].*$/$2/i;
+  return if ($lk !~ /<a([^>]+)?\s+href\s?=\s?['"]\s?([^'"#]+)['"#].*$/i);
+  $lk = $2;
   $lk =~ s/^([^h\/])/\/$1/i;
   return "" if ($lk !~ /senat\.fr/ && $lk !~ /^\//);
   $lk =~ s/^.*senat\.fr//i;
@@ -101,8 +102,10 @@ sub find_elements {
   if ($contentleg =~ s/iso-8859-1/utf-8/gi) {
     $contentleg = decode("windows-1252", $contentleg);
   }
-  $contentleg =~ s/<a/\n<a/g;
+  
+  $contentleg =~ s/<a/\n<a/ig;
   foreach $line (split /\n/, $contentleg) {
+   if ($line =~ /^<a/) {
     $line = examine_url($line);
     $urla = "";
     if ($line =~ /(\/amendements.*\/(\d{4})-.+\/)accueil\.html/) {
@@ -117,6 +120,7 @@ sub find_elements {
       $outdir = "amendements/pdfs";
     }
     download_one($urla, $outdir) if ($urla);
+   }
   }
   $a->back();
 }
@@ -131,12 +135,14 @@ while ($year <= $lastyear) {
   if ($content =~ s/iso-8859-1/utf-8/gi) {
     $content = decode("windows-1252", $content);
   }
-  $content =~ s/<a/\n<a/g;
+  $content =~ s/<a/\n<a/ig;
   foreach $link (split /\n/, $content) {
+   if ($link =~ /^<a/) {
     $link = examine_url($link);
     if ($link =~ /dossier(leg|-legislatif)/) {
       find_elements($link);
     }
+   }
   }
   $a->back();
   $year++;
