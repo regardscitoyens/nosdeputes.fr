@@ -1,5 +1,5 @@
 <?php if (!count($questions)) { ?>
-    <i>Ce sénateur n'a posé aucune question $type.</i>
+    <i>Ce sénateur n'a posé aucune question <?php echo $type; ?>.</i>
 <?php return ;}?>
 <ul>
 <?php foreach($questions as $question) {
