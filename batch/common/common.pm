@@ -5,11 +5,22 @@ use HTML::Entities;
 
 sub datize {
         my $date = shift;
-        $date =~ /([0-9]+)e?r? (\S*) ([0-9]+)/;
-        my $jour = sprintf "%02d", $1;
-        my $mois = $2;
-        my $annee = $3;
-	$mois =~ s/&[^;]+;//g;
+        my $theo_annee = shift;
+	my $jour, $mois, $annee;
+	$date =~ s/&nbsp;/ /g;
+        if($date =~ /([0-9]+)e?r? +(\S+) +([0-9]+)/) {
+	    $jour = sprintf "%02d", $1;
+	    $mois = $2; 
+	    $annee = $3;
+	}elsif ($date =~  /([0-9]+)e?r? +(\S+)/) {
+	    $jour = sprintf "%02d", $1;
+	    $mois = $2; 
+	    $annee = $theo_annee;
+	}else {
+	    print STDERR "pb date : $date\n";
+	    return ();
+	}
+	$mois =~ s/\&[^;]+;//g;
         $mois =~ s/[^a-z]\W?//g;
         return ($annee,$mois{$mois},$jour);
 }
