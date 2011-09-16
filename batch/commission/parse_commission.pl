@@ -5,7 +5,7 @@ require "../common/common.pm";
 
 $file = shift;
 $url_source = uri_unescape($file);
-if ($url_source =~ /(\d{4})/) {
+if ($url_source =~ /(2\d{3})/) {
     $url_year = $1;
 }
 $url_source =~ s/.*html.*\/http/http/;
@@ -19,7 +19,11 @@ $content =~ s/\n//g;
 $content =~ s/(<td[^>]*>)(\s*<\/?(a|strong|p|em)[^>]*>)+/$1/gi;
 $content =~ s/<\/?(a|strong|p|em)[^>]*>\s*<\/td>/<\/td>/gi;
 
-$content =~ s/<\/(p|h[1234]|ul|div)>/<\/$1>\n/gi;
+$content =~ s/<\/(p|h[1234]|ul|div)>/<\/$1>--\n/gi;
+
+$content =~ s/(<h\d[^>]*>)\s*<b>/$1/gi;
+$content =~ s/<\/b>\s*(<\/h\d[^>]*>)/$1/gi;
+$content =~ s/[ \t]+/ /g;
 
 %fonctions = ();
 
@@ -50,6 +54,10 @@ sub print_inter {
 		    print STDERR "ERROR pas de date pour $file\n";
 		    exit 1;
 		}
+		if (!$commission) {
+		    print STDERR "ERROR pas de commission\n";
+		    exit 1;
+		}
 		print '{"commission": "'.$commission.'", "contexte": "'.$context.'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.$intervenant.'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_intervenant.'", "session":"'.$session.'"';
         	print ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 	        print ', "amendements":"'.$amendements.'"' if ($amendements);
@@ -75,19 +83,21 @@ sub setfonction {
 $begin = 0;
 foreach (split /\n/, $content) {
 	$begin = 1 if (/name="toc1"/);
-	$commission = $1 if (/TITLE>((Commission|Mission) [^:]*)&nbsp;:/);
-	next if (!$begin);
+#print STDERR "title: $1\n" if (/<title>([^<]*)</);
+	$commission = $1 if (/TITLE>.*((Commission|Mission|Office)[^\&:]*)/i);
 #	print ;	print "\n";
-	if (/<h2>([^<]+)<\/h2>/) {
-		@date = datize($1, $url_year);
+	if (/<(h[123]|strong)[^>]*>(\s*<[^>]*>)*([^<]+\d{4})\W*<\/(h[123]|strong)>/i) {
+#print STDERR "date: $3 $url_year\n";
+		@date = datize($3, $url_year);
 		print_inter();
 		$date = join '-', @date;
 		$session = sessionize(@date);
 		$numeros_loi = '';
 		$nb_seance = 0;
 	}
-	if (/<h3>([^<]+)<\/h3>/) {
-		$titre = $1;
+	next if (!$begin);
+	if (/<h3>(\s*<[^>]*>)*([^<]+)<\/h3>/) {
+		$titre = $2;
 		print_inter();
 		$context = $titre;
 		setfonction($titre);

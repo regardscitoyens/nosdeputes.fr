@@ -4,7 +4,7 @@ use HTML::Entities;
 
 
 sub datize {
-        my $date = shift;
+        my $date = lc(shift);
         my $theo_annee = shift;
 	my $jour, $mois, $annee;
 	$date =~ s/&nbsp;/ /g;
