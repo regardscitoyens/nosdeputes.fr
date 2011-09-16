@@ -46,6 +46,10 @@ sub print_inter {
 		}
 		$timestamp += 20;
 		$intervenant =~ s/\&nbsp;/ /g;
+		if ($date !~ /\d{4}\-\d{2}-\d{2}/) {
+		    print STDERR "ERROR pas de date pour $file\n";
+		    exit 1;
+		}
 		print '{"commission": "'.$commission.'", "contexte": "'.$context.'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.$intervenant.'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_intervenant.'", "session":"'.$session.'"';
         	print ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 	        print ', "amendements":"'.$amendements.'"' if ($amendements);
