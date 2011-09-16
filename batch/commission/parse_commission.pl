@@ -106,7 +106,6 @@ foreach (split /\n/, $content) {
 	if (/<p[^>]*>(.*)<\/p>/i) {
 		$inter = $1;
 		$inter =~ s/<a[^>]*><\/a>//ig;
-		$recointer = "(M\.m?e?|Amiral|Général|S\.E|Son |colonel)";
 		if ($inter =~ /^<(u|strong|em)>(.*)<\/(u|strong|em)>$/i) {
 			$inter = $2;
 			print_inter();
@@ -116,6 +115,7 @@ foreach (split /\n/, $content) {
 			next;
 		}
 		$inter =~ s/<\/(strong|a)[^>]*>(\s*)(<\/?(strong|a)[^>]*>)+/$2/ig;
+		$recointer = "(M\.m?e?|Amiral|Général|S\.E|Son |colonel)";
 		if ($inter =~ /<(a|strong)[^>]*>($recointer[^<]*)<\/(a|strong)>/i) {
 			$tmpintervenant = $2;
 			$tmpintervenant =~ s/<[^>]*>//g;
