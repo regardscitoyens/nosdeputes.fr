@@ -115,7 +115,8 @@ foreach (split /\n/, $content) {
 			$intervention = '<p>'.$inter.'</p>';
 			next;
 		}
-		if ($inter =~ /<(a|strong)[^>]*>($recointer.*)<\/(a|strong)>/i) {
+		$inter =~ s/<\/(strong|a)[^>]*>(\s*)(<\/?(strong|a)[^>]*>)+/$2/ig;
+		if ($inter =~ /<(a|strong)[^>]*>($recointer[^<]*)<\/(a|strong)>/i) {
 			$tmpintervenant = $2;
 			$tmpintervenant =~ s/<[^>]*>//g;
 			if ($tmpintervenant =~ s/^([^,]+), ([^,]*).*/$1/g) {
