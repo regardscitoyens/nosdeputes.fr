@@ -1,12 +1,15 @@
 #!/usr/bin/perl
 
-mkdir "html" unless -e "html";
-
-use URI::Escape;
 use WWW::Mechanize;
 use HTML::TokeParser;
-$a = WWW::Mechanize->new();
+use URI::Escape;
+use Encode;
+use utf8;
+
+mkdir "html" unless -e "html";
+
 $url = shift;
+$a = WWW::Mechanize->new();
 eval {$a->get($url);};
 if ($a->status() == 404) {
   $a->back();
