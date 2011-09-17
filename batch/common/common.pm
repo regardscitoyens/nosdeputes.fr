@@ -4,7 +4,7 @@ use HTML::Entities;
 
 
 sub datize {
-        my $date = lc(shift);
+        my $date = " ".lc(shift);
         my $theo_annee = shift;
 	my $jour, $mois, $annee;
 	$date =~ s/&nbsp;/ /g;
@@ -12,7 +12,7 @@ sub datize {
 	    $jour = sprintf "%02d", $1;
 	    $mois = $2; 
 	    $annee = $3;
-	}elsif ($date =~  /\D([0-9]{1,2})e?r? +(\S+)/) {
+	}elsif ($date =~ /\D([0-9]{1,2})e?r? +(\S+)/) {
 	    $jour = sprintf "%02d", $1;
 	    $mois = $2; 
 	    $annee = $theo_annee;
@@ -60,16 +60,44 @@ sub heurize {
 	return sprintf("%02d:%02d", $heure{$1}, $heure{$2});
 }
 
+$rom{'I'} = 1;
+$rom{'II'} = 2;
+$rom{'III'} = 3;
+$rom{'IV'} = 4;
+$rom{'V'} = 5;
+$rom{'VI'} = 6;
+$rom{'VII'} = 7;
+$rom{'VIII'} = 8;
+$rom{'IX'} = 9;
+$rom{'X'} = 10;
+$rom{'XI'} = 11;
+$rom{'XII'} = 12;
+$rom{'XIII'} = 13;
+$rom{'XIV'} = 14;
+$rom{'XV'} = 15;
+$rom{'XVI'} = 16;
+$rom{'XVII'} = 17;
+$rom{'XVIII'} = 18;
+$rom{'XIX'} = 19;
+$rom{'XX'} = 20;
+
+sub deromanize {
+	my $n = shift;
+	return $rom{$n} if ($rom{$n});
+	return $n;
+}
+
 sub sessionize {
 	return ($_[1] <= 8) ? ($_[0]-1).$_[0] :  $_[0].($_[0]+1);
 }
 
 sub name_lowerize {
 	my $name = shift;
-	utf8::decode($name);
+	my $utf = shift;
+	utf8::decode($name) if (!$utf);
 	$name = decode_entities($name);
 	$name =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜÇ])(\w+ ?)/$1\L$2/g;
-	utf8::encode($name);
+	utf8::encode($name) if (!$utf);
 	return $name;
 }
 

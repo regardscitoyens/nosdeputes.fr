@@ -65,6 +65,8 @@ if ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(S[EÉ]NAT|SESSION (EXTRA)?-?OR
   $sommaire = $1;
 } elsif ($string =~ s/^(.*)<\/ul>\s*<hr\/?>//i) {
   $sommaire = $1;
+} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(PRO(JET|POSITION) DE LOI)(<\/[^>]*>)?<\/p>)/$2/i) {
+  $sommaire = $1;
 } elsif ($string =~ s/^(.*)<p Align=center>(<[^>]*>)?_+(<\/[^>]*>)?<\/p>//i) {
   $sommaire = $1;
 } elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(N°\s*$num)(<\/[^>]*>)?<\/p>)/$2/i) {
