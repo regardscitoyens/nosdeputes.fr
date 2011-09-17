@@ -74,17 +74,17 @@ sub examine_url {
   my $outdirs = "";
   if ($lk =~ /\/(motion)?(tas|p[jp][lr])(\d\d)-(\d{3})/) {
     $y = $3 + 2000;
-    return $lk if ($y lt $yearzero);
+    return $lk if ($y lt $yearzero || $y gt 2070);
     $urls = "http://www.senat.fr/leg/$1$2$3-$4.html";
     $outdirs = "documents/$2";
   } elsif ($lk =~ /\/([arl])(\d\d)(-\d{3}\d*(-\d+)*)/) {
     $y = $2 + 2000;
-    return $lk if ($y lt $yearzero);
+    return $lk if ($y lt $yearzero || $y gt 2070);
     $urls = "http://www.senat.fr/rap/$1$2$3/$1$2$3_mono.html";
     $outdirs = "documents/rap";
   } elsif ($lk =~ /\/(\d{4})\/(ga\d+)-/) {
     $y = $1;
-    return $lk if ($y lt $yearzero);
+    return $lk if ($y lt $yearzero || $y gt 2070);
     $urls = "http://www.senat.fr/ga/$2/$2_mono.html";
     $outdirs = "documents/rga";
   }

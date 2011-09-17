@@ -28,7 +28,9 @@ if ($typeid eq "ga") {
   if ($typeid eq "tas") {
     $doc{'id'} = "TAS".$doc{'id'};
     $type = "Texte adopté";
-  } elsif ($typeid =~ /pjl/) {
+  } elsif ($typeid eq "motionpjl") {
+    $type = "Motion";
+  } elsif ($typeid eq "pjl") {
     $type = "Projet de loi";
   } elsif ($typeid eq "ppl") {
     $type = "Proposition de loi";
@@ -89,6 +91,7 @@ if ($header) {
   }
   if ($header =~ /<!--#set var="BACKURL" value="([^"]*)dossier(leg|-legislatif)\/([^"]*)\.html"/) {
     $doc{'dossier'} = $3;
+    $doc{'dossier'} =~ s/^04-323/ppl04-323/;
   }
   if ($typeid =~ /^[lr]$/ && $header =~ /<!--#set var="A3LIB" value="([^"]*)"/) {
     $type = $1;
@@ -106,9 +109,9 @@ if ($header) {
     $doc{'keywords'} =~ s/([^\s,-\.A-ZÀÉÈÊÎÏÔÙÇ])([A-ZÀÉÈÊÎÏÔÙÇ]+)/$1, $2/g;
     $doc{'keywords'} = lc($doc{'keywords'});   
     $doc{'keywords'} =~ s/([ÀÉÈÊÎÏÔÙÇ])/\L$1/g;
-    $doc{'keywords'} =~ s/\s*,+\s*/./g;
-    $doc{'keywords'} =~ s/^[\.\s]+//g;
-    $doc{'keywords'} =~ s/[\.\s]+$//g;
+    $doc{'keywords'} =~ s/[\s,\.]+/./g;
+    $doc{'keywords'} =~ s/^\.//g;
+    $doc{'keywords'} =~ s/\.$//g;
   }
 }
 
@@ -123,16 +126,18 @@ if ($sommaire) {
   $doc{'auteurs'} =~ s/\s*(fait )?au nom de la commission mixte paritaire//i;
 }
 
-if ($reperes && !($doc{'date'} || $doc{'auteurs'})) {
+if ($reperes) {
   $reperes =~ s/<[^!>]+>*//g;
   $sommaire =~ s/\s+/ /g;
   $sommaire =~ s/\s*,+\s*/, /g;
   $doc{'date'} = $1 if ($reperes =~ /<![\-\s]*START-date[\-\s]*>(\d+e?r? \S* \d+)\s*:?<![\-\s]*END-date[\-\s]*>/i);
-  $doc{'auteurs'} = $1 if ($reperes =~ /<![\-\s]*START-auteurs[\-\s]*>Par (M[Mlmes\.]\s*.*)<![\-\s]*END-auteurs[\-\s]*>/i);
-  if ($reperes =~ /<![\-\s]*START-organismes[\-\s]*>(.*)<![\-\s]*END-organismes[\-\s]*>/i) {
-    $com = $1;
-    if ($com !~ /mixte paritaire/) {
-      $doc{'auteurs'} .= ", $com Auteur";
+  if (!$doc{'auteurs'}) {
+    $doc{'auteurs'} = $1 if ($reperes =~ /<![\-\s]*START-auteurs[\-\s]*>Par (M[Mlmes\.]\s*.*)<![\-\s]*END-auteurs[\-\s]*>/i);
+    if ($reperes =~ /<![\-\s]*START-organismes[\-\s]*>(.*)<![\-\s]*END-organismes[\-\s]*>/i) {
+      $com = $1;
+      if ($com !~ /mixte paritaire/) {
+        $doc{'auteurs'} .= ", $com Auteur";
+      }
     }
   }
 }
@@ -149,7 +154,7 @@ $string =~ s/^.*au format pdf\s*\([^\)]*\)\s*//i;
 #$doc{'contenu'} = $string;
 
 $string =~ s/Voir le\(?s?\)? numéro\(?s?\)?.*$//i;
-
+$string =~ s/Mesdames, Messieurs.*$//i;
 if ($display_text) {
   utf8::encode($string);
   print $string;
@@ -168,6 +173,12 @@ $string =~ s/__+.*$//;
 $string =~ s/\s*Série.*$//;
 $string =~ s/[,\s]*(PRÉSENTÉE? )?EN APPLICATION DE .* RÈGLEMENT[,\s]*/ /i;
 $string =~ s/\s*EXPOSÉ DES MOTIFS.*$//i;
+$string =~ s/commission( est)? composée de.*$//i;
+$string =~ s/déposé sur le bureau d.*$//i;
+$string =~ s/[\s,]*Le Sénat a (adopt|modifi)é.*$//;
+$string =~ s/[\s,]*Est devenue résolution du Sénat.*$//;
+
+#Find tome/volume/annexe number in text or retrieve from url (less sure)
 if ($annexes) {
   $doc{'annexe'} = sprintf("t%02d", deromanize($2)) if ($string =~ /T(OME|ome)[N\s°]+([\dIVX]+)/);
   $doc{'annexe'} .= sprintf("v%02d", $2) if ($string =~ /V(OLUME|olume)[N\s°]+([\dIVX]+)/);
@@ -179,13 +190,16 @@ if ($annexes) {
     $doc{'annexe'} .= sprintf("a%02d", $5) if ($5);
   }
 }
+
+# Find auteurs from header loi
 if ($string =~ s/[rR]apporteur[es]* [sS]pécia[leuxs]+ : (M[Mlmes\.\s]+.*) \(1\).*$//) {
   $doc{'auteurs'} = $1;
-} elsif ($string =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*([dD]e|[pP]ar) (M[Mlmes\.\s]+.*), Sénat(eur|rice).*$//) {
+} elsif ($string =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*([dD]e|[pP]ar) (M[Mlmes\.\s]+.*), [sS]énat(eur|rice).*$//) {
   $doc{'auteurs'} = $3;
-} elsif ($string =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*([dD]e|[pP]ar) (M[Mlmes\.\s]+.*), Président.*$//) {
+} elsif ($string =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*([dD]e|[pP]ar) (M[Mlmes\.\s]+.*), [pP]résident.*$//) {
   $doc{'auteurs'} = $3;
 }
+
 if ($string =~ s/[,\s]*TEXTE [EÉ]LABOR[EÉ] PAR LA COMMISSION MIXTE PARITAIRE.*$//) {
   $doc{'type'} = "Texte de la commission mixte paritaire";
 } elsif ($string =~ s/[,\s]*TEXTE DE LA (COMMISSION[^\(]+)\(1\).*$//) {
@@ -197,11 +211,16 @@ if ($string =~ s/[,\s]*TEXTE [EÉ]LABOR[EÉ] PAR LA COMMISSION MIXTE PARITAIRE.*
 } else {
   $doc{'type'} = $type;
 }
-$string =~ s/[\s,]*Le Sénat a (adopt|modifi)é.*$//;
+
 $doc{'titre'} =~ s/de en application de .* règlement, //i;
-$string =~ s/[\s,]*Est devenue résolution du Sénat.*$//;
 $string =~ s/[\s,]*TRANSMISE? PAR.*$//i;
 $string =~ s/[\s,\.]* par (M[Mlmes\.\s]+.*).*$//i;
+$string =~ s/^\s+//;
+if ($doc{'type'} eq "Motion") {
+  $doc{'titre'} = ucfirst(lc($string));
+  $doc{'titre'} =~ s/\s*\([^\)]+\)[,\s]*//g;
+  $string = "";
+}
 $doc{'titre'} =~ s/\s*$type[,\s]*//;
 $string =~ s/\s+sur : -.*$//;
 if ($doc{'type'} =~ /^(Avis|Rapport|Texte)/) {
@@ -246,6 +265,7 @@ if ($doc{'type_details'} =~ /^\s*tableau comparatif/i) {
   $doc{'type_details'} =~ s/^.* au nom /au nom /;
   $doc{'type_details'} .= $tmpstring;
 }
+$doc{'type_details'} =~ s/^compte/ - compte/i;
 
 #format date
 $doc{'date'} = join '-', datize($doc{'date'});
@@ -254,9 +274,12 @@ $doc{'auteurs'} =~ s/\s+/ /g;
 $doc{'auteurs'} =~ s/[\s,]+(fait )?au nom de la\s*(.)/, \U$2/ig;
 $doc{'auteurs'} =~ s/ et /, /ig;
 $doc{'auteurs'} =~ s/, (premier|ministre|haut|secr)/ $1/ig;
-$doc{'auteurs'} =~ s/, Président[^,]*,/,/;
+$doc{'auteurs'} =~ s/, président[^,]*, /, /ig;
 $doc{'auteurs'} =~ s/^[,\s]+//;
 $doc{'auteurs'} =~ s/[,\s]*$/,/;
+$doc{'auteurs'} =~ s/\s*\([^\)]+\)\s*/ /g;
+$doc{'auteurs'} =~ s/[\(\)]//g;
+
 if ($doc{'type'} =~ /^(Avis|Rapport)/) {
   if ($doc{'auteurs'} =~ /commission/i && $doc{'auteurs'} !~ /Auteur/) {
     $doc{'auteurs'} =~ s/,$/ Auteur,/;
@@ -289,7 +312,7 @@ while ($doc{'auteurs'} =~ /\s*([^,]* )([A-ZÀÉÈÊÎÏÔÙÇ][^,\s]*) (Rapporte
     $sexe = "M. ";
   }
   $aut =~ s/[àéèêëïîôùüû]//gi;
-  if (!$cosign && $fct eq "Auteur" && $doc{'type'} =~ /^Propo/ && ( ($sexe eq $prevsexe && $aut lt $prevaut) || ($sexe ne $prevsexe && $sexe eq "Mme ") )) {
+  if (!$cosign && $fct eq "Auteur" && $doc{'type'} =~ /^(Propo|Motion)/ && ( ($sexe eq $prevsexe && $aut lt $prevaut) || ($sexe ne $prevsexe && $sexe eq "Mme ") )) {
     $cosign = 1;
   }
   $prevaut = $aut;
