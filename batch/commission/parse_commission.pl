@@ -55,7 +55,7 @@ sub print_inter {
 		    exit 1;
 		}
 		if (!$commission) {
-		    print STDERR "ERROR pas de commission\n";
+		    print STDERR "ERROR pas de commission pour $file\n";
 		    exit 1;
 		}
 		print '{"commission": "'.$commission.'", "contexte": "'.$context.'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.$intervenant.'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_intervenant.'", "session":"'.$session.'"';
