@@ -8,16 +8,16 @@ sub datize {
         my $theo_annee = shift;
 	my $jour, $mois, $annee;
 	$date =~ s/&nbsp;/ /g;
-        if($date =~ /([0-9]+)e?r? +(\S+) +([0-9]+)/) {
+        if($date =~ /\D([0-9]{1,2})e?r? +(\S+) +([0-9]+)/) {
 	    $jour = sprintf "%02d", $1;
 	    $mois = $2; 
 	    $annee = $3;
-	}elsif ($date =~  /([0-9]+)e?r? +(\S+)/) {
+	}elsif ($date =~  /\D([0-9]{1,2})e?r? +(\S+)/) {
 	    $jour = sprintf "%02d", $1;
 	    $mois = $2; 
 	    $annee = $theo_annee;
 	}else {
-	    print STDERR "pb date : $date\n";
+#	    print STDERR "pb date : $date\n";
 	    return ();
 	}
 	$mois =~ s/\&[^;]+;//g;

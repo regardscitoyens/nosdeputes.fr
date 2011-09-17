@@ -54,7 +54,7 @@ sub print_inter {
 		    print STDERR "ERROR pas de date pour $file\n";
 		    exit 1;
 		}
-		if (!$commission) {
+		if (!$commission || $commission =~ /[\/<>]/) {
 		    print STDERR "ERROR pas de commission pour $file\n";
 		    exit 1;
 		}
@@ -84,16 +84,19 @@ $begin = 0;
 foreach (split /\n/, $content) {
 	$begin = 1 if (/name="toc1"/);
 #print STDERR "title: $1\n" if (/<title>([^<]*)</);
-	$commission = $1 if (/TITLE>.*((Commission|Mission|Office)[^\&:]*)/i);
+	$commission = $1 if (/TITLE>[^<]*((Commission|Mission|Office|Délégation)[^\&:<]*)/i);
 #	print ;	print "\n";
-	if (/<(h[123]|strong)[^>]*>(\s*<[^>]*>)*([^<\(]+\d[^<\(]+\d{4})\W*<\/(h[123]|strong)>/i) {
+	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})\W*<\/(h[123])>/i)) {
 #print STDERR "date: $3 $url_year\n";
 		@date = datize($3, $url_year);
-		print_inter();
-		$date = join '-', @date;
-		$session = sessionize(@date);
-		$numeros_loi = '';
-		$nb_seance = 0;
+		if (@date) {
+#print STDERR "date:"."@date"."\n";
+		    print_inter();
+		    $date = join '-', @date;
+		    $session = sessionize(@date);
+		    $numeros_loi = '';
+		    $nb_seance = 0;
+		}
 	}
 	next if (!$begin);
 	if (/<h3>(\s*<[^>]*>)*([^<]+)<\/h3>/) {
