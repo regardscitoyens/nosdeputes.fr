@@ -749,15 +749,18 @@ h1 {
 /* header - logo */
 
 #header {
-  width: 1060px;
-  height:147px;
-  background: url('images/header.png') no-repeat;
+  width: 970px;
+  height:144px;
+  background: url('/css/xneth/images/header_bg.png') repeat;
+  border-left: 1px solid #b5b5b3;
+  border-right: 1px solid #b5b5b3;
+  margin-left: 44px;
   overflow:hidden;
 }
 
 #header img {
   width:629px;
-  height:147px;
+  height:145px;
   margin-left:44px;
 }
 
@@ -790,8 +793,8 @@ h1 {
   color:#3c3c3c;
 }
 
-.vert {
-  color:#8aa915;
+.rouge {
+  color:#d1253b;
 }
 
 .orange {

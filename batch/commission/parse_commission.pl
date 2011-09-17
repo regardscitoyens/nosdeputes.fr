@@ -133,7 +133,7 @@ foreach (split /\n/, $content) {
 		}
 		$inter =~ s/(<\/(strong|a)[^>]*>)+([\s,]*)(<\/?(strong|a)[^>]*>)+/$3/ig;
 		if (($interstrong && $inter =~ /<(a|strong)[^>]*>($recointer[^<]+)<\/(a|strong)>/i) || 
-		    (!$interstrong && ($inter =~ /(>)($recointer[^<]{10}[^<\.\-]*)/))) {
+		    (!$interstrong && ($inter =~ /(>)($recointer[^<]{10}[^<\.]*)/))) {
 			$tmpintervenant = $2;
 			$tmpintervenant =~ s/<[^>]*>//g;
 			if ($tmpintervenant =~ s/^([^,]+), ([^,]*).*/$1/g) {
@@ -141,7 +141,11 @@ foreach (split /\n/, $content) {
 				$tmpfonction =~ s/\W+$//;
 				$fonctions{$tmpintervenant} = $tmpfonction;
 			}else{
+			    if ($tmpintervenant =~ s/\s*l[ae].{1,6}(pr(&[^;]*;|é)sidente?)\s*/ /) {
+				$tmpfonction = $1;
+			    }else{
 				$tmpfonction = $fonctions{$tmpintervenant};
+			    }
 			}
 			print_inter() if ($tmpintervenant ne $intervenant);
 			$intervenant = $tmpintervenant;
