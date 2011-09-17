@@ -86,7 +86,7 @@ foreach (split /\n/, $content) {
 #print STDERR "title: $1\n" if (/<title>([^<]*)</);
 	$commission = $1 if (/TITLE>.*((Commission|Mission|Office)[^\&:]*)/i);
 #	print ;	print "\n";
-	if (/<(h[123]|strong)[^>]*>(\s*<[^>]*>)*([^<]+\d{4})\W*<\/(h[123]|strong)>/i) {
+	if (/<(h[123]|strong)[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})\W*<\/(h[123]|strong)>/i) {
 #print STDERR "date: $3 $url_year\n";
 		@date = datize($3, $url_year);
 		print_inter();
