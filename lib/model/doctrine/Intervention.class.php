@@ -255,10 +255,14 @@ class Intervention extends BaseIntervention
   }
 
   public function getIntervention($args = array()) {
-    $inter = $this->_get('intervention');
+    $intertot = $this->_get('intervention');
     if ($this->type != 'question' && isset($args['linkify_amendements']) && $linko = $args['linkify_amendements']) {
-      $inter = preg_replace('/\(([^\)]+)\)/', '(<i>\\1</i>)', $inter);
-      if (preg_match_all('/(amendements?[,\s]+(identiques?)?[,\s]*)((n[°os\s]*|\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
+      $intertot = preg_replace('/\(([^\)]+)\)/', '(<i>\\1</i>)', $intertot);
+      $interres = '';
+      foreach (explode('</p>', $intertot) as $inter) {
+
+       //Repère les amendements (pour les linkifier)
+       if (preg_match_all('/(amendements?[,\s]+(identiques?)?[,\s]*)((n[°os\s]*|\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
 	$lois = implode(',', $this->getTags(array('is_triple' => true,
 						  'namespace' => 'loi',
 						  'key' => 'numero',
@@ -280,12 +284,27 @@ class Intervention extends BaseIntervention
 	  }
 	}
       }
-      if (preg_match('/<i>n[°os\s]*([\d,\set]+)<\/i>/', $inter, $match)) {
+
+      //Repère les documents parlementaires (pour les linkifier)
+      if (preg_match('/(projet|proposition)[^<]+[<i>]*(nos?\s|n<sup>os?<\/sup>|n°)[\&nbsp\; ]*([\d\[\]\(\)\-, ]*)/', $inter, $match)) {
         sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-        foreach (explode(',', preg_replace('/\s+/', '', $match[1])) as $loi)
-          $inter = preg_replace('/'.$loi.'/', '<a href="'.url_for('@document?id='.$loi).'">'.$loi.'</a>', $inter);
+	for($i = 3 ; $i < count($match) ; $i+=3) {
+        	$matche = explode(',', $match[$i]);
+		$loie = $matche;
+		for ($y = 0 ; $y < count($matche) ; $y++) {
+			$loie[$y] = preg_replace('/(\d+)\D+(\d+)\-(\d+)\D*/', '\\2\\3-\\1', $matche[$y]);
+	  		if (!preg_match('/\-/', $loie[$y])) {
+				$loie[$y] = $this->getSeance()->getSession().'-'.preg_replace('/\D/', '', $loie[$y]);
+			}
+			$matche[$y] = preg_replace('/\D/', '.', $matche[$y]);
+          		$inter = preg_replace('/('.$matche[$y].')/', '<a href="'.url_for('@document?id='.$loie[$y]).'">\\1</a>', $inter);
+		}
+         }
       }
+      $interres .= $inter;
+      }
+      $intertot = $interres;
     }
-    return $inter;
+    return $intertot;
   }
 }
