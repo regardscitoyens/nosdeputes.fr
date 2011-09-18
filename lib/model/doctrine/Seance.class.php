@@ -32,8 +32,6 @@ class Seance extends BaseSeance
     $q = Doctrine::getTable('Presence')->createQuery('p');
     $q->where('parlementaire_id = ?', $parlementaire->id)->andWhere('seance_id = ?', $this->id);
     $presence = $q->execute()->getFirst();
-    $q->free();
-    unset($q);
     if (!$presence) {
       $presence = new Presence();
       $presence->Parlementaire = $parlementaire;
@@ -42,7 +40,6 @@ class Seance extends BaseSeance
       $presence->save();
     }
     $res = $presence->addPreuve($type, $source);
-    $presence->free();
     return $res;
   }
  
@@ -50,8 +47,6 @@ class Seance extends BaseSeance
     $q = Doctrine::getTable('Presence')->createQuery('p');
     $q->where('parlementaire_id = ?', $parlementaire_id)->andWhere('seance_id = ?', $this->id);
     $presence = $q->execute()->getFirst();
-    $q->free();
-    unset($q);
     if (!$presence) {
       $presence = new Presence();
       $presence->_set('parlementaire_id', $parlementaire_id);
@@ -60,7 +55,6 @@ class Seance extends BaseSeance
       $presence->save();
     }
     $res = $presence->addPreuve($type, $source);
-    $presence->free();
     return $res;
   }
 

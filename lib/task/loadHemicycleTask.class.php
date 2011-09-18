@@ -7,7 +7,7 @@ class loadHemicyleTask extends sfBaseTask
     $this->namespace = 'load';
     $this->name = 'Hemicycle';
     $this->briefDescription = 'Load Hemicycle data';
-    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
@@ -82,21 +82,16 @@ class loadHemicyleTask extends sfBaseTask
 	      }
 	      if (!$p) {
                 $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);
-	      } else $p->free();
+	      }
 	    }
 	    $intervention->save();
 	    if (!isset($sections[$intervention->getSection()->id]))
 	      $sections[$intervention->getSection()->id] = $intervention->getSection();
-	    $intervention->free();
 	  }
 	  foreach(array_values($sections) as $section) {
 	    $section->updateNbInterventions();
             $section->setMaxDate($date);
           }
-          if ($section) {
-	    $section->free();
-	  }
-	  unset($sections);
 	  unlink($dir.$file);
 	}
         closedir($dh);

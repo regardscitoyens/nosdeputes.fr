@@ -18,7 +18,6 @@ class TitreLoi extends BaseTitreLoi
     if (!$senateur) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe."\n";
     else {
       $this->_set('Parlementaire', $senateur);
-      $senateur->free();
     }
   }
 

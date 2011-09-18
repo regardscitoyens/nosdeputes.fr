@@ -5,6 +5,10 @@
  */
 class Intervention extends BaseIntervention
 {
+
+  private static $seances = null;
+  private static $personnalites = null;
+
   public function getLink() {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@interventions_seance?seance='.$this->getSeance()->id).'#inter_'.$this->getMd5();
@@ -56,28 +60,49 @@ class Intervention extends BaseIntervention
     return $titre;
   }
 
-  public function setSeance($type, $date, $heure, $session, $commission = null) {
+  public function setSeance($type, $date, $heure, $session, $commissiontxt = null) {
     $this->setType($type);
+    if (is_array(self::$seances)) {
+      if (isset(self::$seances[$type.$date.$heure.$session.$commissiontxt])) {
+	return $this->_set('seance_id', self::$seances[$type.$date.$heure.$session.$commissiontxt]);
+      }else {
+	self::$seances = array();
+      }
+    }else{
+      self::$seances = array();
+    }
     if ($type == 'commission') {
-      $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commission, 'parlementaire');
+      $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commissiontxt, 'parlementaire');
       $seance = $commission->getSeanceByDateAndMomentOrCreateIt($date, $heure, $session);
-      $commission->free();
     } else{
       $seance = Doctrine::getTable('Seance')->findOneOrCreateIt('hemicycle', $date, $heure, $session);
     }
     $id = $this->_set('seance_id', $seance->id);
-    $seance->free();
+    self::$seances[$type.$date.$heure.$session.$commissiontxt] = $seance->id;
     return $id;
   }
   public function setPersonnaliteByNom($nom, $fonction = null) 
   {
+    $nom = html_entity_decode($nom);
     $this->setFonction($fonction);
+    if (is_array(self::$personnalites)) {
+      if (isset(self::$personnalites[$nom.$fonction])) {
+	if (isset(self::$personnalites[$nom.$fonction]['personnalite'])) {
+	  return $this->setPersonnalite(self::$personnalites[$nom.$fonction]['personnalite']);
+	}else{
+	  return $this->setParlementaire(self::$personnalites[$nom.$fonction]['parlementaire']);
+	}
+      }
+    }else{
+      self::$personnalites = array();
+    }
     if (!preg_match('/ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux/i', $fonction)) { 
       $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
       if (!$personne && ($this->type != "commission" || $fonction == null || preg_match('/(rapporteur|présidente?$)/i', $fonction))) {
 	$personne = Doctrine::getTable('Parlementaire')->similarTo($nom);
       }
       if ($personne) {
+	self::$personnalites[$nom.$fonction] = array('parlementaire' => $personne);
 	return $this->setParlementaire($personne);
       }
     }
@@ -88,6 +113,7 @@ class Intervention extends BaseIntervention
       $personne->save();
     }
     if ($personne) {
+      self::$personnalites[$nom.$fonction] = array('personnalite' => $personne);
       return $this->setPersonnalite($personne);
     }
   }
@@ -97,7 +123,6 @@ class Intervention extends BaseIntervention
       $this->_set('personnalite_id', null);
       if (!$from_db)
         $this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);
-      $parlementaire->free();
     }
   }
   public function setPersonnalite($personne) {

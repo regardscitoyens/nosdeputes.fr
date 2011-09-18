@@ -158,7 +158,6 @@ class Texteloi extends BaseTexteloi
         else {
           if ($debug) echo $senateur->nom."\n";
           $this->addParlementaire($senateur, $fonction, $orga);
-          $senateur->free();
         }
       }
     }
@@ -190,7 +189,6 @@ class Texteloi extends BaseTexteloi
     }
     $pd->_set('fonction', $fonction);
     if ($pd->save()) {
-      $pd->free();
       return true;
     } else return false;
   }

@@ -48,7 +48,6 @@ class Question extends BaseQuestion
     if (!$senateur) print "ERROR: Auteur introuvable in ".$this->source." : $sen\n";
     else {
       $this->_set('parlementaire_id', $senateur->id);
-      $senateur->free();
     }
   }
 

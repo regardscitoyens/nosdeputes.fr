@@ -64,8 +64,6 @@ class Organisme extends BaseOrganisme
     $q = Doctrine::getTable('Seance')->createQuery('s');
     $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment = ?', $moment);
     $res = $q->fetchOne();
-    $q->free();
-    unset($q);
     if ($res) {
       return $res;
     }
@@ -75,8 +73,6 @@ class Organisme extends BaseOrganisme
       $q = Doctrine::getTable('Seance')->createQuery('s');
       $q->where("organisme_id = ?", $this->id)->andWhere('date = ?', $date)->andWhere('moment LIKE ?', $match[1].':%');
       $res = $q->fetchOne();
-      $q->free();
-      unset($q);
     }
     return $res;
   }

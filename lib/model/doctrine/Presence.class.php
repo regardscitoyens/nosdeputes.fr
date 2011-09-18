@@ -8,7 +8,6 @@ class Presence extends BasePresence
   public function addPreuve($type, $source) {
     $q = Doctrine::getTable('PreuvePresence')->createQuery('p');
     $preuve = $q->where('presence_id = ?', $this->id)->andWhere('type = ?', $type)->fetchOne();
-    $q->free();
     if (!$preuve) {
       $preuve = new PreuvePresence();
       $preuve->presence_id = $this->id;
@@ -18,7 +17,6 @@ class Presence extends BasePresence
     $preuve->source = $source;
     $res = $preuve->save();
     $this->save();
-    $preuve->free();
     return $res;
   }
 }

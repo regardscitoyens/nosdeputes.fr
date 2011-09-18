@@ -19,8 +19,6 @@ class PersonnaliteTable extends Doctrine_Table
 	return array($res[0]);
       return $res[0];
     }
-    $q->free();
-    $res->free();
 
     //load parlementaires only once
     if (!$this->all) {

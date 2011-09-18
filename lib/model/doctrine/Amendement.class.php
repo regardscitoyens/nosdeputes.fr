@@ -68,7 +68,6 @@ class Amendement extends BaseAmendement {
         if ($debug) echo $parl->nom."\n";
         if (!$groupe && $parl->groupe_acronyme != "") $groupe = $parl->groupe_acronyme;
         $this->addParlementaire($parl, $signataireindex);
-        $parl->free();
       }
       $signataireindex++;
     }
@@ -82,7 +81,6 @@ class Amendement extends BaseAmendement {
     $pa->_set('Amendement', $this);
     $pa->numero_signataire = $signataireindex;
     if ($pa->save()) {
-      $pa->free();
       return true;
     } else return false;
   }
