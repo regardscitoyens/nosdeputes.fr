@@ -83,7 +83,6 @@ if ($string =~ s/^(.*)CONSTITUTION DU 4 OCTOBRE 1958//) {
 }
 $string =~ s/<!--\s*(START : box|END : primary|#\/section|%finContenu)\s*-->.*$//;
 $string =~ s/<![^>]*>//g;
-
 if ($header) {
   if ($header =~ /<!--#set var="TITLE" value="([^"]*)"/) {
     $doc{'titre'} = ucfirst(decode_entities($1));
@@ -162,7 +161,8 @@ $string =~ s/^.*au format pdf\s*\([^\)]*\)+\s*//i;
 if(!$yml) {
   $doc{'contenu'} = $string;
 }
- 
+
+$string =~ s/composition d[eula'\s]+(office|observatoire|(com)?(d[eé]l[eé]gat|miss)ion).*$//i;
 $string =~ s/Voir le\(?s?\)? numéro\(?s?\)?.*$//i;
 $string =~ s/Mesdames, Messieurs.*$//i;
 if ($display_text) {
@@ -298,7 +298,7 @@ if ($doc{'type'} =~ /^Texte/) {
 }
 $doc{'type_details'} =~ s/\s*\([^\)]+\)+\s*/ /g;
 $doc{'type_details'} =~ s/^[\.,\s]+//;
-$doc{'type_details'} =~ s/[\.,\s]+$//;
+$doc{'type_details'} =~ s/\W+$//;
 $doc{'type_details'} =~ s/\s+/ /g;
 $doc{'type_details'} =~ s/^groupe/du groupe/;
 $doc{'type_details'} =~ s/assemblée/Assemblée/;
@@ -319,7 +319,6 @@ if ((substr $doc{'type_details'}, 0, 40) eq (substr $doc{'titre'}, 0, 40)) {
   $doc{'type_details'} = "";
 }
 
-
 #format date
 $doc{'date'} = join '-', datize($doc{'date'});
 #clean auteurs
@@ -327,7 +326,7 @@ $doc{'auteurs'} =~ s/\s+/ /g;
 $doc{'auteurs'} =~ s/[\s,]+(fait )?au nom d[ela'u\s]+(.)/, \U$2/ig;
 $doc{'auteurs'} =~ s/ et ([A-ZÀÉÈÊÎÏÔÙÇ])/, $1/g;
 $doc{'auteurs'} =~ s/[\s,]+et les membres/, les membres/g;
-$doc{'auteurs'} =~ s/, (premier|ministre|haut|secr)/ $1/ig;
+$doc{'auteurs'} =~ s/, (premier|ministre|garde|haut|secr)/ \U$1/ig;
 $doc{'auteurs'} =~ s/, président[^,]*, /, /ig;
 $doc{'auteurs'} =~ s/^[,\s]+//;
 $doc{'auteurs'} =~ s/[,\s]*$/,/;
