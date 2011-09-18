@@ -2,9 +2,10 @@
 
 use WWW::Mechanize;
 use HTML::TokeParser;
-use  URI::Escape;
+use URI::Escape;
 use Encode;
 
+mkdir "html" unless -e "html";
 
 $a = WWW::Mechanize->new();
 $start = shift || '0';
@@ -46,7 +47,11 @@ foreach $index (@indexes) {
  	    if (-e "html/$file") { $a->back(); next; }
 	    print "$file\n";
 	    open FILE, ">:utf8", "html/$file.tmp";
-	    print FILE $a->content;
+	    $thecontent = $a->content;
+            if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
+              $thecontent = decode("windows-1252", $thecontent);
+            }
+	    print FILE $thecontent;
 	    close FILE;
 	    rename "html/$file.tmp", "html/$file"; 
 	    $a->back();

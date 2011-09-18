@@ -60,7 +60,7 @@ sub print_inter {
 		    print STDERR "ERROR pas de commission pour $file\n";
 		    exit 1;
 		}
-		print '{"commission": "'.quotize($commission).'", "contexte": "'.$context.'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.$intervenant.'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_intervenant.'", "session":"'.$session.'"';
+		print '{"commission": "'.quotize($commission).'", "contexte": "'.$context.'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($intervenant).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_intervenant.'", "session":"'.$session.'"';
         	print ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 	        print ', "amendements":"'.$amendements.'"' if ($amendements);
 		print "}\n";
