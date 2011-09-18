@@ -73,7 +73,6 @@ class loadAmdmtsTask extends sfBaseTask {
                 $amdmt->setAuteurs($json->auteurs);
               } else if (!$json->sort || !preg_match('/(irrecevable|retir)/i', $json->sort)) {
                 echo "ERROR json auteurs missing : $line\n";
-                $amdmt->free();
                 continue;
               }
               if ($json->commission)
@@ -88,7 +87,6 @@ class loadAmdmtsTask extends sfBaseTask {
             elseif (!$amdmt->sort)
               $amdmt->sort = "Indéfini";
             $amdmt->save();
-            $amdmt->free();
           }
           if ($ct_crees) print "$dir$file\n".$ct_lines." amendements lus : ".$ct_lus." écrits dont ".$ct_crees." nouveaux.\n";
           unlink($dir.$file);

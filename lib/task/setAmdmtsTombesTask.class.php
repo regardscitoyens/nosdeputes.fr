@@ -16,7 +16,6 @@ class setAmdmtsTombesTask extends sfBaseTask {
     if ($amdmts) foreach($amdmts as $amdmt) {
       $amdmt->sort = 'Tombe';
       $amdmt->save();
-      $amdmt->free();
     }
   }
 }

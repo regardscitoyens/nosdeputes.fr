@@ -51,7 +51,6 @@ class setVacancesTask extends sfBaseTask {
       $option->setValue(serialize($semaines));
     } else $option->setValue(serialize($semaines));
     $option->save();
-    $option->free();
   }
 }
 

@@ -107,7 +107,6 @@ class correctCommentairesTask extends sfBaseTask {
       }
 
       $comment->save();
-      $comment->free();
     }
   }
 }

@@ -22,11 +22,8 @@ class correctTagLoisTask extends sfBaseTask {
           $object->addTag('loi:numero='.$arguments['loi_1']);
           $object->addTag('loi:numero='.$arguments['loi_2']);
           $object->save();
-          $object->free();
-          $tagging->free();
         }
         Doctrine_Query::create()->delete('Tagging t')->where('t.tag_id = ?', $oldtag->id)->execute();
-        $oldtag->free();
       }
       Doctrine_Query::create()->delete('Tag t')->where('t.triple_value = ?', $wrong)->execute();
     }

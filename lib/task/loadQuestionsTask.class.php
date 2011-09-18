@@ -80,7 +80,6 @@ class loadQuestionsTask extends sfBaseTask {
               $quest->date_cloture = $json->date_reponse;
             $quest->setReponse($json->reponse);
             $quest->save();
-            $quest->free();
           }
           unlink($dir.$file);
         }
