@@ -27,7 +27,7 @@ sub datize {
 
 sub quotize {
 	my $str = shift;
-	$str =~ s/"/&quot;/g;
+	$str =~ s/"//g;
 	return $str;
 }
 
