@@ -251,7 +251,7 @@ class Texteloi extends BaseTexteloi
     $str .= " N° ".$this->numero;
     if (preg_match('/t(\d+)/', $this->annexe, $tom)) {
       $str .= " (Tome ".$tom[1];
-      if ((preg_match('/v(\d+)/', $this->annexe, $vol))
+      if (preg_match('/v(\d+)/', $this->annexe, $vol))
         $str .= " - volume ".$vol[1];
       $str .= ")";
     }
