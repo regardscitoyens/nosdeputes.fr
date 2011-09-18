@@ -28,7 +28,7 @@ while(<FILE>) {
 	$on = 1;
     }
 }
-$lines =~s/&nbsp;<b>/ /g;
+$lines =~ s/&nbsp;<b>/ /g;
 $lines =~ s/&nbsp;/ /g;
 $lines =~ s/<\/b> *<b>/ /g;
 $lines =~ s/<\/b>/<\/b>\n/g;
@@ -56,13 +56,13 @@ $lines =~ s/\<hr.*Texte \d+ sur \d+\s*//g;
 
 $lines =~ s/\<A .*\<\/a\>\s*//ig;
 $lines =~ s/,? ?\<hr/\n<hr/;
-$lines =~ s/<[^i][^>]+>//g;
+$lines =~ s/<[^ib][^>]+>//g;
 $lines =~ s/\n([^\s<]+)\s\n+(\S+)\n/\n$1 $2\n/g;
 $lines =~ s/(\d[erm]+ r|R)éunion /\n$1éunion /gi;
 $lines =~ s/\. / /g;
 
 foreach (split /\n/, $lines) {
-    if (/comité|commission|mission/i && !/Ordre du jour/ && !/(réunion|séance)/i && !/Membres/i && !/^\s*\(/) {
+    if (/Comité|Commission|Mission/ && !/Ordre du jour/ && !/(réunion|séance)/i && !/Membres/i && !/^\s*\(/) {
 	$commission = $_;
 	$commission =~ s/.*(Comité|Commission|Mission)/$1/;
 	$commission =~ s/\s*\(.*//;
@@ -72,7 +72,7 @@ foreach (split /\n/, $lines) {
 	s/ heures/:00/;
 	s/ h /:/;
 	if (/([\d]+)[er]* ([\wéû]+) (\d+)/) {
-	    $date = "$3-".$mois{$2}."-$1";
+	    $date = "$3-".$mois{$2}.'-'.sprintf("%02d",$1);
 	}
 	if (/ à ([\d:]+)/) {
 	    $heure = $1;
@@ -81,7 +81,7 @@ foreach (split /\n/, $lines) {
 	}
 	$on = 0;
     }
-    if (/(<i>Excus|Ordre)/) {
+    if (/(<i>Excus|Ordre|<b>Convocation|<b>Nomination)/) {
 	$on = 0;
     }
     if ($on && /\w/) {
@@ -101,7 +101,7 @@ foreach (split /\n/, $lines) {
 		    print " } \n";
 	    }
     }
-    if (/<i>(Présent|Assistai)/) {
+    if (/<i>(Présents?\W|Assistai)/) {
 	$on = 1;
     }
 }
