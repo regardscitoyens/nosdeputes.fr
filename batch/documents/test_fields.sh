@@ -2,9 +2,17 @@
 
 reparse=shift
 mkdir -p test
+outdir="out.yml"
 
 if $reparse; then
-  bash reparse_all.sh 1
+  rm -rf $outdir.sv
+  mv $outdir $outdir.sv
+  mkdir -p $outdir
+  for dir in pjl ppl ppr tas rap rga; do
+    for file in `ls $dir`; do
+      perl parse_doc.pl $dir/$file 1 > $outdir/$file
+    done;
+  done;
 fi
 
 fields=`cat out.yml/* | grep ": ." | grep -v "^    - " | sed 's/: .*$//' | sed 's/^ *//' | sort | uniq`
