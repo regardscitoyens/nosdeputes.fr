@@ -174,7 +174,7 @@ if ($display_text) {
 if ($string =~ s/^.*ORDINAIRE DE (\d{4})-(\d{4})\s*//) {
   $session = $1.$2;
   $annee = $doc{'date'};
-  $annee = s/^.*(\d{4}).*$//;
+  $annee =~ s/^.*(\d{4}).*$/$1/;
   if ($session =~ /$annee/) {
     $doc{'id'} =~ s/^\d{8}-/$session-/;
   }
@@ -238,7 +238,7 @@ if ($tmpstring =~ s/[rR]apporteur[es]* [sS]pécia[leuxs]+ : (M[Mlmes\.\s]+.*) \(
 if ($auteurs && (!$doc{'auteurs'} || $type !~ /^(Rapport|Avis)/ || $annexes)) {
   $doc{'auteurs'} = $auteurs;
 }
-$string = s/[\.,\s]*(pr[eé]sent[eé]|fait)?e?\s*par $auteurs(,? ?(président|sénat(eur|rice)))?.*$// if ($auteurs);
+$string =~ s/[\.,\s]*(pr[eé]sent[eé]|fait)?e?\s*par $auteurs(,? ?(président|sénat(eur|rice)))?.*$// if ($auteurs);
 
 $doc{'auteurs'} =~ s/, (député|rapporteur)//gi;
 if ($string =~ s/[,\s]*TEXTE [EÉ]LABOR[EÉ] PAR LA COMMISSION MIXTE PARITAIRE.*$//) {
@@ -259,6 +259,7 @@ $string =~ s/[\s,\.]* (par|de) (M[Mlmes\.\s]+.*).*$//i;
 $string =~ s/^\s+//;
 if ($doc{'type'} eq "Motion" || !$doc{'titre'} || $doc{'titre'} eq $type) {
   $doc{'titre'} = ucfirst(lc($string));
+  $doc{'titre'} =~ s/\s*présentée?\s*$//;
   $doc{'titre'} =~ s/\s*\([^\)]+\)+[,\s]*//g;
   $string = "";
 }
