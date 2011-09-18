@@ -63,15 +63,17 @@ $string = decode_entities($string);
 $reperes = $1 if ($string =~ s/^.*<!--repere-box-->(.*)<!--\/repere-box-->//i);
 if ($string =~ s/^(.*)CONSTITUTION DU 4 OCTOBRE 1958//) {
   $sommaire = $1;
-} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(S[EÉ]NAT|SESSION (EXTRA)?-?ORDINAIRE DE \d{4}-\d{4})(<\/[^>]*>)?<\/p>)/$2/) {
+} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?SESSION (EXTRA)?-?ORDINAIRE DE \d{4}-\d{4}<\/)/$2/) {
+  $sommaire = $1;
+} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?SÉNAT<\/)/$2/) {
   $sommaire = $1;
 } elsif ($string =~ s/^(.*)<\/ul>\s*<hr\/?>//i) {
   $sommaire = $1;
-} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(N°\s*$num)(<\/[^>]*>)?<\/p>)/$3/i) {
+} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(N°\s*$num)<\/)/$3/i) {
   $sommaire = $1;
-} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(PRO(JET|POSITION) DE LOI)(<\/[^>]*>)?<\/p>)/$3/i) {
+} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(PRO(JET|POSITION) DE LOI)<\/)/$3/i) {
   $sommaire = $1;
-} elsif ($string =~ s/^(.*)<p Align=center>(<[^>]*>)?_+(<\/[^>]*>)?<\/p>//i) {
+} elsif ($string =~ s/^(.*)<p Align=center>(<[^>]*>)?_+<\///i) {
   $sommaire = $1;
 } elsif ($string =~ s/^(.*)(<[\/uldivbr\s]+>\s*)+<hr>//i) {
   $sommaire = $1;
@@ -81,9 +83,6 @@ if ($string =~ s/^(.*)CONSTITUTION DU 4 OCTOBRE 1958//) {
 }
 $string =~ s/<!--\s*(START : box|END : primary|#\/section|%finContenu)\s*-->.*$//;
 $string =~ s/<![^>]*>//g;
-
-#$string =~ s/<[\/ ]*br[\/ ]*>//gi;
-#$string =~ s/\s*(<\/?hr\/?>)\s*/\n<hr\/>/ig;
 
 if ($header) {
   if ($header =~ /<!--#set var="TITLE" value="([^"]*)"/) {
