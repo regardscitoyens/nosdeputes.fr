@@ -61,18 +61,22 @@ $string =~ s/\s*<a name=[^>]+>\s*(<\/a>)?\s*//ig;
 $header = $1 if ($string =~ s/^.*<body>(.*)<!--#hr function="section"-->//i);
 $string = decode_entities($string);
 $reperes = $1 if ($string =~ s/^.*<!--repere-box-->(.*)<!--\/repere-box-->//i);
-if ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(S[EÉ]NAT|SESSION (EXTRA)?-?ORDINAIRE DE \d{4}-\d{4})(<\/[^>]*>)?<\/p>)/$2/) {
+if ($string =~ s/^(.*)CONSTITUTION DU 4 OCTOBRE 1958//) {
+  $sommaire = $1;
+} elsif ($$string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(S[EÉ]NAT|SESSION (EXTRA)?-?ORDINAIRE DE \d{4}-\d{4})(<\/[^>]*>)?<\/p>)/$2/) {
   $sommaire = $1;
 } elsif ($string =~ s/^(.*)<\/ul>\s*<hr\/?>//i) {
+  $sommaire = $1;
+} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(N°\s*$num)(<\/[^>]*>)?<\/p>)/$2/i) {
   $sommaire = $1;
 } elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(PRO(JET|POSITION) DE LOI)(<\/[^>]*>)?<\/p>)/$2/i) {
   $sommaire = $1;
 } elsif ($string =~ s/^(.*)<p Align=center>(<[^>]*>)?_+(<\/[^>]*>)?<\/p>//i) {
   $sommaire = $1;
-} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(N°\s*$num)(<\/[^>]*>)?<\/p>)/$2/i) {
+} elsif ($string =~ s/^(.*)(<[\/uldivbr\s]+>\s*)+<hr>//i) {
   $sommaire = $1;
 } else {
-  $string =~ s/^(.*)(<[\/uldivbr\s]+>\s*)+<hr>//i;
+  $string =~ s/^(.*)<div id="wysiwyg">//ig;
   $sommaire = $1;
 }
 $string =~ s/<!--\s*(START : box|END : primary|#\/section|%finContenu)\s*-->.*$//;
@@ -108,10 +112,10 @@ if ($header) {
     $doc{'keywords'} =~ s/\s*-\s*/-/g;
     $doc{'keywords'} =~ s/[ ,]*Sénat.*$//ig;
     $doc{'keywords'} =~ s/([^\s,\-\.A-ZÀÉÈÊÎÏÔÙÇ])([A-ZÀÉÈÊÎÏÔÙÇ]+)/$1, $2/g;
-    $doc{'keywords'} = lc($doc{'keywords'});   
+    $doc{'keywords'} = lc($doc{'keywords'});
     $doc{'keywords'} =~ s/([ÀÉÈÊÎÏÔÙÇ])/\L$1/g;
-    $doc{'keywords'} =~ s/\s*[,\.:]+\s*/./g;
-    $doc{'keywords'} =~ s/ d[uel'as\s]+\.//g;
+    $doc{'keywords'} =~ s/\s*[,\.:\/\\]+\s*/./g;
+    $doc{'keywords'} =~ s/ [dl][uel'as\s]+\.//g;
     $doc{'keywords'} =~ s/\.+/./g;
     $doc{'keywords'} =~ s/^\.//g;
     $doc{'keywords'} =~ s/\.$//g;
@@ -144,6 +148,7 @@ if ($reperes) {
     }
   }
 }
+$doc{'auteurs'} =~ s/ et ([^,]+collègues)/, $1/ig;
 
 $string =~ s/<\/?sup>//ig;
 $string =~ s/<a[^>]*href=[^>]*>(<[^>]*>)*[^<]*(<[^>]*>)*<\/a>//ig;
@@ -169,12 +174,16 @@ if ($display_text) {
 
 if ($string =~ s/^.*ORDINAIRE DE (\d{4})-(\d{4})\s*//) {
   $session = $1.$2;
-  $doc{'id'} =~ s/^\d{8}-/$session-/;
+  $annee = $doc{'date'};
+  $annee = s/^.*(\d{4}).*$//;
+  if ($session =~ /$annee/) {
+    $doc{'id'} =~ s/^\d{8}-/$session-/;
+  }
 }
 if ($string =~ s/^.*Enregistr[eé] [aà] la Pr[eé]sidence du S[eé]nat le (\d+e?r? \S* \d+)//i) {
   $doc{'date'} = $1 if (!$doc{'date'});
 }
-if ($string =~ s/^.*Annexe au procès-verbal de la séance du (\d+e?r? \S* \d+)//i) {
+if ($string =~ s/^.*Annexe au procès-verbal de la séance du( le)? (\d+e?r? \S* \d+)//i) {
   $doc{'date'} = $1 if (!$doc{'date'});
 }
 
@@ -182,11 +191,11 @@ $string =~ s/__+.*$//;
 $string =~ s/\s*Série.*$//;
 $string =~ s/[,\s]*(PRÉSENTÉE? )?EN APPLICATION DE L'ARTICLE \d+(,? \S+\s?\d*,?)? DU RÈGLEMENT[,\s]*/ /i;
 $string =~ s/\s*EXPOSÉ DES MOTIFS.*$//i;
-$string =~ s/(délégat|miss)ion[^\.\,]+composée de.*$//i;
-$string =~ s/déposé sur le bureau d.*$//i;
-$string =~ s/[\s,]*Le Sénat a (adopt|modifi)é.*$//;
-$string =~ s/[\s,]*Est devenue résolution du Sénat.*$//;
-$string =~ s/[\s,\(]*Envoyée à la commission.*$//i;
+$string =~ s/(office|observatoire|(délégat|miss)ion)[^\.\,]+composée? de.*$//i;
+$string =~ s/[\s,\(]*déposé sur le bureau d.*$//i;
+$string =~ s/[\s,\(]*Le Sénat a (adopt|modifi)é.*$//;
+$string =~ s/[\s,\(]*Est devenue résolution du Sénat.*$//;
+$string =~ s/[\s,\(]*r?envoyée à la commission.*$//i;
 $string =~ s/- sur .*[^M]\.//;
 
 #Find tome/volume/annexe number in text or retrieve from url (less sure)
@@ -208,18 +217,29 @@ if ($annexes) {
 }
 
 # Find auteurs from header loi
-$string =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*([dD]e|[pP][aA][Rr]) ((M[Mlmes\.\s]+)?[A-ZÀÉÈÊÎÏÔÙÇ].*), [dD]éputé[\s\.,]*//;
-if ($string =~ s/[rR]apporteur[es]* [sS]pécia[leuxs]+ : (M[Mlmes\.\s]+.*) \(1\).*$//) {
-  $doc{'auteurs'} = $1;
-} elsif ($string =~ s/[\.,\s]*[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)[A-ZÀÉÈÊÎÏÔÙÇ].*), [sS]énat(eur|rice).*$//) {
-  $doc{'auteurs'} = $2;
-} elsif ($string =~ s/[\.,\s]*[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)[A-ZÀÉÈÊÎÏÔÙÇ].*), [pP]résident.*$//) {
-  $doc{'auteurs'} = $2;
-} elsif ($string =~ s/[\.,\s]*[pPF](R[EÉ]SENT[EÉ]|r[eé]sent[eé]|ait|AIT)[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)[A-ZÀÉÈÊÎÏÔÙÇ].*)\s*$//) {
-  $doc{'auteurs'} = $1;
-} elsif ($string =~ s/[\.,\s]*[pPF](R[EÉ]SENT[EÉ]|r[eé]sent[eé]|ait|AIT)[eE]?\s*[pP][aA][Rr] ([A-ZÀÉÈÊÎÏÔÙÇ]\w\w+.*)\s*$//) {
-  $doc{'auteurs'} = $1;
+$tmpauteurs = $doc{'auteurs'};
+$tmpauteurs =~ s/\s*,.*$//;
+$tmpauteurs =~ s/[\(\)]//g;
+$tmpauteurs =~ s/^\s*(M[Mlmes\.]+)\s*//;
+$autsexe = $1;
+$tmpstring = $string;
+$tmpstring =~ s/^.*([Mlmes\.\s]+)*$tmpauteurs/Par $autsexe $tmpauteurs/i if ($tmpauteurs);
+$tmpstring =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*(D[Ee]|[pP][aA][Rr]) (M[Mlmes\.\s]+[A-ZÀÉÈÊÎÏÔÙÇ].*), [dD]éputé[\s\.,]*//;
+if ($tmpstring =~ s/[rR]apporteur[es]* [sS]pécia[leuxs]+ : (M[Mlmes\.\s]+.*) \(1\).*$//) {
+  $auteurs = $1;
+} elsif ($tmpstring =~ s/[\.,\s]*[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)[A-ZÀÉÈÊÎÏÔÙÇ].*), [sS]énat(eur|rice).*$//) {
+  $auteurs = $2;
+} elsif ($tmpstring =~ s/[\.,\s]*[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)[A-ZÀÉÈÊÎÏÔÙÇ].*), [pP]résident.*$//) {
+  $auteurs = $2;
+} elsif ($tmpstring =~ s/[\.,\s]*[pPF](R[EÉ]SENT[EÉ]|r[eé]sent[eé]|ait|AIT)[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)[A-ZÀÉÈÊÎÏÔÙÇ].*)\s*$//) {
+  $auteurs = $2;
+} elsif ($tmpstring =~ s/[\.,\s]*[pPF](R[EÉ]SENT[EÉ]|r[eé]sent[eé]|ait|AIT)[eE]?\s*[pP][aA][Rr] ([A-ZÀÉÈÊÎÏÔÙÇ]\w\w+.*)\s*$//) {
+  $auteurs = $2;
 }
+if ($auteurs && (!$doc{'auteurs'} || $type !~ /^(Rapport|Avis)/ || $annexes)) {
+  $doc{'auteurs'} = $auteurs;
+}
+$string = s/[\.,\s]*(pr[eé]sent[eé]|fait)?e?\s*par $auteurs(,? ?(président|sénat(eur|rice)))?.*$// if ($auteurs);
 
 $doc{'auteurs'} =~ s/, (député|rapporteur)//gi;
 if ($string =~ s/[,\s]*TEXTE [EÉ]LABOR[EÉ] PAR LA COMMISSION MIXTE PARITAIRE.*$//) {
@@ -227,9 +247,9 @@ if ($string =~ s/[,\s]*TEXTE [EÉ]LABOR[EÉ] PAR LA COMMISSION MIXTE PARITAIRE.*
 } elsif ($string =~ s/[,\s]*TEXTE DE LA (COMMISSION[^\(]+)\(1\).*$//) {
   $doc{'type'} = "Texte de la commission";
   $doc{'auteurs'} = "";
-} elsif ($string =~ s/^.*[,\s]*(présenté|fait)? ?(au nom d['elua\s]+((groupe|office|(com)?mission)[^\(]*))\(1\)/$2/i) {
+} elsif ($string =~ s/^.*[,\s]*(présenté|fait)? ?(au nom d['elua\s]+((groupe|observatoir|office|(com)?mission)[^\(]*))\(1\)/$2/i) {
   $doc{'type'} = $type;
-  $doc{'auteurs'} .= ", ".ucfirst(lc($3))." Auteur" if (lc($3) !~ /commission mixte paritaire/i);
+  $doc{'auteurs'} .= ", ".ucfirst(lc($3))." Auteur" if (lc($3) !~ /commission mixte paritaire/i && $doc{'auteurs'} !~ /groupe|observatoir|office|mission/);
 } else {
   $doc{'type'} = $type;
 }
@@ -305,7 +325,7 @@ if ((substr $doc{'type_details'}, 0, 40) eq (substr $doc{'titre'}, 0, 40)) {
 $doc{'date'} = join '-', datize($doc{'date'});
 #clean auteurs
 $doc{'auteurs'} =~ s/\s+/ /g;
-$doc{'auteurs'} =~ s/[\s,]+(fait )?au nom de la\s*(.)/, \U$2/ig;
+$doc{'auteurs'} =~ s/[\s,]+(fait )?au nom d[ela'u\s]+(.)/, \U$2/ig;
 $doc{'auteurs'} =~ s/ et ([A-ZÀÉÈÊÎÏÔÙÇ])/, $1/g;
 $doc{'auteurs'} =~ s/[\s,]+et les membres/, les membres/g;
 $doc{'auteurs'} =~ s/, (premier|ministre|haut|secr)/ $1/ig;
@@ -316,17 +336,17 @@ $doc{'auteurs'} =~ s/\s*\([^\)]*\)+\s*/ /g;
 $doc{'auteurs'} =~ s/[\(\)]//g;
 
 if ($doc{'type'} =~ /^(Avis|Rapport)/) {
-  if ($doc{'auteurs'} =~ /commission/i && $doc{'auteurs'} !~ /Auteur/) {
+  if ($doc{'auteurs'} =~ /mission|observatoire|office|délégation/i && $doc{'auteurs'} !~ /Auteur/) {
     $doc{'auteurs'} =~ s/,$/ Auteur,/;
   }
   $doc{'auteurs'} =~ s/ ([A-ZÀÉÈÊÎÏÔÙÇ][^,\s]*),/ $1 Rapporteur,/g;
-  $doc{'auteurs'} =~ s/Auteur Rapporteur/Auteur/;
 } else {
   $doc{'auteurs'} =~ s/ ([A-ZÀÉÈÊÎÏÔÙÇ][^,\s]*),/ $1 Auteur,/g;
   if ($doc{'auteurs'} ne ',' && $doc{'auteurs'} !~ /Auteur,$/) {
     $doc{'auteurs'} =~ s/[\s,]*$/ Auteur/;
   }
 }
+$doc{'auteurs'} =~ s/Auteur (Au|Rappor)teur/Auteur/;
 $doc{'auteurs'} =~ s/\s*,\s*/, /g;
 
 #propage le sexe et identifie les cosignataires via l'ordre
@@ -338,8 +358,9 @@ $auteurs = $doc{'auteurs'};
 while ($doc{'auteurs'} =~ /\s*([^,]* )([A-ZÀÉÈÊÎÏÔÙÇ][^,\s]*) (Rapporteur|Auteur),/g) {
   $aut = $2;
   $name = $1.$aut;
-  $sexename = "";
   $fct = $3;
+  next if ($aut =~ /mission|délégation|office|ministre/);
+  $sexename = "";
   $sexename = $1 if ($name =~ s/^(M[Mlmes\.]+\s)//);
   $prevsexe = $sexe;
   if ($sexename =~ /[le]/) {
