@@ -43,11 +43,11 @@ sub print_inter {
 		$timestamp += 20;
 		$context = $bigcontext;
 		$context .= ' > '.$subcontext if ($subcontext);
-                if ($intervention =~ /\(((projet)?\s*n[^<]+)/) {
+                if ($intervention =~ /((projet|proposition)\s[^<]*(n°|n<sup>os?<\/sup>|nos?)[^<\.]{1,5}\d[^<\.]+)/i) {
                           $docs = $1;
                           $docs =~ s/&[^;]*;//g;
                           $numeros_loi = '';
-                          while ($docs =~ /(\d+)(, (\d{4}-\d{4}|))/g) {
+                          while ($docs =~ /(\d+)([\(\[\, ]+(\d{4}-\d{4})|)/g) {
                                  if ($3) {
                                           $numeros_loi .= law_numberize($1,$3).",";
                                  }else{
