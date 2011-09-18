@@ -88,7 +88,7 @@ sub deromanize {
 }
 
 sub sessionize {
-	return ($_[1] <= 8) ? ($_[0]-1).$_[0] :  $_[0].($_[0]+1);
+	return ($_[1] <= 9) ? ($_[0]-1).$_[0] :  $_[0].($_[0]+1);
 }
 
 sub name_lowerize {
