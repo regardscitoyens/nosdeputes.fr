@@ -3,7 +3,8 @@
 class amendementActions extends sfActions
 {
   static $seuil_amdmts = 8;
-  
+  static $order = 'CONCAT(REPEAT("0", 5 - CHAR_LENGTH(SUBSTRING_INDEX(a.numero, "-", -1))), SUBSTRING_INDEX(a.numero, "-", -1))';
+ 
   public function executeShow(sfWebRequest $request)
   {
     $query = Doctrine::getTable('Amendement')->createquery('a')
@@ -21,8 +22,8 @@ class amendementActions extends sfActions
      else $this->section = $section->getSection(1);
 
      $this->identiques = Doctrine::getTable('Amendement')->createQuery('a')
-       ->where('content_md5 = ?', $this->amendement->content_md5)
-       ->orderBy('numero')
+       ->where('a.content_md5 = ?', $this->amendement->content_md5)
+       ->orderBy(self::$order)
        ->execute();
 
      if (count($this->identiques) < 2) {
@@ -42,7 +43,7 @@ class amendementActions extends sfActions
        ->where('a.texteloi_id = ?', $this->amendement->texteloi_id)
        ->andWhere('a.sort <> ?', 'Rectifié')
        ->andWhere('a.numero_pere = ?', $this->amendement->numero)
-       ->orderBy('a.numero')
+       ->orderBy(self::$order)
        ->fetchArray();
    
      $this->titreloi = Doctrine::getTable('TitreLoi')->findLightLoi($this->amendement->texteloi_id);
@@ -59,7 +60,7 @@ class amendementActions extends sfActions
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('a.sort <> ?', 'Rectifié')
     //  ->andWhere('pa.numero_signataire <= ?', self::$seuil_amdmts)
-      ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
+      ->orderBy('a.date DESC, a.texteloi_id DESC, '.self::$order.' DESC');
 
     $request->setParameter('rss', array(array('link' => '@parlementaire_amendements_rss?slug='.$this->parlementaire->slug, 'title'=>'Les derniers amendements de '.$this->parlementaire->nom.' en RSS')));
   }
@@ -82,7 +83,7 @@ class amendementActions extends sfActions
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('a.sort <> ?', 'Rectifié')
       ->andWhereIn('a.texteloi_id', $lois)
-      ->orderBy('a.texteloi_id DESC, a.date DESC, a.numero DESC');
+      ->orderBy('a.texteloi_id DESC, a.date DESC, '.self::$order.' DESC');
   }
 
   public function executeSearch(sfWebRequest $request)
@@ -132,7 +133,7 @@ class amendementActions extends sfActions
         $this->query->leftJoin('a.ParlementaireAmendement pa')
           ->andWhere('pa.parlementaire_id = ?', $this->parlementaire->id);
     }
-    $this->query->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
+    $this->query->orderBy('a.date DESC, a.texteloi_id DESC, '.self::$order.' DESC');
     if ($request->getParameter('rss')) {
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
@@ -157,8 +158,8 @@ class amendementActions extends sfActions
       for ($ct=0;$ct<count($this->lois);$ct++)
         $this->amendements_query->andWhere('a.texteloi_id = ?', $this->lois[$ct]);
       if ($amdt == 'new')
-        $this->amendements_query->orderBy('a.texteloi_id DESC, a.created_at DESC, a.source');
-      else $this->amendements_query->orderBy('a.texteloi_id DESC, a.source');
+        $this->amendements_query->orderBy('a.texteloi_id DESC, a.date DESC, a.created_at DESC, '.self::$order);
+      else $this->amendements_query->orderBy('a.texteloi_id DESC, '.self::$order);
       return ;
     }
     $numeros = array();
