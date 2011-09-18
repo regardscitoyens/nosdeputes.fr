@@ -81,7 +81,7 @@ foreach (split /\n/, $lines) {
 	}
 	$on = 0;
     }
-    if (/(<i>Excus|Ordre|<b>Convocation|<b>Nomination)/) {
+    if (/(<i>Excus|<i>Ont d|Ordre|<b>Convocation|<b>Nomination)/) {
 	$on = 0;
     }
     if ($on && /\w/) {
