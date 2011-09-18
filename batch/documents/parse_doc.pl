@@ -38,9 +38,7 @@ if ($typeid eq "ga") {
     $type = "Proposition de résolution";
   } elsif ($typeid eq "a") {
     $type = "Avis";
-  } elsif ($typeid eq "l") {
-    $type = "Rapport législatif";
-  } elsif ($typeid eq "r") {
+  } elsif ($typeid =~ /[lr]/) {
     $type = "Rapport";
   }
   $doc{'id'} = $session."-".$doc{'id'};
@@ -63,7 +61,7 @@ $string =~ s/\s*<a name=[^>]+>\s*(<\/a>)?\s*//ig;
 $header = $1 if ($string =~ s/^.*<body>(.*)<!--#hr function="section"-->//i);
 $string = decode_entities($string);
 $reperes = $1 if ($string =~ s/^.*<!--repere-box-->(.*)<!--\/repere-box-->//i);
-if ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(S[EÉ]NAT|SESSION (EXTRA)?-?ORDINAIRE DE \d{4}-\d{4})(<\/[^>]*>)?<\/p>)/$2/i) {
+if ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?(S[EÉ]NAT|SESSION (EXTRA)?-?ORDINAIRE DE \d{4}-\d{4})(<\/[^>]*>)?<\/p>)/$2/) {
   $sommaire = $1;
 } elsif ($string =~ s/^(.*)<\/ul>\s*<hr\/?>//i) {
   $sommaire = $1;
@@ -87,29 +85,33 @@ if ($header) {
   if ($header =~ /<!--#set var="TITLE" value="([^"]*)"/) {
     $doc{'titre'} = ucfirst(decode_entities($1));
     $doc{'titre'} =~ s/"\s*([^"]*)\s*"/« $1 »/g;
-    $doc{'titre'} =~ s/\s*\([^\)]+\)\s*/ /g;
+    $doc{'titre'} =~ s/\s*\([^\)]+\)+\s*/ /g;
   }
   if ($header =~ /<!--#set var="BACKURL" value="([^"]*)dossier(leg|-legislatif)\/([^"]*)\.html"/) {
     $doc{'dossier'} = $3;
     $doc{'dossier'} =~ s/^04-323/ppl04-323/;
+    $doc{'dossier'} =~ s/^ppl707/ppl10-707/;
   }
   if ($typeid =~ /^[lr]$/ && $header =~ /<!--#set var="A3LIB" value="([^"]*)"/) {
     $type = $1;
     $type =~ s/s / /ig;
     $type =~ s/s$//i;
+    $type =~ s/ législatif$//;
   }
   if ($header =~ /<!--#set var="KEYWORDS" value="([^"]*)"/) {
     $doc{'keywords'} = decode_entities($1);
     $doc{'keywords'} =~ s/"//g;
     $doc{'keywords'} =~ s/[ ,]+Sénat.*$//ig;
-    $doc{'keywords'} =~ s/[,\s]*\(([^\)]*)\)\s*/, $1, /g;
+    $doc{'keywords'} =~ s/[,\s]*\(([^\)]*)\)+\s*/, $1, /g;
+    $doc{'keywords'} =~ s/[\(\)]//g;
     $doc{'keywords'} =~ s/\s+et\s+/, /ig;
     $doc{'keywords'} =~ s/\s*-\s*/-/g;
     $doc{'keywords'} =~ s/[ ,]*Sénat.*$//ig;
     $doc{'keywords'} =~ s/([^\s,-\.A-ZÀÉÈÊÎÏÔÙÇ])([A-ZÀÉÈÊÎÏÔÙÇ]+)/$1, $2/g;
     $doc{'keywords'} = lc($doc{'keywords'});   
     $doc{'keywords'} =~ s/([ÀÉÈÊÎÏÔÙÇ])/\L$1/g;
-    $doc{'keywords'} =~ s/[\s,\.]+/./g;
+    $doc{'keywords'} =~ s/\s*[,\.:]+\s*/./g;
+    $doc{'keywords'} =~ s/\.+/./g;
     $doc{'keywords'} =~ s/^\.//g;
     $doc{'keywords'} =~ s/\.$//g;
   }
@@ -143,13 +145,14 @@ if ($reperes) {
 }
 
 $string =~ s/<\/?sup>//ig;
+$string =~ s/<a[^>]*href=[^>]*>(<[^>]*>)*[^<]*(<[^>]*>)*<\/a>//ig;
 $string =~ s/\s*<[^>]*>\s*/ /g;
 $string =~ s/\\/-/g;
 $string =~ s/"/&quot;/g;
 $string =~ s/\s+/ /g;
 $string =~ s/\s*'+\s*/'/g;
 $string =~ s/\s*,+\s*/, /g;
-$string =~ s/^.*au format pdf\s*\([^\)]*\)\s*//i;
+$string =~ s/^.*au format pdf\s*\([^\)]*\)+\s*//i;
 
 #$doc{'contenu'} = $string;
 
@@ -161,27 +164,37 @@ if ($display_text) {
   exit;
 }
 
-$string =~ s/^.*ORDINAIRE DE \d{4}-\d{4}\s*//;
+if ($string =~ s/^.*ORDINAIRE DE (\d{4})-(\d{4})\s*//) {
+  $session = $1.$2;
+  $doc{'id'} =~ s/^\d{8}-/$session-/;
+}
 if ($string =~ s/^.*Enregistr[eé] [aà] la Pr[eé]sidence du S[eé]nat le (\d+e?r? \S* \d+)//i) {
-  $doc{'date'} = $1;
+  $doc{'date'} = $1 if (!$doc{'date'});
 }
 if ($string =~ s/^.*Annexe au procès-verbal de la séance du (\d+e?r? \S* \d+)//i) {
-  $doc{'date'} = $1;
+  $doc{'date'} = $1 if (!$doc{'date'});
 }
 
 $string =~ s/__+.*$//;
 $string =~ s/\s*Série.*$//;
-$string =~ s/[,\s]*(PRÉSENTÉE? )?EN APPLICATION DE .* RÈGLEMENT[,\s]*/ /i;
+$string =~ s/[,\s]*(PRÉSENTÉE? )?EN APPLICATION DE L'ARTICLE \d+(,? \S+\s?\d*,?)? DU RÈGLEMENT[,\s]*/ /i;
 $string =~ s/\s*EXPOSÉ DES MOTIFS.*$//i;
-$string =~ s/commission( est)? composée de.*$//i;
+$string =~ s/(délégat|miss)ion[^\.\,]+composée de.*$//i;
 $string =~ s/déposé sur le bureau d.*$//i;
 $string =~ s/[\s,]*Le Sénat a (adopt|modifi)é.*$//;
 $string =~ s/[\s,]*Est devenue résolution du Sénat.*$//;
+$string =~ s/[\s,\(]*Envoyée à la commission.*$//i;
+$string =~ s/- sur .*[^M]\.//;
 
 #Find tome/volume/annexe number in text or retrieve from url (less sure)
 if ($annexes) {
   $doc{'annexe'} = sprintf("t%02d", deromanize($2)) if ($string =~ /T(OME|ome)[N\s°]+([\dIVX]+)/);
-  $doc{'annexe'} .= sprintf("v%02d", $2) if ($string =~ /V(OLUME|olume)[N\s°]+([\dIVX]+)/);
+  $doc{'annexe'} .= sprintf("v%02d", $2) if ($string =~ /F(ASCICULE|ascicule)[N\s°]+([\dIVX]+)/);
+  if ($string =~ /V(olume|OLUME)[N\s°]+([\dIVX]+)/) {
+    $tmpann = sprintf("%02d", $2);
+    $tmpann = ($doc{'annexe'} =~ /v/ ? "a" : "v").$tmpann;
+    $doc{'annexe'} .= $tmpann;
+  }
   $doc{'annexe'} .= sprintf("a%02d", $2) if ($string =~ /A(NNEXE|nnexe)[N\s°]+([\dIVX]+)/);
   $string =~ s/T(OME|ome)[N\s°]+([\dIVX]+).* [pP](ar|ar) / Par /;
   if (!$doc{'annexe'} && $annexes =~ /^-(\d)(-(\d+))?(-?(\d+))?/) {
@@ -190,35 +203,38 @@ if ($annexes) {
     $doc{'annexe'} .= sprintf("a%02d", $5) if ($5);
   }
 }
-
 # Find auteurs from header loi
+$string =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*([dD]e|[pP][aA][Rr]) ((M[Mlmes\.\s]+)?[A-ZÀÉÈÊÎÏÔÙÇ].*), [dD]éputé[\s\.,]*//;
 if ($string =~ s/[rR]apporteur[es]* [sS]pécia[leuxs]+ : (M[Mlmes\.\s]+.*) \(1\).*$//) {
   $doc{'auteurs'} = $1;
-} elsif ($string =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*([dD]e|[pP]ar) (M[Mlmes\.\s]+.*), [sS]énat(eur|rice).*$//) {
-  $doc{'auteurs'} = $3;
-} elsif ($string =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*([dD]e|[pP]ar) (M[Mlmes\.\s]+.*), [pP]résident.*$//) {
-  $doc{'auteurs'} = $3;
+} elsif ($string =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)?[A-ZÀÉÈÊÎÏÔÙÇ].*), [sS]énat(eur|rice).*$//) {
+  $doc{'auteurs'} = $2;
+} elsif ($string =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)?[A-ZÀÉÈÊÎÏÔÙÇ].*), [pP]résident.*$//) {
+  $doc{'auteurs'} = $2;
+} elsif ($string =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)?[A-ZÀÉÈÊÎÏÔÙÇ].*)\s*$//) {
+  $doc{'auteurs'} = $1;
 }
-
+$doc{'auteurs'} =~ s/, (député|rapporteur)//gi;
 if ($string =~ s/[,\s]*TEXTE [EÉ]LABOR[EÉ] PAR LA COMMISSION MIXTE PARITAIRE.*$//) {
   $doc{'type'} = "Texte de la commission mixte paritaire";
 } elsif ($string =~ s/[,\s]*TEXTE DE LA (COMMISSION[^\(]+)\(1\).*$//) {
   $doc{'type'} = "Texte de la commission";
   $doc{'auteurs'} = "";
-} elsif ($string =~ s/^.*[,\s]*(présenté|fait) (au nom de la (commission[^\(]+))\(1\)/$2/i) {
+} elsif ($string =~ s/^.*[,\s]*(présenté|fait)? ?(au nom d['elua\s]+((groupe|office|(com)?mission)[^\(]*))\(1\)/$2/i) {
   $doc{'type'} = $type;
-  $doc{'auteurs'} .= ", ".ucfirst(lc($3))." Auteur" if (lc($3) ne "commission mixte paritaire ");
+  $doc{'auteurs'} .= ", ".ucfirst(lc($3))." Auteur" if (lc($3) !~ /commission mixte paritaire/i);
 } else {
   $doc{'type'} = $type;
 }
 
 $doc{'titre'} =~ s/de en application de .* règlement, //i;
 $string =~ s/[\s,]*TRANSMISE? PAR.*$//i;
-$string =~ s/[\s,\.]* par (M[Mlmes\.\s]+.*).*$//i;
+$string =~ s/[\s,]*présentée? au nom de (M[Mlmes\.\s]+.*).*$//i;
+$string =~ s/[\s,\.]* (par|de) (M[Mlmes\.\s]+.*).*$//i;
 $string =~ s/^\s+//;
 if ($doc{'type'} eq "Motion") {
   $doc{'titre'} = ucfirst(lc($string));
-  $doc{'titre'} =~ s/\s*\([^\)]+\)[,\s]*//g;
+  $doc{'titre'} =~ s/\s*\([^\)]+\)+[,\s]*//g;
   $string = "";
 }
 $doc{'titre'} =~ s/\s*$type[,\s]*//;
@@ -253,31 +269,35 @@ if ($doc{'type'} =~ /^Texte/) {
   $doc{'type_details'} =~ s/\s*modifié par le sénat//;
 }
 $doc{'type_details'} = "organique ".$doc{'type_details'} if ($doc{'titre'} =~ s/^\s*organique\s*//);
-$doc{'type_details'} =~ s/\s*\([^\)]+\)\s*/ /g;
+$doc{'type_details'} =~ s/\s*\([^\)]+\)+\s*/ /g;
 $doc{'type_details'} =~ s/^[\.,\s]+//;
 $doc{'type_details'} =~ s/[\.,\s]+$//;
 $doc{'type_details'} =~ s/\s+/ /g;
 $doc{'type_details'} =~ s/^groupe/du groupe/;
 $doc{'type_details'} =~ s/assemblée/Assemblée/;
+$doc{'type_details'} =~ s/[\s,]*adressé à M. le président du Sénat//i;
 $doc{'type_details'} =~ s/sénat/Sénat/;
 if ($doc{'type_details'} =~ /^\s*tableau comparatif/i) {
   $doc{'type_details'} = $doc{'auteurs'};
   $doc{'type_details'} =~ s/^.* au nom /au nom /;
   $doc{'type_details'} .= $tmpstring;
 }
+$doc{'type_details'} =~ s/^\s*fait\s*//i;
 $doc{'type_details'} =~ s/^compte/ - compte/i;
+$doc{'type_details'} =~ s/[\s,]*(sur l|au nom d|en [\d\wè]+ lecture|adopté)/, $1/ig;
 
 #format date
 $doc{'date'} = join '-', datize($doc{'date'});
 #clean auteurs
 $doc{'auteurs'} =~ s/\s+/ /g;
 $doc{'auteurs'} =~ s/[\s,]+(fait )?au nom de la\s*(.)/, \U$2/ig;
-$doc{'auteurs'} =~ s/ et /, /ig;
+$doc{'auteurs'} =~ s/[,\s]*(et )?les membres du groupe (.)/, \U$2/;
+$doc{'auteurs'} =~ s/ et ([A-ZÀÉÈÊÎÏÔÙÇ])/, $1/g;
 $doc{'auteurs'} =~ s/, (premier|ministre|haut|secr)/ $1/ig;
 $doc{'auteurs'} =~ s/, président[^,]*, /, /ig;
 $doc{'auteurs'} =~ s/^[,\s]+//;
 $doc{'auteurs'} =~ s/[,\s]*$/,/;
-$doc{'auteurs'} =~ s/\s*\([^\)]+\)\s*/ /g;
+$doc{'auteurs'} =~ s/\s*\([^\)]*\)+\s*/ /g;
 $doc{'auteurs'} =~ s/[\(\)]//g;
 
 if ($doc{'type'} =~ /^(Avis|Rapport)/) {
@@ -292,7 +312,8 @@ if ($doc{'type'} =~ /^(Avis|Rapport)/) {
     $doc{'auteurs'} =~ s/[\s,]*$/ Auteur/;
   }
 }
-$doc{'auteurs'} =~ s/[,\s]*les membres du groupe (.)/, \U$1/;
+$doc{'auteurs'} =~ s/\s*,\s*/, /g;
+
 #propage le sexe et identifie les cosignataires via l'ordre
 $auteurs = "";
 $sexe = "Mme ";
@@ -335,5 +356,5 @@ if ($yml) {
   exit;
 }
 
-print '{"source": "'.$doc{'source'}.'", "id": "'.$doc{'id'}.'", "numero": "'.$doc{'num'}.'", "annexe": "'.$doc{'annexe'}.'", "date": "'.$doc{'date'}.'", "auteurs": "'.$doc{'auteurs'}.'", "dossier": "'.$doc{'dossier'}.'", "type": "'.$doc{'type'}.'", "type_details": "'.$doc{'type_details'}.'", "titre": "'.$doc{'titre'}.'", "motscles": "'.$doc{'keywords'}.'", "contenu": "'.$string.'"}'."\n";
+print '{"source": "'.$doc{'source'}.'", "id": "'.$doc{'id'}.'", "numero": "'.$doc{'num'}.'", "annexe": "'.$doc{'annexe'}.'", "date": "'.$doc{'date'}.'", "auteurs": "'.$doc{'auteurs'}.'", "dossier": "'.$doc{'dossier'}.'", "type": "'.$doc{'type'}.'", "type_details": "'.$doc{'type_details'}.'", "titre": "'.$doc{'titre'}.'", "motscles": "'.$doc{'keywords'}.'", "contenu": "'.$doc{'contenu'}.'"}'."\n";
 

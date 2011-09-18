@@ -1,11 +1,11 @@
 #!/bin/bash
 
-yml=shift
-
+yml=shift;
 outdir="out"
-if [ ! -z $yml ]; then
+if $yml; then
   outdir="out.yml"
 fi
+
 rm -rf $outdir.sv
 mv $outdir $outdir.sv
 mkdir -p $outdir
