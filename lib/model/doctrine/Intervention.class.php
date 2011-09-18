@@ -286,7 +286,7 @@ class Intervention extends BaseIntervention
       }
 
       //Repère les documents parlementaires (pour les linkifier)
-      if (preg_match('/(projet|proposition)[^<]+[<i>]*(nos?\s|n<sup>os?<\/sup>|n°)[\&nbsp\; ]*([\d\[\]\(\)\-, ]*)/', $inter, $match)) {
+      if (preg_match('/(projet|proposition)[^<]+[<i>]*(nos?\s|n<sup>[os\&nbp\;]+[^>]*>|n°)[\&nbsp\; ]*([\d\[\]\(\)\-, ]*)/', $inter, $match)) {
         sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
 	for($i = 3 ; $i < count($match) ; $i+=3) {
         	$matche = explode(',', $match[$i]);
