@@ -618,14 +618,13 @@ Texteloi:
       date: date
   columns:
     id:
-      type: string(16)
+      type: string(20)
       unique: true
-    legislature: integer
     numero: integer
     annexe: string(12)
     type:
       type: enum
-      values: ['Proposition de loi', 'Proposition de résolution', 'Projet de loi', 'Texte de la commission', 'Lettre', 'Rapport', "Rapport d'information", 'Avis']
+      values: ['Motion', 'Proposition de loi', 'Proposition de résolution', 'Projet de loi', 'Texte adopté', 'Texte de la commission', 'Texte de la commission mixte paritaire', 'Lettre', 'Rapport', "Rapport d'information", "Rapport d'office parlementaire", 'Avis', "Rapport de groupe d'amitié", "Rapport de commission d'enquête"]
     type_details: string(512)
     categorie: string(128)
     id_dossier_institution: string(255)
@@ -663,7 +662,7 @@ ParlementaireTexteloi:
     Timestampable:
   columns:
     parlementaire_id: integer
-    texteloi_id: string(16)
+    texteloi_id: string(20)
     importance: integer
     fonction: string(255)
   relations:

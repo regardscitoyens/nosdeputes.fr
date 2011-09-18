@@ -39,7 +39,7 @@ class Texteloi extends BaseTexteloi
   }
 
   public static function getAmdmts($type, $numero, $help = 0) {
-    if (!($type === "Rapport" && $help) && !preg_match('/(Projet de loi|Proposition de loi|Proposition de résolution|Texte de la commission)/', $type))
+    if (!($type === "Rapport" && $help) && !preg_match('/(Motion|Projet de loi|Proposition de loi|Proposition de résolution|Texte de la commission)/', $type))
       return 0;
     $res = count(Doctrine::getTable('Amendement')->createQuery('a')
       ->where('texteloi_id = ?', $numero)
@@ -99,7 +99,7 @@ class Texteloi extends BaseTexteloi
   }
 
   public function setAuteurs($signataires) {    
-    //$debug=1;
+  //  $debug=1;
     $this->signataires = $signataires;
    //Set signatires, auteurs via PArlemnaitreTexteDocu et Organisme
     $orga = null;
@@ -111,8 +111,8 @@ class Texteloi extends BaseTexteloi
     foreach ($signataires as $senateur) {
       if (preg_match('/^(M[\.mle]+)/', $senateur, $match)) 
         continue;
-      if (preg_match('/^(.*)(\set apparentés)?\s+(Auteur|Cosignataire|Rapporteur)/', $senateur, $match)) {
-        $orga = trim($match[1]).$match[2];
+      if (preg_match('/^(.*)(\set|,)?( apparentés)?(\set|,)?( rattachés)?\s+(Auteur|Cosignataire|Rapporteur)/', $senateur, $match)) {
+        $orga = trim($match[1]);
         $organisme = Doctrine::getTable('Organisme')->findOneByNomType($orga, 'parlementaire');
         if ($organisme) {
           $this->setOrganisme($organisme);
@@ -133,6 +133,7 @@ class Texteloi extends BaseTexteloi
             $orga = " pour le groupe ".$orga;
           }
         }
+        if ($debug) echo $orga." -> ".$organisme->nom."\n";
         break;
       }
     }
@@ -195,7 +196,7 @@ class Texteloi extends BaseTexteloi
 
   public function getTypeString() {
     $str = "ce";
-    if (preg_match('/(propos|lettre)/i', $this->type))
+    if (preg_match('/(propos|lettre|motion)/i', $this->type))
       $str .= "tte";
     else if ($this->type === "Avis")
       $str .= "t";
@@ -240,19 +241,17 @@ class Texteloi extends BaseTexteloi
 
   public function getShortTitre() {
     $str = "";
-    if ($this->annexe && preg_match('/a([1-9]\d*)/', $this->id, $ann)) {
+    if (preg_match('/a([1-9]\d*)/', $this->annexe, $ann)) {
       $str .= "Annexe N° ".$ann[1]." ";
       if ($this->type === "Avis")
         $str .= "à l'";
       else $str .=  "au ";
     }
     $str .= $this->type;
-    if ($this->annexe && $this->annexe === "a00")
-      $str .= " annexé au Rapport";
     $str .= " N° ".$this->numero;
-    if ($this->annexe && preg_match('/t([\dIVX]+)/', $this->id, $tom)) {
+    if (preg_match('/t(\d+)/', $this->annexe, $tom)) {
       $str .= " (Tome ".$tom[1];
-      if ($this->annexe && preg_match('/v(\d+)/', $this->id, $vol))
+      if ((preg_match('/v(\d+)/', $this->annexe, $vol))
         $str .= " - volume ".$vol[1];
       $str .= ")";
     }
@@ -268,10 +267,10 @@ class Texteloi extends BaseTexteloi
 
   public function getDetailsTitre() {
     $str = "";
-    if ($this->type_details && !preg_match('/'.$this->type_details.'/', $this->_get('titre')))
+    if ($this->type_details) // && !preg_match('/'.$this->type_details.'/', $this->_get('titre')))
       $str .= " ".$this->type_details;
     if ($this->_get('titre'))
-      $str .= " ".$this->_get('titre');
+      $str .= (preg_match('/^[A-ZÉÈÊËÀÂÎÏÔÛÜÇ]/', $this->_get('titre')) ? " - " : " ").$this->_get('titre');
     $str = preg_replace('/^,\s*/', '', preg_replace('/\s*,\s*/', ', ', $str));
     return $str;
   }
@@ -314,6 +313,8 @@ class Texteloi extends BaseTexteloi
     $str = preg_replace('/^.*(mesdames)/i', '\\1', $sub);
     if (!preg_match('/^mesdames/i', $str)) {
       if (preg_match('/^.*introduction(.*)$/i', $sub, $match))
+        $str = $match[1];
+      else if (preg_match('/^.*exposé des motifs(.*)$/i', $sub, $match))
         $str = $match[1];
       else return null;
     }
