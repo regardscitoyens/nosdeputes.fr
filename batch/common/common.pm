@@ -124,7 +124,7 @@ sub name_lowerize {
 sub law_numberize {
 	my $n = shift;
 	my $s = shift;
-	$s =~ s/^(\d{4}).*$/$1/;
+	$s =~ s/^\(?(\d{4}).*$/$1/;
 	return sprintf('%04d%04d-%03d', $s, $s+1, $n);
 }
 

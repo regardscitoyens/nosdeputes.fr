@@ -28,18 +28,20 @@ $content =~ s/[ \t]+/ /g;
 %fonctions = ();
 
 $timestamp = 0;
-$nb_seance = 0;
+$nb_seance = 1;
 sub print_inter {
 	if ($intervention && $intervention ne '<p></p>') {
 		if ($intervention =~ /(projet de loi|texte)( n[^<]+)/) {
 			$doc = $2;
 			$doc =~ s/&[^;]+;//g;
-			$numeros_lois = '';
+			$numeros_loi = '';
 			while ($doc =~ / n\s*(\d+) ?(\(\d+\-\d+\))/g) {
 				$numeros_loi .= law_numberize($1,$2).",";
 			}
-			$numeros_loi =~ s/[^0-9\-\,]//g;
-			chop($numeros_loi);
+			if ($numeros_loi) {
+			    chop($numeros_loi);
+			    $numeros_loi =~ s/[^0-9\-\,]//g;
+			}
 		}
 		if ($intervention =~ /amendement( n[^<]+)/) {
 			$doc = $1;
@@ -99,7 +101,7 @@ foreach (split /\n/, $content) {
 		    $date = join '-', @date;
 		    $session = sessionize(@date);
 		    $numeros_loi = '';
-		    $nb_seance = 0;
+		    $nb_seance = 1;
 		}
 	}
 	next if (!$begin);
@@ -110,18 +112,30 @@ foreach (split /\n/, $content) {
 		setfonction($titre);
 		$context =~ s/ - / > /;
 		$intervention = '<p>'.$titre.'</p>';
-		$nb_seance++;
-		$heure = ($nb_seance == 1) ? '1ere' : $nb_seance.'ieme';
-		$heure .= ' séance';
 		%fonctions = ();
 		$timestamp = 0;
 		$numeros_loi = '';
-		print_inter();
+		$is_newcontext = 1;
 	}
 	$source = "#$1" if (/name="([^"]+)"/);
 
 	if (/<p[^>]*>(.*)<\/p>/i) {
 		$inter = $1;
+		if ($inter =~ /<u>(Au cours[^<]*)<\/u>/) {
+		    $aucours = $1;
+		    if ($aucours =~ /\Wapr[^s]+s( |&nbsp;|-)*midi($|\W)/) {
+			$nb_seance = 2;
+		    }elsif ($aucours =~ /\Wsoir(é|&[^;]*;)e($|\W)/) {
+			$nb_seance = 3;
+		    }
+		    print_inter() if (!$is_newcontext);
+		    $heure = ($nb_seance == 1) ? '1ere' : $nb_seance.'ieme';
+		    $heure .= ' séance';
+		}
+		if($is_newcontext) {
+		    $is_newcontext = 0;
+		    print_inter();
+		}
 		$inter =~ s/<a[^>]*><\/a>//ig;
 		if ($inter =~ /^<(u|strong|em)>(.*)<\/(u|strong|em)>$/i) {
 			$inter = $2;
