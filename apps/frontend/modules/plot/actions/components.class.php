@@ -43,7 +43,7 @@ class plotComponents extends sfComponents
       $sem = $date_fin['numero_semaine'];
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     }
-    $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee, $sem);
+    $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee, $sem0);
     $this->data['vacances'] = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
 
     $query = Doctrine_Query::create()
