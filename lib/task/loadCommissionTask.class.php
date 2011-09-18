@@ -47,7 +47,9 @@ class loadCommissionTask extends sfBaseTask
               print_r($contraints["json"]);
               continue;
             }
-
+	    $json->intervention = html_entity_decode($json->intervention, ENT_NOQUOTES, "UTF-8");
+	    $json->commission = html_entity_decode($json->commission, ENT_NOQUOTES, "UTF-8");
+	    $json->contexte = html_entity_decode($json->contexte, ENT_NOQUOTES, "UTF-8");
 	    if (strlen($json->commission) > 255) {
 	      $json->commission = preg_replace('/ \S+$/', '', substr($json->commission, 0, 255));
 	    }
