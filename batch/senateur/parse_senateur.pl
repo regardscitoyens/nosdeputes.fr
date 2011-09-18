@@ -134,7 +134,7 @@ sub fonctions {
 					$fonction =~ s/^.* \/ //;
 					$commission =~ s/ \/ .*$//;
 				}
-				if (! $groupes{$commission}) {
+				if ($commission && ! $groupes{$commission}) {
 					$groupes{$commission} = 1;
 					$commission .= ' / '.lc($fonction);
 					$senateur{'groupes'}{ucfirst($commission)} = 1;
