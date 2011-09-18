@@ -44,7 +44,7 @@ class loadHemicyleTask extends sfBaseTask
 	      echo "\n => ";
 	      print_r($json);
 	      $contraints = get_defined_constants(true);
-	      print_r($constrants["json"]);
+	      print_r($contraints["json"]);
 	      continue;
 	    }
             $date = $json->date;
