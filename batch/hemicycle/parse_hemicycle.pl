@@ -2,6 +2,8 @@
 
 use URI::Escape;
 use HTML::Entities;
+use Encode;
+use utf8;
 require "../common/common.pm";
 
 $| = 1;
@@ -24,6 +26,9 @@ if ($doc =~ /ance du (\d+e?r? \S+ \d+)/i) {
 }
 
 $doc =~ s/\n/ /g;
+$doc =~ s/&nbsp;/ /gi;
+utf8::decode($doc);
+$doc = decode_entities($doc);
 $doc =~ s/.* id="par_1"/<p id="par_1"/;
 $doc =~ s/<p class="l1_signature" .*//;
 $doc =~ s/<!--[^>]*-->//g;
@@ -43,8 +48,9 @@ sub print_inter {
 		$timestamp += 20;
 		$context = $bigcontext;
 		$context .= ' > '.$subcontext if ($subcontext);
-                if ($intervention =~ /((projet|proposition)\s[^<]*(n°|n<sup>os?<\/sup>|nos?|n&[^;]+;&[^;]+;)[^<\.]{1,5}\d[^<\.]+)/i) {
+                if ($intervention =~ /((projet|proposition|motion|lettre)\s[^<]*(n°|n<sup>os?<\/sup>|nos?|n&[^;]+;&[^;]+;)[^<\.]{1,5}\d[^<\.]+)/i) {
                           $docs = $1;
+			  $docs =~ s/°//g;
                           $docs =~ s/&[^;]*;//g;
                           $numeros_loi = '';
                           while ($docs =~ /(\d+)([\(\[\, ]+(\d{4}-\d{4})|)/g) {
@@ -59,8 +65,9 @@ sub print_inter {
                 if ($intervention =~ /amendements? n([^<]+)/) {
                                         $amdt = $1;
                                         $amdt =~ s/&[^;]*;//g;
+					$amdt =~ s/°//g;
                                         $amendements = '';
-                                        while ($amdt =~ /(\d+)( ?rectifi|)\D/g) {
+                                        while ($amdt =~ /(\d+)( ?rect|)\D/g) {
                                                 $amendements .= "$1";
 #                                                $amendements .= " rectifié" if ($2);
                                                 $amendements .= ",";
@@ -70,6 +77,9 @@ sub print_inter {
 		$intervention =~ s/<p> +/<p>/g;
 		$secondinter = '';
 		$secondinter = $1 if ($inter =~ s/ et (.*)//) ;
+		utf8::encode($context);
+		utf8::encode($intervention);
+		utf8::encode($fonction);
 		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
 		$json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 		$json .= ', "amendements":"'.$amendements.'"' if ($amendements);
