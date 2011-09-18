@@ -80,6 +80,26 @@ $rom{'XVII'} = 17;
 $rom{'XVIII'} = 18;
 $rom{'XIX'} = 19;
 $rom{'XX'} = 20;
+$rom{'XXI'} = 21;
+$rom{'XXII'} = 22;
+$rom{'XXIII'} = 23;
+$rom{'XXIV'} = 24;
+$rom{'XXV'} = 25;
+$rom{'XXVI'} = 26;
+$rom{'XXVII'} = 27;
+$rom{'XXVIII'} = 28;
+$rom{'XXIX'} = 29;
+$rom{'XXX'} = 30;
+$rom{'XXXI'} = 31;
+$rom{'XXXII'} = 32;
+$rom{'XXXIII'} = 33;
+$rom{'XXXIV'} = 34;
+$rom{'XXXV'} = 35;
+$rom{'XXXVI'} = 36;
+$rom{'XXXVII'} = 37;
+$rom{'XXXVIII'} = 38;
+$rom{'XXXIX'} = 39;
+
 
 sub deromanize {
 	my $n = shift;

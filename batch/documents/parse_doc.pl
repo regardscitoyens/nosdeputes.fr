@@ -192,10 +192,10 @@ $string =~ s/\s*Série.*$//;
 $string =~ s/[,\s]*(PRÉSENTÉE? )?EN APPLICATION DE L'ARTICLE \d+(,? \S+\s?\d*,?)? DU RÈGLEMENT[,\s]*/ /i;
 $string =~ s/\s*EXPOSÉ DES MOTIFS.*$//i;
 $string =~ s/(office|observatoire|(délégat|miss)ion)[^\.\,]+composée? de.*$//i;
-$string =~ s/[\s,\(]*déposé sur le bureau d.*$//i;
+$string =~ s/[\s,\(]*déposée? sur le bureau d.*$//i;
 $string =~ s/[\s,\(]*Le Sénat a (adopt|modifi)é.*$//;
 $string =~ s/[\s,\(]*Est devenue résolution du Sénat.*$//;
-$string =~ s/[\s,\(]*r?envoyée à la commission.*$//i;
+$string =~ s/[\s,\(]*r?envoyée? à la commission.*$//i;
 $string =~ s/- sur .*[^M]\.//;
 
 #Find tome/volume/annexe number in text or retrieve from url (less sure)
@@ -227,9 +227,9 @@ $tmpstring =~ s/^.*([Mlmes\.\s]+)*$tmpauteurs/Par $autsexe $tmpauteurs/i if ($tm
 $tmpstring =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*(D[Ee]|[pP][aA][Rr]) (M[Mlmes\.\s]+[A-ZÀÉÈÊÎÏÔÙÇ].*), [dD]éputé[\s\.,]*//;
 if ($tmpstring =~ s/[rR]apporteur[es]* [sS]pécia[leuxs]+ : (M[Mlmes\.\s]+.*) \(1\).*$//) {
   $auteurs = $1;
-} elsif ($tmpstring =~ s/[\.,\s]*[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)[A-ZÀÉÈÊÎÏÔÙÇ].*), [sS]énat(eur|rice).*$//) {
+} elsif ($tmpstring =~ s/[\.,\s]*[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)[A-ZÀÉÈÊÎÏÔÙÇ].*),? [sS]énat(eur|rice).*$//) {
   $auteurs = $2;
-} elsif ($tmpstring =~ s/[\.,\s]*[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)[A-ZÀÉÈÊÎÏÔÙÇ].*), [pP]résident.*$//) {
+} elsif ($tmpstring =~ s/[\.,\s]*[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)[A-ZÀÉÈÊÎÏÔÙÇ].*),? [pP]résident.*$//) {
   $auteurs = $2;
 } elsif ($tmpstring =~ s/[\.,\s]*[pPF](R[EÉ]SENT[EÉ]|r[eé]sent[eé]|ait|AIT)[eE]?\s*[pP][aA][Rr] ((M[Mlmes\.\s]+)[A-ZÀÉÈÊÎÏÔÙÇ].*)\s*$//) {
   $auteurs = $2;
