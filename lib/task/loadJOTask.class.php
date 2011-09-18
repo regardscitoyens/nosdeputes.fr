@@ -57,7 +57,7 @@ class loadJOTask extends sfBaseTask
 	      continue;
 	    }
 	    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($jo->commission, 'parlementaire');
-	    if (!$jo->date) {
+	    if (!isset($jo->date) || !$jo->date) {
 	      $senateur->clearRelated();
 	      $commission->clearRelated();
 	      echo "ERROR date : ";
@@ -65,6 +65,8 @@ class loadJOTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
+	    if (!isset($jo->heure) || !$jo->heure)
+	      $jo->heure = '1ere séance';
 	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->date, $jo->heure);
 	    $seance->addPresence($senateur, $typesource, $jo->source);
 	  }
