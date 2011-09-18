@@ -57,21 +57,16 @@ class loadJOTask extends sfBaseTask
 	      continue;
 	    }
 	    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($jo->commission, 'parlementaire');
-	    if (!$jo->reunion) {
+	    if (!$jo->date) {
 	      $senateur->clearRelated();
-	      $senateur->free();
 	      $commission->clearRelated();
-	      $commission->free();
 	      echo "ERROR date : ";
 	      echo $line;
 	      echo "\n";
 	      continue;
 	    }
-	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->reunion, $jo->session);
+	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->date, $jo->heure);
 	    $seance->addPresence($senateur, $typesource, $jo->source);
-	    $seance->free();
-	    $commission->free();
-	    $senateur->free();
 	  }
 	  unlink($dir.$file);
 	}

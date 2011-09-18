@@ -72,12 +72,12 @@ foreach (split /\n/, $lines) {
 	s/ heures/:00/;
 	s/ h /:/;
 	if (/([\d]+)[er]* ([\wéû]+) (\d+)/) {
-	    $reunion = "$3-".$mois{$2}."-$1";
+	    $date = "$3-".$mois{$2}."-$1";
 	}
 	if (/ à ([\d:]+)/) {
-	    $session = $1;
+	    $heure = $1;
 	}elsif (/(\d+\S+ (réunion|séance))/) {
-	    $session = $1;
+	    $heure = $1;
 	}
 	$on = 0;
     }
@@ -91,9 +91,10 @@ foreach (split /\n/, $lines) {
 			$d = $1.' '.$d;
 		    }
 		    $d =~ s/\([^\)]+\)//;
+		    next if ($d eq 'M');
 		    print '{ ';
-		    print '"reunion": "'.$reunion.'",';
-		    print '"session": "'.$session.'",';
+		    print '"date": "'.$date.'",';
+		    print '"heure": "'.$heure.'",';
 		    print '"commission": "'.$commission.'",';
 		    print '"senateur": "'.$d.'",';
 		    print '"source": "Journal officiel du '.$source.'"';
