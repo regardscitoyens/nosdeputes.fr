@@ -121,7 +121,9 @@ class myTools {
   }	
 
   public static function getLinkDossier($urlan) {
-    return link_to('Dossier sur le site du Sénat', "http://www.senat.fr/dossier-legislatif/".$urlan.".html");
+    if ($urlan)
+      return link_to('Dossier sur le site du Sénat', "http://www.senat.fr/dossier-legislatif/".$urlan.".html");
+    return;
   }
 
   public static function getLinkLoi($id) {
