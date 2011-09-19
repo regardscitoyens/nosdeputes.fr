@@ -169,7 +169,7 @@
 <div class="clear accueil">
   <div class="box_news">
   <div class="carte" id="cartesenateurs">
-  <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nossenateurs.png" /></span>Trouver son sénateur</h2>
+  <h2><span style="margin-right: 5px;"><img height="19" alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nossenateurs.png" /></span>Trouver son sénateur</h2>
     <div class="cont_box_news">
 	  <?php include_partial('circonscription/mapDepartement', array('width'=>0, 'height'=>200, 'link' => true)); ?>
 	  </div>
@@ -186,7 +186,7 @@
   <div class="clear"></div>
 <div class="box_container">
   <div class="box_tags">
-  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/senat.png" /></span><?php echo link_to('En ce moment au Sénat', '@parlementaires_tags'); ?></h2>
+  <h2><span style="margin-right: 5px;"><?php /* <img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/senat.png" /> */?></span><?php echo link_to('En ce moment au Sénat', '@parlementaires_tags'); ?></h2>
   <?php echo include_component('tag', 'globalActivite'); ?>
   </div>
   <div class="box_repartition aligncenter"><div style="margin: auto;">
