@@ -21,7 +21,7 @@ for field in $fields; do
   uniqs=`wc -l test/$field.uniq | awk '{print $1}'`
   echo "$uniqs valeurs uniques :" >> test/$field.stats
   echo  >> test/$field.stats
-  if [ $total -ne $uniqs ] && [ $uniqs -le 500 ]; then
+  if [ $total -ne $uniqs ] && [ $uniqs -le 500 ] || [[ $field == "id" ]]; then
     while read line; do if [[ ! -z $line ]]; then
       echo $line | sed 's/^/'`grep -r "$field: $line$" out.yml/ | wc -l | awk '{print $1}'`' fois\t\t/' >> test/$field.stats
     fi; done < test/$field.uniq

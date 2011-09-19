@@ -123,6 +123,9 @@ if ($header) {
 }
 
 if ($sommaire) {
+  if ($typeid eq "motionpjl" && $sommaire =~ />N°\s*(\d+)</) {
+    $doc{'id'} = sprintf("%03d", $1);
+  }
   $sommaire =~ s/^\s*(<[^>]+>\s*)*<p>/<p>/i;
   $sommaire =~ s/<p>Disponible au.*$//i;
   $sommaire =~ s/<[^>]+>*//g;
