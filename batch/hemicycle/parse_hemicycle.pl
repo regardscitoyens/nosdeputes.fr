@@ -27,8 +27,6 @@ if ($doc =~ /ance du (\d+e?r? \S+ \d+)/i) {
 
 $doc =~ s/\n/ /g;
 $doc =~ s/&nbsp;/ /gi;
-utf8::decode($doc);
-$doc = decode_entities($doc);
 $doc =~ s/.* id="par_1"/<p id="par_1"/;
 $doc =~ s/<p class="l1_signature" .*//;
 $doc =~ s/<!--[^>]*-->//g;
@@ -101,6 +99,8 @@ sub print_inter {
 }
 
 foreach (split /\n/, $doc) {
+    utf8::decode($_);
+    $_ = decode_entities($_);
     if (/<\/span><span([^>]*>)/ && $1 !~ /orateur_qualite/) {
 	s/<\/span><span[^>]*>//g;
     }
