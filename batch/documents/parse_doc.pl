@@ -115,10 +115,12 @@ if ($header) {
     $doc{'keywords'} = lc($doc{'keywords'});
     $doc{'keywords'} =~ s/([ÀÉÈÊÎÏÔÙÇ])/\L$1/g;
     $doc{'keywords'} =~ s/\s*[,\.:\/\\]+\s*/./g;
-    $doc{'keywords'} =~ s/ [dl][uel'as\s]+\.//g;
+    $doc{'keywords'} =~ s/ l\W(.)/ l'$1/g;
+    $doc{'keywords'} =~ s/ [dl][uel'as\s]+\././g;
     $doc{'keywords'} =~ s/\.+/./g;
     $doc{'keywords'} =~ s/^\.//g;
     $doc{'keywords'} =~ s/\.$//g;
+    $doc{'keywords'} =~ s/\...?\././ig;
   }
 }
 
@@ -189,14 +191,13 @@ $string =~ s/Mesdames, Messieurs.*$//i;
 if ($string =~ s/^.*ORDINAIRE DE (\d{4})-(\d{4})\s*//) {
   $sessions{$1.$2}++;
 }
-if ($string =~ s/^.*Enregistr[eé] [aà] la Pr[eé]sidence du S[eé]nat le (\d+e?r? \S* \d+)( le (\d+e?r? \S* \d+))?//i) {
-  $tmpdate = ($3 ? $3 : $1);
-  $doc{'date'} = $tmpdate if (!$doc{'date'});
-  $sessions{sessionize(datize($tmpdate))}++;
+if ($string =~ s/^.*enregistr[eé]+ [aà] la Pr[eé]sidence du S[eé]nat[dule\s]*((\d+e?r? \S* \d+)[dule\s]*)?(\d+e?r? \S* \d+)//i) {
+  $doc{'date'} = $3 if (!$doc{'date'});
+  $sessions{sessionize(datize($3))}++;
 }
-if ($string =~ s/^.*Annexe au procès-verbal de la séance du (le )?(\d+e?r? \S* \d+)//i) {
-  $doc{'date'} = $2 if (!$doc{'date'});
-  $sessions{sessionize(datize($2))}++;
+if ($string =~ s/^.*annexe au procès-verbal de la séance[dule\s]*((\d+e?r? \S* \d+)[dule\s]*)?( \d+e?r? \S* \d+)//i) {
+  $doc{'date'} = $3 if (!$doc{'date'});
+  $sessions{sessionize(datize($3))}++;
 }
 
 $string =~ s/__+.*$//;
@@ -266,6 +267,7 @@ if ($string =~ s/[,\s]*TEXTE [EÉ]LABOR[EÉ] PAR LA COMMISSION MIXTE PARITAIRE.*
   $doc{'type'} = $type;
 }
 
+$string =~ s/en application de .* (constitution|règlement), //i;
 $string =~ s/[\s,]*TRANSMISE? PAR.*$//i;
 $string =~ s/[\s,]*présentée? au nom de (M[Mlmes\.\s]+.*).*$//i;
 $string =~ s/[\s,\.]* (par|de) (M[Mlmes\.\s]+.*).*$//i;
@@ -288,7 +290,7 @@ if ($doc{'type'} =~ /^(Avis|Rapport|Texte)/) {
 } else {
   $doc{'titre'} = lcfirst($doc{'titre'});
 }
-$doc{'titre'} =~ s/en application de .* règlement, //i;
+$doc{'titre'} =~ s/en application de .* (constitution|règlement), //i;
 $doc{'titre'} =~ s/[\.,\s]+$//;
 $string = lc($string);
 $type = lc($doc{'type'});
@@ -305,9 +307,9 @@ if ($typeid =~ /^([alr]|ga|rap)$/) {
 
 $doc{'type_details'} = $string if (length($string) <= 500);
 if ($doc{'type'} =~ /^Texte/) {
-  $doc{'type_details'} =~ s/\s*propo/sur la propo/;
-  $doc{'type_details'} =~ s/\s*projet/sur le projet/;
-  $doc{'type_details'} =~ s/\s*résolu/sur la proposition de résolu/;
+  $doc{'type_details'} =~ s/(sur la )?propo/sur la propo/;
+  $doc{'type_details'} =~ s/(sur le )?projet/sur le projet/;
+  $doc{'type_details'} =~ s/(sur la proposition de )?résolu/sur la proposition de résolu/;
   $doc{'type_details'} =~ s/\s*modifié par le sénat//;
 }
 $doc{'type_details'} =~ s/\s*\([^\)]+\)+\s*/ /g;
@@ -315,6 +317,7 @@ $doc{'type_details'} =~ s/^[\.,\s]+//;
 $doc{'type_details'} =~ s/\W+$//;
 $doc{'type_details'} =~ s/\s+/ /g;
 $doc{'type_details'} =~ s/^groupe/du groupe/;
+$doc{'type_details'} =~ s/^office parlementaire //i;
 $doc{'type_details'} =~ s/^((com)?(miss|délégat)ion)/de la $1/;
 $doc{'type_details'} =~ s/assemblée/Assemblée/;
 $doc{'type_details'} =~ s/[\s,]*adressé à M. le président du Sénat//i;
@@ -329,10 +332,31 @@ if ($doc{'type_details'} =~ /^\s*tableau comparatif/i) {
 $doc{'type_details'} =~ s/^\s*fait\s*//i;
 $doc{'type_details'} =~ s/^compte/ - compte/i;
 $doc{'type_details'} =~ s/[\s,]*(après eng|sur l|au nom d|en [\d\wè]+ lecture|adopté)/, $1/ig;
-if ((substr $doc{'type_details'}, 0, 40) eq (substr $doc{'titre'}, 0, 40)) {
+$doc{'type_details'} =~ s/[\(\)]//g;
+$doc{'type_details'} =~ s/\s*compte[-\s]*rendu du déplacement.*$//i;
+$doc{'type_details'} =~ s/^.*projet de loi.*retiré.*par le.*ministre.*$//i;
+$doc{'type_details'} =~ s/^.*dépôt.*publié.*journal officiel.*//i;
+$doc{'type_details'} =~ s/\s*présentée?[\s,]*$//;
+$doc{'type_details'} =~ s/^[\s,]*présentée?\s*//;
+$tmpdetails = $doc{'type_details'};
+if ($doc{'titre'} =~ /$tmpdetails/) {
+  $doc{'type_details'} = "";
+}
+if ((substr $doc{'type_details'}, 0, 30) eq (substr $doc{'titre'}, 0, 30)) {
   $doc{'titre'} = (length($doc{'titre'}) > length($doc{'type_details'}) ? $doc{'titre'} : $doc{'type_details'});
   $doc{'type_details'} = "";
 }
+$doc{'type_details'} =~ s/(\s+[ld])\s*$/$1'/i;
+if ($doc{'type_details'} =~ s/^lettre\s*(.*)$/$1/i) {
+  $doc{'type_details'} .= " ".lc($doc{'type'});
+  $doc{'type'} = "Lettre";
+}
+if ($doc{'type_details'} =~ /^et /) {
+  $doc{'titre'} .= " ".$doc{'type_details'};
+  $doc{'type_details'} = "";
+}
+$doc{'titre'} =~ s/[\s,]*présentée?.*$//i;
+$doc{'titre'} =~ s/[\s,\.]+$//;
 
 #format date
 $doc{'date'} = join '-', datize($doc{'date'});
