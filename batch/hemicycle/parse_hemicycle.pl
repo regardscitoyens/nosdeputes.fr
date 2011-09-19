@@ -75,19 +75,18 @@ sub print_inter {
 		$intervention =~ s/<p> +/<p>/g;
 		$secondinter = '';
 		$secondinter = $1 if ($inter =~ s/ et (.*)//) ;
-		utf8::encode($context);
-		utf8::encode($intervention);
-		utf8::encode($fonction);
 		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
 		$json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 		$json .= ', "amendements":"'.$amendements.'"' if ($amendements);
 		$json .= "}\n";
+		utf8::encode($json);
 		print $json;
 		if ($secondinter) {
 		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($secondinter).'", "fonction": "", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
                 $json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
                 $json .= ', "amendements":"'.$amendements.'"' if ($amendements);
                 $json .= "}\n";
+		utf8::encode($json);
                 print $json;
 		}
 	}
