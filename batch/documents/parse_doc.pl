@@ -355,7 +355,7 @@ if ($doc{'type_details'} =~ /^et /) {
   $doc{'titre'} .= " ".$doc{'type_details'};
   $doc{'type_details'} = "";
 }
-if (!$doc{'titre'} || $$doc{'titre'} =~ /^\s*$/) {
+if (!$doc{'titre'} || $doc{'titre'} =~ /^\s*$/) {
   $doc{'titre'} = $doc{'type_details'};
   $doc{'type_details'} = "";
 }
