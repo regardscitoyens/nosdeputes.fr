@@ -44,6 +44,7 @@ class parlementaireActions extends sfActions
     $rayon = 50; //pour la vignette
     $bordure = 10;
     $work_height = 500; //pour éviter des sentiments d'antialiasing
+    $ratio = 160/110;
 
     $slug = $request->getParameter('slug');
     $parlementaire = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->fetchOne();
@@ -76,7 +77,16 @@ class parlementaireActions extends sfActions
     imagecopyresampled($ih, $iorig, 0, 0, 0, 0, $work_height*$width/$height, $work_height, $width, $height);
     $width = $work_height*$width/$height;
     $height = $work_height;
-    imagedestroy($iorig);
+
+    if ($height/$width < $ratio) {
+	$iorig = imagecreatetruecolor($width, $width*$ratio);
+        imagecopyresampled($iorig, $ih, 0, $height - $width*$ratio, 0, 0, $width, $width*$ratio, $width, $height);
+	$height = $width*$ratio;
+
+    }
+
+    imagedestroy($ih);
+    $ih = $iorig;
     unlink($file);
 
     if ((isset($parlementaire->autoflip) && $parlementaire->autoflip) XOR $request->getParameter('flip')) {
