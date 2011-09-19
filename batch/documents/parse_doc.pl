@@ -390,7 +390,7 @@ if ($typeid ne "ga") {
 $doc{'auteurs'} =~ s/\s+/ /g;
 $doc{'auteurs'} =~ s/[\s,]+(fait )?au nom d[ela'u\s]+(.)/, \U$2/ig;
 $doc{'auteurs'} =~ s/[\s,]+fait (.)/, \U$1/ig;
-$doc{'auteurs'} =~ s/ et ([A-ZÀÉÈÊÎÏÔÙÇ])/, $1/g;
+$doc{'auteurs'} =~ s/ et[\s,]*([A-ZÀÉÈÊÎÏÔÙÇ])/, $1/g;
 $doc{'auteurs'} =~ s/[\s,]+et les membres/, les membres/g;
 $doc{'auteurs'} =~ s/, (premier|ministre|garde|haut|secr)/ \U$1/ig;
 $doc{'auteurs'} =~ s/, président[^,]*, /, /ig;
