@@ -355,6 +355,10 @@ if ($doc{'type_details'} =~ /^et /) {
   $doc{'titre'} .= " ".$doc{'type_details'};
   $doc{'type_details'} = "";
 }
+if (!$doc{'titre'}) {
+  $doc{'titre'} = $doc{'type_details'};
+  $doc{'type_details'} = "";
+}
 $doc{'titre'} =~ s/[\s,]*présentée?.*$//i;
 $doc{'titre'} =~ s/[\s,\.]+$//;
 
