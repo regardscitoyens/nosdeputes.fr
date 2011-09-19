@@ -113,9 +113,10 @@ foreach (split /\n/, $doc) {
                         $h = heurize($3);
 			($htab) = split /:/, $h;
 			if (!$heure || ($htab >= 14 && $oldhtab < 14) || ($htab >= 20 && $oldhtab < 20)) {
-				$heure = $h;
-				$oldhtab = $htab;
-				$timestamp = 0;
+			    print_inter();
+			    $heure = $h;
+			    $oldhtab = $htab;
+			    $timestamp = 0;
 			}
                 }
         }
