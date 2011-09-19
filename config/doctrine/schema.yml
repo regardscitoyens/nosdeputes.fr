@@ -8,7 +8,7 @@ Personnalite:
   actAs:
     Timestampable:
     Sluggable:
-      fields: [nom]
+      fields: [nom_clean_for_slug]
       unique: true
   columns:
     nom: string(255)

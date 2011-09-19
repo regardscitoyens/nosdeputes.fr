@@ -19,4 +19,8 @@ class Personnalite extends BasePersonnalite
   public function getPhoto() {
     return null;
   }
+  public function getNomCleanForSlug() {
+    return preg_replace('/ü/i', 'u', $this->nom);
+  }
+
 }
