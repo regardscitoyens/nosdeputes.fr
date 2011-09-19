@@ -21,9 +21,8 @@ class loadCommissionTask extends sfBaseTask
       if ($dh = opendir($dir)) {
         $count = 0;
         while (($file = readdir($dh)) !== false) {
-          if ($count == 10) {
-            exit 1;
-          }
+          if ($count == 10)
+            exit(1);
           $count++;
           $sections = array();
 	  if (preg_match('/^\./', $file))
@@ -97,8 +96,10 @@ class loadCommissionTask extends sfBaseTask
               $sections[$intervention->getSection()->id] = $intervention->getSection();
 	  }
           foreach(array_values($sections) as $section) {
-            $section->updateNbInterventions();
-            $section->setMaxDate($date);
+	    if ($section) {
+              $section->updateNbInterventions();
+              $section->setMaxDate($date);
+            }
           }
 	  unlink($dir.$file);
 	}
