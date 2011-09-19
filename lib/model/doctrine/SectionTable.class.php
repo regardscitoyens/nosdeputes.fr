@@ -6,6 +6,8 @@ class SectionTable extends Doctrine_Table
 {
   public function findOneByContexteOrCreateIt($contexte, $date = '', $timestamp = '') {
     $contexte = self::cleanContexte($contexte); 
+    if(!$contexte)
+      return null;
     $section = $this->findOneByMd5(md5($contexte));
     if (!$section) {
       $section = new Section();
