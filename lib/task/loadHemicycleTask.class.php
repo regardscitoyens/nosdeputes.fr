@@ -19,12 +19,20 @@ class loadHemicyleTask extends sfBaseTask
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
+        $cpt = 0;
         while (($file = readdir($dh)) !== false) {
+	  if ($cpt > 9)
+		exit(1);
+	  $cpt ++;
 	  $sections = array();
 	  if (preg_match('/^\./', $file))
 	    continue;
 	  echo "$dir$file\n";
           $debug = 1;
+          if (!filesize($dir.$file)) {
+		echo "ERROR file empty : $file\n";
+		continue;
+	  }
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
             $error = 0;
@@ -89,8 +97,10 @@ class loadHemicyleTask extends sfBaseTask
 	      $sections[$intervention->getSection()->id] = $intervention->getSection();
 	  }
 	  foreach(array_values($sections) as $section) {
-	    $section->updateNbInterventions();
-            $section->setMaxDate($date);
+	    if ($section) {
+	    	$section->updateNbInterventions();
+            	$section->setMaxDate($date);
+	    }
           }
 	  unlink($dir.$file);
 	}
