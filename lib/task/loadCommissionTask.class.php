@@ -19,7 +19,12 @@ class loadCommissionTask extends sfBaseTask
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
+        $count = 0;
         while (($file = readdir($dh)) !== false) {
+          if ($count = 10) {
+            exit 1;
+          }
+          $count++;
           $sections = array();
 	  if (preg_match('/^\./', $file))
 	    continue;
