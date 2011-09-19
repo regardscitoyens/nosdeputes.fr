@@ -147,6 +147,8 @@ if ($reperes) {
   }
 }
 $doc{'auteurs'} =~ s/ et ([^,]+collègues)/, $1/ig;
+$doc{'auteurs'} =~ s/[,\s]*sénateur(.*député)?[,\s]*/, /gi;
+$doc{'auteurs'} =~ s/au nom (d[elau'\s]+)?//gi;
 
 $string =~ s/<\/?sup>//ig;
 $string =~ s/<a[^>]*href=[^>]*>(<[^>]*>)*[^<]*(<[^>]*>)*<\/a>//ig;
@@ -171,15 +173,8 @@ if ($display_text) {
   exit;
 }
 
-if ($string =~ s/^.*ORDINAIRE DE (\d{4})-(\d{4})\s*//) {
-  $session = $1.$2;
-  $annee = $doc{'date'};
-  $annee =~ s/^.*(\d{4}).*$/$1/;
-  if ($session =~ /$annee/) {
-    $doc{'id'} =~ s/^\d{8}-/$session-/;
-  }
-}
-if ($string =~ s/^.*Enregistr[eé] [aà] la Pr[eé]sidence du S[eé]nat le (\d+e?r? \S* \d+)//i) {
+$string =~ s/^.*ORDINAIRE DE (\d{4})-(\d{4})\s*//;
+if ($string =~ s/^.*Enregistr[eé] [aà] la Pr[eé]sidence du S[eé]nat le (\d+e?r? \S* \d+)( le (\d+e?r? \S* \d+))?//i) {
   $doc{'date'} = $1 if (!$doc{'date'});
 }
 if ($string =~ s/^.*Annexe au procès-verbal de la séance du( le)? (\d+e?r? \S* \d+)//i) {
@@ -246,9 +241,9 @@ if ($string =~ s/[,\s]*TEXTE [EÉ]LABOR[EÉ] PAR LA COMMISSION MIXTE PARITAIRE.*
 } elsif ($string =~ s/[,\s]*TEXTE DE LA (COMMISSION[^\(]+)\(1\).*$//) {
   $doc{'type'} = "Texte de la commission";
   $doc{'auteurs'} = "";
-} elsif ($string =~ s/^.*[,\s]*(présenté|fait)? ?(au nom d['elua\s]+((groupe|observatoir|office|(com)?mission)[^\(]*))\(1\)/$2/i) {
+} elsif ($string =~ s/^.*[,\s]*(présenté|fait)? ?(au nom (d['elua\s]+)?((groupe|observatoir|office|(com)?(delegat|miss)ion)[^\(]*))\(1\)/$2/i) {
   $doc{'type'} = $type;
-  $doc{'auteurs'} .= ", ".ucfirst(lc($3))." Auteur" if (lc($3) !~ /commission mixte paritaire/i && $doc{'auteurs'} !~ /groupe|observatoir|office|mission/);
+  $doc{'auteurs'} .= ", ".ucfirst(lc($4))." Auteur" if (lc($4) !~ /commission mixte paritaire/i && $doc{'auteurs'} !~ /groupe|observatoir|office|mission/);
 } else {
   $doc{'type'} = $type;
 }
@@ -302,6 +297,7 @@ $doc{'type_details'} =~ s/^[\.,\s]+//;
 $doc{'type_details'} =~ s/\W+$//;
 $doc{'type_details'} =~ s/\s+/ /g;
 $doc{'type_details'} =~ s/^groupe/du groupe/;
+$doc{'type_details'} =~ s/^((com)?(miss|délégat)ion)/de la $1/;
 $doc{'type_details'} =~ s/assemblée/Assemblée/;
 $doc{'type_details'} =~ s/[\s,]*adressé à M. le président du Sénat//i;
 $doc{'type_details'} =~ s/sénat/Sénat/g;
@@ -322,9 +318,16 @@ if ((substr $doc{'type_details'}, 0, 40) eq (substr $doc{'titre'}, 0, 40)) {
 
 #format date
 $doc{'date'} = join '-', datize($doc{'date'});
+#reset ID from session in date plus sur
+@date = split '-', $doc{'date'};
+print "@date";
+$session = sessionize(@date);
+$doc{'id'} =~ s/^\d{8}-/$session-/;
+
 #clean auteurs
 $doc{'auteurs'} =~ s/\s+/ /g;
 $doc{'auteurs'} =~ s/[\s,]+(fait )?au nom d[ela'u\s]+(.)/, \U$2/ig;
+$doc{'auteurs'} =~ s/[\s,]+fait (.)/, \U$1/ig;
 $doc{'auteurs'} =~ s/ et ([A-ZÀÉÈÊÎÏÔÙÇ])/, $1/g;
 $doc{'auteurs'} =~ s/[\s,]+et les membres/, les membres/g;
 $doc{'auteurs'} =~ s/, (premier|ministre|garde|haut|secr)/ \U$1/ig;
