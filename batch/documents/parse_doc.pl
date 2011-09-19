@@ -11,6 +11,8 @@ $yml = shift;
 $display_text = shift;
 
 my %doc;
+my %sessions;
+
 $doc{'source'} = $file;
 $doc{'source'} =~ s/^[^\/]+\///;
 $doc{'source'} = uri_unescape($doc{'source'});
@@ -22,7 +24,7 @@ if ($typeid eq "ga") {
   $doc{'id'} = "GA".$doc{'num'};
   $type = "Rapport de groupe d'amitié";
 } else {
-  $session = sprintf('%04d%04d', 2000+$3, 2001+$3);
+  $sessions{sprintf('%04d%04d', 2000+$3, 2001+$3)}++;
   $doc{'num'} = $5;
   $annexes = $6;
   if ($typeid eq "tas") {
@@ -41,7 +43,6 @@ if ($typeid eq "ga") {
   } elsif ($typeid =~ /[lr]/) {
     $type = "Rapport";
   }
-  $doc{'id'} = $session."-".$doc{'id'};
 }
 $num = $doc{'num'};
 $num =~ s/^0+//;
@@ -63,7 +64,8 @@ $string = decode_entities($string);
 $reperes = $1 if ($string =~ s/^.*<!--repere-box-->(.*)<!--\/repere-box-->//i);
 if ($string =~ s/^(.*)CONSTITUTION DU 4 OCTOBRE 1958//) {
   $sommaire = $1;
-} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?SESSION (EXTRA)?-?ORDINAIRE DE \d{4}-\d{4}<\/)/$2/) {
+} elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?SESSION (EXTRA)?-?ORDINAIRE DE (\d{4})-(\d{4})<\/)/$2/) {
+  $sessions{$5.$6}++;
   $sommaire = $1;
 } elsif ($string =~ s/^(.*)(<p Align=center>(<[^>]*>)?SÉNAT<\/)/$2/) {
   $sommaire = $1;
@@ -126,7 +128,10 @@ if ($sommaire) {
   $sommaire =~ s/<[^>]+>*//g;
   $sommaire =~ s/\s+/ /g;
   $sommaire =~ s/\s*,+\s*/, /g;
-  $doc{'date'} = $2 if ($sommaire =~ /(-|le) (\d+e?r? \S* \d+)/i);
+  if ($sommaire =~ /(-|le) (\d+e?r? \S* \d+)/i) {
+    $doc{'date'} = $2;
+    $sessions{sessionize(datize($doc{'date'}))}++;
+  }
   $doc{'auteurs'} = $2 if ($sommaire =~ /(de|par) (M[Mlmes\.]\s*.*), déposé/);
   $doc{'auteurs'} =~ s/\s*(fait )?au nom de la commission mixte paritaire//i;
 }
@@ -135,7 +140,12 @@ if ($reperes) {
   $reperes =~ s/<[^!>]+>*//g;
   $sommaire =~ s/\s+/ /g;
   $sommaire =~ s/\s*,+\s*/, /g;
-  $doc{'date'} = $1 if ($reperes =~ /<![\-\s]*START-date[\-\s]*>(\d+e?r? \S* \d+)\s*:?<![\-\s]*END-date[\-\s]*>/i);
+  if ($reperes =~ /<![\-\s]*START-date[\-\s]*>(\d+e?r? \S* \d+)\s*:?<![\-\s]*END-date[\-\s]*>/i) {
+    $sessions{sessionize(datize($1))}++;
+    if (!$doc{'date'}) {
+      $doc{'date'} = $1;
+    }
+  }
   if (!$doc{'auteurs'}) {
     $doc{'auteurs'} = $1 if ($reperes =~ /<![\-\s]*START-auteurs[\-\s]*>Par (M[Mlmes\.]\s*.*)<![\-\s]*END-auteurs[\-\s]*>/i);
     if ($reperes =~ /<![\-\s]*START-organismes[\-\s]*>(.*)<![\-\s]*END-organismes[\-\s]*>/i) {
@@ -164,21 +174,26 @@ if(!$yml) {
   $doc{'contenu'} = $string;
 }
 
-$string =~ s/composition d[eula'\s]+(office|observatoire|(com)?(d[eé]l[eé]gat|miss)ion).*$//i;
-$string =~ s/Voir le\(?s?\)? numéro\(?s?\)?.*$//i;
-$string =~ s/Mesdames, Messieurs.*$//i;
 if ($display_text) {
   utf8::encode($string);
   print $string;
   exit;
 }
 
-$string =~ s/^.*ORDINAIRE DE (\d{4})-(\d{4})\s*//;
-if ($string =~ s/^.*Enregistr[eé] [aà] la Pr[eé]sidence du S[eé]nat le (\d+e?r? \S* \d+)( le (\d+e?r? \S* \d+))?//i) {
-  $doc{'date'} = $1 if (!$doc{'date'});
+$string =~ s/composition d[eula'\s]+(office|observatoire|(com)?(d[eé]l[eé]gat|miss)ion).*$//i;
+$string =~ s/Voir le\(?s?\)? numéro\(?s?\)?.*$//i;
+$string =~ s/Mesdames, Messieurs.*$//i;
+if ($string =~ s/^.*ORDINAIRE DE (\d{4})-(\d{4})\s*//) {
+  $sessions{$1.$2}++;
 }
-if ($string =~ s/^.*Annexe au procès-verbal de la séance du( le)? (\d+e?r? \S* \d+)//i) {
-  $doc{'date'} = $1 if (!$doc{'date'});
+if ($string =~ s/^.*Enregistr[eé] [aà] la Pr[eé]sidence du S[eé]nat le (\d+e?r? \S* \d+)( le (\d+e?r? \S* \d+))?//i) {
+  $tmpdate = ($3 ? $3 : $1);
+  $doc{'date'} = $tmpdate if (!$doc{'date'});
+  $sessions{sessionize(datize($tmpdate))}++;
+}
+if ($string =~ s/^.*Annexe au procès-verbal de la séance du (le )?(\d+e?r? \S* \d+)//i) {
+  $doc{'date'} = $2 if (!$doc{'date'});
+  $sessions{sessionize(datize($2))}++;
 }
 
 $string =~ s/__+.*$//;
@@ -319,10 +334,16 @@ if ((substr $doc{'type_details'}, 0, 40) eq (substr $doc{'titre'}, 0, 40)) {
 #format date
 $doc{'date'} = join '-', datize($doc{'date'});
 #reset ID from session in date plus sur
-@date = split '-', $doc{'date'};
-print "@date";
-$session = sessionize(@date);
-$doc{'id'} =~ s/^\d{8}-/$session-/;
+if ($typeid ne "ga") {
+  $maxses=0;
+  foreach $ses (keys %sessions) {
+    if ($sessions{"$ses"} > $maxses) {
+      $session = $ses;
+      $maxses = $sessions{"$ses"};
+    }
+  }
+  $doc{'id'} = $session."-".$doc{'id'};
+}
 
 #clean auteurs
 $doc{'auteurs'} =~ s/\s+/ /g;

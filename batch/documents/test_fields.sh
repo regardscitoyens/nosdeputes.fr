@@ -3,7 +3,7 @@
 reparse=$1
 mkdir -p test
 
-if $reparse; then
+if [ ! -z $reparse ]; then
   bash reparse_all.sh 1
 fi
 
