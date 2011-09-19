@@ -80,16 +80,17 @@ class parlementaireActions extends sfActions
     $width = $work_height*$width/$height;
     $height = $work_height;
 
-    if ($height/$width < $ratio) {
+    if ($height/$width != $ratio) {
 	$iorig = imagecreatetruecolor($width, $width*$ratio);
         imagecopyresampled($iorig, $ih, 0, -($height - $width*$ratio), 0, 0, $width, $width*$ratio, $width, $height);
-	imagefilledrectangle($iorig, 0, - $height + $width*$ratio, $width, $heigth - $width*$ratio, $colortop);
+	imagefilledrectangle($iorig, 0, - $height + $width*$ratio, $width, $height - $width*$ratio, $colortop);
 	$height = $width*$ratio;
 
+        imagedestroy($ih);
+        $ih = $iorig;
+    }else{
+        imagedestroy($iorig);
     }
-
-    imagedestroy($ih);
-    $ih = $iorig;
     unlink($file);
 
     if ((isset($parlementaire->autoflip) && $parlementaire->autoflip) XOR $request->getParameter('flip')) {
