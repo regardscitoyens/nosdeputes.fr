@@ -428,6 +428,7 @@ while ($doc{'auteurs'} =~ /\s*([^,]* )([A-ZÀÉÈÊÎÏÔÙÇ][^,\s]*) (Rapporte
 }
 $doc{'auteurs'} = $auteurs;
 $doc{'auteurs'} =~ s/[,\s]+les membres du groupe (.)/, \U$1/;
+$doc{'auteurs'} =~ s/,[,\s]+/, /g;
 $doc{'auteurs'} =~ s/[,\s]+$//;
 $doc{'auteurs'} = name_lowerize($doc{'auteurs'},1);
 
