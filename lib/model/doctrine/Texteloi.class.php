@@ -99,7 +99,7 @@ class Texteloi extends BaseTexteloi
   }
 
   public function setAuteurs($signataires) {    
-  //  $debug=1; // $debug2=1;
+   // $debug=1; // $debug2=1;
     $this->signataires = $signataires;
    //Set signatires, auteurs via PArlemnaitreTexteDocu et Organisme
     $orga = null;
@@ -310,11 +310,11 @@ class Texteloi extends BaseTexteloi
 
   public function getExtract() {
     $sub = substr(strip_tags($this->contenu), 0, 30000);
-    $str = preg_replace('/^.*(mesdames)/i', '\\1', $sub);
-    if (!preg_match('/^mesdames/i', $str)) {
-      if (preg_match('/^.*introduction(.*)$/i', $sub, $match))
-        $str = $match[1];
-      else if (preg_match('/^.*exposé des motifs(.*)$/i', $sub, $match))
+    if (preg_match('/^.*EXPOS(É|E) DES MOTIFS\s*(.*)$/i', $sub, $match))
+      $str = $match[2];
+    else {
+      $str = preg_replace('/^.*(mesdames)/i', '\\1', $sub);
+      if (!preg_match('/^mesdames/i', $str) && preg_match('/^.*introduction(.*)$/i', $sub, $match))
         $str = $match[1];
       else return null;
     }
