@@ -30,7 +30,7 @@ class loadCommissionTask extends sfBaseTask
                 echo "ERROR file empty : $file\n";
                 continue;
           }
-          if ($count == 10)
+          if ($count == 50)
             exit(1);
           $count++;
 	  foreach(file($dir.$file) as $line) {
@@ -54,6 +54,10 @@ class loadCommissionTask extends sfBaseTask
               $contraints = get_defined_constants(true);
               print_r($contraints["json"]);
               continue;
+            }
+	    if ($json->session < 20042005) {
+	      echo "saute séance trop vieille : ".$json->session."\n";
+              break;
             }
 	    $json->intervention = html_entity_decode($json->intervention, ENT_NOQUOTES, "UTF-8");
 	    $json->commission = html_entity_decode($json->commission, ENT_NOQUOTES, "UTF-8");

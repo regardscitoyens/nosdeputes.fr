@@ -5,6 +5,7 @@ mkdir "html" unless -e "html";
 use URI::Escape;
 use WWW::Mechanize;
 use HTML::TokeParser;
+use Encode;
 $a = WWW::Mechanize->new();
 $url = shift;
 eval {$a->get($url);};

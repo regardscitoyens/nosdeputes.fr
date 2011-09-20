@@ -16,11 +16,15 @@ class loadAmdmtsTask extends sfBaseTask {
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
+	$cpt = 0;
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == ".") continue;
           $ct_lines = 0;
           $ct_lus = 0;
           $ct_crees = 0;
+          if ($cpt > 25)
+                exit(1);
+          $cpt ++;
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
             $json = json_decode($line);

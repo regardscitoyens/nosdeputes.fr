@@ -21,9 +21,6 @@ class loadHemicyleTask extends sfBaseTask
       if ($dh = opendir($dir)) {
         $cpt = 0;
         while (($file = readdir($dh)) !== false) {
-	  if ($cpt > 9)
-		exit(1);
-	  $cpt ++;
 	  $sections = array();
 	  if (preg_match('/^\./', $file))
 	    continue;
@@ -33,6 +30,9 @@ class loadHemicyleTask extends sfBaseTask
 		echo "ERROR file empty : $file\n";
 		continue;
 	  }
+          if ($cpt > 9)
+                exit(1);
+          $cpt ++;
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
             $error = 0;
