@@ -21,14 +21,18 @@ class loadCommissionTask extends sfBaseTask
       if ($dh = opendir($dir)) {
         $count = 0;
         while (($file = readdir($dh)) !== false) {
-          if ($count == 10)
-            exit(1);
-          $count++;
           $sections = array();
 	  if (preg_match('/^\./', $file))
 	    continue;
 	  echo "$dir$file\n";
           $debug = 1;
+          if (!filesize($dir.$file)) {
+                echo "ERROR file empty : $file\n";
+                continue;
+          }
+          if ($count == 10)
+            exit(1);
+          $count++;
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
             $error = 0;
