@@ -19,6 +19,10 @@ $mois{'décembre'} = '12';
 
 $on = 0;
 while(<FILE>) {
+    if (/<b>COMMISSION /) {
+	$_ = "$_\n";
+        $on = 1;
+    }
     if ($on) {
 	chomp;
 	s/<br>/ /g;
@@ -28,6 +32,8 @@ while(<FILE>) {
 	$on = 1;
     }
 }
+$lines =~ s/Membres? présents? ou excusés?//;
+$lines =~ s/&nbsp;:<br>/ :\n/g;
 $lines =~ s/&nbsp;<b>/ /g;
 $lines =~ s/&nbsp;/ /g;
 $lines =~ s/<\/b> *<b>/ /g;
@@ -62,9 +68,9 @@ $lines =~ s/(\d[erm]+ r|R)éunion /\n$1éunion /gi;
 $lines =~ s/\. / /g;
 
 foreach (split /\n/, $lines) {
-    if (/Comité|Commission|Mission/ && !/Ordre du jour/ && !/(réunion|séance)/i && !/Membres/i && !/^\s*\(/) {
+    if (/(Comité\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/(réunion|séance)/i && !/Membres/i && !/^\s*\(/) {
 	$commission = $_;
-	$commission =~ s/.*(Comité|Commission|Mission)/$1/;
+	$commission =~ s/.*\W(Comité|Commission|Mission|Office|Observatoire|Délégation)/$1/i;
 	$commission =~ s/\s*[\(:].*//;
 	$on = 0;
     }
