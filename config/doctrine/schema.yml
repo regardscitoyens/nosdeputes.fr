@@ -651,7 +651,6 @@ Texteloi:
       fields: [id_dossier_institution]
     index_alpha:
       fields: [numero, annexe]
-      type: unique
     index_type:
       fields: [type(30), type_details(200)]
     index_date:

@@ -32,7 +32,7 @@ class loadDocumentsTask extends sfBaseTask {
 	    if (!$json->numero)
 	      {echo "ERROR numero : \n"; continue;}
 	    if(!$json->date)
-	      {echo "ERROR date_depot : \n"; continue;}
+	      {echo "ERROR date : \n"; continue;}
 	    if (!$json->type)
 	      {echo "ERROR type : \n"; continue;}
             $doc = Doctrine::getTable('Texteloi')->find($json->id);
@@ -41,14 +41,10 @@ class loadDocumentsTask extends sfBaseTask {
               $doc->id = $json->id;
               $doc->source = $json->source;
               $doc->numero = $json->numero;
-              if ($json->annexe != "") {
-                if (Doctrine::getTable('Texteloi')->findByNumAnnexe($json->numero,$json->annexe))
-                  {echo "ERROR numero + annexe déjà existant avec url différente : \n"; continue;}
+              if ($json->annexe != "")
                 $doc->annexe = $json->annexe;
-              }
               $doc->date = $json->date;
               $doc->type = $json->type;
-	      //	      $doc->save();
             }
             if ($json->dossier)
               $doc->setDossier($json->dossier);
