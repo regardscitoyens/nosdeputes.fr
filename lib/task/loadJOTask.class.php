@@ -41,7 +41,7 @@ class loadJOTask extends sfBaseTask
 	      continue;
 	    }
 	    if (!$jo->senateur) {
-	      echo "ERROR null : ";
+	      echo "ERROR senateur : ";
 	      echo $line;
 	      echo "\n";
 	      continue;
@@ -52,6 +52,12 @@ class loadJOTask extends sfBaseTask
 	    }
 	    if (!$senateur) {
 	      echo "ERROR senateur : ";
+	      echo $line;
+	      echo "\n";
+	      continue;
+	    }
+	    if (!$jo->commission,) {
+	      echo "ERROR commission : ";
 	      echo $line;
 	      echo "\n";
 	      continue;
