@@ -217,6 +217,7 @@ $string =~ s/[\s,\(]*Est devenue résolution du Sénat.*$//;
 $string =~ s/[\s,\(]*r?envoyée? à la( com)?.*$//i;
 $string =~ s/- sur .*[^M]\.//;
 $string =~ s/SOMMAIRE.*$//;
+$string =~ s/Nota\. -.*$//;
 
 #Find tome/volume/annexe number in text or retrieve from url (less sure)
 if ($annexes) {
@@ -416,7 +417,9 @@ $doc{'auteurs'} =~ s/[,\s]*$/,/;
 $doc{'auteurs'} =~ s/\s*\([^\)]*\)+\s*/ /g;
 $doc{'auteurs'} =~ s/[\(\)]//g;
 $doc{'auteurs'} =~ s/de l'union centr/Union centr/ig;
-#$doc{'auteurs'} =~ s/ {1,2,3} 
+$doc{'auteurs'} =~ s/[\s,]+sur .*$//ig;
+$doc{'auteurs'} =~ s/[\s,]+Compte .*:,/,/ig;
+
 
 if ($doc{'type'} =~ /^(Avis|Rapport)/) {
   if ($doc{'auteurs'} =~ /mission|observatoire|office|délégation/i && $doc{'auteurs'} !~ /Auteur/) {
