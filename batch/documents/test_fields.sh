@@ -7,6 +7,11 @@ if [ ! -z $reparse ]; then
   bash reparse_all.sh 1
 fi
 
+if grep "\$\$" parse_doc.pl; then
+  echo "WARNING \$\$ présent dans parse_doc.pl. STOPPING NOW"
+  exit
+fi
+
 fields=`cat out.yml/* | grep ": ." | grep -v "^    - " | sed 's/: .*$//' | sed 's/^ *//' | sort | uniq`
 total=`ls out.yml/ | wc -l | awk '{print $1}'`
 echo "$total documents parsés analysés"
@@ -33,3 +38,7 @@ done;
 echo "Vérifier les champs dans test :"
 ls -lrth test
 
+
+# useful to test erreurs :
+# scheme = "date $" "sénateur" "centriste" ...
+# for file in `rgrep $scheme out.yml | grep "date:" | awk -F ":" '{print $1'} | sed 's/out.yml\(.*\)\(rap\|ppl\|pjl\|ppr\|tas\|ga\)/\2\1\2/'`; do echo $file; perl parse_doc.pl $file 1; done
