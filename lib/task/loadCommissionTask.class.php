@@ -28,6 +28,7 @@ class loadCommissionTask extends sfBaseTask
           $debug = 1;
           if (!filesize($dir.$file)) {
                 echo "ERROR file empty : $file\n";
+		unlink($dir.$file);
                 continue;
           }
           if ($count == 50)
