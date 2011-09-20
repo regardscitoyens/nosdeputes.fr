@@ -73,7 +73,6 @@ class Question extends BaseQuestion
       $ministere = preg_replace('/(petites et moyennes entreprises).*$/', '\\1', $ministere);
     else if (! preg_match('/(français de l\'étranger|plan de relance|politique de la ville|aménagement du territoire|relations avec le parlement)/', $ministere))
       $ministere = preg_replace('/^(Ministère|Haut-Commissariat|Secrétariat d\'État) ((à|de) l\'|(à la|au|aux|du|des|de la) )([^ ]+) +.*$/', '\\1 \\2\\5', $ministere);
-print_r($match);
     return preg_replace('/[\s,]+$/', '', $ministere);
   }
 
