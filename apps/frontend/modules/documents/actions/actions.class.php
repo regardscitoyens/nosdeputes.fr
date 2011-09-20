@@ -25,7 +25,7 @@ class documentsActions extends sfActions
 
    $this->auteurs = $this->doc->getAuteurs();
    $this->cosign = $this->doc->getCosignataires();
-   $this->qtag = $this->qtag = Doctrine_Query::create()
+   $this->qtag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t')
       ->where('tg.taggable_id = ?', $this->doc->id);
    $this->section = $this->doc->getSection();

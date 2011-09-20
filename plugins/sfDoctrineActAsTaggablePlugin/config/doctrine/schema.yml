@@ -46,7 +46,7 @@ Tagging:
     taggable_model:   
       type:           string(30)
     taggable_id:      
-      type:           integer
+      type:           string(20)
   relations:
     Tag:
   indexes:
