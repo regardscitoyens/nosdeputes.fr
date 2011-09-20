@@ -67,12 +67,13 @@ class Question extends BaseQuestion
     $ministere = str_replace('chargé', '', $ministere);
     $ministere = str_replace('de la mise en oeuvre', '', $ministere);
     $ministere = preg_replace('/^([^,]+),.*$/', '\\1', $ministere);
-    if (preg_match('/^((Ministère|Haut-Commissariat|Secrétariat d\'État) ((à|de) l\'|(à la|au|aux|du|des|de la) ))(affaires|espace|fonction|collectivités|cohésion|sécurité|anciens|enseignement|éducation|commerce)(( *[^ ]+) +$)/', $ministere, $match))
-      $ministere = $match[1].$match[6].$match[7];
+    if (preg_match('/^((Ministère|Haut-Commissariat|Secrétariat d\'État) [àauxdeusl\'\s]+(affaires|espace|fonction|collectivités|cohésion|sécurité|anciens|enseignement|éducation|commerce) [^\s]+) /i', $ministere, $match))
+      $ministere = $match[1];
     else if (preg_match('/petites et moyennes entreprises/', $ministere))
       $ministere = preg_replace('/(petites et moyennes entreprises).*$/', '\\1', $ministere);
     else if (! preg_match('/(français de l\'étranger|plan de relance|politique de la ville|aménagement du territoire|relations avec le parlement)/', $ministere))
       $ministere = preg_replace('/^(Ministère|Haut-Commissariat|Secrétariat d\'État) ((à|de) l\'|(à la|au|aux|du|des|de la) )([^ ]+) +.*$/', '\\1 \\2\\5', $ministere);
+print_r($match);
     return preg_replace('/[\s,]+$/', '', $ministere);
   }
 
