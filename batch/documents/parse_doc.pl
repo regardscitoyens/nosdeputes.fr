@@ -63,6 +63,7 @@ $tmpdate = $1 if ($string =~ /<meta name="date" content="(\d{4}-\d\d-\d\d)">/i);
 $header = $1 if ($string =~ s/^.*<body>(.*)<!--#hr function="section"-->//i);
 $string = decode_entities($string);
 $string =~ s/(\W)UMP(\W)/$1Union pour un mouvement populaire$2/g;
+$string =~ s/C O L L O Q U E.*$//;
 $reperes = $1 if ($string =~ s/^.*<!--repere-box-->(.*)<!--\/repere-box-->//i);
 if ($string =~ s/^(.*)CONSTITUTION DU 4 OCTOBRE 1958//) {
   $sommaire = $1;
@@ -213,7 +214,7 @@ $string =~ s/[cet\s]*(groupe|office|observatoire|(délégat|(com)?miss)ion)[^\.\
 $string =~ s/[\s,\(]*déposée? sur le bureau d.*$//i;
 $string =~ s/[\s,\(]*Le Sénat a (adopt|modifi)é.*$//;
 $string =~ s/[\s,\(]*Est devenue résolution du Sénat.*$//;
-$string =~ s/[\s,\(]*r?envoyée? à la com.*$//i;
+$string =~ s/[\s,\(]*r?envoyée? à la( com)?.*$//i;
 $string =~ s/- sur .*[^M]\.//;
 $string =~ s/SOMMAIRE.*$//;
 
@@ -264,7 +265,12 @@ if ($auteurs && (!$doc{'auteurs'} || $type !~ /^(Rapport|Avis)/ || $annexes || $
 }
 if ($auteurs) {
   $auteurs =~ s/^([^,]+),.*$/$1/;
-  $string =~ s/[\.,\s]*(pr[eé]sent[eé]|fait)?e?\s*par[\-\s]+$auteurs(,? ?(président|sénat(eur|rice)))?.*$//;
+  $auteurs =~ s/Mmes /Mme /g;
+  $string =~ s/Mmes /Mme /g;
+  $string =~ s/[\.,\s]*(pr[eé]sent[eé]|fait)?e?\s*(par)?[\-\s]+$auteurs(,? ?(président|sénat(eur|rice)))?.*$//i;
+  $auteurs =~ s/^M[mles\.\s]+//;
+  $string =~ s/[\.,\s]*(pr[eé]sent[eé]|fait)?e?\s*(par)?[\-\s]+$auteurs(,? ?(président|sénat(eur|rice)))?.*$//i;
+  $string =~ s/[\s,]*par[\s,]*$//i;
 }
 
 $doc{'auteurs'} =~ s/, (député|rapporteur)//gi;
@@ -281,7 +287,7 @@ if ($string =~ s/[,\s]*TEXTE [EÉ]LABOR[EÉ] PAR LA COMMISSION MIXTE PARITAIRE.*
 }
 
 $string =~ s/en application de .* (constitution|règlement), //i;
-$string =~ s/[\s,]*TRANSMISE? PAR.*$//i;
+$string =~ s/[\s,]*TRANSMISE?( PAR)?.*$//i;
 $string =~ s/[\s,]*présentée? au nom de (M[Mlmes\.\s]+.*).*$//i;
 $string =~ s/[\s,\.]* (par|de) (M[Mlmes\.\s]+.*).*$//i;
 $string =~ s/^\s+//;
@@ -310,14 +316,15 @@ $doc{'titre'} =~ s/[\.,\s]+$//;
 $string = lc($string);
 $type = lc($doc{'type'});
 $string =~ s/\s*$type[,\s]*//;
-$string = "organique ".$string if ($doc{'titre'} =~ s/^\s*organique\s*//);
-$string = "ratifiant ".$string if ($doc{'titre'} =~ s/^\s*organique\s*//);
+$string =~ s/actualisant/tendant à actualiser/g;
+$string = "organique ".$string if ($doc{'titre'} =~ s/^\s*organique\s*// && $string !~ /organique/);
+$string = "ratifiant ".$string if ($doc{'titre'} =~ s/^\s*ratifiant\s*// && $string !~ /ratifiant/);
 $tmp = lc($doc{'titre'});
 $string =~ s/[,\s]*$tmp[,\s\?!:]*/ /g;
 $tmp =~ s/ : .*$//g;
 $string =~ s/[,\s]*$tmp[,\s\?!:]*/ /g;
 if ($typeid =~ /^([alr]|ga|rap)$/) {
-  $string =~ s/rapport.*(sur )?/$1/i;
+  $string =~ s/rapport.*(sur )?/$1/;
 }
 
 $doc{'type_details'} = $string if (length($string) <= 500);
@@ -356,7 +363,7 @@ $doc{'type_details'} =~ s/^.*dépôt.*publié.*journal officiel.*//i;
 $doc{'type_details'} =~ s/\s*présentée?[\s,]*$//;
 $doc{'type_details'} =~ s/^[\s,]*présentée?\s*//;
 $tmpdetails = $doc{'type_details'};
-if ($doc{'titre'} =~ /$tmpdetails/) {
+if ($doc{'titre'} =~ /$tmpdetails/i) {
   $doc{'type_details'} = "";
 }
 if ((substr $doc{'type_details'}, 0, 30) eq (substr $doc{'titre'}, 0, 30)) {
@@ -376,6 +383,8 @@ if (!$doc{'titre'} || $doc{'titre'} =~ /^\s*$/) {
   $doc{'titre'} = $doc{'type_details'};
   $doc{'type_details'} = "";
 }
+$doc{'type_details'} =~ s/\s+,+\s*/, /g;
+$doc{'titre'} .= " et des sénateurs" if ($doc{'type_details'} =~ s/ et des Sénateurs//i);
 $doc{'titre'} =~ s/[\s,\.]+$//;
 
 #format date
@@ -395,6 +404,7 @@ if ($typeid ne "ga") {
 
 #clean auteurs
 $doc{'auteurs'} =~ s/\s+/ /g;
+$doc{'auteurs'} =~ s/\W*à,? M\. le président.*$//i;
 $doc{'auteurs'} =~ s/[\s,]+(fait )?au nom d[ela'u\s]+(.)/, \U$2/ig;
 $doc{'auteurs'} =~ s/[\s,]+fait (.)/, \U$1/ig;
 $doc{'auteurs'} =~ s/ et[\s,]*([A-ZÀÉÈÊÎÏÔÙÇ])/, $1/g;
@@ -454,6 +464,9 @@ $doc{'auteurs'} =~ s/[,\s]+(les membres|et) du groupe (du )?(.)/, \U$3/ig;
 $doc{'auteurs'} =~ s/,[,\s]+/, /g;
 $doc{'auteurs'} =~ s/[,\s]+$//;
 $doc{'auteurs'} =~ s/([^M])\./$1/g;
+$doc{'auteurs'} =~ s/([re], )([^M]*), M/$1$2 Auteur, M/g;
+$doc{'auteurs'} =~ s/(Auteur|Rapporteur|Cosignataire, )d/$1Commission d/g;
+$doc{'auteurs'} =~ s/rattachés,/rattachés Auteur,/ig;
 $doc{'auteurs'} = name_lowerize($doc{'auteurs'},1);
 
 foreach $k (keys %doc) {
