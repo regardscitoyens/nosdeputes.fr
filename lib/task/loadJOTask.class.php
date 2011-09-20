@@ -56,7 +56,7 @@ class loadJOTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
-	    if (!$jo->commission,) {
+	    if (!$jo->commission) {
 	      echo "ERROR commission : ";
 	      echo $line;
 	      echo "\n";
