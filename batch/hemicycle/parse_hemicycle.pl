@@ -46,7 +46,7 @@ sub print_inter {
 		$timestamp += 20;
 		$context = $bigcontext;
 		$context .= ' > '.$subcontext if ($subcontext);
-                if ($intervention =~ /((projet|proposition|motion|lettre)\s[^<]*(n°|n<sup>os?<\/sup>|nos?|n&[^;]+;&[^;]+;)[^<\.]{1,5}\d[^<\.]+)/i) {
+                if ($intervention =~ /((projet|proposition|motion|lettre)\s[^<]*(n°|n<sup>os?<\/sup>|nos?|n&[^;]+;&[^;]+;)[^<\.]{1,5}\d[^<\.]+)/i && $intervention !~ /amendements? n/) {
                           $docs = $1;
 			  $docs =~ s/°//g;
                           $docs =~ s/&[^;]*;//g;
