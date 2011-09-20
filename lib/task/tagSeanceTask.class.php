@@ -13,16 +13,20 @@ class tagSeanceTask extends sfBaseTask
  
   protected function count($array, $excludeS = 0) {
     foreach($array as $i) {
-      $i = preg_replace('/\([^\)]+\)/', '', $i);
-      $i = preg_replace('/&#339;/', 'oe', $i['intervention']);
+      $i = preg_replace('/\([^\)]+\)/', '', $i['intervention']);
+      $i = strip_tags($i);
+      $i = preg_replace('/&#339;/', 'oe', $i);
       foreach(preg_split('/[\s\,\;\.\:\_\(\)\&\#\<\>\']+/i', $i) as $w) {
 	if (!preg_match('/^[A-Z]+$/', $w))
 	  $w = strtolower($w);
 	if (strlen($w)>1 && preg_match('/[a-z]/i', $w)) {
 	  //	  $s = soundex($w);
 	  $s = $w;
-	  $words[$s]++;
-	  if (!$this->sound[$s])
+	  if (!isset($words[$s]))
+	    $words[$s] = 1;
+	  else
+	    $words[$s]++;
+	  if (!isset($this->sound[$s]))
 	    $this->sound[$s] = $w;
 	}
       }
@@ -30,7 +34,7 @@ class tagSeanceTask extends sfBaseTask
     foreach(array_keys($words) as $k) {
       if (preg_match('/s$/', $k)) {
 	$ks = preg_replace('/s$/', '', $k);
-	if ($words[$ks]) {
+	if (isset($words[$ks])) {
 	  $words[$ks]+=$words[$k];
 	  if ($excludeS)
 	    unset($words[$k]);
@@ -60,7 +64,7 @@ class tagSeanceTask extends sfBaseTask
     $exclude_sentences = array('garde des sceaux'=>1, 'haut-commissaire' => 1, 'monsieur' => 1, 'madame'=>1);
 
     foreach(array_keys($words) as $k) {
-      if (!$include[$k])
+      if (!isset($include[$k]))
         $exclude[$k] = 1;
       echo $k.': '.$words[$k]*100/$tot."\n";
       if ($words[$k]*100/$tot < 3)
@@ -96,7 +100,7 @@ class tagSeanceTask extends sfBaseTask
       $tags = array();
       //Pour les mots le plus populaires non exclus on les gardes
       foreach(array_keys($words) as $k) {
-        if (!$exclude[$k]) {
+        if (!isset($exclude[$k])) {
           $cpt++;
           $pc = $words[$k]*100/$tot;
           if ($pc < 0.8)
@@ -113,12 +117,18 @@ class tagSeanceTask extends sfBaseTask
         foreach (array_keys($tags) as $tag) {
           if (preg_match('/([^\s\,\.\:\>\;\(\)]*[^\,\.\:\>\;\(\)]{6}'.$tag.'[^\s\,\.\:\<\&\(\)]*)/i', $inter['intervention'], $match)) {
             $sent = strtolower($match[1]);
-            $sentences[$sent]++;
+	    if (!isset($sentences[$sent]))
+	      $sentences[$sent] = 1;
+	    else
+	      $sentences[$sent]++;
             $sent2word[$sent] = $tag;
           }
           if (preg_match('/([^\s\,\.\:\>\;\)\)]*'.$tag.'[^\,\.\:\<\&\(\)]{6}[^\s\,\.\:\<\&\(\)]*)/i', $inter['intervention'], $match)) {
             $sent = strtolower($match[1]);
-            $sentences[$sent]++;
+	    if (!isset($sentences[$sent]))
+	      $sentences[$sent] = 1;
+	    else
+	      $sentences[$sent]++;
             $sent2word[$sent] = $tag;
           }
         }
@@ -190,7 +200,7 @@ class tagSeanceTask extends sfBaseTask
 	$seance->save();
       }
       unset($tags);
-      unset($array);
+       unset($array);
       echo " done.";
       unset($s);
       if ($tagged == 0)
