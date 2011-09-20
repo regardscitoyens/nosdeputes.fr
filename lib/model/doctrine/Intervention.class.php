@@ -83,7 +83,8 @@ class Intervention extends BaseIntervention
   }
   public function setPersonnaliteByNom($nom, $fonction = null) 
   {
-    $nom = html_entity_decode($nom);
+    $nom = html_entity_decode($nom, ENT_COMPAT, 'UTF-8');
+    $fonction = html_entity_decode($fonction, ENT_COMPAT, 'UTF-8');
     $this->setFonction($fonction);
     if (is_array(self::$personnalites)) {
       if (isset(self::$personnalites[$nom.$fonction])) {
