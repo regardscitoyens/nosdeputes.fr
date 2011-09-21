@@ -11,7 +11,7 @@
 <div><ul>
 <?php $sf_response->setTitle('Les sénateurs spécialistes de "'.$tag.'"');
 foreach($parlementaires as $inter) {
-  echo '<li>'.link_to($inter['Parlementaire']['nom'], '@tag_parlementaire_interventions?parlementaire='.$inter['Parlementaire']['slug'].'&tags='.$tag).' (<span class="list_inter">'.$inter['nb'].' interventions</span>)</li>';
+  echo '<li>'.link_to($inter['Parlementaire']['nom'], '@tag_parlementaire_interventions?parlementaire='.$inter['Parlementaire']['slug'].'&tags='.$tag).' (<span class="list_inter">'.$inter['nb'].' intervention'.($inter['nb'] > 1 ? 's' : '').'</span>)</li>';
 }
 ?></ul>
 </div>
