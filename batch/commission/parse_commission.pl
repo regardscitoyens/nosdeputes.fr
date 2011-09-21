@@ -118,7 +118,6 @@ foreach (split /\n/, $content) {
 		$context =~ s/ - / > /;
 		$intervention = '<p>'.$titre.'</p>';
 		%fonctions = ();
-		$timestamp = 0;
 		$numeros_loi = '';
 		$is_newcontext = 1;
 	}
@@ -136,6 +135,7 @@ foreach (split /\n/, $content) {
 		    print_inter() if (!$is_newcontext);
 		    $heure = ($nb_seance == 1) ? '1ere' : $nb_seance.'ieme';
 		    $heure .= ' séance';
+		    $timestamp = '0';
 		}
 		if($is_newcontext) {
 		    $is_newcontext = 0;
