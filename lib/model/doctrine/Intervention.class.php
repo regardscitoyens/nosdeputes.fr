@@ -201,7 +201,7 @@ class Intervention extends BaseIntervention
     $lois = $this->prepareLoi($tlois);
     $this->addTagLoi($lois);
 
-    if ($lois[0]) {
+    if (!isset($lois[0]) || !$lois[0] {
       $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
       return $debug;
     }
