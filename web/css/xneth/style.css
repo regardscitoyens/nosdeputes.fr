@@ -1714,6 +1714,9 @@ h2 {
 .accueil_message_content {
   text-align: justify;
 }
+.accueil_message a {
+      text-decoration: underline;
+}
 .accueil_message_content h1 {
   text-align: left;
   margin: 0;

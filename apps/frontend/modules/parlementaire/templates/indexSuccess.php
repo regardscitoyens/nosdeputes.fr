@@ -155,6 +155,7 @@
     <p>NosDéputés.fr est un site qui cherche à mettre en valeur l'activité parlementaire des députés de l'Assemblée Nationale Française.</p>
     <p>En synthétisant les différentes activités législatives et de contrôle du gouvernement des élus de la nation, ce site essaie de donner aux citoyens de nouveaux outils pour comprendre et analyser le travail de leurs représentants.</p>
     <p>Conçu comme une plateforme de médiation entre citoyens et députés, le site propose à chacun de participer et de s'exprimer sur les débats parlementaires. Au travers de leurs commentaires, les utilisateurs sont invités à créer le débat en partageant leur expertise lorsque cela leur semble utile. Peut-être pourront-ils ainsi nourrir le travail de leurs élus ?</p>
+    <p>Si vous souhaitez vous intéresser à l'activité du <a href="http://nossenateurs.fr/">sénat</a>, vous pouvez vous référer à notre initiative <a href="http://www.NosSenateurs.fr/">Nos Sénateurs</a>.</p>
   </div>
   <div class="accueil_message_signature">
     <p>Toute l'équipe du collectif <a href="http://www.regardscitoyens.org/">RegardsCitoyens.org</a>.</p>
