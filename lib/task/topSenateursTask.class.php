@@ -109,6 +109,7 @@ class topSenateursTask extends sfBaseTask
       ->from('Parlementaire p, p.Amendements a')
       ->groupBy('p.id')
       ->andWhere('a.sort != ?', 'Rectifié')
+      ->andWhere('a.organisme_id IS NULL')
       ->fetchArray();
     foreach ($parlementaires as $p) {
       $this->senateurs[$p['id']]['amendements_signes']['value'] = $p['count'];
@@ -121,6 +122,7 @@ class topSenateursTask extends sfBaseTask
       ->from('Parlementaire p, p.Amendements a')
       ->groupBy('p.id')
       ->andWhere('a.sort = ?', 'Adopté')
+      ->andWhere('a.organisme_id IS NULL')
       ->fetchArray();
     foreach ($parlementaires as $p) {
       $this->senateurs[$p['id']]['amendements_adoptes']['value'] = $p['count'];
@@ -133,6 +135,7 @@ class topSenateursTask extends sfBaseTask
       ->from('Parlementaire p, p.Amendements a')
       ->groupBy('p.id')
       ->andWhere('a.sort = ?', 'Rejeté')
+      ->andWhere('a.organisme_id IS NULL')
       ->fetchArray();
     foreach ($parlementaires as $p) {
       $this->senateurs[$p['id']]['amendements_rejetes']['value'] = $p['count'];
