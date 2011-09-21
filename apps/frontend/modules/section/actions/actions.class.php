@@ -125,7 +125,9 @@ class sectionActions extends sfActions
     if (!($this->order = $request->getParameter('order')))
       $this->order = 'plus';
     $query = Doctrine::getTable('Section')->createQuery('s')
-      ->where('s.id = s.section_id');
+      ->where('s.id = s.section_id')
+      ->andWhere('s.nb_interventions > ?', 9);
+      // ->andWhere('s.date LIKE ?', '%-%-%);
     if ($this->order == 'date') {
       $query->orderBy('s.max_date DESC');
       $this->titre = 'Les derniers dossiers traités au Sénat';

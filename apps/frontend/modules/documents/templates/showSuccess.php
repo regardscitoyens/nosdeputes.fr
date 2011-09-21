@@ -4,7 +4,7 @@
 <h2><?php echo preg_replace('/ - /', '<br/>- ', $doc->getDetailsTitre()); ?></h2>
 <div class="document">
 <?php $feminin = "";
-if (preg_match('/(propos|lettre)/i', $doc->type))
+if (preg_match('/(propos|lettre|motion)/i', $doc->type))
   $feminin = "e";
 
 if (count($auteurs)) {

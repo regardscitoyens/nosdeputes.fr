@@ -1,6 +1,6 @@
 <div class="travaux_parlementaires">
 <h1>Les dossiers parlementaires</h1>
-<?php include_component('section', 'simplifions', array()); ?>
+<?php // include_component('section', 'simplifions', array()); ?>
 <h2><?php echo $titre; ?></h2>
 <ul>
 <?php if ($order == 'date') { echo '<li>'; $mois = ""; }
