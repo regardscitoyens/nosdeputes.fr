@@ -80,7 +80,7 @@ class tagSeanceTask extends sfBaseTask
     }
     unset($words);
 
-    $qs = Doctrine::getTable('Seance')->createQuery()->select('id')->where('tagged IS NULL');
+    $qs = Doctrine::getTable('Seance')->createQuery()->select('id')->where('tagged IS NULL')->orderBy('date DESC');
 
     foreach($qs->fetchArray() as $s) {
       echo "Seance ".$s['id']." ..";
