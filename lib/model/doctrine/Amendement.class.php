@@ -24,16 +24,16 @@ class Amendement extends BaseAmendement {
   public function setAuteurs($auteurs) {
     $groupe = null;
     $sexe = null;
+    $regexp = array();
     if (preg_match('/^\s*(.*),+\s*[dl]es\s+(.*\s+[gG]roupe|membres|députés)\s+(.*)\s*$/' ,$auteurs, $match)) {
-      $auteurs = $match[1];
-      $groupe = preg_replace("/^\s*(de la|de l'|du)\s*/", "", $match[3]);
-      if (preg_match('/^(.*)(et|,)\s+(M[\s\.ml].*)$/' ,$groupe, $match2)) {
-        $groupe = $match2[1];
-        $auteurs .= ", ".$match2[3];
-      }
       $tmpgroupe = null;
-      foreach (myTools::getGroupesInfos() as $gpe)
-        if (preg_match('/('.$gpe[4].'|'.$gpe[1].')/i', $groupe)) $tmpgroupe = $gpe[1];
+      foreach (myTools::getGroupesInfos() as $gpe) {
+        $regexp[] = $gpe[4];
+        if (preg_match('/('.$gpe[4].'|'.$gpe[1].')/i', $groupe)) {
+          $tmpgroupe = $gpe[1];
+          $auteurs = preg_replace('/,[^,]*'.$gpe[0].'[^,]*/', '', $auteurs);
+        }
+      }
       if ($tmpgroupe) $groupe = $tmpgroupe;
       else $groupe = null;
     }
@@ -45,24 +45,28 @@ class Amendement extends BaseAmendement {
         $depute = trim($match[1]);
         $circo = preg_replace('/\s/', '-', ucfirst(trim($match[2])));
       } else $circo = null;
-      if (preg_match('/(gouvernement|président|rapporteur|commission|questeur)/i', $depute)) {
+      if (count($regexp)) if (preg_match('/('.implode("|", $regexp).')/i', $depute)) {
         if ($debug) print "WARN: Skip auteur ".$depute." for ".$this->source."\n";
         continue;
-      } elseif (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([a-zA-Z].*)\s*$/', $depute, $match)) {
+      }
+      if (preg_match('/(gouvernement|président|rapporteur|commission|délégation|questeur|apparentés|rattachés|collègues)/i', $depute)) {
+        if ($debug) print "WARN: Skip auteur ".$depute." for ".$this->source."\n";
+        continue;
+      } elseif (preg_match('/^\s*(M[Mmles]*)[\.\s]+(\w.*)\s*$/', $depute, $match)) {
           $nom = $match[2];
-          if (preg_match('/M[ml]/', $match[1]))
+          if (preg_match('/[el]/', $match[1]))
             $sexe = 'F';
           else $sexe = 'H';
       } else $nom = preg_replace("/^\s*(.*)\s*$/", "\\1", $depute);
       $nom = ucfirst($nom);
       if ($debug) echo $nom."//".$sexe."//".$groupe."//".$circo." => ";
-      $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe, $groupe, $circo, $this);
-      if (!$depute) print "ERROR: Auteur introuvable in ".$this->source."/".$this->numero." : ".$nom." // ".$sexe." // ".$groupe."\n";
+      $parl = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe, $groupe, $circo, $this);
+      if (!$parl) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$groupe."\n";
       else {
-        if ($debug) echo $depute->nom."\n";
-        if (!$groupe && $depute->groupe_acronyme != "") $groupe = $depute->groupe_acronyme;
-        $this->addParlementaire($depute, $signataireindex);
-        $depute->free();
+        if ($debug) echo $parl->nom."\n";
+        if (!$groupe && $parl->groupe_acronyme != "") $groupe = $parl->groupe_acronyme;
+        $this->addParlementaire($parl, $signataireindex);
+        $parl->free();
       }
       $signataireindex++;
     }
@@ -84,7 +88,7 @@ class Amendement extends BaseAmendement {
   public function getSignataires($link = 0) {
     $signa = preg_replace("/M\s+/", "M. ", $this->_get('signataires'));
     if ($link && !preg_match('/gouvernement/i',$signa))
-      $signa = preg_replace('/(M+[\.mles\s]+)?([\wàéëêèïîôöûüÉ\s-]+)\s*(,\s*|$)/', '<a href="/deputes?search=\\2">\\1\\2</a>\\3', $signa);
+      $signa = preg_replace('/(M+[\.mles\s]+)?([A-ZÉ][^,]+)\s*(,\s*|$)/', '<a href="/deputes/rechercher/\\2">\\1\\2</a>\\3', $signa);
     return $signa;
   }
 

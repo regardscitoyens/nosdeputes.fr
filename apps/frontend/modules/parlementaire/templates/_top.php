@@ -73,6 +73,7 @@ foreach(array_keys($images) as $k) {
     $value = 0;
   $couleur = 'gris';
   $titre = $value.' '.$titres[$k];
+  if ($value < 2) $titre = preg_replace('/s$/', '', str_replace('s ', ' ', $titre));
   if ($rank && $top[$k]['rank'] <= 150) {
     $couleur = 'vert';
     $titre .=' (fait partie des 150 premiers)';

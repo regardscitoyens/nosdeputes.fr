@@ -74,7 +74,9 @@ echo include_component('commentaire', 'form', array('object' => $amendement)); ?
 <script type="text/javascript">
 <!--
 $('#liste_deputes a').live('mouseover', function() {
- nom = $(this).attr('href').split('='); $('.photo_fiche[alt*="'+nom[1]+'"]').css('opacity', '1');
+ nom = $(this).attr('href');
+ nom = nom.replace(/^.*rechercher\/([A-ZÉ][\.\s]+)*/, '');
+ $('.photo_fiche[alt*="'+nom+'"]').css('opacity', '1');
 });
 $('#liste_deputes').bind('mouseover mouseout', function(event) {
  if (event.type == "mouseover") { $('.photo_fiche').css('opacity', '0.3'); $("#liste_deputes").die("mouseover"); }

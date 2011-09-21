@@ -19,7 +19,7 @@ class Parlementaire extends BaseParlementaire
     return '';
   }
   public function __tostring() {
-    if($nom = $this->getNom())
+    if(isset($this->nom) && $nom = $this->getNom())
       return $nom;
     return "";
   }
