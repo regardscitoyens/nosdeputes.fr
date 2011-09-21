@@ -4,6 +4,7 @@ use URI::Escape;
 use HTML::Entities;
 use Encode;
 require "../common/common.pm";
+use utf8;
 
 $| = 1;
 $file = shift;
@@ -85,14 +86,14 @@ sub print_inter {
 		$json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 		$json .= ', "amendements":"'.$amendements.'"' if ($amendements);
 		$json .= "}\n";
-#		utf8::encode($json);
+		utf8::encode($json);
 		print $json;
 		if ($secondinter) {
 		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($secondinter).'", "fonction": "", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
                 $json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
                 $json .= ', "amendements":"'.$amendements.'"' if ($amendements);
                 $json .= "}\n";
-#		utf8::encode($json);
+		utf8::encode($json);
                 print $json;
 		}
 	}
@@ -104,8 +105,8 @@ sub print_inter {
 }
 
 foreach (split /\n/, $doc) {
-#    utf8::decode($_);
-#    $_ = decode_entities($_);
+    utf8::decode($_);
+    $_ = decode_entities($_);
     if (/<\/span><span([^>]*>)/ && $1 !~ /orateur_qualite/) {
 	s/<\/span><span[^>]*>//g;
     }
