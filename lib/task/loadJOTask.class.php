@@ -29,6 +29,7 @@ class loadJOTask extends sfBaseTask
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
+	$correspondanceheureseance = array();
         while (($file = readdir($dh)) !== false) {
 	  if (! is_file($dir.$file))
 	     continue;
@@ -73,6 +74,27 @@ class loadJOTask extends sfBaseTask
 	    }
 	    if (!isset($jo->heure) || !$jo->heure)
 	      $jo->heure = '1ere séance';
+	    //Pour sénat si heure alors 1ère/2d/3ième séance
+	    if(preg_match('/(\d)\:\d/', $jo->heure, $match)) {
+	      if (isset($correspondanceheureseance[$match[1]])) {
+		$jo->heure = $correspondanceheureseance[$match[1]];
+	      }else{
+		$jo->heure = "1ère séance";
+		if ($match[1] > 14) {
+		  $count = Doctrine::getTable('Seance')->createQuery('s')
+		    ->where('organisme_id = ?', $commission->id)
+		    ->andWhere('date = ?', $jo->date)->count();
+		  if ($count > 1) {
+		    if ($match[1] < 20) {
+		      $jo->heure = "2ième séance";
+		    }else{
+		      $jo->heure = $count."ième séance";
+		    }
+		  }
+		}
+		$correspondanceheureseance[$match[1]] = $jo->heure;	      
+	      }
+	    }
 	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->date, $jo->heure);
 	    $seance->addPresence($senateur, $typesource, $jo->source);
 	  }
