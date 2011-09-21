@@ -3,7 +3,6 @@
 use URI::Escape;
 use HTML::Entities;
 use Encode;
-use utf8;
 require "../common/common.pm";
 
 $| = 1;
@@ -46,19 +45,26 @@ sub print_inter {
 		$timestamp += 20;
 		$context = $bigcontext;
 		$context .= ' > '.$subcontext if ($subcontext);
-                if ($intervention =~ /((projet|proposition|motion|lettre)\s[^<]*(n°|n<sup>os?<\/sup>|nos?|n&[^;]+;&[^;]+;)[^<\.]{1,5}\d[^<\.]+)/i && $intervention !~ /amendements? n/) {
+		$cpt = 0;
+		if ($context =~ /procès verbal|ordre du jour|Conf[&#\d;é]+rence des pr[&#\d;é]+sidents/i) {
+			$numeros_loi = '';
+		}elsif ($subcontext !~ /article|discussion g/i && $intervention =~ /((projet|proposition|motion|lettre)\s[^<]*(n°|n<sup>os?<\/sup>|nos?|n&[^;]+;&[^;]+;)[^<\.]{1,5}\d[^<\.]+)/i && $intervention !~ /amendements? n/) {
+			while ($intervention =~ /((projet|proposition|motion|lettre)\s[^<]*(n°|n<sup>os?<\/sup>|nos?|n&[^;]+;&[^;]+;)[^<\.]{1,5}\d[^<\.]+)/gi) {
                           $docs = $1;
 			  $docs =~ s/°//g;
                           $docs =~ s/&[^;]*;//g;
-                          $numeros_loi = '';
-                          while ($docs =~ /(\d+)([\(\[\, ]+(\d{4}-\d{4})|)/g) {
+			  if ($docs =~ /(\d+)([\(\[\, ]+(\d{4}[- ]\d{4})|)/) {
+                          $numeros_loi = '' if (!$cpt); $cpt++;
+                          while ($docs =~ /(\d+)([\(\[\, ]+(\d{4}[- ]\d{4})|)/g) {
                                  if ($3) {
                                           $numeros_loi .= law_numberize($1,$3).",";
                                  }else{
                                           $numeros_loi .= law_numberize($1,$session).",";
                                  }
                           }
-                          chop($numeros_loi);
+			  }
+			  }
+                          chop($numeros_loi) if ($cpt);
                 }
                 if ($intervention =~ /amendements? n([^<]+)/) {
                                         $amdt = $1;
@@ -79,14 +85,14 @@ sub print_inter {
 		$json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 		$json .= ', "amendements":"'.$amendements.'"' if ($amendements);
 		$json .= "}\n";
-		utf8::encode($json);
+#		utf8::encode($json);
 		print $json;
 		if ($secondinter) {
 		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($secondinter).'", "fonction": "", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
                 $json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
                 $json .= ', "amendements":"'.$amendements.'"' if ($amendements);
                 $json .= "}\n";
-		utf8::encode($json);
+#		utf8::encode($json);
                 print $json;
 		}
 	}
@@ -98,8 +104,8 @@ sub print_inter {
 }
 
 foreach (split /\n/, $doc) {
-    utf8::decode($_);
-    $_ = decode_entities($_);
+#    utf8::decode($_);
+#    $_ = decode_entities($_);
     if (/<\/span><span([^>]*>)/ && $1 !~ /orateur_qualite/) {
 	s/<\/span><span[^>]*>//g;
     }
