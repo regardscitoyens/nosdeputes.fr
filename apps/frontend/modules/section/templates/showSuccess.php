@@ -63,7 +63,7 @@ if ($subsection->id != $section->id) : ?>
         echo link_to($doctitre, '@loi?loi='.$doc['texteloi_id']);
       } else if (isset($doc['id'])) {
         $amendements = Texteloi::getAmdmts($doc['type'], $curid, 1);
-        $doctitre = $doc['type']." N° $curid";
+        $doctitre = Texteloi::staticShortTitre($doc['id'], "", $doc['type']);
         if (!preg_match('/^,/', $doc['type_details']))
           $doctitre .= " ";
         $doctitre .= $doc['type_details'];

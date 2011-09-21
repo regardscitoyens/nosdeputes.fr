@@ -48,7 +48,8 @@ class Texteloi extends BaseTexteloi
   }
 
   public function getSection() {
-    $section = Doctrine::getTable('Section')->findOneByIdDossierInstitution($this->id_dossier_institution);
+    if ($this->id_dossier_institution)
+      $section = Doctrine::getTable('Section')->findOneByIdDossierInstitution($this->id_dossier_institution);
     if (!$section) $section = Doctrine_Query::create()
       ->select('s.id')
       ->from('Section s, Tagging ta, Tag t')
@@ -82,7 +83,7 @@ class Texteloi extends BaseTexteloi
       ->fetchArray();
     $res = count($sections);
     if ($res == O) {
-    // print "DEBUG : Pas de dossier trouvé pour le texte $this->id\n";
+   //  print "DEBUG : Pas de dossier trouvé pour le texte $this->id\n";
      return false;
     } else if ($res == 1) {
       $section = Doctrine::getTable('Section')->find($sections[0]['id']);
@@ -239,24 +240,31 @@ class Texteloi extends BaseTexteloi
     return $this->getOrganisme();
   }
 
-  public function getShortTitre() {
+  public static function staticShortTitre($id, $annexe, $type) {
     $str = "";
-    if (preg_match('/a([1-9]\d*)/', $this->annexe, $ann)) {
+    if (preg_match('/a([1-9]\d*)/', $annexe, $ann)) {
       $str .= "Annexe N° ".$ann[1]." ";
-      if ($this->type === "Avis")
+      if ($type === "Avis")
         $str .= "à l'";
       else $str .=  "au ";
     }
-    $str .= $this->type;
-    $str .= " N° ".$this->numero;
-    if (preg_match('/t(\d+)/', $this->annexe, $tom)) {
+    $str .= $type." N°&nbsp;";
+    if (preg_match('/^(\d{4})(\d{4})-(TAS)?(\d{3})/', $id, $match))
+      $str .= preg_replace('/^0+/', '', $match[4])." (".$match[1].'-'.$match[2].")";
+    else $str .= $id;
+    if (preg_match('/t(\d+)/', $annexe, $tom)) {
       $str .= " (Tome ".$tom[1];
-      if (preg_match('/v(\d+)/', $this->annexe, $vol))
+      if (preg_match('/v(\d+)/', $annexe, $vol))
         $str .= " - volume ".$vol[1];
       $str .= ")";
     }
     return $str;
   }
+
+  public function getShortTitre() {
+    return staticShortTitre($this->id, $this->annexe, $this->type);
+  }
+
 
   public function getTitre() {
     $str = $this->getDetailsTitre();
