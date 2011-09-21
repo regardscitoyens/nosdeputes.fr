@@ -77,7 +77,7 @@ $bulles = array("",
     $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
     <td id="<?php echo $t[0]['slug']; ?>" class="jstitle phototitle c_<?php echo strtolower($t[0]['groupe_acronyme']); ?> <?php echo $class['parl']; ?>" title="<?php echo $t[0]['nom']; ?> -- Député<?php if ($t[0]['sexe'] === "F") echo 'e'; ?> <?php echo $t[0]['groupe_acronyme'].' '.preg_replace('/([^\'])$/', '\\1 ', Parlementaire::$dptmt_pref[trim($t[0]['nom_circo'])]).$t[0]['nom_circo']; ?>"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"><?php echo $t[0]['nom']; ?></a></td>
     <?php for($i = 1 ; $i < count($t) ; $i++) { ?>
-      <td title="<?php echo $t[$i]['value'].' '; if ($t[$i]['value'] < 2) echo preg_replace('/s (.*-- )?/', ' \\1', $bulles[$i]); else echo $bulles[$i]; ?>" <?php echo $t[$i]['style']; ?> class="jstitle <?php echo $class[$ktop[$i]]; ?>">
+      <td title="<?php echo $t[$i]['value'].' '; if ($t[$i]['value'] < 2) echo preg_replace('/s (.*-- )?/', ' \\1', preg_replace('/s (.*-- )?/', ' \\1', $bulles[$i])); else echo $bulles[$i]; ?>" <?php echo $t[$i]['style']; ?> class="jstitle <?php echo $class[$ktop[$i]]; ?>">
       <?php if (preg_match('/\./', $t[$i]['value']))
         printf('%02d', $t[$i]['value']);
       else echo $t[$i]['value']; ?>
