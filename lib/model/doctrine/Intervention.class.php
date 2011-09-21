@@ -160,11 +160,20 @@ class Intervention extends BaseIntervention
     return $res;
   }
 
-  public function setContexte($contexte, $date = null, $timestamp = null, $tlois = null, $debug = 0) {
+  private function prepareLois($tlois) {
     $tlois = preg_replace('/[^,\d\-]+/', '', $tlois);
     $tlois = preg_replace('/\s+,/', ',', $tlois);
     $tlois = preg_replace('/,\s+/', ',', $tlois);
-    $lois = explode(',', $tlois);
+    return explode(',', $tlois); 
+  }
+
+  public function updateTagLois($strlois) {
+    $lois = $this->prepareLois($strlois);
+    $this->addTagLois($lois);
+    $this->tagSectionLois($lois);
+  }
+
+  public function addTagLois($lois) {
     $loisstring = "";
     foreach($lois as $loi) if ($loi) {
       $tag = 'loi:numero='.$loi;
@@ -172,21 +181,44 @@ class Intervention extends BaseIntervention
       if ($loisstring == "") $loisstring = "t.numero = $loi";
       else $loisstring .= " OR t.numero = $loi";
     }
+  }
+
+  public function tagSectionLois($lois) {
+     if ($this->section_id != 1) {
+        $titre = $this->Section->Section->getTitre();
+        if (!(preg_match('/(conf.*rence des pr.*sidents|^(d.*p.*t|transmission) d(e |.une? |.)(documents?|rapport|proposition|avis|projet)|cloture|ouverture|question|ordre du jour|calendrier|élection.*nouveau|démission|reprise|examen simplifié|cessation.*mandat|proclamation|souhaits|application de l.article|renvoi pour avis|nomination (de|d.une?) membres.|rappel au règlement|^communication|^candidature)/i', $titre))) {
+          foreach($lois as $loi) {
+            $tag = 'loi:numero='.$loi;
+            $this->Section->addTag($tag);
+            if ($this->Section->section_id && $this->Section->Section->id && $this->Section->section_id != $this->section_id)
+              $this->Section->Section->addTag($tag);
+          }
+        }
+      }
+  }
+
+  public function setContexte($contexte, $date = null, $timestamp = null, $tlois = null, $debug = 0) {
+    $lois = $this->prepareLoi($tlois);
+    $this->addTagLoi($lois);
+
     if ($lois[0]) {
-      $urls = Doctrine_Query::create()
+      $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
+      return $debug;
+    }
+    $urls = Doctrine_Query::create()
         ->select('distinct(t.id_dossier_institution)')
         ->from('Texteloi t')
         ->where('t.type = ? OR t.type = ? OR t.type = ? OR t.type = ?', array("Proposition de loi", "Proposition de résolution", "Projet de loi", "Texte de la commission"))
         ->andWhere($loisstring)
         ->fetchArray();
-      $ct = count($urls);
-      if ($ct == 0) $urls = Doctrine_Query::create()
+    $ct = count($urls);
+    if ($ct == 0) $urls = Doctrine_Query::create()
         ->select('distinct(t.id_dossier_institution)')
         ->from('Texteloi t')
         ->where($loisstring)
         ->fetchArray();
-      $ct = count($urls);
-      if ($ct > 1) {
+    $ct = count($urls);
+    if ($ct > 1) {
         $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
         if ($debug) {
           print "WARNING : Intervention $this->id has tags lois corresponding to multiple id_dossier_institutions : ";
@@ -196,9 +228,9 @@ class Intervention extends BaseIntervention
           $debug = 0;
         }
         return $debug;
-      }
-      if ($ct == 0) $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
-      else if ($ct == 1) {
+    }
+    if ($ct == 0) $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
+    else if ($ct == 1) {
         $section1 = Doctrine::getTable('Section')->findOneByContexte($contexte);
         $section2 = Doctrine::getTable('Section')->findOneByIdDossierInstitution($urls[0]['distinct']);
         if ($section2) {
@@ -221,24 +253,10 @@ class Intervention extends BaseIntervention
           $this->setSection($section1);
           $section1->setIdDossierInstitution($urls[0]['distinct']);
           $section1->save();
-        }
-      }
-      if ($this->section_id != 1) {
-        $titre = $this->Section->Section->getTitre();
-        if (!(preg_match('/(conf.*rence des pr.*sidents|^(d.*p.*t|transmission) d(e |.une? |.)(documents?|rapport|proposition|avis|projet)|cloture|ouverture|question|ordre du jour|calendrier|élection.*nouveau|démission|reprise|examen simplifié|cessation.*mandat|proclamation|souhaits|application de l.article|renvoi pour avis|nomination (de|d.une?) membres.|rappel au règlement|^communication|^candidature)/i', $titre))) {
-          foreach($lois as $loi) {
-            $tag = 'loi:numero='.$loi;
-            $this->Section->addTag($tag);
-            if ($this->Section->section_id && $this->Section->Section->id && $this->Section->section_id != $this->section_id)
-              $this->Section->Section->addTag($tag);
-          }
-        }
-      }
-      return $debug;
-    } else {
-      $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
-      return $debug;
+       }
     }
+    $this->tagSectionLois($lois);
+    return $debug;
   }
 
   public function setAmendements($tamendements) {
