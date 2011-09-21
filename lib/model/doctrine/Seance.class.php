@@ -79,7 +79,7 @@ class Seance extends BaseSeance
       return preg_replace('/^0/', '', str_replace('00', '', str_replace(':', 'h', $this->moment)));
     else if (!$this->moment)
       return "réunion";
-    return $this->moment;
+    return preg_replace('/séance/i', 'réunion', $this->moment);
   }
  
   public function setDate($date) {
@@ -122,8 +122,8 @@ class Seance extends BaseSeance
       $titre .= 'en hémicycle ';
     $titre .= 'du '.preg_replace('/^0(\d)/', '\\1', myTools::displayDate($this->getDate()));
     if ($moment = $this->getMoment()) {
-      if (preg_match('/(réunion|^\d+$)/', $moment))
-        $titre .= ' : ';
+      if (preg_match('/(réunion|séance)/i', $moment))
+        $moment = ' : '.preg_replace('/séance/i', 'réunion', $moment);
       else $titre .= ' à ';
       $titre .= $moment;
     }

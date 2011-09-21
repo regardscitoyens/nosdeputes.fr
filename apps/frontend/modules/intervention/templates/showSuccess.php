@@ -1,9 +1,9 @@
 <h1>Intervention de <?php echo $intervention->getIntervenant()->nom; ?></h1>
 <?php 
-$titre2 = $seance->getTitre(0,0,$intervention->getMd5());
-$titre2 .= ' <br/> ';
+$titre2 = "";
 if (isset($orga))
-  $titre2 .= link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug());
+  $titre2 .= link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()).'&nbsp;&mdash; ';
+$titre2 .= $seance->getTitre(0,0,$intervention->getMd5()).'<br/>';
 if (isset($secparent))
   $titre2 .= link_to(ucfirst($secparent->getTitre()), '@section?id='.$section->section_id).'&nbsp;&mdash; ';
 if ($section->getTitre())

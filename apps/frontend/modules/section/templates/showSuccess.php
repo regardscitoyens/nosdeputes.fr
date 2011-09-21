@@ -98,7 +98,8 @@ if ($subsection->id != $section->id) : ?>
 <h2>Toutes les séances consacrées à ce dossier</h2>
 <ul>
 <?php foreach($section->getSeances() as $seance) : ?>
-<li><?php $subtitre = $seance->getTitre();
+<li><?php $subtitre = preg_replace('/ (lois|sociales|étrangères|finances|économie|culture|européennes).*$/', ' \1', $seance->getTypeOrga())."&nbsp;: ".myTools::displayShortDate($seance->date);
+  if ($seance->getMoment()) $subtitre .= '&nbsp;&mdash; '.preg_replace('/séance/i', 'réunion', $seance->getMoment());
   if ($seance->nb_commentaires > 0) {
     $subtitre .= ' (<span class="list_com">'.$seance->nb_commentaires.' commentaire';
     if ($seance->nb_commentaires > 1) $subtitre .= 's';
