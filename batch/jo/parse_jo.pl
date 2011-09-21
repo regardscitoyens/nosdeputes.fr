@@ -33,7 +33,7 @@ while(<FILE>) {
     }
 }
 $lines =~ s/Membres? présents? ou excusés?//;
-$lines =~ s/&nbsp;:<br>/ :\n/g;
+$lines =~ s/&nbsp;:(<br>)?/ :\n/g;
 $lines =~ s/&nbsp;<b>/ /g;
 $lines =~ s/&nbsp;/ /g;
 $lines =~ s/<\/b> *<b>/ /g;
