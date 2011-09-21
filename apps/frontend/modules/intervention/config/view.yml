@@ -1,0 +1,6 @@
+default:
+  metas:
+    robots:       noindex, follow
+seanceSuccess:
+  metas:
+    robots:       index, follow

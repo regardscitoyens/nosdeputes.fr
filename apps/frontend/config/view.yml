@@ -3,11 +3,11 @@ default:
     content-type: text/html
 
   metas:
+    robots:       index, follow
     #title:        symfony project
     #description:  symfony project
     #keywords:     symfony, project
     language:     fr
-    robots:       index, follow
 
   stylesheets:    []
 
