@@ -100,7 +100,6 @@
 
         </div>
 	</div>
-	     <div style="text-align: center; margin-top: 27px;"><h2><a href="/simplifions-la-loi">Participez aux débats « Simplifions la loi 2.0 » !</a></h2></div>
       </div>
       <div id="corps_page">
         <div class="contenu_page">
