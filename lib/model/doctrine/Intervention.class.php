@@ -160,7 +160,7 @@ class Intervention extends BaseIntervention
     return $res;
   }
 
-  private function prepareLois($tlois) {
+  private static function prepareLois($tlois) {
     $tlois = preg_replace('/[^,\d\-]+/', '', $tlois);
     $tlois = preg_replace('/\s+,/', ',', $tlois);
     $tlois = preg_replace('/,\s+/', ',', $tlois);
@@ -168,7 +168,7 @@ class Intervention extends BaseIntervention
   }
 
   public function updateTagLois($strlois) {
-    $lois = $this->prepareLois($strlois);
+    $lois = self::prepareLois($strlois);
     $this->addTagLois($lois);
     $this->tagSectionLois($lois);
   }
@@ -181,6 +181,7 @@ class Intervention extends BaseIntervention
       if ($loisstring == "") $loisstring = "t.numero = $loi";
       else $loisstring .= " OR t.numero = $loi";
     }
+    return $loisstring;
   }
 
   public function tagSectionLois($lois) {
@@ -198,8 +199,8 @@ class Intervention extends BaseIntervention
   }
 
   public function setContexte($contexte, $date = null, $timestamp = null, $tlois = null, $debug = 0) {
-    $lois = $this->prepareLoi($tlois);
-    $this->addTagLoi($lois);
+    $lois = self::prepareLois($tlois);
+    $loisstring = $this->addTagLois($lois);
 
     if (!isset($lois[0]) || !$lois[0]) {
       $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
