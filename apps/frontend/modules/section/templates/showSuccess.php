@@ -32,7 +32,7 @@ if (count($sommaire)) { ?>
 <ul>
 <?php foreach($section->getSubSections() as $subsection) :
 if ($subsection->id != $section->id) : ?>
-<li><?php $subtitre = $subsection->titre;
+<li><?php $subtitre = preg_replace('/(bis|ter|ies)nouv/', '\1 nouv', $subsection->titre);
   if ($subsection->nb_commentaires > 0) {
     $subtitre .= ' (<span class="list_com">'.$subsection->nb_commentaires.'&nbsp;commentaire';
     if ($subsection->nb_commentaires > 1) $subtitre .= 's';
@@ -48,7 +48,7 @@ if ($subsection->id != $section->id) : ?>
   echo '<div class="documents"><h2>Documents législatifs</h2><ul>';
   $curid = 0;
   foreach ($docs as $id => $doc) {
-    $shortid = preg_replace('/-[atv].*$/', '', preg_replace('/[A-Z]/', '', $id));
+    $shortid = preg_replace('/(\d{8}-(TAS)?\d{3}).*$/', '\1', $id);
     if ($curid != $shortid) {
       echo "<li>";
       $curid = $shortid;
@@ -67,8 +67,6 @@ if ($subsection->id != $section->id) : ?>
         if (!preg_match('/^,/', $doc['type_details']))
           $doctitre .= " ";
         $doctitre .= $doc['type_details'];
-        if (preg_match('/mixte paritaire/', $doc['signataires']))
-          $doctitre .= " de la Commission mixte paritaire";
         if ($doc['nb_commentaires'])
           $doctitre .= ' (<span class="list_com">'.$doc['nb_commentaires'].'&nbsp;commentaire';
         if ($doc['nb_commentaires'] > 1)
@@ -87,8 +85,8 @@ if ($subsection->id != $section->id) : ?>
         if ($amendements) 
           $doctitre .= ")";
         echo link_to($doctitre, '@document?id='.$curid);
-      } else
-        echo 'Texte N°&nbsp;'.myTools::getLinkLoi($id);
+      }
+//      else echo 'Texte N°&nbsp;'.myTools::getLinkLoi($id);
       echo '</li>';
     }
   }
@@ -98,7 +96,7 @@ if ($subsection->id != $section->id) : ?>
 <h2>Toutes les séances consacrées à ce dossier</h2>
 <ul>
 <?php foreach($section->getSeances() as $seance) : ?>
-<li><?php $subtitre = preg_replace('/ (lois|sociales|étrangères|finances|économie|culture|européennes).*$/', ' \1', $seance->getTypeOrga())."&nbsp;: ".myTools::displayShortDate($seance->date);
+<li><?php $subtitre = preg_replace('/([\' ])(lois|sociales|étrangères|finances|économie|culture|européennes).*$/', '\1\2', $seance->getTypeOrga())."&nbsp;: ".myTools::displayShortDate($seance->date);
   if ($seance->getMoment()) $subtitre .= '&nbsp;&mdash; '.preg_replace('/séance/i', 'réunion', $seance->getMoment());
   if ($seance->nb_commentaires > 0) {
     $subtitre .= ' (<span class="list_com">'.$seance->nb_commentaires.' commentaire';
