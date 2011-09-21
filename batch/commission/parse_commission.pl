@@ -83,9 +83,9 @@ sub setfonction {
 }
 
 $begin = 0;
-$recointer = "(M\\\.m?e?|Amiral|Général|S\\\.E|Son |colonel)";
+$recointer = "(M\\\.?m?e?|Amiral|Général|S\\\.E|Son |colonel)";
 
-$interstrong = 1 if (/<(a|strong)[^>]*>($recointer[^<]*)<\/(a|strong)>/i);
+$interstrong = 1 if ($content =~ /<(a|strong)[^>]*>\s*($recointer[^<]*)<\/(a|strong)>/i);
 
 foreach (split /\n/, $content) {
 	$begin = 1 if (/name="toc1"/);
@@ -150,9 +150,9 @@ foreach (split /\n/, $content) {
 			$intervention = '<p>'.$inter.'</p>';
 			next;
 		}
-		$inter =~ s/(<\/(strong|a)[^>]*>)+([\s,]*)(<\/?(strong|a)[^>]*>)+/$3/ig;
+		$inter =~ s/(<\/(strong|a)[^>]*>)+([\s,]*)(<\/?(strong)[^>]*>)+/$3/ig;
 		if (($interstrong && $inter =~ /<(a|strong)[^>]*>($recointer[^<]+)<\/(a|strong)>/i) || 
-		    (!$interstrong && ($inter =~ /(>)($recointer[^<]{10}[^<\.]*)/))) {
+		    (!$interstrong && ($inter =~ /(>)\s*($recointer[^<]{10}[^<\.]*)/))) {
 			$tmpintervenant = $2;
 			$tmpintervenant =~ s/<[^>]*>//g;
 			if ($tmpintervenant =~ s/^([^,]+), ([^,]*).*/$1/g) {
