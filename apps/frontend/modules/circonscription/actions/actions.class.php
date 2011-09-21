@@ -348,7 +348,7 @@ class circonscriptionActions extends sfActions
     $im->removeImage();
     $im->setResolution($w * $x_ratio, $h * $y_ratio);
     $im->readImageBlob($dom->saveXML());
-
+    $im->scaleImage($w, $h);
     $im->setImageFormat("png");
     echo $im;
   }
