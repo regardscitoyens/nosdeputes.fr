@@ -134,7 +134,9 @@ class apiActions extends sfActions
     $this->res['senateur']['mandat_debut'] = $senateur->debut_mandat;
     if ($senateur->fin_mandat)
       $this->res['senateur']['mandat_fin'] = $senateur->fin_mandat;
-    $this->res['senateur']['groupe'] = $senateur->getGroupe()->__toString();
+    $groupe = $senateur->getGroupe();
+    if (is_object($groupe))
+      $this->res['senateur']['groupe'] = $groupe->__toString();
     $this->res['senateur']['groupe_sigle'] = $senateur->groupe_acronyme;
     $this->res['senateur']['responsabilites'] = $this->array2hash($senateur->getResponsabilites(), 'responsabilite');
     $this->res['senateur']['responsabilites_extra_parlementaires'] = $this->array2hash($senateur->getExtras(), 'responsabilite');
