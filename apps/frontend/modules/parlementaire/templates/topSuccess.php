@@ -1,5 +1,5 @@
 <h1>Synthèse générale de l'activité parlementaire<br/><small>(sur les 12 derniers mois)</small></h1>
-<h2>Activité de tous les sénateurs ayant au moins 6 mois de mandat :</h2>
+<h2>Activité de tous les sénateurs ayant au moins 10 mois de mandat :</h2>
 <?php 
 $sf_response->setTitle('Synthèse générale des sénateurs');
 $title = array('semaines_presence' => 'd\'activité',
