@@ -10,7 +10,7 @@ class ParlementaireOrganisme extends BaseParlementaireOrganisme
   }
     public static function defImportance($fonction) {
       $val = 50;
-      $fonction = preg_replace('/[eéè]/', 'e', strtolower($fonction));
+      $fonction = preg_replace('/e|é|è/', 'e', strtolower($fonction));
       if (preg_match('/gouverneur|maire/', $fonction)) $val += 40;
       if (preg_match('/president/', $fonction)) $val += 35;
       if (preg_match('/^president/', $fonction)) $val += 10;
@@ -26,10 +26,11 @@ class ParlementaireOrganisme extends BaseParlementaireOrganisme
       if (preg_match('/^co-?/', $fonction)) $val += 4;
       if (preg_match('/de droit/', $fonction)) $val += 3;
       if (preg_match('/honneur/', $fonction)) $val += 2;
-      if (preg_match('/vice[- ]/', $fonction)) $val += 2;
+      if (preg_match('/vice[- ]/', $fonction)) $val -= 2;
       if (preg_match('/^(1|premi)er/', $fonction)) $val += 2;
       if (preg_match('/^(2|deuxi)eme/', $fonction)) $val += 1;
-      if (preg_match('/delegue/', $fonction)) $val -= 3;
+      if (preg_match('/.delegue/', $fonction)) $val -= 3;
+      if (preg_match('/^delegue/', $fonction)) $val += 10;
       if (preg_match('/arrondissement/', $fonction)) $val -= 5;
       if (preg_match('/^ancien/', $fonction)) $val -= 10;
       if (preg_match('/conseiller|supppleant|rattache|adjoint/', $fonction)) $val -= 10;

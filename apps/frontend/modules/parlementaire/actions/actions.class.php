@@ -232,7 +232,7 @@ class parlementaireActions extends sfActions
       ->leftJoin('p.ParlementaireOrganisme po')
       ->leftJoin('po.Organisme o')
       ->where('p.groupe_acronyme = ?', strtoupper($acro))
-//      ->andWhere('p.fin_mandat IS NULL')
+      ->andWhere('p.fin_mandat IS NULL')
       ->andWhere('o.type = ?', 'groupe')
       ->andWhere('o.nom = ?', $nom);
     $query->orderBy("imp DESC, p.nom_de_famille ASC");
