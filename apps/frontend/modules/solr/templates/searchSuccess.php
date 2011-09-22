@@ -236,7 +236,8 @@ $facetName2HumanName = array(
                              'Intervention' => 'Interventions',
                              'Amendement' => 'Amendements',
                              'Commentaire' => 'Commentaires',
-                             'Section' => 'Dossiers'
+                             'Section' => 'Dossiers',
+			     'Organisme' => 'Organismes'
 );
 function facet2Human($id, $facet = "") {
   global $facetName2HumanName;
