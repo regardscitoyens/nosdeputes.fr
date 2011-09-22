@@ -187,7 +187,7 @@ class Intervention extends BaseIntervention
   public function tagSectionLois($lois) {
      if ($this->section_id != 1) {
         $titre = $this->Section->Section->getTitre();
-        if (!(preg_match('/(conf.*rence des pr.*sidents|^(d.*p.*t|transmission) d(e |.une? |.)(documents?|rapport|proposition|avis|projet)|cloture|ouverture|question|ordre du jour|calendrier|élection.*nouveau|démission|reprise|examen simplifié|cessation.*mandat|proclamation|souhaits|application de l.article|renvoi pour avis|nomination (de|d.une?) membres.|rappel au règlement|^communication|^candidature)/i', $titre))) {
+        if (!(preg_match('/(conf.*rence des pr.*sidents|^(d.*p.*t|transmission) d(e |.une? |.)(documents?|rapport|proposition|avis|projet)|cloture|ouverture|question|ordre du jour|calendrier|élection.*nouveau|démission|reprise|examen simplifié|cessation.*mandat|proclamation|souhaits|application de l.article|renvoi pour avis|nomination (de|d.une?) (membre|rapporteur)s?|rappel au règlement|^communication|^candidature)/i', $titre))) {
           foreach($lois as $loi) {
             $tag = 'loi:numero='.$loi;
             $this->Section->addTag($tag);
