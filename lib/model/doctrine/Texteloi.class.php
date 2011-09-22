@@ -262,7 +262,7 @@ class Texteloi extends BaseTexteloi
   }
 
   public function getShortTitre() {
-    return staticShortTitre($this->id, $this->annexe, $this->type);
+    return self::staticShortTitre($this->id, $this->annexe, $this->type);
   }
 
 
