@@ -1,4 +1,4 @@
-<?php $sf_response->setTitle('NosSénateurs.fr : Observatoire citoyen de l\'activité parlementaire');  $style = "xneth"; ?>
+<?php $sf_response->setTitle('NosSénateurs.fr : Observatoire citoyen de l\'activité sénatoriale');  $style = "xneth"; ?>
 <script type="text/javascript">
 <!--
 	// preload img fond sous-menu

@@ -371,9 +371,9 @@ class parlementaireActions extends sfActions
 	$this->tops[$id][$i]['value'] = $tops[$key]['value'];
 
 	$this->tops[$id][$i]['style'] = '';
-	if ($tops[$key]['rank'] < 151)
+	if ($tops[$key]['rank'] < 101)
 	  $this->tops[$id][$i]['style'] = ' style="color:green" ';
-	else if ($tops[$key]['rank'] > 577 - 151)
+	else if ($tops[$key]['rank'] > 577 - 101)
 	  $this->tops[$id][$i]['style'] = ' style="color:red" ';
 	$i++;
       }

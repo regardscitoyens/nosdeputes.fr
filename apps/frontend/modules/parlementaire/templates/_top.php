@@ -74,13 +74,13 @@ foreach(array_keys($images) as $k) {
   $couleur = 'gris';
   $titre = $value.' '.$titres[$k];
   if ($value < 2) $titre = preg_replace('/s$/', '', str_replace('s ', ' ', $titre));
-  if ($rank && $top[$k]['rank'] <= 150) {
+  if ($rank && $top[$k]['rank'] <= 100) {
     $couleur = 'vert';
-    $titre .=' (fait partie des 150 premiers)';
+    $titre .=' (fait partie des 100 premiers)';
   }
-  else if ($rank && $top[$k]['rank'] >= $top[$k]['max_rank'] - 150) {
+  else if ($rank && $top[$k]['rank'] >= $top[$k]['max_rank'] - 100) {
     $couleur = 'rouge';
-    $titre .= ' (fait partie des 150 derniers)';
+    $titre .= ' (fait partie des 100 derniers)';
   }
   echo '<li';
   echo $couleur2style[$couleur];
