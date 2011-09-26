@@ -130,6 +130,8 @@ class apiActions extends sfActions
     $this->res['depute']['id'] = $depute->id * 1;
     $this->res['depute']['nom'] = $depute->nom;
     $this->res['depute']['nom_de_famille'] = $depute->nom_de_famille;
+    $this->res['depute']['prenom'] = $depute->getPrenom();
+    $this->res['depute']['slug'] = $depute->getSlug();
     $this->res['depute']['nom_circo'] = $depute->nom_circo;
     $this->res['depute']['num_circo'] = $depute->num_circo * 1;
     $this->res['depute']['mandat_debut'] = $depute->debut_mandat;

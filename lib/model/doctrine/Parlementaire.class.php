@@ -42,6 +42,12 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function getNomPrenom() {
+    $prenom = $this->getPrenom();
+    $nom = str_replace($prenom.' ', '', $this->nom);
+    return $nom.", ".$prenom;
+  }
+
+  public function getPrenom() {
     $weird = array('é' => 'e', 'è' => 'e', 'ë' => 'e', 'Le ' => 'Le', 'La ' => 'La', '\'' => '^ ');
     $beg_name = " ".substr($this->nom_de_famille, 0, 3);
     $ct = strpos($this->nom, $beg_name);
@@ -50,7 +56,7 @@ class Parlementaire extends BaseParlementaire
            break;
     $nom = substr($this->nom, $ct+1);
     $prenom = substr($this->nom, 0, strpos($this->nom, $nom));
-    return $nom.", ".preg_replace('/\s$/', '', $prenom);
+    return preg_replace('/\s$/', '', $prenom);
   }
 
   public function getStatut($link = 0) {
