@@ -130,6 +130,8 @@ class apiActions extends sfActions
     $this->res['senateur']['id'] = $senateur->id * 1;
     $this->res['senateur']['nom'] = $senateur->nom;
     $this->res['senateur']['nom_de_famille'] = $senateur->nom_de_famille;
+    $this->res['senateur']['prenom'] = $senateur->getPrenom();
+    $this->res['senateur']['slug'] = $senateur->getSlug();
     $this->res['senateur']['departement'] = $senateur->nom_circo;
     $this->res['senateur']['mandat_debut'] = $senateur->debut_mandat;
     if ($senateur->fin_mandat)

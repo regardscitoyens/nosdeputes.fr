@@ -34,6 +34,12 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function getNomPrenom() {
+    $prenom = $this->getPrenom();
+    $nom = str_replace($prenom.' ', '', $this->nom);
+    return $nom.", ".$prenom;
+  }
+
+  public function getPrenom() {
     $weird = array('Ã©' => 'e', 'Ã¨' => 'e', 'Ãª' => 'e', 'Ã«' => 'e', 'É' => 'e', 'é' => 'e', 'è' => 'e', 'ë' => 'e', 'Le ' => 'Le', 'La ' => 'La', '\'' => '^ ');
     $beg_name = " ".substr($this->nom_de_famille, 0, 3);
     $ct = strpos($this->nom, $beg_name);
@@ -42,7 +48,7 @@ class Parlementaire extends BaseParlementaire
            break;
     $nom = substr($this->nom, $ct+1);
     $prenom = substr($this->nom, 0, strpos($this->nom, $nom));
-    return $nom.", ".preg_replace('/\s$/', '', $prenom);
+    return preg_replace('/\s$/', '', $prenom);
   }
 
   public function getStatut($link = 0) {
@@ -571,12 +577,12 @@ class Parlementaire extends BaseParlementaire
       "réunion" => "974",
       "saint-pierre-et-miquelon" => "975",
       "mayotte" => "976",
-      "saint-barthélémy" => "977",
+      "saint-barthélemy" => "977",
       "saint-martin" => "978",
       "wallis-et-futuna" => "986",
       "polynésie française" => "987",
       "nouvelle-calédonie" => "988",
-      "francais établis hors de france" => "99");
+      "français établis hors de france" => "99");
 
   public static function getNumeroDepartement($nom) {
     $nom = strtolower($nom);
