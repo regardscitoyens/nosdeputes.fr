@@ -49,7 +49,7 @@ if ($subsection->id != $section->id) : ?>
   $curid = 0;
   foreach ($docs as $id => $doc) {
     $shortid = preg_replace('/(\d{8}-(TAS)?\d{3}).*$/', '\1', $id);
-    if ($curid != $shortid) {
+    if ($curid != $shortid && (isset($doc['texteloi_id']) || isset($doc['id']))) {
       echo "<li>";
       $curid = $shortid;
       if (isset($doc['texteloi_id'])) {

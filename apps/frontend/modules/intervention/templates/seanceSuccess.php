@@ -38,7 +38,7 @@ if ($table['nb_interventions']) echo '<span class="dossier">('.link_to('voir le 
 <h2>La séance</h2>
 <div class="interventions">
   <?php if (!count($interventions)) { ?>
-  <p><em>Le contenu de cette séance n'a pas encore été rendu public par les services de l'Assemblée nationale.</em></p>
+  <p><em>Le contenu de cette séance n'a pas encore été rendu public par les services du Sénat.</em></p>
   <?php } else { $table = ''; $titre = 0; $source_displayed = 0; 
 foreach($interventions as $intervention) : 	
 if (! $source_displayed) {

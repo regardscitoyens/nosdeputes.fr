@@ -16,7 +16,7 @@ echo ', '.link_to('derniers commentaires', '@commentaires');
 ?>
   
 </div>
-<p><?php echo $total; ?> citoyens se sont inscrits sur NosSénateurs.fr depuis l'ouverture du site le 14 septembre 2011. <?php echo $comments['auteurs']; ?> d'entre eux ont laissé un total de <?php echo link_to($comments['comments'].'&nbsp;commentaires', '@commentaires'); ?>.</p>
+<p><?php echo $total; ?> citoyens se sont inscrits sur <a href="http://www.nosdeputes.fr/">NosDéputés.fr</a> et NosSénateurs.fr depuis l'ouverture du premier site le 14 septembre 2009. <?php echo $comments['auteurs']; ?> d'entre eux ont laissé un total de <?php echo link_to($comments['comments'].'&nbsp;commentaires', '@commentaires'); ?>.</p>
 <p><?php if (!$sf_user->isAuthenticated()) echo 'Vous n\'avez pas encore de compte&nbsp;? Cliquez ici pour <strong><a href="'.url_for('@inscription').'">vous inscrire</a></strong> ou <strong><a href="'.url_for('@signin').'">vous connecter'; else echo '<strong><a href="'.url_for('@citoyen?slug='.$sf_user->getAttribute('slug')).'">Voir votre compte'; ?></a></strong>.</p>
 
 <div class="liste">
