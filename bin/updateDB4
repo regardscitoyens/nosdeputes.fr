@@ -1,0 +1,32 @@
+
+exit;
+
+http://nosdeputes.fr/seance/3709
+http://nosdeputes.fr/seance/4916
+http://nosdeputes.fr/seance/4988
+
+
+
+
+php symfony fuse:Dossiers 13136 14348 4916
+
+UPDATE intervention SET section_id = 14348 WHERE id IN (610995);
+
+php symfony move:Seance 3709 9710 2
+php symfony move:Seance 4916 714 2
+php symfony move:Seance 4916 12298 14265
+php symfony move:Seance 4988 13461 2
+
+
+UPDATE intervention SET section_id = 9710 WHERE id IN (470151,470152,470153,470154);
+UPDATE intervention SET section_id = 714 WHERE id IN (610569,610570,610571);
+UPDATE intervention SET section_id = 13461 WHERE id IN (617893);
+UPDATE intervention SET section_id = 12298 WHERE id IN (610726,610727,610728);
+
+DELETE ta FROM `tagging` ta join tag t on t.id = ta.tag_id join section s on s.id = ta.taggable_id where taggable_model = "Section" and t.triple_key = "numero" and s.section_id = 714;
+
+
+bash bin/update_hardcache_one 3709
+bash bin/update_hardcache_one 4916
+bash bin/update_hardcache_one 4988
+
