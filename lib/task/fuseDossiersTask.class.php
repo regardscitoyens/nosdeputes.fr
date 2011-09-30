@@ -7,6 +7,7 @@ class fuseDossiersTask extends sfBaseTask {
     $this->briefDescription = 'Fusionne un dossier vers un autre';
     $this->addArgument('baddossier', sfCommandArgument::REQUIRED, 'Dossier à intégrer'); 
     $this->addArgument('gooddossier', sfCommandArgument::REQUIRED, 'Dossier d\'acccueil');
+    $this->addArgument('seanceid', sfCommandArgument::REQUIRED, 'Optionnel : limite à cette séance');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
  }
@@ -15,12 +16,13 @@ class fuseDossiersTask extends sfBaseTask {
     $manager = new sfDatabaseManager($this->configuration);
     $bad = Doctrine::getTable('Section')->find($arguments['baddossier']);
     $good = Doctrine::getTable('Section')->find($arguments['gooddossier']);
+    $seance = $arguments['seanceid'];
     if (!$bad || !$good) {
       print "Dossier inexistant\n";
       return;
     }
-    if ($bad->id != $bad->section_id || $good->id != $good->section_id) {
-      print "Un dossier est une sous section\n";
+    if ($good->id != $good->section_id) {
+      print "Le dossier d'accueil est une sous section\n";
       return;
     }
     if ($bad->id == $good->id)  {
@@ -35,7 +37,7 @@ class fuseDossiersTask extends sfBaseTask {
       print "\n + $sub->titre_complet";
       $exist = Doctrine::getTable('Section')->createQuery('s')->where('s.section_id = ?', $good->id)->andWhere('s.titre = ?', $sub->getOrigTitre())->fetchOne();
       if (isset($exist->section_id)) {
-        #print " existe déjà pour la section d'accueil, met-à-jour\n";
+        print " existe déjà pour la section d'accueil, met-à-jour\n";
 
         $this->updateTags($sub, $exist);
         $n_itv += $this->updateInterv($sub, $exist);
@@ -48,7 +50,7 @@ class fuseDossiersTask extends sfBaseTask {
         if (! $query->execute()) {
           print "\n  -> Suppression impossible de la sous-section $sub->id\n";
           return;
-        } #else print " fusionnée et supprimée\n";
+        } else print " fusionnée et supprimée\n";
 
       } else {
         $sub->setTitreComplet(str_replace($bad->getOrigTitre(), $good->getOrigTitre(), $sub->titre_complet));
@@ -59,7 +61,45 @@ class fuseDossiersTask extends sfBaseTask {
         $sub->nb_commentaires;
       }
     }
-  
+
+  if ($bad->id != $bad->section_id) {
+    print "\n + $sub->titre_complet";
+    $exist = Doctrine::getTable('Section')->createQuery('s')->where('s.section_id = ?', $good->id)->andWhere('s.titre = ?', $bad->getOrigTitre())->fetchOne();
+    if (isset($exist->section_id)) {
+      print " existe déjà pour la section d'accueil, met-à-jour\n";
+      if ($seance) $n_itv += $this->updateInterv($bad, $exist, 0, $seance);
+      else {
+        $this->updateTags($bad, $exist);
+        $n_itv += $this->updateInterv($bad, $exist);
+        $this->updateComments($bad, $exist);
+        $this->updateMinDate($bad, $exist);
+        $query = Doctrine_Query::create()
+          ->delete('Section s')
+          ->where('s.id = ?', $bad->id);
+        if (! $query->execute()) {
+          print "\n  -> Suppression impossible de la sous-section $bad->id\n";
+          return;
+        } else print " fusionnée et supprimée\n";
+      }
+    } else {
+      if ($seance) {
+        $new = new Section();
+        $new->setTitreComplet(str_replace($bad->Section->getOrigTitre(), $good->getOrigTitre(), $bad->titre_complet));
+        $new->section_id = $good->id;
+        print " -> $new->titre_complet";
+        $this->updateInterv($bad, $new, 0, $seance);
+        $new->save();
+      } else {
+        $bad->setTitreComplet(str_replace($bad->getOrigTitre(), $good->getOrigTitre(), $bad->titre_complet));
+        $bad->section_id = $good->id;
+        print " -> $bad->titre_complet";
+        $bad->save();
+        $n_itv += $bad->nb_interventions;
+        $bad->nb_commentaires;
+      }
+    }
+
+  } else { 
     $this->updateTags($bad, $good);
     $this->updateInterv($bad, $good, $n_itv);
     $this->updateComments($bad, $good);
@@ -96,6 +136,7 @@ class fuseDossiersTask extends sfBaseTask {
       print 'Suppression impossible de la section '.$bad->id."\n";
     }
   }
+ }
 
   private static function updateTags($b, $g) {
     #print "      Gère les tags\n";
@@ -115,10 +156,12 @@ class fuseDossiersTask extends sfBaseTask {
     }
   }
 
-  private static function updateInterv($b, $g, $base = 0) {
+  private static function updateInterv($b, $g, $base = 0, $seance = 0) {
     #print "      Gère les interventions\n";
     $ct = 0;
-    foreach(Doctrine::getTable('Intervention')->createQuery('i')->where('i.section_id = ?', $b->id)->execute() as $itv) {
+    $query = Doctrine::getTable('Intervention')->createQuery('i')->where('i.section_id = ?', $b->id);
+    if ($seance) $query->andWhere('i.seance_id = ?', $seance);
+    foreach($query->execute() as $itv) {
       #print $itv->id." ";
       $itv->section_id = $g->id;
       $itv->save();

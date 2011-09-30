@@ -22,8 +22,15 @@
 <?php $table_m = $seance->getTableMatiere(); $ct = count($table_m); if ($ct) {?>
 <div class="orga_dossier">
 <h2>Sommaire</h2>
-<ul><?php foreach($table_m as $table) : if (!$table['titre']) {continue;} ;?>
-<?php if ($table['section_id'] != $table['id']) echo '<ul>'; ?>
+<ul><?php $lastparent = 0;
+foreach($table_m as $table) : if (!$table['titre']) {continue;} ;
+if ($table['section_id'] != $table['id']) {
+  if ($table['section_id'] != $lastparent) {
+    echo '<li><a href="#table_'.$table['id'].'">'.ucfirst(preg_replace('/ > .*$/', '', $table['titre_complet'])).'</a></li>';
+    $lastparent = $table['section_id'];
+  }
+  echo '<ul>';
+} else $lastparent = $table['section_id']; ?>
 <li><?php if (isset($table['id']) && $table['id']) { ?>
 <a href="#table_<?php 
 echo $table['id']; 
@@ -70,6 +77,8 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
         echo link_to(ucfirst($intervention->Section->titre),'@section?id='.$intervention->Section->id);
 	echo '</h3><br/>';
       }
+      if ($intervention->hasIntervenant())
+        echo '</div></div><div class="intervention" id="inter_<?php echo $intervention->getMd5(); ?>-2"><div class="intervenant">';
     }
   } else echo '<div class="intervenant">';
     if ($intervention->hasIntervenant()) {

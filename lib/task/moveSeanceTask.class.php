@@ -40,6 +40,7 @@ class moveSeanceTask extends sfBaseTask {
     $ncgoodsub = 0;
     foreach(Doctrine::getTable('Intervention')->createQuery('i')->leftJoin('i.Section s')->where('i.seance_id = ?', $seance->id)->andWhere('s.section_id = ?', $bad->id)->orderBy('i.timestamp')->execute() as $itv) {
 #print "Intervention N°".$itv->id."\n";
+      if (preg_match('/ > discussion /i', $itv->Section->titre_complet) && preg_match('/^question/i', $good->titre_complet)) break;
       if ($itv->section_id != $bad->id) {
         if ($badcurrent->id != $itv->section_id) {
           if ($badcurrent->id != $bad->id)
@@ -76,7 +77,7 @@ class moveSeanceTask extends sfBaseTask {
       }
       $nc += $coms;
       $ni++;
-      if (preg_match('/^question/i', $itv->Section->titre_complet))
+      if (preg_match('/^question/i', $good->titre_complet))
         $itv->type = "question";
       $itv->save();
     }

@@ -101,7 +101,7 @@ class Seance extends BaseSeance
     return $q->execute();
   }
   public function getTableMatiere() {
-    $q = Doctrine_Query::create()->select('s.titre, s.id, s.section_id, s.nb_interventions')->from('Section s')->leftJoin('s.Interventions i')->where('i.seance_id = ?', $this->id)->orderBy('i.timestamp ASC');
+    $q = Doctrine_Query::create()->select('s.titre, s.titre_complet, s.id, s.section_id, s.nb_interventions')->from('Section s')->leftJoin('s.Interventions i')->where('i.seance_id = ?', $this->id)->orderBy('i.timestamp ASC');
     return $q->fetchArray();
   }
 
