@@ -49,6 +49,8 @@ sub find_senateurs {
 find_senateurs("http://www.senat.fr/senateurs/senatl.html");
 find_senateurs("http://www.senat.fr/senateurs/news.html");
 
+find_senateurs("http://www.senat.fr/senateurs/senatl_nouveau.html");
+
 #Enable below on first load
 #find_senateurs("http://www.senat.fr/senateurs/news_2009-2010.html");
 #find_senateurs("http://www.senat.fr/senateurs/news_2008-2009.html");

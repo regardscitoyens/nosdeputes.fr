@@ -186,8 +186,8 @@ sub mandats {
 	$cause = "";
 	$t = $p->get_tag('ul');
 	while ($t = $p->get_tag('li', '/ul')) {
-		$date1 = $date2 = 0;
 		last if ($t->[0] ne "li");
+		$date1 = $date2 = 0;
 		$election = $p->get_text('/li', '/ul');
 		$election =~ s/\n/ /g;
 		if ($election =~ /\s+([0-9]*e?r? \S* [0-9]{4})\s+(jusqu')?au\s+([0-9]*e?r? \S* [0-9]{4})/) {
@@ -196,6 +196,7 @@ sub mandats {
 		} elsif ($election =~ /\s+([0-9]*e?r? \S* [0-9]{4})/) {
 			$date1 = join '/', reverse datize($1);
 		}
+
 		$suppleant_de = "";
 		$oldcause = $cause;
 		$cause = "";
@@ -229,10 +230,16 @@ sub mandats {
 				$mandatouvert = 0;
 				$senateur{'premiers_mandats'}{$date1." / ".$date2." / ".$cause} = 1;
 			} else {
-				$mandatouvert = 1;
 				$senateur{'debut_mandat'} = $date1;
+				$mandatouvert = 1;
 			}
 		}
+	}
+	if ($date1 && !$senateur{'debut_mandat'}) {
+		$senateur{'debut_mandat'} = $date1;
+	}
+	if ($date2) {
+		$senateur{'fin_mandat'} = $date2;
 	}
 	if ($suppleant_de !~ /^$/) {
 		$senateur{'suppleant_de'} = $suppleant_de;
