@@ -270,6 +270,7 @@ class parlementaireActions extends sfActions
         ->leftJoin('po.Organisme o')
         ->where('o.slug = ?', $orga)
         ->andWhere('p.fin_mandat IS NULL')
+	->andWhere('po.fonction NOT LIKE ?', '%ancien %')
         ->orderBy("po.importance DESC, p.nom_de_famille ASC");
       $this->parlementaires = array();
       $this->total = 0;
