@@ -48,6 +48,7 @@ class topSenateursTask extends sfBaseTask
   {
     $semaines = $q->select('p.id, s.numero_semaine, pr.id, count(s.id)')
       ->from('Parlementaire p, p.Presences pr, pr.Seance s')
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->groupBy('p.id, s.numero_semaine')
       ->fetchArray();
     foreach ($semaines as $p) {
@@ -61,6 +62,7 @@ class topSenateursTask extends sfBaseTask
       $parlementaires = $q->select('p.id, count(pr.id)')
 	->from('Parlementaire p, p.Presences pr, pr.Seance s')
 	->groupBy('p.id')
+        ->andWhere('p.groupe_acronyme IS NOT NULL')
 	->andWhere('s.type = ?', 'commission')
 	->fetchArray();
       foreach ($parlementaires as $p) {
@@ -72,6 +74,7 @@ class topSenateursTask extends sfBaseTask
     $q->select('p.id, count(i.id)')
       ->from('Parlementaire p, p.Interventions i')
       ->groupBy('p.id')
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->andWhere('i.type = ?', 'commission');
     $parlementaires = $q->fetchArray();
     foreach ($parlementaires as $p) {
@@ -83,6 +86,7 @@ class topSenateursTask extends sfBaseTask
       $parlementaires = $q->select('p.id, count(i.id)')
 	->from('Parlementaire p, p.Interventions i, i.Seance s')
 	->groupBy('p.id')
+        ->andWhere('p.groupe_acronyme IS NOT NULL')
 	->andWhere('s.type = ?', 'hemicycle')
 	->andWhere('i.nb_mots <= 20')
 	->fetchArray();
@@ -95,6 +99,7 @@ class topSenateursTask extends sfBaseTask
     $parlementaires = $q->select('p.id, count(i.id)')
       ->from('Parlementaire p, p.Interventions i, i.Seance s')
       ->groupBy('p.id')
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->andWhere('s.type = ?', 'hemicycle')
       ->andWhere('i.nb_mots > 20')
       ->fetchArray();
@@ -108,6 +113,7 @@ class topSenateursTask extends sfBaseTask
     $parlementaires = $q->select('p.id, count(a.id)')
       ->from('Parlementaire p, p.Amendements a')
       ->groupBy('p.id')
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->andWhere('a.sort != ?', 'Rectifié')
       ->andWhere('a.organisme_id IS NULL')
       ->fetchArray();
@@ -121,6 +127,7 @@ class topSenateursTask extends sfBaseTask
     $parlementaires = $q->select('p.id, count(a.id)')
       ->from('Parlementaire p, p.Amendements a')
       ->groupBy('p.id')
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->andWhere('a.sort = ?', 'Adopté')
       ->andWhere('a.organisme_id IS NULL')
       ->fetchArray();
@@ -134,6 +141,7 @@ class topSenateursTask extends sfBaseTask
     $parlementaires = $q->select('p.id, count(a.id)')
       ->from('Parlementaire p, p.Amendements a')
       ->groupBy('p.id')
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->andWhere('a.sort = ?', 'Rejeté')
       ->andWhere('a.organisme_id IS NULL')
       ->fetchArray();
@@ -146,6 +154,7 @@ class topSenateursTask extends sfBaseTask
   {
     $parlementaires = $q->select('p.id, count(q.id)')
       ->from('Parlementaire p, p.Questions q')
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->andWhere('q.type = ?', 'Question écrite')
       ->groupBy('p.id')
       ->fetchArray();
@@ -158,6 +167,7 @@ class topSenateursTask extends sfBaseTask
   {
     $parlementaires = $q->select('p.id, count(q.id)')
       ->from('Parlementaire p, p.Questions q')
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->andWhere('q.type != ?', 'Question écrite')
       ->andWhere('q.reponse != ?', '')
       ->groupBy('p.id')
@@ -172,6 +182,7 @@ class topSenateursTask extends sfBaseTask
     $questions = $q->select('p.id, count(DISTINCT i.seance_id) as count')
       ->from('Parlementaire p, p.Interventions i')
       ->groupBy('p.id')
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->andWhere('i.type = ?', 'question')
       ->andWhere('i.nb_mots > 40')
       ->andWhere('i.fonction NOT LIKE ?', 'président%')
@@ -185,6 +196,7 @@ class topSenateursTask extends sfBaseTask
     $parlementaires = $q->select('p.id, count(t.id)')
       ->from('Parlementaire p, p.Textelois t')
       ->andWhere('t.type != ? AND t.type != ?', self::$lois)
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->groupBy('p.id')
       ->fetchArray();
     foreach ($parlementaires as $p) {
@@ -195,6 +207,7 @@ class topSenateursTask extends sfBaseTask
   {
     $parlementaires = $q->select('p.id, count(t.id)')
       ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->andWhere('t.type = ? OR t.type = ?', self::$lois)
       ->andWhere('pt.importance < ?', 4)
       ->groupBy('p.id')
@@ -207,6 +220,7 @@ class topSenateursTask extends sfBaseTask
   {
     $parlementaires = $q->select('p.id, count(t.id)')
       ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
+      ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->andWhere('t.type = ? OR t.type = ?', self::$lois)
       ->groupBy('p.id')
       ->fetchArray();
@@ -320,13 +334,14 @@ class topSenateursTask extends sfBaseTask
     
     $senateurs = Doctrine::getTable('Parlementaire')->createQuery()
       ->where('type = ?', 'senateur')
-      ->andWhere('fin_mandat IS NULL') 
+      ->andWhere('fin_mandat IS NULL')
+      ->andWhere('groupe_acronyme IS NOT NULL')
       ->fetchArray();
     foreach($senateurs as $d) {
       $this->senateurs[$d['id']]['groupe'] = $d['groupe_acronyme'];
     }
 
-    $q = Doctrine_Query::create()->where('fin_mandat IS NULL');
+    $q = Doctrine_Query::create()->where('fin_mandat IS NULL')->andWhere('groupe_acronyme IS NOT NULL');
  
     $qs = clone $q;
     $qs->andWhere('s.date > ?', date('Y-m-d', time()-60*60*24*365));
