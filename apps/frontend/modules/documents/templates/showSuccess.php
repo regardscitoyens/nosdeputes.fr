@@ -71,7 +71,7 @@ if (count($relatifs) || $section) { ?>
     if ($curid != $shortid) {
       echo '<li>';
       $curid = $shortid;
-      $doctitre = $rel['type']." N° $curid";
+      $doctitre = Texteloi::staticShortTitre($curid, "", $rel['type']);
       if (!preg_match('/^,/', $rel['type_details']))
         $doctitre .= " ";
       $doctitre .= $rel['type_details'];
