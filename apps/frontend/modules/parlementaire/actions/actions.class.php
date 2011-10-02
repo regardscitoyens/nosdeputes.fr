@@ -357,7 +357,7 @@ class parlementaireActions extends sfActions
       $qp->whereIn('id', $ids);
     }
     $qp->andWhere('fin_mandat IS NULL')
-      ->andWhere('debut_mandat < ?', date('Y-m-d', time()-round(60*60*24*3650/10)))
+      ->andWhere('debut_mandat < ?', date('Y-m-d', time()-round(60*60*24*3650/12)))
       ->orderBy('nom_de_famille');
     $parlementaires = $qp->fetchArray();
     unset($qp);
