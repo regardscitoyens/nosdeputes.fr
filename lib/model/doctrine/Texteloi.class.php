@@ -35,7 +35,7 @@ class Texteloi extends BaseTexteloi
   }
 
   public function getAmendements($help = 0) {
-    return self::getAmdmts($this->type, $this->numero, $help);
+    return self::getAmdmts($this->type, $this->id, $help);
   }
 
   public static function getAmdmts($type, $numero, $help = 0) {
