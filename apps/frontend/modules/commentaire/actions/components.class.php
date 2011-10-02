@@ -72,7 +72,8 @@ class commentaireComponents extends sfComponents
   
   public function executeShowWidget() {
     $query = Doctrine::getTable('Commentaire')->createQuery('c')
-      ->where('is_public = 1')
+      ->where('c.id = (SELECT c2.id FROM commentaire c2 WHERE c.citoyen_id = c2.citoyen_id ORDER BY c2.created_at DESC LIMIT 1)')
+      ->andWhere('c.is_public = 1')
       ->orderBy('c.created_at DESC')
       ->limit(5);
     $this->commentaires = $query->execute();

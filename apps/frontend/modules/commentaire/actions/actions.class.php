@@ -14,7 +14,7 @@ class commentaireActions extends sfActions
   public function executePost(sfWebRequest $request)
   {
     $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement_id?id=', 'QuestionEcrite' => '@question_id?id=', 'ArticleLoi' => '@loi_article_id?id=', 'Alinea' => '@loi_alinea?id=', 'Texteloi' => '@document?id=');
-    $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "A propos d'une question écrite d");
+    $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "À propos d'une question écrite d");
 	
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');
@@ -111,9 +111,9 @@ class commentaireActions extends sfActions
       $loi = Doctrine::getTable('Texteloi')->findLoi($object->texteloi_id);
       if ($this->type != 'Amendement') {
         if ($titreloi)
-          $present = preg_replace('/<br\/>.*$/', '', $titreloi['titre']).' - A propos de l\'article ';
+          $present = preg_replace('/<br\/>.*$/', '', $titreloi['titre']).' - À propos de l\'article ';
         else if($loi)
-          $present = $loi->getTitre().' - A propos de l\'article n°'.$object->numero;
+          $present = $loi->getTitre().' - À propos de l\'article n°'.$object->numero;
         if ($this->type == 'Alinea') {
           $article = Doctrine::getTable('ArticleLoi')->createQuery('a')
             ->select('titre')
@@ -123,9 +123,9 @@ class commentaireActions extends sfActions
           $present .= $article['titre'].' alinéa '.$object->numero;
         } else $present .= $object->titre;
       } else if ($titreloi)
-        $present = preg_replace('/<br\/>.*$/', '', $titreloi['titre']).' - A propos de l\'amendement n°'.$object->numero;
+        $present = preg_replace('/<br\/>.*$/', '', $titreloi['titre']).' - À propos de l\'amendement n°'.$object->numero;
       else if ($loi)
-        $present = $loi->getShortTitre().' - A propos de l\'amendement n°'.$object->numero;
+        $present = $loi->getShortTitre().' - À propos de l\'amendement n°'.$object->numero;
       else $present = $about[$this->type].' le '.date('d/m/Y', strtotime($object->date));
     } else {
       $present = '';
@@ -268,9 +268,20 @@ class commentaireActions extends sfActions
 
   public function executeList(sfWebRequest $request) {
     $this->commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
-      ->leftJoin('c.Objects co')
-      ->andWhere('is_public = 1')
-      ->orderBy('created_at DESC');
+      ->leftJoin('c.Objects co')    
+      ->orderBy('created_at DESC');    
+    if ($this->type != 'all') {
+      $commentsids = array();
+      foreach (Doctrine_Query::create()
+        ->select('c.id')
+        ->from('Commentaire c')
+        ->where('c.id = (SELECT c2.id FROM commentaire c2 WHERE c.citoyen_id = c2.citoyen_id ORDER BY c2.created_at DESC LIMIT 1)')
+        ->andWhere('c.is_public = 1')
+        ->orderBy('c.created_at DESC')
+        ->fetchArray() as $com)
+          $commentsids[] = $com['id'];
+      $this->commentaires->andWhere('id IN ('.implode(',', array_values($commentsids)).')');
+    } else $this->commentaires->andWhere('is_public = 1');
     $this->titre = 'Les derniers commentaires';
     $this->url_link = '';
     if ($slug = $request->getParameter('slug')) {
