@@ -58,6 +58,12 @@ class citoyenActions extends sfActions
     $this->getResponse()->setStatusCode(403);
   }
 
+  public function executeRedirect(sfWebRequest $request) {
+    $user = Doctrine::getTable('Citoyen')->find($request->getParameter('id'));
+    $this->forward404Unless($user);
+    $this->redirect('@citoyen?slug='.$user->slug);
+  }
+
   public function executeShow(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');

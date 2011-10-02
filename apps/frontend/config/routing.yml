@@ -360,6 +360,9 @@ photo_citoyen:
 citoyen:
   url: /citoyen/:slug
   param: {module: citoyen, action: show}
+citoyenid:
+  url: /citoyenid/:id
+  param: {module: citoyen, action: redirect}
 edit_citoyen:
   url: /profil/edition
   param: {module: citoyen, action: edit}
