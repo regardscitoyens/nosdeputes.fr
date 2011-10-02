@@ -67,7 +67,7 @@ if (count($relatifs) || $section) { ?>
   <?php if ($section) echo '<li>'.link_to('Dossier : '.$section->titre, '@section?id='.$section->id).'</li>';
   $curid = 0;
   foreach ($relatifs as $rel) {
-    $shortid = preg_replace('/-[atv].*$/', '', preg_replace('/[A-Z]/', '', $rel['id']));
+    $shortid = preg_replace('/(\d{8}-(TAS)?\d{3}).*$/', '\1', $rel['id']);
     if ($curid != $shortid) {
       echo '<li>';
       $curid = $shortid;
