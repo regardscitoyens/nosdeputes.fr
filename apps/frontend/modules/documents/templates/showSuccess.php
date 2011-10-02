@@ -37,7 +37,7 @@ if (count($cosign)) {
 <p class="justify tabulation"><?php echo myTools::escape_blanks(preg_replace('/([a-z])\. ([^"»])/', '\\1.</p><p class="justify tabulation">\\2', $doc->getExtract())); ?></p>
 <?php } ?>
 <h3><a href="<?php echo $doc->source; ?>">Consulter le document complet sur le site du Sénat</a></h3>
-<p class="aligncenter">(<?php echo link_to('version pdf', preg_replace('/html$/', 'pdf', preg_replace('/(ga|rap)(.*.)\./', '\\1\\2'."1.", $doc->source))); ?>)</p>
+<p class="aligncenter">(<?php echo link_to('version pdf', preg_replace('/html$/', 'pdf', preg_replace('/((ga|rap)[a-z0-9\/\-]*)(_mono)?\./', '${1}1.', $doc->source))); ?>)</p>
 </div>
 <div class="right">
 <?php print $tags;
