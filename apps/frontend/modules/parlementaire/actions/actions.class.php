@@ -357,7 +357,7 @@ class parlementaireActions extends sfActions
       $qp->whereIn('id', $ids);
     }
     $qp->andWhere('fin_mandat IS NULL')
-      ->andWhere('debut_mandat < ?', date('Y-m-d', time()-round(60*60*24*3650/12)))
+      ->andWhere('debut_mandat < ?', date('Y-m-d', time()-round(60*60*24*3650/10)))
       ->orderBy('nom_de_famille');
     $parlementaires = $qp->fetchArray();
     unset($qp);
@@ -374,7 +374,7 @@ class parlementaireActions extends sfActions
 	$this->tops[$id][$i]['style'] = '';
 	if ($tops[$key]['rank'] < 101)
 	  $this->tops[$id][$i]['style'] = ' style="color:green" ';
-	else if ($tops[$key]['rank'] > 577 - 101)
+	else if ($tops[$key]['rank'] > 348 - 101)
 	  $this->tops[$id][$i]['style'] = ' style="color:red" ';
 	$i++;
       }
