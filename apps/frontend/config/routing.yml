@@ -91,7 +91,12 @@ rate_id:
   url: /rate/:object_type/:object_id/:rate
   param: {module: rate, action: rateIt}
 
-# Compte Renu
+# Assister aux séances
+assister:
+  url: /assister-aux-debats
+  param: {module: parlementaire, action: assister}
+
+# Compte Rendu
 compterendu_list:
   url: /compterendu
   param: {module: article, action: pager, categorie: Seance, titre: "Compte-rendus citoyens"}

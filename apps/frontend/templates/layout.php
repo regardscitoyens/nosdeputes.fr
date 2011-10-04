@@ -117,7 +117,7 @@ $menu_citoyen = $selectcitoyen;
           <ul>
             <li><a href="<?php echo url_for('@list_citoyens?order=date'); ?>">Tous les citoyens</a> <strong>|</strong></li>
             <li><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a> <strong>|</strong></li>
-            <li><a href="<?php echo url_for('@compterendu_list'); ?>">Les comptes rendus citoyens</a></li>
+            <li><a href="<?php echo url_for('@assister'); ?>">Assister aux débats</a></li>
           </ul>
         </div>
 	</div>

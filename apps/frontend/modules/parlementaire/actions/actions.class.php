@@ -10,6 +10,10 @@
  */
 class parlementaireActions extends sfActions
 {
+  public function executeAssister(sfWebRequest $request) {
+    $this->response->setTitle('Assister aux débats publics de l\'Assemblée nationale - NosDéputés.fr');
+  }
+
   public static function imagetograyscale($im)
   {
     if (imageistruecolor($im)) {
@@ -299,7 +303,7 @@ class parlementaireActions extends sfActions
         ->orderBy('nb DESC')
         ->fetchArray();
     }
-    $this->response->setTitle('Les parlementaires par tag');
+    $this->response->setTitle('Les parlementaires par mot-clé - NosDéputés.fr');
   }
 
   public function executePlot(sfWebRequest $request)

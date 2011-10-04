@@ -1900,3 +1900,21 @@ a:hover img {
 .block {
   display: block;
 }
+.floatright {
+  float: right;
+  margin: 10px;
+}
+.floatleft {
+  float: left;
+  margin: 10px;
+}
+#assister {
+  text-align: justify;
+}
+#assister a {
+  text-decoration: underline;
+}
+#assister p:first-letter {
+  padding-left: 10px;
+}
+
