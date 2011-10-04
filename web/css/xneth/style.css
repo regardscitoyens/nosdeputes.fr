@@ -8,6 +8,10 @@ body {
 img { border:0; }
 
 h1 a:link { color: inherit; }
+
+ul {
+  padding-left: 18px;
+}
   
 a:link {
   color: inherit;
