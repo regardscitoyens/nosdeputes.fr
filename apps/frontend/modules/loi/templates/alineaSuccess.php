@@ -9,10 +9,8 @@
 </table>
 </div>
 <p class="suivant"><b><a href="<?php echo url_for('@loi_article?loi='.$alinea->texteloi_id.'&article='.$slug_article); ?>">Voir tout l'article</a></b></p>
-<div class="commentaires" id="commentaires">
-<?php if ($alinea->nb_commentaires == 0)
-  echo '<h3 class="list_com">Aucun commentaire n\'a encore été formulé sur cet alinéa</h3>';
-else echo include_component('commentaire', 'showAll', array('object' => $alinea));
+<div class="commentaires">
+<?php echo include_component('commentaire', 'showAll', array('object' => $alinea, 'type' => 'cet alinéa'));
 echo include_component('commentaire', 'form', array('object' => $alinea));
 ?>
 </div>

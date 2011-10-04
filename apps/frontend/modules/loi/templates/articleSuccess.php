@@ -57,10 +57,8 @@ if (isset($amendements['après '.$arttitre])) {
   echo '</p>';
 } ?>
 </div>
-<div class="commentaires" id="commentaires">
-<h3 class="list_com"><?php if ($article->nb_commentaires == 0)
-  echo 'Aucun commentaire n\'a encore été formulé sur cet article</h3>';
-else echo include_component('commentaire', 'showAll', array('object' => $article, 'presentation' => 'noarticle'));
+<div class="commentaires">
+<?php echo include_component('commentaire', 'showAll', array('object' => $article, 'presentation' => 'noarticle', 'type' => 'cet article'));
 echo include_component('commentaire', 'form', array('object' => $article));
 ?>
 </div>

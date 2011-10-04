@@ -70,10 +70,8 @@
     <?php echo myTools::escape_blanks($amendement->getExpose()); ?>
   </div>
 <?php } ?>
-<div class="commentaires" id="commentaires">
-<?php if ($amendement->nb_commentaires == 0)
-  echo '<h3 class="list_com">Aucun commentaire n\'a encore été formulé sur cet amendement</h3>';
-else echo include_component('commentaire', 'showAll', array('object' => $amendement));
+<div class="commentaires">
+<?php echo include_component('commentaire', 'showAll', array('object' => $amendement, 'type' => 'cet amendement'));
 echo include_component('commentaire', 'form', array('object' => $amendement)); ?>
 </div>
 </div>

@@ -34,8 +34,6 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
   </div>
 </div>
 <div class="commentaires">
-<?php if ($question->nb_commentaires == 0)
-  echo '<h3 class="list_com">Aucun commentaire n\'a encore été formulé sur cette question</h3>';
-else echo include_component('commentaire', 'showAll', array('object' => $question));
+<?php echo include_component('commentaire', 'showAll', array('object' => $question, 'type' => 'cette question'));
 echo include_component('commentaire', 'form', array('object' => $question)); ?>
 </div>
