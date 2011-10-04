@@ -73,10 +73,8 @@ if ($intervention->hasIntervenant()) {
       echo ' &mdash; <span class="list_com">'.link_to($commenttitre, '/intervention/'.$intervention->id.'#commentaires').'</span>'; } ?></p>
     </div>
       <?php if (isset($complete)) { ?>
-    <div id="commentaires">
-<?php if ($intervention->nb_commentaires == 0)
-  echo '<h3 class="list_com">Aucun commentaire n\'a encore été formulé sur cette intervention</h3>';
-else echo include_component('commentaire', 'showAll', array('object'=>$intervention));
+    <div>
+<?php echo include_component('commentaire', 'showAll', array('object'=>$intervention, 'type' => 'cette intervention'));
 echo include_component('commentaire', 'form', array('object'=>$intervention)); ?>
     </div>
   <?php } ?>

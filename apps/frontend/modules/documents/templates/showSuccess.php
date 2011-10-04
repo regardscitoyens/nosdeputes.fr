@@ -85,9 +85,7 @@ if (count($relatifs) || $section) { ?>
 </div>
 </div>
 <div class="commentaires document">
-<?php if ($doc->nb_commentaires == 0)
-  echo '<h3 class="list_com">Aucun commentaire n\'a encore été formulé sur '.$doc->getTypeString().'</h3>';
-else echo include_component('commentaire', 'showAll', array('object' => $doc));
+<?php echo include_component('commentaire', 'showAll', array('object' => $doc, 'type' => $doc->getTypeString()));
 echo include_component('commentaire', 'form', array('object' => $doc)); ?>
 </div>
 <?php
