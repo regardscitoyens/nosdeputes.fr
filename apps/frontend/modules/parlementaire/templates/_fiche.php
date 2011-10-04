@@ -9,7 +9,7 @@
 <?php else : ?>
       <li>Mandat en cours depuis le <?php echo myTools::displayDate($parlementaire->debut_mandat); ?></li>
 <?php endif;
-      if (isset($parlementaire->suppleant_de_id) && $supplee = $parlementaire->getSuppleantDe())
+      if ($parlementaire->suppleant_de_id && $supplee = $parlementaire->getSuppleantDe())
         echo '<li>Suppléant'.($parlementaire->sexe == "F" ? 'e' : '').' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>';
       if ($parlementaire->groupe_acronyme != "") : ?>
       <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getgroupe()->getFonction(); ?>)</li>
