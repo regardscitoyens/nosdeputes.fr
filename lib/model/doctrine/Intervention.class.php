@@ -22,7 +22,7 @@ class Intervention extends BaseIntervention
       $heuretime = $moment;
     else if (preg_match('/^(\d)/', $moment, $match))
       $heuretime = sprintf('%02d', 10+4*($match[1]-1)).':00';
-    $datetime += strtotime($heuretime) - strtotime(today);
+    $datetime += strtotime($heuretime) - strtotime('today');
     $timestamp = $this->timestamp;
     $len = strlen($timestamp);
     if ($len > 6)
