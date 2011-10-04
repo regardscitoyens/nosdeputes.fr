@@ -44,12 +44,8 @@ if (count($cosign)) {
 if ((isset($texte) && $texte > 0) || count($annexes) || $amendements) { ?>
   <div class="annexes">
   <h3>Documents associés</h3><ul>
-  <?php if ($amendements) echo '<li>'.link_to("Voir les ".$amendements." amendement".($amendements > 1 ? "s" : "")." déposé".($amendements > 1 ? "s" : "")." sur ce texte", '@find_amendements_by_loi_and_numero?loi='.$doc->numero.'&numero=all').'</li>';
-  if (isset($texte) && $texte > 0)
-    echo '<li>'.link_to('Voir le rapport de la commission', '@document?id='.$doc->numero).'</li>';
+  <?php if ($amendements) echo '<li>'.link_to("Voir les ".$amendements." amendement".($amendements > 1 ? "s" : "")." déposé".($amendements > 1 ? "s" : "")." sur ce texte", '@find_amendements_by_loi_and_numero?loi='.$doc->id.'&numero=all').'</li>';
   if (count($annexes)) {
-    foreach ($annexes as $annexe) if ($annexe['id'] != $doc->id && preg_match('/-a0/', $annexe['id']))
-      echo '<li>'.link_to('Voir le texte adopté par la commission', '@document?id='.$doc->numero.'-a0').'</li>';
     foreach ($annexes as $annexe) if ($annexe['id'] != $doc->id && preg_match('/t([\dIVX]+)/', $annexe['id'], $tom)) {
       $titreannexe = "Tome&nbsp;".$tom[1];
       if (preg_match('/v(\d+)/', $annexe['id'], $vol))

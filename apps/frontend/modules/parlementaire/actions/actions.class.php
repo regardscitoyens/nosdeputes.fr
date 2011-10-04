@@ -11,6 +11,7 @@
 class parlementaireActions extends sfActions
 {
   public function executeAssister(sfWebRequest $request) {
+    $this->response->setTitle('Assister aux débats publics du Sénat - NosSénateurs.fr');
   }
 
   public static function imagetograyscale($im)
@@ -317,7 +318,7 @@ class parlementaireActions extends sfActions
         ->orderBy('nb DESC')
         ->fetchArray();
     }
-    $this->response->setTitle('Les parlementaires par tag');
+    $this->response->setTitle('Les parlementaires par tag - NosSénateurs.fr');
   }
 
   public function executePlot(sfWebRequest $request) {
