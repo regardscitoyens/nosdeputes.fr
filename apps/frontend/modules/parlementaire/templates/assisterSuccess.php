@@ -7,7 +7,7 @@
 <small><a href="http://www.flickr.com/photos/edhral/4592418942/">Photo de Edhral - CC-BY-SA</a></small></span>
 </div>
 
-<p>Contrairement à l’idée reçue généralement établie, il est très simple d’assister aux débats parlementaire. Comme exigé par <a href="http://fr.wikipedia.org/wiki/Article_33_de_la_Constitution_de_la_Cinqui%C3%A8me_R%C3%A9publique_fran%C3%A7aise">l'article 33 de la Constitution</a>, les séances sont en effet publiques et donc accessibles à chaque citoyen, en tribunes publiques et en vidéo.</p>
+<p>Contrairement à l’idée reçue généralement établie, il est très simple d’assister aux débats parlementaires. Comme exigé par <a href="http://fr.wikipedia.org/wiki/Article_33_de_la_Constitution_de_la_Cinqui%C3%A8me_R%C3%A9publique_fran%C3%A7aise">l'article 33 de la Constitution</a>, les séances sont en effet publiques et donc accessibles à chaque citoyen, en tribunes publiques et en vidéo.</p>
 
 <p>Tout d'abord, la première chose à faire consiste à prendre connaissance de <a href="http://www.senat.fr/ordre-du-jour/ordre-du-jour.html">l'ordre du jour des débats</a>, choisir un sujet qui vous intéresse, et repérer la date et l'horaire de la séance correspondante.</p>
 
