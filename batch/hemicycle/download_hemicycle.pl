@@ -3,13 +3,20 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
+$lastyear = localtime(time);
+my @month = `date +%m`;
+$lastyear =~ s/^.*\s(\d{4})$/$1/;
+$lastyear-- if ($month[0] < 10);
+$session = "$lastyear-".($lastyear+1);
+$oldsession = ($lastyear-1)."-$lastyear";
+
 @url = (
-    "http://www.assemblee-nationale.fr/13/cri/2010-2011-extra2/",
-    "http://www.assemblee-nationale.fr/13/cri/2010-2011-extra/",
-    "http://www.assemblee-nationale.fr/13/cri/2010-2011/",
-    "http://www.assemblee-nationale.fr/13/cri/2009-2010-extra2/",
-    "http://www.assemblee-nationale.fr/13/cri/2009-2010-extra/",
-    "http://www.assemblee-nationale.fr/13/cri/2009-2010/",
+    "http://www.assemblee-nationale.fr/13/cri/$session-extra2/",
+    "http://www.assemblee-nationale.fr/13/cri/$session-extra/",
+    "http://www.assemblee-nationale.fr/13/cri/$session/",
+    "http://www.assemblee-nationale.fr/13/cri/$oldsession-extra2/",
+    "http://www.assemblee-nationale.fr/13/cri/$oldsession-extra/",
+    "http://www.assemblee-nationale.fr/13/cri/$oldsession/",
 );
 
 $a = WWW::Mechanize->new();
