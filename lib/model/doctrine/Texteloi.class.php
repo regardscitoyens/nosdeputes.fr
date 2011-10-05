@@ -83,7 +83,7 @@ class Texteloi extends BaseTexteloi
       ->fetchArray();
     $res = count($sections);
     if ($res == O) {
-     print "DEBUG : Pas de dossier trouvé pour le texte $this->id\n";
+     // print "DEBUG : Pas de dossier trouvé pour le texte $this->id\n";
      return false;
     } else if ($res == 1) {
       $section = Doctrine::getTable('Section')->find($sections[0]['id']);
@@ -100,7 +100,7 @@ class Texteloi extends BaseTexteloi
   }
 
   public function setAuteurs($signataires) {    
-    $debug=1; // $debug2=1;
+   // $debug=1; // $debug2=1;
     $this->signataires = $signataires;
    //Set signatires, auteurs via PArlemnaitreTexteDocu et Organisme
     $orga = null;
