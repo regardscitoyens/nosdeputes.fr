@@ -7,7 +7,13 @@
 <?php if ($parlementaire->fin_mandat && $parlementaire->fin_mandat >= $parlementaire->debut_mandat) : ?>
       <li>Mandat clos rempli du <?php echo myTools::displayDate($parlementaire->debut_mandat); ?> au <?php echo myTools::displayDate($parlementaire->fin_mandat); ?></li>
 <?php else : ?>
-      <li>Mandat en cours depuis le <?php echo myTools::displayDate($parlementaire->debut_mandat); ?></li>
+      <li>Mandat en cours depuis le <?php echo myTools::displayDate($parlementaire->debut_mandat); ?>
+      <?php foreach ($missions as $resp)
+        if (preg_match('/^Mission temporaire/', $resp->getNom())) {
+          echo '<br/>&nbsp;(en cours de mission pour le gouvernement)';
+          break;
+        } ?>
+      </li>
 <?php endif;
       if ($parlementaire->suppleant_de_id && $supplee = $parlementaire->getSuppleantDe())
         echo '<li>Suppléant'.($parlementaire->sexe == "F" ? 'e' : '').' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>';
