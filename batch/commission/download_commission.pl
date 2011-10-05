@@ -35,8 +35,18 @@ while ($ok) {
     $start += $count;
 }
 
+$a = WWW::Mechanize->new(autocheck => 0);
+
 @url = keys %url;
-push(@url, "http://www.assemblee-nationale.fr/13/budget/plf2011/commissions_elargies/cr/", "http://www.assemblee-nationale.fr/13/budget/plf2010/commissions_elargies/cr/", "http://www.assemblee-nationale.fr/13/cr-mec/07-08/index.asp", "http://www.assemblee-nationale.fr/13/cr-mec/08-09/index.asp", "http://www.assemblee-nationale.fr/13/cr-mec/09-10/index.asp", "http://www.assemblee-nationale.fr/13/cr-mec/10-11/index.asp");
+
+$lastyear = localtime(time);
+$lastyear =~ s/^.*\s(\d{4})$/$1/;
+for $year (2007 .. $lastyear) {
+  $session = sprintf('%02d-%02d', $year-2001, $year-2000);
+  push(@url, "http://www.assemblee-nationale.fr/13/budget/plf$year/commissions_elargies/cr/");
+  push(@url, "http://www.assemblee-nationale.fr/13/cr-mec/$session/index.asp");
+}
+
 $a = WWW::Mechanize->new();
 
 foreach $url (@url) {
