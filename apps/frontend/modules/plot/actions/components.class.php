@@ -45,7 +45,13 @@ class plotComponents extends sfComponents
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     }
     $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee, $sem0);
-    $this->data['vacances'] = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
+    $debutmandat = $this->parlementaire->debut_mandat;
+    foreach (unserialize($this->parlementaire->anciens_mandats) as $ancien)
+      if (preg_match('#^(\d+)/(\d+)/(\d+) / \d+/\d+/'.$annee.'#', $ancien, $match)) {
+        $debutmandat = $match[3].'-'.$match[2].'-'.$match[1];
+        break;
+      }
+    $this->data['vacances'] = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($debutmandat));
 
     $query = Doctrine_Query::create()
       ->select('COUNT(p.id) as nombre, p.id,s.type, s.annee, s.numero_semaine')
