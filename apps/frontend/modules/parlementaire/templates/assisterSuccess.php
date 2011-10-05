@@ -34,5 +34,5 @@
 <div class="aligncenter">
 <img src="/images/billet_seance.png" alt="Des billets de séance de l'Assemblée nationale" title="Des billets de séance de l'Assemblée nationale"/><br/>
 <span>Des billets de séance de l'Assemblée nationale</span>
-<p><a href="http://www.assemblee-nationale.fr/infos/assister.asp">En savoir plus sur le site de l'Assemblée nationale.</a></p>
+<p>&nbsp;<a href="http://www.assemblee-nationale.fr/infos/assister.asp">En savoir plus sur le site de l'Assemblée nationale.</a></p>
 </div>
