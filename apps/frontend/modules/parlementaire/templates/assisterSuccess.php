@@ -26,5 +26,5 @@
 <div class="aligncenter">
 <img src="/images/billet_seance.png" alt="Un billet de séance du Sénat" title="Un billet de séance du Sénat"/><br/>
 <span>Un billet de séance du Sénat</span>
-<p><a href="http://www.senat.fr/visite/visiter.html#seance">En savoir plus sur le site du Sénat.</a></p>
+<p>&nbsp;<a href="http://www.senat.fr/visite/visiter.html#seance">En savoir plus sur le site du Sénat.</a></p>
 </div>
