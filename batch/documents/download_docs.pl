@@ -3,25 +3,29 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
+$lastyear = localtime(time);
+$lastyear =~ s/^.*\s(\d{4})$/$1/;
+
 $a = WWW::Mechanize->new(autocheck => 0);
 
-foreach $baseurl ("http://www.assemblee-nationale.fr/13/documents/index-depots.asp",
-                  "http://www.assemblee-nationale.fr/13/documents/index-rapports.asp",
-                  "http://www.assemblee-nationale.fr/13/documents/index-application_lois.asp",
-                  "http://www.assemblee-nationale.fr/13/europe/index-rapinfo.asp",
-                  "http://www.assemblee-nationale.fr/13/documents/index-information-comper.asp",
-                  "http://www.assemblee-nationale.fr/13/documents/index-rapports-legislation.asp",
-                  "http://www.assemblee-nationale.fr/13/documents/index-oeps.asp",
-                  "http://www.assemblee-nationale.fr/documents/index-general-oecst.asp",
-                  "http://www.assemblee-nationale.fr/13/documents/index-territoire.asp",
-                  "http://www.assemblee-nationale.fr/13/documents/index-femmes.asp",
-                  "http://www.assemblee-nationale.fr/13/documents/index-information-comper.asp",
-                  "http://www.assemblee-nationale.fr/13/documents/index-enquete-rapports.asp",
-                  "http://www.assemblee-nationale.fr/13/budget/plf2008/rapporteurs.asp",
-                  "http://www.assemblee-nationale.fr/13/budget/plf2009/rapporteurs.asp",
-                  "http://www.assemblee-nationale.fr/13/budget/plf2010/rapporteurs.asp",
-                  "http://www.assemblee-nationale.fr/13/budget/plf2011/rapporteurs.asp"
-) {
+@urls = ("http://www.assemblee-nationale.fr/13/documents/index-depots.asp",
+         "http://www.assemblee-nationale.fr/13/documents/index-rapports.asp",
+         "http://www.assemblee-nationale.fr/13/documents/index-application_lois.asp",
+         "http://www.assemblee-nationale.fr/13/europe/index-rapinfo.asp",
+         "http://www.assemblee-nationale.fr/13/documents/index-information-comper.asp",
+         "http://www.assemblee-nationale.fr/13/documents/index-rapports-legislation.asp",
+         "http://www.assemblee-nationale.fr/13/documents/index-oeps.asp",
+         "http://www.assemblee-nationale.fr/documents/index-general-oecst.asp",
+         "http://www.assemblee-nationale.fr/13/documents/index-territoire.asp",
+         "http://www.assemblee-nationale.fr/13/documents/index-femmes.asp",
+         "http://www.assemblee-nationale.fr/13/documents/index-information-comper.asp",
+         "http://www.assemblee-nationale.fr/13/documents/index-enquete-rapports.asp"
+);
+for $year (2008 .. $lastyear) {
+  @urls = (@urls, "http://www.assemblee-nationale.fr/13/budget/plf$year/rapporteurs.asp");
+}
+
+foreach $baseurl (@urls) {
   $ct = 0;
   $a->get($baseurl);
   $content = $a->content;
