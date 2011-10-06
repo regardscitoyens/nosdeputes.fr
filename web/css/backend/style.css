@@ -110,3 +110,10 @@ body {
   float: right;
   margin-right: 20px;
 }
+.photo {
+  border: thin solid;
+  float: left;
+  text-align: center;
+  margin: 3px;
+  padding: 3px;
+}

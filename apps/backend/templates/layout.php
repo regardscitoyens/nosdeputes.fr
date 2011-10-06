@@ -13,6 +13,10 @@
 	}
 	/* ]]> */
 	</script>
+    <?php echo stylesheet_tag('/css/backend/style.css'); ?>
+    <?php echo javascript_include_tag('jquery-1.6.2.min.js'); ?>
+    <?php echo javascript_include_tag('jquery-ui-1.8.5.custom.min.js'); ?>
+    <?php echo javascript_include_tag('fonctions.js'); ?>
   </head>
   <body>
     <div id="backend">
