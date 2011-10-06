@@ -116,6 +116,10 @@ article:
     column:               id
     with_wildcard_routes: true
 
+flip:
+  url: /photos/flip
+  param: {module: photos, action: flip}
+
 commission_fuse_seances:
   url: /commission/seance/:id/fuse/result/:result
   param: {module: organisme, action: commission}

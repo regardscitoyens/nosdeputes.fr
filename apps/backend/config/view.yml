@@ -9,9 +9,9 @@ default:
     #language:     en
     #robots:       index, follow
 
-  stylesheets:    [/sfDoctrinePlugin/css/global.css, /sfDoctrinePlugin/css/default.css, backend/style.css]
+  stylesheets:    [/sfDoctrinePlugin/css/global.css, /sfDoctrinePlugin/css/default.css]
 
   javascripts:    []
 
-  has_layout:     on
+  has_layout:     true 
   layout:         layout
