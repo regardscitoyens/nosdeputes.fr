@@ -167,7 +167,7 @@ sub fonctions {
 			} elsif ($commission =~ /nateurs ne figurant sur la liste d'aucun groupe/ || $commission =~ /^groupe /i) {
 				$commission =~ s/^groupe (d(u |e l'))?//i;
 				$commission =~ s/groupe \/ /groupe politique \/ /i;
-				$commission =~ s/^union centriste.*\//Union Centriste \//i;
+#				$commission =~ s/^union centriste.*\//Union Centriste et Républicaine\//i;
 				$senateur{'groupe'}{$commission} = 1;
 				if ($autres && $autres eq "anciengroupe") {
 					$groupes{$comm} = 1;

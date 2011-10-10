@@ -29,20 +29,20 @@ class OrganismeTable extends Doctrine_Table
       $org = $this->findOneByNom($nom);
 
     if ($org) {
-#      echo "- $org->nom (trouve : ".$org->id.", $type)\n";
+    #  echo "- $org->nom (trouve : ".$org->id.", $type)\n";
       if (strlen($nom) > strlen($org->nom)) {
 	$org->nom = $nom;
 	$org->save();
       }
       return $org;
     }
-#    echo "- $nom (pas trouve)\n";
+   # echo "- $nom (pas trouve)\n";
 
     $orgs = Doctrine::getTable('Organisme')->createQuery('o')->where('type = ?', $type)->execute();
     foreach($orgs as $o) {
       $res = similar_text($o->nom, $nom, $pc);
       if ($pc > 95) {
-#        echo "RECHERCHE : $nom $pc\n".$o->nom."'".$o->id."\n";
+       # echo "RECHERCHE : $nom $pc\n".$o->nom."'".$o->id."\n";
 	$org = $o;
 	break;
       }
@@ -60,7 +60,7 @@ class OrganismeTable extends Doctrine_Table
     $org->type = $type;
     $org->nom = self::cleanNom($nom);
     $org->save();
-#    echo "- $nom (créé : ".$org->id.")\n";
+   # echo "- $nom (créé : ".$org->id.")\n";
     return $org;
   }
  
@@ -69,7 +69,7 @@ class OrganismeTable extends Doctrine_Table
     $nom = preg_replace("/(&#8217;|’|')\s*/", "'", $nom);
     $nom = preg_replace('/\([^\)]*$/', '', $nom);
     $nom = preg_replace('/^[^\(]*\)/', '', $nom);
-    $nom = preg_replace('/\W+$/', '', $nom);
+    $nom = preg_replace('/[^a-zàâéèêëîïôùûü]+$/i', '', $nom);
     $nom = preg_replace('/(\([^\)]*)$/', '\\1)', $nom);
     $nom = preg_replace('/\s+/', ' ', $nom);
     $nom = preg_replace('/\s$/', '', $nom);
