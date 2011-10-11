@@ -41,7 +41,7 @@ foreach $url (@url) {
 	    $size = -s "html/$file";
 	    if ($size) {
 		$cpt++;
-		exit if ($cpt > 3);
+		last if ($cpt > 3);
 		next;
 	    }
 	    $cpt = 0;
