@@ -1,5 +1,6 @@
 #!/bin/bash 
 
+mkdir -p out
 for i in html/http* ; do 
 file=$(echo $i | sed 's/html\///') ; 
 echo $file ; 
