@@ -69,7 +69,7 @@ $lines =~ s/,? ?\<hr/\n<hr/;
 $lines =~ s/<[^ib][^>]+>//g;
 $lines =~ s/\n([^\s<]+)\s\n+(\S+)\n/\n$1 $2\n/g;
 $lines =~ s/(\d[erm]+ r|R)éunion /\n$1éunion /gi;
-$lines =~ s/\. / /g;
+$lines =~ s/(\.|\;) /$1\n/g;
 
 foreach (split /\n/, $lines) {
     if (/(Comité\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/(réunion|séance)/i && !/Membres/i && !/^\s*\(/) {
@@ -92,25 +92,49 @@ foreach (split /\n/, $lines) {
 	}
 	$on = 0;
     }
-    if (/(<i>Excus|<i>Ont d|Ordre|<b>Convocation|<b>Nomination)/) {
+    if (/(<i>Excus|<i>Ont d|Ordre|Convocation|Excusés|<b>Nomination)/) {
 	$on = 0;
     }
     if ($on && /\w/) {
 	foreach $d (split /\, / ) { #/
-		    chomp($d);
-		    if ($d =~ s/ (\S)\.//) {
-			$d = $1.' '.$d;
-		    }
-		    $d =~ s/\([^\)]+\)//;
-		    next if ($d eq 'M');
-		    print '{ ';
-		    print '"date": "'.$date.'",';
-		    print '"heure": "'.$heure.'",';
-		    print '"commission": "'.$commission.'",';
-		    print '"senateur": "'.$d.'",';
-		    print '"source": "Journal officiel du '.$source.'"';
-		    print " } \n";
+	    chomp($d);
+	    if ($d =~ s/ (\S)\.//) {
+		$d = $1.' '.$d;
 	    }
+	    $d =~ s/\([^\)]+\)//;
+	    $d =~ s/^\W+//;
+	    $d =~ s/\W+$//;
+
+	    if ($d =~ s/(.*) (et |; |\d+| ?\. ?)(.*)/$1/) { 
+		$nextd = $3;
+	    }
+	    $d =~ s/( et|\W+)$//;
+	    $d =~ s/ ?- ?/-/;
+	    $d =~ s/  */ /;
+
+	    next if (length($d) < 3);
+	    next if ($d =~ /^.\>/);
+	    print '{ ';
+	    print '"date": "'.$date.'",';
+	    print '"heure": "'.$heure.'",';
+	    print '"commission": "'.$commission.'",';
+	    print '"senateur": "'.$d.'",';
+	    print '"source": "Journal officiel du '.$source.'"';
+	    print " } \n";
+	    if ($nextd) {
+		$d = $nextd;
+		$d =~ s/ (et|\.)$//;
+		$d =~ s/ ?- ?/-/;
+		$d =~ s/  */ /;
+		print '{ ';
+		print '"date": "'.$date.'",';
+		print '"heure": "'.$heure.'",';
+		print '"commission": "'.$commission.'",';
+		print '"senateur": "'.$d.'",';
+		print '"source": "Journal officiel du '.$source.'"';
+		print " } \n";
+	    }
+	}
     }
     if (/<i>(Présents?\W|Assistai)/) {
 	$on = 1;
