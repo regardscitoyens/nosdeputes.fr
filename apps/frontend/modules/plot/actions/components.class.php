@@ -122,13 +122,13 @@ class plotComponents extends sfComponents
     } 
 */
     $query3 = Doctrine_Query::create()
-      ->select('COUNT(q.id) AS nombre, YEAR(q.date) as annee, WEEKOFYEAR(q.date) as numero_semaine')
+      ->select('COUNT(q.id) AS nombre, YEAR(IF(ISNULL(q.date_cloture),q.date, greatest(q.date, q.date_cloture))) as annee, WEEKOFYEAR(IF(ISNULL(q.date_cloture),q.date, greatest(q.date, q.date_cloture))) as numero_semaine')
       ->from('Question q')
       ->where('q.type != ?', 'Question écrite')
       ->andWhere('q.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('q.reponse != ?', '')
-      ->andWhere('q.date >= ?', $date_debut)
-      ->andWhere('q.date < ?', $date_fin)
+      ->andWhere('IF(ISNULL(q.date_cloture),q.date, greatest(q.date, q.date_cloture)) >= ?', $date_debut)
+      ->andWhere('IF(ISNULL(q.date_cloture),q.date, greatest(q.date, q.date_cloture)) < ?', $date_fin)
       ->groupBy('annee, numero_semaine');
     $questionsorales = $query3->fetchArray();
 
