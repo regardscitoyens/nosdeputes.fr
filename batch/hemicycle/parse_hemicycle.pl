@@ -45,6 +45,7 @@ sub print_inter {
 	if ($heure && $intervention && $intervention ne "<p></p>") {
 		$timestamp += 20;
 		$context = $bigcontext;
+		$context =~ s/ suite$//;
 		$context .= ' > '.$subcontext if ($subcontext);
 		$cpt = 0;
 		if ($context =~ /procès verbal|ordre du jour|Conf[&#\d;é]+rence des pr[&#\d;é]+sidents/i) {
