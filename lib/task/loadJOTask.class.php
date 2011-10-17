@@ -64,7 +64,7 @@ class loadJOTask extends sfBaseTask
 	      continue;
 	    }
 	    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($jo->commission, 'parlementaire');
-	    if (!isset($jo->date) || !$jo->date) {
+	    if (!isset($jo->date) || !$jo->date || $jo->date < 1990) {
 	      $senateur->clearRelated();
 	      $commission->clearRelated();
 	      echo "ERROR date : ";
