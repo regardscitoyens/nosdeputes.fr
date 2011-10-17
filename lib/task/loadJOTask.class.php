@@ -49,10 +49,10 @@ class loadJOTask extends sfBaseTask
 	    }
 	    $senateur = Doctrine::getTable('Parlementaire')->findOneByNom($jo->senateur);
 	    if ($jo->senateur && !$senateur) {
-	      $senateur = Doctrine::getTable('Parlementaire')->similarTo($jo->senateur);
+	      $senateur = Doctrine::getTable('Parlementaire')->similarTo($jo->senateur, null, 0, preg_replace('/-.*/', '', $jo->date));
 	    }
 	    if (!$senateur) {
-	      echo "ERROR senateur : ";
+	      echo "ERROR senateur (Not recognized) : ";
 	      echo $line;
 	      echo "\n";
 	      continue;

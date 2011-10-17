@@ -6,7 +6,7 @@ class PersonnaliteTable extends Doctrine_Table
 {
   protected $changed = 0;
   protected $all = null;
-  public function similarTo($str, $sexe = null, $return_array = 0)
+  public function similarTo($str, $sexe = null, $return_array = 0, $year = 0)
   {
     if (preg_match('/^\s*$/', $str))
       return null;
@@ -18,6 +18,23 @@ class PersonnaliteTable extends Doctrine_Table
       if ($return_array)
 	return array($res[0]);
       return $res[0];
+    }else{
+      $similar = array();
+      foreach ($res as $r) {
+	if (preg_match('/ '.$str.'$/', $r->nom) && (!$r->fin_mandat || !$year || preg_replace('/-.*/', '', $r->fin_mandat) >= $year))
+	  $similar[] = $r;
+      }
+      if (count($similar) == 1 && (!$sexe || $similar[0]->sexe == $sexe) )
+	if ($return_array)
+	  return $similar;
+	else
+	  return $similar[0];
+
+      if  (count($similar) > 1 && !$sexe)
+	if ($return_array)
+	  return array();
+	else
+	  return null;
     }
 
     //load parlementaires only once
@@ -69,7 +86,6 @@ class PersonnaliteTable extends Doctrine_Table
     //If str is the end of the best parlementaire, it is OK (remove non alpha car to avoid preg pb)
     if (preg_match('/'.preg_replace('/[^a-z]/i', '', $str).'$/', preg_replace('/[^a-z]/i', '', $closest['nom'])))
       return $this->find($closest['id']);
-
 
     return null;
   }
