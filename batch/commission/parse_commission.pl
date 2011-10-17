@@ -115,6 +115,7 @@ foreach (split /\n/, $content) {
 		print_inter();
 		$context = $titre;
 		setfonction($titre);
+		$context =~ s/&nbsp;/ /g;
 		$context =~ s/ - / > /;
 		$intervention = '<p>'.$titre.'</p>';
 		%fonctions = ();
