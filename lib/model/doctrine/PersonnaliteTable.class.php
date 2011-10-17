@@ -21,7 +21,7 @@ class PersonnaliteTable extends Doctrine_Table
     }else{
       $similar = array();
       foreach ($res as $r) {
-	if (preg_match('/ '.$str.'$/', $r->nom) && (!$r->fin_mandat || !$year || preg_replace('/-.*/', '', $r->fin_mandat) >= $year))
+	if (preg_match('/ '.$str.'$/', $r->nom) && (!$year || (preg_replace('/-.*/', '', $r->fin_mandat) >= $year && preg_replace('/-.*/', '', $r->debut_mandat) <= $year) || !$r->fin_mandat))
 	  $similar[] = $r;
       }
       if (count($similar) == 1 && (!$sexe || $similar[0]->sexe == $sexe) )
