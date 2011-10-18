@@ -46,7 +46,7 @@ class loadQuestionsTask extends sfBaseTask {
 	      }
               continue;
             }
-            if (!$json->ministere_interroge || !$json->ministere_attribue || !$json->rubrique || !$json->tete_analyse || !$json->analyse) {
+            if (!$json->ministere_interroge || !$json->ministere_attribue || !$json->rubrique || !($json->tete_analyse && !$json->analyse)) {
               echo "ERROR json facu : $line\n";
               continue;
             }
@@ -63,7 +63,9 @@ class loadQuestionsTask extends sfBaseTask {
             if (!$quest->reponse || $quest->reponse === "") {
               $quest->date = $json->date_question;
               $quest->ministere = $json->ministere_interroge." / ".$json->ministere_attribue;
-              $quest->themes = $json->rubrique." / ".$json->tete_analyse." / ".$json->analyse;
+              $quest->themes = $json->rubrique;
+              if ($json->tete_analyse) $quest->themes .= " / ".$json->tete_analyse;
+              if ($json->analyse) $quest->themes .= " / ".$json->analyse;
               $quest->question = $json->question;
               $quest->content_md5 = md5($json->legislature.$json->question);
               if ($json->date_retrait) {
