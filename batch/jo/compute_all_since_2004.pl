@@ -1,6 +1,6 @@
 #!/usr/bin/perl
 
-for ($cpt = 0 ; 1 ; $cpt++) {
+for ($cpt = 0 ; -1 ; $cpt++) {
 	@time = localtime(time()-60*60*24*$cpt);
 	$year = $time[5];
 	$mon = $time[4] + 1;
@@ -16,8 +16,8 @@ for ($cpt = 0 ; 1 ; $cpt++) {
 		exit;
 	}
 	$ret = system('sh compute_jo.sh '.$mday.' '.$mon.' '.$year);
-	if ($ret) {
-		exit;
-	}
+#	if ($ret) {
+#		exit;
+#	}
 }
 
