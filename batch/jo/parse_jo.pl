@@ -1,3 +1,4 @@
+
 #!/usr/bin/perl
 
 open FILE, shift;
@@ -19,11 +20,11 @@ $mois{'décembre'} = '12';
 
 $on = 0;
 while(<FILE>) {
-    if (!$on && /<b>C?O?M?MISSION /) {
+    if (!$on && /<b>C?O?M?MISSION /i) {
 	$_ = "$_\n";
         $on = 1;
     }
-    if (/<b>Convocation/i) {
+    if (/<b>Convocation|<b>Réunion|<b>Composition/i) {
 	$on = 0;
     }
     if ($on) {
@@ -40,6 +41,7 @@ $lines =~ s/<\/b>,?à/<\/b>\nà/g;
 $lines =~ s/&nbsp;:(<br>)?/ :\n/g;
 $lines =~ s/&nbsp;<b>/ /g;
 $lines =~ s/&nbsp;/ /g;
+$lines =~ s/([^\.>]) \n/$1 /g;
 $lines =~ s/<\/b> *<b>/ /g;
 $lines =~ s/<\/b>/<\/b>\n/g;
 $lines =~ s/<\/i>/<\/i>\n/g;
@@ -72,11 +74,13 @@ $lines =~ s/(\d[erm]+ r|R)éunion /\n$1éunion /gi;
 $lines =~ s/(\.|\;) /$1\n/g;
 
 foreach (split /\n/, $lines) {
-    if (/(Comité\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/(réunion|séance)/i && !/Membres/i && !/^\s*\(/) {
+#    print "l: $lines\n";
+    if (/(Comité\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/(réunion|séance|nommé)/i && !/Membres/i && !/^\s*\(/ && length($_) < 250) {
 	$commission = $_;
 	$commission =~ s/.*\W(Comité|Commission|Mission|Office|Observatoire|Délégation)/$1/i;
 	$commission =~ s/\s*[\(:].*//;
 	$commission =~ s/[, \)]+$//;
+	$commission =~ s/\W+$//;
 	$on = 0;
     }
     if (/(réunion|séance)/i) {
