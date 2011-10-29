@@ -103,12 +103,12 @@ foreach (split /\n/, $content) {
 #print STDERR "date:"."@date"." ($timestamp $intervention)\n";
 		    print_inter() if ($intervention && !$timestamp && $date);
                     $date = join '-', @date;
-		    print_inter() if ($intervention && !$timestamp);
 #print STDERR "date:".$date."\n";
 		    $heure = '';
 		    $session = sessionize(@date);
 		    $numeros_loi = '';
 		    $nb_seance = 1;
+		    print_inter() if ($intervention && !$timestamp);
 		}
 	}
 	next if (!$begin);
