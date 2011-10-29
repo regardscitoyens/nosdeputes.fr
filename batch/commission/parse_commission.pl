@@ -93,16 +93,18 @@ foreach (split /\n/, $content) {
 	if (/TITLE>[^<]*(Commission[^\&:<]*)/i) {
 	    $commission = $1;
 	}else {
-	    $commission = $1 if (/TITLE>[^<]*((Mission|Office|Délégation)[^\&:<]*)/i);
+	    $commission = $1 if (/TITLE>[^<]*((Mission|Office|Délégation|Groupe de travail)[^\&:<]*)/i);
 	}
 #	print ;	print "\n";
 	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})\W*<\/(h[123])>/i)) {
 #print STDERR "date: $3 $url_year\n";
 		@date = datize($3, $url_year);
 		if (@date) {
-#print STDERR "date:"."@date"."\n";
-		    print_inter();
-		    $date = join '-', @date;
+#print STDERR "date:"."@date"." ($timestamp $intervention)\n";
+		    print_inter() if ($intervention && !$timestamp && $date);
+                    $date = join '-', @date;
+		    print_inter() if ($intervention && !$timestamp);
+#print STDERR "date:".$date."\n";
 		    $heure = '';
 		    $session = sessionize(@date);
 		    $numeros_loi = '';
