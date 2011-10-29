@@ -314,6 +314,7 @@ if ($doc{'type'} =~ /^(Avis|Rapport|Texte)/) {
 $doc{'titre'} =~ s/en application de .* (constitution|règlement), //i;
 $doc{'titre'} =~ s/[\s,]*présentée?[\s,]*//gi;
 $doc{'titre'} =~ s/[\.,\s]+$//;
+$doc{'titre'} =~ s/^([^\(]*)\)/$1/;
 $string = lc($string);
 $type = lc($doc{'type'});
 $string =~ s/\s*$type[,\s]*//;
