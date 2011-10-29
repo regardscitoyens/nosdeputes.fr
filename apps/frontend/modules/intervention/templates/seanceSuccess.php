@@ -26,7 +26,7 @@
 foreach($table_m as $table) : if (!$table['titre']) {continue;} ;
 if ($table['section_id'] != $table['id']) {
   if ($table['section_id'] != $lastparent) {
-    echo '<li><a href="#table_'.$table['id'].'">'.ucfirst(preg_replace('/ > .*$/', '', $table['titre_complet'])).'</a></li>';
+    echo '<li><a href="#table_'.$table['id'].'">'.myTools::betterUCFirst(preg_replace('/ > .*$/', '', $table['titre_complet'])).'</a></li>';
     $lastparent = $table['section_id'];
   }
   echo '<ul>';
@@ -35,7 +35,7 @@ if ($table['section_id'] != $table['id']) {
 <a href="#table_<?php 
 echo $table['id']; 
 ?>"><?php 
-echo ucfirst($table['titre']); 
+echo myTools::betterUCFirst($table['titre']); 
 ?></a> <?php }
 if ($table['nb_interventions']) echo '<span class="dossier">('.link_to('voir le dossier', '@section?id='.$table['id']).')</span>'; ?></li>
 <?php if ($table['section_id'] != $table['id']) echo '</ul>'; ?>
@@ -69,12 +69,12 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
     echo '<span class="source"><a href="#sommaire">Retour au sommaire</a>&nbsp;-&nbsp<a href="#table_'.$intervention->section_id.'">Permalien</a></span><br/>';
     if ($titre != 2) {
       if ($lasttitre != 1) {
-        echo '<h2 class="section">'.link_to(ucfirst($intervention->Section->Section->titre),'@section?id='.$intervention->Section->Section->id);
+        echo '<h2 class="section">'.link_to(myTools::betterUCFirst($intervention->Section->Section->titre),'@section?id='.$intervention->Section->Section->id);
 	echo '</h2>';
       }
       if ($intervention->Section->id != $intervention->Section->section_id) {
         echo '<h3 class="sous-section">';
-        echo link_to(ucfirst($intervention->Section->titre),'@section?id='.$intervention->Section->id);
+        echo link_to(myTools::betterUCFirst($intervention->Section->titre),'@section?id='.$intervention->Section->id);
 	echo '</h3><br/>';
       }
       if ($intervention->hasIntervenant())
