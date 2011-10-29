@@ -24,6 +24,7 @@ $content =~ s/<\/(p|h[1234]|ul|div)>/<\/$1>\n/gi;
 $content =~ s/(<h\d[^>]*>)\s*<b>/$1/gi;
 $content =~ s/<\/b>\s*(<\/h\d[^>]*>)/$1/gi;
 $content =~ s/[ \t]+/ /g;
+$content =~ s/&nbsp;/ /g;
 
 %fonctions = ();
 

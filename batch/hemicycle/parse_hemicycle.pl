@@ -31,7 +31,7 @@ $doc =~ s/.* id="par_1"/<p id="par_1"/;
 $doc =~ s/<p class="l1_signature" .*//;
 $doc =~ s/<!--[^>]*-->//g;
 $doc =~ s/> +</></g;
-
+$doc =~ s/&nbsp;/ /g;
 $doc =~ s/<\/i> *<i>/ /gi;
 $doc =~ s/(info_entre_parentheses">[^<]*)<\/span> *<i>([^<]*)<\/i>/$1 $2<\/span>/gi;
 
