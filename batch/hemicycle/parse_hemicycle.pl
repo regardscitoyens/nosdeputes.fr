@@ -32,6 +32,9 @@ $doc =~ s/<p class="l1_signature" .*//;
 $doc =~ s/<!--[^>]*-->//g;
 $doc =~ s/> +</></g;
 
+$doc =~ s/<\/i> *<i>/ /gi;
+$doc =~ s/(info_entre_parentheses">[^<]*)<\/span> *<i>([^<]*)<\/i>/$1 $2<\/span>/gi;
+
 #$doc =~ s/<\/?(i|cri|div)[^>]*>//ig;
 #$doc =~ s/<p[^>]+class="[^"]+_article"[^>]*>[^<]+<\/p>//g;
 
@@ -109,7 +112,7 @@ foreach (split /\n/, $doc) {
     utf8::decode($_);
     $_ = decode_entities($_);
     if (/<\/span><span([^>]*>)/ && $1 !~ /orateur_qualite/) {
-	s/<\/span><span[^>]*>//g;
+	s/<\/span><span[^>]*>/ /g;
     }
 	if (/name="([^"]+)"/) {
 		$source = "#$1";
