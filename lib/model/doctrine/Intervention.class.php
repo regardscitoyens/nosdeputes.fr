@@ -137,7 +137,7 @@ class Intervention extends BaseIntervention
   public function setContexte($contexte, $date = null, $timestamp = null, $tlois = null, $debug = 0) {
 
     if ($date && preg_match("/^(\d{4}-\d\d-\d\d)/", $date, $annee)) {
-      if (!preg_match("/^".$annee[1]."\d\d:\d\d$/")
+      if (!preg_match("/^".$annee[1]."\d\d:\d\d$/"))
         $date = $annee[1]."00:00";
     } else print "WARNING : Intervention $this->id has incorrect date : $date";
 
