@@ -318,15 +318,12 @@ class topSenateursTask extends sfBaseTask
 
     if (isset($arguments['month']) && preg_match('/(\d{4})-(\d{2})-01/', $arguments['month'], $m)) {
       $this->executeMonth($arguments['month']);
-      $globale = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$m[1]);
+      $globale = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$m[1].'_'.$m[2]);
       if (!$globale) {
 	$globale = new VariableGlobale();
-	$globale->champ = 'stats_month_'.$m[1];
-	$globale->value = serialize(array());
+	$globale->champ = 'stats_month_'.$m[1].'_'.$m[2];
       }
-      $topMonth = unserialize($globale->value);
-      $topMonth[$m[1].$m[2]] = $this->senateurs;
-      $globale->value = serialize($topMonth);
+      $globale->value = serialize($this->senateurs);
       $globale->save();
       return;
     }
