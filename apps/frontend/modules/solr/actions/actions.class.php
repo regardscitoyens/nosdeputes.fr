@@ -46,7 +46,7 @@ class solrActions extends sfActions
     }
     $this->query = $request->getParameter('query');
     
-    $query = preg_replace('/\*/', '', utf8_decode($this->query));
+    $query = preg_replace('/\*/', '', $this->query);
 
     $nb = 20;
     $deb = ($request->getParameter('page', 1) - 1) * $nb ;
