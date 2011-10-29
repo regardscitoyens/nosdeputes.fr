@@ -39,25 +39,25 @@ class apiActions extends sfActions
   public function executeTop(sfWebRequest $request)
   {
     $date = $request->getParameter('date');
-    $this->forward404Unless(preg_match('/(\d{2,4})-?\d{2}/', $date, $d));
+    $this->forward404Unless(preg_match('/(\d{2,4})-?(\d{2})/', $date, $d));
     $date = preg_replace('/-/', '', $date);
     $date = preg_replace('/^(\d{2})(\d{2})$/', '20\\1\\2', $date);
     $d[1] = preg_replace('/^(\d{2})$/', '20\\1', $d[1]);
-    $vg = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$d[1]);
+    $vg = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$d[1].'_'.$d[2]);
     $top = unserialize($vg->value);
 
-    $this->forward404Unless(isset($top[$date]));
+    $this->forward404Unless($top);
 
     $this->res = array();
     $this->champs = array();
-    foreach(array_keys($top[$date]) as $id) {
+    foreach(array_keys($top) as $id) {
       $depute['id'] = $id;
       $this->champs['id'] = 1;
 
-      foreach (array_keys($top[$date][$id]) as $k) {
+      foreach (array_keys($top[$id]) as $k) {
 	//Gestion de l'ordre des parametres
 	$kfinal = preg_replace('/^\d*_/', '', $k);
-	$depute[$kfinal] = $top[$date][$id][$k]['value'];
+	$depute[$kfinal] = $top[$id][$k]['value'];
 	$this->champs[$kfinal] = 1;
       }
       $this->res["deputes"][] = array('depute' => $depute);
