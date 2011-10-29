@@ -201,6 +201,10 @@ class Intervention extends BaseIntervention
   public function setContexte($contexte, $date = null, $timestamp = null, $tlois = null, $debug = 0) {
     $lois = self::prepareLois($tlois);
     $loisstring = $this->addTagLois($lois);
+    if ($date && preg_match("/^(\d{4}-\d\d-\d\d)/", $date, $annee)) {
+      if (!preg_match("/^".$annee[1]."\d\d:\d\d$/")
+        $date = $annee[1]."00:00";
+    } else print "WARNING : Intervention $this->id has incorrect date : $date";
 
     if (!isset($lois[0]) || !$lois[0]) {
       $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
