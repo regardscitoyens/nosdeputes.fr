@@ -36,6 +36,12 @@ while(<FILE>) {
 	$on = 1;
     }
 }
+$lines =~ s/\<hr\>\<a[^>]+\><\/a>[^<]*JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE Texte \d+ sur \d+//gi;
+$lines =~ s/\.\<br\>//gi;
+$lines =~ s/ +\. +/ /g;
+$lines =~ s/ +\. +/ /g;
+
+$lines =~ s/\.<br>\n/<br>\n<br>/g;
 $lines =~ s/Membres? présents? ou excusés?//;
 $lines =~ s/<\/b>,?à/<\/b>\nà/g;
 $lines =~ s/&nbsp;:(<br>)?/ :\n/g;
@@ -76,11 +82,12 @@ $lines =~ s/(\.|\;) /$1\n/g;
 foreach (split /\n/, $lines) {
 #    print "l: $lines\n";
     if (/(Comité\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/(réunion|séance|nommé)/i && !/Membres/i && !/^\s*\(/ && length($_) < 250) {
-	$commission = $_;
-	$commission =~ s/.*\W(Comité|Commission|Mission|Office|Observatoire|Délégation)/$1/i;
-	$commission =~ s/\s*[\(:].*//;
-	$commission =~ s/[, \)]+$//;
-	$commission =~ s/\W+$//;
+	$commissiontmp = $_;
+	$commissiontmp =~ s/.*\W(Comité|Commission|Mission|Office|Observatoire|Délégation)/$1/i;
+	$commissiontmp =~ s/\s*[\(:].*//;
+	$commissiontmp =~ s/[, \)]+$//;
+	$commissiontmp =~ s/\W+$//;
+	$commission = $commissiontmp if ($commissiontmp =~ /^[A-Z]/);
 	$on = 0;
     }
     if (/(réunion|séance)/i) {
@@ -96,7 +103,7 @@ foreach (split /\n/, $lines) {
 	}
 	$on = 0;
     }
-    if (/(<i>Excus|<i>Ont d|Ordre|Convocation|Excusés|<b>Nomination)/) {
+    if (/(<i>Excus|<i>Ont d|Ordre|Convocation|Excusés|<b>Nomination|^Nomination)/) {
 	$on = 0;
     }
     if ($on && /\w/) {
@@ -107,17 +114,22 @@ foreach (split /\n/, $lines) {
 	    }
 	    $d =~ s/\([^\)]+\)//;
 	    $d =~ s/^\W+//;
-	    $d =~ s/\W+$//;
+	    $d =~ s/[^àâéèêëîïôùûü\w]+$//;
+	    $d =~ s/ \(.*//;
 
-	    if ($d =~ s/(.*) (et |; |\d+| ?\. ?)(.*)/$1/) { 
+	    if ($d =~ s/(.*)(,| et | ; | \d+| +\. ?)(.*)/$1/) { 
 		$nextd = $3;
 	    }
-	    $d =~ s/( et|\W+)$//;
+	    $d =~ s/( et|[^àâéèêëîïôùûü\w]+)$//;
 	    $d =~ s/ ?- ?/-/;
 	    $d =~ s/  */ /;
 
 	    next if (length($d) < 3);
 	    next if ($d =~ /^.\>/);
+	    next unless ($d =~ /[A-Z]/);
+	    next if ($d =~ /[A-Z]{2}/);
+	    next unless ($d =~ /^[A-Z]/);
+
 	    print '{ ';
 	    print '"date": "'.$date.'",';
 	    print '"heure": "'.$heure.'",';
@@ -130,6 +142,9 @@ foreach (split /\n/, $lines) {
 		$d =~ s/ (et|\.)$//;
 		$d =~ s/ ?- ?/-/;
 		$d =~ s/  */ /;
+		next unless ($d =~ /[A-Z]/);
+		next if ($d =~ /[A-Z]{2}/);
+		next unless ($d =~ /^[A-Z]/);
 		print '{ ';
 		print '"date": "'.$date.'",';
 		print '"heure": "'.$heure.'",';
