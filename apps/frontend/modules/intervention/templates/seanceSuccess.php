@@ -57,7 +57,7 @@ if (! $source_displayed) {
   <?php
   $lasttitre = $titre;
   if ($table != $intervention->getSectionId()) {
-    if ($table == '') $titre = 2;
+    if ($table == '' && !$intervention->Section->titre) $titre = 2;
     else $titre = 1;
     $table = $intervention->getSectionId();
   } else $titre = 0;
