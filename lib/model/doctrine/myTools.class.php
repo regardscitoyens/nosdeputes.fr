@@ -1,6 +1,15 @@
 <?php
 class myTools {
 
+  public static function betterUCFirst($str) {
+    $str = ucfirst($str);
+    $str = preg_replace('/^é/', 'É', $str);
+    $str = preg_replace('/^ê/', 'Ê', $str);
+    $str = preg_replace('/^â/', 'Â', $str);
+    $str = preg_replace('/^à/', 'À', $str);
+    return $str;
+  }
+
   public static function convertYamlToArray($string) {
     $string = preg_replace('/^\s*\[\s*"\s*/', '', $string);
     $string = preg_replace('/\s*"\s*]\s*$/', '', $string);
