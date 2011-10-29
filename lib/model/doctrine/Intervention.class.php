@@ -202,7 +202,7 @@ class Intervention extends BaseIntervention
     $lois = self::prepareLois($tlois);
     $loisstring = $this->addTagLois($lois);
     if ($date && preg_match("/^(\d{4}-\d\d-\d\d)/", $date, $annee)) {
-      if (!preg_match("/^".$annee[1]."\d\d:\d\d$/")
+      if (!preg_match("/^".$annee[1]."\d\d:\d\d$/", $date))
         $date = $annee[1]."00:00";
     } else print "WARNING : Intervention $this->id has incorrect date : $date";
 
