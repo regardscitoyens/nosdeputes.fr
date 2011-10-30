@@ -180,7 +180,6 @@ class tagSeanceTask extends sfBaseTask
       unset($sentences);
       unset($sent2word);
 
-foreach ($tags as $t => $n) print htmlentities($t, ENT_COMPAT, 'UTF-8')."\n";
       print_r($tags);
 
       //On cherche maintenant les tags dans les interventions pour les associer
