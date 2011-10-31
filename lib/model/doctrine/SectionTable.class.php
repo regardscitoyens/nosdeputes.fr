@@ -29,13 +29,12 @@ class SectionTable extends Doctrine_Table
   }
   
   private static function cleanContexte($contexte) {
-    $contexte = strtolower($contexte);
+    $contexte = str_replace(array("’", "&#8217;"), "'", $contexte);
     $contexte = preg_replace('/[\/\|\)\(]+/', '', $contexte);
-    $contexte = preg_replace('/\&\#8217\;/', '\'', $contexte);
-    $contexte = html_entity_decode($contexte, ENT_COMPAT, 'UTF-8');
-    $contexte = strtolower(htmlentities($contexte, ENT_COMPAT, 'UTF-8'));
+    $contexte = strtolower(htmlentities(html_entity_decode($contexte, ENT_COMPAT, 'UTF-8'), ENT_COMPAT, 'UTF-8'));
     $contexte = preg_replace('/\&\#\d+\;/', '', $contexte);
-    $contexte = strtolower(html_entity_decode($contexte, ENT_COMPAT, 'UTF-8'));
+    $contexte = html_entity_decode($contexte, ENT_COMPAT, 'UTF-8');
+    $contexte = str_replace(html_entity_decode('&nbsp;', ENT_COMPAT, "UTF-8"), ' ', $contexte);
     $contexte = preg_replace('/\,/', ' ', $contexte);
     $contexte = preg_replace('/\s+/', ' ', $contexte);
     $contexte = preg_replace('/\s+$/', '', preg_replace('/^\s+/', '', $contexte));

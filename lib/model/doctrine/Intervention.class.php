@@ -99,7 +99,7 @@ class Intervention extends BaseIntervention
     }
     if (!preg_match('/ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux/i', $fonction)) { 
       $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
-      if (!$personne && ($this->type != "commission" || $fonction == null || preg_match('/(rapporteur|présidente?$|présidente? de la commission)/i', $fonction))) {
+      if (!$personne && ($this->type != "commission" || $fonction == null || preg_match('/(sénateur|sénatrice|rapporteur|présidente?$|présidente? de la commission)/i', $fonction))) {
 	$personne = Doctrine::getTable('Parlementaire')->similarTo($nom);
       }
       if ($personne) {
@@ -274,6 +274,7 @@ class Intervention extends BaseIntervention
   }
   
   public function setIntervention($s) {
+    $s = str_replace(html_entity_decode('&nbsp;', ENT_COMPAT, "UTF-8"), ' ', $s);
     $this->_set('nb_mots', str_word_count($s));
     return $this->_set('intervention', $s);
   }
@@ -284,7 +285,6 @@ class Intervention extends BaseIntervention
       $intertot = preg_replace('/\(([^\)]+)\)/', '(<i>\\1</i>)', $intertot);
       $interres = '';
       foreach (explode('</p>', $intertot) as $inter) {
-
        //Repère les amendements (pour les linkifier)
        if (preg_match_all('/(amendements?[,\s]+(identiques?)?[,\s]*)((n[°os\s]*|\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
 	$lois = implode(',', $this->getTags(array('is_triple' => true,
@@ -302,7 +302,7 @@ class Intervention extends BaseIntervention
                 $am = "COM-".$am;
 	      $link = str_replace('LLL', urlencode($lois), $linko);
 	      $link = str_replace('AAA', urlencode($am), $link);
-	      $replace = preg_replace('/%'.$amend.'%/', '<a name="amend_'.$am.'" href="'.$link.'">'.$amend.'</a> ', $replace);
+	      $replace = preg_replace('/%'.$amend.'%/', '<a name="amend_'.$am.'" href="'.$link.'">'.$amend.'</a>', $replace);
 	    }
 	    $inter = preg_replace('/'.$match[1][$i].$match[3][$i].'/', $match[1][$i].$replace, $inter);
 	  }
@@ -310,19 +310,27 @@ class Intervention extends BaseIntervention
       }
 
       //Repère les documents parlementaires (pour les linkifier)
-      if (preg_match_all('/(projet|proposition)[^<]+[<i>]*(nos?\s|n<sup>[os\&nbp\;]+[^>]*>|n°)(\W[^<\)]*\d[^<\)]*)/', $inter, $matches)) {
+      if (preg_match_all('/(projet|proposition|annexe|rapport|avis)[^<x]+[<i>]*(nos?\s|n<sup>[os\&nbp\;]+[^>]*>|n°s?)(\W*[^<x\)]*\d[^<x\)\w]*)/i', $inter, $matches)) {
 	$match = $matches[3];
         sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
 	for($i = 0 ; $i < count($match) ; $i++) {
-        	$matche = explode(',', $match[$i]);
+		$match[$i] = preg_replace('/[, ]+et[, ]+/', ', ', $match[$i]);
+        	$matche = explode(';', $match[$i]);
+		if (count($matche) == 1 && (strlen($match[$i]) > 16 || strlen($match[$i]) < 14))
+			$matche = explode(',', $matche[0]);
 		$loie = $matche;
-		for ($y = 0 ; $y < count($matche) ; $y++) {
-			$loie[$y] = preg_replace('/(\d+)\D+(\d+)\-(\d+)\D*/', '\\2\\3-\\1', $matche[$y]);
+		for ($y = 0 ; $y < count($matche) ; $y++) if (preg_match('/\d/', $matche[$y])) {
+			if (preg_match('/annexe/', $matches[1][$i]) && $i)
+			     $loie[$y] = $oldloi."-".preg_replace('/^\D*(\d+)\D*$/', '\\1', $matche[$y]);
+			else $loie[$y] = preg_replace('/\s*(\d+)\D+(\d+)\-(\d+)\D*/', '\\2\\3-\\1', $matche[$y]);
 	  		if (!preg_match('/\-/', $loie[$y])) {
 				$loie[$y] = $this->getSeance()->getSession().'-'.preg_replace('/\D/', '', $loie[$y]);
 			}
-			$matche[$y] = preg_replace('/\D/', '.', $matche[$y]);
-          		$inter = preg_replace('/('.$matche[$y].')/', '<a href="'.url_for('@document?id='.$loie[$y]).'">\\1</a>', $inter);
+			$loie[$y] = trim($loie[$y]);
+			if (strlen($loie[$y]) < 10) continue;
+			$matche[$y] = preg_replace('/\D/', '.', trim($matche[$y]));
+          		$inter = preg_replace('/(n[os\s<up>°]*)?('.$matche[$y].')/', '<a href="'.url_for('@document?id='.$loie[$y]).'">\\1\\2</a>', $inter);
+			$oldloi = $loie[$y];
 		}
          }
       }

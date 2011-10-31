@@ -11,6 +11,7 @@ class PersonnaliteTable extends Doctrine_Table
     if (preg_match('/^\s*$/', $str))
       return null;
     $str = preg_replace('/\(.*\)/', '', $str);
+    $str = preg_replace('/[\(\)]/', '', $str);
     $word = preg_replace('/^.*\s(\S+)\s*$/i', '\\1', $str);
     $q = $this->createQuery('p')->where('nom LIKE ?', '% '.$word.'%');
     $res = $q->Execute();

@@ -89,7 +89,12 @@ class Section extends BaseSection
   }
 
   public function getTitre() {
-    return myTools::betterUCFirst(preg_replace('/\s*\?$/', '', $this->_get('titre')));
+    $titre = myTools::betterUCFirst(preg_replace('/\s*\?$/', '', $this->_get('titre')));
+    if (preg_match('/audition/i', $titre)) {
+      $titre = preg_replace('audition', 'Audition', $titre);
+      $titre = preg_replace('([, ])m([mle\.]+) (.)(\S+) (.)(\S+)', '\\1M\\2 \U\\3\\4 \U\\5\\6', $titre);
+    }
+    return $titre;
   }
 
   public function getOrigTitre() {
