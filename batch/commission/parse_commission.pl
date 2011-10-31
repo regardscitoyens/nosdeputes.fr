@@ -89,6 +89,8 @@ $recointer = "(M\\\.?m?e?|Amiral|Général|S\\\.E|Son |colonel)";
 $interstrong = 1 if ($content =~ /<(a|strong)[^>]*>\s*($recointer[^<]*)<\/(a|strong)>/i);
 
 foreach (split /\n/, $content) {
+	s/&(nbsp|#160);/ /ig;
+	s/ n<sup>[0os\s]+<\/sup>\s*/ n° /ig;
 	$begin = 1 if (/name="toc1"/);
 #print STDERR "title: $1\n" if (/<title>([^<]*)</);
 	if (/TITLE>[^<]*(Commission[^\&:<]*)/i) {
@@ -119,7 +121,7 @@ foreach (split /\n/, $content) {
 		$context = $titre;
 		setfonction($titre);
 		$context =~ s/&nbsp;/ /g;
-		$context =~ s/ - / > /;
+		$context =~ s/ -{1,2} / > /;
 		$intervention = '<p>'.$titre.'</p>';
 		%fonctions = ();
 		$numeros_loi = '';
