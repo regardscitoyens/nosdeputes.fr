@@ -194,15 +194,17 @@ foreach (split /\n/, $doc) {
 		if (!$tmpfonction && $tmpinter =~ s/,(.*)//) {
 			$tmpfonction = $1;
 		}
+		$tmpfonction =~ s/^[,\s]+//;
 		if ($tmpinter ne $inter) {
 			print_inter();
 			$inter = $tmpinter;
 			$url_inter = $tmpurl_inter;
 			$fonction = $tmpfonction;
 		}
+		s/<span class="info_entre_parentheses">([^\(][^<]*)<\/span>/<i>\1<\/i>/g;
 	}
 
-        while (s/([^>]*)<span class="info_entre_parentheses">\(?([^\)]*)\)?<\/span>([\.\s\)]*)//) {
+        while (s/([^>]*)<span class="info_entre_parentheses">\(([^\)]*)\)?<\/span>([\.\s\)]*)//) {
 		$i = $1;
 		$i =~ s/<[^>]*>//g;
                 $intervention .= "<p>".$i."</p>";
@@ -233,6 +235,7 @@ foreach (split /\n/, $doc) {
 		s/(<span.*|)<\/span>\s*//i;
 		s/\s+$//;
 		s/\.\.+//g;
+		s/<\/sup><i>/<\/sup> <i>/gi;
 		if ($_) {
 			if ($iscontext) {
 			s/<[^>]*>//g;
