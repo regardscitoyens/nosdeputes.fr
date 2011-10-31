@@ -143,7 +143,7 @@ foreach (split /\n/, $doc) {
                 if ($didasc =~ /(ouverte|reprise) (&#224;|à) (\S+ heures\s*\S*)\W/) {
                         $h = heurize($3);
 			($htab) = split /:/, $h;
-			if (!$heure || ($htab >= 14 && $oldhtab < 15) || ($htab >= 20 && $oldhtab < 20)) {
+			if (!$heure || ($htab >= 14 && $oldhtab < 12) || ($htab >= 20 && $oldhtab < 20)) {
                             print_inter();
 			    $intervention = "<p>$didasc</p>";
 			    $oldhtab = $htab;
