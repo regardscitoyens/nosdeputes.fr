@@ -123,7 +123,7 @@ sub print_inter {
 }
 
 $doc =~ s/(class="titre_S1"[^>]*>[^<]*)\s*<[^\n]*\n[^\n]*class="titre_S1"[^>]*>\s*/\1 /g;
-$resetcontexte = 0;
+$resetcontexte = $oldhtab = 0;
 foreach (split /\n/, $doc) {
     s/&(nbsp|#160);/ /ig;
     s/ n<sup>[0os\s]+<\/sup>\s*/ n° /ig;
@@ -143,19 +143,19 @@ foreach (split /\n/, $doc) {
                 if ($didasc =~ /(ouverte|reprise) (&#224;|à) (\S+ heures\s*\S*)\W/) {
                         $h = heurize($3);
 			($htab) = split /:/, $h;
-			if (!$heure || ($htab >= 14 && $oldhtab < 14) || ($htab >= 20 && $oldhtab < 20)) {
+print "TEST : $oldhtab / $htab\n";
+			if (!$heure || ($htab >= 14 && $oldhtab < 15) || ($htab >= 20 && $oldhtab < 20)) {
                             print_inter();
-                            $resetcontexte = 1 if ($heure);
+			    $intervention = "<p>$didasc</p>";
+			    $oldhtab = $htab;
 			    if (!$heure) {
-                            	$intervention = "<p>$didasc</p>";
 				$heure = $h;
 				print_inter();
 				next;
 			    }
-			    $intervention  = "<p>$didasc</p>";
 			    print_inter();
+                            $resetcontexte = 1 if ($heure);
                             $heure = $h;
-			    $oldhtab = $htab;
 			    $timestamp = 0;
 			}
                 }
@@ -207,6 +207,7 @@ foreach (split /\n/, $doc) {
         while (s/([^>]*)<span class="info_entre_parentheses">\(([^\)]*)\)?<\/span>([\.\s\)]*)//) {
 		$i = $1;
 		$i =~ s/<[^>]*>//g;
+		$i =~ s/\s+/ /g;
                 $intervention .= "<p>".$i."</p>";
                 $didasc = $2;
                 $didasc =~ s/<[^>]*>//gi;
@@ -233,8 +234,8 @@ foreach (split /\n/, $doc) {
 	}
 	if (s/.*id="(intv_|)par_[^>]*>\s*(.*)\s*<\/p>.*/$2/i) {
 		s/(<span.*|)<\/span>\s*//i;
-		s/\s+$//;
 		s/\.\.+//g;
+		s/\s+$//;
 		s/<\/sup><i>/<\/sup> <i>/gi;
 		if ($_) {
 			if ($iscontext) {
@@ -250,6 +251,7 @@ foreach (split /\n/, $doc) {
 				if (!/^\s*(vice-)?pr(é|&#233;)sident/) {
 				$subcontext = $_;
 				$subcontext =~ s/<[^>]+>//g;
+				$subcontext =~ s/\s+/ /g;
 				$intervention = "<p>$subcontext</p>";
 				print_inter();
 				}
