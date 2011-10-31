@@ -7,6 +7,7 @@ class myTools {
     $str = preg_replace('/^ê/', 'Ê', $str);
     $str = preg_replace('/^â/', 'Â', $str);
     $str = preg_replace('/^à/', 'À', $str);
+    $str = preg_replace('/^œ/', 'Œ', $str);
     return $str;
   }
 
