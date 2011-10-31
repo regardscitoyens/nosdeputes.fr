@@ -322,7 +322,7 @@ class Intervention extends BaseIntervention
 		for ($y = 0 ; $y < count($matche) ; $y++) if (preg_match('/\d/', $matche[$y])) {
 			if (preg_match('/annexe/', $matches[1][$i]) && $i)
 			     $loie[$y] = $oldloi."-".preg_replace('/^\D*(\d+)\D*$/', '\\1', $matche[$y]);
-			else $loie[$y] = preg_replace('/\s*(\d+)\D+(\d+)\-(\d+)\D*/', '\\2\\3-\\1', $matche[$y]);
+			else $loie[$y] = preg_replace('/\s*(\d+)\D+(\d+)[\s\-]+(\d+)\D*/', '\\2\\3-\\1', $matche[$y]);
 	  		if (!preg_match('/\-/', $loie[$y])) {
 				$loie[$y] = $this->getSeance()->getSession().'-'.preg_replace('/\D/', '', $loie[$y]);
 			}
