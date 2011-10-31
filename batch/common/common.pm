@@ -44,6 +44,7 @@ $heure{'dix-huit'} = '18';
 $heure{'dix-neuf'} = '19';
 $heure{'vingt'} = '20';
 $heure{'vingt et une'} = '21';
+$heure{'vingt-et-une'} = '21';
 $heure{'vingt-deux'} = '22';
 $heure{'quarante'} = '45';
 $heure{'quarante-cinq'} = '45';
@@ -56,6 +57,7 @@ $heure{''} = '00';
 
 sub heurize {
 	my $h = shift;
+	$h =~ s/\W+$//;
 	$h =~ /(\S+) heures\s*(\S*)/;
 	return sprintf("%02d:%02d", $heure{$1}, $heure{$2});
 }

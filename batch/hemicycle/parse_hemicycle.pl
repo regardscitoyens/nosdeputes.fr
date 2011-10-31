@@ -50,6 +50,20 @@ sub print_inter {
 		$context = $bigcontext;
 		$context =~ s/ suite$//;
 		$context .= ' > '.$subcontext if ($subcontext);
+		if ($resetcontexte) {
+			if (!$inter) {
+				$context = "";
+			} else {
+				$resetcontexte = 0;
+                        	if ($intervention !~ /séance.*reprise.*(poursuiv|continu|repren)ons.*(discussion|examen|débat)/) {
+                                	$bigcontext = "";
+                                	$subcontext = "";
+					$context = "";
+					$numeros_loi = '';
+				}
+                        }       
+                }
+
 		$cpt = 0;
 		if ($context =~ /procès verbal|ordre du jour|Conf[&#\d;é]+rence des pr[&#\d;é]+sidents/i) {
 			$numeros_loi = '';
@@ -86,14 +100,14 @@ sub print_inter {
 		$intervention =~ s/<p> +/<p>/g;
 		$secondinter = '';
 		$secondinter = $1 if ($inter =~ s/ et (.*)//) ;
-		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
+		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter,1).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
 		$json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 		$json .= ', "amendements":"'.$amendements.'"' if ($amendements);
 		$json .= "}\n";
 		utf8::encode($json);
 		print $json;
 		if ($secondinter) {
-		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($secondinter).'", "fonction": "", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
+		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($secondinter,1).'", "fonction": "", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
                 $json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
                 $json .= ', "amendements":"'.$amendements.'"' if ($amendements);
                 $json .= "}\n";
@@ -108,29 +122,45 @@ sub print_inter {
 	$amendements = '';
 }
 
+$doc =~ s/(class="titre_S1"[^>]*>[^<]*)\s*<[^\n]*\n[^\n]*class="titre_S1"[^>]*>\s*/\1 /g;
+$resetcontexte = 0;
 foreach (split /\n/, $doc) {
+    s/&(nbsp|#160);/ /ig;
+    s/ n<sup>[0os\s]+<\/sup>\s*/ n° /ig;
     utf8::decode($_);
     $_ = decode_entities($_);
     if (/<\/span><span([^>]*>)/ && $1 !~ /orateur_qualite/) {
 	s/<\/span><span[^>]*>/ /g;
+	s/ ' /'/g;
     }
-	if (/name="([^"]+)"/) {
-		$source = "#$1";
+	if (/ (id|name)="([^"]+)"/) {
+		$source = "#$2";
 	}
-        if (/<span class="info_entre_parentheses">\((.*)<\/span>([\.\s\)]*)/) {
+        if (/<span class="info_entre_parentheses">\s*\((.*)<\/span>([\.\s\)]*)/) {
                 $didasc = $1;
+		$didasc =~ s/\)$//;
+		$didasc =~ s/vingt et une/vingt-et-une/gi;
                 if ($didasc =~ /(ouverte|reprise) (&#224;|à) (\S+ heures\s*\S*)\W/) {
                         $h = heurize($3);
 			($htab) = split /:/, $h;
 			if (!$heure || ($htab >= 14 && $oldhtab < 14) || ($htab >= 20 && $oldhtab < 20)) {
+                            print_inter();
+                            $resetcontexte = 1 if ($heure);
+			    if (!$heure) {
+                            	$intervention = "<p>$didasc</p>";
+				$heure = $h;
+				print_inter();
+				next;
+			    }
+			    $intervention  = "<p>$didasc</p>";
 			    print_inter();
-			    $heure = $h;
+                            $heure = $h;
 			    $oldhtab = $htab;
 			    $timestamp = 0;
 			}
                 }
         }
-	if (/>[^a-z]*Pr(\&\#[0-9]+\;|é|É)sidence de (M[^<]*)/i) {
+	if (/>[^a-z]*Pr(é|É)sidence de (M[^<]*)/i) {
 		$president = $2;
 	}
 	next if (!$heure);
@@ -171,10 +201,11 @@ foreach (split /\n/, $doc) {
 			$fonction = $tmpfonction;
 		}
 	}
-        while (s/([^>]*)<span class="info_entre_parentheses">\(([^\)]*)\)?<\/span>([\.\s\)]*)//) {
+
+        while (s/([^>]*)<span class="info_entre_parentheses">\(?([^\)]*)\)?<\/span>([\.\s\)]*)//) {
 		$i = $1;
 		$i =~ s/<[^>]*>//g;
-                $intervention .= "<p>".$1."</p>";
+                $intervention .= "<p>".$i."</p>";
                 $didasc = $2;
                 $didasc =~ s/<[^>]*>//gi;
                 $didasc =~ s/\)//g;
@@ -201,6 +232,7 @@ foreach (split /\n/, $doc) {
 	if (s/.*id="(intv_|)par_[^>]*>\s*(.*)\s*<\/p>.*/$2/i) {
 		s/(<span.*|)<\/span>\s*//i;
 		s/\s+$//;
+		s/\.\.+//g;
 		if ($_) {
 			if ($iscontext) {
 			s/<[^>]*>//g;
