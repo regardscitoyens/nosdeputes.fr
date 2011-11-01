@@ -33,6 +33,7 @@ $string =~ s/\<br\>.*\n//g;
 $string =~ s/&#8217;/'/g;
 $string =~ s/&#339;/oe/g;
 $string =~ s/&#8211;/-/g;
+$string =~ s/\\//g;
 close FILE;
 
 my $presente = 0;
@@ -283,6 +284,7 @@ $amdmt{'auteurs'} =~ s/(,\s*,|,+)/,/g;
 $amdmt{'auteurs'} =~ s/,+/,/g;
 $amdmt{'auteurs'} =~ s/^\s*,\s*//g;
 $amdmt{'auteurs'} =~ s/\s*,\s*$//g;
+$amdmt{'auteurs'} =~ s/ et(M[mle\.\s])/, \1/g;
 $amdmt{'auteurs'} =~ s/ et(\W)/\1/g;
 $amdmt{'auteurs'} =~ s/([^,\s])\s*(les\s*membres.*groupe.*)$/\1, \2/i;
 
