@@ -105,6 +105,7 @@ foreach (split /\n/, $content) {
 		if (@date) {
 #print STDERR "date:"."@date"." ($timestamp $intervention)\n";
 		    print_inter() if ($intervention && !$timestamp && $date);
+		    $olddate = $date;
                     $date = join '-', @date;
 #print STDERR "date:".$date."\n";
 		    $heure = '';
@@ -112,10 +113,12 @@ foreach (split /\n/, $content) {
 		    $numeros_loi = '';
 		    $nb_seance = 1;
 		    print_inter() if ($intervention && !$timestamp);
+		    $timestamp = '0' if ($olddate ne $date);
+		    next;
 		}
 	}
 	next if (!$begin);
-	if (/<h3>(\s*<[^>]*>)*([^<]+)<\/h3>/) {
+	if (/<h[234]>(\s*<[^>]*>)*([^<]+)<\/h[234]>/) {
 		$titre = $2;
 		print_inter();
 		$context = $titre;
