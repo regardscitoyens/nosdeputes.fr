@@ -84,7 +84,7 @@ class tagSeanceTask extends sfBaseTask
     }
     unset($words);
 
-    $qs = Doctrine::getTable('Seance')->createQuery()->select('id')->where('tagged IS NULL')->orderBy('date DESC');
+    $qs = Doctrine::getTable('Seance')->createQuery()->select('id')->where('tagged IS NULL')->orderBy('id'); // date DESC');
 //$qs = Doctrine::getTable('Seance')->createQuery()->select('id')->where('id = ?', '1859');
 
     foreach($qs->fetchArray() as $s) {
@@ -149,7 +149,8 @@ class tagSeanceTask extends sfBaseTask
       $debut_bani = 'à|de|la|ainsi|ensuite';
       if (count($sentences)) {
         foreach (array_keys($sentences) as $sent) {
-          if  (preg_match("/^($debut_bani)/i", $sent) || preg_match("/($debut_bani)$/i", $sent) || preg_match('/\d|amendement|rapporteur|commision|collègue/i', $sent) )
+	  $sent = preg_replace('/[\[\]\(\)]/', '', $sent);
+          if (preg_match("/^($debut_bani)/i", $sent) || preg_match("/($debut_bani)$/i", $sent) || preg_match('/\d|amendement|rapporteur|commision|collègue/i', $sent) )
             continue;
 	  
           if (preg_match('/^[A-Z][a-z]/', $sent)) {
