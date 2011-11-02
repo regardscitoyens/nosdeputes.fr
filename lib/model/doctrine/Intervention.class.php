@@ -292,7 +292,7 @@ class Intervention extends BaseIntervention
 						  'key' => 'numero',
 						  'return' => 'value')));
 	if ($lois) for ($i = 0 ; $i < count($match[0]) ; $i++) {
-	  $match_protected = preg_replace('/(\s*)([ABICOM\-]*\d[\d\s\à]*rectifiés?|[ABICOM\-]*\d[\d\s\à]*)(,\s*|\s*et\s*)*/', '\1%\2%\3', $match[3][$i]);
+	  $match_protected = preg_replace('/(n[°os<\/up>\s]+)?([ABICOM\-]*\d[\d\s\à]*rectifiés?|[ABICOM\-]*\d\d*)(,|(et|à))*/', '%\1\2%\3', $match[3][$i]);
 	  if (preg_match_all('/\s*%([^%]+)%(,\s*|\s*et\s*)*/', $match_protected, $amends)) {
 	    $replace = $match_protected;
 	    foreach($amends[1] as $amend) {
@@ -310,13 +310,12 @@ class Intervention extends BaseIntervention
       }
 
       //Repère les documents parlementaires (pour les linkifier)
-      if (preg_match_all('/(projet|proposition|annexe|rapport|avis)[^<°]+[<i>]*(n[os°\s<\/up>]+)(([\s,;\w°]{0,8}\W*\d+([\s,\d\(\)\[\]\-])?)+)/i', $inter, $matches)) {
-	$match = $matches[3];
-        sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-	for($i = 0 ; $i < count($match) ; $i++) if (!preg_match('/ du /', $match[$i]) && !preg_match('/^\D*\d\d\d\d\D*$/', $match[$i])) {
+      if (preg_match_all('/(projet|proposition|annexe|rapport|avis)[^<°]*(<i>|\s|\[|\()(n[os°\s<\/up>]+)(([\s,;\w°<>i]{0,8}\W*\d+[\s,\d\(\[\]\-<>i\/]*)+)/i', $inter, $matches)) {
+	$match = $matches[4];
+	for($i = 0 ; $i < count($match) ; $i++) if (!preg_match('/ (à|du) /', $match[$i]) && !preg_match('/^\D*\d[\d\.]+\d\d\d\D*$/', $match[$i])) {
 		$match[$i] = preg_replace('/[, ]+et[, ]+/', ', ', $match[$i]);
         	$matche = explode(';', $match[$i]);
-		if (count($matche) == 1 && preg_match('/\d\d\d(\d|\D+\d\d\d)/', $match[$i]))
+		if (count($matche) == 1 && !preg_match('/\d[,\s\(\(]+\d\d\d\d\D+\d\d\d\d/', $match[$i]))
 			$matche = explode(',', $matche[0]);
 		$loie = $matche;
 		for ($y = 0 ; $y < count($matche) ; $y++) if (preg_match('/\d/', $matche[$y])) {
@@ -326,7 +325,7 @@ class Intervention extends BaseIntervention
 	  		if (!preg_match('/\-/', $loie[$y])) {
 				$loie[$y] = $this->getSeance()->getSession().'-'.preg_replace('/\D/', '', $loie[$y]);
 			}
-			$loie[$y] = trim($loie[$y]);
+			$loie[$y] = trim(preg_replace('/<[^>]*>/', '', $loie[$y]));
 			if (strlen($loie[$y]) < 10) continue;
 			$matche[$y] = preg_replace('/\D/', '.', trim($matche[$y]));
           		$inter = preg_replace('/(n[os\s<\/up>°]*)?('.$matche[$y].')/', '<a href="'.url_for('@document?id='.$loie[$y]).'">\\1\\2</a>', $inter);
