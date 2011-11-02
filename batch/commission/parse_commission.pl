@@ -125,6 +125,7 @@ foreach (split /\n/, $content) {
 		setfonction($titre);
 		$context =~ s/&nbsp;/ /g;
 		$context =~ s/ -{1,2} / > /;
+		$context =~ s/[\s\(]+suite[\s\)]*$//i;
 		$intervention = '<p>'.$titre.'</p>';
 		%fonctions = ();
 		$numeros_loi = '';
@@ -164,7 +165,11 @@ foreach (split /\n/, $content) {
 		    (!$interstrong && ($inter =~ /(>)\s*($recointer[^<]{10}[^<\.]*)/))) {
 			$tmpintervenant = $2;
 			$tmpintervenant =~ s/<[^>]*>//g;
-			if ($tmpintervenant =~ s/^([^,]+), ([^,]*).*/$1/g) {
+			if ($tmpintervenant =~ s/^Mm\./M./i || $tmpintervenant =~ s/^Mmes/Mme/i) {
+				$tmpintervenant =~ s/^([^,]+)(,[^,]+)*,\s*([^,]*)\W*$/$1/g;
+				$tmpfonction = $3;
+				$fonctions{$tmpintervenant} = $tmpfonction;
+			} elsif ($tmpintervenant =~ s/^([^,]+), ([^,]*).*/$1/g) {
 				$tmpfonction = $2;
 				$tmpfonction =~ s/\W+$//;
 				$fonctions{$tmpintervenant} = $tmpfonction;
