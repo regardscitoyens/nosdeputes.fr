@@ -18,6 +18,7 @@ $url_source = uri_unescape($file);
 $url_source =~ s/.*http/http/;
 
 $session = '';
+%num_lois = ();
 
 if ($doc =~ /ance du (\d+e?r? \S+ \d+)/i) {
 	@date = datize($1);
@@ -46,6 +47,7 @@ $intervention = '';
 $timestamp = 0;
 sub print_inter {
 	if ($heure && $intervention && $intervention ne "<p></p>") {
+		$intervention =~ s/\s*,\s*/, /g;
 		$timestamp += 20;
 		$context = $bigcontext;
 		$context =~ s/ suite$//;
@@ -55,7 +57,8 @@ sub print_inter {
 				$context = "";
 			} else {
 				$resetcontexte = 0;
-                        	if ($intervention !~ /séance.*reprise.*(poursuiv|continu|repren)ons.*(discussion|examen|débat)/) {
+                        	if ($intervention !~ /Nous poursuivons / && $intervention !~ /séance.*reprise.*(amendement.*présenté|(poursuiv|continu|repren)ons.*(discussion|examen|débat)|dans.*discussion.*sommes.*(arrivés|parvenus)|parole.*répondre.*orateurs|je.*mets.*aux.*voix|nous.*allons.*procéder.*(scrutin|délibération))/) {
+					$oldbigcontext = $bigcontext;
                                 	$bigcontext = "";
                                 	$subcontext = "";
 					$context = "";
@@ -65,7 +68,7 @@ sub print_inter {
                 }
 
 		$cpt = 0;
-		if ($context =~ /procès verbal|ordre du jour|Conf[&#\d;é]+rence des pr[&#\d;é]+sidents/i) {
+		if ($context =~ /procès verbal|ordre du jour|Conf[&#\d;é]+rence des pr[&#\d;é]+sidents|question.*(crible|orale|gouvernement)/i) {
 			$numeros_loi = '';
 		}elsif ($subcontext !~ /article|discussion g/i && $intervention =~ /((projet|proposition|motion|lettre)\s[^<]*(n°|n<sup>os?<\/sup>|nos?|n&[^;]+;&[^;]+;)[^<\.]{1,5}\d[^<\.]+)/i && $intervention !~ /amendements? n/) {
 			while ($intervention =~ /((projet|proposition|motion|lettre)\s[^<]*(n°|n<sup>os?<\/sup>|nos?|n&[^;]+;&[^;]+;)[^<\.]{1,5}\d[^<\.]+)/gi) {
@@ -73,7 +76,7 @@ sub print_inter {
 			  $docs =~ s/°//g;
                           $docs =~ s/&[^;]*;//g;
 			  if ($docs =~ /(\d+)([\(\[\, ]+(\d{4}[- ]\d{4})|)/) {
-                          $numeros_loi = '' if (!$cpt); $cpt++;
+                          $numeros_loi = $num_lois{$bigcontext} if (!$cpt); $cpt++;
                           while ($docs =~ /(\d+)([\(\[\, ]+(\d{4}[- ]\d{4})|)/g) {
                                  if ($3) {
                                           $numeros_loi .= law_numberize($1,$3).",";
@@ -84,7 +87,9 @@ sub print_inter {
 			  }
 			  }
                           chop($numeros_loi) if ($cpt);
+			  $num_lois{$bigcontext} = $numeros_loi if ($cpt);
                 }
+		$numeros_loi = $num_lois{$bigcontext} if (!$numeros_loi);
                 if ($intervention =~ /amendements? n([^<]+)/) {
                                         $amdt = $1;
                                         $amdt =~ s/&[^;]*;//g;
@@ -101,15 +106,15 @@ sub print_inter {
 		$secondinter = '';
 		$secondinter = $1 if ($inter =~ s/ et (.*)//) ;
 		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter,1).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
-		$json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
-		$json .= ', "amendements":"'.$amendements.'"' if ($amendements);
+		$json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi && $context);
+		$json .= ', "amendements":"'.$amendements.'"' if ($amendements && $context);
 		$json .= "}\n";
 		utf8::encode($json);
 		print $json;
 		if ($secondinter) {
 		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($secondinter,1).'", "fonction": "", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
-                $json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
-                $json .= ', "amendements":"'.$amendements.'"' if ($amendements);
+                $json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi && $context);
+                $json .= ', "amendements":"'.$amendements.'"' if ($amendements && $context);
                 $json .= "}\n";
 		utf8::encode($json);
                 print $json;
@@ -136,14 +141,15 @@ foreach (split /\n/, $doc) {
 	if (/ (id|name)="([^"]+)"/) {
 		$source = "#$2";
 	}
-        if (/<span class="info_entre_parentheses">\s*\((.*)<\/span>([\.\s\)]*)/) {
-                $didasc = $1;
+        if (/<(i|span class="info_entre_parentheses")>\s*\((.*)<\/(i|span)>([\.\s\)]*)/) {
+                $didasc = $2;
 		$didasc =~ s/\)$//;
+		$didasc =~ s/<[^>]*>//g;
 		$didasc =~ s/vingt et une/vingt-et-une/gi;
-                if ($didasc =~ /(ouverte|reprise) (&#224;|à) (\S+ heures\s*\S*)\W/) {
+                if ($didasc =~ /(ouverte|reprise) (&#224;|à) (midi\s*\S*|\S+ heures\s*\S*)\W/) {
                         $h = heurize($3);
 			($htab) = split /:/, $h;
-			if (!$heure || ($htab >= 14 && $oldhtab < 12) || ($htab >= 20 && $oldhtab < 20)) {
+			if (!$heure || ($htab > 13 && $oldhtab < 14) || ($htab > 20 && $oldhtab < 21)) {
                             print_inter();
 			    $intervention = "<p>$didasc</p>";
 			    $oldhtab = $htab;
@@ -203,12 +209,12 @@ foreach (split /\n/, $doc) {
 		s/<span class="info_entre_parentheses">([^\(][^<]*)<\/span>/<i>\1<\/i>/g;
 	}
 
-        while (s/([^>]*)<span class="info_entre_parentheses">\(([^\)]*)\)?<\/span>([\.\s\)]*)//) {
+        while (s/([^>]*)<(i|span class="info_entre_parentheses")>\(([^\)]*)\)?<\/(i|span)>([\.\s\)]*)//) {
 		$i = $1;
 		$i =~ s/<[^>]*>//g;
 		$i =~ s/\s+/ /g;
                 $intervention .= "<p>".$i."</p>";
-                $didasc = $2;
+                $didasc = $3;
                 $didasc =~ s/<[^>]*>//gi;
                 $didasc =~ s/\)//g;
                 $predida_inter = $inter;
@@ -241,6 +247,7 @@ foreach (split /\n/, $doc) {
 			s/<[^>]*>//g;
 			if ($iscontext eq '1') {
 			    if (!/^\s*PR(É|&#201;)SIDENCE DE /) {
+				$resetcontexte = 0;
 				$bigcontext = $_;
 				$subcontext = '';
 				$intervention = "<p>$bigcontext</p>";
@@ -248,6 +255,8 @@ foreach (split /\n/, $doc) {
 			    }
 			}else{
 				if (!/^\s*(vice-)?pr(é|&#233;)sident/) {
+				$resetcontexte = 0;
+				$bigcontext = $oldbigcontext if (!$bigcontext);
 				$subcontext = $_;
 				$subcontext =~ s/<[^>]+>//g;
 				$subcontext =~ s/\s+/ /g;

@@ -54,11 +54,13 @@ $heure{'quarante-cinq'} = '45';
 $heure{'cinquante'} = '45';
 $heure{'zéro'} = '00';
 $heure{'cinq'} = '00';
+$heure{'midi'} = '12';
 $heure{''} = '00';
 
 sub heurize {
 	my $h = shift;
 	$h =~ s/\W+$//;
+	$h .= " heures zéro" if ($h !~ /heures/);
 	$h =~ /(\S+) heures\s*(\S*)/;
 	return sprintf("%02d:%02d", $heure{$1}, $heure{$2});
 }
