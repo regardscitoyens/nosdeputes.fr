@@ -75,9 +75,8 @@ sub print_inter {
                           $docs = $1;
 			  $docs =~ s/°//g;
                           $docs =~ s/&[^;]*;//g;
-			  if ($docs =~ /(\d+)([\(\[\, ]+(\d{4}[- ]\d{4})|)/) {
-                          $numeros_loi = $num_lois{$bigcontext} if (!$cpt); $cpt++;
-                          while ($docs =~ /(\d+)([\(\[\, ]+(\d{4}[- ]\d{4})|)/g) {
+			  if ($docs =~ /(\d+)([\(\[\, ]+(\d{4}[- ]+\d{4})|)/) {
+                          while ($docs =~ /\D(\d{1,3})([\(\[\, ]+(\d{4}[- ]+\d{4})|)/g) {
                                  if ($3) {
                                           $numeros_loi .= law_numberize($1,$3).",";
                                  }else{
