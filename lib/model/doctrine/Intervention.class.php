@@ -313,7 +313,7 @@ class Intervention extends BaseIntervention
       if (preg_match_all('/(projet|proposition|annexe|rapport|avis)[^<°]+[<i>]*(n[os°\s<\/up>]+)(([\s,;\w°]{0,8}\W*\d+([\s,\d\(\)\[\]\-])?)+)/i', $inter, $matches)) {
 	$match = $matches[3];
         sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-	for($i = 0 ; $i < count($match) ; $i++) if (!preg_match('/ du /', $match[$i])) {
+	for($i = 0 ; $i < count($match) ; $i++) if (!preg_match('/ du /', $match[$i]) && !preg_match('/^\D*\d\d\d\d\D*$/', $match[$i])) {
 		$match[$i] = preg_replace('/[, ]+et[, ]+/', ', ', $match[$i]);
         	$matche = explode(';', $match[$i]);
 		if (count($matche) == 1 && preg_match('/\d\d\d(\d|\D+\d\d\d)/', $match[$i]))
