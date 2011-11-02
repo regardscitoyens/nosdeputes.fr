@@ -286,19 +286,19 @@ class Intervention extends BaseIntervention
       $interres = '';
       foreach (explode('</p>', $intertot) as $inter) {
        //Repère les amendements (pour les linkifier)
-       if (preg_match_all('/(amendements?[,\s]+(identiques?)?[,\s]*)((n[°os\s]*|\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
+       if (preg_match_all('/(amendements?[,\s]+(identiques?)?[,\s]*)((n[°os\s]*|([ABICOM]+-)?\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
 	$lois = implode(',', $this->getTags(array('is_triple' => true,
 						  'namespace' => 'loi',
 						  'key' => 'numero',
 						  'return' => 'value')));
 	if ($lois) for ($i = 0 ; $i < count($match[0]) ; $i++) {
-	  $match_protected = preg_replace('/(\s*)(\d[\d\s\à]*rectifiés?|\d[\d\s\à]*)(,\s*|\s*et\s*)*/', '\1%\2%\3', $match[3][$i]);
+	  $match_protected = preg_replace('/(\s*)([ABICOM\-]*\d[\d\s\à]*rectifiés?|[ABICOM\-]*\d[\d\s\à]*)(,\s*|\s*et\s*)*/', '\1%\2%\3', $match[3][$i]);
 	  if (preg_match_all('/\s*%([^%]+)%(,\s*|\s*et\s*)*/', $match_protected, $amends)) {
 	    $replace = $match_protected;
 	    foreach($amends[1] as $amend) {
 	      $am = preg_replace('/à+/', '-', $amend);
-	      $am = preg_replace('/[^\d\-]+/', '',$am);
-              if ($this->type == 'commission')
+	      $am = strtoupper(preg_replace('/[^\d\-ABICOM]+/', '',$am));
+              if ($this->type == 'commission' && !preg_match("/COM/", $am))
                 $am = "COM-".$am;
 	      $link = str_replace('LLL', urlencode($lois), $linko);
 	      $link = str_replace('AAA', urlencode($am), $link);
@@ -310,13 +310,13 @@ class Intervention extends BaseIntervention
       }
 
       //Repère les documents parlementaires (pour les linkifier)
-      if (preg_match_all('/(projet|proposition|annexe|rapport|avis)[^<x]+[<i>]*(nos?\s|n<sup>[os\&nbp\;]+[^>]*>|n°s?)(\W*[^<x\)]*\d[^<x\)\w]*)/i', $inter, $matches)) {
+      if (preg_match_all('/(projet|proposition|annexe|rapport|avis)[^<°]+[<i>]*(n[os°\s<\/up>]+)(([\s,;\w°]{0,8}\W*\d+([\s,\d\(\)\[\]\-])?)+)/i', $inter, $matches)) {
 	$match = $matches[3];
         sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-	for($i = 0 ; $i < count($match) ; $i++) {
+	for($i = 0 ; $i < count($match) ; $i++) if (!preg_match('/ du /', $match[$i])) {
 		$match[$i] = preg_replace('/[, ]+et[, ]+/', ', ', $match[$i]);
         	$matche = explode(';', $match[$i]);
-		if (count($matche) == 1 && (strlen($match[$i]) > 16 || strlen($match[$i]) < 14))
+		if (count($matche) == 1 && preg_match('\d\d\d\d', $match[$i]))
 			$matche = explode(',', $matche[0]);
 		$loie = $matche;
 		for ($y = 0 ; $y < count($matche) ; $y++) if (preg_match('/\d/', $matche[$y])) {
@@ -329,7 +329,7 @@ class Intervention extends BaseIntervention
 			$loie[$y] = trim($loie[$y]);
 			if (strlen($loie[$y]) < 10) continue;
 			$matche[$y] = preg_replace('/\D/', '.', trim($matche[$y]));
-          		$inter = preg_replace('/(n[os\s<up>°]*)?('.$matche[$y].')/', '<a href="'.url_for('@document?id='.$loie[$y]).'">\\1\\2</a>', $inter);
+          		$inter = preg_replace('/(n[os\s<\/up>°]*)?('.$matche[$y].')/', '<a href="'.url_for('@document?id='.$loie[$y]).'">\\1\\2</a>', $inter);
 			$oldloi = $loie[$y];
 		}
          }
