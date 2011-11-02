@@ -92,8 +92,10 @@ class Section extends BaseSection
     $titre = myTools::betterUCFirst(preg_replace('/\s*\?$/', '', $this->_get('titre')));
     if (preg_match('/auditions? /i', $titre)) {
       $titre = preg_replace('/audition/', 'Audition', $titre);
-      $titre = preg_replace('/([, ])m([mle\.]+) (.)(\S+) (d[ulea\'\s]+)?(.)(\S+)/e', '"\\1M\\2 ".strtoupper("\\3")."\\4 \\5".strtoupper("\\6")."\\7"', $titre);
+      $titre = preg_replace('/([, ])m([mle\.]+) (.)([^\s\-]+)((-)(.)(\S+))? (d[ulea\'\s]+)?(.)(\S+)/e', '"\\1M\\2 ".strtoupper("\\3")."\\4\\6".strtoupper("\\7")."\\8 \\9".strtoupper("\\10")."\\11"', $titre);
     }
+    if (preg_match('/article/i', $titre))
+      $titre = preg_replace('/\s([a-p]{1,3})\s*(précédemment|réservés?|nouveaux?)*\s*$/e', '" ".strtoupper("\\1")', $titre);
     return $titre;
   }
 
