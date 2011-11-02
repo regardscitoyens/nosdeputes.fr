@@ -316,7 +316,7 @@ class Intervention extends BaseIntervention
 	for($i = 0 ; $i < count($match) ; $i++) if (!preg_match('/ du /', $match[$i])) {
 		$match[$i] = preg_replace('/[, ]+et[, ]+/', ', ', $match[$i]);
         	$matche = explode(';', $match[$i]);
-		if (count($matche) == 1 && preg_match('\d\d\d\d', $match[$i]))
+		if (count($matche) == 1 && preg_match('/\d\d\d(\d|\D+\d\d\d)/', $match[$i]))
 			$matche = explode(',', $matche[0]);
 		$loie = $matche;
 		for ($y = 0 ; $y < count($matche) ; $y++) if (preg_match('/\d/', $matche[$y])) {
