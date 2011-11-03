@@ -24,7 +24,7 @@ $content =~ s/<\/(p|h[1234]|ul|div)>/<\/$1>\n/gi;
 $content =~ s/(<h\d[^>]*>)\s*<b>/$1/gi;
 $content =~ s/<\/b>\s*(<\/h\d[^>]*>)/$1/gi;
 $content =~ s/[ \t]+/ /g;
-$content =~ s/&nbsp;/ /g;
+$content =~ s/&(#160|nbsp);/ /ig;
 
 %fonctions = ();
 
@@ -52,7 +52,6 @@ sub print_inter {
 			}
 		}
 		$timestamp += 20;
-		$intervenant =~ s/\&nbsp;/ /g;
 		if ($date !~ /\d{4}\-\d{2}-\d{2}/) {
 		    print STDERR "ERROR pas de date pour $file\n";
 		    exit 1;
@@ -87,19 +86,19 @@ $begin = 0;
 $recointer = "(M\\\.?m?e?|Amiral|Général|S\\\.E|Son |colonel)";
 
 $interstrong = 1 if ($content =~ /<(a|strong)[^>]*>\s*($recointer[^<]*)<\/(a|strong)>/i);
-
 foreach (split /\n/, $content) {
-	s/&(nbsp|#160);/ /ig;
 	s/ n<sup>[0os\s]+<\/sup>\s*/ n° /ig;
 	$begin = 1 if (/name="toc1"/);
 #print STDERR "title: $1\n" if (/<title>([^<]*)</);
-	if (/TITLE>[^<]*(Commission[^\&:<]*)/i) {
+	if (/TITLE>[^<]*(Commission[^:<]*)/i) {
 	    $commission = $1;
+	    $commission =~ s/[\s\-]+S[é&eacut;]+nat\s*//i;
 	}else {
-	    $commission = $1 if (/TITLE>[^<]*((Mission|Office|Délégation|Groupe de travail)[^\&:<]*)/i);
+	    $commission = $1 if (/TITLE>[^<]*((Mission|Office|Délégation|Groupe de travail)[^:<]*)/i);
+	    $commission =~ s/[\s\-]+S[é&eacut;]+nat\s*//i;
 	}
 #	print ;	print "\n";
-	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})\W*<\/(h[123])>/i)) {
+	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*<\/(h[123])>/i)) {
 #print STDERR "date: $3 $url_year\n";
 		@date = datize($3, $url_year);
 		if (@date) {
@@ -123,7 +122,6 @@ foreach (split /\n/, $content) {
 		print_inter();
 		$context = $titre;
 		setfonction($titre);
-		$context =~ s/&nbsp;/ /g;
 		$context =~ s/ -{1,2} / > /;
 		$titre =~ s/[\s\(]+suite[\s\)]*$//i if ($context =~ s/[\s\(]+suite[\s\)]*$//i);
 		$intervention = '<p>'.$titre.'</p>';
@@ -137,7 +135,7 @@ foreach (split /\n/, $content) {
 		$inter = $1;
 		if ($inter =~ /<u>(Au cours[^<]*)<\/u>/) {
 		    $aucours = $1;
-		    if ($aucours =~ /\Wapr[^s]+s( |&nbsp;|-)*midi($|\W)/) {
+		    if ($aucours =~ /\Wapr[^s]+s( |-)*midi($|\W)/) {
 			$nb_seance = 2;
 		    }elsif ($aucours =~ /\Wsoir(é|&[^;]*;)e($|\W)/) {
 			$nb_seance = 3;
