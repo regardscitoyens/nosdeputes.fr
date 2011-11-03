@@ -137,13 +137,19 @@ foreach (split /\n/, $content) {
 		$inter = $1;
 		if ($inter =~ /<u>(Au cours[^<]*)<\/u>/) {
 		    $aucours = $1;
-		    if ($aucours =~ /\Wapr[^s]+s( |-)*midi($|\W)/) {
+		    if ($aucours =~ /\Wquatri(è|&[^;]*;)me($|\W)/) {
+                        $nb_seance = 4;
+                    }elsif ($aucours =~ /\W(troisi(è|&[^;]*;)me|soir(é|&[^;]*;)e)($|\W)/) {
+                        $nb_seance = 3;
+                    }elsif ($aucours =~ /\W(seconde|apr[^s]+s( |-)*midi)($|\W)/) {
 			$nb_seance = 2;
-		    }elsif ($aucours =~ /\Wsoir(é|&[^;]*;)e($|\W)/) {
-			$nb_seance = 3;
+		    }elsif ($aucours =~ /\W(premi(è|&[^;]*;)re|matin(é|&[^;]*;)e)($|\W)/) {
+                        $nb_seance = 1;
+		    }else {
+			$nb_seance++;
 		    }
 		    print_inter() if (!$is_newcontext);
-		    $heure = ($nb_seance == 1) ? '1ere' : $nb_seance.'ieme';
+		    $heure = ($nb_seance == 1 ? '1ère' : $nb_seance.'ème');
 		    $heure .= ' séance';
 		    $timestamp = '0';
 		}
