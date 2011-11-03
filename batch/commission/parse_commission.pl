@@ -18,13 +18,13 @@ $content = "@lignes";
 $content =~ s/\n//g;
 $content =~ s/(<td[^>]*>)(\s*<\/?(a|strong|p|em)[^>]*>)+/$1/gi;
 $content =~ s/<\/?(a|strong|p|em)[^>]*>\s*<\/td>/<\/td>/gi;
-
-$content =~ s/<\/(p|h[1234]|ul|div)>/<\/$1>\n/gi;
-
-$content =~ s/(<h\d[^>]*>)\s*<b>/$1/gi;
-$content =~ s/<\/b>\s*(<\/h\d[^>]*>)/$1/gi;
+$content =~ s/<br\/?\s?>/ /ig;
 $content =~ s/[ \t]+/ /g;
 $content =~ s/&(#160|nbsp);/ /ig;
+$content =~ s/\s+/ /g;
+$content =~ s/<\/(p|h[1234]|ul|div)>/<\/$1>\n/gi;
+$content =~ s/(<h\d[^>]*>)\s*<b>/$1/gi;
+$content =~ s/<\/b>\s*(<\/h\d[^>]*>)/$1/gi;
 
 %fonctions = ();
 
@@ -98,7 +98,7 @@ foreach (split /\n/, $content) {
 	    $commission =~ s/[\s\-]+S[é&eacut;]+nat\s*//i;
 	}
 #	print ;	print "\n";
-	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*<\/(h[123])>/i)) {
+	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*\W*<\/(h[123])>/i)) {
 #print STDERR "date: $3 $url_year\n";
 		@date = datize($3, $url_year);
 		if (@date) {
@@ -116,10 +116,10 @@ foreach (split /\n/, $content) {
 		    next;
 		}
 	}
-	next if (!$begin);
-	if (/<h[234]>(\s*<[^>]*>)*([^<]+)<\/h[234]>/) {
+	if (/<h[1234][^>]*>(\s*<[^>]*>)*([^<]+)<\/h[1234]>/) {
 		$titre = $2;
-		print_inter();
+		next if ($titre =~ /^((com)?mission|comptes rendus |office|délégation|groupe de travail)/i && $titre !~/commission mixte paritaire/i);
+		print_inter() if($timestamp);
 		$context = $titre;
 		setfonction($titre);
 		$context =~ s/ -{1,2} / > /;
@@ -129,6 +129,7 @@ foreach (split /\n/, $content) {
 		$numeros_loi = '';
 		$is_newcontext = 1;
 	}
+	next if (!$begin);
 	$source = "#$1" if (/name="([^"]+)"/);
 
 	if (/<p[^>]*>(.*)<\/p>/i) {
@@ -164,6 +165,7 @@ foreach (split /\n/, $content) {
 			$tmpintervenant = $2;
 			$tmpintervenant =~ s/<[^>]*>//g;
 			if ($tmpintervenant =~ s/^Mm\./M./i || $tmpintervenant =~ s/^Mmes/Mme/i) {
+				$tmpintervenant =~ s/ et /, /g;
 				$tmpintervenant =~ s/^([^,]+)(,[^,]+)*,\s*([^,]*)\W*$/$1/g;
 				$tmpfonction = $3;
 				$fonctions{$tmpintervenant} = $tmpfonction;
