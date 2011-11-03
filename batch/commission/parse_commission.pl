@@ -87,6 +87,7 @@ $recointer = "(M\\\.?m?e?|Amiral|Général|S\\\.E|Son |colonel)";
 
 $interstrong = 1 if ($content =~ /<(a|strong)[^>]*>\s*($recointer[^<]*)<\/(a|strong)>/i);
 foreach (split /\n/, $content) {
+	last if (/END : primary/);
 	s/ n<sup>[0os\s]+<\/sup>\s*/ n° /ig;
 	$begin = 1 if (/name="toc1"/);
 #print STDERR "title: $1\n" if (/<title>([^<]*)</);
@@ -182,7 +183,7 @@ foreach (split /\n/, $content) {
 			}
 			print_inter() if ($tmpintervenant ne $intervenant);
 			$intervenant = $tmpintervenant;
-			$intervenant =~ s/[\s-_\(\)\[\],;"'<>«»]+$//;
+			$intervenant =~ s/[\s-_\.,;"'<>«»]+$//;
 		        $fonction = $tmpfonction;
 			$url_intervenant = $1 if ($inter =~ /href="([^"]+senfic\/[^"]+)"/i);
 		}
