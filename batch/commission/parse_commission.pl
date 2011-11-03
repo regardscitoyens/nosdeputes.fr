@@ -171,12 +171,12 @@ foreach (split /\n/, $content) {
 		    (!$interstrong && ($inter =~ /(>)\s*($recointer[^<]{10}[^<\.]*)/))) {
 			$tmpintervenant = $2;
 			$tmpintervenant =~ s/<[^>]*>//g;
-			$tmpintervenant =~ s/ et /, /g if ($tmpintervenant =~ /^Mm(\.|es)/);
-			$tmpintervenant =~ s/^M[mlmes\.\s]{1,4}//;
+			$tmpintervenant =~ s/ et /, /g if ($tmpintervenant =~ /^Mm([\.\s]|es)/);
+			$tmpintervenant =~ s/^M[mles]{0,3}[\.\s]+//;
 			$tmpintervenant =~ s/[\s-_\.,;"'<>«»]+$//;
 			if ($tmpintervenant =~ s/^([^,]+),\s*([^,]+,\s*)*([^,]*)\W*$/$1/g) {
 				$tmpfonction = $3;
-				$tmpfonction = $2.$tmpfonction if ($2 !~ / M[mlmes\.\s]/);
+				$tmpfonction = $2.$tmpfonction if ($2 !~ / M[mles\.\s]/);
 				$fonctions{$tmpintervenant} = $tmpfonction;
 			} elsif ($tmpintervenant =~ s/^([^,]+), ([^,]*).*/$1/g) {
 				$tmpfonction = $2;
@@ -201,7 +201,7 @@ foreach (split /\n/, $content) {
 		$sintervenant =~ s/([\(\)\*])/\\$1/g;
 		$sfonction = $fonction;
 		$sfonction =~ s/([\(\)\*])/\\$1/g;
-		$inter =~ s/^[^\w\&]*(M[mlmes\.\s]{1,4})?$sintervenant[^\w\&]*($sfonction[^\w\&]*|)//;
+		$inter =~ s/^[^\w\&]*(M[mles]{0,3}[\.\s]+)?$sintervenant[^\w\&]*($sfonction[^\w\&]*|)//;
 		$intervention .= '<p>'.$inter.'</p>' if ($inter =~ /[a-z]/i);
 	}
 #	print "$date $titre $source\n";
