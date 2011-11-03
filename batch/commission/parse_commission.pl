@@ -182,11 +182,12 @@ foreach (split /\n/, $content) {
 			}
 			print_inter() if ($tmpintervenant ne $intervenant);
 			$intervenant = $tmpintervenant;
+			$intervenant =~ s/[\s-_\(\)\[\],;"'<>«»]+$//;
 		        $fonction = $tmpfonction;
 			$url_intervenant = $1 if ($inter =~ /href="([^"]+senfic\/[^"]+)"/i);
 		}
 		$inter =~ s/<[^>]+>//g;
-		print_inter() if ($inter =~ /^La commission /);
+		print_inter() if ($inter =~ /^La (com)?mission /);
 		$sintervenant = $intervenant;
 		$sintervenant =~ s/([\(\)\*])/\\$1/g;
 		$sfonction = $fonction;
