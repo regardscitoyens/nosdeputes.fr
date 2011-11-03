@@ -104,7 +104,7 @@ foreach (split /\n/, $content) {
 		@date = datize($3, $url_year);
 		if (@date) {
 #print STDERR "date:"."@date"." ($timestamp $intervention)\n";
-		    print_inter() if ($date && $intervention !~ /commission.*mixte.*paritaire/i);
+		    print_inter() if ($date && ($intervention !~ /commission.*mixte.*paritaire/i)); # || $intervention =~ /(adopt|rejet)/);
 		    $olddate = $date;
                     $date = join '-', @date;
 #print STDERR "date:".$date."\n";
@@ -186,6 +186,7 @@ foreach (split /\n/, $content) {
 			$url_intervenant = $1 if ($inter =~ /href="([^"]+senfic\/[^"]+)"/i);
 		}
 		$inter =~ s/<[^>]+>//g;
+		print_inter() if ($inter =~ /^La commission /);
 		$sintervenant = $intervenant;
 		$sintervenant =~ s/([\(\)\*])/\\$1/g;
 		$sfonction = $fonction;
