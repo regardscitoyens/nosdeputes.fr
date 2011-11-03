@@ -104,6 +104,7 @@ sub print_inter {
 		$intervention =~ s/<p> +/<p>/g;
 		$secondinter = '';
 		$secondinter = $1 if ($inter =~ s/ et (.*)//) ;
+		$secondinter =~ s/^\s*M[mles]{0,3}[\.\s]+//;
 		$json  = '{"contexte": "'.quotize($context).'", "intervention": "'.quotize($intervention).'", "timestamp": "'.$timestamp.'", "date": "'.$date.'", "source": "'.$url_source.$source.'", "heure":"'.$heure.'", "intervenant": "'.name_lowerize($inter,1).'", "fonction": "'.$fonction.'", "intervenant_url": "'.$url_inter.'", "session":"'.$session.'"';
 		$json .= ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi && $context);
 		$json .= ', "amendements":"'.$amendements.'"' if ($amendements && $context);
@@ -174,6 +175,7 @@ foreach (split /\n/, $doc) {
 		}elsif(/<a [^>]*>(.+)<\/a>/) {
 			$tmpinter = $1;
 		}
+		$tmpinter =~ s/^\s*M[mles]{0,3}[\.\s]+//;
 		$tmpfonction = '';
 		$tmpurl_inter = '';
 		if (/class="orateur_qualite"[^>]*>([^>]*)</) {
@@ -210,10 +212,10 @@ foreach (split /\n/, $doc) {
 
         while (s/([^>]*)<(i|span class="info_entre_parentheses")>\(([^\)]*)\)?<\/(i|span)>([\.\s\)]*)//) {
 		$i = $1;
+		$didasc = $3;
 		$i =~ s/<[^>]*>//g;
 		$i =~ s/\s+/ /g;
                 $intervention .= "<p>".$i."</p>";
-                $didasc = $3;
                 $didasc =~ s/<[^>]*>//gi;
                 $didasc =~ s/\)//g;
                 $predida_inter = $inter;
