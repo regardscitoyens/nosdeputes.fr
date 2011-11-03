@@ -104,7 +104,7 @@ foreach (split /\n/, $content) {
 		@date = datize($3, $url_year);
 		if (@date) {
 #print STDERR "date:"."@date"." ($timestamp $intervention)\n";
-		    print_inter() if ($intervention && !$timestamp && $date);
+		    print_inter() if ($date && $intervention !~ /commission.*mixte.*paritaire/i);
 		    $olddate = $date;
                     $date = join '-', @date;
 #print STDERR "date:".$date."\n";
@@ -125,7 +125,7 @@ foreach (split /\n/, $content) {
 		setfonction($titre);
 		$context =~ s/&nbsp;/ /g;
 		$context =~ s/ -{1,2} / > /;
-		$context =~ s/[\s\(]+suite[\s\)]*$//i;
+		$titre =~ s/[\s\(]+suite[\s\)]*$//i if ($context =~ s/[\s\(]+suite[\s\)]*$//i);
 		$intervention = '<p>'.$titre.'</p>';
 		%fonctions = ();
 		$numeros_loi = '';
