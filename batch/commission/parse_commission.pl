@@ -165,8 +165,9 @@ foreach (split /\n/, $content) {
 		    (!$interstrong && ($inter =~ /(>)\s*($recointer[^<]{10}[^<\.]*)/))) {
 			$tmpintervenant = $2;
 			$tmpintervenant =~ s/<[^>]*>//g;
-			$tmpintervenant =~ s/^M[mlmes\.\s]{1,4}//i;
-			$tmpintervenant =~ s/ et /, /g;
+			$tmpintervenant =~ s/ et /, /g if ($tmpintervenant =~ /^Mm(\.|es)/);
+			$tmpintervenant =~ s/^M[mlmes\.\s]{1,4}//;
+			$tmpintervenant =~ s/[\s-_\.,;"'<>«»]+$//;
 			if ($tmpintervenant =~ s/^([^,]+),\s*([^,]+,\s*)*([^,]*)\W*$/$1/g) {
 				$tmpfonction = $3;
 				$tmpfonction = $2.$tmpfonction if ($2 !~ / M[mlmes\.\s]/);
