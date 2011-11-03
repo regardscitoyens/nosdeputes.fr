@@ -167,8 +167,9 @@ foreach (split /\n/, $content) {
 			$tmpintervenant =~ s/<[^>]*>//g;
 			$tmpintervenant =~ s/^M[mlmes\.\s]{1,4}//i;
 			$tmpintervenant =~ s/ et /, /g;
-			if ($tmpintervenant =~ s/^([^,]+)(,[^,]+)*,\s*([^,]*)\W*$/$1/g) {
+			if ($tmpintervenant =~ s/^([^,]+),\s*([^,]+,\s*)*([^,]*)\W*$/$1/g) {
 				$tmpfonction = $3;
+				$tmpfonction = $2.$tmpfonction if ($2 !~ / M[mlmes\.\s]/);
 				$fonctions{$tmpintervenant} = $tmpfonction;
 			} elsif ($tmpintervenant =~ s/^([^,]+), ([^,]*).*/$1/g) {
 				$tmpfonction = $2;
@@ -193,7 +194,7 @@ foreach (split /\n/, $content) {
 		$sintervenant =~ s/([\(\)\*])/\\$1/g;
 		$sfonction = $fonction;
 		$sfonction =~ s/([\(\)\*])/\\$1/g;
-		$inter =~ s/^[^\w\&]*$sintervenant[^\w\&]*($sfonction[^\w\&]*|)//;
+		$inter =~ s/^[^\w\&]*(M[mlmes\.\s]{1,4})?$sintervenant[^\w\&]*($sfonction[^\w\&]*|)//;
 		$intervention .= '<p>'.$inter.'</p>' if ($inter =~ /[a-z]/i);
 	}
 #	print "$date $titre $source\n";
