@@ -131,8 +131,8 @@ $doc =~ s/(class="titre_S1"[^>]*>[^<]*)\s*<[^\n]*\n[^\n]*class="titre_S1"[^>]*>\
 $resetcontexte = $oldhtab = 0;
 foreach (split /\n/, $doc) {
     s/&(nbsp|#160);/ /ig;
-    s/ n<sup>[0os\s]+<\/sup>\s*/ n° /ig;
     utf8::decode($_);
+    s/ n<sup>[0os\s]+<\/sup>\s*/ n° /ig;
     $_ = decode_entities($_);
     if (/<\/span><span([^>]*>)/ && $1 !~ /orateur_qualite/) {
 	s/<\/span><span[^>]*>/ /g;
@@ -210,29 +210,34 @@ foreach (split /\n/, $doc) {
 		s/<span class="info_entre_parentheses">([^\(][^<]*)<\/span>/<i>\1<\/i>/g;
 	}
 
-        while (s/([^>]*)<(i|span class="info_entre_parentheses")>\(([^\)]*)\)?<\/(i|span)>([\.\s\)]*)//) {
+	if (!(/"titre_S([123][^"]*)"/ || /"mention_(article)"/)) {
+	    while (s/([^>]*)<(i|span class="info_entre_parentheses")>\(([^\)]*)\)?<\/(i|span)>([\.\s\)]*)//) {
 		$i = $1;
 		$didasc = $3;
 		$i =~ s/<[^>]*>//g;
 		$i =~ s/\s+/ /g;
-                $intervention .= "<p>".$i."</p>";
-                $didasc =~ s/<[^>]*>//gi;
-                $didasc =~ s/\)//g;
-                $predida_inter = $inter;
-                $predida_urlinter = $url_inter;
-                $predida_fonction = $fonction;
-                print_inter();
-                $intervention = '<p>'.$didasc.'</p>';
-                print_inter();
-                $inter = $predida_inter;
-                $url_inter = $predida_urlinter;
-                $fonction = $predida_fonction;
-        }
+		$i =~ s/\s+$//;
+		$intervention .= "<p>".$i."</p>";
+		$didasc =~ s/<[^>]*>//gi;
+		$didasc =~ s/\)//g;
+		$predida_inter = $inter;
+		$predida_urlinter = $url_inter;
+		$predida_fonction = $fonction;
+		print_inter();
+		$intervention = '<p>'.$didasc.'</p>';
+		print_inter();
+		$inter = $predida_inter;
+		$url_inter = $predida_urlinter;
+		$fonction = $predida_fonction;
+	    }
+	}
+
 	if (/class="titre_/) {
 		if ($inter) {
                         print_inter();
 		}
 	} 
+
 	$iscontext = '';
 	if (/"titre_S([123][^"]*)"/ || /"mention_(article)"/) {
 		$iscontext = $1;
@@ -240,7 +245,7 @@ foreach (split /\n/, $doc) {
 	}
 	if (s/.*id="(intv_|)par_[^>]*>\s*(.*)\s*<\/p>.*/$2/i) {
 		s/(<span.*|)<\/span>\s*//i;
-		s/\.\.+//g;
+		s/\.\.\.\.+//g;
 		s/\s+$//;
 		s/<\/sup><i>/<\/sup> <i>/gi;
 		if ($_) {
@@ -271,5 +276,6 @@ foreach (split /\n/, $doc) {
 			}
 		}
 	}
+
 }
 print_inter();
