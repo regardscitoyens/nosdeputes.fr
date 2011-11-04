@@ -167,6 +167,8 @@ foreach (split /\n/, $doc) {
         }
 	if (/>[^a-z]*Pr(é|É)sidence de (M[^<]*)/i) {
 		$president = $2;
+		$president =~ s/^\s*M[mles]{0,3}[\.\s]+//;
+		$president =~ s/\s([a-z])(\w+)$/ \U$1$2/;
 	}
 	next if (!$heure);
 	if (/class="intervenant/) {
