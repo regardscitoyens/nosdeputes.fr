@@ -220,15 +220,17 @@ foreach (split /\n/, $doc) {
 		$intervention .= "<p>".$i."</p>";
 		$didasc =~ s/<[^>]*>//gi;
 		$didasc =~ s/\)//g;
-		$predida_inter = $inter;
-		$predida_urlinter = $url_inter;
-		$predida_fonction = $fonction;
-		print_inter();
-		$intervention = '<p>'.$didasc.'</p>';
-		print_inter();
-		$inter = $predida_inter;
-		$url_inter = $predida_urlinter;
-		$fonction = $predida_fonction;
+		if ($didasc && $didasc !~ /^(suite|nouveau)$/i) {
+			$predida_inter = $inter;
+			$predida_urlinter = $url_inter;
+			$predida_fonction = $fonction;
+			print_inter();
+			$intervention = '<p>'.$didasc.'</p>';
+			print_inter();
+			$inter = $predida_inter;
+			$url_inter = $predida_urlinter;
+			$fonction = $predida_fonction;
+		}
 	    }
 	}
 
@@ -242,6 +244,7 @@ foreach (split /\n/, $doc) {
 	if (/"titre_S([123][^"]*)"/ || /"mention_(article)"/) {
 		$iscontext = $1;
 		print_inter();
+		s/<(i|span class="info_entre_parentheses")>\([^\)]*\)?<\/(i|span)>//;
 	}
 	if (s/.*id="(intv_|)par_[^>]*>\s*(.*)\s*<\/p>.*/$2/i) {
 		s/(<span.*|)<\/span>\s*//i;

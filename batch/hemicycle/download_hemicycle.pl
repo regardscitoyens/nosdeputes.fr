@@ -16,14 +16,14 @@ if ($lastfile =~ /s(\d{4})(\d{2})\d{2}_mono.html/) {
 }
 
 my ($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
-
+$mon += 1;
 $a = WWW::Mechanize->new();
 
 for($annee = $dannee ; $annee <= $year +1900 ; $annee++) {
 $lastmonth = 12;
 $lastmonth = $mon if ($year + 1900 == $annee);
 for($mois = $dmois ; $mois <= $lastmonth ; $mois++) { 
-#    print STDERR "$mois ($lastmonth) $annee ($year)\n";
+    print STDERR "$mois ($lastmonth) $annee ($year)\n";
     $url = 'http://www.senat.fr/seances/s'.sprintf('%04d', $annee).sprintf('%02d', $mois).'/s'.sprintf('%04d', $annee).sprintf('%02d', $mois).'.html';
 
     print STDERR "search seance in $url\n";
