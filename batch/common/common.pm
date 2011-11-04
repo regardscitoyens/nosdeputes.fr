@@ -46,6 +46,7 @@ $heure{'vingt'} = '20';
 $heure{'vingt et une'} = '21';
 $heure{'vingt-et-une'} = '21';
 $heure{'vingt-deux'} = '22';
+$heure{'vingt-trois'} = '22';
 $heure{'vingt-cinq'} = '30';
 $heure{'trente'} = '30';
 $heure{'trente-cinq'} = '30';
