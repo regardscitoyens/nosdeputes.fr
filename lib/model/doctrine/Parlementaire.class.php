@@ -623,7 +623,7 @@ class Parlementaire extends BaseParlementaire
   public function setPhoto($s) {
     if (preg_match('/http/', $s)) {
       $len = strlen($this->getInternalPhoto());
-      if ($len < 5200) {
+      if ($len < 5200 || date('d') % 8 == 5) {
 	$s = file_get_contents($s);
       }else
 	return true;
