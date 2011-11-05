@@ -177,7 +177,6 @@ foreach (split /\n/, $doc) {
 		}elsif(/<a [^>]*>(.+)<\/a>/) {
 			$tmpinter = $1;
 		}
-		$tmpinter =~ s/^\s*M[mles]{0,3}[\.\s]+//;
 		$tmpfonction = '';
 		$tmpurl_inter = '';
 		if (/class="orateur_qualite"[^>]*>([^>]*)</) {
@@ -188,6 +187,7 @@ foreach (split /\n/, $doc) {
                 }
                 $tmpinter =~ s/<[^>]*>//g;
                 $tmpinter =~ s/[\.,]\s*$//;
+		$tmpinter =~ s/^\s*M[mles]{0,3}[\.\s]+//;
                 $tmpfonction =~ s/[\.,]\s*$//;
 		#Cas mauvais formatage des interventions
 		if ($tmpinter =~ /^(.{4}[^\(]*[^M])\./) {
@@ -211,8 +211,9 @@ foreach (split /\n/, $doc) {
 		}
 		s/<span class="info_entre_parentheses">([^\(][^<]*)<\/span>/<i>\1<\/i>/g;
 	}
-
+	s/<\/sup><i>/<\/sup> <i>/gi;
 	if (!(/"titre_S([123][^"]*)"/ || /"mention_(article)"/)) {
+	    s/<\/?(sup|br?|strong)\/?>//gi;
 	    while (s/([^>]*)<(i|span class="info_entre_parentheses")>\(([^\)]*)\)?<\/(i|span)>([\.\s\)]*)//) {
 		$i = $1;
 		$didasc = $3;
@@ -252,7 +253,6 @@ foreach (split /\n/, $doc) {
 		s/(<span.*|)<\/span>\s*//i;
 		s/\.\.\.\.+//g;
 		s/\s+$//;
-		s/<\/sup><i>/<\/sup> <i>/gi;
 		if ($_) {
 			if ($iscontext) {
 			s/<[^>]*>//g;
