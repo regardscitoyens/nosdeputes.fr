@@ -32,7 +32,7 @@ foreach($senateurs as $senateur) {
     <span class="list_nom">
       <a href="<?php echo url_for('@parlementaire?slug='.$senateur->slug); ?>"><?php echo $senateur->getNomPrenom(); ?></a>
     </span>
-    <span class="list_right"><a href="<?php if (!isset($circo)) echo url_for('@list_parlementaires_departement?departement='.$senateur->nom_circo); else echo url_for('@parlementaire?slug='.$senateur->slug); ?>"><?php
+    <span class="list_right"><a href="<?php echo url_for('@parlementaire?slug='.$senateur->slug); //if (!isset($circo)) echo url_for('@list_parlementaires_departement?departement='.$senateur->nom_circo); else echo url_for('@parlementaire?slug='.$senateur->slug); ?>"><?php
       if (isset($circo)) {
         $string = '<span class="list_num_circo">';
         if (isset($dept))
@@ -41,13 +41,13 @@ foreach($senateurs as $senateur) {
       } else echo Parlementaire::displayNomCirco($senateur->nom_circo);
     ?></a></span><br/>
     <span class="list_left">
-      <?php echo preg_replace('/\s([A-Z\-]+)$/', ' <a href="'.url_for('@list_parlementaires_groupe?acro='.$senateur->groupe_acronyme).'"><span class="c_'.strtolower($senateur->getGroupeAcronyme()).'">'."\\1</span></a>", $senateur->getStatut()); ?>
+      <?php echo preg_replace('/\s([A-Z\-]+)$/', ' <a href="'.url_for('@parlementaire?slug='.$senateur->slug).'"><span class="c_'.strtolower($senateur->getGroupeAcronyme()).'">'."\\1</span></a>", $senateur->getStatut()); ?>
     </span>
     <span class="list_right"><?php
       if (!$senateur->nb_commentaires)
         echo "0&nbsp;commentaire";
       else {
-        echo '<a href="'.url_for('@parlementaire_commentaires?slug='.$senateur->slug).'"><span class="list_com">'.$senateur->nb_commentaires.'&nbsp;commentaire';
+        echo '<a href="'.url_for('@parlementaire?slug='.$senateur->slug).'"><span class="list_com">'.$senateur->nb_commentaires.'&nbsp;commentaire';
         if ($senateur->nb_commentaires > 1) echo 's';
         echo '</span></a>';
       }
