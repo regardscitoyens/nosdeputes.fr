@@ -214,7 +214,8 @@ foreach (split /\n/, $doc) {
 	s/<\/sup><i>/<\/sup> <i>/gi;
 	if (!(/"titre_S([123][^"]*)"/ || /"mention_(article)"/)) {
 	    s/<\/?(sup|br?|strong)\/?>//gi;
-	    while (s/([^>]*)<(i|span class="info_entre_parentheses")>\(([^\)]*)\)?<\/(i|span)>([\.\s\)]*)//) {
+	    s/(<(i|span class="info_entre_parentheses")>\()/§$1/g;
+	    while (s/([^§]*)§<(i|span class="info_entre_parentheses")>\(([^\)]*)\)?<\/(i|span)>([\.\s\)]*)//) {
 		$i = $1;
 		$didasc = $3;
 		$i =~ s/<[^>]*>//g;
