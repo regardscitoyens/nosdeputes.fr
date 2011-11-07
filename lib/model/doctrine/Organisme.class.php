@@ -25,9 +25,9 @@ class Organisme extends BaseOrganisme
   public function getSmallNomGroupe() {
     $hashmap = array();
     foreach (myTools::getGroupesInfos() as $gpe)
-      $hashmap[$gpe[0]] = $gpe[1];
-    if (isset($hashmap[$this->getNom()]))
-      return $hashmap[$this->getNom()];
+      $hashmap[strtolower($gpe[0])] = $gpe[1];
+    if (isset($hashmap[strtolower($this->getNom())]))
+      return $hashmap[strtolower($this->getNom())];
     return "";
   }
   public static function getNomByAcro($acro) {
