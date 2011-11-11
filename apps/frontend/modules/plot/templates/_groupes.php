@@ -25,7 +25,7 @@ if ($plot == 'total') { $DataSetBis = new xsPData();
   $Data3 = $DataSet3->GetData(); $DataDescr3 = $DataSet3->GetDataDescription();
 }
 $DataSetLegend = new xsPData();
-foreach($labels as $groupe) {
+foreach($labels as $groupe) if ($groupe) {
   $DataSetLegend->AddPoint(array(), $groupe);
   $DataSetLegend->AddSerie($groupe);
 }
@@ -94,8 +94,8 @@ foreach ($couleurs as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)
   $Test->setColorPalette($ct,$cols[1],$cols[2],$cols[3]);
   $ct++;
 }
-$Test->drawFilledRoundedRectangle(12,$ylegend-14,94,$ylegend+5,5,255,255,255);
-$Test->drawLegend(12,$ylegend,$DataDescrLegend,255,255,255);
+$Test->drawFilledRoundedRectangle(10,$ylegend-14,95,$ylegend+5,5,255,255,255);
+$Test->drawLegend(10,$ylegend,$DataDescrLegend,255,255,255);
 $Test->xsSetFontProperties("tahoma.ttf",10);
 $Test->drawTitle(29,$ylegend-1,'Groupes',0,0,0);
 
