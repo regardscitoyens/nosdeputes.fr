@@ -25,7 +25,7 @@ if ($plot == 'total') { $DataSetBis = new xsPData();
   $Data3 = $DataSet3->GetData(); $DataDescr3 = $DataSet3->GetDataDescription();
 }
 $DataSetLegend = new xsPData();
-foreach($labels as $groupe) {
+foreach($labels as $groupe) if ($groupe) {
   $DataSetLegend->AddPoint(array(), $groupe);
   $DataSetLegend->AddSerie($groupe);
 }
