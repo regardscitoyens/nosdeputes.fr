@@ -97,7 +97,7 @@ if ($subsection->id != $section->id) : ?>
 <div class="seances_dossier">
 <h2>Toutes les séances consacrées à ce dossier</h2>
 <ul>
-<?php foreach($section->getSeances() as $seance) : ?>
+<?php foreach($seances as $seance) : ?>
 <li><?php $subtitre = $seance->getTitre();
   if ($seance->nb_commentaires > 0) {
     $subtitre .= ' (<span class="list_com">'.$seance->nb_commentaires.' commentaire';
