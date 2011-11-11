@@ -95,7 +95,7 @@ if ($subsection->id != $section->id) : ?>
 <div class="seances_dossier">
 <h2>Toutes les séances consacrées à ce dossier</h2>
 <ul>
-<?php foreach($section->getSeances() as $seance) : ?>
+<?php foreach($seances as $seance) : ?>
 <li><?php $subtitre = preg_replace('/([\' ])(lois|sociales|étrangères|finances|économie|culture|européennes).*$/', '\1\2', $seance->getTypeOrga())."&nbsp;: ".myTools::displayShortDate($seance->date);
   if ($seance->getMoment()) $subtitre .= '&nbsp;&mdash; '.preg_replace('/séance/i', 'réunion', $seance->getMoment());
   if ($seance->nb_commentaires > 0) {

@@ -49,6 +49,9 @@ class sectionActions extends sfActions
     }
     $this->section = Doctrine::getTable('Section')->find($secid);
     $this->forward404Unless($this->section);
+    $this->seances = $this->section->getSeances();
+    if (count($this->seances) == 1)
+      $this->redirect('@interventions_seance?seance='.$this->seances[0]->id.'#table_'.$this->section->id);
 
     $lois = $this->section->getTags(array('is_triple' => true,
                                           'namespace' => 'loi',
