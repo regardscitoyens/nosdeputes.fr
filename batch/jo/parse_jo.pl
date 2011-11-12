@@ -2,7 +2,8 @@
 
 open FILE, shift;
 $source = shift;
-
+$anneepdf = $source;
+$anneepdf =~ s/^.*\/.*\///;
 
 $mois{'janvier'} = '01';
 $mois{'février'} = '02';
@@ -71,8 +72,11 @@ foreach (split /\n/, $lines) {
     if (/(réunion|séance)/i) {
 	s/ heures/:00/;
 	s/ h /:/;
-	if (/([\d]+)[er]* ([\wéû]+) (\d+)/) {
-	    $reunion = "$3-".$mois{$2}."-$1";
+	if (/([\d]+)[er]* ([\wéû]+) (à |\d+)/) {
+	    $reunion = $mois{$2}."-$1";
+	    $annee = $3;
+	    $annee = $anneepdf if ($annee !=~ /\d/);
+	    $reunion = "$annee-".$reunion;
 	}
 	if (/ à ([\d:]+)/) {
 	    $session = $1;
