@@ -115,6 +115,7 @@ sub getProjetLoi {
     return $ploi{$titre} if (defined($ploi{$titre}));
     $intervention = lc shift;
     foreach $k (keys %ploi) {
+	$k =~ s/[\(\)]/./g;
         if ($intervention =~ /$k/i) {
             $ploi{$titre} = $ploi{$k};
             return $ploi{$k};
