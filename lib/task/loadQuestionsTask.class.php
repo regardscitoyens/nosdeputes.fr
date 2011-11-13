@@ -16,11 +16,11 @@ class loadQuestionsTask extends sfBaseTask {
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
+	$ct_lines = 0;
+	$ct_lus = 0;
+	$ct_crees = 0;
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == ".") continue;
-          $ct_lines = 0;
-          $ct_lus = 0;
-          $ct_crees = 0;
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
             $json = json_decode($line);
@@ -46,7 +46,7 @@ class loadQuestionsTask extends sfBaseTask {
 	      }
               continue;
             }
-            if (!$json->ministere_interroge || !$json->ministere_attribue || !$json->rubrique || !($json->tete_analyse && !$json->analyse)) {
+            if (!$json->ministere_interroge || !$json->ministere_attribue || !$json->rubrique || (!$json->tete_analyse && !$json->analyse)) {
               echo "ERROR json facu : $line\n";
               continue;
             }
@@ -80,10 +80,10 @@ class loadQuestionsTask extends sfBaseTask {
             $quest->save();
             $quest->free();
           }
-          if ($ct_crees) print "$dir$file\n".$ct_lines." questions lues : ".$ct_lus." écrites dont ".$ct_crees." nouvelles.\n";
           unlink($dir.$file);
         }
         closedir($dh);
+	if ($ct_crees) print "$dir\n".$ct_lines." questions lues : ".$ct_lus." écrites dont ".$ct_crees." nouvelles.\n";
       }
     }
   }
