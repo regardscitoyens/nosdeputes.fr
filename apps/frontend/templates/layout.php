@@ -135,6 +135,9 @@ $menu_citoyen = $selectcitoyen;
         </div>
       </div>
       <div id="bottom">
+<div class="legal">
+<a href="http://www.regardscitoyens.org/mentions-legales/">Mentions légales</a>
+</div>
         <div class="regardscitoyens">
 		<a href="http://www.regardscitoyens.org"><span class="RC">R</span>egards<span class="RC">C</span><span style="color: #C1272D;">i</span>toyens.org</a>
 		</div>

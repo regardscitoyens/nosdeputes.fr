@@ -1904,6 +1904,12 @@ a:hover img {
 .block {
   display: block;
 }
+.legal {
+    float: left;
+    position: relative;
+    top: 19px;
+    left: 18px;
+}
 .floatright {
   float: right;
   margin: 10px;
@@ -1921,4 +1927,3 @@ a:hover img {
 #assister p:first-letter {
   padding-left: 10px;
 }
-
