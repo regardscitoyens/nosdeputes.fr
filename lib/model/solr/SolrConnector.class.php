@@ -27,11 +27,13 @@ class SolrConnector extends sfLogger
   }
   
 
-  public function updateFromCommands() {
+  public function updateFromCommands($output = 0) {
     $file = SolrCommands::getInstance()->getCommandContent();
     foreach(file($file) as $line) {
       if (preg_match('/(UPDATE|DELETE) : (.+)/', $line, $matches)) {
 	$obj = json_decode($matches[2]);
+	if ($output)
+		echo "ID: ".$obj->id."\n";
 	if ($matches[1] == 'UPDATE') {
 	  $this->updateLuceneRecord($obj);
 	}else{
