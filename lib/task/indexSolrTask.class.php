@@ -22,6 +22,7 @@ class indexSolrTask extends sfBaseTask
     $this->addOption('all', null, sfCommandOption::PARAMETER_OPTIONAL, 'Reindex all the database (=no|yes no default)', 'no');
     $this->addOption('pages', null, sfCommandOption::PARAMETER_OPTIONAL, 'Index static pages (=no|yes no default)', 'no');
     $this->addOption('removePages', null, sfCommandOption::PARAMETER_OPTIONAL, 'remove indexed static pages(=no|yes no default)', 'no');
+    $this->addOption('verbose', null, sfCommandOption::PARAMETER_OPTIONAL, 'Print the indexed object ID (=no|yes no default)', 'no');
 
     $this->file_conf = sys_get_temp_dir().DIRECTORY_SEPARATOR."reindex_slor.db";
     $this->state = array();
@@ -79,7 +80,7 @@ class indexSolrTask extends sfBaseTask
     }
 
     if ($options['all'] == 'no') {
-      $solr->updateFromCommands();
+      $solr->updateFromCommands(options['verbose'] == 'yes');
       return;
     }
 
@@ -102,7 +103,7 @@ class indexSolrTask extends sfBaseTask
 	  $o->Save();
 	  $this->state[$table] = $o->id;
 	}
-	$solr->updateFromCommands();
+	$solr->updateFromCommands(options['verbose'] == 'yes');
 	$this->writeState();
       }
     }
