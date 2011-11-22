@@ -80,7 +80,7 @@ class indexSolrTask extends sfBaseTask
     }
 
     if ($options['all'] == 'no') {
-      $solr->updateFromCommands(options['verbose'] == 'yes');
+      $solr->updateFromCommands($options['verbose'] == 'yes');
       return;
     }
 
@@ -103,7 +103,7 @@ class indexSolrTask extends sfBaseTask
 	  $o->Save();
 	  $this->state[$table] = $o->id;
 	}
-	$solr->updateFromCommands(options['verbose'] == 'yes');
+	$solr->updateFromCommands($options['verbose'] == 'yes');
 	$this->writeState();
       }
     }
