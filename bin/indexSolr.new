@@ -18,7 +18,7 @@ then
     if test ! -e /proc/$(cat $LOCK) ;
     then
 	echo "WARNING : l'indexation solr est lockée alors que son processus ne tourne plus..."
-	echo "\t suppression du fichier (tentative n°$STATUS)...";
+	echo " suppression du fichier (tentative n°$STATUS)...";
 	rm $LOCK
 	if [ $STATUS -ge 4 ]; then
 	    echo "trying to restart Tomcat"
@@ -28,9 +28,6 @@ then
 	echo "$STATUS" > $STATUSFILE
 	exit 1;
     fi
-#     echo Script locké par $(cat $LOCK) : $LOCK
-#        ps aux | grep "php symfony index:Solr" | grep -v grep > /dev/null
-#        if [[ $? -eq 1 ]]; then echo "WARNING : l'indexation solr semble lockée mais ne pas tourner"; fi
     exit 1;
 fi
 
