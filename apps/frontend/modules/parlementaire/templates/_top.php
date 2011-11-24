@@ -46,11 +46,11 @@ if (!$top)
   return ;
 if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->debut_mandat) {
   $mois = floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30));
-  if($mois < 6) {
+  if($mois < 12) {
     echo '<h3>Activité <small>(';
     if ($mois <= 1) echo 'premier';
-    else
-      echo $mois.' premiers';
+    else if ($mois < 10) echo $mois.' premiers';
+    else echo $mois;
     echo ' mois de mandat)</small> :</h3>';
     $rank = 0;
   }else {
