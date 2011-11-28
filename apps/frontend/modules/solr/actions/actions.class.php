@@ -217,7 +217,7 @@ class solrActions extends sfActions
       if ($objclass === 'Section')
         $this->results['docs'][$i]['titre'] = "Dossier : ".$this->results['docs'][$i]['titre'];
       else if ($objclass === 'Commentaire')
-        $this->results['docs'][$i]['titre'] = "Commentaire ".preg_replace('/^./', strtolower($this->results['docs'][$i]['titre']{0}), $this->results['docs'][$i]['titre']);
+        $this->results['docs'][$i]['titre'] = "Commentaire : ".ucfirst(preg_replace('/^./', strtolower($this->results['docs'][$i]['titre']{0}), $this->results['docs'][$i]['titre']));
       $this->results['docs'][$i]['personne'] = $obj->getPersonne();
       if ($this->query && isset($results['highlighting'][$res['id']]['text'])) {
         $high_res = array();
