@@ -328,7 +328,7 @@ class Intervention extends BaseIntervention
 			$loie[$y] = trim(preg_replace('/<[^>]*>/', '', $loie[$y]));
 			if (strlen($loie[$y]) < 10) continue;
 			$matche[$y] = preg_replace('/\D/', '.', trim($matche[$y]));
-          		$inter = preg_replace('/(n[os\s<\/up>°]*)?('.$matche[$y].')/', '<a href="'.url_for('@document?id='.$loie[$y]).'">\\1\\2</a>', $inter);
+          		$inter = preg_replace('/((n[os\s<\/up>°]*|,|et) *)('.$matche[$y].')/', '\\1<a href="'.url_for('@document?id='.$loie[$y]).'">\\3</a>', $inter);
 			$oldloi = $loie[$y];
 		}
          }
