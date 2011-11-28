@@ -174,7 +174,7 @@ foreach (split /\n/, $content) {
 		    print_inter();
 		}
 		$inter =~ s/<a[^>]*><\/a>//ig;
-		if ($inter =~ /^<(u|strong|em)>(.*)<\/(u|strong|em)>$/i) {
+		if ($inter =~ /^\s*<(u|strong|em)>(.*)<\/(u|strong|em)>\s*$/i) {
 			$inter = $2;
 			print_inter();
 	                $inter =~ s/<[^>]+>//g;
