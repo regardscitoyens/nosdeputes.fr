@@ -21,6 +21,7 @@ $content =~ s/<\/?(a|strong|p|em)[^>]*>\s*<\/td>/<\/td>/gi;
 $content =~ s/<br\/?\s?>/ /ig;
 $content =~ s/[ \t]+/ /g;
 $content =~ s/&(#160|nbsp);/ /ig;
+$content =~ s/<\/?em>//gi;
 $content =~ s/\s+/ /g;
 $content =~ s/<\/(p|h[1234]|ul|div)>/<\/$1>\n/gi;
 $content =~ s/(<h\d[^>]*>)\s*<b>/$1/gi;
