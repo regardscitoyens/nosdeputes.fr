@@ -267,18 +267,6 @@ class commentaireActions extends sfActions
   }
 
   public function executeList(sfWebRequest $request) {
-    if ($this->type != 'all') {
-      $commentsids = array();
-      foreach (Doctrine_Query::create()
-        ->select('c.id')
-        ->from('Commentaire c')
-        ->where('c.id = (SELECT c2.id FROM commentaire c2 WHERE c.citoyen_id = c2.citoyen_id ORDER BY c2.created_at DESC LIMIT 1)')
-        ->andWhere('c.is_public = 1')
-        ->orderBy('c.created_at DESC')
-        ->fetchArray() as $com)
-          $commentsids[] = $com['id'];
-      $this->commentaires->andWhere('id IN ('.implode(',', array_values($commentsids)).')');
-    } else $this->commentaires->andWhere('is_public = 1');
     $this->titre = 'Les derniers commentaires';
     $this->url_link = '';
     if ($slug = $request->getParameter('slug')) {
