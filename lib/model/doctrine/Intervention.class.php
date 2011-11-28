@@ -286,7 +286,7 @@ class Intervention extends BaseIntervention
       $interres = '';
       foreach (explode('</p>', $intertot) as $inter) {
        //Repère les amendements (pour les linkifier)
-       if (preg_match_all('/(amendements?[,\s]+(identiques?|rédactionnels?)?[,\s]*)((n[°os\s]*|([ABICOM]+-)?\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
+       if (preg_match_all('/(amendements?[,\s]+(identiques?|rédactionnels?|de coordination)?[,\s]*)((n[°os\s]*|([ABICOM]+-)?\s*\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
 	$lois = implode(',', $this->getTags(array('is_triple' => true,
 						  'namespace' => 'loi',
 						  'key' => 'numero',
