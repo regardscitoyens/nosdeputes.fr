@@ -25,6 +25,13 @@ class sendAlertTask extends sfBaseTask
     foreach($query->execute() as $alerte) {
       $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")+1;
       $query = '('.$alerte->query.") date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d').'T'.date('H:i:s')."Z]";
+      foreach (explode('&', $alerte->filter) as $filtre)
+        if (preg_match('/^([^=]+)=(.*)$/', $filtre, $match))
+          foreach (explode(',', $match[2]) as $value) {
+            if (preg_match("=", $match[2]))
+              $query .= ' '.$match[1].':'.preg_replace('/=(.*)$/', '="$1"', $match[2]);
+            else $query .= ' '.$match[1].':"'.$match[2].'"';
+          }
       $results = $solr->search($query, array('sort' => 'date desc', 'hl' => 'yes', 'hl.fragsize'=>500));
       $alerte->next_mail = date('Y-m-d H:i:s', time() + self::$period[$alerte->period]);
       if (! $results['response']['numFound']) {
