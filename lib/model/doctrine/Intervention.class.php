@@ -310,7 +310,7 @@ class Intervention extends BaseIntervention
       }
 
       //Repère les documents parlementaires (pour les linkifier)
-      if (preg_match_all('/(projet|proposition|annexe|rapport|avis)[^<°]*(<i>|\s|\[|\()(n[os°\s<\/up>]+)(([\s,;\w°<>i]{0,8}\W*\d+[\s,\d\(\[\]\-<>i\/]*)+)/i', $inter, $matches)) {
+      if (preg_match_all('/(projet|proposition|annexe|rapport|avis)[^<°]*(<i>|\s|\[|\()(n[os°\s<\/up>]+)(([\s,;\w°<i>]{0,5}\W*\d+[\s,\d\(\[\]\-<>i\/]*)+)/i', $inter, $matches)) {
 	$match = $matches[4];
 	for($i = 0 ; $i < count($match) ; $i++) if (!preg_match('/ (à|du) /', $match[$i]) && !preg_match('/^\D*\d[\d\.]+\d\d\d\D*$/', $match[$i])) {
 		$match[$i] = preg_replace('/[, ]+et[, ]+/', ', ', $match[$i]);
