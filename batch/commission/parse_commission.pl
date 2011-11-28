@@ -33,12 +33,27 @@ $timestamp = 0;
 $nb_seance = 1;
 sub print_inter {
 	if ($intervention && $intervention ne '<p></p>') {
-		if ($intervention =~ /(projet de loi|texte)( n[^<]+)/) {
+		if ($intervention =~ /(projets? de loi|textes?|propositions? de loi)( n[^<]+)/) {
 			$doc = $2;
 			$doc =~ s/&[^;]+;//g;
 			$numeros_loi = '';
-			while ($doc =~ / n\s*(\d+) ?(\(\d+\-\d+\))/g) {
+			while ($doc =~ / n\D*(\d+) ?(\(\d+\-\d+\))/g) {
 				$numeros_loi .= law_numberize($1,$2).",";
+			}
+			if (!$numeros_loi) {
+				if ($doc =~ s/\((\d+\-\d+)\)//) {
+					$year = $1;
+				}
+				if (!$year) {
+					$year = $url_year.'-'.($url_year+1);
+				}
+				while ($doc =~ /n\D*((\d+)(, (\d+))*( et (\d+))?)/g) {
+					foreach $no (split(/(, | et )/, $1)) {
+						$no =~ s/\D//g;
+						next unless ($no);
+						$numeros_loi .= law_numberize($no,$year).",";
+					}
+				}
 			}
 			if ($numeros_loi) {
 			    chop($numeros_loi);
