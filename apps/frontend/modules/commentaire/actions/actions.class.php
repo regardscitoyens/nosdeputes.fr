@@ -267,21 +267,6 @@ class commentaireActions extends sfActions
   }
 
   public function executeList(sfWebRequest $request) {
-    $this->commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
-      ->leftJoin('c.Objects co')
-      ->orderBy('created_at DESC');
-    if ($this->type != 'all') {
-      $commentsids = array();
-      foreach (Doctrine_Query::create()
-        ->select('c.id')
-        ->from('Commentaire c')
-        ->where('c.id = (SELECT c2.id FROM commentaire c2 WHERE c.citoyen_id = c2.citoyen_id ORDER BY c2.created_at DESC LIMIT 1)')
-        ->andWhere('c.is_public = 1')
-        ->orderBy('c.created_at DESC')
-        ->fetchArray() as $com)
-          $commentsids[] = $com['id'];
-      $this->commentaires->andWhere('id IN ('.implode(',', array_values($commentsids)).')');
-    } else $this->commentaires->andWhere('is_public = 1');
     $this->titre = 'Les derniers commentaires';
     $this->url_link = '';
     if ($slug = $request->getParameter('slug')) {
@@ -307,7 +292,21 @@ class commentaireActions extends sfActions
       $this->linkrss = '@commentaires_rss';
       $this->presentation = '';
     }
-    if ($this->type != 'all') {
+    $this->commentaires = Doctrine::getTable('Commentaire')->createQuery('c')
+      ->leftJoin('c.Objects co')
+      ->orderBy('created_at DESC');
+    if ($this->type == 'all') {
+      $commentsids = array();
+      foreach (Doctrine_Query::create()
+        ->select('c.id')
+        ->from('Commentaire c')
+        ->where('c.id = (SELECT c2.id FROM commentaire c2 WHERE c.citoyen_id = c2.citoyen_id ORDER BY c2.created_at DESC LIMIT 1)')
+        ->andWhere('c.is_public = 1')
+        ->orderBy('c.created_at DESC')
+        ->fetchArray() as $com)
+          $commentsids[] = $com['id'];
+      $this->commentaires->andWhere('id IN ('.implode(',', array_values($commentsids)).')');
+    } else {
       $this->forward404Unless($this->object);
       if ($this->type != 'Parlementaire') {
         $this->titre .= ' sur '.$this->object->titre;
@@ -316,7 +315,8 @@ class commentaireActions extends sfActions
         else if ($this->type == 'TitreLoi')
           $this->url_link .= $this->object->texteloi_id;
       }
-      $this->commentaires->andWhere('co.object_type = ?', $this->type)
+      $this->commentaires->andWhere('is_public = 1')
+        ->andWhere('co.object_type = ?', $this->type)
         ->andWhere('co.object_id = ?', $this->object->id);
     }
     if ($request->getParameter('rss')) {
