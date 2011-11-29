@@ -14,8 +14,8 @@ foreach ($results['response']['docs'] as $res)
   } else if ($res['object_name'] === "Section")
     echo "Dossier : ";
   echo $titre."\n";
-  echo "------------------------------------------------\n";
  if ($res['object_name'] != 'Texteloi') {
+  echo "------------------------------------------------\n";
   $printable = array();
   $brut = $res['text'];
   foreach($brut as $text) {
