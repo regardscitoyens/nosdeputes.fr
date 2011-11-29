@@ -41,7 +41,7 @@ foreach ($results['response']['docs'] as $res)
   }
 
   $text = str_replace($titre, '', $text);
-  if ($res['object_name'] === "Commentaire" && $citoyen)
+  if ($nohuman && $res['object_name'] === "Commentaire" && $citoyen)
     $text = substr($text, strlen($citoyen)-4);
   echo "$text\n";
  }
