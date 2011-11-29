@@ -26,6 +26,9 @@ function depile($res, $breakline) {
       }
     }
   }else{
+    $res = str_replace('<', '&lt;', $res);
+    $res = str_replace('>', '&gt;', $res);
+    $res = str_replace('&', '&amp;', $res);
     echo $res;
   }
 }
