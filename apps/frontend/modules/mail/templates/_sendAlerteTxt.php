@@ -5,10 +5,13 @@ Voici les dernières alertes de votre abonnement : <?php echo $alerte->titre; ?>
 <?php
 foreach ($results['response']['docs'] as $res) 
 {
+  $citoyen = "";
   $titre = $res['object']->getTitre();
-  if ($res['object_name'] === "Commentaire")
-    echo "Commentaire : ";
-  else if ($res['object_name'] === "Section")
+  if ($res['object_name'] === "Commentaire") {
+    foreach ($res['tag'] as $tag) if (preg_match("/Citoyen=(.*)$/", $tag, $match))
+      $citoyen .= " par ".$match[1];
+    echo "Commentaire$citoyen : ";
+  } else if ($res['object_name'] === "Section")
     echo "Dossier : ";
   else if ($res['object_name'] === "QuestionEcrite")
     $titre = str_replace('Question', 'Question écrite', $titre);
@@ -40,6 +43,8 @@ foreach ($results['response']['docs'] as $res)
   }
 
   $text = str_replace($titre, '', $text);
+  if ($res['object_name'] === "Commentaire" && $citoyen)
+    $text = substr($text, strlen($citoyen)-4);
   echo "$text\n";
  }
   echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', $res['object']->getLink())."\n\n";
