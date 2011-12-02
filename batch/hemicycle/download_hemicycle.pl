@@ -5,6 +5,8 @@ use HTML::TokeParser;
 use URI::Escape;
 use Encode;
 
+#$since_hour = shift || 24;
+
 @files = <./html/*>;
 $lastfile = pop(@files);
 @files = ();
@@ -16,12 +18,21 @@ if ($lastfile =~ /s(\d{4})(\d{2})\d{2}_mono.html/) {
 }
 
 my ($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
+$year+=1900;
+if ($mday < 10 && $mon == $dmois && $year == $dannee) {
+	$dmois--;
+	if ($dmois < 1) {
+		$dmois = 12;
+		$dannee--;
+	}
+}
 $mon += 1;
 $a = WWW::Mechanize->new();
+#$a->add_header('If-Modified-Since' => scalar(localtime(time()-3600*$since_hour)));
 
-for($annee = $dannee ; $annee <= $year +1900 ; $annee++) {
+for($annee = $dannee ; $annee <= $year ; $annee++) {
 $lastmonth = 12;
-$lastmonth = $mon if ($year + 1900 == $annee);
+$lastmonth = $mon if ($year == $annee);
 for($mois = $dmois ; $mois <= $lastmonth ; $mois++) { 
     print STDERR "$mois ($lastmonth) $annee ($year)\n";
     $url = 'http://www.senat.fr/seances/s'.sprintf('%04d', $annee).sprintf('%02d', $mois).'/s'.sprintf('%04d', $annee).sprintf('%02d', $mois).'.html';
@@ -43,15 +54,26 @@ for($mois = $dmois ; $mois <= $lastmonth ; $mois++) {
 	      $a->back();
 	      next;
 	  }
+	  $thecontent = $a->content;
+	  if(!$thecontent) {
+		$a->back();
+		next;
+	  }
+
           $file = uri_escape($a->uri());
-	  open FILE, ">:utf8", "html/$file";
+	  open FILE, ">:utf8", "html/$file.tmp";
 	  $thecontent = $a->content;
 	  if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
 	      $thecontent = decode("windows-1252", $thecontent);
 	  }
 	  print FILE $thecontent;
 	  close FILE;
-	  print "$file\n";
+	  if (! -e "html/$file" || -s "html/$file" != -s "html/$file.tmp") {
+		rename "html/$file.tmp", "html/$file";
+		print "$file\n";
+	  }else {
+	        unlink ("html/$file.tmp");
+          }
 	  $a->back();
     }
 
