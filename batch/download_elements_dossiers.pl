@@ -6,12 +6,16 @@ use URI::Escape;
 use Encode;
 use File::Path qw(make_path);
 
+#Annee des dossiers à télécharger
+$year = shift;
+$since_hour = shift || 24;
+$verbose = shift || 0;
+
 $lastyear = localtime(time);
 my @month = `date +%m`;
 $lastyear =~ s/^.*\s(\d{4})$/$1/;
 $lastyear-- if ($month[0] < 10);
 
-$year = shift;
 $year = $lastyear if (!$year);
 $yearzero = $year;
 if (! $year =~ /^\d{4}$/) {
@@ -19,12 +23,12 @@ if (! $year =~ /^\d{4}$/) {
   exit;
 }
 
-$verbose = shift || 0;
-
 %done = ();
 %donedo = ();
 %donedl = ();
 $a = WWW::Mechanize->new();
+$aif = WWW::Mechanize->new();
+$aif->add_header('If-Modified-Since' => scalar(localtime(time()-3600*$since_hour)));
 
 sub download_one {
   $uri = shift;
@@ -32,32 +36,38 @@ sub download_one {
   make_path($dir) unless -e $dir;
   return if ($donedl{$uri});
   $donedl{$uri} = 1;
-  eval {$a->get($uri);};
-  if ($a->status() == 404) {
-    $a->back();
+  eval {$aif->get($uri);};
+  if ($aif->status() == 404) {
+    $aif->back();
     if ($dir =~ /r(ga|ap)/i && $uri =~ /_mono/i) {
       $uri =~ s/_mono//i;
       download_one($uri, $dir);
     } else {
-      print "ERREUR 404 sur $uri\n";
+      print STDERR "ERREUR 404 sur $uri\n";
     }
     return;
   }
-  $htmfile = uri_escape($a->uri);
+  $htmfile = uri_escape($aif->uri);
   if ($donedl{$htmfile}) {
-    $a->back();
+    $aif->back();
     return;
   }
   $donedl{$htmfile} = 1;
+
+  $thecontent = $aif->content;
+  if (!$thecontent) {
+        $aif->back();
+        return ;
+  }
+
   print "    $dir\t\t->\t\t$htmfile\n";
   open FILE, ">:utf8", "$dir/$htmfile";
-  $thecontent = $a->content;
   if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
     $thecontent = decode("windows-1252", $thecontent);
   }
   print FILE $thecontent;
   close FILE;
-  $a->back();
+  $aif->back();
 }
 
 sub examine_url {
@@ -96,14 +106,13 @@ sub find_elements {
   my $urlp = shift;
   my $urla = "";
   my $outdir = "";
-  $a->get($urlp);
-  if ($donedo{$a->uri}) {
-    $a->back();
+  $aif->get($urlp);
+  if ($donedo{$aif->uri}) {
     return;
   }
-  $donedo{$a->uri} = 1;
+  $donedo{$aif->uri} = 1;
   print STDERR " examine dossier $urlp\n" if ($verbose);
-  my $contentleg = $a->content;
+  my $contentleg = $aif->content;
   if ($contentleg =~ s/iso-8859-1/utf-8/gi) {
     $contentleg = decode("windows-1252", $contentleg);
   }
@@ -115,7 +124,6 @@ sub find_elements {
     $urla = "";
     if ($line =~ /(\/amendements.*\/(\d{4})-.+\/)accueil\.html/) {
       if ($2 lt $yearzero) {
-        $a->back();
         next;
       }
       $urla = "http://www.senat.fr$1jeu_complet.html";
@@ -127,10 +135,7 @@ sub find_elements {
     download_one($urla, $outdir) if ($urla);
    }
   }
-  $a->back();
 }
-
-# urls en compte-rendu-commissions a checker si already dl?
 
 sub explore_page {
   my $baseurls = shift;
