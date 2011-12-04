@@ -1,13 +1,12 @@
 #!/bin/bash
 
-if ! test -e out/ ; then
-	mkdir out
+mkdir -p out
+
+if [ -e to_parse.list ]; then
+  for file in `cat to_parse.list`; do
+    echo $file
+    output=`echo $file | sed 's/\(pjl\|ppl\|ppr\|rap\|rga\|tas\)\//out\//'`
+    perl parse_doc.pl $file > $output
+  done
 fi
-
-for file in `perl download_docs.pl`; do
-  echo $file
-  file2=`echo $file | sed 's/^\(pjl\|ppl\|ppr\|rap\|rga\|tas\)\//out\//'`
-  perl parse_doc.pl $file > $file2
-done;
-
 

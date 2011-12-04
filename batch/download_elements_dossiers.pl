@@ -6,17 +6,16 @@ use URI::Escape;
 use Encode;
 use File::Path qw(make_path);
 
-#Annee des dossiers à télécharger
-$year = shift;
-$since_hour = shift || 24;
-$verbose = shift || 0;
-
 $lastyear = localtime(time);
 my @month = `date +%m`;
 $lastyear =~ s/^.*\s(\d{4})$/$1/;
 $lastyear-- if ($month[0] < 10);
 
-$year = $lastyear if (!$year);
+#Annee des dossiers à télécharger
+$year = shift || $lastyear;
+$since_hour = shift || 24;
+$verbose = shift || 0;
+
 $yearzero = $year;
 if (! $year =~ /^\d{4}$/) {
   print STDERR "Please input a 4-digit year\n";
@@ -28,7 +27,10 @@ if (! $year =~ /^\d{4}$/) {
 %donedl = ();
 $a = WWW::Mechanize->new();
 $aif = WWW::Mechanize->new();
-$aif->add_header('If-Modified-Since' => scalar(localtime(time()-3600*$since_hour)));
+$aif->add_header('If-Modified-Since' => scalar(localtime(time()-3600*$since_hour))) if ($since_hour > 0);
+
+open LISTAMD, ">:utf8", "amendements/to_parse.list";
+open LISTDOC, ">:utf8", "documents/to_parse.list";
 
 sub download_one {
   $uri = shift;
@@ -56,11 +58,21 @@ sub download_one {
 
   $thecontent = $aif->content;
   if (!$thecontent) {
-        $aif->back();
-        return ;
+    $aif->back();
+    return ;
   }
 
-  print "    $dir\t\t->\t\t$htmfile\n";
+  if ($dir =~ /amendements/) {
+    if ($dir =~ /html/) {
+      print LISTAMD "html/$htmfile\n";
+    } else {
+# gestion des pdfs?
+    }
+  } else {
+    $ssdir = $dir;
+    $ssdir =~ s/documents\///;
+    print LISTDOC "$ssdir/$htmfile\n";
+  }
   open FILE, ">:utf8", "$dir/$htmfile";
   if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
     $thecontent = decode("windows-1252", $thecontent);
@@ -166,3 +178,5 @@ while ($year <= $lastyear) {
 print STDERR "Download rapports from groupes d'amitié ...\n" if ($verbose);
 explore_page("http://www.senat.fr/rapports/rapports-groupe-amitie.html");
 
+close LISTAMD;
+close LISTDOC;
