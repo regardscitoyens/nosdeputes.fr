@@ -13,7 +13,7 @@ for ($cpt = 0 ; 1 ; $cpt++) {
 	}
 	$ret = system('sh compute_jo.sh '.$mday.' '.$mon.' '.$year);
 	if ($ret) {
-		exit;
+		next;
 	}
 }
 
