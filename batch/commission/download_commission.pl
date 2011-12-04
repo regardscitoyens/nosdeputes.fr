@@ -13,9 +13,6 @@ mkdir "html" unless -e "html";
 $a = WWW::Mechanize->new();
 $aif = WWW::Mechanize->new();
 $aif->add_header('If-Modified-Since' =>  scalar(localtime(time()-3600*$since_hour))) if ($since_hour > 0);
-$start = shift || '0';
-$count = 50;
-$ok = 1;
 
 open FILE, "conf/cr.list";
 @indexes = <FILE>;

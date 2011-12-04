@@ -65,12 +65,38 @@ foreach $index (@indexes) {
 if ($with_archive) {
     @more = (@more, @archive);
 }
+
 mkdir('conf') if (! -e 'conf');
+@ignores = "";
+if (-e 'conf/ignore.list') {
+  open FILE, "conf/ignore.list";
+  @ignores = <FILE>;
+  close FILE;
+}
+
 open FILE, "> conf/cr.list";
 foreach $url (@more) {
-    print FILE "$url\n";
+  $skip = 0;
+  foreach $ignore (@ignores) {
+    chomp($ignore);
+    if ($ignore eq $url) {
+      $skip = 1;
+      last;
+    }
+  }
+  next if ($skip);
+  print FILE "$url\n";  
 }
 foreach $url (keys %cr) {
-    print FILE "$url\n";
+  $skip = 0;
+  foreach $ignore (@ignores) {
+    chomp($ignore);      
+    if ($ignore eq $url) {
+      $skip = 1;
+      last;
+    }
+  }
+  next if ($skip);
+  print FILE "$url\n";
 }
 close FILE;
