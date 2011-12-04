@@ -107,7 +107,7 @@ $string = "@string";
 close FILE;
 foreach $url (split /\n/, $string) {
   $count2++;
-  #download_one($url);
+  download_one($url);
 }
 print $count2." questions sans réponse retéléchargées\n\n" if ($verbose);
 print $count+$count2." questions téléchargées\n" if ($verbose);
