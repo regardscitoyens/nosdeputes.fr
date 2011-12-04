@@ -18,7 +18,7 @@ echo $$ > /tmp/loadupdate.lock
 senateurs=1
 jo=1
 questions=1
-while getopts "hdjqo-:" option
+while getopts "hsjqo-:" option
 do
   if [ $option = "-" ]; then
     case $OPTARG in
@@ -68,13 +68,19 @@ if [[ $jo -eq 1 ]]; then
 fi
 echo Hemicycles
 echo =======================
-cd batch/hemicycle ; bash compute_latest.sh ; cd -
+cd batch/hemicycle ; bash compute_hemicycle.sh ; cd -
 echo Commissions
 echo =======================
 cd batch/commission ; bash compute_latest.sh ; cd -
-echo Amendements
+echo Amendements et Documents
+echo =======================
+cd batch ; perl download_elements_dossiers.pl ; cd -
+echo Parse amendements
 echo =======================
 cd batch/amendements ; bash compute_latest.sh ; cd -
+echo Parse documents
+echo =======================
+cd batch/documents ; bash compute_latest.sh ; cd -
 if [[ $questions -ne 0 ]]; then
   echo Questions
   echo =======================
@@ -86,15 +92,6 @@ if [[ $questions -ne 0 ]]; then
   fi
   cd -
 fi
-echo Rapports et Textes de lois
-echo ==========================
-cd batch/documents
-if [[ $questions -eq 2 ]]; then
-  bash reload_latest_ppl.sh
-fi
-bash compute_latest.sh
-cd -
-
 
 # Vérification des JSON
 
