@@ -4,6 +4,7 @@ class SolrConnector extends sfLogger
 {
   private $solr = NULL;
   private $_options = NULL;
+  private $nb_commit = 0;
 
   protected function doLog($message, $priority)
   {
@@ -27,11 +28,13 @@ class SolrConnector extends sfLogger
   }
   
 
-  public function updateFromCommands() {
+  public function updateFromCommands($output = 0) {
     $file = SolrCommands::getInstance()->getCommandContent();
     foreach(file($file) as $line) {
       if (preg_match('/(UPDATE|DELETE) : (.+)/', $line, $matches)) {
 	$obj = json_decode($matches[2]);
+	if ($output)
+		echo "ID: ".$obj->id."\n";
 	if ($matches[1] == 'UPDATE') {
 	  $this->updateLuceneRecord($obj);
 	}else{
@@ -42,11 +45,22 @@ class SolrConnector extends sfLogger
     SolrCommands::getInstance()->releaseCommandContent();
   }
 
+  public function commit() {
+	$optimize = false;
+	$wait = false;
+	$this->nb_commit++;
+	if ($this->nb_commit > 1000) {
+		$optimize = true;
+		$wait = true;
+		$this->nb_commit = 0;
+	}
+	return $this->solr->commit($optimize, $wait);
+  }
 
   public function deleteLuceneRecord($solr_id)
   {
     if($this->solr->deleteById($solr_id) ) {
-      return $this->solr->commit();
+      return $this->commit();
     }
     return false;
   }
@@ -71,12 +85,12 @@ class SolrConnector extends sfLogger
 	}
      }
      $this->solr->addDocument($document);
-     $this->solr->commit();
+     $this->commit();
   }
 
   public function deleteAll() {
     $this->solr->deleteByQuery('*:*');
-    $this->solr->commit();
+    $this->commit();
   }
 
   public function search($queryString, $params = array(), $offset = 0, $maxHits = 0) {
@@ -92,8 +106,8 @@ class SolrConnector extends sfLogger
       }else{
 	$results['response']['docs'][$i]['object'] = Doctrine::getTable($res['object_name'])->find($res['object_id']);
       }
-      if (!$results['response']['docs'][$i]['object'])
-	$unset[] = $i;
+      $results['response']['docs'][$i]['hightlighting'] = $results['response']['highlighting'][$id]['text'];
+      $unset[] = $i;
     }
     foreach ($unset as $i) {
       unset($results['response']['docs'][$i]);
