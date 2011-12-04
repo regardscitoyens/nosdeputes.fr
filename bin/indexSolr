@@ -22,7 +22,7 @@ then
 	rm $LOCK
         if [ $STATUS -ge 4 ]; then
             echo "trying to restart Tomcat"
-            sudo /etc/init.d/tomcat5.5 restart > /tmp/log-restart-tomcat 2>&1
+            sudo /etc/init.d/tomcat6 restart > /tmp/log-restart-tomcat 2>&1
             cat /tmp/log-restart-tomcat
             STATUS="0"
         fi
