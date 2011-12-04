@@ -22,7 +22,7 @@ foreach $index (@indexes) {
     chomp($index);
     eval {$aif->get($index);};
     if ($aif->status() == 404) {
-	print "ERR: bad file in index : 404 on $index\n";
+	print STDERR "ERR: bad file in index : 404 on $index\n";
 	next;
     }
     $content = $aif->content;
@@ -41,7 +41,7 @@ foreach $index (@indexes) {
  	    next if -e "html/".uri_escape($uriurl);
 	    eval {$a->get($curl);};
 	    if ($a->status() == 404) {
-		print "ERR: 404 ".$a->uri()." (from $index)\n ";
+		print STDERR "ERR: 404 ".$a->uri()." (from $index)\n ";
 		$a->back();
 		next;
 	    }
