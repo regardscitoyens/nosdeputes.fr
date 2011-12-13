@@ -18,7 +18,8 @@ echo $$ > /tmp/loadupdate.lock
 senateurs=1
 jo=1
 questions=1
-while getopts "hsjqo-:" option
+total=0
+while getopts "thsjqo-:" option
 do
   if [ $option = "-" ]; then
     case $OPTARG in
@@ -27,6 +28,7 @@ do
       nojo) option="j";;
       noquestions) option="q";;
       oldquestions) option="o";;
+      total) option="t";;
     esac
   fi  
   case $option in
@@ -42,6 +44,7 @@ do
          exit 1
        fi
        questions=2;;
+    t) total=-1;;
     h) echo "syntaxe : loadupdate [-h|--help  /  [-j|--nojo] [-q|-noquestions / -o|--oldquestions] ]"
        echo "  -h ( --help )         : affiche cette aide"
        echo "  -s ( --nosenateurs )  : pas de mise-à-jour de la liste des sénateurs et de leurs commissions"
@@ -71,10 +74,10 @@ echo =======================
 cd batch/hemicycle ; bash compute_hemicycle.sh ; cd -
 echo Commissions
 echo =======================
-cd batch/commission ; bash compute_latest.sh ; cd -
+cd batch/commission ; bash compute_latest.sh $total ; cd -
 echo Amendements et Documents
 echo =======================
-cd batch ; perl download_elements_dossiers.pl ; cd -
+cd batch ; perl download_elements_dossiers.pl $total ; cd -
 echo Parse amendements
 echo =======================
 cd batch/amendements ; bash compute_latest.sh ; cd -
