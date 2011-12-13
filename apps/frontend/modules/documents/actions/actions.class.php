@@ -46,7 +46,7 @@ class documentsActions extends sfActions
      ->andWhere('t.id <> ?', $this->doc->id)
      ->orderBy('t.numero, t.annexe')
      ->fetchArray();
-   $this->response->setTitle($this->doc->getTitre().' - NosSénateurs.fr');
+   $this->response->setTitle(preg_replace('/\&[^;]+;/', ' ', $this->doc->getTitre()).' - NosSénateurs.fr');
   }
 
   public function executeParlementaire(sfWebRequest $request) {

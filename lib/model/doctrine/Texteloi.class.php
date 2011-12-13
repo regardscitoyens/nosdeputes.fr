@@ -50,7 +50,7 @@ class Texteloi extends BaseTexteloi
   public function getSection() {
     if ($this->id_dossier_institution)
       $section = Doctrine::getTable('Section')->findOneByIdDossierInstitution($this->id_dossier_institution);
-    if (!$section) $section = Doctrine_Query::create()
+    if (!isset($section) || !$section) $section = Doctrine_Query::create()
       ->select('s.id')
       ->from('Section s, Tagging ta, Tag t')
       ->where('s.section_id = s.id')
