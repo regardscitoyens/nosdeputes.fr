@@ -15,16 +15,13 @@ class plotComponents extends sfComponents
         $this->data['mandat_clos'] = true;
       } else $date = time();
       $annee = date('Y', $date); $sem = date('W', $date);
-      $annee0 = $annee - 1;
-      $sem0 = $sem;
-      if ($sem == 53 && date('n', $date) == 1) {
-        $annee0--;
-        $sem = 0;
-      }
       $last_year = $date - 32054400;
       $date_debut = date('Y-m-d', $last_year);
       $date_fin = date('Y-m-d', $date);
+      $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year);
+      if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
+//print "$date ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
     } else {
       $query4 = Doctrine_Query::create()
         ->select('s.annee, s.numero_semaine')
@@ -44,7 +41,7 @@ class plotComponents extends sfComponents
       $sem = $date_fin['numero_semaine'];
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     }
-    $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee, $sem0);
+    $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee0, $sem0);
     $debutmandat = $this->parlementaire->debut_mandat;
     foreach (unserialize($this->parlementaire->anciens_mandats) as $ancien)
       if (preg_match('#^(\d+)/(\d+)/(\d+) / \d+/\d+/'.$annee.'#', $ancien, $match)) {
@@ -163,7 +160,7 @@ class plotComponents extends sfComponents
  }
 
  public static function getLabelsSemaines($n_weeks, $annee, $sem) {
-    if ($sem <= 1) $an = $annee - 1;
+    if ($sem <= 51) $an = $annee + 1;
     else $an = $annee;
     $hashmap = array( '3'  => "Jan ".sprintf('%02d', $an-2000), '6'  => " Fév", '10' => " Mar", '15' => "Avr",
                       '19' => " Mai", '24' => "Juin", '28' => "Juil", '33' => "Août",
