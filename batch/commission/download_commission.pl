@@ -41,6 +41,7 @@ $a = WWW::Mechanize->new(autocheck => 0);
 
 $lastyear = localtime(time);
 $lastyear =~ s/^.*\s(\d{4})$/$1/;
+$lastyear++;
 for $year (2007 .. $lastyear) {
   $session = sprintf('%02d-%02d', $year-2001, $year-2000);
   push(@url, "http://www.assemblee-nationale.fr/13/budget/plf$year/commissions_elargies/cr/");

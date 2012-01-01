@@ -5,6 +5,7 @@ use HTML::TokeParser;
 
 $lastyear = localtime(time);
 $lastyear =~ s/^.*\s(\d{4})$/$1/;
+$lastyear++;
 
 $a = WWW::Mechanize->new(autocheck => 0);
 

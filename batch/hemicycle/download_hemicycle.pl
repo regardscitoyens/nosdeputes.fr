@@ -18,7 +18,7 @@ $oldsession = ($lastyear-1)."-$lastyear";
     "http://www.assemblee-nationale.fr/13/cri/$oldsession-extra3/",
     "http://www.assemblee-nationale.fr/13/cri/$oldsession-extra2/",
     "http://www.assemblee-nationale.fr/13/cri/$oldsession-extra/",
-    "http://www.assemblee-nationale.fr/13/cri/$oldsession/",
+    "http://www.assemblee-nationale.fr/13/cri/$oldsession/"
 );
 
 $a = WWW::Mechanize->new();
