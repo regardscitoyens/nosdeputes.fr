@@ -185,7 +185,6 @@ class apiActions extends sfActions
     $res['autres_mandats'] = self::array2hash(unserialize($parl->autres_mandats), 'mandat');
     $res['profession'] = $parl->profession;
     $res['place_en_hemicycle'] = $parl->place_hemicycle;
-    $res['sexe'] = $parl->sexe;
     $res['slug'] = $parl->getSlug();
     return $res;
   }
