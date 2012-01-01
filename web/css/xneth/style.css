@@ -243,7 +243,8 @@ a:hover {
   margin-bottom: 16px;
   float: right;
   margin-right: 5px;
-  height: 400px
+  height: 400px;
+  width: 435px;
 }
 
 .box_container {
