@@ -20,9 +20,10 @@ then
 	echo "WARNING : l'indexation solr est lockée alors que son processus ne tourne plus..."
 	echo " suppression du fichier (tentative n°$STATUS)...";
 	rm $LOCK
-	if [ $STATUS -ge 4 ]; then
+	if [ $STATUS -ge 3 ]; then
 	    echo "trying to restart Tomcat"
-	    sudo /etc/init.d/tomcat5.5 restart
+	    sudo /etc/init.d/tomcat5.5 restart > /tmp/log-restart-tomcat 2>&1
+	    cat /tmp/log-restart-tomcat
 	    STATUS="0"
         fi
 	echo "$STATUS" > $STATUSFILE
