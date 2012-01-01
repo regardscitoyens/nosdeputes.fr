@@ -42,9 +42,12 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function getNomPrenom() {
+    return $this->getNomFamilleCorrect().", ".$this->getPrenom();
+  }
+
+  public function getNomFamilleCorrect() {
     $prenom = $this->getPrenom();
-    $nom = str_replace($prenom.' ', '', $this->nom);
-    return $nom.", ".$prenom;
+    return str_replace($prenom.' ', '', $this->nom);
   }
 
   public function getPrenom() {
