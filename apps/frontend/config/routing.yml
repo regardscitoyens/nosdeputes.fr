@@ -138,6 +138,15 @@ tag_result_parlementaires:
 list_parlementaires_search:
   url: /deputes/rechercher/:query
   param: {module: solr, action: redirect, object_name: Parlementaire}
+list_parlementaires_en_mandat_json:
+  url: /deputes/enmandat/json
+  param: {module: api, action: listParlementaires, format: json, current: true}
+list_parlementaires_en_mandat_xml:
+  url: /deputes/enmandat/xml
+  param: {module: api, action: listParlementaires, format: xml, current: true}
+list_parlementaires_en_mandat_csv:
+  url: /deputes/enmandat/csv
+  param: {module: api, action: listParlementaires, format: csv, current: true}
 list_parlementaires_json:
   url: /deputes/json
   param: {module: api, action: listParlementaires, format: json}

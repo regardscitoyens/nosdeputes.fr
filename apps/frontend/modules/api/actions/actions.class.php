@@ -75,92 +75,119 @@ class apiActions extends sfActions
     $this->templatize($request, $date.'_stats_deputes');
   }
 
-  protected function array2hash($array, $hashname) {
+  protected static function array2hash($array, $hashname) {
     if (!$array)
       return '';
     $hash = array();
     if (!isset($array[0])) {
-      return $array;
+      if (isset($array->fonction))
+        return array("organisme" => $array->getNom(), "fonction" => $array->fonction);
+      else return $array;
     }
-    foreach($array as $e) {
-      if ($e)
-	$hash[] = array($hashname => preg_replace('/\n/', ', ', $e));
+    foreach($array as $e) if ($e) {
+      if (isset($e->fonction))
+        $hash[] = array($hashname => array("organisme" => $e->getNom(), "fonction" => $e->fonction));
+      else $hash[] = array($hashname => preg_replace('/\n/', ', ', $e));
     }
     return $hash;
   }
 
   public function executeListParlementaires(sfWebRequest $request) 
   {
-    $deputes = Doctrine::getTable('Parlementaire')->createQuery('p')->execute();
-    $this->res = array('deputes' => array());
+    $query = Doctrine::getTable('Parlementaire')->createQuery('p');
+    if ($request->getParameter('current') == true) {
+      $query->where('fin_mandat IS NULL OR debut_mandat > fin_mandat');
+      $this->multi = array();
+      $this->multi['responsabilite'] = 1;
+      $this->multi['email'] = 1;
+      $this->multi['adresse'] = 1;
+      $this->multi['mandat'] = 1;
+    }
+    $deputes = $query->execute();
     $this->champs = array();
+    $this->res = array('deputes' => array());
     $this->breakline = 'depute';
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     foreach($deputes as $dep) {
-      $depute = array();
-      $depute['id'] = $dep->id;
-      $this->champs['id'] = 1;
-      $depute['nom'] = $dep->nom;
-      $this->champs['nom'] = 1;
-      if ($dep->fin_mandat && $dep->fin_mandat >= $dep->debut_mandat) 
-	$depute['ancien_depute'] = 1;
-      else if ($request->getParameter('format') == 'csv')
-	$depute['ancien_depute'] = 0;
-      $this->champs['ancien_depute'] = 1;
-      $depute['mandat_debut'] = $dep->debut_mandat;
-      $this->champs['mandat_debut'] = 1;
-      if ($request->getParameter('format') == 'csv' || $dep->fin_mandat)
-	$depute['mandat_fin'] = $dep->fin_mandat;
-      $this->champs['mandat_fin'] = 1;
+      if ($request->getParameter('current') == true) {
+        $depute = $this->getParlementaireArray($dep);
+        if ($request->getParameter('format') == 'csv')
+         foreach(array_keys($depute) as $key)
+          if (!isset($this->champs[$key]))
+           $this->champs[$key] = 1;
+      } else {
+        $depute = array();
+        $depute['id'] = $dep->id;
+        $depute['nom'] = $dep->nom;
+        if ($dep->fin_mandat && $dep->fin_mandat >= $dep->debut_mandat) 
+	  $depute['ancien_depute'] = 1;
+        else if ($request->getParameter('format') == 'csv')
+	  $depute['ancien_depute'] = 0;
+        $depute['mandat_debut'] = $dep->debut_mandat;
+        if ($request->getParameter('format') == 'csv' || $dep->fin_mandat)
+	  $depute['mandat_fin'] = $dep->fin_mandat;
+        $this->champs['id'] = 1;
+        $this->champs['nom'] = 1;
+        $this->champs['ancien_depute'] = 1;
+        $this->champs['mandat_debut'] = 1;
+        $this->champs['mandat_fin'] = 1;
+      }
       $depute['api_url'] = 'http://'.$_SERVER['HTTP_HOST'].url_for('api/parlementaire?format='.$request->getParameter('format').'&slug='.$dep->slug);
       $this->champs['api_url'] = 1;
       $this->res['deputes'][] = array('depute' => $depute);
     }
-    $this->templatize($request, 'nosdeputes.fr_deputes');
+    $this->templatize($request, 'nosdeputes.fr_deputes'.($request->getParameter('current') == true ? "_en_mandat" : ""));
   }
+
   public function executeParlementaire(sfWebRequest $request) 
   {
     $slug = $request->getParameter('slug');
     $this->forward404Unless($slug);
-
     $depute = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->res = array();
+    $this->res['depute'] = $this->getParlementaireArray($depute);
     $this->multi = array();
-    $this->res['depute'] = array();
-    $this->res['depute']['id'] = $depute->id * 1;
-    $this->res['depute']['nom'] = $depute->nom;
-    $this->res['depute']['nom_de_famille'] = $depute->getNomFamilleCorrect();
-    $this->res['depute']['prenom'] = $depute->getPrenom();
-    $this->res['depute']['slug'] = $depute->getSlug();
-    $this->res['depute']['num_deptmt'] = $depute->getNumDepartement();
-    $this->res['depute']['nom_circo'] = $depute->nom_circo;
-    $this->res['depute']['num_circo'] = $depute->num_circo * 1;
-    $this->res['depute']['mandat_debut'] = $depute->debut_mandat;
-    if ($depute->fin_mandat)
-      $this->res['depute']['mandat_fin'] = $depute->fin_mandat;
-    $groupe = $depute->getGroupe();
-    if (is_object($groupe))
-      $this->res['depute']['groupe'] = $groupe->__toString();
-    $this->res['depute']['groupe_sigle'] = $depute->groupe_acronyme;
-    $this->res['depute']['responsabilites'] = $this->array2hash($depute->getResponsabilites(), 'responsabilite');
-    $this->res['depute']['responsabilites_extra_parlementaires'] = $this->array2hash($depute->getExtras(), 'responsabilite');
     $this->multi['responsabilite'] = 1;
-    $this->res['depute']['site_web'] = $depute->site_web;
-    $this->res['depute']['url_an'] = $depute->url_an;
-    $this->res['depute']['emails'] = $this->array2hash(unserialize($depute->mails), 'email');
     $this->multi['email'] = 1;
-    $this->res['depute']['adresses'] = $this->array2hash(unserialize($depute->adresses), 'adresse');
     $this->multi['adresse'] = 1;
-    $this->res['depute']['autres_mandats'] = $this->array2hash(unserialize($depute->autres_mandats), 'mandat');
     $this->multi['mandat'] = 1;
-    $this->res['depute']['profession'] = $depute->profession;
-    $this->res['depute']['place_en_hemicycle'] = $depute->place_hemicycle;
-    $this->res['depute']['sexe'] = $depute->sexe;
     $this->champ = 'depute';
     $this->breakline = '';
     $date = $depute->updated_at.'';
     $date = preg_replace('/[- :]/', '', $date);
     $this->templatize($request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
+  }
+
+
+  public static function getParlementaireArray($parl) {
+    $res = array();
+    $res['id'] = $parl->id * 1;
+    $res['nom'] = $parl->nom;
+    $res['nom_de_famille'] = $parl->getNomFamilleCorrect();
+    $res['prenom'] = $parl->getPrenom();
+    $res['sexe'] = $parl->sexe;
+    $res['num_deptmt'] = $parl->getNumDepartement();
+    $res['nom_circo'] = $parl->nom_circo;
+    $res['num_circo'] = $parl->num_circo * 1;
+    $res['mandat_debut'] = $parl->debut_mandat;
+    if ($parl->fin_mandat)
+      $res['mandat_fin'] = $parl->fin_mandat;
+    $groupe = $parl->getGroupe();
+    if (is_object($groupe))
+      $res['groupe'] = self::array2hash($groupe, 'groupe_politique');
+    $res['groupe_sigle'] = $parl->groupe_acronyme;
+    $res['responsabilites'] = self::array2hash($parl->getResponsabilites(), 'responsabilite');
+    $res['responsabilites_extra_parlementaires'] = self::array2hash($parl->getExtras(), 'responsabilite');
+    $res['site_web'] = $parl->site_web;
+    $res['url_an'] = $parl->url_an;
+    $res['emails'] = self::array2hash(unserialize($parl->mails), 'email');
+    $res['adresses'] = self::array2hash(unserialize($parl->adresses), 'adresse');
+    $res['autres_mandats'] = self::array2hash(unserialize($parl->autres_mandats), 'mandat');
+    $res['profession'] = $parl->profession;
+    $res['place_en_hemicycle'] = $parl->place_hemicycle;
+    $res['sexe'] = $parl->sexe;
+    $res['slug'] = $parl->getSlug();
+    return $res;
   }
 
   private function templatize($request, $filename) {
