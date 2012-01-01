@@ -42,7 +42,7 @@
 --></script>
       </div>
       <div id="header">
-        <a href="/"><img alt="NosDeput&eacute;s.fr" src="/images/xneth/header_logo.png" /></a>
+        <a href="/"><img alt="NosDeput&eacute;s.fr" src="/images/xneth/header_indispo.png" /></a>
       </div>
         <div id="menu">
         <div class="menu_navigation">
