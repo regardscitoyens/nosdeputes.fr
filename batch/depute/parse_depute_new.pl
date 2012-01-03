@@ -21,6 +21,7 @@ $string =~ s/<div id="actualite".*<\/div>(<div id="fonctions")/\1/i;
 $string =~ s/<div id="travaux".*$//i;
 while ($string =~ s/(<li class="contact-adresse">([^<]*)?)(<\/?p>)+(.*<\/li>(<li class="contact-adresse">|<\/ul>))/\1 \4/gi) {}
 $string =~ s/(<(div|p|li|abbr|img|a|dt)[ >])/\n\1/ig;
+$string =~ s/\s*'\s*/'/g;
 
 if ($display_text) {
   print $string;
@@ -29,15 +30,21 @@ if ($display_text) {
 
 my %depute;
 
+sub clean_vars {
+  $encours = $lieu = $organisme = $fonction = "";
+}
+
 sub add_mandat {
   $start = shift; 
   $end = shift;
   $cause = shift;
-  $cause =~ s/(remplacement.*)\s*:\s*(.*)\s*$/\1(\2)/i;
-  $depute{'suppleant_de'} = $2 if ($2);
+  if ($cause =~ /(remplacement.*)\s*:\s*(.*)\s*$/i) {
+    $depute{'suppleant_de'} = $2;
+    $cause =~ s/\s*:\s*(.*)\s*$/ \(\1\)/;
+  }
   $depute{'premiers_mandats'}{"$start / $end / ".lc($cause)} = 1;
   $depute{'debut_mandat'} = max_date($start,$depute{'debut_mandat'});
-  $depute{'fin_mandat'} = max_date($end,$depute{'fin_mandat'}) if ($endi !~ /^$/);
+  $depute{'fin_mandat'} = max_date($end,$depute{'fin_mandat'}) if ($end !~ /^$/ && max_date($end,"20/06/2007") != "20/06/2007");
 }
 
 if ($file =~ /(\d+)/) {
@@ -90,6 +97,58 @@ foreach $line (split /\n/, $string) {
     add_mandat($1,"",$3);
   } elsif ($line =~ /Mandat du ([\d\/]+)( \(.*\))? au ([\d\/]+)( \((.*)\))?/i) {
     add_mandat($1,$3,$5);
+  } elsif ($line =~ /class="article-title/) {
+    clean_vars();
+    $line =~ s/\s*<[^>]+>\s*//g;
+    if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?)/i) {
+      $encours = "fonctions";
+    } elsif ($line =~ /(Organismes? extra-parlementaires?|Fonctions? dans les instances internationales ou judiciaires)/i) {
+      $encours = "extras"; 
+    } elsif ($line =~ /(Mandats? loca[lux]+ en cours|Mandats? intercommuna)/i) {
+      $encours = "autresmandats"; 
+    } elsif ($line =~ /^Anciens mandats/i && $line !~ /Assemblée nationale/i) {
+      $encours = "anciensmandats"; 
+    } elsif ($line =~ /(Groupes? d'études?|Groupes? d'amitié)/i) {
+      $encours = "groupes";
+      $type_groupe = $line;
+    }
+  } elsif ($line =~ /<div id="/i) {
+    clean_vars();
+  } elsif ($encours !~ /^$/) {
+    $line =~ s/\s*<[^>]+>\s*//g;
+    next if ($line =~ /^$/);
+    if ($encours =~ /anciensmandats/) {
+      if ($line =~ /du (\d+\/\d+\/\d+) au (\d+\/\d+\/\d+) \((.*)\)/i) {
+        $depute{$encours}{"$lieu / $organisme / $3 / $1 / $2"} = 1;
+      } elsif ($line =~ /^([^(]*) d[elau'\s]+([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)$/) {
+        $organisme = $1;
+        $lieu = $2;
+        $organisme = "Conseil de Paris" if ($lieu =~ s/ \(Département de Paris\)/ (Département)/);
+      } else {
+        $lieu = $line;
+        $organisme = "Communauté d'agglomération";
+      }
+    } elsif ($encours =~ /autresmandats/) {
+      $lieu = $4 if ($line =~ s/^(.*) d([ue](s| la)? |'|e l')([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)$/\1/);
+      $organisme = ucfirst($4) if ($line =~ s/^(.*) d((u|e la) |e l')(.*)$/\1/);
+      $fonction = $line;
+      $organisme = "Conseil municipal" if ($fonction =~ /Maire/i);
+      $lieu =~ s/, (.*)$/ (\1)/;
+      $depute{$encours}{"$lieu / $organisme / $fonction"} = 1;
+    } elsif ($encours =~ /groupes/ && $line =~ s/^\s*(.*) : - //) {
+      $fonction = $1;
+      $type = "Groupe d'amitié France-";
+      $type = "Groupe d'études " if ($type_groupe =~ /étude/i);
+      foreach $gpe (split / - /, $line) {
+        $depute{$encours}{"$type$gpe / $fonction"} = 1;
+      }
+    } else {
+      $line =~ s/ (\(ex|depuis le) .*$//;
+      $fonction = $1 if ($line =~ s/^\s*((\S+\s*){1,3}( du bureau)?) d((u|e la) |e l')(.*)$/\6/);
+      $organisme = ucfirst($line);
+      $organisme =~ s/^(Assemblée nationale)/Bureau de l'\1/i;
+      $depute{$encours}{"$organisme / $fonction"} = 1;
+    }
   }
 }
 
@@ -99,12 +158,8 @@ foreach $line (split /\n/, $string) {
 # - fix changements nom_famille
 # - multiples sites_web, facebook? tiwtter?
 # - find suppléant si existe
-#
-#CHAMPS :
-#fonctions [ "orga minuscule / fonction / ", "" ]
-#extras : 
-#autres_mandats:
-#anciens_autres_mandats:
+# - add gestion mission tempo
+# - gérer stockage anciens mandats, premiers_mandats, groupes...
 
 #On récupère le nom de famille à partir des emails
 $nomdep = $depute{'nom'};

@@ -27,9 +27,9 @@ sub max_date {
   $d2 = shift;
   return $d2 if (!$d1);
   return $d1 if (!$d2);
-  if ($d1 =~ /(\d)+\/(\d+)\/(\d+)/) {
+  if ($d1 =~ /^(\d+)\/(\d+)\/(\d+)$/) {
     $y = $3; $m = $2; $d = $1;
-    if ($d2 =~ /(\d)+\/(\d+)\/(\d+)/) {
+    if ($d2 =~ /^(\d+)\/(\d+)\/(\d+)$/) {
       return $d1 if ($3 lt $y || ($3 eq $y && $2 lt $m) || ($3 eq $y && $2 eq $m && $1 lt $d));
       return $d2;
     }
