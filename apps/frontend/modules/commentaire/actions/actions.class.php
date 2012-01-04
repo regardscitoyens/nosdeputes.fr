@@ -321,7 +321,7 @@ class commentaireActions extends sfActions
     }
     if ($request->getParameter('rss')) {
       if ($this->type == 'all') $this->titre .= ' de NosDéputés.fr';
-      $this->comments = $this->commentaires->limit(10)->execute();
+      $this->comments = $this->commentaires->limit(20)->execute();
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
     } else {
