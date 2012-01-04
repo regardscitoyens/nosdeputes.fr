@@ -107,8 +107,8 @@ class SolrConnector extends sfLogger
 	$results['response']['docs'][$i]['object'] = Doctrine::getTable($res['object_name'])->find($res['object_id']);
       }
       if (!$results['response']['docs'][$i]['object'])
--	$unset[] = $i;
-      $results['response']['docs'][$i]['hightlighting'] = $results['response']['highlighting'][$id]['text'];
+	$unset[] = $i;
+//      $results['response']['docs'][$i]['hightlighting'] = $results['response']['highlighting'][$id]['text'];
     }
     foreach ($unset as $i) {
       unset($results['response']['docs'][$i]);
