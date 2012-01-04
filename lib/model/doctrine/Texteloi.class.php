@@ -235,7 +235,8 @@ class Texteloi extends BaseTexteloi
   public function getCommission() {
     if ($this->type === "Texte de la commission") {
       $rap = Doctrine::getTable('Texteloi')->find("$this->numero");
-      return $rap->getOrganisme();
+      if ($rap) return $rap->getOrganisme();
+      return null;
     }
     return $this->getOrganisme();
   }
