@@ -162,7 +162,7 @@ class tagSeanceTask extends sfBaseTask
             continue;
           }
 	  
-          if (($sentences[$sent]*100/$tot > 0.8 || $sentences[$sent]*100/$words[$sent2word[$sent]] > 70)&& $words[$sent2word[$sent]] > 5) {
+          if (($sentences[$sent]*100/$tot > 0.8 || ($words[$sent2word[$sent]] && $sentences[$sent]*100/$words[$sent2word[$sent]] > 70))&& $words[$sent2word[$sent]] > 5) {
 	    $ok = 1;
 	    foreach($exclude_sentences as $excl_sent) {
 	      if (preg_match('/'.$excl_sent.'/i', $sent)) {
@@ -192,7 +192,7 @@ class tagSeanceTask extends sfBaseTask
 
         $i = null;
         foreach (array_keys($tags) as $tag) {
-          $tag = trim($tag);
+          $tag = trim(preg_replace('/^[dl]\'/', '', trim($tag)));
     	  if (preg_match('/'.preg_replace('/\//', '\/', $tag).'/i', $inter['intervention'])) {
             if (!$i)
               $i = Doctrine::getTable('Intervention')->find($inter['id']);
