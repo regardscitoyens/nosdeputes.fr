@@ -156,7 +156,7 @@ class myTools {
 
   public static function escape_blanks($txt) {
     $txt = preg_replace('/([«\-])\s+/', '\\1&nbsp;', $txt);
-    $txt = preg_replace('/\s+([0»:;\?!\-])/', '&nbsp;\\1', $txt);
+    $txt = preg_replace('/\s+([0»:;\?!\-%])/', '&nbsp;\\1', $txt);
     return $txt;
   }
 
