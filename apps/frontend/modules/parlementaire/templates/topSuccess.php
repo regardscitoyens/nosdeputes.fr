@@ -29,7 +29,7 @@ $class = array('parl' => 'p',
 	       'questions_ecrites' => 'qe',
 	       'questions_orales' => 'qo');
 $bulles = array("",
-               "Semaines d'activité -- Nombre de semaines où le sénateur a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle</li>",
+               "Semaines d'activité -- Nombre de semaines où le sénateur a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle",
                "Séances de Commission -- Nombre de séances de commission où le sénateur a été relevé présent",
                "Interventions en Commission -- Nombre d'interventions prononcées par le sénateur en commissions",
                "Interventions longues en Hémicycle -- Nombre d'interventions de plus de 20 mots prononcées par le sénateur en hémicycle",
@@ -87,6 +87,7 @@ $bulles = array("",
 <?php } ?>
 </table>
 </div>
+<p class="aligncenter"><small>Les chiffres en couleur indiquent que le sénateur se trouve pour le critère indiqué parmi <span style="color:green">les 100 premiers</span> ou <span style="color:red">les 100 derniers</span>.</small></p>
 </div>
 </div>
 <div class="synthese_div">
