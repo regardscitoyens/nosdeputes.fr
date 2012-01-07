@@ -19,8 +19,9 @@ class plotComponents extends sfComponents
       $date_debut = date('Y-m-d', $last_year);
       $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year);
       if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
+      if ($sem0 >= 52 && $sem <= 1) $sem0 = 0;
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
-//print "$date ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
+#print "$date ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
     } else {
       $query4 = Doctrine_Query::create()
         ->select('s.annee, s.numero_semaine')
@@ -132,7 +133,7 @@ class plotComponents extends sfComponents
  }
 
  public static function getLabelsSemaines($n_weeks, $annee, $sem) {
-    if ($sem <= 51) $an = $annee + 1;
+    if ($sem != 0 && $sem <= 51) $an = $annee + 1;
     else $an = $annee;
     $hashmap = array( '3'  => "Jan ".sprintf('%02d', $an-2000), '6'  => " Fév", '10' => " Mar", '15' => "Avr",
                       '19' => " Mai", '24' => "Juin", '28' => "Juil", '33' => "Août",
