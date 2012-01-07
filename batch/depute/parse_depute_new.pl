@@ -75,6 +75,10 @@ foreach $line (split /\n/, $string) {
     $read = "suppleant";
   } elsif ($read !~ /^$/) {
     $depute{"$read"} = $1 if ($line =~ />([^<]+)</);
+    if ($read =~ /suppleant/) {
+      $depute{"$read"} =~ s/[(,\s]+décédé.*$//i;
+      $depute{"$read"} =~ s/Mlle /Mme /;
+    }
     $read = "";
   } elsif ($line =~ /class="political-party[^>]*>([^<]+)</i) {
     $groupe = lc($1);
@@ -100,9 +104,9 @@ foreach $line (split /\n/, $string) {
   } elsif ($line =~ /class="article-title/) {
     clean_vars();
     $line =~ s/\s*<[^>]+>\s*//g;
-    if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?)/i) {
+    if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?)/) {
       $encours = "fonctions";
-    } elsif ($line =~ /(Organismes? extra-parlementaires?|Fonctions? dans les instances internationales ou judiciaires)/i) {
+    } elsif ($line =~ /(Organismes? extra-parlementaires?|Fonctions? dans les instances internationales ou judiciaires)/) {
       $encours = "extras"; 
     } elsif ($line =~ /(Mandats? loca[lux]+ en cours|Mandats? intercommuna)/i) {
       $encours = "autresmandats"; 
@@ -119,20 +123,43 @@ foreach $line (split /\n/, $string) {
     next if ($line =~ /^$/);
     if ($encours =~ /anciensmandats/) {
       if ($line =~ /du (\d+\/\d+\/\d+) au (\d+\/\d+\/\d+) \((.*)\)/i) {
-        $depute{$encours}{"$lieu / $organisme / $3 / $1 / $2"} = 1;
-      } elsif ($line =~ /^([^(]*) d[elau'\s]+([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)$/) {
+        $dates = "$1 / $2";
+        $fonction = $3;
+        $tmporga = lc($organisme);
+        $tmporga =~ s/\W/./g;
+        $fonction =~ s/\s*(d[elau'\s]+)?$tmporga\s*//i;
+        $depute{$encours}{"$lieu / $organisme / $fonction / $dates"} = 1;
+      } elsif ($line =~ /^\s*(.[^A-Z\(]+) d(e la |[ue]s? |'|e l')([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)$/) {
+#      } elsif ($line =~ /^\s*(.[^(A-ZÀÉÈÊËÎÏÔÙÛÇ]*) d([ue](s| la)? |'|e l')(\U.*)$/) {
         $organisme = $1;
-        $lieu = $2;
+        $lieu = $3;
         $organisme = "Conseil de Paris" if ($lieu =~ s/ \(Département de Paris\)/ (Département)/);
       } else {
         $lieu = $line;
-        $organisme = "Communauté d'agglomération";
+        if ($line =~ /^\s*c(ommunauté d[elau'\s]+\S+) (d[elasu'\s]+)?(\U.*)$/i) {
+          $organisme = "C$1";
+          $lieu = $3;
+        } else {
+          $organisme = "Communauté d'agglomération";
+        }
       }
     } elsif ($encours =~ /autresmandats/) {
-      $lieu = $4 if ($line =~ s/^(.*) d([ue](s| la)? |'|e l')([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)$/\1/);
-      $organisme = ucfirst($4) if ($line =~ s/^(.*) d((u|e la) |e l')(.*)$/\1/);
-      $fonction = $line;
-      $organisme = "Conseil municipal" if ($fonction =~ /Maire/i);
+      if ($line =~ /^\s*(.*) (de la )?c(ommunauté d[elau'\s]+\S+) (d[elsau'\s]+)?(\U.*)$/i) {
+        $organisme = "C$3";
+        $lieu = $5;
+        $fonction = $1;
+      } else {
+        $lieu = "";
+        if ($line =~ s/^(.*) d([ue](s| la)? |'|e l')([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)$/\1/) {
+          $lieu = $4;
+        } elsif ($line =~ s/^(.*)\(([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)\)$/\1/) {
+          $lieu = $2;
+        }
+        $line =~ s/\s+$//;
+        $organisme = ucfirst($4) if ($line =~ s/^(.*) d((u|e la) |e l')(.*)$/\1/);
+        $fonction = $line;
+        $organisme = "Conseil municipal" if ($fonction =~ /Maire/i);
+      }
       $lieu =~ s/, (.*)$/ (\1)/;
       $depute{$encours}{"$lieu / $organisme / $fonction"} = 1;
     } elsif ($encours =~ /groupes/ && $line =~ s/^\s*(.*) : - //) {
@@ -143,10 +170,15 @@ foreach $line (split /\n/, $string) {
         $depute{$encours}{"$type$gpe / $fonction"} = 1;
       }
     } else {
-      $line =~ s/ (\(ex|depuis le) .*$//;
-      $fonction = $1 if ($line =~ s/^\s*((\S+\s*){1,3}( du bureau)?) d((u|e la) |e l')(.*)$/\6/);
-      $organisme = ucfirst($line);
-      $organisme =~ s/^(Assemblée nationale)/Bureau de l'\1/i;
+      if ($line =~ /^\s*(.*) \((.*) - mission débutée.*\)/i) {
+        $organisme = "Mission temporaire pour le $2 : $1";
+        $fonction = "Chargé".($depute{'sexe'} eq "F" ? "e" : "")." de mission";
+      } else {
+        $line =~ s/ (\(ex|depuis le) .*$//;
+        $fonction = $1 if ($line =~ s/^\s*((\S+\s*){1,3}( du bureau)?) d((u|e la) |e l')(.*)$/\6/);
+        $organisme = ucfirst($line);
+        $organisme =~ s/^(Assemblée nationale)/Bureau de l'\1/i;
+      }
       $depute{$encours}{"$organisme / $fonction"} = 1;
     }
   }

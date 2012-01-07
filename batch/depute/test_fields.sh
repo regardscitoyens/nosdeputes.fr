@@ -42,7 +42,7 @@ cat test/organismes | awk -F " / " '{print $1}' | sort | uniq > test/organismes.
 cat test/organismes | awk -F " / " '{print $2}' | sort | uniq > test/fonctions.uniq
 cat test/organismes | awk -F " / " '{print $3}' | sort | uniq > test/postes.uniq
 cat test/organismes | awk -F " / " '{print $4" / "$5}' | sort | uniq > test/dates.uniq
-rm test/arrays test/organismes
+#rm test/arrays test/organismes
 
 echo "Vérifier les champs dans test :"
 ls -lrth test
