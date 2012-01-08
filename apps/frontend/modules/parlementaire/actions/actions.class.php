@@ -363,12 +363,20 @@ class parlementaireActions extends sfActions
     $parlementaires = $qp->fetchArray();
     unset($qp);
     $this->tops = array();
+    $this->gpes = array();
+    foreach(myTools::getGroupesInfosOrder() as $gpe) {
+      $this->gpes[$gpe[1]] = array();
+      $this->gpes[$gpe[1]][0] = array();
+      $this->gpes[$gpe[1]][0]['nb'] = 0;
+      $this->gpes[$gpe[1]][0]['nom'] = $gpe[0];
+      $this->gpes[$gpe[1]][0]['desc'] = $gpe[3];
+    }
     foreach($parlementaires as $p) {
       $tops = unserialize($p['top']);
       $id = $p['id'];
       $i = 0;
       $this->tops[$id][$i++] = $p;
-
+      $this->gpes[$p['groupe_acronyme']][0]['nb']++;
       foreach(array_keys($tops) as $key) {
 	$this->tops[$id][$i]['value'] = $tops[$key]['value'];
 
@@ -377,6 +385,9 @@ class parlementaireActions extends sfActions
 	  $this->tops[$id][$i]['style'] = ' style="color:green" ';
 	else if ($tops[$key]['rank'] > 348 - 101)
 	  $this->tops[$id][$i]['style'] = ' style="color:red" ';
+        if (!isset($this->gpes[$p['groupe_acronyme']][$i]))
+          $this->gpes[$p['groupe_acronyme']][$i] = 0;
+        $this->gpes[$p['groupe_acronyme']][$i] += $tops[$key]['value'];
 	$i++;
       }
     }
