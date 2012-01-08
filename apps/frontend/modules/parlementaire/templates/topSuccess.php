@@ -35,7 +35,7 @@ $bulles = array("",
                "Interventions longues en Hémicycle -- Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle",
                "interventions courtes en Hémicycle -- Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle",
                "Amendements signés -- Nombre d'amendements signés ou co-signés par le député",
-               "Amendements adoptés -- Nombre d'amendements du député qui ont été adoptés en séance",
+               "Amendements adoptés -- Nombre d'amendements signés par le député qui ont été adoptés en séance",
                "Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur",
                "Propositions écrites -- Nombre de propositions de loi ou de résolution dont le député est l'auteur",
                "Propositions signées -- Nombre de propositions de loi ou de résolution dont le député est cosignataire",
@@ -77,7 +77,7 @@ $bulles = array("",
     $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
     <td id="<?php echo $t[0]['slug']; ?>" class="jstitle phototitle c_<?php echo strtolower($t[0]['groupe_acronyme']); ?> <?php echo $class['parl']; ?>" title="<?php echo $t[0]['nom']; ?> -- Député<?php if ($t[0]['sexe'] === "F") echo 'e'; ?> <?php echo $t[0]['groupe_acronyme'].' '.preg_replace('/([^\'])$/', '\\1 ', Parlementaire::$dptmt_pref[trim($t[0]['nom_circo'])]).$t[0]['nom_circo']; ?>"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"><?php echo $t[0]['nom']; ?></a></td>
     <?php for($i = 1 ; $i < count($t) ; $i++) { ?>
-      <td title="<?php echo $t[$i]['value'].' '; if ($t[$i]['value'] < 2) echo preg_replace('/s (.*-- )?/', ' \\1', preg_replace('/s (.*-- )?/', ' \\1', $bulles[$i])); else echo $bulles[$i]; ?>" <?php echo $t[$i]['style']; ?> class="jstitle <?php echo $class[$ktop[$i]]; ?>">
+      <td title="<?php echo $t[$i]['value'].' '; if ($t[$i]['value'] < 2) echo preg_replace('/s (.*-- )/', ' \\1', preg_replace('/s (.*-- )/', ' \\1', $bulles[$i])); else echo $bulles[$i]; ?>" <?php echo $t[$i]['style']; ?> class="jstitle <?php echo $class[$ktop[$i]]; ?>">
       <?php if (preg_match('/\./', $t[$i]['value']))
         printf('%02d', $t[$i]['value']);
       else echo $t[$i]['value']; ?>
@@ -95,11 +95,11 @@ $bulles = array("",
 <table>
   <tr>
     <th class="<?php echo $class['parl']; ?>">&nbsp;</th>
-    <th title="Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>">Semaines</th>
+    <th title="Semaines d'activité -- Nombre moyen de semaines où un député de ce groupe -- a été relevé présent en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>">Semaines</th>
     <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
     <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
     <th colspan="2" class="<?php if ($sort == 6 || $sort == 7) echo 'tr_odd';?>">Amendements</th>
-    <th title="Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur" class="jstitle <?php if ($sort == 8) echo 'tr_odd';?>">Rapports</th>
+    <th title="Rapports écrits -- Nombre moyen de rapports ou avis dont le député est l'auteur" class="jstitle <?php if ($sort == 8) echo 'tr_odd';?>">Rapports</th>
     <th colspan="2" class="<?php if ($sort == 9 || $sort == 10) echo 'tr_odd';?>">Propositions</th>
     <th colspan="2" class="<?php if ($sort == 11 || $sort == 12) echo 'tr_odd';?>">Questions</th>
     <th style="width:10px;"/>
@@ -109,6 +109,7 @@ $bulles = array("",
     <?php $i = 1;
     foreach($ktop as $key) {
       if ($key === "") continue;
+      $bulles[$i] = str_replace('Nombre', 'Nombre moyen', str_replace('le député', 'un député de ce groupe', $bulles[$i]));
       echo '<th title="'.$bulles[$i].'" class="jstitle '.$class[$key].($sort == $i ? ' tr_odd' : '').'">'.$title[$key].'</th>';
       $i++;
     } ?>
@@ -121,9 +122,8 @@ $bulles = array("",
     $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
     <td id="<?php echo $gpe; ?>" class="jstitle c_<?php echo strtolower($gpe); ?> <?php echo $class['parl']; ?>" title="<?php echo $t[0]['nom']." -- ".$t[0]['desc']; ?>"><a href="<?php echo url_for('@list_parlementaires_groupe?acro='.$gpe); ?>"><?php echo $gpe." : ".$t[0]['nb']." députés"; ?></a></td>
     <?php for($i = 1 ; $i < count($t) ; $i++) {
-      $t[$i] = round($t[$i]/$t[0]['nb']);
-      if ($cpt == 1) $bulles[$i] = str_replace('Nombre', 'Nombre moyen', str_replace('le député', 'un député de ce groupe', $bulles[$i])); ?>
-      <td title="<?php echo $t[$i].' '; if ($t[$i] < 2) echo preg_replace('/s (.*-- )?/', ' \\1', preg_replace('/s (.*-- )?/', ' \\1', $bulles[$i])); else echo $bulles[$i]; ?>" class="jstitle <?php echo $class[$ktop[$i]]; ?>">
+      $t[$i] = round($t[$i]/$t[0]['nb']); ?>
+      <td title="<?php echo $t[$i].' '; if ($t[$i] < 2) echo preg_replace('/s (.*-- )/', ' \\1', preg_replace('/s (.*-- )/', ' \\1', $bulles[$i])); else echo $bulles[$i]; ?>" class="jstitle <?php echo $class[$ktop[$i]]; ?>">
       <?php if (preg_match('/\./', $t[$i]))
         printf('%02d', $t[$i]);
       else echo $t[$i]; ?>
