@@ -88,6 +88,51 @@ $bulles = array("",
 </table>
 </div>
 <p class="aligncenter"><small>Les chiffres en couleur indiquent que le député se trouve pour le critère indiqué parmi <span style="color:green">les 150 premiers</span> ou <span style="color:red">les 150 derniers</span>.</small></p>
+</div></div>
+<h2 id="groupes">Activité moyenne d'un député de chaque groupe politique :</h2>
+<div class="liste_deputes_top">
+<div class="synthese">
+<table>
+  <tr>
+    <th class="<?php echo $class['parl']; ?>">&nbsp;</th>
+    <th title="Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>">Semaines</th>
+    <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
+    <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
+    <th colspan="2" class="<?php if ($sort == 6 || $sort == 7) echo 'tr_odd';?>">Amendements</th>
+    <th title="Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur" class="jstitle <?php if ($sort == 8) echo 'tr_odd';?>">Rapports</th>
+    <th colspan="2" class="<?php if ($sort == 9 || $sort == 10) echo 'tr_odd';?>">Propositions</th>
+    <th colspan="2" class="<?php if ($sort == 11 || $sort == 12) echo 'tr_odd';?>">Questions</th>
+    <th style="width:10px;"/>
+  </tr>
+  <tr>
+    <th class="jstitle <?php echo $class['parl']; ?>">Groupe</th>
+    <?php $i = 1;
+    foreach($ktop as $key) {
+      if ($key === "") continue;
+      echo '<th title="'.$bulles[$i].'" class="jstitle '.$class[$key].($sort == $i ? ' tr_odd' : '').'">'.$title[$key].'</th>';
+      $i++;
+    } ?>
+    <th style="width:10px;"/>
+  </tr>
+</table>
+<div class="synthese_groupes">
+<table>
+  <?php $cpt = 0; foreach ($gpes as $gpe => $t) {
+    $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
+    <td id="<?php echo $gpe; ?>" class="jstitle c_<?php echo strtolower($gpe); ?> <?php echo $class['parl']; ?>" title="<?php echo $t[0]['nom']." -- ".$t[0]['desc']; ?>"><a href="<?php echo url_for('@list_parlementaires_groupe?acro='.$gpe); ?>"><?php echo $gpe." : ".$t[0]['nb']." députés"; ?></a></td>
+    <?php for($i = 1 ; $i < count($t) ; $i++) {
+      $t[$i] = round($t[$i]/$t[0]['nb']);
+      if ($cpt == 1) $bulles[$i] = str_replace('Nombre', 'Nombre moyen', str_replace('le député', 'un député de ce groupe', $bulles[$i])); ?>
+      <td title="<?php echo $t[$i].' '; if ($t[$i] < 2) echo preg_replace('/s (.*-- )?/', ' \\1', preg_replace('/s (.*-- )?/', ' \\1', $bulles[$i])); else echo $bulles[$i]; ?>" class="jstitle <?php echo $class[$ktop[$i]]; ?>">
+      <?php if (preg_match('/\./', $t[$i]))
+        printf('%02d', $t[$i]);
+      else echo $t[$i]; ?>
+      </td>
+    <?php } ?>
+  </tr>
+<?php } ?>
+</table>
+</div>
 </div>
 </div>
 <div class="synthese_div">
