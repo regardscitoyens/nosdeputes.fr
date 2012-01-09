@@ -266,7 +266,7 @@ class circonscriptionActions extends sfActions
     echo "</map>";
   }
 
-  private static function echoDeptmtsImage($w, $h) {
+  public static function echoDeptmtsImage($w, $h) {
     $dom = self::generateSvgDep($w, $h);
 
     $im = new Imagick();
@@ -326,7 +326,7 @@ class circonscriptionActions extends sfActions
   }
 
   /* $circo is a three digits string, or "full" for the full map */
-  private static function echoCircoImage($circo, $w, $h)
+  public static function echoCircoImage($circo, $w, $h)
   {
 
     /* If you want to resize a vector-graphics image (such as SVG) to a
@@ -354,21 +354,21 @@ class circonscriptionActions extends sfActions
   }
 
   public function executeGetDeptmtsimagepng(sfWebRequest $request) {
-    $w = $request->getParameter('w');
-    $h = $request->getParameter('h');
-    header("Content-type: image/png");
-    self::echoDeptmtsImage($w, $h);
-    return sfView::NONE;
+    $this->w = $request->getParameter('w');
+    $this->h = $request->getParameter('h');
+    $this->getResponse()->setHttpHeader('content-type', 'image/png');
+    $this->setLayout(false);
+    $this->getResponse()->setHttpHeader('Expires', 'Mon, 06 Jan 2042 00:00:00 GMT');
   }
 
   public function executeGetCircoimagepng(sfWebRequest $request)
   {
-    $circo = $request->getParameter('circo');
-    $w = $request->getParameter('w');
-    $h = $request->getParameter('h');
-    header("Content-type: image/png");
-    self::echoCircoImage($circo, $w, $h);
-    return sfView::NONE;
+    $this->circo = $request->getParameter('circo');
+    $this->w = $request->getParameter('w');
+    $this->h = $request->getParameter('h');
+    $this->getResponse()->setHttpHeader('content-type', 'image/png');
+    $this->setLayout(false);
+    $this->getResponse()->setHttpHeader('Expires', 'Mon, 06 Jan 2042 00:00:00 GMT');
   }
 
   public function executeList(sfWebRequest $request) 
