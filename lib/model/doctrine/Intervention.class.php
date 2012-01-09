@@ -58,13 +58,7 @@ class Intervention extends BaseIntervention
 
   public function setSeance($type, $date, $heure, $session, $commission = null) {
     $this->setType($type);
-    if ($type == 'commission') {
-      $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commission, 'parlementaire');
-      $seance = $commission->getSeanceByDateAndMomentOrCreateIt($date, $heure, $session);
-      $commission->free();
-    } else{
-      $seance = Doctrine::getTable('Seance')->findOneOrCreateIt('hemicycle', $date, $heure, $session);
-    }
+    $seance = Doctrine::getTable('Seance')->getOrCreateItFromSeanceArgs($type, $date, $heure, $session, $commission);
     $id = $this->_set('seance_id', $seance->id);
     $seance->free();
     return $id;

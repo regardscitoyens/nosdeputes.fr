@@ -4,8 +4,28 @@
  */
 class SeanceTable extends Doctrine_Table
 {
+  public function getFromSeanceArgs($type, $date, $heure, $session, $commission = null) {
+    if ($type == 'commission') {
+      $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commission, 'parlementaire');
+      return $commission->getSeanceByDateAndMoment($date, $heure, $session);
+    } 
+    return Doctrine::getTable('Seance')->findOneByTypeDateHeureSession('hemicycle', $date, $heure, $session);
+  }
+
+  public function getOrCreateItFromSeanceArgs($type, $date, $heure, $session, $commission = null) {
+    if ($type == 'commission') {
+      $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commission, 'parlementaire');
+      return $commission->getSeanceByDateAndMomentOrCreateIt($date, $heure, $session);
+    } 
+    return Doctrine::getTable('Seance')->findOneOrCreateIt('hemicycle', $date, $heure, $session);
+  }
+
+  public function findOneByTypeDateHeureSession($type, $date, $heure, $session) {
+    return $this->createQuery('s')->where('type = ?', $type)->andWhere('date = ?', $date)->andWhere('moment = ?', $heure)->fetchOne();
+  }
+
   public function findOneOrCreateIt($type, $date, $heure, $session) {
-    $s = $this->createQuery('s')->where('type = ?', $type)->andWhere('date = ?', $date)->andWhere('moment = ?', $heure)->fetchOne();
+    $s = findOneByTypeDateHeureSession($type, $date, $heure, $session);
     if (!$s) {
       if ($type != 'hemicycle')
 	return new Exception("Cannot create seance of type $type");

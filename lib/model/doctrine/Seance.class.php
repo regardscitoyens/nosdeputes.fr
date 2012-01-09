@@ -119,6 +119,20 @@ class Seance extends BaseSeance
     return $this->getOrganisme()->getNom();
   }
 
+  public function deleteInterventions() {
+    if ($this->countComments()) {
+      throw new Exception('Il existe des commentaires');
+    }
+    foreach (Doctrine::getTable('Intervention')->createQuery('i')->where('i.seance_id = ?', $this->id)->execute() as $i) {
+      $i->delete();
+    }
+  }
+
+  public function countComments() {
+    $interventions = Doctrine::getTable('Intervention')->createQuery('i')->where('i.seance_id = ?', $this->id)->select('i.id')->fetchArray();
+    return Doctrine::getTable('Commentaire')->createQuery('c')->whereIN('object_id', $interventions)->andWhere('object_type = ?', 'Intervention')->count();
+  }
+
   public function getTitre($miniature = 0, $hemicycle = 0, $ref = '') {
     $titre = '';
     if ($ref != '')

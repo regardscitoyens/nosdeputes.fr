@@ -23,6 +23,7 @@ class loadCommissionTask extends sfBaseTask
 	  if (preg_match('/^\./', $file))
 	    continue;
 	  echo "$dir$file\n";
+          $first = 1;
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
 	    if (!$json || !$json->intervention || !$json->date || !$json->commission || !$json->source) {
@@ -36,6 +37,18 @@ class loadCommissionTask extends sfBaseTask
 	      $json->commission = preg_replace('/ \S+$/', '', substr($json->commission, 0, 255));
 	    }
 
+	    if ($first) { #On teste si la séance existe déjà.
+		$first = 0;
+		$seance = Doctrine::getTable('Seance')->getFromSeanceArgs('commission', $json->date, $json->heure, $json->session, $json->commission);
+		if ($seance) {
+		  try {
+		    $seance->deleteInterventions();
+		  }catch(Exception $e) {
+		    echo "ERROR: Séance exists (".$e->getMessage().")\n";
+		    continue 2;
+		  }
+		}
+	    }
 
 	    $id = md5($json->intervention.$json->date.$json->heure.$json->commission);
 	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
@@ -52,7 +65,7 @@ class loadCommissionTask extends sfBaseTask
 	      $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);
 	    }
 	    $intervention->save();
-        $intervention->free();
+	    $intervention->free();
 	  }
 	  unlink($dir.$file);
 	}
