@@ -287,13 +287,21 @@ foreach $line (split /\n/, $string)
 	    $majIntervenant = 1;
 	    $intervenant = setIntervenant($1.$2);
 	    $found = 1;
-	}elsif ($line =~ s/^\s*\|\s*[Ll][ea] ([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
+	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
 		$f = $1;
 		$i = $2;
 		$found = $majIntervenant = 1;
                 checkout();
                 setFonction($f, $i);
 		$intervenant = setIntervenant($i);
+	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]résidente?|[rR]apporteure?)[\.: \|]*//) {
+		$tmpfonction = lc($1);
+		$tmpintervenant = $fonction2inter{$tmpfonction};
+		if ($tmpintervenant) {
+	                checkout();
+			$intervenant = $tmpintervenant;
+			$found = $majIntervenant = 1;
+		}
 	}
 	$line =~ s/^\s+//;
 	$line =~ s/[\|\/]//g;
