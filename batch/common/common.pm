@@ -37,3 +37,10 @@ sub max_date {
   return null;
 }
 
+sub trim {
+  $t = shift;
+  $t =~ s/\s+/ /g;
+  $t =~ s/^ //;
+  $t =~ s/ $//;
+  return $t;
+}

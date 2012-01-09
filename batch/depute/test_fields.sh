@@ -33,16 +33,24 @@ for field in $fields; do
 done;
 
 grep -r "^      - " out.yml/ | sed 's/^.*\(.\)\.asp:      - //' | sort | uniq > test/arrays
-grep "@" test/arrays > test/emails.uniq
-grep "http" test/arrays > test/sites.uniq
-grep "Téléphone" test/arrays > test/adresses.uniq
-grep "- [0-9]\+\/[0-9]\+\/[0-9]\+ \/ " test/arrays | sort | uniq > test/premiersmandats.uniq
-grep -v "\(Téléphone|@\|http\|\- [0-9]\+\/[0-9]\+\/[0-9]\+ \/ \)" test/arrays > test/organismes
-cat test/organismes | awk -F " / " '{print $1}' | sort | uniq > test/organismes.uniq
-cat test/organismes | awk -F " / " '{print $2}' | sort | uniq > test/fonctions.uniq
-cat test/organismes | awk -F " / " '{print $3}' | sort | uniq > test/postes.uniq
-cat test/organismes | awk -F " / " '{print $4" / "$5}' | sort | uniq > test/dates.uniq
-#rm test/arrays test/organismes
+grep "@" test/arrays > test/mails.uniq
+grep "http" test/arrays > test/sites_web.uniq
+grep "\([0-9]\{5\}\|[0-9][0-9] [0-9][0-9] [0-9][0-9]\)" test/arrays > test/adresses.uniq
+grep "^[0-9]\+\/[0-9]\+\/[0-9]\+"  test/arrays > test/premiers_mandats.uniq
+grep "^\([^0-9].*\)\? / .* / " test/arrays > test/mandats_locaux.uniq
+grep "Groupe d'" test/arrays > test/groupes.uniq
+grep -v "\(@\|http\|[0-9]\{5\}\|[0-9][0-9] [0-9][0-9] [0-9][0-9]\|^[0-9]\+\/[0-9]\+\/[0-9]\+\|^\([^0-9].*\)\? / .* / \|Groupe d'\)" test/arrays > test/allfonctions.uniq
+
+cat test/premiers_mandats.uniq | awk -F " / " '{print $3}' | sort | uniq > test/premiers_mandats_motifs.uniq
+cat test/mandats_locaux.uniq | awk -F " / " '{print $1}' | sort | uniq > test/mandats_locauxlieux.uniq
+cat test/mandats_locaux.uniq | awk -F " / " '{print $2}' | sort | uniq > test/mandats_locauxinstances.uniq
+cat test/mandats_locaux.uniq | awk -F " / " '{print $3}' | sort | uniq > test/mandats_locauxpostes.uniq
+cat test/groupes.uniq | awk -F " / " '{print $1}' | sort | uniq > test/groupes_noms.uniq
+cat test/groupes.uniq | awk -F " / " '{print $2}' | sort | uniq > test/groupes_fonctions.uniq
+cat test/allfonctions.uniq | awk -F " / " '{print $1}' | sort | uniq > test/allfonctions_organismes.uniq
+cat test/allfonctions.uniq | awk -F " / " '{print $2}' | sort | uniq > test/allfonctions_fonctions.uniq
+
+#rm test/arrays
 
 echo "Vérifier les champs dans test :"
 ls -lrth test
