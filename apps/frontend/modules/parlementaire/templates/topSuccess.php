@@ -89,7 +89,7 @@ $bulles = array("",
 </div>
 <p class="aligncenter"><small>Les chiffres en couleur indiquent que le député se trouve pour le critère indiqué parmi <span style="color:green">les 150 premiers</span> ou <span style="color:red">les 150 derniers</span>.</small></p>
 </div></div>
-<h2 id="groupes">Activité moyenne d'un député de chaque groupe politique :</h2>
+<h2 id="groupes">Activité moyenne d'un député de chaque groupe politique au cours des 12 derniers mois :</h2>
 <div class="liste_deputes_top">
 <div class="synthese">
 <table>
