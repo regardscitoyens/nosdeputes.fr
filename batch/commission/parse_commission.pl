@@ -109,14 +109,14 @@ sub checkout {
 
 sub setFonction {
     my $fonction = shift;
-    my $intervenant = shift;
+    my $intervenant = setIntervenant(shift);
     $fonction =~ s/\W+$//;
     $fonction =~ s/<[^>]+>\s*//g;
     $fonction =~ s/<[^>]*$//;
     my $kfonction = lc($fonction);
-    $kfonction =~ s/[^a-z]+/ /gi;
+    $kfonction =~ s/[^a-zéàè]+/ /gi;
     $fonction2inter{$kfonction} = $intervenant;
-#    print "$fonction ($kfonction)  => $intervenant \n";
+#    print "$fonction ($kfonction)  => $intervenant-".$inter2fonction{$intervenant}."\n";
     if (!$inter2fonction{$intervenant}) {
 	$inter2fonction{$intervenant} = $fonction;
     }
@@ -287,6 +287,13 @@ foreach $line (split /\n/, $string)
 	    $majIntervenant = 1;
 	    $intervenant = setIntervenant($1.$2);
 	    $found = 1;
+	}elsif ($line =~ s/^\s*\|\s*[Ll][ea] ([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
+		$f = $1;
+		$i = $2;
+		$found = $majIntervenant = 1;
+                checkout();
+                setFonction($f, $i);
+		$intervenant = setIntervenant($i);
 	}
 	$line =~ s/^\s+//;
 	$line =~ s/[\|\/]//g;
@@ -298,7 +305,7 @@ foreach $line (split /\n/, $string)
 	    }elsif ($line =~ s/^\s*(M[mes\.]+\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
 		checkout();
 		$intervenant = setIntervenant($1);
-	    }elsif($line =~ s/^\s*L[ea] (Présidente?) ([^\.:\|]+)//i) {
+	    }elsif($line =~ s/^\s*[Ll][ea] ([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
                 setFonction($1, $2);
                 checkout();
                 $intervenant = setIntervenant($2);
