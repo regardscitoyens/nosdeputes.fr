@@ -298,6 +298,10 @@ foreach $line (split /\n/, $string)
 	    }elsif ($line =~ s/^\s*(M[mes\.]+\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
 		checkout();
 		$intervenant = setIntervenant($1);
+	    }elsif($line =~ s/^\s*L[ea] (Présidente?) ([^\.:\|]+)//i) {
+                setFonction($1, $2);
+                checkout();
+                $intervenant = setIntervenant($2);
 	    }
 	}
 	$intervention .= "<p>$line</p>";
