@@ -168,6 +168,7 @@ class apiActions extends sfActions
     $res['nom_de_famille'] = $parl->nom_de_famille;
     $res['prenom'] = $parl->getPrenom();
     $res['sexe'] = $parl->sexe;
+    $res['date_naissance'] = $parl->date_naissance;
     $res['nom_circo'] = $parl->nom_circo;
     $res['num_deptmt'] = $parl->getNumDepartement();
     $res['mandat_debut'] = $parl->debut_mandat;

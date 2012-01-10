@@ -16,6 +16,7 @@ Personnalite:
     sexe: 
       type: enum
       values: ['H', 'F']
+    date_naissance: date
   inheritance:
     extends: ObjectCommentable
     type: concrete
@@ -27,6 +28,7 @@ Parlementaire:
       extra_weight: 3
       description: [villes]
       moretags: [profession]
+      date: debut_mandat
   columns:
     nom_circo: string(255)
     num_circo: integer
