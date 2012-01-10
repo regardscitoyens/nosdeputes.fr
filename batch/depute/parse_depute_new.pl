@@ -29,6 +29,7 @@ if ($display_text) {
 }
 
 my %depute;
+my %groupes;
 
 sub clean_vars {
   $encours = $lieu = $organisme = $fonction = "";
@@ -91,11 +92,12 @@ foreach $line (split /\n/, $string) {
   } elsif ($line =~ /class="political-party[^>]*>([^<]+)</i) {
     $groupe = lc($1);
     if ($groupe =~ s/^(apparentée?|présidente?)( du groupe)? //) {
-      $depute{'groupe'} = $groupe." / ".$1;
+      $gpe = $groupe." / ".$1;
     } else {
-      $depute{'groupe'} = $groupe." / membre";
+      $gpe = $groupe." / membre";
     }
-    $depute{'groupe'} .= "e" if ($depute{'sexe'} eq "F" && $depute{'groupe'} =~ /(président|apparenté)$/);
+    $gpe .= "e" if ($depute{'sexe'} eq "F" && $gpe =~ /(président|apparenté)$/);
+    $depute{'groupe'}{$gpe} = 1;
   } elsif ($line =~ /img [^>]*class="deputy-profile-picture[^>]* src="([^"]+)"/i) {
     $depute{'photo'} = "http://www.assemblee-nationale.fr$1";
   } elsif ($line =~ /mailto:([^'"]+)['"]/i) {
@@ -176,13 +178,21 @@ foreach $line (split /\n/, $string) {
       $fonction = $1;
       $type = "Groupe d'amitié France-";
       $type = "Groupe d'études " if ($type_groupe =~ /étude/i);
+      $type = "Groupe d'études France-" if ($type_groupe =~ /international/i);
       foreach $gpe (split / - /, $line) {
-        $depute{$encours}{$type.trim($gpe)." / ".lc(trim($fonction))} = 1;
+        $gpe =~ s/\(République du\)/(République démocratique du)/i;
+        if (!$groupes{$gpe}) {
+          $groupes{$gpe} = 1;
+          $depute{$encours}{$type.trim($gpe)." / ".lc(trim($fonction))} = 1;
+        }
       }
     } else {
       next if ($line =~ /Rapporteure? spécial/i);
       if ($line =~ /^\s*(.*) \((.*) - mission débutée.*\)/i) {
-        $organisme = "Mission temporaire pour le $2 : $1";
+        $organisme = $1;
+        $minist = $2;
+        $minist =~ s/m(inistère d[^,]*),.*$/M\1/i;
+        $organisme = "Mission temporaire pour le $minist : $organisme";
         $fonction = "chargé".($depute{'sexe'} eq "F" ? "e" : "")." de mission";
       } else {
         next if ($line =~ /^Membre$/);
@@ -199,7 +209,7 @@ foreach $line (split /\n/, $string) {
         $fonction = lc($1) if ($line =~ s/^\s*((\S+\s*){1,3}(du [bB]ureau)?) d((u|e la) |e l')(.*)$/\6/);
         $organisme = ucfirst($line);
         $organisme =~ s/^(Assemblée nationale)/Bureau de l'\1/i;
-        $organisme =~ s/(\s*"\s*|\(\s*|\s*\))//g;
+        $organisme =~ s/("|\(\s*|\s*\))//g;
       }
       $depute{$encours}{trim($organisme)." / ".trim($fonction)} = 1;
     }
