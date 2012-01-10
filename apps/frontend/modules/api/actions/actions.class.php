@@ -145,6 +145,7 @@ class apiActions extends sfActions
     $slug = $request->getParameter('slug');
     $this->forward404Unless($slug);
     $depute = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    $this->forward404Unless($depute);
     $this->res = array();
     $this->res['depute'] = $this->getParlementaireArray($depute);
     $this->multi = array();
@@ -163,6 +164,8 @@ class apiActions extends sfActions
 
   public static function getParlementaireArray($parl) {
     $res = array();
+    if (!$parl)
+	throw new Exception("pas de parlementaire");
     $res['id'] = $parl->id * 1;
     $res['nom'] = $parl->nom;
     $res['nom_de_famille'] = $parl->getNomFamilleCorrect();
