@@ -580,9 +580,9 @@ class Parlementaire extends BaseParlementaire
       "saint-barthélemy" => "977",
       "saint-martin" => "978",
       "wallis-et-futuna" => "986",
-      "polynésie française" => "987",
+      "polynésie-française" => "987",
       "nouvelle-calédonie" => "988",
-      "français établis hors de france" => "99");
+      "français-établis-hors-de-france" => "99");
 
   public static function getNumeroDepartement($nom) {
     $nom = strtolower($nom);
