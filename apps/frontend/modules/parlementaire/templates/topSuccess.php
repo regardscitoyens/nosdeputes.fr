@@ -1,4 +1,6 @@
-<h1>Synthèse générale de l'activité parlementaire<br/><small>(sur les 12 derniers mois)</small></h1>
+<?php foreach ($tops as $t) if (!isset($date)) $date = $t[0]['updated_at']; ?>
+<h1>Synthèse générale de l'activité parlementaire<br/><small>sur les 12 derniers mois</small></h1>
+<h2 class="aligncenter"><small>(dernière <a href="<?php echo url_for('@faq'); ?>#post_2">mise-à-jour</a> le <?php echo preg_replace('/20(\d+)-(\d+)-(\d+) (\d+):(\d+):\d+/', '$3/$2/$1 à $4H$5', $date); ?>)</h1>
 <h2>Activité de tous les députés ayant au moins 10 mois de mandat :</h2>
 <?php 
 $sf_response->setTitle('Synthèse générale des députés');
