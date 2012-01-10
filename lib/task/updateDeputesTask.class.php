@@ -50,22 +50,32 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->nom_de_famille = $json->nom_de_famille;
 	      $parl->sexe = $json->sexe;
 	    }
+            if ($json->date_naissance)
+              $parl->date_naissance = $json->date_naissance;
+            if ($json->lieu_naissance)
+              $parl->lieu_naissance = $json->lieu_naissance;
 	    if ($json->circonscription)
 	      $parl->circonscription = $json->circonscription;
 	    if (count($json->adresses))
 	      $parl->adresses = $json->adresses;
+            if (count($json->premiers_mandats))
+              $parl->anciens_mandats = $json->premiers_mandats;
 	    if (count($json->autresmandats))
 	      $parl->autres_mandats = $json->autresmandats;
+            if (count($json->anciensmandats))
+              $parl->anciens_autres_mandats = $json->anciensmandats;
 	    if ($json->groupe)
 	      $parl->groupe = $this->splitArrayJson($json->groupe);
+            if (count($json->fonctions))
+              $parl->fonctions = $this->splitArrayJson($json->fonctions);
 	    if (count($json->extras))
 	      $parl->extras = $this->splitArrayJson($json->extras);
-	    if (count($json->fonctions))
-	      $parl->fonctions = $this->splitArrayJson($json->fonctions);
+	    if (count($json->groupes))
+	      $parl->groupes = $this->splitArrayJson($json->groupes);
 	    $parl->debut_mandat = $json->debut_mandat;
 	    $parl->fin_mandat = $json->fin_mandat;
 	    if ($json->id_an)
-	      $parl->id_an = $json->id_an;
+	      $parl->id_an = $json->id_institution;
 	    if (count($json->mails))
 		$parl->mails = $json->mails;
 	    if ($json->photo)
@@ -74,12 +84,21 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->place_hemicycle = $json->place_hemicycle;
 	    if ($json->profession)
 	      $parl->profession = $json->profession;
-	    if ($json->site_web)
-	      $parl->site_web = $json->site_web;
+	    if (count($json->sites_web))
+	      $parl->sites_web = $json->sites_web;
 	    if ($json->url_an)
-	      $parl->url_an = $json->url_an;
+	      $parl->url_an = $json->url_institution;
+            if ($json->suppleant_de)
+              $parl->setSuppleantDe($json->suppleant_de);
 	    $parl->villes = $villes->{$parl->getNumDepartement()}->{$parl->num_circo};
 	    $parl->save();
+            if ($json->suppleant) {
+              $suppl = Doctrine::getTable('Parlementaire')->findOneByNom(preg_replace('/^\s*M[.mle]* /', '', $json->suppleant));
+              if ($suppl) {
+                $suppl->setSuppleantDe($parl->nom);
+                $suppl->save();
+              }              
+            }
 	  }
 	}
       }

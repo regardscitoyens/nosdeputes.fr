@@ -118,6 +118,9 @@ class Parlementaire extends BaseParlementaire
   public function setGroupe($array) {
     return $this->setPOrganisme('groupe', $array);
   }
+  public function setGroupes($array) {
+    return $this->setPOrganisme('groupes', $array);
+  }
 
   public function setPOrganisme($type, $array) {
     if (!$array)
@@ -182,8 +185,21 @@ class Parlementaire extends BaseParlementaire
   public function setAutresMandats($array) {
     $this->_set('autres_mandats', serialize($array));
   }
+  public function setAnciensMandats($array) {
+    $this->_set('anciens_mandats', serialize($array));
+  }
+  public function setAnciensAutresMandats($array) {
+    $this->_set('anciens_autres_mandats', serialize($array));
+  }
+  public function setSuppleantDe($nom) {
+    if ($p = doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom))
+      $this->_set('SuppleantDe', $p);
+  }
   public function setMails($array) {
     $this->_set('mails', serialize($array));
+  }
+  public function setSitesWeb($array) {
+    $this->_set('sites_web', serialize($array));
   }
   public function setAdresses($array) {
     $this->_set('adresses', serialize($array));
@@ -201,6 +217,14 @@ class Parlementaire extends BaseParlementaire
     foreach($this->getParlementaireOrganismes() as $po) {
       if ($po->type == 'extra') 
 	array_push($res, $po);
+    }
+    return $res;
+  }
+  public function getGroupes() {
+    $res = array();
+    foreach($this->getParlementaireOrganismes() as $po) {
+      if ($po->type == 'groupes')
+        array_push($res, $po);
     }
     return $res;
   }

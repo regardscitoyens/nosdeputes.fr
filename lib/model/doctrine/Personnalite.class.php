@@ -19,4 +19,11 @@ class Personnalite extends BasePersonnalite
   public function getPhoto() {
     return null;
   }
+
+  public function setDateNaissance($str) {
+    if (preg_match('/(\d{2})\/(\d{2})\/(\d{4})/', $str, $m)) {
+      $this->_set('date_naissance', $m[3].'-'.$m[2].'-'.$m[1]);
+    }
+  }
+
 }

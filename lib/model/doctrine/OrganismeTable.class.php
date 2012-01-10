@@ -22,9 +22,10 @@ class OrganismeTable extends Doctrine_Table
     if ($type == 'parlementaire')
     $org = $this->createQuery('o')
       ->where('o.nom LIKE ?', $nom.'%')
+      ->andWhere('o.type = ?', $type)
       ->orderBy('LENGTH(o.nom) DESC')
       ->fetchOne();
-    if ($type != 'parlementaire' || strlen($org->nom) < 50)
+    if ($type != 'parlementaire' || !$org || strlen($org->nom) < 50)
       $org = $this->findOneByNom($nom);
 
     if ($org) {
@@ -36,7 +37,6 @@ class OrganismeTable extends Doctrine_Table
       return $org;
     }
    // echo "- $nom (pas trouve)\n";
-    
 
     $orgs = Doctrine::getTable('Organisme')->createQuery('o')->where('type = ?', $type)->execute();
     foreach($orgs as $o) {
@@ -66,7 +66,7 @@ class OrganismeTable extends Doctrine_Table
   private static function cleanNom($nom) {
     $nom = strtolower($nom);
     $nom = preg_replace('/(&#8217;|\')/', '’', $nom);
-    $nom = preg_replace('/\W+$/', '', $nom);
+    $nom = preg_replace('/[^a-zàâéèêëîïôùûü]+$/', '', $nom);
     $nom = preg_replace('/\([^\)]*\)/', '', $nom);
     $nom = preg_replace('/\([^\)]*$/', '', $nom);
     $nom = preg_replace('/^[^\)]*\)/', '', $nom);

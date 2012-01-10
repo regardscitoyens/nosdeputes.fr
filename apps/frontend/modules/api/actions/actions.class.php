@@ -102,6 +102,7 @@ class apiActions extends sfActions
       $this->multi['email'] = 1;
       $this->multi['adresse'] = 1;
       $this->multi['mandat'] = 1;
+      $this->multi['site'] = 1;
     }
     $deputes = $query->execute();
     $this->champs = array();
@@ -151,6 +152,7 @@ class apiActions extends sfActions
     $this->multi['email'] = 1;
     $this->multi['adresse'] = 1;
     $this->multi['mandat'] = 1;
+    $this->multi['site'] = 1;
     $this->champ = 'depute';
     $this->breakline = '';
     $date = $depute->updated_at.'';
@@ -166,6 +168,8 @@ class apiActions extends sfActions
     $res['nom_de_famille'] = $parl->getNomFamilleCorrect();
     $res['prenom'] = $parl->getPrenom();
     $res['sexe'] = $parl->sexe;
+    $res['date_naissance'] = $parl->date_naissance;
+    $res['lieu_naissance'] = $parl->lieu_naissance;
     $res['num_deptmt'] = $parl->getNumDepartement();
     $res['nom_circo'] = $parl->nom_circo;
     $res['num_circo'] = $parl->num_circo * 1;
@@ -178,11 +182,14 @@ class apiActions extends sfActions
     $res['groupe_sigle'] = $parl->groupe_acronyme;
     $res['responsabilites'] = self::array2hash($parl->getResponsabilites(), 'responsabilite');
     $res['responsabilites_extra_parlementaires'] = self::array2hash($parl->getExtras(), 'responsabilite');
-    $res['site_web'] = $parl->site_web;
+    $res['groupes_parlementaires'] = self::array2hash($parl->getGroupes(), 'responsabilite');
+    $res['sites_web'] = self::array2hash(unserialize($parl->sites_web), 'site');
     $res['url_an'] = $parl->url_an;
     $res['emails'] = self::array2hash(unserialize($parl->mails), 'email');
     $res['adresses'] = self::array2hash(unserialize($parl->adresses), 'adresse');
+    $res['anciens_mandats'] = self::array2hash(unserialize($parl->anciens_mandats), 'mandat');
     $res['autres_mandats'] = self::array2hash(unserialize($parl->autres_mandats), 'mandat');
+    $res['anciens_autres_mandats'] = self::array2hash(unserialize($parl->anciens_autres_mandats), 'mandat');
     $res['profession'] = $parl->profession;
     $res['place_en_hemicycle'] = $parl->place_hemicycle;
     $res['slug'] = $parl->getSlug();
