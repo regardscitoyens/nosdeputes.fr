@@ -44,7 +44,7 @@ class loadCommissionTask extends sfBaseTask
 		  try {
 		    $seance->deleteInterventions();
 		  }catch(Exception $e) {
-		    echo "ERROR: Séance exists (".$e->getMessage().")\n";
+		    echo "ERROR: Impossible de supprimer la séance ".$seance->id." (".$e->getMessage().")\n";
 		    continue 2;
 		  }
 		}

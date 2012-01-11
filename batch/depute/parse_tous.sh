@@ -17,5 +17,5 @@ do
 	    echo $ID;
     fi
 #    perl parse_depute.pl html/$ID.asp > out/$ID.xml
-    perl parse_depute.new html/$ID.asp > out/$ID.xml
+    perl parse_depute_new.pl html/$ID.asp > out/$ID.xml
 done

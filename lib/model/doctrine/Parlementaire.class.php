@@ -108,6 +108,8 @@ class Parlementaire extends BaseParlementaire
     if (!$str) {
       $this->_set('fin_mandat', NULL);
     }
+    if ($this->fin_mandat < $this->debut_mandat)
+      $this->_set('fin_mandat', NULL);
   }
   public function setFonctions($array) {
     return $this->setPOrganisme('parlementaire', $array);

@@ -130,7 +130,12 @@ class Seance extends BaseSeance
 
   public function countComments() {
     $interventions = Doctrine::getTable('Intervention')->createQuery('i')->where('i.seance_id = ?', $this->id)->select('i.id')->fetchArray();
-    return Doctrine::getTable('Commentaire')->createQuery('c')->whereIN('object_id', $interventions)->andWhere('object_type = ?', 'Intervention')->count();
+    if (!count($interventions)) {
+	echo("WARNING: Pas d'intervention dans cette séance\n");
+	return 0;
+    }
+    $q = Doctrine::getTable('Commentaire')->createQuery('c')->whereIn('c.object_id', $interventions)->andWhere('c.object_type = ?', 'Intervention');
+    return $q->count();
   }
 
   public function getTitre($miniature = 0, $hemicycle = 0, $ref = '') {

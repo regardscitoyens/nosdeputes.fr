@@ -86,6 +86,8 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->profession = $json->profession;
 	    if (count($json->sites_web))
 	      $parl->sites_web = $json->sites_web;
+            else if ($parl->sites_web && !preg_match('/^a:/', $parl->sites_web))
+              $parl->sites_web = array($parl->sites_web);
 	    if ($json->url_an)
 	      $parl->url_an = $json->url_institution;
             if ($json->suppleant_de)
