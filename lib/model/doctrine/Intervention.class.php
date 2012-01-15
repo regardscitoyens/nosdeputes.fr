@@ -104,7 +104,7 @@ class Intervention extends BaseIntervention
 	$personne = Doctrine::getTable('Parlementaire')->similarTo($nom);
       }
       if ($personne) {
-        self::$personnalites[$nom.preg_replace('/[,\s]*d([eé]|'.$acc.')put([eé]|'.$acc.')e?[,\s]*/i', '', $fonction)] = array('parlementaire' => $personne);
+        self::$personnalites[$nom.preg_replace('/d([eé]|'.$acc.')put([eé]|'.$acc.')e?[^,]*, ?/i', '', $fonction)] = array('parlementaire' => $personne);
 	self::$personnalites[$nom.$fonction] = array('parlementaire' => $personne);
 	return $this->setParlementaire($personne);
       }
@@ -116,7 +116,7 @@ class Intervention extends BaseIntervention
       $personne->save();
     }
     if ($personne) {
-      self::$personnalites[$nom.preg_replace('/[,\s]*d([eé]|'.$acc.')put([eé]|'.$acc.')e?[,\s]*/i', '', $fonction)] = array('personnalite' => $personne);
+      self::$personnalites[$nom.preg_replace('/d([eé]|'.$acc.')put([eé]|'.$acc.')e?[^,]*, ?/i', '', $fonction)] = array('personnalite' => $personne);
       self::$personnalites[$nom.$fonction] = array('personnalite' => $personne);
       return $this->setPersonnalite($personne);
     }
