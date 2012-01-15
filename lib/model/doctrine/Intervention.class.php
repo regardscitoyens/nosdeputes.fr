@@ -85,6 +85,7 @@ class Intervention extends BaseIntervention
   {
     $nom = html_entity_decode($nom, ENT_COMPAT, 'UTF-8');
     $fonction = html_entity_decode($fonction, ENT_COMPAT, 'UTF-8');
+    $acc = html_entity_decode("&eacute;", ENT_COMPAT, 'UTF-8');
     $this->setFonction($fonction);
     if (is_array(self::$personnalites)) {
       if (isset(self::$personnalites[$nom.$fonction])) {
@@ -97,12 +98,13 @@ class Intervention extends BaseIntervention
     }else{
       self::$personnalites = array();
     }
-    if (!preg_match('/ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux/i', $fonction)) { 
+    if (!preg_match('/d([eé]|'.$acc.')put([eé]|'.$acc.')|ministre|secr([eé]|'.$acc.')taire [^t]+tat|commissaire|garde des sceaux/i', $fonction)) { 
       $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
-      if (!$personne && ($this->type != "commission" || $fonction == null || preg_match('/(sénateur|sénatrice|rapporteur|présidente?$|présidente? de la commission)/i', $fonction))) {
+      if (!$personne && ($this->type != "commission" || $fonction == null || preg_match('/(s([eé]|'.$acc.')nateur|s([eé]|'.$acc.')natrice|rapporteur|pr([eé]|'.$acc.')sidente?$|pr([eé]|'.$acc.')sidente? de la commission)/i', $fonction))) {
 	$personne = Doctrine::getTable('Parlementaire')->similarTo($nom);
       }
       if ($personne) {
+        self::$personnalites[$nom.preg_replace('/[,\s]*d([eé]|'.$acc.')put([eé]|'.$acc.')e?[,\s]*/i', '', $fonction)] = array('parlementaire' => $personne);
 	self::$personnalites[$nom.$fonction] = array('parlementaire' => $personne);
 	return $this->setParlementaire($personne);
       }
@@ -114,6 +116,7 @@ class Intervention extends BaseIntervention
       $personne->save();
     }
     if ($personne) {
+      self::$personnalites[$nom.preg_replace('/[,\s]*d([eé]|'.$acc.')put([eé]|'.$acc.')e?[,\s]*/i', '', $fonction)] = array('personnalite' => $personne);
       self::$personnalites[$nom.$fonction] = array('personnalite' => $personne);
       return $this->setPersonnalite($personne);
     }
