@@ -37,7 +37,7 @@ class ParlementaireTable extends PersonnaliteTable
       $revert_nom = $match[3]." ".$match[1].$match[2];
       $memeNom = $this->findByNom($revert_nom);
     }
-    if (count($memeNom) == 0) $senateur = $this->similarTo(preg_replace('/^\s*(de |du |la )+\s*/i', '', $nom), $sexe);
+    if (count($memeNom) == 0) $senateur = $this->similarToCheckPrenom(preg_replace('/^\s*(de |du |la )+\s*/i', '', $nom), $sexe);
     elseif (count($memeNom) == 1) $senateur = $memeNom[0];
     else {
       $memeSexe = array();

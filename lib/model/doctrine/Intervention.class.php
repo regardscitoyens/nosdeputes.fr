@@ -101,7 +101,7 @@ class Intervention extends BaseIntervention
     if (!preg_match('/d([eé]|'.$acc.')put([eé]|'.$acc.')|ministre|secr([eé]|'.$acc.')taire [^t]+tat|commissaire|garde des sceaux/i', $fonction)) { 
       $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
       if (!$personne && ($this->type != "commission" || $fonction == null || preg_match('/(s([eé]|'.$acc.')nateur|s([eé]|'.$acc.')natrice|rapporteur|pr([eé]|'.$acc.')sidente?$|pr([eé]|'.$acc.')sidente? de la commission)/i', $fonction))) {
-	$personne = Doctrine::getTable('Parlementaire')->similarTo($nom);
+	$personne = Doctrine::getTable('Parlementaire')->similarToCheckPrenom($nom);
       }
       if ($personne) {
         self::$personnalites[$nom.preg_replace('/d([eé]|'.$acc.')put([eé]|'.$acc.')e?[^,]*, ?/i', '', $fonction)] = array('parlementaire' => $personne);
