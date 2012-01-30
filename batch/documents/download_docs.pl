@@ -40,7 +40,7 @@ foreach $baseurl (@urls) {
     next if $url =~ /(dossiers|i0562.asp)/i;
     next if $url =~ /\.pdf$/i;
     next if !($url =~ /nale\.fr\/13\//);
-    next if $url =~ /app\.readspeaker\.com/i;
+    next if $url =~ /app\.(eu\.)?readspeaker\.com/i;
     $ct++;
     $file = $url;
     $file =~ s/\//_/gi;
