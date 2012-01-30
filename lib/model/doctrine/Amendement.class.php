@@ -51,7 +51,7 @@ class Amendement extends BaseAmendement {
         if ($debug) print "WARN: Skip auteur ".$depute." for ".$this->source."\n";
         continue;
       }
-      if (preg_match('/(gouvernement|président|rapporteur|commission|délégation|questeur|apparentés|rattachés|collègues)/i', $depute)) {
+      if (preg_match('/(membres|gouvernement|président|rapporteur|commission|délégation|questeur|apparentés|rattachés|collègues)/i', $depute)) {
         if ($debug) print "WARN: Skip auteur ".$depute." for ".$this->source."\n";
         continue;
       } elseif (preg_match('/^\s*(M[Mmles]*)[\.\s]+(\w.*)\s*$/', $depute, $match)) {
