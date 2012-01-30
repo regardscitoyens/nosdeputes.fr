@@ -131,7 +131,8 @@ class Seance extends BaseSeance
   public function countComments() {
     $interventions = Doctrine::getTable('Intervention')->createQuery('i')->where('i.seance_id = ?', $this->id)->select('i.id')->fetchArray();
     if (!count($interventions)) {
-	echo("WARNING: Pas d'intervention dans cette séance\n");
+	if ($this->type != "commission")
+          echo("WARNING: Pas d'intervention dans cette séance\n");
 	return 0;
     }
     $q = Doctrine::getTable('Commentaire')->createQuery('c')->whereIn('c.object_id', $interventions)->andWhere('c.object_type = ?', 'Intervention');
