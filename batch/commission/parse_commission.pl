@@ -90,6 +90,7 @@ if ($string =~ /réunion.*commission.*commence[^\.]+à ([^\.]+)( |&nbsp;)heures?
 #exit;
 $cpt = 0;
 sub checkout {
+    $commission =~ s/"//g;
     $cpt+=10;
     $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
     if ($intervenant) {
@@ -214,6 +215,7 @@ $string =~ s/<\/?ul>//gi;
 
 foreach $line (split /\n/, $string)
 {
+#print "TEST: ".$line."\n";
     if ($line =~ /<h[1-9]+/i || $line =~ /"presidence"/) {
       if ($line =~ /pr..?sidence de (M[^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
         $prez = $1;
@@ -236,7 +238,7 @@ foreach $line (split /\n/, $string)
     if ($line =~ /\<[a]/i) {
 	if ($line =~ /<a name=["']([^"']+)["']/) {
 	    $source = $url."#$1";
-	}elsif($line =~ /class="menu"/ && $line =~ /<a[^>]+>([^<]+)</) {
+	}elsif($line =~ /class="menu"/ && $line =~ /<a[^>]+>([^<]+)<?/) {
 	    $test = $1;
 	    if (!$commission && $test =~ /Commission|mission/) {
 		$test =~ s/\s*Les comptes rendus de la //;

@@ -48,6 +48,7 @@ sub checkout {
 	print STDERR "$source: Pas de présent trouvé\n";
 	return ;
     }
+    $commission =~ s/"//g;
     foreach $depute (@presents) {
 	$depute =~ s/[\/<\|]//g;
 	$depute =~ s/^\s*M[me\.]+\s+//;
@@ -85,7 +86,7 @@ foreach $line (split /\n/, $string)
     if ($line =~ /\<[a]/i) {
 	if ($line =~ /<a name=["']([^"']+)["']/) {
 	    $source = $url."#$1";
-	}elsif($line =~/class="menu"/ && $line =~ /<a[^>]+>([^<]+)</) {
+	}elsif($line =~/class="menu"/ && $line =~ /<a[^>]+>([^<]+)<?/) {
 	    $test = $1;
 	    if (!$commission && $test =~ /Commission|mission/) {
 		$test =~ s/ Les comptes rendus de la //;

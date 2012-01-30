@@ -47,6 +47,10 @@ for $year (2007 .. $lastyear) {
   push(@url, "http://www.assemblee-nationale.fr/13/budget/plf$year/commissions_elargies/cr/");
   push(@url, "http://www.assemblee-nationale.fr/13/cr-mec/$session/index.asp");
 }
+push(@url, "http://www.assemblee-nationale.fr/13/cr-micompetitivite/10-11/index.asp");
+push(@url, "http://www.assemblee-nationale.fr/13/cr-micompetitivite/11-12/index.asp");
+push(@url, "http://www.assemblee-nationale.fr/13/cr-mitoxicomanie/10-11/index.asp");
+push(@url, "http://www.assemblee-nationale.fr/13/cr-cegrippea/09-10/");
 
 $a = WWW::Mechanize->new();
 
