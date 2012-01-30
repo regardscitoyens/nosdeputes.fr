@@ -13,7 +13,7 @@ $source =~ s/_/\//g;
 if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   $amdmt{'legislature'} = $1;
   if ($2-$3 == 0) {
-    $amdmt{'loi'} = $3+0
+    $amdmt{'loi'} = $3+0;
   }
   $num = $5+0;
   $lettre = $4;
@@ -22,17 +22,28 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   } else {
     $amdmt{'numero'} = (10000*$lettre+$num);
   }
+} elsif ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d+)\./i) {
+  $amdmt{'legislature'} = $1;
+  $amdmt{'loi'} = $2+0;
+  $num = $3+0;
+  $amdmt{'numero'} = $num;
 }
 
 open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
-#utf8::decode($string);
+utf8::decode($string) if ($string =~ /charset=UTF-?8/i);
 $string =~ s/(\<p class="presente".*)\s*\<br[\/]?\>\s*[\n]?\s*(.*)/\1, \2/g;
 $string =~ s/\<br\>.*\n//g;
 $string =~ s/&#8217;/'/g;
 $string =~ s/&#339;/oe/g;
 $string =~ s/&#8211;/-/g;
+$string =~ s/&Eacute;/É/g;
+$string =~ s/&eacute;/é/g;
+$string =~ s/&Egrave;/È/g;
+$string =~ s/&egrave;/è/g;
+$string =~ s/&Agrave;/À/g;
+$string =~ s/&agrave;/à/g;
 $string =~ s/\\//g;
 close FILE;
 
@@ -62,7 +73,7 @@ sub numero {
      	}
      } else {
 	$line =~ /(\d+)/;
-     #  $amdmt{'numero'} = $1;
+    #   $amdmt{'numero'} = $1;
 	$amdmt{'rectif'} = 0;
      }
 }
@@ -156,8 +167,10 @@ sub identiques {
 $string =~ s/\r//g;
 $string =~ s/&nbsp;/ /g;
 $string =~ s/\|(\W+)\|/$1/g;
+$string =~ s/([^>]\s*)\n/\1/g;
 foreach $line (split /\n/, $string)
 {
+#print "TEST: $presente / $texte / $line\n";
     if ($line =~ /meta.*content=/) {
 	if ($line =~ /name="DATE_BADAGE"/i) { 
 	    $line =~ s/^.*content="//i; 
@@ -173,7 +186,7 @@ foreach $line (split /\n/, $string)
 	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
 	    sortseance();
-	} elsif ($line =~ /name="NUM_AMENDG"/i) { 
+	} elsif ($line =~ /name="NUM_AMENDG?"/i) { 
 	    numero();
 	}
     } elsif ($line =~ /date_amend.(\d{1,2}) avril (\d{4})\D/i && !$amdmt{'date'}) {
@@ -238,6 +251,17 @@ foreach $line (split /\n/, $string)
 	    $line = $1;
 	    texte();
 	}
+    } elsif ($line =~ /class="amddispotitre"/i) {
+        $texte = 1;
+        if ($line =~ /amendement.*[\s°](\d+)[\s\<]/i) {
+            $amdmt{'parent'} = $1;
+        }
+    } elsif ($line =~ /class="amd(expo|dispo)texte"/i) {
+        texte();
+    } elsif ($line =~ /class="amdexpotitre"/i) {
+        if ($amdmt{'texte'} || !$line =~ /article/i) {
+            $texte = 2;
+        }
     } elsif (!$amdt{'sort'} && $line =~ /\<div.*id="sort"/i) {
 	sortseance();
     } elsif ($identiques == 1 && $line =~ /\<p style=".*text-align:.*\>.*M[\.Mml]/i) {
@@ -247,11 +271,11 @@ foreach $line (split /\n/, $string)
 	    $line =~ /(\d+)/;
 	    $amdmt{'parent'} = $1;
 	} elsif ($texte < 1) {
-	    auteurs();
+	    auteurs() if ($line !~ /par<\/p>/);
 	} else {
 	    texte();
 	}
-    } elsif ($presente == 1 && $line =~ /\<p style=".*text-indent:.*\>.*M[\.Mml]/i) { 
+    } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td align="center"[^>]*)>.*M[\.Mml]/i) { 
 	auteurs();
     } elsif ($line =~ /\<p style=".*text-indent:/i) {
 	if ($line =~ /amendement.*(irrecevable|retir)/i) {
@@ -264,7 +288,7 @@ foreach $line (split /\n/, $string)
 	    }
 	}
 	texte();
-    } elsif ($line =~ /\<p\>(.*)\<\/p\>/ && $texte > 1) {
+    } elsif ($line =~ /\<p[^\>]*\>(.*)\<\/p\>/i && $texte >= 1) {
 	$line = $1;
 	texte();
     }
