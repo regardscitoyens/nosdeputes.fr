@@ -138,6 +138,9 @@ class sectionActions extends sfActions
     } else if ($this->order == 'coms') {
       $query->orderBy('s.nb_commentaires DESC');
       $this->titre = 'Les dossiers de l\'Assemblée les plus commentés par les citoyens';
+    } else if ($this->order == 'nom') {
+      $query->orderBy('s.titre');
+      $this->titre = 'Les dossiers de l\'Assemblée dans l\'ordre alphabétique';
     } else $this->forward404();
     $this->getResponse()->setTitle(str_replace('Assemblée', 'Assemblée nationale', $this->titre)." - NosDéputés.fr");
     $this->sections = $query->execute();
