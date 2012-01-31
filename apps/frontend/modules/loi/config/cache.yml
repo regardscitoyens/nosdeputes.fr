@@ -7,3 +7,5 @@ section:
   enabled: false
 alinea:
   enabled: false
+article:
+  enabled: false
