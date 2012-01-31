@@ -5,7 +5,7 @@
       <h2> Informations</h2>
     <ul>
 <?php if ($parlementaire->fin_mandat && $parlementaire->fin_mandat >= $parlementaire->debut_mandat) : ?>
-      <li>Mandat clos rempli du <?php echo myTools::displayDate($parlementaire->debut_mandat); ?> au <?php echo myTools::displayDate($parlementaire->fin_mandat); ?></li>
+      <li>Mandat clos rempli du <?php echo myTools::displayDate($parlementaire->debut_mandat); ?> au <?php echo myTools::displayDate($parlementaire->fin_mandat); ?> (<?php echo $parlementaire->getCauseFinMandat(); ?>)</li>
 <?php else : ?>
       <li>Mandat en cours depuis le <?php echo myTools::displayDate($parlementaire->debut_mandat); ?>
       <?php foreach ($missions as $resp)
@@ -58,8 +58,9 @@
             <?php } ?>
           </ul>
         </li>
+        <?php } ?>
 	<?php if ($parlementaire->getGroupes()) { ?>
-	<li>Groupes d'études et d'amitié interparlementaires&nbsp;
+	<li>Groupes d'études et d'amitié interparlementaires&nbsp;:
 	  <ul>
 	    <?php foreach ($parlementaire->getGroupes() as $groupe) { ?>
             <li><?php echo link_to($groupe->getNom(),'@list_parlementaires_organisme?slug='.$groupe->getSlug() ); ?> (<?php echo $groupe->getFonction(); ?>)</li>
@@ -67,7 +68,6 @@
 	  </ul>
 	</li>
 	<?php } ?>
-        <?php } ?>
       </ul>
       <?php endif; ?> <!-- else : ajouter les infos venant de parsing ancien (anciennes responsabilités) et avant les respon actuelles de ministre machin via les personnalites get fonctions? -->
       </div>
