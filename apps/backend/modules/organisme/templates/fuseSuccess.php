@@ -19,10 +19,17 @@
       else include_partial('seance/listCommission', array('seances' => $seances, 'nofuse' => 1)); ?>
     </div>
     <?php if (!(isset($doublons) && $doublons > 1)) {
-      echo '<p id="fuse" style="text-align:center;"><a href="';
-      if ($type == "commission") echo url_for('@fuse_commissions?bad='.$bad.'&good='.$good);
-      else echo url_for('@fuse_seances?id='.$orga.'&bad='.$bads.'&good='.$goods);
-      echo '">FUSIONNER</a></p>';
+      echo '<form id="fuse" style="text-align:center;" action="';
+      if ($type == "commission") {
+        echo url_for('@fuse_commissions').'" method="post">';
+        echo '<input type="hidden" name="bad" value="'.$bad.'" />';
+        echo '<input type="hidden" name="good" value="'.$good.'" />';
+      } else {
+        echo url_for('@fuse_seances?id='.$orga).'" method="post">';
+        echo '<input type="hidden" name="bad" value="'.$bads.'" />';
+        echo '<input type="hidden" name="good" value="'.$goods.'" />';
+      }
+      echo '<input type="submit" value="Fusionner" /></div>';
     } ?>
   </div>
   <div id="sf_admin_footer"><br/></div>

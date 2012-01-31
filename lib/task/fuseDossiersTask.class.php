@@ -7,7 +7,7 @@ class fuseDossiersTask extends sfBaseTask {
     $this->briefDescription = 'Fusionne un dossier vers un autre';
     $this->addArgument('baddossier', sfCommandArgument::REQUIRED, 'Dossier à intégrer'); 
     $this->addArgument('gooddossier', sfCommandArgument::REQUIRED, 'Dossier d\'acccueil');
-    $this->addArgument('seanceid', sfCommandArgument::REQUIRED, 'Optionnel : limite à cette séance');
+    $this->addArgument('seanceid', sfCommandArgument::OPTIONAL, 'Optionnel : limite à cette séance');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
  }
