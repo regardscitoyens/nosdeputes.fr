@@ -603,6 +603,16 @@ class Parlementaire extends BaseParlementaire
     return unserialize($s);
   }
 
+  public function getCauseFinMandat() {
+    if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $this->fin_mandat, $m))
+      $fin =  $m[3].'/'.$m[2].'/'.$m[1];
+    else return null;
+    foreach (unserialize($this->getAnciensMandats()) as $m)
+      if (preg_match("/^(.*) \/ (.*) \/ (.*)$/", $m, $match))
+        if ($match[2] === $fin) return $match[3];
+    return null;
+  }
+
   private function setInternalPhoto($photo) {
     $this->photo = $photo;
     return true;
