@@ -6,6 +6,17 @@ class PersonnaliteTable extends Doctrine_Table
 {
   protected $changed = 0;
   protected $all = null;
+
+  public function similarToCheckPrenom($str, $sexe = null, $return_array = 0, $year = 0) {
+    $str = preg_replace('/\(.*\)/', '', $str);
+    $str = preg_replace('/[\(\)]/', '', $str);
+    $first = preg_replace('/[\WàÀéèÉÈêÊîÎïÏôÔüÜùÙ]/', '.', strtolower(preg_replace('/^\s*(\S{4}).*$/i', '\\1', $str)));
+    $res = $this->similarTo($str, $sexe, $return_array, $year);
+    if ($res && (preg_match("/^".$first."/i", $res->getNom()) || preg_match("/^".$first."/i", $res->getNomDeFamille())))
+      return $res;
+    return null;
+  }
+
   public function similarTo($str, $sexe = null, $return_array = 0)
   {
     if (preg_match('/^\s*$/', $str))
