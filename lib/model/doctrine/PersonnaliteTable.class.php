@@ -7,9 +7,25 @@ class PersonnaliteTable extends Doctrine_Table
   protected $changed = 0;
   protected $all = null;
 
-  public function similarToCheckPrenom($str, $sexe = null, $return_array = 0, $year = 0) {
+  public function cleanString($str) {
+    $str = preg_replace('/^\s+/', '', preg_replace('/\s+$/', '', $str));
     $str = preg_replace('/\(.*\)/', '', $str);
     $str = preg_replace('/[\(\)]/', '', $str);
+    $strcl = array('str' => $str);
+    if (preg_match('/^M([\.Mmle]+) (.*)$/', $str, $match)) {
+      $strcl['str'] = $match[2];
+      $strcl['sexe'] = "H";
+      if (preg_match('/e/', $match[1]))
+        $strcl['sexe'] = "F";
+    }
+    return $strcl;
+  }
+
+  public function similarToCheckPrenom($str, $sexe = null, $return_array = 0, $year = 0) {
+    $strcl = $this->cleanString($str);
+    $str = $strcl['str'];
+    if (!$sexe && isset($strcl['sexe']))
+      $sexe = $strcl['sexe'];
     $first = preg_replace('/[\WàÀéèÉÈêÊîÎïÏôÔüÜùÙ]/', '.', strtolower(preg_replace('/^\s*(\S{4}).*$/i', '\\1', $str)));
     $res = $this->similarTo($str, $sexe, $return_array, $year);
     if ($res && (preg_match("/^".$first."/i", $res->getNom()) || preg_match("/^".$first."/i", $res->getNomDeFamille())))
@@ -21,7 +37,10 @@ class PersonnaliteTable extends Doctrine_Table
   {
     if (preg_match('/^\s*$/', $str))
       return null;
-    $str = preg_replace('/\(.*\)/', '', $str);
+    $strcl = $this->cleanString($str);
+    $str = $strcl['str'];
+    if (!$sexe && isset($strcl['sexe']))
+      $sexe = $strcl['sexe'];
     $word = preg_replace('/^.*\s(\S+)\s*$/i', '\\1', $str);
     $q = $this->createQuery('p')->where('nom LIKE ?', '% '.$word.'%');
     $res = $q->Execute();
