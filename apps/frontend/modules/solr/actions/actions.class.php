@@ -106,6 +106,9 @@ class solrActions extends sfActions
       $from = null;
     }
 
+    $this->parlfacet = $request->getParameter('parlfacet', 0);
+    $this->tagsfacet = $request->getParameter('tagsfacet', 0);
+    $this->timefacet = $request->getParameter('timefacet', 0);
     if ($format == 'json') {
       $this->getResponse()->setContentType('text/plain; charset=utf-8');
       $this->setTemplate('json');
@@ -201,7 +204,7 @@ class solrActions extends sfActions
       $this->getUser()->setFlash('error', 'Désolé, le moteur de recherche est indisponible pour le moment. <!-- '.$query." $e".' -->');
     }
     
-    if  (!$format && count($results['response']['docs']) == 1 && $results['response']['docs'][0]['object_name'] == 'Parlementaire') {
+    if (!$format && count($results['response']['docs']) == 1 && $results['response']['docs'][0]['object_name'] == 'Parlementaire' && !$request->getParameter('format')) {
       return $this->redirect($results['response']['docs'][0]['object']->getLink());
     }
 

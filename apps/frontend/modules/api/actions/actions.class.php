@@ -180,10 +180,12 @@ class apiActions extends sfActions
     $res['groupe_sigle'] = $parl->groupe_acronyme;
     $res['responsabilites'] = self::array2hash($parl->getResponsabilites(), 'responsabilite');
     $res['responsabilites_extra_parlementaires'] = self::array2hash($parl->getExtras(), 'responsabilite');
+    $res['groupes_parlementaires'] = self::array2hash($parl->getGroupes(), 'responsabilite');
     $res['sites_web'] = self::array2hash(unserialize($parl->sites_web), 'site');
     $res['url_institution'] = $parl->url_institution;
     $res['emails'] = self::array2hash(unserialize($parl->mails), 'email');
     $res['adresses'] = self::array2hash(unserialize($parl->adresses), 'adresse');
+    $res['anciens_mandats'] = self::array2hash(unserialize($parl->anciens_mandats), 'mandat');
     $res['autres_mandats'] = self::array2hash(unserialize($parl->autres_mandats), 'mandat');
     $res['profession'] = $parl->profession;
     $res['place_en_hemicycle'] = $parl->place_hemicycle;

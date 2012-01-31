@@ -1,4 +1,26 @@
-<?php if (!$tags) : ?>
+<?php 
+if ($timefacet) { 
+ 	if (!isset($fdates)) 
+		$exportfacet = null; 
+	else 
+		$exportfacet = $fdates; 
+} 
+if($parlfacet) { 
+	$exportfacet = null; 
+	if(isset($facet['parlementaires'])) 
+		$exportfacet = $facet['parlementaires']; 
+} 
+if ($tagsfacet) { 
+	$exportfacet = null; 
+	if (isset($facet['tag'])) 
+		$exportfacet = $facet['tag']; 
+} 
+if (isset($exportfacet)) { 
+	print(json_encode($exportfacet)); 
+	return ; 
+}
+ 
+if (!$tags) : ?> 
 { "start": <?php echo $results['start'] + 1; ?>, "end" : <?php echo $results['end'] - 1; ?>, "last_result" : <?php echo $results['numFound'];  ?>, "results" : {<?php
 	    $nb = 0;
 foreach ($results['docs'] as $record)
