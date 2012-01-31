@@ -111,9 +111,11 @@ class organismeActions extends autoOrganismeActions
 
     $this->type = $request->getParameter('type');
     $this->forward404Unless($this->type && preg_match('/^(commission|seance)$/', $this->type));
-    $this->bads = $request->getParameter('bad');
-    $this->goods = $request->getParameter('good');
+    $this->bads = $request->getParameter('bad', $_SESSION["hack_fuse_bad"]);
+    $this->goods = $request->getParameter('good', $_SESSION["hack_fuse_good"]);
     $this->forward404Unless($this->bads && $this->goods && ($this->bads != $this->goods));
+    unset($_SESSION["hack_fuse_bad"]);
+    unset($_SESSION["hack_fuse_good"]);
 
     if ($this->type == "seance") {
       $this->orga = $request->getParameter('id');
@@ -199,8 +201,11 @@ class organismeActions extends autoOrganismeActions
             }
           }  
         }
-        if ($doublons_bad != "" && $doublons_good != "" && ($doublons_bad != $doublons_good))
-          $this->redirect('@fuse?type=seance&id='.$this->bad.','.$this->good.'&bad='.$doublons_bad.'&good='.$doublons_good.'&doublons=1');
+        if ($doublons_bad != "" && $doublons_good != "" && ($doublons_bad != $doublons_good)) {
+          $_SESSION["hack_fuse_bad"] = $doublons_bad;
+          $_SESSION["hack_fuse_good"] = $doublons_good;
+          $this->redirect('@fuse?type=seance&id='.$this->bad.','.$this->good.'&doublons=1');
+        }
       }
       $query = Doctrine_Query::create()
         ->select('count(distinct(parlementaire_id)) as ct')

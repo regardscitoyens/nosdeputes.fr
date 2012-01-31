@@ -125,7 +125,7 @@ commission_fuse_seances:
   param: {module: organisme, action: commission}
 
 fuse_seances:
-  url: /commission/seance/:id/fuse/:bad/:good
+  url: /commission/seance/:id/fuse_commissions
   param: {module: organisme, action: fuse, type: 'seance', ok: 1}
 
 seance_suppr_ok:
@@ -149,7 +149,7 @@ list_commissions_fuse:
   param: {module: organisme, action: listCommissions}
 
 fuse_commissions:
-  url: /commissions/fuse/:bad/:good
+  url: /commissions/fuse_commissions
   param: {module: organisme, action: fuse, type: 'commission', ok: 1}
 
 commission_suppr_ok:
