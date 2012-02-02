@@ -1,7 +1,7 @@
 <?php if (!$tags) : ?>
 <search>
 <start><?php echo $results['start'] + 1; ?></start>
-<end><?php echo $results['end'] - 1; ?></end>
+<end><?php if ($results['numFound'] == $results['end'] - 1) echo $results['end'] - 1; else echo $results['end']; ?></end>
 <last_result><?php echo $results['numFound']; ?></last_result>
 <results>
 <?php
