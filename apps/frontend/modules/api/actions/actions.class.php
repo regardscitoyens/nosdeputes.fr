@@ -110,29 +110,11 @@ class apiActions extends sfActions
     $this->breakline = 'senateur';
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     foreach($senateurs as $dep) {
-      if ($request->getParameter('current') == true) {
-        $senateur = $this->getParlementaireArray($dep);
-        if ($request->getParameter('format') == 'csv')
-         foreach(array_keys($senateur) as $key)
-          if (!isset($this->champs[$key]))
-           $this->champs[$key] = 1;
-      } else {
-        $senateur = array();
-        $senateur['id'] = $dep->id;
-        $senateur['nom'] = $dep->nom;
-        if ($dep->fin_mandat && $dep->fin_mandat >= $dep->debut_mandat) 
-	  $senateur['ancien_senateur'] = 1;
-        else if ($request->getParameter('format') == 'csv')
-	  $senateur['ancien_senateur'] = 0;
-        $senateur['mandat_debut'] = $dep->debut_mandat;
-        if ($request->getParameter('format') == 'csv' || $dep->fin_mandat)
-          $senateur['mandat_fin'] = $dep->fin_mandat;
-        $this->champs['id'] = 1;
-        $this->champs['nom'] = 1;
-        $this->champs['ancien_senateur'] = 1;
-        $this->champs['mandat_debut'] = 1;
-        $this->champs['mandat_fin'] = 1;
-      }
+      $senateur = $this->getParlementaireArray($dep, $request->getParameter('format'), ($request->getParameter('current') == true ? 1 : 2));
+      if ($request->getParameter('format') == 'csv')
+       foreach(array_keys($senateur) as $key)
+        if (!isset($this->champs[$key]))
+         $this->champs[$key] = 1;
       $senateur['api_url'] = 'http://'.$_SERVER['HTTP_HOST'].url_for('api/parlementaire?format='.$request->getParameter('format').'&slug='.$dep->slug);
       $this->champs['api_url'] = 1;
       $this->res['senateurs'][] = array('senateur' => $senateur);
@@ -145,6 +127,7 @@ class apiActions extends sfActions
     $slug = $request->getParameter('slug');
     $this->forward404Unless($slug);
     $senateur = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    $this->forward404Unless($senateur);
     $this->res = array();
     $this->res['senateur'] = $this->getParlementaireArray($senateur);
     $this->multi = array();
@@ -161,8 +144,10 @@ class apiActions extends sfActions
   }
 
 
-  public static function getParlementaireArray($parl) {
+  public static function getParlementaireArray($parl, $format, $light = 0) {
     $res = array();
+    if (!$parl)
+        throw new Exception("pas de parlementaire");
     $res['id'] = $parl->id * 1;
     $res['nom'] = $parl->nom;
     $res['nom_de_famille'] = $parl->nom_de_famille;
@@ -174,21 +159,35 @@ class apiActions extends sfActions
     $res['mandat_debut'] = $parl->debut_mandat;
     if ($parl->fin_mandat)
       $res['mandat_fin'] = $parl->fin_mandat;
-    $groupe = $parl->getGroupe();
-    if (is_object($groupe))
-      $res['groupe'] = self::array2hash($groupe, 'groupe_politique');
+    else if ($format == 'csv' && $light != 1)
+      $res['mandat_fin'] = "";
+    if ($parl->fin_mandat && $parl->fin_mandat >= $parl->debut_mandat)
+      $res['ancien_senateur'] = 1;
+    else if ($format == 'csv' && $light != 1)
+      $res['ancien_senateur'] = 0;
+    if (!$light) {
+      $groupe = $parl->getGroupe();
+      if (is_object($groupe))
+        $res['groupe'] = self::array2hash($groupe, 'groupe_politique');
+      else if ($format == 'csv')
+        $res['groupe'] = "";
+    }
     $res['groupe_sigle'] = $parl->groupe_acronyme;
-    $res['responsabilites'] = self::array2hash($parl->getResponsabilites(), 'responsabilite');
-    $res['responsabilites_extra_parlementaires'] = self::array2hash($parl->getExtras(), 'responsabilite');
-    $res['groupes_parlementaires'] = self::array2hash($parl->getGroupes(), 'responsabilite');
-    $res['sites_web'] = self::array2hash(unserialize($parl->sites_web), 'site');
-    $res['url_institution'] = $parl->url_institution;
-    $res['emails'] = self::array2hash(unserialize($parl->mails), 'email');
-    $res['adresses'] = self::array2hash(unserialize($parl->adresses), 'adresse');
-    $res['anciens_mandats'] = self::array2hash(unserialize($parl->anciens_mandats), 'mandat');
-    $res['autres_mandats'] = self::array2hash(unserialize($parl->autres_mandats), 'mandat');
+    if (!$light) {
+      $res['responsabilites'] = self::array2hash($parl->getResponsabilites(), 'responsabilite');
+      $res['responsabilites_extra_parlementaires'] = self::array2hash($parl->getExtras(), 'responsabilite');
+      $res['groupes_parlementaires'] = self::array2hash($parl->getGroupes(), 'responsabilite');
+    }
+    if ($light != 2) {
+      $res['sites_web'] = self::array2hash(unserialize($parl->sites_web), 'site');
+      $res['emails'] = self::array2hash(unserialize($parl->mails), 'email');
+      $res['adresses'] = self::array2hash(unserialize($parl->adresses), 'adresse');
+      $res['anciens_mandats'] = self::array2hash(unserialize($parl->anciens_mandats), 'mandat');
+      $res['autres_mandats'] = self::array2hash(unserialize($parl->autres_mandats), 'mandat');
+    }
     $res['profession'] = $parl->profession;
     $res['place_en_hemicycle'] = $parl->place_hemicycle;
+    $res['url_institution'] = $parl->url_institution;
     $res['slug'] = $parl->getSlug();
     return $res;
   }
