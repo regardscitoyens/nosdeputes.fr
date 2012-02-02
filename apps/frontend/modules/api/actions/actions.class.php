@@ -129,7 +129,7 @@ class apiActions extends sfActions
     $senateur = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->forward404Unless($senateur);
     $this->res = array();
-    $this->res['senateur'] = $this->getParlementaireArray($senateur);
+    $this->res['senateur'] = $this->getParlementaireArray($senateur, $request->getParameter('format'));
     $this->multi = array();
     $this->multi['responsabilite'] = 1;
     $this->multi['email'] = 1;
