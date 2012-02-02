@@ -21,7 +21,7 @@ if (isset($exportfacet)) {
 }
 
 if (!$tags) : ?>
-{ "start": <?php echo $results['start'] + 1; ?>, "end" : <?php echo $results['end'] - 1; ?>, "last_result" : <?php echo $results['numFound'];  ?>, "results" : {<?php
+{ "start": <?php echo $results['start'] + 1; ?>, "end" : <?php if ($results['numFound'] == $results['end'] - 1) echo $results['end'] - 1; else echo $results['end']; ?>, "last_result" : <?php echo $results['numFound'];  ?>, "results" : {<?php
 	    $nb = 0;
 foreach ($results['docs'] as $record)
 {
