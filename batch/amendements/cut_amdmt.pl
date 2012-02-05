@@ -2,6 +2,7 @@
 
 $file = shift;
 use HTML::TokeParser;
+require ("../common/common.pm");
 
 my %amdmt;
 
@@ -189,8 +190,8 @@ foreach $line (split /\n/, $string)
 	} elsif ($line =~ /name="NUM_AMENDG?"/i) { 
 	    numero();
 	}
-    } elsif ($line =~ /date_amend.(\d{1,2}) avril (\d{4})\D/i && !$amdmt{'date'}) {
-           $amdmt{'date'} = $2.'-04-'.sprintf('%02d', $1);
+    } elsif ($line =~ /date_?amend.*([0-9]+e?r? \S+ [0-9]+)\D/i && !$amdmt{'date'}) {
+           $amdmt{'date'} = join '/', reverse datize($1);
     } elsif ($line =~ /class="amddispotitre"/i && !$amdmt{'sujet'}) {
             $line =~ s/<[^>]+>//g;
             $amdmt{'sujet'} = $line;
@@ -275,7 +276,7 @@ foreach $line (split /\n/, $string)
 	} else {
 	    texte();
 	}
-    } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td align="center"[^>]*)>.*M[\.Mml]/i) { 
+    } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td align="center"[^>]*)>.*(M[\.Mml]|Le gouvern)/i) { 
 	auteurs();
     } elsif ($line =~ /\<p style=".*text-indent:/i) {
 	if ($line =~ /amendement.*(irrecevable|retir)/i) {
