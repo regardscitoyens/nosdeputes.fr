@@ -97,8 +97,8 @@ sub auteurs {
 sub texte {
     $line2 = $line;
     $line2 =~ s/\s*\<\/?[^\>]+\>//g;
-    $line2 =~ s/^[ \s]*//;
-    $line2 =~ s/[\s ]*$//;
+    $line2 =~ s/^[ \s]+(\w)/\1/;
+    $line2 =~ s/[\s ]+$//;
     if ($line2 !~ /^$/ && !($line2 =~ /\s*Adt\s+n°\s*$/)) {
     	$output = 'texte';
     	if ($texte == 2) { $output = 'expose'; }
@@ -122,6 +122,8 @@ sub sortseance {
 	$amdmt{'sort'} = 'Rejeté';
     } elsif ($line =~ /adopt/i) {
 	$amdmt{'sort'} = 'Adopté';
+    } elsif ($line =~ /Re/) {
+        $amdmt{'sort'} = 'Retiré';
     }
 }
 
@@ -170,12 +172,12 @@ sub identiques {
 
 
 $string =~ s/\r//g;
-$string =~ s/\t//g;
+$string =~ s/\t+/ /g;
 $string =~ s/\s*\n+\s*/\n/g;
 $string =~ s/&nbsp;/ /g;
 $string =~ s/\|(\W+)\|/$1/g;
-$string =~ s/([^>])\n/\1/g;
-$string =~ s/>\n([^<])/> \1/g;
+$string =~ s/([^\n>]+)\n/\1 /g;
+$string =~ s/>\n([^\n<]+)/> \1/g;
 foreach $line (split /\n/, $string)
 {
 #print "TEST: $presente / $texte / $line\n";
