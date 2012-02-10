@@ -2,6 +2,8 @@
 
 $file = shift;
 use HTML::TokeParser;
+use File::stat;
+use Date::Format;
 require ("../common/common.pm");
 
 my %amdmt;
@@ -95,7 +97,9 @@ sub auteurs {
 sub texte {
     $line2 = $line;
     $line2 =~ s/\s*\<\/?[^\>]+\>//g;
-    if (!($line2 =~ /\s*Adt\s+n°\s*$/)) {
+    $line2 =~ s/^[ \s]*//;
+    $line2 =~ s/[\s ]*$//;
+    if ($line2 !~ /^$/ && !($line2 =~ /\s*Adt\s+n°\s*$/)) {
     	$output = 'texte';
     	if ($texte == 2) { $output = 'expose'; }
     	if (!$amdmt{$output}) { $amdmt{$output} = "<p>".$line2."</p>"; }
@@ -166,9 +170,12 @@ sub identiques {
 
 
 $string =~ s/\r//g;
+$string =~ s/\t//g;
+$string =~ s/\s*\n+\s*/\n/g;
 $string =~ s/&nbsp;/ /g;
 $string =~ s/\|(\W+)\|/$1/g;
-$string =~ s/([^>]\s*)\n/\1/g;
+$string =~ s/([^>])\n/\1/g;
+$string =~ s/>\n([^<])/> \1/g;
 foreach $line (split /\n/, $string)
 {
 #print "TEST: $presente / $texte / $line\n";
@@ -312,5 +319,13 @@ $amdmt{'auteurs'} =~ s/\s*,\s*$//g;
 $amdmt{'auteurs'} =~ s/ et(M[mle\.\s])/, \1/g;
 $amdmt{'auteurs'} =~ s/ et(\W)/\1/g;
 $amdmt{'auteurs'} =~ s/([^,\s])\s*(les\s*membres.*groupe.*)$/\1, \2/i;
+
+if (!$amdmt{'date'}) {
+  $time = stat($file)->mtime;
+  $amdmt{'date'} = time2str("%Y-%m-%d", $time);
+}
+if (!$amdmt{'sort'} && $amdmt{'texte'} =~ /amendement irrecevable/i) {
+  $amdmt{'sort'} = 'Irrecevable';
+}
 
 print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
