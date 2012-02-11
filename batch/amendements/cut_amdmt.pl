@@ -173,7 +173,8 @@ sub identiques {
 
 $string =~ s/\r//g;
 $string =~ s/\t+/ /g;
-$string =~ s/\s*\n+\s*/\n/g;
+$string =~ s/ +\n+/\n/g;
+$string =~ s/\n+ +/\n/g;
 $string =~ s/&nbsp;/ /g;
 $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/([^\n>]+)\n/\1 /g;
