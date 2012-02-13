@@ -89,7 +89,8 @@ sub auteurs {
     $line =~ s/^et\s+/, /g;
     $line =~ s/\s*EXPOSÉ SOMMAIRE\s*//g;
     $line =~ s/\s+,/,/g;
-    if (!$line =~ /^$/) {
+    $line =~ s/^de M/M/;
+    if (!$line =~ /^$/ && (!$amdmt{'auteurs'} || $amdmt{'auteurs'} !~  /, $line/)) {
 	$amdmt{'auteurs'} = $amdmt{'auteurs'}.", ".$line;
     }
 }
@@ -101,7 +102,10 @@ sub texte {
     $line2 =~ s/[\s ]+$//;
     if ($line2 !~ /^$/ && !($line2 =~ /\s*Adt\s+n°\s*$/)) {
     	$output = 'texte';
-    	if ($texte == 2) { $output = 'expose'; }
+    	if ($texte == 2) {
+           return if $line2 =~ /^\s*\d+\s*$/;
+           $output = 'expose';
+        }
     	if (!$amdmt{$output}) { $amdmt{$output} = "<p>".$line2."</p>"; }
     	else { $amdmt{$output} = $amdmt{$output}."<p>".$line2."</p>"; }
     }
@@ -205,8 +209,9 @@ foreach $line (split /\n/, $string)
     } elsif ($line =~ /class="amddispotitre"/i && !$amdmt{'sujet'}) {
             $line =~ s/<[^>]+>//g;
             $amdmt{'sujet'} = $line;
-    } elsif ($line =~ /class="presente"/i) {
-	if ($presente == 0) {
+    } elsif ($line =~ /class="presente"/i || $line =~ /<div>\s*(de )?M[Mmel.s]+ /) {
+        $texte = 0 if ($texte == 2);
+	if ($presente != 1) {
 	    $presente = 1;
 	} elsif ($texte >= 1 && $line =~ /font-style: italic/i) {
 	    texte();
