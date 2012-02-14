@@ -209,7 +209,7 @@ foreach $line (split /\n/, $string)
     } elsif ($line =~ /class="amddispotitre"/i && !$amdmt{'sujet'}) {
             $line =~ s/<[^>]+>//g;
             $amdmt{'sujet'} = $line;
-    } elsif ($line =~ /class="presente"/i || $line =~ /<div>\s*(de )?M[Mmel.s]+ /) {
+    } elsif (($line =~ /class="presente"/i || $line =~ /<div>\s*(de )?M[Mmel.s]+ /) && $line !~ /utilisateurs/) {
         $texte = 0 if ($texte == 2);
 	if ($presente != 1) {
 	    $presente = 1;
