@@ -15,7 +15,7 @@ class reindexSolrObjectTask extends sfBaseTask {
   protected function execute($arguments = array(), $options = array()) {
     $manager = new sfDatabaseManager($this->configuration);
     $class = $arguments['class'];
-    if (!preg_match('/^(Commentaire|Intervention|Amendement|QuestionEcrite|Section|Organisme|Texteloi|Parlementaire)$/', $class)) {
+    if (!preg_match('/^(Commentaire|Intervention|Amendement|QuestionEcrite|Section|Organisme|Texteloi|Parlementaire|Seance)$/', $class)) {
       echo "ERREUR : $class n'est pas une classe d'objet indexé dans Solr\n";
       return;
     }
@@ -24,7 +24,17 @@ class reindexSolrObjectTask extends sfBaseTask {
       echo "ERREUR : $id n'a pas l'air d'une id correcte";
       return;
     }
-    $obj = Doctrine::getTable($class)->find($id);
+    if ($class === "Seance") {
+      $inters = Doctrine::getTable('Intervention')->createQuery('i')->where('seance_id = ?', $id)->execute();
+      foreach ($inters as $i)
+        $this->index($i);
+    } else {
+      $obj = Doctrine::getTable($class)->find($id);
+      $this->index($obj);
+    }
+  }
+
+  protected static function index($obj) {
     if (!$obj) {
       $json = new stdClass();
       $json->id = $class.'/'.$id;
@@ -33,6 +43,5 @@ class reindexSolrObjectTask extends sfBaseTask {
       $obj->save();
     }
   }
-
 }
 
