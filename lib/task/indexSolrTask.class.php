@@ -60,7 +60,7 @@ class indexSolrTask extends sfBaseTask
  
   protected function execute($arguments = array(), $options = array())
   {
-    $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['dev'], true);
+    $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);    
 
     $solr = new SolrConnector();
