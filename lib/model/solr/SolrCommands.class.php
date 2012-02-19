@@ -24,25 +24,35 @@ class SolrCommands
   }
 
   private function __construct() {
+    $this->semaphore = null;
   }
 
   public function __destruct() {
-    if ($this->semaphore)
-      $this->unprotect();
+    if ($this->semaphore) {
+      sem_remove($this->semaphore);
+      $this->semaphore = null;
+    }
+  }
+
+  private static function getSemId() {
+    self::getFileCommands();
+    $semfile = sfConfig::get('sf_log_dir')."/solr/SolrSem.id";
+    if (!file_exists($semfile)) {
+      touch($semfile);
+    }
+    $id = ftok($semfile, 's');
+    return $id;
   }
 
   private function protect() {
     if (! $this->semaphore) {
-      $id = ftok(self::getFileCommands(), 's');
-      $this->semaphore = sem_get($id);
+      $this->semaphore = sem_get(self::getSemId());
     }
-    sem_acquire($this->semaphore);
+    sem_acquire($this->semaphore, 1);
   }
 
   private function unprotect() {
     sem_release($this->semaphore);
-    sem_remove($this->semaphore);
-    $this->semaphore = null;
   }
 
   public function addCommand($status, $json) {
@@ -52,6 +62,8 @@ class SolrCommands
     }
     $str = $status.' : '.json_encode($json)."\n";
     fwrite($this->file, $str, strlen($str));
+    fclose($this->file);
+    $this->file = null;
     $this->unprotect();
   }
 
