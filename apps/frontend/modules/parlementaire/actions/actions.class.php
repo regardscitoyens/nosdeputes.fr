@@ -87,10 +87,10 @@ class parlementaireActions extends sfActions
     $groupe = $parlementaire->groupe_acronyme;
   if ($groupe) {
       imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon+$bordure, $rayon+$bordure, imagecolorallocate($ih, 255, 255, 255));
-      if ($groupe == 'GDR') {
+/*     if ($groupe == 'GDR') {
 	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 45, 225, imagecolorallocate($ih, 0, 170, 0), IMG_ARC_EDGED);
 	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 225, 45, imagecolorallocate($ih, 240, 0, 0), IMG_ARC_EDGED);
-      } else foreach (myTools::getGroupesInfos() as $gpe)
+      } else */ foreach (myTools::getGroupesInfos() as $gpe)
         if ($gpe[1] == $groupe && preg_match('/^(\d+),(\d+),(\d+)$/', $gpe[2], $match))
          imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, $match[1], $match[2], $match[3]));
     }
