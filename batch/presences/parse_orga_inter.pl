@@ -7,6 +7,7 @@ use POSIX qw<mktime strftime>;
 $a = WWW::Mechanize->new();
 
 $url = shift;
+$organisme = shift;
 $a->get($url);
 $html = $a->content;
 utf8::encode($html);
@@ -19,6 +20,7 @@ $html =~ s/<\/b>\s*<b>/ /gi;
 
 $html =~ s/<\/b>/<\/b>\n/g;
 $html =~ s/<b>/\n<b>/g;
+$html =~ s/\r//g;
 
 sub findDate($) {
 	$_ = shift;
@@ -72,6 +74,11 @@ foreach (split /\n/, $html) {
 		$titre =~ s/\s+/ /g;
 		$titre =~ s/^\s*//;
 		$titre =~ s/\s*$//;
+		$titre =~ s/\’/\'/g;
+		$titre =~ s/&#8217;/'/g;
+		$titre =~ s/&#8211;/-/g;
+		$titre =~ s/\xc2\x92/'/g;
+		$titre =~ s/\xc2\x96/-/g;
 		@date = findDate($_);
 		next;
 	}
@@ -82,7 +89,7 @@ foreach (split /\n/, $html) {
 		$id{$id} = 1;
 		$nom =~ s/&nbsp;/ /g;
 		foreach $d (@date) {
-			print "{\"nom_depute\":\"$nom\", \"id_an\":\"$id\", \"date\",\"$d\", \"url\": \"$url\", \"titre_evenement\":\"$titre\" }\n";
+			print "{\"depute\":\"$nom\", \"id_an\":\"$id\", \"reunion\":\"$d\", \"commission\":\"$organisme\", \"source\": \"$url\", \"session\":\"$titre\"}\n";
 		}
 	}
 }
