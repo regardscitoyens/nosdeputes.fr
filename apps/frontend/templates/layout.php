@@ -37,7 +37,7 @@ $menu_citoyen = $selectcitoyen;
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="search" href="<?php echo $sf_request->getRelativeUrlRoot(); ?>/nosdeputesfr.xml" title="Rechercher sur NosDéputés.fr" type="application/opensearchdescription+xml" />
     <?php echo stylesheet_tag($style.'/jquery-ui-1.8.5.custom.css'); ?>
-    <?php echo stylesheet_tag($style.'/style.css'); ?>
+    <?php echo stylesheet_tag($style.'/style.v.2584.css'); ?>
     <?php echo stylesheet_tag($style.'/print', array('media' => 'print')); ?>
     <!--[if lte IE 6]>
       <?php echo stylesheet_tag($style.'/ie6'); ?>
@@ -121,7 +121,7 @@ $menu_citoyen = $selectcitoyen;
           </ul>
         </div>
 	</div>
-	     <div style="text-align: center; margin-top: 27px;"><h2><a href="/simplifions-la-loi">Participez aux débats « Simplifions la loi 2.0 » !</a></h2></div>
+	     <div style="text-align: center; margin-top: 27px;"><h2><a href="/confiseurs/2011/">Consultez notre étude 2010 &mdash; 2011 sur les sanctions relatives à la présence des députés !</a></h2></div>
       </div>
       <div id="corps_page">
         <div class="contenu_page">
@@ -143,5 +143,16 @@ $menu_citoyen = $selectcitoyen;
 		</div>
       </div>
     </div>
+<script type="text/javascript"> 
+// Google 
+  var _gaq = _gaq || []; 
+  _gaq.push(['_setAccount', 'UA-10423931-2']); 
+  _gaq.push(['_trackPageview']); 
+  (function() { 
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true; 
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js'; 
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s); 
+  })(); 
+</script>
   </body>
 </html>

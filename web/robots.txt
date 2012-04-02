@@ -4,4 +4,4 @@ User-agent: 008
 Disallow: /
 User-agent: *
 Disallow: /recherche/
-
+Disallow: /citoyen/photo/samia-lakhal

@@ -29,12 +29,12 @@ class reindexSolrObjectTask extends sfBaseTask {
       foreach ($inters as $i)
         $this->index($i);
     } else {
-      $obj = Doctrine::getTable($class)->find($id);
-      $this->index($obj);
+      $this->index($class, $id);
     }
   }
 
-  protected static function index($obj) {
+  protected static function index($class, $id) {
+    $obj = Doctrine::getTable($class)->find($id);
     if (!$obj) {
       $json = new stdClass();
       $json->id = $class.'/'.$id;

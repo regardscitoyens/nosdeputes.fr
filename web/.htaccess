@@ -5,19 +5,46 @@ Options +FollowSymLinks +ExecCGI
 
   # uncomment the following line, if you are having trouble
   # getting no_script_name to work
-  #RewriteBase /
+  RewriteBase /
+  RewriteRule ^(.*)\.v\.[0-9]+(\..*)$ $1$2 [QSA,L,E=VERSIONED_FILE:1]
 
   # we skip all files with .something
   #RewriteCond %{REQUEST_URI} \..+$
   #RewriteCond %{REQUEST_URI} !\.html$
   #RewriteRule .* - [L]
+  RewriteRule ^simplifions-la-loi /dossiers/date [R,L]
+  RewriteRule ^Simplifions-la-loi-2.0 /dossiers/date [R,L]
+  RewriteRule ^simplifions-LOPPSI /loi/2271 [R,L]
+  RewriteRule ^Simplifions-LOPPSI /loi/2271 [R,L]
+  RewriteRule ^simplifions-loppsi /loi/2271 [R,L]
+  RewriteRule ^loppsi /loi/2271 [R,L]
+  RewriteRule ^lopsi /loi/2271 [R,L]
+  RewriteRule ^LOPPSI /loi/2271 [R,L]
+  RewriteRule ^LOPSI /loi/2271 [R,L]
+  RewriteRule ^Grenelle2.0 /loi/2449 [R,L]
+  RewriteRule ^Grenelle2 /loi/2449 [R,L]
+  RewriteRule ^Grenelle /loi/2449 [R,L]
+  RewriteRule ^grenelle2.0 /loi/2449 [R,L]
+  RewriteRule ^grenelle2 /loi/2449 [R,L]
+  RewriteRule ^grenelle /loi/2449 [R,L]
+  RewriteRule ^GrenelleII /loi/2449 [R,L]
+  RewriteRule ^grenelleII /loi/2449 [R,L]
+  RewriteRule ^amnesty /loi/951 [R,L]
+  RewriteRule ^cpi /loi/951 [R,L]
+  RewriteRule ^retraite /loi/2760 [R,L]
+  RewriteRule ^Retraite /loi/2760 [R,L]
+  RewriteRule ^retraites /loi/2760 [R,L]
+#  RewriteRule ^dossier/ / [R,L]
 
   # we check if the .html version is here (caching)
   RewriteRule ^$ index.html [QSA]
   RewriteRule ^([^.]+)$ $1.html [QSA]
-  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-f 
 
   # no, so we redirect to our front web controller
   RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
+Redirect /confiseurs_1001 /confiseurs/2009
+Redirect /confiseurs_1007 /confiseurs/2010
+Redirect /confiseurs_temp_1107 /confiseurs/2011
