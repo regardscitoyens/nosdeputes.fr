@@ -365,10 +365,7 @@ class citoyenActions extends sfActions
   {
     $this->slug = $request->getParameter('slug');
     $this->activation_id = $request->getParameter('activation_id');
-    if (Doctrine::getTable('Citoyen')->findOneBySlug($this->slug)->is_active < 0) {
-      $this->getUser()->setFlash('error', 'Ce compte a été désactivé');
-      return;
-    }
+    
     if ($this->getUser()->isAuthenticated())
     {
       $user = Doctrine::getTable('Citoyen')->findOneBySlug($this->getUser()->getAttribute('slug'));

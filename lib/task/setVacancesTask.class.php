@@ -43,6 +43,7 @@ class setVacancesTask extends sfBaseTask {
       if ($sem >= 53) { $annee++; $sem = 1; }
       else $sem++;
     }
+
     $option = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
     if (!$option) {
       $option = new VariableGlobale();

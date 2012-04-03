@@ -45,10 +45,10 @@ class SolrCommands
   }
 
   private function protect() {
-#    if (! $this->semaphore) {
-      $this->semaphore = sem_get(self::getSemId(), 1, 0666, -1);
-#    }
-    sem_acquire($this->semaphore);
+    if (! $this->semaphore) {
+      $this->semaphore = sem_get(self::getSemId());
+    }
+    sem_acquire($this->semaphore, 1);
   }
 
   private function unprotect() {
