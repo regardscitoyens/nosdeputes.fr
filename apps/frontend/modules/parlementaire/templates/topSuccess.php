@@ -120,19 +120,10 @@ $bulles = array("",
 </table>
 <div class="synthese_groupes">
 <table>
-  <?php $cpt = 0; foreach ($gpes as $gpe => $t) {
-    $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
-    <td id="<?php echo $gpe; ?>" class="jstitle c_<?php echo strtolower($gpe); ?> <?php echo $class['parl']; ?>" title="<?php echo $t[0]['nom']." -- ".$t[0]['desc']; ?>"><a href="<?php echo url_for('@list_parlementaires_groupe?acro='.$gpe); ?>"><?php echo $gpe." : ".$t[0]['nb']." députés"; ?></a></td>
-    <?php for($i = 1 ; $i < count($t) ; $i++) {
-      $t[$i] = round($t[$i]/$t[0]['nb']); ?>
-      <td title="<?php echo $t[$i].' '; if ($t[$i] < 2) echo preg_replace('/s (.*-- )/', ' \\1', preg_replace('/s (.*-- )/', ' \\1', $bulles[$i])); else echo $bulles[$i]; ?>" class="jstitle <?php echo $class[$ktop[$i]]; ?>">
-      <?php if (preg_match('/\./', $t[$i]))
-        printf('%02d', $t[$i]);
-      else echo $t[$i]; ?>
-      </td>
-    <?php } ?>
-  </tr>
-<?php } ?>
+  <?php $cp = 0;
+  $cp = myTools::echo_synthese_groupe($gpes, $bulles, $class, $ktop, $cp);
+#  $cp = myTools::echo_synthese_groupe($sexes, $bulles, $class, $ktop, $cp);
+#  $cp = myTools::echo_synthese_groupe($mandats, $bulles, $class, $ktop, $cp); ?>
 </table>
 </div>
 </div>

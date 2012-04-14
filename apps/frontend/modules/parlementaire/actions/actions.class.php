@@ -361,11 +361,24 @@ class parlementaireActions extends sfActions
       $this->gpes[$gpe[1]][0]['nom'] = $gpe[0];
       $this->gpes[$gpe[1]][0]['desc'] = $gpe[3];
     }
+/*
+    $this->mandats = array();
+    for ($i = 1; $i < 6; $i++) {
+      $this->mandats[$i] = array();
+      $this->mandats[$i][0] = array();
+      $this->mandats[$i][0]['nb'] = 0;
+      $this->mandats[$i][0]['nom'] = "$i mandat".($i > 1 ? "s" : "");
+    }
+    $this->sexes = array("H" => array("0" => array("nb" => 0, "nom" => "Hommes")), "F" => array("0" => array("nb" => 0, "nom" => "Femmes")));
+*/
     foreach($parlementaires as $p) {
       $tops = unserialize($p['top']);
       $id = $p['id'];
       $i = 0;
       $this->tops[$id][$i++] = $p;
+#      $nbmdts = count(unserialize($p['autres_mandats']));
+#      $this->sexes[$p['sexe']][0]['nb']++;
+#      $this->mandats[$nbmdts][0]['nb']++;
       $this->gpes[$p['groupe_acronyme']][0]['nb']++;
       foreach(array_keys($tops) as $key) {
 	$this->tops[$id][$i]['value'] = $tops[$key]['value'];
@@ -378,6 +391,14 @@ class parlementaireActions extends sfActions
         if (!isset($this->gpes[$p['groupe_acronyme']][$i]))
           $this->gpes[$p['groupe_acronyme']][$i] = 0;
         $this->gpes[$p['groupe_acronyme']][$i] += $tops[$key]['value'];
+/*
+ 	if (!isset($this->sexes[$p['sexe']][$i]))
+ 	  $this->sexes[$p['sexe']][$i] = 0;
+ 	$this->sexes[$p['sexe']][$i] += $tops[$key]['value'];
+ 	if (!isset($this->mandats[$nbmdts][$i]))
+ 	  $this->mandats[$nbmdts][$i] = 0;
+ 	$this->mandats[$nbmdts][$i] += $tops[$key]['value'];
+*/
 	$i++;
       }
     }
