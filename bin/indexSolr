@@ -3,20 +3,32 @@
 #Récupère le fichier de configuration pour notre environnement (qui se trouve dans le même que ce script)
 . $(echo $0 | sed 's/[^\/]*$//')db.inc
 
+#CRASHSTATUS
+STATUSFILE="/tmp/indexSolr.tomcatcrash.status"
+if test ! -e $STATUSFILE ;
+then
+    echo "0" > $STATUSFILE
+fi
+STATUS=`cat $STATUSFILE`
+STATUS=$(($STATUS + 1))
 #LOCK
 LOCK="/tmp/indexSolr.bash.lock"
 if test -e $LOCK ;
 then
     if test ! -e /proc/$(cat $LOCK) ;
     then
-	echo "WARNING : l'indexation solr lockée alors que son processus ne tourne plus..."
-	echo "\t suppression du fichier...";
+	echo "WARNING : l'indexation solr est lockée alors que son processus ne tourne plus..."
+	echo " suppression du fichier (tentative n°$STATUS)...";
 	rm $LOCK
+	if [ $STATUS -ge 3 ]; then
+	    echo "trying to restart Tomcat"
+	    sudo /etc/init.d/tomcat5.5 restart > /tmp/log-restart-tomcat 2>&1
+	    cat /tmp/log-restart-tomcat
+	    STATUS="0"
+        fi
+	echo "$STATUS" > $STATUSFILE
 	exit 1;
     fi
-#     echo Script locké par $(cat $LOCK) : $LOCK
-#        ps aux | grep "php symfony index:Solr" | grep -v grep > /dev/null
-#        if [[ $? -eq 1 ]]; then echo "WARNING : l'indexation solr semble lockée mais ne pas tourner"; fi
     exit 1;
 fi
 
@@ -37,5 +49,5 @@ sleep 1
 done
 #echo Fin Indexation
 #date
-
+echo "0" > $STATUSFILE
 rm $LOCK ;
