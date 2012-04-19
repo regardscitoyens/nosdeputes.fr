@@ -12,8 +12,10 @@ $lastyear =~ s/^.*\s(\d{4})$/$1/;
 $lastyear-- if ($month[0] < 10);
 
 #Annee des dossiers à télécharger
-$year = shift || $lastyear;
-$since_hour = shift || 24;
+$since_hour = shift || 48;
+$tmpyear = $lastyear;
+$tmpyear-- if ($month[0] == 10);
+$year = shift || $tmpyear;
 $verbose = shift || 0;
 
 $yearzero = $year;

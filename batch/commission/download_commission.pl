@@ -6,7 +6,7 @@ use URI::Escape;
 use Encode;
 
 #Prend en compte uniquement les pages de commission qui ont changé depuis moins de x heures (-1 pour désactiver)
-$since_hour = shift || 24;
+$since_hour = shift || 48;
 
 mkdir "html" unless -e "html";
 
@@ -34,7 +34,8 @@ foreach $index (@indexes) {
     while ($t = $p->get_tag('a')) {
 	if ($t->[1]{href} =~ /compte-rendu-commissions/ || $t->[1]{href} =~ /\d{6}\d*.html/) {
 	    $curl =  $t->[1]{href};
-	    next if ($curl =~ /\/presse\// || curl =~ /prog.html/);
+            $curl =~ s/#[^\/]*$//;
+	    next if ($curl =~ /\/presse\// || $curl =~ /prog.html/);
 	    next if ($url{$curl});
 	    $uriurl = $curl;
 	    $uriurl =~ s/^\//http:\/\/www.senat.fr\//;
