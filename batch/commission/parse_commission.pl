@@ -111,8 +111,9 @@ foreach (split /\n/, $content) {
 	    $commission = $1;
 	    $commission =~ s/[\s\-]+S[é&eacut;]+nat\s*//i;
 	}else {
-	    $commission = $1 if (/TITLE>[^<]*((Mission|Office|Délégation|Groupe de travail)[^:<]*)/i);
+	    $commission = $1 if (/TITLE>[^<]*((MCI|Mission|Office|Délégation|Groupe de travail)[^:<]*)/i);
 	    $commission =~ s/[\s\-]+S[é&eacut;]+nat\s*//i;
+            $commission =~ s/MCI /Mission commune d'information /;
 	}
 #	print ;	print "\n";
 	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*\W*<\/(h[123])>/i)) {
