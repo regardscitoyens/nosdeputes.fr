@@ -3,6 +3,7 @@ all:
   base_url: http://www.nossenateurs.fr/
   secret_key: _______PUT_YOUR_KEY_HERE________
   legislature: 13
+  debut_mandature: "2011-10-01"
   groupes_actuels: >
     ["CRC", "SOC", "ECO", "RDSE", "UCR", "UMP", "NI"]
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
@@ -12,8 +13,8 @@ all:
     "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche / CRC-SPG / 255,30,30 / PCF, PG et ratt. / communiste|républicain|citoyen|sénateurs.*gauche",
     "Socialiste et apparentés / SOC / 255,50,190 / Socialistes (PS et ratt.) / socialiste",
     "Socialiste, Apparentés et Groupe Europe Écologie Les Verts rattaché / SOC-EELV / 255,50,190 / Socialistes (PS, Verts et ratt.) / socialiste|écologie",
-    "Socialiste / SOC / 255,50,190 / Socialistes (PS, Verts et ratt.) / socialiste",
-    "Écologiste / ECO / 0,230,30 / Écologistes (EELV) / [ée]cologiste",
+    "Socialiste / SOCV / 255,50,190 / Socialistes (PS, Verts et ratt.) / socialiste",
+    "Écologiste / ECO / 0,230,30 / Écologistes (EELV) / [eéÉ]cologiste",
     "Rassemblement Démocratique et Social Européen / RDSE / 250,195,132 / Socio-Radicaux (PRG, MRC) / démocratique|européen",
     "Union Centriste et Républicaine / UCR / 30,180,255 / Union Centriste (NC, Modem, ...) / centre|centriste",
     "Union Centriste / UC / 30,180,255 / Union Centriste (NC, Modem, ...) / centre|centriste",

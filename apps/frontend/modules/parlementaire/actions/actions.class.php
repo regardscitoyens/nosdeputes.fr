@@ -238,8 +238,8 @@ class parlementaireActions extends sfActions
       ->where('p.groupe_acronyme = ?', strtoupper($acro))
       ->andWhere('p.fin_mandat IS NULL')
       ->andWhere('o.type = ?', 'groupe')
-      ->andWhere('o.nom = ?', $nom);
-    $query->orderBy("imp DESC, p.nom_de_famille ASC");
+      ->andWhere('o.nom = ?', $nom)
+      ->orderBy('imp DESC, p.nom_de_famille ASC');
     $this->parlementaires = array();
     $this->total = 0;
     foreach ($query->execute() as $senateur) {
@@ -248,6 +248,18 @@ class parlementaireActions extends sfActions
       if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $senateur;
       else $this->parlementaires[$imp] = array($senateur);
     }
+    $query = Doctrine::getTable('Parlementaire')->createQuery('p')
+      ->select('p.*')
+      ->where('p.groupe_acronyme = ?', strtoupper($acro))
+      ->andWhere('p.fin_mandat IS NOT NULL')
+      ->andWhere('p.fin_mandat > p.debut_mandat')
+      ->orderBy('p.nom_de_famille ASC');
+    foreach ($query->execute() as $senateur) {
+      $this->total++;
+      if (isset($this->parlementaires[0])) $this->parlementaires[0][] = $senateur;
+      else $this->parlementaires[0] = array($senateur);
+    }
+
     $query2 = Doctrine::getTable('Organisme')->createQuery('o');
     $query2->where('o.nom = ?', $nom);
     $this->orga = $query2->fetchOne();
@@ -360,8 +372,11 @@ class parlementaireActions extends sfActions
       }
       $qp->whereIn('id', $ids);
     }
+    if (myTools::isDebutMandature())
+      $enddate = myTools::getDebutMandature();
+    else $enddate = date('Y-m-d', time()-round(60*60*24*3650/12));
     $qp->andWhere('fin_mandat IS NULL')
-      ->andWhere('debut_mandat < ?', date('Y-m-d', time()-round(60*60*24*3650/12)))
+      ->andWhere('debut_mandat < ?', $enddate)
       ->orderBy('nom_de_famille');
     $parlementaires = $qp->fetchArray();
     unset($qp);

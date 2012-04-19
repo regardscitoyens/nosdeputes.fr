@@ -18,6 +18,20 @@ class myTools {
     return explode('","', $string);
   }
 
+  public static function getDebutMandature() {
+    $date = sfConfig::get('app_debut_mandature');
+    if (!$date)
+      $date = "2011-10-01";
+    return $date;
+  }
+
+  public static function isDebutMandature() {
+    $gap = time() - strtotime(self::getDebutMandature());
+    if ($gap > 864000 && $gap < 25920000)
+      return true;
+    return false;
+  }
+
   public static function getGroupesInfos() {
     $conf = sfConfig::get('app_groupes_infos', '');
     if (!$conf) {

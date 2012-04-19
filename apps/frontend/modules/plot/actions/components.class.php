@@ -194,11 +194,15 @@ class plotComponents extends sfComponents
     else $this->data['titres'] = array("", "Interventions", "Longues", "Courtes", "Déposés", "Adoptés", "de Lois", "Écrites", "Orales");
     $n = count($this->data['titres']);
     $stats = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
+    if (myTools::isDebutMandature())
+      $enddate = myTools::getDebutMandature();
+    else $enddate = date('Y-m-d', time()-60*60*24*365);
     $query = Doctrine_Query::create()
       ->select('p.groupe_acronyme, count(DISTINCT(a.id)) as ct')
       ->from('Parlementaire p, p.ParlementaireAmendements pa, pa.Amendement a')
-      ->where('a.date > ?', date('Y-m-d', time()-60*60*24*365))
+      ->where('pa.numero_signataire = ?', 1)
       ->andWhere('p.groupe_acronyme IS NOT NULL')
+      ->andWhere('a.date > ?', $enddate)
       ->groupBy('p.groupe_acronyme');
     $qamdmts = clone($query);
     $amdmts = $qamdmts->fetchArray();
@@ -210,13 +214,13 @@ class plotComponents extends sfComponents
     $props = Doctrine_Query::create()
       ->select('p.groupe_acronyme, count(DISTINCT(t.id)) as ct')
       ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
-      ->where('t.date > ?', date('Y-m-d', time()-60*60*24*365))
+      ->where('t.date > ?', $enddate)
       ->andWhere('pt.importance = 1')
       ->andWhere('t.type LIKE ?', "proposition%")
       ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->groupBy('p.groupe_acronyme')
       ->fetchArray();
-    foreach ($this->data['groupes'] as $groupe => $arr) if ($stats[$groupe]) {
+    foreach ($this->data['groupes'] as $groupe => $arr) if (isset($stats[$groupe])) {
       $this->data['groupes'][$groupe][] = $stats[$groupe]['groupe']['nb'];
       if ($this->type === "all") {
         $this->data['groupes'][$groupe][] = $stats[$groupe]['commission_interventions']['somme'];
@@ -224,14 +228,14 @@ class plotComponents extends sfComponents
         $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions_courtes']['somme'];
       } else $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme']+$stats[$groupe]['commission_interventions']['somme'];
     }
-    foreach ($amdmts as $amdt) if (isset($this->data['groupes'][$amdt['groupe_acronyme']]))
+    foreach ($amdmts as $amdt) if ($amdt['groupe_acronyme'] != "" && isset($this->data['groupes'][$amdt['groupe_acronyme']]))
       $this->data['groupes'][$amdt['groupe_acronyme']][] = $amdt['ct'];
     if ($this->type === "all")
-      foreach ($amdmts2 as $amdt) if (isset($this->data['groupes'][$amdt['groupe_acronyme']]))
+      foreach ($amdmts2 as $amdt) if ($amdt['groupe_acronyme'] != "" && isset($this->data['groupes'][$amdt['groupe_acronyme']]))
         $this->data['groupes'][$amdt['groupe_acronyme']][] = $amdt['ct'];
-    foreach ($props as $pro) if (isset($this->data['groupes'][$pro['groupe_acronyme']]))
+    foreach ($props as $pro) if ($pro['groupe_acronyme'] != "" && isset($this->data['groupes'][$pro['groupe_acronyme']]))
       $this->data['groupes'][$pro['groupe_acronyme']][] = $pro['ct'];
-    foreach ($this->data['groupes'] as $groupe => $arr) if ($stats[$groupe]) {
+    foreach ($this->data['groupes'] as $groupe => $arr) if (isset($stats[$groupe])) {
       $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_ecrites']['somme'];
       if ($this->type === "all")
         $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_orales']['somme'];
@@ -240,10 +244,10 @@ class plotComponents extends sfComponents
     for ($i=0;$i<$n;$i++)
       $this->data['totaux'][] = 0;
     foreach ($this->data['groupes'] as $groupe => $arr)
-      for ($i=0;$i<$n;$i++)
+      for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i]))
         $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
     foreach ($this->data['groupes'] as $groupe => $arr)
-      for ($i=0;$i<$n;$i++) {
+      for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i])) {
         $tmp = round($this->data['groupes'][$groupe][$i]  / $this->data['totaux'][$i] * 1000)/10;
         $this->data['groupes'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
       }

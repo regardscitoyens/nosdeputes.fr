@@ -12,7 +12,7 @@ class topSenateursTask extends sfBaseTask
     $this->briefDescription = 'Top Senateurs';
     $this->addArgument('month', sfCommandArgument::OPTIONAL, 'First day of the month you want to add in db', '');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
-    $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
   /**
@@ -46,10 +46,10 @@ class topSenateursTask extends sfBaseTask
 
   protected function executePresence($q)
   {
-    $semaines = $q->select('p.id, s.numero_semaine, pr.id, count(s.id)')
+    $semaines = $q->select('p.id, s.annee, s.numero_semaine, pr.id, count(s.id)')
       ->from('Parlementaire p, p.Presences pr, pr.Seance s')
       ->andWhere('p.groupe_acronyme IS NOT NULL')
-      ->groupBy('p.id, s.numero_semaine')
+      ->groupBy('p.id, s.annee, s.numero_semaine')
       ->fetchArray();
     foreach ($semaines as $p) {
       foreach($p['Presences'] as $pr) {
@@ -341,8 +341,11 @@ class topSenateursTask extends sfBaseTask
     $q = Doctrine_Query::create()->where('fin_mandat IS NULL')->andWhere('groupe_acronyme IS NOT NULL');
  
     $qs = clone $q;
-    $qs->andWhere('s.date > ?', date('Y-m-d', time()-60*60*24*365));
 
+    if (myTools::isDebutMandature())
+      $enddate = myTools::getDebutMandature();
+    else $enddate = date('Y-m-d', time()-60*60*24*365);
+    $qs->andWhere('s.date > ?', $enddate);
     
      
     $this->executePresence(clone $qs);
@@ -352,7 +355,7 @@ class topSenateursTask extends sfBaseTask
     $this->orderSenateurs('commission_presences');
     
     $qi = clone $q;
-    $qi->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
+    $qi->andWhere('i.date > ?', $enddate);
 
     $this->executeCommissionInterventions(clone $qi);
     $this->orderSenateurs('commission_interventions');
@@ -365,7 +368,7 @@ class topSenateursTask extends sfBaseTask
     $this->orderSenateurs('hemicycle_interventions_courtes');
     
     $qa = clone $q;
-    $qa->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
+    $qa->andWhere('a.date > ?', $enddate);
     $this->executeAmendementsSignes(clone $qa);
     $this->orderSenateurs('amendements_signes');
     
@@ -376,7 +379,7 @@ class topSenateursTask extends sfBaseTask
 //    $this->orderSenateurs('amendements_rejetes', 0);
 
     $qd = clone $q;
-    $qd->where('t.date > ?', date('Y-m-d', time()-60*60*24*365));
+    $qd->where('t.date > ?',$enddate);
     $this->executeRapports(clone $qd);
     $this->orderSenateurs('rapports');
 
@@ -387,7 +390,7 @@ class topSenateursTask extends sfBaseTask
     $this->orderSenateurs('propositions_signees');
 
     $qq = clone $q;
-    $qq->where('q.date > ?', date('Y-m-d', time()-60*60*24*365));
+    $qq->where('q.date > ?', $enddate);
     $this->executeQuestionsEcrites(clone $qq);
     $this->orderSenateurs('questions_ecrites');
 
@@ -398,6 +401,8 @@ class topSenateursTask extends sfBaseTask
 
     $groupes = array();
     foreach(array_keys($this->senateurs) as $id) {
+      if ($this->senateurs[$id]['groupe'] == "")
+        continue;
       foreach(array_keys($this->senateurs[$id]) as $key) {
 	$groupes[$this->senateurs[$id]['groupe']][$key]['somme'] += $this->senateurs[$id][$key]['value'];
 	$groupes[$this->senateurs[$id]['groupe']][$key]['nb']++;

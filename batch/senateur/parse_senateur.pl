@@ -110,6 +110,7 @@ sub groupefonction {
 	$str =~ s/^(Assemblée parlementaire de la franco)/Section française de l'$1/i;
 	$str =~ s/^(Assemblée parlementaire de l'OTAN)/Délégation française à l'$1/i;
 	$str =~ s/Groupe Groupe/Groupe/i;
+        $str =~ s/écologiste/Écologiste/;
 	utf8::encode($str);
 	return ucfirst($str);
 }

@@ -45,12 +45,19 @@ $top = $parlementaire->getTop();
 if (!$top)
   return ;
 if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->debut_mandat) {
-  $mois = floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30));
+  if (myTools::isDebutMandature() && strtotime(myTools::getDebutMandature()) > strtotime($parlementaire->debut_mandat)) {
+    $stdate = myTools::getDebutMandature();
+    $headstr = "premier";
+    if (strtotime(myTools::getDebutMandature()) - strtotime($parlementaire->debut_mandat) > 2160000)
+      $headstr = "dernier";
+  }
+  else $stdate = $parlementaire->debut_mandat;
+  $mois = floor((time() - strtotime($stdate) ) / (60*60*24*30));
   if($mois < 12) {
     echo '<h3>Activité <small>(';
-    if ($mois <= 1) echo 'premier';
+    if ($mois <= 1) echo $headstr;
     else
-      echo $mois.' premiers';
+      echo $mois.' '.$headstr.'s';
     echo ' mois de mandat)</small> :</h3>';
     $rank = 0;
   }else {
