@@ -385,7 +385,7 @@ class circonscriptionActions extends sfActions
 
     $this->parlementaires = Doctrine::getTable('Parlementaire')->createQuery('p')
       ->where('p.nom_circo = ?', $this->circo)
-      ->addOrderBy('p.num_circo')
+      ->addOrderBy('p.num_circo, p.nom_de_famille')
       ->execute();
     $this->total = count($this->parlementaires);
     $this->forward404Unless($this->total);
