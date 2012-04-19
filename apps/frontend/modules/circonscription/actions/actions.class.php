@@ -379,7 +379,7 @@ class circonscriptionActions extends sfActions
   public function executeShow(sfWebRequest $request) 
   {
     $this->circo = preg_replace('/^.*polyn.*$/i', 'Polynésie-française', $request->getParameter('departement'));
-    $this->circo = preg_replace('/^.*[eé]tranger.*/', 'Français établis hors de France', $this->circo);
+    $this->circo = preg_replace('/^.*([eé]tranger|établis).*/', 'Français établis hors de France', $this->circo);
     $this->forward404Unless($this->circo);
     $this->departement_num = Parlementaire::getNumeroDepartement($this->circo);
 
