@@ -115,13 +115,13 @@ sub texte {
 sub sortseance {
     if ($line =~ /irrecevable/i) {
 	$amdmt{'sort'} = 'Irrecevable';
-    } elsif ($line =~ /retiré.*séance/i) {
+    } elsif ($line =~ /retir.+s.+ance/i) {
 	$amdmt{'sort'} = 'Retiré avant séance';
     } elsif ($line =~ /retiré/i) {
 	$amdmt{'sort'} = 'Retiré';
     } elsif ($line =~ /non.*(soutenu|défendu)/i) {
 	$amdmt{'sort'} = 'Non soutenu';
-    } elsif ($line =~ /tombe/i) {
+    } elsif ($line =~ /tomb/i) {
 	$amdmt{'sort'} = 'Tombe';
     } elsif ($line =~ /rejet/i) {
 	$amdmt{'sort'} = 'Rejeté';
@@ -202,7 +202,7 @@ foreach $line (split /\n/, $string)
 	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
 	    sortseance();
-	} elsif ($line =~ /name="NUM_AMENDG?"/i) { 
+	} elsif ($line =~ /name="NUM_AM(TXT|ENDG?)"/i) { 
 	    numero();
 	}
     } elsif ($line =~ /date_?amend.*([0-9]+e?r? \S+ [0-9]+)\D/i && !$amdmt{'date'}) {
@@ -279,7 +279,7 @@ foreach $line (split /\n/, $string)
         if ($amdmt{'texte'} || !$line =~ /article/i) {
             $texte = 2;
         }
-    } elsif (!$amdt{'sort'} && $line =~ /\<div.*id="sort"/i) {
+    } elsif ((!$amdt{'sort'} || $amdt{'sort'} == "") && ($line =~ /\<div.*id="sort"/i || $line =~ /retir.+ avant s.+ance/i)) {
 	sortseance();
     } elsif ($identiques == 1 && $line =~ /\<p style=".*text-align:.*\>.*M[\.Mml]/i) {
 	identiques();
