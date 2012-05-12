@@ -5,6 +5,9 @@
  */
 class Intervention extends BaseIntervention
 {
+
+  public $perso = null;
+
   public function getLink() {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@interventions_seance?seance='.$this->getSeance()->id).'#inter_'.$this->getMd5();
@@ -111,11 +114,16 @@ class Intervention extends BaseIntervention
     return false;
   }
 
-  public function getIntervenant() {
-    $perso = $this->Parlementaire;
-    if (!$perso->id)
-      $perso = $this->Personnalite;
-    return $perso;
+  public function getIntervenant(&$parlementaires = null, &$personnalites = null) {
+    if (is_null($this->perso)) {
+      if ($this->parlementaire_id) {
+        $this->perso = $parlementaires[$this->parlementaire_id];
+      }
+      if ($this->personnalite_id) {
+        $this->perso = $personnalites[$this->personnalite_id];
+      }
+    }
+    return $this->perso;
   }
 
   public function getNomAndFonction() {

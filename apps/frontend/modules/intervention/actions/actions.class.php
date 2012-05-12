@@ -94,6 +94,34 @@ class interventionActions extends sfActions
     $query = Doctrine::getTable('Intervention')->createquery('i')
         ->where('i.seance_id = ?', $seance_id)
         ->orderBy('i.timestamp ASC');
+
+
+    $parlementaires = Doctrine::getTable('Intervention')->createquery('i')
+        ->where('i.seance_id = ?', $seance_id)
+        ->leftJoin('i.Parlementaire p')
+        ->groupBy('i.parlementaire_id')
+        ->execute()
+        ;
+    $this->parlementaires = array();
+    foreach ($parlementaires as $p) {
+      if ($p->parlementaire_id) {
+        $this->parlementaires[$p->parlementaire_id] = $p->Parlementaire;
+      }
+    }
+
+    $personnalites = Doctrine::getTable('Intervention')->createquery('i')
+        ->where('i.seance_id = ?', $seance_id)
+        ->leftJoin('i.Personnalite p')
+        ->groupBy('i.personnalite_id')
+        ->execute()
+        ;
+    $this->personnalites = array();
+    foreach ($personnalites as $p) {
+      if ($p->personnalite_id) {
+        $this->personnalites[$p->personnalite_id] = $p->Personnalite;
+      }
+    }
+
     $qtag = Doctrine_Query::create();
     $qtag->from('Tagging tg, tg.Tag t, Intervention i');
     $qtag->where('i.seance_id = ?', $seance_id);
