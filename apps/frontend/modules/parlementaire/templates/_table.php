@@ -27,28 +27,29 @@ if (isset($list)) {
   echo '<td>';
 }
 foreach($deputes as $depute) {
+  $url_depute = url_for('@parlementaire?slug='.$depute->slug);
   $ct++; ?>
-  <div class="list_dep<?php if (isset($circo) && $depute->fin_mandat == null) echo ' dep_map" id="dep'.preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo); ?>" onclick="document.location='<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>'"><span title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>" class="jstitle phototitle block"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>"></a>
+  <div class="list_dep<?php if (isset($circo) && $depute->fin_mandat == null) echo ' dep_map" id="dep'.preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo); ?>" onclick="document.location='<?php echo $url_depute; ?>'"><span title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>" class="jstitle phototitle block"><a class="urlphoto" href="<?php echo $url_depute; ?>"></a>
     <span class="list_nom">
-      <a href="<?php echo url_for('@parlementaire?slug='.$depute->slug); ?>"><?php echo $depute->getNomPrenom(); ?></a>
+      <a href="<?php echo $url_depute; ?>"><?php echo $depute->getNomPrenom(); ?></a>
     </span>
-    <span class="list_right"><a href="<?php echo url_for('@parlementaire?slug='.$depute->slug); //if (!isset($circo)) echo url_for('@list_parlementaires_departement?departement='.$depute->nom_circo); else echo url_for('@parlementaire?slug='.$depute->slug); ?>"><?php
+    <span class="list_right"><a href="<?php echo $url_depute; //if (!isset($circo)) echo url_for('@list_parlementaires_departement?departement='.$depute->nom_circo); else echo url_for('@parlementaire?slug='.$depute->slug); ?>"><?php
       if (isset($circo)) {
         echo '<span class="list_num_circo">';
         $string = preg_replace('/(è[rm]e)/', '<sup>\1</sup>', $depute->getNumCircoString());
         if (isset($dept))
           $string = $depute->getNumDepartement().'&nbsp;&mdash;&nbsp;'.preg_replace("/nscription/", "", $string);
         echo $string.'</span></a>';
-      } else echo $depute->nom_circo; 
+      } else echo $depute->nom_circo;
     ?></a></span><br/>
     <span class="list_left">
-      <?php echo preg_replace('/\s([A-Z]+)$/', ' <a href="'.url_for('@parlementaire?slug='.$depute->slug).'"><span class="c_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
+      <?php echo preg_replace('/\s([A-Z]+)$/', ' <a href="'.$url_depute.'"><span class="c_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
     </span>
     <span class="list_right"><?php
       if (!$depute->nb_commentaires)
         echo "0&nbsp;commentaire";
       else {
-        echo '<a href="'.url_for('@parlementaire?slug='.$depute->slug).'"><span class="list_com">'.$depute->nb_commentaires.'&nbsp;commentaire';
+        echo '<a href="'.$url_depute.'"><span class="list_com">'.$depute->nb_commentaires.'&nbsp;commentaire';
         if ($depute->nb_commentaires > 1) echo 's';
         echo '</span></a>';
       }

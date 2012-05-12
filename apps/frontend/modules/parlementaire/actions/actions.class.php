@@ -160,25 +160,25 @@ class parlementaireActions extends sfActions
   public function executeList(sfWebRequest $request) {
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
     $query->orderBy('p.nom_de_famille ASC');
+    $results = $query->execute();
     $this->parlementaires = array();
-    foreach ($query->execute() as $depute) {
+    foreach ($results as $depute) {
       $lettre = $depute->nom_de_famille[0];
       $lettre = preg_replace('/[ÉÉ]/', 'E', $lettre);
       if (isset($this->parlementaires[$lettre])) $this->parlementaires[$lettre][] = $depute;
       else $this->parlementaires[$lettre] = array($depute);
     }
-    $ctquery = Doctrine_Query::create()
+    unset($results);
+    $this->total = Doctrine_Query::create()
       ->from('Parlementaire p')
       ->select('count(distinct p.id) as ct')
-      ->fetchOne();
-    $this->total = $ctquery['ct'];
-    $ctquery = Doctrine_Query::create()
+      ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+    $this->actifs = Doctrine_Query::create()
       ->from('Parlementaire p')
       ->select('count(distinct p.id) as ct')
       ->where('p.fin_mandat IS NULL')
       ->orWhere('p.fin_mandat < p.debut_mandat')
-      ->fetchOne();
-    $this->actifs = $ctquery['ct'];
+      ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
   }
 
   public function executeListProfession(sfWebRequest $request) {
