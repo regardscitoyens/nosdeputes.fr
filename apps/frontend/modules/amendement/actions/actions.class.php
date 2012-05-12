@@ -38,12 +38,8 @@ class amendementActions extends sfActions
 
      $this->sous_admts = Doctrine_Query::create()
        ->select('a.id, a.numero, a.sort')
-       ->from('Amendement a, Tagging tg, tg.Tag t')
-       ->where('a.texteloi_id = ?', $this->amendement->texteloi_id)
-       ->andWhere('a.sort <> ?', 'Rectifié')
-       ->andWhere('a.id = tg.taggable_id')
-       ->andWhere('t.name LIKE ?', 'loi:sous_amendement_de=%')
-       ->andWhere('t.triple_value = ?', $this->amendement->numero)
+       ->from('Amendement a')
+       ->where('a.sous_amendement_de = ?', $this->amendement->numero)
        ->orderBy('a.numero')
        ->fetchArray();
    

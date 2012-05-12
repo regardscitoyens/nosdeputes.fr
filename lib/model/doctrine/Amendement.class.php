@@ -117,11 +117,7 @@ class Amendement extends BaseAmendement {
   public function getPresentTitre($link = 0) {
     $parent = 0;
     $pluriel = "";
-    $parent = $this->getTags(array('is_triple' => true,
-	  'namespace' => 'loi',
-	  'key' => 'sous_amendement_de',
-	  'return'    => 'value'));
-    if (count($parent) == 1)
+    if ($this->sous_amendement_de)
       $titre = "Sous-Amendement";
     else {
       $parent = "";
@@ -144,14 +140,14 @@ class Amendement extends BaseAmendement {
       $titre .= " rectifié".$pluriel;
     elseif($this->rectif > 1)
       $titre .= " ".$this->rectif."ème rectif.";
-    if ($parent != 0) {
+    if ($this->sous_amendement_de) {
       $titre .= ' à ';
       if ($link && function_exists('url_for')) {
-	$titre .= '<a href="'.url_for('@amendement?loi='.$this->texteloi_id.'&numero='.$parent[0]).'">';
+	$titre .= '<a href="'.url_for('@amendement?loi='.$this->texteloi_id.'&numero='.$this->sous_amendement_de).'">';
       }else{
 	$link = 0;
       }
-      $titre .= 'l\'amendement N° '.$parent[0].$lettre;
+      $titre .= 'l\'amendement N° '.$this->sous_amendement_de;
       if ($link) $titre .= '</a>';
     }
     return $titre;
