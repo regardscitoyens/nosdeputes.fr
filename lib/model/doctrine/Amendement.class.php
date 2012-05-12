@@ -132,7 +132,11 @@ class Amendement extends BaseAmendement {
 	  'return'    => 'value'));
       sort($ident);
       foreach ($ident as $iden) if (preg_match('/'.$lettre.'/', $iden)) $iden.= $lettre;
-      $numeros = implode(', ', $ident);
+      if (count($ident) ==  $this->nb_multiples) {
+	$numeros = $ident[0].' à '.$ident[$this->nb_multiples -1];
+      }else{
+	$numeros = implode(', ', $ident);
+      }
       $pluriel = "s";
     }
     $titre .= $pluriel." N° ".$numeros;
