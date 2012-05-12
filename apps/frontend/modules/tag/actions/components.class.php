@@ -75,13 +75,13 @@ class tagComponents extends sfComponents
   }
 
   public function executeGlobalActivite() {
-    $inter = Doctrine::getTable('Intervention')->createQuery('i')
+    $ids = Doctrine::getTable('Intervention')->createQuery('i')
+      ->select('i.id')
       ->orderBy('i.date DESC')
-      ->limit(5000)->fetchArray();
-    $ids = array();
-    foreach($inter as $i) {
-      $ids[] = $i['id'];
-    }
+      ->limit(5000)
+      ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+//      ->fetchArray();
+
     $this->itag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t')
       ->andwhere('tg.taggable_model = ?', 'Intervention')

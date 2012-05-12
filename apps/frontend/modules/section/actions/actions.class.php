@@ -88,19 +88,16 @@ class sectionActions extends sfActions
 
     $interventions = array();
 
-    $inters = Doctrine_Query::create()
+    $interventions = Doctrine_Query::create()
       ->select('i.id')
       ->from('Intervention i')
       ->leftJoin('i.Section s')
       ->where('s.section_id = ?', $this->section->id)
       ->andWhere('i.nb_mots > 20')
-      ->fetchArray();    
-    foreach($inters as $i) {
-      $interventions[] = $i['id'];
-    }
+      ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
 
     //    $this->forward404Unless(count($interventions));
-      
+
     $this->qtag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t');
     if (count($interventions))
