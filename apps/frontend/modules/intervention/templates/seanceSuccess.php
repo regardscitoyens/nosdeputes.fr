@@ -84,23 +84,26 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
     if ($intervention->hasIntervenant()) {
       $didascalie = 0;
       $perso = $intervention->getIntervenant($parlementaires, $personnalites);
+      $nomandfonction = $intervention->getNomAndFonction();
       if ($titre != 1) {
 	echo '<span class="source">';
         if ($ct) echo '<a href="#table_'.$intervention->section_id.'">Debut de section</a>&nbsp;-&nbsp;';
         echo '<a href="'.url_for("@interventions_seance?seance=$seance->id").'#inter_'.$intervention->getMd5().'">Permalien</a></span>';
       }
-      if ($perso->getPageLink()) {
-        if ($photo = $perso->hasPhoto()) {
-	  echo '<a href="'.url_for($perso->getPageLink()).'">';
-	  include_partial('parlementaire/photoParlementaire', array('parlementaire' => $perso, 'height' => 70));
-	  echo '</a>';
-        }
-        echo '<div class="perso"><span><a href="'.url_for($perso->getPageLink()).'">';
-        echo $intervention->getNomAndFonction();
-        echo '</a></span></div>';
-      } else {
-        echo '<span class="perso">'.$intervention->getNomAndFonction().'</span>';
+      if ($perso->getPageLink() && $photo = $perso->hasPhoto()) {
+	echo '<a href="'.url_for($perso->getPageLink()).'">';
+	include_partial('parlementaire/photoParlementaire', array('parlementaire' => $perso, 'height' => 70));
+	echo '</a>';
       }
+      echo '<div class="perso">';
+      if ($perso->getPageLink()) {
+        echo '<span><a href="'.url_for($perso->getPageLink()).'">';
+        echo $nomandfonction;
+        echo '</a></span>';
+      } else {
+        echo $nomandfonction;
+      }
+      echo '</div>';
     } else {
       $didascalie = 1;
     } ?>
