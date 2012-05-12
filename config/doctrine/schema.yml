@@ -335,6 +335,8 @@ QuestionEcrite:
     uniq_num:
       fields: [legislature, numero]
       type: unique
+    index_date:
+      fields: [date]
 
 ParlementaireAmendement:
   actAs:
