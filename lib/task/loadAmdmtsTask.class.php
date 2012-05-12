@@ -58,19 +58,28 @@ class loadAmdmtsTask extends sfBaseTask {
               $amdmt->date = $json->date;
               $lettre = $amdmt->getLettreLoi();
               if ($json->serie) {
+		$nb_serie = 0;
                 if (preg_match('/,/', $json->serie)) {
                   $arr = preg_split('/,/', $json->serie);
                   foreach ($arr as $gap_stri) {
                     $gap = preg_split('/-/', $gap_stri);
-                    for ($n = $gap[0]; $n <= $gap[1]; $n++) 
+                    for ($n = $gap[0]; $n <= $gap[1]; $n++) {
                       $amdmt->addTag('loi:amendement='.$n.$lettre);
+		      $nb_serie++;
+		    }
                   }
                 } else {
                   $gap = preg_split('/-/', $json->serie);
-                  for ($n = $gap[0]; $n <= $gap[1]; $n++)
+                  for ($n = $gap[0]; $n <= $gap[1]; $n++) {
                     $amdmt->addTag('loi:amendement='.$n.$lettre);
+		    $nb_serie++;
+		  }
                 }
-              } else $amdmt->addTag('loi:amendement='.$amdmt->numero);
+		$amdmt->nb_multiples = $nb_serie;
+              } else {
+		$amdmt->addTag('loi:amendement='.$amdmt->numero);
+		$amdmt->nb_multiples = 1;
+	      }
               if ($json->parent)
                 $amdmt->sous_amendement_de = $json->parent.$lettre;
               $amdmt->sujet = $json->sujet;

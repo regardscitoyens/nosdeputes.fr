@@ -281,6 +281,9 @@ Amendement:
     expose: 
       type: string
     content_md5: string(36)
+    nb_multiples: 
+      type: integer
+      default: 1
   relations:
     Parlementaires:
       class: Parlementaire

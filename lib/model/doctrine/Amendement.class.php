@@ -125,13 +125,13 @@ class Amendement extends BaseAmendement {
     }
     $numeros = $this->numero;
     $lettre = $this->getLettreLoi();
-    $ident = $this->getTags(array('is_triple' => true,
+    if ($this->nb_multiples > 1) {
+      $ident = $this->getTags(array('is_triple' => true,
 	  'namespace' => 'loi',
 	  'key' => 'amendement',
 	  'return'    => 'value'));
-    if (count($ident) > 1 && $lettre != "") {
       sort($ident);
-      if ($lettre) foreach ($ident as $iden) $iden .= $lettre;
+      foreach ($ident as $iden) if (preg_match('/'.$lettre.'/', $iden)) $iden.= $lettre;
       $numeros = implode(', ', $ident);
       $pluriel = "s";
     }

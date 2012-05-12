@@ -40,6 +40,7 @@ class amendementActions extends sfActions
        ->select('a.id, a.numero, a.sort')
        ->from('Amendement a')
        ->where('a.sous_amendement_de = ?', $this->amendement->numero)
+       ->andWhere('a.sort <> ?', 'Rectifié')
        ->orderBy('a.numero')
        ->fetchArray();
    
