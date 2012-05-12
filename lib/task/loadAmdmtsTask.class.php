@@ -72,7 +72,7 @@ class loadAmdmtsTask extends sfBaseTask {
                 }
               } else $amdmt->addTag('loi:amendement='.$amdmt->numero);
               if ($json->parent)
-                $amdmt->addTag('loi:sous_amendement_de='.$json->parent.$lettre);
+                $amdmt->sous_amendement_de = $json->parent.$lettre;
               $amdmt->sujet = $json->sujet;
               $amdmt->texte = $json->texte;
               if ($json->expose)
