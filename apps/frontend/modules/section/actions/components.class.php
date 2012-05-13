@@ -17,11 +17,11 @@ class sectionComponents extends sfComponents
       ->andWhere('i.nb_mots > 20')
       ->groupBy('s.section_id');
 
-    if (isset($this->order) && $this->order == 'date')
+    if (isset($this->order) && $this->order == 'date') {
       $sql->orderBy('i.date DESC')->groupBy('s.section_id, i.date');
-    else $sql->orderBy('nb DESC');
-    if (isset($this->limit))
-      $sql->limit($this->limit*5);
+      if (isset($this->limit))
+	$sql->limit($this->limit*5);
+    } else $sql->orderBy('nb DESC');
     $this->textes = $sql->fetchArray();
     if (isset($this->order) && $this->order == 'date') {
       $done = array();
