@@ -103,7 +103,7 @@
 </tr></table>
       <h2>Champ lexical <small>(<?php
 if (myTools::isFinLegislature()) {
-echo "sur l'ensemble du quinquenat";
+echo "sur l'ensemble du quinquennat";
 }else{
 echo "sur 12 mois";
 }
