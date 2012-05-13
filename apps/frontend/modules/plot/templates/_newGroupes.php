@@ -1,7 +1,7 @@
 <div id="overDiv"></div>
 <?php $PictureID = "Map_".rand(1,10000).".map"; ?>
 <?php if ($type === "home") echo '<a href="'.url_for('@top_global').'">'; ?>
-<img id="graph_groupes" alt="Répartition de l'activité parlementaire sur les 12 derniers mois" src="<?php echo url_for('@groupes_plot_graph?type='.$type.'&mapId='.$PictureID); ?>" onmousemove="getMousePosition(event);" onmouseout="nd();"/>
+<img width="433" height="320" id="graph_groupes" alt="Répartition de l'activité parlementaire sur les 12 derniers mois" src="<?php echo url_for('@groupes_plot_graph?type='.$type.'&mapId='.$PictureID); ?>" onmousemove="getMousePosition(event);" onmouseout="nd();"/>
 <?php if ($type === "home") echo '</a>'; ?>
 <script type="text/javascript"> 
 <!--
