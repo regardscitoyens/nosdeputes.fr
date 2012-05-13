@@ -101,7 +101,13 @@
        <td><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/email.png', 'alt="Email"'); ?></a><br/><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>">par email</a></td>
        <td><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>">par RSS</a></td>
 </tr></table>
-      <h2>Champ lexical</h2>
+      <h2>Champ lexical <small>(<?php
+if (myTools::isFinLegislature()) {
+echo "sur l'ensemble du quinquenat";
+}else{
+echo "sur 12 mois";
+}
+?>)</small></h2>
       <div style="text-align: justify">
 <?php echo include_component('tag', 'parlementaire', array('parlementaire'=>$parlementaire)); ?>
 <p class="suivant"><?php echo link_to('Tous ses mots', '@parlementaire_tags?slug='.$parlementaire->slug); ?></p>
