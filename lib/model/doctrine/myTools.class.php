@@ -17,6 +17,13 @@ class myTools {
     return explode('","', $string);
   }
 
+  public static function getDebutLegislature() {
+    $date = sfConfig::get('app_debut_legislature');
+    if (!$date)
+      $date = "2007-06-20";
+    return $date;
+  }
+
   public static function isFinLegislature() {
     if (sfConfig::get('app_fin_legislature') == true)
       return true;

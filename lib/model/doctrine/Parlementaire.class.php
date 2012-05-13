@@ -613,6 +613,37 @@ class Parlementaire extends BaseParlementaire
     return null;
   }
 
+  public function getNbMois() {
+    $vacs = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
+    $vacances = array();
+    if ($vacs) {
+      $vacances = unserialize($vacs->value);
+      unset($vacs);
+    }
+    $debut = strtotime(myTools::getDebutLegislature());
+    $fin = $debut + (5*365-31)*24*3600;  # fin législature définie à 4 ans et 11 mois)
+    $semaines = 0;
+    foreach (unserialize($this->getAnciensMandats()) as $m) {
+      if (preg_match("/^(.*) \/ (.*) \/ (.*)$/", $m, $match)) {
+        $match[1] = preg_replace("#^(\d+)/(\d+)/(\d+)$#", "\\3-\\2-\\1", $match[1]);
+        $sta = strtotime($match[1]);
+        if ($match[2] != "") {
+          $match[2] = preg_replace("#^(\d+)/(\d+)/(\d+)$#", "\\3-\\2-\\1", $match[2]);
+          $end = strtotime($match[2]);
+        } else $end = $fin;
+        if ($sta < $debut || $end > $fin)
+          continue;
+        $semaines += ($end - $sta)/(3600*24*7);
+        foreach ($vacances as $vacance) {
+          $week = strtotime($vacance["annee"]."0104 +".($vacance["semaine"] - 1)." weeks");
+          if ($week >= $sta && $week <= $end)
+            $semaines--;
+        }
+      }
+    }
+    return round($semaines*12/53);
+  }
+
   private function setInternalPhoto($photo) {
     $this->photo = $photo;
     return true;
