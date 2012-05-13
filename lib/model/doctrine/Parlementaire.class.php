@@ -598,9 +598,7 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function getTop() {
-    //A supprimer lorsque les top seront unifiés (cf. parlementaire action)
-    $s = preg_replace('/s:20:"hemicycle_invectives/', 's:31:"hemicycle_interventions_courtes', $this->_get('top'));
-    return unserialize($s);
+    return unserialize($this->_get('top'));
   }
 
   public function getCauseFinMandat() {

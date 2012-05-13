@@ -1,5 +1,5 @@
 <?php $fin = myTools::isFinLegislature();
-foreach ($tops as $t) if (!isset($date)) $date = $t[0]['updated_at']; ?>
+foreach ($tops as $t) if (!isset($date)) {$date = $t[0]['updated_at']; break;} ?>
 <h1>Synthèse générale de l'activité parlementaire<br/><small><?php if ($fin) echo "sur toute la législature"; else echo "sur les 12 derniers mois"; ?></small></h1>
 <h2 class="aligncenter"><small>(dernière <a href="<?php echo url_for('@faq'); ?>#post_2">mise-à-jour</a> le <?php echo preg_replace('/20(\d+)-(\d+)-(\d+) (\d+):(\d+):\d+/', '$3/$2/$1 à $4H$5', $date); ?>)</h2>
 <h2>Activité <?php if ($fin) echo "mensuelle moyenne "; ?>de tous les députés<?php if (!$fin) echo " ayant au moins 10 mois de mandat"; ?> :</h2>
@@ -79,13 +79,23 @@ $bulles = array("",
   foreach($tops as $t) {
     $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
     <td id="<?php echo $t[0]['slug']; ?>" class="jstitle phototitle c_<?php echo strtolower($t[0]['groupe_acronyme']); ?> <?php echo $class['parl']; ?>" title="<?php echo $t[0]['nom']; ?> -- Député<?php if ($t[0]['sexe'] === "F") echo 'e'; ?> <?php echo $t[0]['groupe_acronyme'].' '.preg_replace('/([^\'])$/', '\\1 ', Parlementaire::$dptmt_pref[trim($t[0]['nom_circo'])]).$t[0]['nom_circo']; ?>"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"><?php echo $t[0]['nom']; ?></a></td>
-    <?php for($i = 1 ; $i < count($t) ; $i++) { ?>
-      <td title="<?php echo $t[$i]['value'].' '; if ($t[$i]['value'] < 2) echo preg_replace('/s (.*-- )/', ' \\1', preg_replace('/s (.*-- )/', ' \\1', $bulles[$i])); else echo $bulles[$i]; ?>" <?php echo $t[$i]['style']; ?> class="jstitle <?php echo $class[$ktop[$i]]; ?>">
-      <?php if (preg_match('/\./', $t[$i]['value']))
+    <?php $field = "value";
+    if ($fin) 
+      $field = "moyenne";
+    for($i = 1 ; $i < count($t) ; $i++) {
+      echo '<td title="'.$t[$i]['value'].' ';
+      $leg = $bulles[$i];
+      if ($t[$i]['value'] < 2)
+        $leg = preg_replace('/s (.*-- )/', ' \\1', preg_replace('/s (.*-- )/', ' \\1', $leg));
+      if ($fin)
+        $leg = str_replace(" -- Nombre", " sur ".$t[0]["nb_mois"]." mois de mandat -- Nombre", $leg);
+      echo $leg;
+      echo '" '.$t[$i]['style'].' class="jstitle '.$class[$ktop[$i]].'">';
+      if (!$fin && preg_match('/\./', $t[$i]['value']))
         printf('%02d', $t[$i]['value']);
-      else echo $t[$i]['value']; ?>
-      </td>
-    <?php } ?>
+      else echo str_replace(".", ",", sprintf('%.02f', $t[$i][$field]));
+      echo '</td>';
+    } ?>
   </tr>
 <?php } ?>
 </table>

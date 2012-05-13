@@ -326,9 +326,9 @@ class parlementaireActions extends sfActions
   }
 
   public static function topSort($a, $b) {
-    if ($b[$_GET['sort']]['value'] == $a[$_GET['sort']]['value'])
+    if ($b[$_GET['sort']]['rank'] == $a[$_GET['sort']]['rank'])
       return strcmp($a[0]['nom_de_famille'], $b[0]['nom_de_famille']);
-    else return $b[$_GET['sort']]['value'] - $a[$_GET['sort']]['value'];
+    else return $a[$_GET['sort']]['rank'] - $b[$_GET['sort']]['rank'];
   }
 
   public function executeTop(sfWebRequest $request)
@@ -347,9 +347,11 @@ class parlementaireActions extends sfActions
       }
       $qp->whereIn('id', $ids);
     }
-    $qp->andWhere('fin_mandat IS NULL')
-      ->andWhere('debut_mandat < ?', date('Y-m-d', time()-round(60*60*24*3650/12)))
-      ->orderBy('nom_de_famille');
+    $fin = myTools::isFinLegislature();
+    if (!$fin)
+      $qp->andWhere('fin_mandat IS NULL')
+        ->andWhere('debut_mandat < ?', date('Y-m-d', time()-round(60*60*24*3650/12)));
+    $qp->orderBy('nom_de_famille');
     $parlementaires = $qp->fetchArray();
     unset($qp);
     $this->tops = array();
@@ -375,22 +377,33 @@ class parlementaireActions extends sfActions
       $tops = unserialize($p['top']);
       $id = $p['id'];
       $i = 0;
+      if ($fin && $tops['nb_mois'] < 4)
+        continue;
       $this->tops[$id][$i++] = $p;
 #      $nbmdts = count(unserialize($p['autres_mandats']));
 #      $this->sexes[$p['sexe']][0]['nb']++;
 #      $this->mandats[$nbmdts][0]['nb']++;
-      $this->gpes[$p['groupe_acronyme']][0]['nb']++;
+      if ($fin)
+        $this->tops[$id][0]["nb_mois"] = $tops['nb_mois'];
+      if (isset($this->gpes[$p['groupe_acronyme']]) && $p['groupe_acronyme'] != "")
+        $this->gpes[$p['groupe_acronyme']][0]['nb']++;
       foreach(array_keys($tops) as $key) {
+        if ($key == "nb_mois")
+          continue;
+        $this->tops[$id][$i]['rank'] = $tops[$key]['rank'];
 	$this->tops[$id][$i]['value'] = $tops[$key]['value'];
-
+        if ($fin)
+          $this->tops[$id][$i]['moyenne'] = $tops[$key]['moyenne'];
 	$this->tops[$id][$i]['style'] = '';
 	if ($tops[$key]['rank'] < 151)
 	  $this->tops[$id][$i]['style'] = ' style="color:green" ';
 	else if ($tops[$key]['rank'] > 577 - 151)
 	  $this->tops[$id][$i]['style'] = ' style="color:red" ';
-        if (!isset($this->gpes[$p['groupe_acronyme']][$i]))
-          $this->gpes[$p['groupe_acronyme']][$i] = 0;
-        $this->gpes[$p['groupe_acronyme']][$i] += $tops[$key]['value'];
+        if ($p['groupe_acronyme'] != "") {
+          if (!isset($this->gpes[$p['groupe_acronyme']][$i]))
+            $this->gpes[$p['groupe_acronyme']][$i] = 0;
+          $this->gpes[$p['groupe_acronyme']][$i] += $tops[$key]['value'];
+        }
 /*
  	if (!isset($this->sexes[$p['sexe']][$i]))
  	  $this->sexes[$p['sexe']][$i] = 0;
@@ -403,6 +416,9 @@ class parlementaireActions extends sfActions
       }
     }
     $this->ktop = array_keys($tops);
+    if ($this->ktop[0] == "nb_mois")
+      array_shift($this->ktop);
+
     $this->sort = $this->getRequestParameter('sort');
     if (($_GET['sort'] = $this->sort)) {
       usort($this->tops, 'parlementaireActions::topSort');

@@ -44,7 +44,11 @@ $couleur2style = array('vert' => ' style="color: green"',
 $top = $parlementaire->getTop();
 if (!$top)
   return ;
-if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->debut_mandat) {
+if (myTools::isFinLegislature()) {
+  echo '<h3>Activité totale ('.$top["nb_mois"].' mois) :</h3>';
+  $rank = 1;
+} else {
+ if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->debut_mandat) {
   $mois = floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30));
   if($mois < 12) {
     echo '<h3>Activité <small>(';
@@ -64,6 +68,7 @@ if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->
   else $temps = sprintf('%d semaines', $weeks);
   echo '<h3>Activité sur '.$temps.' :</h3>';
  }
+}
 ?>
 <ul><?php
 foreach(array_keys($images) as $k) {

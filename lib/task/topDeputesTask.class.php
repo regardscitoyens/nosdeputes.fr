@@ -20,28 +20,42 @@ class topDeputesTask extends sfBaseTask
    **/
   protected function orderDeputes($type, $reverse = 1) {
     $tot = 0;
+    $field = "value";
+    if (myTools::isFinLegislature())
+      $field = "moyenne";
     foreach(array_keys($this->deputes) as $id) {
-      if (!isset($this->deputes[$id][$type]['value'])) 
-	$this->deputes[$id][$type]['value'] = 0;
-      $ordered[$id] = $this->deputes[$id][$type]['value'];
+      if (!isset($this->deputes[$id][$type][$field])) 
+	$this->deputes[$id][$type][$field] = 0;
+      $ordered[$id] = $this->deputes[$id][$type][$field];
       $tot++;
     }
     if ($reverse)
       arsort($ordered);
     else
       asort($ordered);
-      
+     
     $cpt = 0;
     $last_value = -999;
     $last_cpt = 0;
     foreach(array_keys($ordered) as $id) {
       $cpt++;
-      if ($last_value != $this->deputes[$id][$type]['value'])
+      if ($last_value != $this->deputes[$id][$type][$field])
 	$last_cpt = $cpt;
       $this->deputes[$id][$type]['rank'] = $last_cpt;
       $this->deputes[$id][$type]['max_rank'] = $tot;
-      $last_value = $this->deputes[$id][$type]['value'];
+      $last_value = $this->deputes[$id][$type][$field];
     }
+  }
+
+  protected function executeMoyenneMois($field) {
+    if (myTools::isFinlegislature() && isset($this->deputes[1]['nb_mois']))
+      foreach ($this->deputes as $id => $p) {
+        if (!$this->deputes[$id][$field]['value'])
+          $this->deputes[$id][$field]['value'] = 0;
+        if ($this->deputes[$id]['nb_mois'])
+          $this->deputes[$id][$field]['moyenne'] = round(100 * $this->deputes[$id][$field]['value'] / $this->deputes[$id]['nb_mois']) / 100;
+        else $this->deputes[$id][$field]['moyenne'] = $this->deputes[$id][$field]['value'];
+      }
   }
 
   protected function executePresence($q)
@@ -55,6 +69,7 @@ class topDeputesTask extends sfBaseTask
 	$this->deputes[$p['id']]['semaines_presence']['value']++;
       }
     }
+    $this->executeMoyenneMois('semaines_presence');
   }
   protected function executeCommissionPresence($q) 
   {
@@ -66,6 +81,7 @@ class topDeputesTask extends sfBaseTask
       foreach ($parlementaires as $p) {
 	$this->deputes[$p['id']]['commission_presences']['value'] = $p['count'];
       }
+    $this->executeMoyenneMois('commission_presences');
   }
   protected function executeCommissionInterventions($q)
   {
@@ -77,6 +93,7 @@ class topDeputesTask extends sfBaseTask
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['commission_interventions']['value'] = $p['count'];
     }
+    $this->executeMoyenneMois('commission_interventions');
   }
   protected function executeHemicycleInvectives($q) 
   {
@@ -89,6 +106,7 @@ class topDeputesTask extends sfBaseTask
       foreach ($parlementaires as $p) {
 	$this->deputes[$p['id']]['hemicycle_interventions_courtes']['value'] = $p['count'];
       }
+      $this->executeMoyenneMois('hemicycle_interventions_courtes');
   }
   protected function executeHemicycleInterventions($q)
   {
@@ -101,6 +119,7 @@ class topDeputesTask extends sfBaseTask
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['hemicycle_interventions']['value'] = $p['count'];
     }
+    $this->executeMoyenneMois('hemicycle_interventions');
   }
 
   protected function executeAmendementsSignes($q)
@@ -113,6 +132,7 @@ class topDeputesTask extends sfBaseTask
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['amendements_signes']['value'] = $p['count'];
     }
+    $this->executeMoyenneMois('amendements_signes');
   }
  
   protected function executeAmendementsAdoptes($q)
@@ -125,6 +145,7 @@ class topDeputesTask extends sfBaseTask
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['amendements_adoptes']['value'] = $p['count'];
     }
+    $this->executeMoyenneMois('amendements_adoptes');
   }
 
   protected function executeAmendementsRejetes($q)
@@ -137,6 +158,7 @@ class topDeputesTask extends sfBaseTask
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['amendements_rejetes']['value'] = $p['count'];
     }
+    $this->executeMoyenneMois('amendements_rejetes');
   }
   
   protected function executeQuestionsEcrites($q)
@@ -148,6 +170,7 @@ class topDeputesTask extends sfBaseTask
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['questions_ecrites']['value'] = $p['count'];
     }
+    $this->executeMoyenneMois('questions_ecrites');
   }
   protected function executeQuestionsOrales($q)
   {
@@ -161,6 +184,7 @@ class topDeputesTask extends sfBaseTask
     foreach ($questions as $q) {
       $this->deputes[$q['id']]['questions_orales']['value'] = $q['count'];
     }
+    $this->executeMoyenneMois('questions_orales');
   }
   protected function executeRapports($q)
   {
@@ -172,6 +196,7 @@ class topDeputesTask extends sfBaseTask
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['rapports']['value'] = $p['count'];
     }
+    $this->executeMoyenneMois('rapports');
   }
   protected function executePropositionsEcrites($q)
   {
@@ -184,6 +209,7 @@ class topDeputesTask extends sfBaseTask
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['propositions_ecrites']['value'] = $p['count'];
     }
+    $this->executeMoyenneMois('propositions_ecrites');
   }
   protected function executePropositionsSignees($q)
   {
@@ -194,7 +220,8 @@ class topDeputesTask extends sfBaseTask
       ->fetchArray();
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['propositions_signees']['value'] = $p['count'];
-    } 
+    }
+    $this->executeMoyenneMois('propositions_signees');
   }   
 
 
@@ -299,10 +326,13 @@ class topDeputesTask extends sfBaseTask
     $qdeputes = Doctrine::getTable('Parlementaire')->createQuery()
       ->where('type = ?', 'depute');
     if (!$fin)
-      $qdeputes->andWhere('fin_mandat IS NULL'); 
-    else $qdeputes->andWhere('groupe_acronyme IS NOT NULL AND groupe_acronyme <> ?', '');
+      $qdeputes->andWhere('fin_mandat IS NULL');
     foreach($qdeputes->fetchArray() as $d) {
-      $this->deputes[$d['id']]['groupe'] = $d['groupe_acronyme'];
+      if (isset($d['groupe_acronyme']))
+        $this->deputes[$d['id']]['groupe'] = $d['groupe_acronyme'];
+      else $this->deputes[$d['id']]['groupe'] = "";
+      if ($fin)
+        $this->deputes[$d['id']]['nb_mois'] = Doctrine::getTable('Parlementaire')->find($d['id'])->getNbMois();
     }
 
     $q = Doctrine_Query::create();
@@ -370,11 +400,11 @@ class topDeputesTask extends sfBaseTask
 
     $groupes = array();
     foreach(array_keys($this->deputes) as $id) {
-      if ($this->deputes[$id]['groupe'] == "")
-        continue;
-      foreach(array_keys($this->deputes[$id]) as $key) {
-	$groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
-	$groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
+      if ($this->deputes[$id]['groupe'] != "") {
+        foreach(array_keys($this->deputes[$id]) as $key) {
+	  $groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
+	  $groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
+        }
       }
       unset($this->deputes[$id]['groupe']);
       $depute = Doctrine::getTable('Parlementaire')->find($id);
