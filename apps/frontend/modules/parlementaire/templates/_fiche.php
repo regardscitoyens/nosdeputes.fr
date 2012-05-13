@@ -75,7 +75,7 @@
       <div class="b_d_infos">
       <h2>Travaux législatifs</h2>
 	<h3><?php if(myTools::isFinLegislature()) {
-	  echo "Ses principaux dossiers du quinquennat";
+	  echo "Ses principaux dossiers de la législature";
 	  $order = 'nb';
 	}else{
 	  echo "Ses derniers dossiers";
@@ -109,7 +109,7 @@
 </tr></table>
       <h2>Champ lexical <small>(<?php
 if (myTools::isFinLegislature()) {
-echo "sur l'ensemble du quinquennat";
+echo "sur l'ensemble de la législature";
 }else{
 echo "sur 12 mois";
 }
