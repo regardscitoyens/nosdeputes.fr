@@ -27,7 +27,7 @@ class reindexSolrObjectTask extends sfBaseTask {
     if ($class === "Seance") {
       $inters = Doctrine::getTable('Intervention')->createQuery('i')->where('seance_id = ?', $id)->execute();
       foreach ($inters as $i)
-        $this->index($i);
+        $this->index($class, $i);
     } else {
       $this->index($class, $id);
     }
