@@ -25,9 +25,9 @@ class solrActions extends sfActions
     case 'Parlementaire':
       return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj, 'height'=>70));
     case 'Commentaire':
-      return '<img width="53" class="jstitle" title="'.$obj->getCitoyen()->getLogin().'" alt="'.$obj->getCitoyen()->getLogin().'" src="'.url_for('@photo_citoyen?slug='.$obj->getCitoyen()->getSlug()).'"/>';
+      return '<img style="width:53px;" class="jstitle" title="'.$obj->getCitoyen()->getLogin().'" alt="'.$obj->getCitoyen()->getLogin().'" src="'.url_for('@photo_citoyen?slug='.$obj->getCitoyen()->getSlug()).'"/>';
     case 'Citoyen':
-      return '<img width="53" class="jstitle" title="'.$obj->getLogin().'" alt="'.$obj->getLogin().'" src="'.url_for('@photo_citoyen?slug='.$obj->getSlug()).'"/>';
+      return '<img style="width:53px;" class="jstitle" title="'.$obj->getLogin().'" alt="'.$obj->getLogin().'" src="'.url_for('@photo_citoyen?slug='.$obj->getSlug()).'"/>';
     case 'NonObjectPage':
       return $obj->getImage();
     }
