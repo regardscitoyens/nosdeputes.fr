@@ -75,6 +75,10 @@ class tagComponents extends sfComponents
   }
 
   public function executeGlobalActivite() {
+    $this->itag = null;
+    if (myTools::isFinLegislature())
+      return ;
+
     $ids = Doctrine::getTable('Intervention')->createQuery('i')
       ->select('i.id')
       ->orderBy('i.date DESC')

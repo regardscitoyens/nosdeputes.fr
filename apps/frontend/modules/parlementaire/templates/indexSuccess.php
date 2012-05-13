@@ -186,7 +186,13 @@
   <div class="clear"></div>
 <div class="box_container">
   <div class="box_tags">
-  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png" /></span><?php echo link_to('En ce moment à l\'Assemblée nationale', '@parlementaires_tags'); ?></h2>
+  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png" /></span><?php 
+if (myTools::isFinLegislature()) {
+$titretags = 'Les mots clés du quinquénat';
+}else{
+$titretags = 'En ce moment à l\'Assemblée nationale';
+}
+echo link_to($titretags, '@parlementaires_tags'); ?></h2>
   <?php echo include_component('tag', 'globalActivite'); ?>
   </div>
   <div class="box_repartition aligncenter"><div style="margin: auto;">
