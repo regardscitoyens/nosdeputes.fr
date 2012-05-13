@@ -107,15 +107,16 @@ class sectionActions extends sfActions
     
     $this->ptag = Doctrine_Query::create()
       ->from('Intervention i')
-      ->leftJoin('i.Parlementaire p')
-      ->where('p.id IS NOT NULL')
+      ->where('i.parlementaire_id IS NOT NULL')
       ->andWhere('((i.fonction != ? AND i.fonction != ? ) OR i.fonction IS NULL)', array('président', 'présidente'))
-      ->groupBy('p.id')
-      ->limit(30);
-    if (count($interventions))
+      ;
+    $this->interventions = array();
+    if (count($interventions)) {
       $this->ptag->whereIn('i.id', $interventions);
-    else
+      $this->interventions = $interventions;
+    }else{
       $this->ptag->where('false');
+    }
     
     $request->setParameter('rss', array(array('link' => '@section_rss_commentaires?id='.$this->section->id, 'title'=>'Les commentaires sur '.$this->section->titre)));
   }

@@ -110,7 +110,7 @@ if ($subsection->id != $section->id) : ?>
 </div>
 <div class="orateurs_dossier">
 <h2>Les principaux orateurs sur ce dossier :</h2>
-<?php echo include_component('parlementaire', 'list', array('parlementairequery' => $ptag, 'route'=>'@parlementaire_texte?id='.$section->id.'&slug=')); ?>
+<?php echo include_component('parlementaire', 'list', array('interventions' => $interventions, 'route'=>'@parlementaire_texte?id='.$section->id.'&slug=')); ?>
 </div>
 </div>
 <?php if ($section->nb_commentaires != 0) { ?>
