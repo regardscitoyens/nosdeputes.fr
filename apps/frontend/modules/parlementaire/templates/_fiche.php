@@ -116,7 +116,7 @@ echo "sur 12 mois";
 ?>)</small></h2>
       <div style="text-align: justify">
 <?php echo include_component('tag', 'parlementaire', array('parlementaire'=>$parlementaire)); ?>
-<p class="suivant"><?php echo link_to('Tous ses mots', '@parlementaire_tags?slug='.$parlementaire->slug); ?></p>
+<p class="suivant"><?php $end = ""; if (myTools::isFinLegislature()) $end = '&all=1'; echo link_to('Tous ses mots', '@parlementaire_tags?slug='.$parlementaire->slug.$end); ?></p>
       </div>
       </div>
     </div>
