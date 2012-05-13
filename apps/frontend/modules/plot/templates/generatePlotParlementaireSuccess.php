@@ -77,7 +77,7 @@ $DataSet2->AddPoint($data['vacances'], "Serie6");
 $DataSet2->AddSerie("Serie6");
 $DataSet2->SetAbsciseLabelSerie("Serie1");
 
-if ($questions === 'true' && $type != 'commission') {
+if (!$data['fin'] && $questions === 'true' && $type != 'commission') {
   $DataSet3 = new xsPData();
   $DataSet3->AddPoint($data['labels'], "Serie1");
   $DataSet3->AddPoint($data['n_questions'], "Serie7");
@@ -103,7 +103,9 @@ $Test->drawRoundedRectangle(5,5,795,$size - 5,5,230,230,230);
 $Test->drawGraphArea(230,230,230,FALSE);
 $Test->setFixedScale(0,$scale,$scale/$ticks);
 $Test->xsSetFontProperties("tahoma.ttf",$font);
-$Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,TRUE,0,0,FALSE,1,FALSE);
+$ticks = TRUE;
+if ($data['fin']) $ticks = FALSE;
+$Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,$ticks,0,0,FALSE,1,FALSE);
 if ($link === 'true') {
   $Test->setColorPalette(0,255,255,255);
   $Test->setColorPalette(1,255,255,255);
@@ -118,7 +120,7 @@ $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,255,255,0);
 $Test->setColorPalette(2,0,255,0);
 $Test->drawFilledLineGraph($Data,$DataDescr,78);
-if ($questions === 'true' && $type != 'commission') {
+if (!$data["fin"] && $questions === 'true' && $type != 'commission') {
   $Test->setColorPalette(0,0,0,255);
   $Test->drawOverlayBarGraph($Data3,$DataDescr3,85,25);
 }

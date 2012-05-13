@@ -429,8 +429,8 @@
 
      $this->DataCount = count($Data);
 
-     if ( $DrawTicks == FALSE )
-      return(0);
+#     if ( $DrawTicks == FALSE )
+#      return(0);
 
      $YPos = $this->GArea_Y2; $XMin = NULL;
      for($i=1;$i<=$Divisions+1;$i++)
@@ -481,7 +481,8 @@
       {
        if ( $ID % $SkipLabels == 0 )
         {
-         $this->drawLine(floor($XPos),$YAxisPos,floor($XPos),$YAxisPos+$YAxisOrt*5,$R,$G,$B);
+         if ($DrawTicks == TRUE)
+           $this->drawLine(floor($XPos),$YAxisPos,floor($XPos),$YAxisPos+$YAxisOrt*5,$R,$G,$B);
          $Value      = $Data[$Key][$DataDescription["Position"]];
          if ( $DataDescription["Format"]["X"] == "number" )
           $Value = $Value.$DataDescription["Unit"]["X"];

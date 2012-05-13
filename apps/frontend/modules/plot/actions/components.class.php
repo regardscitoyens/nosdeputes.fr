@@ -8,14 +8,17 @@ class plotComponents extends sfComponents
   public function executeGetParlData() {
     static $seuil_invective = 20;
     $this->data = array();
+    $this->data['fin'] = myTools::isFinLegislature();
     if (!isset($this->session)) $this->session = 'lastyear';
     if ($this->session === 'lastyear') {
-      if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {
+      if (!$this->data['fin'] && isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {
         $date = strtotime($this->parlementaire->fin_mandat);
         $this->data['mandat_clos'] = true;
       } else $date = time();
       $annee = date('Y', $date); $sem = date('W', $date);
-      $last_year = $date - 32054400;
+      if ($this->data['fin'])
+        $last_year = strtotime(myTools::getDebutLegislature());
+      else $last_year = $date - 32054400;
       $date_debut = date('Y-m-d', $last_year);
       $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year);
       if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
@@ -41,7 +44,9 @@ class plotComponents extends sfComponents
       $sem = $date_fin['numero_semaine'];
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     }
-    $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee0, $sem0);
+    if ($this->data['fin'])
+      $this->data['labels'] = $this->getLabelsMois($n_weeks, $annee0, $sem0);
+    else $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee0, $sem0);
     $this->data['vacances'] = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
 
     $query = Doctrine_Query::create()
@@ -87,7 +92,7 @@ class plotComponents extends sfComponents
       }
     }
     unset($participations);
-
+   if (!$this->data['fin']) {
     $query3 = Doctrine_Query::create()
       ->select('count(distinct s.id) as nombre, i.id, s.annee, s.numero_semaine')
       ->from('Intervention i')
@@ -112,6 +117,8 @@ class plotComponents extends sfComponents
       }
     }
     unset($questionsorales);
+   }
+    
   }
 
   public static function getVacances($n_weeks, $annee0, $sem0, $debut_mandat) {
@@ -144,6 +151,18 @@ class plotComponents extends sfComponents
       if (isset($hashmap[$index]) && !(($index == 3) && ($sem < 3 && $sem > 1))) $labels[$i] = $hashmap[$index];
     }
     if ($sem < 3 && $sem != 0) $labels[54] = "Jan";
+    return $labels;
+  }
+
+  public static function getLabelsMois($n_weeks, $annee, $sem) {
+    $hashmap = array('4'  => "Jan #AN#", '22' => "Mai", '38' => "Sep");
+    $labels = array_fill(1, $n_weeks, "");
+    for ($i = 1; $i <= $n_weeks; $i++) {
+      $index = $i + $sem;
+      $an = sprintf('%02d', $annee + floor($index/53) - 2000);
+      $index %= 53;
+      if (isset($hashmap[$index]) && !(($index == 3) && ($sem < 3 && $sem > 1))) $labels[$i] = str_replace('#AN#', $an, $hashmap[$index]);
+    }
     return $labels;
   }
 
