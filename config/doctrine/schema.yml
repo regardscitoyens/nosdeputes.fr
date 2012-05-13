@@ -125,7 +125,7 @@ Seance:
     type:
       type: enum
       values: ['commission', 'hemicycle']
-    moment: string(30)
+    moment: string(255)
     organisme_id: integer
     tagged: boolean
     session: string(10)

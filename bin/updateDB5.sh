@@ -6,4 +6,6 @@ echo 'select a.id, a.texteloi_id, a.numero, t.triple_value from amendement a, ta
 echo 'ALTER TABLE amendement ADD nb_multiples INT NOT NULL DEFAULT 1 AFTER content_md5 ' | mysql $MYSQLID $DBNAME
 echo 'select a.id, count(tg.id) FROM tagging tg LEFT JOIN amendement a ON a.id = tg.taggable_id LEFT JOIN tag t ON t.id = tg.tag_id  WHERE a.sort <> "Rectifié" AND t.triple_key = "amendement" AND taggable_model = "Amendement" group by a.id' |  mysql $MYSQLID $DBNAME | grep ^[0-9]  | awk '{print "UPDATE amendement SET nb_multiples = "$2" WHERE id = "$1";"}'  | mysql $MYSQLID $DBNAME
 
+echo 'ALTER TABLE seance CHANGE moment moment VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL' | mysql $MYSQLID $DBNAME
+
 php symfony doctrine:build-model

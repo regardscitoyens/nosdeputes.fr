@@ -7,7 +7,7 @@ use POSIX qw<mktime strftime>;
 $a = WWW::Mechanize->new();
 
 $url = shift;
-$organisme = shift;
+$deforganisme = shift;
 $a->get($url);
 $html = $a->content;
 utf8::encode($html);
@@ -51,6 +51,7 @@ sub findDate($) {
 	@dates =();
 	
 	my ( $year, $month, $day )  = split /-/, $datesrange[0];
+	return () if($year < 2000);
 	my ($eyear, $emonth, $eday) = split /-/, $datesrange[1];
 
 	my $end_date   = mktime( 0, 0, 0, $eday, $emonth -1, $eyear - 1900 );
@@ -77,17 +78,34 @@ foreach (split /\n/, $html) {
 		$titre =~ s/\’/\'/g;
 		$titre =~ s/&#8217;/'/g;
 		$titre =~ s/&#8211;/-/g;
+		$titre =~ s/&#8209;/-/g;
 		$titre =~ s/\xc2\x92/'/g;
 		$titre =~ s/\xc2\x96/-/g;
 		@date = findDate($_);
+		$organisme = '';
+		if($titre =~ /groupe d'amitié/i) {
+		    $titre =~ s/\s+\-\s+/-/g;
+		    $titre =~ s/- France/-France/gi;
+		    $titre =~ s/Groupe d'amitié France \/ /Groupe d'amitié France-/gi;
+		    $titre =~ s/Royaume Uni/Royaume-Uni/gi;
+		    $titre =~ s/Île Maurice/Île-Maurice/gi;
+		    $titre =~ s/Union des Comores/France-Comores/gi;
+		    $titre =~ s/Cap Vert/Cap-Vert/gi;
+		    $titre =~ s/Burkina Faso/Burkina-Faso/gi;
+		    $titre =~ s/France-Union des Comores/France-Comores/gi;
+		    $organisme = lc($1) if ($titre =~ /(groupe d'amitié [^:.,\( ]*) ?/i);
+		    $organisme =~ s/(\S*)-france/France-$1/i;
+		}
 		next;
 	}
 	%id = ();
 	while (/fiches_id.(\d+).asp">([^<]*)<\/a>/g) {
 		$nom = $2; $id = $1;
+		$nom =~ s/députée?s?//;
 		next if ($id{$id});
 		$id{$id} = 1;
 		$nom =~ s/&nbsp;/ /g;
+		$organisme = $deforganisme unless($organisme);
 		foreach $d (@date) {
 			print "{\"depute\":\"$nom\", \"id_an\":\"$id\", \"reunion\":\"$d\", \"commission\":\"$organisme\", \"source\": \"$url\", \"session\":\"$titre\"}\n";
 		}

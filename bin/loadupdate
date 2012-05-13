@@ -66,6 +66,11 @@ if [[ $jo -eq 1 ]]; then
   echo =======================
   cd batch/jo ; perl compute_latest.pl ; cd -
 fi
+if [[ $questions -eq 2 ]]; then
+  echo International
+  echo =======================
+  cd batch/presences ; bash load_all.sh  ; cd -    
+fi
 echo Hemicycles
 echo =======================
 cd batch/hemicycle ; bash compute_latest.sh ; cd -
@@ -88,9 +93,9 @@ if [[ $questions -ne 0 ]]; then
 fi
 echo Rapports et Textes de lois
 echo ==========================
-cd batch/documents
+cd batch/documents 
 if [[ $questions -eq 2 ]]; then
-  bash reload_latest_ppl.sh
+ bash reload_latest_ppl.sh
 fi
 bash compute_latest.sh
 cd -
@@ -106,6 +111,13 @@ if [[ $jo -eq 1 ]]; then
   echo load JO
   echo =======================
   while ! php symfony load:JO ; do
+        php symfony cc --env=test  --app=frontend > /dev/null
+  done;
+fi
+if [[ $questions -eq 2 ]]; then
+  echo load International
+  echo =======================
+  while ! php symfony load:JO --source=international; do
         php symfony cc --env=test  --app=frontend > /dev/null
   done;
 fi

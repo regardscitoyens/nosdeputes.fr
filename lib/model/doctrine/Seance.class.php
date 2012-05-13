@@ -66,6 +66,8 @@ class Seance extends BaseSeance
 
  
   public static function convertMoment($moment) {
+    if (strlen($moment) > 25)
+      return substr($moment, 0, 255);
     if (preg_match('`(seance|séance)`i', $moment)) {
         if (preg_match('`1`', $moment)) return "1ère séance";
         if (preg_match('`(\d{1})`', $moment, $match)) return $match[1];

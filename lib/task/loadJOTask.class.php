@@ -7,7 +7,7 @@ class loadJOTask extends sfBaseTask
     $this->namespace = 'load';
     $this->name = 'JO';
     $this->briefDescription = 'Load Présences from JO data or CRI';
-    $this->addOption('source', null, sfCommandOption::PARAMETER_OPTIONAL, 'Define the source to load: jo or cri', 'jo');
+    $this->addOption('source', null, sfCommandOption::PARAMETER_OPTIONAL, 'Define the source to load: jo or cri or international', 'jo');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
@@ -20,6 +20,9 @@ class loadJOTask extends sfBaseTask
     } else if ($options['source'] === "cri") {
       $workdir = "commission/presents";
       $typesource = "compte-rendu";
+    } else if ($options['source'] === "international") {
+      $workdir = "presences/json";
+      $typesource = "international";
     } else {
       echo "Error wrong value for option --source, choose cri or jo";
       return;
