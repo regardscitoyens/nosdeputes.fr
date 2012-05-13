@@ -1,4 +1,5 @@
 <?php
+$size='';
 if ($time === 'lastyear')
   $shortduree = 'annee';
 else $shortduree = $time;
@@ -9,13 +10,12 @@ else {
   if ($type === 'commission') $titre .= 's';
   $titre .= '-'.$shortduree;
 }
-$PictureID = "Map_".rand(1,10000).".map"; 
-$size = 'height="300" width="800"';
+$PictureID = "Map_".$parlementaire->slug.'_'.rand(1,10000).".map"; 
 if ($link === 'true') {
   echo '<a href="'.url_for('@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear').'">';
-  $size = 'height="150" width="800"';
+  $size = 'height:150px; width:800px';
  } else echo '<div class="par_session">'; ?>
- <img <?php echo $size; ?> id="graph<?php echo $PictureID; ?>" alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>" src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&mapId='.$PictureID); ?>" onmousemove="getMousePosition(event);" onmouseout="nd();"/>
+ <img style="<?php echo $size; ?>" id="graph<?php echo $PictureID; ?>" alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>" src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&mapId='.$PictureID); ?>" onmousemove="getMousePosition(event);" onmouseout="nd();"/>
 <?php if ($link === 'true') { ?>
 <script type="text/javascript">
 <!--
