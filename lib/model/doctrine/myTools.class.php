@@ -25,9 +25,7 @@ class myTools {
   }
 
   public static function isFinLegislature() {
-    if (sfConfig::get('app_fin_legislature') == true)
-      return true;
-    return false;
+    return (sfConfig::get('app_fin_legislature') == true);
   }
 
   public static function getGroupesInfos() {

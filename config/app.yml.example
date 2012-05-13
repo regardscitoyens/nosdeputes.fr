@@ -3,8 +3,8 @@ all:
   base_url: http://www.nosdeputes.fr/
   secret_key: _______PUT_YOUR_KEY_HERE________
   legislature: 13
-  debut_legislature: "2007-06-20"
-  fin_legislature: true
+#  fin_legislature: true
+#  debut_legislature: "2007-06-20"
   groupes_actuels: >
     ["GDR", "SRC", "NC", "UMP", "NI"]
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
