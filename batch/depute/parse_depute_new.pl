@@ -35,6 +35,7 @@ sub clean_vars {
   $encours = $lieu = $organisme = $fonction = "";
 }
 
+my %premiers_mandats;
 sub add_mandat {
   $start = shift; 
   $end = shift;
@@ -45,7 +46,7 @@ sub add_mandat {
   }
   $cause =~ s/^É/é/; 
   $cause =~ s/(du gouvernement) :.*$/\1/i;
-  $depute{'premiers_mandats'}{"$start / $end / ".lc($cause)} = 1;
+  $premiers_mandats{"$start / $end / ".lc($cause)} = 1;
   $depute{'debut_mandat'} = max_date($start,$depute{'debut_mandat'});
   $depute{'fin_mandat'} = max_date($end,$depute{'fin_mandat'}) if ($end !~ /^$/ && max_date($end,"20/06/2007") != "20/06/2007");
 }
@@ -112,6 +113,8 @@ foreach $line (split /\n/, $string) {
     add_mandat($1,"",$3);
   } elsif ($line =~ /Mandat du ([\d\/]+)( \(.*\))? au ([\d\/]+)( \((.*)\))?/i) {
     add_mandat($1,$3,$5);
+  } elsif ($line =~ /(Reprise de l'exercice.*député.*) le[ :]+([\d\/]+)/) {
+    add_mandat($2, "", $1);
   } elsif ($line =~ /class="article-title/) {
     clean_vars();
     $line =~ s/\s*<[^>]+>\s*//g;
@@ -253,6 +256,19 @@ if (!$depute{'nom_de_famille'}) {
   }
 }
 $depute{'nom_de_famille'} = trim($depute{'nom_de_famille'});
+
+#clean doublons mandats
+my %tmp_mandats;
+foreach $m (keys %premiers_mandats) {
+  $date1 = $m;
+  $date1 =~ s/ \/ .*$//;
+  if (!$tmp_mandats{$date1} || $tmp_mandats{$date1} =~ / \/ +\/ /) {
+    $tmp_mandats{$date1} = $m;
+  }
+}
+foreach $m (values %tmp_mandats) {
+  $depute{'premiers_mandats'}{$m} = 1;
+}
 
 if ($yml) {
     print "  depute_".$depute{'id_an'}.":\n";
