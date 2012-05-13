@@ -4,10 +4,15 @@ if (isset($list)) {
   if (!isset($colonnes))
     $colonnes = 3;
   if (isset($imp)) {
-    $fonction = $deputes[0]->fonction;
-    foreach ($deputes as $depute) if ($depute->sexe === "H") {
-      $fonction = $depute->fonction;
-       break;
+    if (isset($deputes[0]->fonction)) { 
+      $fonction = $deputes[0]->fonction; 
+      foreach ($deputes as $depute) if ($depute->sexe === "H") { 
+        $fonction = $depute->fonction; 
+        break; 
+      } 
+    } else { 
+      $pluriel = (count($deputes) > 1 ? "s" : ""); 
+      $fonction = "Ancien député"; 
     }
     echo '<h3 class="aligncenter">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', (count($deputes) > 1 ? preg_replace('/(,)? /', 's\\1 ', (preg_match('/(spécial|général)/i', $fonction) ? preg_replace('/al$/', 'aux', $fonction) : $fonction)) : $fonction))).(count($deputes) > 1 && !preg_match('/(spécial|général|droit|bureau)$/i', $fonction) ? 's' : '').'</h3>';
   }
