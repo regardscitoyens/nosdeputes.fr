@@ -75,7 +75,7 @@
       <div class="b_d_infos">
       <h2>Travaux législatifs</h2>
 	<h3><?php if(myTools::isFinLegislature()) {
-	  echo "Ses principaux dossiers de la législature";
+	  echo "Ses principaux dossiers durant la législature";
 	  $order = 'nb';
 	}else{
 	  echo "Ses derniers dossiers";
