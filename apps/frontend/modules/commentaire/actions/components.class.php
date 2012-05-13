@@ -23,7 +23,7 @@ class commentaireComponents extends sfComponents
     $type = get_class($this->object);
     $query = Doctrine::getTable('Commentaire')
       ->createQuery('c');
-    if ($type === 'ArticleLoi' || $type === 'Texteloi')
+    if ($type === 'ArticleLoi' || $type === 'Titreloi')
       $query->leftJoin('c.Objects co')
         ->where('(c.object_type = ? AND c.object_id = ?) OR (co.object_type = "'.$type.'" AND co.object_id = ?)', array($type, $id, $id));
     else $query->where('(c.object_type = ? AND c.object_id = ?)', array($type, $id));
