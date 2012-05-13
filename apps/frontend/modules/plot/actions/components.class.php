@@ -15,7 +15,7 @@ class plotComponents extends sfComponents
         $this->data['mandat_clos'] = true;
       } else $date = time();
       $annee = date('Y', $date); $sem = date('W', $date);
-      $last_year = $date - 32054400;
+      $last_year = $date - 32054400*5;
       $date_debut = date('Y-m-d', $last_year);
       $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year);
       if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
@@ -167,9 +167,12 @@ class plotComponents extends sfComponents
     $n = count($this->data['titres']);
     $stats = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
     $query = Doctrine_Query::create()
-      ->select('p.groupe_acronyme, count(DISTINCT(a.id)) as ct')
-      ->from('Parlementaire p, p.ParlementaireAmendements pa, pa.Amendement a')
+      ->select('p.groupe_acronyme, sum(a.nb_multiples) as ct')
+      ->from('Parlementaire p')
+      ->leftJoin('p.ParlementaireAmendements pa')
+      ->leftJoin('pa.Amendement a')
       ->where('pa.numero_signataire = ?', 1)
+      ->andWhere('a.sort <> ?', 'Rectifié')
       ->groupBy('p.groupe_acronyme');
     if (!myTools::isFinLegislature())
       $query->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
