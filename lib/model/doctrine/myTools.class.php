@@ -17,6 +17,12 @@ class myTools {
     return explode('","', $string);
   }
 
+  public static function isFinLegislature() {
+    if (sfConfig::get('app_fin_legislature') == true)
+      return true;
+    return false;
+  }
+
   public static function getGroupesInfos() {
     $conf = sfConfig::get('app_groupes_infos', '');
     if (!$conf) {

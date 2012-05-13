@@ -1,7 +1,8 @@
-<?php foreach ($tops as $t) if (!isset($date)) $date = $t[0]['updated_at']; ?>
-<h1>Synthèse générale de l'activité parlementaire<br/><small>sur les 12 derniers mois</small></h1>
-<h2 class="aligncenter"><small>(dernière <a href="<?php echo url_for('@faq'); ?>#post_2">mise-à-jour</a> le <?php echo preg_replace('/20(\d+)-(\d+)-(\d+) (\d+):(\d+):\d+/', '$3/$2/$1 à $4H$5', $date); ?>)</h1>
-<h2>Activité de tous les députés ayant au moins 10 mois de mandat :</h2>
+<?php $fin = myTools::isFinLegislature();
+foreach ($tops as $t) if (!isset($date)) $date = $t[0]['updated_at']; ?>
+<h1>Synthèse générale de l'activité parlementaire<br/><small><?php if ($fin) echo "sur toute la législature"; else echo "sur les 12 derniers mois"; ?></small></h1>
+<h2 class="aligncenter"><small>(dernière <a href="<?php echo url_for('@faq'); ?>#post_2">mise-à-jour</a> le <?php echo preg_replace('/20(\d+)-(\d+)-(\d+) (\d+):(\d+):\d+/', '$3/$2/$1 à $4H$5', $date); ?>)</h2>
+<h2>Activité <?php if ($fin) echo "mensuelle moyenne "; ?>de tous les députés<?php if (!$fin) echo " ayant au moins 10 mois de mandat"; ?> :</h2>
 <?php 
 $sf_response->setTitle('Synthèse générale des députés');
 $title = array('semaines_presence' => 'd\'activité',
@@ -91,7 +92,7 @@ $bulles = array("",
 </div>
 <p class="aligncenter"><small>Les chiffres en couleur indiquent que le député se trouve pour le critère indiqué parmi <span style="color:green">les 150 premiers</span> ou <span style="color:red">les 150 derniers</span>.</small></p>
 </div></div>
-<h2 id="groupes">Activité moyenne d'un député de chaque groupe politique au cours des 12 derniers mois :</h2>
+<h2 id="groupes">Activité moyenne d'un député de chaque groupe politique <?php if ($fin) echo "sur toute la législature"; else echo "au cours des 12 derniers mois"; ?> :</h2>
 <div class="liste_deputes_top">
 <div class="synthese">
 <table>
@@ -129,7 +130,7 @@ $bulles = array("",
 </div>
 </div>
 <div class="synthese_div">
-<h2>Répartition de l'activité des députés sur les 12 derniers mois par groupe politique :</h2>
+<h2>Répartition de l'activité des députés sur <?php if ($fin) echo "toute la législature"; else echo "les 12 derniers mois"; ?> par groupe politique :</h2>
 <div class="aligncenter"><?php echo include_component('plot', 'newGroupes', array('type' => 'all')); ?></div>
 </div>
 <div class="synthese_div">

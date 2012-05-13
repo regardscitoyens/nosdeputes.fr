@@ -169,8 +169,10 @@ class plotComponents extends sfComponents
     $query = Doctrine_Query::create()
       ->select('p.groupe_acronyme, count(DISTINCT(a.id)) as ct')
       ->from('Parlementaire p, p.ParlementaireAmendements pa, pa.Amendement a')
-      ->where('a.date > ?', date('Y-m-d', time()-60*60*24*365))
+      ->where('pa.numero_signataire = ?', 1)
       ->groupBy('p.groupe_acronyme');
+    if (!myTools::isFinLegislature())
+      $query->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
     $qamdmts = clone($query);
     $amdmts = $qamdmts->fetchArray();
     if ($this->type === "all") {
@@ -178,15 +180,16 @@ class plotComponents extends sfComponents
       $amdmts2 = $qamdmts2->andWhere('a.sort = ?', "Adopté")
         ->fetchArray();
     }
-    $props = Doctrine_Query::create()
+    $qprops = Doctrine_Query::create()
       ->select('p.groupe_acronyme, count(DISTINCT(t.id)) as ct')
       ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
-      ->where('t.date > ?', date('Y-m-d', time()-60*60*24*365))
-      ->andWhere('pt.importance = 1')
+      ->where('pt.importance = 1')
       ->andWhere('t.type LIKE ?', "proposition%")
-      ->groupBy('p.groupe_acronyme')
-      ->fetchArray();
-    foreach ($this->data['groupes'] as $groupe => $arr) if ($stats[$groupe]) {
+      ->groupBy('p.groupe_acronyme');
+    if (!myTools::isFinLegislature())
+      $qprops->andWhere('t.date > ?', date('Y-m-d', time()-60*60*24*365));
+    $props = $qprops->fetchArray();
+    foreach ($this->data['groupes'] as $groupe => $arr) if (isset($stats[$groupe])) {
       $this->data['groupes'][$groupe][] = $stats[$groupe]['groupe']['nb'];
       if ($this->type === "all") {
         $this->data['groupes'][$groupe][] = $stats[$groupe]['commission_interventions']['somme'];
@@ -194,14 +197,14 @@ class plotComponents extends sfComponents
         $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions_courtes']['somme'];
       } else $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme']+$stats[$groupe]['commission_interventions']['somme'];
     }
-    foreach ($amdmts as $amdt)
+    foreach ($amdmts as $amdt) if ($amdt['groupe_acronyme'] != "")
       $this->data['groupes'][$amdt['groupe_acronyme']][] = $amdt['ct'];
     if ($this->type === "all")
-      foreach ($amdmts2 as $amdt)
+      foreach ($amdmts2 as $amdt) if ($amdt['groupe_acronyme'] != "")
         $this->data['groupes'][$amdt['groupe_acronyme']][] = $amdt['ct'];
-    foreach ($props as $pro)
+    foreach ($props as $pro) if ($pro['groupe_acronyme'] != "")
       $this->data['groupes'][$pro['groupe_acronyme']][] = $pro['ct'];
-    foreach ($this->data['groupes'] as $groupe => $arr) if ($stats[$groupe]) {
+    foreach ($this->data['groupes'] as $groupe => $arr) if (isset($stats[$groupe])) {
       $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_ecrites']['somme'];
       if ($this->type === "all")
         $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_orales']['somme'];
@@ -210,10 +213,10 @@ class plotComponents extends sfComponents
     for ($i=0;$i<$n;$i++)
       $this->data['totaux'][] = 0;
     foreach ($this->data['groupes'] as $groupe => $arr)
-      for ($i=0;$i<$n;$i++)
+      for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i]))
         $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
     foreach ($this->data['groupes'] as $groupe => $arr)
-      for ($i=0;$i<$n;$i++) {
+      for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i])) {
         $tmp = round($this->data['groupes'][$groupe][$i]  / $this->data['totaux'][$i] * 1000)/10;
         $this->data['groupes'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
       }

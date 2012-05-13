@@ -12,7 +12,7 @@ class topDeputesTask extends sfBaseTask
     $this->briefDescription = 'Top Deputes';
     $this->addArgument('month', sfCommandArgument::OPTIONAL, 'First day of the month you want to add in db', '');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
-    $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
   /**
@@ -46,9 +46,9 @@ class topDeputesTask extends sfBaseTask
 
   protected function executePresence($q)
   {
-    $semaines = $q->select('p.id, s.numero_semaine, pr.id, count(s.id)')
+    $semaines = $q->select('p.id, s.annee, s.numero_semaine, pr.id, count(s.id)')
       ->from('Parlementaire p, p.Presences pr, pr.Seance s')
-      ->groupBy('p.id, s.numero_semaine')
+      ->groupBy('p.id, s.annee, s.numero_semaine')
       ->fetchArray();
     foreach ($semaines as $p) {
       foreach($p['Presences'] as $pr) {
@@ -294,21 +294,24 @@ class topDeputesTask extends sfBaseTask
       $globale->save();
       return;
     }
+    $fin = myTools::isFinLegislature();
 
-    
-    $deputes = Doctrine::getTable('Parlementaire')->createQuery()
-      ->where('type = ?', 'depute')
-      ->andWhere('fin_mandat IS NULL') 
-      ->fetchArray();
-    foreach($deputes as $d) {
+    $qdeputes = Doctrine::getTable('Parlementaire')->createQuery()
+      ->where('type = ?', 'depute');
+    if (!$fin)
+      $qdeputes->andWhere('fin_mandat IS NULL'); 
+    else $qdeputes->andWhere('groupe_acronyme IS NOT NULL AND groupe_acronyme <> ?', '');
+    foreach($qdeputes->fetchArray() as $d) {
       $this->deputes[$d['id']]['groupe'] = $d['groupe_acronyme'];
     }
 
-    $q = Doctrine_Query::create()->where('fin_mandat IS NULL');
+    $q = Doctrine_Query::create();
+    if (!$fin)
+      $q->where('fin_mandat IS NULL');
  
     $qs = clone $q;
-    $qs->andWhere('s.date > ?', date('Y-m-d', time()-60*60*24*365));
-
+    if (!$fin)
+      $qs->andWhere('s.date > ?', date('Y-m-d', time()-60*60*24*365));
     
      
     $this->executePresence(clone $qs);
@@ -318,7 +321,8 @@ class topDeputesTask extends sfBaseTask
     $this->orderDeputes('commission_presences');
     
     $qi = clone $q;
-    $qi->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
+    if (!$fin)
+      $qi->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
 
     $this->executeCommissionInterventions(clone $qi);
     $this->orderDeputes('commission_interventions');
@@ -331,7 +335,8 @@ class topDeputesTask extends sfBaseTask
     $this->orderDeputes('hemicycle_interventions_courtes');
     
     $qa = clone $q;
-    $qa->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
+    if (!$fin)
+      $qa->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
     $this->executeAmendementsSignes(clone $qa);
     $this->orderDeputes('amendements_signes');
     
@@ -342,7 +347,8 @@ class topDeputesTask extends sfBaseTask
 //    $this->orderDeputes('amendements_rejetes', 0);
 
     $qd = clone $q;
-    $qd->where('t.date > ?', date('Y-m-d', time()-60*60*24*365));
+    if (!$fin)
+      $qd->where('t.date > ?', date('Y-m-d', time()-60*60*24*365));
     $this->executeRapports(clone $qd);
     $this->orderDeputes('rapports');
 
@@ -353,7 +359,8 @@ class topDeputesTask extends sfBaseTask
     $this->orderDeputes('propositions_signees');
 
     $qq = clone $q;
-    $qq->where('q.date > ?', date('Y-m-d', time()-60*60*24*365));
+    if (!$fin)
+      $qq->where('q.date > ?', date('Y-m-d', time()-60*60*24*365));
     $this->executeQuestionsEcrites($qq);
     $this->orderDeputes('questions_ecrites');
 
@@ -363,6 +370,8 @@ class topDeputesTask extends sfBaseTask
 
     $groupes = array();
     foreach(array_keys($this->deputes) as $id) {
+      if ($this->deputes[$id]['groupe'] == "")
+        continue;
       foreach(array_keys($this->deputes[$id]) as $key) {
 	$groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
 	$groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
@@ -381,8 +390,9 @@ class topDeputesTask extends sfBaseTask
     $globale->value = serialize($groupes);
     $globale->save();
 
-    //On fait la même chose pour les députés ayant un mandat clos.
-
+    //On fait la même chose pour les députés ayant un mandat clos si on n'est pas en fin de législature.
+   if (!$fin) {
+  
     $parlementaires = Doctrine_Query::create()->where('fin_mandat IS NOT NULL')
       ->from('Parlementaire p')->execute();
     
@@ -440,6 +450,6 @@ class topDeputesTask extends sfBaseTask
 	$p->save();
       }
     }
-    
+   } 
   }
 }
