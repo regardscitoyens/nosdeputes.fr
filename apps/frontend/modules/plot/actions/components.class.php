@@ -15,7 +15,7 @@ class plotComponents extends sfComponents
         $this->data['mandat_clos'] = true;
       } else $date = time();
       $annee = date('Y', $date); $sem = date('W', $date);
-      $last_year = $date - 32054400*5;
+      $last_year = $date - 32054400;
       $date_debut = date('Y-m-d', $last_year);
       $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year);
       if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
