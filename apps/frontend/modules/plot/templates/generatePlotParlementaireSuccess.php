@@ -119,14 +119,14 @@ $Test->drawOverlayBarGraph($Data2,$DataDescr2,30,100);
 $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,255,255,0);
 $Test->setColorPalette(2,0,255,0);
-$Test->drawFilledCubicCurve($Data,$DataDescr,0.25,78);
+$Test->drawFilledLineGraph($Data,$DataDescr,78);
 if (!$data["fin"] && $questions === 'true' && $type != 'commission') {
   $Test->setColorPalette(0,0,0,255);
   $Test->drawOverlayBarGraph($Data3,$DataDescr3,85,25);
 }
 $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,0,0,0);
-$Test->drawCubicCurve($DataBordure,$DataDescrBordure,0.25);
+$Test->drawLineGraph($DataBordure,$DataDescrBordure);
 
 $Test->xsSetFontProperties("tahoma.ttf",$font + 3);
 $pos_titre = 240;
