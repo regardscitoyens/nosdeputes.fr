@@ -50,6 +50,7 @@ $bulles = array("",
 <table>
   <tr>
     <th class="<?php echo $class['parl']; ?>">&nbsp;</th>
+    <?php if ($nb_mdts) echo '<th>Nb mandats</th>'; ?>
     <th title="Trier par : Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', $top_link.'sort=1'); ?></th>
     <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
     <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
@@ -79,7 +80,8 @@ $bulles = array("",
   foreach($tops as $t) {
     $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
     <td id="<?php echo $t[0]['slug']; ?>" class="jstitle phototitle c_<?php echo strtolower($t[0]['groupe_acronyme']); ?> <?php echo $class['parl']; ?>" title="<?php echo $t[0]['nom']; ?> -- Député<?php if ($t[0]['sexe'] === "F") echo 'e'; ?> <?php echo $t[0]['groupe_acronyme'].' '.preg_replace('/([^\'])$/', '\\1 ', Parlementaire::$dptmt_pref[trim($t[0]['nom_circo'])]).$t[0]['nom_circo']; ?>"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"><?php echo $t[0]['nom']; ?></a></td>
-    <?php $field = "value";
+    <?php if ($nb_mdts) echo '<td>'.count(unserialize($t[0]['autres_mandats'])).'</td>';
+    $field = "value";
     if ($fin) 
       $field = "moyenne";
     for($i = 1 ; $i < count($t) ; $i++) {
@@ -133,8 +135,10 @@ $bulles = array("",
 <table>
   <?php $cp = 0;
   $cp = myTools::echo_synthese_groupe($gpes, $bulles, $class, $ktop, $cp);
-#  $cp = myTools::echo_synthese_groupe($sexes, $bulles, $class, $ktop, $cp);
-#  $cp = myTools::echo_synthese_groupe($mandats, $bulles, $class, $ktop, $cp); ?>
+  if ($nb_mdts) {
+    $cp = myTools::echo_synthese_groupe($sexes, $bulles, $class, $ktop, $cp);
+    $cp = myTools::echo_synthese_groupe($mandats, $bulles, $class, $ktop, $cp);
+  } ?>
 </table>
 </div>
 </div>
