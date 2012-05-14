@@ -44,10 +44,13 @@ class plotComponents extends sfComponents
       $sem = $date_fin['numero_semaine'];
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     }
-    if ($this->data['fin'])
+    if ($this->data['fin']) {
       $this->data['labels'] = $this->getLabelsMois($n_weeks, $annee0, $sem0);
-    else $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee0, $sem0);
-    $this->data['vacances'] = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
+      $this->data['vacances'] = $this->getVacancesAllMandats($n_weeks, $annee0, $sem0, $this->parlementaire->getMandatsLegislature());
+    } else {
+      $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee0, $sem0);
+      $this->data['vacances'] = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
+    }
 
     $query = Doctrine_Query::create()
       ->select('COUNT(p.id) as nombre, p.id,s.type, s.annee, s.numero_semaine')
@@ -118,10 +121,23 @@ class plotComponents extends sfComponents
     }
     unset($questionsorales);
    }
+    # Clean interventiosn de ministre hors périodes de mandat
+    for($i=1; $i < $n_weeks; $i++)
+      if ($this->data['vacances'][$i] == 20) {
+        $this->data['n_presences']['hemicycle'][$i] = 0;
+        $this->data['n_presences']['commission'][$i] = 0;
+        $this->data['n_participations']['hemicycle'][$i] = 0;
+        $this->data['n_participations']['commission'][$i] = 0;
+        $this->data['n_mots']['hemicycle'][$i] = 0;
+        $this->data['n_mots']['commission'][$i] = 0;
+        if (isset($this->data['n_questions']))
+          $this->data['n_questions'][$i] = 0;
+      }
     
   }
 
   public static function getVacances($n_weeks, $annee0, $sem0, $debut_mandat) {
+    
     $n_vacances = array_fill(1, $n_weeks, 0);
     $mandat_an0 = date('Y', $debut_mandat);
     $mandat_sem0 = date('W', $debut_mandat);
@@ -137,9 +153,52 @@ class plotComponents extends sfComponents
         $n_vacances[$n] = 20;
     }
     return $n_vacances;
- }
+  }
 
- public static function getLabelsSemaines($n_weeks, $annee, $sem) {
+  public static function getVacancesAllMandats($n_weeks, $annee0, $sem0, $mandats) {
+    $n_vacances = array_fill(1, $n_weeks, 0);
+    $n = 0;
+    $annee = $annee0;
+    $sem = $sem0;
+    foreach($mandats as $m) {
+      if (preg_match("/^(.*);(.*)?$/", $m, $match)) {
+        $debut = strtotime($match[1]);
+        $mandat_an0 = date('Y', $debut);
+        $mandat_sem0 = date('W', $debut);
+        if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
+        if ($match[2] != "")
+          $fin = strtotime($match[2]);
+        else $fin = time();
+        $mandat_an1 = date('Y', $fin);
+        $mandat_sem1 = date('W', $fin);
+        if ($mandat_sem1 == 53) { $mandat_an1++; $mandat_sem1 = 1; }
+        while ($n <= $n_weeks && ($annee < $mandat_an0 || ($annee == $mandat_an0 && $sem < $mandat_sem0))) {
+          $n_vacances[$n] = 20;
+          $sem++;
+          if ($sem == 53) { $annee++ ; $sem = 1; }
+          $n++;
+        }
+        while ($n <= $n_weeks && ($annee < $mandat_an1 || ($annee == $mandat_an1 && $sem < $mandat_sem1))) {
+          $sem++;
+          if ($sem == 53) { $annee++ ; $sem = 1; }
+          $n++;
+        }
+      }
+    }
+    while ($n <= $n_weeks) {
+      $n_vacances[$n] = 20;
+      $n++;
+    }  
+    $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
+    if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
+      $n = ($vacance['annee'] - $annee0)*53 + $vacance['semaine'] - $sem0 + 1;
+      if ($n > 0 && $n <= $n_weeks)
+        $n_vacances[$n] = 20;
+    }
+    return $n_vacances;
+  }
+
+  public static function getLabelsSemaines($n_weeks, $annee, $sem) {
     if ($sem > 1 && $sem <= 51) $an = $annee + 1;
     else $an = $annee;
     $hashmap = array( '3'  => "Jan ".sprintf('%02d', $an-2000), '6'  => " Fév", '10' => " Mar", '15' => "Avr",

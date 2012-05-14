@@ -134,6 +134,9 @@ if ($time === 'lastyear') {
   if (isset($data['mandat_clos'])) {
     $pos_titre = 210;
     $duree = ' sa dernière année de mandat';
+  } else if ($data['fin']) {
+    $pos_titre = 235;
+    $duree = ' toute la législature';
   } else $duree = 's 12 derniers mois';
   $shortduree = 'annee';
 } else {

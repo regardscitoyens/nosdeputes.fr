@@ -642,6 +642,22 @@ class Parlementaire extends BaseParlementaire
     return round($semaines*12/53);
   }
 
+  public function getMandatsLegislature() {
+    $mandats = array();
+    $debut = strtotime(myTools::getDebutLegislature());
+    foreach (unserialize($this->getAnciensMandats()) as $m) {
+      if (preg_match("/^(.*) \/ (.*) \/ (.*)$/", $m, $match)) {
+        $match[1] = preg_replace("#^(\d+)/(\d+)/(\d+)$#", "\\3-\\2-\\1", $match[1]);
+        if ($match[2] != "")
+          $match[2] = preg_replace("#^(\d+)/(\d+)/(\d+)$#", "\\3-\\2-\\1", $match[2]);
+        if (strtotime($match[1]) >= $debut)
+          $mandats[] = $match[1].";".$match[2];
+      }
+    }
+    sort($mandats);
+    return $mandats;
+  }
+
   private function setInternalPhoto($photo) {
     $this->photo = $photo;
     return true;
