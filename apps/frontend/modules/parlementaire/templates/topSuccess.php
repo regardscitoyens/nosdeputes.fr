@@ -93,7 +93,7 @@ $bulles = array("",
       echo '" '.$t[$i]['style'].' class="jstitle '.$class[$ktop[$i]].'">';
       if (!$fin && preg_match('/\./', $t[$i]['value']))
         printf('%02d', $t[$i]['value']);
-      else echo str_replace(".", ",", sprintf('%.02f', $t[$i][$field]));
+      else echo str_replace(".", ",", ($fin ? sprintf('%.02f', $t[$i][$field]) : $t[$i][$field]));
       echo '</td>';
     } ?>
   </tr>
