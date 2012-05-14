@@ -10,7 +10,7 @@ class tagComponents extends sfComponents
 
     //Ici on cherche à grouper les tags qui sont très similaires
     foreach(array_keys($this->tags) as $tag) {
-      if (preg_match('/^(é|É|Î)/', $tag)) {
+      if (preg_match('/^(â|é|É|Î)/i', $tag)) {
         $cleantag = preg_replace('/^â/', 'aZ', $tag);
         $cleantag = preg_replace('/^é/', 'eZ', $cleantag);
         $cleantag = preg_replace('/^É/', 'EZ', $cleantag);
