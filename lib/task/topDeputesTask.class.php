@@ -324,6 +324,7 @@ class topDeputesTask extends sfBaseTask
     $fin = myTools::isFinLegislature();
 
     $qdeputes = Doctrine::getTable('Parlementaire')->createQuery()
+      ->select('id, groupe_acronyme')
       ->where('type = ?', 'depute');
     if (!$fin)
       $qdeputes->andWhere('fin_mandat IS NULL');
@@ -346,10 +347,10 @@ class topDeputesTask extends sfBaseTask
      
     $this->executePresence(clone $qs);
     $this->orderDeputes('semaines_presence');
-    
+
     $this->executeCommissionPresence(clone $qs);
     $this->orderDeputes('commission_presences');
-    
+
     $qi = clone $q;
     if (!$fin)
       $qi->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
