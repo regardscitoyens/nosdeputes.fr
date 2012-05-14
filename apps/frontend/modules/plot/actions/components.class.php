@@ -133,7 +133,6 @@ class plotComponents extends sfComponents
         if (isset($this->data['n_questions']))
           $this->data['n_questions'][$i] = 0;
       }
-    
   }
 
   public static function getVacances($n_weeks, $annee0, $sem0, $debut_mandat) {
@@ -175,12 +174,12 @@ class plotComponents extends sfComponents
         while ($n <= $n_weeks && ($annee < $mandat_an0 || ($annee == $mandat_an0 && $sem < $mandat_sem0))) {
           $n_vacances[$n] = 20;
           $sem++;
-          if ($sem == 53) { $annee++ ; $sem = 1; }
+          if ($sem == 53) { $annee++ ; $sem = 0; }
           $n++;
         }
         while ($n <= $n_weeks && ($annee < $mandat_an1 || ($annee == $mandat_an1 && $sem < $mandat_sem1))) {
           $sem++;
-          if ($sem == 53) { $annee++ ; $sem = 1; }
+          if ($sem == 53) { $annee++ ; $sem = 0; }
           $n++;
         }
       }
