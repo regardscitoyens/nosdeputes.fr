@@ -45,7 +45,7 @@ $top = $parlementaire->getTop();
 if (!$top)
   return ;
 if (myTools::isFinLegislature()) {
-  echo '<h3>Activité totale ('.$top["nb_mois"].' mois) :</h3>';
+  echo '<h3 class="jstitle" title="Bilan d\'activité totale -- durant '.$top["nb_mois"].' mois de mandat(s) du député, -- vacances parlementaires exclues">Activité totale ('.$top["nb_mois"].' mois) :</h3>';
   $rank = 1;
 } else {
  if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->debut_mandat) {
