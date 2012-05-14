@@ -324,7 +324,7 @@ class parlementaireActions extends sfActions
   {
     $slug = $request->getParameter('slug');
     $this->session = $request->getParameter('time');
-    $this->forward404Unless(preg_match('/^(lastyear|2\d{3}2\d{3})$/', $this->session));
+    $this->forward404Unless(preg_match('/^(legislature|lastyear|2\d{3}2\d{3})$/', $this->session));
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->forward404Unless($this->parlementaire);
     $this->sessions = Doctrine_Query::create()

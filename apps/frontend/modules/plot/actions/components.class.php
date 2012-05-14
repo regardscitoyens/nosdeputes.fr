@@ -9,7 +9,7 @@ class plotComponents extends sfComponents
     static $seuil_invective = 20;
     $this->data = array();
     $this->data['fin'] = myTools::isFinLegislature();
-    if (!isset($this->session)) $this->session = 'lastyear';
+    if (!isset($this->session) || $this->session === 'legislature') $this->session = 'lastyear';
     if ($this->session === 'lastyear') {
       if (!$this->data['fin'] && isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {
         $date = strtotime($this->parlementaire->fin_mandat);

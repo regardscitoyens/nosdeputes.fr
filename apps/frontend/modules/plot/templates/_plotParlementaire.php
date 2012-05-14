@@ -12,7 +12,9 @@ else {
 }
 $PictureID = "Map_".$parlementaire->slug.'_'.rand(1,10000).".map"; 
 if ($link === 'true') {
-  echo '<a href="'.url_for('@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear').'">';
+  $time = 'lastyear';
+  if (myTools::isFinLegislature()) $time = 'legislature';
+  echo '<a href="'.url_for('@parlementaire_plot?slug='.$parlementaire->slug.'&time=legislature').'">';
   $size = 'height:150px; width:800px';
  } else echo '<div class="par_session">'; ?>
  <img style="<?php echo $size; ?>" id="graph<?php echo $PictureID; ?>" alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>" src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&mapId='.$PictureID); ?>" onmousemove="getMousePosition(event);" onmouseout="nd();"/>

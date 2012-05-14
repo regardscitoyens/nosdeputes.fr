@@ -14,7 +14,7 @@ class plotActions extends sfActions {
     $this->type = $request->getParameter('type');
     $this->time = $request->getParameter('time');
     $this->forward404Unless(preg_match('/^(total|hemicycle|commission)$/', $this->type));
-    $this->forward404Unless(preg_match('/^(lastyear|20\d{2}20\d{2})$/', $this->time));
+    $this->forward404Unless(preg_match('/^(legislature|lastyear|20\d{2}20\d{2})$/', $this->time));
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
     $this->questions = $request->getParameter('questions');
