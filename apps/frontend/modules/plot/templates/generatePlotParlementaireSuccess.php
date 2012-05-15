@@ -6,6 +6,7 @@ $n = count($data['labels']);
 $presences = array_fill(1, $n, 0);
 $participations = array_fill(1, $n, 0);
 $mots = array_fill(1, $n, 0);
+$presences_medi = array_fill(1, $n, 0);
 if ($type === 'total') for ($i = 1; $i <= $n; $i++) {
   $presences[$i] = $data['n_presences']['hemicycle'][$i] + $data['n_presences']['commission'][$i];
   $participations[$i] = $data['n_participations']['hemicycle'][$i] + $data['n_participations']['commission'][$i];
@@ -15,6 +16,7 @@ if ($type === 'total') for ($i = 1; $i <= $n; $i++) {
   $participations = $data['n_participations']["$type"];
   $mots = $data['n_mots']["$type"];
 }
+$presences_medi = $data['presences_medi']["$type"];
 
 if ($link === 'true') {
   $font = 9;
@@ -87,6 +89,16 @@ if (!$data['fin'] && $questions === 'true' && $type != 'commission') {
   $DataDescr3 = $DataSet3->GetDataDescription();
 }
 
+$DataSet4 = new xsPData();
+$DataSet4->AddPoint($data['labels'], "Serie1");
+$DataSet4->AddPoint($presences_medi, "Serie8");
+$DataSet4->AddPoint(array_fill(1, count($data['labels']), 0), "Serie5");
+$DataSet4->AddSerie("Serie8");
+$DataSet4->AddSerie("Serie5");
+$DataSet4->SetAbsciseLabelSerie("Serie1");
+$Data4 = $DataSet4->GetData();
+$DataDescr4 = $DataSet4->GetDataDescription();
+
 $Data = $DataSet->GetData();
 $DataDescr = $DataSet->GetDataDescription();
 $DataBordure = $DataSetBordure->GetData();
@@ -112,10 +124,12 @@ if ($link === 'true') {
   $Test->setImageMap(TRUE,$mapId);
   $Test->drawOverlayBarGraph($DataLegend,$DataDescrLegend,30,100);
   $Test->setImageMap(FALSE,$mapId);
-}  
+} 
 $Test->drawGrid(0,TRUE,0,0,0,100);
 $Test->setColorPalette(0,50,50,50);
 $Test->drawOverlayBarGraph($Data2,$DataDescr2,30,100);
+$Test->setColorPalette(0,200,200,200);
+$Test->drawLineGraph($Data4,$DataDescr4);
 $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,255,255,0);
 $Test->setColorPalette(2,0,255,0);

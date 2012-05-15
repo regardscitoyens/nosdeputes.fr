@@ -32,11 +32,12 @@ if ($type === 'commission') echo '&nbsp;Présences enregistrées&nbsp;&nbsp;&nbs
 else echo '&nbsp;Présences relevées&nbsp;&nbsp;&nbsp;';
 echo "<span style='background-color: rgb(255,200,0);'>&nbsp;</span>&nbsp;Participations&nbsp;&nbsp;&nbsp;";
 echo "<span style='background-color: rgb(0,255,0);'>&nbsp;</span>&nbsp;Mots prononcés (x&nbsp;10&nbsp;000)&nbsp;&nbsp;&nbsp;";
-if (!myTools::isFinLegislature() && $questions === 'true' && $type != 'commission')
-    echo "<span style='background-color: rgb(0,0,255);'>&nbsp;</span>&nbsp;Questions orales&nbsp;&nbsp;&nbsp;";
-echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires";
+if (!(myTools::isFinLegislature() && preg_match('/^l/', $time)) && $questions === 'true' && $type != 'commission')
+    echo "<span style='background-color: rgb(0,0,255);'>&nbsp;</span>&nbsp;Questions orales<br/>";
+echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires&nbsp;&nbsp;";
+echo "<span style='font-weight: bolder; color: rgb(200,200,200);'>&mdash;</span>&nbsp;Présence médiane";
 if ($link === 'true')
-  echo "&nbsp;&nbsp;&nbsp;&nbsp;".link_to('Explications', '@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear#explications').'</p>';
+  echo '&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.url_for('@faq').'#post_4">Explications</a></p>';
 else echo '</p>';
 if ($link != 'true')
   echo '</div>';

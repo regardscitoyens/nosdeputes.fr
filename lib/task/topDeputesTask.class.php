@@ -481,6 +481,65 @@ class topDeputesTask extends sfBaseTask
 	$p->save();
       }
     }
-   } 
+   }
+
+    $date = time();
+    $annee = date('Y', $date); $sem = date('W', $date);
+    $start = strtotime(myTools::getDebutLegislature());
+    $date_debut = date('Y-m-d', $start);
+    $annee0 = date('Y', $start); $sem0 = date('W', $start);
+    if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
+    if ($sem0 >= 52 && $sem <= 1) $sem0 = 0;
+    $n_weeks = ($annee - $annee0)*53 + $sem - $sem0;
+    $query = Doctrine_Query::create()
+      ->select('COUNT(p.id) as nombre, p.id, p.parlementaire_id, s.type, s.annee, s.numero_semaine')
+      ->from('Presence p')
+      ->leftJoin('p.Seance s')
+      ->where('s.date > ?', $date_debut)
+      ->groupBy('s.type, s.annee, s.numero_semaine, p.parlementaire_id')
+      ->orderBy('s.type, s.annee, s.numero_semaine, nombre');
+    $presences_medi = array('commission' => array_fill(1, $n_weeks, 0),
+                            'hemicycle' => array_fill(1, $n_weeks, 0),
+                            'total' => array_fill(1, $n_weeks, 0));
+    $presences = $query->fetchArray();
+    $deps = floor(count($presences)/$n_weeks);
+    $mid = floor($deps/2)+1;
+    $ct = 0;
+    foreach ($presences as $presence) {
+      $ct++;
+      if ($ct % $deps != $mid) continue;
+      $n = ($presence['Seance']['annee'] - $annee0)*53 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
+      if ($n <= $n_weeks)
+        $presences_medi[$presence['Seance']['type']][$n] = $presence['nombre'];
+    }
+    unset($presences);
+    $query = Doctrine_Query::create()
+      ->select('COUNT(p.id) as nombre, p.id, p.parlementaire_id, s.annee, s.numero_semaine')
+      ->from('Presence p')
+      ->leftJoin('p.Seance s')
+      ->where('s.date > ?', $date_debut)
+      ->groupBy('s.annee, s.numero_semaine, p.parlementaire_id')
+      ->orderBy('s.annee, s.numero_semaine, nombre');
+    $presences = $query->fetchArray();
+    $deps = floor(count($presences)/$n_weeks);
+    $mid = floor($deps/2)+1;
+    $ct = 0;
+    foreach ($presences as $presence) {
+      $ct++;
+      if ($ct % $deps != $mid) continue;
+      $n = ($presence['Seance']['annee'] - $annee0)*53 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
+      if ($n <= $n_weeks) {
+        $presences_medi['total'][$n] = $presence['nombre'];
+      }
+    }
+    unset($presences);
+    $globale2 = Doctrine::getTable('VariableGlobale')->findOneByChamp('presences_medi');
+    if (!$globale2) {
+      $globale2 = new VariableGlobale();
+      $globale2->champ = 'presences_medi';
+    }
+    $globale2->value = serialize($presences_medi);
+    $globale2->save();
+
   }
 }

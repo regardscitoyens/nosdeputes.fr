@@ -8,8 +8,8 @@ class plotComponents extends sfComponents
   public function executeGetParlData() {
     static $seuil_invective = 20;
     $this->data = array();
-    $this->data['fin'] = myTools::isFinLegislature();
     if (!isset($this->session) || $this->session === 'legislature') $this->session = 'lastyear';
+    $this->data['fin'] = myTools::isFinLegislature() && ($this->session === 'lastyear');
     if ($this->session === 'lastyear') {
       if (!$this->data['fin'] && isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {
         $date = strtotime($this->parlementaire->fin_mandat);
@@ -121,6 +121,24 @@ class plotComponents extends sfComponents
     }
     unset($questionsorales);
    }
+
+    # Données de présence mediane par semaine
+    $this->data['presences_medi'] = array('commission' => array_fill(1, $n_weeks, 0),
+                                          'hemicycle'  => array_fill(1, $n_weeks, 0),
+                                          'total' => array_fill(1, $n_weeks, 0));
+    $presences_medi = Doctrine::getTable('VariableGlobale')->findOneByChamp('presences_medi');
+    if ($presences_medi) {
+      $prmedi = unserialize($presences_medi->value);
+      $debut_legis = strtotime(myTools::getDebutLegislature());
+      $an_legis = date('Y', $debut_legis);
+      $sem_legis = date('W', $debut_legis);
+      if ($sem_legis == 53) { $an_legis++; $sem_legis = 1; }
+      $startweek = ($annee0 - $an_legis)*53 + $sem0 - $sem_legis;
+      $this->data['presences_medi']['commission'] = array_slice($prmedi['commission'], $startweek, $n_weeks);
+      $this->data['presences_medi']['hemicycle'] = array_slice($prmedi['hemicycle'], $startweek, $n_weeks);
+      $this->data['presences_medi']['total'] = array_slice($prmedi['total'], $startweek, $n_weeks);
+    }
+
     # Clean interventiosn de ministre hors périodes de mandat
     for($i=1; $i < $n_weeks; $i++)
       if ($this->data['vacances'][$i] == 20) {
@@ -130,6 +148,9 @@ class plotComponents extends sfComponents
         $this->data['n_participations']['commission'][$i] = 0;
         $this->data['n_mots']['hemicycle'][$i] = 0;
         $this->data['n_mots']['commission'][$i] = 0;
+        $this->data['presences_medi']['hemicycle'][$i] = 0;
+        $this->data['presences_medi']['commission'][$i] = 0;
+        $this->data['presences_medi']['total'][$i] = 0;
         if (isset($this->data['n_questions']))
           $this->data['n_questions'][$i] = 0;
       }
