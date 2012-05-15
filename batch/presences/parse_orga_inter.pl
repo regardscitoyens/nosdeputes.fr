@@ -8,6 +8,11 @@ $a = WWW::Mechanize->new();
 
 $url = shift;
 $deforganisme = shift;
+$typeorganisme = shift;
+if ($typeorganisme) {
+    $typeorganisme = ", \"typeorganisme\": \"$typeorganisme\"";
+}
+
 $a->get($url);
 $html = $a->content;
 utf8::encode($html);
@@ -107,7 +112,7 @@ foreach (split /\n/, $html) {
 		$nom =~ s/&nbsp;/ /g;
 		$organisme = $deforganisme unless($organisme);
 		foreach $d (@date) {
-			print "{\"depute\":\"$nom\", \"id_an\":\"$id\", \"reunion\":\"$d\", \"commission\":\"$organisme\", \"source\": \"$url\", \"session\":\"$titre\"}\n";
+			print "{\"depute\":\"$nom\", \"id_an\":\"$id\", \"reunion\":\"$d\", \"commission\":\"$organisme\", \"source\": \"$url\", \"session\":\"$titre\"$typeorganisme}\n";
 		}
 	}
 }

@@ -59,7 +59,10 @@ class loadJOTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
-	    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($jo->commission, 'parlementaire');
+	    $typeorganisme = 'parlementaire';
+	    if (isset($jo->typeorganisme))
+	      $typeorganisme = $jo->typeorganisme;
+	    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($jo->commission, $typeorganisme);
 	    if (!$jo->reunion) {
 	      $depute->clearRelated();
 	      $depute->free();
