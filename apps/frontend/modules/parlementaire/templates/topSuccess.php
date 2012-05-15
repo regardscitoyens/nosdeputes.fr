@@ -147,7 +147,7 @@ $bulles = array("",
 <h2>Répartition de l'activité des députés sur <?php if ($fin) echo "toute la législature"; else echo "les 12 derniers mois"; ?> par groupe politique :</h2>
 <div class="aligncenter"><?php echo include_component('plot', 'newGroupes', array('type' => 'all')); ?></div>
 </div>
-<div class="synthese_div">
+<div id="legende" class="synthese_div">
 <h2>Explications :</h2>
 <ul>
   <li><strong>Semaines d'activité</strong> : Nombre de semaines où le député a été relevé présent en commission ou a pris la parole (même brièvement) en hémicycle</li>
