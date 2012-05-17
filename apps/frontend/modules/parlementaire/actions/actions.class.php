@@ -525,11 +525,15 @@ class parlementaireActions extends sfActions
 
   public function executeWidget(sfWebRequest $request) {
     $this->parl = $request->getParameter('depute');
-    $this->options = array(
-      'titre' => $request->getParameter('notitre', true),
-      'photo' => $request->getParameter('nophoto', true),
-      'graphe' => $request->getParameter('nographe', true),
-      'activite' => $request->getParameter('noactivite', true));
+    $this->options = array('titre' => 1, 'photo' => 1, 'graphe' => 1, 'activite' => 1);
+    if ($request->getParameter('notitre', false))
+      $this->options['titre'] = 0;
+    if ($request->getParameter('nophoto', false))
+      $this->options['photo'] = 0;
+    if ($request->getParameter('nographe', false))
+      $this->options['graphe'] = 0;
+    if ($request->getParameter('noactivite', false))
+      $this->options['activite'] = 0;
     $this->setLayout(false);
   }
 }
