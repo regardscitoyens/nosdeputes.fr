@@ -4,6 +4,9 @@ all:
 rss:
   lifetime: 3600
   enabled: true
+_widget:
+  lifetime: 86400
+  enabled: true
 _duJour:
   lifetime: 86400
   enabled: true

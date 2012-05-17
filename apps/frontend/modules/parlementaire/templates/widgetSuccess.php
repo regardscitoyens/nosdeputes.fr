@@ -1,1 +1,1 @@
-<?php include_component('parlementaire', 'widget', array('depute' => $parl, 'options' => $options)); ?>
+<?php if ($parl) include_component('parlementaire', 'widget', array('slug' => $parl, 'options' => $options)); ?>

@@ -524,7 +524,23 @@ class parlementaireActions extends sfActions
   }
 
   public function executeWidget(sfWebRequest $request) {
-    $this->parl = $request->getParameter('depute');
+    $search = $request->getParameter('depute');
+    $sexe = null;
+    if (preg_match("/M\([.mle]\)+ */", $search, $match)) {
+      $sexe = "H";
+      if (preg_match("/e/", $match[1]))
+        $sexe = "F";
+      $search = preg_replace("/^.*M\([.mle]\)+ */", "", $search);
+    }
+    $search = preg_replace("/([ \-.]\w)/", strtoupper("\\1"), ucfirst(strtolower($search)));
+    $dep = Doctrine::getTable('Parlementaire')->findOneBySlug(strtolower($search));
+    if (!$dep)
+      $dep = Doctrine::getTable('Parlementaire')->findOneByNom($search);
+    if (!$dep)
+      $dep = Doctrine::getTable('Parlementaire')->findOneByNomDeFamille($search);
+#   if (!$dep)
+#     $dep = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($search, $sexe);
+    $this->parl = $dep->slug;
     $this->options = array('titre' => 1, 'photo' => 1, 'graphe' => 1, 'activite' => 1);
     if ($request->getParameter('notitre', false))
       $this->options['titre'] = 0;
