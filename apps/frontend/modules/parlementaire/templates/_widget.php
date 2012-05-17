@@ -1,5 +1,4 @@
 <?php if (!$parl) {
- echo "<p>$depute</p>";
  return;
 }
 $url = url_for('@parlementaire?slug='.$parl->slug); ?>
