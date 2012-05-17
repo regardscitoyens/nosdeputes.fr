@@ -129,6 +129,9 @@ parlementaire_id_format:
   url: /parlementaire/id/:id/:format
   param: {module: parlementaire, action: id}
 # Liste de tous les parlementaires ou par catégorie
+parlementaire_widget:
+  url: /widget/:depute
+  param: {module: parlementaire, action: widget}
 parlementaires_tags:
   url: /deputes/tags
   param: {module: parlementaire, action: tag}

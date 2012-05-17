@@ -47,4 +47,25 @@ class parlementaireComponents extends sfComponents
       $this->similars = Doctrine::getTable('Parlementaire')->similarTo($this->search, null, 1);
     }
   }
+
+  public function executeWidget() {
+    $search = $this->depute;
+    $sexe = null;
+    if (preg_match("/M\([.mle]\)+ */", $search, $match)) {
+      $sexe = "H";
+      if (preg_match("/e/", $match[1])) 
+        $sexe = "F";
+      $search = preg_replace("/^.*M\([.mle]\)+ */", "", $search);
+    }
+    $search = preg_replace("/([ \-.]\w)/", strtoupper("\\1"), ucfirst(strtolower($search)));
+    $this->parl = Doctrine::getTable('Parlementaire')->findOneBySlug(strtolower($search));
+    if (!$this->parl)
+      $this->parl = Doctrine::getTable('Parlementaire')->findOneByNom($search);
+    if (!$this->parl)
+      $this->parl = Doctrine::getTable('Parlementaire')->findOneByNomDeFamille($search);
+#    if (!$this->parl)
+#      $this->parl = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($search, $sexe);
+    if (!$this->options)
+      $this->options = array('titre' => 1, 'photo' => 1, 'graphe' => 1, 'activite' => 1);
+  }  
 }

@@ -522,4 +522,14 @@ class parlementaireActions extends sfActions
   }
   public function executeError404() {
   }
+
+  public function executeWidget(sfWebRequest $request) {
+    $this->parl = $request->getParameter('depute');
+    $this->options = array(
+      'titre' => $request->getParameter('notitre', true),
+      'photo' => $request->getParameter('nophoto', true),
+      'graphe' => $request->getParameter('nographe', true),
+      'activite' => $request->getParameter('noactivite', true));
+    $this->setLayout(false);
+  }
 }
