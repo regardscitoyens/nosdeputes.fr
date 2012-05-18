@@ -541,7 +541,7 @@ class parlementaireActions extends sfActions
 #   if (!$dep)
 #     $dep = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($search, $sexe);
     $this->parl = $dep->slug;
-    $this->options = array('titre' => 1, 'photo' => 1, 'graphe' => 1, 'activite' => 1);
+    $this->options = array('titre' => 1, 'photo' => 1, 'graphe' => 1, 'activite' => 1, 'tags' => 1);
     if ($request->getParameter('notitre', false))
       $this->options['titre'] = 0;
     if ($request->getParameter('nophoto', false))
@@ -550,6 +550,8 @@ class parlementaireActions extends sfActions
       $this->options['graphe'] = 0;
     if ($request->getParameter('noactivite', false))
       $this->options['activite'] = 0;
+    if ($request->getParameter('notags', false))
+      $this->options['tags'] = 0;
     $this->setLayout(false);
   }
 }
