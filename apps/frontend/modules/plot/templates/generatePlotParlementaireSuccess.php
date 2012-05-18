@@ -128,7 +128,7 @@ if ($link === 'true') {
 $Test->drawGrid(0,TRUE,0,0,0,100);
 $Test->setColorPalette(0,50,50,50);
 $Test->drawOverlayBarGraph($Data2,$DataDescr2,30,100);
-$Test->setColorPalette(0,200,200,200);
+$Test->setColorPalette(0,160,160,160);
 $Test->drawLineGraph($Data4,$DataDescr4);
 $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,255,255,0);

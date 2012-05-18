@@ -35,7 +35,7 @@ echo "<span style='background-color: rgb(0,255,0);'>&nbsp;</span>&nbsp;Mots pron
 if (!(myTools::isFinLegislature() && preg_match('/^l/', $time)) && $questions === 'true' && $type != 'commission')
     echo "<span style='background-color: rgb(0,0,255);'>&nbsp;</span>&nbsp;Questions orales<br/>";
 echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires&nbsp;&nbsp;";
-echo "<span style='font-weight: bolder; color: rgb(200,200,200);'>&mdash;</span>&nbsp;Présence médiane";
+echo "<span style='font-weight: bolder; color: rgb(160,160,160);'>&mdash;</span>&nbsp;Présence médiane";
 if ($link === 'true')
   echo '&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.url_for('@faq').'#post_4">Explications</a></p>';
 else echo '</p>';
