@@ -18,11 +18,15 @@ class photosActions extends sfActions
       if ($ids != "") $ids .= ",";
       $ids .= ','.$i;
     }
-    if ($ids) $query = Doctrine_Query::create()
-      ->update('Parlementaire')
-      ->set('autoflip', 1)
-      ->whereIn('id', explode(',', $ids))
-      ->execute();
+    if ($ids) {
+      $query = Doctrine_Query::create()->select('id, autoflip')->from('Parlementaire')->whereIn('id', explode(',', $ids));
+      foreach ($query->fetchArray() as $dep)
+        $query = Doctrine_Query::create()
+          ->update('Parlementaire')
+          ->set('autoflip', 1-$dep['autoflip'])
+          ->where('id = ?', $dep['id'])
+          ->execute();
+    }
     $this->parlementaires = Doctrine::getTable('Parlementaire')
       ->createQuery()
       ->orderBy('nom_de_famille')
