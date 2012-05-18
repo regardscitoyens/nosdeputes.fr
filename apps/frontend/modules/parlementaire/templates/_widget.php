@@ -1,7 +1,7 @@
 <?php if (!$parl) {
  return;
 }
-$url = url_for('@parlementaire?slug='.$parl->slug); ?>
+$url = url_for('@parlementaire?slug='.$parl->slug, 'absolute=true'); ?>
 <style type="text/css">
  .nosdeputes_widget { width: 935px; text-align: center; font-size: 11px; }
  .nosdeputes_widget a { text-decoration: none; color: inherit; }
@@ -28,29 +28,29 @@ if ($options['tags']) : ?>
 <div class="nosdeputes_widget">
  <?php if ($options['titre']) : ?>
   <div style="text-align:center;">
-   <h2><a href="<?php echo $url; ?>"><?php echo $parl->nom; ?>, <?php echo $parl->getLongStatut(1); ?></h2>
+   <h2><a href="<?php echo $url; ?>"><?php echo $parl->nom; ?>, <?php echo $parl->getLongStatut(); ?></h2>
   </div>
  <?php endif;
  if ($options['photo']) : ?>
   <div style="float: left; border: 2px solid #DCD6CA; height: 160px; width: 125px; margin-right: 3px;">
-   <a href="<?php echo $url; ?>"><?php include_partial('parlementaire/photoParlementaire', array('parlementaire' => $parl, 'height' => 160)); ?></a>
+   <a href="<?php echo $url; ?>"><?php include_partial('photoParlementaire', array('parlementaire' => $parl, 'height' => 160, 'absolute' => true)); ?></a>
   </div>
  <?php endif;
  if ($options['graphe']) : ?>
   <div class="graph_depute">
-   <?php echo include_component('plot', 'parlementaire', array('parlementaire' => $parl, 'options' => array('plot' => 'total', 'questions' => 'true', 'link' => 'true'))); ?>
+   <?php echo include_component('plot', 'parlementaire', array('parlementaire' => $parl, 'options' => array('plot' => 'total', 'questions' => 'true', 'link' => 'true', 'absolute' => true))); ?>
   </div>
   <div style="clear: both;"></div>
  <?php endif;
  if ($options['activite']) : ?>
   <div class="barre_activite">
-   <?php include_partial('top', array('parlementaire'=>$parl)); ?>
+   <?php include_partial('top', array('parlementaire'=>$parl, 'absolute' => true)); ?>
   </div>
   <div style="clear: both;"></div>
  <?php endif;
  if ($options['tags']) : ?>
   <div style="text-align: justify; border: 2px solid #EBEBEB">
-    <?php echo include_component('tag', 'parlementaire', array('parlementaire'=>$parl)); ?>
+    <?php echo include_component('tag', 'parlementaire', array('parlementaire'=>$parl, 'absolute' => true)); ?>
   </div>
  <?php endif; ?>
 </div>

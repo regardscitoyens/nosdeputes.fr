@@ -1,4 +1,10 @@
 <?php
+$abs = '';
+$serv = '';
+if (isset($absolute) && $absolute) {
+  $abs = 'absolute=true';
+  $serv = 'http://'.$_SERVER['SERVER_NAME'];
+}
 $titres = array('semaines_presence' => 'Semaines d\'activité',
 	       'commission_presences' => 'Présences en commission',
 	       'commission_interventions'=> 'Interventions en commission',
@@ -93,7 +99,7 @@ foreach(array_keys($images) as $k) {
   if ($rank)
     echo 'a';
   else echo 'span';
-  echo ' class="jstitle" title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug).'"><img style="height: 16px; width: 16px;" src="'.$sf_request->getRelativeUrlRoot().'/images/xneth/';
+  echo ' class="jstitle" title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug, $abs).'"><img style="height: 16px; width: 16px;" src="'.$serv.$sf_request->getRelativeUrlRoot().'/images/xneth/';
   printf($images[$k], $couleur);
   echo '" alt="'.$titre.'" />';
   echo ' : '.$value.'</';

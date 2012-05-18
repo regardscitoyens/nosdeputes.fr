@@ -1,4 +1,7 @@
-<?php $keys = array_keys($tags);
+<?php $abs = '';
+if (isset($absolute) && $absolute)
+  $abs = 'absolute=true';
+$keys = array_keys($tags);
 $tot = count($keys);
 if (!isset($nozerodisplay))
   $nozerodisplay = false;
@@ -19,7 +22,7 @@ $rel = preg_replace('/^eZ/', 'é', $rel);
 $rel = preg_replace('/^EZ/', 'É', $rel);
 $rel = preg_replace('/^iZ/', 'î', $rel);
 $rel = preg_replace('/^IZ/', 'Î', $rel);
-echo url_for($route.'tags='.$rel); ?>" title="<?php echo $tags[$tag]['count']; ?>"><?php
+echo url_for($route.'tags='.$rel, $abs); ?>" title="<?php echo $tags[$tag]['count']; ?>"><?php
 } else if ($ct % 2 == 0) echo '<br/>';
 $nom = preg_replace('/\s+/', '&nbsp;', $tags[$tag]['tag']);
 $nom = preg_replace('/^aZ/', 'â', $nom);
