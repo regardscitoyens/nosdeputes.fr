@@ -44,7 +44,7 @@ if ($options['tags']) : ?>
 </style>
 <div class="nosdeputes_widget">
 <?php if ($options['titre']) : ?>
-  <h2><a<?php echo $target; ?> href="<?php echo $url; ?>"><?php echo $parl->nom; ?><?php if ($options['width'] > 600) echo ', '.$parl->getLongStatut(); else if ($options['width'] > 300) echo ', '.$parl->getStatut(); ?></a></h2>
+  <h2><a<?php echo $target; ?> href="<?php echo $url; ?>"><?php echo $parl->nom; ?><?php if ($options['width'] >= 600) echo ', '.$parl->getLongStatut(); else if ($options['width'] >= 300) echo ', '.$parl->getStatut(); ?></a></h2>
 <?php endif;
 if ($options['photo']) : ?>
   <div class="photo_depute">
