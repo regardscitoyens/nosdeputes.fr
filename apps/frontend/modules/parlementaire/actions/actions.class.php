@@ -523,9 +523,7 @@ class parlementaireActions extends sfActions
   public function executeError404() {
   }
 
-  public function executeWidget(sfWebRequest $request) {
-    $this->search = $request->getParameter('depute');
-    $search = $this->search;
+  private function searchDepute($search) {
     $sexe = null;
     if (preg_match("/M\([.mle]\)+ */", $search, $match)) {
       $sexe = "H";
@@ -541,6 +539,21 @@ class parlementaireActions extends sfActions
       $dep = Doctrine::getTable('Parlementaire')->findOneByNomDeFamille($search);
 #   if (!$dep)
 #     $dep = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($search, $sexe);
+      return $dep;
+  }
+
+  public function executeWidgetEditor(sfWebRequest $request) {
+    $this->depute = $this->searchDepute($request->getParameter('depute'));
+    if (!$this->depute)
+    $this->depute = Doctrine::getTable('Parlementaire')->createQuery('p')->where('fin_mandat IS NULL')->orderBy('rand()')->limit(1)->fetchOne();
+
+  }
+
+  public function executeWidget(sfWebRequest $request) {
+    $this->search = $request->getParameter('depute');
+    $dep = $this->searchDepute($this->search);
+    $this->parl = null;
+    if (!$dep) return;
     $this->parl = $dep->slug;
     $this->options = array('titre' => 1, 'photo' => 1, 'graphe' => 1, 'activite' => 1, 'tags' => 1, 'iframe' => 0);
     if ($request->getParameter('notitre', false))
