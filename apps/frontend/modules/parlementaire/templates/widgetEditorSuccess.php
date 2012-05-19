@@ -1,31 +1,35 @@
-<h1>Include NosDeputes.fr sur votre site</h1>
+<h1>Inclure NosDéputés.fr sur votre site</h1>
 <div id="editor">
 <form>
 <h2>Saisissez le nom de votre député</h2>
-<p>Nom du député : <input type="text" id="nom" value="<?php if ($depute) echo $depute->getNom();?>" class="update"><input type="button" value="créer" id="bouton"/></p>
+<p>Nom : <input type="text" id="nom" value="<?php if ($depute) echo $depute->getNom();?>" class="update"><input type="button" value="rechercher" id="bouton"/></p>
 <input type="hidden" id="slug" value="<?php if ($depute) echo $depute->getSlug(); ?>"/>
 <h2>Choisissez quelques options</h2>
-<p><label><input type="checkbox" id="titre" value="1" class="update" CHECKED>Include le titre</label></p>
-<p><label><input type="checkbox" id="tag" value="1" class="update">Include le nuage de tags</label></p>
-<p><label><input type="checkbox" id="graph" value="1" class="update" CHECKED>Include le graphique d'activité</label></p>
-<p><label><input type="checkbox" id="photo" value="1" class="update" CHECKED>Include la photo du député-e</label></p>
-<p><label><input type="checkbox" id="indicateurs" value="1" class="update"CHECKED>Include les indicateurs d'activité</label></p>
-<p>Taille du widget : <input type="text" id="width" class="update" value="600"/></p>
+<div style="margin-left: 150px; width: 300px; height: 138px; float: left;">
+<p><label><input type="checkbox" id="titre" value="1" class="update" CHECKED>Inclure le titre</label></p>
+<p><label><input type="checkbox" id="photo" value="1" class="update" CHECKED>Inclure la photo du député-e</label></p>
+<p><label><input type="checkbox" id="tag" value="1" class="update">Inclure le nuage de tags</label></p>
+<p id="maxtags" style="display:block;"><label>Afficher un maximum de <input size=3 type="textbox" id="nb_maxtags" value="40" class="update"/> mots-clés.</label></p>
+</div>
+<div style="width: 300px; float: left;">
+<p><label><input type="checkbox" id="graph" value="1" class="update" CHECKED>Inclure le graphique d'activité</label></p>
+<p><label><input type="checkbox" id="indicateurs" value="1" class="update" CHECKED>Inclure les indicateurs d'activité</label></p>
+<p>Taille du widget : <input size=4 type="text" id="width" class="update" value="600"/> pixels.</p>
+</div>
 <input type="hidden" id="height" value=""/>
 <input type="hidden" id="url" value=""/>
 </form>
 </div>
-<div id="preview" style="display:none;">
-<h2>Prévisualiser le résultat</h2>
+<div id="preview" style="clear:both; display:none";>
+<h2>Prévisualisez le résultat</h2>
 <center>
 <div id="resultat">
 </div>
 </center>
 </div>
 <h2>Embarquez votre député</h2>
-<p>Pour insérer ce widget sur votre site, il vous suffit de copier/coller le contenu HTML ci dessous :</p>
-<textarea cols="150" rows=3 id="iframe" onclick="this.focus();this.select()" readonly="readonly">
-</textarea>
+<p>Pour insérer ce widget sur votre site, il vous suffit de copier/coller le contenu HTML ci-dessous :</p>
+<center><textarea style="font-size: 8px;" cols="175" rows=2 id="iframe" onclick="this.focus();this.select()" readonly="readonly"></textarea></center>
 <script>
 var updateIframe = function() {
   if (!$('#url').val()) return;
@@ -47,7 +51,13 @@ var updatePreview = function() {
      url += "notitre=1&"; 
    }
    if (!$("#tag:checked").val()) {
-     url += "notags=1&"; 
+     url += "notags=1&";
+     $("#maxtags").hide();
+   } else {
+     $("#maxtags").show();
+     if ($("#nb_maxtags").val() != 40) {
+       url += "maxtags="+$("#nb_maxtags").val()+"&";
+     }
    }
    if (!$("#graph:checked").val()) {
      url += "nographe=1&"; 

@@ -33,7 +33,7 @@ if ($options['activite']) : ?>
  .nosdeputes_widget .barre_activite li img { margin-left: <?php echo floor(25*$options['width']/935); ?>px; }
 <?php endif;
 if ($options['tags']) : ?>
- .nosdeputes_widget .tags_deputes { text-align: justify; border: 2px solid #EBEBEB; }
+ .nosdeputes_widget .tags_depute { text-align: justify; border: 2px solid #EBEBEB; }
  .nosdeputes_widget .internal_tag_cloud { margin: <?php echo floor(2*$options['width']/935); ?>px; position: relative; text-align: center; font-size: 12px; }
  .nosdeputes_widget .tag_level_0 { font-size: 0.5em; }
  .nosdeputes_widget .tag_level_1 { font-size: 0.7em; }
@@ -44,7 +44,7 @@ if ($options['tags']) : ?>
 </style>
 <div class="nosdeputes_widget">
 <?php if ($options['titre']) : ?>
-  <h2><a<?php echo $target; ?> href="<?php echo $url; ?>"><?php echo $parl->nom; ?><?php if ($options['width'] >= 600) echo ', '.$parl->getLongStatut(); else if ($options['width'] >= 300) echo ', '.$parl->getStatut(); ?></a></h2>
+  <h2><a<?php echo $target; ?> href="<?php echo $url; ?>"><?php echo $parl->nom; ?><?php if ($options['width'] >= 580) echo ', '.$parl->getLongStatut(); else if ($options['width'] >= 280) echo ', '.$parl->getStatut(); ?></a></h2>
 <?php endif;
 if ($options['photo']) : ?>
   <div class="photo_depute">
