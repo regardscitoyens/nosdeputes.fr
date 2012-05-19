@@ -23,7 +23,7 @@
 </div>
 <h2>Embarquez votre député</h2>
 <p>Pour insérer ce widget sur votre site, il vous suffit de copier/coller le contenu HTML ci dessous :</p>
-<textarea cols="150" rows=3 id="iframe">
+<textarea cols="150" rows=3 id="iframe" onclick="this.focus();this.select()" readonly="readonly">
 </textarea>
 <script>
 var updateIframe = function() {
@@ -31,7 +31,9 @@ var updateIframe = function() {
   $("#iframe").val('<iframe src="'+$('#url').val()+'" height="'+$('#height').val()+'" width="'+$('#width').val()+'"/>');
 }
 var updatePreview = function() {
-   var url = 'http://'+window.location.hostname+'/widget/'+$('#nom').val().replace(/ /, '-')+"?iframe=true&";
+   var nom = $('#nom').val();
+   if (!nom) return;
+   var url = 'http://'+window.location.hostname+'/widget/'+nom.replace(/ /, '-')+"?iframe=true&";
    if (!$("#titre:checked").val()) {
      url += "notitre=1&"; 
    }
