@@ -29,15 +29,18 @@
 <script>
 var updateIframe = function() {
   if (!$('#url').val()) return;
-  if ($('#height').val() == $('#resultat').height()) return;
   $('#height').val($('#resultat').height());
   $("#iframe").val('<iframe frameborder="0" scrolling="no" src="'+$('#url').val()+'" height="'+($('#height').val()*1+20)+'" width="'+$('#width').val()+'"></iframe>');
 }
 var updatePreview = function() {
    var nom = $('#nom').val();
    if (!nom) return;
-   var slug = $('#slug').val();
-   if (slug)   nom = slug;
+   if ($(this).attr('id') == "nom") {
+     $('#slug').val(null);
+   } else {
+     var slug = $('#slug').val();  
+     if (slug)   nom = slug;
+   }
    $("#preview").show();
    var url = 'http://'+window.location.hostname+'/widget/'+nom.replace(/ /, '-')+"?iframe=true&";
    if (!$("#titre:checked").val()) {
@@ -58,11 +61,10 @@ var updatePreview = function() {
    url+= "width="+($('#width').val()-20);
    $('#url').val(url);
    updateIframe();
-   $('#resultat').load(url, function(text, status) {
+   $('#resultat').load(url+"&internal=1", function(text, status) {
      updateIframe();
    });
 };
-$("#nom").change(function() {$("#slug").val('');});
 $('.update').change(updatePreview);
 $('#bouton').click(updatePreview);
 $("#height").change(updateIframe);

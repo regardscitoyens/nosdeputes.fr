@@ -552,12 +552,13 @@ class parlementaireActions extends sfActions
 
   public function executeWidget(sfWebRequest $request) {
     $this->search = $request->getParameter('depute');
-    $dep = $this->searchDepute($this->search);
+    $this->internal = $request->getParameter('internal'); 
+   $dep = $this->searchDepute($this->search);
     $this->parl = null;
     if (!$dep) return;
     $this->parl = $dep->slug;
-    if ($this->parl != $this->search) {
-      return $this->redirect('parlementaire/widget?depute='.$this->parl);
+    if ($this->parl != $this->search && !$this->internal) {
+      return $this->redirect('parlementaire/widget?depute='.$this->parl."&".$_SERVER['QUERY_STRING']);
     }
     $this->options = array('titre' => 1, 'photo' => 1, 'graphe' => 1, 'activite' => 1, 'tags' => 1, 'iframe' => 0);
     if ($request->getParameter('notitre', false))
