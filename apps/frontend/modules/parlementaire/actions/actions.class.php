@@ -543,6 +543,7 @@ class parlementaireActions extends sfActions
   }
 
   public function executeWidgetEditor(sfWebRequest $request) {
+    $this->response->setTitle("Intégrer NosDeputes.fr sur votre site");
     $this->depute = $this->searchDepute($request->getParameter('depute'));
     if (!$this->depute)
     $this->depute = Doctrine::getTable('Parlementaire')->createQuery('p')->where('fin_mandat IS NULL')->orderBy('rand()')->limit(1)->fetchOne();
