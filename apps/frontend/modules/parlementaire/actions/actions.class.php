@@ -524,7 +524,8 @@ class parlementaireActions extends sfActions
   }
 
   public function executeWidget(sfWebRequest $request) {
-    $search = $request->getParameter('depute');
+    $this->search = $request->getParameter('depute');
+    $search = $this->search;
     $sexe = null;
     if (preg_match("/M\([.mle]\)+ */", $search, $match)) {
       $sexe = "H";
