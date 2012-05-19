@@ -552,6 +552,10 @@ class parlementaireActions extends sfActions
       $this->options['activite'] = 0;
     if ($request->getParameter('notags', false))
       $this->options['tags'] = 0;
+    if (preg_match('/^\d+$/', $request->getParameter('maxtags', 40)))
+      $this->options['maxtags'] = $request->getParameter('maxtags', 40);
+    if (preg_match('/^\d+$/', $request->getParameter('width', 935)))
+      $this->options['width'] = $request->getParameter('width', 935);
     $this->setLayout(false);
   }
 }

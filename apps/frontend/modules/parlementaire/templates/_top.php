@@ -77,6 +77,9 @@ if (myTools::isFinLegislature()) {
 }
 ?>
 <ul><?php
+$icosize = 16;
+if (isset($widthrate))
+  $icosize = floor($icosize*$widthrate);
 foreach(array_keys($images) as $k) {
   if (isset($top[$k]['value']))
     $value = $top[$k]['value'];
@@ -99,7 +102,7 @@ foreach(array_keys($images) as $k) {
   if ($rank)
     echo 'a';
   else echo 'span';
-  echo ' class="jstitle" title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug, $abs).'"><img style="height: 16px; width: 16px;" src="'.$serv.$sf_request->getRelativeUrlRoot().'/images/xneth/';
+  echo ' class="jstitle" title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug, $abs).'"><img style="height: '.$icosize.'px; width: '.$icosize.'px;" src="'.$serv.$sf_request->getRelativeUrlRoot().'/images/xneth/';
   printf($images[$k], $couleur);
   echo '" alt="'.$titre.'" />';
   echo ' : '.$value.'</';

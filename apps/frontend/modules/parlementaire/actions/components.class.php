@@ -52,6 +52,6 @@ class parlementaireComponents extends sfComponents
     $search = $this->slug;
     $this->parl = Doctrine::getTable('Parlementaire')->findOneBySlug($this->slug);
     if (!$this->options)
-      $this->options = array('titre' => 1, 'photo' => 1, 'graphe' => 1, 'activite' => 1, 'tags' => 1);
+      $this->options = array('titre' => 1, 'photo' => 1, 'graphe' => 1, 'activite' => 1, 'tags' => 1, 'width' => 935, 'maxtags' => 40);
   }  
 }

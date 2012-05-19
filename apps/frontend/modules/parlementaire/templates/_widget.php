@@ -3,54 +3,64 @@
 }
 $url = url_for('@parlementaire?slug='.$parl->slug, 'absolute=true'); ?>
 <style type="text/css">
- .nosdeputes_widget { width: 935px; text-align: center; font-size: 11px; }
+ .nosdeputes_widget { width: <?php echo $options['width']; ?>px; text-align: center; font-size: <?php echo max(8, floor(14*$options['width']/935)); ?>px; }
  .nosdeputes_widget a { text-decoration: none; color: inherit; }
  .nosdeputes_widget #overDiv { position: absolute; visibility: hidden; z-index: 1000; }
 <?php if ($options['graphe']) : ?>
- .nosdeputes_widget .graph_depute { float: left; height: 170px; margin-right: 3px; width: 800px; }
- .nosdeputes_widget .graph_depute p { margin: 0; padding: 0; }
+ .nosdeputes_widget .graph_depute { float: left; height: <?php echo floor(170*$options['width']/935); ?>px; margin: 1px; width: <?php echo floor(800*$options['width']/935); ?>px; }
+ .nosdeputes_widget .graph_depute p { font-size: <?php echo floor(11*$options['width']/935); ?>px; margin: 0; padding: 0; }
 <?php endif;
 if ($options['activite']) : ?>
- .nosdeputes_widget .barre_activite { text-align: center; background-color: #EBEBEB; float: left; margin-top: 10px; padding-top: 3px; width: 935px; text-align: left; }
- .nosdeputes_widget .barre_activite ul, .barre_activite li { background-color: transparent; display: inline; font-weight: bold; line-height: 24px; margin: -3px; padding: 0; }
- .nosdeputes_widget .barre_activite h3 { background-color: transparent; color: #6B6B6B; display: inline; font-size: 1.3em; line-height: 24px; margin: 0; padding-left: 5px; }
- .nosdeputes_widget .barre_activite li img { margin-left: 25px; }
+ .nosdeputes_widget .barre_activite { font-size: <?php echo floor(13*$options['width']/935); ?>px; background-color: #EBEBEB; float: left; margin-top: <?php echo floor(10*$options['width']/935); ?>px; padding-top: <?php echo floor(3*$options['width']/935); ?>px; width: <?php echo floor($options['width']); ?>px; text-align: left; }
+ .nosdeputes_widget .barre_activite ul, .barre_activite li { background-color: transparent; display: inline; font-weight: bold; line-height: <?php echo floor(24*$options['width']/935); ?>px; margin: -<?php echo floor(3*$options['width']/935); ?>px; padding: 0; }
+ .nosdeputes_widget .barre_activite h3 { background-color: transparent; color: #6B6B6B; display: inline; font-size: 1.2em; line-height: <?php echo floor(24*$options['width']/935); ?>px; margin: 0; padding-left: <?php echo floor(5*$options['width']/935); ?>px; }
+ .nosdeputes_widget .barre_activite li img { margin-left: <?php echo floor(25*$options['width']/935); ?>px; }
 <?php endif;
 if ($options['tags']) : ?>
- .nosdeputes_widget .tag_level_0 { font-size: 0.8em; }
- .nosdeputes_widget .tag_level_1 { font-size: 0.9em; }
- .nosdeputes_widget .tag_level_2 { font-size: 1em; }
- .nosdeputes_widget .tag_level_3 { font-size: 1.5em; }
- .nosdeputes_widget .tag_level_4 { font-size: 1.7em; }
- .nosdeputes_widget .internal_tag_cloud { margin: auto; position: relative; text-align: center; }
+ .nosdeputes_widget .tag_level_0 { font-size: 0.5em; }
+ .nosdeputes_widget .tag_level_1 { font-size: 0.7em; }
+ .nosdeputes_widget .tag_level_2 { font-size: 0.9em; }
+ .nosdeputes_widget .tag_level_3 { font-size: 1.1em; }
+ .nosdeputes_widget .tag_level_4 { font-size: 1.3em; }
+ .nosdeputes_widget .internal_tag_cloud { margin: <?php echo floor(2*$options['width']/935); ?>px; position: relative; text-align: center; font-size: 12px; }
  <?php endif; ?>
 </style>
 <div class="nosdeputes_widget">
  <?php if ($options['titre']) : ?>
   <div style="text-align:center;">
-   <h2><a href="<?php echo $url; ?>"><?php echo $parl->nom; ?>, <?php echo $parl->getLongStatut(); ?></h2>
+   <h2><a href="<?php echo $url; ?>"><?php echo $parl->nom; ?><?php if ($options['width'] > 600) echo ', '.$parl->getLongStatut(); else if ($options['width'] > 300) echo ', '.$parl->getStatut(); ?></a></h2>
   </div>
  <?php endif;
- if ($options['photo']) : ?>
-  <div style="float: left; border: 2px solid #DCD6CA; height: 160px; width: 125px; margin-right: 3px;">
-   <a href="<?php echo $url; ?>"><?php include_partial('photoParlementaire', array('parlementaire' => $parl, 'height' => 160, 'absolute' => true)); ?></a>
+ if ($options['photo']) : 
+  if (!$options['graphe']) {
+    $photow = $options['width']-2;
+    $photoh = floor(160/125*$photow);
+  } else {
+    $photoh = floor(160*($options['width']-4)/935);
+    $photow = floor(125*($options['width']-4)/935);
+  } ?>
+  <div style="<?php echo ($options['graphe'] ? 'float: left; ' : ''); ?>border: <?php echo floor(2*$options['width']/935); ?>px solid #DCD6CA; height: <?php echo $photoh; ?>px; width: <?php echo $photow; ?>px;">
+   <a href="<?php echo $url; ?>"><?php include_partial('photoParlementaire', array('parlementaire' => $parl, 'height' => $photoh, 'absolute' => true)); ?></a>
   </div>
  <?php endif;
- if ($options['graphe']) : ?>
-  <div class="graph_depute">
-   <?php echo include_component('plot', 'parlementaire', array('parlementaire' => $parl, 'options' => array('plot' => 'total', 'questions' => 'true', 'link' => 'true', 'absolute' => true))); ?>
+ if ($options['graphe']) : 
+  if (!$options['photo'])
+    $widthrate = $options['width']/800.;
+  else $widthrate = $options['width']/935.; ?>
+  <div class="graph_depute" style="margin: auto; <?php echo ($widthrate > 1/3 ? 'margin-bottom: 10px; ' : ''); ?>height: <?php echo floor(160*$widthrate); ?>px">
+   <?php echo include_component('plot', 'parlementaire', array('parlementaire' => $parl, 'options' => array('plot' => 'total', 'questions' => 'true', 'link' => 'true', 'absolute' => true, 'widthrate' => $widthrate))); ?>
   </div>
   <div style="clear: both;"></div>
  <?php endif;
  if ($options['activite']) : ?>
   <div class="barre_activite">
-   <?php include_partial('top', array('parlementaire'=>$parl, 'absolute' => true)); ?>
+   <?php include_partial('top', array('parlementaire'=>$parl, 'absolute' => true, 'widthrate' => $options['width']/935.)); ?>
   </div>
   <div style="clear: both;"></div>
  <?php endif;
  if ($options['tags']) : ?>
   <div style="text-align: justify; border: 2px solid #EBEBEB">
-    <?php echo include_component('tag', 'parlementaire', array('parlementaire'=>$parl, 'absolute' => true)); ?>
+    <?php echo include_component('tag', 'parlementaire', array('parlementaire'=>$parl, 'absolute' => true, 'limit' => $options['maxtags'])); ?>
   </div>
  <?php endif; ?>
 </div>
