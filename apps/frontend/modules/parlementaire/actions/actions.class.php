@@ -556,6 +556,9 @@ class parlementaireActions extends sfActions
     $this->parl = null;
     if (!$dep) return;
     $this->parl = $dep->slug;
+    if ($this->parl != $this->search) {
+      return $this->redirect('parlementaire/widget?depute='.$this->parl);
+    }
     $this->options = array('titre' => 1, 'photo' => 1, 'graphe' => 1, 'activite' => 1, 'tags' => 1, 'iframe' => 0);
     if ($request->getParameter('notitre', false))
       $this->options['titre'] = 0;
