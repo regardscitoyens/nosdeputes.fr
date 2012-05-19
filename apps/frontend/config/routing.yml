@@ -310,6 +310,9 @@ top_global_sorted:
 top_global: 
   url: /synthese
   param: {module: parlementaire, action: top}
+api_synthese_current:
+  url: /synthese/data/:format
+  param: {module: api, action: topSynthese}
 api_synthese:
   url: /synthese/:date/:format
   param: {module: api, action: top}

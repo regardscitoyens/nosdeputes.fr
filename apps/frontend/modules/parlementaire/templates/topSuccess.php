@@ -103,6 +103,7 @@ $bulles = array("",
 </table>
 </div>
 <p class="aligncenter"><small>Les chiffres en couleur indiquent que le député se trouve pour le critère indiqué parmi <span style="color:green">les 150 premiers</span> ou <span style="color:red">les 150 derniers</span>.</small></p>
+<p class="aligncenter"><small>Télécharger les données : <b><?php echo link_to('CSV', '@api_synthese_current?format=csv'); ?></b> &mdash; <b><?php echo link_to('JSON', '@api_synthese_current?format=json'); ?></b> &mdash; <b><?php echo link_to('XML', '@api_synthese_current?format=xml'); ?></b></small>&nbsp;&nbsp;<a href="http://www.regardscitoyens.org/open-data-en-france/"><img src="/images/opendata.png" alt="OpenData" title="OpenData" style="border: none; margin-bottom: -4px;"/></a></p>
 </div></div>
 <h2 id="groupes">Activité moyenne d'un député de chaque groupe politique <?php if ($fin) echo "sur toute la législature"; else echo "au cours des 12 derniers mois"; ?> :</h2>
 <div class="liste_deputes_top">

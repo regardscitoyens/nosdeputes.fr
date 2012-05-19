@@ -72,8 +72,62 @@ class apiActions extends sfActions
     }
 
     $this->breakline = 'depute';
-    $this->templatize($request, $date.'_stats_deputes');
+    $this->templatize($request, 'nosdeputes.fr_'.$date.'_stats_deputes');
   }
+
+  public function executeTopSynthese(sfWebRequest $request) {
+    $qp = Doctrine::getTable('Parlementaire')->createQuery('p');
+    $fin = myTools::isFinLegislature();
+    if (!$fin) $qp->andWhere('fin_mandat IS NULL')
+      ->andWhere('debut_mandat < ?', date('Y-m-d', time()-round(60*60*24*3650/12)));
+    $qp->orderBy('nom_de_famille');
+    $parlementaires = $qp->execute();
+    unset($qp);
+    $this->res = array();
+    $this->champs = array();
+    foreach($parlementaires as $p) {
+      $tops = $p->top;
+      $depute['id'] = $p->id;
+      $this->champs['id'] = 1;
+      if ($fin && $tops['nb_mois'] < 4)
+        continue;
+      $depute = $this->getParlementaireArray($p, $request->getParameter('format'), 2);
+      if ($fin)
+        $depute["nb_mois"] = $tops['nb_mois'];
+      if ($request->getParameter('format') == 'csv')
+       foreach(array_keys($depute) as $key)
+        if (!isset($this->champs[$key]))
+         $this->champs[$key] = 1;
+      foreach(array_keys($tops) as $k) {
+        if ($k != 'nb_mois') {
+          //Gestion de l'ordre des parametres
+          $kfinal = preg_replace('/^\d*_/', '', $k);
+          $depute[$kfinal] = $tops[$k]['value'];
+          if (!isset($this->champs[$kfinal])) $this->champs[$kfinal] = 1;
+          if ($fin) {
+            $depute[$kfinal.'_moyenne_mensuelle']  = $tops[$k]['moyenne'];
+            if (!isset($this->champs[$kfinal.'_moyenne_mensuelle'])) $this->champs[$kfinal.'_moyenne_mensuelle'] = 1;
+          }
+        } else {
+          $depute[$k] = $tops[$k];
+          if (!isset($this->champs[$k])) $this->champs[$k] = 1;
+        }
+      }
+      $this->res["deputes"][] = array('depute' => $depute);
+    }
+
+    for($i = 0 ; $i < count($this->res["deputes"]) ; $i++) {
+      foreach(array_keys($this->champs) as $key) {
+        if (!isset($this->res['deputes'][$i]['depute'][$key])) {
+          $this->res['deputes'][$i]['depute'][$key] = 0;
+        }
+      }
+    }
+
+    $this->breakline = 'depute';
+    $this->templatize($request, 'nosdeputes.fr_synthese_'.date('Y-m-d'));
+  }
+
 
   protected static function array2hash($array, $hashname) {
     if (!$array)
@@ -108,18 +162,15 @@ class apiActions extends sfActions
     $this->champs = array();
     $this->res = array('deputes' => array());
     $this->breakline = 'depute';
-    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     foreach($deputes as $dep) {
       $depute = $this->getParlementaireArray($dep, $request->getParameter('format'), ($request->getParameter('current') == true ? 1 : 2));
       if ($request->getParameter('format') == 'csv')
        foreach(array_keys($depute) as $key)
         if (!isset($this->champs[$key]))
          $this->champs[$key] = 1;
-      $depute['api_url'] = 'http://'.$_SERVER['HTTP_HOST'].url_for('api/parlementaire?format='.$request->getParameter('format').'&slug='.$dep->slug);
-      $this->champs['api_url'] = 1;
       $this->res['deputes'][] = array('depute' => $depute);
     }
-    $this->templatize($request, 'nosdeputes.fr_deputes'.($request->getParameter('current') == true ? "_en_mandat" : ""));
+    $this->templatize($request, 'nosdeputes.fr_deputes'.($request->getParameter('current') == true ? "_en_mandat" : "").date('Y-m-d'));
   }
 
   public function executeParlementaire(sfWebRequest $request) 
@@ -192,6 +243,10 @@ class apiActions extends sfActions
     $res['place_en_hemicycle'] = $parl->place_hemicycle;
     $res['url_an'] = $parl->url_an;
     $res['slug'] = $parl->getSlug();
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    $res['url_nosdeputes'] = url_for('@parlementaire?slug='.$res['slug'], 'absolute=true');
+    $res['url_nosdeputes_api'] = url_for('api/parlementaire?format='.$format.'&slug='.$res['slug'], 'absolute=true');
+    $res['nb_mandats'] = count(unserialize($parl->getAutresMandats()));
     return $res;
   }
 
