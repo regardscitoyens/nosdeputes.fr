@@ -6,10 +6,10 @@
 <input type="hidden" id="slug" value="<?php if ($depute) echo $depute->getSlug(); ?>"/>
 <h2>Choisissez quelques options</h2>
 <div style="margin-left: 150px; width: 300px; height: 138px; float: left;">
-<p><label><input type="checkbox" id="titre" value="1" class="update" CHECKED>Inclure le titre</label></p>
-<p><label><input type="checkbox" id="photo" value="1" class="update" CHECKED>Inclure la photo du député-e</label></p>
-<p><label><input type="checkbox" id="tag" value="1" class="update">Inclure le nuage de tags</label></p>
-<p id="maxtags" style="display:block;"><label>Afficher un maximum de <input size=3 type="textbox" id="nb_maxtags" value="40" class="update"/> mots-clés.</label></p>
+<p><label><input type="checkbox" id="titre" value="1" class="update" CHECKED>Inclure un titre</label></p>
+<p><label><input type="checkbox" id="photo" value="1" class="update" CHECKED>Inclure la photo</label></p>
+<p><label><input type="checkbox" id="tag" value="1" class="update">Inclure un nuage de mots-clés</label></p>
+<p id="maxtags" style="display:block;"><label>Afficher un maximum de <input size=3 type="textbox" id="nb_maxtags" value="40" class="update"/> tags.</label></p>
 </div>
 <div style="width: 300px; float: left;">
 <p><label><input type="checkbox" id="graph" value="1" class="update" CHECKED>Inclure le graphique d'activité</label></p>
@@ -30,6 +30,7 @@
 <h2>Embarquez votre député</h2>
 <p>Pour insérer ce widget sur votre site, il vous suffit de copier/coller le contenu HTML ci-dessous :</p>
 <center><textarea style="font-size: 8px;" cols="175" rows=2 id="iframe" onclick="this.focus();this.select()" readonly="readonly"></textarea></center>
+<p style="margin: 20px;"><a href="http://cpc.regardscitoyens.org/trac/wiki/API">Pour un usage avancé, plus de précisions ou un accès direct aux données elles-mêmes, nous vous invitons à vous référer à la documentation de notre API.</a></p>
 <script>
 var updateIframe = function() {
   if (!$('#url').val()) return;
