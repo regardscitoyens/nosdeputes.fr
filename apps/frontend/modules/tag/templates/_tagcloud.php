@@ -1,6 +1,8 @@
 <?php $abs = '';
 if (isset($absolute) && $absolute)
   $abs = 'absolute=true';
+if (!isset($target))
+  $target = '';
 $keys = array_keys($tags);
 $tot = count($keys);
 if (!isset($nozerodisplay))
@@ -14,7 +16,7 @@ if ($nozerodisplay) { ?>
 <?php $ct = 1; $keys = array_keys($tags);
 if ($tot > 0) { foreach($keys as $tag) : ?>
 <span class="tag_level_<?php echo $tags[$tag]['class']; ?>"><?php if (isset($route)) {
-echo '<a href="'; 
+echo '<a'.$target.' href="'; 
 $rel = $tags[$tag]['related'];
 $rel = preg_replace('/^aZ/', 'â', $rel);
 $rel = preg_replace('/^eZ/', 'é', $rel);
