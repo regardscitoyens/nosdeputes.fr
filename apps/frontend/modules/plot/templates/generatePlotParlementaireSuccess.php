@@ -144,7 +144,7 @@ $Test->drawLineGraph($DataBordure,$DataDescrBordure);
 
 $Test->xsSetFontProperties("tahoma.ttf",$font + 3);
 $pos_titre = 240;
-if ($time === 'lastyear') {
+if (preg_match("/^l/", $time)) {
   if (isset($data['mandat_clos'])) {
     $pos_titre = 210;
     $duree = ' sa dernière année de mandat';

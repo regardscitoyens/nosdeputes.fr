@@ -18,7 +18,7 @@
       if ($parlementaire->suppleant_de_id && $supplee = $parlementaire->getSuppleantDe())
         echo '<li>Suppléant'.($parlementaire->sexe == "F" ? 'e' : '').' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>'; 
       if ($parlementaire->groupe_acronyme != "") : ?>
-      <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getgroupe()->getFonction(); ?>)</li>
+      <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getGroupe()->getFonction(); ?>)</li>
       <?php endif; ?>
       <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, '@list_parlementaires_profession?search='.$parlementaire->profession); else : ?>Non communiquée<?php endif; ?></li>
       <li><?php echo link_to('Fiche sur le site de l\'Assemblée nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'rel'=>'nofollow')); ?></li>
