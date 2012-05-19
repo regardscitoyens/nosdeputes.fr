@@ -5,11 +5,11 @@
 <p>Nom du député : <input type="text" id="nom" value="<?php if ($depute) echo $depute->getNom();?>" class="update"><input type="button" value="créer" id="bouton"/></p>
 <input type="hidden" id="slug" value="<?php if ($depute) echo $depute->getSlug(); ?>"/>
 <h2>Choisissez quelques options</h2>
-<p><label><input type="checkbox" id="titre" value="1" class="update" CHECKED>Inserrer un titre</label></p>
-<p><label><input type="checkbox" id="tag" value="1" class="update">Inserrer un nuage de tags</label></p>
-<p><label><input type="checkbox" id="graph" value="1" class="update" CHECKED>Inserrer le graphique d'activité</label></p>
-<p><label><input type="checkbox" id="photo" value="1" class="update" CHECKED>Inserrer la photo du député-e</label></p>
-<p><label><input type="checkbox" id="indicateurs" value="1" class="update"CHECKED>Inserrer les indicateurs d'activité</label></p>
+<p><label><input type="checkbox" id="titre" value="1" class="update" CHECKED>Include le titre</label></p>
+<p><label><input type="checkbox" id="tag" value="1" class="update">Include le nuage de tags</label></p>
+<p><label><input type="checkbox" id="graph" value="1" class="update" CHECKED>Include le graphique d'activité</label></p>
+<p><label><input type="checkbox" id="photo" value="1" class="update" CHECKED>Include la photo du député-e</label></p>
+<p><label><input type="checkbox" id="indicateurs" value="1" class="update"CHECKED>Include les indicateurs d'activité</label></p>
 <p>Taille du widget : <input type="text" id="width" class="update" value="600"/></p>
 <input type="hidden" id="height" value=""/>
 <input type="hidden" id="url" value=""/>
@@ -31,7 +31,7 @@ var updateIframe = function() {
   if (!$('#url').val()) return;
   if ($('#height').val() == $('#resultat').height()) return;
   $('#height').val($('#resultat').height());
-  $("#iframe").val('<iframe src="'+$('#url').val()+'" height="'+$('#height').val()+'" width="'+$('#width').val()+'"/>');
+  $("#iframe").val('<iframe frameborder="0" scrolling="no" src="'+$('#url').val()+'" height="'+($('#height').val()*1+20)+'" width="'+$('#width').val()+'"></iframe>');
 }
 var updatePreview = function() {
    var nom = $('#nom').val();
@@ -55,7 +55,7 @@ var updatePreview = function() {
    if (!$("#indicateurs:checked").val()) {
      url += "noactivite=1&"; 
    }
-   url+= "width="+$('#width').val();
+   url+= "width="+($('#width').val()-20);
    $('#url').val(url);
    updateIframe();
    $('#resultat').load(url, function(text, status) {
