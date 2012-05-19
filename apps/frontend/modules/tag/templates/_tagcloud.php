@@ -35,7 +35,8 @@ if (isset($route)) { ?></a> <?php }
 		 ?></span> <?php $ct++; endforeach; 
 } else { ?>
 <span><em>Aucun mot-clé trouvé</em></span>
-<?php } ?></div>
+<?php } ?>
+</div>
 <?php if ($nozerodisplay) { ?>
 </div>
 <?php }

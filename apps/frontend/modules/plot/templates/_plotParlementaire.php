@@ -17,22 +17,22 @@ $PictureID = "Map_".$parlementaire->slug.'_'.rand(1,10000).".map";
 if ($link === 'true') {
   $time = 'lastyear';
   if (myTools::isFinLegislature()) $time = 'legislature';
-  echo '<a href="'.url_for('@parlementaire'.(isset($absolute) ? '' : '_plot').'?slug='.$parlementaire->slug.(isset($absolute) ? '' : '&time=legislature'), $abs).'">';
+  echo '<a href="'.url_for('@parlementaire'.(isset($absolute) && $absolute ? '' : '_plot').'?slug='.$parlementaire->slug.(isset($absolute) && $absolute ? '' : '&time=legislature'), $abs).'">';
   if (!isset($widthrate))
     $size = 'height:150px; width:800px';
   else $size = 'height:'.floor(150*$widthrate).'px; width:'.floor(800*$widthrate).'px';
  } else echo '<div class="par_session">'; ?>
  <img style="<?php echo $size; ?>" id="graph<?php echo $PictureID; ?>" alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>" src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&mapId='.$PictureID, $abs); ?>" onmousemove="getMousePosition(event);" onmouseout="nd();"/>
-<?php if ($link === 'true') { ?>
+<?php if ($link === 'true' && !isset($absolute)) { ?>
 <script type="text/javascript">
 <!--
 LoadImageMap("graph<?php echo $PictureID; ?>", "<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&drawAction=map&mapId='.$PictureID, $abs); ?>");
 //-->
 </script>
-<?php } ?>
+<?php }
 
-<?php if (!isset($widthrate) || $widthrate > 1/3) {
 if ($link === 'true') echo '</a>';
+if (!isset($widthrate) || $widthrate > 1/3) {
 echo "<p><span style='background-color: rgb(255,0,0);'>&nbsp;</span> ";
 if ($type === 'commission') echo '&nbsp;Présences enregistrées&nbsp;&nbsp;&nbsp;';
 else echo '&nbsp;Présences relevées&nbsp;&nbsp;&nbsp;';
@@ -45,7 +45,7 @@ echo "<span style='font-weight: bolder; color: rgb(160,160,160);'>&mdash;</span>
 if ($link === 'true')
   echo '&nbsp;&nbsp;&nbsp;&nbsp;<a href="'.url_for('@faq', $abs).'#post_4">Explications</a></p>';
 else echo '</p>';
+}
 if ($link != 'true')
   echo '</div>';
-}
 ?>

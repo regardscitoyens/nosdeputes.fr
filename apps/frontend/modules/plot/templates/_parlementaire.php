@@ -1,10 +1,13 @@
-<div id="overDiv"></div>
 <?php $plotarray = array('parlementaire' => $parlementaire, 'time' => 'lastyear', 'questions' => 'false', 'link' => 'false', 'absolute' => false, 'widthrate' => 1);
 if (isset($options['session'])) $plotarray['time'] = $options['session'];
 if (isset($options['questions'])) $plotarray['questions'] = $options['questions'];
 if (isset($options['link'])) $plotarray['link'] = $options['link'];
-if (isset($options['absolute'])) $plotarray['absolute'] = $options['absolute'];
 if (isset($options['widthrate'])) $plotarray['widthrate'] = $options['widthrate'];
+if (isset($options['absolute'])) {
+  $plotarray['absolute'] = $options['absolute'];
+} else {
+  echo '<div id="overDiv"></div>';
+}
 
 if ($options['plot'] == 'all' || $options['plot'] == 'total') {
   $plotarray = array_merge($plotarray, array('type' => 'total'));
