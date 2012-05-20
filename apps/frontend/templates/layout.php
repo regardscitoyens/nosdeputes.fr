@@ -68,7 +68,8 @@ $menu_citoyen = $selectcitoyen;
 --></script>
       </div>
       <div id="header">
-        <a href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo.png', array('alt' => 'NosDeput&eacute;s.fr')); ?></a>
+        <a style="float:left;" href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo.png', array('id' => 'logo', 'alt' => 'NosDeput&eacute;s.fr')); ?></a>
+        <a style="float:right; margin-right: 55px; margin-top: 2px;" href="http://www.regardscitoyens.org/nous-aider/"><?php echo image_tag('contribuer.png', array('alt' => 'Nous soutenir')); ?></a>
       </div>
         <div id="menu">
         <div class="menu_navigation">

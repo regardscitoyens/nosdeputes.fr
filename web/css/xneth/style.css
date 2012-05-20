@@ -763,7 +763,7 @@ h1 {
   overflow:hidden;
 }
 
-#header img {
+#header #logo {
   width:629px;
   height:147px;
   margin-left:44px;
