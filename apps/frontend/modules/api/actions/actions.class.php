@@ -76,6 +76,11 @@ class apiActions extends sfActions
   }
 
   public function executeTopSynthese(sfWebRequest $request) {
+    $format = $request->getParameter('format');
+    $bom = $request->getParameter('withBOM');
+    if ($format == 'csv' && !$bom && preg_match('/windows/i', $_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_REFERER']) {
+      return $this->redirect('api/topSynthese?format=csv&withBOM=true');
+    }
     $qp = Doctrine::getTable('Parlementaire')->createQuery('p');
     $fin = myTools::isFinLegislature();
     if (!$fin) $qp->andWhere('fin_mandat IS NULL')
@@ -91,10 +96,10 @@ class apiActions extends sfActions
       $this->champs['id'] = 1;
       if ($fin && $tops['nb_mois'] < 4)
         continue;
-      $depute = $this->getParlementaireArray($p, $request->getParameter('format'), 2);
+      $depute = $this->getParlementaireArray($p, $format, 2);
       if ($fin)
         $depute["nb_mois"] = $tops['nb_mois'];
-      if ($request->getParameter('format') == 'csv')
+      if ($format == 'csv')
        foreach(array_keys($depute) as $key)
         if (!isset($this->champs[$key]))
          $this->champs[$key] = 1;

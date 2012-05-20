@@ -1,4 +1,7 @@
 <?php
+if (isset($GET['withBOM']) && $GET['withBOM']) {
+  printf("\xef\xbb\xbf");
+}
 if (!isset($multi)) {
   $multi = array();
  }
