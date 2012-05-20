@@ -1,3 +1,6 @@
+<noscript>
+  <p class="flash_error">Attention : cette interface est prévue pour fonctionner avec Javascript, vous devez donc l'activer pour en profiter.<br/><small>(Les widgets proposées ne contiennent en revanche pas de javascript.)</small></p>
+</noscript>
 <h1>Inclure NosDéputés.fr sur votre site</h1>
 <div id="editor">
 <form>
