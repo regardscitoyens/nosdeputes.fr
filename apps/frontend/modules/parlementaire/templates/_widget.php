@@ -27,7 +27,7 @@ if ($options['graphe']) : ?>
  .nosdeputes_widget .graph_depute p { font-size: <?php echo floor(12*$options['width']/935); ?>px; margin: 0; padding: 0; }
 <?php endif;
 if ($options['activite']) : ?>
- .nosdeputes_widget .barre_activite { font-size: <?php echo floor(13*$options['width']/935); ?>px; background-color: #EBEBEB; float: left; margin-top: <?php echo floor(10*$options['width']/935); ?>px; padding-top: <?php echo floor(3*$options['width']/935); ?>px; width: <?php echo floor($options['width']); ?>px; text-align: left; }
+ .nosdeputes_widget .barre_activite { font-size: <?php echo floor(12*$options['width']/935); ?>px; background-color: #EBEBEB; float: left; margin-top: <?php echo floor(10*$options['width']/935); ?>px; padding-top: <?php echo floor(3*$options['width']/935); ?>px; width: <?php echo floor($options['width']); ?>px; text-align: left; }
  .nosdeputes_widget .barre_activite ul, .barre_activite li { background-color: transparent; display: inline; font-weight: bold; line-height: <?php echo floor(24*$options['width']/935); ?>px; margin: -<?php echo floor(3*$options['width']/935); ?>px; padding: 0; }
  .nosdeputes_widget .barre_activite h3 { background-color: transparent; color: #6B6B6B; display: inline; font-size: 1.2em; line-height: <?php echo floor(24*$options['width']/935); ?>px; margin: 0; padding-left: <?php echo floor(5*$options['width']/935); ?>px; }
  .nosdeputes_widget .barre_activite li img { margin-left: <?php echo floor(25*$options['width']/935); ?>px; }
