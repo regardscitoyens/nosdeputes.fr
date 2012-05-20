@@ -30,7 +30,7 @@
 <h2>Embarquez votre député</h2>
 <p>Pour insérer ce widget sur votre site, il vous suffit de copier/coller le contenu HTML ci-dessous :</p>
 <center><textarea style="font-size: 8px;" cols="175" rows=2 id="iframe" onclick="this.focus();this.select()" readonly="readonly"></textarea></center>
-<p style="margin: 20px;"><a href="http://cpc.regardscitoyens.org/trac/wiki/API">Pour un usage avancé, plus de précisions ou un accès direct aux données elles-mêmes, nous vous invitons à vous référer à la documentation de notre API.</a></p>
+<p style="margin: 20px;"><a href="http://cpc.regardscitoyens.org/trac/wiki/API">Pour un usage avancé, plus de précisions ou un accès direct aux données brutes, nous vous invitons à vous référer à la documentation de notre API.</a></p>
 <script>
 var updateIframe = function() {
   if (!$('#url').val()) return;
