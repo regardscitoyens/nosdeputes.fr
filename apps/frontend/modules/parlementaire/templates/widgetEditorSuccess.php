@@ -5,19 +5,19 @@
 <div id="editor">
 <form>
 <h2>Saisissez le nom de votre député</h2>
-<p>Nom : <input type="text" id="nom" value="<?php if ($depute) echo $depute->getNom();?>" class="update"><input type="button" value="rechercher" id="bouton"/></p>
+<p style="margin-left:45px; margin-bottom: 20px;">Nom :&nbsp;&nbsp;<input type="text" id="nom" value="<?php if ($depute) echo $depute->getNom();?>" class="update"/>&nbsp;&nbsp;<input type="button" value="rechercher" id="bouton"/></p></center>
 <input type="hidden" id="slug" value="<?php if ($depute) echo $depute->getSlug(); ?>"/>
 <h2>Choisissez quelques options</h2>
 <div style="margin-left: 150px; width: 300px; height: 138px; float: left;">
 <p><label><input type="checkbox" id="titre" value="1" class="update" CHECKED>Inclure un titre</label></p>
 <p><label><input type="checkbox" id="photo" value="1" class="update" CHECKED>Inclure la photo</label></p>
 <p><label><input type="checkbox" id="tag" value="1" class="update">Inclure un nuage de mots-clés</label></p>
-<p id="maxtags" style="display:block;"><label>Afficher un maximum de <input size=3 type="textbox" id="nb_maxtags" value="40" class="update"/> tags.</label></p>
+<p id="maxtags" style="display:block; margin-left: 19px;"><label>Afficher un maximum de <input size=3 type="textbox" id="nb_maxtags" value="40" class="update"/> tags</label></p>
 </div>
 <div style="width: 300px; float: left;">
 <p><label><input type="checkbox" id="graph" value="1" class="update" CHECKED>Inclure le graphique d'activité</label></p>
 <p><label><input type="checkbox" id="indicateurs" value="1" class="update" CHECKED>Inclure les indicateurs d'activité</label></p>
-<p>Taille du widget : <input size=4 type="text" id="width" class="update" value="600"/> pixels.</p>
+<p style="margin-left: 19px;">Taille du widget : <input size=4 type="text" id="width" class="update" value="600"/> pixels</p>
 </div>
 <input type="hidden" id="height" value=""/>
 <input type="hidden" id="url" value=""/>
