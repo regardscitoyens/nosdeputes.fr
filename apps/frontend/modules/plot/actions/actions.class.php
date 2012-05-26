@@ -31,6 +31,9 @@ class plotActions extends sfActions {
     sfConfig::set('sf_web_debug', false);
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
+    $this->getResponse()->addCacheControlHttpHeader('max-age='.(60*60*12).',public');
+    $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()+60*60*12));
+
   }
 
   public function executeGeneratePlotGroupes(sfWebRequest $request) {
@@ -42,6 +45,8 @@ class plotActions extends sfActions {
     $this->type = $request->getParameter('type');
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
+    $this->getResponse()->addCacheControlHttpHeader('public,max_age='.(60*60*12));
+    $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()+60*60*12));
   }
   
 }
