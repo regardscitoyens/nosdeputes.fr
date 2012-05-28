@@ -41,25 +41,23 @@ $note_fonction = false;
 if ($parlementaire->fin_mandat == null || $parlementaire->fin_mandat < $parlementaire->debut_mandat) : ?>
       <h2>Responsabilités</h2>
       <ul>
-        <li>Commission permanente : <ul><?php foreach ($commissions_permanentes as $resp) { echo '<li>'.link_to(ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/', '\\1 ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') </li>'; break; } ?></ul></li>
+        <li>Commission permanente : <ul><?php foreach ($commissions_permanentes as $resp) { echo '<li>'.link_to(ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/', '\\1 ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug()); 
+    $fonction = preg_replace('/((président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
+    echo " ($fonction)";
+    echo '</li>'; 
+break; } ?></ul></li>
 <?php if (count($missions)) : ?>
         <li>Missions parlementaires :
           <ul>
             <?php 
             foreach ($missions as $resp) { ?>
             <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug());
-  $fonction = preg_replace('/(questeur[^, ]*)/', '<strong>\1*</strong>', $resp->getFonction());
-  if (preg_match('/questeur/', $fonction)) {
-    $note_fonction = true;
-  }
+  $fonction = preg_replace('/((président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
   echo " ($fonction)";
 ?></li>
             <?php } ?>
           </ul>
         </li>
-<?php if ($note_fonction) : ?>
-<p><strong>*</strong>&nbsp;: <small>L'Assemblée ne publiant pas d'informations fiables relatives à cette fonction, elle n'est pas prise en compte dans l'évaluation de l'activité globale du député.</small></p>
-<?php endif; ?>
 <?php endif; ?>
         <?php if ($parlementaire->getExtras()) { ?>
         <li>Fonctions judiciaires, internationales ou extra-parlementaires&nbsp;:
