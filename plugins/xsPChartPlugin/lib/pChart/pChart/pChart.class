@@ -168,9 +168,9 @@
    var $MapID            = NULL;
 
    function getTmpFolder() {
-      $cache = sfConfig::get('sf_cache_dir').'/'.sfConfig::get('sf_app').'/pChart/';
+      $cache = sfConfig::get('sf_cache_dir').'/'.sfConfig::get('sf_app').'/'.sfConfig::get('sf_environment').'/pChart';
       if (!is_dir($cache)) {
-      	 mkdir($cache);
+      	 mkdir($cache, 0777, true);
 	 if (!is_dir($cache))
 	    $cache = $tmpFolder;
       }
