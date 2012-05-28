@@ -58,7 +58,7 @@ if ($parlementaire->fin_mandat == null || $parlementaire->fin_mandat < $parlemen
           </ul>
         </li>
 <?php if ($note_fonction) : ?>
-<p><strong>*</strong>&nbsp;: <small>L'Assemblée ne publiant pas d'informations fiables relatives à l'activite du parlementaire concernant cette fonction, elle n'est pas prise en compte dans l'évaluation de l'activité globale du député.</small></p>
+<p><strong>*</strong>&nbsp;: <small>L'Assemblée ne publiant pas d'informations fiables relatives à cette fonction, elle n'est pas prise en compte dans l'évaluation de l'activité globale du député.</small></p>
 <?php endif; ?>
 <?php endif; ?>
         <?php if ($parlementaire->getExtras()) { ?>
