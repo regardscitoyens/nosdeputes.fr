@@ -167,6 +167,16 @@
    var $tmpFolder        = "/tmp";
    var $MapID            = NULL;
 
+   function getTmpFolder() {
+      $cache = sfConfig::get('sf_cache_dir').'/'.sfConfig::get('sf_app').'/pChart/';
+      if (!is_dir($cache)) {
+      	 mkdir($cache);
+	 if (!is_dir($cache))
+	    $cache = $tmpFolder;
+      }
+      return $cache;
+   }
+
    /* This function create the background picture */
    function pChart($XSize,$YSize)
     {
@@ -2822,7 +2832,7 @@
    function getImageMap($MapName,$Flush=TRUE)
     {
      /* Strip HTML query strings */
-     $Values   = $this->tmpFolder.DIRECTORY_SEPARATOR.$MapName;
+     $Values   = $this->getTmpFolder().DIRECTORY_SEPARATOR.$MapName;
      $Value    = split("\?",$Values);
      $FileName = $Value[0];
 
@@ -2855,7 +2865,7 @@
        $this->Errors[] = "[Warning] SaveImageMap - Image map is empty.";
        return(-1);
       }
-     $Handle = fopen($this->tmpFolder.DIRECTORY_SEPARATOR.$this->MapID, 'w');
+     $Handle = fopen($this->getTmpFolder().DIRECTORY_SEPARATOR.$this->MapID, 'w');
      if ( !$Handle )
       {
        $this->Errors[] = "[Warning] SaveImageMap - Cannot save the image map.";
