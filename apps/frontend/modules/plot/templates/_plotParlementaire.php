@@ -24,11 +24,11 @@ if ($link === 'true') {
     $size = 'height:150px; width:800px';
   else $size = 'height:'.floor(150*$widthrate).'px; width:'.floor(800*$widthrate).'px';
  } else echo '<div class="par_session">'; ?>
- <img style="<?php echo $size; ?>" id="graph<?php echo $PictureID; ?>" alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>" src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&mapId='.$PictureID, $abs); ?>"<?php if (!isset($absolute)) echo ' onmousemove="getMousePosition(event);" onmouseout="nd();"'; ?>/>
-<?php if ($link === 'true' && !isset($absolute)) { ?>
+ <img style="<?php echo $size; ?>" id="graph<?php echo $PictureID; ?>" alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>" src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&mapId='.$PictureID, $abs); ?>"<?php if (!(isset($absolute) && $absolute)) echo ' onmousemove="getMousePosition(event);" onmouseout="nd();"'; ?>/>
+<?php if ($link === 'true' && !(isset($absolute) && $absolute)) { ?>
 <script type="text/javascript">
 <!--
-LoadImageMap("graph<?php echo $PictureID; ?>", "<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&drawAction=map&mapId='.$PictureID, $abs); ?>");
+LoadImageMap("graph<?php echo $PictureID; ?>", "<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&drawAction=map&mapId='.$PictureID); ?>");
 //-->
 </script>
 <?php }
