@@ -42,7 +42,7 @@ if ($parlementaire->fin_mandat == null || $parlementaire->fin_mandat < $parlemen
       <h2>Responsabilités</h2>
       <ul>
         <li>Commission permanente : <ul><?php foreach ($commissions_permanentes as $resp) { echo '<li>'.link_to(ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/', '\\1 ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug()); 
-    $fonction = preg_replace('/((président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
+    $fonction = preg_replace('/^(.*(président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
     echo " ($fonction)";
     echo '</li>'; 
 break; } ?></ul></li>
@@ -52,7 +52,7 @@ break; } ?></ul></li>
             <?php 
             foreach ($missions as $resp) { ?>
             <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug());
-  $fonction = preg_replace('/((président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
+  $fonction = preg_replace('/^(.*(président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
   echo " ($fonction)";
 ?></li>
             <?php } ?>
