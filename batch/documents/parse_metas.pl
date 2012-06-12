@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 
 $dir = $file = $source = shift;
+$no_text = shift;
 $dir =~ s/^([^\/]+)\/.*$/\1/;
 $source =~ s/^[^\/]+\///;
 $source =~ s/http(.?)-/http\1:/;
@@ -208,5 +209,7 @@ $string =~ s/if \(window!= top\) top\.location\.href=location\.href//i;
 $string =~ s/Recherche \| Aide \| Plan du site Accueil \&gt\; Documents parlementaires \&gt\; Les rapports législatifs//i;
 $string =~ s/_____ ASSEMBL'E NATIONALE CONSTITUTION DU 4 OCTOBRE 1958 TREIZIÈME LÉGISLATURE//i;
 $string =~ s/__*//i;
+
+if ($no_text) { $string = ""; }
 #print "\n";
 print '{"source": "'.$source.'", "legislature": "'.$legislature.'", "id": "'.$id.'", "numero": "'.$num.'", "annexe": "'.$annexe.'", "date_depot": "'.$date0.'", "date_publi": "'.$date1.'", "auteurs": "'.$auteurs.'", "dossier": "'.$dossier.'", "type": "'.$type0.'", "type_details": "'.$type1.'", "titre": "'.$titre.'", "categorie": "'.$categorie.'", "motscles": "'.$keywords.'", "contenu": "'.$string.'"}'."\n";

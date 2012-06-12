@@ -1,8 +1,6 @@
 #!/bin/bash
 
-if ! test -e out/ ; then
-	mkdir out
-fi
+mkdir -p pjl ppl ppr rap ta out
 
 for file in `perl download_docs.pl`; do
   echo $file
