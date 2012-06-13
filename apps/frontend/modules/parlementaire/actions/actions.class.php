@@ -554,9 +554,10 @@ class parlementaireActions extends sfActions
   }
 
   public function executeWidget(sfWebRequest $request) {
+    $this->setLayout(false);
     $this->search = $request->getParameter('depute');
     $this->internal = $request->getParameter('internal'); 
-   $dep = $this->searchDepute($this->search);
+    $dep = $this->searchDepute($this->search);
     $this->parl = null;
     if (!$dep) return;
     $this->parl = $dep->slug;
@@ -580,6 +581,5 @@ class parlementaireActions extends sfActions
       $this->options['width'] = $request->getParameter('width', 935);
     if ($request->getParameter('iframe', false))
       $this->options['iframe'] = 1;
-    $this->setLayout(false);
   }
 }
