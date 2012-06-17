@@ -287,7 +287,9 @@ class circonscriptionActions extends sfActions
     $dom = new DOMDocument();
     $dom->preserveWhiteSpace = FALSE;
     // FIXME Use loadXML to load from a string instead (database)
-    $dom->load("circo.svg");
+    if (sfConfig::get('app_legislature') <= 13)
+      $dom->load("circo.svg");
+    else $dom->load("circo2012.svg");
 
     if(preg_match("/^\d\d[\dab]$/",$circo))
       self::crop_svg($dom, "/^$circo-\d\d$/", 10);

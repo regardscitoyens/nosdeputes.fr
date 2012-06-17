@@ -288,6 +288,7 @@ class Parlementaire extends BaseParlementaire
      "Eure" => "de l'",
      "Eure-et-Loir" => "d'",
      "Finistère" => "du",
+     "Français de l'étranger" => "des",
      "Gard" => "du",
      "Gers" => "du",
      "Gironde" => "de la",
@@ -472,11 +473,12 @@ class Parlementaire extends BaseParlementaire
       "974" => "Réunion",
       "975" => "Saint-Pierre-et-Miquelon",
       "976" => "Mayotte",
-    //  "977" => "Saint-Barthélémy",
-    //  "978" => "Saint-Martin",
+      "977" => "Saint-Barthélémy",
+      "978" => "Saint-Martin",
       "986" => "Wallis-et-Futuna",
       "987" => "Polynésie Française",
-      "988" => "Nouvelle-Calédonie");
+      "988" => "Nouvelle-Calédonie",
+      "99"  => "Français de l'étranger");
   public static function getNomDepartement($numero) {
     $numero = strtolower($numero);
     if ( isset(self::$dptmt_nom["$numero"]) ) return $nom = self::$dptmt_nom["$numero"];
@@ -514,6 +516,8 @@ class Parlementaire extends BaseParlementaire
       "eure" => "27",
       "eure-et-loir" => "28",
       "finistère" => "29",
+      "français de l'étranger" => "99",
+      "français-de-l'étranger" => "99",
       "gard" => "30",
       "haute-garonne" => "31",
       "gers" => "32",
