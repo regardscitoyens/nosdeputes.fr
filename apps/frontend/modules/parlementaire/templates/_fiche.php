@@ -15,6 +15,8 @@
         } ?>
       </li>
 <?php endif;
+      if ($parlementaire->url_ancien_cpc)
+	echo '<li><a href="'.$parlementaire->url_ancien_cpc.'">Sa page NosDéputés.fr pour l\'ancienne législature</a></li>';
       if ($parlementaire->suppleant_de_id && $supplee = $parlementaire->getSuppleantDe())
         echo '<li>Suppléant'.($parlementaire->sexe == "F" ? 'e' : '').' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>'; 
       if ($parlementaire->groupe_acronyme != "") : ?>
