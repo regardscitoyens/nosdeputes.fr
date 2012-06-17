@@ -55,6 +55,10 @@ class documentsActions extends sfActions
     $this->parlementaire = Doctrine::getTable('Parlementaire')
       ->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
+
+    if (myTools::isLegislatureCloturee() && !$this->parlementaire->url_nouveau_cpc)
+      $this->response->addMeta('robots', 'noindex,follow');
+
     $this->typetitre = "rapports";
     $this->feminin = "";
     if ($this->type === "loi") {

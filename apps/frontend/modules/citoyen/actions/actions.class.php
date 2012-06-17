@@ -69,6 +69,8 @@ class citoyenActions extends sfActions
     $slug = $request->getParameter('slug');
     $this->user = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
     $this->forward404Unless($this->user->is_active);
+    if (myTools::isLegislatureCloturee())
+      $this->response->addMeta('robots', 'noindex,follow');
     $response = $this->getResponse();
     $response->setTitle('Profil de '.$this->user->login); 
     $this->getUser()->setAttribute('token', md5(microtime(true) . mt_rand(0,10000)));

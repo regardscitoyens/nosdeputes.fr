@@ -25,7 +25,11 @@ class myTools {
   }
 
   public static function isFinLegislature() {
-    return (sfConfig::get('app_fin_legislature') == true);
+    return (sfConfig::get('app_fin_legislature'));
+  }
+
+  public static function isLegislatureCloturee() {
+    return preg_match('/clotur/', sfConfig::get('app_fin_legislature'));
   }
 
   public static function getGroupesInfos() {

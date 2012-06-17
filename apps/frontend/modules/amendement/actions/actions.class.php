@@ -53,6 +53,10 @@ class amendementActions extends sfActions
     $this->parlementaire = Doctrine::getTable('Parlementaire')
       ->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
+
+    if (myTools::isLegislatureCloturee() && !$this->parlementaire->url_nouveau_cpc)
+      $this->response->addMeta('robots', 'noindex,follow');
+
     $this->amendements = Doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
@@ -67,6 +71,9 @@ class amendementActions extends sfActions
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
+
+    if (myTools::isLegislatureCloturee() && !$this->parlementaire->url_nouveau_cpc)
+      $this->response->addMeta('robots', 'noindex,follow');
 
     $this->section = Doctrine::getTable('Section')->find($request->getParameter('id'));
     $this->forward404Unless($this->section);

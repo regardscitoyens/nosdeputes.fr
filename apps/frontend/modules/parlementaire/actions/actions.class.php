@@ -129,6 +129,8 @@ class parlementaireActions extends sfActions
 					));
     $this->response->addMeta('keywords', $this->parlementaire->nom.' '.$this->parlementaire->nom_circo.' '.$this->parlementaire->type.' '.$this->parlementaire->groupe_acronyme.' Assemblée nationale');
     $this->response->addMeta('description', 'Pour tout connaître de l\'activité de '.$this->parlementaire->nom.' à l\'Assemblée Nationale. '.$this->parlementaire->nom.' est '.$this->parlementaire->getLongStatut().' à l\'Assemblée Nationale.');
+    if (myTools::isLegislatureCloturee() && !$this->parlementaire->url_nouveau_cpc)
+      $this->response->addMeta('robots', 'noindex,follow');
     $this->response->addMeta('parlementaire_id', 'd'.$this->parlementaire->id);
     $this->response->addMeta('parlementaire_id_url', 'http://www.nosdeputes.fr/id/'.'d'.$this->parlementaire->id);
 
@@ -256,6 +258,8 @@ class parlementaireActions extends sfActions
   public function executeListOrganisme(sfWebRequest $request) {
     $orga = $request->getParameter('slug');
     $this->forward404Unless($orga);
+    if (myTools::isLegislatureCloturee())
+      $this->response->addMeta('robots', 'noindex,follow');
     $this->orga = Doctrine::getTable('Organisme')->createQuery('o')
       ->where('o.slug = ?', $orga)->fetchOne();
     $this->forward404Unless($this->orga);
@@ -330,6 +334,10 @@ class parlementaireActions extends sfActions
     $this->forward404Unless(preg_match('/^(legislature|lastyear|2\d{3}2\d{3})$/', $this->session));
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->forward404Unless($this->parlementaire);
+
+    if (myTools::isLegislatureCloturee() && !$this->parlementaire->url_nouveau_cpc)
+      $this->response->addMeta('robots', 'noindex,follow');
+
     $this->sessions = Doctrine_Query::create()
       ->select('s.session')
       ->from('Seance s')

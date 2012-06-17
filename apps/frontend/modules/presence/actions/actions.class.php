@@ -15,6 +15,10 @@ class presenceActions extends sfActions
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
+
+    if (myTools::isLegislatureCloturee() && !$this->parlementaire->url_nouveau_cpc)
+      $this->response->addMeta('robots', 'noindex,follow');
+
     if ($this->type = $request->getParameter('type'))
       $this->forward404Unless(preg_match('/(hemicycle|commission)/', $this->type));
     else $this->type = "all";
@@ -34,6 +38,10 @@ class presenceActions extends sfActions
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
+
+    if (myTools::isLegislatureCloturee() && !$this->parlementaire->url_nouveau_cpc)
+      $this->response->addMeta('robots', 'noindex,follow');
+
     $seance_id = $request->getParameter('seance');
     $this->seance = Doctrine::getTable('Seance')->findOneById($seance_id);
     $this->forward404Unless($this->seance);

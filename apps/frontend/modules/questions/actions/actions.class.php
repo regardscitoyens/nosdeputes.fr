@@ -35,6 +35,10 @@ class questionsActions extends sfActions
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
+
+    if (myTools::isLegislatureCloturee() && !$this->parlementaire->url_nouveau_cpc)
+      $this->response->addMeta('robots', 'noindex,follow');
+
     $this->questions = Doctrine::getTable('QuestionEcrite')->createQuery('q')
       ->select('q.*, if(q.date_cloture is not null,q.date_cloture,q.date) as date2')
       ->where('q.parlementaire_id = ?', $this->parlementaire->id)
