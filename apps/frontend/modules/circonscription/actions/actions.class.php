@@ -320,7 +320,10 @@ class circonscriptionActions extends sfActions
 
     $src = url_for("@circo_image_png?circo=$circo&w=$w&h=$h");
 
-    echo "<img class=\"carte_departement\" src=\"$src\" usemap=\"#$circo\" ";
+    $alt = "";
+    if (sfConfig::get('app_legislature') > 13)
+      $alt = ' alt="Carte des circonscriptions législatives réalisées par Jérôme Cukier - CC-BY-SA"';
+    echo "<img".$alt." class=\"carte_departement\" src=\"$src\" usemap=\"#$circo\" ";
     echo 'style="width:'.$w.'px; height:'.$h.'px;" />';
     echo "<map name=\"$circo\">";
     echo $r['areas'];
