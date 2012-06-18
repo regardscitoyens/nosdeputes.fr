@@ -92,6 +92,8 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->url_an = $json->url_institution;
             if ($json->suppleant_de)
               $parl->setSuppleantDe($json->suppleant_de);
+            if ($json->url_nouveau_cpc)
+              $parl->url_nouveau_cpc = $json->url_nouveau_cpc;
 	    $parl->villes = $villes->{$parl->getNumDepartement()}->{$parl->num_circo};
 	    $parl->save();
             if ($json->suppleant) {
