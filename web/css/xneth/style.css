@@ -1913,7 +1913,7 @@ a:hover img {
     top: 19px;
     left: 18px;
 }
-#licences { position: relative; top: 4px; margin-left: 65px; }
+#legalinks {     top: 0px; left: 330px;    position: absolute;    width: 400px; }
 .floatright {
   float: right;
   margin: 10px;
