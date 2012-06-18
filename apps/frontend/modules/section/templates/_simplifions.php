@@ -1,3 +1,4 @@
+<?php if (!$lois) return; ?>
 <div>
 <h2>Les dossiers en discussion sur "Simplifions la loi 2.0"</h2>
 <ul>

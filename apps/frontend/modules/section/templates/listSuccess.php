@@ -3,7 +3,7 @@
 <?php include_component('section', 'simplifions', array()); ?>
 <h2><?php echo $titre; ?></h2>
 <ul>
-<?php if ($order == 'date') { echo '<li>'; $mois = ""; }
+<?php if ($order == 'date') { if (count($sections)) echo '<li>'; $mois = ""; }
 foreach($sections as $s) if ($s->titre) {
   if (preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $s->titre)) continue;
   $moisactuel = myTools::displayDateMoisAnnee($s->max_date);
