@@ -69,13 +69,17 @@ class parlementaireActions extends sfActions
     $newheight = ceil($request->getParameter('height', $height)/10)*10;
     if ($newheight > 250)
       $newheight = 250;
-
+    $ratio = 125/160.;
+    $width2 = $width; $height2 = $height;
+    if ($ratio > $width/$height)
+      $height2 = $width/$ratio;
+    else $width2 = $height*$ratio;
     $iorig = imagecreatefromjpeg($file);
-    $ih = imagecreatetruecolor($work_height*$width/$height, $work_height);
+    $ih = imagecreatetruecolor($work_height*$ratio, $work_height);
     if (($parlementaire->fin_mandat >= $parlementaire->debut_mandat && !myTools::isFinlegislature()) || preg_match('/décè/i', $parlementaire->getAnciensMandats()))
       self::imagetograyscale($iorig);
-    imagecopyresampled($ih, $iorig, 0, 0, 0, 0, $work_height*$width/$height, $work_height, $width, $height);
-    $width = $work_height*$width/$height;
+    imagecopyresampled($ih, $iorig, 0, 0, max(0, ($width - $width2)/2), max(0, ($height - $height2)/2), $work_height*$ratio, $work_height, $width2, $height2);
+    $width = $work_height*$ratio;
     $height = $work_height;
     imagedestroy($iorig);
     unlink($file);
