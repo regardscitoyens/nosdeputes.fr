@@ -6,7 +6,7 @@ class setVacancesTask extends sfBaseTask {
     $this->name = 'Vacances';
     $this->briefDescription = 'Load Vacances from Seances';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
-    $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
 
   protected function execute($arguments = array(), $options = array()) {
@@ -18,7 +18,7 @@ class setVacancesTask extends sfBaseTask {
       ->groupBy('s.annee, s.numero_semaine')
       ->orderBy('s.date ASC');
     $seances = $q->fetchArray();
-
+   if ($seances) {
     $annee = $seances[0]['annee'];
     $sem = $seances[0]['numero_semaine'];
     foreach ($seances as $seance) {
@@ -30,6 +30,10 @@ class setVacancesTask extends sfBaseTask {
       if ($seance['numero_semaine'] >= 53) { $annee = $seance['annee'] + 1 ; $sem = 1; }
       else { $annee = $seance['annee']; $sem = $seance['numero_semaine'] + 1; }
     }
+   } else {
+    $annee = date('Y', myTools::getDebutLegislature());
+    $sem = date('W', myTools::getDebutLegislature());
+   }
 
     $date = time();
     $last_annee = date('Y', $date);
