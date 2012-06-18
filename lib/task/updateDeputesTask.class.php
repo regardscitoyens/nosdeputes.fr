@@ -56,6 +56,12 @@ class updateDeputesTask extends sfBaseTask
               $parl->lieu_naissance = $json->lieu_naissance;
 	    if ($json->circonscription)
 	      $parl->circonscription = $json->circonscription;
+	    else {
+	      if ($json->departement)
+	        $parl->setDepartementParNumero($json->departement);
+              if ($json->num_circonscription)
+                $parl->num_circo = $json->num_circonscription;
+	    }
 	    if (count($json->adresses))
 	      $parl->adresses = $json->adresses;
             if (count($json->premiers_mandats))
@@ -92,6 +98,8 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->url_an = $json->url_institution;
             if ($json->suppleant_de)
               $parl->setSuppleantDe($json->suppleant_de);
+            if ($json->url_ancien_cpc)
+              $parl->url_ancien_cpc = $json->url_ancien_cpc;
             if ($json->url_nouveau_cpc)
               $parl->url_nouveau_cpc = $json->url_nouveau_cpc;
 	    $parl->villes = $villes->{$parl->getNumDepartement()}->{$parl->num_circo};

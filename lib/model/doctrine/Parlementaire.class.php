@@ -31,6 +31,12 @@ class Parlementaire extends BaseParlementaire
     }
   }
 
+  public function setDepartementParNumero($n) {
+    $n = strtolower(trim($n));
+    if ( isset(self::$dptmt_nom["$n"]) )
+      $this->_set('nom_circo', self::$dptmt_nom["$n"]);
+  }
+
   public function getNumCircoString($list = 0) {
     if ($this->num_circo == 1) $string = $this->num_circo.'ère circonscription';
     else $string = $this->num_circo.'ème circonscription';
@@ -364,13 +370,13 @@ class Parlementaire extends BaseParlementaire
      "Yonne" => "de l'",
      "Yvelines" => "des"
     );
- public function getPrefixeCirconscription() {
-     $prefixe = self::$dptmt_pref[trim($this->nom_circo)];
+  public function getPrefixeCirconscription() {
+    $prefixe = self::$dptmt_pref[trim($this->nom_circo)];
     if (! preg_match("/'/", $prefixe)) $prefixe = $prefixe.' ';
     return $prefixe;
   }
 
- public static $dptmt_nom = array(
+  public static $dptmt_nom = array(
       "1" => "Ain",
       "2" => "Aisne",
       "3" => "Allier",
