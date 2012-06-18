@@ -3,3 +3,4 @@ DBNAME="cpc"
 DUMPDIR="data/sql/dumps"
 PATH_APP="/home/nosdeputes/project"
 SOLR_DATA_PATH="$PATH_APP/lib/vendor/SolrServer/solr/data"
+#LEGISLATURE=13

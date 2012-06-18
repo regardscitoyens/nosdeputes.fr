@@ -11,7 +11,7 @@ recherche_solr:
     segment_separators: [/]
 
 document:
-  url: /document/:id
+  url: /%LEGISLATURE%/document/:id
   param: {module: documents, action: show}
 
 loi_redirect_article:
@@ -23,43 +23,43 @@ loi_redirect:
   param: {module: loi, action: redirect}
 
 loi_alinea:
-  url: /loi/alinea/:id
+  url: /%LEGISLATURE%/loi/alinea/:id
   param: {module: loi, action: alinea}
 
 loi_alinea_commentaires:
-  url: /loi/alinea/:id/commentaires
+  url: /%LEGISLATURE%/loi/alinea/:id/commentaires
   param: {module: commentaire, action: showAjax, alinea: 1}
 
 loi_article:
-  url: /loi/:loi/article/:article
+  url: /%LEGISLATURE%/loi/:loi/article/:article
   param: {module: loi, action: article}
 
 loi_article_id:
-  url: /loi/article/:id
+  url: /%LEGISLATURE%/loi/article/:id
   param: {module: loi, action: article}
 
 loi_article_commentaires_json:
-  url: /loi/article/:article/commentaires
+  url: /%LEGISLATURE%/loi/article/:article/commentaires
   param: {module: commentaire, action: json}
 
 loi_section:
-  url: /loi/:loi/section/:chapitre/:section
+  url: /%LEGISLATURE%/loi/:loi/section/:chapitre/:section
   param: {module: loi, action: section}
 
 loi_chapitre:
-  url: /loi/:loi/section/:chapitre
+  url: /%LEGISLATURE%/loi/:loi/section/:chapitre
   param: {module: loi, action: section, section: "0"}
 
 loi_rss_commentaires:
-  url: /loi/:loi/commentaires/rss
+  url: /%LEGISLATURE%/loi/:loi/commentaires/rss
   param: {module: commentaire, action: list, rss: 1}
 
 loi_commentaires:
-  url: /loi/:loi/commentaires
+  url: /%LEGISLATURE%/loi/:loi/commentaires
   param: {module: commentaire, action: list}
 
 loi:
-  url: /loi/:loi
+  url: /%LEGISLATURE%/loi/:loi
   param: {module: loi, action: loi}
 
 homepage:
@@ -67,7 +67,7 @@ homepage:
   param: {module: parlementaire, action: index}
 # Les commentaires 
 commentaire_post:
-  url: /commentaire/:type/:id
+  url: /%LEGISLATURE%/commentaire/:type/:id
   param: {module: commentaire, action: post}
 faq_new:
   url: /faq/new
@@ -130,10 +130,10 @@ parlementaire_id_format:
   param: {module: parlementaire, action: id}
 # Liste de tous les parlementaires ou par catégorie
 widget:
-  url: /widget
+  url: /widget%LEGISLATURE%
   param: {module: parlementaire, action: widgetEditor}
 parlementaire_widget:
-  url: /widget/:depute
+  url: /widget%LEGISLATURE%/:depute
   param: {module: parlementaire, action: widget}
 parlementaires_tags:
   url: /deputes/tags
@@ -224,39 +224,39 @@ sections:
   url: /dossiers/:order
   param: {module: section, action: list}
 section_rss_commentaires:
-  url: /dossier/:id/commentaires/rss
+  url: /%LEGISLATURE%/dossier/:id/commentaires/rss
   param: {module: commentaire, action: list, rss: 1}
 section_commentaires:
-  url: /dossier/:id/commentaires
+  url: /%LEGISLATURE%/dossier/:id/commentaires
   param: {module: commentaire, action: list}
 section:
-  url: /dossier/:id
+  url: /%LEGISLATURE%/dossier/:id
   param: {module: section, action: show}
 intervention:
-  url: /intervention/:id
+  url: /%LEGISLATURE%/intervention/:id
   param: {module: intervention, action: show}
 intervention_commentaires:
-  url: /intervention/:id/commentaires
+  url: /%LEGISLATURE%/intervention/:id/commentaires
   param: {module: commentaire, action: showAjax, intervention: 1, limit: 4}
 interventions_seance:
-  url: /seance/:seance
+  url: /%LEGISLATURE%/seance/:seance
   param: {module: intervention, action: seance}
 presents_seance:
-  url: /seance/:seance/presents
+  url: /%LEGISLATURE%/seance/:seance/presents
   param: {module: presence, action: seance}
 seance_commentaires_json:
-  url: /seance/:seance/commentaires
+  url: /%LEGISLATURE%/seance/:seance/commentaires
   param: {module: commentaire, action: json}
 amendement_id:
-  url: /amendement/:id
+  url: /%LEGISLATURE%/amendement/:id
   param: {module: amendement, action: redirect}
 
 amendement:
-  url: /amendement/:loi/:numero
+  url: /%LEGISLATURE%/amendement/:loi/:numero
   param: {module: amendement, action: show}
 
 find_amendements_by_loi_and_numero:
-  url: /amendements/:loi/:numero
+  url: /%LEGISLATURE%/amendements/:loi/:numero
   param: {module: amendement, action: find}
 
 # Recherche lexicale d'interventions ou d'amendements
@@ -294,7 +294,7 @@ tag_interventions:
   url: /tag/:tags
   param: {module: intervention, action: tag}
 tag_section_interventions:
-  url: /dossier/:section/tag/:tags
+  url: /%LEGISLATURE%/dossier/:section/tag/:tags
   param: {module: intervention, action: tag}
 tag_parlementaire_interventions:
   url: /parlementaire/:parlementaire/tag/:tags
@@ -326,13 +326,13 @@ api_document:
 
 # Affichage d'une question
 question_numero:
-  url: /question/QE/:numero
+  url: /%LEGISLATURE%/question/QE/:numero
   param: {module: questions, action: show}
 question:
-  url: /question/id/:id
+  url: /%LEGISLATURE%/question/id/:id
   param: {module: questions, action: redirect}
 question_id:
-  url: /question/:id
+  url: /%LEGISLATURE%/question/:id
   param: {module: questions, action: redirect}
 
 # Captcha
@@ -470,10 +470,10 @@ parlementaire_textes:
   url: /:slug/dossiers
   param: {module: section, action: parlementaire}
 parlementaire_texte_amendements:
-  url: /:slug/dossier/:id/amendements
+  url: /%LEGISLATURE%/:slug/dossier/:id/amendements
   param: {module: amendement, action: parlementaireSection}
 parlementaire_texte:
-  url: /:slug/dossier/:id
+  url: /%LEGISLATURE%/:slug/dossier/:id
   param: {module: section, action: parlementaireSection}
 parlementaire_amendements:
   url: /:slug/amendements
@@ -497,7 +497,7 @@ groupes_plot_graph:
   url: /graphes/groupes/:type
   param: {module: plot, action: generatePlotGroupes}
 preuve_presence_seance:
-  url: /:slug/seance/:seance
+  url: /%LEGISLATURE%/:slug/seance/:seance
   param: {module: presence, action: preuve}
 parlementaire_questions:
   url: /:slug/questions
