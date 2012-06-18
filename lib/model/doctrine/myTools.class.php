@@ -8,6 +8,8 @@ class myTools {
         preg_match('/^([^0-9]+)/', $adresse, $titre);
         preg_match('/([0-9]{5})/', $adresse, $code_postal);
         preg_match('/(([-. ]?[0-9]{2}){5})/', $adresse, $tel);
+        if(!isset($titre[0])) { $titre[0] = '###'; }
+        if(!isset($code_postal[0])) { $code_postal[0] = '###'; }
         if(!isset($tel[0])) { $tel[0] = '###'; }
         $replace = array(
           $titre[0] => '<div class="fn org">'.$titre[0].'</div>',

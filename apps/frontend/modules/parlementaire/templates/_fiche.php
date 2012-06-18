@@ -38,7 +38,7 @@
         echo $moreweb;
       } ?>
     </ul><?php
-echo myTools::displayVCards($parlementaire->adresses, $parlementaire->mails)
+echo myTools::displayVCards($parlementaire->adresses, $parlementaire->mails);
 $note_fonction = false;
 if ($parlementaire->fin_mandat == null || $parlementaire->fin_mandat < $parlementaire->debut_mandat) : ?>
       <h2>Responsabilités</h2>
