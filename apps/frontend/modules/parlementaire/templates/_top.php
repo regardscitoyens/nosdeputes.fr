@@ -46,9 +46,9 @@ $sort = array('semaines_presence' => '1',
                'propositions_signees' => '10',
 	       'questions_ecrites' => '11',
 	       'questions_orales' => '12');
-$couleur2style = array('vert' => ' style="color: green"',
-	       'gris' => '',
-	       'rouge' => ' style="color: red"');
+$couleur2style = array('vert' => ' style="color: green;font-weight:bold;"',
+	       'gris' => ' style="font-weight:bold;"',
+	       'rouge' => ' style="color: red;font-style:italic;"');
 $top = $parlementaire->getTop();
 if (!$top)
   return ;
