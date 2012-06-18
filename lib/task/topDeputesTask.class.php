@@ -490,7 +490,7 @@ class topDeputesTask extends sfBaseTask
     $annee0 = date('Y', $start); $sem0 = date('W', $start);
     if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
     if ($sem0 >= 52 && $sem <= 1) $sem0 = 0;
-    $n_weeks = ($annee - $annee0)*53 + $sem - $sem0;
+    $n_weeks = max(1, ($annee - $annee0)*53 + $sem - $sem0);
     $query = Doctrine_Query::create()
       ->select('COUNT(p.id) as nombre, p.id, p.parlementaire_id, s.type, s.annee, s.numero_semaine')
       ->from('Presence p')
