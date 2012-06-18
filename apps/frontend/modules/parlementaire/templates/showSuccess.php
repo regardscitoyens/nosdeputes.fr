@@ -5,7 +5,7 @@
 <h1><?php echo $parlementaire->nom; ?></h1>
 <h2>, <?php echo $parlementaire->getLongStatut(1); ?><span class="rss"><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
 <?php if ($parlementaire->url_nouveau_cpc) : ?>
-<h3 style="color:red; margin: 0px"><a href="<?php echo $parlementaire->url_nouveau_cpc; ?>">Ce député a été réélu, consultez sa fiche pour la <?php echo sfConfig::get('app_legislature')+1; ?><sup>ième</sup> législature</a></h3>
+<h3 style="color:red; margin: 0px"><a href="<?php echo $parlementaire->url_nouveau_cpc; ?>">Ce député a été réélu, consultez sa fiche pour la <?php echo sfConfig::get('app_legislature')+1; ?><sup>ème</sup> législature</a></h3>
 <?php endif; ?>
     </div>
   <div class="depute_gauche">
