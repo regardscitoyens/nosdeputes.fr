@@ -137,7 +137,7 @@ $menu_citoyen = $selectcitoyen;
       </div>
       <div id="bottom">
 <div class="legal">
-<a href="<?php echo url_for("@faq"); ?>">Questions fréquentes</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/publication/">Données</a>&nbsp; &mdash; &nbsp;<a href="http://cpc.regardscitoyens.org/trac/wiki/API">API</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/mentions-legales/">Mentions légales</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/nous-contacter/">Contact</a>
+<a href="<?php echo url_for("@faq"); ?>">Questions fréquentes</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/publication/">Données</a>&nbsp; &mdash; &nbsp;<a href="http://cpc.regardscitoyens.org/trac/wiki/API">API</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/mentions-legales/">Mentions légales</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/nous-contacter/">Contact</a> <span id="licences"><a href="http://cpc.regardscitoyens.org/trac/wiki/API"><img src="/images/opendata.png" height="15"/></a> <a href="http://cpc.regardscitoyens.org/trac"><img src="/images/agpl.png" height="15"/></a></span>
 </div>
         <div class="regardscitoyens">
 		<a href="http://www.regardscitoyens.org"><span class="RC">R</span>egards<span class="RC">C</span><span style="color: #C1272D;">i</span>toyens.org</a>
