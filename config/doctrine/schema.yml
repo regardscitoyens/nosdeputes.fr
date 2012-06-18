@@ -55,6 +55,8 @@ Parlementaire:
     mails: string
     top: string
     villes: string
+    url_ancien_cpc: string
+    url_nouveau_cpc: string
   inheritance:
     extends: Personnalite
     type: concrete
