@@ -305,7 +305,8 @@ class commentaireActions extends sfActions
         ->orderBy('c.created_at DESC')
         ->fetchArray() as $com)
           $commentsids[] = $com['id'];
-      $this->commentaires->andWhere('id IN ('.implode(',', array_values($commentsids)).')');
+      if (count(array_values($commentsids)))
+        $this->commentaires->andWhere('id IN ('.implode(',', array_values($commentsids)).')');
     } else {
       $this->forward404Unless($this->object);
       if ($this->type != 'Parlementaire') {
