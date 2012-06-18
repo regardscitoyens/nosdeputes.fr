@@ -38,6 +38,7 @@
 var updateIframe = function() {
   if (!$('#url').val()) return;
   $('#height').val($('#resultat').height());
+  if (!$('#height').val()) return;
   $("#iframe").val('<iframe frameborder="0" scrolling="no" src="'+$('#url').val()+'" height="'+($('#height').val()*1+20)+'" width="'+$('#width').val()+'"></iframe>');
 }
 var updatePreview = function() {
