@@ -16,9 +16,9 @@
       </li>
 <?php endif;
       if ($parlementaire->url_ancien_cpc)
-	echo '<li><a href="'.$parlementaire->url_ancien_cpc.'">Sa page NosDéputés.fr pour l\'ancienne législature</a></li>';
+  echo '<li><a href="'.$parlementaire->url_ancien_cpc.'">Sa page NosDéputés.fr pour l\'ancienne législature</a></li>';
       if ($parlementaire->suppleant_de_id && $supplee = $parlementaire->getSuppleantDe())
-        echo '<li>Suppléant'.($parlementaire->sexe == "F" ? 'e' : '').' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>'; 
+        echo '<li>Suppléant'.($parlementaire->sexe == "F" ? 'e' : '').' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>';
       if ($parlementaire->groupe_acronyme != "") : ?>
       <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getGroupe()->getFonction(); ?>)</li>
       <?php endif; ?>
@@ -37,21 +37,21 @@
         }
         echo $moreweb;
       } ?>
-    </ul>
-    <?php 
+    </ul><?php
+echo myTools::displayVCards($parlementaire->adresses, $parlementaire->mails)
 $note_fonction = false;
 if ($parlementaire->fin_mandat == null || $parlementaire->fin_mandat < $parlementaire->debut_mandat) : ?>
       <h2>Responsabilités</h2>
       <ul>
-        <li>Commission permanente : <ul><?php foreach ($commissions_permanentes as $resp) { echo '<li>'.link_to(ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/', '\\1 ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug()); 
+        <li>Commission permanente : <ul><?php foreach ($commissions_permanentes as $resp) { echo '<li>'.link_to(ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/', '\\1 ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug());
     $fonction = preg_replace('/^(.*(président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
     echo " ($fonction)";
-    echo '</li>'; 
+    echo '</li>';
 break; } ?></ul></li>
 <?php if (count($missions)) : ?>
         <li>Missions parlementaires :
           <ul>
-            <?php 
+            <?php
             foreach ($missions as $resp) { ?>
             <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug());
   $fonction = preg_replace('/^(.*(président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
@@ -85,13 +85,13 @@ break; } ?></ul></li>
     <div class="b_d_cont">
       <div class="b_d_infos">
       <h2>Travaux législatifs</h2>
-	<h3><?php if(myTools::isFinLegislature()) {
-	  echo "Ses principaux dossiers durant la législature";
-	  $order = 'nb';
-	}else{
-	  echo "Ses derniers dossiers";
-	  $order = 'date';
-	}?></h3>
+  <h3><?php if(myTools::isFinLegislature()) {
+    echo "Ses principaux dossiers durant la législature";
+    $order = 'nb';
+  }else{
+    echo "Ses derniers dossiers";
+    $order = 'date';
+  }?></h3>
       <?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'order' => $order)); ?>
       <p class="suivant"><?php echo link_to('Tous ses dossiers', '@parlementaire_textes?slug='.$parlementaire->slug); ?></p>
       <h3><?php echo link_to('Travaux en commissions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=commission'); ?></h3>
@@ -108,7 +108,7 @@ break; } ?></ul></li>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
   </div>
-    
+
   <div class="boite_depute" id="b2">
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
@@ -151,4 +151,3 @@ echo "sur 12 mois";
 
   <div class="boite_depute" id="b4">
   </div>
-

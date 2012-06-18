@@ -1,6 +1,29 @@
 <?php
 class myTools {
 
+
+  public static function displayVCards($adresses, $mails) {
+    foreach (unserialize($adresses) as $adresse) {
+      if(trim($adresse) != '') {
+        preg_match('/^([^0-9]+)/', $adresse, $titre);
+        preg_match('/([0-9]{5})/', $adresse, $code_postal);
+        preg_match('/(([-. ]?[0-9]{2}){5})/', $adresse, $tel);
+        if(!isset($tel[0])) { $tel[0] = '###'; }
+        $replace = array(
+          $titre[0] => '<div class="fn org">'.$titre[0].'</div>',
+          $code_postal[0] => '<br /><span class="postal-code">'.$code_postal[0].'</span>',
+          'Téléphone :'.$tel[0] => '<br />Téléphone : <span class="tel"><a href="callto:'.preg_replace('/0/', '0033', preg_replace('/[^0-9]/', '', $tel[0]), 1).'">'.trim($tel[0]).'</a></span>',
+          'Télécopie' => '<br /><span class="tel"><span class="type">Fax</span>'
+        );
+        echo '<div class="vcard">';
+        echo strtr($adresse, $replace);
+        echo '</div>';
+      }
+    }
+    echo '<div class="stopfloat"></div>';
+  }
+
+
   public static function betterUCFirst($str) {
     $str = ucfirst($str);
     $str = preg_replace('/^é/', 'É', $str);
@@ -76,7 +99,7 @@ class myTools {
      "10" => "octobre",
      "11" => "novembre",
      "12" => "décembre");
-  
+
   public static function displayDate($date) {
     if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $date, $match)) {
       $match[3] = preg_replace('/^0(\d)/', '\\1', $match[3]);
@@ -89,7 +112,7 @@ class myTools {
     if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $date, $match)) {
       return self::$num_mois[$match[2]].' '.$match[1];
     } else return $date;
-  } 
+  }
 
   static $day_week = array(
      "0" => "Dimanche",
@@ -102,7 +125,7 @@ class myTools {
 
   public static function displayDateSemaine($date) {
     $day = self::$day_week[date('w', strtotime($date))];
-    return $day.' '.self::displayDate($date); 
+    return $day.' '.self::displayDate($date);
   }
 
   public static function displayShortDate($d) {
@@ -120,19 +143,19 @@ class myTools {
     $date = $date.substr($d,2,2);      // année
     return $date;
   }
-  
+
   public static function displayMoisAnnee($d) {
     $d = preg_replace ('/\-/', '', $d);
     $date = self::$num_mois[substr($d,4,2)].' ';  // mois txt
     $date = $date.substr($d,0,4);      // année num
     return $date;
   }
- 
-  public static function displayDateTime($d) { 
-    $date = self::displayShortDate($d)." à "; 
-    $date = $date.substr($d,11,5);     // heures et minutes 
-    return $date; 
-  } 
+
+  public static function displayDateTime($d) {
+    $date = self::displayShortDate($d)." à ";
+    $date = $date.substr($d,11,5);     // heures et minutes
+    return $date;
+  }
 
   public static function getAge($dob) {
     list($year,$month,$day) = explode("-",$dob);
@@ -142,7 +165,7 @@ class myTools {
     if (($month_diff == 0 && $day_diff < 0) || $month_diff < 0)
       $year_diff--;
     return $year_diff;
-  }	
+  }
 
   public static function getLinkDossier($urlan) {
     return link_to('Dossier sur le site de l\'Assemblée', "http://www.assemblee-nationale.fr/".sfConfig::get('app_legislature', 13)."/dossiers/".$urlan.".asp");
@@ -168,7 +191,7 @@ class myTools {
 
   public static function clearHtml($s, $authorized_tags = '<strong><i><b><a><em>') {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-	
+
     if ($authorized_tags)
       $s = strip_tags($s, $authorized_tags.'<depute>');
 
@@ -189,7 +212,7 @@ class myTools {
   }
       }
     }
-    $s = '<p>'.$s.'</p>'; 
+    $s = '<p>'.$s.'</p>';
     $s = preg_replace('/\n/', '</p><p>', $s);
     return $s;
   }
