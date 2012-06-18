@@ -3,6 +3,7 @@ class myTools {
 
 
   public static function displayVCards($adresses, $mails) {
+    if (!$adresses) return;
     foreach (unserialize($adresses) as $adresse) {
       if(trim($adresse) != '') {
         preg_match('/^([^0-9]+)/', $adresse, $titre);
