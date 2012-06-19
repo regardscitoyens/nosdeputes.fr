@@ -8,7 +8,7 @@ class updateDeputesTask extends sfBaseTask
     $this->name = 'Deputes';
     $this->briefDescription = 'Update Deputes';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
-    $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
   protected function splitArrayJson($json) {
@@ -25,7 +25,9 @@ class updateDeputesTask extends sfBaseTask
     $dir = dirname(__FILE__).'/../../batch/depute/out/';
     $manager = new sfDatabaseManager($this->configuration);    
 
-    $villes = json_decode(file_get_contents($dir.'../static/villes.json'));
+    if (sfConfig::get('app_legislature') > 13)
+      $villes = json_decode(file_get_contents($dir.'../static/villes_2012.json'));
+    else $villes = json_decode(file_get_contents($dir.'../static/villes.json'));
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
