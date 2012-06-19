@@ -639,8 +639,10 @@ class Parlementaire extends BaseParlementaire
           $match[2] = preg_replace("#^(\d+)/(\d+)/(\d+)$#", "\\3-\\2-\\1", $match[2]);
           $end = strtotime($match[2]);
         } else $end = $fin;
-        if ($sta < $debut || $end > $fin)
+        if ($sta < $debut || $sta > $fin)
           continue;
+        if ($end > $fin)
+          $end = $fin;
         $semaines += ($end - $sta)/(3600*24*7);
         foreach ($vacances as $vacance) {
           $week = strtotime($vacance["annee"]."0104 +".($vacance["semaine"] - 1)." weeks");
