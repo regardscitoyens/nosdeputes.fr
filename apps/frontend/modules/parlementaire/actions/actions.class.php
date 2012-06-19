@@ -425,7 +425,7 @@ class parlementaireActions extends sfActions
 	$this->tops[$id][$i]['value'] = $tops[$key]['value'];
         if ($fin)
           $this->tops[$id][$i]['moyenne'] = $tops[$key]['moyenne'];
-	$this->tops[$id][$i]['style'] = ' style="font-weight:bold;"';
+	$this->tops[$id][$i]['style'] = ' ';
 	if ($tops[$key]['rank'] < 151)
 	  $this->tops[$id][$i]['style'] = ' style="color:green;font-weight:bold;" ';
 	else if ($tops[$key]['rank'] > 577 - 151)
