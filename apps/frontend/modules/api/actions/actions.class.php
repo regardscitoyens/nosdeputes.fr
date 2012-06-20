@@ -247,6 +247,7 @@ class apiActions extends sfActions
     $res['profession'] = $parl->profession;
     $res['place_en_hemicycle'] = $parl->place_hemicycle;
     $res['url_an'] = $parl->url_an;
+    $res['id_an'] = $parl->id_an;
     $res['slug'] = $parl->getSlug();
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     $res['url_nosdeputes'] = url_for('@parlementaire?slug='.$res['slug'], 'absolute=true');
