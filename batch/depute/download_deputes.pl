@@ -27,7 +27,8 @@ while ($t = $p->get_tag('a')) {
     }
 }
 
-$a->get("http://www.assembleenationale.fr/".$legislature."/tribun/xml/liste_mandats_clos.asp");
+eval { $a->get("http://www.assembleenationale.fr/".$legislature."/tribun/xml/liste_mandats_clos.asp"); };
+if ($@) { if ($a->status != 404) {
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 open PM, ">finmandats.pm";
@@ -65,4 +66,8 @@ while ($t = $p->get_tag('td')) {
 	    }
 	}
     }
-}
+} } elsif (! -e "finmandats.pm") {
+  open PM, ">finmandats.pm";
+  print PM '$fin_mandat{"null"} = "null";';
+} }
+
