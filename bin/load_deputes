@@ -1,6 +1,7 @@
 #!/bin/bash
+source bin/db.inc
 cd batch/depute
-perl download_deputes.pl 
+perl download_deputes.pl $LEGISLATURE
 sh parse_tous.sh 
 cd -
 php symfony update:Deputes 

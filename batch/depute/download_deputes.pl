@@ -2,7 +2,7 @@
 
 use WWW::Mechanize;
 use HTML::TokeParser;
-
+$legislature = shift || 14;
 $verbose = shift || 0;
 
 sub download_fiche {
@@ -18,7 +18,7 @@ sub download_fiche {
 }
 $a = WWW::Mechanize->new();
 
-$a->get("http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=13");
+$a->get("http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=".$legislature);
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 while ($t = $p->get_tag('a')) {
@@ -27,7 +27,7 @@ while ($t = $p->get_tag('a')) {
     }
 }
 
-$a->get("http://www.assembleenationale.fr/13/tribun/xml/liste_mandats_clos.asp");
+$a->get("http://www.assembleenationale.fr/".$legislature."/tribun/xml/liste_mandats_clos.asp");
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 open PM, ">finmandats.pm";
@@ -43,6 +43,7 @@ while ($t = $p->get_tag('td')) {
 		$t = $p->get_tag('td');
 		$t = $p->get_text('/td');
 		$t =~ s/[^\d\/]//g;
+              if ($legislature == 13) {
 # Cas Estrosi dont la fin de mandat n'est pas mise à jour sur la page de l'AN
                 if ($id == 1263) {
                   $t = '23/07/2009';
@@ -59,6 +60,7 @@ while ($t = $p->get_tag('td')) {
                 if ($id == 267680) {
                   $t = '13/12/2010';
                 }
+              }
 		print PM "\$fin_mandat{'$id'} = '$t';\n";
 	    }
 	}
