@@ -13,7 +13,7 @@ my %depute;
 
 if ($file =~ /(\d+)/) {
     $depute{'id_an'} = $1;
-    $depute{'url_an'} = "http://www.assembleenationale.fr/13/tribun/fiches_id/$1.asp";
+    $depute{'url_an'} = "http://www.assembleenationale.fr/$legislature/tribun/fiches_id/$1.asp";
     $depute{'Fin_Mandat'} = $fin_mandat{"$1.asp"};
 }
 

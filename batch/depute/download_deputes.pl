@@ -32,6 +32,7 @@ if ($@) { if ($a->status != 404) {
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 open PM, ">finmandats.pm";
+print PM '$legislature = '."$legislature;\n";
 while ($t = $p->get_tag('td')) {
     if ($t->[1]{class} eq 'denom') {
 	$t = $p->get_tag('a');
@@ -66,8 +67,5 @@ while ($t = $p->get_tag('td')) {
 	    }
 	}
     }
-} } elsif (! -e "finmandats.pm") {
-  open PM, ">finmandats.pm";
-  print PM '$fin_mandat{"null"} = "null";';
-} }
+} } }
 
