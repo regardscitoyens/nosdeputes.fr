@@ -27,12 +27,12 @@ while ($t = $p->get_tag('a')) {
     }
 }
 
+open PM, ">finmandats.pm";
+print PM '$legislature = '."$legislature;\n";
 eval { $a->get("http://www.assembleenationale.fr/".$legislature."/tribun/xml/liste_mandats_clos.asp"); };
 if ($@) { if ($a->status != 404) {
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
-open PM, ">finmandats.pm";
-print PM '$legislature = '."$legislature;\n";
 while ($t = $p->get_tag('td')) {
     if ($t->[1]{class} eq 'denom') {
 	$t = $p->get_tag('a');
@@ -63,7 +63,7 @@ while ($t = $p->get_tag('td')) {
                   $t = '13/12/2010';
                 }
               }
-		print PM "\$fin_mandat{'$id'} = '$t';\n";
+	      print PM "\$fin_mandat{'$id'} = '$t';\n";
 	    }
 	}
     }
