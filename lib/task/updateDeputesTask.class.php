@@ -82,7 +82,7 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->groupes = $this->splitArrayJson($json->groupes);
 	    $parl->debut_mandat = $json->debut_mandat;
 	    $parl->fin_mandat = $json->fin_mandat;
-	    if ($json->id_an)
+	    if ($json->id_institution)
 	      $parl->id_an = $json->id_institution;
 	    if (count($json->mails))
 		$parl->mails = $json->mails;
@@ -96,7 +96,7 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->sites_web = $json->sites_web;
             else if ($parl->sites_web && !preg_match('/^a:/', $parl->sites_web))
               $parl->sites_web = array($parl->sites_web);
-	    if ($json->url_an)
+	    if ($json->url_institution)
 	      $parl->url_an = $json->url_institution;
             if ($json->suppleant_de)
               $parl->setSuppleantDe($json->suppleant_de);

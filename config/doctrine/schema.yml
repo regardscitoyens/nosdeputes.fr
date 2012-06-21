@@ -93,7 +93,7 @@ Organisme:
       index_if: has_parlementaires
   columns:
     nom: 
-      type: string(255)
+      type: string(333)
       unique: true
 #      notnull: true
     type:
