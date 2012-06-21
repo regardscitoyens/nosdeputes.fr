@@ -53,9 +53,9 @@ sub add_mandat {
 
 if ($file =~ /(\d+)/) {
   $depute{'id_institution'} = $1;
-  $depute{'url_institution'} = "http://www.assemblee-nationale.fr/13/tribun/fiches_id/$1.asp";
+  $depute{'url_institution'} = "http://www.assemblee-nationale.fr/$legislature/tribun/fiches_id/$1.asp";
   $depute{'fin_mandat'} = $fin_mandat{"$1.asp"};
-  $depute{'photo'} = "http://www.assemblee-nationale.fr/13/tribun/photos/$1.jpg";
+  $depute{'photo'} = "http://www.assemblee-nationale.fr/$legislature/tribun/photos/$1.jpg";
 }
 
 $read = "";
