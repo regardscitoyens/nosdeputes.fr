@@ -191,8 +191,8 @@ foreach $line (split /\n/, $string) {
       }
     } else {
       next if ($line =~ /Rapporteure? spécial/i);
-      if ($line =~ /^\s*(.*) \((.*) - mission débutée.*\)/i) {
-        $organisme = $1;
+      if ($line =~ /^(.*)\((.*) - mission débutée.*\)/i) {
+        $organisme = trim($1);
         $minist = $2;
         $minist =~ s/m(inistère d[^,]*),.*$/M\1/i;
         $organisme = "Mission temporaire pour le $minist : $organisme";
@@ -234,11 +234,15 @@ $nomdep = $depute{'nom'};
 if ((join " ", keys %{$depute{'mails'}}) =~ /(\S+)\@assemblee/) {
     $login = $1;
     while ($login = substr($login, 1)) {
+        $clogin = $login;
+        $clogin =~ s/[ce]/./ig;
+        $clogin =~ s/\.+/.+/g;
         for($i = 0 ; $i <= $#noms ; $i++) {
-            $tmpnom = $noms[$i];
+            $tmpnom = lc($noms[$i]);
             $tmpnom =~ s/[àÀéÉèÈêÊëËîÎïÏôÔùÙûÛçÇ]/./ig;
-            if ($login =~ /$tmpnom/i)  {
-                if ($nomdep =~ /(\s[dl][ea]s?\s)?(\S*$login.*$)/i) {
+            $tmpnom =~ s/\.+/.+/g;
+            if ($login =~ /$tmpnom/i) {
+                if ($nomdep =~ /(\s[dl][ea]s?\s)?(\S*$clogin.*$)/i) {
                     $depute{'nom_de_famille'} = $1.$2;
                     last;
                 }
