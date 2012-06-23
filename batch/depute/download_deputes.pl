@@ -7,8 +7,9 @@ $verbose = shift || 0;
 
 sub download_fiche {
 	$uri = $file = shift;
+	$uri =~ s/^\//http:\/\/www.assemblee-nationale.fr\//;
 	$file =~ s/^.*\/([^\/]+)/$1/;
-	print "$file\n" if ($verbose);
+	print "$file : $uri\n" if ($verbose);
 	$a->get($uri);
 	mkdir html unless -e "html/" ;
 	open FILE, ">", "html/$file";
@@ -17,7 +18,7 @@ sub download_fiche {
 	return $file;
 }
 $a = WWW::Mechanize->new();
-
+print "http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=".$legislature."\n" if ($verbose);
 $a->get("http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=".$legislature);
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
