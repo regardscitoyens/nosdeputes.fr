@@ -176,7 +176,6 @@ class circonscriptionActions extends sfActions
     foreach ($paths as $path)
       if (preg_match($regexp, $path->getAttribute('id'))) {
         $cs = self::compose_transform($path);
-        $points = self::convert_path($path->getAttribute('d'), $cs, $ratio_w, $ratio_h);
         if ($deptitle) {
           $title = $path->getAttribute('title');
           $id = preg_replace('/d/', '', $path->getAttribute('id'));
@@ -186,8 +185,13 @@ class circonscriptionActions extends sfActions
           $title = self::get_title($path);
           $href = url_for("@redirect_parlementaires_circo?code=".$path->getAttribute('id'));
         }
-        $areas .= "<area id=\"map$id\" href=\"".$href."\" class=\"jstitle\" title=\"".str_replace('&mdash;', '--', $title)."\" alt=\"".$title."\" ".
-          "shape=\"poly\" coords=\"".$points."\" />\n";
+        $ct = 0;
+        foreach (split(" z ", $path->getAttribute('d')) as $d) {
+          if (!preg_match('/ z$/', $d)) $d .= " z";
+          $points = self::convert_path($d, $cs, $ratio_w, $ratio_h);
+          $areas .= "<area id=\"map$id-$ct\" href=\"".$href."\" class=\"map$id nothover jstitle\" title=\"".str_replace('&mdash;', '--', $title)."\" alt=\"".$title."\" "."shape=\"poly\" coords=\"".$points."\" />\n";
+          $ct++;
+        }
       }
     return array('areas' => $areas, 'w' => $w, 'h' => $h);
   }
