@@ -242,7 +242,7 @@ if ((join " ", keys %{$depute{'mails'}}) =~ /(\S+)\@assemblee/) {
             $tmpnom =~ s/[àÀéÉèÈêÊëËîÎïÏôÔùÙûÛçÇ]/./ig;
             $tmpnom =~ s/\.+/.+/g;
             if ($login =~ /$tmpnom/i) {
-                if ($nomdep =~ /(\s[dl][ea]s?\s)?(\S*$clogin.*$)/i) {
+                if ($nomdep =~ /(\s[dl][ea]s?\s)?(\S*$tmpnom.*$)/i) {
                     $depute{'nom_de_famille'} = $1.$2;
                     last;
                 }
