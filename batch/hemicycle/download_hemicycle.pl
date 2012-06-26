@@ -3,6 +3,7 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
+$legislature = shift || 14;
 $lastyear = localtime(time);
 my @month = `date +%m`;
 $lastyear =~ s/^.*\s(\d{4})$/$1/;
@@ -11,14 +12,14 @@ $session = "$lastyear-".($lastyear+1);
 $oldsession = ($lastyear-1)."-$lastyear";
 
 @url = (
-    "http://www.assemblee-nationale.fr/13/cri/$session-extra3/",
-    "http://www.assemblee-nationale.fr/13/cri/$session-extra2/",
-    "http://www.assemblee-nationale.fr/13/cri/$session-extra/",
-    "http://www.assemblee-nationale.fr/13/cri/$session/",
-    "http://www.assemblee-nationale.fr/13/cri/$oldsession-extra3/",
-    "http://www.assemblee-nationale.fr/13/cri/$oldsession-extra2/",
-    "http://www.assemblee-nationale.fr/13/cri/$oldsession-extra/",
-    "http://www.assemblee-nationale.fr/13/cri/$oldsession/"
+    "http://www.assemblee-nationale.fr/$legislature/cri/$session-extra3/",
+    "http://www.assemblee-nationale.fr/$legislature/cri/$session-extra2/",
+    "http://www.assemblee-nationale.fr/$legislature/cri/$session-extra/",
+    "http://www.assemblee-nationale.fr/$legislature/cri/$session/",
+    "http://www.assemblee-nationale.fr/$legislature/cri/$oldsession-extra3/",
+    "http://www.assemblee-nationale.fr/$legislature/cri/$oldsession-extra2/",
+    "http://www.assemblee-nationale.fr/$legislature/cri/$oldsession-extra/",
+    "http://www.assemblee-nationale.fr/$legislature/cri/$oldsession/"
 );
 
 $a = WWW::Mechanize->new();

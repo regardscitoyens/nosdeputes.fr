@@ -3,13 +3,14 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
+$legislature = shift | 14;
 $a = WWW::Mechanize->new();
 $start = shift || '0';
 $count = 50;
 $ok = 1;
 while ($ok) {
     $ok = 0;
-    $a->get('http://recherche2.assemblee-nationale.fr/resultats_generique.jsp?texterecherche=*&typedoc=crdebats&auteurid=&legislatureNum=13&categoryid=&ResultCount='.$count.'&ResultStart='.$start);
+    $a->get('http://recherche2.assemblee-nationale.fr/resultats_generique.jsp?texterecherche=*&typedoc=crdebats&auteurid=&legislatureNum='.$legislature.'&categoryid=&ResultCount='.$count.'&ResultStart='.$start);
     $content = $a->content;
     $p = HTML::TokeParser->new(\$content);
     
