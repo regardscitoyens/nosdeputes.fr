@@ -11,10 +11,10 @@ done;
 
 for seance_id in $(echo "select DISTINCT seance_id from presence order by seance_id" | mysql $MYSQLID $DBNAME | grep -v seance_id )
 do
-	echo "http://$VHOST/seance/$seance_id"
-	rm web/seance/$seance_id.html 2> /dev/null
-	curl -q http://$VHOST/seance/${seance_id}?_sf_ignore_cache=1 > $TMPFILE
-	mv $TMPFILE web/seance/$seance_id.html
+	echo "http://$VHOST/$LEGISLATURE/seance/$seance_id"
+	rm web/$LEGISLATURE/seance/$seance_id.html 2> /dev/null
+	curl -q http://$VHOST/$LEGISLATURE/seance/${seance_id}?_sf_ignore_cache=1 > $TMPFILE
+	mv $TMPFILE web/$LEGISLATURE/seance/$seance_id.html
 done
 rm -rf cache/frontend/prod/template/*/all/intervention/seance/seance
 rm -rf cache/frontend/prod/template/*/all/sf_cache_partial/plot/_groupes/sf_cache_key

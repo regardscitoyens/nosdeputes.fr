@@ -4,10 +4,10 @@ TMPFILE=/tmp/hard_cache.$$
 
 for seance_id in $(echo "select DISTINCT id from seance where type = 'hemicycle'" | mysql $MYSQLID $DBNAME | grep -v id )
 do
-	echo "http://$VHOST/seance/$seance_id"
-	rm web/seance/$seance_id.html 2> /dev/null
-	curl -q http://$VHOST/seance/$seance_id > TMPFILE
-	mv TMPFILE web/seance/$seance_id.html
+	echo "http://$VHOST/$LEGISLATURE/seance/$seance_id"
+	rm web/$LEGISLATURE/seance/$seance_id.html 2> /dev/null
+	curl -q http://$VHOST/$LEGISLATURE/seance/$seance_id > TMPFILE
+	mv TMPFILE web/$LEGISLATURE/seance/$seance_id.html
 done
 rm cache/frontend/prod/template/*/all/intervention/seance/seance/*
 rm cache/frontend/prod/template/*/all/sf_cache_partial/plot/_groupes/sf_cache_key/*
