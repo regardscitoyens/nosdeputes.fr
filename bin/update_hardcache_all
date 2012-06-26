@@ -5,17 +5,17 @@ TMPFILE=/tmp/hard_cache.$$
 for url in synthese synthesetri/10 synthesetri/11 synthesetri/12 synthesetri/1 synthesetri/2 synthesetri/3 synthesetri/4 synthesetri/5 synthesetri/6 synthesetri/7 synthesetri/8 synthesetri/9;
 do 
   rm web/$url.html
-  curl http://www.nosdeputes.fr/$url > $TMPFILE
+  curl http://$VHOST/$url > $TMPFILE
   mv $TMPFILE web/$url.html
 done;
 
 for seance_id in $(echo "select DISTINCT seance_id from presence order by seance_id" | mysql $MYSQLID $DBNAME | grep -v seance_id )
 do
-	echo "http://www.nosdeputes.fr/seance/$seance_id"
+	echo "http://$VHOST/seance/$seance_id"
 	rm web/seance/$seance_id.html 2> /dev/null
-	curl -q http://www.nosdeputes.fr/seance/${seance_id}?_sf_ignore_cache=1 > $TMPFILE
+	curl -q http://$VHOST/seance/${seance_id}?_sf_ignore_cache=1 > $TMPFILE
 	mv $TMPFILE web/seance/$seance_id.html
 done
-rm -rf cache/frontend/prod/template/www_nosdeputes_fr/all/intervention/seance/seance
-rm -rf cache/frontend/prod/template/www_nosdeputes_fr/all/sf_cache_partial/plot/_groupes/sf_cache_key
+rm -rf cache/frontend/prod/template/*/all/intervention/seance/seance
+rm -rf cache/frontend/prod/template/*/all/sf_cache_partial/plot/_groupes/sf_cache_key
 

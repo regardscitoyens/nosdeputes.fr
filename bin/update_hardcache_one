@@ -1,10 +1,11 @@
 #!/bin/bash
 TMPFILE=/tmp/hard_cache.$$
+source bin/db.inc
 
 seance_id=$1
 
-echo "http://www.nosdeputes.fr/seance/$seance_id"
+echo "http://$VHOST/seance/$seance_id"
 rm web/seance/$seance_id.html 2> /dev/null
-curl -q http://www.nosdeputes.fr/seance/${seance_id}?_sf_ignore_cache=$$ > $TMPFILE
+curl -q http://$VHOST/seance/${seance_id}?_sf_ignore_cache=$$ > $TMPFILE
 mv $TMPFILE web/seance/$seance_id.html
 
