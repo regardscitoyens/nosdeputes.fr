@@ -3,7 +3,7 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
-$legislature = shift | 14;
+$legislature = shift || 14;
 $a = WWW::Mechanize->new();
 $start = shift || '0';
 $count = 50;
