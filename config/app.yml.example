@@ -20,5 +20,21 @@ all:
   groupes_proximite: >
     ["CRC / SOC", "NC / UMP"]
 
+# groupes 14eme
+#    ["GDR", "SOC", "ECOLO", "RRDP", "UDI", "UMP", "NI"]
+#  groupes_infos: >
+#    [
+#    "Gauche Démocrate et Républicaine / GDR / 255,30,30 / PCF, PG, ultra-marins et rat. / gauche.*d[eéÉ]mocrate",
+#    "Socialiste, Républicain et Citoyen / SRC / 255,50,190 / Socialistes (PS, MRC et ratt.) / socialiste",
+#    "Radical, Républicain, Démocrate et Progressiste / RRDP / 250,195,132 / Radicaux (PRG, MUP, Modem, ...) / radical",
+#    "Écologiste / ECOLO / 0,230,30 / Écologistes (EELV) / [eéÉ]cologiste",
+#    "Union des Démocrates et Indépendants / UDI / 30,180,255 / Centristes / d[eéÉ]mocrates.*ind[eéÉ]pendants",
+#    "Union pour un Mouvement Populaire / UMP / 30,30,200 / UMP et rattachés / union.*mouvement.*populaire",
+#    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (Modem, divers) / inscrits|députés.*aucun"
+#    ]
+#  groupes_proximite: >
+#    ["GDR / SOC", "SOC / ECO", "GDR / ECO", "RRDP / SOC", "RRDP / ECO", "RRDP / UDI", "UDI / UMP"]
+
+
   sfDoctrineActAsTaggablePlugin:
     triple_distinct:   true
