@@ -54,7 +54,7 @@ class amendementActions extends sfActions
       ->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
 
-    if (myTools::isLegislatureCloturee() && !$this->parlementaire->url_nouveau_cpc)
+    if (myTools::isLegislatureCloturee() && $this->parlementaire->url_nouveau_cpc)
       $this->response->addMeta('robots', 'noindex,follow');
 
     $this->amendements = Doctrine::getTable('Amendement')->createQuery('a')
@@ -72,7 +72,7 @@ class amendementActions extends sfActions
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
 
-    if (myTools::isLegislatureCloturee() && !$this->parlementaire->url_nouveau_cpc)
+    if (myTools::isLegislatureCloturee() && $this->parlementaire->url_nouveau_cpc)
       $this->response->addMeta('robots', 'noindex,follow');
 
     $this->section = Doctrine::getTable('Section')->find($request->getParameter('id'));
