@@ -1,5 +1,5 @@
 <?php
-if (isset($GET['withBOM']) && $GET['withBOM']) {
+if ((isset($GET['withBOM']) && $GET['withBOM']) || (isset($withBOM) && $withBOM)) {
   printf("\xef\xbb\xbf");
 }
 if (!isset($multi)) {

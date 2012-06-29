@@ -77,8 +77,8 @@ class apiActions extends sfActions
 
   public function executeTopSynthese(sfWebRequest $request) {
     $format = $request->getParameter('format');
-    $bom = $request->getParameter('withBOM');
-    if ($format == 'csv' && !$bom && preg_match('/windows/i', $_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_REFERER']) {
+    $this->withBOM = $request->getParameter('withBOM');
+    if ($format == 'csv' && !$this->withBOM && preg_match('/windows/i', $_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_REFERER']) {
       return $this->redirect('api/topSynthese?format=csv&withBOM=true');
     }
     $qp = Doctrine::getTable('Parlementaire')->createQuery('p');
