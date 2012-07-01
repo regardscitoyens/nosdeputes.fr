@@ -9,7 +9,7 @@ class loadJOTask extends sfBaseTask
     $this->briefDescription = 'Load Présences from JO data or CRI';
     $this->addOption('source', null, sfCommandOption::PARAMETER_OPTIONAL, 'Define the source to load: jo or cri or international', 'jo');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
-    $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
   protected function execute($arguments = array(), $options = array())
@@ -63,14 +63,16 @@ class loadJOTask extends sfBaseTask
 	    if (isset($jo->typeorganisme))
 	      $typeorganisme = $jo->typeorganisme;
 	    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($jo->commission, $typeorganisme);
-	    if (!$jo->reunion) {
+	    if (!$jo->reunion || strtotime($jo->reunion) < strtotime(myTools::getDebutLegislature())) {
 	      $depute->clearRelated();
 	      $depute->free();
 	      $commission->clearRelated();
 	      $commission->free();
-	      echo "ERROR date : ";
-	      echo $line;
-	      echo "\n";
+	      if (!$jo->reunion) {
+		echo "ERROR date : ";
+	        echo $line;
+	        echo "\n";
+              }
 	      continue;
 	    }
 	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->reunion, $jo->session);

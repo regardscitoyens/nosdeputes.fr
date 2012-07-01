@@ -17,15 +17,14 @@ $a->get($url);
 $html = $a->content;
 utf8::encode($html);
 $html =~ s/’/'/g;
+$html =~ s/(\n|<br>)/ /gi;
+$html =~ s/\r//g;
+$html =~ s/<\!--.*-->//g;
 $html =~ s/<\/[^ab][^>]*>//gi;
 $html =~ s/<[^ba\/][^ba>][^>]*>//gi;
-$html =~ s/(\n|<br>)/ /gi;
-
 $html =~ s/<\/b>\s*<b>/ /gi;
-
 $html =~ s/<\/b>/<\/b>\n/g;
 $html =~ s/<b>/\n<b>/g;
-$html =~ s/\r//g;
 
 sub findDate($) {
 	$_ = shift;
