@@ -3,27 +3,28 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
+$legislature = shift || 14;
 $lastyear = localtime(time);
 $lastyear =~ s/^.*\s(\d{4})$/$1/;
 $lastyear++;
 
 $a = WWW::Mechanize->new(autocheck => 0);
 
-@urls = ("http://www.assemblee-nationale.fr/13/documents/index-depots.asp",
-         "http://www.assemblee-nationale.fr/13/documents/index-rapports.asp",
-         "http://www.assemblee-nationale.fr/13/documents/index-application_lois.asp",
-         "http://www.assemblee-nationale.fr/13/europe/index-rapinfo.asp",
-         "http://www.assemblee-nationale.fr/13/documents/index-information-comper.asp",
-         "http://www.assemblee-nationale.fr/13/documents/index-rapports-legislation.asp",
-         "http://www.assemblee-nationale.fr/13/documents/index-oeps.asp",
+@urls = ("http://www.assemblee-nationale.fr/$legislature/documents/index-depots.asp",
+         "http://www.assemblee-nationale.fr/$legislature/documents/index-rapports.asp",
+         "http://www.assemblee-nationale.fr/$legislature/documents/index-application_lois.asp",
+         "http://www.assemblee-nationale.fr/$legislature/europe/index-rapinfo.asp",
+         "http://www.assemblee-nationale.fr/$legislature/documents/index-information-comper.asp",
+         "http://www.assemblee-nationale.fr/$legislature/documents/index-rapports-legislation.asp",
+         "http://www.assemblee-nationale.fr/$legislature/documents/index-oeps.asp",
          "http://www.assemblee-nationale.fr/documents/index-general-oecst.asp",
-         "http://www.assemblee-nationale.fr/13/documents/index-territoire.asp",
-         "http://www.assemblee-nationale.fr/13/documents/index-femmes.asp",
-         "http://www.assemblee-nationale.fr/13/documents/index-information-comper.asp",
-         "http://www.assemblee-nationale.fr/13/documents/index-enquete-rapports.asp"
+         "http://www.assemblee-nationale.fr/$legislature/documents/index-territoire.asp",
+         "http://www.assemblee-nationale.fr/$legislature/documents/index-femmes.asp",
+         "http://www.assemblee-nationale.fr/$legislature/documents/index-information-comper.asp",
+         "http://www.assemblee-nationale.fr/$legislature/documents/index-enquete-rapports.asp"
 );
 for $year (2008 .. $lastyear) {
-  @urls = (@urls, "http://www.assemblee-nationale.fr/13/budget/plf$year/rapporteurs.asp");
+  @urls = (@urls, "http://www.assemblee-nationale.fr/$legislature/budget/plf$year/rapporteurs.asp");
 }
 
 foreach $baseurl (@urls) {
@@ -39,7 +40,7 @@ foreach $baseurl (@urls) {
     }
     next if $url =~ /(dossiers|i0562.asp)/i;
     next if $url =~ /\.pdf$/i;
-    next if !($url =~ /nale\.fr\/13\//);
+    next if !($url =~ /nale\.fr\/$legislature\//);
     next if $url =~ /app\.(eu\.)?readspeaker\.com/i;
     $ct++;
     $file = $url;
