@@ -13,7 +13,6 @@ def convertdate(s):
     return '-'.join((y, m, d))
 
 fn = sys.argv[1]
-url = 'http://questions.assemblee-nationale.fr/q13/13-%sQE.htm'
 
 fieldorder = (
     'source',
@@ -39,7 +38,8 @@ fieldorder = (
 )
 
 d = dict.fromkeys(fieldorder, '')
-d['legislature'] = '13'
+leg_reg = re.compile(r'^.*nationale.fr_q(\d+)_.*$')
+d['legislature'] = leg_reg.sub(r'\1', fn)
 d['type'] = 'QE'
 
 _clean_html_re = re.compile("<.*?>")
@@ -132,7 +132,8 @@ if d.get('date_reponse'):
     r = s.find(text=re.compile(u'^\s*Texte de la r\xe9ponse\s*$'))
     d['reponse'] = extracttext(r)
 
-d['source'] = url % d['numero']
+file_reg = re.compile(r'^.*/([^/]+)$')
+d['source'] = file_reg.sub(r'\1', fn).replace('_', '/')
 d['motif_retrait'] = d['motif_retrait'].lower()
 
 for k, v in d.iteritems():

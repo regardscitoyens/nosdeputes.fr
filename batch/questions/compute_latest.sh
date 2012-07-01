@@ -22,7 +22,7 @@ echo $sql_string | mysql $MYSQLID $DBNAME | grep -v source > liste_sans_reponse.
 rm -f html/*
 
 #log cette partie très verbeuse
-perl download_questions.pl > /tmp/download_questions.log
+perl download_questions.pl $LEGISLATURE > /tmp/download_questions.log
 
 for file in `grep -Lr "The page cannot be found" html/`; do
 	fileout=$(echo $file | sed 's/html/json/' | sed 's/\.htm/\.xml/')

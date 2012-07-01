@@ -3,6 +3,8 @@
 use Date::Format;
 use WWW::Mechanize;
 use HTML::TokeParser;
+
+$legislature = shift || 14;
 $count = 0;
 $count2 = 0;
 
@@ -11,7 +13,7 @@ open(FILE, 'dernier_numero.txt') ;
 $last_record = "@last_record";
 close FILE;
 
-$url = "http://recherche2.assemblee-nationale.fr/questions/resultats-questions.jsp?NumLegislature=13Questions&C1=QE&Dates=DPQ&Scope=TEXTEINTEGRAL&SortField=NUM&SortOrder=DESC&format=HTML";
+$url = "http://recherche2.assemblee-nationale.fr/questions/resultats-questions.jsp?NumLegislature=".$legislature."Questions&C1=QE&Dates=DPQ&Scope=TEXTEINTEGRAL&SortField=NUM&SortOrder=DESC&format=HTML";
 $a = WWW::Mechanize->new();
 $a->get($url);
 $content = $a->content;
@@ -26,7 +28,7 @@ while ($t = $p->get_tag('span')) {
 print "Download questions écrites numéro ".($last_record-100)." à ".($last_number+100).'\n\n';
 
 for ($cpt = $last_record-100 ; $cpt < $last_number+100 ; $cpt++) {
-    $htmfile = "http://questions.assemblee-nationale.fr/q13/13-".$cpt."QE.htm";
+    $htmfile = "http://questions.assemblee-nationale.fr/q".$legislature."/".$legislature."-".$cpt."QE.htm";
     $htmfile =~ s/^\s+//gi;
     $count++;
     $a->get($htmfile);

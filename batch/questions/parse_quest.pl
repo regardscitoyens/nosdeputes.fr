@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+print "ce script est obsolète il permet de télécharger et parser toutes les questions de la 13ème legislature\n";
+exit;
+
 use WWW::Mechanize;
 use HTML::TokeParser;
 $dont_parse = shift || 0;

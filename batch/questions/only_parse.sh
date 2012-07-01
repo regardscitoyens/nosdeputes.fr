@@ -1,4 +1,6 @@
 #!/bin/bash
+echo "ce script est obsolète il permet de parser toutes les questions de la 13ème législature\n";
+exit;
 
 for file in wget/* ; do
     echo " - "$file;
