@@ -101,7 +101,7 @@ foreach $line (split /\n/, $string) {
     $depute{'groupe'}{$gpe} = 1;
   } elsif ($line =~ /img [^>]*class="deputy-profile-picture[^>]* src="([^"]+)"/i) {
     $depute{'photo'} = "http://www.assemblee-nationale.fr$1";
-  } elsif ($line =~ /mailto:([^'"]+)['"]/i) {
+  } elsif ($line =~ /mailto:([^'"]+@[^'"]+)['"]/i) {
     $depute{'mails'}{$1} = 1;
   } elsif ($line =~ /<a [^>]*href=['"]([^"']+)['"].*_blank/i) {
     $depute{'sites_web'}{$1} = 1;
