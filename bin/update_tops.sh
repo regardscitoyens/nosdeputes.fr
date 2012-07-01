@@ -1,12 +1,14 @@
 #!/bin/bash
 
-cd /home/nosdeputes/prod
+. $(echo $0 | sed 's/[^\/]*$//')db.inc
+cd $PATH_APP
+start=$(($LEGISLATURE * 5 + 1937))
 
 php symfony top:Deputes
 for month in 06 07 08 09 10 11 12; do
-  php symfony top:Deputes 2007-$month-01
+  php symfony top:Deputes $start-$month-01
 done
-for year in 2008 2009 2010 2011 2012; do
+for year in `seq $(($start + 1)) $(($start + 4))`; do
   if test $year -gt `date +%Y`; then
     break
   fi
@@ -19,5 +21,4 @@ for year in 2008 2009 2010 2011 2012; do
     php symfony top:Deputes $year-$month-01
   done
 done
-
 
