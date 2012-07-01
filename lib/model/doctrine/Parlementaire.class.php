@@ -349,7 +349,7 @@ class Parlementaire extends BaseParlementaire
      "Réunion" => "de la",
      "Rhône" => "du",
      "Saint-Pierre-et-Miquelon" => "de",
-     "Saint-Barthélémy et Saint-Martin" => "de",
+     "Saint-Barthelemy et Saint-Martin" => "de",
      "Saône-et-Loire" => "de",
      "Sarthe" => "de la",
      "Savoie" => "de",
@@ -480,11 +480,12 @@ class Parlementaire extends BaseParlementaire
       "974" => "Réunion",
       "975" => "Saint-Pierre-et-Miquelon",
       "976" => "Mayotte",
-      "977" => "Saint-Barthélémy et Saint-Martin",
+      "977" => "Saint-Barthélemy et Saint-Martin",
       "986" => "Wallis-et-Futuna",
       "987" => "Polynésie Française",
       "988" => "Nouvelle-Calédonie",
-      "99"  => "Français établis hors de France");
+      "99"  => "Français établis hors de France",
+      "999"  => "Français établis hors de France");
   public static function getNomDepartement($numero) {
     $numero = strtolower($numero);
     if ( isset(self::$dptmt_nom["$numero"]) ) return $nom = self::$dptmt_nom["$numero"];
@@ -522,8 +523,8 @@ class Parlementaire extends BaseParlementaire
       "eure" => "27",
       "eure-et-loir" => "28",
       "finistère" => "29",
-      "français établis hors de france" => "99",
-      "français-établis-hors-de-france" => "99",
+      "français établis hors de france" => "999",
+      "français-établis-hors-de-france" => "999",
       "gard" => "30",
       "haute-garonne" => "31",
       "gers" => "32",
@@ -596,7 +597,8 @@ class Parlementaire extends BaseParlementaire
       "réunion" => "974",
       "saint-pierre-et-miquelon" => "975",
       "mayotte" => "976",
-      "saint-barthélémy-et-saint-martin" => "977",
+      "saint-barthélemy et saint-martin" => "977",
+      "saint-barthélemy-et-saint-martin" => "977",
       "wallis-et-futuna" => "986",
       "polynésie française" => "987",
       "polynésie-française" => "987",
@@ -697,7 +699,7 @@ class Parlementaire extends BaseParlementaire
   public function setPhoto($s) {
     if (preg_match('/http/', $s)) {
       $len = strlen($this->getInternalPhoto());
-      if ($len < 5200 || date('d') % 8 == 5) {
+      if ($len < 5200 || date('d') % 3 == 0) {
 	$s = file_get_contents($s);
       }else
 	return true;
