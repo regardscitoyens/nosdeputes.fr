@@ -4570,7 +4570,7 @@
        sodipodi:rx="28.813559"
        sodipodi:cy="573.72882"
        sodipodi:cx="105.08475"
-       id="999-01"
+       id="temp999-01"
        sodipodi:type="arc">
       <title
          id="te01">Première circonscription des français de l'étranger</title>
@@ -4585,7 +4585,7 @@
        sodipodi:rx="28.813559"
        sodipodi:cy="573.72882"
        sodipodi:cx="105.08475"
-       id="999-02"
+       id="temp999-02"
        sodipodi:type="arc">
       <title
          id="te02">Deuxième circonscription des français de l'étranger</title>
@@ -4595,7 +4595,7 @@
     <path
        class="circo"
        sodipodi:type="arc"
-       id="999-03"
+       id="temp999-03"
        sodipodi:cx="105.08475"
        sodipodi:cy="573.72882"
        sodipodi:rx="28.813559"
@@ -4615,7 +4615,7 @@
        sodipodi:rx="28.813559"
        sodipodi:cy="573.72882"
        sodipodi:cx="105.08475"
-       id="999-04"
+       id="temp999-04"
        sodipodi:type="arc">
       <title
          id="te04">Quatrième circonscription des français de l'étranger</title>
@@ -4625,7 +4625,7 @@
     <path
        class="circo"
        sodipodi:type="arc"
-       id="999-05"
+       id="temp999-05"
        sodipodi:cx="105.08475"
        sodipodi:cy="573.72882"
        sodipodi:rx="28.813559"
@@ -4640,7 +4640,7 @@
     <path
        class="circo"
        sodipodi:type="arc"
-       id="999-06"
+       id="temp999-06"
        sodipodi:cx="105.08475"
        sodipodi:cy="573.72882"
        sodipodi:rx="28.813559"
@@ -4660,7 +4660,7 @@
        sodipodi:rx="28.813559"
        sodipodi:cy="573.72882"
        sodipodi:cx="105.08475"
-       id="999-07"
+       id="temp999-07"
        sodipodi:type="arc">
       <title
          id="te07">Septième circonscription des français de l'étranger</title>
@@ -4670,7 +4670,7 @@
     <path
        class="circo"
        sodipodi:type="arc"
-       id="999-08"
+       id="temp999-08"
        sodipodi:cx="105.08475"
        sodipodi:cy="573.72882"
        sodipodi:rx="28.813559"
@@ -4690,7 +4690,7 @@
        sodipodi:rx="28.813559"
        sodipodi:cy="573.72882"
        sodipodi:cx="105.08475"
-       id="999-09"
+       id="temp999-09"
        sodipodi:type="arc">
       <title
          id="te09">Neuvième circonscription des français de l'étranger</title>
@@ -4705,7 +4705,7 @@
        sodipodi:rx="28.813559"
        sodipodi:cy="573.72882"
        sodipodi:cx="105.08475"
-       id="999-10"
+       id="temp999-10"
        sodipodi:type="arc">
       <title
          id="te10">Dixième circonscription des français de l'étranger</title>
@@ -4715,7 +4715,7 @@
     <path
        class="circo"
        sodipodi:type="arc"
-       id="999-11"
+       id="temp999-11"
        sodipodi:cx="105.08475"
        sodipodi:cy="573.72882"
        sodipodi:rx="28.813559"
