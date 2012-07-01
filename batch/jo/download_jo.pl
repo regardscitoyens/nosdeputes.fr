@@ -25,11 +25,12 @@ $agent->get($url_html);
 
 $doc = $agent->{content};
 $doc =~ s/\n/ /g;
-if ($doc !~ /class="rubrique_02">Assembl&eacute;e nationale<\/p>(.*)(COMMISSIONS|S&eacute;nat)/) {
+if ($doc !~ /class="rubrique_02">Assembl&eacute;e nationale<\/p>(.*)COMMISSIONS/ || ($doc =~ /S&eacute;nat/ && $doc !~ /COMMISSIONS.*S&eacute;nat/)) {
     exit 1;
 }
 
-$doc = $1;
+$doc =~ s/^.*class="rubrique_02">Assembl&eacute;e nationale<\/p>//;
+$doc =~ s/class="rubrique_02">S&eacute;nat.*$//;
 if ($doc =~ /(.*)COMMISSIONS/) {
     $doc = $1;
 }
