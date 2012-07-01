@@ -1,4 +1,6 @@
 #!/bin/bash
+. $(echo $0 | sed 's/[^\/]*$//')db.inc
+cd $PATH_APP
 source bin/db.inc
 cd batch/depute
 perl download_deputes.pl $LEGISLATURE
