@@ -27,7 +27,8 @@ while ($t = $p->get_tag('span')) {
 
 print "Download questions écrites numéro ".($last_record-100)." à ".($last_number+100).'\n\n';
 
-for ($cpt = $last_record-100 ; $cpt < $last_number+100 ; $cpt++) {
+if ($last_record) {
+  for ($cpt = $last_record-100 ; $cpt < $last_number+100 ; $cpt++) {
     $htmfile = "http://questions.assemblee-nationale.fr/q".$legislature."/".$legislature."-".$cpt."QE.htm";
     $htmfile =~ s/^\s+//gi;
     $count++;
@@ -42,6 +43,7 @@ for ($cpt = $last_record-100 ; $cpt < $last_number+100 ; $cpt++) {
     close FILE;
     print "downloaded.\n";
     $a->back();
+  }
 }
 print $count." questions récentes\n\n";
 
