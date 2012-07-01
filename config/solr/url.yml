@@ -333,6 +333,16 @@ circo976:
   title: "Les députés de Mayotte (976)"
   image: "<img width='53' class='jstitle' title='Mayotte (976)' alt='Mayotte (976)' src='/circonscription/image/976/53/0'/>"
   weight: 10
+circo977:
+  url: "/circonscription/departement/Saint-Barthélemy_et_Saint-Martin"
+  title: "Les députés de Saint-Barthélemy_et_Saint-Martin (977)"
+  image: "<img width='53' class='jstitle' title='Saint-Barthélemy_et_Saint-Martin (977)' alt='Saint-Barthélemy_et_Saint-Martin (977)' src='/circonscription/image/977/53/0'/>"
+  weight: 10
+circo999:
+  url: "/circonscription/departement/Français_établis_hors_de_France"
+  title: "Les députés des Français établis hors de France (999)"
+  image: "<img width='53' class='jstitle' title='Français établis hors de France (999)' alt='Français établis hors de France (999)' src='/circonscription/image/999/53/0'/>"
+  weight: 10
 circo54:
   url: "/circonscription/departement/Meurthe-et-Moselle"
   title: "Les députés de Meurthe-et-Moselle (54)"
