@@ -4,13 +4,14 @@ use WWW::Mechanize;
 use HTML::TokeParser;
 
 $a = WWW::Mechanize->new();
+$legislature = shift || 14;
 $start = shift || '0';
 $count = 50;
 $ok = 1;
 while ($ok) {
     $ok = 0;
     last if ($start > 300);
-    $a->get('http://recherche2.assemblee-nationale.fr/resultats_generique.jsp?texterecherche=*&typedoc=crreunions&auteurid=&legislatureNum=13&categoryid=&ResultCount='.$count.'&ResultStart='.$start);
+    $a->post("http://recherche2.assemblee-nationale.fr/resultats_dossiers2.jsp", ['titre' => 'Comptes rendus des réunions', 'text' => '*', 'typeres' => 'crreunions', 'legislature' => $legislature.'ème législature', 'ResultStart' => $start, 'ResultCount' => $count, 'ResultMaxDocs' => 500, 'database' => $legislature.'ComptesRendusReunions', 'fieldtext' => '', 'database' => $legislature.'ComptesRendusReunionsDeleg']);
     $content = $a->content;
     $p = HTML::TokeParser->new(\$content);
     while ($t = $p->get_tag('a')) {
@@ -42,15 +43,18 @@ $a = WWW::Mechanize->new(autocheck => 0);
 $lastyear = localtime(time);
 $lastyear =~ s/^.*\s(\d{4})$/$1/;
 $lastyear++;
-for $year (2007 .. $lastyear) {
+$startyear = $legislature * 5 + 1942;
+for $year ($startyear .. $lastyear) {
   $session = sprintf('%02d-%02d', $year-2001, $year-2000);
-  push(@url, "http://www.assemblee-nationale.fr/13/budget/plf$year/commissions_elargies/cr/");
-  push(@url, "http://www.assemblee-nationale.fr/13/cr-mec/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/budget/plf$year/commissions_elargies/cr/");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-mec/$session/index.asp");
 }
-push(@url, "http://www.assemblee-nationale.fr/13/cr-micompetitivite/10-11/index.asp");
-push(@url, "http://www.assemblee-nationale.fr/13/cr-micompetitivite/11-12/index.asp");
-push(@url, "http://www.assemblee-nationale.fr/13/cr-mitoxicomanie/10-11/index.asp");
-push(@url, "http://www.assemblee-nationale.fr/13/cr-cegrippea/09-10/");
+if ($legislature == 13) {
+  push(@url, "http://www.assemblee-nationale.fr/13/cr-micompetitivite/10-11/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/13/cr-micompetitivite/11-12/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/13/cr-mitoxicomanie/10-11/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/13/cr-cegrippea/09-10/");
+}
 
 $a = WWW::Mechanize->new();
 
