@@ -87,7 +87,7 @@ class circonscriptionActions extends sfActions
           E_USER_ERROR);
       return NULL;
     }
-    $points =  preg_split("/[\sCMLz]+/",$data, -1, PREG_SPLIT_NO_EMPTY);
+    $points = preg_split("/[\sCMLz]+/",$data, -1, PREG_SPLIT_NO_EMPTY);
     foreach($points as $k => $p) {
       $xy = preg_split("/,/", $p);
       if (count($xy) != 2) {
@@ -114,7 +114,7 @@ class circonscriptionActions extends sfActions
           E_USER_ERROR);
       return NULL;
     }
-    $points =  preg_split("/[\sCMLz]+/",$data, -1, PREG_SPLIT_NO_EMPTY);
+    $points = preg_split("/[\sCMLz]+/",$data, -1, PREG_SPLIT_NO_EMPTY);
     foreach($points as $k => $p) {
       $xy = preg_split("/,/", $p);
       if (count($xy) != 2) {
@@ -186,7 +186,7 @@ class circonscriptionActions extends sfActions
           $href = url_for("@redirect_parlementaires_circo?code=".$path->getAttribute('id'));
         }
         $ct = 0;
-        foreach (split(" z ", $path->getAttribute('d')) as $d) {
+        foreach (preg_split("/ z /", $path->getAttribute('d')) as $d) {
           if (!preg_match('/ z$/', $d)) $d .= " z";
           $points = self::convert_path($d, $cs, $ratio_w, $ratio_h);
           $areas .= "<area id=\"map$id-$ct\" href=\"".$href."\" class=\"map$id nothover jstitle\" title=\"".str_replace('&mdash;', '--', $title)."\" alt=\"".$title."\" "."shape=\"poly\" coords=\"".$points."\" />\n";
