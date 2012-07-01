@@ -8,6 +8,12 @@ prod:
   mailer:
     param:
       delivery_strategy: realtime
+  view_cache:
+    class: sfMemcacheCache
+    param:
+      host: localhost
+      port: 11211
+      persistent: true
 
 cli:
   controller:
