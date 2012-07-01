@@ -2,7 +2,7 @@
 
 . $(echo $0 | sed 's/[^\/]*$//')db.inc
 cd $PATH_APP
-start=$(($LEGISLATURE * 5 + 1937))
+start=$(($LEGISLATURE * 5 + 1942))
 
 php symfony top:Deputes
 for month in 06 07 08 09 10 11 12; do
