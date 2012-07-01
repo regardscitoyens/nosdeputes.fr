@@ -49,6 +49,14 @@ class loadJOTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
+            if (!$jo->reunion || strtotime($jo->reunion) < strtotime(myTools::getDebutLegislature())) {
+              if (!$jo->reunion) {
+                echo "ERROR date : ";
+                echo $line;
+                echo "\n";
+              }
+              continue;
+            }
 	    $depute = Doctrine::getTable('Parlementaire')->findOneByNom($jo->depute);
 	    if ($jo->depute && !$depute) {
 	      $depute = Doctrine::getTable('Parlementaire')->similarTo($jo->depute);
@@ -63,18 +71,6 @@ class loadJOTask extends sfBaseTask
 	    if (isset($jo->typeorganisme))
 	      $typeorganisme = $jo->typeorganisme;
 	    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($jo->commission, $typeorganisme);
-	    if (!$jo->reunion || strtotime($jo->reunion) < strtotime(myTools::getDebutLegislature())) {
-	      $depute->clearRelated();
-	      $depute->free();
-	      $commission->clearRelated();
-	      $commission->free();
-	      if (!$jo->reunion) {
-		echo "ERROR date : ";
-	        echo $line;
-	        echo "\n";
-              }
-	      continue;
-	    }
 	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->reunion, $jo->session);
 	    $seance->addPresence($depute, $typesource, $jo->source);
 	    $seance->free();
