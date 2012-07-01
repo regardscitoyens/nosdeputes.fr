@@ -1,5 +1,8 @@
 #!/usr/bin/perl
 
+print "ce script est obsolète il permet de télécharger et parser tous les amendements de 2007 à 2009\n";
+exit;
+
 use WWW::Mechanize;
 use HTML::TokeParser;
 $total_amdmts = 0;

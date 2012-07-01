@@ -9,9 +9,9 @@ echo 'SELECT source FROM amendement WHERE sort LIKE "Ind%" AND date > DATE_SUB(C
 
 rm -f html/*
 
-perl download_amendements.pl > /tmp/download_amendements.log
+perl download_amendements.pl $LEGISLATURE > /tmp/download_amendements.log
 
-for file in html/*; do 
+for file in `ls html`; do 
 	fileout=$(echo $file | sed 's/html/json/' | sed 's/\.asp/\.xml/')
 	perl cut_amdmt.pl $file > $fileout
 done;
