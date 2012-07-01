@@ -349,7 +349,7 @@ class Parlementaire extends BaseParlementaire
      "Réunion" => "de la",
      "Rhône" => "du",
      "Saint-Pierre-et-Miquelon" => "de",
-     "Saint-Barthelemy et Saint-Martin" => "de",
+     "Saint-Barthélemy et Saint-Martin" => "de",
      "Saône-et-Loire" => "de",
      "Sarthe" => "de la",
      "Savoie" => "de",
