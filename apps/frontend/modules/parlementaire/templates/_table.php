@@ -51,9 +51,7 @@ foreach($deputes as $depute) {
       <?php echo preg_replace('/\s([A-Z]+)$/', ' <a href="'.$url_depute.'"><span class="c_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
     </span>
     <span class="list_right"><?php
-      if (!$depute->nb_commentaires)
-        echo "0&nbsp;commentaire";
-      else {
+      if ($depute->nb_commentaires) {
         echo '<a href="'.$url_depute.'"><span class="list_com">'.$depute->nb_commentaires.'&nbsp;commentaire';
         if ($depute->nb_commentaires > 1) echo 's';
         echo '</span></a>';
