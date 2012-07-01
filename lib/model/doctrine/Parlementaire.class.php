@@ -466,7 +466,8 @@ class Parlementaire extends BaseParlementaire
       "986" => "Wallis-et-Futuna",
       "987" => "Polynésie française",
       "988" => "Nouvelle-Calédonie",
-      "99"  => "Français établis hors de France");
+      "99"  => "Français établis hors de France",
+      "999"  => "Français établis hors de France");
 
   public static function getNomDepartement($numero) {
     $numero = strtolower($numero);
@@ -582,7 +583,7 @@ class Parlementaire extends BaseParlementaire
       "wallis-et-futuna" => "986",
       "polynésie-française" => "987",
       "nouvelle-calédonie" => "988",
-      "français-établis-hors-de-france" => "99");
+      "français-établis-hors-de-france" => "999");
 
   public static function getNumeroDepartement($nom) {
     $nom = strtolower($nom);
