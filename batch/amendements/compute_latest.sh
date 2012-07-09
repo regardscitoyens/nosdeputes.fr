@@ -13,6 +13,6 @@ perl download_amendements.pl $LEGISLATURE > /tmp/download_amendements.log
 
 for file in `ls html`; do 
 	fileout=$(echo $file | sed 's/html/json/' | sed 's/\.asp/\.xml/')
-	perl cut_amdmt.pl $file > $fileout
+	perl cut_amdmt.pl html/$file > json/$fileout
 done;
 

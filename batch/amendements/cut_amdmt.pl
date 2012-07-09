@@ -330,7 +330,7 @@ $amdmt{'auteurs'} =~ s/ et(\W)/\1/g;
 $amdmt{'auteurs'} =~ s/([^,\s])\s*(les\s*membres.*groupe.*)$/\1, \2/i;
 
 if (!$amdmt{'date'}) {
-  $time = stat($file)->mtime;
+  $time = (stat $file)[9];
   $amdmt{'date'} = time2str("%Y-%m-%d", $time);
 }
 if (!$amdmt{'sort'} && $amdmt{'texte'} =~ /amendement irrecevable/i) {
