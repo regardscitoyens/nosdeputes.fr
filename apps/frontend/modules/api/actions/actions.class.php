@@ -136,7 +136,7 @@ class apiActions extends sfActions
 
   protected static function array2hash($array, $hashname) {
     if (!$array)
-      return '';
+      return array();
     $hash = array();
     if (!isset($array[0])) {
       if (isset($array->fonction))
