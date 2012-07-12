@@ -206,7 +206,7 @@ foreach $line (split /\n/, $string)
 	    numero();
 	}
     } elsif ($line =~ /date_?amend.*([0-9]+e?r? \S+ [0-9]+)\D/i && !$amdmt{'date'}) {
-           $amdmt{'date'} = join '/', reverse datize($1);
+           $amdmt{'date'} = join '-', datize($1);
     } elsif ($line =~ /class="amddispotitre"/i && !$amdmt{'sujet'}) {
             $line =~ s/<[^>]+>//g;
             $amdmt{'sujet'} = $line;
