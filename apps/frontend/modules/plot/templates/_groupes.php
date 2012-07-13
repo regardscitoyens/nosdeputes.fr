@@ -129,10 +129,10 @@ if ($plot == 'total') {
 }
 $Test->xsRender($filename);
 if ($plot == 'total')
-  echo link_to(image_tag('tmp/xspchart/'.$filename, array('alt'=>"Répartition ".$titre, 'style'=>'width: '.$xsize.'px; height: '.$ysize.'px;')), '@top_global');
+  echo link_to(image_tag('tmp/xspchart/'.$filename, array('alt'=>"Répartition ".$titre, 'style'=>'height: '.$ysize.'px;')), '@top_global');
  else if (preg_match('/com/', $plot) && !isset($nolink))
-   echo link_to(image_tag('tmp/xspchart/'.$filename, array('alt'=>"Répartition ".$titre, 'style'=>'width: '.$xsize.'px; height: '.$ysize.'px;')), '@presents_seance?seance='.$seance);
- else echo image_tag('tmp/xspchart/'.$filename, array('alt'=>'Répartition '.$titre, 'style'=>'width: '.$xsize.'px; height: '.$ysize.'px;'));
+   echo link_to(image_tag('tmp/xspchart/'.$filename, array('alt'=>"Répartition ".$titre, 'style'=>'height: '.$ysize.'px;')), '@presents_seance?seance='.$seance);
+ else echo image_tag('tmp/xspchart/'.$filename, array('alt'=>'Répartition '.$titre, 'style'=>'height: '.$ysize.'px;'));
 
 echo include_partial('plot/groupesLegende', array());
 ?>
