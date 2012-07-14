@@ -327,7 +327,14 @@ $amdmt{'auteurs'} =~ s/^\s*,\s*//g;
 $amdmt{'auteurs'} =~ s/\s*,\s*$//g;
 $amdmt{'auteurs'} =~ s/ et(M[mle\.\s])/, \1/g;
 $amdmt{'auteurs'} =~ s/ et(\W)/\1/g;
-$amdmt{'auteurs'} =~ s/([^,\s])\s*(les\s*membres.*groupe.*)$/\1, \2/i;
+if ($amdmt{'auteurs'} =~ /^(.*)[,\s]+(le(s\s*membres\s*du)?.*groupe.*)$/) {
+  $amdmt{'auteurs'} = $1;
+  $gpe = $2;
+  $amdmt{'auteurs'} =~ s/[,\s]+$//;
+  $gpe =~ s/\s*,\s*/ /g;
+  $gpe =~ s/\s+/ /g;
+  $amdmt{'auteurs'} .= ", ".$gpe
+}
 
 if (!$amdmt{'date'}) {
   $time = (stat $file)[9];
