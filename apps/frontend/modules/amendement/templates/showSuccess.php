@@ -59,7 +59,7 @@
   echo myTools::escape_blanks($texte); ?>
 </div>
 <?php if (isset($amendement->expose)) { ?>
-  <h3>Exposé Sommaire :</h3>
+  <h3>Exposé sommaire :</h3>
   <div class="expose_amendement">
     <?php echo myTools::escape_blanks($amendement->getExpose()); ?>
   </div>
@@ -74,7 +74,7 @@ echo include_component('commentaire', 'form', array('object' => $amendement)); ?
 $('#liste_deputes a').live('mouseover', function() {
  nom = $(this).attr('href');
  nom = nom.replace(/^.*rechercher\/([A-ZÉ][\.\s]+)*/, '');
- $('.photo_fiche[alt*="'+nom+'"]').css('opacity', '1');
+ $('.photo_fiche[title*="'+nom+'"]').css('opacity', '1');
 });
 $('#liste_deputes').bind('mouseover mouseout', function(event) {
  if (event.type == "mouseover") { $('.photo_fiche').css('opacity', '0.3'); $("#liste_deputes").die("mouseover"); }
