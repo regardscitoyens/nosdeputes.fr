@@ -11,18 +11,19 @@ class tagSeanceTask extends sfBaseTask
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
-  protected function count($array, $excludeS = 0) {
+  protected function count($array, $excludeS = 0, $minsize = 1) {
     foreach($array as $i) {
       $i = preg_replace('/\([^\)]+\)/', '', $i);
       $i = preg_replace('/&#339;/', 'oe', $i['intervention']);
       foreach(preg_split('/[\s\,\;\.\:\_\(\)\&\#\<\>\']+/i', $i) as $w) {
 	if (!preg_match('/^[A-Z]+$/', $w))
 	  $w = strtolower($w);
-	if (strlen($w)>1 && preg_match('/[a-z]/i', $w)) {
+	if (strlen($w)>$minsize && preg_match('/[a-z]/i', $w)) {
 	  //	  $s = soundex($w);
 	  $s = $w;
+	  if (!isset($words[$s])) $words[$s] = 0;
 	  $words[$s]++;
-	  if (!$this->sound[$s])
+	  if (!isset($this->sound[$s]))
 	    $this->sound[$s] = $w;
 	}
       }
@@ -30,7 +31,7 @@ class tagSeanceTask extends sfBaseTask
     foreach(array_keys($words) as $k) {
       if (preg_match('/s$/', $k)) {
 	$ks = preg_replace('/s$/', '', $k);
-	if ($words[$ks]) {
+	if (isset($words[$ks])) {
 	  $words[$ks]+=$words[$k];
 	  if ($excludeS)
 	    unset($words[$k]);
@@ -49,9 +50,16 @@ class tagSeanceTask extends sfBaseTask
     $q = Doctrine_Query::create();
     $q->select('intervention')->from('Intervention i')->where('i.parlementaire_id IS NOT NULL');
     echo "count:\n\t";
-    echo $q->count()."\n";
+    $totinters = $q->count();
+    echo $totinters."\n";
+    $minsize = 1;
+    $exclmin = 3;
+    if ($totinters < 20000) {
+      $minsize = 5;
+      $exclmin = 0.2;
+    }
     $array = $q->fetchArray();
-    $words = $this->count($array);
+    $words = $this->count($array, 0, $minsize);
     $cpt = 0;
     $tot = count($words);
 
@@ -60,17 +68,17 @@ class tagSeanceTask extends sfBaseTask
     $exclude_sentences = array('garde des sceaux'=>1, 'haut-commissaire' => 1, 'monsieur' => 1, 'madame'=>1);
 
     foreach(array_keys($words) as $k) {
-      if (!$include[$k])
+      if (!isset($include[$k]))
         $exclude[$k] = 1;
       echo $k.': '.$words[$k]*100/$tot."\n";
-      if ($words[$k]*100/$tot < 3)
+      if ($words[$k]*100/$tot < $exclmin)
         break;
     }
     unset($words);
     $q = Doctrine_Query::create();
     $q->select('nom as intervention')->from('Parlementaire o');
     $array = $q->fetchArray();
-    $words = $this->count($array);
+    $words = $this->count($array, 0, $minsize);
     foreach(array_keys($words) as $k) {
       $exclude[$k] = 1;
     }
@@ -90,13 +98,13 @@ class tagSeanceTask extends sfBaseTask
 	echo " pas d'intervention trouvée\n";
         continue;
       }
-      $words = $this->count($array, 1);
+      $words = $this->count($array, 1, $minsize);
       $cpt = 0;
       $tot = count($words);
       $tags = array();
       //Pour les mots le plus populaires non exclus on les gardes
       foreach(array_keys($words) as $k) {
-        if (!$exclude[$k]) {
+        if (!isset($exclude[$k])) {
           $cpt++;
           $pc = $words[$k]*100/$tot;
           if ($pc < 0.8)
@@ -113,11 +121,13 @@ class tagSeanceTask extends sfBaseTask
         foreach (array_keys($tags) as $tag) {
           if (preg_match('/([^\s\,\.\:\>\;\(\)]*[^\,\.\:\>\;\(\)]{6}'.$tag.'[^\s\,\.\:\<\&\(\)]*)/i', $inter['intervention'], $match)) {
             $sent = strtolower($match[1]);
+            if (!isset($sentences[$sent])) $sentences[$sent] = 0;
             $sentences[$sent]++;
             $sent2word[$sent] = $tag;
           }
           if (preg_match('/([^\s\,\.\:\>\;\)\)]*'.$tag.'[^\,\.\:\<\&\(\)]{6}[^\s\,\.\:\<\&\(\)]*)/i', $inter['intervention'], $match)) {
             $sent = strtolower($match[1]);
+            if (!isset($sentences[$sent])) $sentences[$sent] = 0;
             $sentences[$sent]++;
             $sent2word[$sent] = $tag;
           }
