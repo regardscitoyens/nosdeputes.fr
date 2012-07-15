@@ -113,7 +113,9 @@ class myTools {
 
   public static function displayDateMoisAnnee($date) {
     if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $date, $match)) {
-      return self::$num_mois[$match[2]].' '.$match[1];
+      if($match[2] != '00') {
+        return self::$num_mois[$match[2]].' '.$match[1];
+      } else return $date;
     } else return $date;
   }
 
