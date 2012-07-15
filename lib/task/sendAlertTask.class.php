@@ -21,7 +21,7 @@ class sendAlertTask extends sfBaseTask
     $this->configuration->loadHelpers(array('Partial', 'Url'));
     
     $solr = new SolrConnector();
-    $query = Doctrine::getTable('Alerte')->createQuery('a')->where('next_mail < NOW()')->andWhere('confirmed = 1');
+    $query = Doctrine::getTable('Alerte')->createQuery('a')->where('next_mail < NOW() OR next_mail IS NULL')->andWhere('confirmed = 1');
     foreach($query->execute() as $alerte) if (preg_match("/\w@\w/", $alerte->email)) {
       $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")+1;
       $query = '('.$alerte->query.") date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d').'T'.date('H:i:s')."Z]";
