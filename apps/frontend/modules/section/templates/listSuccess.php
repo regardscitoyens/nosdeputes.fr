@@ -39,3 +39,16 @@ foreach($sections as $s) if ($s->titre) {
 }
 if ($order == 'date') echo '</ul>'; ?>
 </ul></div>
+<script type="text/javascript">
+
+$('.travaux_parlementaires h2:first').append('<input type="text" id="js_search_box" />');
+
+$('#js_search_box').live('keyup', function(){
+  to_search = $(this).val();
+  if(to_search != '') {
+    $('.travaux_parlementaires li').css('display', 'none');
+    $(".travaux_parlementaires li:Contains("+to_search+")").css("display", "inherit");
+  }
+  else { $('.travaux_parlementaires li').css('display', 'inherit'); }
+});
+</script>

@@ -8,52 +8,52 @@ $(document).ready(function() {
     if (!$('#header_pass').attr('value')) {
       $('#header_pass').attr('value', '______________');
     }
-    
-	// Menu
-	$(".menu_navigation a").mouseover(function() {
-	  $(".menu_navigation a").removeClass("selected");
-	  for (i=1; i<=3; i++) { $('#sous_menu_'+i).css("display", "none"); }
-	  if ($(this).parent().attr("id") == "item2") { $(this).attr("class", "selected"); $('#sous_menu_1').css("display", "block"); }
-	  if ($(this).parent().attr("id") == "item3") { $(this).attr("class", "selected"); $('#sous_menu_2').css("display", "block"); }
-	  if ($(this).parent().attr("id") == "item4") { $(this).attr("class", "selected"); $('#sous_menu_3').css("display", "block"); }
-	});
-		
-	// Effet survol tagcloud
-	$(".internal_tag_cloud").prepend("<div id=\"loupe\"></div>");
-	
-	$(".internal_tag_cloud a").each(
-	  function() { 
-	    $(this).attr("alt", $(this).attr('title'));
-	    $(this).removeAttr('title');
-	    $(this).mouseover(function() { 
-	      $("#loupe").text($(this).text()+" ("+$(this).attr("alt")+")");
-	      $("#loupe").css("display", "block");
-	    });
-	  }
-	);
-	$(".internal_tag_cloud").mousemove(function(e) {
-	  milieu = $("#loupe").width() / 2;
-	  $("#loupe").css({left: e.clientX - milieu, top: e.clientY + 20});
-	});
-	
-	$(".internal_tag_cloud").mouseout(function() {
-	  $("#loupe").css("display", "none");
-	});
 
-	$("input.examplevalue").focus(function() {
-		if (!$(this).attr('default')) {
-		    $(this).attr('default', $(this).val());
-		}
-		if ($(this).attr('default') == $(this).val())
-		    $(this).val('');
-	});
-	$("input.examplevalue").blur(function() {
-		if (!$(this).val()) {
-		    $(this).val($(this).attr('default'));
-		}
-	});
+  // Menu
+  $(".menu_navigation a").mouseover(function() {
+    $(".menu_navigation a").removeClass("selected");
+    for (i=1; i<=3; i++) { $('#sous_menu_'+i).css("display", "none"); }
+    if ($(this).parent().attr("id") == "item2") { $(this).attr("class", "selected"); $('#sous_menu_1').css("display", "block"); }
+    if ($(this).parent().attr("id") == "item3") { $(this).attr("class", "selected"); $('#sous_menu_2').css("display", "block"); }
+    if ($(this).parent().attr("id") == "item4") { $(this).attr("class", "selected"); $('#sous_menu_3').css("display", "block"); }
+  });
 
-	$('.jstitle').mousemove(function(e) {
+  // Effet survol tagcloud
+  $(".internal_tag_cloud").prepend("<div id=\"loupe\"></div>");
+
+  $(".internal_tag_cloud a").each(
+    function() {
+      $(this).attr("alt", $(this).attr('title'));
+      $(this).removeAttr('title');
+      $(this).mouseover(function() {
+        $("#loupe").text($(this).text()+" ("+$(this).attr("alt")+")");
+        $("#loupe").css("display", "block");
+      });
+    }
+  );
+  $(".internal_tag_cloud").mousemove(function(e) {
+    milieu = $("#loupe").width() / 2;
+    $("#loupe").css({left: e.clientX - milieu, top: e.clientY + 20});
+  });
+
+  $(".internal_tag_cloud").mouseout(function() {
+    $("#loupe").css("display", "none");
+  });
+
+  $("input.examplevalue").focus(function() {
+    if (!$(this).attr('default')) {
+        $(this).attr('default', $(this).val());
+    }
+    if ($(this).attr('default') == $(this).val())
+        $(this).val('');
+  });
+  $("input.examplevalue").blur(function() {
+    if (!$(this).val()) {
+        $(this).val($(this).attr('default'));
+    }
+  });
+
+  $('.jstitle').mousemove(function(e) {
     if ($('#jstitle').length == 0) {
       $('body').append('<div id="jstitle" style="text-align: center; display: none; position: absolute; z-index: 888; border: 1px solid black;padding: 5px;"></div>')
     }
@@ -90,14 +90,19 @@ $(document).ready(function() {
 
 function uniqueArray(array) {
   if ($.isArray(array)){
-	var duplique = {}; var len, i;
-	for (i = 0, len = array.length; i < len; i++){
-	  var test = array[i].toString();
-	  if (duplique[test]) { array.splice(i,1); len--; i--; } else { duplique[test] = true; }
+  var duplique = {}; var len, i;
+  for (i = 0, len = array.length; i < len; i++){
+    var test = array[i].toString();
+    if (duplique[test]) { array.splice(i,1); len--; i--; } else { duplique[test] = true; }
     }
   }
   else {
-	alert(array+" n'est pas un array");
+  alert(array+" n'est pas un array");
   }
   return(array);
 }
+
+// Recherche "case insensitive" pour jquery ; ex: $("div:Contains("str")")
+jQuery.expr[':'].Contains = function(a, i, m) {
+  return jQuery(a).text().toUpperCase().indexOf(m[3].toUpperCase()) >= 0;
+};
