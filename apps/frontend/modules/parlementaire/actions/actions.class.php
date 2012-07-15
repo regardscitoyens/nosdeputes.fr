@@ -376,8 +376,10 @@ class parlementaireActions extends sfActions
     }
     $fin = myTools::isFinLegislature();
     if (!$fin)
-      $qp->andWhere('fin_mandat IS NULL')
-        ->andWhere('debut_mandat < ?', date('Y-m-d', time()-round(60*60*24*3650/12)));
+      $qp->andWhere('fin_mandat IS NULL');
+    $dixmois = time() - round(60*60*24*3650/12);
+    if ($dixmois > strtotime(myTools::getDebutLegislature()))
+      $qp->andWhere('debut_mandat < ?', date('Y-m-d', $dixmois));
     $qp->orderBy('nom_de_famille');
     $parlementaires = $qp->fetchArray();
     unset($qp);

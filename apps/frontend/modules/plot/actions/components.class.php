@@ -297,15 +297,22 @@ class plotComponents extends sfComponents
         $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme'];
         $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions_courtes']['somme'];
       } else $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme']+$stats[$groupe]['commission_interventions']['somme'];
+      $stats[$groupe]['amdmts'] = 0;
+      $stats[$groupe]['amdmts_adoptes'] = 0;
+      $stats[$groupe]['propositions'] = 0;
     }
     foreach ($amdmts as $amdt) if ($amdt['groupe_acronyme'] != "")
-      $this->data['groupes'][$amdt['groupe_acronyme']][] = $amdt['ct'];
+      $stats[$amdt['groupe_acronyme']]['amdmts'] = $amdt['ct'];
     if ($this->type === "all")
       foreach ($amdmts2 as $amdt) if ($amdt['groupe_acronyme'] != "")
-        $this->data['groupes'][$amdt['groupe_acronyme']][] = $amdt['ct'];
+        $stats[$amdt['groupe_acronyme']]['amdmts_adoptes'] = $amdt['ct'];
     foreach ($props as $pro) if ($pro['groupe_acronyme'] != "")
-      $this->data['groupes'][$pro['groupe_acronyme']][] = $pro['ct'];
+      $stats[$pro['groupe_acronyme']]['propositions'] = $pro['ct'];
     foreach ($this->data['groupes'] as $groupe => $arr) if (isset($stats[$groupe])) {
+      $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts'];
+      if ($this->type === "all")
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_adoptes'];
+      $this->data['groupes'][$groupe][] = $stats[$groupe]['propositions'];
       $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_ecrites']['somme'];
       if ($this->type === "all")
         $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_orales']['somme'];
@@ -317,10 +324,8 @@ class plotComponents extends sfComponents
       for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i]))
         $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
     foreach ($this->data['groupes'] as $groupe => $arr)
-      for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i])) {
-        $tmp = round($this->data['groupes'][$groupe][$i]  / $this->data['totaux'][$i] * 1000)/10;
+      for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i]))
         $this->data['groupes'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
-      }
     for ($i=0;$i<$n;$i++)
       $this->data['totaux'][$i] = preg_replace('/(\d)(\d{3})$/', '\\1 \\2', $this->data['totaux'][$i]);
   }
