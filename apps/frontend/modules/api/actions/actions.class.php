@@ -78,13 +78,12 @@ class apiActions extends sfActions
   public function executeTopSynthese(sfWebRequest $request) {
     $format = $request->getParameter('format');
     $this->withBOM = $request->getParameter('withBOM');
-    if ($format == 'csv' && !$this->withBOM && preg_match('/windows/i', $_SERVER['HTTP_USER_AGENT']) && $_SERVER['HTTP_REFERER']) {
-      return $this->redirect('api/topSynthese?format=csv&withBOM=true');
-    }
     $qp = Doctrine::getTable('Parlementaire')->createQuery('p');
     $fin = myTools::isFinLegislature();
-    if (!$fin) $qp->andWhere('fin_mandat IS NULL')
-      ->andWhere('debut_mandat < ?', date('Y-m-d', time()-round(60*60*24*3650/12)));
+    if (!$fin) $qp->andWhere('fin_mandat IS NULL');
+    $dixmois = time() - round(60*60*24*3650/12);
+    if ($dixmois > strtotime(myTools::getDebutLegislature()))
+      $qp->andWhere('debut_mandat < ?', date('Y-m-d', $dixmois));
     $qp->orderBy('nom_de_famille');
     $parlementaires = $qp->execute();
     unset($qp);
