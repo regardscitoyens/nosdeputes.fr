@@ -47,7 +47,7 @@ foreach ($results['response']['docs'] as $res)
     $text = substr($text, strlen($citoyen)-4);
   echo "$text\n";
  }
-  echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', $res['object']->getLink())."\n\n";
+  echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', $res['object']->getLink())."\n\n";
 }
 
 ?>
@@ -55,18 +55,18 @@ foreach ($results['response']['docs'] as $res)
 <?php
 if (!isset($nohuman) || !nohuman) {
 echo "Visualiser cette alerte sur le site :\n";
-echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('@recherche_solr?sort=1&query='.$alerte->query))."\n";
+echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('@recherche_solr?sort=1&query='.$alerte->query))."\n";
 }
 ?>
 Pour éditer cette alerte :
 <?php 
-echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('alerte/edit?verif='.$alerte->getVerif()));
+echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/edit?verif='.$alerte->getVerif()));
 ?>
 
 Pour supprimer cette alerte :
-<?php echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('alerte/delete?verif='.$alerte->getVerif())); ?>
+<?php echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/delete?verif='.$alerte->getVerif())); ?>
 
 <?php if ($alerte->citoyen_id) : ?>
 L'interface vous permettant de gérer vos alertes :
-<?php echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('alerte/list')); ?>
+<?php echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/list')); ?>
 <?php endif; ?>
