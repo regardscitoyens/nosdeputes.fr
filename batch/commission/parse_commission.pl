@@ -294,6 +294,11 @@ foreach $line (split /\n/, $string)
             }
 	    $intervenant = setIntervenant($interv1.$extrainterv);
 	    $found = 1;
+	}elsif ($line =~ s/^\|([^\|,]+)[,\s]+([^\|]+)\|// ) {
+	    checkout();
+            $found = $majIntervenant = 1;
+	    setFonction($2, $1);
+	    $intervenant = setIntervenant($1);
 	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
 		$f = $1;
 		$i = $2;
