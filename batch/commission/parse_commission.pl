@@ -276,11 +276,12 @@ foreach $line (split /\n/, $string)
     if ($line =~ /\<[p]/i || ($line =~ /\<h[1-9]+ class="titre\d+/i && $line !~ /Commission/)) {
 	$found = 0;
 	$line =~ s/\s*\<\/?[^\>]+\>//g;
+	$line =~ s/^\s+//;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
 
 	#si italique ou tout gras => commentaire
-	if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/.*\/\s*$/) {
+	if ($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) {
 	    checkout() if ($intervenant);	    
 	    rapporteur();
 	    $found = 1;
@@ -294,7 +295,7 @@ foreach $line (split /\n/, $string)
             }
 	    $intervenant = setIntervenant($interv1.$extrainterv);
 	    $found = 1;
-	}elsif ($line =~ s/^\|([^\|,]+)[,\s]+([^\|]+)\|// ) {
+	}elsif ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// ) {
 	    checkout();
             $found = $majIntervenant = 1;
 	    setFonction($2, $1);
