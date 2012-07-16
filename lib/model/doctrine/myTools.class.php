@@ -1,29 +1,43 @@
 <?php
 class myTools {
 
-
-  public static function displayVCards($adresses, $mails) {
+  public static function displayContact($adresses, $emails = array()) {
     if (!$adresses) return;
+    $telephones = array();
     foreach (unserialize($adresses) as $adresse) {
-      if(trim($adresse) != '') {
-        preg_match('/^([^0-9]+)/', $adresse, $titre);
-        preg_match('/([0-9]{5})/', $adresse, $code_postal);
-        preg_match('/(([-. ]?[0-9]{2}){5})/', $adresse, $tel);
-        if(!isset($titre[0])) { $titre[0] = '###'; }
-        if(!isset($code_postal[0])) { $code_postal[0] = '###'; }
-        if(!isset($tel[0])) { $tel[0] = '###'; }
-        $replace = array(
-          $titre[0] => '<div class="fn org">'.$titre[0].'</div>',
-          $code_postal[0] => '<br /><span class="postal-code">'.$code_postal[0].'</span>',
-          'Téléphone :'.$tel[0] => '<br />Téléphone : <span class="tel"><a href="callto:'.preg_replace('/0/', '0033', preg_replace('/[^0-9]/', '', $tel[0]), 1).'">'.trim($tel[0]).'</a></span>',
-          'Télécopie' => '<br /><span class="tel"><span class="type">Fax</span>'
-        );
-        echo '<div class="vcard">';
-        echo strtr($adresse, $replace);
-        echo '</div>';
+      if(trim($adresse) != '' && strpos($adresse, 'Assemblée nationale') === false) {
+        $adresse = preg_replace('/Télécopie : ([-. ]?[0-9]{2}){5}/', '', $adresse);
+        $adresse = preg_replace('/Téléphone : /', '', $adresse);
+        preg_match('/(([-. ]?[0-9]{2}){5})/', $adresse, $tels);
+        array_shift($tels);
+        foreach ($tels as $tel) {
+          $callto = preg_replace('/0/', '0033',preg_replace('/[^0-9]/', '', $tel), 1);
+          if(strlen($callto) == 13) {
+            $telephones[] = '<span class="tel"><a href="callto:'.$callto.'" title="'.trim(preg_replace('/'.$tel.'/', '', $adresse)).'">'.trim($tel).'</a>';
+          }
+        }
       }
     }
-    echo '<div class="stopfloat"></div>';
+    if(count($telephones) != 0) {
+      echo '<li><img src="/css/xneth/images/telephone.png" alt="Téléphone(s) :" /> ';
+      foreach ($telephones as $key => $telephone) {
+        echo $telephone;
+        if($key < (count($telephones) - 1)) { echo ', '; }
+      }
+      echo '</li>';
+    }
+    if(!is_array($emails)) { $emails = array_filter(unserialize($emails)); }
+    if(count($emails) != 0) {
+      echo '<li><img src="/css/xneth/images/email.png" alt="Email(s) :" /> ';
+      foreach ($emails as $key => $email) {
+        if(trim($email) != '') {
+          if(count($emails) > 1) { $num_ad = $key+1; } else { $num_ad = ''; }
+          echo '<span><a class="email" href="mailto:'.str_replace('@', 'an@parl', $email).'">adresse '.$num_ad.'</a></span>';
+          if($key < (count($emails) - 1)) { echo ', '; }
+        }
+      }
+      echo '</li>';
+    }
   }
 
 
