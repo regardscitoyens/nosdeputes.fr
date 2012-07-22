@@ -112,7 +112,7 @@ foreach (split /\n/, $content) {
 	    $commission =~ s/[\s\-]+S[é&eacut;]+nat\s*//i;
 	}else {
 	    $commission = $1 if (/TITLE>[^<]*((MCI|Mission|Office|Délégation|Groupe de travail)[^:<]*)/i);
-	    $commission =~ s/[\s\-]+S[é&eacut;]+nat\s*//i;
+	    $commission =~ s/\-[\s\-]+S[é&eacut;]+nat\s*//;
             $commission =~ s/MCI /Mission commune d'information /;
 	}
 #	print ;	print "\n";
