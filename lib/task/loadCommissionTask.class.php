@@ -36,7 +36,8 @@ class loadCommissionTask extends sfBaseTask
           $count++;
 	  $lines = file($dir.$file);
 	  if (count($lines) <= 1) {
-	    echo "ERROR: file should have more than 1 line ($file)\n";	    
+	    echo "ERROR: file should have more than 1 line ($file)\n";
+	    unlink($dir.$file);
 	    continue;
 	  }
 	  foreach($lines as $line) {
@@ -73,8 +74,12 @@ class loadCommissionTask extends sfBaseTask
 	    }
 
             $date = $json->date;
-	    $id = md5($json->intervention.$json->date.$json->heure.$json->commission);
+	    $id = md5($json->intervention.$json->date.$json->heure.$json->commission.$json->timestamp);
 	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
+	    if (!$intervention) {
+	      $oldid = md5($json->intervention.$json->date.$json->heure.$json->commission);
+	      $intervention = Doctrine::getTable('Intervention')->findOneByMd5($oldid);
+	    }
 	    if(!$intervention) {
 	      $intervention = new Intervention();
 	      $intervention->md5 = $id;
@@ -83,6 +88,9 @@ class loadCommissionTask extends sfBaseTask
 	      $intervention->setSeance('commission', $json->date, $json->heure, $json->session, $json->commission);
 	      $intervention->setSource($json->source);
 	      $intervention->setTimestamp($json->timestamp);
+	    }
+	    if ($intervention->md5 != $id) {
+	      $intervention->md5 = $id;
 	    }
             if (!isset($json->numeros_loi))
               $json->numeros_loi = '';
