@@ -40,15 +40,16 @@ class Section extends BaseSection
       ->orderBy('s.min_date ASC, s.timestamp ASC')->execute();
   }
   public function getFirstSeance() {
-    $q = Doctrine_Query::create()
+    return Doctrine_Query::create()
       ->from('Seance s, Section st, Intervention i')
       ->select('s.id')
       ->where('i.seance_id = s.id')
       ->andwhere('i.section_id = st.id')
       ->andWhere('(st.section_id = ? OR i.section_id = ? )', array($this->id, $this->id))
       ->groupBy('s.id')
-      ->orderBy('st.min_date ASC, st.timestamp ASC')->fetchOne();
-    return $q->id;
+      ->orderBy('st.min_date ASC, st.timestamp ASC')
+      ->limit(1)
+      ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
   }
   public function getSeances() {
     $q = Doctrine_Query::create()
