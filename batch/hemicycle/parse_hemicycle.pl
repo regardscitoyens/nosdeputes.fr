@@ -292,6 +292,7 @@ foreach $line (split /\n/, $string)
     #si italique ou gras sans raison on supprime
     $line =~ s/\/\s*\// /g;
     $line =~ s/\|\s*\|/ /g;
+    $line =~ s/ de loi de loi / de loi /g;
 
     #récupère les ancres pour de meilleurs liens sources
     if ($line =~ /\<[a]/i) {
