@@ -40,6 +40,7 @@ class loadCommissionTask extends sfBaseTask
 	    unlink($dir.$file);
 	    continue;
 	  }
+	  $isOldSeance = 0;
 	  foreach($lines as $line) {
 	    $json = json_decode($line);
             $error = 0;
@@ -80,6 +81,19 @@ class loadCommissionTask extends sfBaseTask
 	      $oldid = md5($json->intervention.$json->date.$json->heure.$json->commission);
 	      $intervention = Doctrine::getTable('Intervention')->findOneByMd5($oldid);
 	    }
+
+	    if ($isOldSeance && !$intervention) { 
+	      $inter = Doctrine::getTable('Intervention')->findOneBySeanceTimestamp($seance, $json->timestamp); 
+	      if ($inter) { 
+		$res = similar_text($inter->getIntervention(), $json->intervention, $pc); 
+		if ($res > 0 && $pc > 75) 
+		  $intervention = $inter; 
+		$intervention->setIntervention($json->intervention); 
+		$intervention->md5 = $id; 
+		echo "WARNING : Intervention en double trouvée : seance/".$seance."#inter_".$id."\n";  
+	      } 
+	    } 
+	    
 	    if(!$intervention) {
 	      $intervention = new Intervention();
 	      $intervention->md5 = $id;
@@ -88,6 +102,8 @@ class loadCommissionTask extends sfBaseTask
 	      $intervention->setSeance('commission', $json->date, $json->heure, $json->session, $json->commission);
 	      $intervention->setSource($json->source);
 	      $intervention->setTimestamp($json->timestamp);
+	    }else{
+	      $isOldSeance = ($intervention->seance_id);
 	    }
 	    if ($intervention->md5 != $id) {
 	      $intervention->md5 = $id;
