@@ -34,7 +34,12 @@ class loadCommissionTask extends sfBaseTask
           if ($count == 50)
             exit(1);
           $count++;
-	  foreach(file($dir.$file) as $line) {
+	  $lines = file($dir.$file);
+	  if (count($lines) <= 1) {
+	    echo "ERROR: file should have more than 1 line ($file)\n";	    
+	    continue;
+	  }
+	  foreach($lines as $line) {
 	    $json = json_decode($line);
             $error = 0;
             if (!$json)
