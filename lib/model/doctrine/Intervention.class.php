@@ -150,10 +150,18 @@ class Intervention extends BaseIntervention
   public function getIntervenant(&$parlementaires = null, &$personnalites = null) {
     if (is_null($this->perso)) {
       if ($this->parlementaire_id) {
-        $this->perso = $parlementaires[$this->parlementaire_id];
+	if ($parlementaires) {
+	  $this->perso = $parlementaires[$this->parlementaire_id];
+	} else {
+	  $this->perso = $this->getParlementaire();
+	}
       }
       if ($this->personnalite_id) {
-        $this->perso = $personnalites[$this->personnalite_id];
+	if ($personnalites) {
+	  $this->perso = $personnalites[$this->personnalite_id];
+	} else {
+	  $this->perso = $this->getPersonnalite();
+	}
       }
     }
     return $this->perso;
