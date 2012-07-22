@@ -20,7 +20,7 @@ if ($string =~ /M[me\.]+[ \&][^<]+<\/a>\.[^<]*<\/b>[^<]*<i>([^<]+)</ && $1 =~ /r
 	$string =~ s/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>/$1,<\/b><i>/g;
 }
 $string =~ s/([^\.])\s*<\/b>\s*<i>([^<]+)<\/i>/$1 $2<\/b>/g;
-
+$string =~ s/<\/?font[^>]*>//ig;
 $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/\r//g;
@@ -148,25 +148,27 @@ sub checkout {
     if ($titre2) {
 	$contexte .= ' > '.$titre2;
     }
-    $out =  '{"contexte": "'.$contexte.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
+    $out =  '{"contexte": "'.$contexte.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
     if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement/i) {
 	$out .= "\"numeros_loi\": \"$ploi\", ";
     }
     if ($amendements) {
 	$out .= '"amendements": "'.$amendements.'", ';
     }
-
+    $out .= '"timestamp": "';
     if ($intervenant) {
 	if ($intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*([A-Z].*)//) {
-	    print $out.'"intervenant": "'.$3."\"}\n";
+	    $ts = $cpt + 1;
+	    print $out.$ts.'", "intervenant": "'.$3."\"}\n";
 	}
 	if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*([A-Z].*)//g) {
-	    print $out.'"intervenant": "'.$3."\"}\n";
+            $ts = $cpt + 2;
+	    print $out.$ts.'", "intervenant": "'.$3."\"}\n";
 	    $inter2fonction{$intervenant} = '';
 	}
-	print $out.'"intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.'", "intervenant_url": "'.$intervenant_url."\"}\n";
+	print $out.$cpt.'", "intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.'", "intervenant_url": "'.$intervenant_url."\"}\n";
     }elsif($intervention) {
-	print $out.'"intervenant":"'."\"}\n";
+	print $out.$cpt.'", "intervenant":"'."\"}\n";
     }else {
 	return ;
     }
@@ -199,7 +201,7 @@ sub setIntervenant {
     $intervenant =~ s/\s*[\.\:]\s*$//;
     $intervenant =~ s/Madame/Mme/;
     $intervenant =~ s/Monsieur/M./;
-    $intervenant =~ s/et M\. /et M /;
+    $intervenant =~ s/et M[\.lmes]+ /et /;
     $intervenant =~ s/^M[\.mes]*\s//i;
     $intervenant =~ s/\s*\..*$//;
     $intervenant =~ s/L([ea])\s/l$1 /i;
@@ -357,7 +359,7 @@ foreach $line (split /\n/, $string)
 	if ($line =~ /href=["']([^"']+)["']/) {
 	    $last_href = $1;
 	}
-	$line =~ s/\s*\<\/?[^\>]+\>//g;
+	$line =~ s/\<\/?[^\>]+\>//g;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
 
@@ -373,7 +375,9 @@ foreach $line (split /\n/, $string)
 	}elsif ($line =~ /^\s*\|/) {
 	    checkout() if ($intervenant);
 	}
-	$line =~ s/^\s+//;
+	$line =~ s/\s+/ /g;
+	$line =~ s/^\s//;
+	$line =~ s/\s$//;
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
 	$intervention .= "<p>$line</p>";

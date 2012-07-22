@@ -25,6 +25,7 @@ class loadHemicyleTask extends sfBaseTask
 	    continue;
 	  echo "$dir$file\n";
           $debug = 1;
+	  $seance = 0;
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
 	    if (!$json || !$json->intervention || !$json->date || !$json->heure || !$json->source) {
@@ -36,6 +37,17 @@ class loadHemicyleTask extends sfBaseTask
             $date = $json->date;
 	    $id = md5($json->intervention.$json->date.$json->heure.'hemicyle'.$json->timestamp);
 	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
+	    if ($seance && !$intervention) {
+	      $inter = Doctrine::getTable('Intervention')->findOneBySeanceTimestamp($seance, $json->timestamp);
+	      if ($inter) {
+		$res = similar_text($inter->getIntervention(), $json->intervention, $pc);
+	        if ($res > 0 && $pc > 75)
+	          $intervention = $inter;
+		  $intervention->setIntervention($json->intervention);
+		  $intervention->md5 = $id;
+		  echo "WARNING : Intervention en double trouvée : seance/".$seance."#inter_".$id."\n"; 
+	      }
+            }
 	    if(!$intervention) {
 	      $intervention = new Intervention();
 	      $intervention->md5 = $id;
@@ -48,23 +60,29 @@ class loadHemicyleTask extends sfBaseTask
 	      $intervention->setSeance($type, $json->date, $json->heure, $json->session);
 	      $intervention->setSource($json->source);
 	      $intervention->setTimestamp($json->timestamp);
-	    }
+	    } else $seance = $intervention->seance_id;
+	    $lois = null;
+	    if (isset($json->numeros_loi))
+	      $lois = $json->numeros_loi;
             if ($json->timestamp)
-              $debug = $intervention->setContexte($json->contexte, $json->date.$json->heure, $json->timestamp, $json->numeros_loi, $debug);
-	    if ($json->amendements)
+              $debug = $intervention->setContexte($json->contexte, $json->date.$json->heure, $json->timestamp, $lois, $debug);
+	    if (isset($json->amendements))
 	      $intervention->setAmendements($json->amendements);
 	    if ($json->intervenant) {
 	      $p = null;
-	      if ($json->intervenant_url) {
+	      $fonction = null;
+	      if (isset($json->fonction))
+	        $fonction = $json->fonction;
+	      if (isset($json->intervenant_url)) {
                 $p = Doctrine::getTable('Parlementaire')
                   ->findOneByUrlAn($json->intervenant_url);
                 if ($p) {
                   $intervention->setParlementaire($p);
-                  $intervention->setFonction($json->fonction);
+                  $intervention->setFonction($fonction);
                 }
 	      }
 	      if (!$p) {
-                $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);
+                $intervention->setPersonnaliteByNom($json->intervenant, $fonction);
 	      } else $p->free();
 	    }
 	    $intervention->save();

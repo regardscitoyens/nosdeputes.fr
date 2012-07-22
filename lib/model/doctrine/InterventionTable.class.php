@@ -5,4 +5,8 @@
 class InterventionTable extends Doctrine_Table
 {
 
+  public function findOneBySeanceTimestamp($seance, $timestamp) {
+    return $this->createQuery('i')->where('seance_id = ?', $seance)->andWhere('timestamp = ?', $timestamp)->limit(1)->fetchOne();
+  }
+
 }
