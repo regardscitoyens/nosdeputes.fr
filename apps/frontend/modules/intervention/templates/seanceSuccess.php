@@ -83,7 +83,7 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
   } else echo '<div class="intervenant">';
     if ($intervention->hasIntervenant()) {
       $didascalie = 0;
-      $perso = $intervention->getIntervenant();
+      $perso = $intervention->getIntervenant($parlementaires, $personnalites);
       if ($titre != 1) {
 	echo '<span class="source">';
         if ($ct) echo '<a href="#table_'.$intervention->section_id.'">Debut de section</a>&nbsp;-&nbsp;';
