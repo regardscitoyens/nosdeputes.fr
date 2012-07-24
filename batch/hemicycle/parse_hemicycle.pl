@@ -321,6 +321,7 @@ foreach $line (split /\n/, $string)
 	    $titre2 =~ s/a href[^>]+>//g;
 	    $titre2 =~ s/\///g;
 	    $titre2 =~ s/\s+$//;
+	    $titre2 =~ s/h2>//gi;
 	    $amendements = @pre_amendements = ();
 	    $line = "<p>|$titre2|</p>";
 	    $donetitre1 = 0;
