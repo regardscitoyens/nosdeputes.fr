@@ -134,9 +134,18 @@ class plotComponents extends sfComponents
       $sem_legis = date('W', $debut_legis);
       if ($sem_legis == 53) { $an_legis++; $sem_legis = 1; }
       $startweek = ($annee0 - $an_legis)*53 + $sem0 - $sem_legis;
-      $this->data['presences_medi']['commission'] = array_slice($prmedi['commission'], $startweek, $n_weeks);
-      $this->data['presences_medi']['hemicycle'] = array_slice($prmedi['hemicycle'], $startweek, $n_weeks);
-      $this->data['presences_medi']['total'] = array_slice($prmedi['total'], $startweek, $n_weeks);
+      if ($startweek <= 0) {
+        $weeks_acti = count($prmedi['commission']);
+        for ($i=0; $i < $weeks_acti - 1; $i++) {
+          $this->data['presences_medi']['commission'][$n_weeks-$i] = $prmedi['commission'][$weeks_acti-$i];
+          $this->data['presences_medi']['hemicycle'][$n_weeks-$i] = $prmedi['hemicycle'][$weeks_acti-$i];
+          $this->data['presences_medi']['total'][$n_weeks-$i] = $prmedi['total'][$weeks_acti-$i];
+        }
+      } else {
+        $this->data['presences_medi']['commission'] = array_slice($prmedi['commission'], $startweek, $n_weeks);
+        $this->data['presences_medi']['hemicycle'] = array_slice($prmedi['hemicycle'], $startweek, $n_weeks);
+        $this->data['presences_medi']['total'] = array_slice($prmedi['total'], $startweek, $n_weeks);
+      }
     }
 
     # Clean interventiosn de ministre hors périodes de mandat
