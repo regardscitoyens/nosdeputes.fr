@@ -153,6 +153,9 @@ class Intervention extends BaseIntervention
     similar_text(strip_tags($this->intervention), $this->Section->getTitreComplet(), $sim);
     if ($sim > 70) 
       return false;
+    similar_text(strip_tags($this->intervention), $this->Section->getTitre(), $sim);
+    if ($sim > 70)
+      return false;
     return true;
   }
 
