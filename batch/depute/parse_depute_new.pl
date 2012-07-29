@@ -60,6 +60,7 @@ if ($file =~ /(\d+)/) {
 
 $read = "";
 foreach $line (split /\n/, $string) {
+  $line =~ s/<\/?sup>//g;
   if ($line =~ /<h1 class="deputy-headline-title[^>]*>(.+)<\/h1>/i) {
     $depute{'nom'} = $1;
     $depute{'nom'} =~ s/,.*$//;
