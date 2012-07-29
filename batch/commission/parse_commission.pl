@@ -143,6 +143,7 @@ sub setIntervenant {
     $intervenant =~ s/^\s+//;
     $intervenant =~ s/É+/é/gi;
     $intervenant =~ s/\&\#8217\;/'/g;
+    $intervenant =~ s/^l[ea] (ministre) (.*)$/\2, \1/i;
     if ($intervenant =~ s/\, (.*)//) {
 	setFonction($1, $intervenant);
     }
