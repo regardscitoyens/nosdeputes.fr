@@ -82,7 +82,6 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
     }
   } else echo '<div class="intervenant">';
     if ($intervention->hasIntervenant()) {
-      $didascalie = 0;
       $perso = $intervention->getIntervenant($parlementaires, $personnalites);
       if ($titre != 1) {
 	echo '<span class="source">';
@@ -101,11 +100,9 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
       } else {
         echo '<span class="perso">'.$intervention->getNomAndFonction().'</span>';
       }
-    } else {
-      $didascalie = 1;
-    } ?>
-<?php
-  if (!($didascalie && $titre != 0)) { ?>
+  }
+  $didascalie = $intervention->isDidascalie();
+  if ($intervention->isInterventionOrDidascalie()) { ?>
     <div class="texte_intervention">
     <?php if ($didascalie) echo '<div class="didascalie">'; ?>
     <?php echo myTools::escape_blanks($intervention->getIntervention(array('linkify_amendements'=>url_for('@find_amendements_by_loi_and_numero?loi=LLL&numero=AAA')))); ?>

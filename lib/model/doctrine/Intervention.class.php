@@ -147,6 +147,22 @@ class Intervention extends BaseIntervention
     return false;
   }
 
+  public function isDidascalie() {
+    if ($this->hasIntervenant())
+      return false;
+    similar_text(strip_tags($this->intervention), $this->Section->getTitreComplet(), $sim);
+    if ($sim > 0.70) 
+      return false;
+    return true;
+  }
+
+  public function isInterventionOrDidascalie() {
+    if ($this->hasIntervenant()) {
+      return true;
+    }
+    return $this->isDidascalie();
+  }
+
   public function getIntervenant(&$parlementaires = null, &$personnalites = null) {
     if (is_null($this->perso)) {
       if ($this->parlementaire_id) {
