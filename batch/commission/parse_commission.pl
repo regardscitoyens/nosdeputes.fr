@@ -155,13 +155,29 @@ foreach (split /\n/, $content) {
 		if ($inter =~ /<u>(Au cours[^<]*)<\/u>/) {
 		    $aucours = $1;
 		    if ($aucours =~ /\Wquatri(è|&[^;]*;)me($|\W)/) {
-                        $nb_seance = 4;
+			if ($nb_seance >= 4) { 
+				$nb_seance++;
+			}else{
+	                        $nb_seance = 4;
+			}
                     }elsif ($aucours =~ /\W(troisi(è|&[^;]*;)me|soir(é|&[^;]*;)e)($|\W)/) {
-                        $nb_seance = 3;
+			if ($nb_seance >= 3) {
+				$nb_seance++;
+			}else{
+                        	$nb_seance = 3;
+			}
                     }elsif ($aucours =~ /\W(seconde|apr[^s]+s( |-)*midi)($|\W)/) {
-			$nb_seance = 2;
+			if ($nb_seance >= 2) {
+				$nb_seance++;
+			}else{
+				$nb_seance = 2;
+			}
 		    }elsif ($aucours =~ /\W(premi(è|&[^;]*;)re|matin(é|&[^;]*;)e)($|\W)/) {
-                        $nb_seance = 1;
+			if ($nb_seance >= 1) {
+				$nb_seance++;
+			}else{
+                        	$nb_seance = 1;
+			}
 		    }else {
 			$nb_seance++;
 		    }
