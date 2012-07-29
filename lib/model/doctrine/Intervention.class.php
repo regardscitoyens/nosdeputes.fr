@@ -151,7 +151,7 @@ class Intervention extends BaseIntervention
     if ($this->hasIntervenant())
       return false;
     similar_text(strip_tags($this->intervention), $this->Section->getTitreComplet(), $sim);
-    if ($sim > 0.70) 
+    if ($sim > 70) 
       return false;
     return true;
   }
@@ -160,7 +160,10 @@ class Intervention extends BaseIntervention
     if ($this->hasIntervenant()) {
       return true;
     }
-    return $this->isDidascalie();
+    if($this->isDidascalie()) {
+      return true;
+    }
+    return false;
   }
 
   public function getIntervenant(&$parlementaires = null, &$personnalites = null) {
