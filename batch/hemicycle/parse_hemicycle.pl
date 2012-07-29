@@ -158,13 +158,13 @@ sub checkout {
     $out .= '"timestamp": "';
     if ($intervenant) {
 	$ts = $cpt;
-	if ($intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*([A-Zé].*)$//) {
+	if ($intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)$//) {
 	    foreach $i (split(/ et |, /, $3)) {
 	        $ts++;
 	        print $out.$ts.'", "intervenant": "'.$i."\"}\n";
 	    }
 	}
-	if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*([A-Zé].*)//g) {
+	if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)//g) {
             $ts++;
 	    print $out.$ts.'", "intervenant": "'.$3."\"}\n";
 	    $inter2fonction{$intervenant} = '';
@@ -189,7 +189,7 @@ sub setFonction {
     $kfonction =~ s/[^a-z]+/ /gi;
     $intervenant =~ s/\W+$//;
     $fonction2inter{$kfonction} = $intervenant;
-#    print "$fonction ($kfonction)  => $intervenant \n";
+    #print "$fonction ($kfonction)  => $intervenant \n";
     if (!$inter2fonction{$intervenant}) {
 	$inter2fonction{$intervenant} = $fonction;
     }
