@@ -210,6 +210,7 @@ foreach $line (split /\n/, $string) {
         $line =~ s/\((commission des finances)\)$/de la \1/i;
         $line =~ s/^\s*(\S+) Comité/\1 du Comité/i;
         $line =~ s/^\s*(\S+) (c?o?m?mission)/\1 de la \2/i;
+	$line =~ s/ à la délégation/ de la délégation/i;
         $fonction = lc($1) if ($line =~ s/^\s*((\S+\s*){1,3}(du [bB]ureau)?) d((u|e la) |e l')(.*)$/\6/);
         $organisme = ucfirst($line);
         $organisme =~ s/^(Assemblée nationale)/Bureau de l'\1/i;
