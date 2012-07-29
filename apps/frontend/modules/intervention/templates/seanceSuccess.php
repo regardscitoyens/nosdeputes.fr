@@ -90,7 +90,7 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
         if ($ct) echo '<a href="#table_'.$intervention->section_id.'">Debut de section</a>&nbsp;-&nbsp;';
         echo '<a href="'.url_for("@interventions_seance?seance=$seance->id").'#inter_'.$intervention->getMd5().'">Permalien</a></span>';
       }
-      if ($perso->getPageLink() && $photo = $perso->hasPhoto()) {
+      if ($perso->getPageLink() && ($photo = $perso->hasPhoto() || isset($perso->type))) {
 	echo '<a href="'.url_for($perso->getPageLink()).'">';
 	include_partial('parlementaire/photoParlementaire', array('parlementaire' => $perso, 'height' => 70));
 	echo '</a>';
