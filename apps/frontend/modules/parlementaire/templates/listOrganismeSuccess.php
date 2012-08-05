@@ -4,6 +4,7 @@
 else $nrap = 0;
 if (isset($pagerSeances)) $nse = $pagerSeances->getNbResults();
 else $nse = 0;
+$ndep = 0;
 if ($page === "home") {
   include_component('article', 'show', array('categorie'=>'Organisme', 'object_id'=>$orga->id));
   $divclass = "";
@@ -19,7 +20,9 @@ if ($page === "home") {
   }
   echo $divclass.'<div class="liste">';
   $listimp = array_keys($parlementaires);
+  
   foreach ($listimp as $i) {
+    $ndep += count($parlementaires[$i]);
     echo '<div class="list_table">';
     include_partial('parlementaire/table', array('deputes' => $parlementaires[$i], 'list' => 1, 'colonnes' => $colonnes, 'imp' => $i));
     echo '</div>';
@@ -29,7 +32,7 @@ if ($page === "home") {
 if ($page === "home" && ($nse || $nrap))
   echo '</div><div class="listeright">';
 else echo '<div>';
-if (count($parlementaires)) {
+if ($ndep > 1) {
   echo '<div class="plot_seance aligncenter">';
   echo include_component('plot', 'groupes', array('plot' => 'organisme_'.$orga->id, 'membres' => $parlementaires, 'nolegend' => true));
   echo '</div>';
