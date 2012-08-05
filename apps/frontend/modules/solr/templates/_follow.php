@@ -1,9 +1,12 @@
 <div class="options">
+<?php if (sfConfig::get('app_redirect404tohost') && !isset($norss)) : ?>
+  <div class="mail"><h3 class="aligncenter"><a href="http://<?php echo sfConfig::get('app_redirect404tohost')."/".url_search($query, array()); ?>">Rechercher sur la<br/>précédente législature</a></h3></div>
+<?php endif ?>
   <div class="mail">
   <?php if (!isset($zero)) { ?>
   <h3 class="aligncenter">S'abonner aux résultats<br/>de cette recherche</h3>
   <?php } else { ?>
-  <h3 class="aligncenter">Etre alerté lorsque cette<br/>recherche a un résultat</h3>
+  <h3 class="aligncenter">Être alerté lorsque cette<br/>recherche a un résultat</h3>
   <?php } ?>
 <?php $args = '';
   foreach(array_keys($selected) as $k) {
