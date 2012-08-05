@@ -256,7 +256,7 @@ function facet2Human($id, $facet = "") {
 <?php } ?>
   <div class="facets">
 <?php if (sfConfig::get('app_redirect404tohost') && !isset($norss)) : ?>
-  <h3 class="aligncenter"><a href="http://<?php echo sfConfig::get('app_redirect404tohost')."/".url_for(url_search($query, $selected)); ?>">Rechercher sur la<br/>précédente législature</a></h3>
+  <h3 class="aligncenter"><a href="http://<?php echo sfConfig::get('app_redirect404tohost').url_for(url_search($query, $selected)); ?>">Rechercher sur la<br/>précédente législature</a></h3>
 <?php endif ?>
   <h3 class="aligncenter">Affiner la recherche</h3>
   <?php 
