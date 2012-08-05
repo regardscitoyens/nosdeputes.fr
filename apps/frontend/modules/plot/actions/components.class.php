@@ -410,11 +410,18 @@ class plotComponents extends sfComponents
               $groupes[$groupe['groupe_acronyme']]['presences'] = $groupe['count'];
             else $groupes[$groupe['groupe_acronyme']]['presences'] += $groupe['count'];
         }
+      } else if (preg_match('/organisme/', $this->plot, $match) && isset($this->membres)) {
+        foreach ($this->membres as $imp => $deps) foreach ($deps as $p)
+          if (!isset($groupes[$p['groupe_acronyme']]['membres']))
+            $groupes[$p['groupe_acronyme']]['membres'] = 1;
+          else $groupes[$p['groupe_acronyme']]['membres'] += 1;
+        $this->membres = array();
       } else throw new Exception('wrong plot argument');
-      if (!count($interventions) && (!isset($presences) || !count($presences))) {
+      if (isset($interventions) && !count($interventions) && (!isset($presences) || !count($presences))) {
 	$this->empty = 1;
 	return ;
       }
+     if (!isset($this->membres)) {
       foreach ($interventions as $groupe)
         if (!isset($groupes[$groupe['groupe_acronyme']]['interventions']))
           $groupes[$groupe['groupe_acronyme']]['interventions'] = $groupe['count'];
@@ -423,8 +430,9 @@ class plotComponents extends sfComponents
       if (!isset($groupes[$groupe['groupe_acronyme']]['temps_parole']))
           $groupes[$groupe['groupe_acronyme']]['temps_parole'] = $groupe['sum'];
         else $groupes[$groupe['groupe_acronyme']]['temps_parole'] += $groupe['sum'];
-
+     }
       foreach($this->labels as $groupe) {
+       if (!isset($this->membres)) {
         if (!isset($groupes[$groupe]['interventions']))
           $this->interventions[] = 0;
         else $this->interventions[] = $groupes[$groupe]['interventions'];
@@ -436,13 +444,19 @@ class plotComponents extends sfComponents
             $this->presences[] = 0;
           else $this->presences[] = $groupes[$groupe]['presences'];
         }
+       } else {
+        if (!isset($groupes[$groupe]['membres']))
+          $this->membres[] = 0;
+        else $this->membres[] = $groupes[$groupe]['membres'];
+       }
       }
       $this->labels[] = "";
       $this->interventions[] = array_sum($this->interventions)/2;
       $this->temps[] = array_sum($this->temps)/2;
       if (isset($presences))
         $this->presences[] = array_sum($this->presences)/2;
-
+      if (isset($this->membres))
+        $this->membres[] = array_sum($this->membres)/2;
     }
   }
   

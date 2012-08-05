@@ -19,6 +19,10 @@ if ($plot == 'total') { $DataSetBis = new xsPData();
   $DataSet2Bis->AddPoint($labels, "Serie1"); $DataSet2Bis->AddPoint($interventions_moy, "Serie2");
   $DataSet2Bis->AddSerie("Serie2"); $DataSet2Bis->SetAbsciseLabelSerie("Serie1");
   $Data2Bis = $DataSet2Bis->GetData(); $DataDescr2Bis = $DataSet2Bis->GetDataDescription();
+} else if (isset($membres)) { $DataSet = new xsPData();
+  $DataSet->AddPoint($labels, "Serie1"); $DataSet->AddPoint($membres, "Serie2");
+  $DataSet->AddSerie("Serie2"); $DataSet->SetAbsciseLabelSerie("Serie1");
+  $Data = $DataSet->GetData(); $DataDescr = $DataSet->GetDataDescription();
 } else if (array_sum($interventions) != 0) { $DataSet3 = new xsPData();
   $DataSet3->AddPoint($labels, "Serie1"); $DataSet3->AddPoint($temps, "Serie2");
   $DataSet3->AddSerie("Serie2"); $DataSet3->SetAbsciseLabelSerie("Serie1");
@@ -54,6 +58,9 @@ if ($plot == 'total') {
       $xsize = 550; $xtitre = 60;
       $titre .= ' de commission';
     }
+  } else if (preg_match('/orga/', $plot)) {
+    $xsize = 250; $xtitre = 48;
+    $titre = 'par groupe';
   }
 }
 $Test = new xsPChart($xsize,$ysize);
@@ -130,9 +137,10 @@ if ($plot == 'total') {
 $Test->xsRender($filename);
 if ($plot == 'total')
   echo link_to(image_tag('tmp/xspchart/'.$filename, array('alt'=>"Répartition ".$titre, 'style'=>'height: '.$ysize.'px;')), '@top_global');
- else if (preg_match('/com/', $plot) && !isset($nolink))
-   echo link_to(image_tag('tmp/xspchart/'.$filename, array('alt'=>"Répartition ".$titre, 'style'=>'height: '.$ysize.'px;')), '@presents_seance?seance='.$seance);
- else echo image_tag('tmp/xspchart/'.$filename, array('alt'=>'Répartition '.$titre, 'style'=>'height: '.$ysize.'px;'));
+else if (preg_match('/com/', $plot) && !isset($nolink))
+  echo link_to(image_tag('tmp/xspchart/'.$filename, array('alt'=>"Répartition ".$titre, 'style'=>'height: '.$ysize.'px;')), '@presents_seance?seance='.$seance);
+else echo image_tag('tmp/xspchart/'.$filename, array('alt'=>'Répartition '.$titre, 'style'=>'height: '.$ysize.'px;'));
 
-echo include_partial('plot/groupesLegende', array());
+if (!isset($nolegend))
+ echo include_partial('plot/groupesLegende', array());
 ?>

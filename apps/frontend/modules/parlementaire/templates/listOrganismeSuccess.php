@@ -29,6 +29,11 @@ if ($page === "home") {
 if ($page === "home" && ($nse || $nrap))
   echo '</div><div class="listeright">';
 else echo '<div>';
+if (count($parlementaires)) {
+  echo '<div class="plot_seance aligncenter">';
+  echo include_component('plot', 'groupes', array('plot' => 'organisme_'.$orga->id, 'membres' => $parlementaires, 'nolegend' => true));
+  echo '</div>';
+}
 if ($page != "seances" && $nrap) {
   echo '<h3>';
   if ($page === "home")
