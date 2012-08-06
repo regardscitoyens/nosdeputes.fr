@@ -254,10 +254,21 @@ function facet2Human($id, $facet = "") {
 <div id="results_container">
 <div class="options">
 <?php } ?>
+<?php if (sfConfig::get('app_redirect404tohost') || sfConfig::get('fin_legislature')) : ?>
   <div class="facets">
-<?php if (sfConfig::get('app_redirect404tohost') && !isset($norss)) : ?>
   <h3 class="aligncenter"><a href="http://<?php echo sfConfig::get('app_redirect404tohost').url_for(url_search($query, $selected)); ?>">Rechercher sur la<br/>précédente législature</a></h3>
+  <ul>
+<?php if (sfConfig::get('app_redirect404tohost')) : ?>
+  <li><a href="http://<?php echo sfConfig::get('app_redirect404tohost').url_for(url_search($query, $selected)); ?>"><?php echo sfConfig::get('app_legislature') - 1; ?><sup>ème</sup> législature</a></li>
+<?php endif; ?>
+  <li class="selected" style="font-weight: bold"><?php echo sfConfig::get('app_legislature'); ?><sup>ème</sup> législature</li>
+<?php if (sfConfig::get('app_fin_legislature')) : ?>
+  <li><a href="http://<?php echo sfConfig::get('app_redirect404tohost').url_for(url_search($query, $selected)); ?>"><?php echo sfConfig::get('app_legislature') + 1; ?><sup>ème</sup> législature</a></li>
+<?php endif; ?>
+  </ul>
+  </div>
 <?php endif ?>
+  <div class="facets">
   <h3 class="aligncenter">Affiner la recherche</h3>
   <?php 
   if(isset($selected['date'])) {
