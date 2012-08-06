@@ -6,6 +6,7 @@ all:
 #  fin_legislature: true
 #  debut_legislature: "2007-06-20"
 #  redirect404tohost: "2007.nosdeputes.fr"
+#  host_next_legislature: "2012.nosdeputes.fr"
   groupes_actuels: >
     ["GDR", "SRC", "NC", "UMP", "NI"]
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
