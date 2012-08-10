@@ -96,7 +96,7 @@ class SolrConnector extends sfLogger
   public function search($queryString, $params = array(), $offset = 0, $maxHits = 0) {
     if($maxHits == 0)
         $maxHits = sfConfig::get('app_solr_max_hits', 256);
-    $response = $this->solr->search($queryString, $offset, $maxHits, $params);
+    $response = $this->solr->search(utf8_decode($queryString), $offset, $maxHits, $params);
     $results = unserialize($response->getRawResponse());
     $unset = array();
     for ($i = 0 ; $i < count($results['response']['docs']); $i++) {
