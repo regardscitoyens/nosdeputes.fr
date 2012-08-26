@@ -148,7 +148,7 @@ class circonscriptionActions extends sfActions
    * selects the nodes to include in the image map (based on their id).
    * If only one of $w and $h is given, preserve the svg ratio.
    */
-  private static function compute_areas($dom, $w, $h, $regexp, $deptitle = 0)
+  private static function compute_areas($dom, $w, $h, $regexp, $deptitle = 0, $circo=false)
   {
     $areas = "";
 
@@ -156,6 +156,11 @@ class circonscriptionActions extends sfActions
 
     $svg_w = (string) $svg->getAttribute('width');
     $svg_h = (string) $svg->getAttribute('height');
+
+    if ($circo) {
+      $svg_w = $svg_w / 5;
+      $svg_h = $svg_h / 5;
+    }
 
     if ($w == 0 && $h == 0)
     {
@@ -240,8 +245,9 @@ class circonscriptionActions extends sfActions
     $y_min = min($miny) - $margin;
     $y_max = max($maxy) + $margin;
 
-    $svg->setAttribute('width', $x_max - $x_min);
-    $svg->setAttribute('height', $y_max - $y_min);
+    $svg->setAttribute('width', 5*($x_max - $x_min));
+    $svg->setAttribute('height', 5*($y_max - $y_min));
+    $svg->setAttribute('viewBox', $x_min." ".$y_min." ".($x_max - $x_min)." ".($y_max - $y_min));
     $svg->setAttribute('transform', "translate(".-$x_min.",".-$y_min.")");
   }
 
@@ -281,7 +287,7 @@ class circonscriptionActions extends sfActions
     $im->removeImage();
     $im->setResolution($w * $x_ratio, $h * $y_ratio);
     $im->readImageBlob($dom->saveXML());
-
+    $im->resizeImage($w, $h, imagick::FILTER_LANCZOS, 0.9, true);
     $im->setImageFormat("png");
     echo $im;
   }
@@ -311,7 +317,7 @@ class circonscriptionActions extends sfActions
     else
       $regexp = "/^$circo-(0[1-9]|[1-9]\d)$/";
 
-    return array($dom, self::compute_areas($dom, $w, $h, $regexp));
+    return array($dom, self::compute_areas($dom, $w, $h, $regexp, 0, true));
   }
 
   /* $circo is a three digits string, or "full" for the full map */
@@ -348,6 +354,9 @@ class circonscriptionActions extends sfActions
     $r = $arr[1];
     $w = $r['w'];
     $h = $r['h'];
+    
+    $svg = $dom->getElementsByTagName('svg')->item(0);
+    $svg->removeAttribute('transform');
 
     $im = new Imagick();
     $im->readImageBlob($dom->saveXML());
@@ -357,7 +366,7 @@ class circonscriptionActions extends sfActions
     $im->removeImage();
     $im->setResolution($w * $x_ratio, $h * $y_ratio);
     $im->readImageBlob($dom->saveXML());
-
+    $im->resizeImage($w, $h, imagick::FILTER_LANCZOS, 0.9, true);
     $im->setImageFormat("png");
     echo $im;
   }
