@@ -93,12 +93,14 @@ class sectionActions extends sfActions
 
     $interventions = array();
 
-    $interventions = Doctrine_Query::create()
+    $query = Doctrine_Query::create()
       ->select('i.id')
       ->from('Intervention i')
-      ->leftJoin('i.Section s')
-      ->where('s.section_id = ?', $this->section->id)
-      ->andWhere('i.nb_mots > 20')
+      ->leftJoin('i.Section s');
+    if ($this->section->id == $this->section->section_id)
+      $query->where('s.section_id = ?', $this->section->id);
+    else $query->where('s.id = ?', $this->section->id);
+    $interventions = $query->andWhere('i.nb_mots > 20')
       ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
 
     //    $this->forward404Unless(count($interventions));
