@@ -19,6 +19,11 @@ class commentaireActions extends sfActions
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');
     $this->follow_talk = $request->getParameter('follow_talk');
+
+    if (myTools::isCommentairesLocked()) {
+       $this->getUser()->setFlash('error', 'Pour raisons techniques, les commentaires sont momentanément désactivées.');
+       return $this->redirect($redirect_url[$this->type].$this->id);
+    }
     
     $values = $request->getParameter('commentaire');
     $this->commentaire = myTools::clearHtml($values['commentaire']);

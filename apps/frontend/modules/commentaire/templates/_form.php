@@ -6,6 +6,7 @@
   <tr>
     <td colspan="3">
       <?php echo $form['commentaire']->renderError(); ?>
+      <?php if (myTools::isCommentairesLocked()) echo '<p class="flash_error">Pour raisons techniques, le dépôt des commentaires est momentanément désactivé.</p>'; ?>
       <?php echo $form['commentaire']->render(array('style' => 'width:73.5em')); ?>
     </td>
   </tr>

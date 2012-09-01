@@ -72,6 +72,10 @@ class myTools {
     return preg_match('/clotur/', sfConfig::get('app_fin_legislature'));
   }
 
+  public static function isCommentairesLocked() {
+    return (sfConfig::get('app_lock_commentaires'));
+  }
+
   public static function getGroupesInfos() {
     $conf = sfConfig::get('app_groupes_infos', '');
     if (!$conf) {
