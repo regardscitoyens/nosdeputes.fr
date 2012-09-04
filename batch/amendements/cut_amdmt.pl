@@ -35,7 +35,7 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
 open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
-utf8::decode($string) if ($string =~ /charset=UTF-?8/i);
+#utf8::decode($string) if ($string =~ /charset=UTF-?8/i);
 $string =~ s/(\<p class="presente".*)\s*\<br[\/]?\>\s*[\n]?\s*(.*)/\1, \2/g;
 $string =~ s/\<br\>.*\n//g;
 $string =~ s/(&#8217;|’)/'/g;
