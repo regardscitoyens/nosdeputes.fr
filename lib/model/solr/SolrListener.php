@@ -34,14 +34,14 @@ class SolrListener extends Doctrine_Record_Listener
 	return array();
       $f = $obj->get($field);
       if ($f) {
-	if (is_array($f) || (get_class($f) == 'Doctrine_Collection')) {
+	if (is_array($f) || (is_object($f) && get_class($f) == 'Doctrine_Collection')) {
 	  $res = array();
 	  foreach($f as $i) {
 	    $res[] = $i.'';
 	  }
 	  return $res;
 	}
-	if (get_class($f) && ! $f->id)
+	if (is_object($f) && get_class($f) && ! $f->id)
 	  return array();
 	return array(strip_tags($f));
       }
