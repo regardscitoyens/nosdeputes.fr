@@ -22,7 +22,7 @@ $oldsession = ($lastyear-1)."-$lastyear";
     "http://www.assemblee-nationale.fr/$legislature/cri/$oldsession/"
 );
 
-$a = WWW::Mechanize->new();
+$a = WWW::Mechanize->new(autocheck => 0);
 
 foreach $url (@url) {
     $a->get($url);
