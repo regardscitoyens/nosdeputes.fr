@@ -22,7 +22,7 @@ class Amendement extends BaseAmendement {
   }
 
   public function setAuteurs($auteurs) {
-#$debug=1;
+    $debug=0;
     $auteurs = html_entity_decode($auteurs, ENT_COMPAT, 'UTF-8');
     $groupe = null;
     $sexe = null;
