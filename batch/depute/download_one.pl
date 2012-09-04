@@ -5,10 +5,10 @@ $a = WWW::Mechanize->new();
 
 $uri = $file = shift;
 $file =~ s/^.*\/([^\/]+)/$1/;
-print "$file\n" if ($verbose);
+print "$file : $uri\n";
 $a->get($uri);
 mkdir html unless -e "html/" ;
-open FILE, ">", "html/$file";
+open FILE, ">:utf-8", "html/$file";
 print FILE $a->content;
 close FILE;
 

@@ -12,7 +12,7 @@ sub download_fiche {
 	print "$file : $uri\n" if ($verbose);
 	$a->get($uri);
 	mkdir html unless -e "html/" ;
-	open FILE, ">", "html/$file";
+	open FILE, ">:utf-8", "html/$file";
 	print FILE $a->content;
 	close FILE;
 	return $file;
