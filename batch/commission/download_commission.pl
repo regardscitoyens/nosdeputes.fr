@@ -3,7 +3,7 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
-$a = WWW::Mechanize->new();
+$a = WWW::Mechanize->new(autocheck => 0);
 $legislature = shift || 14;
 $start = shift || '0';
 $count = 50;
@@ -56,7 +56,7 @@ if ($legislature == 13) {
   push(@url, "http://www.assemblee-nationale.fr/13/cr-cegrippea/09-10/");
 }
 
-$a = WWW::Mechanize->new();
+$a = WWW::Mechanize->new(autocheck => 0);
 
 foreach $url (@url) {
 
