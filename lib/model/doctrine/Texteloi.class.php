@@ -81,7 +81,7 @@ class Texteloi extends BaseTexteloi
       ->andWhere('t.name = ?', "loi:numero=".$this->numero)
       ->fetchArray();
     $res = count($sections);
-    if ($res == O) {
+    if ($res == 0) {
      #print "Pas de dossier trouvé pour le texte $this->id\n";
      return false;
     } else if ($res == 1) {
