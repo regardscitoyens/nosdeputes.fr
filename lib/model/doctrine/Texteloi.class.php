@@ -99,7 +99,7 @@ class Texteloi extends BaseTexteloi
   }
 
   public function setAuteurs($signataires) {    
-    //$debug=1;
+    $debug=0;
     $this->signataires = $signataires;
    //Set signatires, auteurs via PArlemnaitreTexteDocu et Organisme
     $orga = null;
