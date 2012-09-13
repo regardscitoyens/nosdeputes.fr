@@ -15,7 +15,7 @@ class sendAlertTask extends sfBaseTask
 
   protected function execute($arguments = array(), $options = array())
   {
-    $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['dev'], true);
+    $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);
     $context = sfContext::createInstance($this->configuration);
     $this->configuration->loadHelpers(array('Partial', 'Url'));
