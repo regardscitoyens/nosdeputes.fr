@@ -154,6 +154,8 @@ class apiActions extends sfActions
     $res['date_naissance'] = $parl->date_naissance;
     $res['nom_circo'] = $parl->nom_circo;
     $res['num_deptmt'] = $parl->getNumDepartement();
+    $res['reserve_deputes_1'] = '';
+    $res['reserve_deputes_2'] = '';
     $res['mandat_debut'] = $parl->debut_mandat;
     if ($parl->fin_mandat)
       $res['mandat_fin'] = $parl->fin_mandat;
