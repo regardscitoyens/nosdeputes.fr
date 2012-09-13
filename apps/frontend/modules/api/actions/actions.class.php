@@ -115,8 +115,6 @@ class apiActions extends sfActions
        foreach(array_keys($senateur) as $key)
         if (!isset($this->champs[$key]))
          $this->champs[$key] = 1;
-      $senateur['api_url'] = 'http://'.$_SERVER['HTTP_HOST'].url_for('api/parlementaire?format='.$request->getParameter('format').'&slug='.$dep->slug);
-      $this->champs['api_url'] = 1;
       $this->res['senateurs'][] = array('senateur' => $senateur);
     }
     $this->templatize($request, 'nossenateurs.fr_senateurs'.($request->getParameter('current') == true ? "_en_mandat" : ""));
@@ -188,7 +186,12 @@ class apiActions extends sfActions
     $res['profession'] = $parl->profession;
     $res['place_en_hemicycle'] = $parl->place_hemicycle;
     $res['url_institution'] = $parl->url_institution;
+    $res['id_institution'] = $parl->id_institution;
     $res['slug'] = $parl->getSlug();
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    $res['url_nossenateurs'] = url_for('@parlementaire?slug='.$res['slug'], 'absolute=true');
+    $res['url_nossenateurs_api'] = url_for('api/parlementaire?format='.$format.'&slug='.$res['slug'], 'absolute=true');
+    $res['nb_mandats'] = count(unserialize($parl->getAutresMandats()));
     return $res;
   }
 
