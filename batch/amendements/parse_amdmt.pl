@@ -210,6 +210,7 @@ sub clean_auteurs {
   $txt =~ s/Mm[. ]/MM./ig;
   $txt =~ s/\s+e+t\s+([A-ZÉl])/, $1/g;
   $txt =~ s/^et\s+//g;
+  $txt =~ s/ et( del? )/,\1/g;
   $txt =~ s/\s+,/,/g;
   $txt =~ s/(,\s*,|,+)/,/g;
   $txt =~ s/,+/,/g;
