@@ -107,6 +107,7 @@ sub texte {
            $output = 'expose';
         }
         $line2 =~ s/"\s*([^"]*)\s*"/« \1 »/g;
+        $line2 =~ s/"/\\"/g;
     	if (!$amdmt{$output}) { $amdmt{$output} = "<p>".$line2."</p>"; }
     	else { $amdmt{$output} = $amdmt{$output}."<p>".$line2."</p>"; }
     }
