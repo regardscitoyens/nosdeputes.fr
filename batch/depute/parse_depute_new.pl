@@ -48,7 +48,7 @@ sub add_mandat {
   $cause =~ s/(du gouvernement) :.*$/\1/i;
   $premiers_mandats{"$start / $end / ".lc($cause)} = 1;
   $depute{'debut_mandat'} = max_date($start,$depute{'debut_mandat'});
-  $depute{'fin_mandat'} = max_date($end,$depute{'fin_mandat'}) if ($end !~ /^$/ && max_date($end,"20/06/2007") != "20/06/2007");
+  $depute{'fin_mandat'} = max_date($end,$depute{'fin_mandat'}) if ($end !~ /^$/ && max_date($end,$depute{'debut_mandat'}) != $depute{'debut_mandat'});
 }
 
 if ($file =~ /(\d+)/) {
@@ -72,7 +72,7 @@ foreach $line (split /\n/, $string) {
     }
   } elsif (!$depute{'circonscription'} && $line =~ />([^<]*) \((\d+[èrme]+)( circonscription)?\)</i) {
     $depute{'circonscription'} = "$1 ($2)";
-  } elsif ($line =~ /Née? le ([0-9]+e?r? \S+ [0-9]+)( [àau]+ (.*))?</i) {
+  } elsif ($line =~ /Née? le ([0-9]+e?r? \S+ [0-9]+)( [àaux]+ (.*))?</i) {
     $depute{'date_naissance'} = join '/', reverse datize($1);
     $lieu = $3;
     $lieu =~ s/\s*\(\)\s*//g;
