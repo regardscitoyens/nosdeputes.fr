@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-
+use utf8;
 use HTML::TokeParser;
 require "finmandats.pm";
 
@@ -103,7 +103,7 @@ sub mandat {
 		    $fonction =~ s/ par les groupes//;
 		    $fonction =~ s/ du bureau//;
 		    $orga =~ s/\s+$//;
-		    $orga =~ s/Assembl�e Nationale/Bureau de l'Assembl�e Nationale/;
+		    $orga =~ s/Assemblée Nationale/Bureau de l'Assemblée Nationale/;
 		    $orga =~ s/^commission.*\)( du | de la | de l')//i;
 		    $deb = "";
 		    if ($orga =~ s/( depuis)? le : ([\d\/]+)//) {
@@ -163,7 +163,7 @@ sub place {
     }
 }
 
-while($t = $p->get_tag("h2", "img")) {
+while($t = $p->get_tag("h2", "img", "abbr", "h1")) {
     if ($t->[0] eq 'img') {
 	if (! $depute{'photo'} && $t->[1]{'src'} =~ /photo/) {
 	    $img = $t->[1]{'src'};
@@ -174,8 +174,9 @@ while($t = $p->get_tag("h2", "img")) {
 	}
 	next;
     }
-    $_ = $p->get_text('/h2');
-    if (/Informations générales/) {
+    $_ = $p->get_text('/h2', '/abbr', '/h1');
+    print "h2: $_\n";
+    if (/Informations générales/ || /Biographie/) {
 	infosgene($p);
     }elsif (/Contacts et site internet/) {
 	contact($p);
@@ -194,7 +195,7 @@ while($t = $p->get_tag("h2", "img")) {
 
 #On récupère le nom de famille à partir des emails
 $nomdep = $depute{'Nom'};
-$nomdep =~ s/[éèêë]+/e/ig;
+$nomdep =~ s/[éèëê]+/e/ig;
 @noms = split / /, $nomdep;
 if ((join " ", keys %{$depute{'Mails'}}) =~ /(\S+)\@assemblee/) {
     $login = $1;
@@ -258,7 +259,7 @@ if ($yml) {
     
     print "  depute_".$depute{'id_an'}.":\n"; 
     foreach $k (keys %depute) { 
-	next if ($k =~ /supplÃ©ant/i); 
+	next if ($k =~ /suppléant/i); 
 	if (ref($depute{$k}) =~ /HASH/) { 
 	    print "    ".lc($k).":\n"; 
 	    foreach $i (keys %{$depute{$k}}) { 
