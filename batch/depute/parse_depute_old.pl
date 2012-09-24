@@ -163,7 +163,7 @@ sub place {
     }
 }
 
-while($t = $p->get_tag("h2", "img", "abbr", "h1")) {
+while($t = $p->get_tag("h2", "img")) {
     if ($t->[0] eq 'img') {
 	if (! $depute{'photo'} && $t->[1]{'src'} =~ /photo/) {
 	    $img = $t->[1]{'src'};
@@ -174,9 +174,8 @@ while($t = $p->get_tag("h2", "img", "abbr", "h1")) {
 	}
 	next;
     }
-    $_ = $p->get_text('/h2', '/abbr', '/h1');
-    print "h2: $_\n";
-    if (/Informations générales/ || /Biographie/) {
+    $_ = $p->get_text('/h2'); 
+    if (/Informations générales/) {
 	infosgene($p);
     }elsif (/Contacts et site internet/) {
 	contact($p);
