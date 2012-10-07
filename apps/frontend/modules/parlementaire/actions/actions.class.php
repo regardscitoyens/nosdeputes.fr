@@ -314,7 +314,7 @@ class parlementaireActions extends sfActions
   public function executeTag(sfWebRequest $request) {
     $this->tquery = null;
     if ($this->tag = $request->getParameter('tags')) {
-      $tags = split(',', $this->tag);
+      $tags = preg_split('/,/', $this->tag);
 
       $this->parlementaires = Doctrine::getTable('Intervention')
         ->createQuery('i')

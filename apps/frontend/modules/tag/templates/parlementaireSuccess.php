@@ -35,4 +35,4 @@ foreach ($sessions as $s) {
   else echo '</b>';
 }?></p>
 </div>
-   <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'min_tag' => 2, 'route' => '@tag_parlementaire_interventions?parlementaire='.$parlementaire->slug.'&', 'limit'=>1000)); ?>
+   <?php echo include_component('tag', 'tagcloud', array('tagquery' => $qtag, 'model' => 'Intervention', 'min_tag' => 2, 'extraroute' => '&tag=parlementaire%3D'.myTools::solrize($parlementaire->nom), 'limit'=>1000)); ?>

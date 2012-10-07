@@ -40,6 +40,18 @@ class myTools {
     }
   }
 
+  public static function solrize($str) {
+    $str = strtolower(trim($str));
+    $str = preg_replace('/[àâÀÂ]/', '', $str);
+    $str = preg_replace('/[àâÀÂ]/', 'a', $str);
+    $str = preg_replace('/[éèëêÉÈËÊ]/', 'e', $str);
+    $str = preg_replace('/[ïîÏÎ]/', 'i', $str);
+    $str = preg_replace('/[ôöÖÔ]/', 'o', $str);
+    $str = preg_replace('/[ùûüÙÛÜ]/', 'Ô', $str);
+    $str = preg_replace('/[çÇ]/', 'c', $str);
+    $str = preg_replace('/\s+/', '+', $str);
+    return $str;
+  }
 
   public static function betterUCFirst($str) {
     $str = ucfirst($str);
