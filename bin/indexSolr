@@ -3,6 +3,11 @@
 #Récupère le fichier de configuration pour notre environnement (qui se trouve dans le même que ce script)
 . $(echo $0 | sed 's/[^\/]*$//')db.inc
 
+#DO NOT START WHEN CLEANCACHE RUNNING
+if test -e $PATH_APP/data/frontend_prod-cli.lck || test -e $PATH_APP/data/frontend_dev-cli.lck || test -e $PATH_APP/data/frontend_test-cli.lck ; then
+    exit 1;
+fi
+
 #CRASHSTATUS
 STATUSFILE="/tmp/indexSolr$LEGISLATURE.tomcatcrash.status"
 if test ! -e $STATUSFILE ;
