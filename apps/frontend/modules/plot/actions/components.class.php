@@ -23,7 +23,7 @@ class plotComponents extends sfComponents
       $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year);
       if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
       if ($sem0 >= 52 && $sem <= 1) $sem0 = 0;
-      $n_weeks = ($annee - $annee0)*53 + $sem - $sem0;
+      $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
 #print "$date ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
     } else {
       $query4 = Doctrine_Query::create()
