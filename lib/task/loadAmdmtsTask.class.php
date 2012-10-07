@@ -45,7 +45,6 @@ class loadAmdmtsTask extends sfBaseTask {
             if (!$amdmt) {
               $ct_crees++;
               $amdmt = new Amendement();
-              $amdmt->source = $json->source;
               $amdmt->legislature = $json->legislature;
               $amdmt->texteloi_id = $json->loi;
               $amdmt->addTag('loi:numero='.$amdmt->texteloi_id);
@@ -55,6 +54,7 @@ class loadAmdmtsTask extends sfBaseTask {
               $modif = false;
             }
             if ($modif) {
+              $amdmt->source = $json->source;
               $amdmt->date = $json->date;
               $lettre = $amdmt->getLettreLoi();
               if ($json->serie) {
