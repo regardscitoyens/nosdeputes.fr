@@ -64,7 +64,7 @@ $heure{''} = '00';
 if ($string =~ /ance est ouverte/i) {
     $heure = '09:30';
 }
-if ($string =~ /ouverte[^\.]+à ([^\.]+) heures?\s*([^\.]*)\./) {
+if ($string =~ /ouverte[^\.]+à ([^\.]+) heures?\s*([^\.\s]*)\s*\./) {
     $heure = $heure{$1}.':'.$heure{$2};
 }
 
