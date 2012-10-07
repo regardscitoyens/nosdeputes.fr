@@ -47,7 +47,7 @@ class myTools {
     $str = preg_replace('/[éèëêÉÈËÊ]/', 'e', $str);
     $str = preg_replace('/[ïîÏÎ]/', 'i', $str);
     $str = preg_replace('/[ôöÖÔ]/', 'o', $str);
-    $str = preg_replace('/[ùûüÙÛÜ]/', 'Ô', $str);
+    $str = preg_replace('/[ùüûÙÛÜ]/', 'u', $str);
     $str = preg_replace('/[çÇ]/', 'c', $str);
     $str = preg_replace('/\s+/', '+', $str);
     return $str;

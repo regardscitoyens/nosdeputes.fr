@@ -52,11 +52,11 @@ class tagSeanceTask extends sfBaseTask
     echo "count:\n\t";
     $totinters = $q->count();
     echo $totinters."\n";
-    $minsize = 1;
+    $minsize = 2;
     $exclmin = 3;
     if ($totinters < 20000) {
-      $minsize = 5;
-      $exclmin = 0.2;
+      $minsize = 6;
+      $exclmin = 5;
     }
     $array = $q->fetchArray();
     $words = $this->count($array, 0, $minsize);
