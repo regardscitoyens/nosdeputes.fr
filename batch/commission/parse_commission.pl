@@ -253,7 +253,7 @@ foreach $line (split /\n/, $string)
     }
     if ($line =~ /<h[1-9]+/i) {
         rapporteur();
-#       print "$line\n";
+       #print "$line\n";
         if (!$date && $line =~ /SOMdate|\"seance\"|h2/) {
             if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
               if ($line =~ /\w+\s+(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/i) {
@@ -275,7 +275,7 @@ foreach $line (split /\n/, $string)
             }
         }
     }
-    if ($line =~ /\<[p]/i || ($line =~ /\<h[1-9]+ class="titre\d+/i && $line !~ /Commission/)) {
+    if ($line =~ /\<p/i || ($line =~ /\<h[1-9]+ class="titre\d+/i && $line !~ /Commission/)) {
 	$found = 0;
 	$line =~ s/\s*\<\/?[^\>]+\>//g;
 	$line =~ s/^\s+//;
@@ -284,6 +284,10 @@ foreach $line (split /\n/, $string)
 
 	#si italique ou tout gras => commentaire
 	if ($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) {
+	    if (!$timestamp && !$commission && $line =~ /^\|(.*(groupe|mission|délégation|office|comité).*)\|\s*$/i) {
+		$commission = $1;
+		next;
+	    }
 	    checkout() if ($intervenant);	    
 	    rapporteur();
 	    $found = 1;

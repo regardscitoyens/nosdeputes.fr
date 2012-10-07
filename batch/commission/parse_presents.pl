@@ -119,6 +119,9 @@ foreach $line (split /\n/, $string)
 	    }
 	}
     }
+    if (!$commission && $line =~ /^\s*<p>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
+        $commission = $1;
+    }
     if ($present) {
 	$line =~ s/<[^>]+>//gi;
 	$line =~ s/&[^;]*;/ /gi;
