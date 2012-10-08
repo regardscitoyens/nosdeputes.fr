@@ -340,7 +340,9 @@ foreach $line (split /\n/, $string)
 	    if ($titre =~ /^[\/\s]*[\wéè]+ \s*partie[\/\s]*(suite[\/\s]*|)$/i || $titre =~ /^\s*[\(\/]+.*[\/\)]+\s*$/) {
 		next
 	    }
-	    $donetitre1 = 1;
+	    if ($titre !~ /rappels? au règlement/i) {
+            $donetitre1 = 1;
+        }
 	    $titre1 = $titre;
 	    $titre2 = '';
 	    $amendements = @pre_amendements = ();
