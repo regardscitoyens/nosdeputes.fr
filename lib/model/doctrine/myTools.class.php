@@ -42,7 +42,6 @@ class myTools {
 
   public static function solrize($str) {
     $str = strtolower(trim($str));
-    $str = preg_replace('/[àâÀÂ]/', '', $str);
     $str = preg_replace('/[àâÀÂ]/', 'a', $str);
     $str = preg_replace('/[éèëêÉÈËÊ]/', 'e', $str);
     $str = preg_replace('/[ïîÏÎ]/', 'i', $str);
