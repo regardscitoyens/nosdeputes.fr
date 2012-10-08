@@ -26,7 +26,11 @@ $(document).ready(function() {
       $(this).attr("alt", $(this).attr('title'));
       $(this).removeAttr('title');
       $(this).mouseover(function() {
-        $("#loupe").text($(this).text()+" ("+$(this).attr("alt")+")");
+        text = $(this).text();
+        if ($(this).attr("alt")) {
+          text = text + " ("+$(this).attr("alt")+")";
+        }
+        $("#loupe").text(text);
         $("#loupe").css("display", "block");
       });
     }
