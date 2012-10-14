@@ -4,7 +4,7 @@
 . $(echo $0 | sed 's/[^\/]*$//')db.inc
 
 #LOCK
-LOCK="/tmp/sendAlert.bash.lock"
+LOCK="/tmp/sendAlert$LEGISLATURE.bash.lock"
 if test -e $LOCK ;
 then
 #	echo Script locké par $(cat $LOCK) : $LOCK
