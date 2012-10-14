@@ -25,11 +25,15 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   } else {
     $amdmt{'numero'} = (10000*$lettre+$num);
   }
-} elsif ($source =~ /(\d{2})\/amendements\/(\d{4})S?\/(\d+)\./i) {
+} elsif ($source =~ /(\d{2})\/amendements\/(\d{4})([A-Z])?\/(\d+)\./i) {
   $amdmt{'legislature'} = $1;
   $amdmt{'loi'} = $2+0;
-  $num = $3+0;
+  $lettre = $3;
+  $num = $4+0;
   $amdmt{'numero'} = $num;
+  if ($lettre != "S") {
+    $amdmt{'numero'} = $num.uc($lettre);
+  }
 }
 
 open(FILE, $file) ;
