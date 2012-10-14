@@ -31,8 +31,9 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   $lettre = $3;
   $num = $4+0;
   $amdmt{'numero'} = $num;
-  if ($lettre != "S") {
-    $amdmt{'numero'} = $num.uc($lettre);
+  print $lettre;
+  if ($lettre !~ "S") {
+    $amdmt{'numero'} .= uc($lettre);
   }
 }
 
@@ -51,6 +52,8 @@ $string =~ s/&Egrave;/È/g;
 $string =~ s/&egrave;/è/g;
 $string =~ s/&Agrave;/À/g;
 $string =~ s/&agrave;/à/g;
+$string =~ s/&Ccedil;/Ç/g;
+$string =~ s/&ccedil;/ç/g;
 $string =~ s/\\//g;
 close FILE;
 
