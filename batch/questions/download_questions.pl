@@ -14,7 +14,7 @@ $last_record = "@last_record";
 close FILE;
 
 $url = "http://recherche2.assemblee-nationale.fr/questions/resultats-questions.jsp?NumLegislature=".$legislature."Questions&C1=QE&Dates=DPQ&Scope=TEXTEINTEGRAL&SortField=NUM&SortOrder=DESC&format=HTML";
-$a = WWW::Mechanize->new();
+$a = WWW::Mechanize->new(autocheck => 0);
 $a->get($url);
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
@@ -31,7 +31,7 @@ if ($last_record < 0) {
 } 
 print "Download questions écrites numéro ".$last_record." à ".($last_number+100).'\n\n';
 
-for ($cpt = 0, $last_record ; $cpt < $last_number+100 ; $cpt++) {
+for ($cpt = ($last_record >= 100 ? $last_record-100 : 0) ; $cpt < $last_number+100 ; $cpt++) {
     $htmfile = "http://questions.assemblee-nationale.fr/q".$legislature."/".$legislature."-".$cpt."QE.htm";
     $htmfile =~ s/^\s+//gi;
     $count++;
