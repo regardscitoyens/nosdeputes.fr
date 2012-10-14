@@ -30,6 +30,7 @@ if ($display_text) {
 
 my %depute;
 my %groupes;
+my %orgas;
 
 sub clean_vars {
   $encours = $lieu = $organisme = $fonction = "";
@@ -143,7 +144,10 @@ foreach $line (split /\n/, $string) {
         $tmporga = lc($organisme);
         $tmporga =~ s/\W/./g;
         $fonction =~ s/\s*(d[elau'\s]+)?$tmporga\s*//i;
-        $depute{$encours}{trim($lieu)." / ".trim($organisme)." / ".trim($fonction)." / $dates"} = 1;
+        if (!$orgas{trim($lieu)." / ".trim($organisme)}) {
+          $depute{$encours}{trim($lieu)." / ".trim($organisme)." / ".trim($fonction)." / $dates"} = 1;
+          $orgas{trim($lieu)." / ".trim($organisme)} = 1;
+        }
       } elsif ($line =~ /^\s*(.[^A-Z\(]+) d(e la |[ue]s? |'|e l')([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)$/) {
 #      } elsif ($line =~ /^\s*(.[^(A-ZÀÉÈÊËÎÏÔÙÛÇ]*) d([ue](s| la)? |'|e l')(\U.*)$/) {
         $organisme = $1;
@@ -177,7 +181,10 @@ foreach $line (split /\n/, $string) {
         $organisme = "Conseil municipal" if ($fonction =~ /Maire/i);
       }
       $lieu =~ s/, (.*)$/ (\1)/;
-      $depute{$encours}{trim($lieu)." / ".trim($organisme)." / ".trim($fonction)} = 1;
+      if (!$orgas{trim($lieu)." / ".trim($organisme)}) {
+        $depute{$encours}{trim($lieu)." / ".trim($organisme)." / ".trim($fonction)} = 1;
+        $orgas{trim($lieu)." / ".trim($organisme)} = 1;
+      }
     } elsif ($encours =~ /groupes/ && $line =~ s/^\s*(.*) : - //) {
       $fonction = $1;
       $type = "Groupe d'amitié France-";
@@ -187,7 +194,10 @@ foreach $line (split /\n/, $string) {
         $gpe =~ s/\(République du\)/(République démocratique du)/i;
         if (!$groupes{$gpe}) {
           $groupes{$gpe} = 1;
-          $depute{$encours}{$type.trim($gpe)." / ".lc(trim($fonction))} = 1;
+          if (!$orgas{$type.trim($gpe)}) {
+            $depute{$encours}{$type.trim($gpe)." / ".lc(trim($fonction))} = 1;
+            $orgas{$type.trim($gpe)} = 1;
+          }
         }
       }
     } else {
@@ -216,7 +226,10 @@ foreach $line (split /\n/, $string) {
         $organisme =~ s/^(Assemblée nationale)/Bureau de l'\1/i;
         $organisme =~ s/("|\(\s*|\s*\))//g;
       }
-      $depute{$encours}{trim($organisme)." / ".trim($fonction)} = 1;
+      if (!$orgas{trim($organisme)}) {
+        $depute{$encours}{trim($organisme)." / ".trim($fonction)} = 1;
+        $orgas{trim($organisme)} = 1;
+      }
     }
   }
 }
