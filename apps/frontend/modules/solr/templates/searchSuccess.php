@@ -323,7 +323,7 @@ function facet2Human($id, $facet = "") {
   <p class="photo"><a href="<?php echo $record['link']; ?>" rel="nofollow"><?php echo $record['photo']; ?></a></p>
   <?php } ?>
   <p class="intervenant"><a href="<?php echo $record['link']; ?>" rel="nofollow"><?php echo $record['personne']; ?></a></p>
-  <p class="content"><?php echo $record['highlighting']; ?></p>
+  <p class="content"><?php echo preg_replace('/^'.$record['personne'].' /', '', $record['highlighting']); ?></p>
   <p class="more"><a href="<?php echo $record['link']; ?>">Consulter</a></p>
   </div>
   <div class="record">

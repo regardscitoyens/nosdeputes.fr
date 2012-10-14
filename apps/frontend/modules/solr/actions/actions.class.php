@@ -32,6 +32,7 @@ class solrActions extends sfActions
       return $obj->getImage();
     }
   }
+
  /**
   * Executes index action
   *
@@ -41,9 +42,10 @@ class solrActions extends sfActions
   {
     if ($search = $request->getParameter('search')) {
       if ($ob = $request->getParameter('object_name'))
-	$ob = '&object_name='.$ob;
-      return $this->redirect('solr/search?query='.$search.$ob);
+        $ob = '&object_name='.$ob;
+      return $this->redirect('@recherche_solr?query='.$search.$ob);
     }
+
     $this->query = $request->getParameter('query');
     
     $query = preg_replace('/\*/', '', $this->query);
