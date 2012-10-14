@@ -1,5 +1,5 @@
 #!/usr/bin/perl
-
+use utf8;
 use WWW::Mechanize;
 use HTML::TokeParser;
 $legislature = shift || 14;
@@ -12,9 +12,10 @@ sub download_fiche {
 	print "$file : $uri\n" if ($verbose);
 	$a->get($uri);
 	mkdir html unless -e "html/" ;
-	open FILE, ">:utf-8", "html/$file";
+	open FILE, ">:utf8", "html/$file" || warn("cannot write on html/$file");
 	print FILE $a->content;
 	close FILE;
+	print "html/$file written\n" if ($verbose);
 	return $file;
 }
 $a = WWW::Mechanize->new();
