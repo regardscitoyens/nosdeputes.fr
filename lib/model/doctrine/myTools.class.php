@@ -59,7 +59,7 @@ class myTools {
     return url_for('@recherche_solr?query='.$query, $absolute);
   }
 
-  private static function solrize($str) {
+  public static function solrize($str) {
     $str = trim($str);
     $str = str_replace(array('à', 'â', 'À', 'Â'), 'a', $str);
     $str = str_replace(array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ë', 'Ê'), 'e', $str);

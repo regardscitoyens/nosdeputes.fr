@@ -207,7 +207,7 @@ class solrActions extends sfActions
       $this->getUser()->setFlash('error', 'Désolé, le moteur de recherche est indisponible pour le moment. <!-- '.$query." $e".' -->');
     }
     
-    if  (!$format && count($results['response']['docs']) == 1 && $results['response']['docs'][0]['object_name'] == 'Parlementaire' && !$request->getParameter('format')) {
+    if  (!$format && count($results['response']['docs']) == 1 && $results['response']['docs'][0]['object_name'] == 'Parlementaire' && !$request->getParameter('format') && !$request->getParameter('noredirect')) {
       return $this->redirect($results['response']['docs'][0]['object']->getLink());
     }
 
