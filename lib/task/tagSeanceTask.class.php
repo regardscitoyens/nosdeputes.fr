@@ -63,9 +63,9 @@ class tagSeanceTask extends sfBaseTask
     $cpt = 0;
     $tot = count($words);
 
-    $exclude = array('rappelle' => 1, 'hong' => 1, applicable, expliqué, propose, relative, 'indique' => 1, 'vingt' => 1, 'janvier' => 1, 'puis' => 1, 'jour' => 1, 'lecture'=>1, 'séance'=>1, 'alinéa'=>1, 'résolution'=>1, 'adoption'=>1, 'collègue'=>1, 'cher'=>1, 'collègues'=>1, 'chers'=>1,'bis'=>1, '1er'=>1, 'rectifié'=>1, 'question'=>1, 'rédactionnel'=>1, 'scrutin'=>1, 'exposer'=>1, 'identiques'=>1, 'identique'=>1, 'commission'=>1, 'adopte'=>1, 'rejette' => 1, 'additionnel' => 1, 'tendant' => 1, 'examiné' => 1, 'examine' => 1, 'rejeté'=> 1, 'avis' => 1, 'suivant'=>1, 'estimé'=>1, 'déclaré'=>1, 'parce'=>1, 'beaucoup'=>1, 'afin'=>1, 'madame'=>1, 'sous'=>1, 'bonne'=>1, 'monsieur'=>1, 'quelle'=>1, 'quinze'=>1, 'lors'=>1, 'là'=>1, 'long'=>1, 'messieurs'=>1, 'ici'=>1, 'trois'=>1, 'êtes'=>1, 'serait'=>1, 'seront'=>1, 'dix'=>1, 'mot'=>1, 'vin'=>1, 'mon'=>1, 'hier'=>1, 'date'=>1, 'cinq'=>1, 'celui'=>1, 'réponse' => 1, 'allez' => 1, 'après' => 1, 'bureau' => 1, 'cause' => 1, 'sous-amendement' => 1, 'certaine' => 1, 'chose' => 1, 'code' => 1, 'compris' => 1, 'général' => 1, 'pris' => 1 'demande' => 1, 'dernière' => 1, 'donner' => 1, 'délégation' => 1, 'défendu' => 1, 'défavorable' => 1, 'exemple' => 1, 'favorable' => 1, 'fonction' => 1, 'grand' => 1, 'habitant' => 1, 'haut' => 1, 'juridique' => 1, 'mars' => 1, 'membre' => 1, 'mettre' => 1, 'mise' => 1, 'ministère' => 1, 'mission' => 1, 'niveau' => 1, 'oui' => 1, 'organique' => 1, 'objet' => 1, 'notion' => 1, 'norme' => 1, 'pense' => 1, 'première' => 1, 'prendre' => 1, 'principe' => 1, 'procédure' => 1, 'puisque' => 1, 'rien' => 1, 'sceaux' => 1, 'réponse' => 1, 'spécial' => 1, 'vise' => 1, 'vos' => 1, 'vote' => 1, 'suppresion' => 1, 'urgence' => 1, "d'avenir professeur" => 1, "finances rectificative" => 1, "garde des sceaux" => 1, "rappel au règlement" => 1, "rapporteur" => 1);
+    $exclude = array('rappelle' => 1, 'hong' => 1, 'applicable' => 1, 'expliqué' => 1, 'propose' => 1, 'relative' => 1, 'indique' => 1, 'vingt' => 1, 'janvier' => 1, 'puis' => 1, 'jour' => 1, 'lecture' => 1, 'séance' => 1, 'alinéa'=>1, 'résolution'=>1, 'adoption'=>1, 'collègue'=>1, 'cher'=>1, 'collègues'=>1, 'chers'=>1,'bis'=>1, '1er'=>1, 'rectifié'=>1, 'question'=>1, 'rédactionnel'=>1, 'scrutin'=>1, 'exposer'=>1, 'identiques'=>1, 'identique'=>1, 'commission'=>1, 'adopte'=>1, 'rejette' => 1, 'additionnel' => 1, 'tendant' => 1, 'examiné' => 1, 'examine' => 1, 'rejeté'=> 1, 'avis' => 1, 'suivant'=>1, 'estimé'=>1, 'déclaré'=>1, 'parce'=>1, 'beaucoup'=>1, 'afin'=>1, 'madame'=>1, 'sous'=>1, 'bonne'=>1, 'monsieur'=>1, 'quelle'=>1, 'quinze'=>1, 'lors'=>1, 'là'=>1, 'long'=>1, 'messieurs'=>1, 'ici'=>1, 'trois'=>1, 'êtes'=>1, 'serait'=>1, 'seront'=>1, 'dix'=>1, 'mot'=>1, 'vin'=>1, 'mon'=>1, 'hier'=>1, 'date'=>1, 'cinq'=>1, 'celui'=>1, 'allez' => 1, 'après' => 1, 'bureau' => 1, 'cause' => 1, 'sous-amendement' => 1, 'certaine' => 1, 'chose' => 1, 'code' => 1, 'compris' => 1, 'général' => 1, 'pris' => 1, 'demande' => 1, 'jeudi' => 1, 'jamais' => 1, 'juillet' => 1, 'mois' => 1, 'plusieurs' => 1, 'mardi' => 1, 'mercredi' => 1, 'lundi' => 1, 'quatre' => 1, 'semaine' => 1, 'suppression' => 1, 'semble' => 1, 'souvent' => 1, 'vers' => 1, 'jamais' => 1, 'comité' => 1, 'discussion' => 1, 'liens' => 1, 'lieux' => 1, 'membres' => 1, 'vendredi' => 1, 'dernière' => 1, 'donner' => 1, 'délégation' => 1, 'défendu' => 1, 'défavorable' => 1, 'exemple' => 1, 'favorable' => 1, 'fonction' => 1, 'grand' => 1, 'habitant' => 1, 'haut' => 1, 'juridique' => 1, 'mars' => 1, 'membre' => 1, 'mettre' => 1, 'mise' => 1, 'ministère' => 1, 'mission' => 1, 'niveau' => 1, 'oui' => 1, 'organique' => 1, 'objet' => 1, 'notion' => 1, 'norme' => 1, 'pense' => 1, 'première' => 1, 'prendre' => 1, 'principe' => 1, 'procédure' => 1, 'puisque' => 1, 'rien' => 1, 'sceaux' => 1, 'réponse' => 1, 'spécial' => 1, 'vise' => 1, 'vos' => 1, 'vote' => 1, 'suppresion' => 1, 'urgence' => 1, "rapporteur" => 1, "rapporteure" => 1);
     $include = array('télévision' => 1, 'dimanche'=>1, 'internet'=>1, 'outre-mer'=>1, 'logement'=>1, 'militaire'=>1, 'taxe'=>1, 'médecin'=>1, 'hôpital'=>1);
-    $exclude_sentences = array('garde des sceaux'=>1, 'haut-commissaire' => 1, 'monsieur le' => 1, 'madame la présidente'=>1);
+    $exclude_sentences = array('sceaux'=>1, 'commissaire' => 1, 'monsieur' => 1, 'madame'=>1, 'professeur' => 1, 'amendement' => 1, 'règlement' => 1, 'rectificative' => 1, 'rapporteur' => 1);
 
     foreach(array_keys($words) as $k) {
       if (!isset($include[$k]))
@@ -137,11 +137,11 @@ class tagSeanceTask extends sfBaseTask
 
       //Si les groupes de mots ont une certernaines popularité, on les garde
       //Au dessus de 70% d'utilisation le tag contenu est supprimé
-      $debut_bani = 'à|de|la|ainsi|ensuite';
+      $debut_bani = 'à|des?|l[ea\']|les|ainsi|ensuite';
       if (count($sentences)) {
         foreach (array_keys($sentences) as $sent) {
 	  
-          if  (preg_match("/^($debut_bani)/i", $sent) || preg_match("/($debut_bani)$/i", $sent) || preg_match('/\d|amendement|rapporteure?|commision|collègue/i', $sent) )
+          if (preg_match("/^($debut_bani) /i", $sent) || preg_match("/ ($debut_bani)$/i", $sent) || preg_match('/\d|amendement|rapporteure?|mission|collègue/i', $sent) )
             continue;
 	  
           if (preg_match('/^[A-Z][a-z]/', $sent)) {
@@ -156,7 +156,7 @@ class tagSeanceTask extends sfBaseTask
           if (($sentences[$sent]*100/$tot > 0.8 || $sentences[$sent]*100/$words[$sent2word[$sent]] > 70)&& $words[$sent2word[$sent]] > 5) {
 	    $ok = 1;
 	    foreach($exclude_sentences as $excl_sent) {
-	      if (preg_match('/'.$excl_sent.'/', $sent)) {
+	      if (preg_match('/'.$excl_sent.'/i', $sent)) {
 		$ok = 0;
 		break;
 	      }
