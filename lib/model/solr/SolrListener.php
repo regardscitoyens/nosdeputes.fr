@@ -41,7 +41,7 @@ class SolrListener extends Doctrine_Record_Listener
 	  }
 	  return $res;
 	}
-	if (is_object($f) && get_class($f) && ! isset($f->id))
+	if (is_object($f) && get_class($f) && ! isset($f->id) && ! $f->id)
 	  return array();
 	return array(strip_tags($f));
       }
