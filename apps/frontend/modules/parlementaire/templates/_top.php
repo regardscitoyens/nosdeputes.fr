@@ -64,9 +64,9 @@ if (myTools::isFinLegislature()) {
     else if ($mois < 10) echo $mois.' premiers';
     else echo $mois;
     echo ' mois de mandat)</small> :</h3>';
-    if ($mois < 3)
-      $rank = 0;
-    else $rank = 1;
+    $rank = 0;
+    if ($mois > 10 || ($mois > 2 && time() - strtotime(myTools::getDebutLegislature()) < 60*60*24*310))
+      $rank = 1;
   }else {
     echo '<h3>Activité <small>(12 derniers mois)</small> :</h3>';
     $rank = 1;
