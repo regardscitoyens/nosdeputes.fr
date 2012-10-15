@@ -64,7 +64,9 @@ if (myTools::isFinLegislature()) {
     else if ($mois < 10) echo $mois.' premiers';
     else echo $mois;
     echo ' mois de mandat)</small> :</h3>';
-    $rank = 0;
+    if ($mois < 3)
+      $rank = 0;
+    else $rank = 1;
   }else {
     echo '<h3>Activité <small>(12 derniers mois)</small> :</h3>';
     $rank = 1;
@@ -90,7 +92,7 @@ foreach(array_keys($images) as $k) {
   $couleur = 'gris';
   $titre = $value.' '.$titres[$k];
   if ($value < 2) $titre = preg_replace('/s$/', '', str_replace('s ', ' ', $titre));
-  if ($rank && $top[$k]['rank'] <= 150) {
+  if ($rank && $top[$k]['rank'] <= 150 && $value) {
     $couleur = 'vert';
     $titre .=' (fait partie des 150 premiers)';
   }
