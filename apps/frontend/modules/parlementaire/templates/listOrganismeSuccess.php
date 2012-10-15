@@ -57,7 +57,7 @@ if ($page != "seances" && $nrap) {
     }
   }
   echo '</ul>';
-  include_partial('parlementaire/paginate', array('pager'=>$pagerRapports, 'link'=>'@list_parlementaires_organisme?slug='.$orga->getSlug().'&'));
+  include_partial('parlementaire/paginate', array('pager'=>$pagerRapports, 'link'=>url_for('@list_parlementaires_organisme?slug='.$orga->getSlug())."?"));
 }
 if ($page != "rapports" && $nse) {
   echo '<h3>';
