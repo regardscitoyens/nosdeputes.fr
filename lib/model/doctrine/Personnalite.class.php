@@ -6,7 +6,9 @@
 class Personnalite extends BasePersonnalite
 {
   public function __tostring() {
-    return $this->getNom();
+    if ($nom = $this->getNom())
+      return $nom;
+    return "";
   }
 
   /*  public function save(Doctrine_Connection $conn = null) {

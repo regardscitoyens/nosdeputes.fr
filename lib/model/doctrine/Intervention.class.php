@@ -45,18 +45,31 @@ class Intervention extends BaseIntervention
       $titre = 'Question orale du ';
     else {
       if ($this->type === 'commission') {
-        if ($orga = $this->Seance->Organisme->nom)
+        if ($orga = $this->getOrganisme())
           $titre = $orga." - Intervention";
         else $titre = 'Intervention en commission';
       } else $titre = 'Intervention en hémicycle';
       $titre .= ' le ';
     }
     $titre .= myTools::displayShortDate($this->date);
-    if ($this->type === 'question')      
-      $titre .= ' : '.ucfirst($this->Section->getTitre());
-    else if ($this->type === 'loi')
-      $titre .= ' : '.ucfirst($this->Section->Section->getTitreComplet());
+    if ($this->type != 'commission')      
+      $titre .= ' : '.ucfirst($this->getDossier());
     return $titre;
+  }
+
+  public function getDossier() {
+    if ($this->type === 'question' && $section = $this->Section)
+      return $section->getTitre();
+    if ($this->type === 'loi' && $section = $this->Section->Section)
+      return $section->getTitreComplet();
+    return "";
+  }
+
+  public function getOrganisme() {
+    if ($this->type === 'commission' && $seance = $this->Seance)
+      if ($orga = $seance->Organisme)
+        return $orga->nom;
+    return "";
   }
 
   public function setSeance($type, $date, $heure, $session, $commission = null) {

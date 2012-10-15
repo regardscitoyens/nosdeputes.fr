@@ -21,6 +21,12 @@ class Amendement extends BaseAmendement {
     return $str;
   }
 
+  public function getDossier() {
+    if ($section = $this->getSection())
+      return $section->Section->getTitreComplet();
+    return ''; 
+  }
+
   public function setAuteurs($auteurs) {
     $debug=0;
     $auteurs = html_entity_decode($auteurs, ENT_COMPAT, 'UTF-8');

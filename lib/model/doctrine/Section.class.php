@@ -18,6 +18,19 @@ class Section extends BaseSection
     return "";
   }
 
+  public function getParlementaires() {
+    if (!$this->getIsParent())
+      return "";
+    $parls = Doctrine_query::create()->select('p.*')->from('Parlementaire p')
+      ->leftJoin('p.Interventions i')
+      ->leftJoin('i.Section s')
+      ->where('s.id = ? OR s.section_id = ?', array($this->id, $this->id))
+      ->andWhere('i.nb_mots > 20')
+      ->groupBy('p.id')
+      ->execute();
+    return $parls;
+  }
+
   public function setTitreComplet($titre) {
     $this->_set('titre_complet', $titre);
     $this->md5 = md5($titre);

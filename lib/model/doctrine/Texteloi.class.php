@@ -28,6 +28,20 @@ class Texteloi extends BaseTexteloi
     return $str;
   }
 
+  public function getNature() {
+    if (preg_match('/^Proposition /', $this->type))
+      return "proposition";
+    if (preg_match('/^(Projet|Texte)/', $this->type))
+      return "texte";
+    return "rapport";
+  }
+
+  public function getDossier() {
+    if ($section = $this->getSection())
+      return $section->getTitreComplet();
+    return '';
+  }
+
   public function getPersonne() {
     $auteurs = $this->getAuteurs();
     if (!$auteurs) return "";
