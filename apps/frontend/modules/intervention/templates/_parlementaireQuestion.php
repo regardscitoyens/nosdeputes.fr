@@ -17,5 +17,5 @@
   echo '<li>'.link_to($titre, url_for('@interventions_seance?seance='.$question->getSeance()->id).'#table_'.$section->id).'</li>';
 } ?>
 </ul>
-<p class="suivant"><?php echo link_to('Toutes ses questions orales', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention', 'type=question')); ?></p>
+<p class="suivant"><?php echo link_to('Toutes ses questions orales', '@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=question'); ?></p>
 
