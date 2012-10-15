@@ -2,10 +2,14 @@
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
       <div class="b_d_infos">
-      <h2> Informations</h2>
+      <h2>Informations</h2>
     <ul>
 <?php if ($parlementaire->fin_mandat && $parlementaire->fin_mandat >= $parlementaire->debut_mandat) : ?>
-      <li>Mandat clos rempli du <?php echo myTools::displayDate($parlementaire->debut_mandat); ?> au <?php echo myTools::displayDate($parlementaire->fin_mandat); ?> (<?php echo preg_replace("/^(.*sénat.*)$/i", link_to("\\1 &mdash; Voir sur NosSénateurs.fr", "http://www.nossenateurs.fr/".$parlementaire->slug), $parlementaire->getCauseFinMandat()); ?>)</li>
+      <li>Mandat clos rempli du <?php echo myTools::displayDate($parlementaire->debut_mandat); ?> au <?php echo myTools::displayDate($parlementaire->fin_mandat);
+if ($cause = $parlementaire->getCauseFinMandat()) { 
+  echo " (".preg_replace("/^(.*sénat.*)$/i", link_to("\\1 &mdash; Voir sur NosSénateurs.fr", "http://www.nossenateurs.fr/".$parlementaire->slug), $parlementaire->getCauseFinMandat()).")";
+} ?>
+</li>
 <?php else : ?>
       <li>Mandat en cours depuis le <?php echo myTools::displayDate($parlementaire->debut_mandat); ?>
       <?php foreach ($missions as $resp)
