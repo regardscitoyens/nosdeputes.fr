@@ -15,3 +15,5 @@
   echo '<li>'.link_to($titre, url_for('@question_numero?numero='.$question->numero)).'</li>';
 } ?>
 </ul>
+<p class="suivant"><?php echo link_to('Toutes ses questions écrites', myTools::get_solr_list_url('', $parlementaire->nom, 'QuestionEcrite')); ?></p>
+

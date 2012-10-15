@@ -1,4 +1,4 @@
-<?php if (!count($textes)) { ?>
+<?php if (!count($textes) || (count($textes) == 1 && preg_match('/questions?\s/', $textes[0]['Section']['titre']))) { ?>
     <i>Ce député n'est intervenu sur aucun dossier.</i>
 <?php return ;} ?>
 <ul>
@@ -11,3 +11,4 @@ foreach($textes as $texte) {
     break;
 } ?>
 </ul>
+<p class="suivant"><?php echo link_to('Tous ses dossiers', '@parlementaire_textes?slug='.$parlementaire->slug); ?></p>

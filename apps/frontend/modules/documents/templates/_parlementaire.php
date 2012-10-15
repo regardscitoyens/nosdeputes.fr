@@ -16,3 +16,5 @@
   echo '<li>'.link_to($titre, url_for('@document?id='.$doc->id)).'</li>';
 } ?>
 </ul>
+<?php if ($type == "rapport") echo '<p class="suivant">'.link_to('Tous ses rapports', '@parlementaire_documents?slug='.$parlementaire->slug.'&type=rap').'</p>'; ?>
+

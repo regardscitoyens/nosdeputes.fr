@@ -22,7 +22,7 @@
       if ($parlementaire->groupe_acronyme != "") : ?>
       <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getGroupe()->getFonction(); ?>)</li>
       <?php endif; ?>
-      <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, '@list_parlementaires_profession?search='.$parlementaire->profession); else : ?>Non communiquée<?php endif; ?></li>
+      <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, myTools::get_solr_list_url($parlementaire->profession)); else : ?>Non communiquée<?php endif; ?></li>
       <?php if ($parlementaire->url_an) echo '<li>'.link_to('Page sur le site de l\'Assemblée nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'rel'=>'nofollow')).'</li>'; ?>
       <li><a href="http://fr.wikipedia.org/wiki/<?php echo rawurlencode($parlementaire->nom); ?>">Page sur Wikipédia</a></li>
       <?php if ($parlementaire->sites_web) {
@@ -37,7 +37,6 @@
         }
         echo $moreweb;
       }
-      echo myTools::displayContact($parlementaire->adresses, $parlementaire->mails);
       ?>
     </ul><?php
 $note_fonction = false;
@@ -78,7 +77,7 @@ break; } ?></ul></li>
 //         echo "</ul></li>";
 //       } ?>
       </ul>
-      <?php endif; ?> <!-- else : ajouter les infos venant de parsing ancien (anciennes responsabilités) et avant les respon actuelles de ministre machin via les personnalites get fonctions? -->
+      <?php endif; // else : ajouter les infos venant de parsing ancien (anciennes responsabilités) et avant les respon actuelles de ministre machin via les personnalites get fonctions? ?>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
@@ -94,17 +93,14 @@ break; } ?></ul></li>
     $order = 'date';
   }?></h3>
       <?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'order' => $order)); ?>
-      <p class="suivant"><?php echo link_to('Tous ses dossiers', '@parlementaire_textes?slug='.$parlementaire->slug); ?></p>
-      <h3><?php echo link_to('Travaux en commissions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=commission'); ?></h3>
-      <h3><?php echo link_to('Travaux en hémicycle','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=loi'); ?></h3>
-      <h3><?php echo link_to('Toutes ses interventions','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=all'); ?></h3>
+      <h3><?php echo link_to('Travaux en commissions', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention', 'type=commission')); ?></h3>
+      <h3><?php echo link_to('Travaux en hémicycle', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention', 'type=loi')); ?></h3>
+      <h3><?php echo link_to('Toutes ses interventions', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention')); ?></h3>
       <h2>Questions au gouvernement</h2>
       <h3>Ses dernières questions orales</h3>
        <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
-      <p class="suivant"><?php echo link_to('Toutes ses questions orales','@parlementaire_interventions?slug='.$parlementaire->getSlug().'&type=question'); ?></p>
       <h3>Ses dernières questions écrites</h3>
        <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
-      <p class="suivant"><?php echo link_to('Toutes ses questions écrites','@parlementaire_questions?slug='.$parlementaire->getSlug()); ?></p>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
@@ -140,11 +136,10 @@ echo "sur 12 mois";
       <h2>Productions parlementaires</h2>
       <h3>Ses derniers rapports</h3>
       <?php echo include_component('documents', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'type' => 'rap')); ?>
-      <p class="suivant"><?php echo link_to('Tous ses rapports', '@parlementaire_documents?slug='.$parlementaire->slug.'&type=rap'); ?></p>
       <h3>Ses dernières propositions de loi</h3>
       <?php echo include_component('documents', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'type' => 'loi')); ?>
       <p class="suivant"><?php echo link_to('Toutes ses propositions de loi cosignées', '@parlementaire_documents?slug='.$parlementaire->slug.'&type=loi'); ?></p>
-      <h3><?php echo link_to('Tous ses amendements','@parlementaire_amendements?slug='.$parlementaire->getSlug()); ?></h3>
+      <h3><?php echo link_to('Tous ses amendements', myTools::get_solr_list_url('', $parlementaire->nom, 'Amendement')); ?></h3>
       </div>
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>

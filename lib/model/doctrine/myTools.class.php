@@ -40,16 +40,35 @@ class myTools {
     }
   }
 
-  public static function solrize($str) {
-    $str = strtolower(trim($str));
-    $str = preg_replace('/[àâÀÂ]/', 'a', $str);
-    $str = preg_replace('/[éèëêÉÈËÊ]/', 'e', $str);
-    $str = preg_replace('/[ïîÏÎ]/', 'i', $str);
-    $str = preg_replace('/[ôöÖÔ]/', 'o', $str);
-    $str = preg_replace('/[ùüûÙÛÜ]/', 'u', $str);
-    $str = preg_replace('/[çÇ]/', 'c', $str);
+  public static function get_solr_list_url($query="", $parlementaire='', $type='', $tags='', $options= '', $absolute=false) {
+    if ($query)
+      $query = '"'.$query.'"';
+    if ($type)
+      $query .= "&object_name=".$type;
+    if ($parlementaire)
+      $query .= "&tag=parlementaire%3D".self::solrize($parlementaire);
+    if ($tags) {
+      if ($parlementaire)
+        $query .= ",";
+      else $query .= "&tag=";
+      $query .= str_replace('=', '%3D', $tags);
+    }
+    if ($options)
+      $query .= "&".$options;
+    $query .= "&sort=1";
+    return url_for('@recherche_solr?query='.$query, $absolute);
+  }
+
+  private static function solrize($str) {
+    $str = trim($str);
+    $str = str_replace(array('à', 'â', 'À', 'Â'), 'a', $str);
+    $str = str_replace(array('é', 'è', 'ë', 'ê', 'É', 'È', 'Ë', 'Ê'), 'e', $str);
+    $str = str_replace(array('ï', 'î', 'Ï', 'Î'), 'i', $str);
+    $str = str_replace(array('ô', 'ö', 'Ö', 'Ô'), 'o', $str);
+    $str = str_replace(array('ù', 'ü', 'û', 'Ù', 'Û', 'Ü'), 'u', $str);
+    $str = str_replace(array('ç', 'Ç'), 'c', $str);
     $str = preg_replace('/\s+/', '+', $str);
-    return $str;
+    return strtolower($str);
   }
 
   public static function betterUCFirst($str) {

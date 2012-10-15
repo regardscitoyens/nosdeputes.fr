@@ -26,8 +26,8 @@ $rel = preg_replace('/^iZ/', 'î', $rel);
 $rel = preg_replace('/^IZ/', 'Î', $rel);
 if (isset($route)) echo url_for($route.'tags='.$rel, $abs); 
 else {
-  if (!isset($extraroute)) $extraroute = '';
-  echo url_for('@recherche_solr?query="'.preg_replace('/\s+/', '+', $rel).'"&sort=1'.$extraroute, $abs);
+  if (!isset($parlementaire)) $parlementaire = "";
+  echo myTools::get_solr_list_url($rel, $parlementaire, '', '', '', $abs);
 } ?>" title="<?php //echo $tags[$tag]['count']; ?>"><?php
 $nom = preg_replace('/^aZ/', 'â', $tags[$tag]['tag']);
 $nom = preg_replace('/^eZ/', 'é', $nom);
