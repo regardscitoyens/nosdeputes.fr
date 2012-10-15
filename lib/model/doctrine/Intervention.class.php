@@ -44,11 +44,11 @@ class Intervention extends BaseIntervention
     if ($this->type === 'question')
       $titre = 'Question orale du ';
     else {
-      $titre = 'Intervention';
-      if ($this->type === 'commission')
-        $titre .= ' en commission';
-      else
-        $titre .= ' en hémicycle';
+      if ($this->type === 'commission') {
+        if ($orga = $this->Seance->Organisme->nom)
+          $titre = $orga." - Intervention";
+        else $titre = 'Intervention en commission';
+      } else $titre = 'Intervention en hémicycle';
       $titre .= ' le ';
     }
     $titre .= myTools::displayShortDate($this->date);
