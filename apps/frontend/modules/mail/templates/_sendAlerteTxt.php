@@ -13,8 +13,6 @@ foreach ($results['response']['docs'] as $res)
     echo "Commentaire$citoyen : ";
   } else if ($res['object_name'] === "Section")
     echo "Dossier : ";
-  else if ($res['object_name'] === "QuestionEcrite")
-    $titre = str_replace('Question', 'Question écrite', $titre);
   echo $titre."\n";
  if ($res['object_name'] != 'Texteloi') {
   echo "------------------------------------------------\n";
