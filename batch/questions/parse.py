@@ -56,7 +56,10 @@ def extractspan(t):
     span = t.findNextSibling('span', attrs={'class': 'contenu'})
     return span.decodeContents()
 
-s = BeautifulSoup(open(fn).read(), convertEntities=BeautifulStoneSoup.ALL_ENTITIES)
+re_clean_bad_html = re.compile(r'<//[^>]*>')
+html = re_clean_bad_html.sub('', open(fn).read())
+
+s = BeautifulSoup(html, convertEntities=BeautifulStoneSoup.ALL_ENTITIES)
 
 spandict = {
     'ministere_interroge': u'Minist\xe8re interrog\xe9',
