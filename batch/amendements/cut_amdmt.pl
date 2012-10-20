@@ -281,6 +281,7 @@ foreach $line (split /\n/, $string)
             $amdmt{'parent'} = $1;
         }
     } elsif ($line =~ /class="amd(expo|dispo)texte"/i) {
+        irrecevable();
         texte();
     } elsif ($line =~ /class="amdexpotitre"/i) {
         if ($amdmt{'texte'} || !$line =~ /article/i) {
@@ -302,20 +303,24 @@ foreach $line (split /\n/, $string)
     } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td align="center"[^>]*)>.*(M[\.Mml]|Le gouvern)/i) { 
 	auteurs();
     } elsif ($line =~ /\<p style=".*text-indent:/i) {
+        irrecevable();
+	    texte();
+    } elsif ($line =~ /\<p[^\>]*\>(.*)\<\/p\>/i && $texte >= 1) {
+	$line = $1;
+	texte();
+    }
+}
+
+sub irrecevable {
 	if ($line =~ /amendement.*(irrecevable|retir)/i) {
-	    if (!$amdmt{'sort'}) {
+	  if (!$amdmt{'sort'}) {
 		if ($line =~ /irrecevable/i) {
 		    $amdmt{'sort'} = "Irrecevable";
 		} elsif ($line =~ /retir/i) {
 		    $amdmt{'sort'} = "Retiré avant séance";
 		}
-	    }
+	  }
 	}
-	texte();
-    } elsif ($line =~ /\<p[^\>]*\>(.*)\<\/p\>/i && $texte >= 1) {
-	$line = $1;
-	texte();
-    }
 }
 
 if ($num_ident > 0) {
@@ -326,7 +331,7 @@ $amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
 $amdmt{'auteurs'} =~ s/([a-z])\s+(M[\.Mml])/\1, \2/g;
 $amdmt{'auteurs'} =~ s/,\s*M[\s\.mle]+\s*,/,/g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*les\s+[cC]ommissaires.*$//g;
-$amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà\-']*M(.*)/, M\1/g;
+$amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà\(\)\-']*M(.*)/, M\1/g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêà\-']*//g;
 $amdmt{'auteurs'} =~ s/(,\s*,|,+)/,/g;
 $amdmt{'auteurs'} =~ s/,+/,/g;
