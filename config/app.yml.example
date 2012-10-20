@@ -4,6 +4,7 @@ all:
   secret_key: _______PUT_YOUR_KEY_HERE________
   legislature: 13
   lock_commentaires: false
+  allow_autoclean_solr: false
 #  fin_legislature: true
 #  debut_legislature: "2007-06-20"
 #  host_previous_legislature: "2007.nosdeputes.fr"

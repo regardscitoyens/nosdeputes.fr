@@ -108,8 +108,11 @@ class SolrConnector extends sfLogger
       }else{
 	$results['response']['docs'][$i]['object'] = Doctrine::getTable($res['object_name'])->find($res['object_id']);
       }
-      if (!$results['response']['docs'][$i]['object'])
-	$unset[] = $i;
+      if (!$results['response']['docs'][$i]['object']) {
+        if (sfConfig::get('app_allow_autoclean_solr'))
+          $this->deleteLuceneRecord($res['id']);
+        $unset[] = $i;
+      }
     }
     foreach ($unset as $i) {
       unset($results['response']['docs'][$i]);
