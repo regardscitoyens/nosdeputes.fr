@@ -4,7 +4,24 @@
  */
 class InterventionTable extends Doctrine_Table
 {
-  public function findOneBySeanceTimestamp($seance, $timestamp) { 
-    return $this->createQuery('i')->where('seance_id = ?', $seance)->andWhere('timestamp = ?', $timestamp)->limit(1)->fetchOne(); 
+  public function findOneBySeanceTimestamp($seanceid, $timestamp) { 
+    return $this->createQuery('i')->where('seance_id = ?', $seanceid)->andWhere('timestamp = ?', $timestamp)->limit(1)->fetchOne(); 
+  }
+  public function findOneBySeanceTimestampAndSimilarity($seance, $timestamp, $intervention) {
+    $inter = $this->findOneBySeanceTimestamp($seance, $timestamp);
+    if (!$inter) {
+      return null;
+    }
+    $res = similar_text($inter->getIntervention(), $intervention, $pc);
+    if ($res > 0 && $pc > 75) 
+      return $inter;
+    return null;
+  }
+  public function findSimilarFromJson($json) {
+    $seance = Doctrine::getTable('Seance')->findOne($json->type, $json->date, $json->heure, $json->session, $json->commission);
+    if ($seance && $seance->id) {
+      $inter = Doctrine::getTable('Intervention')->findOneBySeanceTimestampAndSimilarity($seance->id, $json->timestamp, $json->intervention);
+      return $inter;
+    }
   }
 }

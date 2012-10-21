@@ -40,7 +40,8 @@ class loadCommissionTask extends sfBaseTask
 	    unlink($dir.$file);
 	    continue;
 	  }
-	  $oldSeance = 0;
+	  $isExistingSeance = 0;
+	  $lasttimestamp = 10000000;
 	  foreach($lines as $line) {
 	    $json = json_decode($line);
             $error = 0;
@@ -67,6 +68,13 @@ class loadCommissionTask extends sfBaseTask
 	      echo "saute séance trop vieille : ".$json->session."\n";
               break;
             }
+
+	    if ($json->timestamp < $lasttimestamp) {
+	      $seance = Doctrine::getTable('Seance')->findOne('commission', $json->date, $json->heure, $json->session, $json->commission);
+	      $isExistingSeance = ($seance && $seance->id);
+	    }
+	    $lasttimestamp = $json->timestamp;
+
 	    $json->intervention = html_entity_decode($json->intervention, ENT_NOQUOTES, "UTF-8");
 	    $json->commission = html_entity_decode($json->commission, ENT_NOQUOTES, "UTF-8");
 	    $json->contexte = html_entity_decode($json->contexte, ENT_NOQUOTES, "UTF-8");
@@ -81,17 +89,14 @@ class loadCommissionTask extends sfBaseTask
 	      $oldid = md5($json->intervention.$json->date.$json->heure.$json->commission);
 	      $intervention = Doctrine::getTable('Intervention')->findOneByMd5($oldid);
 	    }
-
-	    if ($oldSeance && !$intervention) { 
-	      $inter = Doctrine::getTable('Intervention')->findOneBySeanceTimestamp($oldSeance, $json->timestamp); 
-	      if ($inter) { 
-		$res = similar_text($inter->getIntervention(), $json->intervention, $pc); 
-		if ($res > 0 && $pc > 75) 
-		  $intervention = $inter; 
+	    if (!($intervention) && $isExistingSeance) {
+	      $json->type = 'commission';
+	      $intervention = Doctrine::getTable('Intervention')->findSimilarFromJson($json);
+	      if ($intervention) { 
 		$intervention->setIntervention($json->intervention); 
-		$intervention->md5 = $id; 
-		echo "WARNING : Intervention en double trouvée : seance/".$oldSeance."#inter_".$id."\n";  
-	      } 
+		$intervention->setSource($json->source);
+		echo "WARNING : Intervention en double trouvée : seance/".$intervention->seance_id."#inter_".$id."\n";  
+	      }
 	    } 
 	    
 	    if(!$intervention) {
@@ -102,7 +107,7 @@ class loadCommissionTask extends sfBaseTask
 	      $intervention->setSeance('commission', $json->date, $json->heure, $json->session, $json->commission);
 	      $intervention->setSource($json->source);
 	      $intervention->setTimestamp($json->timestamp);
-	    }else $oldSeance = $intervention->seance_id;
+	    }
 	    if ($intervention->md5 != $id) {
 	      $intervention->md5 = $id;
 	    }

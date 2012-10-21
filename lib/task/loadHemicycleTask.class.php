@@ -34,6 +34,8 @@ class loadHemicyleTask extends sfBaseTask
           if ($cpt > 9)
                 exit(1);
           $cpt ++;
+	  $isExistingSeance = 0;
+	  $lasttimestamp = 1000000;
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
             $error = 0;
@@ -57,8 +59,29 @@ class loadHemicyleTask extends sfBaseTask
 	      continue;
 	    }
             $date = $json->date;
+
+	    if ($json->timestamp < $lasttimestamp) {
+	      $seance = Doctrine::getTable('Seance')->findOne('hemicycle', $json->date, $json->heure, $json->session);
+	      $isExistingSeance = ($seance->id);
+	    }
+	    $lasttimestamp = $json->timestamp;
+
 	    $id = md5($json->intervention.$json->date.$json->heure.'hemicyle'.$json->timestamp);
 	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
+
+	    if (!$intervention && $isExistingSeance) {
+	      $json->type = 'hemicycle';
+	      $json->commission = null;
+	      $intervention = Doctrine::getTable('Intervention')->findSimilarFromJson($json);
+	      if ($intervention) { 
+		$intervention->setIntervention($json->intervention); 
+		$intervention->setSource($json->source);
+		if (!$intervention->md5)
+		  $intervention->md5 = $id;
+		echo "WARNING : Intervention en double trouvée : seance/".$intervention->seance_id."#inter_".$intervention->md5."\n";  
+	      }
+	    }
+
 	    if(!$intervention) {
 	      $intervention = new Intervention();
 	      $intervention->md5 = $id;

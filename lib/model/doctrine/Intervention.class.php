@@ -72,12 +72,7 @@ class Intervention extends BaseIntervention
     }else{
       self::$seances = array();
     }
-    if ($type == 'commission') {
-      $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commissiontxt, 'parlementaire');
-      $seance = $commission->getSeanceByDateAndMomentOrCreateIt($date, $heure, $session);
-    } else{
-      $seance = Doctrine::getTable('Seance')->findOneOrCreateIt('hemicycle', $date, $heure, $session);
-    }
+    $seance = Doctrine::getTable('Seance')->findOneOrCreateIt('hemicycle', $date, $heure, $session, $commissiontxt);
     $id = $this->_set('seance_id', $seance->id);
     self::$seances[$type.$date.$heure.$session.$commissiontxt] = $seance->id;
     return $id;
