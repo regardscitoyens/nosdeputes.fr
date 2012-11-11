@@ -29,7 +29,11 @@ if ($url =~ /\/plf(\d+)\//) {
   $string2 =~ s/\<br\/?\>//ig;
   $string2 =~ s/&nbsp;/ /ig;
   $string2 =~ s/&#8217;/'/ig;
-  $string2 =~ s/^.*Commission élargie//;
+  $string2 =~ s/^.*Commission élargie( : )?//;
+  utf8::decode($string2);
+  $string2 =~ s/\x{92}/'/g;
+  utf8::encode($string2);
+  $string2 =~ s/(#\/item#">|<\/title>).*$//;
   $string2 =~ s/\(Application de l'article 120 du Règlement.*$//;
   $string2 =~ s/\<\/?[a-z0-9\s\-_="']+\>//ig;
   $string2 =~ s/\s+/ /g;
@@ -65,6 +69,7 @@ $heure{'dix-huit'} = '18';
 $heure{'dix-neuf'} = '19';
 $heure{'vingt'} = '20';
 $heure{'vingt et une'} = '21';
+$heure{'vingt-et-une'} = '21';
 $heure{'vingt-deux'} = '22';
 $heure{'quarante'} = '45';
 $heure{'quarante-cinq'} = '45';
@@ -75,8 +80,8 @@ $heure{'zéro'} = '00';
 $heure{'cinq'} = '00';
 $heure{''} = '00';
 
-if ($string =~ /réunion.*commission.*commence[^\.]+à ([^\.]+)( |&nbsp;)heures?\s*([^\.]*)\./i) {
-    $heure = $heure{$1}.':'.$heure{$3};
+if ($string =~ /réunion.*commission.*commence[^\.]+à ([^\.]+)( |&nbsp;)heures?(\s|&nbsp;)*([^\.]*)\./i) {
+    $heure = $heure{$1}.':'.$heure{$4};
 }
 
 #utf8::decode($string);
