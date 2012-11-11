@@ -40,6 +40,7 @@ if ($url =~ /\/plf(\d+)\//) {
   $string2 =~ s/^\s+//;
   $string2 =~ s/[^a-z]+$//;
   $string2 =~ s/ Comm/, Comm/g;
+  $string2 =~ s/ ; .*$//;
   $commission = "Commission élargie : ".$string2;
 }
 
