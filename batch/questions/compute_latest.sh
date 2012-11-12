@@ -13,9 +13,9 @@ rm -f html/*
 source ../../bin/db.inc
 
 if [[ $1 -eq "all" ]]; then
-  sql_string='SELECT source FROM question WHERE (reponse = "" OR reponse IS NULL OR reponse LIKE "%réponse n'est pas disponible à ce jour%") AND motif_retrait IS NULL'
+  sql_string="SELECT source FROM question WHERE (reponse = '' OR reponse IS NULL OR reponse LIKE '%réponse n\'est pas disponible à ce jour%') AND motif_retrait IS NULL"
 else
-  sql_string='SELECT source FROM question WHERE question IS NULL OR ((reponse = "" OR reponse IS NULL OR reponse LIKE "%réponse n'est pas disponible à ce jour%") AND motif_retrait IS NULL AND date > DATE_SUB(CURDATE(), INTERVAL 75 DAY))'
+  sql_string="SELECT source FROM question WHERE question IS NULL OR ((reponse = '' OR reponse IS NULL OR reponse LIKE '%réponse n\'est pas disponible à ce jour%') AND motif_retrait IS NULL AND date > DATE_SUB(CURDATE(), INTERVAL 75 DAY))"
 fi
 echo $sql_string | mysql $MYSQLID $DBNAME | grep -v source > liste_sans_reponse.txt
 
