@@ -63,7 +63,7 @@ class loadQuestionsTask extends sfBaseTask {
               $quest->numero = preg_replace('/^(\d+)([a-z])$/i', $annee.'\\2\\1', $quest->numero);
             }
             $quest->setAuteur($json->auteur);  // déplacé de la zone de création de nouvelles questions ci-dessus pour permettre correction de l'auteur au besoin, potentiellement lourd, à revert si besoin
-            if (!$quest->reponse || $quest->reponse === "") {
+            if (!$quest->reponse || $quest->reponse === "" || preg_match("/réponse n'est pas disponible à ce jour/", $quest->reponse)) {
               $quest->date = $json->date_question;
               $quest->ministere = $json->ministere;
               if (!$json->rappel)
