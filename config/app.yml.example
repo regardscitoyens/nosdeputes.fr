@@ -16,7 +16,7 @@ all:
     "Socialiste / SOCV / 255,50,190 / Socialistes (PS, Verts et ratt.) / socialiste",
     "Écologiste / ECO / 0,230,30 / Écologistes (EELV) / [eéÉ]cologiste",
     "Rassemblement Démocratique et Social Européen / RDSE / 250,195,132 / Socio-Radicaux (PRG, MRC) / démocratique|européen",
-    "Union des Démocrates et Indépendants - UC / UDI / 30,180,255 / Union Centriste (NC, Modem, ...) / union.*d[eé]mocrates.*ind[eé]pendants)",
+    "Union des Démocrates et Indépendants - UC / UDI / 30,180,255 / Union Centriste (NC, Modem, ...) / union.*d[eé]mocrates.*ind[eé]pendants",
     "Union Centriste et Républicaine / UCR / 30,180,255 / Union Centriste (NC, Modem, ...) / centre|centriste",
     "Union Centriste / UC / 30,180,255 / Union Centriste (NC, Modem, ...) / centre|centriste",
     "Union pour un Mouvement Populaire / UMP / 30,30,200 / UMP, RPF, RAD, et ratt. / union.*mouvement.*populaire",
