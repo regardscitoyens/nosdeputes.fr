@@ -26,9 +26,9 @@ Parlementaire:
   actAs:
     Solrable:
       title: [nom, statut]
-      extra_weight: 3
+      extra_weight: 10
       description: [villes]
-      moretags: [profession]
+      moretags: [profession, nom]
       date: debut_mandat
   columns:
     nom_circo: string(255)
@@ -88,7 +88,7 @@ Organisme:
       unique: true
     Solrable:
       title: [titre]
-      extra_weight: 3
+      extra_weight: 4
       moretags: [type]
       index_if: has_parlementaires
   columns:
@@ -182,7 +182,7 @@ Section:
     Solrable:
       title: [titre]
       moretags: [Parlementaires]
-      extra_weight: 1.3
+      extra_weight: 2
       index_if: is_parent
       date: max_date
   columns:
