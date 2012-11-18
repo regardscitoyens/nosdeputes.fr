@@ -291,7 +291,8 @@ foreach $line (split /\n/, $string)
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
 
-	#si italique ou tout gras => commentaire
+	#si italique ou tout gras => commentaire except if intervenant indiqué
+    $line =~ s/^(\|M[me.]+[^\|\.]+\.)\s+(\S+.*)\|\s*$/\1| \2/g;
 	if ($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) {
 	    if (!$timestamp && !$commission && $line =~ /^\|(.*(groupe|mission|délégation|office|comité).*)\|\s*$/i) {
 		$commission = $1;
