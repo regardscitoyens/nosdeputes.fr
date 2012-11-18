@@ -133,7 +133,7 @@ sub setFonction {
 sub setIntervenant {
     my $intervenant = shift;
     #print "$intervenant\n";
-    $intervenant =~ s/^(M(\.|me))(\S)/$1 $2/;
+    $intervenant =~ s/^(M(\.|me))(\S)/$1 $3/;
     $intervenant =~ s/\.\s*[\/\|]\s*/, /g;
     $intervenant =~ s/[\|\/\.]//g;
     $intervenant =~ s/\s*\&\#8211\;\s*$//;
