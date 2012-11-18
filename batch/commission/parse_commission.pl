@@ -288,6 +288,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/\s+/ /g;
     $line =~ s/^\s//;
     $line =~ s/\s$//;
+    $line =~ s/\s*,\s*\|\s*\/\s*/,|\/ /g;
     $line =~ s/\s*\|\s*,\s*\/\s*/,|\/ /g;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
