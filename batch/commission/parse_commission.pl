@@ -283,8 +283,10 @@ foreach $line (split /\n/, $string)
     }
     if ($line =~ /\<p/i || ($line =~ /\<h[1-9]+ class="titre\d+/i && $line !~ /Commission/)) {
 	$found = 0;
-	$line =~ s/\s*\<\/?[^\>]+\>//g;
-	$line =~ s/^\s+//;
+	$line =~ s/\<\/?[^\>]+\>//g;
+    $line =~ s/\s+/ /g;
+    $line =~ s/^\s//;
+    $line =~ s/\s$//;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
 
