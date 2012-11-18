@@ -132,8 +132,9 @@ sub setFonction {
 
 sub setIntervenant {
     my $intervenant = shift;
-#    print "$intervenant\n";
+    #print "$intervenant\n";
     $intervenant =~ s/^(M(\.|me))(\S)/$1 $2/;
+    $intervenant =~ s/\.\s*[\/\|]\s*/, /g;
     $intervenant =~ s/[\|\/\.]//g;
     $intervenant =~ s/\s*\&\#8211\;\s*$//;
     $intervenant =~ s/\s*[\.\:]\s*$//;
@@ -160,7 +161,7 @@ sub setIntervenant {
 	    return $2;
 	}
 	$conv = $fonction2inter{$intervenant};
-#	print "conv: '$conv' '$intervenant'\n";
+	#print "conv: '$conv' '$intervenant'\n";
 	if ($conv) {
 	    $intervenant = $conv;
 	}else {
