@@ -17,7 +17,7 @@ if [[ $1 -eq "all" ]]; then
 else
   sql_string="SELECT source FROM question WHERE question IS NULL OR ((reponse = '' OR reponse IS NULL OR reponse LIKE '%réponse n\'est pas disponible à ce jour%') AND motif_retrait IS NULL AND date > DATE_SUB(CURDATE(), INTERVAL 75 DAY))"
 fi
-echo $sql_string | mysql $MYSQLID $DBNAME | grep -v source > liste_sans_reponse.txt
+echo $sql_string | iconv -f utf8 -t latin1 | mysql $MYSQLID $DBNAME | grep -v "^source$" > liste_sans_reponse.txt
 
 date_from=`echo "SELECT date FROM question ORDER BY date DESC limit 1" | mysql $MYSQLID $DBNAME | grep -v date`
 perl download_questions_from_recherche.pl $date_from
