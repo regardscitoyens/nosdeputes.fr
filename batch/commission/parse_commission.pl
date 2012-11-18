@@ -209,7 +209,6 @@ $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
-$majIntervenant = 0;
 $body = 0;
 
 $string =~ s/<br>\n//gi;
@@ -284,6 +283,7 @@ foreach $line (split /\n/, $string)
     }
     if ($line =~ /\<p/i || ($line =~ /\<h[1-9]+ class="titre\d+/i && $line !~ /Commission/)) {
 	$found = 0;
+    $majIntervenant = 0;
 	$line =~ s/\<\/?[^\>]+\>//g;
     $line =~ s/\s+/ /g;
     $line =~ s/^\s//;
@@ -336,7 +336,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
 	if (!$majIntervenant && !$found) {
-	    if     ($line =~ s/^\s*(M[mes\.]+\s[^\.:]+)[\.:]//) {
+	    if ($line =~ s/^\s*(M[mes\.]+(\s([dl][eaus'\s]+)?[^\.:\s]+){1,4})[\.:]//) {
 		checkout();
 		$intervenant = setIntervenant($1);		
 	    }elsif ($line =~ s/^\s*(M[mes\.]+\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
