@@ -100,8 +100,8 @@ foreach $line (split /\n/, $string)
     if ($line =~ /<h[1-9]+/i) {
 	if (!$date && $line =~ /SOMdate|\"seance\"|h2/) {
 	    if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
-	      if ($line =~ /\w+\s+(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/i) {
-		$date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
+	      if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/i) {
+		$date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
 	      }
 	    }
 	}elsif ($line =~ /SOMseance|"souligne_cra"/i) {
