@@ -125,7 +125,7 @@ sub setFonction {
     $kfonction =~ s/[^a-zéàè]+/ /gi;
     $fonction2inter{$kfonction} = $intervenant;
 #    print "$fonction ($kfonction)  => $intervenant-".$inter2fonction{$intervenant}."\n";
-    if (!$inter2fonction{$intervenant}) {
+    if (!$inter2fonction{$intervenant} || length($inter2fonction{$intervenant}) < length($fonction)) {
 	$inter2fonction{$intervenant} = $fonction;
     }
 }
@@ -281,7 +281,7 @@ foreach $line (split /\n/, $string)
             }
         }
     }
-    if ($line =~ /\<p/i || ($line =~ /\<h[1-9]+ class="titre\d+/i && $line !~ /Commission/)) {
+    if ($line =~ /\<p/i || ($line =~ /\<h[1-9]+ class="titre\d+/i && $line !~ />Commission/)) {
 	$found = 0;
     $majIntervenant = 0;
 	$line =~ s/\<\/?[^\>]+\>//g;
