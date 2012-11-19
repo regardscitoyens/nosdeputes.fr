@@ -166,16 +166,16 @@ sub setIntervenant {
 	    $intervenant = $conv;
 	}else {
 	    $test = lc($intervenant);
-	    $test =~ s/[^a-z]+/ /gi;
+	    $test =~ s/[^a-z]/./gi;
 	    foreach $fonction (keys %fonction2inter) {
-		if ($fonction =~ /$test/) {
+		if ($fonction =~ /$test/i) {
 		    $inter = $fonction2inter{$fonction};
 		    last;
 		}
 	    }
 	    if (!$inter) {
 		foreach $fonction (keys %fonction2inter) {
-		    if ($test =~ /$fonction/) {
+		    if ($test =~ /$fonction/i) {
 			$inter = $fonction2inter{$fonction};
 			last;
 		    }
