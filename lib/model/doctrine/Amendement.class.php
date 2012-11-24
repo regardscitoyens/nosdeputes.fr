@@ -176,6 +176,8 @@ class Amendement extends BaseAmendement {
   public function getLettreLoi() {
     if (preg_match('/^([A-Z])\d/', $this->numero, $match)) {
       return $match[1];
+    } else if (preg_match('/\d([A-Z])$/', $this->numero, $match)) {
+      return $match[1];
     }
     return;
   }

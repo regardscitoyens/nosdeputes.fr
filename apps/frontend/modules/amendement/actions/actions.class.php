@@ -150,7 +150,7 @@ class amendementActions extends sfActions
 
   public function executeFind(sfWebRequest $request)
   {
-    $this->lois = split(',', $request->getParameter('loi'));
+    $this->lois = preg_split('/,/', $request->getParameter('loi'));
     $amdt = $request->getParameter('numero');
     $this->forward404Unless(count($this->lois) && $amdt);
     if ($amdt == 'all' || $amdt == 'new' ) {

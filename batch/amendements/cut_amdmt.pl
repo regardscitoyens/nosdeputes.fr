@@ -31,9 +31,7 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   $lettre = $3;
   $num = $4+0;
   $amdmt{'numero'} = $num;
-  if ($lettre !~ "S") {
-    $amdmt{'numero'} .= uc($lettre);
-  }
+  $amdmt{'numero'} .= uc($lettre);
 }
 
 open(FILE, $file) ;

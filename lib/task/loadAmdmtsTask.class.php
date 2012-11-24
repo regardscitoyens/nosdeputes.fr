@@ -64,20 +64,30 @@ class loadAmdmtsTask extends sfBaseTask {
                   foreach ($arr as $gap_stri) {
                     $gap = preg_split('/-/', $gap_stri);
                     for ($n = $gap[0]; $n <= $gap[1]; $n++) {
-                      $amdmt->addTag('loi:amendement='.$n.$lettre);
+                      $amdmt->addTag('loi:amendement='.$n);
+		      if ($lettre) {
+                          $amdmt->addTag('loi:amendement='.$n.$lettre);
+		      } 
 		      $nb_serie++;
 		    }
                   }
                 } else {
                   $gap = preg_split('/-/', $json->serie);
                   for ($n = $gap[0]; $n <= $gap[1]; $n++) {
-                    $amdmt->addTag('loi:amendement='.$n.$lettre);
+                    $amdmt->addTag('loi:amendement='.$n);
+		    if ($lettre) {
+                    	$amdmt->addTag('loi:amendement='.$n.$lettre);
+		    }
 		    $nb_serie++;
 		  }
                 }
 		$amdmt->nb_multiples = $nb_serie;
               } else {
-		$amdmt->addTag('loi:amendement='.$amdmt->numero);
+	        $amdmt->addTag('loi:amendement='.$amdmt->numero);
+		if ($lettre) {
+		    $num = str_replace($lettre, "", $amdmt->numero);
+		    $amdmt->addTag('loi:amendement='.$num);
+		}
 		$amdmt->nb_multiples = 1;
 	      }
               if ($json->parent)
