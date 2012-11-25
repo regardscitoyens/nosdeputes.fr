@@ -14,6 +14,8 @@ $doc = "@doc";
 @doc = ();
 close FILE;
 
+exit if ($doc =~ /class=.cri_provisoire./);
+
 $url_source = uri_unescape($file);
 $url_source =~ s/.*http/http/;
 
