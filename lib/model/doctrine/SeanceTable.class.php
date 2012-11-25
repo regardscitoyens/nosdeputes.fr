@@ -16,7 +16,7 @@ class SeanceTable extends Doctrine_Table
   public function findOneOrCreateIt($type, $date, $heure, $session, $commissiontxt = null) {
     $s = $this->findOne($type, $date, $heure, $session, $commissiontxt);
     if (!$s) {
-      if ($type = 'commission') {
+      if ($type == 'commission') {
 	$commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commissiontxt, 'parlementaire');
 	return $commission->getSeanceByDateAndMomentOrCreateIt($date, $heure, $session);
       }

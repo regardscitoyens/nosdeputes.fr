@@ -62,21 +62,26 @@ class Intervention extends BaseIntervention
   }
 
   public function setSeance($type, $date, $heure, $session, $commissiontxt = null) {
+    $seancetype = "hemicycle";
+    if ($type == "commission") {
+        $seancetype = "commission";
+    }
     $this->setType($type);
     if (is_array(self::$seances)) {
-      if (isset(self::$seances[$type.$date.$heure.$session.$commissiontxt])) {
-	return $this->_set('seance_id', self::$seances[$type.$date.$heure.$session.$commissiontxt]);
+      if (isset(self::$seances[$seancetype.$date.$heure.$session.$commissiontxt])) {
+	return $this->_set('seance_id', self::$seances[$seancetype.$date.$heure.$session.$commissiontxt]);
       }else {
 	self::$seances = array();
       }
     }else{
       self::$seances = array();
     }
-    $seance = Doctrine::getTable('Seance')->findOneOrCreateIt($type, $date, $heure, $session, $commissiontxt);
+    $seance = Doctrine::getTable('Seance')->findOneOrCreateIt($seancetype, $date, $heure, $session, $commissiontxt);
     $id = $this->_set('seance_id', $seance->id);
-    self::$seances[$type.$date.$heure.$session.$commissiontxt] = $seance->id;
+    self::$seances[$seancetype.$date.$heure.$session.$commissiontxt] = $seance->id;
     return $id;
   }
+
   public function setPersonnaliteByNom($nom, $fonction = null) 
   {
     $nom = html_entity_decode($nom, ENT_COMPAT, 'UTF-8');
