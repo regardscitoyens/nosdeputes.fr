@@ -84,6 +84,11 @@ class Intervention extends BaseIntervention
     $this->setFonction($fonction);
     if (!preg_match('/ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux/i', $fonction)) { 
       $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
+      if (!$personne)
+	  $personne = Doctrine::getTable('Parlementaire')->findOneByNomDeFamille($nom);
+      if (!$personne && preg_match("/^de /", $nom)) {
+	  $personne = Doctrine::getTable('Parlementaire')->findOneByNomDeFamille(preg_replace("/^de /", "", $nom));
+      } 
       if (!$personne && ($this->type != "commission" || $fonction == null || preg_match('/(rapporteur|présidente?$)/i', $fonction))) {
 	$personne = Doctrine::getTable('Parlementaire')->similarToCheckPrenom($nom);
       }
