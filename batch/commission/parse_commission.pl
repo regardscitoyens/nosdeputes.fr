@@ -124,6 +124,16 @@ sub setFonction {
     my $kfonction = lc($fonction);
     $kfonction =~ s/[^a-zéàè]+/ /gi;
     $fonction2inter{$kfonction} = $intervenant;
+    if ($fonction =~ /(ministre déléguée?).*(chargé.*$)/i) {
+        $kfonction = "$1 $2";
+        $kfonction =~ s/[^a-zéàè]+/ /gi;
+        $fonction2inter{$kfonction} = $intervenant;
+    } elsif ($fonction =~ /[,\s]*suppléant[^,]*,\s*/i) {
+        $kfonction = $fonction;
+        $kfonction =~ s/[,\s]*suppléant[^,]*,\s*//i;
+        $kfonction =~ s/[^a-zéàè]+/ /gi;
+        $fonction2inter{$kfonction} = $intervenant;
+    }
 #    print "$fonction ($kfonction)  => $intervenant-".$inter2fonction{$intervenant}."\n";
     if (!$inter2fonction{$intervenant} || length($inter2fonction{$intervenant}) < length($fonction)) {
 	$inter2fonction{$intervenant} = $fonction;
@@ -150,7 +160,7 @@ sub setIntervenant {
     $intervenant =~ s/^\s+//;
     $intervenant =~ s/É+/é/gi;
     $intervenant =~ s/\&\#8217\;/'/g;
-    $intervenant =~ s/^l[ea] (ministre) (.*)$/\2, \1/i;
+    $intervenant =~ s/^l[ea] ([Mm]inistre) ([A-ZÉÈÀÔÙÎÏÇ].*)$/\2, \1/;
     if ($intervenant =~ s/\, (.*)//) {
 	setFonction($1, $intervenant);
     }
@@ -161,21 +171,33 @@ sub setIntervenant {
 	    return $2;
 	}
 	$conv = $fonction2inter{$intervenant};
+    $maybe_inter = "";
 	#print "conv: '$conv' '$intervenant'\n";
 	if ($conv) {
 	    $intervenant = $conv;
 	}else {
 	    $test = lc($intervenant);
-	    $test =~ s/[^a-z]/./gi;
+        $ktest = $test;
+	    $ktest =~ s/[^a-zéàè]+/ /gi;
 	    foreach $fonction (keys %fonction2inter) {
-		if ($fonction =~ /$test/i) {
-		    $inter = $fonction2inter{$fonction};
-		    last;
+		if ($fonction =~ /$ktest/i) {
+            if ($fonction !~ /délégué/i || $test =~ /délégué/i) {
+		        $inter = $fonction2inter{$fonction};
+                $maybe_inter = "";
+		        last;
+            } elsif (!$maybe_inter || ($test =~ /délégué/i && $fonction =~ /délégué/i) || ($test !~ /délégué/i && $fonction !~ /délégué/i)) {
+                $maybe_inter = $fonction2inter{$fonction};
+            }
 		}
 	    }
+        if ($maybe_inter) {
+            $inter = $maybe_inter;
+        }
 	    if (!$inter) {
 		foreach $fonction (keys %fonction2inter) {
-		    if ($test =~ /$fonction/i) {
+            $kfonction = lc($fonction);
+            $kfonction =~ s/ +/.+/g;
+		    if ($test =~ /$kfonction/i) {
 			$inter = $fonction2inter{$fonction};
 			last;
 		    }
@@ -198,6 +220,15 @@ sub rapporteur
 	}elsif ($line =~ /rapport de \|?M[me\.]+\s([^,\.\;\|]+)[\,\.\;\|]/i) {
 	    setFonction('rapporteur', $1);
 	}
+    } elsif ($line =~ /ministre/i) {
+        $line =~ s/[\r\n]//g;
+        @pieces = split(/(,|et) de M[mes\.]+ /, $line);
+        foreach $l (@pieces) {
+            $l =~ s/, sur .*$//;
+            if ($l ne $line && $l =~ /(M[me\.]+\s)?([^,]+), ([Mm]inistre ((, |et |([dl][eaus'\s]+))*(\S+\s+){1,4})+)/) {
+                setFonction($3, $2);
+            }
+        }
     }
 }
 
@@ -209,6 +240,7 @@ $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
+$majIntervenant = 0;
 $body = 0;
 
 $string =~ s/<br>\n//gi;
@@ -281,9 +313,10 @@ foreach $line (split /\n/, $string)
             }
         }
     }
-    if ($line =~ /\<p/i || ($line =~ /\<h[1-9]+ class="titre\d+/i && $line !~ />Commission/)) {
+
+    if ($line =~ /\<p/i || ($line =~ /(<SOMMAIRE>|\<h[1-9]+ class="titre\d+)/i && $line !~ />Commission/)) {
 	$found = 0;
-    $majIntervenant = 0;
+    $line =~ s/<\/?SOMMAIRE>/\//g;
 	$line =~ s/\<\/?[^\>]+\>//g;
     $line =~ s/\s+/ /g;
     $line =~ s/^\s//;
@@ -292,7 +325,6 @@ foreach $line (split /\n/, $string)
     $line =~ s/\s*\|\s*,\s*\/\s*/,|\/ /g;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
-
 	#si italique ou tout gras => commentaire
 	if ($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) {
 	    if (!$timestamp && !$commission && $line =~ /^\|(.*(groupe|mission|délégation|office|comité).*)\|\s*$/i) {
@@ -303,18 +335,17 @@ foreach $line (split /\n/, $string)
 	    rapporteur();
 	    $found = 1;
 	}elsif ($line =~ s/^\|(M[^\|\:]+)[\|\:](\/[^\/]+\/)?// ) {
-	    checkout();
-	    $majIntervenant = 1;
-            $interv1 = $1;
+        checkout();
+        $interv1 = $1;
 	    $extrainterv = $2;
-	    if ($extrainterv =~ s/(\/A \w+i\/)//) {
-	      $line = $1.$line;
-            }
-	    $intervenant = setIntervenant($interv1.$extrainterv);
-	    $found = 1;
+        if ($extrainterv =~ s/(\/A \w+i\/)//) {
+            $line = $1.$line;
+        }
+        $intervenant = setIntervenant($interv1.$extrainterv);
+        $found = $majIntervenant = 1;
 	}elsif ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// ) {
-	    checkout();
-            $found = $majIntervenant = 1;
+        checkout();
+        $found = $majIntervenant = 1;
 	    setFonction($2, $1);
 	    $intervenant = setIntervenant($1);
 	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
@@ -336,17 +367,19 @@ foreach $line (split /\n/, $string)
 	$line =~ s/^\s+//;
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
-	if (!$majIntervenant && !$found) {
-	    if ($line =~ s/^\s*(M[mes\.]+(\s([dl][eaus'\s]+)?[^\.:\s]+){1,4})[\.:]//) {
-		checkout();
-		$intervenant = setIntervenant($1);		
-	    }elsif ($line =~ s/^\s*(M[mes\.]+\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
-		checkout();
-		$intervenant = setIntervenant($1);
-	    }elsif($line =~ s/^\s*[Ll][ea] ([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
+	if (!$found) {
+	    if ($line =~ s/^\s*(M[mes\.]+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.:]//) {
+            checkout();
+            $intervenant = setIntervenant($1);		
+	    }elsif (!$majIntervenant) {
+            if ($line =~ s/^\s*(M[mes\.]+\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
+        	    checkout();
+    	        $intervenant = setIntervenant($1);
+            }elsif($line =~ s/^\s*[Ll][ea] ([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
                 setFonction($1, $2);
                 checkout();
                 $intervenant = setIntervenant($2);
+            }
 	    }
 	}
 	$intervention .= "<p>$line</p>";
