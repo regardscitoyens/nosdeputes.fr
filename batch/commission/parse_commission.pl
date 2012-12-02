@@ -341,7 +341,7 @@ foreach $line (split /\n/, $string)
 	    checkout() if ($intervenant);	    
 	    rapporteur();
 	    $found = 1;
-	}elsif ($line =~ s/^\|(M[^\|\:]+)[\|\:](\/[^\/]+\/)?// ) {
+	}elsif ($line =~ s/^\|(M[^\|\:]+)[\|\:](\/[^\/]+\/)?(.*\w.*)/\3/ ) {
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2;
