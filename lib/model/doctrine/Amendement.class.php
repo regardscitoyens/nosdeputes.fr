@@ -9,6 +9,9 @@ class Amendement extends BaseAmendement {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@amendement?loi='.$this->texteloi_id.'&numero='.$this->numero);
   }
+  public function getLinkSource() {
+    return $this->source;
+  }
   public function getPersonne() {
     return '';
   }

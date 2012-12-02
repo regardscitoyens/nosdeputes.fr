@@ -12,6 +12,12 @@ class Section extends BaseSection
   public function getPersonne() {
     return '';
   }
+  public function getLinkSource() {
+    if ($this->id_dossier_an) {
+      return "http://www.assemblee-nationale.fr/".sfConfig::get('app_legislature', 13)."/dossiers/".$this->id_dossier_an.".asp";
+    }
+    return "";
+  }
   public function __tostring() {
     if ($str = $this->_get('titre_complet'))
       return $str;

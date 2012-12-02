@@ -10,6 +10,9 @@ class QuestionEcrite extends BaseQuestionEcrite
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@question_numero?numero='.$this->numero);
   }
+  public function getLinkSource() {
+    return $this->source;
+  }
   public function getPersonne() {
     return $this->getParlementaire()->getNom();
   }

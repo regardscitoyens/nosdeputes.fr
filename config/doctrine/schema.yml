@@ -28,7 +28,7 @@ Parlementaire:
       title: [nom, statut]
       extra_weight: 10
       description: [villes]
-      moretags: [profession, nom]
+      moretags: [profession, nom, link_source]
       date: debut_mandat
   columns:
     nom_circo: string(255)
@@ -181,7 +181,7 @@ Section:
     Taggable: ~
     Solrable:
       title: [titre]
-      moretags: [Parlementaires]
+      moretags: [Parlementaires, link_source]
       extra_weight: 2
       index_if: is_parent
       date: max_date
@@ -210,7 +210,7 @@ Intervention:
     Taggable: ~
     Solrable:
       description: [Parlementaire, Personnalite, intervention]
-      moretags: [Parlementaire, Personnalite, type, dossier, organisme]
+      moretags: [Parlementaire, Personnalite, type, dossier, organisme, link_source]
       devaluate_if_wordcount_under: 200
       date: full_date
   columns:
@@ -262,7 +262,7 @@ Amendement:
     Solrable: 
       title: [titre]
       description: [expose, texte, signataires]
-      moretags: [Parlementaires, sort, dossier]
+      moretags: [Parlementaires, sort, dossier, link_source]
       date: date
       index_if: is_last_version
   columns:
@@ -312,7 +312,7 @@ QuestionEcrite:
     Solrable:
       title: [titre]
       description: [question, ministere, reponse, themes]
-      moretags: [Parlementaire, ministere, motif_retrait, themes]
+      moretags: [Parlementaire, ministere, motif_retrait, themes, link_source]
       date: last_date
   columns:
     source:
@@ -611,7 +611,7 @@ Texteloi:
     Solrable:
       title: [titre]
       description: [contenu, id]
-      moretags: [categorie, type, Organisme, Parlementaires, nature, dossier]
+      moretags: [categorie, type, Organisme, Parlementaires, nature, dossier, link_source]
       date: date
   columns:
     id:

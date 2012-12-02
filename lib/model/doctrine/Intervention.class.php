@@ -12,7 +12,9 @@ class Intervention extends BaseIntervention
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@interventions_seance?seance='.$this->getSeance()->id).'#inter_'.$this->getMd5();
   }
-
+  public function getLinkSource() {
+    return preg_replace("/#[^#]*$/", "", $this->source);
+  }
   public function getPersonne() {
     return $this->getNomAndFonction();
   }

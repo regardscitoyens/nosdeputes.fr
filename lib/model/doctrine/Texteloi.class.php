@@ -19,7 +19,9 @@ class Texteloi extends BaseTexteloi
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@document?id='.$this->id);
   }
-
+  public function getLinkSource() {
+    return $this->source;
+  }
   public function __toString() {
     $str = substr($this->getExtract(), 0, 250);
     if (strlen($str) == 250) {
