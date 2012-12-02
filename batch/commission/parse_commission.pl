@@ -97,6 +97,7 @@ if ($string =~ /réunion.*commission.*commence[^\.]+à ([^\.]+)( |&nbsp;)heures?
 $cpt = 0;
 sub checkout {
     $commission =~ s/"//g;
+    $intervention =~ s/"/\\"/g;
     $cpt+=10;
     $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
     if ($intervenant) {
@@ -314,7 +315,10 @@ foreach $line (split /\n/, $string)
         }
     }
 
-    if ($line =~ /\<p/i || ($line =~ /(<SOMMAIRE>|\<h[1-9]+ class="titre\d+)/i && $line !~ />Commission/)) {
+    if ($prez && $line =~ /<\/?t(able|d|h|r)/) {
+        checkout() if ($intervenant);
+        $intervention .= "$line";
+    }elsif ($line =~ /\<p/i || ($line =~ /(<SOMMAIRE>|\<h[1-9]+ class="titre\d+)/i && $line !~ />Commission/)) {
 	$found = 0;
     $line =~ s/<\/?SOMMAIRE>/\//g;
 	$line =~ s/\<\/?[^\>]+\>//g;
