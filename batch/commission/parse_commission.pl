@@ -316,6 +316,9 @@ foreach $line (split /\n/, $string)
     }
 
     if ($prez && $line =~ /<\/?t(able|d|h|r)/) {
+        $line =~ s/([^<])[\/\|]/\1/g;
+        $line =~ s/<[^t\/][^>]*>//g;
+        $line =~ s/<\/[^t][^>]*>//g;
         checkout() if ($intervenant);
         $intervention .= "$line";
     }elsif ($line =~ /\<p/i || ($line =~ /(<SOMMAIRE>|\<h[1-9]+ class="titre\d+)/i && $line !~ />Commission/)) {

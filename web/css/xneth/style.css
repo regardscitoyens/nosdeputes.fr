@@ -1263,6 +1263,14 @@ h2 {
 .didascalie {
   font-style: oblique;
 }
+.didascalie table, .didascalie td, .didascalie tr, .didascalie th {
+  font-style: normal;
+  text-align: center;
+  margin: auto;
+}
+.didascalie th {
+  font-weight: bold;
+}
 
 /* form commentaires */
 .inscription {
