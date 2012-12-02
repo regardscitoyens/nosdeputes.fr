@@ -148,7 +148,7 @@ sub checkout {
     if ($titre2) {
 	$contexte .= ' > '.$titre2;
     }
-    $out =  '{"contexte": "'.$contexte.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
+    $out =  '{"contexte": "'.$contexte.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
     if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement/i) {
 	$out .= "\"numeros_loi\": \"$ploi\", ";
     }
@@ -158,20 +158,24 @@ sub checkout {
     $out .= '"timestamp": "';
     if ($intervenant) {
 	$ts = $cpt;
+    if ($intervention =~ s/^<p>(,| |et)+M[mes\.]*\s+(([A-Z]|é)[^\.]+)\.\s*/<p>/g) {
+        $ts++;
+	    print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$2."\"}\n";
+	}
 	if ($intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)$//) {
 	    foreach $i (split(/ et |, /, $3)) {
 	        $ts++;
-	        print $out.$ts.'", "intervenant": "'.$i."\"}\n";
+	        print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i."\"}\n";
 	    }
 	}
 	if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)//g) {
             $ts++;
-	    print $out.$ts.'", "intervenant": "'.$3."\"}\n";
+	    print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$3."\"}\n";
 	    $inter2fonction{$intervenant} = '';
 	}
-	print $out.$cpt.'", "intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.'", "intervenant_url": "'.$intervenant_url."\"}\n";
+	print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.'", "intervenant_url": "'.$intervenant_url."\"}\n";
     }elsif($intervention) {
-	print $out.$cpt.'", "intervenant":"'."\"}\n";
+	print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant":"'."\"}\n";
     }else {
 	return ;
     }
