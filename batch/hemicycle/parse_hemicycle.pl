@@ -247,6 +247,9 @@ sub setIntervenant {
 		foreach $fonction (keys %fonction2inter) {
 		    if ($test =~ /$fonction/) {
 			$inter = $fonction2inter{$fonction};
+            if ($test == $fonction."e") {
+                $inter2fonction{$inter} = lc($intervenant);
+            }
 			last;
 		    }
 		}
@@ -305,7 +308,7 @@ foreach $line (split /\n/, $string)
     }
 
     if ($line =~ /<h[1-9]+/i || $line =~ /"(sompresidence|sstitreinfo)"/) {
-	if ($line =~ /pr..?sidence de (M[^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
+	if ($line =~ /pr..?sidence de ([^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
 	    $prez = $1;
 	    $prez =~ s/\s+vice-pr.*$//;
 #	    print "Présidence de $prez\n";
