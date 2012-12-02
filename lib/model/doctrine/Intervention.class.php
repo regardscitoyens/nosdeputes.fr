@@ -13,7 +13,8 @@ class Intervention extends BaseIntervention
     return url_for('@interventions_seance?seance='.$this->getSeance()->id).'#inter_'.$this->getMd5();
   }
   public function getLinkSource() {
-    return preg_replace("/#[^#]*$/", "", $this->source);
+  //  return preg_replace("/#[^#]*$/", "", $this->source);
+    return $this->source;
   }
   public function getPersonne() {
     return $this->getNomAndFonction();
