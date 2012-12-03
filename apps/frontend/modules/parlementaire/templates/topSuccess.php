@@ -36,9 +36,9 @@ $bulles = array("",
                "Séances de Commission -- Nombre de séances de commission où le député a été relevé présent",
                "Interventions en Commission -- Nombre d'interventions prononcées par le député en commissions",
                "Interventions longues en Hémicycle -- Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle",
-               "interventions courtes en Hémicycle -- Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle",
-               "Amendements signés -- Nombre d'amendements signés ou co-signés par le député",
-               "Amendements adoptés -- Nombre d'amendements signés par le député qui ont été adoptés en séance",
+               "Interventions courtes en Hémicycle -- Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle",
+               "Amendements signés -- Nombre d'amendements de séance plénière signés ou co-signés par le député",
+               "Amendements adoptés -- Nombre d'amendements de séance plénière signés par le député qui ont été adoptés en séance",
                "Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur",
                "Propositions écrites -- Nombre de propositions de loi ou de résolution dont le député est l'auteur",
                "Propositions signées -- Nombre de propositions de loi ou de résolution dont le député est cosignataire",
@@ -156,8 +156,8 @@ $bulles = array("",
   <li><strong>Commission interventions</strong> : Nombre d'interventions prononcées par le député en commissions</li>
   <li><strong>Hémicycle interventions longues</strong> : Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle</li>
   <li><strong>Hémicycle interventions courtes</strong> : Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle</li>
-  <li><strong>Amendements signés</strong> : Nombre d'amendements signés ou co-signés par le député</li>
-  <li><strong>Amendements adoptés</strong> : Nombre d'amendements adoptés qui ont été signés ou cosignés par le député</li>
+  <li><strong>Amendements signés</strong> : Nombre d'amendements de séance plénière signés ou co-signés par le député</li>
+  <li><strong>Amendements adoptés</strong> : Nombre d'amendements de séance plénière adoptés qui ont été signés ou cosignés par le député</li>
   <li><strong>Rapports écrits</strong> : Nombre de rapports ou avis dont le député est l'auteur</li>
   <li><strong>Propositions écrites</strong> : Nombre de propositions de loi ou de résolution dont le député est l'auteur</li>
   <li><strong>Propositions signées</strong> : Nombre de propositions de loi ou de résolution dont le député est cosignataire</li>
