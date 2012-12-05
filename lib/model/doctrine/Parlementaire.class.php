@@ -19,7 +19,7 @@ class Parlementaire extends BaseParlementaire
     return '';
   }
   public function getLinkSource() {
-    return $this->url_an();
+    return $this->url_an;
   }
   public function __tostring() {
     if(isset($this->nom) && $nom = $this->getNom())
