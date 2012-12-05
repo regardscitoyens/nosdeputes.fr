@@ -25,6 +25,9 @@ if ($cause = $parlementaire->getCauseFinMandat()) {
         echo '<li>Suppléant'.($parlementaire->sexe == "F" ? 'e' : '').' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>';
       if ($parlementaire->groupe_acronyme != "") : ?>
       <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getGroupe()->getFonction(); ?>)</li>
+      <?php endif;
+      if ($parlementaire->parti) : ?>
+      <li>Parti politique (rattachement financier) : <?php echo $parlementaire->parti; ?></li>
       <?php endif; ?>
       <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, myTools::get_solr_list_url($parlementaire->profession, '', 'Parlementaire', "profession=".myTools::solrize($parlementaire->profession))."&noredirect=1"); else : ?>Non communiquée<?php endif; ?></li>
       <?php if ($parlementaire->url_an) echo '<li>'.link_to('Page sur le site de l\'Assemblée nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'rel'=>'nofollow')).'</li>'; ?>
