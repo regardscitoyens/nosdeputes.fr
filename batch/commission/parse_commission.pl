@@ -332,13 +332,19 @@ foreach $line (split /\n/, $string)
     $line =~ s/\s*\|\s*,\s*\/\s*/,|\/ /g;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
+    $tmpinter = "";
 	#si italique ou tout gras => commentaire
 	if ($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) {
 	    if (!$timestamp && !$commission && $line =~ /^\|(.*(groupe|mission|délégation|office|comité).*)\|\s*$/i) {
 		$commission = $1;
 		next;
 	    }
-	    checkout() if ($intervenant);	    
+        if ($intervenant) {
+            if ($line =~ /^\/\(.*\.\)\/$/) {
+                $tmpinter = $intervenant;
+            }
+            checkout();
+        }
 	    rapporteur();
 	    $found = 1;
 	}elsif ($line =~ s/^\|(M[^\|\:]+)[\|\:](\/[^\/]+\/)?(.*\w.*)/\3/ ) {
@@ -390,6 +396,10 @@ foreach $line (split /\n/, $string)
 	    }
 	}
 	$intervention .= "<p>$line</p>";
+    if ($tmpinter) {
+        checkout();
+        $intervenant = $tmpinter;	 
+    }
 	if ($line =~ /séance est levée/i) {
 	    last;
 	}
