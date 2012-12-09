@@ -9,6 +9,7 @@ class sendAlertTask extends sfBaseTask
     $this->briefDescription = 'send alerts';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('test', null, sfCommandOption::PARAMETER_OPTIONAL, 'test email');
   }
  
   protected static $period = array('HOUR' => 3600, 'DAY' => 86400, 'WEEK' => 604800, 'MONTH' => 2592000);
@@ -21,10 +22,12 @@ class sendAlertTask extends sfBaseTask
     $this->configuration->loadHelpers(array('Partial', 'Url'));
     
     $solr = new SolrConnector();
-    $query = Doctrine::getTable('Alerte')->createQuery('a')->where('next_mail < NOW()')->andWhere('confirmed = 1');
+    $query = Doctrine::getTable('Alerte')->createQuery('a')->where('next_mail < NOW() OR next_mail IS NULL')->andWhere('confirmed = 1');
+
     foreach($query->execute() as $alerte) if (preg_match("/\w@\w/", $alerte->email)) {
       $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")+1;
       $query = '('.$alerte->query.") date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d').'T'.date('H:i:s')."Z]";
+echo "q: $query\n";
       foreach (explode('&', $alerte->filter) as $filtre)
         if (preg_match('/^([^=]+)=(.*)$/', $filtre, $match))
           foreach (explode(',', $match[2]) as $value) {
@@ -39,8 +42,13 @@ class sendAlertTask extends sfBaseTask
 	continue;
       }
       echo "sending mail to : ".$alerte->email."\n";
+      if ($options['test']) {
+	$email = $options['test'];
+      }else{
+	$email = $alerte->email;
+      }
       $message = $this->getMailer()->compose(array('contact@regardscitoyens.org' => '"Regards Citoyens"'), 
-					     $alerte->email,
+					     $email,
 					     '[NosSenateurs.fr] Alerte - '.$alerte->titre);
 
       echo $alerte->titre."\n";
