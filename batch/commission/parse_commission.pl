@@ -375,7 +375,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
 	if (!$found) {
-	    if ($line =~ s/^\s*(M[mes\.]+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.:]//) {
+	    if ($line =~ s/^\s*((Dr|M[mes\.]+)(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.:]//) {
             checkout();
             $intervenant = setIntervenant($1);		
 	    }elsif (!$majIntervenant) {
