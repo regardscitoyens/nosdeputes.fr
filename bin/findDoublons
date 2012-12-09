@@ -1,0 +1,11 @@
+#!/bin/bash
+. $(echo $0 | sed 's/[^\/]*$//')db.inc
+
+echo "SELECT seance_id, timestamp, count(*) FROM intervention GROUP BY seance_id, timestamp" | mysql $MYSQLID $DBNAME | grep -v '1$' | grep -v timestamp | while read line; do
+SEANCEID=$(echo $line | sed 's/  *.*//')
+TIMESTAMP=$(echo $line | sed 's/^[0-9]* *//' | sed 's/  *.*//')
+echo "Doublons trouvé pour la seance $SEANCEID (timestamp $TIMESTAMP) : "
+echo "SELECT seance_id, md5 FROM intervention WHERE seance_id = $SEANCEID AND timestamp = $TIMESTAMP" | mysql $MYSQLID $DBNAME | grep -v md5 | sed 's|^|http://www.nossenateurs.fr/seance/|' | sed 's|\t|\#inter_|'
+echo
+done
+
