@@ -381,7 +381,7 @@ foreach $line (split /\n/, $string)
 	#si italique ou tout gras => commentaire
 	if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/.*\/\s$/) {
 	    checkout() if ($intervenant);
-	}elsif ($line =~ s/^\s*\|\s*(M[^\|\/\:]+)[\|\/\:]// ) {
+	}elsif ($line =~ s/^\s*\|\s*(M[^\|\/\:]+)[\|\/\:]// || $line =~ s/^\s*(M[\.Mmle]+(\s+([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.\:]//) {
 	    checkout();
 	    $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
