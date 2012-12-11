@@ -99,14 +99,16 @@ sub checkout {
     $commission =~ s/"//g;
     $intervention =~ s/"/\\"/g;
     $cpt+=10;
-    $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "timestamp": "'.$cpt.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
-    if ($intervenant) {
+    $ts = $cpt;
+    $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
+    if ($intervention && $intervenant) {
 	if ($intervenant =~ s/ et M[mes\.]* (.*)//) {
-	    print $out.'"intervenant": "'.$1."\"}\n";
+	    print $out.'"intervenant": "'.$1.', "timestamp": "'.$ts.'"}'."\n";
+	    $ts++;
 	}
-	print $out.'"intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}."\"}\n";
+	print $out.'"intervenant": "'.$intervenant.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{$intervenant}."\"}\n";
     }elsif($intervention) {
-	print $out.'"intervenant":"'."\"}\n";
+	print $out.'"intervenant":"", "timestamp": "'.$ts.'"}'."\n";
     }else {
 	return ;
     }
