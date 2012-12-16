@@ -22,7 +22,11 @@ class parlementaireComponents extends sfComponents
   }
   public function executeDuJour()
   {
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->createQuery('p')->where('fin_mandat IS NULL')->orderBy('rand()')->limit(1)->fetchOne();
+    $query = Doctrine::getTable('Parlementaire')->createQuery('p');
+    if (!myTools::isLegislatureCloturee()) {
+      $query->where('fin_mandat IS NULL');
+    }
+    $this->parlementaire = $query->orderBy('rand()')->limit(1)->fetchOne();
     return ;
   }
   public function executeSearch() {

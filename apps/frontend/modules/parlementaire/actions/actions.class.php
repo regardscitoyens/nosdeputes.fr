@@ -120,7 +120,11 @@ class parlementaireActions extends sfActions
 
   public function executeRandom(sfWebRequest $request)
   {
-    $p = Doctrine::getTable('Parlementaire')->createQuery('p')->where('fin_mandat IS NULL')->orderBy('rand()')->limit(1)->fetchOne();
+    $query = Doctrine::getTable('Parlementaire')->createQuery('p');
+    if (!myTools::isLegislatureCloturee()) {
+      $query->where('fin_mandat IS NULL');
+    }
+    $p = $query->orderBy('rand()')->limit(1)->fetchOne();
     return $this->redirect('@parlementaire?slug='.$p['slug']);
   }
 
