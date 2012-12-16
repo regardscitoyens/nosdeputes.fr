@@ -27,7 +27,6 @@ class sendAlertTask extends sfBaseTask
     foreach($query->execute() as $alerte) if (preg_match("/\w@\w/", $alerte->email)) {
       $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")+1;
       $query = '('.$alerte->query.") date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d').'T'.date('H:i:s')."Z]";
-echo "q: $query\n";
       foreach (explode('&', $alerte->filter) as $filtre)
         if (preg_match('/^([^=]+)=(.*)$/', $filtre, $match))
           foreach (explode(',', $match[2]) as $value) {
