@@ -47,10 +47,11 @@ def clean_html(s):
     return _clean_html_re.sub('', s)
 
 lastbr_re = re.compile('\s*<br\s*/?>$', re.U|re.M)
+linebreaks_re = re.compile(r'[\s\r\n]+')
 def extracttext(t):
     div = t.parent.findNextSibling('div', attrs={'class': 'contenutexte'})
     text = div.decodeContents().strip()
-    return lastbr_re.sub('', text)
+    return linebreaks_re.sub(' ', lastbr_re.sub('', text))
 
 def extractspan(t):
     span = t.findNextSibling('span', attrs={'class': 'contenu'})
