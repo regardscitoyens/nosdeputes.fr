@@ -98,6 +98,7 @@ $cpt = 0;
 sub checkout {
     $commission =~ s/"//g;
     $intervention =~ s/"/\\"/g;
+    $intervention =~ s/\s*(<\/?t[rdh]>)\s*/\1/gi;
     $cpt+=10;
     $ts = $cpt;
     $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
@@ -247,11 +248,10 @@ $majIntervenant = 0;
 $body = 0;
 
 $string =~ s/<br>\n//gi;
+$string =~ s/<t([rdh]) [^>]*>/<t\1>/gi;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention : 
 #on vire les paragraphes contenus et on didascalise
-
-
 $string =~ s/<\/?ul>//gi;
 
 #print $string; exit;
@@ -398,6 +398,10 @@ foreach $line (split /\n/, $string)
 	    }
 	}
 	$intervention .= "<p>$line</p>";
+    if (length($intervention)-32000 > 0) {
+        $tmpinter = $intervenant;
+        checkout();
+    }
     if ($tmpinter) {
         checkout();
         $intervenant = $tmpinter;	 
