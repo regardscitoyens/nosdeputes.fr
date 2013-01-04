@@ -31,9 +31,11 @@ if ($display_text) {
 my %depute;
 my %groupes;
 my %orgas;
+my %mission;
 
 sub clean_vars {
   $encours = $lieu = $organisme = $fonction = "";
+  $mission = 0;
 }
 
 my %premiers_mandats;
@@ -122,6 +124,9 @@ foreach $line (split /\n/, $string) {
     $line =~ s/\s*<[^>]+>\s*//g;
     if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?)/) {
       $encours = "fonctions";
+      if ($line =~ /Missions temporaires/) {
+        $mission = 1;
+      }
     } elsif ($line =~ /(Organismes? extra-parlementaires?|Fonctions? dans les instances internationales ou judiciaires)/) {
       $encours = "extras"; 
     } elsif ($line =~ /(Mandats? loca[lux]+ en cours|Mandats? intercommuna)/i) {
@@ -202,7 +207,7 @@ foreach $line (split /\n/, $string) {
       }
     } else {
       next if ($line =~ /Rapporteure? spécial/i);
-      if ($line =~ /^(.*)\((.*) - mission débutée.*\)/i) {
+      if ($mission && $line =~ /^(.*)\((.*) - mi(ssion|nistère).*\)/i) {
         $organisme = trim($1);
         $minist = $2;
         $minist =~ s/m(inistère d[^,]*),.*$/M\1/i;
@@ -220,7 +225,7 @@ foreach $line (split /\n/, $string) {
         $line =~ s/\((commission des finances)\)$/de la \1/i;
         $line =~ s/^\s*(\S+) Comité/\1 du Comité/i;
         $line =~ s/^\s*(\S+) (c?o?m?mission)/\1 de la \2/i;
-	$line =~ s/ à la délégation/ de la délégation/i;
+        $line =~ s/ à la délégation/ de la délégation/i;
         $fonction = lc($1) if ($line =~ s/^\s*((\S+\s*){1,3}(du [bB]ureau)?) d((u|e la) |e l')(.*)$/\6/);
         $organisme = ucfirst($line);
         $organisme =~ s/^(Assemblée nationale)/Bureau de l'\1/i;
