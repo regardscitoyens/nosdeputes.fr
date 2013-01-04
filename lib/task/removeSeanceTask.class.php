@@ -90,9 +90,9 @@ class removeSeanceTask extends sfBaseTask {
           print $sid."//";
           $query = Doctrine_Query::create()
             ->delete('Section s')
-            ->where('s.id = ?', $sec);
+            ->where('s.id = ?', $sid);
           if (! $query->execute()) {
-            print 'Suppression impossible de la section N°'.$sec."\n";
+            print 'Suppression impossible de la section N°'.$sid."\n";
             return;
           }
         }
