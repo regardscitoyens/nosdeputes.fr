@@ -12,7 +12,8 @@ var d = { running: '0' };
 $("area").live("mouseover", d, function(e) {
   $(this).addClass("hover");
   dep = $(this).attr("id").substring(3,9).replace(/-0$/, "");
-  $("#dep"+dep).css("background-color", "#D1EA74");
+  $(".dep"+dep).css("background-color", "#D1EA74");
+  $(".dep"+dep).css("opacity", 0.8);
   if (e.data.running == 0) {
     d.running = 1;
     $(".map"+dep).filter(":not(.hover)").mouseover();
@@ -22,6 +23,7 @@ $("area").live("mouseover", d, function(e) {
 $("area").live("mouseout", function() {
   $(this).removeClass("hover");
   dep = $(this).attr("id").substring(3,9).replace(/-0$/, "");
-  $("#dep"+dep).css("background-color", "#fff");
+  $(".dep"+dep).css("background-color", "#fff");
+  $(".dep"+dep).css("opacity", 1);
   $(".map"+dep).filter(".hover").mouseout();
 })

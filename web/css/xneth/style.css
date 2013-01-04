@@ -1823,7 +1823,7 @@ a:hover img {
   text-align: center;
 }
 .dept:hover {
-  background-color: rgb(198,229,81);
+  background-color: #D1EA74;
 }
 .dept a {
   display: block;
@@ -1874,7 +1874,7 @@ a:hover img {
 }
 .list_dep:hover {
   color: #000;
-  background-color: rgb(198,229,81);
+  background-color: #D1EA74;
   opacity: 0.8;
 }
 .list_img_left {
