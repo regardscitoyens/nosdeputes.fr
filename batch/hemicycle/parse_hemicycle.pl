@@ -149,7 +149,7 @@ sub checkout {
 	$contexte .= ' > '.$titre2;
     }
     $out =  '{"contexte": "'.$contexte.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
-    if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement/i) {
+    if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|bienvenue|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement/i) {
 	$out .= "\"numeros_loi\": \"$ploi\", ";
     }
     if ($amendements) {
