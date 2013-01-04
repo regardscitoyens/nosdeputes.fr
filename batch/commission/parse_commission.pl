@@ -228,7 +228,7 @@ sub rapporteur
         @pieces = split(/(,|et) de M[mes\.]+ /, $line);
         foreach $l (@pieces) {
             $l =~ s/, sur .*$//;
-            if ($l ne $line && $l =~ /(M[me\.]+\s)?([^,]+), ([Mm]inistre ((, |et |([dl][eaus'\s]+))*(\S+\s+){1,4})+)/) {
+            if ($l ne $line && $l !~ /^[\/\|]?l[ea]s? /i && $l =~ /(M[me\.]+\s)?([^,]+), ([Mm]inistre ((, |et |([dl][eaus'\s]+))*(\S+\s+){1,4})+)/) {
                 setFonction($3, $2);
             }
         }
