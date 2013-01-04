@@ -91,7 +91,7 @@ class tagSeanceTask extends sfBaseTask
       
       //Recherche toutes les interventions pour cette séance
       $q = Doctrine_Query::create();
-      $q->select('intervention, id, parlementaire_id')->from('Intervention i')->where('seance_id = ?', $s['id'])->andWhere('( i.parlementaire_id IS NOT NULL OR i.personnalite_id IS NOT NULL )');//->andWhere('(i.fonction IS NULL OR i.fonction NOT LIKE ? )', 'président%');
+      $q->select('intervention, id, parlementaire_id')->from('Intervention i')->where('seance_id = ?', $s['id'])->andWhere('( i.parlementaire_id IS NOT NULL OR i.personnalite_id IS NOT NULL )')->andWhere('(i.fonction IS NULL OR i.fonction NOT LIKE ? )', 'président%');
 
       $array = $q->fetchArray();
       if (!count($array)) {
