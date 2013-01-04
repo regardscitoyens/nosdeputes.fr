@@ -142,6 +142,7 @@ sub setFonction {
     if (!$inter2fonction{$intervenant} || length($inter2fonction{$intervenant}) < length($fonction)) {
 	$inter2fonction{$intervenant} = $fonction;
     }
+    return $intervenant;
 }
 
 sub setIntervenant {
@@ -171,8 +172,7 @@ sub setIntervenant {
     if ($intervenant =~ /^[a-z]/) {
 	$intervenant =~ s/^l[ea]\s+//i;
 	if ($intervenant =~ /([pP]résidente?|[rR]apporteur[a-zé\s]+)\s([A-Zé].*)/) { #\s([A-Z].*)/i) {
-	    setFonction($1, $2);
-	    return $2;
+	    return setFonction($1, $2);
 	}
 	$conv = $fonction2inter{$intervenant};
     $maybe_inter = "";
@@ -361,15 +361,13 @@ foreach $line (split /\n/, $string)
 	}elsif ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// ) {
         checkout();
         $found = $majIntervenant = 1;
-	    setFonction($2, $1);
-	    $intervenant = setIntervenant($1);
+	    $intervenant = setFonction($2, $1);
 	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
 		$f = $1;
 		$i = $2;
 		$found = $majIntervenant = 1;
-                checkout();
-                setFonction($f, $i);
-		$intervenant = setIntervenant($i);
+        checkout();
+        $intervenant = setFonction($f, $i);
 	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]résidente?|[rR]apporteure?)[\.: \|]*//) {
 		$tmpfonction = lc($1);
 		$tmpintervenant = $fonction2inter{$tmpfonction};
