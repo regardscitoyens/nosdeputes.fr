@@ -59,7 +59,7 @@ class tagSeanceTask extends sfBaseTask
       $exclmin = 5;
     }
     $interventions = $q->fetchArray();
-    $words = $this->wordis($interventions, 0, $minsize);
+    $words = $this->wordize($interventions, 0, $minsize);
     $cpt = 0;
     $tot = count($words);
 
