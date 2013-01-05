@@ -1,5 +1,6 @@
     <VirtualHost *:80>
       ServerName my.cpc.regardscitoyens.org
+      AllowEncodedSlashes On
       DocumentRoot "/home/cpc/project/web"
       DirectoryIndex index.php
       <Directory "/home/cpc/project/web">
