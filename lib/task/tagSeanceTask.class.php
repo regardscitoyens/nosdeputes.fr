@@ -11,7 +11,7 @@ class tagSeanceTask extends sfBaseTask
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
  
-  protected function count($interventions, $excludeS = 0, $minsize = 1) {
+  protected function wordize($interventions, $excludeS = 0, $minsize = 1) {
     foreach($interventions as $i) {
       $i = preg_replace('/\([^\)]+\)/', '', $i);
       $i = preg_replace('/&#339;/', 'oe', $i['intervention']);
@@ -67,6 +67,7 @@ class tagSeanceTask extends sfBaseTask
     $include = array('télévision' => 1, 'dimanche'=>1, 'internet'=>1, 'outre-mer'=>1, 'logement'=>1, 'militaire'=>1, 'taxe'=>1, 'médecin'=>1, 'hôpital'=>1);
     $exclude_sentences = array('vice-président' => 1, 'sceaux'=>1, 'commissaire' => 1, 'monsieur' => 1, 'madame'=>1, 'professeur' => 1, 'amendement' => 1, 'règlement' => 1, 'rectificative' => 1, 'rapporteur' => 1);
 
+    //On exclue les mots les plus populaires (en plus des stopwords)
     foreach(array_keys($words) as $k) {
       if (!isset($include[$k]))
         $exclude[$k] = 1;
@@ -75,10 +76,12 @@ class tagSeanceTask extends sfBaseTask
         break;
     }
     unset($words);
+
+    //Exclusion des noms des parlementaires
     $q = Doctrine_Query::create();
     $q->select('nom as intervention')->from('Parlementaire o');
     $interventions = $q->fetchArray();
-    $words = $this->count($interventions, 0, $minsize);
+    $words = $this->wordize($interventions, 0, $minsize);
     foreach(array_keys($words) as $k) {
       $exclude[$k] = 1;
     }
@@ -86,6 +89,7 @@ class tagSeanceTask extends sfBaseTask
 
     $qs = Doctrine::getTable('Seance')->createQuery()->select('id')->where('tagged IS NULL');
 
+    //Pour chacune des séances
     foreach($qs->fetchArray() as $s) {
       echo "Seance ".$s['id']." ..";
       
@@ -98,13 +102,13 @@ class tagSeanceTask extends sfBaseTask
 	echo " pas d'intervention trouvée\n";
         continue;
       }
-      $words = $this->count($interventions, 1, $minsize);
+      $words = $this->wordize($interventions, 1, $minsize);
       $cpt = 0;
       $tot = count($words);
       $tags = array();
-      //Pour les mots le plus populaires non exclus on les gardes
+      //Pour les mots le plus populaires non exclus on les garde
       foreach(array_keys($words) as $k) {
-        if (!isset($exclude[$k]) && !preg_match('/-((il|elle)s|on|ci|le|[nv]ous)$/', $k)) {
+        if (!isset($exclude[$k]) && !preg_match('/-((il|elle)s?|on|ci|le|[nv]ous)$/', $k)) {
           $cpt++;
           $pc = $words[$k]*100/$tot;
           if ($pc < 0.8)
@@ -115,7 +119,7 @@ class tagSeanceTask extends sfBaseTask
 
       $sentences = null;
       $sent2word = null;
-      //On cherche des groupes de mots commums à partir des tags trouvés
+      //On cherche des groupes de mots communs à partir des tags trouvés
       foreach ($interventions as $inter) {
         $i = null;
         foreach (array_keys($tags) as $tag) {
