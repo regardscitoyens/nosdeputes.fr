@@ -47,6 +47,7 @@ class solrActions extends sfActions
     }
 
     $this->query = $request->getParameter('query');
+    $this->query = preg_replace('#^https?://#', '', $this->query);
     
     $query = preg_replace('/\*/', '', $this->query);
 
