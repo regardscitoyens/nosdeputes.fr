@@ -102,11 +102,11 @@ sub checkout_alinea {
 
 sub handle_text {
   if ($deftitre =~ /^none$/) {
-    if (($titre_chap =~ /^titre$/ && $content =~ /^\s*(T|t)(itre|ITRE)\s+(\d+|[IVX]+)(ER|er)?/) || (!($titre_chap =~ /^titre$/) && $content =~ /^\s*(T|CHAP|Chap)(itre|ITRE)\s+(\d+|[IVX]+)(ER|er)?/)) {
+    if (($titre_chap =~ /^titre$/ && $content =~ /^\s*(T|t)(itre|ITRE)\s+(\d+|[IVX]+)(ER|er)?/) || (!($titre_chap =~ /^titre$/) && $content =~ /^\s*(T|CHAP|Chap)(itre|ITRE)\s+(\d+|[IVXivx]+)(ER|er)?/)) {
       $chapitre++;
       $section = 0;
       $deftitre = 'chapitre';
-    } elsif (($titre_chap =~ /^titre$/ && $content =~ /^\s*(C|c)(HAPITRE|hapitre)\s+(\d+|[IVX]+)(ER|er)?/) || (!($titre_chap =~ /^titre$/) && $content =~ /^\s*section\s+\d+/i)) {
+    } elsif (($titre_chap =~ /^titre$/ && $content =~ /^\s*(C|c)(HAPITRE|hapitre)\s+(\d+|[IVXivx]+)(ER|er)?/) || (!($titre_chap =~ /^titre$/) && $content =~ /^\s*section\s+\d+/i)) {
       $section++;
       $deftitre = 'section';
     } elsif ($align =~ /center/ && $content =~ /<b>\s*Article/) {
