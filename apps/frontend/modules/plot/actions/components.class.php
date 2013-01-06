@@ -20,11 +20,11 @@ class plotComponents extends sfComponents
         $last_year = strtotime(myTools::getDebutLegislature());
       else $last_year = $date - 32054400;
       $date_debut = date('Y-m-d', $last_year);
-      $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year);
-      if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
-      if ($sem0 >= 52 && $sem <= 1) {
-        $sem0 = 0;
-        $annee0 += 1;
+      $annee0 = date('o', $last_year); $sem0 = date('W', $last_year);
+      if ($sem > 51 && date('n', $date) == 1) $sem = 0;
+      if ($sem < 2 && $annee != date('o', $date)) {
+        $annee = date('o', $date);
+        $sem0 -= 1;
       }
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
 #print "$date ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
@@ -231,9 +231,8 @@ class plotComponents extends sfComponents
   }
 
   public static function getLabelsSemaines($n_weeks, $annee, $sem) {
-    if ($sem > 1 && $sem <= 51) $an = $annee + 1;
-    else $an = $annee;
-    $hashmap = array( '3'  => "Jan ".sprintf('%02d', $an-2000), '6'  => " Fév", '10' => " Mar", '15' => "Avr",
+    if ($sem > 1 && $sem <= 52) $annee += 1;
+    $hashmap = array( '3'  => "Jan ".sprintf('%02d', $annee-2000), '6'  => " Fév", '10' => " Mar", '15' => "Avr",
                       '19' => " Mai", '24' => "Juin", '28' => "Juil", '33' => "Août",
                       '38' => "Sept", '42' => " Oct", '47' => "Nov", '52' => "Déc");
     $labels = array_fill(1, $n_weeks, "");
@@ -241,7 +240,7 @@ class plotComponents extends sfComponents
       $index = $i + $sem; if ($index > 53) $index -= 53;
       if (isset($hashmap[$index]) && !(($index == 3) && ($sem < 3 && $sem > 1))) $labels[$i] = $hashmap[$index];
     }
-    if ($sem < 3 && $sem != 0) $labels[54] = "Jan";
+    if ($n_weeks > 54 && $sem < 3 && $sem != 0) $labels[55] = "Jan";
     return $labels;
   }
 
