@@ -3,7 +3,7 @@
 class sectionComponents extends sfComponents
 {
   public function executeSimplifions() {
-    $this->lois = Doctrine_Query::create()->select('l.texteloi_id, l.titre, l.nb_commentaires')->from('TitreLoi l')->where('l.chapitre IS NULL')->andWhere('l.section IS NULL')->andWhere('l.nb_commentaires >= 5')->orderBy('l.date DESC')->fetchArray();
+    $this->lois = Doctrine_Query::create()->select('l.texteloi_id, l.titre, l.nb_commentaires')->from('TitreLoi l')->where('l.leveltype = ?', 'loi')->orderBy('l.date DESC')->fetchArray(); //->andWhere('l.nb_commentaires >= 5') 
   }
 
   public function executeParlementaire() {

@@ -5,8 +5,8 @@
 class AlineaTable extends Doctrine_Table
 {
 
-  public function findOrCreate($loi, $article, $numero, $chapitre = 0, $section = 0) {
-    $art = Doctrine::getTable('ArticleLoi')->findOrCreate($loi, $article, $chapitre, $section);
+  public function findOrCreate($loi, $article, $numero, $levels = array(0, 0, 0, 0)) {
+    $art = Doctrine::getTable('ArticleLoi')->findOrCreate($loi, $article, $levels);
     $query = $this->createQuery('a')
       ->where('a.texteloi_id = ?', $loi)
       ->andWhere('a.article_loi_id = ?', $art->id)

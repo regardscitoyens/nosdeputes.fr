@@ -28,8 +28,8 @@ class loadLoiTask extends sfBaseTask {
               echo "ERROR json : $line\n";
               continue;
             }
-            if ($json->expose) $json->expose = preg_replace("/<a\shref='([^']+)'>/", '<a href="\1">', $json->expose);
-            if ($json->texte) $json->texte = preg_replace("/<a\shref='([^']+)'>/", '<a href="\1">', $json->texte);
+            if (isset($json->expose)) $json->expose = preg_replace("/<a\shref='([^']+)'>/", '<a href="\1">', $json->expose);
+            if (isset($json->texte)) $json->texte = preg_replace("/<a\shref='([^']+)'>/", '<a href="\1">', $json->texte);
             if ($json->type == 'loi') {
               $loi = Doctrine::getTable('TitreLoi')->findLoiOrCreate($json->loi);
               if ($json->source) $loi->source = $json->source;
@@ -38,18 +38,13 @@ class loadLoiTask extends sfBaseTask {
               if ($json->date) $loi->date = $json->date;
               if ($json->auteur) $loi->setAuteur($json->auteur);
               $loi->save();
-            } else if ($json->type == 'chapitre') {
-              $chap = Doctrine::getTable('TitreLoi')->findChapitreOrCreate($json->loi, $json->chapitre);
-              if ($json->titre) $chap->titre = $json->titre;
-              if ($json->expose) $chap->expose = $json->expose;
-              $chap->save();
             } else if ($json->type == 'section') {
-              $sec = Doctrine::getTable('TitreLoi')->findSectionOrCreate($json->loi, $json->chapitre, $json->section);
+              $sec = Doctrine::getTable('TitreLoi')->findLevelOrCreate($json->loi, $json->level, array($json->level1, $json->level2, $json->level3, $json->level4), $json->leveltype);
               if ($json->titre) $sec->titre = $json->titre;
               if ($json->expose) $sec->expose = $json->expose;
               $sec->save();
             } else if ($json->type == 'article') {
-              $art = Doctrine::getTable('ArticleLoi')->findOrCreate($json->loi, $json->article, $json->chapitre, $json->section);
+              $art = Doctrine::getTable('ArticleLoi')->findOrCreate($json->loi, $json->article, array($json->level1, $json->level2, $json->level3, $json->level4));
               if ($json->expose && $json->expose != '') $art->expose = $json->expose;
               if ($json->ordre && $json->ordre != '') {
                 $art->ordre = $json->ordre;
@@ -62,7 +57,7 @@ class loadLoiTask extends sfBaseTask {
                 $oldart = $art;
               } else $art->save();
             } else if ($json->type == 'alinea') {
-              $ali = Doctrine::getTable('Alinea')->findOrCreate($json->loi, $json->article, $json->alinea, $json->chapitre, $json->section);
+              $ali = Doctrine::getTable('Alinea')->findOrCreate($json->loi, $json->article, $json->alinea, array($json->level1, $json->level2, $json->level3, $json->level4));
               if ($json->alinea == 1)
                 $refcode = '';
               if ($json->texte) $refcode = $ali->setTexteCode($json->texte, $refcode);

@@ -10,8 +10,7 @@ class TitreLoiTable extends Doctrine_Table
       ->select('t.titre, t.nb_articles, t.id')
       ->from('TitreLoi t')
       ->where('t.texteloi_id = ?', $id)
-      ->andWhere('t.chapitre IS NULL')
-      ->andWhere('t.section IS NULL')
+      ->andWhere('t.leveltype = ?', 'loi')
       ->fetchOne();
     if (!$loiarr) return null;
     else {
@@ -27,8 +26,7 @@ class TitreLoiTable extends Doctrine_Table
   public function findLoi($numero) {
     $query = $this->createQuery('t')
       ->where('t.texteloi_id = ?', $numero)
-      ->andWhere('t.chapitre IS NULL')
-      ->andWhere('t.section IS NULL');
+      ->andWhere('t.leveltype = ?', 'loi');
     return $query->fetchOne();
   }
 
@@ -38,6 +36,7 @@ class TitreLoiTable extends Doctrine_Table
       $loi = new TitreLoi();
       $loi->texteloi_id = $numero;
       $loi->nb_articles = 0;
+      $loi->leveltype = 'loi';
       $loi->save();
     }
     $loi->titre_loi_id = $loi->id;
@@ -45,45 +44,35 @@ class TitreLoiTable extends Doctrine_Table
     return $loi;
   }
 
-  public function findChapitre($loi, $numero) {
-    $query = $this->createQuery('t')
-      ->where('t.texteloi_id = ?', $loi)
-      ->andWhere('t.chapitre = ?', $numero)
-      ->andWhere('t.section IS NULL');
-    return $query->fetchOne();
-  } 
+  public function identifyAndFindLevel($loi, $levels = array(0, 0, 0, 0)) {
+    return self::findLevel($loi, TitreLoi::findLevel($levels), $levels);
+  }
 
-  public function findChapitreOrCreate($loi, $numero) {
-    $chap = $this->findChapitre($loi, $numero);
-    if (!$chap) {
-      $chap = new TitreLoi();
-      $chap->texteloi_id = $loi;
-      $chap->chapitre = $numero;
-      $chap->nb_articles = 0;
+  public function findLevel($loi, $level, $levels = array(0, 0, 0, 0)) {
+    $query = $this->createQuery('t')
+      ->where('t.texteloi_id = ?', $loi);
+    for ($i = 0; $i < 4; $i++) {
+      if ($i < $level)
+        $query->andWhere('t.level'.($i+1).' = ?', $levels[$i]);
+      else $query->andWhere('t.level'.($i+1).' IS NULL');
     }
-    $chap->titre_loi_id = $this->findLoiOrCreate($loi)->id;
-    $chap->save();
-    return $chap;
-  }
-
-  public function findSection($loi, $chapitre, $numero) {
-    $query = $this->createQuery('t')
-      ->where('t.texteloi_id = ?', $loi)
-      ->andWhere('t.chapitre = ?', $chapitre)
-      ->andWhere('t.section = ?', $numero);
     return $query->fetchOne();
   }
 
-  public function findSectionOrCreate($loi, $chapitre, $numero) {
-    $sect = $this->findSection($loi, $chapitre, $numero);
+  public function findLevelOrCreate($loi, $level, $levels = array(0, 0, 0, 0), $leveltype = '') {
+    if ($level == 0)
+      return $this->findLoiOrCreate($loi);
+    $sect = $this->findLevel($loi, $level, $levels);
     if (!$sect) {
       $sect =  new TitreLoi();
       $sect->texteloi_id = $loi;
-      $sect->chapitre = $chapitre;
-      $sect->section = $numero;
+      for ($i = 0; $i < $level; $i++) 
+        $sect->setLevel($i+1, $levels[$i]);
       $sect->nb_articles = 0;
     }
-    $sect->titre_loi_id = $this->findChapitreOrCreate($loi, $chapitre)->id;
+    if (!$sect->leveltype && $leveltype != "")
+      $sect->leveltype = $leveltype;
+    $sect->titre_loi_id = $this->findLevelOrCreate($loi, $level-1, $levels)->id;
     $sect->save();
     return $sect;
   }

@@ -22,17 +22,62 @@ class TitreLoi extends BaseTitreLoi
     }
   }
 
-  public function getLargeTitre() {
-    $titre = '';
-    if ($this->titre_loi_id != $this->id) {
-      if (isset($this->chapitre) && $this->chapitre != 0) {
-        $titre .= '<a href="@loi_chapitre">Chapitre '.$this->chapitre;
-        if (isset($this->section) && $this->section != 0)
-          $titre .= '</a> - <a href="@loi_section">section '.$this->section;
-        $titre .= ' : '.$this->titre.'</a>';
-      }
-    }
+  public function setLevel($level, $value) {
+    $this->_set($levelstr, $value);
+  }
+
+  public static function findLevel($levels = array(0,0,0,0)) {
+    for ($i = 3; $i >= 0; $i--)
+      if ($levels[$i]) return $i+1;
+    return 0;
+  }
+
+  public function getLevel() {
+    $levels = array();
+    for ($i = 1; $i < 5; $i++)
+      $levels[] = $this->_get('level'.$i, 0);
+    return self::findLevel($levels);
+  }
+
+  public function getLevelValue($level) {
+    if ($level != 1 && $level != 2 && $level != 3 && $level != 4)
+      return '';
+    return $this->_get('level'.$level);
+  }
+
+  public function getUrl() {
+    $level = $this->getLevel();
+    if (!$level)
+      return '@loi?loi='.$this->texteloi_id;
+    $args = "?loi=".$this->texteloi_id;
+    for ($i = 1; $i <= $level; $i++)
+      $args .= "&level".$i."=".$this->_get('level'.$i);
+    return '@loi_level'.$level.$args;
+  }
+
+  public function getShortLevelTitre() {
+    if ($this->getLevel())
+      return ucfirst($this->leveltype).' '.$this->_get('level'.$this->getLevel());
+    return '';
+  }
+
+  public function getLevelTitre() {
+    $titre = ucfirst($this->titre);
+    if ($this->getShortLevelTitre())
+      $titre = $this->getShortLevelTitre()."&nbsp;: ".$titre;
     return $titre;
+  }
+
+  public function getHierarchie() {
+    if (!$this->getLevel())
+      return ''; 
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    $titreparent = '<a href="'.url_for($this->getUrl()).'">'.$this->getShortLevelTitre()."</a>";
+    if ($this->getLevel() > 1) {
+      $parent = $this->TitreLoi;
+      $titreparent = $parent->getHierarchie()." - ".$titreparent;
+    }
+    return $titreparent;
   }
 
   public function getDossier() {
@@ -46,6 +91,65 @@ class TitreLoi extends BaseTitreLoi
       ->andWhere('t.name = ?', "loi:numero=".preg_replace('/^(\d+)-.*/', '\\1', $this->texteloi_id))
       ->fetchOne();
     return $section;
+  }
+
+  public function getVoisins() {
+    $result = array("","");
+    $level = $this->getLevel();
+    if (!$level)
+      return $result;
+    $levelstr = "level".$level;
+    $levelvalue = $this->_get($levelstr);
+    $levels = array(0,0,0,0);
+    for ($i = 1; $i < $level; $i++)
+      $levels[$i-1] = $this->_get('level'.$i);
+    if (preg_match('/^(\d+)\s+bis$/',$levelvalue, $match)) {
+      $result[0] = $match[1];
+      $levels[$levelvalue] = $match[1] + 1;
+      if (Doctrine::getTable('TitreLoi')->findLevel($this->texteloi_id, $levels))
+        $result[1] = $match[1] + 1;
+    } else {
+      $pre = $levelvalue - 1;
+      $qvoisins = Doctrine::getTable('TitreLoi')->createQuery('c')
+        ->select('c.'.$levelstr)
+        ->where('c.texteloi_id = ?', $this->texteloi_id);
+      for ($i = 1; $i < $level; $i++)
+        $qvoisins->andWhere('c.level'.$i.' = ?', $levels[$i-1]);
+      for ($i = $level + 1; $i < 5; $i++)
+        $qvoisins->andWhere('c.level'.$i.' IS NULL');
+      $voisins = $qvoisins->andWhereIn('c.'.$levelstr, array($pre, $pre." bis", $levelvalue." bis", $levelvalue + 1))
+        ->orderBy('c.'.$levelstr)
+        ->fetchArray();
+      $ct = count($voisins);
+      if ($ct == 1) {
+        if ($levelvalue == 1) $result[1] = $voisins[0][$levelstr];
+        else $result[0] = $voisins[0][$levelstr];
+      } else if ($ct == 2) {
+        if ($levelvalue == 1)
+          $result[1] = $voisins[0][$levelstr];
+        else if (preg_match('/^(\d+)\s+bis$/', $voisins[1][$levelstr], $match) && $match[1] < $levelvalue)
+          $result[0] = $voisins[1][$levelstr];
+        else {
+          $result[0] = $voisins[0][$levelstr];
+          $result[1] = $voisins[1][$levelstr];
+        }
+      } else if ($ct > 2) {
+        if (preg_match('/bis/', $voisins[1][$levelstr]) && preg_match('/bis/', $voisins[2][$levelstr])) {
+          $result[0] = $voisins[1][$levelstr];
+          $result[1] = $voisins[2][$levelstr];
+        } else {
+          $result[0] = $voisins[0][$levelstr];
+          if (preg_match('/'.$n_section.'/', $voisins[1][$levelstr])) {
+            $result[0] = $voisins[0][$levelstr];
+            $result[1] = $voisins[1][$levelstr];
+          } else {
+            $result[0] = $voisins[1][$levelstr];
+            $result[1] = $voisins[2][$levelstr];
+          }
+        }
+      }
+    }
+    return $result;
   }
 
 }

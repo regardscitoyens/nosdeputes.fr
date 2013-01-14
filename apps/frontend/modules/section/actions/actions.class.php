@@ -77,8 +77,7 @@ class sectionActions extends sfActions
         ->select('t.texteloi_id, t.titre, t.nb_commentaires')
         ->from('TitreLoi t')
         ->whereIn('t.texteloi_id', $lois)
-        ->andWhere('t.chapitre IS NULL')
-        ->andWhere('t.section is NULL')
+        ->andWhere('t.leveltype = ?', 'loi')
         ->orderBy('t.texteloi_id')
         ->fetchArray();
 

@@ -1286,7 +1286,7 @@ h2 {
   padding: 10px;
   border-bottom: 1px dashed #E8E7E4;
 }
-.inscription input, .connexion input { width: 20em; }
+.inscription input, .connexion input { max-width: 320px; }
 /* commentaires */
 .link_comment {
   height: 11px;
@@ -1298,6 +1298,10 @@ h2 {
   padding-top: 5px;
   clear:both;
   margin-bottom: 15px;
+}
+
+.commentaires .com_ajax textarea {
+  max-width: 840px;
 }
 .commentaire_avatar {
   float: left;
@@ -1330,8 +1334,12 @@ h2 {
 .commentaire span a:hover {
   text-decoration: underline;
 }
-.commentaires com_link {
+.commentaires .com_link {
   float: right;
+}
+
+.commentaires th {
+  max-width: 400px;
 }
 .source {
   float: right;
@@ -1359,8 +1367,11 @@ h2 {
 .loi p:first-letter {
   padding-left: 20px;
 }
-.loi li {
-  margin-left: -15px;
+.sommaireloi ul {
+  margin-bottom: 8px;
+}
+.sommaireloi li {
+  margin-top: 5px;
 }
 .loi blockquote {
   margin-left: 8px;
@@ -1412,7 +1423,7 @@ h2 {
   font-size: 0.8em;
 }
 .alineatexte {
-  width: 870px;
+  max-width: 870px;
 }
 .alineatexte p:first-letter {
   padding-left: 0px;
@@ -1427,27 +1438,49 @@ h2 {
 .alineatexte .com_link {
   display: none;
   float: right;
-  margin-top: 13px;
-  margin-bottom: 0px;
-  margin-right: 25px;
+  margin-top: 10px;
+  margin-bottom: 3px;
+  margin-right: 18px;
   height: 11px;
 }
 .alineatexte .commentaires {
   margin-top: 22px;
   margin-left: 10px;
+  max-width: 850px;
+  clear: both;
+  margin: auto;
 }
 .com_ajax {
   margin-top: 30px;
-}
-.alineatexte .commentaires {
-  clear: both;
-  margin: auto;
 }
 .alineatexte .commentaire_avatar img {
   margin: 6px;
 }
 .loi, .sommaireloi {
   font-size: 12px;
+}
+.sommaireloi .level1 {
+  font-weight: bold;
+  font-size: 14px;
+}
+.sommaireloi .level2 {
+  font-weight: bold;
+  opacity: 0.8;
+  font-size: 13px;
+}
+.sommaireloi .level3 {
+  font-weight: normal;
+  opacity: 1;
+  font-size: 13px;
+}
+.sommaireloi .articleloi {
+  font-weight: normal;
+  font-size: 12px;
+}
+.sommaireloi small {
+  font-weight: normal;
+  opacity: 1;
+  font-size: 11px;
 }
 .loi .alineatexte .commentaire a {
   text-decoration: none;
@@ -1468,8 +1501,11 @@ h2 {
 .alineatexte .commentaire .clear {
   text-align: right;
 }
-.alineatexte .commentaires com_link {
+.alineatexte .commentaires .com_link {
   float: right;
+}
+.alineatexte .commentaires .com_link tr {
+  max-width: 830px;
 }
 .perso {
   font-weight: bold;

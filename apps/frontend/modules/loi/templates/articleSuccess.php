@@ -1,14 +1,7 @@
 <div class="loi">
 <h1><?php echo link_to($loi->titre, '@loi?loi='.$loi->texteloi_id); ?></h1>
-<h2><?php if (preg_match('/@loi_chapitre/', $titre)) {
-  $url = url_for('@loi_chapitre?loi='.$loi->texteloi_id.'&chapitre='.$section->chapitre);
-  $titre = preg_replace('/@loi_chapitre/', $url, $titre);
-  if (preg_match('/@loi_section/', $titre)) {
-    $url = url_for('@loi_section?loi='.$loi->texteloi_id.'&chapitre='.$section->chapitre.'&section='.$section->section);
-    $titre = preg_replace('/@loi_section/', $url, $titre);
-  }
-}
-echo $titre; ?></h2>
+<h2><?php echo $titre; ?></h2>
+<h3><?php echo "(".$section->getHierarchie()."&nbsp;: ".link_to(ucfirst($section->titre), $section->getUrl()).")"; ?></h3>
 <div class="pagerloi">
 <?php if ($article->precedent) {
   echo '<div class="precedent">'.link_to('Article précédent', '@loi_article?loi='.$loi->texteloi_id.'&article='.$article->precedent).'</div>';

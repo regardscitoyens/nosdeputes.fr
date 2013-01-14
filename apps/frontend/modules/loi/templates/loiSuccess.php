@@ -1,7 +1,7 @@
-<?php if ($dossier) echo '<div class="source">'.link_to('Dossier relatif', '@section?id='.$dossier)."</div>"; ?>
+<?php if (isset($dossier)) echo '<div class="source">'.link_to('Dossier relatif', '@section?id='.$dossier)."</div>"; ?>
 <div class="loi"><h1><?php echo $loi->titre; ?></h1></div>
 <?php if ($loi->source) echo '<p class="source"><a href="'.$loi->source.'" rel="nofollow">Source</a></p><div class="clear"></div>';
-if ($loi->parlementaire_id && $loi->expose && !($loi->texteloi_id == 2760)) { ?>
+if ($loi->parlementaire_id && $loi->expose) { ?>
   <div class="loi"><div class="intervenant">
   <?php $perso = $loi->getParlementaire();
   if ($perso->getPageLink() && $photo = $perso->hasPhoto()) {
@@ -16,45 +16,30 @@ if ($loi->parlementaire_id && $loi->expose && !($loi->texteloi_id == 2760)) { ?>
 <div class="sommaireloi">
 <?php $nart = 0; $nbart = 0;
 if (isset($soussections)) {
-  $chapitre = 0;
-  $section = 0;
+  $level = 0;
   foreach ($soussections as $ss) {
-    if (($section != 0 || $chapitre != 0) && ($ss->chapitre != $chapitre || $ss->section > 1)) {
+    if ($ss->level <= $level) {
       echo '<br/><small> &nbsp; Article';
-      if ($nbart > 1) echo 's';
-      echo '&nbsp;: ';
+      if ($nbart > 1) echo 's&nbsp;:';
+      echo ' ';
       for ($i=$nart;$i<$nart+$nbart;$i++) {
         echo link_to($articles[$i]['titre'], '@loi_article?loi='.$loi->texteloi_id.'&article='.$articles[$i]['slug']);
         if ($i != $nart+$nbart-1) echo ', ';
       }
       $nart += $nbart;
       echo '</small>';
-    }
+      if ($ss->level < $level) for ($i=0; $i < $level-$ss->level; $i++)
+        echo "</li></ul>";
+      else echo "</li>";
+    } else echo "<ul>";
+    echo '<li class="level'.$ss->getLevel().'">'.link_to($ss->getLevelTitre(), $ss->getUrl());
+    $level = $ss->getLevel();
     $nbart = $ss->nb_articles;
-    if (isset($ss->chapitre) && $ss->chapitre != $chapitre && (!($ss->section) || $ss->section == 0)) {
-      if ($section != 0) echo '</li></ul>';
-      $section = 0;
-      if ($chapitre != 0) echo '</li>';
-      else echo '<ul>';
-      $chapitre = $ss->chapitre;
-      echo '<li><b><a href="'.url_for('@loi_chapitre?loi='.$loi->texteloi_id.'&chapitre='.$chapitre).'">';
-      echo 'Chapitre '.$chapitre;
-    } else if (isset($ss->section) && $ss->section != $section) {
-      if ($section != 0) echo '</li>';
-      else echo '<ul>';
-      $section = $ss->section;
-      echo '<li><a href="'.url_for('@loi_section?loi='.$loi->texteloi_id.'&chapitre='.$chapitre.'&section='.$section).'">';
-      echo 'Section '.$section;
-    }
-    echo '&nbsp;: '.$ss->titre.'</a>';
-    if ($section == 0) echo '</b>';
-    echo ' ('.$ss->nb_articles.' article';
-    if ($ss->nb_articles > 1) echo 's';
     if ($ss->nb_commentaires > 0) {
-      echo ', <span class="coms_loi_txt">'.$ss->nb_commentaires.' commentaire';
+      echo '(<span class="coms_loi_txt">'.$ss->nb_commentaires.' commentaire';
       if ($ss->nb_commentaires > 1) echo 's';
+      echo '</span>)';
     }
-    echo '</span>)';
   }
   echo '<br/><small> &nbsp; Article';
   if ($nbart > 1) echo 's';
@@ -64,8 +49,8 @@ if (isset($soussections)) {
     if ($i != $nart+$nbart-1) echo ', ';
   }
   echo '</small>';
-  if ($section != 0) echo '</li></ul>';
-  if ($chapitre != 0) echo '</li></ul>';
+  if ($ss->level < $level) for ($i=0; $i < $level-$ss->level; $i++)
+    echo "</li></ul>";
   if ($amendements) {
     echo '<p class="suivant">'.link_to('Voir les '.$amendements.' amendements déposés sur ce texte', '@find_amendements_by_loi_and_numero?loi='.$loi->texteloi_id.'&numero=all');
     if (file_exists('liasses/liasse_'.$loi->texteloi_id.'.pdf')) echo '<br/>(<a href="/liasses/liasse_'.$loi->texteloi_id.'.pdf">version imprimable</a>)';
@@ -84,7 +69,7 @@ if (isset($soussections)) {
 } ?>
 </div>
 <br/>
-<?php if ((!$loi->parlementaire_id && $loi->expose) || $loi->texteloi_id == 2760) {
+<?php if (!$loi->parlementaire_id && $loi->expose) {
   echo '<div class="loi"><h2>Exposé des motifs&nbsp;:</h2>';
   if ($loi->parlementaire_id && $perso = $loi->getParlementaire()) 
     if ($perso->getPageLink() && $photo = $perso->hasPhoto()) {

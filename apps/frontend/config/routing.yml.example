@@ -42,13 +42,21 @@ loi_article_commentaires_json:
   url: /%LEGISLATURE%/loi/article/:article/commentaires
   param: {module: commentaire, action: json}
 
-loi_section:
-  url: /%LEGISLATURE%/loi/:loi/section/:chapitre/:section
+loi_level4:
+  url: /%LEGISLATURE%/loi/:loi/section/:level1/:level2/:level3/:level4
   param: {module: loi, action: section}
 
-loi_chapitre:
-  url: /%LEGISLATURE%/loi/:loi/section/:chapitre
-  param: {module: loi, action: section, section: "0"}
+loi_level3:
+  url: /%LEGISLATURE%/loi/:loi/section/:level1/:level2/:level3
+  param: {module: loi, action: section, level4: "0"}
+
+loi_level2:
+  url: /%LEGISLATURE%/loi/:loi/section/:level1/:level2
+  param: {module: loi, action: section, level3: "0", level4: "0"}
+
+loi_level1:
+  url: /%LEGISLATURE%/loi/:loi/section/:level1
+  param: {module: loi, action: section, level2: "0", level3: "0", level4: "0"}
 
 loi_rss_commentaires:
   url: /%LEGISLATURE%/loi/:loi/commentaires/rss

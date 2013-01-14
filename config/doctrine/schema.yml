@@ -581,8 +581,11 @@ TitreLoi:
     Timestampable:
   columns:
     texteloi_id: string(16)
-    chapitre: string(8)
-    section: string(8)
+    leveltype: string(16)
+    level1: string(8)
+    level2: string(8)
+    level3: string(8)
+    level4: string(8)
     titre: string(512)
     expose:
       type: string
