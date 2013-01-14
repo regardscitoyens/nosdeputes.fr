@@ -23,7 +23,7 @@ class TitreLoi extends BaseTitreLoi
   }
 
   public function setLevel($level, $value) {
-    $this->_set($levelstr, $value);
+    $this->_set('level'.$level, $value);
   }
 
   public static function findLevel($levels = array(0,0,0,0)) {
