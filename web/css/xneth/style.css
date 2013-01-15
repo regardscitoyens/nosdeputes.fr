@@ -1456,6 +1456,14 @@ h2 {
 .alineatexte .commentaire_avatar img {
   margin: 6px;
 }
+.loi #expose_court {
+  display: none;
+  text-align: center;
+  opacity: 0.8;
+}
+.loi #expose_complet {
+  display: show;
+}
 .loi, .sommaireloi {
   font-size: 12px;
 }
