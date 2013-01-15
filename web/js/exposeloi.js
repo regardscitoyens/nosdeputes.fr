@@ -3,6 +3,6 @@ $(document).ready(function() {
   $("#expose_court").show();
   $("#expose_court").bind("click", function() {
     $("#expose_court").hide();
-    $("#expose_complet").slideDown(1);
+    $("#expose_complet").slideDown(500);
   });
 });
