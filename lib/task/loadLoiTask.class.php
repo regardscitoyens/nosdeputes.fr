@@ -58,8 +58,12 @@ class loadLoiTask extends sfBaseTask {
               } else $art->save();
             } else if ($json->type == 'alinea') {
               $ali = Doctrine::getTable('Alinea')->findOrCreate($json->loi, $json->article, $json->alinea, array($json->level1, $json->level2, $json->level3, $json->level4));
-              if ($json->alinea == 1)
+              if ($json->alinea == 1) {
+                if ($refcode) $oldcode = $refcode;
                 $refcode = '';
+              }
+              if (!$refcode && preg_match('/ même (code|loi|ordonnance)/', $json->texte))
+                $refcode = $oldcode;
               if ($json->texte) $refcode = $ali->setTexteCode($json->texte, $refcode);
               $ali->save();
             } else {

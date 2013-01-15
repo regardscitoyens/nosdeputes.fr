@@ -94,9 +94,11 @@ class Alinea extends BaseAlinea
     $texte = trim(preg_replace('/\s+/', ' ', $texte));
     foreach (self::$code_legif as $code => $legif) if (preg_match('/'.$code.'/', $texte)) {
       $this->ref_loi = $code;
-      return $code;
+      if ($this->numero < 3)
+        return $code;
+      return $refcode;
     }
-    if (preg_match('/(loi\sn°\s?[\d\-]+\sdu\s\d+e?r?\s[a-zéû]+\s\d{4})/', $texte, $match)) {
+    if (preg_match('/((ordonnance|loi)\sn°\s?[\d\-]+\sdu\s\d+e?r?\s[a-zéû]+\s\d{4})/', $texte, $match)) {
       $this->ref_loi = $match[1];
       return $match[1];
     }
