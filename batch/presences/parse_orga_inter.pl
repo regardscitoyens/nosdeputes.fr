@@ -79,7 +79,7 @@ foreach (split /\n/, $html) {
 		$titre =~ s/\s+/ /g;
 		$titre =~ s/^\s*//;
 		$titre =~ s/\s*$//;
-		$titre =~ s/\’/\'/g;
+		$titre =~ s/’/\'/g;
 		$titre =~ s/&#8217;/'/g;
 		$titre =~ s/&#8211;/-/g;
 		$titre =~ s/&#8209;/-/g;
@@ -105,10 +105,13 @@ foreach (split /\n/, $html) {
 	%id = ();
 	while (/fiches_id.(\d+).asp">([^<]*)<\/a>/g) {
 		$nom = $2; $id = $1;
+		$nom =~ s/\xc2\x92/'/g;
 		$nom =~ s/députée?s?//;
 		next if ($id{$id});
 		$id{$id} = 1;
 		$nom =~ s/&nbsp;/ /g;
+		$nom =~ s/\s+/ /g;
+		$nom =~ s/^hil/Phil/g;
 		$organisme = $deforganisme unless($organisme);
 		foreach $d (@date) {
 			print "{\"depute\":\"$nom\", \"id_an\":\"$id\", \"reunion\":\"$d\", \"commission\":\"$organisme\", \"source\": \"$url\", \"session\":\"$titre\"$typeorganisme}\n";
