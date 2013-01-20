@@ -1335,7 +1335,7 @@ h2 {
   text-decoration: underline;
 }
 .commentaires .com_link {
-  float: right;
+  float: left;
 }
 
 .commentaires th {
