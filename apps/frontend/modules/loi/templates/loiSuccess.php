@@ -47,7 +47,7 @@ if (isset($soussections)) {
     $level = $ss->getLevel();
     $nbart = $ss->nb_articles;
     if ($ss->nb_commentaires > 0) {
-      echo '(<span class="coms_loi_txt">'.$ss->nb_commentaires.' commentaire';
+      echo ' (<span class="coms_loi_txt">'.$ss->nb_commentaires.' commentaire';
       if ($ss->nb_commentaires > 1) echo 's';
       echo '</span>)';
     }

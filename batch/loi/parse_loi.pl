@@ -128,6 +128,8 @@ sub romans {
 sub set_level {
   $leveltype = lc(shift);
   $levelvalue = romans(shift);
+  $more = shift || "";
+  $more =~ s/<[^>]*>//g;
   $oldlevel = $curlevel;
   if (!$hierarchy{$leveltype}) {
     $curlevel += 1;
@@ -135,17 +137,17 @@ sub set_level {
   } else {
     $curlevel = $hierarchy{$leveltype};
   }
-  $levels[$curlevel-1] = $levelvalue;
+  $levels[$curlevel-1] = $levelvalue.$more;
   for ($i=$curlevel; $i<4; $i++) {
     $levels[$i] = 0;
   }
-  #print "TEST $leveltype ; $levelvalue ; $curlevel ; $hierarchy ; $levels\n";
+  #print "TEST $leveltype ; $levelvalue.$more ; $curlevel ; $hierarchy ; $levels\n";
 }
 
 sub handle_text {
   if ($deftitre == 0) {
-    if ($content =~ /^\s*((chap|t)itre|volume|livre|tome|(sous-)?section)\s+(\d+|[ivx]+)(er?)?/i) {
-      set_level($1, $4);
+    if ($content =~ /^\s*((chap|t)itre|volume|livre|tome|(sous-)?section)\s+(\d+|[ivx]+)(e?r?\s*(<i>\s*)?(un|duo|tre)?(bis|qua|quint|quinqu|sex|oct|nov|non|dec)?(ter|ies)?)/i) {
+      set_level($1, $4, $5);
       $deftitre = 1;
     } elsif ($align =~ /center/ && $content =~ /<b>\s*Article/) {
       $content_art = $content;

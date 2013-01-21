@@ -103,13 +103,15 @@ class TitreLoi extends BaseTitreLoi
     $levels = array(0,0,0,0);
     for ($i = 1; $i < $level; $i++)
       $levels[$i-1] = $this->_get('level'.$i);
-    if (preg_match('/^(\d+)\s+bis$/',$levelvalue, $match)) {
+    if (preg_match('/^(\d+e?r?)\s+bis$/',$levelvalue, $match)) {
       $result[0] = $match[1];
-      $levels[$levelvalue] = $match[1] + 1;
-      if (Doctrine::getTable('TitreLoi')->findLevel($this->texteloi_id, $levels))
-        $result[1] = $match[1] + 1;
+      $levelnumber = preg_replace('/\D/', '', $result[0]);
+      $levels[$level-1] = $levelnumber + 1;
+      if (Doctrine::getTable('TitreLoi')->findLevel($this->texteloi_id, $level, $levels))
+        $result[1] = $levelnumber + 1;
     } else {
-      $pre = $levelvalue - 1;
+      $levelnumber = preg_replace('/\D/', '', $levelvalue);
+      $pre = $levelnumber - 1;
       $qvoisins = Doctrine::getTable('TitreLoi')->createQuery('c')
         ->select('c.'.$levelstr)
         ->where('c.texteloi_id = ?', $this->texteloi_id);
@@ -117,7 +119,7 @@ class TitreLoi extends BaseTitreLoi
         $qvoisins->andWhere('c.level'.$i.' = ?', $levels[$i-1]);
       for ($i = $level + 1; $i < 5; $i++)
         $qvoisins->andWhere('c.level'.$i.' IS NULL');
-      $voisins = $qvoisins->andWhereIn('c.'.$levelstr, array($pre, $pre." bis", $levelvalue." bis", $levelvalue + 1))
+      $voisins = $qvoisins->andWhereIn('c.'.$levelstr, array($pre, $pre."e", $pre."er", $pre." bis", $pre."e bis", $pre."er bis", $levelvalue." bis", $levelnumber."e", $levelnumber."er", $levelnumber." bis", $levelnumber + 1))
         ->orderBy('c.'.$levelstr)
         ->fetchArray();
       $ct = count($voisins);
@@ -127,7 +129,7 @@ class TitreLoi extends BaseTitreLoi
       } else if ($ct == 2) {
         if ($levelvalue == 1)
           $result[1] = $voisins[0][$levelstr];
-        else if (preg_match('/^(\d+)\s+bis$/', $voisins[1][$levelstr], $match) && $match[1] < $levelvalue)
+        else if (preg_match('/^(\d+)e?r?\s+bis$/', $voisins[1][$levelstr], $match) && $match[1] < $levelvalue)
           $result[0] = $voisins[1][$levelstr];
         else {
           $result[0] = $voisins[0][$levelstr];
@@ -139,7 +141,7 @@ class TitreLoi extends BaseTitreLoi
           $result[1] = $voisins[2][$levelstr];
         } else {
           $result[0] = $voisins[0][$levelstr];
-          if (preg_match('/'.$n_section.'/', $voisins[1][$levelstr])) {
+          if (preg_match('/'.$levelvalue.'/', $voisins[1][$levelstr])) {
             $result[0] = $voisins[0][$levelstr];
             $result[1] = $voisins[1][$levelstr];
           } else {
