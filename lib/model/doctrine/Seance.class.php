@@ -161,6 +161,8 @@ class Seance extends BaseSeance
     $titre = preg_replace('/00:00/', 'minuit', $titre);
     $titre = preg_replace('/0(\d:\d{2})/', '\\1', $titre);
     $titre = preg_replace('/ (\d+):(\d{2})/', ' \\1h\\2', $titre);
+    if ($this->type == "commission")
+      $titre = str_replace('Séance', 'Réunion', $titre);
     if ($ref != '')
       $titre .= '</a>';
     return $titre;

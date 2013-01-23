@@ -95,10 +95,12 @@ if ($subsection->id != $section->id) : ?>
   echo '</ul></div>';
 } ?>
 <div class="seances_dossier">
-<h2>Toutes les séances consacrées à ce dossier</h2>
+<h2>Les débats consacrés à ce dossier</h2>
 <ul>
 <?php foreach($seances as $seance) : ?>
 <li><?php $subtitre = $seance->getTitre();
+if ($seance->type == "commission")
+  $subtitre = preg_replace('/([\' ])(lois|sociales|étrangères|finances|économie|culture|européennes).*$/', '\1\2', $seance->getTypeOrga())."&nbsp;: ".strtolower($subtitre);
   if ($seance->nb_commentaires > 0) {
     $subtitre .= ' (<span class="list_com">'.$seance->nb_commentaires.' commentaire';
     if ($seance->nb_commentaires > 1) $subtitre .= 's';
