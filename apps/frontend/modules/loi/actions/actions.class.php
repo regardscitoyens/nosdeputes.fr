@@ -60,6 +60,7 @@ class loiActions extends sfActions
       ->execute());
     if ($this->loi->getDossier())
       $this->dossier = $this->loi->getDossier()->id;
+    $this->doc = Doctrine::getTable('Texteloi')->findOneBySource($this->loi->source);
     $this->response->setTitle("Simplifions la loi - ".strip_tags($this->loi->titre).' - NosDéputés.fr');
     $request->setParameter('rss', array(array('link' => '@loi_rss_commentaires?loi='.$loi_id, 'title'=>'Les commentaires sur '.$this->loi->titre)));
   }

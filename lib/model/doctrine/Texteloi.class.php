@@ -277,6 +277,12 @@ class Texteloi extends BaseTexteloi
     return $str;
   }
 
+  public function getShortTitreExplained() {
+    if ($this->type === "Projet de loi")
+      return $this->type." du gouvernement n°&nbsp;".$this->numero;
+    return $this->getShortTitre();
+  }
+
   public function getTitre() {
     $str = $this->getDetailsTitre();
     if ($str)

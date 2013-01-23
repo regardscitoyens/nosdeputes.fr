@@ -1,5 +1,8 @@
+<?php echo '<div class="precedent">'.myTools::displayDate($loi->date).'</div>'; ?>
 <?php if (isset($dossier)) echo '<div class="source">'.link_to('Dossier relatif', '@section?id='.$dossier)."</div>"; ?>
-<div class="loi"><h1><?php echo $loi->titre; ?></h1></div>
+<div class="loi"><h1><?php echo $loi->titre; ?></h1>
+<?php if (isset($doc) && $doc != null) echo "<h2>".$doc->getShortTitreExplained()."</h2>"; ?>
+</div>
 <?php if ($loi->source) echo '<p class="source"><a href="'.$loi->source.'" rel="nofollow">Source</a></p><div class="clear"></div>';
 if ($loi->expose) {
   echo '<div class="loi"><h2>Exposé des motifs&nbsp;:</h2>';
