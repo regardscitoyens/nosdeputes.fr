@@ -5,9 +5,11 @@
 <?php foreach($questions as $question) {
   $titre = myTools::displayVeryShortDate($question->date).'&nbsp;: ';
   $section = $question->getSection();
-  if (preg_match('/question/i', $section->getSection()->getTitre()))
-    $titre .= ucfirst($section->getTitre());
-  else $titre .= ucfirst($section->getSection()->getTitre());
+  if ($section->getSection()) {
+     if (preg_match('/question/i', $section->getSection()->getTitre()))
+      $titre .= ucfirst($section->getTitre());
+    else $titre .= ucfirst($section->getSection()->getTitre());
+  } else $titre .= ucfirst($section->getTitre());
   if ($question->nb_commentaires)
     $titre .= ' (<span class="list_com">'.$question->nb_commentaires.'&nbsp;commentaire';
   if ($question->nb_commentaires > 1)
