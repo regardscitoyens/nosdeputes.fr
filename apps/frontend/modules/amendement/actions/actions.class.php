@@ -82,8 +82,10 @@ class amendementActions extends sfActions
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('a.sort <> ?', 'Rectifié')
-      ->andWhereIn('a.texteloi_id', $lois)
       ->orderBy('a.texteloi_id DESC, a.date DESC, '.self::$order.' DESC');
+    if (count($lois))
+      $this->qamendements->andWhereIn('a.texteloi_id', $lois);
+    else $this->qamendements->andWhere('a.sort = "FALSE"');
   }
 
   public function executeSearch(sfWebRequest $request)
