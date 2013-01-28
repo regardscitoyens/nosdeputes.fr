@@ -1496,6 +1496,13 @@ h2 {
   font-size: 11px;
   color: #000;
 }
+.alineatexte small {
+  padding-left: 10px;
+}
+.alineatexte small small {
+  font-size: 9px;
+  color: #000;
+}
 .loi .alineatexte .commentaire a {
   text-decoration: none;
   font-weight: bold;

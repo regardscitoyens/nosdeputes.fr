@@ -27,9 +27,9 @@ if (isset($amendements)) {
   if ($totalamdmts > 1) $string .= 's';
   $string .= ' déposé';
   if ($totalamdmts > 1) $string .= 's';
-  $string .= ' sur cet alinéa&nbsp;: ';
+  $string .= ' sur cet alinéa&nbsp;: <span class="orange">';
   foreach ($amendements as $adt) $string .= link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
-  $string .= '</small></p>';
+  $string .= '</span></small></p>';
   $s = preg_replace('/<\/p>$/', $string.'</p>', $s);
 }
 echo myTools::escape_blanks($s);

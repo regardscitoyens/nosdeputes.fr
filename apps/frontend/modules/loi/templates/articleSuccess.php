@@ -11,21 +11,22 @@ if ($article->suivant) {
   } ?>
 </div>
 <br/>
+<div class="articleloi">
 <?php $arttitre = strtolower($article->titre);
 if (isset($amendements['titre']) && preg_match('/[1i]er$/', $article->titre)) {
-  echo '<p><b>Amendement';
+  echo '<p class="sommaireloi"><b>Amendement';
   if ($amendements['titretot'] > 1) echo 's';
-  echo ' proposant une modification du titre&nbsp;:</b> ';
+  echo ' proposant une modification du titre&nbsp;:</b> <span class="orange">';
   foreach ($amendements['titre'] as $adt)
     echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
-  echo '</p>';
+  echo '</span></p>';
 }
 if (isset($amendements['avant '.$arttitre])) {
-  echo '<p><b>Amendement';
+  echo '<p class="sommaireloi"><b>Amendement';
   if ($amendements['avant '.$arttitre.'tot'] > 1) echo 's';
-  echo ' proposant un article additionel avant l\'article '.$article->titre.'&nbsp;:</b> ';
+  echo ' proposant un article additionel avant l\'article '.$article->titre.'&nbsp;:</b> <span class="orange">';
   foreach ($amendements['avant '.$arttitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
-  echo '</p>';
+  echo '</span></p>';
 }
 if (isset($expose)) echo myTools::escape_blanks($expose).'<div class="suivant list_com"><a href="#commentaires">Commenter</a></div>'; ?>
 <br/>
@@ -38,7 +39,7 @@ if (isset($expose)) echo myTools::escape_blanks($expose).'<div class="suivant li
  } ?>
 </table>
 <?php if (isset($amendements[$arttitre])) {
-  echo '<p><b>';
+  echo '<p class="sommaireloi"><b>';
   $ct = $amendements[$arttitre.'tot'];
   if ($ct > 1) echo 'Tous les a';
   else echo 'A';
@@ -46,17 +47,18 @@ if (isset($expose)) echo myTools::escape_blanks($expose).'<div class="suivant li
   if ($ct > 1) echo 's';
   echo ' déposé';
   if ($ct > 1) echo 's';
-  echo ' sur cet article&nbsp;:</b> ';
+  echo ' sur cet article&nbsp;:</b> <span class="orange">';
   foreach ($amendements[$arttitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
-  echo '</p>';
+  echo '</span></p>';
 }
 if (isset($amendements['après '.$arttitre])) {
-  echo '<p><b>Amendement';
+  echo '<p class="sommaireloi"><b>Amendement';
   if ($amendements['après '.$arttitre.'tot'] > 1) echo 's';
-  echo ' proposant un article additionel après l\'article '.$article->titre.'&nbsp;:</b> ';
+  echo ' proposant un article additionel après l\'article '.$article->titre.'&nbsp;:</b> <span class="orange">';
   foreach ($amendements['après '.$arttitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
-  echo '</p>';
+  echo '</span></p>';
 } ?>
+</div>
 </div>
 <div class="commentaires">
 <?php echo include_component('commentaire', 'showAll', array('object' => $article, 'presentation' => 'noarticle', 'type' => 'cet article'));

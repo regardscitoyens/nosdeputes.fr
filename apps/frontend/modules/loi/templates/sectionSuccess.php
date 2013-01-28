@@ -63,9 +63,9 @@ foreach ($articles as $a) {
   if (isset($amendements['avant '.$atitre])) {
     echo '<li><b>Amendement';
     if ($amendements['avant '.$atitre.'tot'] > 1) echo 's';
-    echo ' proposant un article additionel avant l\'article '.$a->titre.'&nbsp;:</b> ';
+    echo ' proposant un article additionel avant l\'article '.$a->titre.'&nbsp;:</b> <span class="orange">';
     foreach ($amendements['avant '.$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
-    echo '</li>';
+    echo '</span></li>';
   }
   $nart = $a->ordre;
   echo '<li class="articleloi"><a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'"><u>Article '.$a->titre.'</u></a>';
@@ -80,9 +80,9 @@ foreach ($articles as $a) {
     $ct = $amendements[$atitre.'tot'];
     echo $ct.' amendement';
     if ($ct > 1) echo 's';
-    echo '&nbsp;: ';
+    echo '&nbsp;: <span class="orange">';
     foreach ($amendements[$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
-      echo '<a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'">';
+      echo '<a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'"></span>';
   }
   if ($a->nb_commentaires > 0 || isset($amendements[$atitre])) echo ')';
   if (isset($a->expose) && $a->expose != "") {
@@ -95,8 +95,9 @@ foreach ($articles as $a) {
   if (isset($amendements['après '.$atitre])) {
     echo '</li><li><b>Amendement';
     if ($amendements['après '.$atitre.'tot'] > 1) echo 's'; 
-    echo ' proposant un article additionel après l\'article '.$a->titre.'&nbsp;:</b> ';
+    echo ' proposant un article additionel après l\'article '.$a->titre.'&nbsp;:</b> <span class="orange">';
     foreach ($amendements['après '.$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
+    echo '</span>';
   }
 } 
 if ($nart != 0) echo '</ul>';
