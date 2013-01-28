@@ -20,9 +20,11 @@ class amendementActions extends sfActions
        $this->section = NULL;
      else $this->section = $section->getSection(1);
 
-     $this->identiques = Doctrine::getTable('Amendement')->createQuery('a')
+     $this->identiques = Doctrine_Query::create()
+       ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
+       ->from('Amendement a')
        ->where('content_md5 = ?', $this->amendement->content_md5)
-       ->orderBy('numero')
+       ->orderBy('num')
        ->execute();
 
      if (count($this->identiques) < 2) {
@@ -37,11 +39,11 @@ class amendementActions extends sfActions
      }
 
      $this->sous_admts = Doctrine_Query::create()
-       ->select('a.id, a.numero, a.sort')
+       ->select('a.id, a.numero, a.sort, CAST( a.numero AS SIGNED ) AS num')
        ->from('Amendement a')
        ->where('a.sous_amendement_de = ?', $this->amendement->numero)
        ->andWhere('a.sort <> ?', 'Rectifié')
-       ->orderBy('a.numero')
+       ->orderBy('num')
        ->fetchArray();
    
      $this->titreloi = Doctrine::getTable('TitreLoi')->findLightLoi($this->amendement->texteloi_id);
@@ -57,12 +59,14 @@ class amendementActions extends sfActions
     if (myTools::isLegislatureCloturee() && $this->parlementaire->url_nouveau_cpc)
       $this->response->addMeta('robots', 'noindex,follow');
 
-    $this->amendements = Doctrine::getTable('Amendement')->createQuery('a')
+    $this->amendements = Doctrine_Query::create()
+      ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
+      ->from('Amendement a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('a.sort <> ?', 'Rectifié')
     //  ->andWhere('pa.numero_signataire <= ?', self::$seuil_amdmts)
-      ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
+      ->orderBy('a.date DESC, a.texteloi_id DESC, num DESC');
 
     $request->setParameter('rss', array(array('link' => '@parlementaire_amendements_rss?slug='.$this->parlementaire->slug, 'title'=>'Les derniers amendements de '.$this->parlementaire->nom.' en RSS')));
   }
@@ -83,11 +87,13 @@ class amendementActions extends sfActions
                                           'key' => 'numero',
                                           'return' => 'value'));
 
-    $this->qamendements = Doctrine::getTable('Amendement')->createQuery('a')
+    $this->qamendements = Doctrine_Query::create()
+      ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
+      ->from('Amendement a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('a.sort <> ?', 'Rectifié')
-      ->orderBy('a.texteloi_id DESC, a.date DESC, a.numero DESC');
+      ->orderBy('a.texteloi_id DESC, a.date DESC, num DESC');
     if (count($lois))
       $this->qamendements->andWhereIn('a.texteloi_id', $lois);
     else $this->qamendements->andWhere('a.sort = "FALSE"');

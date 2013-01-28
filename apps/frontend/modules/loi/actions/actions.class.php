@@ -13,10 +13,12 @@ class loiActions extends sfActions
 
   private function getAmendements($loi, $articles = 'all', $alineas = 0) {
     $amendements = array();
-    $admts = Doctrine::getTable('Amendement')->createquery('a')
+    $admts = Doctrine_Query::create()
+      ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
+      ->from('Amendement a')
       ->where('a.texteloi_id = ?', $loi)
       ->andWhere('a.sort <> ?', 'Rectifié')
-      ->orderBy('a.numero');
+      ->orderBy('num');
     if ($articles != 'all') {
       $likestr = '';
       foreach ($articles as $article) {
