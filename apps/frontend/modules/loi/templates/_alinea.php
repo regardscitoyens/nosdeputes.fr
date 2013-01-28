@@ -22,12 +22,11 @@ $s = preg_replace('/(«|\-)\s+/', '\1&nbsp;', $s);
 $s = preg_replace('/\<a href="([^"]+)\.">/', '<a href="\1">', $s);
 if (isset($amendements)) {
   $string = '<br/><small>';
-  $ct = count($amendements);
-  $string .= $ct;
+  $string .= $totalamdmts;
   $string .= ' amendement';
-  if ($ct > 1) $string .= 's';
+  if ($totalamdmts > 1) $string .= 's';
   $string .= ' déposé';
-  if ($ct > 1) $string .= 's';
+  if ($totalamdmts > 1) $string .= 's';
   $string .= ' sur cet alinéa&nbsp;: ';
   foreach ($amendements as $adt) $string .= link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
   $string .= '</small></p>';

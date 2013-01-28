@@ -14,11 +14,12 @@ class loiActions extends sfActions
   private function getAmendements($loi, $articles = 'all', $alineas = 0) {
     $amendements = array();
     $admts = Doctrine_Query::create()
-      ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
+      ->select('a.*, (sum(a.nb_multiples)-1) as identiques, CAST( a.numero AS SIGNED ) AS num')
       ->from('Amendement a')
       ->where('a.texteloi_id = ?', $loi)
       ->andWhere('a.sort <> ?', 'Rectifié')
-      ->orderBy('num');
+      ->groupBy('a.content_md5')
+      ->orderBy('a.content_md5, a.sort, num');
     if ($articles != 'all') {
       $likestr = '';
       foreach ($articles as $article) {
@@ -33,14 +34,27 @@ class loiActions extends sfActions
     foreach ($admts->fetchArray() as $adt) {
       $art = str_replace("È", "è", preg_replace('/premier/', '1er', strtolower($adt['sujet'])));
       $art = trim(preg_replace("/[l'\s]*art(\.|icle)?\s*/", ' ', $art));
-      if (preg_match('/(adopté|favorable)/i', $adt['sort'], $match)) $add = array($adt['numero'].' <b>'.strtolower($match[1]).'</b>');
-      else $add = array($adt['numero']);
-      if (isset($amendements[$art])) $amendements[$art] = array_merge($amendements[$art], $add);
-      else $amendements[$art] = $add;
+      $content = $adt['numero'];
+      if ($adt['identiques'])
+        $content .= ' <small>('.$adt['identiques'].' identique'.($adt['identiques'] > 1 ? 's' : '').')</small>';
+      if (preg_match('/(adopté|favorable)/i', $adt['sort'], $match)) $content .= ' <b>'.strtolower($match[1]).'</b>';
+      $add = array($content);
+      if (isset($amendements[$art])) {
+        $amendements[$art] = array_merge($amendements[$art], $add);
+        $amendements[$art.'tot'] += $adt['identiques']+1;
+      } else {
+        $amendements[$art] = $add;
+        $amendements[$art.'tot'] = $adt['identiques']+1;
+      }
       if ($alineas && !(preg_match('/(avant|après)/', $art))) { if (preg_match("/alin..?as?..?(\d+)[^\d]/", $adt['texte'], $match)) {
         $al = $art.'-'.$match[1];
-        if (isset($amendements[$al])) $amendements[$al] = array_merge($amendements[$al], $add);
-        else $amendements[$al] = $add;
+        if (isset($amendements[$al])) {
+          $amendements[$al] = array_merge($amendements[$al], $add);
+          $amendements[$al.'tot'] += $adt['identiques']+1;
+        } else {
+          $amendements[$al] = $add;
+          $amendements[$al.'tot'] = $adt['identiques']+1;
+        }
       }
     } }
     return $amendements;

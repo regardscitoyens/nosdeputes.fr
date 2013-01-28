@@ -165,14 +165,15 @@ class amendementActions extends sfActions
         if (!$this->loi)
           $this->loi = Doctrine::getTable('Texteloi')->findLoi($this->lois[0]);
       }
-      $this->amendements_query = Doctrine::getTable('Amendement')
-        ->createQuery('a')
+      $this->amendements_query = Doctrine_Query::create()
+        ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
+        ->from('Amendement a')
         ->where('a.sort <> ?', 'Rectifié');
       for ($ct=0;$ct<count($this->lois);$ct++)
         $this->amendements_query->andWhere('a.texteloi_id = ?', $this->lois[$ct]);
       if ($amdt == 'new')
-        $this->amendements_query->orderBy('a.texteloi_id DESC, a.created_at DESC, a.source');
-      else $this->amendements_query->orderBy('a.texteloi_id DESC, a.source');
+        $this->amendements_query->orderBy('a.texteloi_id DESC, a.created_at DESC, num');
+      else $this->amendements_query->orderBy('a.texteloi_id DESC, num');
       return ;
     }
     $numeros = array();

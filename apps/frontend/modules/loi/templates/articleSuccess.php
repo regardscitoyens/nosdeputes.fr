@@ -14,7 +14,7 @@ if ($article->suivant) {
 <?php $arttitre = strtolower($article->titre);
 if (isset($amendements['titre']) && preg_match('/[1i]er$/', $article->titre)) {
   echo '<p><b>Amendement';
-  if (count($amendements['titre']) > 1) echo 's';
+  if ($amendements['titretot'] > 1) echo 's';
   echo ' proposant une modification du titre&nbsp;:</b> ';
   foreach ($amendements['titre'] as $adt)
     echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
@@ -22,7 +22,7 @@ if (isset($amendements['titre']) && preg_match('/[1i]er$/', $article->titre)) {
 }
 if (isset($amendements['avant '.$arttitre])) {
   echo '<p><b>Amendement';
-  if (count($amendements['avant '.$arttitre]) > 1) echo 's';
+  if ($amendements['avant '.$arttitre.'tot'] > 1) echo 's';
   echo ' proposant un article additionel avant l\'article '.$article->titre.'&nbsp;:</b> ';
   foreach ($amendements['avant '.$arttitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
   echo '</p>';
@@ -33,13 +33,13 @@ if (isset($expose)) echo myTools::escape_blanks($expose).'<div class="suivant li
 <?php foreach ($alineas as $a) {
   $options = array('a'=>$a, 'slug_article'=>$article->slug, 'comment' => 1);
   $al = strtolower($arttitre.'-'.$a->numero);
-  if (isset($amendements[$al])) $options = array_merge($options, array('amendements' => $amendements[$al], 'loi' => $loi->texteloi_id));
+  if (isset($amendements[$al])) $options = array_merge($options, array('amendements' => $amendements[$al], 'totalamdmts' => $amendements[$al.'tot'], 'loi' => $loi->texteloi_id));
   include_partial('alinea', $options);
  } ?>
 </table>
 <?php if (isset($amendements[$arttitre])) {
   echo '<p><b>';
-  $ct = count($amendements[$arttitre]);
+  $ct = $amendements[$arttitre.'tot'];
   if ($ct > 1) echo 'Tous les a';
   else echo 'A';
   echo 'mendement';
@@ -52,7 +52,7 @@ if (isset($expose)) echo myTools::escape_blanks($expose).'<div class="suivant li
 }
 if (isset($amendements['après '.$arttitre])) {
   echo '<p><b>Amendement';
-  if (count($amendements['après '.$arttitre]) > 1) echo 's';
+  if ($amendements['après '.$arttitre.'tot'] > 1) echo 's';
   echo ' proposant un article additionel après l\'article '.$article->titre.'&nbsp;:</b> ';
   foreach ($amendements['après '.$arttitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
   echo '</p>';

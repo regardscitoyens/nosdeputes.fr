@@ -62,7 +62,7 @@ foreach ($articles as $a) {
   $atitre = strtolower($a->titre);
   if (isset($amendements['avant '.$atitre])) {
     echo '<li><b>Amendement';
-    if (count($amendements['avant '.$atitre]) > 1) echo 's';
+    if ($amendements['avant '.$atitre.'tot'] > 1) echo 's';
     echo ' proposant un article additionel avant l\'article '.$a->titre.'&nbsp;:</b> ';
     foreach ($amendements['avant '.$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
     echo '</li>';
@@ -77,7 +77,7 @@ foreach ($articles as $a) {
   }
   if ($a->nb_commentaires > 0 && isset($amendements[$atitre])) echo ', ';
   if (isset($amendements[$atitre])) {
-    $ct = count($amendements[$atitre]);
+    $ct = $amendements[$atitre.'tot'];
     echo $ct.' amendement';
     if ($ct > 1) echo 's';
     echo '&nbsp;: ';
@@ -94,7 +94,7 @@ foreach ($articles as $a) {
   }
   if (isset($amendements['après '.$atitre])) {
     echo '</li><li><b>Amendement';
-    if (count($amendements['après '.$atitre]) > 1) echo 's'; 
+    if ($amendements['après '.$atitre.'tot'] > 1) echo 's'; 
     echo ' proposant un article additionel après l\'article '.$a->titre.'&nbsp;:</b> ';
     foreach ($amendements['après '.$atitre] as $adt) echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
   }
