@@ -7,14 +7,14 @@ cd $PATH_APP
 
 # Récupération et création des JSON
 
-echo Amendements
-echo =======================
-cd batch/amendements ; bash compute_latest_loi.sh $loi ; cd -
+#echo Amendements
+#echo =======================
+cd batch/amendements ; bash compute_latest_loi.sh $LEGISLATURE $loi ; cd -
 
 # Chargement via tasks
 
-echo Load Amendements
-echo =======================
+#echo Load Amendements
+#echo =======================
 while ls batch/amendements/json | grep [a-z] > /dev/null ; do
         php symfony cc --env=test  --app=frontend > /dev/null
         php symfony load:Amdmts
@@ -22,9 +22,9 @@ done;
 
 # Postprocessings
 
-echo clean cache
-rm -r cache/frontend/prod/template/*/all/amendement/parlementaireSection/id/$loi
-rm -r cache/frontend/prod/template/*/all/amendement/parlementaire/slug/*
-rm -r cache/frontend/prod/template/*/all/amendement/find/loi/${loi}/numero/*
-rm cache/frontend/prod/template/*/all/amendement/show/loi/${loi}/numero/*
+#echo clean cache
+#rm -r cache/frontend/prod/template/*/all/amendement/parlementaireSection/id/$loi
+#rm -r cache/frontend/prod/template/*/all/amendement/parlementaire/slug/*
+#rm -r cache/frontend/prod/template/*/all/amendement/find/loi/${loi}/numero/*
+#rm cache/frontend/prod/template/*/all/amendement/show/loi/${loi}/numero/*
 
