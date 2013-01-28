@@ -37,10 +37,10 @@
 </div>
 <div class="sujet">
   <h3><?php $sujet = $amendement->getSujet();
-    if ($titreloi && preg_match('/^(.*)?(article\s*)((\d+|premier).*)$/i', $sujet, $match)) {
-      $art = preg_replace('/premier/i', '1er', $match[3]);
-      $art = preg_replace('/\s+/', '-', $art);
-      $sujet = $match[1].link_to($match[2].$match[3], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art);
+    if ($titreloi && preg_match('/^(.*)?(art(\.|icle)\s*)((\d+|premier).*)$/i', $sujet, $match)) {
+      $art = preg_replace('/premier/i', '1er', $match[4]);
+      $art = strtolower(preg_replace('/\s+/', '-', $art));
+      $sujet = $match[1].link_to($match[2].$match[4], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art);
     }
     if ($titreloi)
       echo link_to(preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $titreloi->titre), '@loi?loi='.$titreloi->texteloi_id);
@@ -52,9 +52,9 @@
 </div>
 <div class="texte_intervention">
   <?php $texte = $amendement->getTexte();
-  if ($titreloi && preg_match('/alin(e|é)a\s*(\d+)[^\d]/', $texte, $match)) {
-    $link = link_to('alinéa '.$match[2], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art.'#alinea_'.$match[2]);
-    $texte = preg_replace('/(alin(e|é)a\s*\d+)([^\d])/', $link.'\3', $texte);
+  if ($titreloi && preg_match('/alin..?as?..?(\d+)[^\d]/', $texte, $match)) {
+    $link = link_to('alinéa '.$match[1], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art.'#alinea_'.$match[1]);
+    $texte = preg_replace('/(alin..?as?..?\d+)([^\d])/', $link.'\2', $texte);
   }
   echo myTools::escape_blanks($texte); ?>
 </div>

@@ -20,25 +20,27 @@ class loiActions extends sfActions
     if ($articles != 'all') {
       $likestr = '';
       foreach ($articles as $article) {
-        $like = 'a.sujet LIKE "%article '.preg_replace('/1.?er/', 'premier', $article->titre).'"';
+        $like = 'a.sujet LIKE "%art% '.preg_replace('/1.?er?/', 'premier', $article->titre).'%"';
+	if (preg_match("/(1.?er?|premier)(.*)$/i", $article->titre, $match))
+          $like .= ' OR a.sujet LIKE "titre" OR a.sujet LIKE "%art% 1e%"';
         if ($likestr == '') $likestr = $like;
         else $likestr .= ' OR '.$like;
       }
-      if (!$likestr === '') $admts->andWhere($likestr);
+      if ($likestr != '') $admts->andWhere($likestr);
     }
     foreach ($admts->fetchArray() as $adt) {
-      $art = preg_replace('/premier/', '1er', strtolower($adt['sujet']));
-      $art = preg_replace("/(l'\s?)?article\s/", '', $art);
+      $art = str_replace("È", "è", preg_replace('/premier/', '1er', strtolower($adt['sujet'])));
+      $art = trim(preg_replace("/[l'\s]*art(\.|icle)?\s*/", ' ', $art));
       if (preg_match('/(adopté|favorable)/i', $adt['sort'], $match)) $add = array($adt['numero'].' <b>'.strtolower($match[1]).'</b>');
       else $add = array($adt['numero']);
       if (isset($amendements[$art])) $amendements[$art] = array_merge($amendements[$art], $add);
       else $amendements[$art] = $add;
-      if ($alineas && !preg_match('/(avant|après)/', $art) && preg_match('/alin(e|é)a\s*(\d+)[^\d]/', $adt['texte'], $match)) {
-        $al = $art.'-'.$match[2];
+      if ($alineas && !(preg_match('/(avant|après)/', $art))) { if (preg_match("/alin..?as?..?(\d+)[^\d]/", $adt['texte'], $match)) {
+        $al = $art.'-'.$match[1];
         if (isset($amendements[$al])) $amendements[$al] = array_merge($amendements[$al], $add);
         else $amendements[$al] = $add;
       }
-    }
+    } }
     return $amendements;
   }
 

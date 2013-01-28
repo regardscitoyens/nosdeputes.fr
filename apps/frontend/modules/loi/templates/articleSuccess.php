@@ -12,7 +12,15 @@ if ($article->suivant) {
 </div>
 <br/>
 <?php $arttitre = strtolower($article->titre);
-  if (isset($amendements['avant '.$arttitre])) {
+if (isset($amendements['titre']) && preg_match('/[1i]er$/', $article->titre)) {
+  echo '<p><b>Amendement';
+  if (count($amendements['titre']) > 1) echo 's';
+  echo ' proposant une modification du titre&nbsp;:</b> ';
+  foreach ($amendements['titre'] as $adt)
+    echo link_to('n°&nbsp;'.$adt, '@amendement?loi='.$loi->texteloi_id.'&numero='.preg_replace('/^([A-Z]{1,3})?(\d+)\s+.*$/', '\1\2', $adt)).' ';
+  echo '</p>';
+}
+if (isset($amendements['avant '.$arttitre])) {
   echo '<p><b>Amendement';
   if (count($amendements['avant '.$arttitre]) > 1) echo 's';
   echo ' proposant un article additionel avant l\'article '.$article->titre.'&nbsp;:</b> ';
@@ -24,7 +32,7 @@ if (isset($expose)) echo myTools::escape_blanks($expose).'<div class="suivant li
 <table>
 <?php foreach ($alineas as $a) {
   $options = array('a'=>$a, 'slug_article'=>$article->slug, 'comment' => 1);
-  $al = $arttitre.'-'.$a->numero;
+  $al = strtolower($arttitre.'-'.$a->numero);
   if (isset($amendements[$al])) $options = array_merge($options, array('amendements' => $amendements[$al], 'loi' => $loi->texteloi_id));
   include_partial('alinea', $options);
  } ?>
