@@ -63,7 +63,7 @@ class fuseDossiersTask extends sfBaseTask {
     }
  
   if ($bad->id != $bad->section_id) {
-    print "\n + $sub->titre_complet";
+    print "\n + $bad->titre_complet";
     $exist = Doctrine::getTable('Section')->createQuery('s')->where('s.section_id = ?', $good->id)->andWhere('s.titre = ?', $bad->getOrigTitre())->fetchOne();
     if (isset($exist->section_id)) {
       print " existe déjà pour la section d'accueil, met-à-jour\n";
