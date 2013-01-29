@@ -14,11 +14,12 @@
   <h3><?php if ($seance) echo 'Discuté en '.link_to('séance le '.myTools::displayDate($seance['date']), '@interventions_seance?seance='.$seance['seance_id'].'#amend_'.$amendement->numero);
   $tot = count($identiques);
   if ($tot > 1) {
+    $ident_titre = " <small>($tot amendement";
     if ($tot > 2)
-      $ident_titre = " ($tot amendements identiques : ";
-    else $ident_titre = " (1 amendement identique : "; ?>
+      $ident_titre .= "s identiques : ";
+    else $ident_titre .= " identique : "; ?>
   <em><?php echo $ident_titre; foreach($identiques as $identique) if ($identique->numero != $amendement->numero)
-      echo link_to($identique->numero, '@amendement?loi='.$identique->texteloi_id.'&numero='.$identique->numero)." "; ?>)</em>
+      echo link_to($identique->numero, '@amendement?loi='.$identique->texteloi_id.'&numero='.$identique->numero)." "; ?>)</em></small>
   <?php } ?></h3>
 </div>
 <?php } ?>
