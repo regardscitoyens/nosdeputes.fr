@@ -68,7 +68,7 @@ foreach ($articles as $a) {
     echo '</span></li>';
   }
   $nart = $a->ordre;
-  echo '<li class="articleloi"><a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'"><u>Article '.$a->titre.'</u></a>';
+  echo '<li class="articleloi"><a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'"><b>Article '.$a->titre.'</b></a>';
   if ($a->nb_commentaires > 0 || isset($amendements[$atitre])) echo ' (';
   if ($a->nb_commentaires > 0) {
     echo '<span class="coms_loi_txt">'.$a->nb_commentaires.' commentaire';
