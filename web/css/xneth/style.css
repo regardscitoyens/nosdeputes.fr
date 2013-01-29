@@ -1500,6 +1500,7 @@ h2 {
   padding-left: 10px;
 }
 .alineatexte small small {
+  padding-left: 0;
   font-size: 9px;
   color: #000;
 }
@@ -1510,6 +1511,9 @@ h2 {
 .alineatexte:hover span {
   display: inline;
   font-weight: bold;
+}
+.alineatexte:hover .orange {
+  font-weight: normal;
 }
 .alineatexte .commentaire span {
   float: left;

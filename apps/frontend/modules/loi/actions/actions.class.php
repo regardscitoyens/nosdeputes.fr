@@ -46,7 +46,7 @@ class loiActions extends sfActions
         $amendements[$art] = $add;
         $amendements[$art.'tot'] = $adt['identiques']+1;
       }
-      if ($alineas && !(preg_match('/(avant|après)/', $art))) { if (preg_match("/alin..?as?..?(\d+)[^\d]/", $adt['texte'], $match)) {
+      if ($alineas && !(preg_match('/(avant|après)/', $art)) && preg_match("/alin..?as?\D\D?(\d+)\D/", $adt['texte'], $match)) {
         $al = $art.'-'.$match[1];
         if (isset($amendements[$al])) {
           $amendements[$al] = array_merge($amendements[$al], $add);
@@ -56,7 +56,7 @@ class loiActions extends sfActions
           $amendements[$al.'tot'] = $adt['identiques']+1;
         }
       }
-    } }
+    } 
     return $amendements;
   }
 
