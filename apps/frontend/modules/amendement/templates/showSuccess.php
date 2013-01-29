@@ -54,7 +54,7 @@
 <div class="texte_intervention">
   <?php $texte = $amendement->getTexte();
   if ($titreloi && preg_match('/alin..?a(s)?\D\D?(\d+)[^\d]/', $texte, $match)) {
-    $link = link_to('alinéa'.$match[1].' '.$match[2], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art.'#alinea_'.$match[1]);
+    $link = link_to('alinéa'.$match[1].' '.$match[2], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art.'#alinea_'.$match[2]);
     $texte = preg_replace('/(alin..?as?\D\D?\d+)([^\d])/', $link.'\2', $texte);
   }
   echo myTools::escape_blanks($texte); ?>
