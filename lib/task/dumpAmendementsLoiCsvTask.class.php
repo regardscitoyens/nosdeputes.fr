@@ -32,7 +32,7 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
       foreach (Doctrine_Query::create()->select('p.slug')->from('Parlementaire p, ParlementaireAmendement pa')->where('p.id = pa.parlementaire_id')->andWhere('pa.amendement_id = ?', $a['id'])->orderBy('pa.numero_signataire')->fetchArray() as $s)
         $parlslugs[] = $s['slug'];
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
-      $a['url_nosdeputes'] = url_for('@amendement?loi='.$loi.'&numero='.$a['numero'], 'absolute=true');
+      $a['url_nosdeputes'] = preg_replace('#http://symfony/#', sfConfig::get('app_base_url'), url_for('@amendement?loi='.$loi.'&numero='.$a['numero'], 'absolute=true'));
       unset($a['num']);
       foreach(array_keys($a) as $key)
         if (!isset($champs[$key]))
