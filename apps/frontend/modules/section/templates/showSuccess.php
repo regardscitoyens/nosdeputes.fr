@@ -55,11 +55,11 @@ if ($subsection->id != $section->id) : ?>
       if (isset($doc['texteloi_id'])) {
         $doctitre = "N°$curid en débat sur NosDéputés.fr&nbsp;: ".strip_tags($doc['titre']);
         if ($doc['nb_commentaires'])
-          $doctitre .= " (".$doc['nb_commentaires']."&nbsp;commentaire";
+          $doctitre .= ' (<span class="list_com">'.$doc['nb_commentaires']."&nbsp;commentaire";
         if ($doc['nb_commentaires'] > 1)
           $doctitre .= "s";
         if ($doc['nb_commentaires'])
-          $doctitre .= ")";
+          $doctitre .= "</span>)";
         echo link_to($doctitre, '@loi?loi='.$doc['texteloi_id']);
       } else if (isset($doc['id'])) {
         $amendements = Texteloi::getAmdmts($doc['type'], $curid, 1);
