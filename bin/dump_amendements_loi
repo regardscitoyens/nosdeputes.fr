@@ -1,0 +1,13 @@
+#!/bin/bash
+
+loi=$1
+
+. $(echo $0 | sed 's/[^\/]*$//')db.inc
+cd $PATH_APP
+
+mkdir -p web/$LEGISLATURE/amendements/$loi
+
+for format in xml json csv; do
+  php symfony dump:AmendementsLoi $loi $format > web/$LEGISLATURE/amendements/$loi/nosdeputesfr-amendements-$loi.$format;
+done
+

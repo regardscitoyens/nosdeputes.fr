@@ -28,3 +28,5 @@ done;
 #rm -r cache/frontend/prod/template/*/all/amendement/find/loi/${loi}/numero/*
 #rm cache/frontend/prod/template/*/all/amendement/show/loi/${loi}/numero/*
 
+bash bin/dump_amendements_loi $loi
+

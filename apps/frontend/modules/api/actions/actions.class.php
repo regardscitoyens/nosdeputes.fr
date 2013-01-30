@@ -132,24 +132,6 @@ class apiActions extends sfActions
     $this->templatize($request, 'nosdeputes.fr_synthese_'.date('Y-m-d'));
   }
 
-
-  protected static function array2hash($array, $hashname) {
-    if (!$array)
-      return array();
-    $hash = array();
-    if (!isset($array[0])) {
-      if (isset($array->fonction))
-        return array("organisme" => $array->getNom(), "fonction" => $array->fonction);
-      else return $array;
-    }
-    foreach($array as $e) if ($e) {
-      if (isset($e->fonction))
-        $hash[] = array($hashname => array("organisme" => $e->getNom(), "fonction" => $e->fonction));
-      else $hash[] = array($hashname => preg_replace('/\n/', ', ', $e));
-    }
-    return $hash;
-  }
-
   public function executeListParlementaires(sfWebRequest $request) 
   {
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
@@ -225,7 +207,7 @@ class apiActions extends sfActions
     if (!$light) {
       $groupe = $parl->getGroupe();
       if (is_object($groupe))
-        $res['groupe'] = self::array2hash($groupe, 'groupe_politique');
+        $res['groupe'] = myTools::array2hash($groupe, 'groupe_politique');
       else if ($format == 'csv')
         $res['groupe'] = "";
     }
@@ -234,17 +216,17 @@ class apiActions extends sfActions
       $parl->parti = "";
     $res['parti_ratt_financier'] = $parl->parti;
     if (!$light) {
-      $res['responsabilites'] = self::array2hash($parl->getResponsabilites(), 'responsabilite');
-      $res['responsabilites_extra_parlementaires'] = self::array2hash($parl->getExtras(), 'responsabilite');
-      $res['groupes_parlementaires'] = self::array2hash($parl->getGroupes(), 'responsabilite');
+      $res['responsabilites'] = myTools::array2hash($parl->getResponsabilites(), 'responsabilite');
+      $res['responsabilites_extra_parlementaires'] = myTools::array2hash($parl->getExtras(), 'responsabilite');
+      $res['groupes_parlementaires'] = myTools::array2hash($parl->getGroupes(), 'responsabilite');
     }
     if ($light != 2) {
-      $res['sites_web'] = self::array2hash(unserialize($parl->sites_web), 'site');
-      $res['emails'] = self::array2hash(unserialize($parl->mails), 'email');
-      $res['adresses'] = self::array2hash(unserialize($parl->adresses), 'adresse');
-      $res['anciens_mandats'] = self::array2hash(unserialize($parl->anciens_mandats), 'mandat');
-      $res['autres_mandats'] = self::array2hash(unserialize($parl->autres_mandats), 'mandat');
-      $res['anciens_autres_mandats'] = self::array2hash(unserialize($parl->anciens_autres_mandats), 'mandat');
+      $res['sites_web'] = myTools::array2hash(unserialize($parl->sites_web), 'site');
+      $res['emails'] = myTools::array2hash(unserialize($parl->mails), 'email');
+      $res['adresses'] = myTools::array2hash(unserialize($parl->adresses), 'adresse');
+      $res['anciens_mandats'] = myTools::array2hash(unserialize($parl->anciens_mandats), 'mandat');
+      $res['autres_mandats'] = myTools::array2hash(unserialize($parl->autres_mandats), 'mandat');
+      $res['anciens_autres_mandats'] = myTools::array2hash(unserialize($parl->anciens_autres_mandats), 'mandat');
     }
     $res['profession'] = $parl->profession;
     $res['place_en_hemicycle'] = $parl->place_hemicycle;
