@@ -1,7 +1,8 @@
 ============ Alerte NosDeputes.fr ============
 
 Voici les dernières alertes de votre abonnement : <?php echo $alerte->titre; ?> 
-!!! Attention : répondre à ce mail ne vous permet pas d'écrire à un parlementaire mais simplement aux membres de l'association Regards Citoyens indépendante de l'Assemblée nationale !!!
+----------------------------------------------------------------------
+ATTENTION : répondre à ce mail ne vous permet pas d'écrire à un parlementaire mais simplement aux membres de l'association Regards Citoyens indépendante de l'Assemblée nationale
 
 <?php
 foreach ($results['response']['docs'] as $res) 
