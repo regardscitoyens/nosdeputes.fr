@@ -130,6 +130,7 @@ sub set_level {
   $levelvalue = romans(shift);
   $more = shift || "";
   $more =~ s/<[^>]*>//g;
+  $more = lc($more);
   $oldlevel = $curlevel;
   if (!$hierarchy{$leveltype}) {
     $curlevel += 1;
