@@ -18,7 +18,7 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
     $this->configuration->loadHelpers(array('Url'));
     $loi = $arguments['loi_id'];
     $amendements = Doctrine::getTable('Amendement')->createQuery('a')
-      ->select('a.id, a.legislature, a.texteloi_id, a.numero, CAST( a.numero AS SIGNED ) AS num, a.sujet, a.sort, a.date, a.texte, a.expose, a.signataires, a.source')
+      ->select('a.id, a.legislature, a.texteloi_id, a.numero, CAST( a.numero AS SIGNED ) AS num, a.sujet, a.sort, a.date, a.texte, a.expose, a.content_md5 as cle_unicite, a.signataires, a.source, a.nb_multiples')
       ->from('Amendement a')
       ->where('a.sort <> ?', 'Rectifié')
       ->andWhere('a.texteloi_id = ?', $loi)
