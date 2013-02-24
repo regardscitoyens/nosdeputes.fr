@@ -104,13 +104,14 @@ class moveSeanceTask extends sfBaseTask {
   private static function fixDossiers($good, $bad, $seance, $ni, $nc) {
     self::updateCounts($good, $ni, $nc);
     self::setMinDate($seance, $good);
-    if ($bad->nb_interventions - $ni < 1) {
+    $n_inters = Doctrine_Query::create()->select('count(i.id) as ct')->from('Intervention i')->leftJoin('i.Section s')->where('s.id = ? OR s.section_id = ?', array($bad->id, $bad->id))->fetchArray();
+    if (!$n_inters || $n_inters[0]['ct'] < 1) {
       $query = Doctrine_Query::create()
         ->delete('Section s')
         ->where('id = ?', $bad->id);
       if (!$query->execute())
         print "Impossible de supprimer la section vide N°$bad->id : $bad->titre_complet";
-      #else print "Section vide N°$bad->id : $bad->titre_complet supprimée";
+      else print "  -> Section vide N°$bad->id : $bad->titre_complet supprimée\n";
     } else self::updateCounts($bad, -$ni, -$nc);
   }
 
