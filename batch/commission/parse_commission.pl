@@ -151,11 +151,14 @@ sub setFonction {
 
 sub setIntervenant {
     my $intervenant = shift;
+    $intervenant =~ s/<[^>]+>\s*//g;
+    $intervenant =~ s/<[^>]*$//;
     #print "$intervenant\n";
+    $intervenant =~ s/\s*\&\#821[12]\;\s*//;
+    $intervenant =~ s/^audition de //i;
     $intervenant =~ s/^(M(\.|me))(\S)/$1 $3/;
     $intervenant =~ s/\.\s*[\/\|]\s*/, /g;
     $intervenant =~ s/[\|\/\.]//g;
-    $intervenant =~ s/\s*\&\#8211\;\s*$//;
     $intervenant =~ s/\s*[\.\:]\s*$//;
     $intervenant =~ s/Madame/Mme/;
     $intervenant =~ s/Monsieur/M./;
