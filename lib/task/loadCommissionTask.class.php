@@ -24,6 +24,7 @@ class loadCommissionTask extends sfBaseTask
 	    continue;
 	  echo "$dir$file\n";
           $first = 1;
+          $prev_ts = 0;
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
 	    if (!$json || !$json->intervention || !$json->date || !$json->commission || !$json->source) {
@@ -50,7 +51,7 @@ class loadCommissionTask extends sfBaseTask
 		}
 	    }
 
-	    $id = md5($json->intervention.$json->date.$json->heure.$json->commission);
+	    $id = md5($json->intervention.$json->date.$json->heure.$json->commission.($json->timestamp == $prev_ts + 1 ? '1' : ''));
 	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
 	    if(!$intervention) {
 	      $intervention = new Intervention();
@@ -61,6 +62,7 @@ class loadCommissionTask extends sfBaseTask
 	      $intervention->setSource($json->source);
 	      $intervention->setTimestamp($json->timestamp);
 	    }
+            $prev_ts = $json->timestamp;
 	    if ($json->intervenant) {
 	      $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);
 	    }

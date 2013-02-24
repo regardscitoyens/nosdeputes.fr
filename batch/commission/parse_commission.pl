@@ -103,8 +103,12 @@ sub checkout {
     $ts = $cpt;
     $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
     if ($intervention && $intervenant) {
-	if ($intervenant =~ s/ et M[mes\.]* (.*)//) {
-	    print $out.'"intervenant": "'.$1.'", "timestamp": "'.$ts.'"}'."\n";
+	if ($intervenant =~ s/ et M[mes\.]* (l[ea] )?(.*)//) {
+            $second = $2;
+            if ($fonction2inter{$second}) {
+                $second = $fonction2inter{$second};
+            }
+	    print $out.'"intervenant": "'.$second.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{$second}."\"}\n";
 	    $ts++;
 	}
 	print $out.'"intervenant": "'.$intervenant.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{$intervenant}."\"}\n";
