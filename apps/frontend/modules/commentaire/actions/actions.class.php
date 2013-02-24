@@ -91,13 +91,13 @@ class commentaireActions extends sfActions
 
   // On teste l'existence préalable du même commentaire
     if ($existing = Doctrine::getTable('Commentaire')->createQuery('c')
-      ->select('created_at')
+      ->select('created_at, lien, id')
       ->where('citoyen_id = ?', $this->getUser()->getAttribute('user_id'))
-      ->andWhere('commentaire LIKE ?', $this->commentaire)
-      ->andWhere('object_type = ?', $this->type)
-      ->andWhere('object_id = ?', $this->id)
+      ->andWhere('commentaire LIKE ?', '%'.$this->commentaire.'%')
+      //->andWhere('object_type = ?', $this->type)
+      //->andWhere('object_id = ?', $this->id)
       ->fetchArray()) {
-      $this->getUser()->setFlash('error', 'Vous avez déjà posté ce même commentaire le '.myTools::displayShortDate($existing[0]['created_at']));
+      $this->getUser()->setFlash('error', 'Vous avez déjà posté ce même commentaire <a href="'.url_for($existing[0]['lien']).'#commentaire_'.$existing[0]['id'].'">le '.myTools::displayShortDate($existing[0]['created_at']).'</a>.');
       return;
     }
 
