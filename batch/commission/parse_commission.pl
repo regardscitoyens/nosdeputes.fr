@@ -104,7 +104,7 @@ sub checkout {
     $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
     if ($intervention && $intervenant) {
 	if ($intervenant =~ s/ et M[mes\.]* (.*)//) {
-	    print $out.'"intervenant": "'.$1.', "timestamp": "'.$ts.'"}'."\n";
+	    print $out.'"intervenant": "'.$1.'", "timestamp": "'.$ts.'"}'."\n";
 	    $ts++;
 	}
 	print $out.'"intervenant": "'.$intervenant.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{$intervenant}."\"}\n";
