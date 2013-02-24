@@ -12,10 +12,10 @@
 <?php if ($seance || count($identiques) > 1) { ?>
 <div class="seance_amendements">
   <h3><?php if ($seance) echo 'Discuté en '.link_to('séance le '.myTools::displayDate($seance['date']), '@interventions_seance?seance='.$seance['seance_id'].'#amend_'.$amendement->numero);
-  $tot = count($identiques);
-  if ($tot > 1) {
+  $tot = count($identiques)-1;
+  if ($tot > 0) {
     $ident_titre = " <small>($tot amendement";
-    if ($tot > 2)
+    if ($tot > 1)
       $ident_titre .= "s identiques : ";
     else $ident_titre .= " identique : "; ?>
   <em><?php echo $ident_titre; foreach($identiques as $identique) if ($identique->numero != $amendement->numero)
