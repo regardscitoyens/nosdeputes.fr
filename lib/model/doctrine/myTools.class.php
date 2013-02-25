@@ -87,6 +87,10 @@ class myTools {
     return explode('","', $string);
   }
 
+  public static function getPreviousHost() {
+    return (sfConfig::get('app_redirect404tohost', null));
+  }
+
   public static function getDebutLegislature() {
     $date = sfConfig::get('app_debut_legislature');
     if (!$date)
