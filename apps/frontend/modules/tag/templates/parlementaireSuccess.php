@@ -1,6 +1,8 @@
 <?php
+$mois = min(12, floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30)));
+$txtmois = ($mois < 2 ? " premier" : "s $mois ".($mois < 12 ? "prem" : "dern")."iers");
 $surtitre = 'Champ lexical';
-if ($last) $titre = 'Sur les 12 derniers mois';
+if ($last) $titre = "Sur le$txtmois mois";
 else if ($all) $titre = 'Sur tout son mandat';
 else if ($session) $titre = 'Sur la session '.preg_replace('/^(\d{4})/', '\\1-', $session);
 $sf_response->setTitle($surtitre.' de '.$parlementaire->nom.' '.strtolower($titre));
@@ -11,21 +13,26 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
    if (!$last) 
     echo '<a href="'.url_for('@parlementaire_tags?slug='.$parlementaire->slug).'">';
    else echo '<b>';
-   echo 'Les 12 derniers mois';
+   echo "Le$txtmois mois";
    if (!$last)
      echo '</a>';
    else echo '</b>';
    echo ', ';  
  } 
-if (!$all)
+if ($mois == 12 || $all) {
+ if (!$all)
   echo '<a href="'.url_for('@parlementaire_all_tags?slug='.$parlementaire->slug).'">';
 else echo '<b>';
 echo 'tout son mandat';
 if (!$all)
   echo '</a>'; 
 else echo '</b>';
+echo ", ";
+}
+$ct = 0;
 foreach ($sessions as $s) {
-  echo ', ';
+  if ($ct) echo ', ';
+  $ct++;
   if ($s['session'] != $session)
     echo '<a href="'.url_for('@parlementaire_session_tags?slug='.$parlementaire->slug.'&session='.$s['session']).'">';
   else echo '<b>';

@@ -19,7 +19,7 @@ $PictureID = "Map_".$parlementaire->slug.'_'.rand(1,10000).".map";
 if ($link === 'true') {
   $time = 'lastyear';
   if (myTools::isFinLegislature()) $time = 'legislature';
-  echo '<a'.$target.' href="'.url_for('@parlementaire'.(isset($absolute) && $absolute ? '' : '_plot').'?slug='.$parlementaire->slug.(isset($absolute) && $absolute ? '' : '&time=legislature'), $abs).'">';
+  echo '<a'.$target.' href="'.url_for('@parlementaire'.(isset($absolute) && $absolute ? '' : '_plot').'?slug='.$parlementaire->slug.(isset($absolute) && $absolute ? '' : '&time='.(myTools::isFinLegislature() ? 'legislature' : 'lastyear')), $abs).'">';
   if (!isset($widthrate))
     $size = 'height:150px; width:800px';
   else $size = 'height:'.floor(150*$widthrate).'px; width:'.floor(800*$widthrate).'px';

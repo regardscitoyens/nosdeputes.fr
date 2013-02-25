@@ -2,10 +2,14 @@
 $surtitre = "Graphes d'activité parlementaire";
 $fin = myTools::isFinLegislature();
 if ($fin) $test = 'legislature';
-else $test = 'lastyear';
+else {
+  $test = 'lastyear';
+  $mois = min(12, floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30)));
+  $txtmois = ($mois < 2 ? " premier" : "s $mois ".($mois < 12 ? "prem" : "dern")."iers");
+}
 if ($session == $test) {
  if ($fin) $titre = 'Sur toute la législature';
- else $titre = 'Sur les 12 derniers mois';
+ else $titre = "Sur le$txtmois mois";
 } else $titre = 'Sur la session '.preg_replace('/^(\d{4})/', '\\1-', $session);
 $sf_response->setTitle($surtitre.' de '.$parlementaire->nom.' '.strtolower($titre));
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $surtitre));
@@ -15,7 +19,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
   echo '<a href="'.url_for('@parlementaire_plot?slug='.$parlementaire->slug.'&time='.$test).'">';
   else echo '<b>';
   if ($fin) echo 'Toute la législature';
-  else echo 'Les 12 derniers mois';
+  else echo "Le$txtmois mois";
   if ($session != $test) echo '</a>';
   else echo '</b>';
   foreach ($sessions as $s) {

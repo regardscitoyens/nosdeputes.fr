@@ -105,7 +105,7 @@ $bulles = array("",
 <p class="aligncenter"><small>Les chiffres en couleur indiquent que le député se trouve pour le critère indiqué parmi <span style="color:green;font-weight: bold;">les 150 premiers</span> ou <span style="color:red;font-style : italic;">les 150 derniers</span>.</small></p>
 <p class="aligncenter"><small>Télécharger les données : <b><?php echo link_to('CSV', '@api_synthese_current?format=csv'); ?></b> &mdash; <b><?php echo link_to('JSON', '@api_synthese_current?format=json'); ?></b> &mdash; <b><?php echo link_to('XML', '@api_synthese_current?format=xml'); ?></b> &mdash; <b class="jstitle" title="Format CSV corrigeant les problèmes d'encodage liés à certains logiciels de tableurs"><?php echo link_to('Tableur', '@api_synthese_current?format=csv&withBOM=true'); ?></b></small>&nbsp;&nbsp;<a href="http://www.regardscitoyens.org/open-data-en-france/"><img src="/images/opendata.png" alt="OpenData" title="OpenData" style="border: none; margin-bottom: -4px;"/></a></p>
 </div></div>
-<h2 id="groupes">Activité moyenne d'un député de chaque groupe politique <?php if ($fin) echo "sur toute la législature"; else echo "au cours des 12 derniers mois"; ?> :</h2>
+<h2 id="groupes">Activité moyenne d'un député de chaque groupe politique <?php if ($fresh) echo "depuis le début de la législature"; elseif ($fin) echo "sur toute la législature"; else echo "au cours des 12 derniers mois"; ?> :</h2>
 <div class="liste_deputes_top">
 <div class="synthese">
 <table>
@@ -145,7 +145,7 @@ $bulles = array("",
 </div>
 </div>
 <div class="synthese_div">
-<h2>Répartition de l'activité des députés sur <?php if ($fin) echo "toute la législature"; else echo "les 12 derniers mois"; ?> par groupe politique :</h2>
+<h2>Répartition de l'activité des députés sur <?php if ($fresh) echo "depuis le début de la législature"; elseif ($fin) echo "toute la législature"; else echo "les 12 derniers mois"; ?> par groupe politique :</h2>
 <div class="aligncenter"><?php echo include_component('plot', 'newGroupes', array('type' => 'all')); ?></div>
 </div>
 <div id="legende" class="synthese_div">

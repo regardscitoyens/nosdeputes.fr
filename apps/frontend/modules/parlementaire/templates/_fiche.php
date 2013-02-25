@@ -131,7 +131,8 @@ break; } ?></ul></li>
 if (myTools::isFinLegislature()) {
 echo "sur l'ensemble de la législature";
 }else{
-echo "sur 12 mois";
+$mois = min(12, floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30)));
+echo "sur $mois mois";
 }
 ?>)</small></h2>
       <div style="text-align: justify">

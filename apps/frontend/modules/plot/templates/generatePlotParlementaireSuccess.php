@@ -151,7 +151,10 @@ if (preg_match("/^l/", $time)) {
   } else if ($data['fin']) {
     $pos_titre = 235;
     $duree = ' toute la législature';
-  } else $duree = 's 12 derniers mois';
+  } else {
+    $mois = min(12, floor((time() - strtotime(myTools::getDebutLegislature()) ) / (60*60*24*30)));
+    $duree = ($mois < 2 ? " premier" : "s $mois ".($mois < 12 ? "prem" : "dern")."iers")." mois";
+  }
   $shortduree = 'annee';
 } else {
   $duree = " la session ".preg_replace('/^(\d{4})/', '\\1-', $time);
