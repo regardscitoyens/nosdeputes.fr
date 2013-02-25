@@ -6,7 +6,7 @@
   $titre = myTools::displayVeryShortDate($question->date).'&nbsp;: ';
   $section = $question->getSection();
   if ($section->getSection()) {
-     if (preg_match('/question/i', $section->getSection()->getTitre()))
+     if (!preg_match('/reprise des questions/i', $section->getTitre()) && preg_match('/question/i', $section->getSection()->getTitre()))
       $titre .= ucfirst($section->getTitre());
     else $titre .= ucfirst($section->getSection()->getTitre());
   } else $titre .= ucfirst($section->getTitre());
