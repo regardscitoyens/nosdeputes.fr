@@ -25,7 +25,10 @@
       echo '</h2>';
       if ($question->reponse)
         echo '<p>'.myTools::escape_blanks($question->reponse).'</p>';
-      else echo '<p>Cette question n\'a pas encore de réponse.</p>';
+      else {
+        echo '<p>Cette question n\'a pas encore de réponse.</p>';
+        echo '<div class="source alerte"><a href="'.url_for('@alerte_question?num='.$question->numero).'">'.image_tag('xneth/email.png')."<br/>être informé<br/>par e-mail de<br/>la réponse".'</a></div>';
+      }
     } ?>
   </div>
 </div>

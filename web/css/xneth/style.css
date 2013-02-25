@@ -1346,6 +1346,11 @@ h2 {
   margin-top: 0px;
   text-decoration: underline;
 }
+.question .alerte {
+  margin-right: 10px;
+  margin-top: -60px;
+  text-align: center;
+}
 .question,.loi p {
   text-align: justify;
 }

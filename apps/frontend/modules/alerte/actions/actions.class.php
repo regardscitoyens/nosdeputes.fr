@@ -25,6 +25,21 @@ class alerteActions extends sfActions
     $this->setTemplate('form');
   }
 
+  public function executeQuestion(sfWebRequest $request)
+  {
+    $num = $request->getParameter('num');
+    $this->forward404Unless($num);
+    $question = doctrine::getTable('QuestionEcrite')->findOneByNumero($num);
+    $this->forward404Unless($question);
+    $alerte = new Alerte();
+    $alerte->query = '"Question+Écrite+N°+'.$question->numero.'"&object_name=QuestionEcrite';
+    $alerte->no_human_query = 1;
+    $alerte->titre = 'Changements liés à la Question Écrite N° '.$question->numero;
+    $this->submit = 'Créer';
+    $this->form = $this->processForm($request, $alerte);
+    $this->setTemplate('form');
+  }
+
   public function executeList(sfWebRequest $request) {
     $citoyen_id = $this->getUser()->getAttribute('user_id');
     if ($citoyen_id)
