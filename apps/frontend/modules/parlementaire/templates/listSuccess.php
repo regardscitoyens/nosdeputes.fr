@@ -1,6 +1,7 @@
 <h1>Tous les députés par ordre alphabétique</h1> 
 <?php $sf_response->setTitle('Liste de tous les députés à l\'Assemblée nationale - NosDéputés.fr'); ?> 
 <p>Les <?php echo $total; ?> députés de la <?php echo sfConfig::get('app_legislature', 13); ?><sup>ème</sup> législature (<?php echo $actifs; ?> en cours de mandat)&nbsp;:</p> 
+<?php include_partial('parlementaire/groupes'); ?>
 <div class="liste"><?php 
 $listlettres = array_keys($parlementaires);
 foreach($listlettres as $i) {
