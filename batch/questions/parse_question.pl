@@ -67,10 +67,10 @@ foreach $line (split /\n/, $string) {
     if ($num != $question{'numero'}) {
       print "Erreur numero question : ".$num." dans texte mais ".$question{'numero'}." dans url ".$question{'source'};
     }
-  } elsif ($line =~ /<b>(M[\.mle]+) (.*)\s*<\/b>\s*\((.* - .*)\)\s*<\/h2>$/) {
-    $nom_auteur = $2;
-    $details = $3;
-    $sexe = $1;
+  } elsif ($line =~ /(<b>|<a[^>]*>)(M[\.mle]+) ([^<]*)\s*(<\/a>)?<\/b>\s*\((.* - .*)\)\s*<\/h2>$/) {
+    $nom_auteur = $3;
+    $details = $5;
+    $sexe = $2;
     if ($sexe =~ /[mle]/) {
       $sexe = "F";
     } else {
