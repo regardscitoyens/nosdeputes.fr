@@ -8,11 +8,11 @@ else
 	$a->texte = preg_replace('/^\<p(>\<i\>«.*\<\/i\>\<\/p\>)$/', '<p class="center"\\1</div>', $a->texte);
 echo '" id="alinea_'.$a->numero.'"><td class="alineanumero"><a href="#alinea_'.$a->numero.'">'.$a->numero.'.</a></td><td class="alineatexte">';
 $s = $a->texte;
-$s = preg_replace('/(articles? (L?)\.? ?([0-9.\-a-z]+)) (de la loi (n° *[\d\-]+ du \d+e?r? \S+ \d{4}))/i', '<a href="/redirect/loi/\\5/\\2\\3">\\1</a> \\4', $s);
-$s = preg_replace('/(articles? (L?)\.? ?([0-9.\-a-z]+)( <i>([^<]*)<\/i>)?) de (l[^ ]*(ordonnance n° *[\d\-]+ du \d+e?r? \S+ \d{4}))/i', '<a href="/redirect/loi/\\7/\\2\\3\\5">\\1</a> \\6', $s);
-$s = preg_replace('/(articles? (L?)\.? ?([0-9.\-a-z]+ ?[A-Z]?)) (du code ([^,.»]+))([,.»]| est| et au| sont)/i', '<a href="/redirect/loi/\\5/\\2\\3">\\1</a> \\4\\6', $s);
+$s = preg_replace('/(articles? ([ADL]?)\.? ?([0-9.\-a-z]+)) (de la loi (n° *[\d\-]+ du \d+e?r? \S+ \d{4}))/i', '<a href="/redirect/loi/\\5/\\2\\3">\\1</a> \\4', $s);
+$s = preg_replace('/(articles? ([ADL]?)\.? ?([0-9.\-a-z]+)( <i>([^<]*)<\/i>)?) de (l[^ ]*(ordonnance n° *[\d\-]+ du \d+e?r? \S+ \d{4}))/i', '<a href="/redirect/loi/\\7/\\2\\3\\5">\\1</a> \\6', $s);
+$s = preg_replace('/(articles? ([ADL]?)\.? ?([0-9.\-a-z]+ ?[A-Z]?)) (du code ([^,.»]+))([,.»]| est| et au| sont)/i', '<a href="/redirect/loi/\\5/\\2\\3">\\1</a> \\4\\6', $s);
 if ($a->ref_loi)
-$s = preg_replace('/(articles? (L?)\.? ?([0-9.\-]+))/i', '<a href="/redirect/loi/'.preg_replace('/^(code|livre) */', '', $a->ref_loi).'/\\2\\3">\\1</a>', $s);
+$s = preg_replace('/(articles? ([ADL]?)\.? ?([0-9.\-]+))/i', '<a href="/redirect/loi/'.preg_replace('/^(code|livre) */', '', $a->ref_loi).'/\\2\\3">\\1</a>', $s);
 $s = preg_replace('/(loi (n° *[\d\-]+ du \d+e?r? \S+ \d{4}))([^"\/])/', '<a href="/redirect/loi/\\2">\\1</a>\\3', $s);
 $s = preg_replace('/(l[^ \/]*)(ordonnance (n° *[\d\-]+ du \d+e?r? \S+ \d{4}))/i', '\\1<a href="/redirect/loi/\\2">\\2</a>', $s);
 if ($a->ref_loi) 
