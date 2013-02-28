@@ -32,7 +32,7 @@ class alerteActions extends sfActions
     $question = doctrine::getTable('QuestionEcrite')->findOneByNumero($num);
     $this->forward404Unless($question);
     $alerte = new Alerte();
-    $alerte->query = '"Question+Écrite+N°+'.$question->numero.'"&object_name=QuestionEcrite';
+    $alerte->query = 'object_id:'.$question->id.' object_name:QuestionEcrite';
     $alerte->no_human_query = 1;
     $alerte->titre = 'Changements liés à la Question Écrite N° '.$question->numero;
     $this->submit = 'Créer';
