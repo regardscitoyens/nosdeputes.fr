@@ -10,7 +10,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
   <div class="source"><a href="<?php echo $question->source; ?>">source</a></div>
   <h1><?php echo $question->titre; ?></h1>
   <div id="question">
-    <h2>Question soumise le <?php echo myTools::displayDate(min($question->date, $question->date_cloture)) ?></h2>
+    <h2>Question soumise le <?php echo myTools::displayDate($question->date_cloture ? min($question->date, $question->date_cloture) : $question->date) ?></h2>
     <?php echo $question->getQuestionRiche(); ?>
   </div>
   <div id="reponse">
