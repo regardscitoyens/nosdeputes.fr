@@ -126,12 +126,11 @@ a:hover {
 }
 .solr .mail, .solr .facets, .alerte .mail {
   border:1px solid #E0E0DD;
-  margin:15px;
-  margin-bottom: 75px;
-  padding: 10px;
-  padding-top: 0;
+  margin:15px 3px 0px 15px;
+  padding: 0px 10px 10px 10px;
   width:210px;
 }
+
 .solr .options h3, .alerte h3 {
   text-align: center;
   padding: 3px;
@@ -1346,7 +1345,7 @@ h2 {
   text-decoration: underline;
 }
 .question .alerte {
-  margin: -15px 0px 0px 5px;
+  margin: -15px 0px 75px 5px;
   text-align: center;
   float: right;
 }
