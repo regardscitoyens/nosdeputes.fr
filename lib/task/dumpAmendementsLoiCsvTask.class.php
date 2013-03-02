@@ -26,7 +26,6 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
       ->fetchArray();
     $champs = array();
     $res = array('amendements' => array());
-    $res = array();
     foreach ($amendements as $a) {
       $parlslugs = array();
       foreach (Doctrine_Query::create()->select('p.slug')->from('Parlementaire p, ParlementaireAmendement pa')->where('p.id = pa.parlementaire_id')->andWhere('pa.amendement_id = ?', $a['id'])->orderBy('pa.numero_signataire')->fetchArray() as $s)
@@ -57,6 +56,5 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
         echo "Please input format csv, json or xml.";
     }
   }
-  
 }
 
