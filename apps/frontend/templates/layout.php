@@ -143,7 +143,7 @@ $menu_citoyen = $selectcitoyen;
 </span>
 <span id="legalinks"><a href="<?php echo url_for("@faq"); ?>">Questions fréquentes</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/publication/">Données</a>&nbsp; &mdash; &nbsp;<a href="http://cpc.regardscitoyens.org/trac/wiki/API">API</a>&nbsp; &mdash; &nbsp;<?php
 if (myTools::getPreviousHost()) {
-	echo '<a href="http://'.myTools::getPreviousHost().'">Législatude précédente</a>&nbsp; &mdash; &nbsp;';
+	echo '<a href="http://'.myTools::getPreviousHost().'">Législature précédente</a>&nbsp; &mdash; &nbsp;';
 }
 ?><a href="http://www.regardscitoyens.org/mentions-legales/">Mentions légales</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/nous-contacter/">Contact</a></span>
 </div>
