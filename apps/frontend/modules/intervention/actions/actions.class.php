@@ -149,13 +149,13 @@ class interventionActions extends sfActions
         $this->breakline = 'intervention';
         $this->multi = array('tag' => 'tag', 'loi' => 'loi', 'amendement' => 'amendement');
         foreach($this->interventions as $int) {
-	   $i['id'] = $int['id'];
            $i['seance_id'] = $int['seance_id'];
            $i['seance_titre'] = $this->seance->titre;
            $i['seance_lieu'] = ($this->orga) ? $this->orga->getNom() : 'Hémicycle';
            $i['date'] = $int['date'];
            $i['heure'] = $this->seance->moment;
            $i['type'] = $int['type'];
+           $i['timestamp'] = $int['timestamp'];
            $i['section'] = '';
            $i['soussection'] = '';
            if ($int['section_id']) {
@@ -166,7 +166,6 @@ class interventionActions extends sfActions
 		}
            	$i['soussection'] = $this->sections[$int['section_id']]->titre;
 	   }
-           $i['timestamp'] = $int['timestamp'];
            $i['intervenant_nom'] = '';
            $i['intervenant_fonction'] = $int['fonction'];
 	   $i['intervenant_slug'] = '';
@@ -182,7 +181,7 @@ class interventionActions extends sfActions
            $i['contenu'] = $int['intervention'];
 	   $qtag = Doctrine::getTable('tag')->createQuery('t');
 	   $qtag->from('Tagging tg, tg.Tag t');
-	   $qtag->andWhere('tg.taggable_id = ?', $i['id']);
+	   $qtag->andWhere('tg.taggable_id = ?', $int['id']);
            $qtag->andWhere('tg.taggable_model = "Intervention"');
            $tags = array();
            $lois = array();
@@ -200,8 +199,9 @@ class interventionActions extends sfActions
            }
            $i['tags'] = myTools::array2hash($tags, 'tag');
            $i['amendements'] = myTools::array2hash($amendements, 'amendement');
-           $i['loi'] = myTools::array2hash($lois, 'loi');
+           $i['lois'] = myTools::array2hash($lois, 'loi');
            $i['source'] = $int['source'];
+           $i['id'] = $int['id'];
            $this->res['seance'][] = array('intervention' => $i);
 	   if (!isset($this->champs)) {
                 $this->champs = array();
