@@ -392,4 +392,35 @@ class myTools {
     }
   }
 
+  public static function templatize($action, $request, $filename) {
+    $action->setLayout(false);
+    switch($request->getParameter('format')) {
+      case 'json':
+        $action->setTemplate('json', 'api');
+        if (!$request->getParameter('textplain')) {
+          $action->getResponse()->setContentType('text/plain; charset=utf-8');
+          $action->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.json"');
+        }
+        break;
+      case 'xml':
+        $action->setTemplate('xml', 'api');
+        if (!$request->getParameter('textplain')) {
+          $action->getResponse()->setContentType('text/xml; charset=utf-8');
+          //    $action->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.xml"');
+        }
+        break;
+      case 'csv':
+        $action->setTemplate('csv', 'api');
+        if (!$request->getParameter('textplain')) {
+          $action->getResponse()->setContentType('application/csv; charset=utf-8');
+          $action->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.csv"');
+        }
+        break;
+    default:
+      $action->forward404();
+    }
+    if ($request->getParameter('textplain')) {
+      $action->getResponse()->setContentType('text/plain; charset=utf-8');
+    }
+  }
 }

@@ -89,8 +89,8 @@ class interventionActions extends sfActions
     $this->response->setTitle($titre.' - Intervention de '.$this->intervention->getIntervenant()->nom." - NosDéputés.fr");
     //    $this->response->setDescription($this->intervention->intervention);
   }
-  
-  public function executeSeance(sfWebRequest $request) {
+
+  private function initSeance(sfWebRequest $request) {
     $seance_id = $request->getParameter('seance');
     $this->seance = Doctrine::getTable('Seance')->find($seance_id);
     $this->forward404Unless($this->seance);
@@ -126,13 +126,96 @@ class interventionActions extends sfActions
       }
     }
 
+    $sects = Doctrine::getTable('Intervention')->createquery('i')
+        ->where('i.seance_id = ?', $seance_id)
+        ->leftJoin('i.Section s')
+        ->groupBy('i.section_id')
+        ->execute();
+    $this->sections = array();
+    foreach ($sects as $s) {
+	if ($s->section_id) {
+	   $this->sections[$s->section_id] = $s->Section;
+        }
+    }
+
+    return $query;
+  }
+
+  public function executeSeanceAPI(sfWebRequest $request) {
+	$query = $this->initSeance($request);
+        myTools::templatize($this, $request, 'seances'.$this->seance->id);
+        $this->interventions = $query->fetchArray();
+        $this->res = array('seance' => array());
+        $this->breakline = 'intervention';
+        foreach($this->interventions as $int) {
+	   $i['id'] = $int['id'];
+           $i['seance_id'] = $int['seance_id'];
+           $i['seance_type'] = $this->seance->type;
+           $i['seance_titre'] = $this->seance->titre;
+           $i['seance_lieu'] = ($this->orga) ? $this->orga->getNom() : 'hémicycle';
+           $i['date'] = $int['date'];
+           $i['heure'] = $this->seance->moment;
+           $i['section'] = '';
+           $i['soussection'] = '';
+           if ($int['section_id']) {
+	        if ($this->sections[$int['section_id']]->section_id) {
+        	   	$i['section'] = $this->sections[$this->sections[$int['section_id']]->section_id]->titre;
+	        }else{
+			$i['section'] = $this->sections[$int['section_id']]->titre;
+		}
+           	$i['soussection'] = $this->sections[$int['section_id']]->titre;
+	   }
+           $i['timestamp'] = $int['timestamp'];
+           $i['intervenant_nom'] = '';
+           $i['intervenant_fonction'] = $int['fonction'];
+	   $i['intervenant_slug'] = '';
+	   $i['intervenant_groupe'] = '';
+           if ($int['parlementaire_id']) {
+           	$i['intervenant_nom'] = $this->parlementaires[$int['parlementaire_id']]->getNom();
+                $i['intervenant_slug'] = $this->parlementaires[$int['parlementaire_id']]->getSlug();
+                $i['intervenant_goupe'] = $this->parlementaires[$int['parlementaire_id']]->getGroupeAcronyme();
+           }else if ($int['personnalite_id']) {
+                $i['intervenant_nom'] = $this->personnalites[$int['personnalite_id']]->getNom();
+	   }
+           $i['nbmots'] = $int['nb_mots'];
+           $i['contenu'] = $int['intervention'];
+	   $qtag = Doctrine::getTable('tag')->createQuery('t');
+	   $qtag->from('Tagging tg, tg.Tag t');
+	   $qtag->andWhere('tg.taggable_id = ?', $i['id']);
+           $qtag->andWhere('tg.taggable_model = "Intervention"');
+           $tags = array();
+           foreach($qtag->fetchArray() as $tag) {
+		$tags[] = $tag['Tag']['name'];
+           }
+           $i['tags'] = myTools::array2hash($tags, 'tag');
+           $i['source'] = $int['source'];
+           $this->res['seance'][] = array('intervention' => $i);
+	   if (!isset($this->champs)) {
+                $this->multi = array('tag' => 'tag');
+                $this->champs = array();
+		foreach($i as $k => $v) {
+			$this->champs[$k] = $k;
+                }
+           }
+       }
+  }
+
+  public function executeSeance(sfWebRequest $request) {
+
+    if ($request->getParameter('api')) {
+        return $this->executeSeanceAPI($request);
+    }
+
+    $query = $this->initSeance($request);
+    $this->interventions = $query->execute();
+
     $qtag = Doctrine_Query::create();
     $qtag->from('Tagging tg, tg.Tag t, Intervention i');
-    $qtag->where('i.seance_id = ?', $seance_id);
+    $qtag->where('i.seance_id = ?', $this->seance->id);
     $qtag->andWhere('i.id = tg.taggable_id');
     $qtag->andWhere('t.name NOT LIKE ?', 'loi:%');
     $this->tags = PluginTagTable::getPopulars($qtag, array('model' => 'Intervention', 'limit' => 9));
-    $this->interventions = $query->execute();
+
   }
 
   public function executeTag(sfWebRequest $request) {

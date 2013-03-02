@@ -28,7 +28,7 @@ class apiActions extends sfActions
     $date = $o->updated_at; 
     $this->res = array();
     $this->res[strtolower($class)] = $o->toArray();
-    $this->templatize($request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
+    myTools::templatize($this, $request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
     $this->breakline = '';
   }
  /**
@@ -72,7 +72,7 @@ class apiActions extends sfActions
     }
 
     $this->breakline = 'depute';
-    $this->templatize($request, 'nosdeputes.fr_'.$date.'_stats_deputes');
+    myTools::templatize($this, $request, 'nosdeputes.fr_'.$date.'_stats_deputes');
   }
 
   public function executeTopSynthese(sfWebRequest $request) {
@@ -129,7 +129,7 @@ class apiActions extends sfActions
     }
 
     $this->breakline = 'depute';
-    $this->templatize($request, 'nosdeputes.fr_synthese_'.date('Y-m-d'));
+    myTools::templatize($this, $request, 'nosdeputes.fr_synthese_'.date('Y-m-d'));
   }
 
   public function executeListParlementaires(sfWebRequest $request) 
@@ -156,7 +156,7 @@ class apiActions extends sfActions
          $this->champs[$key] = 1;
       $this->res['deputes'][] = array('depute' => $depute);
     }
-    $this->templatize($request, 'nosdeputes.fr_deputes'.($request->getParameter('current') == true ? "_en_mandat" : "").date('Y-m-d'));
+    myTools::templatize($this, $request, 'nosdeputes.fr_deputes'.($request->getParameter('current') == true ? "_en_mandat" : "").date('Y-m-d'));
   }
 
   public function executeParlementaire(sfWebRequest $request) 
@@ -177,7 +177,7 @@ class apiActions extends sfActions
     $this->breakline = '';
     $date = $depute->updated_at.'';
     $date = preg_replace('/[- :]/', '', $date);
-    $this->templatize($request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
+    myTools::templatize($this, $request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
   }
 
 
@@ -240,35 +240,4 @@ class apiActions extends sfActions
     return $res;
   }
 
-  private function templatize($request, $filename) {
-    $this->setLayout(false);
-    switch($request->getParameter('format')) {
-      case 'json':
-	$this->setTemplate('json');
-	if (!$request->getParameter('textplain')) {
-	  $this->getResponse()->setContentType('text/plain; charset=utf-8');
-	  $this->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.json"');
-	}
-	break;
-      case 'xml':
-	$this->setTemplate('xml');
-	if (!$request->getParameter('textplain')) {
-	  $this->getResponse()->setContentType('text/xml; charset=utf-8');
-	  //	$this->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.xml"');
-	}
-	break;
-      case 'csv':
-	$this->setTemplate('csv');
-	if (!$request->getParameter('textplain')) {
-	  $this->getResponse()->setContentType('application/csv; charset=utf-8');
-	  $this->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.csv"');
-	}
-	break;
-    default:
-      $this->forward404();
-    }
-    if ($request->getParameter('textplain')) {
-      $this->getResponse()->setContentType('text/plain; charset=utf-8');
-    }
-  }
 }
