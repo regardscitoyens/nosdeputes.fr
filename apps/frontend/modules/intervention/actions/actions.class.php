@@ -201,11 +201,6 @@ class interventionActions extends sfActions
   }
 
   public function executeSeance(sfWebRequest $request) {
-
-    if ($request->getParameter('api')) {
-        return $this->executeSeanceAPI($request);
-    }
-
     $query = $this->initSeance($request);
     $this->interventions = $query->execute();
 

@@ -246,6 +246,9 @@ intervention:
 intervention_commentaires:
   url: /%LEGISLATURE%/intervention/:id/commentaires
   param: {module: commentaire, action: showAjax, intervention: 1, limit: 4}
+interventions_seance_api:
+  url: /%LEGISLATURE%/seance/:seance/:format
+  param: {module: intervention, action: seanceAPI}
 interventions_seance:
   url: /%LEGISLATURE%/seance/:seance
   param: {module: intervention, action: seance}
