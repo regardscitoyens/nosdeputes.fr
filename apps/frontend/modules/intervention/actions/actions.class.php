@@ -143,18 +143,19 @@ class interventionActions extends sfActions
 
   public function executeSeanceAPI(sfWebRequest $request) {
 	$query = $this->initSeance($request);
-        myTools::templatize($this, $request, 'seances'.$this->seance->id);
+        myTools::templatize($this, $request, 'nosdeputes.fr_seance'.$this->seance->id.'_'.$this->seance->updated_at);
         $this->interventions = $query->fetchArray();
         $this->res = array('seance' => array());
         $this->breakline = 'intervention';
+        $this->multi = array('tag' => 'tag', 'loi' => 'loi', 'amendement' => 'amendement');
         foreach($this->interventions as $int) {
 	   $i['id'] = $int['id'];
            $i['seance_id'] = $int['seance_id'];
-           $i['seance_type'] = $this->seance->type;
            $i['seance_titre'] = $this->seance->titre;
-           $i['seance_lieu'] = ($this->orga) ? $this->orga->getNom() : 'hémicycle';
+           $i['seance_lieu'] = ($this->orga) ? $this->orga->getNom() : 'Hémicycle';
            $i['date'] = $int['date'];
            $i['heure'] = $this->seance->moment;
+           $i['type'] = $int['type'];
            $i['section'] = '';
            $i['soussection'] = '';
            if ($int['section_id']) {
@@ -184,14 +185,25 @@ class interventionActions extends sfActions
 	   $qtag->andWhere('tg.taggable_id = ?', $i['id']);
            $qtag->andWhere('tg.taggable_model = "Intervention"');
            $tags = array();
+           $lois = array();
+           $amendements = array();
            foreach($qtag->fetchArray() as $tag) {
-		$tags[] = $tag['Tag']['name'];
+                if ($tag['Tag']['triple_namespace'] == 'loi') {
+			if ($tag['Tag']['triple_key'] == 'numero') {
+				$lois[] = $tag['Tag']['triple_value'];
+			}else if ($tag['Tag']['triple_key'] == 'amendement') {
+				$amendements[] = $tag['Tag']['triple_value'];
+			}
+                }else{
+			$tags[] = $tag['Tag']['name'];
+		}
            }
            $i['tags'] = myTools::array2hash($tags, 'tag');
+           $i['amendements'] = myTools::array2hash($amendements, 'amendement');
+           $i['loi'] = myTools::array2hash($lois, 'loi');
            $i['source'] = $int['source'];
            $this->res['seance'][] = array('intervention' => $i);
 	   if (!isset($this->champs)) {
-                $this->multi = array('tag' => 'tag');
                 $this->champs = array();
 		foreach($i as $k => $v) {
 			$this->champs[$k] = $k;
