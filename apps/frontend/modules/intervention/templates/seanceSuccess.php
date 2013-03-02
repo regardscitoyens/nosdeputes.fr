@@ -68,13 +68,14 @@ if ($intervention->section_id && !$sections[$intervention->section_id]->titre) {
     echo '<div id="table_'.$table.'">';
     echo '<span class="source"><a href="#sommaire">Retour au sommaire</a>&nbsp;-&nbsp<a href="#table_'.$intervention->section_id.'">Permalien</a></span><br/>';
     if ($titre != 2) {
+      $section_parente_id = $sections[$intervention->section_id]->section_id;
       if ($lasttitre != 1) {
-        echo '<h2 class="section">'.link_to(myTools::betterUCFirst($sections[$sections[$intervention->section_id]->section_id]->titre),'@section?id='.$sections[$intervention->section_id]->section_id);
+        echo '<h2 class="section">'.link_to(myTools::betterUCFirst($sections[$section_parente_id]->titre),'@section?id='.$section_parente_id);
 	echo '</h2>';
       }
-      if ($sections[$intervention->section_id] != $sections[$intervention->section_id]->section_id) {
+      if ($sections[$intervention->section_id] != $section_parente_id) {
         echo '<h3 class="sous-section">';
-        echo link_to(myTools::betterUCFirst($sections[$intervention->section_id]->titre),'@section?id='.$$intervention->section_id);
+        echo link_to(myTools::betterUCFirst($sections[$intervention->section_id]->titre),'@section?id='.$intervention->section_id);
 	echo '</h3><br/>';
       }
       if ($intervention->hasIntervenant())
