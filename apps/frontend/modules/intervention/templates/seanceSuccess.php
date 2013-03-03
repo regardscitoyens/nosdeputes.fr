@@ -56,25 +56,26 @@ if (! $source_displayed) {
   <div class="intervention" id="inter_<?php echo $intervention->getMd5(); ?>">
   <?php
   $lasttitre = $titre;
-  if ($table != $intervention->getSectionId()) {
-    if ($table == '' && !$intervention->Section->titre) $titre = 2;
+  if ($table != $intervention->section_id) {
+    if ($table == '' && !$sections[$intervention->section_id]->titre) $titre = 2;
     else $titre = 1;
-    $table = $intervention->getSectionId();
+    $table = $intervention->section_id;
   } else $titre = 0;
-if ($intervention->getSectionId() && !$intervention->Section->titre) {
+if ($intervention->section_id && !$sections[$intervention->section_id]->titre) {
   $titre = 0;
  }
   if ($titre != 0) {
     echo '<div id="table_'.$table.'">';
     echo '<span class="source"><a href="#sommaire">Retour au sommaire</a>&nbsp;-&nbsp<a href="#table_'.$intervention->section_id.'">Permalien</a></span><br/>';
     if ($titre != 2) {
+      $section_parente_id = $sections[$intervention->section_id]->section_id;
       if ($lasttitre != 1) {
-        echo '<h2 class="section">'.link_to(myTools::betterUCFirst($intervention->Section->Section->titre),'@section?id='.$intervention->Section->Section->id);
+        echo '<h2 class="section">'.link_to(myTools::betterUCFirst($sections[$section_parente_id]->titre),'@section?id='.$section_parente_id);
 	echo '</h2>';
       }
-      if ($intervention->Section->id != $intervention->Section->section_id) {
+      if ($sections[$intervention->section_id] != $section_parente_id) {
         echo '<h3 class="sous-section">';
-        echo link_to(myTools::betterUCFirst($intervention->Section->titre),'@section?id='.$intervention->Section->id);
+        echo link_to(myTools::betterUCFirst($sections[$intervention->section_id]->titre),'@section?id='.$intervention->section_id);
 	echo '</h3><br/>';
       }
       if ($intervention->hasIntervenant())
@@ -82,27 +83,33 @@ if ($intervention->getSectionId() && !$intervention->Section->titre) {
     }
   } else echo '<div class="intervenant">';
     if ($intervention->hasIntervenant()) {
+      $didascalie = 0;
       $perso = $intervention->getIntervenant($parlementaires, $personnalites);
+      $nomandfonction = $intervention->getNomAndFonction();
       if ($titre != 1) {
 	echo '<span class="source">';
         if ($ct) echo '<a href="#table_'.$intervention->section_id.'">Debut de section</a>&nbsp;-&nbsp;';
         echo '<a href="'.url_for("@interventions_seance?seance=$seance->id").'#inter_'.$intervention->getMd5().'">Permalien</a></span>';
       }
-      if ($perso->getPageLink()) {
-        if ($photo = $perso->hasPhoto()) {
-	  echo '<a href="'.url_for($perso->getPageLink()).'">';
-	  include_partial('parlementaire/photoParlementaire', array('parlementaire' => $perso, 'height' => 70));
-	  echo '</a>';
-        }
-        echo '<div class="perso"><span><a href="'.url_for($perso->getPageLink()).'">';
-        echo $intervention->getNomAndFonction();
-        echo '</a></span></div>';
-      } else {
-        echo '<span class="perso">'.$intervention->getNomAndFonction().'</span>';
+      if ($perso->getPageLink() && ($photo = $perso->hasPhoto() || isset($perso->type))) {
+	echo '<a href="'.url_for($perso->getPageLink()).'">';
+	include_partial('parlementaire/photoParlementaire', array('parlementaire' => $perso, 'height' => 70));
+	echo '</a>';
       }
-  }
-  $didascalie = $intervention->isDidascalie();
-  if ($intervention->isInterventionOrDidascalie()) { ?>
+      echo '<div class="perso">';
+      if ($perso->getPageLink()) {
+        echo '<span><a href="'.url_for($perso->getPageLink()).'">';
+        echo $nomandfonction;
+        echo '</a></span>';
+      } else {
+        echo $nomandfonction;
+      }
+      echo '</div>';
+    } else {
+      $didascalie = 1;
+    } ?>
+<?php
+  if (!($didascalie && $titre != 0)) { ?>
     <div class="texte_intervention">
     <?php if ($didascalie) echo '<div class="didascalie">'; ?>
     <?php echo myTools::escape_blanks($intervention->getIntervention(array('linkify_amendements'=>url_for('@find_amendements_by_loi_and_numero?loi=LLL&numero=AAA')))); ?>

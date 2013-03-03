@@ -232,12 +232,15 @@ intervention:
 intervention_commentaires:
   url: /intervention/:id/commentaires
   param: {module: commentaire, action: showAjax, intervention: 1, limit: 4}
-interventions_seance:
-  url: /seance/:seance
-  param: {module: intervention, action: seance}
 presents_seance:
   url: /seance/:seance/presents
   param: {module: presence, action: seance}
+interventions_seance_api:
+  url: /seance/:seance/:format
+  param: {module: intervention, action: seanceAPI}
+interventions_seance:
+  url: /seance/:seance
+  param: {module: intervention, action: seance}
 seance_commentaires_json:
   url: /seance/:seance/commentaires
   param: {module: commentaire, action: json}
