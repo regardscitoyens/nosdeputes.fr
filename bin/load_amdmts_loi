@@ -9,7 +9,7 @@ cd $PATH_APP
 
 #echo Amendements
 #echo =======================
-cd batch/amendements ; bash compute_latest_loi.sh $LEGISLATURE $loi ; cd -
+cd batch/amendements ; bash compute_latest_loi.sh $LEGISLATURE $loi ; cd ../..
 
 # Chargement via tasks
 

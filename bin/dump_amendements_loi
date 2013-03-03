@@ -8,6 +8,6 @@ cd $PATH_APP
 mkdir -p web/$LEGISLATURE/amendements/$loi
 
 for format in xml json csv; do
-  php symfony dump:AmendementsLoi $loi $format > web/$LEGISLATURE/amendements/$loi/nosdeputesfr-amendements-$loi.$format;
+  php symfony dump:AmendementsLoi $loi $format > web/$LEGISLATURE/amendements/$loi/nosdeputes.fr-amendements-$loi.$format;
 done
 
