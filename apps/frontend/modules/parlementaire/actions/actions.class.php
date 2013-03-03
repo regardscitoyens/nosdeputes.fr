@@ -261,7 +261,7 @@ class parlementaireActions extends sfActions
     $query2 = Doctrine::getTable('Organisme')->createQuery('o');
     $query2->where('o.nom = ?', $nom);
     $this->orga = $query2->fetchOne();
-    $this->forward404Unless($orga);
+    $this->forward404Unless($this->orga);
   }
 
   public function executeListOrganisme(sfWebRequest $request) {
