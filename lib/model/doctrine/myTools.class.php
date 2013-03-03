@@ -201,4 +201,130 @@ class myTools {
     $s = preg_replace('/\n/', '</p><p>', $s);
     return $s;
   }
+
+  public static function array2hash($array, $hashname) {
+    if (!$array)
+      return array();
+    $hash = array();
+    if (!isset($array[0])) {
+      if (isset($array->fonction))
+        return array("organisme" => $array->getNom(), "fonction" => $array->fonction);
+      else return $array;
+    }
+    foreach($array as $e) if ($e) {
+      if (isset($e->fonction))
+        $hash[] = array($hashname => array("organisme" => $e->getNom(), "fonction" => $e->fonction));
+      else $hash[] = array($hashname => preg_replace('/\n/', ', ', $e));
+    }
+    return $hash;
+  }
+
+  public static function depile_assoc_xml($asso, $breakline, $alreadyline) {
+    foreach (array_keys($asso) as $k) {
+      if (!$alreadyline && $k == $breakline) {
+        echo "\n";
+        $alreadyline = 1;
+      }
+      echo "<$k>";
+      echo self::depile_xml($asso[$k], $breakline, $alreadyline);
+      echo "</$k>";
+      if ($k == $breakline) {
+        echo "\n";
+      }
+    }
+  }
+
+  public static function depile_xml($res, $breakline, $alreadyline = 0) {
+    if (is_array($res)) {
+      if (!isset($res[0])) {
+        self::depile_assoc_xml($res, $breakline, $alreadyline);
+      }else{
+        foreach($res as $r) {
+  	  self::depile_xml($r, $breakline, $alreadyline);
+        }
+      }
+    }else{
+      $res = str_replace('<', '&lt;', $res);
+      $res = str_replace('>', '&gt;', $res);
+      $res = str_replace('&', '&amp;', $res);
+      echo $res;
+    }
+  }
+  
+  public static function depile_assoc_csv($asso, $breakline, $multi, $alreadyline) {
+    $semi = 0;
+    foreach (array_keys($asso) as $k) {
+      if (isset($multi[$k]) && $multi[$k]) {
+        $semi = 1;
+      }
+      self::depile_csv($asso[$k], $breakline, $multi, $semi, $alreadyline);
+      if ($k == $breakline) {
+        echo "\n";
+      }
+    }
+    return $semi;
+  }
+  
+  public static function depile_csv($res, $breakline, $multi, $comma = 0, $alreadyline = 0) {
+    if (is_array($res)) {
+      if (isset($res['organisme']) && isset($res['fonction']))
+        return self::depile_csv($res['organisme']." - ".$res['fonction'], $breakline, $multi, $comma, $alreadyline);
+      if (!isset($res[0])) {
+        if (array_keys($res)) 
+  	return self::depile_assoc_csv($res, $breakline, $multi, $alreadyline);
+        echo ";";
+        return;
+      }
+      foreach($res as $r)
+        $semi = self::depile_csv($r, $breakline, $multi, 0, $alreadyline);
+      if ($semi) 
+        echo ';';
+    }else{
+      if ($comma)
+        $res = preg_replace('/[,;]/', '', $res);
+      $string = preg_match('/[,;"]/', $res);
+      if ($string) {
+        $res = preg_replace('/"/', '\"', $res);
+        echo '"';
+      }
+      echo $res;
+      if ($string)
+        echo '"';
+      if ($comma) 
+        echo '|';
+      else echo ';';
+    }
+  }
+
+  public static function templatize($action, $request, $filename) {
+    $action->setLayout(false);
+    switch($request->getParameter('format')) {
+      case 'json':
+        $action->setTemplate('json', 'api');
+        if (!$request->getParameter('textplain')) {
+          $action->getResponse()->setContentType('text/plain; charset=utf-8');
+          $action->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.json"');
+        }
+        break;
+      case 'xml':
+        $action->setTemplate('xml', 'api');
+        if (!$request->getParameter('textplain')) {
+          $action->getResponse()->setContentType('text/xml; charset=utf-8');
+          //    $action->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.xml"');
+        }
+        break;
+      case 'csv':
+        $action->setTemplate('csv', 'api');
+        if (!$request->getParameter('textplain')) {
+          $action->getResponse()->setContentType('application/csv; charset=utf-8');
+          $action->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.csv"');
+        }
+        break;
+    default:
+      $action->forward404();
+    }
+    if ($request->getParameter('textplain')) {
+      $action->getResponse()->setContentType('text/plain; charset=utf-8');
+    }
+  }  
 }
