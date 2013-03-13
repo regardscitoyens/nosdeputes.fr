@@ -298,7 +298,7 @@ foreach $line (split /\n/, $string)
 	} else {
 	    texte();
 	}
-    } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td align="center"[^>]*)>.*(M[\.Mml]|Le gouvern)/i) { 
+    } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le gouvern)/i) { 
 	auteurs();
     } elsif ($line =~ /\<p style=".*text-indent:/i) {
         irrecevable();
