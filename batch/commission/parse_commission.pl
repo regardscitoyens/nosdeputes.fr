@@ -256,6 +256,8 @@ $body = 0;
 
 $string =~ s/<br>\n//gi;
 $string =~ s/<t([rdh]) [^>]*>/<t\1>/gi;
+$string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
+$string =~ s/(<\/table>)\s*(<table)/\1\n\2/gi;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention : 
 #on vire les paragraphes contenus et on didascalise
@@ -403,6 +405,7 @@ foreach $line (split /\n/, $string)
 	    }
 	}
 	$intervention .= "<p>$line</p>";
+    }
     if (length($intervention)-32000 > 0) {
         $tmpinter = $intervenant;
         checkout();
@@ -411,9 +414,8 @@ foreach $line (split /\n/, $string)
         checkout();
         $intervenant = $tmpinter;	 
     }
-	if ($line =~ /séance est levée/i) {
-	    last;
-	}
+    if ($line =~ /séance est levée/i) {
+        last;
     }
 }
 checkout();
