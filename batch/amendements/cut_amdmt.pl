@@ -107,6 +107,7 @@ sub texte {
     $line2 =~ s/\s*\<\/?[^\>]+\>//g;
     $line2 =~ s/^[ \s]+(\w)/\1/;
     $line2 =~ s/([^à])[\s ]+$/\1/;
+    $line2 =~ s/^[\s ]+$//;
     if ($line2 !~ /^$/ && !($line2 =~ /\s*Adt\s+n°\s*$/)) {
     	$output = 'texte';
     	if ($texte == 2) {
