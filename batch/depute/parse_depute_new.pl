@@ -108,7 +108,13 @@ foreach $line (split /\n/, $string) {
   } elsif ($line =~ /mailto:([^'"]+@[^'"]+)['"]/i) {
     $depute{'mails'}{$1} = 1;
   } elsif ($line =~ /<a [^>]*href=['"]([^"']+)['"].*_blank/i) {
-    $depute{'sites_web'}{$1} = 1;
+    $site = $1;
+    $site =~ s#^(http://)*#http://#i;
+    if ($site =~ s/(http:\/\/)?(.*@.*)$/\2/) {
+      $depute{'mails'}{$site} = 1;
+    } else {
+      $depute{'sites_web'}{$site} = 1;
+    }
   } elsif ($line =~ /li class="contact-adresse">\s*([^\/]*)\s*<\/li>/i) {
     $depute{'adresses'}{trim($1)} = 1;
   } elsif ($line =~ /"hemicycle-picture".*place occupée[\s:]+(\d+)[\s"]/i) {
