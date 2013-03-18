@@ -118,7 +118,7 @@ if ($intervention->section_id && !$sections[$intervention->section_id]->titre) {
   <?php } ?>
 <?php if (!$didascalie) : ?>
     <div class="commentaires" id='com_<?php echo $intervention->id; ?>' style="clear: both;">
-      <span class="com_link list_com" id="com_link_<?php echo $intervention->id; ?>"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> - </span><span class="list_com"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
+      <span class="com_link list_com" id="com_link_<?php echo $intervention->id; ?>"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> -&nbsp;</span><span class="list_com"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
   <?php endif; ?>
   </div></div>
