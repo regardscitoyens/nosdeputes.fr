@@ -134,7 +134,11 @@ class interventionActions extends sfActions
     $this->sections = array();
     foreach ($sects as $s) {
 	if ($s->section_id) {
-	   $this->sections[$s->section_id] = $s->Section;
+	   $sec = $s->Section;
+	   $this->sections[$s->section_id] = $sec;
+	   if ($sec->id != $sec->section_id && !isset($this->sections[$sec->section_id])) {
+	       $this->sections[$sec->section_id] = $sec->Section;
+	   }
         }
     }
 
