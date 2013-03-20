@@ -20,7 +20,7 @@ $string =~ s/^.*(<h1 class="deputy-headline-title)/\1/i;
 $string =~ s/<div id="actualite".*<\/div>(<div id="fonctions")/\1/i;
 $string =~ s/<div id="travaux".*$//i;
 while ($string =~ s/(<li class="contact-adresse">([^<]*)?)(<\/?p>)+(.*<\/li>(<li class="contact-adresse">|<\/ul>))/\1 \4/gi) {}
-$string =~ s/(<(div|p|li|abbr|img|a|dt)[ >])/\n\1/ig;
+$string =~ s/(<(div|p|li|abbr|img|dt)[ >])/\n\1/ig;
 $string =~ s/\s*'\s*/'/g;
 
 if ($display_text) {
@@ -127,7 +127,9 @@ foreach $line (split /\n/, $string) {
     add_mandat($2, "", $1);
   } elsif ($line =~ /class="article-title/) {
     clean_vars();
-    $line =~ s/\s*<[^>]+>\s*//g;
+    $line =~ s/\s*<[^>]+>\s*/ /g;
+    $line =~ s/[  \s]+/ /g;
+    $line = trim($line);
     if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?)/) {
       $encours = "fonctions";
       if ($line =~ /Missions temporaires/) {
@@ -146,8 +148,11 @@ foreach $line (split /\n/, $string) {
   } elsif ($line =~ /<div id="/i) {
     clean_vars();
   } elsif ($encours !~ /^$/) {
-    $line =~ s/\s*<[^>]+>\s*//g;
+    $line =~ s/\s*<[^>]+>\s*/ /g;
+    $line =~ s/([^à])[  \s]+/\1 /g;
+    $line = trim($line);
     next if ($line =~ /^$/);
+#    print "TEST $line\n";
     if ($encours =~ /anciensmandats/) {
       if ($line =~ /du (\d+\/\d+\/\d+) au (\d+\/\d+\/\d+) \((.*)\)/i) {
         $dates = "$1 / $2";
