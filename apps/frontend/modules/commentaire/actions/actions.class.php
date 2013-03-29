@@ -69,6 +69,15 @@ class commentaireActions extends sfActions
 
     if ($isAuthenticated) {
       $citoyen_id = $this->getUser()->getAttribute('user_id');
+      $checkuser = Doctrine::getTable('Citoyen')->createQuery('c')
+        ->where('c.is_active = ?', true)
+        ->andWhere('c.slug = ?', $this->getUser()->getAttribute('slug'))
+        ->andWhere('c.activation_id is null')
+        ->fetchOne();
+      if (!$checkuser) {
+        $this->getUser()->setFlash('error', 'Ce compte a été désactivé');
+        return;
+      }
       $is_active = $this->getUser()->getAttribute('is_active');
     } else if ($values['nom'] && $values['email']) {
       $this->getUser()->setAttribute('partial', 'inscriptioncom');
