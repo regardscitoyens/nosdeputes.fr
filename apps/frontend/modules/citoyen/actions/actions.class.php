@@ -67,8 +67,10 @@ class citoyenActions extends sfActions
   public function executeShow(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
-    $this->user = Doctrine::getTable('Citoyen')->findOneBySlug($slug);
-    $this->forward404Unless($this->user->is_active);
+    $this->user = Doctrine::getTable('Citoyen')->createQuery('c')
+      ->where('c.is_active = ?', true)
+      ->andWhere('c.slug = ?', $slug)->fetchOne();
+    $this->forward404Unless($this->user);
     if (myTools::isLegislatureCloturee())
       $this->response->addMeta('robots', 'noindex,follow');
     $response = $this->getResponse();
@@ -169,7 +171,7 @@ class citoyenActions extends sfActions
     $this->slug = $request->getParameter('slug');
     $this->activation_id = $request->getParameter('activation_id');
     
-    if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') != 0)
+    if ($this->getUser()->isAuthenticated() and $this->getUser()->getAttribute('is_active') > 0)
     {
       $userslug = $this->getUser()->getAttribute('slug');
       if ($userslug === $this->slug)
@@ -367,7 +369,7 @@ class citoyenActions extends sfActions
   {
     $this->slug = $request->getParameter('slug');
     $this->activation_id = $request->getParameter('activation_id');
-    if ($this->slug && Doctrine::getTable('Citoyen')->findOneBySlug($this->slug)->is_active < 0) {
+    if ($this->slug && Doctrine::getTable('Citoyen')->createQuery('c')->where('c.slug = ?', $this->slug)->andWhere('c.is_active = ?', true)->andWhere('c.activation_id is null')->fetchOne()) {
       $this->getUser()->setFlash('error', 'Ce compte a été désactivé');
       return;
     }
