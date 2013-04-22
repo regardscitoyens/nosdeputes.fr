@@ -29,7 +29,7 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   $amdmt{'legislature'} = $1;
   $amdmt{'loi'} = $2;
   $lettre = $3;
-  $num = $4+0;
+  $num = $5+0;
   if ($amdmt{'loi'} !~ /TA/) {
     $amdmt{'loi'} += 0;
   }
