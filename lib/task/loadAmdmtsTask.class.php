@@ -35,7 +35,7 @@ class loadAmdmtsTask extends sfBaseTask {
             $ct_lus++;
             $modif = true;
             $amdmt = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
-            if ($json->rectif > 0) foreach(Doctrine::getTable('Amendement')->findBySource($json->source) as $rect) {
+            if ($json->rectif > 0) foreach(Doctrine::getTable('Amendement')->findByCleanedSource($json->source) as $rect) {
              if ($rect->rectif < $json->rectif && $rect->texteloi_id == $json->loi && $rect->numero == $json->numero) {
               $rect->sort = "Rectifié";
               $rect->save();

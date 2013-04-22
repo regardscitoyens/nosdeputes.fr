@@ -14,5 +14,15 @@ class AmendementTable extends Doctrine_Table
     return $query->fetchOne();
   }
 
+  public function findByCleanedSource($source) {
+    $query = $this->createQuery('a');
+    if (strpos($source, '/AN/') !== false) {
+      $source2 = preg_replace('/\/AN\//', '/', $source);
+      $query->whereIn('a.source', array($source, $source2));
+    } else {
+      $query->where('a.source = ?', $source);
+    }
+    return $query->execute();
+  }
 
 }
