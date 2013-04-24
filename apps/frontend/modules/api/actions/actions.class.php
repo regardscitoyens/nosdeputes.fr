@@ -75,6 +75,53 @@ class apiActions extends sfActions
     $this->templatize($request, $date.'_stats_senateurs');
   }
 
+  public function executeTopSynthese(sfWebRequest $request) {
+    $format = $request->getParameter('format');
+    $this->withBOM = $request->getParameter('withBOM');
+    $qp = Doctrine::getTable('Parlementaire')->createQuery('p');
+    $qp->andWhere('fin_mandat IS NULL');
+    $dixmois = time() - round(60*60*24*3650/12);
+    $qp->orderBy('nom_de_famille');
+    $parlementaires = $qp->execute();
+    unset($qp);
+    $this->res = array();
+    $this->champs = array();
+    foreach($parlementaires as $p) {
+      $tops = $p->top;
+      $parlementaire['id'] = $p->id;
+      $this->champs['id'] = 1;
+      $parlementaire = $this->getParlementaireArray($p, $format, 2);
+      if ($format == 'csv')
+       foreach(array_keys($parlementaire) as $key)
+        if (!isset($this->champs[$key]))
+         $this->champs[$key] = 1;
+      foreach(array_keys($tops) as $k) {
+        if ($k != 'nb_mois') {
+          //Gestion de l'ordre des parametres
+          $kfinal = preg_replace('/^\d*_/', '', $k);
+          $parlementaire[$kfinal] = $tops[$k]['value'];
+          if (!isset($this->champs[$kfinal])) $this->champs[$kfinal] = 1;
+        } else {
+          $parlementaire[$k] = $tops[$k];
+          if (!isset($this->champs[$k])) $this->champs[$k] = 1;
+        }
+      }
+      $this->res["parlementaires"][] = array('parlementaire' => $parlementaire);
+    }
+
+    for($i = 0 ; $i < count($this->res["parlementaires"]) ; $i++) {
+      foreach(array_keys($this->champs) as $key) {
+        if (!isset($this->res['parlementaires'][$i]['parlementaire'][$key])) {
+          $this->res['parlementaires'][$i]['parlementaire'][$key] = 0;
+        }
+      }
+    }
+
+    $this->breakline = 'parlementaire';
+    $this->templatize($request, 'nosenateurs.fr_synthese_'.date('Y-m-d'));
+  }
+
+
   protected static function array2hash($array, $hashname) {
     if (!$array)
       return '';
@@ -154,8 +201,8 @@ class apiActions extends sfActions
     $res['date_naissance'] = $parl->date_naissance;
     $res['nom_circo'] = $parl->nom_circo;
     $res['num_deptmt'] = $parl->getNumDepartement();
-    $res['reserve_deputes_1'] = '';
-    $res['reserve_deputes_2'] = '';
+    $res['reserve_parlementaires_1'] = '';
+    $res['reserve_parlementaires_2'] = '';
     $res['mandat_debut'] = $parl->debut_mandat;
     if ($parl->fin_mandat)
       $res['mandat_fin'] = $parl->fin_mandat;
