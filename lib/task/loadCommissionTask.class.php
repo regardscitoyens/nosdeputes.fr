@@ -9,6 +9,7 @@ class loadCommissionTask extends sfBaseTask
     $this->briefDescription = 'Load Commission data';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('verbose', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 0);
   }
  
   protected function execute($arguments = array(), $options = array())
@@ -16,6 +17,8 @@ class loadCommissionTask extends sfBaseTask
     // your code here
     $dir = dirname(__FILE__).'/../../batch/commission/out/';
     $manager = new sfDatabaseManager($this->configuration);    
+
+    $verbose = $options['verbose'];
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
@@ -54,6 +57,8 @@ class loadCommissionTask extends sfBaseTask
 	    $id = md5($json->intervention.$json->date.$json->heure.$json->commission.($json->timestamp == $prev_ts + 1 ? '1' : ''));
 	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
 	    if(!$intervention) {
+	      if ($verbose)
+		echo "Create interversion for $id\n";
 	      $intervention = new Intervention();
 	      $intervention->md5 = $id;
 	      $intervention->setIntervention($json->intervention);
@@ -64,7 +69,11 @@ class loadCommissionTask extends sfBaseTask
 	    }
             $prev_ts = $json->timestamp;
 	    if ($json->intervenant) {
+	      if ($verbose)
+		echo "Set Intervenant for $id (".$json->intervenant.")\n";
 	      $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);
+	      if ($verbose)
+		echo "Parlementaire ".$intervention->parlementaire_id." set for $id\n";
 	    }
 	    $intervention->save();
 	    $intervention->free();
