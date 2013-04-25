@@ -22,6 +22,7 @@ close FILE;
 $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/\r//g;
+$string =~ s/&#278;/É/g;
 
 if ($url =~ /\/plf(\d+)\//) {
   $string2 = $string;
