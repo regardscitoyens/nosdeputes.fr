@@ -42,25 +42,27 @@ class SolrConnector extends sfLogger
 	}
       }
     }
+    $this->commit(1);
     SolrCommands::getInstance()->releaseCommandContent();
   }
 
-  public function commit() {
-	$optimize = false;
+  public function commit($force = false , $optimize = false) {
 	$wait = false;
 	$this->nb_commit++;
-	if ($this->nb_commit > 1000) {
-		$optimize = true;
+	if ($this->nb_commit > 1000 || $force) {
 		$wait = true;
 		$this->nb_commit = 0;
 	}
-	return $this->solr->commit($optimize, $wait);
+	if ($this->nb_commit % 100 || $force) {
+		return $this->solr->commit($optimize, $wait);
+	}
+	return true;		
   }
 
   public function deleteLuceneRecord($solr_id)
   {
     if($this->solr->deleteById($solr_id) ) {
-      return $this->commit();
+      return $this->commit(1);
     }
     return false;
   }
@@ -90,7 +92,7 @@ class SolrConnector extends sfLogger
 
   public function deleteAll() {
     $this->solr->deleteByQuery('*:*');
-    $this->commit();
+    $this->commit(1);
   }
 
   public function search($queryString, $params = array(), $offset = 0, $maxHits = 0) {

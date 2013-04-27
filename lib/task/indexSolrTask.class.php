@@ -24,7 +24,7 @@ class indexSolrTask extends sfBaseTask
     $this->addOption('removePages', null, sfCommandOption::PARAMETER_OPTIONAL, 'remove indexed static pages(=no|yes no default)', 'no');
     $this->addOption('verbose', null, sfCommandOption::PARAMETER_OPTIONAL, 'Print the indexed object ID (=no|yes no default)', 'no');
 
-    $this->file_conf = sys_get_temp_dir().DIRECTORY_SEPARATOR."reindex_slor.db";
+    $this->file_conf = sys_get_temp_dir().DIRECTORY_SEPARATOR."reindex_solr.db";
     $this->state = array();
     if (file_exists($this->file_conf)) {
       $this->state = unserialize(file_get_contents($this->file_conf));
@@ -60,9 +60,9 @@ class indexSolrTask extends sfBaseTask
  
   protected function execute($arguments = array(), $options = array())
   {
+
     $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);    
-
     $solr = new SolrConnector();
 
     if ($options['removeAll'] == 'yes') {
@@ -84,8 +84,12 @@ class indexSolrTask extends sfBaseTask
       return;
     }
 
+    echo "Reindex all !!!\n";
+
     foreach(array("Parlementaire", "Organisme", "Section", "Intervention", "Amendement", "QuestionEcrite", "Citoyen", "Commentaire", "Texteloi") as $table) {
+      echo "reindex all $table\n";
       while (1) {
+	echo "new querry\n";
 	$q = Doctrine::getTable($table)
 	  ->createQuery('o')
 	  ->orderBy('o.id ASC');
