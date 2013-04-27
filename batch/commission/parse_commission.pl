@@ -147,6 +147,11 @@ sub setFonction {
     if (!$inter2fonction{$intervenant} || length($inter2fonction{$intervenant}) < length($fonction)) {
 	$inter2fonction{$intervenant} = $fonction;
     }
+    if ($intervenant =~ / et / && $kfonction =~ s/s$//) {
+	$intervenants = $intervenant;
+	$intervenants =~ s/ et .*//;
+	setFonction($kfonction, $intervenants);
+    }
     return $intervenant;
 }
 
