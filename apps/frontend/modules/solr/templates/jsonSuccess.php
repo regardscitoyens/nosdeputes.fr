@@ -31,7 +31,7 @@ foreach ($results['docs'] as $record)
     $nb = 1;
   echo "[document_type:\"".get_class($record['object'])."\",";
   echo "document_id:".$record['object']->id.",";
-  echo "document_url:\"".sfConfig::get('app_baseurl').url_for('@api_document?format='.$format.'&class='.get_class($record['object']).'&id='.$record['object']->id)."\"]";
+  echo "document_url:\"".sfConfig::get('app_base_url').url_for('@api_document?format='.$format.'&class='.get_class($record['object']).'&id='.$record['object']->id)."\"]";
 }
 ?> }}<?php return;
 endif;

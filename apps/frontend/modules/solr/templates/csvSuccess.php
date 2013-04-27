@@ -8,7 +8,8 @@ foreach ($results['docs'] as $record)
   echo get_class($record['object']);
   echo ";";
   echo $record['object']->id;
-  echo url_for('@api_document?format='.$format.'&class='.get_class($record['object']).'&id='.$record['object']->id)."\n";
+  echo ";";
+  echo sfConfig::get('app_base_url').url_for('@api_document?format='.$format.'&class='.get_class($record['object']).'&id='.$record['object']->id);
   echo ";\n";
 }
 return;
