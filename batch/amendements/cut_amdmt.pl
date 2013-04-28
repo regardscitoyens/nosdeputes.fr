@@ -241,11 +241,10 @@ foreach $line (split /\n/, $string)
         } elsif (!$amdmt{'serie'} && ($line =~ /class="numamendement".*à\s+(\d+)\W/i)) {
           $num_ident = $1;
           $amdmt{'serie'} = ($amdmt{'numero'}+1).'-';
-	} elsif ($line =~ /class="presente"/i) {
-	    if ($line =~ /amendement/) {
-		$line =~ /(\d+)/;
-		$amdmt{'parent'} = $1;
-	    } elsif ($presente == 1) {
+	} elsif ($line =~ /class="(titreamend|presente)".*à l'amendement.*\D(\d+)\D/i) {
+            $amdmt{'parent'} = $2;
+        } elsif ($line =~ /class="presente"/i) {
+	    if ($presente == 1) {
 		auteurs();
 	    } else {
 		texte();
@@ -282,6 +281,8 @@ foreach $line (split /\n/, $string)
         if ($line =~ /amendement.*[\s°](\d+)[\s\<]/i) {
             $amdmt{'parent'} = $1;
         }
+    } elsif ($line =~ /class="(titreamend|presente)".*à l'amendement.*\D(\d+)\D/i) {
+        $amdmt{'parent'} = $2;
     } elsif ($line =~ /class="amd(expo|dispo)texte"/i) {
         if ((!$amdt{'sort'} || $amdt{'sort'} == "") && ($line =~ /\<div.*id="sort"/i || $line =~ /retir.+ avant (publication|s.+ance)/i)) {
             sortseance();
