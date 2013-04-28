@@ -15,6 +15,7 @@ open $fh, $file ;
 $content = "@content";
 $content =~ s/\n/ /g;
 $content =~ s/  / /g;
+$content =~ s/\r//g;
 @content = ();
 seek($fh, 0, 0);
 $p = HTML::TokeParser->new($fh);
