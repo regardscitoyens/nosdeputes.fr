@@ -150,7 +150,8 @@ sub identiques {
     } else {
 	$line =~ s/\s*<\/?[^t][^\>]*>//g;
         $line =~ s/<t[dr]>/ /ig;
-	if ($line =~ /^.*Adt\s+n°\s*(\d+).*\s*de\s*(.*)\s*$/) {
+	$line =~ s/ +/ /g;
+	if ($line =~ /^.*Adt\s*n°\s*(\d+).*de\s*(.*)\s*$/) {
     	    $num = $1;
 	    $line = $2;
 	    if ($num_ident == -1) {
