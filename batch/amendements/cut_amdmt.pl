@@ -148,17 +148,16 @@ sub identiques {
 	    auteurs();
 	}
     } else {
-	$line =~ s/\s*\<\/?[^\>]+\>//g;
-	if ($line =~ /^.*Adt\s+n°\s+(\d+).*\s+de\s+(.*)\s*$/) {
+	$line =~ s/\s*<\/?[^t][^\>]*>//g;
+        $line =~ s/<t[dr]>/ /ig;
+	if ($line =~ /^.*Adt\s+n°\s*(\d+).*\s*de\s*(.*)\s*$/) {
     	    $num = $1;
 	    $line = $2;
 	    if ($num_ident == -1) {
 		$num_ident = $num;
 		$amdmt{'serie'} = $num_ident."-";
 	    }
-	    if ($amdmt{'numero'} != $num) {
-		auteurs();
-	    }
+	    auteurs();
 	    if ($num > $num_ident + 1) {
 		$amdmt{'serie'} = $amdmt{'serie'}.$num_ident.",".$num."-";
 	    }
@@ -193,9 +192,11 @@ $string =~ s/&nbsp;/ /g;
 $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/([^\n>]+)\n/\1 /g;
 $string =~ s/>\n([^\n<]+)/> \1/g;
+$string =~ s/<t([rdh]|able)[^>]*>/<t\1>/ig;
+$string =~ s/\n?<(\/)?td>\n?/<\1td>/ig;
 foreach $line (split /\n/, $string)
 {
-#print "TEST: $presente / $texte / $line\n";
+#print "TEST: $identiques / $presente / $texte / $line\n";
     if ($line =~ /meta.*content=/) {
 	if ($line =~ /name="DATE_BADAGE"/i) { 
 	    $line =~ s/^.*content="//i; 
@@ -271,7 +272,7 @@ foreach $line (split /\n/, $string)
 		auteurs();
 	    }
 	} elsif ($identiques == 1 && $line =~ /\<div\>.*(\d+).*\<\/div\>/) {
-		identiques();
+	    identiques();
 	} elsif ($texte >= 1 && $line =~ /\<div\>(.*)\<\/div\>/) {
 	    $line = $1;
 	    texte();
@@ -283,6 +284,8 @@ foreach $line (split /\n/, $string)
         }
     } elsif ($line =~ /class="(titreamend|presente)".*à l'amendement.*\D(\d+)\D/i) {
         $amdmt{'parent'} = $2;
+    } elsif ($line =~ /amendements?\s*identiques?.*déposé/i) {
+	$identiques = 1;
     } elsif ($line =~ /class="amd(expo|dispo)texte"/i) {
         if ((!$amdt{'sort'} || $amdt{'sort'} == "") && ($line =~ /\<div.*id="sort"/i || $line =~ /retir.+ avant (publication|s.+ance)/i)) {
             sortseance();
@@ -295,7 +298,7 @@ foreach $line (split /\n/, $string)
         }
     } elsif ((!$amdt{'sort'} || $amdt{'sort'} == "") && ($line =~ /\<div.*id="sort"/i || $line =~ /retir.+ avant (publication|s.+ance)/i)) {
 	sortseance();
-    } elsif ($identiques == 1 && $line =~ /\<p style=".*text-align:.*\>.*M[\.Mml]/i) {
+    } elsif ($identiques == 1 && $line =~ /<p[^>]*style="[">]*text-align:.*>.*M[\.Mml]/i) {
 	identiques();
     } elsif ($line =~ /class="presente"/i) {
 	if ($line =~ /amendement/) {
