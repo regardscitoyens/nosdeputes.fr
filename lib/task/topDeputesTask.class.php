@@ -128,6 +128,7 @@ class topDeputesTask extends sfBaseTask
       ->from('Parlementaire p, p.Amendements a')
       ->groupBy('p.id')
       ->andWhere('a.sort != ?', 'Rectifié')
+      ->andWhere('a.numero NOT LIKE ?', '%-%')
       ->fetchArray();
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['amendements_signes']['value'] = $p['count'];
@@ -141,6 +142,7 @@ class topDeputesTask extends sfBaseTask
       ->from('Parlementaire p, p.Amendements a')
       ->groupBy('p.id')
       ->andWhere('a.sort = ?', 'Adopté')
+      ->andWhere('a.numero NOT LIKE ?', '%-%')
       ->fetchArray();
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['amendements_adoptes']['value'] = $p['count'];
@@ -154,6 +156,7 @@ class topDeputesTask extends sfBaseTask
       ->from('Parlementaire p, p.Amendements a')
       ->groupBy('p.id')
       ->andWhere('a.sort = ?', 'Rejeté')
+      ->andWhere('a.numero NOT LIKE ?', '%-%')
       ->fetchArray();
     foreach ($parlementaires as $p) {
       $this->deputes[$p['id']]['amendements_rejetes']['value'] = $p['count'];
