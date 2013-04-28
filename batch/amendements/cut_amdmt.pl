@@ -158,7 +158,9 @@ sub identiques {
 		$num_ident = $num;
 		$amdmt{'serie'} = $num_ident."-";
 	    }
-	    auteurs();
+	    if ($amdmt{'numero'} != $num_ident) {
+		auteurs();
+	    }
 	    if ($num > $num_ident + 1) {
 		$amdmt{'serie'} = $amdmt{'serie'}.$num_ident.",".$num."-";
 	    }
@@ -194,7 +196,8 @@ $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/([^\n>]+)\n/\1 /g;
 $string =~ s/>\n([^\n<]+)/> \1/g;
 $string =~ s/<t([rdh]|able)[^>]*>/<t\1>/ig;
-$string =~ s/\n?<(\/)?td>\n?/<\1td>/ig;
+$string =~ s/\n?<(\/)?t([rhd]|able)>\n?/<\1t\2>/ig;
+$string =~ s/<\/tr>/<\/tr>\n/ig;
 foreach $line (split /\n/, $string)
 {
 #print "TEST: $identiques / $presente / $texte / $line\n";
