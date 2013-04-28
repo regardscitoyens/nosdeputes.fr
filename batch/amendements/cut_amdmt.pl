@@ -283,7 +283,7 @@ foreach $line (split /\n/, $string)
         if ($line =~ /amendement.*[\s°](\d+)[\s\<]/i) {
             $amdmt{'parent'} = $1;
         }
-    } elsif ($line =~ /class="(titreamend|presente)".*à l'amendement.*\D(\d+)\D/i) {
+    } elsif ($line =~ /class="(titreamend|presente)".*à l'amendement\D*(\d+)\D/i) {
         $amdmt{'parent'} = $2;
     } elsif ($line =~ /amendements?\s*identiques?.*déposé/i) {
 	$identiques = 1;
