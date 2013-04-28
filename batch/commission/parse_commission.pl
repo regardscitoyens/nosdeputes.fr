@@ -119,7 +119,8 @@ foreach (split /\n/, $content) {
 	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*\W*<\/(h[123])>/i)) {
 #print STDERR "date: $3 $url_year\n";
 		@date = datize($3, $url_year);
-		if (@date) {
+#print STDERR length($3)."length\n";
+		if (@date && (!$date || length($3) < 40)) {
 #print STDERR "date:"."@date"." ($timestamp $intervention)\n";
 		    print_inter() if ($date && ($intervention !~ /commission.*mixte.*paritaire/i)); # || $intervention =~ /(adopt|rejet)/);
 		    $olddate = $date;

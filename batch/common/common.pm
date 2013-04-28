@@ -22,6 +22,10 @@ sub datize {
 	}
 	$mois =~ s/\&[^;]+;//g;
         $mois =~ s/[^a-z]\W?//g;
+	if ($theo_anee && $annee != $theo_annee) {
+#	    print STDERR "Incohérence d'année : $annee <-> $theo_annee\n";
+		return ();
+	}
         return ($annee,$mois{$mois},$jour);
 }
 
