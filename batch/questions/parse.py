@@ -57,9 +57,13 @@ def extractspan(t):
     span = t.findNextSibling('span', attrs={'class': 'contenu'})
     return span.decodeContents()
 
-re_clean_bad_html = re.compile(r'<//[^>]*>')
-html = re_clean_bad_html.sub('', open(fn).read())
-
+re_clean_html = [(re.compile(r'<//[^>]*>'), ''),
+		 (re.compile(r"(<[^>]*='[^>'\"]*')['\"]([^>]*>)"), r'\1\2'),
+		 (re.compile(r"(<[^>]*=\"[^>'\"]*\")['\"]([^>]*>)"), r'\1\2'),
+		 (re.compile(r"(<[^>]*=)=(['\"][^>]*>)"), r'\1\2')]
+html = open(fn).read()
+for reg, rep in re_clean_html:
+    html = reg.sub(rep, html)
 s = BeautifulSoup(html, convertEntities=BeautifulStoneSoup.ALL_ENTITIES)
 
 spandict = {
