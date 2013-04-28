@@ -203,7 +203,7 @@ class Intervention extends BaseIntervention
           print "WARNING : Intervention $this->id has tags lois corresponding to multiple id_dossier_ans : ";
           foreach ($urls as $url)
             print $url['distinct']." ; ";
-          print " => Saving to section $this->Section->id\n";
+          print " => Saving to section ".$this->Section."-".$this->Section->id."\n";
           $debug = 0;
         }
         return $debug;
@@ -221,7 +221,7 @@ class Intervention extends BaseIntervention
             $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
             if ($debug) {
               print "WARNING : Intervention $this->id has tags lois corresponding to another section $section2->id";
-              print " => Saving to section ".$this->Section->id."\n";
+              print " => Saving to section ".$this->Section."-".$this->Section->id."\n";
               $debug = 0;
             }
             return $debug;
