@@ -160,6 +160,7 @@ sub setIntervenant {
     $intervenant =~ s/<[^>]+>\s*//g;
     $intervenant =~ s/<[^>]*$//;
     #print "$intervenant\n";
+    $intervenant =~ s/ présidence / présidente /;
     $intervenant =~ s/\s*\&\#821[12]\;\s*//;
     $intervenant =~ s/^audition de //i;
     $intervenant =~ s/^(M(\.|me))(\S)/$1 $3/;
