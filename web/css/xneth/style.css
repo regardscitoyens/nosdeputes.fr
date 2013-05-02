@@ -1261,7 +1261,7 @@ h2 {
 .didascalie {
   font-style: oblique;
 }
-.didascalie table, .didascalie td, .didascalie tr, .didascalie th {
+.alineatexte table, .alineatexte td, .alineatexte tr, .alineatexte th, .didascalie table, .didascalie td, .didascalie tr, .didascalie th {
   font-style: normal;
   text-align: center;
   margin: auto;
