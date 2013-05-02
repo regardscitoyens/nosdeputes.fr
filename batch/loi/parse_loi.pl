@@ -13,7 +13,7 @@ $loi =~ s/^http\:\/\/.*\/ta\/ta0*(\d+)\.asp$/ta\1/;
 if ($loi =~ /ta/ || $source =~ /rapports.*-a0/i) {
   $present = 0;
 } else {
-  $present = 0;
+  $present = 1;
 }
 use HTML::Entities;
 
@@ -35,18 +35,27 @@ $string =~ s/\s*<[a-z]+>\s*\(nouveau\)\s*<\/[a-z]+>//gi;
 $string =~ s/\s*\(nouveau\)//gi;
 $string =~ s/\r//g;
 $string =~ s/\|(\W+)\|/$1/g;
+$string =~ s/<t([rdh]|able)[^>]+>/<t\1>/ig;
+$string =~ s/[\n\s]*(<\/?t(able|[rdh])>)[\s\n]*/\1/ig;
+$string =~ s/(<\/table>)\s*(<\/p>)?/\1<\/p>\n/ig;
+$string =~ s/<table>/<table border=1>/ig;
+$string =~ s/<t([dh])><p[^>]*>/<t\1>/ig;
+$string =~ s/<\/p><\/t([dh])>/<\/t\1>/ig;
 close FILE;
 
 if ($string =~ /adopt.+\spar\sle\ss.+nat/i) {
   $present = 0;
 } 
-
+$doneloi = 0;
 sub checkout_loi {
+ if (!$doneloi) {
   $expose =~ s/<p>\s*<a href/<p>&nbsp;<a href/i;
   $expose =~ s/<ul>/<\/p><ul>/gi;
   $expose =~ s/<\/ul><\/p>/<\/ul>/gi;
   print '{"type": "loi", "loi": "'.$loi.'", "titre": "'.$titreloi.'", "expose": "'.$expose.'", "auteur": "'.$auteur.'", "date": "'.$date.'", "source": "'.$source."\"}\n";
   $expose = "";
+  $doneloi = 1;
+ }
 }
 
 $accents = '[ÀÉÈÊËÎÏÔÙÛÜÇ]';
@@ -83,30 +92,39 @@ sub checkout_level {
   $titre = "";
 }
 
+$exposes_articles = [];
 sub checkout_present_article {
   while ($exposearticle =~ /<a href=["'][^"']*;[^"']*["']>/i) {
     $exposearticle =~ s/<a href=["']([^"']*);([^"']*)["']>/<a href='\1.\2'>/gi;
   }
-  if ($levels[0] != 0 && $num_article != 0) {
+  if ($levels[0] != 0 || $num_article != 0) {
    if (!($exposearticle =~ /^$/)) {
 #    $exposearticle =~ s/\s*$/<\/p>/;
     if ($num_article == 1) {
       $num_article_titre = "1er";
+      checkout_loi();
     } else {
       $num_article_titre = $num_article;
     }
-    print '{"type": "article", "loi": "'.$loi.'", "level": "'.$level.'", "leveltype": "'.$leveltype.'", "level1": "'.$levels[0].'", "level2": "'.$levels[1].'", "level3": "'.$levels[2].'", "level4": "'.$levels[3].'", "article": "'.$num_article_titre.'", "ordre": "", "expose": "'.$exposearticle."\"}\n";
-   } $exposearticle = "";
+    $exposes_articles{$num_article} = $exposearticle;
+    #print '{"type": "article", "loi": "'.$loi.'", "level": "'.$level.'", "leveltype": "'.$leveltype.'", "level1": "'.$levels[0].'", "level2": "'.$levels[1].'", "level3": "'.$levels[2].'", "level4": "'.$levels[3].'", "article": "'.$num_article_titre.'", "ordre": "", "expose": "'.$exposearticle."\"}\n";
+   }
+   $exposearticle = "";
   }
 }
 
 sub checkout_article {
+  if ($num_article == 1 && !$levels[0]) {
+    checkout_loi();
+  }
   if ($num_article != 0 && $titre_article != '') {
-    print '{"type": "article", "loi": "'.$loi.'", "level1": "'.$levels[0].'", "level2": "'.$levels[1].'", "level3": "'.$levels[2].'", "level4": "'.$levels[3].'", "article": "'.$titre_article.'", "ordre": "'.$num_article.'", "expose": ""}'."\n";
+    $artexpose = ($exposes_articles{$num_article} ? $exposes_articles{$num_article} : "");
+    print '{"type": "article", "loi": "'.$loi.'", "level1": "'.$levels[0].'", "level2": "'.$levels[1].'", "level3": "'.$levels[2].'", "level4": "'.$levels[3].'", "article": "'.$titre_article.'", "ordre": "'.$num_article.'", "expose": "'.$artexpose.'"}'."\n";
   }
 }
 
 sub checkout_alinea {
+  $texte =~ s/"/\\"/g;
   print '{"type": "alinea", "loi": "'.$loi.'", "level1": "'.$levels[0].'", "level2": "'.$levels[1].'", "level3": "'.$levels[2].'", "level4": "'.$levels[3].'", "article": "'.$titre_article.'", "alinea": "'.$num_alinea.'", "texte": "'.$texte."\"}\n";
   $texte = "";
 }
@@ -164,7 +182,7 @@ sub handle_text {
       if ($content =~ /(Fait|Délibéré\s+en\s+séance)(\s+publique)?,?\s+à\s+Paris,\s*le\s*\d+/) {
         exit;
       }
-      if (!($content =~ /^(<[a-z]+>)?\[?\(?(non\smodifié|suppressions?\s+(conform|maintenu)es?|supprimés?|dispositions?\s+déclarées?\s+irrecevables?\s+au\s+regard\s+de\s+l'article\s+\d+\s+de\s+la\s+constitution|division)(\s+et\s+intitulé)?(\s+nouveaux|nouvelle)?\)?\]?(<\/[a-z]+>)?/i)) {
+      if ($content && !($content =~ /^(<[a-z]+>)?\[?\(?(non\smodifié|suppressions?\s+(conform|maintenu)es?|supprimés?|dispositions?\s+déclarées?\s+irrecevables?\s+au\s+regard\s+de\s+l'article\s+\d+\s+de\s+la\s+constitution|division)(\s+et\s+intitulé)?(\s+nouveaux|nouvelle)?\)?\]?(<\/[a-z]+>)?/i)) {
 
         if ($num_alinea == 0) {
           $num_article++;
@@ -205,7 +223,7 @@ $zone = 0;
 reset_vars();
 
 foreach $line (split /\n/, $string) {
-#   print $line."\n";
+#   print "TEST $zone $present $deftitre $expose $line\n";
   if ($line =~ /<meta name=/i) {
     if ($line =~ /name="DATE_DEPOT"/) {
       $line =~ s/^.*content="([^"]+)".*$/\1/;
@@ -223,13 +241,19 @@ foreach $line (split /\n/, $string) {
       $line =~ s/^.*content="([^"]+)".*$/\1/;
       $titreloi = $line;
     }
-  } elsif ($present == 1 && $line =~ /<p style="text-align: (center|justify)">(.*)<\/p>/) {
-    $align = $1;
-    $content = $2;
+  } elsif ($present == 1 && $line =~ /^\s*<p( style="text-align: (center|justify)")?>(.*)<\/p>\s*$/) {
+    if ($1) {
+      $align = $2;
+    } else {
+      $align = "none";
+    }
+    $content = $3;
 
     if ($content =~ /(PRO.*DE\s+LOI|EXPOS.*MOTIF)/) {
       if ($zone == 2) {
-        if ($levels[0] == 0) {
+        if ($exposearticle) {
+          checkout_present_article();
+        } elsif ($levels[0] == 0) {
           checkout_loi();
           $titre = "";
         }
@@ -270,59 +294,57 @@ foreach $line (split /\n/, $string) {
         set_level($2, $4);
       }
 
-      if ($levels[0] == 0) {
-        $expose .= '<p>'.$content.'</p>';
-      } else {
-        if ($content =~ /<b>.*article.*<\/b>/i) {
-          $content =~ s/M\./M /g;
-          $texteassemble = '';
-          while ($content =~ /<(a\s+href=["'][^"']*\.[^"']*["'])>/i) {
-            $content =~ s/<a\s+href=["']([^"']*)\.([^"']*)["']>/<a href='\1;\2'>/gi;
-          }
-          foreach $phrase (split /\.\s*/, $content) {
-            if ($phrase =~ /la\s+((sous-)?section)\s+(\d+|[ivx]+)/i) {
-              set_level($1, $3);
-              $exposelevels[$curlevel-1] = '<p>'.$phrase.'.</p>';
-              if (!($phrase =~ /article\s+(\d+)/i)) {
-                next;
-              }
-            }
-            if ($phrase =~ /<b>.*articles?\s+(\d+).*<\/b>/i && $num_article + 1 == $1) {
-              checkout_present_article();
-              $num_article = $1;
-            }
-            if ($num_article != 0) {
-              $texteassemble .= $phrase.'. ';
-            }
-          }
-          if (!$texteassemble =~ /^$/) {
-            $exposearticle .= '<p>'.$texteassemble.'</p>';
-          }
-  #        if (!($exposearticle =~ /article\s+($num_article)/)) {
-  #          if ($section != 0 && !($exposesection =~ /$content/)) {
-  #            $exposesection .= '<p>'.$content.'</p>';
-  #          }
-  #          elsif (!($exposechapitre =~ /$content/)) {
-  #            $exposechapitre .= '<p>'.$content.'</p>';
-  #          }
-  #        }
-        } elsif ($levels[$curlevel-1] != 0 && !($exposelevels[$curlevel-1] =~ /$content/)) {
-          $exposelevels[$curlevel-1] .= '<p>'.$content.'</p>';
-#        } elsif (!($exposearticle =~ /article\s+($num_article)/) && !($exposechapitre =~ /$content/)) {
-#          $exposechapitre .= '<p>'.$content.'</p>';
-        } elsif (!$exposearticle =~ /^$/) {
-          $exposearticle .= '<p>'.$content.'</p>';
+      if ($content =~ /<b>.*article.*<\/b>/i) {
+        $content =~ s/M\./M /g;
+        $texteassemble = '';
+        while ($content =~ /<(a\s+href=["'][^"']*\.[^"']*["'])>/i) {
+          $content =~ s/<a\s+href=["']([^"']*)\.([^"']*)["']>/<a href='\1;\2'>/gi;
         }
+        foreach $phrase (split /\.\s*/, $content) {
+          if ($phrase =~ /la\s+((sous-)?section)\s+(\d+|[ivx]+)/i) {
+            set_level($1, $3);
+            $exposelevels[$curlevel-1] = '<p>'.$phrase.'.</p>';
+            if (!($phrase =~ /article\s+(\d+)/i)) {
+              next;
+            }
+          }
+          if ($phrase =~ /<b>.*articles?\s+(\d+).*<\/b>/i && $num_article + 1 == $1) {
+            checkout_present_article();
+            $num_article = $1;
+          }
+          if ($num_article != 0) {
+            $texteassemble .= $phrase.'. ';
+          }
+        }
+        if (!$texteassemble =~ /^$/) {
+          $exposearticle .= '<p>'.$texteassemble.'</p>';
+        }
+#        if (!($exposearticle =~ /article\s+($num_article)/)) {
+#          if ($section != 0 && !($exposesection =~ /$content/)) {
+#            $exposesection .= '<p>'.$content.'</p>';
+#          }
+#          elsif (!($exposechapitre =~ /$content/)) {
+#            $exposechapitre .= '<p>'.$content.'</p>';
+#          }
+#        }
+      } elsif ($curlevel > 1 && $levels[$curlevel-1] != 0 && !($exposelevels[$curlevel-1] =~ /$content/)) {
+        $exposelevels[$curlevel-1] .= '<p>'.$content.'</p>';
+#      } elsif (!($exposearticle =~ /article\s+($num_article)/) && !($exposechapitre =~ /$content/)) {
+#        $exposechapitre .= '<p>'.$content.'</p>';
+      } elsif (!$exposearticle =~ /^$/) {
+        $exposearticle .= '<p>'.$content.'</p>';
+      } elsif ($levels[0] == 0 && $num_article == 0) {
+        $expose .= '<p>'.$content.'</p>';
       }
     } elsif ($zone == 3) {
       handle_text();
     }
   } elsif ($present == 0) {
-    if ($line =~ /<p style="text-align: (center|justify)">(.*)<\/p>/) {
+    if ($line =~ /^\s*<p style="text-align: (center|justify)">(.*)<\/p>/) {
       $align = $1;
       $content = $2;
       handle_text();
-    } elsif ($line =~ /<p>(.*)<\/p>/) {
+    } elsif ($line =~ /^\s*<p>(.*)<\/p>/) {
       $align = 'none';
       $content = $1;
       handle_text();
