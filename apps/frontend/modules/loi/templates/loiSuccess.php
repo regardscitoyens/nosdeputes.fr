@@ -1,3 +1,4 @@
+<?php use_helper('Text') ?>
 <?php echo '<div class="precedent">'.myTools::displayDate($loi->date).'</div>'; ?>
 <?php if (isset($dossier)) echo '<div class="source">'.link_to('Dossier relatif', '@section?id='.$dossier)."</div>"; ?>
 <div class="loi"><h1><?php echo $loi->titre; ?></h1>
@@ -20,16 +21,20 @@ if ($loi->expose) {
   $pos = 0;
   for ($i=0; $i < 8; $i++)
     $pos = strpos($expose, '<', $pos+1);
-  echo substr($expose, 0, $pos-1);
-  echo '<div id="expose_court">Lire l\'exposé complet...</div>';
-  echo '<div id="expose_complet">'.substr($expose, $pos).'</div>';
+  if ($pos) {
+    echo substr($expose, 0, $pos - 1);
+    echo '<div id="expose_court">Lire l\'exposé complet...</div>';
+    echo '<div id="expose_complet">'.substr($expose, $pos).'</div>';
+  } else {
+    echo $expose;
+  }
   if ($loi->parlementaire_id) 
     echo '<div class="auteurloi"><a href="'.url_for($perso->getPageLink()).'">'.$perso->nom.'</a></div>';
   echo '<br/><h2>Sommaire&nbsp;:</h2></div>';
 } ?>
 <div class="sommaireloi">
 <?php $nart = 0; $nbart = 0;
-if (isset($soussections)) {
+if (isset($soussections) && count($soussections)) {
   $level = 0;
   foreach ($soussections as $ss) {
     if ($ss->level <= $level) {
@@ -45,7 +50,13 @@ if (isset($soussections)) {
       if ($ss->level < $level) for ($i=0; $i < $level-$ss->level; $i++)
         echo "</li></ul>";
       else echo "</li>";
-    } else echo "<ul>";
+    } else {
+      echo "<ul>";
+      if ($loi->texteloi_id == 1005 && $nart == 0 && $nbart > 0) {
+        echo "<small> &nbsp; Article ".link_to($articles[0]['titre'], '@loi_article?loi='.$loi->texteloi_id.'&article='.$articles[0]['slug']).'</small>';
+        $nart = 1;
+      }
+    }
     echo '<li class="level'.$ss->getLevel().'">'.link_to($ss->getLevelTitre(), $ss->getUrl());
     $level = $ss->getLevel();
     $nbart = $ss->nb_articles;
@@ -74,10 +85,10 @@ if (isset($soussections)) {
   foreach ($articles as $a) {
     if ($nart != 0) echo '</li>';
     else echo '<ul>';
-    $nart = $a->ordre;
-    echo '<li><a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a->slug).'">';
-    echo 'Article '.$a->titre;
-    if (isset($a->expose)) echo '&nbsp;:'.myTools::escape_blanks(truncate_text(preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', $a->expose), 120));
+    $nart = $a['ordre'];
+    echo '<li><b><a href="'.url_for('@loi_article?loi='.$loi->texteloi_id.'&article='.$a['slug']).'">';
+    echo 'Article '.$a['titre'];
+    if (isset($a['expose'])) echo '&nbsp;:</b>&nbsp;'.myTools::escape_blanks(truncate_text(preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', strip_tags($a['expose'])), 120));
     echo '</a>';
   }
 } ?>

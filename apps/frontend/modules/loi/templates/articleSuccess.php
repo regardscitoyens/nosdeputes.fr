@@ -1,7 +1,8 @@
 <div class="loi">
 <h1><?php echo link_to($loi->titre, '@loi?loi='.$loi->texteloi_id); ?></h1>
 <h2><?php echo $titre; ?></h2>
-<h3><?php echo "(".$section->getHierarchie()."&nbsp;: ".link_to(ucfirst($section->titre), $section->getUrl()).")"; ?></h3>
+<?php $hiera = $section->getHierarchie(); ?>
+<h3><?php echo "(".($hiera ? $hiera."&nbsp;: " : "").link_to(ucfirst($section->titre), $section->getUrl()).")"; ?></h3>
 <div class="pagerloi">
 <?php if ($article->precedent) {
   echo '<div class="precedent">'.link_to('Article précédent', '@loi_article?loi='.$loi->texteloi_id.'&article='.$article->precedent).'</div>';
