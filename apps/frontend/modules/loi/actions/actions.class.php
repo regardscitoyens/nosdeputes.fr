@@ -185,9 +185,10 @@ class loiActions extends sfActions
 	$article = $request->getParameter('article');
 	if (preg_match('/^n°/', $loi)) {
 		$loi = 'loi '.$loi;
-	}else if (!preg_match('/^(code|loi|libre)/', $loi)) {
+	}else if (!preg_match('/^(code|loi|livre)/', $loi)) {
 		$loi ='code '.$loi;
 	}
+    $loi = preg_replace('/ et,?$/', '', $loi);
 	if (preg_match('/^(code|livre)/', $loi) && $article) {
     		foreach (Alinea::$code_legif as $code => $legif) if (preg_match('/'.$code.'/', $loi)) {
       			return $this->redirect('http://www.legifrance.gouv.fr/rechCodeArticle.do?champCode='.$legif.'&champNumArticle='.$article);
