@@ -6,6 +6,8 @@
 class Seance extends BaseSeance
 {
   public function __tostring() {
+    if ($this->type == 'commission')
+    return 'réunion du '.myTools::displayDate($this->date).', '.$this->moment;
     return 'séance du '.myTools::displayDate($this->date).', '.$this->moment;
   }
   
@@ -114,12 +116,18 @@ class Seance extends BaseSeance
     $titre = '';
     if ($ref != '')
       $titre .= '<a href="'.url_for('@interventions_seance?seance='.$this->id).'#inter_'.$ref.'">';
-    if ($miniature == 0)
-      $titre .= 'S';
-    else $titre .= 's';
-    $titre .= 'éance ';
-    if ($hemicycle == 1)
+    if ($hemicycle == 1) {
+      if ($miniature == 0)
+        $titre .= 'S';
+      else $titre .= 's';
+      $titre .= 'éance ';
       $titre .= 'en hémicycle ';
+    }else{
+      if ($miniature == 0)
+        $titre .= 'R';
+      else $titre .= 'r';
+      $titre .= 'éunion ';
+    }
     $titre .= 'du '.preg_replace('/^0(\d)/', '\\1', myTools::displayDate($this->getDate()));
     if ($moment = $this->getMoment()) {
       if (preg_match('/(réunion|séance)/i', $moment))
