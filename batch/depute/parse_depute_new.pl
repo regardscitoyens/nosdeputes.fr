@@ -51,7 +51,7 @@ sub add_mandat {
   $cause =~ s/(du gouvernement) :.*$/\1/i;
   $premiers_mandats{"$start / $end / ".lc($cause)} = 1;
   $depute{'debut_mandat'} = max_date($start,$depute{'debut_mandat'});
-  $depute{'fin_mandat'} = max_date($end,$depute{'fin_mandat'}) if ($end !~ /^$/ && max_date($end,$depute{'debut_mandat'}) != $depute{'debut_mandat'});
+  $depute{'fin_mandat'} = max_date($end,$depute{'fin_mandat'}) if ($end !~ /^$/ && ($start == $end || max_date($end,$depute{'debut_mandat'}) != $depute{'debut_mandat'} ));
 }
 
 if ($file =~ /(\d+)/) {
