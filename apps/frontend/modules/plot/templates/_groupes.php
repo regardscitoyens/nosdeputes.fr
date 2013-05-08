@@ -46,7 +46,7 @@ if ($plot == 'total') {
 } else {
   $xtitre = 25; $ysize = 190; $ylegend = 60; $x0 = 155; $y0 = 110;
   $filename .= '-'.$plot.'.png';
-  $titre = 'par groupe du travail de cette séance';
+  $titre = 'par groupe du travail de cette '.$seancenom;
   if (preg_match('/section/', $plot)) {
     $xtitre = 28; $xtitre = 38;
     $titre = 'par groupe du travail sur ce dossier';

@@ -33,7 +33,13 @@ if ($nb > 0) {
 }
 $nb2 = $ntot - $nb;
 if ($nb2 > 0) {
-  echo '<li>Assistai'; if ($nb2 > 1) echo 'en'; echo 't à la séance&nbsp;:<ul>';
+  echo '<li>Assistai'; if ($nb2 > 1) echo 'en'; echo 't à la ';
+  if ($orga) {
+	echo 'réunion';
+  }else{
+	echo 'séance';
+  }
+  echo '&nbsp;:<ul>';
   foreach($presents as $presence) {
     $p = $presence->getParlementaire();
     if (isset($interv[$p->id])) continue;

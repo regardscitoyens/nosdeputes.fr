@@ -6,7 +6,7 @@ foreach ($tops as $t) if (!isset($date)) {$date = $t[0]['updated_at']; break;} ?
 <?php 
 $sf_response->setTitle('Synthèse générale des députés');
 $title = array('semaines_presence' => 'd\'activité',
-	       'commission_presences' => 'séances',
+	       'commission_presences' => 'réunion',
 	       'commission_interventions'=> 'interv.',
 	       'hemicycle_interventions'=>'interv.<br/>longues',
 	       'hemicycle_interventions_courtes'=>'interv.<br/>courtes',
@@ -33,7 +33,7 @@ $class = array('parl' => 'p',
 	       'questions_orales' => 'qo');
 $bulles = array("",
                "Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle",
-               "Séances de Commission -- Nombre de séances de commission où le député a été relevé présent",
+               "Réunions de Commission -- Nombre de réunions de commission où le député a été relevé présent",
                "Interventions en Commission -- Nombre d'interventions prononcées par le député en commissions",
                "Interventions longues en Hémicycle -- Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle",
                "Interventions courtes en Hémicycle -- Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle",
@@ -152,7 +152,7 @@ $bulles = array("",
 <h2>Explications :</h2>
 <ul>
   <li><strong>Semaines d'activité</strong> : Nombre de semaines où le député a été relevé présent en commission ou a pris la parole (même brièvement) en hémicycle</li>
-  <li><strong>Commission séances</strong> : Nombre de séances de commission où le député a été relevé présent</li>
+  <li><strong>Commission réunions</strong> : Nombre de réunions de commission où le député a été relevé présent</li>
   <li><strong>Commission interventions</strong> : Nombre d'interventions prononcées par le député en commissions</li>
   <li><strong>Hémicycle interventions longues</strong> : Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle</li>
   <li><strong>Hémicycle interventions courtes</strong> : Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle</li>

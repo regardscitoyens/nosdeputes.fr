@@ -350,6 +350,7 @@ class plotComponents extends sfComponents
     foreach ($this->labels as $gpe)
       $this->couleurs[] = $colormap[$gpe];
     $this->interventions = array();
+    $this->seancenom = 'séance';
     if ($this->plot == 'total') {
       $this->presences = array();
       $this->interventions_moy = array();
@@ -398,7 +399,9 @@ class plotComponents extends sfComponents
           ->andWhere('i.fonction NOT LIKE ?', 'président%')
           ->groupBy('p.id')
           ->fetchArray();
+	$this->seancenom = 'séance';
         if ($match[1] == 'com') {
+	  $this->seancenom = 'réunion'; 
           $this->presences = array();
           $presences = Doctrine_Query::create()
             ->select('p.groupe_acronyme, count(pr.id)')
