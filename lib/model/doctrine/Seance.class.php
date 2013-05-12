@@ -65,8 +65,8 @@ class Seance extends BaseSeance
     if (!$moment)
       return '1ère séance';
     if (preg_match('`(seance|séance|réunion|reunion)`i', $moment)) {
-        if (preg_match('/1/', $moment)) return "1ère séance";
-        if (preg_match('/(\d{1})/', $moment, $match)) return $match[1]."ème séance";
+        if (preg_match('/1/', $moment)) return "1ère réunion";
+        if (preg_match('/(\d{1})/', $moment, $match)) return $match[1]."ème réunion";
         return $moment;
     }
     if (preg_match('/(\d{1,2})[:h](\d{2})/', $moment, $match)) {
@@ -138,6 +138,8 @@ class Seance extends BaseSeance
     $titre = preg_replace('/00:00/', 'minuit', $titre);
     $titre = preg_replace('/0(\d:\d{2})/', '\\1', $titre);
     $titre = preg_replace('/ (\d+):(\d{2})/', ' \\1h\\2', $titre);
+    if ($this->type == "commission")
+      $titre = str_replace('Séance', 'Réunion', $titre);
     if ($ref != '')
       $titre .= '</a>';
     return $titre;
