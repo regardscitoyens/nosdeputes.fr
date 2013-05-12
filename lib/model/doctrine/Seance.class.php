@@ -6,6 +6,8 @@
 class Seance extends BaseSeance
 {
   public function __tostring() {
+    if ($this->type == 'commission')
+      return 'réunion du '.myTools::displayDate($this->date).', '.$this->moment;
     return 'séance du '.myTools::displayDate($this->date).', '.$this->moment;
   }
   
@@ -90,7 +92,7 @@ class Seance extends BaseSeance
       return preg_replace('/^0/', '', str_replace('00', '', str_replace(':', 'h', $this->moment)));
     else if (!$this->moment)
       return "réunion";
-    return $this->moment;
+    return preg_replace('/séance/i', 'réunion', $this->moment);
   }
  
   public function setDate($date) {
