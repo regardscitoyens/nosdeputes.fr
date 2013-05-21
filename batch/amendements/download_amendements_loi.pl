@@ -21,7 +21,7 @@ while ($t = $p->get_tag('a')) {
         $count++;
 	$a->get($htmfile);
 	$htmfile =~ s/^\s+//gi;
-	$htmfile =~ s/\//_/gi;
+	$htmfile =~ s/\//_-_/gi;
 	$htmfile =~ s/\#.*//;
 	print "  $htmfile ... ";
 	open FILE, ">:utf8", "html/$htmfile";

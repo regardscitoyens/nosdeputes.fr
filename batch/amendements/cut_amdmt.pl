@@ -10,7 +10,7 @@ my %amdmt;
 
 $source = $file;
 $source =~ s/^.*(http.*)$/\1/i;
-$source =~ s/_/\//g;
+$source =~ s/_-_/\//g;
 
 # Récupération des informations identifiantes à partir de l'url plus sure :
 if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
@@ -25,11 +25,15 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   } else {
     $amdmt{'numero'} = (10000*$lettre+$num);
   }
-} elsif ($source =~ /(\d{2})\/amendements\/(TA\d{2}|\d{4})([A-Z])?(\/AN)?\/(\d+)\./i) {
+} elsif ($source =~ /(\d{2})\/amendements\/(TA\d{2}|\d{4})([A-Z])?\/?(AN|[A-Z_]+)?\/([A-Z]+)?(\d+)\./i) {
   $amdmt{'legislature'} = $1;
   $amdmt{'loi'} = $2;
   $lettre = $3;
-  $num = $5+0;
+  $num = $6+0;
+  if ($4 ne "AN" && $5) {
+    $commission = $4;
+    $num = $5.$num;
+  }
   if ($amdmt{'loi'} !~ /TA/) {
     $amdmt{'loi'} += 0;
   }
@@ -369,4 +373,9 @@ if (!$amdmt{'sort'} && $amdmt{'texte'} =~ /amendement irrecevable/i) {
   $amdmt{'sort'} = 'Irrecevable';
 }
 
-print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'" } '."\n";
+$extra = "";
+if ($commission) {
+  $extra = ', "commission": "'.$commission.'"';
+}
+
+print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'"'.$extra." } \n";

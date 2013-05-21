@@ -8,7 +8,7 @@ $a = WWW::Mechanize->new();
     $url = $htmfile = shift;
     $htmfile =~ s/^\s+//gi;
     $a->get($url);
-    $htmfile =~ s/\//_/gi;
+    $htmfile =~ s/\//_-_/gi;
     $htmfile =~ s/\#.*//;
     print "  $htmfile ... ";
     open FILE, ">:utf8", "html/$htmfile";
