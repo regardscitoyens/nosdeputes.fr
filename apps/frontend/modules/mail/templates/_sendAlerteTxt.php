@@ -53,7 +53,7 @@ foreach ($results['response']['docs'] as $res)
 ?>
 ===============================================
 <?php
-if (!isset($nohuman) || !nohuman) {
+if (!isset($nohuman) || !$nohuman) {
 echo "Visualiser cette alerte sur le site :\n";
 echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('@recherche_solr?sort=1&query='.$alerte->query))."\n";
 }
