@@ -101,6 +101,10 @@ class alerteActions extends sfActions
   private function processForm($request, $alerte) {
     if ($citoyen_id = $this->getUser()->getAttribute('user_id')) {
       $alerte->citoyen_id = $citoyen_id;
+      if (!$alerte->getCitoyen()->is_active) {
+	$this->getUser()->setFlash('error', "Votre compte n'a pas été confirmé, vous ne pouvez donc pas créer d'alerte");
+	return $this->redirect('@homepage');
+      }
     }
     $form = new AlerteForm($alerte);
     if ($request->isMethod('post')) {
