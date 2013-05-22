@@ -13,7 +13,7 @@
 class Alerte extends BaseAlerte
 {
   public function getEmail() {
-    if ($this->citoyen_id) {
+    if ($this->citoyen_id && $this->getCitoyen()->is_active) {
       return $this->getCitoyen()->email;
     }
     return $this->_get('email');
