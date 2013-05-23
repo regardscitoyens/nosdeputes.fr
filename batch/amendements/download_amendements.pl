@@ -58,7 +58,7 @@ foreach $line (split /\n/, $string) {
     next if ($htmfile =~ /source/);
     $count2++;
     $a->get($line);
-    $htmfile =~ s/\//_/gi;
+    $htmfile =~ s/\//_-_/gi;
     $htmfile =~ s/\#.*//;
     print "  $htmfile ... ";
     open FILE, ">:utf8", "html/$htmfile";
