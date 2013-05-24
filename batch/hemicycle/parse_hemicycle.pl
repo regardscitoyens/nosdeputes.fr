@@ -15,6 +15,11 @@ open(FILE, $file) ;
 $string = "@string";
 close FILE;
 
+$string =~ s/\n/ /g;
+$string =~ s/<br\/><br\/>/<\/p><p>/g;
+$string =~ s/<\/p>/<\/p>\n/g;
+
+
 #Si italique dans gras, on vire (pb fonction)
 if ($string =~ /M[me\.]+[ \&][^<]+<\/a>\.[^<]*<\/b>[^<]*<i>([^<]+)</ && $1 =~ /rapporteur|president/i) {
 	$string =~ s/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>/$1,<\/b><i>/g;
@@ -202,7 +207,7 @@ sub setFonction {
 sub setIntervenant {
     my $intervenant = shift;
     #print "$intervenant\n";
-    $intervenant =~ s/^(M(\.|me))(\S)/$1 $2/;
+    $intervenant =~ s/^(M\.|Mme)([^  \s])/$1 $2/;
     $intervenant =~ s/[\|\/]//g;
     $intervenant =~ s/\s*\&\#8211\;\s*$//;
     $intervenant =~ s/\s*[\.\:]\s*$//;
@@ -220,6 +225,7 @@ sub setIntervenant {
     $intervenant =~ s/\&\#8217\;/'/g;
     $intervenant =~ s/([^\s\,])\s+rapporteur/$1, rapporteur/i;
     $intervenant =~ s/M\. /M /;
+
     if ($intervenant =~ s/\,\s*(.*)//) {
 	setFonction($1, $intervenant);
     }
@@ -367,7 +373,7 @@ foreach $line (split /\n/, $string)
 
     $line =~ s/<<//g;
 
-#    print "$titre1 > $titre2 : $line\n" ; next;
+#    print STDERR "$titre1 > $titre2 : $line\n" ; next;
     $line =~ s/\|\///;
     if ($line =~ /\<[p]/i) {
 	$last_href = '';
@@ -386,6 +392,7 @@ foreach $line (split /\n/, $string)
 	    $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
 	    $intervenant_url = $last_href;
+	    $intervenant_url = "http://www.assemblee-nationale.fr".$last_href if ($intervenant_url =~ /^\//);
 	    $found = 1;
 	}elsif ($line =~ /^\s*\|/) {
 	    checkout() if ($intervenant);
