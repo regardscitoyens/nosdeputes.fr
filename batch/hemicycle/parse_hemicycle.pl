@@ -309,9 +309,10 @@ foreach $line (split /\n/, $string)
     #si deux intervenant en même temps
     $line =~ s/\|\s*et\s*\|/ et /gi;
     #si italique ou gras sans raison on supprime
-    $line =~ s/\/\s*\// /g;
+    $line =~ s/([^p][^:])\/\s*\//$1 /g; #évite de le faire pour http://
     $line =~ s/\|\s*\|/ /g;
     $line =~ s/ de loi de loi / de loi /g;
+
 
     #récupère les ancres pour de meilleurs liens sources
     if ($line =~ /\<[a]/i) {
@@ -379,6 +380,10 @@ foreach $line (split /\n/, $string)
 #    print STDERR "$titre1 > $titre2 : $line\n" ; next;
     $line =~ s/\|\///;
     if ($line =~ /\<[p]/i) {
+	$last_href = '';
+	if ($line =~ /href=["']([^"']+)["']/) {
+	    $last_href = $1;
+	}
 	$line =~ s/\<\/?[^\>]+\>//g;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
@@ -390,10 +395,6 @@ foreach $line (split /\n/, $string)
 	    checkout();
 	    $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
-	    $last_href = '';
-	    if ($line =~ /href=["']([^"']+)["']/) {
-		$last_href = $1;
-	    }
 	    $intervenant_url = $last_href;
 	    $intervenant_url = "http://www.assemblee-nationale.fr".$last_href if ($intervenant_url =~ /^\//);
 	    $found = 1;
