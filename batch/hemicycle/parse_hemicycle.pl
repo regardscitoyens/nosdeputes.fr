@@ -16,9 +16,11 @@ $string = "@string";
 close FILE;
 
 $string =~ s/ / /g;
+$string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
 $string =~ s/<br\/><br\/>/<\/p><p>/g;
 $string =~ s/<\/p>/<\/p>\n/g;
+$string =~ s/(<\/h[1-9]>)/$1\n/g;
 
 
 #Si italique dans gras, on vire (pb fonction)
@@ -377,10 +379,6 @@ foreach $line (split /\n/, $string)
 #    print STDERR "$titre1 > $titre2 : $line\n" ; next;
     $line =~ s/\|\///;
     if ($line =~ /\<[p]/i) {
-	$last_href = '';
-	if ($line =~ /href=["']([^"']+)["']/) {
-	    $last_href = $1;
-	}
 	$line =~ s/\<\/?[^\>]+\>//g;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
@@ -392,6 +390,10 @@ foreach $line (split /\n/, $string)
 	    checkout();
 	    $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
+	    $last_href = '';
+	    if ($line =~ /href=["']([^"']+)["']/) {
+		$last_href = $1;
+	    }
 	    $intervenant_url = $last_href;
 	    $intervenant_url = "http://www.assemblee-nationale.fr".$last_href if ($intervenant_url =~ /^\//);
 	    $found = 1;
