@@ -15,6 +15,7 @@ open(FILE, $file) ;
 $string = "@string";
 close FILE;
 
+$string =~ s/ / /g;
 $string =~ s/\n/ /g;
 $string =~ s/<br\/><br\/>/<\/p><p>/g;
 $string =~ s/<\/p>/<\/p>\n/g;
