@@ -317,7 +317,7 @@ foreach $line (split /\n/, $string)
     #récupère les ancres pour de meilleurs liens sources
     if ($line =~ /\<[a]/i) {
 	if ($line =~ s/<a name=["']([^"']+)["'][^<]+<[^>]+>/<</g) {
-	    $source = $url."#$1";
+	    $nextsource = $url."#$1";
 	}
     }
 
@@ -358,8 +358,8 @@ foreach $line (split /\n/, $string)
 		next
 	    }
 	    if ($titre !~ /rappels? au règlement/i) {
-            $donetitre1 = 1;
-        }
+            	$donetitre1 = 1;
+            }
 	    $titre1 = $titre;
 	    $titre2 = '';
 	    $amendements = @pre_amendements = ();
@@ -387,7 +387,8 @@ foreach $line (split /\n/, $string)
 	$line =~ s/\<\/?[^\>]+\>//g;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
-
+        #cas des intervenants en gras suivi immédiatement de la fonction en italique
+        $line =~ s/^(\s*\|\s*M[^\|]+)\|([\s,]*)\/([^\/]+)\//$1$2$3|/;
 	#si italique ou tout gras => commentaire
 	if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/.*\/\s$/) {
 	    checkout() if ($intervenant);
@@ -408,5 +409,6 @@ foreach $line (split /\n/, $string)
 	$line =~ s/^[\.\:]\s*//;
 	$intervention .= "<p>$line</p>";
     }
+    $source = $nextsource;
 }
 checkout();
