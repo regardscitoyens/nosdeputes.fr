@@ -407,7 +407,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/\s$//;
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
-	$line =~ s/"/&quote;/g;
+	$line =~ s/"/&quot;/g;
 	$intervention .= "<p>$line</p>";
     }
     $source = $nextsource;
