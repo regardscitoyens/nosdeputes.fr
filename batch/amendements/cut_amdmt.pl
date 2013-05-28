@@ -25,7 +25,7 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   } else {
     $amdmt{'numero'} = (10000*$lettre+$num);
   }
-} elsif ($source =~ /(\d{2})\/amendements\/(TA\d{2}|\d{4})([A-Z])?\/?(AN|[A-Z_]+)?\/([A-Z]+)?(\d+)\./i) {
+} elsif ($source =~ /(\d{2})\/amendements\/(TA\d{2}|\d{4})([A-Z])?\/?(AN|[A-Z_-]+)?\/([A-Z]+)?(\d+)\./i) {
   $amdmt{'legislature'} = $1;
   $amdmt{'loi'} = $2;
   $lettre = $3;
