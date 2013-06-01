@@ -40,7 +40,9 @@ while ($t = $p->get_tag('a')) {
 	$htmfile = $t->[1]{href};
 	next if ($htmfile =~ /(index|javascript)/);
     if ($done{$htmfile}) {
-        print "skip already dl\n";
+        if ($debug) {
+            print "skip already dl\n";
+        }
         next;
     }
     $done{$htmfile} = 1;
