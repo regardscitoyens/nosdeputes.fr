@@ -397,11 +397,11 @@ foreach $line (split /\n/, $string)
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
 	if (!$found) {
-	    if ($line =~ s/^\s*((Dr|M[mes\.]+)(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.:]//) {
+	    if ($line =~ s/^\s*((Dr|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.:]//) {
             checkout();
             $intervenant = setIntervenant($1);		
 	    }elsif (!$majIntervenant) {
-            if ($line =~ s/^\s*(M[mes\.]+\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
+            if ($line =~ s/^\s*(M(mes?|[e\.])+\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
         	    checkout();
     	        $intervenant = setIntervenant($1);
             }elsif($line =~ s/^\s*[Ll][ea] ([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
