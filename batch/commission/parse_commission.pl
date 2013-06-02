@@ -401,7 +401,7 @@ foreach $line (split /\n/, $string)
             checkout();
             $intervenant = setIntervenant($1);		
 	    }elsif (!$majIntervenant) {
-            if ($line =~ s/^\s*(M(mes?|[e\.])+\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
+            if ($line =~ s/^\s*(M(mes?|[e\.])\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
         	    checkout();
     	        $intervenant = setIntervenant($1);
             }elsif($line =~ s/^\s*[Ll][ea] ([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
