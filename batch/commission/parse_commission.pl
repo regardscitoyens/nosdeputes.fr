@@ -132,7 +132,12 @@ sub setFonction {
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
     my $kfonction = lc($fonction);
     $kfonction =~ s/[^a-zéàè]+/ /gi;
-    $fonction2inter{$kfonction} = $intervenant;
+    if ($fonction2inter{$kfonction} && !$intervenant) {
+        $intervenant = $fonction2inter{$kfonction};
+    } else {
+        $fonction2inter{$kfonction} = $intervenant;
+    }
+    #print "TEST $kfonction -> $intervenant\n";
     if ($fonction =~ /(ministre déléguée?).*(chargé.*$)/i) {
         $kfonction = "$1 $2";
         $kfonction =~ s/[^a-zéàè]+/ /gi;
@@ -159,7 +164,7 @@ sub setIntervenant {
     my $intervenant = shift;
     $intervenant =~ s/<[^>]+>\s*//g;
     $intervenant =~ s/<[^>]*$//;
-    #print "$intervenant\n";
+    #print "TEST $intervenant\n";
     $intervenant =~ s/ présidence / présidente /;
     $intervenant =~ s/\s*\&\#821[12]\;\s*//;
     $intervenant =~ s/^audition de //i;
@@ -186,11 +191,16 @@ sub setIntervenant {
     if ($intervenant =~ /^[a-z]/) {
 	$intervenant =~ s/^l[ea]\s+//i;
 	if ($intervenant =~ /([pP]résidente?|[rR]apporteur[a-zé\s]+)\s([A-Zé].*)/) { #\s([A-Z].*)/i) {
-	    return setFonction($1, $2);
+        $tmpint = $2;
+        $tmpfct = $1;
+        if ($tmpint =~ /commission/i) {
+            return setFonction("$tmpfct $tmpint");
+        }
+	    return setFonction($tmpfct, $tmpint);
 	}
 	$conv = $fonction2inter{$intervenant};
     $maybe_inter = "";
-	#print "conv: '$conv' '$intervenant'\n";
+	#print "TEST conv: '$conv' '$intervenant'\n";
 	if ($conv) {
 	    $intervenant = $conv;
 	}else {
