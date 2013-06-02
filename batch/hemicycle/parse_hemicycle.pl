@@ -22,7 +22,6 @@ $string =~ s/<br\/><br\/>/<\/p><p>/g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 
-
 #Si italique dans gras, on vire (pb fonction)
 if ($string =~ /M[me\.]+[ \&][^<]+<\/a>\.[^<]*<\/b>[^<]*<i>([^<]+)</ && $1 =~ /rapporteur|president/i) {
 	$string =~ s/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>/$1,<\/b><i>/g;
@@ -407,7 +406,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/\s$//;
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
-	$line =~ s/"/&quot;/g;
+	$line =~ s/"/\\"/g;
 	$intervention .= "<p>$line</p>";
     }
     $source = $nextsource;
