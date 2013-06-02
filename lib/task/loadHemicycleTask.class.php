@@ -95,7 +95,7 @@ class loadHemicyleTask extends sfBaseTask
 	    $section->updateNbInterventions();
             $section->setMaxDate($date);
           }
-          if ($section) {
+          if (isset($section) && $section) {
 	    $section->free();
 	  }
 	  unset($sections);
