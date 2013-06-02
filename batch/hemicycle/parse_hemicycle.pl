@@ -21,6 +21,8 @@ $string =~ s/\n/ /g;
 $string =~ s/<br\/><br\/>/<\/p><p>/g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
+$string =~ s/(<i>\s*\([^\)]+\)\s*\.?\s*<\/i>)/<\/p>\n<p>$1<\/p>\n<p>/g;
+$string =~ s/<p><\/p>\n//g;
 
 #Si italique dans gras, on vire (pb fonction)
 if ($string =~ /M[me\.]+[ \&][^<]+<\/a>\.[^<]*<\/b>[^<]*<i>([^<]+)</ && $1 =~ /rapporteur|president/i) {
@@ -163,7 +165,7 @@ sub checkout {
 	$out .= '"amendements": "'.$amendements.'", ';
     }
     $out .= '"timestamp": "';
-    if ($intervenant) {
+    if ($intervenant && $intervention) {
 	$ts = $cpt;
     if ($intervention =~ s/^<p>(,| |et)+M[mes\.]*\s+(([A-Z]|é)[^\.]+)\.\s*/<p>/g) {
         $ts++;
@@ -389,8 +391,18 @@ foreach $line (split /\n/, $string)
         #cas des intervenants en gras suivi immédiatement de la fonction en italique
         $line =~ s/^(\s*\|\s*M[^\|]+)\|([\s,]*)\/([^\/]+)\//$1$2$3|/;
 	#si italique ou tout gras => commentaire
-	if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/.*\/\s$/) {
+	if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/[^\/]*[\/\)\.\s]*$/) {
+            $oldintervenant = $intervenant;
+            $oldintervenant_url = $intervenant_url;
 	    checkout() if ($intervenant);
+	    if ($line =~ /^[\s\/\.]*\([^\)]+\)[\s\/\.]*$/) {
+	        $line =~ s/[\|\/]//g;
+		$intervention = "<p>$line</p>";
+		checkout();
+		$intervenant = $oldintervenant;
+		$intervenant_url = $oldintervenant_url;
+                next;
+            }
 	}elsif ($line =~ s/^\s*\|\s*(M[^\|\/\:]+)[\|\/\:]// || $line =~ s/^\s*(M[\.Mmle]+(\s+([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.\:]//) {
 	    checkout();
 	    $majIntervenant = 1;
