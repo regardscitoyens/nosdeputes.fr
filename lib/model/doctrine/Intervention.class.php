@@ -263,7 +263,7 @@ class Intervention extends BaseIntervention
   
   public function setIntervention($s) {
     $this->_set('nb_mots', str_word_count($s));
-    return $this->_set('intervention', $s);
+    return $this->_set('intervention', html_entity_decode($s));
   }
 
   public function getIntervention($args = array()) {
