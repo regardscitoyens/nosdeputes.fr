@@ -134,9 +134,9 @@ sub setFonction {
     $kfonction =~ s/[^a-zéàè]+/ /gi;
     if ($fonction2inter{$kfonction} && !$intervenant) {
         $intervenant = $fonction2inter{$kfonction};
-    } else {
-        $fonction2inter{$kfonction} = $intervenant;
+        return $intervenant;
     }
+    $fonction2inter{$kfonction} = $intervenant;
     #print "TEST $kfonction -> $intervenant\n";
     if ($fonction =~ /(ministre déléguée?).*(chargé.*$)/i) {
         $kfonction = "$1 $2";
@@ -188,9 +188,12 @@ sub setIntervenant {
     if ($intervenant =~ s/\, (.*)//) {
 	setFonction($1, $intervenant);
     }
+    if ($intervenant =~ s/ ?(l[ea] )?((président|rapporteur)[es,\s]*)+$//i) {
+        return setFonction($2, $intervenant);
+    }
     if ($intervenant =~ /^[a-z]/) {
 	$intervenant =~ s/^l[ea]\s+//i;
-	if ($intervenant =~ /([pP]résidente?|[rR]apporteur[a-zé\s]+)\s([A-Zé].*)/) { #\s([A-Z].*)/i) {
+	if ($intervenant =~ /([pP]résidente?|[rR]apporteur[a-zé\s]+)\s([A-Zé].*)/) { #\s([A-Z].*)/i) 
         $tmpint = $2;
         $tmpfct = $1;
         if ($tmpint =~ /commission/i) {
