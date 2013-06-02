@@ -18,7 +18,7 @@ close FILE;
 $string =~ s/ / /g;
 $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
-$string =~ s/<br\/><br\/>/<\/p><p>/g;
+$string =~ s/<br\/><br\/>/ /g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<i>\s*\([^\)]+\)\s*\.?\s*<\/i>)/<\/p>\n<p>$1<\/p>\n<p>/g;
@@ -396,6 +396,7 @@ foreach $line (split /\n/, $string)
             $oldintervenant = $intervenant;
             $oldintervenant_url = $intervenant_url;
 	    checkout() if ($intervenant);
+            $intervenant = ''; $intervenant_url = '';
 	    if ($line =~ /^[\s\/\.]*\([^\)]+\)[\s\/\.]*$/) {
 	        $line =~ s/[\|\/]//g;
 		$intervention = "<p>$line</p>";
