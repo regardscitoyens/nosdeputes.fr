@@ -22,6 +22,7 @@ $string =~ s/<br\/><br\/>/<\/p><p>/g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<i>\s*\([^\)]+\)\s*\.?\s*<\/i>)/<\/p>\n<p>$1<\/p>\n<p>/g;
+$string =~ s/(<i>\s*\([^\)]+\s*<\/i>\s\)\s*\.?)/<\/p>\n<p>$1<\/p>\n<p>/g;
 $string =~ s/<p><\/p>\n//g;
 
 #Si italique dans gras, on vire (pb fonction)
