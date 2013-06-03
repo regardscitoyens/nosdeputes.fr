@@ -205,7 +205,7 @@ $string =~ s/<\/tr>/<\/tr>\n/ig;
 foreach $line (split /\n/, $string)
 {
 #print "TEST: $identiques / $presente / $texte / $line\n";
-    if ($line =~ /meta.*content=/) {
+  if ($line =~ /meta.*content=/) {
 	if ($line =~ /name="DATE_BADAGE"/i) { 
 	    $line =~ s/^.*content="//i; 
 	    $line =~ s/".*$//;
@@ -225,22 +225,22 @@ foreach $line (split /\n/, $string)
 	} elsif ($line =~ /name="AUTEURS".*content="\s*([^"]*)\s*"/) {
 	    $tmpauteurs = $1;
 	}
-    } elsif ($line =~ /date_?amend.*([0-9]+e?r? \S+ [0-9]+)\D/i && !$amdmt{'date'}) {
+  } elsif ($line =~ /date_?amend.*([0-9]+e?r? \S+ [0-9]+)\D/i && !$amdmt{'date'}) {
            $amdmt{'date'} = join '-', datize($1);
-    } elsif ($line =~ /class="amddispotitre"/i && !$amdmt{'sujet'}) {
+  } elsif ($line =~ /class="amddispotitre"/i && !$amdmt{'sujet'}) {
             $line =~ s/<[^>]+>//g;
             $amdmt{'sujet'} = $line;
-    } elsif (($line =~ /class="presente"/i || $line =~ /<div>\s*(de )?M[Mmel.s]+ /) && $line !~ /utilisateurs/) {
+  } elsif (($line =~ /class="presente"/i || $line =~ /<div>\s*(de )?M[Mmel.s]+ /) && $line !~ /utilisateurs/) {
         $texte = 0 if ($texte == 2);
 	if ($presente != 1) {
 	    $presente = 1;
 	} elsif ($texte >= 1 && $line =~ /font-style: italic/i) {
 	    texte();
 	}
-    } elsif ($presente == 1 && $line =~ /class="tirets"/i) {
+   } elsif ($presente == 1 && $line =~ /class="tirets"/i) {
 	$presente = 2;
-    }
-    if ($line =~ /(NOEXTRACT|EXPOSE)/i) {
+   }
+  if ($line =~ /(NOEXTRACT|EXPOSE)/i) {
 	if (!$amdmt{'numero'} && ($line =~ /class="numamendement"/i || $line =~ /class="titreamend".*num_partie/i)) {
 	    if ($line =~ /\<num_amend\>\s*(.*)\s*\<\/num_amend\>/i) { 
 	    	$line = $1;
@@ -287,30 +287,30 @@ foreach $line (split /\n/, $string)
 	    $line = $1;
 	    texte();
 	}
-    } elsif ($line =~ /class="amddispotitre"/i) {
-        $texte = 1;
-        if ($line =~ /amendement.*[\s°](\d+)[\s\<]/i) {
-            $amdmt{'parent'} = $1;
-        }
-    } elsif ($line =~ /class="(titreamend|presente)".*à l'amendement\D*(\d+)\D/i) {
+  } elsif ($line =~ /class="(titreamend|presente)".*à l'amendement\D*(\d+)\D/i) {
         $amdmt{'parent'} = $2;
-    } elsif ($line =~ /amendements?\s*identiques?.*déposé/i) {
+  } elsif ($line =~ /amendements?\s*identiques?.*déposé/i) {
 	$identiques = 1;
-    } elsif ($line =~ /class="amd(expo|dispo)texte"/i) {
+  } elsif ($line =~ /class="amd(expo|dispo)texte"/i) {
         if ((!$amdt{'sort'} || $amdt{'sort'} == "") && ($line =~ /\<div.*id="sort"/i || $line =~ /retir.+ avant (publication|s.+ance)/i)) {
             sortseance();
         }
         irrecevable();
         texte();
-    } elsif ($line =~ /class="amdexpotitre"/i) {
+  } elsif ($line =~ /class="amddispotitre"/i) {
+        $texte = 1;
+        if ($line =~ /amendement.*[\s°](\d+)[\s\<]/i) {
+            $amdmt{'parent'} = $1;
+        }
+  } elsif ($line =~ /class="amdexpotitre"/i) {
         if ($amdmt{'texte'} || !$line =~ /article/i) {
             $texte = 2;
         }
-    } elsif ((!$amdt{'sort'} || $amdt{'sort'} == "") && ($line =~ /\<div.*id="sort"/i || $line =~ /retir.+ avant (publication|s.+ance)/i)) {
+  } elsif ((!$amdt{'sort'} || $amdt{'sort'} == "") && ($line =~ /\<div.*id="sort"/i || $line =~ /retir.+ avant (publication|s.+ance)/i)) {
 	sortseance();
-    } elsif ($identiques == 1 && $line =~ /<p[^>]*style="[">]*text-align:.*>.*M[\.Mml]/i) {
+  } elsif ($identiques == 1 && $line =~ /<p[^>]*style="[">]*text-align:.*>.*M[\.Mml]/i) {
 	identiques();
-    } elsif ($line =~ /class="presente"/i) {
+  } elsif ($line =~ /class="presente"/i) {
 	if ($line =~ /amendement/) {
 	    $line =~ /(\d+)/;
 	    $amdmt{'parent'} = $1;
@@ -319,15 +319,15 @@ foreach $line (split /\n/, $string)
 	} else {
 	    texte();
 	}
-    } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le gouvern)/i) { 
+  } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le gouvern)/i) { 
 	auteurs();
-    } elsif ($line =~ /\<p style=".*text-indent:/i) {
+  } elsif ($line =~ /\<p style=".*text-indent:/i) {
         irrecevable();
 	    texte();
-    } elsif ($line =~ /\<p[^\>]*\>(.*)\<\/p\>/i && $texte >= 1) {
+  } elsif ($line =~ /\<p[^\>]*\>(.*)\<\/p\>/i && $texte >= 1) {
 	$line = $1;
 	texte();
-    }
+  }
 }
 
 sub irrecevable {
