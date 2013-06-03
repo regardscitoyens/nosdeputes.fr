@@ -127,8 +127,8 @@ class TitreLoi extends BaseTitreLoi
         if ($levelvalue == 1) $result[1] = $voisins[0][$levelstr];
         else $result[0] = $voisins[0][$levelstr];
       } else if ($ct == 2) {
-        if ($levelvalue == 1)
-          $result[1] = $voisins[0][$levelstr];
+        if ($levelvalue == 1 || $levelvalue === "1er")
+          $result[1] = $voisins[1][$levelstr];
         else if (preg_match('/^(\d+)e?r?\s+bis$/', $voisins[1][$levelstr], $match) && $match[1] < $levelvalue)
           $result[0] = $voisins[1][$levelstr];
         else {
