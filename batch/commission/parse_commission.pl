@@ -289,8 +289,9 @@ foreach $line (split /\n/, $string)
 {
 #print "TEST: ".$line."\n";
     if ($line =~ /<h[1-9]+/i || $line =~ /"presidence"/ || $line =~ /\/Présidence de/) {
-      if ($line =~ /pr..?sidence de (M[^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
+      if ($line =~ /pr..?sidence\s+de\s+(M[^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
         $prez = $1;
+        $prez =~ s/\s*pr..?sident[es\s]*$//i;
 #       print "Présidence de $prez\n";
         if ($prez =~ /^Mm/) {
           setFonction('présidente', $prez);
