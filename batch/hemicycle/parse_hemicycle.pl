@@ -398,6 +398,7 @@ foreach $line (split /\n/, $string)
 	    checkout() if ($intervenant);
             $intervenant = ''; $intervenant_url = '';
 	    if ($line =~ /^[\s\/\.]*\([^\)]+\)[\s\/\.]*$/) {
+		checkout() if ($intervention);
 	        $line =~ s/[\|\/]//g;
 		$intervention = "<p>$line</p>";
 		$intervention =~ s/[\(\)]//g;
