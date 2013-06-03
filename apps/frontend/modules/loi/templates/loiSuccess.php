@@ -60,10 +60,20 @@ if (isset($soussections) && count($soussections)) {
     echo '<li class="level'.$ss->getLevel().'">'.link_to($ss->getLevelTitre(), $ss->getUrl());
     $level = $ss->getLevel();
     $nbart = $ss->nb_articles;
-    if ($ss->nb_commentaires > 0) {
-      echo ' (<span class="coms_loi_txt">'.$ss->nb_commentaires.' commentaire';
-      if ($ss->nb_commentaires > 1) echo 's';
-      echo '</span>)';
+    if ($ss->nb_commentaires > 0 || $amendements_sec[$ss->id]) {
+      echo ' (';
+      if ($amendements_sec[$ss->id]) {
+        echo '<span class="orange">'.$amendements_sec[$ss->id].' amendement';
+        if ($amendements_sec[$ss->id] > 1) echo 's';
+        echo '</span>';
+      }
+      if ($ss->nb_commentaires > 0 && $amendements_sec[$ss->id]) echo ", ";
+      if ($ss->nb_commentaires > 0) {
+        echo '<span class="coms_loi_txt">'.$ss->nb_commentaires.' commentaire';
+        if ($ss->nb_commentaires > 1) echo 's';
+        echo '</span>';
+      }
+      echo ')';
     }
   }
   echo '<br/><small> &nbsp; Article';
@@ -90,6 +100,12 @@ if (isset($soussections) && count($soussections)) {
     echo 'Article '.$a['titre'];
     if (isset($a['expose'])) echo '&nbsp;:</b>&nbsp;'.myTools::escape_blanks(truncate_text(preg_replace('/<\/?p>|\&[^\;]+\;/i', ' ', strip_tags($a['expose'])), 120));
     echo '</a>';
+    $atitre = strtolower($a['titre']);
+    $nadmts = 0;
+    if (isset($amendements_art[$atitre.'tot'])) $nadmts += $amendements_art[$atitre.'tot'];
+    if (isset($amendements_art['après '.$atitre.'tot'])) $nadmts += $amendements_art['après '.$atitre.'tot'];
+    if (isset($amendements_art['avant '.$atitre.'tot'])) $nadmts += $amendements_art['avant '.$atitre.'tot'];
+    if ($nadmts) echo '&nbsp; (<span class="orange">'.$nadmts.' amendement'.($nadmts > 1 ? 's' : '').'</span>)';
   }
 } ?>
 </div>

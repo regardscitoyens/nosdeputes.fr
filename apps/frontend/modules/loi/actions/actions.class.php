@@ -11,7 +11,7 @@
 class loiActions extends sfActions
 {
 
-  private function getAmendements($loi, $articles = 'all', $alineas = 0) {
+  private function getAmendements($loi, $articles = 'all', $alineas = 0, $soussections = null) {
     $amendements = array();
     $admts = Doctrine_Query::create()
       ->select('a.*, (sum(a.nb_multiples)-1) as identiques, CAST( a.numero AS SIGNED ) AS num')
@@ -20,9 +20,13 @@ class loiActions extends sfActions
       ->andWhere('a.sort <> ?', 'Rectifié')
       ->groupBy('a.content_md5')
       ->orderBy('a.content_md5, a.sort, num');
+    $sections_amdmt = array();
     if ($articles != 'all') {
       $likestr = '';
       foreach ($articles as $article) {
+        if (!isset($sections_amdmt[$article->titre_loi_id]))
+	  $sections_amdmt[$article->titre_loi_id] = array();
+        $sections_amdmt[$article->titre_loi_id][strtolower($article->titre)] = 1;
         $like = 'a.sujet LIKE "%art% '.preg_replace('/1.?er?/', 'premier', $article->titre).'%"';
 	if (preg_match("/(1.?er?|premier)(.*)$/i", $article->titre, $match))
           $like .= ' OR a.sujet LIKE "titre" OR a.sujet LIKE "%art% 1e%"';
@@ -56,10 +60,21 @@ class loiActions extends sfActions
           $amendements[$al.'tot'] = $adt['identiques']+1;
         }
       }
-    } 
+    }
+    if ($soussections) {
+      $tmpamdmts = array();
+      foreach ($soussections as $ss) {
+        $tmpamdmts[$ss->id] = 0;
+	foreach (array_keys($sections_amdmt[$ss->id]) as $art) {
+          if (isset($amendements['avant '.$art.'tot'])) $tmpamdmts[$ss->id] += $amendements['avant '.$art.'tot'];
+          if (isset($amendements[$art.'tot'])) $tmpamdmts[$ss->id] += $amendements[$art.'tot'];
+          if (isset($amendements['après '.$art.'tot'])) $tmpamdmts[$ss->id] += $amendements['après '.$art.'tot'];
+        }
+      }
+      $amendements = $tmpamdmts;
+    }
     return $amendements;
   }
-
  
   public function executeLoi(sfWebRequest $request) {
     $loi_id = $this->getLoi($request);
@@ -72,6 +87,13 @@ class loiActions extends sfActions
       ->where('a.texteloi_id = ?', $loi_id)
       ->orderBy('a.ordre')
       ->fetchArray();
+    $this->articles_sec = Doctrine::getTable('ArticleLoi')->createquery('a')
+      ->where('a.texteloi_id = ?', $loi_id)
+      ->orderBy('a.ordre')
+      ->execute();
+    if (count($this->soussections))
+      $this->amendements_sec = $this->getAmendements($loi_id, $this->articles_sec, 0, $this->soussections);
+    else $this->amendements_art = $this->getAmendements($loi_id, $this->articles_sec);
     $this->amendements = count(Doctrine::getTable('Amendement')->createquery('a')
       ->where('a.texteloi_id = ?', $loi_id)
       ->andWhere('a.sort <> ?', 'Rectifié')
