@@ -48,12 +48,24 @@ for $year ($startyear .. $lastyear) {
   $session = sprintf('%02d-%02d', $year-2001, $year-2000);
   push(@url, "http://www.assemblee-nationale.fr/$legislature/budget/plf$year/commissions_elargies/cr/");
   push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-mec/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-cec/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-oecst/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-delf/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-dom/$session/index.asp");
 }
+push(@url, "http://www.assemblee-nationale.fr/$legislature/europe/c-rendus/index.asp");
 if ($legislature == 13) {
   push(@url, "http://www.assemblee-nationale.fr/13/cr-micompetitivite/10-11/index.asp");
   push(@url, "http://www.assemblee-nationale.fr/13/cr-micompetitivite/11-12/index.asp");
   push(@url, "http://www.assemblee-nationale.fr/13/cr-mitoxicomanie/10-11/index.asp");
   push(@url, "http://www.assemblee-nationale.fr/13/cr-cegrippea/09-10/");
+} elsif ($legislature == 14) {
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-csprogfinances/11-12/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-csprogfinances/12-13/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-cesidmet/12-13/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-mimage/12-13/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-micoutsprod/11-12/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-micoutsprod/12-13/index.asp");
 }
 
 $a = WWW::Mechanize->new(autocheck => 0);
