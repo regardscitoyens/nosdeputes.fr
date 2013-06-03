@@ -222,6 +222,8 @@ foreach $line (split /\n/, $string)
 	    sortseance();
 	} elsif ($line =~ /name="NUM_AM(TXT|ENDG?)"/i) { 
 	    numero();
+	} elsif ($line =~ /name="AUTEURS".*content="\s*([^"]*)\s*"/) {
+	    $tmpauteurs = $1;
 	}
     } elsif ($line =~ /date_?amend.*([0-9]+e?r? \S+ [0-9]+)\D/i && !$amdmt{'date'}) {
            $amdmt{'date'} = join '-', datize($1);
@@ -342,6 +344,10 @@ sub irrecevable {
 
 if ($num_ident > 0) {
     $amdmt{'serie'} = $amdmt{'serie'}.$num_ident;
+}
+
+if (!$amdmt{'auteurs'}) {
+  $amdmt{'auteurs'} = $tmpauteurs;
 }
 
 $amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
