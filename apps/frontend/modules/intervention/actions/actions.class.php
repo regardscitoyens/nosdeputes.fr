@@ -77,7 +77,7 @@ class interventionActions extends sfActions
       $titre .= $this->secparent->getTitre();
     else 
       $titre .= $this->section->getTitre();
-    $titre .= " - ".$this->seance->getTitre();
+    $titre .= " - ".$this->seance->getTitre(0,($this->seance->type == "commission" ? 0 : 1));
     $this->lois = $this->intervention->getTags(array('is_triple' => true,
 						     'namespace' => 'loi',
 						     'key' => 'numero',

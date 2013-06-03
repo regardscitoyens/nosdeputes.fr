@@ -1,6 +1,6 @@
 <h1>Intervention de <?php echo $intervention->getIntervenant()->nom; ?></h1>
 <?php 
-$titre2 = $seance->getTitre(0,0,$intervention->getMd5());
+$titre2 = $seance->getTitre(0,($seance->type == "commission" ? 0 : 1),$intervention->getMd5());
 $titre2 .= ' <br/> ';
 if (isset($orga))
   $titre2 .= link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug());
