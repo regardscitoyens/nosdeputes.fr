@@ -240,9 +240,9 @@ foreach $line (split /\n/, $string)
 	} elsif ($texte >= 1 && $line =~ /font-style: italic/i) {
 	    texte();
 	}
-   } elsif ($presente == 1 && $line =~ /class="tirets"/i) {
+  } elsif ($presente == 1 && $line =~ /class="tirets"/i) {
 	$presente = 2;
-   }
+  }
   if ($line =~ /(NOEXTRACT|EXPOSE)/i) {
 	if (!$amdmt{'numero'} && ($line =~ /class="numamendement"/i || $line =~ /class="titreamend".*num_partie/i)) {
 	    if ($line =~ /\<num_amend\>\s*(.*)\s*\<\/num_amend\>/i) { 
@@ -324,11 +324,11 @@ foreach $line (split /\n/, $string)
 	}
   } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le gouvern)/i) { 
 	auteurs();
-  } elsif ($line =~ /\<p style=".*text-indent:/i) {
+  } elsif ($line =~ /<p style=".*text-indent:/i) {
         irrecevable();
 	    texte();
-  } elsif ($line =~ /\<p[^\>]*\>(.*)\<\/p\>/i && $texte >= 1) {
-	$line = $1;
+  } elsif ($line =~ /(\s*<(div|p)[^>]*>\s*)+(.*)(\s*<\/(div|p)>\s*)+/i && $texte >= 1) {
+	$line = $3;
 	texte();
   }
 }
