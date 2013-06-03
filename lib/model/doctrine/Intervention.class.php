@@ -85,7 +85,7 @@ class Intervention extends BaseIntervention
   public function setPersonnaliteByNom($nom, $fonction = null) 
   {
     $this->setFonction($fonction);
-    if (!preg_match('/^(ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux)/i', $fonction)) { 
+    if (!preg_match('/^((premier )?ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux)/i', $fonction)) { 
       $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
       if (!$personne)
 	  $personne = Doctrine::getTable('Parlementaire')->findOneByNomDeFamille($nom);
