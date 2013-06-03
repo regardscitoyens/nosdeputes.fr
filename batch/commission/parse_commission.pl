@@ -99,7 +99,7 @@ $cpt = 0;
 sub checkout {
     $commission =~ s/"//g;
     $intervention =~ s/"/\\"/g;
-    $intervention =~ s/\s*(<\/?t[rdh]>)\s*/\1/gi;
+    $intervention =~ s/\s*(<\/?t(able|[rdh])[^>]*>)\s*/\1/gi;
     $cpt+=10;
     $ts = $cpt;
     $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
@@ -264,7 +264,7 @@ sub rapporteur
 }
 
 $string =~ s/\r//g;
-$string =~ s/&nbsp;/ /g;
+$string =~ s/&(#160|nbsp);/ /g;
 $string =~ s/&#8217;/'/g;
 $string =~ s/d\W+évaluation/d'évaluation/g;
 $string =~ s/&#339;|œ+/oe/g;
@@ -352,7 +352,7 @@ foreach $line (split /\n/, $string)
         $line =~ s/([^<])[\/\|]/\1/g;
         $line =~ s/<[^t\/][^>]*>//g;
         $line =~ s/<\/[^t][^>]*>//g;
-        checkout() if ($intervenant);
+        checkout() if ($intervenant || ($line =~ /<table/ && length($intervention) + length($line) gt 2000));
         $intervention .= "$line";
     }elsif ($line =~ /\<p/i || ($line =~ /(<SOMMAIRE>|\<h[1-9]+ class="titre\d+)/i && $line !~ />Commission/)) {
 	$found = 0;
