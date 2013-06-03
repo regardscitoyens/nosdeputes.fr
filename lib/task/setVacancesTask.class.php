@@ -15,6 +15,8 @@ class setVacancesTask extends sfBaseTask {
     $manager = new sfDatabaseManager($this->configuration);
     $q = Doctrine_Query::create()->select('s.annee, s.numero_semaine')
       ->from('Seance s')
+      ->leftJoin('s.Organisme o')
+      ->where('o.type = ? or s.organisme_id IS NULL', array("parlementaire"))
       ->groupBy('s.annee, s.numero_semaine')
       ->orderBy('s.date ASC');
     $seances = $q->fetchArray();
