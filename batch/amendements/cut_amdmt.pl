@@ -202,6 +202,9 @@ $string =~ s/>\n([^\n<]+)/> \1/g;
 $string =~ s/<t([rdh]|able)[^>]*>/<t\1>/ig;
 $string =~ s/\n?<(\/)?t([rhd]|able)>\n?/<\1t\2>/ig;
 $string =~ s/<\/tr>/<\/tr>\n/ig;
+$string =~ s/<\/span><span>//ig;
+$string =~ s/\s*<br \/>\s*/ /ig;
+
 foreach $line (split /\n/, $string)
 {
 #print "TEST: $identiques / $presente / $texte / $line\n";
