@@ -8,7 +8,7 @@ $legislature = shift || 14;
 $loi = shift;
 $debug = shift || 0;
 
-@urls = ("http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?typeEcran=avance&chercherDateParNumero=non&NUM_INIT=".$loi."&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&SORT_EN_SEANCE=&DELIBERATION=&NUM_PARTIE=&DateDebut=&DateFin=&periode=&LEGISLATURE=".$legislature."Amendements&QueryText=&Scope=TEXTEINTEGRAL&SortField=ORDRE_TEXTE&SortOrder=Asc&searchadvanced=Rechercher&ResultMaxDocs=25000&ResultCount=25000");
+@urls = ("http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?typeEcran=avance&chercherDateParNumero=non&NUM_INIT=".$loi."&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&SORT_EN_SEANCE=&DELIBERATION=&NUM_PARTIE=&DateDebut=&DateFin=&periode=&LEGISLATURE=".$legislature."Amendements&QueryText=&Scope=TEXTEINTEGRAL&SortField=ORDRE_TEXTE&SortOrder=Asc&searchadvanced=Rechercher&ResultMaxDocs=10000&ResultCount=10000");
 
 @organes = ("Affaires%20culturelles%20et%20%E9ducation",
             "Affaires%20%E9conomiques",
@@ -20,14 +20,14 @@ $debug = shift || 0;
             "Finances",
             "S%E9ance%20publique");
 foreach $organe (@organes) {
-  push(@urls, "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?NUM_INIT=".$loi."&LEGISLATURE=".$legislature."&ORGANE=".$organe."&SortField=ORDRE_TEXTE&SortOrder=Asc&searchadvanced=Rechercher&ResultMaxDocs=25000&ResultCount=25000");
+  push(@urls, "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?NUM_INIT=".$loi."&LEGISLATURE=".$legislature."&ORGANE=".$organe."&SortField=ORDRE_TEXTE&SortOrder=Asc&searchadvanced=Rechercher&ResultMaxDocs=10000&ResultCount=10000");
 }
 
 my %done;
 
 foreach $url (@urls) {
 
-if ($shift) {
+if ($debug) {
     print "-> Download amendements from $url\n";
 }
 $a = WWW::Mechanize->new();
@@ -61,6 +61,6 @@ while ($t = $p->get_tag('a')) {
 }
 
 }
-if ($shift) {
+if ($debug) {
     print $count." amendements pour le projet de loi n°$loi\n";
 }
