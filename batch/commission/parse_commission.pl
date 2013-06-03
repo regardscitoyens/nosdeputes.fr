@@ -275,7 +275,8 @@ $majIntervenant = 0;
 $body = 0;
 
 $string =~ s/<br>\n//gi;
-$string =~ s/<t([rdh]) [^>]*>/<t\1>/gi;
+$string =~ s/<t([rdh])[^>]*( (row|col)span=["\d]+)+[^>]*>/<t\1\2>/gi;
+$string =~ s/<t([rdh])( (row|col)span=["\d]+)*[^>]*>/<t\1\2>/gi;
 $string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
 $string =~ s/(<\/table>)\s*(<table)/\1\n\2/gi;
 
