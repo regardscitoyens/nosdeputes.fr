@@ -32,7 +32,8 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   $num = $6+0;
   if ($4 ne "AN" && $5) {
     $commission = $4;
-    $num = $5.$num;
+    $tetenum = $5;
+    $num = $tetenum.$num;
   }
   if ($amdmt{'loi'} !~ /TA/) {
     $amdmt{'loi'} += 0;
@@ -385,6 +386,9 @@ if (!$amdmt{'sort'} && $amdmt{'texte'} =~ /amendement irrecevable/i) {
 $extra = "";
 if ($commission) {
   $extra = ', "commission": "'.$commission.'"';
+  if ($amdmt{'parent'} && $amdmt{'parent'} =~ /^\d/) {
+    $amdmt{'parent'} = $tetenum.$amdmt{'parent'};
+  }
 }
 
 print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'"'.$extra." } \n";
