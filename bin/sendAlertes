@@ -14,8 +14,14 @@ fi
 echo $$ > $LOCK
 cd $PATH_APP
 
-while ! php symfony send:Alert ; do
-sleep 1
-done
+count=0  
+while ! php symfony send:Alert 2>&1 ; do
+  count=$(($count + 1))
+  if [ $count -gt 10 ]; then
+    echo "Script crashé 10 fois"
+    break;
+  fi
+  sleep 1  
+done     
 
 rm $LOCK ;
