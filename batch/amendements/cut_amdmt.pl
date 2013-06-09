@@ -109,6 +109,8 @@ sub auteurs {
 
 sub texte {
     $line2 = $line;
+    $line2 =~ s/\s*<[bB][rR]\s*\/?>\s*([A-Z<«"])/|BR|\1/g;
+    $line2 =~ s/\s*<br\s*\/?>\s*/ /g;
     $line2 =~ s/\s*\<\/?[^\>]+\>//g;
     $line2 =~ s/^[ \s]+(\w)/\1/;
     $line2 =~ s/([^à])[\s ]+$/\1/;
@@ -121,6 +123,7 @@ sub texte {
         }
         $line2 =~ s/"\s*([^"]*)\s*"/« \1 »/g;
         $line2 =~ s/"/\\"/g;
+        $line2 =~ s/\|BR\|/<\/p><p>/g;
     	if (!$amdmt{$output}) { $amdmt{$output} = "<p>".$line2."</p>"; }
     	else { $amdmt{$output} = $amdmt{$output}."<p>".$line2."</p>"; }
     }
@@ -204,7 +207,6 @@ $string =~ s/<t([rdh]|able)[^>]*>/<t\1>/ig;
 $string =~ s/\n?<(\/)?t([rhd]|able)>\n?/<\1t\2>/ig;
 $string =~ s/<\/tr>/<\/tr>\n/ig;
 $string =~ s/<\/span><span>//ig;
-$string =~ s/\s*<br \/>\s*/ /ig;
 
 foreach $line (split /\n/, $string)
 {
