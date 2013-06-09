@@ -52,7 +52,7 @@ if (isset($soussections) && count($soussections)) {
       else echo "</li>";
     } else {
       echo "<ul>";
-      if ($loi->texteloi_id == 1005 && $nart == 0 && $nbart > 0) {
+      if (($loi->texteloi_id ==  1109 || $loi->texteloi_id == 1005) && $nart == 0 && $nbart > 0) {
         echo "<small> &nbsp; Article ".link_to($articles[0]['titre'], '@loi_article?loi='.$loi->texteloi_id.'&article='.$articles[0]['slug']).'</small>';
         $nart = 1;
       }
