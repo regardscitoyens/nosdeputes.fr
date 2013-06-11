@@ -31,8 +31,8 @@ $string =~ s/<\/?sup>//gi;
 $string =~ s/<\/?span( style=[^>]+)?>//gi;
 $string =~ s/<!\-\-\w*\-\->//ig;
 $string =~ s/<a name="[^"]*">[^<]*<\/a>//gi;
-$string =~ s/\s*<[a-z]+>\s*\(nouveau\)\s*<\/[a-z]+>//gi;
-$string =~ s/\s*\(nouveau\)//gi;
+$string =~ s/\s*<[a-z]+>\s*\(nouveau\)\s*<\/[a-z]+>/ /gi;
+$string =~ s/\s*\(nouveau\)/ /gi;
 $string =~ s/\r//g;
 $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/<t([rdh]|able)[^>]+>/<t\1>/ig;
@@ -189,6 +189,7 @@ sub handle_text {
           checkout_article();
         }
         $num_alinea++;
+        $content =~ s/\s+/ /g;
         $texte = '<p>'.$content.'</p>';
         checkout_alinea();
       }
