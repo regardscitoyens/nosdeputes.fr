@@ -62,17 +62,11 @@ if (isset($soussections) && count($soussections)) {
     $nbart = $ss->nb_articles;
     if ($ss->nb_commentaires > 0 || $amendements_sec[$ss->id]) {
       echo ' (';
-      if ($amendements_sec[$ss->id]) {
-        echo '<span class="orange">'.$amendements_sec[$ss->id].' amendement';
-        if ($amendements_sec[$ss->id] > 1) echo 's';
-        echo '</span>';
-      }
+      if ($amendements_sec[$ss->id])
+        echo '<span class="orange">'.$amendements_sec[$ss->id].'&nbsp;amendement'.($amendements_sec[$ss->id] > 1 ? 's' : '').'</span>';
       if ($ss->nb_commentaires > 0 && $amendements_sec[$ss->id]) echo ", ";
-      if ($ss->nb_commentaires > 0) {
-        echo '<span class="coms_loi_txt">'.$ss->nb_commentaires.' commentaire';
-        if ($ss->nb_commentaires > 1) echo 's';
-        echo '</span>';
-      }
+      if ($ss->nb_commentaires > 0)
+        echo '<span class="coms_loi_txt">'.$ss->nb_commentaires.'&nbsp;commentaire'.($ss->nb_commentaires > 1 ? 's' : '').'</span>';
       echo ')';
     }
   }
@@ -105,7 +99,15 @@ if (isset($soussections) && count($soussections)) {
     if (isset($amendements_art[$atitre.'tot'])) $nadmts += $amendements_art[$atitre.'tot'];
     if (isset($amendements_art['après '.$atitre.'tot'])) $nadmts += $amendements_art['après '.$atitre.'tot'];
     if (isset($amendements_art['avant '.$atitre.'tot'])) $nadmts += $amendements_art['avant '.$atitre.'tot'];
-    if ($nadmts) echo '&nbsp; (<span class="orange">'.$nadmts.' amendement'.($nadmts > 1 ? 's' : '').'</span>)';
+    if ($a['nb_commentaires'] > 0 || $nadmts > 0) {
+      echo '&nbsp; (';
+      if ($nadmts)
+        echo '<span class="orange">'.$nadmts.'&nbsp;amendement'.($nadmts > 1 ? 's' : '').'</span>';
+      if ($a['nb_commentaires'] > 0 && $nadmts) echo ", ";
+      if ($a['nb_commentaires'] > 0)
+        echo '<span class="coms_loi_txt">'.$a['nb_commentaires'].'&nbsp;commentaire'.($a['nb_commentaires'] > 1 ? 's' : '').'</span>';
+      echo ')';
+    }
   }
 } ?>
 </div>
