@@ -42,6 +42,7 @@ class amendementActions extends sfActions
        ->select('a.id, a.numero, a.sort, CAST( a.numero AS SIGNED ) AS num')
        ->from('Amendement a')
        ->where('a.sous_amendement_de = ?', $this->amendement->numero)
+       ->andWhere('a.texteloi_id = ?', $this->amendement->texteloi_id)
        ->andWhere('a.sort <> ?', 'Rectifié')
        ->orderBy('num')
        ->fetchArray();
