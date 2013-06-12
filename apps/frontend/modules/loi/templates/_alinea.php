@@ -5,12 +5,12 @@ if (isset($alinea) && $a->numero == $alinea->numero)
 	echo '_select';
 $a->texte = preg_replace('/\s*&nbsp;\s*-\s*&nbsp;\s*/', ' - ', $a->texte);
 $a->texte = preg_replace('/<i>((\s*([\.-]|(un|duo|tre|)?(bis|qua|quint|quinqu|sex|oct|nov|non|dec)?(ter|ies)?)\s*)+)<\/i>/', '\\1', $a->texte);
-$a->texte = preg_replace('/\<\/?b\>/', '', $a->texte);
-$a->texte = preg_replace('/^\<p(>\<i\>«.*\<\/i\>\<\/p\>)$/', '<p class="center"\\1</div>', $a->texte);
-$a->texte = preg_replace('/^\<p(>\s*«.*)$/', '<p class="indent_guillemets"\\1', $a->texte);
-$a->texte = preg_replace('/^\<p>([IVX]+(\s*(un|duo|tre)?(bis|qua|quint|quinqu|sex|oct|nov|non|dec)?(ter|ies)?)?(\s*[A-Z][A-Z]?)?)[\.\s]*-\s*(.*)$/', '<p><b>\\1. &mdash;</b> \\7', $a->texte);
+$a->texte = preg_replace('/<\/?b>/', '', $a->texte);
+$a->texte = preg_replace('/^<p(><i>«.*<\/i><\/p>)$/', '<p class="center"\\1</div>', $a->texte);
+$a->texte = preg_replace('/^<p(>(<i>|\s)*«.*)$/', '<p class="indent_guillemets"\\1', $a->texte);
+$a->texte = preg_replace('/^<p>([IVX]+(\s*(un|duo|tre)?(bis|qua|quint|quinqu|sex|oct|nov|non|dec)?(ter|ies)?)?(\s*[A-Z][A-Z]?)?)[\.\s]*-\s*(.*)$/', '<p><b>\\1. &mdash;</b> \\7', $a->texte);
 $a->texte = preg_replace('/^(<p><b>[IVX]+)\s\. \&m/', '\\1. &m', $a->texte);
-$a->texte = preg_replace('/^\<p>(\d+\s*°(\s*(un|duo|tre|)?(bis|qua|quint|quinqu|sex|oct|nov|non|dec)?(ter|ies)?)?)\s*(.*)$/', '<p><b style="opacity:0.7;">\\1</b> \\6', $a->texte);
+$a->texte = preg_replace('/^<p>(\d+\s*°(\s*(un|duo|tre|)?(bis|qua|quint|quinqu|sex|oct|nov|non|dec)?(ter|ies)?)?)\s*(.*)$/', '<p><b style="opacity:0.7;">\\1</b> \\6', $a->texte);
 echo '" id="alinea_'.$a->numero.'"><td class="alineanumero"><a href="#alinea_'.$a->numero.'">'.$a->numero.'.</a></td><td class="alineatexte">';
 $s = $a->texte;
 $s = preg_replace('/(articles? ?([0-9.\-a-z]+)) (de la )(constitution)/i', '<a href="/redirect/loi/constitution/\\2">\\1</a> \\3<a href="/redirect/loi/constitution">\\4</a>', $s);
