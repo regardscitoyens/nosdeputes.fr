@@ -17,8 +17,8 @@ while ($t = $p->get_tag('a')) {
     if ($t->[1]{class} eq 'lienamendement') {
 	$htmfile = $t->[1]{href};
 	next if ($htmfile =~ /(index|javascript)/);
-	if ($htmfile =~ /\d{4}.(\d{4})\.asp/) {
-	    $num = $1;
+	if ($htmfile =~ /(\d{4}.|amendements\/\d{1,4}\/[A-Z_\-]+\/)(\d{1,4})\.asp/) {
+	    $num = $2;
 	    $num =~ s/^0*//;
 	    print FILE $num."\n";
 	    $count++;
