@@ -62,8 +62,15 @@ class ParlementaireTable extends PersonnaliteTable
         }
         if (count($memeGroupe) == 1) $depute = $memeGroupe[0];
         elseif (count($procheGroupe) == 1) $depute = $procheGroupe[0];
+        $memeSexe = $memeGroupe;
         unset($memeGroupe);
         unset($procheGroupe);
+      }
+      if (!$depute) {
+        $enmandat = array();
+        foreach ($memeSexe as $de)
+          if (!$de->fin_mandat) array_push($enmandat, $de);
+        if (count($enmandat) == 1) $depute = $enmandat[0];
       }
       unset($memeSexe);
     }
