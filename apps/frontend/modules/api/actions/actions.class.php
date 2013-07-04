@@ -172,6 +172,12 @@ class apiActions extends sfActions
     $slug = $request->getParameter('slug');
     $this->forward404Unless($slug);
     $senateur = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
+    if (!$senateur) {
+        $senateur = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($slug);
+        if ($senateur)
+                return $this->redirect('api/parlementaire?slug='.$senateur->slug.'&format='.$request->getParameter('format'));
+    }
+
     $this->forward404Unless($senateur);
     $this->res = array();
     $this->res['senateur'] = $this->getParlementaireArray($senateur, $request->getParameter('format'));
