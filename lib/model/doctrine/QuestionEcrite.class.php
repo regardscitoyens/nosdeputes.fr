@@ -57,7 +57,7 @@ class QuestionEcrite extends BaseQuestionEcrite
   public function uniqueMinistere() 
   {
     $ministere = 'Ministère d';
-    if (preg_match('/(Droits?\s+((d[eu]s?|la)\s+)+[\wàéëêèïîôöûüÉ]+)/', $this->ministere, $match)) $ministre = $match[1];
+    if (preg_match('/((Droits|Réforme)?\s+(d[eu]s?\s*|l[\'a]\s*)+[\wàéëêèïîôöûüÉ]+)/', $this->ministere, $match)) $ministre = $match[1];
     else if (preg_match('/(Affaires|Espace)(\s+[\wàéëêèïîôöûüÉ]+)/', $this->ministere, $match)) $ministre = $match[1].$match[2];
     else {
       $ministre = preg_replace('/^.*\/\s*([\wàéëêèïîôöûüÉ]+)$/', '\\1', $this->ministere);
@@ -65,7 +65,7 @@ class QuestionEcrite extends BaseQuestionEcrite
     }
     if (preg_match('/^(Droits|Aînés|Affaires|Sports|Transports|Solidarités)/', $ministre)) $ministere .= 'es ';
     else if (preg_match('/^[AEÉIOU]/', $ministre)) $ministere .= 'e l\'';
-    else if (preg_match('/^(Famille|Santé|Coopération|Culture|Défense|Justice|Consommation|Prospective|Solidarité)/', $ministre)) $ministere .= 'e la ';
+    else if (preg_match('/^(Famille|Santé|Réforme|Coopération|Culture|Défense|Justice|Consommation|Prospective|Solidarité)/', $ministre)) $ministere .= 'e la ';
     else $ministere .= 'u ';
     if (preg_match('/^Premier/', $ministre)) $ministere = 'Premier Ministre';
     else $ministere .= $ministre;
