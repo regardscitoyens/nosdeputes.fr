@@ -46,9 +46,11 @@ foreach $url (@url) {
 		next;
 	    }
 	    $cpt = 0;
+	    $content = $a->content;
+	    next if ($content =~ /cours de finalisation\s*----/) ;
 	    print "$file\n";
 	    open FILE, ">:utf8", "html/$file";
-	    print FILE $a->content;
+	    print FILE $content;
 	    close FILE;
           }
 	  $a->back();
