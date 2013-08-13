@@ -417,6 +417,7 @@ foreach $line (split /\n/, $string)
 	    $intervenant_url = "http://www.assemblee-nationale.fr".$last_href if ($intervenant_url =~ /^\//);
 	    $found = 1;
 	}elsif ($line =~ s/^\|([^\|]+)\|\s*//) {
+	    checkout();
 	    $intervenant = setIntervenant($1);
 	}elsif ($line =~ /^\s*\|/) {
 	    checkout() if ($intervenant);
