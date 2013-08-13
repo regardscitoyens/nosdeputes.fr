@@ -73,7 +73,7 @@ foreach $line (split /\n/, $string) {
     } else {
       $depute{'sexe'} = "H";
     }
-  } elsif (!$depute{'circonscription'} && $line =~ />([^<]*) \((\d+[èrme]+)( circonscription)?\)</i) {
+  } elsif (!$depute{'circonscription'} && $line =~ />([^<]*) \((\d+[èrme]+) circonscription/i) {
     $depute{'circonscription'} = "$1 ($2)";
   } elsif ($line =~ /Née? le ([0-9]+e?r? \S+ [0-9]+)( [àaux]+ (.*))?</i) {
     $depute{'date_naissance'} = join '/', reverse datize($1);
