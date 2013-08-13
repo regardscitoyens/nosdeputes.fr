@@ -18,7 +18,7 @@ close FILE;
 $string =~ s/ / /g;
 $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
-$string =~ s/<br\/><br\/>/ /g;
+$string =~ s/<br\s*\/><br\s*\/>/ /g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<h[0-9][^>]*>[^<]*)(<i>[^<]*<\/i>\s*)*/$1/gi;
@@ -199,6 +199,7 @@ sub checkout {
 
 sub setFonction {
     my $fonction = shift;
+    $fonction =~ s/^\s*,\s*//;
     my $intervenant = shift;
     my $kfonction = lc($fonction);
     $kfonction =~ s/[^a-z]+/ /gi;
@@ -415,6 +416,8 @@ foreach $line (split /\n/, $string)
 	    $intervenant_url = $last_href;
 	    $intervenant_url = "http://www.assemblee-nationale.fr".$last_href if ($intervenant_url =~ /^\//);
 	    $found = 1;
+	}elsif ($line =~ s/^\|([^\|]+)\|\s*//) {
+	    $intervenant = setIntervenant($1);
 	}elsif ($line =~ /^\s*\|/) {
 	    checkout() if ($intervenant);
 	}
