@@ -33,7 +33,9 @@ if ($string =~ /M[me\.]+[ \&][^<]+<\/a>\.[^<]*<\/b>[^<]*<i>([^<]+)</ && $1 =~ /r
 $string =~ s/([^\.])\s*<\/b>\s*<i>([^<]+)<\/i>/$1 $2<\/b>/g;
 $string =~ s/<\/?font[^>]*>//ig;
 $string =~ s/<\/?b>/|/g;
+$string =~ s/\|\|//g;
 $string =~ s/<\/?i>/\//g;
+$string =~ s/\/\///g;
 $string =~ s/\r//g;
 
 $mois{'janvier'} = '01';
