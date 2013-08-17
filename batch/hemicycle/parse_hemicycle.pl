@@ -23,7 +23,7 @@ $string =~ s/(<br\s*\/>\s*)+/##BR##/g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<h[0-9][^>]*>[^<]*)(<i>[^<]*<\/i>\s*)*/$1/gi;
-$string =~ s/\s*(<i>\s*\([^\)]+\)\s*\.?\s*<\/i>)([,–])?\s*/$2<\/p>\n<p>$1<\/p>\n<p>/g;
+$string =~ s/\s*(<i>\s*\([^\)]+\)\s*\.?\s*<\/i>)([,…–]\W*)?\s*/$2<\/p>\n<p>$1<\/p>\n<p>/g;
 $string =~ s/(<i>\s*\([^\)]+\s*<\/i>\s\)\s*\.?)/<\/p>\n<p>$1<\/p>\n<p>/g;
 $string =~ s/<p><\/p>\n//g;
 
@@ -386,6 +386,7 @@ foreach $line (split /\n/, $string)
     next unless ($debut);
 
     $line =~ s/<<//g;
+#    $line =~ s/<\/?p>//g;
 
 #    print STDERR "$titre1 > $titre2 : $line\n" ; next;
     $line =~ s/\|\///;
