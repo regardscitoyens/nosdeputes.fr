@@ -18,7 +18,7 @@ close FILE;
 $string =~ s/ / /g;
 $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
-$string =~ s/<br\s*\/><br\s*\/>/ /g;
+$string =~ s/(<br\s*\/>\s*)+/##BR##/g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<h[0-9][^>]*>[^<]*)(<i>[^<]*<\/i>\s*)*/$1/gi;
@@ -28,7 +28,7 @@ $string =~ s/<p><\/p>\n//g;
 
 #Si italique dans gras, on vire (pb fonction)
 if ($string =~ /M[me\.]+[ \&][^<]+<\/a>\.[^<]*<\/b>[^<]*<i>([^<]+)</ && $1 =~ /rapporteur|president/i) {
-	$string =~ s/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>/$1,<\/b><i>/g;
+    $string =~ s/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>/$1,<\/b><i>/g;
 }
 $string =~ s/([^\.])\s*<\/b>\s*<i>([^<]+)<\/i>/$1 $2<\/b>/g;
 $string =~ s/<\/?font[^>]*>//ig;
@@ -128,8 +128,8 @@ sub getProjetLoi {
     return $ploi{$titre} if (defined($ploi{$titre}));
     $intervention = lc shift;
     foreach $k (keys %ploi) {
-	$k2 = $k;
-	$k2 =~ s/[\(\)]/./g;
+        $k2 = $k;
+        $k2 =~ s/[\(\)]/./g;
         if ($intervention =~ /$k2/i) {
             $ploi{$titre} = $ploi{$k};
             return $ploi{$k};
@@ -139,15 +139,15 @@ sub getProjetLoi {
     return $ploi{$titre} if (defined($ploi{$titre}));
     $titre_cleaned =~ s/[^a-z]+/ /g;
     while ($titre_cleaned) {
-	foreach $k (keys %ploi) {
-	    $_ = $k;
-	    s/[^a-z]+/ /g;
-	    if (/$titre_cleaned/) {
-		$ploi{$titre} = $ploi{$k};
-		return $ploi{$k};
-	    }
-	}
-	$titre_cleaned =~ s/^\s?\S+\s*//;
+        foreach $k (keys %ploi) {
+            $_ = $k;
+            s/[^a-z]+/ /g;
+            if (/$titre_cleaned/) {
+                $ploi{$titre} = $ploi{$k};
+                return $ploi{$k};
+            }
+        }
+        $titre_cleaned =~ s/^\s?\S+\s*//;
     }
     $ploi{$titre} = '';
     return ;
@@ -159,38 +159,38 @@ sub checkout {
     $cpt+=10;
     $contexte = $titre1;
     if ($titre2) {
-	$contexte .= ' > '.$titre2;
+        $contexte .= ' > '.$titre2;
     }
     $out =  '{"contexte": "'.$contexte.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
     if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|bienvenue|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement/i) {
-	$out .= "\"numeros_loi\": \"$ploi\", ";
+        $out .= "\"numeros_loi\": \"$ploi\", ";
     }
     if ($amendements) {
-	$out .= '"amendements": "'.$amendements.'", ';
+        $out .= '"amendements": "'.$amendements.'", ';
     }
     $out .= '"timestamp": "';
     if ($intervenant && $intervention) {
-	$ts = $cpt;
-    if ($intervention =~ s/^<p>(,| |et)+M[mes\.]*\s+(([A-Z]|é)[^\.]+)\.\s*/<p>/g) {
-        $ts++;
-	    print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$2."\"}\n";
-	}
-	if ($intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)$//) {
-	    foreach $i (split(/ et |, /, $3)) {
-	        $ts++;
-	        print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i."\"}\n";
-	    }
-	}
-	if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)//g) {
+        $ts = $cpt;
+        if ($intervention =~ s/^<p>(,| |et)+M[mes\.]*\s+(([A-Z]|é)[^\.]+)\.\s*/<p>/g) {
             $ts++;
-	    print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$3."\"}\n";
-	    $inter2fonction{$intervenant} = '';
-	}
-	print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.'", "intervenant_url": "'.$intervenant_url."\"}\n";
+            print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$2."\"}\n";
+        }
+        if ($intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)$//) {
+            foreach $i (split(/ et |, /, $3)) {
+                $ts++;
+                print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i."\"}\n";
+            }
+        }
+        if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)//g) {
+            $ts++;
+            print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$3."\"}\n";
+            $inter2fonction{$intervenant} = '';
+        }
+        print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.'", "intervenant_url": "'.$intervenant_url."\"}\n";
     }elsif($intervention) {
-	print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant":"'."\"}\n";
+        print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant":"'."\"}\n";
     }else {
-	return ;
+        return ;
     }
     $commentaire = "";
     $intervenant = "";
@@ -209,7 +209,7 @@ sub setFonction {
     $fonction2inter{$kfonction} = $intervenant;
     #print "$fonction ($kfonction)  => $intervenant \n";
     if (!$inter2fonction{$intervenant}) {
-	$inter2fonction{$intervenant} = $fonction;
+        $inter2fonction{$intervenant} = $fonction;
     }
 }
 
@@ -236,48 +236,48 @@ sub setIntervenant {
     $intervenant =~ s/M\. /M /;
 
     if ($intervenant =~ s/\,\s*(.*)//) {
-	setFonction($1, $intervenant);
+        setFonction($1, $intervenant);
     }
     if ($intervenant =~ /^[a-z]/) {
-	$intervenant =~ s/^l[ea]\s+//i;
-	if ($intervenant =~ /([pP]résidente?|[rR]apporteur[a-zé\s]+)\s([A-Z].+)/) { #\s([A-Z].*)/i) {
-	    setFonction($1, $2);
-	    return $2;
-	}
-	$conv = $fonction2inter{$intervenant};
-	if (!$conv) {
-	    $tmp = $intervenant;
-	    $tmp =~ s/[^a-z]+/ /gi;
-	    $conv = $fonction2inter{$tmp};
-	}
-#	print "conv: '$conv' '$intervenant'\n";
-	if ($conv) {
-	    $intervenant = $conv;
-	}else {
-	    $test = lc($intervenant);
-	    $test =~ s/[^a-z]+/ /gi;
-	    foreach $fonction (keys %fonction2inter) {
-		if ($fonction =~ /$test/) {
-		    $inter = $fonction2inter{$fonction};
-		    last;
-		}
-	    }
-	    if (!$inter) {
-		foreach $fonction (keys %fonction2inter) {
-		    if ($test =~ /$fonction/) {
-			$inter = $fonction2inter{$fonction};
-            if ($test == $fonction."e") {
-                $inter2fonction{$inter} = lc($intervenant);
+        $intervenant =~ s/^l[ea]\s+//i;
+        if ($intervenant =~ /([pP]résidente?|[rR]apporteur[a-zé\s]+)\s([A-Z].+)/) { #\s([A-Z].*)/i) {
+            setFonction($1, $2);
+            return $2;
+        }
+        $conv = $fonction2inter{$intervenant};
+        if (!$conv) {
+            $tmp = $intervenant;
+            $tmp =~ s/[^a-z]+/ /gi;
+            $conv = $fonction2inter{$tmp};
+        }
+    #    print "conv: '$conv' '$intervenant'\n";
+        if ($conv) {
+            $intervenant = $conv;
+        }else {
+            $test = lc($intervenant);
+            $test =~ s/[^a-z]+/ /gi;
+            foreach $fonction (keys %fonction2inter) {
+                if ($fonction =~ /$test/) {
+                    $inter = $fonction2inter{$fonction};
+                    last;
+                }
             }
-			last;
-		    }
-		}
-	    }
-	    if ($inter) {
-		$fonction2inter{lc($intervenant)} = $inter;
-		$intervenant = $inter;
-	    }
-	}
+            if (!$inter) {
+                foreach $fonction (keys %fonction2inter) {
+                    if ($test =~ /$fonction/) {
+                        $inter = $fonction2inter{$fonction};
+                        if ($test == $fonction."e") {
+                            $inter2fonction{$inter} = lc($intervenant);
+                        }
+                        last;
+                    }
+                }
+            }
+            if ($inter) {
+                $fonction2inter{lc($intervenant)} = $inter;
+                $intervenant = $inter;
+            }
+        }
     }
     return $intervenant;
 }
@@ -300,14 +300,14 @@ $donetitre1 = 0;
 foreach $line (split /\n/, $string)
 {
     if ($line =~ /DEBUT_SEANCE|séance est ouverte/) {
-	$debut = 1;
+        $debut = 1;
     }
     #recherche amendements
     if ($line =~ /\<\!\-\- AMEND_/) {
-	@pre_amendements = ();
-	while ($line =~ /\<\!\-\- AMEND_(\d+)\D/g) {
-	    push @pre_amendements, $1;
-	}
+        @pre_amendements = ();
+        while ($line =~ /\<\!\-\- AMEND_(\d+)\D/g) {
+            push @pre_amendements, $1;
+        }
     }
 
     #suppression des commentaires
@@ -322,61 +322,62 @@ foreach $line (split /\n/, $string)
 
     #récupère les ancres pour de meilleurs liens sources
     if ($line =~ /\<[a]/i) {
-	if ($line =~ s/<a name=["']([^"']+)["'][^<]+<[^>]+>/<</g) {
-	    $nextsource = $url."#$1";
-	}
+        if ($line =~ s/<a name=["']([^"']+)["'][^<]+<[^>]+>/<</g) {
+            $nextsource = $url."#$1";
+        }
     }
 
     if ($line =~ /<h[1-9]+/i || $line =~ /"(sompresidence|sstitreinfo)"/) {
-	if ($line =~ /pr..?sidence de ([^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
-	    $prez = $1;
-	    $prez =~ s/\s+vice-pr.*$//;
-#	    print "Présidence de $prez\n";
-	    if ($prez =~ /^Mm/) {
-		setFonction('présidente', $prez);
-	    }else {
-		setFonction('président', $prez);
-	    }
-	}elsif($line =~ /h2 class="titre[23]"><*([^<\(]+)\s*/ || $line =~ /class="sstitreinfo">\/([^\/]+)\//) {
-	    checkout();
-	    if (($1 !~ /suspension/ && $1 !~ /séance/) || $1 =~ /demande/i){
-		$titre2 = $1;
-	    }
-	    $titre2 =~ s/a href[^>]+>//g;
-	    $titre2 =~ s/\///g;
-	    $titre2 =~ s/\s+$//;
-	    $titre2 =~ s/h2>//gi;
-	    $amendements = @pre_amendements = ();
-	    $line = "<p>|$titre2|</p>";
-	    $donetitre1 = 0;
-	}elsif(!$donetitre1 && $line =~ /h2 class="titre1">(.+)<\/h2/i) {
-	    checkout();
-	    $titre = $1;
-	    $titre =~ s/<\/?[^>]+>//g;
-	    $titre =~ s/<//g;
-	    $titre =~ s/[\(\/][^\)\/]+[\)\/]//;
-	    $titre =~ s/\///g;
-	    $titre =~ s/\s+$//;
-	    unless ($titre) {
-		next;
-	    }
-	    if ($titre =~ /^[\/\s]*[\wéè]+ \s*partie[\/\s]*(suite[\/\s]*|)$/i || $titre =~ /^\s*[\(\/]+.*[\/\)]+\s*$/) {
-		next
-	    }
-	    if ($titre !~ /rappels? au règlement/i) {
-            	$donetitre1 = 1;
+        $line =~ s/##BR##/ /g;
+        if ($line =~ /pr..?sidence de ([^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
+            $prez = $1;
+            $prez =~ s/\s+vice-pr.*$//;
+    #        print "Présidence de $prez\n";
+            if ($prez =~ /^Mm/) {
+                setFonction('présidente', $prez);
+            }else {
+                setFonction('président', $prez);
             }
-	    $titre1 = $titre;
-	    $titre2 = '';
-	    $amendements = @pre_amendements = ();
-	    $line = "<p>|$titre1|</p>";
-	}elsif($line =~ /h1 class="seance"/) {
-	    if ($line =~ /(\d{1,2})[ermd]*\s+([a-zéùû]+)\s+(\d{4})/) {
-		$date = $3.'-'.$mois{$2}.'-'.sprintf('%02d', $1);
-	    }
-	}elsif($line =~ /h5 class="numencad"/) {
-	    $donetitre1 = 0;
-	}
+        }elsif($line =~ /h2 class="titre[23]"><*([^<\(]+)\s*/ || $line =~ /class="sstitreinfo">\/([^\/]+)\//) {
+            checkout();
+            if (($1 !~ /suspension/ && $1 !~ /séance/) || $1 =~ /demande/i){
+                $titre2 = $1;
+            }
+            $titre2 =~ s/a href[^>]+>//g;
+            $titre2 =~ s/\///g;
+            $titre2 =~ s/\s+$//;
+            $titre2 =~ s/h2>//gi;
+            $amendements = @pre_amendements = ();
+            $line = "<p>|$titre2|</p>";
+            $donetitre1 = 0;
+        }elsif(!$donetitre1 && $line =~ /h2 class="titre1">(.+)<\/h2/i) {
+            checkout();
+            $titre = $1;
+            $titre =~ s/<\/?[^>]+>//g;
+            $titre =~ s/<//g;
+            $titre =~ s/[\(\/][^\)\/]+[\)\/]//;
+            $titre =~ s/\///g;
+            $titre =~ s/\s+$//;
+            unless ($titre) {
+                next;
+            }
+            if ($titre =~ /^[\/\s]*[\wéè]+ \s*partie[\/\s]*(suite[\/\s]*|)$/i || $titre =~ /^\s*[\(\/]+.*[\/\)]+\s*$/) {
+                next
+            }
+            if ($titre !~ /rappels? au règlement/i) {
+                $donetitre1 = 1;
+            }
+            $titre1 = $titre;
+            $titre2 = '';
+            $amendements = @pre_amendements = ();
+            $line = "<p>|$titre1|</p>";
+        }elsif($line =~ /h1 class="seance"/) {
+            if ($line =~ /(\d{1,2})[ermd]*\s+([a-zéùû]+)\s+(\d{4})/) {
+                $date = $3.'-'.$mois{$2}.'-'.sprintf('%02d', $1);
+            }
+        }elsif($line =~ /h5 class="numencad"/) {
+            $donetitre1 = 0;
+        }
     }
 
     next unless ($debut);
@@ -386,52 +387,65 @@ foreach $line (split /\n/, $string)
 #    print STDERR "$titre1 > $titre2 : $line\n" ; next;
     $line =~ s/\|\///;
     if ($line =~ /\<[p]/i) {
-	$last_href = '';
-	if ($line =~ /href=["']([^"']+)["']/) {
-	    $last_href = $1;
-	}
-	$line =~ s/\<\/?[^\>]+\>//g;
-	last if ($line =~ /^\|annexe/i);
-	next if ($line !~ /\w/);
+        $last_href = '';
+        if ($line =~ /href=["']([^"']+)["']/) {
+            $last_href = $1;
+        }
+        $line =~ s/\<\/?[^\>]+\>//g;
+        last if ($line =~ /^\|annexe/i);
+        next if ($line !~ /\w/);
         #cas des intervenants en gras suivi immédiatement de la fonction en italique
         $line =~ s/^(\s*\|\s*M[^\|]+)\|([\s,]*)\/([^\/]+)\//$1$2$3|/;
-	#si italique ou tout gras => commentaire
-	if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/[^\/]*[\/\)\.\s]*$/) {
-            $oldintervenant = $intervenant;
-            $oldintervenant_url = $intervenant_url;
-	    checkout() if ($intervenant);
-            $intervenant = ''; $intervenant_url = '';
-	    if ($line =~ /^[\s\/\.]*\([^\)]+\)[\s\/\.]*$/) {
-		checkout() if ($intervention);
-	        $line =~ s/[\|\/]//g;
-		$intervention = "<p>$line</p>";
-		$intervention =~ s/[\(\)]//g;
-		checkout();
-		$intervenant = $oldintervenant;
-		$intervenant_url = $oldintervenant_url;
+        #si italique ou tout gras => commentaire
+        $line =~ s/##BR##$//;
+        foreach $line (split /##BR##/, $line) {
+            if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/[^\/]*[\/\)\.\s]*$/) {
+                $oldintervenant = $intervenant;
+                $oldintervenant_url = $intervenant_url;
+                checkout() if ($intervenant);
+                $intervenant = ''; $intervenant_url = '';
+                if ($line =~ /^[\s\/\.]*\([^\)]+\)[\s\/\.]*$/) {
+                    checkout() if ($intervention);
+                    clean_line();
+                    $intervention = "<p>$line</p>";
+                    $intervention =~ s/[\(\)]//g;
+                    checkout();
+                    $intervenant = $oldintervenant;
+                    $intervenant_url = $oldintervenant_url;
+                    next;
+                }
+            }elsif ($line =~ s/^\s*\|\s*(M[^\|\/\:]+)[\|\/\:]// || $line =~ s/^\s*(M[\.Mmle]+(\s+([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.\:]//) {
+                checkout();
+                $majIntervenant = 1;
+                $intervenant = setIntervenant($1);
+                $intervenant_url = $last_href;
+                $intervenant_url = "http://www.assemblee-nationale.fr".$last_href if ($intervenant_url =~ /^\//);
+                $found = 1;
+            }elsif ($line =~ s/^\|([^\|]+)\|\s*//) {
+                checkout();
+                $intervenant = setIntervenant($1);
+            }elsif ($line =~ /^\s*\|/) {
+                checkout() if ($intervenant);
+            }
+            clean_line();
+            if ($line =~ /^\s*$/) {
                 next;
             }
-	}elsif ($line =~ s/^\s*\|\s*(M[^\|\/\:]+)[\|\/\:]// || $line =~ s/^\s*(M[\.Mmle]+(\s+([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.\:]//) {
-	    checkout();
-	    $majIntervenant = 1;
-	    $intervenant = setIntervenant($1);
-	    $intervenant_url = $last_href;
-	    $intervenant_url = "http://www.assemblee-nationale.fr".$last_href if ($intervenant_url =~ /^\//);
-	    $found = 1;
-	}elsif ($line =~ s/^\|([^\|]+)\|\s*//) {
-	    checkout();
-	    $intervenant = setIntervenant($1);
-	}elsif ($line =~ /^\s*\|/) {
-	    checkout() if ($intervenant);
-	}
-	$line =~ s/\s+/ /g;
-	$line =~ s/^\s//;
-	$line =~ s/\s$//;
-	$line =~ s/[\|\/]//g;
-	$line =~ s/^[\.\:]\s*//;
-	$line =~ s/"/\\"/g;
-	$intervention .= "<p>$line</p>";
+            $intervention .= "<p>$line</p>";
+            $source = $nextsource;
+        }
     }
-    $source = $nextsource;
+}
+if ($intervention =~ "^<p>Le Directeur du service du compte rendu de la séance") {
+    $intervenant = "";
 }
 checkout();
+
+sub clean_line{
+    $line =~ s/[\|\/]//g;
+    $line =~ s/^\s*[\.\:]\s*//;
+    $line =~ s/"/\\"/g;
+    $line =~ s/\s+/ /g;
+    $line =~ s/^\s//;
+    $line =~ s/\s$//;
+} 
