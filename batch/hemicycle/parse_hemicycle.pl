@@ -28,9 +28,11 @@ $string =~ s/(<i>\s*\([^\)]+\s*<\/i>\s\)\s*\.?)/<\/p>\n<p>$1<\/p>\n<p>/g;
 $string =~ s/<p><\/p>\n//g;
 
 #Si italique dans gras, on vire (pb fonction)
-if ($string =~ /M[me\.]+[ \&][^<]+<\/a>\.[^<]*<\/b>[^<]*<i>([^<]+)</ && $1 =~ /rapporteur|president/i) {
-    $string =~ s/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>/$1,<\/b><i>/g;
-}
+while ($string =~ m/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>\s*([^<]+)</g) {
+    $fonc = $1;
+    if ($fonc =~ /rapporteur|president/i) {
+        $string =~ s/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>\s*$fonc/$1,<\/b><i>/g;
+}}
 $string =~ s/([^\.])\s*<\/b>\s*<i>([^<]+)<\/i>/$1 $2<\/b>/g;
 $string =~ s/<\/?font[^>]*>//ig;
 $string =~ s/<\/?b>/|/g;
