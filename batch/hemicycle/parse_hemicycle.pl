@@ -18,6 +18,7 @@ close FILE;
 $string =~ s/ / /g;
 $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
+$string =~ s/\\’85//g;
 $string =~ s/(<br\s*\/>\s*)+/##BR##/g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
@@ -395,7 +396,7 @@ foreach $line (split /\n/, $string)
         last if ($line =~ /^\|annexe/i);
         next if ($line !~ /\w/);
         #cas des intervenants en gras suivi immédiatement de la fonction en italique
-        $line =~ s/^(\s*\|\s*M[^\|]+)\|([\s,]*)\/([^\/]+)\//$1$2$3|/;
+        $line =~ s/^(\s*\|\s*M[^\|]+)(\s*,\s*\|\s*|\s*\|\s*,\s*)\/([^\/]+)\//$1, $3|/;
         #si italique ou tout gras => commentaire
         $line =~ s/##BR##$//;
         foreach $line (split /##BR##/, $line) {
