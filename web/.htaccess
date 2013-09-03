@@ -21,3 +21,5 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
+Header set Access-Control-Allow-Origin *
+
