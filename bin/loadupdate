@@ -54,7 +54,7 @@ do
 done
 
 if [[ $deputes -eq 1 ]]; then
-  echo Mise-à-jour députés
+  echo == Mise-à-jour députés
   echo =======================
   bash bin/load_deputes
 fi
@@ -62,26 +62,26 @@ fi
 # Récupération et création des JSON
 
 if [[ $jo -eq 1 ]]; then
-  echo JO
+  echo == JO
   echo =======================
-  cd batch/jo ; perl compute_latest.pl ; cd -
+  cd batch/jo ; perl compute_latest.pl ; cd ../..
 fi
 if [[ $questions -eq 2 ]]; then
-  echo International
+  echo == International
   echo =======================
-  cd batch/presences ; bash load_all.sh  ; cd -    
+  cd batch/presences ; bash load_all.sh  ; cd ../..
 fi
-echo Hemicycles
+echo == Hemicycle
 echo =======================
-cd batch/hemicycle ; bash compute_latest.sh ; cd -
-echo Commissions
+cd batch/hemicycle ; bash compute_latest.sh ; cd ../..
+echo == Commissions
 echo =======================
-cd batch/commission ; bash compute_latest.sh ; cd -
-echo Amendements
+cd batch/commission ; bash compute_latest.sh ; cd ../..
+echo == Amendements
 echo =======================
-cd batch/amendements ; bash compute_latest.sh ; cd -
+cd batch/amendements ; bash compute_latest.sh ; cd ../..
 if [[ $questions -ne 0 ]]; then
-  echo Questions
+  echo == Questions
   echo =======================
   cd batch/questions
   if [[ $questions -eq 1 ]]; then
@@ -89,16 +89,16 @@ if [[ $questions -ne 0 ]]; then
   else
     bash compute_latest.sh all
   fi
-  cd -
+  cd ../..
 fi
-echo Rapports et Textes de lois
-echo ==========================
+echo == Rapports et Textes de lois
+echo =============================
 cd batch/documents 
 if [[ $questions -eq 2 ]]; then
  bash reload_latest_ppl.sh
 fi
 bash compute_latest.sh
-cd -
+cd ../..
 
 
 # Vérification des JSON
@@ -108,52 +108,52 @@ cd -
 # Chargement via tasks
 
 if [[ $jo -eq 1 ]]; then
-  echo load JO
+  echo == Load JO
   echo =======================
   while ! php symfony load:JO ; do
         php symfony cc --env=test  --app=frontend > /dev/null
   done;
 fi
 if [[ $questions -eq 2 ]]; then
-  echo load International
+  echo == Load International
   echo =======================
   while ! php symfony load:JO --source=international; do
         php symfony cc --env=test  --app=frontend > /dev/null
   done;
 fi
-echo Load Hemicycles
+echo == Load Hemicycle
 echo =======================
 while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do 
 	php symfony cc --env=test  --app=frontend > /dev/null
 	php symfony load:Hemicycle 
 done;
-echo "Load Commissions : http://www.nosdeputes.fr/backend.php/commissions"
+echo "== Load Commissions : http://www.nosdeputes.fr/backend.php/commissions"
 echo =======================
 while ls batch/commission/out | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
 	php symfony load:Commission 
 done;
-echo "Load Présences en Commissions"
+echo "== Load Présences en Commissions"
 echo =======================
 while ls batch/commission/presents | grep [a-z] > /dev/null ; do
         php symfony cc --env=test  --app=frontend > /dev/null
         php symfony load:JO --source=cri
 done;
-echo Load Amendements
+echo == Load Amendements
 echo =======================
 while ls batch/amendements/json | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
 	php symfony load:Amdmts 
 done;
 if [[ $questions -ne 0 ]]; then
-  echo Load Questions
+  echo == Load Questions
   echo =======================
   while ls batch/questions/json | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
 	php symfony load:Questions 
   done;
 fi
-echo Load Documents
+echo == Load Documents
 echo =======================
 while ls batch/documents/out | grep [a-z] > /dev/null ; do
         php symfony cc --env=test  --app=frontend > /dev/null
@@ -164,19 +164,19 @@ done;
 
 # Postprocessings
 
-echo Tags séances
+echo == Tag séances
 echo =======================
 bash bin/tag_seance
-echo Update sessions
+echo == Update sessions
 echo =======================
 php symfony set:Session 
-echo Update vacances
+echo == Update vacances
 echo =======================
 php symfony set:Vacances 
-echo Update tops députés
+echo == Update tops députés
 echo =======================
 php symfony top:Deputes
-echo Update hardcache html
+echo == Update hardcache html
 echo =======================
 bash bin/update_hardcache
 

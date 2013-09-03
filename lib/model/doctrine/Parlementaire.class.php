@@ -703,11 +703,11 @@ class Parlementaire extends BaseParlementaire
     if (preg_match('/http/', $s)) {
       $len = strlen($this->getInternalPhoto());
       if ($len < 5200 || date('d') % 3 == 0) {
-	$s = file_get_contents($s);
+        $s = @file_get_contents($s);
       }else
-	return true;
+        return true;
       if (!$s)
-	return false;
+        return false;
     }
     $this->setInternalPhoto($s);
   }
