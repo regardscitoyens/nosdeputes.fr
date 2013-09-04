@@ -14,7 +14,10 @@ done
 "$@" >> /tmp/$tmpoutput 2>&1
 
 if test "$PADBOT" && test "$PADURL" ; then
-date > /tmp/$tmpoutput.date
+echo > /tmp/$tmpoutput.date
+date >> /tmp/$tmpoutput.date
+echo "---------------------" >> /tmp/$tmpoutput.date
+echo >> /tmp/$tmpoutput.date
 cat /tmp/$tmpoutput.date /tmp/$tmpoutput | grep -v '^==' | $PADBOT $PADURL write
 rm /tmp/$tmpoutput.date
 fi
