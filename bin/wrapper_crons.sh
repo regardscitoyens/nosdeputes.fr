@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. bin/db.inc
+. $(dirname $0)/db.inc
 
 command=`echo $2 | sed 's#^.*\/\([^\/]\+\)$#\\1#'`
 tmpout=cron-$command-`date +%d%m%Y-%HH%Mm%S`
