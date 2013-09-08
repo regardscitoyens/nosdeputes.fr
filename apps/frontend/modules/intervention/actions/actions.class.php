@@ -90,6 +90,43 @@ class interventionActions extends sfActions
     //    $this->response->setDescription($this->intervention->intervention);
   }
 
+  private function getSectionId(sfWebRequest $request) {
+    $section_id = $request->getParameter('dossier', '');
+    if ($section_id != "") {
+      if (preg_match('/[a-z]/', $section_id)) {
+        $section_id = Doctrine::getTable('Section')->findOneByIdDossierAn(strtolower($section_id));
+        $this->forward404Unless($section_id);
+        $section_id = $section_id->id;
+      }
+    }
+    return $section_id;
+  }
+
+  public function executeListSeancesByLoi(sfWebRequest $request) {
+    $loi_id = $request->getParameter('loi');
+    $this->forward404Unless($loi_id);
+    $dossier = $this->getSectionId($request);
+    $extrajoin = "";
+    if ($dossier) {
+      $extrajoin = " left join section sc on i.section_id = sc.id";
+    }
+    $this->query = new Doctrine_RawSql();
+    $this->query->select('distinct({s.id})')
+      ->from('seance s left join intervention i on s.id = i.seance_id left join tagging tg on tg.taggable_model = "Intervention" and tg.taggable_id = i.id left join tag t on tg.tag_id = t.id'.$extrajoin)
+      ->addComponent('s', 'Seance s')
+      ->where('t.triple_namespace = "loi" and t.triple_key = "numero" and t.triple_value = ?', $loi_id);
+    if ($dossier) {
+      $this->query->addWhere('(sc.section_id = ? OR sc.id = ?)', array($dossier, $dossier));
+    }
+    myTools::templatize($this, $request, 'nosdeputes.fr_seances_for_'.$loi_id.'_'.$dossier);
+    $this->res = array('seances' => array());
+    $this->breakline = 'seance';
+    $this->champs = array('seance' => 'seance');
+    foreach ($this->query->execute() as $s) {
+      $this->res['seances'][] = array('seance' => $s['id']);
+    }
+  }
+
   private function initSeance(sfWebRequest $request) {
     $seance_id = $request->getParameter('seance');
     $this->seance = Doctrine::getTable('Seance')->find($seance_id);
@@ -146,17 +183,12 @@ class interventionActions extends sfActions
   }
 
   public function executeSeanceAPI(sfWebRequest $request) {
-    $query = $this->initSeance($request);
-    if ($section_id = $request->getParameter('dossier')) {
-      if (preg_match('/[a-z]/', $section_id)) {
-        $section_id = Doctrine::getTable('Section')->findOneByIdDossierAn(strtolower($section_id));
-        $this->forward404Unless($section_id);
-        $section_id = $section_id->id;
-      }
-      $query->leftJoin('i.Section s')->addWhere('s.section_id = ? OR s.id = ?', array($section_id, $section_id));
+    $this->query = $this->initSeance($request);
+    if ($section_id = $this->getSectionId()) {
+      $this->query->leftJoin('i.Section s')->addWhere('s.section_id = ? OR s.id = ?', array($section_id, $section_id));
     }
     myTools::templatize($this, $request, 'nosdeputes.fr_seance'.$this->seance->id.'_'.$this->seance->updated_at);
-    $this->interventions = $query->fetchArray();
+    $this->interventions = $this->query->fetchArray();
     $this->res = array('seance' => array());
     $this->breakline = 'intervention';
     $this->multi = array('tag' => 'tag', 'loi' => 'loi', 'amendement' => 'amendement');
