@@ -15,22 +15,22 @@ $errors = 0;
 while(<STDIN>) {
     chomp;
     @csv = split(/;/);
-    if (!$data[$csv[0]]) {
-	$data[$csv[0]] = $csv[2];
-    }elsif ($data[$csv[0]-1] ne 'CMP') {
-	print "$id: duplicated entry ".$csv[0]."\n";
+    if (!$data[$csv[4]]) {
+	$data[$csv[4]] = $csv[6];
+    }elsif ($data[$csv[4]-1] ne 'CMP') {
+	print "$id: duplicated entry ".$csv[4]."\n";
 	$errors++;
     }
-    if ($csv[4] !~ /^http/) {
-	print "$id: not valid url ".$csv[4]."\n" ;
+    if ($csv[8] !~ /^http/) {
+	print "$id: not valid url ".$csv[8]."\n" ;
 	$errors++;
-    }elsif($csv[2] =~ /assemblee|senat/ && $csv[4] !~ /$csv[2]/) {
-	print "$id: not a chambre url ".$csv[4]."\n";
+    }elsif($csv[6] =~ /assemblee|senat/ && $csv[8] !~ /$csv[6]/) {
+	print "$id: not a chambre url ".$csv[8]."\n";
 	$errors++;
     }
 }
 
-for ($i = 0 ; $i < $#csv ; $i++) {
+for ($i = 0 ; $i < $#data ; $i++) {
     unless($data[$i]) {
 	print "$id: missing step $i\n" if ($data[$i+1] ne 'CMP');
 	$errors++;
