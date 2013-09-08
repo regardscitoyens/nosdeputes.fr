@@ -95,7 +95,7 @@ class interventionActions extends sfActions
     if ($section_id != "") {
       if (preg_match('/[a-z]/', $section_id)) {
         $section_id = Doctrine::getTable('Section')->findOneByIdDossierAn(strtolower($section_id));
-        $this->forward404Unless($section_id);
+        //$this->forward404Unless($section_id);
         $section_id = $section_id->id;
       }
     }
@@ -118,7 +118,7 @@ class interventionActions extends sfActions
     if ($dossier) {
       $this->query->addWhere('(sc.section_id = ? OR sc.id = ?)', array($dossier, $dossier));
     }
-    myTools::templatize($this, $request, 'nosdeputes.fr_seances_for_'.$loi_id.'_'.$dossier);
+    myTools::templatize($this, $request, 'nosdeputes.fr_seances_'.$loi_id.'_'.$dossier);
     $this->res = array('seances' => array());
     $this->breakline = 'seance';
     $this->champs = array('seance' => 'seance');
@@ -184,7 +184,7 @@ class interventionActions extends sfActions
 
   public function executeSeanceAPI(sfWebRequest $request) {
     $this->query = $this->initSeance($request);
-    if ($section_id = $this->getSectionId()) {
+    if ($section_id = $this->getSectionId($request)) {
       $this->query->leftJoin('i.Section s')->addWhere('s.section_id = ? OR s.id = ?', array($section_id, $section_id));
     }
     myTools::templatize($this, $request, 'nosdeputes.fr_seance'.$this->seance->id.'_'.$this->seance->updated_at);
@@ -215,11 +215,11 @@ class interventionActions extends sfActions
       $i['intervenant_slug'] = '';
       $i['intervenant_groupe'] = '';
       if ($int['parlementaire_id']) {
-          $i['intervenant_nom'] = $this->parlementaires[$int['parlementaire_id']]->getNom();
-          $i['intervenant_slug'] = $this->parlementaires[$int['parlementaire_id']]->getSlug();
-          $i['intervenant_goupe'] = $this->parlementaires[$int['parlementaire_id']]->getGroupeAcronyme();
+        $i['intervenant_nom'] = $this->parlementaires[$int['parlementaire_id']]->getNom();
+        $i['intervenant_slug'] = $this->parlementaires[$int['parlementaire_id']]->getSlug();
+        $i['intervenant_goupe'] = $this->parlementaires[$int['parlementaire_id']]->getGroupeAcronyme();
       }else if ($int['personnalite_id']) {
-          $i['intervenant_nom'] = $this->personnalites[$int['personnalite_id']]->getNom();
+        $i['intervenant_nom'] = $this->personnalites[$int['personnalite_id']]->getNom();
       }
       $i['nbmots'] = $int['nb_mots'];
       $i['contenu'] = $int['intervention'];
