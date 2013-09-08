@@ -180,7 +180,7 @@ class interventionActions extends sfActions
 
   public function executeSeanceAPI(sfWebRequest $request) {
     $this->query = $this->initSeance($request);
-    if ($section_id = $this->getSectionId()) {
+    if ($section_id = $this->getSectionId($request)) {
       $this->query->leftJoin('i.Section s')->addWhere('s.section_id = ? OR s.id = ?', array($section_id, $section_id));
     }
     myTools::templatize($this, $request, 'nossenateurs.fr_seance'.$this->seance->id.'_'.$this->seance->updated_at);
