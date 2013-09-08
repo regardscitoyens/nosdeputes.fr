@@ -2,8 +2,8 @@
 
 class printDumpAmendementsLoiCsvTask extends sfBaseTask {
   protected function configure() {
-    $this->namespace = 'dump';
-    $this->name = 'AmendementsLoiCsv';
+    $this->namespace = 'print';
+    $this->name = 'dumpAmendementsLoiCsv';
     $this->briefDescription = 'dump un csv contenant tous les amendements sur un texte de loi';
     $this->addArgument('loi_id', sfCommandArgument::REQUIRED, 'Identifiant de loi, exemple 20112012-592'); 
     $this->addArgument('format', sfCommandArgument::REQUIRED, 'Numero de loi'); 

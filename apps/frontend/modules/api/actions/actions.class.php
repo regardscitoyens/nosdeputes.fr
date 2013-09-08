@@ -282,4 +282,14 @@ class apiActions extends sfActions
       $this->getResponse()->setContentType('text/plain; charset=utf-8');
     }
   }
+
+  public function executeAmendements(sfWebRequest $request) {
+    chdir(sfConfig::get('sf_root_dir'));
+    $this->task = new printDumpAmendementsLoiCsvTask($this->dispatcher, new sfFormatter());
+    $this->loi = $request->getParameter('loi');
+    $this->format = $request->getParameter('format');
+    $this->setLayout(false);
+    myTools::headerize($this, $request, 'nosdeputes.fr_amendements_'.$this->loi, false);
+  }
+
 }

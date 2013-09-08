@@ -251,7 +251,15 @@ amendement_id:
 amendement:
   url: /amendement/:loi/:numero
   param: {module: amendement, action: show}
-
+api_amendements_csv:
+  url: /amendements/:loi/csv
+  param: {module: api, action: amendements, format: csv}
+api_amendements_xml:
+  url: /amendements/:loi/xml
+  param: {module: api, action: amendements, format: xml}
+api_amendements_json:
+  url: /amendements/:loi/json
+  param: {module: api, action: amendements, format: json}
 find_amendements_by_loi_and_numero:
   url: /amendements/:loi/:numero
   param: {module: amendement, action: find}
