@@ -86,6 +86,43 @@ class interventionActions extends sfActions
     //    $this->response->setDescription($this->intervention->intervention);
   }
 
+  private function getSectionId(sfWebRequest $request) {
+    $section_id = $request->getParameter('dossier', '');
+    if ($section_id != "") {
+      if (preg_match('/[a-z]/', $section_id)) {
+        $section_id = Doctrine::getTable('Section')->findOneByIdDossierInstitution(strtolower($section_id));
+        //$this->forward404Unless($section_id);
+        $section_id = $section_id->id;
+      }
+    }
+    return $section_id;
+  }
+
+  public function executeListSeancesByLoi(sfWebRequest $request) {
+    $loi_id = $request->getParameter('loi');
+    $this->forward404Unless($loi_id);
+    $dossier = $this->getSectionId($request);
+    $extrajoin = "";
+    if ($dossier) {
+      $extrajoin = " left join section sc on i.section_id = sc.id";
+    }
+    $this->query = new Doctrine_RawSql();
+    $this->query->select('distinct({s.id})')
+      ->from('seance s left join intervention i on s.id = i.seance_id left join tagging tg on tg.taggable_model = "Intervention" and tg.taggable_id = i.id left join tag t on tg.tag_id = t.id'.$extrajoin)
+      ->addComponent('s', 'Seance s')
+      ->where('t.triple_namespace = "loi" and t.triple_key = "numero" and t.triple_value = ?', $loi_id);
+    if ($dossier) {
+      $this->query->addWhere('(sc.section_id = ? OR sc.id = ?)', array($dossier, $dossier));
+    }
+    myTools::templatize($this, $request, 'nossenateurs.fr_seances_'.$loi_id.'_'.$dossier);
+    $this->res = array('seances' => array());
+    $this->breakline = 'seance';
+    $this->champs = array('seance' => 'seance');
+    foreach ($this->query->execute() as $s) {
+      $this->res['seances'][] = array('seance' => $s['id']);
+    }
+  }
+
   private function initSeance(sfWebRequest $request) {
     $seance_id = $request->getParameter('seance');
     $this->seance = Doctrine::getTable('Seance')->find($seance_id);
@@ -130,7 +167,11 @@ class interventionActions extends sfActions
     $this->sections = array();
     foreach ($sects as $s) {
 	if ($s->section_id) {
-	   $this->sections[$s->section_id] = $s->Section;
+	   $sec = $s->Section;
+	   $this->sections[$s->section_id] = $sec;
+	   if ($sec->id != $sec->section_id && !isset($this->sections[$sec->section_id])) {
+	       $this->sections[$sec->section_id] = $sec->Section;
+	   }
         }
     }
 
@@ -138,74 +179,77 @@ class interventionActions extends sfActions
   }
 
   public function executeSeanceAPI(sfWebRequest $request) {
-	$query = $this->initSeance($request);
-        myTools::templatize($this, $request, 'nosdeputes.fr_seance'.$this->seance->id.'_'.$this->seance->updated_at);
-        $this->interventions = $query->fetchArray();
-        $this->res = array('seance' => array());
-        $this->breakline = 'intervention';
-        $this->multi = array('tag' => 'tag', 'loi' => 'loi', 'amendement' => 'amendement');
-        foreach($this->interventions as $int) {
-           $i['seance_id'] = $int['seance_id'];
-           $i['seance_titre'] = $this->seance->titre;
-           $i['seance_lieu'] = ($this->orga) ? $this->orga->getNom() : 'Hémicycle';
-           $i['date'] = $int['date'];
-           $i['heure'] = $this->seance->moment;
-           $i['type'] = $int['type'];
-           $i['timestamp'] = $int['timestamp'];
-           $i['section'] = '';
-           $i['soussection'] = '';
-           if ($int['section_id']) {
-	        if ($this->sections[$int['section_id']]->section_id) {
-        	   	$i['section'] = $this->sections[$this->sections[$int['section_id']]->section_id]->titre;
-	        }else{
-			$i['section'] = $this->sections[$int['section_id']]->titre;
-		}
-           	$i['soussection'] = $this->sections[$int['section_id']]->titre;
-	   }
-           $i['intervenant_nom'] = '';
-           $i['intervenant_fonction'] = $int['fonction'];
-	   $i['intervenant_slug'] = '';
-	   $i['intervenant_groupe'] = '';
-           if ($int['parlementaire_id']) {
-           	$i['intervenant_nom'] = $this->parlementaires[$int['parlementaire_id']]->getNom();
-                $i['intervenant_slug'] = $this->parlementaires[$int['parlementaire_id']]->getSlug();
-                $i['intervenant_goupe'] = $this->parlementaires[$int['parlementaire_id']]->getGroupeAcronyme();
-           }else if ($int['personnalite_id']) {
-                $i['intervenant_nom'] = $this->personnalites[$int['personnalite_id']]->getNom();
-	   }
-           $i['nbmots'] = $int['nb_mots'];
-           $i['contenu'] = $int['intervention'];
-	   $qtag = Doctrine::getTable('tag')->createQuery('t');
-	   $qtag->from('Tagging tg, tg.Tag t');
-	   $qtag->andWhere('tg.taggable_id = ?', $int['id']);
-           $qtag->andWhere('tg.taggable_model = "Intervention"');
-           $tags = array();
-           $lois = array();
-           $amendements = array();
-           foreach($qtag->fetchArray() as $tag) {
-                if ($tag['Tag']['triple_namespace'] == 'loi') {
-			if ($tag['Tag']['triple_key'] == 'numero') {
-				$lois[] = $tag['Tag']['triple_value'];
-			}else if ($tag['Tag']['triple_key'] == 'amendement') {
-				$amendements[] = $tag['Tag']['triple_value'];
-			}
-                }else{
-			$tags[] = $tag['Tag']['name'];
-		}
-           }
-           $i['tags'] = myTools::array2hash($tags, 'tag');
-           $i['amendements'] = myTools::array2hash($amendements, 'amendement');
-           $i['lois'] = myTools::array2hash($lois, 'loi');
-           $i['source'] = $int['source'];
-           $i['id'] = $int['id'];
-           $this->res['seance'][] = array('intervention' => $i);
-	   if (!isset($this->champs)) {
-                $this->champs = array();
-		foreach($i as $k => $v) {
-			$this->champs[$k] = $k;
-                }
-           }
-       }
+    $this->query = $this->initSeance($request);
+    if ($section_id = $this->getSectionId()) {
+      $this->query->leftJoin('i.Section s')->addWhere('s.section_id = ? OR s.id = ?', array($section_id, $section_id));
+    }
+    myTools::templatize($this, $request, 'nossenateurs.fr_seance'.$this->seance->id.'_'.$this->seance->updated_at);
+    $this->interventions = $this->query->fetchArray();
+    $this->res = array('seance' => array());
+    $this->breakline = 'intervention';
+    $this->multi = array('tag' => 'tag', 'loi' => 'loi', 'amendement' => 'amendement');
+    foreach($this->interventions as $int) {
+      $i['seance_id'] = $int['seance_id'];
+      $i['seance_titre'] = $this->seance->titre;
+      $i['seance_lieu'] = ($this->orga) ? $this->orga->getNom() : 'Hémicycle';
+      $i['date'] = $int['date'];
+      $i['heure'] = $this->seance->moment;
+      $i['type'] = $int['type'];
+      $i['timestamp'] = $int['timestamp'];
+      $i['section'] = '';
+      $i['soussection'] = '';
+      if ($int['section_id']) {
+        if ($this->sections[$int['section_id']]->section_id) {
+          $i['section'] = $this->sections[$this->sections[$int['section_id']]->section_id]->titre;
+        }else{
+          $i['section'] = $this->sections[$int['section_id']]->titre;
+        }
+          $i['soussection'] = $this->sections[$int['section_id']]->titre;
+      }
+      $i['intervenant_nom'] = '';
+      $i['intervenant_fonction'] = $int['fonction'];
+      $i['intervenant_slug'] = '';
+      $i['intervenant_groupe'] = '';
+      if ($int['parlementaire_id']) {
+        $i['intervenant_nom'] = $this->parlementaires[$int['parlementaire_id']]->getNom();
+        $i['intervenant_slug'] = $this->parlementaires[$int['parlementaire_id']]->getSlug();
+        $i['intervenant_goupe'] = $this->parlementaires[$int['parlementaire_id']]->getGroupeAcronyme();
+      }else if ($int['personnalite_id']) {
+        $i['intervenant_nom'] = $this->personnalites[$int['personnalite_id']]->getNom();
+      }
+      $i['nbmots'] = $int['nb_mots'];
+      $i['contenu'] = $int['intervention'];
+      $qtag = Doctrine::getTable('tag')->createQuery('t');
+      $qtag->from('Tagging tg, tg.Tag t');
+      $qtag->andWhere('tg.taggable_id = ?', $int['id']);
+      $qtag->andWhere('tg.taggable_model = "Intervention"');
+      $tags = array();
+      $lois = array();
+      $amendements = array();
+      foreach($qtag->fetchArray() as $tag) {
+        if ($tag['Tag']['triple_namespace'] == 'loi') {
+          if ($tag['Tag']['triple_key'] == 'numero') {
+            $lois[] = $tag['Tag']['triple_value'];
+          }else if ($tag['Tag']['triple_key'] == 'amendement') {
+            $amendements[] = $tag['Tag']['triple_value'];
+          }
+        }else{
+          $tags[] = $tag['Tag']['name'];
+        }
+      }
+      $i['tags'] = myTools::array2hash($tags, 'tag');
+      $i['amendements'] = myTools::array2hash($amendements, 'amendement');
+      $i['lois'] = myTools::array2hash($lois, 'loi');
+      $i['source'] = $int['source'];
+      $i['id'] = $int['id'];
+      $this->res['seance'][] = array('intervention' => $i);
+      if (!isset($this->champs)) {
+        $this->champs = array();
+        foreach($i as $k => $v) {
+          $this->champs[$k] = $k;
+        }
+      }
+    }
   }
 
   public function executeSeance(sfWebRequest $request) {
