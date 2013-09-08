@@ -248,8 +248,8 @@ class apiActions extends sfActions
   public function executeAmendements(sfWebRequest $request) {
     chdir(sfConfig::get('sf_root_dir'));
     $this->task = new printDumpAmendementsLoiCsvTask($this->dispatcher, new sfFormatter());
-    $this->loi = $request->getParameter('loi');
-    $this->format = $request->getParameter('format');
+    $this->loi = preg_replace('/[^0-9a-z\-]/', '', $request->getParameter('loi'));
+    $this->format = preg_replace('/[^a-z]/', '', $request->getParameter('format'));
     $this->setLayout(false);
     myTools::headerize($this, $request, 'nosdeputes.fr_amendements_'.$this->loi, false);
   }
