@@ -114,6 +114,9 @@ class interventionActions extends sfActions
     if ($dossier) {
       $this->query->addWhere('(sc.section_id = ? OR sc.id = ?)', array($dossier, $dossier));
     }
+    if ($request->getParameter('commission')) {
+      $this->query->addWhere('s.type = "commission"');
+    }
     myTools::templatize($this, $request, 'nossenateurs.fr_seances_'.$loi_id.'_'.$dossier);
     $this->res = array('seances' => array());
     $this->breakline = 'seance';
