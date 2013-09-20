@@ -16,7 +16,7 @@ class tagSeanceTask extends sfBaseTask
     foreach($interventions as $i) {
       $i = preg_replace('/\([^\)]+\)/', '', $i);
       $i = preg_replace('/&#339;/', 'oe', $i['intervention']);
-      foreach(preg_split('/[\s\,\;\.\:\_\(\)\&\#\<\>\']+/i', $i) as $w) {
+      foreach(preg_split('/[\s\,\;\.\:\_\(\)\&\#\<\>\'\’]+/i', $i) as $w) {
 	if (!preg_match('/^[A-Z]+$/', $w))
 	  $w = strtolower($w);
 	if (strlen($w)>$minsize && preg_match('/[a-z]/i', $w)) {
