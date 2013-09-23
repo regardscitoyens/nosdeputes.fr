@@ -10,10 +10,9 @@
  */
 class apiActions extends sfActions
 {
-  public function executeSynthese(sfWebRequest $request)
-  {
-    
+  public function executeSynthese(sfWebRequest $request) {
   }
+
   public function executeDocument(sfWebRequest $request)
   {
     $class = $request->getParameter('class');
@@ -25,7 +24,7 @@ class apiActions extends sfActions
       return $this->redirect('api/parlementaire?slug='.$o->slug.'&format='.$format);
     }
     $slug = $class.'_'.$id;
-    $date = $o->updated_at; 
+    $date = $o->updated_at;
     $this->res = array();
     $this->res[strtolower($class)] = $o->toArray();
     myTools::templatize($this, $request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
@@ -132,7 +131,7 @@ class apiActions extends sfActions
     myTools::templatize($this, $request, 'nosdeputes.fr_synthese_'.date('Y-m-d'));
   }
 
-  public function executeListParlementaires(sfWebRequest $request) 
+  public function executeListParlementaires(sfWebRequest $request)
   {
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
     if ($request->getParameter('current') == true) {
@@ -159,7 +158,7 @@ class apiActions extends sfActions
     myTools::templatize($this, $request, 'nosdeputes.fr_deputes'.($request->getParameter('current') == true ? "_en_mandat" : "").date('Y-m-d'));
   }
 
-  public function executeParlementaire(sfWebRequest $request) 
+  public function executeParlementaire(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
     $this->forward404Unless($slug);
@@ -252,6 +251,67 @@ class apiActions extends sfActions
     $this->format = preg_replace('/[^a-z]/', '', $request->getParameter('format'));
     $this->setLayout(false);
     myTools::headerize($this, $request, 'nosdeputes.fr_amendements_'.$this->loi, false);
+  }
+
+  public function executeLinksAmendements(sfWebRequest $request) {
+    $id = $request->getParameter('loi');
+    $amdmts = Doctrine_Query::create()
+      ->select('pa.parlementaire_id, pa.amendement_id, a.content_md5 as uniq_key, a.sujet as amendement_sujet, a.sort as amendement_sort')
+      ->from('ParlementaireAmendement pa')
+      ->innerJoin('pa.Amendement a')
+      ->where('a.texteloi_id = ?', $id)
+      ->andWhere('a.sort <> ?', "Rectifié")
+      ->orderBy('a.id')
+      ->fetchArray();
+    $parls = array();
+    $this->links = array();
+    $sorts = array();
+    $sujets = array();
+    foreach ($amdmts as $pa) {
+      if (!isset($sorts[$pa['amendement_sort']]))
+        $sorts[$pa['amendement_sort']] = 1;
+      if (!isset($sorts[$pa['amendement_sujet']]))
+        $sorts[$pa['amendement_sujet']] = 1;
+      if (!isset($parls[$pa['parlementaire_id']]))
+        $parls[$pa['parlementaire_id']] = array('a' => 1);
+      else $parls[$pa['parlementaire_id']]['a'] += 1;
+    }
+    foreach (Doctrine_Query::create()->select('p.id, p.nom, p.slug, p.groupe_acronyme, p.place_hemicycle')->from('Parlementaire p')->whereIn('p.id', array_keys($parls))->fetchArray() as $parl) {
+      $parls[$parl['id']]['n'] = $parl['nom'];
+      $parls[$parl['id']]['s'] = $parl['slug'];
+      $parls[$parl['id']]['g'] = $parl['groupe_acronyme'];
+      $parls[$parl['id']]['p'] = $parl['place_hemicycle'];
+    }
+    $curra = 0;
+    $prevkey = 0;
+    $ident = array();
+    foreach ($amdmts as $pa) {
+      if ($curra != $pa['amendement_id']) {
+        if ($prevkey) {
+          if (!isset($ident[$prevkey]))
+            $ident[$prevkey] = $cosign;
+          else $ident[$prevkey] = array_merge($ident[$prevkey], $cosign);
+        }
+        $prevkey = $pa['uniq_key'];
+        $curra = $pa['amendement_id'];
+        $cosign = array();
+      } else foreach ($cosign as $co)
+        $this->addLink($pa, $co, 2);
+      $cosign[] = $pa['parlementaire_id'];
+      if (isset($ident[$pa['uniq_key']]))
+        foreach ($ident[$pa['uniq_key']] as $i)
+          $this->addLink($pa, $i, 1);
+    }
+    $this->res = array('sorts' => $sorts, 'sujets' => $sujets, 'parlementaires' => $parls, 'links' => array_values($this->links));
+    myTools::templatize($this, $request, 'nosdeputes.fr_amendements_'.$id.'_'.date('Y-m-d'));
+    $this->breakline = '';
+  }
+
+  private function addLink($parl_amdt, $parl, $weight) {
+    $lid = $parl_amdt['uniq_key'].'-'.min($parl_amdt['parlementaire_id'], $parl).'-'.max($parl_amdt['parlementaire_id'], $parl);
+    if (!isset($this->links[$lid]))
+      $this->links[$lid] = array('1' => $parl_amdt['parlementaire_id'], '2' => $parl, 'w' => $weight);
+    else $this->links[$lid]['w'] += $weight;
   }
 
 }

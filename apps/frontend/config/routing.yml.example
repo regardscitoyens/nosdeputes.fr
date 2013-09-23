@@ -282,6 +282,9 @@ api_amendements_xml:
 api_amendements_json:
   url: /%LEGISLATURE%/amendements/:loi/json
   param: {module: api, action: amendements, format: json}
+get_links_amendements_by_loi_json:
+  url: /%LEGISLATURE%/amendements/:loi/links/json
+  param: {module: api, action: linksAmendements, format: json}
 find_amendements_by_loi_and_numero:
   url: /%LEGISLATURE%/amendements/:loi/:numero
   param: {module: amendement, action: find}
