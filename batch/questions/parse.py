@@ -54,8 +54,11 @@ def extracttext(t):
     return linebreaks_re.sub(' ', lastbr_re.sub('', text))
 
 def extractspan(t):
-    span = t.findNextSibling('span', attrs={'class': 'contenu'})
-    return span.decodeContents()
+    try:
+        span = t.findNextSibling('span', attrs={'class': 'contenu'})
+        return span.decodeContents()
+    except:
+        exit(1)
 
 re_clean_html = [(re.compile(r'<//[^>]*>'), ''),
 		 (re.compile(r"(<[^>]*='[^>'\"]*')['\"]([^>]*>)"), r'\1\2'),
