@@ -68,7 +68,7 @@ my $identiques = 0;
 my $num_ident = -1;
 
 sub numero {
-    $line =~ s/^.*content="//; 
+    $line =~ s/^.*content="//;
     $line =~ s/".*$//;
     $line =~ s/[\(\)]//g;
     if ($line =~ /^\s*(\d+)\s+([1-9a-zA-Z].*)$/i) {
@@ -81,7 +81,7 @@ sub numero {
 		$amdmt{'rectif'} = $1;
 	    } else {
 		$amdmt{'rectif'} = 1;
-	    } 
+	    }
 	    if ($suite =~ /bis/i) {
 		$amdmt{'rectif'}++;
 	    }
@@ -159,14 +159,14 @@ sub identiques {
 	$line =~ s/\s*<\/?[^t][^\>]*>//g;
         $line =~ s/<t[dr]>/ /ig;
 	$line =~ s/ +/ /g;
-	if ($line =~ /^.*Adt\s*n°\s*(\d+).*de\s*(.*)\s*$/) {
-    	    $num = $1;
+	if ($line =~ /^.*Adt\s*n°\s*(\d+).*\Wde\s*(.*)\s*$/) {
+        $num = $1;
 	    $line = $2;
 	    if ($num_ident == -1) {
 		$num_ident = $num;
 		$amdmt{'serie'} = $num_ident."-";
 	    }
-	    if ($amdmt{'numero'} != $num_ident) {
+	    if ($amdmt{'numero'} != $num) {
 		auteurs();
 	    }
 	    if ($num > $num_ident + 1) {
@@ -213,21 +213,21 @@ foreach $line (split /\n/, $string)
 {
 #print "TEST: $identiques / $presente / $texte / $line\n";
   if ($line =~ /meta.*content=/) {
-	if ($line =~ /name="DATE_BADAGE"/i) { 
-	    $line =~ s/^.*content="//i; 
+	if ($line =~ /name="DATE_BADAGE"/i) {
+	    $line =~ s/^.*content="//i;
 	    $line =~ s/".*$//;
 	    if ($line =~ /(\d{1,2})\/(\d{2})\/(\d{4})/) {
 		$amdmt{'date'} = $3.'-'.$2.'-'.sprintf('%02d', $1);
 	    }
 	} elsif ($line =~ /name="DESIGNATION_ARTICLE"/i && !$amdmt{'sujet'}) {
-	    $line =~ s/^.*content="//i; 
+	    $line =~ s/^.*content="//i;
 	    $line =~ s/"\s*(name|\>).*$//;
 	    $amdmt{'sujet'} = $line;
-	} elsif ($line =~ /name="SORT_EN_SEANCE"/i) { 
-	    $line =~ s/^.*content="//i; 
+	} elsif ($line =~ /name="SORT_EN_SEANCE"/i) {
+	    $line =~ s/^.*content="//i;
 	    $line =~ s/".*$//;
 	    sortseance();
-	} elsif ($line =~ /name="NUM_AM(TXT|ENDG?)"/i) { 
+	} elsif ($line =~ /name="NUM_AM(TXT|ENDG?)"/i) {
 	    numero();
 	} elsif ($line =~ /name="AUTEURS".*content="\s*([^"]*)\s*"/) {
 	    $tmpauteurs = $1;
@@ -249,7 +249,7 @@ foreach $line (split /\n/, $string)
   }
   if ($line =~ /(NOEXTRACT|EXPOSE)/i) {
 	if (!$amdmt{'numero'} && ($line =~ /class="numamendement"/i || $line =~ /class="titreamend".*num_partie/i)) {
-	    if ($line =~ /\<num_amend\>\s*(.*)\s*\<\/num_amend\>/i) { 
+	    if ($line =~ /\<num_amend\>\s*(.*)\s*\<\/num_amend\>/i) {
 	    	$line = $1;
 	    	numero();
 	    } elsif ($line =~ /\<\/num_partie\>\s*-\s*(.*)\<\/p\>/i) {
@@ -285,7 +285,7 @@ foreach $line (split /\n/, $string)
 	} elsif ($line =~ /\<div.*\>.*M[\.Mml]/ && !($line =~ /EXPOSE SOMMAIRE/i)) {
 	    if ($identiques == 1) {
 		identiques();
-	    } elsif ($presente == 1) {	
+	    } elsif ($presente == 1) {
 		auteurs();
 	    }
 	} elsif ($identiques == 1 && $line =~ /\<div\>.*(\d+).*\<\/div\>/) {
@@ -326,7 +326,7 @@ foreach $line (split /\n/, $string)
 	} else {
 	    texte();
 	}
-  } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le [Gg]ouvern)/) { 
+  } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le [Gg]ouvern)/) {
 	auteurs();
   } elsif ($line =~ /<p style=".*text-indent:/i) {
         irrecevable();
@@ -356,7 +356,6 @@ if ($num_ident > 0) {
 if (!$amdmt{'auteurs'}) {
   $amdmt{'auteurs'} = $tmpauteurs;
 }
-
 $amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
 $amdmt{'auteurs'} =~ s/([a-z])\s+(M[\.Mml])/\1, \2/g;
 $amdmt{'auteurs'} =~ s/,\s*M[\s\.mle]+\s*,/,/g;
