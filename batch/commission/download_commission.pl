@@ -29,7 +29,7 @@ while ($ok) {
 	    open FILE, ">:utf8", "html/$file.tmp";
 	    print FILE $a->content;
 	    close FILE;
-	    rename "html/$file.tmp", "html/$file"; 
+	    rename "html/$file.tmp", "html/$file";
 	    $a->back();
 	}
     }
@@ -66,6 +66,12 @@ if ($legislature == 13) {
   push (@url, "http://www.assemblee-nationale.fr/14/cr-mimage/12-13/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-micoutsprod/11-12/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-micoutsprod/12-13/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-cefugy/12-13/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-cefugy/13-14/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-cesncm/12-13/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-cesncm/13-14/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-ceaffcahuzac/12-13/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-ceaffcahuzac/13-14/index.asp");
 }
 
 $a = WWW::Mechanize->new(autocheck => 0);
@@ -77,7 +83,7 @@ foreach $url (@url) {
     $p = HTML::TokeParser->new(\$content);
 
     $cpt = 0;
-    
+
     while ($t = $p->get_tag('a')) {
 	$txt = $p->get_text('/a');
 	if ($txt =~ /compte rendu|mission/i && $t->[1]{href} =~ /\d\.asp/) {
