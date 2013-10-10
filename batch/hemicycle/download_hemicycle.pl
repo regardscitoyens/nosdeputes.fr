@@ -30,30 +30,30 @@ foreach $url (@url) {
     $p = HTML::TokeParser->new(\$content);
     $cpt = 0;
     while ($t = $p->get_tag('a')) {
-	$txt = $p->get_text('/a');
-	if ($txt =~ /(\d+[\Serm]+\s+\S+ance|S\S+ance uniq)/i && $t->[1]{href} !~ /provisoire/) {
+    if ($t->[1]{href} =~ /^(http:\/\/www\.assemblee-nationale\.fr\/$legislature\/cri\/\d+-\d+[\-extra\d]*\/)?\d+\.asp$/) {
           $a->get($t->[1]{href});
           $file = $a->uri();
           if ($file !~ /provisoire/) {
 	    $file =~ s/\//_/gi;
 	    $file =~ s/\#.*//;
-	    #on ne peut pas quitter dès le premier, seulement au bout de 
+	    $newcontent = $a->content;
+	    $a->back();
+	    #on ne peut pas quitter dès le premier, seulement au bout de
 	    #trois fois on est sur qu'il n'y a pas de nouveaux fichiers
 	    $size = -s "html/$file";
 	    if ($size) {
-		$cpt++;
-		last if ($cpt > 3);
-		next;
+            $cpt++;
+            last if ($cpt > 3);
+            next;
 	    }
 	    $cpt = 0;
-	    $content = $a->content;
-	    next if ($content =~ /cours de finalisation\s*----/) ;
-	    print "$file\n";
-	    open FILE, ">:utf8", "html/$file";
-	    print FILE $content;
-	    close FILE;
-          }
-	  $a->back();
+	    if ($newcontent !~ /(cours de finalisation\s*----|version provisoire mise en ligne)/) {
+	        print "$file\n";
+	        open FILE, ">:utf8", "html/$file";
+	        print FILE $newcontent;
+	        close FILE;
+        }
+      }
 	}
     }
 }
