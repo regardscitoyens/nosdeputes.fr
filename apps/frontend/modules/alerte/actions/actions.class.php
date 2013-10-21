@@ -17,7 +17,7 @@ class alerteActions extends sfActions
     $parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->forward404Unless($parlementaire);
     $alerte = new Alerte();
-    $alerte->query = 'Parlementaire='.urlencode($parlementaire);
+    $alerte->query = 'Parlementaire='.$parlementaire;
     $alerte->no_human_query = 1;
     $alerte->titre = 'Recherche relative aux travaux de '.$parlementaire->nom;
     $this->submit = 'Créer';
@@ -51,7 +51,7 @@ class alerteActions extends sfActions
   }
 
 
-  public function executeCreate(sfWebRequest $request) 
+  public function executeCreate(sfWebRequest $request)
   {
     $alerte = new Alerte();
     $alerte->query = $request->getParameter('query');
@@ -60,7 +60,7 @@ class alerteActions extends sfActions
     $this->form = $this->processForm($request, $alerte);
     $this->setTemplate('form');
   }
-  public function executeDelete(sfWebRequest $request) 
+  public function executeDelete(sfWebRequest $request)
   {
     $this->forward404Unless($this->alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
     if ($request->isMethod('post')) {
@@ -73,7 +73,7 @@ class alerteActions extends sfActions
     }
   }
 
-  public function executeEdit(sfWebRequest $request) 
+  public function executeEdit(sfWebRequest $request)
   {
     $this->forward404Unless($alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
     $this->form =  $this->processForm($request, $alerte);
@@ -81,7 +81,7 @@ class alerteActions extends sfActions
     $this->setTemplate('form');
   }
 
-  public function executeConfirmation(sfWebRequest $request) 
+  public function executeConfirmation(sfWebRequest $request)
   {
     $this->forward404Unless($alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
     $alerte->confirmed = 1;
@@ -134,7 +134,7 @@ class alerteActions extends sfActions
     return $form;
   }
   private function confirmeAlerte($alerte) {
-    $message = $this->getMailer()->compose(array('nosdeputes@nosdeputes.fr' => '"Regards Citoyens"'), 
+    $message = $this->getMailer()->compose(array('nosdeputes@nosdeputes.fr' => '"Regards Citoyens"'),
 					   $alerte->email,
 					   '[NosDeputes.fr] Confirmation d\'Alerte email - '.$alerte->titre);
     $text = $this->getPartial('mail/sendConfirmationAlerte', array('alerte' => $alerte));
