@@ -6,6 +6,7 @@ class makeLiasseTask extends sfBaseTask {
     $this->name = 'Liasse';
     $this->briefDescription = 'Génère PDF imprimable des amendements dans l\'ordre du texte pour un projet de loi';
     $this->addArgument('numero_loi', sfCommandArgument::REQUIRED, 'Numéro de loi');
+    $this->addArgument('sort', sfCommandArgument::OPTIONAL, 'Sort des amendements');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
  }
 
@@ -15,7 +16,7 @@ class makeLiasseTask extends sfBaseTask {
     $amdmts = Doctrine::getTable('Amendement')->findByTexteloiId($arguments['numero_loi']);
     if ($amdmts) {
       $amdmts_idx = array();
-      foreach ($amdmts as $amdmt) $amdmts_idx[$amdmt->getNumero()] = $amdmt;
+      foreach ($amdmts as $amdmt) if (!$arguments['sort'] || $arguments['sort'] ==  $amdmt->getSort()) $amdmts_idx[$amdmt->getNumero()] = $amdmt;
       echo "********************************************************************************\n";
       echo "***************************   Projet de Loi N°".sprintf("%4s",$arguments['numero_loi'])."   ***************************\n";
       echo "****************************   ".sprintf("%4s",count($amdmts))." amendements    *****************************\n";
@@ -23,7 +24,9 @@ class makeLiasseTask extends sfBaseTask {
 	if (preg_match('/(\d+)/', $line, $match))
           $num = $match[1];
         else continue;
-	$amdmt = $amdmts_idx[$num];
+    $amdmt = null;
+    if (isset($amdmts_idx[$num])) $amdmt = $amdmts_idx[$num];
+    if ($arguments['sort'] && !$amdmt) continue;
         echo "********************************************************************************\n";
         if (!$amdmt) {
 	  echo "Amendement N°".$num." : informations manquantes\n";
