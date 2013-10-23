@@ -300,6 +300,9 @@ $string =~ s/<\/?orateur>\n*//gi;
 $string =~ s/\| et \|/ et /gi;
 
 $string =~ s/##BR##([\|\/])/$1##BR##/g;
+$string =~ s/##BR##(##BR##)+/##BR##/g;
+$string =~ s/##BR##([\|\/])/$1##BR##/g;
+
 
 #print "$string\n"; exit;
 
@@ -333,6 +336,8 @@ foreach $line (split /\n/, $string)
             $nextsource = $url."#$1";
         }
     }
+
+print "$line\n";
 
     if ($line =~ /<h[1-9]+/i || $line =~ /"(sompresidence|sstitreinfo)"/) {
         $line =~ s/##BR##/ /g;
