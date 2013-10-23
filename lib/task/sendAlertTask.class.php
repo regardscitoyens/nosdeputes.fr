@@ -9,6 +9,7 @@ class sendAlertTask extends sfBaseTask
     $this->briefDescription = 'send alerts';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('verbose', null, sfCommandOption::PARAMETER_OPTIONAL, 'verbose (yes or no)', 'no');
   }
  
   protected static $period = array('HOUR' => 3600, 'DAY' => 86400, 'WEEK' => 604800, 'MONTH' => 2592000);
@@ -19,7 +20,7 @@ class sendAlertTask extends sfBaseTask
     $manager = new sfDatabaseManager($this->configuration);
     $context = sfContext::createInstance($this->configuration);
     $this->configuration->loadHelpers(array('Partial', 'Url'));
-    
+    $verbose = ($options['verbose'] == 'yes');
     $solr = new SolrConnector();
     $query = Doctrine::getTable('Alerte')->createQuery('a')->where('next_mail < NOW() OR next_mail IS NULL')->andWhere('confirmed = 1');
     foreach($query->execute() as $alerte) if (preg_match("/\w@\w/", $alerte->email)) {
@@ -32,6 +33,9 @@ class sendAlertTask extends sfBaseTask
               $query .= ' '.$match[1].':'.preg_replace('/=(.*)$/', '="$1"', $match[2]);
             else $query .= ' '.$match[1].':"'.$match[2].'"';
           }
+      if ($verbose) {
+	print "LOG: query: $query\n";
+      }
       $results = $solr->search($query, array('sort' => 'date desc', 'hl' => 'yes', 'hl.fragsize'=>500));
       $alerte->next_mail = date('Y-m-d H:i:s', time() + self::$period[$alerte->period]);
       if (! $results['response']['numFound']) {
