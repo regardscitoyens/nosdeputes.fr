@@ -337,8 +337,6 @@ foreach $line (split /\n/, $string)
         }
     }
 
-print "$line\n";
-
     if ($line =~ /<h[1-9]+/i || $line =~ /"(sompresidence|sstitreinfo)"/) {
         $line =~ s/##BR##/ /g;
         if ($line =~ /pr..?sidence de ([^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
