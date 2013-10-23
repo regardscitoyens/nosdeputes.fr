@@ -8,6 +8,7 @@ class removeSeanceTask extends sfBaseTask {
     $this->addArgument('id', sfCommandArgument::REQUIRED, 'Id de la séance à supprimer');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('withcomments', null, sfCommandOption::PARAMETER_OPTIONAL, 'force seance with comments', false);
  }
 
   protected function execute($arguments = array(), $options = array()) {
@@ -19,9 +20,12 @@ class removeSeanceTask extends sfBaseTask {
     }
     $id = $seance->id;
     print $id;
-    if (Doctrine::getTable('Commentaire')->createQuery('c')->where('c.object_type = ?', 'Intervention')->andWhere('c.object_id = ?', $id)->fetchOne()) {
-      print "Un ou plusieurs commentaires sont associés à cette séance, veillez à corriger cela en premier lieu\n";
-      return;
+    if (Doctrine_Query::create()->select('c.id')->from('Commentaire c, Intervention i')->where('i.id = c.object_id')->andWhere('c.object_type = "Intervention"')->andWhere('i.seance_id = ?', $id)->fetchOne()) {
+
+      print ": Un ou plusieurs commentaires sont associés à cette séance, veillez à corriger cela en premier lieu\n";
+      if (!$options['withcomments']) {
+          return;
+      }
     }
 
     print " - Gère les présences\n";
