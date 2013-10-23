@@ -7,7 +7,7 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
     $this->briefDescription = 'dump un csv contenant tous les amendements sur un texte de loi';
     $this->addArgument('loi_id', sfCommandArgument::REQUIRED, 'Numero de loi'); 
     $this->addArgument('format', sfCommandArgument::REQUIRED, 'Numero de loi'); 
-    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'dev');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
  }
 
