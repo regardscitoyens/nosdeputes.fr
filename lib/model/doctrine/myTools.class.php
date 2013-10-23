@@ -82,8 +82,8 @@ class myTools {
 
   public static function convertYamlToArray($string) {
     $string = preg_replace('/^\s*\[\s*"\s*/', '', $string);
-    $string = preg_replace('/\s*"\s*]\s*$/', '', $string);
-    $string = preg_replace('/",\s+"/', '","', $string);
+    $string = preg_replace('/\s*"\s*\]\s*$/', '', $string);
+    $string = preg_replace('/",\s*"/', '","', $string);
     return explode('","', $string);
   }
 
@@ -346,7 +346,7 @@ class myTools {
       echo $res;
     }
   }
-  
+
   public static function depile_assoc_csv($asso, $breakline, $multi, $alreadyline) {
     $semi = 0;
     foreach (array_keys($asso) as $k) {
@@ -360,20 +360,20 @@ class myTools {
     }
     return $semi;
   }
-  
+
   public static function depile_csv($res, $breakline, $multi, $comma = 0, $alreadyline = 0) {
     if (is_array($res)) {
       if (isset($res['organisme']) && isset($res['fonction']))
         return self::depile_csv($res['organisme']." - ".$res['fonction'], $breakline, $multi, $comma, $alreadyline);
       if (!isset($res[0])) {
-        if (array_keys($res)) 
+        if (array_keys($res))
   	return self::depile_assoc_csv($res, $breakline, $multi, $alreadyline);
         echo ";";
         return;
       }
       foreach($res as $r)
         $semi = self::depile_csv($r, $breakline, $multi, 0, $alreadyline);
-      if ($semi) 
+      if ($semi)
         echo ';';
     }else{
       if ($comma)
@@ -386,7 +386,7 @@ class myTools {
       echo $res;
       if ($string)
         echo '"';
-      if ($comma) 
+      if ($comma)
         echo '|';
       else echo ';';
     }
