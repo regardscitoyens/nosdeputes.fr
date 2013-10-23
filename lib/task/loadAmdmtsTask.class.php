@@ -44,6 +44,7 @@ class loadAmdmtsTask extends sfBaseTask {
             
             if (!$amdmt) {
               $ct_crees++;
+              print "$file -> http://www.nosdeputes.fr/14/amendement/".$json->loi."/".$json->numero."  \n";
               $amdmt = new Amendement();
               $amdmt->legislature = $json->legislature;
               $amdmt->texteloi_id = $json->loi;
@@ -115,9 +116,9 @@ class loadAmdmtsTask extends sfBaseTask {
             $amdmt->save();
             $amdmt->free();
           }
-          if ($ct_crees) print "$dir$file\n".$ct_lines." amendements lus : ".$ct_lus." écrits dont ".$ct_crees." nouveaux.\n";
           unlink($dir.$file);
         }
+        if ($ct_crees) echo $ct_lines." amendements lus : ".$ct_lus." écrits dont ".$ct_crees." nouveaux.\n";
         closedir($dh);
       }
     }
