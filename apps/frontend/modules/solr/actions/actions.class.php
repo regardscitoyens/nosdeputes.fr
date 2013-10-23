@@ -300,8 +300,10 @@ class solrActions extends sfActions
   {
     if ($p = $request->getParameter('slug')) {
       $parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($p);
-      $request->setParameter('tag', 'parlementaire='.$parlementaire);
-      $request->setParameter('deputenom', $parlementaire->getNom());
+      if ($parlementaire) {
+         $request->setParameter('tag', 'parlementaire='.$parlementaire);
+         $request->setParameter('deputenom', $parlementaire->getNom());
+      }
     }
 
     return $this->forward('solr', 'search');
