@@ -15,17 +15,19 @@ open(FILE, $file) ;
 $string = "@string";
 close FILE;
 
+$string =~ s/<\/td><td>/: /g;
+$string =~ s/<\/tr>/\n/g;
 $string =~ s/ / /g;
 $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
 $string =~ s/\\’85//g;
-$string =~ s/(<br\s*\/>\s*)+/##BR##/g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<h[0-9][^>]*>[^<]*)(<i>[^<]*<\/i>\s*)*/$1/gi;
-$string =~ s/\s*(<i>\s*\([^\)]+\)\s*\.?\s*<\/i>)([,…–]\W*)?\s*/$2<\/p>\n<p>$1<\/p>\n<p>/g;
+$string =~ s/\s*(<i>\s*\([^\)]+\)\s*\.?\s*<\/i>)([,…–][^<\w]*)?\s*/$2<\/p>\n<p>$1<\/p>\n<p>/g;
 $string =~ s/(<i>\s*\([^\)]+\s*<\/i>\s\)\s*\.?)/<\/p>\n<p>$1<\/p>\n<p>/g;
 $string =~ s/<p><\/p>\n//g;
+$string =~ s/(<br\s*\/>\s*)+/##BR##/g;
 
 #Si italique dans gras, on vire (pb fonction)
 while ($string =~ m/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>\s*([^<]+)</g) {
@@ -297,6 +299,8 @@ $string =~ s/<br>\n*//gi;
 $string =~ s/<\/?orateur>\n*//gi;
 $string =~ s/\| et \|/ et /gi;
 
+$string =~ s/##BR##([\|\/])/$1##BR##/g;
+
 #print "$string\n"; exit;
 
 $donetitre1 = 0;
@@ -452,4 +456,4 @@ sub clean_line{
     $line =~ s/\s+/ /g;
     $line =~ s/^\s//;
     $line =~ s/\s$//;
-} 
+}
