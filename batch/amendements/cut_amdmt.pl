@@ -25,14 +25,19 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   } else {
     $amdmt{'numero'} = (10000*$lettre+$num);
   }
-} elsif ($source =~ /(\d{2})\/amendements\/(TA\d{1,3}|\d{4})([A-Z])?\/?(AN|[A-Z_-]+)?\/([A-Z]+)?(\d+)\./i) {
+} elsif ($source =~ /(\d{2})\/amendements\/(TA\d{1,3}|\d{4})([A-Z])?\/?(AN|[A-Z_-]+\d*)?\/([A-Z]+)?(\d+)\./i) {
   $amdmt{'legislature'} = $1;
   $amdmt{'loi'} = $2;
   $lettre = $3;
   $num = $6+0;
-  if ($4 ne "AN" && $5) {
+  if ($4 ne "AN") {
     $commission = $4;
-    $tetenum = $5;
+    if ($5) {
+      $tetenum = $5;
+    } else {
+      $tetenum = $4;
+      $tetenum =~ s/[^A-Z]//g;
+    }
     $num = $tetenum.$num;
   }
   if ($amdmt{'loi'} !~ /TA/) {
