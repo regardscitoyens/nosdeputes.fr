@@ -18,6 +18,7 @@ $debug = shift || 0;
             "D%E9veloppement%20durable",
             "Lois",
             "Finances",
+            "Toutes%20Commissions",
             "S%E9ance%20publique");
 foreach $organe (@organes) {
   push(@urls, "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?NUM_INIT=".$loi."&LEGISLATURE=".$legislature."&ORGANE=".$organe."&SortField=ORDRE_TEXTE&SortOrder=Asc&searchadvanced=Rechercher&ResultMaxDocs=10000&ResultCount=10000");
