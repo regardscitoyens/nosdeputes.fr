@@ -57,13 +57,13 @@ class QuestionEcrite extends BaseQuestionEcrite
   public function uniqueMinistere()
   {
     $ministere = 'Ministère d';
-    if (preg_match('/((Droits|Réforme)?\s+(d[eu]s?\s+|l[\'a]\s*)+[\wàéëêâèïîôöûüÉ]+)/', $this->ministere, $match)) $ministre = $match[1];
+    if (preg_match('/((Droits|Réforme|Relations)?\s+(avec\s+|d[eu]s?\s+|l[\'ae]\s*)+[\wàéëêâèïîôöûüÉ]+)/', $this->ministere, $match)) $ministre = $match[1];
     else if (preg_match('/(Affaires|Espace|Personnes)(\s+[\wàéëêèïîôöûüÉâ]+)/', $this->ministere, $match)) $ministre = $match[1].$match[2];
     else {
       $ministre = preg_replace('/^.*\/\s*([\wàéëêèïîôöûüÉ]+)$/', '\\1', $this->ministere);
       $ministre = preg_replace('/^([\wàéëêèïîôöûüÉ]+)[,\s].*$/', '\\1', $ministre);
     }
-    if (preg_match('/^(Droits|Aînés|Personnes|Affaires|Sports|Transports|Solidarités)/', $ministre)) $ministere .= 'es ';
+    if (preg_match('/^(Droits|Aînés|Personnes|Relations|Affaires|Sports|Transports|Solidarités)/', $ministre)) $ministere .= 'es ';
     else if (preg_match('/^[AEÉIOU]/', $ministre)) $ministere .= 'e l\'';
     else if (preg_match('/^(Famille|Santé|Réforme|Coopération|Culture|Défense|Justice|Consommation|Prospective|Solidarité)/', $ministre)) $ministere .= 'e la ';
     else $ministere .= 'u ';
