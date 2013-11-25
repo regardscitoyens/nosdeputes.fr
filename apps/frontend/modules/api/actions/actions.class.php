@@ -131,8 +131,47 @@ class apiActions extends sfActions
     myTools::templatize($this, $request, 'nosdeputes.fr_synthese_'.date('Y-m-d'));
   }
 
-  public function executeListParlementaires(sfWebRequest $request)
-  {
+  public function executeListOrganismes(sfWebRequest $request) {
+    $type = $request->getParameter('type');
+    $this->forward404Unless($type == "extra" || $type == "groupes" || $type == "parlementaire" || $type == "groupe");
+    $query = Doctrine::getTable('Organisme')->createQuery('o')
+      ->innerJoin('o.ParlementaireOrganisme po')
+      ->where('o.type = ?', $type)
+      ->groupBy('o.id')
+      ->orderBy('o.nom');
+    $orgas = $query->execute();
+    $this->champs = array();
+    $this->res = array('organismes' => array());
+    $this->breakline = 'organisme';
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    foreach($orgas as $o) {
+      $orga = array();
+      $orga['id'] = $o->id * 1;
+      $orga['slug'] = $o->slug;
+      $orga['nom'] = $o->nom;
+      $orga['type'] = $o->type;
+      $orga['url_nosdeputes'] = url_for('@list_parlementaires_organisme?slug='.$orga['slug'], 'absolute=true');
+      $orga['url_nosdeputes_api'] = url_for('@list_parlementaires_organisme_api?format='.$request->getParameter('format').'&orga='.$orga['slug'], 'absolute=true');
+      if ($request->getParameter('format') == 'csv')
+       foreach(array_keys($orga) as $key)
+        if (!isset($this->champs[$key]))
+         $this->champs[$key] = 1;
+      $this->res['organismes'][] = array('organisme' => $orga);
+    }
+    myTools::templatize($this, $request, 'nosdeputes.fr_organismes'.date('Y-m-d'));
+  }
+
+  public function executeListParlementairesGroupe(sfWebRequest $request) {
+    $acro = strtolower($request->getParameter('acro'));
+    $nom = Organisme::getNomByAcro($acro);
+    $this->forward404Unless($nom);
+    $orga = Doctrine::getTable('Organisme')->findOneByNom($nom);
+    $this->forward404Unless($orga);
+    $request->setParameter('orga', $orga->slug);
+    $this->executeListParlementaires($request);
+  }
+
+  public function executeListParlementaires(sfWebRequest $request) {
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
     if ($request->getParameter('current') == true) {
       $query->where('fin_mandat IS NULL OR debut_mandat > fin_mandat');
@@ -143,12 +182,21 @@ class apiActions extends sfActions
       $this->multi['mandat'] = 1;
       $this->multi['site'] = 1;
     }
+    $orga = $request->getParameter('orga');
+    if ($orga) {
+      $this->forward404Unless(Doctrine::getTable('Organisme')->findOneBySlug($orga));
+      $query->leftJoin('p.ParlementaireOrganisme po, po.Organisme o')
+        ->addWhere('o.slug = ?', $orga)
+        ->addOrderBy('po.importance DESC, p.nom_de_famille');
+    }
     $deputes = $query->execute();
     $this->champs = array();
     $this->res = array('deputes' => array());
     $this->breakline = 'depute';
     foreach($deputes as $dep) {
-      $depute = $this->getParlementaireArray($dep, $request->getParameter('format'), ($request->getParameter('current') == true ? 1 : 2));
+      $depute = $this->getParlementaireArray($dep, $request->getParameter('format'), ($orga || $request->getParameter('current') == true ? 1 : 2));
+      if ($orga)
+        $depute['fonction'] = $dep['ParlementaireOrganisme'][0]['fonction'];
       if ($request->getParameter('format') == 'csv')
        foreach(array_keys($depute) as $key)
         if (!isset($this->champs[$key]))

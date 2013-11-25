@@ -206,12 +206,21 @@ list_parlementaires_profession:
 list_parlementaires_profession_empty:
   url: /profession/
   param: {module: parlementaire, action: listProfession}
+list_parlementaires_groupe_api:
+  url: /groupe/:acro/:format
+  param: {module: api, action: listParlementairesGroupe}
 list_parlementaires_groupe:
   url: /groupe/:acro
   param: {module: parlementaire, action: listGroupe}
+list_parlementaires_organisme_api:
+  url: /organisme/:orga/:format
+  param: {module: api, action: listParlementaires}
 list_parlementaires_organisme:
   url: /organisme/:slug
   param: {module: parlementaire, action: listOrganisme}
+list_organismes_api:
+  url: /organismes/:type/:format
+  param: {module: api, action: listOrganismes}
 
 photo_parlementaire:
   url: /depute/photo/:slug
