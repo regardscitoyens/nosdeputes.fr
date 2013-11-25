@@ -40,14 +40,14 @@ sub clean_vars {
 
 my %premiers_mandats;
 sub add_mandat {
-  $start = shift; 
+  $start = shift;
   $end = shift;
   $cause = shift;
   if ($cause =~ /(remplacement.*)\s*:\s*(.*)\s*$/i && $cause !~ /lection/i) {
     $depute{'suppleant_de'} = $2;
     $cause =~ s/\s*:\s*(.*)\s*$/ \(\1\)/;
   }
-  $cause =~ s/^É/é/; 
+  $cause =~ s/^É/é/;
   $cause =~ s/(du gouvernement) :.*$/\1/i;
   $premiers_mandats{"$start / $end / ".lc($cause)} = 1;
   $depute{'debut_mandat'} = max_date($start,$depute{'debut_mandat'});
@@ -136,11 +136,11 @@ foreach $line (split /\n/, $string) {
         $mission = 1;
       }
     } elsif ($line =~ /(Organismes? extra-parlementaires?|Fonctions? dans les instances internationales ou judiciaires)/) {
-      $encours = "extras"; 
+      $encours = "extras";
     } elsif ($line =~ /(Mandats? loca[lux]+ en cours|Mandats? intercommuna)/i) {
-      $encours = "autresmandats"; 
+      $encours = "autresmandats";
     } elsif ($line =~ /^Anciens mandats/i && $line !~ /Assemblée nationale/i) {
-      $encours = "anciensmandats"; 
+      $encours = "anciensmandats";
     } elsif ($line =~ /(Groupes? d'études?|Groupes? d'amitié)/i) {
       $encours = "groupes";
       $type_groupe = $line;
@@ -232,6 +232,7 @@ foreach $line (split /\n/, $string) {
         $line =~ s/par le Président de l'Assemblée nationale //;
         $line =~ s/ (\(ex|depuis le) .*$//;
         $line =~ s/ \(art.*$//i;
+        $line =~ s/Ccommission/Commission/i;
         $line =~ s/^\((.*) de la commission de(s finances| la défense)\)/\1/i;
         $line =~ s/\((commission des finances)\)$/de la \1/i;
         $line =~ s/^\s*(\S+) Comité/\1 du Comité/i;
