@@ -27,7 +27,7 @@ try {
   `sexe` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
   `nom_circo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `num_circo` smallint(2) UNSIGNED DEFAULT NULL,
-  `site_web` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `sites_web` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `debut_mandat` date DEFAULT NULL,
   `fin_mandat` date DEFAULT NULL,
   `place_hemicycle` smallint(3) UNSIGNED DEFAULT NULL,
@@ -60,7 +60,7 @@ try {
   FULLTEXT KEY `motif_retrait` (`motif_retrait`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;');
 
-$bdd->query('INSERT INTO `'.$DBTABLE.'` SELECT qe.id, pa.slug, pa.nom, pa.sexe, pa.nom_circo, pa.num_circo, pa.site_web, pa.debut_mandat, pa.fin_mandat, pa.place_hemicycle, pa.url_an, pa.profession, pa.groupe_acronyme,  qe.source, qe.legislature, qe.numero, qe.date, qe.date_cloture, qe.ministere, qe.themes, qe.question, qe.reponse, qe.motif_retrait
+$bdd->query('INSERT INTO `'.$DBTABLE.'` SELECT qe.id, pa.slug, pa.nom, pa.sexe, pa.nom_circo, pa.num_circo, pa.sites_web, pa.debut_mandat, pa.fin_mandat, pa.place_hemicycle, pa.url_an, pa.profession, pa.groupe_acronyme,  qe.source, qe.legislature, qe.numero, qe.date, qe.date_cloture, qe.ministere, qe.themes, qe.question, qe.reponse, qe.motif_retrait
 FROM `question_ecrite` qe
 LEFT JOIN `parlementaire` pa
 ON qe.parlementaire_id = pa.id;');
