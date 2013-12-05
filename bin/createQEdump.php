@@ -27,7 +27,6 @@ try {
   `sexe` varchar(8) COLLATE utf8_unicode_ci DEFAULT NULL,
   `nom_circo` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `num_circo` smallint(2) UNSIGNED DEFAULT NULL,
-  `sites_web` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `debut_mandat` date DEFAULT NULL,
   `fin_mandat` date DEFAULT NULL,
   `place_hemicycle` smallint(3) UNSIGNED DEFAULT NULL,
@@ -60,12 +59,18 @@ try {
   FULLTEXT KEY `motif_retrait` (`motif_retrait`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci ;');
 
-$bdd->query('INSERT INTO `'.$DBTABLE.'` SELECT qe.id, pa.slug, pa.nom, pa.sexe, pa.nom_circo, pa.num_circo, pa.sites_web, pa.debut_mandat, pa.fin_mandat, pa.place_hemicycle, pa.url_an, pa.profession, pa.groupe_acronyme,  qe.source, qe.legislature, qe.numero, qe.date, qe.date_cloture, qe.ministere, qe.themes, qe.question, qe.reponse, qe.motif_retrait
+$bdd->query('INSERT INTO `'.$DBTABLE.'` SELECT qe.id, pa.slug, pa.nom, pa.sexe, pa.nom_circo, pa.num_circo, pa.debut_mandat, pa.fin_mandat, pa.place_hemicycle, pa.url_an, pa.profession, pa.groupe_acronyme,  qe.source, qe.legislature, qe.numero, qe.date, qe.date_cloture, qe.ministere, qe.themes, qe.question, qe.reponse, qe.motif_retrait
 FROM `question_ecrite` qe
 LEFT JOIN `parlementaire` pa
 ON qe.parlementaire_id = pa.id;');
 
-exec('mysqldump '.$var['MYSQLID'].' '.$DBNAME.' '.$DBTABLE.' | gzip -v > '.$DEST.$DBTABLE.'.sql.gz');
+exec('mysqldump '.$var['MYSQLID'].' '.$DBNAME.' '.$DBTABLE.' | gzip -v > '.$DEST.'/nosdeputes.fr/'.$DBTABLE.'.sql.gz');
+exec('mkdir -p /tmp/'.$DBTABLE);
+exec('mysqldump '.$var['MYSQLID'].' '.$DBNAME.' '.$DBTABLE.' --tab=/tmp/'.$DBTABLE.' --fields-terminated-by="," --fields-enclosed-by="\""');
+exec('echo "id,depute_slug,depute_nom,depute_sexe,depute_nom_circo,depute_num_circo,depute_debut_mandat,depute_fin_mandat,depute_place_hemicycle,depute_url_an,depute_profession,depute_groupe_acronyme,source,legislature,numero,date,date_cloture,ministere,themes,question,reponse,motif_retrait" > /tmp/'.$DBTABLE.'/'.$DBTABLE.'.csv');
+exec("sed 's/\\\N//g' /tmp/".$DBTABLE.'/'.$DBTABLE.'.txt >> /tmp/'.$DBTABLE.'/'.$DBTABLE.'.csv');
+exec('gzip -fv /tmp/'.$DBTABLE.'/'.$DBTABLE.'.csv');
+exec('mv /tmp/'.$DBTABLE.'/'.$DBTABLE.'.csv.gz '.$DEST.'/nosdeputes.fr/');
 
 $bdd->query('DROP TABLE IF EXISTS `'.$DBTABLE.'`;');
 }
