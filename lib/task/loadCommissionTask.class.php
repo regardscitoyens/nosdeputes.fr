@@ -11,12 +11,12 @@ class loadCommissionTask extends sfBaseTask
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
     $this->addOption('verbose', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 0);
   }
- 
+
   protected function execute($arguments = array(), $options = array())
   {
     // your code here
     $dir = dirname(__FILE__).'/../../batch/commission/out/';
-    $manager = new sfDatabaseManager($this->configuration);    
+    $manager = new sfDatabaseManager($this->configuration);
 
     $verbose = $options['verbose'];
 
@@ -27,7 +27,6 @@ class loadCommissionTask extends sfBaseTask
 	    continue;
 	  echo "$dir$file\n";
           $first = 1;
-          $prev_ts = 0;
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
 	    if (!$json || !$json->intervention || !$json->date || !$json->commission || !$json->source) {
@@ -54,7 +53,7 @@ class loadCommissionTask extends sfBaseTask
 		}
 	    }
 
-	    $id = md5($json->intervention.$json->date.$json->heure.$json->commission.($json->timestamp == $prev_ts + 1 ? '1' : ''));
+	    $id = md5($json->intervention.$json->date.$json->heure.$json->commission.$json->timestamp);
 	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
 	    if(!$intervention) {
 	      if ($verbose)
@@ -67,7 +66,6 @@ class loadCommissionTask extends sfBaseTask
 	      $intervention->setSource($json->source);
 	      $intervention->setTimestamp($json->timestamp);
 	    }
-            $prev_ts = $json->timestamp;
 	    if ($json->intervenant) {
 	      if ($verbose)
 		echo "Set Intervenant for $id (".$json->intervenant.")\n";
