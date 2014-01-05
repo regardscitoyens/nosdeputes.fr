@@ -123,8 +123,9 @@ foreach $line (split /\n/, $string)
         $commission = $1;
     }
     if ($present) {
-	$line =~ s/<[^>]+>//gi;
-	$line =~ s/&[^;]*;/ /gi;
+	$line =~ s/<[^>]+>//g;
+	$line =~ s/&[^;]*;/ /g;
+	$line =~ s/\s+et\s+/, /gi;
 	$line =~ s/\.$//;
 	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion)\W+//) {
         if ($line !~ /^\s*$/) {
