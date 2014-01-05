@@ -69,7 +69,7 @@ $body = 0;
 $present = 0;
 $string =~ s/<br>\n//gi;
 
-# Le cas de <ul> qui peut faire confondre une nomination à une intervention : 
+# Le cas de <ul> qui peut faire confondre une nomination à une intervention :
 #on vire les paragraphes contenus et on didascalise
 
 
@@ -125,9 +125,12 @@ foreach $line (split /\n/, $string)
     if ($present) {
 	$line =~ s/<[^>]+>//gi;
 	$line =~ s/&[^;]*;/ /gi;
+	$line =~ s/\.$//;
 	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion)\W+//) {
-	    push @presents, split /, /, $line; #/
-	}
+        if ($line !~ /^\s*$/) {
+            push @presents, split /, /, $line; #/
+	    }
+    }
     }
     if ($line =~ /[>\|\/](Membres? présents? ou excusés?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/) {
 	$present = 1;
