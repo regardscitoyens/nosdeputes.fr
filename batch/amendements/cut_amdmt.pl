@@ -365,7 +365,7 @@ if (!$amdmt{'auteurs'}) {
 $amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
 $amdmt{'auteurs'} =~ s/([a-z])\s+(M[\.Mml])/\1, \2/g;
 $amdmt{'auteurs'} =~ s/,\s*M[\s\.mle]+\s*,/,/g;
-$amdmt{'auteurs'} =~ s/\s*[,]?\s*les\s+[cC]ommissaires.*$//g;
+$amdmt{'auteurs'} =~ s/\s*(,|et)?\s*les\s+[cC]ommissaires.*$//g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêàôù\(\)\-']*M(.*)/, M\1/g;
 $amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêàôù\(\)\-']*//gi;
 $amdmt{'auteurs'} =~ s/(,\s*,|,+)/,/g;
