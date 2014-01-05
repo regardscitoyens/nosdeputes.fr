@@ -4,7 +4,7 @@ class plotComponents extends sfComponents
 {
   public function executeParlementaire() {
   }
- 
+
   public function executeGetParlData() {
     static $seuil_invective = 20;
     $this->data = array();
@@ -16,13 +16,16 @@ class plotComponents extends sfComponents
       } else $date = time();
       $annee = date('Y', $date); $sem = date('W', $date);
       $last_year = $date - 32054400;
-      $date_debut = date('Y-m-d', $last_year);
       $date_fin = date('Y-m-d', $date);
-      $annee0 = date('Y', $last_year); $sem0 = date('W', $last_year);
-      if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
-      if ($sem0 >= 52 && $sem <= 1) $sem0 = 0;
-      $n_weeks = ($annee - $annee0)*53 + $sem - $sem0;
-//print "$date ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
+      $date_debut = date('Y-m-d', $last_year);
+      $annee0 = date('o', $last_year); $sem0 = date('W', $last_year);
+      if ($sem > 51 && date('n', $date) == 1) $sem = 0;
+      if ($sem < 2 && $annee != date('o', $date)) {
+        $annee = date('o', $date);
+        $sem0 -= 1;
+      }
+      $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
+#print "$date ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
     } else {
       $query4 = Doctrine_Query::create()
         ->select('s.annee, s.numero_semaine')
@@ -95,30 +98,6 @@ class plotComponents extends sfComponents
     }
     unset($participations);
 
-/*    $query3 = Doctrine_Query::create()
-      ->select('count(distinct s.id) as nombre, i.id, s.annee, s.numero_semaine')
-      ->from('Intervention i')
-      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.type = ?', 'question')
-      ->andWhere('i.fonction NOT LIKE ?', 'président%')
-      ->andWhere('i.nb_mots > ?', 2*$seuil_invective)
-      ->leftJoin('i.Seance s');
-    if ($this->session === 'lastyear')
-      $query3->andWhere('s.date > ?', $date_debut);
-    else $query3->andWhere('s.session = ?', $this->session);
-    $query3->groupBy('s.annee, s.numero_semaine');
-    $questionsorales = $query3->fetchArray();
-
-    $this->data['n_questions'] = array_fill(1, $n_weeks, 0);
-    foreach ($questionsorales as $question) {
-      $n = ($question['Seance']['annee'] - $annee0)*53 + $question['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($n <= $n_weeks) {
-        if ($this->data['n_questions'][$n] == 0)
-          $this->data['n_questions'][$n] -= 0.15;
-        $this->data['n_questions'][$n] += $question['nombre'];
-      }
-    } 
-*/
     $query3 = Doctrine_Query::create()
       ->select('COUNT(q.id) AS nombre, YEAR(IF(ISNULL(q.date_cloture),q.date, greatest(q.date, q.date_cloture))) as annee, WEEKOFYEAR(IF(ISNULL(q.date_cloture),q.date, greatest(q.date, q.date_cloture))) as numero_semaine')
       ->from('Question q')
@@ -128,6 +107,9 @@ class plotComponents extends sfComponents
       ->andWhere('IF(ISNULL(q.date_cloture),q.date, greatest(q.date, q.date_cloture)) >= ?', $date_debut)
       ->andWhere('IF(ISNULL(q.date_cloture),q.date, greatest(q.date, q.date_cloture)) < ?', $date_fin)
       ->groupBy('annee, numero_semaine');
+
+
+
     $questionsorales = $query3->fetchArray();
 
     $this->data['n_questions'] = array_fill(1, $n_weeks, 0);
@@ -138,7 +120,7 @@ class plotComponents extends sfComponents
           $this->data['n_questions'][$n] -= 0.15;
         $this->data['n_questions'][$n] += $question['nombre'];
       }
-    } 
+    }
     unset($questionsorales);
   }
 
@@ -148,7 +130,7 @@ class plotComponents extends sfComponents
     $mandat_sem0 = date('W', $debut_mandat);
     if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
     $week0 = ($mandat_an0 - $annee0)*53 + $mandat_sem0 - $sem0 + 1;
-    for ($n = 0; $n < $week0 ; $n++) 
+    for ($n = 0; $n < $week0 ; $n++)
       $n_vacances[$n] = 20;
 
     $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
@@ -161,9 +143,8 @@ class plotComponents extends sfComponents
  }
 
  public static function getLabelsSemaines($n_weeks, $annee, $sem) {
-    if ($sem > 1 && $sem <= 51) $an = $annee + 1;
-    else $an = $annee;
-    $hashmap = array( '3'  => "Jan ".sprintf('%02d', $an-2000), '6'  => " Fév", '10' => " Mar", '15' => "Avr",
+    if ($sem > 1 && $sem <= 52) $annee += 1;
+    $hashmap = array( '3'  => "Jan ".sprintf('%02d', $annee-2000), '6'  => " Fév", '10' => " Mar", '15' => "Avr",
                       '19' => " Mai", '24' => "Juin", '28' => "Juil", '33' => "Août",
                       '38' => "Sept", '42' => " Oct", '47' => "Nov", '52' => "Déc");
     $labels = array_fill(1, $n_weeks, "");
@@ -171,7 +152,7 @@ class plotComponents extends sfComponents
       $index = $i + $sem; if ($index > 53) $index -= 53;
       if (isset($hashmap[$index]) && !(($index == 3) && ($sem < 3 && $sem > 1))) $labels[$i] = $hashmap[$index];
     }
-    if ($sem < 3 && $sem != 0) $labels[54] = "Jan";
+    if ($n_weeks > 54 && $sem < 3 && $sem != 0) $labels[55] = "Jan";
     return $labels;
   }
 
@@ -199,9 +180,12 @@ class plotComponents extends sfComponents
     else $enddate = date('Y-m-d', time()-60*60*24*365);
     $query = Doctrine_Query::create()
       ->select('p.groupe_acronyme, count(DISTINCT(a.id)) as ct')
-      ->from('Parlementaire p, p.ParlementaireAmendements pa, pa.Amendement a')
+      ->from('Parlementaire p')
+      ->leftJoin('p.ParlementaireAmendements pa')
+      ->leftJoin('pa.Amendement a')
       ->where('pa.numero_signataire = ?', 1)
       ->andWhere('p.groupe_acronyme IS NOT NULL')
+      ->andWhere('a.sort <> ?', 'Rectifié')
       ->andWhere('a.date > ?', $enddate)
       ->groupBy('p.groupe_acronyme');
     $qamdmts = clone($query);
@@ -247,10 +231,8 @@ class plotComponents extends sfComponents
       for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i]))
         $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
     foreach ($this->data['groupes'] as $groupe => $arr)
-      for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i])) {
-        $tmp = round($this->data['groupes'][$groupe][$i]  / $this->data['totaux'][$i] * 1000)/10;
+      for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i]))
         $this->data['groupes'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
-      }
     for ($i=0;$i<$n;$i++)
       $this->data['totaux'][$i] = preg_replace('/(\d)(\d{3})$/', '\\1 \\2', $this->data['totaux'][$i]);
   }
@@ -364,5 +346,5 @@ class plotComponents extends sfComponents
 
     }
   }
-  
+
 }
