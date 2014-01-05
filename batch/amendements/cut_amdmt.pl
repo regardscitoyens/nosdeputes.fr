@@ -53,6 +53,7 @@ $string = "@string";
 #utf8::decode($string) if ($string =~ /charset=UTF-?8/i);
 $string =~ s/(\<p class="presente".*)\s*\<br[\/]?\>\s*[\n]?\s*(.*)/\1, \2/g;
 $string =~ s/\<br\>.*\n//g;
+$string =~ s/<!--[^!]*!\[endif\]-->//g;
 $string =~ s/(&#8217;|’)/'/g;
 $string =~ s/&#339;/oe/g;
 $string =~ s/&#8211;/-/g;
