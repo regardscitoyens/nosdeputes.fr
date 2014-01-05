@@ -166,6 +166,7 @@ sub setIntervenant {
     $intervenant =~ s/<[^>]+>\s*//g;
     $intervenant =~ s/<[^>]*$//;
     #print "TEST $intervenant\n";
+    $intervenant =~ s/president/président/gi;
     $intervenant =~ s/ présidence / présidente /;
     $intervenant =~ s/\s*\&\#821[12]\;\s*//;
     $intervenant =~ s/^audition de //i;
@@ -194,7 +195,7 @@ sub setIntervenant {
     }
     if ($intervenant =~ /^[a-z]/) {
 	$intervenant =~ s/^l[ea]\s+//i;
-	if ($intervenant =~ /([pP]résidente?|[rR]apporteur[a-zé\s]+)\s([A-Zé].*)/) { #\s([A-Z].*)/i) 
+	if ($intervenant =~ /([pP]résidente?|[rR]apporteur[a-zé\s]+)\s([A-Zé].*)/) { #\s([A-Z].*)/i)
         $tmpint = $2;
         $tmpfct = $1;
         if ($tmpint =~ /commission/i) {
@@ -281,7 +282,7 @@ $string =~ s/<t([rdh])( (row|col)span=["\d]+)*[^>]*>/<t\1\2>/gi;
 $string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
 $string =~ s/(<\/table>)\s*(<table)/\1\n\2/gi;
 
-# Le cas de <ul> qui peut faire confondre une nomination à une intervention : 
+# Le cas de <ul> qui peut faire confondre une nomination à une intervention :
 #on vire les paragraphes contenus et on didascalise
 $string =~ s/<\/?ul>//gi;
 
@@ -290,7 +291,8 @@ $string =~ s/<\/?ul>//gi;
 foreach $line (split /\n/, $string)
 {
 #print "TEST: ".$line."\n";
-    if ($line =~ /<h[1-9]+/i || $line =~ /"presidence"/ || $line =~ /Présidence de/) {
+    $line =~ s/residen/résiden/ig;
+    if ($line =~ /<h[1-9]+/i || $line =~ /"présidence"/ || $line =~ /Présidence de/) {
       if ($line =~ /pr..?sidence\s+de\s+(M[^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
         $prez = $1;
         $prez =~ s/\s*pr..?sident[es\s]*$//i;
@@ -394,13 +396,13 @@ foreach $line (split /\n/, $string)
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
-	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
+	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r[eé]sidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
 		$f = $1;
 		$i = $2;
 		$found = $majIntervenant = 1;
         checkout();
         $intervenant = setFonction($f, $i);
-	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]résidente?|[rR]apporteure?)[\.: \|]*//) {
+	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r[eé]sidente?|[rR]apporteure?)[\.: \|]*//) {
 		$tmpfonction = lc($1);
 		$tmpintervenant = $fonction2inter{$tmpfonction};
 		if ($tmpintervenant) {
@@ -415,12 +417,12 @@ foreach $line (split /\n/, $string)
 	if (!$found) {
 	    if ($line =~ s/^\s*((Dr|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.:]//) {
             checkout();
-            $intervenant = setIntervenant($1);		
+            $intervenant = setIntervenant($1);
 	    }elsif (!$majIntervenant) {
             if ($line =~ s/^\s*(M(mes?|[e\.])\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
         	    checkout();
     	        $intervenant = setIntervenant($1);
-            }elsif($line =~ s/^\s*[Ll][ea] ([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
+            }elsif($line =~ s/^\s*[Ll][ea] ([pP]r[ée]sidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
                 setFonction($1, $2);
                 checkout();
                 $intervenant = setIntervenant($2);
@@ -435,7 +437,7 @@ foreach $line (split /\n/, $string)
     }
     if ($tmpinter) {
         checkout();
-        $intervenant = $tmpinter;	 
+        $intervenant = $tmpinter;
     }
     if ($line =~ /séance est levée/i) {
         last;
