@@ -29,7 +29,8 @@ while(<FILE>) {
 	$on = 1;
     }
 }
-$lines =~s/&nbsp;<b>/ /g;
+$lines =~ s/\s+(\d+\.&nbsp;<b>)/\n\1/g;
+$lines =~ s/&nbsp;<b>/ /g;
 $lines =~ s/&nbsp;/ /g;
 $lines =~ s/<\/b> *<b>/ /g;
 $lines =~ s/<\/b>/<\/b>\n/g;
@@ -86,7 +87,7 @@ foreach (split /\n/, $lines) {
 	}
 	$on = 0;
     }
-    if (/(<i>Excus|Ordre)/) {
+    if (/(<i>Excus|Ordre|^\d+\s+[A-Z])/) {
 	$on = 0;
     }
     if ($on && /\w/) {
