@@ -55,7 +55,10 @@ if ($display_text) {
 
 $read_txt = 0;
 foreach $line (split /\n/, $string) {
-  if ($line =~ /<h1>(.*)<\/h1>/) {
+#  print "DEBUG $read_txt $line\n";
+  if ($line =~ /mailto:\?subject=\&body=/ && $read_txt == 2) {
+    $read_txt = 0;
+  } elsif ($line =~ /<h1>(.*)<\/h1>/) {
     $question{'titre'} = $1;
     $question{'titre'} =~ s/"([^"<]*)"/« $1 »/g;
     $question{'titre'} =~ s/"/'/g;
