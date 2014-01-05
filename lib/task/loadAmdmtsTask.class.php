@@ -41,7 +41,12 @@ class loadAmdmtsTask extends sfBaseTask {
               $rect->save();
              }
             }
-            
+
+            if ($json->date === "1970-01-01") {
+              if ($amdmt)
+                $json->date = substr($amdmt->created_at, 0, 10);
+              else $json->date = date('Y-m-d');
+            }
             if (!$amdmt) {
               $ct_crees++;
               print "$file -> http://www.nosdeputes.fr/14/amendement/".$json->loi."/".$json->numero."  \n";
@@ -51,8 +56,6 @@ class loadAmdmtsTask extends sfBaseTask {
               $amdmt->addTag('loi:numero='.$amdmt->texteloi_id);
               $amdmt->numero = $json->numero;
               $amdmt->rectif = $json->rectif;
-              if ($json->date === "1970-01-01")
-                $json->date = date('Y-m-d');
             } elseif (!$json->parent && !$json->serie && $amdmt->signataires == $json->auteurs && ($amdmt->date == $json->date || ($amdmt->texte == $json->texte && $amdmt->expose == $json->expose && $amdmt->sujet == $json->sujet))) {
               $modif = false;
             }
@@ -70,7 +73,7 @@ class loadAmdmtsTask extends sfBaseTask {
                       $amdmt->addTag('loi:amendement='.$n);
 		      if ($lettre) {
                           $amdmt->addTag('loi:amendement='.$n.$lettre);
-		      } 
+		      }
 		      $nb_serie++;
 		    }
                   }
