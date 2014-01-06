@@ -38,17 +38,17 @@ $sort = array('semaines_presence' => '1',
                'propositions_signees' => '10',
 	       'questions_ecrites' => '11',
 	       'questions_orales' => '12');
-$couleur2style = array('vert' => ' style="color: green"',
-	       'gris' => '',
-	       'rouge' => ' style="color: red"');
+$couleur2style = array('vert' => ' style="color: green;font-weight:bold;"',
+	       'gris' => ' style="font-weight:bold;"',
+	       'rouge' => ' style="color: red;font-style:italic;"');
 $top = $parlementaire->getTop();
 if (!$top)
   return ;
 if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->debut_mandat) {
   $rank = 0;
+  $headstr = "premier";
   if (myTools::isDebutMandature() && strtotime(myTools::getDebutMandature()) > strtotime($parlementaire->debut_mandat)) {
     $stdate = myTools::getDebutMandature();
-    $headstr = "premier";
     if (strtotime(myTools::getDebutMandature()) - strtotime($parlementaire->debut_mandat) > 2160000)
       $headstr = "dernier";
     $rank = 1;
@@ -58,8 +58,8 @@ if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->
   if($mois < 12) {
     echo '<h3>Activité <small>(';
     if ($mois <= 1) echo $headstr;
-    else
-      echo $mois.' '.$headstr.'s';
+    else if ($mois < 10) echo $mois.' '.$headstr.'s';
+    else echo $mois.' '.$headstr.'s';
     echo ' mois de mandat)</small> :</h3>';
     if ($mois < 4) $rank = 0;
   }else {
