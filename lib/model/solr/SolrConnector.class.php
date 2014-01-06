@@ -17,19 +17,21 @@ class SolrConnector extends sfLogger
     $port = sfConfig::get('app_solr_port', '8983');
     $url = sfConfig::get('app_solr_url', '/solr');
     $this->solr = new Apache_Solr_Service($host, $port, $url);
-    
+
     if(!$this->solr->ping()) {
       throw new Exception('Search is not available right now.');
     }
-    
+
     $this->_options = $listener_options;
 
     return $this->solr;
   }
-  
+
 
   public function updateFromCommands($output = 0) {
     $file = SolrCommands::getInstance()->getCommandContent();
+    exec("sort -u $file > $file.tmp");
+    exec("cp -f $file.tmp $file");
     foreach(file($file) as $line) {
       if (preg_match('/(UPDATE|DELETE) : (.+)/', $line, $matches)) {
 	$obj = json_decode($matches[2]);
@@ -56,7 +58,7 @@ class SolrConnector extends sfLogger
 	if ($this->nb_commit % 100 || $force) {
 		return $this->solr->commit($optimize, $wait);
 	}
-	return true;		
+	return true;
   }
 
   public function deleteLuceneRecord($solr_id)
@@ -69,18 +71,18 @@ class SolrConnector extends sfLogger
 
   public function updateLuceneRecord($obj)
   {
-     $document = new Apache_Solr_Document(); 
-     $document->addField('id', $obj->id); 
-     $document->addField('object_id', $obj->object_id); 
-     $document->addField('object_name', $obj->object_name); 
+     $document = new Apache_Solr_Document();
+     $document->addField('id', $obj->id);
+     $document->addField('object_id', $obj->object_id);
+     $document->addField('object_name', $obj->object_name);
      if (isset($obj->wordcount))
-       $document->addField('wordcount', $obj->wordcount); 
+       $document->addField('wordcount', $obj->wordcount);
      if (isset($obj->title))
-       $document->addField('title', $obj->title->content, $obj->title->weight); 
+       $document->addField('title', $obj->title->content, $obj->title->weight);
      if (isset($obj->description))
-       $document->addField('description', $obj->description->content, $obj->description->weight); 
+       $document->addField('description', $obj->description->content, $obj->description->weight);
      if (isset($obj->date))
-       $document->addField('date', $obj->date->content, $obj->date->weight); 
+       $document->addField('date', $obj->date->content, $obj->date->weight);
      if (isset($obj->tags)) {
         foreach($obj->tags->content as $tag) if ($tag)  {
 	  $document->setMultiValue('tag', $tag, $obj->tags->weight);
@@ -98,7 +100,7 @@ class SolrConnector extends sfLogger
   public function search($queryString, $params = array(), $offset = 0, $maxHits = 0) {
     if($maxHits == 0)
         $maxHits = sfConfig::get('app_solr_max_hits', 256);
-    if (isset($params['not_utf8']) && $params['not_utf8']) 
+    if (isset($params['not_utf8']) && $params['not_utf8'])
 	$queryString = utf8_decode($queryString);
     $response = $this->solr->search($queryString, $offset, $maxHits, $params);
     $results = unserialize($response->getRawResponse());
@@ -122,6 +124,6 @@ class SolrConnector extends sfLogger
     $results['response']['docs'] = array_values($results['response']['docs']);
     return $results;
   }
-  
+
 }
 
