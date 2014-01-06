@@ -29,4 +29,4 @@ done;
 #rm cache/frontend/prod/template/*/all/amendement/show/loi/${loi}/numero/*
 
 bash bin/dump_amendements_loi $loi
-
+bash bin/make_liasse $loi > /dev/null 2>&1

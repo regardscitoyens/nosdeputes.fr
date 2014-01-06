@@ -8,6 +8,8 @@ if test -e $PATH_APP/data/frontend_prod-cli.lck || test -e $PATH_APP/data/fronte
     exit 1;
 fi
 
+export USE_ZEND_ALLOC=0
+
 #CRASHSTATUS
 STATUSFILE="/tmp/indexSolr$LEGISLATURE.tomcatcrash.status"
 if test ! -e $STATUSFILE ;
@@ -27,7 +29,7 @@ then
 	rm $LOCK
 	if [ $STATUS -ge 3 ]; then
 	    echo "trying to restart Tomcat"
-	    sudo /etc/init.d/tomcat5.5 restart > /tmp/log-restart-tomcat 2>&1
+	    sudo /etc/init.d/tomcat6 restart > /tmp/log-restart-tomcat 2>&1
 	    cat /tmp/log-restart-tomcat
 	    STATUS="0"
         fi

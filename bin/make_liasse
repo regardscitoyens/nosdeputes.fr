@@ -1,14 +1,17 @@
 #!/bin/bash
 
+. $(echo $0 | sed 's/[^\/]*$//')db.inc
+cd $PATH_APP
+
 cd batch/amendements/
-perl getAmdmtsOrder.pl $1
+perl getAmdmtsOrder.pl $LEGISLATURE $1
 cd -
-php symfony make:Liasse $1 > tmp_liasse
+php symfony make:Liasse $1 $2 > tmp_liasse
 iconv -c -f UTF-8 -t LATIN1 tmp_liasse > "Loi ${1} - Liasse des amendements dans l'ordre du texte"
 rm -f tmp_liasse
-a2ps --encoding=iso-8859-1 -o liasse_$1.ps "Loi ${1} - Liasse des amendements dans l'ordre du texte" 
+a2ps --encoding=iso-8859-1 -o liasse_$1$2.ps "Loi ${1} - Liasse des amendements dans l'ordre du texte" 
 rm -f "Loi ${1} - Liasse des amendements dans l'ordre du texte"
-ps2pdf liasse_$1.ps
-rm -f liasse_$1.ps
-mv liasse_$1.pdf web/liasses/
+ps2pdf liasse_$1$2.ps
+rm -f liasse_$1$2.ps
+mv liasse_$1$2.pdf web/liasses/
 
