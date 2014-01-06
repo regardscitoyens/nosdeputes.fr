@@ -46,6 +46,7 @@ Parlementaire:
       type: enum
       values: ['depute', 'senateur']
     groupe_acronyme: string(8)
+    parti: string(255)
     adresses: string
     suppleant_de_id: integer
     anciens_mandats: string

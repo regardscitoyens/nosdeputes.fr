@@ -227,6 +227,9 @@ class apiActions extends sfActions
         $res['groupe'] = "";
     }
     $res['groupe_sigle'] = $parl->groupe_acronyme;
+    if (!$parl->parti)
+      $parl->parti = "";
+    $res['parti_ratt_financier'] = $parl->parti;
     if (!$light) {
       $res['responsabilites'] = self::array2hash($parl->getResponsabilites(), 'responsabilite');
       $res['responsabilites_extra_parlementaires'] = self::array2hash($parl->getExtras(), 'responsabilite');
