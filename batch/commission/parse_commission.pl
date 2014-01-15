@@ -190,13 +190,13 @@ sub setIntervenant {
     if ($intervenant =~ s/\, (.*)//) {
 	setFonction($1, $intervenant);
     }
-    if ($intervenant =~ s/ ?(l[ea] )?((président|rapporteur)[es,\s]*)+$//i) {
+    if ($intervenant =~ s/ ?(l[ea] )?(((président|rapporteur)[es,\st]*)+)$//i) {
         return setFonction($2, $intervenant);
     }
     if ($intervenant =~ /^[a-z]/) {
 	$intervenant =~ s/^l[ea]\s+//i;
-	if ($intervenant =~ /([pP]résidente?|[rR]apporteur[a-zé\s]+)\s([A-Zé].*)/) { #\s([A-Z].*)/i)
-        $tmpint = $2;
+	if ($intervenant =~ /((([pP]résident|[rR]apporteur[a-zé\s]+)[\sest,]*)+)([A-Zé].*)/) {
+        $tmpint = $4;
         $tmpfct = $1;
         if ($tmpint =~ /commission/i) {
             return setFonction("$tmpfct $tmpint");
