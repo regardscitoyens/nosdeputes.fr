@@ -149,7 +149,7 @@ sub setFonction {
         $kfonction =~ s/[^a-zéàè]+/ /gi;
         $fonction2inter{$kfonction} = $intervenant;
     }
-#    print "$fonction ($kfonction)  => $intervenant-".$inter2fonction{$intervenant}."\n";
+    #print "$fonction ($kfonction)  => $intervenant-".$inter2fonction{$intervenant}."\n";
     if (!$inter2fonction{$intervenant} || length($inter2fonction{$intervenant}) < length($fonction)) {
 	$inter2fonction{$intervenant} = $fonction;
     }
@@ -199,10 +199,14 @@ sub setIntervenant {
         $tmpint = $4;
         $tmpfct = $1;
         if ($tmpint =~ /commission/i || $tmpfct =~ /commission d['esla\s]+$/i) {
-            return setFonction("$tmpfct $tmpint");
-        }
-	    return setFonction($tmpfct, $tmpint);
-	}
+            $tmint = setFonction("$tmpfct $tmpint");
+            if ($tmint) {
+                return $tmint;
+            }
+        } else {
+	        return setFonction($tmpfct, $tmpint);
+	    }
+    }
 	$conv = $fonction2inter{$intervenant};
     $maybe_inter = "";
 	#print "TEST conv: '$conv' '$intervenant'\n";
@@ -212,7 +216,7 @@ sub setIntervenant {
 	    $test = lc($intervenant);
         $ktest = $test;
 	    $ktest =~ s/[^a-zéàè]+/ /gi;
-	    foreach $fonction (keys %fonction2inter) {
+	    foreach $fonction (keys %fonction2inter) { if ($fonction2inter{$fonction}) {
 		if ($fonction =~ /$ktest/i) {
             if ($fonction !~ /délégué/i || $test =~ /délégué/i) {
 		        $inter = $fonction2inter{$fonction};
@@ -222,19 +226,19 @@ sub setIntervenant {
                 $maybe_inter = $fonction2inter{$fonction};
             }
 		}
-	    }
+	    } }
         if ($maybe_inter) {
             $inter = $maybe_inter;
         }
 	    if (!$inter) {
-		foreach $fonction (keys %fonction2inter) {
+		foreach $fonction (keys %fonction2inter) { if ($fonction2inter{$fonction}) {
             $kfonction = lc($fonction);
             $kfonction =~ s/ +/.+/g;
 		    if ($test =~ /$kfonction/i) {
 			$inter = $fonction2inter{$fonction};
 			last;
 		    }
-		}
+		} }
 	    }
 	    if ($inter) {
 		$intervenant = $inter;
