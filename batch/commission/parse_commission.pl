@@ -393,7 +393,7 @@ foreach $line (split /\n/, $string)
         }
         $intervenant = setIntervenant($interv1.$extrainterv);
         $found = $majIntervenant = 1;
-	}elsif ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// ) {
+	}elsif ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|.// ) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
