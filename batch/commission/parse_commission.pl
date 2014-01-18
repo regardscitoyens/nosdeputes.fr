@@ -198,7 +198,7 @@ sub setIntervenant {
 	if ($intervenant =~ /((([pP]résident|[rR]apporteur[a-zé\s]+)[\sest,]*)+)([A-Zé].*)/) {
         $tmpint = $4;
         $tmpfct = $1;
-        if ($tmpint =~ /commission/i) {
+        if ($tmpint =~ /commission/i || $tmpfct =~ /commission d['esla\s]+$/i) {
             return setFonction("$tmpfct $tmpint");
         }
 	    return setFonction($tmpfct, $tmpint);
