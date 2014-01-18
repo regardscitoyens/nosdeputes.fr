@@ -396,13 +396,13 @@ foreach $line (split /\n/, $string)
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
-	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r[eé]sidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
+	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r..?sidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
 		$f = $1;
 		$i = $2;
 		$found = $majIntervenant = 1;
         checkout();
         $intervenant = setFonction($f, $i);
-	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r[eé]sidente?|[rR]apporteure?)[\.: \|]*//) {
+	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r..?sidente?|[rR]apporteure?)[\.: \|]*//) {
 		$tmpfonction = lc($1);
 		$tmpintervenant = $fonction2inter{$tmpfonction};
 		if ($tmpintervenant) {
