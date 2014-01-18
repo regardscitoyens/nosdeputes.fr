@@ -383,7 +383,8 @@ foreach $line (split /\n/, $string)
         }
 	    rapporteur();
 	    $found = 1;
-	}elsif ($line =~ s/^\|(M[^\|\:]+)[\|\:](\/[^\/]+\/)?(.*\w.*)/\3/ ) {
+	}
+    if ($line =~ s/^\|(M[^\|\:]+)[\|\:](\/[^\/]+\/)?(.*\w.*)/\3/ ) {
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2;
@@ -429,7 +430,9 @@ foreach $line (split /\n/, $string)
             }
 	    }
 	}
-	$intervention .= "<p>$line</p>";
+    if ($line) {
+	  $intervention .= "<p>$line</p>";
+    }
     }
     if (length($intervention)-32000 > 0) {
         $tmpinter = $intervenant;
