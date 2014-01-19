@@ -186,6 +186,8 @@ sub setIntervenant {
     $intervenant =~ s/^\s+//;
     $intervenant =~ s/É+/é/gi;
     $intervenant =~ s/\&\#8217\;/'/g;
+    $intervenant =~ s/^(l[ea] )?d..?put..?e?\s+//i;
+    $intervenant =~ s/^(l[ea] )?(s..?nat(eur|rice))\s+(.*)$/\4, \2/i;
     $intervenant =~ s/^l[ea] ([Mm]inistre) ([A-ZÉÈÀÔÙÎÏÇ].*)$/\2, \1/;
     if ($intervenant =~ s/\, (.*)//) {
 	setFonction($1, $intervenant);
