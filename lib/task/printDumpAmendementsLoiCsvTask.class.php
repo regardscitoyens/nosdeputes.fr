@@ -33,7 +33,7 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
         $parlslugs[] = $s['slug'];
         $parlgroup[] = $s['groupe_acronyme'];
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
-      $a['groupes_parlementaires'] = myTools:array2hash($parlslugs, 'groupe');
+      $a['groupes_parlementaires'] = myTools::array2hash($parlgroup, 'groupe');
       $a['commission'] = '';
       if ($a['organisme_id']) {
         $a['commission'] = Doctrine::getTable('Organisme')->find($a['organisme_id'])->nom;
