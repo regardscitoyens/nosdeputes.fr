@@ -28,9 +28,12 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
     $res = array('amendements' => array());
     foreach ($amendements as $a) {
       $parlslugs = array();
-      foreach (Doctrine_Query::create()->select('p.slug')->from('Parlementaire p, ParlementaireAmendement pa')->where('p.id = pa.parlementaire_id')->andWhere('pa.amendement_id = ?', $a['id'])->orderBy('pa.numero_signataire')->fetchArray() as $s)
+      $parlgroup = array();
+      foreach (Doctrine_Query::create()->select('p.slug, p.groupe_acronyme')->from('Parlementaire p, ParlementaireAmendement pa')->where('p.id = pa.parlementaire_id')->andWhere('pa.amendement_id = ?', $a['id'])->orderBy('pa.numero_signataire')->fetchArray() as $s)
         $parlslugs[] = $s['slug'];
+        $parlgroup[] = $s['groupe_acronyme'];
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
+      $a['groupes_parlementaires'] = myTools:array2hash($parlslugs, 'groupe');
       $a['commission'] = '';
       if ($a['organisme_id']) {
         $a['commission'] = Doctrine::getTable('Organisme')->find($a['organisme_id'])->nom;
@@ -49,7 +52,7 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
         foreach(array_keys($champs) as $key)
           echo "$key;";
         echo "\n";
-        myTools::depile_csv($res, $breakline, array('parlementaire' => 1));
+        myTools::depile_csv($res, $breakline, array('parlementaire' => 1, 'groupe'=>1));
 	break;
       case 'xml':
         myTools::depile_xml($res, $breakline);
