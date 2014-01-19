@@ -292,7 +292,7 @@ class apiActions extends sfActions
     $this->loi = preg_replace('/[^0-9a-z\-]/', '', $request->getParameter('loi'));
     $this->format = preg_replace('/[^a-z]/', '', $request->getParameter('format'));
     $this->setLayout(false);
-    myTools::headerize($this, $request, 'nosdeputes.fr_amendements_'.$this->loi, false);
+    myTools::headerize($this, $request, 'nossenateurs.fr_amendements_'.$this->loi, false);
   }
 
 }

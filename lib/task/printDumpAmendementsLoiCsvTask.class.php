@@ -7,7 +7,7 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
     $this->briefDescription = 'dump un csv contenant tous les amendements sur un texte de loi';
     $this->addArgument('loi_id', sfCommandArgument::REQUIRED, 'Identifiant de loi, exemple 20112012-592'); 
     $this->addArgument('format', sfCommandArgument::REQUIRED, 'Numero de loi'); 
-    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'dev');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
  }
 
@@ -29,13 +29,14 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
     foreach ($amendements as $a) {
       $parlslugs = array();
       $parlgroup = array();
-      foreach (Doctrine_Query::create()->select('p.slug, p.groupe_acronyme')->from('Parlementaire p, ParlementaireAmendement pa')->where('p.id = pa.parlementaire_id')->andWhere('pa.amendement_id = ?', $a['id'])->orderBy('pa.numero_signataire')->fetchArray() as $s)
+      foreach (Doctrine_Query::create()->select('p.slug, p.groupe_acronyme')->from('Parlementaire p, ParlementaireAmendement pa')->where('p.id = pa.parlementaire_id')->andWhere('pa.amendement_id = ?', $a['id'])->orderBy('pa.numero_signataire')->fetchArray() as $s) {
         $parlslugs[] = $s['slug'];
         $parlgroup[] = $s['groupe_acronyme'];
+      }
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
       $a['groupes_parlementaires'] = myTools::array2hash($parlgroup, 'groupe');
       $a['commission'] = '';
-      if ($a['organisme_id']) {
+      if (isset($a['organisme_id'])) {
         $a['commission'] = Doctrine::getTable('Organisme')->find($a['organisme_id'])->nom;
         unset($a['organisme_id']);
       }
