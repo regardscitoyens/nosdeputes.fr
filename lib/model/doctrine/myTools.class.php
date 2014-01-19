@@ -98,6 +98,12 @@ class myTools {
     return $date;
   }
 
+  public static function getFinLegislature() {
+    $date = self::getDebutLegislature();
+    preg_match('/^(2\d\d\d)/', $date, $m);
+    return str_replace($m[1], $m[1] + 5, $date);
+  }
+
   public static function isFinLegislature() {
     return (sfConfig::get('app_fin_legislature'));
   }

@@ -12,7 +12,7 @@ class solrActions extends sfActions
 {
 
   private function getPhoto($obj) {
-    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));  
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     switch(get_class($obj)) {
     case 'Intervention':
       if ($obj->getParlementaire()->__toString()) {
@@ -48,7 +48,6 @@ class solrActions extends sfActions
 
     $this->query = $request->getParameter('query');
     $this->query = preg_replace('#^https?://#', '', $this->query);
-    
     $query = preg_replace('/\*/', '', $this->query);
 
     $nb = 20;
@@ -74,7 +73,11 @@ class solrActions extends sfActions
 
     //Récupère les résultats auprès de SolR
     $date_debut = preg_replace("/-..$/", "-01T00:00:00Z", myTools::getDebutLegislature());
-    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date,description', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>$date_debut, "facet.date.end"=>"NOW", "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge");
+    $date_fin = 'NOW';
+    if (myTools::isLegislatureCloturee()) {
+        $date_fin = preg_replace("/-..$/", "-01T00:00:00Z", myTools::getFinLegislature());
+    }
+    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date,description', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>$date_debut, "facet.date.end"=>$date_fin, "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge");
     $this->sort_type = 'pertinence';
 
     if (!$this->query) {
@@ -137,9 +140,9 @@ class solrActions extends sfActions
       $params['sort'] = "date desc";
       $this->sort_type = 'date';
     }
-    
+
     $this->vue = 'par_mois';
-    
+
     $period = '';
 
     if ($date) {
@@ -149,21 +152,21 @@ class solrActions extends sfActions
       }
       $dates = explode(',', $date);
       list($from, $to) = $dates;
-      
+
       $nbjours = round((strtotime($to) - strtotime($from))/(60*60*24)+1);
       $jours_max = 90; // Seuil en nb de jours qui détermine l'affichage par jour ou par mois d'une période
-      
+
       $comp_date_from = explode("T", $from);
       $comp_date_from = explode("-", $comp_date_from[0]);
       $comp_date_from = mktime(0, 0, 0, $comp_date_from[1] + 1, $comp_date_from[2], $comp_date_from[0]);
       $comp_date_from = date("Y-m-d", $comp_date_from).'T00:00:00Z';
-      
+
       // Affichage d'une période
-      if(($nbjours < $jours_max) and ($from != $to) and ($comp_date_from != $to)) { 
+      if(($nbjours < $jours_max) and ($from != $to) and ($comp_date_from != $to)) {
         $period = 'DAY';
         $this->vue = 'par_jour';
-      } 
-      if($nbjours >= $jours_max || $vue_actuelle) { 
+      }
+      if($nbjours >= $jours_max || $vue_actuelle) {
         $period = 'MONTH';
         $to = $to.'+1MONTH';
         $this->vue = 'par_mois';
@@ -171,14 +174,14 @@ class solrActions extends sfActions
       // Affichage d'un jour
       else if($from == $to) {
         $period = 'DAY';
-        $this->vue = 'jour'; 
+        $this->vue = 'jour';
       }
       // Affichage d'un mois
       if($comp_date_from == $to) {
         $period = 'DAY';
         $this->vue = 'mois';
       }
-      
+
       if ($period == 'DAY') {
         $from = date ('Y-m-d', strtotime($from)-(3600*2+1)).'T23:59:59Z';
         $to = date ('Y-m-d', strtotime($to)).'T23:59:59Z';
@@ -188,14 +191,14 @@ class solrActions extends sfActions
       $params['facet.date.end'] = $to;
       $params['facet.date.gap'] = '+1'.$period;
     }
-    
+
     $this->start = $params['facet.date.start'];
     if ($period == 'DAY') {
       $this->start = date ('Ymd', strtotime($this->start)+1);
     }
     $this->end = $params['facet.date.end'];
-    if($this->end == 'NOW') { 
-      $this->end = date("Ymd"); 
+    if($this->end == 'NOW') {
+      $this->end = date("Ymd");
     }
 
 
@@ -207,7 +210,7 @@ class solrActions extends sfActions
       $results = array('response' => array('docs' => array(), 'numFound' => 0));
       $this->getUser()->setFlash('error', 'Désolé, le moteur de recherche est indisponible pour le moment. <!-- '.$query." $e".' -->');
     }
-    
+
     if  (!$format && count($results['response']['docs']) == 1 && $results['response']['docs'][0]['object_name'] == 'Parlementaire' && !$request->getParameter('format') && !$request->getParameter('noredirect')) {
       return $this->redirect($results['response']['docs'][0]['object']->getLink());
     }
@@ -229,18 +232,18 @@ class solrActions extends sfActions
       if ($this->query && isset($results['highlighting'][$res['id']]['text'])) {
         $high_res = array();
         foreach($results['highlighting'][$res['id']]['text'] as $h) {
-          $h = preg_replace('/.*=/', '', $h); 
+          $h = preg_replace('/.*=/', '', $h);
           array_push($high_res, $h);
         }
         $this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
-      } 
+      }
       else if (isset($this->results['docs'][$i]['description'])) {
 	$this->results['docs'][$i]['highlighting'] = $this->results['docs'][$i]['description'];
-      	if (strlen($this->results['docs'][$i]['highlighting']) > 700) 
+      	if (strlen($this->results['docs'][$i]['highlighting']) > 700)
     	   $this->results['docs'][$i]['highlighting'] = preg_replace('/[^ ]*$/', '', substr($this->results['docs'][$i]['description'], 0, 700)).'...';
       } else $this->results['docs'][$i]['highlighting'] = "";
     }
-    
+
     $this->results['end'] = $deb + $nb;
     $this->results['page'] = $deb/$nb + 1;
     if ($this->results['end'] > $this->results['numFound'] && $this->results['numFound']) {
@@ -252,12 +255,12 @@ class solrActions extends sfActions
       $this->facet['type']['facet_field'] = 'object_name';
       $this->facet['type']['name'] = 'Types';
       $this->facet['type']['values'] = $results['facet_counts']['facet_fields']['object_name'];
-      
+
       //Prépare les facets des parlementaires
       $this->facet['parlementaires']['prefix'] = 'parlementaire=';
       $this->facet['parlementaires']['facet_field'] = 'tag';
       $this->facet['parlementaires']['name'] = 'Parlementaires';
-      
+
       $tags = $results['facet_counts']['facet_fields']['tag'];
       $this->facet['tag']['prefix'] = '';
       $this->facet['tag']['facet_field'] = 'tag';
@@ -272,7 +275,7 @@ class solrActions extends sfActions
         }
       }
     }
-    
+
     if (!$results['response']['numFound']) {
       if ($format)
       return ;
@@ -295,7 +298,7 @@ class solrActions extends sfActions
       }
     }
   }
-  
+
   public function executeRedirect(sfWebRequest $request)
   {
     if ($p = $request->getParameter('slug')) {
