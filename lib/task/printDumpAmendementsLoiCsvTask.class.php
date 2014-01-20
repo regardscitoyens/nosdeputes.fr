@@ -35,7 +35,7 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
       }
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
       $a['groupes_parlementaires'] = myTools::array2hash($parlgroup, 'groupe');
-      $a['url_nosdeputes'] = preg_replace('#http://symfony/#', sfConfig::get('app_base_url'), url_for('@amendement?loi='.$loi.'&numero='.$a['numero'], 'absolute=true'));
+      $a['url_nosdeputes'] = preg_replace('#http://(symfony/)+#', sfConfig::get('app_base_url'), url_for('@amendement?loi='.$loi.'&numero='.$a['numero'], 'absolute=true'));
       unset($a['num']);
       foreach(array_keys($a) as $key)
         if (!isset($champs[$key]))
