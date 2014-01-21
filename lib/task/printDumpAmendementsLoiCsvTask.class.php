@@ -42,10 +42,32 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
       }
       $a['url_nossenateurs'] = preg_replace('#http://(symfony/)+#', sfConfig::get('app_base_url'), url_for('@amendement?loi='.$loi.'&numero='.$a['numero'], 'absolute=true'));
       unset($a['num']);
+      $am = array();
+      $am['id'] = $a['id'];
+      $am['legislature'] = '';
+      $am['texteloi_id'] = $a['texteloi_id'];
+      $am['numero'] = $a['numero'];
+      $am['sous_amendement_de'] = $a['sous_amendement_de'];
+      $am['rectif'] = $a['rectif'];
+      $am['sujet'] = $a['sujet'];
+      $am['sort'] = $a['sort'];
+      $am['date'] = $a['date'];
+      $am['texte'] = $a['texte'];
+      $am['expose'] = $a['expose'];
+      $am['signataires'] = $a['signataires'];
+      $am['source'] = $a['source'];
+      $am['nb_multiples'] = '';
+      $am['cle_unicite'] = $a['cle_unicite'];
+      $am['parlementaires'] = $a['parlementaires'];
+      $am['groupes_parlementaires'] = $a['groupes_parlementaires'];
+      $am['url_nossenateurs'] = $a['url_nossenateurs'];
+      $am['avis_comm'] = $a['avis_comm'];
+      $am['avis_gouv'] = $a['avis_gouv'];
+      $a = $am;
       foreach(array_keys($a) as $key)
         if (!isset($champs[$key]))
           $champs[$key] = 1;
-      $res['amendements'][] = array("amendement" => $a);
+      $res['amendements'][] = array("amendement" => $am);
     }
     $breakline = 'amendement';
     switch($arguments['format']) {
