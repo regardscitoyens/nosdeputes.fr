@@ -222,7 +222,6 @@ class myTools {
   public static function depile_assoc_xml($asso, $breakline, $alreadyline) {
     foreach (array_keys($asso) as $k) {
       if (!$alreadyline && $k == $breakline) {
-        echo "\n";
         $alreadyline = 1;
       }
       echo "<$k>";
