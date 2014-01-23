@@ -13,22 +13,35 @@ open(FILE, 'dernier_numero.txt') ;
 $last_record = "@last_record";
 close FILE;
 
-$url = "http://recherche2.assemblee-nationale.fr/questions/resultats-questions.jsp?NumLegislature=".$legislature."Questions&C1=QE&Dates=DPQ&Scope=TEXTEINTEGRAL&SortField=NUM&SortOrder=DESC&format=HTML";
+# deprecated
+#$url = "http://recherche2.assemblee-nationale.fr/questions/resultats-questions.jsp?NumLegislature=".$legislature."Questions&C1=QE&Dates=DPQ&Scope=TEXTEINTEGRAL&SortField=NUM&SortOrder=DESC&format=HTML";
+#$a = WWW::Mechanize->new(autocheck => 0);
+#$a->get($url);
+#$content = $a->content;
+#$p = HTML::TokeParser->new(\$content);
+#while ($t = $p->get_tag('span')) {
+#    if ($t->[1]{style} eq 'color:#C2262A; font-weight: bold;') {
+#        $last_number = $p->get_text('/span');
+#        break;
+#    }
+#}
+
+$url = "http://www2.assemblee-nationale.fr/recherche/resultats_questions";
 $a = WWW::Mechanize->new(autocheck => 0);
-$a->get($url);
+$a->post($url, ["sort_by" => "numDocument", "sort_order" => "desc", "limit" => "10", "legislature" => $legislature, "ssTypeDocument[]" => "qe"]);
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
-while ($t = $p->get_tag('span')) {
-    if ($t->[1]{style} eq 'color:#C2262A; font-weight: bold;') {
-        $last_number = $p->get_text('/span');
-	break;
+while ($t = $p->get_tag('a')) {
+    if ($t->[1]{href} =~ /assemblee-nationale\.fr\/q\d+\/\d+-(\d+)QE.html?$/) {
+        $last_number = $1;
+	    break;
     }
 }
 
 $last_record -= 100;
 if ($last_record < 0) {
   $last_record = 0;
-} 
+}
 print "Download questions écrites numéro ".$last_record." à ".($last_number+100).'\n\n';
 
 for ($cpt = ($last_record >= 100 ? $last_record-100 : 0) ; $cpt < $last_number+100 ; $cpt++) {
