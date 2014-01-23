@@ -46,8 +46,17 @@ $lastyear++;
 $startyear = $legislature * 5 + 1942;
 for $year ($startyear .. $lastyear) {
   $session = sprintf('%02d-%02d', $year-2001, $year-2000);
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-cedu/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-eco/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-cafe/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-soc/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-cdef/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-dvp/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-cfiab/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-cloi/$session/index.asp");
   push(@url, "http://www.assemblee-nationale.fr/$legislature/budget/plf$year/commissions_elargies/cr/");
   push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-mec/$session/index.asp");
+  push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-mecss/$session/index.asp");
   push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-cec/$session/index.asp");
   push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-oecst/$session/index.asp");
   push(@url, "http://www.assemblee-nationale.fr/$legislature/cr-delf/$session/index.asp");
@@ -67,12 +76,16 @@ if ($legislature == 13) {
   push (@url, "http://www.assemblee-nationale.fr/14/cr-mimage/12-13/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-micoutsprod/11-12/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-micoutsprod/12-13/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-misimplileg/13-14/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-miecotaxe/13-14/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-cefugy/12-13/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-cefugy/13-14/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-cesncm/12-13/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-cesncm/13-14/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-ceaffcahuzac/12-13/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-ceaffcahuzac/13-14/index.asp");
+  push (@url, "http://www.assemblee-nationale.fr/14/cr-cenucleaire/13-14/index.asp");
+
 }
 
 $a = WWW::Mechanize->new(autocheck => 0);
