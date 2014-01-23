@@ -13,7 +13,7 @@ $p = HTML::TokeParser->new(\$content);
 while ($t = $p->get_tag('a')) {
 	$txt = $p->get_text('/a');
 	$curl = $file = $t->[1]{href};
-	if ($txt =~ /compte rendu|e nationale \~/i && $curl !~ /cri/ && $curl !~ /recherche/ && $curl !~ /\(typeDoc\)/) {
+	if ($txt =~ /compte rendu|e nationale \~/i && $curl !~ /\/cri\/2/ && $curl !~ /recherche/ && $curl !~ /\(typeDoc\)/) {
 	    $ok = 1;
 	    $file =~ s/\//_/gi;
 	    $file =~ s/\#.*//;
