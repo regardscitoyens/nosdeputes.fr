@@ -31,7 +31,7 @@ foreach $line (split /\n/, $a->content) {
 }
 foreach $line (split /","/, $content) {
     $line =~ s/\\\//\//g;
-    $line =~ s/^.*\|(http:\/\/www.assemblee-nationale.fr\/14\/amendements\/[^\|]+)\|.*$/\1/;
+    $line =~ s/^.*\|(http:\/\/www.assemblee-nationale.fr\/\d+\/amendements\/[^\|]+)\|.*$/\1/;
     next if (!$line || $line =~ /(index|javascript)/);
     $count++;
     $a->get($line);
