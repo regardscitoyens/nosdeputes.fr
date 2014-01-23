@@ -3,6 +3,9 @@
 use Date::Format;
 use WWW::Mechanize;
 use HTML::TokeParser;
+print "Deprecated, need to be updated to AN's new search engine\n";
+exit(1);
+
 $count = 0;
 $legislature = shift || 14;
 $loi = shift;
