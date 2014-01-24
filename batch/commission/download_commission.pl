@@ -18,7 +18,7 @@ while ($t = $p->get_tag('a')) {
 	    $file =~ s/\//_/gi;
 	    $file =~ s/\#.*//;
 	    $curl =~ s/[^\/]+$//;
-            $url{$curl} = 1;
+        $url{$curl} = 1;
  	    next if -e "html/$file";
 	    print "$file\n";
 	    $a->get($t->[1]{href});
@@ -98,13 +98,13 @@ foreach $url (@url) {
 	    $file = $a->uri();
 	    $file =~ s/\//_/gi;
 	    $file =~ s/\#.*//;
-            $file =~ s/commissions_elargies_cr_c/commissions_elargies_cr_C/;
+        $file =~ s/commissions_elargies_cr_c/commissions_elargies_cr_C/;
 	    $size = -s "html/$file";
-            if ($size) {
-                $cpt++;
-                last if ($cpt > 3);
-                next;
-            }
+        if ($size) {
+            $cpt++;
+            #last if ($cpt > 3);
+            next;
+        }
 	    print "$file\n";
 	    open FILE, ">:utf8", "html/$file";
 	    print FILE $a->content;
