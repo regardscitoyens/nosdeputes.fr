@@ -177,7 +177,7 @@ class topDeputesTask extends sfBaseTask
   }
   protected function executeQuestionsOrales($q)
   {
-    $questions = $q->select('p.id, count(DISTINCT i.seance_id) as count')
+    $questions = $q->select('p.id, count(DISTINCT i.section_id) as count')
       ->from('Parlementaire p, p.Interventions i')
       ->groupBy('p.id')
       ->andWhere('i.type = ?', 'question')
