@@ -4,7 +4,7 @@ class plotComponents extends sfComponents
 {
   public function executeParlementaire() {
   }
- 
+
   public function executeGetParlData() {
     static $seuil_invective = 20;
     $this->data = array();
@@ -100,7 +100,7 @@ class plotComponents extends sfComponents
     unset($participations);
    if (!$this->data['fin']) {
     $query3 = Doctrine_Query::create()
-      ->select('count(distinct s.id) as nombre, i.id, s.annee, s.numero_semaine')
+      ->select('count(distinct s.id, i.section_id) as nombre, i.id, s.annee, s.numero_semaine')
       ->from('Intervention i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('i.type = ?', 'question')
@@ -169,13 +169,13 @@ class plotComponents extends sfComponents
   }
 
   public static function getVacances($n_weeks, $annee0, $sem0, $debut_mandat) {
-    
+
     $n_vacances = array_fill(1, $n_weeks, 0);
     $mandat_an0 = date('Y', $debut_mandat);
     $mandat_sem0 = date('W', $debut_mandat);
     if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
     $week0 = ($mandat_an0 - $annee0)*53 + $mandat_sem0 - $sem0 + 1;
-    for ($n = 0; $n < $week0 ; $n++) 
+    for ($n = 0; $n < $week0 ; $n++)
       $n_vacances[$n] = 20;
 
     $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
@@ -220,7 +220,7 @@ class plotComponents extends sfComponents
     while ($n <= $n_weeks) {
       $n_vacances[$n] = 20;
       $n++;
-    }  
+    }
     $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
     if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
       $n = ($vacance['annee'] - $annee0)*53 + $vacance['semaine'] - $sem0 + 1;
@@ -263,11 +263,11 @@ class plotComponents extends sfComponents
     $this->data = array();
     if (!isset($this->type) || $this->type != "all")
       $this->type = "home";
-    $this->data['groupes'] = array(); 
+    $this->data['groupes'] = array();
     $this->data['couleurs'] = array();
     $colormap = myTools::getGroupesColorMap();
     foreach (array_reverse(myTools::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''))) as $gpe) {
-      $this->data['groupes'][$gpe] = array(); 
+      $this->data['groupes'][$gpe] = array();
       $this->data['couleurs'][] = $colormap[$gpe];
     }
     if ($this->type === "home")
@@ -344,7 +344,7 @@ class plotComponents extends sfComponents
   public function executeGroupes() {
     $this->empty = 0;
     if (!isset($this->plot)) $this->plot = 'total';
-    $this->labels = myTools::convertYamlToArray(sfConfig::get('app_groupes_actuels', '')); 
+    $this->labels = myTools::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''));
     $this->couleurs = array();
     $colormap = myTools::getGroupesColorMap();
     foreach ($this->labels as $gpe)
@@ -401,7 +401,7 @@ class plotComponents extends sfComponents
           ->fetchArray();
 	$this->seancenom = 'séance';
         if ($match[1] == 'com') {
-	  $this->seancenom = 'réunion'; 
+	  $this->seancenom = 'réunion';
           $this->presences = array();
           $presences = Doctrine_Query::create()
             ->select('p.groupe_acronyme, count(pr.id)')
@@ -464,5 +464,5 @@ class plotComponents extends sfComponents
         $this->membres[] = array_sum($this->membres)/2;
     }
   }
-  
+
 }

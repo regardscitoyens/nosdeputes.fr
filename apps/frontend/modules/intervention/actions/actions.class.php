@@ -24,7 +24,7 @@ class interventionActions extends sfActions
       if ($this->type == 'question')
         $this->interventions->andWhere('i.fonction NOT LIKE ?', 'président%')
           ->andWhere('i.nb_mots > ?', 40)
-          ->groupBy('i.section_id');
+          ->groupBy('i.seance_id, i.section_id');
     } else if ($this->type != 'all')
       $this->forward404();
     if ($this->type == 'question') $this->titre = 'Questions orales';
