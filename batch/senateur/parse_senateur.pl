@@ -218,7 +218,7 @@ sub mandats {
 				last;
 			}
 		}
-		if ($election =~ /Fin de mandat/) {
+		if ($election =~ /Fin de mandat/ || $election =~ /D..mission /) {
 			if ($oldcause =~ /remplacement de M[me\.]+ ([^,]*),/) {
                                 $suppleant_de = $1;
                         }
