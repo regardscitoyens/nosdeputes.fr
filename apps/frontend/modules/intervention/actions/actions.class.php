@@ -249,7 +249,6 @@ class interventionActions extends sfActions
       $i['amendements'] = myTools::array2hash($amendements, 'amendement');
       $i['lois'] = myTools::array2hash($lois, 'loi');
       $i['source'] = $int['source'];
-      $i['source'] = $int['source'];
       $i['url_nosdeputes'] = url_for('@interventions_seance?seance='.$int['seance_id'], 'absolute=true')."#inter_".$int['md5'];
       $i['url_nosdeputes_api'] = url_for("@api_document?class=Intervention&id=".$int['id']."&format=".$request->getParameter('format'), 'absolute=true');
       $i['id'] = $int['id'];
