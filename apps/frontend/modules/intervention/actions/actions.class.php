@@ -216,7 +216,7 @@ class interventionActions extends sfActions
       if ($int['parlementaire_id']) {
         $i['intervenant_nom'] = $this->parlementaires[$int['parlementaire_id']]->getNom();
         $i['intervenant_slug'] = $this->parlementaires[$int['parlementaire_id']]->getSlug();
-        $i['intervenant_goupe'] = $this->parlementaires[$int['parlementaire_id']]->getGroupeAcronyme();
+        $i['intervenant_groupe'] = $this->parlementaires[$int['parlementaire_id']]->getGroupeAcronyme();
       }else if ($int['personnalite_id']) {
         $i['intervenant_nom'] = $this->personnalites[$int['personnalite_id']]->getNom();
       }
