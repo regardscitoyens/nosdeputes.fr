@@ -191,6 +191,7 @@ class interventionActions extends sfActions
     $this->res = array('seance' => array());
     $this->breakline = 'intervention';
     $this->multi = array('tag' => 'tag', 'loi' => 'loi', 'amendement' => 'amendement');
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     foreach($this->interventions as $int) {
       $i['seance_id'] = $int['seance_id'];
       $i['seance_titre'] = $this->seance->titre;
@@ -244,6 +245,8 @@ class interventionActions extends sfActions
       $i['amendements'] = myTools::array2hash($amendements, 'amendement');
       $i['lois'] = myTools::array2hash($lois, 'loi');
       $i['source'] = $int['source'];
+      $i['url_nossenateurs'] = url_for('@interventions_seance?seance='.$int['seance_id'], 'absolute=true')."#inter_".$int['md5'];
+      $i['url_nossenateurs_api'] = url_for("@api_document?class=Intervention&id=".$int['id']."&format=".$request->getParameter('format'), 'absolute=true');
       $i['id'] = $int['id'];
       $this->res['seance'][] = array('intervention' => $i);
       if (!isset($this->champs)) {
