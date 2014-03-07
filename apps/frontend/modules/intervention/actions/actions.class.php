@@ -30,9 +30,9 @@ class interventionActions extends sfActions
     if ($this->type == 'question') $this->titre = 'Questions orales';
     else {
       $this->titre = 'Interventions';
-      if ($this->type == 'loi') 
+      if ($this->type == 'loi')
 	$this->titre .= ' en hémicycle';
-      else if ($this->type == 'commission') 
+      else if ($this->type == 'commission')
 	$this->titre .= ' en commissions';
     }
     $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom." - NosDéputés.fr");
@@ -42,7 +42,7 @@ class interventionActions extends sfActions
       $request->setParameter('rss', array(array('link' => '@parlementaire_interventions_rss?slug='.$this->parlementaire->slug, 'title'=>'Les dernières interventions de '.$this->parlementaire->nom.' en RSS')));
     }
   }
-  
+
   public function executeParlementaireOrganisme(sfWebRequest $request) {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
@@ -75,7 +75,7 @@ class interventionActions extends sfActions
       $titre .= $this->orga->getNom();
     } else if ($this->secparent && !(preg_match('/questions/i', $this->secparent->getTitre())))
       $titre .= $this->secparent->getTitre();
-    else 
+    else
       $titre .= $this->section->getTitre();
     $titre .= " - ".$this->seance->getTitre(0,($this->seance->type == "commission" ? 0 : 1));
     $this->lois = $this->intervention->getTags(array('is_triple' => true,
@@ -220,7 +220,7 @@ class interventionActions extends sfActions
       if ($int['parlementaire_id']) {
         $i['intervenant_nom'] = $this->parlementaires[$int['parlementaire_id']]->getNom();
         $i['intervenant_slug'] = $this->parlementaires[$int['parlementaire_id']]->getSlug();
-        $i['intervenant_goupe'] = $this->parlementaires[$int['parlementaire_id']]->getGroupeAcronyme();
+        $i['intervenant_groupe'] = $this->parlementaires[$int['parlementaire_id']]->getGroupeAcronyme();
       }else if ($int['personnalite_id']) {
         $i['intervenant_nom'] = $this->personnalites[$int['personnalite_id']]->getNom();
       }
@@ -274,7 +274,7 @@ class interventionActions extends sfActions
 
   public function executeTag(sfWebRequest $request) {
     $this->tags = explode('\|', $request->getParameter('tags'));
-    
+
     if (Doctrine::getTable('Tag')->findOneByName($this->tags[0]))
       $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', $this->tags);
     else
@@ -358,6 +358,6 @@ class interventionActions extends sfActions
       $this->feed = new sfRssFeed();
       $this->feed->setLanguage('fr');
     } else $request->setParameter('rss', array(array('link' => '@search_interventions_mots_rss?search='.$this->mots, 'title'=>'Les dernières interventions sur '.$this->mots.' en RSS')));
-    
+
   }
 }
