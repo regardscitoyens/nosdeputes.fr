@@ -4,6 +4,7 @@ all:
   secret_key: _______PUT_YOUR_KEY_HERE________
   legislature: 13
   debut_mandature: "2011-10-01"
+  debut_data: "2004-10-01" 
   groupes_actuels: >
     ["CRC", "SOC", "ECO", "RDSE", "UDI", "UMP", "NI"]
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES

@@ -68,7 +68,7 @@ if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->
   }
  } else {
   $rank = 0;
-  $weeks = (strtotime($parlementaire->fin_mandat) - strtotime($parlementaire->debut_mandat))/(60*60*24*7);
+  $weeks = (strtotime($parlementaire->fin_mandat) - strtotime(max(myTools::getDebutData(), $parlementaire->debut_mandat)))/(60*60*24*7);
   if ($weeks > 52) $temps = sprintf('%d mois', $weeks/4.33);
   else $temps = sprintf('%d semaines', $weeks);
   echo '<h3>Activité sur '.$temps.' :</h3>';

@@ -18,6 +18,13 @@ class myTools {
     return explode('","', $string);
   }
 
+  public static function getDebutData() {
+    $date = sfConfig::get('app_debut_data');
+    if (!$date)
+      $date = "2004-10-01";
+    return $date;
+  }
+
   public static function getDebutMandature() {
     $date = sfConfig::get('app_debut_mandature');
     if (!$date)
