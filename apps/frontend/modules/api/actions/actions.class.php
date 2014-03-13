@@ -143,12 +143,17 @@ class apiActions extends sfActions
     $this->champs = array();
     $this->res = array('organismes' => array());
     $this->breakline = 'organisme';
+    $colormap = myTools::getGroupesColorMap();
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     foreach($orgas as $o) {
       $orga = array();
       $orga['id'] = $o->id * 1;
       $orga['slug'] = $o->slug;
       $orga['nom'] = $o->nom;
+      if ($o->type == "groupe") {
+        $orga['acronyme'] = $o->getSmallNomGroupe();
+        $orga['couleur'] = $colormap[$orga['acronyme']];
+      }
       $orga['type'] = $o->type;
       $orga['url_nosdeputes'] = url_for('@list_parlementaires_organisme?slug='.$orga['slug'], 'absolute=true');
       $orga['url_nosdeputes_api'] = url_for('@list_parlementaires_organisme_api?format='.$request->getParameter('format').'&orga='.$orga['slug'], 'absolute=true');
