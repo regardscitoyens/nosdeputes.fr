@@ -192,12 +192,21 @@ list_parlementaires_profession:
 list_parlementaires_profession_empty:
   url: /profession/
   param: {module: parlementaire, action: listProfession}
+list_parlementaires_groupe_api:
+  url: /groupe/:acro/:format
+  param: {module: api, action: listParlementairesGroupe}
 list_parlementaires_groupe:
   url: /groupe/:acro
   param: {module: parlementaire, action: listGroupe}
+list_parlementaires_organisme_api:
+  url: /organisme/:orga/:format
+  param: {module: api, action: listParlementaires}
 list_parlementaires_organisme:
   url: /organisme/:slug
   param: {module: parlementaire, action: listOrganisme}
+list_organismes_api:
+  url: /organismes/:type/:format
+  param: {module: api, action: listOrganismes}
 
 photo_parlementaire:
   url: /senateur/photo/:slug
@@ -232,6 +241,9 @@ intervention:
 intervention_commentaires:
   url: /intervention/:id/commentaires
   param: {module: commentaire, action: showAjax, intervention: 1, limit: 4}
+seance_commentaires_json:
+  url: /seance/:seance/commentaires
+  param: {module: commentaire, action: json}
 presents_seance:
   url: /seance/:seance/presents
   param: {module: presence, action: seance}
@@ -250,14 +262,9 @@ api_list_seances_by_loi_section:
 api_list_seances_by_loi:
   url: /seances/:loi/:format
   param: {module: intervention, action: listSeancesByLoi}
-
-seance_commentaires_json:
-  url: /seance/:seance/commentaires
-  param: {module: commentaire, action: json}
 amendement_id:
   url: /amendement/:id
   param: {module: amendement, action: redirect}
-
 amendement:
   url: /amendement/:loi/:numero
   param: {module: amendement, action: show}
@@ -270,6 +277,9 @@ api_amendements_xml:
 api_amendements_json:
   url: /amendements/:loi/json
   param: {module: api, action: amendements, format: json}
+get_links_amendements_by_loi_json:
+  url: /14/amendements/:loi/links/json
+  param: {module: api, action: linksAmendements, format: json}
 find_amendements_by_loi_and_numero:
   url: /amendements/:loi/:numero
   param: {module: amendement, action: find}

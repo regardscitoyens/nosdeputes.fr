@@ -22,15 +22,15 @@ class interventionActions extends sfActions
       if ($this->type == 'question')
         $this->interventions->andWhere('i.fonction NOT LIKE ?', 'président%')
           ->andWhere('i.nb_mots > ?', 40)
-          ->groupBy('i.seance_id');
+          ->groupBy('i.seance_id, i.section_id');
     } else if ($this->type != 'all')
       $this->forward404();
     if ($this->type == 'question') $this->titre = 'Questions orales';
     else {
       $this->titre = 'Interventions';
-      if ($this->type == 'loi') 
+      if ($this->type == 'loi')
 	$this->titre .= ' en hémicycle';
-      else if ($this->type == 'commission') 
+      else if ($this->type == 'commission')
 	$this->titre .= ' en commissions';
     }
     $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom." - NosSénateurs.fr");
@@ -40,7 +40,7 @@ class interventionActions extends sfActions
       $request->setParameter('rss', array(array('link' => '@parlementaire_interventions_rss?slug='.$this->parlementaire->slug, 'title'=>'Les dernières interventions de '.$this->parlementaire->nom.' en RSS')));
     }
   }
-  
+
   public function executeParlementaireOrganisme(sfWebRequest $request) {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
@@ -71,7 +71,7 @@ class interventionActions extends sfActions
       $titre .= $this->orga->getNom();
     } else if ($this->secparent && !(preg_match('/questions/i', $this->secparent->getTitre())))
       $titre .= $this->secparent->getTitre();
-    else 
+    else
       $titre .= $this->section->getTitre();
     $titre .= " - ".$this->seance->getTitre();
     $this->lois = $this->intervention->getTags(array('is_triple' => true,
@@ -208,7 +208,7 @@ class interventionActions extends sfActions
         }else{
           $i['section'] = $this->sections[$int['section_id']]->titre;
         }
-          $i['soussection'] = $this->sections[$int['section_id']]->titre;
+        $i['soussection'] = $this->sections[$int['section_id']]->titre;
       }
       $i['intervenant_nom'] = '';
       $i['intervenant_fonction'] = $int['fonction'];
@@ -273,7 +273,7 @@ class interventionActions extends sfActions
 
   public function executeTag(sfWebRequest $request) {
     $this->tags = explode('\|', $request->getParameter('tags'));
-    
+
     if (Doctrine::getTable('Tag')->findOneByName($this->tags[0]))
       $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', $this->tags);
     else
@@ -357,6 +357,6 @@ class interventionActions extends sfActions
       $this->feed = new sfRssFeed();
       $this->feed->setLanguage('fr');
     } else $request->setParameter('rss', array(array('link' => '@search_interventions_mots_rss?search='.$this->mots, 'title'=>'Les dernières interventions sur '.$this->mots.' en RSS')));
-    
+
   }
 }

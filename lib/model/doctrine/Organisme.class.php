@@ -19,8 +19,10 @@ class Organisme extends BaseOrganisme
   public function getPersonne() {
     return '';
   }
-  public function __tostring() {
-    return substr($this->getTitre(), 0, 100);
+  public function __toString() {
+    if ($titre = $this->getTitre())
+      return substr($titre, 0, 100);
+    return "";
   }
   public function getSmallNomGroupe() {
     $hashmap = array();

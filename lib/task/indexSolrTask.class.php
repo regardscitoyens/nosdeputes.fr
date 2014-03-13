@@ -3,8 +3,8 @@
 class indexSolrTask extends sfBaseTask
 {
   private $file_conf;
-  
-  private function writeState() 
+
+  private function writeState()
   {
     $fh = fopen($this->file_conf, 'w');
     fwrite($fh, serialize($this->state));
@@ -24,7 +24,7 @@ class indexSolrTask extends sfBaseTask
     $this->addOption('removePages', null, sfCommandOption::PARAMETER_OPTIONAL, 'remove indexed static pages(=no|yes no default)', 'no');
     $this->addOption('verbose', null, sfCommandOption::PARAMETER_OPTIONAL, 'Print the indexed object ID (=no|yes no default)', 'no');
 
-    $this->file_conf = sys_get_temp_dir().DIRECTORY_SEPARATOR."reindex_slor.db";
+    $this->file_conf = sys_get_temp_dir().DIRECTORY_SEPARATOR."reindex_solr.db";
     $this->state = array();
     if (file_exists($this->file_conf)) {
       $this->state = unserialize(file_get_contents($this->file_conf));
@@ -57,12 +57,12 @@ class indexSolrTask extends sfBaseTask
       $solr->updateLuceneRecord($json);
     }
   }
- 
+
   protected function execute($arguments = array(), $options = array())
   {
-    $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
-    $manager = new sfDatabaseManager($this->configuration);    
 
+    $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
+    $manager = new sfDatabaseManager($this->configuration);
     $solr = new SolrConnector();
 
     if ($options['removeAll'] == 'yes') {
@@ -103,7 +103,7 @@ class indexSolrTask extends sfBaseTask
 	  echo "Count DONE\n";
 	  break;
 	}
-	
+
 	foreach($q->execute() as $o) {
 	  echo get_class($o).' '.$o->id."\n";
 	  $o->Save();
@@ -116,5 +116,5 @@ class indexSolrTask extends sfBaseTask
     }
     //    unlink($this->file_conf);
   }
-  
+
 }

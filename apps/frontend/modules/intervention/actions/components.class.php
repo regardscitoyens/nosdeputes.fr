@@ -11,7 +11,7 @@ class InterventionComponents extends sfComponents
       ->andWhere('i.type = ?', 'question')
       ->andWhere('i.fonction NOT LIKE ?', 'président%')
       ->andWhere('i.nb_mots > ?', 40)
-      ->groupBy('i.seance_id')
+      ->groupBy('i.seance_id, i.section_id')
       ->orderBy('i.date DESC, i.timestamp ASC');
     if (isset($this->limit))
       $query->limit($this->limit);

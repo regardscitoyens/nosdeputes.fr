@@ -5,7 +5,7 @@ class fuseDossiersTask extends sfBaseTask {
     $this->namespace = 'fuse';
     $this->name = 'Dossiers';
     $this->briefDescription = 'Fusionne un dossier vers un autre';
-    $this->addArgument('baddossier', sfCommandArgument::REQUIRED, 'Dossier à intégrer'); 
+    $this->addArgument('baddossier', sfCommandArgument::REQUIRED, 'Dossier à intégrer');
     $this->addArgument('gooddossier', sfCommandArgument::REQUIRED, 'Dossier d\'acccueil');
     $this->addArgument('seanceid', sfCommandArgument::OPTIONAL, 'Optionnel : limite à cette séance');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
@@ -63,7 +63,7 @@ class fuseDossiersTask extends sfBaseTask {
     }
 
   if ($bad->id != $bad->section_id) {
-    print "\n + $sub->titre_complet";
+    print "\n + $bad->titre_complet";
     $exist = Doctrine::getTable('Section')->createQuery('s')->where('s.section_id = ?', $good->id)->andWhere('s.titre = ?', $bad->getOrigTitre())->fetchOne();
     if (isset($exist->section_id)) {
       print " existe déjà pour la section d'accueil, met-à-jour\n";
@@ -99,12 +99,12 @@ class fuseDossiersTask extends sfBaseTask {
       }
     }
 
-  } else { 
+  } else {
     $this->updateTags($bad, $good);
     $this->updateInterv($bad, $good, $n_itv);
     $this->updateComments($bad, $good);
     $this->updateMinDate($bad, $good);
- 
+
     $corresp = array(strtolower($bad->getOrigTitre()) => strtolower($good->getOrigTitre()));
     print "\nEnregistre la correspondance en base :\n";
     $option = Doctrine::getTable('VariableGlobale')->findOneByChamp('dossiers');

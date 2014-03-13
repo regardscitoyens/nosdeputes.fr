@@ -12,10 +12,29 @@ class Section extends BaseSection
   public function getPersonne() {
     return '';
   }
+  public function getLinkSource() {
+    if ($this->id_dossier_institution) {
+      return "http://www.senat.fr/dossier-legislatif/".$this->id_dossier_institution.".html";
+    }
+    return "";
+  }
   public function __tostring() {
     if ($str = $this->_get('titre_complet'))
       return $str;
     return "";
+  }
+
+  public function getParlementaires() {
+    if (!$this->getIsParent())
+      return "";
+    $parls = Doctrine_query::create()->select('p.*')->from('Parlementaire p')
+      ->leftJoin('p.Interventions i')
+      ->leftJoin('i.Section s')
+      ->where('s.id = ? OR s.section_id = ?', array($this->id, $this->id))
+      ->andWhere('i.nb_mots > 20')
+      ->groupBy('p.id')
+      ->execute();
+    return $parls;
   }
 
   public function setTitreComplet($titre) {

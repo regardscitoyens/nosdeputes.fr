@@ -6,9 +6,11 @@
 class Question extends BaseQuestion
 {
   public function getLink() {
-    if (!function_exists('url_for'))
-      sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@question_numero?numero='.$this->numero.'&legi='.$this->legislature);
+  }
+  public function getLinkSource() {
+    return $this->source;
   }
   public function getPersonne() {
     return $this->getParlementaire()->getNom();

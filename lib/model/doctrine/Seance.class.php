@@ -7,7 +7,7 @@ class Seance extends BaseSeance
 {
   public function __tostring() {
     if ($this->type == 'commission')
-    return 'réunion du '.myTools::displayDate($this->date).', '.$this->moment;
+      return 'réunion du '.myTools::displayDate($this->date).', '.$this->moment;
     return 'séance du '.myTools::displayDate($this->date).', '.$this->moment;
   }
   

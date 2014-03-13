@@ -83,7 +83,7 @@ class myTools {
      "10" => "octobre",
      "11" => "novembre",
      "12" => "décembre");
-  
+
   public static function displayDate($date) {
     if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $date, $match)) {
       $match[3] = preg_replace('/^0(\d)/', '\\1', $match[3]);
@@ -94,9 +94,11 @@ class myTools {
 
   public static function displayDateMoisAnnee($date) {
     if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $date, $match)) {
-      return self::$num_mois[$match[2]].' '.$match[1];
+      if($match[2] != '00') {
+        return self::$num_mois[$match[2]].' '.$match[1];
+      } else return $date;
     } else return $date;
-  } 
+  }
 
   static $day_week = array(
      "0" => "Dimanche",
@@ -109,7 +111,7 @@ class myTools {
 
   public static function displayDateSemaine($date) {
     $day = self::$day_week[date('w', strtotime($date))];
-    return $day.' '.self::displayDate($date); 
+    return $day.' '.self::displayDate($date);
   }
 
   public static function displayShortDate($d) {
@@ -127,19 +129,19 @@ class myTools {
     $date = $date.substr($d,2,2);      // année
     return $date;
   }
-  
+
   public static function displayMoisAnnee($d) {
     $d = preg_replace ('/\-/', '', $d);
     $date = self::$num_mois[substr($d,4,2)].' ';  // mois txt
     $date = $date.substr($d,0,4);      // année num
     return $date;
   }
- 
-  public static function displayDateTime($d) { 
-    $date = self::displayShortDate($d)." à "; 
-    $date = $date.substr($d,11,5);     // heures et minutes 
-    return $date; 
-  } 
+
+  public static function displayDateTime($d) {
+    $date = self::displayShortDate($d)." à ";
+    $date = $date.substr($d,11,5);     // heures et minutes
+    return $date;
+  }
 
   public static function getAge($dob) {
     list($year,$month,$day) = explode("-",$dob);
@@ -149,7 +151,7 @@ class myTools {
     if (($month_diff == 0 && $day_diff < 0) || $month_diff < 0)
       $year_diff--;
     return $year_diff;
-  }	
+  }
 
   public static function getLinkDossier($urlan) {
     if ($urlan)
@@ -183,7 +185,7 @@ class myTools {
 
   public static function clearHtml($s, $authorized_tags = '<strong><i><b><a><em>') {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-	
+
     if ($authorized_tags)
       $s = strip_tags($s, $authorized_tags.'<senateur>');
 
@@ -204,7 +206,7 @@ class myTools {
   }
       }
     }
-    $s = '<p>'.$s.'</p>'; 
+    $s = '<p>'.$s.'</p>';
     $s = preg_replace('/\n/', '</p><p>', $s);
     return $s;
   }
@@ -256,7 +258,7 @@ class myTools {
       echo $res;
     }
   }
-  
+
   public static function depile_assoc_csv($asso, $breakline, $multi, $alreadyline) {
     $semi = 0;
     foreach (array_keys($asso) as $k) {
@@ -270,20 +272,20 @@ class myTools {
     }
     return $semi;
   }
-  
+
   public static function depile_csv($res, $breakline, $multi, $comma = 0, $alreadyline = 0) {
     if (is_array($res)) {
       if (isset($res['organisme']) && isset($res['fonction']))
         return self::depile_csv($res['organisme']." - ".$res['fonction'], $breakline, $multi, $comma, $alreadyline);
       if (!isset($res[0])) {
-        if (array_keys($res)) 
+        if (array_keys($res))
   	return self::depile_assoc_csv($res, $breakline, $multi, $alreadyline);
         echo ";";
         return;
       }
       foreach($res as $r)
         $semi = self::depile_csv($r, $breakline, $multi, 0, $alreadyline);
-      if ($semi) 
+      if ($semi)
         echo ';';
     }else{
       if ($comma)
@@ -296,15 +298,15 @@ class myTools {
       echo $res;
       if ($string)
         echo '"';
-      if ($comma) 
+      if ($comma)
         echo '|';
       else echo ';';
     }
   }
 
   public static function templatize($action, $request, $filename) {
-        self::headerize($action, $request, $filename);
-        $action->setTemplate($request->getParameter('format'), 'api');
+    self::headerize($action, $request, $filename);
+    $action->setTemplate($request->getParameter('format'), 'api');
   }
 
   public static function headerize($action, $request, $filename) {

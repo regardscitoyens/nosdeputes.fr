@@ -24,14 +24,14 @@ class reindexSolrObjectTask extends sfBaseTask {
       echo "ERREUR : $id n'a pas l'air d'une id correcte";
       return;
     }
-    if ($class === "Seance") { 
+    if ($class === "Seance") {
       $inters = Doctrine::getTable('Intervention')->createQuery('i')->where('seance_id = ?', $id)->execute(); 
-      foreach ($inters as $i) 
-        $this->index($class, $i); 
+      foreach ($inters as $i)
+        $this->index("Intervention", $i->id);
     } else {
       $this->index($class, $id);
-    } 
-  } 
+    }
+  }
 
   protected static function index($class, $id) {
     $obj = Doctrine::getTable($class)->find($id);
@@ -43,6 +43,5 @@ class reindexSolrObjectTask extends sfBaseTask {
       $obj->save();
     }
   }
-
 }
 

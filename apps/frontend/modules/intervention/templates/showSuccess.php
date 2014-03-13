@@ -13,7 +13,7 @@ if(count($amdmts) >= 1)
 if(count($amdmts) > 1) $titre2 .= 's';
 $titre2 .= ' ';
 foreach($amdmts as $amdmt)
-$titre2 .= link_to($amdmt, '/amendements/'.(implode(',',$lois).'/'.$amdmt)).' ';
+$titre2 .= link_to($amdmt, '@find_amendements_by_loi_and_numero?loi='.(implode(',',$lois).'&numero='.$amdmt)).' ';
 
 ?>
 <h2><?php echo $titre2 ; ?></h2>

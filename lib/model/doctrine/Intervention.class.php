@@ -14,7 +14,9 @@ class Intervention extends BaseIntervention
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@interventions_seance?seance='.$this->getSeance()->id).'#inter_'.$this->getMd5();
   }
-
+  public function getLinkSource() {
+    return $this->source;
+  }
   public function getPersonne() {
     return $this->getNomAndFonction();
   }
@@ -46,19 +48,32 @@ class Intervention extends BaseIntervention
     if ($this->type === 'question')
       $titre = 'Question orale du ';
     else {
-      $titre = 'Intervention';
-      if ($this->type === 'commission')
-        $titre .= ' en commission';
-      else
-        $titre .= ' en hémicycle';
+      if ($this->type === 'commission') {
+        if ($orga = $this->getOrganisme())
+          $titre = $orga." - Intervention";
+        else $titre = 'Intervention en commission';
+      } else $titre = 'Intervention en hémicycle';
       $titre .= ' le ';
     }
     $titre .= myTools::displayShortDate($this->date);
-    if ($this->type === 'question')      
-      $titre .= ' : '.ucfirst($this->Section->getTitre());
-    else if ($this->type === 'loi')
-      $titre .= ' : '.ucfirst($this->Section->Section->getTitreComplet());
+    if ($this->type != 'commission')      
+      $titre .= ' : '.ucfirst($this->getDossier());
     return $titre;
+  }
+
+  public function getDossier() {
+    if ($this->type === 'question' && $section = $this->Section) 
+      return $section->getTitre();
+    if ($this->type === 'loi' && $section = $this->Section->Section)
+      return $section->getTitreComplet();
+    return "";
+  }
+
+  public function getOrganisme() {
+    if ($this->type === 'commission' && $seance = $this->Seance)
+      if ($orga = $seance->Organisme)
+        return $orga->nom;
+    return "";
   }
 
   public function setSeance($type, $date, $heure, $session, $commissiontxt = null) {
@@ -67,15 +82,9 @@ class Intervention extends BaseIntervention
         $seancetype = "commission";
     }
     $this->setType($type);
-    if (is_array(self::$seances)) {
-      if (isset(self::$seances[$seancetype.$date.$heure.$session.$commissiontxt])) {
-	return $this->_set('seance_id', self::$seances[$seancetype.$date.$heure.$session.$commissiontxt]);
-      }else {
+    if (is_array(self::$seances) && isset(self::$seances[$seancetype.$date.$heure.$session.$commissiontxt]))
+	  return $this->_set('seance_id', self::$seances[$seancetype.$date.$heure.$session.$commissiontxt]);
 	self::$seances = array();
-      }
-    }else{
-      self::$seances = array();
-    }
     $seance = Doctrine::getTable('Seance')->findOneOrCreateIt($seancetype, $date, $heure, $session, $commissiontxt);
     $id = $this->_set('seance_id', $seance->id);
     self::$seances[$seancetype.$date.$heure.$session.$commissiontxt] = $seance->id;

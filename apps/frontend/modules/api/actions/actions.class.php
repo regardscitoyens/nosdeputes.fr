@@ -10,10 +10,9 @@
  */
 class apiActions extends sfActions
 {
-  public function executeSynthese(sfWebRequest $request)
-  {
-    
+  public function executeSynthese(sfWebRequest $request) {
   }
+
   public function executeDocument(sfWebRequest $request)
   {
     $class = $request->getParameter('class');
@@ -25,10 +24,10 @@ class apiActions extends sfActions
       return $this->redirect('api/parlementaire?slug='.$o->slug.'&format='.$format);
     }
     $slug = $class.'_'.$id;
-    $date = $o->updated_at; 
+    $date = $o->updated_at;
     $this->res = array();
     $this->res[strtolower($class)] = $o->toArray();
-    $this->templatize($request, 'nossenateurs.fr_'.'_'.$slug.'_'.$date);
+    myTools::templatize($this, $request, 'nossenateurs.fr_'.'_'.$slug.'_'.$date);
     $this->breakline = '';
   }
  /**
@@ -72,7 +71,7 @@ class apiActions extends sfActions
     }
 
     $this->breakline = 'senateur';
-    $this->templatize($request, $date.'_stats_senateurs');
+    myTools::templatize($this, $request, 'nossenateurs.fr_'.$date.'_stats_senateurs');
   }
 
   public function executeTopSynthese(sfWebRequest $request) {
@@ -118,29 +117,55 @@ class apiActions extends sfActions
     }
 
     $this->breakline = 'parlementaire';
-    $this->templatize($request, 'nosenateurs.fr_synthese_'.date('Y-m-d'));
+    myTools::templatize($this, $request, 'nossenateurs.fr_synthese_'.date('Y-m-d'));
   }
 
-
-  protected static function array2hash($array, $hashname) {
-    if (!$array)
-      return '';
-    $hash = array();
-    if (!isset($array[0])) {
-      if (isset($array->fonction))
-        return array("organisme" => $array->getNom(), "fonction" => $array->fonction);
-      else return $array;
+  public function executeListOrganismes(sfWebRequest $request) {
+    $type = $request->getParameter('type');
+    $this->forward404Unless($type == "extra" || $type == "groupes" || $type == "parlementaire" || $type == "groupe");
+    $query = Doctrine::getTable('Organisme')->createQuery('o')
+      ->innerJoin('o.ParlementaireOrganisme po')
+      ->where('o.type = ?', $type)
+      ->groupBy('o.id')
+      ->orderBy('o.nom');
+    $orgas = $query->execute();
+    $this->champs = array();
+    $this->res = array('organismes' => array());
+    $this->breakline = 'organisme';
+    $colormap = myTools::getGroupesColorMap();
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    foreach($orgas as $o) {
+      $orga = array();
+      $orga['id'] = $o->id * 1;
+      $orga['slug'] = $o->slug;
+      $orga['nom'] = $o->nom;
+      if ($o->type == "groupe") {
+        $orga['acronyme'] = $o->getSmallNomGroupe();
+        $orga['couleur'] = $colormap[$orga['acronyme']];
+      }
+      $orga['type'] = $o->type;
+      $orga['url_nossenateurs'] = url_for('@list_parlementaires_organisme?slug='.$orga['slug'], 'absolute=true');
+      $orga['url_nossenateurs_api'] = url_for('@list_parlementaires_organisme_api?format='.$request->getParameter('format').'&orga='.$orga['slug'], 'absolute=true');
+      if ($request->getParameter('format') == 'csv')
+       foreach(array_keys($orga) as $key)
+        if (!isset($this->champs[$key]))
+         $this->champs[$key] = 1;
+      $this->res['organismes'][] = array('organisme' => $orga);
     }
-    foreach($array as $e) if ($e) {
-      if (isset($e->fonction))
-        $hash[] = array($hashname => array("organisme" => $e->getNom(), "fonction" => $e->fonction));
-      else $hash[] = array($hashname => preg_replace('/\n/', ', ', $e));
-    }
-    return $hash;
+    myTools::templatize($this, $request, 'nossenateurs.fr_organismes'.date('Y-m-d'));
   }
 
-  public function executeListParlementaires(sfWebRequest $request) 
-  {
+  public function executeListParlementairesGroupe(sfWebRequest $request) {
+    $acro = strtolower($request->getParameter('acro'));
+    $nom = Organisme::getNomByAcro($acro);
+    $this->forward404Unless($nom);
+    $orga = Doctrine::getTable('Organisme')->findOneByNom($nom);
+    $this->forward404Unless($orga);
+    $request->setParameter('orga', $orga->slug);
+    $this->executeListParlementaires($request);
+  }
+
+  public function executeListParlementaires(sfWebRequest $request) {
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
     if ($request->getParameter('current') == true) {
       $query->where('fin_mandat IS NULL OR debut_mandat > fin_mandat');
@@ -151,23 +176,31 @@ class apiActions extends sfActions
       $this->multi['mandat'] = 1;
       $this->multi['site'] = 1;
     }
+    $orga = $request->getParameter('orga');
+    if ($orga) {
+      $this->forward404Unless(Doctrine::getTable('Organisme')->findOneBySlug($orga));
+      $query->leftJoin('p.ParlementaireOrganisme po, po.Organisme o')
+        ->addWhere('o.slug = ?', $orga)
+        ->addOrderBy('po.importance DESC, p.nom_de_famille');
+    }
     $senateurs = $query->execute();
     $this->champs = array();
     $this->res = array('senateurs' => array());
     $this->breakline = 'senateur';
-    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     foreach($senateurs as $dep) {
-      $senateur = $this->getParlementaireArray($dep, $request->getParameter('format'), ($request->getParameter('current') == true ? 1 : 2));
+      $senateur = $this->getParlementaireArray($dep, $request->getParameter('format'), ($orga || $request->getParameter('current') == true ? 1 : 2));
+      if ($orga)
+        $senateur['fonction'] = $dep['ParlementaireOrganisme'][0]['fonction'];
       if ($request->getParameter('format') == 'csv')
        foreach(array_keys($senateur) as $key)
         if (!isset($this->champs[$key]))
          $this->champs[$key] = 1;
       $this->res['senateurs'][] = array('senateur' => $senateur);
     }
-    $this->templatize($request, 'nossenateurs.fr_senateurs'.($request->getParameter('current') == true ? "_en_mandat" : ""));
+    myTools::templatize($this, $request, 'nossenateurs.fr_senateurs'.($request->getParameter('current') == true ? "_en_mandat" : "").date('Y-m-d'));
   }
 
-  public function executeParlementaire(sfWebRequest $request) 
+  public function executeParlementaire(sfWebRequest $request)
   {
     $slug = $request->getParameter('slug');
     $this->forward404Unless($slug);
@@ -177,7 +210,6 @@ class apiActions extends sfActions
         if ($senateur)
                 return $this->redirect('api/parlementaire?slug='.$senateur->slug.'&format='.$request->getParameter('format'));
     }
-
     $this->forward404Unless($senateur);
     $this->res = array();
     $this->res['senateur'] = $this->getParlementaireArray($senateur, $request->getParameter('format'));
@@ -191,7 +223,7 @@ class apiActions extends sfActions
     $this->breakline = '';
     $date = $senateur->updated_at.'';
     $date = preg_replace('/[- :]/', '', $date);
-    $this->templatize($request, 'nossenateurs.fr_'.'_'.$slug.'_'.$date);
+    myTools::templatize($this, $request, 'nossenateurs.fr_'.'_'.$slug.'_'.$date);
   }
 
 
@@ -205,11 +237,11 @@ class apiActions extends sfActions
     $res['prenom'] = $parl->getPrenom();
     $res['sexe'] = $parl->sexe;
     $res['date_naissance'] = $parl->date_naissance;
-    $res['nom_circo'] = $parl->nom_circo;
-    $res['num_deptmt'] = $parl->getNumDepartement();
     //Pour conserver la cohérence des CSV entre ND et NS, on ajoute deux champs vides :
-    $res['champs_specifique_deputes_1'] = '';
-    $res['champs_specifique_deputes_2'] = '';
+    $res['lieu_naissance'] = 'non disponible';
+    $res['num_deptmt'] = $parl->getNumDepartement();
+    $res['nom_circo'] = $parl->nom_circo;
+    $res['num_circo'] = 'non disponible';
     $res['mandat_debut'] = $parl->debut_mandat;
     if ($parl->fin_mandat)
       $res['mandat_fin'] = $parl->fin_mandat;
@@ -222,7 +254,7 @@ class apiActions extends sfActions
     if (!$light) {
       $groupe = $parl->getGroupe();
       if (is_object($groupe))
-        $res['groupe'] = self::array2hash($groupe, 'groupe_politique');
+        $res['groupe'] = myTools::array2hash($groupe, 'groupe_politique');
       else if ($format == 'csv')
         $res['groupe'] = "";
     }
@@ -231,16 +263,17 @@ class apiActions extends sfActions
       $parl->parti = "";
     $res['parti_ratt_financier'] = $parl->parti;
     if (!$light) {
-      $res['responsabilites'] = self::array2hash($parl->getResponsabilites(), 'responsabilite');
-      $res['responsabilites_extra_parlementaires'] = self::array2hash($parl->getExtras(), 'responsabilite');
-      $res['groupes_parlementaires'] = self::array2hash($parl->getGroupes(), 'responsabilite');
+      $res['responsabilites'] = myTools::array2hash($parl->getResponsabilites(), 'responsabilite');
+      $res['responsabilites_extra_parlementaires'] = myTools::array2hash($parl->getExtras(), 'responsabilite');
+      $res['groupes_parlementaires'] = myTools::array2hash($parl->getGroupes(), 'responsabilite');
     }
     if ($light != 2) {
-      $res['sites_web'] = self::array2hash(unserialize($parl->sites_web), 'site');
-      $res['emails'] = self::array2hash(unserialize($parl->mails), 'email');
-      $res['adresses'] = self::array2hash(unserialize($parl->adresses), 'adresse');
-      $res['anciens_mandats'] = self::array2hash(unserialize($parl->anciens_mandats), 'mandat');
-      $res['autres_mandats'] = self::array2hash(unserialize($parl->autres_mandats), 'mandat');
+      $res['sites_web'] = myTools::array2hash(unserialize($parl->sites_web), 'site');
+      $res['emails'] = myTools::array2hash(unserialize($parl->mails), 'email');
+      $res['adresses'] = myTools::array2hash(unserialize($parl->adresses), 'adresse');
+      $res['anciens_mandats'] = myTools::array2hash(unserialize($parl->anciens_mandats), 'mandat');
+      $res['autres_mandats'] = myTools::array2hash(unserialize($parl->autres_mandats), 'mandat');
+      $res['anciens_autres_mandats'] = myTools::array2hash(array(), 'mandat');
     }
     $res['profession'] = $parl->profession;
     $res['place_en_hemicycle'] = $parl->place_hemicycle;
@@ -254,38 +287,6 @@ class apiActions extends sfActions
     return $res;
   }
 
-  private function templatize($request, $filename) {
-    $this->setLayout(false);
-    switch($request->getParameter('format')) {
-      case 'json':
-	$this->setTemplate('json');
-	if (!$request->getParameter('textplain')) {
-	  $this->getResponse()->setContentType('text/plain; charset=utf-8');
-	  $this->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.json"');
-	}
-	break;
-      case 'xml':
-	$this->setTemplate('xml');
-	if (!$request->getParameter('textplain')) {
-	  $this->getResponse()->setContentType('text/xml; charset=utf-8');
-	  //	$this->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.xml"');
-	}
-	break;
-      case 'csv':
-	$this->setTemplate('csv');
-	if (!$request->getParameter('textplain')) {
-	  $this->getResponse()->setContentType('application/csv; charset=utf-8');
-	  $this->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.csv"');
-	}
-	break;
-    default:
-      $this->forward404();
-    }
-    if ($request->getParameter('textplain')) {
-      $this->getResponse()->setContentType('text/plain; charset=utf-8');
-    }
-  }
-
   public function executeAmendements(sfWebRequest $request) {
     chdir(sfConfig::get('sf_root_dir'));
     $this->task = new printDumpAmendementsLoiCsvTask($this->dispatcher, new sfFormatter());
@@ -293,6 +294,67 @@ class apiActions extends sfActions
     $this->format = preg_replace('/[^a-z]/', '', $request->getParameter('format'));
     $this->setLayout(false);
     myTools::headerize($this, $request, 'nossenateurs.fr_amendements_'.$this->loi, false);
+  }
+
+  public function executeLinksAmendements(sfWebRequest $request) {
+    $id = $request->getParameter('loi');
+    $amdmts = Doctrine_Query::create()
+      ->select('pa.parlementaire_id, pa.amendement_id, a.content_md5 as uniq_key, a.sujet as amendement_sujet, a.sort as amendement_sort')
+      ->from('ParlementaireAmendement pa')
+      ->innerJoin('pa.Amendement a')
+      ->where('a.texteloi_id = ?', $id)
+      ->andWhere('a.sort <> ?', "Rectifié")
+      ->orderBy('a.id')
+      ->fetchArray();
+    $parls = array();
+    $this->links = array();
+    $sorts = array();
+    $sujets = array();
+    foreach ($amdmts as $pa) {
+      if (!isset($sorts[$pa['amendement_sort']]))
+        $sorts[$pa['amendement_sort']] = 1;
+      if (!isset($sorts[$pa['amendement_sujet']]))
+        $sorts[$pa['amendement_sujet']] = 1;
+      if (!isset($parls[$pa['parlementaire_id']]))
+        $parls[$pa['parlementaire_id']] = array('a' => 1);
+      else $parls[$pa['parlementaire_id']]['a'] += 1;
+    }
+    foreach (Doctrine_Query::create()->select('p.id, p.nom, p.slug, p.groupe_acronyme, p.place_hemicycle')->from('Parlementaire p')->whereIn('p.id', array_keys($parls))->fetchArray() as $parl) {
+      $parls[$parl['id']]['n'] = $parl['nom'];
+      $parls[$parl['id']]['s'] = $parl['slug'];
+      $parls[$parl['id']]['g'] = $parl['groupe_acronyme'];
+      $parls[$parl['id']]['p'] = $parl['place_hemicycle'];
+    }
+    $curra = 0;
+    $prevkey = 0;
+    $ident = array();
+    foreach ($amdmts as $pa) {
+      if ($curra != $pa['amendement_id']) {
+        if ($prevkey) {
+          if (!isset($ident[$prevkey]))
+            $ident[$prevkey] = $cosign;
+          else $ident[$prevkey] = array_merge($ident[$prevkey], $cosign);
+        }
+        $prevkey = $pa['uniq_key'];
+        $curra = $pa['amendement_id'];
+        $cosign = array();
+      } else foreach ($cosign as $co)
+        $this->addLink($pa, $co, 2);
+      $cosign[] = $pa['parlementaire_id'];
+      if (isset($ident[$pa['uniq_key']]))
+        foreach ($ident[$pa['uniq_key']] as $i)
+          $this->addLink($pa, $i, 1);
+    }
+    $this->res = array('sorts' => $sorts, 'sujets' => $sujets, 'parlementaires' => $parls, 'links' => array_values($this->links));
+    myTools::templatize($this, $request, 'nossenateurs.fr_amendements_'.$id.'_'.date('Y-m-d'));
+    $this->breakline = '';
+  }
+
+  private function addLink($parl_amdt, $parl, $weight) {
+    $lid = $parl_amdt['uniq_key'].'-'.min($parl_amdt['parlementaire_id'], $parl).'-'.max($parl_amdt['parlementaire_id'], $parl);
+    if (!isset($this->links[$lid]))
+      $this->links[$lid] = array('1' => $parl_amdt['parlementaire_id'], '2' => $parl, 'w' => $weight);
+    else $this->links[$lid]['w'] += $weight;
   }
 
 }

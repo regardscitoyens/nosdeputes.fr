@@ -6,7 +6,9 @@
 class Personnalite extends BasePersonnalite
 {
   public function __tostring() {
-    return $this->getNom();
+    if ($nom = $this->getNom())
+      return $nom;
+    return "";
   }
 
   /*  public function save(Doctrine_Connection $conn = null) {
@@ -22,10 +24,10 @@ class Personnalite extends BasePersonnalite
   public function getNomCleanForSlug() {
     return preg_replace('/ü/i', 'u', $this->nom);
   }
-  public function setDateNaissance($str) { 
-    if (preg_match('/(\d{2})\/(\d{2})\/(\d{4})/', $str, $m)) { 
-      $this->_set('date_naissance', $m[3].'-'.$m[2].'-'.$m[1]); 
-    } 
+  public function setDateNaissance($str) {
+    if (preg_match('/(\d{2})\/(\d{2})\/(\d{4})/', $str, $m)) {
+      $this->_set('date_naissance', $m[3].'-'.$m[2].'-'.$m[1]);
+    }
   }
 
 }
