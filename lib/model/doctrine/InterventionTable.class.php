@@ -9,4 +9,8 @@ class InterventionTable extends Doctrine_Table
     return $this->createQuery('i')->where('seance_id = ?', $seance)->andWhere('timestamp = ?', $timestamp)->limit(1)->fetchOne();
   }
 
+  public function findBySource($source) {
+    return $this->createQuery('i')->where('source LIKE ?', $source.'%')->fetchArray();
+  }
+
 }
