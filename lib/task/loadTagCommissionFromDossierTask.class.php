@@ -25,6 +25,7 @@ class loadTagCommissionFromDossierTask extends sfBaseTask {
 	      }
 	    }
 	  }
+	  unlink($dir.$file);
 	}
       }
     }
