@@ -22,7 +22,6 @@ class loadTagCommissionFromDossierTask extends sfBaseTask {
 	      foreach ( Doctrine::getTable('Intervention')->findBySource($matches[1]) as $i) {
 		$i->addTag('loi:numero='.$matches[2]);
 		$i->save();
-		echo "saved\n";
 	      }
 	    }
 	  }

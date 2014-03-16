@@ -10,7 +10,7 @@ class InterventionTable extends Doctrine_Table
   }
 
   public function findBySource($source) {
-    return $this->createQuery('i')->where('source LIKE ?', $source.'%')->fetchArray();
+    return $this->createQuery('i')->where('source LIKE ?', $source.'%')->execute();
   }
 
 }
