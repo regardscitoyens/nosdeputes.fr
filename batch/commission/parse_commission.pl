@@ -200,7 +200,9 @@ foreach (split /\n/, $content) {
 			$intervention = '<p>'.$inter.'</p>';
 			next;
 		}
+
 		$inter =~ s/(<\/(strong|a)[^>]*>)+([\s,]*)(<\/?(strong)[^>]*>)+/$3/ig;
+		$inter =~ s/(<strong>)\s*([^<]*)<\/strong>(\s*)(<a[^>]*>)\s*<strong>/$1$4$2$3/ig;
 		if (($interstrong && $inter =~ /<(a|strong)[^>]*>($recointer[^<]+)<\/(a|strong)>/i) || 
 		    (!$interstrong && ($inter =~ /(>)\s*($recointer[^<]{10}[^<\.]*)/))) {
 			$tmpintervenant = $2;
