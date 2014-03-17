@@ -16,16 +16,18 @@ class loadTagCommissionFromDossierTask extends sfBaseTask {
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
-          foreach(file($dir.$file) as $line) {
-	    if (preg_match('/([^;]+);(\d+)/', $line, $matches)) {
-	      print $matches[1].' => '.$matches[2]."\n";
-	      foreach ( Doctrine::getTable('Intervention')->findBySource($matches[1]) as $i) {
-		$i->addTag('loi:numero='.$matches[2]);
-		$i->save();
+	  if (preg_match('/.asp/', $file)) {
+	      foreach(file($dir.$file) as $line) {
+		if (preg_match('/([^;]+);(\d+)/', $line, $matches)) {
+		  print $matches[1].' => '.$matches[2]."\n";
+		  foreach ( Doctrine::getTable('Intervention')->findBySource($matches[1]) as $i) {
+		    $i->addTag('loi:numero='.$matches[2]);
+		    $i->save();
+		  }
+		}
 	      }
-	    }
+	      unlink($dir.$file);
 	  }
-	  unlink($dir.$file);
 	}
       }
     }
