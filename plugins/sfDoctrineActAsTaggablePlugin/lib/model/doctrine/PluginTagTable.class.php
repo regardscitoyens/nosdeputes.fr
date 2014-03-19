@@ -340,7 +340,7 @@ class PluginTagTable extends Doctrine_Table
     public static function getObjectTaggedWithQuery($model, $tags = array(), Doctrine_Query $q = null, $options = array())
     {
         $tags = TaggableToolkit::explodeTagString($tags);
-    
+
         if (is_string($tags))
         {
             $tags = array($tags);
@@ -355,10 +355,11 @@ class PluginTagTable extends Doctrine_Table
         {
             $q = Doctrine_Query::create()->from($model);
         }
-        
+
         $taggings = self::getTaggings($tags, array_merge(array('model' => $model), $options));
+
         $tagging = isset($taggings[$model]) ? $taggings[$model] : array();
-        
+
         if (empty($tagging))
         {
           $q->where('false');
@@ -367,7 +368,7 @@ class PluginTagTable extends Doctrine_Table
         {
           $q->whereIn($model . '.id', $tagging);
         }
-        
+
         return $q;
     }
 
@@ -433,8 +434,8 @@ class PluginTagTable extends Doctrine_Table
         }
         
         $tag_ids = $q->execute(array(), Doctrine::HYDRATE_ARRAY);
-        
-        $q = Doctrine_Query::create()
+
+	$q = Doctrine_Query::create()
                            ->select('tg.taggable_id')
                            ->from('Tagging tg')
                            ->whereIn('tg.tag_id', array_keys($tag_ids))
@@ -456,9 +457,10 @@ class PluginTagTable extends Doctrine_Table
         {
             $q->addSelect('tg.taggable_model')->addGroupBy('tg.taggable_model');
         }
-
-        $results = $q->execute(array(), Doctrine::HYDRATE_ARRAY);
-
+	$results = array();
+	if (count($tag_ids)) {
+	        $results = $q->execute(array(), Doctrine::HYDRATE_ARRAY);
+	}
         $taggings = array();
 
         foreach($results as $rs)
