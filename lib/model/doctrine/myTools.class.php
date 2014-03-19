@@ -63,6 +63,14 @@ class myTools {
     return $gpes;
   }
 
+  public static function getAllGroupesOrder() {                                                                                                                                                                   
+    $groupesmap = array();
+    $ct = 0;
+    foreach (myTools::getGroupesInfos() as $gpe)
+      $groupesmap[$gpe[1]] = $ct++;
+    return $groupesmap;
+  }
+
   public static function getGroupesColorMap() {
     $colormap = array();
     foreach (myTools::getGroupesInfos() as $gpe)
