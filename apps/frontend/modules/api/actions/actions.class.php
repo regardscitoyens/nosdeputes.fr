@@ -144,6 +144,7 @@ class apiActions extends sfActions
     $this->res = array('organismes' => array());
     $this->breakline = 'organisme';
     $colormap = myTools::getGroupesColorMap();
+    $groupesorder = myTools::getAllGroupesOrder();
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     foreach($orgas as $o) {
       $orga = array();
@@ -153,6 +154,7 @@ class apiActions extends sfActions
       if ($o->type == "groupe") {
         $orga['acronyme'] = $o->getSmallNomGroupe();
         $orga['couleur'] = $colormap[$orga['acronyme']];
+        $orga['order'] = $groupesorder[$orga['acronyme']];
       }
       $orga['type'] = $o->type;
       $orga['url_nosdeputes'] = url_for('@list_parlementaires_organisme?slug='.$orga['slug'], 'absolute=true');
