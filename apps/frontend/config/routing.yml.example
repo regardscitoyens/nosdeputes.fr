@@ -261,8 +261,11 @@ seance_commentaires_json:
 presents_seance:
   url: /%LEGISLATURE%/seance/:seance/presents
   param: {module: presence, action: seance}
+interventions_seance_loi_api:
+  url: /%LEGISLATURE%/seance/:seance/loi/:loi/:format
+  param: {module: intervention, action: seanceAPI}
 interventions_seance_dossier_api:
-  url: /%LEGISLATURE%/seance/:seance/:dossier/:format
+  url: /%LEGISLATURE%/seance/:seance/dossier/:dossier/:format
   param: {module: intervention, action: seanceAPI}
 interventions_seance_api:
   url: /%LEGISLATURE%/seance/:seance/:format

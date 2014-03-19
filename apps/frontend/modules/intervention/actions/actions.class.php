@@ -125,7 +125,24 @@ class interventionActions extends sfActions
     $this->res = array('seances' => array());
     $this->breakline = 'seance';
     $this->champs = array('seance' => 'seance');
-    foreach ($this->query->execute() as $s) {
+    $ids = array();
+    foreach ($this->query->execute(array(), Doctrine::HYDRATE_ARRAY) as $s) {
+      $ids[$s['id']] = $s;
+    }
+    $this->query = null ;
+    if (!$extrajoin) {
+      $q = PluginTagTable::getObjectTaggedWithQuery('Section', array('loi:numero='.$loi_id));
+      $sections = array();
+      foreach($q->fetchArray() as $s) {
+      		$sections[$s['id']] = $s['id'];
+      }
+      $q = Doctrine::getTable('Intervention')->createQuery('i')->whereIn('i.section_id', array_keys($sections))->select('i.seance_id as id')->distinct();
+      foreach($q->fetchArray() as $s) {
+	      $ids[$s['id']] = $s;
+      }
+    }
+
+    foreach($ids as $s) {
       $this->res['seances'][] = array('seance' => $s['id']);
     }
   }
@@ -190,7 +207,21 @@ class interventionActions extends sfActions
     if ($section_id = $this->getSectionId($request)) {
       $this->query->leftJoin('i.Section s')->addWhere('s.section_id = ? OR s.id = ?', array($section_id, $section_id));
     }
-    myTools::templatize($this, $request, 'nosdeputes.fr_seance'.$this->seance->id.'_'.$this->seance->updated_at);
+    if ($loi = $request->getParameter('loi')) {
+      $querytag = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$loi));
+      $querytag->andWhere('seance_id = ?', $this->seance->id)->select('id');
+      $ids = array('0' => 1);
+      foreach ($querytag->fetchArray() as $id) {
+      	      $ids[$id['id']] = 1;
+      }
+      $querytag = PluginTagTable::getObjectTaggedWithQuery('Section', array('loi:numero='.$loi));
+      $querytag->from('Intervention i')->leftJoin('i.Section s')->andWhere('i.seance_id = ?', $this->seance->id)->select('i.id as id');
+      foreach ($querytag->fetchArray() as $id) {
+      	      $ids[$id['id']] = 1;
+      }
+      $this->query->andWhereIn('id', array_keys($ids));
+    }
+    myTools::templatize($this, $request, 'nosdeputes.fr_seance'.$this->seance->id.$section_id.$loi.'_'.$this->seance->updated_at);
     $this->interventions = $this->query->fetchArray();
     $this->res = array('seance' => array());
     $this->breakline = 'intervention';
