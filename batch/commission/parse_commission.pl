@@ -118,7 +118,7 @@ foreach (split /\n/, $content) {
             $commission =~ s/MCI /Mission commune d'information /;
 	}
 #	print ;	print "\n";
-	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*\W*<\/(h[123])>/i) || /(<strong)(>)\(([^<\(]+\d{4})\)<\/strong>/) {
+	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*\W*<\/(h[123])>/i) || /(<strong)(>)\(([a-z]+ \d+ [a-zéû]+ \d{4})\)<\/strong>/) {
 #print STDERR "date: $3 $url_year\n";
 		@date = datize($3, $url_year);
 #print STDERR length($3)."length\n";
