@@ -105,18 +105,20 @@ $interstrong = 1 if ($content =~ /<(a|strong)[^>]*>\s*($recointer[^<]*)<\/(a|str
 foreach (split /\n/, $content) {
 	last if (/END : primary/);
 	s/ n<sup>[0os\s]+<\/sup>\s*/ n° /ig;
-	$begin = 1 if (/name="toc1"/);
+	$begin = 1 if (/name="toc[01]"/i);
 #print STDERR "title: $1\n" if (/<title>([^<]*)</);
 	if (/TITLE>[^<]*(Commission[^:<]*)/i) {
 	    $commission = $1;
 	    $commission =~ s/[\s\-]+S[é&eacut;]+nat\s*//i;
+	}elsif (/fait au nom de la (commission d'enquête[^:<]*)(\s*,\s*déposé)/i) {
+		$commission = $1;
 	}else {
 	    $commission = $1 if (/TITLE>[^<]*((MCI|Mission|Office|Délégation|Groupe de travail)[^:<]*)/i);
 	    $commission =~ s/\-[\s\-]+S[é&eacut;]+nat\s*//;
             $commission =~ s/MCI /Mission commune d'information /;
 	}
 #	print ;	print "\n";
-	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*\W*<\/(h[123])>/i)) {
+	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*\W*<\/(h[123])>/i) || /(<strong)(>)\(([^<\(]+\d{4})\)<\/strong>/) {
 #print STDERR "date: $3 $url_year\n";
 		@date = datize($3, $url_year);
 #print STDERR length($3)."length\n";
