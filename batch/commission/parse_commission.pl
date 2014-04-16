@@ -313,6 +313,11 @@ foreach $line (split /\n/, $string)
     if ($line =~ /<body[^>]*>/) {
 	$body = 1;
     }
+    if ($line =~ /<meta /) {
+        if(!$commission && $line =~ /name="NOMCOMMISSION" CONTENT="([^"]+)"/i) {
+            $commission = $1;
+        }
+    }
     next unless ($body);
     if ($line =~ /fpfp/) {
 	checkout();
