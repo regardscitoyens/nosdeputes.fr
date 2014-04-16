@@ -98,6 +98,9 @@ if ($string =~ /réunion.*commission.*commence[^\.]+à ([^\.]+)( |&nbsp;)heures?
 $cpt = 0;
 sub checkout {
     $commission =~ s/"//g;
+    if ($commission =~/^\s*Mission d'information\s*$/i && $commission_meta) {
+        $commission = $commission_meta;
+    }
     $intervention =~ s/"/\\"/g;
     $intervention =~ s/\s*(<\/?t(able|[rdh])[^>]*>)\s*/\1/gi;
     $cpt+=10;
@@ -314,8 +317,8 @@ foreach $line (split /\n/, $string)
 	$body = 1;
     }
     if ($line =~ /<meta /) {
-        if(!$commission && $line =~ /name="NOMCOMMISSION" CONTENT="([^"]+)"/i) {
-            $commission = $1;
+        if($line =~ /name="NOMCOMMISSION" CONTENT="([^"]+)"/i) {
+            $commission_meta = $1;
         }
     }
     next unless ($body);
