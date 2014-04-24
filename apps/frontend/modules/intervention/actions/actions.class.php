@@ -121,6 +121,7 @@ class interventionActions extends sfActions
     if ($request->getParameter('commission')) {
       $this->query->addWhere('s.type = "commission"');
     }
+    $this->query->orderBy('s.date');
     myTools::templatize($this, $request, 'nosdeputes.fr_seances_'.$loi_id.'_'.$dossier);
     $this->res = array('seances' => array());
     $this->breakline = 'seance';
@@ -136,9 +137,11 @@ class interventionActions extends sfActions
       foreach($q->fetchArray() as $s) {
       		$sections[$s['id']] = $s['id'];
       }
-      $q = Doctrine::getTable('Intervention')->createQuery('i')->whereIn('i.section_id', array_keys($sections))->select('i.seance_id as id')->distinct();
-      foreach($q->fetchArray() as $s) {
+      if (count($sections)) {
+        $q = Doctrine::getTable('Intervention')->createQuery('i')->whereIn('i.section_id', array_keys($sections))->select('i.seance_id as id')->distinct();
+        foreach($q->fetchArray() as $s) {
 	      $ids[$s['id']] = $s;
+        }
       }
     }
 
