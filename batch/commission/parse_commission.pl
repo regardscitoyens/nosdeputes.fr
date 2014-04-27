@@ -200,7 +200,7 @@ sub setIntervenant {
     }
     if ($intervenant =~ /^[a-z]/) {
 	$intervenant =~ s/^l[ea]\s+//i;
-	if ($intervenant =~ /((([pP]résident|[rR]apporteur[a-zé\s]+)[\sest,]*)+)([A-Zé].*)/) {
+	if ($intervenant =~ /((([pP]résident|[rR]apporteur[a-zé\s]+)[\sest,]*)+)([A-Z].*)/) {
         $tmpint = $4;
         $tmpfct = $1;
         if ($tmpint =~ /commission/i || $tmpfct =~ /commission d['esla\s]+$/i) {
