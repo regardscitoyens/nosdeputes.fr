@@ -4,7 +4,7 @@ class topDeputesTask extends sfBaseTask
 {
 
   static $lois = array('Proposition de loi', 'Proposition de résolution');
-  
+
   protected function configure()
   {
     $this->namespace = 'top';
@@ -14,7 +14,7 @@ class topDeputesTask extends sfBaseTask
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
- 
+
   /**
    * Ordonne la hash table des députés sur une entre ($type) pour en calculer le classement
    **/
@@ -24,7 +24,7 @@ class topDeputesTask extends sfBaseTask
     if (myTools::isFinLegislature())
       $field = "moyenne";
     foreach(array_keys($this->deputes) as $id) {
-      if (!isset($this->deputes[$id][$type][$field])) 
+      if (!isset($this->deputes[$id][$type][$field]))
 	$this->deputes[$id][$type][$field] = 0;
       $ordered[$id] = $this->deputes[$id][$type][$field];
       $tot++;
@@ -33,7 +33,7 @@ class topDeputesTask extends sfBaseTask
       arsort($ordered);
     else
       asort($ordered);
-     
+
     $cpt = 0;
     $last_value = -999;
     $last_cpt = 0;
@@ -71,7 +71,7 @@ class topDeputesTask extends sfBaseTask
     }
     $this->executeMoyenneMois('semaines_presence');
   }
-  protected function executeCommissionPresence($q) 
+  protected function executeCommissionPresence($q)
   {
       $parlementaires = $q->select('p.id, count(pr.id)')
 	->from('Parlementaire p, p.Presences pr, pr.Seance s')
@@ -95,7 +95,7 @@ class topDeputesTask extends sfBaseTask
     }
     $this->executeMoyenneMois('commission_interventions');
   }
-  protected function executeHemicycleInvectives($q) 
+  protected function executeHemicycleInvectives($q)
   {
       $parlementaires = $q->select('p.id, count(i.id)')
 	->from('Parlementaire p, p.Interventions i, i.Seance s')
@@ -135,7 +135,7 @@ class topDeputesTask extends sfBaseTask
     }
     $this->executeMoyenneMois('amendements_signes');
   }
- 
+
   protected function executeAmendementsAdoptes($q)
   {
     $parlementaires = $q->select('p.id, count(a.id)')
@@ -163,7 +163,7 @@ class topDeputesTask extends sfBaseTask
     }
     $this->executeMoyenneMois('amendements_rejetes');
   }
-  
+
   protected function executeQuestionsEcrites($q)
   {
     $parlementaires = $q->select('p.id, count(q.id)')
@@ -225,7 +225,7 @@ class topDeputesTask extends sfBaseTask
       $this->deputes[$p['id']]['propositions_signees']['value'] = $p['count'];
     }
     $this->executeMoyenneMois('propositions_signees');
-  }   
+  }
 
 
   protected function executeDeputesInfo() {
@@ -273,7 +273,7 @@ class topDeputesTask extends sfBaseTask
     $this->executeHemicycleInterventions(clone $qi);
     $this->executeHemicycleInvectives(clone $qi);
     $this->executeQuestionsOrales(clone $qi);
-    
+
     print "Intervention DONE\n";
 
     $qa = clone $q;
@@ -289,7 +289,7 @@ class topDeputesTask extends sfBaseTask
     $qq->where('q.date >= ?', date('Y-m-d', strtotime($date)));
     $qq->andWhere('q.date < ?', date('Y-m-d', strtotime("$date +1month")));
     $this->executeQuestionsEcrites($qq);
-    
+
     print "Question DONE\n";
 
     $qd = clone $q;
@@ -342,12 +342,12 @@ class topDeputesTask extends sfBaseTask
     $q = Doctrine_Query::create();
     if (!$fin)
       $q->where('fin_mandat IS NULL');
- 
+
     $qs = clone $q;
     if (!$fin)
       $qs->andWhere('s.date > ?', date('Y-m-d', time()-60*60*24*365));
-    
-     
+    $qs->andWhere('(s.date > p.debut_mandat)');
+
     $this->executePresence(clone $qs);
     $this->orderDeputes('semaines_presence');
 
@@ -360,20 +360,20 @@ class topDeputesTask extends sfBaseTask
 
     $this->executeCommissionInterventions(clone $qi);
     $this->orderDeputes('commission_interventions');
-    
+
     $this->executeHemicycleInterventions(clone $qi);
     $this->orderDeputes('hemicycle_interventions');
-    
+
 
     $this->executeHemicycleInvectives(clone $qi);
     $this->orderDeputes('hemicycle_interventions_courtes');
-    
+
     $qa = clone $q;
     if (!$fin)
       $qa->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
     $this->executeAmendementsSignes(clone $qa);
     $this->orderDeputes('amendements_signes');
-    
+
     $this->executeAmendementsAdoptes(clone $qa);
     $this->orderDeputes('amendements_adoptes');
 
@@ -426,50 +426,50 @@ class topDeputesTask extends sfBaseTask
 
     //On fait la même chose pour les députés ayant un mandat clos si on n'est pas en fin de législature.
    if (!$fin) {
-  
+
     $parlementaires = Doctrine_Query::create()->where('fin_mandat IS NOT NULL')
       ->from('Parlementaire p')->execute();
-    
+
     foreach ($parlementaires as $p) {
       $this->depute = array();
       $q = Doctrine_Query::create()->where('p.id = ?', $p->id);
-      
+
       $qs = clone $q;
-      $qs->andWhere('(s.date > ? AND s.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)), 
+      $qs->andWhere('(s.date > ? AND s.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
        date('Y-m-d', strtotime($p->fin_mandat)), ));
-     
+
       $this->executePresence(clone $qs);
-      
+
       $this->executeCommissionPresence(clone $qs);
-    
+
       $qi = clone $q;
-      $qi->andWhere('(i.date > ? AND i.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)), 
+      $qi->andWhere('(i.date > ? AND i.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
 							 date('Y-m-d', strtotime($p->fin_mandat)), ));
-     
+
       $this->executeCommissionInterventions(clone $qi);
-      
+
       $this->executeHemicycleInterventions(clone $qi);
-    
+
 
       $this->executeHemicycleInvectives(clone $qi);
-    
+
       $qa = clone $q;
-      $qa->andWhere('(a.date > ? AND a.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)), 
+      $qa->andWhere('(a.date > ? AND a.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
 							 date('Y-m-d', strtotime($p->fin_mandat)), ));
-     
+
 
       $this->executeAmendementsSignes(clone $qa);
-      
+
       $this->executeAmendementsAdoptes(clone $qa);
-      
+
 //      $this->executeAmendementsRejetes(clone $qa);
-      
+
       $qq = clone $q;
-      $qq->andWhere('(q.date > ? AND q.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)), 
+      $qq->andWhere('(q.date > ? AND q.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
 							 date('Y-m-d', strtotime($p->fin_mandat)), ));
-     
+
       $this->executeQuestionsEcrites($qq);
-      
+
       $this->executeQuestionsOrales(clone $qi);
 
       $qd = clone $q;
