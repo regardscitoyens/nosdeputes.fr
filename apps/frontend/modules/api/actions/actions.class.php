@@ -10,7 +10,9 @@
  */
 class apiActions extends sfActions
 {
+
   public function executeSynthese(sfWebRequest $request) {
+
   }
 
   public function executeDocument(sfWebRequest $request)
@@ -27,6 +29,8 @@ class apiActions extends sfActions
     $date = $o->updated_at;
     $this->res = array();
     $this->res[strtolower($class)] = $o->toArray();
+    if ($o->getLink())
+        $this->res[strtolower($class)]['url_nosdeputes'] = $o->getLink();
     myTools::templatize($this, $request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
     $this->breakline = '';
   }
