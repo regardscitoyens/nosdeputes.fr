@@ -12,6 +12,7 @@ while($l = <STDIN>) {
             $cr = "http://www.assemblee-nationale.fr".$1;
         }
         if ($cr && $id) {
+            $id =~ s/^0*//;
             print "$cr;$id\n";
             $cr = '';
         }
