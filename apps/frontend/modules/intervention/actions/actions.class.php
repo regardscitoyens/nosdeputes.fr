@@ -113,14 +113,25 @@ class interventionActions extends sfActions
     $this->query = new Doctrine_RawSql();
     $this->query->select('distinct({s.id})')
       ->from('seance s left join intervention i on s.id = i.seance_id left join tagging tg on tg.taggable_model = "Intervention" and tg.taggable_id = i.id left join tag t on tg.tag_id = t.id'.$extrajoin)
-      ->addComponent('s', 'Seance s')
-      ->where('t.triple_namespace = "loi" and t.triple_key = "numero" and t.triple_value = ?', $loi_id);
+      ->addComponent('s', 'Seance s');
+
+    //Hack pour gérer les tags avec de numéro de loi débutant par 0
+    if (strlen($loi_id) < 4) {
+        $loi_aveczero_id = sprintf('%04d', $loi_id);
+        $this->query->where('t.triple_namespace = "loi" and t.triple_key = "numero" and (t.triple_value = ? OR t.triple_value = ?)', array($loi_id, $loi_aveczero_id));
+    }else{
+        $this->query->where('t.triple_namespace = "loi" and t.triple_key = "numero" and t.triple_value = ?', $loi_id);
+    }
     if ($dossier) {
       $this->query->addWhere('(sc.section_id = ? OR sc.id = ?)', array($dossier, $dossier));
     }
     if ($request->getParameter('commission')) {
       $this->query->addWhere('s.type = "commission"');
     }
+    if ($request->getParameter('hemicycle')) {
+        $this->query->addWhere('s.type = "hemicycle"');
+    }
+
     $this->query->orderBy('s.date');
     myTools::templatize($this, $request, 'nosdeputes.fr_seances_'.$loi_id.'_'.$dossier);
     $this->res = array('seances' => array());
@@ -131,7 +142,7 @@ class interventionActions extends sfActions
       $ids[$s['id']] = $s;
     }
     $this->query = null ;
-    if (!$extrajoin) {
+    if (!$extrajoin && !$request->getParameter('commission')) {
       $q = PluginTagTable::getObjectTaggedWithQuery('Section', array('loi:numero='.$loi_id));
       $sections = array();
       foreach($q->fetchArray() as $s) {
@@ -214,56 +225,68 @@ class interventionActions extends sfActions
       $querytag = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$loi));
       $querytag->andWhere('seance_id = ?', $this->seance->id)->select('id');
       $ids = array('0' => 1);
-      foreach ($querytag->fetchArray() as $id) {
-      	      $ids[$id['id']] = 1;
+      foreach ($querytag->execute(array(), Doctrine::HYDRATE_NONE) as $id) {
+      	      $ids[$id[0]] = 1;
       }
+
+      if (strlen($loi) < 4) {
+        $querytag = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.sprintf('%04d', $loi)));
+        $querytag->andWhere('seance_id = ?', $this->seance->id)->select('id');
+        $ids = array('0' => 1);
+        foreach ($querytag->execute(array(), Doctrine::HYDRATE_NONE) as $id) {
+                $ids[$id[0]] = 1;
+        }
+      }
+
+      $querytag = null;
       $querytag = PluginTagTable::getObjectTaggedWithQuery('Section', array('loi:numero='.$loi));
-      $querytag->from('Intervention i')->leftJoin('i.Section s')->andWhere('i.seance_id = ?', $this->seance->id)->select('i.id as id');
-      foreach ($querytag->fetchArray() as $id) {
-      	      $ids[$id['id']] = 1;
+      $querytag->leftJoin('Section.Interventions i')->andWhere('i.seance_id = ?', $this->seance->id)->select('i.id as id');
+      foreach ($querytag->execute(array(), Doctrine::HYDRATE_NONE) as $id) {
+      	      $ids[$id[0]] = 1;
       }
-      $this->query->andWhereIn('id', array_keys($ids));
+      $this->query->andWhereIn('i.id', array_keys($ids));
     }
     myTools::templatize($this, $request, 'nosdeputes.fr_seance'.$this->seance->id.$section_id.$loi.'_'.$this->seance->updated_at);
-    $this->interventions = $this->query->fetchArray();
+    $this->interventions = $this->query->execute(array(), Doctrine::HYDRATE_NONE);
     $this->res = array('seance' => array());
     $this->breakline = 'intervention';
     $this->multi = array('tag' => 'tag', 'loi' => 'loi', 'amendement' => 'amendement');
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    $h = array("id"=>0, "nb_commentaires"=>1, "nb_mots"=>2, "md5"=>3, "intervention"=>4, "timestamp"=>5, "source"=>6, "seance_id"=>7, "section_id"=>8,   "type"=>9,    "date"=>10,    "personnalite_id"=>11,     "parlementaire_id"=>12,    "fonction"=>13,    "created_at"=>14,  "updated_at"=>15);
     foreach($this->interventions as $int) {
-      $i['seance_id'] = $int['seance_id'];
+      $i['seance_id'] = $int[$h['seance_id']];
       $i['seance_titre'] = $this->seance->titre;
       $i['seance_lieu'] = ($this->orga) ? $this->orga->getNom() : 'Hémicycle';
-      $i['date'] = $int['date'];
+      $i['date'] = $int[$h['date']];
       $i['heure'] = $this->seance->moment;
-      $i['type'] = $int['type'];
-      $i['timestamp'] = $int['timestamp'];
+      $i['type'] = $int[$h['type']];
+      $i['timestamp'] = $int[$h['timestamp']];
       $i['section'] = '';
       $i['soussection'] = '';
-      if ($int['section_id']) {
-        if ($this->sections[$int['section_id']]->section_id) {
-          $i['section'] = $this->sections[$this->sections[$int['section_id']]->section_id]->titre;
+      if ($int[$h['section_id']]) {
+        if ($this->sections[$int[$h['section_id']]]->section_id) {
+          $i['section'] = $this->sections[$this->sections[$int[$h['section_id']]]->section_id]->titre;
         }else{
-          $i['section'] = $this->sections[$int['section_id']]->titre;
+          $i['section'] = $this->sections[$int[$h['section_id']]]->titre;
         }
-        $i['soussection'] = $this->sections[$int['section_id']]->titre;
+        $i['soussection'] = $this->sections[$int[$h['section_id']]]->titre;
       }
       $i['intervenant_nom'] = '';
-      $i['intervenant_fonction'] = $int['fonction'];
+      $i['intervenant_fonction'] = $int[$h['fonction']];
       $i['intervenant_slug'] = '';
       $i['intervenant_groupe'] = '';
-      if ($int['parlementaire_id']) {
-        $i['intervenant_nom'] = $this->parlementaires[$int['parlementaire_id']]->getNom();
-        $i['intervenant_slug'] = $this->parlementaires[$int['parlementaire_id']]->getSlug();
-        $i['intervenant_groupe'] = $this->parlementaires[$int['parlementaire_id']]->getGroupeAcronyme();
-      }else if ($int['personnalite_id']) {
-        $i['intervenant_nom'] = $this->personnalites[$int['personnalite_id']]->getNom();
+      if ($int[$h['parlementaire_id']]) {
+        $i['intervenant_nom'] = $this->parlementaires[$int[$h['parlementaire_id']]]->getNom();
+        $i['intervenant_slug'] = $this->parlementaires[$int[$h['parlementaire_id']]]->getSlug();
+        $i['intervenant_groupe'] = $this->parlementaires[$int[$h['parlementaire_id']]]->getGroupeAcronyme();
+      }else if ($int[$h['personnalite_id']]) {
+        $i['intervenant_nom'] = $this->personnalites[$int[$h['personnalite_id']]]->getNom();
       }
-      $i['nbmots'] = $int['nb_mots'];
-      $i['contenu'] = $int['intervention'];
+      $i['nbmots'] = $int[$h['nb_mots']];
+      $i['contenu'] = $int[$h['intervention']];
       $qtag = Doctrine::getTable('tag')->createQuery('t');
       $qtag->from('Tagging tg, tg.Tag t');
-      $qtag->andWhere('tg.taggable_id = ?', $int['id']);
+      $qtag->andWhere('tg.taggable_id = ?', $int[$h['id']]);
       $qtag->andWhere('tg.taggable_model = "Intervention"');
       $tags = array();
       $lois = array();
@@ -282,10 +305,10 @@ class interventionActions extends sfActions
       $i['tags'] = myTools::array2hash($tags, 'tag');
       $i['amendements'] = myTools::array2hash($amendements, 'amendement');
       $i['lois'] = myTools::array2hash($lois, 'loi');
-      $i['source'] = $int['source'];
-      $i['url_nosdeputes'] = url_for('@interventions_seance?seance='.$int['seance_id'], 'absolute=true')."#inter_".$int['md5'];
-      $i['url_nosdeputes_api'] = url_for("@api_document?class=Intervention&id=".$int['id']."&format=".$request->getParameter('format'), 'absolute=true');
-      $i['id'] = $int['id'];
+      $i['source'] = $int[$h['source']];
+      $i['url_nosdeputes'] = url_for('@interventions_seance?seance='.$int[$h['seance_id']], 'absolute=true')."#inter_".$int[$h['md5']];
+      $i['url_nosdeputes_api'] = url_for("@api_document?class=Intervention&id=".$int[$h['id']]."&format=".$request->getParameter('format'), 'absolute=true');
+      $i['id'] = $int[$h['id']];
       $this->res['seance'][] = array('intervention' => $i);
       if (!isset($this->champs)) {
         $this->champs = array();
