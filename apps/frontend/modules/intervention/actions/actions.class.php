@@ -116,7 +116,10 @@ class interventionActions extends sfActions
     }
     if ($request->getParameter('commission')) {
       $this->query->addWhere('s.type = "commission"');
+    }else if ($request->getParameter('hemicycle')) {
+      $this->query->addWhere('s.type = "hemicycle"');
     }
+
     myTools::templatize($this, $request, 'nossenateurs.fr_seances_'.$loi_id.'_'.$dossier);
     $this->res = array('seances' => array());
     $this->breakline = 'seance';
@@ -183,9 +186,25 @@ class interventionActions extends sfActions
 
   public function executeSeanceAPI(sfWebRequest $request) {
     $this->query = $this->initSeance($request);
-    if ($section_id = $this->getSectionId($request)) {
+    $section_id = $this->getSectionId($request);
+
+    if (!$section_id && $loi = $request->getParameter('loi')) {
+      $querytag = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$loi));
+      $querytag->andWhere('seance_id = ?', $this->seance->id)->select('id');
+      $ids = array('0' => 1);
+      foreach ($querytag->execute(array(), Doctrine::HYDRATE_NONE) as $id) {
+              $ids[$id[0]] = 1;
+      }
+      $querytag = PluginTagTable::getObjectTaggedWithQuery('Section', array('loi:numero='.$loi));
+      $querytag->leftJoin('Section.Interventions i')->select('Section.section_id, count(*) as count')->groupBy('Section.section_id')->orderBy('count desc');
+      $id = $querytag->fetchOne();
+      $section_id = $id->section_id;
+    }
+
+    if ($section_id) {
       $this->query->leftJoin('i.Section s')->addWhere('s.section_id = ? OR s.id = ?', array($section_id, $section_id));
     }
+
     myTools::templatize($this, $request, 'nossenateurs.fr_seance'.$this->seance->id.'_'.$this->seance->updated_at);
     $this->interventions = $this->query->fetchArray();
     $this->res = array('seance' => array());
