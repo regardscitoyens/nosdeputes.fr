@@ -30,7 +30,7 @@ class apiActions extends sfActions
     $this->res = array();
     $this->res[strtolower($class)] = $o->toArray();
     if ($o->getLink())
-        $this->res[strtolower($class)]['url_nosdeputes'] = $o->getLink();
+        $this->res[strtolower($class)]['url_nosdeputes'] = trim(sfConfig::get('app_base_url'), '/').$o->getLink();
     myTools::templatize($this, $request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
     $this->breakline = '';
   }
