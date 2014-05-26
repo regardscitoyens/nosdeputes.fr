@@ -75,9 +75,6 @@ class parlementaireActions extends sfActions
     $colortop = imagecolorat($iorig, 1, 1);
     $ih = imagecreatetruecolor($work_height*$width/$height, $work_height);
 
-    if ($parlementaire->fin_mandat >= $parlementaire->debut_mandat)
-      self::imagetograyscale($iorig);
-
     imagecopyresampled($ih, $iorig, 0, 0, 0, 0, $work_height*$width/$height, $work_height, $width, $height);
     $width = $work_height*$width/$height;
     $height = $work_height;
@@ -95,7 +92,7 @@ class parlementaireActions extends sfActions
     }
     unlink($file);
 
-    if ($parlementaire->fin_mandat >= $parlementaire->debut_mandat)
+    if (!$request->getParameter('color') && $parlementaire->fin_mandat >= $parlementaire->debut_mandat)
       self::imagetograyscale($iorig);
 
     if ((isset($parlementaire->autoflip) && $parlementaire->autoflip) XOR $request->getParameter('flip')) {
