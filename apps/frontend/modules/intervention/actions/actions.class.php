@@ -251,7 +251,7 @@ class interventionActions extends sfActions
       foreach ($querysection->execute(array(), Doctrine::HYDRATE_NONE) as $id) {
       	      $ids[$id[0]] = 1;
       }
-      $this->query->andWhereIn('i.id', array_keys($ids));
+      $this->query->andWhereIn('i.id', array_keys($ids))->andWhere('i.type != "question"');
     }
     myTools::templatize($this, $request, 'nosdeputes.fr_seance'.$this->seance->id.$section_id.$loi.'_'.$this->seance->updated_at);
     $this->interventions = $this->query->execute(array(), Doctrine::HYDRATE_NONE);
