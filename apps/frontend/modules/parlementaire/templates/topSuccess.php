@@ -1,9 +1,9 @@
 <?php $fin = myTools::isFinLegislature(); $fresh = (time() - strtotime(myTools::getDebutLegislature()) < 60*60*24*310);
 foreach ($tops as $t) if (!isset($date)) {$date = $t[0]['updated_at']; break;} ?>
 <h1>Synthèse générale de l'activité parlementaire<br/><small><?php if ($fresh) echo "depuis le début de la législature"; elseif ($fin) echo "sur toute la législature"; else echo "sur les 12 derniers mois"; ?></small></h1>
-<h2 class="aligncenter"><small>(dernière <a href="<?php echo url_for('@faq'); ?>#post_2">mise-à-jour</a> le <?php echo preg_replace('/20(\d+)-(\d+)-(\d+) (\d+):(\d+):\d+/', '$3/$2/$1 à $4H$5', $date); ?>)</h2>
+<h2 class="aligncenter"><small>(<a href="<?php echo url_for('@faq'); ?>#post_2">mise-à-jour quotidienne</a>, dernière en date le <?php echo preg_replace('/20(\d+)-(\d+)-(\d+) (\d+):(\d+):\d+/', '$3/$2/$1 à $4H$5', $date); ?>)</h2>
 <h2>Activité <?php if ($fin) echo "mensuelle moyenne "; ?>de tous les députés<?php if (!$fin && !$fresh) echo " ayant au moins 10 mois de mandat"; ?> :</h2>
-<?php 
+<?php
 $sf_response->setTitle('Synthèse générale des députés');
 $title = array('semaines_presence' => 'd\'activité',
 	       'commission_presences' => 'réunion',
@@ -62,12 +62,12 @@ $bulles = array("",
   </tr>
   <tr>
     <th title="Trier par : Nom de famille" class="jstitle <?php echo $class['parl']; ?>"><?php echo link_to('Nom', '@top_global'); ?></th><?php
-    $last = end($tops); $i = 0; 
-    foreach($ktop as $key) { 
-      $i++ ; 
+    $last = end($tops); $i = 0;
+    foreach($ktop as $key) {
+      $i++ ;
     ?>
     <th title="<?php echo "Trier par : ".$bulles[$i]; ?>" class="jstitle <?php echo $class[$key]; if ($sort == $i) echo ' tr_odd'?>"><?php echo link_to($title[$key], $top_link.'sort='.$i); ?></th>
-	<?php 
+	<?php
 	} ?>
     <th style="width:10px;"/>
   </tr>
@@ -75,14 +75,14 @@ $bulles = array("",
 <?php array_unshift($ktop, ''); ?>
 <div class="tableau_synthese">
 <table>
-  <?php 
-  $cpt = 0; 
+  <?php
+  $cpt = 0;
   foreach($tops as $t) {
     $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
     <td id="<?php echo $t[0]['slug']; ?>" class="jstitle phototitle c_<?php echo strtolower($t[0]['groupe_acronyme']); ?> <?php echo $class['parl']; ?>" title="<?php echo $t[0]['nom']; ?> -- Député<?php if ($t[0]['sexe'] === "F") echo 'e'; ?> <?php echo $t[0]['groupe_acronyme'].' '.preg_replace('/([^\'])$/', '\\1 ', Parlementaire::$dptmt_pref[trim($t[0]['nom_circo'])]).$t[0]['nom_circo']; ?>"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"><?php echo $t[0]['nom']; ?></a></td>
     <?php if ($nb_mdts) echo '<td>'.count(unserialize($t[0]['autres_mandats'])).'</td>';
     $field = "value";
-    if ($fin) 
+    if ($fin)
       $field = "moyenne";
     for($i = 1 ; $i < count($t) ; $i++) {
       echo '<td title="'.$t[$i]['value'].' ';
