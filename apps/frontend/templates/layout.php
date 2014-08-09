@@ -5,6 +5,25 @@
   <head>
     <?php include_http_metas() ?>
     <?php include_metas() ?>  
+
+<!-- Twitter metas -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@RegardsCitoyens">
+    <meta name="twitter:domain" content="NosSénateurs.fr">
+    <meta name="twitter:title" content="NosSénateurs.fr - Regards Citoyens">
+    <meta name="twitter:description" content="Observatoire citoyen de l'activité parlementaire au Sénat">
+    <meta name="twitter:image:src" content="http://www.regardscitoyens.org/wp-content/themes/RegardsCitoyens/images/nossenateurs.png">
+
+<!-- Facebook metas -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="NosSénateurs.fr - Regards Citoyens" />
+    <meta property="og:site_name" content="NosSénateurs.fr" />
+    <meta property="og:description" content="Observatoire citoyen de l'activité parlementaire au Sénat" />
+    <meta property="og:url" content="http://www.NosSénateurs.fr" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:image" content="http://www.regardscitoyens.org/wp-content/themes/RegardsCitoyens/images/nossenateurs.png" />
+    <meta property="og:image:type" content="image/png" />
+
     <?php include_title() ?>
 <?php
     $rss = $sf_request->getParameter('rss');
