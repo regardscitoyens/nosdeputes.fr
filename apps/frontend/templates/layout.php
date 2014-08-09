@@ -4,7 +4,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
   <head>
     <?php include_http_metas() ?>
-    <?php include_metas() ?>  
+    <?php include_metas() ?>
+
+<!-- Twitter metas -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:site" content="@RegardsCitoyens">
+    <meta name="twitter:domain" content="NosDéputés.fr">
+    <meta name="twitter:title" content="NosDéputés.fr - Regards Citoyens">
+    <meta name="twitter:description" content="Observatoire citoyen de l'activité parlementaire à l'Assemblée nationale">
+    <meta name="twitter:image:src" content="http://www.regardscitoyens.org/wp-content/uploads/2009/10/logo_nosdeputes.png">
+
+<!-- Facebook metas -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="NosDéputés.fr - Regards Citoyens" />
+    <meta property="og:site_name" content="NosDéputés.fr" />
+    <meta property="og:description" content="Observatoire citoyen de l'activité parlementaire à l'Assemblée nationale" />
+    <meta property="og:url" content="http://www.NosDéputés.fr" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:image" content="http://www.regardscitoyens.org/wp-content/uploads/2009/10/logo_nosdeputes.png" />
+    <meta property="og:image:type" content="image/png" />
+
     <?php include_title() ?>
 <?php
     $rss = $sf_request->getParameter('rss');
@@ -27,8 +46,8 @@ if ( preg_match('/\/circonscription[\/\?]/', $uri))
    $selectquestion = ' selected="selected"';
  else if (preg_match('/(\/citoyens?[\/\?]?|\/compterendu|\/commentaires?)/', $uri))
    $selectcitoyen = 1;
- else if ( !preg_match('/\/(faq|$)/i', $uri)) 
-   $selectdepute = ' selected="selected"';  
+ else if ( !preg_match('/\/(faq|$)/i', $uri))
+   $selectdepute = ' selected="selected"';
 
 $menu_depute = $selectquestion || $selectdepute || $selectprof || $selectcirco;
 $menu_dossier = $selectinterv || $selectamdmt;
@@ -44,7 +63,7 @@ $menu_citoyen = $selectcitoyen;
       <script type="text/javascript" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/iepngfix/iepngfix_tilebg.js"></script>
       <style type="text/css">
         img, div { behavior: url('<?php echo $sf_request->getRelativeUrlRoot(); ?>/iepngfix/iepngfix.php') }
-      </style> 
+      </style>
     <![endif]-->
     <?php include_partial('parlementaire/cssCouleursGroupes'); ?>
     <?php echo javascript_include_tag('jquery-1.6.2.min.js'); ?>
@@ -59,12 +78,12 @@ $menu_citoyen = $selectcitoyen;
         </div>
 <div id="connected" class="identification">
 <p id="loggued_top">
-<a href="/login">Se connecter</a> - 
+<a href="/login">Se connecter</a> -
 <a href="/login">Mon compte</a>
 </p>
 </div>
-  <script type="text/javascript"><!-- 
-  $('#connected').load("<?php echo url_for('@identification_ajax'); ?>"); 
+  <script type="text/javascript"><!--
+  $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
 --></script>
       </div>
       <div id="header">
@@ -79,8 +98,8 @@ $menu_citoyen = $selectcitoyen;
           <div id="item4"><a <?php if ($menu_citoyen) echo 'class="selected" '; ?>href="<?php echo url_for('@list_citoyens?order=date')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
           <div id="item5"><a title="Questions fréquemment posées" href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
         </div>
-        <?php $search = strip_tags($sf_request->getParameter('query')); 
-              $extraclass = '' ; 
+        <?php $search = strip_tags($sf_request->getParameter('query'));
+              $extraclass = '' ;
               if (!$search) {$extraclass="examplevalue"; $search = "Rechercher un député, une ville, un mot, ...";} ?>
         <div class="menu_recherche">
           <form action="<?php echo url_for('@recherche_solr'); ?>" method="get">
@@ -112,7 +131,7 @@ $menu_citoyen = $selectcitoyen;
           </ul>
         </div>
         </div>
-        
+
         <div id="sous_menu_3" style="display:<?php if ($menu_citoyen) echo 'block'; else echo 'none'; ?>">
               <div class="elements_sous_menu">
           <ul>
