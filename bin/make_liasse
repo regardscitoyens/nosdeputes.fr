@@ -4,7 +4,7 @@
 cd $PATH_APP
 
 cd batch/amendements/
-perl getAmdmtsOrder.pl $LEGISLATURE $1
+python getAmdmtsOrder.py $LEGISLATURE $1
 cd -
 php symfony make:Liasse $1 $2 > tmp_liasse
 iconv -c -f UTF-8 -t LATIN1 tmp_liasse > "Loi ${1} - Liasse des amendements dans l'ordre du texte"
