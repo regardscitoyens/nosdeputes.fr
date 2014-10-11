@@ -7,3 +7,4 @@ perl parse_orga_inter.pl http://www.assemblee-nationale.fr/$LEGISLATURE/internat
 split -l 500 json/grpeamitie.json json/grpeamitie_
 rm json/grpeamitie.json
 perl parse_orga_inter.pl http://www.assemblee-nationale.fr/$LEGISLATURE/international/uip-activites.asp "Groupe français de l'union interparlementaire" > json/uip.json
+perl parse_orga_inter.pl http://www.assemblee-nationale.fr/international/conseil-europe/activites.asp "Délégation française au Conseil de l'Europe" > json/conseil-europe.json

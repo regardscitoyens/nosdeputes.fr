@@ -16,10 +16,12 @@ if ($typeorganisme) {
 $a->get($url);
 $html = $a->content;
 utf8::encode($html);
+$html =~ s/<strong>/<b>/g;
+$html =~ s/<\/strong>/<\/b>/g;
 $html =~ s/’/'/g;
 $html =~ s/(\n|<br>)/ /gi;
 $html =~ s/\r//g;
-$html =~ s/<\!--.*-->//g;
+$html =~ s/<\!--[^-]*-->//g;
 $html =~ s/<span[^>]*font-weight:\s*\d\d+[^>]*>(.*?)<\/span>/<b>\1<\/b>/ig;
 $html =~ s/<\/[^ab][^>]*>//gi;
 $html =~ s/<[^ba\/][^ba>][^>]*>//gi;
