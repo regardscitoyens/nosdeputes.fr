@@ -11,7 +11,7 @@ $plflettre = '';
 if ($id =~ /plf\d{4}\/([a-z])\d{4}/i) {
   $plflettre = uc($1);
 }
-$id =~ s/^http\:\/\/.*(\d{4})(-[at].*)?\.asp$/\1$plflettre\2/i;
+$id =~ s/^http\:\/\/.*(\d{4})(-[atv].*)?\.asp$/\1$plflettre\2/i;
 $id =~ s/^0+//;
 $num = $annexe = $id;
 $num =~ s/^(\d+)([^\d].*)?$/\1/i;
