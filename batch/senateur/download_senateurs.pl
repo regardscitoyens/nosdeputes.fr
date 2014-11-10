@@ -4,6 +4,7 @@ use HTML::TokeParser;
 use URI::Escape;
 use Encode;
 
+
 $|=1;
 
 $verbose = shift || 0;
@@ -12,7 +13,10 @@ sub download_fiche {
 	$uri = shift;
 	return if ($done{$uri});
 	$done{$uri} = 1;
-	$a->get($uri);
+  	eval {
+		$a->get("http://senat.fr".$uri);
+		1;
+	} or return "ERROR: "."$@";
 	$file = uri_escape($a->uri());
 	return if ($done{$file});
 	$done{$file} = 1;
@@ -41,14 +45,23 @@ sub find_senateurs {
 	$p = HTML::TokeParser->new(\$content);
 	while ($t = $p->get_tag('a')) {
 	    if ($t->[1]{href} =~ /\/(senateur|senfic)\//) {
-		download_fiche($t->[1]{href});
+		$i = 3;
+		while ($i) {
+				$i--;
+				if (download_fiche($t->[1]{href}) =~ /^ERROR: /) {
+					print STDERR "Error downloading ".$t->[1]{href}." ($i tries left)\n";
+					sleep 1;
+				}else{
+					$i = 0;
+				}
+		}
 	    }
 	}
 }
 
 find_senateurs("http://www.senat.fr/senateurs/senatl.html");
 find_senateurs("http://www.senat.fr/senateurs/news.html");
-find_senateurs("http://www.senat.fr/senateurs/news_2010-2011.html");
+#find_senateurs("http://www.senat.fr/senateurs/news_2010-2011.html");
 
 #Enable below on first load
 #find_senateurs("http://www.senat.fr/senateurs/news_2009-2010.html");
