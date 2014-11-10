@@ -32,16 +32,26 @@ if ($file =~ /%2F([^%]+).html/) {
 $p->get_tag('h1');
 $senateur{'Nom'} = $p->get_text('/h1');
 utf8::decode($senateur{'Nom'});
+$senateur{'Nom'} =~ s/^M(\.|me|lle) //g;
 $senateur{'Nom'} =~ s/\n/ /;
 $senateur{'Nom'} =~ s/\s+$//;
 $senateur{'Nom'} =~ s/^\s*//;
 $senateur{'Nom'} =~ s/\s+/ /g;
-$senateur{'Nom'} =~ s/^([dD]([eEuU] |'))?(.+[A-ZÉË]) ((\s*[A-ZÉ][\L\w][^\s]*)+)$/$4 $1$3/;
-$nom = $3;
-$nomlc = $nom;
-$nomlc =~ s/([A-ZÉ])(\w+ ?)/$1\L$2/g;
-$senateur{'Nom'} =~ s/$nom/$nomlc/;
-$senateur{'Nom_de_famille'} = $nomlc;
+$senateur{'Nom_de_famille'} = $senateur{'Nom'};
+if ($senateur{'Nom'} =~ /^(de |d'|du )?[A-ZÉËÈÏÙ]{2}/) {
+	$senateur{'Nom'} =~ s/^([dD]([eEuU] |'))?(.+[A-ZÉË]) ((\s*[A-ZÉ][\L\w][^\s]*)+)$/$4 $1$3/;
+	print STDERR $senateur{'Nom'}."\n";
+	$nom = $3;
+	$nomlc = $nom;
+	$nomlc =~ s/([A-ZÉ])(\w+ ?)/$1\L$2/g;
+	$senateur{'Nom'} =~ s/$nom/$nomlc/;
+	$senateur{'Nom_de_famille'} = $nomlc;
+}else{
+	$nomlc = $senateur{'id_institution'};
+	$nomlc =~ s/_.*//;
+	$nomlc =~ s/[aeiou]/./gi; #remove accents
+	$senateur{'Nom_de_famille'} =~ s/.* ($nomlc)/$1/i;
+}
 utf8::encode($senateur{'Nom'});
 utf8::encode($senateur{'Nom_de_famille'});
 $p->get_tag('h2');
@@ -189,12 +199,13 @@ sub mandats {
 	$t = $p->get_tag('ul');
 	while ($t = $p->get_tag('li', '/ul')) {
 		last if ($t->[0] ne "li");
+		$prevdate = $date1;
 		$date1 = $date2 = 0;
 		$election = $p->get_text('/li', '/ul');
 		$election =~ s/\n/ /g;
-		if ($election =~ /\s+([0-9]*e?r? \S* [0-9]{4})\s+(jusqu')?au\s+([0-9]*e?r? \S* [0-9]{4})/) {
+		if ($election =~ /\s+([0-9]*e?r? \S* [0-9]{4})\s+(jusqu')?au\s+([0-9]*e?r? \S* [0-9]{4})(.*en cours|)/) {
 			$date1 = join '/', reverse datize($1);
-			$date2 = join '/', reverse datize($3);
+			$date2 = join '/', reverse datize($3) unless ($4);
 		} elsif ($election =~ /\s+([0-9]*e?r? \S* [0-9]{4})/) {
 			$date1 = join '/', reverse datize($1);
 		}
@@ -226,13 +237,16 @@ sub mandats {
 			$senateur{'premiers_mandats'}{$senateur{'debut_mandat'}." / ".$date1." / ".$cause} = 1;
 		} else {
 			if ($mandatouvert) {
-				$senateur{'premiers_mandats'}{$senateur{'debut_mandat'}." / ".$date1." / ".$oldcause} = 1;
+				$prevdate = $senateur{'debut_mandat'} if (!$prevdate) ;
+				$senateur{'premiers_mandats'}{$prevdate." / ".$date1." / ".$oldcause} = 1;
 			}
 			if ($date2) {
 				$mandatouvert = 0;
 				$senateur{'premiers_mandats'}{$date1." / ".$date2." / ".$cause} = 1;
 			} else {
-				$senateur{'debut_mandat'} = $date1;
+				if (!$senateur{'debut_mandat'}) {
+					$senateur{'debut_mandat'} = $date1;
+				}
 				$mandatouvert = 1;
 			}
 		}
