@@ -43,7 +43,7 @@ sub add_mandat {
   $start = shift;
   $end = shift;
   $cause = shift;
-  if ($cause =~ /(remplacement.*)\s*:\s*(.*)\s*$/i && $cause !~ /lection/i) {
+  if ($cause =~ /(remplacement.*)\s*:\s*(.*)\s*$/i && $cause !~ /lection/i && !$depute{'suppleant'}) {
     $depute{'suppleant_de'} = $2;
     $cause =~ s/\s*:\s*(.*)\s*$/ \(\1\)/;
   }
