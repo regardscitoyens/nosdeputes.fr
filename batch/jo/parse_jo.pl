@@ -20,6 +20,7 @@ $mois{'décembre'} = '12';
 
 $on = 0;
 while(<FILE>) {
+    s/&nbsp;/ /g;
     if (!$on && /<b>C?O?M?MISSION /i) {
 	$_ = "$_\n";
         $on = 1;
