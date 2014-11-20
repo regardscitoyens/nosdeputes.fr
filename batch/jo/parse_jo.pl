@@ -20,6 +20,7 @@ $mois{'décembre'} = '12';
 
 $on = 0;
 while(<FILE>) {
+    s/&nbsp;/ /g;
     if ($on) {
 	chomp;
 	s/<br>/ /g;
