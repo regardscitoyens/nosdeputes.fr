@@ -8,7 +8,7 @@ class sectionComponents extends sfComponents
       ->from('TitreLoi l')
       ->leftJoin('l.Texteloi t')
       ->where('l.leveltype = ?', 'loi')
- //   ->andWhere('l.nb_commentaires >= 5') 
+ //   ->andWhere('l.nb_commentaires >= 5')
       ->orderBy('l.date DESC')
       ->fetchArray();
   }
@@ -23,11 +23,9 @@ class sectionComponents extends sfComponents
       ->andWhere('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('i.nb_mots > 20')
       ->groupBy('s.section_id');
-
     if (isset($this->order) && $this->order == 'date') {
-      $sql->orderBy('i.date DESC')->groupBy('s.section_id, i.date');
-      if (isset($this->limit))
-	$sql->limit($this->limit*5);
+      $sql->andWhere('i.date > ?', date('Y-m-d', time() - 31556926));
+      $sql->orderBy('i.date DESC');
     } else $sql->orderBy('nb DESC');
     $this->textes = $sql->fetchArray();
     if (isset($this->order) && $this->order == 'date') {
