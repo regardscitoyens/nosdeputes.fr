@@ -49,8 +49,10 @@ sub find_senateurs {
 		while ($i) {
 				$i--;
 				if (download_fiche($t->[1]{href}) =~ /^ERROR: /) {
-					print STDERR "Error downloading ".$t->[1]{href}." ($i tries left)\n";
-					sleep 1;
+				    if (!$i) {
+					print STDERR "Error downloading ".$t->[1]{href}."\n";
+				    }
+				    sleep 1;
 				}else{
 					$i = 0;
 				}

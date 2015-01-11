@@ -40,7 +40,7 @@ $senateur{'Nom'} =~ s/\s+/ /g;
 $senateur{'Nom_de_famille'} = $senateur{'Nom'};
 if ($senateur{'Nom'} =~ /^(de |d'|du )?[A-ZÉËÈÏÙ]{2}/) {
 	$senateur{'Nom'} =~ s/^([dD]([eEuU] |'))?(.+[A-ZÉË]) ((\s*[A-ZÉ][\L\w][^\s]*)+)$/$4 $1$3/;
-	print STDERR $senateur{'Nom'}."\n";
+	#print STDERR $senateur{'Nom'}."\n";
 	$nom = $3;
 	$nomlc = $nom;
 	$nomlc =~ s/([A-ZÉ])(\w+ ?)/$1\L$2/g;
