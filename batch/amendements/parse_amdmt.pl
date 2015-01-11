@@ -220,6 +220,7 @@ sub clean_auteurs {
   $txt =~ s/([\s,]+)rat*a*ch[eé]*s?/$1rattachés/ig;
   $txt =~ s/([\s,]+)ap*a*rent[eé]*s?/$1apparentés/ig;
   $txt =~ s/([\s,]+)col*[eè]*gues?/$1collègues/ig;
+  $txt =~ s/ et /, /;
   return $txt;
 }
 
