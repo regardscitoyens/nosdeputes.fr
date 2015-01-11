@@ -308,7 +308,7 @@ delete $senateur{'Mails'}{'e-bure@u'};
 
 if ($content =~ /Sur Internet :<\/dt>(.*)<dt>/) {
 	$sites_str = $1;
-	while($sites_str=~ /<a [^>]*href="([^"]+)"/g) {
+	while($sites_str=~ /<a [^>]*href=" *([^" ][^"]+)"/g) {
 		$senateur{'Sites_Web'}{$1} = 1;
 	}
 }
