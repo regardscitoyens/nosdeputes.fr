@@ -448,7 +448,7 @@ while ($doc{'auteurs'} =~ /\s*([^,]* )([A-ZÀÉÈÊÎÏÔÙÇ][^,\s]*) (Rapporte
   $fct = $3;
   next if ($aut =~ /mission|délégation|office|ministre/);
   $sexename = "";
-  $sexename = $1 if ($name =~ s/^(M[Mlmes\.]+\s)//);
+  $sexename = $1 if ($name =~ s/^(M[Mlmes]+[\s\.]+)//);
   $prevsexe = $sexe;
   if ($sexename =~ /[le]/) {
     $sexe = "Mme ";
