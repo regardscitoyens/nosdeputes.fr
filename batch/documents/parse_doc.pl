@@ -420,7 +420,7 @@ $doc{'auteurs'} =~ s/[\(\)]//g;
 $doc{'auteurs'} =~ s/de l'union centr/Union centr/ig;
 $doc{'auteurs'} =~ s/[\s,]+sur .*$//ig;
 $doc{'auteurs'} =~ s/[\s,]+Compte .*:,/,/ig;
-
+$doc{'auteurs'} =~ s/spécial\s*:\s*,/,/g;
 
 if ($doc{'type'} =~ /^(Avis|Rapport)/) {
   if ($doc{'auteurs'} =~ /mission|observatoire|office|délégation/i && $doc{'auteurs'} !~ /Auteur/) {
@@ -448,7 +448,7 @@ while ($doc{'auteurs'} =~ /\s*([^,]* )([A-ZÀÉÈÊÎÏÔÙÇ][^,\s]*) (Rapporte
   $fct = $3;
   next if ($aut =~ /mission|délégation|office|ministre/);
   $sexename = "";
-  $sexename = $1 if ($name =~ s/^(M[Mlmes]+[\s\.]+)//);
+  $sexename = $1 if ($name =~ s/^(M[Mlmes]*[\s\.]+)//);
   $prevsexe = $sexe;
   if ($sexename =~ /[le]/) {
     $sexe = "Mme ";
