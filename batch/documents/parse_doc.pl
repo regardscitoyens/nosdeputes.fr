@@ -359,6 +359,7 @@ $doc{'type_details'} =~ s/^\s*fait\s*//i;
 $doc{'type_details'} =~ s/^compte/ - compte/i;
 $doc{'type_details'} =~ s/[\s,]*(après eng|sur l|au nom d|en [\d\wè]+ lecture|adopté)/, $1/ig;
 $doc{'type_details'} =~ s/[\(\)]//g;
+$doc{'type_details'} =~ s/[[\]]//g;
 $doc{'type_details'} =~ s/\s*compte[-\s]*rendu du déplacement.*$//i;
 $doc{'type_details'} =~ s/^.*projet de loi.*retiré.*par le.*ministre.*$//i;
 $doc{'type_details'} =~ s/^.*dépôt.*publié.*journal officiel.*//i;
