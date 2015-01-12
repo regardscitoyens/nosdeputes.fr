@@ -80,8 +80,10 @@ $lines =~ s/\n([^\s<]+)\s\n+(\S+)\n/\n$1 $2\n/g;
 $lines =~ s/(\d[erm]+ r|R)éunion /\n$1éunion /gi;
 $lines =~ s/(\.|\;) /$1\n/g;
 
+$lines =~ s/Louis-Jean\s+de\s+Nicola..?,/Louis-Jean de Nicolay,/g;
+
 foreach (split /\n/, $lines) {
-#    print "l: $lines\n";
+    #print "l: $lines\n";
     if (/(Comité\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/(réunion|séance|nommé)/i && !/Membres/i && !/^\s*\(/ && length($_) < 250) {
 	$commissiontmp = $_;
 	$commissiontmp =~ s/.*\W(Comité|Commission|Mission|Office|Observatoire|Délégation)/$1/i;
@@ -118,7 +120,7 @@ foreach (split /\n/, $lines) {
 	    $d =~ s/[^àâéèêëîïôùûü\w]+$//;
 	    $d =~ s/ \(.*//;
 
-	    if ($d =~ s/(.*)(,| et | ; | \d+| +\. ?)(.*)/$1/) { 
+	    if ($d =~ s/(.*)(,| et | ; | \d+| +\. ?)(.*)/$1/) {
 		$nextd = $3;
 	    }
 	    $d =~ s/( et|[^àâéèêëîïôùûü\w]+)$//;
