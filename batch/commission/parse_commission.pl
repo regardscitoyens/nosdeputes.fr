@@ -383,8 +383,9 @@ foreach $line (split /\n/, $string)
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
     $tmpinter = "";
+    #print STDERR $line."\n";
 	#si italique ou tout gras => commentaire
-	if ($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) {
+	if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) && $line !~ /^\|Article\s*\d+/i) {
 	    if (!$timestamp && !$commission && $line =~ /^\|(.*(groupe|mission|délégation|office|comité).*)\|\s*$/i) {
 		$commission = $1;
 		next;
@@ -407,7 +408,7 @@ foreach $line (split /\n/, $string)
         }
         $intervenant = setIntervenant($interv1.$extrainterv);
         $found = $majIntervenant = 1;
-	}elsif ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|.// ) {
+	}elsif ($line !~ /^\|Article\s*\d+/i && $line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|.// ) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
