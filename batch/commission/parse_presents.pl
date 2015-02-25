@@ -49,6 +49,9 @@ sub checkout {
 	return ;
     }
     $commission =~ s/"//g;
+    if ($commission =~/^\s*Mission d'information\s*$/i && $commission_meta) {
+        $commission = $commission_meta;
+    }
     foreach $depute (@presents) {
 	$depute =~ s/[\/<\|]//g;
 	$depute =~ s/^\s*M[me\.]+\s+//;
@@ -82,6 +85,11 @@ foreach $line (split /\n/, $string)
     if ($line =~ /<body[^>]*>/) {
 	$body = 1;
     }
+    if ($line =~ /<meta /) {
+        if($line =~ /name="NOMCOMMISSION" CONTENT="([^"]+)"/i) {
+            $commission_meta = $1;
+        }
+    }
     next unless ($body);
     if ($line =~ /\<[a]/i) {
 	if ($line =~ /<a name=["']([^"']+)["']/) {
@@ -108,6 +116,8 @@ foreach $line (split /\n/, $string)
 	    if ($line =~ /(\d+)\s*(h|heures?)\s*(\d*)/i) {
 		$heure = sprintf("%02d:%02d", $1, $3 || "00");
 	    }
+
+
 	}elsif(!$commission && $line =~ /groupe|commission|mission|délégation|office|comité/i) {
 	    if ($line =~ /[\>\|]\s*((Groupe|Com|Miss|Délé|Offic)[^\>\|]+)[\<\|]/) {
 		$commission = $1;
