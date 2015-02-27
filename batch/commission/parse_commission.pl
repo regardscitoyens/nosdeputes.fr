@@ -120,7 +120,7 @@ foreach (split /\n/, $content) {
 	    $commission =~ s/CE /Commission d'enquête /;
 	    $commission =~ s/GT /Groupe de travail /;
 	}
-	print ;	print "\n";
+#	print ;	print "\n";
 	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*\W*<\/(h[123])>/i) || /(<strong)(>)\(([a-z]+ \d+ [a-zéû]+ \d{4})\)<\/strong>/) {
 #print STDERR "date: $3 $url_year\n";
 		@date = datize($3, $url_year);
