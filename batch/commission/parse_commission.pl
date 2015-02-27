@@ -119,7 +119,6 @@ foreach (split /\n/, $content) {
             $commission =~ s/MCI /Mission commune d'information /;
 	    $commission =~ s/CE /Commission d'enquête /;
 	    $commission =~ s/GT /Groupe de travail /;
-	    print "COMMISSION : $commission \n";
 	}
 	print ;	print "\n";
 	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*\W*<\/(h[123])>/i) || /(<strong)(>)\(([a-z]+ \d+ [a-zéû]+ \d{4})\)<\/strong>/) {

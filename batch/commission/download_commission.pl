@@ -60,9 +60,9 @@ foreach $index (@indexes) {
 		}
 		print FILE $thecontent;
 		close FILE;
-		rename "html/$file.tmp", "html/$file";
 		if ($thecontent =~ /sera publi[^ ]*e? ult[^ ]*rieurement\./) {
-			print STDERR "Commission $file publiée ultérieurement\n";
+			print STDERR "INFO: Commission $file publiée ultérieurement ($uri)\n";
+			unlink "html/$file.tmp";
 		}else{
 			rename "html/$file.tmp", "html/$file";
 			print "$file\n";
