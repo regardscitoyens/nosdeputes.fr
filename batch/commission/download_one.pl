@@ -12,7 +12,7 @@ eval {$a->get($href);};
 if ($@) {
     print STDERR "error downloading $href\n";
     $a->back();
-    next;
+    exit 1;
 }
 $file = uri_escape($a->uri());
 open FILE, ">:utf8", "html/$file";
