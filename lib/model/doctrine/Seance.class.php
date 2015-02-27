@@ -25,6 +25,10 @@ class Seance extends BaseSeance
     }
   }
 
+  public function setMoment($moment) {
+	return $this->_set('moment', preg_replace('/séance/', 'réunion', $moment));
+  }
+
   public function setSession($session) {
     if (!$session && $this->date)
       $session = self::identifySession($this->date);
