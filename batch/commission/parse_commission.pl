@@ -110,14 +110,18 @@ foreach (split /\n/, $content) {
 	if (/TITLE>[^<]*(Commission[^:<]*)/i) {
 	    $commission = $1;
 	    $commission =~ s/[\s\-]+S[é&eacut;]+nat\s*//i;
+	    $commission =~ s/Commission mixte paritaire .*/Commission mixte paritaire/;
 	}elsif (/fait au nom de la (commission d'enquête[^:<]*)(\s*,\s*déposé)/i) {
 		$commission = $1;
 	}else {
-	    $commission = $1 if (/TITLE>[^<]*((MCI|Mission|Office|Délégation|Groupe de travail)[^:<]*)/i);
+	    $commission = $1 if (/TITLE>\s*((MCI|Mission|Office|Délégation|Groupe de travail|CE |GT )[^:<]*)/i);
 	    $commission =~ s/\-[\s\-]+S[é&eacut;]+nat\s*//;
             $commission =~ s/MCI /Mission commune d'information /;
+	    $commission =~ s/CE /Commission d'enquête /;
+	    $commission =~ s/GT /Groupe de travail /;
+	    print "COMMISSION : $commission \n";
 	}
-#	print ;	print "\n";
+	print ;	print "\n";
 	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*\W*<\/(h[123])>/i) || /(<strong)(>)\(([a-z]+ \d+ [a-zéû]+ \d{4})\)<\/strong>/) {
 #print STDERR "date: $3 $url_year\n";
 		@date = datize($3, $url_year);
@@ -150,8 +154,8 @@ foreach (split /\n/, $content) {
 		$numeros_loi = '';
 		$is_newcontext = 1;
 	}
-	next if (!$begin);
 	$source = "#$1" if (/name="([^"]+)"/);
+        next if (!$begin);
 
 	if (/<p[^>]*>(.*)<\/p>/i) {
 		$inter = $1;
@@ -188,7 +192,12 @@ foreach (split /\n/, $content) {
 		    $heure = ($nb_seance == 1 ? '1ère' : $nb_seance.'ème');
 		    $heure .= ' séance';
 		    $timestamp = '0';
-		}
+		}elsif($inter =~ /^La r&eacute;union est ouverte &agrave; (\d+) h(eures?|) ?(\d+|) *(\.|$)/) {
+			$heure = "$1:$3";
+			$heure =~ s/:$/:00/;
+                        $nb_seance++;
+                }
+
 		if($is_newcontext) {
 		    $is_newcontext = 0;
 		    print_inter();
