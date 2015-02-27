@@ -47,6 +47,7 @@ class updateSenateursTask extends sfBaseTask
             }
 	    $parl = Doctrine::getTable('Parlementaire')->findOneByNom($json->nom);
 	    if (!$parl) {
+		echo "WARNGIN: New senateurs : ".$json->nom." \n";
 	      $parl = new Parlementaire();
 	      $parl->type = 'senateur';
 	      $parl->nom = $json->nom;
