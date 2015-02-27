@@ -15,4 +15,3 @@ foreach(array_keys($champs) as $key)
 echo "\n";
 
 myTools::depile_csv($res, $breakline, $multi);
-?>
