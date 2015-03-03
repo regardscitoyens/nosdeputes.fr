@@ -80,7 +80,7 @@ $lines =~ s/\n([^\s<]+)\s\n+(\S+)\n/\n$1 $2\n/g;
 $lines =~ s/(\d[erm]+ r|R)éunion /\n$1éunion /gi;
 $lines =~ s/(\.|\;) /$1\n/g;
 
-$lines =~ s/Louis-Jean\s+de\s+Nicola..?,/Louis-Jean de Nicolay,/g;
+$lines =~ s/Louis-Jean\s+de\s+Nicola..?(,)?/Louis-Jean de Nicolay\1/g;
 
 foreach (split /\n/, $lines) {
     #print "l: $lines\n";
