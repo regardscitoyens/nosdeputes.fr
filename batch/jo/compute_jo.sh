@@ -25,4 +25,4 @@ if [ ! -e jos.html ] ; then echo "ERROR jos.html" exit; fi
 perl parse_jo.pl jos.html $DATE > xml/$FILE.xml
 echo "xml/$FILE.xml created"
 if [ ! -s xml/$FILE.xml ] ; then echo "ERROR JO empty"; rm xml/$FILE.xml ; fi
-rm jo.html  jo_ind.html  jo.pdf  jos.html jo*png 2> /dev/null
+#rm jo.html  jo_ind.html  jo.pdf  jos.html jo*png 2> /dev/null

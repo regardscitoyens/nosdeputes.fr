@@ -83,13 +83,14 @@ $lines =~ s/(\.|\;) /$1\n/g;
 $lines =~ s/Louis-Jean\s+de\s+Nicola..?(,)?/Louis-Jean de Nicolay\1/g;
 
 foreach (split /\n/, $lines) {
-    #print "l: $lines\n";
-    if (/(Comité\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/(réunion|séance|nommé)/i && !/Membres/i && !/^\s*\(/ && length($_) < 250) {
+    #print STDERR "l: $_\n";
+    if (/(Comité\W|Groupe de travail\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/(réunion|séance|nommé)/i && !/Membres/i && !/^\s*\(/ && length($_) < 250) {
 	$commissiontmp = $_;
-	$commissiontmp =~ s/.*\W(Comité|Commission|Mission|Office|Observatoire|Délégation)/$1/i;
+	$commissiontmp =~ s/.*\W(Groupe de travail.*\W(Comité|Groupe de travail|Commission|Mission|Office|Observatoire|Délégation))/$1/i;
 	$commissiontmp =~ s/\s*[\(:].*//;
 	$commissiontmp =~ s/[, \)]+$//;
 	$commissiontmp =~ s/\W+$//;
+	#print STDERR "COMMISSION: $commissiontmp\n";
 	$commission = $commissiontmp if ($commissiontmp =~ /^[A-Z]/);
 	$on = 0;
     }
