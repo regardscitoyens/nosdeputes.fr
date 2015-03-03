@@ -31,6 +31,7 @@ while(<FILE>) {
     if ($on) {
 	chomp;
 	s/<br>/ /g;
+	s/ +/ /g;
 	$lines .= $_;
     }
     if (/Membres? présents? ou excusés?/) {
@@ -84,7 +85,7 @@ $lines =~ s/Louis-Jean\s+de\s+Nicola..?(,)?/Louis-Jean de Nicolay\1/g;
 
 foreach (split /\n/, $lines) {
     #print STDERR "l: $_\n";
-    if (/(Comité\W|Groupe de travail\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/(réunion|séance|nommé)/i && !/Membres/i && !/^\s*\(/ && length($_) < 250) {
+    if (/(Comité\W|Groupe de travail\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/(réunion|séance|nommé)/i && !/Membres/i && !/^\s*\(/ && length($_) < 300) {
 	$commissiontmp = $_;
 	$commissiontmp =~ s/.*\W(Groupe de travail.*\W(Comité|Groupe de travail|Commission|Mission|Office|Observatoire|Délégation))/$1/i;
 	$commissiontmp =~ s/\s*[\(:].*//;
