@@ -84,8 +84,8 @@ $lines =~ s/(\.|\;) /$1\n/g;
 $lines =~ s/Louis-Jean\s+de\s+Nicola..?(,)?/Louis-Jean de Nicolay\1/g;
 
 foreach (split /\n/, $lines) {
-    #print STDERR "l: $_\n";
-    if (/(Comité\W|Groupe de travail\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/(réunion|séance|nommé)/i && !/Membres/i && !/^\s*\(/ && !/(président|rapporteur)/i && length($_) < 300) {
+    #print STDERR "l: $_ $on\n";
+    if (/(Comité\W|Groupe de travail\W|Commission\W|Mission\W|Office|Observatoire|Délégation)/i && !/Ordre du jour/ && !/ \(commission /i && !/(réunion|séance|nommé)/i && !/Membres/i && !/^\s*\(/ && !/(président|rapporteur)/i && length($_) < 300) {
 	$commissiontmp = $_;
 	$commissiontmp =~ s/.*\W(Groupe de travail.*\W(Comité|Groupe de travail|Commission|Mission|Office|Observatoire|Délégation))/$1/i;
 	$commissiontmp =~ s/\s*[\(:].*//;
@@ -109,8 +109,11 @@ foreach (split /\n/, $lines) {
 	}
 	$on = 0;
     }
-    if (/(<i>Excus|<i>Ont d|Ordre|Convocation|Excusés|<b>Nomination|^Nomination)/) {
+    if (/(<i>Excus|<i>Ont d|Ordre|Convocation|Excusés|<b>Nomination|^Nomination)/ || / délégué (leur|son) droit/) {
 	$on = 0;
+    }
+    if (/<i>(Présents?\W|Assistai)/) {
+	$on = 1;
     }
     if ($on && /\w/) {
 	foreach $d (split /\, / ) { #/
@@ -160,8 +163,5 @@ foreach (split /\n/, $lines) {
 		print " } \n";
 	    }
 	}
-    }
-    if (/<i>(Présents?\W|Assistai)/) {
-	$on = 1;
     }
 }
