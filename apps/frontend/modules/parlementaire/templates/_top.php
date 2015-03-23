@@ -75,7 +75,7 @@ if (myTools::isFinLegislature()) {
   $rank = 0;
   $weeks = (strtotime($parlementaire->fin_mandat) - strtotime($parlementaire->debut_mandat))/(60*60*24*7);
   if ($weeks > 52) $temps = sprintf('%d mois', $weeks/4.33);
-  else $temps = sprintf('%d semaines', $weeks);
+  else $temps = sprintf('%d semaine%s', $weeks, ($weeks >= 2 ? "s" : ""));
   echo '<h3>Activité sur '.$temps.' :</h3>';
  }
 }
