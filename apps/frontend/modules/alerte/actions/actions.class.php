@@ -17,7 +17,7 @@ class alerteActions extends sfActions
     $parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->forward404Unless($parlementaire);
     $alerte = new Alerte();
-    $alerte->query = 'Parlementaire='.urlencode($parlementaire);
+    $alerte->query = 'Parlementaire="'.urlencode($parlementaire).'"';
     $alerte->no_human_query = 1;
     $alerte->titre = 'Recherche relative aux travaux de '.$parlementaire->nom;
     $this->submit = 'Créer';
