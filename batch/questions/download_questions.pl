@@ -45,7 +45,7 @@ if ($last_record < 0) {
 print "Download questions écrites numéro ".$last_record." à ".($last_number+100).'\n\n';
 
 for ($cpt = ($last_record >= 100 ? $last_record-100 : 0) ; $cpt < $last_number+100 ; $cpt++) {
-    $htmfile = "http://questions.assemblee-nationale.fr/q".$legislature."/".$legislature."-".$cpt."QE.htm";
+    $htmfile = "http://questions.assemblee-nationale.fr/q".$legislature."/".$legislature."-".$cpt."QE.htm/vue/xml";
     $htmfile =~ s/^\s+//gi;
     $count++;
     $a->get($htmfile);
@@ -68,6 +68,7 @@ $string = "@string";
 close FILE;
 
 foreach $line (split /\n/, $string) {
+    $line .= "/vue/xml";
     $htmfile = $line;
     $htmfile =~ s/^\s+//gi;
     next if ($htmfile =~ /source/);
