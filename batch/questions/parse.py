@@ -36,7 +36,7 @@ def parse_question(url, xmlstring):
         'ministere_attribue': qe['MINA']['ORDRE'][-1]['DEVELOPPE'],
         'ministere_interroge': qe['MINI']['DEVELOPPE'],
         'tete_analyse': qe['INDEXATION_AN']['TETE_ANALYSE'],
-        'analyse': " / ".join(qe['INDEXATION_AN']['ANALYSE']['ANA']),
+        'analyse': " / ".join([a for a in qe['INDEXATION_AN']['ANALYSE']['ANA'] if a]),
         'rubrique': qe['INDEXATION_AN']['@RUBRIQUE'],
         'question': qe['DEPOT'][1]['TEXTE_DEPOT'],
         'reponse': qe['REPONSE']['TEXTE_REPONSE'],
