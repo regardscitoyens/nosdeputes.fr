@@ -191,7 +191,7 @@ foreach (split /\n/, $content) {
 		    $heure = ($nb_seance == 1 ? '1ère' : $nb_seance.'ème');
 		    $heure .= ' séance';
 		    $timestamp = '0';
-		}elsif($inter =~ /^La r&eacute;union est ouverte &agrave; (\d+) h(eures?|) ?(\d+|) *(\.|$)/) {
+		}elsif($inter =~ /^La r&eacute;union est ouverte &agrave; (\d+) ?h(eures?|) ?(\d+|) *(\.|$)/) {
 			$heure = "$1:$3";
 			$heure =~ s/:$/:00/;
                         $nb_seance++;
