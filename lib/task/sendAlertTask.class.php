@@ -11,7 +11,7 @@ class sendAlertTask extends sfBaseTask
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
     $this->addOption('verbose', null, sfCommandOption::PARAMETER_OPTIONAL, 'verbose (yes or no)', 'no');
   }
- 
+
   protected static $period = array('HOUR' => 3600, 'DAY' => 86400, 'WEEK' => 604800, 'MONTH' => 2592000);
 
   protected function execute($arguments = array(), $options = array())
@@ -24,8 +24,9 @@ class sendAlertTask extends sfBaseTask
     $solr = new SolrConnector();
     $query = Doctrine::getTable('Alerte')->createQuery('a')->where('next_mail < NOW() OR next_mail IS NULL')->andWhere('confirmed = 1');
     foreach($query->execute() as $alerte) if (preg_match("/\w@\w/", $alerte->email)) {
+      $currenttime = time();
       $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")+1;
-      $query = '('.$alerte->query.") date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d').'T'.date('H:i:s')."Z]";
+      $query = '('.$alerte->query.") date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d', $currenttime).'T'.date('H:i:s', $currenttime)."Z]";
       foreach (explode('&', $alerte->filter) as $filtre)
         if (preg_match('/^([^=]+)=(.*)$/', $filtre, $match))
           foreach (explode(',', $match[2]) as $value) {
@@ -37,13 +38,13 @@ class sendAlertTask extends sfBaseTask
 	print "LOG: query: $query\n";
       }
       $results = $solr->search($query, array('sort' => 'date desc', 'hl' => 'yes', 'hl.fragsize'=>500));
-      $alerte->next_mail = date('Y-m-d H:i:s', time() + self::$period[$alerte->period]);
+      $alerte->next_mail = date('Y-m-d H:i:s', $currenttime + self::$period[$alerte->period]);
       if (! $results['response']['numFound']) {
 	$alerte->save();
 	continue;
       }
       echo "sending mail to : ".$alerte->email."\n";
-      $message = $this->getMailer()->compose(array('contact@regardscitoyens.org' => '"Regards Citoyens"'), 
+      $message = $this->getMailer()->compose(array('contact@regardscitoyens.org' => '"Regards Citoyens"'),
 					     $alerte->email,
 					     '[NosDeputes.fr] Alerte - '.$alerte->titre);
 
@@ -60,5 +61,5 @@ class sendAlertTask extends sfBaseTask
       }
     }
   }
-  
+
 }
