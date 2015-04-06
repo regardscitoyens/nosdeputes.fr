@@ -20,8 +20,7 @@ if (isset($exportfacet)) {
 	return ;
 }
 
-if (!$tags) : ?>
-{ "start": <?php echo $results['start'] + 1; ?>, "end": <?php if ($results['numFound'] == $results['end'] - 1) echo $results['end'] - 1; else echo $results['end']; ?>, "last_result": <?php echo $results['numFound'];  ?>, "results": [<?php
+if (!$tags) : ?>{"start": <?php echo $results['start'] + 1; ?>, "end": <?php if ($results['numFound'] == $results['end'] - 1) echo $results['end'] - 1; else echo $results['end']; ?>, "last_result": <?php echo $results['numFound'];  ?>, "results": [<?php
 	    $nb = 0;
 foreach ($results['docs'] as $record)
 {
@@ -30,7 +29,7 @@ foreach ($results['docs'] as $record)
   else
     $nb = 1;
   echo '{"document_type": "'.get_class($record['object']).'", ';
-  echo '"document_id": '.$record['object']->id.", ";
+  echo '"document_id": '.($record['object']->id ? $record['object']->id : '""').", ";
   echo '"document_url": "'.sfConfig::get('app_base_url').url_for('@api_document?format='.$format.'&class='.get_class($record['object']).'&id='.$record['object']->id).'"}';
 }
 ?> ]}<?php return;
@@ -48,5 +47,5 @@ foreach(array_keys($facet) as $k)
 	else
 	  $cpt = 1;
 	echo '{"tag_type": "'.$k.'", "tag_nom": "'.$value.'", "nb": '.$nb."}\n";
-      }
-  ?>]
+      } ?>
+]
