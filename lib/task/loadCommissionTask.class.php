@@ -10,12 +10,12 @@ class loadCommissionTask extends sfBaseTask
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
- 
+
   protected function execute($arguments = array(), $options = array())
   {
     // your code here
     $dir = dirname(__FILE__).'/../../batch/commission/out/';
-    $manager = new sfDatabaseManager($this->configuration);    
+    $manager = new sfDatabaseManager($this->configuration);
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
@@ -51,6 +51,8 @@ class loadCommissionTask extends sfBaseTask
                 $error = "pas d'intervention";
             else if (!$json->date)
                 $error = "pas de date";
+            else if (!$json->heure)
+                $error = "pas d'heure";
             else if (!$json->commission)
                 $error = "pas de nom de commission";
             else if (!$json->source)
@@ -92,13 +94,13 @@ class loadCommissionTask extends sfBaseTask
 	    if (!($intervention) && $isExistingSeance) {
 	      $json->type = 'commission';
 	      $intervention = Doctrine::getTable('Intervention')->findSimilarFromJson($json);
-	      if ($intervention) { 
-		$intervention->setIntervention($json->intervention); 
+	      if ($intervention) {
+		$intervention->setIntervention($json->intervention);
 		$intervention->setSource($json->source);
-		echo "WARNING : Intervention en double trouvée : seance/".$intervention->seance_id."#inter_".$id."\n";  
+		echo "WARNING : Intervention en double trouvée : seance/".$intervention->seance_id."#inter_".$id."\n";
 	      }
-	    } 
-	    
+	    }
+
 	    if(!$intervention) {
 	      $intervention = new Intervention();
 	      $intervention->md5 = $id;
