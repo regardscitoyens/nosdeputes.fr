@@ -161,7 +161,7 @@ foreach (split /\n/, $content) {
 		if ($inter =~ /<u>(Au cours[^<]*)<\/u>/) {
 		    $aucours = $1;
 		    if ($aucours =~ /\Wquatri(è|&[^;]*;)me($|\W)/) {
-			if ($nb_seance >= 4) { 
+			if ($nb_seance >= 4) {
 				$nb_seance++;
 			}else{
 	                        $nb_seance = 4;
@@ -191,7 +191,7 @@ foreach (split /\n/, $content) {
 		    $heure = ($nb_seance == 1 ? '1ère' : $nb_seance.'ème');
 		    $heure .= ' séance';
 		    $timestamp = '0';
-		}elsif($inter =~ /^La r&eacute;union est ouverte &agrave; (\d+) ?h(eures?|) ?(\d+|) *(\.|$)/) {
+		}elsif($inter =~ /^La [rs]&eacute;(?:union|ance) est ouverte &agrave; (\d+) ?h(eures?|) ?(\d+|) *(\.|$)/) {
 			$heure = "$1:$3";
 			$heure =~ s/:$/:00/;
                         $nb_seance++;
@@ -213,7 +213,7 @@ foreach (split /\n/, $content) {
 
 		$inter =~ s/(<\/(strong|a)[^>]*>)+([\s,]*)(<\/?(strong)[^>]*>)+/$3/ig;
 		$inter =~ s/(<strong>)\s*([^<]*)<\/strong>(\s*)(<a[^>]*>)\s*<strong>/$1$4$2$3/ig;
-		if (($interstrong && $inter =~ /<(a|strong)[^>]*>($recointer[^<]+)<\/(a|strong)>/i) || 
+		if (($interstrong && $inter =~ /<(a|strong)[^>]*>($recointer[^<]+)<\/(a|strong)>/i) ||
 		    (!$interstrong && ($inter =~ /(>)\s*($recointer[^<]{10}[^<\.]*)/))) {
 			$tmpintervenant = $2;
 			$tmpintervenant =~ s/<[^>]*>//g;
