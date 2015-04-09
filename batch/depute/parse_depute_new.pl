@@ -15,6 +15,7 @@ open(FILE, $file);
 $string = "@string";
 close FILE;
 $string =~ s/\r//g;
+$string =~ s/&nbsp;/ /g;
 $string =~ s/[\n\s]+/ /g;
 $string =~ s/^.*(<h1 class="deputy-headline-title)/\1/i;
 $string =~ s/<div id="actualite".*<\/div>(<div id="fonctions")/\1/i;
@@ -64,7 +65,7 @@ if ($file =~ /(\d+)/) {
 $read = "";
 foreach $line (split /\n/, $string) {
   $line =~ s/<\/?sup>//g;
-  if ($line =~ /<h1 class="deputy-headline-title[^>]*>(.+)<\/h1>/i) {
+  if ($line =~ /<h1>(.+)<\/h1>/i) {
     $depute{'nom'} = $1;
     $depute{'nom'} =~ s/,.*$//;
     $depute{'nom'} =~ s/^(M[.mle]+) //;
@@ -73,7 +74,7 @@ foreach $line (split /\n/, $string) {
     } else {
       $depute{'sexe'} = "H";
     }
-  } elsif (!$depute{'circonscription'} && $line =~ />([^<]*) \((\d+[èrme]+) circonscription/i) {
+  } elsif (!$depute{'circonscription'} && $line =~ /"deputy-healine-sub-title">([^<]*) \((\d+[èrme]+) circonscription/i) {
     $depute{'circonscription'} = "$1 ($2)";
   } elsif ($line =~ /Née? le ([0-9]+e?r? \S+ [0-9]+)( [àaux]+ (.*))?</i) {
     $depute{'date_naissance'} = join '/', reverse datize($1);
