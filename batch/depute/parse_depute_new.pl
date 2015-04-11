@@ -15,13 +15,15 @@ open(FILE, $file);
 $string = "@string";
 close FILE;
 $string =~ s/\r//g;
-$string =~ s/&nbsp;/ /g;
+$string =~ s/\&nbsp;?/ /ig;
 $string =~ s/[\n\s]+/ /g;
 $string =~ s/^.*(<h1 class="deputy-headline-title)/\1/i;
 $string =~ s/<div id="actualite".*<\/div>(<div id="fonctions")/\1/i;
 $string =~ s/<div id="travaux".*$//i;
 while ($string =~ s/(<li class="contact-adresse">([^<]*)?)(<\/?p>)+(.*<\/li>(<li class="contact-adresse">|<\/ul>))/\1 \4/gi) {}
-$string =~ s/(<(div|p|li|abbr|img|dt)[ >])/\n\1/ig;
+$string =~ s/(<(div|p|li|abbr|img|dt|dd|h\d)[ >])/\n\1/ig;
+$string =~ s/<\/?sup>//ig;
+$string =~ s/<svg[^>]*>.*?<\/svg>//ig;
 $string =~ s/\s*'\s*/'/g;
 
 if ($display_text) {
@@ -57,12 +59,14 @@ sub add_mandat {
 
 if ($file =~ /(\d+)/) {
   $depute{'id_institution'} = $1;
-  $depute{'url_institution'} = "http://www.assemblee-nationale.fr/$legislature/tribun/fiches_id/$1.asp";
-  $depute{'fin_mandat'} = $fin_mandat{"$1.asp"};
-  $depute{'photo'} = "http://www.assemblee-nationale.fr/$legislature/tribun/photos/$1.jpg";
+  $depute{'url_institution'} = "http://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA$1";
+  $depute{'old_url_institution'} = "http://www.assemblee-nationale.fr/$legislature/tribun/fiches_id/$1.asp";
+  $depute{'photo'} = "http://www2.assemblee-nationale.fr/static/tribun/$legislature/photos/$1.jpg";
+  $depute{'old_photo'} = "http://www.assemblee-nationale.fr/$legislature/tribun/photos/$1.jpg";
 }
 
 $read = "";
+$address = "";
 foreach $line (split /\n/, $string) {
   $line =~ s/<\/?sup>//g;
   if ($line =~ /<h1>(.+)<\/h1>/i) {
@@ -74,7 +78,7 @@ foreach $line (split /\n/, $string) {
     } else {
       $depute{'sexe'} = "H";
     }
-  } elsif (!$depute{'circonscription'} && $line =~ /"deputy-healine-sub-title">([^<]*) \((\d+[èrme]+) circonscription/i) {
+  } elsif (!$depute{'circonscription'} && $line =~ /"deputy-head?line-sub-title">([^<]*) \((\d+[èrme]+) circonscription/i) {
     $depute{'circonscription'} = "$1 ($2)";
   } elsif ($line =~ /Née? le ([0-9]+e?r? \S+ [0-9]+)( [àaux]+ (.*))?</i) {
     $depute{'date_naissance'} = join '/', reverse datize($1);
@@ -83,32 +87,50 @@ foreach $line (split /\n/, $string) {
     $lieu = trim($lieu);
     $depute{'lieu_naissance'} = $lieu if ($lieu !~ /^$/);
     $read = "profession";
-  } elsif ($line =~ /title="Suppléant"/i) {
+  } elsif ($line =~ /<dt>Suppléant<\/dt>/i) {
     $read = "suppleant";
-  } elsif ($read !~ /^$/) {
+  } elsif ($line =~ /<dl class="adr">/i) {
+    $read = "adresse";
+    $address = "";
+  } elsif ($line =~ /<dd class="tel">.*<span class="value">([^<]*)</i) {
+    delete $depute{'adresses'}{$address};
     $line =~ s/<[^>]+>//g;
-    $line = trim($line);
-    $depute{"$read"} = $line if ($line !~ /^$/);
-    if ($read =~ /suppleant/) {
-      $depute{"$read"} =~ s/[(,\s]+décédé.*$//i;
-      $depute{"$read"} =~ s/Mlle /Mme /;
-      $depute{"$read"} =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜÇ])(\w+ ?)/\1\L\2/g;
+    $address .= " ".trim($line);
+    $depute{'adresses'}{$address} = 1;
+  } elsif ($read !~ /^$/) {
+    if ($read =~ /adresse/) {
+      if ($line =~ /<dd/i) {
+        $address .= $line;
+        $address =~ s/<[^>]+>//g;
+        if ($line =~ /<\/dl>/i) {
+          $address = trim($address);
+          $depute{'adresses'}{$address} = 1;
+          $read = "";
+        }
+      }
+    } else {
+      $line =~ s/<[^>]+>//g;
+      $line = trim($line);
+      $depute{"$read"} = $line if ($line !~ /^$/);
+      if ($read =~ /suppleant/) {
+        $depute{"$read"} =~ s/[(,\s]+décédé.*$//i;
+        $depute{"$read"} =~ s/Mlle /Mme /;
+        $depute{"$read"} =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜÇ])(\w+ ?)/\1\L\2/g;
+      }
+      $read = "" if ($line !~ /^$/ || $read =~ /profession/);
     }
-    $read = "";
-  } elsif ($line =~ /class="political-party[^>]*>([^<]+)</i) {
+  } elsif ($line =~ /composition du groupe"[^>]*>([^<]+)</i) {
     $groupe = lc($1);
-    if ($groupe =~ s/^(apparentée?|présidente?)( du groupe)? //) {
-      $gpe = $groupe." / ".$1;
+    if ($line =~ /(apparentée?|présidente?)( du groupe)? /i) {
+      $gpe = $groupe." / ".(lc $1);
     } else {
       $gpe = $groupe." / membre";
     }
     $gpe .= "e" if ($depute{'sexe'} eq "F" && $gpe =~ /(président|apparenté)$/);
     $depute{'groupe'}{$gpe} = 1;
-  } elsif ($line =~ /img [^>]*class="deputy-profile-picture[^>]* src="([^"]+)"/i) {
-    $depute{'photo'} = "http://www.assemblee-nationale.fr$1";
   } elsif ($line =~ /mailto:([^'"]+@[^'"]+)['"]/i) {
     $depute{'mails'}{$1} = 1;
-  } elsif ($line =~ /<a [^>]*href=['"]([^"']+)['"].*_blank/i) {
+  } elsif ($line =~ /<a [^>]*class="url"[^>]*href=['"]([^"']+)['"]/i) {
     $site = $1;
     $site =~ s#^(http://)*#http://#i;
     if ($site =~ s/(http:\/\/)?(.*@.*)$/\2/) {
@@ -116,16 +138,14 @@ foreach $line (split /\n/, $string) {
     } else {
       $depute{'sites_web'}{$site} = 1;
     }
-  } elsif ($line =~ /li class="contact-adresse">\s*([^\/]*)\s*<\/li>/i) {
-    $depute{'adresses'}{trim($1)} = 1;
-  } elsif ($line =~ /"hemicycle-picture".*place occupée[\s:]+(\d+)[\s"]/i) {
+  } elsif ($line =~ /id="hemicycle-container" data-place="(\d+)">/i) {
     $depute{'place_hemicycle'} = $1;
   } elsif ($line =~ /\(Date de début de mandat[\s:]+([\d\/]+)( \((.*)\)\))?/i) {
     add_mandat($1,"",$3);
-  } elsif ($line =~ /Mandat du ([\d\/]+)( \(.*\))? au ([\d\/]+)( \((.*)\))?/i) {
+  } elsif ($line =~ /Mandat du ([\d\/]+)([ <!\-]+\(.*\))?[ >!\-]+au ([\d\/]+)( \((.*)\))?/i) {
     add_mandat($1,$3,$5);
-  } elsif ($line =~ /(Reprise de l'exercice.*député.*) le[ :]+([\d\/]+)/) {
-    add_mandat($2, "", $1);
+#  } elsif ($line =~ /(Reprise de l'exercice.*député.*) le[ :]+([\d\/]+)/) {
+#    add_mandat($2, "", $1);
   } elsif ($line =~ /class="article-title/) {
     clean_vars();
     $line =~ s/\s*<[^>]+>\s*/ /g;
