@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 use utf8;
+use URI;
 use WWW::Mechanize;
 use HTML::TokeParser;
 $legislature = shift || 14;
@@ -8,14 +9,24 @@ $verbose = shift || 0;
 sub download_fiche {
 	$uri = $file = shift;
 	$uri =~ s/^\//http:\/\/www.assemblee-nationale.fr\//;
-	$file =~ s/^.*\/([^\/]+)/$1/;
-	print "$file : $uri\n" if ($verbose);
+	print "$uri" if ($verbose);
+    $a->max_redirect(0);
 	$a->get($uri);
+    $status = $a->status();
+    if (($status >= 300) && ($status < 400)) {
+      $location = $a->response()->header('Location');
+      if (defined $location) {
+        print "...redirected to $location..." if ($verbose);
+        $a->get(URI->new_abs($location, $a->base()));
+      }
+      $file = $location;
+    }
+	$file =~ s/^.*\/([^\/]+)/$1/;
 	mkdir html unless -e "html/" ;
 	open FILE, ">:utf8", "html/$file" || warn("cannot write on html/$file");
 	print FILE $a->content;
 	close FILE;
-	print "html/$file written\n" if ($verbose);
+	print "\nhtml/$file written\n" if ($verbose);
 	return $file;
 }
 $a = WWW::Mechanize->new();
