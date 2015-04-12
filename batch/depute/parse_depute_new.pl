@@ -240,7 +240,6 @@ foreach $line (split /\n/, $string) {
     } elsif ($encours =~ /groupes/) {
       $type = "Groupe d'amitié ";
       $type = "Groupe d'études " if ($type_groupe =~ /étude/i);
-      $type = "Groupe d'études France-" if ($type_groupe =~ /international/i);
       $line =~ s/\(République du\)/(République démocratique du)/i;
       if (!$groupes{$line}) {
         $groupes{$line} = 1;
