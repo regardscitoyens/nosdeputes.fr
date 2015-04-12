@@ -21,7 +21,7 @@ $string =~ s/^.*(<h1 class="deputy-headline-title)/\1/i;
 $string =~ s/<div id="actualite".*<\/div>(<div id="fonctions")/\1/i;
 $string =~ s/<div id="travaux".*$//i;
 while ($string =~ s/(<li class="contact-adresse">([^<]*)?)(<\/?p>)+(.*<\/li>(<li class="contact-adresse">|<\/ul>))/\1 \4/gi) {}
-$string =~ s/(<(div|p|li|abbr|img|dt|dd|h\d)[ >])/\n\1/ig;
+$string =~ s/(<(div|p|ul|\/li|abbr|img|dt|dd|h\d)[ >])/\n\1/ig;
 $string =~ s/<\/?sup>//ig;
 $string =~ s/<svg[^>]*>.*?<\/svg>//ig;
 $string =~ s/\s*'\s*/'/g;
@@ -67,7 +67,9 @@ if ($file =~ /(\d+)/) {
 
 $read = "";
 $address = "";
+$done = 0;
 foreach $line (split /\n/, $string) {
+ #print STDERR "$line\n";
   $line =~ s/<\/?sup>//g;
   if ($line =~ /<h1>(.+)<\/h1>/i) {
     $depute{'nom'} = $1;
@@ -80,7 +82,7 @@ foreach $line (split /\n/, $string) {
     }
   } elsif (!$depute{'circonscription'} && $line =~ /"deputy-head?line-sub-title">([^<]*) \((\d+[èrme]+) circonscription/i) {
     $depute{'circonscription'} = "$1 ($2)";
-  } elsif ($line =~ /Née? le ([0-9]+e?r? \S+ [0-9]+)( [àaux]+ (.*))?</i) {
+  } elsif ($line =~ /Née? le ([0-9]+e?r? \S+ [0-9]+)( [àaux]+ (.*))?/i) {
     $depute{'date_naissance'} = join '/', reverse datize($1);
     $lieu = $3;
     $lieu =~ s/\s*\(\)\s*//g;
@@ -117,7 +119,7 @@ foreach $line (split /\n/, $string) {
         $depute{"$read"} =~ s/Mlle /Mme /;
         $depute{"$read"} =~ s/([A-ZÀÉÈÊËÎÏÔÙÛÜÇ])(\w+ ?)/\1\L\2/g;
       }
-      $read = "" if ($line !~ /^$/ || $read =~ /profession/);
+      $read = "" if ($line !~ /^$/);
     }
   } elsif ($line =~ /composition du groupe"[^>]*>([^<]+)</i) {
     $groupe = lc($1);
@@ -146,35 +148,39 @@ foreach $line (split /\n/, $string) {
     add_mandat($1,$3,$5);
 #  } elsif ($line =~ /(Reprise de l'exercice.*député.*) le[ :]+([\d\/]+)/) {
 #    add_mandat($2, "", $1);
-  } elsif ($line =~ /class="article-title/) {
+  } elsif ($line =~ /Anciens mandats et fonctions à l'Assemblée nationale/) {
+     $done = 1;
+     $encours = "";
+  } elsif ($line =~ /^<h4 class/ && !$done) {
     clean_vars();
     $line =~ s/\s*<[^>]+>\s*/ /g;
     $line =~ s/[  \s]+/ /g;
     $line = trim($line);
     if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?)/) {
       $encours = "fonctions";
-      if ($line =~ /Missions temporaires/) {
+      if ($line =~ /Missions? temporaires/) {
         $mission = 1;
       }
     } elsif ($line =~ /(Organismes? extra-parlementaires?|Fonctions? dans les instances internationales ou judiciaires)/) {
       $encours = "extras";
-    } elsif ($line =~ /(Mandats? loca[lux]+ en cours|Mandats? intercommuna)/i) {
+    } elsif ($line =~ /Mandats? (loca[lux]+ en cours|intercommuna)/i) {
       $encours = "autresmandats";
-    } elsif ($line =~ /^Anciens mandats/i && $line !~ /Assemblée nationale/i) {
-      $encours = "anciensmandats";
-    } elsif ($line =~ /(Groupes? d'études?|Groupes? d'amitié)/i) {
+    } elsif ($line =~ /Groupes? d'(études?|amitié)/i) {
       $encours = "groupes";
       $type_groupe = $line;
     }
-  } elsif ($line =~ /<div id="/i) {
-    clean_vars();
-  } elsif ($encours !~ /^$/) {
+  } elsif ($encours !~ /^$/ && $line !~ /^<h[23]/i) {
+    #print STDERR "TEST $encours: $line\n";
+    $oline = $line;
     $line =~ s/\s*<[^>]+>\s*/ /g;
     $line =~ s/([^à])[  \s]+/\1 /g;
     $line = trim($line);
     next if ($line =~ /^$/);
-#    print "TEST $line\n";
-    if ($encours =~ /anciensmandats/) {
+    if ($oline =~ /<span class="dt">/i) {
+      #next if ($line =~ /Rapporteure? spécial/i);
+      $fonction = lc $line;
+      next;
+    } elsif ($encours =~ /anciensmandats/) {
       if ($line =~ /du (\d+\/\d+\/\d+) au (\d+\/\d+\/\d+) \((.*)\)/i) {
         $dates = "$1 / $2";
         $fonction = $3;
@@ -201,9 +207,9 @@ foreach $line (split /\n/, $string) {
         }
       }
     } elsif ($encours =~ /autresmandats/) {
-      if ($line =~ /^\s*(.*) (de la )?c(ommunauté d[elau'\s]+\S+) (d[elsau'\s]+)?(\U.*)$/i) {
+      if ($line =~ /^\s*(.*?) (de la )?c(ommunauté (urbaine|d[elau'\s]+\S+)) (d[elsau'\s]+?)?(\U.*)$/i) {
         $organisme = "C$3";
-        $lieu = $5;
+        $lieu = $6;
         $fonction = $1;
       } else {
         $lieu = "";
@@ -222,34 +228,31 @@ foreach $line (split /\n/, $string) {
         $depute{$encours}{trim($lieu)." / ".trim($organisme)." / ".trim($fonction)} = 1;
         $orgas{trim($lieu)." / ".trim($organisme)} = 1;
       }
-    } elsif ($encours =~ /groupes/ && $line =~ s/^\s*(.*) : - //) {
-      $fonction = $1;
-      $type = "Groupe d'amitié France-";
+    } elsif ($encours =~ /groupes/) {
+      $type = "Groupe d'amitié ";
       $type = "Groupe d'études " if ($type_groupe =~ /étude/i);
       $type = "Groupe d'études France-" if ($type_groupe =~ /international/i);
-      foreach $gpe (split / - /, $line) {
-        $gpe =~ s/\(République du\)/(République démocratique du)/i;
-        if (!$groupes{$gpe}) {
-          $groupes{$gpe} = 1;
-          if (!$orgas{$type.trim($gpe)}) {
-            $depute{$encours}{$type.trim($gpe)." / ".lc(trim($fonction))} = 1;
-            $orgas{$type.trim($gpe)} = 1;
-          }
+      $line =~ s/\(République du\)/(République démocratique du)/i;
+      if (!$groupes{$line}) {
+        $groupes{$line} = 1;
+        if (!$orgas{$type.trim($line)}) {
+          $depute{$encours}{$type.trim($line)." / ".lc(trim($fonction))} = 1;
+          $orgas{$type.trim($line)} = 1;
         }
       }
     } else {
-      next if ($line =~ /Rapporteure? spécial/i);
       if ($mission && $line =~ /^(.*)\((.*) - mi(ssion|nistère).*\)/i) {
         $organisme = trim($1);
         $minist = $2;
         $minist =~ s/m(inistère d[^,]*),.*$/M\1/i;
         $organisme = "Mission temporaire pour le $minist : $organisme";
         $fonction = "chargé".($depute{'sexe'} eq "F" ? "e" : "")." de mission";
+      } elsif ($line =~ s/ de l'Assemblée nationale depuis le : \d.*$//) {
+        $organisme = "Bureau de l'Assemblée nationale";
+        $fonction = lc $line;
       } else {
-        next if ($line =~ /^Membre$/);
         $line =~ s/Comuté/Comité/ig;
         $line =~ s/dispostions/dispositions/ig;
-        $line =~ s/(Membre titulaire) membre/\1/i;
         $line =~ s/par le Président de l'Assemblée nationale //;
         $line =~ s/ (\(ex|depuis le) .*$//;
         $line =~ s/ \(art.*$//i;
@@ -259,9 +262,7 @@ foreach $line (split /\n/, $string) {
         $line =~ s/^\s*(\S+) Comité/\1 du Comité/i;
         $line =~ s/^\s*(\S+) (c?o?m?mission)/\1 de la \2/i;
         $line =~ s/ à la délégation/ de la délégation/i;
-        $fonction = lc($1) if ($line =~ s/^\s*((\S+\s*){1,3}(du [bB]ureau)?(\([^\)]+\))?) d((u|e la) |e l')(.*)$/\7/);
         $organisme = ucfirst($line);
-        $organisme =~ s/^(Assemblée nationale)/Bureau de l'\1/i;
         $organisme =~ s/("|\(\s*|\s*\))//g;
       }
       if (!$orgas{trim($organisme)}) {
@@ -271,15 +272,6 @@ foreach $line (split /\n/, $string) {
     }
   }
 }
-
-
-#TODO :
-# - change id_an et url_an dans update:Deputes
-# - fix changements nom_famille
-# - multiples sites_web, facebook? tiwtter?
-# - find suppléant si existe
-# - add gestion mission tempo
-# - gérer stockage anciens mandats, premiers_mandats, groupes...
 
 #On récupère le nom de famille à partir des emails
 $nomdep = $depute{'nom'};
