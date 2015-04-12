@@ -74,6 +74,7 @@ foreach $line (split /\n/, $string) {
   if ($line =~ /<h1>(.+)<\/h1>/i) {
     $depute{'nom'} = $1;
     $depute{'nom'} =~ s/,.*$//;
+    $depute{'nom'} =~ s/[\- ]*Président.*$//;
     $depute{'nom'} =~ s/^(M[.mle]+) //;
     if ($1 =~ /e/) {
       $depute{'sexe'} = "F";
