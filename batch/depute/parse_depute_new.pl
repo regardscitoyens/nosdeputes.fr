@@ -81,8 +81,8 @@ foreach $line (split /\n/, $string) {
     } else {
       $depute{'sexe'} = "H";
     }
-  } elsif (!$depute{'circonscription'} && $line =~ /"deputy-head?line-sub-title">([^<]*) \((\d+[èrme]+) circonscription/i) {
-    $depute{'circonscription'} = "$1 ($2)";
+  } elsif (!$depute{'circonscription'} && $line =~ /(<ul> <li>|"deputy-head?line-sub-title">)([^<]*) \((\d+[èrme]+) circonscription/i) {
+    $depute{'circonscription'} = "$2 ($3)";
   } elsif ($line =~ /Née? le ([0-9]+e?r? \S+ [0-9]+)( [àaux]+ (.*))?/i) {
     $depute{'date_naissance'} = join '/', reverse datize($1);
     $lieu = $3;
@@ -101,7 +101,9 @@ foreach $line (split /\n/, $string) {
     $address .= " ".trim($line);
     $depute{'adresses'}{$address} = 1;
   } elsif ($read !~ /^$/) {
-    if ($read =~ /adresse/) {
+    if ($line !~ /<dt>/i) {
+      $read = "";
+    } elsif ($read =~ /adresse/) {
       if ($line =~ /<dd/i) {
         $address .= $line;
         $address =~ s/<[^>]+>//g;
@@ -124,6 +126,10 @@ foreach $line (split /\n/, $string) {
     }
   } elsif ($line =~ /composition du groupe"[^>]*>([^<]+)</i) {
     $groupe = lc($1);
+    $groupe =~ s/É/é/g;
+    $groupe =~ s/^union pour la démocratie française$/union des démocrates et indépendants/;
+    $groupe =~ s/^rassemblement pour la république$/union pour un mouvement populaire/;
+    $groupe =~ s/^socialiste$/socialiste, républicain et citoyen/;
     if ($line =~ /(apparentée?|présidente?)( du groupe)? /i) {
       $gpe = $groupe." / ".(lc $1);
     } else {
