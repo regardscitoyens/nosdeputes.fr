@@ -151,6 +151,8 @@ foreach $line (split /\n/, $string) {
   } elsif ($line =~ /Anciens mandats et fonctions à l'Assemblée nationale/) {
      $done = 1;
      $encours = "";
+  } elsif ($line =~ /<!--fin.*tab.*-->/) {
+     $encours = "";
   } elsif ($line =~ /^<h4 class/ && !$done) {
     clean_vars();
     $line =~ s/\s*<[^>]+>\s*/ /g;
