@@ -39,6 +39,7 @@ my %mission;
 sub clean_vars {
   $encours = $lieu = $organisme = $fonction = "";
   $mission = 0;
+  $missioninfo = 0;
 }
 
 my %premiers_mandats;
@@ -169,6 +170,8 @@ foreach $line (split /\n/, $string) {
       $encours = "fonctions";
       if ($line =~ /Missions? temporaires?/) {
         $mission = 1;
+      } elsif ($line =~ /information/) {
+        $missioninfo = 1;
       }
     } elsif ($line =~ /(Organismes? extra-parlementaires?|Fonctions? dans les instances internationales ou judiciaires)/) {
       $encours = "extras";
@@ -186,7 +189,11 @@ foreach $line (split /\n/, $string) {
     $line = trim($line);
     next if ($line =~ /^$/);
     if ($oline =~ /<span class="dt">/i) {
-      #next if ($line =~ /Rapporteure? spécial/i);
+      $line =~ s/^\(((Président|Rapporteur)(e)?( (général|spécial))?).*\)$/\1\3/;
+      $line =~ s/Rapporteur(e)? sur .*$/rapporteur\1 thématique/i;
+      $line =~ s/\([^)]*\)//i;
+      $line =~ s/délégue/délégué/i;
+      $line =~ s/ par le Président de l'Assemblée nationale\s*//i;
       $fonction = lc $line;
       next;
     } elsif ($encours =~ /anciensmandats/) {
@@ -250,30 +257,21 @@ foreach $line (split /\n/, $string) {
         }
       }
     } else {
-      if ($mission && $line =~ /^(.*?) ((Ministère d|Secrétariat).*)/) {
-        $organisme = trim($1);
+      if ($mission && $line =~ /^\s*(.*?)[ (]+((Premier ministre|Ministère|Secrétariat).*)[ )]*$/) {
+        $organisme = $1;
         $minist = $2;
-        $minist =~ s/ - (Minist|Secr).*$//;
+        $minist =~ s/ - (Premier min|Minist|Secr).*$//;
         $organisme = "Mission temporaire pour le $minist : $organisme";
         $fonction = "chargé".($depute{'sexe'} eq "F" ? "e" : "")." de mission";
       } elsif ($line =~ s/ de l'Assemblée nationale depuis le : \d.*$//) {
         $organisme = "Bureau de l'Assemblée nationale";
         $fonction = lc $line;
       } else {
-        $fonction =~ s/délégue/délégué/i;
-        $line =~ s/Comuté/Comité/ig;
-        $line =~ s/dispostions/dispositions/ig;
-        $line =~ s/par le Président de l'Assemblée nationale //;
-        $line =~ s/ (\(ex|depuis le) .*$//;
-        $line =~ s/ \(art.*$//i;
-        $line =~ s/Ccommission/Commission/i;
-        $line =~ s/^\((.*) de la commission de(s finances| la défense)\)/\1/i;
-        $line =~ s/\((commission des finances)\)$/de la \1/i;
-        $line =~ s/^\s*(\S+) Comité/\1 du Comité/i;
-        $line =~ s/^\s*(\S+) (c?o?m?mission)/\1 de la \2/i;
-        $line =~ s/ à la délégation/ de la délégation/i;
         $organisme = ucfirst($line);
         $organisme =~ s/("|\(\s*|\s*\))//g;
+        if ($missioninfo && $organisme !~ /^Mission/) {
+          $organisme = "Mission d'information $organisme";
+        }
       }
       if (!$orgas{trim($organisme)}) {
         $depute{$encours}{trim($organisme)." / ".trim($fonction)} = 1;
