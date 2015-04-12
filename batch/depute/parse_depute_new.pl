@@ -101,9 +101,7 @@ foreach $line (split /\n/, $string) {
     $address .= " ".trim($line);
     $depute{'adresses'}{$address} = 1;
   } elsif ($read !~ /^$/) {
-    if ($line !~ /<dt>/i) {
-      $read = "";
-    } elsif ($read =~ /adresse/) {
+    if ($read =~ /adresse/) {
       if ($line =~ /<dd/i) {
         $address .= $line;
         $address =~ s/<[^>]+>//g;
@@ -113,6 +111,8 @@ foreach $line (split /\n/, $string) {
           $read = "";
         }
       }
+    } elsif ($line =~ /<dt>/i) {
+      $read = "";
     } else {
       $line =~ s/<[^>]+>//g;
       $line = trim($line);
@@ -141,7 +141,7 @@ foreach $line (split /\n/, $string) {
     $depute{'mails'}{$1} = 1;
   } elsif ($line =~ /<a [^>]*class="url"[^>]*href=['"]([^"']+)['"]/i) {
     $site = $1;
-    $site =~ s#^(http://)*#http://#i;
+    $site =~ s#^(http://| )*#http://#i;
     if ($site =~ s/(http:\/\/)?(.*@.*)$/\2/) {
       $depute{'mails'}{$site} = 1;
     } else {
@@ -167,7 +167,7 @@ foreach $line (split /\n/, $string) {
     $line = trim($line);
     if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?)/) {
       $encours = "fonctions";
-      if ($line =~ /Missions? temporaires/) {
+      if ($line =~ /Missions? temporaires?/) {
         $mission = 1;
       }
     } elsif ($line =~ /(Organismes? extra-parlementaires?|Fonctions? dans les instances internationales ou judiciaires)/) {
@@ -216,8 +216,8 @@ foreach $line (split /\n/, $string) {
         }
       }
     } elsif ($encours =~ /autresmandats/) {
-      if ($line =~ /^\s*(.*?) (de la )?c(ommunauté (urbaine|d[elau'\s]+\S+)) (d[elsau'\s]+?)?(\U.*)$/i) {
-        $organisme = "C$3";
+      if ($line =~ /^\s*(.*?) (de la )?c(ommunauté (urbaine|d[elaus'\s]+\S+)) (d[elsau'\s]+?)?(\U.*)$/i) {
+        $organisme = "C".(lc $3);
         $lieu = $6;
         $fonction = $1;
       } else {
@@ -250,16 +250,17 @@ foreach $line (split /\n/, $string) {
         }
       }
     } else {
-      if ($mission && $line =~ /^(.*)\((.*) - mi(ssion|nistère).*\)/i) {
+      if ($mission && $line =~ /^(.*?) ((Ministère d|Secrétariat).*)/) {
         $organisme = trim($1);
         $minist = $2;
-        $minist =~ s/m(inistère d[^,]*),.*$/M\1/i;
+        $minist =~ s/ - (Minist|Secr).*$//;
         $organisme = "Mission temporaire pour le $minist : $organisme";
         $fonction = "chargé".($depute{'sexe'} eq "F" ? "e" : "")." de mission";
       } elsif ($line =~ s/ de l'Assemblée nationale depuis le : \d.*$//) {
         $organisme = "Bureau de l'Assemblée nationale";
         $fonction = lc $line;
       } else {
+        $fonction =~ s/délégue/délégué/i;
         $line =~ s/Comuté/Comité/ig;
         $line =~ s/dispostions/dispositions/ig;
         $line =~ s/par le Président de l'Assemblée nationale //;
