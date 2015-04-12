@@ -12,10 +12,10 @@ if [ ! -d html ] ; then mkdir html; fi
 
 for d in html/* ; 
 do
-    ID=$(echo $d | sed 's/html\///' | sed 's/.asp//')
+    ID=$(echo $d | sed 's/html\///')
     if test -n "$1"; then
 	    echo $ID;
     fi
 #    perl parse_depute.pl html/$ID.asp > out/$ID.xml
-    perl parse_depute_new.pl html/$ID.asp > out/$ID.xml
+    perl parse_depute_new.pl html/$ID > out/$ID.xml
 done
