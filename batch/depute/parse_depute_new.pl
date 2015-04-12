@@ -238,6 +238,7 @@ foreach $line (split /\n/, $string) {
         $orgas{trim($lieu)." / ".trim($organisme)} = 1;
       }
     } elsif ($encours =~ /groupes/) {
+      $line =~ s/Groupe d'études //;
       $type = "Groupe d'amitié ";
       $type = "Groupe d'études " if ($type_groupe =~ /étude/i);
       $line =~ s/\(République du\)/(République démocratique du)/i;
