@@ -17,6 +17,7 @@ close FILE;
 $string =~ s/\r//g;
 $string =~ s/\&nbsp;?/ /ig;
 $string =~ s/Univerist/Universit/g;
+$string =~ s/aglommération/agglomération/g;
 $string =~ s/[\n\s]+/ /g;
 $string =~ s/^.*(<h1 class="deputy-headline-title)/\1/i;
 $string =~ s/<div id="actualite".*<\/div>(<div id="fonctions")/\1/i;
@@ -224,10 +225,12 @@ foreach $line (split /\n/, $string) {
         }
       }
     } elsif ($encours =~ /autresmandats/) {
-      if ($line =~ /^\s*(.*?) (de la )?c(ommunauté (urbaine|d[elaus'\s]+\S+)) (d[elsau'\s]+?)?(\U.*)$/i) {
+      if ($line =~ /^\s*(.*?) (de la )?c(ommunauté (urbaine|d[elaus'\s]+\S+)) (d[elsau\s]*?['\s])?(\U.*)$/i) {
+        $fonction = lc $1;
         $organisme = "C".(lc $3);
         $lieu = $6;
-        $fonction = $1;
+        $organisme =~ s/[cC](ommunauté d)(e (communes? de )?l)?'[aA](gglomération)s?/C\1'a\4/;
+        $organisme =~ s/(Communauté de commune)$/\1s/;
       } else {
         $lieu = "";
         $line =~ s/(Con(seil|grès)|Gouvernement)/\L\1/;
@@ -236,18 +239,20 @@ foreach $line (split /\n/, $string) {
         } elsif ($line =~ s/^(.*)\(([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)\)$/\1/) {
           $lieu = $2;
         }
+        $lieu =~ s/(Paris|Lyon|Marseille) \(?(\d+[erèm]+ (Arrondissement|secteur))\)?.*$/\1 \2/i;
         $line =~ s/\s+$//;
         $organisme = ucfirst($4) if ($line =~ s/^(.*) d((u|e la) |e l')(.*)$/\1/);
-        $fonction = $line;
+        $fonction = lc $line;
         $fonction =~ s/ du$//;
-        if ($fonction =~ /Maire/i || $fonction =~ s/^(Conseillere? )municipal (déléguée?)/\1\2/) {
+        if ($fonction =~ /maire/i || $fonction =~ s/^(conseillere? )municipal (déléguée?)/\1\2/) {
           $organisme = "Conseil municipal";
         }
       }
       $lieu =~ s/, (.*)$/ (\1)/;
-      if (!$orgas{trim($lieu)." / ".trim($organisme)}) {
-        $depute{$encours}{trim($lieu)." / ".trim($organisme)." / ".trim($fonction)} = 1;
-        $orgas{trim($lieu)." / ".trim($organisme)} = 1;
+      $hashstr = trim(ucfirst($lieu))." / ".trim($organisme);
+      if (!$orgas{$hashstr}) {
+        $depute{$encours}{$hashstr." / ".trim($fonction)} = 1;
+        $orgas{$hashstr} = 1;
       }
     } elsif ($encours =~ /groupes/) {
       $line =~ s/Groupe d'études //;
