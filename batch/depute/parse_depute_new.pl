@@ -16,6 +16,7 @@ $string = "@string";
 close FILE;
 $string =~ s/\r//g;
 $string =~ s/\&nbsp;?/ /ig;
+$string =~ s/Univerist/Universit/g;
 $string =~ s/[\n\s]+/ /g;
 $string =~ s/^.*(<h1 class="deputy-headline-title)/\1/i;
 $string =~ s/<div id="actualite".*<\/div>(<div id="fonctions")/\1/i;
@@ -229,7 +230,8 @@ foreach $line (split /\n/, $string) {
         $fonction = $1;
       } else {
         $lieu = "";
-        if ($line =~ s/^(.*) d([ue](s| la)? |'|e l')([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)$/\1/) {
+        $line =~ s/(Con(seil|grès)|Gouvernement)/\L\1/;
+        if ($line =~ s/^([^(]*?) d([ue](s| la)? |'|e l')([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)$/\1/) {
           $lieu = $4;
         } elsif ($line =~ s/^(.*)\(([A-ZÀÉÈÊËÎÏÔÙÛÇ].*)\)$/\1/) {
           $lieu = $2;
@@ -237,7 +239,10 @@ foreach $line (split /\n/, $string) {
         $line =~ s/\s+$//;
         $organisme = ucfirst($4) if ($line =~ s/^(.*) d((u|e la) |e l')(.*)$/\1/);
         $fonction = $line;
-        $organisme = "Conseil municipal" if ($fonction =~ /Maire/i);
+        $fonction =~ s/ du$//;
+        if ($fonction =~ /Maire/i || $fonction =~ s/^(Conseillere? )municipal (déléguée?)/\1\2/) {
+          $organisme = "Conseil municipal";
+        }
       }
       $lieu =~ s/, (.*)$/ (\1)/;
       if (!$orgas{trim($lieu)." / ".trim($organisme)}) {
