@@ -9,7 +9,7 @@ cd $PATH_APP
 
 #echo Amendements
 #echo =======================
-cd batch/amendements ; bash compute_latest_loi.sh $LEGISLATURE $loi ; cd ../..
+cd batch/amendements ; bash compute_latest_loi.sh $loi ; cd ../..
 
 # Chargement via tasks
 
@@ -28,5 +28,5 @@ done;
 #rm -r cache/frontend/prod/template/*/all/amendement/find/loi/${loi}/numero/*
 #rm cache/frontend/prod/template/*/all/amendement/show/loi/${loi}/numero/*
 
-bash bin/dump_amendements_loi $loi
+#bash bin/dump_amendements_loi $loi
 bash bin/make_liasse $loi > /dev/null 2>&1

@@ -3,15 +3,27 @@
 . $(echo $0 | sed 's/[^\/]*$//')db.inc
 cd $PATH_APP
 
+loi=$1
+sort=$2
+
 cd batch/amendements/
-python getAmdmtsOrder.py $LEGISLATURE $1
+bash get_ids_loi.sh "$loi" > /tmp/idsloi-$loi.tmp
+
+if [ `cat /tmp/idsloi-$loi.tmp | wc -l` -ne 1 ] ; then
+  echo "This law id $loi does not look like an hemicycle step"
+  cat /tmp/idsloi-$loi.tmp
+  exit 1
+fi
+id_dossier=$(cat /tmp/idsloi-$loi.tmp | awk -F ";" '{print $1}')
+id_examen=$(cat /tmp/idsloi-$loi.tmp | awk -F ";" '{print $2}')
+python getAmdmtsOrder.py $id_dossier $id_examen
 cd -
-php symfony make:Liasse $1 $2 > tmp_liasse
-iconv -c -f UTF-8 -t LATIN1 tmp_liasse > "Loi ${1} - Liasse des amendements dans l'ordre du texte"
+php symfony make:Liasse $loi $sort > tmp_liasse
+iconv -c -f UTF-8 -t LATIN1 tmp_liasse > "Loi $loi - Liasse des amendements dans l'ordre du texte"
 rm -f tmp_liasse
-a2ps --encoding=iso-8859-1 -o liasse_$1$2.ps "Loi ${1} - Liasse des amendements dans l'ordre du texte" 
-rm -f "Loi ${1} - Liasse des amendements dans l'ordre du texte"
-ps2pdf liasse_$1$2.ps
-rm -f liasse_$1$2.ps
-mv liasse_$1$2.pdf web/liasses/
+a2ps --encoding=iso-8859-1 -o liasse_$loi$sort.ps "Loi $loi - Liasse des amendements dans l'ordre du texte" 
+rm -f "Loi $loi - Liasse des amendements dans l'ordre du texte"
+ps2pdf liasse_$loi$sort.ps
+rm -f liasse_$loi$sort.ps
+mv liasse_$loi$sort.pdf web/liasses/
 

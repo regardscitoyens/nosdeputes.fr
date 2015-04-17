@@ -1,16 +1,28 @@
 #!/bin/bash
 
-legislature=$1
-loi=$2
+loi=$1
 
-if test -z "$2"; then
+if test -z "$loi"; then
   echo "Please input a proper loi"
   exit 1
 fi
 
 rm -rf "html-$loi"
 
-bash download_amendements_loi.sh "$loi" > /tmp/download_amendements.log
+mkdir -p "html-$loi"
+
+echo > /tmp/download_amendements.log
+bash get_ids_loi.sh "$loi" | while read line; do
+  id_dossier=$(echo $line | awk -F ";" '{print $1}')
+  id_examen=$(echo $line | awk -F ";" '{print $2}')
+  curl -sL "http://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&idExamen=$id_examen&idDossierLegislatif=$id_dossier&rows=100000&tri=ordreTexteasc&typeRes=liste" |
+    python -m json.tool |
+    grep -P "http://\S+/amendements/" |
+    awk -F "|" '{print $7}' |
+    while read url; do
+      perl download_one.pl "$url" "html-$loi" >> /tmp/download_amendements.log
+    done
+done
 
 for file in `ls html-$loi`; do 
 	fileout=$(echo $file | sed 's|html-[^/]*|json|' | sed 's/\.asp/\.xml/')
