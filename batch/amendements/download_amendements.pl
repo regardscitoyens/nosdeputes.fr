@@ -53,6 +53,7 @@ $string = "@string";
 close FILE;
 
 foreach $line (split /\n/, $string) {
+    $line =~ s/(\/\d+\/)(\d+.asp)$/\1AN\/\2/;
     $htmfile = $line;
     $htmfile =~ s/^\s+//gi;
     next if ($htmfile =~ /source/);
