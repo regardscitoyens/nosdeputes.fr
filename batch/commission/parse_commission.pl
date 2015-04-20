@@ -171,6 +171,7 @@ sub setIntervenant {
     #print "TEST $intervenant\n";
     $intervenant =~ s/president/président/gi;
     $intervenant =~ s/ présidence / présidente /;
+    $intervenant =~ s/Erika Bareigts/Ericka Bareigts/g;
     $intervenant =~ s/\s*\&\#821[12]\;\s*//;
     $intervenant =~ s/^audition de //i;
     $intervenant =~ s/^(M(\.|me))(\S)/$1 $3/;
@@ -385,7 +386,7 @@ foreach $line (split /\n/, $string)
     $tmpinter = "";
     #print STDERR $line."\n";
 	#si italique ou tout gras => commentaire
-	if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) && $line !~ /^\|Article\s*\d+/i) {
+	if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) && $line !~ /^\|Articles?\s*\d+/i) {
 	    if (!$timestamp && !$commission && $line =~ /^\|(.*(groupe|mission|délégation|office|comité).*)\|\s*$/i) {
 		$commission = $1;
 		next;
@@ -408,7 +409,7 @@ foreach $line (split /\n/, $string)
         }
         $intervenant = setIntervenant($interv1.$extrainterv);
         $found = $majIntervenant = 1;
-	}elsif ($line !~ /^\|Article\s*\d+/i && $line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|.// ) {
+	}elsif ($line !~ /^\|Articles?\s*\d+/i && $line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|.// ) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
