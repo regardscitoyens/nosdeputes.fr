@@ -166,6 +166,7 @@ sub checkout {
     if ($titre2) {
         $contexte .= ' > '.$titre2;
     }
+    $contexte =~ s/"/\\"/g;
     $out =  '{"contexte": "'.$contexte.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
     if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|bienvenue|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement/i) {
         $out .= "\"numeros_loi\": \"$ploi\", ";
