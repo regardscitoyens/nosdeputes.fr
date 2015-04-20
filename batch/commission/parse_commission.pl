@@ -191,16 +191,16 @@ sub setIntervenant {
     $intervenant =~ s/\&\#8217\;/'/g;
     $intervenant =~ s/^(l[ea] )?d..?put..?e?\s+//i;
     $intervenant =~ s/^(l[ea] )?(s..?nat(eur|rice))\s+(.*)$/\4, \2/i;
-    $intervenant =~ s/^l[ea] ([Mm]inistre) ([A-ZÉÈÀÔÙÎÏÇ].*)$/\2, \1/;
+    $intervenant =~ s/^l[ea] ([Mm]inistre) ([A-ZÉÈÊÀÂÔÙÛÎÏÇ].*)$/\2, \1/;
     if ($intervenant =~ s/\, (.*)//) {
 	setFonction($1, $intervenant);
     }
-    if ($intervenant =~ s/ ?(l[ea] )?(((président|rapporteur)[es,\st]*)+)$//i) {
-        return setFonction($2, $intervenant);
+    if ($intervenant =~ s/^([A-ZÉÈÊÀÂÔÙÛÎÏÇ].+) ?([Ll][ea] )?((([Pp]résident|[Rr]apporteur)[es,\st]*)+)$/\1/) {
+        return setFonction($3, $intervenant);
     }
     if ($intervenant =~ /^[a-z]/) {
 	$intervenant =~ s/^l[ea]\s+//i;
-	if ($intervenant =~ /((([pP]résident|[rR]apporteur[a-zé\s]+)[\sest,]*)+)([A-Z].*)/) {
+	if ($intervenant =~ /((([pP]résident|[rR]apporteur[a-zé\s]+)[\sest,]*)+)([A-ZÉÈÊÀÂÔÙÛÎÏÇ].*)/) {
         $tmpint = $4;
         $tmpfct = $1;
         if ($tmpint =~ /commission/i || $tmpfct =~ /commission d['esla\s]+$/i) {
