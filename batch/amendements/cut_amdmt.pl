@@ -138,7 +138,7 @@ sub texte {
 sub sortseance {
     if ($line =~ /irrecevable/i) {
 	$amdmt{'sort'} = 'Irrecevable';
-    } elsif ($line =~ /retir.+(s.+ance|publication)/i) {
+    } elsif ($line =~ /retir.+(s.+ance|discussion|publication)/i) {
 	$amdmt{'sort'} = 'Retiré avant séance';
     } elsif ($line =~ /retiré/i) {
 	$amdmt{'sort'} = 'Retiré';
@@ -217,7 +217,7 @@ $string =~ s/<\/span><span>//ig;
 
 foreach $line (split /\n/, $string)
 {
-#print "TEST: $identiques / $presente / $texte / $line\n";
+#print STDERR "TEST: $identiques / $presente / $texte / $line\n";
   if ($line =~ /meta.*content=/) {
 	if ($line =~ /name="DATE_BADAGE"/i) {
 	    $line =~ s/^.*content="//i;
@@ -319,7 +319,7 @@ foreach $line (split /\n/, $string)
         if ($amdmt{'texte'} || !$line =~ /article/i) {
             $texte = 2;
         }
-  } elsif ((!$amdt{'sort'} || $amdt{'sort'} == "") && ($line =~ /\<div.*id="sort"/i || $line =~ /retir.+ avant (publication|s.+ance)/i)) {
+  } elsif ((!$amdt{'sort'} || $amdt{'sort'} == "") && ($line =~ /\<div.*id="sort"/i || $line =~ /retir.+ avant (publication|discussion|s.+ance)/i)) {
 	sortseance();
   } elsif ($identiques == 1 && $line =~ /<p[^>]*style="[">]*text-align:.*>.*M[\.Mml]/i) {
 	identiques();
