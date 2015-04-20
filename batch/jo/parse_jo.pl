@@ -46,6 +46,7 @@ $lines =~ s/\. <A href[^\n]*//ig;
 $lines =~ s/du\s*(<b>|\n)/du /g;
 $lines =~ s/\nà\s*.<i>/à /g;
 $lines =~ s/, à (<i>)?/ à /g;
+$lines =~ s/\s+/ /g;
 $lines =~ s/ : Pr/ <i>Pr/g;
 $lines =~ s/<i>/\n<i>/g;
 $lines =~ s/\.\s*\n/\n/g;
@@ -66,6 +67,7 @@ $lines =~ s/\. / /g;
 $lines =~ s/\s+(<i>)?\s*Excusés[.\s–]*/\n<i>Excusés. – /gi;
 
 foreach (split /\n/, $lines) {
+    #print STDERR $_."\n";
     if (/comité|commission|mission|délégation/i && !/Ordre du jour/ && !/(réunion|séance)/i && !/Membres/i && !/^\s*\(/) {
 	$commission = $_;
 	$commission =~ s/.*(Comité|Commission|Mission)/$1/;
