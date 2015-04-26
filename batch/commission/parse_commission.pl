@@ -131,10 +131,10 @@ foreach (split /\n/, $content) {
 		    $olddate = $date;
                     $date = join '-', @date;
 #print STDERR "date:".$date."\n";
-		    $heure = '';
 		    $session = sessionize(@date);
 		    $numeros_loi = '';
 		    $nb_seance = 1;
+		    $heure = '1ère séance';
 		    print_inter() if ($intervention && !$timestamp);
 		    $timestamp = '0' if ($olddate ne $date);
 		    next;
