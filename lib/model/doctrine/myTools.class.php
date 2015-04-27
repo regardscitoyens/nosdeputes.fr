@@ -193,7 +193,7 @@ class myTools {
 
   public static function escapeHtml($s) {
     if ($s)
-        return preg_replace('/<[^>]*>/g', '', $s);
+        return preg_replace('/<[^>]*>/', '', $s);
     return $s;
 
   }
