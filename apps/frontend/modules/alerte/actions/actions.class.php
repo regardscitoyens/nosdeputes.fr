@@ -36,16 +36,16 @@ class alerteActions extends sfActions
   }
 
 
-  public function executeCreate(sfWebRequest $request) 
+  public function executeCreate(sfWebRequest $request)
   {
     $alerte = new Alerte();
-    $alerte->query = $request->getParameter('query');
-    $alerte->filter = $request->getParameter('filter');
+    $alerte->query = myTools::escapeHtml($request->getParameter('query'));
+    $alerte->filter = myTools::escapeHtml($request->getParameter('filter'));
     $this->submit = 'Créer';
     $this->form = $this->processForm($request, $alerte);
     $this->setTemplate('form');
   }
-  public function executeDelete(sfWebRequest $request) 
+  public function executeDelete(sfWebRequest $request)
   {
     $this->forward404Unless($this->alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
     if ($request->isMethod('post')) {
@@ -58,7 +58,7 @@ class alerteActions extends sfActions
     }
   }
 
-  public function executeEdit(sfWebRequest $request) 
+  public function executeEdit(sfWebRequest $request)
   {
     $this->forward404Unless($alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
     $this->form =  $this->processForm($request, $alerte);
@@ -66,7 +66,7 @@ class alerteActions extends sfActions
     $this->setTemplate('form');
   }
 
-  public function executeConfirmation(sfWebRequest $request) 
+  public function executeConfirmation(sfWebRequest $request)
   {
     $this->forward404Unless($alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
     $alerte->confirmed = 1;
@@ -115,7 +115,7 @@ class alerteActions extends sfActions
     return $form;
   }
   private function confirmeAlerte($alerte) {
-    $message = $this->getMailer()->compose(array('nossenateurs@nossenateurs.fr' => '"Regards Citoyens"'), 
+    $message = $this->getMailer()->compose(array('nossenateurs@nossenateurs.fr' => '"Regards Citoyens"'),
 					   $alerte->email,
 					   '[NosSénateurs.fr] Confirmation d\'Alerte email - '.$alerte->titre);
     $text = $this->getPartial('mail/sendConfirmationAlerte', array('alerte' => $alerte));

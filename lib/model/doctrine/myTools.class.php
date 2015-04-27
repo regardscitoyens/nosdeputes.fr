@@ -63,7 +63,7 @@ class myTools {
     return $gpes;
   }
 
-  public static function getAllGroupesOrder() {                                                                                                                                                                   
+  public static function getAllGroupesOrder() {
     $groupesmap = array();
     $ct = 0;
     foreach (myTools::getGroupesInfos() as $gpe)
@@ -189,6 +189,10 @@ class myTools {
     $txt = preg_replace('/([«\-])\s+/', '\\1&nbsp;', $txt);
     $txt = preg_replace('/\s+([0»:;\?!\-%])/', '&nbsp;\\1', $txt);
     return $txt;
+  }
+
+  public static function escapeHtml($s) {
+    return preg_replace('<[^>]*>', '', $s);
   }
 
   public static function clearHtml($s, $authorized_tags = '<strong><i><b><a><em>') {
