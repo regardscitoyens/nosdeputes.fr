@@ -31,6 +31,7 @@ $content =~ s/<\/b>\s*(<\/h\d[^>]*>)/$1/gi;
 
 $timestamp = 0;
 $nb_seance = 1;
+$changehour = 0;
 sub print_inter {
 	if ($intervention && $intervention ne '<p></p>') {
 		if ($intervention =~ /(projets? de loi|textes?|propositions? de loi)( n[^<]+)/) {
@@ -80,6 +81,9 @@ sub print_inter {
         	print ', "numeros_loi":"'.$numeros_loi.'"' if ($numeros_loi);
 	        print ', "amendements":"'.$amendements.'"' if ($amendements);
 		print "}\n";
+        if ($intervenant) {
+            $changehour = 0;
+        }
 	}
 	$intervenant = '';
 	$fonction = '';
@@ -160,42 +164,50 @@ foreach (split /\n/, $content) {
 		$inter = $1;
 		if ($inter =~ /<u>(Au cours[^<]*)<\/u>/) {
 		    $aucours = $1;
-		    if ($aucours =~ /\Wquatri(è|&[^;]*;)me($|\W)/) {
-			if ($nb_seance >= 4) {
-				$nb_seance++;
-			}else{
-	                        $nb_seance = 4;
-			}
-                    }elsif ($aucours =~ /\W(troisi(è|&[^;]*;)me|soir(é|&[^;]*;)e)($|\W)/) {
-			if ($nb_seance >= 3) {
-				$nb_seance++;
-			}else{
-                        	$nb_seance = 3;
-			}
-                    }elsif ($aucours =~ /\W(seconde|apr[^s]+s( |-)*midi)($|\W)/) {
-			if ($nb_seance >= 2) {
-				$nb_seance++;
-			}else{
-				$nb_seance = 2;
-			}
-		    }elsif ($aucours =~ /\W(premi(è|&[^;]*;)re|matin(é|&[^;]*;)e)($|\W)/) {
-			if ($nb_seance >= 1) {
-				$nb_seance++;
-			}else{
-                        	$nb_seance = 1;
-			}
-		    }else {
-			$nb_seance++;
+		    if ($aucours =~ /quatri(è|&[^;]*;)me/) {
+                if ($nb_seance >= 4) {
+                    $nb_seance++ if (!$changehour);
+                }else{
+                    $nb_seance = 4;
+                }
+            }elsif ($aucours =~ /(troisi(è|&[^;]*;)me|soir(é|&[^;]*;)e)/) {
+                if ($nb_seance >= 3) {
+                    $nb_seance++ if (!$changehour);
+                }else{
+                    $nb_seance = 3;
+                }
+            }elsif ($aucours =~ /(seconde|apr[^s]+s( |-)*midi)/) {
+                if ($nb_seance >= 2) {
+                    $nb_seance++ if (!$changehour);
+                }else{
+                    $nb_seance = 2;
+                }
+		    }elsif ($aucours =~ /(premi(è|&[^;]*;)re|matin(é|&[^;]*;)e)/) {
+                if ($nb_seance >= 1) {
+                    $nb_seance++ if (!$changehour);
+                }else{
+                    $nb_seance = 1;
+                }
+		    }elsif (!$changehour){
+                $nb_seance++;
 		    }
+            if ($changehour && $heure =~ /\d:\d/) {
+                $tmphour = $heure;
+            } else {
+                $tmphour = ($nb_seance == 1 ? '1ère' : $nb_seance.'ème')." séance";
+            }
 		    print_inter() if (!$is_newcontext);
-		    $heure = ($nb_seance == 1 ? '1ère' : $nb_seance.'ème');
-		    $heure .= ' séance';
+		    $heure = $tmphour;
 		    $timestamp = '0';
+            $changehour = 1;
 		}elsif($inter =~ /^La [rs]&eacute;(?:union|ance) est ouverte &agrave; (\d+) ?h(eures?|) ?(\d+|) *(\.|$)/) {
 			$heure = "$1:$3";
 			$heure =~ s/:$/:00/;
-                        $nb_seance++;
-                }
+            if (!$changehour && $nb_seance > 1) {
+                $nb_seance++;
+            }
+            $changehour = 1;
+        }
 
 		if($is_newcontext) {
 		    $is_newcontext = 0;
