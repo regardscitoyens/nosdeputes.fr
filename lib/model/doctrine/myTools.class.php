@@ -192,7 +192,10 @@ class myTools {
   }
 
   public static function escapeHtml($s) {
-    return preg_replace('<[^>]*>', '', $s);
+    if ($s)
+        return preg_replace('/<[^>]*>/g', '', $s);
+    return $s;
+
   }
 
   public static function clearHtml($s, $authorized_tags = '<strong><i><b><a><em>') {
