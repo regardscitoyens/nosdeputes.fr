@@ -260,6 +260,10 @@ class myTools {
     return $txt;
   }
 
+  public static function escapeHtml($s) {
+    return preg_replace('<[^>]*>', '', $s);
+  }
+
   public static function clearHtml($s, $authorized_tags = '<strong><i><b><a><em>') {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
 

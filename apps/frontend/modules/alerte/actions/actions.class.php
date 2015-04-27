@@ -54,8 +54,8 @@ class alerteActions extends sfActions
   public function executeCreate(sfWebRequest $request)
   {
     $alerte = new Alerte();
-    $alerte->query = $request->getParameter('query');
-    $alerte->filter = $request->getParameter('filter');
+    $alerte->query = myTools::escapeHtml($request->getParameter('query'));
+    $alerte->filter = myTools::escapeHtml($request->getParameter('filter'));
     $this->submit = 'Créer';
     $this->form = $this->processForm($request, $alerte);
     $this->setTemplate('form');
