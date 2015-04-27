@@ -45,9 +45,10 @@ class loadCommissionTask extends sfBaseTask
 	  foreach($lines as $line) {
 	    $json = json_decode($line);
             $error = 0;
-            if (!$json)
-                $error = "cannot parse json";
-            else if (!$json->intervention)
+            if (!$json) {
+                echo "ERROR cannot parse json: $line\n";
+                continue;
+            } else if (!$json->intervention)
                 $error = "pas d'intervention";
             else if (!$json->date)
                 $error = "pas de date";
@@ -58,12 +59,10 @@ class loadCommissionTask extends sfBaseTask
             else if (!$json->source)
                 $error = "pas de source";
             if ($error) {
-              echo "ERROR json ($error): ";
-              echo $line;
-              echo "\n => ";
+              echo "ERROR $error: \n => ";
               print_r($json);
-              $contraints = get_defined_constants(true);
-              print_r($contraints["json"]);
+              #$contraints = get_defined_constants(true);
+              #print_r($contraints["json"]);
               continue;
             }
 	    if ($json->session < 20042005) {
