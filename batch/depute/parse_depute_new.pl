@@ -187,7 +187,7 @@ foreach $line (split /\n/, $string) {
     #print STDERR "TEST $encours: $line\n";
     $oline = $line;
     $line =~ s/\s*<[^>]+>\s*/ /g;
-    $line =~ s/([^à])[  \s]+/\1 /g;
+    $line =~ s/([^à]+)[  \s]+/\1 /g;
     $line = trim($line);
     next if ($line =~ /^$/);
     if ($oline =~ /<span class="dt">/i) {
