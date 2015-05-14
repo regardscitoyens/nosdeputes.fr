@@ -27,7 +27,7 @@ class Amendement extends BaseAmendement {
   public function getDossier() {
     if ($section = $this->getSection())
       return $section->Section->getTitreComplet();
-    return ''; 
+    return '';
   }
 
   public function setAuteurs($auteurs) {
@@ -62,7 +62,7 @@ class Amendement extends BaseAmendement {
       if (preg_match('/les membres du groupe/i', $senateur)) {
         if ($debug) print "WARN: Skip ".$senateur." for ".$this->source."\n";
         break;
-      } elseif (preg_match('/(gouvernement|président|rapporteur|commission|formation|délégation|questeur|apparentés|rattachés|collègues)/i', $senateur)) {
+      } elseif (preg_match('/(gouvernement|activité|égalité|président|rapporteur|commission|formation|délégation|questeur|apparentés|rattachés|collègues)/i', $senateur)) {
         if ($debug) print "WARN: Skip auteur ".$senateur." for ".$this->source."\n";
         continue;
       } elseif (preg_match('/^\s*(M[Mmles]*)[\.\s]+(\w.*)\s*$/', $senateur, $match)) {
@@ -86,7 +86,7 @@ class Amendement extends BaseAmendement {
 
   public function addParlementaire($senateur, $signataireindex) {
     foreach(Doctrine::getTable('ParlementaireAmendement')->createQuery('pa')->select('parlementaire_id')->where('amendement_id = ?', $this->id)->fetchArray() as $parlamdt) if ($parlamdt['parlementaire_id'] == $senateur->id) return true;
-    
+
     $pa = new ParlementaireAmendement();
     $pa->_set('Parlementaire', $senateur);
     $pa->_set('Amendement', $this);
@@ -179,7 +179,7 @@ class Amendement extends BaseAmendement {
 
   public function getTexte($style=1) {
     if ($style == 1)
-      return preg_replace('/\<p\>\s*«\s*([^\<]+)\<\/p\>/', '<blockquote>«&nbsp;\1</blockquote>', $this->_get('texte')); 
+      return preg_replace('/\<p\>\s*«\s*([^\<]+)\<\/p\>/', '<blockquote>«&nbsp;\1</blockquote>', $this->_get('texte'));
     return $this->_get('texte');
   }
 
@@ -193,7 +193,7 @@ class Amendement extends BaseAmendement {
   public function getTitreNoLink() {
     return preg_replace('/\<a href.*\>(.*)<\/a\>/', '\1', $this->getTitre());
   }
-  
+
   public function getIsLastVersion() {
     if ($this->sort === "Rectifié")
       return false;
