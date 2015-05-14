@@ -5,13 +5,14 @@ class loadAmdmtsTask extends sfBaseTask {
     $this->namespace = 'load';
     $this->name = 'Amdmts';
     $this->briefDescription = 'Load Amendements data';
-    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
 
   protected function execute($arguments = array(), $options = array()) {
   // your code here
     $dir = dirname(__FILE__).'/../../batch/amendements/json/';
+    $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);
 
     if (is_dir($dir)) {
