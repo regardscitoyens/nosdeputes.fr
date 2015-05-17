@@ -171,15 +171,15 @@ class apiActions extends sfActions
 
   public function executeListParlementaires(sfWebRequest $request) {
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
+    $this->multi = array();
     if ($request->getParameter('current') == true) {
       $query->where('fin_mandat IS NULL OR debut_mandat > fin_mandat');
-      $this->multi = array();
       $this->multi['responsabilite'] = 1;
       $this->multi['email'] = 1;
       $this->multi['adresse'] = 1;
       $this->multi['mandat'] = 1;
-      $this->multi['site'] = 1;
     }
+    $this->multi['site'] = 1;
     $orga = $request->getParameter('orga');
     if ($orga) {
       $this->forward404Unless(Doctrine::getTable('Organisme')->findOneBySlug($orga));
@@ -271,8 +271,8 @@ class apiActions extends sfActions
       $res['responsabilites_extra_parlementaires'] = myTools::array2hash($parl->getExtras(), 'responsabilite');
       $res['groupes_parlementaires'] = myTools::array2hash($parl->getGroupes(), 'responsabilite');
     }
+    $res['sites_web'] = myTools::array2hash(unserialize($parl->sites_web), 'site');
     if ($light != 2) {
-      $res['sites_web'] = myTools::array2hash(unserialize($parl->sites_web), 'site');
       $res['emails'] = myTools::array2hash(unserialize($parl->mails), 'email');
       $res['adresses'] = myTools::array2hash(unserialize($parl->adresses), 'adresse');
       $res['anciens_mandats'] = myTools::array2hash(unserialize($parl->anciens_mandats), 'mandat');
