@@ -179,12 +179,19 @@ sub checkout {
         $ts = $cpt;
         if ($intervention =~ s/^<p>(,| |et)+M[mes\.]*\s+(([A-Z]|é)[^\.]+)\.\s*/<p>/g) {
             $ts++;
-            print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$2."\"}\n";
+            $i = $2;
+            if (!$inter2fonction{$i} && $i =~ s/, (.*)$//) {
+                setFonction($1, $i);
+            }
+            print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
         }
         if ($intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)$//) {
-            foreach $i (split(/ et |, /, $3)) {
+            foreach $i (split(/( et|, )\s*M/, $3)) {
                 $ts++;
-                print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i."\"}\n";
+                if (!$inter2fonction{$i} && $i =~ s/, (.*)$//) {
+                    setFonction($1, $i);
+                }
+                print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
             }
         }
         if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)//g) {
