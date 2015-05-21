@@ -347,7 +347,7 @@ foreach $line (split /\n/, $string)
 
     if ($line =~ /<h[1-9]+/i || $line =~ /"(sompresidence|sstitreinfo)"/) {
         $line =~ s/##BR##/ /g;
-        if ($line =~ /pr..?sidence de ([^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
+        if ($line =~ /pr..?sidence de ([^<\,]+)[<,]/i && $line !~ /sarkozy|télévision/i) {
             $prez = $1;
             $prez =~ s/\s+vice-pr.*$//;
     #        print "Présidence de $prez\n";
