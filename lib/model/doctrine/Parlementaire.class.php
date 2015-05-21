@@ -96,7 +96,7 @@ class Parlementaire extends BaseParlementaire
   public function getMoyenStatut() {
     return $this->getStatut().' '.$this->getPrefixeCirconscription().$this->nom_circo;
   }
-  
+
   public function getLongStatut($link = 0) {
     $circo = $this->nom_circo;
     if ($link && function_exists('_parse_attributes') && function_exists('link_to')) {
@@ -219,14 +219,14 @@ class Parlementaire extends BaseParlementaire
     if($po = $this->getPOFromJoinIf('type', 'groupe'))
       return $po;
     foreach($this->getParlementaireOrganismes() as $po) {
-      if ($po->type === 'groupe') 
+      if ($po->type === 'groupe')
 	return $po;
     }
   }
   public function getExtras() {
     $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {
-      if ($po->type == 'extra') 
+      if ($po->type == 'extra')
 	array_push($res, $po);
     }
     return $res;
@@ -242,7 +242,7 @@ class Parlementaire extends BaseParlementaire
   public function getResponsabilites() {
     $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {
-      if ($po->type == 'parlementaire') 
+      if ($po->type == 'parlementaire')
 	$res[sprintf('%04d',abs(100-$po->importance)).$po->nom]=$po;
     }
     ksort($res);
@@ -363,6 +363,7 @@ class Parlementaire extends BaseParlementaire
      "Tarn" => "du",
      "Tarn-et-Garonne" => "du",
      "Territoire-de-Belfort" => "du",
+     "Territoire de Belfort" => "du",
      "Val-d'Oise" => "du",
      "Val-de-Marne" => "du",
      "Var" => "du",
@@ -691,7 +692,7 @@ class Parlementaire extends BaseParlementaire
     return $this->photo;
   }
 
-  public function hasPhoto() 
+  public function hasPhoto()
   {
     $photo = $this->getInternalPhoto('photo');
     return (strlen($photo) > 0) ;
