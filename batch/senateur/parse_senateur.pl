@@ -193,13 +193,37 @@ sub fonctions {
 	}
 }
 
+sub fltdate {
+    $_y = $_m = shift;
+    $_y =~ s/^.*\/(\d+)$/\1/;
+    $_m =~ s/^.*\/(\d+)\/.*$/\1/;
+    return $_y + $_m/12;
+}
+
+sub distantdates {
+    return (abs(fltdate(shift) - fltdate(shift)) > 0.3);
+}
+
+sub add_mandat {
+    $_deb = shift;
+    $_end = shift;
+    $_cau = shift;
+    $senateur{'premiers_mandats'}{$_deb." / ".$_end." / ".$_cau} = 1;
+    if (distantdates($lastend,$_deb)) {
+        $fakedebut = $_deb;
+    }
+    $lastend = $_end;
+    $mandatouvert = 0;
+}
+
 sub mandats {
 	$mandatouvert = 0;
 	$cause = "";
+    $fakedebut = "";
+    $lastend = "";
 	$t = $p->get_tag('ul');
 	while ($t = $p->get_tag('li', '/ul')) {
 		last if ($t->[0] ne "li");
-		$prevdate = $date1;
 		$date1 = $date2 = 0;
 		$election = $p->get_text('/li', '/ul');
 		$election =~ s/\n/ /g;
@@ -234,19 +258,18 @@ sub mandats {
                                 $suppleant_de = $1;
                         }
 			$senateur{'fin_mandat'} = $date1;
-			$senateur{'premiers_mandats'}{$senateur{'debut_mandat'}." / ".$date1." / ".$cause} = 1;
+            add_mandat($senateur{'debut_mandat'}, $date1, $cause);
 		} else {
 			if ($mandatouvert) {
-				$prevdate = $senateur{'debut_mandat'} if (!$prevdate) ;
-				$senateur{'premiers_mandats'}{$prevdate." / ".$date1." / ".$oldcause} = 1;
+                add_mandat($senateur{'debut_mandat'}, $date1, $oldcause);
 			}
 			if ($date2) {
-				$mandatouvert = 0;
-				$senateur{'premiers_mandats'}{$date1." / ".$date2." / ".$cause} = 1;
+                add_mandat($date1, $date2, $cause);
 			} else {
-				if (!$senateur{'debut_mandat'}) {
-					$senateur{'debut_mandat'} = $date1;
-				}
+                if (!$senateur{'debut_mandat'}) {
+                    $fakedebut = $date1;
+                }
+                $senateur{'debut_mandat'} = $date1;
 				$mandatouvert = 1;
 			}
 		}
@@ -257,9 +280,14 @@ sub mandats {
 	if ($date2) {
 		$senateur{'fin_mandat'} = $date2;
 	}
+    if ($mandatouvert) {
+        add_mandat($senateur{'debut_mandat'}, "", $cause);
+    }
+    $senateur{'debut_mandat'} = $fakedebut;
 	if ($suppleant_de !~ /^$/) {
 		$senateur{'suppleant_de'} = $suppleant_de;
-	}	
+	}
+
 }
 
 if ($content =~ /<h2[^>]*>(Pr..?sidente?) du (S..?nat)/i) {
@@ -351,27 +379,27 @@ foreach $k (keys %senateur) {
 }
 print "</Senateur>\n";
 exit;
-} 
+}
 
 
 if ($yml) {
-    
-    print "senateur_".$senateur{'id_institution'}.":\n"; 
-    foreach $k (keys %senateur) { 
-	next if ($k =~ /suppléant/i); 
-	if (ref($senateur{$k}) =~ /HASH/) { 
-	    print "  ".lc($k).":\n"; 
-	    foreach $i (keys %{$senateur{$k}}) { 
-		print "    - $i\n"; 
-	    } 
-	}else { 
-	    if ($k !~ /suppléant/i) {
-		print "  ".lc($k).": ".$senateur{$k}."\n"; 
+
+    print "senateur_".$senateur{'id_institution'}.":\n";
+    foreach $k (keys %senateur) {
+	next if ($k =~ /suppléant/i);
+	if (ref($senateur{$k}) =~ /HASH/) {
+	    print "  ".lc($k).":\n";
+	    foreach $i (keys %{$senateur{$k}}) {
+		print "    - $i\n";
 	    }
-	} 
-    } 
-    print "  type: senateur\n"; 
-    
+	}else {
+	    if ($k !~ /suppléant/i) {
+		print "  ".lc($k).": ".$senateur{$k}."\n";
+	    }
+	}
+    }
+    print "  type: senateur\n";
+
     exit;
 }
 
