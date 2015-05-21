@@ -300,6 +300,10 @@ class apiActions extends sfActions
     $res['url_nosdeputes'] = url_for('@parlementaire?slug='.$res['slug'], 'absolute=true');
     $res['url_nosdeputes_api'] = url_for('api/parlementaire?format='.$format.'&slug='.$res['slug'], 'absolute=true');
     $res['nb_mandats'] = count(unserialize($parl->getAutresMandats()));
+    $res['twitter'] = "";
+    foreach (unserialize($parl->sites_web) as $site)
+      if (preg_match("/twitter.com/", $site))
+        $res['twitter'] = str_replace("https://twitter.com/", "", $site);
     return $res;
   }
 
