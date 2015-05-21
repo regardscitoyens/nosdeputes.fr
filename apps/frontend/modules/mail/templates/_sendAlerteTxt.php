@@ -1,11 +1,11 @@
 ============ Alerte NosDeputes.fr ============
 
-Voici les dernières alertes de votre abonnement : <?php echo $alerte->titre; ?> 
+Voici les dernières alertes de votre abonnement : <?php echo $alerte->titre; ?>
 ----------------------------------------------------------------------
 ATTENTION : répondre à ce mail ne vous permet pas d'écrire à un parlementaire mais simplement aux membres de l'association Regards Citoyens indépendante de l'Assemblée nationale
 
 <?php
-foreach ($results['response']['docs'] as $res) 
+foreach ($results['response']['docs'] as $res)
 {
   $citoyen = "";
   $titre = $res['object']->getTitre();
@@ -36,7 +36,7 @@ foreach ($results['response']['docs'] as $res)
 
   $text = html_entity_decode($text);
   $text = preg_replace('/\&\#[0-9]+\;/', '', $text);
-  $text = preg_replace('/\«\W/', ' " ', $text);
+  $text = preg_replace('/[«»]/', '"', $text);
 
   if (strlen($text) > 700) {
 	$text = preg_replace('/[^ ]*$/', '', substr($text, 0, 700)).'...';
@@ -59,7 +59,7 @@ echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('@re
 }
 ?>
 Pour éditer cette alerte :
-<?php 
+<?php
 echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/edit?verif='.$alerte->getVerif()));
 ?>
 
