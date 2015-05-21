@@ -10,11 +10,11 @@ class updateDeputesTask extends sfBaseTask
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
- 
+
   protected function splitArrayJson($json) {
     $res = array();
     foreach($json as $j) {
-      if ($j) 
+      if ($j)
 	array_push($res, explode(' / ', $j));
     }
     return $res;
@@ -23,11 +23,24 @@ class updateDeputesTask extends sfBaseTask
   protected function execute($arguments = array(), $options = array())
   {
     $dir = dirname(__FILE__).'/../../batch/depute/out/';
-    $manager = new sfDatabaseManager($this->configuration);    
+    $manager = new sfDatabaseManager($this->configuration);
 
     if (sfConfig::get('app_legislature') > 13)
       $villes = json_decode(file_get_contents($dir.'../static/villes_2012.json'));
     else $villes = json_decode(file_get_contents($dir.'../static/villes.json'));
+
+    $sites = array();
+    $row = 0;
+    if (($handle = fopen($dir."../twitter.csv", "r")) !== FALSE) {
+        fgetcsv($handle);
+        while (($data = fgetcsv($handle)) !== FALSE) {
+            $row++;
+            if ($row == 1) next;
+            $sites[$data[18]] = explode("|", $data[16]);
+            $sites[$data[18]][] = "https://twitter.com/".$data[0];
+        }
+        fclose($handle);
+    }
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
@@ -50,8 +63,8 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->type = 'depute';
 	      $parl->nom = $json->nom;
 	      $parl->nom_de_famille = $json->nom_de_famille;
-	      $parl->sexe = $json->sexe;
 	    }
+	      $parl->sexe = $json->sexe;
             if ($json->date_naissance)
               $parl->date_naissance = $json->date_naissance;
             if ($json->lieu_naissance)
@@ -92,9 +105,14 @@ class updateDeputesTask extends sfBaseTask
 	      $parl->place_hemicycle = $json->place_hemicycle;
 	    if ($json->profession)
 	      $parl->profession = $json->profession;
+        if (isset($sites[$parl->slug]) && count($sites[$parl->slug])) {
+            if (count($json->sites_web))
+                $json->sites_web = array_unique(array_merge($json->sites_web, $sites[$parl->slug]));
+            else $json->sites_web = array_unique($sites[$parl->slug]);
+        }
 	    if (count($json->sites_web))
 	      $parl->sites_web = $json->sites_web;
-            else if ($parl->sites_web && !preg_match('/^a:/', $parl->sites_web))
+        else if ($parl->sites_web && !preg_match('/^a:/', $parl->sites_web))
               $parl->sites_web = array($parl->sites_web);
 	    if ($json->url_institution)
 	      $parl->url_an = $json->url_institution;
@@ -111,11 +129,12 @@ class updateDeputesTask extends sfBaseTask
               if ($suppl) {
                 $suppl->setSuppleantDe($parl->nom);
                 $suppl->save();
-              }              
+              }
             }
 	  }
 	}
       }
     }
+
   }
 }
