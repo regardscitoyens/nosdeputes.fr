@@ -10,11 +10,11 @@ class updateSenateursTask extends sfBaseTask
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
- 
+
   protected function splitArrayJson($json) {
     $res = array();
     foreach($json as $j) {
-      if ($j) 
+      if ($j)
 	array_push($res, explode(' / ', $j));
     }
     return $res;
@@ -26,6 +26,19 @@ class updateSenateursTask extends sfBaseTask
     $manager = new sfDatabaseManager($this->configuration);
 
     $villes = json_decode(file_get_contents($dir.'../static/villes.json'));
+
+    $sites = array();
+    $row = 0;
+    if (($handle = fopen($dir."../twitter.csv", "r")) !== FALSE) {
+        fgetcsv($handle);
+        while (($data = fgetcsv($handle)) !== FALSE) {
+            $row++;
+            if ($row == 1) next;
+            $sites[$data[18]] = explode("|", $data[16]);
+            $sites[$data[18]][] = "https://twitter.com/".$data[0];
+        }
+        fclose($handle);
+    }
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
@@ -54,8 +67,8 @@ class updateSenateursTask extends sfBaseTask
 	      $parl->nom_de_famille = $json->nom_de_famille;
 	      $parl->sexe = $json->sexe;
 	    }
-	    if ($json->naissance) 
-               $parl->date_naissance = $json->naissance; 
+	    if ($json->naissance)
+               $parl->date_naissance = $json->naissance;
 	    if ($json->circonscription)
 	      $parl->circonscription = $json->circonscription;
 	    if (count($json->adresses))
@@ -84,6 +97,11 @@ class updateSenateursTask extends sfBaseTask
 	      $parl->place_hemicycle = $json->place_hemicycle;
 	    if ($json->profession)
 	      $parl->profession = $json->profession;
+        if (isset($sites[$parl->slug]) && count($sites[$parl->slug])) {
+          if (count($json->sites_web))
+            $json->sites_web = array_unique(array_merge($json->sites_web, $sites[$parl->slug]));
+          else $json->sites_web = array_unique($sites[$parl->slug]);
+        }
 	    if (count($json->sites_web))
 	      $parl->sites_web = $json->sites_web;
 	    if ($json->url_institution)
