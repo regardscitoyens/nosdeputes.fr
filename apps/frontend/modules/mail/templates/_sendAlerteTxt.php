@@ -34,9 +34,10 @@ foreach ($results['response']['docs'] as $res)
     $text = preg_replace('/ *\n+ */', ' ', implode('...', $printable));
   }
 
-  $text = html_entity_decode($text);
+  $text = preg_replace('/\s*\&nbsp;\s*/', ' ', $text);
+  //$text = html_entity_decode($text);
   $text = preg_replace('/\&\#[0-9]+\;/', '', $text);
-  $text = preg_replace('/[«»]/', '"', $text);
+  $text = preg_replace('/\s*(«[\s ]*|[\s ]*»)\s*/', ' " ', $text);
 
   if (strlen($text) > 700) {
 	$text = preg_replace('/[^ ]*$/', '', substr($text, 0, 700)).'...';
