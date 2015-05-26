@@ -32,9 +32,10 @@ foreach ($results['response']['docs'] as $res)
     $text = preg_replace('/ *\n+ */', ' ', implode('...', $printable));
   }
 
+  $text = preg_replace('/\s*\&nbsp;\s*/', ' ', $text);
   $text = html_entity_decode($text);
   $text = preg_replace('/\&\#[0-9]+\;/', '', $text);
-  $text = preg_replace('/[«»]/', '"', $text);
+  $text = preg_replace('/\s*(«[\s ]*|[\s ]*»)\s*/', ' " ', $text);
 
   if (strlen($text) > 700) {
 	$text = preg_replace('/[^ ]*$/', '', substr($text, 0, 700)).'...';
@@ -51,7 +52,7 @@ foreach ($results['response']['docs'] as $res)
 ?>
 ===============================================
 <?php
-if (!isset($nohuman) || !nohuman) {
+if (!isset($nohuman) || !$nohuman) {
 echo "Visualiser cette alerte sur le site :\n";
 echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('@recherche_solr?sort=1&query='.$alerte->query))."\n";
 }
