@@ -35,7 +35,7 @@ foreach ($results['response']['docs'] as $res)
   }
 
   $text = preg_replace('/\s*\&nbsp;\s*/', ' ', $text);
-  //$text = html_entity_decode($text);
+  $text = html_entity_decode($text);
   $text = preg_replace('/\&\#[0-9]+\;/', '', $text);
   $text = preg_replace('/\s*(«[\s ]*|[\s ]*»)\s*/', ' " ', $text);
 
