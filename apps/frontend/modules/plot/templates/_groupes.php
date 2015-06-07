@@ -101,7 +101,7 @@ foreach ($couleurs as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)
   $Test->setColorPalette($ct,$cols[1],$cols[2],$cols[3]);
   $ct++;
 }
-$Test->drawFilledRoundedRectangle(15,$ylegend-16,85,$ylegend+3,5,255,255,255);
+$Test->drawFilledRoundedRectangle(15,$ylegend-16,93,$ylegend+8,5,255,255,255);
 $Test->drawLegend(15,$ylegend,$DataDescrLegend,255,255,255);
 $Test->xsSetFontProperties("tahoma.ttf",10);
 $Test->drawTitle(23,$ylegend-2,'Groupes',0,0,0);
