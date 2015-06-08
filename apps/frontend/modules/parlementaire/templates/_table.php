@@ -4,15 +4,15 @@ if (isset($list)) {
   if (!isset($colonnes))
     $colonnes = 3;
   if (isset($imp)) {
-    if (isset($deputes[0]->fonction)) { 
-      $fonction = $deputes[0]->fonction; 
-      foreach ($deputes as $depute) if ($depute->sexe === "H") { 
-        $fonction = $depute->fonction; 
-        break; 
-      } 
-    } else { 
-      $pluriel = (count($deputes) > 1 ? "s" : ""); 
-      $fonction = "Ancien député"; 
+    if (isset($deputes[0]->fonction)) {
+      $fonction = $deputes[0]->fonction;
+      foreach ($deputes as $depute) if ($depute->sexe === "H") {
+        $fonction = $depute->fonction;
+        break;
+      }
+    } else {
+      $pluriel = (count($deputes) > 1 ? "s" : "");
+      $fonction = "Ancien député";
     }
     echo '<h3 class="aligncenter">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', (count($deputes) > 1 ? preg_replace('/(,)? /', 's\\1 ', (preg_match('/(spécial|général)/i', $fonction) ? preg_replace('/al$/', 'aux', $fonction) : $fonction)) : $fonction))).(count($deputes) > 1 && !preg_match('/(spécial|général|droit|bureau)$/i', $fonction) ? 's' : '').'</h3>';
   }
@@ -49,7 +49,7 @@ foreach($deputes as $depute) {
       } else echo $depute->nom_circo;
     ?></a></span><br/>
     <span class="list_left">
-      <?php echo preg_replace('/\s([A-Z]+)$/', ' <a href="'.$url_depute.'"><span class="c_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
+      <?php echo preg_replace('/\s([A-Z\-]+)$/', ' <a href="'.$url_depute.'"><span class="c_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
     </span>
     <span class="list_right"><?php
       if ($depute->nb_commentaires) {
