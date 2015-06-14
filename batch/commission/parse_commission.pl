@@ -22,6 +22,7 @@ close FILE;
 $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/\r//g;
+$string =~ s/(M\.&nbsp;)+/M./g;
 $string =~ s/&#278;/É/g;
 
 if ($url =~ /\/plf(\d+)\//) {
@@ -259,7 +260,7 @@ sub rapporteur
 {
     #Si le commentaire contient peu nous aider à identifier le rapport, on tente
     if ($line =~ /rapport/i) {
-	if ($line =~ /M[me\.]+\s([^,]+), (rapporteur[^\)\,\.\;]*)/i) {
+	if ($line =~ /M[me\.]+\s([^,()]+), (rapporteur[^\)\,\.\;]*)/i) {
 	    setFonction($2, $1);
 	}elsif ($line =~ /rapport de \|?M[me\.]+\s([^,\.\;\|]+)[\,\.\;\|]/i) {
 	    setFonction('rapporteur', $1);
