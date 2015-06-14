@@ -22,7 +22,7 @@ close FILE;
 $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/\r//g;
-$string =~ s/(M\.&nbsp;)+/M./g;
+$string =~ s/(M\.\s*&nbsp;\s*)+/M. /g;
 $string =~ s/&#278;/É/g;
 
 if ($url =~ /\/plf(\d+)\//) {
@@ -206,6 +206,7 @@ sub setIntervenant {
 	if ($intervenant =~ /((([pP]résident|[rR]apporteur[a-zé\s]+)[\sest,]*)+)([A-ZÉÈÊÀÂÔÙÛÎÏÇ].*)/) {
         $tmpint = $4;
         $tmpfct = $1;
+        if ($tmpint != "éral") {
         if ($tmpint =~ /commission/i || $tmpfct =~ /commission d['esla\s]+$/i) {
             $tmint = setFonction("$tmpfct $tmpint");
             if ($tmint) {
@@ -214,6 +215,7 @@ sub setIntervenant {
         } else {
 	        return setFonction($tmpfct, $tmpint);
 	    }
+        }
     }
 	$conv = $fonction2inter{$intervenant};
     $maybe_inter = "";
