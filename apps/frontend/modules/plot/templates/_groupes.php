@@ -44,7 +44,7 @@ if ($plot == 'total') {
   $filename .= '-'.$shortduree.'.png';
   $titre = 'du travail parlementaire';
 } else {
-  $xtitre = 25; $ysize = 190; $ylegend = 60; $x0 = 155; $y0 = 110;
+  $xtitre = 25; $ysize = 190; $ylegend = 60; $x0 = 170; $y0 = 110;
   $filename .= '-'.$plot.'.png';
   $titre = 'par groupe du travail de cette '.$seancenom;
   if (preg_match('/section/', $plot)) {
