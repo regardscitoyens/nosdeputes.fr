@@ -263,7 +263,9 @@ sub rapporteur
     #Si le commentaire contient peu nous aider à identifier le rapport, on tente
     if ($line =~ /rapport/i) {
 	if ($line =~ /M[me\.]+\s([^,()]+), (rapporteur[^\)\,\.\;]*)/i) {
-	    setFonction($2, $1);
+        $fct = $2;
+        $fct =~ s/\s+et\s+.*$//;
+	    setFonction($fct, $1);
 	}elsif ($line =~ /rapport de \|?M[me\.]+\s([^,\.\;\|]+)[\,\.\;\|]/i) {
 	    setFonction('rapporteur', $1);
 	}
