@@ -7,6 +7,8 @@ class loadAmdmtsTask extends sfBaseTask {
     $this->briefDescription = 'Load Amendements data';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
+    $this->addOption('max', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', '100');
+
   }
 
   protected function execute($arguments = array(), $options = array()) {
@@ -14,6 +16,7 @@ class loadAmdmtsTask extends sfBaseTask {
     $dir = dirname(__FILE__).'/../../batch/amendements/json/';
     $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);
+    $nb_json = 0;
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
@@ -24,6 +27,9 @@ class loadAmdmtsTask extends sfBaseTask {
           $ct_crees = 0;
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
+            $nb_json++;
+            if ($nb_json > $options['max'])
+                break 2;
             $json = json_decode($line);
             if (!$json) {
 		echo "ERROR json : $line";
