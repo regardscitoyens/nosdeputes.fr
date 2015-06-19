@@ -286,7 +286,7 @@ foreach $line (split /\n/, $string)
 	    }
 	} elsif ($line =~ /class="amdexpotexte"/i) {
 	    texte();
-	} elsif ($line =~ /amendements\s*identiques/i) {
+	} elsif ($line =~ /amendements\s*identiques/i && $line !~ / adopt.*des\s*amendements\s*identiques/) {
 	    $identiques = 1;
 	} elsif ($line =~ /\<div.*\>.*M[\.Mml]/ && !($line =~ /EXPOSE SOMMAIRE/i)) {
 	    if ($identiques == 1) {
@@ -332,7 +332,7 @@ foreach $line (split /\n/, $string)
 	} else {
 	    texte();
 	}
-  } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le [Gg]ouvern)/) {
+  } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le [Gg]ouvern)/ && $line !~ / adopt.*des\s*amendements\s*identiques/) {
 	auteurs();
   } elsif ($line =~ /<p style=".*text-indent:/i) {
         irrecevable();
