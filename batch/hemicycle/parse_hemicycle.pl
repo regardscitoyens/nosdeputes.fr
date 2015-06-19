@@ -148,7 +148,7 @@ foreach (split /\n/, $doc) {
 		$didasc =~ s/\)$//;
 		$didasc =~ s/<[^>]*>//g;
 		$didasc =~ s/vingt et une/vingt-et-une/gi;
-                if ($didasc =~ /(ouverte|reprise) .*(&#224;|à) (midi\s*\S*|\S+ heures\s*\S*)\W/) {
+                if ($didasc =~ /(ouverte|reprise) (en salle \S* à|&#224;|à) (midi\s*\S*|\S+ heures\s*\S*)\W/) {
                         $h = heurize($3);
 			($htab) = split /:/, $h;
 			if (!$heure || ($htab > 13 && $oldhtab < 14) || ($htab > 20 && $oldhtab < 21)) {
