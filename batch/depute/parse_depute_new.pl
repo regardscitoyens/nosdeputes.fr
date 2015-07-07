@@ -133,6 +133,7 @@ foreach $line (split /\n/, $string) {
     $groupe =~ s/^union pour la démocratie française$/union des démocrates et indépendants/;
     $groupe =~ s/^rassemblement pour la république$/union pour un mouvement populaire/;
     $groupe =~ s/^socialiste$/socialiste, républicain et citoyen/;
+    $groupe =~ s/^non inscrit$/Députés non inscrits/;
     if ($line =~ /(apparentée?|présidente?)( du groupe)? /i) {
       $gpe = $groupe." / ".(lc $1);
     } else {
