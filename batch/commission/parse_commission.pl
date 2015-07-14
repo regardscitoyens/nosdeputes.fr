@@ -170,6 +170,7 @@ sub setIntervenant {
     $intervenant =~ s/<[^>]+>\s*//g;
     $intervenant =~ s/<[^>]*$//;
     #print "TEST $intervenant\n";
+    $intervenant =~ s/^.* de (M(\.|me) )/\1/;
     $intervenant =~ s/president/président/gi;
     $intervenant =~ s/ présidence / présidente /;
     $intervenant =~ s/Erika Bareigts/Ericka Bareigts/g;
@@ -276,7 +277,7 @@ sub rapporteur
         @pieces = split(/(,|et) de M[mes\.]+ /, $line);
         foreach $l (@pieces) {
             $l =~ s/, sur .*$//;
-            if ($l ne $line && $l !~ /^[\/\|]?l[ea]s? /i && $l =~ /(M[me\.]+\s)?([^,]+), ([Mm]inistre ((, |et |([dl][eaus'\s]+))*(\S+\s+){1,4})+)/) {
+            if ($l ne $line && $l !~ /^[\/\|]?l[ea]s? /i && $l =~ /(M[me\.]+\s)?([^,]+), ([Mm]inistre ((, |et |([dl][eaus'\s]+))*(\S+(\s+|$)){1,4})+)/) {
                 setFonction($3, $2);
             }
         }
