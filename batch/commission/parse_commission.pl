@@ -194,7 +194,8 @@ sub setIntervenant {
     $intervenant =~ s/\&\#8217\;/'/g;
     $intervenant =~ s/^(l[ea] )?d..?put..?e?\s+//i;
     $intervenant =~ s/^(l[ea] )?(s..?nat(eur|rice))\s+(.*)$/\4, \2/i;
-    $intervenant =~ s/^l[ea] (présidente?|rapporteure?|[Mm]inistre) ([A-ZÉÈÊÀÂÔÙÛÎÏÇ].*)$/\2, \1/;
+    $intervenant =~ s/^l[ea] ((co[-\s]*|vice[-\s]*)?présidente?|rapporteure?|[Mm]inistre) ([A-ZÉÈÊÀÂÔÙÛÎÏÇ].*)$/\3, \1/;
+    #print "TEST2 $intervenant\n";
     if ($intervenant =~ s/\, (.*)//) {
 	setFonction($1, $intervenant);
     }
