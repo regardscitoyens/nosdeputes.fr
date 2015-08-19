@@ -6,7 +6,7 @@
     <ul>
 <?php if ($parlementaire->fin_mandat && $parlementaire->fin_mandat >= $parlementaire->debut_mandat) : ?>
       <li>Mandat clos rempli du <?php echo myTools::displayDate($parlementaire->debut_mandat); ?> au <?php echo myTools::displayDate($parlementaire->fin_mandat);
-if ($cause = $parlementaire->getCauseFinMandat()) { 
+if ($cause = $parlementaire->getCauseFinMandat()) {
   echo " (".preg_replace("/^(.*sénat.*)$/i", link_to("\\1 &mdash; Voir sur NosSénateurs.fr", "http://www.nossenateurs.fr/".$parlementaire->slug), $parlementaire->getCauseFinMandat()).")";
 } ?>
 </li>
@@ -34,7 +34,7 @@ if ($cause = $parlementaire->getCauseFinMandat()) {
       <li><a href="http://fr.wikipedia.org/wiki/<?php echo rawurlencode($parlementaire->nom); ?>">Page sur Wikipédia</a></li>
       <?php if ($parlementaire->sites_web) {
         $moreweb = "";
-        foreach (unserialize($parlementaire->sites_web) as $site) if ($site) {
+        foreach (unserialize($parlementaire->sites_web) as $site) if ($site && !preg_match('/assemblee-nationale\.fr\/deputes\/fiche/', $site)) {
                 $nomsite = "Site web";
                 if (preg_match('/twitter/', $site)) $nomsite = "Sur Twitter";
                 else if (preg_match('/facebook/', $site)) $nomsite = "Sur Facebook";
