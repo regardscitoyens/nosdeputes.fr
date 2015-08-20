@@ -40,7 +40,7 @@ Parlementaire:
     profession: string(255)
     autoflip: boolean
     id_institution:
-      type: string(32)
+      type: string(64)
       unique: true
     type:
       type: enum
