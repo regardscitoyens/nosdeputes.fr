@@ -51,7 +51,8 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function getNomPrenom() {
-    return $this->getNomFamilleCorrect().", ".$this->getPrenom();
+    $PrNoPaNP = $this->getPrenomNomParticule();
+    return str_replace($PrNoPaNP[0].' ', '', $this->nom).', '.$PrNoPaNP[0];
   }
 
   public function getNomFamilleCorrect() {
@@ -69,6 +70,19 @@ class Parlementaire extends BaseParlementaire
     $nom = substr($this->nom, $ct+1);
     $prenom = substr($this->nom, 0, strpos($this->nom, $nom));
     return preg_replace('/\s$/', '', $prenom);
+  }
+
+  public function getPrenomNomParticule() {
+    $prenom = $this->getPrenom();
+    $nom = str_replace($prenom.' ', '', $this->nom);
+    $part = "";
+    $nompart = $nom;
+    if (preg_match("/^(.*) (d('|u|e(s| l['a])?))$/i", $prenom, $match)) {
+      $prenom = $match[1];
+      $part = $match[2];
+      $nompart = $nom." (".$part.")";
+    }
+    return array($prenom, $nom, $part, $nompart);
   }
 
   public function getStatut($link = 0) {

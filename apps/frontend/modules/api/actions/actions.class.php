@@ -252,8 +252,9 @@ class apiActions extends sfActions
 	throw new Exception("pas de parlementaire");
     $res['id'] = $parl->id * 1;
     $res['nom'] = $parl->nom;
-    $res['nom_de_famille'] = $parl->getNomFamilleCorrect();
-    $res['prenom'] = $parl->getPrenom();
+    $PrNoPaNP = $parl->getPrenomNomParticule();
+    $res['nom_de_famille'] = $PrNoPaNP[3];
+    $res['prenom'] = $PrNoPaNP[0];
     $res['sexe'] = $parl->sexe;
     $res['date_naissance'] = $parl->date_naissance;
     $res['lieu_naissance'] = $parl->lieu_naissance;
