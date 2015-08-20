@@ -1,9 +1,7 @@
-
 #!/usr/bin/perl
 
 open FILE, shift;
 $source = shift;
-
 
 $mois{'janvier'} = '01';
 $mois{'février'} = '02';
@@ -20,7 +18,7 @@ $mois{'décembre'} = '12';
 
 $on = 0;
 while(<FILE>) {
-    s/&nbsp;/ /g;
+    s/(&(#160|nbsp);|\s)+/ /g;
     if (!$on && /<b>C?O?M?MISSION /i) {
 	$_ = "$_\n";
         $on = 1;
@@ -30,8 +28,7 @@ while(<FILE>) {
     }
     if ($on) {
 	chomp;
-	s/<br>/ /g;
-	s/ +/ /g;
+	s/(\s|<br\/?>)+/ /g;
 	$lines .= $_;
     }
     if (/Membres? présents? ou excusés?/) {
@@ -39,16 +36,9 @@ while(<FILE>) {
     }
 }
 $lines =~ s/\<hr\>\<a[^>]+\><\/a>[^<]*JOURNAL OFFICIEL DE LA RÉPUBLIQUE FRANÇAISE Texte \d+ sur \d+//gi;
-$lines =~ s/\.\<br\>//gi;
 $lines =~ s/ +\. +/ /g;
-$lines =~ s/ +\. +/ /g;
-
-$lines =~ s/\.<br>\n/<br>\n<br>/g;
 $lines =~ s/Membres? présents? ou excusés?//;
 $lines =~ s/<\/b>,?à/<\/b>\nà/g;
-$lines =~ s/&nbsp;:(<br>)?/ :\n/g;
-$lines =~ s/&nbsp;<b>/ /g;
-$lines =~ s/&nbsp;/ /g;
 $lines =~ s/([^\.>]) \n/$1 /g;
 $lines =~ s/<\/b> *<b>/ /g;
 $lines =~ s/<\/b>/<\/b>\n/g;
@@ -63,6 +53,7 @@ $lines =~ s/\. <A href[^\n]*//ig;
 $lines =~ s/du\s*(<b>|\n)/du /g;
 $lines =~ s/\nà\s*.<i>/à /g;
 $lines =~ s/, à (<i>)?/ à /g;
+$lines =~ s/ +/ /g;
 $lines =~ s/ : Pr/ <i>Pr/g;
 $lines =~ s/<i>/\n<i>/g;
 $lines =~ s/\.\s*\n/\n/g;
@@ -76,10 +67,11 @@ $lines =~ s/\<hr.*Texte \d+ sur \d+\s*//g;
 
 $lines =~ s/\<A .*\<\/a\>\s*//ig;
 $lines =~ s/,? ?\<hr/\n<hr/;
-$lines =~ s/<[^ib][^>]+>//g;
+$lines =~ s/<[^i][^>]+>//g;
 $lines =~ s/\n([^\s<]+)\s\n+(\S+)\n/\n$1 $2\n/g;
 $lines =~ s/(\d[erm]+ r|R)éunion /\n$1éunion /gi;
 $lines =~ s/(\.|\;) /$1\n/g;
+$lines =~ s/\s+(<i>)?\s*Excusés[.\s–]*/\n<i>Excusés. – /gi;
 
 $lines =~ s/Louis[-\s]*Jean\s+de\s+Nicola..?(,)?/Louis-Jean de Nicolay\1/g;
 $lines =~ s/Morhet Richaud/Morhet-Richaud/g;
