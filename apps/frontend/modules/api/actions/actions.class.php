@@ -87,6 +87,8 @@ class apiActions extends sfActions
     unset($qp);
     $this->res = array();
     $this->champs = array();
+    $this->multi = array();
+    $this->multi["site"] = 1;
     foreach($parlementaires as $p) {
       $tops = $p->top;
       $parlementaire['id'] = $p->id;
