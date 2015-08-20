@@ -37,9 +37,8 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function getNomPrenom() {
-    $prenom = $this->getPrenom();
-    $nom = str_replace($prenom.' ', '', $this->nom);
-    return $nom.", ".$prenom;
+    $PrNoPaNP = $this->getPrenomNomParticule();
+    return str_replace($PrNoPaNP[0].' ', '', $this->nom).', '.$PrNoPaNP[0];
   }
 
   public function getPrenom() {
@@ -52,6 +51,19 @@ class Parlementaire extends BaseParlementaire
     $nom = substr($this->nom, $ct+1);
     $prenom = substr($this->nom, 0, strpos($this->nom, $nom));
     return preg_replace('/\s$/', '', $prenom);
+  }
+
+  public function getPrenomNomParticule() {
+    $prenom = $this->getPrenom();
+    $nom = str_replace($prenom.' ', '', $this->nom);
+    $part = "";
+    $nompart = $nom;
+    if (preg_match("/^(.*) (d('|u|e(s| l['a])?))$/i", $prenom, $match)) {
+      $prenom = $match[1];
+      $part = $match[2];
+      $nompart = $nom." (".$part.")";
+    }
+    return array($prenom, $nom, $part, $nompart);
   }
 
   public function getStatut($link = 0) {
@@ -79,7 +91,7 @@ class Parlementaire extends BaseParlementaire
   public function getMoyenStatut() {
     return $this->getStatut().' '.$this->getPrefixeCirconscription().$this->nom_circo;
   }
-  
+
   public function getLongStatut($link = 0) {
     $circo = $this->nom_circo;
     if ($link && function_exists('_parse_attributes') && function_exists('link_to')) {
@@ -203,14 +215,14 @@ class Parlementaire extends BaseParlementaire
     if($po = $this->getPOFromJoinIf('type', 'groupe'))
       return $po;
     foreach($this->getParlementaireOrganismes() as $po) {
-      if ($po->type === 'groupe') 
+      if ($po->type === 'groupe')
 	return $po;
     }
   }
   public function getExtras() {
     $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {
-      if ($po->type == 'extra') 
+      if ($po->type == 'extra')
 	array_push($res, $po);
     }
     return $res;
@@ -226,7 +238,7 @@ class Parlementaire extends BaseParlementaire
   public function getResponsabilites() {
     $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {
-      if ($po->type == 'parlementaire') 
+      if ($po->type == 'parlementaire')
 	$res[sprintf('%04d',abs(100-$po->importance)).$po->nom]=$po;
     }
     ksort($res);
@@ -630,7 +642,7 @@ class Parlementaire extends BaseParlementaire
     return $this->photo;
   }
 
-  public function hasPhoto() 
+  public function hasPhoto()
   {
     $photo = $this->getInternalPhoto('photo');
     return (strlen($photo) > 0) ;
