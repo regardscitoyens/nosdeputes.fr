@@ -20,19 +20,17 @@ $mois{'décembre'} = '12';
 
 $on = 0;
 while(<FILE>) {
-    s/&nbsp;/ /g;
+    s/(&(#160|nbsp);|\s)+/ /g;
     if ($on) {
 	chomp;
-	s/<br>/ /g;
+	s/\s*<br\/?>\s*/ /g;
 	$lines .= $_;
     }
     if (/Membres? présents? ou excusés?/) {
 	$on = 1;
     }
 }
-$lines =~ s/\s+(\d+\.&nbsp;<b>)/\n\1/g;
-$lines =~ s/&nbsp;<b>/ /g;
-$lines =~ s/&nbsp;/ /g;
+$lines =~ s/\s+(\d+\. <b>)/\n\1/g;
 $lines =~ s/<\/b> *<b>/ /g;
 $lines =~ s/<\/b>/<\/b>\n/g;
 $lines =~ s/<\/i>/<\/i>\n/g;
@@ -46,7 +44,7 @@ $lines =~ s/\. <A href[^\n]*//ig;
 $lines =~ s/du\s*(<b>|\n)/du /g;
 $lines =~ s/\nà\s*.<i>/à /g;
 $lines =~ s/, à (<i>)?/ à /g;
-$lines =~ s/\s+/ /g;
+$lines =~ s/ +/ /g;
 $lines =~ s/ : Pr/ <i>Pr/g;
 $lines =~ s/<i>/\n<i>/g;
 $lines =~ s/\.\s*\n/\n/g;
