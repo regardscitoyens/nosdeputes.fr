@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use utf8;
 use Date::Format;
 use WWW::Mechanize;
 use HTML::TokeParser;
@@ -45,6 +46,13 @@ sub download_one {
   return if ($done{$uri});
   $done{$uri} = 1;
   $a->get($uri);
+  if ( ! $a->success() ) {
+    $a->get($uri);
+    if ( ! $a->success() ) {
+      print "WARNING: could not download $uri\n";
+      return;
+    }
+  }
   $htmfile = uri_escape($a->uri);
   return if ($done{$htmfile});
   $done{$htmfile} = 1;
@@ -61,11 +69,18 @@ sub download_one {
 }
 
 %done = ();
-$a = WWW::Mechanize->new();
+$a = WWW::Mechanize->new( autocheck => 0 );
 
 sub find_questions {
   $start = shift;
   $a->get($baseurl.$start);
+  if ( ! $a->success() ) {
+    $a->get($baseurl.$start);
+    if ( ! $a->success() ) {
+      print "WARNING: could not download $uri\n";
+      return 0;
+    }
+  }
   print $baseurl.$start."\n" if ($verbose);
   $content = $a->content;
   if ($content =~ s/iso-8859-1/utf-8/gi) {

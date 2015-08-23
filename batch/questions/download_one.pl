@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use utf8;
 use WWW::Mechanize;
 use URI::Escape;
 use Encode;
