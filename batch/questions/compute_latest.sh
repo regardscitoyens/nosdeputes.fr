@@ -22,7 +22,7 @@ echo $sql_string | iconv -f utf8 -t latin1 | mysql $MYSQLID $DBNAME | grep -v "^
 date_from=`echo "SELECT date FROM question ORDER BY date DESC limit 1" | mysql $MYSQLID $DBNAME | grep -v date`
 perl download_questions_from_recherche.pl $date_from
 
-for file in `grep -L "The page cannot be found" html/*`; do
+for file in `grep -L "The page cannot be found\|Le texte de cette question sera publié dès sa" html/*`; do
   fileout=$(echo $file | sed 's/html/json/')
   perl parse_question.pl $file > $fileout
 done;
