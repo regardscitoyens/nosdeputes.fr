@@ -332,7 +332,7 @@ foreach $line (split /\n/, $string)
 	} else {
 	    texte();
 	}
-  } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le [Gg]ouvern)/ && $line !~ / adopt.*des\s*amendements\s*identiques/) {
+  } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le [Gg]ouvern)/ && $line !~ /( adopt.*des\s*amendements\s*identiques|rapport.*M[\.Mml])/) {
 	auteurs();
   } elsif ($line =~ /<p style=".*text-indent:/i) {
         irrecevable();
