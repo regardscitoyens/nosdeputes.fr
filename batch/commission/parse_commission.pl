@@ -19,32 +19,9 @@ open(FILE, $file) ;
 $string = "@string";
 close FILE;
 
-$string =~ s/<\/?b>/|/g;
-$string =~ s/<\/?i>/\//g;
 $string =~ s/\r//g;
 $string =~ s/(M\.\s*&nbsp;\s*)+/M. /g;
 $string =~ s/&#278;/É/g;
-
-if ($url =~ /\/plf(\d+)\//) {
-  $string2 = $string;
-  $string2 =~ s/\n//g;
-  $string2 =~ s/\<br\/?\>//ig;
-  $string2 =~ s/&nbsp;/ /ig;
-  $string2 =~ s/&#8217;/'/ig;
-  $string2 =~ s/^.*Commission élargie( : )?//;
-  utf8::decode($string2);
-  $string2 =~ s/\x{92}/'/g;
-  utf8::encode($string2);
-  $string2 =~ s/(#\/item#">|<\/title>).*$//;
-  $string2 =~ s/\(Application de l'article 120 du Règlement.*$//;
-  $string2 =~ s/\<\/?[a-z0-9\s\-_="']+\>//ig;
-  $string2 =~ s/\s+/ /g;
-  $string2 =~ s/^\s+//;
-  $string2 =~ s/[^a-z]+$//;
-  $string2 =~ s/ Comm/, Comm/g;
-  $string2 =~ s/ ; .*$//;
-  $commission = "Commission élargie : ".$string2;
-}
 
 $mois{'janvier'} = '01';
 $mois{'février'} = '02';
@@ -82,6 +59,35 @@ $heure{'quinze'} = '15';
 $heure{'zéro'} = '00';
 $heure{'cinq'} = '00';
 $heure{''} = '00';
+
+if ($url =~ /\/plf(\d+)\//) {
+  $string2 = $string;
+  $string2 =~ s/\n//g;
+  $string2 =~ s/\<br\/?\>//ig;
+  $string2 =~ s/&nbsp;/ /ig;
+  $string2 =~ s/&#8217;/'/ig;
+  utf8::decode($string2);
+  $string2 =~ s/\x{92}/'/g;
+  utf8::encode($string2);
+  $string2 =~ s/\s+/ /g;
+  $string2 =~ s/^.*>commission (e|é|É)largie<.*>commission des finances.*>commission d(e l'|(u|e la|es) )//i;
+  $string2 =~ s/\(Application de l'article 120 du Règlement(.*)$//;
+  $tmpdate = $1;
+  $tmpdate =~ s/\<[^>]+>//ig;
+  $tmpdate =~ s/^\W+//;
+  if ($tmpdate =~ /^(\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/i) {
+    $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
+  }
+  $string2 =~ s/\<\/?[a-z0-9\s\-_="']+\>//ig;
+  $string2 =~ s/^\s+//;
+  $string2 =~ s/[^a-z]+$//;
+  $string2 =~ s/(,| et) d.*( Commission|$)/\2/gi;
+  $string2 =~ s/ Commission d(u|e la|es) ([a-z])/ - \U\2/gi;
+  $commission = "Commission élargie : Finances - ".ucfirst($string2);
+}
+
+$string =~ s/<\/?b>/|/g;
+$string =~ s/<\/?i>/\//g;
 
 if ($string =~ /réunion.*commission.*commence[^\.]+à ([^\.]+)( |&nbsp;)heures?(\s|&nbsp;)*([^\.]*)\./i) {
     $heure = $heure{$1}.':'.$heure{$4};
@@ -300,6 +306,7 @@ $string =~ s/<t([rdh])[^>]*( (row|col)span=["\d]+)+[^>]*>/<t\1\2>/gi;
 $string =~ s/<t([rdh])( (row|col)span=["\d]+)*[^>]*>/<t\1\2>/gi;
 $string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
 $string =~ s/(<\/table>)\s*(<table)/\1\n\2/gi;
+$string =~ s/-->(-->)+/-->/g;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
 #on vire les paragraphes contenus et on didascalise
