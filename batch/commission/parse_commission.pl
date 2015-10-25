@@ -139,6 +139,7 @@ sub setFonction {
     $fonction =~ s/[^a-zàâéèêëîïôùûü]+$//i;
     $fonction =~ s/<[^>]+>\s*//g;
     $fonction =~ s/<[^>]*$//;
+    $fonction =~ s/\///g;
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
     my $kfonction = lc($fonction);
@@ -416,7 +417,7 @@ foreach $line (split /\n/, $string)
 	    rapporteur();
 	    $found = 1;
 	}
-    if ($line =~ s/^\|(M[^\|\:]+)[\|\:](\/[^\/]+\/)?(.*\w.*)/\3/ ) {
+    if ($line =~ s/^\|(M[^\|\:]+)[\|\:](\/[^\/]+\/)?(.*\w.*)/\3/) {
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2;
@@ -425,7 +426,7 @@ foreach $line (split /\n/, $string)
         }
         $intervenant = setIntervenant($interv1.$extrainterv);
         $found = $majIntervenant = 1;
-	}elsif ($line !~ /^\|Articles?\s*\d+/i && $line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|.// ) {
+	}elsif ($line !~ /^\|Articles?\s*\d+/i && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|.// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
@@ -447,6 +448,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/^\s+//;
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
+    #print STDERR $line."\n";
 	if (!$found) {
 	    if ($line =~ s/^\s*((Dr|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.:]//) {
             checkout();
