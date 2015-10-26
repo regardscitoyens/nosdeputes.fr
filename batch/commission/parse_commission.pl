@@ -26,6 +26,8 @@ $content =~ s/\s+/ /g;
 $content =~ s/<\/(p|h[1234]|ul|div)>/<\/$1>\n/gi;
 $content =~ s/(<h\d[^>]*>)\s*<b>/$1/gi;
 $content =~ s/<\/b>\s*(<\/h\d[^>]*>)/$1/gi;
+$content =~ s/>CS />Commission spéciale /g;
+$content =~ s/ CS / Commission spéciale /g;
 
 %fonctions = ();
 
@@ -147,6 +149,7 @@ foreach (split /\n/, $content) {
 	if (/<h[1234][^>]*>(\s*<[^>]*>)*([^<]+)<\/h[1234]>/) {
 		$titre = $2;
 		next if ($titre =~ /^((com)?mission|comptes rendus |office|délégation|groupe de travail)/i && $titre !~/commission mixte paritaire/i);
+
 		print_inter() if($timestamp);
 		$context = $titre;
 		setfonction($titre);
