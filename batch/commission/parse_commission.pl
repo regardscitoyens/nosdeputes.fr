@@ -70,7 +70,7 @@ if ($url =~ /\/plf(\d+)\//) {
   $string2 =~ s/\x{92}/'/g;
   utf8::encode($string2);
   $string2 =~ s/\s+/ /g;
-  $string2 =~ s/^.*>commission (e|é|É)largie<.*>commission des finances.*>commission d(e l'|(u|e la|es) )//i;
+  $string2 =~ s/^.*>commission (e|é|É)largie<.*>commission des finances.*?>commission d(e l'|(u|e la|es) )//i;
   $string2 =~ s/\(Application de l'article 120 du Règlement(.*)$//;
   $tmpdate = $1;
   $tmpdate =~ s/\<[^>]+>//ig;
@@ -81,7 +81,7 @@ if ($url =~ /\/plf(\d+)\//) {
   $string2 =~ s/\<\/?[a-z0-9\s\-_="']+\>//ig;
   $string2 =~ s/^\s+//;
   $string2 =~ s/[^a-z]+$//;
-  $string2 =~ s/(,| et) d.*( Commission|$)/\2/gi;
+  $string2 =~ s/(,| et) d.*?( Commission|$)/\2/gi;
   $string2 =~ s/ Commission d(u|e la|es) ([a-z])/ - \U\2/gi;
   $commission = "Commission élargie : Finances - ".ucfirst($string2);
 }
