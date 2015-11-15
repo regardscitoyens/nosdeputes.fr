@@ -56,21 +56,37 @@ class QuestionEcrite extends BaseQuestionEcrite
   }
   public function uniqueMinistere()
   {
-    $ministere = 'Ministère d';
-    if (preg_match('/((Droits|Réforme|Relations)?\s+(avec\s+|d[eu]s?\s+|l[\'ae]\s*)+[\wàéëêâèïîôöûüÉ]+)/', $this->ministere, $match)) $ministre = $match[1];
-    else if (preg_match('/(Affaires|Espace|Personnes)(\s+[\wàéëêèïîôöûüÉâ]+)/', $this->ministere, $match)) $ministre = $match[1].$match[2];
-    else {
-      $ministre = preg_replace('/^.*\/\s*([\wàéëêèïîôöûüÉ]+)$/', '\\1', $this->ministere);
-      $ministre = preg_replace('/^([\wàéëêèïîôöûüÉ]+)[,\s].*$/', '\\1', $ministre);
+    $min = trim(preg_replace('/^.* \/ /', '', $this->ministere));
+    if ($min == 'Premier ministre') return $min;
+    if (preg_match('/^Secrétariat /', $min)) {
+      $min = preg_replace('/^Secrétariat .* chargé( des)? d/', '', $min);
+      $min = preg_replace('/^([^,]+\s*),.*$/', '\1', $min);
+      $min = preg_replace('/^(.*?)\s+et d.*$/', '\1', $min);
+      $min = preg_replace('/^es /', 'aux ', $min);
+      $min = preg_replace('/^u /', 'au ', $min);
+      $min = preg_replace('/^e l/', 'à l', $min);
+      return "Secrétariat d'état ".$min;
     }
-    if (preg_match('/^(Droits|Aînés|Personnes|Relations|Affaires|Sports|Transports|Solidarités)/', $ministre)) $ministere .= 'es ';
-    else if (preg_match('/^[AEÉIOU]/', $ministre)) $ministere .= 'e l\'';
-    else if (preg_match('/^(Famille|Santé|Réforme|Coopération|Culture|Défense|Justice|Consommation|Prospective|Solidarité)/', $ministre)) $ministere .= 'e la ';
-    else $ministere .= 'u ';
-    if (preg_match('/^Premier/', $ministre)) $ministere = 'Premier Ministre';
-    else $ministere .= $ministre;
-    return $ministere;
+    if (preg_match('/^Ministère /', $min)) {
+      $min = preg_replace('/stère chargé /', 'stère ', (preg_match('/ PME/', $min) ? $min : strtolower($min)));
+      $min = preg_replace('/^([^,]+\s*),.*$/', '\1', $min);
+      $min = preg_replace('/^(.*?)\s+et d.*$/', '\1', $min);
+      return ucfirst($min);
+    }
+    $min = preg_replace('/^([^,]+\s*),.*$/', '\1', $min);
+    $min = preg_replace('/^(.*) et .*?$/', '\1', $min);
+    if ($min == "PME") return 'Ministère des PME';
+    if (preg_match('/^\S+s( |$)/', $min))
+      $art = "es ";
+    elseif (preg_match('/^[AEIOUYÉ]/', $min))
+      $art = "e l'";
+    elseif (preg_match('/^(Culture|Décentralisation|Défense|Famille|Formation|Francophonie|Justice|Politique|Réforme|Réussite|Ville)/', $min))
+      $art = "e la ";
+    else $art = "u ";
+    $min = preg_replace('/^É/', 'é', $min);
+    return 'Ministère d'.$art.lcfirst($min);
   }
+
   public function firstTheme()
   {
     $theme = preg_replace('/^\s*([\w\-àéëêèïîôöûüÉ\s]+)*[,\/:].*$/', '\\1', $this->themes);
