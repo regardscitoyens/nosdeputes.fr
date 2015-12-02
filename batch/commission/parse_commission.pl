@@ -71,7 +71,7 @@ if ($url =~ /\/plf(\d+)\//) {
   utf8::encode($string2);
   $string2 =~ s/\s+/ /g;
   $string2 =~ s/^.*>commission (e|é|É)largie<.*>commission des finances.*?>commission d(e l'|(u|e la|es) )//i;
-  $string2 =~ s/\(Application de l'article 120 du Règlement.*//i;
+  $string2 =~ s/\(Application de l'article 120 du Règlement(.*)//i;
   $tmpdate = $1;
   $tmpdate =~ s/\<[^>]+>//ig;
   $tmpdate =~ s/^\W+//;
