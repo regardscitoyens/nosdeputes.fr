@@ -42,14 +42,14 @@ while ($t = $p->get_tag('a')) {
 
 open PM, ">finmandats.pm";
 print PM '$legislature = '."$legislature;\n";
-$a->get("http://www.assemblee-nationale.fr/".$legislature."/tribun/xml/liste_mandats_clos.asp");
+$a->get("http://www2.assemblee-nationale.fr/deputes/liste/clos");
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 while ($t = $p->get_tag('td')) {
 #    if ($t->[1]{class} eq 'denom') {
 	$t = $p->get_tag('a');
-	if ($t->[1]{href} && $t->[1]{href} =~ /tribun\/fiches/) {
-	    $id = download_fiche($t->[1]{href});
+	if ($t->[1]{href} && $t->[1]{href} =~ /deputes\/fiche/) {
+	    $id = download_fiche("http://www2.assemblee-nationale.fr".$t->[1]{href});
 	    $ret = system("grep -i '>Mandat clos<' html/$id > /dev/null");
 	    if (! $ret) {
 		$t = $p->get_tag('td');
