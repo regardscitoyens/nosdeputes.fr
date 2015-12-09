@@ -105,7 +105,7 @@ foreach (split /\n/, $lines) {
     if (/(<i>Excus|<i>Ont d|Ordre|Convocation|Excusés|<b>Nomination|^Nomination)/ || / délégué (leur|son) droit/) {
 	$on = 0;
     }
-    if (/<i>(Présents?\W|Assistai)/) {
+    if (/<i>(Présents?|Assistai)/) {
 	$on = 1;
     }
     if ($on && /\w/) {
