@@ -110,4 +110,15 @@ class PersonnaliteTable extends Doctrine_Table
     $this->changed = 1;
   }
 
+  public function findOneByIdOrName($search) {
+    $perso = $this->findOneById($search);
+    if (!$perso)
+      $perso = $this->findOneByNom($search);
+    if (!$perso)
+      $perso = $this->findOneByNom(preg_replace('/\s*,.*$/', '', $search));
+    if ($perso) return $perso;
+    print 'Could not find "'.$search.'"';
+    return null;
+  }
+
 }
