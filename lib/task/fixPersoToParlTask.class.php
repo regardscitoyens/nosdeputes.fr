@@ -17,7 +17,8 @@ class fixPersoToParlTask extends sfBaseTask {
     $perso = Doctrine::getTable('Personnalite')->findOneByIdOrName($arguments['perso']);
     $parl = Doctrine::getTable('Parlementaire')->findOneByIdOrName($arguments['parl']);
     if (!$perso || !$parl) return;
-    print "FOUND perso: ".$perso->nom."\n";
+    $fct = (preg_match('/, (.+)$/', $perso->nom, $m) ? $m[1] : null);
+    print "FOUND perso: ".$perso->nom." ".$fct."\n";
     print "FOUND parl : ".$parl->nom."\n";
     if ($arguments['update'])
       print "Applying changes...\n";
@@ -28,6 +29,7 @@ class fixPersoToParlTask extends sfBaseTask {
         print $i->id." ".$i->fonction." http://nosdeputes.fr/14/seance/".$i->seance_id.'#inter_'.$i->getMd5()."\n";
         if ($arguments['update']) {
           $i->setParlementaire($parl);
+          if ($fct) $i->setFonction($fct);
           $i->save();
           $parl = Doctrine::getTable('Parlementaire')->findOneByIdOrName($arguments['parl']);
         }
