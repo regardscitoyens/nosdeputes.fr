@@ -23,6 +23,7 @@ while(<FILE>) {
     s/(&(#160|nbsp);|\s)+/ /g;
     if ($on) {
 	chomp;
+    s/<br\/?>Présents/\n<i>Présents/g;
 	s/\s*<br\/?>\s*/ /g;
 	$lines .= $_;
     }
@@ -54,7 +55,7 @@ $lines =~ s/,? ?M(\.|mes?) /\n/g;
 $lines =~ s/<\/?\w>\n/\n/g;
 $lines =~ s/ : ?\n/\n/g;
 $lines =~ s/– //g;
-$lines =~ s/\<hr.*Texte \d+ sur \d+\s*//g;
+$lines =~ s/\<hr.*Texte \d+ sur \d+\s*/\n/g;
 
 $lines =~ s/\<A .*\<\/a\>\s*//ig;
 $lines =~ s/,? ?\<hr/\n<hr/;
@@ -98,6 +99,8 @@ foreach (split /\n/, $lines) {
 			$d = $1.' '.$d;
 		    }
 		    $d =~ s/\([^\)]+\)//;
+		    $d =~ s/-\s+/-/g;
+            $d =~ s/[^àâéèêëîïôùûü\w]+$//;
 		    print '{ ';
 		    print '"reunion": "'.$reunion.'",';
 		    print '"session": "'.$session.'",';
