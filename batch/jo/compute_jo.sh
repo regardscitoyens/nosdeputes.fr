@@ -25,4 +25,5 @@ if [ ! -e jos.html ] ; then echo "ERROR jos.html" exit; fi
 perl parse_jo.pl jos.html $DATE > xml/$FILE.xml
 echo "xml/$FILE.xml created"
 if [ ! -s xml/$FILE.xml ] ; then echo "ERROR JO empty"; rm xml/$FILE.xml ; fi
+grep -i erratum jos.html | perl -MHTML::Entities -ne 'use Encode; print encode_utf8(decode_entities($_))'
 rm jo.html  jo_ind.html  jo.pdf  jos.html jo*png 2> /dev/null
