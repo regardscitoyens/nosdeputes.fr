@@ -88,7 +88,9 @@ if ($url =~ /\/plf(\d+)\//) {
   $commission =~ s/ - $//;
 }
 
-$string =~ s/<\/?b>/|/g;
+$string =~ s/<\/?b><\/?u>/<b>/g;
+$string =~ s/<\/?u><\/?b>/<b>/g;
+$string =~ s/<\/?[bu]>/|/g;
 $string =~ s/<\/?i>/\//g;
 
 if ($string =~ /réunion.*commission.*commence[^\.]+à ([^\.]+)( |&nbsp;)heures?(\s|&nbsp;)*([^\.]*)\./i) {
@@ -400,6 +402,8 @@ foreach $line (split /\n/, $string)
     $line =~ s/\s$//;
     $line =~ s/\s*,\s*\|\s*\/\s*/,|\/ /g;
     $line =~ s/\s*\|\s*,\s*\/\s*/,|\/ /g;
+    $line =~ s/\|\|//g;
+    $line =~ s/\/\///g;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
     $tmpinter = "";
@@ -419,6 +423,7 @@ foreach $line (split /\n/, $string)
 	    rapporteur();
 	    $found = 1;
 	}
+#print "LINE: $line\n";
     if ($line =~ s/^\|(M[^\|\:]+)[\|\:](\/[^\/]+\/)?(.*\w.*)/\3/) {
         checkout();
         $interv1 = $1;
