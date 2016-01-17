@@ -48,6 +48,11 @@ echo $$ > $LOCK
 #echo Debut Indexation $option
 #date
 cd $PATH_APP
+
+if ! test -e log/solr/commands.log.lock; then
+    mv $(ls log/solr/commands.log.* | grep -v lock | head -n 1) log/solr/commands.log.lock
+fi
+
 while ! php symfony index:Solr $option ; do
 if test "$1" = "" ; then
    exit;
