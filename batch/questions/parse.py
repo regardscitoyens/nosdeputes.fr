@@ -58,7 +58,7 @@ def parse_question(url, xmlstring):
     for k, v in extracted_data.iteritems():
         if not v:
             v = ""
-        extracted_data[k] = v.encode('utf-8').replace('\\', '\\\\').replace('"', '\\"')
+        extracted_data[k] = v.encode('utf-8').replace('\\', '\\\\').replace('"', '\\"').replace('\n', ' ')
 
     return extracted_data
 
