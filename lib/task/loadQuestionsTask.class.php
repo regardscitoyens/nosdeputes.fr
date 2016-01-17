@@ -40,7 +40,7 @@ class loadQuestionsTask extends sfBaseTask {
 		  $missing = 'auteur';
 		if (!$json->type)
 		  $missing = 'type';
-		if (!$json->question)
+		if (!$json->question && !$json->date_retrait)
 		  $missing = 'question';
 		echo "ERROR json ($missing argument missing) : $line\n";
 	      }
@@ -60,9 +60,9 @@ class loadQuestionsTask extends sfBaseTask {
               $quest->numero = $json->numero;
             }
             $quest->setAuteur($json->auteur);  // déplacé de la zone de création de nouvelles questions ci-dessus pour permettre correction de l'auteur au besoin, potentiellement lourd, à revert si besoin
+            $quest->ministere = $json->ministere_interroge." / ".$json->ministere_attribue;
             if (!$quest->reponse || $quest->reponse === "") {
               $quest->date = $json->date_question;
-              $quest->ministere = $json->ministere_interroge." / ".$json->ministere_attribue;
               $quest->themes = $json->rubrique;
               if ($json->tete_analyse) $quest->themes .= " / ".$json->tete_analyse;
               if ($json->analyse) $quest->themes .= " / ".$json->analyse;
