@@ -19,7 +19,7 @@ else
 fi
 echo $sql_string | mysql $MYSQLID $DBNAME | grep -v source > liste_sans_reponse.txt
 
-rm -f html/*
+find html/ -name http* -exec rm -f {} \;
 
 #log cette partie très verbeuse
 perl download_questions.pl $LEGISLATURE > /tmp/download_questions.log
