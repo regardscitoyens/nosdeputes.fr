@@ -40,7 +40,7 @@ def parse_question(url, xmlstring):
         'tete_analyse': qe['INDEXATION_AN']['TETE_ANALYSE'],
         'analyse': " / ".join([a for a in qe['INDEXATION_AN']['ANALYSE']['ANA'] if a]),
         'rubrique': qe['INDEXATION_AN']['@RUBRIQUE'],
-        'question': qe['DEPOT'][1]['TEXTE_DEPOT'],
+        'question': qe['DEPOT'][1]['TEXTE_DEPOT'] if qe['DEPOT'][1] else '',
         'reponse': qe['REPONSE']['TEXTE_REPONSE'],
         'auteur': qe['AUTEUR']['PRENOM'] + ' ' + qe['AUTEUR']['NOM'],
     # unused fields
