@@ -9,6 +9,8 @@ def convert_date(s):
     d, m, y = s.split('/')
     return '-'.join((y, m, d))
 
+clean_minis = lambda m: m.replace(u"Minsitère", u"Ministère")
+
 def parse_question(url, xmlstring):
     data = xmltodict.parse(xmlstring)
 
@@ -33,8 +35,8 @@ def parse_question(url, xmlstring):
         'date_reponse': convert_date(qe['REPONSE']['DATE_JO_REPONSE']),
         'date_retrait': "",
         'motif_retrait': "",
-        'ministere_attribue': qe['MINA']['ORDRE'][-1]['DEVELOPPE'],
-        'ministere_interroge': qe['MINI']['DEVELOPPE'],
+        'ministere_attribue': clean_minis(qe['MINA']['ORDRE'][-1]['DEVELOPPE']),
+        'ministere_interroge': clean_minis(qe['MINI']['DEVELOPPE']),
         'tete_analyse': qe['INDEXATION_AN']['TETE_ANALYSE'],
         'analyse': " / ".join([a for a in qe['INDEXATION_AN']['ANALYSE']['ANA'] if a]),
         'rubrique': qe['INDEXATION_AN']['@RUBRIQUE'],
