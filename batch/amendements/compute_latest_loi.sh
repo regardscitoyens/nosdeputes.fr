@@ -16,6 +16,7 @@ rm -rf "html-$loi"
 mkdir -p "html-$loi"
 
 echo > /tmp/download_amendements.log
+count=0
 bash get_ids_loi.sh "$loi" | while read line; do
   id_dossier=$(echo $line | awk -F ";" '{print $1}')
   id_examen=$(echo $line | awk -F ";" '{print $2}')
@@ -25,7 +26,11 @@ bash get_ids_loi.sh "$loi" | while read line; do
     awk -F "|" '{print $7}' |
     while read url; do
       if ! grep "$url" "$loi.done" > /dev/null; then 
+        count=$(($count + 1))
         perl download_one.pl "$url" "html-$loi" >> /tmp/download_amendements.log
+        if [ $count -gt 20 ]; then
+          break;
+        fi
       fi
     done
 done
