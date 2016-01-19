@@ -7,6 +7,10 @@ if test -z "$loi"; then
   exit 1
 fi
 
+. ../../bin/db.inc
+
+echo 'SELECT source FROM amendement WHERE sort NOT LIKE "Ind%" AND sort NOT LIKE "Rect%" AND texteloi_id = '$loi | mysql $MYSQLID $DBNAME | grep -v source > "$loi.done"
+
 rm -rf "html-$loi"
 
 mkdir -p "html-$loi"
@@ -20,7 +24,9 @@ bash get_ids_loi.sh "$loi" | while read line; do
     grep -P "http://\S+/amendements/" |
     awk -F "|" '{print $7}' |
     while read url; do
-      perl download_one.pl "$url" "html-$loi" >> /tmp/download_amendements.log
+      if ! grep "$url" "$loi.done" > /dev/null; then 
+        perl download_one.pl "$url" "html-$loi" >> /tmp/download_amendements.log
+      fi
     done
 done
 
