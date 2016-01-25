@@ -8,7 +8,7 @@ $verbose = shift || 0;
 
 sub download_fiche {
 	$uri = $file = shift;
-	$uri =~ s/^\//http:\/\/www.assemblee-nationale.fr\//;
+	$uri =~ s/^\//http:\/\/www2.assemblee-nationale.fr\//;
 	print "$uri" if ($verbose);
     $a->max_redirect(0);
 	$a->get($uri);
@@ -30,13 +30,13 @@ sub download_fiche {
 	return $file;
 }
 $a = WWW::Mechanize->new();
-print "http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=".$legislature."\n" if ($verbose);
-$a->get("http://www.assemblee-nationale.fr/qui/xml/liste_alpha.asp?legislature=".$legislature);
+print "http://www2.assemblee-nationale.fr/deputes/liste/alphabetique\n" if ($verbose);
+$a->get("http://www2.assemblee-nationale.fr/deputes/liste/alphabetique");
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 while ($t = $p->get_tag('a')) {
-    if ($t->[1]{class} eq 'dep2') {
-	download_fiche($t->[1]{href});
+    if ($t->[1]{href} =~ /^\/deputes\/fiche\//) {
+        download_fiche($t->[1]{href});
     }
 }
 
@@ -49,7 +49,7 @@ while ($t = $p->get_tag('td')) {
 #    if ($t->[1]{class} eq 'denom') {
 	$t = $p->get_tag('a');
 	if ($t->[1]{href} && $t->[1]{href} =~ /deputes\/fiche/) {
-	    $id = download_fiche("http://www2.assemblee-nationale.fr".$t->[1]{href});
+	    $id = download_fiche($t->[1]{href});
 	    $ret = system("grep -i '>Mandat clos<' html/$id > /dev/null");
 	    if (! $ret) {
 		$t = $p->get_tag('td');
