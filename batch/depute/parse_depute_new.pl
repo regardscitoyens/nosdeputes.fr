@@ -283,6 +283,7 @@ foreach $line (split /\n/, $string) {
         if ($missioninfo && $organisme !~ /^Mission/) {
           $organisme = "Mission d'information $organisme";
         }
+        $organisme =~ s/( et de contrôle)\s*$/\1 de la commission des finances/;
       }
       if (!$orgas{trim($organisme)}) {
         $depute{$encours}{trim($organisme)." / ".trim($fonction)} = 1;
