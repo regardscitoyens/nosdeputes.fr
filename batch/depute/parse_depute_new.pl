@@ -272,6 +272,7 @@ foreach $line (split /\n/, $string) {
         $organisme = $1;
         $minist = $2;
         $minist =~ s/ - (Premier min|Minist|Secr).*$//;
+        $organisme =~ s/^La proposition /Proposition /;
         $organisme = "Mission temporaire pour le $minist : $organisme";
         $fonction = "chargé".($depute{'sexe'} eq "F" ? "e" : "")." de mission";
       } elsif ($line =~ s/ de l'Assemblée nationale depuis le : \d.*$//) {
