@@ -268,12 +268,18 @@ foreach $line (split /\n/, $string) {
         }
       }
     } else {
-      if ($mission && $line =~ /^\s*(.*?)[ (]+((Premier ministre|Ministère|Secrétariat).*)[ )]*$/) {
-        $organisme = $1;
-        $minist = $2;
+      if ($mission && $line =~ /^(.*?)\(?((Premier ministre|Ministère|Secrétariat).*)\)?\s*$/) {
+        $organisme = trim($1);
+        $minist = trim($2);
         $minist =~ s/ - (Premier min|Minist|Secr).*$//;
-        $organisme =~ s/^La proposition /Proposition /;
-        $organisme = "Mission temporaire pour le $minist : $organisme";
+        $minist =~ s/[^a-zàéèêëîïôù]+$//;
+        $minist = "Mission temporaire pour le $minist";
+        if ($organisme !~ /^$/) {
+          $organisme =~ s/^La proposition /Proposition /;
+          $organisme = "$minist : $organisme";
+        } else {
+          $organisme = $minist;
+        }
         $fonction = "chargé".($depute{'sexe'} eq "F" ? "e" : "")." de mission";
       } elsif ($line =~ s/ de l'Assemblée nationale depuis le : \d.*$//) {
         $organisme = "Bureau de l'Assemblée nationale";
