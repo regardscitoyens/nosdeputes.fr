@@ -54,6 +54,7 @@ sub findDate($) {
 	while(/\D+(\d+)[^\d<>]+(janvier|f[^v ]*vrier|mars|avril|mai|juin|juillet|ao[^t ]*t|septembre|octobre|novembre|d[^c ]*cembre)/gi) {
 		$jours[$cpt] = $1;
 		$mois[$cpt--] = $2;
+		last if ($cpt < 0);
 	}
 	if ($cpt > -1) {
 		$fin = $jours[0] = $jours[1];
