@@ -29,7 +29,7 @@ sub download_fiche {
 	if ($thecontent =~ s/iso-8859-1/utf-8/ig) {
 	    $thecontent = decode("windows-1252", $thecontent);
 	}
-    $thecontent =~ s/<li>Membre ([^<]+<a href="[^>]+>[^<]+<\/a>)\s*\((Présidente?)\)<\/li>/<li>\2 \1<\/li>/ig;
+    $thecontent =~ s/<li>Membre ([^<]+<a href="[^>]+>[^<]+<\/a>)\s*\((Pr..?sidente?)\)<\/li>/<li>\2 \1<\/li>/ig;
 	print FILE $thecontent;
 	close FILE;
         print "DONE" if ($verbose);
