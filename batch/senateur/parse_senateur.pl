@@ -169,6 +169,7 @@ sub fonctions {
 		last if ($t->[0] ne "li");
 		$commission = $p->get_text('/li', '/a', '/p', $limit);
 		last if ($commission =~ /ancien.*nat(eur|rice)/i);
+	#print STDERR $commission."\n";
 		$commission = groupefonction($commission);
 		$commission =~ s/^(S..?nat)/Bureau du $1/;
 		$comm = $commission;
