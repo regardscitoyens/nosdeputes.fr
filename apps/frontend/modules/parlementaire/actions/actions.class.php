@@ -19,7 +19,7 @@ class parlementaireActions extends sfActions
     if (imageistruecolor($im)) {
       imagetruecolortopalette($im, false, 256);
     }
-    
+
     for ($c = 0; $c < imagecolorstotal($im); $c++) {
       $col = imagecolorsforindex($im, $c);
       $gray = round(0.299 * $col['red'] + 0.587 * $col['green'] + 0.114 * $col['blue']);
@@ -53,7 +53,7 @@ class parlementaireActions extends sfActions
     $file = tempnam(sys_get_temp_dir(), 'Parl');
     $photo = $parlementaire->photo;
     if (!strlen($photo)) {
-      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_senateur.jpg', $file); 
+      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_senateur.jpg', $file);
     } else {
       $fh = fopen($file, 'w');
       fwrite($fh ,$photo);
@@ -145,7 +145,7 @@ class parlementaireActions extends sfActions
     $this->missions = array();
 
     foreach ($this->parlementaire->getResponsabilites() as $resp) {
-      if (in_array($resp->organisme_id, array(2, 5, 9, 20, 27, 371))) {
+      if (in_array($resp->organisme_id, array(2, 330, 9, 20, 27, 371))) {
 	array_push($this->commissions_permanentes, $resp);
       }else{
 	array_push($this->missions, $resp);
@@ -155,9 +155,9 @@ class parlementaireActions extends sfActions
 
   public function executeId(sfWebRequest $request)
   {
-    $format = $request->getParameter('format'); 
-    if ($format) 
-      $format = '/'.$format; 
+    $format = $request->getParameter('format');
+    if ($format)
+      $format = '/'.$format;
     $id = $request->getParameter('id');
     if (preg_match('/^d/', $id)) $this->redirect("http://www.nosdeputes.fr/id/$id".$format);
     $id = preg_replace('/^s/', '', $id);
@@ -430,7 +430,7 @@ class parlementaireActions extends sfActions
     if (!$request->getParameter('Document')) {
       $request->setParameter('query', 'tag:"Parlementaire='.$this->parlementaire.'"');
       $request->setParameter('title', preg_replace('/%/', $this->parlementaire->nom, $request->getParameter('title')));
-      
+
       if ($o = $request->getParameter('object_name'))
 	$request->setParameter('query', $request->getParameter('query').' object_type='.$o);
       $request->setParameter('format', 'rss');
@@ -442,11 +442,11 @@ class parlementaireActions extends sfActions
     $news = array();
     $elements = 0;
     if ($request->getParameter('Intervention')) {
-      $elements++;  
+      $elements++;
       foreach(Doctrine::getTable('Intervention')->createQuery('i')
 		->where('i.parlementaire_id = ?', $this->parlementaire->id)
 		->limit($this->limit)->orderBy('updated_at DESC')->execute()
-		as $n) 
+		as $n)
         $news[] = $n;
     }
     if ($request->getParameter('Question')) {
@@ -458,12 +458,12 @@ class parlementaireActions extends sfActions
         $news[] = $n;
     }
     if ($request->getParameter('QuestionEcrite')) {
-      $elements++;  
+      $elements++;
       foreach(Doctrine::getTable('Question')->createQuery('q')
 	      ->where('q.parlementaire_id = ?', $this->parlementaire->id)
               ->andWhere('q.type = ? ', "Question écrite")
 	      ->limit($this->limit)->orderBy('updated_at DESC')->execute()
-	      as $n) 
+	      as $n)
 	$news[] = $n;
     }
     if ($request->getParameter('QuestionOrale')) {
@@ -476,13 +476,13 @@ class parlementaireActions extends sfActions
         $news[] = $n;
     }
     if ($request->getParameter('Amendement')) {
-      $elements++;  
+      $elements++;
       foreach(Doctrine::getTable('Amendement')->createQuery('a')
 	      ->leftJoin('a.ParlementaireAmendement pa')
 	      ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
               ->andWhere('a.sort <> ?', 'Rectifié')
               ->orderBy('updated_at DESC')->limit($this->limit)->execute()
-	      as $n) 
+	      as $n)
 	$news[] = $n;
     }
     if ($request->getParameter('Document')) {
@@ -502,7 +502,7 @@ class parlementaireActions extends sfActions
               as $n)
         $news[] = $n;
     }
- 
+
     if ($elements > 1) usort($news, 'parlementaireActions::dateSort');
 
     $this->news = $news;
