@@ -10,12 +10,16 @@ $lastyear++;
 
 $a = WWW::Mechanize->new(autocheck => 0);
 
-@urls = ("http://www.assemblee-nationale.fr/$legislature/documents/index-depots.asp",
-         "http://www.assemblee-nationale.fr/$legislature/documents/index-rapports.asp",
-         "http://www.assemblee-nationale.fr/$legislature/documents/index-application_lois.asp",
-         "http://www.assemblee-nationale.fr/$legislature/europe/index-rapinfo.asp",
+#@urls = ("http://www.assemblee-nationale.fr/$legislature/documents/index-depots.asp",
+@urls = ("http://www2.assemblee-nationale.fr/documents/liste/%28type%29/depots",
+         #"http://www.assemblee-nationale.fr/$legislature/documents/index-rapports.asp",
+         "http://www2.assemblee-nationale.fr/documents/liste/%28type%29/rapports",
+         #"http://www.assemblee-nationale.fr/$legislature/documents/index-application_lois.asp",
+         "http://www2.assemblee-nationale.fr/documents/liste/%28type%29/rapports-application-loi",
+         #"http://www.assemblee-nationale.fr/$legislature/europe/index-rapinfo.asp",
+         #"http://www2.assemblee-nationale.fr/14/autres-commissions/commission-des-affaires-europeennes/%28block%29/RapportsInfoParlementairesInstance/%28init%29/0", // JS LOAD
          "http://www.assemblee-nationale.fr/$legislature/documents/index-information-comper.asp",
-         "http://www.assemblee-nationale.fr/$legislature/documents/index-rapports-legislation.asp",
+         #"http://www.assemblee-nationale.fr/$legislature/documents/index-rapports-legislation.asp",
          "http://www.assemblee-nationale.fr/$legislature/documents/index-oeps.asp",
          "http://www.assemblee-nationale.fr/documents/index-general-oecst.asp",
          "http://www.assemblee-nationale.fr/$legislature/documents/index-territoire.asp",
@@ -28,7 +32,6 @@ for $year (2008 .. $lastyear) {
 }
 
 foreach $baseurl (@urls) {
-  $ct = 0;
   $a->get($baseurl);
   $content = $a->content;
   $p = HTML::TokeParser->new(\$content);
@@ -38,11 +41,12 @@ foreach $baseurl (@urls) {
     if ($url =~ /^\//) {
       $url = "http://www.assemblee-nationale.fr".$url;
     }
+    $url =~ s/\/documents\/notice//;
+    $url =~ s/\/\(index\)\/[a-z]+$/.asp/;
     next if $url =~ /(dossiers|i0562.asp)/i;
     next if $url =~ /\.pdf$/i;
     next if !($url =~ /nale\.fr\/$legislature\//);
     next if $url =~ /app\.(eu\.)?readspeaker\.com/i;
-    $ct++;
     $file = $url;
     $file =~ s/\//_/gi;
     $file =~ s/\#.*//;
