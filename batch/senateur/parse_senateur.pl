@@ -13,12 +13,8 @@ $yml = shift || 0;
 open $fh, $file ;
 @content = <$fh>;
 $content = "@content";
-$content =~ s/\n/ /g;
-$content =~ s/  / /g;
-$content =~ s/\r//g;
-@content = ();
-seek($fh, 0, 0);
-$p = HTML::TokeParser->new($fh);
+$content =~ s/&nbsp;/ /ig;
+$p = HTML::TokeParser->new(\$content);
 
 my %senateur;
 my %groupes;
@@ -121,7 +117,8 @@ sub groupefonction {
 	$str =~ s/^(Assemblée parlementaire de la franco)/Section française de l'$1/i;
 	$str =~ s/^(Assemblée parlementaire de l'OTAN)/Délégation française à l'$1/i;
 	$str =~ s/Groupe Groupe/Groupe/i;
-        $str =~ s/écologiste/Écologiste/;
+    $str =~ s/écologiste/Écologiste/;
+    $str =~ s/^(.*) \((pour .*)\) \/ (.*)$/$1 \/ $3 $2/;
 	utf8::encode($str);
 	return ucfirst($str);
 }
@@ -165,11 +162,13 @@ sub fonctions {
 	}
 	$limit = "/ul";
 	$limit = "/div" if ($autres eq "anciengroupe");
+
 	while ($t = $p->get_tag('li', $limit)) {
 		last if ($t->[0] ne "li");
-		$commission = $p->get_text('/li', '/a', '/p', $limit);
+		$commission = $p->get_text('/li', '/p', $limit);
+        #print STDERR "COMMISSION ".$commission."\n";
+        next if ($commission =~ /jusqu'au 30 septembre 2014/i);
 		last if ($commission =~ /ancien.*nat(eur|rice)/i);
-	#print STDERR $commission."\n";
 		$commission = groupefonction($commission);
 		$commission =~ s/^(S..?nat)/Bureau du $1/;
 		$comm = $commission;
