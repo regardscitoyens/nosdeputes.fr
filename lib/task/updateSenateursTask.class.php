@@ -97,7 +97,12 @@ class updateSenateursTask extends sfBaseTask
 	      $parl->place_hemicycle = $json->place_hemicycle;
 	    if ($json->profession)
 	      $parl->profession = $json->profession;
+	    if (count($json->sites_web))
+          foreach (array_keys($json->sites_web) as $i)
+            $json->sites_web[$i] = preg_replace("|(://[^/]+)/$|", "$1", $json->sites_web[$i]);
         if (isset($sites[$parl->slug]) && count($sites[$parl->slug])) {
+          foreach ($sites[$parl->slug] as $site)
+            $sites[$parl->slug][$i] = preg_replace("|(://[^/]+)/$|", "$1", $sites[$parl->slug][$i]);
           if (count($json->sites_web))
             $json->sites_web = array_unique(array_merge($json->sites_web, $sites[$parl->slug]));
           else $json->sites_web = array_unique($sites[$parl->slug]);
