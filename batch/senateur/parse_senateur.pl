@@ -14,6 +14,7 @@ open $fh, $file ;
 @content = <$fh>;
 $content = "@content";
 $content =~ s/&nbsp;/ /ig;
+$content =~ s/[\r\n\s  ]+/ /ig;
 $p = HTML::TokeParser->new(\$content);
 
 my %senateur;
