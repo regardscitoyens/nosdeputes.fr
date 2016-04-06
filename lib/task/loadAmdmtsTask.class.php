@@ -32,7 +32,7 @@ class loadAmdmtsTask extends sfBaseTask {
 		echo "ERROR json : $line";
 		continue;
 	    }
-	    if (!$json->source || !$json->numero || !$json->loi || !$json->sujet || !$json->texte || !$json->date || !isset($json->rectif)) {
+	    if (!$json->source || !$json->numero || !$json->loi || (!$json->texte && $json->sort != 'Irrecevable') || !$json->date || !isset($json->rectif)) {
               echo "ERROR mandatory arg missing (source|numero|loi|sujet|texte|date|rectif): $line\n";
               continue;
             }
@@ -45,8 +45,12 @@ class loadAmdmtsTask extends sfBaseTask {
               $rect->save();
              }
             }
-            
+
             if (!$amdmt) {
+	          if (!$json->sujet) {
+                echo "ERROR sujet missing for new amdmt: $line\n";
+                continue;
+              }
               $ct_crees++;
               $amdmt = new Amendement();
               $amdmt->source = $json->source;
@@ -66,8 +70,9 @@ class loadAmdmtsTask extends sfBaseTask {
                 $amdmt->numero_pere = $json->parent;
               }
               $amdmt->sujet = $json->sujet;
-              $amdmt->texte = $json->texte;
-              if ($json->expose)
+              if (!$amdmt->texte || !preg_match('/Retir/', $json->sort))
+                $amdmt->texte = $json->texte;
+              if ($json->expose && (!$amdmt->expose || !preg_match('/Retir/', $json->sort)))
                 $amdmt->expose = $json->expose;
               if ($json->refloi)
                 $amdmt->ref_loi = $json->refloi;
