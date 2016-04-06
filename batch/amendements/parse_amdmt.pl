@@ -22,6 +22,7 @@ $string =~ s/\r//g;
 $string =~ s/[\n\s]+/ /g;
 $string =~ s/^.*<body> *//i;
 $string =~ s/ *<\/body>.*$//i;
+$string =~ s/<br style='page-break-before:always'><br>/##NEXT##/ig;
 $string =~ s/\s*<[\s\/]*br[\s\/]*>\s*/<\/p><p>/ig;
 $string =~ s/<![\s\-]*\[if[^\]]+\][\s\-]*>//ig;
 $string =~ s/<![\s\-]*\[endif\][\s\-]*>//ig;
@@ -41,7 +42,9 @@ $string =~ s/\n((<[^=>]+>(.|Objet|\))?)+\n)+/\n/g;
 $string =~ s/ *\n */\n/g;
 $string =~ s/ *, */, /g;
 $string =~ s/\\/\//g;
-$string =~ s/(position_amdt=[^>]* -->)/$1\nNEXT\n/ig;
+$string =~ s/(<div><strong>)/\n\1/g;
+$string =~ s/##NEXT##/\nNEXT\n/g;
+#$string =~ s/(position_amdt=[^>]* -->)/$1\nNEXT\n/ig;
 
 if ($display_text) {
   utf8::encode($string);
@@ -126,7 +129,7 @@ foreach $line (split /\n/, $string) {
       $amdmt{'sujet'} = lc($1);
     }
   } else {
-    if ($line =~ /(amendement.*(irrecevable|retir)|retiré avant séance)/i && (!$amdmt{'sort'} || $amdmt{'sort'} eq "Retiré")) {
+    if ($line =~ /(amendement.*(irrecevable|retir)|retiré avant (réunion|séance))/i && (!$amdmt{'sort'} || $amdmt{'sort'} eq "Retiré")) {
       $amdmt{'sort'} = sortseance($line);
     }
     if ($amdmt{'texte'} eq "") {
@@ -186,7 +189,7 @@ sub sortseance {
   my $sort = shift;
   if ($sort =~ /irrecevab/i) {
     $sort = 'Irrecevable';
-  } elsif ($sort =~ /retir.*avant.*ance/i) {
+  } elsif ($sort =~ /retir.*avant.*(union|ance)/i) {
     $sort = 'Retiré avant séance';
   } elsif ($sort =~ /satisfait/i) {
     $sort = 'Satisfait';
