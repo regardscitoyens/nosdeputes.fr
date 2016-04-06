@@ -69,7 +69,8 @@ class loadAmdmtsTask extends sfBaseTask {
                 $amdmt->addTag('loi:sous_amendement_de='.$json->parent.$lettre);
                 $amdmt->numero_pere = $json->parent;
               }
-              $amdmt->sujet = $json->sujet;
+              if ($json->sujet)
+                $amdmt->sujet = $json->sujet;
               if (!$amdmt->texte || !preg_match('/Retir/', $json->sort))
                 $amdmt->texte = $json->texte;
               if ($json->expose && (!$amdmt->expose || !preg_match('/Retir/', $json->sort)))
