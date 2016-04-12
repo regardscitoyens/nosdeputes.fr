@@ -27,6 +27,7 @@ $string =~ s/<a[^>]*href=["']([^"']+)["'][^>]*>/<a href='$1'>/g;
 $string =~ s/colspan(\d+)/ colspan='$1'/g;
 $string =~ s/<\/?(div|center)>//g;
 $string =~ s/\r//g;
+$string =~ s/\t/ /g;
 $string =~ s/ +/ /g;
 $string =~ s/\n\s+/\n/g;
 $string =~ s/\s+\n/\n/g;
