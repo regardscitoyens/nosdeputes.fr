@@ -1,30 +1,32 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
+# Usage : parse_jo.py chamber [day]
+# "chamber" peut prendre pour valeur : "an" ou "senat" ; "day" doit être une date de la forme "2016-04-15", si omis, la date du jour sera utilisée
 import re, os, sys, urllib2, json
 from datetime import date, time, datetime
 from bs4 import BeautifulSoup
 
 def date_iso(datestr):
   month = {
-    "janvier": "01",
-    "février": "02",
-    "mars": "03",
-    "avril": "04",
-    "mai": "05",
-    "juin": "06",
-    "juillet": "07",
-    "août": "08",
-    "septembre": "09",
-    "octobre": "10",
-    "novembre": "11",
-    "décembre": "12",
+    u"janvier": "01",
+    u"février": "02",
+    u"mars": "03",
+    u"avril": "04",
+    u"mai": "05",
+    u"juin": "06",
+    u"juillet": "07",
+    u"août": "08",
+    u"septembre": "09",
+    u"octobre": "10",
+    u"novembre": "11",
+    u"décembre": "12",
   }
   d = datestr.split(' ')
   if d[1] == '1er':
     d[1] = '01'
   if len(d[1]) == 1:
     d[1] = '0'+d[1]
-  dateiso = d[3]+'-'+month[d[2]]+'-'+d[1]
+  dateiso = d[3][0:4]+'-'+month[d[2]]+'-'+d[1]
   if re.search(reg['date'], dateiso) is not None:
     return dateiso
   else:
@@ -35,20 +37,20 @@ reg['date'] = '^([0-9]{4})-([0-9]{2})-([0-9]{2})$'
 reg['com'] = '^Commissions'
 reg['start'] = u'^[0-9]{1,2}\. Membres présents ou excusés'
 reg['commission'] = u'(.*) :$'
-reg['reunion'] = u'^Réunion du (.*), à (.*) :'
+reg['reunion'] = u'^Réunion du (.*),? à (.*) ?:?'
 reg['presents'] = u'^Présents. - (.*)'
 reg['excuses'] = u'^Excusés?. - (.*)'
 reg['assistent'] = u'^Assistai.* - (.*)'
 reg['civilite'] = u' ?(Mme|M\.) '
 
-# Paramètres
+# Paramètres Réunion du mercredi 16 mars 2016 à 19 h 15
 
 chamber = sys.argv[1]
 
 try:
   day = sys.argv[2]
 except IndexError:
-  day = datetime.now().date()
+  day = str(datetime.now().date())
 
 prefix = 'https://www.legifrance.gouv.fr'
 
@@ -57,7 +59,7 @@ if chamber == 'an':
 elif chamber == 'senat':
   text_link = u'Commissions'
 else:
-  sys.exit(fail)
+  sys.exit('fail')
 
 if re.search(reg['date'], day) is not None:
   m = re.search(reg['date'], day)
@@ -95,9 +97,11 @@ for link in soup.find_all('a'):
       t = soup.find_all("div", "article")
 
       for br in t[0].findAll('br'):
-        br.replace_with("\n")
+        br.replace_with(os.linesep)
 
       on = False
+
+      #print(t[0].get_text())
 
       for line in t[0].get_text().split(os.linesep):
         line = line.strip()
