@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
+# Ce script extrait les présences en commission du Journal Officiel
 # Usage : parse_jo.py chamber [day]
 # "chamber" peut prendre pour valeur : "an" ou "senat" ; "day" doit être une date de la forme "2016-04-15", si omis, la date du jour sera utilisée
 import re, os, sys, urllib2, json
@@ -35,18 +36,19 @@ def date_iso(datestr):
 reg = {}
 reg['date'] = '^([0-9]{4})-([0-9]{2})-([0-9]{2})$'
 reg['com'] = '^Commissions'
-reg['start'] = u'^[0-9]{1,2}\. Membres présents ou excusés'
+reg['start'] = u'^[0-9]{0,2}\.? ?Membres présents ou excusés'
 reg['commission'] = u'(.*) :$'
-reg['reunion'] = u'^Réunion du (.*),? à (.*) ?:?'
-reg['presents'] = u'^Présents. - (.*)'
-reg['excuses'] = u'^Excusés?. - (.*)'
-reg['assistent'] = u'^Assistai.* - (.*)'
+reg['reunion'] = u'^Réunion du (.*) à (.*) :'
+reg['presents'] = u'^Présents. (-|:) (.*)'
+reg['excuses'] = u'^Excusés?. (-|:) (.*)'
+reg['assistent'] = u'^Assistai.* (-|:) (.*)'
 reg['civilite'] = u' ?(Mme|M\.) '
 
-# Paramètres Réunion du mercredi 16 mars 2016 à 19 h 15
-
-chamber = sys.argv[1]
-
+# Paramètres
+try:
+  chamber = sys.argv[1]
+except IndexError:
+  sys.exit('Le 1er argument est obligatoire, il doit être "an ou "senat"')
 try:
   day = sys.argv[2]
 except IndexError:
@@ -59,83 +61,114 @@ if chamber == 'an':
 elif chamber == 'senat':
   text_link = u'Commissions'
 else:
-  sys.exit('fail')
+  sys.exit('Le 1er argument doit être "an" ou "senat"')
 
 if re.search(reg['date'], day) is not None:
   m = re.search(reg['date'], day)
   date_fr = m.group(3)+'/'+m.group(2)+'/'+m.group(1)
   jo_eli = prefix+'/eli/jo/'+m.group(1)+'/'+str(int(m.group(2)))+'/'+str(int(m.group(3)))
 else:
-  sys.exit('fail')
+  sys.exit('Le 2ème argument doit être une date de la forme "2016-04-15"')
 
+# Repertoires
+if not os.path.exists('./html'):
+  os.makedirs('./html')
+if not os.path.exists('./json'):
+  os.makedirs('./json')
 
+# Sommaire JO
 summary = urllib2.urlopen(jo_eli)
 soup = BeautifulSoup(summary.read(), "lxml-xml")
 
-# Sauvegarde sommaire
-with open("html/sommaire_"+day+".html", "wb") as file:
-  file.write(soup.prettify("utf-8"))
+if soup.title.string.strip().startswith(u'Recherche'):
+  sys.exit(chamber.upper()+' '+date_fr+' no JO '+jo_eli)
 
-data = {}
-jo = False
+else:
+  # Sauvegarde sommaire
+  with open("html/sommaire_"+day+".html", "wb") as file:
+    file.write(soup.prettify("utf-8"))
 
-for link in soup.find_all('a'):
-  link_string = unicode(link.string).strip()
-  if re.search(reg['com'], link_string, re.IGNORECASE) is not None:
-    jo = True
+  data = {}
+  commission_link = False
 
-    data['source'] = 'Journal officiel du '+date_fr
+  for link in soup.find_all('a'):
+    link_string = unicode(link.string).strip()
+    if re.search(reg['com'], link_string, re.IGNORECASE) is not None:
 
-    if link_string == text_link:
-      coms_doc = urllib2.urlopen(prefix+link.get('href'))
-      soup = BeautifulSoup(coms_doc.read(), "lxml-xml")
+      data['source'] = 'Journal officiel du '+date_fr
 
-      # Sauvegarde commissions
-      with open("html/coms_doc_"+day+".html", "wb") as file:
-        file.write(soup.prettify("utf-8"))
+      # Commission
+      if link_string == text_link:
+        commission_link = True
+        com_link = prefix+link.get('href')
+        coms_doc = urllib2.urlopen(com_link)
+        soup = BeautifulSoup(coms_doc.read(), "lxml-xml")
 
-      t = soup.find_all("div", "article")
+        # Sauvegarde commissions
+        with open("html/coms_"+chamber+"_"+day+".html", "wb") as file:
+          file.write(soup.prettify("utf-8"))
 
-      for br in t[0].findAll('br'):
-        br.replace_with(os.linesep)
+        t = soup.find_all("div", "article")
 
-      on = False
+        for br in t[0].findAll('br'):
+          br.replace_with(os.linesep)
 
-      #print(t[0].get_text())
+        on = False
 
-      for line in t[0].get_text().split(os.linesep):
-        line = line.strip()
+        com_text = ''
 
-        # Détecter début
-        if re.search(reg['start'], line, re.IGNORECASE) is not None:
-          on = True
+        for line in t[0].get_text().split(os.linesep):
+          line = line.strip()
 
-        if on:
+          # Détecter début
+          if re.search(reg['start'], line, re.IGNORECASE) is not None:
+            on = True
+
+          # Pre-process
+          if on and line:
+            if line.startswith(u'Présent') is False and line.startswith(u'Excusé') is False and line.startswith(u'Assistai') is False and line.endswith(u' :') is False:
+              line = line+u' :'
+
+            com_text += line+os.linesep
+
+        json_file = ''
+
+        for line in com_text.split(os.linesep):
+
           if re.search(reg['commission'], line) is not None:
 
             if re.search(reg['reunion'], line, re.IGNORECASE) is not None:
               m = re.search(reg['reunion'], line, re.IGNORECASE)
               data['reunion'] = date_iso(m.group(1))
-              data['session'] = m.group(2).replace(' h ', ':').replace(' heures', ':00')
+              data['session'] = m.group(2).replace(' :', '').replace(' h ', ':').replace(' heures', ':00')
             else:
               m = re.search(reg['commission'], line)
               data['commission'] = m.group(1)
 
           if re.search(reg['presents'], line, re.IGNORECASE) is not None:
             m = re.search(reg['presents'], line, re.IGNORECASE)
-            presents = re.sub(reg['civilite'], "", m.group(1)).split(',')
+            presents = re.sub(reg['civilite'], "", m.group(2)).split(',')
 
             for present in presents:
               data['depute'] = present
-              print(json.dumps(data, separators=(',',':')))
+              json_file += json.dumps(data, separators=(',',':'))+os.linesep
 
           if re.search(reg['assistent'], line, re.IGNORECASE) is not None:
             m = re.search(reg['assistent'], line, re.IGNORECASE)
-            presents = re.sub(reg['civilite'], "", m.group(1)).split(',')
+            presents = re.sub(reg['civilite'], "", m.group(2)).split(',')
 
             for present in presents:
               data['depute'] = present
-              print(json.dumps(data, separators=(',',':')))
+              json_file += json.dumps(data, separators=(',',':'))+os.linesep
 
-if jo is False:
-  print(date_fr+' '+jo_eli+' no commission link')
+        if not json_file:
+          sys.exit(chamber.upper()+' '+date_fr+' no presence '+com_link)
+        else:
+          print(json_file.strip())
+          #with open("json/"+chamber+"_"+day+".html", "wb") as file:
+          #  file.write(json_file.strip())
+
+if not commission_link:
+  sys.exit(chamber.upper()+' '+date_fr+' no commission '+jo_eli)
+
+
