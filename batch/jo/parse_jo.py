@@ -36,13 +36,16 @@ def date_iso(datestr):
 reg = {}
 reg['date'] = '^([0-9]{4})-([0-9]{2})-([0-9]{2})$'
 reg['com'] = '^Commissions'
-reg['start'] = u'^[0-9]{0,2}\.? ?Membres présents ou excusés'
+reg['start_an'] = u'^[0-9]{0,2}\. Membres présents ou excusés'
+reg['start_senat'] = u'^Membres présents ou excusés'
 reg['commission'] = u'(.*) :$'
-reg['reunion'] = u'^Réunion du (.*) à (.*) :'
-reg['presents'] = u'^Présents. (-|:) (.*)'
-reg['excuses'] = u'^Excusés?. (-|:) (.*)'
+reg['reunion_an'] = u'^Réunion du (.*) à (.*) :'
+reg['reunion_senat'] = u'^(.{1,5}éance) du (.*) :'
+reg['presents'] = u'^Présents\.? (-|:) (.*)'
+reg['excuses'] = u'^Excusés?\.? (-|:) (.*)'
 reg['assistent'] = u'^Assistai.* (-|:) (.*)'
 reg['civilite'] = u' ?(Mme|M\.) '
+reg['fonction_senat'] = u' \(.*\).?'
 
 # Paramètres
 try:
@@ -121,15 +124,17 @@ else:
           line = line.strip()
 
           # Détecter début
-          if re.search(reg['start'], line, re.IGNORECASE) is not None:
+          if re.search(reg['start_'+chamber], line, re.IGNORECASE) is not None:
             on = True
 
           # Pre-process
           if on and line:
-            if line.startswith(u'Présent') is False and line.startswith(u'Excusé') is False and line.startswith(u'Assistai') is False and line.endswith(u' :') is False:
+            if line.startswith(u'Présent') is False and line.startswith(u'Excusé') is False and line.startswith(u'Assistai') is False and line.startswith(u'Ont') is False and line.endswith(u' :') is False:
               line = line+u' :'
 
             com_text += line+os.linesep
+
+        #print(com_text)
 
         json_file = ''
 
@@ -137,28 +142,38 @@ else:
 
           if re.search(reg['commission'], line) is not None:
 
-            if re.search(reg['reunion'], line, re.IGNORECASE) is not None:
-              m = re.search(reg['reunion'], line, re.IGNORECASE)
+            if re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
+              m = re.search(reg['reunion_an'], line, re.IGNORECASE)
               data['reunion'] = date_iso(m.group(1))
               data['session'] = m.group(2).replace(' :', '').replace(' h ', ':').replace(' heures', ':00')
+            elif re.search(reg['reunion_senat'], line, re.IGNORECASE) is not None:
+              m = re.search(reg['reunion_senat'], line, re.IGNORECASE)
+              data['date'] = date_iso(m.group(2))
+              data['heure'] = m.group(1).replace(u'Séance', '')
             else:
               m = re.search(reg['commission'], line)
               data['commission'] = m.group(1)
 
           if re.search(reg['presents'], line, re.IGNORECASE) is not None:
             m = re.search(reg['presents'], line, re.IGNORECASE)
-            presents = re.sub(reg['civilite'], "", m.group(2)).split(',')
+            presents = re.sub(reg['civilite'], "", m.group(2))
 
-            for present in presents:
-              data['depute'] = present
+            for present in presents.split(','):
+              if chamber == "senat":
+                data['senateur'] = present.strip()
+              else:
+                data['depute'] = present.strip()
               json_file += json.dumps(data, separators=(',',':'))+os.linesep
 
           if re.search(reg['assistent'], line, re.IGNORECASE) is not None:
             m = re.search(reg['assistent'], line, re.IGNORECASE)
-            presents = re.sub(reg['civilite'], "", m.group(2)).split(',')
+            presents = re.sub(reg['civilite'], "", m.group(2))
 
-            for present in presents:
-              data['depute'] = present
+            for present in presents.split(','):
+              if chamber == "senat":
+                data['senateur'] = re.sub(reg['fonction_senat'], "", present).strip()
+              else:
+                data['depute'] = present.strip().strip('.')
               json_file += json.dumps(data, separators=(',',':'))+os.linesep
 
         if not json_file:
