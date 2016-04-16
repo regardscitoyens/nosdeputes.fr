@@ -45,7 +45,7 @@ reg['presents'] = u'^Présents\.? (-|:) (.*)'
 reg['excuses'] = u'^Excusés?\.? (-|:) (.*)'
 reg['assistent'] = u'^Assistai.* (-|:) (.*)'
 reg['civilite'] = u' ?(Mme|M\.) '
-reg['fonction_senat'] = u' \(.*\).?'
+reg['fonction_senat'] = u' \(.*\)'
 
 # Paramètres
 try:
@@ -129,12 +129,14 @@ else:
 
           # Pre-process
           if on and line:
-            if line.startswith(u'Présent') is False and line.startswith(u'Excusé') is False and line.startswith(u'Assistai') is False and line.startswith(u'Ont') is False and line.endswith(u' :') is False:
+            if line.startswith(u'Présent') is False and line.startswith(u'Excusé') is False and line.startswith(u'Assistai') is False and line.startswith(u'Ont') is False and line.startswith(u'Les') is False and line.startswith(u'ERRATUM') is False and line.endswith(u' :') is False:
               line = line+u' :'
 
-            com_text += line+os.linesep
+            if line.startswith(u'Les') and line.endswith(u' :'):
+              line = line[0:-2]
+            #Les délégations de vote n'ayant pas été mentionnées dans la liste publiée au JO du jeudi 14 janvier 2016, il convient de lire :
 
-        #print(com_text)
+            com_text += line+os.linesep
 
         json_file = ''
 
@@ -160,18 +162,20 @@ else:
 
             for present in presents.split(','):
               if chamber == "senat":
-                data['senateur'] = present.strip()
+                data['senateur'] = present.strip().strip('.')
               else:
-                data['depute'] = present.strip()
+                data['depute'] = present.strip().strip('.')
               json_file += json.dumps(data, separators=(',',':'))+os.linesep
 
           if re.search(reg['assistent'], line, re.IGNORECASE) is not None:
             m = re.search(reg['assistent'], line, re.IGNORECASE)
             presents = re.sub(reg['civilite'], "", m.group(2))
+            if chamber == "senat":
+              presents = re.sub(reg['fonction_senat'], "", presents)
 
             for present in presents.split(','):
               if chamber == "senat":
-                data['senateur'] = re.sub(reg['fonction_senat'], "", present).strip()
+                data['senateur'] = present.strip().strip('.')
               else:
                 data['depute'] = present.strip().strip('.')
               json_file += json.dumps(data, separators=(',',':'))+os.linesep
