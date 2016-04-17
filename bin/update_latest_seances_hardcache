@@ -1,0 +1,15 @@
+#!/bin/bash
+. bin/db.inc
+TMPFILE=/tmp/hard_cache.$$
+
+mkdir -p web/$LEGISLATURE/seance
+for seance_id in $(echo "select DISTINCT seance_id from intervention where updated_at > SUBTIME(NOW(),'0:20:0')" | mysql $MYSQLID $DBNAME | grep -v seance_id )
+do
+	echo "http://$VHOST/$LEGISLATURE/seance/$seance_id"
+	rm web/$LEGISLATURE/seance/$seance_id.html 2> /dev/null
+	curl -s "http://$VHOST/$LEGISLATURE/seance/$seance_id?_sf_ignore_cache=$$" > $TMPFILE
+	mv $TMPFILE web/$LEGISLATURE/seance/$seance_id.html
+done
+rm -f cache/frontend/prod/template/*/all/intervention/seance/seance/*
+rm -f cache/frontend/prod/template/*/all/sf_cache_partial/plot/__groupes/sf_cache_key/*
+
