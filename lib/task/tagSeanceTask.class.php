@@ -10,10 +10,11 @@ class tagSeanceTask extends sfBaseTask
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
- 
+
   protected function wordize($interventions, $excludeS = 0, $minsize = 1) {
     $words = array();
     foreach($interventions as $i) {
+      $i = preg_replace('/<\/?[a-z][^>]+>/ig', '', $i);
       $i = preg_replace('/\([^\)]+\)/', '', $i);
       $i = preg_replace('/&#339;/', 'oe', $i['intervention']);
       foreach(preg_split('/[\s\,\;\.\:\_\(\)\&\#\<\>\'\’]+/i', $i) as $w) {
@@ -47,7 +48,7 @@ class tagSeanceTask extends sfBaseTask
   {
 
     // your code here
-    $manager = new sfDatabaseManager($this->configuration);    
+    $manager = new sfDatabaseManager($this->configuration);
     $q = Doctrine_Query::create();
     $q->select('intervention')->from('Intervention i')->where('i.parlementaire_id IS NOT NULL');
     echo "count:\n\t";
@@ -93,7 +94,7 @@ class tagSeanceTask extends sfBaseTask
     //Pour chacune des séances
     foreach($qs->fetchArray() as $s) {
       echo "Seance ".$s['id']." ..";
-      
+
       //Recherche toutes les interventions pour cette séance
       $q = Doctrine_Query::create();
       $q->select('intervention, id, parlementaire_id')->from('Intervention i')->where('seance_id = ?', $s['id'])->andWhere('( i.parlementaire_id IS NOT NULL OR i.personnalite_id IS NOT NULL )')->andWhere('(i.type = ? OR i.fonction IS NULL OR i.fonction NOT LIKE ?)', array('commission', 'président%'));
@@ -109,7 +110,7 @@ class tagSeanceTask extends sfBaseTask
       $tags = array();
       //Pour les mots le plus populaires non exclus on les garde
       foreach(array_keys($words) as $k) {
-        if (!isset($exclude[$k]) && !preg_match('/-((il|elle)s?|on|ci|le|[nv]ous)$/', $k)) {
+        if (!isset($exclude[$k]) && !preg_match('/(^http|-((il|elle)s?|on|ci|le|[nv]ous)$)/', $k)) {
           $cpt++;
           $pc = $words[$k]*100/$tot;
           if ($pc < 0.8)
@@ -145,19 +146,19 @@ class tagSeanceTask extends sfBaseTask
       $debut_bani = 'à|de?s?|l[ea]?|les|ainsi|ensuite';
       if (count($sentences)) {
         foreach (array_keys($sentences) as $sent) {
-	  
+
           if (preg_match("/^($debut_bani)[' ]/i", $sent) || preg_match("/ ($debut_bani)$/i", $sent) || preg_match('/\d|amendement|rapporteure?|mission|collègue/i', $sent) )
             continue;
-	  
+
           if (preg_match('/^[A-Z][a-z]/', $sent)) {
             unset($tags[$sent2word[$sent]]);
             continue;
           }
-	  
+
           if (preg_match('/^([a-z]{2} |[A-Z]+)/', $sent) || preg_match('/ [a-z]$/i', $sent)) {
             continue;
           }
-	  
+
           if (($sentences[$sent]*100/$tot > 0.8 || $sentences[$sent]*100/$words[$sent2word[$sent]] > 70)&& $words[$sent2word[$sent]] > 5) {
 	    $ok = 1;
 	    foreach(array_keys($exclude_sentences) as $excl_sent) {
