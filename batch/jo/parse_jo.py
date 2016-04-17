@@ -181,7 +181,7 @@ else:
               json_file += json.dumps(data, separators=(',',':'))+os.linesep
 
         if not json_file:
-          sys.exit(chamber.upper()+' '+date_fr+' no presence '+com_link)
+          sys.exit(chamber.upper()+' '+date_fr+' no attendance '+com_link)
         else:
           print(json_file.strip())
           #with open("json/"+chamber+"_"+day+".html", "wb") as file:
