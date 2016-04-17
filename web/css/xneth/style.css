@@ -1247,6 +1247,11 @@ h2 {
   margin-right: 7px;
   margin-bottom: 7px;
 }
+.intervenant p img {
+  float: none;
+  width: auto;
+  height: auto;
+}
 .intervenant {
 
 }
@@ -1255,8 +1260,10 @@ h2 {
 }
 #carte_circo .carte_departement {
   float: right;
+/*
   margin-top: 10px;
   margin-right: 35px;
+*/
 }
 .didascalie {
   font-style: oblique;

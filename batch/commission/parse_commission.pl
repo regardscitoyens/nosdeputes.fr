@@ -6,6 +6,10 @@ $url =~ s/^[^\/]+\///;
 $url =~ s/_/\//g;
 $url =~ s/commissions\/elargies/commissions_elargies/;
 $source = $url;
+$baseurl = $url;
+$baseurl =~ s/\/[^\/]+$/\//;
+$rooturl = $url;
+$rooturl =~ s/^([^\/]+)\/.*$/\1/;
 
 if ($url =~ /\/(\d+)-(\d+)\//) {
   $session = '20'.$1.'20'.$2;
@@ -113,6 +117,7 @@ sub checkout {
         $commission = $commission_meta;
     }
     $intervention =~ s/"/\\"/g;
+    $intervention =~ s/\\\\/\//g;
     $intervention =~ s/\s*(<\/?t(able|[rdh])[^>]*>)\s*/\1/gi;
     $cpt+=10;
     $ts = $cpt;
@@ -311,6 +316,7 @@ $string =~ s/<t([rdh])[^>]*( (row|col)span=["\d]+)+[^>]*>/<t\1\2>/gi;
 $string =~ s/<t([rdh])( (row|col)span=["\d]+)*[^>]*>/<t\1\2>/gi;
 $string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
 $string =~ s/(<\/table>)\s*(<table)/\1\n\2/gi;
+$string =~ s/(<img[^>]*)[\n\r]+([^>]*>)/\1 \2/gi;
 $string =~ s/-->(-->)+/-->/g;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
@@ -396,6 +402,20 @@ foreach $line (split /\n/, $string)
     }elsif ($line =~ /\<p/i || ($line =~ /(<SOMMAIRE>|\<h[1-9]+ class="titre\d+)/i && $line !~ />Commission/)) {
 	$found = 0;
     $line =~ s/<\/?SOMMAIRE>/\//g;
+    while ($line =~ /^(.*)<(img.*? src=.)(.*?)(['"][^\>]+)>(.*)$/i) {
+      $img0 = $1;
+      $img1 = $2;
+      $img2 = $4;
+      $img3 = $5;
+      $imgurl = $3;
+      if ($imgurl =~ /^\//) {
+        $imgurl = $rooturl.$imgurl
+      } elsif ($imgurl !~ /^http/i) {
+        $imgurl = $baseurl.$imgurl;
+      }
+      $imgurl =~ s/\//\\\\/g;
+      $line = $img0."##".$img1.$imgurl.$img2."##".$img3;
+    }
 	$line =~ s/\<\/?[^\>]+\>//g;
     $line =~ s/\s+/ /g;
     $line =~ s/^\s//;
@@ -404,6 +424,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/\s*\|\s*,\s*\/\s*/,|\/ /g;
     $line =~ s/\|\|//g;
     $line =~ s/\/\///g;
+	$line =~ s/##(img[^\>#]+?)##/<\1 \\\\>/ig;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
     $tmpinter = "";
