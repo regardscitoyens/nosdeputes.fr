@@ -31,18 +31,24 @@ class removeSeanceTask extends sfBaseTask {
     print " - Gère les présences\n";
     foreach (Doctrine_Query::create()->select('id')->from('Presence')->where('seance_id = ?', $id)->fetchArray() as $presence) {
       $pres = $presence['id'];
-      print $pres."//";
+      print $pres;
       $query = Doctrine_Query::create()
         ->delete('PreuvePresence p')
         ->where('p.presence_id = ?', $pres)
+        ->andWhereIn('p.type', array("intervention", "compte-rendu"))
         ->execute();
-      $query = Doctrine_Query::create()
-        ->delete('Presence p')
-        ->where('p.id = ?', $pres);
-      if (! $query->execute()) {
-        print 'Suppression impossible de la présence N°'.$pres."\n";
-        return;
+      if (Doctrine_Query::create()->select('id')->from('PreuvePresence')->where('presence_id = ?', $pres)->fetchOne()) {
+        print "(kept via JO)";
+      } else {
+        $query = Doctrine_Query::create()
+          ->delete('Presence p')
+          ->where('p.id = ?', $pres);
+        if (! $query->execute()) {
+          print 'Suppression impossible de la présence N°'.$pres."\n";
+          return;
+        }
       }
+      print "//";
     }
 
     $sections = array();
