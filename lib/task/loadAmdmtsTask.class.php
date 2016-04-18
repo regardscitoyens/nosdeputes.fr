@@ -92,11 +92,13 @@ class loadAmdmtsTask extends sfBaseTask {
               if ($json->avisgouv)
                 $amdmt->avis_gouv = $json->avisgouv;
             }
-            if ($json->sort)
-              $amdmt->sort = $json->sort;
-            elseif (!$amdmt->sort)
-              $amdmt->sort = "Indéfini";
-            $amdmt->save();
+            if ($modif || !$amdmt->sort || $amdmt->sort != $json->sort) {
+              if ($json->sort)
+                $amdmt->sort = $json->sort;
+              elseif (!$amdmt->sort)
+                $amdmt->sort = "Indéfini";
+              $amdmt->save();
+            }
           }
           if ($ct_crees) print "$dir$file\n".$ct_lines." amendements lus : ".$ct_lus." écrits dont ".$ct_crees." nouveaux.\n";
           unlink($dir.$file);
