@@ -134,7 +134,6 @@ else:
 
             if line.startswith(u'Les') and line.endswith(u' :'):
               line = line[0:-2]
-            #Les délégations de vote n'ayant pas été mentionnées dans la liste publiée au JO du jeudi 14 janvier 2016, il convient de lire :
 
             com_text += line+os.linesep
 
@@ -147,14 +146,14 @@ else:
             if re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
               m = re.search(reg['reunion_an'], line, re.IGNORECASE)
               data['reunion'] = date_iso(m.group(1))
-              data['session'] = m.group(2).replace(' :', '').replace(' h ', ':').replace(' heures', ':00')
+              data['session'] = m.group(2).replace(' :', '').replace(' h ', ':').replace(' heures', ':00')[0:5]
             elif re.search(reg['reunion_senat'], line, re.IGNORECASE) is not None:
               m = re.search(reg['reunion_senat'], line, re.IGNORECASE)
               data['date'] = date_iso(m.group(2))
               data['heure'] = m.group(1).replace(u'Séance', '')
             else:
               m = re.search(reg['commission'], line)
-              data['commission'] = m.group(1)
+              data['commission'] = re.sub(':', '', m.group(1)).strip()
 
           if re.search(reg['presents'], line, re.IGNORECASE) is not None:
             m = re.search(reg['presents'], line, re.IGNORECASE)
@@ -165,7 +164,7 @@ else:
                 data['senateur'] = present.strip().strip('.')
               else:
                 data['depute'] = present.strip().strip('.')
-              json_file += json.dumps(data, separators=(',',':'))+os.linesep
+              json_file += json.dumps(data, separators=(',',':'), ensure_ascii=False, sort_keys=True)+os.linesep
 
           if re.search(reg['assistent'], line, re.IGNORECASE) is not None:
             m = re.search(reg['assistent'], line, re.IGNORECASE)
@@ -178,7 +177,7 @@ else:
                 data['senateur'] = present.strip().strip('.')
               else:
                 data['depute'] = present.strip().strip('.')
-              json_file += json.dumps(data, separators=(',',':'))+os.linesep
+              json_file += json.dumps(data, separators=(',',':'), ensure_ascii=False, sort_keys=True)+os.linesep
 
         if not json_file:
           sys.exit(chamber.upper()+' '+date_fr+' no attendance '+com_link)
