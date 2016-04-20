@@ -182,9 +182,9 @@ else:
         if not json_file:
           sys.exit(chamber.upper()+' '+date_fr+' no attendance '+com_link)
         else:
-          print(json_file.strip().encode('utf-8'))
-          #with open("json/"+chamber+"_"+day+".json", "wb") as file:
-          #  file.write(json_file.strip().encode('utf-8'))
+          #print(json_file.strip().encode('utf-8'))
+          with open("json/"+chamber+"_"+day+".json", "wb") as file:
+            file.write(json_file.strip().encode('utf-8'))
 
 if not commission_link:
   sys.exit(chamber.upper()+' '+date_fr+' no commission '+jo_eli)
