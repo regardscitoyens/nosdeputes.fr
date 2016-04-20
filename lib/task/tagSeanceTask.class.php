@@ -14,7 +14,7 @@ class tagSeanceTask extends sfBaseTask
   protected function wordize($interventions, $excludeS = 0, $minsize = 1) {
     $words = array();
     foreach($interventions as $i) {
-      $i = preg_replace('/<\/?[a-z][^>]+>/ig', '', $i);
+      $i = preg_replace('/<\/?[a-z][^>]+>/i', '', $i);
       $i = preg_replace('/\([^\)]+\)/', '', $i);
       $i = preg_replace('/&#339;/', 'oe', $i['intervention']);
       foreach(preg_split('/[\s\,\;\.\:\_\(\)\&\#\<\>\'\’]+/i', $i) as $w) {
