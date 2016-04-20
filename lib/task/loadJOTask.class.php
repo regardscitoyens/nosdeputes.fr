@@ -11,11 +11,11 @@ class loadJOTask extends sfBaseTask
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
- 
+
   protected function execute($arguments = array(), $options = array())
   {
     if ($options['source'] === "jo") {
-      $workdir = "jo/xml";
+      $workdir = "jo/json";
       $typesource = "jo";
     } else if ($options['source'] === "cri") {
       $workdir = "commission/presents";
@@ -28,7 +28,7 @@ class loadJOTask extends sfBaseTask
       return;
     }
     $dir = dirname(__FILE__).'/../../batch/'.$workdir.'/';
-    $manager = new sfDatabaseManager($this->configuration);    
+    $manager = new sfDatabaseManager($this->configuration);
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
