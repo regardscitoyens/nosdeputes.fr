@@ -2,7 +2,7 @@
 # -*- coding: utf8 -*-
 # Ce script extrait les présences en commission du Journal Officiel
 # Usage : parse_jo.py chamber [day] [stdout]
-# "chamber" peut prendre pour valeur : "an" ou "senat" ; "day" doit être une date de la forme "2016-04-15", si omis, la date du jour sera utilisée ; "stdout" permet d'afficher la sortie du script plutôt que de créer json
+# "chamber" peut prendre pour valeur : "an" ou "senat" ; "day" doit être une date de la forme "2016-04-15", si omis, la date du jour sera utilisée ; "stdout" permet d'afficher la sortie du script plutôt que de créer un fichier dans ./json
 import re, os, sys, urllib2, json
 from datetime import date, time, datetime
 from bs4 import BeautifulSoup
