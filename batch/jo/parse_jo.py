@@ -86,7 +86,7 @@ if not os.path.exists('./json'):
 
 # Sommaire JO
 summary = urllib2.urlopen(jo_eli)
-soup = BeautifulSoup(summary.read(), "lxml-xml")
+soup = BeautifulSoup(summary.read(), "lxml")
 
 if soup.title.string.strip().startswith(u'Recherche'):
   sys.exit(chamber.upper()+' '+date_fr+' no JO '+jo_eli)
@@ -110,7 +110,7 @@ else:
         commission_link = True
         com_link = prefix+link.get('href')
         coms_doc = urllib2.urlopen(com_link)
-        soup = BeautifulSoup(coms_doc.read(), "lxml-xml")
+        soup = BeautifulSoup(coms_doc.read(), "lxml")
 
         # Sauvegarde commissions
         with open("html/coms_"+chamber+"_"+day+".html", "wb") as file:
