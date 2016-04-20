@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 # Ce script extrait les présences en commission du Journal Officiel
-# Usage : parse_jo.py chamber [day]
-# "chamber" peut prendre pour valeur : "an" ou "senat" ; "day" doit être une date de la forme "2016-04-15", si omis, la date du jour sera utilisée
+# Usage : parse_jo.py chamber [day] [stdout]
+# "chamber" peut prendre pour valeur : "an" ou "senat" ; "day" doit être une date de la forme "2016-04-15", si omis, la date du jour sera utilisée ; "stdout" permet d'afficher la sortie du script plutôt que de créer json
 import re, os, sys, urllib2, json
 from datetime import date, time, datetime
 from bs4 import BeautifulSoup
@@ -56,6 +56,11 @@ try:
   day = sys.argv[2]
 except IndexError:
   day = str(datetime.now().date())
+try:
+  stdout = sys.argv[3]
+  stdout = True
+except IndexError:
+  stdout = False
 
 prefix = 'https://www.legifrance.gouv.fr'
 
@@ -182,9 +187,11 @@ else:
         if not json_file:
           sys.exit(chamber.upper()+' '+date_fr+' no attendance '+com_link)
         else:
-          #print(json_file.strip().encode('utf-8'))
-          with open("json/"+chamber+"_"+day+".json", "wb") as file:
-            file.write(json_file.strip().encode('utf-8'))
+          if stdout:
+            print(json_file.strip().encode('utf-8'))
+          else:
+            with open("json/"+chamber+"_"+day+".json", "wb") as file:
+              file.write(json_file.strip().encode('utf-8'))
 
 if not commission_link:
   sys.exit(chamber.upper()+' '+date_fr+' no commission '+jo_eli)
