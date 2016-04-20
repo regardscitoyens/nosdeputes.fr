@@ -64,7 +64,7 @@ fi
 if [[ $jo -eq 1 ]]; then
   echo == JO
   echo =======================
-  cd batch/jo ; bash compute_latest.sh ; cd ../..
+  cd batch/jo ; bash compute_latest.sh an ; cd ../..
 fi
 if [[ $questions -eq 2 ]]; then
   echo == International
