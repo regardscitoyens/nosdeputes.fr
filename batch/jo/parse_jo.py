@@ -37,15 +37,15 @@ reg = {}
 reg['date'] = '^([0-9]{4})-([0-9]{2})-([0-9]{2})$'
 reg['com'] = '^Commissions'
 reg['start_an'] = u'^[0-9]{0,2}\. Membres présents ou excusés'
-reg['start_senat'] = u'^Membres présents ou excusés'
+reg['start_senat'] = u'^Membres pré|ésents ou excusé|és'
 reg['commission'] = u'(.*) :$'
 reg['reunion_an'] = u'^Réunion du (.*) ?à (.*) :'
 reg['reunion_senat'] = u'^(.{1,5}éance) du (.*) :'
-reg['presents'] = u'^Présents.*(-|:) (.*)'
+reg['presents'] = u'^Présents.* ?(-|:) (.*)'
 reg['excuses'] = u'^Excusé.*(-|:) (.*)'
-reg['assistent'] = u'^Assistai.*(-|:) (.*)'
+reg['assistent'] = u'^Assistai.* (-|:) (.*)'
 reg['civilite'] = u' ?(Mme|M\.) '
-reg['fonction_senat'] = u' \(.*\)'
+reg['fonction_senat'] = u' \([^)]*\)'
 
 # Paramètres
 try:
@@ -141,6 +141,8 @@ else:
               line = line[0:-2]
 
             com_text += line+os.linesep
+
+        com_text = com_text.replace(u"’", u"'")
 
         json_file = ''
 
