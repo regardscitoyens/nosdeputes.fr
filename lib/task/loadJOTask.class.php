@@ -11,11 +11,11 @@ class loadJOTask extends sfBaseTask
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
- 
+
   protected function execute($arguments = array(), $options = array())
   {
     if ($options['source'] === "jo") {
-      $workdir = "jo/xml";
+      $workdir = "jo/json";
       $typesource = "jo";
     } else if ($options['source'] === "cri") {
       $workdir = "commission/presents";
@@ -25,7 +25,7 @@ class loadJOTask extends sfBaseTask
       return;
     }
     $dir = dirname(__FILE__).'/../../batch/'.$workdir.'/';
-    $manager = new sfDatabaseManager($this->configuration);    
+    $manager = new sfDatabaseManager($this->configuration);
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
@@ -92,7 +92,7 @@ class loadJOTask extends sfBaseTask
 		    }
 		  }
 		}
-		$correspondanceheureseance[$match[1]] = $jo->heure;	      
+		$correspondanceheureseance[$match[1]] = $jo->heure;
 	      }
 	    }
 	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->date, $jo->heure);

@@ -30,7 +30,7 @@ do
       oldquestions) option="o";;
       total) option="t";;
     esac
-  fi  
+  fi
   case $option in
     s) senateurs=0;;
     j) jo=0;;
@@ -67,7 +67,7 @@ fi
 if [[ $jo -eq 1 ]]; then
   echo JO
   echo =======================
-  cd batch/jo ; perl compute_latest.pl ; cd -
+  cd batch/jo ; bash compute_latest.sh senat ; cd -
 fi
 echo Hemicycles
 echo =======================
@@ -111,28 +111,28 @@ if [[ $jo -eq 1 ]]; then
 fi
 echo Load Hemicycles
 echo =======================
-while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do 
+while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
-	php symfony load:Hemicycle 
+	php symfony load:Hemicycle
 done;
 echo "Load Commissions : http://www.nossenateurs.fr/backend.php/commissions"
 echo =======================
 while ls batch/commission/out | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
-	php symfony load:Commission 
+	php symfony load:Commission
 done;
 echo Load Amendements
 echo =======================
 while ls batch/amendements/json | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
-	php symfony load:Amdmts 
+	php symfony load:Amdmts
 done;
 if [[ $questions -ne 0 ]]; then
   echo Load Questions
   echo =======================
   while ls batch/questions/json | grep [a-z] > /dev/null ; do
 	php symfony cc --env=test  --app=frontend > /dev/null
-	php symfony load:Questions 
+	php symfony load:Questions
   done;
 fi
 echo Load Documents
@@ -151,10 +151,10 @@ echo =======================
 bash bin/tag_seance
 echo Update sessions
 echo =======================
-php symfony set:Session 
+php symfony set:Session
 echo Update vacances
 echo =======================
-php symfony set:Vacances 
+php symfony set:Vacances
 echo Update tops sénateurs
 echo =======================
 php symfony top:Senateurs
