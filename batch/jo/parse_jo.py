@@ -37,10 +37,11 @@ reg = {}
 reg['date'] = '^([0-9]{4})-([0-9]{2})-([0-9]{2})$'
 reg['com'] = '^Commissions'
 reg['start_an'] = u'^[0-9]{0,2}\. Membres présents ou excusés'
-reg['start_senat'] = u'^Membres pré|ésents ou excusé|és'
+reg['start_senat'] = u'^Membres'
 reg['commission'] = u'(.*) :$'
 reg['reunion_an'] = u'^Réunion du (.*) ?à (.*) :'
 reg['reunion_senat'] = u'^(.{1,5}éance) du (.*) :'
+reg['reunion_senat_bis'] = u'^(.*), séance du (.*)$'
 reg['presents'] = u'^Présents.* ?(-|:) (.*)'
 reg['excuses'] = u'^Excusé.*(-|:) (.*)'
 reg['assistent'] = u'^Assistai.* (-|:) (.*)'
@@ -161,6 +162,12 @@ else:
             else:
               m = re.search(reg['commission'], line)
               data['commission'] = re.sub(':', '', m.group(1)).strip()
+
+              if chamber == "senat" and re.search(reg['reunion_senat_bis'], data['commission'], re.IGNORECASE):
+                m = re.search(reg['reunion_senat_bis'], data['commission'], re.IGNORECASE)
+                data['date'] = date_iso(m.group(2))
+                data['heure'] = ''
+                data['commission'] = m.group(1)
 
           if re.search(reg['presents'], line, re.IGNORECASE) is not None:
             m = re.search(reg['presents'], line, re.IGNORECASE)
