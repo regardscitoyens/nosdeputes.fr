@@ -6,6 +6,7 @@ if test -z "$loi"; then
   echo "Please input a proper loi"
   exit 1
 fi
+LIVE=$2
 
 . ../../bin/db.inc
 
@@ -28,7 +29,7 @@ bash get_ids_loi.sh "$loi" | while read line; do
       if ! grep "$url" "$loi.done" > /dev/null; then 
         count=$(($count + 1))
         perl download_one.pl "$url" "html-$loi" >> /tmp/download_amendements.log
-        if [ $count -gt 20 ]; then
+        if ! test -z $LIVE && [ $count -gt 20 ]; then
           break;
         fi
       fi

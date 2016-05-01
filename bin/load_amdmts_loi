@@ -1,24 +1,34 @@
 #!/bin/bash
 
 loi=$1
+LIVE=$2
 
 . $(echo $0 | sed 's/[^\/]*$//')db.inc
 cd $PATH_APP
+
+if test -e "/tmp/currently_loading_amendements_$loi"; then
+  exit
+fi
+touch "/tmp/currently_loading_amendements_$loi"
 
 # Récupération et création des JSON
 
 #echo Amendements
 #echo =======================
-cd batch/amendements ; bash compute_latest_loi.sh $loi ; cd ../..
+cd batch/amendements ; bash compute_latest_loi.sh $loi $LIVE ; cd ../..
 
 # Chargement via tasks
 
 #echo Load Amendements
 #echo =======================
+if ! ps -ef | grep -v "grep" | grep "load:Amdmts" > /dev/null; then
 while ls batch/amendements/json | grep [a-z] > /dev/null ; do
         php symfony cc --env=test  --app=frontend > /dev/null
         php symfony load:Amdmts
 done;
+fi
+
+rm -f "/tmp/currently_loading_amendements_$loi"
 
 # Postprocessings
 
@@ -30,3 +40,4 @@ done;
 
 #bash bin/dump_amendements_loi $loi
 bash bin/make_liasse $loi > /dev/null 2>&1
+
