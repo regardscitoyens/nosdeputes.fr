@@ -89,8 +89,9 @@ if not os.path.exists('./json'):
 summary = urllib2.urlopen(jo_eli)
 soup = BeautifulSoup(summary.read(), "lxml")
 
+sys.stderr.write(chamber.upper()+' '+date_fr+' '+jo_eli+'\n')
 if soup.title.string.strip().startswith(u'Recherche'):
-  sys.exit(chamber.upper()+' '+date_fr+' no JO '+jo_eli)
+  sys.exit(' no JO')
 
 else:
   # Sauvegarde sommaire
@@ -109,6 +110,7 @@ else:
       # Commission
       if link_string == text_link:
         commission_link = True
+        n_presences = 0
         com_link = prefix+link.get('href')
         coms_doc = urllib2.urlopen(com_link)
         soup = BeautifulSoup(coms_doc.read(), "lxml")
@@ -179,6 +181,7 @@ else:
               else:
                 data['depute'] = present.strip().strip('.')
               json_file += json.dumps(data, separators=(',',':'), ensure_ascii=False, sort_keys=True)+os.linesep
+              n_presences += 1
 
           if re.search(reg['assistent'], line, re.IGNORECASE) is not None:
             m = re.search(reg['assistent'], line, re.IGNORECASE)
@@ -192,10 +195,12 @@ else:
               else:
                 data['depute'] = present.strip().strip('.')
               json_file += json.dumps(data, separators=(',',':'), ensure_ascii=False, sort_keys=True)+os.linesep
+              n_presences += 1
 
         if not json_file:
-          sys.exit(chamber.upper()+' '+date_fr+' no attendance '+com_link)
+          sys.exit(' no attendance '+com_link)
         else:
+          sys.stderr.write(str(n_presences)+' présences '+com_link+'\n')
           if stdout:
             print(json_file.strip().encode('utf-8'))
           else:
@@ -203,6 +208,6 @@ else:
               file.write(json_file.strip().encode('utf-8'))
 
 if not commission_link:
-  sys.exit(chamber.upper()+' '+date_fr+' no commission '+jo_eli)
+  sys.exit(' no commission ')
 
 
