@@ -21,9 +21,8 @@ def test_skiparg(i, fromdate):
 
 idx, from_date = test_skiparg(2, from_date)
 try:
-  to_date = sys.argv[idx]
-  if re_date.search(to_date):
-    m = re_date.search(to_date)
+  m = re_date.search(sys.argv[idx])
+  if m:
     to_date = date(int(m.group(1)), int(m.group(2)), int(m.group(3)))
   else:
     sys.exit('Le 2nd argument (optionnel) doit être la date de fin (de la forme 2016-04-13)')
@@ -34,7 +33,7 @@ idx, from_date = test_skiparg(idx+1, from_date)
 if to_date < from_date:
   sys.exit('La date de début doit être antérieure à la date de fin')
 
-date = from_date
-while date <= to_date:
-  print(date)
-  date += timedelta(days=1)
+day = from_date
+while day <= to_date:
+  print(day)
+  day += timedelta(days=1)
