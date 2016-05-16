@@ -413,7 +413,8 @@ foreach $line (split /\n/, $string)
       } elsif ($imgurl !~ /^http/i) {
         $imgurl = $baseurl.$imgurl;
       }
-      $imgurl =~ s/\//\\\\/g;
+      $imgurl =~ s/[\/]/\\\\/g;
+      $img2 =~ s/[\\]/\\\\/g;
       $line = $img0."##".$img1.$imgurl.$img2."##".$img3;
     }
 	$line =~ s/\<\/?[^\>]+\>//g;
