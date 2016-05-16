@@ -3,7 +3,7 @@
 class amendementActions extends sfActions
 {
   static $seuil_amdmts = 8;
-  
+
   public function executeShow(sfWebRequest $request)
   {
     $query = Doctrine::getTable('Amendement')->createquery('a')
@@ -30,7 +30,7 @@ class amendementActions extends sfActions
      if (count($this->identiques) < 2) {
        $this->identiques = array();
      }
-     
+
      $this->seance = $this->amendement->getIntervention($this->amendement->numero);
      foreach($this->identiques as $a) {
        if ($this->seance)
@@ -46,7 +46,7 @@ class amendementActions extends sfActions
        ->andWhere('a.sort <> ?', 'Rectifié')
        ->orderBy('num')
        ->fetchArray();
-   
+
      $this->titreloi = Doctrine::getTable('TitreLoi')->findLightLoi($this->amendement->texteloi_id);
      $this->loi = Doctrine::getTable('Texteloi')->findLoi($this->amendement->texteloi_id);
   }
@@ -72,7 +72,7 @@ class amendementActions extends sfActions
     $request->setParameter('rss', array(array('link' => '@parlementaire_amendements_rss?slug='.$this->parlementaire->slug, 'title'=>'Les derniers amendements de '.$this->parlementaire->nom.' en RSS')));
   }
 
-  public function executeParlementaireSection(sfWebRequest $request) 
+  public function executeParlementaireSection(sfWebRequest $request)
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
@@ -105,7 +105,7 @@ class amendementActions extends sfActions
     $this->mots = $request->getParameter('search');
     $mots = $this->mots;
     $mcle = array();
-    
+
     if (preg_match_all('/("[^"]+")/', $mots, $quotes)) {
       foreach(array_values($quotes[0]) as $q)
 	$mcle[] = '+'.$q;
@@ -128,7 +128,7 @@ class amendementActions extends sfActions
     $ids = array();
     foreach($search as $s)
       $ids[] = $s['id'];
-    
+
     $this->query = Doctrine::getTable('Amendement')->createQuery('a');
     if (count($ids))
       $this->query->whereIn('a.id', $ids);
@@ -194,12 +194,21 @@ class amendementActions extends sfActions
     }
     $amendements = array();
     foreach($this->lois as $loi) foreach($numeros as $numero) {
-      $query = PluginTagTable::getObjectTaggedWithQuery('Amendement', array('loi:amendement='.$numero));
-      $query->andWhere('texteloi_id = ?', $loi)
+      $query = Doctrine::getTable('Amendement')->createQuery()
+        ->where('numero = ?', $numero)
+        ->andWhere('texteloi_id = ?', $loi)
         ->andWhere('sort <> ?', 'Rectifié');
       $res = $query->execute();
       if (count($res)) foreach ($res as $amd) {
         $amendements[$amd->id] = $amd;
+      } else {
+        $query = PluginTagTable::getObjectTaggedWithQuery('Amendement', array('loi:amendement='.$numero));
+        $query->andWhere('texteloi_id = ?', $loi)
+        ->andWhere('sort <> ?', 'Rectifié');
+        $res = $query->execute();
+        if (count($res)) foreach ($res as $amd) {
+          $amendements[$amd->id] = $amd;
+        }
       }
     }
     if (count($amendements) == 1) {
