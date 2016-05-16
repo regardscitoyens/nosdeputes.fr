@@ -362,7 +362,7 @@ foreach $line (split /\n/, $string)
 	    if (!$commission && $test =~ /Commission|mission/) {
 		$test =~ s/\s*Les comptes rendus de la //;
 		$test =~ s/^ +//;
-		if ($test !~ /spéciale$/i) {
+		if ($test !~ /(spéciale|enquête)$/i) {
 			$commission = $test;
 		}
 	    }
