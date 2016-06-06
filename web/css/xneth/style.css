@@ -1251,6 +1251,7 @@ h2 {
   float: none;
   width: auto;
   height: auto;
+  max-width: 850px;
 }
 .intervenant {
 
