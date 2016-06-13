@@ -271,8 +271,8 @@ Amendement:
       type: string(255)
     legislature: integer
     texteloi_id: string(16)
-    numero: string(8)
-    sous_amendement_de: string(8)
+    numero: string(16)
+    sous_amendement_de: string(16)
     rectif: integer
     sujet: string(100)
     sort:
