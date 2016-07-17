@@ -150,8 +150,8 @@ class apiActions extends sfActions
         $orga['order'] = $groupesorder[$orga['acronyme']];
       }
       $orga['type'] = $o->type;
-      $orga['url_nossenateurs'] = url_for('@list_parlementaires_organisme?slug='.$orga['slug'], 'absolute=true');
-      $orga['url_nossenateurs_api'] = url_for('@list_parlementaires_organisme_api?format='.$request->getParameter('format').'&orga='.$orga['slug'], 'absolute=true');
+      $orga['url_nossenateurs'] = myTools::url_forAPI('@list_parlementaires_organisme?slug='.$orga['slug']);
+      $orga['url_nossenateurs_api'] = myTools::url_forAPI('@list_parlementaires_organisme_api?format='.$request->getParameter('format').'&orga='.$orga['slug']);
       if ($request->getParameter('format') == 'csv')
        foreach(array_keys($orga) as $key)
         if (!isset($this->champs[$key]))
@@ -288,8 +288,8 @@ class apiActions extends sfActions
     $res['id_institution'] = $parl->id_institution;
     $res['slug'] = $parl->getSlug();
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-    $res['url_nossenateurs'] = url_for('@parlementaire?slug='.$res['slug'], 'absolute=true');
-    $res['url_nossenateurs_api'] = url_for('api/parlementaire?format='.$format.'&slug='.$res['slug'], 'absolute=true');
+    $res['url_nossenateurs'] = myTools::url_forAPI('@parlementaire?slug='.$res['slug']);
+    $res['url_nossenateurs_api'] = myTools::url_forAPI('api/parlementaire?format='.$format.'&slug='.$res['slug']);
     $res['nb_mandats'] = count(unserialize($parl->getAutresMandats()));
     $res['twitter'] = "";
     foreach (unserialize($parl->sites_web) as $site)

@@ -18,6 +18,17 @@ class myTools {
     return explode('","', $string);
   }
 
+  public static function getProtocol() {
+    if ($_SERVER['HTTPS'] != "") return "https";
+    return "http";
+  }
+
+  public static function url_forAPI($args) {
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    $url = url_for($args, 'absolute=true');
+    return preg_replace('/^https:\/\//', 'http://', $url);
+  }
+
   public static function getDebutData() {
     $date = sfConfig::get('app_debut_data');
     if (!$date)

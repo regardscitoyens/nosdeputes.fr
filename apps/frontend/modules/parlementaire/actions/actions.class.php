@@ -139,7 +139,7 @@ class parlementaireActions extends sfActions
     $this->response->addMeta('keywords', $this->parlementaire->nom.' '.$this->parlementaire->nom_circo.' '.$this->parlementaire->type.' '.$this->parlementaire->groupe_acronyme.' Sénat');
     $this->response->addMeta('description', 'Pour tout connaître de l\'activité de '.$this->parlementaire->nom.' au Sénat. '.$this->parlementaire->nom.' est '.$this->parlementaire->getLongStatut().' au Sénat Français.');
     $this->response->addMeta('parlementaire_id', 'd'.$this->parlementaire->id);
-    $this->response->addMeta('parlementaire_id_url', 'http://www.nossenateurs.fr/id/'.'d'.$this->parlementaire->id);
+    $this->response->addMeta('parlementaire_id_url', myTools::getProtocol().'://www.nossenateurs.fr/id/'.'d'.$this->parlementaire->id);
 
     $this->commissions_permanentes = array();
     $this->missions = array();
@@ -159,7 +159,7 @@ class parlementaireActions extends sfActions
     if ($format)
       $format = '/'.$format;
     $id = $request->getParameter('id');
-    if (preg_match('/^d/', $id)) $this->redirect("http://www.nosdeputes.fr/id/$id".$format);
+    if (preg_match('/^d/', $id)) $this->redirect(myTools::getProtocol()."://www.nosdeputes.fr/id/$id".$format);
     $id = preg_replace('/^s/', '', $id);
     $p = Doctrine::getTable('Parlementaire')->find($id);
     $this->forward404Unless($p);
