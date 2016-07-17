@@ -3,7 +3,7 @@
 if ($type == 'Parlementaire')
   $feed->setTitle($titre." de ".$object->nom);
 else $feed->setTitle($titre);
-$feed->setLink('http://'.$_SERVER['HTTP_HOST'].url_for(preg_replace('/_rss/', '', $linkrss)));
+$feed->setLink(myTools::getProtocol().'://'.$_SERVER['HTTP_HOST'].url_for(preg_replace('/_rss/', '', $linkrss)));
 foreach($comments as $c)
 {
   $auteur = $c->getCitoyen()->login;

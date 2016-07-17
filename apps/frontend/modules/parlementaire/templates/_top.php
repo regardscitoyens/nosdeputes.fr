@@ -3,7 +3,7 @@ $abs = '';
 $serv = '';
 if (isset($absolute) && $absolute) {
   $abs = 'absolute=true';
-  $serv = 'http://'.$_SERVER['SERVER_NAME'];
+  $serv = myTools::getProtocol().'://'.$_SERVER['SERVER_NAME'];
 }
 if (!isset($target))
   $target = '';

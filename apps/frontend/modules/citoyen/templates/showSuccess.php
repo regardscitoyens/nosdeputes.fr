@@ -13,7 +13,7 @@
         <h1><?php echo $user->login; ?></h1>
         <?php if (!empty($user->activite)) $activite = $user->activite;
           else $activite = '(Activité non-renseignée)'; ?>
-        <p><?php echo $activite; 
+        <p><?php echo $activite;
           if ($user->naissance) echo '<br/>'.myTools::getAge($user->naissance).'&nbsp;ans'; ?></p>
         <?php if (!empty($user->url_site)) {
           $url = html_entity_decode(strip_tags($user->url_site), ENT_NOQUOTES, "UTF-8");
@@ -21,7 +21,7 @@
         } ?>
       </div>
       <?php if ($user->created_at < myTools::getDebutLegislature() && myTools::getPreviousHost())
-        echo '<div class="b_c_edit"><small><a href="http://'.myTools::getPreviousHost()."/".url_for('@citoyen?slug='.$user->slug).'">précédente législature</a></small> </div>';
+        echo '<div class="b_c_edit"><small><a href="'.myTools::getProtocol().'://'.myTools::getPreviousHost()."/".url_for('@citoyen?slug='.$user->slug).'">précédente législature</a></small> </div>';
       if ($sf_user->getAttribute('user_id') == $user->id) {
 	    echo '<div class="b_c_edit"><a href="'.url_for('alerte/list').'">Gérer mes alertes</a> &mdash; ';
 	    echo '<a href="'.url_for('@edit_citoyen').'">Modifier mon profil</a></div>';

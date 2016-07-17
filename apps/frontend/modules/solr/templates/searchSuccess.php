@@ -1,23 +1,23 @@
-<?php 
+<?php
 if ($query === "")
   $sf_response->setTitle("Recherche sur NosDéputés.fr");
 else $sf_response->setTitle("Recherche de $query");
 $style = "xneth";
 
-function url_search($query, $args) 
+function url_search($query, $args)
 {
   $extra = '';
   $url = "solr/search?query=".$query;
   foreach($args as $key => $value) {
     if (is_array($value)) {
       if (count($value)) { $extra .= '&'.$key.'='.implode(',', array_keys($value)); }
-    }    
+    }
     else { $extra .= '&'.$key.'='.$value; }
   }
   return $url.$extra;
 }
 
-function link_search($text, $query, $args, $options) 
+function link_search($text, $query, $args, $options)
 {
   if($options) { return link_to($text, url_search($query, $args), $options); }
   else { return link_to($text, url_search($query, $args)); }
@@ -29,7 +29,7 @@ function addToDate($date, $interval) {
   $mois = substr($date, 4, 2);
   $jour = substr($date, 6, 2);
   if($interval == 'mois') {
-    $date = mktime(0, 0, 0, $mois + 1, $jour, $annee); 
+    $date = mktime(0, 0, 0, $mois + 1, $jour, $annee);
     #int mktime  ("H","m","s","M","j","Y", -1)
   }
   else { $date = mktime(0, 0, 0, $mois, $jour - 1, $annee); }
@@ -123,7 +123,7 @@ $(document).ready(function() {
     if($(this).height() > bh) { bh = $(this).height(); }
     date_li = $(this).attr("title").split('--');
     date_href[nb_li] = $(this).find('a').attr("href");
-    $(this).find(".hover_graph").attr("onclick", "document.location.replace('http://"+location.host+date_href[nb_li]+"')");
+    $(this).find(".hover_graph").attr("onclick", "document.location.replace('//"+location.host+date_href[nb_li]+"')");
     $(this).find(".hover_graph").css("cursor", "pointer");
     periode[nb_li] = date_li[0];
     nb_li++;
@@ -153,10 +153,10 @@ $(document).ready(function() {
 			  lien = constructLien(parametre['date']);
 			  document.location = '#date='+parametre['date'];
 
-			  if(ui.values[0] == ui.values[1]) { 
+			  if(ui.values[0] == ui.values[1]) {
 			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>'+periode[ui.values[0]].toLowerCase()+'<\/strong><\/a>';
 			  }
-			  else { 
+			  else {
 			    texte_periode = '<a href="'+lien+'" style="text-decoration: underline;"><strong>entre '+periode[ui.values[0]].toLowerCase()+' et '+ periode[ui.values[1]].toLowerCase()+'<\/strong><\/a>';
 			  }
 <?php if ($vue == "par_mois") { ?>
@@ -179,8 +179,8 @@ $(document).ready(function() {
   <?php include_partial('solr/searchbox'); ?>
 <div class="solrleft">
 <h1><?php echo $intitule_resultats; ?></h1>
-<?php 
-if($graph) { 
+<?php
+if($graph) {
   $width_date = 650;
   $left = 2;
   $espacement = 4;
@@ -190,25 +190,25 @@ if($graph) {
    <span>Affiner par date :</span> <span id="periode"><?php echo $periode_text; ?></span>
   <div class="date" style="width: <?php echo $width_date ?>px;">
   <ul>
-    <?php $i = 0; foreach($fdates['values'] as $date => $nb) :    
+    <?php $i = 0; foreach($fdates['values'] as $date => $nb) :
     $height = round($nb['pc']*100/($fdates['max']) * 2);
-    $padding = 200-$height; 
+    $padding = 200-$height;
     if($i != 0) { $left = $left + $width; } if($i < (count($fdates['values']))) { $left = $left + $espacement; }
-    
+
     $newargs = $selected;
     $newargs['date'] = $date.'%2C'.$date;
-    
-    if(($vue == 'jour') or ($vue == 'par_jour') or ($vue == 'mois')){ 
+
+    if(($vue == 'jour') or ($vue == 'par_jour') or ($vue == 'mois')){
       $title_date = myTools::$day_week[date('w', strtotime($date))]." ".myTools::displayShortDate($date).' -- '.$nb['nb'].' résultats';
     }
-    if($vue == 'par_mois') { 
+    if($vue == 'par_mois') {
       $title_date = ucfirst(myTools::displayMoisAnnee($date)).' -- '.$nb['nb'].' résultats';
       $newargs['date'] = $date.'%2C'.addToDate($date, 'mois');
     }
-    
-    echo '<li title="'.$title_date.'" class="jstitle" style="list-style-image: none; width: '.$width.'px; height: '.$height.'px; left: '.$left.'px;">'; 
-    echo '<div class="hover_graph" style="width: '.$width.'px; height: '.$padding.'px;	bottom: '.$height.'px;"></div><span class="text_graph">'.link_search($nb['nb'], $query, $newargs, array()).'</span>'; 
-    
+
+    echo '<li title="'.$title_date.'" class="jstitle" style="list-style-image: none; width: '.$width.'px; height: '.$height.'px; left: '.$left.'px;">';
+    echo '<div class="hover_graph" style="width: '.$width.'px; height: '.$padding.'px;	bottom: '.$height.'px;"></div><span class="text_graph">'.link_search($nb['nb'], $query, $newargs, array()).'</span>';
+
     $i++;
     ?>
     </li>
@@ -217,7 +217,7 @@ if($graph) {
   </div>
   <div id="slider_date_graph"></div>
 </div>
-<?php } 
+<?php }
 ///////////////////// FIN SANS AJAX /////////////////////
 ?>
 </div>
@@ -270,26 +270,26 @@ function facet2Human($id, $facet = "") {
 <?php endif ?>
   <div class="facets">
   <h3 class="aligncenter">Affiner la recherche</h3>
-  <?php 
+  <?php
   if(isset($selected['date'])) {
     $args_sans_date = $selected;
     unset($args_sans_date['date']);
     echo '<p><strong>'.link_search('Réinitialiser les dates', $query, $args_sans_date, 0).'</strong></ul>';
   }
-  
+
   foreach(array_keys($facet) as $k) { if (isset($facet[$k]['values']) && count($facet[$k]['values'])) : ?>
     <div class="<?php echo $k; ?>">
        <p><strong><?php echo facet2Human($facet[$k]['name']); ?></strong></p>
     <ul>
     <?php foreach($facet[$k]['values'] as $value => $nb) : if ($nb) :
-      $is_selected = isset($selected[$facet[$k]['facet_field']][$facet[$k]['prefix'].$value]) && 
+      $is_selected = isset($selected[$facet[$k]['facet_field']][$facet[$k]['prefix'].$value]) &&
 		  $selected[$facet[$k]['facet_field']][$facet[$k]['prefix'].$value];
     ?>
-      <li<?php if ($is_selected) echo ' class="selected"'; ?>><?php 
+      <li<?php if ($is_selected) echo ' class="selected"'; ?>><?php
       $newargs = $selected;
-      if ($is_selected) 
+      if ($is_selected)
         unset($newargs[$facet[$k]['facet_field']][$facet[$k]['prefix'].$value]);
-      else			      
+      else
         $newargs[$facet[$k]['facet_field']][$facet[$k]['prefix'].$value] = 1;
       echo link_search(facet2Human($value, $facet[$k]['name']), $query, $newargs, 0); ?>&nbsp;(<?php echo $nb; ?>)
       </li>
@@ -338,7 +338,7 @@ function facet2Human($id, $facet = "") {
   if ($results['page'] > 1) {
     if (isset($newargs['page'][1]))
     unset($newargs['page'][1]);
-    echo link_search('<img src="/images/xneth/left.png" alt="fleche gauche"/> page précédente', $query, $newargs, 0); 
+    echo link_search('<img src="/images/xneth/left.png" alt="fleche gauche"/> page précédente', $query, $newargs, 0);
   }
   ?>
   </span>
@@ -347,7 +347,7 @@ function facet2Human($id, $facet = "") {
   if ($results['end'] < $results['numFound']) {
     $newargs = $selected;
     $newargs['page'][$results['page'] + 1] = 1;
-    echo link_search('page suivante <img src="/images/xneth/right.png" alt="fleche droite"/>', $query, $newargs, 0); 
+    echo link_search('page suivante <img src="/images/xneth/right.png" alt="fleche droite"/>', $query, $newargs, 0);
   }
   ?>
   </span>

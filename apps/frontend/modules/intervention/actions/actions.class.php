@@ -313,8 +313,8 @@ class interventionActions extends sfActions
       $i['amendements'] = myTools::array2hash($amendements, 'amendement');
       $i['lois'] = myTools::array2hash($lois, 'loi');
       $i['source'] = $int[$h['source']];
-      $i['url_nosdeputes'] = url_for('@interventions_seance?seance='.$int[$h['seance_id']], 'absolute=true')."#inter_".$int[$h['md5']];
-      $i['url_nosdeputes_api'] = url_for("@api_document?class=Intervention&id=".$int[$h['id']]."&format=".$request->getParameter('format'), 'absolute=true');
+      $i['url_nosdeputes'] = myTools::url_forAPI('@interventions_seance?seance='.$int[$h['seance_id']])."#inter_".$int[$h['md5']];
+      $i['url_nosdeputes_api'] = myTools::url_forAPI("@api_document?class=Intervention&id=".$int[$h['id']]."&format=".$request->getParameter('format'));
       $i['id'] = $int[$h['id']];
       $this->res['seance'][] = array('intervention' => $i);
       if (!isset($this->champs)) {
