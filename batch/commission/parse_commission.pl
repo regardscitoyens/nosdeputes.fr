@@ -479,7 +479,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/^[\.\:]\s*//;
     #print STDERR $line."\n";
 	if (!$found) {
-	    if ($line =~ s/^\s*((Dr|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.:]//) {
+	    if ($line =~ s/^\s*((Dr|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.:]//) {
             checkout();
             $intervenant = setIntervenant($1);
 	    }elsif (!$majIntervenant) {
