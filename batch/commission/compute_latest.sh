@@ -6,7 +6,7 @@ if [ ! -d html ] ; then mkdir html; fi
 if [ ! -d out ] ; then mkdir out; fi
 
 for file in $(perl download_commission.pl $LEGISLATURE); do
-    if grep "La page à laquelle vous souhaitez accéder n'existe pas." "html/$file"; then
+    if grep "La page à laquelle vous souhaitez accéder n'existe pas.\|HTTP Error 503" "html/$file"; then
         echo "...removing empty file."
         rm "html/$file"
         continue
