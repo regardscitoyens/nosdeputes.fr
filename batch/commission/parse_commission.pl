@@ -318,6 +318,7 @@ $string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
 $string =~ s/(<\/table>)\s*(<table)/\1\n\2/gi;
 $string =~ s/(<img[^>]*)[\n\r]+([^>]*>)/\1 \2/gi;
 $string =~ s/-->(-->)+/-->/g;
+#$string =~ s/<!-- \.(.*?)\. -->//g;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
 #on vire les paragraphes contenus et on didascalise
@@ -446,10 +447,10 @@ foreach $line (split /\n/, $string)
 	    $found = 1;
 	}
 #print "LINE: $line\n";
-    if ($line =~ s/^\|(M[^\|\:]+)[\|\:](\/[^\/]+\/)?(.*\w.*)/\3/) {
+    if ($line =~ s/^\|(M[^\|\:]+?)(?:[\|\:](\/[^\/]+?\/)?|(, \/[^\/]+?\/))(.*\w.*)/\4/) {
         checkout();
         $interv1 = $1;
-	    $extrainterv = $2;
+	    $extrainterv = $2.$3;
         if ($extrainterv =~ s/(\/A \w+i\/)//) {
             $line = $1.$line;
         }
