@@ -92,8 +92,8 @@ if ($url =~ /\/plf(\d+)\//) {
   $commission =~ s/ - $//;
 }
 
-$string =~ s/<\/?b><\/?u>/<b>/g;
-$string =~ s/<\/?u><\/?b>/<b>/g;
+$string =~ s/<\/?b>(\.)?<\/?u>/\1<b>/g;
+$string =~ s/<\/?u>(\.)?<\/?b>/\1<b>/g;
 $string =~ s/<\/?[bu]>/|/g;
 $string =~ s/<\/?i>/\//g;
 
