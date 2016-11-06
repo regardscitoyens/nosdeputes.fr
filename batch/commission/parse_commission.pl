@@ -478,7 +478,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
     #print STDERR $line."\n";
-	if (!$found) {
+	if (!$found && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève)/) {
 	    if ($line =~ s/^\s*((Dr|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.:]//) {
             checkout();
             $intervenant = setIntervenant($1);
