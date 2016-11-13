@@ -330,7 +330,7 @@ foreach $line (split /\n/, $string)
 #print "TEST: ".$line."\n";
     $line =~ s/residen/résiden/ig;
     if ($line =~ /<h[1-9]+/i || $line =~ /"présidence"/ || $line =~ /Présidence de/) {
-      if ($line =~ /pr..?sidence\s+de\s+(M[^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
+      if ($line =~ /pr..?sidence\s+de\s+(M[^<\,]+?)[<,]/i && $line !~ /sarkozy/i) {
         $prez = $1;
         $prez =~ s/\s*pr..?sident[es\s]*$//i;
 #       print "Présidence de $prez\n";
@@ -455,7 +455,7 @@ foreach $line (split /\n/, $string)
         }
         $intervenant = setIntervenant($interv1.$extrainterv);
         $found = $majIntervenant = 1;
-	}elsif ($line !~ /^\|Articles?\s*\d+/i && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
+	}elsif (!($line =~ /^\|(?:Commission|Présidence|Articles?\s*\d+)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
