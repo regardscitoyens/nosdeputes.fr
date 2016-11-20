@@ -12,7 +12,7 @@ $with_archive = shift;
 
 @indexes = ("http://www.senat.fr/offices_deleg_observatoire/index.html", "http://www.senat.fr/commission/spec/index.html", "http://www.senat.fr/commission/missions/index.html", "http://www.senat.fr/commission/enquete/index.html");
 
-@more = ("http://www.senat.fr/compte-rendu-commissions/office-parlementaire-d-evaluation-des-choix-scient.-tech..html");
+@more = ("http://www.senat.fr/compte-rendu-commissions/office-parlementaire-d-evaluation-des-choix-scient.-tech..html", "http://www.senat.fr/compte-rendu-commissions/controle-de-la-securite-sociale-mecss.html");
 
 $a = WWW::Mechanize->new();
 $start = shift || '0';
@@ -85,12 +85,12 @@ foreach $url (@more) {
     }
   }
   next if ($skip);
-  print FILE "$url\n";  
+  print FILE "$url\n";
 }
 foreach $url (keys %cr) {
   $skip = 0;
   foreach $ignore (@ignores) {
-    chomp($ignore);      
+    chomp($ignore);
     if ($ignore eq $url) {
       $skip = 1;
       last;
