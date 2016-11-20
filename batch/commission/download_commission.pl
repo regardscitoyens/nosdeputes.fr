@@ -48,8 +48,8 @@ foreach $index (@indexes) {
 	    }
 	    $uri = $a->uri();
 	    if ($url{$uri}) { $a->back(); next; }
-            $url{$curl} = 1;	    
-            $url{$uri} = 1;	    
+            $url{$curl} = 1;
+            $url{$uri} = 1;
 	    $file =  uri_escape($uri);
  	    if (-e "html/$file") { $a->back(); next; }
 	    open FILE, ">:utf8", "html/$file.tmp";
@@ -60,7 +60,7 @@ foreach $index (@indexes) {
 		}
 		print FILE $thecontent;
 		close FILE;
-		if ($thecontent =~ /sera publi[^ ]*e? ult[^ ]*rieurement\./) {
+		if ($thecontent =~ /sera publi[^ ]*e? ult[^ ]*rieurement[\.\)]/) {
 			print STDERR "INFO: Commission $file publiée ultérieurement ($uri)\n";
 			unlink "html/$file.tmp";
 		}else{
