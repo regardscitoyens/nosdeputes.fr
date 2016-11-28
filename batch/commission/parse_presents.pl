@@ -71,6 +71,7 @@ $majIntervenant = 0;
 $body = 0;
 $present = 0;
 $string =~ s/<br>\n//gi;
+$string =~ s/(<\/h\d+>)/\1\n/gi;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
 #on vire les paragraphes contenus et on didascalise
@@ -108,7 +109,7 @@ foreach $line (split /\n/, $string)
     if ($line =~ /<h[1-9]+/i) {
 	if (!$date && $line =~ /SOMdate|\"seance\"|h2/) {
 	    if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
-	      if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/i) {
+	      if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d()!<>]+)\s+(\d\d+)/i) {
 		$date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
 	      }
 	    }

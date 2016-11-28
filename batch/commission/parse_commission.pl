@@ -316,6 +316,7 @@ $majIntervenant = 0;
 $body = 0;
 
 $string =~ s/<br>\n//gi;
+$string =~ s/(<\/h\d+>)/\1\n/gi;
 $string =~ s/<t([rdh])[^>]*( (row|col)span=["\d]+)+[^>]*>/<t\1\2>/gi;
 $string =~ s/<t([rdh])( (row|col)span=["\d]+)*[^>]*>/<t\1\2>/gi;
 $string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
@@ -378,7 +379,7 @@ foreach $line (split /\n/, $string)
        #print "$line\n";
         if (!$date && $line =~ /SOMdate|\"seance\"|h2/) {
             if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
-              if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/i) {
+              if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d()!<>]+)\s+(\d\d+)/i) {
                 $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
               }
             }
