@@ -186,7 +186,7 @@ sub checkout {
             print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
         }
         if ($intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)$//) {
-            foreach $i (split(/( et|, )\s*M/, $3)) {
+            foreach $i (split(/(?:et\s*M[mes\.]*| et |, M[mes\.]*)\s*/, $3)) {
                 $ts++;
                 if (!$inter2fonction{$i} && $i =~ s/, (.*)$//) {
                     setFonction($1, $i);
