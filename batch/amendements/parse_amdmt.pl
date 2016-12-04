@@ -22,6 +22,7 @@ $string =~ s/\r//g;
 $string =~ s/[\n\s]+/ /g;
 $string =~ s/^.*<body> *//i;
 $string =~ s/ *<\/body>.*$//i;
+$string =~ s/<p><!-- fin_objet --><\/p>//g;
 $string =~ s/<br style='page-break-before:always'><br>/##NEXT##/ig;
 $string =~ s/\s*<[\s\/]*br[\s\/]*>\s*/<\/p><p>/ig;
 $string =~ s/<![\s\-]*\[if[^\]]+\][\s\-]*>//ig;
