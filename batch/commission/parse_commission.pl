@@ -316,6 +316,7 @@ $majIntervenant = 0;
 $body = 0;
 
 $string =~ s/<br>\n//gi;
+$string =~ s/\s*<\/h(\d+)><\/CRPRESIDENT><CRPRESIDENT><h\1[^>]*>\s*/ /gi;
 $string =~ s/(<\/h\d+>)/\1\n/gi;
 $string =~ s/<t([rdh])[^>]*( (row|col)span=["\d]+)+[^>]*>/<t\1\2>/gi;
 $string =~ s/<t([rdh])( (row|col)span=["\d]+)*[^>]*>/<t\1\2>/gi;
