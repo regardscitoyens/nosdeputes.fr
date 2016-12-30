@@ -386,7 +386,7 @@ foreach $line (split /\n/, $string)
               }
             }
         }elsif ($line =~ /SOMseance|"souligne_cra"/i) {
-            if ($line =~ /(\d+)\s*(h|heures?)\s*(\d*)/i) {
+            if ($line =~ /(\d+)\s*(h(?:eures?)?)\s*(\d*)/i) {
                 $heure = sprintf("%02d:%02d", $1, $3 || "00");
             }
         }elsif(!$commission && $line =~ /groupe|commission|mission|délégation|office|comité/i) {
