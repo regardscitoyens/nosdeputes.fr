@@ -96,6 +96,7 @@ if ($url =~ /\/plf(\d+)\//) {
 }
 
 $string =~ s/\s*&(#160|nbsp);\s*/ /ig;
+$string =~ s/<\/b>(\s*)<b>/\1/g;
 $string =~ s/<b>(\s*[\.,]\s*)<\/b>/\1/g;
 $string =~ s/<\/[ub]>\s*,\s*<\/[ub]>/,<u><b>/g;
 $string =~ s/(?:<\/?[ub]>)+\s*(\.)?\s*(?:<\/?[ub]>)+/\1<b>/g;
