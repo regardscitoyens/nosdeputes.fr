@@ -107,12 +107,15 @@ a:hover {
   font-size: 1.2em;
   font-weight: normal;
 }
-.solr h3 {
+.solr h3, .alerte h3 {
   text-align: left;
   font-size: 1.1em;
   font-weight: bold;
   padding-left: 4px;
   background-color: #dddddd;
+}
+.alerte td {
+  border: 0 !important;
 }
 .solr ul {
   padding: 0;
@@ -124,7 +127,7 @@ a:hover {
 .solr .options {
   float: right;
 }
-.solr .mail, .solr .facets {
+.solr .mail, .solr .facets, .alerte .mail {
   border:1px solid #E0E0DD;
   margin-top:15px;
   margin-left:15px;
@@ -133,7 +136,7 @@ a:hover {
   padding-top: 0;
   width:210px;
 }
-.solr .options h3 {
+.solr .options h3, .alerte h3 {
   text-align: center;
   padding: 3px;
 }
@@ -1331,6 +1334,11 @@ h2 {
   float: right;
   margin-top: 0px;
   text-decoration: underline;
+}
+.question .alerte {
+  margin: -15px 0px 200px 5px;
+  text-align: center;
+  float: right;
 }
 .question,.loi p {
   text-align: justify;

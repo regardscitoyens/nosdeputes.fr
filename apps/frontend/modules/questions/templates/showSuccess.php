@@ -11,6 +11,9 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
   <h1><?php echo $question->titre; ?></h1>
   <div id="question">
     <h2>Question soumise le <?php echo myTools::displayDate($question->date_cloture ? min($question->date, $question->date_cloture) : $question->date) ?></h2>
+<?php if (!$question->hasReponse()) {
+echo '<div class="alerte"><div class="mail"><h3 class="aligncenter">Être alerté lorsque cette<br>question aura une réponse</h3><table width="100%" style="text-align: center"><tbody><tr><td><a href="'.url_for('@alerte_question?num='.$question->numero).'"><img src="/images/xneth/email.png" alt="Email"></a><br><a href="'.url_for('@alerte_question?num='.$question->numero).'">par email</a></td><td></td></tr></tbody></table></div></div>';
+} ?>
     <?php echo $question->getQuestionRiche(); ?>
   </div>
   <div id="reponse">
@@ -27,7 +30,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
         echo ' le '.myTools::displayDate($question->date_cloture);
       }
       echo '</h2>';
-      if ($question->reponse)
+      if ($question->hasReponse())
         echo $question->getReponseRiche();
       else echo '<p>Cette question n\'a pas encore de réponse.</p>';
     } ?>

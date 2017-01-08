@@ -125,6 +125,11 @@ class Question extends BaseQuestion
     $this->_set('reponse', $reponse);
   }
 
+  public function hasReponse() {
+    $rep = preg_replace("/<p>(\W|<[a-z]*>)*<\/p>/i", "", $this->_get('reponse'));
+    return (trim($rep) != "");
+  }
+
   public function getReponseRiche() {
     if (!function_exists('url_for'))
       sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
