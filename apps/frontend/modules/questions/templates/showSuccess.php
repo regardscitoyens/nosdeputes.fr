@@ -1,7 +1,7 @@
 <div class="question" id="question<?php echo $question->legislature."-".$question->numero ?>">
 <?php
   $titre = $question->type.' N° '.$question->getShortNum();
-  $sf_response->setTitle($parlementaire->nom.' - '.$titre.' : '.$question->titre." - NosDéputés.fr");
+  $sf_response->setTitle($parlementaire->nom.' - '.$titre.' : '.$question->titre." - NosSénateurs.fr");
   $titre .= ' au '.$question->uniqueMinistere();
   if ($question->motif_retrait === "caduque") $titre .= ' (caduque)';
   else if ($question->motif_retrait || ($question->date_cloture && !$question->reponse && (date("Y-m-d") > $question->date_cloture))) $titre .= ' (retirée)';
