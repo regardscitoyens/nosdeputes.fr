@@ -12,12 +12,14 @@ class loadDocumentsTask extends sfBaseTask {
   protected function execute($arguments = array(), $options = array()) {
     $dir = dirname(__FILE__).'/../../batch/documents/out/';
     $manager = new sfDatabaseManager($this->configuration);
+    $doc = null;
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == "." || $file == ".svn") continue;
           foreach(file($dir.$file) as $line) {
+        if ($doc) exit(1);
 	    echo "\n$dir$file ... ";
             $json = json_decode($line);
             if (!$json )
