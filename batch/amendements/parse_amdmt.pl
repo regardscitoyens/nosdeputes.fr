@@ -140,6 +140,7 @@ foreach $line (split /\n/, $string) {
     }
   }
 }
+checkout();
 
 sub reset_amdmt {
   foreach $k (keys %amdmt) {
