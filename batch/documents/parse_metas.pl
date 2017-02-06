@@ -209,6 +209,7 @@ $string =~ s/if \(window!= top\) top\.location\.href=location\.href//i;
 $string =~ s/Recherche \| Aide \| Plan du site Accueil \&gt\; Documents parlementaires \&gt\; Les rapports législatifs//i;
 $string =~ s/_____ ASSEMBL'E NATIONALE CONSTITUTION DU 4 OCTOBRE 1958 TREIZIÈME LÉGISLATURE//i;
 $string =~ s/__*//i;
+$string =~ s/\s*var _gaq =.*$//;
 
 if ($no_text) { $string = ""; }
 #print "\n";
