@@ -138,7 +138,7 @@ class Parlementaire extends BaseParlementaire
     return $this->setPOrganisme('parlementaire', $array);
   }
   public function setExtras($array) {
-    return $this->setPOrganisme('extra', $array);
+    return $this->setPOrganisme('extra', $array, 1);
   }
   public function setGroupe($array) {
     return $this->setPOrganisme('groupe', $array);
@@ -147,14 +147,14 @@ class Parlementaire extends BaseParlementaire
     return $this->setPOrganisme('groupes', $array);
   }
 
-  public function setPOrganisme($type, $array) {
-    if (!$array)
+  public function setPOrganisme($type, $array, $loadEmpty = 0) {
+    if (!$array && !$loadEmpty)
       return;
     $orgas = $this->getParlementaireOrganismes();
     foreach($orgas->getKeys() as $key) {
       $o = $orgas->get($key);
       if ($o->type == $type)
-	$orgas->remove($key);
+      $orgas->remove($key);
     }
     foreach ($array as $args) {
       $orga = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($args[0], $type);
@@ -167,9 +167,9 @@ class Parlementaire extends BaseParlementaire
       $po->setFonction($fonction);
       $importance = ParlementaireOrganisme::defImportance($fonction);
       $po->setImportance($importance);
-  /*      if (isset($args[2])) {
-	$po->setDebutFonction($args[2]);
-	}*/
+  /*  if (isset($args[2])) {
+        $po->setDebutFonction($args[2]);
+      }*/
       $orgas->add($po);
     }
     $this->_set('ParlementaireOrganismes', $orgas);
@@ -188,8 +188,8 @@ class Parlementaire extends BaseParlementaire
           $po->setParlementaire($this);
           $po->setOrganisme($o);
           return $po;
-	}
-	$i++;
+      }
+      $i++;
       }
       return NULL;
     }
@@ -204,7 +204,7 @@ class Parlementaire extends BaseParlementaire
       return $po;
     foreach($this->getParlementaireOrganismes() as $po) {
       if ($po['Organisme']->nom == $str)
-	return $po;
+        return $po;
     }
   }
   public function setAutresMandats($array) {
@@ -234,14 +234,14 @@ class Parlementaire extends BaseParlementaire
       return $po;
     foreach($this->getParlementaireOrganismes() as $po) {
       if ($po->type === 'groupe')
-	return $po;
+        return $po;
     }
   }
   public function getExtras() {
     $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {
       if ($po->type == 'extra')
-	array_push($res, $po);
+        array_push($res, $po);
     }
     return $res;
   }
@@ -257,7 +257,7 @@ class Parlementaire extends BaseParlementaire
     $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {
       if ($po->type == 'parlementaire')
-	$res[sprintf('%04d',abs(100-$po->importance)).$po->nom]=$po;
+        $res[sprintf('%04d',abs(100-$po->importance)).$po->nom]=$po;
     }
     ksort($res);
     return array_values($res);
@@ -699,7 +699,7 @@ class Parlementaire extends BaseParlementaire
       $this->photo = null;
       $pphoto = doctrine::getTable('ParlementairePhoto')->find($this->id);
       if ($pphoto)
-	$this->photo = $pphoto->photo;
+        $this->photo = $pphoto->photo;
     }
     if (!$this->photo)
       return null;
