@@ -36,7 +36,7 @@ def date_iso(datestr):
 reg = {}
 reg['date'] = '^([0-9]{4})-([0-9]{2})-([0-9]{2})$'
 reg['com'] = '^Commissions'
-reg['start_an'] = u'^[0-9]{0,2}\. Membres présents ou excusés'
+reg['start_an'] = u'^[0-9]{0,2}\.? *Membres présents ou excusés'
 reg['start_senat'] = u'^Membres'
 reg['commission'] = u'(.*) :$'
 reg['reunion_an'] = u'^Réunion du (.*) ?à (.*) :'
