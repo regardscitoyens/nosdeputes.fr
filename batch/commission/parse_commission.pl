@@ -146,6 +146,13 @@ foreach (split /\n/, $content) {
 		    next;
 		}
 	}
+    if (!$date && !$commission && (/<[^>]*>(R\S+union d[^<]*) du (\S+ [0-9er]+ \S+ \d+)<\//)) {
+        @date = datize($2, $url_year);
+        $date = join '-', @date;
+        $titre = $1;
+        $commission = $1 if ($titre =~ /((MCI|Mission|Office|Délégation|Groupe de travail|CE |GT )[^:<]*)/i);
+        $heure = '1ère séance';
+    }
 	if (/<h[1234][^>]*>(\s*<[^>]*>)*([^<]+)<\/h[1234]>/) {
 		$titre = $2;
 		next if ($titre =~ /^((com)?mission|comptes rendus |office|délégation|groupe de travail)/i && $titre !~/commission mixte paritaire/i);
