@@ -54,7 +54,7 @@ tail -n +2 $CSVDIR/$year-$month-com.txt >> $CSVDIR/commissions_mercredimatin.csv
 
 done
 
-echo 'SELECT distinct(p.id) as id FROM parlementaire p JOIN parlementaire_organisme po ON ( po.parlementaire_id = p.id ) WHERE ( po.organisme_id = 1 AND po.fonction NOT LIKE "secretaire" ) OR ( po.organisme_id IN ( '$GROUPES' ) AND po.fonction like "president%" ) OR ( p.nom_circo IN ( "Guadeloupe", "Martinique", "Guyane", "Saint-Pierre-et-Miquelon", "Mayotte", "Wallis-et-Futuna" ) ) OR p.nom_circo LIKE "R%union" OR p.nom_circo LIKE "Polynesie%" OR p.nom_circo LIKE "Nouvelle-Caledonie" order by p.id' | mysql $MYSQLID $DBNAME  | sed 's/$/;1/' | sed 's/id;1/id;exonere/g' | iconv --from-code=ISO-8859-1 --to-code=UTF-8 > $CSVDIR/exoneres.txt
+echo 'SELECT distinct(p.id) as id FROM parlementaire p JOIN parlementaire_organisme po ON ( po.parlementaire_id = p.id ) WHERE ( po.organisme_id = 1 AND po.fonction NOT LIKE "secr%" ) OR ( po.organisme_id IN ( '$GROUPES' ) AND po.fonction like "president%" ) OR ( p.nom_circo IN ( "Guadeloupe", "Martinique", "Guyane", "Saint-Pierre-et-Miquelon", "Mayotte", "Wallis-et-Futuna" ) ) OR p.nom_circo LIKE "R%union" OR p.nom_circo LIKE "Polynesie%" OR p.nom_circo LIKE "Nouvelle-Caledonie" OR p.nom_circo LIKE "Saint-Barth%" order by p.id' | mysql $MYSQLID $DBNAME  | sed 's/$/;1/' | sed 's/id;1/id;exonere/g' | iconv --from-code=ISO-8859-1 --to-code=UTF-8 > $CSVDIR/exoneres.txt
 
 tail -n +2 $CSVDIR/deputes.txt  | sort -t ';' -k 8,8 > $CSVDIR/deputes.sorted_by_commission.txt
 cat $CSVDIR/commissions_mercredimatin.csv | sort -t ';' -k 1,1 > $CSVDIR/commissions_mercredimatin.sorted_b_commission.csv
@@ -72,3 +72,7 @@ grep -i "[a-z]" $CSVDIR/presences_deputes_mercredimatin_with_commissions.sorted.
 
 
 echo "Sanction généré dans $CSVDIR/"$YEAR"_presences_deputes_mercredimatin_with_commissions.csv";
+echo
+echo "Il reste à exclure les députés hors d'europe, ceux qui devaient être"
+echo "présents dans des fonctions internationales ou ont d'autres excuses "
+echo "reconnues valable au regard du règlement"
