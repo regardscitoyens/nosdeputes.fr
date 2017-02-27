@@ -20,7 +20,7 @@
       if ($parlementaire->groupe_acronyme != "") : ?>
       <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getgroupe()->getFonction(); ?>)</li>
       <?php endif;
-      if ($parlementaire->parti) : ?> 
+      if ($parlementaire->parti) : ?>
       <li>Parti politique (rattachement financier) : <?php echo $parlementaire->parti; ?></li>
       <?php endif; ?>
       <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, '@list_parlementaires_profession?search='.$parlementaire->profession); else : ?>Non communiquée<?php endif; ?></li>
@@ -32,12 +32,12 @@
 		$nomsite = "Site web";
 		if (preg_match('/twitter/', $site)) $nomsite = "Sur Twitter";
 		else if (preg_match('/facebook/', $site)) $nomsite = "Sur Facebook";
-		$link = "<li>".link_to($nomsite, $site, array('title' => 'Lien externe', 'rel'=>'nofollow'))."</li>";
+		$link = '<li><a href="'.$site.'" title="Lien externe" rel="nofollow">'.$nomsite."</a></li>";
 		if (preg_match('/twitter|facebook/', $site)) $moreweb .= $link;
 		else echo $link;
 	}
 	echo $moreweb;
-      } ?>  
+      } ?>
     </ul>
     <?php if ($parlementaire->fin_mandat == null || $parlementaire->fin_mandat < $parlementaire->debut_mandat) : ?>
       <h2>Responsabilités</h2>
@@ -46,7 +46,7 @@
 <?php if (count($missions)) : ?>
         <li>Missions parlementaires :
           <ul>
-            <?php 
+            <?php
             foreach ($missions as $resp) { ?>
             <li><?php echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug()); echo ' ('.$resp->getFonction().') '; ?></li>
             <?php } ?>
@@ -99,7 +99,7 @@
     </div>
     <div class="b_d_b"><div class="b_d_bg"></div><div class="b_d_bd"></div></div>
   </div>
-    
+
   <div class="boite_senateur" id="b2">
     <div class="b_d_h"><div class="b_d_hg"></div><div class="b_d_hd"></div></div>
     <div class="b_d_cont">
