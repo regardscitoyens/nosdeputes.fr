@@ -149,6 +149,7 @@ foreach (split /\n/, $content) {
     if (!$date && !$commission && (/<[^>]*>(R\S+union d[^<]*) du (\S+ [0-9er]+ \S+ \d+)<\//)) {
         @date = datize($2, $url_year);
         $date = join '-', @date;
+        $session = sessionize(@date);
         $titre = $1;
         $commission = $1 if ($titre =~ /((MCI|Mission|Office|Délégation|Groupe de travail|CE |GT )[^:<]*)/i);
         $heure = '1ère séance';
@@ -161,6 +162,7 @@ foreach (split /\n/, $content) {
 		$context = $titre;
 		setfonction($titre);
 		$context =~ s/ -{1,2} / > /;
+                $context =~ s/"//g;
 		$titre =~ s/[\s\(]+suite[\s\)]*$//i if ($context =~ s/[\s\(]+suite[\s\)]*$//i);
 		$intervention = '<p>'.$titre.'</p>';
 		%fonctions = ();
