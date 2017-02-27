@@ -38,8 +38,6 @@ if [ $extra -gt 0 ]; then
   echo
 fi
 
-done=0
-fail=0
 missing=$(diff all_amdts_opendataAN.tmp all_amdts_nosdeputes.tmp | grep "^<" | wc -l)
 if [ $missing -gt 0 ]; then
   echo "There are $missing Amendements missing, reloading them:"
@@ -49,15 +47,11 @@ if [ $missing -gt 0 ]; then
     while read AMurl; do
       AMfile=$(echo "$AMurl" | sed 's|/|_-_|g')
       perl download_one.pl "$AMurl" 2>/dev/null && perl cut_amdmt.pl "html/$AMfile" > "json/$AMfile"
-      if [ -s "html/$AMfile" ]; then
-        done=$(($done + 1))
-      else
-        fail=$(($fail + 1))
-      fi
     done
+  AMdone=$(ls json | wc -l)
   echo
-  echo "$fail missing amendements from AN's OpenData could not be found on AN's website"
-  echo 'All '"$done"' missing found Amendements reloaded and parsed, run "php symfony load:Amdts" to complete'
+  echo "$(($missing - $AMdone)) missing amendements from AN's OpenData could not be found on AN's website"
+  echo 'All '"$AMdone"' missing found Amendements reloaded and parsed, run "php symfony load:Amdts" to complete'
 fi
 
 rm -f all_amdts_*.tmp
