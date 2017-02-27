@@ -51,7 +51,7 @@ if [ $missing -gt 0 ]; then
   AMdone=$(ls json | wc -l)
   echo
   echo "$(($missing - $AMdone)) missing amendements from AN's OpenData could not be found on AN's website"
-  echo 'All '"$AMdone"' missing found Amendements reloaded and parsed, run "php symfony load:Amdts" to complete'
+  echo 'All '"$AMdone"' missing found Amendements reloaded and parsed, run "while find batch/amendements/json -type f > /dev/null; do php symfony load:Amdmts; done" to complete'
 fi
 
 rm -f all_amdts_*.tmp
