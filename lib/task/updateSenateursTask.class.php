@@ -97,15 +97,20 @@ class updateSenateursTask extends sfBaseTask
 	      $parl->place_hemicycle = $json->place_hemicycle;
 	    if ($json->profession)
 	      $parl->profession = $json->profession;
+        $done_sites = array();
 	    if (count($json->sites_web))
-          foreach (array_keys($json->sites_web) as $i)
+          foreach (array_keys($json->sites_web) as $i) {
             $json->sites_web[$i] = preg_replace("|(://[^/]+)/$|", "$1", $json->sites_web[$i]);
+            $done_sites[preg_replace("#^(https?://|www\.)*(.*)$#", "$2", $json->sites_web[$i])] = 1;
+          }
         if (isset($sites[$parl->slug]) && count($sites[$parl->slug])) {
-          foreach ($sites[$parl->slug] as $site)
-            $sites[$parl->slug][$i] = preg_replace("|(://[^/]+)/$|", "$1", $sites[$parl->slug][$i]);
-          if (count($json->sites_web))
-            $json->sites_web = array_unique(array_merge($json->sites_web, $sites[$parl->slug]));
-          else $json->sites_web = array_unique($sites[$parl->slug]);
+          foreach ($sites[$parl->slug] as $site) {
+            $site = preg_replace("|(://[^/]+)/$|", "$1", $site);
+            $rootsite = preg_replace("#^(https?://|www\.)*(.*)$#", "$2", $site);
+            if (!isset($done_sites[$rootsite]))
+              $json->sites_web[] = $site;
+            $done_sites[$rootsite] = 1;
+          }
         }
 	    if (count($json->sites_web))
 	      $parl->sites_web = $json->sites_web;
