@@ -56,6 +56,15 @@ $mois{'octobre'} = '10';
 $mois{'novembre'} = '11';
 $mois{'décembre'} = '12';
 
+$heure{'zéro'} = '00';
+$heure{'une'} = '01';
+$heure{'deux'} = '02';
+$heure{'trois'} = '03';
+$heure{'quatre'} = '04';
+$heure{'cinq'} = '05';
+$heure{'six'} = '06';
+$heure{'sept'} = '07';
+$heure{'huit'} = '08';
 $heure{'neuf'} = '09';
 $heure{'dix'} = '10';
 $heure{'onze'} = '11';
@@ -70,22 +79,21 @@ $heure{'dix-neuf'} = '19';
 $heure{'vingt'} = '20';
 $heure{'vingt et une'} = '21';
 $heure{'vingt-deux'} = '22';
+$heure{'vingt-trois'} = '23';
 $heure{'vingt-cinq'} = '25';
+$heure{'trente'} = '30';
+$heure{'trente-cinq'} = '35';
 $heure{'quarante'} = '40';
 $heure{'quarante-cinq'} = '45';
 $heure{'cinquante'} = '50';
 $heure{'cinquante-cinq'} = '55';
-$heure{'trente'} = '30';
-$heure{'trente-cinq'} = '35';
-$heure{'quinze'} = '15';
-$heure{'zéro'} = '00';
-$heure{'cinq'} = '05';
 $heure{''} = '00';
 
-if ($string =~ /ouverte[^\.]+à ([^\.]+) heures?\s*([^\.\s]*)\s*\./) {
+if ($string =~ /ouverte[^\.]+à\s+([^\.]+?)\s*heures?\s*([^\.\s]*)\s*\./) {
     $heure = $heure{$1}.':'.$heure{$2};
-    print STDERR "ERROR: cannot find start hour in séance $url\n"
-    exit(1)
+} else {
+    print STDERR "ERROR: cannot find start hour in séance $url\n";
+    exit(1);
 }
 
 sub savepLoi() {
