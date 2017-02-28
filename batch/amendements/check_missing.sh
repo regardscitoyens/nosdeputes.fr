@@ -20,7 +20,6 @@ rm -f Amendements_XIV.json*
 
 echo "Extracting list of Questions from NosDéputés..."
 echo 'SELECT source FROM amendement WHERE sort NOT LIKE "Rect%" ORDER BY source'    |
-  iconv -t "utf-8"                                                                  |
   mysql $MYSQLID $DBNAME                                                            |
   sed -r 's|(/T?A?[0-9]{4}[A-Z]?/)([0-9]+\.asp)|\1AN/\2|'                           |
   grep -v "cr-cfiab/12-13/c1213068"                                                 |
