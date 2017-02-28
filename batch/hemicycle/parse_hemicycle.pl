@@ -70,20 +70,22 @@ $heure{'dix-neuf'} = '19';
 $heure{'vingt'} = '20';
 $heure{'vingt et une'} = '21';
 $heure{'vingt-deux'} = '22';
-$heure{'quarante'} = '45';
+$heure{'vingt-cinq'} = '25';
+$heure{'quarante'} = '40';
 $heure{'quarante-cinq'} = '45';
+$heure{'cinquante'} = '50';
+$heure{'cinquante-cinq'} = '55';
 $heure{'trente'} = '30';
 $heure{'trente-cinq'} = '35';
 $heure{'quinze'} = '15';
 $heure{'zéro'} = '00';
-$heure{'cinq'} = '00';
+$heure{'cinq'} = '05';
 $heure{''} = '00';
 
-if ($string =~ /ance est ouverte/i) {
-    $heure = '09:30';
-}
 if ($string =~ /ouverte[^\.]+à ([^\.]+) heures?\s*([^\.\s]*)\s*\./) {
     $heure = $heure{$1}.':'.$heure{$2};
+    print STDERR "ERROR: cannot find start hour in séance $url\n"
+    exit(1)
 }
 
 sub savepLoi() {
