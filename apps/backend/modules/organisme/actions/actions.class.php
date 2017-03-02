@@ -23,7 +23,7 @@ class organismeActions extends autoOrganismeActions
       ->leftJoin('o.Seances s')
       ->groupBy('o.id')
       ->orderBy('o.nom');
-    $this->orgas = $query->fetchArray(); 
+    $this->orgas = $query->fetchArray();
 
     $this->seances = Doctrine_Query::create()
       ->select('id, date, moment, session, organisme_id, tagged, nb_commentaires, i.seance_id, count(distinct(i.id)) as n_interventions, p.seance_id, count(distinct(p.parlementaire_id)) as presents, count(distinct(pr.type)) as sources')
@@ -36,7 +36,7 @@ class organismeActions extends autoOrganismeActions
       ->groupBy('s.id')
       ->orderBy('s.date, s.moment')
       ->fetchArray();
-    
+
     if ($suppr = $request->getParameter('suppr')) {
       if ($suppr == 'commission')
         $this->delcom = array('id' => $request->getParameter('id'), 'art' => $request->getParameter('art'), 'dep' => $request->getParameter('dep'), 'sea' => $request->getParameter('sea'));
@@ -59,7 +59,7 @@ class organismeActions extends autoOrganismeActions
       ->where('po.organisme_id = ?', $orga)
       ->orderBy('po.importance DESC, p.sexe ASC, p.nom_de_famille ASC')
       ->fetchArray();
- 
+
     $this->seances = Doctrine_Query::create()
       ->select('id, date, moment, session, organisme_id, tagged, nb_commentaires, i.seance_id, count(distinct(i.id)) as n_interventions, p.seance_id, count(distinct(p.parlementaire_id)) as presents, count(distinct(pr.type)) as sources')
       ->from('Seance s')
@@ -111,8 +111,8 @@ class organismeActions extends autoOrganismeActions
 
     $this->type = $request->getParameter('type');
     $this->forward404Unless($this->type && preg_match('/^(commission|seance)$/', $this->type));
-    $this->bads = $request->getParameter('bad', $_SESSION["hack_fuse_bad"]);
-    $this->goods = $request->getParameter('good', $_SESSION["hack_fuse_good"]);
+    $this->bads = $request->getParameter('bad', (isset($_SESSION["hack_fuse_bad"]) ? $_SESSION["hack_fuse_bad"] : null));
+    $this->goods = $request->getParameter('good', (isset($_SESSION["hack_fuse_good"]) ? $_SESSION["hack_fuse_good"] : null));
     $this->forward404Unless($this->bads && $this->goods && ($this->bads != $this->goods));
     unset($_SESSION["hack_fuse_bad"]);
     unset($_SESSION["hack_fuse_good"]);
@@ -199,7 +199,7 @@ class organismeActions extends autoOrganismeActions
               $doublons_bad .= ','.$bd;
               $doublons_good .= ','.$gd;
             }
-          }  
+          }
         }
         if ($doublons_bad != "" && $doublons_good != "" && ($doublons_bad != $doublons_good)) {
           $_SESSION["hack_fuse_bad"] = $doublons_bad;
@@ -256,12 +256,12 @@ class organismeActions extends autoOrganismeActions
           $option->setValue(serialize($corresp));
         } else $option->setValue(serialize(array_merge(unserialize($option->getValue()), $corresp)));
         $option->save();
-        
+
         if ($this->article && $this->article->object_id == $this->bad) {
           $this->article->object_id = $this->good;
           $this->article->save();
         }
-        
+
         $query = Doctrine_Query::create()
           ->update('Seance')
           ->set('organisme_id', $this->good)
