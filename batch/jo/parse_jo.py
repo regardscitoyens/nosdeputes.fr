@@ -151,7 +151,36 @@ else:
 
         for line in com_text.split(os.linesep):
 
-          if re.search(reg['commission'], line) is not None:
+          #print >> sys.stderr, line
+          if re.search(reg['presents'], line, re.IGNORECASE) is not None:
+            m = re.search(reg['presents'], line, re.IGNORECASE)
+            presents = re.sub(reg['civilite'], "", m.group(2))
+
+            for present in presents.split(','):
+              if chamber == "senat":
+                data['senateur'] = present.strip().strip('.')
+              else:
+                data['depute'] = present.strip().strip('.')
+              json_file += json.dumps(data, separators=(',',':'), ensure_ascii=False, sort_keys=True)+os.linesep
+              n_presences += 1
+
+          elif re.search(reg['assistent'], line, re.IGNORECASE) is not None:
+            m = re.search(reg['assistent'], line, re.IGNORECASE)
+            presents = re.sub(reg['civilite'], "", m.group(2))
+            if chamber == "senat":
+              presents = re.sub(reg['fonction_senat'], "", presents)
+
+            for present in presents.split(','):
+              if chamber == "senat":
+                data['senateur'] = present.strip().strip('.')
+              else:
+                data['depute'] = present.strip().strip('.')
+              json_file += json.dumps(data, separators=(',',':'), ensure_ascii=False, sort_keys=True)+os.linesep
+              n_presences += 1
+
+          elif re.search(reg['excuses'], line) is not None:
+            pass
+          elif re.search(reg['commission'], line) is not None:
 
             if re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
               m = re.search(reg['reunion_an'], line, re.IGNORECASE)
@@ -170,32 +199,6 @@ else:
                 data['date'] = date_iso(m.group(2))
                 data['heure'] = ''
                 data['commission'] = m.group(1)
-
-          if re.search(reg['presents'], line, re.IGNORECASE) is not None:
-            m = re.search(reg['presents'], line, re.IGNORECASE)
-            presents = re.sub(reg['civilite'], "", m.group(2))
-
-            for present in presents.split(','):
-              if chamber == "senat":
-                data['senateur'] = present.strip().strip('.')
-              else:
-                data['depute'] = present.strip().strip('.')
-              json_file += json.dumps(data, separators=(',',':'), ensure_ascii=False, sort_keys=True)+os.linesep
-              n_presences += 1
-
-          if re.search(reg['assistent'], line, re.IGNORECASE) is not None:
-            m = re.search(reg['assistent'], line, re.IGNORECASE)
-            presents = re.sub(reg['civilite'], "", m.group(2))
-            if chamber == "senat":
-              presents = re.sub(reg['fonction_senat'], "", presents)
-
-            for present in presents.split(','):
-              if chamber == "senat":
-                data['senateur'] = present.strip().strip('.')
-              else:
-                data['depute'] = present.strip().strip('.')
-              json_file += json.dumps(data, separators=(',',':'), ensure_ascii=False, sort_keys=True)+os.linesep
-              n_presences += 1
 
         if not json_file:
           sys.exit(' no attendance '+com_link)
