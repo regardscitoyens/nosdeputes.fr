@@ -37,13 +37,22 @@ function link_tof($name, $parameters) { return sfProjectConfiguration::getActive
 function toggleOK(){
   var past = "",
     curr = "",
-    keep = {};
+    keep = {},
+    opts = {},
+    tmplist = [];
   $("form tbody tr").each(function(a, b){
-    console.log(a, b, curr);
     curr = $(b).attr("class");
     if(past===curr) {
-      keep[a-1] = 1;
-      keep[a] = 1;
+      tmplist.push(a)
+      opts[$(b).find('[type="radio"]').attr("name").replace(/\d/g, "")] = 1;
+      if (opts.good && opts.bad) {
+        tmplist.forEach(function(c){
+          keep[c] = 1;
+        });
+      }
+    } else {
+      opts = {};
+      tmplist = [a];
     }
     past = curr
   });
