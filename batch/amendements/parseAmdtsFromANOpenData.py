@@ -55,14 +55,18 @@ fieldnames = ['refTexteLegislatif', 'amendementParent',
 
 
 
-with open("amendements_liste.csv", 'w') as f2:
-    spamwriter =  csv.DictWriter(f2, delimiter='|', fieldnames=fieldnames)
-    spamwriter.writeheader()
+#with open("amendements_liste.csv", 'w') as f2:
+#    spamwriter =  csv.DictWriter(f2, delimiter='|', fieldnames=fieldnames)
+#    spamwriter.writeheader()
 
 
-    for texte in json_data['textesEtAmendements']['texteleg']:
-        refTexteLeg = texte['refTexteLegislatif']
-        print "Texte being treated : %s " % refTexteLeg
+for texte in json_data['textesEtAmendements']['texteleg']:
+    refTexteLeg = texte['refTexteLegislatif']
+    print "Texte being treated : %s " % refTexteLeg
+    texteAmdtFileName = "OpenDataAN/amdts_%s.json" % refTexteLeg
+
+    with open(texteAmdtFileName, 'w') as texteAmdtFile :
+        
         if type(texte['amendements']['amendement']) != list :
             print "==================================================="
             print "COnverting a single element in a list"
@@ -147,7 +151,8 @@ with open("amendements_liste.csv", 'w') as f2:
                     if result[k] and type(result[k]) != list and type(result[k]) != dict:
                         result[k] = result[k].encode('utf8')
 
-                spamwriter.writerow(result)
+                texteAmdtFile.writerow(json.dumps(result))
+                #spamwriter.writerow(result)
                 
 
             except Exception as e: 
