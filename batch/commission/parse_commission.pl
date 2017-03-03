@@ -104,8 +104,13 @@ $string =~ s/\. ([A-Z])<\/b>(\w)/.<\/b> \1\2/g;
 $string =~ s/<\/?[bu]>/|/g;
 $string =~ s/<\/?i>/\//g;
 
+if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
+  $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
+  $heure = sprintf("%02d:%02d", $5, $6 || '00');
+}
+
 if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([^\.]*)\./i) {
-    $heure = $heure{$1}.':'.$heure{$2};
+  $heure = $heure{$1}.':'.$heure{$2};
 }
 
 #utf8::decode($string);
@@ -122,6 +127,9 @@ sub checkout {
     $commission =~ s/"//g;
     if ($commission =~/^\s*Mission d'information\s*$/i && $commission_meta) {
         $commission = $commission_meta;
+    }
+    if (!$date) {
+        $date = $tmpdate;
     }
     $intervention =~ s/"/\\"/g;
     $intervention =~ s/\\\\/\//g;
@@ -380,7 +388,7 @@ foreach $line (split /\n/, $string)
     if ($line =~ /<h[1-9]+/i) {
         rapporteur();
        #print "$line\n";
-        if (!$date && $line =~ /SOMdate|\"seance\"|h2/) {
+        if (!$date && $line =~ /SOM(seance|date)|\"seance\"|h2/) {
             if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
               if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d()!<>]+)\s+(\d\d+)/i) {
                 $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);

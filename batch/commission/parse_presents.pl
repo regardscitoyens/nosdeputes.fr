@@ -52,6 +52,9 @@ sub checkout {
     if ($commission =~/^\s*Mission d'information\s*$/i && $commission_meta) {
         $commission = $commission_meta;
     }
+    if (!$date) {
+        $date = $tmpdate;
+    }
     foreach $depute (@presents) {
 	$depute =~ s/[\/<\|]//g;
 	$depute =~ s/^\s*M[me\.]+\s+//;
@@ -78,6 +81,15 @@ $string =~ s/(<\/h\d+>)/\1\n/gi;
 
 
 $string =~ s/<\/?ul>//gi;
+
+if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
+  $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
+  $heure = sprintf("%02d:%02d", $5, $6 || '00');
+}
+
+if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([^\.]*)\./i) {
+  $heure = $heure{$1}.':'.$heure{$2};
+}
 
 #print $string; exit;
 
@@ -107,7 +119,7 @@ foreach $line (split /\n/, $string)
 	}
     }
     if ($line =~ /<h[1-9]+/i) {
-	if (!$date && $line =~ /SOMdate|\"seance\"|h2/) {
+	if (!$date && $line =~ /SOM(date|seance)|\"seance\"|h2/) {
 	    if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
 	      if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d()!<>]+)\s+(\d\d+)/i) {
 		$date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
