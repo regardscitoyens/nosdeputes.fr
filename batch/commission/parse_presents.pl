@@ -45,7 +45,7 @@ $mois{'décembre'} = '12';
 $cpt = 0;
 sub checkout {
     if ($#presents <= 0) {
-	print STDERR "$source: Pas de présent trouvé\n";
+	print STDERR "$url: Pas de présent trouvé\n";
 	return ;
     }
     $commission =~ s/"//g;

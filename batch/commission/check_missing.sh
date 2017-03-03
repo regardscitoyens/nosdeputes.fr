@@ -157,21 +157,20 @@ fi
 
 missing=$(diff all_crs_AN all_crs_ND | grep "^<" | wc -l)
 if [ $missing -gt 0 ]; then
-  echo "There are $missing Compte-rendus missing, reloading them:"
+  echo "- There are $missing Compte-rendus missing, reloading them:"
   diff all_crs_AN all_crs_ND    |
     grep "^<"                   |
     sed 's/^< //'               |
     while read CRurl; do
       CRfile=$(echo $CRurl | sed 's|/|_|g')
-      echo $CRurl
-      #perl download_one.pl "$CRurl"
-      #perl parse_presents.pl html/$CRfile > presents/$CRfile
-      #perl parse_commission.pl html/$CRfile > out/$CRfile
+      perl download_one.pl "$CRurl"
+      perl parse_presents.pl html/$CRfile > presents/$CRfile
+      perl parse_commission.pl html/$CRfile > out/$CRfile
     done
+  echo
   echo 'All missing Compte-rendus reloaded and parsed, run to complete:'
-  echo 'while find batch/commission/out -type f > /dev/null; do php symfony load:Commission; done'
-  echo 'while find batch/commission/presents -type f > /dev/null; do php symfony load:JO --source=cri; done'
+  echo 'while find batch/commission/out -type f | grep . > /dev/null; do php symfony load:Commission; done'
+  echo 'while find batch/commission/presents -type f | grep . > /dev/null; do php symfony load:JO --source=cri; done'
 fi
 
-#rm -f all_crs_*
-
+rm -f all_crs_*
