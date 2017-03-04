@@ -18,6 +18,7 @@ def convertToNDFormat(amdtOD):
     formatND['sujet'] = amdtOD['pointeurFragmentTexte.division.articleDesignationCourte']
     formatND['texte'] = amdtOD['corps.dispositif']
     formatND['expose'] = amdtOD['corps.exposeSommaire']
+    formatND['auteur_reel'] = amdtOD['signataires.auteur.acteurRef']
 
 
 
