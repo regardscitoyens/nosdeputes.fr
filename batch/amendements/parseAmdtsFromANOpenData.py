@@ -3,9 +3,21 @@ import json,csv
 amdtFilePath="Amendements_XIV.json"
 
 
-def convertForNDFormat(amdtOD):
-    source = "www.assemblee-nationale.fr%s.asp" % amdtOD['representation.contenu.documentURI'][:-4]
-    print source
+def convertToNDFormat(amdtOD):
+    formatND['source'] = "www.assemblee-nationale.fr%s.asp" % amdtOD['representation.contenu.documentURI'][:-4]
+    formatND['legislature'] = amdtOD['identifiant.legislature']
+    formatND['loi'] = amdtOD['refTexteLegislatif']
+    #formatND['numero'] = amdtOD['identifiant.numero']
+    formatND['numero'] = amdtOD['numeroLong']
+    formatND['serie'] = ""
+    formatND['rectif']  = amdtOD['identifiant.numRect']
+    formatND['parent'] = amdtOD['amendementParent']
+    formatND['date'] = amdtOD['dateDepot']
+    formatND['auteurs'] = amdtOD['signataires.texteAffichable']
+    formatND['sort'] = amdtOD['sort.sortEnSeance']
+    formatND['sujet'] = amdtOD['pointeurFragmentTexte.division.articleDesignationCourte']
+    formatND['texte'] = amdtOD['corps.dispositif']
+    formatND['expose'] = amdtOD['corps.exposeSommaire']
 
 
 
@@ -158,8 +170,8 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                     if result[k] and type(result[k]) != list and type(result[k]) != dict:
                         result[k] = result[k].encode('utf8')
 
-                convertForNDFormat(result)
-                texteAmdtFile.write(json.dumps(result)+"\n")
+                amdtND = convertToNDFormat(result)
+                texteAmdtFile.write(json.dumps(amdtND)+"\n")
                 #spamwriter.writerow(result)
                 
 
