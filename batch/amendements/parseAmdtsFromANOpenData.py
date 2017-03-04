@@ -151,7 +151,7 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                     if result[k] and type(result[k]) != list and type(result[k]) != dict:
                         result[k] = result[k].encode('utf8')
 
-                texteAmdtFile.writerow(json.dumps(result))
+                texteAmdtFile.write(json.dumps(result)+"\n")
                 #spamwriter.writerow(result)
                 
 
