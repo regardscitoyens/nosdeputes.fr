@@ -1,4 +1,4 @@
-import json,csv
+import json,csv,os
 
 amdtFilePath="Amendements_XIV.json"
 
@@ -88,11 +88,15 @@ fieldnames = ['refTexteLegislatif', 'amendementParent',
 #    spamwriter =  csv.DictWriter(f2, delimiter='|', fieldnames=fieldnames)
 #    spamwriter.writeheader()
 
+dirpath = "OpenDataAN"
+if not os.path.exists(dirpath):
+    os.makedirs(dirpath)
+
 
 for texte in json_data['textesEtAmendements']['texteleg']:
     refTexteLeg = texte['refTexteLegislatif']
     print "Texte being treated : %s " % refTexteLeg
-    texteAmdtFileName = "OpenDataAN/amdts_%s.json" % refTexteLeg
+    texteAmdtFileName = "%s/amdts_%s.json" % (dirpath,refTexteLeg)
 
     with open(texteAmdtFileName, 'w') as texteAmdtFile :
         
