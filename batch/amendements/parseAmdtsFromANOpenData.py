@@ -15,7 +15,13 @@ def convertToNDFormat(amdtOD):
     formatND['parent'] = amdtOD['amendementParent']
     formatND['date'] = amdtOD['dateDepot']
     formatND['auteurs'] = amdtOD['signataires.texteAffichable']
-    formatND['sort'] = amdtOD['sort.sortEnSeance']
+    
+    sort = ""
+    if 'sort.sortEnSeance' in amdtOD:
+        sort = amdtOD['sort.sortEnSeance']
+    else :
+        sort = amdtOD['etat']
+    formatND['sort'] = sort
     formatND['sujet'] = amdtOD['pointeurFragmentTexte.division.articleDesignationCourte']
     formatND['texte'] = amdtOD['corps.dispositif']
     formatND['expose'] = amdtOD['corps.exposeSommaire']
