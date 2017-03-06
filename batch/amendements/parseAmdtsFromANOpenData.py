@@ -5,7 +5,7 @@ amdtFilePath="Amendements_XIV.json"
 
 def convertToNDFormat(amdtOD):
     formatND = {}
-    formatND['source'] = "www.assemblee-nationale.fr%s.asp" % amdtOD['representation.contenu.documentURI'][:-4]
+    formatND['source'] = "http://www.assemblee-nationale.fr%s.asp" % amdtOD['representation.contenu.documentURI'][:-4]
     formatND['legislature'] = amdtOD['identifiant.legislature']
     formatND['loi'] = amdtOD['refTexteLegislatif']
     #formatND['numero'] = amdtOD['identifiant.numero']
