@@ -192,6 +192,6 @@ for texte in json_data['textesEtAmendements']['texteleg']:
             except Exception as e: 
                 print type(e)
                 print e
-                print "Error on %s" % amdt
+                print "Error on %s\n" % json.dumps(amdt)
             
 
