@@ -120,9 +120,10 @@ foreach (split /\n/, $content) {
 	}elsif (/fait au nom de la (commission d'enquête[^:<]*)(\s*,\s*déposé)/i) {
 		$commission = $1;
 	}else {
-	    $commission = $1 if (/TITLE>\s*((MCI|Mission|Office|Délégation|Groupe de travail|CE |GT )[^:<]*)/i);
+	    $commission = $1 if (/TITLE>\s*((MC?I|Mission|Office|Délégation|Groupe de travail|CE |GT )[^:<]*)/i);
 	    $commission =~ s/\-[\s\-]+S[é&eacut;]+nat\s*//;
-            $commission =~ s/MCI /Mission commune d'information /;
+        $commission =~ s/MI /Mission d'information /;
+        $commission =~ s/MCI /Mission commune d'information /;
 	    $commission =~ s/CE /Commission d'enquête /;
 	    $commission =~ s/GT /Groupe de travail /;
 	}
