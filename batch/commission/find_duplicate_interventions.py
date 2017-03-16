@@ -21,11 +21,11 @@ def longest_common_subsequence(list1, list2, i1, i2):
     """
     k=0
     for k in range(min(len(list1)-i1,len(list2)-i2)):
-        if similar(list1[i1+k], list2[i2+k]) < 0.6:
+        if similar(list1[i1+k], list2[i2+k]) < 0.85:
             break
     j=0
     for j in range(min(i1,i2)+1):
-        if similar(list1[i1-j], list2[i2-j]) < 0.6:
+        if similar(list1[i1-j], list2[i2-j]) < 0.85:
             break
     return (-j+1,k)
 
@@ -63,19 +63,68 @@ with open(sys.argv[1]) as f:
             reunions[row["seance_id"]] = {
               "ids": [],
               "txts": [],
-              "intervs": []
+              "intervs": [],
+              "anchors": []
             }
         reunions[row["seance_id"]]["ids"].append(row["id"])
-        reunions[row["seance_id"]]["txts"].append(row["intervention"])
+        reunions[row["seance_id"]]["txts"].append(row["intervention"].lower())
         reunions[row["seance_id"]]["intervs"].append(row["parlementaire_id"])
+        reunions[row["seance_id"]]["anchors"].append(row["md5"])
 
-ndurl = lambda i: "https://www.nosdeputes.fr/14/seance/%s" % i
+seances = {}
+with open(sys.argv[2]) as f:
+    for row in csv.DictReader(f, delimiter="\t"):
+        seances[int(row["id"])] = row
+
+def ndurl(sid, ank=None):
+    ank = "#inter_%s" % ank if ank else ""
+    return "https://www.nosdeputes.fr/14/seance/%s%s" % (sid, ank)
+
+def choose_kept_seance(s1, s2, n1, n2, metas):
+    if metas[s1]["nb_commentaires"] != "NULL":
+        if metas[s2]["nb_commentaires"] != "NULL":
+            print "WARNING: both réunions have comments!"
+        else:
+            return s1, s2
+    elif metas[s2]["nb_commentaires"] != "NULL":
+        return s2, s1
+    if n1 > n2:
+        return s1, s2
+    elif n2 > n1:
+        return s2, s1
+    if metas[s1]["nom"] == "Commission des affaires européennes":
+        return s2, s1
+    return s1, s2
 
 found = False
 for s1, s2 in combinations(reunions.keys(), 2):
     res = find_matchings(reunions[s1]["txts"], reunions[s2]["txts"])
     if res:
-        print " -> FOUND MATCH!", ndurl(s1), ndurl(s2), len(reunions[s1]["intervs"]), len(reunions[s2]["intervs"]), res
+        maxs = max([n for _,_,n in res])
+        sims = sum([n for _,_,n in res])
+        ni1 = len(reunions[s1]["intervs"])
+        ni2 = len(reunions[s2]["intervs"])
+        st1 = reunions[s1]["anchors"][res[0][0]]
+        st2 = reunions[s2]["anchors"][res[0][1]]
+        if seances[s1]["nom"] == seances[s2]["nom"]:
+            if maxs > 4 and sims > ni1 / 2 and sims > ni2 / 2 and abs(ni1 - ni2) < 10:
+                print " -> WARNING: FOUND probable duplicate CR"
+            else:
+                # false positives
+                continue
+        elif sims > 5 and abs(sims - ni1) < 5 and abs(sims - ni2) < 5 and abs(ni1 - ni2) < 5:
+            if len(res) == 1:
+                print " -> FOUND SURE MATCH!"
+                keep, remove = choose_kept_seance(s1, s2, ni1, ni2, seances)
+                stid = res[0][0 if remove == s1 else 1]
+                edid = stid + sims
+                print "    You should merge presences from seance %s into %s" % (remove, keep)
+                print "    and remove %s interventions from seance %s:" % (sims, remove), reunions[remove]["ids"][stid:edid]
+            else:
+                print " -> FOUND NEARLY SURE MATCH:"
+        else:
+            print " -> FOUND MATCH TO CHECK:"
+        print ndurl(s1, st1), ndurl(s2, st2), ni1, ni2, res
         found = True
 
 exit(int(not found))
