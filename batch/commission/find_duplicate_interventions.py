@@ -71,8 +71,11 @@ with open(sys.argv[1]) as f:
 
 ndurl = lambda i: "https://www.nosdeputes.fr/14/seance/%s" % i
 
+found = False
 for s1, s2 in combinations(reunions.keys(), 2):
     res = find_matchings(reunions[s1]["txts"], reunions[s2]["txts"])
     if res:
         print " -> FOUND MATCH!", ndurl(s1), ndurl(s2), len(reunions[s1]["intervs"]), len(reunions[s2]["intervs"]), res
+        found = True
 
+exit(int(not found))
