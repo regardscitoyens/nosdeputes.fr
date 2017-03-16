@@ -18,9 +18,9 @@ echo "SELECT distinct(seance_id) AS s_id, date, count(id) AS ct
           FROM intervention
           WHERE type = 'commission' AND date = '$DAT'
           ORDER BY seance_id, timestamp"    |
-  mysql $MYSQLID $DBNAME                    |
-  iconv -f "iso-8859-15" -t "utf-8" > /tmp/interventions-commissions-$DAT.tsv
-  echo
-  python find_duplicate_interventions.py /tmp/interventions-commissions-$DAT.tsv #> /tmp/duplicates-interventions-commissions-$DAT.json
+    mysql $MYSQLID $DBNAME                  |
+    iconv -f "iso-8859-15" -t "utf-8" > /tmp/interventions-commissions-$DAT.tsv
+    echo
+    python find_duplicate_interventions.py /tmp/interventions-commissions-$DAT.tsv #> /tmp/duplicates-interventions-commissions-$DAT.json
   done
 
