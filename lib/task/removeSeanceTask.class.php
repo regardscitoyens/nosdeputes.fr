@@ -110,6 +110,9 @@ class removeSeanceTask extends sfBaseTask {
     }
 
     print "\n";
+    if (Doctrine_Query::create()->select('id')->from('Presence')->where('seance_id = ?', $id)->fetchOne()) {
+      print "Séance ".$id." vidée de ses interventions et présences associées\n";
+    } else {
     $query = Doctrine_Query::create()
       ->delete('Seance s')
       ->where('s.id = ?', $id);
@@ -118,6 +121,7 @@ class removeSeanceTask extends sfBaseTask {
       return;
     }
     print "Séance ".$id." supprimée avec ses dépendances\n";
+    }
   }
 }
 
