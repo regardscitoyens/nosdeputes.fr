@@ -34,9 +34,9 @@ def convertToNDFormat(amdtOD):
         #print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
         #print formatND['source']
         #print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
-        #print type(e)
-        #print e
-        #print "Error on %s\n" % json.dumps(amdtOD)
+        print type(e)
+        print e
+        print "Error on %s\n" % json.dumps(amdtOD)
 
 
     return formatND 
@@ -94,7 +94,7 @@ fieldnames = ['refTexteLegislatif', 'amendementParent',
 
 
 
-
+counterError = 0
 
 #with open("amendements_liste.csv", 'w') as f2:
 #    spamwriter =  csv.DictWriter(f2, delimiter='|', fieldnames=fieldnames)
@@ -110,6 +110,8 @@ for texte in json_data['textesEtAmendements']['texteleg']:
     #print "Texte being treated : %s " % refTexteLeg
     texteAmdtFileName = "%s/amdts_%s.json" % (dirpath,refTexteLeg)
 
+    DictIdAN_ND = dict()
+
     with open(texteAmdtFileName, 'w') as texteAmdtFile :
         
         if type(texte['amendements']['amendement']) != list :
@@ -117,12 +119,23 @@ for texte in json_data['textesEtAmendements']['texteleg']:
             #print "COnverting a single element in a list"
             #print "==================================================="
             texte['amendements']['amendement'] =  [texte['amendements']['amendement']]
+
+        #Create an index of uid and numero of amdt for ND purpose   
+        for amdt in texte['amendements']['amendement']:
+            DictIdAN_ND[amdt['uid'] ]= amdt['identifiant']['numero']
+#        print DictIdAN_ND
+
         for amdt in texte['amendements']['amendement']:
             #print amdt
             try:
                 result = {}
                 result['refTexteLegislatif'] = refTexteLeg
-                result['amendementParent'] = amdt['amendementParent'] 
+#                result['amendementParent'] = amdt['amendementParent'] 
+                if amdt['amendementParent']:
+                    result['amendementParent'] = DictIdAN_ND[amdt['amendementParent']] 
+                else:
+                    result['amendementParent']= " "
+
                 result['article99'] = amdt['article99']
                 result['cardinaliteAmdtMultiples'] = amdt['cardinaliteAmdtMultiples'] 
                 result['corps.annexeExposeSommaire'] = amdt['corps']['annexeExposeSommaire']
@@ -209,5 +222,10 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 print type(e)
                 print e
                 print "Error on %s\n" % json.dumps(amdt)
+                counterError += 1
+#                exit()
+print counterError
+
+
             
 
