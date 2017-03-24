@@ -122,10 +122,10 @@ for s1, s2 in combinations(reunions.keys(), 2):
                     continue
                 chains[remove] = keep
                 stid = res[0][0 if remove == s1 else 1]
-                edid = stid + sims
+                edid = stid + sims - 1
                 print " -> FOUND SURE MATCH!"
-                print "    You should merge presences from seance %s into %s" % (remove, keep)
-                print "    and remove %s interventions from seance %s:" % (sims, remove), reunions[remove]["ids"][stid:edid]
+                print "    %s (%s intervs) %s (%s intervs)" % (ndurl(remove, st1 if remove == s1 else st2), len(reunions[remove]["intervs"]), ndurl(keep, st1 if keep == s1 else st2), len(reunions[keep]["intervs"])), res
+                print '    Fix with "php symfony merge:ReunionsJointes %s %s %s %s' % (remove, keep, reunions[remove]["ids"][stid], reunions[remove]["ids"][edid])
             else:
                 print " -> FOUND NEARLY SURE MATCH:"
         else:
