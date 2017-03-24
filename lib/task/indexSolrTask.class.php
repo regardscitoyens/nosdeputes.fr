@@ -3,8 +3,8 @@
 class indexSolrTask extends sfBaseTask
 {
   private $file_conf;
-  
-  private function writeState() 
+
+  private function writeState()
   {
     $fh = fopen($this->file_conf, 'w');
     fwrite($fh, serialize($this->state));
@@ -57,13 +57,14 @@ class indexSolrTask extends sfBaseTask
       $solr->updateLuceneRecord($json);
     }
   }
- 
+
   protected function execute($arguments = array(), $options = array())
   {
 
     $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
-    $manager = new sfDatabaseManager($this->configuration);    
+    $manager = new sfDatabaseManager($this->configuration);
     $solr = new SolrConnector();
+
 
     if ($options['removeAll'] == 'yes') {
       $solr->deleteAll();
@@ -101,7 +102,7 @@ class indexSolrTask extends sfBaseTask
 	  echo "Count DONE\n";
 	  break;
 	}
-	
+
 	foreach($q->execute() as $o) {
 	  echo get_class($o).' '.$o->id."\n";
 	  $o->Save();
@@ -113,5 +114,5 @@ class indexSolrTask extends sfBaseTask
     }
     //    unlink($this->file_conf);
   }
-  
+
 }
