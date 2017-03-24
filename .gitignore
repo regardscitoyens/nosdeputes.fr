@@ -1,6 +1,7 @@
 *~
 *#
 *swp
+*.pyc
 log/
 cache/
 bin/db.inc
@@ -9,17 +10,26 @@ bin/db.inc
 data/sql/
 data/mails/
 web/14/
+web/images/tmp/
+web/liasses/
 web/synthese*
+
+apps/frontend/config/routing.yml
+config/app.yml
+config/databases.yml
+config/ProjectConfiguration.class.php
 
 batch/amendements/commission/
 batch/amendements/html/
+batch/amendements/liste_sort_indefini.txt
 batch/commission/html/
 batch/commission/tmp/
 batch/depute/first_set/
 batch/depute/html/
 batch/depute/json/
 batch/depute/out/
-batch/depute/twitter/
+batch/depute/twitter.csv
+batch/depute/finmandats.pm
 batch/documents/html/
 batch/documents/pjl/
 batch/documents/ppl/
@@ -36,6 +46,8 @@ batch/loi/json/
 batch/presences/oldjson/
 batch/questions/html/
 batch/questions/test/
+batch/questions/dernier_numero.txt
+batch/questions/liste_sans_reponse.txt
 csv/
 lib/model/doctrine/base/
 lib/model/doctrine/sfDoctrineActAsTaggablePlugin/
