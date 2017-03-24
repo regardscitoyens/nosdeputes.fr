@@ -6,26 +6,38 @@ amdtFilePath="Amendements_XIV.json"
 def convertToNDFormat(amdtOD):
     formatND = {}
     formatND['source'] = "http://www.assemblee-nationale.fr%s.asp" % amdtOD['representation.contenu.documentURI'][:-4]
-    formatND['legislature'] = amdtOD['identifiant.legislature']
-    formatND['loi'] = amdtOD['refTexteLegislatif']
-    #formatND['numero'] = amdtOD['identifiant.numero']
-    formatND['numero'] = amdtOD['numeroLong']
-    formatND['serie'] = ""
-    formatND['rectif']  = amdtOD['identifiant.numRect']
-    formatND['parent'] = amdtOD['amendementParent']
-    formatND['date'] = amdtOD['dateDepot']
-    formatND['auteurs'] = amdtOD['signataires.texteAffichable']
-    
-    sort = ""
-    if 'sort.sortEnSeance' in amdtOD:
-        sort = amdtOD['sort.sortEnSeance']
-    else :
-        sort = amdtOD['etat']
-    formatND['sort'] = sort
-    formatND['sujet'] = amdtOD['pointeurFragmentTexte.division.articleDesignationCourte']
-    formatND['texte'] = amdtOD['corps.dispositif']
-    formatND['expose'] = amdtOD['corps.exposeSommaire']
-    formatND['auteur_reel'] = amdtOD['signataires.auteur.acteurRef']
+
+    try:
+        formatND['legislature'] = amdtOD['identifiant.legislature']
+        formatND['loi'] = amdtOD['refTexteLegislatif']
+        #formatND['numero'] = amdtOD['identifiant.numero']
+        formatND['numero'] = amdtOD['numeroLong']
+        formatND['serie'] = ""
+        formatND['rectif']  = amdtOD['identifiant.numRect']
+        formatND['parent'] = amdtOD['amendementParent']
+        formatND['date'] = amdtOD['dateDepot']
+        formatND['auteurs'] = amdtOD['signataires.texteAffichable']
+        
+        sort = ""
+        if 'sort.sortEnSeance' in amdtOD:
+            sort = amdtOD['sort.sortEnSeance']
+        else :
+            sort = amdtOD['etat']
+        formatND['sort'] = sort
+        formatND['sujet'] = amdtOD['pointeurFragmentTexte.division.articleDesignationCourte']
+        formatND['texte'] = amdtOD['corps.dispositif']
+        formatND['expose'] = amdtOD['corps.exposeSommaire']
+        formatND['auteur_reel'] = amdtOD['signataires.auteur.acteurRef']
+    except Exception as e: 
+
+        print ">%s" % amdtOD['refTexteLegislatif']
+        #print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        #print formatND['source']
+        #print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        #print type(e)
+        #print e
+        #print "Error on %s\n" % json.dumps(amdtOD)
+
 
     return formatND 
 
@@ -95,15 +107,15 @@ if not os.path.exists(dirpath):
 
 for texte in json_data['textesEtAmendements']['texteleg']:
     refTexteLeg = texte['refTexteLegislatif']
-    print "Texte being treated : %s " % refTexteLeg
+    #print "Texte being treated : %s " % refTexteLeg
     texteAmdtFileName = "%s/amdts_%s.json" % (dirpath,refTexteLeg)
 
     with open(texteAmdtFileName, 'w') as texteAmdtFile :
         
         if type(texte['amendements']['amendement']) != list :
-            print "==================================================="
-            print "COnverting a single element in a list"
-            print "==================================================="
+            #print "==================================================="
+            #print "COnverting a single element in a list"
+            #print "==================================================="
             texte['amendements']['amendement'] =  [texte['amendements']['amendement']]
         for amdt in texte['amendements']['amendement']:
             #print amdt
@@ -116,6 +128,10 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 result['corps.annexeExposeSommaire'] = amdt['corps']['annexeExposeSommaire']
                 if 'dispositif' in amdt['corps']:
                     result['corps.dispositif'] = amdt['corps']['dispositif']
+                else:
+                    #This is for PJLF amdt with tables. So we can read what is in corps as debug
+                    result['corps.dispositif'] = amdt['corps']
+                result['corps'] = amdt['corps']
                 result['corps.exposeSommaire'] = amdt['corps']['exposeSommaire']
                 result['dateDepot'] = amdt['dateDepot']
                 result['dateDistribution'] = amdt['dateDistribution']
