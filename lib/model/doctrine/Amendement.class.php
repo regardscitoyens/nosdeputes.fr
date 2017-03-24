@@ -27,7 +27,7 @@ class Amendement extends BaseAmendement {
   public function getDossier() {
     if ($section = $this->getSection())
       return $section->Section->getTitreComplet();
-    return ''; 
+    return '';
   }
 
   public function setAuteurs($auteurs) {
@@ -85,7 +85,7 @@ class Amendement extends BaseAmendement {
 
   public function addParlementaire($depute, $signataireindex) {
     foreach(Doctrine::getTable('ParlementaireAmendement')->createQuery('pa')->select('parlementaire_id')->where('amendement_id = ?', $this->id)->fetchArray() as $parlamdt) if ($parlamdt['parlementaire_id'] == $depute->id) return true;
-    
+
     $pa = new ParlementaireAmendement();
     $pa->_set('Parlementaire', $depute);
     $pa->_set('Amendement', $this);
@@ -172,7 +172,7 @@ class Amendement extends BaseAmendement {
 
   public function getTexte($style=1) {
     if ($style == 1) {
-      return preg_replace('/\<p\>\s*«\s*([^\<]+)\<\/p\>/', '<blockquote>«&nbsp;\1</blockquote>', $this->_get('texte')); 
+      return preg_replace('/\<p\>\s*«\s*([^\<]+)\<\/p\>/', '<blockquote>«&nbsp;\1</blockquote>', $this->_get('texte'));
     } else return $this->_get('texte');
   }
 
@@ -188,7 +188,7 @@ class Amendement extends BaseAmendement {
   public function getTitreNoLink() {
     return preg_replace('/\<a href.*\>(.*)<\/a\>/', '\1', $this->getTitre());
   }
-  
+
   public function getLinkPDF() {
     return preg_replace('/\/amendement/', '/pdf/amendement', preg_replace('/\.asp(.*)$/', '.pdf', $this->source));
   }
