@@ -1,48 +1,44 @@
-# Cache and logs (Symfony2)
-/app/cache/*
-/app/logs/*
-!app/cache/.gitkeep
-!app/logs/.gitkeep
+*~
+*#
+*swp
+log/
+cache/
+bin/db.inc
+*new
+*edited
+data/sql/
+data/mails/
+web/14/
+web/synthese*
 
-# Email spool folder
-/app/spool/*
-
-# Cache, session files and logs (Symfony3)
-/var/cache/*
-/var/logs/*
-/var/sessions/*
-!var/cache/.gitkeep
-!var/logs/.gitkeep
-!var/sessions/.gitkeep
-
-# Parameters
-/app/config/parameters.yml
-/app/config/parameters.ini
-
-# Managed by Composer
-/app/bootstrap.php.cache
-/var/bootstrap.php.cache
-/bin/*
-!bin/console
-!bin/symfony_requirements
-/vendor/
-
-# Assets and user uploads
-/web/bundles/
-/web/uploads/
-
-# Assets managed by Bower
-/web/assets/vendor/
-
-# PHPUnit
-/app/phpunit.xml
-/phpunit.xml
-
-# Build data
-/build/
-
-# Composer PHAR
-/composer.phar
-
-# Backup entities generated with doctrine:generate:entities command
-*/Entity/*~
+batch/amendements/commission/
+batch/amendements/html/
+batch/commission/html/
+batch/commission/tmp/
+batch/depute/first_set/
+batch/depute/html/
+batch/depute/json/
+batch/depute/out/
+batch/depute/twitter/
+batch/documents/html/
+batch/documents/pjl/
+batch/documents/ppl/
+batch/documents/ppr/
+batch/documents/rap/
+batch/documents/ta/
+batch/dossiers/html/
+batch/hemicycle/html/
+batch/hemicycle/toload130817/
+batch/jo/export/
+batch/jo/html/
+batch/jo/pdf/
+batch/loi/json/
+batch/presences/oldjson/
+batch/questions/html/
+batch/questions/test/
+csv/
+lib/model/doctrine/base/
+lib/model/doctrine/sfDoctrineActAsTaggablePlugin/
+lib/filter/doctrine/
+lib/form/doctrine/
+lib/form/BaseForm.class.php
