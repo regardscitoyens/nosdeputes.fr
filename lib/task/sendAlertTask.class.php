@@ -35,11 +35,12 @@ class sendAlertTask extends sfBaseTask
             else $query .= ' '.$match[1].':"'.$match[2].'"';
           }
       if ($verbose) {
-	print "LOG: query: $query\n";
+	print "LOG: query for alerte ".$alerte->id." to ".$alerte->email.": $query\n";
       }
       $results = $solr->search($query, array('sort' => 'date desc', 'hl' => 'yes', 'hl.fragsize'=>500));
       $alerte->next_mail = date('Y-m-d H:i:s', $currenttime + self::$period[$alerte->period]);
       if (! $results['response']['numFound']) {
+      if ($verbose) print "Save with no new result\n";
 	$alerte->save();
 	continue;
       }
@@ -55,6 +56,7 @@ class sendAlertTask extends sfBaseTask
       try {
 	$this->getMailer()->send($message);
 	$alerte->last_mail = preg_replace('/T/', ' ', preg_replace('/Z/', '', $results['response']['docs'][0]['date']));
+      if ($verbose) print "Save with results\n";
 	$alerte->save();
       }catch(Exception $e) {
 	echo "ERROR: mail could not be sent ($text)\n";
