@@ -1,6 +1,6 @@
 import json,csv,os
 
-amdtFilePath="Amendements_XIV.json"
+amdtFilePath="OpenDataAN/Amendements_XIV.json"
 
 
 def convertToNDFormat(amdtOD):
