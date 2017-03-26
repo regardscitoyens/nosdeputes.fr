@@ -4,6 +4,16 @@
  */
 class ParlementaireTable extends PersonnaliteTable
 {
+
+  public function findOneByIdAn($id_an) {
+    $id_an = preg_replace('/PA/', '', $id_an);
+    $query = $this->createQuery('p')->where('p.id_an = ?', $id_an);
+    $deputes = $query->execute();
+    if (count($deputes) > 1) {
+      throw new sfException("More than one Parlementaire found");
+    }
+    return $deputes[0];
+  }
   public function findOneByNomSexeGroupeCirco($nom, $sexe = null, $groupe = null, $circo = null, $document = null) {
     $depute = null;
     $memeNom = $this->findByNom($nom);
