@@ -1,6 +1,6 @@
 <?php function link_tof($name, $parameters) { return sfProjectConfiguration::getActive()->generateFrontendUrl($name, $parameters); } ?>
 <div id="sf_admin_container">
-  <h1>Fusionner des <?php echo $type; ?>s&nbsp;&mdash <?php if ($type == "commission") echo link_to("Retour aux commissions", '@list_commissions'); else if (preg_match('/^(\d+),(\d+)$/', $orga, $match)) echo link_to("Retour à la fusion", '@fuse?type=commission&bad='.$match[1].'&good='.$match[2]); else echo link_to("Retour à la commission", '@commission?id='.$orga); ?></h1>
+  <h1>Fusionner des <?php echo $type; ?>s&nbsp;&mdash; <?php if ($type == "commission") echo link_to("Retour aux commissions", '@list_commissions'); else if (preg_match('/^(\d+),(\d+)$/', $orga, $match)) echo link_to("Retour à la fusion", '@fuse?type=commission&bad='.$match[1].'&good='.$match[2]); else echo link_to("Retour à la commission", '@commission?id='.$orga); ?></h1>
   <div id="sf_admin_header"> </div>
   <div id="sf_admin_content">
     <?php if (isset($result)) {
