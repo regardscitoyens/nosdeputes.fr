@@ -13,7 +13,7 @@ Personnalite:
   columns:
     nom: string(255)
     nom_de_famille: string(255)
-    sexe: 
+    sexe:
       type: enum
       values: ['H', 'F']
     date_naissance: date
@@ -78,8 +78,8 @@ Parlementaire:
 ParlementairePhoto:
   columns:
     slug: string(255)
-    photo: clob 
-        
+    photo: clob
+
 
 Organisme:
   actAs:
@@ -93,7 +93,7 @@ Organisme:
       moretags: [type]
       index_if: has_parlementaires
   columns:
-    nom: 
+    nom:
       type: string(255)
       unique: true
 #      notnull: true
@@ -219,10 +219,10 @@ Intervention:
 #      type: string(36)
 #      primary: true
     nb_mots: integer
-    md5: 
+    md5:
       type: string(36)
       unique: true
-    intervention: 
+    intervention:
       type: string
     timestamp: integer
     source: string(128)
@@ -260,7 +260,7 @@ Amendement:
   actAs:
     Timestampable: ~
     Taggable: ~
-    Solrable: 
+    Solrable:
       title: [titre]
       description: [expose, texte, signataires]
       moretags: [Parlementaires, sort, dossier, link_source]
@@ -279,13 +279,14 @@ Amendement:
       type: enum
       values: ['Indéfini', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non soutenu', 'Retiré avant séance', 'Rectifié', 'Favorable']
     date: date
+    auteur_id: integer
     signataires: string
-    texte: 
+    texte:
       type: string
-    expose: 
+    expose:
       type: string
     content_md5: string(36)
-    nb_multiples: 
+    nb_multiples:
       type: integer
       default: 1
   relations:
@@ -293,6 +294,11 @@ Amendement:
       class: Parlementaire
       refClass: ParlementaireAmendement
       foreignAlias: Amendements
+    Auteur:
+      class: Parlementaire
+      foreignAlias: AuteurAmendements
+      local: auteur_id
+      foreign: id
     Texteloi:
       foreignAlias: Amendements
   inheritance:
@@ -383,7 +389,7 @@ Citoyen:
       default: 0
     travail_pour: integer
     naissance: date
-    sexe: 
+    sexe:
       type: enum
       values: [null, 'H', 'F']
     nom_circo: string(255)
@@ -393,7 +399,7 @@ Citoyen:
     is_active:
       type: boolean
       default: 0
-    role: 
+    role:
       type: enum
       values: ['membre', 'moderateur', 'admin']
       default: membre
@@ -681,10 +687,10 @@ Alerte:
     query: string
     filter: string
     query_md5: string(32)
-    titre: string 
+    titre: string
     confirmed: boolean
     no_human_query: boolean
-    period: 
+    period:
       type: enum
       values: ['HOUR', 'DAY', 'WEEK', 'MONTH']
     next_mail: datetime
@@ -698,4 +704,3 @@ Alerte:
     index_uniq:
       fields: [email, citoyen_id, query_md5]
       type: unique
-    
