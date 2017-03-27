@@ -274,8 +274,8 @@ api_list_seances_by_loi_section:
   url: /%LEGISLATURE%/seances/:loi/:dossier/:format
   param: {module: intervention, action: listSeancesByLoi}
 api_list_seances_by_loi:
-    url: /%LEGISLATURE%/seances/:loi/:format
-    param: {module: intervention, action: listSeancesByLoi}
+  url: /%LEGISLATURE%/seances/:loi/:format
+  param: {module: intervention, action: listSeancesByLoi}
 amendement_id:
   url: /%LEGISLATURE%/amendement/:id
   param: {module: amendement, action: redirect}
