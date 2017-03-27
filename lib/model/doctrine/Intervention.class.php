@@ -55,7 +55,7 @@ class Intervention extends BaseIntervention
       $titre .= ' le ';
     }
     $titre .= myTools::displayShortDate($this->date);
-    if ($this->type != 'commission')      
+    if ($this->type != 'commission')
       $titre .= ' : '.ucfirst($this->getDossier());
     return $titre;
   }
@@ -82,16 +82,16 @@ class Intervention extends BaseIntervention
     $seance->free();
     return $id;
   }
-  public function setPersonnaliteByNom($nom, $fonction = null) 
+  public function setPersonnaliteByNom($nom, $fonction = null)
   {
     $this->setFonction($fonction);
-    if (!preg_match('/^((premier )?ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux)/i', $fonction)) { 
+    if (!preg_match('/^((premier )?ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux)/i', $fonction)) {
       $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
       if (!$personne)
 	  $personne = Doctrine::getTable('Parlementaire')->findOneByNomDeFamille($nom);
       if (!$personne && preg_match("/^de /", $nom)) {
 	  $personne = Doctrine::getTable('Parlementaire')->findOneByNomDeFamille(preg_replace("/^de /", "", $nom));
-      } 
+      }
       if (!$personne && ($this->type != "commission" || $fonction == null || preg_match('/(rapporteur|présidente?$)/i', $fonction))) {
 	$personne = Doctrine::getTable('Parlementaire')->similarToCheckPrenom($nom);
       }
@@ -118,11 +118,18 @@ class Intervention extends BaseIntervention
       $parlementaire->free();
     }
   }
+
   public function setPersonnalite($personne) {
     if (isset($personne->id)) {
       $this->_set('parlementaire_id', null);
       $this->_set('personnalite_id', $personne->id);
     }
+  }
+
+  public function setAsDidascalie() {
+    $this->_set('parlementaire_id', null);
+    $this->_set('personnalite_id', null);
+    $this->setFonction(null);
   }
 
   public function hasIntervenant() {
@@ -213,7 +220,7 @@ class Intervention extends BaseIntervention
         $section1 = Doctrine::getTable('Section')->findOneByContexte($contexte);
         $section2 = Doctrine::getTable('Section')->findOneByIdDossierAn($urls[0]['distinct']);
         if ($section2) {
-          if (!$section1) 
+          if (!$section1)
             $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt(str_replace(trim(preg_replace('/^([^>]+)(>.*)?$/', '\\1', $contexte)), $section2->titre, $contexte), $date, $timestamp));
           else if ($section1->section_id == $section2->id)
             $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($section1->titre_complet, $date, $timestamp));
@@ -260,7 +267,7 @@ class Intervention extends BaseIntervention
       $this->addTag($tag);
     }
   }
-  
+
   public function setIntervention($s) {
     $this->_set('nb_mots', str_word_count($s));
     return $this->_set('intervention', html_entity_decode($s));
