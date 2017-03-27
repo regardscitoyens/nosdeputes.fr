@@ -97,6 +97,7 @@ def choose_kept_seance(s1, s2, n1, n2, metas):
     return s1, s2
 
 found = False
+chains = {}
 for s1, s2 in combinations(reunions.keys(), 2):
     res = find_matchings(reunions[s1]["txts"], reunions[s2]["txts"])
     if res:
@@ -114,12 +115,17 @@ for s1, s2 in combinations(reunions.keys(), 2):
                 continue
         elif sims > 5 and abs(sims - ni1) < 5 and abs(sims - ni2) < 5 and abs(ni1 - ni2) < 5:
             if len(res) == 1:
-                print " -> FOUND SURE MATCH!"
                 keep, remove = choose_kept_seance(s1, s2, ni1, ni2, seances)
+                if keep in chains:
+                    keep = chains[keep]
+                if remove in chains and chains[remove] == keep:
+                    continue
+                chains[remove] = keep
                 stid = res[0][0 if remove == s1 else 1]
-                edid = stid + sims
-                print "    You should merge presences from seance %s into %s" % (remove, keep)
-                print "    and remove %s interventions from seance %s:" % (sims, remove), reunions[remove]["ids"][stid:edid]
+                edid = stid + sims - 1
+                print " -> FOUND SURE MATCH!"
+                print "    %s (%s intervs) %s (%s intervs)" % (ndurl(remove, st1 if remove == s1 else st2), len(reunions[remove]["intervs"]), ndurl(keep, st1 if keep == s1 else st2), len(reunions[keep]["intervs"])), res
+                print '    Fix with "php symfony merge:ReunionsJointes %s %s %s %s' % (remove, keep, reunions[remove]["ids"][stid], reunions[remove]["ids"][edid])
             else:
                 print " -> FOUND NEARLY SURE MATCH:"
         else:
