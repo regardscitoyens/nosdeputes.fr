@@ -28,6 +28,6 @@ echo "SELECT distinct(seance_id) AS s_id, date, count(id) AS ct
           ORDER BY seance_id, timestamp"    |
     mysql $MYSQLID $DBNAME                  |
     iconv -f "iso-8859-15" -t "utf-8" > /tmp/interventions-commissions-$DAT.tsv
-    python find_duplicate_interventions.py /tmp/interventions-commissions-$DAT.tsv /tmp/seances-metas.tsv && echo #> /tmp/duplicates-interventions-commissions-$DAT.json
+    python find_duplicate_interventions.py /tmp/interventions-commissions-$DAT.tsv /tmp/seances-metas.tsv && echo
   done
 

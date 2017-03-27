@@ -126,6 +126,7 @@ for s1, s2 in combinations(reunions.keys(), 2):
                 print " -> FOUND SURE MATCH!"
                 print "    %s (%s intervs) %s (%s intervs)" % (ndurl(remove, st1 if remove == s1 else st2), len(reunions[remove]["intervs"]), ndurl(keep, st1 if keep == s1 else st2), len(reunions[keep]["intervs"])), res
                 print '    Fix with "php symfony merge:ReunionsJointes %s %s %s %s' % (remove, keep, reunions[remove]["ids"][stid], reunions[remove]["ids"][edid])
+                continue
             else:
                 print " -> FOUND NEARLY SURE MATCH:"
         else:
