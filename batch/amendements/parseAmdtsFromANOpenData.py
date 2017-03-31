@@ -2,6 +2,10 @@ import json,csv,os
 
 amdtFilePath="OpenDataAN/Amendements_XIV.json"
 
+# TODOs
+# - handle numero & loi from urls to match ND parsing (warning to TA & PJLF A-B-C)
+# - fix html entities in auteurs/texte/expose
+# - see how to handle complexe dispositif (tables) for PJLFs
 
 def convertToNDFormat(amdtOD):
     formatND = {}
@@ -17,7 +21,7 @@ def convertToNDFormat(amdtOD):
         formatND['parent'] = amdtOD['amendementParent']
         formatND['date'] = amdtOD['dateDepot']
         formatND['auteurs'] = amdtOD['signataires.texteAffichable']
-        
+
         sort = ""
         if 'sort.sortEnSeance' in amdtOD:
             sort = amdtOD['sort.sortEnSeance']
@@ -28,7 +32,7 @@ def convertToNDFormat(amdtOD):
         formatND['texte'] = amdtOD['corps.dispositif']
         formatND['expose'] = amdtOD['corps.exposeSommaire']
         formatND['auteur_reel'] = amdtOD['signataires.auteur.acteurRef']
-    except Exception as e: 
+    except Exception as e:
 
         print ">%s" % amdtOD['refTexteLegislatif']
         #print "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
@@ -39,7 +43,7 @@ def convertToNDFormat(amdtOD):
         print "Error on %s\n" % json.dumps(amdtOD)
 
 
-    return formatND 
+    return formatND
 
 
 
@@ -51,12 +55,12 @@ with open(amdtFilePath, 'r') as f:
 print "Json loaded !"
 
 #List of all the normalized fieldnames available in the json from the AN OpenData
-fieldnames = ['refTexteLegislatif', 'amendementParent', 
-            'article99', 'cardinaliteAmdtMultiples', 
+fieldnames = ['refTexteLegislatif', 'amendementParent',
+            'article99', 'cardinaliteAmdtMultiples',
             'corps.annexeExposeSommaire','corps.dispositif', 'corps.exposeSommaire',
-            'dateDepot', 'dateDistribution', 'etapeTexte', 'etat', 
+            'dateDepot', 'dateDistribution', 'etapeTexte', 'etat',
             'identifiant.legislature', 'identifiant.numRect', 'identifiant.numero',
-            'identifiant.saisine.mentionSecondeDeliberation', 
+            'identifiant.saisine.mentionSecondeDeliberation',
             'identifiant.saisine.numeroPartiePLF', 'identifiant.saisine.organeExamen', 'identifiant.saisine.refTexteLegislatif',
             'loiReference.codeLoi', 'loiReference.divisionCodeLoi',
             'numeroLong',
@@ -89,7 +93,7 @@ fieldnames = ['refTexteLegislatif', 'amendementParent',
             'signataires.cosignataires.acteurRef',
             'signataires.texteAffichable',
             'sort.dateSaisie', 'sort.sortEnSeance',
-            'triAmendement', 'uid' ] 
+            'triAmendement', 'uid' ]
 
 
 
@@ -113,14 +117,14 @@ for texte in json_data['textesEtAmendements']['texteleg']:
     DictIdAN_ND = dict()
 
     with open(texteAmdtFileName, 'w') as texteAmdtFile :
-        
+
         if type(texte['amendements']['amendement']) != list :
             #print "==================================================="
             #print "COnverting a single element in a list"
             #print "==================================================="
             texte['amendements']['amendement'] =  [texte['amendements']['amendement']]
 
-        #Create an index of uid and numero of amdt for ND purpose   
+        #Create an index of uid and numero of amdt for ND purpose
         for amdt in texte['amendements']['amendement']:
             DictIdAN_ND[amdt['uid'] ]= amdt['identifiant']['numero']
 #        print DictIdAN_ND
@@ -130,14 +134,14 @@ for texte in json_data['textesEtAmendements']['texteleg']:
             try:
                 result = {}
                 result['refTexteLegislatif'] = refTexteLeg
-#                result['amendementParent'] = amdt['amendementParent'] 
+#                result['amendementParent'] = amdt['amendementParent']
                 if amdt['amendementParent']:
-                    result['amendementParent'] = DictIdAN_ND[amdt['amendementParent']] 
+                    result['amendementParent'] = DictIdAN_ND[amdt['amendementParent']]
                 else:
                     result['amendementParent']= " "
 
                 result['article99'] = amdt['article99']
-                result['cardinaliteAmdtMultiples'] = amdt['cardinaliteAmdtMultiples'] 
+                result['cardinaliteAmdtMultiples'] = amdt['cardinaliteAmdtMultiples']
                 result['corps.annexeExposeSommaire'] = amdt['corps']['annexeExposeSommaire']
                 if 'dispositif' in amdt['corps']:
                     result['corps.dispositif'] = amdt['corps']['dispositif']
@@ -148,12 +152,12 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 result['corps.exposeSommaire'] = amdt['corps']['exposeSommaire']
                 result['dateDepot'] = amdt['dateDepot']
                 result['dateDistribution'] = amdt['dateDistribution']
-                result['etapeTexte'] = amdt['etapeTexte'] 
-                result['etat'] = amdt['etat'] 
+                result['etapeTexte'] = amdt['etapeTexte']
+                result['etat'] = amdt['etat']
                 result['identifiant.legislature'] = amdt['identifiant']['legislature']
                 result['identifiant.numRect'] = amdt['identifiant']['numRect']
                 result['identifiant.numero'] = amdt['identifiant']['numero']
-                result['identifiant.saisine.mentionSecondeDeliberation'] = amdt['identifiant']['saisine']['mentionSecondeDeliberation'] 
+                result['identifiant.saisine.mentionSecondeDeliberation'] = amdt['identifiant']['saisine']['mentionSecondeDeliberation']
                 result['identifiant.saisine.numeroPartiePLF'] = amdt['identifiant']['saisine']['numeroPartiePLF']
                 result['identifiant.saisine.organeExamen'] = amdt['identifiant']['saisine']['organeExamen']
                 result['identifiant.saisine.refTexteLegislatif'] = amdt['identifiant']['saisine']['refTexteLegislatif']
@@ -175,8 +179,8 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 result['pointeurFragmentTexte.missionVisee'] = amdt['pointeurFragmentTexte']['missionVisee']
                 result['representation.contenu.documentURI'] = amdt['representations']['representation']['contenu']['documentURI']
                 result['representation.dateDispoRepresentation'] = amdt['representations']['representation']['dateDispoRepresentation']
-                result['representation.nom'] = amdt['representations']['representation']['nom'] 
-                result['representation.offset'] = amdt['representations']['representation']['offset'] 
+                result['representation.nom'] = amdt['representations']['representation']['nom']
+                result['representation.offset'] = amdt['representations']['representation']['offset']
                 result['representation.repSource'] = amdt['representations']['representation']['repSource']
                 result['representation.statutRepresentation.canonique'] = amdt['representations']['representation']['statutRepresentation']['canonique']
                 result['representation.statutRepresentation.enregistrement'] = amdt['representations']['representation']['statutRepresentation']['enregistrement']
@@ -204,10 +208,10 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                     result['signataires.cosignataires.acteurRef'] = amdt['signataires']['cosignataires']['acteurRef']
                 result['signataires.texteAffichable'] = amdt['signataires']['texteAffichable']
                 if amdt['sort']:
-                    result['sort.dateSaisie'] = amdt['sort']['dateSaisie'] 
+                    result['sort.dateSaisie'] = amdt['sort']['dateSaisie']
                     result['sort.sortEnSeance'] = amdt['sort']['sortEnSeance']
                 result['triAmendement'] = amdt['triAmendement']
-                result['uid'] = amdt['uid']  
+                result['uid'] = amdt['uid']
                 for k in result:
 #                    print "key is %s" % k
                     if result[k] and type(result[k]) != list and type(result[k]) != dict:
@@ -216,9 +220,9 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 amdtND = convertToNDFormat(result)
                 texteAmdtFile.write(json.dumps(amdtND)+"\n")
                 #spamwriter.writerow(result)
-                
 
-            except Exception as e: 
+
+            except Exception as e:
                 print type(e)
                 print e
                 print "Error on %s\n" % json.dumps(amdt)
@@ -227,5 +231,5 @@ for texte in json_data['textesEtAmendements']['texteleg']:
 print counterError
 
 
-            
+
 
