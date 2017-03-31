@@ -113,21 +113,28 @@ for s1, s2 in combinations(reunions.keys(), 2):
             else:
                 # false positives
                 continue
-        elif sims > 5 and abs(sims - ni1) < 5 and abs(sims - ni2) < 5 and abs(ni1 - ni2) < 5:
+        elif sims < 4:
+            # false positives
+            continue
+        elif sims > 5 and (abs(sims - ni1) < 5 or abs(sims - ni2) < 5 or abs(ni1 - ni2) < 5):
+            found = True
+            keep, remove = choose_kept_seance(s1, s2, ni1, ni2, seances)
+            if keep in chains:
+                keep = chains[keep]
+            if remove in chains and chains[remove] == keep:
+                continue
+            chains[remove] = keep
+            stid = res[0][0 if remove == s1 else 1]
+            edid = stid + sims - 1
             if len(res) == 1:
-                keep, remove = choose_kept_seance(s1, s2, ni1, ni2, seances)
-                if keep in chains:
-                    keep = chains[keep]
-                if remove in chains and chains[remove] == keep:
-                    continue
-                chains[remove] = keep
-                stid = res[0][0 if remove == s1 else 1]
-                edid = stid + sims - 1
                 print " -> FOUND SURE MATCH!"
                 print "    %s (%s intervs) %s (%s intervs)" % (ndurl(remove, st1 if remove == s1 else st2), len(reunions[remove]["intervs"]), ndurl(keep, st1 if keep == s1 else st2), len(reunions[keep]["intervs"])), res
-                print '    Fix with "php symfony merge:ReunionsJointes %s %s %s %s' % (remove, keep, reunions[remove]["ids"][stid], reunions[remove]["ids"][edid])
+                print '    Fix with: bin/merge_reunions.sh %s %s %s %s' % (remove, keep, reunions[remove]["ids"][stid], reunions[remove]["ids"][edid])
             else:
-                print " -> FOUND NEARLY SURE MATCH:"
+                print " -> FOUND NEARLY SURE MATCH: plz check and adjust interv ids"
+                print "    %s (%s intervs) %s (%s intervs)" % (ndurl(remove, st1 if remove == s1 else st2), len(reunions[remove]["intervs"]), ndurl(keep, st1 if keep == s1 else st2), len(reunions[keep]["intervs"])), res
+                print '    Fix with: bin/merge_reunions.sh %s %s %s %s' % (remove, keep, reunions[remove]["ids"][stid], reunions[remove]["ids"][edid])
+            continue
         else:
             print " -> FOUND MATCH TO CHECK:"
         print ndurl(s1, st1), ndurl(s2, st2), ni1, ni2, res
