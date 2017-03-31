@@ -323,17 +323,18 @@ a:hover {
 .synthese td.p { width: 112px; }
 .synthese th.p { width: 122px; border-left: 13px solid #FFF; }
 .synthese .we { width: 70px; }
-.synthese .cp { width: 63px; }
-.synthese .ci { width: 63px; }
-.synthese .hl { width: 63px; }
-.synthese .hc { width: 63px; }
-.synthese .as { width: 63px; }
-.synthese .aa { width: 63px; }
-.synthese .ra { width: 63px; }
-.synthese .pe { width: 63px; }
-.synthese .ps { width: 63px; }
-.synthese .qe { width: 63px; }
-.synthese .qo { width: 63px; }
+.synthese .cp { width: 57px; }
+.synthese .ci { width: 57px; }
+.synthese .hl { width: 57px; }
+.synthese .hc { width: 57px; }
+.synthese .at { width: 57px; }
+.synthese .as { width: 57px; }
+.synthese .aa { width: 57px; }
+.synthese .ra { width: 57px; }
+.synthese .pe { width: 57px; }
+.synthese .ps { width: 57px; }
+.synthese .qe { width: 57px; }
+.synthese .qo { width: 57px; }
 .tr_odd td { border-right: 1px #999999 solid; }
 .tr_odd td.qo { border-right: 0px #999999 solid; }
 
@@ -2016,4 +2017,3 @@ a:hover img {
 #js_search_box {
   float: right;
 }
-

@@ -122,6 +122,20 @@ class topDeputesTask extends sfBaseTask
     $this->executeMoyenneMois('hemicycle_interventions');
   }
 
+  protected function executeAmendementsAuteurs($q)
+  {
+    $parlementaires = $q->select('a.auteur_id, count(a.id)')
+      ->from('Amendement a')
+      ->groupBy('a.auteur_id')
+      ->andWhere('a.sort != ?', 'Rectifié')
+      ->andWhere('a.numero NOT LIKE ?', '%-%')
+      ->fetchArray();
+    foreach ($parlementaires as $p) {
+      $this->deputes[$p['auteur_id']]['amendements_auteurs']['value'] = $p['count'];
+    }
+    $this->executeMoyenneMois('amendements_auteurs');
+  }
+
   protected function executeAmendementsSignes($q)
   {
     $parlementaires = $q->select('p.id, count(a.id)')
@@ -237,7 +251,7 @@ class topDeputesTask extends sfBaseTask
       $this->deputes[$id]['semaines_presence']['value'] += 0;
       $this->deputes[$id]['questions_orales']['value'] += 0;
       $this->deputes[$id]['questions_ecrites']['value'] += 0;
-//      $this->deputes[$id]['amendements_rejetes']['value'] += 0;
+      $this->deputes[$id]['amendements_auteurs']['value'] += 0;
       $this->deputes[$id]['amendements_signes']['value'] += 0;
       $this->deputes[$id]['amendements_adoptes']['value'] += 0;
       $this->deputes[$id]['rapports']['value'] += 0;
@@ -281,7 +295,7 @@ class topDeputesTask extends sfBaseTask
     $qa->andWhere('a.date < ?', date('Y-m-d', strtotime("$date +1month")));
     $this->executeAmendementsSignes(clone $qa);
     $this->executeAmendementsAdoptes(clone $qa);
-//    $this->executeAmendementsRejetes(clone $qa);
+    $this->executeAmendementsAuteurs(clone $qa);
 
     print "Amendements DONE\n";
 
@@ -377,8 +391,8 @@ class topDeputesTask extends sfBaseTask
     $this->executeAmendementsAdoptes(clone $qa);
     $this->orderDeputes('amendements_adoptes');
 
-//    $this->executeAmendementsRejetes(clone $qa);
-//    $this->orderDeputes('amendements_rejetes', 0);
+    $this->executeAmendementsAuteurs(clone $qa);
+    $this->orderDeputes('amendements_auteurs', 0);
 
     $qd = clone $q;
     if (!$fin)
@@ -406,8 +420,8 @@ class topDeputesTask extends sfBaseTask
     foreach(array_keys($this->deputes) as $id) {
       if ($this->deputes[$id]['groupe'] != "") {
         foreach(array_keys($this->deputes[$id]) as $key) {
-	  $groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
-	  $groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
+  	      $groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
+	        $groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
         }
       }
       unset($this->deputes[$id]['groupe']);
@@ -462,7 +476,7 @@ class topDeputesTask extends sfBaseTask
 
       $this->executeAmendementsAdoptes(clone $qa);
 
-//      $this->executeAmendementsRejetes(clone $qa);
+      $this->executeAmendementsAuteurs(clone $qa);
 
       $qq = clone $q;
       $qq->andWhere('(q.date > ? AND q.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
