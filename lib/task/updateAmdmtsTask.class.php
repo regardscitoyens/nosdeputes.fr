@@ -13,7 +13,7 @@ class updateAmdmtsTask extends sfBaseTask {
 
   protected function execute($arguments = array(), $options = array()) {
     // your code here
-    $dir = dirname(__FILE__).'/../../batch/amendements/json/';
+    $dir = dirname(__FILE__).'/../../batch/amendements/OpenDataAN/';
     $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);
     $nb_json = 0;
@@ -21,15 +21,14 @@ class updateAmdmtsTask extends sfBaseTask {
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
-          if ($file == ".." || $file == ".") continue;
+          if (substr($file, 0, 6) != 'amdts_') continue;
           $ct_lines = 0;
           $ct_lus = 0;
           $ct_crees = 0;
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
-            $nb_json++;
             if ($nb_json > $options['max'])
-            break 2;
+              break 2;
             $json = json_decode($line);
             if (!$json) {
               echo "ERROR json : $line";
@@ -42,13 +41,20 @@ class updateAmdmtsTask extends sfBaseTask {
             $ct_lus++;
             $amdmt = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
             if (!$amdmt) {
+              echo "ERROR amdmt from OpenData AN missing from ND data: $line\n";
               continue;
             }
             if ($json->auteur_reel) {
-              $amdmt->setAuteur(Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel));
+              $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel);
+              if (!$parl) {
+                echo "ERROR, cannot find auteur from AN ID: $line\n";
+                continue;
+              }
+              $amdmt->setAuteur($parl);
               $amdmt->save();
             }
             $amdmt->free();
+            $nb_json++;
           }
           unlink($dir.$file);
         }
