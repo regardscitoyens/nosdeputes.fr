@@ -6,7 +6,6 @@ import json, csv, os, re
 amdtFilePath="OpenDataAN/Amendements_XIV.json"
 
 # TODOs
-# - fix en base les TA sans 0 en 0 préfixés
 # - fix html entities in auteurs/texte/expose
 # - see how to handle complexe dispositif (tables) for PJLFs
 
