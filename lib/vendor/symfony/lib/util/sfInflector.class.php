@@ -27,6 +27,7 @@ class sfInflector
    */
   public static function camelize($lower_case_and_underscored_word)
   {
+    $tmp = $lower_case_and_underscored_word;
     return sfToolkit::camelize($tmp);
   }
 
