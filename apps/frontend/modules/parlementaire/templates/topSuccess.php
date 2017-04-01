@@ -6,44 +6,44 @@ foreach ($tops as $t) if (!isset($date)) {$date = $t[0]['updated_at']; break;} ?
 <?php
 $sf_response->setTitle('Synthèse générale des députés');
 $title = array('semaines_presence' => 'd\'activité',
-                'commission_presences' => 'réunion',
-                'commission_interventions'=> 'interv.',
-                'hemicycle_interventions'=>'interv.<br/>longues',
-                'hemicycle_interventions_courtes'=>'interv.<br/>courtes',
-                'amendements_proposes' => 'proposés',
-                'amendements_signes' => 'signés',
-                'amendements_adoptes'=>'adoptés',
-                'rapports' => 'écrits',
-                'propositions_ecrites' => 'écrites',
-                'propositions_signees' => 'signées',
-                'questions_ecrites' => 'écrites',
-                'questions_orales' => 'orales');
+				'commission_presences' => 'réunion',
+				'commission_interventions'=> 'interv.',
+				'hemicycle_interventions'=>'interv.<br/>longues',
+				'hemicycle_interventions_courtes'=>'interv.<br/>courtes',
+				'amendements_proposes' => 'proposés',
+				'amendements_signes' => 'signés',
+				'amendements_adoptes'=>'adoptés',
+				'rapports' => 'écrits',
+				'propositions_ecrites' => 'écrites',
+				'propositions_signees' => 'signées',
+				'questions_ecrites' => 'écrites',
+				'questions_orales' => 'orales');
 $class = array('parl' => 'p',
-           'semaines_presence' => 'we',
-           'commission_presences' => 'cp',
-           'commission_interventions'=> 'ci',
-           'hemicycle_interventions'=>'hl',
-           'hemicycle_interventions_courtes'=>'hc',
-           'amendements_proposes' => 'ap',
-           'amendements_signes' => 'as',
-           'amendements_adoptes'=>'aa',
-           // 'amendements_rejetes' => 'ar',
-           'rapports' => 'ra',
-           'propositions_ecrites' => 'pe',
-           'propositions_signees' => 'ps',
-           'questions_ecrites' => 'qe',
-           'questions_orales' => 'qo');
+	       'semaines_presence' => 'we',
+	       'commission_presences' => 'cp',
+	       'commission_interventions'=> 'ci',
+	       'hemicycle_interventions'=>'hl',
+	       'hemicycle_interventions_courtes'=>'hc',
+				 'amendements_proposes' => 'ap',
+	       'amendements_signes' => 'as',
+	       'amendements_adoptes'=>'aa',
+				 'rapports' => 'ra',
+				 'propositions_ecrites' => 'pe',
+				 'propositions_signees' => 'ps',
+	       // 'amendements_rejetes' => 'ar',
+	       'questions_ecrites' => 'qe',
+	       'questions_orales' => 'qo');
 $bulles = array("",
                "Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle",
                "Réunions de Commission -- Nombre de réunions de commission où le député a été relevé présent",
                "Interventions en Commission -- Nombre d'interventions prononcées par le député en commissions",
                "Interventions longues en Hémicycle -- Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle",
                "Interventions courtes en Hémicycle -- Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle",
-               "Amendements proposés -- Nombre d'amendements dont le député est le premier auteur",
-               "Amendements signés -- Nombre d'amendements signés ou co-signés par le député",
-               "Amendements adoptés -- Nombre d'amendements signés par le député qui ont été adoptés en séance",
+							 "Amendements proposés -- Nombre d'amendements de séance plénière proposés par le député (déclaré « auteur » par l'Assemblée)",
+               "Amendements signés -- Nombre d'amendements de séance plénière signés ou co-signés par le député",
+               "Amendements adoptés -- Nombre d'amendements de séance plénière signés par le député qui ont été adoptés en séance",
                "Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur",
-               "Propositions écrites -- Nombre de propositions de loi ou de résolution dont le député auteur",
+               "Propositions écrites -- Nombre de propositions de loi ou de résolution dont le député est l'auteur",
                "Propositions signées -- Nombre de propositions de loi ou de résolution dont le député est cosignataire",
                "Questions écrites -- Nombre de questions écrites soumises par le député",
                "Questions orales -- Nombre de questions orales posées par le député");
@@ -70,8 +70,8 @@ $bulles = array("",
       $i++ ;
     ?>
     <th title="<?php echo "Trier par : ".$bulles[$i]; ?>" class="jstitle <?php echo $class[$key]; if ($sort == $i) echo ' tr_odd'?>"><?php echo link_to($title[$key], $top_link.'sort='.$i); ?></th>
-    <?php
-    } ?>
+	<?php
+	} ?>
     <th style="width:10px;"/>
   </tr>
 </table>
@@ -160,9 +160,9 @@ $bulles = array("",
   <li><strong>Commission interventions</strong> : Nombre d'interventions prononcées par le député en commissions</li>
   <li><strong>Hémicycle interventions longues</strong> : Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle</li>
   <li><strong>Hémicycle interventions courtes</strong> : Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle</li>
-  <li><strong>Amendements proposés</strong> : Nombre d'amendements dont le député est le premier auteur</li>
-  <li><strong>Amendements signés</strong> : Nombre d'amendements signés ou co-signés par le député</li>
-  <li><strong>Amendements adoptés</strong> : Nombre d'amendements adoptés qui ont été signés ou cosignés par le député</li>
+	<li><strong>Amendements proposés</strong> : Nombre d'amendements de séance plénière proposés par le député (indiqué comme « auteur » par l'Assemblée)</li>
+  <li><strong>Amendements signés</strong> : Nombre d'amendements de séance plénière signés ou co-signés par le député</li>
+  <li><strong>Amendements adoptés</strong> : Nombre d'amendements de séance plénière adoptés qui ont été signés ou cosignés par le député</li>
   <li><strong>Rapports écrits</strong> : Nombre de rapports ou avis dont le député est l'auteur</li>
   <li><strong>Propositions écrites</strong> : Nombre de propositions de loi ou de résolution dont le député est l'auteur</li>
   <li><strong>Propositions signées</strong> : Nombre de propositions de loi ou de résolution dont le député est cosignataire</li>
