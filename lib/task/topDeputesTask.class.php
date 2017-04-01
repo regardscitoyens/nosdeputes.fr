@@ -294,9 +294,9 @@ class topDeputesTask extends sfBaseTask
     $qa = clone $q;
     $qa->where('a.date >= ?', date('Y-m-d', strtotime($date)));
     $qa->andWhere('a.date < ?', date('Y-m-d', strtotime("$date +1month")));
+    $this->executeAmendementsProposes(clone $qa);
     $this->executeAmendementsSignes(clone $qa);
     $this->executeAmendementsAdoptes(clone $qa);
-    $this->executeAmendementsProposes(clone $qa);
 
     print "Amendements DONE\n";
 
@@ -386,14 +386,14 @@ class topDeputesTask extends sfBaseTask
     $qa = clone $q;
     if (!$fin)
       $qa->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
+    $this->executeAmendementsProposes(clone $qa);
+    $this->orderDeputes('amendements_proposes');
+
     $this->executeAmendementsSignes(clone $qa);
     $this->orderDeputes('amendements_signes');
 
     $this->executeAmendementsAdoptes(clone $qa);
     $this->orderDeputes('amendements_adoptes');
-
-    $this->executeAmendementsProposes(clone $qa);
-    $this->orderDeputes('amendements_proposes');
 
     $qd = clone $q;
     if (!$fin)
