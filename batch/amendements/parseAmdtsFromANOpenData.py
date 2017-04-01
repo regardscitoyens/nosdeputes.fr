@@ -16,18 +16,19 @@ def parseUrl(urlAN):
     elements = urlAN[:-4].split("/")
     loi = elements[3]
     try:
-        lettre = re.search(r"([A-Z])$", loi, re.I).group(1)
+        lettre = re.search(ur"([A-Z])$", loi, re.I).group(1)
         loi = loi[:-1]
     except:
         lettre = ""
-    if not loi.startswith("TA"):
+    if not loi.startswith(u"TA"):
         loi = str(int(loi))
     numero = elements[5]
-    if elements[4] != "AN" and not re.search(r"[A-Z]", numero, re.I):
-        numero = re.sub(r"[^A-Z]", "", elements[4], re.I) + numero
+    if elements[4] != u"AN" and not re.search(ur"[A-Z]", numero, re.I):
+        numero = re.sub(ur"[^A-Z]", "", elements[4], re.I) + numero
     numero += lettre.upper()
     return loi, numero
 
+re_rmNum = re.compile(ur"\d+")
 def extractNumRectif(num):
     # Extract rectif & serie from numéro long strings such as
     # - "456"                       -> "0", ""
@@ -35,31 +36,40 @@ def extractNumRectif(num):
     # - "456 (4ème Rect)"           -> "4", ""
     # - "456 à 460"                 -> "0", "456-460"
     # - "456 (Rect) à 460 (Rect)"   -> "1", "456-460"
+    # - "DC456 à 460"               -> "0", "DC456-DC460"
+    # - "DC456 à DC460"             -> "0", "DC456-DC460"
     serie = ""
     if u" à " in num:
         num, serie = num.split(u" à ")
-        serie = serie.split(" ")[0]
-    pieces = num.split(' (')
+        serie = serie.split(u" ")[0]
+    pieces = num.split(u' (')
     num = pieces[0]
     if serie:
-        serie = "%s-%s" % (num, serie)
+        try:
+            numint = int(num)
+            com = u""
+        except:
+            com = re_rmNum.sub(u"", num)
+        serie = "%s-%s%s" % (num, com, serie.replace(com, u""))
     if len(pieces) > 1:
-        if pieces[1].startswith("Rect)"):
+        if pieces[1].startswith(u"Rect)"):
             return "1", serie
         return pieces[1][0], serie
     return "0", serie
 
+re_et = re.compile(ur"\s*?(,| et)\s*M", re.I)
 def cleanAuteurs(auteurs, h):
     auteurs = h.unescape(auteurs)
+    auteurs = re_et.sub(u", M", auteurs)
     return auteurs
 
 def extractSort(sort):
     if sort.startswith("Irrecevable"):
-        return "Irrecevable"
-    if sort in ["A discuter", "En traitement"]:
+        return u"Irrecevable"
+    if sort in [u"A discuter", u"En traitement"]:
         return u"Indéfini"
     if sort == u"Tombé":
-        return "Tombe"
+        return u"Tombe"
     return sort
 
 reRmAttributes = re.compile(ur"<([pbiu]|t([drh]|able)|span|em|div)\s+[^>]*>", re.I)
@@ -80,7 +90,7 @@ def fixHTML(text, h):
 def convertToNDFormat(amdtOD):
     h = HTMLParser()
     formatND = {}
-    formatND['source'] = "http://www.assemblee-nationale.fr%s.asp" % amdtOD['representation.contenu.documentURI'][:-4]
+    formatND['source'] = u"http://www.assemblee-nationale.fr%s.asp" % amdtOD['representation.contenu.documentURI'][:-4]
 
     try:
         formatND['legislature'] = amdtOD['identifiant.legislature']

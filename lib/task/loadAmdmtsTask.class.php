@@ -8,7 +8,6 @@ class loadAmdmtsTask extends sfBaseTask {
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
     $this->addOption('max', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', '100');
-
   }
 
   protected function execute($arguments = array(), $options = array()) {
@@ -29,7 +28,7 @@ class loadAmdmtsTask extends sfBaseTask {
             $ct_lines++;
             $nb_json++;
             if ($nb_json > $options['max'])
-            break 2;
+              break 2;
             $json = json_decode($line);
             if (!$json) {
               echo "ERROR json : $line";
@@ -51,7 +50,7 @@ class loadAmdmtsTask extends sfBaseTask {
 
             if ($json->date === "1970-01-01") {
               if ($amdmt)
-              $json->date = substr($amdmt->created_at, 0, 10);
+                $json->date = substr($amdmt->created_at, 0, 10);
               else $json->date = date('Y-m-d');
             }
             if (!$amdmt) {
@@ -104,11 +103,11 @@ class loadAmdmtsTask extends sfBaseTask {
                 $amdmt->nb_multiples = 1;
               }
               if ($json->parent)
-              $amdmt->sous_amendement_de = $json->parent.$lettre;
+                $amdmt->sous_amendement_de = $json->parent.$lettre;
               $amdmt->sujet = $json->sujet;
               $amdmt->texte = $json->texte;
               if ($json->expose)
-              $amdmt->expose = $json->expose;
+                $amdmt->expose = $json->expose;
               $amdmt->content_md5 = md5($json->legislature.$json->loi.$json->sujet.$json->texte);
               if ($json->auteurs) {
                 $amdmt->signataires = $json->auteurs;
@@ -130,9 +129,9 @@ class loadAmdmtsTask extends sfBaseTask {
             $amdmt->save();
             $amdmt->free();
           }
+          if ($ct_crees) echo $ct_lines." amendements lus : ".$ct_lus." écrits dont ".$ct_crees." nouveaux.\n";
           unlink($dir.$file);
         }
-        if ($ct_crees) echo $ct_lines." amendements lus : ".$ct_lus." écrits dont ".$ct_crees." nouveaux.\n";
         closedir($dh);
       }
     }
