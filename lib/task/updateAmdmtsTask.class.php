@@ -25,7 +25,7 @@ class updateAmdmtsTask extends sfBaseTask {
           $ct_lines = 0;
           $ct_lus = 0;
           $ct_crees = 0;
-          if ($nb_json_files > options['max'])
+          if ($nb_json_files > $options['max'])
             break;
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
