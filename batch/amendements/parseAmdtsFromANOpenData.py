@@ -57,11 +57,28 @@ def extractNumRectif(num):
         return pieces[1][0], serie
     return "0", serie
 
-re_et = re.compile(ur"\s*?(,| et)\s*M", re.I)
+re_parentheses = re.compile(ur"\([^)]*\)")
+re_spaces = re.compile(ur"\s+")
+re_rapp = re.compile(ur"rapporteur.*?(M[.me]+ |$)")
+re_missingSexF = re.compile(ur"(,| et) (Barbara Pompili|Véronique Massonneau)")
+re_missingSexH = re.compile(ur"(,| et) (Guy Geoffroy|Denis Baupin|Eric Alauzet|François-Michel Lambert)")
+re_specommas = re.compile(ur"(socialiste|radical|républicain), (écologiste|démocrate|républicain)", re.I)
+re_et = re.compile(ur"(,| et) (M[.me]+ |les (aut|memb|commissai)res|$)", re.I)
+re_commas = re.compile(ur"\s*,\s*")
 def cleanAuteurs(auteurs, h):
-    auteurs = h.unescape(auteurs)
-    auteurs = re_et.sub(u", M", auteurs)
-    return auteurs
+    auteurs = h.unescape(auteurs.strip(', '))
+    auteurs = auteurs.replace(u"\xa0", u" ")
+    auteurs = auteurs.replace(u"commissaiires", u"commissaires")
+    auteurs = re_parentheses.sub(u"", auteurs)
+    auteurs = re_spaces.sub(u" ", auteurs)
+    auteurs = re_rapp.sub(ur"\1", auteurs)
+    auteurs = re_missingSexF.sub(ur", Mme \2", auteurs)
+    auteurs = re_missingSexH.sub(ur", M. \2", auteurs)
+    auteurs = re_specommas.sub(ur"\1﹐\2", auteurs)
+    auteurs = re_specommas.sub(ur"\1﹐\2", auteurs) # twice because RRDP
+    auteurs = re_et.sub(ur", \2", auteurs)
+    auteurs = re_commas.sub(ur", ", auteurs)
+    return auteurs.strip(', ')
 
 def extractSort(sort):
     if sort.startswith("Irrecevable"):
@@ -78,7 +95,8 @@ reCleanDoubleBR = re.compile(ur"(</?br */*>\s*)+", re.I)
 reCleanEmpty = re.compile(ur"\s*<p>(</?[bi][r /]*>|\s)*</p>\s*", re.I)
 reCleanDouble = re.compile(ur"\s*((</?p>)(</?[bi][r /]*>|\s)*|(</?[bi][r /]*>|\s)*(</?p>))\s*", re.I)
 def fixHTML(text, h):
-    text = h.unescape(text)
+    text = h.unescape(text.strip())
+    text = text.replace(u"\xa0", u" ")
     text = text.replace(u"\n", u" ")
     text = reRmAttributes.sub(ur"<\1>", text)
     text = reRmMarkup.sub(u"", text)
