@@ -2,12 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import json, csv, os, re
+try:                    # Python 2.6-2.7
+    from HTMLParser import HTMLParser
+except ImportError:     # Python 3
+    from html.parser import HTMLParser
 
 amdtFilePath="OpenDataAN/Amendements_XIV.json"
 
-# TODOs
-# - fix html entities in auteurs/texte/expose
-# - see how to handle complexe dispositif (tables) for PJLFs
+# TODO: see how to handle complexe dispositif (tables) for PJLFs
 
 def parseUrl(urlAN):
     elements = urlAN[:-4].split("/")
@@ -26,6 +28,7 @@ def parseUrl(urlAN):
     return loi, numero
 
 def convertToNDFormat(amdtOD):
+    h = HTMLParser()
     formatND = {}
     formatND['source'] = "http://www.assemblee-nationale.fr%s.asp" % amdtOD['representation.contenu.documentURI'][:-4]
 
@@ -39,17 +42,11 @@ def convertToNDFormat(amdtOD):
         formatND['rectif']  = amdtOD['identifiant.numRect']
         formatND['parent'] = amdtOD['amendementParent']
         formatND['date'] = amdtOD['dateDepot']
-        formatND['auteurs'] = amdtOD['signataires.texteAffichable']
-
-        sort = ""
-        if 'sort.sortEnSeance' in amdtOD:
-            sort = amdtOD['sort.sortEnSeance']
-        else :
-            sort = amdtOD['etat']
-        formatND['sort'] = sort
-        formatND['sujet'] = amdtOD['pointeurFragmentTexte.division.articleDesignationCourte']
-        formatND['texte'] = amdtOD['corps.dispositif']
-        formatND['expose'] = amdtOD['corps.exposeSommaire']
+        formatND['auteurs'] = h.unescape(amdtOD['signataires.texteAffichable'])
+        formatND['sort'] = amdtOD.get('sort.sortEnSeance', amdtOD['etat'])
+        formatND['sujet'] = h.unescape(amdtOD['pointeurFragmentTexte.division.articleDesignationCourte'])
+        formatND['texte'] = h.unescape(amdtOD['corps.dispositif'])
+        formatND['expose'] = h.unescape(amdtOD['corps.exposeSommaire'])
         formatND['auteur_reel'] = amdtOD['signataires.auteur.acteurRef']
     except Exception as e:
 
