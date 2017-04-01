@@ -151,10 +151,13 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 result = {}
                 result['refTexteLegislatif'] = refTexteLeg
 #                result['amendementParent'] = amdt['amendementParent']
+                result['amendementParent']= ""
                 if amdt['amendementParent']:
-                    result['amendementParent'] = DictIdAN_ND[amdt['amendementParent']]
-                else:
-                    result['amendementParent']= ""
+                    try:
+                        result['amendementParent'] = DictIdAN_ND[amdt['amendementParent']]
+                    except:
+                        counterError += 1
+                        print "WARNING: could not retrieve parent amdmt ID on %s\n" % json.dumps(amdt)
 
                 result['article99'] = amdt['article99']
                 result['cardinaliteAmdtMultiples'] = amdt['cardinaliteAmdtMultiples']
