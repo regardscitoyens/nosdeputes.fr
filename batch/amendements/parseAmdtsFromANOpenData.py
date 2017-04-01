@@ -11,7 +11,6 @@ amdtFilePath="OpenDataAN/Amendements_XIV.json"
 
 # TODO:
 # - see how to handle complexe dispositif (tables) for PJLFs
-# - fix num rect not matching text one
 
 def parseUrl(urlAN):
     elements = urlAN[:-4].split("/")
@@ -29,6 +28,55 @@ def parseUrl(urlAN):
     numero += lettre.upper()
     return loi, numero
 
+def extractNumRectif(num):
+    # Extract rectif & serie from numéro long strings such as
+    # - "456"                       -> "0", ""
+    # - "456 (Rect)"                -> "1", ""
+    # - "456 (4ème Rect)"           -> "4", ""
+    # - "456 à 460"                 -> "0", "456-460"
+    # - "456 (Rect) à 460 (Rect)"   -> "1", "456-460"
+    serie = ""
+    if u" à " in num:
+        num, serie = num.split(u" à ")
+        serie = serie.split(" ")[0]
+    pieces = num.split(' (')
+    num = pieces[0]
+    if serie:
+        serie = "%s-%s" % (num, serie)
+    if len(pieces) > 1:
+        if pieces[1].startswith("Rect)"):
+            return "1", serie
+        return pieces[1][0], serie
+    return "0", serie
+
+def cleanAuteurs(auteurs, h):
+    auteurs = h.unescape(auteurs)
+    return auteurs
+
+def extractSort(sort):
+    if sort.startswith("Irrecevable"):
+        return "Irrecevable"
+    if sort in ["A discuter", "En traitement"]:
+        return u"Indéfini"
+    if sort == u"Tombé":
+        return "Tombe"
+    return sort
+
+reRmAttributes = re.compile(ur"<([pbiu]|t([drh]|able)|span|em|div)\s+[^>]*>", re.I)
+reRmMarkup = re.compile(ur"<\/?(span|div)>", re.I)
+reCleanDoubleBR = re.compile(ur"(</?br */*>\s*)+", re.I)
+reCleanEmpty = re.compile(ur"\s*<p>(</?[bi][r /]*>|\s)*</p>\s*", re.I)
+reCleanDouble = re.compile(ur"\s*((</?p>)(</?[bi][r /]*>|\s)*|(</?[bi][r /]*>|\s)*(</?p>))\s*", re.I)
+def fixHTML(text, h):
+    text = h.unescape(text)
+    text = text.replace(u"\n", u" ")
+    text = reRmAttributes.sub(ur"<\1>", text)
+    text = reRmMarkup.sub(u"", text)
+    text = reCleanDoubleBR.sub(u"<br/>", text)
+    text = reCleanEmpty.sub(u" ", text)
+    text = reCleanDouble.sub(lambda x: x.group(2) or x.group(5), text)
+    return text
+
 def convertToNDFormat(amdtOD):
     h = HTMLParser()
     formatND = {}
@@ -40,15 +88,15 @@ def convertToNDFormat(amdtOD):
         #formatND['numero'] = amdtOD['identifiant.numero']
         #formatND['numero'] = amdtOD['numeroLong']
         formatND['loi'], formatND['numero'] = parseUrl(amdtOD['representation.contenu.documentURI'])
-        formatND['serie'] = ""
-        formatND['rectif']  = amdtOD['identifiant.numRect']
+        #formatND['rectif']  = amdtOD['identifiant.numRect']
+        formatND['rectif'], formatND['serie'] = extractNumRectif(amdtOD['numeroLong'])
         formatND['parent'] = amdtOD['amendementParent']
         formatND['date'] = amdtOD['dateDepot']
-        formatND['auteurs'] = h.unescape(amdtOD['signataires.texteAffichable'])
-        formatND['sort'] = amdtOD.get('sort.sortEnSeance', amdtOD['etat'])
+        formatND['auteurs'] = cleanAuteurs(amdtOD['signataires.texteAffichable'], h)
+        formatND['sort'] = extractSort(amdtOD.get('sort.sortEnSeance', amdtOD['etat']))
         formatND['sujet'] = h.unescape(amdtOD['pointeurFragmentTexte.division.articleDesignationCourte'])
-        formatND['texte'] = h.unescape(amdtOD['corps.dispositif'])
-        formatND['expose'] = h.unescape(amdtOD['corps.exposeSommaire'])
+        formatND['texte'] = fixHTML(amdtOD['corps.dispositif'], h)
+        formatND['expose'] = fixHTML(amdtOD['corps.exposeSommaire'], h)
         formatND['auteur_reel'] = amdtOD['signataires.auteur.acteurRef']
     except Exception as e:
 
@@ -176,7 +224,7 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                     result['corps.dispositif'] = amdt['corps']['dispositif']
                 else:
                     #This is for PJLF amdt with tables. So we can read what is in corps as debug
-                    result['corps.dispositif'] = amdt['corps']
+                    result['corps.dispositif'] = json.dumps(amdt['corps'], ensure_ascii=False)
                 result['corps'] = amdt['corps']
                 result['corps.exposeSommaire'] = amdt['corps']['exposeSommaire']
                 result['dateDepot'] = amdt['dateDepot']
