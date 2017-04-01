@@ -232,13 +232,9 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                     result['sort.sortEnSeance'] = amdt['sort']['sortEnSeance']
                 result['triAmendement'] = amdt['triAmendement']
                 result['uid'] = amdt['uid']
-                for k in result:
-#                    print "key is %s" % k
-                    if result[k] and type(result[k]) != list and type(result[k]) != dict:
-                        result[k] = result[k].encode('utf8')
 
                 amdtND = convertToNDFormat(result)
-                texteAmdtFile.write(json.dumps(amdtND)+"\n")
+                texteAmdtFile.write(json.dumps(amdtND, ensure_ascii=False).encode("utf-8")+"\n")
                 #spamwriter.writerow(result)
 
 
