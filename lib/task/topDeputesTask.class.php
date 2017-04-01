@@ -125,7 +125,7 @@ class topDeputesTask extends sfBaseTask
   protected function executeAmendementsAuteurs($q)
   {
     $parlementaires = $q->select('a.auteur_id, count(a.id)')
-      ->from('Amendement a')
+      ->from('Amendement a, a.Auteur p')
       ->groupBy('a.auteur_id')
       ->andWhere('a.sort != ?', 'Rectifié')
       ->andWhere('a.numero NOT LIKE ?', '%-%')
