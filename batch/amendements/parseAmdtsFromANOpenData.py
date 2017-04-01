@@ -74,7 +74,7 @@ def cleanAuteurs(auteurs, h):
     auteurs = re_rapp.sub(ur"\1", auteurs)
     auteurs = re_missingSexF.sub(ur", Mme \2", auteurs)
     auteurs = re_missingSexH.sub(ur", M. \2", auteurs)
-    auteurs = re_specommas.sub(ur"\1﹐\2", auteurs)
+    auteurs = re_specommas.sub(ur"\1，\2", auteurs)
     auteurs = re_specommas.sub(ur"\1﹐\2", auteurs) # twice because RRDP
     auteurs = re_et.sub(ur", \2", auteurs)
     auteurs = re_commas.sub(ur", ", auteurs)
