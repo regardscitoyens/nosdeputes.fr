@@ -5,16 +5,24 @@
 class AmendementTable extends Doctrine_Table
 {
 
-  public function findOneByLegisLoiNumRect($legis, $loi, $numero, $rect) {
+  public function findLastOneByLegisLoiNum($legis, $loi, $numero) {
     $lois = array($loi);
     if (substr($loi, 0, 2) == "TA") {
       $lois[] = str_replace("TA", "TA0", $loi);
       $lois[] = str_replace("TA", "TA00", $loi);
       $lois[] = str_replace("TA", "TA000", $loi);
-    }
     $query = $this->createQuery('a')
       ->where('a.legislature = ?', $legis)
       ->andWhereIn('a.texteloi_id', $lois)
+      ->andWhere('a.numero = ?', $numero)
+      ->andWhere('a.sort != ?', "Rectifié");
+    return $query->fetchOne();
+  }
+
+  public function findOneByLegisLoiNumRect($legis, $loi, $numero, $rect) {
+    $query = $this->createQuery('a')
+      ->where('a.legislature = ?', $legis)
+      ->andWhere('a.texteloi_id = ?', $loi)
       ->andWhere('a.numero = ?', $numero)
       ->andWhere('a.rectif = ?', $rect);
     return $query->fetchOne();

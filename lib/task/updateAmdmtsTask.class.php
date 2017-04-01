@@ -5,10 +5,9 @@ class updateAmdmtsTask extends sfBaseTask {
     $this->namespace = 'update';
     $this->name = 'Amdmts';
     $this->briefDescription = 'Update Amendements data to set auteur_id';
-    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
     $this->addOption('max', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', '10');
-
   }
 
   protected function execute($arguments = array(), $options = array()) {
@@ -21,6 +20,7 @@ class updateAmdmtsTask extends sfBaseTask {
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
+          print "$file\n";
           if (substr($file, 0, 6) != 'amdts_') continue;
           $ct_lines = 0;
           $ct_lus = 0;
@@ -39,7 +39,7 @@ class updateAmdmtsTask extends sfBaseTask {
               continue;
             }
             $ct_lus++;
-            $amdmt = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
+            $amdmt = Doctrine::getTable('Amendement')->findLastOneByLegisLoiNum($json->legislature, $json->loi, $json->numero);
             if (!$amdmt) {
               echo "ERROR amdmt from OpenData AN missing from ND data: $line\n";
               continue;
