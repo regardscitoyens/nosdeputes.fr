@@ -254,5 +254,5 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 counterError += 1
 #                exit()
 print "\nWARNING: %s total errors" % counterError
-print "\n       & %s total duplicates" % nbDuplicates
+print "       & %s total duplicates" % nbDuplicates
 
