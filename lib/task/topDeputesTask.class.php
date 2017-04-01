@@ -480,11 +480,11 @@ class topDeputesTask extends sfBaseTask
 							 date('Y-m-d', strtotime($p->fin_mandat)), ));
 
 
+      $this->executeAmendementsProposes(clone $qa);
+
       $this->executeAmendementsSignes(clone $qa);
 
       $this->executeAmendementsAdoptes(clone $qa);
-
-      $this->executeAmendementsProposes(clone $qa);
 
       $qq = clone $q;
       $qq->andWhere('(q.date > ? AND q.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
