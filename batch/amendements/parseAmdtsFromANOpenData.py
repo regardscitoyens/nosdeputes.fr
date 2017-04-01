@@ -1,36 +1,52 @@
-import json,csv,os
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import json, csv, os, re
+try:                    # Python 2.6-2.7
+    from HTMLParser import HTMLParser
+except ImportError:     # Python 3
+    from html.parser import HTMLParser
 
 amdtFilePath="OpenDataAN/Amendements_XIV.json"
 
-# TODOs
-# - handle numero & loi from urls to match ND parsing (warning to TA & PJLF A-B-C)
-# - fix html entities in auteurs/texte/expose
-# - see how to handle complexe dispositif (tables) for PJLFs
+# TODO: see how to handle complexe dispositif (tables) for PJLFs
+
+def parseUrl(urlAN):
+    elements = urlAN[:-4].split("/")
+    loi = elements[3]
+    try:
+        lettre = re.search(r"([A-Z])$", loi, re.I).group(1)
+        loi = loi[:-1]
+    except:
+        lettre = ""
+    if not loi.startswith("TA"):
+        loi = str(int(loi))
+    numero = elements[5]
+    if elements[4] != "AN" and not re.search(r"[A-Z]", numero, re.I):
+        numero = re.sub(r"[^A-Z]", "", elements[4], re.I) + numero
+    numero += lettre.upper()
+    return loi, numero
 
 def convertToNDFormat(amdtOD):
+    h = HTMLParser()
     formatND = {}
     formatND['source'] = "http://www.assemblee-nationale.fr%s.asp" % amdtOD['representation.contenu.documentURI'][:-4]
 
     try:
         formatND['legislature'] = amdtOD['identifiant.legislature']
-        formatND['loi'] = amdtOD['refTexteLegislatif']
+        #formatND['loi'] = amdtOD['refTexteLegislatif']
         #formatND['numero'] = amdtOD['identifiant.numero']
-        formatND['numero'] = amdtOD['numeroLong']
+        #formatND['numero'] = amdtOD['numeroLong']
+        formatND['loi'], formatND['numero'] = parseUrl(amdtOD['representation.contenu.documentURI'])
         formatND['serie'] = ""
         formatND['rectif']  = amdtOD['identifiant.numRect']
         formatND['parent'] = amdtOD['amendementParent']
         formatND['date'] = amdtOD['dateDepot']
-        formatND['auteurs'] = amdtOD['signataires.texteAffichable']
-
-        sort = ""
-        if 'sort.sortEnSeance' in amdtOD:
-            sort = amdtOD['sort.sortEnSeance']
-        else :
-            sort = amdtOD['etat']
-        formatND['sort'] = sort
-        formatND['sujet'] = amdtOD['pointeurFragmentTexte.division.articleDesignationCourte']
-        formatND['texte'] = amdtOD['corps.dispositif']
-        formatND['expose'] = amdtOD['corps.exposeSommaire']
+        formatND['auteurs'] = h.unescape(amdtOD['signataires.texteAffichable'])
+        formatND['sort'] = amdtOD.get('sort.sortEnSeance', amdtOD['etat'])
+        formatND['sujet'] = h.unescape(amdtOD['pointeurFragmentTexte.division.articleDesignationCourte'])
+        formatND['texte'] = h.unescape(amdtOD['corps.dispositif'])
+        formatND['expose'] = h.unescape(amdtOD['corps.exposeSommaire'])
         formatND['auteur_reel'] = amdtOD['signataires.auteur.acteurRef']
     except Exception as e:
 
@@ -135,10 +151,13 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 result = {}
                 result['refTexteLegislatif'] = refTexteLeg
 #                result['amendementParent'] = amdt['amendementParent']
+                result['amendementParent']= ""
                 if amdt['amendementParent']:
-                    result['amendementParent'] = DictIdAN_ND[amdt['amendementParent']]
-                else:
-                    result['amendementParent']= " "
+                    try:
+                        result['amendementParent'] = DictIdAN_ND[amdt['amendementParent']]
+                    except:
+                        counterError += 1
+                        print "WARNING: could not retrieve parent amdmt ID on %s\n" % json.dumps(amdt)
 
                 result['article99'] = amdt['article99']
                 result['cardinaliteAmdtMultiples'] = amdt['cardinaliteAmdtMultiples']
@@ -212,13 +231,9 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                     result['sort.sortEnSeance'] = amdt['sort']['sortEnSeance']
                 result['triAmendement'] = amdt['triAmendement']
                 result['uid'] = amdt['uid']
-                for k in result:
-#                    print "key is %s" % k
-                    if result[k] and type(result[k]) != list and type(result[k]) != dict:
-                        result[k] = result[k].encode('utf8')
 
                 amdtND = convertToNDFormat(result)
-                texteAmdtFile.write(json.dumps(amdtND)+"\n")
+                texteAmdtFile.write(json.dumps(amdtND, ensure_ascii=False).encode("utf-8")+"\n")
                 #spamwriter.writerow(result)
 
 
@@ -228,8 +243,5 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 print "Error on %s\n" % json.dumps(amdt)
                 counterError += 1
 #                exit()
-print counterError
-
-
-
+print "\nWARNING: %s total errors" % counterError
 

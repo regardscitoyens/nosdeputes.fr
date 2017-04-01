@@ -7,7 +7,7 @@ class updateAmdmtsTask extends sfBaseTask {
     $this->briefDescription = 'Update Amendements data to set auteur_id';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
-    $this->addOption('max', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', '100');
+    $this->addOption('max', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', '10');
 
   }
 
@@ -16,7 +16,7 @@ class updateAmdmtsTask extends sfBaseTask {
     $dir = dirname(__FILE__).'/../../batch/amendements/OpenDataAN/';
     $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);
-    $nb_json = 0;
+    $nb_json_files = 0;
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
@@ -25,10 +25,10 @@ class updateAmdmtsTask extends sfBaseTask {
           $ct_lines = 0;
           $ct_lus = 0;
           $ct_crees = 0;
+          if ($nb_json_files > $options['max'])
+            break;
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
-            if ($nb_json > $options['max'])
-              break 2;
             $json = json_decode($line);
             if (!$json) {
               echo "ERROR json : $line";
@@ -54,9 +54,9 @@ class updateAmdmtsTask extends sfBaseTask {
               $amdmt->save();
             }
             $amdmt->free();
-            $nb_json++;
           }
           unlink($dir.$file);
+          $nb_json_files++;
         }
         if ($ct_crees) echo $ct_lines." amendements lus : ".$ct_lus." mis à jour dont ".$ct_crees." nouveaux.\n";
         closedir($dh);
