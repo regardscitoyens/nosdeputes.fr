@@ -331,8 +331,8 @@ class topDeputesTask extends sfBaseTask
       $this->executeMonth($arguments['month']);
       $globale = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$m[1].'_'.$m[2]);
       if (!$globale) {
-	$globale = new VariableGlobale();
-	$globale->champ = 'stats_month_'.$m[1].'_'.$m[2];
+        $globale = new VariableGlobale();
+	      $globale->champ = 'stats_month_'.$m[1].'_'.$m[2];
       }
       $globale->value = serialize($this->deputes);
       $globale->save();
@@ -392,7 +392,7 @@ class topDeputesTask extends sfBaseTask
     $this->orderDeputes('amendements_adoptes');
 
     $this->executeAmendementsAuteurs(clone $qa);
-    $this->orderDeputes('amendements_auteurs', 0);
+    $this->orderDeputes('amendements_auteurs');
 
     $qd = clone $q;
     if (!$fin)
@@ -420,14 +420,21 @@ class topDeputesTask extends sfBaseTask
     foreach(array_keys($this->deputes) as $id) {
       if ($this->deputes[$id]['groupe'] != "") {
         foreach(array_keys($this->deputes[$id]) as $key) {
-  	      $groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
-	        $groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
+          if(is_array($this->deputes[$id][$key])) {
+  	         $groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
+	           $groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
+          }
         }
       }
       unset($this->deputes[$id]['groupe']);
       $depute = Doctrine::getTable('Parlementaire')->find($id);
-      $depute->top = serialize($this->deputes[$id]);
-      $depute->save();
+      if ($depute) {
+        $depute->top = serialize($this->deputes[$id]);
+        $depute->save();
+      }else{
+        echo "ERREUR: député $id non trouvé\n";
+        var_dump($this->deputes[$id]);
+      }
     }
 
     $globale = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes');
