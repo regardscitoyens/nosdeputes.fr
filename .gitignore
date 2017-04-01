@@ -21,6 +21,7 @@ config/ProjectConfiguration.class.php
 
 batch/amendements/commission/
 batch/amendements/html/
+batch/amendements/OpenDataAN/
 batch/amendements/liste_sort_indefini.txt
 batch/commission/html/
 batch/commission/tmp/

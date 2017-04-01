@@ -1,11 +1,30 @@
-import json,csv,os
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import json, csv, os, re
 
 amdtFilePath="OpenDataAN/Amendements_XIV.json"
 
 # TODOs
-# - handle numero & loi from urls to match ND parsing (warning to TA & PJLF A-B-C)
+# - fix en base les TA sans 0 en 0 préfixés
 # - fix html entities in auteurs/texte/expose
 # - see how to handle complexe dispositif (tables) for PJLFs
+
+def parseUrl(urlAN):
+    elements = urlAN[:-4].split("/")
+    loi = elements[3]
+    try:
+        lettre = re.search(r"([A-Z])$", loi, re.I).group(1)
+        loi = loi[:-1]
+    except:
+        lettre = ""
+    if not loi.startswith("TA"):
+        loi = str(int(loi))
+    numero = elements[5]
+    if elements[4] != "AN" and not re.search(r"[A-Z]", numero, re.I):
+        numero = re.sub(r"[^A-Z]", "", elements[4], re.I) + numero
+    numero += lettre.upper()
+    return loi, numero
 
 def convertToNDFormat(amdtOD):
     formatND = {}
@@ -13,9 +32,10 @@ def convertToNDFormat(amdtOD):
 
     try:
         formatND['legislature'] = amdtOD['identifiant.legislature']
-        formatND['loi'] = amdtOD['refTexteLegislatif']
+        #formatND['loi'] = amdtOD['refTexteLegislatif']
         #formatND['numero'] = amdtOD['identifiant.numero']
-        formatND['numero'] = amdtOD['numeroLong']
+        #formatND['numero'] = amdtOD['numeroLong']
+        formatND['loi'], formatND['numero'] = parseUrl(amdtOD['representation.contenu.documentURI'])
         formatND['serie'] = ""
         formatND['rectif']  = amdtOD['identifiant.numRect']
         formatND['parent'] = amdtOD['amendementParent']
@@ -138,7 +158,7 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 if amdt['amendementParent']:
                     result['amendementParent'] = DictIdAN_ND[amdt['amendementParent']]
                 else:
-                    result['amendementParent']= " "
+                    result['amendementParent']= ""
 
                 result['article99'] = amdt['article99']
                 result['cardinaliteAmdtMultiples'] = amdt['cardinaliteAmdtMultiples']
@@ -228,8 +248,5 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 print "Error on %s\n" % json.dumps(amdt)
                 counterError += 1
 #                exit()
-print counterError
-
-
-
+print "\nWARNING: %s total errors" % counterError
 
