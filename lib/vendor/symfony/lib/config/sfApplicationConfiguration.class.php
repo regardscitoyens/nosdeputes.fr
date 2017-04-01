@@ -178,10 +178,10 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
 
   /**
    * Adds enabled plugins to autoload config.
-   * 
+   *
    * @param   sfEvent $event
    * @param   array   $config
-   * 
+   *
    * @return  array
    */
   public function filterAutoloadConfig(sfEvent $event, array $config)

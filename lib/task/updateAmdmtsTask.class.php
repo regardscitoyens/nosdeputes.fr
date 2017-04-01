@@ -5,7 +5,7 @@ class updateAmdmtsTask extends sfBaseTask {
     $this->namespace = 'update';
     $this->name = 'Amdmts';
     $this->briefDescription = 'Update Amendements data to set auteur_id';
-    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
+    $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
     $this->addOption('max', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', '10');
   }
@@ -57,9 +57,9 @@ class updateAmdmtsTask extends sfBaseTask {
             }
             $amdmt->free();
           }
+          if ($ct_lines) echo $ct_lines." amendements lus : ".$ct_lus." mis à jour dont ".$ct_crees." nouveaux.\n";
           unlink($dir.$file);
         }
-        if ($ct_lines) echo $ct_lines." amendements lus : ".$ct_lus." mis à jour dont ".$ct_crees." nouveaux.\n";
         closedir($dh);
       }
     }
