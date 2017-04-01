@@ -41,8 +41,9 @@ class updateAmdmtsTask extends sfBaseTask {
             }
             $amdmt = Doctrine::getTable('Amendement')->findLastOneByLegisLoiNum($json->legislature, $json->loi, $json->numero);
             if (!$amdmt) {
-              echo "ERROR amdmt from OpenData AN missing from ND data: $line\n";
+              echo "WARNING: amdmt from OpenData AN missing from ND data: $line\n";
               # TODO load missing ones
+              $ct_crees++;
               continue;
             }
             if ($json->auteur_reel) {
@@ -57,7 +58,7 @@ class updateAmdmtsTask extends sfBaseTask {
             }
             $amdmt->free();
           }
-          if ($ct_lines) echo $ct_lines." amendements lus : ".$ct_lus." mis à jour dont ".$ct_crees." nouveaux.\n";
+          if ($ct_lines) echo $ct_lines." amendements lus : ".$ct_lus." mis à jour et ".$ct_crees." nouveaux trouvés.\n";
           unlink($dir.$file);
         }
         closedir($dh);
