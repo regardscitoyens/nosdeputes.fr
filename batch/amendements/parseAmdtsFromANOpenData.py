@@ -9,7 +9,9 @@ except ImportError:     # Python 3
 
 amdtFilePath="OpenDataAN/Amendements_XIV.json"
 
-# TODO: see how to handle complexe dispositif (tables) for PJLFs
+# TODO:
+# - see how to handle complexe dispositif (tables) for PJLFs
+# - fix num rect not matching text one
 
 def parseUrl(urlAN):
     elements = urlAN[:-4].split("/")
@@ -125,6 +127,8 @@ if not os.path.exists(dirpath):
     os.makedirs(dirpath)
 
 
+DictSourceAN = dict()
+nbDuplicates = 0
 for texte in json_data['textesEtAmendements']['texteleg']:
     refTexteLeg = texte['refTexteLegislatif']
     #print "Texte being treated : %s " % refTexteLeg
@@ -142,10 +146,16 @@ for texte in json_data['textesEtAmendements']['texteleg']:
 
         #Create an index of uid and numero of amdt for ND purpose
         for amdt in texte['amendements']['amendement']:
-            DictIdAN_ND[amdt['uid'] ]= amdt['identifiant']['numero']
+            DictIdAN_ND[amdt['uid']] = amdt['identifiant']['numero']
 #        print DictIdAN_ND
 
         for amdt in texte['amendements']['amendement']:
+            amdtURI = amdt['representations']['representation']['contenu']['documentURI']
+            if amdtURI in DictSourceAN:
+                print "WARNING: duplicate Amdmt in OpenDataAN for %s\n" % amdtURI
+                nbDuplicates += 1
+                continue
+            DictSourceAN[amdtURI] = True
             #print amdt
             try:
                 result = {}
@@ -196,7 +206,7 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 result['pointeurFragmentTexte.division.type'] = amdt['pointeurFragmentTexte']['division']['type']
                 result['pointeurFragmentTexte.division.urlDivisionTexteVise'] = amdt['pointeurFragmentTexte']['division']['urlDivisionTexteVise']
                 result['pointeurFragmentTexte.missionVisee'] = amdt['pointeurFragmentTexte']['missionVisee']
-                result['representation.contenu.documentURI'] = amdt['representations']['representation']['contenu']['documentURI']
+                result['representation.contenu.documentURI'] = amdtURI
                 result['representation.dateDispoRepresentation'] = amdt['representations']['representation']['dateDispoRepresentation']
                 result['representation.nom'] = amdt['representations']['representation']['nom']
                 result['representation.offset'] = amdt['representations']['representation']['offset']
@@ -244,4 +254,5 @@ for texte in json_data['textesEtAmendements']['texteleg']:
                 counterError += 1
 #                exit()
 print "\nWARNING: %s total errors" % counterError
+print "\n       & %s total duplicates" % nbDuplicates
 
