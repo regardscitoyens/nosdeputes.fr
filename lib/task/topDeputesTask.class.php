@@ -122,18 +122,19 @@ class topDeputesTask extends sfBaseTask
     $this->executeMoyenneMois('hemicycle_interventions');
   }
 
-  protected function executeAmendementsAuteurs($q)
+  protected function executeAmendementsProposes($q)
   {
     $parlementaires = $q->select('a.auteur_id, count(a.id)')
       ->from('Amendement a, a.Auteur p')
       ->groupBy('a.auteur_id')
+      ->andWhere('a.auteur_id != ?', 0)
       ->andWhere('a.sort != ?', 'Rectifié')
       ->andWhere('a.numero NOT LIKE ?', '%-%')
       ->fetchArray();
     foreach ($parlementaires as $p) {
-      $this->deputes[$p['auteur_id']]['amendements_auteurs']['value'] = $p['count'];
+      $this->deputes[$p['auteur_id']]['amendements_proposes']['value'] = $p['count'];
     }
-    $this->executeMoyenneMois('amendements_auteurs');
+    $this->executeMoyenneMois('amendements_proposes');
   }
 
   protected function executeAmendementsSignes($q)
@@ -251,7 +252,7 @@ class topDeputesTask extends sfBaseTask
       $this->deputes[$id]['semaines_presence']['value'] += 0;
       $this->deputes[$id]['questions_orales']['value'] += 0;
       $this->deputes[$id]['questions_ecrites']['value'] += 0;
-      $this->deputes[$id]['amendements_auteurs']['value'] += 0;
+      $this->deputes[$id]['amendements_proposes']['value'] += 0;
       $this->deputes[$id]['amendements_signes']['value'] += 0;
       $this->deputes[$id]['amendements_adoptes']['value'] += 0;
       $this->deputes[$id]['rapports']['value'] += 0;
@@ -295,7 +296,7 @@ class topDeputesTask extends sfBaseTask
     $qa->andWhere('a.date < ?', date('Y-m-d', strtotime("$date +1month")));
     $this->executeAmendementsSignes(clone $qa);
     $this->executeAmendementsAdoptes(clone $qa);
-    $this->executeAmendementsAuteurs(clone $qa);
+    $this->executeAmendementsProposes(clone $qa);
 
     print "Amendements DONE\n";
 
@@ -391,8 +392,8 @@ class topDeputesTask extends sfBaseTask
     $this->executeAmendementsAdoptes(clone $qa);
     $this->orderDeputes('amendements_adoptes');
 
-    $this->executeAmendementsAuteurs(clone $qa);
-    $this->orderDeputes('amendements_auteurs');
+    $this->executeAmendementsProposes(clone $qa);
+    $this->orderDeputes('amendements_proposes');
 
     $qd = clone $q;
     if (!$fin)
@@ -483,7 +484,7 @@ class topDeputesTask extends sfBaseTask
 
       $this->executeAmendementsAdoptes(clone $qa);
 
-      $this->executeAmendementsAuteurs(clone $qa);
+      $this->executeAmendementsProposes(clone $qa);
 
       $qq = clone $q;
       $qq->andWhere('(q.date > ? AND q.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),

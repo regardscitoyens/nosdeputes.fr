@@ -22,11 +22,12 @@ class updateAmdmtsTask extends sfBaseTask {
         while (($file = readdir($dh)) != false) {
           print "$file\n";
           if (substr($file, 0, 6) != 'amdts_') continue;
+          if ($nb_json_files > $options['max'])
+            break;
+          $nb_json_files++;
           $ct_lines = 0;
           $ct_lus = 0;
           $ct_crees = 0;
-          if ($nb_json_files > $options['max'])
-            break;
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
             $json = json_decode($line);
@@ -38,10 +39,10 @@ class updateAmdmtsTask extends sfBaseTask {
               echo "ERROR mandatory arg missing (source|legis|numero|loi|sujet|texte|date|rectif): $line\n";
               continue;
             }
-            $ct_lus++;
             $amdmt = Doctrine::getTable('Amendement')->findLastOneByLegisLoiNum($json->legislature, $json->loi, $json->numero);
             if (!$amdmt) {
               echo "ERROR amdmt from OpenData AN missing from ND data: $line\n";
+              # TODO load missing ones
               continue;
             }
             if ($json->auteur_reel) {
@@ -50,15 +51,15 @@ class updateAmdmtsTask extends sfBaseTask {
                 echo "ERROR, cannot find auteur from AN ID: $line\n";
                 continue;
               }
+              $ct_lus++;
               $amdmt->setAuteur($parl);
               $amdmt->save();
             }
             $amdmt->free();
           }
           unlink($dir.$file);
-          $nb_json_files++;
         }
-        if ($ct_crees) echo $ct_lines." amendements lus : ".$ct_lus." mis à jour dont ".$ct_crees." nouveaux.\n";
+        if ($ct_lines) echo $ct_lines." amendements lus : ".$ct_lus." mis à jour dont ".$ct_crees." nouveaux.\n";
         closedir($dh);
       }
     }
