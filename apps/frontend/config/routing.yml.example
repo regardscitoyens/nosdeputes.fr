@@ -73,7 +73,7 @@ loi:
 homepage:
   url: /
   param: {module: parlementaire, action: index}
-# Les commentaires 
+# Les commentaires
 commentaire_post:
   url: /%LEGISLATURE%/commentaire/:type/:id
   param: {module: commentaire, action: post}
@@ -343,13 +343,13 @@ tag_parlementaire_interventions:
 top_organisme_global_sorted:
   url: /syntheseo/:organisme/tri/:sort
   param: {module: parlementaire, action: top}
-top_organisme_global: 
+top_organisme_global:
   url: /syntheseo/:organisme
   param: {module: parlementaire, action: top}
-top_global_sorted: 
+top_global_sorted:
   url: /synthesetri/:sort
   param: {module: parlementaire, action: top}
-top_global: 
+top_global:
   url: /synthese
   param: {module: parlementaire, action: top}
 api_synthese_current:
@@ -472,6 +472,9 @@ alerte_confirmation:
 parlementaire:
   url: /:slug
   param: {module: parlementaire, action: show}
+parlementaire_preview:
+  url: /:slug/preview
+  param: {module: parlementaire, action: preview}
 parlementaire_rss:
   url: /:slug/rss
   param: {module: parlementaire, action: rss, title: "l'activité de %"}
@@ -553,4 +556,3 @@ parlementaire_documents_rss:
 parlementaire_documents:
   url: /:slug/documents/:type
   param: {module: documents, action: parlementaire}
-

@@ -6,14 +6,6 @@
     <?php include_http_metas() ?>
     <?php include_metas() ?>
 
-<!-- Twitter metas -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:site" content="@RegardsCitoyens">
-    <meta name="twitter:domain" content="NosDéputés.fr">
-    <meta name="twitter:title" content="NosDéputés.fr - Regards Citoyens">
-    <meta name="twitter:description" content="Observatoire citoyen de l'activité parlementaire à l'Assemblée nationale">
-    <meta name="twitter:image:src" content="http://www.regardscitoyens.org/wp-content/uploads/2009/10/logo_nosdeputes.png">
-
 <!-- Facebook metas -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content="NosDéputés.fr - Regards Citoyens" />

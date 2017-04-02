@@ -4,6 +4,9 @@ all:
 rss:
   lifetime: 3600
   enabled: true
+preview:
+  lifetime: 86400
+  enabled: true
 _widget:
   lifetime: 86400
   enabled: true
@@ -12,9 +15,9 @@ _duJour:
   enabled: true
 _fiche:
   lifetime: 86400
-  enabled: true 
+  enabled: true
 list:
   lifetime: 86400
-  enabled: true 
+  enabled: true
 show:
   enabled: false
