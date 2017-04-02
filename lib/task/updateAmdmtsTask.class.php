@@ -52,7 +52,7 @@ class updateAmdmtsTask extends sfBaseTask {
               $amdmt->sort = $json->sort;
               $save = True;
             }
-            if ($json->auteur_reel) {
+            if ($json->auteur_reel && !$amdmt->auteur_id) {
               $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel);
               if ($parl) {
                 $amdmt->setAuteur($parl);
