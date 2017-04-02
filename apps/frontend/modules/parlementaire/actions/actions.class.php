@@ -423,9 +423,9 @@ class parlementaireActions extends sfActions
       }
       if ($fin)
         $this->tops[$id][0]["nb_mois"] = $tops['nb_mois'];
-      if (!isset($this->gpes[$p['groupe_acronyme']]))
+      if (!$fin && !isset($this->gpes[$p['groupe_acronyme']]))
         continue;
-      if ($p['groupe_acronyme'] != "")
+      if ($p['groupe_acronyme'] != "" && isset($this->gpes[$p['groupe_acronyme']]))
         $this->gpes[$p['groupe_acronyme']][0]['nb']++;
       foreach(array_keys($tops) as $key) {
         if ($key == "nb_mois")
@@ -439,7 +439,7 @@ class parlementaireActions extends sfActions
 	  $this->tops[$id][$i]['style'] = ' style="color:green;font-weight:bold;" ';
 	else if ($tops[$key]['rank'] > 577 - 151)
 	  $this->tops[$id][$i]['style'] = ' style="color:red;font-style:italic;" ';
-        if ($p['groupe_acronyme'] != "") {
+        if ($p['groupe_acronyme'] != "" && isset($this->gpes[$p['groupe_acronyme']])) {
           if (!isset($this->gpes[$p['groupe_acronyme']][$i]))
             $this->gpes[$p['groupe_acronyme']][$i] = 0;
           $this->gpes[$p['groupe_acronyme']][$i] += $tops[$key]['value'];
