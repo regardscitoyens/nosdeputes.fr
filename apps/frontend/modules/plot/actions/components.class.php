@@ -272,7 +272,7 @@ class plotComponents extends sfComponents
     }
     if ($this->type === "home")
       $this->data['titres'] = array("Députés", "Interventions", "Amendements", "Propositions", "Quest. Écrites");
-    else $this->data['titres'] = array("", "Interventions", "Longues", "Courtes", "Proposés", "Déposés", "Adoptés", "de Lois", "Écrites", "Orales");
+    else $this->data['titres'] = array("", "Interventions", "Longues", "Courtes", "Proposés", "Adoptés", "de Lois", "Écrites", "Orales");
     $n = count($this->data['titres']);
     $stats = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
 
@@ -307,14 +307,6 @@ class plotComponents extends sfComponents
         ->fetchArray();
     }
 
-    $query = Doctrine_Query::create()
-      ->select('p.groupe_acronyme, sum(a.nb_multiples) as ct')
-      ->from('Amendement a, a.Auteur p')
-      ->groupBy('p.groupe_acronyme');
-    if (!myTools::isFinLegislature())
-        $query->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
-    $amdmts_proposes = $qamdmts_deposes->fetchArray();
-
     $qprops = Doctrine_Query::create()
       ->select('p.groupe_acronyme, count(DISTINCT(t.id)) as ct')
       ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
@@ -330,8 +322,6 @@ class plotComponents extends sfComponents
     if ($this->type === "all") {
       foreach ($amdmts_adoptes as $amdt) if ($amdt['groupe_acronyme'] != "")
         $stats[$amdt['groupe_acronyme']]['amdmts_adoptes'] = $amdt['ct'];
-      foreach ($amdmts_proposes as $amdt) if ($amdt['groupe_acronyme'] != "")
-        $stats[$amdt['groupe_acronyme']]['amdmts_proposes'] = $amdt['ct'];
     }
     foreach ($props as $pro) if ($pro['groupe_acronyme'] != "") {
       $stats[$pro['groupe_acronyme']]['propositions'] = $pro['ct'];
@@ -344,9 +334,6 @@ class plotComponents extends sfComponents
         $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions_courtes']['somme'];
       } else {
         $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme']+$stats[$groupe]['commission_interventions']['somme'];
-      }
-      if ($this->type === "all") {
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_proposes'];
       }
       $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_deposes'];
       if ($this->type === "all") {

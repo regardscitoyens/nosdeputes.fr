@@ -54,10 +54,10 @@ $Test->drawTitle(4+2*$font,$ysize-4*$font+18, "TOTAL :",50,50,50);
 if ($type === "all") {
   $Test->drawTitle(70,28,"Députés",50,50,50);
   $Test->drawTitle(130,28,"Commission",50,50,50);
-  $Test->drawTitle(205,28,"Hémicycle interv.",50,50,50);
-  $Test->drawTitle(370,28,"Amendements",50,50,50);
-  $Test->drawTitle(505,28,"Propositions",50,50,50);
-  $Test->drawTitle(610,28,"Questions",50,50,50);
+  $Test->drawTitle(210,28,"Hémicycle interventions",50,50,50);
+  $Test->drawTitle(380,28,"Amendements",50,50,50);
+  $Test->drawTitle(490,28,"Propositions",50,50,50);
+  $Test->drawTitle(600,28,"Questions",50,50,50);
   $Test->xsSetFontProperties("tahoma.ttf",$font+5);
 //  $Test->drawTitle(60,30,"Répartition de l'activité des députés sur les 12 derniers mois par groupe politique",25,25,25);
 }
