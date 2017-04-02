@@ -7,7 +7,7 @@ class updateAmdmtsTask extends sfBaseTask {
     $this->briefDescription = 'Update Amendements data to set auteur_id';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
-    $this->addOption('max', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', '10');
+    $this->addOption('max', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', '3');
   }
 
   protected function execute($arguments = array(), $options = array()) {
@@ -21,11 +21,11 @@ class updateAmdmtsTask extends sfBaseTask {
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
+          if (substr($file, 0, 12) != 'amendements_') continue;
           print "$file\n";
-          if (substr($file, 0, 6) != 'amdts_') continue;
+          $nb_json_files++;
           if ($nb_json_files > $options['max'])
             break;
-          $nb_json_files++;
           $ct_lines = 0;
           $ct_lus = 0;
           $ct_crees = 0;
