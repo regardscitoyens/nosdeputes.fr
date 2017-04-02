@@ -47,14 +47,22 @@ class updateAmdmtsTask extends sfBaseTask {
               $ct_crees++;
               continue;
             }
+            $save = False;
+            if ($json->sort != "Indéfini" && $amdmt->sort == "Indéfini") {
+              $amdmt->sort = $json->sort;
+              $save = True;
+            }
             if ($json->auteur_reel) {
               $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel);
-              if (!$parl) {
+              if ($parl) {
+                $amdmt->setAuteur($parl);
+                $save = True;
+              } else {
                 echo "ERROR, cannot find auteur from AN ID: $line\n";
-                continue;
               }
+            }
+            if ($save) {
               $ct_lus++;
-              $amdmt->setAuteur($parl);
               $amdmt->save();
             }
             $amdmt->free();
