@@ -33,6 +33,8 @@ all:
     host: localhost
     port: 8080
     url: /solr_nosdeputes
+  manet:
+    url: http://example.manet.org/
 
  # Conf 13eme
 #  fin_legislature: true

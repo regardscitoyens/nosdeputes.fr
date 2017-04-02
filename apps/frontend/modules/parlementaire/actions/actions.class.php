@@ -141,6 +141,11 @@ class parlementaireActions extends sfActions
       $this->response->addMeta('robots', 'noindex,follow');
     $this->response->addMeta('parlementaire_id', 'd'.$this->parlementaire->id);
     $this->response->addMeta('parlementaire_id_url', myTools::getProtocol().'://www.nosdeputes.fr/id/'.'d'.$this->parlementaire->id);
+    $this->response->addMeta('twitter:card', 'summary_large_image');
+    $this->response->addMeta('twitter:title', "Toute l'activité parlementaire de ".$this->parlementaire->nom.' à l\'Assemblée Nationale');
+    $this->response->addMeta('twitter:description', "NosDéputés.fr propose de découvrir ce que ".$this->parlementaire->nom." fait à l'Assemblée Nationale à travers l'exploitation des documents parlementaires");
+    $this->response->addMeta('twitter:image', myTools::getProtocol().'://www.nosdeputes.fr/'.$this->parlementaire->slug.'/preview');
+
 
     $this->commissions_permanentes = array();
     $this->missions = array();
@@ -153,6 +158,19 @@ class parlementaireActions extends sfActions
       }
     }
   }
+
+  public function executePreview(sfWebRequest $request) {
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->parlementaire);
+
+    $this->getResponse()->setHttpHeader('content-type', 'image/png');
+    $this->setLayout(false);
+
+    $this->url  = sfConfig::get('app_manet_url') .'?url='. urlencode(myTools::getProtocol().'://www.nosdeputes.fr/'.$this->parlementaire->slug);
+    $this->url .= "&format=jpg&clipRect=".urlencode("0,0,1060,555");
+
+  }
+
 
   public function executeId(sfWebRequest $request)
   {
@@ -423,9 +441,9 @@ class parlementaireActions extends sfActions
       }
       if ($fin)
         $this->tops[$id][0]["nb_mois"] = $tops['nb_mois'];
-      if (!isset($this->gpes[$p['groupe_acronyme']]))
+      if (!$fin && !isset($this->gpes[$p['groupe_acronyme']]))
         continue;
-      if ($p['groupe_acronyme'] != "")
+      if ($p['groupe_acronyme'] != "" && isset($this->gpes[$p['groupe_acronyme']]))
         $this->gpes[$p['groupe_acronyme']][0]['nb']++;
       foreach(array_keys($tops) as $key) {
         if ($key == "nb_mois")
@@ -439,7 +457,7 @@ class parlementaireActions extends sfActions
 	  $this->tops[$id][$i]['style'] = ' style="color:green;font-weight:bold;" ';
 	else if ($tops[$key]['rank'] > 577 - 151)
 	  $this->tops[$id][$i]['style'] = ' style="color:red;font-style:italic;" ';
-        if ($p['groupe_acronyme'] != "") {
+        if ($p['groupe_acronyme'] != "" && isset($this->gpes[$p['groupe_acronyme']])) {
           if (!isset($this->gpes[$p['groupe_acronyme']][$i]))
             $this->gpes[$p['groupe_acronyme']][$i] = 0;
           $this->gpes[$p['groupe_acronyme']][$i] += $tops[$key]['value'];

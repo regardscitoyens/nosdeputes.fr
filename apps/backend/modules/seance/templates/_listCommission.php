@@ -1,4 +1,4 @@
-<?php if (! isset($nofuse)) { ?> 
+<?php if (! isset($nofuse)) { ?>
   <form action="<?php echo url_for('@fuse_nseances'); ?>" method="get">
   <input type="hidden" name="id" value="<?php echo $orga; ?>" />
   <div style="text-align:right;"><input type="submit" name="formaction" value="Supprimer les seances" /><input type="submit" name="formaction" value="Fusionner les seances" /></div>

@@ -2,6 +2,11 @@
 
 $data = unserialize(get_component('plot', 'getParlData', array('parlementaire' => $parlementaire, 'session' => $time)));
 
+if ($drawAction == 'txt') {
+    print_r($data);
+    exit;
+}
+
 $n = count($data['labels']);
 $presences = array_fill(1, $n, 0);
 $participations = array_fill(1, $n, 0);
@@ -38,8 +43,8 @@ if ($link === 'true') {
   }
 }
 
-if ($drawAction === "map" ) {  
-  $Test = new xsPChart(800,$size);  
+if ($drawAction === "map" ) {
+  $Test = new xsPChart(800,$size);
   $Test->getImageMap($mapId, TRUE);
 }
 
@@ -124,7 +129,7 @@ if ($link === 'true') {
   $Test->setImageMap(TRUE,$mapId);
   $Test->drawOverlayBarGraph($DataLegend,$DataDescrLegend,30,100);
   $Test->setImageMap(FALSE,$mapId);
-} 
+}
 $Test->drawGrid(0,TRUE,0,0,0,100);
 $Test->setColorPalette(0,50,50,50);
 $Test->drawOverlayBarGraph($Data2,$DataDescr2,30,100);
