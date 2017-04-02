@@ -11,6 +11,9 @@ class AmendementTable extends Doctrine_Table
       $lois[] = str_replace("TA", "TA0", $loi);
       $lois[] = str_replace("TA", "TA00", $loi);
       $lois[] = str_replace("TA", "TA000", $loi);
+      $lois[] = str_replace("TA000", "TA", $loi);
+      $lois[] = str_replace("TA00", "TA", $loi);
+      $lois[] = str_replace("TA0", "TA", $loi);
     }
     $query = $this->createQuery('a')
       ->where('a.legislature = ?', $legis)
