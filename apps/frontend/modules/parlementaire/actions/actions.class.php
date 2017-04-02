@@ -140,11 +140,11 @@ class parlementaireActions extends sfActions
     if (myTools::isLegislatureCloturee() && $this->parlementaire->url_nouveau_cpc)
       $this->response->addMeta('robots', 'noindex,follow');
     $this->response->addMeta('parlementaire_id', 'd'.$this->parlementaire->id);
-    $this->response->addMeta('parlementaire_id_url', myTools::getProtocol().'://www.nosdeputes.fr/id/'.'d'.$this->parlementaire->id);
+    $this->response->addMeta('parlementaire_id_url', str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).'id/'.'d'.$this->parlementaire->id);
     $this->response->addMeta('twitter:card', 'summary_large_image');
     $this->response->addMeta('twitter:title', "Toute l'activité parlementaire de ".$this->parlementaire->nom.' à l\'Assemblée Nationale');
     $this->response->addMeta('twitter:description', "NosDéputés.fr propose de découvrir ce que ".$this->parlementaire->nom." fait à l'Assemblée Nationale à travers l'exploitation des documents parlementaires");
-    $this->response->addMeta('twitter:image', myTools::getProtocol().'://www.nosdeputes.fr/'.$this->parlementaire->slug.'/preview');
+    $this->response->addMeta('twitter:image', str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).$this->parlementaire->slug.'/preview');
 
 
     $this->commissions_permanentes = array();
@@ -166,7 +166,7 @@ class parlementaireActions extends sfActions
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
 
-    $this->url  = sfConfig::get('app_manet_url') .'?url='. urlencode(myTools::getProtocol().'://www.nosdeputes.fr/'.$this->parlementaire->slug);
+    $this->url  = sfConfig::get('app_manet_url') .'?url='. urlencode(str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).$this->parlementaire->slug);
     $this->url .= "&format=jpg&clipRect=".urlencode("0,0,1060,555");
 
   }
