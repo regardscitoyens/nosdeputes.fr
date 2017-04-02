@@ -24,11 +24,11 @@ class loadAmdmtsTask extends sfBaseTask {
           $ct_lines = 0;
           $ct_lus = 0;
           $ct_crees = 0;
+          if ($nb_json > $options['max'])
+            break;
+          $nb_json++;
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
-            $nb_json++;
-            if ($nb_json > $options['max'])
-              break 2;
             $json = json_decode($line);
             if (!$json) {
               echo "ERROR json : $line";

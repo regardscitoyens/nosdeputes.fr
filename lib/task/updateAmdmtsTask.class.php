@@ -13,6 +13,7 @@ class updateAmdmtsTask extends sfBaseTask {
   protected function execute($arguments = array(), $options = array()) {
     // your code here
     $dir = dirname(__FILE__).'/../../batch/amendements/OpenDataAN/';
+    $to_load_file = dirname(__FILE__).'/../../batch/amendements/json/OpenData_missing.json';
     $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);
     $nb_json_files = 0;
@@ -41,8 +42,8 @@ class updateAmdmtsTask extends sfBaseTask {
             }
             $amdmt = Doctrine::getTable('Amendement')->findLastOneByLegisLoiNum($json->legislature, $json->loi, $json->numero);
             if (!$amdmt) {
-              echo "WARNING: amdmt from OpenData AN missing from ND data: $line\n";
-              # TODO load missing ones
+              #echo "WARNING: amdmt from OpenData AN missing from ND data: ".$json->source."\n";
+              file_put_contents($to_load_file, $line, FILE_APPEND | LOCK_EX);
               $ct_crees++;
               continue;
             }
