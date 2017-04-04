@@ -1,40 +1,4 @@
-body {
-  margin: 0;
-  padding: 0;
-  font: 11px Verdana, Tahoma, Geneva, Arial, Sans-serif;
-  color: #484848;
-  background: #e4e4e1 url('images/mosaique.gif') repeat;
-}
-img { border:0; }
 
-h1 a:link { color: inherit; }
-
-ul {
-  padding-left: 18px;
-}
-
-a:link {
-  color: inherit;
-  text-decoration: none;
-  background-color: transparent;
-}
-
-a:active {
-  text-decoration: none;
-  background-color: transparent;
-}
-
-a:visited {
-  color: inherit;
-  text-decoration: none;
-  background-color: transparent;
-}
-
-a:hover {
-  color: #000;
-  text-decoration: underline;
-  background-color: transparent;
-}
 /* Recherches */
 .cont_date_graph {
   margin-right: 4px;
@@ -70,7 +34,6 @@ a:hover {
   background-color: #FBD9A8;
 }
 .date li:hover, .date li:focus {
-  background-color: #D49647;
 }
 .date li a {
   display: block;
@@ -99,17 +62,14 @@ a:hover {
 }
 .solr h1 {
   text-align: left;
-  font-size: 1.3em;
   width: 650px;
 }
 .solr h2 {
   text-align: left;
-  font-size: 1.2em;
   font-weight: normal;
 }
 .solr h3, .alerte h3 {
   text-align: left;
-  font-size: 1.1em;
   font-weight: bold;
   padding-left: 4px;
   background-color: #dddddd;
@@ -173,8 +133,6 @@ a:hover {
 /* Widget page d'accueil */
 .box_widget h2 {
   background: #9CDAE1 url("images/fond_translucide.png");
-  font-size:1.4em;
-  line-height:1.4em;
   margin:0;
   padding-left:5px;
   text-align:left;
@@ -752,22 +710,7 @@ h1 {
   float:left;
 }
 
-/* header - logo */
-
-#header {
-  width: 1060px;
-  height:147px;
-  background: url('images/header.png') no-repeat;
-  overflow:hidden;
-}
-
-#header #logo {
-  width:629px;
-  height:147px;
-  margin-left:44px;
-}
-
-/* menu - barre de navigation - champ de recherche */
+/* menu - barre de navigation - champ de recherche 
 
 #menu {
   width: 1060px;
@@ -894,8 +837,9 @@ h1 {
   background: url('images/recherche.png') top right no-repeat;
   cursor:pointer;
 }
+*/
 
-/* sous menu  */
+/* sous menu  
 
 #sous_menu {
   width:1060px;
@@ -962,26 +906,14 @@ h1 {
   height:21px;
   background: url('images/sous_menu_combined.png') 0 -42px;
 }
+*/
 
 /* corps de page */
-#corps_page {
-  width:1060px;
-  background: url('images/corps_page.png');
-}
-.contenu_page {
-  min-height:520px;
-  width:920px;
-  overflow:hidden;
-  margin-left:auto;
-  margin-right:auto;
-}
+#corps_page {}
+.contenu_page {}
 
 /* bottom - pied de page */
-#bottom {
-  width:1060px;
-  height:42px;
-  background: url('images/bottom.png');
-}
+#bottom {}
 
 /* Carte des députés */
 .conteneur_resultat_dep  {
@@ -1756,51 +1688,8 @@ h2 {
   padding:7px 0 7px 5px;
   margin:0 0 0 20px;
 }
-#couleur1 {
-  background-color:#eee;
-}
-#couleur2 {
-  background-color:#f7f7f7;
-}
-.accueil_liste_liens h2 {
-  background-color:#dbd5c8;
-  font-size: 1.2em;
-  margin:0 0 10px 0;
-}
-.accueil_deputes_jour h2 {
-  font-size: 1.4em;
-  color: #6F6F6F;
-  text-shadow: 0 0 4px #FFFFFF;
-  margin: 0;
-  background: #dbea9e url("images/fond_translucide.png");
-  border-bottom: 1px solid #DDDDDD;
-}
-.accueil_deputes_jour {
-  float: right;
-  width: 202px;
-  height: 253px;
-  border: 1px solid #DDDDDD;
-  text-align: center;
-  background-color: #FAFAFA;
-  margin: 16px 6px;
-}
 .clear {
   clear: both;
-}
-.accueil_deputes_jour img {
-  border:1px solid #727272;
-}
-.accueil_message {
-  float: left;
-  width: 662px;
-  height: 223px;
-  font-size: 12px;
-  border: 1px dashed #dddddd;
-  margin: 16px 0;
-  padding: 15px;
-}
-.accueil_message_content {
-  text-align: justify;
 }
 .accueil_message a {
       text-decoration: underline;
