@@ -50,7 +50,10 @@ echo $$ > $LOCK
 cd $PATH_APP
 
 if ! test -e log/solr/commands.log.lock; then
-    mv $(ls log/solr/commands.log.* | grep -v lock | head -n 1) log/solr/commands.log.lock
+    nextcommand=$(find log/solr/ -name 'commands.log.*' | grep -v lock | head -n 1)
+    if test "$nextcommand" ; then 
+        mv $nextcommand log/solr/commands.log.lock
+    fi
 fi
 
 while ! php symfony index:Solr $option ; do
