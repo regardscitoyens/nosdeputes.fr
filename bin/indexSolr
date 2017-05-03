@@ -56,7 +56,7 @@ if ! test -e log/solr/commands.log.lock; then
     fi
 fi
 
-while ! php symfony index:Solr $option ; do
+while ! php symfony index:Solr --env=dev $option ; do
 if test "$1" = "" ; then
    exit;
 fi
