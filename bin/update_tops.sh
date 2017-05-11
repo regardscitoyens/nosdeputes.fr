@@ -8,7 +8,7 @@ php symfony top:Deputes
 for month in 06 07 08 09 10 11 12; do
   php symfony top:Deputes $start-$month-01
 done
-for year in `seq $(($start + 1)) $(($start + 4))`; do
+for year in `seq $(($start + 1)) $(($start + 5))`; do
   if test $year -gt `date +%Y`; then
     break
   fi
