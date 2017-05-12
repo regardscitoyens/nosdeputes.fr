@@ -39,7 +39,7 @@ $bulles = array("",
                "Interventions longues en Hémicycle -- Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle",
                "Interventions courtes en Hémicycle -- Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle",
                "Amendements proposés -- Nombre d'amendements proposés par le député (indiqué « auteur » par l'Assemblée)",
-               "Amendements signés -- Nombre d'amendements de ou co-signés par le député",
+               "Amendements signés -- Nombre d'amendements proposés ou co-signés par le député",
                "Amendements adoptés -- Nombre d'amendements signés par le député qui ont été adoptés en séance",
                "Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur",
                "Propositions écrites -- Nombre de propositions de loi ou de résolution dont le député est l'auteur",
@@ -160,8 +160,8 @@ $bulles = array("",
   <li><strong>Hémicycle interventions longues</strong> : Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle</li>
   <li><strong>Hémicycle interventions courtes</strong> : Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle</li>
   <li><strong>Amendements proposés</strong> : Nombre d'amendements proposés par le député (indiqué «&nbsp;auteur&nbsp;» par l'Assemblée)</li>
-  <li><strong>Amendements signés</strong> : Nombre d'amendements signés ou co-signés par le député</li>
-  <li><strong>Amendements adoptés</strong> : Nombre d'amendements adoptés qui ont été signés ou cosignés par le député</li>
+  <li><strong>Amendements signés</strong> : Nombre d'amendements proposés ou co-signés par le député</li>
+  <li><strong>Amendements adoptés</strong> : Nombre d'amendements signés par le député qui ont été adoptés</li>
   <li><strong>Rapports écrits</strong> : Nombre de rapports ou avis dont le député est l'auteur</li>
   <li><strong>Propositions écrites</strong> : Nombre de propositions de loi ou de résolution dont le député est l'auteur</li>
   <li><strong>Propositions signées</strong> : Nombre de propositions de loi ou de résolution dont le député est cosignataire</li>
