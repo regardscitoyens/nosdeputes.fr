@@ -1,6 +1,6 @@
 <?php
 
-class SolrCommands 
+class SolrCommands
 {
   public static function getFileCommands() {
     umask(0000);
@@ -13,7 +13,7 @@ class SolrCommands
   }
 
   protected $semaphore = null;
-  protected $file = null; 
+  protected $file = null;
 
   protected static $instance = null;
   public static function getInstance() {
@@ -67,7 +67,7 @@ class SolrCommands
     $this->unprotect();
   }
 
-  public  function getCommandContent() {
+  public function getCommandContent() {
     $lockfile = $this->getFileCommands().'.lock';
     if (file_exists($lockfile)) {
       return $lockfile;
@@ -83,7 +83,7 @@ class SolrCommands
     $this->unprotect();
     return $lockfile;
   }
-  public  function releaseCommandContent() {
+  public function releaseCommandContent() {
     $this->protect();
     unlink($this->getFileCommands().'.lock');
     $this->unprotect();
