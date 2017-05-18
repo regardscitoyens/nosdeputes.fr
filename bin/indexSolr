@@ -52,7 +52,7 @@ cd $PATH_APP
 
 if test -e log/solr/commands.log.lock; then
     sort -u log/solr/commands.log.lock > log/solr/commands.log.lock.tmp
-    split -a 4 -d -l 800 commands.log.lock.tmp commands.log.l
+    split -a 4 -d -l 800 commands.log.lock.tmp commands.log.$(date +%y%M%d%H%M)-
     rm -f commands.log.lock commands.log.lock.tmp
 fi
 
