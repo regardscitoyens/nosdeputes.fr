@@ -34,7 +34,7 @@ class SolrConnector extends sfLogger
     foreach(file($file) as $line) {
       if (preg_match('/(UPDATE|DELETE) : (.+)/', $line, $matches)) {
         $nlines++;
-        if ($nlines > 1250) {
+        if ($nlines > 810) {
           $this->commit(1);
           return false;
         }
