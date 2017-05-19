@@ -28,7 +28,7 @@ class SolrCommands
   }
 
   public function __destruct() {
-    if ($this->semaphore) {
+    if (!is_null($this->semaphore)) {
       sem_remove($this->semaphore);
       $this->semaphore = null;
     }
@@ -45,9 +45,9 @@ class SolrCommands
   }
 
   private function protect() {
-#    if (! $this->semaphore) {
+    if (is_null($this->semaphore)) {
       $this->semaphore = sem_get(self::getSemId(), 1, 0666, -1);
-#    }
+    }
     sem_acquire($this->semaphore);
   }
 

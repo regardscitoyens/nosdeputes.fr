@@ -32,12 +32,12 @@ class SolrConnector extends sfLogger
     $file = SolrCommands::getInstance()->getCommandContent();
     $nlines = 0;
     foreach(file($file) as $line) {
+      $nlines++;
+      if ($nlines > 301) {
+        $this->commit(1);
+        return false;
+      }
       if (preg_match('/(UPDATE|DELETE) : (.+)/', $line, $matches)) {
-        $nlines++;
-        if ($nlines > 810) {
-          $this->commit(1);
-          return false;
-        }
         $obj = json_decode($matches[2]);
         if ($output)
           echo "ID: ".$obj->id."\n";
