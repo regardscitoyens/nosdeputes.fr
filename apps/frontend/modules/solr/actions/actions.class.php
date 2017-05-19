@@ -77,7 +77,7 @@ class solrActions extends sfActions
     if (myTools::isLegislatureCloturee()) {
         $date_fin = preg_replace("/-..$/", "-01T00:00:00Z", myTools::getFinLegislature());
     }
-    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date,description', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>$date_debut, "facet.date.end"=>$date_fin, "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge");
+    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date,description', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>$date_debut, "facet.date.end"=>$date_fin, "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge", "facet.limit" => 600);
     $this->sort_type = 'pertinence';
 
     if (!$this->query) {
