@@ -15,7 +15,7 @@ echo $$ > $LOCK
 cd $PATH_APP
 
 while ! php symfony project:send-email --application="frontend" --env="prod" --message-limit=10 | grep "sent 0 emails"  > /dev/null; do
-sleep 1
+sleep 10
 done
 
 rm $LOCK ;
