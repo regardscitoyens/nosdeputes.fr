@@ -237,4 +237,10 @@ sudo a2enmod rewrite
    ```
    memory_limit = 128M      ; Maximum amount of memory a script may consume (16MB)
    ```
+## License
 
+Copyright (C) 2009/... - [Regards Citoyens](https://RegardsCitoyens.org)
+
+This program is free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License, either version 3 of the License (as published by the Free Software Foundation and available [here](LICENSE), or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
