@@ -78,8 +78,9 @@ sudo aptitude install libwww-mechanize-perl libfile-path-perl
  * Charger des données :
 
     * Télécharger le dernier dump de la base de données :
-     - pour NosDéputés.fr : https://www.regardscitoyens.org/telechargement/donnees/nosdeputes.fr/
-     - pour NosSénateurs.fr : https://www.regardscitoyens.org/telechargement/donnees/nossenateurs.fr/
+
+      * pour NosDéputés.fr : https://www.regardscitoyens.org/telechargement/donnees/nosdeputes.fr/
+      * pour NosSénateurs.fr : https://www.regardscitoyens.org/telechargement/donnees/nossenateurs.fr/
 
     * Importer le dump dans mysql. Un prompt vous demandera le mot de passe défini plus tôt :
 
@@ -152,25 +153,25 @@ Si vous utilisez le déploiement simplifié : http://127.0.0.1:8000/frontend_dev
 
 L'utilisation de la page `frontend_dev.php` vous permet de naviguer sur le site avec des informations de debug très pratiques pour le développement.
 
-### Bugs connus
+### Problèmes connus
 
- * Si à l'affichage de frontend_dev.php dans le navigateur, PHP dit qu'il n'a pas pu allouer assez de mémoire, augmenter la taille maximale de mémoire autorisée : 
+Si à l'affichage de frontend_dev.php dans le navigateur, PHP dit qu'il n'a pas pu allouer assez de mémoire, augmenter la taille maximale de mémoire autorisée : 
 
-   ```bash
-   sudo nano /etc/php5/cli/php.ini
-   ```
+```bash
+sudo nano /etc/php5/cli/php.ini
+```
 
-   cherchez la ligne
+cherchez la ligne
 
-   ```
-   memory_limit = 16M      ; Maximum amount of memory a script may consume (16MB)
-   ```
+```
+memory_limit = 16M      ; Maximum amount of memory a script may consume (16MB)
+```
 
-   et mettez une valeur haute, par exemple
+et mettez une valeur haute, par exemple
 
-   ```
-   memory_limit = 128M      ; Maximum amount of memory a script may consume (16MB)
-   ```
+```
+memory_limit = 128M      ; Maximum amount of memory a script may consume (16MB)
+```
 
 ## Installation de Solr
 
@@ -237,7 +238,7 @@ Solr est le moteur de recherche utilisé dans le projet. Il s'installe sur un mo
     php symfony cc
     ```
 
-## Optimisations de la configuration pour déploiement production
+## Optimisations de la configuration pour le déploiement en production
 
 Pour le passage en production, un certain nombre d'optimisation sont souhaitables.
 
