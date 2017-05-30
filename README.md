@@ -9,6 +9,11 @@ Ce projet contient le code source des sites web [NosDéputés.fr](http://www.nos
 
 Voir les [instructions d'installation pour une machine GNU/Linux](doc/install.md).
 
+## Données
+
+Toutes les données de NosDéputés.Fr et NosSénateurs.fr (à l'exception des métadonnées et contributions des utilisateurs) sont librement réutilisables en OpenData sous [licence ODbL](http://www.vvlibri.org/fr/licence/odbl/10/fr/legalcode), c'est-à-dire sous la condition d'en citer la source et de remettre à disposition des utilisateurs/lecteurs les données modifiées sous les mêmes conditions.
+
+Plus de détails sur [les données et le modèle sur cette page](doc/opendata.md).
 
 ## License
 
