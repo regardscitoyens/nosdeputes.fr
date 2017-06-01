@@ -359,9 +359,10 @@ class topDeputesTask extends sfBaseTask
       $q->where('fin_mandat IS NULL');
 
     $qs = clone $q;
-    if (!$fin)
+    if (!$fin) {
       $qs->andWhere('s.date > ?', date('Y-m-d', time()-60*60*24*365));
-    $qs->andWhere('(s.date > p.debut_mandat)');
+      $qs->andWhere('(s.date > p.debut_mandat)');
+    }
 
     $this->executePresence(clone $qs);
     $this->orderDeputes('semaines_presence');
