@@ -5,7 +5,6 @@ Cette page présente une liste non exhaustive des contenus et données réutilis
 ## Données directement accessibles par l'API
 
 - [Liste des parlementaires](api.md#) (infos biographique, responsabilités parlementaire et extra-parlementaire...)
-- [Photos des parlementaires](api.md#)
 - [Indicateurs de l'activité parlementaire](api.md#) (par parlementaire et par mois)
 - [Recherche et métadonnées des activités parlementaire publiées](api.md#) :
   + Interventions
@@ -15,6 +14,11 @@ Cette page présente une liste non exhaustive des contenus et données réutilis
   + Organismes (commissions, délégations, missions...)
 
 Voir la [documentation de l'API](api.md) pour plus de détails.
+
+## Contenus directement réutilisables
+
+- [Photos des parlementaires](api.md#)
+- Graphique, barre d'activité et mots-clés des parlementaires via le [widget d'activité](widget.md) (pour NosDéputés.fr seulement)
 
 ## Données complètes SQL téléchargeables
 

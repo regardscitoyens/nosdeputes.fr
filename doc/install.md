@@ -145,7 +145,7 @@ sudo aptitude install libwww-mechanize-perl libfile-path-perl
 
 Sans passer par Apache, vous pouvez lancer un serveur web léger en tapant ``php -S 127.0.0.1:8000 -t web`` dans le dossier `nosdeputes.fr/`.
 
-### Tester :
+### Tester
 
 Si vous avez installé un environnement de développement via Apache, l'adresse suivante devrait fonctionner : http://my.cpc.regardscitoyens.org/frontend_dev.php/
 
