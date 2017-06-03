@@ -99,7 +99,7 @@ Vous pouvez restreindre les résultats à :
 
 - un **type d'objet** précis : ajouter `&object_name=OBJTYPE` avec `OBJTYPE` parmi : Parlementaire, Organisme, Intervention, Amendement, QuestionEcrite, Section, Texteloi, Commentaire
 
-- une **période temporelle** précise : ajouter `&date=YYYYMMDD%2CYYYYMMDD` par exemple pour les résultats sur « internet » en septembre 2015 : https://www.nosdeputes.fr/recherche/internet?format=xml&date=20150901%2C20150931
+- une **période temporelle** précise : ajouter `&date=YYYYMMDD%2CYYYYMMDD` par exemple pour les résultats sur « internet » en janvier 2016 : https://www.nosdeputes.fr/recherche/internet?format=xml&date=20160101%2C20160131
 
 - un **parlementaire** précis : ajouter `&tag=parlementaire=SLUG`
 
