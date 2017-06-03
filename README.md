@@ -9,11 +9,13 @@ Ce projet contient le code source des sites web [NosDéputés.fr](http://www.nos
 
 Voir les [instructions d'installation pour une machine GNU/Linux](doc/install.md).
 
-## Données parlementaires
+## Données parlementaires & API
 
 Toutes les données de NosDéputés.Fr et NosSénateurs.fr (à l'exception de celles concernant les utilisateurs) sont librement réutilisables en OpenData sous [licence ODbL](http://www.vvlibri.org/fr/licence/odbl/10/fr/legalcode), c'est-à-dire sous la condition d'en citer la source et de remettre à disposition des utilisateurs/lecteurs les données modifiées sous les mêmes conditions.
 
 Plus de détails sur l'[accès à ces données et d'autres sur cette page](doc/opendata.md).
+
+Une API a par ailleurs été développée pour offrir un accès direct aux données de NosDéputés.fr et NosSénateurs.fr aux formats XML, JSON et CSV. [Voir la documentation de l'API](doc/api.md).
 
 ## Licence
 

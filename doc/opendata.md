@@ -22,7 +22,7 @@ Voir la [documentation de l'API](api.md) pour plus de détails.
 
 ## Données complètes SQL téléchargeables
 
-Des [dumps SQL complets des bases](http://www.regardscitoyens.org/telechargement/donnees/) (sans les données personnelles de nos utilisateurs) sont mis à disposition à l'adresse suivante : http://www.regardscitoyens.org/telechargement/donnees/
+Des [dumps SQL complets des bases](https://www.regardscitoyens.org/telechargement/donnees/) (sans les données personnelles de nos utilisateurs) sont mis à disposition à l'adresse suivante : https://www.regardscitoyens.org/telechargement/donnees/
 
 Ils contiennent en plus de ce qui est déjà disponible via l'API :
 
@@ -38,17 +38,17 @@ Diverses données parlementaires également mises en œuvre sur nos sites sont d
 
 - Carte SVG de l'[hémicycle de l'Assemblée](https://github.com/regardscitoyens/mapHemicycle/blob/gh-pages/img/hemicycle-an.svg)
 - Carte SVG des [départements](https://github.com/regardscitoyens/nosdeputes.fr/blob/master/web/france_deptmts.svg)
-- Carte SVG des [circonscriptions](http://www.data.gouv.fr/fr/datasets/carte-des-circonscriptions-lgislatives-2012/)
+- Carte SVG des [circonscriptions](https://www.data.gouv.fr/fr/datasets/carte-des-circonscriptions-lgislatives-2012/)
 - Appartenance des [communes aux circonscriptions législatives](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/circo_insee_2012.csv)
 - Catalogue [OpenData officiel de l'Assemblée nationale](http://data.assemblee-nationale.fr)
 - Catalogue [OpenData officiel du Sénat](http://data.senat.fr)
 - [ParlAPI](http://parlapi.fr/) reprenant les données des catalogues officiels OpenData
-- [API de LaFabriqueDeLaLoi.fr](http://api.lafabriquedelaloi.fr) proposant les détails de procédure parlementaire pour 300 dossiers
+- [API de LaFabriqueDeLaLoi.fr](https://www.lafabriquedelaloi.fr/api/) proposant les détails de procédure parlementaire pour 300 dossiers
 - Liste et comptes Twitter des [membres du gouvernement](https://github.com/regardscitoyens/direct-parlement/blob/gh-pages/resources/gouvernement.csv) maintenue par Accropolis
 - [Comptes Twitter](https://github.com/regardscitoyens/twitter-parlementaires) des parlementaires
 - [Rattachement financier annuel aux partis politiques](https://github.com/regardscitoyens/rattachement-financier-parlementaires) des parlementaires
 - [Réserve parlementaire annuelle](https://github.com/regardscitoyens/reserveparlementaire_parser) des députés
-- [Déclarations d'intérêts 2014 manuscrites numérisées](http://www.data.gouv.fr/fr/datasets/declarations-d-interets-des-parlementaires-publiees-par-la-haute-autorite-pour-la-transparence/) par crowdsourcing des parlementaires
+- [Déclarations d'intérêts 2014 manuscrites numérisées](https://www.data.gouv.fr/fr/datasets/declarations-d-interets-des-parlementaires-publiees-par-la-haute-autorite-pour-la-transparence/) par crowdsourcing des parlementaires
 - Liste des [collaborateurs parlementaires](https://github.com/regardscitoyens/Collaborateurs-Parlement)
 - Liste des [représentants d'intérets enregistrés](https://github.com/regardscitoyens/registre-lobbying-AN)
 - [Personnes auditionnées à l'Assemblée](http://www.nosdonnees.fr/package/influence-auditions-deputes-lobbying) entre 2010 et 2012 extraites par crowdsourcing des rapports

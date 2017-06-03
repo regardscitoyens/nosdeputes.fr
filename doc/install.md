@@ -173,6 +173,8 @@ et mettez une valeur haute, par exemple
 memory_limit = 128M      ; Maximum amount of memory a script may consume (16MB)
 ```
 
+N'hésitez pas à nous contacter ou [laisser une issue](https://github.com/regardscitoyens/nosdeputes.fr/issues) pour tout problème rencontré.
+
 ## Installation de Solr
 
 Solr est le moteur de recherche utilisé dans le projet. Il s'installe sur un moteur de servlet (jetty, tomcat, ...). Cette section décrit le déploiement avec tomcat6 dans le cadre du projet.
