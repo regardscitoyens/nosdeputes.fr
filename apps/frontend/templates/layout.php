@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
   <head>
     <?php include_http_metas() ?>
-    <?php include_metas() ?>  
+    <?php include_metas() ?>
 
 <!-- Twitter metas -->
     <meta name="twitter:card" content="summary">
@@ -19,7 +19,7 @@
     <meta property="og:title" content="NosSénateurs.fr - Regards Citoyens" />
     <meta property="og:site_name" content="NosSénateurs.fr" />
     <meta property="og:description" content="Observatoire citoyen de l'activité parlementaire au Sénat" />
-    <meta property="og:url" content="http://www.NosSénateurs.fr" />
+    <meta property="og:url" content="https://www.NosSénateurs.fr" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:image" content="http://www.regardscitoyens.org/wp-content/themes/RegardsCitoyens/images/nossenateurs.png" />
     <meta property="og:image:type" content="image/png" />
@@ -46,8 +46,8 @@ if ( preg_match('/\/circonscription[\/\?]/', $uri))
    $selectquestion = ' selected="selected"';
  else if (preg_match('/(\/citoyens?[\/\?]?|\/assister|\/commentaires?)/', $uri))
    $selectcitoyen = 1;
- else if ( !preg_match('/\/(faq|$)/i', $uri)) 
-   $selectsenateur = ' selected="selected"';  
+ else if ( !preg_match('/\/(faq|$)/i', $uri))
+   $selectsenateur = ' selected="selected"';
 
 $menu_senateur = $selectquestion || $selectsenateur || $selectprof || $selectcirco;
 $menu_dossier = $selectinterv || $selectamdmt;
@@ -63,7 +63,7 @@ $menu_citoyen = $selectcitoyen;
       <script type="text/javascript" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/iepngfix/iepngfix_tilebg.js"></script>
       <style type="text/css">
         img, div { behavior: url('<?php echo $sf_request->getRelativeUrlRoot(); ?>/iepngfix/iepngfix.php') }
-      </style> 
+      </style>
     <![endif]-->
     <?php include_partial('parlementaire/cssCouleursGroupes'); ?>
     <?php echo javascript_include_tag('jquery-1.6.2.min.js'); ?>
@@ -74,16 +74,16 @@ $menu_citoyen = $selectcitoyen;
   <div id="contenu">
       <div id="top">
         <div class="initiative">
-          <a href="http://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);">Une initiative de RegardsCitoyens.org</a>
+          <a target="_blank" href="https://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);">Une initiative de RegardsCitoyens.org</a>
         </div>
 <div id="connected" class="identification">
 <p id="loggued_top">
-<a href="/login">Se connecter</a> - 
+<a href="/login">Se connecter</a> -
 <a href="/login">Mon compte</a>
 </p>
 </div>
-  <script type="text/javascript"><!-- 
-  $('#connected').load("<?php echo url_for('@identification_ajax'); ?>"); 
+  <script type="text/javascript"><!--
+  $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
 --></script>
       </div>
       <div id="header">
@@ -97,8 +97,8 @@ $menu_citoyen = $selectcitoyen;
           <div id="item4"><a <?php if ($menu_citoyen) echo 'class="selected" '; ?>href="<?php echo url_for('@list_citoyens?order=date')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
           <div id="item5"><a title="Questions fréquemment posées" href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
         </div>
-        <?php $search = strip_tags($sf_request->getParameter('query')); 
-              $extraclass = '' ; 
+        <?php $search = strip_tags($sf_request->getParameter('query'));
+              $extraclass = '' ;
               if (!$search) {$extraclass="examplevalue"; $search = "Rechercher un sénateur, une ville, un mot, ...";} ?>
         <div class="menu_recherche">
           <form action="<?php echo url_for('@recherche_solr'); ?>" method="get">
@@ -130,7 +130,7 @@ $menu_citoyen = $selectcitoyen;
           </ul>
         </div>
         </div>
-        
+
         <div id="sous_menu_3" style="display:<?php if ($menu_citoyen) echo 'block'; else echo 'none'; ?>">
               <div class="elements_sous_menu">
           <ul>
@@ -153,11 +153,22 @@ $menu_citoyen = $selectcitoyen;
         </div>
       </div>
       <div id="bottom">
-<div class="legal">
-<a href="<?php echo url_for("@faq"); ?>">Questions fréquentes</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/publication/">Données</a>&nbsp; &mdash; &nbsp;<a href="http://cpc.regardscitoyens.org/trac/wiki/API">API</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/mentions-legales/">Mentions légales</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/nous-contacter/">Contact</a>
-</div>
+        <div class="legal">
+          <span id="licences">
+            <a target="_blank" href="https://github.com/regardscitoyens/nosdeputes.fr/tree/nossenateurs.fr"><img src="/images/agpl.png" height="15"/></a>
+            <a target="_blank" href="https://github.com/regardscitoyens/nosdeputes.fr/blob/master/doc/opendata.md"><img src="/images/opendata.png" height="15"/></a>
+          </span>
+          <span id="legalinks">
+            <a href="<?php echo url_for("@faq"); ?>">Questions fréquentes</a>&nbsp; &mdash; &nbsp;
+            <a target="_blank" href="https://github.com/regardscitoyens/nosdeputes.fr/blob/master/doc/opendata.md">Données</a>&nbsp; &mdash; &nbsp;
+            <a target="_blank" href="https://github.com/regardscitoyens/nosdeputes.fr/blob/master/doc/api.md">API</a>&nbsp; &mdash; &nbsp;
+            <a target="_blank" href="https://www.nosdeputes.fr">NosDéputés.fr</a>&nbsp; &mdash; &nbsp;
+            <a target="_blank" href="https://www.regardscitoyens.org/mentions-legales/">Mentions légales</a>&nbsp; &mdash; &nbsp;
+            <a target="_blank" href="https://www.regardscitoyens.org/nous-contacter/">Contact</a>
+          </span>
+        </div>
         <div class="regardscitoyens">
-		<a href="http://www.regardscitoyens.org"><span class="RC">R</span>egards<span class="RC">C</span><span style="color: #C1272D;">i</span>toyens.org</a>
+		  <a target="_blank" href="https://www.regardscitoyens.org"><span class="RC">R</span>egards<span class="RC">C</span><span style="color: #C1272D;">i</span>toyens.org</a>
 		</div>
       </div>
     </div>
