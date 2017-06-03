@@ -21,13 +21,13 @@ L'ensemble des données de ces différents sites est par ailleurs mis à disposi
 
 ## Liste des parlementaires
 
-- Tous les députés en cours de mandat :
+- **Tous les députés en cours de mandat :**
 
   - format tableur (csv) : https://www.nosdeputes.fr/deputes/enmandat/csv 
   - XML : https://www.nosdeputes.fr/deputes/enmandat/xml 
   - JSON : https://www.nosdeputes.fr/deputes/enmandat/json
 
-- Tous les députés :
+- **Tous les députés :**
 
   *Attention : Moins de champs sont disponibles avec cette version : autres mandats, groupe, e-mails, adresses, sites webs...*
 
@@ -41,13 +41,15 @@ Chaque parlementaire dispose d'un `slug`, identifiant unique proche du nom compl
 
 Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou les deviner : par exemple pour Nathalie Appéré : `nathalie-appere` ou pour Pierre Morel-A-L'Huissier : `pierre-morel-a-l-huissier`.
 
-- Infos biographiques, contacts et mandats :
+- **Infos biographiques, contacts et mandats :**
 
   Exemple pour Guy Teissier : https://www.nosdeputes.fr/guy-teissier/xml
-- Photo (hauteur configurable) :
+
+- **Photo** (hauteur configurable) :
 
   Exemple pour Guy Teissier avec 60 pixels de hauteur : https://www.nosdeputes.fr/depute/photo/guy-teissier/60
-- Widget HTML (graphe, barre d'activité et mots-clés) :
+
+- **Widget HTML** (graphe, barre d'activité et mots-clés) :
 
   Vous pouvez embarquer sur votre site les graphiques, barres d'activité et mots-clés des députés via le [widget d'activité](http://www.nosdeputes.fr/widget14) (pour NosDéputés.fr seulement).
 
@@ -55,7 +57,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
 ## Données d'activité des parlementaires
 
-- Synthèse des 12 derniers mois ou de toute la législature :
+- **Synthèse des 12 derniers mois ou de toute la législature** :
 
   *(telle qu'affichée sur la page [synthèse](https://www.nosdeputes.fr/synthese)*
 
@@ -63,13 +65,13 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
   - XML : https://www.nosdeputes.fr/synthese/data/xml
   - JSON : https://www.nosdeputes.fr/synthese/data/json
 
-- Synthèse mensuelle :
+- **Synthèse mensuelle** :
 
   *Attention : seuls les parlementaires ayant manifesté une activité sur la période sont renvoyés*
   
   Exemple pour le mois d'avril 2016 : https://www.nosdeputes.fr/synthese/201604/xml
 
-- Contenu des travaux :
+- **Contenu des travaux** :
 
   Tous les contenus textuels des différents travaux parlementaires (organismes, débats, amendements, questions, rapports, propositions de loi) sont indexés dans le moteur de recherche et peuvent donc être individuellement retrouvés et filtrés à travers cette API ([voir plus bas](#résultats-du-moteur-de-recherche).
   
@@ -95,23 +97,23 @@ Différents paramètres peuvent être ajoutés aux requêtes de recherche et com
 
 Vous pouvez restreindre les résultats à :
 
-- un type d'objet précis : ajouter `&object_name=OBJTYPE` avec `OBJTYPE` parmi : Parlementaire, Organisme, Intervention, Amendement, QuestionEcrite, Section, Texteloi, Commentaire
+- un **type d'objet** précis : ajouter `&object_name=OBJTYPE` avec `OBJTYPE` parmi : Parlementaire, Organisme, Intervention, Amendement, QuestionEcrite, Section, Texteloi, Commentaire
 
-- une période temporelle précise : ajouter `&date=YYYYMMDD%2CYYYYMMDD` par exemple pour les résultats sur « internet » en septembre 2015 : https://www.nosdeputes.fr/recherche/internet?format=xml&date=20150901%2C20150931
+- une **période temporelle** précise : ajouter `&date=YYYYMMDD%2CYYYYMMDD` par exemple pour les résultats sur « internet » en septembre 2015 : https://www.nosdeputes.fr/recherche/internet?format=xml&date=20150901%2C20150931
 
-- un parlementaire précis : ajouter `&tag=parlementaire=SLUG`
+- un **parlementaire** précis : ajouter `&tag=parlementaire=SLUG`
 
-- ceux associés à des mots-clés spécifique : ajouter `&tag=KEYWORD1,KEYWORD2,...` par exemple pour les résultats sur « internet » effectivement taggés "internet" : https://www.nosdeputes.fr/recherche/internet?format=xml&tag=internet
+- ceux associés à des **mots-clés** spécifique : ajouter `&tag=KEYWORD1,KEYWORD2,...` par exemple pour les résultats sur « internet » effectivement taggés "internet" : https://www.nosdeputes.fr/recherche/internet?format=xml&tag=internet
 
 ### Statistiques
 
 Vous pouvez également obtenir des statistiques agrégées sur les résultats d'une recherche (au format JSON uniquement) via les options suivantes :
 
-- Répartition par députés : `&parlfacet=1`
+- **Répartition par députés** : `&parlfacet=1`
 
-- Répartition par mots-clés associés : `&tagsfacet=1`
+- **Répartition par mots-clés** associés : `&tagsfacet=1`
 
-- Répartition temporelle : `&timefacet=1`
+- **Répartition temporelle** : `&timefacet=1`
 
   *(par périodes d'un mois si la période considérée dépasse 90 jours, par jour sinon)*
 
