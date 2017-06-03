@@ -127,6 +127,14 @@ Complémentaires des données de NosDéputés.fr et NosSénateurs.fr, les platef
 
 Nous développons donc un accès simplifié par une API à ces jeux de données sur le site [ParlAPI.fr](http://parlapi.fr) dont le code source est disponible sur notre [Gitlab](https://git.regardscitoyens.org/regardscitoyens/parlapi).
 
+## Exemples de réutilisations basées sur l'API :
+
+- [LobbyTrack](https://github.com/regardscitoyens/LobbyTrack) : outil d'identification des travaux parlementaires qui se sont inspirés d'un document texte de lobbying
+
+- [DirectParlement](https://github.com/regardscitoyens/direct-parlement) : outil de génération d'incruste pour encart dans vidéo live de débat parlementaire utilisé par [Accropolis](http://accropolis.fr)
+
+- [Synthèse globale](https://regardscitoyens.github.io/synthese-globale/) : mini-application agrégeant les données de synthèse mensuelle pour nous permettre de répondre aux sollicitations des députés nous demandant en cours de mandat leur bilan complet
+
 ## Conditions d'utilisation
 
 Les informations diffusées sur NosDéputés.fr sont disponibles sous [licence CC-BY-SA](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/) pour les contenus et en OpenData sous [licence ODbL](http://www.vvlibri.org/fr/licence/odbl/10/fr/legalcode) pour les données.

@@ -4,9 +4,9 @@ Cette page présente une liste non exhaustive des contenus et données réutilis
 
 ## Données directement accessibles par l'API
 
-- [Liste des parlementaires](api.md#) (infos biographique, responsabilités parlementaire et extra-parlementaire...)
-- [Indicateurs de l'activité parlementaire](api.md#) (par parlementaire et par mois)
-- [Recherche et métadonnées des activités parlementaire publiées](api.md#) :
+- [Liste des parlementaires](api.md#liste-des-parlementaires) (infos biographique, responsabilités parlementaire et extra-parlementaire...)
+- [Indicateurs de l'activité parlementaire](api.md#données-dactivité-des-parlementaires) (par parlementaire et par mois)
+- [Recherche et métadonnées des activités parlementaire publiées](api.md#résultats-du-moteur-de-recherche) :
   + Interventions
   + Questions écrites
   + Amendements
@@ -17,7 +17,7 @@ Voir la [documentation de l'API](api.md) pour plus de détails.
 
 ## Contenus directement réutilisables
 
-- [Photos des parlementaires](api.md#)
+- [Photos des parlementaires](api.md#détails-de-chaque-parlementaire)
 - Graphique, barre d'activité et mots-clés des parlementaires via le [widget d'activité](widget.md) (pour NosDéputés.fr seulement)
 
 ## Données complètes SQL téléchargeables
@@ -50,11 +50,13 @@ Diverses données parlementaires également mises en œuvre sur nos sites sont d
 - [Réserve parlementaire annuelle](https://github.com/regardscitoyens/reserveparlementaire_parser) des députés
 - [Déclarations d'intérêts 2014 manuscrites numérisées](https://www.data.gouv.fr/fr/datasets/declarations-d-interets-des-parlementaires-publiees-par-la-haute-autorite-pour-la-transparence/) par crowdsourcing des parlementaires
 - Liste des [collaborateurs parlementaires](https://github.com/regardscitoyens/Collaborateurs-Parlement)
-- Liste des [représentants d'intérets enregistrés](https://github.com/regardscitoyens/registre-lobbying-AN)
-- [Personnes auditionnées à l'Assemblée](http://www.nosdonnees.fr/package/influence-auditions-deputes-lobbying) entre 2010 et 2012 extraites par crowdsourcing des rapports
+- Liste des [représentants d'intérets enregistrés](https://github.com/regardscitoyens/registre-lobbying-AN) à l'Assemblée et au Sénat
+- [Personnes auditionnées à l'Assemblée](http://www.nosdonnees.fr/package/influence-auditions-deputes-lobbying) entre 2007 et 2012 extraites par crowdsourcing des rapports
 - [Top mensuel par groupe des amendements adoptés](https://github.com/regardscitoyens/top-amendements-adoptes) réalisé pour L'Hémicycle
-- [Statistiques de visites quotidiennes](https://github.com/regardscitoyens/stats-analytics) de NosDéputés.fr et NosSénateurs.fr
+- [Statistiques quotidiennes de visite](https://github.com/regardscitoyens/stats-analytics) de NosDéputés.fr et NosSénateurs.fr
 - RSS du [flux de dépèches AFP de l'Assemblée](https://github.com/regardscitoyens/AFP-AN-RSS)
+- [Professions de foi](https://github.com/regardscitoyens/professions-foi-candidats) des candidats aux élections publiées par le Ministère de l'Intérieur
+- [Métadonnées des décisions du Conseil Constitutionnel](https://github.com/regardscitoyens/CC-portes-etroites) et liste des « portes étroites » déclarées.
 
 ## Conditions d'utilisation
 
