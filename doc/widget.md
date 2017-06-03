@@ -36,11 +36,10 @@ Il est relativement aisé d'inclure ces éléments sur un autre site à l'aide d
 
 Par exemple la page http://www.regardscitoyens.org/gouvernement2012/ est écrite tout simplement ainsi :
 
-{{{
+```php
 <?php
   $anciens_deputes = array("HOLLANDE", "Ayrault", "FABIUS", "TAUBIRA", "MOSCOVICI", "TOURAINE", "VALLS", "MONTEBOURG", "SAPIN", "FILIPPETTI", "FIORASO", "LEBRANCHU", "LUREL", "FOURNEYRON", "CAHUZAC", "PAU-LANGEVIN", "VIDALIES", "BATHO", "LAMY", "CAZENEUVE", "DELAUNAY", "PINEL", "CUVILLIER");
   foreach ($anciens_deputes as $d)
     echo file_get_contents('http://www.nosdeputes.fr/widget/'.$d.'?maxtags=15');
 ?>
-}}}
-
+```
