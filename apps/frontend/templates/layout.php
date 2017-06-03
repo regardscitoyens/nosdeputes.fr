@@ -11,7 +11,7 @@
     <meta property="og:title" content="NosDéputés.fr - Regards Citoyens" />
     <meta property="og:site_name" content="NosDéputés.fr" />
     <meta property="og:description" content="Observatoire citoyen de l'activité parlementaire à l'Assemblée nationale" />
-    <meta property="og:url" content="http://www.NosDéputés.fr" />
+    <meta property="og:url" content="https://www.NosDéputés.fr" />
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:image" content="http://www.regardscitoyens.org/wp-content/uploads/2009/10/logo_nosdeputes.png" />
     <meta property="og:image:type" content="image/png" />
@@ -66,7 +66,7 @@ $menu_citoyen = $selectcitoyen;
   <div id="contenu">
       <div id="top">
         <div class="initiative">
-          <a href="http://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);">Une initiative de RegardsCitoyens.org</a>
+          <a target="_blank" href="https://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);">Une initiative de RegardsCitoyens.org</a>
         </div>
 <div id="connected" class="identification">
 <p id="loggued_top">
@@ -80,7 +80,7 @@ $menu_citoyen = $selectcitoyen;
       </div>
       <div id="header">
         <a style="float:left;" href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo.png', array('id' => 'logo', 'alt' => 'NosDeput&eacute;s.fr')); ?></a>
-        <a style="float:right; margin-right: 55px; margin-top: 2px;" href="http://www.regardscitoyens.org/nous-aider/"><?php echo image_tag('contribuer.png', array('alt' => 'Nous soutenir')); ?></a>
+        <a style="float:right; margin-right: 55px; margin-top: 2px;" target="_blank" href="https://www.regardscitoyens.org/nous-aider/"><?php echo image_tag('contribuer.png', array('alt' => 'Nous soutenir')); ?></a>
       </div>
         <div id="menu">
         <div class="menu_navigation">
@@ -147,19 +147,24 @@ $menu_citoyen = $selectcitoyen;
         </div>
       </div>
       <div id="bottom">
-<div class="legal">
-<span id="licences">
-<a href="http://cpc.regardscitoyens.org/trac"><img src="/images/agpl.png" height="15"/></a>
-<a href="http://cpc.regardscitoyens.org/trac/wiki/API"><img src="/images/opendata.png" height="15"/></a>
-</span>
-<span id="legalinks"><a href="<?php echo url_for("@faq"); ?>">Questions fréquentes</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/publication/">Données</a>&nbsp; &mdash; &nbsp;<a href="http://cpc.regardscitoyens.org/trac/wiki/API">API</a>&nbsp; &mdash; &nbsp;<?php
-if (myTools::getPreviousHost()) {
-	echo '<a href="http://'.myTools::getPreviousHost().'">Législature précédente</a>&nbsp; &mdash; &nbsp;';
-}
-?><a href="http://www.regardscitoyens.org/mentions-legales/">Mentions légales</a>&nbsp; &mdash; &nbsp;<a href="http://www.regardscitoyens.org/nous-contacter/">Contact</a></span>
-</div>
+        <div class="legal">
+          <span id="licences">
+            <a target="_blank" href="https://github.com/regardscitoyens/nosdeputes.fr"><img src="/images/agpl.png" height="15"/></a>
+            <a target="_blank" href="https://github.com/regardscitoyens/nosdeputes.fr/blob/master/doc/opendata.md"><img src="/images/opendata.png" height="15"/></a>
+          </span>
+          <span id="legalinks">
+            <a href="<?php echo url_for("@faq"); ?>">Questions fréquentes</a>&nbsp; &mdash; &nbsp;
+            <a target="_blank" href="https://github.com/regardscitoyens/nosdeputes.fr/blob/master/doc/opendata.md">Données</a>&nbsp; &mdash; &nbsp;
+            <a target="_blank" href="https://github.com/regardscitoyens/nosdeputes.fr/blob/master/doc/api.md">API</a>&nbsp; &mdash; &nbsp;
+            <?php if (myTools::getPreviousHost()) :?>
+            <a target="_blank" href="https://<?php echo myTools::getPreviousHost(); ?>">Législature précédente</a>&nbsp; &mdash; &nbsp;
+            <?php endif;?>
+            <a target="_blank" href="https://www.regardscitoyens.org/mentions-legales/">Mentions légales</a>&nbsp; &mdash; &nbsp;
+            <a target="_blank" href="https://www.regardscitoyens.org/nous-contacter/">Contact</a>
+          </span>
+        </div>
         <div class="regardscitoyens">
-		<a href="http://www.regardscitoyens.org"><span class="RC">R</span>egards<span class="RC">C</span><span style="color: #C1272D;">i</span>toyens.org</a>
+		  <a target="_blank" href="https://www.regardscitoyens.org"><span class="RC">R</span>egards<span class="RC">C</span><span style="color: #C1272D;">i</span>toyens.org</a>
 		</div>
       </div>
     </div>
