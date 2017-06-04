@@ -115,6 +115,15 @@ class myTools {
     return str_replace($m[1], $m[1] + 5, $date);
   }
 
+  public static function getAnalytics() {
+    return (sfConfig::get('app_analytics_id'));
+  }
+
+  public static function getPiwik() {
+    return array("domain" => sfConfig::get('app_piwik_domain'),
+                 "id" => sfConfig::get('app_piwik_id'));
+  }
+
   public static function isFinLegislature() {
     return (sfConfig::get('app_fin_legislature'));
   }

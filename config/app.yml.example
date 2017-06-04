@@ -29,12 +29,21 @@ all:
 
   sfDoctrineActAsTaggablePlugin:
     triple_distinct:   true
+
   solr:
     host: localhost
     port: 8080
     url: /solr_nosdeputes
+
   manet:
     url: http://example.manet.org/
+
+  analytics_id: false
+  #analytics_id: UA-XXXXXXX-X
+  piwik_domain: false
+  #piwik_domain: stats.regardscitoyens.org
+  piwik_id: false
+  #piwik_id: 2
 
  # Conf 13eme
 #  fin_legislature: true
