@@ -34,3 +34,10 @@ all:
 
   sfDoctrineActAsTaggablePlugin:
     triple_distinct:   true
+
+  analytics_id: false
+  #analytics_id: UA-XXXXXXX-X
+  piwik_domain: false
+  #piwik_domain: stats.regardscitoyens.org
+  piwik_id: false
+  #piwik_id: 3
