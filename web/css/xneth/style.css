@@ -1734,7 +1734,7 @@ h2 {
   background-image:url('images/minilogo_nosdeputes.png');
 }
 .accueil .carte {
-    height: 250px;
+    height: 350px;
     font-size: 12px;
 }
 .accueil .carte .message {
@@ -1749,7 +1749,6 @@ h2 {
     color: grey;
 }
 .accueil .carte_departement{
-    height: 250px;
     float: left;
 }
 .accueil_liste_liens {

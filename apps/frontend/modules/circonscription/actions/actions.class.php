@@ -148,7 +148,7 @@ class circonscriptionActions extends sfActions
    * selects the nodes to include in the image map (based on their id).
    * If only one of $w and $h is given, preserve the svg ratio.
    */
-  private static function compute_areas($dom, $w, $h, $regexp, $deptitle = 0, $circo=false)
+  private static function compute_areas($dom, $w, $h, $regexp)
   {
     $areas = "";
 
@@ -157,10 +157,8 @@ class circonscriptionActions extends sfActions
     $svg_w = (string) $svg->getAttribute('width');
     $svg_h = (string) $svg->getAttribute('height');
 
-    if ($circo) {
-      $svg_w = $svg_w / 5;
-      $svg_h = $svg_h / 5;
-    }
+    $svg_w = $svg_w / 5;
+    $svg_h = $svg_h / 5;
 
     if ($w == 0 && $h == 0)
     {
@@ -181,15 +179,9 @@ class circonscriptionActions extends sfActions
     foreach ($paths as $path)
       if (preg_match($regexp, $path->getAttribute('id'))) {
         $cs = self::compose_transform($path);
-        if ($deptitle) {
-          $title = $path->getAttribute('title');
-          $id = preg_replace('/d/', '', $path->getAttribute('id'));
-          $href = url_for("@list_parlementaires_circo_search?search=$id");
-        } else {
-          $id = $path->getAttribute('id');
-          $title = self::get_title($path);
-          $href = url_for("@redirect_parlementaires_circo?code=".$path->getAttribute('id'));
-        }
+        $id = $path->getAttribute('id');
+        $title = self::get_title($path);
+        $href = url_for("@redirect_parlementaires_circo?code=".$path->getAttribute('id'));
         $ct = 0;
         foreach (preg_split("/ z /", $path->getAttribute('d')) as $d) {
           if (!preg_match('/ z$/', $d)) $d .= " z";
@@ -238,7 +230,7 @@ class circonscriptionActions extends sfActions
     foreach($toRemove as $node) {
       $node->parentNode->removeChild($node);
     }
- 
+
     if (!count($minx)) return;
     $x_min = min($minx) - $margin;
     $x_max = max($maxx) + $margin;
@@ -249,47 +241,6 @@ class circonscriptionActions extends sfActions
     $svg->setAttribute('height', 5*($y_max - $y_min));
     $svg->setAttribute('viewBox', $x_min." ".$y_min." ".($x_max - $x_min)." ".($y_max - $y_min));
     $svg->setAttribute('transform', "translate(".-$x_min.",".-$y_min.")");
-  }
-
-  private static function generateSvgDep($w, $h) {
-    $dom = new DOMDocument();
-    $dom->preserveWhiteSpace = FALSE;
-    // FIXME Use loadXML to load from a string instead (database)
-    $dom->load("france_deptmts.svg");
-    return $dom;
-  }
-
-  public static function echoDeptmtsMap($w, $h, $link) {
-    $dom = self::generateSvgDep($w, $h);
-    $r = self::compute_areas($dom, $w, $h, '/^d\d+/', 1);
-    $w = $r['w'];
-    $h = $r['h'];
-
-    $src = url_for("@deptmts_image_png?w=$w&h=$h");
-    
-    if ($link) echo '<a class="jstitle" title="Tous les départements français" href="'.url_for('@list_parlementaires_circo').'">';
-    echo "<img alt=\"Carte issue de Wikipedia : Départements et régions de France par Bayo (sous licence GFDL)\" class=\"carte_departement\" src=\"$src\" usemap=\"#deptmts\" ";
-    echo 'style="width:'.$w.'px; height:'.$h.'px;" />';
-    if ($link) echo '</a>';
-    echo "<map name=\"deptmts\" id=\"deptmts\">";
-    echo $r['areas'];
-    echo "</map>";
-  }
-
-  public static function echoDeptmtsImage($w, $h) {
-    $dom = self::generateSvgDep($w, $h);
-
-    $im = new Imagick();
-    $im->readImageBlob($dom->saveXML());
-    $res = $im->getImageResolution();
-    $x_ratio = $res['x'] / $im->getImageWidth();
-    $y_ratio = $res['y'] / $im->getImageHeight();
-    $im->removeImage();
-    $im->setResolution($w * $x_ratio, $h * $y_ratio);
-    $im->readImageBlob($dom->saveXML());
-    $im->resizeImage($w, $h, imagick::FILTER_LANCZOS, 0.9, true);
-    $im->setImageFormat("png");
-    echo $im;
   }
 
   private static function generateSvgDom($circo, $w, $h)
@@ -305,7 +256,6 @@ class circonscriptionActions extends sfActions
       self::crop_svg($dom, "/^$circo-\d\d$/", 10);
 
     return $dom;
-
   }
 
   private static function prepareMap($circo, $w, $h)
@@ -317,7 +267,7 @@ class circonscriptionActions extends sfActions
     else
       $regexp = "/^$circo-(0[1-9]|[1-9]\d)$/";
 
-    return array($dom, self::compute_areas($dom, $w, $h, $regexp, 0, true));
+    return array($dom, self::compute_areas($dom, $w, $h, $regexp));
   }
 
   /* $circo is a three digits string, or "full" for the full map */
@@ -354,7 +304,7 @@ class circonscriptionActions extends sfActions
     $r = $arr[1];
     $w = $r['w'];
     $h = $r['h'];
-    
+
     $svg = $dom->getElementsByTagName('svg')->item(0);
     $svg->removeAttribute('transform');
 
@@ -371,14 +321,6 @@ class circonscriptionActions extends sfActions
     echo $im;
   }
 
-  public function executeGetDeptmtsimagepng(sfWebRequest $request) {
-    $this->w = $request->getParameter('w');
-    $this->h = $request->getParameter('h');
-    $this->getResponse()->setHttpHeader('content-type', 'image/png');
-    $this->setLayout(false);
-    $this->getResponse()->setHttpHeader('Expires', 'Mon, 06 Jan 2042 00:00:00 GMT');
-  }
-
   public function executeGetCircoimagepng(sfWebRequest $request)
   {
     $this->circo = $request->getParameter('circo');
@@ -389,12 +331,12 @@ class circonscriptionActions extends sfActions
     $this->getResponse()->setHttpHeader('Expires', 'Mon, 06 Jan 2042 00:00:00 GMT');
   }
 
-  public function executeList(sfWebRequest $request) 
+  public function executeList(sfWebRequest $request)
   {
     $this->circos = Parlementaire::$dptmt_nom;
   }
 
-  public function executeShow(sfWebRequest $request) 
+  public function executeShow(sfWebRequest $request)
   {
     $this->circo = preg_replace('/_/', ' ', $request->getParameter('departement'));
     $this->forward404Unless($this->circo);
@@ -406,10 +348,10 @@ class circonscriptionActions extends sfActions
       ->execute();
     $this->total = count($this->parlementaires);
     $this->forward404Unless($this->total);
-    if ($this->total == 1) 
-        return $this->redirect('@parlementaire?slug='.$this->parlementaires[0]['slug']); 
+    if ($this->total == 1)
+        return $this->redirect('@parlementaire?slug='.$this->parlementaires[0]['slug']);
   }
-  public function executeSearch(sfWebRequest $request) 
+  public function executeSearch(sfWebRequest $request)
   {
     $this->search = $request->getParameter('search');
     $departmt = strip_tags(trim(strtolower($this->search)));
@@ -421,7 +363,7 @@ class circonscriptionActions extends sfActions
         return $this->redirect('@list_parlementaires_departement?departement='.$this->circo);
       if (preg_match('/^(\d+\w?)$/', $departmt, $match)) {
 	$num = preg_replace('/^0+/', '', $match[1]);
-        $this->circo = Parlementaire::getNomDepartement($num); 
+        $this->circo = Parlementaire::getNomDepartement($num);
         if ($this->circo)
 	  return $this->redirect('@list_parlementaires_departement?departement='.$this->circo);
       }
@@ -440,7 +382,7 @@ class circonscriptionActions extends sfActions
         ->addOrderBy('nom_circo, num_circo');
     }
   }
-  public function executeRedirect(sfWebRequest $request) 
+  public function executeRedirect(sfWebRequest $request)
   {
     $departement = $request->getParameter('departement');
     $num = $request->getParameter('numero');
