@@ -88,7 +88,7 @@ class myTools {
   }
 
   public static function getProtocol() {
-    if ($_SERVER['HTTPS'] != "") return "https";
+    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") return "https";
     return "http";
   }
 
