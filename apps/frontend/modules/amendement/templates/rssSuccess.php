@@ -1,6 +1,6 @@
 <?php
 
-$feed->setTitle("Les dernières amendements portant sur \"".$mots."\"");
+$feed->setTitle("Les derniers amendements portant sur \"".$mots."\"");
 $feed->setLink(myTools::getProtocol().'://'.$_SERVER['HTTP_HOST'].url_for('@search_amendements_mots?search='.$mots));
 
 $query->limit(20);
