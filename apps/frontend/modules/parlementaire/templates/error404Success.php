@@ -1,7 +1,12 @@
 <?php
-if (sfConfig::get('app_host_previous_legislature') && !preg_match('/^\/'.sfConfig::get('app_legislature').'\//', $_SERVER['REQUEST_URI'])) {
-header("Location: http://".sfConfig::get('app_host_previous_legislature').$_SERVER['REQUEST_URI']."\n");
-exit;
+$prevHost = myTools::getPreviousHost();
+$uri = $_SERVER['REQUEST_URI'];
+if ($prevHost &&
+  (preg_match('/^\/1\d\//', $uri) || preg_match('/^\/[^\/]+$/', $uri)) &&
+  !preg_match('/^\/'.myTools::getLegislature().'\//', $uri)
+) {
+  header("Location: ".myTools::getProtocol()."://".$prevHost.$uri."\n");
+  exit;
 }
 header("Status: 404 Not found");
 ?><h1>Nous n'avons pas pu trouver la page demandée</h1>

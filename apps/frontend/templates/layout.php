@@ -159,6 +159,9 @@ $menu_citoyen = $selectcitoyen;
             <?php if (myTools::getPreviousHost()) :?>
             <a target="_blank" href="https://<?php echo myTools::getPreviousHost(); ?>">Législature précédente</a>&nbsp; &mdash; &nbsp;
             <?php endif;?>
+            <?php if (myTools::getNextHost()) :?>
+            <a target="_blank" href="https://<?php echo myTools::getNextHost(); ?>">Législature suivante</a>&nbsp; &mdash; &nbsp;
+            <?php endif;?>
             <a target="_blank" href="https://www.regardscitoyens.org/mentions-legales/">Mentions légales</a>&nbsp; &mdash; &nbsp;
             <a target="_blank" href="https://www.regardscitoyens.org/nous-contacter/">Contact</a>
           </span>

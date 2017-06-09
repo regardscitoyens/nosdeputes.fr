@@ -254,16 +254,19 @@ function facet2Human($id, $facet = "") {
 <div id="results_container">
 <div class="options">
 <?php } ?>
-<?php if (sfConfig::get('app_host_previous_legislature') || sfConfig::get('app_host_next_legislature')) : ?>
+<?php $prevHost = myTools::getPreviousHost();
+$nextHost = myTools::getNextHost();
+$legi = myTools::getLegislature();
+if ($prevHost || $nextHost) : ?>
   <div class="facets">
   <h3 class="aligncenter">Rechercher par législature</h3>
   <ul>
-<?php if (sfConfig::get('app_host_previous_legislature')) : ?>
-  <li><a href="http://<?php echo sfConfig::get('app_host_previous_legislature').url_for(url_search($query, $selected)); ?>"><?php echo sfConfig::get('app_legislature') - 1; ?><sup>ème</sup> législature</a></li>
+<?php if ($prevHost) : ?>
+  <li><a href="//<?php echo $prevHost.url_for(url_search($query, $selected)); ?>"><?php echo $legi - 1; ?><sup>ème</sup> législature</a></li>
 <?php endif; ?>
-  <li class="selected" style="font-weight: bold"><?php echo sfConfig::get('app_legislature'); ?><sup>ème</sup> législature</li>
-<?php if (sfConfig::get('app_host_next_legislature')) : ?>
-  <li><a href="http://<?php echo sfConfig::get('app_host_next_legislature').url_for(url_search($query, $selected)); ?>"><?php echo sfConfig::get('app_legislature') + 1; ?><sup>ème</sup> législature</a></li>
+  <li class="selected" style="font-weight: bold"><?php echo $legi; ?><sup>ème</sup> législature</li>
+<?php if ($nextHost) : ?>
+  <li><a href="//<?php echo $nextHost.url_for(url_search($query, $selected)); ?>"><?php echo $legi + 1; ?><sup>ème</sup> législature</a></li>
 <?php endif; ?>
   </ul>
   </div>
