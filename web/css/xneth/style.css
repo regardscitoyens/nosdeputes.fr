@@ -2000,12 +2000,19 @@ a:hover img {
   display: block;
 }
 .legal {
-    float: left;
-    position: relative;
-    top: 19px;
-    left: 18px;
+  float: left;
+  position: relative;
+  top: 19px;
+  left: 18px;
 }
-#legalinks {     top: 0px; left: 250px;    position: absolute;    width: 600px; }
+#licences {
+  float: left;
+}
+#legalinks {
+  float: left;
+  width: 740px;
+  text-align: center;
+}
 .floatright {
   float: right;
   margin: 10px;
