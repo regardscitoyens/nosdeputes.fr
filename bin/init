@@ -5,5 +5,6 @@ chmod 777 log cache
 cp config/app.yml{.example,}
 cp config/ProjectConfiguration.class{.example,}.php
 cp config/databases.yml{.example,}
+cp apps/frontend/config/factories.yml{.example,}
 cp bin/db.inc{.example,}
 echo "Don't forget to adapt the configuration files : bin/db.inc config/ProjectConfiguration.class.php config/databases.yml config/app.yml"

@@ -58,6 +58,8 @@ sudo aptitude install libwww-mechanize-perl libfile-path-perl
 
     * `config/app.yml` : Adapter la configuration en fonction de la législature traitée.
 
+    * `apps/frontend/config/factories.yml` : Ajuster la configuration uniquement pour optimiser la production ([voir section dédiée](#optimisations-de-la-configuration-pour-le-déploiement-en-production)).
+
     * `bin/db.inc` : Adapter `MYSQLID`, `DBNAME`, `PATH_APP` et `LEGISLATURE` comme pour les précédents fichiers.
 
 
@@ -242,13 +244,15 @@ Solr est le moteur de recherche utilisé dans le projet. Il s'installe sur un mo
 
 ## Optimisations de la configuration pour le déploiement en production
 
-Pour le passage en production, un certain nombre d'optimisation sont souhaitables.
+Pour le passage en production, un certain nombre d'optimisations sont activables depuis `apps/frontend/config/factories.yml`.
 
 ### Utilisation de memcache :
 
-Pour utiliser memcache comme outil de cache au lieu de l'usage de fichiers, voici la configuration à indiquer dans apps/frontend/config/factories.yml :
+Pour utiliser memcache comme outil de cache au lieu de l'usage de fichiers, décommentez et ajustez le port de la section dédiée dans apps/frontend/config/factories.yml :
 
 ```
+# Memcache
+# (uncomment and setup to use memcache)
   view_cache:
     class: sfMemcacheCache
     param:
@@ -259,17 +263,18 @@ Pour utiliser memcache comme outil de cache au lieu de l'usage de fichiers, voic
 
 ### Utilisation de l'envoi différé des mails :
 
-Certains service de mail, ralentissent voire bloquent les envois de mails massif. C'est par défaut le cas de `exim` qui préfère les envois de pas plus de 10 mails par connexion tcp. Pour activer, le mode spool pour l'envoi des mail, il faut modifier la configuration de `apps/frontend/config/factories.yml` comme suit :
+Certains services de mail, ralentissent voire bloquent les envois de mails massif. C'est par défaut le cas de `exim` qui préfère les envois de pas plus de 10 mails par connexion tcp. Pour activer, le mode spool pour l'envoi des mail, il faut modifier la configuration comme suit en commentant la section "Regular mail handling" et en décommentant la section "Pool mail handling" dans `apps/frontend/config/factories.yml` :
 
 ```
   mailer:
     param:
--     delivery_strategy: realtime
-+     delivery_strategy: spool
-+     spool_class: Swift_FileSpool
-+     spool_arguments:
-+       Swift_FileSpool: %SF_ROOT_DIR%/data/mails
+# Regular mail handling
+#      delivery_strategy: realtime
+# Pool mail handling
+# (to avoid rate limitations with stronger user)
+      delivery_strategy: spool
+      spool_class: Swift_FileSpool
+      spool_arguments:
+        Swift_FileSpool: %SF_ROOT_DIR%/data/mails
 ```
  
-avec - les lignes à retirer et + les lignes à ajouter
-
