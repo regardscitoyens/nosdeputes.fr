@@ -73,7 +73,7 @@ echo include_component('commentaire', 'form', array('object' => $amendement)); ?
 </div>
 <script type="text/javascript">
 <!--
-$('#liste_deputes a').live('mouseover', function() {
+$('#liste_deputes a').on('mouseover', function() {
  nom = $(this).attr('href');
  nom = nom.replace(/^.*rechercher\/([A-ZÉ][\.\s]+)*/, '');
  $('.photo_fiche[title*="'+nom+'"]').css('opacity', '1');

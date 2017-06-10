@@ -93,7 +93,7 @@ if (count($cosign)) {
   if (count($cosign) < 16) { ?>
 <script type="text/javascript">
 <!--
-$('#liste_deputes a').live('mouseover', function() {
+$('#liste_deputes a').on('mouseover', function() {
  nom = $(this).attr('href').split('/'); nom = nom.reverse(); $('.photo_fiche[src*="'+nom[0]+'"]').css('opacity', '1');
 });
 $('#liste_deputes').bind('mouseover mouseout', function(event) {

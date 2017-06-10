@@ -43,7 +43,7 @@ if ($order == 'date') echo '</ul>'; ?>
 
 //$('.travaux_parlementaires h2:first').append('<input type="text" id="js_search_box" />');
 
-$('#js_search_box').live('keyup', function(){
+$('#js_search_box').on('keyup', function(){
   to_search = $(this).val();
   if(to_search != '') {
     $('.travaux_parlementaires li').css('display', 'none');

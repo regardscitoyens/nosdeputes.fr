@@ -58,7 +58,7 @@ $menu_citoyen = $selectcitoyen;
       </style>
     <![endif]-->
     <?php include_partial('parlementaire/cssCouleursGroupes'); ?>
-    <?php echo javascript_include_tag('jquery-1.6.2.min.js'); ?>
+    <?php echo javascript_include_tag('jquery-1.8.3.min.js'); ?>
     <?php echo javascript_include_tag('jquery-ui-1.8.5.custom.min.js'); ?>
     <?php echo javascript_include_tag('fonctions.v.'.trim(file_get_contents("../.git/ORIG_HEAD")).'.js'); ?>
   </head>

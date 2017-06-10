@@ -1,15 +1,15 @@
 /* survol du txt */
-$(".dep_map").live("mouseover", function() {
+$(".dep_map").on("mouseover", function() {
   dep = $(this).attr("id").substring(3);
   $(".map"+dep).mouseover();
 })
-$(".dep_map").live("mouseout", function() {
+$(".dep_map").on("mouseout", function() {
   dep = $(this).attr("id").substring(3);
   $(".map"+dep).mouseout();
 })
 /* survol de la map */
 var d = { running: '0' };
-$("area").live("mouseover", d, function(e) {
+$("area").on("mouseover", d, function(e) {
   $(this).addClass("hover");
   dep = $(this).attr("id").substring(3,9).replace(/-0$/, "");
   $(".dep"+dep).css("background-color", "#D1EA74");
@@ -20,7 +20,7 @@ $("area").live("mouseover", d, function(e) {
     d.running = 0;
   }
 })
-$("area").live("mouseout", function() {
+$("area").on("mouseout", function() {
   $(this).removeClass("hover");
   dep = $(this).attr("id").substring(3,9).replace(/-0$/, "");
   $(".dep"+dep).css("background-color", "#fff");
