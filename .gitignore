@@ -59,6 +59,7 @@ lib/form/BaseForm.class.php
 lib/vendor/SolrServer/solr/conf/solrconfig.xml
 lib/vendor/SolrServer/solr/data
 
+web/carte*.jpg
 web/circonscription.html
 web/14/
 web/images/tmp/
