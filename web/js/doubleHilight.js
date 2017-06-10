@@ -2,7 +2,6 @@ $(document).ready(function(){
   /* survol du txt */
   $(".dep_map").on("mouseover", function() {
     dep = $(this).attr("id").substring(3);
-  console.log(dep);
     $(".map"+dep).mouseover();
   });
   $(".dep_map").on("mouseout", function() {
@@ -14,7 +13,6 @@ $(document).ready(function(){
   $("area").on("mouseover", d, function(e) {
     $(this).addClass("hover");
     dep = $(this).attr("id").substring(3,9).replace(/-0$/, "");
-  console.log(dep, $(this));
     $(".dep"+dep).css("background-color", "#D1EA74");
     $(".dep"+dep).css("opacity", 0.8);
     if (e.data.running == 0) {
