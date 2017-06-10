@@ -189,12 +189,12 @@ Solr est le moteur de recherche utilisé dans le projet. Il s'installe sur un mo
     sudo aptitude install tomcat6
     ```
 
- * Spécifier le dossier d'accueil des données Solr :
+ * Préparer le dossier d'accueil des données Solr :
 
-    * Remplacer la valeur du dossier data dans le fichier de configuration de solr `lib/vendor/SolrServer/solr/conf/solrconfig.xml` :
+    * Remplacer le chemin du dossier `dataDir` dans le fichier de configuration de solr `lib/vendor/SolrServer/solr/conf/solrconfig.xml` :
 
     ```xml
-    <dataDir>/MON/REPERTOIRE/project/lib/vendor/SolrServer/solr/data</dataDir>
+    <dataDir>/MON/REPERTOIRE/lib/vendor/SolrServer/solr/data</dataDir>
     ```
 
     * Et faire de même dans `bin/db.inc`:
@@ -206,19 +206,19 @@ Solr est le moteur de recherche utilisé dans le projet. Il s'installe sur un mo
  * S'assurer que ce répertoire data soit accessible en écriture par l'utilisateur tomcat6 (ou tomcatXX suivant votre version de Tomcat) :
 
     ```bash
-    sudo chmod g+w /MON/REPERTOIRE/project/lib/vendor/SolrServer/solr/data
-    sudo chown tomcat6 /MON/REPERTOIRE/project/lib/vendor/SolrServer/solr/data
+    sudo chmod g+w /MON/REPERTOIRE/lib/vendor/SolrServer/solr/data
+    sudo chown tomcat6 /MON/REPERTOIRE/lib/vendor/SolrServer/solr/data
     ```
 
  * Brancher solr avec Tomcat en créant le fichier `solr_nosdeputes.xml` (ou `solr_nossenateur.xml`) dans `/etc/tomcat6/Catalina/localhost/` contenant :
 
     ```xml
-    <Context docBase="/MON/REPERTOIRE/project/lib/vendor/SolrServer/webapps/solr.war" debug="0" crossContext="true" >
-       <Environment name="solr/home" type="java.lang.String" value="/MON/REPERTOIRE/project/lib/vendor/SolrServer/solr" override="true" />
+    <Context docBase="/MON/REPERTOIRE/lib/vendor/SolrServer/webapps/solr.war" debug="0" crossContext="true" >
+       <Environment name="solr/home" type="java.lang.String" value="/MON/REPERTOIRE/lib/vendor/SolrServer/solr" override="true" />
     </Context>
     ```
 
- * Redémarrer tomcat et régénérer le cache de symfony :
+ * Redémarrer tomcat :
 
     ```bash
     sudo /etc/init.d/tomcat6 restart
