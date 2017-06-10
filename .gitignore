@@ -4,16 +4,13 @@
 *.pyc
 log/
 cache/
-bin/db.inc
-*new
+*.new
+*.old
 *edited
 data/sql/
 data/mails/
-web/14/
-web/images/tmp/
-web/liasses/
-web/synthese*
 
+bin/db.inc
 apps/frontend/config/routing.yml
 apps/frontend/config/factories.yml
 config/app.yml
@@ -51,7 +48,8 @@ batch/questions/html/
 batch/questions/test/
 batch/questions/dernier_numero.txt
 batch/questions/liste_sans_reponse.txt
-csv/
+batch/sanctions/
+
 lib/model/doctrine/base/
 lib/model/doctrine/sfDoctrineActAsTaggablePlugin/
 lib/filter/doctrine/
@@ -60,3 +58,9 @@ lib/form/BaseForm.class.php
 
 lib/vendor/SolrServer/solr/conf/solrconfig.xml
 lib/vendor/SolrServer/solr/data
+
+web/circonscription.html
+web/14/
+web/images/tmp/
+web/liasses/
+web/synthese*

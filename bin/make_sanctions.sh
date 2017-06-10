@@ -12,7 +12,7 @@ if ! test "$year"; then
 	exit 1;
 fi
 
-CSVDIR=$(dirname $0)/../csv
+CSVDIR=$(dirname $0)/../batch/sanctions
 mkdir -p $CSVDIR
 
 echo "SELECT pa.id as id, pa.nom as nom, pa.nom_de_famille as nom_de_famille, pa.groupe_acronyme as groupe, pa.nom_circo, pa.debut_mandat as debut_mandat, pa.fin_mandat as fin_mandat, o.slug as commission FROM parlementaire pa LEFT JOIN parlementaire_organisme po ON ( po.parlementaire_id = pa.id ) JOIN organisme o ON ( o.id = po.organisme_id ) WHERE o.id IN ("$COMMISSIONS") ORDER BY id" | mysql $MYSQLID $DBNAME | sed 's/\t/;/g' | iconv --from-code=ISO-8859-1 --to-code=UTF-8 > $CSVDIR/deputes.txt
