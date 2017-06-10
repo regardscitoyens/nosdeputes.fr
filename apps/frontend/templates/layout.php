@@ -79,7 +79,7 @@ $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
         --></script>
       </div>
       <div id="header">
-        <a style="float:left;" href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo.png', array('id' => 'logo', 'alt' => 'NosDeput&eacute;s.fr')); ?></a>
+        <a style="float:left;" href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo_2012.png', array('id' => 'logo', 'alt' => 'NosDeput&eacute;s.fr')); ?></a>
         <a style="float:right; margin-right: 55px; margin-top: 2px;" target="_blank" href="https://www.regardscitoyens.org/nous-aider/"><?php echo image_tag('contribuer.png', array('alt' => 'Nous soutenir')); ?></a>
       </div>
       <div id="menu">

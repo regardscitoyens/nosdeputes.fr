@@ -633,7 +633,7 @@ h1 {
 /* top - barre du haut */
 
 #top {
-  height:32px;
+  height: 29px;
   width: 1060px;
   background: url('images/top.png') no-repeat;
   overflow:hidden;
