@@ -98,6 +98,18 @@ class myTools {
     return preg_replace('/^http:\/\//', 'https://', $url);
   }
 
+  public static function getAnnounceLink() {
+    return (sfConfig::get('app_announce_link'));
+  }
+
+  public static function getAnnounceText() {
+    return (sfConfig::get('app_announce_text'));
+  }
+
+  public static function hasAnnounce() {
+    return self::getAnnounceLink() && self::getAnnounceText();
+  }
+
   public static function getLegislature() {
     return (sfConfig::get('app_legislature', 13));
   }

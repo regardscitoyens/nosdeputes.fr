@@ -777,6 +777,16 @@ h1 {
   overflow:hidden;
 }
 
+#announce {
+  text-align: center;
+  margin-top: 24px;
+  display: none;
+}
+
+#announce span {
+  text-decoration: underline;
+}
+
 .menu_navigation {
   float:left;
   height:35px;

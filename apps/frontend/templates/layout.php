@@ -23,23 +23,23 @@ if ($rss) {
   foreach($rss as $r) {
     echo '<link rel="alternate" type="application/rss+xml" title="'.$r['title'].'" href="'.url_for($r['link']).'"/>';
   }
- }
+}
 $uri = strip_tags($_SERVER['REQUEST_URI']);
 $selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selectamdmt = "";$selectquestion = ""; $selectcitoyen = '';
 if ( preg_match('/\/circonscription[\/\?]/', $uri))
   $selectcirco = ' selected="selected"';
- else  if ( preg_match('/\/profession[\/\?]/', $uri))
-   $selectprof = ' selected="selected"';
- else if ( preg_match('/\/(interventions?|seance|dossiers?)[\/\?]/',$uri))
-   $selectinterv = ' selected="selected"';
- else if ( preg_match('/\/amendements?[\/\?]/', $uri))
-   $selectamdmt = ' selected="selected"';
- else if ( preg_match('/\/question[\/\?]/', $uri))
-   $selectquestion = ' selected="selected"';
- else if (preg_match('/(\/citoyens?[\/\?]?|\/compterendu|\/commentaires?)/', $uri))
-   $selectcitoyen = 1;
- else if ( !preg_match('/\/(faq|$)/i', $uri))
-   $selectdepute = ' selected="selected"';
+else  if ( preg_match('/\/profession[\/\?]/', $uri))
+  $selectprof = ' selected="selected"';
+else if ( preg_match('/\/(interventions?|seance|dossiers?)[\/\?]/',$uri))
+  $selectinterv = ' selected="selected"';
+else if ( preg_match('/\/amendements?[\/\?]/', $uri))
+  $selectamdmt = ' selected="selected"';
+else if ( preg_match('/\/question[\/\?]/', $uri))
+  $selectquestion = ' selected="selected"';
+else if (preg_match('/(\/citoyens?[\/\?]?|\/compterendu|\/commentaires?)/', $uri))
+  $selectcitoyen = 1;
+else if ( !preg_match('/\/(faq|$)/i', $uri))
+  $selectdepute = ' selected="selected"';
 
 $menu_depute = $selectquestion || $selectdepute || $selectprof || $selectcirco;
 $menu_dossier = $selectinterv || $selectamdmt;
@@ -63,77 +63,84 @@ $menu_citoyen = $selectcitoyen;
     <?php echo javascript_include_tag('fonctions.v.'.trim(file_get_contents("../.git/ORIG_HEAD")).'.js'); ?>
   </head>
   <body>
-  <div id="contenu">
+    <div id="contenu">
       <div id="top">
         <div class="initiative">
           <a target="_blank" href="https://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);">Une initiative de RegardsCitoyens.org</a>
         </div>
-<div id="connected" class="identification">
-<p id="loggued_top">
-<a href="/login">Se connecter</a> -
-<a href="/login">Mon compte</a>
-</p>
-</div>
-  <script type="text/javascript"><!--
-  $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
---></script>
+        <div id="connected" class="identification">
+          <p id="loggued_top">
+            <a href="/login">Se connecter</a> -
+            <a href="/login">Mon compte</a>
+          </p>
+        </div>
+        <script type="text/javascript"><!--
+$('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
+        --></script>
       </div>
       <div id="header">
         <a style="float:left;" href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo.png', array('id' => 'logo', 'alt' => 'NosDeput&eacute;s.fr')); ?></a>
         <a style="float:right; margin-right: 55px; margin-top: 2px;" target="_blank" href="https://www.regardscitoyens.org/nous-aider/"><?php echo image_tag('contribuer.png', array('alt' => 'Nous soutenir')); ?></a>
       </div>
-        <div id="menu">
+      <div id="menu">
         <div class="menu_navigation">
-            <div id="item1"><a href="<?php echo url_for('@homepage'); ?>" title="Accueil"></a></div>
-          <div id="item2"><a <?php if ($menu_depute) echo 'class="selected" '; ?>href="<?php echo url_for('@list_parlementaires'); ?>"><span class="gris">Les</span> <span class="vert">D</span><span class="gris">&eacute;put&eacute;s</span></a></div>
-          <div id="item3"><a <?php if ($menu_dossier) echo 'class="selected" '; ?>href="<?php echo url_for('@sections?order=date')?>"><span class="gris">Les</span> <span class="orange">D</span><span class="gris">ossiers</span></a></div>
-          <div id="item4"><a <?php if ($menu_citoyen) echo 'class="selected" '; ?>href="<?php echo url_for('@list_citoyens?order=date')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
-          <div id="item5"><a title="Questions fréquemment posées" href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
+          <div id="item1"><a href="<?php echo url_for('@homepage'); ?>" title="Accueil"></a></div>
+            <div id="item2"><a <?php if ($menu_depute) echo 'class="selected" '; ?>href="<?php echo url_for('@list_parlementaires'); ?>"><span class="gris">Les</span> <span class="vert">D</span><span class="gris">&eacute;put&eacute;s</span></a></div>
+            <div id="item3"><a <?php if ($menu_dossier) echo 'class="selected" '; ?>href="<?php echo url_for('@sections?order=date')?>"><span class="gris">Les</span> <span class="orange">D</span><span class="gris">ossiers</span></a></div>
+            <div id="item4"><a <?php if ($menu_citoyen) echo 'class="selected" '; ?>href="<?php echo url_for('@list_citoyens?order=date')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
+            <div id="item5"><a title="Questions fréquemment posées" href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
+          </div>
+          <?php $search = strip_tags($sf_request->getParameter('query'));
+                $extraclass = '' ;
+                if (!$search) {$extraclass="examplevalue"; $search = "Rechercher un député, une ville, un mot, ...";} ?>
+          <div class="menu_recherche">
+            <form action="<?php echo url_for('@recherche_solr'); ?>" method="get">
+              <p>
+                <input class="rechercher<?php echo " ".$extraclass; ?>" name="search" type="text" size="25" value="<?php echo str_replace('"', '&quot;', $search); ?>"/>
+                <input title="Rechercher sur NosDéputés.fr" class="bouton_ok" value="" type="submit"/>
+              </p>
+            </form>
+          </div>
         </div>
-        <?php $search = strip_tags($sf_request->getParameter('query'));
-              $extraclass = '' ;
-              if (!$search) {$extraclass="examplevalue"; $search = "Rechercher un député, une ville, un mot, ...";} ?>
-        <div class="menu_recherche">
-          <form action="<?php echo url_for('@recherche_solr'); ?>" method="get">
-            <p>
-              <input class="rechercher<?php echo " ".$extraclass; ?>" name="search" type="text" size="25" value="<?php echo str_replace('"', '&quot;', $search); ?>"/>
-              <input title="Rechercher sur NosDéputés.fr" class="bouton_ok" value="" type="submit"/>
-            </p>
-          </form>
-        </div>
-      </div>
-      <div id="sous_menu">
-        <div id="sous_menu_1" style="display:<?php if ($menu_depute) echo 'block'; else echo 'none'; ?>">
-        <div class="elements_sous_menu">
-          <ul>
-            <li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> <strong>|</strong></li>
-            <li><a href="<?php echo url_for('@list_parlementaires_circo'); ?>">Par circonscription</a> <strong>|</strong></li>
-            <li><a href="<?php echo url_for('@parlementaires_tags'); ?>">Par mots clés</a> <strong>|</strong></li>
-            <li><a href="<?php echo url_for('@top_global'); ?>">Synthèse</a> <strong>|</strong></li>
-            <li><a href="<?php echo url_for('@parlementaire_random'); ?>">Au hasard</a></li>
-          </ul>
-        </div>
+        <div id="sous_menu">
+          <div id="sous_menu_1" style="display:<?php if ($menu_depute) echo 'block'; else echo 'none'; ?>">
+          <div class="elements_sous_menu">
+            <ul>
+              <li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@list_parlementaires_circo'); ?>">Par circonscription</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@parlementaires_tags'); ?>">Par mots clés</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@top_global'); ?>">Synthèse</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@parlementaire_random'); ?>">Au hasard</a></li>
+            </ul>
+          </div>
         </div>
         <div id="sous_menu_2" style="display:<?php if ($menu_dossier) echo 'block'; else echo 'none'; ?>">
-              <div class="elements_sous_menu">
-          <ul>
-            <li><a href="<?php echo url_for('@sections?order=date'); ?>">Les derniers dossiers</a> <strong>|</strong></li>
-            <li><a href="<?php echo url_for('@sections?order=plus'); ?>">Les dossiers les plus discutés</a> <strong>|</strong></li>
-            <li><a href="<?php echo url_for('@sections?order=coms'); ?>">Les dossiers les plus commentés</a></li>
-          </ul>
-        </div>
+          <div class="elements_sous_menu">
+            <ul>
+              <li><a href="<?php echo url_for('@sections?order=date'); ?>">Les derniers dossiers</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@sections?order=plus'); ?>">Les dossiers les plus discutés</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@sections?order=coms'); ?>">Les dossiers les plus commentés</a></li>
+            </ul>
+          </div>
         </div>
 
         <div id="sous_menu_3" style="display:<?php if ($menu_citoyen) echo 'block'; else echo 'none'; ?>">
-              <div class="elements_sous_menu">
-          <ul>
-            <li><a href="<?php echo url_for('@list_citoyens?order=date'); ?>">Tous les citoyens</a> <strong>|</strong></li>
-            <li><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a> <strong>|</strong></li>
-            <li><a href="<?php echo url_for('@assister'); ?>">Assister aux débats</a></li>
-          </ul>
-        </div>
-	</div>
-	     <div style="text-align: center; margin-top: 27px;"><h2><a href="/simplifions-la-loi">Participez aux débats « Simplifions la loi 2.0 » !</a></h2></div>
+          <div class="elements_sous_menu">
+            <ul>
+              <li><a href="<?php echo url_for('@list_citoyens?order=date'); ?>">Tous les citoyens</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@assister'); ?>">Assister aux débats</a></li>
+            </ul>
+          </div>
+  	    </div>
+        <?php if (myTools::hasAnnounce()) : ?>
+  	    <div id="announce"><h2><a target="_blank" href="<?php echo myTools::getAnnounceLink(); ?>"><?php echo myTools::getAnnounceText(); ?> : <span>Cliquez ici !</span></a></h2></div>
+        <script type="text/javascript">
+$(document).ready(function() {
+  $('#announce').delay(1500).fadeIn('slow');
+});
+        </script>
+        <?php endif ?>
       </div>
       <div id="corps_page">
         <div class="contenu_page">

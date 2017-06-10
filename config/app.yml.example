@@ -31,6 +31,10 @@ all:
   sfDoctrineActAsTaggablePlugin:
     triple_distinct:   true
 
+  announce:
+    link: "//irfm.regardscitoyens.org"
+    text: "Frais des députés, aidez nous à obtenir la transparence"
+
   solr:
     host: localhost
     port: 8080
