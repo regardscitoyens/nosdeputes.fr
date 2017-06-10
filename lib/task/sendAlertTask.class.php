@@ -21,12 +21,14 @@ class sendAlertTask extends sfBaseTask
     $context = sfContext::createInstance($this->configuration);
     $this->configuration->loadHelpers(array('Partial', 'Url'));
     $verbose = ($options['verbose'] == 'yes');
+    $bad_sections = Doctrine_Query::create()->select('id')->from('Section')->where('titre IS NULL OR titre LIKE "Ordre du jour%"')->fetchArray();
+    $exclude_sections = array_map(function($v){ return '-id:Section/'.$v['id']; }, $bad_sections);
     $solr = new SolrConnector();
     $query = Doctrine::getTable('Alerte')->createQuery('a')->where('next_mail < NOW() OR next_mail IS NULL')->andWhere('confirmed = 1');
     foreach($query->execute() as $alerte) if (preg_match("/\w@\w/", $alerte->email)) {
       $currenttime = time();
       $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")+1;
-      $query = '('.$alerte->query.") -id:Section/1 date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d', $currenttime).'T'.date('H:i:s', $currenttime)."Z]";
+      $query = '('.$alerte->query.") ".join(" ", $exclude_sections)." date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d', $currenttime).'T'.date('H:i:s', $currenttime)."Z]";
       foreach (explode('&', $alerte->filter) as $filtre)
         if (preg_match('/^([^=]+)=(.*)$/', $filtre, $match))
           foreach (explode(',', $match[2]) as $value) {
