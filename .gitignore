@@ -1,21 +1,26 @@
 *~
 *#
 *swp
-*.pyc
-log/
-cache/
+*edited
 *.new
 *.old
-*edited
-data/sql/
-data/mails/
+*.pyc
+*.sql.gz
 
 bin/db.inc
-apps/frontend/config/routing.yml
-apps/frontend/config/factories.yml
 config/app.yml
 config/databases.yml
 config/ProjectConfiguration.class.php
+apps/frontend/config/routing.yml
+apps/frontend/config/factories.yml
+lib/vendor/SolrServer/solr/conf/solrconfig.xml
+
+data/sql/
+data/mails/
+lib/vendor/SolrServer/solr/data/
+
+cache/
+log/
 
 batch/amendements/commission/
 batch/amendements/html/
@@ -50,17 +55,14 @@ batch/questions/dernier_numero.txt
 batch/questions/liste_sans_reponse.txt
 batch/sanctions/
 
-lib/model/doctrine/base/
-lib/model/doctrine/sfDoctrineActAsTaggablePlugin/
 lib/filter/doctrine/
 lib/form/doctrine/
 lib/form/BaseForm.class.php
-
-lib/vendor/SolrServer/solr/conf/solrconfig.xml
-lib/vendor/SolrServer/solr/data
+lib/model/doctrine/base/
+lib/model/doctrine/sfDoctrineActAsTaggablePlugin/
 
 web/circonscription.html
-web/14/
+web/1*/
 web/images/tmp/
 web/liasses/
 web/synthese*
