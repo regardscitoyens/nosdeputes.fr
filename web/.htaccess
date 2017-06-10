@@ -2,19 +2,21 @@ Options +FollowSymLinks +ExecCGI
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
-
-  # uncomment the following line, if you are having trouble
-  # getting no_script_name to work
-  #RewriteBase /
+  RewriteBase /
 
   # versionned files to force refresh new versions
   RewriteRule ^(.*)\.v\.[0-9a-z]+(\..*)$ $1$2 [QSA,L,E=VERSIONED_FILE:1]
 
-  # we skip all files with .something
-  #RewriteCond %{REQUEST_URI} \..+$
-  #RewriteCond %{REQUEST_URI} !\.html$
-  #RewriteRule .* - [L]
+  # redirect 13th pages to 2007-2012
+  RewriteRule ^dossier/(.*)$ http://2007-2012.nosdeputes.fr/dossier/$1 [R,L]
+  RewriteRule ^seance/(.*)$ http://2007-2012.nosdeputes.fr/seance/$1 [R,L]
+  RewriteRule ^loi/(.*)$ http://2007-2012.nosdeputes.fr/loi/$1 [R,L]
+  RewriteRule ^amendement/(.*)$ http://2007-2012.nosdeputes.fr/amendement/$1 [R,L]
+  RewriteRule ^document/(.*)$ http://2007-2012.nosdeputes.fr/document/$1 [R,L]
+  RewriteRule ^question/(.*)$ http://2007-2012.nosdeputes.fr/question/$1 [R,L]
+  RewriteRule ^widget/(.*)$ http://2007-2012.nosdeputes.fr/widget/$1 [R,L]
 
+  # handle hardcache html
   # we check if the .html version is here (caching)
   RewriteRule ^$ index.html [QSA]
   RewriteRule ^([^.]+)$ $1.html [QSA]
@@ -25,4 +27,3 @@ Options +FollowSymLinks +ExecCGI
 </IfModule>
 
 Header set Access-Control-Allow-Origin *
-
