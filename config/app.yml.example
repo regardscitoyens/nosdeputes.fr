@@ -1,39 +1,40 @@
 # default values
 all:
-  base_url: http://www.nosdeputes.fr/
+  base_url: http://2012-2017.nosdeputes.fr/
   secret_key: _______PUT_YOUR_KEY_HERE________
   legislature: 14
   debut_legislature: "2012-06-20"
-  fin_legislature: false
+  fin_legislature: true
   host_previous_legislature: 2007.nosdeputes.fr
-  host_next_legislature: 
-  lock_commentaires: false
-  allow_autoclean_solr: false
+  host_next_legislature: 2017.nosdeputes.fr
+  lock_commentaires: true
+  allow_autoclean_solr: true
 
   groupes_actuels: >
-    ["GDR", "SRC", "ECOLO", "RRDP", "UDI", "LES-REP", "NI"]
+    ["GDR", "SER", "RRDP", "UDI", "LR", "NI"]
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
   groupes_infos: >
     [
-    "Gauche Démocrate et Républicaine / GDR / 255,30,30 / PCF, PG, ultra-marins et rat. / gauche.*d[eéÉ]mocrate",
-    "Socialiste, Républicain et Citoyen / SRC / 255,50,190 / Socialistes (PS, MRC et ratt.) / socialiste",
-    "Écologiste / ECOLO / 0,230,30 / Écologistes (EELV) / [eéÉ]cologiste",
-    "Radical, Républicain, Démocrate et Progressiste / RRDP / 250,195,132 / Radicaux (PRG, MUP, Modem, ...) / radical",
+    "Gauche Démocrate et Républicaine / GDR / 255,30,30 / PCF, PG, ultra-marins / gauche.*d[eéÉ]mocrate",
+    "Socialiste, écologiste et républicain / SER / 255,50,190 / Socialistes (PS, MRC, ex-EELV…) / socialiste",
+    #"Socialiste, Républicain et Citoyen / SRC / 255,50,190 / Socialistes (PS, MRC et ratt.) / socialiste",
+    #"Écologiste / ECOLO / 0,230,30 / Écologistes (EELV) / [eéÉ]cologiste",
+    "Radical, Républicain, Démocrate et Progressiste / RRDP / 250,195,132 / Radicaux / radical",
     "Union des Démocrates et Indépendants / UDI / 30,180,255 / Centristes / d[eéÉ]mocrates.*ind[eéÉ]pendants",
-    "Rassemblement - Union pour un Mouvement Populaire / RUMP / 30,120,220 / R-UMP (fillonistes) / rassemblement.*u",
-    "Les Républicains / LES-REP / 30,30,200 / Républicains (ex UMP) / r[eéÉ]publicains",
-    "Union pour un Mouvement Populaire / UMP / 30,30,200 / UMP et rattachés / union.*mouvement.*populaire",
-    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (Modem, divers) / inscrits|députés.*aucun"
+    #"Rassemblement - Union pour un Mouvement Populaire / RUMP / 30,120,220 / R-UMP (fillonistes) / rassemblement.*u",
+    "Les Républicains / LR / 30,30,200 / Républicains (ex UMP) / r[eéÉ]publicains",
+    #"Union pour un Mouvement Populaire / UMP / 30,30,200 / UMP et rattachés / union.*mouvement.*populaire",
+    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (EELV, Modem, Divers droite, FN…) / inscrit|députés.*aucun"
     ]
   groupes_proximite: >
-    ["GDR / SRC", "SRC / ECO", "GDR / ECO", "RRDP / SRC", "RRDP / ECO", "RRDP / UDI", "UDI / UMP", "UDI / LES-REP", "LES-REP / UMP"]
+    ["GDR / SER", "RRDP / SER", "RRDP / UDI", "UDI / UMP", "UDI / LR", "LR / UMP"]
 
   sfDoctrineActAsTaggablePlugin:
     triple_distinct:   true
 
   announce:
-    link: "//irfm.regardscitoyens.org"
-    text: "Frais des députés, aidez nous à obtenir la transparence"
+    link: "//2017.nosdeputes.fr"
+    text: "Découvrez nos députés de la 15ème législature"
 
   admin_ips: >
     [
@@ -55,6 +56,7 @@ all:
   #piwik_domain: stats.regardscitoyens.org
   piwik_id: false
   #piwik_id: 2
+
 
  # Conf 13eme
 #  base_url: http://2007-2012.nosdeputes.fr
