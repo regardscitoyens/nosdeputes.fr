@@ -84,3 +84,7 @@ while ($t = $p->get_tag('td')) {
 #    }
 }
 
+# Cas Monique Lubin au mandat express listée dans aucune liste de députés
+if ($legislature == 14) {
+  download_fiche("/deputes/fiche/OMC_PA342564");
+}
