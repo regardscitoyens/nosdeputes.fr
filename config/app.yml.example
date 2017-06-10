@@ -35,6 +35,12 @@ all:
     link: "//irfm.regardscitoyens.org"
     text: "Frais des députés, aidez nous à obtenir la transparence"
 
+  admin_ips: >
+    [
+    "127.0.0.1",
+    "::1"
+    ]
+
   solr:
     host: localhost
     port: 8080

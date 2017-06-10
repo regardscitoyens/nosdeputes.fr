@@ -110,6 +110,10 @@ class myTools {
     return self::getAnnounceLink() && self::getAnnounceText();
   }
 
+  public static function getAdminIPs() {
+    return (self::convertYamlToArray(sfConfig::get('app_admin_ips')));
+  }
+
   public static function getLegislature() {
     return (sfConfig::get('app_legislature', 13));
   }
