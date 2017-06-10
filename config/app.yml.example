@@ -2,10 +2,10 @@
 all:
   base_url: http://www.nosdeputes.fr/
   secret_key: _______PUT_YOUR_KEY_HERE________
-  legislature: 14
-  debut_legislature: "2012-06-20"
+  legislature: 15
+  debut_legislature: "2017-06-21"
   fin_legislature: false
-  host_previous_legislature: 2007.nosdeputes.fr
+  host_previous_legislature: 2012.nosdeputes.fr
   host_next_legislature: 
   lock_commentaires: false
   allow_autoclean_solr: false
@@ -56,21 +56,3 @@ all:
   piwik_id: false
   #piwik_id: 2
 
- # Conf 13eme
-#  base_url: http://2007-2012.nosdeputes.fr
-#  legislature: 13
-#  debut_legislature: "2007-06-20"
-#  fin_legislature: true
-#  host_next_legislature: "2012.nosdeputes.fr"
-#  groupes_actuels: >
-#    ["GDR", "SRC", "NC", "UMP", "NI"]
-#  groupes_infos: >
-#    [
-#    "Gauche démocrate et républicaine / GDR / 255,30,30 / PCF, PG et rattachés / gauche.*démocrate",
-#    "Socialiste, radical, citoyen et divers gauche / SRC / 255,50,190 / Socialistes (PS, MRC, PRG et ratt.) / socialiste|radical|citoyen|divers.*gauche",
-#    "Nouveau centre / NC / 30,180,255 / Nouveau Centre / nouveau.*centre",
-#    "Union pour un mouvement populaire / UMP / 30,30,200 / UMP et rattachés / union.*mouvement.*populaire",
-#    "Députés n'appartenant à aucun groupe / NI / 165,165,165 / Non-Inscrits (Modem, Verts, divers) / inscrits|députés.*aucun"
-#    ]
-#  groupes_proximite: >
-#    ["CRC / SOC", "NC / UMP"]
