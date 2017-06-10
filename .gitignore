@@ -15,6 +15,7 @@ web/liasses/
 web/synthese*
 
 apps/frontend/config/routing.yml
+apps/frontend/config/factories.yml
 config/app.yml
 config/databases.yml
 config/ProjectConfiguration.class.php
