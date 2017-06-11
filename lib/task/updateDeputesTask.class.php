@@ -98,6 +98,8 @@ class updateDeputesTask extends sfBaseTask
               $parl->anciens_autres_mandats = $json->anciensmandats;
             if ($json->groupe)
               $parl->groupe = $this->splitArrayJson($json->groupe);
+            if ($json->parti)
+              $parl->parti = $json->parti;
             if (count($json->fonctions))
               $parl->fonctions = $this->splitArrayJson($json->fonctions);
             $parl->extras = (count($json->extras) ? $this->splitArrayJson($json->extras) : array());

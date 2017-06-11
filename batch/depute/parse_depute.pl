@@ -69,6 +69,7 @@ if ($file =~ /(\d+)/) {
 }
 
 $read = "";
+$parti = "";
 $address = "";
 $done = 0;
 foreach $line (split /\n/, $string) {
@@ -95,6 +96,8 @@ foreach $line (split /\n/, $string) {
     $read = "profession";
   } elsif ($line =~ /<dt>Suppléant<\/dt>/i) {
     $read = "suppleant";
+  } elsif ($line =~ /<dt>Rattachement au titre du financement/i) {
+    $read = "parti";
   } elsif ($line =~ /<dl class="adr">/i) {
     $read = "adresse";
     $address = "";
@@ -345,6 +348,12 @@ foreach $m (keys %premiers_mandats) {
 }
 foreach $m (values %tmp_mandats) {
   $depute{'premiers_mandats'}{$m} = 1;
+}
+if ($depute{"parti"}) {
+  if ($depute{"parti"} =~ s/Non rattaché\(s\)/Non rattaché/i && $depute{"sexe"} eq "F") {
+    $depute{"parti"} .= "e";
+  };
+  $depute{"parti"} =~ s/ \(Debout la République\)//i;
 }
 
 if ($yml) {
