@@ -238,7 +238,7 @@ class circonscriptionActions extends sfActions
     foreach($toRemove as $node) {
       $node->parentNode->removeChild($node);
     }
- 
+
     if (!count($minx)) return;
     $x_min = min($minx) - $margin;
     $x_max = max($maxx) + $margin;
@@ -266,7 +266,7 @@ class circonscriptionActions extends sfActions
     $h = $r['h'];
 
     $src = url_for("@deptmts_image_png?w=$w&h=$h");
-    
+
     if ($link) echo '<a class="jstitle" title="Tous les départements français" href="'.url_for('@list_parlementaires_circo').'">';
     echo "<img alt=\"Carte issue de Wikipedia : Départements et régions de France par Bayo (sous licence GFDL)\" class=\"carte_departement\" src=\"$src\" usemap=\"#deptmts\" ";
     echo 'style="width:'.$w.'px; height:'.$h.'px;" />';
@@ -298,7 +298,7 @@ class circonscriptionActions extends sfActions
     $dom->preserveWhiteSpace = FALSE;
     // FIXME Use loadXML to load from a string instead (database)
     if (sfConfig::get('app_legislature') <= 13)
-      $dom->load("circo.svg");
+      $dom->load("circo2007.svg");
     else $dom->load("circo2012.svg");
 
     if(preg_match("/^\d\d[\dab]$/",$circo))
@@ -354,7 +354,7 @@ class circonscriptionActions extends sfActions
     $r = $arr[1];
     $w = $r['w'];
     $h = $r['h'];
-    
+
     $svg = $dom->getElementsByTagName('svg')->item(0);
     $svg->removeAttribute('transform');
 
@@ -389,12 +389,12 @@ class circonscriptionActions extends sfActions
     $this->getResponse()->setHttpHeader('Expires', 'Mon, 06 Jan 2042 00:00:00 GMT');
   }
 
-  public function executeList(sfWebRequest $request) 
+  public function executeList(sfWebRequest $request)
   {
     $this->circos = Parlementaire::$dptmt_nom;
   }
 
-  public function executeShow(sfWebRequest $request) 
+  public function executeShow(sfWebRequest $request)
   {
     $this->circo = preg_replace('/_/', ' ', $request->getParameter('departement'));
     $this->forward404Unless($this->circo);
@@ -406,10 +406,10 @@ class circonscriptionActions extends sfActions
       ->execute();
     $this->total = count($this->parlementaires);
     $this->forward404Unless($this->total);
-    if ($this->total == 1) 
-        return $this->redirect('@parlementaire?slug='.$this->parlementaires[0]['slug']); 
+    if ($this->total == 1)
+        return $this->redirect('@parlementaire?slug='.$this->parlementaires[0]['slug']);
   }
-  public function executeSearch(sfWebRequest $request) 
+  public function executeSearch(sfWebRequest $request)
   {
     $this->search = $request->getParameter('search');
     $departmt = strip_tags(trim(strtolower($this->search)));
@@ -421,7 +421,7 @@ class circonscriptionActions extends sfActions
         return $this->redirect('@list_parlementaires_departement?departement='.$this->circo);
       if (preg_match('/^(\d+\w?)$/', $departmt, $match)) {
 	$num = preg_replace('/^0+/', '', $match[1]);
-        $this->circo = Parlementaire::getNomDepartement($num); 
+        $this->circo = Parlementaire::getNomDepartement($num);
         if ($this->circo)
 	  return $this->redirect('@list_parlementaires_departement?departement='.$this->circo);
       }
@@ -440,7 +440,7 @@ class circonscriptionActions extends sfActions
         ->addOrderBy('nom_circo, num_circo');
     }
   }
-  public function executeRedirect(sfWebRequest $request) 
+  public function executeRedirect(sfWebRequest $request)
   {
     $departement = $request->getParameter('departement');
     $num = $request->getParameter('numero');

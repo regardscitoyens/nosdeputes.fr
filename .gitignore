@@ -29,10 +29,8 @@ batch/amendements/OpenDataAN/
 batch/amendements/liste_sort_indefini.txt
 batch/commission/html/
 batch/commission/tmp/
-batch/depute/first_set/
 batch/depute/html/
 batch/depute/json/
-batch/depute/out/
 batch/depute/twitter.csv
 batch/depute/finmandats.pm
 batch/documents/html/

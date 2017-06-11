@@ -5,7 +5,7 @@ source bin/db.inc
 cd batch/depute
 wget -q https://github.com/regardscitoyens/twitter-parlementaires/raw/master/data/deputes.csv --no-check-certificate -O twitter.csv
 perl download_deputes.pl $LEGISLATURE
-sh parse_tous.sh 
+./parse_tous.sh $LEGISLATURE
 cd ../..
 php symfony update:Deputes 
 

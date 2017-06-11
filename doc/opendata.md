@@ -38,8 +38,9 @@ Diverses données parlementaires également mises en œuvre sur nos sites sont d
 
 - Carte SVG de l'[hémicycle de l'Assemblée](https://github.com/regardscitoyens/mapHemicycle/blob/gh-pages/img/hemicycle-an.svg)
 - Carte SVG des [départements](https://github.com/regardscitoyens/nosdeputes.fr/blob/master/web/france_deptmts.svg)
-- Carte SVG des [circonscriptions](https://www.data.gouv.fr/fr/datasets/carte-des-circonscriptions-lgislatives-2012/)
-- Appartenance des [communes aux circonscriptions législatives](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/circo_insee_2012.csv)
+- Carte SVG des [circonscriptions (après 2012)](https://www.data.gouv.fr/fr/datasets/carte-des-circonscriptions-lgislatives-2012/)
+- Carte SVG des [circonscriptions (avant 2012)](../web/circo2007.svg)
+- Appartenance des [communes aux circonscriptions législatives](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_insee.csv)
 - Catalogue [OpenData officiel de l'Assemblée nationale](http://data.assemblee-nationale.fr)
 - Catalogue [OpenData officiel du Sénat](http://data.senat.fr)
 - [ParlAPI](http://parlapi.fr/) reprenant les données des catalogues officiels OpenData
