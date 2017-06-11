@@ -19,10 +19,11 @@ if ($cause = $parlementaire->getCauseFinMandat()) {
         } ?>
       </li>
 <?php endif;
+      $fem = ($parlementaire->sexe == "F" ? 'e' : '');
       if ($parlementaire->url_ancien_cpc)
-  echo '<li><a href="'.$parlementaire->url_ancien_cpc.'"><strong>Sa page NosDéputés.fr pour l\'ancienne législature</strong></a></li>';
+        echo '<li><a href="'.$parlementaire->url_ancien_cpc.'"><strong>Député'.$fem.' réélu'.$fem.' : voir sa page NosDéputés.fr de la précédente législature</strong></a></li>';
       if ($parlementaire->suppleant_de_id && $supplee = $parlementaire->getSuppleantDe())
-        echo '<li>Suppléant'.($parlementaire->sexe == "F" ? 'e' : '').' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>';
+        echo '<li>Suppléant'.$fem.' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>';
       if ($parlementaire->groupe_acronyme != "") : ?>
       <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getGroupe()->getFonction(); ?>)</li>
       <?php endif;
@@ -30,22 +31,48 @@ if ($cause = $parlementaire->getCauseFinMandat()) {
       <li>Parti politique (rattachement financier) : <?php echo $parlementaire->parti; ?></li>
       <?php endif; ?>
       <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, myTools::get_solr_list_url($parlementaire->profession, '', 'Parlementaire', "profession=".myTools::solrize($parlementaire->profession))."&noredirect=1"); else : ?>Non communiquée<?php endif; ?></li>
-      <?php if ($parlementaire->url_an) echo '<li>'.link_to('Page sur le site de l\'Assemblée nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'rel'=>'nofollow')).'</li>'; ?>
-      <li><a href="http://fr.wikipedia.org/wiki/<?php echo rawurlencode($parlementaire->nom); ?>">Page sur Wikipédia</a></li>
+      <?php if ($parlementaire->url_an) echo '<li>'.link_to('Fiche Assemblée nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'rel'=>'nofollow')).'</li>';
+        echo '<li><a href="http://fr.wikipedia.org/wiki/'.rawurlencode($parlementaire->nom).'">Page Wikipédia</a></li>'; ?>
       <?php if ($parlementaire->sites_web) {
         $moreweb = "";
         foreach (unserialize($parlementaire->sites_web) as $site) if ($site && !preg_match('/assemblee-nationale\.fr\/deputes\/fiche/', $site)) {
-                $nomsite = "Site web";
-                if (preg_match('/twitter/', $site)) $nomsite = "Sur Twitter";
-                else if (preg_match('/facebook/', $site)) $nomsite = "Sur Facebook";
+                $nomsite = "Site web : ".$site;
+                if (preg_match('/twitter/', $site)) $nomsite = "Twitter : ".preg_replace("/^.*[^a-z0-9_]([a-z0-9_]+)$/i", "@\\1", $site);
+                else if (preg_match('/facebook/', $site)) $nomsite = "Page Facebook";
                 $link = "<li>".link_to($nomsite, $site, array('title' => 'Lien externe', 'rel'=>'nofollow'))."</li>";
-                if (preg_match('/twitter|facebook/', $site)) $moreweb .= $link;
+                if (!preg_match('/twitter|facebook/', $site)) $moreweb .= $link;
                 else echo $link;
         }
         echo $moreweb;
-      }
-      ?>
-    </ul><?php
+      } ?>
+    </ul>
+    <h2>Contact</h2>
+    <ul>
+      <li>Par e-mail :
+        <ul>
+          <?php foreach (unserialize($parlementaire->mails) as $mail) : ?>
+          <li><?php echo $mail ?></li>
+          <?php endforeach; ?>
+        </ul>
+      </li>
+      <li>Par courrier :
+        <ul>
+          <?php foreach (unserialize($parlementaire->adresses) as $addr) : ?>
+          <li><?php echo $addr ?></li>
+          <?php endforeach; ?>
+        </ul>
+      </li>
+      <?php if ($parlementaire->collaborateurs) : ?>
+      <li>Collaborateurs :
+        <ul>
+          <?php foreach (unserialize($parlementaire->collaborateurs) as $collab) : ?>
+          <li><?php echo $collab ?></li>
+          <?php endforeach; ?>
+        </ul>
+      </li>
+      <?php endif; ?>
+    </ul>
+<?php
 $note_fonction = false;
 if ($parlementaire->fin_mandat == null || $parlementaire->fin_mandat < $parlementaire->debut_mandat) : ?>
       <h2>Responsabilités</h2>
