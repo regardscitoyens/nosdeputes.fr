@@ -1,17 +1,18 @@
 #!/bin/bash
 
 DIR=$(echo $0 | sed 's/[^\/]*$//');
-LEGISLATURE=$1
 
 if echo $DIR | grep -i [a-z]; then
   cd $DIR
 fi
 
+source ../../bin/db.inc
+
 mkdir -p json html
 
 for d in html/* ; do
   ID=$(echo $d | sed 's/html\///' | sed 's/\.asp$//')
-  if test -n "$2"; then
+  if test -n "$1"; then
     echo $ID;
   fi
   if [ "$LEGISLATURE" = "13" ]; then

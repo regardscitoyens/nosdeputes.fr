@@ -72,7 +72,7 @@ $read = "";
 $address = "";
 $done = 0;
 foreach $line (split /\n/, $string) {
- #print STDERR "$line\n";
+  #print STDERR "$line\n";
   $line =~ s/<\/?sup>//g;
   if ($line =~ /<h1>(.+)<\/h1>/i) {
     $depute{'nom'} = $1;
@@ -304,27 +304,27 @@ foreach $line (split /\n/, $string) {
 $nomdep = $depute{'nom'};
 @noms = split / /, $nomdep;
 if ((join " ", keys %{$depute{'mails'}}) =~ /(\S+)\@assemblee/) {
-    $login = $1;
-    while ($login = substr($login, 1)) {
-        $clogin = $login;
-        $clogin =~ s/[ce]/./ig;
-        $clogin =~ s/\.+/.+/g;
-        for($i = 0 ; $i <= $#noms ; $i++) {
-            next if ($noms[$i] =~ /^[ld]e/i);
-            $tmpnom = lc($noms[$i]);
-            $tmpnom =~ s/[àÀéÉèÈêÊëËîÎïÏôÔùÙûÛçÇ]/./ig;
-            $tmpnom =~ s/\.+/.+/g;
-            if ($login =~ /$tmpnom/i) {
-                if ($nomdep =~ /.\s([l][ea]s?\s)?(\S*?$tmpnom.*$)/i) {
-                    $depute{'nom_de_famille'} = $1.$2;
-                    last;
-                }
-            }
+  $login = $1;
+  while ($login = substr($login, 1)) {
+    $clogin = $login;
+    $clogin =~ s/[ce]/./ig;
+    $clogin =~ s/\.+/.+/g;
+    for($i = 0 ; $i <= $#noms ; $i++) {
+      next if ($noms[$i] =~ /^[ld]e/i);
+      $tmpnom = lc($noms[$i]);
+      $tmpnom =~ s/[àÀéÉèÈêÊëËîÎïÏôÔùÙûÛçÇ]/./ig;
+      $tmpnom =~ s/\.+/.+/g;
+      if ($login =~ /$tmpnom/i) {
+        if ($nomdep =~ /.\s([l][ea]s?\s)?(\S*?$tmpnom.*$)/i) {
+          $depute{'nom_de_famille'} = $1.$2;
+          last;
         }
-        if ($depute{'nom_de_famille'}) {
-            last;
-        }
+      }
     }
+    if ($depute{'nom_de_famille'}) {
+      last;
+    }
+  }
 }
 #Si pas de nom de famille, on le récupère par le nom
 if (!$depute{'nom_de_famille'}) {
@@ -348,35 +348,29 @@ foreach $m (values %tmp_mandats) {
 }
 
 if ($yml) {
-    print "  depute_".$depute{'id_an'}.":\n";
-    foreach $k (keys %depute) {
-        if (ref($depute{$k}) =~ /HASH/) {
-            print "    ".lc($k).":\n";
-            foreach $i (keys %{$depute{$k}}) {
-                print "      - $i\n";
-            }
-        }else {
-            print "    ".lc($k).": ".$depute{$k}."\n";
-        }
-    }
-    print "    type: depute\n";
-    exit;
-}
-
-print "{ ";
-foreach $k (keys %depute) {
+  print "  depute_".$depute{'id_an'}.":\n";
+  foreach $k (keys %depute) {
     if (ref($depute{$k}) =~ /HASH/) {
-        print '"'.lc($k).'" : [';
-        foreach $i (keys %{$depute{$k}}) {
-            $i =~ s/"//g;
-            print '"'.$i.'",';
-        }
-        print '"" ], ';
-    }else {
-        $depute{$k} =~ s/"//g;
-        print '"'.lc($k).'" : "'.$depute{$k}.'", ';
+      print "    ".lc($k).":\n";
+      foreach $i (keys %{$depute{$k}}) {
+        print "      - $i\n";
+      }
+    } else {
+      print "    ".lc($k).": ".$depute{$k}."\n";
     }
+  }
+  print "    type: depute\n";
+  exit;
 }
-print "\"type\" : \"depute\" }\n";
 
+print "{";
+foreach $k (keys %depute) {
+  if (ref($depute{$k}) =~ /HASH/) {
+    print '"'.lc($k).'": ['.join(", ", map { s/"/\\"/g; '"'.$_.'"' } keys %{$depute{$k}})."], ";
+  } else {
+    $depute{$k} =~ s/"/\\"/g;
+    print '"'.lc($k).'": "'.$depute{$k}.'", ';
+  }
+}
+print '"type": "depute"}'."\n";
 

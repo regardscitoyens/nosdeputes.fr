@@ -6,7 +6,7 @@ if [ -z $1 ]; then
   cp -r out.yml out.yml.sv
   rm -f out.yml/*
   for url in `ls html`; do
-    perl parse_depute_new.pl html/$url 1 > out.yml/$url
+    perl parse_depute.pl html/$url 1 > out.yml/$url
   done
 fi
 
@@ -14,7 +14,7 @@ fields=`cat out.yml/* | grep ": ." | grep -v "^      - " | sed 's/: .*$//' | sed
 total=`ls out.yml/ | wc -l | awk '{print $1}'`
 
 for field in $fields; do
-  grep -r "    $field:" out.yml/ | sed 's/^.*\(.\)\.asp:    '$field': //' | sort > test/$field.tmp
+  grep -r "    $field:" out.yml/ | sed 's/^out\.yml[^:]*:    '$field': //' | sort > test/$field.tmp
   stotal=`wc -l test/$field.tmp | awk '{print $1}'`
   echo "Champ $field présent dans $stotal fichiers (manque dans $(($total-$stotal)) fichiers)" > test/$field.stats
   echo  >> test/$field.stats
@@ -32,7 +32,7 @@ for field in $fields; do
   rm test/$field.uniq
 done;
 
-grep -r "^      - " out.yml/ | sed 's/^.*\(.\)\.asp:      - //' | sort | uniq > test/arrays
+grep -r "^      - " out.yml/ | sed 's/^out\.yml[^:]*:      - //' | sort | uniq > test/arrays
 grep "@" test/arrays > test/mails.uniq
 grep "http" test/arrays > test/sites_web.uniq
 grep "\([0-9]\{5\}\|[0-9][0-9] [0-9][0-9] [0-9][0-9]\)" test/arrays > test/adresses.uniq
@@ -54,5 +54,4 @@ cat test/allfonctions.uniq | awk -F " / " '{print $2}' | sort | uniq > test/allf
 
 echo "Vérifier les champs dans test :"
 ls -lrth test
-
 

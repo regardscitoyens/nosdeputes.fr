@@ -25,8 +25,8 @@ def add_value(val):
     values[val] += 1
 
 MISSING = []
-for dep in os.listdir('out'):
-    with open(os.path.join('out', dep)) as f:
+for dep in os.listdir('json'):
+    with open(os.path.join('json', dep)) as f:
         data = json.load(f)
         if field == "all":
             for k in data:
