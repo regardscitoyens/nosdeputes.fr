@@ -58,7 +58,7 @@ if ($cause = $parlementaire->getCauseFinMandat()) {
       <li>Par courrier :
         <ul>
           <?php foreach (unserialize($parlementaire->adresses) as $addr) : ?>
-          <li><?php echo $addr ?></li>
+          <li><?php echo preg_replace('/ Télé(phone|copie) :/i', '', $addr) ?></li>
           <?php endforeach; ?>
         </ul>
       </li>
