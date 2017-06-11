@@ -31,6 +31,7 @@ batch/commission/html/
 batch/commission/tmp/
 batch/depute/html/
 batch/depute/json/
+batch/depute/collabs.csv
 batch/depute/twitter.csv
 batch/depute/finmandats.pm
 batch/documents/html/

@@ -54,6 +54,7 @@ Parlementaire:
     autres_mandats: string
     anciens_autres_mandats: string
     mails: string
+    collaborateurs: string
     top: string
     villes: string
     url_ancien_cpc: string
