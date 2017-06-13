@@ -45,7 +45,7 @@ $menu_depute = $selectquestion || $selectdepute || $selectprof || $selectcirco;
 $menu_dossier = $selectinterv || $selectamdmt;
 $menu_citoyen = $selectcitoyen;
 	  
-$gitversion = file_get_contents('../.git/') . substr(file_get_contents('../.git/HEAD'), 5);
+$gitversion = file_get_contents('../.git/' . trim(substr(file_get_contents('../.git/HEAD'), 5)));
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="search" href="<?php echo $sf_request->getRelativeUrlRoot(); ?>/nosdeputesfr.xml" title="Rechercher sur NosDéputés.fr" type="application/opensearchdescription+xml" />
