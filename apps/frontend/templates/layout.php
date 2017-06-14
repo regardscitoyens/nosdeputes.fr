@@ -44,11 +44,13 @@ else if ( !preg_match('/\/(faq|$)/i', $uri))
 $menu_depute = $selectquestion || $selectdepute || $selectprof || $selectcirco;
 $menu_dossier = $selectinterv || $selectamdmt;
 $menu_citoyen = $selectcitoyen;
+	  
+$gitversion = file_get_contents('../.git/' . trim(substr(file_get_contents('../.git/HEAD'), 5)));
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="search" href="<?php echo $sf_request->getRelativeUrlRoot(); ?>/nosdeputesfr.xml" title="Rechercher sur NosDéputés.fr" type="application/opensearchdescription+xml" />
     <?php echo stylesheet_tag($style.'/jquery-ui-1.8.5.custom.css'); ?>
-    <?php echo stylesheet_tag($style.'/style.v.'.trim(file_get_contents("../.git/ORIG_HEAD")).'.css'); ?>
+    <?php echo stylesheet_tag($style.'/style.v.'.$gitversion.'.css'); ?>
     <?php echo stylesheet_tag($style.'/print', array('media' => 'print')); ?>
     <!--[if lte IE 6]>
       <?php echo stylesheet_tag($style.'/ie6'); ?>
@@ -60,7 +62,7 @@ $menu_citoyen = $selectcitoyen;
     <?php include_partial('parlementaire/cssCouleursGroupes'); ?>
     <?php echo javascript_include_tag('jquery-1.8.3.min.js'); ?>
     <?php echo javascript_include_tag('jquery-ui-1.8.5.custom.min.js'); ?>
-    <?php echo javascript_include_tag('fonctions.v.'.trim(file_get_contents("../.git/ORIG_HEAD")).'.js'); ?>
+    <?php echo javascript_include_tag('fonctions.v.'.$gitversion.'.js'); ?>
   </head>
   <body>
     <div id="contenu">
