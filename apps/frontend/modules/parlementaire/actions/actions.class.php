@@ -128,6 +128,10 @@ class parlementaireActions extends sfActions
     return $this->redirect('@parlementaire?slug='.$p['slug']);
   }
 
+  public static function historiqueSort($a, $b) {
+    return strcmp($b->fin_fonction.$b->debut_fonction, $a->fin_fonction.$a->debut_fonction);
+  }
+
   public function executeShow(sfWebRequest $request)
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
@@ -149,6 +153,8 @@ class parlementaireActions extends sfActions
 
     $this->commissions_permanentes = array();
     $this->missions = array();
+    $this->historique = $this->parlementaire->getHistorique();
+    usort($this->historique, 'parlementaireActions::historiqueSort');
 
     foreach ($this->parlementaire->getResponsabilites() as $resp) {
       if (in_array($resp->organisme_id, array(9, 10, 11, 12, 13, 14, 15, 16))) {

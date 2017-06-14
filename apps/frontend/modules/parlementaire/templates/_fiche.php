@@ -158,4 +158,19 @@ if (myTools::isFinLegislature()) {
       <?php echo include_component('documents', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'type' => 'loi')); ?>
       <p class="suivant"><?php echo link_to('Toutes ses propositions de loi cosignées', '@parlementaire_documents?slug='.$parlementaire->slug.'&type=loi'); ?></p>
 
+    <?php if ($historique) : ?>
+    <h2>Historique de mandat</h2>
+      <ul><?php foreach ($historique as $resp) : ?>
+        <li>- <?php
+if ($resp->type == "groupe") {
+  $acro = $resp->Organisme->getSmallNomGroupe();
+  echo link_to(($acro != "NI" ? "Groupe " : "").$resp->getNom(), '@list_parlementaires_groupe?acro='.$acro);
+} else echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug());
+$fonction = preg_replace('/^(.*(président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
+echo " ($fonction du ";
+echo myTools::displayDate($resp->debut_fonction).' au '.myTools::displayDate($resp->fin_fonction).')';
+        ?></li>
+      <?php endforeach ?></ul>
+    <?php endif ?>
+
   </div>

@@ -201,13 +201,17 @@ class Parlementaire extends BaseParlementaire
     }
   }
 
-  public function getOrganismes($includePast=false) {
+  public function getOrganismes($old=false) {
     $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {
-      if ($includePast || !$po->fin_fonction)
+      if (($old && $po->fin_fonction) || (!$old && !$po->fin_fonction))
         array_push($res, $po);
     }
     return $res;
+  }
+
+  public function getHistorique() {
+    return $this->getOrganismes(true);
   }
 
   public function setAutresMandats($array) {
@@ -241,25 +245,25 @@ class Parlementaire extends BaseParlementaire
         return $po;
     }
   }
-  public function getExtras($includePast=false) {
+  public function getExtras($old=false) {
     $res = array();
-    foreach($this->getOrganismes($includePast) as $po) {
+    foreach($this->getOrganismes($old) as $po) {
       if ($po->type == 'extra')
         array_push($res, $po);
     }
     return $res;
   }
-  public function getGroupes($includePast=false) {
+  public function getGroupes($old=false) {
     $res = array();
-    foreach($this->getOrganismes($includePast) as $po) {
+    foreach($this->getOrganismes($old) as $po) {
       if ($po->type == 'groupes')
         array_push($res, $po);
     }
     return $res;
   }
-  public function getResponsabilites($includePast=false) {
+  public function getResponsabilites($old=false) {
     $res = array();
-    foreach($this->getOrganismes($includePast) as $po) {
+    foreach($this->getOrganismes($old) as $po) {
       if ($po->type == 'parlementaire')
         $res[sprintf('%04d',abs(100-$po->importance)).$po->nom]=$po;
     }
