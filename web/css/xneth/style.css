@@ -1922,8 +1922,8 @@ a:hover img {
   margin: auto;
   margin-bottom: 30px;
 }
-.list_table .anciens {
-  opacity: 0.55;
+.anciens {
+  opacity: 0.45;
 }
 .list_table h3 {
   margin-top: 0px;

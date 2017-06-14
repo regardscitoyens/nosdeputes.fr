@@ -22,7 +22,7 @@ if (isset($list)) {
     }
     echo '<h3 class="aligncenter'.($anciens ? " anciens" : "").'">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', (count($deputes) > 1 ? preg_replace('/(,)? /', 's\\1 ', (preg_match('/(spécial|général)/i', $fonction) ? preg_replace('/al$/', 'aux', $fonction) : $fonction)) : $fonction))).(count($deputes) > 1 && !preg_match('/(spécial|général|droit|bureau)$/i', $fonction) ? 's' : '').'</h3>';
   }
-  echo '<table '.($anciens ? 'class="anciens" ': "").'summary="Députés'.(isset($lettre) ? ' dont le nom commence par '.$lettre : '').'"><tr>';
+  echo '<table summary="Députés'.(isset($lettre) ? ' dont le nom commence par '.$lettre : '').'"><tr>';
   $totaldep = count($deputes);
   $div = floor($totaldep/$colonnes)+1;
   if ($div > 1 && $totaldep % $colonnes == 0)
@@ -41,7 +41,7 @@ foreach($deputes as $depute) {
   $url_depute = url_for('@parlementaire?slug='.$depute->slug);
   $ct++;
   $id_circo = preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo); ?>
-  <div class="list_dep<?php if (isset($circo) && ($depute->fin_mandat == null || myTools::isFinLegislature())) echo ' dep_map dep'.$id_circo.'" id="'.sprintf('%03d', $depute->id).$id_circo; ?>" onclick="document.location='<?php echo $url_depute; ?>'"><span title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>" class="jstitle phototitle block"><a class="urlphoto" href="<?php echo $url_depute; ?>"></a>
+  <div class="list_dep<?php if ($anciens || $depute->fin_mandat > $depute->debut_mandat) echo ' anciens'; if (isset($circo) && (!$depute->fin_mandat || myTools::isFinLegislature())) echo ' dep_map dep'.$id_circo.'" id="'.sprintf('%03d', $depute->id).$id_circo; ?>" onclick="document.location='<?php echo $url_depute; ?>'"><span title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>" class="jstitle phototitle block"><a class="urlphoto" href="<?php echo $url_depute; ?>"></a>
     <span class="list_nom">
       <a href="<?php echo $url_depute; ?>"><?php echo $depute->getNomPrenom(); ?></a>
     </span>
