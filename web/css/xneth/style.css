@@ -1155,14 +1155,6 @@ h1 {
   float: left;
   width: 414px;
 }
-#b3 {
-  float: left;
-  width: 414px;
-}
-#b4 {
-  float: right;
-  width: 414px;
-}
 /**/
 .meilleur_pire {
   padding-bottom:10px;
@@ -1170,9 +1162,6 @@ h1 {
 }
 .meilleur_pire h3 {
   background-color: #ebebeb;
-}
-.b_d_infos h3{
-
 }
 .bas_depute {
   clear: both;
