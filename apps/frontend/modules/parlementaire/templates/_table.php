@@ -41,11 +41,12 @@ foreach($deputes as $depute) {
   $url_depute = url_for('@parlementaire?slug='.$depute->slug);
   $ct++;
   $id_circo = preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo); ?>
-  <div class="list_dep<?php if ($anciens || $depute->fin_mandat > $depute->debut_mandat) echo ' anciens'; if (isset($circo) && (!$depute->fin_mandat || myTools::isFinLegislature())) echo ' dep_map dep'.$id_circo.'" id="'.sprintf('%03d', $depute->id).$id_circo; ?>" onclick="document.location='<?php echo $url_depute; ?>'"><span title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>" class="jstitle phototitle block"><a class="urlphoto" href="<?php echo $url_depute; ?>"></a>
+  <a href="<?php echo $url_depute; ?>"><div class="list_dep jstitle phototitle block<?php if ($anciens || $depute->fin_mandat > $depute->debut_mandat) echo ' anciens'; if (isset($circo) && (!$depute->fin_mandat || myTools::isFinLegislature())) echo ' dep_map dep'.$id_circo.'" id="'.sprintf('%03d', $depute->id).$id_circo; ?>" title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>">
+    <span class="urlphoto" href="<?php echo $url_depute; ?>"></span>
     <span class="list_nom">
-      <a href="<?php echo $url_depute; ?>"><?php echo $depute->getNomPrenom(); ?></a>
+      <?php echo $depute->getNomPrenom(); ?>
     </span>
-    <span class="list_right"><a href="<?php echo $url_depute; ?>"><?php
+    <span class="list_right"><?php
       if ($anciens) {
         echo '<span class="clearboth">';
         if (isset($depute->fin_fonction))
@@ -60,18 +61,18 @@ foreach($deputes as $depute) {
           $string = $depute->getNumDepartement().'&nbsp;&mdash;&nbsp;'.preg_replace("/nscription/", "", $string);
         echo $string.'</span></a>';
       } else echo $depute->nom_circo;
-    ?></a></span><br/>
+    ?></span><br/>
     <span class="list_left">
-      <?php echo preg_replace('/\s([A-Z\-]+)$/', ' <a href="'.$url_depute.'"><span class="c_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
+      <?php echo preg_replace('/\s([A-Z\-]+)$/', ' <span class="c_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span>", $depute->getStatut()); ?>
     </span>
     <span class="list_right">
     <?php if ($depute->nb_commentaires) {
-      echo '<a href="'.$url_depute.'"><span class="list_com">'.$depute->nb_commentaires.'&nbsp;commentaire';
+      echo '<span class="list_com">'.$depute->nb_commentaires.'&nbsp;commentaire';
       if ($depute->nb_commentaires > 1) echo 's';
-      echo '</span></a>';
+      echo '</span>';
     } ?>
     </span><br/>
-  </span></div>
+  </div></a>
   <?php if (isset($list) && $ct % $div == 0 && $ct != $totaldep && $totaldep != 1) {
     $td++;
     echo '</td><td class="list_borderleft">';
