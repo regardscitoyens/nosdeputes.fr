@@ -1,5 +1,6 @@
 <?php
 $ct = 0;
+$anciens = false;
 if (isset($list)) {
   if (!isset($colonnes))
     $colonnes = 3;
@@ -10,13 +11,18 @@ if (isset($list)) {
         $fonction = $depute->fonction;
         break;
       }
+      if (isset($deputes[0]->fin_fonction)) {
+        $anciens = true;
+        $fonction = "Ancien ".$fonction;
+      }
     } else {
       $pluriel = (count($deputes) > 1 ? "s" : "");
       $fonction = "Ancien député";
+      $anciens = true;
     }
-    echo '<h3 class="aligncenter">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', (count($deputes) > 1 ? preg_replace('/(,)? /', 's\\1 ', (preg_match('/(spécial|général)/i', $fonction) ? preg_replace('/al$/', 'aux', $fonction) : $fonction)) : $fonction))).(count($deputes) > 1 && !preg_match('/(spécial|général|droit|bureau)$/i', $fonction) ? 's' : '').'</h3>';
+    echo '<h3 class="aligncenter'.($anciens ? " anciens" : "").'">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', (count($deputes) > 1 ? preg_replace('/(,)? /', 's\\1 ', (preg_match('/(spécial|général)/i', $fonction) ? preg_replace('/al$/', 'aux', $fonction) : $fonction)) : $fonction))).(count($deputes) > 1 && !preg_match('/(spécial|général|droit|bureau)$/i', $fonction) ? 's' : '').'</h3>';
   }
-  echo '<table summary="Députés'.(isset($lettre) ? ' dont le nom commence par '.$lettre : '').'"><tr>';
+  echo '<table '.($anciens ? 'class="anciens" ': "").'summary="Députés'.(isset($lettre) ? ' dont le nom commence par '.$lettre : '').'"><tr>';
   $totaldep = count($deputes);
   $div = floor($totaldep/$colonnes)+1;
   if ($div > 1 && $totaldep % $colonnes == 0)
@@ -39,7 +45,14 @@ foreach($deputes as $depute) {
     <span class="list_nom">
       <a href="<?php echo $url_depute; ?>"><?php echo $depute->getNomPrenom(); ?></a>
     </span>
-    <span class="list_right"><a href="<?php echo $url_depute; //if (!isset($circo)) echo url_for('@list_parlementaires_departement?departement='.$depute->nom_circo); else echo url_for('@parlementaire?slug='.$depute->slug); ?>"><?php
+    <span class="list_right"><a href="<?php echo $url_depute; ?>"><?php
+      if ($anciens) {
+        echo '<span class="clearboth">';
+        if (isset($depute->fin_fonction))
+          echo 'du '.myTools::displayDate($depute->debut_fonction).' au '.myTools::displayDate($depute->fin_fonction);
+        else echo $depute->old_fonction;
+        echo '</span><br/>';
+      }
       if (isset($circo)) {
         echo '<span class="list_num_circo">';
         $string = preg_replace('/(è[rm]e)/', '<sup>\1</sup>', $depute->getNumCircoString());
@@ -51,13 +64,12 @@ foreach($deputes as $depute) {
     <span class="list_left">
       <?php echo preg_replace('/\s([A-Z\-]+)$/', ' <a href="'.$url_depute.'"><span class="c_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
     </span>
-    <span class="list_right"><?php
-      if ($depute->nb_commentaires) {
-        echo '<a href="'.$url_depute.'"><span class="list_com">'.$depute->nb_commentaires.'&nbsp;commentaire';
-        if ($depute->nb_commentaires > 1) echo 's';
-        echo '</span></a>';
-      }
-    ?>
+    <span class="list_right">
+    <?php if ($depute->nb_commentaires) {
+      echo '<a href="'.$url_depute.'"><span class="list_com">'.$depute->nb_commentaires.'&nbsp;commentaire';
+      if ($depute->nb_commentaires > 1) echo 's';
+      echo '</span></a>';
+    } ?>
     </span><br/>
   </span></div>
   <?php if (isset($list) && $ct % $div == 0 && $ct != $totaldep && $totaldep != 1) {

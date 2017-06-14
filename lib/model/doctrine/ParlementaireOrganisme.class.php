@@ -18,7 +18,10 @@ class ParlementaireOrganisme extends BaseParlementaireOrganisme
     else if (preg_match('/questeur/i', $fonction)) {
       if (preg_match('/membre/i', $fonction)) return 80;
       return 70;
-    } else if (preg_match('/(secretaire|secrétaire)/i', $fonction)) return 65;
+    } else if (preg_match('/(secretaire|secrétaire)/i', $fonction)) {
+      if (!preg_match('/[âa]ge/i', $fonction)) return 65;
+      return 50;
+    }
     else if (preg_match('/rapporteur/i', $fonction)) {
       if (preg_match('/spécial/i', $fonction)) return 60;
       return 55;

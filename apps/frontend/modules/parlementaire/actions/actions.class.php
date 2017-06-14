@@ -249,32 +249,34 @@ class parlementaireActions extends sfActions
     $this->forward404Unless($nom);
 
     $query = Doctrine::getTable('Parlementaire')->createQuery('p')
-      ->select('p.*, po.fonction as fonction, po.importance as imp')
+      ->select('p.*, po.fonction as fonction, po.importance as imp, po.debut_fonction as debut_fonction, po.fin_fonction as fin_fonction')
       ->leftJoin('p.ParlementaireOrganisme po')
       ->leftJoin('po.Organisme o')
-      ->where('p.fin_mandat IS NULL')
-      ->andWhere('p.groupe_acronyme = ?', $acro)
+      ->where('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat')
       ->andWhere('o.type = ?', 'groupe')
       ->andWhere('o.nom = ?', $nom)
-      ->orderBy('imp DESC, p.nom_de_famille ASC');
+      ->orderBy('po.fin_fonction, imp DESC, p.nom_de_famille ASC');
     $this->parlementaires = array();
     $this->total = 0;
     foreach ($query->execute() as $depute) {
-      $this->total++;
       $imp = $depute->imp;
+      if ($depute->fin_fonction)
+        $imp -= 100;
+      else $this->total++;
       if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
       else $this->parlementaires[$imp] = array($depute);
     }
     $query = Doctrine::getTable('Parlementaire')->createQuery('p')
-      ->select('p.*')
-      ->where('p.groupe_acronyme = ?', strtoupper($acro))
+      ->select('p.*, po.fonction as old_fonction')
+      ->leftJoin('p.ParlementaireOrganisme po')
+      ->leftJoin('po.Organisme o')
+      ->where('o.nom = ?', $nom)
       ->andWhere('p.fin_mandat IS NOT NULL')
       ->andWhere('p.fin_mandat > p.debut_mandat')
-      ->orderBy('p.nom_de_famille ASC');
+      ->orderBy('po.fin_fonction, p.nom_de_famille ASC');
     foreach ($query->execute() as $depute) {
-      $this->total++;
-      if (isset($this->parlementaires[0])) $this->parlementaires[0][] = $depute;
-      else $this->parlementaires[0] = array($depute);
+      if (isset($this->parlementaires[-200])) $this->parlementaires[-200][] = $depute;
+      else $this->parlementaires[-200] = array($depute);
     }
     $query2 = Doctrine::getTable('Organisme')->createQuery('o');
     $query2->where('o.nom = ?', $nom);
@@ -300,19 +302,33 @@ class parlementaireActions extends sfActions
     } else $this->page = "seances";
     if ($this->page === "home") {
       $query = Doctrine::getTable('Parlementaire')->createQuery('p')
-        ->select('p.*, po.fonction as fonction, po.importance as imp')
+        ->select('p.*, po.fonction as fonction, po.importance as imp, po.debut_fonction as debut_fonction, po.fin_fonction as fin_fonction')
         ->leftJoin('p.ParlementaireOrganisme po')
         ->leftJoin('po.Organisme o')
         ->where('o.slug = ?', $orga)
-        ->andWhere('p.fin_mandat IS NULL')
-        ->orderBy("po.importance DESC, p.nom_de_famille ASC");
+        ->andWhere('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat')
+        ->orderBy("po.fin_fonction, po.importance DESC, p.nom_de_famille ASC");
       $this->parlementaires = array();
       $this->total = 0;
       foreach ($query->execute() as $depute) {
-        $this->total++;
         $imp = $depute->imp;
+        if ($depute->fin_fonction)
+          $imp -= 100;
+        else $this->total++;
         if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
         else $this->parlementaires[$imp] = array($depute);
+      }
+      $query = Doctrine::getTable('Parlementaire')->createQuery('p')
+        ->select('p.*, po.fonction as old_fonction')
+        ->leftJoin('p.ParlementaireOrganisme po')
+        ->leftJoin('po.Organisme o')
+        ->where('o.slug = ?', $orga)
+        ->andWhere('p.fin_mandat IS NOT NULL')
+        ->andWhere('p.fin_mandat > p.debut_mandat')
+        ->orderBy('po.fin_fonction, p.nom_de_famille ASC');
+      foreach ($query->execute() as $depute) {
+        if (isset($this->parlementaires[-200])) $this->parlementaires[-200][] = $depute;
+        else $this->parlementaires[-200] = array($depute);
       }
     }
     if ($this->page === "home" || $this->page === "seances") {
@@ -399,7 +415,7 @@ class parlementaireActions extends sfActions
     }
     $fin = myTools::isFinLegislature();
     if (!$fin)
-      $qp->andWhere('fin_mandat IS NULL');
+      $qp->andWhere('fin_mandat IS NULL OR fin_mandat < debut_mandat');
     $dixmois = time() - round(60*60*24*3650/12);
     if ($dixmois > strtotime(myTools::getDebutLegislature()))
       $qp->andWhere('debut_mandat < ?', date('Y-m-d', $dixmois));
