@@ -6,7 +6,7 @@
 <?php foreach($docs as $doc) {
   $titre = $doc->getTitre();
   $titre = preg_replace('/N°\s\d+/', '', $titre);
-  $titre = myTools::displayVeryShortDate($doc->date).'&nbsp;: '.truncate_text($titre, 100);
+  $titre = myTools::displayVeryShortDate($doc->date).'&nbsp;: '.truncate_text($titre, 120);
   if ($doc->nb_commentaires)
     $titre .= ' (<span class="list_com">'.$doc->nb_commentaires.'&nbsp;commentaire';
   if ($doc->nb_commentaires > 1)
