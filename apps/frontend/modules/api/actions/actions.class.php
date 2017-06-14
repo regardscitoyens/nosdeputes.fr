@@ -302,7 +302,7 @@ class apiActions extends sfActions
     $res['url_nosdeputes_api'] = myTools::url_forAPI('api/parlementaire?format='.$format.'&slug='.$res['slug']);
     $res['nb_mandats'] = count(unserialize($parl->getAutresMandats()));
     $res['twitter'] = "";
-    foreach (unserialize($parl->sites_web) as $site)
+    if ($parl->sites_web) foreach (unserialize($parl->sites_web) as $site)
       if (preg_match("/twitter.com/", $site))
         $res['twitter'] = str_replace("https://twitter.com/", "", $site);
     return $res;
