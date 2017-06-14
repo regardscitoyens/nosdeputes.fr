@@ -273,7 +273,7 @@ class parlementaireActions extends sfActions
       ->where('o.nom = ?', $nom)
       ->andWhere('p.fin_mandat IS NOT NULL')
       ->andWhere('p.fin_mandat > p.debut_mandat')
-      ->orderBy('po.fin_fonction, p.nom_de_famille ASC');
+      ->orderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille ASC');
     foreach ($query->execute() as $depute) {
       if (isset($this->parlementaires[-200])) $this->parlementaires[-200][] = $depute;
       else $this->parlementaires[-200] = array($depute);
@@ -325,7 +325,7 @@ class parlementaireActions extends sfActions
         ->where('o.slug = ?', $orga)
         ->andWhere('p.fin_mandat IS NOT NULL')
         ->andWhere('p.fin_mandat > p.debut_mandat')
-        ->orderBy('po.fin_fonction, p.nom_de_famille ASC');
+        ->orderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille ASC');
       foreach ($query->execute() as $depute) {
         if (isset($this->parlementaires[-200])) $this->parlementaires[-200][] = $depute;
         else $this->parlementaires[-200] = array($depute);
