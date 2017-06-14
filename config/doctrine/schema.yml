@@ -103,21 +103,32 @@ Organisme:
       values: ['parlementaire', 'groupe', 'extra', 'groupes']
 
 ParlementaireOrganisme:
+  actAs:
+    Timestampable:
   columns:
+    organisme_id: integer
+    parlementaire_id: integer
     fonction: string(512)
     importance: integer
     debut_fonction: date
-    organisme_id:
-      type: integer
-      primary: true
-    parlementaire_id:
-      type: integer
-      primary: true
+    fin_fonction: date
   relations:
     Parlementaire:
       foreignAlias: ParlementaireOrganismes
     Organisme:
       foreignAlias: ParlementaireOrganismes
+  indexes:
+    uniq_index:
+      fields: [organisme_id, parlementaire_id, fin_fonction]
+      type: unique
+    index_parl:
+      fields: [parlementaire_id]
+    index_cur_parl:
+      fields: [parlementaire_id, fin_fonction]
+    index_org:
+      fields: [organisme_id]
+    index_cur_org:
+      fields: [organisme_id, fin_fonction]
 
 Seance:
   actAs:

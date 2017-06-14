@@ -138,7 +138,7 @@ class Parlementaire extends BaseParlementaire
     return $this->setPOrganisme('parlementaire', $array);
   }
   public function setExtras($array) {
-    return $this->setPOrganisme('extra', $array, 1);
+    return $this->setPOrganisme('extra', $array);
   }
   public function setGroupe($array) {
     return $this->setPOrganisme('groupe', $array);
@@ -147,66 +147,69 @@ class Parlementaire extends BaseParlementaire
     return $this->setPOrganisme('groupes', $array);
   }
 
-  public function setPOrganisme($type, $array, $loadEmpty = 0) {
-    if (!$array && !$loadEmpty)
-      return;
-    $orgas = $this->getParlementaireOrganismes();
-    foreach($orgas->getKeys() as $key) {
-      $o = $orgas->get($key);
-      if ($o->type == $type)
-      $orgas->remove($key);
+  public function setPOrganisme($type, $array) {
+    $today = date("Y-m-d");
+
+    # Get existing type organismes
+    $porgas = $this->getOrganismes();
+    foreach($porgas as $po) {
+      if ($po->type != $type)
+        unset($porgas[array_search($po, $porgas)]);
     }
+
+    # Check all input organismes
     foreach ($array as $args) {
+      $fonction = $args[1];
+      $importance = ParlementaireOrganisme::defImportance($fonction);
+
+      # Create Organisme if new in db
       $orga = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($args[0], $type);
+
+      # Search organisme in already listed one
+      $found = false;
+      foreach ($porgas as $po) {
+        # If it already exists and the function has not changed we leave it
+        if ($po->organisme_id == $orga->id && $po->fonction == $fonction) {
+          $found = true;
+          unset($porgas[array_search($po, $porgas)]);
+          break;
+        }
+      }
+
+      # If it doesn't exist, create it
+      if (!$found) {
+        echo "INFO: ".$this->nom." joined ".$orga->nom." as ".$fonction."\n";
+        $po = new ParlementaireOrganisme();
+        $po->setParlementaire($this);
+        $po->setOrganisme($orga);
+        $po->setFonction($fonction);
+        $po->setImportance($importance);
+        $po->setDebutFonction($today);
+        $po->save();
+      }
+
+      # Special case of groupe impacting specific field
       if ($type == 'groupe')
         $this->groupe_acronyme = $orga->getSmallNomGroupe();
-      $po = new ParlementaireOrganisme();
-      $po->setParlementaire($this);
-      $po->setOrganisme($orga);
-      $fonction = preg_replace("/\(/","",$args[1]);
-      $po->setFonction($fonction);
-      $importance = ParlementaireOrganisme::defImportance($fonction);
-      $po->setImportance($importance);
-  /*  if (isset($args[2])) {
-        $po->setDebutFonction($args[2]);
-      }*/
-      $orgas->add($po);
     }
-    $this->_set('ParlementaireOrganismes', $orgas);
-  }
 
-  private function getPOFromJoinIf($field, $value) {
-    $p = $this->toArray();
-    if (isset($p['ParlementaireOrganisme'])) {
-      $i = 0;
-      while (isset($p['ParlementaireOrganisme'][$i])) {
-        if ($p['ParlementaireOrganisme'][$i]['Organisme'][$field] == $value) {
-          $po = new ParlementaireOrganisme();
-          $o = new Organisme();
-          $o->fromArray($p['ParlementaireOrganisme'][$i]['Organisme']);
-          $po->setFonction($p['ParlementaireOrganisme'][$i]['fonction']);
-          $po->setParlementaire($this);
-          $po->setOrganisme($o);
-          return $po;
-      }
-      $i++;
-      }
-      return NULL;
+    # Declare as finished those not listed anymore
+    foreach($porgas as $po) {
+      echo "INFO: ".$this->nom." left ".$po->nom." as ".$po->fonction." (".$po->debut_fonction." -> ".$today.")\n";
+      $po->setFinFonction($today);
+      $po->save();
     }
   }
 
-  public function getOrganismes() {
-    return doctrine::getTable('Organisme')->createQuery('o')->leftJoin('o.Parlementaires p')->where('p.id = ?', $this->id)->execute();
-  }
-
-  public function getPOrganisme($str) {
-    if($po = $this->getPOFromJoinIf('nom', $str))
-      return $po;
+  public function getOrganismes($includePast=false) {
+    $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {
-      if ($po['Organisme']->nom == $str)
-        return $po;
+      if ($includePast || !$po->fin_fonction)
+        array_push($res, $po);
     }
+    return $res;
   }
+
   public function setAutresMandats($array) {
     $this->_set('autres_mandats', serialize($array));
   }
@@ -233,32 +236,30 @@ class Parlementaire extends BaseParlementaire
     $this->_set('adresses', serialize($array));
   }
   public function getGroupe() {
-    if($po = $this->getPOFromJoinIf('type', 'groupe'))
-      return $po;
-    foreach($this->getParlementaireOrganismes() as $po) {
-      if ($po->type === 'groupe')
+    foreach($this->getOrganismes() as $po) {
+      if ($po->type === 'groupe' && !$po->fin_fonction)
         return $po;
     }
   }
-  public function getExtras() {
+  public function getExtras($includePast=false) {
     $res = array();
-    foreach($this->getParlementaireOrganismes() as $po) {
+    foreach($this->getOrganismes($includePast) as $po) {
       if ($po->type == 'extra')
         array_push($res, $po);
     }
     return $res;
   }
-  public function getGroupes() {
+  public function getGroupes($includePast=false) {
     $res = array();
-    foreach($this->getParlementaireOrganismes() as $po) {
+    foreach($this->getOrganismes($includePast) as $po) {
       if ($po->type == 'groupes')
         array_push($res, $po);
     }
     return $res;
   }
-  public function getResponsabilites() {
+  public function getResponsabilites($includePast=false) {
     $res = array();
-    foreach($this->getParlementaireOrganismes() as $po) {
+    foreach($this->getOrganismes($includePast) as $po) {
       if ($po->type == 'parlementaire')
         $res[sprintf('%04d',abs(100-$po->importance)).$po->nom]=$po;
     }

@@ -88,10 +88,4 @@ class Organisme extends BaseOrganisme
       return false;
     return true;
   }
-
-  public function getHasParlementaires() {
-    if (count($this->getParlementaires()))
-      return true;
-    return false;
-  }
 }
