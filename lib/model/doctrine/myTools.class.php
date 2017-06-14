@@ -372,13 +372,13 @@ class myTools {
     }
   }
 
-  public static function depile_assoc_csv($asso, $breakline, $multi, $alreadyline) {
+  public static function depile_assoc_csv($asso, $breakline, $multi, $last) {
     $semi = 0;
     foreach (array_keys($asso) as $k) {
       if (isset($multi[$k]) && $multi[$k]) {
         $semi = 1;
       }
-      self::depile_csv($asso[$k], $breakline, $multi, $semi, $alreadyline);
+      self::depile_csv($asso[$k], $breakline, $multi, $semi, $last);
       if ($k == $breakline) {
         echo "\n";
       }
@@ -386,32 +386,31 @@ class myTools {
     return $semi;
   }
 
-  public static function depile_csv($res, $breakline, $multi, $comma = 0, $alreadyline = 0) {
+  public static function depile_csv($res, $breakline, $multi, $comma = 0, $last=0) {
     if (is_array($res)) {
+      $maxk = count(array_keys($res)) - 1;
       if (isset($res['organisme']) && isset($res['fonction']))
-        return self::depile_csv($res['organisme']." - ".$res['fonction'], $breakline, $multi, $comma, $alreadyline);
+        return self::depile_csv($res['organisme']." - ".$res['fonction'], $breakline, $multi, $comma, $last);
       if (!isset($res[0])) {
         if (array_keys($res))
-  	return self::depile_assoc_csv($res, $breakline, $multi, $alreadyline);
+          return self::depile_assoc_csv($res, $breakline, $multi, $last);
         echo ";";
         return;
       }
-      foreach($res as $r)
-        $semi = self::depile_csv($r, $breakline, $multi, 0, $alreadyline);
+      foreach(array_keys($res) as $k)
+        $semi = self::depile_csv($res[$k], $breakline, $multi, 0, ($k == $maxk));
       if ($semi)
         echo ';';
-    }else{
-      if ($comma)
-        $res = preg_replace('/[,;]/', '', $res);
+    } else {
       $string = preg_match('/[,;"]/', $res);
       if ($string) {
-        $res = preg_replace('/"/', '\"', $res);
+        $res = preg_replace('/"/', '""', $res);
         echo '"';
       }
       echo $res;
       if ($string)
         echo '"';
-      if ($comma)
+      if ($comma && !$last)
         echo '|';
       else echo ';';
     }
