@@ -210,8 +210,14 @@ class Parlementaire extends BaseParlementaire
     return $res;
   }
 
+  public static function historiqueSort($a, $b) {
+    return strcmp($b->fin_fonction.$b->debut_fonction, $a->fin_fonction.$a->debut_fonction);
+  }
+
   public function getHistorique() {
-    return $this->getOrganismes(true);
+    $histo = $this->getOrganismes(true);
+    usort($histo, 'Parlementaire::historiqueSort');
+    return $histo;
   }
 
   public function setAutresMandats($array) {

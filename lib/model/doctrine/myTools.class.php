@@ -323,18 +323,25 @@ class myTools {
     return $cpt;
   }
 
+  public static function formatOrganisme($org) {
+    $resp = array("organisme" => $org->getNom(), "fonction" => $org->fonction, "debut_fonction" => $org->debut_fonction);
+    if ($org->fin_fonction)
+      $resp["fin_fonction"] = $org->fin_fonction;
+    return $resp;
+  }
+
   public static function array2hash($array, $hashname) {
     if (!$array)
       return array();
     $hash = array();
     if (!isset($array[0])) {
       if (isset($array->fonction))
-        return array("organisme" => $array->getNom(), "fonction" => $array->fonction);
+        return self::formatOrganisme($array);
       else return $array;
     }
     foreach($array as $e) if ($e) {
       if (isset($e->fonction))
-        $hash[] = array($hashname => array("organisme" => $e->getNom(), "fonction" => $e->fonction));
+        $hash[] = array($hashname => self::formatOrganisme($e));
       else $hash[] = array($hashname => preg_replace('/\n/', ', ', $e));
     }
     return $hash;
@@ -390,7 +397,7 @@ class myTools {
     if (is_array($res)) {
       $maxk = count(array_keys($res)) - 1;
       if (isset($res['organisme']) && isset($res['fonction']))
-        return self::depile_csv($res['organisme']." - ".$res['fonction'], $breakline, $multi, $comma, $last);
+        return self::depile_csv($res['organisme']." - ".$res['fonction']." (".$res['debut_fonction']." -> ".$res['fin_fonction'].")", $breakline, $multi, $comma, $last);
       if (!isset($res[0])) {
         if (array_keys($res))
           return self::depile_assoc_csv($res, $breakline, $multi, $last);

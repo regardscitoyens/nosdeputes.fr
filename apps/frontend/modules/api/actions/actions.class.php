@@ -199,23 +199,31 @@ class apiActions extends sfActions
       $this->forward404Unless(Doctrine::getTable('Organisme')->findOneBySlug($orga));
       $query->leftJoin('p.ParlementaireOrganisme po, po.Organisme o')
         ->addWhere('o.slug = ?', $orga)
+        // On ne garde que les députés actuellement membres
+        ->addWhere('po.fin_fonction IS NULL')
         ->addOrderBy('po.importance DESC, p.nom_de_famille');
+        // ou si on veut renvoyer aussi les anciens membres
+        //->addOrderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille');
     }
     $deputes = $query->execute();
     $this->champs = array();
     $this->res = array('deputes' => array());
     $this->breakline = 'depute';
     foreach($deputes as $dep) {
-      $depute = $this->getParlementaireArray($dep, $request->getParameter('format'), ($orga || $request->getParameter('current') == true ? 1 : 2));
-      if ($orga)
+      $depute = $this->getParlementaireArray($dep, $request->getParameter('format'), ($request->getParameter('current') == true || !$orga ? 1 : 2));
+      if ($orga) {
         $depute['fonction'] = $dep['ParlementaireOrganisme'][0]['fonction'];
+        $depute['debut_fonction'] = $dep['ParlementaireOrganisme'][0]['debut_fonction'];
+        // Utile uniquement si on renvoie aussi les anciens membres
+        //$depute['fin_fonction'] = $dep['ParlementaireOrganisme'][0]['fin_fonction'];
+      }
       if ($request->getParameter('format') == 'csv')
        foreach(array_keys($depute) as $key)
         if (!isset($this->champs[$key]))
          $this->champs[$key] = 1;
       $this->res['deputes'][] = array('depute' => $depute);
     }
-    myTools::templatize($this, $request, 'nosdeputes.fr_deputes'.($request->getParameter('current') == true ? "_en_mandat" : "").date('Y-m-d'));
+    myTools::templatize($this, $request, 'nosdeputes.fr_deputes'.($orga ? "_".$orga : "").($request->getParameter('current') == true ? "_en_mandat" : "").'_'.date('Y-m-d'));
   }
 
   public function executeParlementaire(sfWebRequest $request)
@@ -224,9 +232,9 @@ class apiActions extends sfActions
     $this->forward404Unless($slug);
     $depute = Doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     if (!$depute) {
-        $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($slug);
-        if ($depute)
-                return $this->redirect('api/parlementaire?slug='.$depute->slug.'&format='.$request->getParameter('format'));
+      $depute = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($slug);
+      if ($depute)
+        return $this->redirect('api/parlementaire?slug='.$depute->slug.'&format='.$request->getParameter('format'));
     }
     $this->forward404Unless($depute);
     $this->res = array();
@@ -284,6 +292,7 @@ class apiActions extends sfActions
       $res['responsabilites'] = myTools::array2hash($parl->getResponsabilites(), 'responsabilite');
       $res['responsabilites_extra_parlementaires'] = myTools::array2hash($parl->getExtras(), 'responsabilite');
       $res['groupes_parlementaires'] = myTools::array2hash($parl->getGroupes(), 'responsabilite');
+      $res['historique_responsabilites'] = myTools::array2hash($parl->getHistorique(), 'responsabilite');
     }
     $res['sites_web'] = myTools::array2hash(unserialize($parl->sites_web), 'site');
     if ($light != 2) {
