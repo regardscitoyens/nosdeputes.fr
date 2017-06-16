@@ -70,7 +70,7 @@ L'ensemble des données de ces différents sites est par ailleurs mis à disposi
 
   https://www.nosdeputes.fr/organismes/groupes/xml
 
-- **Liste des parlementaires membres d'un organisme** :
+- **Liste des parlementaires membres d'un organisme :**
 
   - Pour les groupes politiques, il faut utiliser l'acronyme du groupe issu de la liste des groupes ou des détails d'un député.
 
@@ -106,7 +106,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
 ## Données d'activité des parlementaires
 
-- **Synthèse des 12 derniers mois ou de toute la législature** :
+- **Synthèse des 12 derniers mois ou de toute la législature :**
 
   *(telle qu'affichée sur la page [synthèse](https://www.nosdeputes.fr/synthese)*
 
@@ -114,17 +114,34 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
   - XML : https://www.nosdeputes.fr/synthese/data/xml
   - JSON : https://www.nosdeputes.fr/synthese/data/json
 
-- **Synthèse mensuelle** :
+- **Synthèse mensuelle :**
 
   *Attention : seuls les parlementaires ayant manifesté une activité sur la période sont renvoyés*
   
   Exemple pour le mois d'avril 2016 : https://www.nosdeputes.fr/synthese/201604/xml
 
-- **Contenu des travaux** :
+
+## Documents parlementaires
+
+- **Contenu des travaux :**
 
   Tous les contenus textuels des différents travaux parlementaires (organismes, débats, amendements, questions, rapports, propositions de loi) sont indexés dans le moteur de recherche et peuvent donc être individuellement retrouvés et filtrés à travers cette API ([voir plus bas](#résultats-du-moteur-de-recherche)).
   
   Les résultats de la recherche renvoient les urls des données détaillées de chaque élément accessible via l'API.
+
+- **Tous les amendements déposés sur un texte :**
+
+  Les amendements sont disponibles à partir des numéros des lois correspondantes.
+
+  - À l'Assemblée nationale, par exemple pour le projet de loi initial relatif à la transparence de la vie publique (n° 1005) sous la 14ème législature : https://www.nosdeputes.fr/14/amendements/1005/xml
+
+    *Attention pour l'Assemblée à bien ajuster également le numéro de législature.*
+
+  - Au Sénat, par exemple pour le texte sur la transparence présenté en commission (n° pjl12-689) après son passage à l'Assemblée : https://www.nossenateurs.fr/amendements/20122013-689/xml
+
+    *Attention pour le Sénat a bien reformater la partie année de l'identifiant de loi sous sa forme complète : ppl15-xxx -> `20152016-xxx`, pjl12-xxx -> `2012013-yyy`.*
+
+  Un export expérimental de données de type "graphe" (uniquement au format json) indiquant les liens entre parlementaires ayant signé ou cosigné des amendements identiques sur un texte donné est accessible en remplaçant le format par `links/json` dans l'url, par exemple pour le texte transparence à l'Assemblée : https://www.nosdeputes.fr/14/amendements/1005/links/json
 
 
 ## Résultats du moteur de recherche
@@ -133,39 +150,39 @@ Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche
 
 **Exemple :** résultats d'une recherche sur « OpenData https://www.nosdeputes.fr/recherche/opendata?format=xml
 
-### Pagination
-
-Les résultats indiquent un total de résultats `lastResult` et sont délivrés par lots de 20, numérotés de `start` à `end`.
-
-Ajoutez à l'url le paramètre `&page=N` pour accéder aux résultats de la page N (contenant les éléments n° 20*(N-1)+1 à 20*N).
-
-**Exemple :** résultats de la 2nde page d'une recherche sur « Internet » https://www.nosdeputes.fr/recherche/internet?page=2&format=xml
-
-### Filtrage
-
-Différents paramètres peuvent être ajoutés aux requêtes de recherche et combinés pour préciser les résultats.
-
-Vous pouvez restreindre les résultats à :
-
-- un **type d'objet** précis : ajouter `&object_name=OBJTYPE` avec `OBJTYPE` parmi : `Parlementaire`, `Organisme`, `Intervention`, `Amendement`, `QuestionEcrite`, `Section`, `Texteloi`, `Commentaire`
-
-- une **période temporelle** précise : ajouter `&date=YYYYMMDD%2CYYYYMMDD` par exemple pour les résultats sur « internet » en janvier 2016 : https://www.nosdeputes.fr/recherche/internet?format=xml&date=20160101%2C20160131
-
-- un **parlementaire** précis : ajouter `&tag=parlementaire=SLUG`
-
-- ceux associés à des **mots-clés** spécifique : ajouter `&tag=KEYWORD1,KEYWORD2,...` par exemple pour les résultats sur « internet » effectivement taggés "internet" : https://www.nosdeputes.fr/recherche/internet?format=xml&tag=internet
-
-### Statistiques
-
-Vous pouvez également obtenir des statistiques agrégées sur les résultats d'une recherche (au format JSON uniquement) via les options suivantes :
-
-- **Répartition par députés** : `&parlfacet=1`
-
-- **Répartition par mots-clés** associés : `&tagsfacet=1`
-
-- **Répartition temporelle** : `&timefacet=1`
-
-  *(par périodes d'un mois si la période considérée dépasse 90 jours, par jour sinon)*
+  ### Pagination
+  
+  Les résultats indiquent un total de résultats `lastResult` et sont délivrés par lots de 20, numérotés de `start` à `end`.
+  
+  Ajoutez à l'url le paramètre `&page=N` pour accéder aux résultats de la page N (contenant les éléments n° 20*(N-1)+1 à 20*N).
+  
+  **Exemple :** résultats de la 2nde page d'une recherche sur « Internet » https://www.nosdeputes.fr/recherche/internet?page=2&format=xml
+  
+  ### Filtrage
+  
+  Différents paramètres peuvent être ajoutés aux requêtes de recherche et combinés pour préciser les résultats.
+  
+  Vous pouvez restreindre les résultats à :
+  
+  - un **type d'objet** précis : ajouter `&object_name=OBJTYPE` avec `OBJTYPE` parmi : `Parlementaire`, `Organisme`, `Intervention`, `Amendement`, `QuestionEcrite`, `Section`, `Texteloi`, `Commentaire`
+  
+  - une **période temporelle** précise : ajouter `&date=YYYYMMDD%2CYYYYMMDD` par exemple pour les résultats sur « internet » en janvier 2016 : https://www.nosdeputes.fr/recherche/internet?format=xml&date=20160101%2C20160131
+  
+  - un **parlementaire** précis : ajouter `&tag=parlementaire=SLUG`
+  
+  - ceux associés à des **mots-clés** spécifique : ajouter `&tag=KEYWORD1,KEYWORD2,...` par exemple pour les résultats sur « internet » effectivement taggés "internet" : https://www.nosdeputes.fr/recherche/internet?format=xml&tag=internet
+  
+  ### Statistiques
+  
+  Vous pouvez également obtenir des statistiques agrégées sur les résultats d'une recherche (au format JSON uniquement) via les options suivantes :
+  
+  - **Répartition par députés :** `&parlfacet=1`
+  
+  - **Répartition par mots-clés** associés : `&tagsfacet=1`
+  
+  - **Répartition temporelle :** `&timefacet=1`
+  
+    *(par périodes d'un mois si la période considérée dépasse 90 jours, par jour sinon)*
 
 
 ## Librairie Python [CPC-API](https://pypi.python.org/pypi/cpc_api)

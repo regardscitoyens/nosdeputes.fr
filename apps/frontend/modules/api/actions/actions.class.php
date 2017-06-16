@@ -311,7 +311,7 @@ class apiActions extends sfActions
 
   public function executeAmendements(sfWebRequest $request) {
     chdir(sfConfig::get('sf_root_dir'));
-    $this->task = new printDumpAmendementsLoiCsvTask($this->dispatcher, new sfFormatter());
+    $this->task = new printDumpAmendementsLoiTask($this->dispatcher, new sfFormatter());
     $this->loi = preg_replace('/[^0-9a-z\-]/', '', $request->getParameter('loi'));
     $this->format = preg_replace('/[^a-z]/', '', $request->getParameter('format'));
     $this->setLayout(false);
@@ -368,6 +368,7 @@ class apiActions extends sfActions
           $this->addLink($pa, $i, 1);
     }
     $this->res = array('sorts' => $sorts, 'sujets' => $sujets, 'parlementaires' => $parls, 'links' => array_values($this->links));
+
     myTools::templatize($this, $request, 'nosdeputes.fr_amendements_'.$id.'_'.date('Y-m-d'));
     $this->breakline = '';
   }
