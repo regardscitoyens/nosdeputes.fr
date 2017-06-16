@@ -2,6 +2,21 @@
 
 Une API a été développée pour offrir un accès aux données de NosDéputés.fr et NosSénateurs.fr aux formats XML, JSON et CSV.
 
+
+## Sommaire
+
+- [Explications](#explications)
+- [Liste des parlementaires](#liste-des-parlementaires)
+- [Liste des organismes (commissions, groupes, etc)](#list-des-organismes-commissions-groupes-etc-)
+- [Détails de chaque parlementaire](#détails-de-chaque-parlementaire)
+- [Données d'activité des parlementaires](#données-dactivité-des-parlementaires)
+- [Résultats du moteur de recherche](#résultats-du-moteur-de-recherche)
+- [Librairie Python CPC-API](#librairie-python-cpc-api)
+- [ParlAPI.fr : API sur l'OpenData officielle de l'AN et du Sénat](#parlapifr--api-sur-lopendata-officielle-de-lan-et-du-sénat)
+- [Exemples de réutilisations basées sur l'API](#exemples-de-réutilisations-basées-sur-lapi)
+- [Conditions d'utilisation](#conditions-dutilisation)
+
+
 ## Explications
 
 - **Format :** La plupart des exemples fournis ci-dessous sont donnés au format XML pour permettre plus de lisibilité dans le navigateur web. Veuillez remplacer `xml` en `json` ou `csv` pour accéder aux autres formats
@@ -19,6 +34,7 @@ Une API a été développée pour offrir un accès aux données de NosDéputés.
 
 L'ensemble des données de ces différents sites est par ailleurs mis à disposition en bloc sous la forme de dumps SQL. Retrouvez les détails ainsi que d'autres [données parlementaires ici](opendata.md).
 
+
 ## Liste des parlementaires
 
 - **Tous les députés en cours de mandat :**
@@ -34,6 +50,38 @@ L'ensemble des données de ces différents sites est par ailleurs mis à disposi
   - format tableur (CSV) : https://www.nosdeputes.fr/deputes/csv
   - XML : https://www.nosdeputes.fr/deputes/xml
   - JSON : https://www.nosdeputes.fr/deputes/json
+
+
+## Liste des organismes (commissions, groupes, etc)
+
+- **Liste des groupes politiques :**
+
+  https://www.nosdeputes.fr/organismes/groupe/xml
+
+- **Liste des organes parlementaires** (commissions, délégations, missions, offices) :
+
+  https://www.nosdeputes.fr/organismes/parlementaire/xml
+
+- **Liste des organes extra-parlementaires** (fonctions judiciaires, internationales ou autres) :
+
+  https://www.nosdeputes.fr/organismes/extra/xml
+
+- **Liste des groupes d'études et d'amitié :**
+
+  https://www.nosdeputes.fr/organismes/groupes/xml
+
+- **Liste des parlementaires membres d'un organisme** :
+
+  - Pour les groupes politiques, il faut utiliser l'acronyme du groupe issu de la liste des groupes ou des détails d'un député.
+
+    Par exemple pour les non inscrits (`NI`) : https://www.nosdeputes.fr/groupe/NI/xml
+
+  - Pour les autres organes, il faut utiliser le `slug` de l'organisme souhaité issu d'une liste des organismes.
+
+    Par exemple pour la Commission des Affaires Économiques : https://www.nosdeputes.fr/organisme/commission-des-affaires-economiques/xml
+
+    *Remarque : les groupes politiques sont également accessibles ainsi via leur `slug`, par exemple pour les non-inscrits : https://www.nosdeputes.fr/organisme/deputes-non-inscrits/xml*
+
 
 ## Détails de chaque parlementaire
 
@@ -54,6 +102,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
   Vous pouvez embarquer sur votre site les graphiques, barres d'activité et mots-clés des députés via le [widget d'activité](http://www.nosdeputes.fr/widget14) (pour NosDéputés.fr seulement).
 
   Voir les détails sur la [doc du widget](widget.md).
+
 
 ## Données d'activité des parlementaires
 
@@ -76,6 +125,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
   Tous les contenus textuels des différents travaux parlementaires (organismes, débats, amendements, questions, rapports, propositions de loi) sont indexés dans le moteur de recherche et peuvent donc être individuellement retrouvés et filtrés à travers cette API ([voir plus bas](#résultats-du-moteur-de-recherche)).
   
   Les résultats de la recherche renvoient les urls des données détaillées de chaque élément accessible via l'API.
+
 
 ## Résultats du moteur de recherche
 
@@ -117,9 +167,11 @@ Vous pouvez également obtenir des statistiques agrégées sur les résultats d'
 
   *(par périodes d'un mois si la période considérée dépasse 90 jours, par jour sinon)*
 
+
 ## Librairie Python [CPC-API](https://pypi.python.org/pypi/cpc_api)
 
 Certains des points d'entrée de cette API sont accessibles de manière simplifiée en langage Python à l'aide du paquet pip [`cpc-api`](https://pypi.python.org/pypi/cpc_api) dont le [code source est disponible ici](https://github.com/regardscitoyens/cpc-api).
+
 
 ## [ParlAPI.fr](http://parlapi.fr) : API sur l'OpenData officielle de l'AN et du Sénat
 
@@ -127,13 +179,15 @@ Complémentaires des données de NosDéputés.fr et NosSénateurs.fr, les platef
 
 Nous développons donc un accès simplifié par une API à ces jeux de données sur le site [ParlAPI.fr](http://parlapi.fr) dont le code source est disponible sur notre [Gitlab](https://git.regardscitoyens.org/regardscitoyens/parlapi).
 
-## Exemples de réutilisations basées sur l'API :
+
+## Exemples de réutilisations basées sur l'API
 
 - [LobbyTrack](https://github.com/regardscitoyens/LobbyTrack) : outil d'identification des travaux parlementaires qui se sont inspirés d'un document texte de lobbying
 
 - [DirectParlement](https://regardscitoyens.github.io/direct-parlement) : outil de génération d'incruste pour encart dans vidéo live de débat parlementaire utilisé par [Accropolis](http://accropolis.fr) ([code-source](https://github.com/regardscitoyens/direct-parlement))
 
 - [Synthèse globale](https://regardscitoyens.github.io/synthese-globale/) : mini-application agrégeant les données de synthèse mensuelle pour nous permettre de répondre aux sollicitations des députés nous demandant en cours de mandat leur bilan complet ([code-source](https://github.com/regardscitoyens/synthese-globale))
+
 
 ## Conditions d'utilisation
 

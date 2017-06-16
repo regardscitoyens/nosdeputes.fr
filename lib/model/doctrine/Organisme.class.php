@@ -25,6 +25,7 @@ class Organisme extends BaseOrganisme
     return "";
   }
   public function getSmallNomGroupe() {
+    if (!$this->type == "groupe") return "";
     $hashmap = array();
     foreach (myTools::getGroupesInfos() as $gpe)
       $hashmap[strtolower($gpe[0])] = $gpe[1];

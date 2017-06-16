@@ -293,6 +293,10 @@ class parlementaireActions extends sfActions
       ->where('o.slug = ?', $orga)->fetchOne();
     $this->forward404Unless($this->orga);
 
+    $acro = $this->orga->getSmallNomGroupe();
+    if ($acro)
+      return $this->redirect('@list_parlementaires_groupe?acro='.$acro);
+
     $pageS = $request->getParameter('pages', 1);
     $pageR = $request->getParameter('page', 1);
     if ($pageS == 1) {

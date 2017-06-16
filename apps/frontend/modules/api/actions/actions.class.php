@@ -11,10 +11,6 @@
 class apiActions extends sfActions
 {
 
-  public function executeSynthese(sfWebRequest $request) {
-
-  }
-
   public function executeDocument(sfWebRequest $request)
   {
     $class = $request->getParameter('class');
@@ -31,14 +27,11 @@ class apiActions extends sfActions
     $this->res[strtolower($class)] = $o->toArray();
     if ($o->getLink())
         $this->res[strtolower($class)]['url_nosdeputes'] = trim(sfConfig::get('app_base_url'), '/').$o->getLink();
-    myTools::templatize($this, $request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
+
     $this->breakline = '';
+    myTools::templatize($this, $request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
   }
- /**
-  * Executes index action
-  *
-  * @param sfRequest $request A request object
-  */
+
   public function executeTop(sfWebRequest $request)
   {
     $date = $request->getParameter('date');
@@ -48,7 +41,6 @@ class apiActions extends sfActions
     $d[1] = preg_replace('/^(\d{2})$/', '20\\1', $d[1]);
     $vg = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$d[1].'_'.$d[2]);
     $top = unserialize($vg->value);
-
     $this->forward404Unless($top);
 
     $this->res = array();
@@ -58,19 +50,19 @@ class apiActions extends sfActions
       $this->champs['id'] = 1;
 
       foreach (array_keys($top[$id]) as $k) {
-	//Gestion de l'ordre des parametres
-	$kfinal = preg_replace('/^\d*_/', '', $k);
-	$depute[$kfinal] = $top[$id][$k]['value'];
-	$this->champs[$kfinal] = 1;
+        //Gestion de l'ordre des parametres
+        $kfinal = preg_replace('/^\d*_/', '', $k);
+        $depute[$kfinal] = $top[$id][$k]['value'];
+        $this->champs[$kfinal] = 1;
       }
       $this->res["deputes"][] = array('depute' => $depute);
     }
 
     for($i = 0 ; $i < count($this->res["deputes"]) ; $i++) {
       foreach(array_keys($this->champs) as $key) {
-	if (!isset($this->res['deputes'][$i]['depute'][$key])) {
-	  $this->res['deputes'][$i]['depute'][$key] = 0;
-	}
+        if (!isset($this->res['deputes'][$i]['depute'][$key])) {
+          $this->res['deputes'][$i]['depute'][$key] = 0;
+        }
       }
     }
 
@@ -158,12 +150,12 @@ class apiActions extends sfActions
       $orga['nom'] = $o->nom;
       if ($o->type == "groupe") {
         $orga['acronyme'] = $o->getSmallNomGroupe();
-        $orga['couleur'] = $colormap[$orga['acronyme']];
-        $orga['order'] = $groupesorder[$orga['acronyme']];
+        $orga['couleur'] = (isset($colormap[$orga['acronyme']]) ? $colormap[$orga['acronyme']] : '');
+        $orga['order'] = (isset($groupesorder[$orga['acronyme']]) ? $groupesorder[$orga['acronyme']] : '');
       }
       $orga['type'] = $o->type;
-      $orga['url_nosdeputes'] = myTools::url_forAPI('@list_parlementaires_organisme?slug='.$orga['slug']);
-      $orga['url_nosdeputes_api'] = myTools::url_forAPI('@list_parlementaires_organisme_api?format='.$request->getParameter('format').'&orga='.$orga['slug']);
+      $orga['url_nosdeputes'] = myTools::url_forAPI('@list_parlementaires_organisme?slug='.$o->slug);
+      $orga['url_nosdeputes_api'] = myTools::url_forAPI('@list_parlementaires_organisme_api?format='.$request->getParameter('format').'&orga='.$o->slug);
       if ($request->getParameter('format') == 'csv')
        foreach(array_keys($orga) as $key)
         if (!isset($this->champs[$key]))
