@@ -152,13 +152,15 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Les exemples ci-dessous s'appliquent au projet de loi initial sur la transparence discuté par l'Assemblée sous la 14ème législature.
 
-  *Attention pour l'Assemblée à bien ajuster également le numéro de législature, et pour le Sénat à ne pas l'indiquer.*
+  - Remarques :
 
-  *Attention pour le Sénat a bien reformater la partie année de l'identifiant de loi sous sa forme complète : ppl15-xxx -> `20152016-xxx`, pjl12-xxx -> `20122013-yyy`.*
+    - *pour l'Assemblée :* pensez bien à ajuster également le numéro de législature, et pour le Sénat à ne pas l'indiquer.
 
-  *Note :* Ces accès peuvent être filtrés par dossier législatif en utilisant l'identifiant officiel du projet de loi sur les sites de l'institution retrouvable à la fin des urls dédiées, par exemple pour le projet de loi transparence :
-  - à l'Assemblée : http://www.assemblee-nationale.fr/14/dossiers/transparence_vie_publique_pjl.asp -> `transparence_vie_publique_pjl`
-  - au Sénat : http://www.senat.fr/dossier-legislatif/pjl12-689.html -> `pjl12-689`
+    - *pour le Sénat :* pensez bien à reformater la partie année de l'identifiant de loi sous sa forme complète : ppl15-xxx -> `20152016-xxx`, pjl12-xxx -> `20122013-yyy`.
+
+    - *Note :* Ces accès peuvent être filtrés par dossier législatif en utilisant l'identifiant officiel du projet de loi sur les sites de l'institution retrouvable à la fin des urls dédiées, par exemple pour le projet de loi transparence :
+      - à l'Assemblée : http://www.assemblee-nationale.fr/14/dossiers/transparence_vie_publique_pjl.asp -> `transparence_vie_publique_pjl`
+      - au Sénat : http://www.senat.fr/dossier-legislatif/pjl12-689.html -> `pjl12-689`
 
   - **Liste de tous les débats d'une chambre sur un texte :**
 
