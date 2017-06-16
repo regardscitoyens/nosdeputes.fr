@@ -96,7 +96,8 @@ class interventionActions extends sfActions
       if (preg_match('/[a-z]/', $section_id)) {
         $section_id = Doctrine::getTable('Section')->findOneByIdDossierAn(strtolower($section_id));
         //$this->forward404Unless($section_id);
-        $section_id = $section_id->id;
+        if ($section_id) $section_id = $section_id->id;
+        else $section_id = "";
       }
     }
     return $section_id;
