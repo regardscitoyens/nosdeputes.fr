@@ -194,9 +194,6 @@ list_parlementaires_circo_france:
 circo_image_png:
   url: /circonscription/image/:circo/:w/:h
   param: {module: circonscription, action: getCircoimagepng}
-deptmts_image_png:
-  url: /circonscription/cartedepts/:w/:h
-  param: {module: circonscription, action: getDeptmtsimagepng}
 redirect_parlementaires_circo:
   url: /circonscription/:code
   param: {module: circonscription, action: redirect}

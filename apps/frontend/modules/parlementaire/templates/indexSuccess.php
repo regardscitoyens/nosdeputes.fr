@@ -171,7 +171,7 @@
   <div class="carte" id="cartedeputes">
   <h2><span style="margin-right: 5px;"><img alt="actu" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_nosdeputes.png" /></span>Trouver son député</h2>
     <div class="cont_box_news">
-	  <?php include_partial('circonscription/mapDepartement', array('width'=>0, 'height'=>200, 'link' => true)); ?>
+	  <?php include_partial('circonscription/mapDepartement', array('width'=>0, 'height'=>300, 'link' => true)); ?>
 	  </div>
 	  <div class="message">
 	  <p>Pour retrouver votre député sur le site, vous pouvez saisir son nom.</p>

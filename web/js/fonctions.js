@@ -62,6 +62,7 @@ $(document).ready(function() {
       $('body').append('<div id="jstitle" style="text-align: center; display: none; position: absolute; z-index: 888; border: 1px solid black;padding: 5px;"></div>')
     }
     if ($(this).attr('title')) {
+      $(this).find("title").remove();
       title = $(this).attr('title').replace(/ \-\- /g, '<br/>').replace(/^([^<]+)<br/, '<b>$1</b><br');
       if ($(this).hasClass('phototitle') && !title.match(/<img src/)) {
         title = '<img src=\'' + $(this).children('.urlphoto').attr('href').replace(/\/([^\/]+)$/, "/depute/photo/$1/70") + '\'/><br/>' + title;
