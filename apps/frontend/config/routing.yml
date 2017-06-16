@@ -278,7 +278,7 @@ api_amendements_json:
   url: /amendements/:loi/json
   param: {module: api, action: amendements, format: json}
 get_links_amendements_by_loi_json:
-  url: /14/amendements/:loi/links/json
+  url: /amendements/:loi/links/json
   param: {module: api, action: linksAmendements, format: json}
 find_amendements_by_loi_and_numero:
   url: /amendements/:loi/:numero
