@@ -403,6 +403,7 @@ class parlementaireActions extends sfActions
     $fin = myTools::isFinLegislature();
     $parlementaires = Doctrine::getTable("Parlementaire")->prepareParlementairesTopQuery($fin)->fetchArray();
 
+    // Prepare les metas des groupes
     $this->gpes = array();
     foreach(myTools::getGroupesInfosOrder() as $gpe) {
       $this->gpes[$gpe[1]] = array();
@@ -415,44 +416,61 @@ class parlementaireActions extends sfActions
     $this->tops = array();
     foreach($parlementaires as $p) {
       $tops = unserialize($p['top']);
-      $id = $p['id'];
-      $i = 0;
-      if ($fin && $tops['nb_mois'] < 4)
+
+      // En mode bilan final on n'affiche que les députés avec plus de 6 mois de mandat
+      if ($fin && $tops['nb_mois'] < 6)
         continue;
-      $this->tops[$id][$i++] = $p;
+
+      $parl = array();
+      $idx = 0;
+      $parl[$idx++] = $p;
+
+      // ajout du nombre de mois de mandat en mode bilan
       if ($fin)
-        $this->tops[$id][0]["nb_mois"] = $tops['nb_mois'];
-      if (!$fin && !isset($this->gpes[$p['groupe_acronyme']]))
-        continue;
-      if ($p['groupe_acronyme'] != "" && isset($this->gpes[$p['groupe_acronyme']]))
+        $parl[0]["nb_mois"] = $tops['nb_mois'];
+
+      // Somme des députés par groupe
+      if ($p['groupe_acronyme'] && isset($this->gpes[$p['groupe_acronyme']]))
         $this->gpes[$p['groupe_acronyme']][0]['nb']++;
-      foreach(array_keys($tops) as $key) {
-        if ($key == "nb_mois")
+
+      // Traite chaque indicateur
+      foreach(array_keys($tops) as $k) {
+        if ($k == "nb_mois")
           continue;
-        $this->tops[$id][$i]['rank'] = $tops[$key]['rank'];
-	$this->tops[$id][$i]['value'] = $tops[$key]['value'];
+
+        $indic = array();
+        $indic['rank'] = $tops[$k]['rank'];
+        $indic['value'] = $tops[$k]['value'];
+
+        // Style les mieux et moins bien classés
+        $indic['style'] = ' ';
+        if ($tops[$k]['rank'] < 151 && $tops[$k]['value'])
+          $indic['style'] .= 'style="color:green; font-weight:bold;" ';
+        else if ($tops[$k]['rank'] > 577 - 151)
+          $indic['style'] = ' style="color:red; font-style:italic;" ';
+
+        // Valeur moyenne en mode bilan
         if ($fin)
-          $this->tops[$id][$i]['moyenne'] = $tops[$key]['moyenne'];
-	$this->tops[$id][$i]['style'] = ' ';
-	if ($tops[$key]['rank'] < 151 && $tops[$key]['value'])
-	  $this->tops[$id][$i]['style'] = ' style="color:green;font-weight:bold;" ';
-	else if ($tops[$key]['rank'] > 577 - 151)
-	  $this->tops[$id][$i]['style'] = ' style="color:red;font-style:italic;" ';
-        if ($p['groupe_acronyme'] != "" && isset($this->gpes[$p['groupe_acronyme']])) {
-          if (!isset($this->gpes[$p['groupe_acronyme']][$i]))
-            $this->gpes[$p['groupe_acronyme']][$i] = 0;
-          $this->gpes[$p['groupe_acronyme']][$i] += $tops[$key]['value'];
+          $indic['moyenne'] = $tops[$k]['moyenne'];
+
+        // Somme les valeurs par groupe (actuel)
+        if ($p['groupe_acronyme'] && isset($this->gpes[$p['groupe_acronyme']])) {
+          if (!isset($this->gpes[$p['groupe_acronyme']][$idx]))
+            $this->gpes[$p['groupe_acronyme']][$idx] = 0;
+          $this->gpes[$p['groupe_acronyme']][$idx] += $tops[$k]['value'];
         }
-	  $i++;
+
+        $parl[$idx++] = $indic;
       }
+      $this->tops[$p['id']] = $parl;
     }
 
-    // Build list of top keys
+    // Construit la liste des indicateurs du tableau
     $this->ktop = array_keys($tops);
     if ($this->ktop[0] == "nb_mois")
       array_shift($this->ktop);
 
-    // Order by required field if such
+    // Ordonne par le champ requis si nécessaire
     $this->sort = $this->getRequestParameter('sort');
     if (($_GET['sort'] = $this->sort)) {
       usort($this->tops, 'parlementaireActions::topSort');

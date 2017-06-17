@@ -78,43 +78,56 @@ class apiActions extends sfActions
     $fin = myTools::isFinLegislature();
     $parlementaires = Doctrine::getTable("Parlementaire")->prepareParlementairesTopQuery($fin)->execute();
 
-    $this->res = array();
-    $this->champs = array();
+    $this->champs = array("id" => 1);
     $this->multi = array();
     $this->multi["site"] = 1;
+
+    $this->res = array();
     foreach($parlementaires as $p) {
-      $depute = array();
       $tops = $p->top;
-      $depute['id'] = $p->id;
-      $this->champs['id'] = 1;
-      if ($fin && $tops['nb_mois'] < 4)
+
+      // En mode bilan final on n'affiche que les députés avec plus de 6 mois de mandat
+      if ($fin && $tops['nb_mois'] < 6)
         continue;
-      $depute = $this->getParlementaireArray($p, $format, 2);
-      if ($fin)
-        $depute["nb_mois"] = $tops['nb_mois'];
-      if ($format == 'csv')
-       foreach(array_keys($depute) as $key)
-        if (!isset($this->champs[$key]))
-         $this->champs[$key] = 1;
+
+      $parl = $this->getParlementaireArray($p, $format, 2);
+
+      // Liste des champs pour le csv
+      foreach(array_keys($parl) as $k)
+        if (!isset($this->champs[$k]))
+          $this->champs[$k] = 1;
+
+      // ajout du nombre de mois de mandat en mode bilan
+      if ($fin) {
+        $parl["nb_mois"] = $tops['nb_mois'];
+        if (!isset($this->champs["nb_mois"]))
+          $this->champs["nb_mois"] = 1;
+      }
+
+      // Traite chaque indicateur
       foreach(array_keys($tops) as $k) {
-        if ($k != 'nb_mois') {
-          //Gestion de l'ordre des parametres
-          $kfinal = preg_replace('/^\d*_/', '', $k);
-          $depute[$kfinal] = $tops[$k]['value'];
-          if (!isset($this->champs[$kfinal])) $this->champs[$kfinal] = 1;
-          if ($fin) {
-            $depute[$kfinal.'_moyenne_mensuelle']  = $tops[$k]['moyenne'];
-            if (!isset($this->champs[$kfinal.'_moyenne_mensuelle'])) $this->champs[$kfinal.'_moyenne_mensuelle'] = 1;
-          }
-        } else {
-          $depute[$k] = $tops[$k];
-          if (!isset($this->champs[$k])) $this->champs[$k] = 1;
+        if ($k == "nb_mois")
+          continue;
+
+        // Gestion de l'ordre des parametres
+        $kfinal = preg_replace('/^\d*_/', '', $k);
+        $parl[$kfinal] = $tops[$k]['value'];
+        if (!isset($this->champs[$kfinal]))
+          $this->champs[$kfinal] = 1;
+
+        // Valeur moyenne en mode bilan
+        if ($fin) {
+          $kmean = $kfinal.'_moyenne_mensuelle';
+          $parl[$kmean] = $tops[$k]['moyenne'];
+          if (!isset($this->champs[$kmean]))
+            $this->champs[$kmean] = 1;
         }
       }
-      $this->res["deputes"][] = array('depute' => $depute);
+      $this->res["deputes"][] = array('depute' => $parl);
     }
 
-    for($i = 0 ; $i < count($this->res["deputes"]) ; $i++) {
+    // Complète les valeurs de champs manquantes
+    for($i=0; $i < count($this->res["deputes"]); $i++) {
       foreach(array_keys($this->champs) as $key) {
         if (!isset($this->res['deputes'][$i]['depute'][$key])) {
           $this->res['deputes'][$i]['depute'][$key] = 0;
