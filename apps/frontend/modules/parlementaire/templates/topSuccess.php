@@ -52,12 +52,11 @@ $bulles = array("",
 <table>
   <tr>
     <th class="<?php echo $class['parl']; ?>">&nbsp;</th>
-    <?php if ($nb_mdts) echo '<th>Nb mandats</th>'; ?>
-    <th title="Trier par : Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', $top_link.'sort=1'); ?></th>
+    <th title="Trier par : Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', '@top_global_sorted?sort=1'); ?></th>
     <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
     <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
     <th colspan="3" class="<?php if ($sort == 6 || $sort == 7 || $sort == 8) echo 'tr_odd';?>">Amendements</th>
-    <th title="Trier par : Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur" class="jstitle <?php if ($sort == 9) echo 'tr_odd';?>"><?php echo link_to('Rapports', $top_link.'sort=9'); ?></th>
+    <th title="Trier par : Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur" class="jstitle <?php if ($sort == 9) echo 'tr_odd';?>"><?php echo link_to('Rapports', '@top_global_sorted?sort=9'); ?></th>
     <th colspan="2" class="<?php if ($sort == 10 || $sort == 11) echo 'tr_odd';?>">Propositions</th>
     <th colspan="2" class="<?php if ($sort == 12 || $sort == 13) echo 'tr_odd';?>">Questions</th>
     <th style="width:10px;"/>
@@ -68,7 +67,7 @@ $bulles = array("",
     foreach($ktop as $key) {
       $i++ ;
     ?>
-    <th title="<?php echo "Trier par : ".$bulles[$i]; ?>" class="jstitle <?php echo $class[$key]; if ($sort == $i) echo ' tr_odd'?>"><?php echo link_to($title[$key], $top_link.'sort='.$i); ?></th>
+    <th title="<?php echo "Trier par : ".$bulles[$i]; ?>" class="jstitle <?php echo $class[$key]; if ($sort == $i) echo ' tr_odd'?>"><?php echo link_to($title[$key], '@top_global_sorted?sort='.$i); ?></th>
     <?php
     } ?>
     <th style="width:10px;"/>
@@ -82,8 +81,7 @@ $bulles = array("",
   foreach($tops as $t) {
     $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
     <td id="<?php echo $t[0]['slug']; ?>" class="jstitle phototitle c_<?php echo strtolower($t[0]['groupe_acronyme']); ?> <?php echo $class['parl']; ?>" title="<?php echo $t[0]['nom']; ?> -- Député<?php if ($t[0]['sexe'] === "F") echo 'e'; ?> <?php echo $t[0]['groupe_acronyme'].' '.preg_replace('/([^\'])$/', '\\1 ', Parlementaire::$dptmt_pref[trim($t[0]['nom_circo'])]).$t[0]['nom_circo']; ?>"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"><?php echo $t[0]['nom']; ?></a></td>
-    <?php if ($nb_mdts) echo '<td>'.count(unserialize($t[0]['autres_mandats'])).'</td>';
-    $field = "value";
+<?php $field = "value";
     if ($fin)
       $field = "moyenne";
     for($i = 1 ; $i < count($t) ; $i++) {
@@ -138,11 +136,7 @@ $bulles = array("",
 <div class="synthese_groupes">
 <table>
   <?php $cp = 0;
-  $cp = myTools::echo_synthese_groupe($gpes, $bulles, $class, $ktop, $cp);
-  if ($nb_mdts) {
-    $cp = myTools::echo_synthese_groupe($sexes, $bulles, $class, $ktop, $cp);
-    $cp = myTools::echo_synthese_groupe($mandats, $bulles, $class, $ktop, $cp);
-  } ?>
+  $cp = myTools::echo_synthese_groupe($gpes, $bulles, $class, $ktop, $cp); ?>
 </table>
 </div>
 </div>
