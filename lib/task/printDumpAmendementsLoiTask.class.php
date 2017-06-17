@@ -29,9 +29,11 @@ class printDumpAmendementsLoiTask extends sfBaseTask {
     foreach ($amendements as $a) {
       $parlslugs = array();
       $parlgroup = array();
-      foreach (Doctrine_Query::create()->select('p.slug, p.groupe_acronyme')->from('Parlementaire p, ParlementaireAmendement pa')->where('p.id = pa.parlementaire_id')->andWhere('pa.amendement_id = ?', $a['id'])->orderBy('pa.numero_signataire')->fetchArray() as $s) {
+      foreach (Doctrine_Query::create()->select('parlementaire_groupe_acronyme, p.slug as slug, p.groupe_acronyme as curgroupe')->from('ParlementaireAmendement pa')->leftJoin('pa.Parlementaire p')->where('p.id = pa.parlementaire_id')->andWhere('pa.amendement_id = ?', $a['id'])->orderBy('pa.numero_signataire')->fetchArray() as $s) {
         $parlslugs[] = $s['slug'];
-        $parlgroup[] = $s['groupe_acronyme'];
+        if (!$s["parlementaire_groupe_acronyme"])
+          $parlgroup[] = $s['curgroupe'];
+        else $parlgroup[] = $s['parlementaire_groupe_acronyme'];
       }
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
       $a['groupes_parlementaires'] = myTools::array2hash($parlgroup, 'groupe');

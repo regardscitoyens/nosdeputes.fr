@@ -44,7 +44,7 @@ class Amendement extends BaseAmendement {
 
   public function setFirstAuteur($auteur) {
     $this->setAuteur($auteur);
-    $this->_set('auteur_groupe_acronyme', $parl->groupe_acronyme);
+    $this->_set('auteur_groupe_acronyme', $auteur->groupe_acronyme);
   }
 
   public function setAuteurs($auteurs) {

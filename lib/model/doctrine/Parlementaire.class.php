@@ -181,8 +181,18 @@ class Parlementaire extends BaseParlementaire
         echo "INFO: ".$this->nom." joined ".$orga->nom." as ".$fonction."\n";
 
         # Special case of groupe impacting specific field
-        if ($type == 'groupe')
-          $this->groupe_acronyme = $orga->getSmallNomGroupe();
+        if ($type == 'groupe') {
+          $acro = $orga->getSmallNomGroupe();
+          if ($acro && $acro != $this->groupe_acronyme) {
+            $this->groupe_acronyme = $orga->getSmallNomGroupe();
+            # Update group_acronyme of current other afiliations except for left groupe
+            foreach($this->getOrganismes() as $po)
+              if ($po->type != "groupe") {
+                $po->_set('parlementaire_groupe_acronyme', $acro);
+                $po->save();
+              }
+          }
+        }
 
         $po = new ParlementaireOrganisme();
         $po->setParlementaire($this);
