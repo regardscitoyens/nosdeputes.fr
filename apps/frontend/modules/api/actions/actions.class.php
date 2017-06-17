@@ -188,14 +188,16 @@ class apiActions extends sfActions
     $this->multi['site'] = 1;
     $orga = $request->getParameter('orga');
     if ($orga) {
+      $includePast = ($request->getParameter('includePast') == true);
       $this->forward404Unless(Doctrine::getTable('Organisme')->findOneBySlug($orga));
       $query->leftJoin('p.ParlementaireOrganisme po, po.Organisme o')
-        ->addWhere('o.slug = ?', $orga)
-        // On ne garde que les députés actuellement membres
-        ->addWhere('po.fin_fonction IS NULL')
-        ->addOrderBy('po.importance DESC, p.nom_de_famille');
-        // ou si on veut renvoyer aussi les anciens membres
-        //->addOrderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille');
+        ->addWhere('o.slug = ?', $orga);
+      if (!$includePast) {
+      // Par défaut on ne renvoie que les députés actuellement membres
+        $query->addWhere('po.fin_fonction IS NULL')
+          ->addOrderBy('po.importance DESC, p.nom_de_famille');
+      } else // Autrement on renvoie aussi les anciens membres
+        $query->addOrderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille');
     }
     $deputes = $query->execute();
     $this->champs = array();
@@ -206,9 +208,11 @@ class apiActions extends sfActions
       if ($orga) {
         $depute['fonction'] = $dep['ParlementaireOrganisme'][0]['fonction'];
         $depute['debut_fonction'] = $dep['ParlementaireOrganisme'][0]['debut_fonction'];
+        if ($includePast) {
         // Utile uniquement si on renvoie aussi les anciens membres
-        //$depute['fin_fonction'] = $dep['ParlementaireOrganisme'][0]['fin_fonction'];
-        //$depute['groupe_en_fin_fonction'] = ($depute['fin_fonction'] ? $dep['ParlementaireOrganisme'][0]['parlementaire_groupe_acronyme'] : "");
+          $depute['fin_fonction'] = $dep['ParlementaireOrganisme'][0]['fin_fonction'];
+          $depute['groupe_a_fin_fonction'] = ($depute['fin_fonction'] ? $dep['ParlementaireOrganisme'][0]['parlementaire_groupe_acronyme'] : "");
+        }
       }
       if ($request->getParameter('format') == 'csv')
        foreach(array_keys($depute) as $key)

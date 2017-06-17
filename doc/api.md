@@ -83,6 +83,8 @@ L'ensemble des données de ces différents sites est par ailleurs mis à disposi
 
     *Remarque : les groupes politiques sont également accessibles ainsi via leur `slug`, par exemple pour les non-inscrits : https://www.nosdeputes.fr/organisme/deputes-non-inscrits/xml*
 
+  *Note :* par défaut l'API ne renvoie que les députés actuellement membres du groupe ou de l'organisme souhaité. À partir de la 15ème législature il est possible d'inclure également les anciens membres de l'organisme en ajoutant `?includePast=true` à la fin de l'url. Les données renvoient alors également deux champs `fin_fonction` et `groupe_a_fin_fonction` indiquant la date de fin de la fonction et le groupe politique du député à cette date. Par exemple pour la commission des affaires européennes : https://www.nosdeputes.fr/organisme/commission-des-affaires-economiques/xml?includePast=true
+
 
 ## Détails de chaque parlementaire
 
