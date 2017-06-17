@@ -47,10 +47,7 @@ class printDumpAmendementsLoiTask extends sfBaseTask {
     $breakline = 'amendement';
     switch($arguments['format']) {
       case 'csv':
-        foreach(array_keys($champs) as $key)
-          echo "$key;";
-        echo "\n";
-        myTools::depile_csv($res, $breakline, array('parlementaire' => 1, 'groupe'=>1));
+        myTools::depile_csv($res, $breakline, array('parlementaire' => 1, 'groupe' => 1), $champs);
 	break;
       case 'xml':
         myTools::depile_xml($res, $breakline);

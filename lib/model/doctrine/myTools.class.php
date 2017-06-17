@@ -403,48 +403,57 @@ class myTools {
     }
   }
 
-  public static function depile_assoc_csv($asso, $breakline, $multi, $last) {
-    $semi = 0;
-    foreach (array_keys($asso) as $k) {
-      if (isset($multi[$k]) && $multi[$k]) {
-        $semi = 1;
-      }
-      self::depile_csv($asso[$k], $breakline, $multi, $semi, $last);
-      if ($k == $breakline) {
-        echo "\n";
-      }
+  public static function formatOrganismesForCsv($val) {
+    if (is_array($val)) {
+      if (!count($val)) return "";
+      if (isset($val['organisme']) && isset($val['fonction']))
+        return $val['organisme']." - ".$val['fonction']." (".$val['debut_fonction']." -> ".(isset($val['fin_fonction']) ? $val['fin_fonction'] : "").")";
     }
-    return $semi;
+    return $val;
   }
 
-  public static function depile_csv($res, $breakline, $multi, $comma = 0, $last=0) {
-    if (is_array($res)) {
-      $maxk = count(array_keys($res)) - 1;
-      if (isset($res['organisme']) && isset($res['fonction']))
-        return self::depile_csv($res['organisme']." - ".$res['fonction']." (".$res['debut_fonction']." -> ".$res['fin_fonction'].")", $breakline, $multi, $comma, $last);
-      if (!isset($res[0])) {
-        if (array_keys($res))
-          return self::depile_assoc_csv($res, $breakline, $multi, $last);
-        echo ";";
-        return;
-      }
-      foreach(array_keys($res) as $k)
-        $semi = self::depile_csv($res[$k], $breakline, $multi, 0, ($k == $maxk));
-      if ($semi)
-        echo ';';
-    } else {
-      $string = preg_match('/[,;"]/', $res);
-      if ($string) {
-        $res = preg_replace('/"/', '""', $res);
-        echo '"';
-      }
-      echo $res;
-      if ($string)
-        echo '"';
-      if ($comma && !$last)
-        echo '|';
-      else echo ';';
+  public static function depile_csv($res, $breakline, $multi, $champs=null) {
+    // Print headers
+    if ($champs)
+      echo join(";", array_keys($champs))."\n";
+
+    // Loop on elements until found individual wanted ones
+    if (!isset($res[$breakline])) {
+      foreach (array_keys($res) as $k)
+        self::depile_csv($res[$k], $breakline, $multi);
+      return;
     }
+
+    // Or process single element
+    $line = array();
+    $row = $res[$breakline];
+    foreach (array_keys($row) as $k) {
+      // Regular value case
+      if (!is_array($row[$k]))
+        $value = $row[$k];
+
+      // when value is an array nested in "multi" field because of xml
+      else if (isset($row[$k][0])) {
+        $val = array();
+        foreach($row[$k] as $el) {
+          foreach(array_keys($el) as $k2)
+            if (isset($multi[$k2]))
+              $val[] = self::formatOrganismesForCsv($el[$k2]);
+        }
+        // assemble array elements
+        $value = join("|", $val);
+      }
+
+      // only cases of arrays without multi are groupe and empty arrays
+      else $value = self::formatOrganismesForCsv($row[$k]);
+
+      // Quotize textvalue if necessary
+      if (preg_match('/[;"]/', $value))
+        $value = '"'.preg_replace('/"/', '""', $value).'"';
+      $line[] = $value;
+    }
+    // Print row
+    echo join(";", $line)."\n";
   }
 
   public static function templatize($action, $request, $filename) {

@@ -28,7 +28,7 @@ class apiActions extends sfActions
     if ($o->getLink())
         $this->res[strtolower($class)]['url_nosdeputes'] = trim(sfConfig::get('app_base_url'), '/').$o->getLink();
 
-    $this->breakline = '';
+    $this->breakline = strtolower($class);
     myTools::templatize($this, $request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
   }
 
@@ -252,8 +252,7 @@ class apiActions extends sfActions
     $this->multi['adresse'] = 1;
     $this->multi['mandat'] = 1;
     $this->multi['site'] = 1;
-    $this->champ = 'depute';
-    $this->breakline = '';
+    $this->breakline = 'depute';
     $date = $depute->updated_at.'';
     $date = preg_replace('/[- :]/', '', $date);
     myTools::templatize($this, $request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
@@ -386,7 +385,6 @@ class apiActions extends sfActions
     $this->res = array('sorts' => $sorts, 'sujets' => $sujets, 'parlementaires' => $parls, 'links' => array_values($this->links));
 
     myTools::templatize($this, $request, 'nosdeputes.fr_amendements_'.$id.'_'.date('Y-m-d'));
-    $this->breakline = '';
   }
 
   private function addLink($parl_amdt, $parl, $weight) {
