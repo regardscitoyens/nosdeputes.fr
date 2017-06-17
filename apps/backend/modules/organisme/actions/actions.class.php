@@ -282,10 +282,10 @@ class organismeActions extends autoOrganismeActions
             $bad = $obj;
           else $good = $obj;
         $this->presences = array();
-        foreach (Doctrine_Query::create()->select('id, type, source, pr.parlementaire_id as depute')->from('PreuvePresence p')
+        foreach (Doctrine_Query::create()->select('id, type, source, pr.parlementaire_id as depute, pr.parlementaire_groupe_acronyme as groupe')->from('PreuvePresence p')
           ->leftJoin('p.Presence pr')->where('pr.seance_id = ?', $this->bad)->fetchArray() as $presence) {
           $this->presences[] = $presence['id'];
-          $good->addPresenceLight($presence['depute'], $presence['type'], $presence['source']);
+          $good->addPresenceLight($presence['depute'], $presence['groupe'], $presence['type'], $presence['source']);
         }
         if (preg_match('/^(\d{2}:\d{2})/', $bad->moment, $match)) {
           $goodmom = $match[1];

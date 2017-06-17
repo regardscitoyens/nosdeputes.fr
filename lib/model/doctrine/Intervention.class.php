@@ -116,6 +116,7 @@ class Intervention extends BaseIntervention
   public function setParlementaire($parlementaire, $from_db = null) {
     if (isset($parlementaire->id)) {
       $this->_set('parlementaire_id', $parlementaire->id);
+      $this->_set('parlementaire_groupe_acronyme', $parlementaire->groupe_acronyme);
       $this->_set('personnalite_id', null);
       if (!$from_db)
         $this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);

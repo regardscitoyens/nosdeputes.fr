@@ -55,6 +55,7 @@ class QuestionEcrite extends BaseQuestionEcrite
     if (!$depute) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe."\n";
     else {
       $this->_set('parlementaire_id', $depute->id);
+      $this->_set('parlementaire_groupe_acronyme', $depute->groupe_acronyme);
       $depute->free();
     }
   }

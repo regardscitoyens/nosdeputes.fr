@@ -179,18 +179,20 @@ class Parlementaire extends BaseParlementaire
       # If it doesn't exist, create it
       if (!$found) {
         echo "INFO: ".$this->nom." joined ".$orga->nom." as ".$fonction."\n";
+
+        # Special case of groupe impacting specific field
+        if ($type == 'groupe')
+          $this->groupe_acronyme = $orga->getSmallNomGroupe();
+
         $po = new ParlementaireOrganisme();
         $po->setParlementaire($this);
+        $po->_set('parlementaire_groupe_acronyme', $this->groupe_acronyme);
         $po->setOrganisme($orga);
         $po->setFonction($fonction);
         $po->setImportance($importance);
         $po->setDebutFonction($today);
         $po->save();
       }
-
-      # Special case of groupe impacting specific field
-      if ($type == 'groupe')
-        $this->groupe_acronyme = $orga->getSmallNomGroupe();
     }
 
     # Declare as finished those not listed anymore

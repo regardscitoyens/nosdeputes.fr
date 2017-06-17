@@ -42,6 +42,11 @@ class Amendement extends BaseAmendement {
     return '';
   }
 
+  public function setFirstAuteur($auteur) {
+    $this->setAuteur($auteur);
+    $this->_set('auteur_groupe_acronyme', $parl->groupe_acronyme);
+  }
+
   public function setAuteurs($auteurs) {
     $debug=0;
     $auteurs = html_entity_decode($auteurs, ENT_COMPAT, 'UTF-8');
@@ -100,6 +105,7 @@ class Amendement extends BaseAmendement {
 
     $pa = new ParlementaireAmendement();
     $pa->_set('Parlementaire', $depute);
+    $pa->_set('parlementaire_groupe_acronyme', $depute->groupe_acronyme);
     $pa->_set('Amendement', $this);
     $pa->numero_signataire = $signataireindex;
     if ($pa->save()) {

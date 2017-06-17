@@ -55,7 +55,7 @@ class updateAmdmtsTask extends sfBaseTask {
             if ($json->auteur_reel && !$amdmt->auteur_id) {
               $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel);
               if ($parl) {
-                $amdmt->setAuteur($parl);
+                $amdmt->setFirstAuteur($parl);
                 $save = True;
               } else {
                 echo "ERROR, cannot find auteur from AN ID: $line\n";

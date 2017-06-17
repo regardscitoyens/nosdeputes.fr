@@ -185,6 +185,7 @@ class Texteloi extends BaseTexteloi
 
     $pd = new ParlementaireTexteloi();
     $pd->_set('Parlementaire', $depute);
+    $pd->_set('parlementaire_groupe_acronyme', $depute->groupe_acronyme);
     $pd->_set('Texteloi', $this);
     if ($fonction === "Auteur")
       $pd->_set('importance', 1);

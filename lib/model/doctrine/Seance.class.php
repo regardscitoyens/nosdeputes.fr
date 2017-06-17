@@ -10,7 +10,7 @@ class Seance extends BaseSeance
       return 'réunion du '.myTools::displayDate($this->date).', '.$this->moment;
     return 'séance du '.myTools::displayDate($this->date).', '.$this->moment;
   }
-  
+
   static $debut_session = null;
   public static function identifySession($date) {
     if (!self::$debut_session) {
@@ -39,24 +39,7 @@ class Seance extends BaseSeance
     if (!$presence) {
       $presence = new Presence();
       $presence->Parlementaire = $parlementaire;
-      $presence->Seance = $this;
-      $presence->date = $this->date;
-      $presence->save();
-    }
-    $res = $presence->addPreuve($type, $source);
-    $presence->free();
-    return $res;
-  }
- 
-  public function addPresenceLight($parlementaire_id, $type, $source) {
-    $q = Doctrine::getTable('Presence')->createQuery('p');
-    $q->where('parlementaire_id = ?', $parlementaire_id)->andWhere('seance_id = ?', $this->id);
-    $presence = $q->execute()->getFirst();
-    $q->free();
-    unset($q);
-    if (!$presence) {
-      $presence = new Presence();
-      $presence->_set('parlementaire_id', $parlementaire_id);
+      $presence->parlementaire_groupe_acronyme = $parlementaire->groupe_acronyme;
       $presence->Seance = $this;
       $presence->date = $this->date;
       $presence->save();
@@ -66,7 +49,26 @@ class Seance extends BaseSeance
     return $res;
   }
 
- 
+  public function addPresenceLight($parlementaire_id, $groupe_acronyme, $type, $source) {
+    $q = Doctrine::getTable('Presence')->createQuery('p');
+    $q->where('parlementaire_id = ?', $parlementaire_id)->andWhere('seance_id = ?', $this->id);
+    $presence = $q->execute()->getFirst();
+    $q->free();
+    unset($q);
+    if (!$presence) {
+      $presence = new Presence();
+      $presence->_set('parlementaire_id', $parlementaire_id);
+      $presence->_set('parlementaire_groupe_acronyme', $groupe_acronyme);
+      $presence->Seance = $this;
+      $presence->date = $this->date;
+      $presence->save();
+    }
+    $res = $presence->addPreuve($type, $source);
+    $presence->free();
+    return $res;
+  }
+
+
   public static function convertMoment($moment) {
     if (strlen($moment) > 25)
       return substr($moment, 0, 255);
@@ -86,7 +88,7 @@ class Seance extends BaseSeance
     }
     return $moment;
   }
- 
+
   public function getShortMoment() {
     if (preg_match('/:/', $this->moment))
       return preg_replace('/^0/', '', str_replace('00', '', str_replace(':', 'h', $this->moment)));
@@ -94,7 +96,7 @@ class Seance extends BaseSeance
       return "réunion";
     return preg_replace('/séance/i', 'réunion', $this->moment);
   }
- 
+
   public function setDate($date) {
     if (!$this->_set('date', $date))
       return false;
