@@ -72,23 +72,24 @@ if ($parlementaire->sites_web) {
     <h2>Responsabilités</h2>
       <ul>
         <li>Commission permanente :
-          <ul><?php foreach ($commissions_permanentes as $resp) : ?>
-            <li><?php
-  echo link_to(ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/', '\\1 ', $resp->getNom()))), '@list_parlementaires_organisme?slug='.$resp->getSlug());
-  $fonction = preg_replace('/^(.*(président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
-  echo " ($fonction)"; ?>
-            </li>
-          <?php break; endforeach ?></ul>
+          <ul>
+            <li><?php if ($commission_permanente) {
+$name = ucfirst(str_replace('Commission ', '', preg_replace('/(Commission|et|,) d(u |e la |es |e l\'|e l’)/',
+'\\1 ', $commission_permanente->getNom())));
+echo link_to($name, '@list_parlementaires_organisme?slug='.$commission_permanente->getSlug());
+$fonction = preg_replace('/^(.*(président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $commission_permanente->getFonction());
+echo " ($fonction)";
+            } ?></li>
+          </ul>
         </li>
         <?php if (count($missions)) : ?>
         <li>Missions parlementaires :
           <ul><?php foreach ($missions as $resp) : ?>
             <li><?php
-  echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug());
-    $fonction = preg_replace('/^(.*(président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
-    echo " ($fonction)";
-  ?>
-            </li>
+echo link_to($resp->getNom(), '@list_parlementaires_organisme?slug='.$resp->getSlug());
+$fonction = preg_replace('/^(.*(président|rapporteur|questeur)[^,]*)/i', '<strong>\1</strong>', $resp->getFonction());
+echo " ($fonction)";
+            ?></li>
           <?php endforeach ?></ul>
         </li>
         <?php endif; ?>
@@ -161,7 +162,7 @@ if (myTools::isFinLegislature()) {
     <?php if ($historique) : ?>
     <h2>Historique de mandat</h2>
       <ul><?php foreach ($historique as $resp) : ?>
-        <li>- <?php
+        <li><?php
 if ($resp->type == "groupe") {
   $acro = $resp->Organisme->getSmallNomGroupe();
   echo link_to(($acro != "NI" ? "Groupe " : "").$resp->getNom(), '@list_parlementaires_groupe?acro='.$acro);

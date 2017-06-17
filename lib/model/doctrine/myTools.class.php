@@ -169,6 +169,10 @@ class myTools {
     return $colormap;
   }
 
+  public static function getCommissionsPermanentes() {
+    return self::convertYamlToArray(sfConfig::get('app_commissions_permanentes', array()));
+  }
+
   static $num_mois = array(
      "01" => "janvier",
      "02" => "février",

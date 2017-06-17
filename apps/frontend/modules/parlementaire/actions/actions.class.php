@@ -147,15 +147,13 @@ class parlementaireActions extends sfActions
     $this->response->addMeta('twitter:image', str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).$this->parlementaire->slug.'/preview');
 
 
-    $this->commissions_permanentes = array();
+    $this->commission_permanente = null;
     $this->missions = array();
-
     foreach ($this->parlementaire->getResponsabilites() as $resp) {
-      if (in_array($resp->organisme_id, array(9, 10, 11, 12, 13, 14, 15, 16))) {
-	array_push($this->commissions_permanentes, $resp);
-      }else{
-	array_push($this->missions, $resp);
-      }
+      $permas = myTools::getCommissionsPermanentes();
+      if (in_array($resp->Organisme->slug, $permas))
+        $this->commission_permanente = $resp;
+      else array_push($this->missions, $resp);
     }
   }
 

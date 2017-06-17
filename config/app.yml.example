@@ -28,6 +28,18 @@ all:
   groupes_proximite: >
     ["GDR / SRC", "SRC / ECO", "GDR / ECO", "RRDP / SRC", "RRDP / ECO", "RRDP / UDI", "UDI / UMP", "UDI / LES-REP", "LES-REP / UMP"]
 
+  commissions_permanentes: >
+    [
+    "commission-des-lois-constitutionnelles-de-la-legislation-et-de-l-administration-generale-de-la-republique",
+    "commission-des-finances-de-l-economie-generale-et-du-controle-budgetaire",
+    "commission-des-affaires-economiques",
+    "commission-des-affaires-sociales",
+    "commission-des-affaires-culturelles-et-de-l-education",
+    "commission-des-affaires-etrangeres",
+    "commission-du-developpement-durable-et-de-l-amenagement-du-territoire",
+    "commission-de-la-defense-nationale-et-des-forces-armees"
+    ]
+
   sfDoctrineActAsTaggablePlugin:
     triple_distinct:   true
 
