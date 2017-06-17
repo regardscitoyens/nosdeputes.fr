@@ -18,6 +18,7 @@ class apiActions extends sfActions
     $id = $request->getParameter('id');
     $this->forward404Unless($class);
     $o = doctrine::getTable($class)->find($id);
+    $this->forward404Unless($o);
     if ($class == 'Parlementaire') {
       return $this->redirect('api/parlementaire?slug='.$o->slug.'&format='.$format);
     }
