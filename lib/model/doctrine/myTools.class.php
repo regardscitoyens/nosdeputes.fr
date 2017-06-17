@@ -94,6 +94,12 @@ class myTools {
     return $date;
   }
 
+  public static $dixmois = 26280000;
+
+  public static function isFreshLegislature() {
+    return (time() - strtotime(self::getDebutLegislature()) < self::$dixmois);
+  }
+
   public static function getFinLegislature() {
     $date = self::getDebutLegislature();
     preg_match('/^(2\d\d\d)/', $date, $m);

@@ -400,18 +400,9 @@ class parlementaireActions extends sfActions
 
   public function executeTop(sfWebRequest $request)
   {
-    $qp = Doctrine::getTable('Parlementaire')->createQuery('p');
-
     $fin = myTools::isFinLegislature();
-    if (!$fin)
-      $qp->andWhere('fin_mandat IS NULL OR fin_mandat < debut_mandat');
-    $dixmois = time() - round(60*60*24*3650/12);
-    if ($dixmois > strtotime(myTools::getDebutLegislature()))
-      $qp->andWhere('debut_mandat < ?', date('Y-m-d', $dixmois));
-    $qp->orderBy('nom_de_famille');
-    $parlementaires = $qp->fetchArray();
-    unset($qp);
-    $this->tops = array();
+    $parlementaires = Doctrine::getTable("Parlementaire")->prepareParlementairesTopQuery($fin)->fetchArray();
+
     $this->gpes = array();
     foreach(myTools::getGroupesInfosOrder() as $gpe) {
       $this->gpes[$gpe[1]] = array();
@@ -421,6 +412,7 @@ class parlementaireActions extends sfActions
       $this->gpes[$gpe[1]][0]['desc'] = $gpe[3];
     }
 
+    $this->tops = array();
     foreach($parlementaires as $p) {
       $tops = unserialize($p['top']);
       $id = $p['id'];
@@ -454,10 +446,13 @@ class parlementaireActions extends sfActions
 	  $i++;
       }
     }
+
+    // Build list of top keys
     $this->ktop = array_keys($tops);
     if ($this->ktop[0] == "nb_mois")
       array_shift($this->ktop);
 
+    // Order by required field if such
     $this->sort = $this->getRequestParameter('sort');
     if (($_GET['sort'] = $this->sort)) {
       usort($this->tops, 'parlementaireActions::topSort');

@@ -46,6 +46,7 @@ class apiActions extends sfActions
     $this->res = array();
     $this->champs = array();
     foreach(array_keys($top) as $id) {
+      $depute = array();
       $depute['id'] = $id;
       $this->champs['id'] = 1;
 
@@ -73,20 +74,16 @@ class apiActions extends sfActions
   public function executeTopSynthese(sfWebRequest $request) {
     $format = $request->getParameter('format');
     $this->withBOM = $request->getParameter('withBOM');
-    $qp = Doctrine::getTable('Parlementaire')->createQuery('p');
+
     $fin = myTools::isFinLegislature();
-    if (!$fin) $qp->andWhere('fin_mandat IS NULL');
-    $dixmois = time() - round(60*60*24*3650/12);
-    if ($dixmois > strtotime(myTools::getDebutLegislature()))
-      $qp->andWhere('debut_mandat < ?', date('Y-m-d', $dixmois));
-    $qp->orderBy('nom_de_famille');
-    $parlementaires = $qp->execute();
-    unset($qp);
+    $parlementaires = Doctrine::getTable("Parlementaire")->prepareParlementairesTopQuery($fin)->execute();
+
     $this->res = array();
     $this->champs = array();
     $this->multi = array();
     $this->multi["site"] = 1;
     foreach($parlementaires as $p) {
+      $depute = array();
       $tops = $p->top;
       $depute['id'] = $p->id;
       $this->champs['id'] = 1;
