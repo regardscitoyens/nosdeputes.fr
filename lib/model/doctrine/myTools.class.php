@@ -121,7 +121,20 @@ class myTools {
     return (sfConfig::get('app_lock_commentaires'));
   }
 
+  public static function getObjectGroupeAcronyme($obj) {
+    if ($obj->parlementaire_groupe_acronyme)
+      return $obj->parlementaire_groupe_acronyme;
+    $acro = $obj->getParlementaire()->groupe_acronyme;
+    $obj->parlementaire_groupe_acronyme = $acro;
+    $obj->save();
+    return $acro;
+  }
+
+  private static $groupes_infos = null;
+
   public static function getGroupesInfos() {
+    if (self::$groupes_infos)
+      return self::$groupes_infos;
     $conf = sfConfig::get('app_groupes_infos', '');
     if (!$conf) {
       $config = sfYaml::load(dirname(__FILE__).'/../../../config/app.yml');
@@ -131,16 +144,8 @@ class myTools {
     $res = array();
     foreach ($gpes as $gpe)
       $res[] = explode(' / ', $gpe);
+    self::$groupes_infos = $res;
     return $res;
-  }
-
-  public static function getObjectGroupeAcronyme($obj) {
-    if ($obj->parlementaire_groupe_acronyme)
-      return $obj->parlementaire_groupe_acronyme;
-    $acro = $obj->getParlementaire()->groupe_acronyme;
-    $obj->parlementaire_groupe_acronyme = $acro;
-    $obj->save();
-    return $acro;
   }
 
   public static function getGroupesInfosOrder() {
