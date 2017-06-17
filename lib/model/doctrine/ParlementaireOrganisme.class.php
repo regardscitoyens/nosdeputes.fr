@@ -44,4 +44,8 @@ class ParlementaireOrganisme extends BaseParlementaireOrganisme
   public function getSlug() {
     return $this->getOrganisme()->getSlug();
   }
+
+  public function getGroupeAcronyme() {
+    return myTools::getObjectGroupeAcronyme($this);
+  }
 }

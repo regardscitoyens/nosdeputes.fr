@@ -20,6 +20,10 @@ class Intervention extends BaseIntervention
     return $this->getNomAndFonction();
   }
 
+  public function getGroupeAcronyme() {
+    return myTools::getObjectGroupeAcronyme($this);
+  }
+
   public function getFullDate() {
     $datetime = strtotime($this->date);
     $moment = $this->Seance->moment;

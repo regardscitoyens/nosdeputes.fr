@@ -17,6 +17,10 @@ class QuestionEcrite extends BaseQuestionEcrite
     return $this->getParlementaire()->getNom();
   }
 
+  public function getGroupeAcronyme() {
+    return myTools::getObjectGroupeAcronyme($this);
+  }
+
   public function __toString() {
     $str = substr(strip_tags($this->question), 0, 250);
     if (strlen($str) == 250) {

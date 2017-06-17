@@ -21,4 +21,9 @@ class Presence extends BasePresence
     $preuve->free();
     return $res;
   }
+
+  public function getGroupeAcronyme() {
+    return myTools::getObjectGroupeAcronyme($this);
+  }
+
 }

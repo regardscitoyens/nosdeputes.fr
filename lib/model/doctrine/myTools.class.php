@@ -134,6 +134,15 @@ class myTools {
     return $res;
   }
 
+  public static function getObjectGroupeAcronyme($obj) {
+    if ($obj->parlementaire_groupe_acronyme)
+      return $obj->parlementaire_groupe_acronyme;
+    $acro = $obj->getParlementaire()->groupe_acronyme;
+    $obj->parlementaire_groupe_acronyme = $acro;
+    $obj->save();
+    return $acro;
+  }
+
   public static function getGroupesInfosOrder() {
     $gpes = self::getGroupesInfos();
     $map = array();

@@ -16,6 +16,18 @@ class Amendement extends BaseAmendement {
     return '';
   }
 
+  public function getGroupeAcronyme() {
+    if ($this->auteur_groupe_acronyme)
+      return $this->auteur_groupe_acronyme;
+    $aut = $this->getAuteur();
+    if ($aut && $acro = $aut->groupe_acronyme) {
+      $this->_set("auteur_groupe_acronyme", $acro);
+      $this->save();
+      return $acro;
+    }
+    return "";
+  }
+
   public function __toString() {
     $str = substr(strip_tags($this->expose), 0, 250);
     if (strlen($str) == 250) {

@@ -5,5 +5,7 @@
  */
 class ParlementaireAmendement extends BaseParlementaireAmendement
 {
-
+  public function getGroupeAcronyme() {
+    return myTools::getObjectGroupeAcronyme($this);
+  }
 }
