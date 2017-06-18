@@ -41,27 +41,36 @@ if ($parlementaire->sites_web) {
         ?>
       </ul>
 
+    <?php $mails = unserialize($parlementaire->mails);
+    $adresses = unserialize($parlementaire->adresses);
+    $collabs = unserialize($parlementaire->collaborateurs); ?>
     <h2>Contact</h2>
       <ul>
         <li>Par e-mail :
+          <?php if ($mails && count($mails) && $mails[0]) : ?>
           <ul>
-            <?php foreach (unserialize($parlementaire->mails) as $mail) : ?>
-            <li><?php echo $mail ?></li>
+            <?php foreach ($mails as $mail) : ?>
+            <li><?php echo $mail; ?></li>
             <?php endforeach; ?>
           </ul>
+          <?php else : ?> non renseigné
+          <?php endif; ?>
         </li>
         <li>Par courrier :
+          <?php if ($adresses && count($adresses)) : ?>
           <ul>
-            <?php foreach (unserialize($parlementaire->adresses) as $addr) : ?>
-            <li><?php echo preg_replace('/ Télé(phone|copie) :/i', '', $addr) ?></li>
+            <?php foreach ($adresses as $addr) : ?>
+            <li><?php echo preg_replace('/ Télé(phone|copie) :/i', '', $addr); ?></li>
             <?php endforeach; ?>
           </ul>
+          <?php else : ?> non renseigné
+          <?php endif; ?>
         </li>
-        <?php if ($parlementaire->collaborateurs) : ?>
+        <?php if ($collabs && count($collabs)) : ?>
         <li>Collaborateurs :
           <ul>
-            <?php foreach (unserialize($parlementaire->collaborateurs) as $collab) : ?>
-            <li><?php echo $collab ?></li>
+            <?php foreach ($collabs as $collab) : ?>
+            <li><?php echo $collab; ?></li>
             <?php endforeach; ?>
           </ul>
         </li>
