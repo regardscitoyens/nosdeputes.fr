@@ -243,12 +243,12 @@ class topDeputesTask extends sfBaseTask
   }
 
 
-  protected function executeDeputesInfo() {
+  protected function executeDeputesInfo($start, $end) {
     foreach (array_keys($this->deputes) as $id) {
       $dep = Doctrine::getTable('Parlementaire')->find($id);
       //Bidouille pour avoir les paramètres dans le bon ordre
       $this->deputes[$id]['01_nom']['value'] = $dep->nom;
-      $this->deputes[$id]['02_groupe']['value'] = $dep->groupe_acronyme;
+      $this->deputes[$id]['02_groupe']['value'] = $dep->getGroupeWhen($start, $end);
       $this->deputes[$id]['semaines_presence']['value'] += 0;
       $this->deputes[$id]['questions_orales']['value'] += 0;
       $this->deputes[$id]['questions_ecrites']['value'] += 0;
@@ -267,33 +267,33 @@ class topDeputesTask extends sfBaseTask
   }
 
   protected function executeMonth($date) {
+    $start = date('Y-m-d', strtotime($date));
+    $end = date('Y-m-d', strtotime("$date +1month"));
+    echo "$date $enddate\n";
+
     $q = Doctrine_Query::create();
 
-    print "$date ";
-    print date('Y-m-d', strtotime("$date +1month"));
-    print "\n";
-
     $qs = clone $q;
-    $qs->where('s.date >= ?', date('Y-m-d', strtotime($date)));
-    $qs->andWhere('s.date < ?', date('Y-m-d', strtotime("$date +1month")));
+    $qs->where('s.date >= ?', $start);
+    $qs->andWhere('s.date < ?', $end);
     $this->executePresence(clone $qs);
     $this->executeCommissionPresence(clone $qs);
 
-    print "Presence DONE\n";
+    print "Présences DONE\n";
 
     $qi = clone $q;
-    $qi->where('i.date >= ?', date('Y-m-d', strtotime($date)));
-    $qi->andWhere('i.date < ?', date('Y-m-d', strtotime("$date +1month")));
+    $qi->where('i.date >= ?', $start);
+    $qi->andWhere('i.date < ?', $end);
     $this->executeCommissionInterventions(clone $qi);
     $this->executeHemicycleInterventions(clone $qi);
     $this->executeHemicycleInvectives(clone $qi);
     $this->executeQuestionsOrales(clone $qi);
 
-    print "Intervention DONE\n";
+    print "Interventions DONE\n";
 
     $qa = clone $q;
-    $qa->where('a.date >= ?', date('Y-m-d', strtotime($date)));
-    $qa->andWhere('a.date < ?', date('Y-m-d', strtotime("$date +1month")));
+    $qa->where('a.date >= ?', $start);
+    $qa->andWhere('a.date < ?', $end);
     $this->executeAmendementsProposes(clone $qa);
     $this->executeAmendementsSignes(clone $qa);
     $this->executeAmendementsAdoptes(clone $qa);
@@ -301,24 +301,24 @@ class topDeputesTask extends sfBaseTask
     print "Amendements DONE\n";
 
     $qq = clone $q;
-    $qq->where('q.date >= ?', date('Y-m-d', strtotime($date)));
-    $qq->andWhere('q.date < ?', date('Y-m-d', strtotime("$date +1month")));
+    $qq->where('q.date >= ?', $start);
+    $qq->andWhere('q.date < ?', $end);
     $this->executeQuestionsEcrites($qq);
 
-    print "Question DONE\n";
+    print "Questions DONE\n";
 
     $qd = clone $q;
-    $qd->where('t.date >= ?', date('Y-m-d', strtotime($date)));
-    $qd->andWhere('t.date < ?', date('Y-m-d', strtotime("$date +1month")));
+    $qd->where('t.date >= ?', $start);
+    $qd->andWhere('t.date < ?', $end);
     $this->executePropositionsEcrites(clone $qd);
     $this->executePropositionsSignees(clone $qd);
     $this->executeRapports(clone $qd);
 
     print "Documents DONE\n";
 
-    $this->executeDeputesInfo();
+    $this->executeDeputesInfo($start, $end);
 
-    print "Info Deputes DONE\n";
+    print "Infos Députés DONE\n";
     return ;
   }
 
@@ -355,12 +355,14 @@ class topDeputesTask extends sfBaseTask
     }
 
     $q = Doctrine_Query::create();
-    if (!$fin)
+    if (!$fin) {
       $q->where('fin_mandat IS NULL');
+      $end = date('Y-m-d', time()-60*60*24*365);
+    }
 
     $qs = clone $q;
     if (!$fin) {
-      $qs->andWhere('s.date > ?', date('Y-m-d', time()-60*60*24*365));
+      $qs->andWhere('s.date > ?', $end);
       $qs->andWhere('(s.date > p.debut_mandat)');
     }
 
@@ -372,7 +374,7 @@ class topDeputesTask extends sfBaseTask
 
     $qi = clone $q;
     if (!$fin)
-      $qi->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
+      $qi->andWhere('i.date > ?', $end);
 
     $this->executeCommissionInterventions(clone $qi);
     $this->orderDeputes('commission_interventions');
@@ -386,7 +388,7 @@ class topDeputesTask extends sfBaseTask
 
     $qa = clone $q;
     if (!$fin)
-      $qa->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
+      $qa->andWhere('a.date > ?', $end);
     $this->executeAmendementsProposes(clone $qa);
     $this->orderDeputes('amendements_proposes');
 
@@ -398,7 +400,7 @@ class topDeputesTask extends sfBaseTask
 
     $qd = clone $q;
     if (!$fin)
-      $qd->where('t.date > ?', date('Y-m-d', time()-60*60*24*365));
+      $qd->where('t.date > ?', $end);
     $this->executeRapports(clone $qd);
     $this->orderDeputes('rapports');
 
@@ -410,7 +412,7 @@ class topDeputesTask extends sfBaseTask
 
     $qq = clone $q;
     if (!$fin)
-      $qq->where('q.date > ?', date('Y-m-d', time()-60*60*24*365));
+      $qq->where('q.date > ?', $end);
     $this->executeQuestionsEcrites($qq);
     $this->orderDeputes('questions_ecrites');
 
