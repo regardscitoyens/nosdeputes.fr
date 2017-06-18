@@ -1917,7 +1917,7 @@ a:hover img {
 .dept_col73 .deptnom {
   width: 104px;
 }
-.dept:hover {
+.dept:hover, .dept.hover {
   background-color: #D1EA74;
 }
 .dept a {
@@ -1970,7 +1970,7 @@ a:hover img {
   padding: 5px;
   height: 32px;
 }
-.list_dep:hover {
+.list_dep:hover, .list_dep.hover {
   color: #000;
   background-color: #D1EA74;
   opacity: 0.8;
