@@ -65,6 +65,11 @@ $(document).ready(function() {
     $(this).height(textarea_height + 10);
   });
 
+  // Redimensionnement si page trop courte
+  var minHeight = $(window).height() - 306;
+  if ($("#corps_page").height() < minHeight)
+    $("#corps_page").height(minHeight);
+
 }); // fin document ready
 
 function uniqueArray(array) {
