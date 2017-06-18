@@ -259,9 +259,42 @@ class Parlementaire extends BaseParlementaire
   }
   public function getGroupe() {
     foreach($this->getOrganismes() as $po) {
-      if ($po->type === 'groupe' && !$po->fin_fonction)
+      if ($po->type === 'groupe')
         return $po;
     }
+  }
+  public function getGroupeWhen($date, $enddate=null) {
+    $date = strtotime($date);
+    if ($enddate) $enddate = strtotime($enddate);
+    $groupes = array();
+    foreach($this->getParlementaireOrganismes() as $po) {
+      if ($po->type != 'groupe')
+        continue;
+      $start = $po->debut_fonction;
+      if (!$start) $start = $this->debut_mandat;
+      $end = $po->fin_fonction;
+      if (!$end) $end = date('Y-m-d');
+
+      $start = strtotime($start);
+      $end = strtotime($end);
+      if (!$enddate) {
+        if ($date >= $start && $date <= $end)
+          return $po->groupe_acronyme;
+      } else {
+        if (($date < $start && $enddate >= $start) || ($date >= $start && $date <= $end)) {
+          if (!isset($groupes[$po->groupe_acronyme]))
+            $groupes[$po->groupe_acronyme] = 0;
+          $groupes[$po->groupe_acronyme] += min($enddate, $end) - max($date, $start);
+        }
+      }
+    }
+    $grps = array_keys($groupes);
+    $ngrps = count($grps);
+    if ($ngrps == 1)
+      return array_keys($groupes)[0];
+    else if ($ngrps > 1)
+      return array_search(max($groupes), $groupes);
+    return "";
   }
   public function getExtras($old=false) {
     $res = array();
