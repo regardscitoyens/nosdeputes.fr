@@ -1094,28 +1094,37 @@ h1 {
 .barre_activite {
   float: left;
   width: 920px;
-  margin-top:10px;
+  margin-top: 10px;
   padding-top: 3px;
   background: #8F8F8F url("images/fond_bas.gif") repeat-x 0 0;
 }
 .barre_activite ul, .barre_activite li {
   display: inline;
-  margin: -3px;
   padding: 0;
   line-height: 24px;
   background-color: transparent;
 }
+.barre_activite ul {
+  margin: 0;
+  width: 690px;
+  display: inline-flex;
+  float: left;
+}
+.barre_activite li {
+  width: 10%;
+}
 .barre_activite h3 {
   padding-left: 5px;
-  display: inline;
   margin: 0;
   font-size: 1.3em;
   color: #6F6F6F;
   line-height: 24px;
   background-color: transparent;
+  width: 220px;
+  float: left;
 }
 .barre_activite li img{
-  margin-left: 25px;
+  margin-bottom: -2px;
 }
 .barre_activite a {
   text-decoration: none;

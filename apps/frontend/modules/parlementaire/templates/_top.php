@@ -53,34 +53,35 @@ $couleur2style = array('vert' => ' style="color: green;font-weight:bold;"',
 $top = $parlementaire->getTop();
 if (!$top)
   return ;
+$details = "";
+$title = "";
+$rank = true;
 if (myTools::isFinLegislature()) {
-  echo '<h3 class="jstitle" title="Bilan d\'activité totale -- durant '.$top["nb_mois"].' mois de mandat(s) du député, -- vacances parlementaires exclues">Activité totale ('.$top["nb_mois"].' mois) :</h3>';
-  $rank = 1;
-} else {
- if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->debut_mandat) {
+  $details = "totale ";
+  $duree = $top["nb_mois"]." mois";
+  $title = "Bilan d'activité totale -- durant ".$top["nb_mois"]." mois de mandat(s) du député, -- vacances parlementaires exclues";
+  $rank = ($top["nb_mois"] >= 6);
+} else if ($parlementaire->isEnMandat()) {
   $mois = floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30));
-  if($mois < 12) {
-    echo '<h3>Activité <small>(';
-    if ($mois <= 1) echo 'premier';
-    else if ($mois < 10) echo $mois.' premiers';
-    else echo $mois;
-    echo ' mois de mandat)</small> :</h3>';
-    $rank = 0;
-    if ($mois > 10 || ($mois > 2 && time() - strtotime(myTools::getDebutLegislature()) < 60*60*24*310))
-      $rank = 1;
-  }else {
-    echo '<h3>Activité <small>(12 derniers mois)</small> :</h3>';
-    $rank = 1;
+  if ($mois < 12) {
+    if ($mois <= 1) $duree = 'premier';
+    else if ($mois < 10) $duree = $mois.' premiers';
+    else $duree = $mois;
+    $rank = ($mois > 10 || myTools::isFreshLegislature());
+  } else {
+    $duree = "12 derniers";
   }
- } else {
-  $rank = 0;
+  $duree .= " mois";
+} else {
+  $details = "totale ";
+  $title = "Bilan d'activité totale -- durant ".$parlementaire->getNbMois()." mois de mandat du député, -- vacances parlementaires exclues";
+  $rank = false;
   $weeks = (strtotime($parlementaire->fin_mandat) - strtotime($parlementaire->debut_mandat))/(60*60*24*7);
-  if ($weeks > 52) $temps = sprintf('%d mois', $weeks/4.33);
-  else $temps = sprintf('%d semaine%s', $weeks, ($weeks >= 2 ? "s" : ""));
-  echo '<h3>Activité sur '.$temps.' :</h3>';
- }
+  if ($weeks > 52) $duree = sprintf('%d mois', $weeks/4.33);
+  else $duree = sprintf('%d semaine%s', $weeks, ($weeks >= 2 ? "s" : ""));
 }
 ?>
+<h3 <?php if ($title) echo 'class="jstitle" title="'.$title.'"'; ?>">Activité <?php echo $details; ?><small>(<?php echo $duree; ?>)</small> :</h3>
 <ul><?php
 $icosize = 16;
 if (isset($widthrate))
