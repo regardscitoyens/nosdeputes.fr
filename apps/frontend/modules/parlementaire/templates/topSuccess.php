@@ -80,8 +80,15 @@ $bulles = array("",
   <?php
   $cpt = 0;
   foreach($tops as $t) {
-    $cpt++;?><tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
-    <td id="<?php echo $t[0]['slug']; ?>" class="jstitle phototitle c_<?php echo strtolower($t[0]['groupe_acronyme']); ?> <?php echo $class['parl']; ?>" title="<?php echo $t[0]['nom']; ?> -- Député<?php if ($t[0]['sexe'] === "F") echo 'e'; ?> <?php echo $t[0]['groupe_acronyme'].' '.preg_replace('/([^\'])$/', '\\1 ', Parlementaire::$dptmt_pref[trim($t[0]['nom_circo'])]).$t[0]['nom_circo']; ?>"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$t[0]['slug']); ?>"><?php echo $t[0]['nom']; ?></a></td>
+    $cpt++;
+    $urldep = url_for('@parlementaire?slug='.$t[0]['slug']); ?>
+  <tr<?php if ($cpt %2) echo ' class="tr_odd"'?>>
+    <td id="<?php echo $t[0]['slug']; ?>"
+        class="jstitle phototitle c_<?php echo strtolower($t[0]['groupe_acronyme']); ?> <?php echo $class['parl']; ?>"
+        title="<?php echo $t[0]['nom']; ?> -- Député<?php if ($t[0]['sexe'] === "F") echo 'e'; ?> <?php echo $t[0]['groupe_acronyme'].' '.preg_replace('/([^\'])$/', '\\1 ', Parlementaire::$dptmt_pref[trim($t[0]['nom_circo'])]).$t[0]['nom_circo']; ?>">
+      <span class="urlphoto" title="<?php echo $urldep; ?>"></span>
+      <a href="<?php echo $urldep; ?>"><?php echo $t[0]['nom']; ?></a>
+    </td>
 <?php $field = "value";
     if ($fin)
       $field = "moyenne";

@@ -3,12 +3,12 @@ $(document).ready(function(){
   $(".dep_map").on("mouseover", function() {
     dep = $(this).attr("id").substring(3);
     $(".map"+dep).mouseover();
-    $(".departement"+dep).attr('class', $(".departement"+dep).attr('class') + " hover");
+    $(".departement"+dep).addClass('hover');
   });
   $(".dep_map").on("mouseout", function() {
     dep = $(this).attr("id").substring(3);
     $(".map"+dep).mouseout();
-    $(".departement"+dep).attr('class', $(".departement"+dep).attr('class').replace(/ hover/, ''));
+    $(".departement"+dep).removeClass('hover');
   });
   /* survol de la map ou du svg */
   var d = { running: '0' };
@@ -16,7 +16,6 @@ $(document).ready(function(){
     $(this).addClass("hover");
     dep = $(this).attr("id").replace(/^(d|map)/, "").replace(/-0$/, "");
     $(".dep"+dep+", #dep"+dep).css("background-color", "#D1EA74");
-    $(".dep"+dep).css("opacity", 0.8);
     if (e.data.running == 0) {
       d.running = 1;
       $(".map"+dep).filter(":not(.hover)").mouseover();
@@ -27,7 +26,6 @@ $(document).ready(function(){
     $(this).removeClass("hover");
     dep = $(this).attr("id").replace(/^(d|map)/, "").replace(/-0$/, "");
     $(".dep"+dep+", #dep"+dep).css("background-color", "#fff");
-    $(".dep"+dep).css("opacity", 1);
     $(".map"+dep).filter(".hover").mouseout();
   });
 });

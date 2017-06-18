@@ -42,7 +42,7 @@ foreach($deputes as $depute) {
   $ct++;
   $id_circo = preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo); ?>
   <a href="<?php echo $url_depute; ?>"><div class="list_dep jstitle phototitle block<?php if ($anciens || $depute->fin_mandat > $depute->debut_mandat) echo ' anciens'; if (isset($circo) && (!$depute->fin_mandat || myTools::isFinLegislature())) echo ' dep_map dep'.$id_circo.'" id="'.sprintf('%03d', $depute->id).$id_circo; ?>" title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>">
-    <span class="urlphoto" href="<?php echo $url_depute; ?>"></span>
+    <span class="urlphoto" title="<?php echo $url_depute; ?>"></span>
     <span class="list_nom">
       <?php echo $depute->getNomPrenom(); ?>
     </span>
@@ -59,7 +59,7 @@ foreach($deputes as $depute) {
         $string = preg_replace('/(è[rm]e)/', '<sup>\1</sup>', $depute->getNumCircoString());
         if (isset($dept))
           $string = $depute->getNumDepartement().'&nbsp;&mdash;&nbsp;'.preg_replace("/nscription/", "", $string);
-        echo $string.'</span></a>';
+        echo $string.'</span>';
       } else echo $depute->nom_circo;
     ?></span><br/>
     <span class="list_left">

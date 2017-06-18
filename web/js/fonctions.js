@@ -65,7 +65,7 @@ $(document).ready(function() {
       $(this).find("title").remove();
       title = $(this).attr('title').replace(/ \-\- /g, '<br/>').replace(/^([^<]+)<br/, '<b>$1</b><br');
       if ($(this).hasClass('phototitle') && !title.match(/<img src/)) {
-        title = '<img src=\'' + $(this).children('.urlphoto').attr('href').replace(/\/([^\/]+)$/, "/depute/photo/$1/70") + '\'/><br/>' + title;
+        title = '<img src=\'' + $(this).find('.urlphoto').attr('title').replace(/\/([^\/]+)$/, "/depute/photo/$1/70") + '\'/><br/>' + title;
       }
       $(this).attr('jstitle', title);
       $(this).attr('title', '');
