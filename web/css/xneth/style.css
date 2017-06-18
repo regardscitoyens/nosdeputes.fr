@@ -251,9 +251,16 @@ a:hover {
 
 .box_tags .internal_tag_cloud {
   padding: 7px;
+  vertical-align: middle;
 }
-.internal_tag_cloud span {
-  padding-right: 4px;
+.internal_tag_cloud a {
+  margin: 4px;
+  padding: 2px;
+  white-space: nowrap;
+}
+.internal_tag_cloud a:hover {
+  background-color: #f2e2b5;
+  text-decoration: none;
 }
 .box_repartition h2 {
   background-color: #DFDACF;

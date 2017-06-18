@@ -18,32 +18,6 @@ $(document).ready(function() {
     if ($(this).parent().attr("id") == "item4") { $(this).attr("class", "selected"); $('#sous_menu_3').css("display", "block"); }
   });
 
-  // Effet survol tagcloud
-  $(".internal_tag_cloud").prepend("<div id=\"loupe\"></div>");
-
-  $(".internal_tag_cloud a").each(
-    function() {
-      $(this).attr("alt", $(this).attr('title'));
-      $(this).removeAttr('title');
-      $(this).mouseover(function() {
-        text = $(this).text();
-        if ($(this).attr("alt")) {
-          text = text + " ("+$(this).attr("alt")+")";
-        }
-        $("#loupe").text(text);
-        $("#loupe").css("display", "block");
-      });
-    }
-  );
-  $(".internal_tag_cloud").mousemove(function(e) {
-    milieu = $("#loupe").width() / 2;
-    $("#loupe").css({left: e.clientX - milieu, top: e.clientY + 20});
-  });
-
-  $(".internal_tag_cloud").mouseout(function() {
-    $("#loupe").css("display", "none");
-  });
-
   $("input.examplevalue").focus(function() {
     if (!$(this).attr('default')) {
         $(this).attr('default', $(this).val());

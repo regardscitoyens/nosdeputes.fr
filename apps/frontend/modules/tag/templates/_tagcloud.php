@@ -34,7 +34,7 @@ if (isset($route)) echo url_for($route.'tags='.$rel, $abs);
 else {
   if (!isset($parlementaire)) $parlementaire = "";
   echo myTools::get_solr_list_url($rel, $parlementaire, 'Intervention', $solrtag, '', $abs);
-} ?>" title="<?php //echo $tags[$tag]['count']; ?>"><?php
+} ?>"><?php
 $nom = preg_replace('/^aZ/', 'â', $tags[$tag]['tag']);
 $nom = preg_replace('/^eZ/', 'é', $nom);
 $nom = preg_replace('/^EZ/', 'É', $nom);
