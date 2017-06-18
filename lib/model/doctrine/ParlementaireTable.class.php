@@ -35,7 +35,7 @@ class ParlementaireTable extends PersonnaliteTable
     if (count($memeNom) == 0) {
       $query = $this->createQuery('p')
         ->where('p.nom_de_famille = ?' , $nom);
-      if ($document) $query->andWhere('p.fin_mandat is null or p.fin_mandat > ?', $document->getDate());
+      if ($document) $query->andWhere('p.fin_mandat is null or p.fin_mandat >= ?', $document->getDate());
       $memeNom = $query->execute();
     }
     if (count($memeNom) > 1) {
@@ -79,7 +79,7 @@ class ParlementaireTable extends PersonnaliteTable
       if (!$depute) {
         $enmandat = array();
         foreach ($memeSexe as $de)
-          if (!$de->fin_mandat) array_push($enmandat, $de);
+          if ($de->isEnMandat()) array_push($enmandat, $de);
         if (count($enmandat) == 1) $depute = $enmandat[0];
       }
       unset($memeSexe);

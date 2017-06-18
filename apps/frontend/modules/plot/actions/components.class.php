@@ -11,7 +11,7 @@ class plotComponents extends sfComponents
     if (!isset($this->session) || $this->session === 'legislature') $this->session = 'lastyear';
     $this->data['fin'] = myTools::isFinLegislature() && ($this->session === 'lastyear');
     if ($this->session === 'lastyear') {
-      if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {
+      if (!$this->parlementaire->isEnMandat()) {
         $date = strtotime($this->parlementaire->fin_mandat);
         $this->data['mandat_clos'] = true;
       } else $date = time();
@@ -281,7 +281,7 @@ class plotComponents extends sfComponents
       ->from('Parlementaire p')
       ->groupBy('p.groupe_acronyme');
     if (!myTools::isFinLegislature()) {
-      $query->andWhere('p.fin_mandat IS NULL');
+      $query->andWhere('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat');
     }
 
     $nbgroupes = $query->fetchArray();

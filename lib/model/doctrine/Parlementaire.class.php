@@ -94,7 +94,7 @@ class Parlementaire extends BaseParlementaire
         else $type = 'sénateur';
     }
     $statut = "";
-    if ($this->fin_mandat != null) {
+    if (!$this->isEnMandat()) {
       if ($this->sexe == 'F') $statut = 'ancienne ';
       else $statut = 'ancien ';
     }
@@ -655,6 +655,10 @@ class Parlementaire extends BaseParlementaire
 
   public function getTop() {
     return unserialize($this->_get('top'));
+  }
+
+  public function isEnMandat() {
+    return (!$this->fin_mandat || $this->fin_mandat < $this->debut_mandat);
   }
 
   public function getCauseFinMandat() {

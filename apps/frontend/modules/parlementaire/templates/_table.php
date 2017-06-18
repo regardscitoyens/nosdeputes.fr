@@ -41,7 +41,7 @@ foreach($deputes as $depute) {
   $url_depute = url_for('@parlementaire?slug='.$depute->slug);
   $ct++;
   $id_circo = preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo); ?>
-  <a href="<?php echo $url_depute; ?>"><div class="list_dep jstitle phototitle block<?php if ($anciens || $depute->fin_mandat > $depute->debut_mandat) echo ' anciens'; if (isset($circo) && (!$depute->fin_mandat || myTools::isFinLegislature())) echo ' dep_map dep'.$id_circo.'" id="'.sprintf('%03d', $depute->id).$id_circo; ?>" title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>">
+  <a href="<?php echo $url_depute; ?>"><div class="list_dep jstitle phototitle block<?php if ($anciens || !$depute->isEnMandat()) echo ' anciens'; if (isset($circo) && ($depute->isEnMandat() || myTools::isFinLegislature())) echo ' dep_map dep'.$id_circo.'" id="'.sprintf('%03d', $depute->id).$id_circo; ?>" title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>">
     <span class="urlphoto" title="<?php echo $url_depute; ?>"></span>
     <span class="list_nom">
       <?php echo $depute->getNomPrenom(); ?>

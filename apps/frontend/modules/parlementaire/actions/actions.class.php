@@ -76,7 +76,7 @@ class parlementaireActions extends sfActions
     else $width2 = $height*$ratio;
     $iorig = imagecreatefromjpeg($file);
     $ih = imagecreatetruecolor($work_height*$ratio, $work_height);
-    if (!$request->getParameter('color') && (($parlementaire->fin_mandat >= $parlementaire->debut_mandat && !myTools::isFinlegislature()) || preg_match('/décè/i', $parlementaire->getAnciensMandats())))
+    if (!$request->getParameter('color') && ((!$parlementaire->isEnMandat() && !myTools::isFinlegislature()) || preg_match('/décè/i', $parlementaire->getAnciensMandats())))
       self::imagetograyscale($iorig);
     imagecopyresampled($ih, $iorig, 0, 0, max(0, ($width - $width2)/2), max(0, ($height - $height2)/2), $work_height*$ratio, $work_height, $width2, $height2);
     $width = $work_height*$ratio;
@@ -122,7 +122,7 @@ class parlementaireActions extends sfActions
   {
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
     if (!myTools::isLegislatureCloturee()) {
-      $query->where('fin_mandat IS NULL');
+      $query->where('fin_mandat IS NULL OR debut_mandat > fin_mandat');
     }
     $p = $query->orderBy('rand()')->limit(1)->fetchOne();
     return $this->redirect('@parlementaire?slug='.$p['slug']);
@@ -270,7 +270,7 @@ class parlementaireActions extends sfActions
       ->leftJoin('po.Organisme o')
       ->where('o.nom = ?', $nom)
       ->andWhere('p.fin_mandat IS NOT NULL')
-      ->andWhere('p.fin_mandat > p.debut_mandat')
+      ->andWhere('p.fin_mandat >= p.debut_mandat')
       ->orderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille ASC');
     foreach ($query->execute() as $depute) {
       if (isset($this->parlementaires[-200])) $this->parlementaires[-200][] = $depute;
@@ -326,7 +326,7 @@ class parlementaireActions extends sfActions
         ->leftJoin('po.Organisme o')
         ->where('o.slug = ?', $orga)
         ->andWhere('p.fin_mandat IS NOT NULL')
-        ->andWhere('p.fin_mandat > p.debut_mandat')
+        ->andWhere('p.fin_mandat >= p.debut_mandat')
         ->orderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille ASC');
       foreach ($query->execute() as $depute) {
         if (isset($this->parlementaires[-200])) $this->parlementaires[-200][] = $depute;
@@ -580,7 +580,7 @@ class parlementaireActions extends sfActions
     $this->response->setTitle("Intégrer NosDeputes.fr sur votre site");
     $this->depute = $this->searchDepute($request->getParameter('depute'));
     if (!$this->depute)
-    $this->depute = Doctrine::getTable('Parlementaire')->createQuery('p')->where('fin_mandat IS NULL')->orderBy('rand()')->limit(1)->fetchOne();
+    $this->depute = Doctrine::getTable('Parlementaire')->createQuery('p')->where('fin_mandat IS NULL OR debut_mandat > fin_mandat')->orderBy('rand()')->limit(1)->fetchOne();
 
   }
 

@@ -1,9 +1,9 @@
-<?php 
+<?php
 $add='';
 $groupe = "";
 if (isset($flip) && $flip)
   $add = '&flip='.$flip;
-if ($parlementaire->fin_mandat != null && $parlementaire->fin_mandat >= $parlementaire->debut_mandat)
+if (!$parlementaire->isEnMandat())
   $groupe = " -- (ancien".($parlementaire->sexe == "F" ? "ne" : "")." député".($parlementaire->sexe == "F" ? "e" : "").')';
 else if ($parlementaire->groupe_acronyme) $groupe = " -- (Groupe parlementaire : ".$parlementaire->groupe_acronyme.')';
 $abs = '';

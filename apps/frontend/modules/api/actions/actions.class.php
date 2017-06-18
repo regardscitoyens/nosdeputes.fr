@@ -280,7 +280,7 @@ class apiActions extends sfActions
       $res['mandat_fin'] = $parl->fin_mandat;
     else if ($format == 'csv' && $light != 1)
       $res['mandat_fin'] = "";
-    if ($parl->fin_mandat && $parl->fin_mandat >= $parl->debut_mandat)
+    if (!$parl->isEnMandat())
       $res['ancien_depute'] = 1;
     else if ($format == 'csv' && $light != 1)
       $res['ancien_depute'] = 0;

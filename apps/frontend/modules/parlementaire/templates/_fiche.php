@@ -1,7 +1,7 @@
   <div class="boite_depute" id="b1">
     <h2>Informations</h2>
       <ul>
-        <?php if ($parlementaire->fin_mandat && $parlementaire->fin_mandat >= $parlementaire->debut_mandat) : ?>
+        <?php if (!$parlementaire->isEnMandat()) : ?>
         <li>Mandat clos rempli du <?php
 echo myTools::displayDate($parlementaire->debut_mandat).' au '.myTools::displayDate($parlementaire->fin_mandat);
 if ($cause = $parlementaire->getCauseFinMandat())
@@ -68,7 +68,7 @@ if ($parlementaire->sites_web) {
         <?php endif; ?>
       </ul>
 
-    <?php if ($parlementaire->fin_mandat == null || $parlementaire->fin_mandat < $parlementaire->debut_mandat) : ?>
+    <?php if ($parlementaire->isEnMandat()) : ?>
     <h2>Responsabilités</h2>
       <ul>
         <li>Commission permanente :
@@ -129,16 +129,16 @@ if(myTools::isFinLegislature()) {
   </div>
 
   <div class="boite_depute" id="b2">
-    <?php if ($parlementaire->fin_mandat && $parlementaire->fin_mandat >= $parlementaire->debut_mandat) { ?>
-    <h2>Le mandat de ce député est achevé.</h2>
-    <?php } else { ?>
+    <?php if (!$parlementaire->isEnMandat()) : ?>
+    <h2>Le mandat de ce député est achevé</h2>
+    <?php else : ?>
     <h2>Suivre l'activité du député</h2>
       <table width=100% style="text-align: center"><tr>
         <td width=33%><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/email.png', 'alt="Email"'); ?></a><br/><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>">par email</a></td>
         <td width=33%><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>">par RSS</a></td>
         <td width=33%><a href="<?php echo url_for('@widget?depute='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/widget.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for('@widget?depute='.$parlementaire->slug); ?>">sur mon site</a></td>
       </tr></table>
-    <?php } ?>
+    <?php endif; ?>
     <h2>Champ lexical <small>(<?php
 if (myTools::isFinLegislature()) {
   echo "sur l'ensemble de la législature";
