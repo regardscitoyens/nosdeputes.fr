@@ -337,6 +337,7 @@ class topDeputesTask extends sfBaseTask
     $manager = new sfDatabaseManager($this->configuration);
 
     $this->deputes = array();
+    $this->groupes = array();
 
     if (isset($arguments['month']) && preg_match('/(\d{4})-(\d{2})-01/', $arguments['month'], $m)) {
       $this->executeMonth($arguments['month']);
@@ -352,18 +353,10 @@ class topDeputesTask extends sfBaseTask
 
     $fin = myTools::isFinLegislature();
 
-    $qdeputes = Doctrine::getTable('Parlementaire')->createQuery()
-      ->select('id, groupe_acronyme')
-      ->where('type = ?', 'depute');
-    if (!$fin)
-      $qdeputes->andWhere('fin_mandat IS NULL');
-    else $vacances = myTools::getVacances();
-    foreach($qdeputes->fetchArray() as $d) {
-      if (isset($d['groupe_acronyme']))
-        $this->deputes[$d['id']]['groupe'] = $d['groupe_acronyme'];
-      else $this->deputes[$d['id']]['groupe'] = "";
-      if ($fin)
-        $this->deputes[$d['id']]['nb_mois'] = Doctrine::getTable('Parlementaire')->find($d['id'])->getNbMois($vacances);
+    if ($fin) {
+      $vacances = myTools::getVacances();
+      foreach(Doctrine::getTable('Parlementaire')->prepareParlementairesTopQuery($fin)->execute() as $d)
+        $this->deputes[$d->id]['nb_mois'] = $d->getNbMois($vacances);
     }
 
     $q = Doctrine_Query::create();
@@ -432,26 +425,18 @@ class topDeputesTask extends sfBaseTask
     $this->orderDeputes('propositions_signees');
 
     $qq = clone $q;
-    if (!$fin)
-      $qq->where('q.date > ?', $end);
+    if (!$fin) {
+      $qq->andWhere('q.date >= ?', $lastyear);
+      $qq->andWhere('(q.date >= p.debut_mandat)');
+    }
+
     $this->executeQuestionsEcrites($qq);
     $this->orderDeputes('questions_ecrites');
 
     $this->executeQuestionsOrales(clone $qi);
     $this->orderDeputes('questions_orales');
 
-
-    $groupes = array();
     foreach(array_keys($this->deputes) as $id) {
-      if ($this->deputes[$id]['groupe'] != "") {
-        foreach(array_keys($this->deputes[$id]) as $key) {
-          if(is_array($this->deputes[$id][$key])) {
-  	         $groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
-	           $groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
-          }
-        }
-      }
-      unset($this->deputes[$id]['groupe']);
       $depute = Doctrine::getTable('Parlementaire')->find($id);
       if ($depute) {
         $depute->top = serialize($this->deputes[$id]);
