@@ -128,6 +128,26 @@ class topDeputesTask extends sfBaseTask
     $this->processResults($q, 'amendements_proposes', 'auteur_id', 'auteur_groupe_acronyme');
   }
 
+  protected function executeAmendementsProposesAdoptes($q)
+  {
+    $q->select('a.auteur_id, a.auteur_groupe_acronyme, count(a.id)')
+      ->from('Amendement a, a.Auteur p')
+      ->andWhere('a.auteur_id IS NOT NULL')
+      ->andWhere('a.sort = ?', 'Adopté')
+      ->groupBy('p.id, a.auteur_groupe_acronyme');
+    $this->processResults($q, 'amendements_proposes_adoptes', 'auteur_id', 'auteur_groupe_acronyme');
+  }
+
+  protected function executeAmendementsProposesRejetes($q)
+  {
+    $q->select('a.auteur_id, a.auteur_groupe_acronyme, count(a.id)')
+      ->from('Amendement a, a.Auteur p')
+      ->andWhere('a.auteur_id IS NOT NULL')
+      ->andWhere('a.sort = ?', 'Rejeté')
+      ->groupBy('p.id, a.auteur_groupe_acronyme');
+    $this->processResults($q, 'amendements_proposes_rejetes', 'auteur_id', 'auteur_groupe_acronyme');
+  }
+
   protected function executeAmendementsSignes($q)
   {
     $q->select('pa.parlementaire_id, pa.parlementaire_groupe_acronyme, count(pa.id)')
