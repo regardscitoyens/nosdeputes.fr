@@ -65,3 +65,10 @@ web/1*/
 web/images/tmp/
 web/liasses/
 web/synthese*
+
+lib/vendor/autoload.php
+lib/vendor/bin/
+lib/vendor/composer/
+lib/vendor/lexpress/
+lib/vendor/swiftmailer/
+

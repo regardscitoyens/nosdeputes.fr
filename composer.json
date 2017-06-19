@@ -1,0 +1,9 @@
+{
+    "require": {
+            "lexpress/symfony1": "dev-master",
+            "lexpress/doctrine1": "dev-master"
+    },
+    "config": {
+            "vendor-dir": "lib/vendor"
+    }
+}
