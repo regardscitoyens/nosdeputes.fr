@@ -95,7 +95,7 @@ class ParlementaireTable extends PersonnaliteTable
     if (!$fin) {
       $qp->andWhere('fin_mandat IS NULL OR fin_mandat < debut_mandat');
 
-      // Au début on affiche tout le monde, après 10 mois seulement les députés avec au moins 10 mois de mandat
+      // Au début on affiche tout le monde, puis après 10 mois uniquement les députés avec au moins 10 mois de mandat
       if (!myTools::isFreshLegislature())
         $qp->andWhere('debut_mandat < ?', date('Y-m-d', time() - myTools::$dixmois));
     }

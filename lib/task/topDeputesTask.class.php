@@ -368,14 +368,16 @@ class topDeputesTask extends sfBaseTask
 
     $q = Doctrine_Query::create();
     if (!$fin) {
-      $q->where('fin_mandat IS NULL');
-      $end = date('Y-m-d', time()-60*60*24*365);
+      $q->andWhere('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat');
+      if (!myTools::isFreshLegislature())
+        $q->andWhere('p.debut_mandat < ?', date('Y-m-d', time() - myTools::$dixmois));
+      $lastyear = date('Y-m-d', time()-60*60*24*365);
     }
 
     $qs = clone $q;
     if (!$fin) {
-      $qs->andWhere('s.date > ?', $end);
-      $qs->andWhere('(s.date > p.debut_mandat)');
+      $qs->andWhere('s.date >= ?', $lastyear);
+      $qs->andWhere('s.date >= p.debut_mandat');
     }
 
     $this->executePresence(clone $qs);
@@ -385,8 +387,10 @@ class topDeputesTask extends sfBaseTask
     $this->orderDeputes('commission_presences');
 
     $qi = clone $q;
-    if (!$fin)
-      $qi->andWhere('i.date > ?', $end);
+    if (!$fin) {
+      $qi->andWhere('i.date >= ?', $lastyear);
+      $qi->andWhere('i.date >= p.debut_mandat');
+    }
 
     $this->executeCommissionInterventions(clone $qi);
     $this->orderDeputes('commission_interventions');
@@ -394,13 +398,15 @@ class topDeputesTask extends sfBaseTask
     $this->executeHemicycleInterventions(clone $qi);
     $this->orderDeputes('hemicycle_interventions');
 
-
     $this->executeHemicycleInvectives(clone $qi);
     $this->orderDeputes('hemicycle_interventions_courtes');
 
     $qa = clone $q;
-    if (!$fin)
-      $qa->andWhere('a.date > ?', $end);
+    if (!$fin) {
+      $qa->andWhere('a.date >= ?', $lastyear);
+      $qa->andWhere('a.date >= p.debut_mandat');
+    }
+
     $this->executeAmendementsProposes(clone $qa);
     $this->orderDeputes('amendements_proposes');
 
@@ -411,8 +417,11 @@ class topDeputesTask extends sfBaseTask
     $this->orderDeputes('amendements_adoptes');
 
     $qd = clone $q;
-    if (!$fin)
-      $qd->where('t.date > ?', $end);
+    if (!$fin) {
+      $qd->andWhere('t.date >= ?', $lastyear);
+      $qd->andWhere('t.date >= p.debut_mandat');
+    }
+
     $this->executeRapports(clone $qd);
     $this->orderDeputes('rapports');
 
@@ -467,7 +476,10 @@ class topDeputesTask extends sfBaseTask
     if (!$fin) {
       $qparlementaires = Doctrine_Query::create()
         ->from('Parlementaire p')
-        ->where('fin_mandat IS NOT NULL');
+        ->where('fin_mandat IS NOT NULL AND debut_mandat <= fin_mandat');
+
+      if (!myTools::isFreshLegislature())
+        $qparlementaires->orWhere('debut_mandat >= ?', date('Y-m-d', time() - myTools::$dixmois));
 
       foreach ($qparlementaires->execute() as $p) {
         $this->depute = array();
