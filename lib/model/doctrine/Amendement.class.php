@@ -54,16 +54,13 @@ class Amendement extends BaseAmendement {
     $sexe = null;
     $regexp = array();
     if (preg_match('/^\s*(.*),+\s*[dl]es\s+(.*\s+[gG]roupe|membres|députés)\s+(.*)\s*$/' ,$auteurs, $match)) {
-      $tmpgroupe = null;
-      foreach (myTools::getGroupesInfos() as $gpe) {
+      foreach (myTools::getCurrentGroupesInfos() as $gpe) {
         $regexp[] = $gpe[4];
-        if (preg_match('/('.$gpe[4].'|'.$gpe[1].')/i', $groupe)) {
-          $tmpgroupe = $gpe[1];
-          $auteurs = preg_replace('/,[^,]*'.$gpe[0].'[^,]*/', '', $auteurs);
+        if (preg_match('/('.$gpe[4].'|'.$gpe[1].')/i', $match[3])) {
+          $groupe = $gpe[1];
+          $auteurs = preg_replace('/,[^,]*('.$gpe[4].'|'.$gpe[1].')[^,]*/', '', $auteurs);
         }
       }
-      if ($tmpgroupe) $groupe = $tmpgroupe;
-      else $groupe = null;
     }
     if ($debug) echo $auteurs." // ".$groupe."\n";
     $arr = preg_split('/,/', $auteurs);
@@ -92,7 +89,7 @@ class Amendement extends BaseAmendement {
       if (!$parl) print "ERROR: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$groupe."\n";
       else {
         if ($debug) echo $parl->nom."\n";
-        if (!$groupe && $parl->groupe_acronyme != "") $groupe = $parl->groupe_acronyme;
+        if (!$groupe && $parl->groupe_acronyme) $groupe = $parl->groupe_acronyme;
         $this->addParlementaire($parl, $signataireindex);
         $parl->free();
       }

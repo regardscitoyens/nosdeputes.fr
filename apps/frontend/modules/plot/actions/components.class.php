@@ -263,7 +263,7 @@ class plotComponents extends sfComponents
     $this->data['groupes'] = array();
     $this->data['couleurs'] = array();
     $colormap = myTools::getGroupesColorMap();
-    foreach (array_reverse(myTools::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''))) as $gpe) {
+    foreach (array_reverse(myTools::getCurrentGroupes()) as $gpe) {
       $this->data['groupes'][$gpe] = array();
       $this->data['couleurs'][] = $colormap[$gpe];
     }
@@ -363,7 +363,7 @@ class plotComponents extends sfComponents
   public function executeGroupes() {
     $this->empty = 0;
     if (!isset($this->plot)) return;
-    $this->labels = myTools::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''));
+    $this->labels = myTools::getCurrentGroupes();
     $this->couleurs = array();
     $colormap = myTools::getGroupesColorMap();
     foreach ($this->labels as $gpe)

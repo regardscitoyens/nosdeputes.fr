@@ -1,6 +1,6 @@
 <p class="legende">
 <?php $txt_l = 0;
-foreach (array_reverse(myTools::getGroupesInfosOrder()) as $gpe) {
+foreach (myTools::getCurrentGroupesInfos() as $gpe) {
   if ($txt_l > 75) {
     echo '<br/>';
     $txt_l = 0;

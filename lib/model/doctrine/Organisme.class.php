@@ -11,37 +11,40 @@ class Organisme extends BaseOrganisme
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     return url_for('@list_parlementaires_organisme?slug='.$this->slug);
   }
+
   public function getTitre() {
     if ($this->type === "groupe")
       return $this->getNom().' ('.$this->getSmallNomGroupe().')';
     else return $this->getNom();
   }
+
   public function getPersonne() {
     return '';
   }
+
   public function __toString() {
     if ($titre = $this->getTitre())
       return substr($titre, 0, 100);
     return "";
   }
+
   public function getSmallNomGroupe() {
     if (!$this->type == "groupe") return "";
-    $hashmap = array();
+    $key = strtolower($this->getNom());
     foreach (myTools::getGroupesInfos() as $gpe)
-      $hashmap[strtolower($gpe[0])] = $gpe[1];
-    if (isset($hashmap[strtolower($this->getNom())]))
-      return $hashmap[strtolower($this->getNom())];
+      if (strtolower($gpe[0]) == $key)
+        return $gpe[1];
     return "";
   }
+
   public static function getNomByAcro($acro) {
-    $acro = strtolower($acro);
-    $hashmap = array();
+    $key = strtolower($acro);
     foreach (myTools::getGroupesInfos() as $gpe)
-      $hashmap[strtolower($gpe[1])] = $gpe[0];
-    if (preg_match('/^('.implode('|',array_keys($hashmap)).')$/i', $acro))
-      return $hashmap["$acro"];
-    else return false;
+      if (strtolower($gpe[1]) == $key)
+        return $gpe[0];
+    return false;
   }
+
   public function getSeanceByDateAndMomentOrCreateIt($date, $moment, $session = null) {
     $seance = $this->getSeanceByDateAndMoment($date, $moment);
     if (!$seance) {

@@ -91,15 +91,15 @@ class parlementaireActions extends sfActions
     $groupe = $parlementaire->groupe_acronyme;
   if ($groupe) {
       imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon+$bordure, $rayon+$bordure, imagecolorallocate($ih, 255, 255, 255));
-/*     Gestion des multicouleurs Communistes/verts
-      if ($groupe == 'GDR') {
+
+      $colormap = myTools::getGroupesColorMap();
+      if (in_array($groupe, $colormap) && preg_match('/^(\d+),(\d+),(\d+)$/', $colormap[$groupe], $match))
+        imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, $match[1], $match[2], $match[3]));
+
+/*  Old code to handle groupes bicolore
 	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 45, 225, imagecolorallocate($ih, 0, 170, 0), IMG_ARC_EDGED);
 	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 225, 45, imagecolorallocate($ih, 240, 0, 0), IMG_ARC_EDGED);
-      } else
 */
-      foreach (myTools::getGroupesInfos() as $gpe)
-        if ($gpe[1] == $groupe && preg_match('/^(\d+),(\d+),(\d+)$/', $gpe[2], $match))
-         imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, $match[1], $match[2], $match[3]));
     }
 
     if ($newheight) {
@@ -405,7 +405,7 @@ class parlementaireActions extends sfActions
 
     // Prepare les metas des groupes
     $this->gpes = array();
-    foreach(myTools::getGroupesInfosOrder() as $gpe) {
+    foreach(myTools::getCurrentGroupesInfos() as $gpe) {
       $this->gpes[$gpe[1]] = array();
       $this->gpes[$gpe[1]][0] = array();
       $this->gpes[$gpe[1]][0]['nb'] = 0;

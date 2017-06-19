@@ -163,30 +163,32 @@ class myTools {
     return $res;
   }
 
-  public static function getGroupesInfosOrder() {
-    $gpes = self::getGroupesInfos();
-    $map = array();
-    foreach ($gpes as $gpe)
-      $map[$gpe[1]] = $gpe;
-    $gpes = array();
-    foreach (self::convertYamlToArray(sfConfig::get('app_groupes_actuels', '')) as $gpe)
-      $gpes[] = $map[$gpe];
-    return $gpes;
-  }
-
-  public static function getAllGroupesOrder() {
+  public static function getGroupesOrderMap() {
     $groupesmap = array();
     $ct = 0;
-    foreach (myTools::getGroupesInfos() as $gpe)
+    foreach (self::getGroupesInfos() as $gpe)
       $groupesmap[$gpe[1]] = $ct++;
     return $groupesmap;
   }
 
   public static function getGroupesColorMap() {
     $colormap = array();
-    foreach (myTools::getGroupesInfos() as $gpe)
+    foreach (self::getGroupesInfos() as $gpe)
       $colormap[$gpe[1]] = $gpe[2];
     return $colormap;
+  }
+
+  public static function getCurrentGroupes() {
+    return self::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''));
+  }
+
+  public static function getCurrentGroupesInfos() {
+    $gpes = array();
+    $curgpes = self::getCurrentGroupes();
+    foreach (self::getGroupesInfos() as $g)
+      if (in_array($g[1], $curgpes))
+        $gpes[] = $g;
+    return $gpes;
   }
 
   public static function getCommissionsPermanentes() {
