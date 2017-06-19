@@ -169,7 +169,6 @@ class parlementaireActions extends sfActions
 
   }
 
-
   public function executeId(sfWebRequest $request)
   {
     $format = $request->getParameter('format');
@@ -241,6 +240,7 @@ class parlementaireActions extends sfActions
       $this->citoyens = $query->execute();
     }
   }
+
   public function executeListGroupe(sfWebRequest $request) {
     $acro = strtolower($request->getParameter('acro'));
     $nom = Organisme::getNomByAcro($acro);
@@ -405,7 +405,7 @@ class parlementaireActions extends sfActions
 
     // Prepare les metas des groupes
     $this->gpes = array();
-    foreach(myTools::getCurrentGroupesInfos() as $gpe) {
+    foreach(myTools::getGroupesInfos() as $gpe) {
       $this->gpes[$gpe[1]] = array();
       $this->gpes[$gpe[1]][0] = array();
       $this->gpes[$gpe[1]][0]['nb'] = 0;

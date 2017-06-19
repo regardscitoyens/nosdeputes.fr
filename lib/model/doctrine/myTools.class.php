@@ -336,14 +336,14 @@ class myTools {
 
   public static function echo_synthese_groupe($list, $bulles, $class, $ktop, $cpt) {
     foreach ($list as $gpe => $t) {
+      if (!$t[0]['nb']) continue;
       $cpt++;
+      $nb = ' ('.$t[0]['nb'].' député'.($t[0]['nb'] > 1 ? 's' : '').')';
       echo '<tr'.($cpt %2 ? ' class="tr_odd"' : '').'>';
       echo '<td id="'.$gpe.'" class="jstitle c_'.strtolower($gpe).' '.$class['parl'].'" title="'.$t[0]['nom'];
-      if (isset($t[0]['desc'])) {
-        echo ' -- '.$t[0]['desc'].'"><a href="'.url_for('@list_parlementaires_groupe?acro='.$gpe).'">'.$gpe.' : '.$t[0]['nb'].' députés</a>';
-      } else {
-        echo '">'.$t[0]['nom']." : ".$t[0]['nb'];
-      }
+      if (isset($t[0]['desc']))
+        echo ' -- '.$t[0]['desc'].'"><a href="'.url_for('@list_parlementaires_groupe?acro='.$gpe).'">'.$gpe.$nb.'</a>';
+      else echo '">'.$t[0]['nom'].$nb;
       echo '</td>';
       for($i = 1 ; $i < count($t) ; $i++) {
         $t[$i] = round($t[$i]/$t[0]['nb']);
