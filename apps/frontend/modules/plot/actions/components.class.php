@@ -15,13 +15,16 @@ class plotComponents extends sfComponents
         $date = strtotime($this->parlementaire->fin_mandat);
         $this->data['mandat_clos'] = true;
       } else $date = time();
-      $annee = date('Y', $date); $sem = date('W', $date);
+      $annee = date('Y', $date);
+      $sem = date('W', $date);
       if ($this->data['fin'])
         $last_year = strtotime(myTools::getDebutLegislature());
       else $last_year = $date - 32054400;
       $date_debut = date('Y-m-d', $last_year);
-      $annee0 = date('o', $last_year); $sem0 = date('W', $last_year);
-      if ($sem > 51 && date('n', $date) == 1) $sem = 0;
+      $annee0 = date('o', $last_year);
+      $sem0 = date('W', $last_year);
+      if ($sem > 51 && date('n', $date) == 1)
+        $sem = 0;
       if ($sem < 2 && $annee != date('o', $date)) {
         $annee = date('o', $date);
         $sem0 -= 1;
@@ -126,16 +129,21 @@ class plotComponents extends sfComponents
    }
 
     # Données de présence mediane par semaine
-    $this->data['presences_medi'] = array('commission' => array_fill(1, $n_weeks, 0),
-                                          'hemicycle'  => array_fill(1, $n_weeks, 0),
-                                          'total' => array_fill(1, $n_weeks, 0));
+    $this->data['presences_medi'] = array(
+      'commission' => array_fill(1, $n_weeks, 0),
+      'hemicycle'  => array_fill(1, $n_weeks, 0),
+      'total' => array_fill(1, $n_weeks, 0)
+    );
     $presences_medi = Doctrine::getTable('VariableGlobale')->findOneByChamp('presences_medi');
     if ($presences_medi) {
       $prmedi = unserialize($presences_medi->value);
       $debut_legis = strtotime(myTools::getDebutLegislature());
       $an_legis = date('Y', $debut_legis);
       $sem_legis = date('W', $debut_legis);
-      if ($sem_legis == 53) { $an_legis++; $sem_legis = 1; }
+      if ($sem_legis == 53) {
+        $an_legis++;
+        $sem_legis = 1;
+      }
       $startweek = ($annee0 - $an_legis)*53 + $sem0 - $sem_legis;
       if ($startweek <= 0) {
         $weeks_acti = count($prmedi['commission']);
@@ -151,7 +159,7 @@ class plotComponents extends sfComponents
       }
     }
 
-    # Clean interventiosn de ministre hors périodes de mandat
+    # Clean interventions de ministre hors périodes de mandat
     for($i=1; $i < $n_weeks; $i++)
       if ($this->data['vacances'][$i] == 20) {
         $this->data['n_presences']['hemicycle'][$i] = 0;
@@ -206,12 +214,18 @@ class plotComponents extends sfComponents
         while ($n <= $n_weeks && ($annee < $mandat_an0 || ($annee == $mandat_an0 && $sem < $mandat_sem0))) {
           $n_vacances[$n] = 20;
           $sem++;
-          if ($sem == 53) { $annee++ ; $sem = 0; }
+          if ($sem == 53) {
+            $annee++;
+            $sem = 0;
+          }
           $n++;
         }
         while ($n <= $n_weeks && ($annee < $mandat_an1 || ($annee == $mandat_an1 && $sem < $mandat_sem1))) {
           $sem++;
-          if ($sem == 53) { $annee++ ; $sem = 0; }
+          if ($sem == 53) {
+            $annee++;
+            $sem = 0;
+          }
           $n++;
         }
       }
@@ -229,16 +243,32 @@ class plotComponents extends sfComponents
   }
 
   public static function getLabelsSemaines($n_weeks, $annee, $sem) {
-    if ($sem > 1 && $sem <= 52) $annee += 1;
-    $hashmap = array( '3'  => "Jan ".sprintf('%02d', $annee-2000), '6'  => " Fév", '10' => " Mar", '15' => "Avr",
-                      '19' => " Mai", '24' => "Juin", '28' => "Juil", '33' => "Août",
-                      '38' => "Sept", '42' => " Oct", '47' => "Nov", '52' => "Déc");
+    if ($sem > 1 && $sem <= 52)
+      $annee += 1;
+    $hashmap = array(
+      '3'  => "Jan ".sprintf('%02d', $annee-2000),
+      '6'  => " Fév",
+      '10' => " Mar",
+      '15' => "Avr",
+      '19' => " Mai",
+      '24' => "Juin",
+      '28' => "Juil",
+      '33' => "Août",
+      '38' => "Sept",
+      '42' => " Oct",
+      '47' => "Nov",
+      '52' => "Déc"
+    );
     $labels = array_fill(1, $n_weeks, "");
     for ($i = 1; $i <= $n_weeks; $i++) {
-      $index = $i + $sem; if ($index > 53) $index -= 53;
-      if (isset($hashmap[$index]) && !(($index == 3) && ($sem < 3 && $sem > 1))) $labels[$i] = $hashmap[$index];
+      $index = $i + $sem;
+      if ($index > 53)
+        $index -= 53;
+      if (isset($hashmap[$index]) && !(($index == 3) && ($sem < 3 && $sem > 1)))
+        $labels[$i] = $hashmap[$index];
     }
-    if ($n_weeks > 54 && $sem < 3 && $sem != 0) $labels[55] = "Jan";
+    if ($n_weeks > 54 && $sem < 3 && $sem != 0)
+      $labels[55] = "Jan";
     return $labels;
   }
 
@@ -249,7 +279,8 @@ class plotComponents extends sfComponents
       $index = $i + $sem;
       $an = sprintf('%02d', $annee + floor($index/53) - 2000);
       $index %= 53;
-      if (isset($hashmap[$index]) && !(($index == 3) && ($sem < 3 && $sem > 1))) $labels[$i] = str_replace('#AN#', $an, $hashmap[$index]);
+      if (isset($hashmap[$index]) && !(($index == 3) && ($sem < 3 && $sem > 1)))
+        $labels[$i] = str_replace('#AN#', $an, $hashmap[$index]);
     }
     return $labels;
   }
@@ -316,26 +347,21 @@ class plotComponents extends sfComponents
 
     foreach ($amdmts_deposes as $amdt) if ($amdt['groupe_acronyme'] != "")
       $stats[$amdt['groupe_acronyme']]['amdmts_deposes'] = $amdt['ct'];
-    if ($this->type === "all") {
+    if ($this->type === "all")
       foreach ($amdmts_adoptes as $amdt) if ($amdt['groupe_acronyme'] != "")
         $stats[$amdt['groupe_acronyme']]['amdmts_adoptes'] = $amdt['ct'];
-    }
-    foreach ($props as $pro) if ($pro['groupe_acronyme'] != "") {
+    foreach ($props as $pro) if ($pro['groupe_acronyme'] != "")
       $stats[$pro['groupe_acronyme']]['propositions'] = $pro['ct'];
-    }
     foreach ($this->data['groupes'] as $groupe => $arr) if (isset($stats[$groupe])) {
       $this->data['groupes'][$groupe][] = $stats[$groupe]['nb'];
       if ($this->type === "all") {
         $this->data['groupes'][$groupe][] = $stats[$groupe]['commission_interventions'];
         $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions'];
         $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions_courtes'];
-      } else {
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions'] + $stats[$groupe]['commission_interventions'];
-      }
+      } else $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions'] + $stats[$groupe]['commission_interventions'];
       $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_deposes'];
-      if ($this->type === "all") {
+      if ($this->type === "all")
         $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_adoptes'];
-      }
       $this->data['groupes'][$groupe][] = $stats[$groupe]['propositions'];
       $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_ecrites'];
       if ($this->type === "all")
@@ -343,15 +369,13 @@ class plotComponents extends sfComponents
     }
 
     $this->data['totaux'] = array();
-    for ($i=0;$i<$n;$i++) {
+    for ($i=0;$i<$n;$i++)
       $this->data['totaux'][] = 0;
-    }
-    foreach ($this->data['groupes'] as $groupe => $arr)
+
+    foreach ($this->data['groupes'] as $groupe => $arr) {
       for ($i=0;$i<$n;$i++) {
-        if (isset($this->data['groupes'][$groupe][$i])) {
+        if (isset($this->data['groupes'][$groupe][$i]))
           $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
-        }
-    }
 
     foreach ($this->data['groupes'] as $groupe => $arr)
       for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i]))
@@ -374,20 +398,20 @@ class plotComponents extends sfComponents
     $this->temps = array();
     if (preg_match('/section_(\d+)$/', $this->plot, $match)) {
       $interventions = Doctrine_Query::create()
-	->select('p.groupe_acronyme, count(i.id) as count')
-	->from('Parlementaire p, p.Interventions i, i.Section s')
-	->where('s.section_id = ?', $match[1])
-	->andWhere('i.fonction NOT LIKE ?', 'président%')
-	->andWhere('i.nb_mots > 20')
-	->groupBy('p.id')
-	->fetchArray();
+        ->select('p.groupe_acronyme, count(i.id) as count')
+        ->from('Parlementaire p, p.Interventions i, i.Section s')
+        ->where('s.section_id = ?', $match[1])
+        ->andWhere('i.fonction NOT LIKE ?', 'président%')
+        ->andWhere('i.nb_mots > 20')
+        ->groupBy('p.id')
+        ->fetchArray();
       $mots = Doctrine_Query::create()
-	->select('p.groupe_acronyme, sum(i.nb_mots) as sum')
-	->from('Parlementaire p, p.Interventions i, i.Section s')
-	->where('s.section_id = ?', $match[1])
-	->andWhere('i.fonction NOT LIKE ?', 'président%')
-	->groupBy('p.id')
-	->fetchArray();
+        ->select('p.groupe_acronyme, sum(i.nb_mots) as sum')
+        ->from('Parlementaire p, p.Interventions i, i.Section s')
+        ->where('s.section_id = ?', $match[1])
+        ->andWhere('i.fonction NOT LIKE ?', 'président%')
+        ->groupBy('p.id')
+        ->fetchArray();
     } else if (preg_match('/seance_(com|hemi)_(\d+)$/', $this->plot, $match)) {
       if (preg_match('/com/', $this->plot)) $this->seance = $match[2];
       $interventions = Doctrine_Query::create()
@@ -405,9 +429,9 @@ class plotComponents extends sfComponents
         ->andWhere('i.fonction NOT LIKE ?', 'président%')
         ->groupBy('p.id')
         ->fetchArray();
-	$this->seancenom = 'séance';
+      $this->seancenom = 'séance';
       if ($match[1] == 'com') {
-	$this->seancenom = 'réunion';
+        $this->seancenom = 'réunion';
         $this->presences = array();
         $presences = Doctrine_Query::create()
           ->select('p.groupe_acronyme, count(pr.id)')
@@ -429,37 +453,37 @@ class plotComponents extends sfComponents
       $this->membres = array();
     } else throw new Exception('wrong plot argument');
     if (isset($interventions) && !count($interventions) && (!isset($presences) || !count($presences))) {
-	$this->empty = 1;
-	return ;
+      $this->empty = 1;
+      return ;
     }
-   if (!isset($this->membres)) {
-    foreach ($interventions as $groupe)
-      if (!isset($groupes[$groupe['groupe_acronyme']]['interventions']))
-        $groupes[$groupe['groupe_acronyme']]['interventions'] = $groupe['count'];
-      else $groupes[$groupe['groupe_acronyme']]['interventions'] += $groupe['count'];
-    foreach ($mots as $groupe)
-    if (!isset($groupes[$groupe['groupe_acronyme']]['temps_parole']))
-        $groupes[$groupe['groupe_acronyme']]['temps_parole'] = $groupe['sum'];
-      else $groupes[$groupe['groupe_acronyme']]['temps_parole'] += $groupe['sum'];
-   }
+    if (!isset($this->membres)) {
+      foreach ($interventions as $groupe)
+        if (!isset($groupes[$groupe['groupe_acronyme']]['interventions']))
+          $groupes[$groupe['groupe_acronyme']]['interventions'] = $groupe['count'];
+        else $groupes[$groupe['groupe_acronyme']]['interventions'] += $groupe['count'];
+      foreach ($mots as $groupe)
+        if (!isset($groupes[$groupe['groupe_acronyme']]['temps_parole']))
+          $groupes[$groupe['groupe_acronyme']]['temps_parole'] = $groupe['sum'];
+        else $groupes[$groupe['groupe_acronyme']]['temps_parole'] += $groupe['sum'];
+    }
     foreach($this->labels as $groupe) {
-     if (!isset($this->membres)) {
-      if (!isset($groupes[$groupe]['interventions']))
-        $this->interventions[] = 0;
-      else $this->interventions[] = $groupes[$groupe]['interventions'];
-      if (!isset($groupes[$groupe]['temps_parole']))
-        $this->temps[] = 0;
-      else $this->temps[] = $groupes[$groupe]['temps_parole'];
-      if (isset($presences)) {
-        if (!isset($groupes[$groupe]['presences']))
-          $this->presences[] = 0;
-        else $this->presences[] = $groupes[$groupe]['presences'];
+      if (!isset($this->membres)) {
+        if (!isset($groupes[$groupe]['interventions']))
+          $this->interventions[] = 0;
+        else $this->interventions[] = $groupes[$groupe]['interventions'];
+        if (!isset($groupes[$groupe]['temps_parole']))
+          $this->temps[] = 0;
+        else $this->temps[] = $groupes[$groupe]['temps_parole'];
+        if (isset($presences)) {
+          if (!isset($groupes[$groupe]['presences']))
+            $this->presences[] = 0;
+          else $this->presences[] = $groupes[$groupe]['presences'];
+        }
+      } else {
+        if (!isset($groupes[$groupe]['membres']))
+          $this->membres[] = 0;
+        else $this->membres[] = $groupes[$groupe]['membres'];
       }
-     } else {
-      if (!isset($groupes[$groupe]['membres']))
-        $this->membres[] = 0;
-      else $this->membres[] = $groupes[$groupe]['membres'];
-     }
     }
     $this->labels[] = "";
     $this->interventions[] = array_sum($this->interventions)/2;
