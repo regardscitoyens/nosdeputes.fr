@@ -484,67 +484,73 @@ class topDeputesTask extends sfBaseTask
 
     // Calcule présences médianes pour les graphes
     $date = time();
-    $annee = date('Y', $date); $sem = date('W', $date);
+    $annee = date('Y', $date);
+    $sem = date('W', $date);
     $start = strtotime(myTools::getDebutLegislature());
     $date_debut = date('Y-m-d', $start);
-    $annee0 = date('Y', $start); $sem0 = date('W', $start);
+    $this->annee0 = date('Y', $start);
+    $this->sem0 = date('W', $start);
     if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
-    if ($sem0 >= 52 && $sem <= 1) $sem0 = 0;
-    $n_weeks = max(1, ($annee - $annee0)*53 + $sem - $sem0);
+    if ($this->sem0 >= 52 && $sem <= 1) $this->sem0 = 0;
+    $this->n_weeks = max(1, ($annee - $this->annee0)*53 + $sem - $this->sem0);
+
+    $this->presences_medi = array(
+      'commission' => array_fill(1, $this->n_weeks, 0),
+      'hemicycle' => array_fill(1, $this->n_weeks, 0),
+      'total' => array_fill(1, $this->n_weeks, 0)
+    );
 
     $query = Doctrine_Query::create()
-      ->select('COUNT(p.id) as nombre, p.id, p.parlementaire_id, s.type, s.annee, s.numero_semaine')
-      ->from('Presence p')
-      ->leftJoin('p.Seance s')
-      ->where('s.date > ?', $date_debut)
-      ->groupBy('s.type, s.annee, s.numero_semaine, p.parlementaire_id')
-      ->orderBy('s.type, s.annee, s.numero_semaine, nombre');
-
-    $presences_medi = array('commission' => array_fill(1, $n_weeks, 0),
-                            'hemicycle' => array_fill(1, $n_weeks, 0),
-                            'total' => array_fill(1, $n_weeks, 0));
-
-    $presences = $query->fetchArray();
-    $deps = floor(count($presences)/$n_weeks);
-    $mid = floor($deps/2)+1;
-    $ct = 0;
-    foreach ($presences as $presence) {
-      $ct++;
-      if ($ct % $deps != $mid) continue;
-      $n = ($presence['Seance']['annee'] - $annee0)*53 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($n <= $n_weeks)
-        $presences_medi[$presence['Seance']['type']][$n] = $presence['nombre'];
-    }
-    unset($presences);
-
-    $query = Doctrine_Query::create()
-      ->select('COUNT(p.id) as nombre, p.id, p.parlementaire_id, s.annee, s.numero_semaine')
+      ->select('count(p.id), p.id, p.parlementaire_id, s.annee, s.numero_semaine')
       ->from('Presence p')
       ->leftJoin('p.Seance s')
       ->where('s.date > ?', $date_debut)
       ->groupBy('s.annee, s.numero_semaine, p.parlementaire_id')
-      ->orderBy('s.annee, s.numero_semaine, nombre');
-    $presences = $query->fetchArray();
-    $deps = floor(count($presences)/$n_weeks);
-    $mid = floor($deps/2)+1;
-    $ct = 0;
-    foreach ($presences as $presence) {
-      $ct++;
-      if ($ct % $deps != $mid) continue;
-      $n = ($presence['Seance']['annee'] - $annee0)*53 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($n <= $n_weeks) {
-        $presences_medi['total'][$n] = $presence['nombre'];
-      }
-    }
-    unset($presences);
+      ->orderBy('s.annee, s.numero_semaine, count');
+
+    $q = clone($query);
+    $q->andWhere('s.type = ?', 'commission');
+    $this->processMediane($q, 'commission');
+
+    $q = clone($query);
+    $q->andWhere('s.type = ?', 'hemicycle');
+    $this->processMediane($q, 'hemicycle');
+
+    $this->processMediane($query, 'total');
 
     $globale2 = Doctrine::getTable('VariableGlobale')->findOneByChamp('presences_medi');
     if (!$globale2) {
       $globale2 = new VariableGlobale();
       $globale2->champ = 'presences_medi';
     }
-    $globale2->value = serialize($presences_medi);
+    $globale2->value = serialize($this->presences_medi);
     $globale2->save();
-
   }
+
+  protected static function getMedianeArray($arr) {
+    $n = count($arr);
+    // S'il y a eu moins de 150 députés actifs cette semaine là on la banalise
+    if ($n < 150) return 0;
+    // Autrement on prend le nombre médian de présences sur la semaine parmi les actifs
+    return $arr[round($n/2) + 1];
+  }
+
+  protected function processMediane($q, $type) {
+    $w = array();
+    $curn = -1;
+    foreach ($q->fetchArray() as $presence) {
+      $n = ($presence['Seance']['annee'] - $this->annee0)*53 + $presence['Seance']['numero_semaine'] - $this->sem0 + 1;
+      if ($n > $this->n_weeks)
+        break;
+      if ($n != $curn) {
+        if ($curn != -1)
+          $this->presences_medi[$type][$curn] = self::getMedianeArray($w);
+        $w = array();
+        $curn = $n;
+      }
+      $w[] = $presence['count'];
+    }
+    $this->presences_medi[$type][$curn] = self::getMedianeArray($w);
+  }
+
 }
