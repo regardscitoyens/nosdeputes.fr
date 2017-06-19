@@ -59,7 +59,7 @@ $rank = true;
 if (myTools::isFinLegislature()) {
   $details = "totale ";
   $duree = $top["nb_mois"]." mois";
-  $title = "Bilan d'activité totale -- durant ".$top["nb_mois"]." mois de mandat(s) du député, -- vacances parlementaires exclues";
+  $title = "Bilan d'activité totale -- durant ".$top["nb_mois"]." mois d'exercice du député, -- vacances parlementaires exclues";
   $rank = ($top["nb_mois"] >= 6);
 } else if ($parlementaire->isEnMandat()) {
   $mois = floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30));
@@ -74,7 +74,7 @@ if (myTools::isFinLegislature()) {
   $duree .= " mois";
 } else {
   $details = "totale ";
-  $title = "Bilan d'activité totale -- durant ".$parlementaire->getNbMois()." mois de mandat du député, -- vacances parlementaires exclues";
+  $title = "Bilan d'activité totale -- durant ".$parlementaire->getNbMois()." mois d'exercice du député, -- vacances parlementaires exclues";
   $rank = false;
   $weeks = (strtotime($parlementaire->fin_mandat) - strtotime($parlementaire->debut_mandat))/(60*60*24*7);
   if ($weeks > 52) $duree = sprintf('%d mois', $weeks/4.33);

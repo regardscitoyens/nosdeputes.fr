@@ -98,7 +98,7 @@ $bulles = array("",
       if ($t[$i]['value'] < 2)
         $leg = preg_replace('/s (.*-- )/', ' \\1', preg_replace('/s (.*-- )/', ' \\1', $leg));
       if ($fin)
-        $leg = str_replace(" -- Nombre", " sur ".$t[0]["nb_mois"]." mois de mandat -- Nombre", $leg);
+        $leg = str_replace(" -- Nombre", " sur ".$t[0]["nb_mois"]." mois d'exercice -- Nombre", $leg);
       echo $leg;
       echo '" '.$t[$i]['style'].' class="jstitle '.$class[$ktop[$i]].'">';
       if (!$fin && preg_match('/\./', $t[$i]['value']))
