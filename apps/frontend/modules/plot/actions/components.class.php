@@ -326,20 +326,20 @@ class plotComponents extends sfComponents
     foreach ($this->data['groupes'] as $groupe => $arr) if (isset($stats[$groupe])) {
       $this->data['groupes'][$groupe][] = $stats[$groupe]['nb'];
       if ($this->type === "all") {
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['commission_interventions']['somme'];
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme'];
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions_courtes']['somme'];
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['commission_interventions'];
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions'];
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions_courtes'];
       } else {
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme']+$stats[$groupe]['commission_interventions']['somme'];
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions'] + $stats[$groupe]['commission_interventions'];
       }
       $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_deposes'];
       if ($this->type === "all") {
         $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_adoptes'];
       }
       $this->data['groupes'][$groupe][] = $stats[$groupe]['propositions'];
-      $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_ecrites']['somme'];
+      $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_ecrites'];
       if ($this->type === "all")
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_orales']['somme'];
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_orales'];
     }
 
     $this->data['totaux'] = array();
