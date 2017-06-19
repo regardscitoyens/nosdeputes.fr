@@ -178,8 +178,7 @@ class plotComponents extends sfComponents
     for ($n = 0; $n < $week0 ; $n++)
       $n_vacances[$n] = 20;
 
-    $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
-    if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
+    foreach (myTools::getVacances() as $vacance) {
       $n = ($vacance['annee'] - $annee0)*53 + $vacance['semaine'] - $sem0 + 1;
       if ($n > 0 && $n < $n_weeks)
         $n_vacances[$n] = 20;
@@ -221,8 +220,7 @@ class plotComponents extends sfComponents
       $n_vacances[$n] = 20;
       $n++;
     }
-    $vacances = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
-    if ($vacances) foreach (unserialize($vacances->value) as $vacance) {
+    foreach (myTools::getVacances() as $vacance) {
       $n = ($vacance['annee'] - $annee0)*53 + $vacance['semaine'] - $sem0 + 1;
       if ($n > 0 && $n <= $n_weeks)
         $n_vacances[$n] = 20;

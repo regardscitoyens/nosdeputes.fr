@@ -106,6 +106,15 @@ class myTools {
     return str_replace($m[1], $m[1] + 5, $date);
   }
 
+  public static function getVacances() {
+    $vacances = array();
+    $vacs = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
+    if ($vacs)
+      $vacances = unserialize($vacs->value);
+    unset($vacs);
+    return $vacances;
+  }
+
   public static function getAnalytics() {
     return (sfConfig::get('app_analytics_id'));
   }

@@ -346,12 +346,13 @@ class topDeputesTask extends sfBaseTask
       ->where('type = ?', 'depute');
     if (!$fin)
       $qdeputes->andWhere('fin_mandat IS NULL');
+    else $vacances = myTools::getVacances();
     foreach($qdeputes->fetchArray() as $d) {
       if (isset($d['groupe_acronyme']))
         $this->deputes[$d['id']]['groupe'] = $d['groupe_acronyme'];
       else $this->deputes[$d['id']]['groupe'] = "";
       if ($fin)
-        $this->deputes[$d['id']]['nb_mois'] = Doctrine::getTable('Parlementaire')->find($d['id'])->getNbMois();
+        $this->deputes[$d['id']]['nb_mois'] = Doctrine::getTable('Parlementaire')->find($d['id'])->getNbMois($vacances);
     }
 
     $q = Doctrine_Query::create();
