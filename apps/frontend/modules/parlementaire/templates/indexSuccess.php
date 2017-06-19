@@ -203,8 +203,7 @@ echo 'de la législature';
 $mois = min(12, floor((time() - strtotime(myTools::getDebutLegislature())) / (60*60*24*30)));
 echo ($mois < 2 ? "du premier" : "des $mois ".($mois < 12 ? "prem" : "dern")."iers")." mois";
 }?></a></h2>
-  <?php echo include_component('plot', 'newGroupes', array('type' => 'home')); ?>
-  <?php // echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
+  <?php echo include_component('plot', 'syntheseGroupes', array('type' => 'home')); ?>
   </div></div>
 </div>
   <div class="clear"></div>

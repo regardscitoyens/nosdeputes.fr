@@ -151,7 +151,7 @@ $bulles = array("",
 </div>
 <div class="synthese_div">
 <h2>Répartition de l'activité des députés sur <?php if ($fresh) echo "depuis le début de la législature"; elseif ($fin) echo "toute la législature"; else echo "les 12 derniers mois"; ?> par groupe politique :</h2>
-<div class="aligncenter"><?php echo include_component('plot', 'newGroupes', array('type' => 'all')); ?></div>
+<div class="aligncenter"><?php echo include_component('plot', 'syntheseGroupes', array('type' => 'all')); ?></div>
 </div>
 <div id="legende" class="synthese_div">
 <h2>Explications :</h2>
