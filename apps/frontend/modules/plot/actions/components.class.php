@@ -2,8 +2,7 @@
 
 class plotComponents extends sfComponents
 {
-  public function executeParlementaire() {
-  }
+  public function executeParlementaire() {}
 
   public function executeGetParlData() {
     static $seuil_invective = 20;
@@ -308,14 +307,13 @@ class plotComponents extends sfComponents
       ->select('p.groupe_acronyme, count(p.id) as ct')
       ->from('Parlementaire p')
       ->groupBy('p.groupe_acronyme');
-    if (!myTools::isFinLegislature()) {
+    if (!myTools::isFinLegislature())
       $query->andWhere('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat');
-    }
 
     $nbgroupes = $query->fetchArray();
-    foreach ($nbgroupes as $grp) if ($grp['groupe_acronyme'] != "") {
-      $stats[$grp['groupe_acronyme']]['nb'] = $grp['ct'];
-    }
+    foreach ($nbgroupes as $grp)
+      if ($grp['groupe_acronyme'])
+        $stats[$grp['groupe_acronyme']]['nb'] = $grp['ct'];
 
     $query = Doctrine_Query::create()
       ->select('p.groupe_acronyme, sum(a.nb_multiples) as ct')
@@ -372,21 +370,25 @@ class plotComponents extends sfComponents
     for ($i=0;$i<$n;$i++)
       $this->data['totaux'][] = 0;
 
-    foreach ($this->data['groupes'] as $groupe => $arr) {
-      for ($i=0;$i<$n;$i++) {
+    foreach ($this->data['groupes'] as $groupe => $arr)
+      for ($i=0;$i<$n;$i++)
         if (isset($this->data['groupes'][$groupe][$i]))
           $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
 
     foreach ($this->data['groupes'] as $groupe => $arr)
-      for ($i=0;$i<$n;$i++) if (isset($this->data['groupes'][$groupe][$i]))
-        $this->data['groupes'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
+      for ($i=0;$i<$n;$i++)
+        if (isset($this->data['groupes'][$groupe][$i]))
+          $this->data['groupes'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
+
     for ($i=0;$i<$n;$i++)
       $this->data['totaux'][$i] = preg_replace('/(\d)(\d{3})$/', '\\1 \\2', $this->data['totaux'][$i]);
   }
 
   public function executeGroupes() {
+    if (!isset($this->plot))
+      return;
+
     $this->empty = 0;
-    if (!isset($this->plot)) return;
     $this->labels = myTools::getCurrentGroupes();
     $this->couleurs = array();
     $colormap = myTools::getGroupesColorMap();
@@ -429,7 +431,6 @@ class plotComponents extends sfComponents
         ->andWhere('i.fonction NOT LIKE ?', 'président%')
         ->groupBy('p.id')
         ->fetchArray();
-      $this->seancenom = 'séance';
       if ($match[1] == 'com') {
         $this->seancenom = 'réunion';
         $this->presences = array();
@@ -452,10 +453,12 @@ class plotComponents extends sfComponents
         else $groupes[$p['groupe_acronyme']]['membres'] += 1;
       $this->membres = array();
     } else throw new Exception('wrong plot argument');
+
     if (isset($interventions) && !count($interventions) && (!isset($presences) || !count($presences))) {
       $this->empty = 1;
       return ;
     }
+
     if (!isset($this->membres)) {
       foreach ($interventions as $groupe)
         if (!isset($groupes[$groupe['groupe_acronyme']]['interventions']))
@@ -479,12 +482,11 @@ class plotComponents extends sfComponents
             $this->presences[] = 0;
           else $this->presences[] = $groupes[$groupe]['presences'];
         }
-      } else {
-        if (!isset($groupes[$groupe]['membres']))
-          $this->membres[] = 0;
-        else $this->membres[] = $groupes[$groupe]['membres'];
-      }
+      } else if (!isset($groupes[$groupe]['membres']))
+        $this->membres[] = 0;
+      else $this->membres[] = $groupes[$groupe]['membres'];
     }
+
     $this->labels[] = "";
     $this->interventions[] = array_sum($this->interventions)/2;
     $this->temps[] = array_sum($this->temps)/2;
@@ -493,5 +495,4 @@ class plotComponents extends sfComponents
     if (isset($this->membres))
       $this->membres[] = array_sum($this->membres)/2;
   }
-
 }
