@@ -1,0 +1,168 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "a517e187284e1078cccf55b4a7e73fc7",
+    "content-hash": "7d49da8f1c518a7ffa8832fece284354",
+    "packages": [
+        {
+            "name": "lexpress/doctrine1",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LExpress/doctrine1.git",
+                "reference": "fce1192e87a76e1ddcf69b3defa73e451a816c8c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LExpress/doctrine1/zipball/fce1192e87a76e1ddcf69b3defa73e451a816c8c",
+                "reference": "fce1192e87a76e1ddcf69b3defa73e451a816c8c",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pdo": "*",
+                "php": ">=5.2.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Doctrine_": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Konsta Vesterinen",
+                    "email": "kvesteri@cc.hut.fi"
+                },
+                {
+                    "name": "Jonathan Wage",
+                    "email": "jonwage@gmail.com"
+                }
+            ],
+            "description": "PHP5 Database ORM",
+            "homepage": "http://www.doctrine-project.org",
+            "keywords": [
+                "database",
+                "orm"
+            ],
+            "time": "2017-06-18 18:45:04"
+        },
+        {
+            "name": "lexpress/symfony1",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LExpress/symfony1.git",
+                "reference": "42302ed4fee481923403e38cc901be0213a5dd20"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LExpress/symfony1/zipball/42302ed4fee481923403e38cc901be0213a5dd20",
+                "reference": "42302ed4fee481923403e38cc901be0213a5dd20",
+                "shasum": ""
+            },
+            "require": {
+                "swiftmailer/swiftmailer": "~5.2"
+            },
+            "require-dev": {
+                "psr/log": "*"
+            },
+            "suggest": {
+                "lexpress/doctrine1": "Doctrine plugin",
+                "propel/sf-propel-o-r-m-plugin": "Propel plugin",
+                "psr/log": "Psr logger"
+            },
+            "bin": [
+                "data/bin/symfony"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "autoload.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Fork of symfony 1.4 with dic, form enhancements, latest swiftmailer and better performance",
+            "time": "2017-06-13 15:24:08"
+        },
+        {
+            "name": "swiftmailer/swiftmailer",
+            "version": "v5.4.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/swiftmailer/swiftmailer.git",
+                "reference": "9a06dc570a0367850280eefd3f1dc2da45aef517"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/9a06dc570a0367850280eefd3f1dc2da45aef517",
+                "reference": "9a06dc570a0367850280eefd3f1dc2da45aef517",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.1",
+                "symfony/phpunit-bridge": "~3.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "5.4-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "lib/swift_required.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Chris Corbyn"
+                },
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                }
+            ],
+            "description": "Swiftmailer, free feature-rich PHP mailer",
+            "homepage": "http://swiftmailer.org",
+            "keywords": [
+                "email",
+                "mail",
+                "mailer"
+            ],
+            "time": "2017-05-01 15:54:03"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": {
+        "lexpress/symfony1": 20,
+        "lexpress/doctrine1": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": []
+}
