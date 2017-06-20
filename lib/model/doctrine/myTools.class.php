@@ -45,7 +45,7 @@ class myTools {
     $string = preg_replace('/^\s*\[\s*"\s*/', '', $string);
     $string = preg_replace('/\s*"\s*\]\s*$/', '', $string);
     $string = preg_replace('/",\s*"/', '","', $string);
-    return explode('","', $string);
+    return preg_split('/","/', $string);
   }
 
   public static function getProtocol() {
@@ -181,7 +181,7 @@ class myTools {
   }
 
   public static function getCommissionsPermanentes() {
-    return self::convertYamlToArray(sfConfig::get('app_commissions_permanentes', array()));
+    return self::convertYamlToArray(sfConfig::get('app_commissions_permanentes', ''));
   }
 
   static $num_mois = array(
