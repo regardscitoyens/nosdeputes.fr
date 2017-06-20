@@ -7,4 +7,4 @@ cache:
 	mkdir cache ; sudo chown www-data cache  ; sudo chmod g+ws cache
 
 log:
-	mkdir log; sudo chown www-data log ; sudo chmod g+ws cache
+	mkdir log; sudo chown www-data log ; sudo chmod g+ws log
