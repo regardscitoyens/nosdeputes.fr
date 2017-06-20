@@ -1,24 +1,43 @@
 <?php
 if ($empty)
   return ;
-if (preg_match('/seance_com/', $plot)) { $DataSet = new xsPData();
-  $DataSet->AddPoint($labels, "Serie1"); $DataSet->AddPoint($presences, "Serie2");
-  $DataSet->AddSerie("Serie2"); $DataSet->SetAbsciseLabelSerie("Serie1");
-  $Data = $DataSet->GetData(); $DataDescr = $DataSet->GetDataDescription();
+$isOrga = preg_match('/orga/', $plot);
+$isComm = preg_match('/seance_com/', $plot);
+$hasInter = (array_sum($interventions) != 0);
+if ($isComm) {
+  $DataSet = new xsPData();
+  $DataSet->AddPoint($labels, "Serie1");
+  $DataSet->AddPoint($presences, "Serie2");
+  $DataSet->AddSerie("Serie2");
+  $DataSet->SetAbsciseLabelSerie("Serie1");
+  $Data = $DataSet->GetData();
+  $DataDescr = $DataSet->GetDataDescription();
 }
-if (array_sum($interventions) != 0) { $DataSet2 = new xsPData();
-  $DataSet2->AddPoint($labels, "Serie1"); $DataSet2->AddPoint($interventions, "Serie2");
-  $DataSet2->AddSerie("Serie2"); $DataSet2->SetAbsciseLabelSerie("Serie1");
-  $Data2 = $DataSet2->GetData(); $DataDescr2 = $DataSet2->GetDataDescription();
+if ($hasInter) {
+  $DataSet2 = new xsPData();
+  $DataSet2->AddPoint($labels, "Serie1");
+  $DataSet2->AddPoint($interventions, "Serie2");
+  $DataSet2->AddSerie("Serie2");
+  $DataSet2->SetAbsciseLabelSerie("Serie1");
+  $Data2 = $DataSet2->GetData();
+  $DataDescr2 = $DataSet2->GetDataDescription();
 }
-if (isset($membres)) { $DataSet = new xsPData();
-  $DataSet->AddPoint($labels, "Serie1"); $DataSet->AddPoint($membres, "Serie2");
-  $DataSet->AddSerie("Serie2"); $DataSet->SetAbsciseLabelSerie("Serie1");
-  $Data = $DataSet->GetData(); $DataDescr = $DataSet->GetDataDescription();
-} else if (array_sum($interventions) != 0) { $DataSet3 = new xsPData();
-  $DataSet3->AddPoint($labels, "Serie1"); $DataSet3->AddPoint($temps, "Serie2");
-  $DataSet3->AddSerie("Serie2"); $DataSet3->SetAbsciseLabelSerie("Serie1");
-  $Data3 = $DataSet3->GetData(); $DataDescr3 = $DataSet3->GetDataDescription();
+if (isset($membres)) {
+  $DataSet = new xsPData();
+  $DataSet->AddPoint($labels, "Serie1");
+  $DataSet->AddPoint($parls, "Serie2");
+  $DataSet->AddSerie("Serie2");
+  $DataSet->SetAbsciseLabelSerie("Serie1");
+  $Data = $DataSet->GetData();
+  $DataDescr = $DataSet->GetDataDescription();
+} else if ($hasInter) {
+  $DataSet3 = new xsPData();
+  $DataSet3->AddPoint($labels, "Serie1");
+  $DataSet3->AddPoint($temps, "Serie2");
+  $DataSet3->AddSerie("Serie2");
+  $DataSet3->SetAbsciseLabelSerie("Serie1");
+  $Data3 = $DataSet3->GetData();
+  $DataDescr3 = $DataSet3->GetDataDescription();
 }
 $DataSetLegend = new xsPData();
 foreach($labels as $groupe) if ($groupe) {
@@ -28,23 +47,30 @@ foreach($labels as $groupe) if ($groupe) {
 $DataDescrLegend = $DataSetLegend->GetDataDescription();
 
 $filename = 'repartition-groupes';
-$xsize = 390;
-$xtitre = 25; $ysize = 190; $ylegend = 60; $x0 = 170; $y0 = 110;
+$xsize = 395;
+$xtitre = 25;
+$ysize = 190;
+$ylegend = 45;
+$x0 = 160;
+$y0 = 105;
 $filename .= '-'.$plot.'.png';
 $titre = 'par groupe du travail de cette '.$seancenom;
 if (preg_match('/section/', $plot)) {
-  $xtitre = 28; $xtitre = 38;
+  $xtitre = 38;
   $titre = 'par groupe du travail sur ce dossier';
-} else if (preg_match('/com/', $plot)) {
-  if (array_sum($interventions) == 0) {
-    $xsize = 250;  $xtitre = 48;
+} else if ($isComm) {
+  if (!$hasInter) {
+    $xsize = 250;
+    $xtitre = 48;
     $titre = 'des présents';
   } else {
-    $xsize = 550; $xtitre = 60;
+    $xsize = 550;
+    $xtitre = 60;
     $titre .= ' de commission';
   }
-} else if (preg_match('/orga/', $plot)) {
-  $xsize = 250; $xtitre = 48;
+} else if ($isOrga) {
+  $xsize = 250;
+  $xtitre = 48;
   $titre = 'par groupe';
 }
 
@@ -78,28 +104,26 @@ foreach ($couleurs as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)
   $Test->setColorPalette($ct,$cols[1],$cols[2],$cols[3]);
   $ct++;
 }
-$Test->drawFilledRoundedRectangle(15,$ylegend-16,78,$ylegend+8,5,255,255,255);
 $Test->drawLegend(15,$ylegend,$DataDescrLegend,255,255,255);
-$Test->xsSetFontProperties("tahoma.ttf",10);
-$Test->drawTitle(23,$ylegend-2,'Groupes',0,0,0);
 
 $Test->xsSetFontProperties("tahoma.ttf",12);
 $Test->drawTitle($xtitre,25,'Répartition '.$titre,50,50,50);
-$Test->xsSetFontProperties("tahoma.ttf",9);
 $Test->xsSetFontProperties("tahoma.ttf",8);
+if ($isOrga)
+  $Test->drawTitle(140,160,'Membres',50,50,50);
 if (preg_match('/(section|seance_hemi)/', $plot)) {
-  $Test->drawTitle(120,166,'Interventions',50,50,50);
-  $Test->drawTitle(268,158,'Temps de parole',50,50,50);
-  $Test->drawTitle(268,172,'(mots prononcés)',50,50,50);
-} else if (preg_match('/seance_com/', $plot)) {
-  $Test->drawTitle(135,166,'Présents',50,50,50);
-  $Test->drawTitle(275,166,'Interventions',50,50,50);
-  $Test->drawTitle(415,158,'Temps de parole',50,50,50);
-  $Test->drawTitle(415,172,'(mots prononcés)',50,50,50);
+  $Test->drawTitle(131,160,'Interventions',50,50,50);
+  $Test->drawTitle(272,152,'Temps de parole',50,50,50);
+  $Test->drawTitle(272,166,'(mots prononcés)',50,50,50);
+} else if ($isComm) {
+  $Test->drawTitle(142,160,'Présents',50,50,50);
+  $Test->drawTitle(275,160,'Interventions',50,50,50);
+  $Test->drawTitle(415,152,'Temps de parole',50,50,50);
+  $Test->drawTitle(415,166,'(mots prononcés)',50,50,50);
 }
 $Test->xsRender($filename);
-if (preg_match('/com/', $plot) && !isset($nolink))
-  echo link_to(image_tag('tmp/xspchart/'.$filename, array('alt'=>"Répartition ".$titre, 'style'=>'height: '.$ysize.'px;')), '@presents_seance?seance='.$seance);
+if ($isComm && !isset($nolink))
+  echo link_to(image_tag('tmp/xspchart/'.$filename, array('alt'=>"Répartition ".$titre, 'style'=>'height: '.$ysize.'px;')), '@presents_seance?seance='.$seancecom);
 else echo image_tag('tmp/xspchart/'.$filename, array('alt'=>'Répartition '.$titre, 'style'=>'height: '.$ysize.'px;'));
 
 if (!isset($nolegend))

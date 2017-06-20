@@ -20,7 +20,7 @@ if ($page === "home") {
   }
   echo $divclass.'<div class="liste">';
   $listimp = array_keys($parlementaires);
-  
+
   foreach ($listimp as $i) {
     $ndep += count($parlementaires[$i]);
     echo '<div class="list_table">';
@@ -34,7 +34,7 @@ if ($page === "home" && ($nse || $nrap))
 else echo '<div>';
 if ($ndep > 1) {
   echo '<div class="plot_seance aligncenter">';
-  echo include_component('plot', 'groupes', array('plot' => 'organisme_'.$orga->id, 'membres' => $parlementaires, 'nolegend' => true));
+  echo include_component('plot', 'groupes', array('plot' => 'organisme_'.$orga->id, 'membres' => $parlementaires));
   echo '</div>';
 }
 if ($page != "seances" && $nrap) {
@@ -83,7 +83,7 @@ if ($page != "rapports" && $nse) {
     echo link_to($subtitre, '@interventions_seance?seance='.$seance->id);
   }
   echo '</ul>';
-  include_partial('intervention/paginate', array('pager'=>$pagerSeances, 'link'=>'@list_parlementaires_organisme?slug='.$orga->getSlug().'&')); 
+  include_partial('intervention/paginate', array('pager'=>$pagerSeances, 'link'=>'@list_parlementaires_organisme?slug='.$orga->getSlug().'&'));
 } ?>
 </div>
 <?php if ($page != "home") echo '<h3 class="aligncenter">'.link_to('Voir la composition de la commission', '@list_parlementaires_organisme?slug='.$orga->slug).'</h3>'; ?>
