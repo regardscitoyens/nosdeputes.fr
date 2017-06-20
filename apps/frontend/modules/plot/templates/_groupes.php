@@ -127,5 +127,5 @@ if ($isComm && !isset($nolink))
 else echo image_tag('tmp/xspchart/'.$filename, array('alt'=>'Répartition '.$titre, 'style'=>'height: '.$ysize.'px;'));
 
 if (!isset($nolegend))
- echo include_partial('plot/groupesLegende', array());
+ echo include_partial('plot/groupesLegende', array("groupes" => $labels));
 ?>
