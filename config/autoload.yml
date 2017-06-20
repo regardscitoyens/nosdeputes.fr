@@ -4,4 +4,4 @@ autoload:
     name:           project
     path:           %SF_LIB_DIR%/vendor
     recursive:      true
-    exclude:        [symfony]
+    exclude:        ["symfony", "tests", "test"]

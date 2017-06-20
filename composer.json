@@ -5,5 +5,8 @@
     },
     "config": {
             "vendor-dir": "lib/vendor"
+    },
+     "autoload": {
+	    "exclude-from-classmap": ["/test/", "/tests/"]
     }
 }
