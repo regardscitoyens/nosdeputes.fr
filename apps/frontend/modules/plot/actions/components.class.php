@@ -399,11 +399,10 @@ class plotComponents extends sfComponents
       foreach ($this->membres as $imp => $deps) {
         if ($imp < 1)
           continue;
-        foreach ($deps as $p) {
+        foreach ($deps as $p)
           if (!isset($groupes[$p['groupe_acronyme']]['membres']))
             $groupes[$p['groupe_acronyme']]['membres'] = 1;
           else $groupes[$p['groupe_acronyme']]['membres'] += 1;
-        }
       }
 
     // Ou pour les séances et les dossiers

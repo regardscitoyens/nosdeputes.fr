@@ -226,6 +226,7 @@ a:hover {
 .legende {
   margin-top: 2px;
   text-align: center;
+  white-space: nowrap;
 }
 .box_tags {
   border: 1px solid #DBDBDB;

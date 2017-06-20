@@ -110,16 +110,16 @@ $Test->xsSetFontProperties("tahoma.ttf",12);
 $Test->drawTitle($xtitre,25,'Répartition '.$titre,50,50,50);
 $Test->xsSetFontProperties("tahoma.ttf",8);
 if ($isOrga)
-  $Test->drawTitle(140,160,'Membres',50,50,50);
+  $Test->drawTitle(140,155,'Membres',50,50,50);
 if (preg_match('/(section|seance_hemi)/', $plot)) {
   $Test->drawTitle(131,160,'Interventions',50,50,50);
   $Test->drawTitle(272,152,'Temps de parole',50,50,50);
   $Test->drawTitle(272,166,'(mots prononcés)',50,50,50);
 } else if ($isComm) {
-  $Test->drawTitle(142,160,'Présents',50,50,50);
-  $Test->drawTitle(275,160,'Interventions',50,50,50);
-  $Test->drawTitle(415,152,'Temps de parole',50,50,50);
-  $Test->drawTitle(415,166,'(mots prononcés)',50,50,50);
+  $Test->drawTitle(141,160,'Présents',50,50,50);
+  $Test->drawTitle(281,160,'Interventions',50,50,50);
+  $Test->drawTitle(423,152,'Temps de parole',50,50,50);
+  $Test->drawTitle(423,166,'(mots prononcés)',50,50,50);
 }
 $Test->xsRender($filename);
 if ($isComm && !isset($nolink))
@@ -127,5 +127,5 @@ if ($isComm && !isset($nolink))
 else echo image_tag('tmp/xspchart/'.$filename, array('alt'=>'Répartition '.$titre, 'style'=>'height: '.$ysize.'px;'));
 
 if (!isset($nolegend))
- echo include_partial('plot/groupesLegende', array("groupes" => $labels));
+ echo include_partial('plot/groupesLegende', array("groupes" => $labels, "width" => $xsize));
 ?>
