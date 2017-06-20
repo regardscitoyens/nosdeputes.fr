@@ -25,22 +25,24 @@ class setObjectsGroupeAcronymeTask extends sfBaseTask {
   }
 
   protected static function fixClass($class) {
-    echo "Complete $class:\n";
+    echo "Complete ".$class."s:\n";
     $ct = 0;
-    $field = ($class == "Amendement" ? 'auteur' : 'parlementaire').'_groupe_acronyme';
+    $field = ($class == "Amendement" ? 'auteur' : 'parlementaire');
     $done = false;
     while (!$done) {
       $objects = Doctrine::getTable($class)
         ->createQuery()
-        ->where($field." IS NULL")
+        ->where($field."_groupe_acronyme IS NULL")
+        ->andWhere($field."_id IS NOT NULL")
         ->limit(1000)
         ->execute();
       if (!count($objects))
         $done = true;
       else foreach ($objects as $obj) {
-        print " - $class ".$obj->id.": ".$obj->getGroupeAcronyme()."\n";
+        $obj->getGroupeAcronyme();
         $ct++;
       }
+      print " - $class $ct\n";
     }
     echo "  => fixed $ct objects\n\n";
   }
