@@ -14,7 +14,7 @@ class setObjectsGroupeAcronymeTask extends sfBaseTask {
   protected function execute($arguments = array(), $options = array()) {
     $manager = new sfDatabaseManager($this->configuration);
     $class = $arguments['class'];
-    $valid_classes = array("ParlementaireOrganisme", "Presence", "Intervention", "Amendement", "QuestionEcrite", "ParlementaireTexteloi", "ParlementaireAmendement");
+    $valid_classes = array("QuestionEcrite", "ParlementaireTexteloi", "ParlementaireOrganisme", "Presence", "Amendement", "Intervention", "ParlementaireAmendement");
     if ($class == 'all') {
       foreach ($valid_classes as $class)
         self::fixClass($class);
