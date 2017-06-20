@@ -93,7 +93,7 @@ class parlementaireActions extends sfActions
       imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon+$bordure, $rayon+$bordure, imagecolorallocate($ih, 255, 255, 255));
 
       $colormap = myTools::getGroupesColorMap();
-      if (in_array($groupe, $colormap) && preg_match('/^(\d+),(\d+),(\d+)$/', $colormap[$groupe], $match))
+      if (isset($colormap[$groupe]) && preg_match('/^(\d+),(\d+),(\d+)$/', $colormap[$groupe], $match))
         imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, $match[1], $match[2], $match[3]));
 
 /*  Old code to handle groupes bicolore
