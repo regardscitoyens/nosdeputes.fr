@@ -71,8 +71,13 @@ class myTools {
     return self::getAnnounceLink() && self::getAnnounceText();
   }
 
-  public static function getAdminIPs() {
-    return (self::convertYamlToArray(sfConfig::get('app_admin_ips')));
+  public static function isAdminIP($http_headers) {
+    $admins = self::convertYamlToArray(sfConfig::get('app_admin_ips', ''));
+    $admins[] = "127.0.0.1";
+    $admins[] = "::1";
+    return ((isset($http_headers['HTTP_CF_CONNECTING_IP']) && in_array($http_headers['HTTP_CF_CONNECTING_IP'], $admins)) ||
+            (isset($http_headers['REMOTE_ADDR']) && in_array($http_headers['REMOTE_ADDR'], $admins)) ||
+            (isset($http_headers['HTTP_X_FORWARDED_FOR']) && in_array($http_headers['HTTP_X_FORWARDED_FOR'], $admins)));
   }
 
   public static function getLegislature() {
@@ -106,6 +111,15 @@ class myTools {
     return str_replace($m[1], $m[1] + 5, $date);
   }
 
+  public static function getVacances() {
+    $vacances = array();
+    $vacs = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
+    if ($vacs)
+      $vacances = unserialize($vacs->value);
+    unset($vacs);
+    return $vacances;
+  }
+
   public static function getAnalytics() {
     return (sfConfig::get('app_analytics_id'));
   }
@@ -120,7 +134,7 @@ class myTools {
   }
 
   public static function isLegislatureCloturee() {
-    return preg_match('/clotur/', sfConfig::get('app_fin_legislature'));
+    return (sfConfig::get('host_next_legislature'));
   }
 
   public static function isCommentairesLocked() {
@@ -154,30 +168,32 @@ class myTools {
     return $res;
   }
 
-  public static function getGroupesInfosOrder() {
-    $gpes = self::getGroupesInfos();
-    $map = array();
-    foreach ($gpes as $gpe)
-      $map[$gpe[1]] = $gpe;
-    $gpes = array();
-    foreach (self::convertYamlToArray(sfConfig::get('app_groupes_actuels', '')) as $gpe)
-      $gpes[] = $map[$gpe];
-    return $gpes;
-  }
-
-  public static function getAllGroupesOrder() {
+  public static function getGroupesOrderMap() {
     $groupesmap = array();
     $ct = 0;
-    foreach (myTools::getGroupesInfos() as $gpe)
+    foreach (self::getGroupesInfos() as $gpe)
       $groupesmap[$gpe[1]] = $ct++;
     return $groupesmap;
   }
 
   public static function getGroupesColorMap() {
     $colormap = array();
-    foreach (myTools::getGroupesInfos() as $gpe)
+    foreach (self::getGroupesInfos() as $gpe)
       $colormap[$gpe[1]] = $gpe[2];
     return $colormap;
+  }
+
+  public static function getCurrentGroupes() {
+    return self::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''));
+  }
+
+  public static function getCurrentGroupesInfos() {
+    $gpes = array();
+    $curgpes = self::getCurrentGroupes();
+    foreach (self::getGroupesInfos() as $g)
+      if (in_array($g[1], $curgpes))
+        $gpes[] = $g;
+    return $gpes;
   }
 
   public static function getCommissionsPermanentes() {
@@ -325,14 +341,14 @@ class myTools {
 
   public static function echo_synthese_groupe($list, $bulles, $class, $ktop, $cpt) {
     foreach ($list as $gpe => $t) {
+      if (!$t[0]['nb']) continue;
       $cpt++;
+      $nb = ' ('.$t[0]['nb'].' député'.($t[0]['nb'] > 1 ? 's' : '').')';
       echo '<tr'.($cpt %2 ? ' class="tr_odd"' : '').'>';
       echo '<td id="'.$gpe.'" class="jstitle c_'.strtolower($gpe).' '.$class['parl'].'" title="'.$t[0]['nom'];
-      if (isset($t[0]['desc'])) {
-        echo ' -- '.$t[0]['desc'].'"><a href="'.url_for('@list_parlementaires_groupe?acro='.$gpe).'">'.$gpe.' : '.$t[0]['nb'].' députés</a>';
-      } else {
-        echo '">'.$t[0]['nom']." : ".$t[0]['nb'];
-      }
+      if (isset($t[0]['desc']))
+        echo ' -- '.$t[0]['desc'].'"><a href="'.url_for('@list_parlementaires_groupe?acro='.$gpe).'">'.$gpe.$nb.'</a>';
+      else echo '">'.$t[0]['nom'].$nb;
       echo '</td>';
       for($i = 1 ; $i < count($t) ; $i++) {
         $t[$i] = round($t[$i]/$t[0]['nb']);

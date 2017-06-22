@@ -186,7 +186,7 @@
   <div class="clear"></div>
 <div class="box_container">
   <?php echo include_component('tag', 'globalActivite'); ?>
-  <?php echo include_component('plot', 'newGroupes', array('type' => 'home')); ?>
+  <?php echo include_component('plot', 'syntheseGroupes', array('type' => 'home')); ?>
 </div>
   <div class="clear"></div>
   <div class="box_widget">

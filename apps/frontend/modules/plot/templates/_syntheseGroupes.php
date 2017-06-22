@@ -14,7 +14,6 @@ echo 'de la législature';
 $mois = min(12, floor((time() - strtotime(myTools::getDebutLegislature())) / (60*60*24*30)));
 echo ($mois < 2 ? "du premier" : "des $mois ".($mois < 12 ? "prem" : "dern")."iers")." mois";
 }?></a></h2>
-<div id="overDiv"></div>
 <?php endif; //Fin d'entete div pour la HOME ?>
 <?php $PictureID = "Map_".rand(1,10000).".map"; ?>
 <?php $style = 'width:720px;height:336px;'; if ($type === "home") {echo '<a href="'.url_for('@top_global').'#groupes">'; $style="width:433px; height:320px;";}?>
