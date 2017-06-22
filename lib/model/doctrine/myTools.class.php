@@ -75,9 +75,9 @@ class myTools {
     $admins = self::convertYamlToArray(sfConfig::get('app_admin_ips', ''));
     $admins[] = "127.0.0.1";
     $admins[] = "::1";
-    return (in_array(@$http_headers['HTTP_CF_CONNECTING_IP'], $admins ||
-            in_array(@$http_headers['REMOTE_ADDR'], $admins ||
-            in_array(@$http_headers['HTTP_X_FORWARDED_FOR'], $admins);
+    return (in_array(@$http_headers['HTTP_CF_CONNECTING_IP'], $admins) ||
+            in_array(@$http_headers['REMOTE_ADDR'], $admins) ||
+            in_array(@$http_headers['HTTP_X_FORWARDED_FOR']), $admins);
   }
 
   public static function getLegislature() {
