@@ -282,6 +282,30 @@ class parlementaireActions extends sfActions
     $this->forward404Unless($this->orga);
   }
 
+  private function loadOrganismes() {
+    $this->organisme_types = array (
+      'parlementaire' => 'Organismes parlementaires (commissions, missions, ...)',
+      'groupe' => 'Groupes politiques',
+      'groupes' => 'Groupes d\'amitié',
+      'extra' => 'Organismes extra-parlementaires'
+    );
+  }
+
+  public function executeListOrganismes(sfWebRequest $request) {
+    $this->loadOrganismes();
+  }
+
+  public function executeListOrganismesType(sfWebRequest $request) {
+    $type = $request->getParameter('type');
+    $this->forward404Unless($type);
+    $this->loadOrganismes();
+    $query = Doctrine::getTable('Organisme')->createQuery('o')->select('o.nom, o.type, o.slug')->where('type = ?', $type);
+    $this->organismes = $query->execute();
+
+    $this->loadOrganismes();
+    $this->human_type = $this->organisme_types[$type];
+  }
+
   public function executeListOrganisme(sfWebRequest $request) {
     $orga = $request->getParameter('slug');
     $this->forward404Unless($orga);
