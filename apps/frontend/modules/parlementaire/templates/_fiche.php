@@ -50,7 +50,7 @@ if ($parlementaire->sites_web) {
           <?php if ($mails && count($mails) && $mails[0]) : ?>
           <ul>
             <?php foreach ($mails as $mail) : ?>
-            <li><?php echo $mail; ?></li>
+            <li><a href="mailto:<?php echo $mail; ?>"><?php echo $mail; ?></a></li>
             <?php endforeach; ?>
           </ul>
           <?php else : ?> non renseigné
