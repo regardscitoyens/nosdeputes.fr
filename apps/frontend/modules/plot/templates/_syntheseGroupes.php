@@ -35,6 +35,6 @@ echo (myTools::isFinLegislature() ? "l'ensemble de la législature" : "les 12 de
 <script type="text/javascript">
 LoadImageMap("graph_groupes", "<?php echo url_for('@groupes_plot_graph?type='.$type.'&drawAction=map&mapId='.$PictureID); ?>");
 </script>
-<?php if ($type === "home") : ?>
+<?php if ($type === "home") : //Si c'est la home, on ferme les div consacrées ?>
 </div></div>
 <?php endif; ?>

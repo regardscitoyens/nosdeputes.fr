@@ -185,16 +185,7 @@
   </div>
   <div class="clear"></div>
 <div class="box_container">
-  <div class="box_tags">
-  <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png" /></span><?php
-if (myTools::isFinLegislature()) {
-$titretags = 'Les principaux mots clés de la législature';
-}else{
-$titretags = 'En ce moment à l\'Assemblée nationale';
-}
-echo link_to($titretags, '@parlementaires_tags'); ?></h2>
   <?php echo include_component('tag', 'globalActivite'); ?>
-  </div>
   <?php echo include_component('plot', 'syntheseGroupes', array('type' => 'home')); ?>
 </div>
   <div class="clear"></div>

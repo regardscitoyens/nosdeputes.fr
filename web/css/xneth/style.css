@@ -1759,6 +1759,7 @@ h2 {
 }
 .accueil .carte_departement{
     float: left;
+    margin-left: 50px;
 }
 .accueil_liste_liens {
   float:left;
