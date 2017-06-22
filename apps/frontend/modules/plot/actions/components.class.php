@@ -335,11 +335,15 @@ class plotComponents extends sfComponents
       } else {
         $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions']['somme']+$stats[$groupe]['commission_interventions']['somme'];
       }
-      $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_deposes'];
+      if (isset($stats[$groupe]['amdmts_deposes'])) {
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_deposes'];
+      }
       if ($this->type === "all") {
         $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_adoptes'];
       }
-      $this->data['groupes'][$groupe][] = $stats[$groupe]['propositions'];
+      if (isset($stats[$groupe]['propositions'])) {
+        $this->data['groupes'][$groupe][] = $stats[$groupe]['propositions'];
+      }
       $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_ecrites']['somme'];
       if ($this->type === "all")
         $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_orales']['somme'];
