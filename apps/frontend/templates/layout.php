@@ -174,6 +174,7 @@ $(document).ready(function() {
             <?php if (myTools::getNextHost()) :?>
             <a target="_blank" href="https://<?php echo myTools::getNextHost(); ?>">Législature suivante</a>&nbsp; &mdash; &nbsp;
             <?php endif;?>
+            <a target="_blank" href="https://stats.regardscitoyens.org/">Stats de fréquentation</a>&nbsp; &mdash; &nbsp;
             <a target="_blank" href="https://www.regardscitoyens.org/mentions-legales/">Mentions légales</a>&nbsp; &mdash; &nbsp;
             <a target="_blank" href="https://www.regardscitoyens.org/nous-contacter/">Contact</a>
           </span>
