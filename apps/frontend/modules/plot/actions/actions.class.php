@@ -48,5 +48,5 @@ class plotActions extends sfActions {
     $this->getResponse()->addCacheControlHttpHeader('public,max_age='.(60*60*12));
     $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()+60*60*12));
   }
-  
+
 }
