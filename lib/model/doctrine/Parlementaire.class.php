@@ -704,13 +704,8 @@ class Parlementaire extends BaseParlementaire
     return null;
   }
 
-  public function getNbMois() {
-    $vacs = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
-    $vacances = array();
-    if ($vacs) {
-      $vacances = unserialize($vacs->value);
-      unset($vacs);
-    }
+  public function getNbMois($vacances=array()) {
+    if (!$vacances) $vacances = myTools::getVacances();
     $debut = strtotime(myTools::getDebutLegislature());
     $fin = $debut + (5*365-31)*24*3600;  # fin législature définie à 4 ans et 11 mois)
     $semaines = 0;

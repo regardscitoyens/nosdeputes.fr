@@ -152,17 +152,21 @@ class apiActions extends sfActions
     $this->champs = array();
     $this->res = array('organismes' => array());
     $this->breakline = 'organisme';
+
+    $curgpes = myTools::getCurrentGroupes();
     $colormap = myTools::getGroupesColorMap();
-    $groupesorder = myTools::getAllGroupesOrder();
+    $groupesorder = myTools::getGroupesOrderMap();
     foreach($orgas as $o) {
       $orga = array();
       $orga['id'] = $o->id * 1;
       $orga['slug'] = $o->slug;
       $orga['nom'] = $o->nom;
       if ($o->type == "groupe") {
-        $orga['acronyme'] = $o->getSmallNomGroupe();
-        $orga['couleur'] = (isset($colormap[$orga['acronyme']]) ? $colormap[$orga['acronyme']] : '');
-        $orga['order'] = (isset($groupesorder[$orga['acronyme']]) ? $groupesorder[$orga['acronyme']] : '');
+        $acro = $o->getSmallNomGroupe();
+        $orga['acronyme'] = $acro;
+        $orga['groupe_actuel'] = in_array($acro, $curgpes);
+        $orga['couleur'] = (isset($colormap[$acro]) ? $colormap[$acro] : '');
+        $orga['order'] = (isset($groupesorder[$acro]) ? $groupesorder[$acro] : '');
       }
       $orga['type'] = $o->type;
       $orga['url_nosdeputes'] = myTools::url_forAPI('@list_parlementaires_organisme?slug='.$o->slug);

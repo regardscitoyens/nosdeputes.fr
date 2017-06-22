@@ -15,24 +15,22 @@ class topDeputesTask extends sfBaseTask
     $this->addOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
 
+
   /**
    * Ordonne la hash table des députés sur une entre ($type) pour en calculer le classement
    **/
-  protected function orderDeputes($type, $reverse = 1) {
+  protected function orderDeputes($type) {
     $tot = 0;
     $field = "value";
     if (myTools::isFinLegislature())
       $field = "moyenne";
     foreach(array_keys($this->deputes) as $id) {
       if (!isset($this->deputes[$id][$type][$field]))
-	$this->deputes[$id][$type][$field] = 0;
+        $this->deputes[$id][$type][$field] = 0;
       $ordered[$id] = $this->deputes[$id][$type][$field];
       $tot++;
     }
-    if ($reverse)
-      arsort($ordered);
-    else
-      asort($ordered);
+    arsort($ordered);
 
     $cpt = 0;
     $last_value = -999;
@@ -40,12 +38,13 @@ class topDeputesTask extends sfBaseTask
     foreach(array_keys($ordered) as $id) {
       $cpt++;
       if ($last_value != $this->deputes[$id][$type][$field])
-	$last_cpt = $cpt;
+        $last_cpt = $cpt;
       $this->deputes[$id][$type]['rank'] = $last_cpt;
       $this->deputes[$id][$type]['max_rank'] = $tot;
       $last_value = $this->deputes[$id][$type][$field];
     }
   }
+
 
   protected function executeMoyenneMois($field) {
     if (myTools::isFinlegislature() && isset($this->deputes[1]['nb_mois']))
@@ -58,188 +57,170 @@ class topDeputesTask extends sfBaseTask
       }
   }
 
+
   protected function executePresence($q)
   {
-    $semaines = $q->select('p.id, s.annee, s.numero_semaine, pr.id, count(s.id)')
+    $q->select('p.id, s.annee, s.numero_semaine, pr.id, count(s.id)')
       ->from('Parlementaire p, p.Presences pr, pr.Seance s')
-      ->groupBy('p.id, s.annee, s.numero_semaine')
-      ->fetchArray();
-    foreach ($semaines as $p) {
-      foreach($p['Presences'] as $pr) {
-	$this->deputes[$p['id']]['semaines_presence']['value']++;
-      }
-    }
+      ->groupBy('p.id, s.annee, s.numero_semaine');
+    foreach ($q->fetchArray() as $r)
+      $this->deputes[$r['id']]['semaines_presence']['value'] += count($r['Presences']);
     $this->executeMoyenneMois('semaines_presence');
   }
+
+  protected function processResults($q, $field, $parlid_field='parlementaire_id', $groupe_field='parlementaire_groupe_acronyme') {
+    foreach ($q->fetchArray() as $r) {
+      $this->deputes[$r[$parlid_field]][$field]['value'] += $r['count'];
+      if ($r[$groupe_field])
+        $this->groupes[$r[$groupe_field]][$field] += $r['count'];
+    }
+    $this->executeMoyenneMois($field);
+  }
+
   protected function executeCommissionPresence($q)
   {
-      $parlementaires = $q->select('p.id, count(pr.id)')
-	->from('Parlementaire p, p.Presences pr, pr.Seance s')
-	->groupBy('p.id')
-	->andWhere('s.type = ?', 'commission')
-	->fetchArray();
-      foreach ($parlementaires as $p) {
-	$this->deputes[$p['id']]['commission_presences']['value'] = $p['count'];
-      }
-    $this->executeMoyenneMois('commission_presences');
+    $q->select('pr.parlementaire_id, pr.parlementaire_groupe_acronyme, count(pr.id)')
+      ->from('Presence pr, pr.Parlementaire p, pr.Seance s')
+      ->andWhere('s.type = ?', 'commission')
+      ->groupBy('p.id, pr.parlementaire_groupe_acronyme');
+    $this->processResults($q, 'commission_presences');
   }
+
   protected function executeCommissionInterventions($q)
   {
-    $q->select('p.id, count(i.id)')
-      ->from('Parlementaire p, p.Interventions i')
-      ->groupBy('p.id')
-      ->andWhere('i.type = ?', 'commission');
-    $parlementaires = $q->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['commission_interventions']['value'] = $p['count'];
-    }
-    $this->executeMoyenneMois('commission_interventions');
+    $q->select('i.parlementaire_id, i.parlementaire_groupe_acronyme, count(i.id)')
+      ->from('Intervention i, i.Parlementaire p')
+      ->andWhere('i.parlementaire_id IS NOT NULL')
+      ->andWhere('i.type = ?', 'commission')
+      ->groupBy('p.id, i.parlementaire_groupe_acronyme');
+    $this->processResults($q, 'commission_interventions');
   }
+
   protected function executeHemicycleInvectives($q)
   {
-      $parlementaires = $q->select('p.id, count(i.id)')
-	->from('Parlementaire p, p.Interventions i, i.Seance s')
-	->groupBy('p.id')
-	->andWhere('s.type = ?', 'hemicycle')
-	->andWhere('i.nb_mots <= 20')
-	->fetchArray();
-      foreach ($parlementaires as $p) {
-	$this->deputes[$p['id']]['hemicycle_interventions_courtes']['value'] = $p['count'];
-      }
-      $this->executeMoyenneMois('hemicycle_interventions_courtes');
+    $q->select('i.parlementaire_id, i.parlementaire_groupe_acronyme, count(i.id)')
+      ->from('Intervention i, i.Parlementaire p')
+      ->andWhere('i.parlementaire_id IS NOT NULL')
+      ->andWhere('i.type != ?', 'commission')
+      ->andWhere('i.nb_mots <= 20')
+      ->groupBy('p.id, i.parlementaire_groupe_acronyme');
+    $this->processResults($q, 'hemicycle_interventions_courtes');
   }
+
   protected function executeHemicycleInterventions($q)
   {
-    $parlementaires = $q->select('p.id, count(i.id)')
-      ->from('Parlementaire p, p.Interventions i, i.Seance s')
-      ->groupBy('p.id')
-      ->andWhere('s.type = ?', 'hemicycle')
+    $q->select('i.parlementaire_id, i.parlementaire_groupe_acronyme, count(i.id)')
+      ->from('Intervention i, i.Parlementaire p')
+      ->andWhere('i.parlementaire_id IS NOT NULL')
+      ->andWhere('i.type != ?', 'commission')
       ->andWhere('i.nb_mots > 20')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['hemicycle_interventions']['value'] = $p['count'];
-    }
-    $this->executeMoyenneMois('hemicycle_interventions');
+      ->groupBy('p.id, i.parlementaire_groupe_acronyme');
+    $this->processResults($q, 'hemicycle_interventions');
   }
 
   protected function executeAmendementsProposes($q)
   {
-    $parlementaires = $q->select('a.auteur_id, count(a.id)')
+    $q->select('a.auteur_id, a.auteur_groupe_acronyme, count(a.id)')
       ->from('Amendement a, a.Auteur p')
-      ->groupBy('a.auteur_id')
-      ->andWhere('a.auteur_id != ?', 0)
+      ->andWhere('a.auteur_id IS NOT NULL')
       ->andWhere('a.sort != ?', 'Rectifié')
-      ->andWhere('a.numero NOT LIKE ?', '%-%')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['auteur_id']]['amendements_proposes']['value'] = $p['count'];
-    }
-    $this->executeMoyenneMois('amendements_proposes');
+      ->groupBy('p.id, a.auteur_groupe_acronyme');
+    $this->processResults($q, 'amendements_proposes', 'auteur_id', 'auteur_groupe_acronyme');
+  }
+
+  protected function executeAmendementsProposesAdoptes($q)
+  {
+    $q->select('a.auteur_id, a.auteur_groupe_acronyme, count(a.id)')
+      ->from('Amendement a, a.Auteur p')
+      ->andWhere('a.auteur_id IS NOT NULL')
+      ->andWhere('a.sort = ?', 'Adopté')
+      ->groupBy('p.id, a.auteur_groupe_acronyme');
+    $this->processResults($q, 'amendements_proposes_adoptes', 'auteur_id', 'auteur_groupe_acronyme');
+  }
+
+  protected function executeAmendementsProposesRejetes($q)
+  {
+    $q->select('a.auteur_id, a.auteur_groupe_acronyme, count(a.id)')
+      ->from('Amendement a, a.Auteur p')
+      ->andWhere('a.auteur_id IS NOT NULL')
+      ->andWhere('a.sort = ?', 'Rejeté')
+      ->groupBy('p.id, a.auteur_groupe_acronyme');
+    $this->processResults($q, 'amendements_proposes_rejetes', 'auteur_id', 'auteur_groupe_acronyme');
   }
 
   protected function executeAmendementsSignes($q)
   {
-    $parlementaires = $q->select('p.id, count(a.id)')
-      ->from('Parlementaire p, p.Amendements a')
-      ->groupBy('p.id')
+    $q->select('pa.parlementaire_id, pa.parlementaire_groupe_acronyme, count(pa.id)')
+      ->from('ParlementaireAmendement pa, pa.Parlementaire p, pa.Amendement a')
       ->andWhere('a.sort != ?', 'Rectifié')
-      ->andWhere('a.numero NOT LIKE ?', '%-%')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_signes']['value'] = $p['count'];
-    }
-    $this->executeMoyenneMois('amendements_signes');
+      ->groupBy('p.id, pa.parlementaire_groupe_acronyme');
+    $this->processResults($q, 'amendements_signes');
   }
 
   protected function executeAmendementsAdoptes($q)
   {
-    $parlementaires = $q->select('p.id, count(a.id)')
-      ->from('Parlementaire p, p.Amendements a')
-      ->groupBy('p.id')
+    $q->select('pa.parlementaire_id, pa.parlementaire_groupe_acronyme, count(pa.id)')
+      ->from('ParlementaireAmendement pa, pa.Parlementaire p, pa.Amendement a')
       ->andWhere('a.sort = ?', 'Adopté')
-      ->andWhere('a.numero NOT LIKE ?', '%-%')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_adoptes']['value'] = $p['count'];
-    }
-    $this->executeMoyenneMois('amendements_adoptes');
+      ->groupBy('p.id, pa.parlementaire_groupe_acronyme');
+    $this->processResults($q, 'amendements_adoptes');
   }
 
   protected function executeAmendementsRejetes($q)
   {
-    $parlementaires = $q->select('p.id, count(a.id)')
-      ->from('Parlementaire p, p.Amendements a')
-      ->groupBy('p.id')
+    $q->select('pa.parlementaire_id, pa.parlementaire_groupe_acronyme, count(pa.id)')
+      ->from('ParlementaireAmendement pa, pa.Parlementaire p, pa.Amendement a')
       ->andWhere('a.sort = ?', 'Rejeté')
-      ->andWhere('a.numero NOT LIKE ?', '%-%')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['amendements_rejetes']['value'] = $p['count'];
-    }
-    $this->executeMoyenneMois('amendements_rejetes');
+      ->groupBy('p.id, pa.parlementaire_groupe_acronyme');
+    $this->processResults($q, 'amendements_rejetes');
   }
 
   protected function executeQuestionsEcrites($q)
   {
-    $parlementaires = $q->select('p.id, count(q.id)')
-      ->from('Parlementaire p, p.QuestionEcrites q')
-      ->groupBy('p.id')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['questions_ecrites']['value'] = $p['count'];
-    }
-    $this->executeMoyenneMois('questions_ecrites');
+    $q->select('q.parlementaire_id, q.parlementaire_groupe_acronyme, count(q.id)')
+      ->from('QuestionEcrite q, q.Parlementaire p')
+      ->groupBy('p.id, q.parlementaire_groupe_acronyme');
+    $this->processResults($q, 'questions_ecrites');
   }
+
   protected function executeQuestionsOrales($q)
   {
-    $questions = $q->select('p.id, count(DISTINCT i.section_id, i.seance_id) as count')
-      ->from('Parlementaire p, p.Interventions i')
-      ->groupBy('p.id')
+    $q->select('i.parlementaire_id, i.parlementaire_groupe_acronyme, count(distinct(i.section_id))')
+      ->from('Intervention i, i.Parlementaire p')
+      ->andWhere('i.parlementaire_id IS NOT NULL')
       ->andWhere('i.type = ?', 'question')
       ->andWhere('i.nb_mots > 40')
       ->andWhere('i.fonction NOT LIKE ?', 'président%')
-      ->fetchArray();
-    foreach ($questions as $q) {
-      $this->deputes[$q['id']]['questions_orales']['value'] = $q['count'];
-    }
-    $this->executeMoyenneMois('questions_orales');
+      ->groupBy('p.id, i.parlementaire_groupe_acronyme, i.seance_id');
+    $this->processResults($q, 'questions_orales');
   }
+
   protected function executeRapports($q)
   {
-    $parlementaires = $q->select('p.id, count(t.id)')
-      ->from('Parlementaire p, p.Textelois t')
-      ->andWhere('t.type != ? AND t.type != ?', self::$lois)
-      ->groupBy('p.id')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['rapports']['value'] = $p['count'];
-    }
-    $this->executeMoyenneMois('rapports');
+    $q->select('pt.parlementaire_id, pt.parlementaire_groupe_acronyme, count(pt.id)')
+      ->from('ParlementaireTexteloi pt, pt.Parlementaire p, pt.Texteloi t')
+      ->andWhereNotIn('t.type', self::$lois)
+      ->groupBy('p.id, pt.parlementaire_groupe_acronyme');
+    $this->processResults($q, 'rapports');
   }
+
   protected function executePropositionsEcrites($q)
   {
-    $parlementaires = $q->select('p.id, count(t.id)')
-      ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
-      ->andWhere('t.type = ? OR t.type = ?', self::$lois)
+    $q->select('pt.parlementaire_id, pt.parlementaire_groupe_acronyme, count(pt.id)')
+      ->from('ParlementaireTexteloi pt, pt.Parlementaire p, pt.Texteloi t')
+      ->andWhereIn('t.type', self::$lois)
       ->andWhere('pt.importance < ?', 4)
-      ->groupBy('p.id')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['propositions_ecrites']['value'] = $p['count'];
-    }
-    $this->executeMoyenneMois('propositions_ecrites');
+      ->groupBy('p.id, pt.parlementaire_groupe_acronyme');
+    $this->processResults($q, 'propositions_ecrites');
   }
+
   protected function executePropositionsSignees($q)
   {
-    $parlementaires = $q->select('p.id, count(t.id)')
-      ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
-      ->andWhere('t.type = ? OR t.type = ?', self::$lois)
-      ->groupBy('p.id')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['id']]['propositions_signees']['value'] = $p['count'];
-    }
-    $this->executeMoyenneMois('propositions_signees');
+    $q->select('pt.parlementaire_id, pt.parlementaire_groupe_acronyme, count(pt.id)')
+      ->from('ParlementaireTexteloi pt, pt.Parlementaire p, pt.Texteloi t')
+      ->andWhereIn('t.type', self::$lois)
+      ->groupBy('p.id, pt.parlementaire_groupe_acronyme');
+    $this->processResults($q, 'propositions_signees');
   }
 
 
@@ -265,6 +246,7 @@ class topDeputesTask extends sfBaseTask
       ksort($this->deputes[$id]);
     }
   }
+
 
   protected function executeMonth($date) {
     $start = date('Y-m-d', strtotime($date));
@@ -322,48 +304,46 @@ class topDeputesTask extends sfBaseTask
     return ;
   }
 
+
   protected function execute($arguments = array(), $options = array())
   {
     $manager = new sfDatabaseManager($this->configuration);
 
     $this->deputes = array();
+    $this->groupes = array();
 
     if (isset($arguments['month']) && preg_match('/(\d{4})-(\d{2})-01/', $arguments['month'], $m)) {
       $this->executeMonth($arguments['month']);
       $globale = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$m[1].'_'.$m[2]);
       if (!$globale) {
         $globale = new VariableGlobale();
-	      $globale->champ = 'stats_month_'.$m[1].'_'.$m[2];
+        $globale->champ = 'stats_month_'.$m[1].'_'.$m[2];
       }
       $globale->value = serialize($this->deputes);
       $globale->save();
       return;
     }
+
     $fin = myTools::isFinLegislature();
 
-    $qdeputes = Doctrine::getTable('Parlementaire')->createQuery()
-      ->select('id, groupe_acronyme')
-      ->where('type = ?', 'depute');
-    if (!$fin)
-      $qdeputes->andWhere('fin_mandat IS NULL');
-    foreach($qdeputes->fetchArray() as $d) {
-      if (isset($d['groupe_acronyme']))
-        $this->deputes[$d['id']]['groupe'] = $d['groupe_acronyme'];
-      else $this->deputes[$d['id']]['groupe'] = "";
-      if ($fin)
-        $this->deputes[$d['id']]['nb_mois'] = Doctrine::getTable('Parlementaire')->find($d['id'])->getNbMois();
+    if ($fin) {
+      $vacances = myTools::getVacances();
+      foreach(Doctrine::getTable('Parlementaire')->prepareParlementairesTopQuery($fin)->execute() as $d)
+        $this->deputes[$d->id]['nb_mois'] = $d->getNbMois($vacances);
     }
 
     $q = Doctrine_Query::create();
     if (!$fin) {
-      $q->where('fin_mandat IS NULL');
-      $end = date('Y-m-d', time()-60*60*24*365);
+      $q->andWhere('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat');
+      if (!myTools::isFreshLegislature())
+        $q->andWhere('p.debut_mandat < ?', date('Y-m-d', time() - myTools::$dixmois));
+      $lastyear = date('Y-m-d', time()-60*60*24*365);
     }
 
     $qs = clone $q;
     if (!$fin) {
-      $qs->andWhere('s.date > ?', $end);
-      $qs->andWhere('(s.date > p.debut_mandat)');
+      $qs->andWhere('s.date >= ?', $lastyear);
+      $qs->andWhere('s.date >= p.debut_mandat');
     }
 
     $this->executePresence(clone $qs);
@@ -373,8 +353,10 @@ class topDeputesTask extends sfBaseTask
     $this->orderDeputes('commission_presences');
 
     $qi = clone $q;
-    if (!$fin)
-      $qi->andWhere('i.date > ?', $end);
+    if (!$fin) {
+      $qi->andWhere('i.date >= ?', $lastyear);
+      $qi->andWhere('i.date >= p.debut_mandat');
+    }
 
     $this->executeCommissionInterventions(clone $qi);
     $this->orderDeputes('commission_interventions');
@@ -382,13 +364,15 @@ class topDeputesTask extends sfBaseTask
     $this->executeHemicycleInterventions(clone $qi);
     $this->orderDeputes('hemicycle_interventions');
 
-
     $this->executeHemicycleInvectives(clone $qi);
     $this->orderDeputes('hemicycle_interventions_courtes');
 
     $qa = clone $q;
-    if (!$fin)
-      $qa->andWhere('a.date > ?', $end);
+    if (!$fin) {
+      $qa->andWhere('a.date >= ?', $lastyear);
+      $qa->andWhere('a.date >= p.debut_mandat');
+    }
+
     $this->executeAmendementsProposes(clone $qa);
     $this->orderDeputes('amendements_proposes');
 
@@ -399,8 +383,11 @@ class topDeputesTask extends sfBaseTask
     $this->orderDeputes('amendements_adoptes');
 
     $qd = clone $q;
-    if (!$fin)
-      $qd->where('t.date > ?', $end);
+    if (!$fin) {
+      $qd->andWhere('t.date >= ?', $lastyear);
+      $qd->andWhere('t.date >= p.debut_mandat');
+    }
+
     $this->executeRapports(clone $qd);
     $this->orderDeputes('rapports');
 
@@ -411,163 +398,159 @@ class topDeputesTask extends sfBaseTask
     $this->orderDeputes('propositions_signees');
 
     $qq = clone $q;
-    if (!$fin)
-      $qq->where('q.date > ?', $end);
+    if (!$fin) {
+      $qq->andWhere('q.date >= ?', $lastyear);
+      $qq->andWhere('(q.date >= p.debut_mandat)');
+    }
+
     $this->executeQuestionsEcrites($qq);
     $this->orderDeputes('questions_ecrites');
 
     $this->executeQuestionsOrales(clone $qi);
     $this->orderDeputes('questions_orales');
 
-
-    $groupes = array();
     foreach(array_keys($this->deputes) as $id) {
-      if ($this->deputes[$id]['groupe'] != "") {
-        foreach(array_keys($this->deputes[$id]) as $key) {
-          if(is_array($this->deputes[$id][$key])) {
-  	         $groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
-	           $groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
-          }
-        }
-      }
-      unset($this->deputes[$id]['groupe']);
       $depute = Doctrine::getTable('Parlementaire')->find($id);
       if ($depute) {
         $depute->top = serialize($this->deputes[$id]);
         $depute->save();
-      }else{
-        echo "ERREUR: député $id non trouvé\n";
+      } else {
+        echo "ERREUR: député '$id' non trouvé\n";
         var_dump($this->deputes[$id]);
       }
     }
 
+    // Store les statistiques par groupe politique
     $globale = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes');
     if (!$globale) {
       $globale = new VariableGlobale();
       $globale->champ = 'stats_groupes';
     }
-    $globale->value = serialize($groupes);
+    $globale->value = serialize($this->groupes);
     $globale->save();
 
-    //On fait la même chose pour les députés ayant un mandat clos si on n'est pas en fin de législature.
-   if (!$fin) {
 
-    $parlementaires = Doctrine_Query::create()->where('fin_mandat IS NOT NULL')
-      ->from('Parlementaire p')->execute();
+    // On fait la même chose sans classement pour les députés ayant un mandat clos ou trop court si on n'est pas en fin de législature.
+    if (!$fin) {
+      $qparlementaires = Doctrine_Query::create()
+        ->from('Parlementaire p')
+        ->where('fin_mandat IS NOT NULL AND debut_mandat <= fin_mandat');
 
-    foreach ($parlementaires as $p) {
-      $this->depute = array();
-      $q = Doctrine_Query::create()->where('p.id = ?', $p->id);
+      if (!myTools::isFreshLegislature())
+        $qparlementaires->orWhere('debut_mandat >= ?', date('Y-m-d', time() - myTools::$dixmois));
 
-      $qs = clone $q;
-      $qs->andWhere('(s.date > ? AND s.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
-       date('Y-m-d', strtotime($p->fin_mandat)), ));
+      foreach ($qparlementaires->execute() as $p) {
+        $this->depute = array();
+        $dates = array(date('Y-m-d', strtotime($p->debut_mandat)), date('Y-m-d', strtotime($p->fin_mandat)));
 
-      $this->executePresence(clone $qs);
+        $q = Doctrine_Query::create()->where('p.id = ?', $p->id);
 
-      $this->executeCommissionPresence(clone $qs);
+        $qs = clone $q;
+        $qs->andWhere('(s.date > ? AND s.date < ?)', $dates);
+        $this->executePresence(clone $qs);
+        $this->executeCommissionPresence(clone $qs);
 
-      $qi = clone $q;
-      $qi->andWhere('(i.date > ? AND i.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
-							 date('Y-m-d', strtotime($p->fin_mandat)), ));
+        $qi = clone $q;
+        $qi->andWhere('(i.date > ? AND i.date < ?)', $dates);
+        $this->executeCommissionInterventions(clone $qi);
+        $this->executeHemicycleInterventions(clone $qi);
+        $this->executeHemicycleInvectives(clone $qi);
 
-      $this->executeCommissionInterventions(clone $qi);
+        $qa = clone $q;
+        $qa->andWhere('(a.date > ? AND a.date < ?)', $dates);
+        $this->executeAmendementsProposes(clone $qa);
+        $this->executeAmendementsSignes(clone $qa);
+        $this->executeAmendementsAdoptes(clone $qa);
 
-      $this->executeHemicycleInterventions(clone $qi);
+        $qq = clone $q;
+        $qq->andWhere('(q.date > ? AND q.date < ?)', $dates);
+        $this->executeQuestionsEcrites($qq);
 
+        $this->executeQuestionsOrales(clone $qi);
 
-      $this->executeHemicycleInvectives(clone $qi);
+        $qd = clone $q;
+        $qd->andWhere('(t.date > ? AND t.date < ?)', $dates);
+        $this->executePropositionsEcrites(clone $qd);
+        $this->executePropositionsSignees(clone $qd);
+        $this->executeRapports(clone $qd);
 
-      $qa = clone $q;
-      $qa->andWhere('(a.date > ? AND a.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
-							 date('Y-m-d', strtotime($p->fin_mandat)), ));
-
-
-      $this->executeAmendementsProposes(clone $qa);
-
-      $this->executeAmendementsSignes(clone $qa);
-
-      $this->executeAmendementsAdoptes(clone $qa);
-
-      $qq = clone $q;
-      $qq->andWhere('(q.date > ? AND q.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
-							 date('Y-m-d', strtotime($p->fin_mandat)), ));
-
-      $this->executeQuestionsEcrites($qq);
-
-      $this->executeQuestionsOrales(clone $qi);
-
-      $qd = clone $q;
-      $qd->andWhere('(t.date > ? AND t.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),
-                                                         date('Y-m-d', strtotime($p->fin_mandat)), ));
-      $this->executePropositionsEcrites(clone $qd);
-      $this->executePropositionsSignees(clone $qd);
-      $this->executeRapports(clone $qd);
-
-      if (count($this->deputes[$p->id])) {
-	$p->top = serialize($this->deputes[$p->id]);
-	$p->save();
+        if (count($this->deputes[$p->id])) {
+          $p->top = serialize($this->deputes[$p->id]);
+          $p->save();
+        }
       }
     }
-   }
 
+
+    // Calcule présences médianes pour les graphes
     $date = time();
-    $annee = date('Y', $date); $sem = date('W', $date);
+    $annee = date('Y', $date);
+    $sem = date('W', $date);
     $start = strtotime(myTools::getDebutLegislature());
     $date_debut = date('Y-m-d', $start);
-    $annee0 = date('Y', $start); $sem0 = date('W', $start);
+    $this->annee0 = date('Y', $start);
+    $this->sem0 = date('W', $start);
     if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
-    if ($sem0 >= 52 && $sem <= 1) $sem0 = 0;
-    $n_weeks = max(1, ($annee - $annee0)*53 + $sem - $sem0);
+    if ($this->sem0 >= 52 && $sem <= 1) $this->sem0 = 0;
+    $this->n_weeks = max(1, ($annee - $this->annee0)*53 + $sem - $this->sem0);
+
+    $this->presences_medi = array(
+      'commission' => array_fill(1, $this->n_weeks, 0),
+      'hemicycle' => array_fill(1, $this->n_weeks, 0),
+      'total' => array_fill(1, $this->n_weeks, 0)
+    );
+
     $query = Doctrine_Query::create()
-      ->select('COUNT(p.id) as nombre, p.id, p.parlementaire_id, s.type, s.annee, s.numero_semaine')
-      ->from('Presence p')
-      ->leftJoin('p.Seance s')
-      ->where('s.date > ?', $date_debut)
-      ->groupBy('s.type, s.annee, s.numero_semaine, p.parlementaire_id')
-      ->orderBy('s.type, s.annee, s.numero_semaine, nombre');
-    $presences_medi = array('commission' => array_fill(1, $n_weeks, 0),
-                            'hemicycle' => array_fill(1, $n_weeks, 0),
-                            'total' => array_fill(1, $n_weeks, 0));
-    $presences = $query->fetchArray();
-    $deps = floor(count($presences)/$n_weeks);
-    $mid = floor($deps/2)+1;
-    $ct = 0;
-    foreach ($presences as $presence) {
-      $ct++;
-      if ($ct % $deps != $mid) continue;
-      $n = ($presence['Seance']['annee'] - $annee0)*53 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($n <= $n_weeks)
-        $presences_medi[$presence['Seance']['type']][$n] = $presence['nombre'];
-    }
-    unset($presences);
-    $query = Doctrine_Query::create()
-      ->select('COUNT(p.id) as nombre, p.id, p.parlementaire_id, s.annee, s.numero_semaine')
+      ->select('count(p.id), p.id, p.parlementaire_id, s.annee, s.numero_semaine')
       ->from('Presence p')
       ->leftJoin('p.Seance s')
       ->where('s.date > ?', $date_debut)
       ->groupBy('s.annee, s.numero_semaine, p.parlementaire_id')
-      ->orderBy('s.annee, s.numero_semaine, nombre');
-    $presences = $query->fetchArray();
-    $deps = floor(count($presences)/$n_weeks);
-    $mid = floor($deps/2)+1;
-    $ct = 0;
-    foreach ($presences as $presence) {
-      $ct++;
-      if ($ct % $deps != $mid) continue;
-      $n = ($presence['Seance']['annee'] - $annee0)*53 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($n <= $n_weeks) {
-        $presences_medi['total'][$n] = $presence['nombre'];
-      }
-    }
-    unset($presences);
+      ->orderBy('s.annee, s.numero_semaine, count');
+
+    $q = clone($query);
+    $q->andWhere('s.type = ?', 'commission');
+    $this->processMediane($q, 'commission');
+
+    $q = clone($query);
+    $q->andWhere('s.type = ?', 'hemicycle');
+    $this->processMediane($q, 'hemicycle');
+
+    $this->processMediane($query, 'total');
+
     $globale2 = Doctrine::getTable('VariableGlobale')->findOneByChamp('presences_medi');
     if (!$globale2) {
       $globale2 = new VariableGlobale();
       $globale2->champ = 'presences_medi';
     }
-    $globale2->value = serialize($presences_medi);
+    $globale2->value = serialize($this->presences_medi);
     $globale2->save();
-
   }
+
+  protected static function getMedianeArray($arr) {
+    $n = count($arr);
+    // S'il y a eu moins de 150 députés actifs cette semaine là on la banalise
+    if ($n < 150) return 0;
+    // Autrement on prend le nombre médian de présences sur la semaine parmi les actifs
+    return $arr[round($n/2) + 1];
+  }
+
+  protected function processMediane($q, $type) {
+    $w = array();
+    $curn = -1;
+    foreach ($q->fetchArray() as $presence) {
+      $n = ($presence['Seance']['annee'] - $this->annee0)*53 + $presence['Seance']['numero_semaine'] - $this->sem0 + 1;
+      if ($n > $this->n_weeks)
+        break;
+      if ($n != $curn) {
+        if ($curn != -1)
+          $this->presences_medi[$type][$curn] = self::getMedianeArray($w);
+        $w = array();
+        $curn = $n;
+      }
+      $w[] = $presence['count'];
+    }
+    $this->presences_medi[$type][$curn] = self::getMedianeArray($w);
+  }
+
 }

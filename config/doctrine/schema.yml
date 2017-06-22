@@ -92,7 +92,6 @@ Organisme:
       title: [titre]
       extra_weight: 4
       moretags: [type]
-      index_if: has_parlementaires
   columns:
     nom:
       type: string(255)

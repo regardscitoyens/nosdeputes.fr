@@ -1,8 +1,10 @@
-<h1>Tous les députés par ordre alphabétique</h1> 
-<?php $sf_response->setTitle('Liste de tous les députés à l\'Assemblée nationale - NosDéputés.fr'); ?> 
-<p>Les <?php echo $total; ?> députés de la <?php echo sfConfig::get('app_legislature', 13); ?><sup>ème</sup> législature (<?php echo $actifs; ?> en cours de mandat)&nbsp;:</p> 
-<?php include_partial('parlementaire/groupes'); ?>
-<div class="liste"><?php 
+<h1>Tous les députés par ordre alphabétique</h1>
+<?php $sf_response->setTitle('Liste de tous les députés à l\'Assemblée nationale - NosDéputés.fr'); ?>
+<p>Les <?php echo $total; ?> députés de la <?php echo sfConfig::get('app_legislature', 13); ?><sup>ème</sup> législature (<?php echo $actifs; ?> en cours de mandat)&nbsp;:</p>
+<center><h4><?php foreach (myTools::getCurrentGroupesInfos() as $gpe)
+  echo '&nbsp; '.link_to(str_replace(' ', '&nbsp;', $gpe[0].' (<b').' class="c_'.strtolower($gpe[1]).'">'.$gpe[1].'</b>)', '@list_parlementaires_groupe?acro='.$gpe[1]).'&nbsp; '; ?>
+</h4></center>
+<div class="liste"><?php
 $listlettres = array_keys($parlementaires);
 foreach($listlettres as $i) {
   echo '<div class="list_choix" id="'.$i.'">';

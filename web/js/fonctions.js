@@ -68,7 +68,7 @@ $(document).ready(function() {
   // Redimensionnement si page trop courte
   var minHeight = $(window).height() - 306;
   if ($("#corps_page").height() < minHeight)
-    $("#corps_page").height(minHeight);
+    $("#corps_page").css("min-height", minHeight+"px");
 
 }); // fin document ready
 

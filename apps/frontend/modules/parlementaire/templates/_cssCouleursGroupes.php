@@ -1,10 +1,10 @@
 <style type="text/css">
 <?php
 $synthese = " ";
-foreach (myTools::getGroupesInfos() as $gpe) {
-  $acro = strtolower($gpe[1]);
-  $col = $gpe[2];
-  echo ".c_$acro { color: rgb($col); } .c_b_$acro { background-color: rgb($col); } .synthese .c_$acro { border-left: 5px solid rgb($col); }";
+foreach (myTools::getGroupesColorMap() as $acro => $col) {
+  $acro = strtolower($acro);
+  $col = 'rgb('.$col.')';
+  echo ".c_$acro { color: $col; } .c_b_$acro { background-color: $col; } .synthese .c_$acro { border-left: 5px solid $col; }";
   if ($synthese != " ") $synthese .= ", ";
   $synthese .= ".synthese .c_$acro";
 }
