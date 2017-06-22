@@ -239,6 +239,9 @@ class circonscriptionActions extends sfActions
 
     $svg->setAttribute('width', 5*($x_max - $x_min));
     $svg->setAttribute('height', 5*($y_max - $y_min));
+    $svg->setAttribute('fill', '#deecbd');
+    $svg->setAttribute('stroke', '#cccccc');
+    $svg->setAttribute('stroke-width', '0.5');
     $svg->setAttribute('viewBox', $x_min." ".$y_min." ".($x_max - $x_min)." ".($y_max - $y_min));
     $svg->setAttribute('transform', "translate(".-$x_min.",".-$y_min.")");
   }
