@@ -4,7 +4,7 @@ class parlementaireComponents extends sfComponents
   public function executeList()
   {
     $this->parlementaires = array();
-    if (!isset($this->interventions) || !count($this->interventions)) 
+    if (!isset($this->interventions) || !count($this->interventions))
       return ;
     $this->parlementaires = Doctrine::getTable('Intervention')->createQuery('i')
       ->leftJoin('i.Parlementaire p')
@@ -23,7 +23,7 @@ class parlementaireComponents extends sfComponents
   public function executeDuJour()
   {
     $query = Doctrine::getTable('Parlementaire')->createQuery('p');
-    if (!myTools::isLegislatureCloturee()) {
+    if (!myTools::isFinLegislature()) {
       $query->where('fin_mandat IS NULL');
     }
     $this->parlementaire = $query->orderBy('rand()')->limit(1)->fetchOne();
@@ -57,5 +57,5 @@ class parlementaireComponents extends sfComponents
     $this->parl = Doctrine::getTable('Parlementaire')->findOneBySlug($this->slug);
     if (!$this->options)
       $this->options = array('titre' => 1, 'photo' => 1, 'graphe' => 1, 'activite' => 1, 'tags' => 1, 'iframe' => 0, 'width' => 935, 'maxtags' => 40);
-  }  
+  }
 }

@@ -153,7 +153,7 @@ class myTools {
   }
 
   public static function isLegislatureCloturee() {
-    return preg_match('/clotur/', sfConfig::get('app_fin_legislature'));
+    return (sfConfig::get('host_next_legislature'));
   }
 
   public static function isCommentairesLocked() {
