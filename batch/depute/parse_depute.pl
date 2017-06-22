@@ -3,7 +3,7 @@
 use HTML::TokeParser;
 use HTML::Entities;
 use Encode;
-require "finmandats.pm";
+require "./finmandats.pm";
 require "../common/common.pm";
 
 $file = shift;
@@ -146,13 +146,18 @@ foreach $line (split /\n/, $string) {
     $depute{'groupe'}{$gpe} = 1;
   } elsif ($line =~ /mailto:([^'"]+@[^'"]+)['"]/i) {
     $depute{'mails'}{$1} = 1;
-  } elsif ($line =~ /<a [^>]*class="url"[^>]*href=['"]([^"']+)['"]/i) {
-    $site = $1;
-    $site =~ s#^(http://| )*#http://#i;
-    if ($site =~ s/(http:\/\/)?(.*@.*)$/\2/) {
+  } elsif ($line =~ /<a [^>]*class="(url|facebook|twitter topmargin)" *href=['"]([^"']+)['"]/i) {
+    $site = $2;
+    if ($1 =~ /twitter/) {
+      $site =~ s/\/$//;
+    }
+#    $site =~ s#^(http://| )*#http://#i; #Bug plus d'actualité ?
+    if ($site =~ s/(https?:\/\/)?([^\/]+@[^\/]+)$/\2/) { #Les url twitter sont indiquées avec un @
       $depute{'mails'}{$site} = 1;
     } else {
-      $depute{'sites_web'}{$site} = 1;
+      if ($site !~ /www.facebook\.com.sharer\.php/) { #Evite de prendre les boutons de partage de l'AN
+        $depute{'sites_web'}{$site} = 1;
+      }
     }
   } elsif ($line =~ /id="hemicycle-container" data-place="(\d+)">/i) {
     $depute{'place_hemicycle'} = $1;
@@ -382,4 +387,3 @@ foreach $k (keys %depute) {
   }
 }
 print '"type": "depute"}'."\n";
-
