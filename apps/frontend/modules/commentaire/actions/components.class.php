@@ -7,7 +7,7 @@ class commentaireComponents extends sfComponents
     $_GET['isAuthenticated'] = 1;
     if (!isset($this->form))
       $this->form = new CommentaireForm();
-    
+
     if (isset($this->object)) {
       $this->id = $this->object->id;
       $this->type = get_class($this->object);
@@ -33,7 +33,7 @@ class commentaireComponents extends sfComponents
     $query->orderBy('created_at');
     $this->commentaires = $query->execute();
   }
-  
+
   public function executeShowAllCitoyen() {
     $id = $this->id;
     $query = Doctrine::getTable('Commentaire')
@@ -44,7 +44,7 @@ class commentaireComponents extends sfComponents
     $query->orderBy('created_at DESC');
     $this->commentaires = $query->execute();
   }
- 
+
   public function executeLastObject() {
     $id = $this->object->id;
     $type = get_class($this->object);
@@ -69,7 +69,7 @@ class commentaireComponents extends sfComponents
 
     $this->pager = $pager;
   }
-  
+
   public function executeShowWidget() {
     $query = Doctrine::getTable('Commentaire')->createQuery('c')
       ->where('c.id = (SELECT c2.id FROM commentaire c2 WHERE c.citoyen_id = c2.citoyen_id ORDER BY c2.created_at DESC LIMIT 1)')
@@ -77,5 +77,9 @@ class commentaireComponents extends sfComponents
       ->orderBy('c.created_at DESC')
       ->limit(5);
     $this->commentaires = $query->execute();
+  }
+
+  public function executeHomeWidget() {
+    $this->executeShowWidget();
   }
 }
