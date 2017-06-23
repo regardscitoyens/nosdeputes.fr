@@ -243,6 +243,15 @@ parlementaire_random:
 sections:
   url: /dossiers/:order
   param: {module: section, action: list}
+sections_json:
+  url: /dossiers/:order/json
+  param: {module: api, action: listSections, format: json}
+sections_csv:
+  url: /dossiers/:order/csv
+  param: {module: api, action: listSections, format: csv}
+sections_xml:
+  url: /dossiers/:order/xml
+  param: {module: api, action: listSections, format: xml}
 section_rss_commentaires:
   url: /%LEGISLATURE%/dossier/:id/commentaires/rss
   param: {module: commentaire, action: list, rss: 1}
@@ -252,6 +261,15 @@ section_commentaires:
 section:
   url: /%LEGISLATURE%/dossier/:id
   param: {module: section, action: show}
+section_json:
+  url: /%LEGISLATURE%/dossier/:id/json
+  param: {module: api, action: section, format: json}
+section_csv:
+  url: /%LEGISLATURE%/dossier/:id/csv
+  param: {module: api, action: section, format: csv}
+section_xml:
+  url: /%LEGISLATURE%/dossier/:id/xml
+  param: {module: api, action: section, format: xml}
 intervention:
   url: /%LEGISLATURE%/intervention/:id
   param: {module: intervention, action: show}

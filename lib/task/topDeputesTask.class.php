@@ -30,18 +30,21 @@ class topDeputesTask extends sfBaseTask
       $ordered[$id] = $this->deputes[$id][$type][$field];
       $tot++;
     }
-    arsort($ordered);
 
     $cpt = 0;
     $last_value = -999;
     $last_cpt = 0;
-    foreach(array_keys($ordered) as $id) {
-      $cpt++;
-      if ($last_value != $this->deputes[$id][$type][$field])
-        $last_cpt = $cpt;
-      $this->deputes[$id][$type]['rank'] = $last_cpt;
-      $this->deputes[$id][$type]['max_rank'] = $tot;
-      $last_value = $this->deputes[$id][$type][$field];
+
+    if ($ordered) {
+      arsort($ordered);
+      foreach(array_keys($ordered) as $id) {
+        $cpt++;
+        if ($last_value != $this->deputes[$id][$type][$field])
+          $last_cpt = $cpt;
+        $this->deputes[$id][$type]['rank'] = $last_cpt;
+        $this->deputes[$id][$type]['max_rank'] = $tot;
+        $last_value = $this->deputes[$id][$type][$field];
+      }
     }
   }
 

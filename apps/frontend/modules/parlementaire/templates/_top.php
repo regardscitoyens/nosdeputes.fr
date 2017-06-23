@@ -90,7 +90,7 @@ if (myTools::isFinLegislature()) {
   else $duree = sprintf('%d semaine%s', $weeks, ($weeks >= 2 ? "s" : ""));
 }
 ?>
-<h3 <?php if ($title) echo 'class="jstitle" title="'.$title.'"'; ?>>Activité <?php echo $details; ?><small>(<?php echo $duree; ?>)</small> :</h3>
+<h3<?php if ($title) echo ' class="jstitle" title="'.$title.'"'; ?>>Activité <?php echo $details; ?><small>(<?php echo $duree; ?>)</small> :</h3>
 <ul><?php
 $icosize = 16;
 if (isset($widthrate))

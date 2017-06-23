@@ -286,102 +286,136 @@ class plotComponents extends sfComponents
 
   public function executeSyntheseGroupes() {}
 
+  public static function getValueOrZero($arr, $field) {
+    if (isset($arr[$field]))
+      return $arr[$field];
+    return 0;
+  }
+
   public function executeGetGroupesData() {
-    $this->data = array();
     if (!isset($this->type) || $this->type != "all")
       $this->type = "home";
-    $this->data['groupes'] = array();
-    $this->data['couleurs'] = array();
-    $colormap = myTools::getGroupesColorMap();
-    foreach (array_reverse(myTools::getCurrentGroupes()) as $gpe) {
-      $this->data['groupes'][$gpe] = array();
-      $this->data['couleurs'][] = $colormap[$gpe];
-    }
+
+    $this->data = array();
     if ($this->type === "home")
       $this->data['titres'] = array("Députés", "Interventions", "Amendements", "Propositions", "Quest. Écrites");
     else $this->data['titres'] = array("", "Interventions", "Longues", "Courtes", "Proposés", "Adoptés", "de Lois", "Écrites", "Orales");
     $n = count($this->data['titres']);
-    $stats = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
 
+    $stats = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes');
+    if ($stats)
+      $stats = unserialize($stats->value);
+    $lastyear = date('Y-m-d', time()-60*60*24*365);
+
+    // Collecte toutes les appartenances de députés à un groupe pour afficher la proportion de députés de chaque groupe sur l'ensemble de la période plutôt que sur le moment
+    $keep = array();
     $query = Doctrine_Query::create()
-      ->select('p.groupe_acronyme, count(p.id) as ct')
-      ->from('Parlementaire p')
-      ->groupBy('p.groupe_acronyme');
+      ->select('po.parlementaire_groupe_acronyme, count(po.parlementaire_id)')
+      ->from('ParlementaireOrganisme po, po.Parlementaire p, po.Organisme o')
+      ->where('o.type = ?', 'groupe')
+      ->groupBy('po.parlementaire_groupe_acronyme');
     if (!myTools::isFinLegislature())
-      $query->andWhere('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat');
+      $query->andWhere('po.fin_fonction IS NULL OR po.fin_fonction >= ?', $lastyear);
+    foreach ($query->fetchArray() as $grp) {
+      $acro = $grp['parlementaire_groupe_acronyme'];
+      if ($acro) {
+        $stats[$acro]['nb'] = $grp['count'];
+        $keep[] = $acro;
+      }
+    }
 
-    $nbgroupes = $query->fetchArray();
-    foreach ($nbgroupes as $grp)
-      if ($grp['groupe_acronyme'])
-        $stats[$grp['groupe_acronyme']]['nb'] = $grp['ct'];
+    $this->data['groupes'] = array();
+    $this->data['couleurs'] = array();
+    $colormap = myTools::getGroupesColorMap();
+    foreach (array_reverse(myTools::getGroupes()) as $gpe) {
 
-    $query = Doctrine_Query::create()
-      ->select('p.groupe_acronyme, sum(a.nb_multiples) as ct')
-      ->from('Parlementaire p')
-      ->leftJoin('p.ParlementaireAmendements pa')
-      ->leftJoin('pa.Amendement a')
+      if (in_array($gpe, $keep)) {
+        $this->data['groupes'][$gpe] = array();
+        $this->data['couleurs'][] = $colormap[$gpe];
+      }
+    }
+
+    // Compte séparément le total de députés pour ne les compter chacun qu'une fois
+    $query = Doctrine::getTable('Parlementaire')->createQuery()->select('count(id)');
+    if (!myTools::isFinLegislature())
+      $query->andWhere('fin_mandat IS NULL OR fin_mandat < debut_mandat OR fin_mandat >= ?', $lastyear);
+    $nbdeputes = $query->fetchOne()['count'];
+
+    $qamdmts = Doctrine_Query::create()
+      ->select('pa.parlementaire_groupe_acronyme, sum(a.nb_multiples)')
+      ->from('ParlementaireAmendement pa, pa.Amendement a')
       ->where('pa.numero_signataire = ?', 1)
       ->andWhere('a.sort <> ?', 'Rectifié')
-      ->groupBy('p.groupe_acronyme');
+      ->groupBy('pa.parlementaire_groupe_acronyme');
     if (!myTools::isFinLegislature())
-      $query->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
-    $qamdmts_deposes = clone($query);
-    $amdmts_deposes = $qamdmts_deposes->fetchArray();
+      $qamdmts->andWhere('a.date > ?', $lastyear);
+    $qamdmts_deposes = clone($qamdmts);
+    foreach ($qamdmts_deposes->fetchArray() as $amdt)
+      if ($amdt['parlementaire_groupe_acronyme'])
+        $stats[$amdt['parlementaire_groupe_acronyme']]['amdmts_deposes'] = $amdt['sum'];
+
     if ($this->type === "all") {
-      $qamdmts_adoptes = clone($query);
+      $qamdmts_adoptes = clone($qamdmts);
       $amdmts_adoptes = $qamdmts_adoptes->andWhere('a.sort = ?', "Adopté")
         ->fetchArray();
+      foreach ($qamdmts_adoptes->fetchArray() as $amdt)
+        if ($amdt['parlementaire_groupe_acronyme'])
+          $stats[$amdt['parlementaire_groupe_acronyme']]['amdmts_adoptes'] = $amdt['sum'];
     }
 
     $qprops = Doctrine_Query::create()
-      ->select('p.groupe_acronyme, count(DISTINCT(t.id)) as ct')
-      ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
+      ->select('pt.parlementaire_groupe_acronyme, count(DISTINCT(pt.texteloi_id))')
+      ->from('ParlementaireTexteloi pt, pt.Texteloi t')
       ->where('pt.importance = 1')
-      ->andWhere('t.type LIKE ?', "proposition%")
-      ->groupBy('p.groupe_acronyme');
+      ->andWhereIn('t.type', array('Proposition de loi', 'Proposition de résolution'))
+      ->groupBy('pt.parlementaire_groupe_acronyme');
     if (!myTools::isFinLegislature())
-      $qprops->andWhere('t.date > ?', date('Y-m-d', time()-60*60*24*365));
-    $props = $qprops->fetchArray();
+      $qprops->andWhere('t.date > ?', $lastyear);
+    foreach ($qprops->fetchArray() as $pro)
+      if ($pro['parlementaire_groupe_acronyme'])
+        $stats[$pro['parlementaire_groupe_acronyme']]['propositions'] = $pro['count'];
 
-    foreach ($amdmts_deposes as $amdt) if ($amdt['groupe_acronyme'] != "")
-      $stats[$amdt['groupe_acronyme']]['amdmts_deposes'] = $amdt['ct'];
-    if ($this->type === "all")
-      foreach ($amdmts_adoptes as $amdt) if ($amdt['groupe_acronyme'] != "")
-        $stats[$amdt['groupe_acronyme']]['amdmts_adoptes'] = $amdt['ct'];
-    foreach ($props as $pro) if ($pro['groupe_acronyme'] != "")
-      $stats[$pro['groupe_acronyme']]['propositions'] = $pro['ct'];
     foreach ($this->data['groupes'] as $groupe => $arr) if (isset($stats[$groupe])) {
       $this->data['groupes'][$groupe][] = $stats[$groupe]['nb'];
       if ($this->type === "all") {
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['commission_interventions'];
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions'];
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions_courtes'];
-      } else $this->data['groupes'][$groupe][] = $stats[$groupe]['hemicycle_interventions'] + $stats[$groupe]['commission_interventions'];
-      $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_deposes'];
+        $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'commission_interventions');
+        $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'hemicycle_interventions');
+        $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'hemicycle_interventions_courtes');
+      } else $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'commission_interventions') + self::getValueOrZero($stats[$groupe], 'hemicycle_interventions');
+      $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'amdmts_deposes');
       if ($this->type === "all")
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['amdmts_adoptes'];
-      $this->data['groupes'][$groupe][] = $stats[$groupe]['propositions'];
-      $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_ecrites'];
+        $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'amdmts_adoptes');
+      $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'propositions');
+      $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'questions_ecrites');
       if ($this->type === "all")
-        $this->data['groupes'][$groupe][] = $stats[$groupe]['questions_orales'];
+        $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'questions_orales');
     }
 
-    $this->data['totaux'] = array();
     for ($i=0;$i<$n;$i++)
       $this->data['totaux'][] = 0;
 
     foreach ($this->data['groupes'] as $groupe => $arr)
       for ($i=0;$i<$n;$i++)
-        if (isset($this->data['groupes'][$groupe][$i]))
-          $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
+        $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
+
+    $this->data['hasData'] = false;
+    for ($i=1;$i<$n;$i++)
+      if ($this->data['totaux'][$i]) {
+        $this->data['hasData'] = true;
+        break;
+      }
 
     foreach ($this->data['groupes'] as $groupe => $arr)
       for ($i=0;$i<$n;$i++)
-        if (isset($this->data['groupes'][$groupe][$i]))
+        if ($this->data['totaux'][$i])
           $this->data['groupes'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
+        else $this->data['groupes'][$groupe][$i] = 0;
 
     for ($i=0;$i<$n;$i++)
       $this->data['totaux'][$i] = preg_replace('/(\d)(\d{3})$/', '\\1 \\2', $this->data['totaux'][$i]);
+
+    // Réécrit le total de députés pour affichage
+    $this->data['totaux'][0] = $nbdeputes;
   }
 
   public function executeGroupes() {
