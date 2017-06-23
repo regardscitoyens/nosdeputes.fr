@@ -91,7 +91,7 @@ class apiActions extends sfActions
       if ($fin && $tops['nb_mois'] < 6)
         continue;
 
-      $parl = $this->getParlementaireArray($p, $format, 2);
+      $parl = self::getParlementaireArray($p, $format, 2);
 
       // Liste des champs pour le csv
       foreach(array_keys($parl) as $k)
@@ -219,7 +219,7 @@ class apiActions extends sfActions
     $this->res = array('deputes' => array());
     $this->breakline = 'depute';
     foreach($deputes as $dep) {
-      $depute = $this->getParlementaireArray($dep, $request->getParameter('format'), ($request->getParameter('current') == true || !$orga ? 1 : 2));
+      $depute = self::getParlementaireArray($dep, $request->getParameter('format'), ($request->getParameter('current') == true || !$orga ? 1 : 2));
       if ($orga) {
         $depute['fonction'] = $dep['ParlementaireOrganisme'][0]['fonction'];
         $depute['debut_fonction'] = $dep['ParlementaireOrganisme'][0]['debut_fonction'];
@@ -250,7 +250,7 @@ class apiActions extends sfActions
     }
     $this->forward404Unless($depute);
     $this->res = array();
-    $this->res['depute'] = $this->getParlementaireArray($depute, $request->getParameter('format'));
+    $this->res['depute'] = self::getParlementaireArray($depute, $request->getParameter('format'));
     $this->multi = array();
     $this->multi['responsabilite'] = 1;
     $this->multi['email'] = 1;
@@ -262,7 +262,6 @@ class apiActions extends sfActions
     $date = preg_replace('/[- :]/', '', $date);
     myTools::templatize($this, $request, 'nosdeputes.fr_'.'_'.$slug.'_'.$date);
   }
-
 
   public static function getParlementaireArray($parl, $format, $light = 0) {
     $res = array();
@@ -325,6 +324,193 @@ class apiActions extends sfActions
     if ($parl->sites_web) foreach (unserialize($parl->sites_web) as $site)
       if (preg_match("/twitter.com/", $site))
         $res['twitter'] = str_replace("https://twitter.com/", "", $site);
+    return $res;
+  }
+
+  public function executeListSections(sfWebRequest $request) {
+    $query = Doctrine::getTable('Section')
+      ->createQuery()
+      ->where('id = section_id')
+      ->andWhere('id_dossier_an IS NOT NULL');
+
+    $order = $request->getParameter('order', 'plus');
+    if ($order == 'date') {
+      $query->orderBy('max_date DESC');
+    } else if ($order == 'plus') {
+      $query->orderBy('nb_interventions DESC');
+    } else if ($order == 'coms') {
+      $query->orderBy('nb_commentaires DESC');
+    } else if ($order == 'nom') {
+      $query->orderBy('titre');
+    } else $this->forward404();
+
+    $this->champs = array();
+    $format = $request->getParameter('format');
+
+    $this->res = array('sections' => array());
+    foreach($query->execute() as $sec) {
+      $section = self::getSectionArray($sec, $format, 1);
+      $this->res['sections'][] = array('section' => $section);
+    }
+
+    if (count($this->res['sections']) && ($format == 'csv'))
+      foreach(array_keys($this->res['sections'][0]) as $key)
+        if (!isset($this->champs[$key]))
+          $this->champs[$key] = 1;
+
+    $this->breakline = 'section';
+    myTools::templatize($this, $request, 'nosdeputes.fr_dossiers_'.$order.'_'.date('Y-m-d'));
+  }
+
+  public function executeSection(sfWebRequest $request)
+  {
+    $secid = $request->getParameter('id');
+    $this->forward404Unless($secid);
+
+    if ($option = Doctrine::getTable('VariableGlobale')->findOneByChamp('linkdossiers')) {
+      $links = unserialize($option->getValue());
+      if (isset($links[$secid]))
+        $secid = $links[$secid];
+    }
+
+    // Recherche par id ou par id dossier AN
+    $section = Doctrine::getTable('Section')->find($secid);
+    if (!$section) {
+      $section = Doctrine::getTable('Section')->findOneByIdDossierAn($secid);
+    }
+    $this->forward404Unless($section);
+
+    $format = $request->getParameter('format');
+    $this->res = array('section' => self::getSectionArray($section, $format, ($format == 'csv' ? 1 : 0)));
+
+    $this->breakline = 'section';
+    myTools::templatize($this, $request, 'nosdeputes.fr_dossier_'.$secid.'_'.date('Y-m-d'));
+  }
+
+  public static function getSectionArray($sec, $format, $light=0)
+  {
+    $res = array();
+    if (!$sec)
+      throw new Exception("pas de section");
+
+    $res['id'] = $sec->id * 1;
+    $res['id_dossier_institution'] = $sec->id_dossier_an;
+    $res['titre'] = $sec->titre;
+    $res['min_date'] = substr($sec->min_date, 0, 10);
+    $res['max_date'] = $sec->max_date;
+    $res['nb_interventions'] = $sec->nb_interventions * 1;
+    $res['url_institution'] = $sec->getLinkSource();
+    $res['url_nosdeputes'] = myTools::url_forAPI('@section?id='.$res['id']);
+    $res['url_nosdeputes_api'] = myTools::url_forAPI('@section_'.$format.'?id='.$res['id']);
+
+    if ($light == 0) {
+      // List related Séances
+      $seances = array();
+      foreach ($sec->getSeances() as $seance) {
+        $seances[] = self::getSeanceArray($seance, $format);
+      }
+      $res['seances'] = myTools::array2hash($seances, 'seance');
+
+      // List related law texts & reports
+      $lois = $sec->getTags(array('is_triple' => true,
+                                  'namespace' => 'loi',
+                                  'key' => 'numero',
+                                  'return' => 'value'));
+      $docs = array();
+      if ($sec->id_dossier_an || $lois) {
+        $qtextes = Doctrine_Query::create()
+          ->select('t.id, t.numero, t.annexe, t.type, t.type_details, t.titre, t.date, t.source, t.signataires')
+          ->from('Texteloi t')
+          ->orderBy('t.numero, t.annexe');
+        if ($lois)
+          $qtextes->orWhereIn('t.numero', $lois);
+        if ($sec->id_dossier_an)
+          $qtextes->orWhere('t.id_dossier_an = ?', $sec->id_dossier_an);
+        foreach ($qtextes->fetchArray() as $texte)
+          $docs[$texte['id']] = $texte;
+      }
+      foreach ($lois as $loi)
+        if (!isset($docs["$loi"]))
+          $docs["$loi"] = 1;
+
+      $documents = array();
+      foreach ($docs as $id => $item) {
+        if ($item == 1) {
+          $item = array('id' => $id);
+        } else {
+          $item['url_nosdeputes'] = myTools::url_forAPI('@document?id='.$id);
+          $item['url_nosdeputes_api'] = myTools::url_forAPI('@api_document?class=Texteloi&id='.$id.'&format='.$format);
+        }
+        $documents[] = $item;
+      }
+      $res['documents'] = myTools::array2hash($documents, 'document');
+
+      // List speakers
+      $interv_parl = array();
+      $query = Doctrine::getTable('Intervention')->createQuery('i')
+        ->select('p.nom, p.slug, i.id, count(i.id)')
+        ->leftJoin('i.Parlementaire p, i.Section s')
+        ->andWhere('((i.fonction != ? AND i.fonction != ? ) OR i.fonction IS NULL)', array('président', 'présidente'))
+        ->andWhere('i.parlementaire_id IS NOT NULL')
+        ->andWhere('i.nb_mots > 20')
+        ->groupBy('p.id')
+        ->orderBy('count DESC');
+      if ($sec->id == $sec->section_id)
+        $query->andWhere('s.section_id = ?', $sec->id);
+      else $query->andWhere('s.id = ?', $sec->id);
+      foreach ($query->fetchArray() as $parl)
+        $interv_parl[] = self::getParlementaireInterventionsArray($parl, $format, $sec->section_id);
+      $res['intervenants'] = myTools::array2hash($interv_parl, 'parlementaire');
+
+      // List subsections
+      $subsections = array();
+      foreach($sec->getSubSections() as $subsection) {
+        if ($sec->id != $subsection->id) {
+          $sub = array();
+          $sub['id'] = $subsection->id;
+          $sub['titre'] = $subsection->titre;
+          $sub['min_date'] = substr($subsection->min_date, 0, 10);
+          $sub['max_date'] = $subsection->max_date;
+          $sub['timestamp'] = $subsection->timestamp;
+          $sub['url_nosdeputes'] = myTools::url_forAPI('@section?id='.$subsection->id);
+          $sub['url_nosdeputes_api'] = myTools::url_forAPI('@section_'.$format.'?id='.$subsection->id);
+
+          $subsections[] = $sub;
+        }
+      }
+      $res['soussections'] = myTools::array2hash($subsections, 'soussection');
+    }
+
+    return $res;
+  }
+
+  public static function getSeanceArray($seance, $format) {
+    if (!$seance)
+      throw new Exception("pas de seance");
+
+    $res = array();
+    $res['id'] = $seance->id;
+    $res['type'] = $seance->type;
+    $res['date'] = $seance->date;
+    $res['heure'] = $seance->moment;
+    $res['session'] = $seance->session;
+    $res['organisme'] = $seance->getOrganisme()->nom;
+    $res['url_nosdeputes'] = myTools::url_forAPI('@interventions_seance?seance='.$seance->id);
+    $res['url_nosdeputes_api'] = myTools::url_forAPI('@interventions_seance_api?format='.$format.'&seance='.$seance->id);
+
+    return $res;
+  }
+
+  public static function getParlementaireInterventionsArray($parl, $format, $secid) {
+    if (!$parl)
+      throw new Exception("pas de parlementaire");
+
+    $res = array();
+    $res['nom'] = $parl['Parlementaire']['nom'];
+    $res['slug'] = $parl['Parlementaire']['slug'];
+    $res['nb_interventions'] = $parl['count'];
+    $res['url_nosdeputes'] = myTools::url_forAPI('@parlementaire_texte?slug='.$res['slug'].'&id='.$secid);
+
     return $res;
   }
 
