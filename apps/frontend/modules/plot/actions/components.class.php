@@ -302,7 +302,9 @@ class plotComponents extends sfComponents
     else $this->data['titres'] = array("", "Interventions", "Longues", "Courtes", "Proposés", "Adoptés", "de Lois", "Écrites", "Orales");
     $n = count($this->data['titres']);
 
-    $stats = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
+    $stats = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes');
+    if ($stats)
+      $stats = unserialize($stats->value);
     $lastyear = date('Y-m-d', time()-60*60*24*365);
 
     // Collecte toutes les appartenances de députés à un groupe pour afficher la proportion de députés de chaque groupe sur l'ensemble de la période plutôt que sur le moment
