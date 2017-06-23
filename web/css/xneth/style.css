@@ -1283,6 +1283,9 @@ h2 {
 #carte_circo h1 {
   margin-bottom: 20px;
 }
+#carte-francais-etranger {
+  margin-top: -35px;
+}
 .didascalie {
   font-style: oblique;
 }
@@ -1901,7 +1904,7 @@ a:hover img {
 .list_circo {
   float: left;
   margin-bottom: 30px;
-  width: 40%;
+  width: 300px;
 }
 .list_deptmts {
   float: left;

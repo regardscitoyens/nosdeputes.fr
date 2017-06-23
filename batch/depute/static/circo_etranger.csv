@@ -1,0 +1,244 @@
+ID,NAME,iso_a3,iso_n3,circo
+CA,Canada (le),CAN,124,1
+US,États-Unis,USA,840,1
+GU,Guam,GUM,316,1
+MP,Îles Mariannes du Nord,MNP,580,1
+VI,Îles Vierges des États-Unis,VIR,850,1
+PR,Porto Rico,PRI,630,1
+AS,Samoa américaines,ASM,16,1
+AG,Antigua-et-Barbuda,ATG,28,2
+AR,Argentine (l'),ARG,32,2
+BS,Bahamas (les),BHS,44,2
+BB,Barbade (la),BRB,52,2
+BZ,Belize (le),BLZ,84,2
+BO,Bolivie,BOL,68,2
+BR,Brésil (le),BRA,76,2
+CL,Chili (le),CHL,152,2
+CO,Colombie (la),COL,170,2
+CR,Costa Rica (le),CRI,188,2
+CU,Cuba,CUB,192,2
+DM,Dominique (la),DMA,212,2
+SV,El Salvador,SLV,222,2
+EC,Équateur (l'),ECU,218,2
+GD,Grenade (la),GRD,308,2
+GT,Guatemala (le),GTM,320,2
+GY,Guyana (le),GUY,328,2
+HT,Haïti,HTI,332,2
+HN,Honduras (le),HND,340,2
+JM,Jamaïque (la),JAM,388,2
+MX,Mexique (le),MEX,484,2
+NI,Nicaragua (le),NIC,558,2
+PA,Panama (le),PAN,591,2
+PY,Paraguay (le),PRY,600,2
+PE,Pérou (le),PER,604,2
+DO,Rép. dominicaine,DOM,214,2
+KN,Saint-Kitts-et-Nevis,KNA,659,2
+VC,Saint-Vincent-et-les Grenadines,VCT,670,2
+LC,Sainte-Lucie,LCA,662,2
+SR,Suriname (le),SUR,740,2
+TT,Trinité-et-Tobago (la),TTO,780,2
+UY,Uruguay (l'),URY,858,2
+VE,Venezuela,VEN,862,2
+AI,Anguilla,AIA,660,3
+BM,Bermudes,BMU,60,3
+DK,Danemark (le),DNK,208,3
+EE,Estonie (l'),EST,233,3
+FI,Finlande (la),FIN,246,3
+GS,Géorgie du Sud-et-les Îles Sandwich du Sud,SGS,239,3
+GI,Gibraltar,GIB,292,3
+GL,Groenland,GRL,304,3
+GG,Guernesey,GGY,831,3
+IM,Île de Man,IMN,833,3
+AX,Îles Åland,ALA,248,3
+KY,Îles Caïmans,CYM,136,3
+CK,Îles Cook,COK,184,3
+FO,Îles Féroé,FRO,234,3
+FK,Îles Malouines,FLK,238,3
+TC,Îles Turks-et-Caïcos,TCA,796,3
+VG,Îles Vierges britanniques,VGB,92,3
+IE,Irlande (l'),IRL,372,3
+IS,Islande (l'),ISL,352,3
+JE,Jersey,JEY,832,3
+LV,Lettonie (la),LVA,428,3
+LT,Lituanie (la),LTU,440,3
+NU,Niue,NIU,570,3
+NO,Norvège (la),NOR,578,3
+PN,Pitcairn,PCN,612,3
+GB,Royaume-Uni,GBR,826,3
+SH,Sainte-Hélène,SHN,654,3
+SE,Suède (la),SWE,752,3
+SJ,Svalbard et l'Île Jan Mayen,SJM,-99,3
+IO,Territoire britannique de l'océan Indien,IOT,86,3
+AW,Aruba,ABW,533,4
+BE,Belgique (la),BEL,56,4
+CW,Curaçao,CUW,531,4
+LU,Luxembourg (le),LUX,442,4
+NL,Pays-Bas (les),NLD,528,4
+BQ,Pays-Bas caribéens,BES,535,4
+SX,Sint Maarten,SXM,534,4
+AD,Andorre (l'),AND,20,5
+ES,Espagne (l'),ESP,724,5
+MC,Monaco,MCO,492,5
+PT,Portugal (le),PRT,620,5
+LI,Liechtenstein (le),LIE,438,6
+CH,Suisse (la),CHE,756,6
+AL,Albanie (l'),ALB,8,7
+DE,Allemagne (l'),DEU,276,7
+AT,Autriche (l'),AUT,40,7
+BA,Bosnie-Herzégovine (la),BIH,70,7
+BG,Bulgarie (la),BGR,100,7
+HR,Croatie (la),HRV,191,7
+HU,Hongrie (la),HUN,348,7
+XK,Kosovo,XKX,-99,7
+MK,Macédoine,MKD,807,7
+ME,Monténégro (le),MNE,499,7
+PL,Pologne (la),POL,616,7
+CZ,Rép. tchèque,CZE,203,7
+RO,Roumanie (la),ROU,642,7
+RS,Serbie (la),SRB,688,7
+SK,Slovaquie (la),SVK,703,7
+SI,Slovénie (la),SVN,705,7
+CY,Chypre,CYP,196,8
+GR,Grèce (la),GRC,300,8
+IL,Israël,ISR,376,8
+IT,Italie (l'),ITA,380,8
+MT,Malte,MLT,470,8
+SM,Saint-Marin,SMR,674,8
+TR,Turquie (la),TUR,792,8
+VA,Vatican,VAT,336,8
+DZ,Algérie (l'),DZA,12,9
+BF,Burkina Faso (le),BFA,854,9
+CV,Cap Vert,CPV,132,9
+CI,Côte d'Ivoire (la),CIV,384,9
+GM,Gambie (la),GMB,270,9
+GN,Guinée (la),GIN,324,9
+GW,Guinée-Bissau (la),GNB,624,9
+LR,Libéria (le),LBR,430,9
+LY,Libye (la),LBY,434,9
+ML,Mali (le),MLI,466,9
+MA,Maroc (le),MAR,504,9
+MR,Mauritanie (la),MRT,478,9
+NE,Niger (le),NER,562,9
+EH,Sahara occidental,ESH,732,9
+SN,Sénégal (le),SEN,686,9
+SL,Sierra Leone (la),SLE,694,9
+TN,Tunisie (la),TUN,788,9
+ZA,Afrique du Sud (l'),ZAF,710,10
+AO,Angola,AGO,24,10
+SA,Arabie saoudite (l'),SAU,682,10
+BH,Bahreïn,BHR,48,10
+BJ,Bénin (le),BEN,204,10
+BW,Botswana (le),BWA,72,10
+BI,Burundi (le),BDI,108,10
+CM,Cameroun (le),CMR,120,10
+KM,Comores (les),COM,174,10
+CG,Congo (le),COG,178,10
+DJ,Djibouti,DJI,262,10
+EG,Égypte (l'),EGY,818,10
+AE,Émirats arabes unis (les),ARE,784,10
+ER,Érythrée (l'),ERI,232,10
+ET,Éthiopie (l'),ETH,231,10
+GA,Gabon (le),GAB,266,10
+GH,Ghana (le),GHA,288,10
+GQ,Guinée équatoriale (la),GNQ,226,10
+IQ,Irak,IRQ,368,10
+JO,Jordanie (la),JOR,400,10
+KE,Kenya (le),KEN,404,10
+KW,Koweït (le),KWT,414,10
+LS,Lesotho (le),LSO,426,10
+LB,Liban (le),LBN,422,10
+MG,Madagascar,MDG,450,10
+MW,Malawi (le),MWI,454,10
+MU,Maurice,MUS,480,10
+MZ,Mozambique (le),MOZ,508,10
+NA,Namibie (la),NAM,516,10
+NG,Nigéria (le),NGA,566,10
+OM,Oman,OMN,512,10
+UG,Ouganda (l'),UGA,800,10
+QA,Qatar (le),QAT,634,10
+CD,RDC,COD,180,10
+CF,Rép. centrafricaine,CAF,140,10
+RW,Rwanda (le),RWA,646,10
+ST,Sao Tomé-et-Principe,STP,678,10
+SC,Seychelles (les),SYC,690,10
+SO,Somalie (la),SOM,706,10
+SD,Soudan (le),SDN,729,10
+SS,Soudan du Sud (le),SSD,728,10
+SZ,Swaziland (le),SWZ,748,10
+SY,Syrie,SYR,760,10
+TZ,Tanzanie,TZA,834,10
+TD,Tchad (le),TCD,148,10
+TG,Togo (le),TGO,768,10
+YE,Yémen (le),YEM,887,10
+ZM,Zambie (la),ZMB,894,10
+ZW,Zimbabwe (le),ZWE,716,10
+AF,Afghanistan (l'),AFG,4,11
+AM,Arménie (l'),ARM,51,11
+AU,Australie (l'),AUS,36,11
+AZ,Azerbaïdjan (l'),AZE,31,11
+BD,Bangladesh (le),BGD,50,11
+BY,Biélorussie,BLR,112,11
+BN,Brunéi,BRN,96,11
+KH,Cambodge (le),KHM,116,11
+CN,Chine (la),CHN,156,11
+KR,Corée du Sud,KOR,410,11
+FJ,Fidji (les),FJI,242,11
+GE,Géorgie (la),GEO,268,11
+HK,Hong Kong,HKG,344,11
+IN,Inde (l'),IND,356,11
+ID,Indonésie (l'),IDN,360,11
+IR,Iran,IRN,364,11
+JP,Japon (le),JPN,392,11
+KZ,Kazakhstan (le),KAZ,398,11
+KG,Kirghizistan (le),KGZ,417,11
+KI,Kiribati,KIR,296,11
+LA,Laos,LAO,418,11
+MO,Macao,MAC,446,11
+MY,Malaisie (la),MYS,458,11
+MV,Maldives (les),MDV,462,11
+MH,Marshall (Îles),MHL,584,11
+FM,Micronésie,FSM,583,11
+MD,Moldavie,MDA,498,11
+MN,Mongolie (la),MNG,496,11
+MM,Myanmar (le),MMR,104,11
+NR,Nauru,NRU,520,11
+NP,Népal (le),NPL,524,11
+NZ,Nouvelle-Zélande (la),NZL,554,11
+UZ,Ouzbékistan (l'),UZB,860,11
+PK,Pakistan (le),PAK,586,11
+PW,Palaos (les),PLW,585,11
+PG,Papouasie-Nouvelle-Guinée (la),PNG,598,11
+PH,Philippines (les),PHL,608,11
+RU,Russie,RUS,643,11
+SB,Salomon (Îles),SLB,90,11
+WS,Samoa (le),WSM,882,11
+SG,Singapour,SGP,702,11
+LK,Sri Lanka,LKA,144,11
+TJ,Tadjikistan (le),TJK,762,11
+TW,Taïwan,TWN,158,11
+TH,Thaïlande (la),THA,764,11
+TL,Timor-Leste (le),TLS,626,11
+TK,Tokelau (les),TKL,772,11
+TO,Tonga (les),TON,776,11
+TM,Turkménistan (le),TKM,795,11
+TV,Tuvalu (les),TUV,798,11
+UA,Ukraine (l'),UKR,804,11
+VU,Vanuatu (le),VUT,548,11
+VN,Viet Nam (le),VNM,704,11
+AQ,Antarctique,ATA,10,-1
+BT,Bhoutan (le),BTN,64,-1
+KP,Corée du Nord,PRK,408,-1
+FR,France (la),FRA,250,0
+GP,Guadeloupe,GLP,312,0
+GF,Guyane française,GUF,254,0
+MQ,Martinique,MTQ,474,0
+YT,Mayotte,MYT,175,0
+NC,Nouvelle-Calédonie,NCL,540,0
+PS,Palestine,PSE,275,-1
+PF,Polynésie française,PYF,258,0
+RE,Réunion,REU,638,0
+BL,Saint-Barthélemy,BLM,652,0
+MF,Saint-Martin,MAF,663,0
+PM,Saint-Pierre-et-Miquelon,SPM,666,0
+TF,Terres australes françaises,ATF,260,0
+WF,Wallis-et-Futuna,WLF,876,0
