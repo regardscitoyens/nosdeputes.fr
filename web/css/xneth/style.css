@@ -2065,6 +2065,10 @@ a:hover img {
   padding-left: 10px;
 }
 
+#faq h3, #faq p {
+  padding-left: 18px;
+}
+
 #js_search_box {
   float: right;
 }

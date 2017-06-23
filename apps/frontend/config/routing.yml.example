@@ -70,25 +70,37 @@ loi:
   url: /%LEGISLATURE%/loi/:loi
   param: {module: loi, action: loi}
 
-homepage:
-  url: /
-  param: {module: parlementaire, action: index}
-# Les commentaires
 commentaire_post:
   url: /%LEGISLATURE%/commentaire/:type/:id
   param: {module: commentaire, action: post}
-faq_new:
-  url: /faq/new
-  param: {module: article, action: create, categorie: Faq, hasParent: true, role: "membre", exclude: 1, link: "@faq"}
-faq_edit:
-  url: /faq/edit/:article_id
-  param: {module: article, action: update, categorie: Faq, hasParent: true, role: "membre", exclude: 1}
+
+homepage:
+  url: /
+  param: {module: parlementaire, action: index}
+
+# Questions fréquentes
+faq:
+  url: /faq
+  param: {module: parlementaire, action: faq}
+
+# Assister aux séances
+assister:
+  url: /assister-aux-debats
+  param: {module: parlementaire, action: assister}
+
+# Old FAQ via admin editable articles
+#faq_new:
+#  url: /faq/new
+#  param: {module: article, action: create, categorie: Faq, hasParent: true, role: "membre", exclude: 1, link: "@faq"}
+#faq_edit:
+#  url: /faq/edit/:article_id
+#  param: {module: article, action: update, categorie: Faq, hasParent: true, role: "membre", exclude: 1}
+#faq:
+#  url: /faq
+#  param: {module: article, action: list, categorie: Faq, titre: "Questions fréquemment posées"}
 article_delete:
   url: /article/delete/:article_id
   param: {module: article, action: delete, role: "membre", exclude: 1}
-faq:
-  url: /faq
-  param: {module: article, action: list, categorie: Faq, titre: "Questions fréquemment posées"}
 doc_organisme_new:
   url: /organisme/new
   param: {module: article, action: create, categorie: Organisme, hasObject: true, hasTitre: false, isUnique: true, role: "membre", exclude: 1, link: "@list_parlementaires_organisme?slug=%s"}
@@ -98,11 +110,6 @@ doc_organisme_edit:
 rate_id:
   url: /rate/:object_type/:object_id/:rate
   param: {module: rate, action: rateIt}
-
-# Assister aux séances
-assister:
-  url: /assister-aux-debats
-  param: {module: parlementaire, action: assister}
 
 # Compte Rendu
 compterendu_list:
