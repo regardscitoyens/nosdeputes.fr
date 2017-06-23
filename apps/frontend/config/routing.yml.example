@@ -218,6 +218,12 @@ list_parlementaires_organisme:
 list_organismes_api:
   url: /organismes/:type/:format
   param: {module: api, action: listOrganismes}
+list_organismes:
+  url: /organismes
+  param: {module: parlementaire, action: listOrganismes}
+list_organismes_type:
+  url: /organismes/:type
+  param: {module: parlementaire, action: listOrganismesType}
 
 photo_parlementaire:
   url: /depute/photo/:slug
