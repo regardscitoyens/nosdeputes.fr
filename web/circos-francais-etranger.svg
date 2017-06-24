@@ -277,7 +277,7 @@
    <use class="sphere" xlink:href="#sphere"></use>
   </g>
   <g id="layers">
-   <g id="c01" class="jstitle circonscription" 
+   <g id="c01" class="jstitle circonscription circo999-01"
     title="Première circonscription des français de l'étranger : -- États-Unis, Canada">
     <title>Première circonscription des français de l'étranger : États-Unis, Canada</title>
     <use xlink:href="#f-path-CA"></use>
@@ -288,7 +288,7 @@
     <use xlink:href="#f-path-PR"></use>
     <use xlink:href="#f-path-AS"></use>
    </g>
-   <g id="c02" class="jstitle circonscription" 
+   <g id="c02" class="jstitle circonscription circo999-02"
     title="Deuxième circonscription des français de l'étranger : -- Amérique du Sud, Amérique centrale, Mexique, Caraïbes">
     <title>Deuxième circonscription des français de l'étranger : Amérique du Sud, Amérique centrale, Mexique, Caraïbes</title>
     <use xlink:href="#f-path-AG"></use>
@@ -325,7 +325,7 @@
     <use xlink:href="#f-path-UY"></use>
     <use xlink:href="#f-path-VE"></use>
    </g>
-   <g id="c03" class="jstitle circonscription" 
+   <g id="c03" class="jstitle circonscription circo999-03"
     title="Troisième circonscription des français de l'étranger : -- Europe du Nord">
     <title>Troisième circonscription des français de l'étranger : Europe du Nord</title>
     <use xlink:href="#f-path-AI"></use>
@@ -359,7 +359,7 @@
     <use xlink:href="#f-path-SJ"></use>
     <use xlink:href="#f-path-IO"></use>
    </g>
-   <g id="c04" class="jstitle circonscription" 
+   <g id="c04" class="jstitle circonscription circo999-04"
     title="Quatrième circonscription des français de l'étranger : -- Benelux">
     <title>Quatrième circonscription des français de l'étranger : Benelux</title>
     <use xlink:href="#f-path-AW"></use>
@@ -370,7 +370,7 @@
     <use xlink:href="#f-path-BQ"></use>
     <use xlink:href="#f-path-SX"></use>
    </g>
-   <g id="c05" class="jstitle circonscription" 
+   <g id="c05" class="jstitle circonscription circo999-05"
     title="Cinquième circonscription des français de l'étranger : -- Péninsule Ibérique">
     <title>Cinquième circonscription des français de l'étranger : Péninsule Ibérique</title>
     <use xlink:href="#f-path-AD"></use>
@@ -378,13 +378,13 @@
     <use xlink:href="#f-path-MC"></use>
     <use xlink:href="#f-path-PT"></use>
    </g>
-   <g id="c06" class="jstitle circonscription" 
+   <g id="c06" class="jstitle circonscription circo999-06"
     title="Sixième circonscription des français de l'étranger : -- Liechtenstein, Suisse">
     <title>Sixième circonscription des français de l'étranger : Liechtenstein, Suisse</title>
     <use xlink:href="#f-path-LI"></use>
     <use xlink:href="#f-path-CH"></use>
    </g>
-   <g id="c07" class="jstitle circonscription" 
+   <g id="c07" class="jstitle circonscription circo999-07"
     title="Septième circonscription des français de l'étranger : -- Europe centrale, Balkans">
     <title>Septième circonscription des français de l'étranger : Europe centrale, Balkans</title>
     <use xlink:href="#f-path-AL"></use>
@@ -404,7 +404,7 @@
     <use xlink:href="#f-path-SK"></use>
     <use xlink:href="#f-path-SI"></use>
    </g>
-   <g id="c08" class="jstitle circonscription" 
+   <g id="c08" class="jstitle circonscription circo999-08"
     title="Huitième circonscription des français de l'étranger : -- Europe du Sud, Asie mineure">
     <title>Huitième circonscription des français de l'étranger : Europe du Sud, Asie mineure</title>
     <use xlink:href="#f-path-CY"></use>
@@ -416,7 +416,7 @@
     <use xlink:href="#f-path-TR"></use>
     <use xlink:href="#f-path-VA"></use>
    </g>
-   <g id="c09" class="jstitle circonscription" 
+   <g id="c09" class="jstitle circonscription circo999-09"
     title="Neuvième circonscription des français de l'étranger : -- Maghreb, Afrique de l'Ouest">
     <title>Neuvième circonscription des français de l'étranger : Maghreb, Afrique de l'Ouest</title>
     <use xlink:href="#f-path-DZ"></use>
@@ -437,7 +437,7 @@
     <use xlink:href="#f-path-SL"></use>
     <use xlink:href="#f-path-TN"></use>
    </g>
-   <g id="c10" class="jstitle circonscription" 
+   <g id="c10" class="jstitle circonscription circo999-10"
     title="Dixième circonscription des français de l'étranger : -- Afrique orientale, Moyen-Orient">
     <title>Dixième circonscription des français de l'étranger : Afrique orientale, Moyen-Orient</title>
     <use xlink:href="#f-path-ZA"></use>
@@ -490,7 +490,7 @@
     <use xlink:href="#f-path-ZM"></use>
     <use xlink:href="#f-path-ZW"></use>
    </g>
-   <g id="c11" class="jstitle circonscription" 
+   <g id="c11" class="jstitle circonscription circo999-11"
     title="Onzième circonscription des français de l'étranger : -- Asie, Europe de l'Est, Océanie">
     <title>Onzième circonscription des français de l'étranger : Asie, Europe de l'Est, Océanie</title>
     <use xlink:href="#f-path-AF"></use>
