@@ -218,6 +218,8 @@ class circonscriptionActions extends sfActions
           $maxx[] = $t["maxx"];
           $miny[] = $t["miny"];
           $maxy[] = $t["maxy"];
+          if ($path->getAttribute('class') == "vide")
+            $path->setAttribute('fill', '#DDD');
         }
         else {
           /* WARNING You can't remove DOMNodes from a DOMNodeList as you're

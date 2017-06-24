@@ -18,7 +18,10 @@ $(document).ready(function(){
   var d = { running: '0' };
   $("g.circonscription, area, .departement").on("mouseover", d, function(e) {
     $(this).addClass("hover");
-    dep = $(this).attr("id").replace(/^(d|map)/, "").replace(/-0$/, "").replace(/^c/, "999-");
+    var dep = $(this).attr("id").replace(/^(d|map)/, "").replace(/-\d$/, "").replace(/^c/, "999-"),
+      map = $("#carte .departement"+dep);
+    if (map.length)
+      map.attr('class', map.attr('class')+' hover');
     $(".dep"+dep+", #dep"+dep).addClass('hover');
     if (e.data.running == 0) {
       d.running = 1;
@@ -28,7 +31,10 @@ $(document).ready(function(){
   });
   $("g.circonscription, area, .departement, .departement path").on("mouseout", function() {
     $(this).removeClass("hover");
-    dep = $(this).attr("id").replace(/^(d|map)/, "").replace(/-0$/, "").replace(/^c/, "999-");
+    var dep = $(this).attr("id").replace(/^(d|map)/, "").replace(/-\d$/, "").replace(/^c/, "999-"),
+      map = $("#carte .departement"+dep);
+    if (map.length)
+      map.attr('class', map.attr('class').replace(/ hover/, ''));
     $(".dep"+dep+", #dep"+dep).removeClass('hover');
     $(".map"+dep).filter(".hover").mouseout();
   });
