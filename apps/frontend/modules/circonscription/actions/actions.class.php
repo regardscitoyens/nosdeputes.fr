@@ -181,7 +181,7 @@ class circonscriptionActions extends sfActions
         $cs = self::compose_transform($path);
         $id = $path->getAttribute('id');
         $title = self::get_title($path);
-        $href = url_for("@redirect_parlementaires_circo?code=".$path->getAttribute('id'));
+        $href = url_for("@redirect_parlementaires_circo?code=".$id);
         $ct = 0;
         foreach (preg_split("/ z /", $path->getAttribute('d')) as $d) {
           if (!preg_match('/ z$/', $d)) $d .= " z";

@@ -4,7 +4,6 @@ if (!isset($num) || !$num)
 
 if (preg_match('/^\d$/', $num))
   $num = sprintf("%02d",$num);
-if (preg_match('/\d[a-z]/i', $num))
 $fixednum = (preg_match('/\d[a-z]/i', $num) ? '0'.$num : sprintf('%03d',$num));
 
 CirconscriptionActions::echoCircoMap($fixednum, $size, 0);
