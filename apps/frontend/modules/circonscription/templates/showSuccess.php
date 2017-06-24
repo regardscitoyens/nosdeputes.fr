@@ -11,5 +11,9 @@ if ($departement_num == "999")
   <div class="list_<?php echo ($departement_num == "999" ? 'table' : 'circo'); ?>">
     <?php include_partial('parlementaire/table', $listOptions); ?>
   </div>
-  <?php if ($departement_num == "999") echo file_get_contents('circos-francais-etranger.svg'); ?>
+<?php if ($departement_num == "999") {
+  $svg = file_get_contents('circos-francais-etranger.svg');
+  $svg = str_replace("\n", "", $svg);
+  echo preg_replace_callback('/<g id="c(\d+)".*?<\/g>/', function($m) { return '<a xlink:href="'.url_for('@redirect_parlementaires_circo?code=999-'.$m[1]).'">'.$m[0].'</a>'; }, $svg);
+} ?>
 </div>
