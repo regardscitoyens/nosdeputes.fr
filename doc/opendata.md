@@ -37,7 +37,7 @@ Vous pouvez consulter [le modèle et le schéma SQL de ces bases ici](data_model
 Diverses données parlementaires également mises en œuvre sur nos sites et ailleurs sont disponibles :
 
 - Carte SVG de l'[hémicycle de l'Assemblée](https://github.com/regardscitoyens/mapHemicycle/blob/gh-pages/img/hemicycle-an.svg)
-- Carte SVG des [départements](https://github.com/regardscitoyens/nosdeputes.fr/blob/master/web/france_deptmts.svg)
+- Carte SVG des [départements](../web/departements.svg)
 - Carte SVG des [circonscriptions (depuis 2012)](https://www.data.gouv.fr/fr/datasets/carte-des-circonscriptions-lgislatives-2012/)
 - Carte SVG des [circonscriptions (avant 2012)](../web/circo2007.svg)
 - Carte SVG des [circonscriptions des français de l'étranger (depuis 2012)](../web/circos-francais-etranger.svg)
