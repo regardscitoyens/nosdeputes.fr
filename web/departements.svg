@@ -3,6 +3,7 @@
     .departement {
       fill: #deecbd;
       stroke: grey;
+      stroke-width: 0.5;
     }
     .departement:hover, .departement.hover{
       fill: #D1EA74;
