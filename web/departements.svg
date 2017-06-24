@@ -1,4 +1,4 @@
-<svg id="carte" class="carte_departement" viewBox="0 0 384.98181 447.31604" width="384.98181" height="447.31604">
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" id="carte" class="carte_departement" viewBox="0 0 384.98181 447.31604" width="384.98181" height="447.31604">
   <style type="text/css">
     .departement {
       fill: #deecbd;
