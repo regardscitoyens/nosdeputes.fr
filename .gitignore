@@ -10,7 +10,6 @@
 bin/db.inc
 config/app.yml
 config/databases.yml
-config/ProjectConfiguration.class.php
 apps/frontend/config/routing.yml
 apps/frontend/config/factories.yml
 lib/vendor/SolrServer/solr/conf/solrconfig.xml
