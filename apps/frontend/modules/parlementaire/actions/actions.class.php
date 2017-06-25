@@ -10,6 +10,15 @@
  */
 class parlementaireActions extends sfActions
 {
+
+  public function executeIndex(sfWebRequest $request) {
+    $request->setParameter('rss', array(array('link' => '@commentaires_rss', 'title'=>'Les derniers commentaires sur NosDéputés.fr')));
+  }
+
+  public function executeFaq(sfWebRequest $request) {
+    $this->response->setTitle('Questions fréquemment posées - NosDéputés.fr');
+  }
+
   public function executeAssister(sfWebRequest $request) {
     $this->response->setTitle('Assister aux débats publics de l\'Assemblée nationale - NosDéputés.fr');
   }
@@ -112,10 +121,6 @@ class parlementaireActions extends sfActions
     $this->image = $ih;
     $this->getResponse()->addCacheControlHttpHeader('max-age='.(60*60*24*3).',public');
     $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()+60*60*24*3));
-  }
-
-  public function executeIndex(sfWebRequest $request) {
-    $request->setParameter('rss', array(array('link' => '@commentaires_rss', 'title'=>'Les derniers commentaires sur NosDéputés.fr')));
   }
 
   public function executeRandom(sfWebRequest $request)

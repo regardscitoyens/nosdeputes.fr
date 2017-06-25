@@ -181,7 +181,7 @@ class circonscriptionActions extends sfActions
         $cs = self::compose_transform($path);
         $id = $path->getAttribute('id');
         $title = self::get_title($path);
-        $href = url_for("@redirect_parlementaires_circo?code=".$path->getAttribute('id'));
+        $href = url_for("@redirect_parlementaires_circo?code=".$id);
         $ct = 0;
         foreach (preg_split("/ z /", $path->getAttribute('d')) as $d) {
           if (!preg_match('/ z$/', $d)) $d .= " z";
@@ -218,6 +218,8 @@ class circonscriptionActions extends sfActions
           $maxx[] = $t["maxx"];
           $miny[] = $t["miny"];
           $maxy[] = $t["maxy"];
+          if ($path->getAttribute('class') == "vide")
+            $path->setAttribute('fill', '#DDD');
         }
         else {
           /* WARNING You can't remove DOMNodes from a DOMNodeList as you're
@@ -241,7 +243,7 @@ class circonscriptionActions extends sfActions
     $svg->setAttribute('height', 5*($y_max - $y_min));
     $svg->setAttribute('fill', '#deecbd');
     $svg->setAttribute('stroke', '#cccccc');
-    $svg->setAttribute('stroke-width', '0.5');
+    $svg->setAttribute('stroke-width', '0.2');
     $svg->setAttribute('viewBox', $x_min." ".$y_min." ".($x_max - $x_min)." ".($y_max - $y_min));
     $svg->setAttribute('transform', "translate(".-$x_min.",".-$y_min.")");
   }

@@ -1283,6 +1283,9 @@ h2 {
 #carte_circo h1 {
   margin-bottom: 20px;
 }
+#carte-francais-etranger {
+  margin-top: -35px;
+}
 .didascalie {
   font-style: oblique;
 }
@@ -1748,7 +1751,7 @@ h2 {
 }
 .accueil .carte .message {
     margin-left: 300px;
-    padding: 30px;
+    padding: 50px;
 }
 .accueil .carte .message input {
     margin-left: 12px;
@@ -1901,7 +1904,7 @@ a:hover img {
 .list_circo {
   float: left;
   margin-bottom: 30px;
-  width: 40%;
+  width: 300px;
 }
 .list_deptmts {
   float: left;
@@ -2063,6 +2066,10 @@ a:hover img {
 }
 #assister p:first-letter {
   padding-left: 10px;
+}
+
+#faq h3, #faq p {
+  padding-left: 18px;
 }
 
 #js_search_box {

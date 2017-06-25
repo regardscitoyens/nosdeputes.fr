@@ -37,10 +37,12 @@ Vous pouvez consulter [le modèle et le schéma SQL de ces bases ici](data_model
 Diverses données parlementaires également mises en œuvre sur nos sites et ailleurs sont disponibles :
 
 - Carte SVG de l'[hémicycle de l'Assemblée](https://github.com/regardscitoyens/mapHemicycle/blob/gh-pages/img/hemicycle-an.svg)
-- Carte SVG des [départements](https://github.com/regardscitoyens/nosdeputes.fr/blob/master/web/france_deptmts.svg)
-- Carte SVG des [circonscriptions (après 2012)](https://www.data.gouv.fr/fr/datasets/carte-des-circonscriptions-lgislatives-2012/)
+- Carte SVG des [départements](../web/departements.svg)
+- Carte SVG des [circonscriptions (depuis 2012)](https://www.data.gouv.fr/fr/datasets/carte-des-circonscriptions-lgislatives-2012/)
 - Carte SVG des [circonscriptions (avant 2012)](../web/circo2007.svg)
+- Carte SVG des [circonscriptions des français de l'étranger (depuis 2012)](../web/circos-francais-etranger.svg)
 - Appartenance des [communes aux circonscriptions législatives](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_insee.csv)
+- Détail des pays appartenant aux [circonscriptions des français de l'étranger](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_etranger.csv)
 - Catalogue [OpenData officiel de l'Assemblée nationale](http://data.assemblee-nationale.fr)
 - Catalogue [OpenData officiel du Sénat](http://data.senat.fr)
 - [ParlAPI](http://parlapi.fr/) reprenant les données des catalogues officiels OpenData
