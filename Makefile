@@ -18,7 +18,7 @@ apps/frontend/config/factories.yml: apps/frontend/config/factories.yml.example
 lib/model/doctrine/base/BaseParlementaire.class.php:
 	php symfony doctrine:build --model
 
-bin/db.inc: config/databases.yml bin/db.inc.example
+bin/db.inc: config/databases.yml bin/db.inc.example config/app.yml
 	bash bin/generate_dbinc.sh
 
 web/images/tmp/xspchart:
