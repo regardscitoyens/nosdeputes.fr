@@ -12,21 +12,22 @@ all:
   allow_autoclean_solr: false
 
   groupes_actuels: >
-    ["FI", "GDR", "SER", "REM", "MODEM", "LRCUDI", "LR", "NI"]
+    ["LFI", "GDR", "SER", "RP", "LREM", "MODEM", "RCUDI", "LR", "NI"]
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
   groupes_infos: >
     [
-    "France Insoumise / FI / 255,30,30 / France Insoumise / insoumis",
+    "La France Insoumise / LFI / 255,30,30 / France Insoumise / insoumis",
     "Gauche Démocrate et Républicaine / GDR / 255,40,100 / PCF et régionalistes / gauche.*d[eéÉ]mocrate",
-    "Socialiste, Écologiste et Républicain / SER / 255,50,190 / PS, PRG et divers Gauche / socialiste",
-    "République En Marche / REM / 236,234,76 / En Marche / marche",
-    "Modem / MODEM / 250,195,132 / Modem / modem",
-    "Les Républicains Constructifs et l'Union des Démocrates et Indépendants / LRCUDI / 30,180,255 / LR proches d'En Marche & UDI / constructif",
+    "Socialiste, Écologiste et Républicain / SER / 255,50,190 / PS / socialiste",
+    "Radical Progressiste / RP / 198,81,249 / PRG, ex-EELV et divers gauche / radical|progressiste",
+    "République En Marche / LREM / 236,234,76 / En Marche / marche",
+    "Mouvement Démocrate / MODEM / 250,195,132 / MoDem / modem",
+    "Républicains Constructifs et Union des Démocrates et Indépendants / RCUDI / 30,180,255 / LR proches d'En Marche & UDI / constructif",
     "Les Républicains / LR / 30,30,200 / Les Républicains / r[eéÉ]publicains",
     "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (Divers droite, FN…) / inscrit|députés.*aucun"
     ]
   groupes_proximite: >
-    ["FI / GDR", "FI / SER", "GDR / SER", "SER / REM", "REM / MODEM", "REM / LRCUDI", "MODEM / LRCUDI", "LRCUDI / LR"
+    ["LFI / GDR", "LFI / SER", "GDR / SER", "SER / RP", "SER / LREM", "RP / LREM", "LREM / MODEM", "LREM / RCUDI", "MODEM / RCUDI", "RCUDI / LR", "LR / NI"]
 
   commissions_permanentes: >
     [
