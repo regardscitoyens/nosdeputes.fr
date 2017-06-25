@@ -59,7 +59,6 @@ if ($type === "all") {
   $Test->drawTitle(490,28,"Propositions",50,50,50);
   $Test->drawTitle(600,28,"Questions",50,50,50);
   $Test->xsSetFontProperties("tahoma.ttf",$font+5);
-//  $Test->drawTitle(60,30,"Répartition de l'activité des députés sur les 12 derniers mois par groupe politique",25,25,25);
 }
 $Test->drawGrid(4,TRUE,0,0,0,30);
 $ct = 0;
@@ -70,8 +69,5 @@ foreach ($data['couleurs'] as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col
 $Test->setImageMap(TRUE,$mapId);
 $Test->drawStackedBarGraph($Data,$DataDescr,75,90);
 
-//$Test->drawTitle($pos_titre,3 + 2*$font,"Participation globale au cours de".$duree." (hémicycle et commissions)",50,50,50,585);
-
 $Test->xsStroke();
-
 ?>

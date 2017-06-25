@@ -284,9 +284,9 @@ class parlementaireActions extends sfActions
 
   private function loadOrganismes() {
     $this->organisme_types = array (
-      'parlementaire' => 'Organismes parlementaires (commissions, missions, ...)',
+      'parlementaire' => 'Organismes parlementaires (commissions, délégations, missions...)',
       'groupe' => 'Groupes politiques',
-      'groupes' => 'Groupes d\'amitié',
+      'groupes' => "Groupes d'étude et d'amitié",
       'extra' => 'Organismes extra-parlementaires'
     );
   }

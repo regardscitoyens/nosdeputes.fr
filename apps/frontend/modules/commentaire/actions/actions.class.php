@@ -10,12 +10,12 @@
  */
 class commentaireActions extends sfActions
 {
-  
+
   public function executePost(sfWebRequest $request)
   {
     $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement_id?id=', 'QuestionEcrite' => '@question_id?id=', 'ArticleLoi' => '@loi_article_id?id=', 'Alinea' => '@loi_alinea?id=', 'Texteloi' => '@document?id=');
     $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "À propos d'une question écrite d");
-	
+
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');
     $this->follow_talk = $request->getParameter('follow_talk');
@@ -24,7 +24,7 @@ class commentaireActions extends sfActions
        $this->getUser()->setFlash('error', 'Pour raisons techniques, les commentaires sont momentanément désactivées.');
        return $this->redirect($redirect_url[$this->type].$this->id);
     }
-    
+
     $values = $request->getParameter('commentaire');
     $this->commentaire = myTools::clearHtml($values['commentaire']);
     $this->unique_form = $request->getParameter('unique_form');
@@ -62,7 +62,7 @@ class commentaireActions extends sfActions
 
     /** Creation du form et validation */
     $this->form = new CommentaireForm();
-    $this->form->bind($values);	
+    $this->form->bind($values);
     if (!$request->getParameter('ok') || !$this->form->isValid())
       return ;
 
@@ -92,11 +92,11 @@ class commentaireActions extends sfActions
     if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
 	    $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
     $ip = $ip . ',';
-    if(isset($_SERVER['HTTP_CLIENT_IP'])) 
+    if(isset($_SERVER['HTTP_CLIENT_IP']))
 	    $ip = $ip . $_SERVER['HTTP_CLIENT_IP'];
     $ip = $ip . ',';
-    if(isset($_SERVER['REMOTE_ADDR'])) 
-	    $ip = $ip . $_SERVER['REMOTE_ADDR']; 
+    if(isset($_SERVER['REMOTE_ADDR']))
+	    $ip = $ip . $_SERVER['REMOTE_ADDR'];
 
   // On teste l'existence préalable du même commentaire
     if ($existing = Doctrine::getTable('Commentaire')->createQuery('c')
@@ -110,7 +110,7 @@ class commentaireActions extends sfActions
       return;
     }
 
-  
+
     $commentaire = $this->form->getObject();
     //Pas trouvé d'autre moyen que de bypasser le form pour conserver la presentation htmlisée
     $commentaire->commentaire = $this->commentaire;
@@ -118,7 +118,7 @@ class commentaireActions extends sfActions
     $commentaire->object_id = $this->id;
     $commentaire->lien = $redirect_url[$this->type].$this->id;
     $object = Doctrine::getTable($this->type)->find($this->id);
-    if ($this->type === 'Texteloi') 
+    if ($this->type === 'Texteloi')
       $present = $object->getShortTitre();
     else if (isset($object->texteloi_id)) {
       $titreloi = Doctrine::getTable('TitreLoi')->findLightLoi($object->texteloi_id);
@@ -149,7 +149,7 @@ class commentaireActions extends sfActions
         if ($present == '' && $this->type == 'Intervention' && $object->type == 'commission')
           $present = $object->getSeance()->getOrganisme()->getNom();
       }
-      if ($present != '') $present .= ' - ';   
+      if ($present != '') $present .= ' - ';
       else $present = '';
       $present .= $about[$this->type];
       $nom = '';
@@ -232,7 +232,7 @@ class commentaireActions extends sfActions
         $commentaire->addObject('Texteloi', $object->texteloi_id);
     }
 
-      
+
     $pas_confirme_mail = '';
     if (!$is_active) {
       $pas_confirme_mail = ', pour le rendre public, cliquez sur le lien d\'activation contenu dans l\'email que nous vous avons envoyé afin de terminer votre inscription.';

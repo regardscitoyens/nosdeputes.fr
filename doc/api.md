@@ -129,8 +129,24 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 - **Contenu des travaux :**
 
   Tous les contenus textuels des différents travaux parlementaires (organismes, débats, amendements, questions, rapports, propositions de loi) sont indexés dans le moteur de recherche et peuvent donc être individuellement retrouvés et filtrés à travers cette API ([voir plus bas](#résultats-du-moteur-de-recherche)).
-  
+
   Les résultats de la recherche renvoient les urls des données détaillées de chaque élément accessible via l'API.
+
+- **Liste des dossiers législatifs** (à partir de la 15ème législature uniquement pour l'Assemblée) :
+
+  - Triés dans l'ordre alphabétique : https://www.nosdeputes.fr/15/dossiers/nom/xml
+  - Triés du plus récent au plus ancien : https://www.nosdeputes.fr/15/dossiers/date/xml
+  - Triés du plus débattu au moins débattu : https://www.nosdeputes.fr/15/dossiers/plus/xml
+
+- **Détails d'un dossier législatif** (à partir de la 15ème législature uniquement pour l'Assemblée) :
+
+  Plus de détails sont disponibles pour chaque dossier : listes des documents associés, des séances, des intervenants et des sous-sections.
+
+  Par exemple : https://www.nosdeputes.fr/15/dossier/1/xml
+
+  *Note :* Comme les dossiers, ces accès peuvent être filtrés par dossier législatif en utilisant l'identifiant officiel du projet de loi sur les sites de l'institution retrouvable à la fin des urls dédiées, par exemple pour le projet de loi transparence :
+    - à l'Assemblée : http://www.assemblee-nationale.fr/14/dossiers/transparence_vie_publique_pjl.asp -> `transparence_vie_publique_pjl` -> https://www.nosdeputes.fr/15/dossier/transparence_vie_publique_pjl/xml
+    - au Sénat : http://www.senat.fr/dossier-legislatif/pjl12-689.html -> `pjl12-689` -> https://www.nossenateurs.fr/15/dossier/pjl12-689/xml
 
 - **Tous les amendements déposés sur un texte :**
 
@@ -160,9 +176,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
     - *pour le Sénat :* pensez bien à reformater la partie année de l'identifiant de loi sous sa forme complète : ppl15-xxx -> `20152016-xxx`, pjl12-xxx -> `20122013-yyy`.
 
-    - *Note :* Ces accès peuvent être filtrés par dossier législatif en utilisant l'identifiant officiel du projet de loi sur les sites de l'institution retrouvable à la fin des urls dédiées, par exemple pour le projet de loi transparence :
-      - à l'Assemblée : http://www.assemblee-nationale.fr/14/dossiers/transparence_vie_publique_pjl.asp -> `transparence_vie_publique_pjl`
-      - au Sénat : http://www.senat.fr/dossier-legislatif/pjl12-689.html -> `pjl12-689`
+    - *Note :* Comme les dossiers, ces accès peuvent être filtrés par dossier législatif en utilisant l'identifiant officiel du projet de loi sur les sites de l'institution retrouvable à la fin des urls dédiées.
 
   - **Liste de tous les débats d'une chambre sur un texte :**
 

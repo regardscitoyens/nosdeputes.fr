@@ -168,6 +168,13 @@ class myTools {
     return $res;
   }
 
+  public static function getGroupes() {
+    $groupes = array();
+    foreach (self::getGroupesInfos() as $gpe)
+      $groupes[] = $gpe[1];
+    return $groupes;
+  }
+
   public static function getGroupesOrderMap() {
     $groupesmap = array();
     $ct = 0;
