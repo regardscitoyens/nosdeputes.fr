@@ -1,4 +1,4 @@
-all: lib/vendor/autoload.php cache log apps/frontend/config/routing.yml apps/frontend/config/factories.yml lib/model/doctrine/base/BaseParlementaire.class.php bin/db.inc
+all: lib/vendor/autoload.php cache log apps/frontend/config/routing.yml apps/frontend/config/factories.yml lib/model/doctrine/base/BaseParlementaire.class.php bin/db.inc web/images/tmp/xspchart
 
 lib/vendor/autoload.php: composer.json composer.lock
 	composer install
@@ -20,3 +20,6 @@ lib/model/doctrine/base/BaseParlementaire.class.php:
 
 bin/db.inc: config/databases.yml bin/db.inc.example
 	bash bin/generate_dbinc.sh
+
+web/images/tmp/xspchart:
+	mkdir -p web/images/tmp/xspchart ; sudo chown www-data web/images/tmp/xspchart ; sudo chmod g+ws web/images/tmp/xspchart
