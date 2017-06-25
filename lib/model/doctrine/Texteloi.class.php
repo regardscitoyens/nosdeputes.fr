@@ -318,7 +318,7 @@ class Texteloi extends BaseTexteloi
     fwrite($temp, $t);
     fclose($temp);
     $temp = gzopen($file, 'r');
-    $z = gzgets($temp, memory_get_usage(true)*2/3);
+    $z = gzgets($temp);
     gzclose($temp);
     unlink($file);
     return $z;
