@@ -313,24 +313,17 @@ $nomdep = $depute{'nom'};
 @noms = split / /, $nomdep;
 if ((join " ", keys %{$depute{'mails'}}) =~ /(\S+)\@assemblee/) {
   $login = $1;
-  while ($login = substr($login, 1)) {
-    $clogin = $login;
-    $clogin =~ s/[ce]/./ig;
-    $clogin =~ s/\.+/.+/g;
-    for($i = 0 ; $i <= $#noms ; $i++) {
-      next if ($noms[$i] =~ /^[ld]e/i);
-      $tmpnom = lc($noms[$i]);
-      $tmpnom =~ s/[àÀéÉèÈêÊëËîÎïÏôÔùÙûÛçÇ]/./ig;
-      $tmpnom =~ s/\.+/.+/g;
-      if ($login =~ /$tmpnom/i) {
-        if ($nomdep =~ /.\s([l][ea]s?\s)?(\S*?$tmpnom.*$)/i) {
-          $depute{'nom_de_famille'} = $1.$2;
-          last;
-        }
+  $login =~ s/^[^\.]+\.//;
+  for($i = 0 ; $i <= $#noms ; $i++) {
+    next if ($noms[$i] =~ /^[ld]e/i);
+    $tmpnom = lc($noms[$i]);
+    $tmpnom =~ s/[àÀéÉèÈêÊëËîÎïÏôÔùÙûÛçÇ]/./ig;
+    $tmpnom =~ s/\.+/.+/g;
+    if ($login =~ /$tmpnom/i) {
+      if ($nomdep =~ /.\s([l][ea]s?\s)?(\S*?$tmpnom.*$)/i) {
+        $depute{'nom_de_famille'} = $1.$2;
+        last;
       }
-    }
-    if ($depute{'nom_de_famille'}) {
-      last;
     }
   }
 }
