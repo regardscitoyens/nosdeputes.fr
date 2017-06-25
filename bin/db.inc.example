@@ -6,4 +6,4 @@ SOLR_DATA_PATH="$PATH_APP/lib/vendor/SolrServer/solr/data"
 VHOST=www.nosdeputes.fr
 PADURL=https://etherpad.mozilla.org/xxxxxxxxxxx
 PADBOT="phantomjs --cookies-file=cache/phanom.cookie /home/nosdeputes/padbot/etherpad.js"
-#LEGISLATURE=13
+LEGISLATURE=15
