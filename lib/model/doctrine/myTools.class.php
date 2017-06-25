@@ -204,7 +204,7 @@ class myTools {
     $gpes = array();
     $curgpes = self::getCurrentGroupes();
     foreach (self::getGroupesInfos() as $g)
-      if (in_array($g[1], $curgpes))
+      if (isset($g[1]) && in_array($g[1], $curgpes))
         $gpes[] = $g;
     return $gpes;
   }

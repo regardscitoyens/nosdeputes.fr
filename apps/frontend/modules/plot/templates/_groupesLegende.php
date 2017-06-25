@@ -4,6 +4,8 @@ if (!isset($width)) $width = 400;
 $max_l = $width / 6.5;
 $txt_l = 0;
 foreach (myTools::getGroupesInfos() as $gpe) {
+  if (!isset($gpe[3]))
+    continue;
   if (isset($groupes) && !in_array($gpe[1], $groupes))
     continue;
   $txt_l += strlen($gpe[3]) + 4;

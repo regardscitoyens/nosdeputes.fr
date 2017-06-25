@@ -501,7 +501,7 @@ class plotComponents extends sfComponents
     $this->labels = array();
     $labels = array_keys($groupes);
     foreach (myTools::getGroupesInfos() as $gpe)
-      if (in_array($gpe[1], $labels))
+      if (isset($gpe[1]) && in_array($gpe[1], $labels))
         $this->labels[] = $gpe[1];
 
     // On remplit et complète les données dans l'ordre des groupes

@@ -101,11 +101,11 @@ foreach(array_keys($images) as $k) {
   $titre = $value.' '.$titres[$k];
   if ($value < 2)
     $titre = preg_replace('/s$/', '', str_replace('s ', ' ', $titre));
-  if ($rank && $top[$k]['rank'] <= 150 && $value) {
+  if ($rank && isset($top[$k]) && $top[$k]['rank'] <= 150 && $value) {
     $couleur = 'vert';
     $titre .=' (fait partie des 150 premiers)';
   }
-  else if ($rank && $top[$k]['rank'] >= $top[$k]['max_rank'] - 150) {
+  else if ($rank && isset($top[$k]) && $top[$k]['rank'] >= $top[$k]['max_rank'] - 150) {
     $couleur = 'rouge';
     $titre .= ' (fait partie des 150 derniers)';
   }
