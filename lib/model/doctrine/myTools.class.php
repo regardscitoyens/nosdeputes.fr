@@ -158,7 +158,9 @@ class myTools {
     $conf = sfConfig::get('app_groupes_infos', '');
     if (!$conf) {
       $config = sfYaml::load(dirname(__FILE__).'/../../../config/app.yml');
-      $conf = $config['all']['groupes_infos'];
+      if (isset($config['all']) && isset( $config['all']['groupes_infos'])) {
+        $conf = $config['all']['groupes_infos'];
+      }
     }
     $gpes = self::convertYamlToArray($conf);
     $res = array();
@@ -171,7 +173,9 @@ class myTools {
   public static function getGroupes() {
     $groupes = array();
     foreach (self::getGroupesInfos() as $gpe)
-      $groupes[] = $gpe[1];
+      if (isset($gpe[1])) {
+        $groupes[] = $gpe[1];
+      }
     return $groupes;
   }
 
@@ -186,7 +190,9 @@ class myTools {
   public static function getGroupesColorMap() {
     $colormap = array();
     foreach (self::getGroupesInfos() as $gpe)
-      $colormap[$gpe[1]] = $gpe[2];
+      if (isset($gpe[1]) && isset($gpe[2])) {
+        $colormap[$gpe[1]] = $gpe[2];
+      }
     return $colormap;
   }
 
