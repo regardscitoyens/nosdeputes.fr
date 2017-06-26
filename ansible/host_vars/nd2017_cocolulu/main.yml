@@ -1,0 +1,32 @@
+---
+
+cpc_domain: 2017.nosdeputes.fr
+cpc_instance_name: nd2017
+
+cpc_user: nd2017
+cpc_home: /srv/nd2017
+
+cpc_repo: https://github.com/regardscitoyens/nosdeputes.fr
+cpc_version: master
+
+cpc_port_web: 8111
+cpc_port_phpmyadmin: 8112
+cpc_port_mysql: 8113
+cpc_port_memcached: 8114
+cpc_port_solr: 8115
+
+cpc_memcached: true
+cpc_memcached_limit: 1G
+cpc_spool_mails: false
+cpc_solr: true
+
+cpc_legislature: 15
+cpc_debut_legislature: '2017-06-21'
+cpc_fin_legislature: false
+
+cpc_host_prev: 2012.nosdeputes.fr
+cpc_host_next:
+
+cpc_ssl_cert: '/var/lib/dehydrated/certs/{{ cpc_domain }}/cert.pem'
+cpc_ssl_key: '/var/lib/dehydrated/certs/{{ cpc_domain }}/privkey.pem'
+cpc_ssl_chain: '/var/lib/dehydrated/certs/{{ cpc_domain }}/fullchain.pem'

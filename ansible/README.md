@@ -65,6 +65,12 @@ Les variables suivantes sont disponibles (voir `ansible/group_vars/all/main.yml`
 * `cpc_piwik_domain` : domaine Piwik
 * `cpc_piwik_id` : ID Piwik
 
+### SSL (optionnel)
+
+* `cpc_ssl_cert` : chemin distant vers le certificat SSL
+* `cpc_ssl_key` : chemin distant vers la clé privée serveur pour le certificat SSL
+* `cpc_ssl_chain` : chemin distant vers la chaine complête de certificats SSL
+
 ## Instance de développement locale
 
 ### Installation
