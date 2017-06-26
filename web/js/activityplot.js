@@ -189,7 +189,8 @@ function plot_activity_data(url, divid, width, height, type) {
       .attr('width', week_width)
       .attr('height', yscale(0)-yscale(maxval))
       .attr("date", function (x){return x;})
-      .on('mouseover', function (x){
+      .on('mouseover', function (x, idx, rects){
+        $(rects[idx]).css('fill-opacity', 0.15);
         $(tooltipid+" .tooltip_week").html(d3.timeFormat("%d %b %Y")(new Date(x)));
         $(tooltipid+" .tooltip_participations").html(participations[x]);
         if (questions)
@@ -199,11 +200,13 @@ function plot_activity_data(url, divid, width, height, type) {
         $(tooltipid+" .banner_vacances")[vacances[x]==1 ? 'show' : 'hide']();
       })
       .on('mousemove', function(e){
-        $(tooltipid).css('left', d3.event.pageX - 200)
-         .css('top', d3.event.pageY + 20)
+        $(tooltipid)
+         .css('left', d3.event.pageX - 100)
+         .css('top', d3.event.pageY - 140)
          .show();
       })
-      .on('mouseleave', function(){
+      .on('mouseleave', function(x, idx, rects){
+        $(rects[idx]).css('fill-opacity', 0);
         $(tooltipid).css("display", "none");
       })
 
