@@ -93,7 +93,7 @@ function plot_activity_data(url, divid, width, height, type) {
 
     // Scales
     timescale = d3.scaleTime()
-      .domain([get_last_monday(startdate), new Date(get_last_monday(enddate).getTime()+1000*60*60*24*7)])
+      .domain([get_last_monday(startdate), new Date(get_last_monday(enddate).getTime()+1000*60*60*24)])
       .range([margin_left, svg_width-2]);
     yscale = d3.scaleLinear()
       .domain([0, maxval])
@@ -184,7 +184,7 @@ function plot_activity_data(url, divid, width, height, type) {
       .enter()
       .append("rect")
       .classed('tooltip', true)
-      .attr('x', function (x){return timescale(new Date(x));})
+      .attr('x', function (x){return timescale(new Date(x)) - week_width/2;})
       .attr('y', yscale(maxval))
       .attr('width', week_width)
       .attr('height', yscale(0)-yscale(maxval))
