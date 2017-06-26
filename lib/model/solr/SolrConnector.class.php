@@ -105,7 +105,7 @@ class SolrConnector extends sfLogger
   public function search($queryString, $params = array(), $offset = 0, $maxHits = 0) {
     if($maxHits == 0)
         $maxHits = sfConfig::get('app_solr_max_hits', 256);
-    if ((isset($params['not_utf8']) && $params['not_utf8']) || !sfConfig::get('app_solr_utf8', true))  {
+    if (!sfConfig::get('app_solr_utf8', true))  {
 	    $queryString = utf8_decode($queryString);
     }
     $response = $this->solr->search($queryString, $offset, $maxHits, $params);
