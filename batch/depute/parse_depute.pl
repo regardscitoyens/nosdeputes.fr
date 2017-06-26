@@ -156,7 +156,7 @@ foreach $line (split /\n/, $string) {
       $depute{'mails'}{$site} = 1;
     } else {
       if ($site !~ /www.facebook\.com.sharer\.php/) { #Evite de prendre les boutons de partage de l'AN
-        $site =~ s/@//;
+        $site =~ s/(twitter.com\/)@/\1/i;
         $depute{'sites_web'}{$site} = 1;
       }
     }
