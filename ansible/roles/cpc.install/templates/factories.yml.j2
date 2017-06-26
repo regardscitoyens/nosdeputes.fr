@@ -69,8 +69,8 @@ all:
       transport:
         class: Swift_SmtpTransport
         param:
-          host:       localhost
-          port:       25
+          host:       {{ cpc_smtp_host }}
+          port:       {{ cpc_smtp_port }}
           encryption: ~
           username:   ~
           password:   ~

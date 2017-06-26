@@ -24,6 +24,7 @@ Les variables suivantes sont disponibles (voir `ansible/group_vars/all/main.yml`
 ### Configuration de base
 
 * `cpc_domain` [U] : nom de domaine de cette instance
+* `cpc_domain_aliases` : liste d'alias à configurer
 * `cpc_instance_name` [U] : nom de l'instance (`cpc` par défaut) [U]
 * `cpc_user` : utilisateur Unix (`cpc` par défaut)
 * `cpc_home` [U] : répertoire hébergeant le repository et les fichiers de contrôle (`/opt/cpc` par défaut)
@@ -43,13 +44,12 @@ Les variables suivantes sont disponibles (voir `ansible/group_vars/all/main.yml`
 
 * `cpc_memcached` : booléen, activer ou non Memcached
 * `cpc_memcached_limit` : mémoire maximale utilisée par Memcached (des suffixes peuvent être utilisés, par exemple 100M ou 1G)
-* `cpc_spool_mails` : booléen, activer ou non le spooling mail
 * `cpc_solr` : booléen, activer ou non Solr
 * `cpc_admin_ips` : liste des IP autorisées pour `/frontend_dev.php/`
 * `cpc_php_cli_memory_limit` : limite mémoire PHP pour les scripts en ligne de commande
 * `cpc_php_web_memory_limit` : limite mémoire PHP depuis Apache
 * `cpc_php_show_errors` : booléen, afficher ou non les erreurs PHP
-* ̀cpc_enable_cronjobs` : booléen, créer ou non les jobs cron
+* `cpc_enable_cronjobs` : booléen, créer ou non les jobs cron
 
 ### Législature
 
@@ -70,6 +70,12 @@ Les variables suivantes sont disponibles (voir `ansible/group_vars/all/main.yml`
 * `cpc_ssl_cert` : chemin distant vers le certificat SSL
 * `cpc_ssl_key` : chemin distant vers la clé privée serveur pour le certificat SSL
 * `cpc_ssl_chain` : chemin distant vers la chaine complête de certificats SSL
+
+### Envoi des mails
+
+* `cpc_smtp_host` : hostname pour l'envoi des mails
+* `cpc_smtp_port` : port pour l'envoi des mails
+* `cpc_spool_mails` : booléen, activer ou non le spooling mail
 
 ## Instance de développement locale
 

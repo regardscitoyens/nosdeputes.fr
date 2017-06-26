@@ -1,6 +1,11 @@
 ---
 
-cpc_domain: 2017.nosdeputes.fr
+cpc_domain: www.nosdeputes.fr
+cpc_domain_aliases:
+  - nosdeputes.fr
+  - 2017.nosdeputes.fr
+  - 2017-2022.nosdeputes.fr
+
 cpc_instance_name: nd2017
 
 cpc_user: nd2017
@@ -30,3 +35,10 @@ cpc_host_next:
 cpc_ssl_cert: '/var/lib/dehydrated/certs/{{ cpc_domain }}/cert.pem'
 cpc_ssl_key: '/var/lib/dehydrated/certs/{{ cpc_domain }}/privkey.pem'
 cpc_ssl_chain: '/var/lib/dehydrated/certs/{{ cpc_domain }}/fullchain.pem'
+
+cpc_analytics_id: UA-10423931-2
+cpc_piwik_domain: stats.regardscitoyens.org
+cpc_piwik_id: 2
+cpc_manet_url: http://manet.regardscitoyens.org/
+
+cpc_smtp_host: "172.17.42.1"
