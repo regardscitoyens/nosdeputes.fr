@@ -1,0 +1,107 @@
+#presence_chart {
+  border: 0px solid black;
+}
+
+#presence_chart rect.presence,
+#tooltip_activity rect.presence,
+#curve_presence {
+  fill: red;
+}
+
+#curve_mediane {
+  stroke: rgb(120,120,120);
+  stroke-opacity: 0.4;
+  fill: none;
+  stroke-width: 1px;
+}
+rect.mediane {
+  fill: rgb(150,150,150);
+}
+
+#presence_chart rect.mots,
+#tooltip_activity rect.mots {
+  fill: white;
+}
+#presence_chart rect.participations,
+#tooltip_activity rect.participations,
+#curve_participation {
+  fill: orange;
+}
+
+#yaxis line,
+#yaxis path,
+#timeaxis line,
+#timeaxis path {
+  stroke: gray;
+}
+#tooltip_activity {
+  border-radius: 5px;
+  background: white;
+  border: 1px solid black;
+  display: none;
+  width: 200px;
+  position: absolute;
+  padding: 7px;
+  font-size: 14px;
+}
+#tooltip_activity .title {
+  position: absolute;
+  padding-bottom: 10px;
+  width: 100%;
+  left: 0;
+  top: 5px;
+}
+#tooltip_activity table {
+  font-size: 14px;
+  margin-top: 20px;
+}
+#tooltip_activity tr td: nth-child(2){
+  text-align: center;
+  padding-left: 20px;
+}
+#tooltip_activity rect {
+  width: 100%;
+  height: 100%;
+}
+
+#yaxis text,
+#timeaxis text {
+  fill: gray;
+}
+svg text.yaxistitle {
+  text-anchor: middle;
+  font-size: 12px;
+  fill:gray;
+}
+
+#mediane {
+  fill: none;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+rect.vacances,
+#curve_vacances {
+  fill: rgba(150,150,150,.5);
+}
+rect.tooltip {
+  fill: rgba(0,0,0,0);
+}
+
+#tooltip_activity svg{
+  width: 3px;
+  height: 11px;
+  margin-right: 6px;
+}
+#tooltip_activity div {
+  display: inline-block;
+}
+#banner_vacances {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  background: rgba(256,256,256,.9);
+  height: 100%;
+  border-radius: 5px;
+}

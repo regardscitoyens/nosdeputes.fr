@@ -37,7 +37,7 @@ function plot_activity_data(url) {
       idx++;
     }
     all_weeks = Object.keys(all_weeks)
-    
+
     week_after = get_last_monday(new Date((new Date(all_weeks[all_weeks.length-1])).getTime()+1000*24*60*60*7))
     
     var svg_width=800;
@@ -46,17 +46,16 @@ function plot_activity_data(url) {
     var margin_left=45;
     var margin_bottom=25;
     var week_width = (svg_width-margin_left)/Object.keys(all_weeks).length+0.2;
-    
+
     // Scales
     timescale = d3.scaleLinear()
       .domain([get_last_monday(startdate), new Date(get_last_monday(enddate).getTime()+1000*60*60*24*7)])
       .range([margin_left,svg_width-2]);
-    
+
     yscale = d3.scaleLinear()
       .domain([0,14])
       .range([svg_height-margin_bottom,4]);
-    
-    
+
     // Background horizontal [gray/white] stripes
     grid = d3.select("#presence_chart").append('g').classed('grid',1);
     for(var i=4; i<=yscale.domain()[1]; i=i+4){
@@ -67,53 +66,54 @@ function plot_activity_data(url) {
         .attr('y',yscale(i))
         .attr('x',timescale.range()[0]);
     }
-    
+
     plot_area = d3.select("#presence_chart").append('g').classed('plot',1);
-    
+
     // This function is probably useless on real data <------------------------------------------------------------------------------
     // If you remove it, replace 'clip(x,a,b)' by 'x' alone
     function clip(x,a,b) {
       return Math.max(Math.min(x,b),a);
     }
-    
-    // Presence
-    plot_area.append("path").attr("id","curve_presence")
-    	  .attr("d", d3.area()
-    		     .curve(d3.curveLinear)
-    		     .x(function (x){return timescale(new Date(x));})
-    		     .y1(function (x){return clip(yscale(presence[x] || 0),yscale(14)+.5,yscale(0)-.5);})
-    		     .y0(yscale(0))
-    	    (all_weeks.concat([week_after])))
-    
-    // Participations
-    plot_area.append("path").attr("id","curve_participation")
-    	  .attr("d", d3.area()
-    		     .curve(d3.curveLinear)
-    		     .x(function (x){return timescale(new Date(x));})
-    		     .y1(function (x){return clip(yscale(participations[x] || 0),yscale(14)+.5,yscale(0)-.5);})
-    		     .y0(yscale(0))
-    	    (all_weeks.concat([week_after])))
-    
-    
+
     // Mediane
     d3.select("#presence_chart").append("path").attr("id","curve_mediane")
       .attr("d", d3.line()
-    		.curve(d3.curveLinear)
-    		.x(function (x){return timescale(new Date(x));})
-    		.y(function (x){return clip(yscale(mediane[x] || 0),yscale(14)+.5,yscale(0)-.5);})
-        (all_weeks.concat([week_after])))
+      .curve(d3.curveLinear)
+      .x(function (x){return timescale(new Date(x));})
+      .y(function (x){return clip(yscale(mediane[x] || 0),yscale(14)+.5,yscale(0)-.5);})
+      (all_weeks.concat([week_after])))
+
+    // Presence
+    plot_area.append("path").attr("id","curve_presence")
+      .attr("d", d3.area()
+      .curve(d3.curveLinear)
+      .x(function (x){return timescale(new Date(x));})
+      .y1(function (x){return clip(yscale(presence[x] || 0),yscale(14)+.5,yscale(0)-.5);})
+      .y0(yscale(0))
+      (all_weeks.concat([week_after])))
     
+    // Participations
+    plot_area.append("path").attr("id","curve_participation")
+      .attr("d", d3.area()
+      .curve(d3.curveLinear)
+      .x(function (x){return timescale(new Date(x));})
+      .y1(function (x){return clip(yscale(participations[x] || 0),yscale(14)+.5,yscale(0)-.5);})
+      .y0(yscale(0))
+      (all_weeks.concat([week_after])))
+
+
     plot_area.append("path").attr("id","curve_vacances")
       .attr("d", d3.area()
-    		.curve(d3.curveStepAfter)
-    		.x(function (x){return timescale(new Date(x));})
-    		.y1(function (x){return yscale(14*vacances[x] || 0);})
-    		.y0(yscale(0))
-        (all_weeks.concat([week_after])))
-    
+      .curve(d3.curveStepAfter)
+      .x(function (x){return timescale(new Date(x));})
+      .y1(function (x){return yscale(14*vacances[x] || 0);})
+      .y0(yscale(0))
+      (all_weeks.concat([week_after])))
+
     // Tooltips
     d3.select("#presence_chart").append('g').classed("tooltipRectangle",1).selectAll("rect.tooltip").data(all_weeks).enter()
-      .append("rect").classed('tooltip',1)
+      .append("rect")
+      .classed('tooltip', true)
       .attr('x',function (x){return timescale(new Date(x));})
       .attr('y',yscale(14))
       .attr('width',week_width)
@@ -125,22 +125,17 @@ function plot_activity_data(url) {
         $("#tooltip_presences").html(presence[x]);
         $("#tooltip_mediane").html(mediane[x]);
         $("#tooltip_mots").html(mots[x]);
-        if(vacances[x]==1){
-    	   $("#tooltip #banner_vacances").show();
-        }
-        else {
-    	   $("#tooltip #banner_vacances").hide();
-        }
+        $("#banner_vacances")[vacances[x]==1 ? 'show' : 'hide']();
       })
       .on('mousemove', function(e) {
-        $('#tooltip').css('left', d3.event.pageX - 200)
-             .css('top', d3.event.pageY + 20)
-             .show();
+        $('#tooltip_activity').css('left', d3.event.pageX - 200)
+         .css('top', d3.event.pageY + 20)
+         .show();
       })
       .on('mouseleave', function() {
-        $("#tooltip").css("display","none");
+        $("#tooltip_activity").css("display","none");
       })
-    
+
     // Axes
     d3.select("#presence_chart").append("g").attr('id','yaxis')
       .attr("transform","translate("+(margin_left-6)+",0)")
@@ -148,6 +143,12 @@ function plot_activity_data(url) {
     d3.select("#presence_chart").append("g").attr('id','timeaxis')
       .attr("transform","translate(0,"+(svg_height-margin_bottom+5)+")")
       .call(d3.axisBottom(timescale).ticks(10).tickFormat(d3.timeFormat("%b %y")))
-    
+
+    d3.select("#presence_chart").append('text')
+      .attr('x', -svg_height/2)
+      .attr('y', 10)
+      .classed('yaxistitle', true)
+      .attr('transform', 'rotate(-90)')
+      .text('Séances par semaine');
   });
 }
