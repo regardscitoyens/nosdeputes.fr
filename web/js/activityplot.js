@@ -19,7 +19,11 @@ function get_last_monday(day) {
   return d;
 }
 
-function plot_activity_data(url, divid) {
+function plot_activity_data(url, divid, width, height, type) {
+  var svg_width = width;
+  var svg_height = height - 30;
+  var margin_left = 45;
+  var margin_bottom = 25;
   d3.json(url, function(data) {
     var startdate = get_last_monday(data["date_debut"]);
     var enddate = get_last_monday(new Date());
@@ -29,23 +33,25 @@ function plot_activity_data(url, divid) {
     for (var d = new Date(startdate); d <= enddate; d.setDate(d.getDate() + 7)) {
       var md = get_last_monday(d);
       all_weeks[md] = 0;
-      presence[md] = data['n_presences']['commission'][idx] + data['n_presences']['hemicycle'][idx];
-      participations[md] = data['n_participations']['commission'][idx] + data['n_participations']['hemicycle'][idx];
-      mots[md] = data['n_mots']['commission'][idx] + data['n_mots']['hemicycle'][idx];
-      mediane[md] = data["presences_medi"]["total"][idx];
+      if (type === "total") {
+        presence[md] = data['n_presences']['commission'][idx] + data['n_presences']['hemicycle'][idx];
+        participations[md] = data['n_participations']['commission'][idx] + data['n_participations']['hemicycle'][idx];
+        mots[md] = data['n_mots']['commission'][idx] + data['n_mots']['hemicycle'][idx];
+      } else {
+        presence[md] = data['n_presences'][type][idx];
+        participations[md] = data['n_participations'][type][idx];
+        mots[md] = data['n_mots'][type][idx];
+      }
+      mediane[md] = data["presences_medi"][type][idx];
       vacances[md] = !!data['vacances'][idx];
       idx++;
     }
     all_weeks = Object.keys(all_weeks)
 
-    var svg_width=800;
-    var svg_height=150;
-
-    var margin_left=45;
-    var margin_bottom=25;
     var week_width = (svg_width-margin_left)/Object.keys(all_weeks).length+0.2;
 
     $("#"+divid).html(
+      '<h3>Participation globale au cours de toute la législature (hémicycle et commissions)</h3>' +
       '<svg width='+svg_width+' height='+svg_height+'></svg>'
     );
     var svg = d3.select("#"+divid+" svg");
@@ -93,7 +99,7 @@ function plot_activity_data(url, divid) {
         .y0(yscale(0))
         (all_weeks)
       );
-    
+
     // Participations
     plot_area.append("path")
       .attr("id", "curve_participation")
