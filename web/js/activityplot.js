@@ -67,8 +67,21 @@ function plot_activity_data(url, divid, width, height, type) {
     else titre += "en " + type.replace('commission', 'commissions') + " au cours " + extra;
 
     $("#"+divid).html(
-      '<h3>' + titre + '</h3>' + 
-      '<svg width='+svg_width+' height='+svg_height+'></svg>'
+'<h3>' + titre + '</h3>' +
+'<svg width='+svg_width+' height='+svg_height+'></svg>' +
+'<center class="tooltip_activity">' +
+  '<div class="tooltip_title">Semaine du <span class="tooltip_week"></span></div>' +
+  '<table>' +
+    '<tr><td><svg><rect class="mediane"/></svg>Médiane</td><td class="tooltip_mediane"></td></tr>' +
+    '<tr><td><svg><rect class="participations"/></svg>Participations</td><td width=20 class="tooltip_participations"></td></tr>' +
+    '<tr><td><svg><rect class="presence"/></svg>Présences</td><td class="tooltip_presences"></td></tr>' +
+    '<tr><td><svg><rect class="mots"/></svg>Mots prononcés</td><td class="tooltip_mots"></td></tr>' +
+  '</table>' +
+  '<div class="banner_vacances">' +
+    '<br><br><br>' +
+    '<b>Vacances Parlementaires</b>' +
+  '</div>' +
+'</center>'
     );
     var svg = d3.select("#"+divid+" svg");
 
@@ -139,6 +152,7 @@ function plot_activity_data(url, divid, width, height, type) {
       ).attr("transform", "translate(-"+(week_width/2)+", 0)");
 
     // Tooltips
+    var tooltipid = '#'+divid+' .tooltip_activity';
     svg.append('g')
       .classed("tooltipRectangle", true)
       .selectAll("rect.tooltip")
@@ -152,20 +166,20 @@ function plot_activity_data(url, divid, width, height, type) {
       .attr('height', yscale(0)-yscale(14))
       .attr("date", function (x){return x;})
       .on('mouseover', function (x){
-        $("#tooltip_week").html(d3.timeFormat("%d %b %Y")(new Date(x)));
-        $("#tooltip_participations").html(participations[x]);
-        $("#tooltip_presences").html(presence[x]);
-        $("#tooltip_mediane").html(mediane[x]);
-        $("#tooltip_mots").html(mots[x]);
-        $("#banner_vacances")[vacances[x]==1 ? 'show' : 'hide']();
+        $(tooltipid+" .tooltip_week").html(d3.timeFormat("%d %b %Y")(new Date(x)));
+        $(tooltipid+" .tooltip_participations").html(participations[x]);
+        $(tooltipid+" .tooltip_presences").html(presence[x]);
+        $(tooltipid+" .tooltip_mediane").html(mediane[x]);
+        $(tooltipid+" .tooltip_mots").html(mots[x]);
+        $(tooltipid+" .banner_vacances")[vacances[x]==1 ? 'show' : 'hide']();
       })
       .on('mousemove', function(e){
-        $('#tooltip_activity').css('left', d3.event.pageX - 200)
+        $(tooltipid).css('left', d3.event.pageX - 200)
          .css('top', d3.event.pageY + 20)
          .show();
       })
       .on('mouseleave', function(){
-        $("#tooltip_activity").css("display", "none");
+        $(tooltipid).css("display", "none");
       })
 
     // Axes
@@ -184,5 +198,6 @@ function plot_activity_data(url, divid, width, height, type) {
       .classed('yaxistitle', true)
       .attr('transform', 'rotate(-90)')
       .text('Séances par semaine');
+
   });
 }
