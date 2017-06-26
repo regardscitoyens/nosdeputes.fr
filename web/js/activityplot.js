@@ -25,8 +25,8 @@ function plot_activity_data(url, divid, width, height, type) {
   var margin_left = 45;
   var margin_bottom = 25;
   d3.json(url, function(data) {
-    var startdate = get_last_monday(data["date_debut"]);
-    var enddate = get_last_monday(new Date());
+    var startdate = get_last_monday(data.date_debut);
+    var enddate = get_last_monday(data.date_fin);
     var all_weeks = {}; // Becomes a list later
     var idx = 0;
     var mediane = {}; var presence = {}; var participations = {}; var mots = {}; var vacances = {};
@@ -34,24 +34,40 @@ function plot_activity_data(url, divid, width, height, type) {
       var md = get_last_monday(d);
       all_weeks[md] = 0;
       if (type === "total") {
-        presence[md] = data['n_presences']['commission'][idx] + data['n_presences']['hemicycle'][idx];
-        participations[md] = data['n_participations']['commission'][idx] + data['n_participations']['hemicycle'][idx];
-        mots[md] = data['n_mots']['commission'][idx] + data['n_mots']['hemicycle'][idx];
+        presence[md] = data.n_presences.commission[idx] + data.n_presences.hemicycle[idx];
+        participations[md] = data.n_participations.commission[idx] + data.n_participations.hemicycle[idx];
+        mots[md] = data.n_mots.commission[idx] + data.n_mots.hemicycle[idx];
       } else {
-        presence[md] = data['n_presences'][type][idx];
-        participations[md] = data['n_participations'][type][idx];
-        mots[md] = data['n_mots'][type][idx];
+        presence[md] = data.n_presences[type][idx];
+        participations[md] = data.n_participations[type][idx];
+        mots[md] = data.n_mots[type][idx];
       }
-      mediane[md] = data["presences_medi"][type][idx];
-      vacances[md] = !!data['vacances'][idx];
+      mediane[md] = data.presences_medi[type][idx];
+      vacances[md] = !!data.vacances[idx];
       idx++;
     }
     all_weeks = Object.keys(all_weeks)
 
     var week_width = (svg_width-margin_left)/Object.keys(all_weeks).length+0.2;
 
+    var titre = "Participation ",
+      extra = "";
+    if (data.periode === "lastyear") {
+      if (data.fin)
+        extra = 'de toute la législature';
+      else if (data.mandat_clos)
+        extra = 'de la dernière année de mandat';
+      else {
+        var mois = Math.min(12, Math.floor(enddate - startdate) / (60*60*24*30));
+        extra = (mois < 2 ? "du premier" : "des " + mois + " " + (mois < 12 ? "prem" : "dern") + "iers") + " mois";
+      }
+    } else extra = "de la session " + data.periode.replace(/^(\d{4})/, '$1-');
+    if (type === 'total')
+      titre += "globale au cours " + extra + " (hémicycle et commissions)";
+    else titre += "en " + type.replace('commission', 'commissions') + " au cours " + extra;
+
     $("#"+divid).html(
-      '<h3>Participation globale au cours de toute la législature (hémicycle et commissions)</h3>' +
+      '<h3>' + titre + '</h3>' + 
       '<svg width='+svg_width+' height='+svg_height+'></svg>'
     );
     var svg = d3.select("#"+divid+" svg");

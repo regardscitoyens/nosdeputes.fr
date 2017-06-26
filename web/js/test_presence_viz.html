@@ -25,11 +25,13 @@
   <div id="full_chart" class="activity_plot"></div>
   <div id="hemicycle_chart" class="activity_plot"></div>
   <div id="commission_chart" class="activity_plot"></div>
+  <div id="session_chart" class="activity_plot"></div>
 </center>
 
 <script type="text/javascript">
 plot_activity_data("/frontend_dev.php/gilles-carrez/graphes/lastyear/total?questions=true&format=json", "small_full_chart", 700, 150, "total");
 plot_activity_data("/frontend_dev.php/gilles-carrez/graphes/lastyear/total?questions=true&format=json", "full_chart", 900, 300, "total");
-plot_activity_data("/frontend_dev.php/gilles-carrez/graphes/lastyear/total?questions=true&format=json", "hemicycle_chart", 900, 300, "hemicycle");
-plot_activity_data("/frontend_dev.php/gilles-carrez/graphes/lastyear/total?format=json", "commission_chart", 900, 300, "commission");
+plot_activity_data("/frontend_dev.php/gilles-carrez/graphes/lastyear/hemicycle?questions=true&format=json", "hemicycle_chart", 900, 300, "hemicycle");
+plot_activity_data("/frontend_dev.php/gilles-carrez/graphes/lastyear/commission?format=json", "commission_chart", 900, 300, "commission");
+plot_activity_data("/frontend_dev.php/gilles-carrez/graphes/20152016/total?format=json", "session_chart", 900, 300, "total");
 </script>
