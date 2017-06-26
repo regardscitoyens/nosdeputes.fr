@@ -1,8 +1,14 @@
-#presence_chart {
+.activity_plot {
+  font-family: Liberation Sans, sans-serif;
   border: 0px solid black;
 }
+.activity_plot h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: normal;
+}
 
-#presence_chart rect.presence,
+#activity_plot rect.presence,
 #tooltip_activity rect.presence,
 #curve_presence {
   fill: red;
@@ -18,11 +24,11 @@ rect.mediane {
   fill: rgb(150,150,150);
 }
 
-#presence_chart rect.mots,
+#activity_plot rect.mots,
 #tooltip_activity rect.mots {
   fill: white;
 }
-#presence_chart rect.participations,
+#activity_plot rect.participations,
 #tooltip_activity rect.participations,
 #curve_participation {
   fill: orange;

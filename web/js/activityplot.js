@@ -19,7 +19,11 @@ function get_last_monday(day) {
   return d;
 }
 
-function plot_activity_data(url, divid) {
+function plot_activity_data(url, divid, width, height) {
+  var svg_width = width;
+  var svg_height = height - 30;
+  var margin_left=45;
+  var margin_bottom=25;
   d3.json(url, function(data) {
     var startdate = get_last_monday(data["date_debut"]);
     var enddate = get_last_monday(new Date());
@@ -38,14 +42,10 @@ function plot_activity_data(url, divid) {
     }
     all_weeks = Object.keys(all_weeks)
 
-    var svg_width=800;
-    var svg_height=150;
-
-    var margin_left=45;
-    var margin_bottom=25;
     var week_width = (svg_width-margin_left)/Object.keys(all_weeks).length+0.2;
 
     $("#"+divid).html(
+      '<h3>Participation globale au cours de toute la législature (hémicycle et commissions)</h3>' +
       '<svg width='+svg_width+' height='+svg_height+'></svg>'
     );
     var svg = d3.select("#"+divid+" svg");
