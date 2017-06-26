@@ -1,0 +1,174 @@
+---
+
+- name: Installation docker
+  include: docker.yml
+
+- name: Creation user '{{ cpc_user }}'
+  user:
+    name: '{{ cpc_user }}'
+    state: present
+    home: '{{ cpc_home }}'
+
+- name: Vérification mot de passe '{{ cpc_user }}'
+  shell: 'cat /etc/shadow | egrep ^{{ cpc_user }}: | cut -d ":" -f 2 | wc -c'
+  register: cpc_crypted_password
+  changed_when: false
+
+- name: Suppression mot de passe '{{ cpc_user }}'
+  command: 'passwd -d {{ cpc_user }}'
+  when: cpc_crypted_password.stdout != '1'
+
+- name: Lecture UID '{{ cpc_user }}'
+  shell: 'cat /etc/passwd | egrep ^{{ cpc_user }}: | cut -d ":" -f 3'
+  register: cpc_user_id
+  changed_when: false
+
+- name: Clonage repo git
+  git:
+    repo: '{{ cpc_repo }}'
+    dest: '{{ cpc_home }}/repo'
+    version: '{{ cpc_version }}'
+
+- name: Permissions repo git
+  file:
+    path: '{{ cpc_home }}/repo'
+    state: directory
+    owner: '{{ cpc_user }}'
+    recurse: yes
+
+- name: Création sous-répertoires repo
+  file:
+    dest: '{{ cpc_home }}/repo/{{ item }}'
+    state: directory
+    mode: 0777
+    owner: '{{ cpc_user }}'
+  with_items:
+    - cache
+    - lib/vendor/SolrServer/solr/data
+    - log
+    - web/images/tmp/xspchart
+
+- name: Génération secret
+  shell: 'head -c 50 /dev/urandom | base64 > {{ cpc_home }}/secret'
+  args:
+    creates: '{{ cpc_home }}/secret'
+
+- name: Lecture secret
+  shell: 'cat {{ cpc_home }}/secret'
+  register: cpc_secret
+
+- name: Création répertoires docker
+  file:
+    dest: '{{ cpc_home }}/docker/{{ item }}'
+    state: directory
+    owner: '{{ cpc_user }}'
+  with_items:
+    - web
+    - solr
+
+- name: Création dockerfiles et config docker-compose
+  template:
+    src: '{{ item.from }}'
+    dest: '{{ cpc_home }}/docker/{{ item.to }}'
+    owner: '{{ cpc_user }}'
+  with_items:
+    - from: web_Dockerfile.j2
+      to: web/Dockerfile
+    - from: web_php.ini.j2
+      to: web/web_php.ini
+    - from: cli_php.ini.j2
+      to: web/cli_php.ini
+    - from: solr_Dockerfile.j2
+      to: solr/Dockerfile
+    - from: docker-compose.yml.j2
+      to: docker-compose.yml
+
+- name: Copie fichiers nécessaires à docker
+  copy:
+    src: '{{ item.from }}'
+    dest: '{{ cpc_home }}/docker/{{ item.to }}'
+    owner: '{{ cpc_user }}'
+  with_items:
+    - from: 000-default.conf
+      to: web/000-default.conf
+    - from: solr_cpc.xml
+      to: solr/solr_cpc.xml
+
+- name: Arrêt containers
+  command: 'docker-compose -p {{ cpc_instance_name }} stop'
+  args:
+    chdir: '{{ cpc_home }}/docker'
+
+- name: Construction containers
+  command: 'docker-compose -p {{ cpc_instance_name }} build --force-rm'
+  args:
+    chdir: '{{ cpc_home }}/docker'
+
+- name: Démarrage containers
+  command: 'docker-compose -p {{ cpc_instance_name }} up -d'
+  args:
+    chdir: '{{ cpc_home }}/docker'
+
+- name: Rechargement Apache dans container
+  include: roles/cpc.exec/tasks/main.yml
+  vars:
+    command: service apache2 reload
+
+- name: Création des fichiers de config cpc (templates)
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ cpc_home }}/repo/{{ item.dest }}'
+    owner: '{{ cpc_user }}'
+  with_items:
+    - src: db.inc.j2
+      dest: bin/db.inc
+    - src: app.yml.j2
+      dest: config/app.yml
+    - src: factories.yml.j2
+      dest: apps/frontend/config/factories.yml
+
+- name: Création des fichiers de config cpc (statiques)
+  copy:
+    src: '{{ item }}'
+    dest: '{{ cpc_home }}/repo/config/{{ item }}'
+    owner: '{{ cpc_user }}'
+  with_items:
+    - ProjectConfiguration.class.php
+    - databases.yml
+
+- name: Création fichier de config solr
+  copy:
+    src: solrconfig.xml
+    dest: '{{ cpc_home }}/repo/lib/vendor/SolrServer/solr/conf/solrconfig.xml'
+    owner: '{{ cpc_user }}'
+
+- name: Attente container MySQL
+  wait_for:
+    port: '{{ cpc_port_mysql }}'
+    connect_timeout: 5
+    timeout: 30
+
+- name: Génération routing
+  include: roles/cpc.exec/tasks/main.yml
+  vars:
+    command: bin/generate_routing.sh
+
+- name: Génération schéma base de données
+  include: roles/cpc.exec/tasks/main.yml
+  vars:
+    command: php symfony doctrine:build --all --no-confirmation
+
+- name: Vidage cache
+  include: roles/cpc.exec/tasks/main.yml
+  vars:
+    command: php symfony cc
+
+- name: Import dump
+  include: dump.yml
+  when: cpc_dump is defined
+
+- name: Création raccourci docker-compose
+  template:
+    src: compose.j2
+    dest: /usr/local/bin/dc-{{ cpc_instance_name }}
+    mode: 0755

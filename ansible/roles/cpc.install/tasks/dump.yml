@@ -1,0 +1,17 @@
+---
+
+- name: Copie dump
+  copy:
+    src: '{{ cpc_dump }}'
+    dest: '{{ cpc_home }}/repo/data/dump.sql.gz'
+    owner: '{{ cpc_user }}'
+
+- name: Chargement dump
+  include: roles/cpc.exec/tasks/main.yml
+  vars:
+    command: bash -c "zcat data/dump.sql.gz | mysql --default-character-set=utf8 -h database -u cpc -pcpc cpc"
+
+- name: Reconstruction top députés
+  include: roles/cpc.exec/tasks/main.yml
+  vars:
+    command: php symfony top:Deputes

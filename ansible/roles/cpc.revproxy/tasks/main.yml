@@ -1,0 +1,16 @@
+---
+
+- name: Création config vhost apache
+  template:
+    src: cpc.conf.j2
+    dest: /etc/apache2/sites-available/999-cpc_{{ cpc_instance_name }}.conf
+  notify:
+    - reload apache
+
+- name: Création lien config vhost apache
+  file:
+    src: /etc/apache2/sites-available/999-cpc_{{ cpc_instance_name }}.conf
+    path: /etc/apache2/sites-enabled/999-cpc_{{ cpc_instance_name }}.conf
+    state: link
+  notify:
+    - reload apache
