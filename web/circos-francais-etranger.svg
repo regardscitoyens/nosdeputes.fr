@@ -278,8 +278,8 @@
   </g>
   <g id="layers">
    <g id="c01" class="jstitle circonscription circo999-01"
-    title="Première circonscription des français de l'étranger : -- États-Unis, Canada">
-    <title>Première circonscription des français de l'étranger : États-Unis, Canada</title>
+    title="Première circonscription des français de l'étranger : Amérique du Nord -- Canada, États-Unis">
+    <title>Première circonscription des français de l'étranger : Amérique du Nord (Canada, États-Unis)</title>
     <use xlink:href="#f-path-CA"></use>
     <use xlink:href="#f-path-US"></use>
     <use xlink:href="#f-path-GU"></use>
@@ -289,8 +289,8 @@
     <use xlink:href="#f-path-AS"></use>
    </g>
    <g id="c02" class="jstitle circonscription circo999-02"
-    title="Deuxième circonscription des français de l'étranger : -- Amérique du Sud, Amérique centrale, Mexique, Caraïbes">
-    <title>Deuxième circonscription des français de l'étranger : Amérique du Sud, Amérique centrale, Mexique, Caraïbes</title>
+    title="Deuxième circonscription des français de l'étranger : Amérique centrale et Amérique du Sud -- Antigua-et-Barbuda, Argentine, Bahamas, Barbade, Belize, Bolivie, Brésil, Chili, Colombie, Costa Rica, Cuba, République dominicaine, Dominique, Équateur, Grenade, Guatemala, Guyana, Haïti, Honduras, Jamaïque, Mexique, Nicaragua, Panama, Paraguay, Pérou, Saint-Christophe-et-Niévès, Sainte-Lucie, Saint-Vincent-et-les Grenadines, Salvador, Suriname, Trinité-et-Tobago, Uruguay, Venezuela">
+    <title>Deuxième circonscription des français de l'étranger : Amérique centrale et Amérique du Sud (Antigua-et-Barbuda, Argentine, Bahamas, Barbade, Belize, Bolivie, Brésil, Chili, Colombie, Costa Rica, Cuba, République dominicaine, Dominique, Équateur, Grenade, Guatemala, Guyana, Haïti, Honduras, Jamaïque, Mexique, Nicaragua, Panama, Paraguay, Pérou, Saint-Christophe-et-Niévès, Sainte-Lucie, Saint-Vincent-et-les Grenadines, Salvador, Suriname, Trinité-et-Tobago, Uruguay, Venezuela)</title>
     <use xlink:href="#f-path-AG"></use>
     <use xlink:href="#f-path-AR"></use>
     <use xlink:href="#f-path-BS"></use>
@@ -326,8 +326,8 @@
     <use xlink:href="#f-path-VE"></use>
    </g>
    <g id="c03" class="jstitle circonscription circo999-03"
-    title="Troisième circonscription des français de l'étranger : -- Europe du Nord">
-    <title>Troisième circonscription des français de l'étranger : Europe du Nord</title>
+    title="Troisième circonscription des français de l'étranger : Europe du Nord -- Danemark, Estonie, Finlande, Irlande, Islande, Lettonie, Lituanie, Norvège, Royaume-Uni, Suède">
+    <title>Troisième circonscription des français de l'étranger : Europe du Nord (Danemark, Estonie, Finlande, Irlande, Islande, Lettonie, Lituanie, Norvège, Royaume-Uni, Suède)</title>
     <use xlink:href="#f-path-AI"></use>
     <use xlink:href="#f-path-BM"></use>
     <use xlink:href="#f-path-DK"></use>
@@ -360,8 +360,8 @@
     <use xlink:href="#f-path-IO"></use>
    </g>
    <g id="c04" class="jstitle circonscription circo999-04"
-    title="Quatrième circonscription des français de l'étranger : -- Benelux">
-    <title>Quatrième circonscription des français de l'étranger : Benelux</title>
+    title="Quatrième circonscription des français de l'étranger : Benelux -- Belgique, Luxembourg, Pays-Bas">
+    <title>Quatrième circonscription des français de l'étranger : Benelux (Belgique, Luxembourg, Pays-Bas)</title>
     <use xlink:href="#f-path-AW"></use>
     <use xlink:href="#f-path-BE"></use>
     <use xlink:href="#f-path-CW"></use>
@@ -371,22 +371,22 @@
     <use xlink:href="#f-path-SX"></use>
    </g>
    <g id="c05" class="jstitle circonscription circo999-05"
-    title="Cinquième circonscription des français de l'étranger : -- Péninsule Ibérique">
-    <title>Cinquième circonscription des français de l'étranger : Péninsule Ibérique</title>
+    title="Cinquième circonscription des français de l'étranger : Péninsule Ibérique -- Andorre, Espagne, Monaco, Portugal">
+    <title>Cinquième circonscription des français de l'étranger : Péninsule Ibérique (Andorre, Espagne, Monaco, Portugal)</title>
     <use xlink:href="#f-path-AD"></use>
     <use xlink:href="#f-path-ES"></use>
     <use xlink:href="#f-path-MC"></use>
     <use xlink:href="#f-path-PT"></use>
    </g>
    <g id="c06" class="jstitle circonscription circo999-06"
-    title="Sixième circonscription des français de l'étranger : -- Liechtenstein, Suisse">
+    title="Sixième circonscription des français de l'étranger : Liechtenstein, Suisse">
     <title>Sixième circonscription des français de l'étranger : Liechtenstein, Suisse</title>
     <use xlink:href="#f-path-LI"></use>
     <use xlink:href="#f-path-CH"></use>
    </g>
    <g id="c07" class="jstitle circonscription circo999-07"
-    title="Septième circonscription des français de l'étranger : -- Europe centrale, Balkans">
-    <title>Septième circonscription des français de l'étranger : Europe centrale, Balkans</title>
+    title="Septième circonscription des français de l'étranger : Europe centrale, Balkans -- Albanie, Allemagne, Autriche, Bosnie-Herzégovine, Bulgarie, Croatie, Hongrie, Kosovo, Macédoine, Monténégro, Pologne, Roumanie, Serbie, Slovaquie, Slovénie, République tchèque">
+    <title>Septième circonscription des français de l'étranger : Europe centrale, Balkans (Albanie, Allemagne, Autriche, Bosnie-Herzégovine, Bulgarie, Croatie, Hongrie, Kosovo, Macédoine, Monténégro, Pologne, Roumanie, Serbie, Slovaquie, Slovénie, République tchèque)</title>
     <use xlink:href="#f-path-AL"></use>
     <use xlink:href="#f-path-DE"></use>
     <use xlink:href="#f-path-AT"></use>
@@ -405,8 +405,8 @@
     <use xlink:href="#f-path-SI"></use>
    </g>
    <g id="c08" class="jstitle circonscription circo999-08"
-    title="Huitième circonscription des français de l'étranger : -- Europe du Sud, Asie mineure">
-    <title>Huitième circonscription des français de l'étranger : Europe du Sud, Asie mineure</title>
+    title="Huitième circonscription des français de l'étranger : Europe du Sud, Asie mineure -- Chypre, Grèce, Israël, Italie, Malte, Saint-Marin, Saint-Siège, Turquie">
+    <title>Huitième circonscription des français de l'étranger : Europe du Sud, Asie mineure (Chypre, Grèce, Israël, Italie, Malte, Saint-Marin, Saint-Siège, Turquie)</title>
     <use xlink:href="#f-path-CY"></use>
     <use xlink:href="#f-path-GR"></use>
     <use xlink:href="#f-path-IL"></use>
@@ -417,8 +417,8 @@
     <use xlink:href="#f-path-VA"></use>
    </g>
    <g id="c09" class="jstitle circonscription circo999-09"
-    title="Neuvième circonscription des français de l'étranger : -- Maghreb, Afrique de l'Ouest">
-    <title>Neuvième circonscription des français de l'étranger : Maghreb, Afrique de l'Ouest</title>
+    title="Neuvième circonscription des français de l'étranger : Maghreb, Afrique de l'Ouest -- Algérie, Burkina Faso, Cap-Vert, Côte d'Ivoire, Gambie, Guinée, Guinée-Bissau, Liberia, Libye, Mali, Maroc, Mauritanie, Niger, Sénégal, Sierra Leone, Tunisie">
+    <title>Neuvième circonscription des français de l'étranger : Maghreb, Afrique de l'Ouest (Algérie, Burkina Faso, Cap-Vert, Côte d'Ivoire, Gambie, Guinée, Guinée-Bissau, Liberia, Libye, Mali, Maroc, Mauritanie, Niger, Sénégal, Sierra Leone, Tunisie)</title>
     <use xlink:href="#f-path-DZ"></use>
     <use xlink:href="#f-path-BF"></use>
     <use xlink:href="#f-path-CV"></use>
@@ -438,8 +438,8 @@
     <use xlink:href="#f-path-TN"></use>
    </g>
    <g id="c10" class="jstitle circonscription circo999-10"
-    title="Dixième circonscription des français de l'étranger : -- Afrique orientale, Moyen-Orient">
-    <title>Dixième circonscription des français de l'étranger : Afrique orientale, Moyen-Orient</title>
+    title="Dixième circonscription des français de l'étranger : Afrique orientale, Moyen-Orient -- Afrique du Sud, Angola, Arabie saoudite, Bahreïn, Bénin, Botswana, Burundi, Cameroun, République centrafricaine, Comores, République du Congo, République démocratique du Congo, Djibouti, Égypte, Émirats arabes unis, Érythrée, Éthiopie, Gabon, Ghana, Guinée équatoriale, Irak, Jordanie, Kenya, Koweït, Lesotho, Liban, Madagascar, Malawi, Maurice, Mozambique, Namibie, Nigeria, Oman, Ouganda, Qatar, Rwanda, Sao Tomé-et-Principe, Seychelles, Somalie, Soudan, Soudan du Sud, Swaziland, Syrie, Tanzanie, Tchad, Togo, Yémen, Zambie, Zimbabwe">
+    <title>Dixième circonscription des français de l'étranger : Afrique orientale, Moyen-Orient (Afrique du Sud, Angola, Arabie saoudite, Bahreïn, Bénin, Botswana, Burundi, Cameroun, République centrafricaine, Comores, République du Congo, République démocratique du Congo, Djibouti, Égypte, Émirats arabes unis, Érythrée, Éthiopie, Gabon, Ghana, Guinée équatoriale, Irak, Jordanie, Kenya, Koweït, Lesotho, Liban, Madagascar, Malawi, Maurice, Mozambique, Namibie, Nigeria, Oman, Ouganda, Qatar, Rwanda, Sao Tomé-et-Principe, Seychelles, Somalie, Soudan, Soudan du Sud, Swaziland, Syrie, Tanzanie, Tchad, Togo, Yémen, Zambie, Zimbabwe)</title>
     <use xlink:href="#f-path-ZA"></use>
     <use xlink:href="#f-path-AO"></use>
     <use xlink:href="#f-path-SA"></use>
@@ -491,8 +491,8 @@
     <use xlink:href="#f-path-ZW"></use>
    </g>
    <g id="c11" class="jstitle circonscription circo999-11"
-    title="Onzième circonscription des français de l'étranger : -- Asie, Europe de l'Est, Océanie">
-    <title>Onzième circonscription des français de l'étranger : Asie, Europe de l'Est, Océanie</title>
+    title="Onzième circonscription des français de l'étranger : Asie, Europe de l'Est, Océanie -- Afghanistan, Arménie, Australie, Azerbaïdjan, Bangladesh, Biélorussie, Birmanie, Brunei, Cambodge, Chine, Corée du Sud, Fidji, Géorgie, Îles Marshall, Inde, Indonésie, Iran, Japon, Kazakhstan, Kirghizistan, Kiribati, Laos, Malaisie, Maldives, Micronésie, Moldavie, Mongolie, Nauru, Népal, Nouvelle-Zélande, Ouzbékistan, Pakistan, Palaos, Papouasie-Nouvelle-Guinée, Philippines, Russie, Salomon, Samoa, Singapour, Sri Lanka, Tadjikistan, Taïwan, Thaïlande, Timor oriental, Tonga, Turkménistan, Tuvalu, Ukraine, Vanuatu, Viêt Nam">
+    <title>Onzième circonscription des français de l'étranger : Asie, Europe de l'Est, Océanie (Afghanistan, Arménie, Australie, Azerbaïdjan, Bangladesh, Biélorussie, Birmanie, Brunei, Cambodge, Chine, Corée du Sud, Fidji, Géorgie, Îles Marshall, Inde, Indonésie, Iran, Japon, Kazakhstan, Kirghizistan, Kiribati, Laos, Malaisie, Maldives, Micronésie, Moldavie, Mongolie, Nauru, Népal, Nouvelle-Zélande, Ouzbékistan, Pakistan, Palaos, Papouasie-Nouvelle-Guinée, Philippines, Russie, Salomon, Samoa, Singapour, Sri Lanka, Tadjikistan, Taïwan, Thaïlande, Timor oriental, Tonga, Turkménistan, Tuvalu, Ukraine, Vanuatu, Viêt Nam)</title>
     <use xlink:href="#f-path-AF"></use>
     <use xlink:href="#f-path-AM"></use>
     <use xlink:href="#f-path-AU"></use>
@@ -562,7 +562,7 @@
     <use xlink:href="#f-path-TF"></use>
     <use xlink:href="#f-path-WF"></use>
    </g>
-   <g id="nocirco">
+   <g id="nocirco" title="Antarctique, Bhoutan, Corée du Nord, Palestine">
     <use xlink:href="#f-path-AQ"></use>
     <use xlink:href="#f-path-BT"></use>
     <use xlink:href="#f-path-KP"></use>

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec docker-compose -p {{ cpc_instance_name }} -f {{ cpc_home }}/docker/docker-compose.yml "$@"

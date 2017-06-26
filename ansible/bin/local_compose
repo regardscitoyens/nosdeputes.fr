@@ -1,0 +1,3 @@
+#!/bin/bash
+
+exec docker-compose -p dev_local -f /opt/cpc/docker/docker-compose.yml "$@"

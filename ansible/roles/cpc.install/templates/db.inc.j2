@@ -1,9 +1,9 @@
-MYSQLID="-u cpc -pM_O_T__D_E__P_A_S_S_E"
+MYSQLID="-h database -u cpc -pcpc"
 DBNAME="cpc"
 DUMPDIR="data/sql/dumps"
-PATH_APP="/home/nosdeputes/project"
-SOLR_DATA_PATH="$PATH_APP/lib/vendor/SolrServer/solr/data"
-VHOST=www.nosdeputes.fr
+PATH_APP="/var/www/cpc"
+SOLR_DATA_PATH="$PATH_APP/data/solr"
+VHOST={{ cpc_domain }}
 PADURL=https://etherpad.mozilla.org/xxxxxxxxxxx
 PADBOT="phantomjs --cookies-file=cache/phanom.cookie /home/nosdeputes/padbot/etherpad.js"
-LEGISLATURE=15
+LEGISLATURE={{ cpc_legislature }}
