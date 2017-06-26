@@ -1,0 +1,33 @@
+<meta charset="UTF-8">
+
+<script src="d3.v4.min.js"></script>
+<script src="jquery-1.8.3.min.js"></script>
+<script src="activityplot.js"></script>
+
+<center>
+    <div id=tooltip>
+	<table>
+	    <tr><td><svg><rect width=100% height=100% class=mediane /></svg>Mediane</td><td id=tooltip_mediane></td></tr>
+	    <tr><td><svg><rect width=100% height=100% class=participations /></svg>Participations</td><td width=20 id=tooltip_participations></td></tr>
+	    <tr><td><svg><rect width=100% height=100% class=presence /></svg>Présences</td><td id=tooltip_presences></td></tr>
+	    <tr><td><svg><rect width=100% height=100% class=mots /></svg>Mots prononcés</td><td id=tooltip_mots></td></tr>
+	</table>
+	<div id=banner_vacances>
+	    <br><br><br>
+	    <b>Vacances Parlementaires</b>
+	</div>
+	<div class=title>Semaine du <div id=tooltip_week></div></div>
+
+    </div>
+    <svg id="presence_chart">
+	<text x=-65 y=10 style='text-anchor:middle;font-size:12px;fill:gray;' transform='rotate(-90)'>Séances par semaine</text>
+    </svg>
+    <div id=legend></div>
+</center>
+
+<link rel="stylesheet" type="text/css" href="../css/xneth/presence_viz.css">
+
+
+<script type="text/javascript">
+plot_activity_data("/lionel-tardy/graphes/lastyear/total?questions=true&format=json");
+</script>
