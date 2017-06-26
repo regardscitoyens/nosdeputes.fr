@@ -23,11 +23,11 @@ class plotActions extends sfActions {
     $this->link = $request->getParameter('link');
     if (!$this->link)
       $this->link = 'false';
-    $this->drawAction = $request->getParameter('drawAction');
-    if (!$this->drawAction)
-      $this->drawAction = "draw";
+    $this->format = $request->getParameter('format');
+    if (!$this->format)
+      $this->format = "draw";
     $this->mapId = $request->getParameter('mapId');
-    $this->forward404Unless($this->mapId && preg_match('/^Map_.*_\d+\.map$/', $this->mapId));
+    $this->forward404Unless(($this->mapId && preg_match('/^Map_.*_\d+\.map$/', $this->mapId)) || $this->format == 'json');
     sfConfig::set('sf_web_debug', false);
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
@@ -37,9 +37,9 @@ class plotActions extends sfActions {
   }
 
   public function executeGeneratePlotGroupes(sfWebRequest $request) {
-    $this->drawAction = $request->getParameter('drawAction');
-    if (!$this->drawAction)
-      $this->drawAction = "draw";
+    $this->format = $request->getParameter('format');
+    if (!$this->format)
+      $this->format = "draw";
     $this->mapId = $request->getParameter('mapId');
     $this->forward404Unless($this->mapId && preg_match('/^Map_\d+\.map$/', $this->mapId));
     $this->type = $request->getParameter('type');

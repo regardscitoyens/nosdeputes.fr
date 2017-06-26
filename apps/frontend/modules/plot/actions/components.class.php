@@ -100,32 +100,32 @@ class plotComponents extends sfComponents
       }
     }
     unset($participations);
-   if (!$this->data['fin']) {
-    $query3 = Doctrine_Query::create()
-      ->select('count(distinct s.id, i.section_id) as nombre, i.id, s.annee, s.numero_semaine')
-      ->from('Intervention i')
-      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.type = ?', 'question')
-      ->andWhere('i.fonction NOT LIKE ?', 'président%')
-      ->andWhere('i.nb_mots > ?', 2*$seuil_invective)
-      ->leftJoin('i.Seance s');
-    if ($this->session === 'lastyear')
-      $query3->andWhere('s.date > ?', $date_debut);
-    else $query3->andWhere('s.session = ?', $this->session);
-    $query3->groupBy('s.annee, s.numero_semaine');
-    $questionsorales = $query3->fetchArray();
+    if (!$this->data['fin']) {
+      $query3 = Doctrine_Query::create()
+        ->select('count(distinct s.id, i.section_id) as nombre, i.id, s.annee, s.numero_semaine')
+        ->from('Intervention i')
+        ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+        ->andWhere('i.type = ?', 'question')
+        ->andWhere('i.fonction NOT LIKE ?', 'président%')
+        ->andWhere('i.nb_mots > ?', 2*$seuil_invective)
+        ->leftJoin('i.Seance s');
+      if ($this->session === 'lastyear')
+        $query3->andWhere('s.date > ?', $date_debut);
+      else $query3->andWhere('s.session = ?', $this->session);
+      $query3->groupBy('s.annee, s.numero_semaine');
+      $questionsorales = $query3->fetchArray();
 
-    $this->data['n_questions'] = array_fill(1, $n_weeks, 0);
-    foreach ($questionsorales as $question) {
-      $n = ($question['Seance']['annee'] - $annee0)*53 + $question['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($n <= $n_weeks) {
-        if ($this->data['n_questions'][$n] == 0)
-          $this->data['n_questions'][$n] -= 0.15;
-        $this->data['n_questions'][$n] += $question['nombre'];
+      $this->data['n_questions'] = array_fill(1, $n_weeks, 0);
+      foreach ($questionsorales as $question) {
+        $n = ($question['Seance']['annee'] - $annee0)*53 + $question['Seance']['numero_semaine'] - $sem0 + 1;
+        if ($n <= $n_weeks) {
+          if ($this->data['n_questions'][$n] == 0)
+            $this->data['n_questions'][$n] -= 0.15;
+          $this->data['n_questions'][$n] += $question['nombre'];
+        }
       }
+      unset($questionsorales);
     }
-    unset($questionsorales);
-   }
 
     # Données de présence mediane par semaine
     $this->data['presences_medi'] = array(
@@ -173,6 +173,8 @@ class plotComponents extends sfComponents
         if (isset($this->data['n_questions']))
           $this->data['n_questions'][$i] = 0;
       }
+
+    $this->data['date_debut'] = $date_debut;
   }
 
   public static function getVacances($n_weeks, $annee0, $sem0, $debut_mandat) {

@@ -1,11 +1,12 @@
 <?php
 
-$data = unserialize(get_component('plot', 'getParlData', array('parlementaire' => $parlementaire, 'session' => $time)));
+$data = get_component('plot', 'getParlData', array('parlementaire' => $parlementaire, 'session' => $time));
 
-if ($drawAction == 'txt') {
+if ($format == 'json') {
     print_r($data);
     exit;
 }
+$data = json_decode($data, true);
 
 $n = count($data['labels']);
 $presences = array_fill(1, $n, 0);
@@ -43,7 +44,7 @@ if ($link === 'true') {
   }
 }
 
-if ($drawAction === "map" ) {
+if ($format === "map" ) {
   $Test = new xsPChart(800,$size);
   $Test->getImageMap($mapId, TRUE);
 }
