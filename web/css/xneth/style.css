@@ -1087,17 +1087,20 @@ h1 {
   border: 2px solid #dcd6ca;
 }
 .graph_depute {
-  float: right;
-  width: 800px;
-  height: 170px;
-  margin-right: 3px;
+  float: left;
+  width: 795px;
+  height: 165px;
   text-align: center;
 }
 .graph_depute p {
   text-align: center;
   margin: 0px;
+  margin-top: -2px;
   padding: 0px;
-  font-size: 0.9em;
+  font-size: 13px;
+}
+.graph_depute p a {
+  font-size: 11px;
 }
 .barre_activite {
   float: left;
@@ -1847,6 +1850,10 @@ h2 {
   font-size: 1.4em;
   margin: 0px;
   padding: 0px;
+}
+.par_session p {
+  margin-top: 0;
+  margin-bottom: 25px;
 }
 #center {
   width: 390px;
