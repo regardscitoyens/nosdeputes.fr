@@ -136,7 +136,7 @@ function plot_activity_data(url, divid, width, height, type) {
         .y1(function (x){return yscale(14*vacances[x] || 0);})
         .y0(yscale(0))
         (all_weeks)
-      );
+      ).attr("transform", "translate(-"+(week_width/2)+", 0)");
 
     // Tooltips
     svg.append('g')
