@@ -1,8 +1,7 @@
 <meta charset="UTF-8">
 
-<script src="js/d3.v4.min.js"></script>
-<script src="js/jquery-3.2.1.min.js"></script>
-<script src="js/underscore-min-1.8.3.js"></script>
+<script src="d3.v4.min.js"></script>
+<script src="jquery-1.8.3.min.js"></script>
 
 <center>
     <div id=tooltip>
@@ -25,7 +24,7 @@
     <div id=legend></div>
 </center>
 
-<link rel="stylesheet" type="text/css" href="presence_viz.css">
+<link rel="stylesheet" type="text/css" href="../css/xneth/presence_viz.css">
 
 
 <script type="text/javascript">
@@ -55,7 +54,7 @@
  for (var d = new Date(legislature_debut); d <= legislature_fin; d.setDate(d.getDate() + 1)) {
      all_weeks[get_last_monday(d)] = 0;
  }
- all_weeks = _.keys(all_weeks)
+ all_weeks = Object.keys(all_weeks)
 
  function random(a,b) {
      return Math.round(Math.random()*(b-a)+a);
@@ -97,7 +96,7 @@
  $("#presence_chart").css('width',svg_width).css('height',svg_height);
  var margin_left=45;
  var margin_bottom=25;
- var week_width = (svg_width-margin_left)/_.keys(all_weeks).length+0.2;
+ var week_width = (svg_width-margin_left)/Object.keys(all_weeks).length+0.2;
 
  // Scales
  timescale = d3.scaleLinear()
