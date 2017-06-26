@@ -15,7 +15,6 @@ else {
   if ($type === 'commission') $titre .= 's';
   $titre .= '-'.$shortduree;
 }
-$PictureID = "Map_".$parlementaire->slug.'_'.rand(1,10000).".map";
 if ($link === 'true') {
   $time = 'lastyear';
   if (myTools::isFinLegislature()) $time = 'legislature';
@@ -23,17 +22,12 @@ if ($link === 'true') {
   if (!isset($widthrate)) $widthrate = 1;
   $size = 'height: '.floor(150*$widthrate).'px; width: '.floor(795*$widthrate).'px;';
  } else echo '<div class="par_session">'; ?>
- <img style="<?php echo $size; ?>" id="graph<?php echo $PictureID; ?>" alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>" src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&mapId='.$PictureID, $abs); ?>"<?php if (!(isset($absolute) && $absolute)) echo ' onmousemove="getMousePosition(event);" onmouseout="nd();"'; ?>/>
-<?php if ($link === 'true') {
-echo '</a>';
-  if (!(isset($absolute) && $absolute)) : ?>
+ <img style="<?php echo $size; ?>" alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>" src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link, $abs); ?>"<?php if (!(isset($absolute) && $absolute)) echo ' onmousemove="getMousePosition(event);" onmouseout="nd();"'; ?>/>
+<?php if ($link === 'true') echo '</a>';
+if (!(isset($absolute) && $absolute)) : ?>
 <script type="text/javascript">
-<!--
-LoadImageMap("graph<?php echo $PictureID; ?>", "<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&drawAction=map&mapId='.$PictureID); ?>");
-//-->
 </script>
 <?php endif;
-}
 
 if (!isset($widthrate) || $widthrate > 1/3) {
 echo "<p><span style='background-color: rgb(255,0,0);'>&nbsp;</span> ";

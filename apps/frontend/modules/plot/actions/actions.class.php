@@ -26,8 +26,6 @@ class plotActions extends sfActions {
     $this->format = $request->getParameter('format');
     if (!$this->format)
       $this->format = "draw";
-    $this->mapId = $request->getParameter('mapId');
-    $this->forward404Unless(($this->mapId && preg_match('/^Map_.*_\d+\.map$/', $this->mapId)) || $this->format == 'json');
     sfConfig::set('sf_web_debug', false);
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);

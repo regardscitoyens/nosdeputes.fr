@@ -6,8 +6,6 @@ if (isset($options['widthrate'])) $plotarray['widthrate'] = $options['widthrate'
 if (isset($options['target'])) $plotarray['target'] = $options['target'];
 if (isset($options['absolute'])) {
   $plotarray['absolute'] = $options['absolute'];
-} else {
-  echo '<div id="overDiv"></div>';
 }
 
 if ($options['plot'] == 'all' || $options['plot'] == 'total') {

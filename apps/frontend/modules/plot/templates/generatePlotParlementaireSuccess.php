@@ -41,11 +41,6 @@ if ($link === 'true') {
   }
 }
 
-if ($format === "map" ) {
-  $Test = new xsPChart(800,$size);
-  $Test->getImageMap($mapId, TRUE);
-}
-
 $DataSet = new xsPData();
 $DataSet->AddPoint($data['labels'], "Serie1");
 $DataSet->AddPoint($presences, "Serie2");
@@ -109,7 +104,7 @@ $DataDescr2 = $DataSet2->GetDataDescription();
 $DataLegend = $DataSetLegend->GetData();
 $DataDescrLegend = $DataSetLegend->GetDataDescription();
 
-$Test = new xsPChart(800,$size);
+$Test = new xsPChart(795,$size);
 $Test->setGraphArea(25+3*$font,3*$font,780,$size-10-2*$font);
 $Test->drawFilledRoundedRectangle(7,3,793,$size-7,5,240,240,240);
 $Test->drawRoundedRectangle(5,1,795,$size - 5,5,230,230,230);
@@ -122,9 +117,7 @@ $Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,$ticks,0,0,FALSE,1,FALSE
 if ($link === 'true') {
   $Test->setColorPalette(0,255,255,255);
   $Test->setColorPalette(1,255,255,255);
-  $Test->setImageMap(TRUE,$mapId);
   $Test->drawOverlayBarGraph($DataLegend,$DataDescrLegend,30,100);
-  $Test->setImageMap(FALSE,$mapId);
 }
 $Test->drawGrid(0,TRUE,0,0,0,100);
 $Test->setColorPalette(0,50,50,50);
@@ -170,8 +163,6 @@ if ($type === 'total') {
   $Test->drawTitle($pos_titre+30,3 + 2*$font,"Participation en ".$titre." au cours de".$duree,50,50,50,585);
   $titre .= '-'.$shortduree;
 }
-if ($link === 'true')
-  $Test->setImageMap(TRUE,$mapId);
 
 $Test->xsStroke();
 
