@@ -94,6 +94,12 @@
     - from: solr_cpc.xml
       to: solr/solr_cpc.xml
 
+- name: Création raccourci docker-compose
+  template:
+    src: compose.j2
+    dest: /usr/local/bin/dc-{{ cpc_instance_name }}
+    mode: 0755
+
 - name: Arrêt containers
   command: 'docker-compose -p {{ cpc_instance_name }} stop'
   args:
@@ -108,6 +114,12 @@
   command: 'docker-compose -p {{ cpc_instance_name }} up -d'
   args:
     chdir: '{{ cpc_home }}/docker'
+
+- name: Attente container web
+  wait_for:
+    port: '{{ cpc_port_web }}'
+    connect_timeout: 5
+    timeout: 30
 
 - name: Rechargement Apache dans container
   include: roles/cpc.exec/tasks/main.yml
@@ -166,9 +178,3 @@
 - name: Import dump
   include: dump.yml
   when: cpc_dump is defined
-
-- name: Création raccourci docker-compose
-  template:
-    src: compose.j2
-    dest: /usr/local/bin/dc-{{ cpc_instance_name }}
-    mode: 0755
