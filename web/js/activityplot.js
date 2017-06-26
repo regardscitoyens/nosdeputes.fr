@@ -50,10 +50,10 @@ function plot_activity_data(url, divid, width, height, type) {
 
     var titre = "Participation ",
       extra = "";
-    if (data.periode === "lastyear") {
-      if (data.fin)
-        extra = 'de toute la législature';
-      else if (data.mandat_clos)
+    if (data.fin)
+      extra = 'de toute la législature';
+    else if (data.periode === "lastyear") {
+      if (data.mandat_clos)
         extra = 'de la dernière année de mandat';
       else {
         var mois = Math.min(12, Math.floor(enddate - startdate) / (60*60*24*30));
