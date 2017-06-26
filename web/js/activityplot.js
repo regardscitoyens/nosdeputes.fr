@@ -32,7 +32,7 @@ function plot_activity_data(url, divid, width, height, type) {
       idx = 0,
       presence = {},
       participations = {},
-      questions = {},
+      questions = (type !== 'commission' && data.n_questions ? {} : undefined),
       vacances = {},
       mediane = {};
     for (var d = new Date(startdate); d <= enddate; d.setDate(d.getDate() + 7)) {
@@ -45,7 +45,7 @@ function plot_activity_data(url, divid, width, height, type) {
         presence[md] = data.n_presences[type][idx];
         participations[md] = data.n_participations[type][idx];
       }
-      if (type !== "commission")
+      if (questions)
         questions[md] = data.n_questions[idx]/0.85;
       mediane[md] = data.presences_medi[type][idx];
       vacances[md] = !!data.vacances[idx];
@@ -79,7 +79,7 @@ function plot_activity_data(url, divid, width, height, type) {
   '<div class="tooltip_title">Semaine du <span class="tooltip_week"></span></div>' +
   '<table>' +
     '<tr><td><svg><rect class="participations"/></svg>Participations</td><td width=20 class="tooltip_participations"></td></tr>' +
-    (type !== 'commission' ? '<tr><td><svg><rect class="questions"/></svg>Questions orales</td><td width=20 class="tooltip_questions"></td></tr>' : '') +
+    (questions ? '<tr><td><svg><rect class="questions"/></svg>Questions orales</td><td width=20 class="tooltip_questions"></td></tr>' : '') +
     '<tr><td><svg><rect class="presence"/></svg>Présences</td><td class="tooltip_presences"></td></tr>' +
     '<tr><td><svg><rect class="mediane"/></svg>Présence médiane</td><td class="tooltip_mediane"></td></tr>' +
   '</table>' +
@@ -148,19 +148,21 @@ function plot_activity_data(url, divid, width, height, type) {
       );
 
     // Questions orales
-    var barScale = function(val) {
-      return (val ? val / maxval * svg_height : 0)*0.75;
+    if (questions) {
+      var barScale = function(val) {
+        return (val ? val / maxval * svg_height : 0)*0.75;
+      }
+      svg.append("g")
+        .attr("transform", "translate(-3,"+(svg_height-margin_bottom)+")")
+        .selectAll(".histo_questions")
+        .data(Object.keys(questions))
+        .enter().append("g")
+        .classed("histo_questions", true)
+        .attr("transform", function(x) { return "translate(" + timescale(new Date(x)) + ", -" + barScale(questions[x] || 0) + ")"; })
+        .append("rect")
+        .attr("width", 6)
+        .attr("height", function(x) { return barScale(questions[x]); });
     }
-    svg.append("g")
-      .attr("transform", "translate(-3,"+(svg_height-margin_bottom)+")")
-      .selectAll(".histo_questions")
-      .data(Object.keys(questions))
-      .enter().append("g")
-      .classed("histo_questions", true)
-      .attr("transform", function(x) { return "translate(" + timescale(new Date(x)) + ", -" + barScale(questions[x] || 0) + ")"; })
-      .append("rect")
-      .attr("width", 6)
-      .attr("height", function(x) { return barScale(questions[x]); });
 
     // Vacances
     plot_area.append("path")
@@ -190,7 +192,7 @@ function plot_activity_data(url, divid, width, height, type) {
       .on('mouseover', function (x){
         $(tooltipid+" .tooltip_week").html(d3.timeFormat("%d %b %Y")(new Date(x)));
         $(tooltipid+" .tooltip_participations").html(participations[x]);
-        if (type !== 'commission')
+        if (questions)
           $(tooltipid+" .tooltip_questions").html(questions[x]);
         $(tooltipid+" .tooltip_presences").html(presence[x]);
         $(tooltipid+" .tooltip_mediane").html(mediane[x]);
