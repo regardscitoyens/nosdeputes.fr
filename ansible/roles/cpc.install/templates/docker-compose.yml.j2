@@ -1,0 +1,54 @@
+web:
+  build: web
+  ports:
+    - "127.0.0.1:{{ cpc_port_web }}:80"
+  volumes:
+    - {{ cpc_home }}/repo:/var/www/cpc/
+  environment:
+    CPC_ENV: docker
+  links:
+    - database
+{% if cpc_solr %}
+    - solr
+{% endif %}
+{% if cpc_memcached %}
+    - memcache
+{% endif %}
+
+phpmyadmin:
+  image: corbinu/docker-phpmyadmin
+  ports:
+    - "127.0.0.1:{{ cpc_port_phpmyadmin }}:80"
+  environment:
+    - MYSQL_USERNAME=root
+    - MYSQL_PASSWORD=password
+    - MYSQL_PORT={{ cpc_port_mysql }}
+  links:
+    - database:mysql
+
+database:
+  image: mysql:5.5
+  ports:
+    - "127.0.0.1:{{ cpc_port_mysql }}:3306"
+  environment:
+    - MYSQL_ROOT_PASSWORD=password
+    - MYSQL_DATABASE=cpc
+    - MYSQL_USER=cpc
+    - MYSQL_PASSWORD=cpc
+
+{% if cpc_memcached %}
+memcache:
+  image: memcached:1.4
+  ports:
+    - "127.0.0.1:{{ cpc_port_memcached }}:11211"
+  command: memcached -m {{ cpc_memcached_limit }}
+{% endif %}
+
+{% if cpc_solr %}
+solr:
+  build: solr
+  volumes:
+    - {{ cpc_home }}/repo:/var/www/cpc/
+  ports:
+    - "127.0.0.1:{{ cpc_port_solr }}:8080"
+{% endif %}

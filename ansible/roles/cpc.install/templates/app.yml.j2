@@ -1,13 +1,12 @@
 # default values
 all:
-  base_url: http://www.nosdeputes.fr/
-  secret_key: _______PUT_YOUR_KEY_HERE________
-  legislature: 15
-  # attention : il est important que la date soit entre guillemets
-  debut_legislature: "2017-06-21"
-  fin_legislature: false
-  host_previous_legislature: 2012.nosdeputes.fr
-  host_next_legislature: 
+  base_url: http://{{ cpc_domain }}/
+  secret_key: {{ cpc_secret.stdout }}
+  legislature: {{ cpc_legislature }}
+  debut_legislature: '{{ cpc_debut_legislature }}'
+  fin_legislature: {{ cpc_fin_legislature }}
+  host_previous_legislature: {{ cpc_host_prev }}
+  host_next_legislature: {{ cpc_host_next }}
   lock_commentaires: false
   allow_autoclean_solr: false
 
@@ -50,20 +49,19 @@ all:
 
   admin_ips: >
     [
+    {% for ip in cpc_admin_ips %}
+    "{{ ip }}",
+    {% endfor %}
     ]
 
   solr:
-    host: localhost
+    host: solr
     port: 8080
-    url: /solr_nosdeputes
+    url: /solr_cpc
 
   manet:
     url: http://example.manet.org/
 
-  analytics_id: false
-  #analytics_id: UA-XXXXXXX-X
-  piwik_domain: false
-  #piwik_domain: stats.regardscitoyens.org
-  piwik_id: false
-  #piwik_id: 2
-
+  analytics_id: {{ cpc_analytics_id }}
+  piwik_domain: {{ cpc_piwik_domain }}
+  piwik_id: {{ cpc_piwik_id }}

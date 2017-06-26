@@ -24,23 +24,23 @@ if test -e $LOCK ;
 then
     if test ! -e /proc/$(cat $LOCK) ;
     then
-	echo "WARNING : l'indexation solr est lockée alors que son processus ne tourne plus..."
-	echo " suppression du fichier (tentative n°$STATUS)...";
-	rm $LOCK
-	if [ $STATUS -ge 3 ]; then
-	    echo "trying to restart Tomcat"
-	    sudo /etc/init.d/tomcat6 restart > /tmp/log-restart-tomcat 2>&1
-	    cat /tmp/log-restart-tomcat
-	    STATUS="0"
+        echo "WARNING : l'indexation solr est lockée alors que son processus ne tourne plus..."
+        echo " suppression du fichier (tentative n°$STATUS)...";
+        rm $LOCK
+        if [ $STATUS -ge 3 -a "x$CPC_ENV" != "xdocker" ]; then
+            echo "trying to restart Tomcat"
+            sudo /etc/init.d/tomcat6 restart > /tmp/log-restart-tomcat 2>&1
+            cat /tmp/log-restart-tomcat
+            STATUS="0"
         fi
-	echo "$STATUS" > $STATUSFILE
-	exit 1;
+        echo "$STATUS" > $STATUSFILE
+        exit 1;
     fi
     exit 1;
 fi
 
 option=''
-if test "$1" = "all"; then 
+if test "$1" = "all"; then
    option="--all=yes"
 fi
 
@@ -58,7 +58,7 @@ fi
 
 if ! test -e log/solr/commands.log.lock; then
     nextcommand=$(find log/solr/ -name 'commands.log.*' | grep -v lock | head -n 1)
-    if test "$nextcommand" ; then 
+    if test "$nextcommand" ; then
         mv $nextcommand log/solr/commands.log.lock
     fi
 fi

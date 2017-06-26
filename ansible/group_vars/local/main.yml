@@ -1,0 +1,9 @@
+---
+
+cpc_domain: localhost
+cpc_instance_name: dev_local
+
+cpc_admin_ips:
+  - '172.17.0.1'
+
+cpc_php_show_errors: true

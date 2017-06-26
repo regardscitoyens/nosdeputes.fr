@@ -1,0 +1,36 @@
+---
+
+- name: Installation prérequis Docker CE
+  apt:
+    pkg: '{{ item }}'
+    state: present
+  with_items:
+    - apt-transport-https
+
+- name: Clé GPG APT Docker CE
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    id: 9DC858229FC7DD38854AE2D88D81803C0EBFCD88
+    state: present
+
+- name: Lecture distro
+  command: lsb_release -cs
+  register: distro
+  changed_when: false
+
+- name: Repo APT Docker CE
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian {{ distro.stdout }} stable
+    state: present
+
+- name: Installation docker
+  apt:
+    pkg: '{{ item }}'
+    state: present
+  with_items:
+    - docker-ce
+
+- name: Installation docker (python) et docker-compose
+  pip:
+    name: docker,docker-compose
+    state: latest

@@ -1,0 +1,44 @@
+<VirtualHost *:80>
+  ServerName {{ cpc_domain }}
+  ServerSignature Off
+
+  Redirect / https://{{ cpc_domain }}/
+
+  <Location />
+    Order deny,allow
+    Allow from all
+  </Location>
+</VirtualHost>
+
+
+<VirtualHost *:443>
+  ServerName {{ cpc_domain }}
+  ServerSignature Off
+
+  CustomLog ${APACHE_LOG_DIR}/cpc_{{ cpc_instance_name }}_access.log combined
+  ErrorLog ${APACHE_LOG_DIR}/cpc_{{ cpc_instance_name }}_error.log
+
+  SSLCertificateFile      {{ cpc_ssl_cert }}
+  SSLCertificateKeyFile   {{ cpc_ssl_key }}
+  SSLCertificateChainFile {{ cpc_ssl_chain }}
+
+  SSLEngine On
+  RequestHeader set X-Forwarded-Proto 'https'
+
+  LoadModule  proxy_module         /usr/lib/apache2/modules/mod_proxy.so
+  LoadModule  proxy_http_module    /usr/lib/apache2/modules/mod_proxy_http.so
+  LoadModule  headers_module       /usr/lib/apache2/modules/mod_headers.so
+
+  ProxyVia On
+  ProxyRequests Off
+  ProxyPass / http://127.0.0.1:{{ cpc_port_web }}/
+  ProxyPassReverse / http://127.0.0.1:{{ cpc_port_web }}/
+  ProxyPreserveHost On
+
+  <Proxy *>
+    Options FollowSymLinks MultiViews
+    AllowOverride All
+    Order allow,deny
+    Allow from all
+  </Proxy>
+</VirtualHost>

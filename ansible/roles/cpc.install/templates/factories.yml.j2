@@ -1,0 +1,76 @@
+prod:
+  logger:
+    class:   sfNoLogger
+    param:
+      level:   err
+      loggers: ~
+
+  mailer:
+    param:
+{% if cpc_spool_mails %}
+      delivery_strategy: spool
+      spool_class: Swift_FileSpool
+      spool_arguments:
+        Swift_FileSpool: %SF_ROOT_DIR%/data/mails
+{% else %}
+      delivery_strategy: realtime
+{% endif %}
+
+{% if cpc_memcached %}
+view_cache:
+  class: sfMemcacheCache
+  param:
+    host: memcache
+    port: {{ cpc_port_memcached }}
+    persistent: true
+{% endif %}
+
+cli:
+  controller:
+    class: sfConsoleController
+  request:
+    class: sfConsoleRequest
+  response:
+    class: sfConsoleResponse
+
+test:
+  storage:
+    class: sfSessionTestStorage
+    param:
+      session_path: %SF_TEST_CACHE_DIR%/sessions
+
+  response:
+    class: sfWebResponse
+    param:
+      send_http_headers: false
+
+  mailer:
+    param:
+      delivery_strategy: none
+
+dev:
+  mailer:
+    param:
+      delivery_strategy: realtime
+
+all:
+  routing:
+    class: sfPatternRouting
+    param:
+      generate_shortest_url:            true
+      extra_parameters_as_query_string: true
+      cache: null
+
+  mailer:
+    class: sfMailer
+    param:
+      logging:           %SF_LOGGING_DISABLED%
+      charset:           %SF_CHARSET%
+    transport:
+      class: Swift_SmtpTransport
+      param:
+        host:       localhost
+        port:       25
+        encryption: ~
+        username:   ~
+        password:   ~

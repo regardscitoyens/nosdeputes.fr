@@ -1,0 +1,5 @@
+[remote]
+dev_cocolulu ansible_host=cocolulu.regardscitoyens.org ansible_user=rcdeploy
+
+[all]
+dev_cocolulu

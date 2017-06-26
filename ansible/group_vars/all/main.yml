@@ -1,0 +1,39 @@
+---
+
+cpc_domain: cpc.example.com
+cpc_instance_name: cpc
+
+cpc_user: cpc
+cpc_home: /opt/cpc
+
+cpc_repo: https://github.com/regardscitoyens/nosdeputes.fr
+cpc_version: master
+# cpc_dump: /path/to/dump.sql.gz
+
+cpc_port_web: 8001
+cpc_port_phpmyadmin: 8002
+cpc_port_mysql: 8003
+cpc_port_memcached: 8004
+cpc_port_solr: 8005
+
+cpc_memcached: false
+cpc_memcached_limit: 100M
+cpc_spool_mails: false
+cpc_solr: true
+cpc_php_web_memory_limit: 65M
+cpc_php_cli_memory_limit: -1
+cpc_php_show_errors: false
+cpc_enable_cronjobs: false
+
+cpc_legislature: 14
+cpc_debut_legislature: '2012-06-21'
+cpc_fin_legislature: false
+
+cpc_host_prev: 2007.nosdeputes.fr
+cpc_host_next:
+
+cpc_analytics_id: false
+cpc_piwik_domain: false
+cpc_piwik_id: false
+
+cpc_admin_ips: []
