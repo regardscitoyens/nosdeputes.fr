@@ -1,5 +1,14 @@
 ---
 
+- name: active les modules nécessaires
+  apache2_module: state=present name={{item}}
+  with_items:
+  - proxy_module
+  - proxy_http_module
+  - headers_module
+  notify:
+    - reload apache
+
 - name: Création config vhost apache
   template:
     src: cpc.conf.j2

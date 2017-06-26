@@ -25,10 +25,6 @@
   SSLEngine On
   RequestHeader set X-Forwarded-Proto 'https'
 
-  LoadModule  proxy_module         /usr/lib/apache2/modules/mod_proxy.so
-  LoadModule  proxy_http_module    /usr/lib/apache2/modules/mod_proxy_http.so
-  LoadModule  headers_module       /usr/lib/apache2/modules/mod_headers.so
-
   ProxyVia On
   ProxyRequests Off
   ProxyPass / http://127.0.0.1:{{ cpc_port_web }}/
