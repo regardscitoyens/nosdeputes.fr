@@ -94,6 +94,34 @@
     - from: solr_cpc.xml
       to: solr/solr_cpc.xml
 
+- name: Création des fichiers de config cpc (templates)
+  template:
+    src: '{{ item.src }}'
+    dest: '{{ cpc_home }}/repo/{{ item.dest }}'
+    owner: '{{ cpc_user }}'
+  with_items:
+    - src: db.inc.j2
+      dest: bin/db.inc
+    - src: app.yml.j2
+      dest: config/app.yml
+    - src: factories.yml.j2
+      dest: apps/frontend/config/factories.yml
+
+- name: Création des fichiers de config cpc (statiques)
+  copy:
+    src: '{{ item }}'
+    dest: '{{ cpc_home }}/repo/config/{{ item }}'
+    owner: '{{ cpc_user }}'
+  with_items:
+    - ProjectConfiguration.class.php
+    - databases.yml
+
+- name: Création fichier de config solr
+  copy:
+    src: solrconfig.xml
+    dest: '{{ cpc_home }}/repo/lib/vendor/SolrServer/solr/conf/solrconfig.xml'
+    owner: '{{ cpc_user }}'
+
 - name: Création raccourci docker-compose
   template:
     src: compose.j2
@@ -125,34 +153,6 @@
   include: roles/cpc.exec/tasks/main.yml
   vars:
     command: service apache2 reload
-
-- name: Création des fichiers de config cpc (templates)
-  template:
-    src: '{{ item.src }}'
-    dest: '{{ cpc_home }}/repo/{{ item.dest }}'
-    owner: '{{ cpc_user }}'
-  with_items:
-    - src: db.inc.j2
-      dest: bin/db.inc
-    - src: app.yml.j2
-      dest: config/app.yml
-    - src: factories.yml.j2
-      dest: apps/frontend/config/factories.yml
-
-- name: Création des fichiers de config cpc (statiques)
-  copy:
-    src: '{{ item }}'
-    dest: '{{ cpc_home }}/repo/config/{{ item }}'
-    owner: '{{ cpc_user }}'
-  with_items:
-    - ProjectConfiguration.class.php
-    - databases.yml
-
-- name: Création fichier de config solr
-  copy:
-    src: solrconfig.xml
-    dest: '{{ cpc_home }}/repo/lib/vendor/SolrServer/solr/conf/solrconfig.xml'
-    owner: '{{ cpc_user }}'
 
 - name: Attente container MySQL
   wait_for:
