@@ -8,13 +8,13 @@
   font-weight: normal;
 }
 
-#activity_plot rect.presence,
+.activity_plot rect.presence,
 .tooltip_activity rect.presence,
-#curve_presence {
+.curve_presence {
   fill: red;
 }
 
-#curve_mediane {
+.curve_mediane {
   stroke: rgb(120,120,120);
   stroke-opacity: 0.4;
   fill: none;
@@ -24,16 +24,16 @@ rect.mediane {
   fill: rgb(150,150,150);
 }
 
-#activity_plot rect.participations,
+.activity_plot rect.participations,
 .tooltip_activity rect.participations,
-#curve_participation {
+.curve_participation {
   fill: orange;
 }
 
-#yaxis line,
-#yaxis path,
-#timeaxis line,
-#timeaxis path {
+.yaxis line,
+.yaxis path,
+.timeaxis line,
+.timeaxis path {
   stroke: gray;
 }
 .tooltip_activity {
@@ -66,8 +66,8 @@ rect.mediane {
   height: 100%;
 }
 
-#yaxis text,
-#timeaxis text {
+.yaxis text,
+.timeaxis text {
   fill: gray;
 }
 svg text.yaxistitle {
@@ -76,15 +76,19 @@ svg text.yaxistitle {
   fill:gray;
 }
 
-#mediane {
+.mediane {
   fill: none;
   stroke: black;
   stroke-width: 1px;
 }
 
 rect.vacances,
-#curve_vacances {
+.histo_vacances {
   fill: rgba(150,150,150,.5);
+}
+rect.questions,
+.histo_questions {
+  fill: rgba(100,100,255,1);
 }
 rect.tooltip {
   fill: rgba(0,0,0,0);

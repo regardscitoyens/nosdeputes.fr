@@ -20,16 +20,21 @@ function get_last_monday(day) {
 }
 
 function plot_activity_data(url, divid, width, height, type) {
-  var svg_width = width;
-  var svg_height = height - 30;
-  var margin_left = 45;
-  var margin_bottom = 25;
+  var svg_width = width,
+    maxval = (type === "total" ? 14 : 12),
+    svg_height = (height - 30) * maxval / 14,
+    margin_left = 45,
+    margin_bottom = 25;
   d3.json(url, function(data) {
-    var startdate = get_last_monday(data.date_debut);
-    var enddate = get_last_monday(data.date_fin);
-    var all_weeks = {}; // Becomes a list later
-    var idx = 0;
-    var mediane = {}; var presence = {}; var participations = {}; var vacances = {};
+    var startdate = get_last_monday(data.date_debut),
+      enddate = get_last_monday(data.date_fin),
+      all_weeks = {}, // Becomes a list later
+      idx = 0,
+      presence = {},
+      participations = {},
+      questions = {},
+      vacances = {},
+      mediane = {};
     for (var d = new Date(startdate); d <= enddate; d.setDate(d.getDate() + 7)) {
       var md = get_last_monday(d);
       all_weeks[md] = 0;
@@ -40,6 +45,8 @@ function plot_activity_data(url, divid, width, height, type) {
         presence[md] = data.n_presences[type][idx];
         participations[md] = data.n_participations[type][idx];
       }
+      if (type !== "commission")
+        questions[md] = data.n_questions[idx]/0.85;
       mediane[md] = data.presences_medi[type][idx];
       vacances[md] = !!data.vacances[idx];
       idx++;
@@ -64,15 +71,17 @@ function plot_activity_data(url, divid, width, height, type) {
       titre += "globale au cours " + extra + " (hémicycle et commissions)";
     else titre += "en " + type.replace('commission', 'commissions') + " au cours " + extra;
 
-    $("#"+divid).html(
+    divid = '#' + divid;
+    $(divid).html(
 '<h3>' + titre + '</h3>' +
 '<svg width='+svg_width+' height='+svg_height+'></svg>' +
 '<center class="tooltip_activity">' +
   '<div class="tooltip_title">Semaine du <span class="tooltip_week"></span></div>' +
   '<table>' +
-    '<tr><td><svg><rect class="mediane"/></svg>Médiane</td><td class="tooltip_mediane"></td></tr>' +
     '<tr><td><svg><rect class="participations"/></svg>Participations</td><td width=20 class="tooltip_participations"></td></tr>' +
+    (type !== 'commission' ? '<tr><td><svg><rect class="questions"/></svg>Questions orales</td><td width=20 class="tooltip_questions"></td></tr>' : '') +
     '<tr><td><svg><rect class="presence"/></svg>Présences</td><td class="tooltip_presences"></td></tr>' +
+    '<tr><td><svg><rect class="mediane"/></svg>Présence médiane</td><td class="tooltip_mediane"></td></tr>' +
   '</table>' +
   '<div class="banner_vacances">' +
     '<br><br><br>' +
@@ -80,15 +89,15 @@ function plot_activity_data(url, divid, width, height, type) {
   '</div>' +
 '</center>'
     );
-    var svg = d3.select("#"+divid+" svg");
+    var svg = d3.select(divid+" svg");
 
     // Scales
     timescale = d3.scaleLinear()
       .domain([get_last_monday(startdate), new Date(get_last_monday(enddate).getTime()+1000*60*60*24*7)])
-      .range([margin_left,svg_width-2]);
+      .range([margin_left, svg_width-2]);
     yscale = d3.scaleLinear()
-      .domain([0,14])
-      .range([svg_height-margin_bottom,4]);
+      .domain([0, maxval])
+      .range([svg_height-margin_bottom, 4]);
 
     // Background horizontal [gray/white] stripes
     grid = svg.append('g')
@@ -107,7 +116,7 @@ function plot_activity_data(url, divid, width, height, type) {
 
     // Médiane
     svg.append("path")
-      .attr("id", "curve_mediane")
+      .classed("curve_mediane", true)
       .attr("d", d3.line()
         .curve(d3.curveLinear)
         .x(function (x){return timescale(new Date(x));})
@@ -117,7 +126,7 @@ function plot_activity_data(url, divid, width, height, type) {
 
     // Présences
     plot_area.append("path")
-      .attr("id", "curve_presence")
+      .classed("curve_presence", true)
       .attr("d", d3.area()
         .curve(d3.curveLinear)
         .x(function (x){return timescale(new Date(x));})
@@ -128,7 +137,7 @@ function plot_activity_data(url, divid, width, height, type) {
 
     // Participations
     plot_area.append("path")
-      .attr("id", "curve_participation")
+      .classed("curve_participation", true)
       .attr("d", d3.area()
         .curve(d3.curveLinear)
         .x(function (x){return timescale(new Date(x));})
@@ -137,19 +146,34 @@ function plot_activity_data(url, divid, width, height, type) {
         (all_weeks)
       );
 
+    // Questions orales
+    var barScale = function(val) {
+      return (val ? val / maxval * svg_height : 0)*0.75;
+    }
+    svg.append("g")
+      .attr("transform", "translate(-3,"+(svg_height-margin_bottom)+")")
+      .selectAll(".histo_questions")
+      .data(Object.keys(questions))
+      .enter().append("g")
+      .classed("histo_questions", true)
+      .attr("transform", function(x) { return "translate(" + timescale(new Date(x)) + ", -" + barScale(questions[x] || 0) + ")"; })
+      .append("rect")
+      .attr("width", 6)
+      .attr("height", function(x) { return barScale(questions[x]); });
+
     // Vacances
     plot_area.append("path")
-      .attr("id", "curve_vacances")
+      .classed("histo_vacances", true)
       .attr("d", d3.area()
-        .curve(d3.curveStepAfter)
+        .curve(d3.curveStep)
         .x(function (x){return timescale(new Date(x));})
-        .y1(function (x){return yscale(14*vacances[x] || 0);})
+        .y1(function (x){return yscale(maxval*vacances[x] || 0);})
         .y0(yscale(0))
         (all_weeks)
-      ).attr("transform", "translate(-"+(week_width/2)+", 0)");
+      );
 
     // Tooltips
-    var tooltipid = '#'+divid+' .tooltip_activity';
+    var tooltipid = divid+' .tooltip_activity';
     svg.append('g')
       .classed("tooltipRectangle", true)
       .selectAll("rect.tooltip")
@@ -158,13 +182,15 @@ function plot_activity_data(url, divid, width, height, type) {
       .append("rect")
       .classed('tooltip', true)
       .attr('x', function (x){return timescale(new Date(x));})
-      .attr('y', yscale(14))
+      .attr('y', yscale(maxval))
       .attr('width', week_width)
-      .attr('height', yscale(0)-yscale(14))
+      .attr('height', yscale(0)-yscale(maxval))
       .attr("date", function (x){return x;})
       .on('mouseover', function (x){
         $(tooltipid+" .tooltip_week").html(d3.timeFormat("%d %b %Y")(new Date(x)));
         $(tooltipid+" .tooltip_participations").html(participations[x]);
+        if (type !== 'commission')
+          $(tooltipid+" .tooltip_questions").html(questions[x]);
         $(tooltipid+" .tooltip_presences").html(presence[x]);
         $(tooltipid+" .tooltip_mediane").html(mediane[x]);
         $(tooltipid+" .banner_vacances")[vacances[x]==1 ? 'show' : 'hide']();
@@ -180,11 +206,11 @@ function plot_activity_data(url, divid, width, height, type) {
 
     // Axes
     svg.append("g")
-      .attr('id', 'yaxis')
+      .classed('yaxis', true)
       .attr("transform", "translate("+(margin_left-6)+",0)")
       .call(d3.axisLeft(yscale).ticks(5))
     svg.append("g")
-      .attr('id', 'timeaxis')
+      .classed('timeaxis', true)
       .attr("transform", "translate(0,"+(svg_height-margin_bottom+5)+")")
       .call(d3.axisBottom(timescale).ticks(10).tickFormat(d3.timeFormat("%b %y")))
 

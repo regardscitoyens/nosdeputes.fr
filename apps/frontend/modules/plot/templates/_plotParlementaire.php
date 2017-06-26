@@ -41,7 +41,7 @@ if ($type === 'commission') echo '&nbsp;Présences enregistrées&nbsp;&nbsp;&nbs
 else echo '&nbsp;Présences relevées&nbsp;&nbsp;&nbsp;';
 echo "<span style='background-color: rgb(255,200,0);'>&nbsp;</span>&nbsp;Participations&nbsp;&nbsp;&nbsp;";
 if (!(myTools::isFinLegislature() && preg_match('/^l/', $time)) && $questions === 'true' && $type != 'commission') {
-  echo "<span style='background-color: rgb(0,0,255);'>&nbsp;</span>&nbsp;Questions orales&nbsp;&nbsp;";
+  echo "<span style='background-color: rgb(100,100,255);'>&nbsp;</span>&nbsp;Questions orales&nbsp;&nbsp;";
 }
 echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires&nbsp;&nbsp;";
 echo "<span style='font-weight: bolder; color: rgb(160,160,160);'>&mdash;</span>&nbsp;Présence médiane";
