@@ -235,7 +235,7 @@ class plotComponents extends sfComponents
       }
     }
     while ($n <= $n_weeks) {
-      $n_vacances[$n] = 20;
+      $n_vacances[$n] = 0;
       $n++;
     }
     foreach (myTools::getVacances() as $vacance) {
