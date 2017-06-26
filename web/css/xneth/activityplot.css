@@ -46,18 +46,19 @@ rect.mediane {
   padding: 7px;
   font-size: 14px;
 }
-.tooltip_activity .title {
+.tooltip_activity .tooltip_title {
   position: absolute;
   padding-bottom: 10px;
   width: 100%;
   left: 0;
   top: 5px;
+  font-weight: bold;
 }
 .tooltip_activity table {
   font-size: 14px;
   margin-top: 20px;
 }
-.tooltip_activity tr td: nth-child(2){
+.tooltip_activity tr td:last-child{
   text-align: center;
   padding-left: 20px;
 }

@@ -78,8 +78,8 @@ function plot_activity_data(url, divid, width, height, type) {
 '<center class="tooltip_activity">' +
   '<div class="tooltip_title">Semaine du <span class="tooltip_week"></span></div>' +
   '<table>' +
-    '<tr><td><svg><rect class="participations"/></svg>Participations</td><td width=20 class="tooltip_participations"></td></tr>' +
-    (questions ? '<tr><td><svg><rect class="questions"/></svg>Questions orales</td><td width=20 class="tooltip_questions"></td></tr>' : '') +
+    '<tr><td><svg><rect class="participations"/></svg>Participations</td><td class="tooltip_participations"></td></tr>' +
+    (questions ? '<tr><td><svg><rect class="questions"/></svg>Questions orales</td><td class="tooltip_questions"></td></tr>' : '') +
     '<tr><td><svg><rect class="presence"/></svg>Présences</td><td class="tooltip_presences"></td></tr>' +
     '<tr><td><svg><rect class="mediane"/></svg>Présence médiane</td><td class="tooltip_mediane"></td></tr>' +
   '</table>' +
@@ -191,7 +191,7 @@ function plot_activity_data(url, divid, width, height, type) {
       .attr("date", function (x){return x;})
       .on('mouseover', function (x, idx, rects){
         $(rects[idx]).css('fill-opacity', 0.15);
-        $(tooltipid+" .tooltip_week").html(d3.timeFormat("%d %b %Y")(new Date(x)));
+        $(tooltipid+" .tooltip_week").html(d3.timeFormat("%d %B %Y")(new Date(x)));
         $(tooltipid+" .tooltip_participations").html(participations[x]);
         if (questions)
           $(tooltipid+" .tooltip_questions").html(questions[x]);
