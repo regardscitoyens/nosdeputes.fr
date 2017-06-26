@@ -92,7 +92,7 @@ function plot_activity_data(url, divid, width, height, type) {
     var svg = d3.select(divid+" svg");
 
     // Scales
-    timescale = d3.scaleLinear()
+    timescale = d3.scaleTime()
       .domain([get_last_monday(startdate), new Date(get_last_monday(enddate).getTime()+1000*60*60*24*7)])
       .range([margin_left, svg_width-2]);
     yscale = d3.scaleLinear()
@@ -102,11 +102,12 @@ function plot_activity_data(url, divid, width, height, type) {
     // Background horizontal [gray/white] stripes
     grid = svg.append('g')
       .classed('grid', true);
-    for(var i=4; i<=yscale.domain()[1]; i=i+4){
+    var step = (svg_height > 200 ? 1 : 2);
+    for(var i=2*step; i<=yscale.domain()[1]; i=i+2*step){
       grid.append('rect')
         .style('fill', 'rgb(240,240,240)')
         .attr('width',timescale.range()[1]-timescale.range()[0])
-        .attr('height',yscale(0)-yscale(2))
+        .attr('height',yscale(0)-yscale(step))
         .attr('y',yscale(i))
         .attr('x',timescale.range()[0]);
     }
@@ -208,14 +209,14 @@ function plot_activity_data(url, divid, width, height, type) {
     svg.append("g")
       .classed('yaxis', true)
       .attr("transform", "translate("+(margin_left-6)+",0)")
-      .call(d3.axisLeft(yscale).ticks(5))
+      .call(d3.axisLeft(yscale).ticks((svg_height > 200 ? 10 : 5)))
     svg.append("g")
       .classed('timeaxis', true)
       .attr("transform", "translate(0,"+(svg_height-margin_bottom+5)+")")
-      .call(d3.axisBottom(timescale).ticks(10).tickFormat(d3.timeFormat("%b %y")))
+      .call(d3.axisBottom(timescale).ticks(d3.timeMonth.every(data.fin ? 4 : 1)).tickFormat(d3.timeFormat("%b %y")))
 
     svg.append('text')
-      .attr('x', -svg_height/2)
+      .attr('x', -svg_height/2 + 2)
       .attr('y', 10)
       .classed('yaxistitle', true)
       .attr('transform', 'rotate(-90)')
