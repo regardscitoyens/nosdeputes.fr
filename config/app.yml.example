@@ -7,7 +7,7 @@ all:
   debut_legislature: "2017-06-21"
   fin_legislature: false
   host_previous_legislature: 2012.nosdeputes.fr
-  host_next_legislature: 
+  host_next_legislature:
   lock_commentaires: false
   allow_autoclean_solr: false
 
@@ -56,6 +56,7 @@ all:
     host: localhost
     port: 8080
     url: /solr_nosdeputes
+    utf8: false
 
   manet:
     url: http://example.manet.org/
@@ -66,4 +67,3 @@ all:
   #piwik_domain: stats.regardscitoyens.org
   piwik_id: false
   #piwik_id: 2
-
