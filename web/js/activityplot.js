@@ -56,7 +56,7 @@ function plot_activity_data(url, divid, width, height, type) {
       if (data.mandat_clos)
         extra = 'de la dernière année de mandat';
       else {
-        var mois = Math.min(12, Math.floor(enddate - startdate) / (60*60*24*30));
+        var mois = Math.min(12, Math.floor((enddate - startdate) / (60*60*24*30*1000)));
         extra = (mois < 2 ? "du premier" : "des " + mois + " " + (mois < 12 ? "prem" : "dern") + "iers") + " mois";
       }
     } else extra = "de la session " + data.periode.replace(/^(\d{4})/, '$1-');

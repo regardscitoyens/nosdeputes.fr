@@ -17,9 +17,10 @@ class plotComponents extends sfComponents
       } else $date_fin = time();
       $annee = date('Y', $date_fin);
       $sem = date('W', $date_fin);
+      $legistart = strtotime(myTools::getDebutLegislature());
       if ($this->data['fin'])
-        $last_year = strtotime(myTools::getDebutLegislature());
-      else $last_year = $date_fin - 32054400;
+        $last_year = $legistart;
+      else $last_year = max($legistart - 1209600, $date_fin - 32054400);
       $date_debut = date('Y-m-d', $last_year);
       $date_fin = date('Y-m-d', $date_fin);
       $annee0 = date('o', $last_year);
