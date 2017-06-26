@@ -20,6 +20,7 @@ class plotComponents extends sfComponents
         $last_year = strtotime(myTools::getDebutLegislature());
       else $last_year = $date_fin - 32054400;
       $date_debut = date('Y-m-d', $last_year);
+      $date_fin = date('Y-m-d', $date_fin);
       $annee0 = date('o', $last_year);
       $sem0 = date('W', $last_year);
       if ($sem > 51 && date('n', $date_fin) == 1)
