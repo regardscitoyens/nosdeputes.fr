@@ -11,16 +11,13 @@ $data = json_decode($data, true);
 $n = count($data['labels']);
 $presences = array_fill(1, $n, 0);
 $participations = array_fill(1, $n, 0);
-$mots = array_fill(1, $n, 0);
 $presences_medi = array_fill(1, $n, 0);
 if ($type === 'total') for ($i = 1; $i <= $n; $i++) {
   $presences[$i] = $data['n_presences']['hemicycle'][$i] + $data['n_presences']['commission'][$i];
   $participations[$i] = $data['n_participations']['hemicycle'][$i] + $data['n_participations']['commission'][$i];
-  $mots[$i] = $data['n_mots']['hemicycle'][$i] + $data['n_mots']['commission'][$i];
 } else if ($type === 'hemicycle' || $type === 'commission') {
   $presences = $data['n_presences']["$type"];
   $participations = $data['n_participations']["$type"];
-  $mots = $data['n_mots']["$type"];
 }
 $presences_medi = $data['presences_medi']["$type"];
 
@@ -53,10 +50,8 @@ $DataSet = new xsPData();
 $DataSet->AddPoint($data['labels'], "Serie1");
 $DataSet->AddPoint($presences, "Serie2");
 $DataSet->AddPoint($participations, "Serie3");
-$DataSet->AddPoint($mots, "Serie4");
 $DataSet->AddSerie("Serie2");
 $DataSet->AddSerie("Serie3");
-$DataSet->AddSerie("Serie4");
 $DataSet->SetAbsciseLabelSerie("Serie1");
 $DataSet->SetYAxisName("Séances par semaine");
 

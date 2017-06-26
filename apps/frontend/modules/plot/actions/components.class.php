@@ -94,16 +94,14 @@ class plotComponents extends sfComponents
     $query2->groupBy('s.type, s.annee, s.numero_semaine');
     $participations = $query2->fetchArray();
 
-    $this->data['n_participations'] = array('commission' => array_fill(1, $n_weeks, 0),
-                                    'hemicycle' => array_fill(1, $n_weeks, 0));
-    $this->data['n_mots'] = array('commission' => array_fill(1, $n_weeks, 0),
-                          'hemicycle' => array_fill(1, $n_weeks, 0));
+    $this->data['n_participations'] = array(
+      'commission' => array_fill(1, $n_weeks, 0),
+      'hemicycle' => array_fill(1, $n_weeks, 0)
+    );
     foreach ($participations as $participation) {
       $n = ($participation['Seance']['annee'] - $annee0)*53 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($n <= $n_weeks) {
+      if ($n <= $n_weeks)
         $this->data['n_participations'][$participation['Seance']['type']][$n] += $participation['nombre'];
-        $this->data['n_mots'][$participation['Seance']['type']][$n] += $participation['mots']/10000;
-      }
     }
     unset($participations);
     if (!$this->data['fin']) {
@@ -171,8 +169,6 @@ class plotComponents extends sfComponents
         $this->data['n_presences']['commission'][$i] = 0;
         $this->data['n_participations']['hemicycle'][$i] = 0;
         $this->data['n_participations']['commission'][$i] = 0;
-        $this->data['n_mots']['hemicycle'][$i] = 0;
-        $this->data['n_mots']['commission'][$i] = 0;
         $this->data['presences_medi']['hemicycle'][$i] = 0;
         $this->data['presences_medi']['commission'][$i] = 0;
         $this->data['presences_medi']['total'][$i] = 0;
