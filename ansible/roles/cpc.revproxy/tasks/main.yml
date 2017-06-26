@@ -1,0 +1,25 @@
+---
+
+- name: Création config vhost apache
+  template:
+    src: cpc.conf.j2
+    dest: /etc/apache2/sites-available/999-cpc_{{ cpc_instance_name }}.conf
+  notify:
+    - reload apache
+  when: cpc_ssl_cert is not defined
+
+- name: Création config vhost apache (SSL)
+  template:
+    src: cpc-ssl.conf.j2
+    dest: /etc/apache2/sites-available/999-cpc_{{ cpc_instance_name }}.conf
+  notify:
+    - reload apache
+  when: cpc_ssl_cert is defined
+
+- name: Création lien config vhost apache
+  file:
+    src: /etc/apache2/sites-available/999-cpc_{{ cpc_instance_name }}.conf
+    path: /etc/apache2/sites-enabled/999-cpc_{{ cpc_instance_name }}.conf
+    state: link
+  notify:
+    - reload apache

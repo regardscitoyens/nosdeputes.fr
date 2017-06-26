@@ -1,0 +1,67 @@
+# default values
+all:
+  base_url: http://{{ cpc_domain }}/
+  secret_key: {{ cpc_secret.stdout }}
+  legislature: {{ cpc_legislature }}
+  debut_legislature: '{{ cpc_debut_legislature }}'
+  fin_legislature: {{ cpc_fin_legislature }}
+  host_previous_legislature: {{ cpc_host_prev }}
+  host_next_legislature: {{ cpc_host_next }}
+  lock_commentaires: false
+  allow_autoclean_solr: false
+
+  groupes_actuels: >
+    ["LFI", "GDR", "SER", "RP", "LREM", "MODEM", "RCUDI", "LR", "NI"]
+# groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
+  groupes_infos: >
+    [
+    "La France Insoumise / LFI / 255,30,30 / France Insoumise / insoumis",
+    "Gauche Démocrate et Républicaine / GDR / 255,40,100 / PCF et régionalistes / gauche.*d[eéÉ]mocrate",
+    "Socialiste, Écologiste et Républicain / SER / 255,50,190 / PS / socialiste",
+    "Radical Progressiste / RP / 198,81,249 / PRG, ex-EELV et divers gauche / radical|progressiste",
+    "République En Marche / LREM / 236,234,76 / En Marche / marche",
+    "Mouvement Démocrate / MODEM / 250,195,132 / MoDem / modem",
+    "Républicains Constructifs et Union des Démocrates et Indépendants / RCUDI / 30,180,255 / LR proches d'En Marche & UDI / constructif",
+    "Les Républicains / LR / 30,30,200 / Les Républicains / r[eéÉ]publicains",
+    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (Divers droite, FN…) / inscrit|députés.*aucun"
+    ]
+  groupes_proximite: >
+    ["LFI / GDR", "LFI / SER", "GDR / SER", "SER / RP", "SER / LREM", "RP / LREM", "LREM / MODEM", "LREM / RCUDI", "MODEM / RCUDI", "RCUDI / LR", "LR / NI"]
+
+  commissions_permanentes: >
+    [
+    "commission-des-lois-constitutionnelles-de-la-legislation-et-de-l-administration-generale-de-la-republique",
+    "commission-des-finances-de-l-economie-generale-et-du-controle-budgetaire",
+    "commission-des-affaires-economiques",
+    "commission-des-affaires-sociales",
+    "commission-des-affaires-culturelles-et-de-l-education",
+    "commission-des-affaires-etrangeres",
+    "commission-du-developpement-durable-et-de-l-amenagement-du-territoire",
+    "commission-de-la-defense-nationale-et-des-forces-armees"
+    ]
+
+  sfDoctrineActAsTaggablePlugin:
+    triple_distinct:   true
+
+  announce:
+    link: "//irfm.regardscitoyens.org"
+    text: "Frais des députés, aidez nous à obtenir la transparence"
+
+  admin_ips: >
+    [
+    {% for ip in cpc_admin_ips %}
+    "{{ ip }}",
+    {% endfor %}
+    ]
+
+  solr:
+    host: solr
+    port: 8080
+    url: /solr_cpc
+
+  manet:
+    url: http://example.manet.org/
+
+  analytics_id: {{ cpc_analytics_id }}
+  piwik_domain: {{ cpc_piwik_domain }}
+  piwik_id: {{ cpc_piwik_id }}

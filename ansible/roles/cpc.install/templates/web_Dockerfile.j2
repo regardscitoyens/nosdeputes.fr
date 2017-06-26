@@ -1,0 +1,37 @@
+FROM php:5.6-apache
+
+RUN apt-get update && apt-get -my install --no-install-recommends \
+	wget \
+	mysql-client \
+	libfile-path-perl \
+	libfreetype6-dev \
+	libjpeg62-turbo-dev \
+	libmagickwand-dev \
+	libpng12-dev \
+	libwww-mechanize-perl
+
+RUN rm -rf /var/lib/apt/lists/*
+
+RUN pecl install imagick && docker-php-ext-enable imagick
+
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/
+
+RUN docker-php-ext-install \
+	gd \
+	pdo_mysql \
+	sysvsem
+
+RUN usermod -u {{ cpc_user_id.stdout }} www-data
+
+RUN mkdir -p /usr/local/etc/php/apache2 && \
+    cp -R /usr/local/etc/php/conf.d /usr/local/etc/php/apache2 && \
+    echo 'export PHP_INI_SCAN_DIR=/usr/local/etc/php/apache2/conf.d' >> /etc/apache2/envvars
+
+COPY 000-default.conf /etc/apache2/sites-enabled/000-default.conf
+COPY cli_php.ini /usr/local/etc/php/php.ini
+COPY web_php.ini /usr/local/etc/php/apache2/conf.d/php.ini
+
+RUN a2enmod rewrite
+RUN a2enmod headers
+
+WORKDIR /var/www/cpc

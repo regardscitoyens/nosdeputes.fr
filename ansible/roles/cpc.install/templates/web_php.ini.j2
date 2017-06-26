@@ -1,0 +1,13 @@
+memory_limit = {{ cpc_php_web_memory_limit }}
+
+date.timezone = Europe/Paris
+
+{% if cpc_php_show_errors %}
+error_reporting = E_ALL & ~E_NOTICE
+display_errors = On
+{% else %}
+error_reporting = E_ALL & ~E_DEPRECATED
+display_errors = Off
+{% endif %}
+
+log_errors = On

@@ -1,0 +1,6 @@
+---
+
+- name: "Commande sur container web: {{ command }}"
+  command: 'docker-compose -p {{ cpc_instance_name }} exec -T web {{ command }}'
+  args:
+    chdir: '{{ cpc_home }}/docker'

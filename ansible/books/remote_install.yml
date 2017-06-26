@@ -1,0 +1,10 @@
+---
+
+- hosts: remote
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - cpc.install
+    - cpc.cronjobs
+    - cpc.revproxy
