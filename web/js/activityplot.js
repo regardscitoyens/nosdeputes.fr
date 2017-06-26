@@ -29,18 +29,16 @@ function plot_activity_data(url, divid, width, height, type) {
     var enddate = get_last_monday(data.date_fin);
     var all_weeks = {}; // Becomes a list later
     var idx = 0;
-    var mediane = {}; var presence = {}; var participations = {}; var mots = {}; var vacances = {};
+    var mediane = {}; var presence = {}; var participations = {}; var vacances = {};
     for (var d = new Date(startdate); d <= enddate; d.setDate(d.getDate() + 7)) {
       var md = get_last_monday(d);
       all_weeks[md] = 0;
       if (type === "total") {
         presence[md] = data.n_presences.commission[idx] + data.n_presences.hemicycle[idx];
         participations[md] = data.n_participations.commission[idx] + data.n_participations.hemicycle[idx];
-        mots[md] = data.n_mots.commission[idx] + data.n_mots.hemicycle[idx];
       } else {
         presence[md] = data.n_presences[type][idx];
         participations[md] = data.n_participations[type][idx];
-        mots[md] = data.n_mots[type][idx];
       }
       mediane[md] = data.presences_medi[type][idx];
       vacances[md] = !!data.vacances[idx];
@@ -75,7 +73,6 @@ function plot_activity_data(url, divid, width, height, type) {
     '<tr><td><svg><rect class="mediane"/></svg>Médiane</td><td class="tooltip_mediane"></td></tr>' +
     '<tr><td><svg><rect class="participations"/></svg>Participations</td><td width=20 class="tooltip_participations"></td></tr>' +
     '<tr><td><svg><rect class="presence"/></svg>Présences</td><td class="tooltip_presences"></td></tr>' +
-    '<tr><td><svg><rect class="mots"/></svg>Mots prononcés</td><td class="tooltip_mots"></td></tr>' +
   '</table>' +
   '<div class="banner_vacances">' +
     '<br><br><br>' +
@@ -170,7 +167,6 @@ function plot_activity_data(url, divid, width, height, type) {
         $(tooltipid+" .tooltip_participations").html(participations[x]);
         $(tooltipid+" .tooltip_presences").html(presence[x]);
         $(tooltipid+" .tooltip_mediane").html(mediane[x]);
-        $(tooltipid+" .tooltip_mots").html(mots[x]);
         $(tooltipid+" .banner_vacances")[vacances[x]==1 ? 'show' : 'hide']();
       })
       .on('mousemove', function(e){

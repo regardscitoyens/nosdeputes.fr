@@ -24,10 +24,6 @@ rect.mediane {
   fill: rgb(150,150,150);
 }
 
-#activity_plot rect.mots,
-.tooltip_activity rect.mots {
-  fill: white;
-}
 #activity_plot rect.participations,
 .tooltip_activity rect.participations,
 #curve_participation {
