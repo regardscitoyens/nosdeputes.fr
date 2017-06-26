@@ -37,8 +37,7 @@ function plot_activity_data(url, divid) {
       idx++;
     }
     all_weeks = Object.keys(all_weeks)
-    week_after = get_last_monday(new Date((new Date(all_weeks[all_weeks.length-1])).getTime()+1000*24*60*60*7))
-    
+
     var svg_width=800;
     var svg_height=150;
 
@@ -74,50 +73,48 @@ function plot_activity_data(url, divid) {
     plot_area = svg.append('g')
       .classed('plot', true);
 
-    // This function is probably useless on real data <------------------------------------------------------------------------------
-    // If you remove it, replace 'clip(x,a,b)' by 'x' alone
-    function clip(x,a,b){
-      return Math.max(Math.min(x,b),a);
-    }
-
-    // Mediane
+    // Médiane
     svg.append("path")
       .attr("id", "curve_mediane")
       .attr("d", d3.line()
-      .curve(d3.curveLinear)
-      .x(function (x){return timescale(new Date(x));})
-      .y(function (x){return clip(yscale(mediane[x] || 0),yscale(14)+.5,yscale(0)-.5);})
-      (all_weeks.concat([week_after])))
+        .curve(d3.curveLinear)
+        .x(function (x){return timescale(new Date(x));})
+        .y(function (x){return yscale(mediane[x] || 0);})
+        (all_weeks)
+      );
 
-    // Presence
+    // Présences
     plot_area.append("path")
       .attr("id", "curve_presence")
       .attr("d", d3.area()
-      .curve(d3.curveLinear)
-      .x(function (x){return timescale(new Date(x));})
-      .y1(function (x){return clip(yscale(presence[x] || 0),yscale(14)+.5,yscale(0)-.5);})
-      .y0(yscale(0))
-      (all_weeks.concat([week_after])))
+        .curve(d3.curveLinear)
+        .x(function (x){return timescale(new Date(x));})
+        .y1(function (x){return yscale(presence[x] || 0);})
+        .y0(yscale(0))
+        (all_weeks)
+      );
     
     // Participations
     plot_area.append("path")
       .attr("id", "curve_participation")
       .attr("d", d3.area()
-      .curve(d3.curveLinear)
-      .x(function (x){return timescale(new Date(x));})
-      .y1(function (x){return clip(yscale(participations[x] || 0),yscale(14)+.5,yscale(0)-.5);})
-      .y0(yscale(0))
-      (all_weeks.concat([week_after])))
+        .curve(d3.curveLinear)
+        .x(function (x){return timescale(new Date(x));})
+        .y1(function (x){return yscale(participations[x] || 0);})
+        .y0(yscale(0))
+        (all_weeks)
+      );
 
-
+    // Vacances
     plot_area.append("path")
       .attr("id", "curve_vacances")
       .attr("d", d3.area()
-      .curve(d3.curveStepAfter)
-      .x(function (x){return timescale(new Date(x));})
-      .y1(function (x){return yscale(14*vacances[x] || 0);})
-      .y0(yscale(0))
-      (all_weeks.concat([week_after])))
+        .curve(d3.curveStepAfter)
+        .x(function (x){return timescale(new Date(x));})
+        .y1(function (x){return yscale(14*vacances[x] || 0);})
+        .y0(yscale(0))
+        (all_weeks)
+      );
 
     // Tooltips
     svg.append('g')
