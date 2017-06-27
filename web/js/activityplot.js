@@ -29,7 +29,7 @@ function plot_activity_data(url, divid, width, height, type) {
     var startdate = get_last_monday(data.date_debut),
       enddate = get_last_monday(data.date_fin),
       all_weeks = {}, // Becomes a list later
-      idx = 0,
+      idx = 1,
       presence = {},
       participations = {},
       questions = (type !== 'commission' && data.n_questions ? {} : undefined),
@@ -93,7 +93,7 @@ function plot_activity_data(url, divid, width, height, type) {
 
     // Scales
     timescale = d3.scaleTime()
-      .domain([get_last_monday(startdate), new Date(get_last_monday(enddate).getTime()+1000*60*60*24*3)])
+      .domain([get_last_monday(startdate), new Date(get_last_monday(enddate).getTime())])
       .range([margin_left, svg_width-2]);
     yscale = d3.scaleLinear()
       .domain([0, maxval])

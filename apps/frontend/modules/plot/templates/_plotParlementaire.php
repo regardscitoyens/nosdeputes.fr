@@ -26,7 +26,7 @@ if ($link === 'true') {
   $width = floor($width * $widthrate);
 } else echo '<div class="par_session">'; ?>
 <div class="activity_plot" id="plot<?php echo $type; ?>">
-  <?php if ((!isset($absolute) && $absolute)) echo '<noscript>'; ?>
+  <?php if (!(!isset($absolute) && $absolute)) echo '<noscript>'; ?>
   <img
     style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px;"
     alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>"
