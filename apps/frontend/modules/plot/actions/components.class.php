@@ -402,11 +402,12 @@ class plotComponents extends sfComponents
         $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
 
     $this->data['hasData'] = false;
-    for ($i=1;$i<$n;$i++)
-      if ($this->data['totaux'][$i]) {
-        $this->data['hasData'] = true;
-        break;
-      }
+    if (count($this->data['groupes']) > 1)
+      for ($i=1;$i<$n;$i++)
+        if ($this->data['totaux'][$i]) {
+          $this->data['hasData'] = true;
+          break;
+        }
 
     foreach ($this->data['groupes'] as $groupe => $arr)
       for ($i=0;$i<$n;$i++)
