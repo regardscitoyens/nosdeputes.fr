@@ -28,16 +28,16 @@ if ($link === 'true') {
 <div class="activity_plot" id="plot<?php echo $type; ?>">
   <?php if ((!isset($absolute) && $absolute)) echo '<noscript>'; ?>
   <img
-    style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px;'
+    style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px;"
     alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>"
-    src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link, $abs); ?>"
+    src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type, $abs).'?questions='.$questions.'&link='.$link; ?>"
   />
   <?php if (!(isset($absolute) && $absolute)) echo '</noscript>'; ?>
 </div>
 <?php if ($link === 'true') echo '</a>';
 if (!(isset($absolute) && $absolute)) : ?>
 <script type="text/javascript">
-plot_activity_data("<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&format=json'); ?>", "plot<?php echo $type; ?>", "<?php echo $width; ?>", "<?php echo $height; ?>", "<?php echo $type; ?>");
+plot_activity_data("<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type).'?questions='.$questions.'&format=json'; ?>", "plot<?php echo $type; ?>", "<?php echo $width; ?>", "<?php echo $height; ?>", "<?php echo $type; ?>");
 </script>
 <?php endif;
 
