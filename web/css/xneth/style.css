@@ -1097,7 +1097,8 @@ h1 {
   margin: 0px;
   margin-top: -2px;
   padding: 0px;
-  font-size: 13px;
+  font-size: 14px;
+  font-family: Liberation Sans, sans-serif;
 }
 .graph_depute p a {
   font-size: 11px;
