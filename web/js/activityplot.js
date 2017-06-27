@@ -39,14 +39,14 @@ function plot_activity_data(url, divid, width, height, type) {
       var md = get_last_monday(d);
       all_weeks[md] = 0;
       if (type === "total") {
-        presence[md] = data.n_presences.commission[idx] + data.n_presences.hemicycle[idx];
-        participations[md] = data.n_participations.commission[idx] + data.n_participations.hemicycle[idx];
+        presence[md] = (data.n_presences.commission[idx] || 0) + (data.n_presences.hemicycle[idx] || 0);
+        participations[md] = (data.n_participations.commission[idx] || 0) + (data.n_participations.hemicycle[idx] || 0);
       } else {
-        presence[md] = data.n_presences[type][idx];
-        participations[md] = data.n_participations[type][idx];
+        presence[md] = (data.n_presences[type][idx] || 0);
+        participations[md] = (data.n_participations[type][idx] || 0);
       }
       if (questions)
-        questions[md] = data.n_questions[idx]/0.85;
+        questions[md] = (data.n_questions[idx] || 0)/0.85;
       mediane[md] = data.presences_medi[type][idx];
       vacances[md] = !!data.vacances[idx];
       idx++;
