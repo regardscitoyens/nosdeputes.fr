@@ -84,8 +84,9 @@ function plot_activity_data(url, divid, width, height, type) {
     '<tr><td><svg><rect class="mediane"/></svg>Présence médiane</td><td class="tooltip_mediane"></td></tr>' +
   '</table>' +
   '<div class="banner_vacances">' +
-    '<br><br><br>' +
-    '<b>Vacances Parlementaires</b>' +
+    '<br/>Vacances parlementaires' +
+    '<br/><small>(aucune séance ou réunion' +
+    '<br/>durant cette semaine)</small>' +
   '</div>' +
 '</center>'
     );

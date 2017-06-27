@@ -107,9 +107,9 @@ rect.tooltip {
 .banner_vacances {
   position: absolute;
   left: 0;
-  top: 0;
+  top: 22%;
   width: 100%;
-  background: rgba(256,256,256,.9);
-  height: 100%;
+  background: rgba(256,256,256,1);
+  height: 78%;
   border-radius: 5px;
 }
