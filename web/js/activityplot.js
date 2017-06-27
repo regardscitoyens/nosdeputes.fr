@@ -53,7 +53,7 @@ function plot_activity_data(url, divid, width, height, type) {
     }
     all_weeks = Object.keys(all_weeks)
 
-    var week_width = (svg_width-margin_left)/Object.keys(all_weeks).length+0.2;
+    var week_width = (svg_width-margin_left)/(Object.keys(all_weeks).length);
 
     var titre = "Participation ",
       extra = "";
@@ -93,7 +93,7 @@ function plot_activity_data(url, divid, width, height, type) {
 
     // Scales
     timescale = d3.scaleTime()
-      .domain([get_last_monday(startdate), new Date(get_last_monday(enddate).getTime()+1000*60*60*24)])
+      .domain([get_last_monday(startdate), new Date(get_last_monday(enddate).getTime()+1000*60*60*24*3)])
       .range([margin_left, svg_width-2]);
     yscale = d3.scaleLinear()
       .domain([0, maxval])
@@ -184,9 +184,9 @@ function plot_activity_data(url, divid, width, height, type) {
       .enter()
       .append("rect")
       .classed('tooltip', true)
-      .attr('x', function (x){return timescale(new Date(x)) - week_width/2;})
+      .attr('x', function (x){ return Math.max(margin_left, timescale(new Date(x)) - week_width/2); })
       .attr('y', yscale(maxval))
-      .attr('width', week_width)
+      .attr('width', function(x, idx){ return (idx ? week_width : week_width / 2); })
       .attr('height', yscale(0)-yscale(maxval))
       .attr("date", function (x){return x;})
       .on('mouseover', function (x, idx, rects){

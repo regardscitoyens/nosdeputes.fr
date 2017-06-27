@@ -141,26 +141,26 @@ $pos_titre = 240;
 if (preg_match("/^l/", $time)) {
   if (isset($data['mandat_clos'])) {
     $pos_titre = 210;
-    $duree = ' sa dernière année de mandat';
+    $duree = 'de sa dernière année de mandat';
   } else if ($data['fin']) {
     $pos_titre = 235;
-    $duree = ' toute la législature';
+    $duree = 'de toute la législature';
   } else {
     $mois = min(12, floor((time() - strtotime(myTools::getDebutLegislature()) ) / (60*60*24*30)));
-    $duree = ($mois < 2 ? " premier" : "s $mois ".($mois < 12 ? "prem" : "dern")."iers")." mois";
+    $duree = ($mois < 2 ? "du premier" : "des $mois ".($mois < 12 ? "prem" : "dern")."iers")." mois";
   }
   $shortduree = 'annee';
 } else {
-  $duree = " la session ".preg_replace('/^(\d{4})/', '\\1-', $time);
+  $duree = "de la session ".preg_replace('/^(\d{4})/', '\\1-', $time);
   $shortduree = $time;
 }
 if ($type === 'total') {
-  $Test->drawTitle($pos_titre,3 + 2*$font,"Participation globale au cours de".$duree." (hémicycle et commissions)",50,50,50,585);
+  $Test->drawTitle($pos_titre,3 + 2*$font,"Participation globale au cours ".$duree." (hémicycle et commissions)",50,50,50,585);
   $titre = 'globale-'.$shortduree;
 } else {
   $titre = $type;
   if ($type === 'commission') $titre .= 's';
-  $Test->drawTitle($pos_titre+30,3 + 2*$font,"Participation en ".$titre." au cours de".$duree,50,50,50,585);
+  $Test->drawTitle($pos_titre+30,3 + 2*$font,"Participation en ".$titre." au cours ".$duree,50,50,50,585);
   $titre .= '-'.$shortduree;
 }
 
