@@ -33,7 +33,7 @@ echo (myTools::isFinLegislature() ? "l'ensemble de la législature" : "les 12 de
 <?php if ($type === "home") echo '</a>'; ?>
 <?php echo include_partial('plot/groupesLegende', array("groupes" => array_keys($data['groupes']), "width" => $w)); ?>
 <script type="text/javascript">
-LoadImageMap("graph_groupes", "<?php echo url_for('@groupes_plot_graph?type='.$type.'&drawAction=map&mapId='.$PictureID); ?>");
+LoadImageMap("graph_groupes", "<?php echo url_for('@groupes_plot_graph?type='.$type.'&format=map&mapId='.$PictureID); ?>");
 </script>
 <?php if ($type === "home") : //Si c'est la home, on ferme les div consacrées ?>
 </div></div>

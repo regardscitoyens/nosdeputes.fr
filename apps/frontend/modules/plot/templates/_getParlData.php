@@ -1,1 +1,1 @@
-<?php echo serialize($data); ?>
+<?php echo json_encode($data); ?>

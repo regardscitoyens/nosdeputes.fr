@@ -13,7 +13,7 @@ if ($type === "home") {
 $ysize = $ydefsize + $yadd;
 $font = 8;
 
-if ($drawAction === "map") {
+if ($format === "map") {
   $Test = new xsPChart($xsize,$ysize);
   $Test->getImageMap($mapId, TRUE);
 }
