@@ -80,7 +80,7 @@ function plot_activity_data(url, divid, width, height, type) {
   '<table>' +
     '<tr><td><svg><rect class="participations"/></svg>Participations</td><td class="tooltip_participations"></td></tr>' +
     (questions ? '<tr><td><svg><rect class="questions"/></svg>Questions orales</td><td class="tooltip_questions"></td></tr>' : '') +
-    '<tr><td><svg><rect class="presence"/></svg>Présences</td><td class="tooltip_presences"></td></tr>' +
+    '<tr><td><svg><rect class="presence"/></svg>Présences '+(type === 'commission' ? 'enregistr' : 'relev')+'ées</td><td class="tooltip_presences"></td></tr>' +
     '<tr><td><svg><rect class="mediane"/></svg>Présence médiane</td><td class="tooltip_mediane"></td></tr>' +
   '</table>' +
   '<div class="banner_vacances">' +
