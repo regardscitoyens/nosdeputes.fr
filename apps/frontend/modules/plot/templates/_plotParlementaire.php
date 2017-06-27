@@ -26,10 +26,13 @@ if ($link === 'true') {
   $width = floor($width * $widthrate);
 } else echo '<div class="par_session">'; ?>
 <div class="activity_plot" id="plot<?php echo $type; ?>">
-  <noscript><img
+  <?php if ((!isset($absolute) && $absolute)) echo '<noscript>'; ?>
+  <img
+    style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px;'
     alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>"
     src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link, $abs); ?>"
-  /></noscript>
+  />
+  <?php if (!(isset($absolute) && $absolute)) echo '<§noscript>'; ?>
 </div>
 <?php if ($link === 'true') echo '</a>';
 if (!(isset($absolute) && $absolute)) : ?>
