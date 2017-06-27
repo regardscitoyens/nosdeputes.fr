@@ -32,7 +32,7 @@ if ($link === 'true') {
     alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>"
     src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link, $abs); ?>"
   />
-  <?php if (!(isset($absolute) && $absolute)) echo '<§noscript>'; ?>
+  <?php if (!(isset($absolute) && $absolute)) echo '</noscript>'; ?>
 </div>
 <?php if ($link === 'true') echo '</a>';
 if (!(isset($absolute) && $absolute)) : ?>
