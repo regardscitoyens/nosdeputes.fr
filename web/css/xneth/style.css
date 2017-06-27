@@ -1100,8 +1100,14 @@ h1 {
   font-size: 14px;
   font-family: Liberation Sans, sans-serif;
 }
+.graph_depute a:hover {
+  text-decoration: none;
+}
 .graph_depute p a {
   font-size: 11px;
+}
+.graph_depute p a:hover {
+  text-decoration: underline;
 }
 .barre_activite {
   float: left;
