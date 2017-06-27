@@ -3,8 +3,8 @@
 $data = get_component('plot', 'getParlData', array('parlementaire' => $parlementaire, 'session' => $time));
 
 if ($format == 'json') {
-    print_r($data);
-    exit;
+  print_r($data);
+  exit;
 }
 $data = json_decode($data, true);
 
@@ -104,10 +104,10 @@ $DataDescr2 = $DataSet2->GetDataDescription();
 $DataLegend = $DataSetLegend->GetData();
 $DataDescrLegend = $DataSetLegend->GetDataDescription();
 
-$Test = new xsPChart(795,$size);
+$Test = new xsPChart(790,$size);
 $Test->setGraphArea(25+3*$font,3*$font,780,$size-10-2*$font);
-$Test->drawFilledRoundedRectangle(7,3,793,$size-7,5,240,240,240);
-$Test->drawRoundedRectangle(5,1,795,$size - 5,5,230,230,230);
+$Test->drawFilledRoundedRectangle(7,3,785,$size-7,5,240,240,240);
+$Test->drawRoundedRectangle(5,1,787,$size - 5,5,230,230,230);
 $Test->drawGraphArea(230,230,230,FALSE);
 $Test->setFixedScale(0,$scale,$scale/$ticks);
 $Test->xsSetFontProperties("tahoma.ttf",$font);

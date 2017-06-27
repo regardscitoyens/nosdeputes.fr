@@ -213,11 +213,11 @@ function plot_activity_data(url, divid, width, height, type) {
     // Axes
     svg.append("g")
       .classed('yaxis', true)
-      .attr("transform", "translate("+(margin_left-6)+",0)")
+      .attr("transform", "translate("+(margin_left-4)+",0)")
       .call(d3.axisLeft(yscale).ticks((svg_height > 200 ? 10 : 5)))
     svg.append("g")
       .classed('timeaxis', true)
-      .attr("transform", "translate(0,"+(svg_height-margin_bottom+5)+")")
+      .attr("transform", "translate(0,"+(svg_height-margin_bottom)+")")
       .call(d3.axisBottom(timescale).ticks(d3.timeMonth.every(data.fin ? 4 : 1)).tickFormat(d3.timeFormat("%b %y")))
 
     svg.append('text')
