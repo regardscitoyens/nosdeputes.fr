@@ -49,6 +49,13 @@
     - log
     - web/images/tmp/xspchart
 
+- name: Création répertoire mysql
+  file:
+    dest: '{{ cpc_home }}/mysql'
+    state: directory
+    owner: '{{ cpc_user }}'
+    mode: 0777
+
 - name: Génération secret
   shell: 'head -c 50 /dev/urandom | base64 > {{ cpc_home }}/secret'
   args:
