@@ -1,7 +1,8 @@
 body {
   margin: 0;
   padding: 0;
-  font: 11px Verdana, Tahoma, Geneva, Arial, Sans-serif;
+  font-size: 11px;
+  font-family: Liberation Sans, sans-serif;
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
@@ -353,7 +354,7 @@ a:hover {
 .coms {
   width: 25px;
   height: 25px;
-  font-family: verdana;
+  font-family: Liberation Sans, sans-serif;
   text-align: center;
   color: #000;
   font-size: 0.8em;
@@ -610,7 +611,7 @@ a:hover {
 h1 {
   font-size: 1.5em;
   color: #6F6F6F;
-  font-family: Verdana, Tahoma, Geneva, Arial, Sans-serif;
+  font-family: Liberation Sans, sans-serif;
   margin-top: 20px;
   margin-bottom: 10px;
   text-align: center;
@@ -954,7 +955,7 @@ h1 {
   padding: 0;
   margin: 0;
   font-size: 8pt;
-  font-family: Tahoma, Arial, Helvetica, sans-serif;
+  font-family: Liberation Sans, sans-serif;
 }
 .elements_sous_menu   li{
   display: block ;
