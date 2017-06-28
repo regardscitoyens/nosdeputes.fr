@@ -13,7 +13,7 @@
     <meta property="og:description" content="Observatoire citoyen de l'activité parlementaire à l'Assemblée nationale" />
     <meta property="og:url" content="https://www.NosDéputés.fr" />
     <meta property="og:locale" content="fr_FR" />
-    <meta property="og:image" content="http://www.regardscitoyens.org/wp-content/uploads/2009/10/logo_nosdeputes.png" />
+    <meta property="og:image" content="https://www.nosdeputes.fr/images/xneth/bouton_logo.png" />
     <meta property="og:image:type" content="image/png" />
 
     <?php include_title() ?>

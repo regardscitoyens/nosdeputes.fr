@@ -12,7 +12,7 @@ default:
     "twitter:site":   @RegardsCitoyens
     "twitter:title":  "NosDéputés.fr par Regards Citoyens"
     "twitter:description": "Observatoire citoyen de l'activité parlementaire à l'Assemblée nationale">
-    "twitter:image": "http://www.regardscitoyens.org/wp-content/uploads/2009/10/logo_nosdeputes.png"
+    "twitter:image": "https://www.nosdeputes.fr/images/xneth/bouton_logo.png"
   stylesheets:    []
 
   javascripts:    []
