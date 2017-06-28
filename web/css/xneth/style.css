@@ -2009,7 +2009,7 @@ a:hover img {
 }
 .list_dep:hover, .list_dep.hover {
   color: #000;
-  background-color: #D1EA74;
+  background-color: rgba(209, 234, 116, 0.6);
   opacity: 0.8;
 }
 .list_img_left {
