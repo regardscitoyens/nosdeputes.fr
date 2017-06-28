@@ -17,12 +17,12 @@ all:
   groupes_infos: >
     [
     "La France insoumise / LFI / 204,42,70 / France Insoumise / insoumise",
-    "Gauche démocrate et républicaine / GDR / 255,30,30 / PCF et ultramarins / gauc\s*d.*mocrate",
+    "Gauche démocrate et républicaine / GDR / 255,30,30 / PCF et ultramarins / gauche\s*d.*mocrate",
     "Nouvelle Gauche / NG / 255,50,190 / PS et divers gauche / nouvelle",
     "La République En Marche / LREM / 232,197,5 / En Marche / marche",
     "Mouvement Démocrate et apparentés / MODEM / 247,138,13 / MoDem / mouvement",
     "Les Constructifs : républicains, udi, indépendants / LC / 30,180,255 / LR proches d'En Marche & UDI / constructif",
-    "Les Républicains / LR / 30,30,200 / Les Républicains / les\s.*publicains",
+    "Les Républicains / LR / 30,30,200 / Les Républicains / les\s*r.*publicains",
     "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (Divers droite, FN...) / inscrit|non\s*inscrit"
     ]
   groupes_proximite: >
