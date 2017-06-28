@@ -1,7 +1,7 @@
 <?php use_helper('Text') ?>
 <h1 class="list_com"><?php echo $title; ?></h1>
 <?php $total = $pager->getNbResults();
-      $ct = 0; 
+      $ct = 0;
       $types = array("date"  => "date d'inscription",
                      "alpha" => "ordre alphabétique",
                      "comm"  => "commentaires postés"); ?>
@@ -11,13 +11,18 @@
   else echo '<strong>'.$texte.'</strong>';
   $ct++;
   if ($ct != count($types)) echo ', ';
-} 
+}
 echo ', '.link_to('derniers commentaires', '@commentaires');
 ?>
-  
+
 </div>
-<p><?php echo $total; ?> citoyens se sont inscrits sur NosDéputés.fr depuis la première ouverture du site le 14 septembre 2009. <?php echo $comments['auteurs']; ?> d'entre eux ont laissé un total de <?php echo link_to($comments['comments'].'&nbsp;commentaires', '@commentaires'); ?> depuis le début de l'actuelle législature le <?php echo myTools::displayDate(myTools::getDebutLegislature());?>.</p>
-<p><?php if (!$sf_user->isAuthenticated()) echo 'Vous n\'avez pas encore de compte&nbsp;? Cliquez ici pour <strong><a href="'.url_for('@inscription').'">vous inscrire</a></strong> ou <strong><a href="'.url_for('@signin').'">vous connecter'; else echo '<strong><a href="'.url_for('@citoyen?slug='.$sf_user->getAttribute('slug')).'">Voir votre compte'; ?></a></strong>.</p>
+<p><?php if (!$total) echo "Aucun citoyen ne s'est encore inscrit";
+else echo $total." citoyen".($total == 1 ? " s'est inscrit" : "s se sont inscrits"); ?>
+ sur NosDéputés.fr depuis la première ouverture du site le 14 septembre 2009.
+<?php if ($total) { if (!$comments['auteurs']) echo "Aucun d'entre eux n'a encore laissé de commentaire";
+else echo $comments['auteurs']." d'entre eux ".($comments['auteurs'] > 1 ? 'ont' : 'a')." laissé un ".($comments['comments'] > 1 ? "total de ".link_to($comments['comments'].'&nbsp;commentaires', '@commentaires') : "commentaire"); ?>
+ depuis le début de l'actuelle législature le <?php echo myTools::displayDate(myTools::getDebutLegislature())."."; } ?></p>
+<p><?php if (!$sf_user->isAuthenticated()) echo 'Vous n\'avez pas encore de compte&nbsp;? Cliquez ici pour <strong><a href="'.url_for('@inscription').'">vous inscrire</a></strong> ou <strong><a href="'.url_for('@signin').'">vous connecter'; else echo '<strong><a href="'.url_for('@citoyen?slug='.$sf_user->getAttribute('slug')).'">Voir votre compte'; ?></a></strong></p>
 
 <div class="liste">
 <?php if ($pager->haveToPaginate()) include_partial('parlementaire/paginate', array('pager'=>$pager, 'link'=>'@list_citoyens?order='.$order.'&')); ?>

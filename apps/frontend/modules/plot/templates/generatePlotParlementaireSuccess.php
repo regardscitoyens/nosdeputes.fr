@@ -1,25 +1,23 @@
 <?php
 
-$data = unserialize(get_component('plot', 'getParlData', array('parlementaire' => $parlementaire, 'session' => $time)));
+$data = get_component('plot', 'getParlData', array('parlementaire' => $parlementaire, 'session' => $time));
 
-if ($drawAction == 'txt') {
-    print_r($data);
-    exit;
+if ($format == 'json') {
+  print_r($data);
+  exit;
 }
+$data = json_decode($data, true);
 
 $n = count($data['labels']);
 $presences = array_fill(1, $n, 0);
 $participations = array_fill(1, $n, 0);
-$mots = array_fill(1, $n, 0);
 $presences_medi = array_fill(1, $n, 0);
 if ($type === 'total') for ($i = 1; $i <= $n; $i++) {
   $presences[$i] = $data['n_presences']['hemicycle'][$i] + $data['n_presences']['commission'][$i];
   $participations[$i] = $data['n_participations']['hemicycle'][$i] + $data['n_participations']['commission'][$i];
-  $mots[$i] = $data['n_mots']['hemicycle'][$i] + $data['n_mots']['commission'][$i];
 } else if ($type === 'hemicycle' || $type === 'commission') {
   $presences = $data['n_presences']["$type"];
   $participations = $data['n_participations']["$type"];
-  $mots = $data['n_mots']["$type"];
 }
 $presences_medi = $data['presences_medi']["$type"];
 
@@ -43,19 +41,12 @@ if ($link === 'true') {
   }
 }
 
-if ($drawAction === "map" ) {
-  $Test = new xsPChart(800,$size);
-  $Test->getImageMap($mapId, TRUE);
-}
-
 $DataSet = new xsPData();
 $DataSet->AddPoint($data['labels'], "Serie1");
 $DataSet->AddPoint($presences, "Serie2");
 $DataSet->AddPoint($participations, "Serie3");
-$DataSet->AddPoint($mots, "Serie4");
 $DataSet->AddSerie("Serie2");
 $DataSet->AddSerie("Serie3");
-$DataSet->AddSerie("Serie4");
 $DataSet->SetAbsciseLabelSerie("Serie1");
 $DataSet->SetYAxisName("Séances par semaine");
 
@@ -113,10 +104,10 @@ $DataDescr2 = $DataSet2->GetDataDescription();
 $DataLegend = $DataSetLegend->GetData();
 $DataDescrLegend = $DataSetLegend->GetDataDescription();
 
-$Test = new xsPChart(800,$size);
+$Test = new xsPChart(790,$size);
 $Test->setGraphArea(25+3*$font,3*$font,780,$size-10-2*$font);
-$Test->drawFilledRoundedRectangle(7,7,793,$size-7,5,240,240,240);
-$Test->drawRoundedRectangle(5,5,795,$size - 5,5,230,230,230);
+$Test->drawFilledRoundedRectangle(7,3,785,$size-7,5,240,240,240);
+$Test->drawRoundedRectangle(5,1,787,$size - 5,5,230,230,230);
 $Test->drawGraphArea(230,230,230,FALSE);
 $Test->setFixedScale(0,$scale,$scale/$ticks);
 $Test->xsSetFontProperties("tahoma.ttf",$font);
@@ -126,9 +117,7 @@ $Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,$ticks,0,0,FALSE,1,FALSE
 if ($link === 'true') {
   $Test->setColorPalette(0,255,255,255);
   $Test->setColorPalette(1,255,255,255);
-  $Test->setImageMap(TRUE,$mapId);
   $Test->drawOverlayBarGraph($DataLegend,$DataDescrLegend,30,100);
-  $Test->setImageMap(FALSE,$mapId);
 }
 $Test->drawGrid(0,TRUE,0,0,0,100);
 $Test->setColorPalette(0,50,50,50);
@@ -152,30 +141,28 @@ $pos_titre = 240;
 if (preg_match("/^l/", $time)) {
   if (isset($data['mandat_clos'])) {
     $pos_titre = 210;
-    $duree = ' sa dernière année de mandat';
+    $duree = 'de sa dernière année de mandat';
   } else if ($data['fin']) {
     $pos_titre = 235;
-    $duree = ' toute la législature';
+    $duree = 'de toute la législature';
   } else {
     $mois = min(12, floor((time() - strtotime(myTools::getDebutLegislature()) ) / (60*60*24*30)));
-    $duree = ($mois < 2 ? " premier" : "s $mois ".($mois < 12 ? "prem" : "dern")."iers")." mois";
+    $duree = ($mois < 2 ? "du premier" : "des $mois ".($mois < 12 ? "prem" : "dern")."iers")." mois";
   }
   $shortduree = 'annee';
 } else {
-  $duree = " la session ".preg_replace('/^(\d{4})/', '\\1-', $time);
+  $duree = "de la session ".preg_replace('/^(\d{4})/', '\\1-', $time);
   $shortduree = $time;
 }
 if ($type === 'total') {
-  $Test->drawTitle($pos_titre,3 + 2*$font,"Participation globale au cours de".$duree." (hémicycle et commissions)",50,50,50,585);
+  $Test->drawTitle($pos_titre,3 + 2*$font,"Participation globale au cours ".$duree." (hémicycle et commissions)",50,50,50,585);
   $titre = 'globale-'.$shortduree;
 } else {
   $titre = $type;
   if ($type === 'commission') $titre .= 's';
-  $Test->drawTitle($pos_titre+30,3 + 2*$font,"Participation en ".$titre." au cours de".$duree,50,50,50,585);
+  $Test->drawTitle($pos_titre+30,3 + 2*$font,"Participation en ".$titre." au cours ".$duree,50,50,50,585);
   $titre .= '-'.$shortduree;
 }
-if ($link === 'true')
-  $Test->setImageMap(TRUE,$mapId);
 
 $Test->xsStroke();
 

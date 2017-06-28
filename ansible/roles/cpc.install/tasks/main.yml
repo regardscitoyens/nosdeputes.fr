@@ -8,6 +8,7 @@
     name: '{{ cpc_user }}'
     state: present
     home: '{{ cpc_home }}'
+    shell: /bin/bash
 
 - name: Vérification mot de passe '{{ cpc_user }}'
   shell: 'cat /etc/shadow | egrep ^{{ cpc_user }}: | cut -d ":" -f 2 | wc -c'
@@ -127,6 +128,16 @@
     src: compose.j2
     dest: /usr/local/bin/dc-{{ cpc_instance_name }}
     mode: 0755
+
+- name: Autorisation exécution sudo
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    line: '{{ cpc_user }}  ALL=(ALL) NOPASSWD: {{ item }}'
+    validate: 'visudo -cf %s'
+  with_items:
+    - '/usr/local/bin/dc-{{ cpc_instance_name }}'
+    - '/usr/local/bin/docker-compose'
 
 - name: Arrêt containers
   command: 'docker-compose -p {{ cpc_instance_name }} stop'

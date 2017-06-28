@@ -12,22 +12,21 @@ all:
   allow_autoclean_solr: false
 
   groupes_actuels: >
-    ["LFI", "GDR", "SER", "RP", "LREM", "MODEM", "RCUDI", "LR", "NI"]
+    ["LFI", "GDR", "NG", "LREM", "MODEM", "LC", "LR", "NI"]
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
   groupes_infos: >
     [
-    "La France Insoumise / LFI / 255,30,30 / France Insoumise / insoumis",
-    "Gauche Démocrate et Républicaine / GDR / 255,40,100 / PCF et régionalistes / gauche.*d[eéÉ]mocrate",
-    "Socialiste, Écologiste et Républicain / SER / 255,50,190 / PS / socialiste",
-    "Radical Progressiste / RP / 198,81,249 / PRG, ex-EELV et divers gauche / radical|progressiste",
-    "République En Marche / LREM / 236,234,76 / En Marche / marche",
-    "Mouvement Démocrate / MODEM / 250,195,132 / MoDem / modem",
-    "Républicains Constructifs et Union des Démocrates et Indépendants / RCUDI / 30,180,255 / LR proches d'En Marche & UDI / constructif",
-    "Les Républicains / LR / 30,30,200 / Les Républicains / r[eéÉ]publicains",
-    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (Divers droite, FN…) / inscrit|députés.*aucun"
+    "La France insoumise / LFI / 204,42,70 / France Insoumise / insoumise",
+    "Gauche démocrate et républicaine / GDR / 255,30,30 / PCF et ultramarins / gauche\s*d.*mocrate",
+    "Nouvelle Gauche / NG / 255,50,190 / PS et divers gauche / nouvelle",
+    "La République En Marche / LREM / 232,197,5 / En Marche / marche",
+    "Mouvement Démocrate et apparentés / MODEM / 247,138,13 / MoDem / mouvement",
+    "Les Constructifs : républicains, udi, indépendants / LC / 30,180,255 / LR proches d'En Marche & UDI / constructif",
+    "Les Républicains / LR / 30,30,200 / Les Républicains / les\s*r.*publicains",
+    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (Divers droite, FN...) / inscrit|non\s*inscrit"
     ]
   groupes_proximite: >
-    ["LFI / GDR", "LFI / SER", "GDR / SER", "SER / RP", "SER / LREM", "RP / LREM", "LREM / MODEM", "LREM / RCUDI", "MODEM / RCUDI", "RCUDI / LR", "LR / NI"]
+    ["LFI / GDR", "LFI / NG", "GDR / NG", "NG / LREM", "LREM / MODEM", "LREM / LC", "MODEM / LC", "LC / LR", "LR / NI"]
 
   commissions_permanentes: >
     [

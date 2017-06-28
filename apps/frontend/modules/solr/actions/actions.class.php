@@ -145,16 +145,16 @@ class solrActions extends sfActions
 
     $period = '';
 
+    $jours_max = 90; // Seuil en nb de jours qui détermine l'affichage par jour ou par mois d'une période
     if ($date) {
       $this->selected['date'][$date] = $date;
       if (preg_match('/\d{8}/',$date)) {
-	$date = preg_replace('/(\d{4})(\d{2})(\d{2})/', '\1-\2-\3T00:00:00Z', $date);
+        $date = preg_replace('/(\d{4})(\d{2})(\d{2})/', '\1-\2-\3T00:00:00Z', $date);
       }
       $dates = explode(',', $date);
       list($from, $to) = $dates;
 
       $nbjours = round((strtotime($to) - strtotime($from))/(60*60*24)+1);
-      $jours_max = 90; // Seuil en nb de jours qui détermine l'affichage par jour ou par mois d'une période
 
       $comp_date_from = explode("T", $from);
       $comp_date_from = explode("-", $comp_date_from[0]);
@@ -189,6 +189,12 @@ class solrActions extends sfActions
       $query .= ' date:['.$from.' TO '.$to.']';
       $params['facet.date.start'] = $from;
       $params['facet.date.end'] = $to;
+      $params['facet.date.gap'] = '+1'.$period;
+    } else if (time() - strtotime($date_debut) < $jours_max*60*60*24) {
+      $period = 'DAY';
+      $this->vue = 'par_jour';
+      $params['facet.date.start'] = date ('Y-m-d', strtotime($date_debut)-(3600*2+1)).'T23:59:59Z';;
+      $params['facet.date.end'] = date ('Y-m-d', time()).'T23:59:59Z';
       $params['facet.date.gap'] = '+1'.$period;
     }
 

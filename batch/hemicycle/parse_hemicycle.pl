@@ -21,6 +21,7 @@ $string =~ s/ / /g;
 $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
 $string =~ s/\\’85//g;
+$string =~ s/’/'/g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<h[0-9][^>]*>[^<]*)(<i>[^<]*<\/i>\s*)*/$1/gi;
@@ -177,7 +178,7 @@ sub checkout {
         $contexte .= ' > '.$titre2;
     }
     $contexte =~ s/"/\\"/g;
-    $out =  '{"contexte": "'.$contexte.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
+    $out =  '{"contexte": "'.$contexte.'", "date": "'.$date.'", "source": "'.$source.'", "heure": "'.$heure.'", "session": "'.$session.'", ';
     if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|bienvenue|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement/i) {
         $out .= "\"numeros_loi\": \"$ploi\", ";
     }
@@ -209,9 +210,13 @@ sub checkout {
             print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$3."\"}\n";
             $inter2fonction{$intervenant} = '';
         }
-        print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.'", "intervenant_url": "'.$intervenant_url."\"}\n";
+        $extrafct = "";
+        if ($intervenant =~ s/\s*(Doyenn?e? d'âge)$//i) {
+            $extrafct = ", ".lc($1);
+        }
+        print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.$extrafct.'", "intervenant_url": "'.$intervenant_url."\"}\n";
     }elsif($intervention) {
-        print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant":"'."\"}\n";
+        print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant": "'."\"}\n";
     }else {
         return ;
     }
@@ -465,7 +470,7 @@ foreach $line (split /\n/, $string)
         }
     }
 }
-if ($intervention =~ "^<p>Le Directeur du service du compte rendu de la séance") {
+if ($intervention =~ /^<p>L[ea] Direct(eur|rice) du service du compte rendu de la séance/) {
     $intervenant = "";
 }
 checkout();
