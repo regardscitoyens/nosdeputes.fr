@@ -16,7 +16,8 @@ Pour le parsing :
 
 ```bash
 sudo aptitude install libwww-mechanize-perl libfile-path-perl
-sudo pip install bs4
+sudo aptitude install libxml2-devel libxslt-devel python-devel
+sudo pip install bs4 lxml
 ```
 
 ## Installation
