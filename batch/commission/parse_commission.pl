@@ -137,7 +137,7 @@ sub checkout {
     $intervention =~ s/\s*(<\/?t(able|[rdh])[^>]*>)\s*/\1/gi;
     $cpt+=10;
     $ts = $cpt;
-    $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
+    $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure": "'.$heure.'", "session": "'.$session.'", ';
     if ($intervention && $intervenant) {
 	if ($intervenant =~ s/ et M[mes\.]* (l[ea] )?(.*)//) {
             $second = $2;
@@ -149,7 +149,7 @@ sub checkout {
 	}
 	print $out.'"intervenant": "'.$intervenant.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{$intervenant}."\"}\n";
     }elsif($intervention) {
-	print $out.'"intervenant":"", "timestamp": "'.$ts.'"}'."\n";
+	print $out.'"intervenant": "", "timestamp": "'.$ts.'"}'."\n";
     }else {
 	return ;
     }
@@ -483,14 +483,19 @@ foreach $line (split /\n/, $string)
 		$found = $majIntervenant = 1;
         checkout();
         $intervenant = setFonction($f, $i);
-	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r..?sidente?|[rR]apporteure?)[\.: \|]*//) {
-		$tmpfonction = lc($1);
-		$tmpintervenant = $fonction2inter{$tmpfonction};
-		if ($tmpintervenant) {
-	                checkout();
-			$intervenant = $tmpintervenant;
-			$found = $majIntervenant = 1;
-		}
+	}elsif ($line =~ s/^([Llea\s]*\|[Llea\s]*([pP]r..?sidente?|[rR]apporteure?)[\.: \|]*)//) {
+        $source = $1;
+		$tmpfonction = lc($2);
+        if (!$intervenant && $intervention =~ /:<\/p>$/) {
+            $line = "$source$line";
+        } else {
+		    $tmpintervenant = $fonction2inter{$tmpfonction};
+		    if ($tmpintervenant) {
+                checkout();
+			    $intervenant = $tmpintervenant;
+			    $found = $majIntervenant = 1;
+		    }
+        }
 	}
 	$line =~ s/^\s+//;
 	$line =~ s/[\|\/]//g;
@@ -502,8 +507,13 @@ foreach $line (split /\n/, $string)
             $intervenant = setIntervenant($1);
 	    }elsif (!$majIntervenant) {
             if ($line =~ s/^\s*(M(mes?|[e\.])\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
-        	    checkout();
-    	        $intervenant = setIntervenant($1);
+                $source = $1;
+                if (!$intervenant && !$line) {
+                    $line = $source;
+                } else {
+        	        checkout();
+    	            $intervenant = setIntervenant($source);
+                }
             }elsif($line =~ s/^\s*[Ll][ea] ([pP]r[ée]sidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
                 setFonction($1, $2);
                 checkout();
