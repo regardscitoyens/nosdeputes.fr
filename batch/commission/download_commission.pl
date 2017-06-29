@@ -4,7 +4,7 @@ use WWW::Mechanize;
 use HTML::TokeParser;
 
 $a = WWW::Mechanize->new(autocheck => 0);
-$legislature = shift || 14;
+$legislature = shift || 15;
 $start = shift || '0';
 $count = 50;
 $a->post("http://www2.assemblee-nationale.fr/recherche/resultats_recherche/%28tri%29/date/%28query%29/YTo3OntzOjE6InEiO3M6NDY6InR5cGVEb2N1bWVudDoiY29tcHRlIHJlbmR1IiBhbmQgY29udGVudTpjb21wdGUiO3M6NDoicm93cyI7aToxMDA7czo1OiJzdGFydCI7aTowO3M6Mjoid3QiO3M6MzoicGhwIjtzOjI6ImhsIjtzOjU6ImZhbHNlIjtzOjI6ImZsIjtzOjE5NzoidXJsLHRpdHJlLHVybERvc3NpZXJMZWdpc2xhdGlmLHRpdHJlRG9zc2llckxlZ2lzbGF0aWYsdGV4dGVRdWVzdGlvbix0eXBlRG9jdW1lbnQsc3NUeXBlRG9jdW1lbnQscnVicmlxdWUsdGV0ZUFuYWx5c2UsbW90c0NsZXMsYXV0ZXVyLGRhdGVEZXBvdCxzaWduYXRhaXJlc0FtZW5kZW1lbnQsZGVzaWduYXRpb25BcnRpY2xlLHNvbW1haXJlLHNvcnQiO3M6NDoic29ydCI7czowOiIiO30=");

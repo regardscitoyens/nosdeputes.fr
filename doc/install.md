@@ -16,6 +16,7 @@ Pour le parsing :
 
 ```bash
 sudo aptitude install libwww-mechanize-perl libfile-path-perl
+sudo pip install bs4
 ```
 
 ## Installation
