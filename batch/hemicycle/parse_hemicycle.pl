@@ -22,13 +22,19 @@ $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
 $string =~ s/\\’85//g;
 $string =~ s/’/'/g;
+$string =~ s/,…/, …/g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<h[0-9][^>]*>[^<]*)(<i>[^<]*<\/i>\s*)*/$1/gi;
-$string =~ s/\s*(<i>\s*\([^\)]+\)\s*\.?\s*<\/i>)([,…–][^<\w]*)?\s*/$2<\/p>\n<p>$1<\/p>\n<p>/g;
-$string =~ s/(<i>\s*\([^\)]+\s*<\/i>\s\)\s*\.?)/<\/p>\n<p>$1<\/p>\n<p>/g;
+$string =~ s/(\((Applaudissement|Exclamation|Vif|Vive|Quelque|Même|Rires)[^)]*\))/<i>\1<\/i>/ig;
+$string =~ s/(<\/?i>)(\s*)\1/\1\2/ig;
+$string =~ s/(<i><\/i>|<\/i><i>)//ig;
+$string =~ s/\)([,\.]\s*)<\/i>/)<\/i>\1/ig;
+$string =~ s/\s*(<i>\s*\([^\)]+\)[\s\.]*<\/i>|\(<i>[^\)]+?<\/i>\))((,|\s*[…–:])\s*[^<\wàâéèêëïîôöùûü]*)?\s*/$2<\/p>\n<p>$1<\/p>\n<p>/ig;
+$string =~ s/(<i>\s*\([^\)]+\s*<\/i>\s\)\s*\.?|\(<i>[^\)]+?<\/i>\))/<\/p>\n<p>$1<\/p>\n<p>/g;
 $string =~ s/<p><\/p>\n//g;
 $string =~ s/(<br\s*\/>\s*)+/##BR##/g;
+
 
 #Si italique dans gras, on vire (pb fonction)
 while ($string =~ m/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>\s*([^<]+)</g) {
@@ -449,12 +455,16 @@ foreach $line (split /\n/, $string)
                     next;
                 }
             }elsif ($line =~ s/^\s*\|\s*(M[^\|\/\:]+)[\|\/\:]// || $line =~ s/^\s*(M[\.Mmle]+(\s+([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.\:]//) {
-                checkout();
-                $majIntervenant = 1;
-                $intervenant = setIntervenant($1);
-                $intervenant_url = $last_href;
-                $intervenant_url = "http://www.assemblee-nationale.fr".$last_href if ($intervenant_url =~ /^\//);
-                $found = 1;
+                if ($line) {
+                    checkout();
+                    $majIntervenant = 1;
+                    $intervenant = setIntervenant($1);
+                    $intervenant_url = $last_href;
+                    $intervenant_url = "http://www.assemblee-nationale.fr".$last_href if ($intervenant_url =~ /^\//);
+                    $found = 1;
+                } else {
+                    $line .= $1.".";
+                }
             }elsif ($line =~ s/^\|([^\|]+)\|\s*//) {
                 checkout();
                 $intervenant = setIntervenant($1);
