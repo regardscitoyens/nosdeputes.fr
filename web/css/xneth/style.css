@@ -1609,6 +1609,13 @@ h2 {
   padding: 0px;
   margin: 0 0 10px;
 }
+.article_organisme {
+  max-width: 650px;
+}
+.plot_organisme {
+  float: right;
+  margin-top: 10px;
+}
 .plot_section, .plot_seance {
   text-align: center;
 }
@@ -1969,6 +1976,7 @@ a:hover img {
 }
 .list_table {
   margin: auto;
+  clear: both;
   margin-bottom: 30px;
 }
 .anciens {
