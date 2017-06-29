@@ -1533,6 +1533,8 @@
            if ( is_numeric($Data[$Key][$ColName]) )
             {
              $Value = $Data[$Key][$ColName];
+             // Don't draw a single pixel line when value is empty
+             if (!$Value) continue;
 
              if ( isset($LastValue[$Key]) )
               {
