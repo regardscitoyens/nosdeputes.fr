@@ -146,6 +146,11 @@
     - '/usr/local/bin/dc-{{ cpc_instance_name }}'
     - '/usr/local/bin/docker-compose'
 
+- name: Configuration logrotate
+  template:
+    src: logrotate.j2
+    dest: '/etc/logrotate.d/cpc_{{ cpc_instance_name }}'
+
 - name: Arrêt containers
   command: 'docker-compose -p {{ cpc_instance_name }} stop'
   args:
