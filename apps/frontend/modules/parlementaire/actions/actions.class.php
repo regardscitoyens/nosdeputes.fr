@@ -345,7 +345,7 @@ class parlementaireActions extends sfActions
         $imp = $depute->imp;
         if ($depute->fin_fonction)
           $imp -= 100;
-        else $this->total++;
+        else if (!preg_match('/[âa]ge$/i', $depute->fonction)) $this->total++;
         if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
         else $this->parlementaires[$imp] = array($depute);
       }
