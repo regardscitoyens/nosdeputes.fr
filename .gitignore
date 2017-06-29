@@ -31,6 +31,8 @@ batch/amendements/OpenDataAN/
 batch/amendements/liste_sort_indefini.txt
 batch/commission/html/
 batch/commission/tmp/
+batch/commission/out/
+batch/commission/presents/
 batch/depute/html/
 batch/depute/json/
 batch/depute/collabs.csv
