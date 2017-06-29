@@ -1533,9 +1533,6 @@
            if ( is_numeric($Data[$Key][$ColName]) )
             {
              $Value = $Data[$Key][$ColName];
-             // Don't draw a single pixel line when value is empty
-             if (!$Value) continue;
-
              if ( isset($LastValue[$Key]) )
               {
                $YPos    = $this->GArea_Y2 - ((($Value+$LastValue[$Key])-$this->VMin) * $this->DivisionRatio);
@@ -1549,11 +1546,15 @@
                $LastValue[$Key] = $Value;
               }
 
-             /* Save point into the image map if option activated */
-             if ( $this->BuildMap )
-              $this->addToImageMap($XPos+1,min($YBottom,$YPos),$XPos+$SeriesWidth-1,max($YBottom,$YPos),$DataDescription["Description"][$ColName],$Data[$Key][$ColName].$DataDescription["Unit"]["Y"],"sBar");
+             // Don't draw a single pixel line when value is empty
+             if ($Value) {
 
-             $this->drawFilledRectangle($XPos+1,$YBottom,$XPos+$SeriesWidth-1,$YPos,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"],TRUE,$Alpha);
+              /* Save point into the image map if option activated */
+              if ( $this->BuildMap )
+               $this->addToImageMap($XPos+1,min($YBottom,$YPos),$XPos+$SeriesWidth-1,max($YBottom,$YPos),$DataDescription["Description"][$ColName],$Data[$Key][$ColName].$DataDescription["Unit"]["Y"],"sBar");
+
+              $this->drawFilledRectangle($XPos+1,$YBottom,$XPos+$SeriesWidth-1,$YPos,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"],TRUE,$Alpha);
+             }
             }
           }
          $XPos = $XPos + $this->DivisionWidth;
