@@ -499,7 +499,7 @@ class plotComponents extends sfComponents
     }
 
     // Pas de graphe pour les séances ou sections sans données
-    if (isset($interventions) && !count($interventions) && (!isset($presences) || !count($presences))) {
+    if (!count($groupes) || (isset($interventions) && !count($interventions) && (!isset($presences) || !count($presences)))) {
       $this->empty = 1;
       return ;
     }
