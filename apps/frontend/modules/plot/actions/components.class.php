@@ -310,17 +310,20 @@ class plotComponents extends sfComponents
       $stats = unserialize($stats->value);
     $lastyear = date('Y-m-d', time()-60*60*24*365);
 
-    // Collecte toutes les appartenances de députés à un groupe pour afficher la proportion de députés de chaque groupe sur l'ensemble de la période plutôt que sur le moment
+    // Collecte les dernières appartenances de députés à un groupe pour afficher la proportion de députés de chaque groupe sur l'ensemble de la période plutôt que sur le moment
     $keep = array();
     $query = Doctrine_Query::create()
-      ->select('po.parlementaire_groupe_acronyme, count(po.parlementaire_id)')
-      ->from('ParlementaireOrganisme po, po.Parlementaire p, po.Organisme o')
+      ->select('p.groupe_acronyme, count(distinct(p.id))')
+      ->from('Parlementaire p')
+      ->leftJoin('p.ParlementaireOrganisme po')
+      ->leftJoin('po.Organisme o')
       ->where('o.type = ?', 'groupe')
-      ->groupBy('po.parlementaire_groupe_acronyme');
+      ->orderBy('po.fin_fonction, po.importance DESC')
+      ->groupBy('p.groupe_acronyme');
     if (!myTools::isFinLegislature())
       $query->andWhere('po.fin_fonction IS NULL OR po.fin_fonction >= ?', $lastyear);
     foreach ($query->fetchArray() as $grp) {
-      $acro = $grp['parlementaire_groupe_acronyme'];
+      $acro = $grp['groupe_acronyme'];
       if ($acro) {
         $stats[$acro]['nb'] = $grp['count'];
         $keep[] = $acro;
@@ -337,12 +340,6 @@ class plotComponents extends sfComponents
         $this->data['couleurs'][] = $colormap[$gpe];
       }
     }
-
-    // Compte séparément le total de députés pour ne les compter chacun qu'une fois
-    $query = Doctrine::getTable('Parlementaire')->createQuery()->select('count(id)');
-    if (!myTools::isFinLegislature())
-      $query->andWhere('fin_mandat IS NULL OR fin_mandat < debut_mandat OR fin_mandat >= ?', $lastyear);
-    $nbdeputes = $query->fetchOne()['count'];
 
     $qamdmts = Doctrine_Query::create()
       ->select('pa.parlementaire_groupe_acronyme, sum(a.nb_multiples)')
@@ -417,9 +414,6 @@ class plotComponents extends sfComponents
 
     for ($i=0;$i<$n;$i++)
       $this->data['totaux'][$i] = preg_replace('/(\d)(\d{3})$/', '\\1 \\2', $this->data['totaux'][$i]);
-
-    // Réécrit le total de députés pour affichage
-    $this->data['totaux'][0] = $nbdeputes;
   }
 
   public function executeGroupes() {
