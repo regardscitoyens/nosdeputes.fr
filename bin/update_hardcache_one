@@ -6,6 +6,6 @@ seance_id=$1
 
 echo "http://$VHOST/$LEGISLATURE/seance/$seance_id"
 rm web/$LEGISLATURE/seance/$seance_id.html 2> /dev/null
-curl -s http://$VHOST/$LEGISLATURE/seance/${seance_id}?_sf_ignore_cache=$$ > $TMPFILE
+curl -sL http://$VHOST/$LEGISLATURE/seance/${seance_id}?_sf_ignore_cache=$$ > $TMPFILE
 mv $TMPFILE web/$LEGISLATURE/seance/$seance_id.html
 
