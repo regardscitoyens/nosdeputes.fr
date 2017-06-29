@@ -42,6 +42,7 @@ batch/documents/ppl/
 batch/documents/ppr/
 batch/documents/rap/
 batch/documents/ta/
+batch/documents/out/
 batch/dossiers/html/
 batch/hemicycle/html/
 batch/hemicycle/out/
@@ -51,6 +52,7 @@ batch/jo/html/
 batch/jo/pdf/
 batch/loi/json/
 batch/presences/oldjson/
+batch/presences/json/
 batch/questions/html/
 batch/questions/test/
 batch/questions/dernier_numero.txt
