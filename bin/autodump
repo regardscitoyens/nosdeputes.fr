@@ -28,7 +28,7 @@ if [[ $(date +%-d) -eq 1 ]]; then
     month0=`expr $(date +%m) - 2`
   fi
   ym=`printf "%02d%02d" $year0 $month0`
-  rm -f `ls $DUMPDIR/archives/$DBNAME.${ym}*.s*.gz | grep -v .${ym}01.sql.gz`
+  rm -f `ls $DUMPDIR/archives/$DBNAME.${ym}*.s*.gz 2> /dev/null | grep -v .${ym}01.sql.gz`
 fi
 
 # On efface les dumps vieux de plus d'une semaine
