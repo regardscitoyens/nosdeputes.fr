@@ -7,7 +7,7 @@ source ../../bin/db.inc
 mkdir -p html
 
 lastpdf=$(find ./html -name "coms_$1_*" | sed -e 's/[^0-9-]//g' | sort | tail -1)
-if [ -z "$lastpdf"]; then
+if [ -z "$lastpdf" ]; then
   startyear=$((LEGISLATURE * 5 + 1942))
   lastpdf="$startyear-06-23"
 fi
