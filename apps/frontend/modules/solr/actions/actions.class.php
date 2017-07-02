@@ -44,7 +44,8 @@ class solrActions extends sfActions
       if ($ob = $request->getParameter('object_name'))
         $ob = '&object_name='.$ob;
       return $this->redirect('@recherche_solr?query='.$search.$ob);
-    }
+    } else if ($request->hasParameter('search'))
+      return $this->redirect('@recherche_home?sort=1');
 
     $this->query = $request->getParameter('query');
     $this->query = preg_replace('#^https?://#', '', $this->query);
