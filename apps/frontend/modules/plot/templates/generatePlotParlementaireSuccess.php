@@ -120,21 +120,36 @@ if ($link === 'true') {
   $Test->drawOverlayBarGraph($DataLegend,$DataDescrLegend,30,100);
 }
 $Test->drawGrid(0,TRUE,0,0,0,100);
+
+// Vacances
 $Test->setColorPalette(0,50,50,50);
 $Test->drawOverlayBarGraph($Data2,$DataDescr2,30,100);
+
+// Médiane
 $Test->setColorPalette(0,160,160,160);
-$Test->drawLineGraph($Data4,$DataDescr4);
+if ($histogram)
+  $Test->drawOverlayBarGraph($Data4,$DataDescr4,5,95);
+else $Test->drawLineGraph($Data4,$DataDescr4);
+
+// Présences et participations
 $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,255,255,0);
 $Test->setColorPalette(2,0,255,0);
-$Test->drawFilledLineGraph($Data,$DataDescr,78);
+if ($histogram)
+  $Test->drawOverlayBarGraph($Data,$DataDescr,78,95);
+else $Test->drawFilledLineGraph($Data,$DataDescr,78);
+
+// Questions
 if (!$data["fin"] && $questions === 'true' && $type != 'commission') {
-  $Test->setColorPalette(0,0,0,255);
-  $Test->drawOverlayBarGraph($Data3,$DataDescr3,85,25);
+  $Test->setColorPalette(0,100,100,255);
+  $Test->drawOverlayBarGraph($Data3,$DataDescr3,100,25);
 }
+
+// Bordure présences sur participation
 $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,0,0,0);
-$Test->drawLineGraph($DataBordure,$DataDescrBordure);
+if (!$histogram)
+  $Test->drawLineGraph($DataBordure,$DataDescrBordure);
 
 $Test->xsSetFontProperties("tahoma.ttf",$font + 3);
 $pos_titre = 240;

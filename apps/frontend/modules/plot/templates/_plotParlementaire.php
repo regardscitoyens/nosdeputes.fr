@@ -1,4 +1,5 @@
 <?php
+$histogram = false;
 $abs = '';
 if (!isset($target))
   $target = '';
@@ -30,14 +31,14 @@ if ($link === 'true') {
   <img
     style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px;"
     alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>"
-    src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type, $abs).'?questions='.$questions.'&link='.$link; ?>"
+    src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type, $abs).'?questions='.$questions.'&link='.$link.'&histogram='.$histogram; ?>"
   />
   <?php if (!(isset($absolute) && $absolute)) echo '</noscript>'; ?>
 </div>
 <?php if ($link === 'true') echo '</a>';
 if (!(isset($absolute) && $absolute)) : ?>
 <script type="text/javascript">
-plot_activity_data("<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type).'?questions='.$questions.'&format=json'; ?>", "plot<?php echo $type; ?>", "<?php echo $width; ?>", "<?php echo $height; ?>", "<?php echo $type; ?>");
+plot_activity_data("<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type).'?questions='.$questions.'&format=json'; ?>", "plot<?php echo $type; ?>", "<?php echo $width; ?>", "<?php echo $height; ?>", "<?php echo $type; ?>", "<?php echo $histogram; ?>");
 </script>
 <?php endif;
 
@@ -46,7 +47,7 @@ if (!isset($widthrate) || $widthrate > 1/3) {
   echo '&nbsp;Présences '.($type === 'commission' ? 'enregistr' : 'relev').'ées&nbsp;&nbsp;&nbsp;';
   echo "<span style='background-color: rgb(255,200,0);'>&nbsp;</span>&nbsp;Participations&nbsp;&nbsp;&nbsp;";
   if (!(myTools::isFinLegislature() && preg_match('/^l/', $time)) && $questions === 'true' && $type !== 'commission')
-    echo "<span style='background-color: rgb(100,100,255);'>&nbsp;</span>&nbsp;Questions orales&nbsp;&nbsp;";
+    echo "<span style='background-color: rgba(100,100,255,0.75);'>&nbsp;</span>&nbsp;Questions orales&nbsp;&nbsp;";
   echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires&nbsp;&nbsp;";
   echo "<span style='font-weight: bolder; color: rgb(160,160,160);'>&mdash;</span>&nbsp;Présence médiane";
   if ($link === 'true')

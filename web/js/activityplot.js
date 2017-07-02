@@ -19,12 +19,13 @@ function get_last_monday(day) {
   return d;
 }
 
-function plot_activity_data(url, divid, width, height, type) {
+function plot_activity_data(url, divid, width, height, type, histogram) {
   var svg_width = width,
     maxval = (type === "total" ? 14 : 12),
     svg_height = (height - 30) * maxval / 14,
     margin_left = 45,
-    margin_bottom = 25;
+    margin_bottom = 25,
+    typePlot = (histogram ? d3.curveStep : d3.curveLinear);
   d3.json(url, function(data) {
     var startdate = get_last_monday(data.date_debut),
       enddate = get_last_monday(data.date_fin),
@@ -120,7 +121,7 @@ function plot_activity_data(url, divid, width, height, type) {
     svg.append("path")
       .classed("curve_mediane", true)
       .attr("d", d3.line()
-        .curve(d3.curveLinear)
+        .curve(typePlot)
         .x(function (x){return timescale(new Date(x));})
         .y(function (x){return yscale(mediane[x] || 0);})
         (all_weeks)
@@ -130,7 +131,7 @@ function plot_activity_data(url, divid, width, height, type) {
     plot_area.append("path")
       .classed("curve_presence", true)
       .attr("d", d3.area()
-        .curve(d3.curveLinear)
+        .curve(typePlot)
         .x(function (x){return timescale(new Date(x));})
         .y1(function (x){return yscale(presence[x] || 0);})
         .y0(yscale(0))
@@ -141,7 +142,7 @@ function plot_activity_data(url, divid, width, height, type) {
     plot_area.append("path")
       .classed("curve_participation", true)
       .attr("d", d3.area()
-        .curve(d3.curveLinear)
+        .curve(typePlot)
         .x(function (x){return timescale(new Date(x));})
         .y1(function (x){return yscale(participations[x] || 0);})
         .y0(yscale(0))
