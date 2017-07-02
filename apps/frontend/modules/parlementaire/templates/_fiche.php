@@ -168,8 +168,8 @@ if (myTools::isFinLegislature()) {
       <?php echo include_component('documents', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'type' => 'loi')); ?>
       <p class="suivant"><?php echo link_to('Toutes ses propositions de loi cosignées', '@parlementaire_documents?slug='.$parlementaire->slug.'&type=loi'); ?></p>
 
-    <?php if ($historique) : ?>
-    <h2>Historique de mandat</h2>
+    <?php if ($historique || $anciens_mandats) : ?>
+    <h2>Historique des fonctions et mandats</h2>
       <ul><?php foreach ($historique as $resp) : ?>
         <li><?php
 if ($resp->type == "groupe") {
@@ -180,6 +180,9 @@ $fonction = preg_replace('/^(.*(président|rapporteur|questeur)[^,]*)/i', '<stro
 echo " ($fonction du ";
 echo myTools::displayDate($resp->debut_fonction).' au '.myTools::displayDate($resp->fin_fonction).')';
         ?></li>
+      <?php endforeach;
+      foreach ($anciens_mandats as $m) : ?>
+        <li><?php echo $m; ?></li>
       <?php endforeach ?></ul>
     <?php endif ?>
 

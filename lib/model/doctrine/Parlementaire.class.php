@@ -85,14 +85,17 @@ class Parlementaire extends BaseParlementaire
     return array($prenom, $nom, $part, $nompart);
   }
 
-  public function getStatut($link = 0) {
+  public function getParlFonction() {
     if ($this->type == 'depute') {
-        if ($this->sexe == 'F') $type = 'députée';
-        else $type = 'député';
-    } else {
-        if ($this->sexe == 'F') $type = 'sénatrice';
-        else $type = 'sénateur';
+      if ($this->sexe == 'F') return 'députée';
+      return 'député';
     }
+    if ($this->sexe == 'F') return 'sénatrice';
+    return 'sénateur';
+  }
+
+  public function getStatut($link = 0) {
+    $type = $this->getParlFonction();
     $statut = "";
     if (!$this->isEnMandat()) {
       if ($this->sexe == 'F') $statut = 'ancienne ';

@@ -160,6 +160,14 @@ class parlementaireActions extends sfActions
         $this->commission_permanente = $resp;
       else array_push($this->missions, $resp);
     }
+
+    $this->anciens_mandats = array();
+    foreach (unserialize($this->parlementaire->getAnciensMandats()) as $m)
+      if (preg_match("/^(.*) \/ (.*) \/ (.*)$/", $m, $match)) {
+        if ($match[2] != "")
+          $this->anciens_mandats[] = ucfirst($this->parlementaire->getParlFonction())." du $match[1] au $match[2] ($match[3])";
+      }
+    rsort($this->anciens_mandats);
   }
 
   public function executePreview(sfWebRequest $request) {
