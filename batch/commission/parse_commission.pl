@@ -466,7 +466,7 @@ foreach $line (split /\n/, $string)
 	    rapporteur();
 	    $found = 1;
 	}
-#print "LINE: $line\n";
+    #print STDERR "LINE: $line\n";
     if ($line =~ s/^\|(M[^\|\:]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:, \/|\/, )[^\/]+?\/))(.*\w.*)/\4/) {
         checkout();
         $interv1 = $1;
@@ -503,15 +503,20 @@ foreach $line (split /\n/, $string)
 	$line =~ s/^\s+//;
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
-    #print STDERR $line."\n";
+    #print STDERR "LINE: $found $line\n";
 	if (!$found && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève)/) {
-	    if ($line =~ s/^\s*((Dr|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.:]//) {
-            checkout();
-            $intervenant = setIntervenant($1);
+	    if ($line =~ s/^\s*((Dr|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
+            $orig = $1.$7;
+            if (!$intervenant && $line =~ /^\s*$/) {
+                $line = $orig;
+            } else {
+                checkout();
+                $intervenant = setIntervenant($orig);
+            }
 	    }elsif (!$majIntervenant) {
             if ($line =~ s/^\s*(M(mes?|[e\.])\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
                 $orig = $1;
-                if (!$intervenant && !$line) {
+                if (!$intervenant && $line =~ /^\s*$/) {
                     $line = $orig;
                 } else {
         	        checkout();
