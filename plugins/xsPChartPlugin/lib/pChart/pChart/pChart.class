@@ -2030,6 +2030,9 @@
      $TopPlots = "";
      foreach($iValues as $Key => $Value)
       {
+       // Don't draw empty values
+       if (!$Value) continue;
+
        $XCenterPos = cos(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $XPos;
        $YCenterPos = sin(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $YPos;
 
