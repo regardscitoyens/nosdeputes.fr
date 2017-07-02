@@ -532,7 +532,7 @@ class plotComponents extends sfComponents
     // pour que 2/5e du donut soit vide et forcer l'apparence d'un hémicycle
     $this->labels[] = "";
     if (isset($this->membres))
-      $this->parls[] = array_sum($this->parls)/2;
+      $this->parls[] = array_sum($this->parls)*3/5;
     else {
       $this->interventions[] = array_sum($this->interventions)*3/5;
       $this->temps[] = array_sum($this->temps)*3/5;
