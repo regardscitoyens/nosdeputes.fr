@@ -52,7 +52,7 @@ $xtitre = 25;
 $ysize = 190;
 $ylegend = 45;
 $x0 = 160;
-$y0 = 105;
+$y0 = 110;
 $filename .= '-'.$plot.'.png';
 $titre = 'par groupe du travail de cette '.$seancenom;
 if (preg_match('/section/', $plot)) {
@@ -85,18 +85,18 @@ foreach ($couleurs as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)
 $Test->setColorPalette($ct,240,240,240);
 $Test->xsSetFontProperties("tahoma.ttf",7);
 if (isset($Data)) {
-  $Test->drawFlatPieGraph($Data,$DataDescr,$x0,$y0,50,PIE_VALUES,0,0,150);
-  $Test->drawFilledCircle($x0,$y0+2,12,240,240,240);
+  $Test->drawFlatPieGraph($Data,$DataDescr,$x0,$y0,47,PIE_VALUES,0,0,157);
+  $Test->drawFilledCircle($x0+1,$y0+1,15,240,240,240);
   $x0 += 150;
 }
 if (isset($Data2)) {
-  $Test->drawFlatPieGraph($Data2,$DataDescr2,$x0,$y0,50,PIE_VALUES,0,0,150);
-  $Test->drawFilledCircle($x0,$y0+2,12,240,240,240);
+  $Test->drawFlatPieGraph($Data2,$DataDescr2,$x0,$y0,47,PIE_VALUES,0,0,157);
+  $Test->drawFilledCircle($x0+1,$y0+1,15,240,240,240);
 }
 $x0 += 150;
 if (isset($Data3)) {
-  $Test->drawFlatPieGraph($Data3,$DataDescr3,$x0,$y0,50,PIE_PERCENTAGE,0,0,150,150);
-  $Test->drawFilledCircle($x0,$y0+2,12,240,240,240);
+  $Test->drawFlatPieGraph($Data3,$DataDescr3,$x0,$y0,47,PIE_PERCENTAGE,0,0,157);
+  $Test->drawFilledCircle($x0+1,$y0+1,15,240,240,240);
 }
 $Test->xsSetFontProperties("tahoma.ttf",9);
 $ct = 0;

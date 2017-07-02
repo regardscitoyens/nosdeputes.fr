@@ -529,15 +529,15 @@ class plotComponents extends sfComponents
     }
 
     // On ajoute à la fin des arrays la moitié de la somme totale de l'array
-    // pour qu'1/3 du donut soit vide et forcer l'apparence d'un hémicycle
+    // pour que 2/5e du donut soit vide et forcer l'apparence d'un hémicycle
     $this->labels[] = "";
     if (isset($this->membres))
       $this->parls[] = array_sum($this->parls)/2;
     else {
-      $this->interventions[] = array_sum($this->interventions)/2;
-      $this->temps[] = array_sum($this->temps)/2;
+      $this->interventions[] = array_sum($this->interventions)*3/5;
+      $this->temps[] = array_sum($this->temps)*3/5;
       if (isset($presences))
-        $this->presences[] = array_sum($this->presences)/2;
+        $this->presences[] = array_sum($this->presences)*3/5;
     }
 
     // On renvoie les couleurs de chaque groupe
