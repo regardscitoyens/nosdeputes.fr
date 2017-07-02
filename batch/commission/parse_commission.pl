@@ -514,12 +514,13 @@ foreach $line (split /\n/, $string)
     #print STDERR "LINE: $found $line\n";
 	if (!$found && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève)/) {
 	    if ($line =~ s/^\s*((Dr|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
+            $tmpi = $1;
             $orig = $1.$7;
             if (!$intervenant && $line =~ /^\s*$/) {
                 $line = $orig;
             } else {
                 checkout();
-                $intervenant = setIntervenant($orig);
+                $intervenant = setIntervenant($tmpi);
             }
 	    }elsif (!$majIntervenant) {
             if ($line =~ s/^\s*(M(mes?|[e\.])\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
