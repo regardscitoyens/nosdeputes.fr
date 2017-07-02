@@ -15,7 +15,7 @@ if (!isset($surtitre)) $surtitre = ''; ?>
   <?php if (isset($deputefirst)) $titre = '<a href="'.url_for($parlementaire->getPageLink()).'">'.$parlementaire->nom.'</a> <br/>'.$titre;
   else {
     $titre .=' ';
-    if (preg_match('/^(A|E|É|I|O|U|Y)/', $parlementaire->nom))
+    if (preg_match('/^(A|E|É|I|O|U)/', $parlementaire->nom))
       $titre.= "d'";
     else $titre.= 'de ';
     $titre.= '<a href="'.url_for($parlementaire->getPageLink()).'">'.$parlementaire->nom.'</a>';
