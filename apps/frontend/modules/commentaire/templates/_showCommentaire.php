@@ -7,7 +7,7 @@ include_component('citoyen', 'shortCitoyen', array('citoyen_id'=>$c->citoyen_id)
 <div class="commentaire_avatar"><?php include_component('citoyen','avatarCitoyen', array('citoyen_id'=>$c->citoyen_id)); ?></div>
 <p><?php echo myTools::escape_blanks($c->commentaire); ?></p>
 <?php if(!$c->is_public)
-  echo "<p><strong>Attention, ce commentaire est en attente de validation par email. Les autres utilisateurs ne peuvent pas le voir.</strong></p>";
+  echo "<p><strong>Attention, ce commentaire est en attente de validation par e-mail. Les autres utilisateurs ne peuvent pas le voir.</strong></p>";
 ?>
 <p class="clear" align="right">Vous trouvez ce commentaire constructif&nbsp;: <?php include_component('rate', 'show', array('object' => $c)); ?> </p>
 </div>

@@ -41,7 +41,7 @@ class AlerteForm extends BaseAlerteForm
     $this->setDefault('period', 'WEEK');
 
     $this->widgetSchema->setLabels(array(
-					 'email'    => 'Votre email',
+					 'email'    => 'Votre e-mail',
 					 'query'   => 'Mots clés recherchés',
 					 'period' => 'Période max. de réception',
 					 )
@@ -58,7 +58,7 @@ class AlerteForm extends BaseAlerteForm
       unset($this->widgetSchema['email']);
       unset($this->validatorSchema['email']);
     }else {
-      $this->validatorSchema['email'] = new sfValidatorEmail(array('required' => true), array('required' => 'Email obligatoire'));
+      $this->validatorSchema['email'] = new sfValidatorEmail(array('required' => true), array('required' => 'e-mail obligatoire'));
     }
   }
 }

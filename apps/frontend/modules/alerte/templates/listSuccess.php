@@ -1,12 +1,12 @@
 <?php if (isset($alertes)) { ?>
 <h1>Liste de mes alertes</h1>
 <?php $sf_response->setTitle('Liste de mes alertes mails');
-?><p>Les alertes emails permettent d'être tenu informé dès leur publication sur NosDeputes.Fr des documents parlementaires contenant des mots clés précis. Voici la liste des alertes auxquelles vous êtes abonné(e). Cette interface vous permet de les éditer et les supprimer</p>
+?><p>Les alertes e-mails permettent d'être tenu informé dès leur publication sur NosDeputes.Fr des documents parlementaires contenant des mots clés précis. Voici la liste des alertes auxquelles vous êtes abonné(e). Cette interface vous permet de les éditer et les supprimer</p>
 <?php if (count($alertes)) : ?>
 <table class="list">
-<?php 
+<?php
 $filter = 0;
-foreach($alertes as $a) 
+foreach($alertes as $a)
 {
 if ($a->getFilter())
 $filter = 1;
@@ -16,7 +16,7 @@ break;
 <tr><th>Type d'alerte</th><?php if ($filter) echo '<th>Filtre</th>'; ?><th>Envoyée au maximum</th><th>Dernier envoi</th></tr>
 <?php //'
 $period = array('HOUR' => 'heure', 'DAY' => 'jour', 'WEEK' => 'semaine', 'MONTH' => 'mois');
-foreach($alertes as $a) 
+foreach($alertes as $a)
 {
   echo "<tr><td>";
   echo link_to($a->getTitre(), 'alerte/edit?verif='.$a->verif);

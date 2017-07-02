@@ -1,6 +1,6 @@
-<?php if ($submit == 'Créer') 
-  $titre = "Création d'une alerte email";
-else $titre = "Modification d'une alerte email";
+<?php if ($submit == 'Créer')
+  $titre = "Création d'une alerte e-mail";
+else $titre = "Modification d'une alerte e-mail";
 $sf_response->setTitle($titre); ?>
 <div class="boite_form large_boite_form">
   <div class="b_f_h"><div class="b_f_hg"></div><div class="b_f_hd"></div></div>
@@ -15,7 +15,7 @@ $sf_response->setTitle($titre); ?>
           </tr>
          <?php if ($form->getObject()->citoyen_id) { ?>
           <tr>
-            <th style="text-align:left;">Email</th>
+            <th style="text-align:left;">e-mail</th>
             <td>
               <?php echo $form->getObject()->Citoyen->email; ?>
             </td>
@@ -28,7 +28,7 @@ $sf_response->setTitle($titre); ?>
               <?php echo $form->getObject()->titre; ?>
             </td>
           </tr>
-         <?php } 
+         <?php }
          if ($f = $form->getObject()->filter) { ?>
           <tr>
             <th>Filtré sur</th>

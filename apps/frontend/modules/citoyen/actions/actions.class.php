@@ -104,7 +104,7 @@ class citoyenActions extends sfActions
     }
     else
     {
-      $this->getUser()->setFlash('notice', 'Vous allez recevoir un email de confirmation. Pour finaliser votre inscription, veuillez cliquer sur le lien d\'activation contenu dans cet email.');
+      $this->getUser()->setFlash('notice', 'Vous allez recevoir un e-mail de confirmation. Pour finaliser votre inscription, veuillez cliquer sur le lien d\'activation contenu dans cet e-mail.');
       $this->redirect('@homepage');
     }
   }
@@ -422,7 +422,7 @@ class citoyenActions extends sfActions
           }
           else
           {
-            $this->getUser()->setFlash('error', 'Veuillez indiquer votre nom d\'utilisateur <strong>ou</strong> votre email');
+            $this->getUser()->setFlash('error', 'Veuillez indiquer votre nom d\'utilisateur <strong>ou</strong> votre e-mail');
             return;
           }
           self::sendmailresetmotdepasse($user, $this);
@@ -444,7 +444,7 @@ class citoyenActions extends sfActions
     'mailContext'=>array('activation_id' => $activation_id, 'slug' => $user->slug)
     ));
 
-    $action->getUser()->setFlash('notice', 'Un email de réinitialisation de mot de passe vient de vous être envoyé.<br />Si vous rencontrez un problème lors de cette procédure veuillez nous contacter par email à l\'adresse contact[at]regardscitoyens.org.');
+    $action->getUser()->setFlash('notice', 'Un e-mail de réinitialisation de mot de passe vient de vous être envoyé.<br />Si vous rencontrez un problème lors de cette procédure veuillez nous contacter par e-mail à l\'adresse contact[at]regardscitoyens.org.');
     $action->redirect('@homepage');
   }
 
