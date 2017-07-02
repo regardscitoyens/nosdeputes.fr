@@ -153,12 +153,15 @@ class parlementaireActions extends sfActions
 
 
     $this->commission_permanente = null;
+    $this->main_fonction = null;
     $this->missions = array();
     foreach ($this->parlementaire->getResponsabilites() as $resp) {
       $permas = myTools::getCommissionsPermanentes();
       if (in_array($resp->Organisme->slug, $permas))
         $this->commission_permanente = $resp;
       else array_push($this->missions, $resp);
+      if (preg_match('/^Bureau/', $resp->nom) && preg_match('/(président|questeur)e?$/i', $resp->fonction))
+        $this->main_fonction = ucfirst($resp->fonction);
     }
 
     $this->anciens_mandats = array();

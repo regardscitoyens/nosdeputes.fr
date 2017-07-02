@@ -1,6 +1,7 @@
   <div class="boite_depute" id="b1">
     <h2>Informations</h2>
       <ul>
+        <?php if ($main_fonction) echo "<li><b>$main_fonction de l'Assemblée nationale</b></li>"; ?>
         <?php if (!$parlementaire->isEnMandat()) : ?>
         <li>Mandat clos rempli du <?php
 echo myTools::displayDate($parlementaire->debut_mandat).' au '.myTools::displayDate($parlementaire->fin_mandat);
