@@ -30,7 +30,7 @@ class Organisme extends BaseOrganisme
 
   public function getSmallNomGroupe() {
     if (!$this->type == "groupe") return "";
-    $key = strtolower($this->getNom());
+    $key = strtolower($this->_get('nom'));
     foreach (myTools::getGroupesInfos() as $gpe)
       if (strtolower($gpe[0]) == $key)
         return $gpe[1];
@@ -62,6 +62,8 @@ class Organisme extends BaseOrganisme
   public function getNom() {
     if ($this->_get('nom') == 'assemblée nationale')
       return "Bureau de l'Assemblée Nationale";
+    else if ($this->type == "groupe")
+      return $this->getNomByAcro($this->getSmallNomGroupe());
     else return ucfirst($this->_get('nom'));
   }
 
