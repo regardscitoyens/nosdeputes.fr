@@ -40,32 +40,32 @@ $mois{'octobre'} = '10';
 $mois{'novembre'} = '11';
 $mois{'décembre'} = '12';
 
-$heure{'neuf'} = '09';
-$heure{'dix'} = '10';
-$heure{'onze'} = '11';
-$heure{'douze'} = '12';
-$heure{'treize'} = '13';
-$heure{'quatorze'} = '14';
-$heure{'quinze'} = '15';
-$heure{'seize'} = '16';
-$heure{'dix-sept'} = '17';
-$heure{'dix-huit'} = '18';
-$heure{'dix-neuf'} = '19';
-$heure{'vingt'} = '20';
-$heure{'vingt-cinq'} = '25';
-$heure{'vingt et une'} = '21';
-$heure{'vingt-et-une'} = '21';
-$heure{'vingt-deux'} = '22';
-$heure{'cinquante'} = '50';
-$heure{'quarante'} = '45';
-$heure{'quarante-cinq'} = '45';
-$heure{'cinquante-cinq'} = '55';
-$heure{'trente'} = '30';
-$heure{'trente-cinq'} = '35';
-$heure{'quinze'} = '15';
-$heure{'zéro'} = '00';
-$heure{'cinq'} = '00';
-$heure{''} = '00';
+$heures{'neuf'} = '09';
+$heures{'dix'} = '10';
+$heures{'onze'} = '11';
+$heures{'douze'} = '12';
+$heures{'treize'} = '13';
+$heures{'quatorze'} = '14';
+$heures{'quinze'} = '15';
+$heures{'seize'} = '16';
+$heures{'dix-sept'} = '17';
+$heures{'dix-huit'} = '18';
+$heures{'dix-neuf'} = '19';
+$heures{'vingt'} = '20';
+$heures{'vingt-cinq'} = '25';
+$heures{'vingt et une'} = '21';
+$heures{'vingt-et-une'} = '21';
+$heures{'vingt-deux'} = '22';
+$heures{'cinquante'} = '50';
+$heures{'quarante'} = '45';
+$heures{'quarante-cinq'} = '45';
+$heures{'cinquante-cinq'} = '55';
+$heures{'trente'} = '30';
+$heures{'trente-cinq'} = '35';
+$heures{'quinze'} = '15';
+$heures{'zéro'} = '00';
+$heures{'cinq'} = '00';
+$heures{''} = '00';
 
 if ($url =~ /\/plf(\d+)\//) {
   $string2 = $string;
@@ -111,7 +111,7 @@ if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\
 }
 
 if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([^\.]*)\./i) {
-  $heure = $heure{$1}.':'.$heure{$2};
+  $heure = $heures{$1}.':'.$heures{$2};
 }
 
 #utf8::decode($string);

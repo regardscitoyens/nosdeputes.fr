@@ -18,6 +18,9 @@ close FILE;
 $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/\r//g;
+$string =~ s/(M\.\s*&nbsp;\s*)+/M. /g;
+$string =~ s/\s*&(#160|nbsp);\s*/ /ig;
+$string =~ s/&#278;/É/g;
 
 $mois{'janvier'} = '01';
 $mois{'février'} = '02';
@@ -32,6 +35,41 @@ $mois{'octobre'} = '10';
 $mois{'novembre'} = '11';
 $mois{'décembre'} = '12';
 
+$heures{'neuf'} = '09';
+$heures{'dix'} = '10';
+$heures{'onze'} = '11';
+$heures{'douze'} = '12';
+$heures{'treize'} = '13';
+$heures{'quatorze'} = '14';
+$heures{'quinze'} = '15';
+$heures{'seize'} = '16';
+$heures{'dix-sept'} = '17';
+$heures{'dix-huit'} = '18';
+$heures{'dix-neuf'} = '19';
+$heures{'vingt'} = '20';
+$heures{'vingt-cinq'} = '25';
+$heures{'vingt et une'} = '21';
+$heures{'vingt-et-une'} = '21';
+$heures{'vingt-deux'} = '22';
+$heures{'cinquante'} = '50';
+$heures{'quarante'} = '45';
+$heures{'quarante-cinq'} = '45';
+$heures{'cinquante-cinq'} = '55';
+$heures{'trente'} = '30';
+$heures{'trente-cinq'} = '35';
+$heures{'quinze'} = '15';
+$heures{'zéro'} = '00';
+$heures{'cinq'} = '00';
+$heures{''} = '00';
+
+if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
+  $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
+  $heure = sprintf("%02d:%02d", $5, $6 || '00');
+}
+
+if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([^\.]*)\./i) {
+  $heure = $heures{$1}.':'.$heures{$2};
+}
 
 #utf8::decode($string);
 #
@@ -59,13 +97,13 @@ sub checkout {
 	$depute =~ s/[\/<\|]//g;
 	$depute =~ s/^\s*M[me\.]+\s+//;
 	$depute =~ s/\s+$//;
-	print '{"reunion": "'.$date.'", "session": "'.$heure.'", "commission": "'.$commission.'", "depute": "'.$depute.'", "source": "'.$source.'"}'."\n";
+    print '{"commission": "'.$commission.'","depute": "'.$depute.'","reunion":"'.$date.'","session":"'.$heure.'","source":"'.$source.'"}'."\n";
     }
 }
 
 $string =~ s/\r//g;
-$string =~ s/&nbsp;/ /g;
 $string =~ s/&#8217;/'/g;
+$string =~ s/d\W+évaluation/d'évaluation/g;
 $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/ission d\W+information/ission d'information/gi;
@@ -78,18 +116,7 @@ $string =~ s/(<\/h\d+>)/\1\n/gi;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
 #on vire les paragraphes contenus et on didascalise
-
-
 $string =~ s/<\/?ul>//gi;
-
-if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
-  $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
-  $heure = sprintf("%02d:%02d", $5, $6 || '00');
-}
-
-if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([^\.]*)\./i) {
-  $heure = $heure{$1}.':'.$heure{$2};
-}
 
 #print $string; exit;
 
@@ -119,20 +146,20 @@ foreach $line (split /\n/, $string)
 	}
     }
     if ($line =~ /<h[1-9]+/i) {
-	if (!$date && $line =~ /SOM(date|seance)|\"seance\"|h2/) {
-	    if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
-	      if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d()!<>]+)\s+(\d\d+)/i) {
-		$date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
-	      }
-	    }
-	}elsif ($line =~ /SOMseance|"souligne_cra"/i) {
-	    if ($line =~ /(\d+)\s*(h|heures?)\s*(\d*)/i) {
-		$heure = sprintf("%02d:%02d", $1, $3 || "00");
+        if (!$date && $line =~ /SOM(seance|date)|\"seance\"|h2/) {
+            if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
+              if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d()!<>]+)\s+(\d\d+)/i) {
+                $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
+              }
+            }
+        }elsif ($line =~ /SOMseance|"souligne_cra"/i) {
+            if ($line =~ /(\d+)\s*(h(?:eures?)?)\s*(\d*)/i) {
+                $heure = sprintf("%02d:%02d", $1, $3 || "00");
 	    }
 
 
-	}elsif(!$commission && $line =~ /groupe|commission|mission|délégation|office|comité/i) {
-	    if ($line =~ /[\>\|]\s*((Groupe|Com|Miss|Délé|Offic)[^\>\|]+)[\<\|]/) {
+        }elsif(!$commission && $line =~ /groupe|commission|mission|délégation|office|comité/i) {
+            if ($line =~ /[\>\|]\s*((Groupe|Com|Miss|Délé|Offic)[^\>\|]+)[\<\|]/) {
 		$commission = $1;
 		$commission =~ s/\s*$//;
 	    }
@@ -157,7 +184,7 @@ foreach $line (split /\n/, $string)
     }
     }
     if ($line =~ /[>\|\/](Membres? présents? ou excusés?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/) {
-	$present = 1;
+        $present = 1;
     }
 }
 checkout();
