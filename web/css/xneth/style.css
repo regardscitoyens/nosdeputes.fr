@@ -1311,18 +1311,23 @@ h2 {
 }
 
 /* form commentaires */
-.inscription {
-  border: 1px solid #E8E7E4;
-  margin-top: 10px;
+.commentaires_table, #commentaire_commentaire {
+  width: 100%; 
 }
-.connexion {
-  float: right;
+.inscription, .connexion {
+  float: left;
   border: 1px solid #E8E7E4;
+  border-radius: 4px;
   margin-top: 10px;
+  width: 430px;
 }
 .inscription td, .connexion td, .inscription th, .connexion th {
   padding: 10px;
-  border-bottom: 1px dashed #E8E7E4;
+  border-bottom: 1px dotted #E8E7E4;
+}
+.inscription tr:last-child td, .connexion tr:last-child td, .inscription tr:last-child th, .connexion tr:last-child th {
+  padding: 10px;
+  border-bottom: none;
 }
 .inscription input, .connexion input { max-width: 320px; }
 /* commentaires */
