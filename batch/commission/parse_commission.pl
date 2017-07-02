@@ -484,10 +484,10 @@ foreach $line (split /\n/, $string)
         checkout();
         $intervenant = setFonction($f, $i);
 	}elsif ($line =~ s/^([Llea\s]*\|[Llea\s]*([pP]r..?sidente?|[rR]apporteure?)[\.: \|]*)//) {
-        $source = $1;
+        $orig = $1;
 		$tmpfonction = lc($2);
         if (!$intervenant && $intervention =~ /:<\/p>$/) {
-            $line = "$source$line";
+            $line = "$orig$line";
         } else {
 		    $tmpintervenant = $fonction2inter{$tmpfonction};
 		    if ($tmpintervenant) {
@@ -507,12 +507,12 @@ foreach $line (split /\n/, $string)
             $intervenant = setIntervenant($1);
 	    }elsif (!$majIntervenant) {
             if ($line =~ s/^\s*(M(mes?|[e\.])\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
-                $source = $1;
+                $orig = $1;
                 if (!$intervenant && !$line) {
-                    $line = $source;
+                    $line = $orig;
                 } else {
         	        checkout();
-    	            $intervenant = setIntervenant($source);
+    	            $intervenant = setIntervenant($orig);
                 }
             }elsif($line =~ s/^\s*[Ll][ea] ([pP]r[ée]sidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
                 setFonction($1, $2);
