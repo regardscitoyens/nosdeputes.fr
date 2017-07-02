@@ -258,6 +258,7 @@ class parlementaireActions extends sfActions
       ->where('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat')
       ->andWhere('o.type = ?', 'groupe')
       ->andWhere('o.nom = ?', $nom)
+      ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL 10 DAY) >= po.debut_fonction)')
       ->orderBy('po.fin_fonction, imp DESC, p.nom_de_famille ASC');
     $this->parlementaires = array();
     $this->total = 0;
@@ -276,6 +277,7 @@ class parlementaireActions extends sfActions
       ->where('o.nom = ?', $nom)
       ->andWhere('p.fin_mandat IS NOT NULL')
       ->andWhere('p.fin_mandat >= p.debut_mandat')
+      ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL 10 DAY) >= po.debut_fonction)')
       ->orderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille ASC');
     foreach ($query->execute() as $depute) {
       if (isset($this->parlementaires[-200])) $this->parlementaires[-200][] = $depute;
@@ -337,7 +339,8 @@ class parlementaireActions extends sfActions
         ->leftJoin('p.ParlementaireOrganisme po')
         ->leftJoin('po.Organisme o')
         ->where('o.slug = ?', $orga)
-        ->andWhere('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat')
+        ->andWhere('(p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat)')
+        ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL 10 DAY) >= po.debut_fonction)')
         ->orderBy("po.fin_fonction, po.importance DESC, p.nom_de_famille ASC");
       $this->parlementaires = array();
       $this->total = 0;
@@ -356,6 +359,7 @@ class parlementaireActions extends sfActions
         ->where('o.slug = ?', $orga)
         ->andWhere('p.fin_mandat IS NOT NULL')
         ->andWhere('p.fin_mandat >= p.debut_mandat')
+        ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL 10 DAY) >= po.debut_fonction)')
         ->orderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille ASC');
       foreach ($query->execute() as $depute) {
         if (isset($this->parlementaires[-200])) $this->parlementaires[-200][] = $depute;

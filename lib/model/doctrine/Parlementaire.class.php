@@ -213,9 +213,12 @@ class Parlementaire extends BaseParlementaire
     }
   }
 
-  public function getOrganismes($old=false) {
+  public function getOrganismes($old=false, $removeShortOnes=false) {
     $res = array();
+    if ($removeShortOnes) $tendays = 10*24*60*60;
     foreach($this->getParlementaireOrganismes() as $po) {
+      if ($removeShortOnes && $po->fin_fonction && strtotime($po->fin_fonction) - strtotime($po->debut_fonction) < $tendays)
+        continue;
       if (($old && $po->fin_fonction) || (!$old && !$po->fin_fonction))
         array_push($res, $po);
     }
@@ -226,8 +229,8 @@ class Parlementaire extends BaseParlementaire
     return strcmp($b->fin_fonction.$b->debut_fonction, $a->fin_fonction.$a->debut_fonction);
   }
 
-  public function getHistorique() {
-    $histo = $this->getOrganismes(true);
+  public function getHistorique($removeShortOnes=false) {
+    $histo = $this->getOrganismes(true, $removeShortOnes);
     usort($histo, 'Parlementaire::historiqueSort');
     return $histo;
   }
