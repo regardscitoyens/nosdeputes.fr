@@ -297,7 +297,7 @@ sub rapporteur
 {
     #Si le commentaire contient peu nous aider à identifier le rapport, on tente
     if ($line =~ /rapport/i) {
-	if ($line =~ /M[me\.]+\s([^,()]+), (rapporteur[^\)\,\.\;]*)/i) {
+	if ($line =~ /M[me\.]+\s([^,()]+)(?:,| est proclamée?) (rapporteur[^\)\,\.\;]*)/i) {
         $fct = $2;
         $fct =~ s/\s+et\s+.*$//;
 	    setFonction($fct, $1);
