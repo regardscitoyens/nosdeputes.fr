@@ -19,28 +19,27 @@ class loadDocumentsTask extends sfBaseTask {
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == "." || $file == ".svn") continue;
           foreach(file($dir.$file) as $line) {
-        if ($doc) exit(1);
-	    echo "\n$dir$file ... ";
+            if ($doc) exit(1);
+            echo "\n$dir$file ... ";
             $json = json_decode($line);
-            if (!$json )
-	    {
+            if (!$json) {
               echo "ERROR json : \n";
               continue;
             }
-	    if (!$json->source)
-	      {echo "ERROR source : \n"; continue;}
-	    if (!$json->legislature)
-	      {echo "ERROR legislature : \n"; continue;}
-	    if (!$json->id)
-	      {echo "ERROR id : \n"; continue;}
-	    if (!$json->numero)
-	      {echo "ERROR numero : \n"; continue;}
-	    if(!$json->date_depot)
-	      {echo "ERROR date_depot : \n"; continue;}
-	    if (!$json->dossier)
-	      {echo "ERROR dossier : \n"; continue;}
-	    if (!$json->type)
-	      {echo "ERROR type : \n"; continue;}
+            if (!$json->source)
+              {echo "ERROR source : \n"; continue;}
+            if (!$json->legislature)
+              {echo "ERROR legislature : \n"; continue;}
+            if (!$json->id)
+              {echo "ERROR id : \n"; continue;}
+            if (!$json->numero)
+              {echo "ERROR numero : \n"; continue;}
+            if(!$json->date_depot)
+              {echo "ERROR date_depot : \n"; continue;}
+            if (!$json->dossier)
+              {echo "ERROR dossier : \n"; continue;}
+            if (!$json->type)
+              {echo "ERROR type : \n"; continue;}
             $doc = Doctrine::getTable('Texteloi')->find($json->id);
             if (!$doc) {
               $doc = new Texteloi();
@@ -55,7 +54,6 @@ class loadDocumentsTask extends sfBaseTask {
               }
               $doc->date = $json->date_depot;
               $doc->type = $json->type;
-	      //	      $doc->save();
             }
             if ($json->date_publi)
               $doc->date = $json->date_publi;
@@ -72,12 +70,12 @@ class loadDocumentsTask extends sfBaseTask {
               foreach (explode('.', $json->motscles) as $tag)
                 if (strlen($tag) <= 50)
                   $doc->addTag($tag);
-	    if ($json->contenu)
-	      $doc->setContenu($json->contenu);
+            if ($json->contenu)
+              $doc->setContenu($json->contenu);
             $doc->save();
-	    echo " DONE";
+            echo " DONE\n";
           }
-	  unlink($dir.$file);
+          unlink($dir.$file);
         }
         closedir($dh);
         echo "\n";
