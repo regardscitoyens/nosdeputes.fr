@@ -45,44 +45,28 @@ plot_activity_data("<?php echo url_for('@parlementaire_plot_graph?slug='.$parlem
 $lela = ($parlementaire->sexe == "F" ? "la députée" : "le député");
 $fem = ($parlementaire->sexe == "F" ? "e" : "");
 if (!isset($widthrate) || $widthrate > 1/3) : ?>
-<p>
-  <span class="jstitle" title="Nombre de <?php
+<p><span class="jstitle" title="Nombre de <?php
 $reus = "réunions de commissions auxquelles $lela a été enregistré$fem présent$fem";
 $sean = "séances en hémicycle pendant lesquelles $lela est intervenu$fem même brièvement";
 if ($type === "total") echo "$reus et de $sean";
 else if ($type === "hemicycle") echo $sean;
 else echo $reus;
-  ?>">
-    <span style="background-color: rgb(255,0,0);">&nbsp;</span>&nbsp;Présences <?php echo ($type === 'commission' ? 'enregistr' : 'relev'); ?>ées
-  </span>&nbsp;&nbsp;&nbsp;
-  <span class="jstitle" title="Nombre de <?php
+?>"><span style="background-color: rgb(255,0,0);">&nbsp;</span>&nbsp;Présences <?php
+echo ($type === 'commission' ? 'enregistr' : 'relev');
+?>ées</span>&nbsp;&nbsp;&nbsp;<span class="jstitle" title="Nombre de <?php
 $reus = "réunions de commissions";
 $sean = "séances en hémicycle";
 if ($type === "total") echo "$reus et de $sean";
 else if ($type === "hemicycle") echo $sean;
-else echo $reus;
-  ?> pendant lesquelles <?php echo $lela; ?> a participé aux débats">
-    <span style="background-color: rgb(255,200,0);">&nbsp;</span>&nbsp;Participations
-  </span>&nbsp;&nbsp;&nbsp;
-  <?php if (!(myTools::isFinLegislature() && preg_match('/^l/', $time)) && $questions === 'true' && $type !== 'commission') : ?>
-  <span class="jstitle" title="Nombre de questions orales posées au gouvernement par <?php echo $lela; ?>">
-    <span style="background-color: rgba(100,100,255,0.75);">&nbsp;</span>&nbsp;Questions orales
-  </span>&nbsp;&nbsp;
-  <?php endif; ?>
-  <span class="jstitle" title="Semaines durant lesquelles les députés ne se sont réunis ni en commission ni en hémicycle">
-    <span style="background-color: rgb(150,150,150);">&nbsp;</span>&nbsp;Vacances parlementaires
-  </span>&nbsp;&nbsp;
-  <span class="jstitle" title="Médiane pour l'ensemble des députés du nombre de <?php
+else echo $reus; ?> pendant lesquelles <?php echo $lela; ?> a participé aux débats"><span style="background-color: rgb(255,200,0);">&nbsp;</span>&nbsp;Participations</span>&nbsp;&nbsp;&nbsp;<?php
+if (!(myTools::isFinLegislature() && preg_match('/^l/', $time)) && $questions === 'true' && $type !== 'commission') :
+?><span class="jstitle" title="Nombre de questions orales posées au gouvernement par <?php echo $lela; ?>"><span style="background-color: rgba(100,100,255,0.75);">&nbsp;</span>&nbsp;Questions orales</span>&nbsp;&nbsp;<?php
+endif; ?><span class="jstitle" title="Semaines durant lesquelles les députés ne se sont réunis ni en commission ni en hémicycle"><span style="background-color: rgb(150,150,150);">&nbsp;</span>&nbsp;Vacances parlementaires</span>&nbsp;&nbsp;<span class="jstitle" title="Médiane pour l'ensemble des députés du nombre de <?php
 if ($type === "total") echo "$reus et de $sean";
 else if ($type === "hemicycle") echo $sean;
-else echo $reus;
-  ?> auxquelles ils ont participé">
-    <span style="font-weight: bolder; color: rgb(160,160,160);">&mdash;</span>&nbsp;Présence médiane
-  </span>
-  <?php if ($link === 'true') : ?>
-  <span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="jstitle" title="Lire plus d'explications dans la FAQ"<?php echo $target; ?> href="<?php echo url_for('@faq', $abs); ?>#post_4">Explications</a></span>
-  <?php endif; ?>
-</p>
+else echo $reus; ?> auxquelles ils ont participé"><span style="font-weight: bolder; color: rgb(160,160,160);">&mdash;</span>&nbsp;Présence médiane</span><?php
+if ($link === 'true') : ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="jstitle" title="Lire plus d'explications dans la FAQ"<?php echo $target; ?> href="<?php echo url_for('@faq', $abs); ?>#post_4">Explications</a></span><?php
+endif; ?></p>
 <?php endif;
 if ($link != 'true')
   echo '</div>';
