@@ -1,7 +1,7 @@
 <?php $sf_response->setTitle($parlementaire->nom.' - Son activité de député à l\'Assemblée nationale - NosDéputés.fr'); ?>
 <div class="fiche_depute">
   <div class="info_depute">
-    <h1><?php echo $parlementaire->nom; ?></h1><h2>, <?php echo $parlementaire->getLongStatut(1); ?></h2>
+    <h1><?php echo $parlementaire->nom; ?></h1><h2>, <?php echo preg_replace('/(\d)(è[mr]e)/', '\\1<sup><small>\\2</small></sup>', $parlementaire->getLongStatut(1)); ?></h2>
 <?php if ($parlementaire->url_nouveau_cpc) : ?>
   <?php if ($parlementaire->sexe == 'H') : ?>
     <h3 style="color:red; margin: 0px"><a href="<?php echo $parlementaire->url_nouveau_cpc; ?>">Ce député a été réélu, consultez sa fiche pour la <?php echo sfConfig::get('app_legislature')+1; ?><sup>ème</sup> législature</a></h3>
