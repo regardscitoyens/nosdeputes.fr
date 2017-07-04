@@ -20,10 +20,10 @@ class loadAmdmtsTask extends sfBaseTask {
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
+        $ct_lines = 0;
+        $ct_crees = 0;
+        $ct_modif = 0;
           if ($file == ".." || $file == ".") continue;
-          $ct_lines = 0;
-          $ct_lus = 0;
-          $ct_crees = 0;
           if ($nb_json > $options['max'])
             break;
           $nb_json++;
@@ -38,7 +38,6 @@ class loadAmdmtsTask extends sfBaseTask {
               echo "ERROR mandatory arg missing (source|legis|numero|loi|sujet|texte|date|rectif): $line\n";
               continue;
             }
-            $ct_lus++;
             $modif = true;
             $amdmt = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
             if ($json->rectif > 0) foreach(Doctrine::getTable('Amendement')->findByCleanedSource($json->source) as $rect) {
@@ -66,6 +65,7 @@ class loadAmdmtsTask extends sfBaseTask {
               $modif = false;
             }
             if ($modif) {
+              $ct_modif++;
               $amdmt->source = $json->source;
               $amdmt->date = $json->date;
               $lettre = $amdmt->getLettreLoi();
@@ -132,9 +132,9 @@ class loadAmdmtsTask extends sfBaseTask {
             $amdmt->save();
             $amdmt->free();
           }
-          if ($ct_crees) echo $ct_lines." amendements lus : ".$ct_lus." écrits dont ".$ct_crees." nouveaux.\n";
           unlink($dir.$file);
         }
+        if ($ct_modif) echo $ct_lines." amendements lus : ".$ct_modif." écrits dont ".$ct_crees." nouveaux.\n";
         closedir($dh);
       }
     }
