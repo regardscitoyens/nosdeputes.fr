@@ -19,10 +19,10 @@ class loadAmdmtsTask extends sfBaseTask {
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
-        while (($file = readdir($dh)) != false) {
         $ct_lines = 0;
         $ct_crees = 0;
         $ct_modif = 0;
+        while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == ".") continue;
           if ($nb_json > $options['max'])
             break;
@@ -131,6 +131,8 @@ class loadAmdmtsTask extends sfBaseTask {
             }
             $amdmt->save();
             $amdmt->free();
+            $reindexWithParls = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
+            $reindexWithParls->save();
           }
           unlink($dir.$file);
         }

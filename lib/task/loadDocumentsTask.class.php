@@ -73,6 +73,8 @@ class loadDocumentsTask extends sfBaseTask {
             if ($json->contenu)
               $doc->setContenu($json->contenu);
             $doc->save();
+            $reindexWithParls = Doctrine::getTable('Texteloi')->find($json->id);
+            $reindexWithParls->save();
             echo " DONE\n";
           }
           unlink($dir.$file);
