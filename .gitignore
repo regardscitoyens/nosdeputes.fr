@@ -57,6 +57,7 @@ batch/loi/json/
 batch/presences/oldjson/
 batch/presences/json/
 batch/questions/html/
+batch/questions/json/
 batch/questions/test/
 batch/questions/dernier_numero.txt
 batch/questions/liste_sans_reponse.txt
