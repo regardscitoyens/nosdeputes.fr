@@ -28,12 +28,12 @@ $style = "width: ".$w."px; height: ".$h."px;";
 ?>
 <img style="<?php echo $style; ?>" id="graph_groupes" alt="Répartition de l'activité parlementaire sur <?php
 echo (myTools::isFinLegislature() ? "l'ensemble de la législature" : "les 12 derniers mois");
-?>" src="<?php echo url_for('@groupes_plot_graph?type='.$type.'&mapId='.$PictureID); ?>" onmousemove="getMousePosition(event);" onmouseout="nd();"/>
+?>" src="<?php echo url_for('@groupes_plot_graph?type='.$type).'?mapId='.$PictureID; ?>" onmousemove="getMousePosition(event);" onmouseout="nd();"/>
 <div id="overDiv"></div>
 <?php if ($type === "home") echo '</a>'; ?>
 <?php echo include_partial('plot/groupesLegende', array("groupes" => array_keys($data['groupes']), "width" => $w)); ?>
 <script type="text/javascript">
-LoadImageMap("graph_groupes", "<?php echo url_for('@groupes_plot_graph?type='.$type.'&format=map&mapId='.$PictureID); ?>");
+LoadImageMap("graph_groupes", "<?php echo url_for('@groupes_plot_graph?type='.$type).'?format=map&mapId='.$PictureID; ?>");
 </script>
 <?php if ($type === "home") : //Si c'est la home, on ferme les div consacrées ?>
 </div></div>
