@@ -40,8 +40,10 @@ class loadDocumentsTask extends sfBaseTask {
               {echo "ERROR dossier : \n"; continue;}
             if (!$json->type)
               {echo "ERROR type : \n"; continue;}
+            $new = false;
             $doc = Doctrine::getTable('Texteloi')->find($json->id);
             if (!$doc) {
+              $new = true;
               $doc = new Texteloi();
               $doc->id = $json->id;
               $doc->source = $json->source;
@@ -73,8 +75,11 @@ class loadDocumentsTask extends sfBaseTask {
             if ($json->contenu)
               $doc->setContenu($json->contenu);
             $doc->save();
-            $reindexWithParls = Doctrine::getTable('Texteloi')->find($json->id);
-            $reindexWithParls->save();
+            $doc->free();
+            if ($new) {
+              $reindexWithParls = Doctrine::getTable('Texteloi')->find($json->id);
+              $reindexWithParls->save();
+            }
             echo " DONE\n";
           }
           unlink($dir.$file);

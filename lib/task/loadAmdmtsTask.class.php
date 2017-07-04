@@ -39,6 +39,7 @@ class loadAmdmtsTask extends sfBaseTask {
               continue;
             }
             $modif = true;
+            $new = false;
             $amdmt = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
             if ($json->rectif > 0) foreach(Doctrine::getTable('Amendement')->findByCleanedSource($json->source) as $rect) {
               if ($rect->rectif < $json->rectif && $rect->texteloi_id == $json->loi && $rect->numero == $json->numero) {
@@ -54,6 +55,7 @@ class loadAmdmtsTask extends sfBaseTask {
             }
             if (!$amdmt) {
               $ct_crees++;
+              $new = true;
               print "$file -> http://www.nosdeputes.fr/14/amendement/".$json->loi."/".$json->numero."  \n";
               $amdmt = new Amendement();
               $amdmt->legislature = $json->legislature;
@@ -131,8 +133,10 @@ class loadAmdmtsTask extends sfBaseTask {
             }
             $amdmt->save();
             $amdmt->free();
-            $reindexWithParls = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
-            $reindexWithParls->save();
+            if ($new) {
+              $reindexWithParls = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
+              $reindexWithParls->save();
+            }
           }
           unlink($dir.$file);
         }
