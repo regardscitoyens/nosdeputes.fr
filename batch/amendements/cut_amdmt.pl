@@ -69,6 +69,7 @@ $string =~ s/&ccedil;/ç/g;
 $string =~ s/\\//g;
 close FILE;
 
+my $firstauteur = "";
 my $presente = 0;
 my $texte = 0;
 my $identiques = 0;
@@ -236,6 +237,8 @@ foreach $line (split /\n/, $string)
 	    sortseance();
 	} elsif ($line =~ /name="NUM_AM(TXT|ENDG?)"/i) {
 	    numero();
+	} elsif ($line =~ /name="AUTEUR_ID".*content="\s*([^"]*)\s*"/) {
+	    $firstauteur = $1;
 	} elsif ($line =~ /name="AUTEURS".*content="\s*([^"]*)\s*"/) {
 	    $tmpauteurs = $1;
 	}
@@ -402,4 +405,4 @@ if ($commission) {
   }
 }
 
-print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'"'.$extra." } \n";
+print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteur_reel": "'.$firstauteur.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'"'.$extra." } \n";

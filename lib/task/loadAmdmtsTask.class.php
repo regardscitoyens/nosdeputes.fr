@@ -123,8 +123,11 @@ class loadAmdmtsTask extends sfBaseTask {
             } elseif (!$amdmt->sort) {
               $amdmt->sort = "Indéfini";
             }
-            if ($json->auteur_reel) {
-              $amdmt->setAuteur(Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel));
+            if ($json->auteur_reel && !$amdmt->auteur_id) {
+              $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel);
+              if ($parl)
+                $amdmt->setFirstAuteur($parl);
+              else echo "WARNING: cannot find auteur from ID AN: $line\n";
             }
             $amdmt->save();
             $amdmt->free();
