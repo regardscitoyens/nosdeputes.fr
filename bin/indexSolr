@@ -56,7 +56,7 @@ if test -e log/solr/commands.log.lock; then
 fi
 
 if ! test -e log/solr/commands.log.lock; then
-    nextcommand=$(ls log/solr/commands.log.* | grep -v lock | head -n 1)
+    nextcommand=$(ls log/solr/commands.log.* 2> /dev/null | grep -v lock | head -n 1)
     if test "$nextcommand" ; then
         mv $nextcommand log/solr/commands.log.lock
     fi
