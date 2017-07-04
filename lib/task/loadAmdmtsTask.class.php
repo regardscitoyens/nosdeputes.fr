@@ -24,9 +24,9 @@ class loadAmdmtsTask extends sfBaseTask {
         $ct_modif = 0;
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == ".") continue;
+          $nb_json++;
           if ($nb_json > $options['max'])
             break;
-          $nb_json++;
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
             $json = json_decode($line);
