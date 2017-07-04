@@ -19,7 +19,7 @@ else {
 }
 $datedebut = $year."-".sprintf('%02d', $month)."-".sprintf('%02d', $day);
 
-$url = "http://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&idExamen=&idDossierLegislatif=&numAmend=&idAuteur=&idArticle=&idAlinea=&sort=&dateDebut=".$datedebut."&dateFin=".$datefin."&periodeParlementaire=&texteRecherche=&rows=2500&format=html&tri=datedesc&typeRes=liste&start=";
+$url = "http://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&leg=".$legislature."&idExamen=&idDossierLegislatif=&missionVisee=&numAmend=&idAuteur=&premierSignataire=true&idArticle=&idAlinea=&sort=&dateDebut=".$datedebut."&dateFin=".$datefin."&periodeParlementaire=&texteRecherche=&rows=2500&format=html&tri=datedesc&typeRes=liste&start=";
 
 $a = WWW::Mechanize->new();
 $a->get($url);
