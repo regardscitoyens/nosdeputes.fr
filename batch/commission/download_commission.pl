@@ -14,7 +14,7 @@ $p = HTML::TokeParser->new(\$content);
 while ($t = $p->get_tag('a')) {
   $txt = $p->get_text('/a');
   $curl = $file = $t->[1]{href};
-  if ($txt =~ /compte rendu|e nationale \~/i && $curl !~ /(\/cri\/2|\(typeDoc\))/ && $curl =~ /nationale\.fr\/$legislature\//) {
+  if ($txt =~ /compte rendu|e nationale \~/i && $curl !~ /(\/cri\/(2|congres)|\(typeDoc\))/ && $curl =~ /nationale\.fr\/$legislature\//) {
     $ok = 1;
     $file =~ s/\//_/gi;
     $file =~ s/\#.*//;
