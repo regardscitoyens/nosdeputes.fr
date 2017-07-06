@@ -332,6 +332,7 @@ a:hover {
 .synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
 .synthese td.p { width: 112px; }
 .synthese th.p { width: 122px; border-left: 13px solid #FFF; }
+.synthese th.p.gpes { width: 119px; border-left: 5px solid #FFF; }
 .synthese .we { width: 70px; }
 .synthese .cp { width: 57px; }
 .synthese .ci { width: 57px; }

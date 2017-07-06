@@ -131,7 +131,7 @@ $bulles = array(
 <div class="synthese">
 <table>
   <tr>
-    <th class="<?php echo $class['parl']; ?>">&nbsp;</th>
+    <th class="gpes <?php echo $class['parl']; ?>">&nbsp;</th>
     <th title="Semaines d'activité -- Nombre moyen de semaines où un député de ce groupe -- a été relevé présent en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>">Semaines</th>
     <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
     <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
@@ -141,7 +141,7 @@ $bulles = array(
     <th colspan="2" class="<?php if ($sort == 12 || $sort == 13) echo 'tr_odd';?>">Questions</th>
   </tr>
   <tr>
-    <th class="jstitle <?php echo $class['parl']; ?>">Groupe</th>
+    <th class="jstitle gpes <?php echo $class['parl']; ?>">Groupe</th>
     <?php $i = 1;
     foreach($ktop as $key) {
       if ($key === "") continue;
