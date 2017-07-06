@@ -139,7 +139,6 @@ $bulles = array(
     <th title="Rapports écrits -- Nombre moyen de rapports ou avis dont le député est l'auteur" class="jstitle <?php if ($sort == 9) echo 'tr_odd';?>">Rapports</th>
     <th colspan="2" class="<?php if ($sort == 10 || $sort == 11) echo 'tr_odd';?>">Propositions</th>
     <th colspan="2" class="<?php if ($sort == 12 || $sort == 13) echo 'tr_odd';?>">Questions</th>
-    <th style="width:10px;"/>
   </tr>
   <tr>
     <th class="jstitle <?php echo $class['parl']; ?>">Groupe</th>
@@ -150,7 +149,6 @@ $bulles = array(
       echo '<th title="'.$bulles[$i].'" class="jstitle '.$class[$key].($sort == $i ? ' tr_odd' : '').'">'.$title[$key].'</th>';
       $i++;
     } ?>
-    <th style="width:10px;"/>
   </tr>
 </table>
 <div class="synthese_groupes">
