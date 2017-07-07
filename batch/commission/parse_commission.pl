@@ -351,6 +351,7 @@ $string =~ s/<\/?ul>//gi;
 
 #print $string; exit;
 
+$finished = 0;
 foreach $line (split /\n/, $string)
 {
     #print "TEST: ".$line."\n";
@@ -475,7 +476,11 @@ foreach $line (split /\n/, $string)
 	    $found = 1;
 	}
     #print STDERR "LINE: $line\n";
-    if ($line =~ s/^\|(M[^\|\:]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:, \/|\/, )[^\/]+?\/))(.*\w.*)/\4/) {
+    if ($line =~ /\|Informations relatives à la Commission/i) {
+        $finished = 1;
+    }
+    if (!$finished) {
+      if ($line =~ s/^\|(M[^\|\:]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:, \/|\/, )[^\/]+?\/))(.*\w.*)/\4/) {
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2.$3;
@@ -484,17 +489,17 @@ foreach $line (split /\n/, $string)
         }
         $intervenant = setIntervenant($interv1.$extrainterv);
         $found = $majIntervenant = 1;
-	}elsif (!($line =~ /^\|(?:Commission|Présidence|Titre|Chapitre|Section|Articles?)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
+	  } elsif (!($line =~ /^\|(?:Commission|Présidence|Titre|Chapitre|Section|Articles?)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
-	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r..?sidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
+	  } elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r..?sidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
 		$f = $1;
 		$i = $2;
 		$found = $majIntervenant = 1;
         checkout();
         $intervenant = setFonction($f, $i);
-	}elsif ($line =~ s/^([Llea\s]*\|[Llea\s]*([pP]r..?sidente?|[rR]apporteure?)[\.: \|]*)//) {
+	  } elsif ($line =~ s/^([Llea\s]*\|[Llea\s]*([pP]r..?sidente?|[rR]apporteure?)[\.: \|]*)//) {
         $orig = $1;
 		$tmpfonction = lc($2);
         if (!$intervenant && $intervention =~ /:<\/p>$/) {
@@ -507,12 +512,13 @@ foreach $line (split /\n/, $string)
 			    $found = $majIntervenant = 1;
 		    }
         }
+      }
 	}
 	$line =~ s/^\s+//;
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
     #print STDERR "LINE: $found $line\n";
-	if (!$found && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève)/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève)/) {
 	    if ($line =~ s/^\s*((Dr|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
