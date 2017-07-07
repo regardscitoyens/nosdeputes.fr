@@ -56,7 +56,7 @@ class loadAmdmtsTask extends sfBaseTask {
             if (!$amdmt) {
               $ct_crees++;
               $new = true;
-              print "$file -> http://www.nosdeputes.fr/14/amendement/".$json->loi."/".$json->numero."  \n";
+              print "$file -> http://www.nosdeputes.fr/".myTools::getLegislature()."/amendement/".$json->loi."/".$json->numero."  \n";
               $amdmt = new Amendement();
               $amdmt->legislature = $json->legislature;
               $amdmt->texteloi_id = $json->loi;

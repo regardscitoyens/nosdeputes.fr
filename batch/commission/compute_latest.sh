@@ -5,8 +5,8 @@ source ../../bin/db.inc
 mkdir -p html out presents
 
 for file in $(perl download_commission.pl $LEGISLATURE); do
-    if grep "La page à laquelle vous souhaitez accéder n'existe pas.\|HTTP Error 503" "html/$file"; then
-        echo "...removing empty file."
+    if grep "La page à laquelle vous souhaitez accéder n'existe pas.\|HTTP Error 503" "html/$file" > /dev/null; then
+        echo "...removing empty file $file."
         rm "html/$file"
         continue
     fi
