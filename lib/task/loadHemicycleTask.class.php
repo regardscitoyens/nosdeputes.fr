@@ -10,16 +10,15 @@ class loadHemicyleTask extends sfBaseTask
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
- 
+
   protected function execute($arguments = array(), $options = array())
   {
     // your code here
     $dir = dirname(__FILE__).'/../../batch/hemicycle/out/';
-    $manager = new sfDatabaseManager($this->configuration);    
+    $manager = new sfDatabaseManager($this->configuration);
 
     if (is_dir($dir)) {
-      if ($dh = opendir($dir)) {
-        while (($file = readdir($dh)) !== false) {
+    foreach (scandir($dir) as $file) {
 	  $sections = array();
 	  if (preg_match('/^\./', $file))
 	    continue;
@@ -46,7 +45,7 @@ class loadHemicyleTask extends sfBaseTask
               $intervention->setIntervention($json->intervention);
               $intervention->md5 = $id;
             }
-            echo "WARNING : Intervention en double trouvée : seance/".$seance."#inter_".$id."\n"; 
+            echo "WARNING : Intervention en double trouvée : seance/".$seance."#inter_".$id."\n";
 	      }
         }
 	    if(!$intervention) {
@@ -101,8 +100,6 @@ class loadHemicyleTask extends sfBaseTask
 	  unset($sections);
 	  unlink($dir.$file);
 	}
-        closedir($dh);
-      }
     }
   }
 }
