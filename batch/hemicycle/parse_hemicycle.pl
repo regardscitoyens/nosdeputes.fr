@@ -452,6 +452,7 @@ foreach $line (split /\n/, $string)
         $line =~ s/([^<])[\/\|]/\1/g;
         $line =~ s/<[^t\/][^>]*>//g;
         $line =~ s/<\/[^t][^>]*>//g;
+        $line =~ s/"/\\"/g;
         checkout() if ($intervenant || ($line =~ /<table/ && length($intervention) + length($line) gt 2000));
         $intervention .= "$line";
         next;
