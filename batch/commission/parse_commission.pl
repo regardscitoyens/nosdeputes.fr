@@ -173,6 +173,7 @@ sub setFonction {
     $fonction =~ s/<[^>]+>\s*//g;
     $fonction =~ s/<[^>]*$//;
     $fonction =~ s/\///g;
+    $fonction =~ s/Président/président/;
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
     my $kfonction = lc($fonction);
@@ -461,13 +462,13 @@ foreach $line (split /\n/, $string)
     $tmpinter = "";
     #print STDERR $line."\n";
 	#si italique ou tout gras => commentaire
-	if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) && $line !~ /^\|Articles?\s*\d+/i) {
+	if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) && $line !~ /^\|Articles?\s*\d+/i && $line !~ /^\/«/) {
 	    if (!$timestamp && !$commission && $line =~ /^\|(.*(groupe|mission|délégation|office|comité).*)\|\s*$/i) {
 		$commission = $1;
 		next;
 	    }
         if ($intervenant) {
-            if ($line =~ /^\/\(.*\.\)\/$/) {
+            if ($line =~ /^\/\(.*\.\)\/$/ || $line =~ /^\|.*\|\s*$/) {
                 $tmpinter = $intervenant;
             }
             checkout();
@@ -489,7 +490,7 @@ foreach $line (split /\n/, $string)
         }
         $intervenant = setIntervenant($interv1.$extrainterv);
         $found = $majIntervenant = 1;
-	  } elsif (!($line =~ /^\|(?:Commission|Présidence|Titre|Chapitre|Section|Articles?)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
+	  } elsif (!($line =~ /^\|(?:Puis de |Commission|Présidence|Titre|Chapitre|Section|Articles?)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
