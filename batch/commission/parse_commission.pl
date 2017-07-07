@@ -330,7 +330,10 @@ $string =~ s/&#8217;/'/g;
 $string =~ s/d\W+évaluation/d'évaluation/g;
 $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
-$string =~ s/<p>(La commission)\s*\|?\s*(en vient|examine|se saisit|adopte|rejette)\s*\|?\s*(.*?)<\/p>/<p>\/$1 $2 $3\/<\/p>/gi;
+$string =~ s/<p>\|(Article \d+\s*:)\s*\|\s*(.*?)<\/p>/<p>\/$1 $2\/<\/p>/gi;
+$string =~ s/<p>(La (?:réunion|séance))(, suspendue à .*?,)?\s*(s'achève|est (?:suspendue|reprise|levée))(.*?)<\/p>/<p>\/$1$2 $3$4\/<\/p>/gi;
+$string =~ s/<p>(L'amendement .*?est)\s*\|?\s*(retiré|adopté|rejeté)\s*\|?\s*(.*?)<\/p>/<p>\/$1 $2 $3\/<\/p>/gi;
+$string =~ s/<p>(Suivant l'avis .*favorable d[^,]*,\s*)?(La commission)\s*\|?\s*(en vient|examine|émet|[est]+ saisi[et]|adopte|rejette)\s*\|?\s*(.*?)<\/p>/<p>\/$1$2 $3 $4\/<\/p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $majIntervenant = 0;
@@ -558,7 +561,7 @@ foreach $line (split /\n/, $string)
         checkout();
         $intervenant = $tmpinter;
     }
-    if ($line =~ /séance est levée/i) {
+    if ($line =~ /(réunion|séance) (s'achève|est levée)/i) {
         last;
     }
 }
