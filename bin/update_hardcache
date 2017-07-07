@@ -11,7 +11,7 @@ do
 done;
 
 mkdir -p web/$LEGISLATURE/seance
-for seance_id in $(echo "select DISTINCT seance_id from intervention where updated_at > SUBTIME(NOW(),'4:0:0')" | mysql $MYSQLID $DBNAME | grep -v seance_id )
+for seance_id in $(echo "select DISTINCT seance_id from intervention where created_at > SUBTIME(NOW(),'4:0:0')" | mysql $MYSQLID $DBNAME | grep -v seance_id )
 do
 	echo "http://$VHOST/$LEGISLATURE/seance/$seance_id"
 	rm web/$LEGISLATURE/seance/$seance_id.html 2> /dev/null
