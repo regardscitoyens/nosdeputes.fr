@@ -120,13 +120,16 @@ class updateDeputesTask extends sfBaseTask
             $done_sites = array();
             if (count($json->sites_web))
               foreach (array_keys($json->sites_web) as $i) {
-                $json->sites_web[$i] = preg_replace("|(://[^/]+)/$|", "$1", $json->sites_web[$i]);
-                $done_sites[preg_replace("#^(https?://|www\.)*(.*)$#", "$2", $json->sites_web[$i])] = 1;
+                $json->sites_web[$i] = preg_replace("|(://[^/]+)/$|", "$1", trim($json->sites_web[$i]));
+                $rootsite = strtolower(preg_replace("#^(https?://|www\.|m\.|fr\.|fr-fr\.)*(.*?)[\s/]*$#", "$2", $json->sites_web[$i]));
+                if (!isset($done_sites[$rootsite]))
+                  $done_sites[$rootsite] = 1;
+                else unset($json->sites_web[$i]);
               }
             if (isset($sites[$parl->slug]) && count($sites[$parl->slug]))
               foreach ($sites[$parl->slug] as $site) {
-                $site = preg_replace("|(://[^/]+)/$|", "$1", $site);
-                $rootsite = preg_replace("#^(https?://|www\.)*(.*)$#", "$2", $site);
+                $site = preg_replace("|(://[^/]+)/$|", "$1", trim($site));
+                $rootsite = strtolower(preg_replace("#^(https?://|www\.|m\.|fr\.|fr-fr\.)*(.*?)[\s/]*$#", "$2", $site));
                 if (!isset($done_sites[$rootsite]))
                   $json->sites_web[] = $site;
                 $done_sites[$rootsite] = 1;

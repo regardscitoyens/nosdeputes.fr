@@ -146,12 +146,13 @@ foreach $line (split /\n/, $string) {
     $depute{'groupe'}{$gpe} = 1;
   } elsif ($line =~ /mailto:([^'"]+@[^'"]+)['"]/i) {
     $depute{'mails'}{$1} = 1;
-  } elsif ($line =~ /<a [^>]*class="(url|facebook|twitter topmargin)" *href=['"]([^"']+)['"]/i) {
+  } elsif ($line =~ /<a [^>]*class="(url|facebook|twitter topmargin)" *href=['"]\s*([^"']+)\s*['"]/i) {
     $site = $2;
     if ($1 =~ /twitter/) {
       $site =~ s/\/$//;
     }
 #    $site =~ s#^(http://| )*#http://#i; #Bug plus d'actualité ?
+    $site =~ s#\s+/$#/#;
     if ($site =~ s/(https?:\/\/)?([^\/]+@[^\/]+)$/\2/) { #Les url twitter sont indiquées avec un @
       $depute{'mails'}{$site} = 1;
     } else {
