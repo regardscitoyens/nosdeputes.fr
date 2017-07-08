@@ -173,6 +173,7 @@ sub setFonction {
     $fonction =~ s/<[^>]+>\s*//g;
     $fonction =~ s/<[^>]*$//;
     $fonction =~ s/\///g;
+    $fonction =~ s/Président/président/;
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
     my $kfonction = lc($fonction);
@@ -329,6 +330,10 @@ $string =~ s/&#8217;/'/g;
 $string =~ s/d\W+évaluation/d'évaluation/g;
 $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
+$string =~ s/<p>\|(Article \d+\s*:)\s*\|\s*(.*?)<\/p>/<p>\/$1 $2\/<\/p>/gi;
+$string =~ s/<p>(La (?:réunion|séance))(, suspendue à .*?,)?\s*(s'achève|est (?:suspendue|reprise|levée))(.*?)<\/p>/<p>\/$1$2 $3$4\/<\/p>/gi;
+$string =~ s/<p>(L'amendement .*?est)\s*\|?\s*(retiré|adopté|rejeté)\s*\|?\s*(.*?)<\/p>/<p>\/$1 $2 $3\/<\/p>/gi;
+$string =~ s/<p>(Suivant l'avis .*favorable d[^,]*,\s*)?(La commission)\s*\|?\s*(en vient|examine|émet|[est]+ saisi[et]|adopte|rejette)\s*\|?\s*(.*?)<\/p>/<p>\/$1$2 $3 $4\/<\/p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $majIntervenant = 0;
@@ -351,6 +356,7 @@ $string =~ s/<\/?ul>//gi;
 
 #print $string; exit;
 
+$finished = 0;
 foreach $line (split /\n/, $string)
 {
     #print "TEST: ".$line."\n";
@@ -460,13 +466,13 @@ foreach $line (split /\n/, $string)
     $tmpinter = "";
     #print STDERR $line."\n";
 	#si italique ou tout gras => commentaire
-	if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) && $line !~ /^\|Articles?\s*\d+/i) {
+	if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) && $line !~ /^\|Articles?\s*\d+/i && $line !~ /^\/«/) {
 	    if (!$timestamp && !$commission && $line =~ /^\|(.*(groupe|mission|délégation|office|comité).*)\|\s*$/i) {
 		$commission = $1;
 		next;
 	    }
         if ($intervenant) {
-            if ($line =~ /^\/\(.*\.\)\/$/) {
+            if ($line =~ /^\/\(.*\.\)\/$/ || $line =~ /^\|.*\|\s*$/) {
                 $tmpinter = $intervenant;
             }
             checkout();
@@ -475,7 +481,11 @@ foreach $line (split /\n/, $string)
 	    $found = 1;
 	}
     #print STDERR "LINE: $line\n";
-    if ($line =~ s/^\|(M[^\|\:]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:, \/|\/, )[^\/]+?\/))(.*\w.*)/\4/) {
+    if ($line =~ /\|Informations relatives à la Commission/i) {
+        $finished = 1;
+    }
+    if (!$finished) {
+      if ($line =~ s/^\|(M[^\|\:]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:, \/|\/, )[^\/]+?\/))(.*\w.*)/\4/) {
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2.$3;
@@ -484,17 +494,17 @@ foreach $line (split /\n/, $string)
         }
         $intervenant = setIntervenant($interv1.$extrainterv);
         $found = $majIntervenant = 1;
-	}elsif (!($line =~ /^\|(?:Commission|Présidence|Titre|Chapitre|Section|Articles?)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
+	  } elsif (!($line =~ /^\|(?:Puis de |En conséquence|Commission|Présidence|Titre|Chapitre|Section|Articles?)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
-	}elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r..?sidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
+	  } elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r..?sidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
 		$f = $1;
 		$i = $2;
 		$found = $majIntervenant = 1;
         checkout();
         $intervenant = setFonction($f, $i);
-	}elsif ($line =~ s/^([Llea\s]*\|[Llea\s]*([pP]r..?sidente?|[rR]apporteure?)[\.: \|]*)//) {
+	  } elsif ($line =~ s/^([Llea\s]*\|[Llea\s]*([pP]r..?sidente?|[rR]apporteure?)[\.: \|]*)//) {
         $orig = $1;
 		$tmpfonction = lc($2);
         if (!$intervenant && $intervention =~ /:<\/p>$/) {
@@ -507,12 +517,13 @@ foreach $line (split /\n/, $string)
 			    $found = $majIntervenant = 1;
 		    }
         }
+      }
 	}
 	$line =~ s/^\s+//;
 	$line =~ s/[\|\/]//g;
 	$line =~ s/^[\.\:]\s*//;
     #print STDERR "LINE: $found $line\n";
-	if (!$found && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève)/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève)/) {
 	    if ($line =~ s/^\s*((Dr|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
@@ -550,7 +561,7 @@ foreach $line (split /\n/, $string)
         checkout();
         $intervenant = $tmpinter;
     }
-    if ($line =~ /séance est levée/i) {
+    if ($line =~ /(réunion|séance) (s'achève|est levée)/i) {
         last;
     }
 }

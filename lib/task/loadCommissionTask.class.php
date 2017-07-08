@@ -20,8 +20,7 @@ class loadCommissionTask extends sfBaseTask
     $verbose = $options['verbose'];
 
     if (is_dir($dir)) {
-      if ($dh = opendir($dir)) {
-        while (($file = readdir($dh)) !== false) {
+      foreach (scandir($dir) as $file) {
           if (preg_match('/^\./', $file))
             continue;
           echo "$dir$file\n";
@@ -77,8 +76,6 @@ class loadCommissionTask extends sfBaseTask
           }
           unlink($dir.$file);
         }
-        closedir($dh);
-      }
     }
   }
 }

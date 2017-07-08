@@ -15,14 +15,12 @@ open(FILE, $file) ;
 $string = "@string";
 close FILE;
 
-$string =~ s/<\/td><td>/: /g;
-$string =~ s/<\/tr>/\n/g;
 $string =~ s/ / /g;
 $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
 $string =~ s/\\’85//g;
 $string =~ s/’/'/g;
-$string =~ s/(,|:)…/\1 …/g;
+$string =~ s/(,|:|;|–)…/\1 …/g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<h[0-9][^>]*>[^<]*)(<i>[^<]*<\/i>\s*)*/$1/gi;
@@ -51,6 +49,13 @@ $string =~ s/\|\|//g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/\/\///g;
 $string =~ s/\r//g;
+
+$string =~ s/<t([rdh])[^>]*( (row|col)span=["\d]+)+[^>]*>/<t\1\2>/gi;
+$string =~ s/<t([rdh])( (row|col)span=["\d]+)*[^>]*>/<t\1\2>/gi;
+$string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
+$string =~ s/(<\/table>)\s*(<table|<p)/\1\n\2/gi;
+$string =~ s/(<\/p>)\s*(<table)/\1\n\2/gi;
+$string =~ s/(<img[^>]*)[\n\r]+([^>]*>)/\1 \2/gi;
 
 $mois{'janvier'} = '01';
 $mois{'février'} = '02';
@@ -187,6 +192,8 @@ sub checkout {
         $contexte .= ' > '.$titre2;
     }
     $contexte =~ s/"/\\"/g;
+    $intervention =~ s/\\\\/\//g;
+    $intervention =~ s/\s*(<\/?t(able|[rdh])[^>]*>)\s*/\1/gi;
     $out =  '{"contexte": "'.$contexte.'", "date": "'.$date.'", "source": "'.$source.'", "heure": "'.$heure.'", "session": "'.$session.'", ';
     if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|bienvenue|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement/i) {
         $out .= "\"numeros_loi\": \"$ploi\", ";
@@ -424,10 +431,37 @@ foreach $line (split /\n/, $string)
 
     next unless ($debut);
 
+    # Rewrite img urls
+    while ($line =~ /^(.*)<(img.*? src=.)(.*?)(['"][^\>]+)>(.*)$/i) {
+      $img0 = $1;
+      $img1 = $2;
+      $img2 = $4;
+      $img3 = $5;
+      $imgurl = $3;
+      if ($imgurl =~ /^\//) {
+        $imgurl = $rooturl.$imgurl
+      } elsif ($imgurl !~ /^http/i) {
+        $imgurl = $baseurl.$imgurl;
+      }
+      $imgurl =~ s/[\/]/\\\\/g;
+      $img2 =~ s/[\\]/\\\\/g;
+      $line = $img0."##".$img1.$imgurl.$img2."##".$img3;
+    }
+
+    if ($prez && $line =~ /<\/?t(able|d|h|r)/) {
+        $line =~ s/([^<])[\/\|]/\1/g;
+        $line =~ s/<[^t\/][^>]*>//g;
+        $line =~ s/<\/[^t][^>]*>//g;
+        $line =~ s/"/\\"/g;
+        checkout() if ($intervenant || ($line =~ /<table/ && length($intervention) + length($line) gt 2000));
+        $intervention .= "$line";
+        next;
+    }
+
     $line =~ s/<<//g;
 #    $line =~ s/<\/?p>//g;
 
-#    print STDERR "$titre1 > $titre2 : $line\n" ; next;
+    #print STDERR "$titre1 > $titre2 : $line\n" ; next;
     $line =~ s/\|\///;
     if ($line =~ /\<[p]/i) {
         $last_href = '';
@@ -435,6 +469,7 @@ foreach $line (split /\n/, $string)
             $last_href = $1;
         }
         $line =~ s/\<\/?[^\>]+\>//g;
+        $line =~ s/##(img[^\>#]+?)##/<\1 \\\\>/ig;
         last if ($line =~ /^\|annexe/i);
         next if ($line !~ /\w/);
         #cas des intervenants en gras suivi immédiatement de la fonction en italique
@@ -464,7 +499,6 @@ foreach $line (split /\n/, $string)
                     $intervenant = setIntervenant($1);
                     $intervenant_url = $last_href;
                     $intervenant_url = "http://www.assemblee-nationale.fr".$last_href if ($intervenant_url =~ /^\//);
-                    $found = 1;
                 } else {
                     $line .= $1.".";
                 }
