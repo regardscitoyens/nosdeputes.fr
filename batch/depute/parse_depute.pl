@@ -152,7 +152,9 @@ foreach $line (split /\n/, $string) {
       $site =~ s/\/$//;
     }
 #    $site =~ s#^(http://| )*#http://#i; #Bug plus d'actualité ?
+    $site =~ s#(facebook\.com/)www\.facebook\.com/#\1#i;
     $site =~ s#\s+/$#/#;
+    $site =~ s#/+$#/#g;
     if ($site =~ s/(https?:\/\/)?([^\/]+@[^\/]+)$/\2/) { #Les url twitter sont indiquées avec un @
       $depute{'mails'}{$site} = 1;
     } else {
