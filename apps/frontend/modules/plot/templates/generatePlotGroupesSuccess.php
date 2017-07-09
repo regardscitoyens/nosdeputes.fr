@@ -21,9 +21,10 @@ if ($format === "map") {
 $DataSet = new xsPData();
 $DataSet->AddPoint($data['titres'], "Serie1");
 $ct = 2;
-foreach ($data['groupes'] as $groupe => $values) {
+foreach ($data['groupes_percent'] as $groupe => $values) {
   $serie = "Serie".$ct;
   $DataSet->AddPoint($values, $serie);
+  $DataSet->AddContext($data['groupes'][$groupe], $serie);
   $DataSet->AddSerie($serie);
   $DataSet->SetSerieName($groupe, $serie);
   $ct++;
@@ -38,6 +39,7 @@ $DataSet2->SetYAxisUnit(" %");
 
 $Data = $DataSet->GetData();
 $DataDescr = $DataSet->GetDataDescription();
+$DataContext = $DataSet->Context;
 $Data2 = $DataSet2->getData();
 $DataDescr2 = $DataSet2->GetDataDescription();
 
@@ -67,7 +69,7 @@ foreach ($data['couleurs'] as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col
   $ct++;
 }
 $Test->setImageMap(TRUE,$mapId);
-$Test->drawStackedBarGraph($Data,$DataDescr,75,90);
+$Test->drawStackedBarGraph($Data,$DataDescr,$DataContext,75,90);
 
 $Test->xsStroke();
 ?>

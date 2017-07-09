@@ -1504,7 +1504,7 @@
     }
 
    /* This function draw a stacked bar graph */
-   function drawStackedBarGraph(&$Data,&$DataDescription,$Alpha=50)
+   function drawStackedBarGraph(&$Data,&$DataDescription,&$DataContext,$Alpha=50)
     {
      /* Validate the Data and DataDescription array */
      $this->validateDataDescription("drawBarGraph",$DataDescription);
@@ -1551,7 +1551,7 @@
 
               /* Save point into the image map if option activated */
               if ( $this->BuildMap )
-               $this->addToImageMap($XPos+1,min($YBottom,$YPos),$XPos+$SeriesWidth-1,max($YBottom,$YPos),$DataDescription["Description"][$ColName],$Data[$Key][$ColName].$DataDescription["Unit"]["Y"],"sBar");
+               $this->addToImageMap($XPos+1,min($YBottom,$YPos),$XPos+$SeriesWidth-1,max($YBottom,$YPos),$DataDescription["Description"][$ColName],$DataContext[$Key][$ColName]." (".$Data[$Key][$ColName].$DataDescription["Unit"]["Y"].")","sBar");
 
               $this->drawFilledRectangle($XPos+1,$YBottom,$XPos+$SeriesWidth-1,$YPos,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"],TRUE,$Alpha);
              }

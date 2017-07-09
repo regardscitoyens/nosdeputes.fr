@@ -409,8 +409,11 @@ class plotComponents extends sfComponents
     foreach ($this->data['groupes'] as $groupe => $arr)
       for ($i=0;$i<$n;$i++)
         if ($this->data['totaux'][$i])
-          $this->data['groupes'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
-        else $this->data['groupes'][$groupe][$i] = 0;
+          $this->data['groupes_percent'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
+        else {
+          $this->data['groupes_percent'][$groupe][$i] = 0;
+          $this->data['groupes'][$groupe][$i] = 0;
+        }
 
     for ($i=0;$i<$n;$i++)
       $this->data['totaux'][$i] = preg_replace('/(\d)(\d{3})$/', '\\1 \\2', $this->data['totaux'][$i]);
