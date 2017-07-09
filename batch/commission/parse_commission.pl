@@ -483,6 +483,7 @@ foreach $line (split /\n/, $string)
     #print STDERR "LINE: $line\n";
     if ($line =~ /\|Informations relatives à la Commission/i) {
         $finished = 1;
+        $tmpinter = "";
     }
     if (!$finished) {
       if ($line =~ s/^\|(M[^\|\:]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:, \/|\/, )[^\/]+?\/))(.*\w.*)/\4/) {
