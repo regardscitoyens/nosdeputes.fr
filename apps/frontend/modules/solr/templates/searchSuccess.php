@@ -128,14 +128,9 @@ $(document).ready(function() {
     periode[nb_li] = date_li[0];
     nb_li++;
   });
-  if(bh <= 30) {
-    $(".date li").each(function() {
-      nh = $(this).height() * 2; $(this).height(nh);
-    });
-    bh = bh * 2;
-  }
-  if(bh <= 170) { bh = bh + 30; $(".date").height(bh); }
-  $(".date").fadeIn(300); /* à revoir */
+  $(".date li").each(function() {
+    $(this).height($(this).height() * 65 / bh);
+  });
 	$(function() {
 		$("#slider_date_graph").slider({
 			range: true,
