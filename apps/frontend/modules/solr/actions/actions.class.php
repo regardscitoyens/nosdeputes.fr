@@ -63,6 +63,8 @@ class solrActions extends sfActions
     }
     if ($tags = $request->getParameter('tag')) {
       foreach(explode(',', $tags) as $tag) {
+        if (!$on && preg_match('/^(type|sort)=/', $tag))
+          continue;
         $this->selected['tag'][$tag] = 1;
         $fq .= ' tag:"'.$tag.'"';
       }
