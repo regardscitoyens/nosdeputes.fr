@@ -78,7 +78,7 @@ class solrActions extends sfActions
     if (myTools::isLegislatureCloturee()) {
         $date_fin = preg_replace("/-..$/", "-01T00:00:00Z", myTools::getFinLegislature());
     }
-    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date,description', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>$date_debut, "facet.date.end"=>$date_fin, "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge", "facet.limit" => 600);
+    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date,description', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>$date_debut, "facet.date.end"=>$date_fin, "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge", "facet.limit" => 2000);
     $this->sort_type = 'pertinence';
 
     if (!$this->query) {
@@ -264,23 +264,60 @@ class solrActions extends sfActions
       $this->facet['type']['name'] = 'Types';
       $this->facet['type']['values'] = $results['facet_counts']['facet_fields']['object_name'];
 
+      //Prépare les facets pour les types d'interventions
+      if ($on == 'Intervention') {
+        $this->facet['intervtypes']['prefix'] = 'type=';
+        $this->facet['intervtypes']['facet_field'] = 'tag';
+        $this->facet['intervtypes']['name'] = 'Types interventions';
+      }
+
+      //Prépare les facets pour les types d'organismes
+      if ($on == 'Organisme') {
+        $this->facet['orgtypes']['prefix'] = 'type=';
+        $this->facet['orgtypes']['facet_field'] = 'tag';
+        $this->facet['orgtypes']['name'] = 'Types organismes';
+      }
+
+      //Prépare les facets des sorts pour les amendements
+      if ($on == 'Amendement') {
+        $this->facet['sorts']['prefix'] = 'sort=';
+        $this->facet['sorts']['facet_field'] = 'tag';
+        $this->facet['sorts']['name'] = 'Sorts';
+      }
+
+      //Prépare les facets pour les types de documents
+      if ($on == 'Texteloi') {
+        $this->facet['documenttypes']['prefix'] = 'type=';
+        $this->facet['documenttypes']['facet_field'] = 'tag';
+        $this->facet['documenttypes']['name'] = 'Types documents';
+      }
+
       //Prépare les facets des parlementaires
       $this->facet['parlementaires']['prefix'] = 'parlementaire=';
       $this->facet['parlementaires']['facet_field'] = 'tag';
       $this->facet['parlementaires']['name'] = 'Parlementaires';
 
-      $tags = $results['facet_counts']['facet_fields']['tag'];
+
+      //Prépare les facets des mots-clés
       $this->facet['tag']['prefix'] = '';
       $this->facet['tag']['facet_field'] = 'tag';
       $this->facet['tag']['name'] = 'Tags';
-      foreach($tags as $tag => $nb ) {
+
+      foreach($results['facet_counts']['facet_fields']['tag'] as $tag => $nb ) {
         if (!$nb)
         continue;
         if (!preg_match('/=/', $tag))
           $this->facet['tag']['values'][$tag] = $nb;
-        if (preg_match('/^parlementaire=(.*)/', $tag, $matches)) {
+        else if (preg_match('/^parlementaire=(.*)/', $tag, $matches))
           $this->facet['parlementaires']['values'][$matches[1]] = $nb;
-        }
+        else if ($on == 'Amendement' && preg_match('/^sort=(.*)/', $tag, $matches))
+          $this->facet['sorts']['values'][$matches[1]] = $nb;
+        else if ($on == 'Texteloi' && preg_match('/^type=(.*)/', $tag, $matches))
+          $this->facet['documenttypes']['values'][$matches[1]] = $nb;
+        else if ($on == 'Intervention' && preg_match('/^type=(.*)/', $tag, $matches))
+          $this->facet['intervtypes']['values'][$matches[1]] = $nb;
+        else if ($on == 'Organisme' && preg_match('/^type=(.*)/', $tag, $matches))
+          $this->facet['orgtypes']['values'][$matches[1]] = $nb;
       }
     }
 
