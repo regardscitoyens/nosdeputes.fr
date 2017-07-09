@@ -222,7 +222,7 @@ class solrActions extends sfActions
       return $this->redirect($results['response']['docs'][0]['object']->getLink());
     }
 
-    //Reconstitut les résultats
+    //Reconstitue les résultats
     $this->results = $results['response'];
     for($i = 0 ; $i < count($this->results['docs']) ; $i++) {
       $res = $this->results['docs'][$i];
@@ -242,7 +242,8 @@ class solrActions extends sfActions
           $h = preg_replace('/.*=/', '', $h);
           array_push($high_res, $h);
         }
-        $this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
+        $cleanpersonne = preg_replace("/, .*$/", "", $this->results['docs'][$i]['personne']);
+        $this->results['docs'][$i]['highlighting'] = preg_replace('/^'.$cleanpersonne.' /', '', implode('...', $high_res));
       }
       else if (isset($this->results['docs'][$i]['description'])) {
 	$this->results['docs'][$i]['highlighting'] = $this->results['docs'][$i]['description'];
