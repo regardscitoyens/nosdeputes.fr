@@ -190,6 +190,7 @@ foreach $line (split /\n/, $string)
 	    }
     }
     }
+    $line =~ s/<\/?a[^>]*>//ig;
     if ($line =~ /[>\|\/](Membres? présents? ou excusés?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/) {
         $present = 1;
     }
