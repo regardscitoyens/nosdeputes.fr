@@ -30,7 +30,7 @@ foreach ($data['groupes_percent'] as $groupe => $values) {
   $ct++;
 }
 $DataSet->SetAbsciseLabelSerie("Serie1");
-$DataSet->SetYAxisUnit(" %");
+$DataSet->SetYAxisUnit("%");
 
 $DataSet2 = new xsPData();
 $DataSet2->AddPoint($data['totaux'], "Serie".$ct);
