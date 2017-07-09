@@ -158,7 +158,7 @@ foreach $line (split /\n/, $string) {
     if ($site =~ s/(https?:\/\/)?([^\/]+@[^\/]+)$/\2/) { #Les url twitter sont indiquées avec un @
       $depute{'mails'}{$site} = 1;
     } else {
-      if ($site !~ /www.facebook\.com.sharer\.php/) { #Evite de prendre les boutons de partage de l'AN
+      if ($site !~ /facebook\.com\/(sharer\.php|sandramarsaudlarepubliquenmarche|BSmedoc|colas\.roy\.2017)/) { #Evite de prendre les boutons de partage de l'AN et les comptes désuets
         $site =~ s/(twitter.com\/)@/\1/i;
         $depute{'sites_web'}{$site} = 1;
       }
