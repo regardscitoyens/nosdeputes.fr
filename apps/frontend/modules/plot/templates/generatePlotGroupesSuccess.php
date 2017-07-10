@@ -50,7 +50,6 @@ $Test->drawGraphArea(190,190,190,FALSE);
 $Test->setFixedScale(0,100.7,4);
 $Test->xsSetFontProperties("tahomabd.ttf",$font-0.7);
 $Test->drawScale($Data2,$DataDescr2,SCALE_NORMAL,50,50,50,TRUE,0,0,TRUE,1,FALSE);
-$Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,TRUE,0,0,TRUE,1,TRUE);
 $Test->xsSetFontProperties("tahomabd.ttf",$font);
 $Test->drawTitle(4+2*$font,$ysize-4*$font+18, "TOTAL :",50,50,50);
 if ($type === "all") {
