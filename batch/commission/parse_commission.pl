@@ -212,6 +212,7 @@ sub setIntervenant {
     $intervenant =~ s/<[^>]*$//;
     #print "TEST $intervenant\n";
     $intervenant =~ s/^.* de (M(\.|me) )/\1/;
+    $intervenant =~ s/Premi/premi/g;
     $intervenant =~ s/president/président/gi;
     $intervenant =~ s/ présidence / présidente /;
     $intervenant =~ s/Erika Bareigts/Ericka Bareigts/g;
@@ -463,6 +464,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/##(img[^\>#]+?)##/<\1 \\\\>/ig;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
+    next if ($line =~ /\|\/(vice-)?présidente?\/\|/);
     $tmpinter = "";
     #print STDERR $line."\n";
 	#si italique ou tout gras => commentaire
@@ -481,7 +483,7 @@ foreach $line (split /\n/, $string)
 	    $found = 1;
 	}
     #print STDERR "LINE: $line\n";
-    if ($line =~ /\|Informations relatives à la Commission/i) {
+    if ($prez && $line =~ /\|(Informations relatives à la Commission|Présences en réunion|Membres présents)/i) {
         $finished = 1;
         $tmpinter = "";
     }
