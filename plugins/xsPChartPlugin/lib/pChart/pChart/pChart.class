@@ -449,7 +449,7 @@
        $Value     = $this->VMin + ($i-1) * (( $this->VMax - $this->VMin ) / $Divisions);
        $Value     = floor($Value * pow(10,$Decimals)) / pow(10,$Decimals);
        if ( $DataDescription["Format"]["Y"] == "number" )
-        $Value = $Value.$DataDescription["Unit"]["Y"];
+        $Value = $Value." ".$DataDescription["Unit"]["Y"];
        if ( $DataDescription["Format"]["Y"] == "time" )
         $Value = $this->ToTime($Value);        
        if ( $DataDescription["Format"]["Y"] == "date" )
