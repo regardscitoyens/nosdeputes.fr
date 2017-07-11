@@ -23,12 +23,13 @@ $string =~ s/’/'/g;
 $string =~ s/(,|:|;|–)…/\1 …/g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
-$string =~ s/(<h[0-9][^>]*>[^<]*)(<i>[^<]*<\/i>\s*)*/$1/gi;
+$string =~ s/(<(h[0-9])[^>]*>[^<]*)(<i>[^<]*<\/i>)\s*<\/\2>/\1<\/\2>\n<p>\3<\/p>/gi;
 $string =~ s/\s*…\s*(<\/i>)?\s*(<br\s*\/?>\s*)+…\s*/\1 /gi;
 $string =~ s/\((\s*)<i>/\1<i>(/ig;
 $string =~ s/<\/i>(\s*)\)<i>/)<\/i>\1/ig;
 $string =~ s/(\((Applaudissement|Exclamation|Vif|Vive|Quelque|M..?mes? mouve|Rires)[^)]*\))/<i>\1<\/i>/ig;
 $string =~ s/(<\/?i>)([,\.\s]*)\1/\1\2/ig;
+$string =~ s/»<\/i><i>\s*\(/»<\/i> <i>(/ig;
 $string =~ s/(<i><\/i>|<\/i><i>)//ig;
 $string =~ s/\)((,|\.|…)\s*)<\/i>/)<\/i>\1/ig;
 $string =~ s/\s*(<i>\s*\([^\)]+\)[\s\.]*<\/i>|\(<i>[^\)]+?<\/i>\))((,|\s*[…–:;])\s*[^<\wàâéèêëïîôöùûü«]*)?\s*/$2<\/p>\n<p>$1<\/p>\n<p>/ig;
@@ -407,12 +408,8 @@ foreach $line (split /\n/, $string)
             $titre =~ s/[\(\/][^\)\/]+[\)\/]//;
             $titre =~ s/\///g;
             $titre =~ s/\s+$//;
-            unless ($titre) {
-                next;
-            }
-            if ($titre =~ /^[\/\s]*[\wéè]+ \s*partie[\/\s]*(suite[\/\s]*|)$/i || $titre =~ /^\s*[\(\/]+.*[\/\)]+\s*$/) {
-                next
-            }
+            next unless ($titre);
+            next if ($titre =~ /^[\/\s]*[\wéè]+ \s*partie[\/\s]*(suite[\/\s]*|)$/i || $titre =~ /^\s*[\(\/]+.*[\/\)]+\s*$/);
             if ($titre !~ /rappels? au règlement/i) {
                 $donetitre1 = 1;
             }
