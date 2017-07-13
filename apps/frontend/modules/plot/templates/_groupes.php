@@ -54,10 +54,10 @@ $ylegend = 45;
 $x0 = 160;
 $y0 = 110;
 $filename .= '-'.$plot.'.png';
-$titre = 'par groupe du travail de cette '.$seancenom;
+$titre = 'par groupes du travail de cette '.$seancenom;
 if (preg_match('/section/', $plot)) {
   $xtitre = 38;
-  $titre = 'par groupe du travail sur ce dossier';
+  $titre = 'par groupes du travail sur ce dossier';
 } else if ($isComm) {
   if (!$hasInter) {
     $xsize = 250;
@@ -71,7 +71,7 @@ if (preg_match('/section/', $plot)) {
 } else if ($isOrga) {
   $xsize = 250;
   $xtitre = 48;
-  $titre = 'par groupe';
+  $titre = 'par groupes';
 }
 
 $Test = new xsPChart($xsize,$ysize);
