@@ -1313,14 +1313,14 @@ h2 {
 
 /* form commentaires */
 .commentaires_table, #commentaire_commentaire {
-  width: 100%; 
+  width: 900px; 
 }
 .inscription, .connexion {
   float: left;
   border: 1px solid #E8E7E4;
   border-radius: 4px;
   margin-top: 10px;
-  width: 430px;
+  width: 100%;
 }
 .inscription td, .connexion td, .inscription th, .connexion th {
   padding: 10px;
