@@ -20,7 +20,7 @@ class loadDocumentsTask extends sfBaseTask {
           if ($file == ".." || $file == "." || $file == ".svn") continue;
           foreach(file($dir.$file) as $line) {
             if ($doc) exit(1);
-            echo "\n$dir$file ... ";
+            echo "$dir$file ... ";
             $json = json_decode($line);
             if (!$json) {
               echo "ERROR json : \n";
@@ -80,12 +80,11 @@ class loadDocumentsTask extends sfBaseTask {
               $reindexWithParls = Doctrine::getTable('Texteloi')->find($json->id);
               $reindexWithParls->save();
             }
-            echo " DONE\n";
+            echo "DONE\n";
           }
           unlink($dir.$file);
         }
         closedir($dh);
-        echo "\n";
       }
     }
   }
