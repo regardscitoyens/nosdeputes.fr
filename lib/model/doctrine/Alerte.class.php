@@ -31,6 +31,7 @@ class Alerte extends BaseAlerte
   }
 
    public function save(Doctrine_Connection $c = null) {
+    $this->query = trim($this->query);
     if (!$this->last_mail)
       $this->last_mail = date('Y-m-d H:i:s');
     if (!$this->verif)

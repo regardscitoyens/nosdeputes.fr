@@ -28,7 +28,7 @@ class sendAlertTask extends sfBaseTask
     foreach($query->execute() as $alerte) if (preg_match("/\w@\w/", $alerte->email)) {
       $currenttime = time();
       $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")+1;
-      $query = '('.$alerte->query.") ".join(" ", $exclude_sections)." date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d', $currenttime).'T'.date('H:i:s', $currenttime)."Z]";
+        $query = '('.$alerte->query.") ".join(" ", $exclude_sections)." date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d', $currenttime).'T'.date('H:i:s', $currenttime)."Z]";
       foreach (explode('&', $alerte->filter) as $filtre)
         if (preg_match('/^([^=]+)=(.*)$/', $filtre, $match))
           foreach (explode(',', $match[2]) as $value) {
@@ -42,7 +42,7 @@ class sendAlertTask extends sfBaseTask
       $results = $solr->search($query, array('sort' => 'date desc', 'hl' => 'yes', 'hl.fragsize'=>500));
       $alerte->next_mail = date('Y-m-d H:i:s', $currenttime + self::$period[$alerte->period]);
       if (! $results['response']['numFound']) {
-      if ($verbose) print "Save with no new result\n";
+        if ($verbose) print "Save with no new result\n";
         $alerte->save();
         continue;
       }
