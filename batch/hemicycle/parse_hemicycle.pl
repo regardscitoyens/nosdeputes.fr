@@ -397,7 +397,7 @@ foreach $line (split /\n/, $string)
             $tmpline = $1;
             $tmpline =~ s/<\/?[a-z][^>]*>//g;
             next unless ($tmpline);
-            if ($tmpline !~ /rappels? au règlement|suspension|séance|reprise/i || $tmpline =~ /demande/i) {
+            if ($tmpline !~ /rappels? au règlement|suspension|reprise/i || $tmpline =~ /demande/i) {
                 $titre2 = $tmpline;
                 $donetitre1 = 0;
                 $amendements = @pre_amendements = ();
@@ -412,7 +412,7 @@ foreach $line (split /\n/, $string)
             $titre =~ s/\///g;
             $titre =~ s/\s+$//;
             next unless ($titre);
-            if ($titre !~ /rappels? au règlement|suspension|séance|reprise/i) {
+            if ($titre !~ /rappels? au règlement|suspension|reprise/i) {
                 $titre1 = $titre;
                 $titre2 = '';
                 $donetitre1 = 1;
