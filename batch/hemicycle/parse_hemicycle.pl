@@ -25,16 +25,18 @@ $string =~ s/<\/?sup>//g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<i><\/i>|<\/i><i>)//ig;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
+$string =~ s/(<h[0-9][^>]*>.*?)\s*-\s*Suite(\)<\/i><\/h2>)/\1\2>/gi;
 $string =~ s/(<h[0-9][^>]*>[^<]*)[\s(]*<i>[\s(]*Suite.*?<\/i>[\s)]*/\1/gi;
+$string =~ s/(<h[0-9][^>]*>.*?)<i>(.*?)<\/i>(.*?<\/h2>)/\1\2\3/gi;
 $string =~ s/(<(h[0-9])[^>]*>)\s*(<i>[^<]*<\/i>)\s*<\/\2>/\1<\/\2>\n<p>\3<\/p>/gi;
 $string =~ s/\s*…\s*(<\/i>)?\s*(<br\s*\/?>\s*)+…\s*/\1 /gi;
 $string =~ s/\((\s*)<i>/\1<i>(/ig;
 $string =~ s/<\/i>(\s*)\)/)<\/i>\1/ig;
 $string =~ s/(\((Nouveaux|Applaudissement|Exclamation|Vif|Vive|Quelque|M..?mes? mouve|(Sou)?Rires|«.*?bancs d[esu] groupe)[^)]*\))/<i>\1<\/i>/ig;
-$string =~ s/(<\/?i>)([,\.\s]*)\1/\1\2/ig;
+$string =~ s/(<\/?i>)([–,\.\s]*)\1/\1\2/ig;
 $string =~ s/<\/i>\s*<i>\s*\(\s*/<\/i> <i>(/ig;
 $string =~ s/\)((,|\.|…|!|\?)\s*)<\/i>/)<\/i>\1/ig;
-$string =~ s/\s*(<i>\s*\([^\)]+\)[\s\.]*<\/i>|\(<i>[^\)]+?<\/i>\))((,|\s*[…–:;!?])\s*[^<\wàâéèêëïîôöùûü«]*)?\s*/$2<\/p>\n<p>$1<\/p>\n<p>/ig;
+$string =~ s/\s*(<i>\s*\([^\)]+\)[\s\.]*<\/i>|\(<i>[^\)]+?<\/i>\))((,|\s*[…–:;!?])+\s*[^<\wàâéèêëïîôöùûü«]*)?\s*/$2<\/p>\n<p>$1<\/p>\n<p>/ig;
 $string =~ s/(<i>\s*\([^\)]+\s*<\/i>\s\)\s*\.?|\(<i>[^\)]+?<\/i>\))/<\/p>\n<p>$1<\/p>\n<p>/g;
 $string =~ s/<p>\s*<\/i>\s*/<p>/ig;
 $string =~ s/\s*<i>\s*<\/p>/<\/p>/ig;
@@ -390,15 +392,17 @@ foreach $line (split /\n/, $string)
             }else {
                 setFonction('président', $prez);
             }
-        }elsif($line =~ /h2 class="titre[23]">(.*?)\s*<\/h2>/i || $line =~ /class="sstitreinfo">\/([^\/]+)\//) {
+        }elsif($line =~ /h2 class="titre[2-9]+">(.*?)\s*<\/h2>/i || $line =~ /class="sstitreinfo">\/([^\/]+)\//) {
             checkout();
-            if ($1 && $1 !~ /rappels? au règlement|suspension|séance|reprise/i || $1 =~ /demande/i){
-                $titre2 = $1;
-                $titre2 =~ s/<\/?[a-z][^>]*>//g;
-                $amendements = @pre_amendements = ();
+            $tmpline = $1;
+            $tmpline =~ s/<\/?[a-z][^>]*>//g;
+            next unless ($tmpline);
+            if ($tmpline !~ /rappels? au règlement|suspension|séance|reprise/i || $tmpline =~ /demande/i) {
+                $titre2 = $tmpline;
                 $donetitre1 = 0;
-                $line = "<p>|$titre2|</p>";
+                $amendements = @pre_amendements = ();
             }
+            $line = "<p>|$tmpline|</p>";
         }elsif(!$donetitre1 && $line =~ /h2 class="titre1">(.+)<\/h2/i) {
             checkout();
             $titre = $1;
@@ -408,14 +412,13 @@ foreach $line (split /\n/, $string)
             $titre =~ s/\///g;
             $titre =~ s/\s+$//;
             next unless ($titre);
-            next if ($titre =~ /^[\/\s]*[\wéè]+ \s*partie[\/\s]*(suite[\/\s]*|)$/i || $titre =~ /^\s*[\(\/]+.*[\/\)]+\s*$/);
             if ($titre !~ /rappels? au règlement|suspension|séance|reprise/i) {
-                $donetitre1 = 1;
                 $titre1 = $titre;
                 $titre2 = '';
+                $donetitre1 = 1;
                 $amendements = @pre_amendements = ();
-                $line = "<p>|$titre1|</p>";
             }
+            $line = "<p>|$titre|</p>";
         }elsif($line =~ /h1 class="seance"/) {
             if ($line =~ /(\d{1,2})[ermd]*\s+([a-zéùû]+)\s+(\d{4})/) {
                 $date = $3.'-'.$mois{$2}.'-'.sprintf('%02d', $1);
