@@ -95,7 +95,7 @@ if (isset($Data2)) {
 }
 $x0 += 150;
 if (isset($Data3)) {
-  $Test->drawFlatPieGraph($Data3,$DataDescr3,$x0,$y0,47,PIE_PERCENTAGE,0,0,157);
+  $Test->drawFlatPieGraph($Data3,$DataDescr3,$x0,$y0,47,PIE_PERCENTAGE,0,0,157,166.7);
   $Test->drawFilledCircle($x0+1,$y0+1,15,240,240,240);
 }
 $Test->xsSetFontProperties("tahoma.ttf",9);
