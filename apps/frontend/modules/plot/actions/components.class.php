@@ -151,10 +151,10 @@ class plotComponents extends sfComponents
       $startweek = ($annee0 - $an_legis)*53 + $sem0 - $sem_legis;
       if ($startweek <= 0) {
         $weeks_acti = count($prmedi['commission']);
-        for ($i=0; $i < $weeks_acti - 1; $i++) {
-          $this->data['presences_medi']['commission'][$n_weeks-$i] = $prmedi['commission'][$weeks_acti-$i-1];
-          $this->data['presences_medi']['hemicycle'][$n_weeks-$i] = $prmedi['hemicycle'][$weeks_acti-$i-1];
-          $this->data['presences_medi']['total'][$n_weeks-$i] = $prmedi['total'][$weeks_acti-$i-1];
+        for ($i=0; $i < $weeks_acti; $i++) {
+          $this->data['presences_medi']['commission'][$n_weeks-$i] = $prmedi['commission'][$weeks_acti-$i];
+          $this->data['presences_medi']['hemicycle'][$n_weeks-$i] = $prmedi['hemicycle'][$weeks_acti-$i];
+          $this->data['presences_medi']['total'][$n_weeks-$i] = $prmedi['total'][$weeks_acti-$i];
         }
       } else {
         $this->data['presences_medi']['commission'] = array_slice($prmedi['commission'], $startweek, $n_weeks);
