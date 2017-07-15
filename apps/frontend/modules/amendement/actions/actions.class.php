@@ -24,6 +24,7 @@ class amendementActions extends sfActions
        ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
        ->from('Amendement a')
        ->where('content_md5 = ?', $this->amendement->content_md5)
+       ->andWhere('a.sort <> ?', 'Rectifié')
        ->orderBy('num')
        ->execute();
 
