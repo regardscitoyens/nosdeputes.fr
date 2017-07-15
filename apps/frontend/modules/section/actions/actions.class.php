@@ -25,7 +25,7 @@ class sectionActions extends sfActions
     $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom.' - NosDéputés.fr');
   }
 
-  public function executeParlementaireSection(sfWebRequest $request) 
+  public function executeParlementaireSection(sfWebRequest $request)
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
@@ -43,7 +43,7 @@ class sectionActions extends sfActions
       ->andWhere('i.nb_mots > 20')
       ->orderBy('i.date DESC, i.timestamp ASC');
   }
-  public function executeShow(sfWebRequest $request) 
+  public function executeShow(sfWebRequest $request)
   {
     $secid = $request->getParameter('id');
     $this->forward404Unless($secid);
@@ -88,7 +88,7 @@ class sectionActions extends sfActions
       foreach ($lois as $loi)
         if (!isset($this->docs["$loi"]))
           $this->docs["$loi"] = 1;
-    }   
+    }
 
     $interventions = array();
 
@@ -115,18 +115,18 @@ class sectionActions extends sfActions
     if (count($interventions)) {
       $this->interventions = $interventions;
     }
-    
+
     $request->setParameter('rss', array(array('link' => '@section_rss_commentaires?id='.$this->section->id, 'title'=>'Les commentaires sur '.$this->section->titre)));
   }
 
-  public function executeList(sfWebRequest $request) 
+  public function executeList(sfWebRequest $request)
   {
     if (!($this->order = $request->getParameter('order')))
       $this->order = 'plus';
     $query = Doctrine::getTable('Section')->createQuery('s')
       ->where('s.id = s.section_id');
     if ($this->order == 'date') {
-      $query->orderBy('s.max_date DESC');
+      $query->orderBy('s.max_date DESC, s.min_date DESC, s.timestamp DESC');
       $this->titre = 'Les derniers dossiers traités à l\'Assemblée';
     } else if ($this->order == 'plus') {
       $query->orderBy('s.nb_interventions DESC');
