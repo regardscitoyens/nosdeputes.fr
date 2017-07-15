@@ -47,11 +47,11 @@ foreach($labels as $groupe) if ($groupe) {
 $DataDescrLegend = $DataSetLegend->GetDataDescription();
 
 $filename = 'repartition-groupes';
-$xsize = 395;
+$xsize = 405;
 $xtitre = 25;
 $ysize = 190;
 $ylegend = 45;
-$x0 = 160;
+$x0 = 170;
 $y0 = 110;
 $filename .= '-'.$plot.'.png';
 $titre = 'par groupes du travail de cette '.$seancenom;
@@ -110,16 +110,16 @@ $Test->xsSetFontProperties("tahoma.ttf",12);
 $Test->drawTitle($xtitre,25,'Répartition '.$titre,50,50,50);
 $Test->xsSetFontProperties("tahoma.ttf",8);
 if ($isOrga)
-  $Test->drawTitle(140,155,'Membres',50,50,50);
+  $Test->drawTitle(148,155,'Membres',50,50,50);
 if (preg_match('/(section|seance_hemi)/', $plot)) {
-  $Test->drawTitle(131,160,'Interventions',50,50,50);
-  $Test->drawTitle(272,152,'Temps de parole',50,50,50);
-  $Test->drawTitle(272,166,'(mots prononcés)',50,50,50);
+  $Test->drawTitle(139,160,'Interventions',50,50,50);
+  $Test->drawTitle(280,152,'Temps de parole',50,50,50);
+  $Test->drawTitle(280,166,'(mots prononcés)',50,50,50);
 } else if ($isComm) {
-  $Test->drawTitle(141,160,'Présents',50,50,50);
-  $Test->drawTitle(281,160,'Interventions',50,50,50);
-  $Test->drawTitle(423,152,'Temps de parole',50,50,50);
-  $Test->drawTitle(423,166,'(mots prononcés)',50,50,50);
+  $Test->drawTitle(149,160,'Présents',50,50,50);
+  $Test->drawTitle(289,160,'Interventions',50,50,50);
+  $Test->drawTitle(431,152,'Temps de parole',50,50,50);
+  $Test->drawTitle(431,166,'(mots prononcés)',50,50,50);
 }
 $Test->xsRender($filename);
 if ($isComm && !isset($nolink))
