@@ -185,7 +185,7 @@ class plotComponents extends sfComponents
     $mandat_sem0 = date('W', $debut_mandat);
     if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
     $week0 = ($mandat_an0 - $annee0)*53 + $mandat_sem0 - $sem0 + 1;
-    for ($n = 0; $n < $week0 ; $n++)
+    for ($n = 1; $n < $week0 ; $n++)
       $n_vacances[$n] = 20;
 
     foreach (myTools::getVacances() as $vacance) {

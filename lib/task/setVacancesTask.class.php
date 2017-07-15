@@ -20,10 +20,9 @@ class setVacancesTask extends sfBaseTask {
       ->groupBy('s.annee, s.numero_semaine')
       ->orderBy('s.date ASC');
     $seances = $q->fetchArray();
-   if ($seances) {
-    $annee = $seances[0]['annee'];
-    $sem = $seances[0]['numero_semaine'];
-    foreach ($seances as $seance) {
+    $annee = date('Y', strtotime(myTools::getDebutLegislature()));
+    $sem = date('W', strtotime(myTools::getDebutLegislature()));
+    if ($seances) foreach ($seances as $seance) {
       while (($annee < $seance['annee']) || ($annee == $seance['annee'] && $sem < $seance['numero_semaine'])) {
         array_push($semaines, array("annee" => $annee, "semaine" => $sem));
         if ($sem >= 53) { $annee++; $sem = 1; }
@@ -32,10 +31,6 @@ class setVacancesTask extends sfBaseTask {
       if ($seance['numero_semaine'] >= 53) { $annee = $seance['annee'] + 1 ; $sem = 1; }
       else { $annee = $seance['annee']; $sem = $seance['numero_semaine'] + 1; }
     }
-   } else {
-    $annee = date('Y', myTools::getDebutLegislature());
-    $sem = date('W', myTools::getDebutLegislature());
-   }
 
     $date = time();
     $last_annee = date('Y', $date);
