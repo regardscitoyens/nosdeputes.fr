@@ -60,7 +60,6 @@ if ($type === "all") {
   $Test->drawTitle(380,28,"Amendements",50,50,50);
   $Test->drawTitle(490,28,"Propositions",50,50,50);
   $Test->drawTitle(600,28,"Questions",50,50,50);
-  $Test->xsSetFontProperties("tahoma.ttf",$font+5);
 }
 $Test->drawGrid(4,TRUE,0,0,0,30);
 $ct = 0;
