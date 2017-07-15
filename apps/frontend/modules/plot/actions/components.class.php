@@ -341,26 +341,17 @@ class plotComponents extends sfComponents
       }
     }
 
-    $qamdmts = Doctrine_Query::create()
-      ->select('pa.parlementaire_groupe_acronyme, sum(a.nb_multiples)')
-      ->from('ParlementaireAmendement pa, pa.Amendement a')
-      ->where('pa.numero_signataire = ?', 1)
-      ->andWhere('a.sort <> ?', 'Rectifié')
-      ->groupBy('pa.parlementaire_groupe_acronyme');
-    if (!myTools::isFinLegislature())
-      $qamdmts->andWhere('a.date > ?', $lastyear);
-    $qamdmts_deposes = clone($qamdmts);
-    foreach ($qamdmts_deposes->fetchArray() as $amdt)
-      if ($amdt['parlementaire_groupe_acronyme'])
-        $stats[$amdt['parlementaire_groupe_acronyme']]['amdmts_deposes'] = $amdt['sum'];
-
     if ($this->type === "all") {
-      $qamdmts_adoptes = clone($qamdmts);
-      $amdmts_adoptes = $qamdmts_adoptes->andWhere('a.sort = ?', "Adopté")
-        ->fetchArray();
-      foreach ($qamdmts_adoptes->fetchArray() as $amdt)
-        if ($amdt['parlementaire_groupe_acronyme'])
-          $stats[$amdt['parlementaire_groupe_acronyme']]['amdmts_adoptes'] = $amdt['sum'];
+      $qamdmts = Doctrine_Query::create()
+        ->select('a.auteur_groupe_acronyme, sum(a.nb_multiples)')
+        ->from('Amendement a')
+        ->where('a.sort = ?', "Adopté")
+        ->groupBy('a.auteur_groupe_acronyme');
+      if (!myTools::isFinLegislature())
+        $qamdmts->andWhere('a.date > ?', $lastyear);
+      foreach ($qamdmts->fetchArray() as $amdt)
+        if ($amdt['auteur_groupe_acronyme'])
+          $stats[$amdt['auteur_groupe_acronyme']]['amdmts_adoptes'] = $amdt['sum'];
     }
 
     $qprops = Doctrine_Query::create()
@@ -382,7 +373,7 @@ class plotComponents extends sfComponents
         $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'hemicycle_interventions');
         $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'hemicycle_interventions_courtes');
       } else $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'commission_interventions') + self::getValueOrZero($stats[$groupe], 'hemicycle_interventions');
-      $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'amdmts_deposes');
+      $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'amendements_proposes');
       if ($this->type === "all")
         $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'amdmts_adoptes');
       $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'propositions');

@@ -127,9 +127,9 @@ class loadAmdmtsTask extends sfBaseTask {
             }
             if ($json->auteur_reel && !$amdmt->auteur_id) {
               $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel);
-              if ($parl)
+              if ($parl->id)
                 $amdmt->setFirstAuteur($parl);
-              else echo "WARNING: cannot find auteur from ID AN: $line\n";
+              else print "WARNING: cannot find auteur from ID AN ".$json->auteur_reel." for ".$json->auteurs." in ".$json->source." (Amdmt de commission ?)\n";
             }
             $amdmt->save();
             $amdmt->free();
