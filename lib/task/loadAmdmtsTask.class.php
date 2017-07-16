@@ -125,7 +125,7 @@ class loadAmdmtsTask extends sfBaseTask {
             } elseif (!$amdmt->sort) {
               $amdmt->sort = "Indéfini";
             }
-            if ($json->auteur_reel && !$amdmt->auteur_id) {
+            if ($json->auteur_reel && $json->auteur_reel !== "GVT" && !$amdmt->auteur_id) {
               $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel);
               if ($parl->id)
                 $amdmt->setFirstAuteur($parl);
