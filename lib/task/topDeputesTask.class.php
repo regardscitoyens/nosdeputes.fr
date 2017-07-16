@@ -258,6 +258,9 @@ class topDeputesTask extends sfBaseTask
 
     $q = Doctrine_Query::create();
 
+    foreach(Doctrine::getTable('Parlementaire')->createQuery('p')->select('p.id')->execute() as $d)
+      $this->deputes[$d->id] = array();
+
     $qs = clone $q;
     $qs->where('s.date >= ?', $start);
     $qs->andWhere('s.date < ?', $end);
@@ -329,10 +332,11 @@ class topDeputesTask extends sfBaseTask
 
     $fin = myTools::isFinLegislature();
 
-    if ($fin) {
-      $vacances = myTools::getVacances();
-      foreach(Doctrine::getTable('Parlementaire')->prepareParlementairesTopQuery($fin)->execute() as $d)
+    foreach(Doctrine::getTable('Parlementaire')->prepareParlementairesTopQuery($fin)->execute() as $d) {
+      if ($fin) {
+        $vacances = myTools::getVacances();
         $this->deputes[$d->id]['nb_mois'] = $d->getNbMois($vacances);
+      } else $this->deputes[$d->id] = array();
     }
 
     $q = Doctrine_Query::create();

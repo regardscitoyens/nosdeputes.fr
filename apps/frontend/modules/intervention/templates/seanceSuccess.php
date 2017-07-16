@@ -1,7 +1,7 @@
 <div class="titre_int_et_seance" id="sommaire">
-<?php 
+<?php
 $nomseance = 'séance';
-if ($seance->type == 'commission') : 
+if ($seance->type == 'commission') :
 $nomseance = 'réunion';
 ?>
 <h1><?php echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); ?></h1>
@@ -36,10 +36,10 @@ if ($table['section_id'] != $table['id']) {
   echo '<ul>';
 } else $lastparent = $table['section_id']; ?>
 <li><?php if (isset($table['id']) && $table['id']) { ?>
-<a href="#table_<?php 
-echo $table['id']; 
-?>"><?php 
-echo myTools::betterUCFirst($table['titre']); 
+<a href="#table_<?php
+echo $table['id'];
+?>"><?php
+echo myTools::betterUCFirst($table['titre']);
 ?></a> <?php }
 if ($table['nb_interventions']) echo '<span class="dossier">('.link_to('voir le dossier', '@section?id='.$table['id']).')</span>'; ?></li>
 <?php if ($table['section_id'] != $table['id']) echo '</ul>'; ?>
@@ -50,8 +50,8 @@ if ($table['nb_interventions']) echo '<span class="dossier">('.link_to('voir le 
 <div class="interventions">
   <?php if (!count($interventions)) { ?>
   <p><em>Le contenu de cette <?php echo $nomseance; ?> n'a pas encore été rendu public par les services de l'Assemblée nationale.</em></p>
-  <?php } else { $table = ''; $titre = 0; $source_displayed = 0; 
-foreach($interventions as $intervention) : 	
+  <?php } else { $table = ''; $titre = 0; $source_displayed = 0;
+foreach($interventions as $intervention) :
 if (! $source_displayed) {
 	echo '<p class="source"><a href="'.$intervention->source.'" rel="nofollow">Source</a></p><div class="clear"></div>';
 	$source_displayed = 1;
@@ -75,12 +75,12 @@ if ($intervention->section_id && !$sections[$intervention->section_id]->titre) {
       $section_parente_id = $sections[$intervention->section_id]->section_id;
       if ($lasttitre != 1) {
         echo '<h2 class="section">'.link_to(myTools::betterUCFirst($sections[$section_parente_id]->titre),'@section?id='.$section_parente_id);
-	echo '</h2>';
+        echo '</h2>';
       }
-      if ($sections[$intervention->section_id] != $section_parente_id) {
+      if ($sections[$intervention->section_id] != $section_parente_id && $intervention->section_id != $section_parente_id) {
         echo '<h3 class="sous-section">';
         echo link_to(myTools::betterUCFirst($sections[$intervention->section_id]->titre),'@section?id='.$intervention->section_id);
-	echo '</h3><br/>';
+        echo '</h3><br/>';
       }
       if ($intervention->hasIntervenant())
         echo '</div></div><div class="intervention" id="inter_<?php echo $intervention->getMd5(); ?>-2"><div class="intervenant">';

@@ -235,7 +235,7 @@ class commentaireActions extends sfActions
 
     $pas_confirme_mail = '';
     if (!$is_active) {
-      $pas_confirme_mail = ', pour le rendre public, cliquez sur le lien d\'activation contenu dans l\'email que nous vous avons envoyé afin de terminer votre inscription.';
+      $pas_confirme_mail = ', pour le rendre public, cliquez sur le lien d\'activation contenu dans l\'e-mail que nous vous avons envoyé afin de terminer votre inscription.';
     }
     $this->getUser()->setFlash('notice', 'Votre commentaire a été enregistré'.$pas_confirme_mail);
     $this->getUser()->getAttributeHolder()->remove('commentaire_'.$this->type.'_'.$this->id);

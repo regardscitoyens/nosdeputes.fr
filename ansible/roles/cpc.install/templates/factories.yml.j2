@@ -17,12 +17,12 @@ prod:
 {% endif %}
 
 {% if cpc_memcached %}
-view_cache:
-  class: sfMemcacheCache
-  param:
-    host: memcache
-    port: {{ cpc_port_memcached }}
-    persistent: true
+  view_cache:
+    class: sfMemcacheCache
+    param:
+      host: memcache
+      port: 11211
+      persistent: true
 {% endif %}
 
 cli:
@@ -69,8 +69,8 @@ all:
       transport:
         class: Swift_SmtpTransport
         param:
-          host:       localhost
-          port:       25
+          host:       {{ cpc_smtp_host }}
+          port:       {{ cpc_smtp_port }}
           encryption: ~
           username:   ~
           password:   ~

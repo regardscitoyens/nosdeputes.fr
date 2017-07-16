@@ -1,94 +1,45 @@
 ---
 
+- name: Variables crontab
+  cron:
+    env: yes
+    name: '{{ item.name }}'
+    value: '{{ item.value }}'
+    user: '{{ cpc_user }}'
+  with_items:
+    - name: PATH
+      value: /usr/local/bin:/usr/bin:/bin
+    - name: NDRUN
+      value: sudo dc-{{ cpc_instance_name }} exec -T web
+
 - name: Indexation solr
   cron:
     name: 'cpc_{{ cpc_instance_name }}_index_solr'
     minute: '*'
-    job: 'docker-compose -p {{ cpc_instance_name}} -f {{ cpc_home }}/docker/docker-compose.yml exec web bash bin/indexSolr'
+    job: '$NDRUN bash bin/indexSolr'
     state: present
+    user: '{{ cpc_user }}'
   when: cpc_enable_cronjobs and cpc_solr
 
 - name: Suppression indexation solr
   cron:
     name: 'cpc_{{ cpc_instance_name }}_index_solr'
     state: absent
+    user: '{{ cpc_user }}'
   when: not (cpc_enable_cronjobs and cpc_solr)
 
-# #
-# # Each task to run has to be defined through a single line
-# # indicating with different fields when the task will be run
-# # and what command to run for the task
-# #
-# # To define the time you can provide concrete values for
-# # minute (m), hour (h), day of month (dom), month (mon),
-# # and day of week (dow) or use '*' in these fields (for 'any').#
-# # Notice that tasks will be started based on the cron's system
-# # daemon's notion of time and timezones.
-# #
-# # Output of the crontab jobs (including errors) is sent through
-# # email to the user the crontab file belongs to (unless redirected).
-# #
-# # For example, you can run a backup of all your user accounts
-# # at 5 a.m every week with:
-# # 0 5 * * 1 tar -zcf /var/backups/home.tgz /home/
-# #
-# # For more information see the manual pages of crontab(5) and cron(8)
-# #
-# # m h  dom mon dow   command
+- name: Envoi mails spoolés
+  cron:
+    name: 'cpc_{{ cpc_instance_name }}_spool_mail'
+    minute: '*'
+    job: '$NDRUN bash bin/sendSpoolMail'
+    state: present
+    user: '{{ cpc_user }}'
+  when: cpc_enable_cronjobs and cpc_spool_mails
 
-# # Archive quotidienne
-# 0  4      * * *     bash /home/nosdeputes/bin/backup
-
-# # Update preprod
-# #*/15 *    * * *     bash /home/nosdeputes/bin/svn_update
-
-# # Publie un dump SQL tous les mois
-# 31 3      1 * *     bash /home/nosdeputes/export_sql/bin/create_dump
-
-# # Download agendas AN
-# */30 *    * * *     bash /home/nosdeputes/live/an_ordre_jour_dl.sh
-
-# # Index new elements
-# #*  *      * * *     bash /home/nosdeputes/nd2007/bin/wrapper_crons.sh bash /home/nosdeputes/nd2007/bin/indexSolr
-# *  *      * * *     bash /home/nosdeputes/nd2012/bin/wrapper_crons.sh bash /home/nosdeputes/nd2012/bin/indexSolr
-
-# # Send alertes
-# # 42 *  * * *  bash /home/nosdeputes/nd2007/bin/sendAlertes
-# 42 *      * * *     bash /home/nosdeputes/nd2012/bin/sendAlertes
-# #*  *      * * *     bash /home/nosdeputes/nd2007/bin/sendSpoolMail
-# *  *      * * *     bash /home/nosdeputes/nd2012/bin/sendSpoolMail
-
-# # regen tops api tous les 15 jours
-# 0 3 1,7,9,14,29 * *     bash /home/nosdeputes/nd2012/bin/update_tops.sh
-
-# # Load updates nosdeputes
-# #00 06     * * 0     bash /home/nosdeputes/nd2012/bin/wrapper_crons.sh bash /home/nosdeputes/nd2012/bin/loadupdate --oldquestions
-# #00 06     * * 2-4   bash /home/nosdeputes/nd2012/bin/wrapper_crons.sh bash /home/nosdeputes/nd2012/bin/loadupdate
-# #00 06     * * 1,5-6 bash /home/nosdeputes/nd2012/bin/wrapper_crons.sh bash /home/nosdeputes/nd2012/bin/loadupdate --noquestions
-# #00 13,20  * * *     bash /home/nosdeputes/nd2012/bin/wrapper_crons.sh bash /home/nosdeputes/nd2012/bin/loadupdate --noquestions --nojo
-
-# # clean cache
-# 10 00     * * *     php /home/nosdeputes/nd2007/symfony cc > /dev/null
-# 05 00     * * *     php /home/nosdeputes/nd2012/symfony cc > /dev/null
-
-# # update agenda opendata EU
-# 00 03     * * *     wget "http://www.google.com/calendar/ical/d8ctpd90brkif2u7emhrv03kqc@group.calendar.google.com/public/basic.ics" -O /home/nosdeputes/www.regardscitoyens.org/phpicalendar/calendars/euopendata.ics  > /dev/null 2>&1
-
-# # backup agendas
-# 05 04     * * *     bash /home/nosdeputes/www.regardscitoyens.org/phpicalendar/backup/cron.sh
-
-
-# ##  DOWNLOAD AMDMTS PJLNum
-# #* 0-2,9-12,14-19,21-23  20-22 01 *  bash /home/nosdeputes/nd2012/bin/load_amdmts_loi 3399
-
-# ##  DOWNLOAD AMDMTS PJLTravail
-# #* 0-16                         4 5 *  bash /home/nosdeputes/nd2012/bin/load_amdmts_loi 3675
-# #* 16-19,21-23                  4 5 *  bash /home/nosdeputes/nd2012/bin/load_amdmts_loi 3675 1
-# #* 0-4                          5 5 *  bash /home/nosdeputes/nd2012/bin/load_amdmts_loi 3675 1
-# #* 0-2,9-12,14-19,21-23      9-14 5 *  bash /home/nosdeputes/nd2012/bin/load_amdmts_loi 3675 1
-
-# ##  CROWDSOURCE DES INTERES
-# #*  *      * * *     php /home/nosdeputes/crowdsource_dpi/bin/set_done.php
-# #*  *      * * *     php /home/nosdeputes/crowdsource_dpi/include/view/intro_bis.php > /home/nosdeputes/crowdsource_dpi/include/view/intro.tmp.php ; mv -f /home/nosdeputes/crowdsource_dpi/include/view/intro.tmp.php /home/nosdeputes/crowdsource_dpi/include/view/intro.php
-
-# #1 1        * * *     cd /home/nosdeputes/nd2012 ; bash bin/hardcache_main_pages
+- name: Suppression envoi mails spoolés
+  cron:
+    name: 'cpc_{{ cpc_instance_name }}_spool_mail'
+    state: absent
+    user: '{{ cpc_user }}'
+  when: not (cpc_enable_cronjobs and cpc_spool_mails)

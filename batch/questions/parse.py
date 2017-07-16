@@ -37,7 +37,7 @@ def parse_question(url, xmlstring):
         'motif_retrait': "",
         'ministere_attribue': clean_minis(qe['MINA']['ORDRE'][-1]['DEVELOPPE']),
         'ministere_interroge': clean_minis(qe['MINI']['DEVELOPPE']),
-        'tete_analyse': qe['INDEXATION_AN']['TETE_ANALYSE'],
+        'tete_analyse': qe['INDEXATION_AN']['TETE_ANALYSE'].replace(u"aucune tête d'analyse", ""),
         'analyse': " / ".join([a for a in qe['INDEXATION_AN']['ANALYSE']['ANA'] if a]),
         'rubrique': qe['INDEXATION_AN']['@RUBRIQUE'],
         'question': qe['DEPOT'][1]['TEXTE_DEPOT'] if qe['DEPOT'][1] else '',

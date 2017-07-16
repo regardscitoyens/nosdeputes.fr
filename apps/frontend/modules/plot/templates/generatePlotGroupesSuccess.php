@@ -13,7 +13,7 @@ if ($type === "home") {
 $ysize = $ydefsize + $yadd;
 $font = 8;
 
-if ($drawAction === "map") {
+if ($format === "map") {
   $Test = new xsPChart($xsize,$ysize);
   $Test->getImageMap($mapId, TRUE);
 }
@@ -21,23 +21,25 @@ if ($drawAction === "map") {
 $DataSet = new xsPData();
 $DataSet->AddPoint($data['titres'], "Serie1");
 $ct = 2;
-foreach ($data['groupes'] as $groupe => $values) {
+foreach ($data['groupes_percent'] as $groupe => $values) {
   $serie = "Serie".$ct;
   $DataSet->AddPoint($values, $serie);
+  $DataSet->AddContext($data['groupes'][$groupe], $serie);
   $DataSet->AddSerie($serie);
   $DataSet->SetSerieName($groupe, $serie);
   $ct++;
 }
 $DataSet->SetAbsciseLabelSerie("Serie1");
-$DataSet->SetYAxisUnit(" %");
+$DataSet->SetYAxisUnit("%");
 
 $DataSet2 = new xsPData();
 $DataSet2->AddPoint($data['totaux'], "Serie".$ct);
 $DataSet2->SetAbsciseLabelSerie("Serie".$ct);
-$DataSet2->SetYAxisUnit(" %");
+$DataSet2->SetYAxisUnit("%");
 
 $Data = $DataSet->GetData();
 $DataDescr = $DataSet->GetDataDescription();
+$DataContext = $DataSet->Context;
 $Data2 = $DataSet2->getData();
 $DataDescr2 = $DataSet2->GetDataDescription();
 
@@ -58,7 +60,6 @@ if ($type === "all") {
   $Test->drawTitle(380,28,"Amendements",50,50,50);
   $Test->drawTitle(490,28,"Propositions",50,50,50);
   $Test->drawTitle(600,28,"Questions",50,50,50);
-  $Test->xsSetFontProperties("tahoma.ttf",$font+5);
 }
 $Test->drawGrid(4,TRUE,0,0,0,30);
 $ct = 0;
@@ -67,7 +68,7 @@ foreach ($data['couleurs'] as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col
   $ct++;
 }
 $Test->setImageMap(TRUE,$mapId);
-$Test->drawStackedBarGraph($Data,$DataDescr,75,90);
+$Test->drawStackedBarGraph($Data,$DataDescr,$DataContext,75,90);
 
 $Test->xsStroke();
 ?>

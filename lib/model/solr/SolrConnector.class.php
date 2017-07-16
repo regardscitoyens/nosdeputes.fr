@@ -127,7 +127,9 @@ class SolrConnector extends sfLogger
     foreach ($unset as $i) {
       unset($results['response']['docs'][$i]);
     }
-    $results['response']['docs'] = array_values($results['response']['docs']);
+    if ($results['response']['docs'])
+      $results['response']['docs'] = array_values($results['response']['docs']);
+    else $results['response']['docs'] = array();
     return $results;
   }
 

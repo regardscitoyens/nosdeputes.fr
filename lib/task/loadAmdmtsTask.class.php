@@ -19,14 +19,14 @@ class loadAmdmtsTask extends sfBaseTask {
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
+        $ct_lines = 0;
+        $ct_crees = 0;
+        $ct_modif = 0;
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == ".") continue;
-          $ct_lines = 0;
-          $ct_lus = 0;
-          $ct_crees = 0;
+          $nb_json++;
           if ($nb_json > $options['max'])
             break;
-          $nb_json++;
           foreach(file($dir.$file) as $line) {
             $ct_lines++;
             $json = json_decode($line);
@@ -38,8 +38,8 @@ class loadAmdmtsTask extends sfBaseTask {
               echo "ERROR mandatory arg missing (source|legis|numero|loi|sujet|texte|date|rectif): $line\n";
               continue;
             }
-            $ct_lus++;
             $modif = true;
+            $new = false;
             $amdmt = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
             if ($json->rectif > 0) foreach(Doctrine::getTable('Amendement')->findByCleanedSource($json->source) as $rect) {
               if ($rect->rectif < $json->rectif && $rect->texteloi_id == $json->loi && $rect->numero == $json->numero) {
@@ -55,7 +55,8 @@ class loadAmdmtsTask extends sfBaseTask {
             }
             if (!$amdmt) {
               $ct_crees++;
-              print "$file -> http://www.nosdeputes.fr/14/amendement/".$json->loi."/".$json->numero."  \n";
+              $new = true;
+              print "$file -> http://www.nosdeputes.fr/".myTools::getLegislature()."/amendement/".$json->loi."/".$json->numero."  \n";
               $amdmt = new Amendement();
               $amdmt->legislature = $json->legislature;
               $amdmt->texteloi_id = $json->loi;
@@ -66,6 +67,7 @@ class loadAmdmtsTask extends sfBaseTask {
               $modif = false;
             }
             if ($modif) {
+              $ct_modif++;
               $amdmt->source = $json->source;
               $amdmt->date = $json->date;
               $lettre = $amdmt->getLettreLoi();
@@ -123,15 +125,22 @@ class loadAmdmtsTask extends sfBaseTask {
             } elseif (!$amdmt->sort) {
               $amdmt->sort = "Indéfini";
             }
-            if ($json->auteur_reel) {
-              $amdmt->setAuteur(Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel));
+            if ($json->auteur_reel && $json->auteur_reel !== "GVT" && !$amdmt->auteur_id) {
+              $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel);
+              if ($parl->id)
+                $amdmt->setFirstAuteur($parl);
+              else print "WARNING: cannot find auteur from ID AN ".$json->auteur_reel." for ".$json->auteurs." in ".$json->source." (Amdmt de commission ?)\n";
             }
             $amdmt->save();
             $amdmt->free();
+            if ($new) {
+              $reindexWithParls = Doctrine::getTable('Amendement')->findOneByLegisLoiNumRect($json->legislature, $json->loi, $json->numero, $json->rectif);
+              $reindexWithParls->save();
+            }
           }
-          if ($ct_crees) echo $ct_lines." amendements lus : ".$ct_lus." écrits dont ".$ct_crees." nouveaux.\n";
           unlink($dir.$file);
         }
+        if ($ct_modif) echo $ct_lines." amendements lus : ".$ct_modif." écrits dont ".$ct_crees." nouveaux.\n";
         closedir($dh);
       }
     }

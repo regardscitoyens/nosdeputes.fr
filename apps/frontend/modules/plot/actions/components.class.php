@@ -8,47 +8,52 @@ class plotComponents extends sfComponents
     static $seuil_invective = 20;
     $this->data = array();
     if (!isset($this->session) || $this->session === 'legislature') $this->session = 'lastyear';
+    $this->data['periode'] = $this->session;
     $this->data['fin'] = myTools::isFinLegislature() && ($this->session === 'lastyear');
     if ($this->session === 'lastyear') {
       if (!$this->parlementaire->isEnMandat()) {
-        $date = strtotime($this->parlementaire->fin_mandat);
+        $date_fin = strtotime($this->parlementaire->fin_mandat);
         $this->data['mandat_clos'] = true;
-      } else $date = time();
-      $annee = date('Y', $date);
-      $sem = date('W', $date);
+      } else $date_fin = time();
+      $annee = date('Y', $date_fin);
+      $sem = date('W', $date_fin);
+      $legistart = strtotime(myTools::getDebutLegislature());
       if ($this->data['fin'])
-        $last_year = strtotime(myTools::getDebutLegislature());
-      else $last_year = $date - 32054400;
+        $last_year = $legistart;
+      else $last_year = max($legistart - 1209600, $date_fin - 32054400);
       $date_debut = date('Y-m-d', $last_year);
+      $date_fin = date('Y-m-d', $date_fin);
       $annee0 = date('o', $last_year);
       $sem0 = date('W', $last_year);
-      if ($sem > 51 && date('n', $date) == 1)
+      if ($sem > 51 && date('n', $date_fin) == 1)
         $sem = 0;
-      if ($sem < 2 && $annee != date('o', $date)) {
-        $annee = date('o', $date);
+      if ($sem < 2 && $annee != date('o', $date_fin)) {
+        $annee = date('o', $date_fin);
         $sem0 -= 1;
       }
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
-#print "$date ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
     } else {
-      $query4 = Doctrine_Query::create()
-        ->select('s.annee, s.numero_semaine')
+      $start = Doctrine_Query::create()
+        ->select('s.date, s.annee, s.numero_semaine')
         ->from('Seance s')
         ->where('s.session = ?', $this->session)
-        ->orderBy('s.date ASC');
-      $date_debut = $query4->fetchOne();
-      $annee0 = $date_debut['annee'];
-      $sem0 = $date_debut['numero_semaine'];
-      $query4 = Doctrine_Query::create()
-        ->select('s.annee, s.numero_semaine')
+        ->orderBy('s.date ASC')
+        ->fetchOne();
+      $date_debut = $start['date'];
+      $annee0 = $start['annee'];
+      $sem0 = $start['numero_semaine'];
+      $end = Doctrine_Query::create()
+        ->select('s.date, s.annee, s.numero_semaine')
         ->from('Seance s')
         ->where('s.session = ?', $this->session)
-        ->orderBy('s.date DESC');
-      $date_fin = $query4->fetchOne();
-      $annee = $date_fin['annee'];
-      $sem = $date_fin['numero_semaine'];
+        ->orderBy('s.date DESC')
+        ->fetchOne();
+      $date_fin = $end['date'];
+      $annee = $end['annee'];
+      $sem = $end['numero_semaine'];
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     }
+#print "$date_fin ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
     if ($this->data['fin']) {
       $this->data['labels'] = $this->getLabelsMois($n_weeks, $annee0, $sem0);
       $this->data['vacances'] = $this->getVacancesAllMandats($n_weeks, $annee0, $sem0, $this->parlementaire->getMandatsLegislature());
@@ -56,6 +61,8 @@ class plotComponents extends sfComponents
       $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee0, $sem0);
       $this->data['vacances'] = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
     }
+    $this->data['date_debut'] = $date_debut;
+    $this->data['date_fin'] = $date_fin;
 
     $query = Doctrine_Query::create()
       ->select('COUNT(p.id) as nombre, p.id,s.type, s.annee, s.numero_semaine')
@@ -88,44 +95,42 @@ class plotComponents extends sfComponents
     $query2->groupBy('s.type, s.annee, s.numero_semaine');
     $participations = $query2->fetchArray();
 
-    $this->data['n_participations'] = array('commission' => array_fill(1, $n_weeks, 0),
-                                    'hemicycle' => array_fill(1, $n_weeks, 0));
-    $this->data['n_mots'] = array('commission' => array_fill(1, $n_weeks, 0),
-                          'hemicycle' => array_fill(1, $n_weeks, 0));
+    $this->data['n_participations'] = array(
+      'commission' => array_fill(1, $n_weeks, 0),
+      'hemicycle' => array_fill(1, $n_weeks, 0)
+    );
     foreach ($participations as $participation) {
       $n = ($participation['Seance']['annee'] - $annee0)*53 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($n <= $n_weeks) {
+      if ($n <= $n_weeks)
         $this->data['n_participations'][$participation['Seance']['type']][$n] += $participation['nombre'];
-        $this->data['n_mots'][$participation['Seance']['type']][$n] += $participation['mots']/10000;
-      }
     }
     unset($participations);
-   if (!$this->data['fin']) {
-    $query3 = Doctrine_Query::create()
-      ->select('count(distinct s.id, i.section_id) as nombre, i.id, s.annee, s.numero_semaine')
-      ->from('Intervention i')
-      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.type = ?', 'question')
-      ->andWhere('i.fonction NOT LIKE ?', 'président%')
-      ->andWhere('i.nb_mots > ?', 2*$seuil_invective)
-      ->leftJoin('i.Seance s');
-    if ($this->session === 'lastyear')
-      $query3->andWhere('s.date > ?', $date_debut);
-    else $query3->andWhere('s.session = ?', $this->session);
-    $query3->groupBy('s.annee, s.numero_semaine');
-    $questionsorales = $query3->fetchArray();
+    if (!$this->data['fin']) {
+      $query3 = Doctrine_Query::create()
+        ->select('count(distinct s.id, i.section_id) as nombre, i.id, s.annee, s.numero_semaine')
+        ->from('Intervention i')
+        ->where('i.parlementaire_id = ?', $this->parlementaire->id)
+        ->andWhere('i.type = ?', 'question')
+        ->andWhere('i.fonction NOT LIKE ?', 'président%')
+        ->andWhere('i.nb_mots > ?', 2*$seuil_invective)
+        ->leftJoin('i.Seance s');
+      if ($this->session === 'lastyear')
+        $query3->andWhere('s.date > ?', $date_debut);
+      else $query3->andWhere('s.session = ?', $this->session);
+      $query3->groupBy('s.annee, s.numero_semaine');
+      $questionsorales = $query3->fetchArray();
 
-    $this->data['n_questions'] = array_fill(1, $n_weeks, 0);
-    foreach ($questionsorales as $question) {
-      $n = ($question['Seance']['annee'] - $annee0)*53 + $question['Seance']['numero_semaine'] - $sem0 + 1;
-      if ($n <= $n_weeks) {
-        if ($this->data['n_questions'][$n] == 0)
-          $this->data['n_questions'][$n] -= 0.15;
-        $this->data['n_questions'][$n] += $question['nombre'];
+      $this->data['n_questions'] = array_fill(1, $n_weeks, 0);
+      foreach ($questionsorales as $question) {
+        $n = ($question['Seance']['annee'] - $annee0)*53 + $question['Seance']['numero_semaine'] - $sem0 + 1;
+        if ($n <= $n_weeks) {
+          if ($this->data['n_questions'][$n] == 0)
+            $this->data['n_questions'][$n] -= 0.15;
+          $this->data['n_questions'][$n] += $question['nombre'];
+        }
       }
+      unset($questionsorales);
     }
-    unset($questionsorales);
-   }
 
     # Données de présence mediane par semaine
     $this->data['presences_medi'] = array(
@@ -146,7 +151,7 @@ class plotComponents extends sfComponents
       $startweek = ($annee0 - $an_legis)*53 + $sem0 - $sem_legis;
       if ($startweek <= 0) {
         $weeks_acti = count($prmedi['commission']);
-        for ($i=0; $i < $weeks_acti - 1; $i++) {
+        for ($i=0; $i < $weeks_acti; $i++) {
           $this->data['presences_medi']['commission'][$n_weeks-$i] = $prmedi['commission'][$weeks_acti-$i];
           $this->data['presences_medi']['hemicycle'][$n_weeks-$i] = $prmedi['hemicycle'][$weeks_acti-$i];
           $this->data['presences_medi']['total'][$n_weeks-$i] = $prmedi['total'][$weeks_acti-$i];
@@ -165,8 +170,6 @@ class plotComponents extends sfComponents
         $this->data['n_presences']['commission'][$i] = 0;
         $this->data['n_participations']['hemicycle'][$i] = 0;
         $this->data['n_participations']['commission'][$i] = 0;
-        $this->data['n_mots']['hemicycle'][$i] = 0;
-        $this->data['n_mots']['commission'][$i] = 0;
         $this->data['presences_medi']['hemicycle'][$i] = 0;
         $this->data['presences_medi']['commission'][$i] = 0;
         $this->data['presences_medi']['total'][$i] = 0;
@@ -182,7 +185,7 @@ class plotComponents extends sfComponents
     $mandat_sem0 = date('W', $debut_mandat);
     if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
     $week0 = ($mandat_an0 - $annee0)*53 + $mandat_sem0 - $sem0 + 1;
-    for ($n = 0; $n < $week0 ; $n++)
+    for ($n = 1; $n < $week0 ; $n++)
       $n_vacances[$n] = 20;
 
     foreach (myTools::getVacances() as $vacance) {
@@ -230,7 +233,7 @@ class plotComponents extends sfComponents
       }
     }
     while ($n <= $n_weeks) {
-      $n_vacances[$n] = 20;
+      $n_vacances[$n] = 0;
       $n++;
     }
     foreach (myTools::getVacances() as $vacance) {
@@ -307,17 +310,20 @@ class plotComponents extends sfComponents
       $stats = unserialize($stats->value);
     $lastyear = date('Y-m-d', time()-60*60*24*365);
 
-    // Collecte toutes les appartenances de députés à un groupe pour afficher la proportion de députés de chaque groupe sur l'ensemble de la période plutôt que sur le moment
+    // Collecte les dernières appartenances de députés à un groupe pour afficher la proportion de députés de chaque groupe sur l'ensemble de la période plutôt que sur le moment
     $keep = array();
     $query = Doctrine_Query::create()
-      ->select('po.parlementaire_groupe_acronyme, count(po.parlementaire_id)')
-      ->from('ParlementaireOrganisme po, po.Parlementaire p, po.Organisme o')
+      ->select('p.groupe_acronyme, count(distinct(p.id))')
+      ->from('Parlementaire p')
+      ->leftJoin('p.ParlementaireOrganisme po')
+      ->leftJoin('po.Organisme o')
       ->where('o.type = ?', 'groupe')
-      ->groupBy('po.parlementaire_groupe_acronyme');
+      ->orderBy('po.fin_fonction, po.importance DESC')
+      ->groupBy('p.groupe_acronyme');
     if (!myTools::isFinLegislature())
       $query->andWhere('po.fin_fonction IS NULL OR po.fin_fonction >= ?', $lastyear);
     foreach ($query->fetchArray() as $grp) {
-      $acro = $grp['parlementaire_groupe_acronyme'];
+      $acro = $grp['groupe_acronyme'];
       if ($acro) {
         $stats[$acro]['nb'] = $grp['count'];
         $keep[] = $acro;
@@ -335,32 +341,17 @@ class plotComponents extends sfComponents
       }
     }
 
-    // Compte séparément le total de députés pour ne les compter chacun qu'une fois
-    $query = Doctrine::getTable('Parlementaire')->createQuery()->select('count(id)');
-    if (!myTools::isFinLegislature())
-      $query->andWhere('fin_mandat IS NULL OR fin_mandat < debut_mandat OR fin_mandat >= ?', $lastyear);
-    $nbdeputes = $query->fetchOne()['count'];
-
-    $qamdmts = Doctrine_Query::create()
-      ->select('pa.parlementaire_groupe_acronyme, sum(a.nb_multiples)')
-      ->from('ParlementaireAmendement pa, pa.Amendement a')
-      ->where('pa.numero_signataire = ?', 1)
-      ->andWhere('a.sort <> ?', 'Rectifié')
-      ->groupBy('pa.parlementaire_groupe_acronyme');
-    if (!myTools::isFinLegislature())
-      $qamdmts->andWhere('a.date > ?', $lastyear);
-    $qamdmts_deposes = clone($qamdmts);
-    foreach ($qamdmts_deposes->fetchArray() as $amdt)
-      if ($amdt['parlementaire_groupe_acronyme'])
-        $stats[$amdt['parlementaire_groupe_acronyme']]['amdmts_deposes'] = $amdt['sum'];
-
     if ($this->type === "all") {
-      $qamdmts_adoptes = clone($qamdmts);
-      $amdmts_adoptes = $qamdmts_adoptes->andWhere('a.sort = ?', "Adopté")
-        ->fetchArray();
-      foreach ($qamdmts_adoptes->fetchArray() as $amdt)
-        if ($amdt['parlementaire_groupe_acronyme'])
-          $stats[$amdt['parlementaire_groupe_acronyme']]['amdmts_adoptes'] = $amdt['sum'];
+      $qamdmts = Doctrine_Query::create()
+        ->select('a.auteur_groupe_acronyme, sum(a.nb_multiples)')
+        ->from('Amendement a')
+        ->where('a.sort = ?', "Adopté")
+        ->groupBy('a.auteur_groupe_acronyme');
+      if (!myTools::isFinLegislature())
+        $qamdmts->andWhere('a.date > ?', $lastyear);
+      foreach ($qamdmts->fetchArray() as $amdt)
+        if ($amdt['auteur_groupe_acronyme'])
+          $stats[$amdt['auteur_groupe_acronyme']]['amdmts_adoptes'] = $amdt['sum'];
     }
 
     $qprops = Doctrine_Query::create()
@@ -382,7 +373,7 @@ class plotComponents extends sfComponents
         $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'hemicycle_interventions');
         $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'hemicycle_interventions_courtes');
       } else $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'commission_interventions') + self::getValueOrZero($stats[$groupe], 'hemicycle_interventions');
-      $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'amdmts_deposes');
+      $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'amendements_proposes');
       if ($this->type === "all")
         $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'amdmts_adoptes');
       $this->data['groupes'][$groupe][] = self::getValueOrZero($stats[$groupe], 'propositions');
@@ -399,23 +390,24 @@ class plotComponents extends sfComponents
         $this->data['totaux'][$i] += $this->data['groupes'][$groupe][$i];
 
     $this->data['hasData'] = false;
-    for ($i=1;$i<$n;$i++)
-      if ($this->data['totaux'][$i]) {
-        $this->data['hasData'] = true;
-        break;
-      }
+    if (count($this->data['groupes']) > 1)
+      for ($i=1;$i<$n;$i++)
+        if ($this->data['totaux'][$i]) {
+          $this->data['hasData'] = true;
+          break;
+        }
 
     foreach ($this->data['groupes'] as $groupe => $arr)
       for ($i=0;$i<$n;$i++)
         if ($this->data['totaux'][$i])
-          $this->data['groupes'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
-        else $this->data['groupes'][$groupe][$i] = 0;
+          $this->data['groupes_percent'][$groupe][$i] = round($this->data['groupes'][$groupe][$i] / $this->data['totaux'][$i] * 1000)/10;
+        else {
+          $this->data['groupes_percent'][$groupe][$i] = 0;
+          $this->data['groupes'][$groupe][$i] = 0;
+        }
 
     for ($i=0;$i<$n;$i++)
       $this->data['totaux'][$i] = preg_replace('/(\d)(\d{3})$/', '\\1 \\2', $this->data['totaux'][$i]);
-
-    // Réécrit le total de députés pour affichage
-    $this->data['totaux'][0] = $nbdeputes;
   }
 
   public function executeGroupes() {
@@ -433,10 +425,13 @@ class plotComponents extends sfComponents
       foreach ($this->membres as $imp => $deps) {
         if ($imp < 1)
           continue;
-        foreach ($deps as $p)
+        foreach ($deps as $p) {
+          if (preg_match('/[âa]ge$/i', $p->fonction))
+            continue;
           if (!isset($groupes[$p['groupe_acronyme']]['membres']))
             $groupes[$p['groupe_acronyme']]['membres'] = 1;
           else $groupes[$p['groupe_acronyme']]['membres'] += 1;
+        }
       }
 
     // Ou pour les séances et les dossiers
@@ -492,7 +487,7 @@ class plotComponents extends sfComponents
     }
 
     // Pas de graphe pour les séances ou sections sans données
-    if (isset($interventions) && !count($interventions) && (!isset($presences) || !count($presences))) {
+    if (!count($groupes) || (isset($interventions) && !count($interventions) && (!isset($presences) || !count($presences)))) {
       $this->empty = 1;
       return ;
     }
@@ -528,15 +523,15 @@ class plotComponents extends sfComponents
     }
 
     // On ajoute à la fin des arrays la moitié de la somme totale de l'array
-    // pour qu'1/3 du donut soit vide et forcer l'apparence d'un hémicycle
+    // pour que 2/5e du donut soit vide et forcer l'apparence d'un hémicycle
     $this->labels[] = "";
     if (isset($this->membres))
-      $this->parls[] = array_sum($this->parls)/2;
+      $this->parls[] = array_sum($this->parls)*3/5;
     else {
-      $this->interventions[] = array_sum($this->interventions)/2;
-      $this->temps[] = array_sum($this->temps)/2;
+      $this->interventions[] = array_sum($this->interventions)*3/5;
+      $this->temps[] = array_sum($this->temps)*3/5;
       if (isset($presences))
-        $this->presences[] = array_sum($this->presences)/2;
+        $this->presences[] = array_sum($this->presences)*3/5;
     }
 
     // On renvoie les couleurs de chaque groupe

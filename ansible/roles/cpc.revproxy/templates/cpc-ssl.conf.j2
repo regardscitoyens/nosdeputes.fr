@@ -24,6 +24,7 @@
 
   SSLEngine On
   RequestHeader set X-Forwarded-Proto 'https'
+  Header add Strict-Transport-Security "max-age=15552000"
 
   ProxyVia On
   ProxyRequests Off
@@ -38,3 +39,32 @@
     Allow from all
   </Proxy>
 </VirtualHost>
+
+{% for alias in cpc_domain_aliases %}
+<VirtualHost *:80>
+  ServerName {{ alias }}
+  ServerSignature Off
+
+  Redirect / https://{{ cpc_domain }}/
+
+  <Location />
+    Order deny,allow
+    Allow from all
+  </Location>
+</VirtualHost>
+
+<VirtualHost *:443>
+  ServerName {{ alias }}
+  ServerSignature Off
+
+  SSLEngine On
+  Header add Strict-Transport-Security "max-age=15552000"
+
+  SSLCertificateFile      {{ cpc_ssl_cert }}
+  SSLCertificateKeyFile   {{ cpc_ssl_key }}
+  SSLCertificateChainFile {{ cpc_ssl_chain }}
+
+  Redirect / https://{{ cpc_domain }}/
+</VirtualHost>
+
+{% endfor %}

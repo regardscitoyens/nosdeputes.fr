@@ -1,10 +1,13 @@
 <?php
+$histogram = false;
 $abs = '';
 if (!isset($target))
   $target = '';
 if (isset($absolute) && $absolute)
   $abs = 'absolute=true';
 $size='';
+$width = 790;
+$height = 300;
 if ($time === 'lastyear')
   $shortduree = 'annee';
 else $shortduree = $time;
@@ -15,42 +18,56 @@ else {
   if ($type === 'commission') $titre .= 's';
   $titre .= '-'.$shortduree;
 }
-$PictureID = "Map_".$parlementaire->slug.'_'.rand(1,10000).".map"; 
 if ($link === 'true') {
   $time = 'lastyear';
   if (myTools::isFinLegislature()) $time = 'legislature';
   echo '<a'.$target.' href="'.url_for('@parlementaire'.(isset($absolute) && $absolute ? '' : '_plot').'?slug='.$parlementaire->slug.(isset($absolute) && $absolute ? '' : '&time='.(myTools::isFinLegislature() ? 'legislature' : 'lastyear')), $abs).'">';
-  if (!isset($widthrate))
-    $size = 'height:150px; width:800px';
-  else $size = 'height:'.floor(150*$widthrate).'px; width:'.floor(800*$widthrate).'px';
- } else echo '<div class="par_session">'; ?>
- <img style="<?php echo $size; ?>" id="graph<?php echo $PictureID; ?>" alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>" src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&mapId='.$PictureID, $abs); ?>"<?php if (!(isset($absolute) && $absolute)) echo ' onmousemove="getMousePosition(event);" onmouseout="nd();"'; ?>/>
-<?php if ($link === 'true' && !(isset($absolute) && $absolute)) { ?>
+  if (!isset($widthrate)) $widthrate = 1;
+  $height = floor($height / 2 *$widthrate);
+  $width = floor($width * $widthrate);
+} else echo '<div class="par_session">'; ?>
+<div class="activity_plot" id="plot<?php echo $type; ?>">
+  <?php if (!(!isset($absolute) && $absolute)) echo '<noscript>'; ?>
+  <img
+    style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px;"
+    alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>"
+    src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type, $abs).'?questions='.$questions.'&link='.$link.'&histogram='.$histogram; ?>"
+  />
+  <?php if (!(isset($absolute) && $absolute)) echo '</noscript>'; ?>
+</div>
+<?php if ($link === 'true') echo '</a>';
+if (!(isset($absolute) && $absolute)) : ?>
 <script type="text/javascript">
-<!--
-LoadImageMap("graph<?php echo $PictureID; ?>", "<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type.'&questions='.$questions.'&link='.$link.'&drawAction=map&mapId='.$PictureID); ?>");
-//-->
+plot_activity_data("<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type).'?questions='.$questions.'&format=json'; ?>", "plot<?php echo $type; ?>", "<?php echo $width; ?>", "<?php echo $height; ?>", "<?php echo $type; ?>", "<?php echo $histogram; ?>");
 </script>
-<?php }
+<?php endif;
 
-if ($link === 'true') echo '</a>';
-if (!isset($widthrate) || $widthrate > 1/3) {
-echo "<p><span style='background-color: rgb(255,0,0);'>&nbsp;</span> ";
-if ($type === 'commission') echo '&nbsp;Présences enregistrées&nbsp;&nbsp;&nbsp;';
-else echo '&nbsp;Présences relevées&nbsp;&nbsp;&nbsp;';
-echo "<span style='background-color: rgb(255,200,0);'>&nbsp;</span>&nbsp;Participations&nbsp;&nbsp;&nbsp;";
-echo "<span style='background-color: rgb(0,255,0);'>&nbsp;</span>&nbsp;Mots prononcés (x&nbsp;10&nbsp;000)&nbsp;&nbsp;&nbsp;";
-if (!(myTools::isFinLegislature() && preg_match('/^l/', $time)) && $questions === 'true' && $type != 'commission') {
-  echo "<span style='background-color: rgb(0,0,255);'>&nbsp;</span>&nbsp;Questions orales&nbsp;";
-  if ($link != 'true') echo "<br/>";
-  else echo "&nbsp;";
-}
-echo "<span style='background-color: rgb(150,150,150);'>&nbsp;</span>&nbsp;Vacances parlementaires&nbsp;&nbsp;";
-echo "<span style='font-weight: bolder; color: rgb(160,160,160);'>&mdash;</span>&nbsp;Présence médiane";
-if ($link === 'true')
-  echo '&nbsp;&nbsp;&nbsp;&nbsp;<a'.$target.' href="'.url_for('@faq', $abs).'#post_4">Explications</a></p>';
-else echo '</p>';
-}
+$lela = ($parlementaire->sexe == "F" ? "la députée" : "le député");
+$fem = ($parlementaire->sexe == "F" ? "e" : "");
+if (!isset($widthrate) || $widthrate > 1/3) : ?>
+<p><span class="jstitle" title="Nombre de <?php
+$reus = "réunions de commissions auxquelles $lela a été enregistré$fem présent$fem";
+$sean = "séances en hémicycle pendant lesquelles $lela est intervenu$fem même brièvement";
+if ($type === "total") echo "$reus et de $sean";
+else if ($type === "hemicycle") echo $sean;
+else echo $reus;
+?>"><span style="background-color: rgb(255,0,0);">&nbsp;</span>&nbsp;Présences <?php
+echo ($type === 'commission' ? 'enregistr' : 'relev');
+?>ées</span>&nbsp;&nbsp;&nbsp;<span class="jstitle" title="Nombre de <?php
+$reus = "réunions de commissions";
+$sean = "séances en hémicycle";
+if ($type === "total") echo "$reus et de $sean";
+else if ($type === "hemicycle") echo $sean;
+else echo $reus; ?> pendant lesquelles <?php echo $lela; ?> a participé aux débats"><span style="background-color: rgb(255,200,0);">&nbsp;</span>&nbsp;Participations</span>&nbsp;&nbsp;&nbsp;<?php
+if (!(myTools::isFinLegislature() && preg_match('/^l/', $time)) && $questions === 'true' && $type !== 'commission') :
+?><span class="jstitle" title="Nombre de questions orales posées au gouvernement par <?php echo $lela; ?>"><span style="background-color: rgba(100,100,255,0.75);">&nbsp;</span>&nbsp;Questions orales</span>&nbsp;&nbsp;<?php
+endif; ?><span class="jstitle" title="Semaines durant lesquelles les députés ne se sont réunis ni en commission ni en hémicycle"><span style="background-color: rgb(150,150,150);">&nbsp;</span>&nbsp;Vacances parlementaires</span>&nbsp;&nbsp;<span class="jstitle" title="Médiane pour l'ensemble des députés du nombre de <?php
+if ($type === "total") echo "$reus et de $sean";
+else if ($type === "hemicycle") echo $sean;
+else echo $reus; ?> auxquelles ils ont participé"><span style="font-weight: bolder; color: rgb(160,160,160);">&mdash;</span>&nbsp;Présence médiane</span><?php
+if ($link === 'true') : ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="jstitle" title="Lire plus d'explications dans la FAQ"<?php echo $target; ?> href="<?php echo url_for('@faq', $abs); ?>#post_4">Explications</a></span><?php
+endif; ?></p>
+<?php endif;
 if ($link != 'true')
   echo '</div>';
 ?>

@@ -14,7 +14,7 @@ class SolrListener extends Doctrine_Record_Listener
     /**
      * __construct
      *
-     * @param string $options 
+     * @param string $options
      * @return void
      */
     public function __construct($options)
@@ -43,7 +43,7 @@ class SolrListener extends Doctrine_Record_Listener
 	}
 	if (is_object($f) && get_class($f) && ! isset($f->id) && ! $f->id)
 	  return array();
-	return array(strip_tags($f));
+	return array(strip_tags(str_replace('</p><p>', ' ', $f)));
       }
       return array();
     }
@@ -59,12 +59,12 @@ class SolrListener extends Doctrine_Record_Listener
     }
     return $s;
   }
-  
-  private function getLuceneObjId($obj) 
+
+  private function getLuceneObjId($obj)
   {
     return get_class($obj).'/'.$obj->getId();
   }
-  
+
   // Réindexation après une création / modification
   public function postSave(Doctrine_Event $event)
   {
@@ -76,7 +76,7 @@ class SolrListener extends Doctrine_Record_Listener
 	return $this->postDelete($event);
       }
     }
-    
+
     $json = array();
     $json['id'] = $this->getLuceneObjId($obj);
     $json['object_id'] =  $obj->getId();
@@ -85,8 +85,8 @@ class SolrListener extends Doctrine_Record_Listener
       $content = $this->getObjFieldsValue($obj, $t);
       $wordcount = str_word_count($content);
     }
-    
-    if (isset($this->_options['extra_weight'])) 
+
+    if (isset($this->_options['extra_weight']))
       $extra_weight = $this->_options['extra_weight'];
     else
       $extra_weight = 1;
@@ -95,20 +95,20 @@ class SolrListener extends Doctrine_Record_Listener
        if ($wclimit > $wordcount)
 	 $extra_weight *=  0.5 ;
     }
-    
+
     // On donne un poids plus important au titre
     if (isset($this->_options['title']) && $t = $this->_options['title']) {
       $json['title']['content'] = $this->getObjFieldsValue($obj, $t);
       $json['title']['weight'] =  2 * $extra_weight;
     }
-    
+
     // La description
     if (isset($content)) {
       $json['description']['content'] = $content;
       $json['description']['weight'] = $extra_weight;
       $json['wordcount'] = $wordcount;
     }
-      
+
     // par default la date est la created_at
     if (!isset($this->_options['date']) || !($t = $this->_options['date'])) {
       $t = 'created_at';
@@ -117,7 +117,7 @@ class SolrListener extends Doctrine_Record_Listener
     $d = preg_replace('/\+.*/', 'Z', date('c', strtotime($date)));
     $json['date']['content'] = $d;
     $json['date']['weight'] = $extra_weight;
-    
+
 
     $json['tags']['content'] = array();
     try {
@@ -125,7 +125,7 @@ class SolrListener extends Doctrine_Record_Listener
 	$json['tags']['content'][] =  preg_replace('/:/', '=', $tag);
       }
     }catch (Exception $e) {}
-    
+
     if (isset($this->_options['moretags']) && $t = $this->_options['moretags']) {
       if (!is_array($t)) {
 	$t = array($t);
@@ -142,12 +142,12 @@ class SolrListener extends Doctrine_Record_Listener
 	}
       }
     }
-    
+
     $json['tags']['weight'] = 1; //$extra_weight;
-    
+
     SolrCommands::getInstance()->addCommand('UPDATE', $json);
   }
-  
+
   // Désindexation après une suppression
   public function postDelete(Doctrine_Event $event)
   {
@@ -156,5 +156,5 @@ class SolrListener extends Doctrine_Record_Listener
     $json->id = $this->getLuceneObjId($obj);
     SolrCommands::getInstance()->addCommand('DELETE', $json);
   }
-  
+
 }

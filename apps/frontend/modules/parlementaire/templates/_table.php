@@ -1,6 +1,7 @@
 <?php
 $ct = 0;
 $anciens = false;
+$age = false;
 if (isset($list)) {
   if (!isset($colonnes))
     $colonnes = 3;
@@ -14,13 +15,14 @@ if (isset($list)) {
       if (isset($deputes[0]->fin_fonction)) {
         $anciens = true;
         $fonction = "Ancien ".$fonction;
-      }
+      } else if (preg_match('/[âa]ge$/i', $fonction))
+        $age = true;
     } else {
       $pluriel = (count($deputes) > 1 ? "s" : "");
       $fonction = "Ancien député";
       $anciens = true;
     }
-    echo '<h3 class="aligncenter'.($anciens ? " anciens" : "").'">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', (count($deputes) > 1 ? preg_replace('/(,)? /', 's\\1 ', (preg_match('/(spécial|général)/i', $fonction) ? preg_replace('/al$/', 'aux', $fonction) : $fonction)) : $fonction))).(count($deputes) > 1 && !preg_match('/(spécial|général|droit|bureau)$/i', $fonction) ? 's' : '').'</h3>';
+    echo '<h3 class="aligncenter'.($anciens || $age ? " anciens" : "").'">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', (count($deputes) > 1 ? preg_replace('/(,)? /', 's\\1 ', (preg_match('/(spécial|général)/i', $fonction) ? preg_replace('/al$/', 'aux', $fonction) : $fonction)) : $fonction))).(count($deputes) > 1 && !preg_match('/(spécial|général|droit|bureau)$/i', $fonction) ? 's' : '').'</h3>';
   }
   echo '<table summary="Députés'.(isset($lettre) ? ' dont le nom commence par '.$lettre : '').'"><tr>';
   $totaldep = count($deputes);
@@ -41,7 +43,7 @@ foreach($deputes as $depute) {
   $url_depute = url_for('@parlementaire?slug='.$depute->slug);
   $ct++;
   $id_circo = preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo); ?>
-  <a href="<?php echo $url_depute; ?>"><div class="list_dep jstitle phototitle block<?php if ($anciens || !$depute->isEnMandat()) echo ' anciens'; if (isset($circo) && ($depute->isEnMandat() || myTools::isFinLegislature())) echo ' dep_map dep'.$id_circo.'" id="'.sprintf('%03d', $depute->id).$id_circo; ?>" title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>">
+  <a href="<?php echo $url_depute; ?>"><div class="list_dep jstitle phototitle block<?php if ($anciens || $age || !$depute->isEnMandat()) echo ' anciens'; if (isset($circo) && ($depute->isEnMandat() || myTools::isFinLegislature())) echo ' dep_map dep'.$id_circo.'" id="'.sprintf('%03d', $depute->id).$id_circo; ?>" title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>">
     <span class="urlphoto" title="<?php echo $url_depute; ?>"></span>
     <span class="list_nom">
       <?php echo $depute->getNomPrenom(); ?>

@@ -33,7 +33,7 @@ $(document).ready(function() {
 
   $('.jstitle').mousemove(function(e) {
     if ($('#jstitle').length == 0) {
-      $('body').append('<div id="jstitle" style="text-align: center; display: none; position: absolute; z-index: 888; border: 1px solid black;padding: 5px; max-width: 600px;"></div>')
+      $('body').append('<div id="jstitle" style="text-align: center; display: none; position: absolute; z-index: 888; border: 1px solid black;padding: 5px; min-width: 150px; max-width: 600px;"></div>')
     }
     if ($(this).attr('title')) {
       $(this).find("title").remove();
@@ -46,8 +46,8 @@ $(document).ready(function() {
     }
     $('#jstitle').html($(this).attr('jstitle'));
     $('#jstitle').css('background-color', "white");
-    $('#jstitle').css('top', e.pageY+10);
-    $('#jstitle').css('left', e.pageX+10);
+    $('#jstitle').css('top', e.pageY+15);
+    $('#jstitle').css('left', e.pageX-75);
     $('#jstitle').css('display', 'block');
   });
   $('.jstitle').mouseout(function() {

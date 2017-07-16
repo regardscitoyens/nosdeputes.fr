@@ -1,6 +1,8 @@
 ---
 
 cpc_domain: cpc.example.com
+cpc_domain_aliases: []
+
 cpc_instance_name: cpc
 
 cpc_user: cpc
@@ -18,7 +20,6 @@ cpc_port_solr: 8005
 
 cpc_memcached: false
 cpc_memcached_limit: 100M
-cpc_spool_mails: false
 cpc_solr: true
 cpc_php_web_memory_limit: 65M
 cpc_php_cli_memory_limit: -1
@@ -35,5 +36,10 @@ cpc_host_next:
 cpc_analytics_id: false
 cpc_piwik_domain: false
 cpc_piwik_id: false
+cpc_manet_url: http://example.manet.org/
 
 cpc_admin_ips: []
+
+cpc_spool_mails: false
+cpc_smtp_host: localhost
+cpc_smtp_port: 25

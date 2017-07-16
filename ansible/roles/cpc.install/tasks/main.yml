@@ -8,6 +8,7 @@
     name: '{{ cpc_user }}'
     state: present
     home: '{{ cpc_home }}'
+    shell: /bin/bash
 
 - name: Vérification mot de passe '{{ cpc_user }}'
   shell: 'cat /etc/shadow | egrep ^{{ cpc_user }}: | cut -d ":" -f 2 | wc -c'
@@ -47,6 +48,13 @@
     - lib/vendor/SolrServer/solr/data
     - log
     - web/images/tmp/xspchart
+
+- name: Création répertoire mysql
+  file:
+    dest: '{{ cpc_home }}/mysql'
+    state: directory
+    owner: '{{ cpc_user }}'
+    mode: 0777
 
 - name: Génération secret
   shell: 'head -c 50 /dev/urandom | base64 > {{ cpc_home }}/secret'
@@ -127,6 +135,21 @@
     src: compose.j2
     dest: /usr/local/bin/dc-{{ cpc_instance_name }}
     mode: 0755
+
+- name: Autorisation exécution sudo
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    line: '{{ cpc_user }}  ALL=(ALL) NOPASSWD: {{ item }}'
+    validate: 'visudo -cf %s'
+  with_items:
+    - '/usr/local/bin/dc-{{ cpc_instance_name }}'
+    - '/usr/local/bin/docker-compose'
+
+- name: Configuration logrotate
+  template:
+    src: logrotate.j2
+    dest: '/etc/logrotate.d/cpc_{{ cpc_instance_name }}'
 
 - name: Arrêt containers
   command: 'docker-compose -p {{ cpc_instance_name }} stop'

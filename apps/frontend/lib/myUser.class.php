@@ -10,10 +10,10 @@ class myUser extends sfBasicSecurityUser
     }
 
     if(Doctrine::getTable('Citoyen')->findOneByEmail($email)) {
-      $action->getUser()->setFlash('error', 'Cette adresse email existe déjà.');
+      $action->getUser()->setFlash('error', 'Cette adresse e-mail existe déjà.');
       return false;
     }
-    
+
     $citoyen = new Citoyen;
     $citoyen->login = $nom;
     $citoyen->email = $email;
@@ -25,23 +25,23 @@ class myUser extends sfBasicSecurityUser
     self::connexion($citoyen, $action);
 
     echo $action->getComponent('mail', 'send', array(
-      'subject'=>'Inscription NosDéputés.fr', 
-      'to'=>array($citoyen->email), 
-      'partial'=>$partial, 
-      'mailContext'=>array('slug' => $citoyen->slug, 'activation_id' => $citoyen->activation_id) 
+      'subject'=>'Inscription NosDéputés.fr',
+      'to'=>array($citoyen->email),
+      'partial'=>$partial,
+      'mailContext'=>array('slug' => $citoyen->slug, 'activation_id' => $citoyen->activation_id)
       ));
 
     $action->getUser()->getAttributeHolder()->remove('partial');
-    $action->getUser()->setFlash('notice', 'Vous allez recevoir un email de confirmation. Pour finaliser votre inscription, veuillez cliquer sur le lien d\'activation contenu dans cet email.');
+    $action->getUser()->setFlash('notice', 'Vous allez recevoir un e-mail de confirmation. Pour finaliser votre inscription, veuillez cliquer sur le lien d\'activation contenu dans cet e-mail.');
     return $citoyen->getId();
   }
 
-  public static function SignIn($login, $password, $remember, $action) 
+  public static function SignIn($login, $password, $remember, $action)
   {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-	
+
     $reset_mdp = '<a href="'.url_for('@reset_mdp').'">Mot de passe oublié ?</a>';
-    
+
     if(Doctrine::getTable('Citoyen')->findOneByLogin($login))
     {
       $user = Doctrine::getTable('Citoyen')->findOneByLogin($login);
@@ -59,17 +59,17 @@ class myUser extends sfBasicSecurityUser
       $action->getUser()->setFlash('error', 'Utilisateur ou mot de passe incorrect<br />'.$reset_mdp);
       return;
     }
-    
+
     if($user->activation_id != null)
     {
       $user->activation_id = null;
       $user->save();
     }
-    
+
     self::connexion($user, $action);
-    
+
     $action->getUser()->setFlash('notice', 'Vous vous êtes connecté avec succès.');
-    
+
     if($remember)
     {
       $secret_key = sfConfig::get('app_secret_key');
@@ -79,7 +79,7 @@ class myUser extends sfBasicSecurityUser
     }
     return $user->id;
   }
-  
+
   protected static function connexion($user, $action)
   {
     // signin

@@ -1,6 +1,7 @@
   <div class="boite_depute" id="b1">
     <h2>Informations</h2>
       <ul>
+        <?php if ($main_fonction) echo "<li><b>$main_fonction de l'Assemblée nationale</b></li>"; ?>
         <?php if (!$parlementaire->isEnMandat()) : ?>
         <li>Mandat clos rempli du <?php
 echo myTools::displayDate($parlementaire->debut_mandat).' au '.myTools::displayDate($parlementaire->fin_mandat);
@@ -143,7 +144,7 @@ if(myTools::isFinLegislature()) {
     <?php else : ?>
     <h2>Suivre l'activité du député</h2>
       <table width=100% style="text-align: center"><tr>
-        <td width=33%><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/email.png', 'alt="Email"'); ?></a><br/><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>">par email</a></td>
+        <td width=33%><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/email.png', 'alt="e-mail"'); ?></a><br/><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>">par e-mail</a></td>
         <td width=33%><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>">par RSS</a></td>
         <td width=33%><a href="<?php echo url_for('@widget?depute='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/widget.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for('@widget?depute='.$parlementaire->slug); ?>">sur mon site</a></td>
       </tr></table>
@@ -168,8 +169,8 @@ if (myTools::isFinLegislature()) {
       <?php echo include_component('documents', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'type' => 'loi')); ?>
       <p class="suivant"><?php echo link_to('Toutes ses propositions de loi cosignées', '@parlementaire_documents?slug='.$parlementaire->slug.'&type=loi'); ?></p>
 
-    <?php if ($historique) : ?>
-    <h2>Historique de mandat</h2>
+    <?php if ($historique || $anciens_mandats) : ?>
+    <h2>Historique des fonctions et mandats</h2>
       <ul><?php foreach ($historique as $resp) : ?>
         <li><?php
 if ($resp->type == "groupe") {
@@ -180,6 +181,9 @@ $fonction = preg_replace('/^(.*(président|rapporteur|questeur)[^,]*)/i', '<stro
 echo " ($fonction du ";
 echo myTools::displayDate($resp->debut_fonction).' au '.myTools::displayDate($resp->fin_fonction).')';
         ?></li>
+      <?php endforeach;
+      foreach ($anciens_mandats as $m) : ?>
+        <li><?php echo $m; ?></li>
       <?php endforeach ?></ul>
     <?php endif ?>
 

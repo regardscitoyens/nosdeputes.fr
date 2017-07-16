@@ -17,17 +17,10 @@ class plotActions extends sfActions {
     $this->forward404Unless(preg_match('/^(legislature|lastyear|20\d{2}20\d{2})$/', $this->time));
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
-    $this->questions = $request->getParameter('questions');
-    if (!$this->questions)
-      $this->questions = 'false';
-    $this->link = $request->getParameter('link');
-    if (!$this->link)
-      $this->link = 'false';
-    $this->drawAction = $request->getParameter('drawAction');
-    if (!$this->drawAction)
-      $this->drawAction = "draw";
-    $this->mapId = $request->getParameter('mapId');
-    $this->forward404Unless($this->mapId && preg_match('/^Map_.*_\d+\.map$/', $this->mapId));
+    $this->questions = $request->getParameter('questions', false);
+    $this->link = $request->getParameter('link', false);
+    $this->histogram = $request->getParameter('histogram', false);
+    $this->format = $request->getParameter('format', 'draw');
     sfConfig::set('sf_web_debug', false);
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
@@ -37,9 +30,9 @@ class plotActions extends sfActions {
   }
 
   public function executeGeneratePlotGroupes(sfWebRequest $request) {
-    $this->drawAction = $request->getParameter('drawAction');
-    if (!$this->drawAction)
-      $this->drawAction = "draw";
+    $this->format = $request->getParameter('format');
+    if (!$this->format)
+      $this->format = "draw";
     $this->mapId = $request->getParameter('mapId');
     $this->forward404Unless($this->mapId && preg_match('/^Map_\d+\.map$/', $this->mapId));
     $this->type = $request->getParameter('type');

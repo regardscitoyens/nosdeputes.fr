@@ -18,3 +18,18 @@
     Allow from all
   </Proxy>
 </VirtualHost>
+
+{% for alias in cpc_domain_aliases %}
+<VirtualHost *:80>
+  ServerName {{ alias }}
+  ServerSignature Off
+
+  Redirect / http://{{ cpc_domain }}/
+
+  <Location />
+    Order deny,allow
+    Allow from all
+  </Location>
+</VirtualHost>
+
+{% endfor %}

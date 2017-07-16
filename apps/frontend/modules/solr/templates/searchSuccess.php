@@ -128,14 +128,9 @@ $(document).ready(function() {
     periode[nb_li] = date_li[0];
     nb_li++;
   });
-  if(bh <= 30) {
-    $(".date li").each(function() {
-      nh = $(this).height() * 2; $(this).height(nh);
-    });
-    bh = bh * 2;
-  }
-  if(bh <= 170) { bh = bh + 30; $(".date").height(bh); }
-  $(".date").fadeIn(300); /* à revoir */
+  $(".date li").each(function() {
+    $(this).height($(this).height() * 65 / bh);
+  });
 	$(function() {
 		$("#slider_date_graph").slider({
 			range: true,
@@ -225,19 +220,45 @@ if($graph) {
 <?php endif;
 global $facetName2HumanName;
 $facetName2HumanName = array(
-			     'Parlementaires' => 'Filtrer par député',
-			     'Parlementaire' => 'Députés',
-			     'Types' => 'Filtrer par type de résultat',
-			     'Tags' => 'Filtrer par mot-clé',
-			     'Texteloi' => 'Documents parlementaires',
-			     'NonObjectPage' => 'Départements',
-			     'QuestionEcrite' => 'Questions écrites',
-			     'Tags' => 'Filtrer par mot-clé',
-                             'Intervention' => 'Interventions',
-                             'Amendement' => 'Amendements',
-                             'Commentaire' => 'Commentaires',
-                             'Section' => 'Dossiers',
-			     'Organisme' => 'Organismes'
+  'Types' => 'Filtrer par type de résultat',
+    'NonObjectPage' => 'Départements',
+    'Parlementaire' => 'Députés',
+    'Organisme' => 'Organismes',
+    'Section' => 'Dossiers',
+    'Intervention' => 'Interventions',
+    'Amendement' => 'Amendements',
+    'Texteloi' => 'Documents parlementaires',
+    'QuestionEcrite' => 'Questions écrites',
+    'Commentaire' => 'Commentaires',
+  'Sorts' => "Filtrer par sort de l'amendement",
+    'adopte' => 'Adoptés',
+    'rejete' => 'Rejetés',
+    'retire' => 'Retirés',
+    'retire avant seance' => 'Retirés avant séance',
+    'non soutenu' => 'Non défendus',
+    'tombe' => 'Tombés',
+    'irrecevable' => 'Irrecevables',
+    'indefini' => 'En attente de discussion',
+  'Types organismes' => "Filtrer par type d'organisme",
+    'groupe' => 'Groupes politiques',
+    'parlementaire' => 'Missions parlementaires',
+    'extra' => 'Organismes extra-parlementaires',
+    'groupes' => "Groupes d'étude et d'amitié",
+  'Types interventions' => 'Filtrer par type de séance',
+    'loi' => 'Débats en séance plénière',
+    'commission' => 'Réunions de commissions',
+    'question' => 'Questions au gouvernement',
+  'Types documents' => 'Filtrer par type de document',
+    'avis' => 'Avis',
+    'lettre' => 'Lettres',
+    'projet de loi' => 'Projets de loi',
+    'proposition de loi' => 'Propositions de loi',
+    'proposition de resolution' => 'Propositions de résolution',
+    'rapport' => 'Rapports',
+    "rapport d'information" => "Rapports d'information",
+    'texte de la commission' => 'Textes adoptés en commission',
+  'Parlementaires' => 'Filtrer par député',
+  'Tags' => 'Filtrer par mot-clé'
 );
 function facet2Human($id, $facet = "") {
   global $facetName2HumanName;

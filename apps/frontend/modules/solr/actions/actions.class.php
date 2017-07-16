@@ -44,7 +44,8 @@ class solrActions extends sfActions
       if ($ob = $request->getParameter('object_name'))
         $ob = '&object_name='.$ob;
       return $this->redirect('@recherche_solr?query='.$search.$ob);
-    }
+    } else if ($request->hasParameter('search'))
+      return $this->redirect('@recherche_home?sort=1');
 
     $this->query = $request->getParameter('query');
     $this->query = preg_replace('#^https?://#', '', $this->query);
@@ -62,6 +63,8 @@ class solrActions extends sfActions
     }
     if ($tags = $request->getParameter('tag')) {
       foreach(explode(',', $tags) as $tag) {
+        if (!$on && preg_match('/^(type|sort)=/', $tag))
+          continue;
         $this->selected['tag'][$tag] = 1;
         $fq .= ' tag:"'.$tag.'"';
       }
@@ -77,7 +80,7 @@ class solrActions extends sfActions
     if (myTools::isLegislatureCloturee()) {
         $date_fin = preg_replace("/-..$/", "-01T00:00:00Z", myTools::getFinLegislature());
     }
-    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date,description', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>$date_debut, "facet.date.end"=>$date_fin, "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge", "facet.limit" => 600);
+    $params = array('hl'=>'true', 'fl' => 'id,object_id,object_name,date,description', 'hl.fragsize'=>500, "facet"=>"true", "facet.field"=>array("object_name","tag"), "facet.date" => "date", "facet.date.start"=>$date_debut, "facet.date.end"=>$date_fin, "facet.date.gap"=>"+1MONTH", 'fq' => $fq, "facet.date.include" => "edge", "facet.limit" => 2000);
     $this->sort_type = 'pertinence';
 
     if (!$this->query) {
@@ -145,16 +148,16 @@ class solrActions extends sfActions
 
     $period = '';
 
+    $jours_max = 90; // Seuil en nb de jours qui détermine l'affichage par jour ou par mois d'une période
     if ($date) {
       $this->selected['date'][$date] = $date;
       if (preg_match('/\d{8}/',$date)) {
-	$date = preg_replace('/(\d{4})(\d{2})(\d{2})/', '\1-\2-\3T00:00:00Z', $date);
+        $date = preg_replace('/(\d{4})(\d{2})(\d{2})/', '\1-\2-\3T00:00:00Z', $date);
       }
       $dates = explode(',', $date);
       list($from, $to) = $dates;
 
       $nbjours = round((strtotime($to) - strtotime($from))/(60*60*24)+1);
-      $jours_max = 90; // Seuil en nb de jours qui détermine l'affichage par jour ou par mois d'une période
 
       $comp_date_from = explode("T", $from);
       $comp_date_from = explode("-", $comp_date_from[0]);
@@ -190,6 +193,12 @@ class solrActions extends sfActions
       $params['facet.date.start'] = $from;
       $params['facet.date.end'] = $to;
       $params['facet.date.gap'] = '+1'.$period;
+    } else if (time() - strtotime($date_debut) < $jours_max*60*60*24) {
+      $period = 'DAY';
+      $this->vue = 'par_jour';
+      $params['facet.date.start'] = date ('Y-m-d', strtotime($date_debut)-(3600*2+1)).'T23:59:59Z';;
+      $params['facet.date.end'] = date ('Y-m-d', time()).'T23:59:59Z';
+      $params['facet.date.gap'] = '+1'.$period;
     }
 
     $this->start = $params['facet.date.start'];
@@ -215,7 +224,7 @@ class solrActions extends sfActions
       return $this->redirect($results['response']['docs'][0]['object']->getLink());
     }
 
-    //Reconstitut les résultats
+    //Reconstitue les résultats
     $this->results = $results['response'];
     for($i = 0 ; $i < count($this->results['docs']) ; $i++) {
       $res = $this->results['docs'][$i];
@@ -235,7 +244,8 @@ class solrActions extends sfActions
           $h = preg_replace('/.*=/', '', $h);
           array_push($high_res, $h);
         }
-        $this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
+        $cleanpersonne = preg_replace("/, .*$/", "", $this->results['docs'][$i]['personne']);
+        $this->results['docs'][$i]['highlighting'] = preg_replace('/^'.$cleanpersonne.' /', '', implode('...', $high_res));
       }
       else if (isset($this->results['docs'][$i]['description'])) {
 	$this->results['docs'][$i]['highlighting'] = $this->results['docs'][$i]['description'];
@@ -256,23 +266,60 @@ class solrActions extends sfActions
       $this->facet['type']['name'] = 'Types';
       $this->facet['type']['values'] = $results['facet_counts']['facet_fields']['object_name'];
 
+      //Prépare les facets pour les types d'interventions
+      if ($on == 'Intervention') {
+        $this->facet['intervtypes']['prefix'] = 'type=';
+        $this->facet['intervtypes']['facet_field'] = 'tag';
+        $this->facet['intervtypes']['name'] = 'Types interventions';
+      }
+
+      //Prépare les facets pour les types d'organismes
+      if ($on == 'Organisme') {
+        $this->facet['orgtypes']['prefix'] = 'type=';
+        $this->facet['orgtypes']['facet_field'] = 'tag';
+        $this->facet['orgtypes']['name'] = 'Types organismes';
+      }
+
+      //Prépare les facets des sorts pour les amendements
+      if ($on == 'Amendement') {
+        $this->facet['sorts']['prefix'] = 'sort=';
+        $this->facet['sorts']['facet_field'] = 'tag';
+        $this->facet['sorts']['name'] = 'Sorts';
+      }
+
+      //Prépare les facets pour les types de documents
+      if ($on == 'Texteloi') {
+        $this->facet['documenttypes']['prefix'] = 'type=';
+        $this->facet['documenttypes']['facet_field'] = 'tag';
+        $this->facet['documenttypes']['name'] = 'Types documents';
+      }
+
       //Prépare les facets des parlementaires
       $this->facet['parlementaires']['prefix'] = 'parlementaire=';
       $this->facet['parlementaires']['facet_field'] = 'tag';
       $this->facet['parlementaires']['name'] = 'Parlementaires';
 
-      $tags = $results['facet_counts']['facet_fields']['tag'];
+
+      //Prépare les facets des mots-clés
       $this->facet['tag']['prefix'] = '';
       $this->facet['tag']['facet_field'] = 'tag';
       $this->facet['tag']['name'] = 'Tags';
-      foreach($tags as $tag => $nb ) {
+
+      foreach($results['facet_counts']['facet_fields']['tag'] as $tag => $nb ) {
         if (!$nb)
         continue;
         if (!preg_match('/=/', $tag))
           $this->facet['tag']['values'][$tag] = $nb;
-        if (preg_match('/^parlementaire=(.*)/', $tag, $matches)) {
+        else if (preg_match('/^parlementaire=(.*)/', $tag, $matches))
           $this->facet['parlementaires']['values'][$matches[1]] = $nb;
-        }
+        else if ($on == 'Amendement' && preg_match('/^sort=(.*)/', $tag, $matches))
+          $this->facet['sorts']['values'][$matches[1]] = $nb;
+        else if ($on == 'Texteloi' && preg_match('/^type=(.*)/', $tag, $matches))
+          $this->facet['documenttypes']['values'][$matches[1]] = $nb;
+        else if ($on == 'Intervention' && preg_match('/^type=(.*)/', $tag, $matches))
+          $this->facet['intervtypes']['values'][$matches[1]] = $nb;
+        else if ($on == 'Organisme' && preg_match('/^type=(.*)/', $tag, $matches))
+          $this->facet['orgtypes']['values'][$matches[1]] = $nb;
       }
     }
 

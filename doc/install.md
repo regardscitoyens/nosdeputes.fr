@@ -9,12 +9,15 @@ sudo apt-get install git
 sudo tasksel install lamp-server php5-cli
 sudo apt-get install phpmyadmin # optionnel mais recommandé
 sudo apt-get install imagemagick php5-imagick # Pour la carte des circonscriptions
+sudo apt-get install php5-gd # Pour les photos et plots sur certaines configs
 ```
 
 Pour le parsing :
 
 ```bash
 sudo aptitude install libwww-mechanize-perl libfile-path-perl
+sudo aptitude install libxml2-devel libxslt-devel python-devel
+sudo pip install bs4 lxml
 ```
 
 ## Installation

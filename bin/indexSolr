@@ -51,13 +51,12 @@ cd $PATH_APP
 
 
 if test -e log/solr/commands.log.lock; then
-    sort -u log/solr/commands.log.lock > log/solr/commands.log.lock.tmp
-    split -a 4 -d -l 300 log/solr/commands.log.lock.tmp log/solr/commands.log.$(date +%y%m%d%H%M)-
-    rm -f log/solr/commands.log.lock log/solr/commands.log.lock.tmp
+    split -a 4 -d -l 300 log/solr/commands.log.lock log/solr/commands.log.$(date +%y%m%d%H%M)-
+    rm -f log/solr/commands.log.lock
 fi
 
 if ! test -e log/solr/commands.log.lock; then
-    nextcommand=$(find log/solr/ -name 'commands.log.*' | grep -v lock | head -n 1)
+    nextcommand=$(ls log/solr/commands.log.* 2> /dev/null | grep -v lock | head -n 1)
     if test "$nextcommand" ; then
         mv $nextcommand log/solr/commands.log.lock
     fi

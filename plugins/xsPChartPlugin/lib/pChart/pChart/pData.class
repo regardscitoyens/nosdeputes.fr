@@ -53,6 +53,7 @@
    function pData()
     {
      $this->Data                           = array();
+     $this->Context                        = array();
      $this->DataDescription                = array();
      $this->DataDescription["Position"]    = "Name";
      $this->DataDescription["Format"]["X"] = "number";
@@ -114,6 +115,29 @@
           }
         }
        fclose($handle);
+      }
+    }
+
+   function AddContext($Value,$Serie="Serie1")
+    {
+     if (is_array($Value) && count($Value) == 1)
+      $Value = $Value[0];
+
+     $ID = 0;
+     for($i=0;$i<=count($this->Data);$i++)
+      { if(isset($this->Context[$i][$Serie])) { $ID = $i+1; } }
+
+     if ( count($Value) == 1 )
+      {
+       $this->Context[$ID][$Serie] = $Value;
+      }
+     else
+      {
+       foreach($Value as $key => $Val)
+        {
+         $this->Context[$ID][$Serie] = $Val;
+         $ID++;
+        }
       }
     }
 

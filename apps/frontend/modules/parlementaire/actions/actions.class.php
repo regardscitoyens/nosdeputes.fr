@@ -153,13 +153,24 @@ class parlementaireActions extends sfActions
 
 
     $this->commission_permanente = null;
+    $this->main_fonction = null;
     $this->missions = array();
     foreach ($this->parlementaire->getResponsabilites() as $resp) {
       $permas = myTools::getCommissionsPermanentes();
       if (in_array($resp->Organisme->slug, $permas))
         $this->commission_permanente = $resp;
       else array_push($this->missions, $resp);
+      if (preg_match('/^Bureau/', $resp->nom) && preg_match('/(président|questeur)e?$/i', $resp->fonction))
+        $this->main_fonction = ucfirst($resp->fonction);
     }
+
+    $this->anciens_mandats = array();
+    foreach (unserialize($this->parlementaire->getAnciensMandats()) as $m)
+      if (preg_match("/^(.*) \/ (.*) \/ (.*)$/", $m, $match)) {
+        if ($match[2] != "")
+          $this->anciens_mandats[] = ucfirst($this->parlementaire->getParlFonction())." du $match[1] au $match[2] ($match[3])";
+      }
+    rsort($this->anciens_mandats);
   }
 
   public function executePreview(sfWebRequest $request) {
@@ -258,6 +269,7 @@ class parlementaireActions extends sfActions
       ->where('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat')
       ->andWhere('o.type = ?', 'groupe')
       ->andWhere('o.nom = ?', $nom)
+      ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL 10 DAY) >= po.debut_fonction)')
       ->orderBy('po.fin_fonction, imp DESC, p.nom_de_famille ASC');
     $this->parlementaires = array();
     $this->total = 0;
@@ -276,6 +288,7 @@ class parlementaireActions extends sfActions
       ->where('o.nom = ?', $nom)
       ->andWhere('p.fin_mandat IS NOT NULL')
       ->andWhere('p.fin_mandat >= p.debut_mandat')
+      ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL 10 DAY) >= po.debut_fonction)')
       ->orderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille ASC');
     foreach ($query->execute() as $depute) {
       if (isset($this->parlementaires[-200])) $this->parlementaires[-200][] = $depute;
@@ -337,7 +350,8 @@ class parlementaireActions extends sfActions
         ->leftJoin('p.ParlementaireOrganisme po')
         ->leftJoin('po.Organisme o')
         ->where('o.slug = ?', $orga)
-        ->andWhere('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat')
+        ->andWhere('(p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat)')
+        ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL 10 DAY) >= po.debut_fonction)')
         ->orderBy("po.fin_fonction, po.importance DESC, p.nom_de_famille ASC");
       $this->parlementaires = array();
       $this->total = 0;
@@ -345,7 +359,7 @@ class parlementaireActions extends sfActions
         $imp = $depute->imp;
         if ($depute->fin_fonction)
           $imp -= 100;
-        else $this->total++;
+        else if (!preg_match('/[âa]ge$/i', $depute->fonction)) $this->total++;
         if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
         else $this->parlementaires[$imp] = array($depute);
       }
@@ -356,6 +370,7 @@ class parlementaireActions extends sfActions
         ->where('o.slug = ?', $orga)
         ->andWhere('p.fin_mandat IS NOT NULL')
         ->andWhere('p.fin_mandat >= p.debut_mandat')
+        ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL 10 DAY) >= po.debut_fonction)')
         ->orderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille ASC');
       foreach ($query->execute() as $depute) {
         if (isset($this->parlementaires[-200])) $this->parlementaires[-200][] = $depute;

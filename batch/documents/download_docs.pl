@@ -45,6 +45,9 @@ foreach $baseurl (@urls) {
     $url =~ s/\/\(index\)\/[a-z]+$/.asp/;
     next if $url =~ /(dossiers|i0562.asp)/i;
     next if $url =~ /\.pdf$/i;
+    next if $url =~ /\/documents\/index/i;
+    next if $url =~ /\/budget\/redirect\//i;
+    next if $url =~ /\/$legislature\/liste\//i;
     next if !($url =~ /nale\.fr\/$legislature\//);
     next if $url =~ /app\.(eu\.)?readspeaker\.com/i;
     $file = $url;
@@ -63,11 +66,7 @@ foreach $baseurl (@urls) {
       $type = "ta";
     }
     if (-e "$type/$file") {
-      system("grep -e 'pas encore édité' $type/$file > /dev/null");
-      if ($? != 0) {
-        next;
-      }
-      system("grep -e 'DOCUMENT_DISTRIBUE\" content=\"N\">' $type/$file > /dev/null");
+      system("grep -e 'pas encore ..\\?dit..d\\?\\|disponible en format <.*pdf' $type/$file > /dev/null");
       if ($? != 0) {
         next;
       }
@@ -78,8 +77,8 @@ foreach $baseurl (@urls) {
         open FILE, ">:utf8", "$type/$file.tmp";
         print FILE $a->content;
         close FILE;
-        system("grep -e 'pas encore édité' $type/$file.tmp > /dev/null");
-        if ($? != 0 || !(-e "$type/$file")) {
+        system("diff $type/$file $type/$file.tmp 2> /dev/null | grep . > /dev/null");
+        if ($? == 0 || !(-e "$type/$file")) {
           rename "$type/$file.tmp", "$type/$file";
           print "$type/$file\n";
         } else {

@@ -85,14 +85,17 @@ class Parlementaire extends BaseParlementaire
     return array($prenom, $nom, $part, $nompart);
   }
 
-  public function getStatut($link = 0) {
+  public function getParlFonction() {
     if ($this->type == 'depute') {
-        if ($this->sexe == 'F') $type = 'députée';
-        else $type = 'député';
-    } else {
-        if ($this->sexe == 'F') $type = 'sénatrice';
-        else $type = 'sénateur';
+      if ($this->sexe == 'F') return 'députée';
+      return 'député';
     }
+    if ($this->sexe == 'F') return 'sénatrice';
+    return 'sénateur';
+  }
+
+  public function getStatut($link = 0) {
+    $type = $this->getParlFonction();
     $statut = "";
     if (!$this->isEnMandat()) {
       if ($this->sexe == 'F') $statut = 'ancienne ';
@@ -213,9 +216,12 @@ class Parlementaire extends BaseParlementaire
     }
   }
 
-  public function getOrganismes($old=false) {
+  public function getOrganismes($old=false, $removeShortOnes=false) {
     $res = array();
+    if ($removeShortOnes) $tendays = 10*24*60*60;
     foreach($this->getParlementaireOrganismes() as $po) {
+      if ($removeShortOnes && $po->fin_fonction && strtotime($po->fin_fonction) - strtotime($po->debut_fonction) < $tendays)
+        continue;
       if (($old && $po->fin_fonction) || (!$old && !$po->fin_fonction))
         array_push($res, $po);
     }
@@ -226,8 +232,8 @@ class Parlementaire extends BaseParlementaire
     return strcmp($b->fin_fonction.$b->debut_fonction, $a->fin_fonction.$a->debut_fonction);
   }
 
-  public function getHistorique() {
-    $histo = $this->getOrganismes(true);
+  public function getHistorique($removeShortOnes=false) {
+    $histo = $this->getOrganismes(true, $removeShortOnes);
     usort($histo, 'Parlementaire::historiqueSort');
     return $histo;
   }

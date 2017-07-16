@@ -1,7 +1,7 @@
 <div class="boite_citoyen">
   <div class="b_c_h"><div class="b_c_hg"></div><div class="b_c_hd"></div></div>
     <div class="b_c_cont">
-      <div class="b_c_photo">  
+      <div class="b_c_photo">
         <?php echo '<img src="'.url_for('@photo_citoyen?slug='.$user->slug).'" alt="Photo de '.$user->login.'"/>'; ?>
       </div>
       <div class="b_c_text">
@@ -52,7 +52,7 @@ if (!empty($user->url_site)) { echo '<li><a href="'.$user->url_site.'" rel="nofo
       <td colspan="2"><a href="<?php echo url_for('@edit_citoyen') ?>" tabindex="50" >Annuler</a> <input type="submit" value="Valider" tabindex="40" /></td>
     </tr>
     <tr class="cel2">
-      <th colspan="2"><a href="<?php echo url_for('@reset_mdp'); ?>" tabindex="60" onclick="javascript:if(!confirm('Recevoir un email de réinitialisation de mot de passe ?')) return false;">Mot de passe oublié ?</a></th>
+      <th colspan="2"><a href="<?php echo url_for('@reset_mdp'); ?>" tabindex="60" onclick="javascript:if(!confirm('Recevoir un e-mail de réinitialisation de mot de passe ?')) return false;">Mot de passe oublié ?</a></th>
     </tr>
   </table>
   </form>

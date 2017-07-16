@@ -132,6 +132,8 @@ class Seance extends BaseSeance
     foreach (Doctrine::getTable('Intervention')->createQuery('i')->where('i.seance_id = ?', $this->id)->execute() as $i) {
       $i->delete();
     }
+    $this->tagged = NULL;
+    $this->save();
   }
 
   public function countComments() {

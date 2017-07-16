@@ -8,7 +8,7 @@ foreach (myTools::getGroupesInfos() as $gpe) {
     continue;
   if (isset($groupes) && !in_array($gpe[1], $groupes))
     continue;
-  $txt_l += strlen($gpe[3]) + 4;
+  $txt_l += strlen($gpe[3]) + 2;
   if ($txt_l > $max_l) {
     echo '<br/>';
     $txt_l = 0;

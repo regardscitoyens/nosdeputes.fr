@@ -1,12 +1,20 @@
-<?php use_helper('Text') ?>
+<?php use_helper('Text');
+if (count(array_keys($parlementaires))) {
+  echo '<div class="plot_organisme">';
+  echo include_component('plot', 'groupes', array('plot' => 'organisme_'.$orga->id, 'membres' => $parlementaires, 'nolegend' => true));
+  echo '</div>';
+} ?>
 <h1><?php echo $orga->getNom(); $sf_response->setTitle($orga->getNom()); ?></h1>
-<?php if (isset($pagerRapports)) $nrap = $pagerRapports->getNbResults();
+<?php
+if (isset($pagerRapports)) $nrap = $pagerRapports->getNbResults();
 else $nrap = 0;
 if (isset($pagerSeances)) $nse = $pagerSeances->getNbResults();
 else $nse = 0;
 $ndep = 0;
 if ($page === "home") {
+  echo '<div class="article_organisme">';
   include_component('article', 'show', array('categorie'=>'Organisme', 'object_id'=>$orga->id));
+  echo '</div>';
   $divclass = "";
   $colonnes = 3;
   if ($nse || $nrap) {
@@ -15,8 +23,8 @@ if ($page === "home") {
   }
   if ($total && $pagerSeances->getPage() == 1 && ($pagerRapports->getPage() == 1)) {
     if ($orga->type == 'extra')
-      echo '<h2>Organisme extra-parlementaire composé de '.$total.' député'.($total > 1 ? 's' : '').'&nbsp;:</h2>';
-    else echo '<h2>'.(preg_match('/commission/i', $orga->getNom()) ? 'Comm' : 'M').'ission parlementaire composée de '.$total.' député'.($total > 1 ? 's' : '').'&nbsp;:</h2>';
+      echo '<h2>Organisme extra-parlementaire composé de '.$total.' député'.($total > 1 ? 's' : '').'</h2>';
+    else echo '<h2>'.(preg_match('/commission/i', $orga->getNom()) ? 'Comm' : 'M').'ission parlementaire composée de '.$total.' député'.($total > 1 ? 's' : '').'</h2>';
   }
   echo $divclass.'<div class="liste">';
   $listimp = array_keys($parlementaires);
@@ -32,11 +40,6 @@ if ($page === "home") {
 if ($page === "home" && ($nse || $nrap))
   echo '</div><div class="listeright">';
 else echo '<div>';
-if ($ndep > 1) {
-  echo '<div class="plot_seance aligncenter">';
-  echo include_component('plot', 'groupes', array('plot' => 'organisme_'.$orga->id, 'membres' => $parlementaires));
-  echo '</div>';
-}
 if ($page != "seances" && $nrap) {
   echo '<h3>';
   if ($page === "home")

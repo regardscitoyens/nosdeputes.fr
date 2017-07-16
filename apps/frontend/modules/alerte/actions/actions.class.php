@@ -66,9 +66,9 @@ class alerteActions extends sfActions
     if ($request->isMethod('post')) {
       if ($request->getParameter('confirmed')) {
 	$this->alerte->delete();
-	$this->getUser()->setFlash('notice', 'Votre alerte email a bien été supprimée');
+	$this->getUser()->setFlash('notice', 'Votre alerte e-mail a bien été supprimée');
       }else
-	$this->getUser()->setFlash('error', 'Votre alerte email n\'a pas été supprimée');
+	$this->getUser()->setFlash('error', 'Votre alerte e-mail n\'a pas été supprimée');
       return $this->redirectPostSave();
     }
   }
@@ -120,13 +120,13 @@ class alerteActions extends sfActions
 	}
 	if ($this->submit == 'Créer') {
 	  if ($alerte->confirmed)
-	    $this->getUser()->setFlash('notice', 'Votre alerte email a été créée');
+	    $this->getUser()->setFlash('notice', 'Votre alerte e-mail a été créée');
 	  else {
 	    $this->confirmeAlerte($alerte);
-	    $this->getUser()->setFlash('notice', 'Votre alerte email a été créée, merci de confirmer votre abonnement par email');
+	    $this->getUser()->setFlash('notice', 'Votre alerte e-mail a été créée, merci de confirmer votre abonnement par e-mail');
 	  }
 	}else {
-	  $this->getUser()->setFlash('notice', 'Votre alerte email a été modifiée');
+	  $this->getUser()->setFlash('notice', 'Votre alerte e-mail a été modifiée');
 	}
 	return $this->redirectPostSave($form->getObject());
       }
@@ -136,13 +136,13 @@ class alerteActions extends sfActions
   private function confirmeAlerte($alerte) {
     $message = $this->getMailer()->compose(array('nosdeputes@nosdeputes.fr' => '"Regards Citoyens"'),
 					   $alerte->email,
-					   '[NosDeputes.fr] Confirmation d\'Alerte email - '.$alerte->titre);
+					   '[NosDeputes.fr] Confirmation d\'Alerte e-mail - '.$alerte->titre);
     $text = $this->getPartial('mail/sendConfirmationAlerte', array('alerte' => $alerte));
     $message->setBody($text, 'text/plain');
     try {
       $this->getMailer()->send($message);
     }catch(Exception $e) {
-      echo "Oups could not send email ($text)\n";
+      echo "Oups could not send e-mail ($text)\n";
     }
   }
 }

@@ -1,7 +1,8 @@
 body {
   margin: 0;
   padding: 0;
-  font: 11px Verdana, Tahoma, Geneva, Arial, Sans-serif;
+  font-size: 11px;
+  font-family: Liberation Sans, sans-serif;
   color: #484848;
   background: #e4e4e1 url('images/mosaique.gif') repeat;
 }
@@ -43,7 +44,7 @@ a:hover {
   border-bottom: 1px solid #E0E0DD;
   width: 650px;
   max-height: 80px;
-        min-height: 70px;
+  min-height: 70px;
   margin: 0;
   padding: 0;
   margin-left: 7px;
@@ -62,8 +63,8 @@ a:hover {
   border: 1px solid #E0E0DD;
   border-bottom: none;
   bottom: 0;
-  list-style:none;
-  list-style-image:none;
+  list-style: none;
+  list-style-image: none;
   margin: 0;
   padding: 0;
   position: absolute;
@@ -94,7 +95,7 @@ a:hover {
   width: 350px;
 }
 .solrleft {
-  float:left;
+  float: left;
   width: 650px;
 }
 .solr h1 {
@@ -125,10 +126,10 @@ a:hover {
   float: right;
 }
 .solr .mail, .solr .facets, .alerte .mail {
-  border:1px solid #E0E0DD;
-  margin:15px 3px 0px 15px;
+  border: 1px solid #E0E0DD;
+  margin: 15px 3px 0px 15px;
   padding: 0px 10px 10px 10px;
-  width:210px;
+  width: 210px;
 }
 
 .solr .options h3, .alerte h3 {
@@ -165,20 +166,20 @@ a:hover {
   margin-top: 5px;
 }
 .solr .pager {
-  clear:both;
-  padding-bottom:15px;
-  padding-top:15px;
+  clear: both;
+  padding-bottom: 15px;
+  padding-top: 15px;
 }
 
 /* Widget page d'accueil */
 .box_widget h2 {
   background: #9CDAE1 url("images/fond_translucide.png");
-  font-size:1.4em;
-  line-height:1.4em;
-  margin:0;
-  padding-left:5px;
-  text-align:left;
-  text-shadow:0 0 4px #FFFFFF;
+  font-size: 1.4em;
+  line-height: 1.4em;
+  margin: 0;
+  padding-left: 5px;
+  text-align: left;
+  text-shadow: 0 0 4px #FFFFFF;
 }
 .box_widget {
   position: relative;
@@ -193,7 +194,7 @@ a:hover {
   max-height: 230px;
 }
 .commentaire_widget {
-  clear:both;
+  clear: both;
   height: 104px;
   padding: 15px;
   padding-top: 11px;
@@ -234,6 +235,7 @@ a:hover {
   height: 400px;
   background-color: #FAFAFA;
   float: left;
+  margin-bottom: 16px;
 }
 
 .box_repartition {
@@ -273,13 +275,13 @@ a:hover {
   background-color: #f2e2b5;
 }
 .box_repartition h2, .box_tags h2, .box_news h2 {
-  background-image:url("images/fond_translucide.png");
-  font-size:1.4em;
-  line-height:1.4em;
-  margin:0;
-  padding-left:5px;
-  text-align:left;
-  text-shadow:0 0 4px #FFFFFF;
+  background-image: url("images/fond_translucide.png");
+  font-size: 1.4em;
+  line-height: 1.4em;
+  margin: 0;
+  padding-left: 5px;
+  text-align: left;
+  text-shadow: 0 0 4px #FFFFFF;
 }
 #loupe {
   position: fixed;
@@ -308,9 +310,9 @@ a:hover {
 /* Synthèse */
 .liste_deputes_top  {
   margin: 20px 0px 40px 0;
-  padding:5px;
+  padding: 5px;
   border: 1px dashed #aeaeae;
-  text-align:justify;
+  text-align: justify;
 }
 .tableau_synthese {
   height: 500px;
@@ -330,6 +332,7 @@ a:hover {
 .synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
 .synthese td.p { width: 112px; }
 .synthese th.p { width: 122px; border-left: 13px solid #FFF; }
+.synthese th.p.gpes { width: 119px; border-left: 5px solid #FFF; }
 .synthese .we { width: 70px; }
 .synthese .cp { width: 57px; }
 .synthese .ci { width: 57px; }
@@ -353,7 +356,7 @@ a:hover {
 .coms {
   width: 25px;
   height: 25px;
-  font-family: verdana;
+  font-family: Liberation Sans, sans-serif;
   text-align: center;
   color: #000;
   font-size: 0.8em;
@@ -602,17 +605,17 @@ a:hover {
 
 #contenu {
   width: 1060px;
-  overflow:hidden;
+  overflow: hidden;
   margin: 0 auto;
-  padding:0;
+  padding: 0;
 }
 
 h1 {
   font-size: 1.5em;
   color: #6F6F6F;
-  font-family: Verdana, Tahoma, Geneva, Arial, Sans-serif;
-  margin-top:20px;
-  margin-bottom:10px;
+  font-family: Liberation Sans, sans-serif;
+  margin-top: 20px;
+  margin-bottom: 10px;
   text-align: center;
 }
 
@@ -641,14 +644,14 @@ h1 {
 /* top - barre du haut */
 
 #top {
-  height:32px;
+  height: 32px;
   width: 1060px;
   background: url('images/top.png') no-repeat;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .initiative {
-  float:left;
+  float: left;
 }
 .initiative a {
   display: block;
@@ -700,24 +703,24 @@ h1 {
 }
 
 .identification {
-  float:right;
+  float: right;
 }
 
 .identification p {
-  margin:0;
-  padding:0;
+  margin: 0;
+  padding: 0;
 }
 
 .identification form {
-  margin:3px 0 0 0;
+  margin: 3px 0 0 0;
 }
 
 .identification input {
-  float:left;
-  width:120px;
-  height:14px;
-  border:0;
-  margin:0;
+  float: left;
+  width: 120px;
+  height: 14px;
+  border: 0;
+  margin: 0;
   background: url('images/top_input.png') no-repeat;
   padding: 3px 0 3px 10px;
   color: #656565;
@@ -725,64 +728,64 @@ h1 {
 }
 
 #loggued_top {
-  margin:6px 20px 0 0;
+  margin: 6px 20px 0 0;
   font-weight: bold;
 }
 
 #header_remember {
-  float:left;
-  width:14px;
-  margin:1px 9px 0 0;
-  padding:0;
-  background:none;
+  float: left;
+  width: 14px;
+  margin: 1px 9px 0 0;
+  padding: 0;
+  background: none;
 }
 
 #bt2 {
-  float:left;
+  float: left;
   width: 80px;
-  height:20px;
-  border:0;
-  margin:0 50px 0 0;
+  height: 20px;
+  border: 0;
+  margin: 0 50px 0 0;
   background: url('images/top_button2.png') no-repeat;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 #bt1 {
-  float:left;
+  float: left;
   width: 28px;
-  height:20px;
-  border:0;
-  margin:0 10px 0 0;
+  height: 20px;
+  border: 0;
+  margin: 0 10px 0 0;
   background: url('images/top_button1.png') no-repeat;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .loggued {
-  float:left;
+  float: left;
 }
 
 /* header - logo */
 
 #header {
   width: 1060px;
-  height:147px;
+  height: 147px;
   background: url('images/header.png') no-repeat;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 #header #logo {
-  width:629px;
-  height:147px;
-  margin-left:44px;
+  width: 629px;
+  height: 147px;
+  margin-left: 44px;
 }
 
 /* menu - barre de navigation - champ de recherche */
 
 #menu {
   width: 1060px;
-  height:35px;
+  height: 35px;
   background: url('images/menu.png') no-repeat;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 #announce {
@@ -796,68 +799,68 @@ h1 {
 }
 
 .menu_navigation {
-  float:left;
-  height:35px;
-  width:682px;
-  overflow:hidden;
-  padding-left:45px;
+  float: left;
+  height: 35px;
+  width: 682px;
+  overflow: hidden;
+  padding-left: 45px;
 }
 
 .menu_navigation a {
-  display:block;
-  height:30px;
+  display: block;
+  height: 30px;
   font: 13pt Georgia, Tahoma, Geneva, Arial, Sans-serif;
-  padding-top:5px;
-  text-decoration:none;
-  text-align:center;
+  padding-top: 5px;
+  text-decoration: none;
+  text-align: center;
 }
 .gris {
-  color:#3c3c3c;
+  color: #3c3c3c;
 }
 
 .vert {
-  color:#8aa915;
+  color: #8aa915;
 }
 
 .orange {
-  color:#d4963e;
+  color: #d4963e;
 }
 
 .bleu {
-  color:#12a8d2;
+  color: #12a8d2;
 }
 
 #item1 a {
-  float:left;
+  float: left;
   background: url('images/menu_item1.png') no-repeat 0 0;
-  width:89px;
+  width: 89px;
 }
 
 #item2  a {
-  float:left;
+  float: left;
   background: url('images/menu_item2.png') no-repeat 0 0;
-  width:166px;
+  width: 166px;
 }
 
 #item3  a {
-  float:left;
+  float: left;
   background: url('images/menu_item3.png') no-repeat 0 0;
-  width:166px;
+  width: 166px;
 }
 
 #item4 a {
-  float:left;
+  float: left;
   background: url('images/menu_item4.png') no-repeat 0 0;
-  width:166px;
+  width: 166px;
 }
 
 #item5  a {
-  float:left;
+  float: left;
   background: url('images/menu_item5.png') no-repeat 0 0;
-  width:74px;
-  padding-top:10px;
+  width: 74px;
+  padding-top: 10px;
   font-size: 8pt;
-  font-weight:bold;
+  font-weight: bold;
 }
 
 #item1 a.selected, #item2 a.selected, #item3 a.selected, #item4 a.selected, #item1 a:hover, #item1 a:focus, #item2 a:hover, #item2 a:focus, #item3 a:hover, #item3 a:focus, #item4 a:hover, #item4 a:focus {
@@ -865,18 +868,18 @@ h1 {
 }
 
 .menu_recherche {
-  height:20px;
-  width:283px;
-  float:right;
-  margin:7px 50px 0 0;
-  overflow:hidden;
+  height: 20px;
+  width: 283px;
+  float: right;
+  margin: 7px 50px 0 0;
+  overflow: hidden;
 }
 
 .type_recherche {
   color: #484848;
   font: 8pt Tahoma, Geneva, Arial, Sans-serif;
-  float:left;
-  margin-top:0px;
+  float: left;
+  margin-top: 0px;
   max-width: 115px;
 }
 
@@ -886,17 +889,17 @@ h1 {
 }
 
 .menu_recherche  img {
-  float:left;
-  margin-left:5px;
-  margin-right:4px;
+  float: left;
+  margin-left: 5px;
+  margin-right: 4px;
 }
 
 .rechercher {
-  float:left;
-  width:230px;
-  height:14px;
-  border:0;
-  margin:0;
+  float: left;
+  width: 230px;
+  height: 14px;
+  border: 0;
+  margin: 0;
   background: url('images/recherche.png') top left no-repeat;
   padding: 3px 0 3px 10px;
   color: #656565;
@@ -905,27 +908,27 @@ h1 {
 }
 
 .bouton_ok {
-  float:left;
+  float: left;
   width: 29px;
-  height:20px;
-  border:0;
-  margin:0;
+  height: 20px;
+  border: 0;
+  margin: 0;
   background: url('images/recherche.png') top right no-repeat;
-  cursor:pointer;
+  cursor: pointer;
 }
 
 /* sous menu  */
 
 #sous_menu {
-  width:1060px;
-  height:50px;
+  width: 1060px;
+  height: 50px;
   background: url('images/sous_menu.png') no-repeat;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .elements_sous_menu {
-  padding-top:3px;
-  position:absolute;
+  padding-top: 3px;
+  position: absolute;
 }
 
 #sous_menu_1 .elements_sous_menu {
@@ -938,67 +941,67 @@ h1 {
   padding-left: 180px;
 }
 .elements_sous_menu  a, .elements_sous_menu a:visited {
-  text-decoration:none;
-  letter-spacing:0.7pt;
-  color:black;
+  text-decoration: none;
+  letter-spacing: 0.7pt;
+  color: black;
 }
 
 .elements_sous_menu  a:hover {
-  text-decoration:underline;
-  letter-spacing:0.7pt;
-  color:black;
-  background-color:#eee;
+  text-decoration: underline;
+  letter-spacing: 0.7pt;
+  color: black;
+  background-color: #eee;
 }
 .elements_sous_menu ul {
-  float:left;
-  padding:0;
-  margin:0;
+  float: left;
+  padding: 0;
+  margin: 0;
   font-size: 8pt;
-  font-family: Tahoma, Arial, Helvetica, sans-serif;
+  font-family: Liberation Sans, sans-serif;
 }
 .elements_sous_menu   li{
   display: block ;
-  float:left;
-  padding:0;
-  margin:0;
-  margin-left:2px;
+  float: left;
+  padding: 0;
+  margin: 0;
+  margin-left: 2px;
 }
 #sous_menu_1 {
-  float:left;
-  width:1060px;
-  height:21px;
+  float: left;
+  width: 1060px;
+  height: 21px;
   background: url('images/sous_menu_combined.png');
 }
 #sous_menu_2 {
-  float:left;
-  width:1060px;
-  height:21px;
+  float: left;
+  width: 1060px;
+  height: 21px;
   background: url('images/sous_menu_combined.png') 0 -21px;
 }
 #sous_menu_3 {
-  float:left;
-  width:1060px;
-  height:21px;
+  float: left;
+  width: 1060px;
+  height: 21px;
   background: url('images/sous_menu_combined.png') 0 -42px;
 }
 
 /* corps de page */
 #corps_page {
-  width:1060px;
+  width: 1060px;
   background: url('images/corps_page.png');
 }
 .contenu_page {
-  min-height:520px;
-  width:920px;
-  overflow:hidden;
-  margin-left:auto;
-  margin-right:auto;
+  min-height: 520px;
+  width: 920px;
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* bottom - pied de page */
 #bottom {
-  width:1060px;
-  height:42px;
+  width: 1060px;
+  height: 42px;
   background: url('images/bottom.png');
 }
 
@@ -1019,18 +1022,18 @@ h1 {
   padding: 2px;
 }
 .image_map {
-  float:right;
+  float: right;
   border : 1px solid #BFBFBF;
 }
 
 /* Début fiche député */
 .fiche_depute {
   width: 938px;
-  overflow:hidden;
+  overflow: hidden;
 }
 .fiche_depute h1 {
   text-align: center;
-  margin:30px 0 20px 0;
+  margin: 30px 0 20px 0;
 }
 .fiche_depute dt, .fiche_depute dd {
   display: inline;
@@ -1082,22 +1085,32 @@ h1 {
   width: 125px;
 }
 .photo_depute {
-  height:160px;
-  width:125px;
+  height: 160px;
+  width: 125px;
   border: 2px solid #dcd6ca;
 }
 .graph_depute {
-  float: right;
-  width: 800px;
-  height: 170px;
-  margin-right: 3px;
+  float: left;
+  width: 795px;
+  height: 165px;
   text-align: center;
 }
 .graph_depute p {
   text-align: center;
   margin: 0px;
+  margin-top: -2px;
   padding: 0px;
-  font-size: 0.9em;
+  font-size: 14px;
+  font-family: Liberation Sans, sans-serif;
+}
+.graph_depute a:hover {
+  text-decoration: none;
+}
+.graph_depute p a {
+  font-size: 11px;
+}
+.graph_depute p a:hover {
+  text-decoration: underline;
 }
 .barre_activite {
   float: left;
@@ -1145,9 +1158,9 @@ h1 {
 }
 .contenu_depute {
   width: 918px;
-  overflow:hidden;
+  overflow: hidden;
   border: 1px solid #d6d6d6;
-  margin-bottom:20px;
+  margin-bottom: 20px;
 }
 .boite_depute {
   padding: 15px;
@@ -1174,8 +1187,8 @@ h1 {
 }
 /**/
 .meilleur_pire {
-  padding-bottom:10px;
-  border-bottom:1px dashed  #BFBFBF;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed  #BFBFBF;
 }
 .meilleur_pire h3 {
   background-color: #ebebeb;
@@ -1203,7 +1216,7 @@ h1 {
   float: left;
 }
 .bas_depute_d img {
-  padding-left:10px;;
+  padding-left: 10px;;
 }
 .rss {
   margin: 0;
@@ -1299,18 +1312,23 @@ h2 {
 }
 
 /* form commentaires */
-.inscription {
-  border: 1px solid #E8E7E4;
-  margin-top: 10px;
+.commentaires_table, #commentaire_commentaire {
+  width: 900px; 
 }
-.connexion {
-  float: right;
+.inscription, .connexion {
+  float: left;
   border: 1px solid #E8E7E4;
+  border-radius: 4px;
   margin-top: 10px;
+  width: 100%;
 }
 .inscription td, .connexion td, .inscription th, .connexion th {
   padding: 10px;
-  border-bottom: 1px dashed #E8E7E4;
+  border-bottom: 1px dotted #E8E7E4;
+}
+.inscription tr:last-child td, .connexion tr:last-child td, .inscription tr:last-child th, .connexion tr:last-child th {
+  padding: 10px;
+  border-bottom: none;
 }
 .inscription input, .connexion input { max-width: 320px; }
 /* commentaires */
@@ -1322,7 +1340,7 @@ h2 {
 }
 .commentaires {
   padding-top: 5px;
-  clear:both;
+  clear: both;
   margin-bottom: 15px;
 }
 
@@ -1342,7 +1360,7 @@ h2 {
   font-weight: bold;
 }
 .commentaire {
-  clear:both;
+  clear: both;
   min-height: 104px;
   padding: 15px;
   padding-top: 0px;
@@ -1411,7 +1429,7 @@ h2 {
   text-decoration: underline;
 }
 .loi .connexion th, .loi .inscription th {
-  text-align:center;
+  text-align: center;
 }
 .auteurloi {
   float: right;
@@ -1577,16 +1595,16 @@ h2 {
 /* Dossiers législatifs */
 .numeros_textes {
   border-bottom: 1px solid #b3aea4;
-  margin:20px 50px 20px 30px;
+  margin: 20px 50px 20px 30px;
 }
 .titre_int_et_seance .nuage_de_tags {
-  float:right;
+  float: right;
 }
 .nuage_de_tags {
-  min-height:92px;
-  margin:5px 0 0 40px;
-  padding:5px;
-  text-align:justify;
+  min-height: 92px;
+  margin: 5px 0 0 40px;
+  padding: 5px;
+  text-align: justify;
   background-color: #f7f7f7;
   border: 1px solid #9a9a9a;
 }
@@ -1598,12 +1616,19 @@ h2 {
   padding: 0px;
   margin: 0 0 10px;
 }
+.article_organisme {
+  max-width: 650px;
+}
+.plot_organisme {
+  float: right;
+  margin-top: 10px;
+}
 .plot_section, .plot_seance {
   text-align: center;
 }
 #overDiv {
-  position:absolute;
-  visibility:hidden;
+  position: absolute;
+  visibility: hidden;
   z-index:1000
 }
 .titre_int_et_seance .plot_section, .titre_int_et_seance .plot_seance {
@@ -1631,24 +1656,24 @@ h2 {
 .orga_dossier li .dossier {display: none;}
 .orga_dossier li:hover .dossier {display: inline;}
 .orga_dossier p {
-  background-color:#dbd5c8;
+  background-color: #dbd5c8;
 }
 .seances_dossier {
-  clear:both;
-  margin:auto;
-  padding-top:15px;
+  clear: both;
+  margin: auto;
+  padding-top: 15px;
 }
 .seances_dossier p {
-  background-color:#dbd5c8;
+  background-color: #dbd5c8;
 }
 .orateurs_dossier  {
-  clear:both;
-  margin:auto;
-  padding-top:10px;
-  padding-bottom:20px;
+  clear: both;
+  margin: auto;
+  padding-top: 10px;
+  padding-bottom: 20px;
 }
 .orateurs_dossier p {
-  background-color:#dbd5c8;
+  background-color: #dbd5c8;
 }
 
 /* Liste députés */
@@ -1665,12 +1690,12 @@ h2 {
 /* Liste députés */
 .liste_deputes_tags  {
   margin: 20px 10px 30px 0;
-  padding:5px 20px 20px 20px;
+  padding: 5px 20px 20px 20px;
   border: 1px dashed #aeaeae;
-  text-align:justify;
+  text-align: justify;
 }
 .liste_deputes_tags p {
-  background-color:#dbd5c8;
+  background-color: #dbd5c8;
   font-size: 1.2em;
 }
 
@@ -1679,23 +1704,23 @@ h2 {
   margin: 20px 10px 20px 0;
 }
 .travaux_parlementaires p {
-  background-color:#dbd5c8;
+  background-color: #dbd5c8;
   font-size: 1.2em;
 }
 /* interventions */
 .info {
-  margin:20px;
-  background-color:#dbd5c8;
+  margin: 20px;
+  background-color: #dbd5c8;
 }
 .texte_intervention, .expose_amendement {
-  margin:20px;
+  margin: 20px;
   text-align: justify;
 }
 .texte_intervention a {
   text-decoration: underline;
 }
 .contexte {
-  margin:20px;
+  margin: 20px;
 }
 .tr_odd{
   background-color: #f7f7f7;
@@ -1715,32 +1740,32 @@ h2 {
 }
 .listeright {
   float: right;
-  width: 35%;
+  width: 250px;
   margin-bottom: 30px;
 }
 
 /* accueil */
 .texte_presentation_gauche {
   margin: 20px 10px 20px 10px;
-  padding:10px;
-  float:left;
-  width:400px;
-  min-height:590px;
-  background-color:#f6f6f6;
+  padding: 10px;
+  float: left;
+  width: 400px;
+  min-height: 590px;
+  background-color: #f6f6f6;
   border : 1px dashed #cecdc2;
 }
 .texte_presentation_gauche h1 {
   margin: 10px 0 40px 0;
 }
 #texte_a_ecrire {
-  text-align:justify;
+  text-align: justify;
 }
 #illustration {
-  float:left;
-  width:100px;
-  height:90px;
-  margin:5px;
-  background-image:url('images/minilogo_nosdeputes.png');
+  float: left;
+  width: 100px;
+  height: 90px;
+  margin: 5px;
+  background-image: url('images/minilogo_nosdeputes.png');
 }
 .accueil .carte {
     height: 300px;
@@ -1765,30 +1790,30 @@ h2 {
     margin-left: 50px;
 }
 .accueil_liste_liens {
-  float:left;
-  width:200px;
-  margin:0 20px 20px 0;
+  float: left;
+  width: 200px;
+  margin: 0 20px 20px 0;
 }
 .accueil_liste_liens  ul {
-  margin:0;
-  padding:0;
-  list-style-type:none;
-  list-style:url('images/right.png');
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  list-style: url('images/right.png');
 }
 .accueil_liste_liens  li{
-  padding:7px 0 7px 5px;
-  margin:0 0 0 20px;
+  padding: 7px 0 7px 5px;
+  margin: 0 0 0 20px;
 }
 #couleur1 {
-  background-color:#eee;
+  background-color: #eee;
 }
 #couleur2 {
-  background-color:#f7f7f7;
+  background-color: #f7f7f7;
 }
 .accueil_liste_liens h2 {
-  background-color:#dbd5c8;
+  background-color: #dbd5c8;
   font-size: 1.2em;
-  margin:0 0 10px 0;
+  margin: 0 0 10px 0;
 }
 .accueil_deputes_jour h2 {
   font-size: 1.4em;
@@ -1811,7 +1836,7 @@ h2 {
   clear: both;
 }
 .accueil_deputes_jour img {
-  border:1px solid #727272;
+  border: 1px solid #727272;
 }
 .accueil_message {
   float: left;
@@ -1848,10 +1873,14 @@ h2 {
   margin: 0px;
   padding: 0px;
 }
+.par_session p {
+  margin-top: 0;
+  margin-bottom: 25px;
+}
 #center {
-  width:390px;
-  margin-left:auto;
-  margin-right:auto;
+  width: 390px;
+  margin-left: auto;
+  margin-right: auto;
 }
 .accueil .nuage_de_tags {
   margin: 0;
@@ -1954,6 +1983,7 @@ a:hover img {
 }
 .list_table {
   margin: auto;
+  clear: both;
   margin-bottom: 30px;
 }
 .anciens {
@@ -1994,11 +2024,11 @@ a:hover img {
 }
 .list_dep:hover, .list_dep.hover {
   color: #000;
-  background-color: #D1EA74;
+  background-color: rgba(209, 234, 116, 0.6);
   opacity: 0.8;
 }
 .list_img_left {
-  float:left;
+  float: left;
   margin: 4px;
 }
 .list_img_left img {

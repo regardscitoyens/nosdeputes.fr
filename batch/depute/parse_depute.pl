@@ -146,18 +146,23 @@ foreach $line (split /\n/, $string) {
     $depute{'groupe'}{$gpe} = 1;
   } elsif ($line =~ /mailto:([^'"]+@[^'"]+)['"]/i) {
     $depute{'mails'}{$1} = 1;
-  } elsif ($line =~ /<a [^>]*class="(url|facebook|twitter topmargin)" *href=['"]([^"']+)['"]/i) {
+  } elsif ($line =~ /<a [^>]*class="(url|facebook|twitter topmargin)" *href=['"]\s*([^"']+)\s*['"]/i) {
     $site = $2;
     if ($1 =~ /twitter/) {
       $site =~ s/\/$//;
     }
 #    $site =~ s#^(http://| )*#http://#i; #Bug plus d'actualité ?
-    if ($site =~ s/(https?:\/\/)?([^\/]+@[^\/]+)$/\2/) { #Les url twitter sont indiquées avec un @
+    $site =~ s#(facebook\.com/)www\.facebook\.com/#\1#i;
+    $site =~ s#\s+(/)?$#\1#;
+    $site =~ s#/+$#/#g;
+    if ($site =~ s/^\s*(https?:\/\/)?([^\/]+@[^\/]+)$/\2/) { #Les url twitter sont indiquées avec un @
       $depute{'mails'}{$site} = 1;
     } else {
-      if ($site !~ /www.facebook\.com.sharer\.php/) { #Evite de prendre les boutons de partage de l'AN
-        $site =~ s/(twitter.com\/)@/\1/i;
-        $depute{'sites_web'}{$site} = 1;
+      if ($site !~ /facebook\.com\/(sharer\.php|sandramarsaudlarepubliquenmarche|BSmedoc|colas\.roy\.2017)/) { #Evite de prendre les boutons de partage de l'AN et les comptes désuets
+        $site =~ s/(twitter.com\/)[\s@]+/\1/i;
+        if ($site !~ /twitter.com\/(valeriebeauvais2017|sttrompille|Darrieussecq|bernarddeflesselles|Marc_Delatte|davidlorion|Josso2017|ColasRoy2017|GCHICHE2017|obono2017|celiadeputee2017|Vincent.Ledoux59|EricDiardDepute|MireilleRobert|Fdumas2017|PascalBois2017|pgoulet58|micheldelpon|DipompeoChris)/) {   # remove bad twitter accounts from AN
+          $depute{'sites_web'}{$site} = 1;
+        }
       }
     }
   } elsif ($line =~ /id="hemicycle-container" data-place="(\d+)">/i) {

@@ -1,7 +1,7 @@
 <?php $sf_response->setTitle($parlementaire->nom.' - Son activité de député à l\'Assemblée nationale - NosDéputés.fr'); ?>
 <div class="fiche_depute">
   <div class="info_depute">
-    <h1><?php echo $parlementaire->nom; ?></h1><h2>, <?php echo $parlementaire->getLongStatut(1); ?></h2>
+    <h1><?php echo $parlementaire->nom; ?></h1><h2>, <?php echo preg_replace('/(\d)(è[mr]e)/', '\\1<sup><small>\\2</small></sup>', $parlementaire->getLongStatut(1)); ?></h2>
 <?php if ($parlementaire->url_nouveau_cpc) : ?>
   <?php if ($parlementaire->sexe == 'H') : ?>
     <h3 style="color:red; margin: 0px"><a href="<?php echo $parlementaire->url_nouveau_cpc; ?>">Ce député a été réélu, consultez sa fiche pour la <?php echo sfConfig::get('app_legislature')+1; ?><sup>ème</sup> législature</a></h3>
@@ -25,7 +25,7 @@
 </div>
 
 <div class="contenu_depute">
-  <?php include_partial('parlementaire/fiche', array('parlementaire'=>$parlementaire, 'commission_permanente' => $commission_permanente, 'missions' => $missions, 'historique' => $parlementaire->historique)); ?>
+  <?php include_partial('parlementaire/fiche', array('parlementaire'=>$parlementaire, 'commission_permanente' => $commission_permanente, 'missions' => $missions, 'historique' => $parlementaire->getHistorique(true), 'anciens_mandats' => $anciens_mandats, 'main_fonction' => $main_fonction)); ?>
   <div class="bas_depute">
     <h2 class="list_com">Derniers commentaires concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
     <?php if ($parlementaire->nb_commentaires == 0) echo '<p>Le travail de ce député n\'a pas encore inspiré de commentaire aux utilisateurs.</p>';
