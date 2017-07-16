@@ -4,7 +4,17 @@ if (count(array_keys($parlementaires))) {
   echo include_component('plot', 'groupes', array('plot' => 'organisme_'.$orga->id, 'membres' => $parlementaires, 'nolegend' => true));
   echo '</div>';
 } ?>
-<h1><?php echo $orga->getNom(); $sf_response->setTitle($orga->getNom()); ?></h1>
+<div class="organisme_header">
+  <h3><a href="<?php echo url_for('@list_organismes_type?type='.$orga->type); ?>"><?php echo $human_type; ?> :</a></h3>
+  <h1><?php echo $orga->getNom(); $sf_response->setTitle($orga->getNom()); ?></h1>
+<?php
+if ($total && $pagerSeances->getPage() == 1 && ($pagerRapports->getPage() == 1)) {
+  if ($orga->type == 'extra')
+    echo '<h2>Organisme extra-parlementaire composé de '.$total.' député'.($total > 1 ? 's' : '').'</h2>';
+  else echo '<h2>'.(preg_match('/commission/i', $orga->getNom()) ? 'Comm' : 'M').'ission parlementaire composée de '.$total.' député'.($total > 1 ? 's' : '').'</h2>';
+}
+ ?>
+</div>
 <?php
 if (isset($pagerRapports)) $nrap = $pagerRapports->getNbResults();
 else $nrap = 0;
@@ -20,11 +30,6 @@ if ($page === "home") {
   if ($nse || $nrap) {
     $divclass = '<div class="listeleft">';
     $colonnes = 2;
-  }
-  if ($total && $pagerSeances->getPage() == 1 && ($pagerRapports->getPage() == 1)) {
-    if ($orga->type == 'extra')
-      echo '<h2>Organisme extra-parlementaire composé de '.$total.' député'.($total > 1 ? 's' : '').'</h2>';
-    else echo '<h2>'.(preg_match('/commission/i', $orga->getNom()) ? 'Comm' : 'M').'ission parlementaire composée de '.$total.' député'.($total > 1 ? 's' : '').'</h2>';
   }
   echo $divclass.'<div class="liste">';
   $listimp = array_keys($parlementaires);

@@ -1676,6 +1676,11 @@ h2 {
   background-color: #dbd5c8;
 }
 
+.organisme_header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
 /* Liste députés */
 .liste  {
   margin: 20px 10px 20px 0;
