@@ -333,6 +333,9 @@ class parlementaireActions extends sfActions
       ->where('o.slug = ?', $orga)->fetchOne();
     $this->forward404Unless($this->orga);
 
+    $this->loadOrganismes();
+    $this->human_type = $this->organisme_types[$this->orga->type];
+
     $acro = $this->orga->getSmallNomGroupe();
     if ($acro)
       return $this->redirect('@list_parlementaires_groupe?acro='.$acro);
