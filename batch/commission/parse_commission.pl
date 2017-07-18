@@ -334,7 +334,7 @@ $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/<p>\|((?:<a name.*?<\/a>)?Article (?:unique|\d+e?r?)\s*:)\s*\|\s*(.*?)<\/p>/<p>\/$1 $2\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?La (?:réunion|séance))(, suspendue à .*?,)?\s*(s'achève|est (?:suspendue|reprise|levée))(.*?)<\/p>/<p>\/$1$2 $3$4\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?L'amendement .*?est)\s*\|?\s*(retiré|adopté|rejeté)\s*\|?\s*(.*?)<\/p>/<p>\/$1 $2 $3\/<\/p>/gi;
-$string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis [dé]?favorable) d[^,]*,\s*)?(La commission)\s*\|?\s*([a ]*(?:en vient|examin|émet|emis|[est']+ saisi[et]|adopt|rejet+)e?é?)\s*\|?\s*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
+$string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis [dé]?favorable) d[^,]*,\s*)?(La commission)\s*\|?\s*([a ]*(?:par ailleurs )?(?:en vient|désign|examin|émet|emis|[est']+ saisi[et]|adopt|rejet+)e?é?)\s*\|?\s*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $majIntervenant = 0;
@@ -566,7 +566,8 @@ foreach $line (split /\n/, $string)
         $intervenant = $tmpinter;
     }
     if ($line =~ /(réunion|séance) (s'achève|est levée)/i) {
-        last;
+        $finished = 1;
+        $tmpinter = "";
     }
 }
 checkout();
