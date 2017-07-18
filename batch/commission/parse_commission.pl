@@ -334,7 +334,7 @@ $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/<p>\|((?:<a name.*?<\/a>)?Article (?:unique|\d+e?r?)\s*:)\s*\|\s*(.*?)<\/p>/<p>\/$1 $2\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?La (?:réunion|séance))(, suspendue à .*?,)?\s*(s'achève|est (?:suspendue|reprise|levée))(.*?)<\/p>/<p>\/$1$2 $3$4\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?L'amendement .*?est)\s*\|?\s*(retiré|adopté|rejeté)\s*\|?\s*(.*?)<\/p>/<p>\/$1 $2 $3\/<\/p>/gi;
-$string =~ s/<p>(<a name.*?<\/a>)?(Suivant l'avis .*favorable d[^,]*,\s*)?(La commission)\s*\|?\s*(en vient|examine|émet|[est]+ saisi[et]|adopte|rejette)\s*\|?\s*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
+$string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis [dé]?favorable) d[^,]*,\s*)?(La commission)\s*\|?\s*([a ]*(?:en vient|examin|émet|emis|[est']+ saisi[et]|adopt|rejet+)e?é?)\s*\|?\s*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $majIntervenant = 0;
@@ -343,6 +343,7 @@ $body = 0;
 $string =~ s/<br>\n//gi;
 $string =~ s/\s*<\/h(\d+)><\/CRPRESIDENT><CRPRESIDENT><h\1[^>]*>\s*/ /gi;
 $string =~ s/(<\/h\d+>)/\1\n/gi;
+$string =~ s/(<\/h\d+>)\n(<\/SOMMAIRE>)/\1\2/gi;
 $string =~ s/<t([rdh])[^>]*( (row|col)span=["\d]+)+[^>]*>/<t\1\2>/gi;
 $string =~ s/<t([rdh])( (row|col)span=["\d]+)*[^>]*>/<t\1\2>/gi;
 $string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
@@ -497,7 +498,7 @@ foreach $line (split /\n/, $string)
         }
         $intervenant = setIntervenant($interv1.$extrainterv);
         $found = $majIntervenant = 1;
-	  } elsif (!($line =~ /^\|(?:Puis de |En conséquence|Commission|Présidence|Titre|Chapitre|Section|Articles?)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
+	  } elsif (!($line =~ /^\|(?:Puis de |En conséquence|Commission|Accords?|Présidence|Titre|Chapitre|Section|Articles?)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
