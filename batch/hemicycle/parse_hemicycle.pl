@@ -16,12 +16,13 @@ $string = "@string";
 close FILE;
 
 $string =~ s/ / /g;
-$string =~ s/(\?!)([^\s<!?.…])/\1 \2/g;
+$string =~ s/(&#8211;)/–/g;
+$string =~ s/(’|&#8217;)/'/g;
+$string =~ s/(\.|,|:|;|…|–)(,|:|;|…|–)/\1 \2/g;
+$string =~ s/(!|\?|\.|:|;|…|–)([^\s<!?\.:;…–])/\1 \2/g;
 $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
 $string =~ s/\\’85//g;
-$string =~ s/(’|&#8217;)/'/g;
-$string =~ s/(,|:|;|–)…/\1 …/g;
 $string =~ s/<\/?sup>//g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<i><\/i>|<\/i><i>)//ig;
