@@ -111,11 +111,16 @@ if ($intervention->section_id && !$sections[$intervention->section_id]->titre) {
       echo '</div>';
     } else {
       $didascalie = 1;
+      $didascalietitre = 0;
+      $comparableinter = trim(strtolower(preg_replace('/<[^>]+>/i', '', $intervention->intervention)));
+      if ($comparableinter === trim(strtolower($sections[$intervention->section_id]->titre)) ||
+          preg_match('/^(suspension|reprise|rappels? au)/', $comparableinter))
+        $didascalietitre = 1;
     } ?>
 <?php
   if (!($didascalie && $titre != 0)) { ?>
     <div class="texte_intervention">
-    <?php if ($didascalie) echo '<div class="didascalie">'; ?>
+    <?php if ($didascalie) echo '<div class="didascalie'.($didascalietitre ? "Titre" : "").'">'; ?>
     <?php echo myTools::escape_blanks($intervention->getIntervention(array('linkify_amendements'=>url_for('@find_amendements_by_loi_and_numero?loi=LLL&numero=AAA')))); ?>
     <?php if ($didascalie) echo '</div>'; ?>
     </div>
