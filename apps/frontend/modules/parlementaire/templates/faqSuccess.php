@@ -43,7 +43,7 @@
   <h2 id="post_1">Origine et nature des données publiées</h2>
 
   <h3 id="post_2">D'où viennent les données publiées sur le site ?</h3>
-  <p>Toutes les données relatives à l'activité parlementaire présentées sur ce site sont issues du site de l'<a rel="nofollow" href="http://www.assemblee-nationale.fr/">Assemblée nationale</a> et du Journal Officiel. Il s'agit donc d'informations intégralement publiques. Ces informations sont mises-à-jour toutes les 4 heures à partir des sites officiels.</p>
+  <p>Toutes les données relatives à l'activité parlementaire présentées sur ce site sont issues du site de l'<a rel="nofollow" href="http://www.assemblee-nationale.fr/">Assemblée nationale</a> et du Journal Officiel. Il s'agit donc d'informations intégralement publiques. Ces informations sont mises-à-jour toutes les 8 heures à partir des sites officiels. Les compte-rendus des débats peuvent parfois mettre plusieurs heures voire plusieurs jours avant d'être publiés par les services de l'Assemblée, les données des dernières semaines sont donc amenées à évoluer régulièrement et ne sauraient refléter l'actualité immédiate de l'Assemblée.</p>
   <p>Les cartes utilisées sont librement adaptées de celles remises à disposition par Wikipedia, Toxicode et Jérôme Cukier. Vous pouvez les télécharger sur <a href="http://www.nosdonnees.fr/package?q=circonscriptions+carte">NosDonnées.fr</a>.</p>
 
   <h3 id="post_3">Avez vous le droit de publier ces données ?</h3>
