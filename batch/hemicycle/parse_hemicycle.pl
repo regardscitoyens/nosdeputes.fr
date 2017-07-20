@@ -16,6 +16,7 @@ $string = "@string";
 close FILE;
 
 $string =~ s/ / /g;
+$string =~ s/(\?!)([^\s<!?.…])/\1 \2/g;
 $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
 $string =~ s/\\’85//g;
