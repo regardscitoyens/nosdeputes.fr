@@ -513,6 +513,7 @@ foreach $line (split /\n/, $string)
             if ($line =~ /^\s*$/) {
                 next;
             }
+            $line =~ s/\s*«\s*$//;
             $intervention .= "<p>$line</p>";
             $source = $nextsource;
         }
