@@ -94,6 +94,8 @@ foreach $line (split /\n/, $string) {
     $lieu = trim($lieu);
     $depute{'lieu_naissance'} = $lieu if ($lieu !~ /^$/);
     $read = "profession";
+  } elsif ($line =~ /<li class="allpadding">\s*([^<]*)\s*/i) {
+    $depute{'collabs'}{$1} = 1;
   } elsif ($line =~ /<dt>Suppléant<\/dt>/i) {
     $read = "suppleant";
   } elsif ($line =~ /<dt>Rattachement au titre du financement/i) {
