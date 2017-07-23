@@ -196,11 +196,12 @@ class apiActions extends sfActions
     if ($request->getParameter('current') == true) {
       $query->where('fin_mandat IS NULL OR debut_mandat > fin_mandat');
       $this->multi['responsabilite'] = 1;
-      $this->multi['email'] = 1;
-      $this->multi['adresse'] = 1;
       $this->multi['mandat'] = 1;
     }
     $this->multi['site'] = 1;
+    $this->multi['email'] = 1;
+    $this->multi['adresse'] = 1;
+    $this->multi['collaborateur'] = 1;
     $orga = $request->getParameter('orga');
     if ($orga) {
       $includePast = ($request->getParameter('includePast') == true);
@@ -255,6 +256,7 @@ class apiActions extends sfActions
     $this->multi['responsabilite'] = 1;
     $this->multi['email'] = 1;
     $this->multi['adresse'] = 1;
+    $this->multi['collaborateur'] = 1;
     $this->multi['mandat'] = 1;
     $this->multi['site'] = 1;
     $this->breakline = 'depute';
@@ -308,6 +310,7 @@ class apiActions extends sfActions
     if ($light != 2) {
       $res['emails'] = myTools::array2hash(unserialize($parl->mails), 'email');
       $res['adresses'] = myTools::array2hash(unserialize($parl->adresses), 'adresse');
+      $res['collaborateurs'] = myTools::array2hash(unserialize($parl->collaborateurs), 'collaborateur');
       $res['anciens_mandats'] = myTools::array2hash(unserialize($parl->anciens_mandats), 'mandat');
       $res['autres_mandats'] = myTools::array2hash(unserialize($parl->autres_mandats), 'mandat');
       $res['anciens_autres_mandats'] = myTools::array2hash(unserialize($parl->anciens_autres_mandats), 'mandat');

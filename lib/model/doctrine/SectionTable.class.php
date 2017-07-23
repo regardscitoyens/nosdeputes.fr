@@ -5,7 +5,7 @@
 class SectionTable extends Doctrine_Table
 {
   public function findOneByContexteOrCreateIt($contexte, $date = '', $timestamp = '') {
-    $contexte = self::cleanContexte($contexte); 
+    $contexte = self::cleanContexte($contexte);
     $section = $this->findOneByMd5(md5($contexte));
     if (!$section) {
       $section = new Section();
@@ -25,16 +25,16 @@ class SectionTable extends Doctrine_Table
     $contexte = self::cleanContexte($contexte);
     return $this->findOneByMd5(md5($contexte));
   }
-  
+
   private static function cleanContexte($contexte) {
     $contexte = preg_replace('/û/', 'u', $contexte);
-    $contexte = preg_replace('/[\/\|\)\(«»]/', '', strtolower($contexte));
+    $contexte = preg_replace('/[\/\|«»]/', '', strtolower($contexte));
     $contexte = preg_replace('/\&\#8217\;/', '\'', $contexte);
     $contexte = preg_replace('/\&\#\d+\;/', '', $contexte);
     $contexte = preg_replace('/’/', "'", $contexte);
     $contexte = preg_replace('/\,/', ' ', $contexte);
     $contexte = preg_replace('/\s+/', ' ', $contexte);
-    $contexte = preg_replace('/\s+$/', '', preg_replace('/^\s+/', '', $contexte));
+    $contexte = trim($contexte);
     return $contexte;
   }
 

@@ -1302,6 +1302,11 @@ h2 {
 .didascalie {
   font-style: oblique;
 }
+.didascalieTitre {
+  text-align: center;
+  font-weight: bold;
+  font-size: 12px;
+}
 .alineatexte table, .alineatexte td, .alineatexte tr, .alineatexte th, .didascalie table, .didascalie td, .didascalie tr, .didascalie th {
   font-style: normal;
   text-align: center;
