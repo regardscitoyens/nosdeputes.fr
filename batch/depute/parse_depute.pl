@@ -146,7 +146,7 @@ foreach $line (split /\n/, $string) {
     }
     $gpe .= "e" if ($depute{'sexe'} eq "F" && $gpe =~ /(président|apparenté)$/);
     $depute{'groupe'}{$gpe} = 1;
-  } elsif ($line =~ /mailto:([^'"]+@[^'"]+)['"]/i) {
+  } elsif ($line =~ /mailto:([^'"]+@[^'" ]+)['" ]/i) {
     $depute{'mails'}{$1} = 1;
   } elsif ($line =~ /<a [^>]*class="(url|facebook|twitter topmargin)" *href=['"]\s*([^"']+)\s*['"]/i) {
     $site = $2;
