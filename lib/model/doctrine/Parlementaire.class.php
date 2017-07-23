@@ -616,6 +616,10 @@ class Parlementaire extends BaseParlementaire
     return unserialize($this->_get('top'));
   }
 
+  public function isEnMandat() {
+    return (!$this->fin_mandat || $this->fin_mandat < $this->debut_mandat);
+  }
+
   public function getCauseFinMandat() {
     if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $this->fin_mandat, $m))
       $fin =  $m[3].'/'.$m[2].'/'.$m[1];

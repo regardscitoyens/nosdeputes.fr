@@ -33,7 +33,7 @@ if (isset($list)) {
 }
 foreach($senateurs as $senateur) {
   $ct++; ?>
-  <div class="list_dep<?php if (isset($circo) && $senateur->fin_mandat == null) echo ' dep_map" id="dep'.preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($senateur->nom_circo))).'-'.sprintf('%02d', $senateur->num_circo); ?>" onclick="document.location='<?php echo url_for('@parlementaire?slug='.$senateur->slug); ?>'"><span title="<?php echo $senateur->nom.' -- '.$senateur->getMoyenStatut(); ?>" class="jstitle phototitle block"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$senateur->slug); ?>"></a>
+  <div class="list_dep<?php if (!$senateur->isEnMandat()) echo ' anciens'; if (isset($circo) && $senateur->fin_mandat == null) echo ' dep_map" id="dep'.preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($senateur->nom_circo))).'-'.sprintf('%02d', $senateur->num_circo); ?>" onclick="document.location='<?php echo url_for('@parlementaire?slug='.$senateur->slug); ?>'"><span title="<?php echo $senateur->nom.' -- '.$senateur->getMoyenStatut(); ?>" class="jstitle phototitle block"><a class="urlphoto" href="<?php echo url_for('@parlementaire?slug='.$senateur->slug); ?>"></a>
     <span class="list_nom">
       <a href="<?php echo url_for('@parlementaire?slug='.$senateur->slug); ?>"><?php echo $senateur->getNomPrenom(); ?></a>
     </span>
