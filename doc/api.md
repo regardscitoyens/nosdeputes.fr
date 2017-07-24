@@ -46,7 +46,7 @@ L'ensemble des données de ces différents sites est par ailleurs mis à disposi
 
 - **Tous les députés :**
 
-  *Attention : Moins de champs sont disponibles avec cette version : autres mandats, groupe, e-mails, adresses, sites webs...*
+  *Attention : Moins de champs sont disponibles avec cette version : autres mandats, commissions, ...*
 
   - format tableur (CSV) : https://www.nosdeputes.fr/deputes/csv
   - XML : https://www.nosdeputes.fr/deputes/xml

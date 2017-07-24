@@ -16,11 +16,13 @@ $string = "@string";
 close FILE;
 
 $string =~ s/ / /g;
+$string =~ s/(&#8211;)/–/g;
+$string =~ s/(’|&#8217;)/'/g;
+$string =~ s/(\.|,|:|;|…|–)(,|:|;|…|–)/\1 \2/g;
+$string =~ s/(!|\?|\.|:|;|…|–)([^\s<!?\.:;…–])/\1 \2/g;
 $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
 $string =~ s/\\’85//g;
-$string =~ s/(’|&#8217;)/'/g;
-$string =~ s/(,|:|;|–)…/\1 …/g;
 $string =~ s/<\/?sup>//g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<i><\/i>|<\/i><i>)//ig;
@@ -397,7 +399,7 @@ foreach $line (split /\n/, $string)
             $tmpline = $1;
             $tmpline =~ s/<\/?[a-z][^>]*>//g;
             next unless ($tmpline);
-            if ($tmpline !~ /rappels? au règlement|suspension|reprise/i || $tmpline =~ /demande/i) {
+            if (lc($tmpline) ne lc($titre1) && ($tmpline !~ /rappels? au règlement|suspension|reprise/i || $tmpline =~ /demande/i)) {
                 $titre2 = $tmpline;
                 $donetitre1 = 0;
                 $amendements = @pre_amendements = ();
@@ -511,6 +513,7 @@ foreach $line (split /\n/, $string)
             if ($line =~ /^\s*$/) {
                 next;
             }
+            $line =~ s/\s*«\s*$//;
             $intervention .= "<p>$line</p>";
             $source = $nextsource;
         }

@@ -104,6 +104,8 @@ if ($url =~ /\/plf(\d+)\//) {
 }
 
 $string =~ s/\s*&(#160|nbsp);\s*/ /ig;
+$string =~ s/(<p>)(&#\d+;\s*)(<b>)/\1\3\2/ig;
+$string =~ s/\s*(<\/[bi]>)\s*:\s*/ :\1 /g;
 $string =~ s/\s*<b>\s+<\/b>\s*/ /g;
 $string =~ s/<\/b>(\s*)<b>/\1/g;
 $string =~ s/<b>(\s*[\.,]\s*)<\/b>/\1/g;
@@ -331,10 +333,11 @@ $string =~ s/&#8217;/'/g;
 $string =~ s/d\W+évaluation/d'évaluation/g;
 $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
-$string =~ s/<p>\|((?:<a name.*?<\/a>)?Article (?:unique|\d+e?r?)\s*:)\s*\|\s*(.*?)<\/p>/<p>\/$1 $2\/<\/p>/gi;
+$string =~ s/<p>\|((?:<a name.*?<\/a>)?Article (?:unique|\d+e?r?)[^<]*?)\s*\|\s*\/?(.*?)\s*\/?\s*<\/p>/<p>\/$1 $2\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?La (?:réunion|séance))(, suspendue à .*?,)?\s*(s'achève|est (?:suspendue|reprise|levée))(.*?)<\/p>/<p>\/$1$2 $3$4\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?L'amendement .*?est)\s*\|?\s*(retiré|adopté|rejeté)\s*\|?\s*(.*?)<\/p>/<p>\/$1 $2 $3\/<\/p>/gi;
-$string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis [dé]?favorable) d[^,]*,\s*)?(La commission)\s*\|?\s*([a ]*(?:par ailleurs )?(?:en vient|désign|examin|émet|emis|[est']+ saisi[et]|adopt|rejet+)e?é?)\s*\|?\s*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
+$string =~ s/<p>\|([A-Z\W]+)\|<\/p>/<p>\/\1\/<\/p>/g;
+$string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis [dé]*favorable) d[^,]*,\s*)?(La commission(?: d[^<]*?)?)( (?:a |par ailleurs |ensuite )+)?\s*\|?\s*((?:en vient|désign|examin|émet|emis|[est']+ saisi[et]|accept|adopt|rejet+)[eé,]*)\s*\|?\s*(.*?)<\/p>/<p>\/$1$2$3 $4$5 $6\/<\/p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $majIntervenant = 0;
@@ -468,20 +471,26 @@ foreach $line (split /\n/, $string)
     next if ($line =~ /\|\/(vice-)?présidente?\/\|/);
     $tmpinter = "";
     #print STDERR $line."\n";
-	#si italique ou tout gras => commentaire
-	if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) && $line !~ /^\|Articles?\s*\d+/i && $line !~ /^\/«/) {
-	    if (!$timestamp && !$commission && $line =~ /^\|(.*(groupe|mission|délégation|office|comité).*)\|\s*$/i) {
-		$commission = $1;
-		next;
-	    }
-        if ($intervenant) {
-            if ($line =~ /^\/\(.*\.\)\/$/ || $line =~ /^\|.*\|\s*$/) {
-                $tmpinter = $intervenant;
-            }
-            checkout();
+    #si italique ou tout gras => commentaire
+    if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) && $line !~ /^\|Articles?\s*\d+/i && $line !~ /^\/«/) {
+      if ($line =~ /^\|(.*(groupe|mission|délégation|office|comité).*)\|\s*$/i) {
+        if (!$timestamp && !$commission) {
+          $commission = $1;
+          next;
+        } elsif (lc($commission) eq lc($1)) {
+          next;
         }
-	    rapporteur();
-	    $found = 1;
+      }
+      if ($intervenant) {
+        if (!$tmpinter) {
+          checkout();
+        }
+        if ($line =~ /^\/\(.*\.\)\/$/ || $line =~ /^\|.*\|\s*$/) {
+          $tmpinter = $intervenant;
+        }
+      }
+      rapporteur();
+      $found = 1;
 	}
     #print STDERR "LINE: $line\n";
     if ($prez && $line =~ /^\|?(Informations relatives à la Commission|Présences en réunion|Membres présents)/i) {
@@ -496,12 +505,16 @@ foreach $line (split /\n/, $string)
         if ($extrainterv =~ s/(\/A \w+i\/)//) {
             $line = $1.$line;
         }
-        $intervenant = setIntervenant($interv1.$extrainterv);
         $found = $majIntervenant = 1;
-	  } elsif (!($line =~ /^\|(?:Puis de |En conséquence|Commission|Accords?|Présidence|Titre|Chapitre|Section|Articles?)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
+        $intervenant = setIntervenant($interv1.$extrainterv);
+	  } elsif (!($line =~ /^\|(?:&#\d+;)?\s*(?:Puis de |En conséquence|Nomination|Commission|Accords?|Présidence|Titre|Chapitre|Section|Articles?)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
+	  } elsif ($line =~ s/^\|((Une?|Plusieurs) députés?)[.\s]*\|//) {
+        checkout();
+        $found = $majIntervenant = 1;
+	    $intervenant = setIntervenant($1);
 	  } elsif ($line =~ s/^[Llea\s]*\|[Llea\s]*([pP]r..?sidente?) (([A-ZÉ][^\.: \|]+ ?)+)[\.: \|]*//) {
 		$f = $1;
 		$i = $2;
