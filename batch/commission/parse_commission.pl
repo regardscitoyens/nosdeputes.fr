@@ -133,6 +133,14 @@ if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([
 #}
 #
 #exit;
+
+sub comparable {
+    $origstr = shift;
+    $origstr = lc($origstr);
+    $origstr =~ s/[^a-z]//g;
+    return $origstr;
+}
+
 $cpt = 0;
 sub checkout {
     $commission =~ s/"//g;
@@ -478,7 +486,7 @@ foreach $line (split /\n/, $string)
         if (!$timestamp && !$commission) {
           $commission = $1;
           next;
-        } elsif (lc($commission) eq lc($1)) {
+        } elsif (comparable($commission) eq comparable($1)) {
           next;
         }
       }
