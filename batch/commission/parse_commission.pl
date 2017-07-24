@@ -176,6 +176,7 @@ sub setFonction {
     $fonction =~ s/<[^>]*$//;
     $fonction =~ s/\///g;
     $fonction =~ s/Président/président/;
+    $fonction =~ s/^(.*), \1$/\1/;
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
     my $kfonction = lc($fonction);
@@ -291,7 +292,7 @@ sub setIntervenant {
 		foreach $fonction (keys %fonction2inter) { if ($fonction2inter{$fonction}) {
             $kfonction = lc($fonction);
             $kfonction =~ s/ +/.+/g;
-		    if ($test =~ /$kfonction/i) {
+		    if ($test =~ /^$kfonction/i) {
 			$inter = $fonction2inter{$fonction};
 			last;
 		    }
