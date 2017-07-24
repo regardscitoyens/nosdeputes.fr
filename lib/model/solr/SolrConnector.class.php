@@ -33,7 +33,7 @@ class SolrConnector extends sfLogger
     $nlines = 0;
     foreach(file($file) as $line) {
       $nlines++;
-      if ($nlines > 301) {
+      if ($nlines > 601) {
         $this->commit(1);
         return false;
       }
