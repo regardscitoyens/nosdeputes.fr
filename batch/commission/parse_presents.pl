@@ -184,7 +184,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/&[^;]*;/ /g;
 	$line =~ s/\s+et\s+/, /gi;
 	$line =~ s/\.$//;
-	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion)\W+//) {
+	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+//) {
         if ($line !~ /^\s*$/) {
             push @presents, split /, /, $line; #/
 	    }
