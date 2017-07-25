@@ -11,7 +11,7 @@ if ! echo "$id_dossier" | grep -P "^\d+$" > /dev/null; then
   exit 1
 fi
 
-curl -sL "http://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&idDossierLegislatif=$id_dossier&typeRes=facettes" |
+curl -sL "http://www2.assemblee-nationale.fr/recherche/query_amendements?leg=15&typeDocument=amendement&idDossierLegislatif=$id_dossier&typeRes=facettes" |
   grep "examen" |
   sed 's/{/\n/g' |
   grep "[lL]ect.* - $loi -" |
