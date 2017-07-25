@@ -25,6 +25,7 @@ $string =~ s/\n/ /g;
 $string =~ s/\\’85//g;
 $string =~ s/<\/?sup>//g;
 $string =~ s/<\/p>/<\/p>\n/g;
+$string =~ s/<\/i>(\W+)<i>/\1/ig;
 $string =~ s/(<i><\/i>|<\/i><i>)//ig;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<h[0-9][^>]*>.*?)\s*-\s*Suite(\)<\/i><\/h2>)/\1\2>/gi;
