@@ -205,6 +205,7 @@ sub identiques {
 
 $string =~ s/\r//g;
 $string =~ s/\t+/ /g;
+$string =~ s/(<\/p>)/\1\n/g;
 $string =~ s/ +\n+/\n/g;
 $string =~ s/\n+ +/\n/g;
 $string =~ s/&nbsp;| / /g;

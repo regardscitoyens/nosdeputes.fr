@@ -133,6 +133,14 @@ if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([
 #}
 #
 #exit;
+
+sub comparable {
+    $origstr = shift;
+    $origstr = lc($origstr);
+    $origstr =~ s/[^a-z]//g;
+    return $origstr;
+}
+
 $cpt = 0;
 sub checkout {
     $commission =~ s/"//g;
@@ -176,6 +184,7 @@ sub setFonction {
     $fonction =~ s/<[^>]*$//;
     $fonction =~ s/\///g;
     $fonction =~ s/Président/président/;
+    $fonction =~ s/^(.*), \1$/\1/;
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
     my $kfonction = lc($fonction);
@@ -291,7 +300,7 @@ sub setIntervenant {
 		foreach $fonction (keys %fonction2inter) { if ($fonction2inter{$fonction}) {
             $kfonction = lc($fonction);
             $kfonction =~ s/ +/.+/g;
-		    if ($test =~ /$kfonction/i) {
+		    if ($test =~ /^$kfonction/i) {
 			$inter = $fonction2inter{$fonction};
 			last;
 		    }
@@ -337,7 +346,7 @@ $string =~ s/<p>\|((?:<a name.*?<\/a>)?Article (?:unique|\d+e?r?)[^<]*?)\s*\|\s*
 $string =~ s/<p>((?:<a name.*?<\/a>)?La (?:réunion|séance))(, suspendue à .*?,)?\s*(s'achève|est (?:suspendue|reprise|levée))(.*?)<\/p>/<p>\/$1$2 $3$4\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?L'amendement .*?est)\s*\|?\s*(retiré|adopté|rejeté)\s*\|?\s*(.*?)<\/p>/<p>\/$1 $2 $3\/<\/p>/gi;
 $string =~ s/<p>\|([A-Z\W]+)\|<\/p>/<p>\/\1\/<\/p>/g;
-$string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis [dé]*favorable) d[^,]*,\s*)?(La commission(?: d[^<]*?)?)( (?:a |par ailleurs |ensuite )+)?\s*\|?\s*((?:en vient|désign|examin|émet|emis|[est']+ saisi[et]|accept|adopt|rejet+)[eé,]*)\s*\|?\s*(.*?)<\/p>/<p>\/$1$2$3 $4$5 $6\/<\/p>/gi;
+$string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis) d[^,]*,\s*)?(La commission(?: d[^<]*?)?)( (?:a |par ailleurs |ensuite )+)?[\s\/|]*((?:en vient|désign|examin|émet|emis|[est']+ saisi[et]|accept|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4$5 $6\/<\/p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $majIntervenant = 0;
@@ -477,7 +486,7 @@ foreach $line (split /\n/, $string)
         if (!$timestamp && !$commission) {
           $commission = $1;
           next;
-        } elsif (lc($commission) eq lc($1)) {
+        } elsif (comparable($commission) eq comparable($1)) {
           next;
         }
       }
@@ -507,7 +516,7 @@ foreach $line (split /\n/, $string)
         }
         $found = $majIntervenant = 1;
         $intervenant = setIntervenant($interv1.$extrainterv);
-	  } elsif (!($line =~ /^\|(?:&#\d+;)?\s*(?:Puis de |En conséquence|Nomination|Commission|Accords?|Présidence|Titre|Chapitre|Section|Articles?)/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
+	  } elsif (!($line =~ /^\|(?:&#\d+;)?\s*(?:Puis de |En conséquence|Nomination|Commission|Accords?|Présidence|Titre|Chapitre|Section|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
