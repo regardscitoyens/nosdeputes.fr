@@ -25,7 +25,7 @@
 </div>
 
 <div class="contenu_depute">
-  <?php include_partial('parlementaire/fiche', array('parlementaire'=>$parlementaire, 'commission_permanente' => $commission_permanente, 'missions' => $missions, 'historique' => $parlementaire->getHistorique(true), 'anciens_mandats' => $anciens_mandats, 'main_fonction' => $main_fonction)); ?>
+  <?php include_partial('parlementaire/fiche', array('parlementaire'=>$parlementaire, 'commission_permanente' => $commission_permanente, 'missions' => $missions, 'historique' => $parlementaire->getHistorique(true), 'anciens_mandats' => $anciens_mandats, 'main_fonction' => $main_fonction, 'amendements' => $amendements)); ?>
   <div class="bas_depute">
     <h2 class="list_com">Derniers commentaires concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
     <?php if ($parlementaire->nb_commentaires == 0) echo '<p>Le travail de ce député n\'a pas encore inspiré de commentaire aux utilisateurs.</p>';

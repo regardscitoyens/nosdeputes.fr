@@ -126,16 +126,22 @@ if(myTools::isFinLegislature()) {
 }
       ?></h3>
       <?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'order' => $order)); ?>
-      <h3><?php echo link_to('Travaux en commissions', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention', 'type=commission')); ?></h3>
-      <h3><?php echo link_to('Travaux en hémicycle', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention', 'type=loi')); ?></h3>
-      <h3><?php echo link_to('Toutes ses interventions', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention')); ?></h3>
-      <h3><?php echo link_to('Tous ses amendements', myTools::get_solr_list_url('', $parlementaire->nom, 'Amendement')); ?></h3>
+      <h3>Interventions</h3>
+      <p class="paddingleft"><?php echo link_to('Consulter ses travaux en commissions', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention', 'type=commission')); ?></p>
+      <p class="paddingleft"><?php echo link_to('Consulter ses travaux en hémicycle', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention', 'type=loi')); ?></p>
+      <p class="paddingleft"><?php echo link_to('Consulter toutes ses interventions', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention')); ?></p>
 
-    <h2>Questions au gouvernement</h2>
-      <h3>Ses dernières questions orales</h3>
-       <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
-      <h3>Ses dernières questions écrites</h3>
-       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
+      <div class="titre_amendements">
+        <h3>Amendements</h3>
+        <p class="paddingleft"><?php echo link_to('Consulter tous ses amendements', myTools::get_solr_list_url('', $parlementaire->nom, 'Amendement')); ?></p>
+      </div>
+      <table class="sorts_amendements">
+        <tr><th>Proposés</th><th/><th>Signés</th></tr>
+        <?php foreach ($amendements["proposes"] as $key => $val)
+          echo "<tr".($key == "Total" ? ' class="total_sorts"' : "")."><td>".$amendements["proposes"][$key].'</td><td class="titre_sort">'.$key."</td><td>".$amendements["signes"][$key]."</td></tr>";
+        ?>
+      </table>
+
   </div>
 
   <div class="boite_depute" id="b2">
@@ -168,6 +174,12 @@ if (myTools::isFinLegislature()) {
       <h3>Ses dernières propositions de loi</h3>
       <?php echo include_component('documents', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'type' => 'loi')); ?>
       <p class="suivant"><?php echo link_to('Toutes ses propositions de loi cosignées', '@parlementaire_documents?slug='.$parlementaire->slug.'&type=loi'); ?></p>
+
+    <h2>Questions au gouvernement</h2>
+      <h3>Ses dernières questions orales</h3>
+       <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
+      <h3>Ses dernières questions écrites</h3>
+       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
 
     <?php if ($historique || $anciens_mandats) : ?>
     <h2>Historique des fonctions et mandats</h2>

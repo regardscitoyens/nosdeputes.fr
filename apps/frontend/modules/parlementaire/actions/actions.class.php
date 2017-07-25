@@ -171,6 +171,60 @@ class parlementaireActions extends sfActions
           $this->anciens_mandats[] = ucfirst($this->parlementaire->getParlFonction())." du $match[1] au $match[2] ($match[3])";
       }
     rsort($this->anciens_mandats);
+
+    $this->amendements = array(
+      "sorts" => array(
+        "Adopté" => "adoptés",
+        "Indéfini" => "en attente",
+        "Irrecevable" => "irrecevables",
+        "Non soutenu" => "non soutenus",
+        "Rejeté" => "rejetés",
+        "Retiré" => "retirés",
+        "Retiré avant séance" => "retirés",
+        "Tombe" => "tombés"
+      ),
+      "proposes" => array(
+        "adoptés" => 0,
+        "rejetés" => 0,
+        "tombés" => 0,
+        "retirés" => 0,
+        "non soutenus" => 0,
+        "irrecevables" => 0,
+        "en attente" => 0,
+        "Total" => 0
+      ),
+      "signes" => array(
+        "adoptés" => 0,
+        "rejetés" => 0,
+        "tombés" => 0,
+        "retirés" => 0,
+        "non soutenus" => 0,
+        "irrecevables" => 0,
+        "en attente" => 0,
+        "Total" => 0
+      )
+    );
+    foreach (Doctrine_Query::create()
+      ->select('a.sort, count(a.id)')
+      ->from('Amendement a')
+      ->where('a.auteur_id = ?', $this->parlementaire->id)
+      ->andWhere('a.sort <> ?', "Rectifié")
+      ->groupBy('a.sort')
+      ->fetchArray() as $sort) {
+        $this->amendements["proposes"]["Total"] += $sort["count"];
+        $this->amendements["proposes"][$this->amendements["sorts"][$sort["sort"]]] += $sort["count"];
+    };
+    foreach (Doctrine_Query::create()
+      ->select('a.sort, count(a.id)')
+      ->from('Amendement a')
+      ->leftJoin('a.ParlementaireAmendements pa')
+      ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
+      ->andWhere('a.sort <> ?', "Rectifié")
+      ->groupBy('a.sort')
+      ->fetchArray() as $sort) {
+        $this->amendements["signes"]["Total"] += $sort["count"];
+        $this->amendements["signes"][$this->amendements["sorts"][$sort["sort"]]] += $sort["count"];
+    };
   }
 
   public function executePreview(sfWebRequest $request) {

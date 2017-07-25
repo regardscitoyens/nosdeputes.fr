@@ -1218,6 +1218,24 @@ h1 {
 .bas_depute_d img {
   padding-left: 10px;;
 }
+.paddingleft {
+  padding-left: 20px;
+}
+.titre_amendements {
+  float:left;
+}
+.sorts_amendements {
+  text-align: center;
+  margin: 15px 20px;
+  float: right;
+}
+.sorts_amendements th, .total_sorts {
+  font-weight: bold;
+}
+.titre_sort {
+  margin-left: -10px;
+  margin-right: -10px;
+}
 .rss {
   margin: 0;
   padding: 0;
