@@ -482,7 +482,7 @@ foreach $line (split /\n/, $string)
     #print STDERR $line."\n";
     #si italique ou tout gras => commentaire
     if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) && $line !~ /^\|Articles?\s*\d+/i && $line !~ /^\/«/) {
-      if ($line =~ /^\|(.*(groupe|mission|délégation|office|comité).*)\|\s*$/i) {
+      if ($line =~ /^[\/|]((groupe|(com)?mission|délégation|office|comité).*)[\/|]\s*$/i) {
         if (!$timestamp && !$commission) {
           $commission = $1;
           next;
