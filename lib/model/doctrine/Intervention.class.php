@@ -108,7 +108,7 @@ class Intervention extends BaseIntervention
       $personne = new Personnalite();
       $personne->setNom($nom);
       $personne->save();
-      echo 'INFO: new Personnalite "'.$nom.'"';
+      echo 'INFO: new Personnalite : '.$nom.($fonction ? " / ".$fonction : "")."\n";
     }
     if ($personne) {
       return $this->setPersonnalite($personne);
