@@ -277,7 +277,7 @@ sub setIntervenant {
     $intervenant =~ s/\s*[\.\:]\s*$//;
     $intervenant =~ s/Madame/Mme/g;
     $intervenant =~ s/Monsieur/M./g;
-    $intervenant =~ s/(\s+et|,)\s+M[\.lmes]+\s+/ et /g;
+    $intervenant =~ s/(\s+et|,)+\s+M[\.lmes]+\s+/ et /g;
     $intervenant =~ s/^M[\.mes]*\s//i;
     $intervenant =~ s/([^M])\s*\..*$/\1/;
     $intervenant =~ s/L([ea])\s/l$1 /i;
