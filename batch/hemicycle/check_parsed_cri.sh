@@ -39,6 +39,7 @@ grep '(' $JSON                          |
   sed 's/^.*"contexte": "//'            |
   sed 's/",.*"intervention": "/  |  /'  |
   sed 's/".*$//'                        |
+  grep -v '(.*  |  [^(]*$'              |
   sort -u
 echo "-------------"
 echo
