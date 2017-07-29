@@ -47,4 +47,6 @@ echo "-------------"
 echo
 echo
 
-
+head -1 $JSON               |
+  sed 's/^.*"source": "//'  |
+  sed 's/[#"].*$//'
