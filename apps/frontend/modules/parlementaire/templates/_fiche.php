@@ -135,13 +135,7 @@ if(myTools::isFinLegislature()) {
         <h3>Amendements</h3>
         <p class="paddingleft"><?php echo link_to('Consulter tous ses amendements', myTools::get_solr_list_url('', $parlementaire->nom, 'Amendement')); ?></p>
       </div>
-      <table class="sorts_amendements">
-        <tr><th>Proposés</th><th/><th>Signés</th></tr>
-        <?php foreach ($amendements["proposes"] as $key => $val)
-          if ($key == "Total" || $key == "adoptés" || $amendements["proposes"][$key] || $amendements["signes"][$key])
-            echo "<tr".($key == "Total" ? ' class="total_sorts"' : "")."><td>".$amendements["proposes"][$key].'</td><td class="titre_sort">'.$key."</td><td>".$amendements["signes"][$key]."</td></tr>";
-        ?>
-      </table>
+      <?php echo include_component('amendement', 'parlementaireStats', array('parlementaire' => $parlementaire)); ?>
 
   </div>
 

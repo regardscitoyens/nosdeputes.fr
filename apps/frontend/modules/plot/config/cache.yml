@@ -1,19 +1,16 @@
 _parlementaire:
   enabled: true
-  lifetime: 86400
+  lifetime: 28800
 _getGroupesData:
   enabled: true
-  lifetime: 86400
+  lifetime: 28800
 _getParlData:
   enabled: true
-  lifetime: 86400
+  lifetime: 28800
 _getVacances:
   enabled: true
   lifetime: 604800
 _groupes:
-  enabled: true
-  lifetime: 192800
-_newGroupes:
   enabled: true
   lifetime: 192800
 

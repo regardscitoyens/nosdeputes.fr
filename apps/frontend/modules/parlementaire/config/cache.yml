@@ -5,19 +5,19 @@ rss:
   lifetime: 3600
   enabled: true
 preview:
-  lifetime: 86400
+  lifetime: 28800
   enabled: true
 _widget:
-  lifetime: 86400
+  lifetime: 28800
   enabled: true
 _duJour:
   lifetime: 86400
   enabled: true
 _fiche:
-  lifetime: 86400
+  lifetime: 28800
   enabled: true
 list:
-  lifetime: 86400
+  lifetime: 28800
   enabled: true
 show:
   enabled: false
