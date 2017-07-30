@@ -103,11 +103,11 @@ foreach(array_keys($images) as $k) {
     $titre = preg_replace('/s$/', '', str_replace('s ', ' ', $titre));
   if ($rank && $top[$k]['rank'] <= 150 && $value) {
     $couleur = 'vert';
-    $titre .=' (fait partie des 150 premiers)';
+    $titre .=' (fait partie des 150 plus actifs sur ce critère)';
   }
   else if ($rank && $top[$k]['rank'] >= $top[$k]['max_rank'] - 150) {
     $couleur = 'rouge';
-    $titre .= ' (fait partie des 150 derniers)';
+    $titre .= ' (fait partie des 150 moins actifs sur ce critère)';
   }
   echo '<li'.$couleur2style[$couleur].'>';
   echo '<'.($rank ? 'a' : 'span').$target.' class="jstitle" title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug, $abs).'">';
