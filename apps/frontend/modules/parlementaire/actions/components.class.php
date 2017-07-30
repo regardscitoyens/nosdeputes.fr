@@ -9,11 +9,11 @@ class parlementaireComponents extends sfComponents
     $this->parlementaires = Doctrine::getTable('Intervention')->createQuery('i')
       ->leftJoin('i.Parlementaire p')
       ->whereIn('i.id', $this->interventions)
-      ->andWhere('((i.fonction != ? AND i.fonction != ? ) OR i.fonction IS NULL)', array('président', 'présidente'))
+      #->andWhere('((i.fonction != ? AND i.fonction != ? ) OR i.fonction IS NULL)', array('président', 'présidente'))
       ->andWhere('i.parlementaire_id IS NOT NULL')
-      ->select('p.nom, p.slug, i.id, count(i.id) as nb')
+      ->select('p.nom, p.slug, i.id, i.fonction, sum(i.nb_mots) as nb')
       ->groupBy('p.id')
-      ->orderBy('nb DESC')
+      ->orderBy('nb DESC, i.fonction')
       ->fetchArray();
 
   }

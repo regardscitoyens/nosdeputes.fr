@@ -15,7 +15,7 @@ class sectionComponents extends sfComponents
 
   public function executeParlementaire() {
     $sql = Doctrine_Query::create()
-      ->select('s.section_id, sp.titre, count(i.id) as nb')
+      ->select('s.section_id, sp.titre, i.fonction as fonction, count(i.id) as nb')
       ->from('Section s')
       ->where('s.section_id = sp.id')
       ->leftJoin('s.Section sp')
@@ -25,8 +25,8 @@ class sectionComponents extends sfComponents
       ->groupBy('s.section_id');
     if (isset($this->order) && $this->order == 'date') {
       $sql->andWhere('i.date > ?', date('Y-m-d', time() - 31556926));
-      $sql->orderBy('i.date DESC');
-    } else $sql->orderBy('nb DESC');
+      $sql->orderBy('i.date DESC, i.fonction');
+    } else $sql->orderBy('nb DESC, i.fonction');
     $this->textes = $sql->fetchArray();
     if (isset($this->order) && $this->order == 'date') {
       $done = array();
