@@ -401,13 +401,14 @@ foreach $line (split /\n/, $string)
             }else {
                 setFonction('président', $prez);
             }
-        }elsif($line =~ /h2 class="titre[2-9]+">(.*?)\s*<\/h2>/i || $line =~ /class="sstitreinfo">\/([^\/]+)\//) {
+        }elsif($line =~ /h2 class="titre[2-9]+">\s*(.*?)\s*<\/h2>/i || $line =~ /class="sstitreinfo">\s*\/\s*([^\/]+)\s*\//) {
             checkout();
             $tmpline = $1;
             $tmpline =~ s/<\/?[a-z][^>]*>//g;
             next unless ($tmpline);
             if (lc($tmpline) ne lc($titre1) && ($tmpline !~ /rappels? au règlement|suspension|reprise/i || $tmpline =~ /demande/i)) {
                 $titre2 = $tmpline;
+                $titre2 =~ s/[\/|]//g;
                 $donetitre1 = 0;
                 $amendements = @pre_amendements = ();
             }
