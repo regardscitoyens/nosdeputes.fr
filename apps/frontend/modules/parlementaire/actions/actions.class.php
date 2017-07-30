@@ -184,24 +184,24 @@ class parlementaireActions extends sfActions
         "Tombe" => "tombés"
       ),
       "proposes" => array(
+        "Total" => 0,
         "adoptés" => 0,
         "rejetés" => 0,
         "tombés" => 0,
         "retirés" => 0,
         "non soutenus" => 0,
         "irrecevables" => 0,
-        "en attente" => 0,
-        "Total" => 0
+        "en attente" => 0
       ),
       "signes" => array(
+        "Total" => 0,
         "adoptés" => 0,
         "rejetés" => 0,
         "tombés" => 0,
         "retirés" => 0,
         "non soutenus" => 0,
         "irrecevables" => 0,
-        "en attente" => 0,
-        "Total" => 0
+        "en attente" => 0
       )
     );
     foreach (Doctrine_Query::create()
