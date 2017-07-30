@@ -25,9 +25,9 @@ class updateDeputesTask extends sfBaseTask
     $dir = dirname(__FILE__).'/../../batch/depute/json/';
     $manager = new sfDatabaseManager($this->configuration);
 
-    if (sfConfig::get('app_legislature') > 13)
-      $villes = json_decode(file_get_contents($dir.'../static/villes_2012.json'));
-    else $villes = json_decode(file_get_contents($dir.'../static/villes_2007.json'));
+    if (sfConfig::get('app_legislature') == 13)
+      $villes = json_decode(file_get_contents($dir.'../static/villes_2007.json'));
+    else $villes = json_decode(file_get_contents($dir.'../static/villes_2012.json'));
 
     $sites = array();
     $row = 0;
