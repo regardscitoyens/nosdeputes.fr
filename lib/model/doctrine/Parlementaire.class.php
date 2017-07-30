@@ -50,6 +50,10 @@ class Parlementaire extends BaseParlementaire
     return $string;
   }
 
+  public function getCeCette($maj=true) {
+    return ($maj ? "C" : "c").($this->sexe == "F" ? "ette députée" : "e député");
+  }
+
   public function getNomPrenom() {
     $PrNoPaNP = $this->getPrenomNomParticule();
     return str_replace($PrNoPaNP[0].' ', '', $this->nom).', '.$PrNoPaNP[0];

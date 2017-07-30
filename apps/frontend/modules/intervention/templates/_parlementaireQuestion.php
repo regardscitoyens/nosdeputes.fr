@@ -1,5 +1,5 @@
 <?php if (!count($questions)) { ?>
-    <i class="paddingleft">Ce député n'a posé aucune question orale.</i>
+    <i class="paddingleft"><?php echo $parlementaire->ceCette; ?> n'a posé aucune question orale.</i>
 <?php return ;}?>
 <ul>
 <?php foreach($questions as $question) {

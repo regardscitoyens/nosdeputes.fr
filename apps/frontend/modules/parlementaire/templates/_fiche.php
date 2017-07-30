@@ -140,9 +140,9 @@ if(myTools::isFinLegislature()) {
 
   <div class="boite_depute" id="b2">
     <?php if (!$parlementaire->isEnMandat()) : ?>
-    <h2>Le mandat de ce député est achevé</h2>
+    <h2>Le mandat de <?php echo $parlementaire->getCeCette(false); ?> est achevé</h2>
     <?php else : ?>
-    <h2>Suivre l'activité du député</h2>
+    <h2>Suivre l'activité d<?php echo ($parlementaire->sexe == "F" ? "e la députée" : "u député"); ?></h2>
       <table width=100% style="text-align: center"><tr>
         <td width=33%><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/email.png', 'alt="e-mail"'); ?></a><br/><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>">par e-mail</a></td>
         <td width=33%><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>">par RSS</a></td>
