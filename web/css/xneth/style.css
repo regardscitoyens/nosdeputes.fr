@@ -1436,16 +1436,23 @@ h2 {
 .question p:first-letter {
   padding-left: 20px;
 }
+#reponse table, .didascalie table {
+  border-collapse: collapse;
+}
 #reponse table {
   min-width: 90%;
   margin: 10px;
-  border-collapse: collapse;
 }
-#reponse th, #reponse td {
+.didascalie table {
+  margin: auto;
+}
+#reponse th, #reponse td, .didascalie th, .didascalie td {
   border: 1px solid darkgrey;
+  padding: 3px 5px;
 }
-#reponse th {
+#reponse th, .didascalie th, #reponse tr:first-child, .didascalie tr:first-child {
   background-color: #CCC;
+  font-weight: bold;
 }
 .loi p:first-letter {
   padding-left: 20px;
