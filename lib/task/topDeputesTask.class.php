@@ -491,11 +491,11 @@ class topDeputesTask extends sfBaseTask
 
     // Calcule présences médianes pour les graphes
     $date = time();
-    $annee = date('Y', $date);
+    $annee = date('o', $date);
     $sem = date('W', $date);
     $start = strtotime(myTools::getDebutLegislature());
     $date_debut = date('Y-m-d', $start);
-    $this->annee0 = date('Y', $start);
+    $this->annee0 = date('o', $start);
     $this->sem0 = date('W', $start);
     if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
     if ($this->sem0 >= 52 && $sem <= 1) $this->sem0 = 0;
