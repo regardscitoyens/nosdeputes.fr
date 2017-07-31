@@ -89,7 +89,7 @@ $bulles = array("",
 <?php } ?>
 </table>
 </div>
-<p class="aligncenter"><small>Les chiffres en couleur indiquent que le sénateur se trouve pour le critère indiqué parmi <span style="color:green">les 100 premiers</span> ou <span style="color:red">les 100 derniers</span>.</small></p>
+<p class="aligncenter"><small>Les chiffres en couleur indiquent que le sénateur se trouve pour le critère indiqué parmi <span style="color:green;font-weight: bold;">les 100 plua actifs</span> ou <span style="color:red;font-style : italic;">les 100 moins actifs</span>.</small></p>
 </div></div>
 <h2 id="groupes">Activité moyenne d'un sénateur de chaque groupe politique <?php if (myTools::isDebutMandature()) echo "depuis le début de la mandature"; else echo "au cours des 12 derniers mois"; ?> :</h2>
 <div class="liste_senateurs_top">

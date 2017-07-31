@@ -396,10 +396,10 @@ class parlementaireActions extends sfActions
 	$this->tops[$id][$i]['value'] = $tops[$key]['value'];
 
 	$this->tops[$id][$i]['style'] = '';
-	if ($tops[$key]['rank'] < 101)
-	  $this->tops[$id][$i]['style'] = ' style="color:green" ';
-	else if ($tops[$key]['rank'] > 348 - 101)
-	  $this->tops[$id][$i]['style'] = ' style="color:red" ';
+	if ($tops[$key]['rank'] <= 100)
+	  $this->tops[$id][$i]['style'] = ' style="color:green;font-weight: bold;" ';
+	else if ($tops[$key]['rank'] >= $top[$key]['max_rank'] - 100)
+	  $this->tops[$id][$i]['style'] = ' style="color:red;font-style : italic;" ';
         if (!isset($this->gpes[$p['groupe_acronyme']][$i]))
           $this->gpes[$p['groupe_acronyme']][$i] = 0;
         $this->gpes[$p['groupe_acronyme']][$i] += $tops[$key]['value'];

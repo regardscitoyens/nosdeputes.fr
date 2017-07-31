@@ -85,11 +85,11 @@ foreach(array_keys($images) as $k) {
   if ($value < 2) $titre = preg_replace('/s$/', '', str_replace('s ', ' ', $titre));
   if ($rank && $top[$k]['rank'] <= 100) {
     $couleur = 'vert';
-    $titre .=' (fait partie des 100 premiers)';
+    $titre .=' (fait partie des 100 plus actifs sur ce critère)';
   }
   else if ($rank && $top[$k]['rank'] >= $top[$k]['max_rank'] - 100) {
     $couleur = 'rouge';
-    $titre .= ' (fait partie des 100 derniers)';
+    $titre .= ' (fait partie des 100 moins actifs sur ce critère)';
   }
   echo '<li';
   echo $couleur2style[$couleur];
