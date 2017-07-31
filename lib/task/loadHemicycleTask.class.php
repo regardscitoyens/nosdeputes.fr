@@ -15,6 +15,7 @@ class loadHemicyleTask extends sfBaseTask
   {
     // your code here
     $dir = dirname(__FILE__).'/../../batch/hemicycle/out/';
+    $backupdir = dirname(__FILE__).'/../../batch/hemicycle/loaded/';
     $manager = new sfDatabaseManager($this->configuration);
 
     if (is_dir($dir)) {
@@ -98,7 +99,7 @@ class loadHemicyleTask extends sfBaseTask
 	    $section->free();
 	  }
 	  unset($sections);
-	  unlink($dir.$file);
+      rename($dir.$file, $backupdir.$file);
 	}
     }
   }
