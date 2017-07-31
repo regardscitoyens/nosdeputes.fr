@@ -1436,6 +1436,17 @@ h2 {
 .question p:first-letter {
   padding-left: 20px;
 }
+#reponse table {
+  min-width: 90%;
+  margin: 10px;
+  border-collapse: collapse;
+}
+#reponse th, #reponse td {
+  border: 1px solid darkgrey;
+}
+#reponse th {
+  background-color: #CCC;
+}
 .loi p:first-letter {
   padding-left: 20px;
 }
