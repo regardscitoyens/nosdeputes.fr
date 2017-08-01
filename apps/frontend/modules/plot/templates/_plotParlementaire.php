@@ -3,7 +3,7 @@ $histogram = false;
 $abs = '';
 if (!isset($target))
   $target = '';
-if (isset($absolute) && $absolute)
+if ($absolute)
   $abs = 'absolute=true';
 $size='';
 $width = 790;
@@ -21,22 +21,22 @@ else {
 if ($link === 'true') {
   $time = 'lastyear';
   if (myTools::isFinLegislature()) $time = 'legislature';
-  echo '<a'.$target.' href="'.url_for('@parlementaire'.(isset($absolute) && $absolute ? '' : '_plot').'?slug='.$parlementaire->slug.(isset($absolute) && $absolute ? '' : '&time='.(myTools::isFinLegislature() ? 'legislature' : 'lastyear')), $abs).'">';
+  echo '<a'.$target.' href="'.url_for('@parlementaire'.($absolute ? '' : '_plot').'?slug='.$parlementaire->slug.($absolute ? '' : '&time='.(myTools::isFinLegislature() ? 'legislature' : 'lastyear')), $abs).'">';
   if (!isset($widthrate)) $widthrate = 1;
   $height = floor($height / 2 *$widthrate);
   $width = floor($width * $widthrate);
 } else echo '<div class="par_session">'; ?>
 <div class="activity_plot" id="plot<?php echo $type; ?>">
-  <?php if (!(!isset($absolute) && $absolute)) echo '<noscript>'; ?>
+  <?php if (!$absolute) echo '<noscript>'; ?>
   <img
     style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px;"
     alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>"
     src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type, $abs).'?questions='.$questions.'&link='.$link.'&histogram='.$histogram; ?>"
   />
-  <?php if (!(isset($absolute) && $absolute)) echo '</noscript>'; ?>
+  <?php if (!$absolute) echo '</noscript>'; ?>
 </div>
 <?php if ($link === 'true') echo '</a>';
-if (!(isset($absolute) && $absolute)) : ?>
+if (!$absolute) : ?>
 <script type="text/javascript">
 plot_activity_data("<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type).'?questions='.$questions.'&format=json'; ?>", "plot<?php echo $type; ?>", "<?php echo $width; ?>", "<?php echo $height; ?>", "<?php echo $type; ?>", "<?php echo $histogram; ?>");
 </script>
