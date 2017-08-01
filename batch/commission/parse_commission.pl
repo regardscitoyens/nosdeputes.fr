@@ -400,22 +400,24 @@ foreach $line (split /\n/, $string)
     }
     next unless ($body);
     if ($line =~ /fpfp/) {
-	checkout();
-	next;
+      checkout();
+      next;
     }
     if ($line =~ /\<[a]/i) {
-	if ($line =~ /<a name=["']([^"']+)["']/) {
-	    $source = $url."#$1";
-	}elsif($line =~ /class="menu"/ && $line =~ /<a[^>]+>([^<]+)<?/) {
-	    $test = $1;
-	    if (!$commission && $test =~ /Commission|mission/) {
-		$test =~ s/\s*Les comptes rendus de la //;
-		$test =~ s/^ +//;
-		if ($test !~ /(spéciale|enquête)$/i) {
-			$commission = $test;
-		}
-	    }
-	}
+      if ($line =~ /<a name=["']([^"']+)["']/) {
+        $source = $url."#$1";
+      } elsif($line =~ /class="menu"/ && $line =~ /<a[^>]+>([^<]+)<?/) {
+        $test = $1;
+        if (!$commission && $test =~ /Commission|mission/) {
+          $test =~ s/\s*Les comptes rendus de la //;
+          $test =~ s/^ +//;
+          if ($test !~ /(spéciale|enquête)$/i) {
+            $commission = $test;
+          }
+        }
+      }
+      $line =~ s/<a name=[^>]*>\s*<\/a>//ig;
+      $line =~ s/<a name=[^\/>]\/\s*>//ig;
     }
     if ($line =~ /<h[1-9]+/i) {
         rapporteur();
@@ -467,7 +469,8 @@ foreach $line (split /\n/, $string)
       $img2 =~ s/[\\]/\\\\/g;
       $line = $img0."##".$img1.$imgurl.$img2."##".$img3;
     }
-	$line =~ s/\<\/?[^\>]+\>//g;
+    $line =~ s/<[^a\/][^>]*>//g;
+    $line =~ s/<\/[^a][^>]*>//g;
     $line =~ s/\s+/ /g;
     $line =~ s/^\s//;
     $line =~ s/\s$//;
