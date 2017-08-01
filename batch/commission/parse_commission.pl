@@ -550,8 +550,13 @@ foreach $line (split /\n/, $string)
       }
 	}
 	$line =~ s/^\s+//;
-	$line =~ s/[\|\/]//g;
-	$line =~ s/^[\.\:]\s*//;
+    if ($line =~ /<a/i) {
+      $line =~ s/([^<])\//\1/g;
+      $line =~ s/\|//g;
+    } else {
+      $line =~ s/[\|\/]//g;
+    }
+    $line =~ s/^[\.\:]\s*//;
     #print STDERR "LINE: $found $line\n";
 	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève)/) {
 	    if ($line =~ s/^\s*((Dr|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
