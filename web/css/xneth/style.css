@@ -1128,11 +1128,11 @@ h1 {
 .barre_activite ul {
   margin: 0;
   width: 690px;
-  display: inline-flex;
   float: left;
 }
 .barre_activite li {
-  width: 10%;
+  width: 68px;
+  display: inline-block;
 }
 .barre_activite h3 {
   padding-left: 5px;
