@@ -477,7 +477,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/\s*,\s*\|\s*\/\s*/,|\/ /g;
     $line =~ s/\s*\|\s*,\s*\/\s*/,|\/ /g;
     $line =~ s/\|\|//g;
-    $line =~ s/\/\///g;
+    $line =~ s/([^:])\/\//\1/g;
 	$line =~ s/##(img[^\>#]+?)##/<\1 \\\\>/ig;
 	last if ($line =~ /^\|annexe/i);
 	next if ($line !~ /\w/);
@@ -551,8 +551,12 @@ foreach $line (split /\n/, $string)
 	}
 	$line =~ s/^\s+//;
     if ($line =~ /<a/i) {
-      $line =~ s/([^<])\//\1/g;
       $line =~ s/\|//g;
+      while ($line =~ /href="[^"]*\//) {
+        $line =~ s/(href="[^"]*)\//\1ø%ø/;
+      }
+      $line =~ s/([^<])\//\1/g;
+      $line =~ s/ø%ø/\//g;
     } else {
       $line =~ s/[\|\/]//g;
     }
