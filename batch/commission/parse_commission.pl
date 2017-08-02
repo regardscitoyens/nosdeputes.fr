@@ -609,7 +609,7 @@ foreach $line (split /\n/, $string)
         $mech = WWW::Mechanize->new();
         $mech->get($urlsommairevid);
         $sommairevid = $mech->content;
-        $nointer = "<p><i>uniquement disponible en vidéo</i></p>";
+        $nointer = "<p><i>(disponible uniquement en vidéo)</i></p>";
         while ($sommairevid =~ s/<chapter[^>]*label="\s*([^"]+)\s*"[^>]*>//) {
           $element = decode_entities($1);
           utf8::encode($element);
