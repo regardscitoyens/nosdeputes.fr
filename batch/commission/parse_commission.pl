@@ -444,14 +444,14 @@ foreach $line (split /\n/, $string)
         }
     }
 
-    if ($prez && $line =~ /<\/?t(able|d|h|r)/) {
-        $line =~ s/<[^t\/][^>]*>//g;
-        $line =~ s/<\/[^t][^>]*>//g;
-        $line =~ s/([^<])\/([^<\/]*)\//\1<i>\2<\/i>/g;
-        $line =~ s/\|([^|]*)\|/<b>\1<\/b>/g;
-        checkout() if ($intervenant || ($line =~ /<table/ && length($intervention) + length($line) gt 2000));
-        $intervention .= "$line";
-    }elsif ($line =~ /\<p/i || ($line =~ /(<SOMMAIRE>|\<h[1-9]+ class="titre\d+)/i && $line !~ />Commission/)) {
+  if ($prez && $line =~ /<\/?t(able|d|h|r)/) {
+    $line =~ s/<[^t\/][^>]*>//g;
+    $line =~ s/<\/[^t][^>]*>//g;
+    $line =~ s/([^<])\/([^<\/]*)\//\1<i>\2<\/i>/g;
+    $line =~ s/\|([^|]*)\|/<b>\1<\/b>/g;
+    checkout() if ($intervenant || ($line =~ /<table/ && length($intervention) + length($line) gt 2000));
+    $intervention .= "$line";
+  }elsif ($line =~ /\<p/i || ($line =~ /(<SOMMAIRE>|\<h[1-9]+ class="titre\d+)/i && $line !~ />Commission/)) {
 	$found = 0;
     $line =~ s/<\/?SOMMAIRE>/\//g;
     while ($line =~ /^(.*)<(img.*? src=.)(.*?)(['"][^\>]+)>(.*)$/i) {
@@ -594,7 +594,43 @@ foreach $line (split /\n/, $string)
     if ($line) {
 	  $intervention .= "<p>$line</p>";
     }
+    if ($line =~ /(https?.*?(videos?\.assemblee-nationale\.(fr|tv)|assemblee-nationale\.tv)\/[^\s"<>]*)[\s"<>]/) {
+      $urlvideo = $1;
+      checkout();
+      $intervention = "<p><iframe height=\"660px\" width=\"100%\" src=\"$urlvideo\"></iframe></p>";
+      checkout();
+      if ($urlvideo =~ /assemblee-nationale.*\/video\.([^.]+)\./) {
+        $idvideo = $1;
+        $urlsommairevid = "http://videos.assemblee-nationale.fr/Datas/an/$idvideo/content/data.nvs";
+        use WWW::Mechanize;
+        use HTML::Entities;
+        $mech = WWW::Mechanize->new();
+        $mech->get($urlsommairevid);
+        $sommairevid = $mech->content;
+        $nointer = "<p><i>uniquement disponible en vidéo</i></p>";
+        while ($sommairevid =~ s/<chapter[^>]*label="\s*([^"]+)\s*"[^>]*>//) {
+          $element = decode_entities($1);
+          utf8::encode($element);
+          $element =~ s/^MM\./M. /;
+          $element =~ s/^M\.(\S+)/M. \1/;
+          if ($element =~ /^M(?:\.|me)\s+([^,]+), (.*)$/) {
+            checkout();
+            $intervenant = setFonction($2, $1);
+            $intervention = $nointer;
+            checkout();
+          } elsif ($element =~ /^M(?:\.|me)\s+(.*)$/) {
+            checkout();
+            $intervenant = setIntervenant($1);
+            $intervention = $nointer;
+            checkout();
+          } else {
+            $intervenant = "";
+            $intervention .= "<p>$element</p>";
+          }
+        }
+      }
     }
+  }
     if (length($intervention)-32000 > 0) {
         $tmpinter = $intervenant;
         checkout();
