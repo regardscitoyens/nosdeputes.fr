@@ -597,8 +597,10 @@ foreach $line (split /\n/, $string)
     if ($line =~ /(https?.*?(videos?\.assemblee-nationale\.(fr|tv)|assemblee-nationale\.tv)\/[^\s"<>]*)[\s"<>]/) {
       $urlvideo = $1;
       checkout();
-      $intervention = "<p><iframe height=\"660px\" width=\"100%\" src=\"$urlvideo\"></iframe></p>";
-      checkout();
+      # no video iframe until AN.tv has a valid https certificate...
+      #$urlvideo =~ s/http:/https:/i;
+      #$intervention = "<p><iframe height=\"660px\" width=\"100%\" src=\"$urlvideo\"></iframe></p>";
+      #checkout();
       if ($urlvideo =~ /assemblee-nationale.*\/video\.([^.]+)\./) {
         $idvideo = $1;
         $urlsommairevid = "http://videos.assemblee-nationale.fr/Datas/an/$idvideo/content/data.nvs";
