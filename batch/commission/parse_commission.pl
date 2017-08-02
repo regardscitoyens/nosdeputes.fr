@@ -555,6 +555,9 @@ foreach $line (split /\n/, $string)
       while ($line =~ /href="[^"]*\//) {
         $line =~ s/(href="[^"]*)\//\1ø%ø/;
       }
+      while ($line =~ /href="[^>]*>[^<]*\//) {
+        $line =~ s/(href="[^>]*>[^<]*)\//\1ø%ø/;
+      }
       $line =~ s/([^<])\//\1/g;
       $line =~ s/ø%ø/\//g;
     } else {
