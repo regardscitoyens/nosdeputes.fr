@@ -520,7 +520,7 @@ foreach $line (split /\n/, $string)
         }
         $found = $majIntervenant = 1;
         $intervenant = setIntervenant($interv1.$extrainterv);
-	  } elsif (!($line =~ /^\|(?:&#\d+;)?\s*(?:Puis de |En conséquence|Nomination|Commission|Accords?|Présidence|Titre|Chapitre|Section|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
+	  } elsif (!($line =~ /^\|(?:&#\d+;)?\s*(?:Puis de |En conséquence|Audition|Nomination|Commission|Accords?|Présidence|Titre|Chapitre|Section|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i) && ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
