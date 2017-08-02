@@ -119,8 +119,11 @@ class Intervention extends BaseIntervention
       $this->_set('parlementaire_id', $parlementaire->id);
       $this->_set('parlementaire_groupe_acronyme', $parlementaire->groupe_acronyme);
       $this->_set('personnalite_id', null);
-      if (!$from_db)
-        $this->getSeance()->addPresence($parlementaire, 'intervention', $this->source);
+      if (!$from_db) {
+        $typepreuve = ($this->intervention === "<p><i>(disponible uniquement en vidéo)</i></p>" ? "video" : "intervention");
+
+        $this->getSeance()->addPresence($parlementaire, $typepreuve, $this->source);
+      }
       $parlementaire->free();
     }
   }
