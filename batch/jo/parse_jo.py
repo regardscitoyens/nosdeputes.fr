@@ -4,6 +4,7 @@
 # Usage : parse_jo.py chamber [day] [stdout]
 # "chamber" peut prendre pour valeur : "an" ou "senat" ; "day" doit être une date de la forme "2016-04-15", si omis, la date du jour sera utilisée ; "stdout" permet d'afficher la sortie du script plutôt que de créer un fichier dans ./json
 import re, os, sys, urllib2, json
+import subprocess
 from datetime import date, time, datetime
 from bs4 import BeautifulSoup
 
@@ -85,12 +86,20 @@ if not os.path.exists('./html'):
 if not os.path.exists('./json'):
   os.makedirs('./json')
 
+# safe download for all server
+def getHtml(url):
+  try:
+    return urllib2.urlopen(url).read()
+  except:
+    res, err = subprocess.Popen(['curl', '-s', '-k', url], stdout=subprocess.PIPE).communicate()
+    return res
+
 # Sommaire JO
-summary = urllib2.urlopen(jo_eli)
-soup = BeautifulSoup(summary.read(), "lxml")
+summary = getHtml(jo_eli)
+soup = BeautifulSoup(summary, "lxml")
 
 sys.stderr.write(chamber.upper()+' '+date_fr+' '+jo_eli+'\n')
-if soup.title.string.strip().startswith(u'Recherche'):
+if not soup.title or soup.title.string.strip().startswith(u'Recherche'):
   sys.exit(' no JO')
 
 else:
@@ -112,8 +121,8 @@ else:
         commission_link = True
         n_presences = 0
         com_link = prefix+link.get('href')
-        coms_doc = urllib2.urlopen(com_link)
-        soup = BeautifulSoup(coms_doc.read(), "lxml")
+        coms_doc = getHtml(com_link)
+        soup = BeautifulSoup(coms_doc, "lxml")
 
         # Sauvegarde commissions
         with open("html/coms_"+chamber+"_"+day+".html", "wb") as file:
