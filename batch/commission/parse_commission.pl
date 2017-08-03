@@ -228,6 +228,7 @@ sub setIntervenant {
     $intervenant =~ s/ présidence / présidente /;
     $intervenant =~ s/Erika Bareigts/Ericka Bareigts/g;
     $intervenant =~ s/Joachim Pueyo/Joaquim Pueyo/g;
+    $intervenant =~ s/\bE(tienne|ric|milie|lodie|lisabeth)/é\1/ig;
     $intervenant =~ s/\s*\&\#821[12]\;\s*//;
     $intervenant =~ s/^audition de //i;
     $intervenant =~ s/^(M(\.|me))(\S)/$1 $3/;
