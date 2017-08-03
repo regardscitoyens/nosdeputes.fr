@@ -595,6 +595,14 @@ foreach $line (split /\n/, $string)
     if ($line) {
 	  $intervention .= "<p>$line</p>";
     }
+    if ($line =~ /^Ont participé (?:au débat|à la discussion)\s*:\s*(M.*?)[\s\.]*$/) {
+      foreach $part (split(/\s*(?:,| et)\s+/, $1)) {
+        checkout();
+        $intervenant = setIntervenant($part);
+        $intervention = "<p><i>(non disponible)</i></p>";
+        checkout();
+      }
+    }
     if ($line =~ /(https?.*?(videos?\.assemblee-nationale\.(fr|tv)|assemblee-nationale\.tv)\/[^\s"<>]*)[\s"<>]/) {
       $urlvideo = $1;
       checkout();
