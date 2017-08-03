@@ -237,7 +237,11 @@ sub checkout {
         if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)//g) {
             $ts++;
             $extraint = $3;
-            $extraint =~ s/,\s+(.*)\s*$/", "fonction": "\1/;
+            if ($extraint =~ s/,\s+(.*)\s*$//) {
+                setFonction($1, $extraint);
+                $fonction = $inter2fonction{$extraint};
+                $extraint .= '", "fonction": "'.$fonction;
+            }
             print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$extraint."\"}\n";
             $inter2fonction{$intervenant} = '';
         }
