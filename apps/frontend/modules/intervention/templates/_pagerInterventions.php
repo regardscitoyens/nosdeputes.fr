@@ -22,7 +22,7 @@
 ?></div>
 <?php if ($pager->haveToPaginate()) :
 
-$uri = $sf_request->getUri();
+$uri = preg_replace("/^https?:\/\/[^\/]+\//", "/", $sf_request->getUri());
 $uri = preg_replace('/page=\d+\&?/', '', $uri);
 
 if (!preg_match('/[\&\?]$/', $uri)) {
