@@ -185,7 +185,7 @@ class Parlementaire extends BaseParlementaire
 
       # If it doesn't exist, create it
       if (!$found) {
-        echo "INFO: ".$this->nom." joined ".$orga->nom." as ".$fonction."\n";
+        echo "INFO: ".$orga->nom." - ".$this->nom." joined as ".$fonction."\n";
 
         # Special case of groupe impacting specific field
         if ($type == 'groupe') {
@@ -214,7 +214,7 @@ class Parlementaire extends BaseParlementaire
 
     # Declare as finished those not listed anymore
     foreach($porgas as $po) {
-      echo "INFO: ".$this->nom." left ".$po->nom." as ".$po->fonction." (".$po->debut_fonction." -> ".$today.")\n";
+      echo "INFO: ".$po->nom." - ".$this->nom." left as ".$po->fonction." (".$po->debut_fonction." -> ".$today.")\n";
       $po->setFinFonction($today);
       $po->save();
     }

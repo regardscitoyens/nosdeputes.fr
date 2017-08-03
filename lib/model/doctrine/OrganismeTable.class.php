@@ -51,7 +51,7 @@ class OrganismeTable extends Doctrine_Table
       return $org;
     return null;
   }
- 
+
   public function findOneByNomOrCreateIt($nom, $type) {
     $org = $this->findOneByNomType($nom, $type);
     if ($org)
@@ -60,9 +60,10 @@ class OrganismeTable extends Doctrine_Table
     $org->type = $type;
     $org->nom = self::cleanNom($nom);
     $org->save();
+    echo "INFO: new Organisme : ".$org->nom." ($type)\n";
     return $org;
   }
-  
+
   private static function cleanNom($nom) {
     $nom = strtolower($nom);
     $nom = preg_replace('/(&#8217;|\')/', '’', $nom);
