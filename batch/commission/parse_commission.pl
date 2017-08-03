@@ -179,6 +179,9 @@ sub checkout {
 sub setFonction {
     my $fonction = shift;
     my $intervenant = setIntervenant(shift);
+    if ($intervenant eq $fonction) {
+      return $intervenant;
+    }
     $fonction =~ s/[^a-zàâéèêëîïôùûü]+$//i;
     $fonction =~ s/<[^>]+>\s*//g;
     $fonction =~ s/<[^>]*$//;
