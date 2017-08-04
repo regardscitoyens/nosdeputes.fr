@@ -608,8 +608,21 @@ foreach $line (split /\n/, $string)
         checkout();
       }
     }
-    if ($line =~ /(https?.*?(videos?\.assemblee-nationale\.(fr|tv)|assemblee-nationale\.tv)\/[^\s"<>]*)[\s"<>]/) {
+    if ($line =~ /(https?.*?(assnat\.fr|videos?\.assemblee-nationale\.(fr|tv)|assemblee-nationale\.tv)\/[^\s"<>]*)[\s"<>]/) {
       $urlvideo = $1;
+      if ($2 eq "assnat.fr") {
+        $origurl = $urlvideo;
+        use WWW::Mechanize;
+        $mech = WWW::Mechanize->new(autocheck => 0);
+        $mech->max_redirect(0);
+        $mech->get($urlvideo);
+        $urlvideo = $mech->response()->header('Location');
+        $pos = index($intervention, $origurl);
+        while($pos > -1) {
+          substr($intervention, $pos, length($origurl), $urlvideo);
+          $pos = index($intervention, $origurl, $pos + length($urlvideo));
+        }
+      }
       checkout();
       $tmpsource = $source;
       $source = $urlvideo;
