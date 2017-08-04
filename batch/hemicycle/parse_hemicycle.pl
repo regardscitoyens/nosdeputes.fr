@@ -224,6 +224,18 @@ sub checkout {
             }
             print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
         }
+        if ($intervenant =~ s/^(plusieurs .*?)(,| et) //i) {
+            $plusieurs = $1;
+            $plusieurs =~ s/des groupes/du groupe /i;
+            $plusieurs =~ s/((?:députés |sur les bancs |du groupe )+)\s*(.*)$/\1/i;
+            $interv1 = $2;
+            foreach $i (split(/(?: et |, )\s*/, $intervenant)) {
+                $ts++;
+                $i =~ s/^(plusieurs|députés|sur les bancs|d[ues]+ groupes?) //g;
+                print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$plusieurs.$i."\"}\n";
+            }
+            $intervenant = $plusieurs.$interv1;
+        }
         if ($intervenant !~ /^plusieurs /i && $intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)$//) {
             foreach $i (split(/(?:et\s*M[mes\.]*| et |, M[mes\.]*)\s*/, $3)) {
                 $ts++;
@@ -299,6 +311,9 @@ sub setIntervenant {
     $intervenant =~ s/([^\s\,])\s+rapporteur/$1, rapporteur/i;
     $intervenant =~ s/M\. /M /;
 
+    if ($intervenant =~ /^plusieurs/i) {
+      return $intervenant;
+    }
     if ($intervenant =~ s/\,\s*(.*)//) {
         setFonction($1, $intervenant);
     }
