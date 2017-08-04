@@ -201,6 +201,7 @@ sub checkout {
     $cpt+=10;
     $contexte = $titre1;
     if ($titre2) {
+        $titre2 =~ s/\s*\(suite\)\s*$//ig;
         $contexte .= ' > '.$titre2;
     }
     $contexte =~ s/"/\\"/g;
