@@ -35,7 +35,7 @@ class interventionActions extends sfActions
       else if ($this->type == 'commission')
 	$this->titre .= ' en commissions';
     }
-    $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom." - NosDéputés.fr");
+    myTools::setPageTitle($this->titre.' de '.$this->parlementaire->nom, $this->response);
     $this->interventions->orderBy('i.date DESC, i.timestamp ASC');
     if ($this->type === "all") {
       $this->rss = true;
@@ -57,7 +57,7 @@ class interventionActions extends sfActions
       ->orderBy('i.date DESC, i.timestamp ASC');
     $this->surtitre = link_to($this->orga->getNom(), '@list_parlementaires_organisme?slug='.$this->orga->getSlug());
     $this->titre = 'Interventions';
-    $this->response->setTitle($this->titre.' en '.$this->orga->nom.' de '.$this->parlementaire->nom." - NosDéputés.fr");
+    myTools::setPageTitle($this->titre.' en '.$this->orga->nom.' de '.$this->parlementaire->nom, $this->response);
   }
 
   public function executeShow(sfWebRequest $request) {
@@ -86,8 +86,7 @@ class interventionActions extends sfActions
 						       'namespace' => 'loi',
 						       'key' => 'amendement',
 						       'return'    => 'value'));
-    $this->response->setTitle($titre.' - Intervention de '.$this->intervention->getIntervenant()->nom." - NosDéputés.fr");
-    //    $this->response->setDescription($this->intervention->intervention);
+    myTools::setPageTitle($titre.' - Intervention de '.$this->intervention->getIntervenant()->nom, $this->response);
   }
 
   private function getSectionId(sfWebRequest $request) {
@@ -358,6 +357,7 @@ class interventionActions extends sfActions
     $qtag->andWhere('t.name NOT LIKE ?', 'loi:%');
     $this->tags = PluginTagTable::getPopulars($qtag, array('model' => 'Intervention', 'limit' => 9));
 
+    myTools::setPageTitle(($this->seance->type == 'commission' ? $this->orga->getNom().' : '.$this->seance->getTitre() : $this->seance->getTitre(0)), $this->response);
   }
 
   public function executeTag(sfWebRequest $request) {
@@ -384,6 +384,8 @@ class interventionActions extends sfActions
 
     $query->orderBy('Intervention.date DESC, Intervention.timestamp ASC');
     $this->query = $query;
+    $this->titre = 'Interventions sur <em>"'.implode(', ', $this->tags).'"</em>';
+    myTools::setPageTitle(strip_tags($this->titre.($this->parlementaire ? ' de '.$this->parlementaire->nom : '')), $this->response);
   }
 
   public function executeSearch(sfWebRequest $request) {

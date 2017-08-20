@@ -1,4 +1,3 @@
-<?php $sf_response->setTitle('La liste des députés "'.$prof.'"'); ?>
 <h1>Liste des députés "<i><?php echo $prof; ?></i>"</h1>
 <?php
   $nResults = count($parlementaires);

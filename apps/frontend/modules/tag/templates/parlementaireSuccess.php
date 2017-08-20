@@ -1,31 +1,24 @@
 <?php
-$mois = min(12, floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30)));
-$txtmois = ($mois < 2 ? " premier" : "s $mois ".($mois < 12 ? "prem" : "dern")."iers");
-$surtitre = 'Champ lexical';
-if ($last) $titre = "Sur le$txtmois mois";
-else if ($all) $titre = 'Sur tout son mandat';
-else if ($session) $titre = 'Sur la session '.preg_replace('/^(\d{4})/', '\\1-', $session);
-$sf_response->setTitle($surtitre.' de '.$parlementaire->nom.' '.strtolower($titre));
-echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $surtitre));
+echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => 'Champ lexical'));
 ?>
   <div class="par_session"><p>
-<?php if (! $parlementaire->fin_mandat) { 
-   if (!$last) 
+<?php if (! $parlementaire->fin_mandat) {
+   if (!$last)
     echo '<a href="'.url_for('@parlementaire_tags?slug='.$parlementaire->slug).'">';
    else echo '<b>';
    echo "Le$txtmois mois";
    if (!$last)
      echo '</a>';
    else echo '</b>';
-   echo ', ';  
- } 
+   echo ', ';
+ }
 if ($mois == 12 || $all) {
  if (!$all)
   echo '<a href="'.url_for('@parlementaire_all_tags?slug='.$parlementaire->slug).'">';
 else echo '<b>';
 echo 'tout son mandat';
 if (!$all)
-  echo '</a>'; 
+  echo '</a>';
 else echo '</b>';
 echo ", ";
 }

@@ -1,14 +1,11 @@
 <?php
-$sf_response->setTitle('Synthèse générale des députés');
-$fin = myTools::isFinLegislature();
-$fresh = myTools::isFreshLegislature();
 foreach ($tops as $t)
   if (!isset($date)) {
     $date = $t[0]['updated_at'];
     break;
   }
 ?>
-<h1>Synthèse générale de l'activité parlementaire<br/><small><?php if ($fresh) echo "depuis le début de la législature"; elseif ($fin) echo "sur toute la législature"; else echo "sur les 12 derniers mois"; ?></small></h1>
+<h1>Synthèse générale de l'activité parlementaire<br/><small><?php echo $subtitle; ?></small></h1>
 <h2 class="aligncenter"><small>(<a href="<?php echo url_for('@faq'); ?>#post_2">mise-à-jour quotidienne</a>, dernière en date le <?php echo preg_replace('/20(\d+)-(\d+)-(\d+) (\d+):(\d+):\d+/', '$3/$2/$1 à $4H$5', $date); ?>)</small></h2>
 <h2>Activité <?php if ($fin) echo "mensuelle moyenne "; ?>de tous les députés<?php echo ($fin ? " ayant exercé au moins 6 mois" : ($fresh ? "" : " en cours de mandat depuis au moins 10 mois")); ?> :</h2>
 <?php

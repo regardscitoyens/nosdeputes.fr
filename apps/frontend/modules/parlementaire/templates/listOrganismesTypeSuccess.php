@@ -1,4 +1,4 @@
-<h1>Liste des <?php echo $human_type; ?></h1>
+<h1><?php echo $title; ?></h1>
 <p>
 <ul>
 <?php foreach($organismes as $o) : ?>

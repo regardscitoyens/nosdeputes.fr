@@ -1,7 +1,4 @@
 <?php
-if ($query === "")
-  $sf_response->setTitle("Recherche sur NosDéputés.fr");
-else $sf_response->setTitle("Recherche de $query");
 $style = "xneth";
 
 function url_search($query, $args)

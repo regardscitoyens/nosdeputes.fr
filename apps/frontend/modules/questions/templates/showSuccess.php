@@ -1,8 +1,5 @@
 <div class="question" id="question<?php echo $question->numero ?>">
 <?php
-  $titre = 'Question N° '.$question->numero.' au '.$question->uniqueMinistere();
-  if ($question->date_cloture && !$question->reponse) $titre .= ' (retirée)';
-  $sf_response->setTitle($parlementaire->nom.' : '.$titre);
   echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $titre, 'deputefirst' => true));
 ?>
   <div class="source"><a href="<?php echo $question->source; ?>">source</a></div>

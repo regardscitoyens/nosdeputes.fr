@@ -46,7 +46,7 @@ class documentsActions extends sfActions
      ->andWhere('t.id <> ?', $this->doc->id)
      ->orderBy('t.numero, t.annexe')
      ->fetchArray();
-   $this->response->setTitle($this->doc->getTitre().' - NosDéputés.fr');
+   myTools::setPageTitle($this->doc->getTitre(), $this->response);
   }
 
   public function executeParlementaire(sfWebRequest $request) {
@@ -75,8 +75,8 @@ class documentsActions extends sfActions
     else if ($this->type === "rap")
       $this->docs->andWhere('t.type != ? AND t.type != ?', $lois);
     $this->docs->orderBy('t.date DESC');
-  
-    $this->response->setTitle('Les '.$this->typetitre.' de '.$this->parlementaire->nom.' - NosDéputés.fr');
+
+    myTools::setPageTitle('Les '.$this->typetitre.' de '.$this->parlementaire->nom, $this->response);
 //    $request->setParameter('rss', array(array('link' => '@parlementaire_documents_rss?slug='.$this->parlementaire->slug.'&type='.$this->type, 'title'=>'Les dernier'.$this->feminin.'s '.$this->typetitre.' de '.$this->parlementaire->nom.' en RSS')));
     $request->setParameter('rss', array(array('link' => '@parlementaire_documents_rss?slug='.$this->parlementaire->slug.'&type='.$this->type, 'title'=>'Les derniers documents parlementaires de '.$this->parlementaire->nom.' en RSS')));
   }

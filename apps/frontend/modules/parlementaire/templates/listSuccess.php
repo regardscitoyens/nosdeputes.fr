@@ -1,5 +1,4 @@
 <h1>Tous les députés par ordre alphabétique</h1>
-<?php $sf_response->setTitle('Liste de tous les députés à l\'Assemblée nationale - NosDéputés.fr'); ?>
 <p>Voici les <?php echo $total; ?> députés de la <?php echo sfConfig::get('app_legislature', 13); ?><sup>ème</sup> législature (<?php echo $actifs; ?> en cours de mandat).<br/>
 Retrouvez les informations relatives aux députés des deux législatures précédentes sur les liens suivants : les <a style="text-decoration:underline" href="https://2007-2012.nosdeputes.fr/deputes">députés entre 2007 et 2012</a>, et les <a style="text-decoration:underline" href="https://2012-2017.nosdeputes.fr/deputes">députés entre 2012 et 2017</a>.</p>
 <center><h4><?php foreach (myTools::getCurrentGroupesInfos() as $gpe)

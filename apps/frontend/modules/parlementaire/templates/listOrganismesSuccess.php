@@ -1,4 +1,4 @@
-<h1>Liste des organismes et groupes</h1>
+<h1><?php echo $title; ?></h1>
 <p>
 <ul>
 <?php foreach($organisme_types as $t => $ht): ?>

@@ -5,11 +5,10 @@ if ($seance->type == 'commission') :
 $nomseance = 'réunion';
 ?>
 <h1><?php echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); ?></h1>
-<h1><?php echo $seance->getTitre(); ?></h1>
-<?php $sf_response->setTitle($orga->getNom().' : '.$seance->getTitre()); ?>
-<?php $plot = 'seance_com_'; else :?>
-<h1><?php echo $seance->getTitre(0); $sf_response->setTitle($seance->getTitre(0).' : NosDeputes.fr'); ?></h1>
-<?php $plot = 'seance_hemi_'; endif; ?>
+<h1><?php echo $seance->getTitre(); $plot = 'seance_com_'; ?></h1>
+<?php else : ?>
+<h1><?php echo $seance->getTitre(0); $plot = 'seance_hemi_'; ?></h1>
+<?php endif; ?>
 <div class="resume">
 <h2>Résumé de la <?php echo $nomseance; ?></h2>
 <?php if (count($tags)) { ?>

@@ -51,6 +51,8 @@ class solrActions extends sfActions
     $this->query = preg_replace('#^https?://#', '', $this->query);
     $query = preg_replace('/\*/', '', $this->query);
 
+    myTools::setPageTitle(($this->query ? : "Résultats de recherche sur \"$query\"" : "Rechercher au travers des travaux parlementaires de l'Assemblée nationale", $this->response);
+
     $nb = 20;
     $deb = ($request->getParameter('page', 1) - 1) * $nb ;
     $fq = '';

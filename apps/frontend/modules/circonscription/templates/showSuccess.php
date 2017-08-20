@@ -1,5 +1,4 @@
 <?php
-$sf_response->setTitle($circo.' ('.$departement_num.') : Les députés par circonscription');
 $listOptions = array('deputes' => $parlementaires, 'circo' => $departement_num);
 if ($departement_num == "999")
   $listOptions["list"] = true;

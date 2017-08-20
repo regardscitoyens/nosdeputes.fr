@@ -29,6 +29,9 @@ class questionsActions extends sfActions
     $this->forward404Unless($this->question);
     $this->parlementaire = Doctrine::getTable('Parlementaire')->find($this->question->parlementaire_id);
     $this->forward404Unless($this->parlementaire);
+    $this->titre = 'Question N° '.$this->question->numero.' au '.$this->question->uniqueMinistere();
+    if ($this->question->date_cloture && !$this->question->reponse) $this->titre .= ' (retirée)';
+    myTools::setPageTitle($this->parlementaire->nom.' : '.$this->titre, $this->response);
   }
 
   public function executeParlementaire(sfWebRequest $request)
@@ -45,7 +48,7 @@ class questionsActions extends sfActions
       ->orderBy('date2 DESC, q.numero DESC');
 
     $request->setParameter('rss', array(array('link' => '@parlementaire_questions_rss?slug='.$this->parlementaire->slug, 'title'=>'Les dernières questions écrites de '.$this->parlementaire->nom.' en RSS')));
-
+    myTools::setPageTitle('Questions écrites de '.$this->parlementaire->nom, $this->response);
   }
 
   public function executeSearch(sfWebRequest $request)

@@ -23,6 +23,7 @@ class alerteActions extends sfActions
     $this->submit = 'Créer';
     $this->form = $this->processForm($request, $alerte);
     $this->setTemplate('form');
+    myTools::setPageTitle("Suivre l'activité parlementaire de".$parlementaire->nom." par e-mail", $this->response);
   }
 
   public function executeQuestion(sfWebRequest $request)
@@ -38,6 +39,7 @@ class alerteActions extends sfActions
     $this->submit = 'Créer';
     $this->form = $this->processForm($request, $alerte);
     $this->setTemplate('form');
+    myTools::setPageTitle("Suivre les changements liés à la Question Écrite N° ".$question->numero." par e-mail", $this->response);
   }
 
   public function executeList(sfWebRequest $request) {
@@ -59,7 +61,9 @@ class alerteActions extends sfActions
     $this->submit = 'Créer';
     $this->form = $this->processForm($request, $alerte);
     $this->setTemplate('form');
+    myTools::setPageTitle("Créer une alerte e-mail sur des travaux de l'Assemblée nationale", $this->response, false);
   }
+
   public function executeDelete(sfWebRequest $request)
   {
     $this->forward404Unless($this->alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
@@ -79,6 +83,7 @@ class alerteActions extends sfActions
     $this->form =  $this->processForm($request, $alerte);
     $this->submit = 'Éditer';
     $this->setTemplate('form');
+    $this->response->setTitle("Modification d'une alerte e-mail");
   }
 
   public function executeConfirmation(sfWebRequest $request)

@@ -22,7 +22,7 @@ class sectionActions extends sfActions
     if (myTools::isLegislatureCloturee() && $this->parlementaire->url_nouveau_cpc)
       $this->response->addMeta('robots', 'noindex,follow');
     $this->titre = 'Dossiers parlementaires';
-    $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom.' - NosDéputés.fr');
+    myTools::setPageTitle($this->titre.' de '.$this->parlementaire->nom, $this->response);
   }
 
   public function executeParlementaireSection(sfWebRequest $request)
@@ -42,7 +42,12 @@ class sectionActions extends sfActions
       ->andWhere('(s.section_id = ? OR s.id = ?)', array($this->section->id, $this->section->id))
       ->andWhere('i.nb_mots > 20')
       ->orderBy('i.date DESC, i.timestamp ASC');
+    if ($this->section->getSection())
+      $this->surtitre = $this->section->getSection()->getTitre().' ('.$this->section->titre.')';
+    else $this->surtitre = $this->section->titre;
+    myTools::setPageTitle('Les interventions de '.$this->parlementaire->nom.' : '.$this->surtitre, $this->response);
   }
+
   public function executeShow(sfWebRequest $request)
   {
     $secid = $request->getParameter('id');
@@ -117,6 +122,7 @@ class sectionActions extends sfActions
     }
 
     $request->setParameter('rss', array(array('link' => '@section_rss_commentaires?id='.$this->section->id, 'title'=>'Les commentaires sur '.$this->section->titre)));
+    myTools::setPageTitle(($this->section->getSection() ? $this->section->getSection()->getTitre().' - ' : '').$this->section->titre, $this->response);
   }
 
   public function executeList(sfWebRequest $request)
@@ -138,7 +144,7 @@ class sectionActions extends sfActions
       $query->orderBy('s.titre');
       $this->titre = 'Les dossiers de l\'Assemblée dans l\'ordre alphabétique';
     } else $this->forward404();
-    $this->getResponse()->setTitle(str_replace('Assemblée', 'Assemblée nationale', $this->titre)." - NosDéputés.fr");
+    myTools::setPageTitle(str_replace('Assemblée', 'Assemblée nationale', $this->titre), $this->response);
     $this->sections = $query->execute();
 
   }
