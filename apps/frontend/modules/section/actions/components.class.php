@@ -24,7 +24,6 @@ class sectionComponents extends sfComponents
       ->andWhere('i.nb_mots > 20')
       ->groupBy('s.section_id');
     if (isset($this->order) && $this->order == 'date') {
-      $sql->andWhere('i.date > ?', date('Y-m-d', time() - 31556926));
       $sql->orderBy('i.date DESC, i.fonction');
     } else $sql->orderBy('nb DESC, i.fonction');
     $this->textes = $sql->fetchArray();
