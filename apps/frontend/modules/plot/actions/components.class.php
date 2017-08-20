@@ -19,7 +19,7 @@ class plotComponents extends sfComponents
       if ($this->data['fin'])
         $last_year = $legistart;
       else $last_year = max($legistart - 1209600, $time_fin - 32054400);
-      $dow = date('N', $time_fin);
+      $dow = date('N', $time_fin) % 7;
       if ($dow <= 2)
         $time_fin = $time_fin - (($dow + 1) * 86400);
       $annee0 = date('o', $last_year);
@@ -193,7 +193,7 @@ class plotComponents extends sfComponents
 
     foreach (myTools::getVacances() as $vacance) {
       $n = ($vacance['annee'] - $annee0)*53 + $vacance['semaine'] - $sem0 + 1;
-      if ($n > 0 && $n < $n_weeks)
+      if ($n > 0 && $n <= $n_weeks)
         $n_vacances[$n] = 20;
     }
     return $n_vacances;
