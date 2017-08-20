@@ -350,7 +350,7 @@ class topDeputesTask extends sfBaseTask
     $qs = clone $q;
     if (!$fin) {
       $qs->andWhere('s.date >= ?', $lastyear);
-      $qs->andWhere('s.date >= p.debut_mandat');
+      $qs->andWhere('s.date >= DATE_SUB(p.debut_mandat, INTERVAL 7 DAY)');
     }
 
     $this->executePresence(clone $qs);
@@ -362,7 +362,7 @@ class topDeputesTask extends sfBaseTask
     $qi = clone $q;
     if (!$fin) {
       $qi->andWhere('i.date >= ?', $lastyear);
-      $qi->andWhere('i.date >= p.debut_mandat');
+      $qi->andWhere('i.date >= DATE_SUB(p.debut_mandat, INTERVAL 7 DAY)');
     }
 
     $this->executeCommissionInterventions(clone $qi);
@@ -377,7 +377,7 @@ class topDeputesTask extends sfBaseTask
     $qa = clone $q;
     if (!$fin) {
       $qa->andWhere('a.date >= ?', $lastyear);
-      $qa->andWhere('a.date >= p.debut_mandat');
+      $qa->andWhere('a.date >= DATE_SUB(p.debut_mandat, INTERVAL 7 DAY)');
     }
 
     $this->executeAmendementsProposes(clone $qa);
@@ -392,7 +392,7 @@ class topDeputesTask extends sfBaseTask
     $qd = clone $q;
     if (!$fin) {
       $qd->andWhere('t.date >= ?', $lastyear);
-      $qd->andWhere('t.date >= p.debut_mandat');
+      $qd->andWhere('t.date >= DATE_SUB(p.debut_mandat, INTERVAL 7 DAY)');
     }
 
     $this->executeRapports(clone $qd);
@@ -407,7 +407,7 @@ class topDeputesTask extends sfBaseTask
     $qq = clone $q;
     if (!$fin) {
       $qq->andWhere('q.date >= ?', $lastyear);
-      $qq->andWhere('(q.date >= p.debut_mandat)');
+      $qq->andWhere('q.date >= DATE_SUB(p.debut_mandat, INTERVAL 7 DAY)');
     }
 
     $this->executeQuestionsEcrites($qq);
@@ -448,7 +448,7 @@ class topDeputesTask extends sfBaseTask
 
       foreach ($qparlementaires->execute() as $p) {
         $this->depute = array();
-        $dates = array(date('Y-m-d', strtotime($p->debut_mandat)), date('Y-m-d', strtotime($p->fin_mandat)));
+        $dates = array(date('Y-m-d', strtotime($p->debut_mandat).' -7days'), date('Y-m-d', strtotime($p->fin_mandat)));
 
         $q = Doctrine_Query::create()->where('p.id = ?', $p->id);
 
