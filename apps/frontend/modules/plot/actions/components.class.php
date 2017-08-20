@@ -87,7 +87,7 @@ class plotComponents extends sfComponents
       ->select('count(distinct s.id) as nombre, sum(i.nb_mots) as mots, count(i.id) as interv, s.type, s.annee, s.numero_semaine, i.fonction')
       ->from('Intervention i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.nb_mots > ?', $seuil_invective)
+      ->andWhere('(i.nb_mots > ? OR not i.nb_mots)', $seuil_invective)
       ->leftJoin('i.Seance s');
     if ($this->session === 'lastyear')
       $query2->andWhere('s.date > ?', $date_debut);
