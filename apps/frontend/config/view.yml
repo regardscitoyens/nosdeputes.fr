@@ -8,11 +8,24 @@ default:
     #keywords:     symfony, project
     language:     fr
     robots:       index, follow
+
+    #Twitter Cards metas
     "twitter:card":   summary
     "twitter:site":   @RegardsCitoyens
     "twitter:title":  "NosDéputés.fr par @RegardsCitoyens"
     "twitter:description": "Observatoire citoyen de l'activité parlementaire à l'Assemblée nationale">
     "twitter:image": "https://www.nosdeputes.fr/images/xneth/bouton_logo.png"
+
+    # Facebook Cards metas
+    "og:type": "website"
+    "og:title": "NosDéputés.fr par Regards Citoyens"
+    "og:site_name": "NosDéputés.fr"
+    "og:description": "Observatoire citoyen de l'activité parlementaire à l'Assemblée nationale"
+    "og:url": "https://www.NosDéputés.fr"
+    "og:locale": "fr_FR"
+    "og:image": "https://www.nosdeputes.fr/images/xneth/bouton_logo.png"
+    "og:image:type": "image/png"
+
   stylesheets:    []
 
   javascripts:    []

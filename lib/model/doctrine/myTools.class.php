@@ -56,10 +56,12 @@ class myTools {
   public static function setPageTitle($title, $response, $image=true) {
     $response->setTitle($title.' - NosDéputés.fr');
     $response->addMeta('twitter:description', $title);
+    $response->addMeta('og:description', $title);
     if ($image) {
-      $urlimage = trim($_SERVER["PATH_INFO"], "/");
+      $urlimage = str_replace('http://', self::getProtocol().'://', sfconfig::get('app_base_url')).trim($_SERVER["PATH_INFO"], "/").'/preview');
       $response->addMeta('twitter:card', 'summary_large_image');
-      $response->addMeta('twitter:image', str_replace('http://', self::getProtocol().'://', sfconfig::get('app_base_url')).$urlimage.'/preview');
+      $response->addMeta('twitter:image', $urlimage);
+      $response->addMeta('og:image', $urlimage);
     }
   }
 

@@ -1,24 +1,12 @@
-<?php $style = 'xneth'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
-  <head>
-    <?php include_http_metas() ?>
-    <?php include_metas() ?>
-
-<!-- Facebook metas -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="NosDéputés.fr - Regards Citoyens" />
-    <meta property="og:site_name" content="NosDéputés.fr" />
-    <meta property="og:description" content="Observatoire citoyen de l'activité parlementaire à l'Assemblée nationale" />
-    <meta property="og:url" content="https://www.NosDéputés.fr" />
-    <meta property="og:locale" content="fr_FR" />
-    <meta property="og:image" content="https://www.nosdeputes.fr/images/xneth/bouton_logo.png" />
-    <meta property="og:image:type" content="image/png" />
-
-    <?php include_title() ?>
-<?php
-    $rss = $sf_request->getParameter('rss');
+  <head><?php
+$style = 'xneth';
+include_http_metas();
+include_metas();
+include_title();
+$rss = $sf_request->getParameter('rss');
 if ($rss) {
   foreach($rss as $r) {
     echo '<link rel="alternate" type="application/rss+xml" title="'.$r['title'].'" href="'.url_for($r['link']).'"/>';
