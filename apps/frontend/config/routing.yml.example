@@ -1,4 +1,20 @@
 # default rules
+manet_preview:
+  url: /:url/preview
+  param: {module: parlementaire, action: preview}
+manet_preview_sub:
+  url: /:url/:url2/preview
+  param: {module: parlementaire, action: preview}
+manet_preview_ssub:
+  url: /:url/:url2/:url3/preview
+  param: {module: parlementaire, action: preview}
+manet_preview_sssub:
+  url: /:url/:url2/:url3/:url4/preview
+  param: {module: parlementaire, action: preview}
+manet_preview_ssssub:
+  url: /:url/:url2/:url3/:url4/:url5/preview
+  param: {module: parlementaire, action: preview}
+
 #Solr Search
 recherche_home:
   url: /recherche/
@@ -491,9 +507,6 @@ alerte_confirmation:
 parlementaire:
   url: /:slug
   param: {module: parlementaire, action: show}
-parlementaire_preview:
-  url: /:slug/preview
-  param: {module: parlementaire, action: preview}
 parlementaire_rss:
   url: /:slug/rss
   param: {module: parlementaire, action: rss, title: "l'activité de %"}
