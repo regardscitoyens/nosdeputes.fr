@@ -58,7 +58,7 @@ class myTools {
     $response->addMeta('twitter:description', $title);
     $response->addMeta('og:description', $title);
     if ($image) {
-      $urlimage = str_replace('http://', self::getProtocol().'://', sfconfig::get('app_base_url')).trim($_SERVER["PATH_INFO"], "/").'/preview');
+      $urlimage = str_replace('http://', self::getProtocol().'://', sfconfig::get('app_base_url')).trim($_SERVER["PATH_INFO"], "/").'/preview';
       $response->addMeta('twitter:card', 'summary_large_image');
       $response->addMeta('twitter:image', $urlimage);
       $response->addMeta('og:image', $urlimage);
