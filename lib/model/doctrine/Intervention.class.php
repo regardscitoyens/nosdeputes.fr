@@ -222,6 +222,7 @@ class Intervention extends BaseIntervention
           print " => Saving to section ".$this->Section."-".$this->Section->id."\n";
           $debug = 0;
         }
+        $this->addTagLoisToSection($lois);
         return $debug;
       }
       if ($ct == 0) $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
@@ -240,6 +241,7 @@ class Intervention extends BaseIntervention
               print " => Saving to section ".$this->Section."-".$this->Section->id."\n";
               $debug = 0;
             }
+            $this->addTagLoisToSection($lois);
             return $debug;
           }
         }
@@ -250,21 +252,24 @@ class Intervention extends BaseIntervention
           $section1->save();
         }
       }
-      if ($this->section_id != 1) {
-        $titre = $this->Section->Section->getTitre();
-        if (!(preg_match('/(cloture|ouverture|question|ordre du jour|calendrier|élection.*nouveau|démission|reprise|examen simplifié|cessation.*mandat|proclamation|souhaits)/i', $titre))) {
-          foreach($lois as $loi) {
-            $tag = 'loi:numero='.$loi;
-            $this->Section->addTag($tag);
-            if ($this->Section->section_id && $this->Section->Section->id && $this->Section->section_id != $this->section_id)
-              $this->Section->Section->addTag($tag);
-          }
-        }
-      }
+      $this->addTagLoisToSection($lois);
       return $debug;
     } else {
       $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
       return $debug;
+    }
+  }
+
+  public function addTagLoisToSection($lois) {
+    if ($this->section_id == 1) return;
+    $titre = $this->Section->Section->getTitre();
+    if (!(preg_match('/(cloture|ouverture|question|ordre du jour|calendrier|élection.*nouveau|démission|reprise|examen simplifié|cessation.*mandat|proclamation|souhaits)/i', $titre))) {
+      foreach($lois as $loi) {
+        $tag = 'loi:numero='.$loi;
+        $this->Section->addTag($tag);
+        if ($this->Section->section_id && $this->Section->Section->id && $this->Section->section_id != $this->section_id)
+          $this->Section->Section->addTag($tag);
+      }
     }
   }
 
