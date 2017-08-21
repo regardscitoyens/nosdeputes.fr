@@ -429,7 +429,7 @@ class plotComponents extends sfComponents
         if ($imp < 1)
           continue;
         foreach ($deps as $p) {
-          if (preg_match('/[âa]ge$/i', $p->fonction))
+          if (preg_match('/[âa]ge$/i', $p->fonction) || !$p['groupe_acronyme'])
             continue;
           if (!isset($groupes[$p['groupe_acronyme']]['membres']))
             $groupes[$p['groupe_acronyme']]['membres'] = 1;
@@ -443,6 +443,7 @@ class plotComponents extends sfComponents
       $qmots = Doctrine_Query::create()
         ->from('Intervention i')
         ->andWhere('i.fonction NOT LIKE ?', 'président%')
+        ->andWhere('i.personnalite_id IS NULL')
         ->groupBy('i.parlementaire_id');
       if (preg_match('/section_(\d+)$/', $this->plot, $match))
         // pour les dossiers

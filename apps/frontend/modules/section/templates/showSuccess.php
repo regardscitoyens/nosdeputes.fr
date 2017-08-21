@@ -21,7 +21,7 @@ else echo '</h1>';
 </div>
 <div class="clear"></div>
 <?php $sommaire = $section->getSubSections();
-if (count($sommaire)) { ?>
+if (count($sommaire) > 1) { ?>
 <div class="orga_dossier right">
 <h2>Organisation du dossier</h2>
 <ul>
