@@ -70,7 +70,7 @@ class sectionActions extends sfActions
     $this->docs = array();
     if ($this->section->id_dossier_an || $lois) {
       $qtextes = Doctrine_Query::create()
-        ->select('t.id, t.type, t.type_details, t.titre, t.signataires, t.nb_commentaires')
+        ->select('t.id, t.numero, t.type, t.type_details, t.titre, t.signataires, t.nb_commentaires')
         ->from('Texteloi t')
         ->whereIn('t.numero', $lois);
       if ($this->section->id_dossier_an)
@@ -85,14 +85,13 @@ class sectionActions extends sfActions
         ->andWhere('t.leveltype = ?', 'loi')
         ->orderBy('t.texteloi_id')
         ->fetchArray();
-
       foreach ($textes as $texte)
-        $this->docs[$texte['id']] = $texte;
+        $this->docs[$texte['numero']] = $texte;
       foreach ($textes_loi as $texte)
         $this->docs[$texte['texteloi_id']] = $texte;
       foreach ($lois as $loi)
         if (!isset($this->docs["$loi"]))
-          $this->docs["$loi"] = 1;
+          $this->docs["$loi"] = $loi;
     }
 
     $interventions = array();

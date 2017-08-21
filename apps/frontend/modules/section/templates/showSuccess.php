@@ -82,8 +82,7 @@ if ($subsection->id != $section->id) : ?>
         if ($amendements)
           $doctitre .= ")";
         echo link_to($doctitre, '@document?id='.$curid);
-      } else
-        echo 'Texte N°&nbsp;'.myTools::getLinkLoi($doc);
+      } else echo 'Texte N°&nbsp;'.myTools::getLinkLoi($doc);
       echo '</li>';
     }
   }
