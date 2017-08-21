@@ -128,7 +128,7 @@ if ($string =~ /ouverte[^\.]+à\s+([^\.]+?)\s*heures?\s*([^\.\s]*)\s*\./) {
 
 sub savepLoi() {
     $no =~ s/&nbsp;/ /g;
-    $no =~ s/\s*et\s*/,/g;
+    $no =~ s/\s*(et|,|;)\s*/,/g;
     $no =~ s/[^\d,]//g;
     @no = split(/,/, $no);
     $no = '';
