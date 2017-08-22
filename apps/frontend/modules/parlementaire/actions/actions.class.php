@@ -323,15 +323,20 @@ class parlementaireActions extends sfActions
   }
 
   public function executeListOrganismesType(sfWebRequest $request) {
-    $type = $request->getParameter('type');
-    $this->forward404Unless($type);
+    $this->type = $request->getParameter('type');
+    $this->forward404Unless($this->type);
     $this->loadOrganismes();
-    $this->forward404Unless($this->organisme_types[$type]);
-    $query = Doctrine::getTable('Organisme')->createQuery('o')->select('o.nom, o.type, o.slug')->where('type = ?', $type);
-    $this->organismes = $query->execute();
-
-    $this->loadOrganismes();
-    $this->human_type = $this->organisme_types[$type];
+    $this->forward404Unless($this->organisme_types[$this->type]);
+    $this->organismes = Doctrine_Query::create()
+      ->select('o.nom, o.slug, count(distinct p.id) as membres, count(distinct s.id) as reunions')
+      ->from('Organisme o')
+      ->leftJoin('o.ParlementaireOrganismes po, po.Parlementaire p, o.Seances s')
+      ->where('o.type = ?', $this->type)
+      ->andWhere('p.fin_mandat IS NULL')
+      ->andWhere('po.fin_fonction IS NULL')
+      ->groupBy('o.id')
+      ->fetchArray();
+    $this->human_type = $this->organisme_types[$this->type];
     $this->title = "Liste des ".$this->human_type;
     myTools::setPageTitle($this->title, $this->response);
   }
