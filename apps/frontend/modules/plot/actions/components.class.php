@@ -65,6 +65,7 @@ class plotComponents extends sfComponents
       $this->data['vacances'] = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
     }
     $this->data['date_debut'] = $date_debut;
+    $this->data['date_debut_parl'] = $this->parlementaire->debut_mandat;
     $this->data['date_fin'] = $date_fin;
 
     $query = Doctrine_Query::create()

@@ -28,6 +28,7 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
     typePlot = (histogram ? d3.curveStep : d3.curveLinear);
   d3.json(url, function(data) {
     var startdate = get_last_monday(data.date_debut),
+      firstdate = get_last_monday(data.date_debut_parl),
       enddate = get_last_monday(data.date_fin),
       all_weeks = {}, // Becomes a list later
       idx = 1,
@@ -64,7 +65,7 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
       if (data.mandat_clos)
         extra = 'de la dernière année de mandat';
       else {
-        var mois = Math.min(12, Math.floor((enddate - startdate) / (60*60*24*30*1000)));
+        var mois = Math.min(12, Math.round((enddate - firstdate) / (60*60*24*30*1000)));
         extra = (mois < 2 ? "du premier" : "des " + mois + " " + (mois < 12 ? "prem" : "dern") + "iers") + " mois";
       }
     } else extra = "de la session " + data.periode.replace(/^(\d{4})/, '$1-');
