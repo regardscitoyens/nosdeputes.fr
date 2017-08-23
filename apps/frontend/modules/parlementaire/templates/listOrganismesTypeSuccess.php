@@ -10,6 +10,7 @@ if ($type == "groupe") {
   foreach (myTools::getGroupesInfos() as $gpe) {
     $g = $groupes[strtolower($gpe[0])];
     $g["nom"] = $gpe[0].' (<b class="c_'.strtolower($gpe[1]).'">'.$gpe[1].'</b>)';
+    $g["acronyme"] = $gpe[1];
     $tmporgas[] = $g;
   }
   $organismes = $tmporgas;
@@ -27,4 +28,9 @@ foreach($organismes as $o) :
 <?php endforeach; ?>
 </tbody>
 </table>
+<?php if ($type == "groupe") {
+  echo '<div class="plot_groupes">';
+  echo include_component('plot', 'groupes', array('plot' => 'groupes', 'groupes' => $organismes, 'nolegend' => true));
+  echo '</div>';
+} ?>
 <p><a href="<?php echo url_for('@list_organismes'); ?>">Retour à la liste des types d'organismes</a></p>

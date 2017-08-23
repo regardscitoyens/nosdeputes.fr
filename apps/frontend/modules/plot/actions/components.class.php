@@ -422,8 +422,16 @@ class plotComponents extends sfComponents
 
     $groupes = array();
 
-    // Pour les organismes
-    if (isset($this->membres))
+    // Si on a directement les données par groupe
+    if (isset($this->groupes)) {
+      $this->total = 0;
+      foreach ($this->groupes as $g) {
+        $groupes[$g['acronyme']]['membres'] = $g['membres'];
+        $this->total += $g['membres'];
+      }
+
+    // Ou pour les organismes
+    } else if (isset($this->membres))
       // Répartition par groupe des membres
       foreach ($this->membres as $imp => $deps) {
         if ($imp < 1)
@@ -509,7 +517,7 @@ class plotComponents extends sfComponents
     $this->presences = array();
     $this->parls = array();
     foreach($this->labels as $groupe) {
-      if (!isset($this->membres)) {
+      if (!isset($this->membres) && !isset($this->groupes)) {
         if (!isset($groupes[$groupe]['interventions']))
           $this->interventions[] = 0;
         else $this->interventions[] = $groupes[$groupe]['interventions'];
@@ -529,7 +537,7 @@ class plotComponents extends sfComponents
     // On ajoute à la fin des arrays la moitié de la somme totale de l'array
     // pour que 2/5e du donut soit vide et forcer l'apparence d'un hémicycle
     $this->labels[] = "";
-    if (isset($this->membres))
+    if (isset($this->membres) || isset($this->groupes))
       $this->parls[] = array_sum($this->parls)*3/5;
     else {
       $this->interventions[] = array_sum($this->interventions)*3/5;

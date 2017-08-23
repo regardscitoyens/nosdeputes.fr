@@ -1664,7 +1664,7 @@ h2 {
   float: right;
   margin-top: 10px;
 }
-.plot_section, .plot_seance {
+.plot_section, .plot_seance, .plot_groupes {
   text-align: center;
 }
 #overDiv {
