@@ -1757,15 +1757,18 @@ h2 {
 
 .list_orgas {
   border-collapse: collapse;
-  width: 100%;
+  width: 99%;
   margin-top: 20px;
   margin-bottom: 20px;
   font-size: 13px;
 }
-.list_orgas tr:hover {
+.list_orgas thead {
+  background-color: #f0f0f0;
+}
+.list_orgas tbody tr:hover {
   background-color: #f2e2b5;
 }
-.list_orgas td {
+.list_orgas td, .list_orgas th {
   border: 1px solid #e4e4e4;
   padding: 5px 5px;
   text-align: center;

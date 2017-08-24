@@ -8,4 +8,5 @@ plotSuccess:
    javascripts: [overlib.js, pMap.js]
 topSuccess:
    javascripts: [overlib.js, pMap.js]
-
+listOrganismesTypeSuccess:
+  javascripts:    [jquery.dynatable.js]
