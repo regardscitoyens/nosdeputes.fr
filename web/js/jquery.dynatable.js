@@ -672,8 +672,8 @@
             // retrieve the contents of this column for each record)
             obj.domColumns.add(obj.domColumns.generate(), columns.length, false, true); // don't skipAppend, do skipUpdate
           }
-          var value = columns[index].attributeReader(this, record),
-              attr = columns[index].id;
+          var attr = columns[index].id,
+            value = columns[index].attributeReader(this, record, attr);
 
           // If value from table is HTML, let's get and cache the text equivalent for
           // the default string sorting, since it rarely makes sense for sort headers
