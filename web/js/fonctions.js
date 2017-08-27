@@ -31,6 +31,7 @@ $(document).ready(function() {
     }
   });
 
+  window.jsTitle = function() {
   $('.jstitle').mousemove(function(e) {
     if ($('#jstitle').length == 0) {
       $('body').append('<div id="jstitle" style="text-align: center; display: none; position: absolute; z-index: 888; border: 1px solid black;padding: 5px; min-width: 150px; max-width: 600px;"></div>')
@@ -54,6 +55,9 @@ $(document).ready(function() {
     $(this).attr('title', $(this).attr('jstitle'));
     $('#jstitle').css('display', 'none');
   });
+  };
+  window.jsTitle();
+
   //Redirection d'un lien envoyé depuis une page ajax
   url = document.location+'';
   if (url.match(/#date=/) && constructLien) {
