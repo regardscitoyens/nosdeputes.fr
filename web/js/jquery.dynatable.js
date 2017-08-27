@@ -79,7 +79,9 @@
       paginationNext: 'Next',
       paginationGap: [1,2,2,1],
       searchTarget: null,
+      searchPlaceholder: '',
       searchPlacement: 'before',
+      searchText: 'Search:',
       perPageTarget: null,
       perPagePlacement: 'before',
       perPageText: 'Show: ',
@@ -1203,13 +1205,14 @@
       var $search = $('<input />', {
             type: 'search',
             id: 'dynatable-query-search-' + obj.element.id,
+            'placeholder': settings.inputs.searchPlaceholder,
             'data-dynatable-query': 'search',
             value: settings.dataset.queries.search
           }),
           $searchSpan = $('<span></span>', {
             id: 'dynatable-search-' + obj.element.id,
             'class': 'dynatable-search',
-            text: 'Search: '
+            text: settings.inputs.searchText,
           }).append($search);
 
       $search
