@@ -1031,21 +1031,26 @@
 
     this.toggleSort = function(e, $link, column) {
       var sortedByColumn = this.sortedByColumn($link, column),
-          value = this.sortedByColumnValue(column);
+          value = this.sortedByColumnValue(column),
+          defaultSortOrder = 1;
       // Clear existing sorts unless this is a multisort event
       if (!settings.inputs.multisort || !utility.anyMatch(e, settings.inputs.multisort, function(evt, key) { return e[key]; })) {
         this.removeAllArrows();
         obj.sorts.clear();
       }
-
+      if (!isNaN(Number(settings.dataset.records[0][column.sorts[0]]))) {
+        defaultSortOrder = -1;
+      }
       // If sorts for this column are already set
       if (sortedByColumn) {
         // If ascending, then make descending
-        if (value == 1) {
+        if (value == defaultSortOrder) {
           for (var i = 0, len = column.sorts.length; i < len; i++) {
-            obj.sorts.add(column.sorts[i], -1);
+            obj.sorts.add(column.sorts[i], -defaultSortOrder);
           }
-          this.appendArrowDown($link);
+          if (defaultSortOrder == 1)
+            this.appendArrowDown($link);
+          else this.appendArrowUp($link);
         // If descending, remove sort
         } else {
           for (var i = 0, len = column.sorts.length; i < len; i++) {
@@ -1056,9 +1061,11 @@
       // Otherwise, if not already set, set to ascending
       } else {
         for (var i = 0, len = column.sorts.length; i < len; i++) {
-          obj.sorts.add(column.sorts[i], 1);
+          obj.sorts.add(column.sorts[i], defaultSortOrder);
         }
-        this.appendArrowUp($link);
+        if (defaultSortOrder == 1)
+          this.appendArrowUp($link);
+        else this.appendArrowDown($link);
       }
     };
 
