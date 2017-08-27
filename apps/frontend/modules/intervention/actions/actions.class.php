@@ -86,7 +86,10 @@ class interventionActions extends sfActions
 						       'namespace' => 'loi',
 						       'key' => 'amendement',
 						       'return'    => 'value'));
-    myTools::setPageTitle($titre.' - Intervention de '.$this->intervention->getIntervenant()->nom, $this->response);
+    if ($parl = $this->intervention->getIntervenant())
+      $this->shorttitle = 'Intervention de '.$parl->nom;
+    else $this->shorttitle = 'Didascalie';
+    myTools::setPageTitle($titre.' - '.$this->shorttitle, $this->response);
   }
 
   private function getSectionId(sfWebRequest $request) {
