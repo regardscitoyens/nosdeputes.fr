@@ -96,8 +96,9 @@ $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
           <div id="sous_menu_1" style="display:<?php if ($menu_depute) echo 'block'; else echo 'none'; ?>">
           <div class="elements_sous_menu">
             <ul>
-              <li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@list_parlementaires'); ?>">Tous les députés</a> <strong>|</strong></li>
               <li><a href="<?php echo url_for('@list_parlementaires_circo'); ?>">Par circonscription</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@list_organismes'); ?>">Par organisme</a> <strong>|</strong></li>
               <li><a href="<?php echo url_for('@parlementaires_tags'); ?>">Par mots clés</a> <strong>|</strong></li>
               <li><a href="<?php echo url_for('@top_global'); ?>">Synthèse</a> <strong>|</strong></li>
               <li><a href="<?php echo url_for('@parlementaire_random'); ?>">Au hasard</a></li>

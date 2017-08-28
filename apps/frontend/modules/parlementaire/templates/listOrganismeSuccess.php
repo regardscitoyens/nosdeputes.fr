@@ -5,7 +5,7 @@ if (count(array_keys($parlementaires))) {
   echo '</div>';
 } ?>
 <div class="organisme_header">
-  <h3><a href="<?php echo url_for('@list_organismes_type?type='.$orga->type); ?>"><?php echo $human_type; ?> :</a></h3>
+  <h4><a href="<?php echo url_for('@list_organismes_type?type='.$orga->type); ?>"><?php echo $human_type; ?></a></h4>
   <h1><?php echo $orga->getNom(); ?></h1>
 <?php
 if ($total && $pagerSeances->getPage() == 1 && ($pagerRapports->getPage() == 1)) {
