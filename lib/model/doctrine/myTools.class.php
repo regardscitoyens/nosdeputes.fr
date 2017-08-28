@@ -358,30 +358,6 @@ class myTools {
     return $s;
   }
 
-  public static function echo_synthese_groupe($list, $bulles, $class, $ktop, $cpt) {
-    foreach ($list as $gpe => $t) {
-      if (!$t[0]['nb']) continue;
-      $cpt++;
-      $nb = ' ('.$t[0]['nb'].' député'.($t[0]['nb'] > 1 ? 's' : '').')';
-      echo '<tr'.($cpt %2 ? ' class="tr_odd"' : '').'>';
-      echo '<td id="'.$gpe.'" class="jstitle c_'.strtolower($gpe).' '.$class['parl'].'" title="'.$t[0]['nom'];
-      if (isset($t[0]['desc']))
-        echo ' -- '.$t[0]['desc'].'"><a href="'.url_for('@list_parlementaires_groupe?acro='.$gpe).'">'.$gpe.$nb.'</a>';
-      else echo '">'.$t[0]['nom'].$nb;
-      echo '</td>';
-      for($i = 1 ; $i < count($t) ; $i++) {
-        $t[$i] = round($t[$i]/$t[0]['nb']);
-        echo '<td title="'.$t[$i].' '.($t[$i] < 2 ? preg_replace('/s (.*-- )/', ' \\1', preg_replace('/s (.*-- )/', ' \\1', $bulles[$i])) : $bulles[$i]).'" class="jstitle '.$class[$ktop[$i]].'">';
-        if (preg_match('/\./', $t[$i]))
-          printf('%02d', $t[$i]);
-        else echo $t[$i];
-        echo '</td>';
-      }
-      echo '</tr>';
-    }
-    return $cpt;
-  }
-
   public static function formatOrganisme($org) {
     $resp = array("organisme" => $org->getNom(), "fonction" => $org->fonction, "debut_fonction" => $org->debut_fonction);
     if ($org->fin_fonction)

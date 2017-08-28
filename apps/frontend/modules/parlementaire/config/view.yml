@@ -3,6 +3,6 @@ listCircoSuccess:
 indexSuccess:
    javascripts: [overlib.js, pMap.js]
 topSuccess:
-   javascripts: [overlib.js, pMap.js]
+   javascripts: [overlib.js, pMap.js, jquery.dynatable.js]
 listOrganismesTypeSuccess:
   javascripts:    [jquery.dynatable.js]

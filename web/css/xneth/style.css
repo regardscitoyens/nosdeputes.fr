@@ -310,17 +310,22 @@ a:hover {
 /* Synthèse */
 .liste_deputes_top  {
   margin: 20px 0px 40px 0;
-  padding: 5px;
+  padding: 0;
   border: 1px dashed #aeaeae;
   text-align: justify;
+}
+.liste_deputes_top table {
+  width: 100%;
 }
 .tableau_synthese {
   height: 500px;
   overflow: auto;
   margin-bottom: 5px;
+  width: 100%;
 }
-.synthese_groupes {
+.tableau_synthese_groupes {
   margin-bottom: 5px;
+  width: 100%;
 }
 .synthese_div {
   margin-bottom: 40px;
@@ -330,24 +335,33 @@ a:hover {
 }
 .synthese th, .synthese td { border-right: 1px #FFFFFF solid; }
 .synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
-.synthese td.p { width: 112px; }
-.synthese th.p { width: 122px; border-left: 13px solid #FFF; }
-.synthese th.p.gpes { width: 119px; border-left: 5px solid #FFF; }
-.synthese .we { width: 70px; }
-.synthese .cp { width: 57px; }
-.synthese .ci { width: 57px; }
-.synthese .hl { width: 57px; }
-.synthese .hc { width: 57px; }
-.synthese .ap { width: 57px; }
-.synthese .as { width: 57px; }
-.synthese .aa { width: 57px; }
-.synthese .ra { width: 57px; }
-.synthese .pe { width: 57px; }
-.synthese .ps { width: 57px; }
-.synthese .qe { width: 57px; }
-.synthese .qo { width: 57px; }
-.tr_odd td { border-right: 1px #999999 solid; }
-.tr_odd td.qo { border-right: 0px #999999 solid; }
+.synthese td span.jstitle { display: block; height: 100%; padding-top: 5px; }
+.synthese .p { width: 112px; }
+.synthese thead .p { width: 121px; }
+.synthese .we { width: 72px; }
+.synthese .cp { width: 55px; }
+.synthese .ci { width: 55px; }
+.synthese .hl { width: 55px; }
+.synthese .hc { width: 55px; }
+.synthese .ap { width: 55px; }
+.synthese .as { width: 55px; }
+.synthese .aa { width: 55px; }
+.synthese .ra { width: 55px; }
+.synthese .pe { width: 55px; }
+.synthese .ps { width: 55px; }
+.synthese .qe { width: 55px; }
+.synthese .qo { width: 55px; }
+.tr_odd, .synthese tbody tr:nth-child(2n+1) {
+  background-color: #f7f7f7;
+}
+.tr_odd td, .synthese tbody tr:nth-child(2n+1) td { border-right: 1px #999999 solid; }
+.synthese tbody tr:nth-child(2n+1) td:last-child { border-right: 0px #999999 solid; }
+
+.dynatable-search input {
+  width: 120px;
+  border: 1px solid lightgray;
+  font-size: 11px;
+}
 
 /* Bulle ajax commentaires */
 .coms_loi_txt {
@@ -1818,8 +1832,8 @@ h2 {
 .contexte {
   margin: 20px;
 }
-.tr_odd{
-  background-color: #f7f7f7;
+.synthese tbody, .synthese thead {
+  display: block;
 }
 .synthese td, .synthese th { padding: 0px; margin: 0px; text-align: center}
 .left {
