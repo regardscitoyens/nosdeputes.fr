@@ -52,8 +52,8 @@ Diverses données parlementaires également mises en œuvre sur nos sites et ail
 - [Rattachement financier annuel aux partis politiques](https://github.com/regardscitoyens/rattachement-financier-parlementaires) des parlementaires
 - [Réserve parlementaire annuelle](https://github.com/regardscitoyens/reserveparlementaire_parser) des députés
 - [Déclarations d'intérêts 2014 manuscrites numérisées](https://www.data.gouv.fr/fr/datasets/declarations-d-interets-des-parlementaires-publiees-par-la-haute-autorite-pour-la-transparence/) par crowdsourcing des parlementaires
-- Liste des [collaborateurs parlementaires](https://github.com/regardscitoyens/Collaborateurs-Parlement)
-- Liste des [représentants d'intérets enregistrés](https://github.com/regardscitoyens/registre-lobbying-AN) à l'Assemblée et au Sénat
+- Listes des [collaborateurs parlementaires](https://github.com/regardscitoyens/Collaborateurs-Parlement) à l'Assemblée et au Sénat
+- Listes des [représentants d'intérets enregistrés](https://github.com/regardscitoyens/registres-lobbying) aux registres de l'Assemblée, du Sénat et de la HATVP
 - Diverses autres données sur les élus et les parlementaires compilées par le [Projet Arcadie](https://github.com/TrisA/Projet-Arcadie)
 - [Personnes auditionnées à l'Assemblée](http://www.nosdonnees.fr/package/influence-auditions-deputes-lobbying) entre 2007 et 2012 extraites par crowdsourcing des rapports
 - [Top mensuel par groupe des amendements adoptés](https://github.com/regardscitoyens/top-amendements-adoptes) réalisé pour L'Hémicycle
