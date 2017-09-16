@@ -12,6 +12,7 @@ $titres = array(
   'semaines_presence'               => 'Semaines d\'activité',
   'commission_presences'            => 'Présences en commission',
   'commission_interventions'        => 'Interventions en commission',
+  'hemicycle_presences'             => 'Information non publique -- Présences en hémicycle',
   'hemicycle_interventions'         => 'Interventions longues en hémicycle',
 //'hemicycle_interventions_courtes' => 'Interventions courtes en hémicycle',
   'amendements_proposes'            => 'Amendements proposés',
@@ -27,6 +28,7 @@ $images = array(
   'semaines_presence'               => 'ico_sem_%s.png',
   'commission_presences'            => 'ico_com_pre_%s.png',
   'commission_interventions'        => 'ico_com_inter_%s.png',
+  'hemicycle_presences'             => 'ico_hem_pre_gris.png',
   'hemicycle_interventions'         => 'ico_inter_hem_long_%s.png',
 //'hemicycle_interventions_courtes' => 'ico_inter_hem_court_%s.png',
   'amendements_proposes'            => 'ico_amendmt_sign_%s.png',
@@ -96,22 +98,26 @@ $icosize = 16;
 if (isset($widthrate))
   $icosize = floor($icosize*$widthrate);
 foreach(array_keys($images) as $k) {
-  $value = (isset($top[$k]['value']) ? $top[$k]['value'] : 0);
-  $couleur = 'gris';
-  $titre = $value.' '.$titres[$k];
-  if ($value < 2)
-    $titre = preg_replace('/s$/', '', str_replace('s ', ' ', $titre));
-  if ($rank && $top[$k]['rank'] <= 150 && $value) {
-    $couleur = 'vert';
-    $titre .=' (fait partie des 150 plus actifs sur ce critère)';
+  if ($k === "hemicycle_presences") {
+    echo '<li'.$couleur2style['gris'].'><a'.$target.' href="'.url_for('@faq', $abs).'#post_4" class="jstitle" title="'.$titres[$k].'"><img style="height: '.$icosize.'px; width: '.$icosize.'px;" src="'.$serv.$sf_request->getRelativeUrlRoot().'/images/xneth/'.$images[$k].'" alt="'.$titres[$k].'" /> : ??</a></li>';
+  } else {
+    $value = (isset($top[$k]['value']) ? $top[$k]['value'] : 0);
+    $couleur = 'gris';
+    $titre = $value.' '.$titres[$k];
+    if ($value < 2)
+      $titre = preg_replace('/s$/', '', str_replace('s ', ' ', $titre));
+    if ($rank && $top[$k]['rank'] <= 150 && $value) {
+      $couleur = 'vert';
+      $titre .=' (fait partie des 150 plus actifs sur ce critère)';
+    }
+    else if ($rank && $top[$k]['rank'] >= $top[$k]['max_rank'] - 150) {
+      $couleur = 'rouge';
+      $titre .= ' (fait partie des 150 moins actifs sur ce critère)';
+    }
+    echo '<li'.$couleur2style[$couleur].'>';
+    echo '<'.($rank ? 'a' : 'span').$target.' class="jstitle" title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug, $abs).'">';
+    echo '<img style="height: '.$icosize.'px; width: '.$icosize.'px;" src="'.$serv.$sf_request->getRelativeUrlRoot().'/images/xneth/';
+    printf($images[$k], $couleur);
+    echo '" alt="'.$titre.'" /> : '.$value.'</'.($rank ? 'a' : 'span').'></li>';
   }
-  else if ($rank && $top[$k]['rank'] >= $top[$k]['max_rank'] - 150) {
-    $couleur = 'rouge';
-    $titre .= ' (fait partie des 150 moins actifs sur ce critère)';
-  }
-  echo '<li'.$couleur2style[$couleur].'>';
-  echo '<'.($rank ? 'a' : 'span').$target.' class="jstitle" title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug, $abs).'">';
-  echo '<img style="height: '.$icosize.'px; width: '.$icosize.'px;" src="'.$serv.$sf_request->getRelativeUrlRoot().'/images/xneth/';
-  printf($images[$k], $couleur);
-  echo '" alt="'.$titre.'" /> : '.$value.'</'.($rank ? 'a' : 'span').'></li>';
 }?></ul>
