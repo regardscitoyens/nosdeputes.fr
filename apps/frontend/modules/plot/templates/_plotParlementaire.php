@@ -64,7 +64,7 @@ if (!(myTools::isFinLegislature() && preg_match('/^l/', $time)) && $questions ==
 endif; ?><span class="jstitle" title="Semaines durant lesquelles les députés ne se sont réunis ni en commission ni en hémicycle"><span style="background-color: rgb(150,150,150);">&nbsp;</span>&nbsp;Vacances parlementaires</span>&nbsp;&nbsp;<span class="jstitle" title="Médiane pour l'ensemble des députés du nombre de <?php
 if ($type === "total") echo "$reus et de $sean";
 else if ($type === "hemicycle") echo $sean;
-else echo $reus; ?> auxquelles ils ont participé"><span style="font-weight: bolder; color: rgb(160,160,160);">&mdash;</span>&nbsp;Présence médiane</span><?php
+else echo $reus; ?> auxquelles ils ont participé"><span style="font-weight: bolder; color: rgb(160,160,160);">&mdash;</span>&nbsp;Médiane des députés</span><?php
 if ($link === 'true') : ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="jstitle" title="Lire plus d'explications dans la FAQ"<?php echo $target; ?> href="<?php echo url_for('@faq', $abs); ?>#post_4">Explications</a></span><?php
 endif; ?></p>
 <?php endif;
