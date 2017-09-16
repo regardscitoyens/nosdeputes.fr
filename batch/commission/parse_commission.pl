@@ -644,7 +644,7 @@ foreach $line (split /\n/, $string)
           utf8::encode($element);
           $element =~ s/^MM\./M. /;
           $element =~ s/^M\.(\S+)/M. \1/;
-          if ($element =~ /^M(?:\.|me)\s+([^,]+), (.*)$/) {
+          if ($element =~ /^M(?:\.|me)\s+([^,]+),\s+(.*)$/) {
             checkout();
             $intervenant = setFonction($2, $1);
             $intervention = $nointer;
