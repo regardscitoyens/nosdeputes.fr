@@ -53,7 +53,7 @@ else if ($type === "hemicycle") echo $sean;
 else echo $reus;
 ?>"><span style="background-color: rgb(255,0,0);">&nbsp;</span>&nbsp;Présences <?php
 echo ($type === 'commission' ? 'enregistr' : 'relev');
-?>ées</span>&nbsp;&nbsp;&nbsp;<span class="jstitle" title="Nombre de <?php
+?>ées&nbsp;<span style="color: rgb(255,0,0);font-weight: bold;">*</span></span>&nbsp;&nbsp;&nbsp;<span class="jstitle" title="Nombre de <?php
 $reus = "réunions de commissions";
 $sean = "séances en hémicycle";
 if ($type === "total") echo "$reus et de $sean";
@@ -65,8 +65,9 @@ endif; ?><span class="jstitle" title="Semaines durant lesquelles les députés n
 if ($type === "total") echo "$reus et de $sean";
 else if ($type === "hemicycle") echo $sean;
 else echo $reus; ?> auxquelles ils ont participé"><span style="font-weight: bolder; color: rgb(160,160,160);">&mdash;</span>&nbsp;Présence médiane</span><?php
-if ($link === 'true') : ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="jstitle" title="Lire plus d'explications dans la FAQ"<?php echo $target; ?> href="<?php echo url_for('@faq', $abs); ?>#post_4">Explications</a></span><?php
+if ($link === 'true') : ?><?php
 endif; ?></p>
+<p><span style="color: rgb(255,0,0);">* : N'inclut pas toutes les présences en hémicycle mais uniquement celles avec intervention orale.</span><span>&nbsp;&nbsp;<a class="jstitle" title="Lire plus d'explications dans la FAQ"<?php echo $target; ?> href="<?php echo url_for('@faq', $abs); ?>#post_4">(plus d'explications)</a></span></p>
 <?php endif;
 if ($link != 'true')
   echo '</div>';
