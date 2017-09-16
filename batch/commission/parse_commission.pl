@@ -182,7 +182,7 @@ sub setFonction {
     if ($intervenant eq $fonction) {
       return $intervenant;
     }
-    $fonction =~ s/[^a-zàâéèêëîïôùûü]+$//i;
+    $fonction =~ s/[^a-zàâéèêëîïôùûü)]+$//i;
     $fonction =~ s/<[^>]+>\s*//g;
     $fonction =~ s/<[^>]*$//;
     $fonction =~ s/\///g;
