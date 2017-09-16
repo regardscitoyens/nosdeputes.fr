@@ -170,7 +170,7 @@ if (preg_match("/^l/", $time)) {
   $shortduree = $time;
 }
 if ($type === 'total') {
-  $Test->drawTitle($pos_titre,3 + 2*$font,"Participation globale au cours ".$duree." (hémicycle et commissions)",50,50,50,585);
+  $Test->drawTitle($pos_titre,3 + 2*$font,"Présences en commissions et participation en hémicycle au cours ".$duree,50,50,50,585);
   $titre = 'globale-'.$shortduree;
 } else {
   $titre = $type;

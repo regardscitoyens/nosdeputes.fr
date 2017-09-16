@@ -57,8 +57,7 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
 
     var week_width = (svg_width-margin_left)/(Object.keys(all_weeks).length);
 
-    var titre = "Participation ",
-      extra = "";
+    var titre, extra = "";
     if (data.fin)
       extra = 'de toute la législature';
     else if (data.periode === "lastyear") {
@@ -70,8 +69,8 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
       }
     } else extra = "de la session " + data.periode.replace(/^(\d{4})/, '$1-');
     if (type === 'total')
-      titre += "globale au cours " + extra + " (hémicycle et commissions)";
-    else titre += "en " + type.replace('commission', 'commissions') + " au cours " + extra;
+      titre = "Présences en commissions et participation en hémicycle au cours " + extra;
+    else titre = "Participation en " + type.replace('commission', 'commissions') + " au cours " + extra;
 
     divid = '#' + divid;
     $(divid).html(
