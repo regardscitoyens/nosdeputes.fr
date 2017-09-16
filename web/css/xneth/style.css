@@ -1114,7 +1114,7 @@ h1 {
   margin: 0px;
   margin-top: -2px;
   padding: 0px;
-  font-size: 14px;
+  font-size: 13px;
   font-family: Liberation Sans, sans-serif;
 }
 .graph_depute a:hover {
@@ -1122,8 +1122,12 @@ h1 {
 }
 .graph_depute p a {
   font-size: 11px;
+  font-weight: bold;
+  color: grey;
+  text-decoration: underline;
 }
 .graph_depute p a:hover {
+  color: black;
   text-decoration: underline;
 }
 .barre_activite {

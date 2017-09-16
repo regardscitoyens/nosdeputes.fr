@@ -65,7 +65,7 @@ endif; ?><span class="jstitle" title="Semaines durant lesquelles les députés n
 if ($type === "total") echo "$reus et de $sean";
 else if ($type === "hemicycle") echo $sean;
 else echo $reus; ?> auxquelles ils ont participé"><span style="font-weight: bolder; color: rgb(160,160,160);">&mdash;</span>&nbsp;Médiane des députés</span><?php
-if ($link === 'true') : ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="jstitle" title="Lire plus d'explications dans la FAQ"<?php echo $target; ?> href="<?php echo url_for('@faq', $abs); ?>#post_4">Explications</a></span><?php
+if ($link === 'true') : ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="jstitle graphe_explications" title="Consultez les questions fréquentes pour plus d'explications"<?php echo $target; ?> href="<?php echo url_for('@faq', $abs); ?>#post_4">Lire plus d'explications</a></span><?php
 endif; ?></p>
 <?php endif;
 if ($link != 'true')
