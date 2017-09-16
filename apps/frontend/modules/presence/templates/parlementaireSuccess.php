@@ -1,6 +1,6 @@
 <?php
 echo include_component("parlementaire", "header", array("parlementaire" => $parlementaire, "titre" => $titre)); ?>
-<h3><?php $n_presences = count($presences); if ($n_presences == 0) echo "Aucune"; else echo $n_presences; echo " présence"; if ($n_presences > 1) echo "s"; if ($type == "commission") echo " enregistrée"; else echo " relevée"; if ($n_presences > 1) echo "s"; ?></h3>
+<h3><?php $n_presences = count($presences); if ($n_presences == 0) echo "Aucune"; else echo $n_presences; echo " présence"; if ($n_presences > 1) echo "s"; if ($type == "commission") echo " enregistrée"; else echo " détectée"; if ($n_presences > 1) echo "s"; ?></h3>
 <?php if ($n_presences > 0) {
   echo '<ul>';
   $seance0 = $presences[0]->getSeance();

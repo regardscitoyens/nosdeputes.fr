@@ -52,7 +52,7 @@ if ($type === "total") echo "$reus et de $sean";
 else if ($type === "hemicycle") echo $sean;
 else echo $reus;
 ?>"><span style="background-color: rgb(255,0,0);">&nbsp;</span>&nbsp;Présences <?php
-echo ($type === 'commission' ? 'enregistr' : 'relev');
+echo ($type === 'commission' ? 'enregistr' : 'détect');
 ?>ées</span>&nbsp;&nbsp;&nbsp;<span class="jstitle" title="Nombre de <?php
 $reus = "réunions de commissions";
 $sean = "séances en hémicycle";
