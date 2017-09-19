@@ -1,6 +1,7 @@
 <?php
 if ($empty)
   return ;
+$isGrpe = ($plot === "groupes");
 $isOrga = preg_match('/orga/', $plot);
 $isComm = preg_match('/seance_com/', $plot);
 $hasInter = (array_sum($interventions) != 0);
@@ -22,7 +23,7 @@ if ($hasInter) {
   $Data2 = $DataSet2->GetData();
   $DataDescr2 = $DataSet2->GetDataDescription();
 }
-if (isset($membres)) {
+if (isset($membres) || $isGrpe) {
   $DataSet = new xsPData();
   $DataSet->AddPoint($labels, "Serie1");
   $DataSet->AddPoint($parls, "Serie2");
@@ -49,10 +50,12 @@ $DataDescrLegend = $DataSetLegend->GetDataDescription();
 $filename = 'repartition-groupes';
 $xsize = 405;
 $xtitre = 25;
+$ytitre = 25;
 $ysize = 190;
 $ylegend = 45;
 $x0 = 170;
 $y0 = 110;
+$radius = 48;
 $filename .= '-'.$plot.'.png';
 $titre = 'par groupes du travail de cette '.$seancenom;
 if (preg_match('/section/', $plot)) {
@@ -72,6 +75,15 @@ if (preg_match('/section/', $plot)) {
   $xsize = 250;
   $xtitre = 48;
   $titre = 'par groupes';
+} else if ($isGrpe) {
+  $xsize = 420;
+  $ysize = 245;
+  $x0 = 250;
+  $y0 = 130;
+  $radius = 106;
+  $xtitre = 115;
+  $ytitre = 220;
+  $titre = "des $total députés";
 }
 
 $Test = new xsPChart($xsize,$ysize);
@@ -85,18 +97,18 @@ foreach ($couleurs as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)
 $Test->setColorPalette($ct,240,240,240);
 $Test->xsSetFontProperties("tahoma.ttf",7);
 if (isset($Data)) {
-  $Test->drawFlatPieGraph($Data,$DataDescr,$x0,$y0,47,PIE_VALUES,0,0,157);
-  $Test->drawFilledCircle($x0+1,$y0+1,15,240,240,240);
+  $Test->drawFlatPieGraph($Data,$DataDescr,$x0,$y0,$radius,PIE_VALUES,0,0,157);
+  $Test->drawFilledCircle($x0+1,$y0+1,$radius/3,240,240,240);
   $x0 += 150;
 }
 if (isset($Data2)) {
-  $Test->drawFlatPieGraph($Data2,$DataDescr2,$x0,$y0,47,PIE_VALUES,0,0,157);
-  $Test->drawFilledCircle($x0+1,$y0+1,15,240,240,240);
+  $Test->drawFlatPieGraph($Data2,$DataDescr2,$x0,$y0,$radius,PIE_VALUES,0,0,157);
+  $Test->drawFilledCircle($x0+1,$y0+1,$radius/3,240,240,240);
 }
 $x0 += 150;
 if (isset($Data3)) {
-  $Test->drawFlatPieGraph($Data3,$DataDescr3,$x0,$y0,47,PIE_PERCENTAGE,0,0,157,166.7);
-  $Test->drawFilledCircle($x0+1,$y0+1,15,240,240,240);
+  $Test->drawFlatPieGraph($Data3,$DataDescr3,$x0,$y0,$radius,PIE_PERCENTAGE,0,0,157,166.7);
+  $Test->drawFilledCircle($x0+1,$y0+1,$radius/3,240,240,240);
 }
 $Test->xsSetFontProperties("tahoma.ttf",9);
 $ct = 0;
@@ -107,7 +119,7 @@ foreach ($couleurs as $col) if (preg_match('/^(\d+),(\d+),(\d+)$/', $col, $cols)
 $Test->drawLegend(15,$ylegend,$DataDescrLegend,255,255,255);
 
 $Test->xsSetFontProperties("tahoma.ttf",12);
-$Test->drawTitle($xtitre,25,'Répartition '.$titre,50,50,50);
+$Test->drawTitle($xtitre,$ytitre,'Répartition '.$titre,50,50,50);
 $Test->xsSetFontProperties("tahoma.ttf",8);
 if ($isOrga)
   $Test->drawTitle(148,155,'Membres',50,50,50);

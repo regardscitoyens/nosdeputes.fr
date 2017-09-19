@@ -12,25 +12,28 @@ class plotComponents extends sfComponents
     $this->data['fin'] = myTools::isFinLegislature() && ($this->session === 'lastyear');
     if ($this->session === 'lastyear') {
       if (!$this->parlementaire->isEnMandat()) {
-        $date_fin = strtotime($this->parlementaire->fin_mandat);
+        $time_fin = strtotime($this->parlementaire->fin_mandat);
         $this->data['mandat_clos'] = true;
-      } else $date_fin = time();
-      $annee = date('Y', $date_fin);
-      $sem = date('W', $date_fin);
+      } else $time_fin = time();
       $legistart = strtotime(myTools::getDebutLegislature());
       if ($this->data['fin'])
         $last_year = $legistart;
-      else $last_year = max($legistart - 1209600, $date_fin - 32054400);
-      $date_debut = date('Y-m-d', $last_year);
-      $date_fin = date('Y-m-d', $date_fin);
+      else $last_year = max($legistart - 1209600, $time_fin - 32054400);
+      $dow = date('N', $time_fin) % 7;
+      if ($dow <= 2)
+        $time_fin = $time_fin - (($dow + 1) * 86400);
       $annee0 = date('o', $last_year);
       $sem0 = date('W', $last_year);
-      if ($sem > 51 && date('n', $date_fin) == 1)
+      $annee = date('o', $time_fin);
+      $sem = date('W', $time_fin);
+      if ($sem > 51 && date('n', $time_fin) == 1)
         $sem = 0;
-      if ($sem < 2 && $annee != date('o', $date_fin)) {
-        $annee = date('o', $date_fin);
+      if ($sem < 2 && $annee != date('o', $time_fin)) {
+        $annee = date('o', $time_fin);
         $sem0 -= 1;
       }
+      $date_debut = date('Y-m-d', $last_year);
+      $date_fin = date('Y-m-d', $time_fin);
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     } else {
       $start = Doctrine_Query::create()
@@ -53,7 +56,7 @@ class plotComponents extends sfComponents
       $sem = $end['numero_semaine'];
       $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
     }
-#print "$date_fin ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
+#print "$dow ; $date_fin ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
     if ($this->data['fin']) {
       $this->data['labels'] = $this->getLabelsMois($n_weeks, $annee0, $sem0);
       $this->data['vacances'] = $this->getVacancesAllMandats($n_weeks, $annee0, $sem0, $this->parlementaire->getMandatsLegislature());
@@ -62,6 +65,7 @@ class plotComponents extends sfComponents
       $this->data['vacances'] = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
     }
     $this->data['date_debut'] = $date_debut;
+    $this->data['date_debut_parl'] = $this->parlementaire->debut_mandat;
     $this->data['date_fin'] = $date_fin;
 
     $query = Doctrine_Query::create()
@@ -87,7 +91,7 @@ class plotComponents extends sfComponents
       ->select('count(distinct s.id) as nombre, sum(i.nb_mots) as mots, count(i.id) as interv, s.type, s.annee, s.numero_semaine, i.fonction')
       ->from('Intervention i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.nb_mots > ?', $seuil_invective)
+      ->andWhere('(i.nb_mots > ? OR not i.nb_mots)', $seuil_invective)
       ->leftJoin('i.Seance s');
     if ($this->session === 'lastyear')
       $query2->andWhere('s.date > ?', $date_debut);
@@ -142,7 +146,7 @@ class plotComponents extends sfComponents
     if ($presences_medi) {
       $prmedi = unserialize($presences_medi->value);
       $debut_legis = strtotime(myTools::getDebutLegislature());
-      $an_legis = date('Y', $debut_legis);
+      $an_legis = date('o', $debut_legis);
       $sem_legis = date('W', $debut_legis);
       if ($sem_legis == 53) {
         $an_legis++;
@@ -150,16 +154,16 @@ class plotComponents extends sfComponents
       }
       $startweek = ($annee0 - $an_legis)*53 + $sem0 - $sem_legis;
       if ($startweek <= 0) {
-        $weeks_acti = count($prmedi['commission']);
-        for ($i=0; $i < $weeks_acti; $i++) {
-          $this->data['presences_medi']['commission'][$n_weeks-$i] = $prmedi['commission'][$weeks_acti-$i];
-          $this->data['presences_medi']['hemicycle'][$n_weeks-$i] = $prmedi['hemicycle'][$weeks_acti-$i];
-          $this->data['presences_medi']['total'][$n_weeks-$i] = $prmedi['total'][$weeks_acti-$i];
+        $weeks_acti = count($prmedi['total']);
+        for ($i=1; $i <= $weeks_acti; $i++) {
+          $this->data['presences_medi']['commission'][$i-$startweek] = $prmedi['commission'][$i];
+          $this->data['presences_medi']['hemicycle'][$i-$startweek] = $prmedi['hemicycle'][$i];
+          $this->data['presences_medi']['total'][$i-$startweek] = $prmedi['total'][$i];
         }
       } else {
-        $this->data['presences_medi']['commission'] = array_slice($prmedi['commission'], $startweek, $n_weeks);
-        $this->data['presences_medi']['hemicycle'] = array_slice($prmedi['hemicycle'], $startweek, $n_weeks);
-        $this->data['presences_medi']['total'] = array_slice($prmedi['total'], $startweek, $n_weeks);
+        $this->data['presences_medi']['commission'] = array_slice($prmedi['commission'], $startweek + 1, $n_weeks);
+        $this->data['presences_medi']['hemicycle'] = array_slice($prmedi['hemicycle'], $startweek + 1, $n_weeks);
+        $this->data['presences_medi']['total'] = array_slice($prmedi['total'], $startweek + 1, $n_weeks);
       }
     }
 
@@ -181,7 +185,7 @@ class plotComponents extends sfComponents
   public static function getVacances($n_weeks, $annee0, $sem0, $debut_mandat) {
 
     $n_vacances = array_fill(1, $n_weeks, 0);
-    $mandat_an0 = date('Y', $debut_mandat);
+    $mandat_an0 = date('o', $debut_mandat);
     $mandat_sem0 = date('W', $debut_mandat);
     if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
     $week0 = ($mandat_an0 - $annee0)*53 + $mandat_sem0 - $sem0 + 1;
@@ -190,7 +194,7 @@ class plotComponents extends sfComponents
 
     foreach (myTools::getVacances() as $vacance) {
       $n = ($vacance['annee'] - $annee0)*53 + $vacance['semaine'] - $sem0 + 1;
-      if ($n > 0 && $n < $n_weeks)
+      if ($n > 0 && $n <= $n_weeks)
         $n_vacances[$n] = 20;
     }
     return $n_vacances;
@@ -204,13 +208,13 @@ class plotComponents extends sfComponents
     foreach($mandats as $m) {
       if (preg_match("/^(.*);(.*)?$/", $m, $match)) {
         $debut = strtotime($match[1]);
-        $mandat_an0 = date('Y', $debut);
+        $mandat_an0 = date('o', $debut);
         $mandat_sem0 = date('W', $debut);
         if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
         if ($match[2] != "")
           $fin = strtotime($match[2]);
         else $fin = time();
-        $mandat_an1 = date('Y', $fin);
+        $mandat_an1 = date('o', $fin);
         $mandat_sem1 = date('W', $fin);
         if ($mandat_sem1 == 53) { $mandat_an1++; $mandat_sem1 = 1; }
         while ($n <= $n_weeks && ($annee < $mandat_an0 || ($annee == $mandat_an0 && $sem < $mandat_sem0))) {
@@ -419,14 +423,22 @@ class plotComponents extends sfComponents
 
     $groupes = array();
 
-    // Pour les organismes
-    if (isset($this->membres))
+    // Si on a directement les données par groupe
+    if (isset($this->groupes)) {
+      $this->total = 0;
+      foreach ($this->groupes as $g) {
+        $groupes[$g['acronyme']]['membres'] = $g['membres'];
+        $this->total += $g['membres'];
+      }
+
+    // Ou pour les organismes
+    } else if (isset($this->membres))
       // Répartition par groupe des membres
       foreach ($this->membres as $imp => $deps) {
         if ($imp < 1)
           continue;
         foreach ($deps as $p) {
-          if (preg_match('/[âa]ge$/i', $p->fonction))
+          if (preg_match('/[âa]ge$/i', $p->fonction) || !$p['groupe_acronyme'])
             continue;
           if (!isset($groupes[$p['groupe_acronyme']]['membres']))
             $groupes[$p['groupe_acronyme']]['membres'] = 1;
@@ -440,6 +452,7 @@ class plotComponents extends sfComponents
       $qmots = Doctrine_Query::create()
         ->from('Intervention i')
         ->andWhere('i.fonction NOT LIKE ?', 'président%')
+        ->andWhere('i.personnalite_id IS NULL')
         ->groupBy('i.parlementaire_id');
       if (preg_match('/section_(\d+)$/', $this->plot, $match))
         // pour les dossiers
@@ -505,7 +518,7 @@ class plotComponents extends sfComponents
     $this->presences = array();
     $this->parls = array();
     foreach($this->labels as $groupe) {
-      if (!isset($this->membres)) {
+      if (!isset($this->membres) && !isset($this->groupes)) {
         if (!isset($groupes[$groupe]['interventions']))
           $this->interventions[] = 0;
         else $this->interventions[] = $groupes[$groupe]['interventions'];
@@ -525,7 +538,7 @@ class plotComponents extends sfComponents
     // On ajoute à la fin des arrays la moitié de la somme totale de l'array
     // pour que 2/5e du donut soit vide et forcer l'apparence d'un hémicycle
     $this->labels[] = "";
-    if (isset($this->membres))
+    if (isset($this->membres) || isset($this->groupes))
       $this->parls[] = array_sum($this->parls)*3/5;
     else {
       $this->interventions[] = array_sum($this->interventions)*3/5;

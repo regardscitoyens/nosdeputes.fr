@@ -13,25 +13,24 @@ if ($cause = $parlementaire->getCauseFinMandat())
         </li>
         <?php endif;
         $fem = ($parlementaire->sexe == "F" ? 'e' : '');
-        if ($parlementaire->url_ancien_cpc)
-          echo '<li><a href="'.$parlementaire->url_ancien_cpc.'"><strong>Député'.$fem.' réélu'.$fem.' : voir sa page NosDéputés.fr de la précédente législature</strong></a></li>';
         if ($parlementaire->suppleant_de_id && $supplee = $parlementaire->getSuppleantDe())
           echo '<li>Suppléant'.$fem.' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>';
         if ($parlementaire->groupe_acronyme != "") : ?>
-        <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo $parlementaire->getGroupe()->getFonction(); ?>)</li>
+        <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo preg_replace('/^(présidente?)$/i', '<strong>\1</strong>', $parlementaire->getGroupe()->getFonction()); ?>)</li>
         <?php endif;
         if ($parlementaire->parti) : ?>
         <li>Parti politique (rattachement financier) : <?php echo $parlementaire->parti; ?></li>
         <?php endif; ?>
         <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, myTools::get_solr_list_url($parlementaire->profession, '', 'Parlementaire', "profession=".myTools::solrize($parlementaire->profession))."&noredirect=1"); else : ?>Non communiquée<?php endif; ?></li>
-        <?php
+        <li>Liens :
+          <ul><?php
  if ($parlementaire->url_an) echo '<li>'.link_to('Fiche Assemblée nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'rel'=>'nofollow')).'</li>';
   echo '<li><a href="http://fr.wikipedia.org/wiki/'.rawurlencode($parlementaire->nom).'">Page Wikipédia</a></li>';
 if ($parlementaire->sites_web) {
   $moreweb = "";
   foreach (unserialize($parlementaire->sites_web) as $site) if ($site && !preg_match('/assemblee-nationale\.fr\/deputes\/fiche/', $site)) {
     $nomsite = "Site web : ".$site;
-    if (preg_match('/twitter/', $site)) $nomsite = "Twitter : ".preg_replace("/^.*[^a-z0-9_]([a-z0-9_]+)$/i", "@\\1", $site);
+    if (preg_match('/twitter/', $site)) $nomsite = "Compte Twitter : ".preg_replace("/^.*[^a-z0-9_]([a-z0-9_]+)$/i", "@\\1", $site);
     else if (preg_match('/facebook/', $site)) $nomsite = "Page Facebook";
     $link = "<li>".link_to($nomsite, $site, array('title' => 'Lien externe', 'rel'=>'nofollow'))."</li>";
     if (!preg_match('/twitter|facebook/', $site)) $moreweb .= $link;
@@ -39,7 +38,7 @@ if ($parlementaire->sites_web) {
   }
   echo $moreweb;
 }
-        ?>
+        ?></ul>
       </ul>
 
     <?php $mails = unserialize($parlementaire->mails);
@@ -126,23 +125,24 @@ if(myTools::isFinLegislature()) {
 }
       ?></h3>
       <?php echo include_component('section', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'order' => $order)); ?>
-      <h3><?php echo link_to('Travaux en commissions', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention', 'type=commission')); ?></h3>
-      <h3><?php echo link_to('Travaux en hémicycle', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention', 'type=loi')); ?></h3>
-      <h3><?php echo link_to('Toutes ses interventions', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention')); ?></h3>
-      <h3><?php echo link_to('Tous ses amendements', myTools::get_solr_list_url('', $parlementaire->nom, 'Amendement')); ?></h3>
+      <h3>Ses interventions</h3>
+      <p class="paddingleft"><?php echo link_to('Consulter ses travaux en commissions', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention', 'type=commission')); ?></p>
+      <p class="paddingleft"><?php echo link_to('Consulter ses travaux en hémicycle', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention', 'type=loi')); ?></p>
+      <p class="paddingleft"><?php echo link_to('Consulter toutes ses interventions', myTools::get_solr_list_url('', $parlementaire->nom, 'Intervention')); ?></p>
 
-    <h2>Questions au gouvernement</h2>
-      <h3>Ses dernières questions orales</h3>
-       <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
-      <h3>Ses dernières questions écrites</h3>
-       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
+      <div class="titre_amendements">
+        <h3>Ses amendements</h3>
+        <p class="paddingleft"><?php echo link_to('Consulter tous ses amendements', myTools::get_solr_list_url('', $parlementaire->nom, 'Amendement')); ?></p>
+      </div>
+      <?php echo include_component('amendement', 'parlementaireStats', array('parlementaire' => $parlementaire)); ?>
+
   </div>
 
   <div class="boite_depute" id="b2">
     <?php if (!$parlementaire->isEnMandat()) : ?>
-    <h2>Le mandat de ce député est achevé</h2>
+    <h2>Le mandat de <?php echo $parlementaire->getCeCette(false); ?> est achevé</h2>
     <?php else : ?>
-    <h2>Suivre l'activité du député</h2>
+    <h2>Suivre l'activité d<?php echo ($parlementaire->sexe == "F" ? "e la députée" : "u député"); ?></h2>
       <table width=100% style="text-align: center"><tr>
         <td width=33%><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/email.png', 'alt="e-mail"'); ?></a><br/><a href="<?php echo url_for('@alerte_parlementaire?slug='.$parlementaire->slug); ?>">par e-mail</a></td>
         <td width=33%><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss_obliq.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for('@parlementaire_rss?slug='.$parlementaire->slug); ?>">par RSS</a></td>
@@ -169,9 +169,17 @@ if (myTools::isFinLegislature()) {
       <?php echo include_component('documents', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'type' => 'loi')); ?>
       <p class="suivant"><?php echo link_to('Toutes ses propositions de loi cosignées', '@parlementaire_documents?slug='.$parlementaire->slug.'&type=loi'); ?></p>
 
+    <h2>Questions au gouvernement</h2>
+      <h3>Ses dernières questions orales</h3>
+       <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
+      <h3>Ses dernières questions écrites</h3>
+       <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
+
     <?php if ($historique || $anciens_mandats) : ?>
     <h2>Historique des fonctions et mandats</h2>
-      <ul><?php foreach ($historique as $resp) : ?>
+      <ul><?php if ($parlementaire->url_ancien_cpc)
+        echo '<li><a href="'.$parlementaire->url_ancien_cpc.'"><strong>Député'.$fem.' réélu'.$fem.' : voir sa page NosDéputés.fr de la précédente législature</strong></a><br/><br/></li>';
+      foreach ($historique as $resp) : ?>
         <li><?php
 if ($resp->type == "groupe") {
   $acro = $resp->Organisme->getSmallNomGroupe();

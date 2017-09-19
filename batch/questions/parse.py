@@ -51,7 +51,7 @@ def parse_question(url, xmlstring):
         'page_reponse': qe['REPONSE']['PAGE_JO_REPONSE']
     }
     if (not extracted_data['date_reponse']):
-        extracted_data['date_retrait'] = qe['CLOTURE']['DATE_JO']
+        extracted_data['date_retrait'] = convert_date(qe['CLOTURE']['DATE_JO'])
     if (extracted_data['date_retrait'] and qe['CLOTURE']['LIBELLE'] != u"Réponse publiée"):
         extracted_data['motif_retrait'] = qe['CLOTURE']['LIBELLE'].lower()
 

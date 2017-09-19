@@ -16,23 +16,30 @@ $string = "@string";
 close FILE;
 
 $string =~ s/ / /g;
+$string =~ s/(&#8211;)/–/g;
+$string =~ s/(’|&#8217;)/'/g;
+$string =~ s/(\.|,|:|;|…|–)(,|:|;|…|–)/\1 \2/g;
+$string =~ s/(!|\?|\.|:|;|…|–)([^\s<!?\.:;…–])/\1 \2/g;
 $string =~ s/  +/ /g;
 $string =~ s/\n/ /g;
 $string =~ s/\\’85//g;
-$string =~ s/(’|&#8217;)/'/g;
-$string =~ s/(,|:|;|–)…/\1 …/g;
+$string =~ s/\s*<\/sup><i>\s*/ <i>/ig;
 $string =~ s/<\/?sup>//g;
 $string =~ s/<\/p>/<\/p>\n/g;
-$string =~ s/(<i><\/i>|<\/i><i>)//ig;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
-$string =~ s/(<h[0-9][^>]*>.*?)\s*-\s*Suite(\)<\/i><\/h2>)/\1\2>/gi;
+$string =~ s/(<h[0-9][^>]*>.*?)<i>\(suite[^)]*?\)<\/i>/\1/gi;
+$string =~ s/<\/i>(\W+)<i>/\1/ig;
+$string =~ s/no<\/i>s <i>/nos /ig;
+$string =~ s/(<i><\/i>|<\/i><i>)//ig;
+$string =~ s/(<h[0-9][^>]*>.*?)\s*(?:–|-)\s*Suite\s*\)\s*<\/i>\s*<\/h2>/\1)<\/i><\/h2>/gi;
 $string =~ s/(<h[0-9][^>]*>[^<]*)[\s(]*<i>[\s(]*Suite.*?<\/i>[\s)]*/\1/gi;
 $string =~ s/(<h[0-9][^>]*>.*?)<i>(.*?)<\/i>(.*?<\/h2>)/\1\2\3/gi;
 $string =~ s/(<(h[0-9])[^>]*>)\s*(<i>[^<]*<\/i>)\s*<\/\2>/\1<\/\2>\n<p>\3<\/p>/gi;
 $string =~ s/\s*…\s*(<\/i>)?\s*(<br\s*\/?>\s*)+…\s*/\1 /gi;
 $string =~ s/\((\s*)<i>/\1<i>(/ig;
 $string =~ s/<\/i>(\s*)\)/)<\/i>\1/ig;
-$string =~ s/(\((Nouveaux|Applaudissement|Exclamation|Vif|Vive|Quelque|M..?mes? mouve|(Sou)?Rires|«.*?bancs d[esu] groupe)[^)]*\))/<i>\1<\/i>/ig;
+$string =~ s/(<i>\(Applaudissement)<\/i>s\s+([^<)]+)/\1s)<\/i> \2/ig;
+$string =~ s/(\(([^)]*?amendement[^)]*?(adopt|rejet)|Nouveaux|Applaudissement|Exclamation|Vif|Vive|Quelque|M..?mes? mouve|(Sou)?Rires|[^)]*?bancs d[esu]+ groupe)[^)]*\))/<i>\1<\/i>/ig;
 $string =~ s/(<\/?i>)([–,\.\s]*)\1/\1\2/ig;
 $string =~ s/<\/i>\s*<i>\s*\(\s*/<\/i> <i>(/ig;
 $string =~ s/\)((,|\.|…|!|\?)\s*)<\/i>/)<\/i>\1/ig;
@@ -41,6 +48,7 @@ $string =~ s/(<i>\s*\([^\)]+\s*<\/i>\s\)\s*\.?|\(<i>[^\)]+?<\/i>\))/<\/p>\n<p>$1
 $string =~ s/<p>\s*<\/i>\s*/<p>/ig;
 $string =~ s/\s*<i>\s*<\/p>/<\/p>/ig;
 $string =~ s/<p><\/p>\n//g;
+$string =~ s/\(… \)/(…)/g;
 $string =~ s/(<br\s*\/>\s*)+/##BR##/g;
 
 #Si italique dans gras, on vire (pb fonction)
@@ -120,7 +128,7 @@ if ($string =~ /ouverte[^\.]+à\s+([^\.]+?)\s*heures?\s*([^\.\s]*)\s*\./) {
 
 sub savepLoi() {
     $no =~ s/&nbsp;/ /g;
-    $no =~ s/\s*et\s*/,/g;
+    $no =~ s/\s*(et|,|;)\s*/,/g;
     $no =~ s/[^\d,]//g;
     @no = split(/,/, $no);
     $no = '';
@@ -193,6 +201,7 @@ sub checkout {
     $cpt+=10;
     $contexte = $titre1;
     if ($titre2) {
+        $titre2 =~ s/\s*\(suite\)\s*$//ig;
         $contexte .= ' > '.$titre2;
     }
     $contexte =~ s/"/\\"/g;
@@ -216,18 +225,37 @@ sub checkout {
             }
             print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
         }
-        if ($intervenant !~ /^plusieurs /i && $intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)$//) {
+        if ($intervenant =~ s/^(plusieurs .*?)(,| et) //i) {
+            $plusieurs = $1;
+            $plusieurs =~ s/des groupes/du groupe /i;
+            $plusieurs =~ s/((?:députés |sur les bancs |du groupe )+)\s*(.*)$/\1/i;
+            $interv1 = $2;
+            foreach $i (split(/(?: et |, )\s*/, $intervenant)) {
+                $ts++;
+                $i =~ s/^(plusieurs|députés|sur les bancs|d[ues]+ groupes?) //g;
+                print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$plusieurs.$i."\"}\n";
+            }
+            $intervenant = $plusieurs.$interv1;
+        }
+        if ($intervenant !~ /^plusieurs /i && $intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)$//) {
             foreach $i (split(/(?:et\s*M[mes\.]*| et |, M[mes\.]*)\s*/, $3)) {
                 $ts++;
                 if (!$inter2fonction{$i} && $i =~ s/, (.*)$//) {
                     setFonction($1, $i);
                 }
+                $i =~ s/^([up])(n |lusieurs)/\U\1\L\2/i;
                 print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
             }
         }
-        if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)//g) {
+        if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)//g) {
             $ts++;
-            print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$3."\"}\n";
+            $extraint = $3;
+            if ($extraint =~ s/,\s+(.*)\s*$//) {
+                setFonction($1, $extraint);
+                $fonction = $inter2fonction{$extraint};
+                $extraint .= '", "fonction": "'.$fonction;
+            }
+            print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$extraint."\"}\n";
             $inter2fonction{$intervenant} = '';
         }
         $extrafct = "";
@@ -271,7 +299,7 @@ sub setIntervenant {
     $intervenant =~ s/\s*[\.\:]\s*$//;
     $intervenant =~ s/Madame/Mme/g;
     $intervenant =~ s/Monsieur/M./g;
-    $intervenant =~ s/(\s+et|,)\s+M[\.lmes]+\s+/ et /g;
+    $intervenant =~ s/(\s+et|,)+\s+M[\.lmes]+\s+/ et /g;
     $intervenant =~ s/^M[\.mes]*\s//i;
     $intervenant =~ s/([^M])\s*\..*$/\1/;
     $intervenant =~ s/L([ea])\s/l$1 /i;
@@ -284,6 +312,9 @@ sub setIntervenant {
     $intervenant =~ s/([^\s\,])\s+rapporteur/$1, rapporteur/i;
     $intervenant =~ s/M\. /M /;
 
+    if ($intervenant =~ /^plusieurs/i) {
+      return $intervenant;
+    }
     if ($intervenant =~ s/\,\s*(.*)//) {
         setFonction($1, $intervenant);
     }
@@ -392,13 +423,14 @@ foreach $line (split /\n/, $string)
             }else {
                 setFonction('président', $prez);
             }
-        }elsif($line =~ /h2 class="titre[2-9]+">(.*?)\s*<\/h2>/i || $line =~ /class="sstitreinfo">\/([^\/]+)\//) {
+        }elsif($line =~ /h2 class="titre[2-9]+">\s*(.*?)\s*<\/h2>/i || $line =~ /class="sstitreinfo">\s*\/\s*([^\/]+)\s*\//) {
             checkout();
             $tmpline = $1;
             $tmpline =~ s/<\/?[a-z][^>]*>//g;
             next unless ($tmpline);
-            if ($tmpline !~ /rappels? au règlement|suspension|reprise/i || $tmpline =~ /demande/i) {
+            if (lc($tmpline) ne lc($titre1) && ($tmpline !~ /rappels? au règlement|suspension|reprise/i || $tmpline =~ /demande/i)) {
                 $titre2 = $tmpline;
+                $titre2 =~ s/[\/|]//g;
                 $donetitre1 = 0;
                 $amendements = @pre_amendements = ();
             }
@@ -448,9 +480,10 @@ foreach $line (split /\n/, $string)
     }
 
     if ($prez && $line =~ /<\/?t(able|d|h|r)/) {
-        $line =~ s/([^<])[\/\|]/\1/g;
         $line =~ s/<[^t\/][^>]*>//g;
         $line =~ s/<\/[^t][^>]*>//g;
+        $line =~ s/([^<])\/([^<\/]*)\//\1<i>\2<\/i>/g;
+        $line =~ s/\|([^\/]*)\|/<b>\1<\/b>/g;
         $line =~ s/"/\\"/g;
         checkout() if ($intervenant || ($line =~ /<table/ && length($intervention) + length($line) gt 2000));
         $intervention .= "$line";
@@ -511,6 +544,7 @@ foreach $line (split /\n/, $string)
             if ($line =~ /^\s*$/) {
                 next;
             }
+            $line =~ s/\s*«\s*$//;
             $intervention .= "<p>$line</p>";
             $source = $nextsource;
         }

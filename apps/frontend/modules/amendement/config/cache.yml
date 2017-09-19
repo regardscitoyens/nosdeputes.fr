@@ -1,6 +1,8 @@
 all:
    enabled: true
    lifetime: 86400
+_parlemantaireStats:
+   lifetime: 28800
 _pagerAmendements:
    enabled: false
 show:

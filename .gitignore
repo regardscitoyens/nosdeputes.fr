@@ -31,6 +31,7 @@ batch/amendements/liste_sort_indefini.txt
 batch/commission/html/
 batch/commission/tmp/
 batch/commission/out/
+batch/commission/loaded/
 batch/commission/presents/
 batch/depute/html/
 batch/depute/json/
@@ -47,7 +48,7 @@ batch/documents/out/
 batch/dossiers/html/
 batch/hemicycle/html/
 batch/hemicycle/out/
-batch/hemicycle/toload130817/
+batch/hemicycle/loaded/
 batch/jo/export/
 batch/jo/html/
 batch/jo/pdf/

@@ -1,13 +1,8 @@
 <?php if ($section->id_dossier_an) echo '<span class="source">'.myTools::getLinkDossier($section->id_dossier_an)."</span>"; ?>
-<h1><?php 
-   $titre = '';
-if ($section->getSection()) {
+<h1><?php
+if ($section->getSection())
   echo link_to($section->getSection()->getTitre(), '@section?id='.$section->section_id).'</h1><h2 class="aligncenter">';
-  $titre = ', '.$section->getSection()->getTitre();
- }
 echo $section->titre;
-$titre = $section->titre.$titre;
-$sf_response->setTitle($titre.' - NosDéputés.fr');
 if ($section->getSection()) echo '</h2>';
 else echo '</h1>';
 ?>
@@ -26,7 +21,7 @@ else echo '</h1>';
 </div>
 <div class="clear"></div>
 <?php $sommaire = $section->getSubSections();
-if (count($sommaire)) { ?>
+if (count($sommaire) > 1) { ?>
 <div class="orga_dossier right">
 <h2>Organisation du dossier</h2>
 <ul>
@@ -44,7 +39,7 @@ if ($subsection->id != $section->id) : ?>
 </div>
 <?php } ?>
 <div class="left">
-<?php if ($docs) { 
+<?php if ($docs) {
   echo '<div class="documents"><h2>Documents législatifs</h2><ul>';
   $curid = 0;
   foreach ($docs as $id => $doc) {
@@ -80,15 +75,14 @@ if ($subsection->id != $section->id) : ?>
           else $doctitre .= ")";
         } else if ($amendements)
           $doctitre .= " (";
-        if ($amendements) 
+        if ($amendements)
           $doctitre .= $amendements.'&nbsp;amendement';
         if ($amendements > 1)
           $doctitre .= "s";
-        if ($amendements) 
+        if ($amendements)
           $doctitre .= ")";
         echo link_to($doctitre, '@document?id='.$curid);
-      } else
-        echo 'Texte N°&nbsp;'.myTools::getLinkLoi($doc);
+      } else echo 'Texte N°&nbsp;'.myTools::getLinkLoi($doc);
       echo '</li>';
     }
   }

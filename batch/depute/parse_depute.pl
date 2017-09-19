@@ -94,6 +94,8 @@ foreach $line (split /\n/, $string) {
     $lieu = trim($lieu);
     $depute{'lieu_naissance'} = $lieu if ($lieu !~ /^$/);
     $read = "profession";
+  } elsif ($line =~ /<li class="allpadding">\s*([^<]*)\s*/i) {
+    $depute{'collabs'}{$1} = 1;
   } elsif ($line =~ /<dt>Suppléant<\/dt>/i) {
     $read = "suppleant";
   } elsif ($line =~ /<dt>Rattachement au titre du financement/i) {
@@ -144,7 +146,7 @@ foreach $line (split /\n/, $string) {
     }
     $gpe .= "e" if ($depute{'sexe'} eq "F" && $gpe =~ /(président|apparenté)$/);
     $depute{'groupe'}{$gpe} = 1;
-  } elsif ($line =~ /mailto:([^'"]+@[^'"]+)['"]/i) {
+  } elsif ($line =~ /mailto:([^'"]+@[^'" ]+)['" ]/i) {
     $depute{'mails'}{$1} = 1;
   } elsif ($line =~ /<a [^>]*class="(url|facebook|twitter topmargin)" *href=['"]\s*([^"']+)\s*['"]/i) {
     $site = $2;
@@ -160,7 +162,7 @@ foreach $line (split /\n/, $string) {
     } else {
       if ($site !~ /facebook\.com\/(sharer\.php|sandramarsaudlarepubliquenmarche|BSmedoc|colas\.roy\.2017)/) { #Evite de prendre les boutons de partage de l'AN et les comptes désuets
         $site =~ s/(twitter.com\/)[\s@]+/\1/i;
-        if ($site !~ /twitter.com\/(valeriebeauvais2017|sttrompille|Darrieussecq|bernarddeflesselles|Marc_Delatte|davidlorion|Josso2017|ColasRoy2017|GCHICHE2017|obono2017|celiadeputee2017|Vincent.Ledoux59|EricDiardDepute|MireilleRobert|Fdumas2017|PascalBois2017|pgoulet58|micheldelpon|DipompeoChris)/) {   # remove bad twitter accounts from AN
+        if ($site !~ /twitter.com\/(valeriebeauvais2017|sttrompille|Darrieussecq|bernarddeflesselles|Marc_Delatte|davidlorion|Josso2017|ColasRoy2017|GCHICHE2017|obono2017|celiadeputee2017|Vincent.Ledoux59|EricDiardDepute|MireilleRobert|Fdumas2017|PascalBois2017|pgoulet58|micheldelpon|DipompeoChris|Valeria_Faure_M|Thourot2017|FabienGoutte|ainakuric2017|FJolivet2017|CaroleBB2017|ludomds|blanchet2017|MaudPetit_LREM|en_marche_77|BPeyrol_REM0303|CFABRE2017|soniakrimi50)/i) {   # remove bad twitter accounts from AN
           $depute{'sites_web'}{$site} = 1;
         }
       }

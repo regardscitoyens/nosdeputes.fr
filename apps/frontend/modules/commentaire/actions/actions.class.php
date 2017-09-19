@@ -342,8 +342,8 @@ class commentaireActions extends sfActions
     } else {
       $request->setParameter('rss', array(array('link' => $this->link, 'title'=>'Les derniers commentaires en RSS')));
       if ($this->type == 'Parlementaire')
-        $this->response->setTitle($this->titre.' de '.$this->object->nom.' - NosDéputés.fr');
-      else $this->response->setTitle(strip_tags($this->titre).' - NosDéputés.fr');
+        myTools::setPageTitle($this->titre.' de '.$this->object->nom, $this->response);
+      else myTools::setPageTitle(strip_tags($this->titre), $this->response);
     }
 
   }

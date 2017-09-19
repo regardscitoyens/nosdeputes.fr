@@ -51,7 +51,7 @@ cd $PATH_APP
 
 
 if test -e log/solr/commands.log.lock; then
-    split -a 4 -d -l 300 log/solr/commands.log.lock log/solr/commands.log.$(date +%y%m%d%H%M)-
+    split -a 4 -d -l 600 log/solr/commands.log.lock log/solr/commands.log.$(date +%y%m%d%H%M)-
     rm -f log/solr/commands.log.lock
 fi
 

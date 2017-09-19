@@ -3,7 +3,7 @@ $histogram = false;
 $abs = '';
 if (!isset($target))
   $target = '';
-if (isset($absolute) && $absolute)
+if ($absolute)
   $abs = 'absolute=true';
 $size='';
 $width = 790;
@@ -21,22 +21,22 @@ else {
 if ($link === 'true') {
   $time = 'lastyear';
   if (myTools::isFinLegislature()) $time = 'legislature';
-  echo '<a'.$target.' href="'.url_for('@parlementaire'.(isset($absolute) && $absolute ? '' : '_plot').'?slug='.$parlementaire->slug.(isset($absolute) && $absolute ? '' : '&time='.(myTools::isFinLegislature() ? 'legislature' : 'lastyear')), $abs).'">';
+  echo '<a'.$target.' href="'.url_for('@parlementaire'.($absolute ? '' : '_plot').'?slug='.$parlementaire->slug.($absolute ? '' : '&time='.(myTools::isFinLegislature() ? 'legislature' : 'lastyear')), $abs).'">';
   if (!isset($widthrate)) $widthrate = 1;
   $height = floor($height / 2 *$widthrate);
   $width = floor($width * $widthrate);
 } else echo '<div class="par_session">'; ?>
 <div class="activity_plot" id="plot<?php echo $type; ?>">
-  <?php if (!(!isset($absolute) && $absolute)) echo '<noscript>'; ?>
+  <?php if (!$absolute) echo '<noscript>'; ?>
   <img
     style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px;"
     alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>"
     src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type, $abs).'?questions='.$questions.'&link='.$link.'&histogram='.$histogram; ?>"
   />
-  <?php if (!(isset($absolute) && $absolute)) echo '</noscript>'; ?>
+  <?php if (!$absolute) echo '</noscript>'; ?>
 </div>
 <?php if ($link === 'true') echo '</a>';
-if (!(isset($absolute) && $absolute)) : ?>
+if (!$absolute) : ?>
 <script type="text/javascript">
 plot_activity_data("<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type).'?questions='.$questions.'&format=json'; ?>", "plot<?php echo $type; ?>", "<?php echo $width; ?>", "<?php echo $height; ?>", "<?php echo $type; ?>", "<?php echo $histogram; ?>");
 </script>
@@ -52,7 +52,7 @@ if ($type === "total") echo "$reus et de $sean";
 else if ($type === "hemicycle") echo $sean;
 else echo $reus;
 ?>"><span style="background-color: rgb(255,0,0);">&nbsp;</span>&nbsp;Présences <?php
-echo ($type === 'commission' ? 'enregistr' : 'relev');
+echo ($type === 'commission' ? 'enregistr' : 'détect');
 ?>ées</span>&nbsp;&nbsp;&nbsp;<span class="jstitle" title="Nombre de <?php
 $reus = "réunions de commissions";
 $sean = "séances en hémicycle";
@@ -64,8 +64,8 @@ if (!(myTools::isFinLegislature() && preg_match('/^l/', $time)) && $questions ==
 endif; ?><span class="jstitle" title="Semaines durant lesquelles les députés ne se sont réunis ni en commission ni en hémicycle"><span style="background-color: rgb(150,150,150);">&nbsp;</span>&nbsp;Vacances parlementaires</span>&nbsp;&nbsp;<span class="jstitle" title="Médiane pour l'ensemble des députés du nombre de <?php
 if ($type === "total") echo "$reus et de $sean";
 else if ($type === "hemicycle") echo $sean;
-else echo $reus; ?> auxquelles ils ont participé"><span style="font-weight: bolder; color: rgb(160,160,160);">&mdash;</span>&nbsp;Présence médiane</span><?php
-if ($link === 'true') : ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="jstitle" title="Lire plus d'explications dans la FAQ"<?php echo $target; ?> href="<?php echo url_for('@faq', $abs); ?>#post_4">Explications</a></span><?php
+else echo $reus; ?> auxquelles ils ont participé"><span style="font-weight: bolder; color: rgb(160,160,160);">&mdash;</span>&nbsp;Médiane des députés</span><?php
+if ($link === 'true') : ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="jstitle graphe_explications" title="Consultez les questions fréquentes pour plus d'explications"<?php echo $target; ?> href="<?php echo url_for('@faq', $abs); ?>#post_4">Lire plus d'explications</a></span><?php
 endif; ?></p>
 <?php endif;
 if ($link != 'true')

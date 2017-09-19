@@ -9,7 +9,7 @@ if len(sys.argv) != 3:
 id_dossier = sys.argv[1]
 id_examen = sys.argv[2]
 
-url = "http://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&idExamen=%s&idDossierLegislatif=%s&numAmend=&idAuteur=&idArticle=&idAlinea=&sort=&dateDebut=&dateFin=&periodeParlementaire=&texteRecherche=&rows=2500&format=html&tri=ordreTexteasc&typeRes=liste&start=" % (id_examen, id_dossier)
+url = "http://www2.assemblee-nationale.fr/recherche/query_amendements?leg=15&typeDocument=amendement&idExamen=%s&idDossierLegislatif=%s&numAmend=&idAuteur=&idArticle=&idAlinea=&sort=&dateDebut=&dateFin=&periodeParlementaire=&texteRecherche=&rows=2500&format=html&tri=ordreTexteasc&typeRes=liste&start=" % (id_examen, id_dossier)
 
 re_clean_num = re.compile(r"\D")
 count = 0

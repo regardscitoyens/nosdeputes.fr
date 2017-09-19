@@ -339,6 +339,7 @@ class circonscriptionActions extends sfActions
   public function executeList(sfWebRequest $request)
   {
     $this->circos = Parlementaire::$dptmt_nom;
+    myTools::setPageTitle('Toutes les circonscriptions électorales par département', $this->response);
   }
 
   public function executeShow(sfWebRequest $request)
@@ -355,6 +356,7 @@ class circonscriptionActions extends sfActions
     $this->forward404Unless($this->total);
     if ($this->total == 1)
         return $this->redirect('@parlementaire?slug='.$this->parlementaires[0]['slug']);
+    myTools::setPageTitle($this->circo.' ('.$this->departement_num.') : Liste des députés par circonscription', $this->response);
   }
   public function executeSearch(sfWebRequest $request)
   {

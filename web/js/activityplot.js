@@ -28,6 +28,7 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
     typePlot = (histogram ? d3.curveStep : d3.curveLinear);
   d3.json(url, function(data) {
     var startdate = get_last_monday(data.date_debut),
+      firstdate = get_last_monday(data.date_debut_parl),
       enddate = get_last_monday(data.date_fin),
       all_weeks = {}, // Becomes a list later
       idx = 1,
@@ -56,21 +57,20 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
 
     var week_width = (svg_width-margin_left)/(Object.keys(all_weeks).length);
 
-    var titre = "Participation ",
-      extra = "";
+    var titre, extra = "";
     if (data.fin)
       extra = 'de toute la législature';
     else if (data.periode === "lastyear") {
       if (data.mandat_clos)
         extra = 'de la dernière année de mandat';
       else {
-        var mois = Math.min(12, Math.floor((enddate - startdate) / (60*60*24*30*1000)));
+        var mois = Math.min(12, Math.round((enddate - firstdate) / (60*60*24*30*1000)));
         extra = (mois < 2 ? "du premier" : "des " + mois + " " + (mois < 12 ? "prem" : "dern") + "iers") + " mois";
       }
     } else extra = "de la session " + data.periode.replace(/^(\d{4})/, '$1-');
     if (type === 'total')
-      titre += "globale au cours " + extra + " (hémicycle et commissions)";
-    else titre += "en " + type.replace('commission', 'commissions') + " au cours " + extra;
+      titre = "Présences en commissions et participation en hémicycle au cours " + extra;
+    else titre = "Participation en " + type.replace('commission', 'commissions') + " au cours " + extra;
 
     divid = '#' + divid;
     $(divid).html(
@@ -81,8 +81,8 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
   '<table>' +
     '<tr><td><svg><rect class="participations"/></svg>Participations</td><td class="tooltip_participations"></td></tr>' +
     (questions ? '<tr><td><svg><rect class="questions"/></svg>Questions orales</td><td class="tooltip_questions"></td></tr>' : '') +
-    '<tr><td><svg><rect class="presence"/></svg>Présences '+(type === 'commission' ? 'enregistr' : 'relev')+'ées</td><td class="tooltip_presences"></td></tr>' +
-    '<tr><td><svg><rect class="mediane"/></svg>Présence médiane</td><td class="tooltip_mediane"></td></tr>' +
+    '<tr><td><svg><rect class="presence"/></svg>Présences '+(type === 'commission' ? 'enregistr' : 'détect')+'ées</td><td class="tooltip_presences"></td></tr>' +
+    '<tr><td><svg><rect class="mediane"/></svg>Médiane des députés</td><td class="tooltip_mediane"></td></tr>' +
   '</table>' +
   '<div class="banner_vacances">' +
     '<br/>Vacances parlementaires' +

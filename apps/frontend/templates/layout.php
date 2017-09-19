@@ -1,24 +1,12 @@
-<?php $style = 'xneth'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="fr" lang="fr">
-  <head>
-    <?php include_http_metas() ?>
-    <?php include_metas() ?>
-
-<!-- Facebook metas -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="NosDéputés.fr - Regards Citoyens" />
-    <meta property="og:site_name" content="NosDéputés.fr" />
-    <meta property="og:description" content="Observatoire citoyen de l'activité parlementaire à l'Assemblée nationale" />
-    <meta property="og:url" content="https://www.NosDéputés.fr" />
-    <meta property="og:locale" content="fr_FR" />
-    <meta property="og:image" content="https://www.nosdeputes.fr/images/xneth/bouton_logo.png" />
-    <meta property="og:image:type" content="image/png" />
-
-    <?php include_title() ?>
-<?php
-    $rss = $sf_request->getParameter('rss');
+  <head><?php
+$style = 'xneth';
+include_http_metas();
+include_metas();
+include_title();
+$rss = $sf_request->getParameter('rss');
 if ($rss) {
   foreach($rss as $r) {
     echo '<link rel="alternate" type="application/rss+xml" title="'.$r['title'].'" href="'.url_for($r['link']).'"/>';
@@ -108,8 +96,9 @@ $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
           <div id="sous_menu_1" style="display:<?php if ($menu_depute) echo 'block'; else echo 'none'; ?>">
           <div class="elements_sous_menu">
             <ul>
-              <li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@list_parlementaires'); ?>">Tous les députés</a> <strong>|</strong></li>
               <li><a href="<?php echo url_for('@list_parlementaires_circo'); ?>">Par circonscription</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@list_organismes'); ?>">Par organisme</a> <strong>|</strong></li>
               <li><a href="<?php echo url_for('@parlementaires_tags'); ?>">Par mots clés</a> <strong>|</strong></li>
               <li><a href="<?php echo url_for('@top_global'); ?>">Synthèse</a> <strong>|</strong></li>
               <li><a href="<?php echo url_for('@parlementaire_random'); ?>">Au hasard</a></li>

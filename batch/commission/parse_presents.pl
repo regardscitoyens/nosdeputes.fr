@@ -184,15 +184,17 @@ foreach $line (split /\n/, $string)
 	$line =~ s/&[^;]*;/ /g;
 	$line =~ s/\s+et\s+/, /gi;
 	$line =~ s/\.$//;
-	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion)\W+//) {
+	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+//) {
         if ($line !~ /^\s*$/) {
             push @presents, split /, /, $line; #/
 	    }
     }
     }
     $line =~ s/<\/?a[^>]*>//ig;
-    if ($line =~ /[>\|\/](Membres? présents? ou excusés?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/) {
+    if ($line =~ /[>\|\/](Membres? présents? ou excusés?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/ || $line =~ /^\s*Députés\s*$/) {
         $present = 1;
+    } elsif ($line =~ /^\s*Sénateurs\s*$/) {
+        $present = 0;
     }
 }
 checkout();

@@ -1,5 +1,5 @@
 all:
-  lifetime: 86400
-  enabled: false
+  lifetime: 28800
+  enabled: true
 show:
   enabled: false

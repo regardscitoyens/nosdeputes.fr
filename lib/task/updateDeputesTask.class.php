@@ -25,9 +25,9 @@ class updateDeputesTask extends sfBaseTask
     $dir = dirname(__FILE__).'/../../batch/depute/json/';
     $manager = new sfDatabaseManager($this->configuration);
 
-    if (sfConfig::get('app_legislature') > 13)
-      $villes = json_decode(file_get_contents($dir.'../static/villes_2012.json'));
-    else $villes = json_decode(file_get_contents($dir.'../static/villes_2007.json'));
+    if (sfConfig::get('app_legislature') == 13)
+      $villes = json_decode(file_get_contents($dir.'../static/villes_2007.json'));
+    else $villes = json_decode(file_get_contents($dir.'../static/villes_2012.json'));
 
     $sites = array();
     $row = 0;
@@ -38,18 +38,6 @@ class updateDeputesTask extends sfBaseTask
         if ($row == 1) continue;
         $sites[$data[18]] = explode("|", $data[16]);
         $sites[$data[18]][] = "https://twitter.com/".$data[0];
-      }
-      fclose($handle);
-    }
-
-    $collabs = array();
-    $row = 0;
-    if (($handle = fopen($dir."../collabs.csv", "r")) !== FALSE) {
-      fgetcsv($handle);
-      while (($data = fgetcsv($handle)) !== FALSE) {
-        $row++;
-        if ($row == 1) continue;
-        $collabs[$data[0]][] = $data[4];
       }
       fclose($handle);
     }
@@ -138,8 +126,8 @@ class updateDeputesTask extends sfBaseTask
               $parl->sites_web = $json->sites_web;
             else if ($parl->sites_web && !preg_match('/^a:/', $parl->sites_web))
               $parl->sites_web = array($parl->sites_web);
-            if (isset($collabs[$parl->nom]) && count($collabs[$parl->nom]))
-              $parl->collaborateurs = $collabs[$parl->nom];
+            if ($json->collabs)
+              $parl->collaborateurs = $json->collabs;
             if ($json->url_institution)
               $parl->url_an = $json->url_institution;
             if ($json->suppleant_de)

@@ -2,5 +2,4 @@ all:
   lifetime: 300
   enabled: true
 list:
-  lifetime: 86400
-  enabled: true 
+  lifetime: 28800

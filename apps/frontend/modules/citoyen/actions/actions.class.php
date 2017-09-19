@@ -44,12 +44,12 @@ class citoyenActions extends sfActions
     }
     $this->pager = Doctrine::getTable('Citoyen')->getPager($request, $query);
     $this->citoyens = $query->execute();
-    $this->getResponse()->setTitle($this->title." sur NosDéputés.fr");
     $this->comments = Doctrine_Query::create()
       ->select('count(distinct(citoyen_id)) as auteurs, count(distinct(id)) as comments')
       ->from('Commentaire')
       ->where('is_public = 1')
       ->fetchOne();
+    myTools::setPageTitle($this->title, $this->response);
   }
 
   public function executeNotauthorized(sfWebRequest $request)
@@ -73,8 +73,7 @@ class citoyenActions extends sfActions
     $this->forward404Unless($this->user);
     if (myTools::isLegislatureCloturee())
       $this->response->addMeta('robots', 'noindex,follow');
-    $response = $this->getResponse();
-    $response->setTitle('Profil de '.$this->user->login);
+    myTools::setPageTitle('Profil de '.$this->user->login, $this->response);
     $this->getUser()->setAttribute('token', md5(microtime(true) . mt_rand(0,10000)));
   }
 

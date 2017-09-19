@@ -50,6 +50,14 @@ class amendementActions extends sfActions
 
      $this->titreloi = Doctrine::getTable('TitreLoi')->findLightLoi($this->amendement->texteloi_id);
      $this->loi = Doctrine::getTable('Texteloi')->findLoi($this->amendement->texteloi_id);
+
+     $this->loititle = 'Texte de loi N° '.$this->amendement->texteloi_id;
+     if ($this->loi) $this->loititle = $this->loi->getTitre();
+     $this->titre1 = $this->amendement->getShortTitre(1);
+     $this->titre2 = "";
+     if ($this->section)
+       $this->$titre2 = $this->section->titre;
+     myTools::setPageTitle($this->loititle.' - '.$this->titre2.'  '.$this->titre1, $this->response);
   }
 
   public function executeParlementaire(sfWebRequest $request)
@@ -71,6 +79,7 @@ class amendementActions extends sfActions
       ->orderBy('a.date DESC, a.texteloi_id DESC, num DESC');
 
     $request->setParameter('rss', array(array('link' => '@parlementaire_amendements_rss?slug='.$this->parlementaire->slug, 'title'=>'Les derniers amendements de '.$this->parlementaire->nom.' en RSS')));
+    myTools::setPageTitle('Les amendements de '.$this->parlementaire->nom, $this->response);
   }
 
   public function executeParlementaireSection(sfWebRequest $request)
@@ -99,6 +108,10 @@ class amendementActions extends sfActions
     if (count($lois))
       $this->qamendements->andWhereIn('a.texteloi_id', $lois);
     else $this->qamendements->andWhere('a.sort = "FALSE"');
+    if ($this->section->getSection())
+      $this->surtitre = $this->section->getSection()->getTitre()." (".$this->section->titre.')';
+    else $this->surtitre = $this->section->titre;
+    myTools::setPageTitle($this->surtitre.' - Les amendements de '.$this->parlementaire->nom, $this->response);
   }
 
   public function executeSearch(sfWebRequest $request)
@@ -153,7 +166,6 @@ class amendementActions extends sfActions
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
     } else $request->setParameter('rss', array(array('link' => '@search_amendements_mots_rss?search='.$this->mots, 'title'=>'Les derniers amendements sur '.$this->mots.' en RSS')));
-
   }
 
   public function executeFind(sfWebRequest $request)

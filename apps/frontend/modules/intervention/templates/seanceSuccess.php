@@ -5,11 +5,10 @@ if ($seance->type == 'commission') :
 $nomseance = 'réunion';
 ?>
 <h1><?php echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); ?></h1>
-<h1><?php echo $seance->getTitre(); ?></h1>
-<?php $sf_response->setTitle($orga->getNom().' : '.$seance->getTitre()); ?>
-<?php $plot = 'seance_com_'; else :?>
-<h1><?php echo $seance->getTitre(0); $sf_response->setTitle($seance->getTitre(0).' : NosDeputes.fr'); ?></h1>
-<?php $plot = 'seance_hemi_'; endif; ?>
+<h1><?php echo $seance->getTitre(); $plot = 'seance_com_'; ?></h1>
+<?php else : ?>
+<h1><?php echo $seance->getTitre(0); $plot = 'seance_hemi_'; ?></h1>
+<?php endif; ?>
 <div class="resume">
 <h2>Résumé de la <?php echo $nomseance; ?></h2>
 <?php if (count($tags)) { ?>
@@ -111,11 +110,16 @@ if ($intervention->section_id && !$sections[$intervention->section_id]->titre) {
       echo '</div>';
     } else {
       $didascalie = 1;
+      $didascalietitre = 0;
+      $comparableinter = trim(strtolower(preg_replace('/<[^>]+>/i', '', $intervention->intervention)));
+      if (($intervention->section_id && $comparableinter === trim(strtolower($sections[$intervention->section_id]->titre))) ||
+          preg_match('/^(suspension|reprise|rappels? au)/', $comparableinter))
+        $didascalietitre = 1;
     } ?>
 <?php
   if (!($didascalie && $titre != 0)) { ?>
     <div class="texte_intervention">
-    <?php if ($didascalie) echo '<div class="didascalie">'; ?>
+    <?php if ($didascalie) echo '<div class="didascalie'.($didascalietitre ? "Titre" : "").'">'; ?>
     <?php echo myTools::escape_blanks($intervention->getIntervention(array('linkify_amendements'=>url_for('@find_amendements_by_loi_and_numero?loi=LLL&numero=AAA')))); ?>
     <?php if ($didascalie) echo '</div>'; ?>
     </div>
@@ -142,7 +146,8 @@ $('#'+linkId+' a').click();
 };
 function highlight_coms(linkIdNum, nbComs) {
   var offset_alinea = $('#com_link_'+linkIdNum+' a').parent().parent().offset();
-  $('body').after('<div class="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-8)+'px; left:'+(Math.round(offset_alinea.left)-50)+'px;"><a href="javascript:fetch_reload(\'com_link_'+linkIdNum+'\')">'+nbComs+'</a></div>');
+  if (offset_alinea)
+    $('body').after('<div class="coms" style="position:absolute; top:'+(Math.round(offset_alinea.top)-8)+'px; left:'+(Math.round(offset_alinea.left)-50)+'px;"><a href="javascript:fetch_reload(\'com_link_'+linkIdNum+'\')">'+nbComs+'</a></div>');
 }
 nbCommentairesCB = function(html){
   ids = eval('(' +html+')');

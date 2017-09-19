@@ -1,8 +1,8 @@
 #!/bin/bash
 
-if [ ! -d html ] ; then mkdir html; fi
-if [ ! -d out ] ; then mkdir out; fi
 source ../../bin/db.inc
+
+mkdir -p html out loaded
 
 #SCRIPT=download_via_recherche.pl
 SCRIPT=download_hemicycle.pl

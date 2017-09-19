@@ -22,7 +22,7 @@ class sectionActions extends sfActions
     if (myTools::isLegislatureCloturee() && $this->parlementaire->url_nouveau_cpc)
       $this->response->addMeta('robots', 'noindex,follow');
     $this->titre = 'Dossiers parlementaires';
-    $this->response->setTitle($this->titre.' de '.$this->parlementaire->nom.' - NosDéputés.fr');
+    myTools::setPageTitle($this->titre.' de '.$this->parlementaire->nom, $this->response);
   }
 
   public function executeParlementaireSection(sfWebRequest $request)
@@ -42,7 +42,12 @@ class sectionActions extends sfActions
       ->andWhere('(s.section_id = ? OR s.id = ?)', array($this->section->id, $this->section->id))
       ->andWhere('i.nb_mots > 20')
       ->orderBy('i.date DESC, i.timestamp ASC');
+    if ($this->section->getSection())
+      $this->surtitre = $this->section->getSection()->getTitre().' ('.$this->section->titre.')';
+    else $this->surtitre = $this->section->titre;
+    myTools::setPageTitle('Les interventions de '.$this->parlementaire->nom.' : '.$this->surtitre, $this->response);
   }
+
   public function executeShow(sfWebRequest $request)
   {
     $secid = $request->getParameter('id');
@@ -65,7 +70,7 @@ class sectionActions extends sfActions
     $this->docs = array();
     if ($this->section->id_dossier_an || $lois) {
       $qtextes = Doctrine_Query::create()
-        ->select('t.id, t.type, t.type_details, t.titre, t.signataires, t.nb_commentaires')
+        ->select('t.id, t.numero, t.type, t.type_details, t.titre, t.signataires, t.nb_commentaires')
         ->from('Texteloi t')
         ->whereIn('t.numero', $lois);
       if ($this->section->id_dossier_an)
@@ -80,14 +85,13 @@ class sectionActions extends sfActions
         ->andWhere('t.leveltype = ?', 'loi')
         ->orderBy('t.texteloi_id')
         ->fetchArray();
-
       foreach ($textes as $texte)
-        $this->docs[$texte['id']] = $texte;
+        $this->docs[$texte['numero']] = $texte;
       foreach ($textes_loi as $texte)
         $this->docs[$texte['texteloi_id']] = $texte;
       foreach ($lois as $loi)
         if (!isset($this->docs["$loi"]))
-          $this->docs["$loi"] = 1;
+          $this->docs["$loi"] = $loi;
     }
 
     $interventions = array();
@@ -117,6 +121,7 @@ class sectionActions extends sfActions
     }
 
     $request->setParameter('rss', array(array('link' => '@section_rss_commentaires?id='.$this->section->id, 'title'=>'Les commentaires sur '.$this->section->titre)));
+    myTools::setPageTitle(($this->section->getSection() ? $this->section->getSection()->getTitre().' - ' : '').$this->section->titre, $this->response);
   }
 
   public function executeList(sfWebRequest $request)
@@ -138,7 +143,7 @@ class sectionActions extends sfActions
       $query->orderBy('s.titre');
       $this->titre = 'Les dossiers de l\'Assemblée dans l\'ordre alphabétique';
     } else $this->forward404();
-    $this->getResponse()->setTitle(str_replace('Assemblée', 'Assemblée nationale', $this->titre)." - NosDéputés.fr");
+    myTools::setPageTitle(str_replace('Assemblée', 'Assemblée nationale', $this->titre), $this->response);
     $this->sections = $query->execute();
 
   }

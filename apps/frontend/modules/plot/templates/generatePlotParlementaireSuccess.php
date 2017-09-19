@@ -161,7 +161,7 @@ if (preg_match("/^l/", $time)) {
     $pos_titre = 235;
     $duree = 'de toute la législature';
   } else {
-    $mois = min(12, floor((time() - strtotime(myTools::getDebutLegislature()) ) / (60*60*24*30)));
+    $mois = min(12, round((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30)));
     $duree = ($mois < 2 ? "du premier" : "des $mois ".($mois < 12 ? "prem" : "dern")."iers")." mois";
   }
   $shortduree = 'annee';
@@ -170,7 +170,7 @@ if (preg_match("/^l/", $time)) {
   $shortduree = $time;
 }
 if ($type === 'total') {
-  $Test->drawTitle($pos_titre,3 + 2*$font,"Participation globale au cours ".$duree." (hémicycle et commissions)",50,50,50,585);
+  $Test->drawTitle($pos_titre,3 + 2*$font,"Présences en commissions et participation en hémicycle au cours ".$duree,50,50,50,585);
   $titre = 'globale-'.$shortduree;
 } else {
   $titre = $type;

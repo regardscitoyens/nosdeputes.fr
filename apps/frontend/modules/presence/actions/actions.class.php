@@ -32,6 +32,10 @@ class presenceActions extends sfActions
     if ($this->type != "all")
       $query->andWhere('s.type = ?', $this->type);
     $this->presences = $query->execute();
+    $this->titre = "Présence en ";
+    if ($this->type == "all") $this->titre .= "hémicycle et commissions";
+    else $this->titre .= $this->type;
+    myTools::setPageTitle($this->titre." de ".$this->parlementaire->nom, $this->response);
   }
 
   public function executePreuve(sfWebRequest $request)
@@ -51,6 +55,8 @@ class presenceActions extends sfActions
       ->where('p.seance_id = ?', $seance_id)
       ->andWhere('p.parlementaire_id = ?', $this->parlementaire->id)
       ->execute();
+    $this->titre = 'Preuve de présence de '.$this->parlementaire->nom.' à la '.$this->seance->getTitre(1);
+    myTools::setPageTitle($this->titre, $this->response, false);
   }
 
   public function executeSeance(sfWebRequest $request)
@@ -62,7 +68,7 @@ class presenceActions extends sfActions
       ->leftJoin('s.Organisme')
       ->fetchOne();
     $this->forward404Unless($this->seance);
-    $this->intervenants = Doctrine::getTable('Presence')->createQuery('p')      
+    $this->intervenants = Doctrine::getTable('Presence')->createQuery('p')
       ->leftJoin('p.Parlementaire pa')
       ->leftJoin('p.Preuves pr')
       ->where('p.seance_id = ?', $seance_id)
@@ -77,5 +83,6 @@ class presenceActions extends sfActions
       ->groupBy('pa.id')
       ->orderBy('pa.nom_de_famille ASC')
       ->execute();
+    myTools::setPageTitle(($this->orga ? $this->orga->getNom() : "Hémicycle").' - Députés présents à la '.$this->seance->getTitre(1), $this->response);
   }
 }

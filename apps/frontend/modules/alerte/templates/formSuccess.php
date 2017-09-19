@@ -1,7 +1,6 @@
 <?php if ($submit == 'Créer')
   $titre = "Création d'une alerte e-mail";
-else $titre = "Modification d'une alerte e-mail";
-$sf_response->setTitle($titre); ?>
+else $titre = "Modification d'une alerte e-mail"; ?>
 <div class="boite_form large_boite_form">
   <div class="b_f_h"><div class="b_f_hg"></div><div class="b_f_hd"></div></div>
     <div class="b_f_cont">

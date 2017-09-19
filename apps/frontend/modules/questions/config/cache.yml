@@ -1,5 +1,7 @@
 all:
-   enabled: false
+   enabled: true
    lifetime: 86400
+show:
+   enabled: false
 _pagerQuestions:
    enabled: false

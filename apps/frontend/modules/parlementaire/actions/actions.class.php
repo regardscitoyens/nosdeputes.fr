@@ -16,11 +16,11 @@ class parlementaireActions extends sfActions
   }
 
   public function executeFaq(sfWebRequest $request) {
-    $this->response->setTitle('Questions fréquemment posées - NosDéputés.fr');
+    myTools::setPageTitle("Questions fréquemment posées", $this->response);
   }
 
   public function executeAssister(sfWebRequest $request) {
-    $this->response->setTitle('Assister aux débats publics de l\'Assemblée nationale - NosDéputés.fr');
+    myTools::setPageTitle("Assister aux débats publics de l'Assemblée nationale", $this->response);
   }
 
   public static function imagetograyscale($im)
@@ -147,10 +147,8 @@ class parlementaireActions extends sfActions
     $this->response->addMeta('parlementaire_id', 'd'.$this->parlementaire->id);
     $this->response->addMeta('parlementaire_id_url', str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).'id/'.'d'.$this->parlementaire->id);
     $this->response->addMeta('twitter:card', 'summary_large_image');
-    $this->response->addMeta('twitter:title', "Toute l'activité parlementaire de ".$this->parlementaire->nom.' à l\'Assemblée Nationale');
-    $this->response->addMeta('twitter:description', "NosDéputés.fr propose de découvrir ce que ".$this->parlementaire->nom." fait à l'Assemblée Nationale à travers l'exploitation des documents parlementaires");
+    $this->response->addMeta('twitter:description', "Retrouvez l'activité parlementaire de ".$this->parlementaire->nom.' à l\'Assemblée nationale');
     $this->response->addMeta('twitter:image', str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).$this->parlementaire->slug.'/preview');
-
 
     $this->commission_permanente = null;
     $this->main_fonction = null;
@@ -174,15 +172,20 @@ class parlementaireActions extends sfActions
   }
 
   public function executePreview(sfWebRequest $request) {
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
-    $this->forward404Unless($this->parlementaire);
-
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
     $this->setLayout(false);
 
-    $this->url  = sfConfig::get('app_manet_url') .'?url='. urlencode(str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).$this->parlementaire->slug);
+    $url = $request->getParameter('url');
+    if ($url2 = $request->getParameter('url2'))
+      $url .= "/$url2";
+    if ($url3 = $request->getParameter('url3'))
+      $url .= "/$url3";
+    if ($url4 = $request->getParameter('url4'))
+      $url .= "/$url4";
+    if ($url5 = $request->getParameter('url5'))
+      $url .= "/$url5";
+    $this->url  = sfConfig::get('app_manet_url') .'?url='. urlencode(str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).$url);
     $this->url .= "&format=jpg&clipRect=".urlencode("0,0,1060,555");
-
   }
 
   public function executeId(sfWebRequest $request)
@@ -223,6 +226,7 @@ class parlementaireActions extends sfActions
       ->where('p.fin_mandat IS NULL')
       ->orWhere('p.fin_mandat < p.debut_mandat')
       ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+    myTools::setPageTitle("Liste de tous les députés à l'Assemblée nationale", $this->response);
   }
 
   public function executeListProfession(sfWebRequest $request) {
@@ -255,6 +259,7 @@ class parlementaireActions extends sfActions
         ->addOrderBy('c.login');
       $this->citoyens = $query->execute();
     }
+    myTools::setPageTitle('Liste de tous les députés "'.$this->prof.'"', $this->response);
   }
 
   public function executeListGroupe(sfWebRequest $request) {
@@ -298,30 +303,42 @@ class parlementaireActions extends sfActions
     $query2->where('o.nom = ?', $nom);
     $this->orga = $query2->fetchOne();
     $this->forward404Unless($this->orga);
+    $this->title = $this->orga->getNom()." (".$this->orga->getSmallNomGroupe().")";
+    myTools::setPageTitle("Liste des députés du groupe ".$this->title, $this->response);
   }
 
   private function loadOrganismes() {
     $this->organisme_types = array (
-      'parlementaire' => 'Organismes parlementaires (commissions, délégations, missions...)',
       'groupe' => 'Groupes politiques',
-      'groupes' => "Groupes d'étude et d'amitié",
-      'extra' => 'Organismes extra-parlementaires'
+      'parlementaire' => 'Fonctions parlementaires (commissions, délégations, missions...)',
+      'extra' => 'Missions extra-parlementaires',
+      'groupes' => "Groupes d'étude et d'amitié"
     );
   }
 
   public function executeListOrganismes(sfWebRequest $request) {
     $this->loadOrganismes();
+    $this->title = "Liste des différents types d'organismes";
+    myTools::setPageTitle($this->title, $this->response);
   }
 
   public function executeListOrganismesType(sfWebRequest $request) {
-    $type = $request->getParameter('type');
-    $this->forward404Unless($type);
+    $this->type = $request->getParameter('type');
+    $this->forward404Unless($this->type);
     $this->loadOrganismes();
-    $query = Doctrine::getTable('Organisme')->createQuery('o')->select('o.nom, o.type, o.slug')->where('type = ?', $type);
-    $this->organismes = $query->execute();
-
-    $this->loadOrganismes();
-    $this->human_type = $this->organisme_types[$type];
+    $this->forward404Unless($this->organisme_types[$this->type]);
+    $this->organismes = Doctrine_Query::create()
+      ->select('o.nom, o.slug, count(distinct p.id) as membres, count(distinct s.id) as reunions')
+      ->from('Organisme o')
+      ->leftJoin('o.ParlementaireOrganismes po, po.Parlementaire p, o.Seances s')
+      ->where('o.type = ?', $this->type)
+      ->andWhere('p.fin_mandat IS NULL')
+      ->andWhere('po.fin_fonction IS NULL')
+      ->groupBy('o.id')
+      ->fetchArray();
+    $this->human_type = $this->organisme_types[$this->type];
+    $this->title = "Liste des ".$this->human_type;
+    myTools::setPageTitle($this->title, $this->response);
   }
 
   public function executeListOrganisme(sfWebRequest $request) {
@@ -397,6 +414,14 @@ class parlementaireActions extends sfActions
       $this->pagerRapports->setPage($pageR);
       $this->pagerRapports->init();
     }
+    if ($this->orga->type == 'extra')
+      $this->detailed_type = 'organisme extra-parlementaire composé';
+    else if ($this->orga->type == 'groupes')
+      $this->detailed_type = 'groupe composé';
+    else $this->detailed_type = (preg_match('/commission/i', $this->orga->getNom()) ? 'comm' : 'm').'ission parlementaire composée';
+    $this->detailed_type .= ' de '.$this->total.' député'.($this->total > 1 ? 's' : '');
+    $this->title = $this->orga->getNom();
+    myTools::setPageTitle($this->title." (".$this->detailed_type.")", $this->response);
   }
 
   public function executeTag(sfWebRequest $request) {
@@ -416,7 +441,7 @@ class parlementaireActions extends sfActions
         ->orderBy('nb DESC')
         ->fetchArray();
     }
-    $this->response->setTitle('Les parlementaires par mot-clé - NosDéputés.fr');
+    myTools::setPageTitle("Les mots-clés des débats de l'Assemblée nationale", $this->response);
   }
 
   public function executePlot(sfWebRequest $request)
@@ -437,6 +462,20 @@ class parlementaireActions extends sfActions
       ->where('p.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('s.session IS NOT NULL AND s.session <> ""')
       ->groupBy('s.session')->fetchArray();
+    $this->title = "Graphes d'activité parlementaire";
+    $this->fin = myTools::isFinLegislature();
+    if ($this->fin)
+      $this->check = 'legislature';
+    else {
+      $this->check = 'lastyear';
+      $mois = min(12, floor((time() - strtotime($this->parlementaire->debut_mandat) ) / (60*60*24*30)));
+      $this->mois = ($mois < 2 ? " premier" : "s $mois ".($mois < 12 ? "prem" : "dern")."iers");
+    }
+    if ($this->session == $this->check) {
+      if ($this->fin) $title = 'Sur toute la législature';
+      else $title = "Sur le".$this->mois." mois";
+    } else $title = 'Sur la session '.preg_replace('/^(\d{4})/', '\\1-', $this->session);
+    myTools::setPageTitle($this->title.' de '.$this->parlementaire->nom.' '.strtolower($title), $this->response);
   }
 
   public static function topSort($a, $b) {
@@ -522,6 +561,12 @@ class parlementaireActions extends sfActions
     if (($_GET['sort'] = $this->sort)) {
       usort($this->tops, 'parlementaireActions::topSort');
     }
+
+    $this->fin = myTools::isFinLegislature();
+    $this->fresh = myTools::isFreshLegislature();
+    if ($this->fresh) $this->subtitle = "depuis le début de la législature";     else if ($this->fin) $this->subtitle = "sur toute la législature";
+    else $this->subtitle = "sur les 12 derniers mois";
+    myTools::setPageTitle("Synthèse générale de l'activité parlementaire des députés ".$this->subtitle, $this->response);
   }
 
   public static function dateSort($a, $b) {
@@ -602,6 +647,7 @@ class parlementaireActions extends sfActions
     $this->feed = new sfRssFeed();
   }
   public function executeError404() {
+    $this->response->setTitle("Erreur 404 - Page introuvable - NosDéputés.fr");
   }
 
   private function searchDepute($search) {
@@ -624,11 +670,11 @@ class parlementaireActions extends sfActions
   }
 
   public function executeWidgetEditor(sfWebRequest $request) {
-    $this->response->setTitle("Intégrer NosDeputes.fr sur votre site");
     $this->depute = $this->searchDepute($request->getParameter('depute'));
     if (!$this->depute)
     $this->depute = Doctrine::getTable('Parlementaire')->createQuery('p')->where('fin_mandat IS NULL OR debut_mandat > fin_mandat')->orderBy('rand()')->limit(1)->fetchOne();
-
+    $this->title = "Afficher des extraits de NosDéputés.fr sur votre site";
+    myTools::setPageTitle($this->title, $this->response);
   }
 
   public function executeWidget(sfWebRequest $request) {

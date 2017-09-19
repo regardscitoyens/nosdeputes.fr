@@ -1,11 +1,7 @@
 <h1><?php if ($orga = $seance->getOrganisme()) echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); else echo "Hémicycle"?></h1>
 <h2>Députés présents à la <?php echo link_to($seance->getTitre(1), '@interventions_seance?seance='.$seance->id); ?>&nbsp;:</h2>
 <div class="plot_seance">
-<?php if (isset($orga)) $titre = $orga->getNom();
-else $titre = "Hémicycle";
-$titre = $titre.' - Députés présents à la '.$seance->getTitre(1);
-$sf_response->setTitle($titre);
-if ($seance->type == 'commission') 
+<?php if ($seance->type == 'commission')
   echo include_component('plot', 'groupes', array('plot' => 'seance_com_'.$seance->id, 'nolink' => true)); ?>
 </div>
   <div class="photos"><p>
@@ -26,7 +22,7 @@ if ($nb > 0) {
   foreach($intervenants as $presence) {
     $p = $presence->getParlementaire();
     $interv[$p->id] = 1;
-    $nbpreuves = $presence->getNbPreuves(); 
+    $nbpreuves = $presence->getNbPreuves();
     echo '<li>'.link_to($p->nom, '@parlementaire?slug='.$p->getSlug()).', '.$p->getLongStatut(1).'<em><a href="'.url_for('@preuve_presence_seance?seance='.$seance->id.'&slug='.$p->slug).'"> ('; if ($nbpreuves > 1) echo "$nbpreuves preuves"; else echo "1 preuve"; echo ')</a></em></li>';
   }
   echo '</ul></li>';
@@ -43,7 +39,7 @@ if ($nb2 > 0) {
   foreach($presents as $presence) {
     $p = $presence->getParlementaire();
     if (isset($interv[$p->id])) continue;
-    $nbpreuves = $presence->getNbPreuves();  
+    $nbpreuves = $presence->getNbPreuves();
     echo '<li>'.link_to($p->nom, '@parlementaire?slug='.$p->getSlug()).', '.$p->getLongStatut(1).'<em><a href="'.url_for('@preuve_presence_seance?seance='.$seance->id.'&slug='.$p->slug).'">'; if ($nbpreuves != 0) {echo ' ('; if ($nbpreuves > 1) echo "$nbpreuves preuves"; else echo "1 preuve"; echo ')</a></em></li>'; }
   }
   echo '</ul></li>';

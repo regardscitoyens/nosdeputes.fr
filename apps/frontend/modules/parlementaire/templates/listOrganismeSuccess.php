@@ -5,13 +5,11 @@ if (count(array_keys($parlementaires))) {
   echo '</div>';
 } ?>
 <div class="organisme_header">
-  <h3><a href="<?php echo url_for('@list_organismes_type?type='.$orga->type); ?>"><?php echo $human_type; ?> :</a></h3>
-  <h1><?php echo $orga->getNom(); $sf_response->setTitle($orga->getNom()); ?></h1>
+  <h4><a href="<?php echo url_for('@list_organismes_type?type='.$orga->type); ?>"><?php echo $human_type; ?></a></h4>
+  <h1><?php echo $orga->getNom(); ?></h1>
 <?php
 if ($total && $pagerSeances->getPage() == 1 && ($pagerRapports->getPage() == 1)) {
-  if ($orga->type == 'extra')
-    echo '<h2>Organisme extra-parlementaire composé de '.$total.' député'.($total > 1 ? 's' : '').'</h2>';
-  else echo '<h2>'.(preg_match('/commission/i', $orga->getNom()) ? 'Comm' : 'M').'ission parlementaire composée de '.$total.' député'.($total > 1 ? 's' : '').'</h2>';
+  echo '<h2>'.$detailed_type.'</h2>';
 }
  ?>
 </div>

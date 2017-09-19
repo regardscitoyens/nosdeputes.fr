@@ -15,6 +15,7 @@ class loadCommissionTask extends sfBaseTask
   protected function execute($arguments = array(), $options = array())
   {
     $dir = dirname(__FILE__).'/../../batch/commission/out/';
+    $backupdir = dirname(__FILE__).'/../../batch/commission/loaded/';
     $manager = new sfDatabaseManager($this->configuration);
 
     $verbose = $options['verbose'];
@@ -74,7 +75,7 @@ class loadCommissionTask extends sfBaseTask
             $intervention->save();
             $intervention->free();
           }
-          unlink($dir.$file);
+          rename($dir.$file, $backupdir.$file);
         }
     }
   }
