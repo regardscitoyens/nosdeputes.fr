@@ -8,7 +8,7 @@
 <?php if ($parlementaire->sexe == 'H') : ?>
 <h3 style="color:red; margin: 0px"><a href="<?php echo $parlementaire->url_nouveau_cpc; ?>">Ce député a été réélu, consultez sa fiche pour la <?php echo sfConfig::get('app_legislature')+1; ?><sup>ème</sup> législature</a></h3>
 <?php else: ?>
-<h3 style="color:red; margin: 0px"><a href="<?php echo $parlementaire->url_nouveau_cpc; ?>">Cette députée a été réélue, consultez sa fiche pour la <?php echo sfConfig::get('app_legislature')+1; ?><sup>ième</sup> législature</a></h3>
+<h3 style="color:red; margin: 0px"><a href="<?php echo $parlementaire->url_nouveau_cpc; ?>">Cette députée a été réélue, consultez sa fiche pour la <?php echo sfConfig::get('app_legislature')+1; ?><sup>ème</sup> législature</a></h3>
 <?php endif; ?>
 <?php endif; ?>
     </div>
