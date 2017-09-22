@@ -18,7 +18,7 @@
    inkscape:export-xdpi="2.03"
    inkscape:export-ydpi="2.03"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="ico_inter_hem_long_gris.svg">
+   sodipodi:docname="ico_inter_hem_long_rouge.svg">
   <defs
      id="defs2" />
   <sodipodi:namedview
@@ -50,7 +50,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
