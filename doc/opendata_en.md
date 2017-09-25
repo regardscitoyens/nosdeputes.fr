@@ -1,6 +1,6 @@
-# Données parlementaires en OpenData
+# Parliamentary Open Data
 
-[See this documentation in English](opendata_en.md).
+[Voir cette documentation en Français](opendata.md).
 
 Cette page présente une liste non exhaustive des contenus et données réutilisables de [NosDéputés.fr](https://NosDéputés.fr) et [NosSénateurs.fr](https://NosSénateurs.fr) ainsi que diverses sources de données parlementaires utiles.
 

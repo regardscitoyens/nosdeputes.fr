@@ -1,13 +1,13 @@
-# API de NosDéputés.fr & NosSénateurs.fr
+# NosDéputés.fr & NosSénateurs.fr API
 
-[See the API documentation in English](api_en.md)
+[Voir la documentation de l'API en Français](api.md)
 
-Une API a été développée pour offrir un accès Open Data simplifié aux données de NosDéputés.fr et NosSénateurs.fr aux formats XML, JSON et CSV.
+An API was developed to allow simplified Open Data access to NosDeputés.fr & NosSénateurs.fr data, in XML, JSON and CSV formats.
 
 
-## Sommaire
+## Table of contents
 
-- [Explications](#explications)
+- [Background](#background)
 - [Liste des parlementaires](#liste-des-parlementaires)
 - [Liste des organismes (commissions, groupes, etc)](#liste-des-organismes-commissions-groupes-etc)
 - [Détails de chaque parlementaire](#détails-de-chaque-parlementaire)
@@ -20,22 +20,22 @@ Une API a été développée pour offrir un accès Open Data simplifié aux donn
 - [Conditions d'utilisation](#conditions-dutilisation)
 
 
-## Explications
+## Background
 
-- **Format :** La plupart des exemples fournis ci-dessous sont donnés au format XML pour permettre plus de lisibilité dans le navigateur web. Veuillez remplacer `xml` en `json` ou `csv` pour accéder aux autres formats
+- **Format:** Most examples below use the XML format to allow a better readability on web browser.  Just replace `xml` with `json` or `csv` in the URL to access other formats.
 
-- **Encoding :** les données sont proposées en `utf-8`. Si vous vous retrouvez face à des caractères kabbalistiques, cela signifie qu'il vous faut régler l'encodage dans les options du logiciel avec lequel vous manipulez les données. Si votre tableur ne vous permet de spécifier l'encodage, vous pouvez rajouter l'option `?withBOM=true` à la fin des adresses des fichiers CSV que vous cherchez à télécharger.
+- **Encoding:** data are published in `utf-8`.  If you end up seeing weird characters, this probably means you have to set the encoding for the software you use to handle data.  If your spreadsheet software doesn't have such an option, you can try adding `?withBOM=true` to the end of CSV file URLs before downloading them.
 
-- **Anciennes législatures Assemblée :** l'accès aux données de NosDéputés.fr pour les précédentes législatures est accessible de manière permanente en remplaçant www.nosdeputes.fr par les adresses suivantes :
+- **Previous constituencies for Assemblée nationale:** You can access data for previous constituencies by replacing `www.nosdeputes.fr` in the URL by one of the following:
 
-  - pour la 13ème législature : 2007-2012.nosdeputes.fr
-  - pour la 14ème législature : 2012-2017.nosdeputes.fr
+  - for the 13th constituency: 2007-2012.nosdeputes.fr
+  - for the 14th constituency: 2012-2017.nosdeputes.fr
 
-- **Sénat :** les exemples donnés ci-dessous se réfèrent à NosDéputés.fr, mais vous pouvez utiliser l'API de NosSénateurs.fr suivant les mêmes schémas en remplaçant nosdeputes.fr par nossenateurs.fr dans chaque adresse.
+- **Senate data:** examples below refer to NosDéputés.fr but you can use the API for NosSénateurs.fr the same way by replacing `nosdeputes.fr` with `nossenateurs.fr` in each URL.
 
-- **SSL :** les exemples fournis utilisent les adresses sécurisées HTTPS de nos sites, mais vous pouvez remplacer https par http lorsque vous le souhaitez.
+- **SSL:** examples below use secure HTTPS URLs for our sites, but you can also replace `https` with `http` in the URLs if you need to.
 
-L'ensemble des données de ces différents sites est par ailleurs mis à disposition en bloc sous la forme de dumps SQL. Retrouvez les détails ainsi que d'autres [données parlementaires ici](opendata.md).
+All the data for those website is also made available in batch as SQL data dumps.  You can find more information and additional [parliamentary data here](opendata_en.md).
 
 
 ## Liste des parlementaires
