@@ -137,7 +137,13 @@ if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([
 sub comparable {
     $origstr = shift;
     $origstr = lc($origstr);
-    $origstr =~ s/[^a-z]//g;
+    $origstr =~ s/(à|â|ä)/a/g;
+    $origstr =~ s/(é|è|ê|ë)/e/g;
+    $origstr =~ s/(î|ï)/i/g;
+    $origstr =~ s/(ô|ö)/o/g;
+    $origstr =~ s/(ù|û|ü)/u/g;
+    $origstr =~ s/ç/c/g;
+    $origstr =~ s/[^a-z]+/ /g;
     return $origstr;
 }
 
@@ -190,8 +196,7 @@ sub setFonction {
     $fonction =~ s/^(.*), \1$/\1/;
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
-    my $kfonction = lc($fonction);
-    $kfonction =~ s/[^a-zéàè]+/ /gi;
+    my $kfonction = comparable($fonction);
     if ($fonction2inter{$kfonction} && !$intervenant) {
         $intervenant = $fonction2inter{$kfonction};
         return $intervenant;
@@ -199,13 +204,12 @@ sub setFonction {
     $fonction2inter{$kfonction} = $intervenant;
     #print "TEST $kfonction -> $intervenant\n";
     if ($fonction =~ /(ministre déléguée?).*(chargé.*$)/i) {
-        $kfonction = "$1 $2";
-        $kfonction =~ s/[^a-zéàè]+/ /gi;
+        $kfonction = comparable("$1 $2");
         $fonction2inter{$kfonction} = $intervenant;
     } elsif ($fonction =~ /[,\s]*suppléant[^,]*,\s*/i) {
         $kfonction = $fonction;
         $kfonction =~ s/[,\s]*suppléant[^,]*,\s*//i;
-        $kfonction =~ s/[^a-zéàè]+/ /gi;
+        $kfonction = comparable($kfonction);
         $fonction2inter{$kfonction} = $intervenant;
     }
     #print "$fonction ($kfonction)  => $intervenant-".$inter2fonction{$intervenant}."\n";
@@ -279,15 +283,15 @@ sub setIntervenant {
 	    }
         }
     }
-	$conv = $fonction2inter{$intervenant};
+    $kinterv = comparable($intervenant);
+	$conv = $fonction2inter{$kinterv};
     $maybe_inter = "";
 	#print "TEST conv: '$conv' '$intervenant'\n";
 	if ($conv) {
 	    $intervenant = $conv;
 	}else {
 	    $test = lc($intervenant);
-        $ktest = $test;
-	    $ktest =~ s/[^a-zéàè]+/ /gi;
+        $ktest = comparable($test);
 	    foreach $fonction (keys %fonction2inter) { if ($fonction2inter{$fonction}) {
 		if ($fonction =~ /$ktest/i) {
             if ($fonction !~ /délégué/i || $test =~ /délégué/i) {
@@ -304,12 +308,12 @@ sub setIntervenant {
         }
 	    if (!$inter) {
 		foreach $fonction (keys %fonction2inter) { if ($fonction2inter{$fonction}) {
-            $kfonction = lc($fonction);
+            $kfonction = comparable($fonction);
             $kfonction =~ s/ +/.+/g;
 		    if ($test =~ /^$kfonction/i) {
 			$inter = $fonction2inter{$fonction};
 			last;
-		    }
+            }
 		} }
 	    }
 	    if ($inter) {
