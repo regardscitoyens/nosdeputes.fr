@@ -273,7 +273,7 @@ sub setIntervenant {
 	if ($intervenant =~ /((([pP]résident|[rR]apporteur[a-zé\s]+)[\sest,]*)+)([A-ZÉÈÊÀÂÔÙÛÎÏÇ].*)/) {
         $tmpint = $4;
         $tmpfct = $1;
-        if ($tmpint != "éral") {
+        if ($tmpint !~ /éral/i) {
         if ($tmpint =~ /commission/i || $tmpfct =~ /commission d['esla\s]+$/i) {
             $tmint = setFonction("$tmpfct $tmpint");
             if ($tmint) {
