@@ -319,7 +319,18 @@ sub setIntervenant {
 	    }
 	    if ($inter) {
 		$intervenant = $inter;
-	    }
+	    } else {
+
+        $shorttest = substr($test, 0, 50);
+		foreach $fonction (keys %fonction2inter) { if ($fonction2inter{$fonction}) {
+            $kfonction = substr(comparable($fonction), 0, 50);
+            $kfonction =~ s/ +/.+/g;
+		    if ($shorttest =~ /^$kfonction/i) {
+			$intervenant = $fonction2inter{$fonction};
+			last;
+            }
+		} }
+        }
 	}
     }
     return $intervenant;
