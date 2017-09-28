@@ -17,7 +17,7 @@ else if (isset($lois)) {
 foreach ($lois as $loi) echo link_to($loi, '@document?id='.$loi).' ('.myTools::getLiasseLoiAN($loi).') '; } ?></p>
 </div>
 <?php if ($pager->haveToPaginate()) {
-  $uri = $sf_request->getUri();
+  $uri = sfContext::getInstance()->getRouting()->getCurrentInternalUri();
   $uri = preg_replace('/page=\d+\&?/', '', $uri);
   if (!preg_match('/[\&\?]$/', $uri)) {
     if (preg_match('/\?/', $uri))

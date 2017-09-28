@@ -10,7 +10,7 @@ if ($results > 1)
 echo '<p>'.$results.'</p>';
 ?>
 <?php if ($pager->haveToPaginate()) {
- $uri = $sf_request->getUri();
+  $uri = sfContext::getInstance()->getRouting()->getCurrentInternalUri();
   $uri = preg_replace('/page=\d+\&?/', '', $uri);
   if (!preg_match('/[\&\?]$/', $uri)) {
     if (preg_match('/\?/', $uri))
