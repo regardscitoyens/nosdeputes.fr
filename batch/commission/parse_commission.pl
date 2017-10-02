@@ -317,21 +317,26 @@ sub setIntervenant {
             }
 		} }
 	    }
-	    if ($inter) {
-		$intervenant = $inter;
-	    } else {
-
-        $shorttest = substr($test, 0, 50);
-		foreach $fonction (keys %fonction2inter) { if ($fonction2inter{$fonction}) {
-            $kfonction = substr(comparable($fonction), 0, 50);
-            $kfonction =~ s/ +/.+/g;
-		    if ($shorttest =~ /^$kfonction/i) {
-			$intervenant = $fonction2inter{$fonction};
-			last;
+        if ($inter) {
+          $intervenant = $inter;
+        } else {
+          $len = 50;
+          while ($len > 10) {
+            foreach $fonction (keys %fonction2inter) {
+              if ($fonction2inter{$fonction}) {
+                $kfonction = substr(comparable($fonction), 0, $len);
+                $kfonction =~ s/ +/.+/g;
+                if ($ktest =~ /^$kfonction/i) {
+                  $intervenant = $fonction2inter{$fonction};
+                  $len = 0;
+                  last;
+                }
+              }
             }
-		} }
+            $len -= 2;
+          }
         }
-	}
+      }
     }
     return $intervenant;
 }
@@ -597,6 +602,9 @@ foreach $line (split /\n/, $string)
                 checkout();
                 $intervenant = setIntervenant($tmpi);
             }
+        } elsif ($line =~ s/^\s*(M(mes?|\.)\s+[A-ZÉ].*?), ((secrétaire|ministre|rapporteur|président).*?)\s*\.\s*//) {
+            checkout();
+            $intervenant = setFonction($3, $1);
 	    }elsif (!$majIntervenant) {
             if ($line =~ s/^\s*(M(mes?|[e\.])\s[A-Z][^\s\,]+\s*([A-Z][^\s\,]+\s*|de\s*){2,})// ) {
                 $orig = $1;
