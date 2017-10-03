@@ -13,7 +13,6 @@ for file in `ls html`; do
   fileout=$(echo $file | sed 's/html/json/' | sed 's/\.asp/\.xml/')
   perl cut_amdmt.pl html/$file > json/$fileout
   if test -e loaded/$fileout && ! diff {json,loaded}/$fileout | grep . > /dev/null; then
-    echo removing already loaded $fileout
     rm -f json/$fileout
   fi
 done
