@@ -2,17 +2,19 @@
 
 . ../../bin/db.inc
 
-if [ ! -d html ] ; then mkdir html; fi
-if [ ! -d json ] ; then mkdir json; fi
+mkdir -p html json loaded
+rm -f html/*
 
 echo 'SELECT source FROM amendement WHERE sort LIKE "Ind%" AND date > DATE_SUB(CURDATE() , INTERVAL 1 YEAR)' | mysql $MYSQLID $DBNAME | grep -v source > liste_sort_indefini.txt
 
-rm -f html/*
-
 perl download_amendements.pl $LEGISLATURE > /tmp/download_amendements.log
 
-for file in `ls html`; do 
-	fileout=$(echo $file | sed 's/html/json/' | sed 's/\.asp/\.xml/')
-	perl cut_amdmt.pl html/$file > json/$fileout
-done;
+for file in `ls html`; do
+  fileout=$(echo $file | sed 's/html/json/' | sed 's/\.asp/\.xml/')
+  perl cut_amdmt.pl html/$file > json/$fileout
+  if test -e loaded/$fileout && ! diff {json,loaded}/$fileout | grep . > /dev/null; then
+    echo removing already loaded $fileout
+    rm -f json/$fileout
+  fi
+done
 
