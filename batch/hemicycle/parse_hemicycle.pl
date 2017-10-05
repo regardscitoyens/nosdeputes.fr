@@ -41,6 +41,7 @@ $string =~ s/<\/i>(\s*)\)/)<\/i>\1/ig;
 $string =~ s/(<i>\(Applaudissement)<\/i>s\s+([^<)]+)/\1s)<\/i> \2/ig;
 $string =~ s/(\(([^)]*?amendement[^)]*?(adopt|rejet)|Nouveaux|Applaudissement|Exclamation|Vif|Vive|Quelque|M..?mes? mouve|(Sou)?Rires|[^)]*?bancs d[esu]+ groupe)[^)]*\))/<i>\1<\/i>/ig;
 $string =~ s/(<\/?i>)([–,\.\s]*)\1/\1\2/ig;
+$string =~ s/(<\/?i>)\s*\.\s*/. \1/ig;
 $string =~ s/<\/i>\s*<i>\s*\(\s*/<\/i> <i>(/ig;
 $string =~ s/\)((,|\.|…|!|\?)\s*)<\/i>/)<\/i>\1/ig;
 $string =~ s/\s*(<i>\s*\([^\)]+\)[\s\.]*<\/i>|\(<i>[^\)]+?<\/i>\))((,|\s*[…–:;!?])+\s*[^<\wàâéèêëïîôöùûü«]*)?\s*/$2<\/p>\n<p>$1<\/p>\n<p>/ig;
