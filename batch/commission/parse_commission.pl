@@ -213,7 +213,7 @@ sub setFonction {
         $fonction2inter{$kfonction} = $intervenant;
     }
     #print "$fonction ($kfonction)  => $intervenant-".$inter2fonction{$intervenant}."\n";
-    if (!$inter2fonction{$intervenant} || length($inter2fonction{$intervenant}) < length($fonction)) {
+    if (!$inter2fonction{$intervenant} || length($inter2fonction{$intervenant}) < length($fonction) || ($inter2fonction{$intervenant} =~ /président/i && $fonction !~ /président/i) || ($inter2fonction{$intervenant} =~ /rapporteur/i && $fonction !~ /rapporteur/i)) {
 	$inter2fonction{$intervenant} = $fonction;
     }
     if ($intervenant =~ / et / && $kfonction =~ s/s$//) {
@@ -405,10 +405,11 @@ foreach $line (split /\n/, $string)
     $line =~ s/residen/résiden/ig;
     if ($line =~ /<h[1-9]+/i || $line =~ /"présidence"/ || $line =~ /Présidence de/) {
       if ($line =~ /pr..?sidence\s+de\s+(M[^<\,]+?)[<,]\s*(pr..?sident d'..?ge)?/i && $line !~ /sarkozy/i) {
+        checkout();
         $prez = $1;
         $age = lc($2);
         $prez =~ s/\s*pr..?sident[es\s]*$//i;
-#       print "Présidence de $prez\n";
+       #print STDERR "Présidence de $prez\n";
         $fct = "président";
         if ($age) {
           $fct = $age;
