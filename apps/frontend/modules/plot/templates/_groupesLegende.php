@@ -1,7 +1,7 @@
 <p class="legende">
 <?php $txt_l = 0;
 foreach (array_reverse(myTools::getGroupesInfosOrder()) as $gpe) {
-  if ($txt_l > 75) {
+  if ($txt_l > 60) {
     echo '<br/>';
     $txt_l = 0;
   }
