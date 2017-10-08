@@ -80,3 +80,5 @@ find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/uc.html");
 find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/rdse.html");
 find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/crc.html");
 find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/ni.html");
+find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/lrem.html");
+find_senateurs("http://www.senat.fr/anciens-senateurs-5eme-republique/rtli.html");

@@ -35,12 +35,12 @@ $senateur{'Nom'} =~ s/\s+$//;
 $senateur{'Nom'} =~ s/^\s*//;
 $senateur{'Nom'} =~ s/\s+/ /g;
 $senateur{'Nom_de_famille'} = $senateur{'Nom'};
-if ($senateur{'Nom'} =~ /^(de |d'|du )?[A-ZÉËÈÏÙ]{2}/) {
-	$senateur{'Nom'} =~ s/^([dD]([eEuU] |'))?(.+[A-ZÉË]) ((\s*[A-ZÉ][\L\w][^\s]*)+)$/$4 $1$3/;
+if ($senateur{'Nom'} =~ /^(de |d'|du )?[A-ZÀÂÉÈÊËÎÏÔÖÙÛÜÇ]{2}/) {
+	$senateur{'Nom'} =~ s/^([dD]([eEuU] |'))?(.+[A-ZÀÂÉÈÊËÎÏÔÖÙÛÜÇ]) ((\s*[A-ZÀÂÉÈÊËÎÏÔÖÙÛÜÇ][\L\w][^\s]*)+)$/$4 $1$3/;
 	#print STDERR $senateur{'Nom'}."\n";
 	$nom = $3;
 	$nomlc = $nom;
-	$nomlc =~ s/([A-ZÉ])(\w+ ?)/$1\L$2/g;
+	$nomlc =~ s/([A-ZÉ])([\wÀÂÉÈÊËÎÏÔÖÙÛÜÇ]+ ?)/$1\L$2/g;
 	$senateur{'Nom'} =~ s/$nom/$nomlc/;
 	$senateur{'Nom_de_famille'} = $nomlc;
 }else{
