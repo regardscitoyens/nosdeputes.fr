@@ -389,6 +389,7 @@ $string =~ s/<t([rdh])( (row|col)span=["\d]+)*[^>]*>/<t\1\2>/gi;
 $string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
 $string =~ s/(<\/table>)\s*(<table)/\1\n\2/gi;
 $string =~ s/(<img[^>]*)[\n\r]+([^>]*>)/\1 \2/gi;
+$string =~ s/<a[^>]*href="javascript:[^"]*"[^>]*>([^<]*)<\/a>/\1/gi;
 $string =~ s/-->(-->)+/-->/g;
 #$string =~ s/<!-- \.(.*?)\. -->//g;
 
