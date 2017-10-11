@@ -184,7 +184,16 @@ sub checkout {
 
 sub setFonction {
     my $fonction = shift;
-    my $intervenant = setIntervenant(shift);
+    my $intervenant = shift;
+    if ($intervenant =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$// ||
+        $fonction    =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$//) {
+      if ($2) {
+        setFonction($2, $1);
+      } else {
+        setFonction($fonction, $1);
+      }
+    }
+    $intervenant = setIntervenant($intervenant);
     if ($intervenant eq $fonction) {
       return $intervenant;
     }
@@ -196,6 +205,7 @@ sub setFonction {
     $fonction =~ s/^(.*), \1$/\1/;
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
+    $fonction =~ s/ de la [com]*mission$//;
     my $kfonction = comparable($fonction);
     if ($fonction2inter{$kfonction} && !$intervenant) {
         $intervenant = $fonction2inter{$kfonction};
