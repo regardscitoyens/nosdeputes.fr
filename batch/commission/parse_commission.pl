@@ -546,7 +546,7 @@ foreach $line (split /\n/, $string)
       $found = 1;
 	}
     #print STDERR "LINE: $line\n";
-    if ($prez && $line =~ /^\|?(Informations relatives à la Commission|Présences en réunion|Membres présents)/i) {
+    if (($prez && $line =~ /^\|?(Informations relatives à la Commission|Présences en réunion)/i) || $line =~ /^\W*Membres présents/) {
         $finished = 1;
         $tmpinter = "";
         checkout();
