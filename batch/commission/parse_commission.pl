@@ -685,12 +685,13 @@ foreach $line (split /\n/, $string)
           utf8::encode($element);
           $element =~ s/^MM\./M. /;
           $element =~ s/^M\.(\S+)/M. \1/;
-          if ($element =~ /^M(?:\.|me)\s+([^,]+),\s+(.*)$/) {
+          $element =~ s/(\S+)\s*\(\s*/\1 (/;
+          if ($element =~ /^M(?:\.|me)\s+([^,]+),\s+(.*)$/ || $element =~ /^((?:Col\.?|Gal\.?)[^,]+),\s+(.*)$/) {
             checkout();
             $intervenant = setFonction($2, $1);
             $intervention = $nointer;
             checkout();
-          } elsif ($element =~ /^M(?:\.|me)\s+(.*)$/) {
+          } elsif ($element =~ /^M(?:\.|me)\s+(.*)$/ || $element =~ /^((?:Col\.?|Gal\.?).*)$/) {
             checkout();
             $intervenant = setIntervenant($1);
             $intervention = $nointer;
