@@ -418,7 +418,7 @@ foreach $line (split /\n/, $string)
     #print "TEST: ".$line."\n";
     $line =~ s/residen/résiden/ig;
     if ($line =~ /<h[1-9]+/i || $line =~ /"présidence"/ || $line =~ /Présidence de/) {
-      if ($line =~ /pr..?sidence\s+de\s+(M[^<\,]+?)[<,]\s*(pr..?sident d'..?ge)?/i && $line !~ /sarkozy/i) {
+      if ($line =~ /pr..?sidence[\s\W]+de\s+(M[^<\,]+?)[<,]\s*(pr..?sident d'..?ge)?/i && $line !~ /sarkozy/i) {
         checkout();
         $prez = $1;
         $age = lc($2);
