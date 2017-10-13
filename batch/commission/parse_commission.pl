@@ -521,7 +521,9 @@ foreach $line (split /\n/, $string)
     $line =~ s/\|\|//g;
     $line =~ s/([^:])\/\//\1/g;
 	$line =~ s/##(img[^\>#]+?)##/<\1 \\\\>/ig;
-	last if ($line =~ /^\|annexe/i);
+    if ($line =~ /ANNEXE/) {
+      $finished = 0;
+    }
 	next if ($line !~ /\w/);
     next if ($line =~ /\|\/(vice-)?présidente?\/\|/);
     $tmpinter = "";
@@ -566,7 +568,7 @@ foreach $line (split /\n/, $string)
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
-	  } elsif ($line =~ s/^\|((Une?|Plusieurs) députés?.*?)[\.\s]*\|//) {
+	  } elsif ($line =~ s/^\|((Une?|Plusieurs) députés?.*?|Réponse)[\.\s]*\|//) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
