@@ -393,6 +393,7 @@ $majIntervenant = 0;
 $body = 0;
 
 $string =~ s/<br>\n//gi;
+$string =~ s/<\/p><p>/<\/p>\n<p>/gi;
 $string =~ s/\s*<\/h(\d+)><\/CRPRESIDENT><CRPRESIDENT><h\1[^>]*>\s*/ /gi;
 $string =~ s/(<\/h\d+>)/\1\n/gi;
 $string =~ s/(<\/h\d+>)\n(<\/SOMMAIRE>)/\1\2/gi;
