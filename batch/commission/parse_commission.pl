@@ -165,8 +165,8 @@ sub checkout {
     if ($intervention && $intervenant) {
 	if ($intervenant =~ s/ et M[mes\.]* (l[ea] )?(.*)//) {
             $second = $2;
-            if ($fonction2inter{$second}) {
-                $second = $fonction2inter{$second};
+            if ($fonction2inter{comparable($second)}) {
+                $second = $fonction2inter{comparable($second)};
             }
 	    print $out.'"intervenant": "'.$second.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{$second}."\"}\n";
 	    $ts++;
@@ -584,7 +584,7 @@ foreach $line (split /\n/, $string)
         if (!$intervenant && $intervention =~ /:<\/p>$/) {
             $line = "$orig$line";
         } else {
-		    $tmpintervenant = $fonction2inter{$tmpfonction};
+		    $tmpintervenant = $fonction2inter{comparable($tmpfonction)};
 		    if ($tmpintervenant) {
                 checkout();
 			    $intervenant = $tmpintervenant;
