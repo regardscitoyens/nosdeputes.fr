@@ -170,8 +170,9 @@ sub fonctions {
         #print STDERR "COMMISSION ".$commission."\n";
         next if ($commission =~ /jusqu'au 30 septembre 2014/i);
 		last if ($commission =~ /ancien.*nat(eur|rice)/i);
+		next if ($commission =~ /^S..?nat(rice|eur)$/i);
 		$commission = groupefonction($commission);
-		$commission =~ s/^(S..?nat)/Bureau du $1/;
+		$commission =~ s/^(S..?nat)$/Bureau du $1/;
 		$comm = $commission;
 		$comm =~ s/ \/ .*$//;
 		if (! $groupes{$comm}) {
