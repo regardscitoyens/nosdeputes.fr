@@ -72,7 +72,7 @@ class presenceActions extends sfActions
       ->leftJoin('p.Parlementaire pa')
       ->leftJoin('p.Preuves pr')
       ->where('p.seance_id = ?', $seance_id)
-      ->andWhere('pr.type = ?', 'intervention')
+      ->andWhereIn('pr.type', array('intervention', 'video'))
       ->groupBy('pa.id')
       ->orderBy('pa.nom_de_famille')
       ->execute();
