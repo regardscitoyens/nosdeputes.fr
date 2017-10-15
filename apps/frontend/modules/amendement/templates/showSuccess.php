@@ -1,7 +1,7 @@
 <div class="amendement" id="L<?php echo $amendement->texteloi_id; ?>-A<?php echo $amendement->numero; ?>">
 <div class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></div>
-<h1><?php echo "<small>".$loititle."</small> &ndash; ".$titre1; ?></h1>
-<h2><?php echo ($section ? link_to($titre2, '@section?id='.$section->id) : $titre2); ?></h2>
+<h2><center><?php echo ($section ? link_to($titre2, '@section?id='.$section->id) : $titre2); ?> &mdash; Texte n°&nbsp;<?php echo $amendement->texteloi_id; ?></center></h2>
+<h1><?php echo $titre1; ?></h1>
 <div class="identiques">
 
 </div>
