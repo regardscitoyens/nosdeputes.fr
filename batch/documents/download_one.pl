@@ -11,10 +11,8 @@ $htmfile = shift;
     $a->get($htmfile);
     $htmfile =~ s/\//_/gi;
     $htmfile =~ s/\#.*//;
-    print "  $htmfile ... ";
     open FILE, ">:utf8", "html/$htmfile";
     print FILE $a->content;
     close FILE;
-    print "downloaded.\n";
     $a->back();
 

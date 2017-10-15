@@ -165,8 +165,8 @@ sub checkout {
     if ($intervention && $intervenant) {
 	if ($intervenant =~ s/ et M[mes\.]* (l[ea] )?(.*)//) {
             $second = $2;
-            if ($fonction2inter{$second}) {
-                $second = $fonction2inter{$second};
+            if ($fonction2inter{comparable($second)}) {
+                $second = $fonction2inter{comparable($second)};
             }
 	    print $out.'"intervenant": "'.$second.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{$second}."\"}\n";
 	    $ts++;
@@ -184,7 +184,16 @@ sub checkout {
 
 sub setFonction {
     my $fonction = shift;
-    my $intervenant = setIntervenant(shift);
+    my $intervenant = shift;
+    if ($intervenant =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$// ||
+        $fonction    =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$//) {
+      if ($2) {
+        setFonction($2, $1);
+      } else {
+        setFonction($fonction, $1);
+      }
+    }
+    $intervenant = setIntervenant($intervenant);
     if ($intervenant eq $fonction) {
       return $intervenant;
     }
@@ -196,6 +205,7 @@ sub setFonction {
     $fonction =~ s/^(.*), \1$/\1/;
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
+    $fonction =~ s/ de la [com]*mission$//;
     my $kfonction = comparable($fonction);
     if ($fonction2inter{$kfonction} && !$intervenant) {
         $intervenant = $fonction2inter{$kfonction};
@@ -213,7 +223,7 @@ sub setFonction {
         $fonction2inter{$kfonction} = $intervenant;
     }
     #print "$fonction ($kfonction)  => $intervenant-".$inter2fonction{$intervenant}."\n";
-    if (!$inter2fonction{$intervenant} || length($inter2fonction{$intervenant}) < length($fonction)) {
+    if (!$inter2fonction{$intervenant} || length($inter2fonction{$intervenant}) < length($fonction) || ($inter2fonction{$intervenant} =~ /président/i && $fonction !~ /président/i) || ($inter2fonction{$intervenant} =~ /rapporteur/i && $fonction !~ /rapporteur/i)) {
 	$inter2fonction{$intervenant} = $fonction;
     }
     if ($intervenant =~ / et / && $kfonction =~ s/s$//) {
@@ -228,6 +238,7 @@ sub setIntervenant {
     my $intervenant = shift;
     $intervenant =~ s/<[^>]+>\s*//g;
     $intervenant =~ s/<[^>]*$//;
+    $intervenant =~ s/\s*-\s*$//;
     #print "TEST $intervenant\n";
     $intervenant =~ s/^.* de (M(\.|me) )/\1/;
     $intervenant =~ s/Premi/premi/g;
@@ -236,6 +247,7 @@ sub setIntervenant {
     $intervenant =~ s/Erika Bareigts/Ericka Bareigts/g;
     $intervenant =~ s/Joachim Pueyo/Joaquim Pueyo/g;
     $intervenant =~ s/Yaël Braun-Pivert/Yaël Braun-Pivet/ig;
+    $intervenant =~ s/Jean-Jean-/Jean-/ig;
     $intervenant =~ s/Mareille/Marielle/g;
     $intervenant =~ s/Jean-Paul Lecocq/Jean-Paul Lecoq/g;
     $intervenant =~ s/\bE(tienne|ric|milie|lodie|lisabeth)/é\1/ig;
@@ -369,11 +381,12 @@ $string =~ s/&#8217;/'/g;
 $string =~ s/d\W+évaluation/d'évaluation/g;
 $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
+$string =~ s/<\/?sup>//ig;
 $string =~ s/<p>\|((?:<a name.*?<\/a>)?Article (?:unique|\d+e?r?)[^<]*?)\s*\|\s*\/?(.*?)\s*\/?\s*<\/p>/<p>\/$1 $2\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?La (?:réunion|séance))(, suspendue à .*?,)?\s*(s'achève|est (?:suspendue|reprise|levée))(.*?)<\/p>/<p>\/$1$2 $3$4\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?L'amendement .*?est)\s*\|?\s*(retiré|adopté|rejeté)\s*\|?\s*(.*?)<\/p>/<p>\/$1 $2 $3\/<\/p>/gi;
 $string =~ s/<p>\|([A-Z\W]+)\|<\/p>/<p>\/\1\/<\/p>/g;
-$string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis) d[^,]*,\s*)?(La commission(?: d[^<\.]*?)?)((?: a| par ailleurs| ensuite)+)?[\s\/|]+((?:désign|examin|emis)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4$5 $6\/<\/p>/gi;
+$string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis) d[^,]*,\s*)?(La commission(?: d[^<\.]*?)?)((?: a| par ailleurs| ensuite)+)?[\s\/|]+((?:désign|examin|emis)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5 $6\/<\/p>/gi;
 $string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis) d[^,]*,\s*)?(La commission(?: d\S+(?: \w\w+)*?)?)[\s\/|]+((?:en vient|émet|est saisi[et]|accept|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
@@ -381,6 +394,7 @@ $majIntervenant = 0;
 $body = 0;
 
 $string =~ s/<br>\n//gi;
+$string =~ s/<\/p><p>/<\/p>\n<p>/gi;
 $string =~ s/\s*<\/h(\d+)><\/CRPRESIDENT><CRPRESIDENT><h\1[^>]*>\s*/ /gi;
 $string =~ s/(<\/h\d+>)/\1\n/gi;
 $string =~ s/(<\/h\d+>)\n(<\/SOMMAIRE>)/\1\2/gi;
@@ -389,7 +403,10 @@ $string =~ s/<t([rdh])( (row|col)span=["\d]+)*[^>]*>/<t\1\2>/gi;
 $string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
 $string =~ s/(<\/table>)\s*(<table)/\1\n\2/gi;
 $string =~ s/(<img[^>]*)[\n\r]+([^>]*>)/\1 \2/gi;
+$string =~ s/<a[^>]*href="javascript:[^"]*"[^>]*>([^<]*)<\/a>/\1/gi;
 $string =~ s/-->(-->)+/-->/g;
+$string =~ s/\. À\| /.| À /g;
+$string =~ s/\s*\|\s*(l[ae])\s*\|/ \1 /ig;
 #$string =~ s/<!-- \.(.*?)\. -->//g;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
@@ -404,11 +421,12 @@ foreach $line (split /\n/, $string)
     #print "TEST: ".$line."\n";
     $line =~ s/residen/résiden/ig;
     if ($line =~ /<h[1-9]+/i || $line =~ /"présidence"/ || $line =~ /Présidence de/) {
-      if ($line =~ /pr..?sidence\s+de\s+(M[^<\,]+?)[<,]\s*(pr..?sident d'..?ge)?/i && $line !~ /sarkozy/i) {
+      if ($line =~ /pr..?sidence[\s\W]+de\s+(M[^<\,]+?)[<,]\s*(pr..?sident d'..?ge)?/i && $line !~ /sarkozy/i) {
+        checkout();
         $prez = $1;
         $age = lc($2);
         $prez =~ s/\s*pr..?sident[es\s]*$//i;
-#       print "Présidence de $prez\n";
+       #print STDERR "Présidence de $prez\n";
         $fct = "président";
         if ($age) {
           $fct = $age;
@@ -507,7 +525,9 @@ foreach $line (split /\n/, $string)
     $line =~ s/\|\|//g;
     $line =~ s/([^:])\/\//\1/g;
 	$line =~ s/##(img[^\>#]+?)##/<\1 \\\\>/ig;
-	last if ($line =~ /^\|annexe/i);
+    if ($line =~ /ANNEXE/) {
+      $finished = 0;
+    }
 	next if ($line !~ /\w/);
     next if ($line =~ /\|\/(vice-)?présidente?\/\|/);
     $tmpinter = "";
@@ -534,7 +554,7 @@ foreach $line (split /\n/, $string)
       $found = 1;
 	}
     #print STDERR "LINE: $line\n";
-    if ($prez && $line =~ /^\|?(Informations relatives à la Commission|Présences en réunion|Membres présents)/i) {
+    if (($prez && $line =~ /^\|?(Informations relatives à la Commission|Présences en réunion)/i) || $line =~ /^\W*Membres présents/) {
         $finished = 1;
         $tmpinter = "";
         checkout();
@@ -552,7 +572,7 @@ foreach $line (split /\n/, $string)
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
-	  } elsif ($line =~ s/^\|((Une?|Plusieurs) députés?.*?)[\.\s]*\|//) {
+	  } elsif ($line =~ s/^\|((Une?|Plusieurs) députés?.*?|Réponse)[\.\s]*\|//) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
@@ -568,7 +588,7 @@ foreach $line (split /\n/, $string)
         if (!$intervenant && $intervention =~ /:<\/p>$/) {
             $line = "$orig$line";
         } else {
-		    $tmpintervenant = $fonction2inter{$tmpfonction};
+		    $tmpintervenant = $fonction2inter{comparable($tmpfonction)};
 		    if ($tmpintervenant) {
                 checkout();
 			    $intervenant = $tmpintervenant;
@@ -669,12 +689,13 @@ foreach $line (split /\n/, $string)
           utf8::encode($element);
           $element =~ s/^MM\./M. /;
           $element =~ s/^M\.(\S+)/M. \1/;
-          if ($element =~ /^M(?:\.|me)\s+([^,]+),\s+(.*)$/) {
+          $element =~ s/(\S+)\s*\(\s*/\1 (/;
+          if ($element =~ /^M(?:\.|me)\s+([^,]+),\s+(.*)$/ || $element =~ /^((?:Col\.?|Gal\.?)[^,]+),\s+(.*)$/) {
             checkout();
             $intervenant = setFonction($2, $1);
             $intervention = $nointer;
             checkout();
-          } elsif ($element =~ /^M(?:\.|me)\s+(.*)$/) {
+          } elsif ($element =~ /^M(?:\.|me)\s+(.*)$/ || $element =~ /^((?:Col\.?|Gal\.?).*)$/) {
             checkout();
             $intervenant = setIntervenant($1);
             $intervention = $nointer;
