@@ -168,7 +168,7 @@ sub fonctions {
 		last if ($t->[0] ne "li");
 		$commission = $p->get_text('/li', '/p', $limit);
         #print STDERR "COMMISSION ".$commission."\n";
-        next if ($commission =~ /jusqu'au \d+.*\d+\)?$/i);
+        next if ($commission =~ /jusqu'au \d+.*\d+\W*$/i);
 		last if ($commission =~ /ancien.*nat(eur|rice)/i);
 		next if ($commission =~ /^S..?nat(rice|eur)$/i);
 		$commission = groupefonction($commission);
