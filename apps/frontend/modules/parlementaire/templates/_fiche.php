@@ -104,11 +104,16 @@ echo " ($fonction)";
         <?php endif; ?>
         <?php if ($parlementaire->getExtras()) : ?>
         <li>Fonctions judiciaires, internationales ou extra-parlementaires&nbsp;:
-          <ul>
-            <?php foreach ($parlementaire->getExtras() as $extra) { ?>
+          <ul><?php foreach ($parlementaire->getExtras() as $extra) { ?>
             <li><?php echo link_to($extra->getNom(),'@list_parlementaires_organisme?slug='.$extra->getSlug() ); ?> (<?php echo $extra->getFonction(); ?>)</li>
-              <?php } ?>
-          </ul>
+          <?php } ?></ul>
+        </li>
+        <?php endif ?>
+        <?php if ($parlementaire->getGroupes()) : ?>
+        <li>Groupes d'études et d'amitié&nbsp;:
+          <ul><?php foreach ($parlementaire->getGroupes() as $gpe) { ?>
+            <li><?php echo link_to($gpe->getNom(),'@list_parlementaires_organisme?slug='.$gpe->getSlug() ); ?> (<?php echo $gpe->getFonction(); ?>)</li>
+          <?php } ?></ul>
         </li>
         <?php endif ?>
       </ul>

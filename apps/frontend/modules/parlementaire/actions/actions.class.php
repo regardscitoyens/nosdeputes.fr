@@ -312,7 +312,7 @@ class parlementaireActions extends sfActions
       'groupe' => 'Groupes politiques',
       'parlementaire' => 'Fonctions parlementaires (commissions, délégations, missions...)',
       'extra' => 'Missions extra-parlementaires',
-      'groupes' => "Groupes d'étude et d'amitié"
+      'groupes' => "Groupes d'études et d'amitié"
     );
   }
 
