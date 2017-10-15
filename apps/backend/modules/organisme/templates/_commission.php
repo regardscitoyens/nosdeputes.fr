@@ -17,7 +17,7 @@ else {
   echo '<h2>'.$ct.' sénateurs inscrits&nbsp;:</h2><p style="text-align:center;">';
   for ($i=0; $i<$ct; $i++) {
     echo '<a href="'.link_tof('parlementaire', array('slug' => $senateurs[$i]['slug'])).'">'.$senateurs[$i]['nom'].'</a>';
-    if ($i != $ct-1) echo ' &nbsp;&mdash ';
+    if ($i != $ct-1) echo ' &nbsp;&mdash; ';
   }
   echo '</p>';
 } ?>

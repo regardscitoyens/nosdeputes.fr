@@ -13,7 +13,7 @@
     <?php $ct = count($presences);
     for ($i=0; $i<$ct; $i++) {
      echo $presences[$i];
-     if ($i != $ct-1) echo ' &nbsp;&mdash ';
+     if ($i != $ct-1) echo ' &nbsp;&mdash; ';
     } ?></p>
     <p id="suppr" style="text-align:center;">Attention !!! Si vous voulez vraiment supprimer cette séance et les références associées, veuillez cliquer sur le lien ci-dessous&nbsp;:</p><p style="text-align:center;"><b><?php echo link_to('SUPPRIMER', '@seance_suppr_ok?id='.$ids); ?></b></p>
   </div>
