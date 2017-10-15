@@ -470,7 +470,7 @@ class plotComponents extends sfComponents
       // Répartition par groupe des interventions
       $qinter = clone($qmots);
       $interventions = $qinter->select('i.parlementaire_groupe_acronyme, count(i.id)')
-        ->andWhere('i.nb_mots > 20')
+        ->andWhere('(i.nb_mots > 20 OR i.nb_mots = 0)')
         ->fetchArray();
       foreach ($interventions as $p)
         if (!isset($groupes[$p['parlementaire_groupe_acronyme']]['interventions']))
@@ -546,7 +546,6 @@ class plotComponents extends sfComponents
       if (isset($presences))
         $this->presences[] = array_sum($this->presences)*3/5;
     }
-
     // On renvoie les couleurs de chaque groupe
     $this->couleurs = array();
     $colormap = myTools::getGroupesColorMap();

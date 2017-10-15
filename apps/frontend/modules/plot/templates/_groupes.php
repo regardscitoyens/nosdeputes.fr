@@ -5,6 +5,7 @@ $isGrpe = ($plot === "groupes");
 $isOrga = preg_match('/orga/', $plot);
 $isComm = preg_match('/seance_com/', $plot);
 $hasInter = (array_sum($interventions) != 0);
+$hasWords = (array_sum($temps) >= 200);
 if ($isComm) {
   $DataSet = new xsPData();
   $DataSet->AddPoint($labels, "Serie1");
@@ -31,7 +32,7 @@ if (isset($membres) || $isGrpe) {
   $DataSet->SetAbsciseLabelSerie("Serie1");
   $Data = $DataSet->GetData();
   $DataDescr = $DataSet->GetDataDescription();
-} else if ($hasInter) {
+} else if ($hasWords) {
   $DataSet3 = new xsPData();
   $DataSet3->AddPoint($labels, "Serie1");
   $DataSet3->AddPoint($temps, "Serie2");
@@ -66,7 +67,7 @@ if (preg_match('/section/', $plot)) {
     $xsize = 250;
     $xtitre = 48;
     $titre = 'des présents';
-  } else {
+  } else if ($hasWords) {
     $xsize = 550;
     $xtitre = 60;
     $titre .= ' de commission';
