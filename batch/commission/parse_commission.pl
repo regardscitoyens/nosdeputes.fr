@@ -598,19 +598,20 @@ foreach $line (split /\n/, $string)
       }
 	}
 	$line =~ s/^\s+//;
-    if ($line =~ /<a/i) {
+    if ($line =~ /(<a|https?:\/\/)/i) {
       $line =~ s/\|//g;
-      while ($line =~ /href="[^"]*\//) {
-        $line =~ s/(href="[^"]*)\//\1ø%ø/;
+      while ($line =~ /(href="|https?:)[^"]*\//) {
+        $line =~ s/((href="|https?:)[^"]*)\//\1ø%ø/;
       }
-      while ($line =~ /href="[^>]*>[^<]*\//) {
-        $line =~ s/(href="[^>]*>[^<]*)\//\1ø%ø/;
+      while ($line =~ /(href="|https?:)[^>]*>[^<]*\//) {
+        $line =~ s/((href="|https?:)[^>]*>[^<]*)\//\1ø%ø/;
       }
       $line =~ s/([^<])\//\1/g;
       $line =~ s/ø%ø/\//g;
     } else {
       $line =~ s/[\|\/]//g;
     }
+    $line =~ s/\/\.\//./g;
     $line =~ s/^[\.\:]\s*//;
     #print STDERR "LINE: $found $line\n";
 	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève| été nommé)/) {
@@ -653,7 +654,7 @@ foreach $line (split /\n/, $string)
         checkout();
       }
     }
-    if ($line =~ /(https?.*?(assnat\.fr|videos?\.assemblee-nationale\.(fr|tv)|assemblee-nationale\.tv)\/[^\s"<>]*)[\s"<>]/) {
+    if ($line =~ /(https?.*?(assnat\.fr|videos?\.assemblee-nationale\.(fr|tv)|assemblee-nationale\.tv)\/[^\s"<>]*)([\s"<>]|\.$)/) {
       $urlvideo = $1;
       if ($2 eq "assnat.fr") {
         $origurl = $urlvideo;
