@@ -39,7 +39,7 @@ $string =~ s/\s*…\s*(<\/i>)?\s*(<br\s*\/?>\s*)+…\s*/\1 /gi;
 $string =~ s/\((\s*)<i>/\1<i>(/ig;
 $string =~ s/<\/i>(\s*)\)/)<\/i>\1/ig;
 $string =~ s/(<i>\(Applaudissement)<\/i>s\s+([^<)]+)/\1s)<\/i> \2/ig;
-$string =~ s/(\(([^)]*?amendement[^)]*?(adopt|rejet)|Nouveaux|Applaudissement|Exclamation|Vif|Vive|Quelque|M..?mes? mouve|(Sou)?Rires|[^)]*?bancs d[esu]+ groupe)[^)]*\))/<i>\1<\/i>/ig;
+$string =~ s/(\(([^)]*?amendement[^)]*?(adopt|rejet)|Nouveaux|Applaudissement|Protestation|Exclamation|Vif|Vive|Quelque|M..?mes? mouve|(Sou)?Rires|[^)]*?bancs d[esu]+ groupe)[^)]*\))/<i>\1<\/i>/ig;
 $string =~ s/(<\/?i>)([–,\.\s]*)\1/\1\2/ig;
 $string =~ s/(<\/?i>)\s*\.\s*/. \1/ig;
 $string =~ s/<\/i>\s*<i>\s*\(\s*/<\/i> <i>(/ig;
@@ -511,7 +511,7 @@ foreach $line (split /\n/, $string)
         #si italique ou tout gras => commentaire
         $line =~ s/##BR##$//;
         foreach $line (split /##BR##/, $line) {
-            if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/[^\/]*[\/\)\.\s]*$/) {
+            if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/[^\/]*[\/\)\.\s]*$/ || $line =~ /^\/\(.*\)\/$/) {
                 $oldintervenant = $intervenant;
                 $oldintervenant_url = $intervenant_url;
                 checkout() if ($intervenant);
