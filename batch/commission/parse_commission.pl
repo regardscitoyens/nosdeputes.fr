@@ -168,10 +168,10 @@ sub checkout {
             if ($fonction2inter{comparable($second)}) {
                 $second = $fonction2inter{comparable($second)};
             }
-	    print $out.'"intervenant": "'.$second.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{$second}."\"}\n";
+	    print $out.'"intervenant": "'.$second.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{comparable($second)}."\"}\n";
 	    $ts++;
 	}
-	print $out.'"intervenant": "'.$intervenant.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{$intervenant}."\"}\n";
+	print $out.'"intervenant": "'.$intervenant.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{comparable($intervenant)}."\"}\n";
     }elsif($intervention) {
 	print $out.'"intervenant": "", "timestamp": "'.$ts.'"}'."\n";
     }else {
@@ -222,9 +222,10 @@ sub setFonction {
         $kfonction = comparable($kfonction);
         $fonction2inter{$kfonction} = $intervenant;
     }
-    #print "$fonction ($kfonction)  => $intervenant-".$inter2fonction{$intervenant}."\n";
-    if (!$inter2fonction{$intervenant} || length($inter2fonction{$intervenant}) < length($fonction) || ($inter2fonction{$intervenant} =~ /président/i && $fonction !~ /président/i) || ($inter2fonction{$intervenant} =~ /rapporteur/i && $fonction !~ /rapporteur/i)) {
-	$inter2fonction{$intervenant} = $fonction;
+    #print "$fonction ($kfonction)  => $intervenant - ".$inter2fonction{$intervenant}."\n";
+    $kinterv = comparable($intervenant);
+    if (!$inter2fonction{$kinterv} || length($inter2fonction{$kinterv}) < length($fonction) || ($inter2fonction{$kinterv} =~ /président/i && $fonction !~ /président/i) || ($inter2fonction{$kinterv} =~ /rapporteur/i && $fonction !~ /rapporteur/i)) {
+	$inter2fonction{$kinterv} = $fonction;
     }
     if ($intervenant =~ / et / && $kfonction =~ s/s$//) {
 	$intervenants = $intervenant;
@@ -280,7 +281,7 @@ sub setIntervenant {
     if ($intervenant =~ s/^([A-ZÉÈÊÀÂÔÙÛÎÏÇ].+) ?([Ll][ea] )?((([Pp]résident|[Rr]apporteur)[es,\st]*)+)$/\1/) {
         return setFonction($3, $intervenant);
     }
-    if ($intervenant =~ /^[a-z]/) {
+    if ($intervenant =~ /^([a-z]|Dr|Ingénieur|(Géné|Ami|Capo)ral)/) {
 	$intervenant =~ s/^l[ea]\s+//i;
 	if ($intervenant =~ /((([pP]résident|[rR]apporteur[a-zé\s]+)[\sest,]*)+)([A-ZÉÈÊÀÂÔÙÛÎÏÇ].*)/) {
         $tmpint = $4;
@@ -297,9 +298,12 @@ sub setIntervenant {
         }
     }
     $kinterv = comparable($intervenant);
+    if ($inter2fonction{$kinterv}) {
+      return $fonction2inter{comparable($inter2fonction{$kinterv})};
+    }
 	$conv = $fonction2inter{$kinterv};
     $maybe_inter = "";
-	#print "TEST conv: '$conv' '$intervenant'\n";
+	#print "TEST conv: '$kinterv' '$conv' '$intervenant'\n";
 	if ($conv) {
 	    $intervenant = $conv;
 	}else {
