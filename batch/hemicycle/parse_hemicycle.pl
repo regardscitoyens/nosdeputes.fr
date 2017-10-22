@@ -52,6 +52,7 @@ $string =~ s/\s*<i>\s*<\/p>/<\/p>/ig;
 $string =~ s/<p><\/p>\n//g;
 $string =~ s/\(… \)/(…)/g;
 $string =~ s/(<br\s*\/>\s*)+/##BR##/g;
+$string =~ s/gruope/groupe/g;
 
 #Si italique dans gras, on vire (pb fonction)
 while ($string =~ m/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>\s*([^<]+)</g) {
