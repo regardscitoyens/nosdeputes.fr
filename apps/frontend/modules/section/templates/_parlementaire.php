@@ -1,5 +1,5 @@
 <?php if (!count($textes) || (count($textes) == 1 && preg_match('/questions?\s/', $textes[0]['Section']['titre']))) { ?>
-    <i class="paddingleft"><?php echo $parlementaire->ceCette; ?> n'a pris la parole sur aucun dossier.</i>
+    <i class="paddingleft"><?php echo $parlementaire->ceCette; ?> n'a pris la parole sur aucun dossier en hémicycle.</i>
 <?php return ;} ?>
 <ul>
 <?php $ct = 0;
