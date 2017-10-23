@@ -222,7 +222,7 @@ sub setFonction {
         $kfonction = comparable($kfonction);
         $fonction2inter{$kfonction} = $intervenant;
     }
-    #print "$fonction ($kfonction)  => $intervenant - ".$inter2fonction{$intervenant}."\n";
+    #print "TEST $fonction ($kfonction)  => $intervenant - ".$inter2fonction{$intervenant}."\n";
     $kinterv = comparable($intervenant);
     if (!$inter2fonction{$kinterv} || length($inter2fonction{$kinterv}) < length($fonction) || ($inter2fonction{$kinterv} =~ /président/i && $fonction !~ /président/i) || ($inter2fonction{$kinterv} =~ /rapporteur/i && $fonction !~ /rapporteur/i)) {
 	$inter2fonction{$kinterv} = $fonction;
@@ -310,7 +310,7 @@ sub setIntervenant {
 	    $test = lc($intervenant);
         $ktest = comparable($test);
 	    foreach $fonction (keys %fonction2inter) { if ($fonction2inter{$fonction}) {
-		if ($fonction =~ /$ktest/i) {
+		if ($fonction =~ /^$ktest/i) {
             if ($fonction !~ /délégué/i || $test =~ /délégué/i) {
 		        $inter = $fonction2inter{$fonction};
                 $maybe_inter = "";
