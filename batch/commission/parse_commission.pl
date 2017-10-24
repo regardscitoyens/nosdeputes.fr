@@ -248,6 +248,7 @@ sub setIntervenant {
     $intervenant =~ s/Erika Bareigts/Ericka Bareigts/g;
     $intervenant =~ s/Joachim Pueyo/Joaquim Pueyo/g;
     $intervenant =~ s/Yaël Braun-Pivert/Yaël Braun-Pivet/ig;
+    $intervenant =~ s/Jean Louis ([A-ZÉ])/Jean-Louis \1/g;
     $intervenant =~ s/Jean-Jean-/Jean-/ig;
     $intervenant =~ s/Mareille/Marielle/g;
     $intervenant =~ s/Jean-Paul Lecocq/Jean-Paul Lecoq/g;
@@ -528,6 +529,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/\s*\|\s*,\s*\/\s*/,|\/ /g;
     $line =~ s/\|\|//g;
     $line =~ s/([^:])\/\//\1/g;
+    $line =~ s/^l \|/|l /;
 	$line =~ s/##(img[^\>#]+?)##/<\1 \\\\>/ig;
     if ($line =~ /ANNEXE/) {
       $finished = 0;
