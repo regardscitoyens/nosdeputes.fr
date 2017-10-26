@@ -17,8 +17,7 @@ echo "Didascalies :"
 echo "-------------"
 grep '"intervenant": ""' $JSON      |
   sed 's/^.*"intervention": "/-> /' |
-  sed 's/".*$//'                    |
-  sort -u
+  sed 's/".*$//'
 echo "-------------"
 echo
 echo
@@ -35,7 +34,7 @@ cat $JSON | while read line; do
     sed 's/^.*"intervention": "//'  |
     sed 's/".*$//'
   )
-  if [ "$interv" = "$newinterv" ]; then
+  if [ "$interv" = "$newinterv" ] && [ ! -z "$interv" ]; then
     echo "-------------"
     echo "$interv: $text"
     echo "$newinterv: $newtext"
