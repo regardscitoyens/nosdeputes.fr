@@ -530,6 +530,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/\s*\|\s*,\s*\/\s*/,|\/ /g;
     $line =~ s/\|\|//g;
     $line =~ s/([^:])\/\//\1/g;
+    $line =~ s/\s*\/\s*\/\s*$//;
     $line =~ s/^l \|/|l /;
 	$line =~ s/##(img[^\>#]+?)##/<\1 \\\\>/ig;
     if ($line =~ /ANNEXE/) {
