@@ -285,7 +285,7 @@ sub setIntervenant {
     }
     if ($intervenant =~ /^([a-z]|Dr|Ingénieur|(Géné|Ami|Capo)ral)/) {
 	$intervenant =~ s/^l[ea]\s+//i;
-	if ($intervenant =~ /((([pP]résident|[rR]apporteur[a-zé\s]+)[\sest,]*)+)([A-ZÉÈÊÀÂÔÙÛÎÏÇ].*)/) {
+	if ($intervenant =~ /((([pP]résident|[rR]apporteur[a-zé\s]+)[\sest,]*)+)([A-Z].*)/) {
         $tmpint = $4;
         $tmpfct = $1;
         if ($tmpint !~ /éral/i) {
