@@ -423,6 +423,7 @@ $string =~ s/<\/?ul>//gi;
 #print $string; exit;
 
 $finished = 0;
+$listinterv = 0;
 foreach $line (split /\n/, $string)
 {
     #print "TEST: ".$line."\n";
@@ -653,8 +654,11 @@ foreach $line (split /\n/, $string)
             }
 	    }
 	}
-    if ($line) {
+    if ($line && !$listinterv) {
 	  $intervention .= "<p>$line</p>";
+    }
+    if ($line =~ /^(Est|Sont?) ([a-z]+ ){0,3}intervenu[^.:<]*\s*:\s*$/) {
+      $listinterv = 1;
     }
     if ($line =~ /^Ont participé (?:au débat|à la discussion)\s*:\s*(M.*?)[\s\.]*$/) {
       foreach $part (split(/\s*(?:,| et)\s+/, $1)) {
@@ -662,6 +666,15 @@ foreach $line (split /\n/, $string)
         $intervenant = setIntervenant($part);
         $intervention = "<p><i>(non disponible)</i></p>";
         checkout();
+      }
+    }
+    if ($listinterv && !$finished && $line =~ /^(?:&#8211;)?\s*(M[.me]+\s+[A-ZÉ][^\.]+)([\s\.;]*)$/) {
+      checkout();
+      $intervenant = setIntervenant($1);
+      $intervention = "<p><i>(non disponible)</i></p>";
+      checkout();
+      if ($listinterv && $2 =~ /\./) {
+        $listinterv = 0;
       }
     }
     if ($line =~ /(https?.*?(assnat\.fr|videos?\.assemblee-nationale\.(fr|tv)|assemblee-nationale\.tv)\/[^\s"<>]*)([\s"<>]|\.$)/) {
