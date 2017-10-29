@@ -26,6 +26,7 @@ close FILE;
 $string =~ s/\r//g;
 $string =~ s/(M\.\s*&nbsp;\s*)+/M. /g;
 $string =~ s/&#278;/É/g;
+$string =~ s/&#8211;/–/g;
 
 $mois{'janvier'} = '01';
 $mois{'février'} = '02';
@@ -239,6 +240,7 @@ sub setIntervenant {
     my $intervenant = shift;
     $intervenant =~ s/<[^>]+>\s*//g;
     $intervenant =~ s/<[^>]*$//;
+    $intervenant =~ s/–/-/g;
     $intervenant =~ s/\s*-\s*$//;
     #print "TEST $intervenant\n";
     $intervenant =~ s/^.* de (M(\.|me) )/\1/;
@@ -363,7 +365,7 @@ sub setIntervenant {
 sub rapporteur
 {
     #Si le commentaire contient peu nous aider à identifier le rapport, on tente
-    if ($line =~ /rapport/i) {
+    if ($line =~ /rapport/i && $line !~ /sp..?ciaux|rapporteure?s/i) {
 	if ($line =~ /M[me\.]+\s([^,()]+)(?:,| est proclamée?) (rapporteur[^\)\,\.\;]*)/i) {
         $fct = $2;
         $fct =~ s/\s+et\s+.*$//;
