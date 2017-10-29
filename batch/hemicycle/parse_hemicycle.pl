@@ -427,7 +427,7 @@ foreach $line (split /\n/, $string)
             }else {
                 setFonction('président', $prez);
             }
-        }elsif($line =~ /h2 class="titre[2-9]+">\s*(.*?)\s*<\/h2>/i || $line =~ /class="sstitreinfo">\s*\/\s*([^\/]+)\s*\//) {
+        }elsif($line =~ /h2 class="titre1?[2-90]+">\s*(.*?)\s*<\/h2>/i || $line =~ /class="sstitreinfo">\s*\/\s*([^\/]+)\s*\//) {
             checkout();
             $tmpline = $1;
             $tmpline =~ s/<\/?[a-z][^>]*>//g;
