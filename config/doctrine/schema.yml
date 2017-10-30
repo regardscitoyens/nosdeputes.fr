@@ -297,9 +297,9 @@ Amendement:
     auteur_groupe_acronyme: string(16)
     signataires: string
     texte:
-      type: string
+      type: clob
     expose:
-      type: string
+      type: clob
     content_md5: string(36)
     nb_multiples:
       type: integer
