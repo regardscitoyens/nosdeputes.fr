@@ -92,7 +92,8 @@ foreach $url (@url) {
       $file = $a->uri();
       $file =~ s/\//_/gi;
       $file =~ s/\#.*//;
-      $file =~ s/commissions_elargies_cr_c/commissions_elargies_cr_C/;
+      #$file =~ s/commissions_elargies_cr_c/commissions_elargies_cr_C/;
+      $file =~ s/commissions_elargies_cr_C/commissions_elargies_cr_c/;
       $size = -s "html/$file";
       if ($size) {
         $cpt++;

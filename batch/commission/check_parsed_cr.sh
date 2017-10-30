@@ -2,23 +2,11 @@
 
 JSON=$1
 
-echo "Intervenants:"
-echo "-------------"
-grep -v '"intervenant": ""' $JSON   |
-  sed 's/^.*"intervenant": "//'     |
-  sed 's/",.*"fonction": "/\t\t|  /'|
-  sed 's/".*$//'                    |
-  sort  | uniq -c
-echo "-------------"
-echo
-echo
-
 echo "Didascalies :"
 echo "-------------"
 grep '"intervenant": ""' $JSON      |
   sed 's/^.*"intervention": "/-> /' |
-  sed 's/".*$//'                    |
-  sort -u
+  sed 's/".*$//'
 echo "-------------"
 echo
 echo
@@ -35,7 +23,7 @@ cat $JSON | while read line; do
     sed 's/^.*"intervention": "//'  |
     sed 's/".*$//'
   )
-  if [ "$interv" = "$newinterv" ]; then
+  if [ "$interv" = "$newinterv" ] && [ ! -z "$interv" ]; then
     echo "-------------"
     echo "$interv: $text"
     echo "$newinterv: $newtext"
@@ -47,6 +35,23 @@ echo "-------------"
 echo
 echo
 
-head -1 $JSON               |
-  sed 's/^.*"source": "//'  |
-  sed 's/[#"].*$//'
+echo "Intervenants:"
+echo "-------------"
+grep -v '"intervenant": ""' $JSON   |
+  sed 's/^.*"intervenant": "//'     |
+  sed 's/",.*"fonction": "/\t\t|  /'|
+  sed 's/".*$//'                    |
+  sort  | uniq -c
+echo "-------------"
+echo
+echo
+
+head -1 $JSON                               |
+  sed 's/^.*"commission": "/COMMISSION: /'  |
+  sed 's/", .*"date": "/\nDATE:       /'    |
+  sed 's/", .*"heure": "/ - /'          |
+  sed 's/".*$//'
+
+head -1 $JSON                           |
+  sed 's/^.*"source": "/SOURCE:     /'  |
+  sed 's/[#"].*$/\n/'

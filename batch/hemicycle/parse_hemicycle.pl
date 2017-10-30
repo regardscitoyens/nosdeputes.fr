@@ -39,7 +39,8 @@ $string =~ s/\s*…\s*(<\/i>)?\s*(<br\s*\/?>\s*)+…\s*/\1 /gi;
 $string =~ s/\((\s*)<i>/\1<i>(/ig;
 $string =~ s/<\/i>(\s*)\)/)<\/i>\1/ig;
 $string =~ s/(<i>\(Applaudissement)<\/i>s\s+([^<)]+)/\1s)<\/i> \2/ig;
-$string =~ s/(\(([^)]*?amendement[^)]*?(adopt|rejet)|Nouveaux|Applaudissement|Exclamation|Vif|Vive|Quelque|M..?mes? mouve|(Sou)?Rires|[^)]*?bancs d[esu]+ groupe)[^)]*\))/<i>\1<\/i>/ig;
+$string =~ s/(<i>\([^<).]+\.) (<\/i>)/\1)\2 /g;
+$string =~ s/(\(([^)]*?amendement[^)]*?(adopt|rejet)|Nouveaux|Applaudissement|Protestation|Approbation|Exclamation|Vif|Vive|Quelque|M..?mes? mouve|(Sou)?Rires|[^)]*?bancs d[esu]+ groupe)[^)]*\))/<i>\1<\/i>/ig;
 $string =~ s/(<\/?i>)([–,\.\s]*)\1/\1\2/ig;
 $string =~ s/(<\/?i>)\s*\.\s*/. \1/ig;
 $string =~ s/<\/i>\s*<i>\s*\(\s*/<\/i> <i>(/ig;
@@ -52,6 +53,7 @@ $string =~ s/\s*<i>\s*<\/p>/<\/p>/ig;
 $string =~ s/<p><\/p>\n//g;
 $string =~ s/\(… \)/(…)/g;
 $string =~ s/(<br\s*\/>\s*)+/##BR##/g;
+$string =~ s/gruope/groupe/g;
 
 #Si italique dans gras, on vire (pb fonction)
 while ($string =~ m/(M[me\.]+[ \&][^<]+<\/a>)\.[^<]*<\/b>[^<]*<i>\s*([^<]+)</g) {
@@ -425,7 +427,7 @@ foreach $line (split /\n/, $string)
             }else {
                 setFonction('président', $prez);
             }
-        }elsif($line =~ /h2 class="titre[2-9]+">\s*(.*?)\s*<\/h2>/i || $line =~ /class="sstitreinfo">\s*\/\s*([^\/]+)\s*\//) {
+        }elsif($line =~ /h2 class="titre1?[2-90]+">\s*(.*?)\s*<\/h2>/i || $line =~ /class="sstitreinfo">\s*\/\s*([^\/]+)\s*\//) {
             checkout();
             $tmpline = $1;
             $tmpline =~ s/<\/?[a-z][^>]*>//g;
@@ -511,7 +513,7 @@ foreach $line (split /\n/, $string)
         #si italique ou tout gras => commentaire
         $line =~ s/##BR##$//;
         foreach $line (split /##BR##/, $line) {
-            if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/[^\/]*[\/\)\.\s]*$/) {
+            if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/[^\/]*[\/\)\.\s]*$/ || $line =~ /^\/\(.*\)\/$/) {
                 $oldintervenant = $intervenant;
                 $oldintervenant_url = $intervenant_url;
                 checkout() if ($intervenant);
@@ -526,7 +528,7 @@ foreach $line (split /\n/, $string)
                     $intervenant_url = $oldintervenant_url;
                     next;
                 }
-            }elsif ($line =~ s/^\s*\|\s*(M[^\|\/\:]+)[\|\/\:]// || $line =~ s/^\s*(M[\.Mmle]+(\s+([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.\:]//) {
+            }elsif ($line =~ s/^\s*\|\s*(M[^\|\/\:]+)[\|\/\:]// || ($line !~ /^[^.]+ (veut|d..?nonce)/ && $line =~ s/^\s*(M[\.Mmle]+(\s+([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.\:]//)) {
                 if ($line) {
                     checkout();
                     $majIntervenant = 1;
