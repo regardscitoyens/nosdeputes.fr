@@ -402,7 +402,7 @@ $string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis) d[^,]*,\s*)?(
 $string =~ s/<p>\s*(La réunion de la commission[^<]*s'achève[^<]*)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
-$string =~ s/<a[^>]*href="[^"]*fiche\/OMC_[^"]*"[^>]*>(\W*M[^<]*)<\/a>/\1/g;
+$string =~ s/<a[^>]*href="[^"]*(?:fiche\/OMC_|tribun\/fiches_id)[^"]*"[^>]*>([^<]*)<\/a>/\1/g;
 $majIntervenant = 0;
 $body = 0;
 
