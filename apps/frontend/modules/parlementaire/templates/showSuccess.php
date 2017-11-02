@@ -23,7 +23,7 @@
 <div class="contenu_depute">
   <?php include_partial('parlementaire/fiche', array('parlementaire'=>$parlementaire, 'commission_permanente' => $commission_permanente, 'missions' => $missions, 'historique' => $parlementaire->getHistorique(true), 'anciens_mandats' => $anciens_mandats, 'main_fonction' => $main_fonction)); ?>
   <div class="bas_depute">
-    <h2 class="list_com">Derniers commentaires concernant <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
+    <h2 class="list_com">Derniers commentaires concernant les travaux de <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
     <?php if ($parlementaire->nb_commentaires == 0) echo '<p>Le travail de '.$parlementaire->getCeCette(false).' n\'a pas encore inspiré de commentaire aux utilisateurs.</p>';
     else {
       echo include_component('commentaire', 'lastObject', array('object' => $parlementaire, 'presentation' => 'noauteur'));
