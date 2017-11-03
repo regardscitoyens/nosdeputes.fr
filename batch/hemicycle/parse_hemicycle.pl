@@ -260,7 +260,6 @@ sub checkout {
                 $extraint .= '", "fonction": "'.$fonction;
             }
             print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$extraint."\"}\n";
-            $inter2fonction{$intervenant} = '';
         }
         $extrafct = "";
         if ($intervenant =~ s/\s*(Doyenn?e? d'âge)$//i) {
