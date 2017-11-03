@@ -229,7 +229,7 @@ Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche
 
   - une **période temporelle** précise : ajouter `&date=YYYYMMDD%2CYYYYMMDD` par exemple pour les résultats sur « internet » en janvier 2016 : https://www.nosdeputes.fr/recherche/internet?format=xml&date=20160101%2C20160131
 
-  - un **parlementaire** précis : ajouter `&tag=parlementaire=SLUG`
+  - un **parlementaire** précis : ajouter `&tag=parlementaire=SEARCHSLUG` avec SEARCHSLUG formé ainsi : `prenom+nom`. sans accents ni cédille mais avec le trait d’union des prénoms et noms composés (par exemple : `cedric-villani`, `carole+bureau-bonnard` ,`marie-christine+verdier-jouclas`)
 
   - ceux associés à des **mots-clés** spécifique : ajouter `&tag=KEYWORD1,KEYWORD2,...` par exemple pour les résultats sur « internet » effectivement taggés "internet" : https://www.nosdeputes.fr/recherche/internet?format=xml&tag=internet
 
