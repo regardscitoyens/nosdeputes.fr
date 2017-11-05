@@ -81,6 +81,15 @@ class Commentaire extends BaseCommentaire
     }
   }
 
+  public function rmObject($object_type, $object_id) {
+    $object = Doctrine::getTable($object_type)->find($object_id);
+    if ($object) {
+      $co = Doctrine::getTable('CommentaireObject')->findUnique($object_type, $object_id, $this->id);
+      $co->delete();
+      $object->updateNbCommentaires();
+    }
+  }
+
   public function getParlementaires() {
     return Doctrine::getTable('CommentaireObject')->getParlementaires($this->id);
   }

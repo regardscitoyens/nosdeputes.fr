@@ -25,9 +25,7 @@ class ObjectCommentable extends BaseObjectCommentable
       $res += $res1[0]['nb'];
     if (isset($res2[0]['nb']))
       $res += $res2[0]['nb'];
-    if ($res) {
-      $this->nb_commentaires = $res + $inc;
-      $this->save();
-    }
+    $this->nb_commentaires = $res + $inc;
+    $this->save();
   }
 }
