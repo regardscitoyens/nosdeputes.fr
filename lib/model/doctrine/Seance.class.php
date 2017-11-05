@@ -91,7 +91,7 @@ class Seance extends BaseSeance
 
   public function getShortMoment() {
     if (preg_match('/:/', $this->moment))
-      return preg_replace('/^0/', '', str_replace('00', '', str_replace(':', 'h', $this->moment)));
+      return preg_replace('/^0?(\d+):(?:00)?(\d*)$/', '\1h\2', $this->moment);
     else if (!$this->moment)
       return "réunion";
     return preg_replace('/séance/i', 'réunion', $this->moment);
