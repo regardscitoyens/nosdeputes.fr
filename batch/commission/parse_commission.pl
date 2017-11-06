@@ -688,7 +688,7 @@ foreach $line (split /\n/, $string)
         $listinterv = 0;
       }
     }
-    if ($line =~ /(https?.*?(assnat\.fr|videos?\.assemblee-nationale\.(fr|tv)|assemblee-nationale\.tv)\/[^\s"<>]*)([\s"<>]|\.$)/) {
+    if ($line =~ /(https?.*?(assnat\.fr|videos?\.assemblee-nationale\.(fr|tv)|assemblee-nationale\.tv)\/[^\s"<>]*)([\s"<>]|\.$)/ && ($line !~ /commission-elargie/ || $source =~ /commissions_elargies/)) {
       $urlvideo = $1;
       if ($2 eq "assnat.fr") {
         $origurl = $urlvideo;
