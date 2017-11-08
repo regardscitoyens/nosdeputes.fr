@@ -201,9 +201,10 @@ sub setFonction {
     if ($intervenant eq $fonction) {
       return $intervenant;
     }
-    $fonction =~ s/[^a-zàâéèêëîïôùûü)]+$//i;
+    $fonction =~ s/[^a-zàâéèêëîïôùûü0-9)]+$//i;
     $fonction =~ s/<[^>]+>\s*//g;
     $fonction =~ s/<[^>]*$//;
+    $fonction =~ s/"//g;
     $fonction =~ s/\///g;
     $fonction =~ s/Président/président/;
     $fonction =~ s/^(.*), \1$/\1/;
