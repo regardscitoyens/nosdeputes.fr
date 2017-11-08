@@ -404,7 +404,7 @@ $string =~ s/<p>((?:<a name.*?<\/a>)?La (?:réunion|séance))(, suspendue à .*?
 $string =~ s/<p>((?:<a name.*?<\/a>)?L['es ]+amendements* .*?(?:est|sont))\s*\|?\s*((?:retir|adopt|rejet)és?\s*)\|?(\s*.*?)<\/p>/<p>\/$1 $2$3\/<\/p>/gi;
 $string =~ s/<p>\|([A-Z\W]+)\|<\/p>/<p>\/\1\/<\/p>/g;
 $string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis) d[^,]*,\s*)?(La commission(?: d[^<\.]*?)?)((?: a| par ailleurs| ensuite)+)?[\s\/|]+((?:désign|examin|emis)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5 $6\/<\/p>/gi;
-$string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis) d[^,]*,\s*)?(La commission(?: d\S+(?: \w\w+)*?)?)[\s\/|]+((?:en vient|émet|est saisi[et]|accept|donne un avis|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
+$string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis) d[^,]*,\s*)?(La commission(?: d\S+(?: \w\w+)*?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|émet|est saisi[et]|accept|donne un avis|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
 $string =~ s/<p>\s*(La réunion de la commission[^<]*s'achève[^<]*)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
@@ -557,7 +557,7 @@ foreach $line (split /\n/, $string)
     $tmpinter = "";
     #print STDERR $line."\n";
     #si italique ou tout gras => commentaire
-    if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/) && $line !~ /^\|Articles?\s*\d+/i && $line !~ /^\/«/) {
+    if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/ || $line =~ /^\/La commission/) && $line !~ /^\|Articles?\s*\d+/i && $line !~ /^\/«/) {
       if ($line =~ /^[\/|]((groupe|(com)?mission|délégation|office|comité).*)[\/|]\s*$/i) {
         if (!$timestamp && !$commission) {
           $commission = $1;
