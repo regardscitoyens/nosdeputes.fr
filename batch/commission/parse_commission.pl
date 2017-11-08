@@ -160,6 +160,9 @@ sub checkout {
     $intervention =~ s/"/\\"/g;
     $intervention =~ s/\\\\/\//g;
     $intervention =~ s/\s*(<\/?t(able|[rdh])[^>]*>)\s*/\1/gi;
+    $regfct = $inter2fonction{comparable($intervenant)};
+    $regfct =~ s/\W/./gi;
+    $intervention =~ s/^<p>[, ]*$regfct[, ]*/<p>/i;
     $cpt+=10;
     $ts = $cpt;
     $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure": "'.$heure.'", "session": "'.$session.'", ';
