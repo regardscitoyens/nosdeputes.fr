@@ -285,8 +285,11 @@ sub setFonction {
     $fonction =~ s/^\s*,\s*//;
     my $intervenant = shift;
     my $kfonction = lc($fonction);
+    my $rfonction = lc($fonction);
     $kfonction =~ s/[^a-z]+/ /gi;
+    $rfonction =~ s/[^a-z]/./gi;
     $intervenant =~ s/[^a-zàâéèêëïîôöùûü]+$//i;
+    $intervenant =~ s/ $rfonction$//i;
     $fonction2inter{$kfonction} = $intervenant;
     #print "TEST $fonction ($kfonction)  => $intervenant \n";
     if (!$inter2fonction{$intervenant}) {
