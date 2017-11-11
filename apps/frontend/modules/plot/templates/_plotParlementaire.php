@@ -8,6 +8,7 @@ if ($absolute)
 $size='';
 $width = 790;
 $height = 300;
+$jsheight = 300;
 if ($time === 'lastyear')
   $shortduree = 'annee';
 else $shortduree = $time;
@@ -15,7 +16,11 @@ if ($type === 'total')
   $titre = 'globale-'.$shortduree;
 else {
   $titre = $type;
-  if ($type === 'commission') $titre .= 's';
+  $height = 267;
+  if ($type === 'commission') {
+    $titre .= 's';
+    $height = 185;
+  }
   $titre .= '-'.$shortduree;
 }
 if ($link === 'true') {
@@ -23,7 +28,7 @@ if ($link === 'true') {
   if (myTools::isFinLegislature()) $time = 'legislature';
   echo '<a'.$target.' href="'.url_for('@parlementaire'.($absolute ? '' : '_plot').'?slug='.$parlementaire->slug.($absolute ? '' : '&time='.(myTools::isFinLegislature() ? 'legislature' : 'lastyear')), $abs).'">';
   if (!isset($widthrate)) $widthrate = 1;
-  $height = floor($height / 2 *$widthrate);
+  $jsheight = floor($jsheight / 2 *$widthrate);
   $width = floor($width * $widthrate);
 } else echo '<div class="par_session">'; ?>
 <div class="activity_plot" id="plot<?php echo $type; ?>">
@@ -38,7 +43,7 @@ if ($link === 'true') {
 <?php if ($link === 'true') echo '</a>';
 if (!$absolute) : ?>
 <script type="text/javascript">
-plot_activity_data("<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type).'?questions='.$questions.'&format=json'; ?>", "plot<?php echo $type; ?>", "<?php echo $width; ?>", "<?php echo $height; ?>", "<?php echo $type; ?>", "<?php echo $histogram; ?>");
+plot_activity_data("<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type).'?questions='.$questions.'&format=json'; ?>", "plot<?php echo $type; ?>", "<?php echo $width; ?>", "<?php echo $jsheight; ?>", "<?php echo $type; ?>", "<?php echo $histogram; ?>");
 </script>
 <?php endif;
 
