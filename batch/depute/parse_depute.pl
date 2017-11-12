@@ -185,7 +185,7 @@ foreach $line (split /\n/, $string) {
     $line =~ s/\s*<[^>]+>\s*/ /g;
     $line =~ s/[  \s]+/ /g;
     $line = trim($line);
-    if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?)/) {
+    if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?|Groupes de travail)/) {
       $encours = "fonctions";
       if ($line =~ /Missions? temporaires?/) {
         $mission = 1;
