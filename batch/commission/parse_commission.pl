@@ -510,6 +510,8 @@ foreach $line (split /\n/, $string)
             if ($line =~ /\s0*(\d+)/ && $1 > 1) {
                 $cpt = $1*1000000;
             }
+        }elsif($line =~ /<\/CRPRéSIDENT>/i) {
+            next;
         }
     }
 
