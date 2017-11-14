@@ -409,6 +409,7 @@ $string =~ s/<p>\|([A-Z\W]+)\|<\/p>/<p>\/\1\/<\/p>/g;
 $string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis) d[^,]*,\s*)?(La commission(?: d[^<\.]*?)?)((?: a| par ailleurs| ensuite)+)?[\s\/|]+((?:désign|examin|emis)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5 $6\/<\/p>/gi;
 $string =~ s/<p>(<a name.*?<\/a>)?(Su(?:r le rapport|ivant l'avis) d[^,]*,\s*)?(La commission(?: d\S+(?: \w\w+)*?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|émet|est saisi[et]|accept|donne un avis|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
 $string =~ s/<p>\s*(La réunion de la commission[^<]*s'achève[^<]*)\s*<\/p>/<p>\/\1\/<\/p>/gi;
+$string =~ s/<p>\s*(M[.me]+ [^.]*? est élu[^.]*?\.)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $string =~ s/<a[^>]*href="[^"]*(?:fiche\/OMC_|tribun\/fiches_id)[^"]*"[^>]*>([^<]*)<\/a>/\1/g;
