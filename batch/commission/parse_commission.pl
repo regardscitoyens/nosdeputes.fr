@@ -429,6 +429,7 @@ $string =~ s/<a[^>]*href="javascript:[^"]*"[^>]*>([^<]*)<\/a>/\1/gi;
 $string =~ s/-->(-->)+/-->/g;
 $string =~ s/\. À\| /.| À /g;
 $string =~ s/\s*\|\s*(l[ae])\s*\|/ \1 /ig;
+$string =~ s/\s*\|\s*et\s*\|\s*(<!|M)/ et \1/ig;
 #$string =~ s/<!-- \.(.*?)\. -->//g;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
