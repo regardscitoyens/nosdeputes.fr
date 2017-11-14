@@ -583,13 +583,13 @@ foreach $line (split /\n/, $string)
       $found = 1;
 	}
     $line =~ s/^(\|M[.me]+)\s*\|\s*/\1 /;
-    #print STDERR "LINE: $line\n";
+    #print "LINE: $line\n";
     if (($prez && $line =~ /^\|?(Informations relatives à la Commission|Présences en réunion)/i) || $line =~ /^\W*Membres présents/) {
         $finished = 1;
         $tmpinter = "";
         checkout();
     } else {
-      if ($line =~ s/^\|(M[^\|\:]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:, \/|\/, )[^\/]+?\/))(.*\w.*)/\4/) {
+      if ($line =~ s/^\|(M[^\|\:,]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:,[\|\s]*\/|[\|\s]*\/\s*,\s*)[^\/]+?\/))(.*\w.*)?/\4/) {
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2.$3;
