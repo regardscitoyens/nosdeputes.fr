@@ -94,12 +94,13 @@ Organisme:
       moretags: [type]
   columns:
     nom:
-      type: string(255)
-      unique: true
+      type: string(511)
+#      unique: true
 #      notnull: true
     type:
       type: enum
       values: ['parlementaire', 'groupe', 'extra', 'groupes']
+
 
 ParlementaireOrganisme:
   actAs:
