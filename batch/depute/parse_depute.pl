@@ -162,7 +162,7 @@ foreach $line (split /\n/, $string) {
     } else {
       if ($site !~ /facebook\.com\/(sharer\.php|sandramarsaudlarepubliquenmarche|BSmedoc|colas\.roy\.2017)/) { #Evite de prendre les boutons de partage de l'AN et les comptes désuets
         $site =~ s/(twitter.com\/)[\s@]+/\1/i;
-        if ($site !~ /twitter.com\/(valeriebeauvais2017|sttrompille|Darrieussecq|bernarddeflesselles|Marc_Delatte|davidlorion|Josso2017|ColasRoy2017|GCHICHE2017|obono2017|celiadeputee2017|Vincent.Ledoux59|EricDiardDepute|MireilleRobert|Fdumas2017|PascalBois2017|pgoulet58|micheldelpon|DipompeoChris|Valeria_Faure_M|Thourot2017|FabienGoutte|ainakuric2017|FJolivet2017|CaroleBB2017|ludomds|blanchet2017|MaudPetit_LREM|en_marche_77|BPeyrol_REM0303|CFABRE2017|soniakrimi50|NLePeih2017|Haury2017|CRoussel_06|c_vignon3103)/i) {   # remove bad twitter accounts from AN
+        if ($site !~ /twitter.com\/(valeriebeauvais2017|sttrompille|Darrieussecq|bernarddeflesselles|Marc_Delatte|davidlorion|Josso2017|ColasRoy2017|GCHICHE2017|obono2017|celiadeputee2017|Vincent.Ledoux59|EricDiardDepute|MireilleRobert|Fdumas2017|PascalBois2017|pgoulet58|micheldelpon|DipompeoChris|Valeria_Faure_M|Thourot2017|FabienGoutte|ainakuric2017|FJolivet2017|CaroleBB2017|ludomds|blanchet2017|MaudPetit_LREM|en_marche_77|BPeyrol_REM0303|CFABRE2017|soniakrimi50|NLePeih2017|Haury2017|CRoussel_06|c_vignon3103|philippemichel1|pierrecabare)/i) {   # remove bad twitter accounts from AN
           $depute{'sites_web'}{$site} = 1;
         }
       }
@@ -185,7 +185,7 @@ foreach $line (split /\n/, $string) {
     $line =~ s/\s*<[^>]+>\s*/ /g;
     $line =~ s/[  \s]+/ /g;
     $line = trim($line);
-    if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?)/) {
+    if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?|Groupes de travail)/) {
       $encours = "fonctions";
       if ($line =~ /Missions? temporaires?/) {
         $mission = 1;

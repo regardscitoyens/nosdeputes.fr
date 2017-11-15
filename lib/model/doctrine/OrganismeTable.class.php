@@ -19,7 +19,7 @@ class OrganismeTable extends Doctrine_Table
         return $org;
     }
 
-    if ($type == 'parlementaire')
+    if ($type == 'parlementaire' && !preg_match('/commission élargie/', $nom))
     $org = $this->createQuery('o')
       ->where('o.nom LIKE ?', $nom.'%')
       ->andWhere('o.type = ?', $type)

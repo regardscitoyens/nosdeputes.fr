@@ -69,8 +69,11 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
       }
     } else extra = "de la session " + data.periode.replace(/^(\d{4})/, '$1-');
     if (type === 'total')
-      titre = "Présences en commissions et participation en hémicycle au cours " + extra;
-    else titre = "Participation en " + type.replace('commission', 'commissions') + " au cours " + extra;
+      titre = "Présences en commissions et participation en hémicycle";
+    else if (type === 'commission')
+      titre = "Présences et participation en commissions";
+    else titre = "Participation en hémicycle";
+    titre += " au cours " + extra;
 
     divid = '#' + divid;
     $(divid).html(

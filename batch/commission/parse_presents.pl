@@ -176,15 +176,17 @@ foreach $line (split /\n/, $string)
 	    }
 	}
     }
-    if (!$commission && $line =~ /^\s*<p>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
+    if (!$commission && $line =~ /^\s*<p[^>]*>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
         $commission = $1;
     }
+    $origline = $line;
     if ($present) {
 	$line =~ s/<[^>]+>//g;
 	$line =~ s/&[^;]*;/ /g;
 	$line =~ s/\s+et\s+/, /gi;
 	$line =~ s/\.$//;
-	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+//) {
+    #print "TEST $newcomm $line\n";
+	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+// || ($newcomm && $line =~ /^\s*M[\.mMe]+\s/)) {
         if ($line !~ /^\s*$/) {
             push @presents, split /, /, $line; #/
 	    }
@@ -195,6 +197,11 @@ foreach $line (split /\n/, $string)
         $present = 1;
     } elsif ($line =~ /^\s*Sénateurs\s*$/) {
         $present = 0;
+    }
+    if ($origline =~ /^\s*<p[^>]*>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
+        $newcomm = 1;
+    } elsif ($line !~ /^\s*$/) {
+        $newcomm = 0;
     }
 }
 checkout();

@@ -285,10 +285,13 @@ sub setFonction {
     $fonction =~ s/^\s*,\s*//;
     my $intervenant = shift;
     my $kfonction = lc($fonction);
+    my $rfonction = lc($fonction);
     $kfonction =~ s/[^a-z]+/ /gi;
+    $rfonction =~ s/[^a-z]/./gi;
     $intervenant =~ s/[^a-zàâéèêëïîôöùûü]+$//i;
+    $intervenant =~ s/ $rfonction$//i;
     $fonction2inter{$kfonction} = $intervenant;
-    #print "$fonction ($kfonction)  => $intervenant \n";
+    #print "TEST $fonction ($kfonction)  => $intervenant \n";
     if (!$inter2fonction{$intervenant}) {
         $inter2fonction{$intervenant} = $fonction;
     }
@@ -296,14 +299,15 @@ sub setFonction {
 
 sub setIntervenant {
     my $intervenant = shift;
-    #print "$intervenant\n";
+    #print "TEST $intervenant\n";
     $intervenant =~ s/^(M\.|Mme)([^  \s])/$1 $2/;
     $intervenant =~ s/[\|\/]//g;
     $intervenant =~ s/\s*\&\#8211\;\s*$//;
     $intervenant =~ s/\s*[\.\:]\s*$//;
     $intervenant =~ s/Madame/Mme/g;
     $intervenant =~ s/Monsieur/M./g;
-    $intervenant =~ s/(\s+et|,)+\s+M[\.lmes]+\s+/ et /g;
+    $intervenant =~ s/([Pp]lusieurs .*?)(\s+et|,)+\s+(M[\.lmes]+\s+.*?)(?:, rapporteure?.*?)?$/\3 et \1/g;
+    $intervenant =~ s/(?:, rapporteure?.*?)?(\s+et|,)+\s+M[\.lmes]+\s+/ et /g;
     $intervenant =~ s/^M[\.mes]*\s//i;
     $intervenant =~ s/([^M])\s*\..*$/\1/;
     $intervenant =~ s/L([ea])\s/l$1 /i;

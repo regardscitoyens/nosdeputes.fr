@@ -52,6 +52,8 @@ head -1 $JSON                               |
   sed 's/", .*"heure": "/ - /'          |
   sed 's/".*$//'
 
-head -1 $JSON                           |
+cat $JSON                               |
   sed 's/^.*"source": "/SOURCE:     /'  |
-  sed 's/[#"].*$/\n/'
+  sed 's/[#"].*$/\n/'                   |
+  grep .                                |
+  sort -u
