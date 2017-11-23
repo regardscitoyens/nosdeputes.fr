@@ -268,7 +268,12 @@ sub checkout {
         }
         print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant": "'.$intervenant.'", "fonction": "'.$inter2fonction{$intervenant}.$extrafct.'", "intervenant_url": "'.$intervenant_url."\"}\n";
     }elsif($intervention) {
-        print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant": "'."\"}\n";
+        if ($intervention =~ s/^(<p>M[.me]+ (.*?) se lève et dit\s*:)["« ]+(.*?)["» ]+<\/p>/\1/i) {
+            print $out.$cpt.'", "intervention": "'.$intervention.'</p>", "intervenant": "'."\"}\n";
+            print $out.($cpt + 1).'", "intervention": "<p>'.$3.'</p>", "intervenant": "'.$2.'"}'."\n";
+        } else {
+            print $out.$cpt.'", "intervention": "'.$intervention.'", "intervenant": "'."\"}\n";
+        }
     }else {
         $cpt-=10;
         return ;
