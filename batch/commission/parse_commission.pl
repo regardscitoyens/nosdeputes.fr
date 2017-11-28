@@ -595,7 +595,7 @@ foreach $line (split /\n/, $string)
         $tmpinter = "";
         checkout();
     } else {
-      if ($line !~ /(Mar|Mercre)di/ && $line =~ s/^\|(M[^\|\:,]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:,[\|\s]*\/|[\|\s]*\/\s*,\s*)[^\/]+?\/))(.*\w.*)?/\4/) {
+      if ($line !~ /(Mar|Mercre)di/ && $line =~ s/^\|(M[.me]+ [^\|\:,]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:,[\|\s]*\/|[\|\s]*\/\s*,\s*)[^\/]+?\/))(.*\w.*)?/\4/) {
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2.$3;
