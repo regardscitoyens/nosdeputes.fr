@@ -14,6 +14,7 @@ class loadAmdmtsTask extends sfBaseTask {
     // your code here
     $dir = dirname(__FILE__).'/../../batch/amendements/json/';
     $backupdir = dirname(__FILE__).'/../../batch/amendements/loaded/';
+    $errordir = dirname(__FILE__).'/../../batch/amendements/errors/';
     $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);
     $nb_json = 0;
@@ -33,10 +34,12 @@ class loadAmdmtsTask extends sfBaseTask {
             $json = json_decode($line);
             if (!$json) {
               echo "ERROR json : $line";
+	      rename($dir.$file, $errordir.$file);
               continue 2;
             }
             if (!$json->source || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->texte || !$json->date || !isset($json->rectif)) {
               echo "ERROR mandatory arg missing (source|legis|numero|loi|sujet|texte|date|rectif): $line\n";
+	      rename($dir.$file, $errordir.$file);
               continue 2;
             }
             $modif = true;
@@ -118,6 +121,7 @@ class loadAmdmtsTask extends sfBaseTask {
               } else if (!$json->sort || !preg_match('/(irrecevable|retir)/i', $json->sort)) {
                 echo "ERROR json auteurs missing : $line\n";
                 $amdmt->free();
+	        rename($dir.$file, $errordir.$file);
                 continue 2;
               }
             }
