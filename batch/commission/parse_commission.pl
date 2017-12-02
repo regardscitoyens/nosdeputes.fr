@@ -653,7 +653,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/^[\.\:]\s*//;
     #print STDERR "LINE: $found $line\n";
 	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève| été nommé|ayant )/) {
-	    if ($line =~ s/^\s*((Dr|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
+	    if ($line =~ s/^\s*((Dr\.?|Pr\.?|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
             if (!$intervenant && $line =~ /^\s*$/) {
