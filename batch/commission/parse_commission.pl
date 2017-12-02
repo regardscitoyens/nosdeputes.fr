@@ -741,12 +741,12 @@ foreach $line (split /\n/, $string)
           $element =~ s/^MM\./M. /;
           $element =~ s/^M\.(\S+)/M. \1/;
           $element =~ s/(\S+)\s*\(\s*/\1 (/;
-          if ($element =~ /^M(?:\.|me)\s+([^,]+),\s+(.*)$/ || $element =~ /^((?:Col\.?|Gal\.?)[^,]+),\s+(.*)$/) {
+          if ($element =~ /^M(?:\.|me)\s+([^,]+),\s+(.*)$/ || $element =~ /^((?:Col\.?|Gal\.?|Dr\.?)[^,]+),\s+(.*)$/) {
             checkout();
             $intervenant = setFonction($2, $1);
             $intervention = $nointer;
             checkout();
-          } elsif ($element =~ /^M(?:\.|me)\s+(.*)$/ || $element =~ /^((?:Col\.?|Gal\.?).*)$/) {
+          } elsif ($element =~ /^M(?:\.|me)\s+(.*)$/ || $element =~ /^((?:Col\.?|Gal\.?|Dr\.?).*)$/) {
             checkout();
             $intervenant = setIntervenant($1);
             $intervention = $nointer;
