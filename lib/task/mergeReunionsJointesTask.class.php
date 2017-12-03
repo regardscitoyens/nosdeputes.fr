@@ -7,7 +7,7 @@ class mergeReunionsJointesTask extends sfBaseTask {
     $this->briefDescription = "Fusionner proprement une réunion conjointe dans une autre (déplace les présences de la première dans la seconde et en supprime les interventions désirées pour une didascalie pointant un lien vers l'autre";
     $this->addArgument('badid', sfCommandArgument::REQUIRED, 'Id de la séance à expurger des doublons');
     $this->addArgument('gdid', sfCommandArgument::REQUIRED, "Id de la séance d'accueil");
-    $this->addArgument('firstinter', sfCommandArgument::REQUIRED, "Id de la première intervention à supprimer");
+    $this->addArgument('firstinter', sfCommandArgument::REQUIRED, "Id de la première intervention à supprimer ou none");
     $this->addArgument('lastinter', sfCommandArgument::REQUIRED, "Id de la dernière intervention à supprimer");
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
@@ -37,6 +37,7 @@ class mergeReunionsJointesTask extends sfBaseTask {
     $gdseanceurl = preg_replace('#http://(symfony/)+#', '/', url_for("@interventions_seance?seance=".$gdid, 'absolute=false'));
     $gdseancefurl = trim(sfConfig::get('app_base_url'), "/").$gdseanceurl;
 
+  if ($arguments['firstinter'] !== "none") {
     $firstinter = Doctrine::getTable('Intervention')->find($arguments['firstinter']);
     if (!$firstinter) {
       print "Intervention ".$arguments['firstinter']." inexistante\n";
@@ -93,6 +94,7 @@ class mergeReunionsJointesTask extends sfBaseTask {
       }
     }
     echo "\n";
+  }
 
     # Merge présences bad seance into good seance
     echo "-> Move présences from bad seance to good seance...";
