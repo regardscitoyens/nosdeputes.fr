@@ -463,8 +463,8 @@ class plotComponents extends sfComponents
       // Préparation des requêtes et attributs suivant le type de graphe
       $qmots = Doctrine_Query::create()
         ->from('Intervention i')
-        ->andWhere('i.fonction NOT LIKE ?', 'président%')
-        ->andWhere('i.personnalite_id IS NULL')
+        ->where('i.fonction NOT LIKE ?', 'président%')
+        ->andWhere('i.parlementaire_id <> NULL')
         ->groupBy('i.parlementaire_id');
       if (preg_match('/section_(\d+)$/', $this->plot, $match))
         // pour les dossiers
@@ -472,7 +472,7 @@ class plotComponents extends sfComponents
           ->andWhere('s.section_id = ?', $match[1]);
       else if (preg_match('/seance_(com|hemi)_(\d+)$/', $this->plot, $match)) {
         // pour les séances
-        $qmots->where('i.seance_id = ?', $match[2]);
+        $qmots->andWhere('i.seance_id = ?', $match[2]);
         if ($match[1] == 'com') {
           $this->seancecom = $match[2];
           $this->seancenom = 'réunion';
