@@ -333,6 +333,18 @@ class plotComponents extends sfComponents
         $keep[] = $acro;
       }
     }
+    $query = Doctrine_Query::create()
+      ->select('distinct(i.parlementaire_groupe_acronyme) as grp')
+      ->from('Intervention i');
+    if (!myTools::isFinLegislature())
+      $query->andWhere('i.date >= ?', $lastyear);
+    foreach ($query->fetchArray() as $grp) {
+      $acro = $grp['grp'];
+      if ($acro && !isset($stats[$acro]['nb'])) {
+        $stats[$acro]['nb'] = 0;
+        $keep[] = $acro;
+      }
+    }
 
     $this->data['groupes'] = array();
     $this->data['couleurs'] = array();
