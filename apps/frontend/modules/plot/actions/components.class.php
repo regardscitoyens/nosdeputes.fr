@@ -464,7 +464,7 @@ class plotComponents extends sfComponents
       $qmots = Doctrine_Query::create()
         ->from('Intervention i')
         ->where('i.fonction NOT LIKE ?', 'président%')
-        ->andWhere('i.parlementaire_id <> NULL')
+        ->andWhere('i.parlementaire_id IS NOT NULL')
         ->groupBy('i.parlementaire_id');
       if (preg_match('/section_(\d+)$/', $this->plot, $match))
         // pour les dossiers
