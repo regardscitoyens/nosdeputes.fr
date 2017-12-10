@@ -169,8 +169,8 @@ else:
             elif re.search(reg['reunion_senat'], line, re.IGNORECASE) is not None:
               m = re.search(reg['reunion_senat'], line, re.IGNORECASE)
               data['date'] = date_iso(m.group(2))
-              data['heure'] = m.group(1).replace(u'Séance', '')
-            else:
+              data['heure'] = m.group(1).replace(u'Séance', '').replace(u'séance', '')
+            elif not re.search(u"délégué.*vote", line, re.I):
               m = re.search(reg['commission'], line)
               data['commission'] = re.sub(':', '', m.group(1)).strip()
 
