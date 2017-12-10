@@ -214,7 +214,7 @@ sub checkout {
     $intervention =~ s/\\\\/\//g;
     $intervention =~ s/\s*(<\/?t(able|[rdh])[^>]*>)\s*/\1/gi;
     $out =  '{"contexte": "'.$contexte.'", "date": "'.$date.'", "source": "'.$source.'", "heure": "'.$heure.'", "session": "'.$session.'", ';
-    if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|bienvenue|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement/i) {
+    if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|bienvenue|annulation|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement/i) {
         $out .= "\"numeros_loi\": \"$ploi\", ";
     }
     if ($amendements) {
