@@ -145,7 +145,7 @@ class parlementaireActions extends sfActions
     $this->missions = array();
 
     foreach ($this->parlementaire->getResponsabilites() as $resp) {
-      if (in_array($resp->organisme_id, array(2, 330, 9, 20, 27, 371))) {
+      if (in_array($resp->organisme_id, array(2, 330, 9, 20, 27, 371, 738))) {
 	array_push($this->commissions_permanentes, $resp);
       }else{
 	array_push($this->missions, $resp);
