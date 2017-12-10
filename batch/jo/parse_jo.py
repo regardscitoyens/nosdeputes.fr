@@ -155,11 +155,11 @@ else:
             com_text += line+os.linesep
 
         com_text = com_text.replace(u"’", u"'")
+        com_text = re.sub(u"\s*:\s*([^:]*séance)", ur" :\n\1", com_text)
 
         json_file = ''
 
         for line in com_text.split(os.linesep):
-
           if re.search(reg['commission'], line) is not None:
 
             if re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
