@@ -253,15 +253,22 @@ sub checkout {
                 print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
             }
         }
-        if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)//g) {
+        if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)//) {
             $ts++;
             $extraint = $3;
             if ($extraint =~ s/,\s+(.*)\s*$//) {
                 setFonction($1, $extraint);
                 $fonction = $inter2fonction{$extraint};
                 $extraint .= '", "fonction": "'.$fonction;
-            }
-            print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$extraint."\"}\n";
+                print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$extraint."\"}\n";
+            } else { foreach $i (split(/(?:et\s*M[mes\.]*| et |, M[mes\.]*)\s*/, $extraint)) {
+                $ts++;
+                if (!$inter2fonction{$i} && $i =~ s/, (.*)$//) {
+                    setFonction($1, $i);
+                }
+                $i =~ s/^([up])(n |lusieurs)/\U\1\L\2/i;
+                print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
+            } }
         }
         $extrafct = "";
         if ($intervenant =~ s/\s*(Doyenn?e? d'âge)$//i) {
