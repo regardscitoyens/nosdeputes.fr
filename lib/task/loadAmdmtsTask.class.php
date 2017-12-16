@@ -18,6 +18,16 @@ class loadAmdmtsTask extends sfBaseTask {
     $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);
     $nb_json = 0;
+    $orgas = array(
+      "GVT"    => "Gouvernement",
+      "59046"  => "Commission de la défense nationale et des forces armées",
+      "59047"  => "Commission des affaires étrangères",
+      "59048"  => "Commission des finances",
+      "59051"  => "Commission des lois",
+      "419610" => "Commission des affaires économiques",
+      "419865" => "Commission du développement durable et de l'aménagement du territoire",
+      "420120" => "Commission des affaires sociales"
+    );
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
@@ -130,7 +140,7 @@ class loadAmdmtsTask extends sfBaseTask {
             } elseif (!$amdmt->sort) {
               $amdmt->sort = "Indéfini";
             }
-            if ($json->auteur_reel && $json->auteur_reel !== "GVT" && !$amdmt->auteur_id) {
+            if ($json->auteur_reel && !isset($orgas[$json->auteur_reel]) && !$amdmt->auteur_id) {
               $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel);
               if ($parl->id)
                 $amdmt->setFirstAuteur($parl);
