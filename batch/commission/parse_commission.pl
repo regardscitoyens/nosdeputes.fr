@@ -138,12 +138,12 @@ if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([
 sub comparable {
     $origstr = shift;
     $origstr = lc($origstr);
-    $origstr =~ s/(à|â|ä)/a/g;
-    $origstr =~ s/(é|è|ê|ë)/e/g;
-    $origstr =~ s/(î|ï)/i/g;
-    $origstr =~ s/(ô|ö)/o/g;
-    $origstr =~ s/(ù|û|ü)/u/g;
-    $origstr =~ s/ç/c/g;
+    $origstr =~ s/(à|â|ä|À|Â|Ä)/a/g;
+    $origstr =~ s/(é|è|ê|ë|É|È|Ê|Ë)/e/g;
+    $origstr =~ s/(î|ï|Î|Ï)/i/g;
+    $origstr =~ s/(ô|ö|Ô|Ö)/o/g;
+    $origstr =~ s/(ù|û|ü|Ù|Û|Ü)/u/g;
+    $origstr =~ s/(ç|Ç)/c/g;
     $origstr =~ s/[^a-z]+/ /g;
     return $origstr;
 }
@@ -659,7 +659,7 @@ foreach $line (split /\n/, $string)
     }
     $line =~ s/\/\.\//./g;
     $line =~ s/^[\.\:]\s*//;
-    #print STDERR "LINE: $found $line\n";
+    #print STDERR "LINE: $found $intervenant $line\n";
 	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève| été nommé|ayant )/) {
 	    if ($line =~ s/^\s*((Dr\.?|Pr\.?|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
