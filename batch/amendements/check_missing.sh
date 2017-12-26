@@ -16,9 +16,29 @@ cat Amendements_XIV.json                                    |
   sed 's/\.pdf/\.asp/'                                      |
   sort -u > all_amdts_opendataAN.tmp
 
-rm -f Amendements_XIV.json*
+#rm -f Amendements_XIV.json*
 
-echo "Extracting list of Questions from NosDéputés..."
+echo "Extracting list of Amendements from search engine AN..."
+searchurl="http://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&leg=$LEGISLATURE&idExamen=&idDossierLegislatif=&missionVisee=&numAmend=&idAuteur=&idArticle=&idAlinea=&sort=&dateDebut=&dateFin=&periodeParlementaire=&texteRecherche=&format=html&tri=ordreTexteasc&typeRes=liste&rows="
+start=1
+total=$(curl "${searchurl}5"    |
+  grep '"nb_resultats"'         |
+  sed 's/^.*:\s*//'             |
+  sed 's/,\s*$//')
+rm -f all_amdts_searchAN.tmp
+while [ $start -lt $total ]; do
+  curl "${searchurl}1000&start=$start"          |
+    grep '^\['                                  |
+    sed 's/","/\n/g'                            |
+    sed 's/^.*|http:/http:/'                    |
+    sed 's/|.*$//'                              |
+    sed 's|\\/|/|g' >> all_amdts_searchAN.tmp
+  start=$(($start + 1000))
+done
+
+cat all_amdts_opendataAN.tmp all_amdts_searchAN.tmp | sort -u > all_amdts_AN.tmp
+
+echo "Extracting list of Amendements from NosDéputés..."
 echo 'SELECT source FROM amendement WHERE sort NOT LIKE "Rect%" ORDER BY source'    |
   mysql $MYSQLID $DBNAME                                                            |
   sed -r 's|(/T?A?[0-9]{4}[A-Z]?/)([0-9]+\.asp)|\1AN/\2|'                           |
@@ -27,20 +47,20 @@ echo 'SELECT source FROM amendement WHERE sort NOT LIKE "Rect%" ORDER BY source'
   sort > all_amdts_nosdeputes.tmp
 
 echo "Analysing diff..."
-extra=$(diff all_amdts_opendataAN.tmp all_amdts_nosdeputes.tmp | grep "^>" | wc -l)
+extra=$(diff all_amdts_AN.tmp all_amdts_nosdeputes.tmp | grep "^>" | wc -l)
 if [ $extra -gt 0 ]; then
   echo "- NosDéputés has $extra Amendements not in AN's OpenData yet(?):"
-  diff all_amdts_opendataAN.tmp all_amdts_nosdeputes.tmp    |
+  diff all_amdts_AN.tmp all_amdts_nosdeputes.tmp    |
     grep "^>"                                               |
     sed 's/^> //' > extra_amdmts_ND
     echo 'Full list available in "extra_amdmts_ND"'
   echo
 fi
 
-missing=$(diff all_amdts_opendataAN.tmp all_amdts_nosdeputes.tmp | grep "^<" | wc -l)
+missing=$(diff all_amdts_AN.tmp all_amdts_nosdeputes.tmp | grep "^<" | wc -l)
 if [ $missing -gt 0 ]; then
   echo "There are $missing Amendements missing, reloading them:"
-  diff all_amdts_opendataAN.tmp all_amdts_nosdeputes.tmp    |
+  diff all_amdts_AN.tmp all_amdts_nosdeputes.tmp    |
     grep "^<"                                               |
     sed 's/^< //'                                           |
     while read AMurl; do
