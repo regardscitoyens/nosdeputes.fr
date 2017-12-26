@@ -608,7 +608,7 @@ foreach $line (split /\n/, $string)
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2.$3;
-        if ($extrainterv =~ s/(\/A \w+i\/)//) {
+        if ($extrainterv =~ s/(\/A \w+i\W*\/)//) {
             $line = $1.$line;
         }
         $found = $majIntervenant = 1;
