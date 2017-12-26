@@ -24,6 +24,7 @@ class loadAmdmtsTask extends sfBaseTask {
       "59047"  => "Commission des affaires étrangères",
       "59048"  => "Commission des finances",
       "59051"  => "Commission des lois",
+      "419604" => "Commission des affaires culturelles et de l'éducation",
       "419610" => "Commission des affaires économiques",
       "419865" => "Commission du développement durable et de l'aménagement du territoire",
       "420120" => "Commission des affaires sociales"
