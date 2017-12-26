@@ -24,7 +24,7 @@ if ($type == "groupe") {
 foreach($organismes as $o) :
   $name = ucfirst(in_array($o["slug"], $permas) ? str_replace("commission", "commission <small>(permanente)</small>", $o["nom"]) : $o["nom"]); ?>
 <tr>
-  <td class="orga"><a href="<?php echo url_for('@list_parlementaires_organisme?slug='. $o["slug"]); ?>"><?php echo $name; ?></a></td>
+  <td class="orga"><a class="<?php echo $o['slug']; ?>" href="<?php echo url_for($type == "groupe" ? '@list_parlementaires_groupe?acro='.$o['acronyme'] : '@list_parlementaires_organisme?slug='. $o["slug"]); ?>"><?php echo $name; ?></a></td>
   <td><?php if ($o["membres"]) echo $o["membres"]; ?></td>
   <?php if ($type == "parlementaire") { ?>
   <td><?php if ($o["reunions"]) echo $o["reunions"]; ?></td>
