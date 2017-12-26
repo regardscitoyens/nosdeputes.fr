@@ -573,6 +573,7 @@ foreach $line (split /\n/, $string)
     }
 	next if ($line !~ /\w/);
     next if ($line =~ /\|\/(vice-)?présidente?\/\|/);
+    $line =~ s/^\s*–\s*\|\s*/|– /;
     $tmpinter = "";
     #print STDERR $line."\n";
     #si italique ou tout gras => commentaire
