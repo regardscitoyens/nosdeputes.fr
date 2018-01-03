@@ -55,7 +55,7 @@ for($mois = $dmois ; $mois <= $lastmonth ; $mois++) {
 	      next;
 	  }
 	  $thecontent = $a->content;
-	  if(!$thecontent) {
+	  if(!$thecontent || $thecontent =~ /version provisoire\W*?<\/title>/i) {
 		$a->back();
 		next;
 	  }
