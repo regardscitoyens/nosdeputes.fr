@@ -16,18 +16,18 @@ cat Amendements_XIV.json                                    |
   sed 's/\.pdf/\.asp/'                                      |
   sort -u > all_amdts_opendataAN.tmp
 
-#rm -f Amendements_XIV.json*
+rm -f Amendements_XIV.json*
 
 echo "Extracting list of Amendements from search engine AN..."
 searchurl="http://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&leg=$LEGISLATURE&idExamen=&idDossierLegislatif=&missionVisee=&numAmend=&idAuteur=&idArticle=&idAlinea=&sort=&dateDebut=&dateFin=&periodeParlementaire=&texteRecherche=&format=html&tri=ordreTexteasc&typeRes=liste&rows="
 start=1
-total=$(curl "${searchurl}5"    |
+total=$(curl -sL "${searchurl}5"|
   grep '"nb_resultats"'         |
   sed 's/^.*:\s*//'             |
   sed 's/,\s*$//')
 rm -f all_amdts_searchAN.tmp
 while [ $start -lt $total ]; do
-  curl "${searchurl}1000&start=$start"          |
+  curl -sL "${searchurl}1000&start=$start"      |
     grep '^\['                                  |
     sed 's/","/\n/g'                            |
     sed 's/^.*|http:/http:/'                    |
@@ -65,12 +65,12 @@ if [ $missing -gt 0 ]; then
     sed 's/^< //'                                           |
     while read AMurl; do
       AMfile=$(echo "$AMurl" | sed 's|/|_-_|g')
-      perl download_one.pl "$AMurl" 2>/dev/null && perl cut_amdmt.pl "html/$AMfile" > "json/$AMfile"
+      perl download_one.pl "$AMurl" 2>/dev/null && perl cut_amdmt.pl "html/$AMfile" > "json/$AMfile" || echo "ERROR: $AMurl missing from AN web"
     done
   AMdone=$(ls json | wc -l)
   echo
   echo "$(($missing - $AMdone)) missing amendements from AN's OpenData could not be found on AN's website"
-  echo 'All '"$AMdone"' missing found Amendements reloaded and parsed, run "while find batch/amendements/json -type f > /dev/null; do php symfony load:Amdmts; done" to complete'
+  echo 'All '"$AMdone"' missing found Amendements reloaded and parsed into batch/amendements/json'
 fi
 
 rm -f all_amdts_*.tmp
