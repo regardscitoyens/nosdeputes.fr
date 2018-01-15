@@ -481,6 +481,11 @@ class myTools {
           $action->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.json"');
         }
         break;
+      case 'json-browser':
+        if (!$request->getParameter('textplain')) {
+          $action->getResponse()->setContentType('text/plain; charset=utf-8');
+        }
+        break;
       case 'xml':
         if (!$request->getParameter('textplain')) {
           $action->getResponse()->setContentType('text/xml; charset=utf-8');
