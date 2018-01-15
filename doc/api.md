@@ -20,7 +20,7 @@ Une API a été développée pour offrir un accès Open Data simplifié aux donn
 
 ## Explications
 
-- **Format :** La plupart des exemples fournis ci-dessous sont donnés au format XML pour permettre plus de lisibilité dans le navigateur web. Veuillez remplacer `xml` en `json` ou `csv` pour accéder aux autres formats. Il éxiste aussi un format `json-browser` qui vous permet d'afficher le fichier dans le navigateur.
+- **Format :** La plupart des exemples fournis ci-dessous sont donnés au format XML pour permettre plus de lisibilité dans le navigateur web. Veuillez remplacer `xml` en `json` ou `csv` pour accéder aux autres formats. Pour forcer l'affichage dans le navigateur, vous pouvez utilisez l'option `?textplain=true`.
 
 - **Encoding :** les données sont proposées en `utf-8`. Si vous vous retrouvez face à des caractères kabbalistiques, cela signifie qu'il vous faut régler l'encodage dans les options du logiciel avec lequel vous manipulez les données. Si votre tableur ne vous permet de spécifier l'encodage, vous pouvez rajouter l'option `?withBOM=true` à la fin des adresses des fichiers CSV que vous cherchez à télécharger.
 
