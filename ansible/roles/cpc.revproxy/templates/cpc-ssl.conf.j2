@@ -7,6 +7,7 @@
   <Location />
     Order deny,allow
     Allow from all
+    Header always set Access-Control-Allow-Origin *
   </Location>
 </VirtualHost>
 
@@ -50,12 +51,15 @@
   <Location />
     Order deny,allow
     Allow from all
+    Header always set Access-Control-Allow-Origin *
   </Location>
 </VirtualHost>
 
 <VirtualHost *:443>
   ServerName {{ alias }}
   ServerSignature Off
+
+  Header always set Access-Control-Allow-Origin *
 
   SSLEngine On
   Header add Strict-Transport-Security "max-age=15552000"
