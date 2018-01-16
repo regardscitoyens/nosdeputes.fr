@@ -66,6 +66,10 @@ if [ $missing -gt 0 ]; then
     while read AMurl; do
       AMfile=$(echo "$AMurl" | sed 's|/|_-_|g')
       perl download_one.pl "$AMurl" 2>/dev/null && perl cut_amdmt.pl "html/$AMfile" > "json/$AMfile" || echo "ERROR: $AMurl missing from AN web"
+      if grep '"date": "1970-01-01", "auteur_reel": "", "auteurs": "", "sort": "", "sujet": "", "texte": "", "expose": "" }' "json/$AMfile" > /dev/null; then
+        echo "ERROR: $AMurl missing from AN web"
+        rm -f "json/$AMfile"
+      fi
     done
   AMdone=$(ls json | wc -l)
   echo
