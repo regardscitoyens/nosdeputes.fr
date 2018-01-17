@@ -646,9 +646,19 @@ class parlementaireActions extends sfActions
     $this->news = $news;
     $this->feed = new sfRssFeed();
   }
-  public function executeError404() {
-    $this->response->setTitle("Erreur 404 - Page introuvable - NosDéputés.fr");
+
+  public function executeError404(sfWebRequest $request) {
+    if (preg_match('#/(xml|json|csv)(\?.*)?$#', $_SERVER["REDIRECT_URL"], $match)) {
+      $this->setLayout(false);
+      $this->setTemplate(false);
+      if ($match[1] === "json") {
+        print "{}";
+      }
+    } else {
+      $this->response->setTitle("Erreur 404 - Page introuvable - NosDéputés.fr");
+    }
   }
+
 
   private function searchDepute($search) {
     $sexe = null;
