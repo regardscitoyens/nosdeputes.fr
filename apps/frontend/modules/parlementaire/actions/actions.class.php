@@ -564,12 +564,23 @@ class parlementaireActions extends sfActions
   }
 
   public function executeError404(sfWebRequest $request) {
-    if (preg_match('#/(xml|json|csv)(\?.*)?$#', $_SERVER["REDIRECT_URL"], $match)) {
+    $prevHost = myTools::getPreviousHost();
+    $uri = $_SERVER["REQUEST_URI"];
+    if ($prevHost &&
+      (preg_match('/^\/(api|1\d)\//', $uri) || preg_match('/^\/[^\/]+$/', $uri) || preg_match('/^\/depute\/photo\//', $uri)) &&
+      !preg_match('/^\/'.myTools::getLegislature().'\//', $uri)
+    ) {
+      $this->response->setHttpHeader('Location', myTools::getProtocol()."://".$prevHost.$uri);
+      print myTools::getProtocol()."://".$prevHost.$uri;
+    } elseif (preg_match('#/(xml|json|csv)(\?.*)?$#', $uri, $match)) {
       $this->setLayout(false);
       $this->setTemplate(false);
       if ($match[1] === "json") {
         print "{}";
       }
+    } else {
+      $this->response->setHttpHeader('Status', '404 Not found');
+      $this->response->setTitle("Erreur 404 - Page introuvable - NosDéputés.fr");
     }
   }
 
