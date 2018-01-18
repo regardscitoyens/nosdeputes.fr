@@ -307,8 +307,8 @@ class apiActions extends sfActions
       $res['historique_responsabilites'] = myTools::array2hash($parl->getHistorique(), 'responsabilite');
     }
     $res['sites_web'] = myTools::array2hash(unserialize($parl->sites_web), 'site');
+    $res['emails'] = myTools::array2hash(unserialize($parl->mails), 'email');
     if ($light != 2) {
-      $res['emails'] = myTools::array2hash(unserialize($parl->mails), 'email');
       $res['adresses'] = myTools::array2hash(unserialize($parl->adresses), 'adresse');
       $res['collaborateurs'] = myTools::array2hash(unserialize($parl->collaborateurs), 'collaborateur');
       $res['anciens_mandats'] = myTools::array2hash(unserialize($parl->anciens_mandats), 'mandat');
