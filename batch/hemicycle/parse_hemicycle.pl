@@ -465,7 +465,7 @@ foreach $line (split /\n/, $string)
             $titre =~ s/\///g;
             $titre =~ s/\s+$//;
             next unless ($titre);
-            if ($titre !~ /rappels? au règlement|suspension|reprise/i) {
+            if ($titre !~ /\b(rappels? au règlement|suspension|reprise)/i) {
                 $titre1 = $titre;
                 $titre2 = '';
                 $donetitre1 = 1;
