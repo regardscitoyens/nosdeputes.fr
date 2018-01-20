@@ -760,7 +760,7 @@ foreach $line (split /\n/, $string)
             $intervenant = setIntervenant($1);
             $intervention = $nointer;
             checkout();
-          } else {
+          } elsif ($element !~ /^Intervention$/i) {
             $intervenant = "";
             $intervention .= "<p>$element</p>";
           }
