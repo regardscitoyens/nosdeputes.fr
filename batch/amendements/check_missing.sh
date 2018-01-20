@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd $(dirname $0)
-source ../../bin/db.inc
+source ../../bin/db-external.inc || source ../../bin/db.inc
 ANroot="http://www.assemblee-nationale.fr"
 
 echo "Downloading Amendements from OpenData AN..."
