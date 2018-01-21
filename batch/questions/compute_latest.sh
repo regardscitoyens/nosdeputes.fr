@@ -19,7 +19,8 @@ else
 fi
 echo $sql_string | iconv -f utf8 -t latin1 | mysql $MYSQLID $DBNAME | grep -v "^source$" > liste_sans_reponse.txt
 
-date_from=`echo "SELECT date FROM question ORDER BY date DESC limit 1" | mysql $MYSQLID $DBNAME | grep -v date`
+#date_from=`echo "SELECT date FROM question ORDER BY date DESC limit 1" | mysql $MYSQLID $DBNAME | grep -v date`
+date_from=`date +%Y-%m-%d -d "last month"`
 perl download_questions_from_recherche.pl $date_from
 
 for file in `grep -L "The page cannot be found\|Le texte de cette question sera publié dès sa" html/*`; do
