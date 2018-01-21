@@ -34,7 +34,7 @@ class plotComponents extends sfComponents
       }
       $date_debut = date('Y-m-d', $last_year);
       $date_fin = date('Y-m-d', $time_fin);
-      $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
+      $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
     } else {
       $start = Doctrine_Query::create()
         ->select('s.date, s.annee, s.numero_semaine')
@@ -54,7 +54,7 @@ class plotComponents extends sfComponents
       $date_fin = $end['date'];
       $annee = $end['annee'];
       $sem = $end['numero_semaine'];
-      $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
+      $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
     }
 #print "$dow ; $date_fin ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
     if ($this->data['fin']) {
@@ -82,7 +82,7 @@ class plotComponents extends sfComponents
     $this->data['n_presences'] = array('commission' => array_fill(1, $n_weeks, 0),
                                'hemicycle' => array_fill(1, $n_weeks, 0));
     foreach ($presences as $presence) {
-      $n = ($presence['Seance']['annee'] - $annee0)*53 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
+      $n = ($presence['Seance']['annee'] - $annee0)*52 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
       if ($n <= $n_weeks) $this->data['n_presences'][$presence['Seance']['type']][$n] += $presence['nombre'];
     }
     unset($presences);
@@ -104,7 +104,7 @@ class plotComponents extends sfComponents
       'hemicycle' => array_fill(1, $n_weeks, 0)
     );
     foreach ($participations as $participation) {
-      $n = ($participation['Seance']['annee'] - $annee0)*53 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
+      $n = ($participation['Seance']['annee'] - $annee0)*52 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
       if ($n <= $n_weeks)
         $this->data['n_participations'][$participation['Seance']['type']][$n] += $participation['nombre'];
     }
@@ -126,7 +126,7 @@ class plotComponents extends sfComponents
 
       $this->data['n_questions'] = array_fill(1, $n_weeks, 0);
       foreach ($questionsorales as $question) {
-        $n = ($question['Seance']['annee'] - $annee0)*53 + $question['Seance']['numero_semaine'] - $sem0 + 1;
+        $n = ($question['Seance']['annee'] - $annee0)*52 + $question['Seance']['numero_semaine'] - $sem0 + 1;
         if ($n <= $n_weeks) {
           if ($this->data['n_questions'][$n] == 0)
             $this->data['n_questions'][$n] -= 0.15;
@@ -152,7 +152,7 @@ class plotComponents extends sfComponents
         $an_legis++;
         $sem_legis = 1;
       }
-      $startweek = ($annee0 - $an_legis)*53 + $sem0 - $sem_legis;
+      $startweek = ($annee0 - $an_legis)*52 + $sem0 - $sem_legis;
       if ($startweek <= 0) {
         $weeks_acti = count($prmedi['total']);
         for ($i=1; $i <= $weeks_acti; $i++) {
@@ -188,12 +188,12 @@ class plotComponents extends sfComponents
     $mandat_an0 = date('o', $debut_mandat);
     $mandat_sem0 = date('W', $debut_mandat);
     if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
-    $week0 = ($mandat_an0 - $annee0)*53 + $mandat_sem0 - $sem0 + 1;
+    $week0 = ($mandat_an0 - $annee0)*52 + $mandat_sem0 - $sem0 + 1;
     for ($n = 1; $n < $week0 ; $n++)
       $n_vacances[$n] = 20;
 
     foreach (myTools::getVacances() as $vacance) {
-      $n = ($vacance['annee'] - $annee0)*53 + $vacance['semaine'] - $sem0 + 1;
+      $n = ($vacance['annee'] - $annee0)*52 + $vacance['semaine'] - $sem0 + 1;
       if ($n > 0 && $n <= $n_weeks)
         $n_vacances[$n] = 20;
     }
@@ -241,7 +241,7 @@ class plotComponents extends sfComponents
       $n++;
     }
     foreach (myTools::getVacances() as $vacance) {
-      $n = ($vacance['annee'] - $annee0)*53 + $vacance['semaine'] - $sem0 + 1;
+      $n = ($vacance['annee'] - $annee0)*52 + $vacance['semaine'] - $sem0 + 1;
       if ($n > 0 && $n <= $n_weeks)
         $n_vacances[$n] = 20;
     }
