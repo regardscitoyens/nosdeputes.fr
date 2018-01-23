@@ -658,10 +658,8 @@ class parlementaireActions extends sfActions
       print myTools::getProtocol()."://".$prevHost.$uri;
     } elseif (preg_match('#/(xml|json|csv)(\?.*)?$#', $uri, $match)) {
       $this->setLayout(false);
-      $this->setTemplate(false);
-      if ($match[1] === "json") {
-        print "{}";
-      }
+      $this->setTemplate($match[1], "api");
+      $this->response->setStatusCode(200);
     } else {
       $this->response->setHttpHeader('Status', '404 Not found');
       $this->response->setTitle("Erreur 404 - Page introuvable - NosDéputés.fr");
