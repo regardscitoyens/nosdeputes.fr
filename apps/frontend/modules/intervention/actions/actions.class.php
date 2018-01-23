@@ -189,12 +189,12 @@ class interventionActions extends sfActions
     $section_id = $this->getSectionId($request);
 
     if (!$section_id && $loi = $request->getParameter('loi')) {
-      $querytag = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$loi));
+      /*$querytag = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.$loi));
       $querytag->andWhere('seance_id = ?', $this->seance->id)->select('id');
       $ids = array('0' => 1);
       foreach ($querytag->execute(array(), Doctrine::HYDRATE_NONE) as $id) {
               $ids[$id[0]] = 1;
-      }
+      }*/
       $querytag = PluginTagTable::getObjectTaggedWithQuery('Section', array('loi:numero='.$loi));
       $querytag->leftJoin('Section.Interventions i')->select('Section.section_id, count(*) as count')->groupBy('Section.section_id')->orderBy('count desc');
       $id = $querytag->fetchOne();
