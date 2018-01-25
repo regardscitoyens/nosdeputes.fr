@@ -536,7 +536,7 @@ foreach $line (split /\n/, $string)
                 $oldintervenant_url = $intervenant_url;
                 checkout() if ($intervenant);
                 $intervenant = ''; $intervenant_url = '';
-                if ($line =~ /^[\s\/\.]*\([^\)]+\)[\s\/\.]*$/) {
+                if ($line =~ /^[\s\/\.]*\([^\)]+\)?[\s\/\.]*$/) {
                     checkout() if ($intervention);
                     clean_line();
                     $intervention = "<p>$line</p>";
