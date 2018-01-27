@@ -1,0 +1,9 @@
+/var/lib/docker/containers/*/*-json.log {
+	daily
+	missingok
+	rotate 14
+	compress
+	notifempty
+	copytruncate
+}
+
