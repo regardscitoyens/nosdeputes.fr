@@ -191,8 +191,8 @@ class apiActions extends sfActions
       $this->multi['responsabilite'] = 1;
       $this->multi['email'] = 1;
       $this->multi['adresse'] = 1;
-      $this->multi['mandat'] = 1;
     }
+    $this->multi['mandat'] = 1;
     $this->multi['site'] = 1;
     $orga = $request->getParameter('orga');
     if ($orga) {
@@ -289,10 +289,10 @@ class apiActions extends sfActions
     if ($light != 2) {
       $res['emails'] = myTools::array2hash(unserialize($parl->mails), 'email');
       $res['adresses'] = myTools::array2hash(unserialize($parl->adresses), 'adresse');
-      $res['anciens_mandats'] = myTools::array2hash(unserialize($parl->anciens_mandats), 'mandat');
       $res['autres_mandats'] = myTools::array2hash(unserialize($parl->autres_mandats), 'mandat');
       $res['anciens_autres_mandats'] = myTools::array2hash(unserialize($parl->anciens_autres_mandats), 'mandat');
     }
+    $res['anciens_mandats'] = myTools::array2hash(unserialize($parl->anciens_mandats), 'mandat');
     $res['profession'] = $parl->profession;
     $res['place_en_hemicycle'] = $parl->place_hemicycle;
     $res['url_an'] = $parl->url_an;
