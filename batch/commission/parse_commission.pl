@@ -599,6 +599,7 @@ foreach $line (split /\n/, $string)
       $found = 1;
 	}
     $line =~ s/^(\|M[.me]+)\s*\|\s*/\1 /;
+    $line =~ s/^\|M\s+([A-ZÉ])/|M. \1/;
     $line =~ s/\|\)/)|/g;
     if (($prez && $line =~ /^\|?(Informations relatives à la Commission|Présences en réunion)/i) || $line =~ /^\W*Membres présents/) {
         $finished = 1;
@@ -623,7 +624,7 @@ foreach $line (split /\n/, $string)
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
-	  } elsif ($line =~ s/^[Llea\s]*\|(?:Madame|Monsieur)?\s*[Llea\s]*([pP]r..?sidente?) (([A-ZÉ][^\.: \|]+ ?|de )+)[\.: \|]*//) {
+	  } elsif ($line =~ s/^(?:(?:Madame|Monsieur|[Ll][ea]|\|)\s*)+([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?|de )+)[\.: \|]*//) {
 		$f = $1;
 		$i = $2;
 		$found = $majIntervenant = 1;
