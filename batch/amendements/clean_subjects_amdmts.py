@@ -67,7 +67,7 @@ def clean_subject(subj, silent=False):
         try:
             subj = regex.sub(replacement, subj)
         except:
-            print "ERROR on", regex, replacement, subj
+            print >> sys.stderr, "ERROR on", regex, replacement, subj
         subj = subj.strip(": ")
     if not silent and (u"à" in subj or (" et " in subj and not "Etat" in subj)) and not subj.startswith('motion'):
         print >> sys.stderr, ("WARNING, weird subject: %s" % subj).encode('utf-8')
@@ -75,13 +75,13 @@ def clean_subject(subj, silent=False):
 
 
 def run_tests():
-    print "RUNNING TESTS"
+    print >> sys.stderr, "RUNNING TESTS"
     with open("tests_clean_subject.json") as f:
         test = json.load(f)
         for bad, gd in test.items():
             check = clean_subject(bad, silent=True)
             if check != gd:
-                print ("ERROR cleaning %s: got %s while expected %s" % (bad, check, gd)).encode("utf-8")
+                print >> sys.stderr, ("ERROR cleaning %s: got %s while expected %s" % (bad, check, gd)).encode("utf-8")
 
 
 if __name__ == "__main__":
