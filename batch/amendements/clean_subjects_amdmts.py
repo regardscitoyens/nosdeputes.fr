@@ -56,8 +56,8 @@ clean_subject_amendements_regexp = [(re.compile(reg), res) for (reg, res) in [
 
 #(résoudre chiffres romains?)
 
-def clean_subject(subj, silent=False):
-    subj = subj.lower().strip()
+def clean_subject(subject, silent=False):
+    subj = subject.lower().strip()
     subj = subj.replace(u' ', ' ')
     subj = subj.replace(u' ', ' ')
     subj = subj.replace(u'\u0091', "'")
@@ -69,9 +69,51 @@ def clean_subject(subj, silent=False):
         except:
             print >> sys.stderr, "ERROR on", regex, replacement, subj
         subj = subj.strip(": ")
-    if not silent and (u"à" in subj or (" et " in subj and not "Etat" in subj)) and not subj.startswith('motion'):
-        print >> sys.stderr, ("WARNING, weird subject: %s" % subj).encode('utf-8')
-    return upper_first(subj)
+    subj = upper_first(subj)
+    if not test_subject(subj):
+        if not silent:
+            print >> sys.stderr, ("WARNING, weird subject: %s -> %s" % (subject, subj)).encode('utf-8')
+        return subject
+    return subj
+
+fixed_subjects = [
+    u"Titre",
+    u"Annexe",
+    u"Titre préliminaire",
+    u"Proposition de résolution européenne",
+    u"Motion préjudicielle",
+    u"Motion tendant à opposer l'exception d'irrecevabilité",
+    u"Motion tendant à opposer la question préalable",
+    u"Motion tendant au renvoi en commission"
+]
+
+bis_27 = ['bis', 'ter', 'quater', 'quinquies', 'sexies', 'septies', 'octies', 'nonies',
+'decies', 'undecies', 'duodecies', 'terdecies', 'quaterdecies', 'quindecies', 'sexdecies', 'septdecies', 'octodecies', 'novodecies',
+'vicies', 'unvicies', 'duovicies', 'tervicies', 'quatervicies', 'quinvicies', 'sexvicies', 'septvicies']
+
+articles = re.compile(ur"^A((vant|près) l'a)?rticle (1er|[2-9]|[1-9]\d+|liminaire)( (%s))?( [A-Z]{1,3})?( et Etat [A-H])?$" % "|".join(bis_27))
+
+titles = re.compile(ur"^(A(vant|près) le|((Chap|T)itre|Tome|S(ous-s)?ection) ([1I]er|[IVX]+|[2-9]|[1-9]\d+))( ((chap|t)itre|tome|s(ous-s)?ection) ([1I]er|[IVX]+|[2-9]|[1-9]\d+))*$")
+
+specials = re.compile(ur"^(Annexe [A-Z1-9]|Etat [A-H])$")
+
+def test_subject(s):
+    s2 = s.strip()
+    if s != s.strip():
+        print >> sys.stderr, "WARNING: subject not properly stripped"
+        return False
+    if not s:
+        print >> sys.stderr, "WARNING: empty subject"
+        return False
+    if s in fixed_subjects:
+        return True
+    if articles.match(s):
+        return True
+    if titles.match(s):
+        return True
+    if specials.match(s):
+        return True
+    return False
 
 
 def run_tests():
@@ -95,4 +137,5 @@ if __name__ == "__main__":
             break
         am = json.loads(line)
         am['sujet'] = clean_subject(am['sujet'])
+
         print json.dumps(am, ensure_ascii=False).encode('utf-8')
