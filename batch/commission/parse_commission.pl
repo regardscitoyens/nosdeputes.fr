@@ -624,13 +624,13 @@ foreach $line (split /\n/, $string)
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
-	  } elsif ($line =~ s/^(?:(?:Madame|Monsieur|[Ll][ea]|\|)\s*)+([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?|de )+)[\.: \|]*//) {
+	  } elsif ($line =~ s/^(?:(?:Madame|Monsieur|[Ll][ea]|\|)\s*)+([pP]résidente?) (([A-ZÉ][^\.: \|]+ ?|de )+)[\.:\|]+\s*//) {
 		$f = $1;
 		$i = $2;
 		$found = $majIntervenant = 1;
         checkout();
         $intervenant = setFonction($f, $i);
-	  } elsif ($line =~ s/^([Llea\s]*\|[Llea\s]*([pP]r..?sidente?|[rR]apporteure?)[\.: \|]*)//) {
+	  } elsif ($line =~ s/^([Llea\s]*\|[Llea\s]*([pP]r..?sidente?|[rR]apporteure?)\s*[\.:\|]+)\s*//) {
         $orig = $1;
 		$tmpfonction = lc($2);
         if (!$intervenant && $intervention =~ /:<\/p>$/) {
