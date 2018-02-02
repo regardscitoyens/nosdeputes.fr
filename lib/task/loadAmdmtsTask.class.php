@@ -58,7 +58,7 @@ class loadAmdmtsTask extends sfBaseTask {
               $amdmt->addTag('loi:numero='.$amdmt->texteloi_id);
               $amdmt->numero = $json->numero;
               $amdmt->rectif = $json->rectif;
-            } elseif ($amdmt->signataires == $json->auteurs && ($amdmt->date == $json->date || ($amdmt->texte == $json->texte && $amdmt->expose == $json->expose && $amdmt->sujet == $json->sujet))) {
+            } elseif ($amdmt->signataires == $json->auteurs && $amdmt->date == $json->date && $amdmt->texte == $json->texte && $amdmt->expose == $json->expose && $amdmt->sujet == $json->sujet) {
               $modif = false;
             }
             if ($modif) {
