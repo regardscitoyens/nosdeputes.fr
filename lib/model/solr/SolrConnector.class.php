@@ -17,68 +17,77 @@ class SolrConnector extends sfLogger
     $port = sfConfig::get('app_solr_port', '8983');
     $url = sfConfig::get('app_solr_url', '/solr');
     $this->solr = new Apache_Solr_Service($host, $port, $url);
-    
+
     if(!$this->solr->ping()) {
       throw new Exception('Search is not available right now.');
     }
-    
+
     $this->_options = $listener_options;
 
     return $this->solr;
   }
-  
+
 
   public function updateFromCommands($output = 0) {
     $file = SolrCommands::getInstance()->getCommandContent();
+    $nlines = 0;
     foreach(file($file) as $line) {
+      $nlines++;
+      if ($nlines > 601) {
+        $this->commit(1);
+        return false;
+      }
       if (preg_match('/(UPDATE|DELETE) : (.+)/', $line, $matches)) {
-	$obj = json_decode($matches[2]);
-	if ($output)
-		echo "ID: ".$obj->id."\n";
-	if ($matches[1] == 'UPDATE') {
-	  $this->updateLuceneRecord($obj);
-	}else{
-	  $this->deleteLuceneRecord($obj->id);
-	}
+        $obj = json_decode($matches[2]);
+        if ($output)
+          echo "ID: ".$obj->id."\n";
+        if ($matches[1] == 'UPDATE') {
+          $this->updateLuceneRecord($obj);
+        }else{
+          $this->deleteLuceneRecord($obj->id);
+        }
       }
     }
+    $this->commit(1);
     SolrCommands::getInstance()->releaseCommandContent();
+    return true;
   }
 
-  public function commit() {
-	$optimize = false;
+  public function commit($force = false , $optimize = false) {
 	$wait = false;
 	$this->nb_commit++;
-	if ($this->nb_commit > 1000) {
-		$optimize = true;
+	if ($this->nb_commit > 1000 || $force) {
 		$wait = true;
 		$this->nb_commit = 0;
 	}
-	return $this->solr->commit($optimize, $wait);
+	if ($this->nb_commit % 100 || $force) {
+		return $this->solr->commit($optimize, $wait);
+	}
+	return true;
   }
 
   public function deleteLuceneRecord($solr_id)
   {
     if($this->solr->deleteById($solr_id) ) {
-      return $this->commit();
+      return $this->commit(1);
     }
     return false;
   }
 
   public function updateLuceneRecord($obj)
   {
-     $document = new Apache_Solr_Document(); 
-     $document->addField('id', $obj->id); 
-     $document->addField('object_id', $obj->object_id); 
-     $document->addField('object_name', $obj->object_name); 
+     $document = new Apache_Solr_Document();
+     $document->addField('id', $obj->id);
+     $document->addField('object_id', $obj->object_id);
+     $document->addField('object_name', $obj->object_name);
      if (isset($obj->wordcount))
-       $document->addField('wordcount', $obj->wordcount); 
+       $document->addField('wordcount', $obj->wordcount);
      if (isset($obj->title))
-       $document->addField('title', $obj->title->content, $obj->title->weight); 
+       $document->addField('title', $obj->title->content, $obj->title->weight);
      if (isset($obj->description))
-       $document->addField('description', $obj->description->content, $obj->description->weight); 
+       $document->addField('description', $obj->description->content, $obj->description->weight);
      if (isset($obj->date))
-       $document->addField('date', $obj->date->content, $obj->date->weight); 
+       $document->addField('date', $obj->date->content, $obj->date->weight);
      if (isset($obj->tags)) {
         foreach($obj->tags->content as $tag) if ($tag)  {
 	  $document->setMultiValue('tag', $tag, $obj->tags->weight);
@@ -90,7 +99,7 @@ class SolrConnector extends sfLogger
 
   public function deleteAll() {
     $this->solr->deleteByQuery('*:*');
-    $this->commit();
+    $this->commit(1);
   }
 
   public function search($queryString, $params = array(), $offset = 0, $maxHits = 0) {
@@ -107,15 +116,15 @@ class SolrConnector extends sfLogger
 	$results['response']['docs'][$i]['object'] = Doctrine::getTable($res['object_name'])->find($res['object_id']);
       }
       if (!$results['response']['docs'][$i]['object'])
-	$unset[] = $i;
-//      $results['response']['docs'][$i]['hightlighting'] = $results['response']['highlighting'][$id]['text'];
+        $unset[] = $i;
     }
     foreach ($unset as $i) {
       unset($results['response']['docs'][$i]);
     }
-    $results['response']['docs'] = array_values($results['response']['docs']);
+    if ($results['response']['docs'])
+      $results['response']['docs'] = array_values($results['response']['docs']);
+    else $results['response']['docs'] = array();
     return $results;
   }
-  
-}
 
+}

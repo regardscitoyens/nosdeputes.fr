@@ -1,6 +1,6 @@
 <?php
 
-class SolrCommands 
+class SolrCommands
 {
   public static function getFileCommands() {
     umask(0000);
@@ -13,7 +13,7 @@ class SolrCommands
   }
 
   protected $semaphore = null;
-  protected $file = null; 
+  protected $file = null;
 
   protected static $instance = null;
   public static function getInstance() {
@@ -28,7 +28,7 @@ class SolrCommands
   }
 
   public function __destruct() {
-    if ($this->semaphore) {
+    if (!is_null($this->semaphore)) {
       sem_remove($this->semaphore);
       $this->semaphore = null;
     }
@@ -45,9 +45,7 @@ class SolrCommands
   }
 
   private function protect() {
-#    if (! $this->semaphore) {
-      $this->semaphore = sem_get(self::getSemId(), 1, 0666, -1);
-#    }
+    $this->semaphore = sem_get(self::getSemId(), 1, 0666, -1);
     sem_acquire($this->semaphore);
   }
 
@@ -67,7 +65,7 @@ class SolrCommands
     $this->unprotect();
   }
 
-  public  function getCommandContent() {
+  public function getCommandContent() {
     $lockfile = $this->getFileCommands().'.lock';
     if (file_exists($lockfile)) {
       return $lockfile;
@@ -83,7 +81,7 @@ class SolrCommands
     $this->unprotect();
     return $lockfile;
   }
-  public  function releaseCommandContent() {
+  public function releaseCommandContent() {
     $this->protect();
     unlink($this->getFileCommands().'.lock');
     $this->unprotect();

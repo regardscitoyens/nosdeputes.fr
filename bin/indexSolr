@@ -3,6 +3,13 @@
 #Récupère le fichier de configuration pour notre environnement (qui se trouve dans le même que ce script)
 . $(echo $0 | sed 's/[^\/]*$//')db.inc
 
+#DO NOT START WHEN CLEANCACHE RUNNING
+if test -e $PATH_APP/data/frontend_prod-cli.lck || test -e $PATH_APP/data/frontend_dev-cli.lck || test -e $PATH_APP/data/frontend_test-cli.lck ; then
+    exit 1;
+fi
+
+export USE_ZEND_ALLOC=0
+
 #CRASHSTATUS
 STATUSFILE="/tmp/indexSolr.tomcatcrash.status"
 if test ! -e $STATUSFILE ;
@@ -17,9 +24,9 @@ if test -e $LOCK ;
 then
     if test ! -e /proc/$(cat $LOCK) ;
     then
-	echo "WARNING : l'indexation solr est lockée alors que son processus ne tourne plus..."
-	echo " suppression du fichier (tentative n°$STATUS)...";
-	rm $LOCK
+        echo "WARNING : l'indexation solr est lockée alors que son processus ne tourne plus..."
+        echo " suppression du fichier (tentative n°$STATUS)...";
+        rm $LOCK
         if [ $STATUS -ge 3 ]; then
             echo "trying to restart Tomcat"
             sudo /etc/init.d/tomcat6 restart > /tmp/log-restart-tomcat 2>&1
@@ -27,13 +34,13 @@ then
             STATUS="0"
         fi
         echo "$STATUS" > $STATUSFILE
-	exit 1;
+        exit 1;
     fi
     exit 1;
 fi
 
 option=''
-if test "$1" = "all"; then 
+if test "$1" = "all"; then
    option="--all=yes"
 fi
 if test "$1" = "verbose"; then
@@ -45,6 +52,20 @@ echo $$ > $LOCK
 #echo Debut Indexation $option
 #date
 cd $PATH_APP
+
+
+if test -e log/solr/commands.log.lock; then
+    split -a 4 -d -l 600 log/solr/commands.log.lock log/solr/commands.log.$(date +%y%m%d%H%M)-
+    rm -f log/solr/commands.log.lock
+fi
+
+if ! test -e log/solr/commands.log.lock; then
+    nextcommand=$(ls log/solr/commands.log.* 2> /dev/null | grep -v lock | head -n 1)
+    if test "$nextcommand" ; then
+        mv $nextcommand log/solr/commands.log.lock
+    fi
+fi
+
 while ! php symfony index:Solr $option ; do
 if test "$1" = "" ; then
    exit;
