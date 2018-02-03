@@ -60,6 +60,7 @@ def clean_subject(subject, silent=False):
     subj = subject.lower().strip()
     subj = subj.replace(u' ', ' ')
     subj = subj.replace(u' ', ' ')
+    subj = subj.replace(u'’', "'")
     subj = subj.replace(u'\u0091', "'")
     subj = subj.replace(u'\u0092', "'")
     subj = subj.replace('septedecies', "septdecies")
