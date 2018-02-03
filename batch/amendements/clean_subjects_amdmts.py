@@ -57,6 +57,8 @@ clean_subject_amendements_regexp = [(re.compile(reg), res) for (reg, res) in [
 #(résoudre chiffres romains?)
 
 def clean_subject(subject, silent=False):
+    if subject and test_subject(subject):
+        return subject
     subj = subject.lower().strip()
     subj = subj.replace(u' ', ' ')
     subj = subj.replace(u' ', ' ')
@@ -71,7 +73,7 @@ def clean_subject(subject, silent=False):
             print >> sys.stderr, "ERROR on", regex, replacement, subj
         subj = subj.strip(": ")
     subj = upper_first(subj)
-    if not test_subject(subj):
+    if not test_subject(subj) and subj:
         if not silent:
             print >> sys.stderr, ("WARNING, weird subject: %s -> %s" % (subject, subj)).encode('utf-8')
         return subject
@@ -91,10 +93,12 @@ fixed_subjects = [
 bis_27 = ['bis', 'ter', 'quater', 'quinquies', 'sexies', 'septies', 'octies', 'nonies',
 'decies', 'undecies', 'duodecies', 'terdecies', 'quaterdecies', 'quindecies', 'sexdecies', 'septdecies', 'octodecies', 'novodecies',
 'vicies', 'unvicies', 'duovicies', 'tervicies', 'quatervicies', 'quinvicies', 'sexvicies', 'septvicies']
+bister = '(%s)' % '|'.join(bis_27)
+extra = '( %s)?( [A-Z]{1,3})?' % bister
 
-articles = re.compile(ur"^A((vant|près) l'a)?rticle (1er|[2-9]|[1-9]\d+|liminaire)( (%s))?( [A-Z]{1,3})?( et Etat [A-H])?$" % "|".join(bis_27))
+articles = re.compile(ur"^A((vant|près) l'a)?rticle (1er|[2-9]|[1-9]\d+|liminaire)%s( et Etat [A-H])?$" % extra)
 
-titles = re.compile(ur"^(A(vant|près) le|((Chap|T)itre|Tome|S(ous-s)?ection) ([1I]er|[IVX]+|[2-9]|[1-9]\d+))( ((chap|t)itre|tome|s(ous-s)?ection) ([1I]er|[IVX]+|[2-9]|[1-9]\d+))*$")
+titles = re.compile(ur"^(A(vant|près) le|((Chap|T)itre|Tome|S(ous-s)?ection) ([1I](er|ère)|[IVX]+|[2-9]|[1-9]\d+)%s)( ((chap|t)itre|tome|s(ous-s)?ection) ([1I](er|ère)|[IVX]+|[2-9]|[1-9]\d+)%s)*$" % (extra, extra))
 
 specials = re.compile(ur"^(Annexe [A-Z1-9]|Etat [A-H])$")
 
