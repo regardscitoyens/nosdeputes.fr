@@ -15,6 +15,7 @@ open(FILE, $file);
 $string = "@string";
 close FILE;
 $string =~ s/\r//g;
+$string =~ s/ / /ig;
 $string =~ s/\&nbsp;?/ /ig;
 $string =~ s/Univerist/Universit/g;
 $string =~ s/aglommération/agglomération/g;
