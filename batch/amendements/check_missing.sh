@@ -65,7 +65,7 @@ if [ $missing -gt 0 ]; then
     sed 's/^< //'                                           |
     while read AMurl; do
       AMfile=$(echo "$AMurl" | sed 's|/|_-_|g')
-      perl download_one.pl "$AMurl" 2>/dev/null && perl cut_amdmt.pl "html/$AMfile" | python clean_subjects_amdmts.py > "json/$AMfile" ) || echo "ERROR: $AMurl missing from AN web"
+      perl download_one.pl "$AMurl" 2>/dev/null && ( perl cut_amdmt.pl "html/$AMfile" | python clean_subjects_amdmts.py > "json/$AMfile" ) || echo "ERROR: $AMurl missing from AN web"
       if grep '"sort": "", "auteurs": "", "parent": "", "serie": "", "expose": "", .*"date": "1970-01-01", "auteur_reel": "", "sujet": "", "texte": ""}' "json/$AMfile" > /dev/null; then
         echo "ERROR: $AMurl missing from AN web"
         rm -f "json/$AMfile"
