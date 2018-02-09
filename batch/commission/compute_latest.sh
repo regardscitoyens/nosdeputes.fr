@@ -16,3 +16,4 @@ for file in $(perl download_commission.pl $LEGISLATURE); do
 	echo out/$file done;
 done
 
+bash compute_special_orgs.sh
