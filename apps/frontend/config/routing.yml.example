@@ -266,15 +266,12 @@ parlementaire_random:
 sections:
   url: /dossiers/:order
   param: {module: section, action: list}
-sections_json:
-  url: /dossiers/:order/json
-  param: {module: api, action: listSections, format: json}
-sections_csv:
-  url: /dossiers/:order/csv
-  param: {module: api, action: listSections, format: csv}
-sections_xml:
-  url: /dossiers/:order/xml
-  param: {module: api, action: listSections, format: xml}
+sections_api:
+  url: /dossiers/:order/:format
+  param: {module: api, action: listSections}
+sections_api_leg:
+  url: /%LEGISLATURE%/dossiers/:order/:format
+  param: {module: api, action: listSections}
 section_rss_commentaires:
   url: /%LEGISLATURE%/dossier/:id/commentaires/rss
   param: {module: commentaire, action: list, rss: 1}

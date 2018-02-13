@@ -348,7 +348,8 @@ class apiActions extends sfActions
     } else $this->forward404();
 
     $this->champs = array();
-    $format = $request->getParameter('format');
+    $format = strtolower($request->getParameter('format'));
+    $this->forward404Unless(in_array($format,array('csv', 'xml', 'json')));
 
     $this->res = array('sections' => array());
     foreach($query->execute() as $sec) {

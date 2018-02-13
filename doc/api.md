@@ -134,9 +134,9 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
 - **Liste des dossiers législatifs** (à partir de la 15ème législature uniquement pour l'Assemblée) :
 
-  - Triés dans l'ordre alphabétique : https://www.nosdeputes.fr/dossiers/nom/xml
-  - Triés du plus récent au plus ancien : https://www.nosdeputes.fr/dossiers/date/xml
-  - Triés du plus débattu au moins débattu : https://www.nosdeputes.fr/dossiers/plus/xml
+  - Triés dans l'ordre alphabétique : https://www.nosdeputes.fr/15/dossiers/nom/xml
+  - Triés du plus récent au plus ancien : https://www.nosdeputes.fr/15/dossiers/date/xml
+  - Triés du plus débattu au moins débattu : https://www.nosdeputes.fr/15/dossiers/plus/xml
 
 - **Détails d'un dossier législatif** (à partir de la 15ème législature uniquement pour l'Assemblée) :
 
