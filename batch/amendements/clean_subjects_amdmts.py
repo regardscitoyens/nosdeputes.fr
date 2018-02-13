@@ -56,7 +56,7 @@ clean_subject_amendements_regexp = [(re.compile(reg), res) for (reg, res) in [
 
 #(résoudre chiffres romains?)
 
-def clean_subject(subject, silent=False):
+def clean_subject(subject, silent=False, source=""):
     if subject and test_subject(subject):
         return subject
     subj = subject.lower().strip()
@@ -70,12 +70,12 @@ def clean_subject(subject, silent=False):
         try:
             subj = regex.sub(replacement, subj)
         except:
-            print >> sys.stderr, "ERROR on", regex, replacement, subj
+            print >> sys.stderr, "ERROR on", source, regex, replacement, subj
         subj = subj.strip(": ")
     subj = upper_first(subj)
-    if not test_subject(subj) and subj:
+    if not test_subject(subj, source=source) and subj:
         if not silent:
-            print >> sys.stderr, ("WARNING, weird subject: %s -> %s" % (subject, subj)).encode('utf-8')
+            print >> sys.stderr, ("WARNING %s: weird subject: %s -> %s" % (subject, source, subj)).encode('utf-8')
         return subject
     return subj
 
@@ -102,13 +102,15 @@ titles = re.compile(ur"^(A(vant|près) le|((Chap|T)itre|Tome|S(ous-s)?ection) ([
 
 specials = re.compile(ur"^(Annexe [A-Z1-9]|Etat [A-H])$")
 
-def test_subject(s):
+def test_subject(s, source=None):
     s2 = s.strip()
     if s != s.strip():
-        print >> sys.stderr, "WARNING: subject not properly stripped"
+        if source:
+            print >> sys.stderr, "WARNING: subject not properly stripped: '%s'" % s, source
         return False
     if not s:
-        print >> sys.stderr, "WARNING: empty subject"
+        if source:
+            print >> sys.stderr, "WARNING: empty subject", source
         return False
     if s in fixed_subjects:
         return True
@@ -141,6 +143,6 @@ if __name__ == "__main__":
         if not stripped:
             break
         am = json.loads(line)
-        am['sujet'] = clean_subject(am['sujet'])
+        am['sujet'] = clean_subject(am['sujet'], source=am['source'])
 
         print json.dumps(am, ensure_ascii=False).encode('utf-8')
