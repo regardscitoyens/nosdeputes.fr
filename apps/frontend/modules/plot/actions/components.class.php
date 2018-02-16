@@ -365,102 +365,110 @@ class plotComponents extends sfComponents
   }
 
   public function executeGroupes() {
+    if (!isset($this->plot))
+      return;
+
     $this->empty = 0;
-    if (!isset($this->plot)) $this->plot = 'total';
-    $this->labels = myTools::convertYamlToArray(sfConfig::get('app_groupes_actuels', ''));
-    $this->couleurs = array();
-    $colormap = myTools::getGroupesColorMap();
-    foreach ($this->labels as $gpe)
-      $this->couleurs[] = $colormap[$gpe];
-    $this->interventions = array();
     $this->seancenom = 'séance';
-    if ($this->plot == 'total') {
-      $this->presences = array();
-      $this->interventions_moy = array();
-      $this->presences_moy = array();
-      $groupes = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
-      $this->time = 'lastyear';
-      foreach($this->labels as $groupe) if ($groupes[$groupe]) {
-        $this->presences[] = $groupes[$groupe]['semaines_presence']['somme'];
-        $this->presences_moy[] = $groupes[$groupe]['semaines_presence']['somme']/$groupes[$groupe]['groupe']['nb'];
-        $this->interventions[] = $groupes[$groupe]['hemicycle_interventions']['somme'];
-        $this->interventions_moy[] = $groupes[$groupe]['hemicycle_interventions']['somme']/$groupes[$groupe]['groupe']['nb'];
+
+    $groupes = array();
+
+    // Si on a directement les données par groupe
+    if (isset($this->groupes)) {
+      $this->total = 0;
+      foreach ($this->groupes as $g) {
+        $groupes[$g['acronyme']]['membres'] = $g['membres'];
+        $this->total += $g['membres'];
       }
-    } else {
-      $groupes = array();
-      $this->temps = array();
-      if (preg_match('/section_(\d+)$/', $this->plot, $match)) {
-        $interventions = Doctrine_Query::create()
-	  ->select('p.groupe_acronyme, count(i.id) as count')
-	  ->from('Parlementaire p, p.Interventions i, i.Section s')
-	  ->where('s.section_id = ?', $match[1])
-	  ->andWhere('i.fonction NOT LIKE ?', 'président%')
-	  ->andWhere('i.nb_mots > 20')
-	  ->groupBy('p.id')
-	  ->fetchArray();
-        $mots = Doctrine_Query::create()
-	  ->select('p.groupe_acronyme, sum(i.nb_mots) as sum')
-	  ->from('Parlementaire p, p.Interventions i, i.Section s')
-	  ->where('s.section_id = ?', $match[1])
-	  ->andWhere('i.fonction NOT LIKE ?', 'président%')
-	  ->groupBy('p.id')
-	  ->fetchArray();
-      } else if (preg_match('/seance_(com|hemi)_(\d+)$/', $this->plot, $match)) {
-        if (preg_match('/com/', $this->plot)) $this->seance = $match[2];
-        $interventions = Doctrine_Query::create()
-          ->select('p.groupe_acronyme, count(i.id) as count')
-          ->from('Parlementaire p, p.Interventions i')
-          ->where('i.seance_id = ?', $match[2])
-          ->andWhere('i.fonction NOT LIKE ?', 'président%')
-          ->andWhere('i.nb_mots > 20')
-          ->groupBy('p.id')
-          ->fetchArray();
-        $mots = Doctrine_Query::create()
-          ->select('p.groupe_acronyme, sum(i.nb_mots) as sum')
-          ->from('Parlementaire p, p.Interventions i')
-          ->where('i.seance_id = ?', $match[2])
-          ->andWhere('i.fonction NOT LIKE ?', 'président%')
-          ->groupBy('p.id')
-          ->fetchArray();
-	$this->seancenom = 'séance';
-        if ($match[1] == 'com') {
-	  $this->seancenom = 'réunion';
-          $this->presences = array();
-          $presences = Doctrine_Query::create()
-            ->select('p.groupe_acronyme, count(pr.id)')
-            ->from('Parlementaire p, p.Presences pr, pr.Seance s')
-            ->where('s.id = ?', $match[2])
-            ->andWhere('s.type = ?', 'commission')
-            ->groupBy('p.id')
-            ->fetchArray();
-          foreach ($presences as $groupe)
-            if (!isset($groupes[$groupe['groupe_acronyme']]['presences']))
-              $groupes[$groupe['groupe_acronyme']]['presences'] = $groupe['count'];
-            else $groupes[$groupe['groupe_acronyme']]['presences'] += $groupe['count'];
-        }
-      } else if (preg_match('/organisme/', $this->plot, $match) && isset($this->membres)) {
-        foreach ($this->membres as $imp => $deps) foreach ($deps as $p)
+
+    // Ou pour les organismes
+    } else if (isset($this->membres))
+      // Répartition par groupe des membres
+      foreach ($this->membres as $imp => $deps) {
+        if ($imp < 1)
+          continue;
+        foreach ($deps as $p) {
+          if (preg_match('/[âa]ge$/i', $p->fonction) || !$p['groupe_acronyme'])
+            continue;
           if (!isset($groupes[$p['groupe_acronyme']]['membres']))
             $groupes[$p['groupe_acronyme']]['membres'] = 1;
           else $groupes[$p['groupe_acronyme']]['membres'] += 1;
-        $this->membres = array();
-      } else throw new Exception('wrong plot argument');
-      if (isset($interventions) && !count($interventions) && (!isset($presences) || !count($presences))) {
-	$this->empty = 1;
-	return ;
+        }
       }
-     if (!isset($this->membres)) {
-      foreach ($interventions as $groupe)
-        if (!isset($groupes[$groupe['groupe_acronyme']]['interventions']))
-          $groupes[$groupe['groupe_acronyme']]['interventions'] = $groupe['count'];
-        else $groupes[$groupe['groupe_acronyme']]['interventions'] += $groupe['count'];
-      foreach ($mots as $groupe)
-      if (!isset($groupes[$groupe['groupe_acronyme']]['temps_parole']))
-          $groupes[$groupe['groupe_acronyme']]['temps_parole'] = $groupe['sum'];
-        else $groupes[$groupe['groupe_acronyme']]['temps_parole'] += $groupe['sum'];
-     }
-      foreach($this->labels as $groupe) {
-       if (!isset($this->membres)) {
+
+    // Ou pour les séances et les dossiers
+    else {
+      // Préparation des requêtes et attributs suivant le type de graphe
+      $qmots = Doctrine_Query::create()
+        ->from('Intervention i')
+        ->where('i.fonction NOT LIKE ?', 'président%')
+        ->andWhere('i.parlementaire_id IS NOT NULL')
+        ->groupBy('i.parlementaire_id');
+      if (preg_match('/section_(\d+)$/', $this->plot, $match))
+        // pour les dossiers
+        $qmots->leftJoin('i.Section s')
+          ->andWhere('s.section_id = ?', $match[1]);
+      else if (preg_match('/seance_(com|hemi)_(\d+)$/', $this->plot, $match)) {
+        // pour les séances
+        $qmots->andWhere('i.seance_id = ?', $match[2]);
+        if ($match[1] == 'com') {
+          $this->seancecom = $match[2];
+          $this->seancenom = 'réunion';
+        }
+      }
+
+      // Répartition par groupe des interventions
+      $qinter = clone($qmots);
+      $interventions = $qinter->select('i.parlementaire_groupe_acronyme, count(i.id)')
+        ->andWhere('(i.nb_mots > 20 OR i.nb_mots = 0)')
+        ->fetchArray();
+      foreach ($interventions as $p)
+        if (!isset($groupes[$p['parlementaire_groupe_acronyme']]['interventions']))
+          $groupes[$p['parlementaire_groupe_acronyme']]['interventions'] = $p['count'];
+        else $groupes[$p['parlementaire_groupe_acronyme']]['interventions'] += $p['count'];
+
+      // Répartition par groupe du temps de parole (= nb mots)
+      $qmots->select('i.parlementaire_groupe_acronyme, sum(i.nb_mots)');
+      foreach ($qmots->fetchArray() as $p)
+        if (!isset($groupes[$p['parlementaire_groupe_acronyme']]['temps_parole']))
+          $groupes[$p['parlementaire_groupe_acronyme']]['temps_parole'] = $p['sum'];
+        else $groupes[$p['parlementaire_groupe_acronyme']]['temps_parole'] += $p['sum'];
+
+      // Pour les séances de commissions, répartition par groupe des présents
+      if (isset($this->seancecom)) {
+        $presences = Doctrine_Query::create()
+          ->select('pr.parlementaire_groupe_acronyme, count(pr.id)')
+          ->from('Presence pr, pr.Seance s')
+          ->where('s.id = ?', $this->seancecom)
+          ->andWhere('s.type = ?', 'commission')
+          ->groupBy('pr.parlementaire_id');
+        foreach ($presences->fetchArray() as $p)
+          if (!isset($groupes[$p['parlementaire_groupe_acronyme']]['presences']))
+            $groupes[$p['parlementaire_groupe_acronyme']]['presences'] = $p['count'];
+          else $groupes[$p['parlementaire_groupe_acronyme']]['presences'] += $p['count'];
+      }
+    }
+
+    // Pas de graphe pour les séances ou sections sans données
+    if (!count($groupes) || (isset ($interventions) && !count($interventions) && (!isset($presences) || !count($presences)))) {
+      $this->empty = 1;
+      return ;
+    }
+
+    // On réordonne les groupes trouvés
+    $this->labels = array();
+    $labels = array_keys($groupes);
+    foreach (myTools::getGroupesInfos() as $gpe)
+      if (in_array($gpe[1], $labels))
+        $this->labels[] = $gpe[1];
+
+    // On remplit et complète les données dans l'ordre des groupes
+    $this->interventions = array();
+    $this->temps = array();
+    $this->presences = array();
+    $this->parls = array();
+    foreach($this->labels as $groupe) {
+      if (!isset($this->membres) && !isset($this->groupes)) {
         if (!isset($groupes[$groupe]['interventions']))
           $this->interventions[] = 0;
         else $this->interventions[] = $groupes[$groupe]['interventions'];
@@ -472,20 +480,28 @@ class plotComponents extends sfComponents
             $this->presences[] = 0;
           else $this->presences[] = $groupes[$groupe]['presences'];
         }
-       } else {
-        if (!isset($groupes[$groupe]['membres']))
-          $this->membres[] = 0;
-        else $this->membres[] = $groupes[$groupe]['membres'];
-       }
-      }
-      $this->labels[] = "";
-      $this->interventions[] = array_sum($this->interventions)/2;
-      $this->temps[] = array_sum($this->temps)/2;
-      if (isset($presences))
-        $this->presences[] = array_sum($this->presences)/2;
-      if (isset($this->membres))
-        $this->membres[] = array_sum($this->membres)/2;
+      } else if (!isset($groupes[$groupe]['membres']))
+        $this->parls[] = 0;
+      else $this->parls[] = $groupes[$groupe]['membres'];
     }
+
+    // On ajoute à la fin des arrays la moitié de la somme totale de l'array
+    // pour que 2/5e du donut soit vide et forcer l'apparence d'un hémicycle
+    $this->labels[] = "";
+    if (isset($this->membres) || isset($this->groupes))
+      $this->parls[] = array_sum($this->parls)*3/5;
+    else {
+      $this->interventions[] = array_sum($this->interventions)*3/5;
+      $this->temps[] = array_sum($this->temps)*3/5;
+      if (isset($presences))
+        $this->presences[] = array_sum($this->presences)*3/5;
+    }
+    // On renvoie les couleurs de chaque groupe
+    $this->couleurs = array();
+    $colormap = myTools::getGroupesColorMap();
+    foreach ($this->labels as $gpe)
+      if ($gpe)
+        $this->couleurs[] = $colormap[$gpe];
   }
 
 }
