@@ -154,6 +154,7 @@ Presence:
     Timestampable:
   columns:
     parlementaire_id: integer
+    parlementaire_groupe_acronyme: string(16)
     seance_id: integer
     nb_preuves: integer
     date: date
@@ -234,6 +235,7 @@ Intervention:
     date: date
     personnalite_id: integer
     parlementaire_id: integer
+    parlementaire_groupe_acronyme: string(16)
     fonction: string(512)
   relations:
     Section:
@@ -280,6 +282,7 @@ Amendement:
       values: ['Indéfini', 'Adopté', 'Irrecevable', 'Rejeté', 'Retiré', 'Tombe', 'Non soutenu', 'Retiré avant séance', 'Rectifié', 'Favorable']
     date: date
     auteur_id: integer
+    auteur_groupe_acronyme: string(16)
     signataires: string
     texte:
       type: string
@@ -339,6 +342,7 @@ QuestionEcrite:
       type: string
     content_md5: string(36)
     parlementaire_id: integer
+    parlementaire_groupe_acronyme: string(16)
   inheritance:
     extends: ObjectCommentable
     type: concrete
@@ -358,6 +362,7 @@ ParlementaireAmendement:
     Timestampable:
   columns:
     parlementaire_id: integer
+    parlementaire_groupe_acronyme: string(16)
     amendement_id: string(36)
     numero_signataire: integer
   relations:
@@ -670,6 +675,7 @@ ParlementaireTexteloi:
     Timestampable:
   columns:
     parlementaire_id: integer
+    parlementaire_groupe_acronyme: string(16)
     texteloi_id: string(16)
     importance: integer
     fonction: string(255)

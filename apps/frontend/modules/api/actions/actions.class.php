@@ -320,7 +320,7 @@ class apiActions extends sfActions
   public function executeLinksAmendements(sfWebRequest $request) {
     $id = $request->getParameter('loi');
     $amdmts = Doctrine_Query::create()
-      ->select('pa.parlementaire_id, pa.amendement_id, a.content_md5 as uniq_key, a.sujet as amendement_sujet, a.sort as amendement_sort')
+      ->select('pa.parlementaire_id, pa.parlementaire_groupe_acronyme, pa.amendement_id, a.content_md5 as uniq_key, a.sujet as amendement_sujet, a.sort as amendement_sort')
       ->from('ParlementaireAmendement pa')
       ->innerJoin('pa.Amendement a')
       ->where('a.texteloi_id = ?', $id)
@@ -337,13 +337,14 @@ class apiActions extends sfActions
       if (!isset($sorts[$pa['amendement_sujet']]))
         $sorts[$pa['amendement_sujet']] = 1;
       if (!isset($parls[$pa['parlementaire_id']]))
-        $parls[$pa['parlementaire_id']] = array('a' => 1);
+        $parls[$pa['parlementaire_id']] = array('a' => 1, 'g' => $pa['parlementaire_groupe_acronyme']);
       else $parls[$pa['parlementaire_id']]['a'] += 1;
     }
     foreach (Doctrine_Query::create()->select('p.id, p.nom, p.slug, p.groupe_acronyme, p.place_hemicycle')->from('Parlementaire p')->whereIn('p.id', array_keys($parls))->fetchArray() as $parl) {
       $parls[$parl['id']]['n'] = $parl['nom'];
       $parls[$parl['id']]['s'] = $parl['slug'];
-      $parls[$parl['id']]['g'] = $parl['groupe_acronyme'];
+      if (!$parls[$parl['id']]['g'])
+        $parls[$parl['id']]['g'] = $parl['groupe_acronyme'];
       $parls[$parl['id']]['p'] = $parl['place_hemicycle'];
     }
     $curra = 0;

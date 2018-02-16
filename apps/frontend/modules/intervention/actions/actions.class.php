@@ -259,7 +259,25 @@ class interventionActions extends sfActions
     $this->breakline = 'intervention';
     $this->multi = array('tag' => 'tag', 'loi' => 'loi', 'amendement' => 'amendement');
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-    $h = array("id"=>0, "nb_commentaires"=>1, "nb_mots"=>2, "md5"=>3, "intervention"=>4, "timestamp"=>5, "source"=>6, "seance_id"=>7, "section_id"=>8,   "type"=>9,    "date"=>10,    "personnalite_id"=>11,     "parlementaire_id"=>12,    "fonction"=>13,    "created_at"=>14,  "updated_at"=>15);
+    $h = array(
+      "id" => 0,
+      "nb_commentaires"     => 1,
+      "nb_mots"             => 2,
+      "md5"                 => 3,
+      "intervention"        => 4,
+      "timestamp"           => 5,
+      "source"              => 6,
+      "seance_id"           => 7,
+      "section_id"          => 8,
+      "type"                => 9,
+      "date"                => 10,
+      "personnalite_id"     => 11,
+      "parlementaire_id"    => 12,
+      "parlementaire_groupe_acronyme"   => 13,
+      "fonction"            => 14,
+      "created_at"          => 15,
+      "updated_at"          => 16
+    );
     foreach($this->interventions as $int) {
       $i['seance_id'] = $int[$h['seance_id']];
       $i['seance_titre'] = $this->seance->titre;
@@ -285,7 +303,9 @@ class interventionActions extends sfActions
       if ($int[$h['parlementaire_id']]) {
         $i['intervenant_nom'] = $this->parlementaires[$int[$h['parlementaire_id']]]->getNom();
         $i['intervenant_slug'] = $this->parlementaires[$int[$h['parlementaire_id']]]->getSlug();
-        $i['intervenant_groupe'] = $this->parlementaires[$int[$h['parlementaire_id']]]->getGroupeAcronyme();
+        if (!$int[$h['parlementaire_groupe_acronyme']])
+          $i['intervenant_groupe'] = $this->parlementaires[$int[$h['parlementaire_id']]]->getGroupeAcronyme();
+        else $i['intervenant_groupe'] = $int[$h['parlementaire_groupe_acronyme']];
       }else if ($int[$h['personnalite_id']]) {
         $i['intervenant_nom'] = $this->personnalites[$int[$h['personnalite_id']]]->getNom();
       }
