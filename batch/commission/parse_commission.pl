@@ -260,6 +260,7 @@ sub setIntervenant {
     $intervenant =~ s/Jean Louis ([A-ZÉ])/Jean-Louis \1/i;
     $intervenant =~ s/Danielle Obono/Danièle Obono/i;
     $intervenant =~ s/Guillaume Pépy/Guillaume Pepy/i;
+    $intervenant =~ s/Jean Marc Mompelat/Jean-Marc Mompelat/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
     $intervenant =~ s/ric Cocquerel/ric Coquerel/i;
     $intervenant =~ s/Jean-Michel Fanget/Michel Fanget/i;
