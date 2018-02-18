@@ -209,13 +209,13 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
 Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche/) sont également accessibles via l'API : il suffit de rajouter le paramètre `format=[xml|json|csv]` à l'url de recherche.
 
-**Exemple :** résultats d'une recherche sur « OpenData » https://www.nosdeputes.fr/recherche/opendata?format=xml
+**Exemple :** résultats d'une recherche sur « OpenData » https://www.nosdeputes.fr/recherche/données?format=xml
 
 - **Pagination :**
 
-  Les résultats indiquent un total de résultats `lastResult` et sont délivrés par lots de 20, numérotés de `start` à `end`.
+  Les résultats indiquent un total de résultats `lastResult` et sont délivrés par lots de 50 ou `count` (maximum 500), numérotés de `start` à `end`.
 
-  Ajoutez à l'url le paramètre `&page=N` pour accéder aux résultats de la page N (contenant les éléments n° 20*(N-1)+1 à 20*N).
+  Ajoutez à l'url le paramètre `&page=N` pour accéder aux résultats de la page N (contenant les éléments n° count*(N-1)+1 à count*N).
 
   **Exemple :** résultats de la 2nde page d'une recherche sur « Internet » https://www.nosdeputes.fr/recherche/internet?page=2&format=xml
 
@@ -225,7 +225,7 @@ Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche
 
   Vous pouvez restreindre les résultats à :
 
-  - un **type d'objet** précis : ajouter `&object_name=OBJTYPE` avec `OBJTYPE` parmi : `Parlementaire`, `Organisme`, `Intervention`, `Amendement`, `QuestionEcrite`, `Section`, `Texteloi`, `Commentaire`
+  - un **type d'objet** précis : ajouter `&object_name=OBJTYPE` avec `OBJTYPE` parmi : `Parlementaire`, `Organisme`, `Intervention`, `Amendement`, `QuestionEcrite`, `Section`, `Texteloi`, `Commentaire`, par exemple pour tous les TexteLoi : https://www.nosdeputes.fr/recherche/?object_name=Texteloi&format=xml&count=500
 
   - une **période temporelle** précise : ajouter `&date=YYYYMMDD%2CYYYYMMDD` par exemple pour les résultats sur « internet » en janvier 2016 : https://www.nosdeputes.fr/recherche/internet?format=xml&date=20160101%2C20160131
 

@@ -53,7 +53,7 @@ class solrActions extends sfActions
 
     myTools::setPageTitle($this->query ? "Résultats de recherche sur \"$query\"" : "Rechercher au travers des travaux parlementaires de l'Assemblée nationale", $this->response);
 
-    $nb = 20;
+    $nb = max(1, min($request->getParameter('count', 50), 500));
     $deb = ($request->getParameter('page', 1) - 1) * $nb ;
     $fq = '';
     $this->facet = array();
