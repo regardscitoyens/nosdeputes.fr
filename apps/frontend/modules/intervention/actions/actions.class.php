@@ -247,7 +247,7 @@ class interventionActions extends sfActions
       foreach ($querytag->execute(array(), Doctrine::HYDRATE_NONE) as $s) {
         array_push($sections, $s[0]);
       }
-      if (count($sections))
+      if (count($sections)) {
       $querysection = Doctrine_Query::create();
       $querysection->from("Intervention i");
       $querysection->leftJoin('i.Section s')->andWhere('i.seance_id = ?', $this->seance->id)->select('i.id as id');
