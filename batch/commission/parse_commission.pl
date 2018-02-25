@@ -263,6 +263,7 @@ sub setIntervenant {
     $intervenant =~ s/Guillaume Pépy/Guillaume Pepy/i;
     $intervenant =~ s/Jean Marc Mompelat/Jean-Marc Mompelat/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
+    $intervenant =~ s/Cédric Cédric Villani/Cédric Villani/i;
     $intervenant =~ s/ric Cocquerel/ric Coquerel/i;
     $intervenant =~ s/Jean-Michel Fanget/Michel Fanget/i;
     $intervenant =~ s/Jean-Bernard Harney/Jean-Bernard Harnay/i;
@@ -619,7 +620,7 @@ foreach $line (split /\n/, $string)
         }
         $found = $majIntervenant = 1;
         $intervenant = setIntervenant($interv1.$extrainterv);
-	  } elsif (!($line =~ /^\|(?:&#\d+;|–)?\s*(?:Puis de |Marges de |de |Ateliers? |Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co]*Présidence|Titre|Chapitre|Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i) &&
+	  } elsif (!($line =~ /^\|(?:&#\d+;|–)?\s*(?:Puis de |Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co]*Présidence|Titre|Chapitre|Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i) &&
           ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
@@ -666,7 +667,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/\/\.\//./g;
     $line =~ s/^[\.\:]\s*//;
     #print STDERR "LINE: $found $intervenant $line\n";
-	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève| été nommé|avait assuré|ayant )/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève|faire part| été nommé|avait assuré|ayant )/) {
 	    if ($line =~ s/^\s*((Dr\.?|Pr\.?|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
