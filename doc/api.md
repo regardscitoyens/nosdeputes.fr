@@ -250,6 +250,21 @@ Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche
 
 Certains des points d'entrée de cette API sont accessibles de manière simplifiée en langage Python à l'aide du paquet pip [`cpc-api`](https://pypi.python.org/pypi/cpc_api) dont le [code source est disponible ici](https://github.com/regardscitoyens/cpc-api).
 
+## Module PowerShell RegardsCitoyenPS
+
+Si vous êtes sous Windows, Il est existe également un Module PowerShell disponible dans le PowerShellGallery.
+
+Il est possible de l'installer depuis la majorité des Machines Windows qui ont PowerShell version 5 et une connection internet en utilisant la commande suivante:
+
+```powershell
+
+Install-Module RegardsCitoyenPS -Force
+
+```
+
+Pour participer au projet / proposer une demande de nouvelle fonctionalité, ou encore pour signaler un bug, vous pouvez vous rendre sur le site du pojet Github ici --> [RegardsCitoyenPS](https://github.com/Stephanevg/RegardsCitoyenPS) 
+
+Pour des explication des détails techniques, rendez vous directement sur le site de l'auteur ici --> [PowerShellDistrict.Com](http://powershelldistrict.com/introduction-regardscitoyenps/)
 
 ## [ParlAPI.fr](http://parlapi.fr) : API sur l'OpenData officielle de l'AN et du Sénat
 
