@@ -30,6 +30,7 @@ if ($special && $url =~ /www2.assemblee/) {
   $string =~ s/[\s\n]+/ /g;
   $string =~ s/[,\s]*<br[\/\s]*>[,\s]*/\n/g;
   $string =~ s/<\/?(p|h\d+|div)[^>]*>/\n<\1>/g;
+  $string =~ s/(Excusé[es\s]*:)\s*/\1\n/g;
 }
 
 $mois{'janvier'} = '01';
@@ -199,10 +200,12 @@ foreach $line (split /\n/, $string)
     if ($special && $line =~ /[pP]résidence de \|M[.me]+ ([A-ZÉ][^|]*)\|/) {
         push @presents, $1;
     }
+    #print STDERR "TEST $special $present: $line\n";
     if ($present) {
 	$line =~ s/<[^>]+>//g;
 	$line =~ s/&[^;]*;/ /g;
     if ($special) {
+        while ($line =~ s/M[me.]+ [^,]+, \/représentée? par (M[me.]+ [^\/]+)\//\1/) {}
         while ($line =~ s/^([^\/]*?)[, ]*\/[^\/]*\//\1/) {}
     }
 	$line =~ s/^\s*et\s+//gi;
