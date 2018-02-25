@@ -251,6 +251,7 @@ sub setIntervenant {
     $intervenant =~ s/\s*-\s*$//;
     #print "TEST $intervenant\n";
     $intervenant =~ s/^.* de (M(\.|me) )/\1/;
+    $intervenant =~ s/^(.........+)\s*M[me.]+ \1/\1/g;
     $intervenant =~ s/Premi/premi/g;
     $intervenant =~ s/president/président/gi;
     $intervenant =~ s/ présidence / présidente /;
