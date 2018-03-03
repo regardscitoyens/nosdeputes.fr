@@ -3,7 +3,7 @@
 Voici les dernières alertes de votre abonnement : <?php echo $alerte->titre."\n"; ?>
 ----------------------------------------------------------------------
 
-ATTENTION : ce message vous est envoyé automatiquement suite à votre abonnement à cette alerte sur le site <?php sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '') ?>. Merci de ne pas y répondre.
+ATTENTION : ce message vous est envoyé automatiquement suite à votre abonnement à cette alerte sur le site <?php echo sfConfig::get('app_base_url'); ?>. Merci de ne pas y répondre.
 
 <?php
 if (!isset($nohuman) || !$nohuman) {
