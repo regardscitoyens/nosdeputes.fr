@@ -2,7 +2,31 @@
 
 Voici les dernières alertes de votre abonnement : <?php echo $alerte->titre."\n"; ?>
 ----------------------------------------------------------------------
-ATTENTION : répondre à ce mail ne vous permet pas d'écrire à un parlementaire mais simplement aux membres de l'association Regards Citoyens indépendante de l'Assemblée nationale
+
+ATTENTION : ce message vous est envoyé automatiquement suite à votre abonnement à cette alerte sur le site <?php sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '') ?>. Merci de ne pas y répondre.
+
+<?php
+if (!isset($nohuman) || !$nohuman) {
+echo "Visualiser cette alerte sur le site :\n";
+echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('@recherche_solr?sort=1&query='.$alerte->query))."\n";
+}
+?>
+Pour éditer cette alerte :
+<?php
+echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/edit?verif='.$alerte->getVerif()));
+?>
+
+Pour supprimer cette alerte et ne plus recevoir ces messages :
+<?php echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/delete?verif='.$alerte->getVerif())); ?>
+
+<?php if ($alerte->citoyen_id) : ?>
+L'interface vous permettant de gérer vos alertes :
+<?php echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/list')); ?>
+<?php endif; ?>
+
+Pour contacter l'association Regards Citoyens, merci d'écrire à l'adresse <contact@regardscitoyens.org>. Nous vous informons que Regards Citoyens est une association bénévole totalement indépendante des institutions publiques. Nous ne sommes donc pas en mesure de faire parvenir de messages auprès des élus.
+
+================================================
 
 <?php
 foreach ($results['response']['docs'] as $res)
@@ -52,22 +76,3 @@ foreach ($results['response']['docs'] as $res)
 }
 
 ?>
-===============================================
-<?php
-if (!isset($nohuman) || !$nohuman) {
-echo "Visualiser cette alerte sur le site :\n";
-echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('@recherche_solr?sort=1&query='.$alerte->query))."\n";
-}
-?>
-Pour éditer cette alerte :
-<?php
-echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/edit?verif='.$alerte->getVerif()));
-?>
-
-Pour supprimer cette alerte :
-<?php echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/delete?verif='.$alerte->getVerif())); ?>
-
-<?php if ($alerte->citoyen_id) : ?>
-L'interface vous permettant de gérer vos alertes :
-<?php echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/list')); ?>
-<?php endif; ?>
