@@ -196,6 +196,8 @@ sub setFonction {
       } else {
         setFonction($fonction, $1);
       }
+    } elsif ($intervenant =~ s/^M[me.]+ l'(ingénieur.*?) ([A-Z])/\2/) {
+      $fonction = ucfirst($1).", $fonction";
     }
     $intervenant = setIntervenant($intervenant);
     if ($intervenant eq $fonction) {
