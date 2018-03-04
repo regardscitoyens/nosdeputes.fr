@@ -116,7 +116,7 @@ foreach $line (split /\n/, $string) {
     $amdmt{$1} = $2;
   } elsif ($line =~ /<!-- ([^\>]+)=\s*([^\>]+)\s+-->/i) {
     $amdmt{$1} = $2;
-  } elsif ($line =~ /<strong>(Direction de la séance|commission (spéciale|d[eu])[^\<]+)<\/strong>/i) {
+  } elsif ($line =~ /<strong>(Direction de la séance|(CS |commission (spéciale|d[eu]))[^\<]+)<\/strong>/i) {
     $amdmt{'contexte'} = $1;
     if ($line =~ />\s*(\d+e?r? \S* \d+)\s*</) {
       $amdmt{'date'} = join '-', datize($1);
