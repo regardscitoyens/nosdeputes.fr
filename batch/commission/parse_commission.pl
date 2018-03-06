@@ -145,6 +145,7 @@ sub comparable {
     $origstr =~ s/(ù|û|ü|Ù|Û|Ü)/u/g;
     $origstr =~ s/(ç|Ç)/c/g;
     $origstr =~ s/[^a-z]+/ /g;
+    $origstr =~ s/\s+$//g;
     return $origstr;
 }
 
@@ -188,18 +189,19 @@ sub checkout {
 
 sub setFonction {
     my $fonction = shift;
-    my $intervenant = shift;
-    if ($intervenant =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$// ||
+    my $intervenantorig = shift;
+    #print STDERR "FONCTION $fonction $intervenantorig\n";
+    if ($intervenantorig =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$// ||
         $fonction    =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$//) {
       if ($2) {
         setFonction($2, $1);
       } else {
         setFonction($fonction, $1);
       }
-    } elsif ($intervenant =~ s/^M[me.]+ l'(ingénieur.*?) ([A-Z])/\2/) {
+    } elsif ($intervenantorig =~ s/^M[me.]+ l'(ingénieur.*?) ([A-Z])/\2/) {
       $fonction = ucfirst($1).", $fonction";
     }
-    $intervenant = setIntervenant($intervenant);
+    my $intervenant = setIntervenant($intervenantorig);
     if ($intervenant eq $fonction) {
       return $intervenant;
     }
@@ -216,13 +218,22 @@ sub setFonction {
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
     $fonction =~ s/ de la [com]*mission$//;
+    if ($intervenant && $fonction =~ /^(ministre( déléguée?)?|président|secrétaire d'[Éé]tat)/i) {
+      $shortfonction = $1;
+      if ($intervenantorig =~ /\b(M[.me]+) /) {
+        $lettre = ($1 eq "M." ? "e" : "a");
+        $shortfonction = comparable("$1 l$lettre $shortfonction");
+        #print STDERR "YEAH $shortfonction -> $intervenant\n";
+        $fonction2inter{$shortfonction} = $intervenant;
+      }
+    }
     my $kfonction = comparable($fonction);
     if ($fonction2inter{$kfonction} && !$intervenant) {
         $intervenant = $fonction2inter{$kfonction};
         return $intervenant;
     }
     $fonction2inter{$kfonction} = $intervenant;
-    #print "TEST $kfonction -> $intervenant\n";
+    #print STDERR "TEST $kfonction -> $intervenant\n";
     if ($fonction =~ /(ministre déléguée?).*(chargé.*$)/i) {
         $kfonction = comparable("$1 $2");
         $fonction2inter{$kfonction} = $intervenant;
@@ -251,7 +262,11 @@ sub setIntervenant {
     $intervenant =~ s/<[^>]*$//;
     $intervenant =~ s/–/-/g;
     $intervenant =~ s/\s*-\s*$//;
-    #print "TEST $intervenant\n";
+    $kinter = comparable($intervenant);
+    if ($fonction2inter{$kinter}) {
+        #print STDERR "!FOUND $kinter -> $fonction2inter{$kinter}\n";
+        return $fonction2inter{$kinter};
+    }
     $intervenant =~ s/^.* de (M(\.|me) )/\1/;
     $intervenant =~ s/^(.........+)\s*M[me.]+ \1/\1/g;
     $intervenant =~ s/Premi/premi/g;
@@ -337,7 +352,7 @@ sub setIntervenant {
     }
 	$conv = $fonction2inter{$kinterv};
     $maybe_inter = "";
-	#print "TEST conv: '$kinterv' '$conv' '$intervenant'\n";
+	#print STDERR "TEST conv: '$kinterv' '$conv' '$intervenant'\n";
 	if ($conv) {
 	    $intervenant = $conv;
 	}else {
