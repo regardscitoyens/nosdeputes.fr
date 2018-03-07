@@ -206,6 +206,7 @@ sub setFonction {
       return $intervenant;
     }
     $fonction =~ s/[^a-zàâéèêëîïôùûü0-9)]+$//i;
+    $fonction =~ s/<!--(.*?)-->//g;
     $fonction =~ s/<[^>]+>\s*//g;
     $fonction =~ s/<[^>]*$//;
     $fonction =~ s/"//g;
