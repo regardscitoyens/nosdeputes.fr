@@ -205,6 +205,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/<[^>]+>//g;
 	$line =~ s/&[^;]*;/ /g;
     if ($special) {
+        next if ($line =~ /Secrétaire d'État/i);
         while ($line =~ s/M[me.]+ [^,]+, \/représentée? par (M[me.]+ [^\/]+)\//\1/) {}
         while ($line =~ s/^([^\/]*?)[, ]*\/[^\/]*\//\1/) {}
     }
