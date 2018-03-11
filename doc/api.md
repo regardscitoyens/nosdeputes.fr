@@ -250,6 +250,10 @@ Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche
 
 Certains des points d'entrée de cette API sont accessibles de manière simplifiée en langage Python à l'aide du paquet pip [`cpc-api`](https://pypi.python.org/pypi/cpc_api) dont le [code source est disponible ici](https://github.com/regardscitoyens/cpc-api).
 
+## Module PowerShell [RegardsCitoyensPS](https://github.com/Stephanevg/RegardsCitoyenPS)
+
+L'API est également accessible depuis PowerShell (sous Windows, MAC & Linux) à l'aide du module ['RegardsCitoyensPS']. Plus de détails sont disponibles sur la page du projet [RegardsCitoyensPS](https://github.com/Stephanevg/RegardsCitoyenPS) 
+
 
 ## [ParlAPI.fr](http://parlapi.fr) : API sur l'OpenData officielle de l'AN et du Sénat
 
