@@ -263,9 +263,19 @@ Nous développons donc un accès simplifié par une API à ces jeux de données 
 
 ## Exemples de réutilisations basées sur l'API
 
-- [LobbyTrack](https://github.com/regardscitoyens/LobbyTrack) : outil d'identification des travaux parlementaires qui se sont inspirés d'un document texte de lobbying
+- [LaFabriqueDeLaLoi.fr](https://www.lafabriquedelaloi.fr)
 
 - [DirectParlement](https://regardscitoyens.github.io/direct-parlement) : outil de génération d'incruste pour encart dans vidéo live de débat parlementaire utilisé par [Accropolis](http://accropolis.fr) ([code-source](https://github.com/regardscitoyens/direct-parlement))
+
+- [Trombinoscope des parlementaires](https://regardscitoyens.github.io/trombi/)
+
+- [LobbyTrack](https://github.com/regardscitoyens/LobbyTrack) : outil d'identification des travaux parlementaires qui se sont inspirés d'un document texte de lobbying
+
+- Analyse sémantique des principaux thèmes investis par les députés dans le [Trombinoscope de Contexte](https://www.contexte.com/article/pouvoirs/les-577-deputes-francais-de-lassemblee-nationale_71506.html)
+
+- [Suivi mensuel de l'activité des députés bretons par Le Télégramme](http://www.letelegramme.fr/dataspot/rentree-parlementaire-suivez-l-activite-des-deputes-bretons-19-09-2017-11669870.php)
+
+- [Visualisation des votes des députés dans l'hémicycle par MédiaPart](https://www.mediapart.fr/journal/france/031017/loi-antiterroriste-qui-vote-quoi?onglet=full)
 
 - [Synthèse globale](https://regardscitoyens.github.io/synthese-globale/) : mini-application agrégeant les données de synthèse mensuelle pour nous permettre de répondre aux sollicitations des députés nous demandant en cours de mandat leur bilan complet ([code-source](https://github.com/regardscitoyens/synthese-globale))
 
