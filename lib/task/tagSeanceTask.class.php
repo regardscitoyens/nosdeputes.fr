@@ -10,7 +10,7 @@ class tagSeanceTask extends sfBaseTask
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
   }
- 
+
   protected function count($array, $excludeS = 0) {
     foreach($array as $i) {
       $i = strip_tags($i['intervention']);
@@ -53,12 +53,12 @@ class tagSeanceTask extends sfBaseTask
   {
 
     // your code here
-    $manager = new sfDatabaseManager($this->configuration);    
+    $manager = new sfDatabaseManager($this->configuration);
     $q = Doctrine_Query::create();
-    $q->select('intervention')->from('Intervention i')->where('i.parlementaire_id IS NOT NULL');
-    echo "count:\n\t";
-    echo $q->count()."\n";
+    $q->select('intervention')->from('Intervention i')->where('i.parlementaire_id IS NOT NULL and i.nb_mots > 10')->orderBy('i.date DESC')->limit(100000);
     $array = $q->fetchArray();
+    echo "count:\n\t";
+    echo count($array)."\n";
     $words = $this->count($array);
     $cpt = 0;
     $tot = count($words);
@@ -89,7 +89,7 @@ class tagSeanceTask extends sfBaseTask
 
     foreach($qs->fetchArray() as $s) {
       echo "Seance ".$s['id']." ..";
-      
+
       //Recherche toutes les interventions pour cette séance
       $q = Doctrine_Query::create();
       $q->select('intervention, id, parlementaire_id')->from('Intervention i')->where('seance_id = ?', $s['id'])->andWhere('( i.parlementaire_id IS NOT NULL OR i.personnalite_id IS NOT NULL )')->andWhere('(i.fonction IS NULL OR i.fonction NOT LIKE ? )', 'président%');
@@ -152,16 +152,16 @@ class tagSeanceTask extends sfBaseTask
 	  $sent = preg_replace('/[\[\]\(\)]/', '', $sent);
           if (preg_match("/^($debut_bani)/i", $sent) || preg_match("/($debut_bani)$/i", $sent) || preg_match('/\d|amendement|rapporteur|commision|collègue/i', $sent) )
             continue;
-	  
+
           if (preg_match('/^[A-Z][a-z]/', $sent)) {
             unset($tags[$sent2word[$sent]]);
             continue;
           }
-	  
+
           if (preg_match('/^([a-z]{2} |[A-Z]+)/', $sent) || preg_match('/ [a-z]$/i', $sent)) {
             continue;
           }
-	  
+
           if (($sentences[$sent]*100/$tot > 0.8 || ($words[$sent2word[$sent]] && $sentences[$sent]*100/$words[$sent2word[$sent]] > 70))&& $words[$sent2word[$sent]] > 5) {
 	    $ok = 1;
 	    foreach($exclude_sentences as $excl_sent) {
