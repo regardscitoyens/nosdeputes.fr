@@ -252,8 +252,7 @@ Certains des points d'entrée de cette API sont accessibles de manière simplifi
 
 ## Module PowerShell [RegardsCitoyensPS](https://github.com/Stephanevg/RegardsCitoyenPS)
 
-L'API est également accessible depuis PowerShell (sous Windows, MAC & Linux) à l'aide du module ['RegardsCitoyensPS']. Plus de détails sont disponibles sur la page du projet [RegardsCitoyensPS](https://github.com/Stephanevg/RegardsCitoyenPS) 
-
+L'API est également accessible depuis PowerShell (sous Windows, MAC & Linux) à l'aide du module [`RegardsCitoyensPS`](https://github.com/Stephanevg/RegardsCitoyenPS) réalisé indépendamment par [@StephaneVG](https://github.com/Stephanevg). Plus de détails sont disponibles sur la page du projet.
 
 ## [ParlAPI.fr](http://parlapi.fr) : API sur l'OpenData officielle de l'AN et du Sénat
 
