@@ -1,10 +1,6 @@
 ============ Alerte NosDeputes.fr ============
 
-Voici les dernières alertes de votre abonnement : <?php echo $alerte->titre."\n"; ?>
-----------------------------------------------------------------------
-
 ATTENTION : ce message vous est envoyé automatiquement suite à votre abonnement à cette alerte sur le site <?php echo sfConfig::get('app_base_url'); ?>. Merci de ne pas y répondre.
-
 <?php
 if (!isset($nohuman) || !$nohuman) {
 echo "Visualiser cette alerte sur le site :\n";
@@ -18,7 +14,6 @@ echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('ale
 
 Pour supprimer cette alerte et ne plus recevoir ces messages :
 <?php echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/delete?verif='.$alerte->getVerif())); ?>
-
 <?php if ($alerte->citoyen_id) : ?>
 L'interface vous permettant de gérer vos alertes :
 <?php echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/list')); ?>
@@ -27,6 +22,9 @@ L'interface vous permettant de gérer vos alertes :
 Pour contacter l'association Regards Citoyens, merci d'écrire à l'adresse <contact@regardscitoyens.org>. Nous vous informons que Regards Citoyens est une association bénévole totalement indépendante des institutions publiques. Nous ne sommes donc pas en mesure de faire parvenir de messages auprès des élus.
 
 ================================================
+
+Voici les dernières alertes de votre abonnement : <?php echo $alerte->titre."\n"; ?>
+----------------------------------------------------------------------
 
 <?php
 foreach ($results['response']['docs'] as $res)
