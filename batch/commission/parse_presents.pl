@@ -30,7 +30,7 @@ if ($special && $url =~ /www2.assemblee/) {
   $string =~ s/[\s\n]+/ /g;
   $string =~ s/[,\s]*<br[\/\s]*>[,\s]*/\n/g;
   $string =~ s/<\/?(p|h\d+|div)[^>]*>/\n<\1>/g;
-  $string =~ s/(Excusé[es\s]*:)\s*/\1\n/g;
+  $string =~ s/((Excusé|Présent)[es\s]*:)\s*/\1\n/g;
 }
 
 $mois{'janvier'} = '01';
