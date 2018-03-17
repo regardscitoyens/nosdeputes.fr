@@ -2,6 +2,7 @@
 
 $file = $url = shift;
 $special = shift;
+$defaulthoraire = shift;
 #use HTML::TokeParser;
 $url =~ s/^[^\/]+\///;
 $url =~ s/_/\//g;
@@ -80,9 +81,9 @@ $heures{'cinquante'} = '50';
 $heures{'cinquante-cinq'} = '55';
 $heures{''} = '00';
 
-if ($special && $string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/) {
+if ($special && $string =~ /(?:réunion de Questure|>Réunion) du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/) {
   $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
-  $heure = "10:00";
+  $heure = $defaulthoraire;
 }
 if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
   $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
@@ -201,7 +202,7 @@ foreach $line (split /\n/, $string)
         push @presents, $1;
     }
     #print STDERR "TEST $special $present: $line\n";
-    if ($present) {
+    if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) étai(en)?t présents?./\2/g)) {
 	$line =~ s/<[^>]+>//g;
 	$line =~ s/&[^;]*;/ /g;
     if ($special) {
