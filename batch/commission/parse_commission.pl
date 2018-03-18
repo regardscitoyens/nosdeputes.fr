@@ -215,7 +215,7 @@ sub setFonction {
     $fonction =~ s/, en préalable.*$//;
     $fonction =~ s/Président/président/;
     $fonction =~ s/\bpésident/président/i;
-    $fonction =~ s/raporteur/rapporteur/i;
+    $fonction =~ s/rap+orteur/rapporteur/i;
     $fonction =~ s/^(.*), \1$/\1/;
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
