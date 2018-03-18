@@ -186,9 +186,9 @@ foreach $line (split /\n/, $string) {
     $line =~ s/\s*<[^>]+>\s*/ /g;
     $line =~ s/[  \s]+/ /g;
     $line = trim($line);
-    if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?|Groupes de travail)/) {
+    if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information|auprès du Gouvernement)s?|Délégations? et Offices?|Groupes de travail)/) {
       $encours = "fonctions";
-      if ($line =~ /Missions? temporaires?/) {
+      if ($line =~ /Missions? (auprès|temporaires)?/) {
         $mission = 1;
       } elsif ($line =~ /information/) {
         $missioninfo = 1;
@@ -285,7 +285,7 @@ foreach $line (split /\n/, $string) {
         }
       }
     } else {
-      if ($mission && $line =~ /^(.*?)\(?((Premier ministre|Ministère|Secrétariat).*)\)?\s*$/) {
+      if ($mission && $line =~ /^(.*?)\(?\s*((Premier ministre|Ministère|Secrétariat).*)\)?\s*$/) {
         $organisme = trim($1);
         $minist = trim($2);
         $minist =~ s/ - (Premier min|Minist|Secr).*$//;
