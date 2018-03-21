@@ -60,7 +60,7 @@ class OrganismeTable extends Doctrine_Table
     $org->type = $type;
     $org->nom = self::cleanNom($nom);
     $org->save();
-    echo "INFO: new Organisme : ".$org->nom." ($type)\n";
+    echo "- NEW Organisme : ".$org->nom." ($type)\n";
     return $org;
   }
 
