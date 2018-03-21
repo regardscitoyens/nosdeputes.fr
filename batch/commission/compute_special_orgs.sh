@@ -11,6 +11,7 @@ function compute_org {
     sed 's/<h3>Réunion du /\n/g' |
     grep 'href="/'               |
     grep -v '/convocation/'      |
+    grep -v '/(offset)/'         |
     sed 's/^.*href="//'          |
     sed 's/".*$//'               |
     while read url; do
