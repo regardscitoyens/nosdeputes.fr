@@ -32,6 +32,7 @@ if ($special && $url =~ /www2.assemblee/) {
   $string =~ s/[,\s]*<br[\/\s]*>[,\s]*/\n/g;
   $string =~ s/<\/?(p|h\d+|div)[^>]*>/\n<\1>/g;
   $string =~ s/((Excusé|Présent)[es\s]*:)\s*/\1\n/g;
+  $string =~ s/<script>.*?<\/script>//g;
 }
 
 $mois{'janvier'} = '01';
@@ -202,6 +203,9 @@ foreach $line (split /\n/, $string)
         push @presents, $1;
     }
     #print STDERR "TEST $special $present: $line\n";
+    if ($origline =~ /Retour haut de page/) {
+        $present = 0;
+    }
     if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) étai(en)?t présents?./\2/g)) {
 	$line =~ s/<[^>]+>//g;
 	$line =~ s/&[^;]*;/ /g;
@@ -214,7 +218,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/\s+et\s+/, /gi;
 	$line =~ s/\.$//;
 	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+// || ($newcomm && $line =~ /^\s*M+[\.mMes]+\s/) || $special) {
-        if ($line !~ /^\s*$/) {
+        if ($line !~ /^[\/\s]*$/) {
             push @presents, split /, /, $line; #/
 	    }
     }
