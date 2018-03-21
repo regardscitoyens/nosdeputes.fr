@@ -302,6 +302,10 @@ foreach $line (split /\n/, $string) {
       } elsif ($line =~ s/ de l'Assemblée nationale depuis le : \d.*$//) {
         $organisme = "Bureau de l'Assemblée nationale";
         $fonction = lc $line;
+        if ($fonction =~ /questeur/i) {
+          $depute{"fonctions"}{"Questure / ".trim($fonction)} = 1;
+          $orgas{"questure"} = 1;
+        }
       } else {
         $organisme = ucfirst($line);
         $organisme =~ s/("|\(\s*|\s*\))//g;
