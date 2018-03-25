@@ -28,9 +28,13 @@ foreach ($results['docs'] as $record)
     echo ", ";
   else
     $nb = 1;
-  echo '{"document_type": "'.get_class($record['object']).'", ';
-  echo '"document_id": '.($record['object']->id ? $record['object']->id : '""').", ";
-  echo '"document_url": "'.sfConfig::get('app_base_url').url_for('@api_document?format='.$format.'&class='.get_class($record['object']).'&id='.$record['object']->id).'"}';
+  echo '{"document_type": "'.get_class($record['object']).'"';
+  echo ', "document_id": '.($record['object']->id ? $record['object']->id : '""')."";
+  echo ', "document_url": "'.preg_replace('/([^:])\/\//', '\1/', sfConfig::get('app_base_url').url_for('@api_document?format='.$format.'&class='.get_class($record['object']).'&id='.$record['object']->id)).'"';
+	echo ', "document_intervenant": "'.$record['personne'].'"';
+	echo ', "document_content": "'. preg_replace('/^'.$record['personne'].' /', '', preg_replace('/<\/?em>/', '', $record['highlighting'])).'"';
+	echo ', "document_date": "'.$record['date'].'"';
+	echo '}';
 }
 ?> ]}<?php return;
 endif;
