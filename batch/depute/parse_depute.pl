@@ -190,7 +190,9 @@ foreach $line (split /\n/, $string) {
       $encours = "fonctions";
       if ($line =~ /Missions? (auprès|temporaires)?/) {
         $mission = 1;
-        $encours = "extras";
+        if ($1) {
+          $encours = "extras";
+        }
       } elsif ($line =~ /information/) {
         $missioninfo = 1;
       }
