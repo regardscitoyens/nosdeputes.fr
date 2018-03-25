@@ -82,7 +82,7 @@ $heures{'cinquante'} = '50';
 $heures{'cinquante-cinq'} = '55';
 $heures{''} = '00';
 
-if ($special && $string =~ /(?:réunion de Questure|>Réunion) du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/) {
+if ($special && $string =~ />(?:Décisions (?:de Questure )?de la )?[Rr]éunion (?:de Questure )?du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/) {
   $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
   $heure = $defaulthoraire;
 }
