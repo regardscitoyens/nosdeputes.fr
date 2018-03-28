@@ -114,7 +114,7 @@ $string =~ s/<\/b>(\s*|l')<b>/\1/g;
 $string =~ s/<b>(\s*[\.,]\s*)<\/b>/\1/g;
 $string =~ s/<\/[ub]>\s*,\s*<\/[ub]>/,<u><b>/g;
 $string =~ s/(?:<\/?[ub]>)+\s*(\.)?\s*(?:<\/?[ub]>)+/\1<b>/g;
-$string =~ s/\. ([A-Z])<\/b>(\w)/.<\/b> \1\2/g;
+$string =~ s/\. ([A-Z]|« )<\/b>(\w+)/.<\/b> \1\2/g;
 $string =~ s/<\/?[bu]>/|/g;
 $string =~ s/<\/?i>/\//g;
 
@@ -221,6 +221,7 @@ sub setFonction {
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
     $fonction =~ s/ de la [com]*mission$//;
+    $fonction =~ s/^[, ]+//;
     if ($intervenant && $fonction =~ /^(ministre( déléguée?)?|président|secrétaire d'[Éé]tat)/i) {
       $shortfonction = $1;
       if ($intervenantorig =~ /\b(M[.me]+) /) {
