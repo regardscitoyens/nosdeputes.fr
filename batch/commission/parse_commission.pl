@@ -457,7 +457,7 @@ $string =~ s/<p>\s*((M[.me]+ [^.]*?[, ]+)+(est|sont) élu[^.]*?\.)\s*<\/p>/<p>\/
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $string =~ s/<a[^>]*href="[^"]*(?:fiche\/OMC_|tribun\/fiches_id|senat\.fr\/senateur\/)[^"]*"[^>]*>([^<]*)<\/a>/\1/g;
-$string =~ s/(\|M[.me]+ [^.]*?\.)\s*(–[^|]*)\|/\1\| \2/g;
+$string =~ s/(\|M[.me]+ [^.|]*?\.)\s*(–[^|]*)\|/\1\| \2/g;
 $majIntervenant = 0;
 $body = 0;
 
