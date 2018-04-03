@@ -214,6 +214,7 @@ sub setFonction {
     $fonction =~ s/"//g;
     $fonction =~ s/\///g;
     $fonction =~ s/, en préalable.*$//;
+    $fonction =~ s/,? sur l[ea] pro(jet|proposition de loi).*$//;
     $fonction =~ s/Président/président/;
     $fonction =~ s/\bpésident/président/i;
     $fonction =~ s/rap+orteur/rapporteur/i;
@@ -696,7 +697,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/\/\.\//./g;
     $line =~ s/^[\.\:]\s*//;
     #print STDERR "LINE: $found $intervenant $line\n";
-	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|question|soulève|faire part| été nommé|avait assuré|ayant )/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|souhaite|question|soulève|faire part| été nommé|avait assuré|ayant )/) {
 	    if ($line =~ s/^\s*((Dr\.?|Pr\.?|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
