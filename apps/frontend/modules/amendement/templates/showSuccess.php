@@ -1,7 +1,11 @@
 <div class="amendement" id="L<?php echo $amendement->texteloi_id; ?>-A<?php echo $amendement->numero; ?>">
 <div class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></div>
-<h2><center><?php echo ($section ? link_to($titre2, '@section?id='.$section->id) : $titre2); ?> &mdash; Texte n°&nbsp;<?php echo $amendement->texteloi_id; ?></center></h2>
-<h1><?php echo $titre1; ?></h1>
+<h2><center><?php
+  if ($section) echo link_to($section->titre, '@section?id='.$section->id)." &mdash; Texte n°&nbsp;".$amendement->texteloi_id;
+  elseif ($loi) echo link_to($loititle, '@document?id='.$loi->id);
+  else echo $loititle;
+?></center></h2>
+<h1><?php echo $titre; ?></h1>
 <div class="identiques">
 
 </div>
@@ -20,7 +24,7 @@
 </div>
 <?php } ?>
 <?php if ($sous_admts) { ?>
-<p>Sous-amendements associés&nbsp: <?php foreach($sous_admts as $sous) {
+<p>Sous-amendements associés&nbsp;: <?php foreach($sous_admts as $sous) {
     if ($sous['sort'] === 'Adopté') echo '<strong>';
     echo link_to($sous['numero'], '@amendement?loi='.$amendement->texteloi_id.'&numero='.$sous['numero']).' ';
     if ($sous['sort'] === 'Adopté') echo '(Adopté)</strong> ';
