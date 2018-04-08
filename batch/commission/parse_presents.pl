@@ -106,7 +106,7 @@ if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([
 #exit;
 $cpt = 0;
 sub checkout {
-    if ($#presents <= 0) {
+    if ($#presents < 0) {
 	print STDERR "$url: Pas de présent trouvé\n";
 	return ;
     }
@@ -217,7 +217,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/^\s*et\s+//gi;
 	$line =~ s/\s+et\s+/, /gi;
 	$line =~ s/\.$//;
-	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+// || ($newcomm && $line =~ /^\s*M+[\.mMes]+\s/) || $special) {
+	if ($line =~ s/\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*// || ($newcomm && $line =~ /^\s*M+[\.mMes]+\s/) || $special) {
         if ($line !~ /^[\/\s]*$/) {
             push @presents, split /, /, $line; #/
 	    }
