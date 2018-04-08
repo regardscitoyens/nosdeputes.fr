@@ -111,7 +111,7 @@ class Parlementaire extends BaseParlementaire
         $groupe = " ".link_to($this->groupe_acronyme, '@list_parlementaires_groupe?acro='.$this->groupe_acronyme);
       else $groupe = " ".$this->groupe_acronyme;
     }
-    if (preg_match('/apparent/', $this->groupe->getFonction())) {
+    if ($this->groupe && preg_match('/apparent/', $this->groupe->getFonction())) {
       if ($this->sexe == 'F') $groupe = ' apparentée'.$groupe;
       else $groupe = ' apparenté'.$groupe;
     }
