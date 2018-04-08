@@ -150,18 +150,18 @@ class Seance extends BaseSeance
   public function getTitre($miniature = 0) {
     $titre = '';
     if ($this->type == 'hemicycle') {
-      if ($miniature == 0)
+      if (!$miniature)
         $titre .= 'S';
       else $titre .= 's';
       $titre .= 'éance ';
       $titre .= 'en hémicycle ';
     }else{
-      if ($miniature == 0)
+      if (!$miniature)
         $titre .= 'R';
       else $titre .= 'r';
       $titre .= 'éunion ';
     }
-    $titre .= 'du '.preg_replace('/^0(\d)/', '\\1', myTools::displayDate($this->getDate()));
+    $titre .= 'du '.preg_replace('/^0(\d)/', '\\1', myTools::displayDateSemaine($this->getDate(), 1));
     if ($moment = $this->getMoment()) {
       if (preg_match('/(réunion|^\d+$)/', $moment))
         $titre .= ' : ';

@@ -1,6 +1,6 @@
 <h1><?php echo $shorttitle; ?></h1>
 <?php
-$titre2 = link_to($seance->getTitre(0), '@interventions_seance?seance='.$seance->id.'#inter_'.$intervention->getMd5());
+$titre2 = link_to($seance->getTitre(), '@interventions_seance?seance='.$seance->id.'#inter_'.$intervention->getMd5());
 $titre2 .= ' <br/> ';
 if (isset($orga))
   $titre2 .= link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug());
