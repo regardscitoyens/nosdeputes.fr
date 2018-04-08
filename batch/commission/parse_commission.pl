@@ -698,7 +698,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/\/\.\//./g;
     $line =~ s/^[\.\:]\s*//;
     #print STDERR "LINE: $found $intervenant $line\n";
-	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|souhaite|question|soulève|faire part| été nommé|avait assuré|ayant )/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+[^\.:]*(interroge|souhaite|question|soulève|empêché|faire part| été nommé|avait assuré|ayant )/) {
 	    if ($line =~ s/^\s*((Dr\.?|Pr\.?|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
