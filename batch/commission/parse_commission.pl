@@ -213,6 +213,7 @@ sub setFonction {
     $fonction =~ s/<[^>]+>\s*//g;
     $fonction =~ s/<[^>]*$//;
     $fonction =~ s/"//g;
+    $fonction =~ s/(\w)\/(\w)/\1-\2/g;
     $fonction =~ s/\///g;
     $fonction =~ s/, en préalable.*$//;
     $fonction =~ s/,? sur l[ea] pro(jet|proposition de loi).*$//;
