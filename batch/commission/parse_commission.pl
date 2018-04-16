@@ -230,8 +230,10 @@ sub setFonction {
       if ($intervenantorig =~ /\b(M[.me]+) /) {
         $lettre = ($1 eq "M." ? "e" : "a");
         $shortfonction = comparable("$1 l$lettre $shortfonction");
-        #print STDERR "YEAH $shortfonction -> $intervenant\n";
-        $fonction2inter{$shortfonction} = $intervenant;
+        if (!$fonction2inter{$shortfonction}) {
+          #print STDERR "YEAH $shortfonction -> $intervenant\n";
+          $fonction2inter{$shortfonction} = $intervenant;
+        }
       }
     }
     my $kfonction = comparable($fonction);
