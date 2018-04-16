@@ -302,6 +302,7 @@ sub setIntervenant {
     $intervenant =~ s/François Gaill/Françoise Gaill/i;
     $intervenant =~ s/Benoît Betinelli/Benoît Bettinelli/i;
     $intervenant =~ s/Élise Fajleges/Élise Fajgeles/i;
+    $intervenant =~ s/Fabien Lachaud/Bastien Lachaud/i;
     $intervenant =~ s/Maine Sage/Maina Sage/i;
     $intervenant =~ s/Nicole Notta/Nicole Notat/i;
     $intervenant =~ s/Frnçois/François/i;
