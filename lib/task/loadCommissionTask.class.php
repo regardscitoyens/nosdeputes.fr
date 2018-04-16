@@ -44,6 +44,9 @@ class loadCommissionTask extends sfBaseTask
               $seance = Doctrine::getTable('Seance')->getFromSeanceArgs('commission', $json->date, $json->heure, $json->session, $json->commission);
               if ($seance) {
                 try {
+                  if (count($seance->Interventions)) {
+                    echo "WARNING: removing existing interventions from compte-rendu ".$seance->Interventions[0]->source."\n";
+                  }
                   $seance->deleteInterventions();
                 }catch(Exception $e) {
                   echo "ERROR: Impossible de supprimer la séance ".$seance->id." (".$e->getMessage().")\n";
