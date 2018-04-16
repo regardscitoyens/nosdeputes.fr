@@ -460,6 +460,7 @@ $string =~ s/<p>(<a name.*?<\/a>)?((?:Puis|Su(?:r le rapport|ivant l'avis) d[^,]
 $string =~ s/<p>(<a name.*?<\/a>)?((?:Puis|Su(?:r le rapport|ivant l'avis) d[^,]*),\s*)?(La commission(?: d\S+(?: \w\w+)*?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|émet|accept|donne un avis|procède (?:au|à)|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
 $string =~ s/<p>\s*\(?((Un échange de vues a suivi|Après le départ de[^<]* il est procédé |L'audition, suspendue à |La réunion de la commission[^<]*s'achève)[^<]*)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/<p>\s*((M[.me]+ [^.]*?[, ]+)+(est|sont) élu[^.]*?\.)\s*<\/p>/<p>\/\1\/<\/p>/gi;
+$string =~ s/<p[^>]*>[\(\/]+([^<\/\)]+)[\/\)\.]+<\/p>/\n<p>\/\1\/<p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $string =~ s/<a[^>]*href="[^"]*(?:fiche\/OMC_|tribun\/fiches_id|senat\.fr\/senateur\/)[^"]*"[^>]*>([^<]*)<\/a>/\1/g;
