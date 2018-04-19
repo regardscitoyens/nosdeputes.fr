@@ -232,7 +232,7 @@ foreach $line (split /\n/, $string)
         $present = 0;
       }
     } else {
-    if ($line =~ /[>\|\/](Membres? présents? ou excusés?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/ || $line =~ /^\s*Députés\s*$/) {
+    if ($line =~ /[>\|\/](Membres? présents?( ou excusés?)?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/ || $line =~ /^\s*Députés\s*$/) {
         $present = 1;
     } elsif ($line =~ /^\s*Sénateurs\s*$/) {
         $present = 0;
