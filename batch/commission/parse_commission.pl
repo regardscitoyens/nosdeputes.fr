@@ -186,6 +186,7 @@ sub checkout {
 	return ;
     }
     $commentaire = "";
+    $previnterv = $intervenant;
     $intervenant = "";
     $intervention = "";
 }
@@ -496,6 +497,7 @@ $string =~ s/<\/?ul>//gi;
 #print $string; exit;
 
 $finished = 0;
+$previnterv = 0;
 $listinterv = 0;
 foreach $line (split /\n/, $string)
 {
@@ -619,7 +621,7 @@ foreach $line (split /\n/, $string)
     next if ($line =~ /\|\/(vice-)?présidente?\/\|/);
     $line =~ s/^\s*–\s*\|\s*/|– /;
     $tmpinter = "";
-    #print STDERR $line."\n";
+    #print STDERR "$intervenant $line\n";
     #si italique ou tout gras => commentaire
     if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/ || $line =~ /^\/La commission/) && $line !~ /^\|Articles?\s*\d+/i && $line !~ /^\/«/) {
       if ($line =~ /^[\/|]((groupe|(com)?mission|délégation|office|comité).*)[\/|]\s*$/i) {
@@ -634,7 +636,7 @@ foreach $line (split /\n/, $string)
         if (!$tmpinter) {
           checkout();
         }
-        if ($line =~ /^\/\(.*\.\)\/$/ || $line =~ /^\|.*\|\s*$/) {
+        if ($line =~ /^\/\(.*\)\/$/ || $line =~ /^\|.*\|\s*$/) {
           $tmpinter = $intervenant;
         }
       }
@@ -734,6 +736,11 @@ foreach $line (split /\n/, $string)
             }
 	    }
 	}
+    if (!$found && !$intervenant && $previnterv) {
+        $tmpprev = $previnterv;
+        checkout();
+        $intervenant = $tmpprev;
+    }
     if ($line && !$listinterv) {
 	  $intervention .= "<p>$line</p>";
     }
