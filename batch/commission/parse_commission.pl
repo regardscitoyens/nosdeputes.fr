@@ -718,7 +718,7 @@ foreach $line (split /\n/, $string)
                 checkout();
                 $intervenant = setIntervenant($tmpi);
             }
-        } elsif ($line =~ s/^\s*(M(mes?|\.)\s+[A-ZÉ][^,]*?), ((secrétaire|ministre|députée?|(?:direct|sénat)(?:eur|rice)|rapporteur|président)[^«\d]*?)\s*[^M]\.\s*//) {
+        } elsif ($line =~ s/^\s*(M(mes?|\.)\s+[A-ZÉ][^,]*?), ((secrétaire|ministre|députée?|(?:direct|sénat)(?:eur|rice)|rapporteur|président)[^«\d]*?[^M])\.\s*//) {
             checkout();
             $intervenant = setFonction($3, $1);
 	    }elsif (!$majIntervenant) {
