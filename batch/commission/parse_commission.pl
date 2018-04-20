@@ -624,7 +624,7 @@ foreach $line (split /\n/, $string)
     $tmpinter = "";
     #print STDERR "$intervenant $line\n";
     #si italique ou tout gras => commentaire
-    if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/ || $line =~ /^\/La commission/) && $line !~ /^\|Articles?\s*\d+/i && $line !~ /^\/«/) {
+    if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/ || $line =~ /^\/La commission/) && $line !~ /^\|Articles?\s*\d+/i && $line !~ /^\/\s*«/) {
       if ($line =~ /^[\/|]((groupe|(com)?mission|délégation|office|comité).*)[\/|]\s*$/i) {
         if (!$timestamp && !$commission) {
           $commission = $1;
