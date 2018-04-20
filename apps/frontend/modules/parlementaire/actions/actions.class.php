@@ -335,6 +335,7 @@ class parlementaireActions extends sfActions
       ->andWhere('p.fin_mandat IS NULL')
       ->andWhere('po.fin_fonction IS NULL')
       ->groupBy('o.id')
+      ->orderBy('o.created_at')
       ->fetchArray();
     $this->human_type = $this->organisme_types[$this->type];
     $this->title = "Liste des ".$this->human_type;
