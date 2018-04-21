@@ -527,7 +527,7 @@ foreach $line (split /\n/, $string)
         last if ($line =~ /^\|annexe/i);
         next if ($line !~ /\w/);
         #cas des intervenants en gras suivi immédiatement de la fonction en italique
-        $line =~ s/^(\s*\|\s*M[^\|]+)(\s*,\s*\|\s*|\s*\|\s*,\s*)\/([^\/]+)\//$1, $3|/;
+        $line =~ s/^(\s*\|\s*(?:Justin|M)[^\|]+)(\s*,\s*\|\s*|\s*\|\s*,\s*)\/([^\/]+)\//$1, $3|/;
         #si italique ou tout gras => commentaire
         $line =~ s/##BR##$//;
         foreach $line (split /##BR##/, $line) {
