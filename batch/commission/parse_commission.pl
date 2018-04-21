@@ -647,7 +647,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/^(\|M[.me]+)\s*\|\s*/\1 /;
     $line =~ s/^\|M\s+([A-ZÉ])/|M. \1/;
     $line =~ s/\|\)/)|/g;
-    if (($prez && $line =~ /^\|?(Informations relatives à la Commission|Présences en réunion)/i) || $line =~ /^\W*Membres présents/) {
+    if (($prez && $line =~ /^\|?(Informations relatives à la Commission|Présences en réunion)/i) || $line =~ /^\W*(Membres )?[Pp]résents/) {
         $finished = 1;
         $tmpinter = "";
         checkout();
