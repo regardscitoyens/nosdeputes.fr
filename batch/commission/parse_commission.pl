@@ -821,7 +821,7 @@ foreach $line (split /\n/, $string)
       $source = $tmpsource;
     }
   }
-    if ($intervention =~ s/((<table[^>]*>).{20000,25000}<\/tr>)\s*(<tr.*<\/table>.*)$/\1/i) {
+    while ($intervention =~ s/((<table[^>]*><tr>.*?<\/tr>).{30000,32000}<\/tr>)\s*(<tr.*<\/table>.*)$/\1/i) {
         $tmpinter = $intervenant;
         $moretable = '<p>'.$2.$3;
         $intervention .= '</table></p>';
