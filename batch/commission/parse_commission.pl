@@ -821,7 +821,18 @@ foreach $line (split /\n/, $string)
       $source = $tmpsource;
     }
   }
-    if (length($intervention)-32000 > 0) {
+    if ($intervention =~ s/((<table[^>]*>).{20000,25000}<\/tr>)\s*(<tr.*<\/table>.*)$/\1/i) {
+        $tmpinter = $intervenant;
+        $moretable = '<p>'.$2.$3;
+        $intervention .= '</table></p>';
+        checkout();
+        $intervention = $moretable;
+        if ($tmpinter) {
+            checkout();
+            $intervenant = $tmpinter;
+        }
+    }
+    if (length($intervention) > 32000) {
         $tmpinter = $intervenant;
         checkout();
     }
