@@ -14,7 +14,9 @@ class fixPersoToParlTask extends sfBaseTask {
  }
 
   protected function execute($arguments = array(), $options = array()) {
+    $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);
+    sfContext::createInstance($this->configuration);
     $perso = Doctrine::getTable('Personnalite')->findOneByIdOrName($arguments['perso']);
     $parl = Doctrine::getTable('Parlementaire')->findOneByIdOrName($arguments['parl']);
     if (!$perso || !$parl) return;
@@ -28,7 +30,7 @@ class fixPersoToParlTask extends sfBaseTask {
     if ($interventions) {
       $rmperso = true;
       foreach($interventions as $i) {
-        print $i->id." ".$i->fonction." http://nosdeputes.fr/14/seance/".$i->seance_id.'#inter_'.$i->getMd5()."\n";
+        print $i->id." ".$i->fonction." http://nosdeputes.fr/".sfConfig::get('app_legislature')."/seance/".$i->seance_id.'#inter_'.$i->getMd5()."\n";
         if ($arguments['seance'] && $i->seance_id == $arguments['seance']) {
           $i->setParlementaire($parl);
           if ($fct) $i->setFonction($fct);
