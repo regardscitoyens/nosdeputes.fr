@@ -131,12 +131,14 @@ class Intervention extends BaseIntervention
   public function setPersonnalite($personne) {
     if (isset($personne->id)) {
       $this->_set('parlementaire_id', null);
+      $this->_set('parlementaire_groupe_acronyme', null);
       $this->_set('personnalite_id', $personne->id);
     }
   }
 
   public function setAsDidascalie() {
     $this->_set('parlementaire_id', null);
+    $this->_set('parlementaire_groupe_acronyme', null);
     $this->_set('personnalite_id', null);
     $this->setFonction(null);
   }

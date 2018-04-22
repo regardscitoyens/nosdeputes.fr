@@ -151,7 +151,7 @@ $Test->setColorPalette(1,0,0,0);
 if (!$histogram)
   $Test->drawLineGraph($DataBordure,$DataDescrBordure);
 
-$Test->xsSetFontProperties("tahoma.ttf",$font + 3);
+$Test->xsSetFontProperties("tahoma.ttf",$font + 2);
 $pos_titre = 240;
 if (preg_match("/^l/", $time)) {
   if (isset($data['mandat_clos'])) {
@@ -171,12 +171,13 @@ if (preg_match("/^l/", $time)) {
 }
 if ($type === 'total') {
   $Test->drawTitle($pos_titre,3 + 2*$font,"Présences en commissions et participation en hémicycle au cours ".$duree,50,50,50,585);
-  $titre = 'globale-'.$shortduree;
 } else {
-  $titre = $type;
-  if ($type === 'commission') $titre .= 's';
-  $Test->drawTitle($pos_titre+30,3 + 2*$font,"Participation en ".$titre." au cours ".$duree,50,50,50,585);
-  $titre .= '-'.$shortduree;
+  if ($type === 'commission') {
+    $titre = "Présences et participation en commissions";
+  } else {
+    $titre = "Participation en hémicycle";
+  }
+  $Test->drawTitle($pos_titre+30,3 + 2*$font, $titre." au cours ".$duree,50,50,50,585);
 }
 
 $Test->xsStroke();

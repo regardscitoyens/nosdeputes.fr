@@ -77,7 +77,7 @@ class interventionActions extends sfActions
       $titre .= $this->secparent->getTitre();
     else
       $titre .= $this->section->getTitre();
-    $titre .= " - ".$this->seance->getTitre(0);
+    $titre .= " - ".$this->seance->getTitre();
     $this->lois = $this->intervention->getTags(array('is_triple' => true,
 						     'namespace' => 'loi',
 						     'key' => 'numero',
@@ -247,12 +247,14 @@ class interventionActions extends sfActions
       foreach ($querytag->execute(array(), Doctrine::HYDRATE_NONE) as $s) {
         array_push($sections, $s[0]);
       }
+      if (count($sections)) {
       $querysection = Doctrine_Query::create();
       $querysection->from("Intervention i");
       $querysection->leftJoin('i.Section s')->andWhere('i.seance_id = ?', $this->seance->id)->select('i.id as id');
       $querysection->andWhereIn('s.section_id', $sections);
       foreach ($querysection->execute(array(), Doctrine::HYDRATE_NONE) as $id) {
       	      $ids[$id[0]] = 1;
+      }
       }
       $this->query->andWhereIn('i.id', array_keys($ids))->andWhere('i.type != "question"');
     }
@@ -360,7 +362,7 @@ class interventionActions extends sfActions
     $qtag->andWhere('t.name NOT LIKE ?', 'loi:%');
     $this->tags = PluginTagTable::getPopulars($qtag, array('model' => 'Intervention', 'limit' => 9));
 
-    myTools::setPageTitle(($this->seance->type == 'commission' ? $this->orga->getNom().' : '.$this->seance->getTitre() : $this->seance->getTitre(0)), $this->response);
+    myTools::setPageTitle(($this->seance->type == 'commission' ? $this->orga->getNom().' : '.$this->seance->getTitre(1) : $this->seance->getTitre()), $this->response);
   }
 
   public function executeTag(sfWebRequest $request) {

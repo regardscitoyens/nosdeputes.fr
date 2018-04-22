@@ -35,7 +35,7 @@ class removeSeanceTask extends sfBaseTask {
       $query = Doctrine_Query::create()
         ->delete('PreuvePresence p')
         ->where('p.presence_id = ?', $pres)
-        ->andWhereIn('p.type', array("intervention", "compte-rendu"))
+        ->andWhereIn('p.type', array("intervention", "compte-rendu", "video"))
         ->execute();
       if (Doctrine_Query::create()->select('id')->from('PreuvePresence')->where('presence_id = ?', $pres)->fetchOne()) {
         print "(kept via JO)";

@@ -16,7 +16,7 @@ if ($cause = $parlementaire->getCauseFinMandat())
         if ($parlementaire->suppleant_de_id && $supplee = $parlementaire->getSuppleantDe())
           echo '<li>Suppléant'.$fem.' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>';
         if ($parlementaire->groupe_acronyme != "") : ?>
-        <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo preg_replace('/^(présidente?)$/i', '<strong>\1</strong>', $parlementaire->getGroupe()->getFonction()); ?>)</li>
+        <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> (<?php echo preg_replace('/^(présidente?)$/i', '<strong>\1</strong>', ($parlementaire->getGroupe() ? $parlementaire->getGroupe()->getFonction() : 'ancien membre')); ?>)</li>
         <?php endif;
         if ($parlementaire->parti) : ?>
         <li>Parti politique (rattachement financier) : <?php echo $parlementaire->parti; ?></li>
@@ -104,11 +104,16 @@ echo " ($fonction)";
         <?php endif; ?>
         <?php if ($parlementaire->getExtras()) : ?>
         <li>Fonctions judiciaires, internationales ou extra-parlementaires&nbsp;:
-          <ul>
-            <?php foreach ($parlementaire->getExtras() as $extra) { ?>
+          <ul><?php foreach ($parlementaire->getExtras() as $extra) { ?>
             <li><?php echo link_to($extra->getNom(),'@list_parlementaires_organisme?slug='.$extra->getSlug() ); ?> (<?php echo $extra->getFonction(); ?>)</li>
-              <?php } ?>
-          </ul>
+          <?php } ?></ul>
+        </li>
+        <?php endif ?>
+        <?php if ($parlementaire->getGroupes()) : ?>
+        <li>Groupes d'études et d'amitié&nbsp;:
+          <ul><?php foreach ($parlementaire->getGroupes() as $gpe) { ?>
+            <li><?php echo link_to($gpe->getNom(),'@list_parlementaires_organisme?slug='.$gpe->getSlug() ); ?> (<?php echo $gpe->getFonction(); ?>)</li>
+          <?php } ?></ul>
         </li>
         <?php endif ?>
       </ul>

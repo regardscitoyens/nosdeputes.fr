@@ -13,9 +13,22 @@ class loadAmdmtsTask extends sfBaseTask {
   protected function execute($arguments = array(), $options = array()) {
     // your code here
     $dir = dirname(__FILE__).'/../../batch/amendements/json/';
+    $backupdir = dirname(__FILE__).'/../../batch/amendements/loaded/';
+    $errordir = dirname(__FILE__).'/../../batch/amendements/errors/';
     $this->configuration = sfProjectConfiguration::getApplicationConfiguration($options['app'], $options['env'], true);
     $manager = new sfDatabaseManager($this->configuration);
     $nb_json = 0;
+    $orgas = array(
+      "GVT"    => "Gouvernement",
+      "59046"  => "Commission de la défense nationale et des forces armées",
+      "59047"  => "Commission des affaires étrangères",
+      "59048"  => "Commission des finances",
+      "59051"  => "Commission des lois",
+      "419604" => "Commission des affaires culturelles et de l'éducation",
+      "419610" => "Commission des affaires économiques",
+      "419865" => "Commission du développement durable et de l'aménagement du territoire",
+      "420120" => "Commission des affaires sociales"
+    );
 
     if (is_dir($dir)) {
       if ($dh = opendir($dir)) {
@@ -32,11 +45,13 @@ class loadAmdmtsTask extends sfBaseTask {
             $json = json_decode($line);
             if (!$json) {
               echo "ERROR json : $line";
-              continue;
+	      rename($dir.$file, $errordir.$file);
+              continue 2;
             }
             if (!$json->source || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->texte || !$json->date || !isset($json->rectif)) {
               echo "ERROR mandatory arg missing (source|legis|numero|loi|sujet|texte|date|rectif): $line\n";
-              continue;
+	      rename($dir.$file, $errordir.$file);
+              continue 2;
             }
             $modif = true;
             $new = false;
@@ -63,7 +78,7 @@ class loadAmdmtsTask extends sfBaseTask {
               $amdmt->addTag('loi:numero='.$amdmt->texteloi_id);
               $amdmt->numero = $json->numero;
               $amdmt->rectif = $json->rectif;
-            } elseif (!$json->parent && !$json->serie && $amdmt->signataires == $json->auteurs && ($amdmt->date == $json->date || ($amdmt->texte == $json->texte && $amdmt->expose == $json->expose && $amdmt->sujet == $json->sujet))) {
+            } elseif (!$json->parent && !$json->serie && $amdmt->signataires == $json->auteurs && $amdmt->date == $json->date && $amdmt->texte == $json->texte && $amdmt->expose == $json->expose && $amdmt->sujet == $json->sujet) {
               $modif = false;
             }
             if ($modif) {
@@ -117,7 +132,8 @@ class loadAmdmtsTask extends sfBaseTask {
               } else if (!$json->sort || !preg_match('/(irrecevable|retir)/i', $json->sort)) {
                 echo "ERROR json auteurs missing : $line\n";
                 $amdmt->free();
-                continue;
+	        rename($dir.$file, $errordir.$file);
+                continue 2;
               }
             }
             if ($json->sort) {
@@ -125,7 +141,7 @@ class loadAmdmtsTask extends sfBaseTask {
             } elseif (!$amdmt->sort) {
               $amdmt->sort = "Indéfini";
             }
-            if ($json->auteur_reel && $json->auteur_reel !== "GVT" && !$amdmt->auteur_id) {
+            if ($json->auteur_reel && !isset($orgas[$json->auteur_reel]) && !$amdmt->auteur_id) {
               $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($json->auteur_reel);
               if ($parl->id)
                 $amdmt->setFirstAuteur($parl);
@@ -138,7 +154,7 @@ class loadAmdmtsTask extends sfBaseTask {
               $reindexWithParls->save();
             }
           }
-          unlink($dir.$file);
+          rename($dir.$file, $backupdir.$file);
         }
         if ($ct_modif) echo $ct_lines." amendements lus : ".$ct_modif." écrits dont ".$ct_crees." nouveaux.\n";
         closedir($dh);

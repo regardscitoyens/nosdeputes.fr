@@ -50,7 +50,7 @@ if ((isset($texte) && $texte > 0) || count($annexes) || $amendements) { ?>
   if (count($annexes)) {
     foreach ($annexes as $annexe) if ($annexe['id'] != $doc->id && preg_match('/-a0/', $annexe['id']))
       echo '<li>'.link_to('Voir le texte adopté par la commission', '@document?id='.$doc->numero.'-a0').'</li>';
-    foreach ($annexes as $annexe) if ($annexe['id'] != $doc->id && preg_match('/t([\dIVX]+)/', $annexe['id'], $tom)) {
+    foreach ($annexes as $annexe) if ($annexe['id'] != $doc->id && preg_match('/t([\dIVX]+)$/', $annexe['id'], $tom)) {
       $titreannexe = "Tome&nbsp;".$tom[1];
       if (preg_match('/v(\d+)/', $annexe['id'], $vol))
         $titreannexe .= " - volume ".$vol[1];

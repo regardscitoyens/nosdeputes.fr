@@ -258,8 +258,9 @@ class myTools {
      "5" => "Vendredi",
      "6" => "Samedi");
 
-  public static function displayDateSemaine($date) {
+  public static function displayDateSemaine($date, $lowercase=0) {
     $day = self::$day_week[date('w', strtotime($date))];
+    if ($lowercase) $day = strtolower($day);
     return $day.' '.self::displayDate($date);
   }
 

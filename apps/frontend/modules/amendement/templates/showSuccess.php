@@ -1,7 +1,11 @@
 <div class="amendement" id="L<?php echo $amendement->texteloi_id; ?>-A<?php echo $amendement->numero; ?>">
 <div class="source"><a href="<?php echo $amendement->source; ?>">source</a> - <a href="<?php echo $amendement->getLinkPDF(); ?>">PDF</a></div>
-<h1><?php echo "<small>".$loititle."</small> &ndash; ".$titre1; ?></h1>
-<h2><?php echo ($section ? link_to($titre2, '@section?id='.$section->id) : $titre2); ?></h2>
+<h2><center><?php
+  if ($section) echo link_to($section->titre, '@section?id='.$section->id)." &mdash; Texte n°&nbsp;".$amendement->texteloi_id;
+  elseif ($loi) echo link_to($loititle, '@document?id='.$loi->id);
+  else echo $loititle;
+?></center></h2>
+<h1><?php echo $titre; ?></h1>
 <div class="identiques">
 
 </div>
@@ -20,7 +24,7 @@
 </div>
 <?php } ?>
 <?php if ($sous_admts) { ?>
-<p>Sous-amendements associés&nbsp: <?php foreach($sous_admts as $sous) {
+<p>Sous-amendements associés&nbsp;: <?php foreach($sous_admts as $sous) {
     if ($sous['sort'] === 'Adopté') echo '<strong>';
     echo link_to($sous['numero'], '@amendement?loi='.$amendement->texteloi_id.'&numero='.$sous['numero']).' ';
     if ($sous['sort'] === 'Adopté') echo '(Adopté)</strong> ';
@@ -69,14 +73,14 @@ echo include_component('commentaire', 'form', array('object' => $amendement)); ?
 </div>
 <script type="text/javascript">
 <!--
-$('#liste_deputes a').on('mouseover', function() {
- nom = $(this).attr('href');
+$('#liste_deputes a').bind('mouseover', function() {
+ var nom = $(this).attr('href');
  nom = nom.replace(/^.*rechercher\/([A-ZÉ][\.\s]+)*/, '');
+ $('.photo_fiche').css('opacity', '0.3');
  $('.photo_fiche[title*="'+nom+'"]').css('opacity', '1');
 });
-$('#liste_deputes').bind('mouseover mouseout', function(event) {
- if (event.type == "mouseover") { $('.photo_fiche').css('opacity', '0.3'); $("#liste_deputes").die("mouseover"); }
- else { $('.photo_fiche').css('opacity', '1'); $("#liste_deputes").die("mouseout"); }
+$('#liste_deputes').bind('mouseout', function() {
+ $('.photo_fiche').css('opacity', '1');
 });
 // -->
 </script>

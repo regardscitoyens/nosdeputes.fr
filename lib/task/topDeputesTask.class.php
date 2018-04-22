@@ -499,7 +499,7 @@ class topDeputesTask extends sfBaseTask
     $this->sem0 = date('W', $start);
     if ($sem >= 52 && date('n', $date) == 1) $sem = 0;
     if ($this->sem0 >= 52 && $sem <= 1) $this->sem0 = 0;
-    $this->n_weeks = max(1, ($annee - $this->annee0)*53 + $sem - $this->sem0 + 1);
+    $this->n_weeks = max(1, ($annee - $this->annee0)*52 + $sem - $this->sem0 + 1);
 
     $this->presences_medi = array(
       'commission' => array_fill(1, $this->n_weeks, 0),
@@ -546,7 +546,7 @@ class topDeputesTask extends sfBaseTask
     $w = array();
     $curn = -1;
     foreach ($q->fetchArray() as $presence) {
-      $n = ($presence['Seance']['annee'] - $this->annee0)*53 + $presence['Seance']['numero_semaine'] - $this->sem0 + 1;
+      $n = ($presence['Seance']['annee'] - $this->annee0)*52 + $presence['Seance']['numero_semaine'] - $this->sem0 + 1;
       if ($n > $this->n_weeks)
         break;
       if ($n != $curn) {

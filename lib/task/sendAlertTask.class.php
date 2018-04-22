@@ -36,6 +36,8 @@ class sendAlertTask extends sfBaseTask
               $query .= ' '.$match[1].':'.preg_replace('/=(.*)$/', '="$1"', $match[2]);
             else $query .= ' '.$match[1].':"'.$match[2].'"';
           }
+      if ($alerte->no_human_query)
+        $query .= " -object_name:Section";
       if ($verbose) {
 	print "LOG: query for alerte ".$alerte->id." to ".$alerte->email.": $query\n";
       }

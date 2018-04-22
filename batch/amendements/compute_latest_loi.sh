@@ -38,6 +38,6 @@ done
 
 for file in `ls html-$loi`; do 
 	fileout=$(echo $file | sed 's|html-[^/]*|json|' | sed 's/\.asp/\.xml/')
-	perl cut_amdmt.pl "html-$loi/$file" > json/$fileout
+	perl cut_amdmt.pl "html-$loi/$file" | python clean_subjects_amdmts.py > json/$fileout
 done;
 

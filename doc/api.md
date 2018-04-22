@@ -20,7 +20,7 @@ Une API a été développée pour offrir un accès Open Data simplifié aux donn
 
 ## Explications
 
-- **Format :** La plupart des exemples fournis ci-dessous sont donnés au format XML pour permettre plus de lisibilité dans le navigateur web. Veuillez remplacer `xml` en `json` ou `csv` pour accéder aux autres formats
+- **Format :** La plupart des exemples fournis ci-dessous sont donnés au format XML pour permettre plus de lisibilité dans le navigateur web. Veuillez remplacer `xml` en `json` ou `csv` pour accéder aux autres formats. Pour forcer l'affichage dans le navigateur, vous pouvez utilisez l'option `?textplain=true`.
 
 - **Encoding :** les données sont proposées en `utf-8`. Si vous vous retrouvez face à des caractères kabbalistiques, cela signifie qu'il vous faut régler l'encodage dans les options du logiciel avec lequel vous manipulez les données. Si votre tableur ne vous permet de spécifier l'encodage, vous pouvez rajouter l'option `?withBOM=true` à la fin des adresses des fichiers CSV que vous cherchez à télécharger.
 
@@ -209,13 +209,13 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
 Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche/) sont également accessibles via l'API : il suffit de rajouter le paramètre `format=[xml|json|csv]` à l'url de recherche.
 
-**Exemple :** résultats d'une recherche sur « OpenData » https://www.nosdeputes.fr/recherche/opendata?format=xml
+**Exemple :** résultats d'une recherche sur « OpenData » https://www.nosdeputes.fr/recherche/données?format=xml
 
 - **Pagination :**
 
-  Les résultats indiquent un total de résultats `lastResult` et sont délivrés par lots de 20, numérotés de `start` à `end`.
+  Les résultats indiquent un total de résultats `lastResult` et sont délivrés par lots de 50 ou `count` (maximum 500), numérotés de `start` à `end`.
 
-  Ajoutez à l'url le paramètre `&page=N` pour accéder aux résultats de la page N (contenant les éléments n° 20*(N-1)+1 à 20*N).
+  Ajoutez à l'url le paramètre `&page=N` pour accéder aux résultats de la page N (contenant les éléments n° count*(N-1)+1 à count*N).
 
   **Exemple :** résultats de la 2nde page d'une recherche sur « Internet » https://www.nosdeputes.fr/recherche/internet?page=2&format=xml
 
@@ -225,11 +225,11 @@ Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche
 
   Vous pouvez restreindre les résultats à :
 
-  - un **type d'objet** précis : ajouter `&object_name=OBJTYPE` avec `OBJTYPE` parmi : `Parlementaire`, `Organisme`, `Intervention`, `Amendement`, `QuestionEcrite`, `Section`, `Texteloi`, `Commentaire`
+  - un **type d'objet** précis : ajouter `&object_name=OBJTYPE` avec `OBJTYPE` parmi : `Parlementaire`, `Organisme`, `Intervention`, `Amendement`, `QuestionEcrite`, `Section`, `Texteloi`, `Commentaire`, par exemple pour tous les TexteLoi : https://www.nosdeputes.fr/recherche/?object_name=Texteloi&format=xml&count=500
 
   - une **période temporelle** précise : ajouter `&date=YYYYMMDD%2CYYYYMMDD` par exemple pour les résultats sur « internet » en janvier 2016 : https://www.nosdeputes.fr/recherche/internet?format=xml&date=20160101%2C20160131
 
-  - un **parlementaire** précis : ajouter `&tag=parlementaire=SLUG`
+  - un **parlementaire** précis : ajouter `&tag=parlementaire=SEARCHSLUG` avec SEARCHSLUG formé ainsi : `prenom+nom`. sans accents ni cédille et en remplaçant les espaces par des + (mais en conservant le trait d'union des prénoms et noms composés, par exemple : `Francois+de+Rugy` `cedric+villani`, `carole+bureau-bonnard` ,`marie-christine+verdier-jouclas`)
 
   - ceux associés à des **mots-clés** spécifique : ajouter `&tag=KEYWORD1,KEYWORD2,...` par exemple pour les résultats sur « internet » effectivement taggés "internet" : https://www.nosdeputes.fr/recherche/internet?format=xml&tag=internet
 
@@ -250,6 +250,9 @@ Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche
 
 Certains des points d'entrée de cette API sont accessibles de manière simplifiée en langage Python à l'aide du paquet pip [`cpc-api`](https://pypi.python.org/pypi/cpc_api) dont le [code source est disponible ici](https://github.com/regardscitoyens/cpc-api).
 
+## Module PowerShell [RegardsCitoyensPS](https://github.com/Stephanevg/RegardsCitoyenPS)
+
+L'API est également accessible depuis PowerShell (sous Windows, MAC & Linux) à l'aide du module [`RegardsCitoyensPS`](https://github.com/Stephanevg/RegardsCitoyenPS) réalisé indépendamment par [@StephaneVG](https://github.com/Stephanevg). Plus de détails sont disponibles sur la page du projet.
 
 ## [ParlAPI.fr](http://parlapi.fr) : API sur l'OpenData officielle de l'AN et du Sénat
 
@@ -260,9 +263,19 @@ Nous développons donc un accès simplifié par une API à ces jeux de données 
 
 ## Exemples de réutilisations basées sur l'API
 
-- [LobbyTrack](https://github.com/regardscitoyens/LobbyTrack) : outil d'identification des travaux parlementaires qui se sont inspirés d'un document texte de lobbying
+- [LaFabriqueDeLaLoi.fr](https://www.lafabriquedelaloi.fr)
 
 - [DirectParlement](https://regardscitoyens.github.io/direct-parlement) : outil de génération d'incruste pour encart dans vidéo live de débat parlementaire utilisé par [Accropolis](http://accropolis.fr) ([code-source](https://github.com/regardscitoyens/direct-parlement))
+
+- [Trombinoscope des parlementaires](https://regardscitoyens.github.io/trombi/)
+
+- [LobbyTrack](https://github.com/regardscitoyens/LobbyTrack) : outil d'identification des travaux parlementaires qui se sont inspirés d'un document texte de lobbying
+
+- Analyse sémantique des principaux thèmes investis par les députés dans le [Trombinoscope de Contexte](https://www.contexte.com/article/pouvoirs/les-577-deputes-francais-de-lassemblee-nationale_71506.html)
+
+- [Suivi mensuel de l'activité des députés bretons par Le Télégramme](http://www.letelegramme.fr/dataspot/rentree-parlementaire-suivez-l-activite-des-deputes-bretons-19-09-2017-11669870.php)
+
+- [Visualisation des votes des députés dans l'hémicycle par MédiaPart](https://www.mediapart.fr/journal/france/031017/loi-antiterroriste-qui-vote-quoi?onglet=full)
 
 - [Synthèse globale](https://regardscitoyens.github.io/synthese-globale/) : mini-application agrégeant les données de synthèse mensuelle pour nous permettre de répondre aux sollicitations des députés nous demandant en cours de mandat leur bilan complet ([code-source](https://github.com/regardscitoyens/synthese-globale))
 

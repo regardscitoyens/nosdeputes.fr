@@ -84,7 +84,7 @@ class updateDeputesTask extends sfBaseTask
               $parl->autres_mandats = $json->autresmandats;
             if (count($json->anciensmandats))
               $parl->anciens_autres_mandats = $json->anciensmandats;
-            if ($json->groupe)
+            if ($json->groupe && !$json->fin_mandat)
               $parl->groupe = $this->splitArrayJson($json->groupe);
             if ($json->parti)
               $parl->parti = $json->parti;
@@ -126,8 +126,7 @@ class updateDeputesTask extends sfBaseTask
               $parl->sites_web = $json->sites_web;
             else if ($parl->sites_web && !preg_match('/^a:/', $parl->sites_web))
               $parl->sites_web = array($parl->sites_web);
-            if ($json->collabs)
-              $parl->collaborateurs = $json->collabs;
+            $parl->collaborateurs = $json->collabs;
             if ($json->url_institution)
               $parl->url_an = $json->url_institution;
             if ($json->suppleant_de)

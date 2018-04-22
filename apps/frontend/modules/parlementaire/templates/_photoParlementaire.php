@@ -5,7 +5,13 @@ if (isset($flip) && $flip)
   $add = '&flip='.$flip;
 if (!$parlementaire->isEnMandat())
   $groupe = " -- (ancien".($parlementaire->sexe == "F" ? "ne" : "")." député".($parlementaire->sexe == "F" ? "e" : "").')';
-else if ($parlementaire->groupe_acronyme) $groupe = " -- (Groupe parlementaire : ".$parlementaire->groupe_acronyme.')';
+else if ($parlementaire->groupe_acronyme) {
+  $apparente = '';
+  if ($parlementaire->groupe && preg_match('/apparent/', $parlementaire->groupe->getFonction())) {
+    $apparente = 'app. ';
+  }
+  $groupe = " -- (Groupe parlementaire : ".$apparente.$parlementaire->groupe_acronyme.')';
+}
 $abs = '';
 if (isset($absolute) && $absolute)
   $abs = 'absolute=true';

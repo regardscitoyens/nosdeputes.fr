@@ -34,7 +34,7 @@ class plotComponents extends sfComponents
       }
       $date_debut = date('Y-m-d', $last_year);
       $date_fin = date('Y-m-d', $time_fin);
-      $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
+      $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
     } else {
       $start = Doctrine_Query::create()
         ->select('s.date, s.annee, s.numero_semaine')
@@ -54,7 +54,7 @@ class plotComponents extends sfComponents
       $date_fin = $end['date'];
       $annee = $end['annee'];
       $sem = $end['numero_semaine'];
-      $n_weeks = ($annee - $annee0)*53 + $sem - $sem0 + 1;
+      $n_weeks = ($annee - $annee0)*52 + $sem - $sem0 + 1;
     }
 #print "$dow ; $date_fin ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
     if ($this->data['fin']) {
@@ -82,7 +82,7 @@ class plotComponents extends sfComponents
     $this->data['n_presences'] = array('commission' => array_fill(1, $n_weeks, 0),
                                'hemicycle' => array_fill(1, $n_weeks, 0));
     foreach ($presences as $presence) {
-      $n = ($presence['Seance']['annee'] - $annee0)*53 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
+      $n = ($presence['Seance']['annee'] - $annee0)*52 + $presence['Seance']['numero_semaine'] - $sem0 + 1;
       if ($n <= $n_weeks) $this->data['n_presences'][$presence['Seance']['type']][$n] += $presence['nombre'];
     }
     unset($presences);
@@ -104,7 +104,7 @@ class plotComponents extends sfComponents
       'hemicycle' => array_fill(1, $n_weeks, 0)
     );
     foreach ($participations as $participation) {
-      $n = ($participation['Seance']['annee'] - $annee0)*53 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
+      $n = ($participation['Seance']['annee'] - $annee0)*52 + $participation['Seance']['numero_semaine'] - $sem0 + 1;
       if ($n <= $n_weeks)
         $this->data['n_participations'][$participation['Seance']['type']][$n] += $participation['nombre'];
     }
@@ -126,7 +126,7 @@ class plotComponents extends sfComponents
 
       $this->data['n_questions'] = array_fill(1, $n_weeks, 0);
       foreach ($questionsorales as $question) {
-        $n = ($question['Seance']['annee'] - $annee0)*53 + $question['Seance']['numero_semaine'] - $sem0 + 1;
+        $n = ($question['Seance']['annee'] - $annee0)*52 + $question['Seance']['numero_semaine'] - $sem0 + 1;
         if ($n <= $n_weeks) {
           if ($this->data['n_questions'][$n] == 0)
             $this->data['n_questions'][$n] -= 0.15;
@@ -152,7 +152,7 @@ class plotComponents extends sfComponents
         $an_legis++;
         $sem_legis = 1;
       }
-      $startweek = ($annee0 - $an_legis)*53 + $sem0 - $sem_legis;
+      $startweek = ($annee0 - $an_legis)*52 + $sem0 - $sem_legis;
       if ($startweek <= 0) {
         $weeks_acti = count($prmedi['total']);
         for ($i=1; $i <= $weeks_acti; $i++) {
@@ -188,12 +188,12 @@ class plotComponents extends sfComponents
     $mandat_an0 = date('o', $debut_mandat);
     $mandat_sem0 = date('W', $debut_mandat);
     if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
-    $week0 = ($mandat_an0 - $annee0)*53 + $mandat_sem0 - $sem0 + 1;
+    $week0 = ($mandat_an0 - $annee0)*52 + $mandat_sem0 - $sem0 + 1;
     for ($n = 1; $n < $week0 ; $n++)
       $n_vacances[$n] = 20;
 
     foreach (myTools::getVacances() as $vacance) {
-      $n = ($vacance['annee'] - $annee0)*53 + $vacance['semaine'] - $sem0 + 1;
+      $n = ($vacance['annee'] - $annee0)*52 + $vacance['semaine'] - $sem0 + 1;
       if ($n > 0 && $n <= $n_weeks)
         $n_vacances[$n] = 20;
     }
@@ -241,7 +241,7 @@ class plotComponents extends sfComponents
       $n++;
     }
     foreach (myTools::getVacances() as $vacance) {
-      $n = ($vacance['annee'] - $annee0)*53 + $vacance['semaine'] - $sem0 + 1;
+      $n = ($vacance['annee'] - $annee0)*52 + $vacance['semaine'] - $sem0 + 1;
       if ($n > 0 && $n <= $n_weeks)
         $n_vacances[$n] = 20;
     }
@@ -330,6 +330,18 @@ class plotComponents extends sfComponents
       $acro = $grp['groupe_acronyme'];
       if ($acro) {
         $stats[$acro]['nb'] = $grp['count'];
+        $keep[] = $acro;
+      }
+    }
+    $query = Doctrine_Query::create()
+      ->select('distinct(i.parlementaire_groupe_acronyme) as grp')
+      ->from('Intervention i');
+    if (!myTools::isFinLegislature())
+      $query->andWhere('i.date >= ?', $lastyear);
+    foreach ($query->fetchArray() as $grp) {
+      $acro = $grp['grp'];
+      if ($acro && !isset($stats[$acro]['nb'])) {
+        $stats[$acro]['nb'] = 0;
         $keep[] = $acro;
       }
     }
@@ -451,8 +463,8 @@ class plotComponents extends sfComponents
       // Préparation des requêtes et attributs suivant le type de graphe
       $qmots = Doctrine_Query::create()
         ->from('Intervention i')
-        ->andWhere('i.fonction NOT LIKE ?', 'président%')
-        ->andWhere('i.personnalite_id IS NULL')
+        ->where('i.fonction NOT LIKE ?', 'président%')
+        ->andWhere('i.parlementaire_id IS NOT NULL')
         ->groupBy('i.parlementaire_id');
       if (preg_match('/section_(\d+)$/', $this->plot, $match))
         // pour les dossiers
@@ -460,7 +472,7 @@ class plotComponents extends sfComponents
           ->andWhere('s.section_id = ?', $match[1]);
       else if (preg_match('/seance_(com|hemi)_(\d+)$/', $this->plot, $match)) {
         // pour les séances
-        $qmots->where('i.seance_id = ?', $match[2]);
+        $qmots->andWhere('i.seance_id = ?', $match[2]);
         if ($match[1] == 'com') {
           $this->seancecom = $match[2];
           $this->seancenom = 'réunion';
@@ -470,7 +482,7 @@ class plotComponents extends sfComponents
       // Répartition par groupe des interventions
       $qinter = clone($qmots);
       $interventions = $qinter->select('i.parlementaire_groupe_acronyme, count(i.id)')
-        ->andWhere('i.nb_mots > 20')
+        ->andWhere('(i.nb_mots > 20 OR i.nb_mots = 0)')
         ->fetchArray();
       foreach ($interventions as $p)
         if (!isset($groupes[$p['parlementaire_groupe_acronyme']]['interventions']))
@@ -500,7 +512,7 @@ class plotComponents extends sfComponents
     }
 
     // Pas de graphe pour les séances ou sections sans données
-    if (!count($groupes) || (isset($interventions) && !count($interventions) && (!isset($presences) || !count($presences)))) {
+    if (!count($groupes) || (isset ($interventions) && !count($interventions) && (!isset($presences) || !count($presences)))) {
       $this->empty = 1;
       return ;
     }
@@ -546,7 +558,6 @@ class plotComponents extends sfComponents
       if (isset($presences))
         $this->presences[] = array_sum($this->presences)*3/5;
     }
-
     // On renvoie les couleurs de chaque groupe
     $this->couleurs = array();
     $colormap = myTools::getGroupesColorMap();

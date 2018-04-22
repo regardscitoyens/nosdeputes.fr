@@ -39,6 +39,8 @@ class sendTestAlertTask extends sfBaseTask
               $query .= ' '.$match[1].':'.preg_replace('/=(.*)$/', '="$1"', $match[2]);
             else $query .= ' '.$match[1].':"'.$match[2].'"';
           }
+      if ($alerte->no_human_query)
+        $query .= " -object_name:Section";
       print "- query for alerte ".$alerte->id." to ".$alerte->email.": $query\n";
       $results = $solr->search($query, array('sort' => 'date desc', 'hl' => 'yes', 'hl.fragsize'=>500));
       if (! $results['response']['numFound']) {
