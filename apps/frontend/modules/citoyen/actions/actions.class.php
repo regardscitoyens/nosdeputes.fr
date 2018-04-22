@@ -238,8 +238,6 @@ class citoyenActions extends sfActions
     {
       if($user->activation_id != null)
       {
-        $user->activation_id = null;
-        $user->save();
         $action->getUser()->setFlash('notice', 'Une erreur s\'est produite');
       } else
         $action->getUser()->setFlash('notice', 'Ce compte a déjà été activé');
