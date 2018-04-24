@@ -157,7 +157,6 @@ for link in soup.find_all('a'):
         if not m:
           m = re.search(reg['presents_'+chamber], line)
         if m:
-          print(m.groups())
           presents = re.sub(reg['civilite'], "", m.group(2))
 
           for present in presents.split(','):
