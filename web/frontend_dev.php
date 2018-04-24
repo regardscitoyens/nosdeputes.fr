@@ -5,7 +5,7 @@ $configuration = ProjectConfiguration::getApplicationConfiguration('frontend', '
 
 // this check prevents access to debug front controllers that are deployed by accident to production servers.
 if (!myTools::isAdminIP(@$_SERVER)) {
-  die('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
+  die('You ('.$_SERVER['REMOTE_ADDR'].' / '.$_SERVER['HTTP_X_FORWARDED_FOR'].') are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
 sfContext::createInstance($configuration)->dispatch();
