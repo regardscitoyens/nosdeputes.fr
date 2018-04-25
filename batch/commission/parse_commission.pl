@@ -738,7 +738,7 @@ foreach $line (split /\n/, $string)
             }
 	    }
 	}
-    if (!$found && !$finished && !$intervenant && $previnterv) {
+    if (!$prez && !$found && !$finished && !$intervenant && $previnterv) {
         $tmpprev = $previnterv;
         checkout();
         $intervenant = $tmpprev;
