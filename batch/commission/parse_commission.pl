@@ -658,7 +658,7 @@ foreach $line (split /\n/, $string)
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2.$3;
-        if ($extrainterv =~ s/(Cooking Budgets|\/A \w+i\W*\/)//) {
+        if ($extrainterv =~ s/(Idem|Cooking Budgets|\/A \w+i\W*\/)//) {
             $line = $1.$line;
         }
         $found = $majIntervenant = 1;
