@@ -213,7 +213,7 @@ sub setFonction {
     $fonction =~ s/<!--(.*?)-->//g;
     $fonction =~ s/<[^>]+>\s*//g;
     $fonction =~ s/<[^>]*$//;
-    $fonction =~ s/([a-z])\.+\s*$/\1/;
+    $fonction =~ s/([a-z])(\.+|\s*»)+\s*$/\1/;
     $fonction =~ s/"//g;
     $fonction =~ s/(\w)\/(\w)/\1-\2/g;
     $fonction =~ s/\///g;
