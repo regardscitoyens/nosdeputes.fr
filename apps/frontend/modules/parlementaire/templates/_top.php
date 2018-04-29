@@ -78,7 +78,7 @@ if (myTools::isFinLegislature()) {
     if ($mois <= 1) $duree = 'premier';
     else if ($mois < 10) $duree = $mois.' premiers';
     else $duree = $mois;
-    $rank = ($mois > 10 || myTools::isFreshLegislature());
+    $rank = ($mois >= 10 || myTools::isFreshLegislature());
   } else {
     $duree = "12 derniers";
   }
