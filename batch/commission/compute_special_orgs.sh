@@ -8,7 +8,7 @@ function compute_org {
   HORAIRE=$3
   curl -sL "$ROOTURL/layout/set/ajax/content/view/embed/$ORGID" |
     tr "\n" " "                  |
-    sed -r 's/<h3>(Décisions de la )?Réunion d/\n/gi' |
+    sed -r 's/<h3>(Décisions de (Questure de )?la )?Réunion d/\n/gi' |
     grep 'href="/'               |
     grep -v '/convocation/'      |
     grep -v '/(offset)/'         |
