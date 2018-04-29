@@ -125,7 +125,7 @@ foreach $line (split /\n/, $string) {
     } else {
       $line =~ s/<[^>]+>//g;
       $line = trim($line);
-      $depute{"$read"} = $line if ($line !~ /^$/);
+      $depute{"$read"} = $line if ($line !~ /^$/ && !($line =~ /^Actualité/ && $read =~ /profession/));
       if ($read =~ /suppleant/) {
         $depute{"$read"} =~ s/[(,\s]+décédé.*$//i;
         $depute{"$read"} =~ s/Mlle /Mme /;
