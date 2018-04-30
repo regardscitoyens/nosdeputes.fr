@@ -806,12 +806,12 @@ foreach $line (split /\n/, $string)
           $element =~ s/^MM\./M. /;
           $element =~ s/^M\.(\S+)/M. \1/;
           $element =~ s/(\S+)\s*\(\s*/\1 (/;
-          if ($element =~ /^M(?:\.|me)\s+([^,]+),\s*(.*)$/ || $element =~ /^((?:Col|Gal|[PD]r)[. ]+[^,]+),\s*(.*)$/) {
+          if ($element =~ /^M(?:\.|me)\s+([^,]+),\s*(.*)$/ || $element =~ /^((?:(?:Col|Gal|SE|Son Excellence|[PD]r)[. ]+)+[^,]+),\s*(.*)$/) {
             checkout();
             $intervenant = setFonction($2, $1);
             $intervention = $nointer;
             checkout();
-          } elsif ($element =~ /^M(?:\.|me)\s+(.*)$/ || $element =~ /^((?:Col|Gal|[DP]r)[. ]+.*)$/) {
+          } elsif ($element =~ /^M(?:\.|me)\s+(.*)$/ || $element =~ /^((?:(?:Col|Gal|SE|Son Excellence|[DP]r)[. ]+)+.*)$/) {
             checkout();
             $intervenant = setIntervenant($1);
             $intervention = $nointer;
