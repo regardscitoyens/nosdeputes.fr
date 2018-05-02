@@ -349,6 +349,11 @@ class parlementaireActions extends sfActions
       $this->response->addMeta('robots', 'noindex,follow');
     $this->orga = Doctrine::getTable('Organisme')->createQuery('o')
       ->where('o.slug = ?', $orga)->fetchOne();
+    if (!$this->orga) {
+      $this->orga = Doctrine::getTable('Organisme')->createQuery('o')
+        ->where('o.slug LIKE ?', $orga.'%')->fetchOne();
+      return $this->redirect('@list_parlementaires_organisme?slug='.$this->orga->slug);
+    }
     $this->forward404Unless($this->orga);
 
     $this->loadOrganismes();
