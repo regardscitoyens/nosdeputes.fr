@@ -352,9 +352,10 @@ class parlementaireActions extends sfActions
     if (!$this->orga) {
       $this->orga = Doctrine::getTable('Organisme')->createQuery('o')
         ->where('o.slug LIKE ?', $orga.'%')->fetchOne();
-      return $this->redirect('@list_parlementaires_organisme?slug='.$this->orga->slug);
+      if ($this->orga)
+        return $this->redirect('@list_parlementaires_organisme?slug='.$this->orga->slug);
+      $this->forward404();
     }
-    $this->forward404Unless($this->orga);
 
     $this->loadOrganismes();
     $this->human_type = $this->organisme_types[$this->orga->type];
