@@ -5,16 +5,17 @@
     $mots = trim($_GET['search']);
     if ($mots != "") { ?>
 pour la recherche sur <em>"<?php echo strip_tags($mots); ?>"</em>
-<?php } } 
+<?php } }
 else if (isset($loi))
-  echo ' sur '.link_to($loi->getTitre(), "@document?id=".$loi->id).' ('.myTools::getLiasseLoiAN($loi->id).')';
+  echo ' sur '.link_to($loi->getTitre(), "@document?id=".$loi->id);#.' ('.myTools::getLiasseLoiAN($loi->id).')';
 else if (isset($lois)) {
   echo ' portant sur ';
   if (count($lois) > 1) echo 'les projets de loi ';
   else
     echo 'le projet de loi ';
   echo 'N° ';
-foreach ($lois as $loi) echo link_to($loi, '@document?id='.$loi).' ('.myTools::getLiasseLoiAN($loi).') '; } ?></p>
+foreach ($lois as $loi) echo link_to($loi, '@document?id='.$loi);#.' ('.myTools::getLiasseLoiAN($loi).') ';
+} ?></p>
 </div>
 <?php if ($pager->haveToPaginate()) {
   $uri = sfContext::getInstance()->getRouting()->getCurrentInternalUri();
