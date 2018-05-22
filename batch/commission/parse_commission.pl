@@ -115,7 +115,7 @@ $string =~ s/<\/b>(\s*|l')<b>/\1/g;
 $string =~ s/<b>(\s*[\.,]\s*)<\/b>/\1/g;
 $string =~ s/<\/[ub]>\s*,\s*<\/[ub]>/,<u><b>/g;
 $string =~ s/(?:<\/?[ub]>)+\s*(\.)?\s*(?:<\/?[ub]>)+/\1<b>/g;
-$string =~ s/\. ([A-Z]'?|« )<\/b>((<i>)?['\w]+)/. <\/b>\1\2/g;
+$string =~ s/\. ([A-Z]['.]?|« )<\/b>((<i>)?\s*['\w]+)/. <\/b>\1\2/g;
 $string =~ s/<\/?[bu]>/|/g;
 $string =~ s/<\/?i>/\//g;
 
@@ -217,6 +217,7 @@ sub setFonction {
     $fonction =~ s/"//g;
     $fonction =~ s/(\w)\/(\w)/\1-\2/g;
     $fonction =~ s/\///g;
+    $fonction =~ s/ pour avise$/ pour avis/;
     $fonction =~ s/, en préalable.*$//;
     $fonction =~ s/,? sur l[ea] pro(jet|proposition de loi).*$//;
     $fonction =~ s/Président/président/;
@@ -293,6 +294,7 @@ sub setIntervenant {
     $intervenant =~ s/Agnès Guion-Firmin/Claire Guion-Firmin/i;
     $intervenant =~ s/Jean Touzel/Jean Jouzel/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
+    $intervenant =~ s/Marielle Sarnez/Marielle de Sarnez/i;
     $intervenant =~ s/Patrick Silberman/Bruno Silberman/i;
     $intervenant =~ s/Céline Muschotti/Cécile Muschotti/i;
     $intervenant =~ s/Marguerite Bayard/Marguerite Bayart/i;
