@@ -331,10 +331,11 @@ class topDeputesTask extends sfBaseTask
     }
 
     $fin = myTools::isFinLegislature();
-    $vacances = myTools::getVacances();
+    if ($fin)
+      $vacances = myTools::getVacances();
 
     if (!myTools::isFreshLegislature())
-      $shortmandats = Doctrine::getTable('Parlementaire')->getShortMandatesIds($vacances);
+      $shortmandats = Doctrine::getTable('Parlementaire')->getShortMandatesIds();
 
     foreach(Doctrine::getTable('Parlementaire')->prepareParlementairesTopQuery($fin)->execute() as $d) {
       if ($fin)

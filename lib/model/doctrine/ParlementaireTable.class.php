@@ -88,12 +88,11 @@ class ParlementaireTable extends PersonnaliteTable
     return $depute;
   }
 
-  public function getShortMandatesIds($vacances=array()) {
-    if (!$vacances) $vacances = myTools::getVacances();
+  public function getShortMandatesIds() {
     $shorts = array();
     foreach ($this->createQuery('p')->where('fin_mandat IS NULL OR fin_mandat < debut_mandat')->execute() as $d) {
-      $mois = $d->getNbMois($vacances);
-      if ($mois < 8) $shorts[] = $d->id;
+      $mois = $d->getNbMois(array());
+      if ($mois < 10) $shorts[] = $d->id;
     }
     return $shorts;
   }
