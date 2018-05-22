@@ -189,7 +189,7 @@ class commentaireActions extends sfActions
       if ($p = $object->getAuteur())
         $commentaire->addObject('Parlementaire', $p->id);
     } else if ($this->type === 'Texteloi') {
-      $parlementaires = $object->getParlementaires();
+      $parlementaires = $object->getAuteurs();
       if ($parlementaires) foreach($parlementaires as $p)
         $commentaire->addObject('Parlementaire', $p->id);
     }
