@@ -721,7 +721,7 @@ class Parlementaire extends BaseParlementaire
   public function getNbMois($vacances=array()) {
     if (!$vacances) $vacances = myTools::getVacances();
     $debut = strtotime(myTools::getDebutLegislature());
-    $fin = $debut + (5*365-31)*24*3600;  # fin législature définie à 4 ans et 11 mois)
+    $fin = min($debut + (5*365-31)*24*3600, time());  # fin législature définie à 4 ans et 11 mois)
     $semaines = 0;
     foreach (unserialize($this->getAnciensMandats()) as $m) {
       if (preg_match("/^(.*) \/ (.*) \/ (.*)$/", $m, $match)) {

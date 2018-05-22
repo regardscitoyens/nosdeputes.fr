@@ -88,9 +88,10 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
     '<tr><td><svg><rect class="mediane"/></svg>Médiane des députés</td><td class="tooltip_mediane"></td></tr>' +
   '</table>' +
   '<div class="banner_vacances">' +
-    '<br/>Vacances parlementaires' +
+    'Vacances parlementaires' +
     '<br/><small>(aucune séance ou réunion' +
-    '<br/>durant cette semaine)</small>' +
+    '<br/>durant cette semaine' +
+    '<br/>ou période hors mandat)</small>' +
   '</div>' +
 '</center>'
     );

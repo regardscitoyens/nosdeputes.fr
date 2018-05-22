@@ -161,7 +161,7 @@ if (preg_match("/^l/", $time)) {
     $pos_titre = 235;
     $duree = 'de toute la législature';
   } else {
-    $mois = min(12, round((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30)));
+    $mois = min(12, $parlementaire->getNbMois());
     $duree = ($mois < 2 ? "du premier" : "des $mois ".($mois < 12 ? "prem" : "dern")."iers")." mois";
   }
   $shortduree = 'annee';

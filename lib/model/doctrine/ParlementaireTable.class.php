@@ -88,6 +88,16 @@ class ParlementaireTable extends PersonnaliteTable
     return $depute;
   }
 
+  public function getShortMandatesIds($vacances=array()) {
+    if (!$vacances) $vacances = myTools::getVacances();
+    $shorts = array();
+    foreach ($this->createQuery('p')->where('fin_mandat IS NULL OR fin_mandat < debut_mandat')->execute() as $d) {
+      $mois = $d->getNbMois($vacances);
+      if ($mois < 8) $shorts[] = $d->id;
+    }
+    return $shorts;
+  }
+
   public function prepareParlementairesTopQuery($fin=false) {
     $qp = $this->createQuery('p');
 
@@ -96,8 +106,11 @@ class ParlementaireTable extends PersonnaliteTable
       $qp->andWhere('fin_mandat IS NULL OR fin_mandat < debut_mandat');
 
       // Au début on affiche tout le monde, puis après 10 mois uniquement les députés avec au moins 10 mois de mandat
-      if (!myTools::isFreshLegislature())
-        $qp->andWhere('debut_mandat < ?', date('Y-m-d', time() - myTools::$dixmois));
+      if (!myTools::isFreshLegislature()) {
+        $shorts = $this->getShortMandatesIds();
+        if (count($shorts))
+          $qp->andWhereNotIn('id', $shorts);
+      }
     }
 
     $qp->orderBy('nom_de_famille');

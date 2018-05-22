@@ -475,7 +475,7 @@ class parlementaireActions extends sfActions
       $this->check = 'legislature';
     else {
       $this->check = 'lastyear';
-      $mois = min(12, floor((time() - strtotime($this->parlementaire->debut_mandat) ) / (60*60*24*30)));
+      $mois = min(12, $this->parlementaire->getNbMois());
       $this->mois = ($mois < 2 ? " premier" : "s $mois ".($mois < 12 ? "prem" : "dern")."iers");
     }
     if ($this->session == $this->check) {

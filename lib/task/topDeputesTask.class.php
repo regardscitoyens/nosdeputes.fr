@@ -331,26 +331,28 @@ class topDeputesTask extends sfBaseTask
     }
 
     $fin = myTools::isFinLegislature();
+    $vacances = myTools::getVacances();
+
+    if (!myTools::isFreshLegislature())
+      $shortmandats = Doctrine::getTable('Parlementaire')->getShortMandatesIds($vacances);
 
     foreach(Doctrine::getTable('Parlementaire')->prepareParlementairesTopQuery($fin)->execute() as $d) {
-      if ($fin) {
-        $vacances = myTools::getVacances();
+      if ($fin)
         $this->deputes[$d->id]['nb_mois'] = $d->getNbMois($vacances);
-      } else $this->deputes[$d->id] = array();
+      else $this->deputes[$d->id] = array();
     }
 
     $q = Doctrine_Query::create();
     if (!$fin) {
       $q->andWhere('p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat');
-      if (!myTools::isFreshLegislature())
-        $q->andWhere('p.debut_mandat < ?', date('Y-m-d', time() - myTools::$dixmois));
+      if (!myTools::isFreshLegislature() && count($shortmandats))
+        $q->andWhereNotIn('p.id', $shortmandats);
       $lastyear = date('Y-m-d', time()-60*60*24*365);
     }
 
     $qs = clone $q;
     if (!$fin) {
       $qs->andWhere('s.date >= ?', $lastyear);
-      $qs->andWhere('s.date >= DATE_SUB(p.debut_mandat, INTERVAL 7 DAY)');
     }
 
     $this->executePresence(clone $qs);
@@ -362,7 +364,6 @@ class topDeputesTask extends sfBaseTask
     $qi = clone $q;
     if (!$fin) {
       $qi->andWhere('i.date >= ?', $lastyear);
-      $qi->andWhere('i.date >= DATE_SUB(p.debut_mandat, INTERVAL 7 DAY)');
     }
 
     $this->executeCommissionInterventions(clone $qi);
@@ -377,7 +378,6 @@ class topDeputesTask extends sfBaseTask
     $qa = clone $q;
     if (!$fin) {
       $qa->andWhere('a.date >= ?', $lastyear);
-      $qa->andWhere('a.date >= DATE_SUB(p.debut_mandat, INTERVAL 7 DAY)');
     }
 
     $this->executeAmendementsProposes(clone $qa);
@@ -392,7 +392,6 @@ class topDeputesTask extends sfBaseTask
     $qd = clone $q;
     if (!$fin) {
       $qd->andWhere('t.date >= ?', $lastyear);
-      $qd->andWhere('t.date >= DATE_SUB(p.debut_mandat, INTERVAL 7 DAY)');
     }
 
     $this->executeRapports(clone $qd);
@@ -407,7 +406,6 @@ class topDeputesTask extends sfBaseTask
     $qq = clone $q;
     if (!$fin) {
       $qq->andWhere('q.date >= ?', $lastyear);
-      $qq->andWhere('q.date >= DATE_SUB(p.debut_mandat, INTERVAL 7 DAY)');
     }
 
     $this->executeQuestionsEcrites($qq);
@@ -443,40 +441,41 @@ class topDeputesTask extends sfBaseTask
         ->from('Parlementaire p')
         ->where('fin_mandat IS NOT NULL AND debut_mandat <= fin_mandat');
 
-      if (!myTools::isFreshLegislature())
-        $qparlementaires->orWhere('debut_mandat >= ?', date('Y-m-d', time() - myTools::$dixmois));
+      if (!myTools::isFreshLegislature() && count($shortmandats))
+        $qparlementaires->orWhereIn('id', $shortmandats);
 
       foreach ($qparlementaires->execute() as $p) {
         $this->depute = array();
-        $dates = array(date('Y-m-d', strtotime($p->debut_mandat).' -7days'), date('Y-m-d', strtotime($p->fin_mandat)));
+        $cur = ($p->fin_mandat < p.debut_mandat);
+        $datef = date('Y-m-d', strtotime($p->fin_mandat));
 
         $q = Doctrine_Query::create()->where('p.id = ?', $p->id);
 
         $qs = clone $q;
-        $qs->andWhere('(s.date > ? AND s.date < ?)', $dates);
+        if (!$cur) $qs->andWhere('(s.date < ?)', $datef);
         $this->executePresence(clone $qs);
         $this->executeCommissionPresence(clone $qs);
 
         $qi = clone $q;
-        $qi->andWhere('(i.date > ? AND i.date < ?)', $dates);
+        if (!$cur) $qi->andWhere('(i.date < ?)', $datef);
         $this->executeCommissionInterventions(clone $qi);
         $this->executeHemicycleInterventions(clone $qi);
         $this->executeHemicycleInvectives(clone $qi);
 
         $qa = clone $q;
-        $qa->andWhere('(a.date > ? AND a.date < ?)', $dates);
+        if (!$cur) $qa->andWhere('(a.date < ?)', $datef);
         $this->executeAmendementsProposes(clone $qa);
         $this->executeAmendementsSignes(clone $qa);
         $this->executeAmendementsAdoptes(clone $qa);
 
         $qq = clone $q;
-        $qq->andWhere('(q.date > ? AND q.date < ?)', $dates);
+        if (!$cur) $qq->andWhere('(q.date < ?)', $datef);
         $this->executeQuestionsEcrites($qq);
 
         $this->executeQuestionsOrales(clone $qi);
 
         $qd = clone $q;
-        $qd->andWhere('(t.date > ? AND t.date < ?)', $dates);
+        if (!$cur) $qd->andWhere('(t.date < ?)', $datef);
         $this->executePropositionsEcrites(clone $qd);
         $this->executePropositionsSignees(clone $qd);
         $this->executeRapports(clone $qd);
