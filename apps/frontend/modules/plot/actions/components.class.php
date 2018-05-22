@@ -59,13 +59,12 @@ class plotComponents extends sfComponents
 #print "$dow ; $date_fin ; $annee ; $sem ; $last_year ; $annee0 ; $sem0 ; $date_debut ; $n_weeks";
     if ($this->data['fin']) {
       $this->data['labels'] = $this->getLabelsMois($n_weeks, $annee0, $sem0);
-      $this->data['vacances'] = $this->getVacancesAllMandats($n_weeks, $annee0, $sem0, $this->parlementaire->getMandatsLegislature());
     } else {
       $this->data['labels'] = $this->getLabelsSemaines($n_weeks, $annee0, $sem0);
-      $this->data['vacances'] = $this->getVacances($n_weeks, $annee0, $sem0, strtotime($this->parlementaire->debut_mandat));
     }
+    $this->data['vacances'] = $this->getVacancesAllMandats($n_weeks, $annee0, $sem0, $this->parlementaire->getMandatsLegislature());
     $this->data['date_debut'] = $date_debut;
-    $this->data['date_debut_parl'] = $this->parlementaire->debut_mandat;
+    $this->data['date_debut_parl'] = explode(";", $this->parlementaire->getMandatsLegislature()[0])[0];
     $this->data['date_fin'] = $date_fin;
 
     $query = Doctrine_Query::create()
