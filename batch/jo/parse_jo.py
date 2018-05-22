@@ -100,7 +100,6 @@ if soup.title.string.strip().startswith(u'Recherche'):
 with open("html/sommaire_"+day+".html", "wb") as file:
   file.write(soup.prettify("utf-8"))
 
-data = {'source': 'Journal officiel du '+date_fr}
 commission_link = False
 json_file = ''
 
@@ -110,6 +109,7 @@ for link in soup.find_all('a'):
 
     # Commission
     if any([link_string.startswith(text_link) for text_link in texts_link]):
+      data = {'source': 'Journal officiel du '+date_fr}
       if link_string.startswith(u"Office parlementaire"):
         data['commission'] = link_string
       commission_link = True
@@ -195,22 +195,26 @@ for link in soup.find_all('a'):
           elif re.search(reg['reunion_senat'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_senat'], line, re.IGNORECASE)
             data['date'] = date_iso(m.group(2))
-            data['heure'] = m.group(1).replace(u'Séance', '')
+            data['reunion'] = data['date']
+            data['heure'] = m.group(1).replace(u'Séance', '') or u"1ère réunion"
+            data['session'] = data['heure']
           else:
             m = re.search(reg['commission'], line)
-            data['commission'] = re.sub(':', '', m.group(1)).strip()
+
+            if not link_string.startswith(u"Office parlementaire"):
+              data['commission'] = re.sub(':', '', m.group(1)).strip()
 
             if chamber == "senat" and re.search(reg['reunion_senat_bis'], data['commission'], re.IGNORECASE):
               m = re.search(reg['reunion_senat_bis'], data['commission'], re.IGNORECASE)
               data['date'] = date_iso(m.group(2))
               data['heure'] = ''
-              data['commission'] = m.group(1)
+              if not link_string.startswith(u"Office parlementaire"):
+                data['commission'] = m.group(1)
 
       if not n_presences:
         sys.exit(' no attendance '+com_link)
       else:
         sys.stderr.write(str(n_presences)+' présences '+com_link+'\n')
-      data['commission'] = ""
 
 if json_file:
   if stdout:

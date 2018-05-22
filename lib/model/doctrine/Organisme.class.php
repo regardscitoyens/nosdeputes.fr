@@ -85,6 +85,12 @@ class Organisme extends BaseOrganisme
       $res = $q->fetchOne();
       $q->free();
       unset($q);
+      if (preg_match('/(\d+)[:](\d+)/', $res->moment, $mtc)) {
+        if (abs(intval($mtc[2]) - intval($match[2])) > 15) {
+          $res = null;
+          unset($res);
+        }
+      }
     }
     return $res;
   }
