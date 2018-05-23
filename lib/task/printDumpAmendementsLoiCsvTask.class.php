@@ -35,7 +35,7 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
         if (!isset($parlgroup[$gpe])) $parlgroup[$gpe] = 0;
         $parlgroup[$gpe] += $s["ct"];
       }
-      $groupes = [];
+      $groupes = array();
       foreach(array_keys($parlgroup) as $k)
         $groupes[] = "$k:".$parlgroup[$k];
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
