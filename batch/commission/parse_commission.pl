@@ -295,6 +295,7 @@ sub setIntervenant {
     $intervenant =~ s/Agnès Guion-Firmin/Claire Guion-Firmin/i;
     $intervenant =~ s/Jean Touzel/Jean Jouzel/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
+    $intervenant =~ s/Emmanuelle Mesnard/Emmanuelle Ménard/i;
     $intervenant =~ s/Marielle Sarnez/Marielle de Sarnez/i;
     $intervenant =~ s/Patrick Silberman/Bruno Silberman/i;
     $intervenant =~ s/Céline Muschotti/Cécile Muschotti/i;
