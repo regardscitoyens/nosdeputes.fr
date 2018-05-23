@@ -5,8 +5,8 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
     $this->namespace = 'print';
     $this->name = 'dumpAmendementsLoiCsv';
     $this->briefDescription = 'dump un csv contenant tous les amendements sur un texte de loi';
-    $this->addArgument('loi_id', sfCommandArgument::REQUIRED, 'Identifiant de loi, exemple 20112012-592'); 
-    $this->addArgument('format', sfCommandArgument::REQUIRED, 'Numero de loi'); 
+    $this->addArgument('loi_id', sfCommandArgument::REQUIRED, 'Identifiant de loi, exemple 20112012-592');
+    $this->addArgument('format', sfCommandArgument::REQUIRED, 'Numero de loi');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'dev');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
  }
@@ -27,14 +27,19 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
     $champs = array();
     $res = array('amendements' => array());
     foreach ($amendements as $a) {
-      $parlslugs = array();
+      $parlslugs = Doctrine_Query::create()->select('p.slug')->from('Parlementaire p')->leftJoin('p.ParlementaireAmendements pa')->where('pa.amendement_id = ?', $a['id'])->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
+      if (is_string($parlslugs)) $parlslugs = array($parlslugs);
       $parlgroup = array();
-      foreach (Doctrine_Query::create()->select('p.slug, p.groupe_acronyme')->from('Parlementaire p, ParlementaireAmendement pa')->where('p.id = pa.parlementaire_id')->andWhere('pa.amendement_id = ?', $a['id'])->orderBy('pa.numero_signataire')->fetchArray() as $s) {
-        $parlslugs[] = $s['slug'];
-        $parlgroup[] = $s['groupe_acronyme'];
+      foreach (Doctrine_Query::create()->select('count(pa.id) as ct, p.groupe_acronyme as curgroupe')->from('ParlementaireAmendement pa')->leftJoin('pa.Parlementaire p')->where('pa.amendement_id = ?', $a['id'])->groupBy('p.groupe_acronyme')->orderBy('p.groupe_acronyme')->fetchArray() as $s) {
+        $gpe = $s['curgroupe'];
+        if (!isset($parlgroup[$gpe])) $parlgroup[$gpe] = 0;
+        $parlgroup[$gpe] += $s["ct"];
       }
+      $groupes = [];
+      foreach(array_keys($parlgroup) as $k)
+        $groupes[] = "$k:".$parlgroup[$k];
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
-      $a['groupes_parlementaires'] = myTools::array2hash($parlgroup, 'groupe');
+      $a['groupes_parlementaires'] = myTools::array2hash($groupes, 'groupe');
       $a['commission'] = '';
       if (isset($a['organisme_id'])) {
         $a['commission'] = Doctrine::getTable('Organisme')->find($a['organisme_id'])->nom;
