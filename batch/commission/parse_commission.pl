@@ -221,6 +221,7 @@ sub setFonction {
     $fonction =~ s/, en préalable.*$//;
     $fonction =~ s/,? sur l[ea] pro(jet|proposition de loi).*$//;
     $fonction =~ s/Président/président/;
+    $fonction =~ s/(du ministre )+/\1/i;
     $fonction =~ s/\bpésident/président/i;
     $fonction =~ s/rap+orteur/rapporteur/i;
     $fonction =~ s/^(.*), \1$/\1/;
