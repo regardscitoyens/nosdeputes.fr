@@ -27,16 +27,19 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
     $champs = array();
     $res = array('amendements' => array());
     foreach ($amendements as $a) {
-      $parlslugs = array();
+      $parlslugs = Doctrine_Query::create()->select('p.slug')->from('Parlementaire p')->leftJoin('p.ParlementaireAmendements pa')->where('pa.amendement_id = ?', $a['id'])->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
+      if (is_string($parlslugs)) $parlslugs = array($parlslugs);
       $parlgroup = array();
-      foreach (Doctrine_Query::create()->select('parlementaire_groupe_acronyme, p.slug as slug, p.groupe_acronyme as curgroupe')->from('ParlementaireAmendement pa')->leftJoin('pa.Parlementaire p')->where('p.id = pa.parlementaire_id')->andWhere('pa.amendement_id = ?', $a['id'])->orderBy('pa.numero_signataire')->fetchArray() as $s) {
-        $parlslugs[] = $s['slug'];
-        if (!$s["parlementaire_groupe_acronyme"])
-          $parlgroup[] = $s['curgroupe'];
-        else $parlgroup[] = $s['parlementaire_groupe_acronyme'];
+      foreach (Doctrine_Query::create()->select('count(pa.id) as ct, parlementaire_groupe_acronyme, p.groupe_acronyme as curgroupe')->from('ParlementaireAmendement pa')->leftJoin('pa.Parlementaire p')->where('pa.amendement_id = ?', $a['id'])->groupBy('parlementaire_groupe_acronyme, p.groupe_acronyme')->orderBy('parlementaire_groupe_acronyme, p.groupe_acronyme')->fetchArray() as $s) {
+        $gpe = $s[(!$s["parlementaire_groupe_acronyme"] ? 'curgroupe' : 'parlementaire_groupe_acronyme')];
+        if (!isset($parlgroup[$gpe])) $parlgroup[$gpe] = 0;
+        $parlgroup[$gpe] += $s["ct"];
       }
+      $groupes = [];
+      foreach(array_keys($parlgroup) as $k)
+        $groupes[] = "$k:".$parlgroup[$k];
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
-      $a['groupes_parlementaires'] = myTools::array2hash($parlgroup, 'groupe');
+      $a['groupes_parlementaires'] = myTools::array2hash($groupes, 'groupe');
       $a['url_nosdeputes'] = preg_replace('#http://(symfony/)+#', sfConfig::get('app_base_url'), url_for('@amendement?loi='.$loi.'&numero='.$a['numero'], 'absolute=true'));
       unset($a['num']);
       foreach(array_keys($a) as $key)
