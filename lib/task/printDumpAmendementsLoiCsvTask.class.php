@@ -30,10 +30,10 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
       $parlslugs = Doctrine_Query::create()->select('p.slug')->from('Parlementaire p')->leftJoin('p.ParlementaireAmendements pa')->where('pa.amendement_id = ?', $a['id'])->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
       if (is_string($parlslugs)) $parlslugs = array($parlslugs);
       $parlgroup = array();
-      foreach (Doctrine_Query::create()->select('count(pa.id) as ct, p.groupe_acronyme as curgroupe')->from('ParlementaireAmendement pa')->leftJoin('pa.Parlementaire p')->where('pa.amendement_id = ?', $a['id'])->groupBy('p.groupe_acronyme')->orderBy('p.groupe_acronyme')->fetchArray() as $s) {
-        $gpe = $s['curgroupe'];
+      foreach (Doctrine_Query::create()->select('count(pa.id), p.groupe_acronyme')->from('Parlementaire p')->leftJoin('p.ParlementaireAmendements pa')->where('pa.amendement_id = ?', $a['id'])->groupBy('p.groupe_acronyme')->orderBy('p.groupe_acronyme')->execute(array(), Doctrine_Core::HYDRATE_ARRAY) as $s) {
+        $gpe = $s['groupe_acronyme'];
         if (!isset($parlgroup[$gpe])) $parlgroup[$gpe] = 0;
-        $parlgroup[$gpe] += $s["ct"];
+        $parlgroup[$gpe] += $s["count"];
       }
       $groupes = array();
       foreach(array_keys($parlgroup) as $k)
