@@ -304,6 +304,7 @@ sub setFonction {
     $rfonction =~ s/[^a-z]/./gi;
     $intervenant =~ s/[^a-zàâéèêëïîôöùûü]+$//i;
     $intervenant =~ s/ $rfonction$//i;
+    $intervenant =~ s/^M[me.]+ //;
     $fonction2inter{$kfonction} = $intervenant;
     #print "TEST $fonction ($kfonction)  => $intervenant \n";
     if (!$inter2fonction{$intervenant}) {
