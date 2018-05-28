@@ -195,6 +195,7 @@ sub setFonction {
     my $fonction = shift;
     my $intervenantorig = shift;
     #print STDERR "FONCTION $fonction $intervenantorig\n";
+    $fonction =~ s/^[Mme\s.]*$intervenantorig[, ]*//;
     if ($intervenantorig =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$// ||
         $fonction    =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$//) {
       if ($2) {
@@ -295,6 +296,8 @@ sub setIntervenant {
     $intervenant =~ s/Agnès Guion-Firmin/Claire Guion-Firmin/i;
     $intervenant =~ s/Jean Touzel/Jean Jouzel/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
+    $intervenant =~ s/Alexandre Guédon/Xavier Guédon/i;
+    $intervenant =~ s/Florence Povey/Florence Poivey/i;
     $intervenant =~ s/Emmanuelle Mesnard/Emmanuelle Ménard/i;
     $intervenant =~ s/Marielle Sarnez/Marielle de Sarnez/i;
     $intervenant =~ s/Patrick Silberman/Bruno Silberman/i;
