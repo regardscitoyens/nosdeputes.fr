@@ -64,7 +64,7 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
       $am['nb_multiples'] = '';
       $am['cle_unicite'] = $a['cle_unicite'];
       $am['parlementaires'] = $a['parlementaires'];
-      $am['groupes_parlementaires'] = $a['groupes_parlementaires'];
+      $am['auteur_groupe_acronyme'] = $a['auteur_groupe_acronyme'];
       $am['url_nossenateurs'] = $a['url_nossenateurs'];
       $am['avis_comm'] = $a['avis_comm'];
       $am['avis_gouv'] = $a['avis_gouv'];
