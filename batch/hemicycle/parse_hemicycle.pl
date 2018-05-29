@@ -240,7 +240,10 @@ sub checkout {
             foreach $i (split(/(?: et |, )\s*/, $intervenant)) {
                 $ts++;
                 $i =~ s/^(plusieurs|députés|sur les bancs|d[ues]+ groupes?) //g;
-                print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$plusieurs.$i."\"}\n";
+                if ($i !~ /^plusieurs/i) {
+                    $i = $plusieurs.$i;
+                }
+                print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i."\"}\n";
             }
             $intervenant = $plusieurs.$interv1;
         }
