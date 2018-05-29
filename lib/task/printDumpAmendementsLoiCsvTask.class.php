@@ -18,7 +18,7 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
     $this->configuration->loadHelpers(array('Url'));
     $loi = $arguments['loi_id'];
     $amendements = Doctrine::getTable('Amendement')->createQuery('a')
-      ->select('a.id, a.legislature, a.texteloi_id, a.numero, CAST( a.numero AS SIGNED ) AS num, a.sous_amendement_de, a.rectif, a.sujet, a.sort, a.date, a.texte, a.expose, a.content_md5 as cle_unicite, a.signataires, a.source, a.nb_multiples')
+      ->select('a.id, a.legislature, a.texteloi_id, a.numero, CAST( a.numero AS SIGNED ) AS num, a.sous_amendement_de, a.rectif, a.sujet, a.sort, a.date, a.texte, a.expose, a.content_md5 as cle_unicite, a.signataires, a.source, a.nb_multiples, a.auteur_groupe_acronyme')
       ->from('Amendement a')
       ->where('a.sort <> ?', 'Rectifié')
       ->andWhere('a.texteloi_id = ?', $loi)
@@ -27,19 +27,19 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
     $champs = array();
     $res = array('amendements' => array());
     foreach ($amendements as $a) {
+      if (!$a['auteur_groupe_acronyme'])
+        $a['auteur_groupe_acronyme'] = Doctrine_Query::create()
+          ->select('pa.parlementaire_groupe_acronyme')
+          ->from('ParlementaireAmendement pa')
+          ->where('pa.amendement_id = ?', $a['id'])
+          ->andWhere('pa.numero_signataire = 1')
+          ->limit(1)
+          ->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
+      if (!$a['auteur_groupe_acronyme'])
+        $a['auteur_groupe_acronyme'] = "";
       $parlslugs = Doctrine_Query::create()->select('p.slug')->from('Parlementaire p')->leftJoin('p.ParlementaireAmendements pa')->where('pa.amendement_id = ?', $a['id'])->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
       if (is_string($parlslugs)) $parlslugs = array($parlslugs);
-      $parlgroup = array();
-      foreach (Doctrine_Query::create()->select('count(pa.id) as ct, parlementaire_groupe_acronyme, p.groupe_acronyme as curgroupe')->from('ParlementaireAmendement pa')->leftJoin('pa.Parlementaire p')->where('pa.amendement_id = ?', $a['id'])->groupBy('parlementaire_groupe_acronyme, p.groupe_acronyme')->orderBy('parlementaire_groupe_acronyme, p.groupe_acronyme')->fetchArray() as $s) {
-        $gpe = $s[(!$s["parlementaire_groupe_acronyme"] ? 'curgroupe' : 'parlementaire_groupe_acronyme')];
-        if (!isset($parlgroup[$gpe])) $parlgroup[$gpe] = 0;
-        $parlgroup[$gpe] += $s["ct"];
-      }
-      $groupes = array();
-      foreach(array_keys($parlgroup) as $k)
-        $groupes[] = "$k:".$parlgroup[$k];
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
-      $a['groupes_parlementaires'] = myTools::array2hash($groupes, 'groupe');
       $a['url_nosdeputes'] = preg_replace('#http://(symfony/)+#', sfConfig::get('app_base_url'), url_for('@amendement?loi='.$loi.'&numero='.$a['numero'], 'absolute=true'));
       unset($a['num']);
       foreach(array_keys($a) as $key)
