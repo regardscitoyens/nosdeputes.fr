@@ -27,19 +27,19 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
     $champs = array();
     $res = array('amendements' => array());
     foreach ($amendements as $a) {
+      $a['auteur_groupe_acronyme'] = Doctrine_Query::create()
+        ->select('p.groupe_acronyme')
+        ->from('Parlementaire p')
+        ->leftJoin('p.ParlementaireAmendements pa')
+        ->where('pa.amendement_id = ?', $a['id'])
+        ->andWhere('pa.numero_signataire = 1')
+        ->limit(1)
+        ->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
+      if (!$a['auteur_groupe_acronyme'])
+        $a['auteur_groupe_acronyme'] = "";
       $parlslugs = Doctrine_Query::create()->select('p.slug')->from('Parlementaire p')->leftJoin('p.ParlementaireAmendements pa')->where('pa.amendement_id = ?', $a['id'])->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
       if (is_string($parlslugs)) $parlslugs = array($parlslugs);
-      $parlgroup = array();
-      foreach (Doctrine_Query::create()->select('count(pa.id), p.groupe_acronyme')->from('Parlementaire p')->leftJoin('p.ParlementaireAmendements pa')->where('pa.amendement_id = ?', $a['id'])->groupBy('p.groupe_acronyme')->orderBy('p.groupe_acronyme')->execute(array(), Doctrine_Core::HYDRATE_ARRAY) as $s) {
-        $gpe = $s['groupe_acronyme'];
-        if (!isset($parlgroup[$gpe])) $parlgroup[$gpe] = 0;
-        $parlgroup[$gpe] += $s["count"];
-      }
-      $groupes = array();
-      foreach(array_keys($parlgroup) as $k)
-        $groupes[] = "$k:".$parlgroup[$k];
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
-      $a['groupes_parlementaires'] = myTools::array2hash($groupes, 'groupe');
       $a['commission'] = '';
       if (isset($a['organisme_id'])) {
         $a['commission'] = Doctrine::getTable('Organisme')->find($a['organisme_id'])->nom;
