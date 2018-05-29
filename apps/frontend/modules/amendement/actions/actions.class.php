@@ -53,11 +53,8 @@ class amendementActions extends sfActions
 
      $this->loititle = 'Texte de loi N° '.$this->amendement->texteloi_id;
      if ($this->loi) $this->loititle = $this->loi->getTitre();
-     $this->titre1 = $this->amendement->getShortTitre(1);
-     $this->titre2 = "";
-     if ($this->section)
-       $this->$titre2 = $this->section->titre;
-     myTools::setPageTitle($this->loititle.' - '.$this->titre2.'  '.$this->titre1, $this->response);
+     $this->titre = $this->amendement->getShortTitre(1);
+     myTools::setPageTitle(($this->section ? $this->section->titre.' - ': '').$this->loititle.' - '.$this->titre, $this->response);
   }
 
   public function executeParlementaire(sfWebRequest $request)

@@ -7,7 +7,7 @@ include_partial($nomPartial, $options); ?>
 <?php } ?>
 <?php if ($pager->haveToPaginate()) :
 
-$uri = $sf_request->getUri();
+$uri = sfContext::getInstance()->getRouting()->getCurrentInternalUri();
 $uri = preg_replace('/page=\d+\&?/', '', $uri);
 
 if (!preg_match('/[\&\?]$/', $uri)) {

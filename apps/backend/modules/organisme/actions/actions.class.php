@@ -18,9 +18,10 @@ class organismeActions extends autoOrganismeActions
     $query = Doctrine_Query::create()
       ->select('id, nom, slug, po.organisme_id, count(distinct(po.parlementaire_id)) as deputes, s.organisme_id, count(distinct(s.id)) as seances, sum(s.tagged) as tags')
       ->from('Organisme o')
-      ->where('o.type = "parlementaire"')
       ->leftJoin('o.ParlementaireOrganismes po')
       ->leftJoin('o.Seances s')
+      ->where('o.type = "parlementaire"')
+      ->andWhere('po.fin_fonction IS NULL')
       ->groupBy('o.id')
       ->orderBy('o.nom');
     $this->orgas = $query->fetchArray();

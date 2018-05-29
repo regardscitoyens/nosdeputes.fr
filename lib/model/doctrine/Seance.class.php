@@ -91,7 +91,7 @@ class Seance extends BaseSeance
 
   public function getShortMoment() {
     if (preg_match('/:/', $this->moment))
-      return preg_replace('/^0/', '', str_replace('00', '', str_replace(':', 'h', $this->moment)));
+      return preg_replace('/^0?(\d+):(?:00)?(\d*)$/', '\1h\2', $this->moment);
     else if (!$this->moment)
       return "réunion";
     return preg_replace('/séance/i', 'réunion', $this->moment);
@@ -150,18 +150,18 @@ class Seance extends BaseSeance
   public function getTitre($miniature = 0) {
     $titre = '';
     if ($this->type == 'hemicycle') {
-      if ($miniature == 0)
+      if (!$miniature)
         $titre .= 'S';
       else $titre .= 's';
       $titre .= 'éance ';
       $titre .= 'en hémicycle ';
     }else{
-      if ($miniature == 0)
+      if (!$miniature)
         $titre .= 'R';
       else $titre .= 'r';
       $titre .= 'éunion ';
     }
-    $titre .= 'du '.preg_replace('/^0(\d)/', '\\1', myTools::displayDate($this->getDate()));
+    $titre .= 'du '.preg_replace('/^0(\d)/', '\\1', myTools::displayDateSemaine($this->getDate(), 1));
     if ($moment = $this->getMoment()) {
       if (preg_match('/(réunion|^\d+$)/', $moment))
         $titre .= ' : ';

@@ -94,12 +94,13 @@ Organisme:
       moretags: [type]
   columns:
     nom:
-      type: string(255)
-      unique: true
+      type: string(511)
+#      unique: true
 #      notnull: true
     type:
       type: enum
       values: ['parlementaire', 'groupe', 'extra', 'groupes']
+
 
 ParlementaireOrganisme:
   actAs:
@@ -297,9 +298,9 @@ Amendement:
     auteur_groupe_acronyme: string(16)
     signataires: string
     texte:
-      type: string
+      type: clob
     expose:
-      type: string
+      type: clob
     content_md5: string(36)
     nb_multiples:
       type: integer

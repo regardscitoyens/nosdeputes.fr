@@ -73,7 +73,7 @@ if ($page != "rapports" && $nse) {
   echo '&nbsp;:</h3><ul>';
   $curdate = "";
   foreach($pagerSeances->getResults() as $seance) {
-    $newdate = myTools::displayDate($seance->date);
+    $newdate = myTools::displayDateSemaine($seance->date, 1);
     if ($curdate != $newdate) {
       if ($curdate != "")
         echo '</li>';

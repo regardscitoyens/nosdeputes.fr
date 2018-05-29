@@ -1,14 +1,14 @@
 <div class="titre_int_et_seance" id="sommaire">
 <?php
 $nomseance = 'séance';
-if ($seance->type == 'commission') :
-$nomseance = 'réunion';
+$plot = 'seance_hemi_';
+if ($seance->type == 'commission') {
+  $nomseance = 'réunion';
+  $plot = 'seance_com_';
+  echo "<h1>".link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug())."</h1>";
+}
 ?>
-<h1><?php echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); ?></h1>
-<h1><?php echo $seance->getTitre(); $plot = 'seance_com_'; ?></h1>
-<?php else : ?>
-<h1><?php echo $seance->getTitre(0); $plot = 'seance_hemi_'; ?></h1>
-<?php endif; ?>
+<h1><?php echo $seance->getTitre(); ?></h1>
 <div class="resume">
 <h2>Résumé de la <?php echo $nomseance; ?></h2>
 <?php if (count($tags)) { ?>

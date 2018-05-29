@@ -69,8 +69,11 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
       }
     } else extra = "de la session " + data.periode.replace(/^(\d{4})/, '$1-');
     if (type === 'total')
-      titre = "Présences en commissions et participation en hémicycle au cours " + extra;
-    else titre = "Participation en " + type.replace('commission', 'commissions') + " au cours " + extra;
+      titre = "Présences en commissions et participation en hémicycle";
+    else if (type === 'commission')
+      titre = "Présences et participation en commissions";
+    else titre = "Participation en hémicycle";
+    titre += " au cours " + extra;
 
     divid = '#' + divid;
     $(divid).html(
@@ -85,9 +88,10 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
     '<tr><td><svg><rect class="mediane"/></svg>Médiane des députés</td><td class="tooltip_mediane"></td></tr>' +
   '</table>' +
   '<div class="banner_vacances">' +
-    '<br/>Vacances parlementaires' +
+    'Vacances parlementaires' +
     '<br/><small>(aucune séance ou réunion' +
-    '<br/>durant cette semaine)</small>' +
+    '<br/>durant cette semaine' +
+    '<br/>ou période hors mandat)</small>' +
   '</div>' +
 '</center>'
     );
@@ -196,7 +200,7 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
         $(tooltipid+" .tooltip_week").html(d3.timeFormat("%d %B %Y")(new Date(x)));
         $(tooltipid+" .tooltip_participations").html(participations[x] || 0);
         if (questions)
-          $(tooltipid+" .tooltip_questions").html(questions[x] || 0);
+          $(tooltipid+" .tooltip_questions").html(Math.round(questions[x]) || 0);
         $(tooltipid+" .tooltip_presences").html(presence[x] || 0);
         $(tooltipid+" .tooltip_mediane").html(mediane[x] || 0);
         $(tooltipid+" .banner_vacances")[vacances[x]==1 ? 'show' : 'hide']();

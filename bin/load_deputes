@@ -8,4 +8,4 @@ perl download_deputes.pl $LEGISLATURE
 ./parse_tous.sh
 cd ../..
 php symfony update:Deputes 
-
+echo "UPDATE parlementaire_organisme JOIN parlementaire p ON p.id = parlementaire_id SET fin_fonction = p.fin_mandat WHERE fin_fonction IS NULL AND p.fin_mandat IS NOT NULL" | mysql $MYSQLID $DBNAME

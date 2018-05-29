@@ -49,7 +49,7 @@ class tagActions extends sfActions
       $this->last = 1;
       $this->qtag->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
     }
-    $this->mois = min(12, floor((time() - strtotime($this->parlementaire->debut_mandat) ) / (60*60*24*30)));
+    $this->mois = min(12, $this->parlementaire->getNbMois(array()));
     $this->txtmois = ($this->mois < 2 ? " premier" : "s $this->mois ".($this->mois < 12 ? "prem" : "dern")."iers");
     myTools::setPageTitle('Champ lexical de '.$this->parlementaire->nom.' sur '.($this->last ? "le".$this->txtmois." mois" : ($this->all ? 'tout son mandat' : ($this->session ? 'la session '.preg_replace('/^(\d{4})/', '\\1-', $this->session): ""))), $this->response);
   }

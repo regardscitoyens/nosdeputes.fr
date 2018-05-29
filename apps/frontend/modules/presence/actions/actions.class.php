@@ -72,7 +72,7 @@ class presenceActions extends sfActions
       ->leftJoin('p.Parlementaire pa')
       ->leftJoin('p.Preuves pr')
       ->where('p.seance_id = ?', $seance_id)
-      ->andWhere('pr.type = ?', 'intervention')
+      ->andWhereIn('pr.type', array('intervention', 'video'))
       ->groupBy('pa.id')
       ->orderBy('pa.nom_de_famille')
       ->execute();
@@ -83,6 +83,7 @@ class presenceActions extends sfActions
       ->groupBy('pa.id')
       ->orderBy('pa.nom_de_famille ASC')
       ->execute();
-    myTools::setPageTitle(($this->orga ? $this->orga->getNom() : "Hémicycle").' - Députés présents à la '.$this->seance->getTitre(1), $this->response);
+    $this->orga = $this->seance->getOrganisme();
+    myTools::setPageTitle(($this->orga !== null ? $this->orga->getNom() : "Hémicycle").' - Députés présents à la '.$this->seance->getTitre(1), $this->response);
   }
 }

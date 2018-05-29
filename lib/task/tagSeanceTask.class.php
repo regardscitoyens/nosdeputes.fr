@@ -110,7 +110,7 @@ class tagSeanceTask extends sfBaseTask
       $tags = array();
       //Pour les mots le plus populaires non exclus on les garde
       foreach(array_keys($words) as $k) {
-        if (!isset($exclude[$k]) && !preg_match('/(^http|-((il|elle)s?|on|ci|le|[nv]ous)$)/', $k)) {
+        if (!isset($exclude[$k]) && !preg_match('/(^http|\/|-((il|elle)s?|on|ci|le|[nv]ous)$)/', $k)) {
           $cpt++;
           $pc = $words[$k]*100/$tot;
           if ($pc < 0.8)

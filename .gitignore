@@ -26,6 +26,8 @@ log/
 batch/amendements/commission/
 batch/amendements/html/
 batch/amendements/json/
+batch/amendements/loaded/
+batch/amendements/errors/
 batch/amendements/OpenDataAN/
 batch/amendements/liste_sort_indefini.txt
 batch/commission/html/

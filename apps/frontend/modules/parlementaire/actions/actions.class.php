@@ -312,7 +312,7 @@ class parlementaireActions extends sfActions
       'groupe' => 'Groupes politiques',
       'parlementaire' => 'Fonctions parlementaires (commissions, délégations, missions...)',
       'extra' => 'Missions extra-parlementaires',
-      'groupes' => "Groupes d'étude et d'amitié"
+      'groupes' => "Groupes d'études et d'amitié"
     );
   }
 
@@ -335,6 +335,7 @@ class parlementaireActions extends sfActions
       ->andWhere('p.fin_mandat IS NULL')
       ->andWhere('po.fin_fonction IS NULL')
       ->groupBy('o.id')
+      ->orderBy('o.created_at')
       ->fetchArray();
     $this->human_type = $this->organisme_types[$this->type];
     $this->title = "Liste des ".$this->human_type;
@@ -348,7 +349,13 @@ class parlementaireActions extends sfActions
       $this->response->addMeta('robots', 'noindex,follow');
     $this->orga = Doctrine::getTable('Organisme')->createQuery('o')
       ->where('o.slug = ?', $orga)->fetchOne();
-    $this->forward404Unless($this->orga);
+    if (!$this->orga) {
+      $this->orga = Doctrine::getTable('Organisme')->createQuery('o')
+        ->where('o.slug LIKE ?', $orga.'%')->fetchOne();
+      if ($this->orga)
+        return $this->redirect('@list_parlementaires_organisme?slug='.$this->orga->slug);
+      $this->forward404();
+    }
 
     $this->loadOrganismes();
     $this->human_type = $this->organisme_types[$this->orga->type];
@@ -468,7 +475,7 @@ class parlementaireActions extends sfActions
       $this->check = 'legislature';
     else {
       $this->check = 'lastyear';
-      $mois = min(12, floor((time() - strtotime($this->parlementaire->debut_mandat) ) / (60*60*24*30)));
+      $mois = min(12, $this->parlementaire->getNbMois(array()));
       $this->mois = ($mois < 2 ? " premier" : "s $mois ".($mois < 12 ? "prem" : "dern")."iers");
     }
     if ($this->session == $this->check) {
@@ -646,9 +653,26 @@ class parlementaireActions extends sfActions
     $this->news = $news;
     $this->feed = new sfRssFeed();
   }
-  public function executeError404() {
-    $this->response->setTitle("Erreur 404 - Page introuvable - NosDéputés.fr");
+
+  public function executeError404(sfWebRequest $request) {
+    $prevHost = myTools::getPreviousHost();
+    $uri = $_SERVER["REQUEST_URI"];
+    if ($prevHost &&
+      (preg_match('/^\/(api|1\d)\//', $uri) || preg_match('/^\/[^\/]+$/', $uri) || preg_match('/^\/depute\/photo\//', $uri)) &&
+      !preg_match('/^\/'.myTools::getLegislature().'\//', $uri)
+    ) {
+      $this->response->setHttpHeader('Location', myTools::getProtocol()."://".$prevHost.$uri);
+      print myTools::getProtocol()."://".$prevHost.$uri;
+    } elseif (preg_match('#/(xml|json|csv)(\?.*)?$#', $uri, $match)) {
+      $this->setLayout(false);
+      $this->setTemplate($match[1], "api");
+      $this->response->setStatusCode(200);
+    } else {
+      $this->response->setHttpHeader('Status', '404 Not found');
+      $this->response->setTitle("Erreur 404 - Page introuvable - NosDéputés.fr");
+    }
   }
+
 
   private function searchDepute($search) {
     $sexe = null;

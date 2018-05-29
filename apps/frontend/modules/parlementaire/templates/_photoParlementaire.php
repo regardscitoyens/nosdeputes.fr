@@ -7,7 +7,7 @@ if (!$parlementaire->isEnMandat())
   $groupe = " -- (ancien".($parlementaire->sexe == "F" ? "ne" : "")." député".($parlementaire->sexe == "F" ? "e" : "").')';
 else if ($parlementaire->groupe_acronyme) {
   $apparente = '';
-  if (preg_match('/apparent/', $parlementaire->getGroupe()->getFonction())) {
+  if ($parlementaire->groupe && preg_match('/apparent/', $parlementaire->groupe->getFonction())) {
     $apparente = 'app. ';
   }
   $groupe = " -- (Groupe parlementaire : ".$apparente.$parlementaire->groupe_acronyme.')';

@@ -90,7 +90,7 @@ class indexSolrTask extends sfBaseTask
     foreach(array("Parlementaire", "Organisme", "Section", "Intervention", "Amendement", "QuestionEcrite", "Citoyen", "Commentaire", "Texteloi") as $table) {
       echo "reindex all $table\n";
       while (1) {
-	echo "new querry\n";
+	echo "new query\n";
 	$q = Doctrine::getTable($table)
 	  ->createQuery('o')
 	  ->orderBy('o.id ASC');

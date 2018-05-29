@@ -18,7 +18,7 @@ class printDumpAmendementsLoiTask extends sfBaseTask {
     $this->configuration->loadHelpers(array('Url'));
     $loi = $arguments['loi_id'];
     $amendements = Doctrine::getTable('Amendement')->createQuery('a')
-      ->select('a.id, a.legislature, a.texteloi_id, a.numero, CAST( a.numero AS SIGNED ) AS num, a.sous_amendement_de, a.rectif, a.sujet, a.sort, a.date, a.texte, a.expose, a.content_md5 as cle_unicite, a.signataires, a.source, a.nb_multiples')
+      ->select('a.id, a.legislature, a.texteloi_id, a.numero, CAST( a.numero AS SIGNED ) AS num, a.sous_amendement_de, a.rectif, a.sujet, a.sort, a.date, a.texte, a.expose, a.content_md5 as cle_unicite, a.signataires, a.source, a.nb_multiples, a.auteur_groupe_acronyme')
       ->from('Amendement a')
       ->where('a.sort <> ?', 'Rectifié')
       ->andWhere('a.texteloi_id = ?', $loi)
@@ -27,16 +27,19 @@ class printDumpAmendementsLoiTask extends sfBaseTask {
     $champs = array();
     $res = array('amendements' => array());
     foreach ($amendements as $a) {
-      $parlslugs = array();
-      $parlgroup = array();
-      foreach (Doctrine_Query::create()->select('parlementaire_groupe_acronyme, p.slug as slug, p.groupe_acronyme as curgroupe')->from('ParlementaireAmendement pa')->leftJoin('pa.Parlementaire p')->where('p.id = pa.parlementaire_id')->andWhere('pa.amendement_id = ?', $a['id'])->orderBy('pa.numero_signataire')->fetchArray() as $s) {
-        $parlslugs[] = $s['slug'];
-        if (!$s["parlementaire_groupe_acronyme"])
-          $parlgroup[] = $s['curgroupe'];
-        else $parlgroup[] = $s['parlementaire_groupe_acronyme'];
-      }
+      if (!$a['auteur_groupe_acronyme'])
+        $a['auteur_groupe_acronyme'] = Doctrine_Query::create()
+          ->select('pa.parlementaire_groupe_acronyme')
+          ->from('ParlementaireAmendement pa')
+          ->where('pa.amendement_id = ?', $a['id'])
+          ->andWhere('pa.numero_signataire = 1')
+          ->limit(1)
+          ->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
+      if (!$a['auteur_groupe_acronyme'])
+        $a['auteur_groupe_acronyme'] = "";
+      $parlslugs = Doctrine_Query::create()->select('p.slug')->from('Parlementaire p')->leftJoin('p.ParlementaireAmendements pa')->where('pa.amendement_id = ?', $a['id'])->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
+      if (is_string($parlslugs)) $parlslugs = array($parlslugs);
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
-      $a['groupes_parlementaires'] = myTools::array2hash($parlgroup, 'groupe');
       $a['url_nosdeputes'] = preg_replace('#http://(symfony/)+#', sfConfig::get('app_base_url'), url_for('@amendement?loi='.$loi.'&numero='.$a['numero'], 'absolute=true'));
       unset($a['num']);
       foreach(array_keys($a) as $key)

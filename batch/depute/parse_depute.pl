@@ -15,6 +15,7 @@ open(FILE, $file);
 $string = "@string";
 close FILE;
 $string =~ s/\r//g;
+$string =~ s/ / /ig;
 $string =~ s/\&nbsp;?/ /ig;
 $string =~ s/Univerist/Universit/g;
 $string =~ s/aglommération/agglomération/g;
@@ -124,7 +125,7 @@ foreach $line (split /\n/, $string) {
     } else {
       $line =~ s/<[^>]+>//g;
       $line = trim($line);
-      $depute{"$read"} = $line if ($line !~ /^$/);
+      $depute{"$read"} = $line if ($line !~ /^$/ && !($line =~ /^Actualité/ && $read =~ /profession/));
       if ($read =~ /suppleant/) {
         $depute{"$read"} =~ s/[(,\s]+décédé.*$//i;
         $depute{"$read"} =~ s/Mlle /Mme /;
@@ -162,7 +163,7 @@ foreach $line (split /\n/, $string) {
     } else {
       if ($site !~ /facebook\.com\/(sharer\.php|sandramarsaudlarepubliquenmarche|BSmedoc|colas\.roy\.2017)/) { #Evite de prendre les boutons de partage de l'AN et les comptes désuets
         $site =~ s/(twitter.com\/)[\s@]+/\1/i;
-        if ($site !~ /twitter.com\/(valeriebeauvais2017|sttrompille|Darrieussecq|bernarddeflesselles|Marc_Delatte|davidlorion|Josso2017|ColasRoy2017|GCHICHE2017|obono2017|celiadeputee2017|Vincent.Ledoux59|EricDiardDepute|MireilleRobert|Fdumas2017|PascalBois2017|pgoulet58|micheldelpon|DipompeoChris|Valeria_Faure_M|Thourot2017|FabienGoutte|ainakuric2017|FJolivet2017|CaroleBB2017|ludomds|blanchet2017|MaudPetit_LREM|en_marche_77|BPeyrol_REM0303|CFABRE2017|soniakrimi50)/i) {   # remove bad twitter accounts from AN
+        if ($site !~ /twitter.com\/(valeriebeauvais2017|sttrompille|Darrieussecq|bernarddeflesselles|Marc_Delatte|davidlorion|Josso2017|ColasRoy2017|GCHICHE2017|obono2017|celiadeputee2017|Vincent.Ledoux59|EricDiardDepute|MireilleRobert|Fdumas2017|PascalBois2017|pgoulet58|micheldelpon|DipompeoChris|Valeria_Faure_M|Thourot2017|FabienGoutte|ainakuric2017|FJolivet2017|CaroleBB2017|ludomds|blanchet2017|MaudPetit_LREM|en_marche_77|BPeyrol_REM0303|CFABRE2017|soniakrimi50|NLePeih2017|Haury2017|CRoussel_06|c_vignon3103|philippemichel1|pierrecabare|zivkapark2017|Laudubray|ykerlogot|RaphaelGauvain|DDavid2017|iflorennesLREM|riottonenmarche|jcleclabart2017|PascalBoisLREM|BCouillard2017|mtamverhaeghe|fbachel1er)/i) {   # remove bad twitter accounts from AN
           $depute{'sites_web'}{$site} = 1;
         }
       }
@@ -185,10 +186,13 @@ foreach $line (split /\n/, $string) {
     $line =~ s/\s*<[^>]+>\s*/ /g;
     $line =~ s/[  \s]+/ /g;
     $line = trim($line);
-    if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information)s?|Délégations? et Offices?)/) {
+    if ($line =~ /(Bureau|Commissions?|Missions? (temporaire|d'information|auprès du Gouvernement)s?|Délégations? et Offices?|Groupes de travail)/) {
       $encours = "fonctions";
-      if ($line =~ /Missions? temporaires?/) {
+      if ($line =~ /Missions? (auprès|temporaires)?/) {
         $mission = 1;
+        if ($1) {
+          $encours = "extras";
+        }
       } elsif ($line =~ /information/) {
         $missioninfo = 1;
       }
@@ -284,7 +288,7 @@ foreach $line (split /\n/, $string) {
         }
       }
     } else {
-      if ($mission && $line =~ /^(.*?)\(?((Premier ministre|Ministère|Secrétariat).*)\)?\s*$/) {
+      if ($mission && $line =~ /^(.*?)\(?\s*((Premier ministre|Ministère|Secrétariat).*)\)?\s*$/) {
         $organisme = trim($1);
         $minist = trim($2);
         $minist =~ s/ - (Premier min|Minist|Secr).*$//;
@@ -300,6 +304,10 @@ foreach $line (split /\n/, $string) {
       } elsif ($line =~ s/ de l'Assemblée nationale depuis le : \d.*$//) {
         $organisme = "Bureau de l'Assemblée nationale";
         $fonction = lc $line;
+        if ($fonction =~ /questeur/i) {
+          $depute{"fonctions"}{"Questure / ".trim($fonction)} = 1;
+          $orgas{"questure"} = 1;
+        }
       } else {
         $organisme = ucfirst($line);
         $organisme =~ s/("|\(\s*|\s*\))//g;

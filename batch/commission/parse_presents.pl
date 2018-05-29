@@ -1,6 +1,8 @@
 #!/usr/bin/perl
 
 $file = $url = shift;
+$special = shift;
+$defaulthoraire = shift;
 #use HTML::TokeParser;
 $url =~ s/^[^\/]+\///;
 $url =~ s/_/\//g;
@@ -17,10 +19,21 @@ close FILE;
 
 $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
+$string =~ s/‑/-/g;
+$string =~ s/’/'/g;
 $string =~ s/\r//g;
 $string =~ s/(M\.\s*&nbsp;\s*)+/M. /g;
 $string =~ s/\s*&(#160|nbsp);\s*/ /ig;
 $string =~ s/&#278;/É/g;
+
+if ($special && $url =~ /www2.assemblee/) {
+  $commission = $special;
+  $string =~ s/[\s\n]+/ /g;
+  $string =~ s/[,\s]*<br[\/\s]*>[,\s]*/\n/g;
+  $string =~ s/<\/?(p|h\d+|div)[^>]*>/\n<\1>/g;
+  $string =~ s/((Excusé|Présent)[es\s]*:)\s*/\1\n/g;
+  $string =~ s/<script>.*?<\/script>//g;
+}
 
 $mois{'janvier'} = '01';
 $mois{'février'} = '02';
@@ -69,6 +82,10 @@ $heures{'cinquante'} = '50';
 $heures{'cinquante-cinq'} = '55';
 $heures{''} = '00';
 
+if ($special && $string =~ />(?:Décisions (?:de Questure )?de la )?[Rr]éunion (?:de Questure )?du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/) {
+  $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
+  $heure = $defaulthoraire;
+}
 if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
   $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
   $heure = sprintf("%02d:%02d", $5, $6 || '00');
@@ -89,7 +106,7 @@ if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([
 #exit;
 $cpt = 0;
 sub checkout {
-    if ($#presents <= 0) {
+    if ($#presents < 0) {
 	print STDERR "$url: Pas de présent trouvé\n";
 	return ;
     }
@@ -102,9 +119,11 @@ sub checkout {
     }
     foreach $depute (@presents) {
 	$depute =~ s/[\/<\|]//g;
-	$depute =~ s/^\s*M[me\.]+\s+//;
+	$depute =~ s/^\s*M+([mes]+\s+|\.\s*)//;
 	$depute =~ s/\s+$//;
-    print '{"commission": "'.$commission.'","depute": "'.$depute.'","reunion":"'.$date.'","session":"'.$heure.'","source":"'.$source.'"}'."\n";
+    if ($depute !~ /^Vice[ -]|Président|Questeur|Secrétaire|Présent|Excusé/i) {
+      print '{"commission": "'.$commission.'","depute": "'.$depute.'","reunion":"'.$date.'","session":"'.$heure.'","source":"'.$source.'"}'."\n";
+    }
     }
 }
 
@@ -176,25 +195,54 @@ foreach $line (split /\n/, $string)
 	    }
 	}
     }
-    if (!$commission && $line =~ /^\s*<p>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
+    if (!$commission && $line =~ /^\s*<p[^>]*>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
         $commission = $1;
     }
-    if ($present) {
+    $origline = $line;
+    if ($special && $line =~ /[pP]résidence de \|M[.me]+ ([A-ZÉ][^|]*)\|/) {
+        push @presents, $1;
+    }
+    #print STDERR "TEST $special $present: $line\n";
+    if ($origline =~ /Retour haut de page/) {
+        $present = 0;
+    }
+    if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) étai(en)?t présents?..*$/\2/g)) {
 	$line =~ s/<[^>]+>//g;
 	$line =~ s/&[^;]*;/ /g;
+    if ($special) {
+        next if ($line =~ /Secrétaire d'État/i);
+        while ($line =~ s/M[me.]+ [^,]+, \/représentée? par (M[me.]+ [^\/]+)\//\1/) {}
+        while ($line =~ s/^([^\/]*?)[, ]*\/représentant.*/\1/) {}
+        while ($line =~ s/^([^\/]*?)[, ]*\/[^\/]*\//\1/) {}
+    }
+	$line =~ s/^\s*et\s+//gi;
 	$line =~ s/\s+et\s+/, /gi;
 	$line =~ s/\.$//;
-	if ($line =~ s/\/?(Présents|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+//) {
-        if ($line !~ /^\s*$/) {
+	if ($line =~ s/\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*// || ($newcomm && $line =~ /^\s*M+[\.mMes]+\s/) || $special) {
+        if ($line !~ /^[\/\s]*$/) {
             push @presents, split /, /, $line; #/
 	    }
     }
     }
     $line =~ s/<\/?a[^>]*>//ig;
-    if ($line =~ /[>\|\/](Membres? présents? ou excusés?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/ || $line =~ /^\s*Députés\s*$/) {
+    # Cases of special orgs
+    if ($special) {
+      if ($origline =~ /Présent[es\s]*:/) {
+        $present = 1;
+      } elsif ($origline =~ /Excusé[es\s]*:/) {
+        $present = 0;
+      }
+    } else {
+    if ($line =~ /[>\|\/](Membres? présents?( ou excusés?)?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/ || $line =~ /^\s*Députés\s*$/) {
         $present = 1;
     } elsif ($line =~ /^\s*Sénateurs\s*$/) {
         $present = 0;
+    }
+    if ($origline =~ /^\s*<p[^>]*>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
+        $newcomm = 1;
+    } elsif ($line !~ /^\s*$/) {
+        $newcomm = 0;
+    }
     }
 }
 checkout();

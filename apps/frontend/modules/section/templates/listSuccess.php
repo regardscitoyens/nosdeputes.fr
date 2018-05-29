@@ -5,7 +5,7 @@
 <ul>
 <?php if ($order == 'date') { if (count($sections)) echo '<li>'; $mois = ""; }
 foreach($sections as $s) if ($s->titre) {
-  if (preg_match('/(questions?\s|ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $s->titre)) continue;
+  if (preg_match('/(ordre\sdu\sjour|nomination|suspension\sde\séance|rappels?\sau\srèglement)/i', $s->titre)) continue;
   $moisactuel = myTools::displayDateMoisAnnee($s->max_date);
   if ($order == 'date' && $mois != $moisactuel) {
     if ($mois != "") echo '</ul></li><li>';

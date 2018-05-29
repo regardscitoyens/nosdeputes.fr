@@ -2,27 +2,6 @@
 
 JSON=$1
 
-echo "Sommaire :"
-echo "-------------"
-cat $JSON                   |
-  sed 's/^.*"contexte": "//'|
-  sed 's/".*$//'            |
-  grep . | uniq
-echo "-------------"
-echo
-echo
-
-echo "Intervenants:"
-echo "-------------"
-grep -v '"intervenant": ""' $JSON   |
-  sed 's/^.*"intervenant": "//'     |
-  sed 's/",.*"fonction": "/\t\t|  /'|
-  sed 's/".*$//'                    |
-  sort  | uniq -c
-echo "-------------"
-echo
-echo
-
 echo "Didascalies :"
 echo "-------------"
 grep '"intervenant": ""' $JSON      |
@@ -33,14 +12,23 @@ echo "-------------"
 echo
 echo
 
+echo "Sommaire :"
+echo "-------------"
+cat $JSON                   |
+  sed 's/^.*"contexte": "//'|
+  sed 's/".*$//'            |
+  grep . | uniq
+echo "-------------"
+echo
+echo
+
 echo "Parenthèses :"
 echo "-------------"
 grep '(' $JSON                          |
   sed 's/^.*"contexte": "//'            |
   sed 's/",.*"intervention": "/  |  /'  |
   sed 's/".*$//'                        |
-  grep -v '(.*  |  [^(]*$'              |
-  sort -u
+  grep -v '(.*  |  [^(]*$'
 echo "-------------"
 echo
 echo
@@ -57,7 +45,7 @@ cat $JSON | while read line; do
     sed 's/^.*"intervention": "//'  |
     sed 's/".*$//'
   )
-  if [ "$interv" = "$newinterv" ]; then
+  if [ "$interv" = "$newinterv" ] && [ ! -z "$interv" ]; then
     echo "-------------"
     echo "$interv: $text"
     echo "$newinterv: $newtext"
@@ -69,6 +57,22 @@ echo "-------------"
 echo
 echo
 
+echo "Intervenants:"
+echo "-------------"
+grep -v '"intervenant": ""' $JSON   |
+  sed 's/^.*"intervenant": "//'     |
+  sed 's/",.*"fonction": "/\t\t|  /'|
+  sed 's/".*$//'                    |
+  sort  | uniq -c
+echo "-------------"
+echo
+echo
+
+head -1 $JSON                               |
+  sed 's/^.*"date": "/\nDATE:    /'    |
+  sed 's/", .*"heure": "/ - /'          |
+  sed 's/".*$//'
+
 head -1 $JSON               |
-  sed 's/^.*"source": "//'  |
+  sed 's/^.*"source": "/SOURCE:  /'  |
   sed 's/[#"].*$//'

@@ -34,7 +34,7 @@ foreach $url (@url) {
     if ($t->[1]{href} =~ /^(http:\/\/www\.assemblee-nationale\.fr\/$legislature\/cri\/\d+-\d+[\-extra\d]*\/)?\d+\.asp$/) {
           $a->get($t->[1]{href});
           $file = $a->uri();
-          if ($file !~ /provisoire/) {
+          if ($file !~ /provisoire|2017-2018\/2013/) {
 	    $file =~ s/\//_/gi;
 	    $file =~ s/\#.*//;
 	    $newcontent = $a->content;

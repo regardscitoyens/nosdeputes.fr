@@ -196,8 +196,8 @@ class apiActions extends sfActions
     if ($request->getParameter('current') == true) {
       $query->where('fin_mandat IS NULL OR debut_mandat > fin_mandat');
       $this->multi['responsabilite'] = 1;
-      $this->multi['mandat'] = 1;
     }
+    $this->multi['mandat'] = 1;
     $this->multi['site'] = 1;
     $this->multi['email'] = 1;
     $this->multi['adresse'] = 1;
@@ -283,11 +283,11 @@ class apiActions extends sfActions
     $res['mandat_debut'] = $parl->debut_mandat;
     if ($parl->fin_mandat)
       $res['mandat_fin'] = $parl->fin_mandat;
-    else if ($format == 'csv' && $light != 1)
+    else if ($format == 'csv')
       $res['mandat_fin'] = "";
     if (!$parl->isEnMandat())
       $res['ancien_depute'] = 1;
-    else if ($format == 'csv' && $light != 1)
+    else if ($format == 'csv')
       $res['ancien_depute'] = 0;
     if (!$light) {
       $groupe = $parl->getGroupe();
@@ -307,14 +307,14 @@ class apiActions extends sfActions
       $res['historique_responsabilites'] = myTools::array2hash($parl->getHistorique(), 'responsabilite');
     }
     $res['sites_web'] = myTools::array2hash(unserialize($parl->sites_web), 'site');
+    $res['emails'] = myTools::array2hash(unserialize($parl->mails), 'email');
     if ($light != 2) {
-      $res['emails'] = myTools::array2hash(unserialize($parl->mails), 'email');
       $res['adresses'] = myTools::array2hash(unserialize($parl->adresses), 'adresse');
       $res['collaborateurs'] = myTools::array2hash(unserialize($parl->collaborateurs), 'collaborateur');
-      $res['anciens_mandats'] = myTools::array2hash(unserialize($parl->anciens_mandats), 'mandat');
       $res['autres_mandats'] = myTools::array2hash(unserialize($parl->autres_mandats), 'mandat');
       $res['anciens_autres_mandats'] = myTools::array2hash(unserialize($parl->anciens_autres_mandats), 'mandat');
     }
+    $res['anciens_mandats'] = myTools::array2hash(unserialize($parl->anciens_mandats), 'mandat');
     $res['profession'] = $parl->profession;
     $res['place_en_hemicycle'] = $parl->place_hemicycle;
     $res['url_an'] = $parl->url_an;
@@ -348,7 +348,8 @@ class apiActions extends sfActions
     } else $this->forward404();
 
     $this->champs = array();
-    $format = $request->getParameter('format');
+    $format = strtolower($request->getParameter('format'));
+    $this->forward404Unless(in_array($format,array('csv', 'xml', 'json')));
 
     $this->res = array('sections' => array());
     foreach($query->execute() as $sec) {
@@ -520,7 +521,7 @@ class apiActions extends sfActions
   public function executeAmendements(sfWebRequest $request) {
     chdir(sfConfig::get('sf_root_dir'));
     $this->task = new printDumpAmendementsLoiTask($this->dispatcher, new sfFormatter());
-    $this->loi = preg_replace('/[^0-9a-z\-]/', '', $request->getParameter('loi'));
+    $this->loi = preg_replace('/[^0-9a-z\-]/i', '', $request->getParameter('loi'));
     $this->format = preg_replace('/[^a-z]/', '', $request->getParameter('format'));
     $this->setLayout(false);
     myTools::headerize($this, $request, 'nosdeputes.fr_amendements_'.$this->loi, false);
