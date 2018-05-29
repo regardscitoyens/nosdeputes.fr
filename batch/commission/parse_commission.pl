@@ -229,6 +229,7 @@ sub setFonction {
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
     $fonction =~ s/ de la [com]*mission$//;
+    $fonction =~ s/, et discusion .*$//;
     $fonction =~ s/^[, ]+//;
     if ($intervenant && $fonction =~ /^(ministre( déléguée?)?|président|secrétaire d'[Éé]tat)/i) {
       $shortfonction = $1;
