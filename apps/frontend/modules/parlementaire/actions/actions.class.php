@@ -36,91 +36,24 @@ class parlementaireActions extends sfActions
     }
   }
 
-  public static function horizontalFlip(&$img) {
-    $size_x = imagesx($img);
-    $size_y = imagesy($img);
-    $temp = imagecreatetruecolor($size_x, $size_y);
-    $x = imagecopyresampled($temp, $img, 0, 0, ($size_x-1), 0, $size_x, $size_y, 0-$size_x, $size_y);
-    if ($x) {
-      $img = $temp;
-    }
-    else {
-      die("Unable to flip image");
-    }
-  }
 
   public function executePhoto(sfWebRequest $request)
   {
-    $rayon = 50; //pour la vignette
-    $bordure = 10;
-    $work_height = 500; //pour éviter des sentiments d'antialiasing
+    $this->rayon = 50; //pour la< vignette
+    $this->bordure = 10;
+    $this->work_height = 500; //pour éviter des sentiments d'antialiasing
 
     $slug = $request->getParameter('slug');
-    $parlementaire = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->fetchOne();
-    $this->forward404Unless($parlementaire);
-    $file = tempnam(sys_get_temp_dir(), 'Parl');
-    $photo = $parlementaire->photo;
-    if (!strlen($photo)) {
-      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_depute.jpg', $file);
-    } else {
-      $fh = fopen($file, 'w');
-      fwrite($fh ,$photo);
-      fclose($fh);
-    }
-    list($width, $height, $image_type) = getimagesize($file);
-    if (!$width || !$height) {
-      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_depute.jpg', $file);
-      list($width, $height, $image_type) = getimagesize($file);
-    }
-
+    $this->parlementaire = Doctrine_Query::create()->from('Parlementaire P')->where('slug = ?', $slug)->fetchOne();
+    $this->forward404Unless($this->parlementaire);
     $this->getResponse()->setHttpHeader('content-type', 'image/png');
-    $this->setLayout(false);
-    $newheight = ceil($request->getParameter('height', $height)/10)*10;
-    if ($newheight > 250)
-      $newheight = 250;
-    $ratio = 125/160.;
-    $width2 = $width; $height2 = $height;
-    if ($ratio > $width/$height)
-      $height2 = $width/$ratio;
-    else $width2 = $height*$ratio;
-    $iorig = imagecreatefromjpeg($file);
-    $ih = imagecreatetruecolor($work_height*$ratio, $work_height);
-    if (!$request->getParameter('color') && ((!$parlementaire->isEnMandat() && !myTools::isFinlegislature()) || preg_match('/décè/i', $parlementaire->getAnciensMandats())))
-      self::imagetograyscale($iorig);
-    imagecopyresampled($ih, $iorig, 0, 0, max(0, ($width - $width2)/2), max(0, ($height - $height2)/2), $work_height*$ratio, $work_height, $width2, $height2);
-    $width = $work_height*$ratio;
-    $height = $work_height;
-    imagedestroy($iorig);
-    unlink($file);
-
-    if ((isset($parlementaire->autoflip) && $parlementaire->autoflip) XOR $request->getParameter('flip')) {
-      self::horizontalFlip($ih);
-    }
-
-    $groupe = $parlementaire->groupe_acronyme;
-  if ($groupe) {
-      imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon+$bordure, $rayon+$bordure, imagecolorallocate($ih, 255, 255, 255));
-
-      $colormap = myTools::getGroupesColorMap();
-      if (isset($colormap[$groupe]) && preg_match('/^(\d+),(\d+),(\d+)$/', $colormap[$groupe], $match))
-        imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, $match[1], $match[2], $match[3]));
-
-/*  Old code to handle groupes bicolore
-	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 45, 225, imagecolorallocate($ih, 0, 170, 0), IMG_ARC_EDGED);
-	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 225, 45, imagecolorallocate($ih, 240, 0, 0), IMG_ARC_EDGED);
-*/
-    }
-
-    if ($newheight) {
-      $newwidth = $newheight*$width/$height;
-      $image = imagecreatetruecolor($newwidth, $newheight);
-      imagecopyresampled($image, $ih, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);
-      imagedestroy($ih);
-      $ih = $image;
-    }
-    $this->image = $ih;
     $this->getResponse()->addCacheControlHttpHeader('max-age='.(60*60*24*3).',public');
     $this->getResponse()->setHttpHeader('Expires', $this->getResponse()->getDate(time()+60*60*24*3));
+    $this->setLayout(false);
+    $this->color = $request->getParameter('color');
+    $this->request_height = $request->getParameter('height');
+    $this->path_to_default_parl_image = sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_depute.jpg';
+    $this->request_flip = $request->getParameter('flip');
   }
 
   public function executeRandom(sfWebRequest $request)

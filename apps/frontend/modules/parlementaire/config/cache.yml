@@ -21,3 +21,6 @@ list:
   enabled: true
 show:
   enabled: false
+photo:
+  lifetime: 28800
+  enabled: true
