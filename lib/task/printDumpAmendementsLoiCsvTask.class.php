@@ -32,7 +32,8 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
         ->from('Parlementaire p')
         ->leftJoin('p.ParlementaireAmendements pa')
         ->where('pa.amendement_id = ?', $a['id'])
-        ->andWhere('pa.numero_signataire = 1')
+        ->andWhere('p.groupe_acronyme != "" and p.groupe_acronyme IS NOT NULL')
+        ->orderBy('pa.numero_signataire ASC')
         ->limit(1)
         ->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
       if (!$a['auteur_groupe_acronyme'])
