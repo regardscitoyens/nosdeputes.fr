@@ -2,6 +2,7 @@
 
 - name: Installation docker
   include: docker.yml
+  when: dont_touch_my_docker == false
 
 - name: Creation user '{{ cpc_user }}'
   user:
