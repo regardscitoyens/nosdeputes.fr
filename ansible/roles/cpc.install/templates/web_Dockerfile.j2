@@ -8,7 +8,7 @@ RUN apt-get update && apt-get -my install --no-install-recommends \
 	libfreetype6-dev \
 	libjpeg62-turbo-dev \
 	libmagickwand-dev \
-	libpng12-dev \
+	libpng{{ use_stretch | ternary('', '12') }}-dev \
 	libwww-mechanize-perl
 
 RUN rm -rf /var/lib/apt/lists/*

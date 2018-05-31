@@ -8,8 +8,9 @@ cpc_instance_name: cpc
 cpc_user: cpc
 cpc_home: /opt/cpc
 
+cpc_senat: false
 cpc_repo: https://github.com/regardscitoyens/nosdeputes.fr
-cpc_version: master
+cpc_version: "{{ cpc_senat | ternary('nossenateurs.fr', 'master') }}"
 # cpc_dump: /path/to/dump.sql.gz
 
 cpc_port_web: 8001
@@ -26,12 +27,69 @@ cpc_php_cli_memory_limit: -1
 cpc_php_show_errors: false
 cpc_enable_cronjobs: false
 
-cpc_legislature: 14
-cpc_debut_legislature: '2012-06-21'
-cpc_fin_legislature: false
+cpc_nd_options:
+  legislature: 14
+  debut_legislature: '2012-06-21'
+  fin_legislature: false
+  host_prev: 2007.nosdeputes.fr
+  host_next:
+  groupes_actuels: <
+    ["LFI", "GDR", "SER", "RP", "LREM", "MODEM", "RCUDI", "LR", "NI"]
+  groupes_infos: <
+    [
+    "La France Insoumise / LFI / 255,30,30 / France Insoumise / insoumis",
+    "Gauche Démocrate et Républicaine / GDR / 255,40,100 / PCF et régionalistes / gauche.*d[eéÉ]mocrate",
+    "Socialiste, Écologiste et Républicain / SER / 255,50,190 / PS / socialiste",
+    "Radical Progressiste / RP / 198,81,249 / PRG, ex-EELV et divers gauche / radical|progressiste",
+    "République En Marche / LREM / 236,234,76 / En Marche / marche",
+    "Mouvement Démocrate / MODEM / 250,195,132 / MoDem / modem",
+    "Républicains Constructifs et Union des Démocrates et Indépendants / RCUDI / 30,180,255 / LR proches d'En Marche & UDI / constructif",
+    "Les Républicains / LR / 30,30,200 / Les Républicains / r[eéÉ]publicains",
+    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (Divers droite, FN…) / inscrit|députés.*aucun"
+    ]
+  groumes_proximite: <
+    ["LFI / GDR", "LFI / SER", "GDR / SER", "SER / RP", "SER / LREM", "RP / LREM", "LREM / MODEM", "LREM / RCUDI", "MODEM / RCUDI", "RCUDI / LR", "LR / NI"]
+  commissions_permanentes: <
+    [
+    "commission-des-lois-constitutionnelles-de-la-legislation-et-de-l-administration-generale-de-la-republique",
+    "commission-des-finances-de-l-economie-generale-et-du-controle-budgetaire",
+    "commission-des-affaires-economiques",
+    "commission-des-affaires-sociales",
+    "commission-des-affaires-culturelles-et-de-l-education",
+    "commission-des-affaires-etrangeres",
+    "commission-du-developpement-durable-et-de-l-amenagement-du-territoire",
+    "commission-de-la-defense-nationale-et-des-forces-armees"
+    ]
 
-cpc_host_prev: 2007.nosdeputes.fr
-cpc_host_next:
+cpc_ns_options:
+  legislature: 13
+  debut_mandature: "2011-10-01"
+  debut_data: "2004-10-01"
+  groupes_actuels: <
+    ["CRCE", "SOC", "RDSE", "LREM", "RTLI", "UC", "LR", "NI"]
+  groupes_infos: <
+    [
+    "Communiste Républicain Citoyen et Écologiste / CRCE / 255,30,30 / PCF, EELV et ratt. / communiste|citoyen|cologiste",
+    "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche / CRC-SPG / 255,30,30 / PCF, PG et ratt. / communiste|citoyen|sénateurs.*gauche",
+    "Communiste Républicain et Citoyen / CRC / 255,30,30 / PCF et ratt. / communiste|citoyen",
+    "Socialiste / SOCV / 255,50,190 / Socialistes (PS, Verts et ratt.) / socialisteold",
+    "Socialiste et républicain / SOC / 255,50,190 / Socialistes (PS et ratt.) / socialiste",
+    "Socialiste, Apparentés et Groupe Europe Écologie Les Verts rattaché / SOC-EELV / 255,50,190 / Socialistes (PS, Verts et ratt.) / socialiste|écologie",
+    "Écologiste / ECO / 0,230,30 / Écologistes (EELV) / [eéÉ]cologiste",
+    "Rassemblement Démocratique et Social Européen / RDSE / 250,195,132 / Socio-Radicaux (PRG, MRC) / démocratique|européen",
+    "La République en Marche / LREM / 232,197,5 / En Marche / marche",
+    "République et Territoires - Les Indépendants / RTLI / 232,197,5 / LR & UDI proches d'En Marche / territoires|ind.*pendants",
+    "Union Centriste / UC / 130,140,255 / Union Centriste (NC, Modem, ...) / centre|centriste",
+    "Union des Démocrates et Indépendants - UC / UDI / 30,180,255 / Union Centriste (NC, Modem, ...) / union.*d[eé]mocrates.*ind[eé]pendants",
+    "Union Centriste et Républicaine / UCR / 30,180,255 / Union Centriste (NC, Modem, ...) / centre|centriste",
+    "Union pour un Mouvement Populaire / UMP / 30,30,200 / UMP, RPF, RAD, et ratt. / union.*mouvement.*populaire",
+    "Les Républicains / LR / 30,30,200 / Républicains, RPF, RAD, et ratt. / républicains",
+    "Réunion administrative des Sénateurs ne figurant sur la liste d'aucun groupe politique / NI / 165,165,165 / Non-Inscrits / inscrits|administrative|aucun"
+    ]
+
+
+cpc_leg_options: "{{ cpc_senat | ternary(cpc_ns_options, cpc_nd_options) }}"
+
 
 cpc_analytics_id: false
 cpc_piwik_domain: false
@@ -43,3 +101,6 @@ cpc_admin_ips: []
 cpc_spool_mails: false
 cpc_smtp_host: localhost
 cpc_smtp_port: 25
+
+dont_touch_my_docker: false
+use_stretch: false
