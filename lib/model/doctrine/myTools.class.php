@@ -304,7 +304,7 @@ class myTools {
   }
 
   public static function getLinkDossier($urlan) {
-    return link_to('Dossier sur le site de l\'Assemblée', "http://www.assemblee-nationale.fr/".self::getLegislature()."/dossiers/".$urlan.".asp");
+    return link_to('Dossier sur le site de l\'Assemblée', "http://www.assemblee-nationale.fr/dyn/".self::getLegislature()."/dossiers/alt/".$urlan);
   }
 
   public static function getLinkLoi($id) {
