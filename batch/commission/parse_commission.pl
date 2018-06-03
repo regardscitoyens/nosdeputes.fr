@@ -480,8 +480,8 @@ $string =~ s/<p>\|((?:<a name.*?<\/a>)?(?:A(?:vant|près) l')?Article (?:unique|
 $string =~ s/<p>\/?((?:<a name.*?<\/a>)?L(?:a réunion|a séance|'audition))(, suspendue à .*?,)?\s*(s'achève|est (?:suspendue|reprise|levée))(.*?)\/?<\/p>(© Assemblée nationale)?/<p>\/$1$2 $3$4 $5\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?L['es ]+amendements* .*?(?:est|sont))\s*\|?\s*((?:retir|adopt|rejet)és?\s*)\|?(\s*.*?)<\/p>/<p>\/$1 $2$3\/<\/p>/gi;
 $string =~ s/<p>\|([A-Z\W]+)\|<\/p>/<p>\/\1\/<\/p>/g;
-$string =~ s/<p>(<a name.*?<\/a>)?((?:Puis|Su(?:r le rapport|ivant l'avis) d[^,]*,)\s*)?(La commission(?: d[^<\.]*?)?)((?: a| par ailleurs| ensuite)+)?[\s\/|]+((?:désign|examin|emis)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5 $6\/<\/p>/gi;
-$string =~ s/<p>(<a name.*?<\/a>)?((?:Puis|Su(?:r le rapport|ivant l'avis) d[^,]*),\s*)?(La commission(?: d\S+(?: \w\w+)*?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|émet|accept|donne un avis|procède (?:au|à)|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
+$string =~ s/<p>(<a name.*?<\/a>)?((?:Puis|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)?(La commission(?: d[^<\.]*?)?)((?:[\s\/|]+(?:a|par ailleurs|ensuite))+)?[\s\/|]+((?:désign|autoris|nomm|examin|emis)(?:e|é|,)*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5 $6\/<\/p>/gi;
+$string =~ s/<p>(<a name.*?<\/a>)?((?:Puis|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*),\s*)?(La commission(?: d\S+(?: \w\w+)*?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|émet|accept|donne un avis|procède (?:au|à)|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
 $string =~ s/<p>\s*\(?((Un échange de vues a suivi|Après le départ de[^<]* il est procédé |L'audition, suspendue à |La réunion de la commission[^<]*s'achève)[^<]*)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/<p>\s*((M[.me]+ [^.]*?[, ]+)+(est|sont) élu[^.]*?\.)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/<p[^>]*>[\(\/]+([^<\/\)]+)[\/\)\.]+<\/p>/\n<p>\/\1\/<p>/gi;
@@ -733,7 +733,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/\/\.\//./g;
     $line =~ s/^[\.\:]\s*//;
     #print STDERR "LINE: $found $intervenant $line\n";
-	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+([^\.:]*(interroge|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|ayant )|[^:]*présentent)/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+([^\.:]*(interroge|, pour le rapport|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|ayant )|[^:]*présentent)/) {
 	    if ($line =~ s/^\s*((Dr\.?|Pr\.?|Maître|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
