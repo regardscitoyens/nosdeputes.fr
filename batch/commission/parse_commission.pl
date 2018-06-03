@@ -644,7 +644,7 @@ foreach $line (split /\n/, $string)
     $tmpinter = "";
     #print STDERR "$intervenant $line\n";
     #si italique ou tout gras => commentaire
-    if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/ || $line =~ /^\/La commission/) && $line !~ /^\|Articles?\s*\d+/i && $line !~ /^\/\s*«/) {
+    if (($line =~ /^\|.*\|\s*$/ || $line =~ /^\/.*\/\s*$/ || $line =~ /^\/La commission/) && $line !~ /^\|Articles?\s*\d+/i && ($line !~ /^\/\s*«/ || $line =~ /^\/\s*« L'Assemblée/ )) {
       if ($line =~ /^[\/|]((groupe|(com)?mission|délégation|office|comité).*)[\/|]\s*$/i) {
         if (!$timestamp && !$commission) {
           $commission = $1;
@@ -657,9 +657,12 @@ foreach $line (split /\n/, $string)
         if (!$tmpinter) {
           checkout();
         }
-        if ($line =~ /^\/\(.*\)\/$/ || $line =~ /^\|.*\|\s*$/) {
+        if ($line =~ /^\/\(.*\)\/$/){ # || $line =~ /^\|.*\|\s*$/) { # keep interv only for italic not titles
           $tmpinter = $intervenant;
         }
+      }
+      if ($line =~ /^\|.*\|\s*$/) {
+        $previnterv = 0;
       }
       rapporteur();
       $found = 1;
@@ -668,9 +671,10 @@ foreach $line (split /\n/, $string)
     $line =~ s/^\|M\s+([A-ZÉ])/|M. \1/;
     $line =~ s/\|\)/)|/g;
     $line =~ s/^(\|M[.me]+[^|.]+\.\s*\|)\/(\«[^\/»]+»)\//\1 \2/g;
-    if (($prez && $line =~ /^\|?(Informations relatives à la Commission|Présences en réunion)/i) || $line =~ /^\W*(Membres )?[Pp]résents/) {
+    if (($prez && $line =~ /^\|?(Informations? relatives? à |Présences en réunion)/i) || $line =~ /^\W*(Membres )?[Pp]résents/) {
         $finished = 1;
         $tmpinter = "";
+        $previnterv = 0;
         checkout();
     } else {
       if ($line !~ /(Mar|Mercre)di/ && $line =~ s/^\|(M[.me]+ [^\|\:,]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:,[\|\s]*\/|[\|\s]*\/\s*,\s*)[^\/]+?\/))(.*\w.*)?/\4/) {
@@ -729,7 +733,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/\/\.\//./g;
     $line =~ s/^[\.\:]\s*//;
     #print STDERR "LINE: $found $intervenant $line\n";
-	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+([^\.:]*(interroge|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|ayant )|[^:]*présentent)/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+([^\.:]*(interroge|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|ayant )|[^:]*présentent)/) {
 	    if ($line =~ s/^\s*((Dr\.?|Pr\.?|Maître|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.]))(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
