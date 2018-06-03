@@ -292,6 +292,9 @@ sub setIntervenant {
     $intervenant =~ s/Yaël Braun-Pivert/Yaël Braun-Pivet/i;
     $intervenant =~ s/Jean Louis ([A-ZÉ])/Jean-Louis \1/i;
     $intervenant =~ s/Danielle Obono/Danièle Obono/i;
+    $intervenant =~ s/Jean-François Beaugas/Michel Beaugas/i;
+    $intervenant =~ s/Marguerite Derprez-Audebert/Marguerite Deprez-Audebert/i;
+    $intervenant =~ s/Bruno Gollnish/Bruno Gollnisch/i;
     $intervenant =~ s/Guillaume Pépy/Guillaume Pepy/i;
     $intervenant =~ s/Jean Marc Mompelat/Jean-Marc Mompelat/i;
     $intervenant =~ s/Agnès Guion-Firmin/Claire Guion-Firmin/i;
