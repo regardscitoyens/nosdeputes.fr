@@ -665,6 +665,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/^(\|M[.me]+)\s*\|\s*/\1 /;
     $line =~ s/^\|M\s+([A-ZÉ])/|M. \1/;
     $line =~ s/\|\)/)|/g;
+    $line =~ s/^(\|M[.me]+[^|.]+\.\s*\|)\/(\«[^\/»]+»)\//\1 \2/g;
     if (($prez && $line =~ /^\|?(Informations relatives à la Commission|Présences en réunion)/i) || $line =~ /^\W*(Membres )?[Pp]résents/) {
         $finished = 1;
         $tmpinter = "";
@@ -755,7 +756,7 @@ foreach $line (split /\n/, $string)
             }
 	    }
 	}
-    if (!$prez && !$found && !$finished && !$intervenant && $previnterv) {
+    if (!$found && !$finished && !$intervenant && $previnterv) {
         $tmpprev = $previnterv;
         checkout();
         $intervenant = $tmpprev;
