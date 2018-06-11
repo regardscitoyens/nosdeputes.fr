@@ -3,7 +3,12 @@
 JSON=$1
 
 source ../../bin/db-external.inc
-DEPUTES=$(echo "SELECT nom from parlementaire"  |
+DATE=$(head -1 $JSON            |
+       sed 's/^.*"date": "//'   |
+       sed 's/".*$//')
+DEPUTES=$(echo "SELECT nom from parlementaire
+                WHERE fin_mandat IS NULL
+                   OR fin_mandat > '$DATE'"     |
           mysql $MYSQLID $DBNAME                |
           grep -v '^nom'                        |
           tr '\n' '|'                           |
