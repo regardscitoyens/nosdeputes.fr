@@ -118,6 +118,7 @@ $string =~ s/(?:<\/?[ub]>)+\s*(\.)?\s*(?:<\/?[ub]>)+/\1<b>/g;
 $string =~ s/\. ((?:[A-Z]|É)['.]?|« )<\/b>((<i>)?\s*['\w]+)/. <\/b>\1\2/g;
 $string =~ s/<\/?[bu]>/|/g;
 $string =~ s/<\/?i>/\//g;
+$string =~ s/Mme François Dumas/Mme Françoise Dumas/gi;
 
 if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
   $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
@@ -299,6 +300,7 @@ sub setIntervenant {
     $intervenant =~ s/Jean Marc Mompelat/Jean-Marc Mompelat/i;
     $intervenant =~ s/Agnès Guion-Firmin/Claire Guion-Firmin/i;
     $intervenant =~ s/Jean Touzel/Jean Jouzel/i;
+    $intervenant =~ s/Jean-Philippe Ardoin/Jean-Philippe Ardouin/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
     $intervenant =~ s/Guillaume Garrot/Guillaume Garot/i;
     $intervenant =~ s/Alexandre Guédon/Xavier Guédon/i;
