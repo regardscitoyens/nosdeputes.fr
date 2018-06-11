@@ -2,6 +2,9 @@
 
 JSON=$1
 
+source ../../bin/db-external.inc
+DEPUTES=$(echo "SELECT nom from parlementaire" | mysql $MYSQLID $DBNAME  | tr '\n' '|')
+
 echo "Didascalies :"
 echo "-------------"
 grep '"intervenant": ""' $JSON      |
@@ -59,11 +62,21 @@ echo
 
 echo "Intervenants:"
 echo "-------------"
+echo " - Députés:"
 grep -v '"intervenant": ""' $JSON   |
   sed 's/^.*"intervenant": "//'     |
   sed 's/",.*"fonction": "/\t\t|  /'|
   sed 's/".*$//'                    |
-  sort  | uniq -c
+  sort | uniq -c                    |
+  grep -P "$DEPUTES"
+echo "-------------"
+echo " - Autres:"
+grep -v '"intervenant": ""' $JSON   |
+  sed 's/^.*"intervenant": "//'     |
+  sed 's/",.*"fonction": "/\t\t|  /'|
+  sed 's/".*$//'                    |
+  sort | uniq -c                    |
+  grep -vP "$DEPUTES"
 echo "-------------"
 echo
 echo
