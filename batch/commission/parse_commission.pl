@@ -119,6 +119,7 @@ $string =~ s/\. ((?:[A-Z]|É)['.]?|« )<\/b>((<i>)?\s*['\w]+)/. <\/b>\1\2/g;
 $string =~ s/<\/?[bu]>/|/g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/Mme François Dumas/Mme Françoise Dumas/gi;
+$string =~ s/M. Adrien Taché, rapporteur/M. Aurélien Taché, rapporteur/gi;
 
 if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
   $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
@@ -303,6 +304,7 @@ sub setIntervenant {
     $intervenant =~ s/Jean-Philippe Ardoin/Jean-Philippe Ardouin/i;
     $intervenant =~ s/Fadela Khattabi/Fadila Khattabi/i;
     $intervenant =~ s/Aurélien Taquet/Adrien Taquet/i;
+    $intervenant =~ s/Pierre Dharéville/Pierre Dharréville/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
     $intervenant =~ s/Guillaume Garrot/Guillaume Garot/i;
     $intervenant =~ s/Alexandre Guédon/Xavier Guédon/i;
@@ -489,8 +491,8 @@ $string =~ s/<p>\/?((?:<a name.*?<\/a>)?L(?:a réunion|a séance|'audition))(, s
 $string =~ s/<p>((?:<a name.*?<\/a>)?(?:En conséquence, )?L['es ]+amendements* .*?(?:est|sont))\s*\|?\s*((?:retir|adopt|rejet)és?\s*)\|?(\s*.*?)<\/p>/<p>\/$1 $2$3\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?(?:En conséquence, )?L['es ]+amendements* .*?tomben?t?)\s*\|?\s*(.*?)<\/p>/<p>\/$1 $2\/<\/p>/gi;
 $string =~ s/<p>\|([A-Z\W]+)\|<\/p>/<p>\/\1\/<\/p>/g;
-$string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La commission(?: d[^<\.]*?)?)((?:[\s\/|]+(?:a|par ailleurs|ensuite))+)?[\s\/|]+((?:désign|autoris|nomm|examin|emis)(?:e|é|,)*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5 $6\/<\/p>/gi;
-$string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La commission(?: d\S+(?: \w\w+)*?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|passe à|aborde|repousse|se saisit|est (ensuite )?saisie|émet|accept|donne un avis|procède (?:au|à)|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $6\/<\/p>/gi;
+$string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|Ensuite,|Par conséquent,|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La commission(?: d[^<\.]*?)?)((?:[\s\/|]+(?:a|par ailleurs|ensuite))+)?[\s\/|]+((?:désign|autoris|étudi|nomm|examin|lev|emis)(?:e|é|,)*)[\s\/|]*(.*?)<\/p>/<p>\/$2$2$3 $4 $5 $6\/<\/p>/gi;
+$string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|Ensuite,|Par conséquent,|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La commission(?: d\S+(?: \w\w+)*?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|passe à|aborde|repousse|se saisit|étudie|est (?:ensuite )?saisie|émet|accept|donne un avis|procède (?:au|à)|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
 $string =~ s/<p>\s*\(?((Un échange de vues a suivi|Après le départ de[^<]* il est procédé |L'audition, suspendue à |La réunion de la commission[^<]*s'achève)[^<]*)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/<p>\s*((M[.me]+ [^.]*?[, ]+)+(est|sont) élu[^.]*?\.)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/<p[^>]*>[\(\/]+([^<\/\)]+)[\/\)\.]+<\/p>/\n<p>\/\1\/<p>/gi;
@@ -539,6 +541,7 @@ foreach $line (split /\n/, $string)
         $prez = $1;
         $age = lc($2);
         $prez =~ s/\s*pr..?sident[es\s]*$//i;
+        $prez =~ s/\s+et\s+de*\s+M[\.me]+.*$//;
        #print STDERR "Présidence de $prez\n";
         $fct = "président";
         if ($age) {
@@ -670,7 +673,7 @@ foreach $line (split /\n/, $string)
           $tmpinter = $intervenant;
         }
       }
-      if ($line =~ /^\|.*\|\s*$/) {
+      if ($line =~ /^\|.*\|\s*$/ || $line =~ /^\/[IV]+\.\s.*\/$/) {
         $previnterv = 0;
       }
       rapporteur();
