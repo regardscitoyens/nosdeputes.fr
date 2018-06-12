@@ -673,7 +673,7 @@ foreach $line (split /\n/, $string)
           $tmpinter = $intervenant;
         }
       }
-      if ($line =~ /^\|.*\|\s*$/ || $line =~ /^\/[IV]+\.\s.*\/$/) {
+      if ($line =~ /^\|.*\|\s*$/ || $line =~ /^\/(Vu l|[IV]+\.\s).*\/$/) {
         $previnterv = 0;
       }
       rapporteur();
