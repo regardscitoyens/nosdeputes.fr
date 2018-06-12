@@ -126,6 +126,9 @@ $heures{'quarante-cinq'} = '45';
 $heures{'cinquante'} = '50';
 $heures{'cinquante-cinq'} = '55';
 $heures{''} = '00';
+foreach $i (0..59) {
+  $heures{"$i"} = sprintf "%02d", $i;
+}
 
 if ($string =~ /ouverte[^\.]+à\s+([^\.]+?)\s*heures?\s*([^\.\s]*)\s*\./) {
     $heure = $heures{$1}.':'.$heures{$2};
