@@ -301,6 +301,8 @@ sub setIntervenant {
     $intervenant =~ s/Agnès Guion-Firmin/Claire Guion-Firmin/i;
     $intervenant =~ s/Jean Touzel/Jean Jouzel/i;
     $intervenant =~ s/Jean-Philippe Ardoin/Jean-Philippe Ardouin/i;
+    $intervenant =~ s/Fadela Khattabi/Fadila Khattabi/i;
+    $intervenant =~ s/Aurélien Taquet/Adrien Taquet/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
     $intervenant =~ s/Guillaume Garrot/Guillaume Garot/i;
     $intervenant =~ s/Alexandre Guédon/Xavier Guédon/i;
@@ -337,6 +339,7 @@ sub setIntervenant {
     $intervenant =~ s/Bruno Bettinelli/Benoît Bettinelli/i;
     $intervenant =~ s/Sophie Beaudoin-Hubière/Sophie Beaudouin-Hubiere/i;
     $intervenant =~ s/Bérangère/Bérengère/i;
+    $intervenant =~ s/Bérengère Abba/Bérangère Abba/i;
     $intervenant =~ s/Laurent Desgorge/Laurent Desgeorge/i;
     $intervenant =~ s/Huguette Tiégna/Huguette Tiegna/i;
     $intervenant =~ s/Danièle Rabaté/Danielle Rabaté/i;
