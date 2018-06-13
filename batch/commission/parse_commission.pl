@@ -306,6 +306,11 @@ sub setIntervenant {
     $intervenant =~ s/Aurélien Taquet/Adrien Taquet/i;
     $intervenant =~ s/Pierre Dharéville/Pierre Dharréville/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
+    $intervenant =~ s/France Henri-Labordère/France Henry-Labordère/i;
+    $intervenant =~ s/Philippe Thillaud/Pierre Thillaud/i;
+    $intervenant =~ s/Jean Michel Blanquer/Jean-Michel Blanquer/i;
+    $intervenant =~ s/E?lisa Hervy/Elsa Hervy/i;
+    $intervenant =~ s/Thérèse Majnoni d'Untignano/Thérèse Majnoni d'Intignano/i;
     $intervenant =~ s/Guillaume Garrot/Guillaume Garot/i;
     $intervenant =~ s/Alexandre Guédon/Xavier Guédon/i;
     $intervenant =~ s/Florence Povey/Florence Poivey/i;
