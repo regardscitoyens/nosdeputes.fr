@@ -104,9 +104,12 @@ if ($url =~ /\/plf(\d+)\//) {
   $commission =~ s/ - $//;
 }
 
-$string =~ s/\s*&(#160|nbsp);\s*/ /ig;
+$string =~ s/\s*&(#160|#8232|nbsp);\s*/ /ig;
 $string =~ s/\s*&#8230;/…/g;
 $string =~ s/\s*&#8217;/'/g;
+$string =~ s/e&#769;/é/g;
+$string =~ s/e?&#768;/è/g;
+$string =~ s/i?&#776;/ï/g;
 $string =~ s/&amp;/&/g;
 $string =~ s/(<p>)(&#\d+;\s*)(<b>)/\1\3\2/ig;
 $string =~ s/\s*(<\/[bi]>)\s*:\s*/ :\1 /g;
@@ -119,7 +122,7 @@ $string =~ s/\. ((?:[A-Z]|É)['.]?|« )<\/b>((<i>)?\s*['\w]+)/. <\/b>\1\2/g;
 $string =~ s/<\/?[bu]>/|/g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/Mme François Dumas/Mme Françoise Dumas/gi;
-$string =~ s/M. Adrien Taché, rapporteur/M. Aurélien Taché, rapporteur/gi;
+$string =~ s/M\. Adrien Taché, rapporteur/M. Aurélien Taché, rapporteur/gi;
 
 if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
   $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
@@ -658,6 +661,7 @@ foreach $line (split /\n/, $string)
 	next if ($line !~ /\w/);
     next if ($line =~ /\|\/(vice-)?présidente?\/\|/);
     $line =~ s/^\s*–\s*\|\s*/|– /;
+    $line =~ s/^\|\s+([A-Z])/|\1/;
     $tmpinter = "";
     #print STDERR "$intervenant $line\n";
     #si italique ou tout gras => commentaire
