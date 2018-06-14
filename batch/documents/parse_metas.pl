@@ -116,7 +116,7 @@ $date1 = $3.'-'.$2.'-'.sprintf('%02d', $1);
 }
 if ($string =~ /<meta name="URL_DOSSIER"([^>]+)>/) {
   $line = $1;
-  $line =~ s/^.*content="[^"]+\/([^"]+)\.asp(#[^"]+)?".*$/\1/;
+  $line =~ s/^.*content="[^"]+\/([^"]+)(\.asp)?(#[^"]+)?".*$/\1/;
   $dossier = $line;
 }
 if ($string =~ /<meta name="TYPE_DOCUMENT"([^>]+)>/) {
