@@ -191,7 +191,7 @@ sub getProjetLoi {
     return unless ($titre);
     return $ploi{$titre} if (defined($ploi{$titre}));
     $titre_cleaned =~ s/[^a-z]+/ /g;
-    while ($titre_cleaned) {
+    while ($titre_cleaned =~ /.{10}/) {
         foreach $k (keys %ploi) {
             $_ = $k;
             s/[^a-z]+/ /g;
