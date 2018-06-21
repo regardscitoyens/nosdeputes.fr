@@ -309,6 +309,7 @@ sub setIntervenant {
     $intervenant =~ s/Aurélien Taquet/Adrien Taquet/i;
     $intervenant =~ s/Pierre Dharéville/Pierre Dharréville/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
+    $intervenant =~ s/Arnaud Villa/Arnaud Viala/i;
     $intervenant =~ s/France Henri-Labordère/France Henry-Labordère/i;
     $intervenant =~ s/Philippe Thillaud/Pierre Thillaud/i;
     $intervenant =~ s/Jean Michel Blanquer/Jean-Michel Blanquer/i;
@@ -332,7 +333,8 @@ sub setIntervenant {
     $intervenant =~ s/Mikaël Nogal/Mickaël Nogal/i;
     $intervenant =~ s/Célia Delavergne/Célia de Lavergne/i;
     $intervenant =~ s/Sébastien Huygue/Sébastien Huyghe/i;
-    $intervenant =~ s/Julien Hubert-Laferrière/Hubert Julien-Laferrière/i;
+    $intervenant =~ s/Julien Hubert-Laferri(e|è)re/Hubert Julien-Laferriere/i;
+    $intervenant =~ s/Hubert Julien-Laferrière/Hubert Julien-Laferriere/i;
     $intervenant =~ s/François Gaill/Françoise Gaill/i;
     $intervenant =~ s/Benoît Betinelli/Benoît Bettinelli/i;
     $intervenant =~ s/Élise Fajleges/Élise Fajgeles/i;
@@ -348,8 +350,9 @@ sub setIntervenant {
     $intervenant =~ s/Sébatien /Sébastien /i;
     $intervenant =~ s/Bruno Bettinelli/Benoît Bettinelli/i;
     $intervenant =~ s/Sophie Beaudoin-Hubière/Sophie Beaudouin-Hubiere/i;
-    $intervenant =~ s/Bérangère/Bérengère/i;
-    $intervenant =~ s/Bérengère Abba/Bérangère Abba/i;
+    $intervenant =~ s/B(e|é)rang(è|e)re/Bérengère/i;
+    $intervenant =~ s/B(e|é)reng(è|e)re Abba/Bérangère Abba/i;
+    $intervenant =~ s/Rodrigue Kokuendo/Rodrigue Kokouendo/i;
     $intervenant =~ s/Laurent Desgorge/Laurent Desgeorge/i;
     $intervenant =~ s/Huguette Tiégna/Huguette Tiegna/i;
     $intervenant =~ s/Danièle Rabaté/Danielle Rabaté/i;
