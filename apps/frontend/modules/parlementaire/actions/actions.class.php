@@ -95,13 +95,16 @@ class parlementaireActions extends sfActions
         $this->main_fonction = ucfirst($resp->fonction);
     }
 
-    $this->anciens_mandats = array();
+    $anciens_mandats = array();
     foreach (unserialize($this->parlementaire->getAnciensMandats()) as $m)
-      if (preg_match("/^(.*) \/ (.*) \/ (.*)$/", $m, $match)) {
-        if ($match[2] != "")
-          $this->anciens_mandats[] = ucfirst($this->parlementaire->getParlFonction())." du $match[1] au $match[2] ($match[3])";
+      if (preg_match("#^((\d+)/(\d+)/(\d+)) / (.*) / (.*)$#", $m, $match)) {
+        if ($match[5] != "")
+          $anciens_mandats[] = "$match[4]$match[3]$match[2]".ucfirst($this->parlementaire->getParlFonction())." du $match[1] au $match[5] ($match[6])";
       }
-    rsort($this->anciens_mandats);
+    rsort($anciens_mandats);
+    $this->anciens_mandats = array();
+    foreach ($anciens_mandats as $m)
+      $this->anciens_mandats[] = substr($m, 8);
   }
 
   public function executePreview(sfWebRequest $request) {
