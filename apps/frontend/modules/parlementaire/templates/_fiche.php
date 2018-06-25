@@ -3,7 +3,7 @@
       <ul>
         <?php if ($main_fonction) echo "<li><b>$main_fonction de l'Assemblée nationale</b></li>"; ?>
         <?php if (!$parlementaire->isEnMandat()) : ?>
-        <li>Mandat clos rempli du <?php
+        <li><b>Mandat clos</b> rempli du <?php
 echo myTools::displayDate($parlementaire->debut_mandat).' au '.myTools::displayDate($parlementaire->fin_mandat);
 if ($cause = $parlementaire->getCauseFinMandat())
   echo " (".preg_replace("/^(.*sénat.*)$/i", link_to("\\1 &mdash; Voir sur NosSénateurs.fr", "http://www.nossenateurs.fr/".$parlementaire->slug), $parlementaire->getCauseFinMandat()).")";
@@ -15,6 +15,10 @@ if ($cause = $parlementaire->getCauseFinMandat())
         $fem = ($parlementaire->sexe == "F" ? 'e' : '');
         if ($parlementaire->suppleant_de_id && $supplee = $parlementaire->getSuppleantDe())
           echo '<li>Suppléant'.$fem.' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>';
+        if (!$parlementaire->isEnMandat() && $suppleant = $parlementaire->getSuppleant()) {
+          $supfem = ($suppleant->sexe == "F" ? 'e' : '');
+          echo '<li><b>Suppléant'.$supfem.'&nbsp;: '.link_to($suppleant->nom, "@parlementaire?slug=".$suppleant->slug).'</li></b>';
+        }
         if ($parlementaire->groupe_acronyme != "") : ?>
         <li>Groupe politique : <?php echo link_to(Organisme::getNomByAcro($parlementaire->groupe_acronyme), '@list_parlementaires_groupe?acro='.$parlementaire->groupe_acronyme); ?> <?php if ($parlementaire->groupe_acronyme !== "NI") : ?>(<?php echo preg_replace('/^(présidente?)$/i', '<strong>\1</strong>', ($parlementaire->getGroupe() ? $parlementaire->getGroupe()->getFonction() : 'ancien membre')); ?>)<?php endif; ?></li>
         <?php endif;

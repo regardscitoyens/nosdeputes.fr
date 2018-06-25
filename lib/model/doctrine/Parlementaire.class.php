@@ -259,6 +259,9 @@ class Parlementaire extends BaseParlementaire
     if ($p = doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom))
       $this->_set('SuppleantDe', $p);
   }
+  public function getSuppleant() {
+    return doctrine::getTable('Parlementaire')->findOneBySuppleantDeId($this->id);
+  }
   public function setCollaborateurs($array) {
     $this->_set('collaborateurs', serialize($array));
   }
