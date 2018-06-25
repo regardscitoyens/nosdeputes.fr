@@ -38,6 +38,7 @@ clean_subject_amendements_regexp = [(re.compile(reg), res) for (reg, res) in [
     (r'\s*\([^)]*\)', ''),
     (r'\s*\(.*$', ''),
     (r'^(\d)', r'article \1'),
+    (r'^(art(.|icle) )+', r'article '),
     (r'articles', 'article'),
     (r'art(s|\.|icle|\s)*(\d+|liminaire)', r'article \2'),
     (ur"(après|avant)[l'\s]+article", r"\1 l'article"),
