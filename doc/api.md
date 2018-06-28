@@ -132,6 +132,8 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Les résultats de la recherche renvoient les urls des données détaillées de chaque élément accessible via l'API.
 
+  *Attention : les amendements déposés lors de l’examen des textes en commission permanente ne sont disponibles qu’à partir de mai 2013 (un an après le début de la 14<sup>e</sup>sup> législature)*
+
 - **Liste des dossiers législatifs** (à partir de la 15<sup>e</sup> législature uniquement pour l'Assemblée) :
 
   - Triés dans l'ordre alphabétique : https://www.nosdeputes.fr/15/dossiers/nom/xml
