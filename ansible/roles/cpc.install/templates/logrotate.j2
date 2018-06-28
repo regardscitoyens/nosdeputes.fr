@@ -1,4 +1,4 @@
-{{ cpc_home }}/repo/log/apache_*.log {
+{{ cpc_home }}/repo/log/*.log {{ cpc_home }}/repo/log/*.sql {
     daily
     missingok
     rotate 14
@@ -6,6 +6,7 @@
     delaycompress
     notifempty
     create 640 {{ cpc_user }} {{ cpc_user }}
+    su {{ cpc_user }} {{ cpc_user }}
     sharedscripts
     postrotate
         if /usr/local/bin/dc-{{ cpc_instance_name }} exec -T web /etc/init.d/apache2 status > /dev/null ; then \
