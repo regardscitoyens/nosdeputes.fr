@@ -9,9 +9,10 @@ from zipfile import ZipFile
 from bs4 import BeautifulSoup
 import requests
 
-CACHE_DIR = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../../data/opendata")
-)
+from . import COMMON_DIR
+
+CACHE_DIR = os.path.join(COMMON_DIR, "opendata")
+
 AN_BASE_URL = "http://data.assemblee-nationale.fr"
 AN_ENTRYPOINTS = {
     "14": {
@@ -31,7 +32,7 @@ def log(str):
     print(str, file=sys.stderr)
 
 
-def fetch_an_jsonzip(legislature, objet, cache_dir=CACHE_DIR):
+def fetch_an_jsonzip(legislature, objet):
     """
     Télécharge le zip du JSON depuis une page de l'open data AN, s'il a été
     modifié depuis le dernier téléchargement.
@@ -48,10 +49,10 @@ def fetch_an_jsonzip(legislature, objet, cache_dir=CACHE_DIR):
             "Objet inconnu: %s (%s legislature)" % (objet, legislature)
         )
 
-    if not os.path.exists(cache_dir):
-        os.makedirs(cache_dir)
+    if not os.path.exists(CACHE_DIR):
+        os.makedirs(CACHE_DIR)
 
-    localzip = os.path.join(cache_dir, "%s_%s.zip" % (legislature, objet))
+    localzip = os.path.join(CACHE_DIR, "%s_%s.zip" % (legislature, objet))
     localzip_lastmod = "%s.last_modified" % localzip
 
     url = "%s/%s" % (AN_BASE_URL, AN_ENTRYPOINTS[str(legislature)][objet])
@@ -112,7 +113,7 @@ def fetch_an_jsonzip(legislature, objet, cache_dir=CACHE_DIR):
     return localzip, do_download
 
 
-def fetch_an_json(legislature, objet, cache_dir=CACHE_DIR):
+def fetch_an_json(legislature, objet):
     """
     Télécharge le zip du JSON depuis une page de l'open data AN, s'il a été
     modifié depuis le dernier téléchargement.
@@ -123,7 +124,7 @@ def fetch_an_json(legislature, objet, cache_dir=CACHE_DIR):
     le fichier a été modifié.
     """
 
-    localzip, updated = fetch_an_jsonzip(legislature, objet, cache_dir)
+    localzip, updated = fetch_an_jsonzip(legislature, objet)
     with ZipFile(localzip, "r") as z:
         for f in [f for f in z.namelist() if f.endswith(".json")]:
             log("JSON extrait : %s" % f)
@@ -132,13 +133,7 @@ def fetch_an_json(legislature, objet, cache_dir=CACHE_DIR):
 
 
 def _cached_ref(
-    legislature,
-    objet,
-    id_mapping,
-    extract_list,
-    extract_id,
-    extract_mapped,
-    cache_dir=CACHE_DIR,
+    legislature, objet, id_mapping, extract_list, extract_id, extract_mapped
 ):
     """
     Génère et renvoie un cache de mapping d'identifiants à partir d'un dump
@@ -151,9 +146,9 @@ def _cached_ref(
     extract_mapped: fonction qui extrait les données mappées d'un item
     """
 
-    data, updated = fetch_an_json(legislature, objet, cache_dir)
+    data, updated = fetch_an_json(legislature, objet)
     cached_file = os.path.join(
-        cache_dir, "mapping_%s_%s.json" % (legislature, id_mapping)
+        CACHE_DIR, "mapping_%s_%s.json" % (legislature, id_mapping)
     )
 
     if updated or not os.path.exists(cached_file):
@@ -170,37 +165,7 @@ def _cached_ref(
             return json.load(f)
 
 
-def ref_deputes(legislature, cache_dir=CACHE_DIR):
-    """
-    Renvoie un mapping des id opendata des députés vers "Prénom Nom"
-    """
-
-    def _extract_list(data):
-        return data["export"]["acteurs"]["acteur"]
-
-    def _extract_id(acteur):
-        return (
-            acteur["uid"]["#text"]
-            if isinstance(acteur["uid"], dict)
-            else acteur["uid"]
-        )
-
-    def _extract_mapped(acteur):
-        ident = acteur["etatCivil"]["ident"]
-        return "%s %s" % (ident["prenom"], ident["nom"])
-
-    return _cached_ref(
-        legislature,
-        "amo",
-        "deputes",
-        _extract_list,
-        _extract_id,
-        _extract_mapped,
-        cache_dir,
-    )
-
-
-def ref_groupes(legislature, cache_dir=CACHE_DIR):
+def ref_groupes(legislature):
     """
     Renvoie un mapping des id opendata des groupes parlementaires vers leur
     abbréviation
@@ -225,11 +190,10 @@ def ref_groupes(legislature, cache_dir=CACHE_DIR):
         _extract_list,
         _extract_id,
         _extract_mapped,
-        cache_dir,
     )
 
 
-def ref_seances(legislature, cache_dir=CACHE_DIR):
+def ref_seances(legislature):
     """
     Renvoie un mapping des id opendata des séances vers leur ID
     """
@@ -253,5 +217,4 @@ def ref_seances(legislature, cache_dir=CACHE_DIR):
         _extract_list,
         _extract_id,
         _extract_mapped,
-        cache_dir,
     )

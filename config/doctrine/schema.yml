@@ -166,6 +166,7 @@ Scrutin:
   actAs:
     Timestampable:
   columns:
+    numero: integer
     annee: integer
     numero_semaine: integer
     date: date
@@ -202,15 +203,15 @@ ParlementaireScrutin:
     parlementaire_groupe_acronyme: string(16)
     position:
       type: enum
-      values: ['pour', 'contre', 'abstention', 'non-votant']
+      values: ['pour', 'contre', 'abstention', 'nonVotant']
     position_groupe:
       type: enum
-      values: ['pour', 'contre', 'abstention', 'non-votant']
+      values: ['pour', 'contre', 'abstention', 'nonVotant']
     par_delegation: boolean
     delegataire_parlementaire_id: integer
     mise_au_point_position:
       type: enum
-      values: ['pour', 'contre', 'abstention', 'non-votant']
+      values: ['pour', 'contre', 'abstention', 'nonVotant', 'nonVotantVolontaire']
   relations:
     Scrutin:
       foreignAlias: Votes
