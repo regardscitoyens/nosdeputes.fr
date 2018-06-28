@@ -83,7 +83,7 @@ L'ensemble des données de ces différents sites est par ailleurs mis à disposi
 
     *Remarque : les groupes politiques sont également accessibles ainsi via leur `slug`, par exemple pour les non-inscrits : https://www.nosdeputes.fr/organisme/deputes-non-inscrits/xml*
 
-  *Note :* par défaut l'API ne renvoie que les députés actuellement membres du groupe ou de l'organisme souhaité. À partir de la 15ème législature il est possible d'inclure également les anciens membres de l'organisme en ajoutant `?includePast=true` à la fin de l'url. Les données renvoient alors également deux champs `fin_fonction` et `groupe_a_fin_fonction` indiquant la date de fin de la fonction et le groupe politique du député à cette date. Par exemple pour la commission des affaires européennes : https://www.nosdeputes.fr/organisme/commission-des-affaires-economiques/xml?includePast=true
+  *Note :* par défaut l'API ne renvoie que les députés actuellement membres du groupe ou de l'organisme souhaité. À partir de la 15<sup>e</sup> législature il est possible d'inclure également les anciens membres de l'organisme en ajoutant `?includePast=true` à la fin de l'url. Les données renvoient alors également deux champs `fin_fonction` et `groupe_a_fin_fonction` indiquant la date de fin de la fonction et le groupe politique du député à cette date. Par exemple pour la commission des affaires européennes : https://www.nosdeputes.fr/organisme/commission-des-affaires-economiques/xml?includePast=true
 
 
 ## Détails de chaque parlementaire
@@ -132,13 +132,13 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Les résultats de la recherche renvoient les urls des données détaillées de chaque élément accessible via l'API.
 
-- **Liste des dossiers législatifs** (à partir de la 15ème législature uniquement pour l'Assemblée) :
+- **Liste des dossiers législatifs** (à partir de la 15<sup>e</sup> législature uniquement pour l'Assemblée) :
 
   - Triés dans l'ordre alphabétique : https://www.nosdeputes.fr/15/dossiers/nom/xml
   - Triés du plus récent au plus ancien : https://www.nosdeputes.fr/15/dossiers/date/xml
   - Triés du plus débattu au moins débattu : https://www.nosdeputes.fr/15/dossiers/plus/xml
 
-- **Détails d'un dossier législatif** (à partir de la 15ème législature uniquement pour l'Assemblée) :
+- **Détails d'un dossier législatif** (à partir de la 15<sup>e</sup> législature uniquement pour l'Assemblée) :
 
   Plus de détails sont disponibles pour chaque dossier : listes des documents associés, des séances, des intervenants et des sous-sections.
 
@@ -152,7 +152,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Les amendements sont disponibles à partir des numéros des lois correspondantes.
 
-  - À l'Assemblée nationale, par exemple pour le projet de loi initial relatif à la transparence de la vie publique (n° 1005) sous la 14ème législature : https://www.nosdeputes.fr/14/amendements/1005/xml
+  - À l'Assemblée nationale, par exemple pour le projet de loi initial relatif à la transparence de la vie publique (n° 1005) sous la 14<sup>e</sup> législature : https://www.nosdeputes.fr/14/amendements/1005/xml
 
     *Attention pour l'Assemblée à bien ajuster également le numéro de législature.*
 
@@ -168,7 +168,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Comme pour les amendements, les débats sont accessibles par numéro de loi du texte correspondant. L'accès se fait en deux temps : tout d'abord en obtenant la liste des séances correspondantes, puis en accédant à la liste des interventions pour chaque séance.
 
-  Les exemples ci-dessous s'appliquent au projet de loi initial sur la transparence discuté par l'Assemblée sous la 14ème législature.
+  Les exemples ci-dessous s'appliquent au projet de loi initial sur la transparence discuté par l'Assemblée sous la 14<sup>e</sup> législature.
 
   - Remarques :
 
