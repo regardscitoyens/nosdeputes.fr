@@ -162,6 +162,67 @@ Seance:
     index_annee:
       fields: [annee]
 
+Scrutin:
+  actAs:
+    Timestampable:
+  columns:
+    annee: integer
+    numero_semaine: integer
+    date: date
+    seance_id: integer
+    nombre_votants: integer
+    nombre_pours: integer
+    nombre_contres: integer
+    nombre_abstentions: integer
+    sort:
+      type: enum
+      values: ['adopté', 'rejeté']
+    titre: text
+    texteloi_id: integer
+    amendement_id: integer
+    sujet: text
+    demandeur: text
+    demandeur_groupe_acronyme: string(16)
+    avis_gouvernement: string(16)
+    avis_rapporteur: string(16)
+  relations:
+    Seance:
+      foreignAlias: Scrutins
+    Texteloi:
+      foreignAlias: Scrutins
+    Amendement:
+      foreignAlias: Scrutins
+
+ParlementaireScrutin:
+  actAs:
+    Timestampable:
+  columns:
+    scrutin_id: integer
+    parlementaire_id: integer
+    parlementaire_groupe_acronyme: string(16)
+    position:
+      type: enum
+      values: ['pour', 'contre', 'abstention', 'non-votant']
+    position_groupe:
+      type: enum
+      values: ['pour', 'contre', 'abstention', 'non-votant']
+    par_delegation: boolean
+    delegataire_parlementaire_id: integer
+    mise_au_point_position:
+      type: enum
+      values: ['pour', 'contre', 'abstention', 'non-votant']
+  relations:
+    Scrutin:
+      foreignAlias: Votes
+    Parlementaire:
+      foreignAlias: Votes
+  indexes:
+    uniq_index:
+      fields: [scrutin_id, parlementaire_id]
+      type: unique
+    index_parlementaire:
+      fields: [parlementaire_id]
+
 Presence:
   actAs:
     Timestampable:
@@ -184,7 +245,7 @@ PreuvePresence:
     presence_id: integer
     type:
       type: enum
-      values: ['jo', 'intervention', 'compte-rendu', 'autre']
+      values: ['jo', 'intervention', 'compte-rendu', 'autre', 'scrutin']
     source: string(200)
   relations:
     Presence:
