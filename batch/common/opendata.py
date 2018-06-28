@@ -1,31 +1,43 @@
 # -*- coding: utf8 -*-
 from __future__ import print_function, unicode_literals
 
-import os
 import json
+import os
+import sys
 from zipfile import ZipFile
 
 from bs4 import BeautifulSoup
 import requests
 
+CACHE_DIR = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), "../../data/opendata")
+)
 AN_BASE_URL = "http://data.assemblee-nationale.fr"
 AN_ENTRYPOINTS = {
-    "14": {"scrutins": "opendata-archives-xive/scrutins-xive-legislature"},
-    "15": {"scrutins": "travaux-parlementaires/votes"},
+    "14": {
+        "amo": "opendata-archives-xive/deputes-senateurs-et-ministres-xive-legislature",
+        "reunions": "opendata-archives-xive/agendas-xive-legislature",
+        "scrutins": "opendata-archives-xive/scrutins-xive-legislature",
+    },
+    "15": {
+        "amo": "acteurs/deputes-en-exercice",
+        "reunions": "reunions/reunions",
+        "scrutins": "travaux-parlementaires/votes",
+    },
 }
 
 
 def log(str):
-    print(str)
+    print(str, file=sys.stderr)
 
 
-def fetch_an_jsonzip(legislature, objet, cache_dir="./tmp"):
+def fetch_an_jsonzip(legislature, objet, cache_dir=CACHE_DIR):
     """
     Télécharge le zip du JSON depuis une page de l'open data AN, s'il a été
     modifié depuis le dernier téléchargement.
 
     Renvoie le chemin local du fichier zip téléchargé (stocké dans le
-    répertoire de cache)
+    répertoire de cache) et un flag indiquant s'il a été modifié
     """
 
     if (
@@ -97,21 +109,149 @@ def fetch_an_jsonzip(legislature, objet, cache_dir="./tmp"):
     else:
         log("Téléchargement skippé, fichier non mis à jour")
 
-    return localzip
+    return localzip, do_download
 
 
-def fetch_an_json(page):
+def fetch_an_json(legislature, objet, cache_dir=CACHE_DIR):
     """
     Télécharge le zip du JSON depuis une page de l'open data AN, s'il a été
     modifié depuis le dernier téléchargement.
 
     page: URL relative de la page, par exemple "travaux-parlementaires/votes"
 
-    Renvoie les données JSON du fichier zip téléchargé.
+    Renvoie les données JSON du fichier zip téléchargé et un flag indiquant si
+    le fichier a été modifié.
     """
 
-    with ZipFile(fetch_an_jsonzip(page), "r") as z:
+    localzip, updated = fetch_an_jsonzip(legislature, objet, cache_dir)
+    with ZipFile(localzip, "r") as z:
         for f in [f for f in z.namelist() if f.endswith(".json")]:
             log("JSON extrait : %s" % f)
             with z.open(f) as zf:
-                return json.load(zf)
+                return json.load(zf), updated
+
+
+def _cached_ref(
+    legislature,
+    objet,
+    id_mapping,
+    extract_list,
+    extract_id,
+    extract_mapped,
+    cache_dir=CACHE_DIR,
+):
+    """
+    Génère et renvoie un cache de mapping d'identifiants à partir d'un dump
+    open data json.
+
+    legislature, objet: définit le dump à utiliser
+    id_mapping: identifiant unique du mapping, utilisé pour stocker en cache
+    extract_list: fonction qui extrait la liste des items du dump json
+    extract_id: fonction qui extrait l'identifiant à mapper d'un item
+    extract_mapped: fonction qui extrait les données mappées d'un item
+    """
+
+    data, updated = fetch_an_json(legislature, objet, cache_dir)
+    cached_file = os.path.join(
+        cache_dir, "mapping_%s_%s.json" % (legislature, id_mapping)
+    )
+
+    if updated or not os.path.exists(cached_file):
+        cache = {}
+        for item in extract_list(data):
+            id = extract_id(item)
+            cache[id] = extract_mapped(item)
+
+        with open(cached_file, "w") as f:
+            json.dump(cache, f)
+        return cache
+    else:
+        with open(cached_file) as f:
+            return json.load(f)
+
+
+def ref_deputes(legislature, cache_dir=CACHE_DIR):
+    """
+    Renvoie un mapping des id opendata des députés vers "Prénom Nom"
+    """
+
+    def _extract_list(data):
+        return data["export"]["acteurs"]["acteur"]
+
+    def _extract_id(acteur):
+        return (
+            acteur["uid"]["#text"]
+            if isinstance(acteur["uid"], dict)
+            else acteur["uid"]
+        )
+
+    def _extract_mapped(acteur):
+        ident = acteur["etatCivil"]["ident"]
+        return "%s %s" % (ident["prenom"], ident["nom"])
+
+    return _cached_ref(
+        legislature,
+        "amo",
+        "deputes",
+        _extract_list,
+        _extract_id,
+        _extract_mapped,
+        cache_dir,
+    )
+
+
+def ref_groupes(legislature, cache_dir=CACHE_DIR):
+    """
+    Renvoie un mapping des id opendata des groupes parlementaires vers leur
+    abbréviation
+    """
+
+    def _extract_list(data):
+        return filter(
+            lambda o: o["codeType"] == "GP",
+            data["export"]["organes"]["organe"],
+        )
+
+    def _extract_id(organe):
+        return organe["uid"]
+
+    def _extract_mapped(organe):
+        return organe["libelleAbrev"]
+
+    return _cached_ref(
+        legislature,
+        "amo",
+        "groupes",
+        _extract_list,
+        _extract_id,
+        _extract_mapped,
+        cache_dir,
+    )
+
+
+def ref_seances(legislature, cache_dir=CACHE_DIR):
+    """
+    Renvoie un mapping des id opendata des séances vers leur ID
+    """
+
+    def _extract_list(data):
+        return filter(
+            lambda reunion: "IDS" in reunion["uid"],
+            data["reunions"]["reunion"],
+        )
+
+    def _extract_id(reunion):
+        return reunion["uid"]
+
+    def _extract_mapped(reunion):
+        return reunion["identifiants"]["idJO"]
+
+    return _cached_ref(
+        legislature,
+        "reunions",
+        "seances",
+        _extract_list,
+        _extract_id,
+        _extract_mapped,
+        cache_dir,
+    )
