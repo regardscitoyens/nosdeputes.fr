@@ -39,6 +39,19 @@ class SeanceTable extends Doctrine_Table
     return $s;
   }
 
+  public function findOneByIDJO($id_jo) {
+    $seance = Doctrine::getTable('Intervention')->createQuery('i')
+      ->select('i.seance_id')
+      ->where('i.source LIKE ?', "%/$id_jo.asp%")
+      ->fetchOne();
+
+    if ($seance) {
+      return $this->find($seance['seance_id'])
+    }
+
+    return NULL;
+  }
+
   public function getPager($request, $query = NULL)
   {
     $pager = new sfDoctrinePager('Seance',30);

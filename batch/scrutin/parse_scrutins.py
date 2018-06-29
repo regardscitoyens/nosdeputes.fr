@@ -62,7 +62,8 @@ def parse_scrutins(legislature, data):
     for item in data["scrutins"]["scrutin"]:
         scrutin = parse_scrutin(item, seances, groupes)
 
-        basename = "scrutin_%s_%s" % (legislature, scrutin["numero"])
+        numero = ("00000%s" % scrutin["numero"])[-5:]
+        basename = "scrutin_%s_%s" % (legislature, numero)
         hash_file = os.path.join(SCRUTINS_DIR, "%s.sha1" % basename)
         json_file = os.path.join(SCRUTINS_DIR, "%s.json" % basename)
 

@@ -13,19 +13,57 @@ class Scrutin extends BaseScrutin
     return $this->_set('numero', $numero);
   }
 
-  public function setSeance($idseance) {
-    $seance = Doctrine::getTable('Seance')->findOneByTODO($idseance);
+  public function setSeance($id_jo) {
+    $seance = Doctrine::getTable('Seance')->findOneByIDJO($id_jo);
     if (!$seance) {
-      throw new Exception("Aucune séance trouvée avec l'id $idseance");
+      throw new Exception("Aucune séance trouvée avec l'id JO $id_jo");
     }
+    $seance_id = $seance->id;
+    $seance->free();
 
-    $ret = $this->_set('seance_id', $seance->id)
+    $ret = $this->_set('seance_id', $seance_id)
         && $this->_set('date', $seance->date)
         && $this->_set('numero_semaine', $seance->numero_semaine)
         && $this->_set('annee', $seance->annee);
 
-    $seance->free();
-    return $ret;
+  }
+
+  public function tagInterventions() {
+    // Comptage des scrutins avec numéro inférieur dans la même séance
+    $avant = $this->createQuery('s')
+                  ->select('count(1) as cnt')
+                  ->where('s.seance_id = ?', $this->seance_id)
+                  ->andWhere('s.numero < ?', $this->numero)
+                  ->fetchOne()['cnt'];
+
+    // Recherche de l'intervention avec un tableau de votants qui correspond
+    $inter = Doctrine::getTable('Intervention')
+                     ->createQuery('i')
+                     ->where('i.seance_id = ?', $this->seance_id)
+                     ->andWhere("i.intervention LIKE '%table class=\"scrutin\"%'")
+                     ->orderBy('i.timestamp')
+                     ->offset($avant)
+                     ->getFirst();
+
+    $found = FALSE;
+    if ($inter) {
+      $found = TRUE;
+
+      // Vérification du nombre de pour/contre
+      $text = $inter->intervention;
+      if (preg_match('/pour[^<]*<\/td><td>(\d+)/', $text, &$match) == 0
+       || intval($match[0]) != $this->nombre_pours
+       || preg_match('/contre[^<]*<\/td><td>(\d+)/', $text, &$match) == 0
+       || intval($match[0]) != $this->nombre_contres) {
+        $found = FALSE;
+      } else {
+        $inter->addTag("scrutin:numero={$this->numero}");
+      }
+    }
+
+    if (!$found) {
+      throw new Exception("Scrutin {$this->numero} non trouvé dans les interventions de la séance $seance_id");
+    }
   }
 
   public function setDemandeur($demandeur) {

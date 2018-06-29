@@ -17,6 +17,11 @@ class loadScrutinsTask extends sfBaseTask
     $dir = dirname(__FILE__).'/../../batch/scrutin/scrutin/';
     $backupdir = dirname(__FILE__).'/../../batch/scrutin/loaded/';
     $manager = new sfDatabaseManager($this->configuration);
+    $seances_manquantes = 0;
+
+    if (!is_dir($backupdir)) {
+      mkdir($backupdir, 0777, TRUE);
+    }
 
     if (is_dir($dir)) {
       foreach (scandir($dir) as $file) {
@@ -41,6 +46,12 @@ class loadScrutinsTask extends sfBaseTask
 
         try {
           $scrutin->setSeance($data->seance);
+        } catch (Exception $e) {
+          $seances_manquantes++;
+          continue;
+        }
+
+        try {
           $scrutin->setDemandeur($data->demandeur);
           $scrutin->setTitre($data->titre);
           $scrutin->setType($data->type);
@@ -56,10 +67,21 @@ class loadScrutinsTask extends sfBaseTask
         }
 
         $scrutin->save();
+
+        try {
+          $scrutin->tagInterventions();
+        } catch(Exception $e) {
+          echo "ERREUR $file (tag interventions) : {$e->getMessage()}\n";
+        }
+
         $scrutin->setVotes($data->parlementaires);
         $scrutin->free();
 
         rename($dir . $file, $backupdir . $file);
+      }
+
+      if ($seances_manquantes > 0) {
+        echo "WARNING: $seances_manquantes séances non trouvées\n";
       }
     }
   }
