@@ -49,6 +49,8 @@ POS_MAP = {
 
 SCRUTINS_DIR = os.path.join(BATCH_DIR, "scrutin", "scrutins")
 
+TYPES = {"SPS": "solennel", "SPO": "ordinaire"}
+
 
 def parse_scrutins(legislature, data):
     groupes = ref_groupes(legislature)
@@ -92,6 +94,7 @@ def parse_scrutin(data, seances, groupes):
         "numero": int(data["numero"]),
         "seance": seances[data["seanceRef"]],
         "titre": data["titre"],
+        "type": TYPES[data["typeVote"]["codeTypeVote"]],
         "nombre_votants": int(synthese["nombreVotants"]),
         "nombre_pours": int(decompte["pour"]),
         "nombre_contres": int(decompte["contre"]),

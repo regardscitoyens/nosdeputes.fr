@@ -22,6 +22,20 @@ class Presence extends BasePresence
     return $res;
   }
 
+  public function delPreuve($type, $source) {
+    $q = Doctrine::getTable('PreuvePresence')->createQuery('p');
+    $preuve = $q->where('presence_id = ?', $this->id)->andWhere('type = ?', $type)->fetchOne();
+    $q->free();
+
+    if ($preuve) {
+      $preuve->delete();
+      $preuve->free();
+
+      $this->nb_preuves--;
+      $this->save();
+    }
+  }
+
   public function getGroupeAcronyme() {
     return myTools::getObjectGroupeAcronyme($this);
   }

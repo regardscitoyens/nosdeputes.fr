@@ -175,6 +175,9 @@ Scrutin:
     nombre_pours: integer
     nombre_contres: integer
     nombre_abstentions: integer
+    type:
+      type: enum
+      values: ['ordinaire', 'solennel']
     sort:
       type: enum
       values: ['adopté', 'rejeté']
@@ -193,6 +196,10 @@ Scrutin:
       foreignAlias: Scrutins
     Amendement:
       foreignAlias: Scrutins
+  indexes:
+    uniq_index:
+      fields: [numero]
+      type: unique
 
 ParlementaireScrutin:
   actAs:
