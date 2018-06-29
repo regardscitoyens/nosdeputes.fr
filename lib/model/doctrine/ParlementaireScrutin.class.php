@@ -16,10 +16,10 @@ class ParlementaireScrutin extends BaseParlementaireScrutin
     return $this->_set('scrutin_id', $scrutin->id);
   }
 
-  public function updatePresence()
+  public function updatePresence() {
     $this->Scrutin->Seance->setUnsetPresenceLight(
       $this->parlementaire_id,
-      $this->groupe_acronyme,
+      $this->parlementaire_groupe_acronyme,
       'scrutin',
       $this->Scrutin->getLinkSource(),
       $this->position != 'nonVotant' && $this->mise_au_point_position == NULL

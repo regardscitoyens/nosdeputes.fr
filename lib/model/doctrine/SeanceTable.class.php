@@ -8,7 +8,7 @@ class SeanceTable extends Doctrine_Table
     if ($type == 'commission') {
       $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commission, 'parlementaire');
       return $commission->getSeanceByDateAndMoment($date, $heure, $session);
-    } 
+    }
     return $this->findOneByTypeDateHeureSession('hemicycle', $date, $heure, $session);
   }
 
@@ -16,7 +16,7 @@ class SeanceTable extends Doctrine_Table
     if ($type == 'commission') {
       $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($commission, 'parlementaire');
       return $commission->getSeanceByDateAndMomentOrCreateIt($date, $heure, $session);
-    } 
+    }
     return $this->findOneOrCreateIt('hemicycle', $date, $heure, $session);
   }
 
@@ -46,7 +46,7 @@ class SeanceTable extends Doctrine_Table
       ->fetchOne();
 
     if ($seance) {
-      return $this->find($seance['seance_id'])
+      return $this->find($seance['seance_id']);
     }
 
     return NULL;

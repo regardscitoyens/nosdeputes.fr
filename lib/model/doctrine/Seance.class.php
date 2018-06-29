@@ -88,7 +88,7 @@ class Seance extends BaseSeance
       $res = $presence->addPreuve($type, $source);
     } else if ($presence) {
       $presence->delPreuve($type, $source);
-      if ($presence->nbPreuves == 0) {
+      if ($presence->nb_preuves == 0) {
         $presence->delete();
       }
     }

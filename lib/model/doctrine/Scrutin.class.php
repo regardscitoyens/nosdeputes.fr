@@ -19,22 +19,24 @@ class Scrutin extends BaseScrutin
       throw new Exception("Aucune séance trouvée avec l'id JO $id_jo");
     }
     $seance_id = $seance->id;
-    $seance->free();
 
     $ret = $this->_set('seance_id', $seance_id)
         && $this->_set('date', $seance->date)
         && $this->_set('numero_semaine', $seance->numero_semaine)
         && $this->_set('annee', $seance->annee);
 
+    $seance->free();
+    return $ret;
   }
 
   public function tagInterventions() {
     // Comptage des scrutins avec numéro inférieur dans la même séance
-    $avant = $this->createQuery('s')
-                  ->select('count(1) as cnt')
-                  ->where('s.seance_id = ?', $this->seance_id)
-                  ->andWhere('s.numero < ?', $this->numero)
-                  ->fetchOne()['cnt'];
+    $avant = Doctrine::getTable('Scrutin')
+                     ->createQuery('s')
+                     ->select('count(1) as cnt')
+                     ->where('s.seance_id = ?', $this->seance_id)
+                     ->andWhere('s.numero < ?', $this->numero)
+                     ->fetchOne()['cnt'];
 
     // Recherche de l'intervention avec un tableau de votants qui correspond
     $inter = Doctrine::getTable('Intervention')
@@ -43,26 +45,36 @@ class Scrutin extends BaseScrutin
                      ->andWhere("i.intervention LIKE '%table class=\"scrutin\"%'")
                      ->orderBy('i.timestamp')
                      ->offset($avant)
-                     ->getFirst();
+                     ->fetchOne();
 
     $found = FALSE;
+    $info = "intervention non trouvée";
     if ($inter) {
       $found = TRUE;
+      $info = "intervention trouvée";
 
       // Vérification du nombre de pour/contre
       $text = $inter->intervention;
-      if (preg_match('/pour[^<]*<\/td><td>(\d+)/', $text, &$match) == 0
-       || intval($match[0]) != $this->nombre_pours
-       || preg_match('/contre[^<]*<\/td><td>(\d+)/', $text, &$match) == 0
-       || intval($match[0]) != $this->nombre_contres) {
+      if (preg_match('/pour[^<]*<\/td><td>(\d+)/i', $text, $match_pour) == 0
+       || intval($match_pour[1]) != $this->nombre_pours
+       || preg_match('/contre[^<]*<\/td><td>(\d+)/i', $text, $match_contre) == 0
+       || intval($match_contre[1]) != $this->nombre_contres) {
         $found = FALSE;
+        $info .= " pour: {$match_pour[1]}!={$this->nombre_pours}";
+        $info .= " contre: {$match_contre[1]}!={$this->nombre_contres}";
+        $info .= " \n$text";
       } else {
         $inter->addTag("scrutin:numero={$this->numero}");
       }
     }
 
     if (!$found) {
-      throw new Exception("Scrutin {$this->numero} non trouvé dans les interventions de la séance $seance_id");
+      $seance = $this->Seance;
+      throw new Exception(
+          "Scrutin {$this->numero} non trouvé dans les interventions "
+        . "de la séance {$seance->id} du {$seance->date} {$seance->moment}\n"
+        . "scrutins avant=$avant, $info"
+      );
     }
   }
 
@@ -95,7 +107,7 @@ class Scrutin extends BaseScrutin
 
         if (!$parlscrutin) {
           $parlscrutin = new ParlementaireScrutin();
-          if (!$parlscrutin->setParlementaire($id_an) ||
+          if (!$parlscrutin->setParlementaire($id_an)
            || !$parlscrutin->setScrutin($this)) {
             return FALSE;
           }

@@ -13,7 +13,7 @@ class loadScrutinsTask extends sfBaseTask
 
   protected function execute($arguments = array(), $options = array())
   {
-    $dir = dirname(__FILE__).'/../../batch/scrutin/scrutin/';
+    $dir = dirname(__FILE__).'/../../batch/scrutin/scrutins/';
     $backupdir = dirname(__FILE__).'/../../batch/scrutin/loaded/';
     $manager = new sfDatabaseManager($this->configuration);
     $seances_manquantes = 0;
@@ -46,6 +46,8 @@ class loadScrutinsTask extends sfBaseTask
         try {
           $scrutin->setSeance($data->seance);
         } catch (Exception $e) {
+          // Commenté pour ne pas spammer les cron avec les séances pas encore publiées
+          // echo "ERREUR $file (seance) : {$e->getMessage()}\n";
           $seances_manquantes++;
           continue;
         }
@@ -71,6 +73,7 @@ class loadScrutinsTask extends sfBaseTask
           $scrutin->tagInterventions();
         } catch(Exception $e) {
           echo "ERREUR $file (tag interventions) : {$e->getMessage()}\n";
+          continue;
         }
 
         $scrutin->setVotes($data->parlementaires);

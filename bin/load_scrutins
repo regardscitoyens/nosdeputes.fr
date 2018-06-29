@@ -5,5 +5,5 @@ cd $PATH_APP
 
 source bin/db.inc
 
-batch/scrutins/parse_scrutins.py $LEGISLATURE
+batch/scrutin/parse_scrutins.py $LEGISLATURE
 php symfony load:Scrutins
