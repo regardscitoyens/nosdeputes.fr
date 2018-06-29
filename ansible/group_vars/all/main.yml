@@ -47,7 +47,7 @@ cpc_nd_options:
     "Les Républicains / LR / 30,30,200 / Les Républicains / r[eéÉ]publicains",
     "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (Divers droite, FN…) / inscrit|députés.*aucun"
     ]
-  groumes_proximite: <
+  groupes_proximite: <
     ["LFI / GDR", "LFI / SER", "GDR / SER", "SER / RP", "SER / LREM", "RP / LREM", "LREM / MODEM", "LREM / RCUDI", "MODEM / RCUDI", "RCUDI / LR", "LR / NI"]
   commissions_permanentes: <
     [
