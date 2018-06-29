@@ -105,6 +105,8 @@ def parse_scrutin(data, seances, groupes):
         "parlementaires": {},
     }
 
+    delegations = 0
+
     vote_groupes = data["ventilationVotes"]["organe"]["groupes"]["groupe"]
     for vote_groupe in vote_groupes:
         acro_groupe = groupes[vote_groupe["organeRef"]]
@@ -124,6 +126,8 @@ def parse_scrutin(data, seances, groupes):
                 par_delegation = None
                 if "parDelegation" in votant:
                     par_delegation = votant["parDelegation"] == "true"
+                    if par_delegation:
+                        delegations += 1
 
                 scrutin["parlementaires"][votant["acteurRef"]] = {
                     "position": position,
@@ -131,6 +135,9 @@ def parse_scrutin(data, seances, groupes):
                     "position_groupe": position_groupe,
                     "par_delegation": par_delegation,
                 }
+
+    if 2 * delegations > int(synthese["nombreVotants"]):
+        log("Scrutin %s: trop de délégations" % scrutin["numero"])
 
     vote_map = data["miseAuPoint"]
     if vote_map:

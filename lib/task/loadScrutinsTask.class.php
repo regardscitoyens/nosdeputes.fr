@@ -13,7 +13,6 @@ class loadScrutinsTask extends sfBaseTask
 
   protected function execute($arguments = array(), $options = array())
   {
-    // your code here
     $dir = dirname(__FILE__).'/../../batch/scrutin/scrutin/';
     $backupdir = dirname(__FILE__).'/../../batch/scrutin/loaded/';
     $manager = new sfDatabaseManager($this->configuration);
