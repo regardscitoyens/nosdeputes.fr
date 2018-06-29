@@ -3,7 +3,9 @@ DBNAME="cpc"
 DUMPDIR="data/sql/dumps"
 PATH_APP="/var/www/cpc"
 SOLR_DATA_PATH="$PATH_APP/data/solr"
+{% if cpc_senat == false %}
 VHOST={{ cpc_domain }}
 PADURL=https://etherpad.mozilla.org/xxxxxxxxxxx
 PADBOT="phantomjs --cookies-file=cache/phanom.cookie /home/nosdeputes/padbot/etherpad.js"
-LEGISLATURE={{ cpc_legislature }}
+LEGISLATURE={{ cpc_leg_options.legislature }}
+{% endif %}
