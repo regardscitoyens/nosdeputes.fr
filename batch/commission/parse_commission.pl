@@ -874,6 +874,7 @@ foreach $line (split /\n/, $string)
             $intervention .= "<p>$element</p>";
           }
         }
+        $previnterv = 0;
       }
       $source = $tmpsource;
     }
