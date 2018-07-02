@@ -113,6 +113,7 @@ $string =~ s/i?&#776;/ï/g;
 $string =~ s/&amp;/&/g;
 $string =~ s/(<p>)(&#\d+;\s*)(<b>)/\1\3\2/ig;
 $string =~ s/\s*(<\/[bi]>)\s*:\s*/ :\1 /g;
+$string =~ s/\.…<\/b>/.<\/b> …/g;
 $string =~ s/\s*<b>\s+<\/b>\s*/ /g;
 $string =~ s/<\/b>(\s*|l')<b>/\1/g;
 $string =~ s/<b>(\s*[\.,]\s*)<\/b>/\1/g;
@@ -318,6 +319,8 @@ sub setIntervenant {
     $intervenant =~ s/E?lisa Hervy/Elsa Hervy/i;
     $intervenant =~ s/Thérèse Majnoni d'Untignano/Thérèse Majnoni d'Intignano/i;
     $intervenant =~ s/Guillaume Garrot/Guillaume Garot/i;
+    $intervenant =~ s/Amal-Amélia Lakfrafi/Amal-Amélia Lakrafi/i;
+    $intervenant =~ s/S[iy]ra S[iy]l+a/Sira Sylla/i;
     $intervenant =~ s/Alexandre Guédon/Xavier Guédon/i;
     $intervenant =~ s/Florence Povey/Florence Poivey/i;
     $intervenant =~ s/Emmanuelle Mesnard/Emmanuelle Ménard/i;
