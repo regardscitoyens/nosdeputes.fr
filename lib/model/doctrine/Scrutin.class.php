@@ -30,41 +30,32 @@ class Scrutin extends BaseScrutin
   }
 
   public function tagInterventions() {
-    // Comptage des scrutins avec numéro inférieur dans la même séance
-    $avant = Doctrine::getTable('Scrutin')
-                     ->createQuery('s')
-                     ->select('count(1) as cnt')
-                     ->where('s.seance_id = ?', $this->seance_id)
-                     ->andWhere('s.numero < ?', $this->numero)
-                     ->fetchOne()['cnt'];
-
     // Recherche de l'intervention avec un tableau de votants qui correspond
-    $inter = Doctrine::getTable('Intervention')
-                     ->createQuery('i')
-                     ->where('i.seance_id = ?', $this->seance_id)
-                     ->andWhere("i.intervention LIKE '%table class=\"scrutin\"%'")
-                     ->orderBy('i.timestamp')
-                     ->offset($avant)
-                     ->fetchOne();
+    $inters = Doctrine::getTable('Intervention')
+                      ->createQuery('i')
+                      ->where('i.seance_id = ?', $this->seance_id)
+                      ->andWhere("i.intervention LIKE '%table class=\"scrutin\"%'")
+                      ->orderBy('i.timestamp')
+                      ->execute();
 
     $found = FALSE;
-    $info = "intervention non trouvée";
-    if ($inter) {
-      $found = TRUE;
-      $info = "intervention trouvée";
-
-      // Vérification du nombre de pour/contre
+    $info = "votants: {$this->nombre_votants}, pour: {$this->nombre_pours}, contre: {$this->nombre_contres}";
+    foreach ($inters as $inter) {
       $text = $inter->intervention;
-      if (preg_match('/pour[^<]*<\/td><td>(\d+)/i', $text, $match_pour) == 0
-       || intval($match_pour[1]) != $this->nombre_pours
-       || preg_match('/contre[^<]*<\/td><td>(\d+)/i', $text, $match_contre) == 0
-       || intval($match_contre[1]) != $this->nombre_contres) {
-        $found = FALSE;
-        $info .= " pour: {$match_pour[1]}!={$this->nombre_pours}";
-        $info .= " contre: {$match_contre[1]}!={$this->nombre_contres}";
-        $info .= " \n$text";
+      $mv = preg_match('/votants[^<]*<\/td><td>(\d+)/i', $text, $match_votant);
+      $mp = preg_match('/pour[^<]*<\/td><td>(\d+)/i', $text, $match_pour);
+      $mc = preg_match('/contre[^<]*<\/td><td>(\d+)/i', $text, $match_contre);
+
+      if ($mv == 0 || $mp == 0 || $mc == 0) {
+        echo "WARNING: décomptes intervention {$inter->id} incomplets :\n$text\n";
+      } elseif (intval($match_votant[1]) != $this->nombre_votants
+             || intval($match_pour[1]) != $this->nombre_pours
+             || intval($match_contre[1]) != $this->nombre_contres) {
+        $info .= "\n  inter {$inter->id} différente (v:{$match_votant[1]}, p:{$match_pour[1]}), c:{$match_contre[1]})";
       } else {
+        $found = TRUE;
         $inter->addTag("scrutin:numero={$this->numero}");
+        break;
       }
     }
 
@@ -73,7 +64,7 @@ class Scrutin extends BaseScrutin
       throw new Exception(
           "Scrutin {$this->numero} non trouvé dans les interventions "
         . "de la séance {$seance->id} du {$seance->date} {$seance->moment}\n"
-        . "scrutins avant=$avant, $info"
+        . "$info"
       );
     }
   }

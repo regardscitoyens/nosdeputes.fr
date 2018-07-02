@@ -17,6 +17,7 @@ class loadScrutinsTask extends sfBaseTask
     $backupdir = dirname(__FILE__).'/../../batch/scrutin/loaded/';
     $manager = new sfDatabaseManager($this->configuration);
     $seances_manquantes = 0;
+    $seance_ids = array();
 
     if (!is_dir($backupdir)) {
       mkdir($backupdir, 0777, TRUE);
@@ -52,6 +53,10 @@ class loadScrutinsTask extends sfBaseTask
           continue;
         }
 
+        if (!in_array($scrutin->seance_id, $seance_ids)) {
+          $seance_ids[] = $scrutin->seance_id;
+        }
+
         try {
           $scrutin->setDemandeur($data->demandeur);
           $scrutin->setTitre($data->titre);
@@ -80,6 +85,26 @@ class loadScrutinsTask extends sfBaseTask
         $scrutin->free();
 
         rename($dir . $file, $backupdir . $file);
+      }
+
+      // Vérification des scrutins pour chaque séance modifiée
+      $seances = Doctrine::getTable("Seance")
+                         ->createQuery("s")
+                         ->whereIn("s.id", $seance_ids)
+                         ->execute();
+
+      foreach ($seances as $seance) {
+        $scrutins = count($seance->Scrutins);
+        $tables = Doctrine::getTable("Intervention")
+                          ->createQuery("i")
+                          ->select("count(1) as cnt")
+                          ->where("i.seance_id = ?", $seance->id)
+                          ->andWhere("i.intervention LIKE '%<table class=\"scrutin%'")
+                          ->fetchOne()['cnt'];
+
+        if ($scrutins != $tables) {
+          echo "WARNING: séance {$seance->id} du {$seance->date} {$seance->moment} : {$scrutins} scrutins, {$tables} tableaux\n";
+        }
       }
 
       if ($seances_manquantes > 0) {
