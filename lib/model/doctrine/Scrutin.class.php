@@ -2,6 +2,10 @@
 
 class Scrutin extends BaseScrutin
 {
+  // Date des premiers scrutins où les délégations ne sont pas toutes à FALSE
+  // On ne génère pas de preuve de présence à partir des votes avant cette date
+  const DEBUT_DELEGATIONS = '2018-03-20';
+
   public function getLinkSource() {
     return "http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/"
          . sfConfig::get('app_legislature', 13)
@@ -29,8 +33,9 @@ class Scrutin extends BaseScrutin
     return $ret;
   }
 
+  // Recherche de l'intervention avec un tableau de votants qui correspond
   public function tagInterventions() {
-    // Recherche de l'intervention avec un tableau de votants qui correspond
+    // Listing des interventions avec un tableau de scrutin
     $inters = Doctrine::getTable('Intervention')
                       ->createQuery('i')
                       ->where('i.seance_id = ?', $this->seance_id)
@@ -40,7 +45,9 @@ class Scrutin extends BaseScrutin
 
     $found = FALSE;
     $info = "votants: {$this->nombre_votants}, pour: {$this->nombre_pours}, contre: {$this->nombre_contres}";
+
     foreach ($inters as $inter) {
+      // Extraction des votants/pours/contres
       $text = $inter->intervention;
       $mv = preg_match('/votants[^<]*<\/td><td>(\d+)/i', $text, $match_votant);
       $mp = preg_match('/pour[^<]*<\/td><td>(\d+)/i', $text, $match_pour);
@@ -51,7 +58,7 @@ class Scrutin extends BaseScrutin
       } elseif (intval($match_votant[1]) != $this->nombre_votants
              || intval($match_pour[1]) != $this->nombre_pours
              || intval($match_contre[1]) != $this->nombre_contres) {
-        $info .= "\n  inter {$inter->id} différente (v:{$match_votant[1]}, p:{$match_pour[1]}), c:{$match_contre[1]})";
+        $info .= "\n  inter {$inter->id} différente (v:{$match_votant[1]}, p:{$match_pour[1]}, c:{$match_contre[1]})";
       } else {
         $found = TRUE;
         $inter->addTag("scrutin:numero={$this->numero}");
@@ -112,7 +119,10 @@ class Scrutin extends BaseScrutin
           return FALSE;
         }
 
-        $parlscrutin->updatePresence();
+        if ($this->Seance->date >= self::DEBUT_DELEGATIONS) {
+          $parlscrutin->updatePresence();
+        }
+
         $parlscrutin->save();
         $parlscrutin->free();
       } catch (Exception $e) {
