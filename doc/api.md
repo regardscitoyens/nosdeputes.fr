@@ -132,7 +132,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Les résultats de la recherche renvoient les urls des données détaillées de chaque élément accessible via l'API.
 
-  *Attention : les amendements déposés lors de l’examen des textes en commission permanente ne sont disponibles qu’à partir de mai 2013 (un an après le début de la 14<sup>ème</sup> législature)*
+  *Attention : l'Assemblée nationale n'ayant commencé à rendre publics les amendements déposés lors de l’examen des textes en commission qu'à partir de mai 2013 (un an après le début de la 14<sup>ème</sup> législature), seuls ceux déposés en hémicycle sont disponibles pour la 13<sup>ème</sup> législature et le début de la 14<sup>ème</sup>.*
 
 - **Liste des dossiers législatifs** (à partir de la 15<sup>ème</sup> législature uniquement pour l'Assemblée) :
 
