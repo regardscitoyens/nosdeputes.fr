@@ -123,6 +123,7 @@ $string =~ s/\. ((?:[A-Z]|É)['.]?|« )<\/b>((<i>)?\s*['\w]+)/. <\/b>\1\2/g;
 $string =~ s/<\/?[bu]>/|/g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/Mme François Dumas/Mme Françoise Dumas/gi;
+$string =~ s/Mme la présente/Mme la présidente/gi;
 $string =~ s/M\. Adrien Taché, rapporteur/M. Aurélien Taché, rapporteur/gi;
 
 if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
@@ -230,7 +231,7 @@ sub setFonction {
     $fonction =~ s/Président/président/;
     $fonction =~ s/(du ministre )+/\1/i;
     $fonction =~ s/\bpésident/président/i;
-    $fonction =~ s/rap+orteur/rapporteur/i;
+    $fonction =~ s/rap+or?tr?eur/rapporteur/i;
     $fonction =~ s/^(.*), \1$/\1/;
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
@@ -326,6 +327,10 @@ sub setIntervenant {
     $intervenant =~ s/S[iy]ra S[iy]l+a/Sira Sylla/i;
     $intervenant =~ s/Alexandre Guédon/Xavier Guédon/i;
     $intervenant =~ s/Florence Povey/Florence Poivey/i;
+    $intervenant =~ s/Fabien Di Filipo/Fabien Di Filippo/i;
+    $intervenant =~ s/Sabine Gaudin/Sandrine Gaudin/i;
+    $intervenant =~ s/Michel Pupponi/François Pupponi/i;
+    $intervenant =~ s/Michel Castallani/Michel Castellani/i;
     $intervenant =~ s/Emmanuelle Mesnard/Emmanuelle Ménard/i;
     $intervenant =~ s/Marielle Sarnez/Marielle de Sarnez/i;
     $intervenant =~ s/Patrick Silberman/Bruno Silberman/i;
