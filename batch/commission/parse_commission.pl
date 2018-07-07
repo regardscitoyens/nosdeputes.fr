@@ -178,8 +178,8 @@ sub checkout {
     $ts = $cpt;
     $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure": "'.$heure.'", "session": "'.$session.'", ';
     if ($intervention && $intervenant) {
-	if ($intervenant =~ s/ et M[mes\.]* (l[ea] )?(.*)//) {
-            $second = $2;
+	if ($intervenant =~ s/ et (M[mes\.]* (l[ea] )?)?(.+)//) {
+            $second = $3;
             if ($fonction2inter{comparable($second)}) {
                 $second = $fonction2inter{comparable($second)};
             }
@@ -376,7 +376,7 @@ sub setIntervenant {
     $intervenant =~ s/\bE(tienne|ric|milie|lodie|lisabeth)/é\1/ig;
     $intervenant =~ s/\s*\&\#821[12]\;\s*//;
     $intervenant =~ s/^audition de //i;
-    $intervenant =~ s/^(M(\.|me))(\S)/$1 $3/;
+    $intervenant =~ s/^(M(\.|me))([^\ss]+)/$1 $3/;
     $intervenant =~ s/\.\s*[\/\|]\s*/, /g;
     $intervenant =~ s/[\|\/\.]//g;
     $intervenant =~ s/\s*[\.\:]\s*$//;
@@ -714,7 +714,7 @@ foreach $line (split /\n/, $string)
         $previnterv = 0;
         checkout();
     } else {
-      if ($line !~ /(Mar|Mercre)di/ && $line =~ s/^\|(M[.me]+ [^\|\:,]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:,[\|\s]*\/|[\|\s]*\/\s*,\s*)[^\/]+?\/))(.*\w.*)?/\4/) {
+      if ($line !~ /(Mar|Mercre)di/ && $line =~ s/^\|(M[.me]+s? [^\|\:,]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:,[\|\s]*\/|[\|\s]*\/\s*,\s*)[^\/]+?\/))(.*\w.*)?/\4/) {
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2.$3;
@@ -864,12 +864,12 @@ foreach $line (split /\n/, $string)
           $element =~ s/^MM\./M. /;
           $element =~ s/^M\.(\S+)/M. \1/;
           $element =~ s/(\S+)\s*\(\s*/\1 (/;
-          if ($element =~ /^M(?:\.|me)\s+([^,]+),\s*(.*)$/ || $element =~ /^((?:(?:Col|Gal|S\.?E\.?M?|Son Excellence|[PD]r)[. ]+)+[^,]+),\s*(.*)$/) {
+          if ($element =~ /^M(?:\.|me)?\s+([^,]+),\s*(.*)$/ || $element =~ /^((?:(?:Col|Gal|S\.?E\.?M?|Son Excellence|[PD]r)[. ]+)+[^,]+),\s*(.*)$/) {
             checkout();
             $intervenant = setFonction($2, $1);
             $intervention = $nointer;
             checkout();
-          } elsif ($element =~ /^M(?:\.|me)\s+(.*)$/ || $element =~ /^((?:(?:Col|Gal|S\.?E\.?M?|Son Excellence|[DP]r)[. ]+)+.*)$/) {
+          } elsif ($element =~ /^M(?:\.|me)?\s+(.*)$/ || $element =~ /^((?:(?:Col|Gal|S\.?E\.?M?|Son Excellence|[DP]r)[. ]+)+.*)$/) {
             checkout();
             $intervenant = setIntervenant($1);
             $intervention = $nointer;
