@@ -29,6 +29,7 @@ $string =~ s/<\/?sup>//g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<h[0-9][^>]*>.*?)<i>\(suite[^)]*?\)<\/i>/\1/gi;
+$string =~ s/<i>(\s*(quid|idem)\s*)<\/i>/\1/ig;
 $string =~ s/<\/i>(\W+)<i>/\1/ig;
 $string =~ s/no<\/i>s <i>/nos /ig;
 $string =~ s/(<i><\/i>|<\/i><i>)//ig;
