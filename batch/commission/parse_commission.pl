@@ -325,6 +325,7 @@ sub setIntervenant {
     $intervenant =~ s/Guillaume Garrot/Guillaume Garot/i;
     $intervenant =~ s/Amal-Amélia Lakfrafi/Amal-Amélia Lakrafi/i;
     $intervenant =~ s/S[iy]ra S[iy]l+a/Sira Sylla/i;
+    $intervenant =~ s/Christophe Jer+et+ie/Christophe Jerretie/i;
     $intervenant =~ s/Alexandre Guédon/Xavier Guédon/i;
     $intervenant =~ s/Florence Povey/Florence Poivey/i;
     $intervenant =~ s/Fabien Di Filipo/Fabien Di Filippo/i;
@@ -364,7 +365,7 @@ sub setIntervenant {
     $intervenant =~ s/Bruno Bettinelli/Benoît Bettinelli/i;
     $intervenant =~ s/Sophie Beaudoin-Hubière/Sophie Beaudouin-Hubiere/i;
     $intervenant =~ s/B(e|é)rang(è|e)re/Bérengère/i;
-    $intervenant =~ s/B(e|é)reng(è|e)re Abba/Bérangère Abba/i;
+    $intervenant =~ s/Bérengère (Abba|Couillard)/Bérangère \1/i;
     $intervenant =~ s/Rodrigue Kokuendo/Rodrigue Kokouendo/i;
     $intervenant =~ s/Laurent Desgorge/Laurent Desgeorge/i;
     $intervenant =~ s/Huguette Tiégna/Huguette Tiegna/i;
