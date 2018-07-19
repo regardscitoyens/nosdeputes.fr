@@ -90,6 +90,7 @@ cpc_ns_options:
 
 cpc_leg_options: "{{ cpc_senat | ternary(cpc_ns_options, cpc_nd_options) }}"
 
+cpc_mysql_max_packet: "128M"
 
 cpc_analytics_id: false
 cpc_piwik_domain: false

@@ -30,6 +30,7 @@ phpmyadmin:
 
 database:
   image: mysql:5.5
+  command: --max_allowed_packet={{ cpc_mysql_max_packet }}
   ports:
     - "127.0.0.1:{{ cpc_port_mysql }}:3306"
   environment:
