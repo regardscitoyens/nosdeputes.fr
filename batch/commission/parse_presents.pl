@@ -221,7 +221,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/\.$//;
 	if ($line =~ s/\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*// || ($newcomm && $line =~ /^\s*M+[\.mMes]+\s/) || $special) {
         $line =~ s/(^|\W+)M+[mes.]+\s+/\1/g;
-        if ($line !~ /^[\/\s]*$/) {
+        if ($line !~ /^([\/\s]*|\s*(le|la|chargée?) .*)$/) {
             push @presents, split /[.,] /, $line; #/
 	    }
     }
