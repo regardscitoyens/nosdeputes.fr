@@ -28,10 +28,10 @@ cpc_php_show_errors: false
 cpc_enable_cronjobs: false
 
 cpc_nd_options:
-  legislature: 14
-  debut_legislature: '2012-06-21'
+  legislature: 15
+  debut_legislature: '2017-06-21'
   fin_legislature: false
-  host_prev: 2007.nosdeputes.fr
+  host_prev: 2012.nosdeputes.fr
   host_next:
   groupes_actuels: <
     ["LFI", "GDR", "SER", "RP", "LREM", "MODEM", "RCUDI", "LR", "NI"]
