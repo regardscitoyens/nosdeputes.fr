@@ -50,9 +50,9 @@ class Scrutin extends BaseScrutin
     foreach ($inters as $inter) {
       // Extraction des votants/pours/contres
       $text = $inter->intervention;
-      $mv = preg_match('/nombre de votants(?:<\/td><td>|\s*)(\d+)/i', $text, $match_votant);
-      $mp = preg_match('/pour l\'(?:adoption|approbation)(?:<\/td><td>|\s*)(\d+)/i', $text, $match_pour);
-      $mc = preg_match('/contre(?:<\/td><td>|\s*)(\d+)/i', $text, $match_contre);
+      $mv = preg_match('/nombre de votants(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_votant);
+      $mp = preg_match('/pour l\'(?:adoption|approbation)(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_pour);
+      $mc = preg_match('/contre(?:<\/td><td>|[,\s])(\d+)/i', $text, $match_contre);
 
       if ($mv == 0 || $mp == 0 || $mc == 0) {
         echo "WARNING: décomptes intervention {$inter->id} incomplets :\n$text\n";
