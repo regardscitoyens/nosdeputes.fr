@@ -252,7 +252,7 @@ sub checkout {
             }
             $intervenant = $plusieurs.$interv1;
         }
-        if ($intervenant !~ /^plusieurs /i && $intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)$//) {
+        if ($intervenant !~ /(^plusieurs |UDI, Agir et Ind)/i && $intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)$//) {
             foreach $i (split(/(?:et\s*M[mes\.]*| et |, M[mes\.]*)\s*/, $3)) {
                 $ts++;
                 if (!$inter2fonction{$i} && $i =~ s/, (.*)$//) {
@@ -322,7 +322,7 @@ sub setFonction {
 
 sub setIntervenant {
     my $intervenant = shift;
-    #print "TEST $intervenant\n";
+    #print STDERR "TEST $intervenant\n";
     $intervenant =~ s/^(M\.|Mme)([^  \s])/$1 $2/;
     $intervenant =~ s/[\|\/]//g;
     $intervenant =~ s/\s*\&\#8211\;\s*$//;
@@ -343,7 +343,7 @@ sub setIntervenant {
     $intervenant =~ s/([^\s\,])\s+rapporteur/$1, rapporteur/i;
     $intervenant =~ s/M\. /M /;
 
-    if ($intervenant =~ /^plusieurs/i) {
+    if ($intervenant =~ /^(plusieurs|un député)/i) {
       return $intervenant;
     }
     if ($intervenant =~ s/\,\s*(.*)//) {
