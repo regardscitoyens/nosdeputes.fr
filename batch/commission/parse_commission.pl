@@ -358,6 +358,7 @@ sub setIntervenant {
     $intervenant =~ s/Maine Sage/Maina Sage/i;
     $intervenant =~ s/Nicole Notta/Nicole Notat/i;
     $intervenant =~ s/Frnçois/François/i;
+    $intervenant =~ s/Franck Deconinck/Frank Deconinck/i;
     $intervenant =~ s/Sophie Beaudoin-Hubiere/Sophie Beaudouin-Hubiere/i;
     $intervenant =~ s/Fanette Charvier/Fannette Charvier/i;
     $intervenant =~ s/Yannick Moreau/Jean-Baptiste Moreau/i;
