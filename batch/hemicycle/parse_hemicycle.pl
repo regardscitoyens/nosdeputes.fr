@@ -237,7 +237,7 @@ sub checkout {
             }
             print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
         }
-        if ($intervenant =~ s/^(plusieurs .*?)(,| et) //i) {
+        if ($intervenant =~ s/^((?:plusieurs|de nombreux) .*?)(,| et) //i) {
             $plusieurs = $1;
             $plusieurs =~ s/des groupes/du groupe /i;
             $plusieurs =~ s/((?:députés |sur les bancs |du groupe )+)\s*(.*)$/\1/i;
@@ -329,7 +329,7 @@ sub setIntervenant {
     $intervenant =~ s/\s*[\.\:]\s*$//;
     $intervenant =~ s/Madame/Mme/g;
     $intervenant =~ s/Monsieur/M./g;
-    $intervenant =~ s/([Pp]lusieurs .*?)(\s+et|,)+\s+(M[\.lmes]+\s+.*?)(?:, rapporteure?.*?)?$/\3 et \1/g;
+    $intervenant =~ s/((:[Pp]lusieurs|De nombreux) .*?)(\s+et|,)+\s+(M[\.lmes]+\s+.*?)(?:, rapporteure?.*?)?$/\3 et \1/g;
     $intervenant =~ s/(?:, (président|rapporteur)e?.*?)?(\s+et|,)+\s+M[\.lmes]+\s+/ et /g;
     $intervenant =~ s/^M[\.mes]*\s//i;
     $intervenant =~ s/([^M])\s*\..*$/\1/;
@@ -343,7 +343,7 @@ sub setIntervenant {
     $intervenant =~ s/([^\s\,])\s+rapporteur/$1, rapporteur/i;
     $intervenant =~ s/M\. /M /;
 
-    if ($intervenant =~ /^(plusieurs|un député)/i) {
+    if ($intervenant =~ /^(plusieurs|un député|de nombreux)/i) {
       return $intervenant;
     }
     if ($intervenant =~ s/\,\s*(.*)//) {
