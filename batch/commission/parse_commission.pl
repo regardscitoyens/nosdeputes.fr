@@ -232,12 +232,13 @@ sub setFonction {
     $fonction =~ s/(du ministre )+/\1/i;
     $fonction =~ s/\bpésident/président/i;
     $fonction =~ s/rap+or?tr?eur/rapporteur/i;
+    $fonction =~ s/co[\-r]*rapporteur/co-rapporteur/i;
     $fonction =~ s/^(.*), \1$/\1/;
     $fonction =~ s/(n°|[(\s]+)$//;
     $fonction =~ s/\s+[0-9][0-9]?\s*$//;
     $fonction =~ s/ de la [com]*mission$//;
     $fonction =~ s/, et discusion .*$//;
-    $fonction =~ s/^[, ]+//;
+    $fonction =~ s/^[\-, ]+//;
     if ($intervenant eq $fonction) {
       return $intervenant;
     }
@@ -723,7 +724,7 @@ foreach $line (split /\n/, $string)
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2.$3;
-        if ($extrainterv =~ s/(Idem|Quid|Cooking Budgets|\/A \w+i\W*\/)//) {
+        if ($extrainterv =~ s/(Idem|In vino veritas|Quid|Cooking Budgets|\/A \w+i\W*\/)//) {
             $line = $1.$line;
         }
         $found = $majIntervenant = 1;
