@@ -525,7 +525,7 @@ $string =~ s/<p>\|([A-Z\W]+)\|<\/p>/<p>\/\1\/<\/p>/g;
 $string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|Enfin,|Ensuite,|Par conséquent,|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La commission(?: d[^<\.]*?)?)((?:[\s\/|]+(?:a|par ailleurs|ensuite))+)?[\s\/|]+((?:désign|autoris|approuv|étudi|nomm|examin|lev|emis)(?:e|é|,)*)[\s\/|]*(.*?)<\/p>/<p>\/$2$2$3 $4 $5 $6\/<\/p>/gi;
 $string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|Enfin,|Ensuite,|Par conséquent,|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La commission(?: d\S+(?: \w\w+)*?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|passe à|aborde|repousse|se saisit|étudie|est (?:ensuite )?saisie|émet|accept|donne un avis|procède (?:au|à)|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
 $string =~ s/<p>\s*\(?((Un échange de vues a suivi|Les résultats du scrutin sont les suivants|Après le départ de[^<]* il est procédé |M[M.me]+ .* prête[^<.]* serment\.|L'audition, suspendue à |La réunion de la commission[^<]*s'achève)[^<]*)\s*<\/p>/<p>\/\1\/<\/p>/gi;
-$string =~ s/<p>\s*((M[.me]+ [^.]*?[, ]+)+(est|sont) élu[^.]*?\.)\s*<\/p>/<p>\/\1\/<\/p>/gi;
+$string =~ s/<p>\s*(Présidence de M[.me]+ [^<]+|(M[.me]+ [^.]*?[, ]+)+(est|sont) élu[^.]*?\.)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/<p[^>]*>[\(\/]+([^<\/\)]+)[\/\)\.]+<\/p>/\n<p>\/\1\/<p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
@@ -730,7 +730,7 @@ foreach $line (split /\n/, $string)
         }
         $found = $majIntervenant = 1;
         $intervenant = setIntervenant($interv1.$extrainterv);
-	  } elsif (!($line =~ /^\|(?:&#\d+;|–)?\s*(?:Puis de |Mesures|Réunion|Examen|Compte-rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co]*Présidence|Titre|Chapitre|Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i) &&
+	  } elsif (!($line =~ /^\|(?:&#\d+;|–)?\s*(?:Puis de |RENFORCE|Mesures|Réunion|Examen|Compte-rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co]*Présidence|Titre|Chapitre|Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i) &&
           ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
