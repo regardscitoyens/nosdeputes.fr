@@ -248,13 +248,20 @@ Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche
   *(par périodes d'un mois si la période considérée dépasse 90 jours, par jour sinon)*
 
 
-## Librairie Python [CPC-API](https://pypi.python.org/pypi/cpc_api)
+## Outils d'accès simplifié à l'API
 
-Certains des points d'entrée de cette API sont accessibles de manière simplifiée en langage Python à l'aide du paquet pip [`cpc-api`](https://pypi.python.org/pypi/cpc_api) dont le [code source est disponible ici](https://github.com/regardscitoyens/cpc-api).
+- **Librairie Python [CPC-API](https://pypi.python.org/pypi/cpc_api)**
 
-## Module PowerShell [RegardsCitoyensPS](https://github.com/Stephanevg/RegardsCitoyenPS)
+  Certains des points d'entrée de cette API sont accessibles de manière simplifiée en langage Python à l'aide du paquet pip [`cpc-api`](https://pypi.python.org/pypi/cpc_api) dont le [code source est disponible ici](https://github.com/regardscitoyens/cpc-api).
 
-L'API est également accessible depuis PowerShell (sous Windows, MAC & Linux) à l'aide du module [`RegardsCitoyensPS`](https://github.com/Stephanevg/RegardsCitoyenPS) réalisé indépendamment par [@StephaneVG](https://github.com/Stephanevg). Plus de détails sont disponibles sur la page du projet.
+- **Module PowerShell [RegardsCitoyensPS](https://github.com/Stephanevg/RegardsCitoyenPS)**
+
+  L'API est également accessible depuis PowerShell (sous Windows, MAC & Linux) à l'aide du module [`RegardsCitoyensPS`](https://github.com/Stephanevg/RegardsCitoyenPS) réalisé indépendamment par [@StephaneVG](https://github.com/Stephanevg). Plus de détails sont disponibles sur la page du projet.
+
+- **API GraphQL [Tricoteuses-API-NosDeputes](https://framagit.org/tricoteuses/tricoteuses-api-nosdeputes)**
+
+  L'API est également utilisable sous la forme d'une API GraphQL grâce au travail indépendant d'[Emmanual Raviart](https://framagit.org/eraviart).
+
 
 ## [ParlAPI.fr](http://parlapi.fr) : API sur l'OpenData officielle de l'AN et du Sénat
 
