@@ -12,6 +12,7 @@ Une API a été développée pour offrir un accès Open Data simplifié aux donn
 - [Données d'activité des parlementaires](#données-dactivité-des-parlementaires)
 - [Documents et débats parlementaires](#documents-et-débats-parlementaires)
 - [Résultats du moteur de recherche](#résultats-du-moteur-de-recherche)
+- [Outils d'accès simplifié à l'API](#outils-daccès-simplifié-à-lapi)
 - [Librairie Python CPC-API](#librairie-python-cpc-api)
 - [ParlAPI.fr : API sur l'OpenData officielle de l'AN et du Sénat](#parlapifr--api-sur-lopendata-officielle-de-lan-et-du-sénat)
 - [Exemples de réutilisations basées sur l'API](#exemples-de-réutilisations-basées-sur-lapi)
