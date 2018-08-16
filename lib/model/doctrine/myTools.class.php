@@ -215,6 +215,15 @@ class myTools {
     return $gpes;
   }
 
+  public static function findGroupeAcronyme($gpe) {
+    foreach (myTools::getGroupesInfos() as $g) {
+      if (preg_match('/('.$g[4].'|'.$g[1].')/i', $gpe)) {
+        return $g[1];
+      }
+    }
+    return null;
+  }
+
   public static function getCommissionsPermanentes() {
     return self::convertYamlToArray(sfConfig::get('app_commissions_permanentes', array()));
   }

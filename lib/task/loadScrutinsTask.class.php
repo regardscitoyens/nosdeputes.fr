@@ -58,7 +58,7 @@ class loadScrutinsTask extends sfBaseTask
         }
 
         try {
-          $scrutin->setDemandeur($data->demandeurs);
+          $scrutin->setDemandeurs($data->demandeurs);
           $scrutin->setTitre($data->titre);
           $scrutin->setType($data->type);
           $scrutin->setStats($data->sort,

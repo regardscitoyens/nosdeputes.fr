@@ -73,9 +73,29 @@ class Scrutin extends BaseScrutin
     }
   }
 
-  public function setDemandeur($demandeur) {
-    // TODO? clean demandeur, set demandeur_groupe_acronyme
-    return $this->_set('demandeur', $demandeur);
+  public function setDemandeurs($demandeurs) {
+    $ret = $this->_set('demandeurs', join("|", $demandeurs));
+    $gpes = array();
+    foreach($demandeurs as $d) {
+      if (preg_match('/^Président\S* du groupe [^A-Z]*(.*)$/', $d, $match)) {
+        $gpe_acro = myTools::findGroupeAcronyme($match[1]);
+        if (!$gpe_acro)
+          print("WARNING: no groupe acronyme found for $d");
+        else $gpes[] = $gpe_acro;
+      }
+    }
+    if ($gpes) {
+      $this->_set('demandeurs_groupes_acronymes', join("|", $gpes));
+    }
+    return $ret;
+  }
+
+  public function getDemandeurs() {
+    return explode("|", $this->_get('demandeurs'));
+  }
+
+  public function getDemandeursGroupesAcronymes() {
+    return explode("|", $this->_get('demandeurs_groupes_acronymes'));
   }
 
   public function setTitre($titre) {
