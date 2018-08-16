@@ -67,6 +67,7 @@ batch/questions/dernier_numero.txt
 batch/questions/liste_sans_reponse.txt
 batch/sanctions/
 batch/scrutin/scrutins
+batch/scrutin/loaded
 
 lib/filter/doctrine/
 lib/form/doctrine/
