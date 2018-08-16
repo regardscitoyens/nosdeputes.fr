@@ -61,9 +61,9 @@ def parse_scrutins(legislature, data):
         os.makedirs(SCRUTINS_DIR)
 
     for item in data["scrutins"]["scrutin"]:
-        scrutin = parse_scrutin(item, seances, groupes)
+        scrutin, logs = parse_scrutin(item, seances, groupes)
 
-        numero = ("00000%s" % scrutin["numero"])[-5:]
+        numero = "%05d" % scrutin["numero"]
         basename = "scrutin_%s_%s" % (legislature, numero)
         hash_file = os.path.join(SCRUTINS_DIR, "%s.sha1" % basename)
         json_file = os.path.join(SCRUTINS_DIR, "%s.json" % basename)
@@ -82,6 +82,7 @@ def parse_scrutins(legislature, data):
                 updated = False
 
         if updated:
+            [log(l) for l in logs]
             with open(hash_file, "w") as f:
                 f.write(sha1)
             with open(json_file, "w") as f:
@@ -90,6 +91,7 @@ def parse_scrutins(legislature, data):
 
 
 def parse_scrutin(data, seances, groupes):
+    logs = []
     synthese = data["syntheseVote"]
     decompte = synthese["decompte"]
     scrutin = {
@@ -105,6 +107,10 @@ def parse_scrutin(data, seances, groupes):
         "demandeur": data["demandeur"]["texte"],
         "parlementaires": {},
     }
+    if not scrutin["seance"]:
+        logs.append("WARNING: scrutin %s has no seance %s" % (data["numero"], data["seanceRef"]))
+    if not scrutin["demandeurs"]:
+        logs.append("WARNING: scrutin %s has no demandeurs %s" % (data["numero"], data["demandeur"]))
 
     delegations = 0
 
@@ -137,8 +143,8 @@ def parse_scrutin(data, seances, groupes):
                     "par_delegation": par_delegation,
                 }
 
-    if 2 * delegations > int(synthese["nombreVotants"]):
-        log("Scrutin %s: trop de délégations" % scrutin["numero"])
+    if 2 * delegations > scrutin["nombre_votants"]:
+        logs.append("Scrutin %s: trop de délégations" % scrutin["numero"])
 
     vote_map = data["miseAuPoint"]
     if vote_map:
@@ -158,7 +164,7 @@ def parse_scrutin(data, seances, groupes):
                     parl = scrutin["parlementaires"][votant["acteurRef"]]
                     parl["mise_au_point_position"] = position
 
-    return scrutin
+    return scrutin, logs
 
 
 if __name__ == "__main__":
