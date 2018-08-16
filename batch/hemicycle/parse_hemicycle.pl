@@ -29,6 +29,7 @@ $string =~ s/<\/?sup>//g;
 $string =~ s/<\/p>/<\/p>\n/g;
 $string =~ s/(<\/h[1-9]>)/$1\n/g;
 $string =~ s/(<h[0-9][^>]*>.*?)<i>\(suite[^)]*?\)<\/i>/\1/gi;
+$string =~ s/<i>(\s*(quid|idem)\s*)<\/i>/\1/ig;
 $string =~ s/<\/i>(\W+)<i>/\1/ig;
 $string =~ s/no<\/i>s <i>/nos /ig;
 $string =~ s/(<i><\/i>|<\/i><i>)//ig;
@@ -41,7 +42,7 @@ $string =~ s/\((\s*)<i>/\1<i>(/ig;
 $string =~ s/<\/i>(\s*)\)/)<\/i>\1/ig;
 $string =~ s/(<i>\(Applaudissement)<\/i>s\s+([^<)]+)/\1s)<\/i> \2/ig;
 $string =~ s/(<i>\([^<).]+\.) (<\/i>)/\1)\2 /g;
-$string =~ s/(\(([^)]*?amendement[^)]*?(adopt|rejet)|Nouveaux|Applaudissement|Protestation|Approbation|Exclamation|Vif|Vive|Quelque|M..?mes? mouve|(Sou)?Rires|[^)]*?bancs d[esu]+ groupe)[^)]*\))/<i>\1<\/i>/ig;
+$string =~ s/(\(([^)]*?amendement[^)]*?(adopt|rejet)|Nouveaux|M[mes.]+[^)]* applaudi[sen]*t|Applaudissement|Protestation|Approbation|Exclamation|Vif|Vive|Quelque|M..?mes? mouve|(Sou)?Rires|[^)]*?bancs d[esu]+ groupe)[^)]*\))/<i>\1<\/i>/ig;
 $string =~ s/(<\/?i>)([–,\.\s]*)\1/\1\2/ig;
 $string =~ s/(<\/?i>)\s*\.\s*/. \1/ig;
 $string =~ s/<\/i>\s*<i>\s*\(\s*/<\/i> <i>(/ig;
@@ -236,7 +237,7 @@ sub checkout {
             }
             print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
         }
-        if ($intervenant =~ s/^(plusieurs .*?)(,| et) //i) {
+        if ($intervenant =~ s/^((?:plusieurs|de nombreux) .*?)(,| et) //i) {
             $plusieurs = $1;
             $plusieurs =~ s/des groupes/du groupe /i;
             $plusieurs =~ s/((?:députés |sur les bancs |du groupe )+)\s*(.*)$/\1/i;
@@ -251,7 +252,7 @@ sub checkout {
             }
             $intervenant = $plusieurs.$interv1;
         }
-        if ($intervenant !~ /^plusieurs /i && $intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)$//) {
+        if ($intervenant !~ /(^plusieurs |UDI, Agir et Ind)/i && $intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)$//) {
             foreach $i (split(/(?:et\s*M[mes\.]*| et |, M[mes\.]*)\s*/, $3)) {
                 $ts++;
                 if (!$inter2fonction{$i} && $i =~ s/, (.*)$//) {
@@ -321,14 +322,14 @@ sub setFonction {
 
 sub setIntervenant {
     my $intervenant = shift;
-    #print "TEST $intervenant\n";
+    #print STDERR "TEST $intervenant\n";
     $intervenant =~ s/^(M\.|Mme)([^  \s])/$1 $2/;
     $intervenant =~ s/[\|\/]//g;
     $intervenant =~ s/\s*\&\#8211\;\s*$//;
     $intervenant =~ s/\s*[\.\:]\s*$//;
     $intervenant =~ s/Madame/Mme/g;
     $intervenant =~ s/Monsieur/M./g;
-    $intervenant =~ s/([Pp]lusieurs .*?)(\s+et|,)+\s+(M[\.lmes]+\s+.*?)(?:, rapporteure?.*?)?$/\3 et \1/g;
+    $intervenant =~ s/((:[Pp]lusieurs|De nombreux) .*?)(\s+et|,)+\s+(M[\.lmes]+\s+.*?)(?:, rapporteure?.*?)?$/\3 et \1/g;
     $intervenant =~ s/(?:, (président|rapporteur)e?.*?)?(\s+et|,)+\s+M[\.lmes]+\s+/ et /g;
     $intervenant =~ s/^M[\.mes]*\s//i;
     $intervenant =~ s/([^M])\s*\..*$/\1/;
@@ -342,7 +343,7 @@ sub setIntervenant {
     $intervenant =~ s/([^\s\,])\s+rapporteur/$1, rapporteur/i;
     $intervenant =~ s/M\. /M /;
 
-    if ($intervenant =~ /^plusieurs/i) {
+    if ($intervenant =~ /^(plusieurs|un député|de nombreux)/i) {
       return $intervenant;
     }
     if ($intervenant =~ s/\,\s*(.*)//) {
