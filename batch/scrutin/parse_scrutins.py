@@ -24,6 +24,7 @@ from __future__ import print_function, unicode_literals, absolute_import
 import hashlib
 import json
 import os
+import re
 import sys
 
 # Faux module dans .. (batch/)
@@ -52,6 +53,23 @@ SCRUTINS_DIR = os.path.join(BATCH_DIR, "scrutin", "scrutins")
 
 TYPES = {"SPS": "solennel", "SPO": "ordinaire"}
 
+CLEAN_DEMANDEUR = [
+    ("President", u"Président"),
+    ("Conference", u"Conférence"),
+    ('"', ''),
+    (r'\s+', ' '),
+]
+
+def clean_demandeur(d):
+    for reg, rep in CLEAN_DEMANDEUR:
+        d = re.compile(reg).sub(rep, d)
+    return d.strip()
+
+def clean_demandeurs(demandeurs):
+    if not demandeurs:
+        return []
+    demandeurs = [clean_demandeur(d) for d in demandeurs.split("\n")]
+    return [d for d in demandeurs if d]
 
 def parse_scrutins(legislature, data):
     groupes = ref_groupes(legislature, ND_names=True)
@@ -104,7 +122,7 @@ def parse_scrutin(data, seances, groupes):
         "nombre_contres": int(decompte["contre"]),
         "nombre_abstentions": int(decompte["abstentions"]),
         "sort": data["sort"]["code"],
-        "demandeur": data["demandeur"]["texte"],
+        "demandeurs": clean_demandeurs(data["demandeur"]["texte"]),
         "parlementaires": {},
     }
     if not scrutin["seance"]:
