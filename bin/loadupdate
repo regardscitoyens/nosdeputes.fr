@@ -164,6 +164,9 @@ done;
 
 # Postprocessings
 
+echo == Load scrutins
+echo =======================
+bash bin/load_scrutins
 echo == Tag séances
 echo =======================
 bash bin/tag_seance
