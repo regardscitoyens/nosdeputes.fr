@@ -208,6 +208,11 @@ def ref_seances(legislature):
     Renvoie un mapping des id opendata des séances vers leur ID
     """
 
+    MISSING = {
+        "RUANR5L15S2018IDS21117": "20180278",
+        "RUANR5L15S2018IDS21120": "20180280"
+    }
+
     def _extract_list(data):
         return filter(
             lambda reunion: "IDS" in reunion["uid"],
@@ -218,7 +223,7 @@ def ref_seances(legislature):
         return reunion["uid"]
 
     def _extract_mapped(reunion):
-        return reunion["identifiants"]["idJO"]
+        return reunion["identifiants"]["idJO"] or MISSING.get(reunion["uid"])
 
     return _cached_ref(
         legislature,
