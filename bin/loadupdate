@@ -164,9 +164,11 @@ done;
 
 # Postprocessings
 
-echo == Load scrutins
-echo =======================
-bash bin/load_scrutins
+if [[ $jo -eq 1 ]]; then
+  echo == Load scrutins
+  echo =======================
+  bash bin/load_scrutins
+fi
 echo == Tag séances
 echo =======================
 bash bin/tag_seance
