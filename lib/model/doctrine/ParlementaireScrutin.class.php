@@ -18,7 +18,7 @@ class ParlementaireScrutin extends BaseParlementaireScrutin
       $this->parlementaire_groupe_acronyme,
       'scrutin',
       $this->Scrutin->getLinkSource(),
-      $this->position != 'nonVotant' && $this->mise_au_point_position == NULL
+      $this->position && !$this->par_delegation
     );
   }
 
