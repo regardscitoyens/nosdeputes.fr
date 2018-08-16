@@ -13,18 +13,13 @@ class Scrutin extends BaseScrutin
          . $this->numero;
   }
 
-  public function setNumero($numero) {
-    return $this->_set('numero', $numero);
-  }
-
   public function setSeance($id_jo) {
     $seance = Doctrine::getTable('Seance')->findOneByIDJO($id_jo);
     if (!$seance) {
       throw new Exception("Aucune séance trouvée avec l'id JO $id_jo");
     }
-    $seance_id = $seance->id;
 
-    $ret = $this->_set('seance_id', $seance_id)
+    $ret = $this->_set('seance_id', $seance->id)
         && $this->_set('date', $seance->date)
         && $this->_set('numero_semaine', $seance->numero_semaine)
         && $this->_set('annee', $seance->annee);
@@ -34,7 +29,7 @@ class Scrutin extends BaseScrutin
   }
 
   // Recherche de l'intervention avec un tableau de votants qui correspond
-  public function tagInterventions() {
+  public function tagIntervention() {
     // Listing des interventions avec un tableau de scrutin
     $inters = Doctrine::getTable('Intervention')
                       ->createQuery('i')
@@ -83,11 +78,8 @@ class Scrutin extends BaseScrutin
   }
 
   public function setTitre($titre) {
+    // TODO? clean title
     return $this->_set('titre', $titre);
-  }
-
-  public function setType($type) {
-    return $this->_set('type', $type);
   }
 
   public function setStats($sort, $nb_votants, $nb_pours, $nb_contres, $nb_abst) {
@@ -106,9 +98,9 @@ class Scrutin extends BaseScrutin
 
         if (!$parlscrutin) {
           $parlscrutin = new ParlementaireScrutin();
-          if (!$parlscrutin->setParlementaire($id_an)
+          if (!$parlscrutin->setParlementaireByIDAN($id_an)
            || !$parlscrutin->setScrutin($this)) {
-            return FALSE;
+            throw new Exception('Could not set ParlId/ScrutinId');
           }
         }
 
@@ -117,7 +109,7 @@ class Scrutin extends BaseScrutin
          || !$parlscrutin->_set('position_groupe', $data->position_groupe)
          || !$parlscrutin->_set('par_delegation', $data->par_delegation)
          || !$parlscrutin->_set('mise_au_point_position', $data->mise_au_point_position or NULL)) {
-          return FALSE;
+          throw new Exception("Could not set vote metadata: {$data}");
         }
 
         if ($this->Seance->date >= self::DEBUT_DELEGATIONS) {

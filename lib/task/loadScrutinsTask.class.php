@@ -75,7 +75,7 @@ class loadScrutinsTask extends sfBaseTask
         $scrutin->save();
 
         try {
-          $scrutin->tagInterventions();
+          $scrutin->tagIntervention();
         } catch(Exception $e) {
           echo "ERREUR $file (tag interventions) : {$e->getMessage()}\n";
           continue;

@@ -3,17 +3,13 @@
 class ParlementaireScrutin extends BaseParlementaireScrutin
 {
 
-  public function setParlementaire($id_an) {
+  public function setParlementaireByIDAN($id_an) {
     $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($id_an);
     if (!$parl) {
       throw new Exception("Aucun parlementaire trouvé avec l'ID AN $id_an");
     }
 
     return $this->_set('parlementaire_id', $parl->id);
-  }
-
-  public function setScrutin($scrutin) {
-    return $this->_set('scrutin_id', $scrutin->id);
   }
 
   public function updatePresence() {
