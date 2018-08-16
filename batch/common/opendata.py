@@ -167,11 +167,17 @@ def _cached_ref(
             return json.load(f)
 
 
-def ref_groupes(legislature):
+def ref_groupes(legislature, ND_names=False):
     """
     Renvoie un mapping des id opendata des groupes parlementaires vers leur
     abbréviation
     """
+
+    GROUPES_ND = {
+        "UDI-AGIR": "UAI",
+        "LAREM": "LREM",
+        "FI": "LFI"
+    }
 
     def _extract_list(data):
         return filter(
@@ -183,6 +189,8 @@ def ref_groupes(legislature):
         return organe["uid"]
 
     def _extract_mapped(organe):
+        if ND_names and organe["libelleAbrev"] in GROUPES_ND:
+            return GROUPES_ND[organe["libelleAbrev"]]
         return organe["libelleAbrev"]
 
     return _cached_ref(

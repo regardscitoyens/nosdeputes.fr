@@ -47,13 +47,14 @@ POS_MAP = {
     "abstention": "abstentions",
 }
 
+
 SCRUTINS_DIR = os.path.join(BATCH_DIR, "scrutin", "scrutins")
 
 TYPES = {"SPS": "solennel", "SPO": "ordinaire"}
 
 
 def parse_scrutins(legislature, data):
-    groupes = ref_groupes(legislature)
+    groupes = ref_groupes(legislature, ND_names=True)
     seances = ref_seances(legislature)
 
     if not os.path.exists(SCRUTINS_DIR):
