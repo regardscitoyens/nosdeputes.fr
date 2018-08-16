@@ -27,9 +27,11 @@ AN_ENTRYPOINTS = {
     },
 }
 
+DEBUG = "--debug" in sys.argv
 
-def log(str):
-    print(str, file=sys.stderr)
+def log(str, debug=False):
+    if not debug or DEBUG:
+        print(str, file=sys.stderr)
 
 
 def fetch_an_jsonzip(legislature, objet):
@@ -56,7 +58,7 @@ def fetch_an_jsonzip(legislature, objet):
     localzip_lastmod = "%s.last_modified" % localzip
 
     url = "%s/%s" % (AN_BASE_URL, AN_ENTRYPOINTS[str(legislature)][objet])
-    log("Téléchargement %s" % url)
+    log("Téléchargement %s" % url, debug=True)
 
     try:
         soup = BeautifulSoup(requests.get(url).content, "html5lib")
@@ -77,26 +79,26 @@ def fetch_an_jsonzip(legislature, objet):
     if jsonzip_url.startswith("/"):
         jsonzip_url = "%s%s" % (AN_BASE_URL, jsonzip_url)
 
-    log("URL JSON zippé : %s" % jsonzip_url)
+    log("URL JSON zippé : %s" % jsonzip_url, debug=True)
 
     try:
         lastmod = requests.head(jsonzip_url).headers["Last-Modified"]
     except Exception:
         raise Exception("Date du dump .json.zip introuvable")
 
-    log("Date modification dump .json.zip: %s" % lastmod)
+    log("Date modification dump .json.zip: %s" % lastmod, debug=True)
     do_download = True
 
     if os.path.exists(localzip) and os.path.exists(localzip_lastmod):
         with open(localzip_lastmod, "r") as f:
             known_lastmod = f.read()
 
-        log("Date modification dernier telechargement: %s" % known_lastmod)
+        log("Date modification dernier telechargement: %s" % known_lastmod, debug=True)
         if known_lastmod == lastmod:
             do_download = False
 
     if do_download:
-        log("Téléchargement .json.zip")
+        log("Téléchargement .json.zip", debug=True)
 
         try:
             with open(localzip, "wb") as out:
@@ -108,7 +110,7 @@ def fetch_an_jsonzip(legislature, objet):
         except Exception:
             raise Exception("Téléchargement .json.zip impossible")
     else:
-        log("Téléchargement skippé, fichier non mis à jour")
+        log("Téléchargement skippé, fichier non mis à jour", debug=True)
 
     return localzip, do_download
 
@@ -127,7 +129,7 @@ def fetch_an_json(legislature, objet):
     localzip, updated = fetch_an_jsonzip(legislature, objet)
     with ZipFile(localzip, "r") as z:
         for f in [f for f in z.namelist() if f.endswith(".json")]:
-            log("JSON extrait : %s" % f)
+            log("JSON extrait : %s" % f, debug=True)
             with z.open(f) as zf:
                 return json.load(zf), updated
 
