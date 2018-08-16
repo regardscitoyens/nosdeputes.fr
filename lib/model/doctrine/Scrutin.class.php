@@ -4,7 +4,8 @@ class Scrutin extends BaseScrutin
 {
   // Date des premiers scrutins où les délégations ne sont pas toutes à FALSE
   // On ne génère pas de preuve de présence à partir des votes avant cette date
-  const DEBUT_DELEGATIONS = '2018-03-20';
+  const DEBUT_DELEGATIONS = '2017-10-24';  # date premier solennel avec délégations
+  #const DEBUT_DELEGATIONS = '2018-03-20'; # date premier ordinaire avec délégations
 
   public function getLinkSource() {
     return "http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/"
