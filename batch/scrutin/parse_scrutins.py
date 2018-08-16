@@ -65,9 +65,14 @@ def clean_demandeur(d):
         d = re.compile(reg).sub(rep, d)
     return d.strip()
 
-def clean_demandeurs(demandeurs):
+MISSING_DEMANDEURS = {
+    "17": [u"Président du groupe Nouvelle Gauche"],
+    "43": [u"Président du groupe La France Insoumise"],
+    "153": [u"Président du groupe Les Républicains"]
+}
+def clean_demandeurs(demandeurs, numero):
     if not demandeurs:
-        return []
+        return MISSING_DEMANDEURS.get(numero, [])
     demandeurs = [clean_demandeur(d) for d in demandeurs.split("\n")]
     return [d for d in demandeurs if d]
 
@@ -122,7 +127,7 @@ def parse_scrutin(data, seances, groupes):
         "nombre_contres": int(decompte["contre"]),
         "nombre_abstentions": int(decompte["abstentions"]),
         "sort": data["sort"]["code"],
-        "demandeurs": clean_demandeurs(data["demandeur"]["texte"]),
+        "demandeurs": clean_demandeurs(data["demandeur"]["texte"], data["numero"]),
         "parlementaires": {},
     }
     if not scrutin["seance"]:
