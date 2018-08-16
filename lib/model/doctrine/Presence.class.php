@@ -6,16 +6,23 @@
 class Presence extends BasePresence
 {
   public function addPreuve($type, $source) {
-    $q = Doctrine::getTable('PreuvePresence')->createQuery('p');
-    $preuve = $q->where('presence_id = ?', $this->id)->andWhere('type = ?', $type)->fetchOne();
+    $q = Doctrine::getTable('PreuvePresence')->createQuery('p')
+      ->where('presence_id = ?', $this->id)
+      ->andWhere('type = ?', $type);
+    if ($type != 'intervention')
+      $q->andWhere('source = ?', $source);
+    $preuve = $q->fetchOne();
     $q->free();
+
     if (!$preuve) {
       $preuve = new PreuvePresence();
       $preuve->presence_id = $this->id;
       $preuve->type = $type;
+      $preuve->source = $source;
+
       $this->nb_preuves++ ;
     }
-    $preuve->source = $source;
+
     $res = $preuve->save();
     $this->save();
     $preuve->free();
@@ -23,8 +30,12 @@ class Presence extends BasePresence
   }
 
   public function delPreuve($type, $source) {
-    $q = Doctrine::getTable('PreuvePresence')->createQuery('p');
-    $preuve = $q->where('presence_id = ?', $this->id)->andWhere('type = ?', $type)->fetchOne();
+    $q = Doctrine::getTable('PreuvePresence')->createQuery('p')
+      ->where('presence_id = ?', $this->id)
+      ->andWhere('type = ?', $type);
+    if ($type != 'intervention')
+      $q->andWhere('source = ?', $source);
+    $preuve = $q->fetchOne();
     $q->free();
 
     if ($preuve) {
