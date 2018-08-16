@@ -82,7 +82,8 @@ class Scrutin extends BaseScrutin
         if (!$gpe_acro)
           print("WARNING: no groupe acronyme found for $d");
         else $gpes[] = $gpe_acro;
-      }
+      } else if ($d != "Conférence des Présidents" && $d != "Gouvernement")
+        print("WARNING: unidentified kind of demandeur: $d");
     }
     if ($gpes) {
       $this->_set('demandeurs_groupes_acronymes', join("|", $gpes));
