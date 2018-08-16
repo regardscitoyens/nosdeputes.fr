@@ -164,6 +164,7 @@ def parse_scrutin(data, seances, groupes):
                     "groupe": acro_groupe,
                     "position_groupe": position_groupe,
                     "par_delegation": par_delegation,
+                    "mise_au_point_position": None
                 }
 
     if 2 * delegations > scrutin["nombre_votants"]:
@@ -183,7 +184,12 @@ def parse_scrutin(data, seances, groupes):
                     votants = [votants]
                 for votant in votants:
                     if votant["acteurRef"] not in scrutin["parlementaires"]:
-                        scrutin["parlementaires"][votant["acteurRef"]] = {}
+                        scrutin["parlementaires"][votant["acteurRef"]] = {
+                            "position": None,
+                            "groupe": None, #TODO
+                            "position_groupe": None, #TODO
+                            "par_delegation": None
+                        }
                     parl = scrutin["parlementaires"][votant["acteurRef"]]
                     parl["mise_au_point_position"] = position
 

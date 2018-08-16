@@ -109,7 +109,7 @@ class Scrutin extends BaseScrutin
          || !$parlscrutin->_set('position', $data->position)
          || !$parlscrutin->_set('position_groupe', $data->position_groupe)
          || !$parlscrutin->_set('par_delegation', $data->par_delegation)
-         || !$parlscrutin->_set('mise_au_point_position', $data->mise_au_point_position or NULL)) {
+         || !$parlscrutin->_set('mise_au_point_position', $data->mise_au_point_position)) {
           throw new Exception("Could not set vote metadata: {$data}");
         }
 
