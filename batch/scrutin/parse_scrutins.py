@@ -122,6 +122,7 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
     scrutin = {
         "numero": int(data["numero"]),
         "seance": seances[data["seanceRef"]],
+        "date": data["dateScrutin"],
         "titre": data["titre"],
         "type": TYPES[data["typeVote"]["codeTypeVote"]],
         "nombre_votants": int(synthese["nombreVotants"]),
@@ -139,11 +140,13 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
 
     delegations = 0
 
+    positions_groupes = {}
     vote_groupes = data["ventilationVotes"]["organe"]["groupes"]["groupe"]
     for vote_groupe in vote_groupes:
         acro_groupe = groupes[vote_groupe["organeRef"]]
         dn = vote_groupe["vote"]["decompteNominatif"]
         position_groupe = vote_groupe["vote"]["positionMajoritaire"]
+        positions_groupes[acro_groupe] = position_groupe
 
         for position in POSITIONS:
             votants_position = dn.get("%ss" % position, dn.get(position))
@@ -174,7 +177,6 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
 
     vote_map = data["miseAuPoint"]
     if vote_map:
-        dat = data["dateScrutin"]
         for position, pluriel in POS_MAP.items():
             map_position = vote_map[pluriel]
             if not isinstance(map_position, list):
@@ -190,15 +192,15 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
                         groupe = None
                         histo = histo_groupes[votant["acteurRef"]]
                         for h in histo or []:
-                            if h["debut"] <= dat <= (h["fin"] or "9999-99-99"):
+                            if h["debut"] <= scrutin["date"] <= (h["fin"] or "9999-99-99"):
                                 groupe = h["sigle"]
                                 break
                         if not groupe:
-                            logs.append("WARNING: no groupe historique found for parl %s for date %s: %s" % (votant["acteurRef"], dat, histo))
+                            logs.append("WARNING: no groupe historique found for parl %s for date %s: %s" % (votant["acteurRef"], scrutin["date"], histo))
                         scrutin["parlementaires"][votant["acteurRef"]] = {
                             "position": None,
                             "groupe": groupe,
-                            "position_groupe": None, #TODO
+                            "position_groupe": positions_groupes.get(groupe),
                             "par_delegation": None
                         }
                     parl = scrutin["parlementaires"][votant["acteurRef"]]
