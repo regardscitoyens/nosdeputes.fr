@@ -21,7 +21,7 @@ AN_ENTRYPOINTS = {
         "scrutins": "opendata-archives-xive/scrutins-xive-legislature",
     },
     "15": {
-        "amo": "acteurs/deputes-en-exercice",
+        "amo": "acteurs/historique-des-deputes",
         "reunions": "reunions/reunions",
         "scrutins": "travaux-parlementaires/votes",
     },
@@ -157,7 +157,7 @@ def _cached_ref(
         cache = {}
         for item in extract_list(data):
             id = extract_id(item)
-            cache[id] = extract_mapped(item)
+            cache[id] = extract_mapped(item, data)
 
         with open(cached_file, "w") as f:
             json.dump(cache, f)
@@ -188,7 +188,7 @@ def ref_groupes(legislature, ND_names=False):
     def _extract_id(organe):
         return organe["uid"]
 
-    def _extract_mapped(organe):
+    def _extract_mapped(organe, data):
         if ND_names and organe["libelleAbrev"] in GROUPES_ND:
             return GROUPES_ND[organe["libelleAbrev"]]
         return organe["libelleAbrev"]
@@ -202,6 +202,42 @@ def ref_groupes(legislature, ND_names=False):
         _extract_mapped,
     )
 
+def ref_histo_groupes(legislature, ND_names=False):
+    """
+    Renvoie un mapping des id opendata des parlementaires vers une liste
+    ordonnée temporellement de leurs appartenances à un groupe politique
+    """
+
+    GROUPES = ref_groupes(legislature, ND_names=ND_names)
+    sort_periods = lambda x: "%s-%s" % (x["debut"], x["fin"])
+
+    def _extract_list(data):
+        return data["export"]["acteurs"]["acteur"]
+
+    def _extract_id(acteur):
+        return acteur["uid"]["#text"]
+
+    def _extract_mapped(acteur, data):
+        groupes = [{
+            "sigle": GROUPES[m["organes"]["organeRef"]],
+            "debut": m["dateDebut"],
+            "fin": m["dateFin"]
+          } for m in acteur["mandats"]["mandat"]
+          if m["typeOrgane"] == "GP"
+          and m["legislature"] == legislature
+          and m["preseance"] != "1"
+        ]
+        groupes = sorted(groupes, key=sort_periods)
+        return groupes
+
+    return _cached_ref(
+        legislature,
+        "amo",
+        "histo_groupes",
+        _extract_list,
+        _extract_id,
+        _extract_mapped,
+    )
 
 def ref_seances(legislature):
     """
@@ -222,7 +258,7 @@ def ref_seances(legislature):
     def _extract_id(reunion):
         return reunion["uid"]
 
-    def _extract_mapped(reunion):
+    def _extract_mapped(reunion, data):
         return reunion["identifiants"]["idJO"] or MISSING.get(reunion["uid"])
 
     return _cached_ref(

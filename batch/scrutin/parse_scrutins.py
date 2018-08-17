@@ -34,6 +34,7 @@ from common import BATCH_DIR  # noqa
 from common.opendata import (
     fetch_an_json,
     ref_groupes,
+    ref_histo_groupes,
     ref_seances,
     log,
 )  # noqa
@@ -78,13 +79,14 @@ def clean_demandeurs(demandeurs, numero):
 
 def parse_scrutins(legislature, data):
     groupes = ref_groupes(legislature, ND_names=True)
+    histo_groupes = ref_histo_groupes(legislature, ND_names=True)
     seances = ref_seances(legislature)
 
     if not os.path.exists(SCRUTINS_DIR):
         os.makedirs(SCRUTINS_DIR)
 
     for item in data["scrutins"]["scrutin"]:
-        scrutin, logs = parse_scrutin(item, seances, groupes)
+        scrutin, logs = parse_scrutin(item, seances, groupes, histo_groupes)
 
         numero = "%05d" % scrutin["numero"]
         basename = "scrutin_%s_%s" % (legislature, numero)
@@ -113,7 +115,7 @@ def parse_scrutins(legislature, data):
             log("Scrutin %s mis à jour" % scrutin["numero"])
 
 
-def parse_scrutin(data, seances, groupes):
+def parse_scrutin(data, seances, groupes, histo_groupes):
     logs = []
     synthese = data["syntheseVote"]
     decompte = synthese["decompte"]
@@ -172,6 +174,7 @@ def parse_scrutin(data, seances, groupes):
 
     vote_map = data["miseAuPoint"]
     if vote_map:
+        dat = data["dateScrutin"]
         for position, pluriel in POS_MAP.items():
             map_position = vote_map[pluriel]
             if not isinstance(map_position, list):
@@ -184,9 +187,17 @@ def parse_scrutin(data, seances, groupes):
                     votants = [votants]
                 for votant in votants:
                     if votant["acteurRef"] not in scrutin["parlementaires"]:
+                        groupe = None
+                        histo = histo_groupes[votant["acteurRef"]]
+                        for h in histo or []:
+                            if h["debut"] <= dat <= (h["fin"] or "9999-99-99"):
+                                groupe = h["sigle"]
+                                break
+                        if not groupe:
+                            logs.append("WARNING: no groupe historique found for parl %s for date %s: %s" % (votant["acteurRef"], dat, histo))
                         scrutin["parlementaires"][votant["acteurRef"]] = {
                             "position": None,
-                            "groupe": None, #TODO
+                            "groupe": groupe,
                             "position_groupe": None, #TODO
                             "par_delegation": None
                         }
