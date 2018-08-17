@@ -38,20 +38,24 @@ class loadScrutinsTask extends sfBaseTask
           continue;
         }
 
+        $new = false;
         $scrutin = Doctrine::getTable('Scrutin')->findOneByNumero($data->numero);
         if (!$scrutin) {
           $scrutin = new Scrutin();
           $scrutin->setNumero($data->numero);
+          $scrutin->setType($data->type);
+
+          try {
+            $scrutin->setSeance($data->seance);
+          } catch (Exception $e) {
+            // Commenté pour ne pas spammer les cron avec les séances pas encore publiées
+            // echo "ERREUR $file (seance) : {$e->getMessage()}\n";
+            $seances_manquantes++;
+            continue;
+          }
+          $new = true;
         }
 
-        try {
-          $scrutin->setSeance($data->seance);
-        } catch (Exception $e) {
-          // Commenté pour ne pas spammer les cron avec les séances pas encore publiées
-          // echo "ERREUR $file (seance) : {$e->getMessage()}\n";
-          $seances_manquantes++;
-          continue;
-        }
 
         if (!in_array($scrutin->seance_id, $seance_ids)) {
           $seance_ids[] = $scrutin->seance_id;
@@ -60,7 +64,6 @@ class loadScrutinsTask extends sfBaseTask
         try {
           $scrutin->setDemandeurs($data->demandeurs);
           $scrutin->setTitre($data->titre);
-          $scrutin->setType($data->type);
           $scrutin->setStats($data->sort,
                              $data->nombre_votants,
                              $data->nombre_pours,
@@ -72,14 +75,16 @@ class loadScrutinsTask extends sfBaseTask
           continue;
         }
 
-        $scrutin->save();
-
-        try {
-          $scrutin->tagIntervention();
-        } catch(Exception $e) {
-          echo "ERREUR $file (tag interventions) : {$e->getMessage()}\n";
-          continue;
+        if ($new) {
+          try {
+            $scrutin->tagIntervention();
+          } catch(Exception $e) {
+            echo "ERREUR $file (tag interventions) : {$e->getMessage()}\n";
+            continue;
+          }
         }
+
+        $scrutin->save();
 
         $scrutin->setVotes($data->parlementaires);
         $scrutin->free();
