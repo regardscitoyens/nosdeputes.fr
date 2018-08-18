@@ -114,6 +114,14 @@ def parse_scrutins(legislature, data):
                 f.write(json_data)
             log("Scrutin %s mis à jour" % scrutin["numero"])
 
+ERREURS_AN = {
+    "120": "20172002",
+    "121": "20172002",
+    "334": "20180086",
+    "335": "20180086",
+    "336": "20180086",
+    "337": "20180086",
+}
 
 def parse_scrutin(data, seances, groupes, histo_groupes):
     logs = []
@@ -133,6 +141,8 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
         "demandeurs": clean_demandeurs(data["demandeur"]["texte"], data["numero"]),
         "parlementaires": {},
     }
+    if data["numero"] in ERREURS_AN:
+        scrutin["seance"] = ERREURS_AN[data["numero"]]
     if not scrutin["seance"]:
         logs.append("WARNING: scrutin %s has no seance %s" % (data["numero"], data["seanceRef"]))
     if not scrutin["demandeurs"]:

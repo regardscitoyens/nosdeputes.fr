@@ -68,6 +68,7 @@ class Scrutin extends BaseScrutin
       throw new Exception(
           "Scrutin {$this->numero} non trouvé dans les interventions "
         . "de la séance {$seance->id} du {$seance->date} {$seance->moment}\n"
+        . "{$inter->source}\n"
         . "$info"
       );
     }
