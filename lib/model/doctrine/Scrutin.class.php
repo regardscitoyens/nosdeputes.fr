@@ -57,7 +57,6 @@ class Scrutin extends BaseScrutin
       } elseif (intval(end($match_votant[1])) != $this->nombre_votants
              || intval(end($match_pour[1])) != $this->nombre_pours
              || intval(end($match_contre[1])) != $this->nombre_contres) {
-        print_r($match_votant);
         $info .= "\n  inter {$inter->id} différente (v:".end($match_votant[1]).", p:".end($match_pour[1]).", c:".end($match_contre[1]).")";
       } else {
         $found = TRUE;
