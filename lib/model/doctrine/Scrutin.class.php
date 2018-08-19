@@ -42,10 +42,12 @@ class Scrutin extends BaseScrutin
 
     $found = FALSE;
     $info = "votants: {$this->nombre_votants}, pour: {$this->nombre_pours}, contre: {$this->nombre_contres}";
+    $source = "";
 
     foreach ($inters as $inter) {
       // Extraction des votants/pours/contres
       $text = $inter->intervention;
+      if (!$source) $source = $inter->source;
       $mv = preg_match('/nombre de votants(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_votant);
       $mp = preg_match('/pour l\'(?:adoption|approbation)(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_pour);
       $mc = preg_match('/contre(?:<\/td><td>|[,\s])(\d+)/i', $text, $match_contre);
@@ -68,7 +70,7 @@ class Scrutin extends BaseScrutin
       throw new Exception(
           "Scrutin {$this->numero} non trouvé dans les interventions "
         . "de la séance {$seance->id} du {$seance->date} {$seance->moment}\n"
-        . "{$inter->source}\n"
+        . "{$source}\n"
         . "$info"
       );
     }

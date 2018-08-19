@@ -121,6 +121,8 @@ ERREURS_AN = {
     "335": "20180086",
     "336": "20180086",
     "337": "20180086",
+    "361": "20180121",
+    "438": "20180174",
 }
 
 def parse_scrutin(data, seances, groupes, histo_groupes):
