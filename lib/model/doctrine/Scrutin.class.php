@@ -48,16 +48,16 @@ class Scrutin extends BaseScrutin
       // Extraction des votants/pours/contres
       $text = $inter->intervention;
       if (!$source) $source = $inter->source;
-      $mv = preg_match('/nombre de votants(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_votant);
-      $mp = preg_match('/pour l\'(?:adoption|approbation)(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_pour);
-      $mc = preg_match('/contre(?:<\/td><td>|[,\s])(\d+)/i', $text, $match_contre);
+      $mv = preg_match_all('/nombre de votants(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_votant);
+      $mp = preg_match_all('/pour l\'(?:adoption|approbation)(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_pour);
+      $mc = preg_match_all('/contre(?:<\/td><td>|[,\s])(\d+)/i', $text, $match_contre);
 
       if ($mv == 0 || $mp == 0 || $mc == 0) {
         echo "WARNING: décomptes intervention {$inter->id} incomplets :\n$text\n";
-      } elseif (intval($match_votant[1]) != $this->nombre_votants
-             || intval($match_pour[1]) != $this->nombre_pours
-             || intval($match_contre[1]) != $this->nombre_contres) {
-        $info .= "\n  inter {$inter->id} différente (v:{$match_votant[1]}, p:{$match_pour[1]}, c:{$match_contre[1]})";
+      } elseif (intval(end($match_votant)[0]) != $this->nombre_votants
+             || intval(end($match_pour)[0]) != $this->nombre_pours
+             || intval(end($match_contre)[0]) != $this->nombre_contres) {
+        $info .= "\n  inter {$inter->id} différente (v:".end($match_votant[0]).", p:".end($match_pour[0]).", c:".end($match_contre[0]).")";
       } else {
         $found = TRUE;
         $inter->addTag("scrutin:numero={$this->numero}");
