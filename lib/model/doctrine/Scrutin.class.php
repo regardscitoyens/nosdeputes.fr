@@ -54,10 +54,11 @@ class Scrutin extends BaseScrutin
 
       if ($mv == 0 || $mp == 0 || $mc == 0) {
         echo "WARNING: décomptes intervention {$inter->id} incomplets :\n$text\n";
-      } elseif (intval(end($match_votant)[0]) != $this->nombre_votants
-             || intval(end($match_pour)[0]) != $this->nombre_pours
-             || intval(end($match_contre)[0]) != $this->nombre_contres) {
-        $info .= "\n  inter {$inter->id} différente (v:".end($match_votant[0]).", p:".end($match_pour[0]).", c:".end($match_contre[0]).")";
+      } elseif (intval(end($match_votant[1])) != $this->nombre_votants
+             || intval(end($match_pour[1])) != $this->nombre_pours
+             || intval(end($match_contre[1])) != $this->nombre_contres) {
+        print_r($match_votant);
+        $info .= "\n  inter {$inter->id} différente (v:".end($match_votant[1]).", p:".end($match_pour[1]).", c:".end($match_contre[1]).")";
       } else {
         $found = TRUE;
         $inter->addTag("scrutin:numero={$this->numero}");
