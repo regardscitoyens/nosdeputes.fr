@@ -9,6 +9,7 @@ foreach ($tops as $t)
 <h2 class="aligncenter"><small>(<a href="<?php echo url_for('@faq'); ?>#post_2">mise-à-jour quotidienne</a>, dernière en date le <?php echo preg_replace('/20(\d+)-(\d+)-(\d+) (\d+):(\d+):\d+/', '$3/$2/$1 à $4H$5', $date); ?>)</small></h2>
 <h2>Activité <?php if ($fin) echo "mensuelle moyenne "; ?>de tous les députés<?php echo ($fin ? " ayant exercé au moins 6 mois" : ($fresh ? "" : " en cours de mandat depuis au moins 10 mois")); ?> :</h2>
 <?php
+$indicateurs = myTools::$indicateurs;
 $title = array(
   'semaines_presence'               => "d'activité",
   'commission_presences'            => 'réunion',
@@ -40,22 +41,9 @@ $class = array(
   'questions_ecrites'               => 'qe',
   'questions_orales'                => 'qo'
 );
-$bulles = array(
-  "",
-  "Semaines d'activité -- Nombre de semaines où le député a été relevé présent en commission, -- a pris la parole (même brièvement) dans hémicycle -- ou a participé physiquement à un scrutin public",
-  "Réunions de Commission -- Nombre de réunions de commission où le député a été relevé présent",
-  "Interventions en Commission -- Nombre d'interventions prononcées par le député en commissions",
-  "Interventions longues en Hémicycle -- Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle",
-  "Interventions courtes en Hémicycle -- Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle",
-  "Amendements proposés -- Nombre d'amendements proposés par le député (indiqué « auteur » par l'Assemblée)",
-  "Amendements signés -- Nombre d'amendements proposés ou co-signés par le député",
-  "Amendements adoptés -- Nombre d'amendements signés par le député qui ont été adoptés en séance",
-  "Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur",
-  "Propositions écrites -- Nombre de propositions de loi ou de résolution dont le député est l'auteur",
-  "Propositions signées -- Nombre de propositions de loi ou de résolution dont le député est cosignataire",
-  "Questions écrites -- Nombre de questions écrites soumises par le député",
-  "Questions orales -- Nombre de questions orales posées par le député"
-);
+$bulles = array("");
+foreach (array_keys($title) as $k)
+  $bulles[] = $indicateurs[$k]['titre'].' --  -- '.$indicateurs[$k]['desc'];
 ?>
 <div class="liste_deputes_top">
 <div class="synthese">
@@ -63,11 +51,11 @@ $bulles = array(
 <thead>
   <tr>
     <th id="search"></th>
-    <th title="Trier par : Semaines d'activité -- Nombre de semaines où le député a été relevé présent en commission, -- a pris la parole (même brièvement) dans l'hémicycle -- ou a participé physiquement à un scrutin public" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', '@top_global_sorted?sort=1'); ?></th>
+    <th title="Trier par : <?php echo $bulles[1]; ?>" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', '@top_global_sorted?sort=1'); ?></th>
     <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
     <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
     <th colspan="3" class="<?php if ($sort == 6 || $sort == 7 || $sort == 8) echo 'tr_odd';?>">Amendements</th>
-    <th title="Trier par : Rapports écrits -- Nombre de rapports ou avis dont le député est l'auteur" class="jstitle <?php if ($sort == 9) echo 'tr_odd';?>"><?php echo link_to('Rapports', '@top_global_sorted?sort=9'); ?></th>
+    <th title="Trier par : <?php echo $bulles[9]; ?>" class="jstitle <?php if ($sort == 9) echo 'tr_odd';?>"><?php echo link_to('Rapports', '@top_global_sorted?sort=9'); ?></th>
     <th colspan="2" class="<?php if ($sort == 10 || $sort == 11) echo 'tr_odd';?>">Propositions</th>
     <th colspan="2" class="<?php if ($sort == 12 || $sort == 13) echo 'tr_odd';?>">Questions</th>
   </tr>
@@ -136,15 +124,17 @@ $bulles = array(
 <h2 id="groupes">Activité moyenne d'un député de chaque groupe politique <?php if ($fresh) echo "depuis le début de la législature"; elseif ($fin) echo "sur toute la législature"; else echo "au cours des 12 derniers mois"; ?> :</h2>
 <div class="liste_deputes_top">
 <div class="synthese">
+<?php for($i=0; $i<count($bulles); $i++)
+  $bulles[$i] = str_replace('Nombre', 'Nombre moyen', str_replace('le député', 'un député de ce groupe', $bulles[$i])); ?>
 <table id="synthese_groupes">
 <thead>
   <tr>
     <th class="gpes <?php echo $class['parl']; ?>">&nbsp;</th>
-    <th title="Semaines d'activité -- Nombre moyen de semaines où un député de ce groupe -- a été relevé présent en commission, a pris la parole (même brièvement) -- dans l'hémicycle ou a participé physiquement à un scrutin public" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>">Semaines</th>
+    <th title="<?php echo $bulles[1]; ?>" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>">Semaines</th>
     <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
     <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
     <th colspan="3" class="<?php if ($sort == 6 || $sort == 7|| $sort == 8) echo 'tr_odd';?>">Amendements</th>
-    <th title="Rapports écrits -- Nombre moyen de rapports ou avis dont le député est l'auteur" class="jstitle <?php if ($sort == 9) echo 'tr_odd';?>">Rapports</th>
+    <th title="<?php echo $bulles[9]; ?>" class="jstitle <?php if ($sort == 9) echo 'tr_odd';?>">Rapports</th>
     <th colspan="2" class="<?php if ($sort == 10 || $sort == 11) echo 'tr_odd';?>">Propositions</th>
     <th colspan="2" class="<?php if ($sort == 12 || $sort == 13) echo 'tr_odd';?>">Questions</th>
   </tr>
@@ -154,7 +144,7 @@ $bulles = array(
     foreach($ktop as $key) :
       if ($key === "") continue;
       $i++;
-      $bulles[$i] = str_replace('Nombre', 'Nombre moyen', str_replace('le député', 'un député de ce groupe', $bulles[$i])); ?>
+    ?>
     <th
       data-dynatable-column="<?php echo $key; ?>"
       data-dynatable-sorts="<?php echo $key; ?>-sort"
@@ -196,19 +186,9 @@ $bulles = array(
 <div id="legende" class="synthese_div">
 <h2>Explications :</h2>
 <ul>
-  <li><strong>Semaines d'activité</strong> : Nombre de semaines où le député a été relevé présent en commission, a pris la parole (même brièvement) dans l'hémicycle ou a participé physiquement à un scrutin public</li>
-  <li><strong>Commission réunions</strong> : Nombre de réunions de commission où le député a été relevé présent</li>
-  <li><strong>Commission interventions</strong> : Nombre d'interventions prononcées par le député en commissions</li>
-  <li><strong>Hémicycle interventions longues</strong> : Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle</li>
-  <li><strong>Hémicycle interventions courtes</strong> : Nombre d'interventions de 20 mots et moins prononcées par le député en hémicycle</li>
-  <li><strong>Amendements proposés</strong> : Nombre d'amendements proposés par le député (indiqué «&nbsp;auteur&nbsp;» par l'Assemblée)</li>
-  <li><strong>Amendements signés</strong> : Nombre d'amendements proposés ou co-signés par le député</li>
-  <li><strong>Amendements adoptés</strong> : Nombre d'amendements signés par le député qui ont été adoptés</li>
-  <li><strong>Rapports écrits</strong> : Nombre de rapports ou avis dont le député est l'auteur</li>
-  <li><strong>Propositions écrites</strong> : Nombre de propositions de loi ou de résolution dont le député est l'auteur</li>
-  <li><strong>Propositions signées</strong> : Nombre de propositions de loi ou de résolution dont le député est cosignataire</li>
-  <li><strong>Questions écrites</strong> : Nombre de questions au gouvernement écrites soumises par le député</li>
-  <li><strong>Questions orales</strong> : Nombre de questions au gouvernement orales posées par le député</li>
+<?php foreach(array_keys($title) as $k)
+  echo '<li><strong>'.$indicateurs[$k]['titre'].'</strong> : '.str_replace(' -- ', ' ', $indicateurs[$k]['desc']).'</li>';
+?>
 </ul>
 <p><a href="<?php echo url_for('@faq#post_1'); ?>">Lire notre FAQ pour plus d'explications</a></p>
 </div>

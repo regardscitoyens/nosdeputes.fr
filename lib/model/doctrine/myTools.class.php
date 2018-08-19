@@ -228,6 +228,65 @@ class myTools {
     return self::convertYamlToArray(sfConfig::get('app_commissions_permanentes', array()));
   }
 
+  public static $indicateurs = array(
+    'semaines_presence' => array(
+        'titre' => "Semaines d'activité",
+        'desc' => "Nombre de semaines où le député a été relevé présent en commission, -- a pris la parole (même brièvement) dans l'hémicycle -- ou a participé physiquement à un scrutin public"
+    ),
+    'commission_presences' => array(
+        'titre' => "Présences en Commission",
+        'desc' => "Nombre de réunions de commission où le député a été relevé présent"
+    ),
+    'commission_interventions' => array(
+        'titre' => "Interventions en Commission",
+        'desc' => "Nombre d'interventions prononcées par le député dans les commissions"
+    ),
+    'hemicycle_presences' => array(
+        'titre' => "Présences en Hémicycle",
+        'desc' => "Information non publique"
+    ),
+    'hemicycle_interventions' => array(
+        'titre' => "Interventions longues en Hémicycle",
+        'desc' => "Nombre d'interventions de plus de 20 mots -- prononcées par le député en hémicycle"
+    ),
+    'hemicycle_interventions_courtes' => array(
+        'titre' => "Interventions courtes en Hémicycle",
+        'desc' => "Nombre d'interventions de 20 mots et moins -- prononcées par le député en hémicycle"
+    ),
+    'amendements_proposes' => array(
+        'titre' => "Amendements proposés",
+        'desc' => "Nombre d'amendements proposés par le député -- (indiqué « auteur » par l'Assemblée)"
+    ),
+    'amendements_signes' => array(
+        'titre' => "Amendements signés",
+        'desc' => "Nombre d'amendements proposés ou co-signés par le député"
+    ),
+    'amendements_adoptes' => array(
+        'titre' => "Amendements adoptés",
+        'desc' => "Nombre d'amendements signés par le député -- qui ont été adoptés en séance"
+    ),
+    'rapports' => array(
+        'titre' => "Rapports écrits",
+        'desc' => "Nombre de rapports ou avis dont le député est l'auteur"
+    ),
+    'propositions_ecrites' => array(
+        'titre' => "Propositions de loi écrites",
+        'desc' => "Nombre de propositions de loi ou de résolution -- dont le député est l'auteur"
+    ),
+    'propositions_signees' => array(
+        'titre' => "Propositions de loi signées",
+        'desc' => "Nombre de propositions de loi ou de résolution -- dont le député est cosignataire"
+    ),
+    'questions_ecrites' => array(
+        'titre' => "Questions écrites",
+        'desc' => "Nombre de questions écrites soumises -- par le député au gouvernement"
+    ),
+    'questions_orales' => array(
+        'titre' => "Questions orales",
+        'desc' => "Nombre de questions orales posées -- par le député au gouvernement"
+    )
+  );
+
   static $num_mois = array(
      "01" => "janvier",
      "02" => "février",
