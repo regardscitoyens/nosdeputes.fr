@@ -7,19 +7,16 @@ if ($absolute)
   $abs = 'absolute=true';
 $size='';
 $width = 790;
-$height = 300;
 $jsheight = 300;
 if ($time === 'lastyear')
   $shortduree = 'annee';
 else $shortduree = $time;
-if ($type === 'total')
+if ($type === 'total') {
   $titre = 'globale-'.$shortduree;
-else {
+} else {
   $titre = $type;
-  $height = 267;
   if ($type === 'commission') {
     $titre .= 's';
-    $height = 185;
   }
   $titre .= '-'.$shortduree;
 }
@@ -34,7 +31,7 @@ if ($link === 'true') {
 <div class="activity_plot" id="plot<?php echo $type; ?>">
   <?php if (!$absolute) echo '<noscript>'; ?>
   <img
-    style="width: <?php echo $width; ?>px; height: <?php echo $height; ?>px;"
+    style="width: <?php echo $width; ?>px;"
     alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>"
     src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type, $abs).'?questions='.$questions.'&link='.$link.'&histogram='.$histogram; ?>"
   />
