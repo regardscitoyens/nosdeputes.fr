@@ -96,6 +96,7 @@ class loadScrutinsTask extends sfBaseTask
       $seances = Doctrine::getTable("Seance")
                          ->createQuery("s")
                          ->whereIn("s.id", $seance_ids)
+                         ->andWhere("s.type = 'hemicycle'")
                          ->execute();
 
       foreach ($seances as $seance) {
