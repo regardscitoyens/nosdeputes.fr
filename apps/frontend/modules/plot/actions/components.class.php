@@ -151,18 +151,20 @@ class plotComponents extends sfComponents
         $an_legis++;
         $sem_legis = 1;
       }
-      $startweek = ($annee0 - $an_legis)*52 + $sem0 - $sem_legis;
+      $startweek = ($annee0 - $an_legis)*52 + $sem0 - $sem_legis + 1;
       if ($startweek <= 0) {
         $weeks_acti = count($prmedi['total']);
         for ($i=1; $i <= $weeks_acti; $i++) {
-          $this->data['presences_medi']['commission'][$i-$startweek] = $prmedi['commission'][$i];
-          $this->data['presences_medi']['hemicycle'][$i-$startweek] = $prmedi['hemicycle'][$i];
-          $this->data['presences_medi']['total'][$i-$startweek] = $prmedi['total'][$i];
+          $this->data['presences_medi']['commission'][$i-$startweek-1] = $prmedi['commission'][$i];
+          $this->data['presences_medi']['hemicycle'][$i-$startweek-1] = $prmedi['hemicycle'][$i];
+          $this->data['presences_medi']['total'][$i-$startweek-1] = $prmedi['total'][$i];
         }
       } else {
-        $this->data['presences_medi']['commission'] = array_slice($prmedi['commission'], $startweek + 1, $n_weeks);
-        $this->data['presences_medi']['hemicycle'] = array_slice($prmedi['hemicycle'], $startweek + 1, $n_weeks);
-        $this->data['presences_medi']['total'] = array_slice($prmedi['total'], $startweek + 1, $n_weeks);
+        for ($i=0; $i < $n_weeks; $i++) {
+          $this->data['presences_medi']['commission'][$i+1] = $prmedi['commission'][$startweek + $i];
+          $this->data['presences_medi']['hemicycle'][$i+1] = $prmedi['hemicycle'][$startweek + $i];
+          $this->data['presences_medi']['total'][$i+1] = $prmedi['total'][$startweek + $i];
+        }
       }
     }
 
