@@ -42,7 +42,7 @@ $class = array(
 );
 $bulles = array(
   "",
-  "Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle",
+  "Semaines d'activité -- Nombre de semaines où le député a été relevé présent en commission, -- a pris la parole (même brièvement) dans hémicycle -- ou a participé physiquement à un scrutin public",
   "Réunions de Commission -- Nombre de réunions de commission où le député a été relevé présent",
   "Interventions en Commission -- Nombre d'interventions prononcées par le député en commissions",
   "Interventions longues en Hémicycle -- Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle",
@@ -63,7 +63,7 @@ $bulles = array(
 <thead>
   <tr>
     <th id="search"></th>
-    <th title="Trier par : Semaines d'activité -- Nombre de semaines où le député a été relevé présent -- en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', '@top_global_sorted?sort=1'); ?></th>
+    <th title="Trier par : Semaines d'activité -- Nombre de semaines où le député a été relevé présent en commission, -- a pris la parole (même brièvement) dans l'hémicycle -- ou a participé physiquement à un scrutin public" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', '@top_global_sorted?sort=1'); ?></th>
     <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
     <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
     <th colspan="3" class="<?php if ($sort == 6 || $sort == 7 || $sort == 8) echo 'tr_odd';?>">Amendements</th>
@@ -140,7 +140,7 @@ $bulles = array(
 <thead>
   <tr>
     <th class="gpes <?php echo $class['parl']; ?>">&nbsp;</th>
-    <th title="Semaines d'activité -- Nombre moyen de semaines où un député de ce groupe -- a été relevé présent en commission ou a pris la parole (même brièvement) en hémicycle" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>">Semaines</th>
+    <th title="Semaines d'activité -- Nombre moyen de semaines où un député de ce groupe -- a été relevé présent en commission, a pris la parole (même brièvement) -- dans l'hémicycle ou a participé physiquement à un scrutin public" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>">Semaines</th>
     <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
     <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
     <th colspan="3" class="<?php if ($sort == 6 || $sort == 7|| $sort == 8) echo 'tr_odd';?>">Amendements</th>
@@ -196,7 +196,7 @@ $bulles = array(
 <div id="legende" class="synthese_div">
 <h2>Explications :</h2>
 <ul>
-  <li><strong>Semaines d'activité</strong> : Nombre de semaines où le député a été relevé présent en commission ou a pris la parole (même brièvement) en hémicycle</li>
+  <li><strong>Semaines d'activité</strong> : Nombre de semaines où le député a été relevé présent en commission, a pris la parole (même brièvement) dans l'hémicycle ou a participé physiquement à un scrutin public</li>
   <li><strong>Commission réunions</strong> : Nombre de réunions de commission où le député a été relevé présent</li>
   <li><strong>Commission interventions</strong> : Nombre d'interventions prononcées par le député en commissions</li>
   <li><strong>Hémicycle interventions longues</strong> : Nombre d'interventions de plus de 20 mots prononcées par le député en hémicycle</li>
