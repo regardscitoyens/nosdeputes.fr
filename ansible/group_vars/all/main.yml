@@ -11,6 +11,7 @@ cpc_home: /opt/cpc
 cpc_senat: false
 cpc_repo: https://github.com/regardscitoyens/nosdeputes.fr
 cpc_version: "{{ cpc_senat | ternary('nossenateurs.fr', 'master') }}"
+cpc_force_git: false
 # cpc_dump: /path/to/dump.sql.gz
 
 cpc_port_web: 8001

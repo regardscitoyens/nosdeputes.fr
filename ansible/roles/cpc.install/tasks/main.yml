@@ -30,6 +30,7 @@
     repo: '{{ cpc_repo }}'
     dest: '{{ cpc_home }}/repo'
     version: '{{ cpc_version }}'
+    force: '{{ cpc_force_git }}'
 
 - name: Permissions repo git
   file:
@@ -47,6 +48,7 @@
   with_items:
     - cache
     - lib/vendor/SolrServer/solr/data
+    - lib/vendor/SolrServer/solr/conf
     - log
     - web/images/tmp/xspchart
 
@@ -188,6 +190,7 @@
   include: roles/cpc.exec/tasks/main.yml
   vars:
     command: bin/generate_routing.sh
+  when: not cpc_senat
 
 - name: Génération schéma base de données
   include: roles/cpc.exec/tasks/main.yml
