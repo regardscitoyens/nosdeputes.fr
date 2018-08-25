@@ -33,7 +33,7 @@ $a = WWW::Mechanize->new();
 for($annee = $dannee ; $annee <= $year ; $annee++) {
 $lastmonth = 12;
 $lastmonth = $mon if ($year == $annee);
-for($mois = $dmois ; $mois <= $lastmonth ; $mois++) { 
+for($mois = $dmois ; $mois <= $lastmonth ; $mois++) {
     print STDERR "$mois ($lastmonth) $annee ($year)\n";
     $url = 'http://www.senat.fr/seances/s'.sprintf('%04d', $annee).sprintf('%02d', $mois).'/s'.sprintf('%04d', $annee).sprintf('%02d', $mois).'.html';
 
@@ -78,5 +78,5 @@ for($mois = $dmois ; $mois <= $lastmonth ; $mois++) {
     }
 
 }
-$dmois = 1; 
+$dmois = 1;
 }
