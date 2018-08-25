@@ -27,7 +27,7 @@ then
         echo "WARNING : l'indexation solr est lockée alors que son processus ne tourne plus..."
         echo " suppression du fichier (tentative n°$STATUS)...";
         rm $LOCK
-        if [ $STATUS -ge 3 ]; then
+        if [ $STATUS -ge 15 ]; then
             echo "trying to restart Tomcat"
             sudo /etc/init.d/tomcat6 restart > /tmp/log-restart-tomcat 2>&1
             cat /tmp/log-restart-tomcat
@@ -68,7 +68,7 @@ fi
 
 while ! php symfony index:Solr $option ; do
 if test "$1" = "" ; then
-   exit;
+    exit;
 fi
 sleep 1
 done
