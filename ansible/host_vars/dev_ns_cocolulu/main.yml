@@ -21,3 +21,4 @@ cpc_spool_mails: false
 cpc_solr: true
 
 cpc_senat: true
+cpc_php_show_errors: true

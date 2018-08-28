@@ -34,9 +34,9 @@ cpc_nd_options:
   fin_legislature: false
   host_prev: 2012.nosdeputes.fr
   host_next:
-  groupes_actuels: <
+  groupes_actuels: |
     ["LFI", "GDR", "SER", "RP", "LREM", "MODEM", "RCUDI", "LR", "NI"]
-  groupes_infos: <
+  groupes_infos: |
     [
     "La France Insoumise / LFI / 255,30,30 / France Insoumise / insoumis",
     "Gauche Démocrate et Républicaine / GDR / 255,40,100 / PCF et régionalistes / gauche.*d[eéÉ]mocrate",
@@ -48,9 +48,9 @@ cpc_nd_options:
     "Les Républicains / LR / 30,30,200 / Les Républicains / r[eéÉ]publicains",
     "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (Divers droite, FN…) / inscrit|députés.*aucun"
     ]
-  groupes_proximite: <
+  groupes_proximite: |
     ["LFI / GDR", "LFI / SER", "GDR / SER", "SER / RP", "SER / LREM", "RP / LREM", "LREM / MODEM", "LREM / RCUDI", "MODEM / RCUDI", "RCUDI / LR", "LR / NI"]
-  commissions_permanentes: <
+  commissions_permanentes: |
     [
     "commission-des-lois-constitutionnelles-de-la-legislation-et-de-l-administration-generale-de-la-republique",
     "commission-des-finances-de-l-economie-generale-et-du-controle-budgetaire",
@@ -66,9 +66,9 @@ cpc_ns_options:
   legislature: 13
   debut_mandature: "2011-10-01"
   debut_data: "2004-10-01"
-  groupes_actuels: <
+  groupes_actuels: |
     ["CRCE", "SOC", "RDSE", "LREM", "RTLI", "UC", "LR", "NI"]
-  groupes_infos: <
+  groupes_infos: |
     [
     "Communiste Républicain Citoyen et Écologiste / CRCE / 255,30,30 / PCF, EELV et ratt. / communiste|citoyen|cologiste",
     "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche / CRC-SPG / 255,30,30 / PCF, PG et ratt. / communiste|citoyen|sénateurs.*gauche",

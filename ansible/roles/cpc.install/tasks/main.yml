@@ -183,6 +183,7 @@
 - name: Attente container MySQL
   wait_for:
     port: '{{ cpc_port_mysql }}'
+    delay: 5
     connect_timeout: 5
     timeout: 30
 
@@ -197,11 +198,11 @@
   vars:
     command: php symfony doctrine:build --all --no-confirmation
 
+- name: Import dump
+  include: dump.yml
+  when: cpc_dump is defined
+
 - name: Vidage cache
   include: roles/cpc.exec/tasks/main.yml
   vars:
     command: php symfony cc
-
-- name: Import dump
-  include: dump.yml
-  when: cpc_dump is defined
