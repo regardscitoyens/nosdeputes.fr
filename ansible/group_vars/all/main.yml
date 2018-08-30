@@ -79,7 +79,7 @@ cpc_ns_options:
     "Écologiste / ECO / 0,230,30 / Écologistes (EELV) / [eéÉ]cologiste",
     "Rassemblement Démocratique et Social Européen / RDSE / 250,195,132 / Socio-Radicaux (PRG, MRC) / démocratique|européen",
     "La République en Marche / LREM / 232,197,5 / En Marche / marche",
-    "République et Territoires - Les Indépendants / RTLI / 232,197,5 / LR & UDI proches d'En Marche / territoires|ind.*pendants",
+    "Les Indépendants - République et Territoires / RTLI / 30,180,255 / LR & UDI proches d'En Marche / territoires|ind.*pendants",
     "Union Centriste / UC / 130,140,255 / Union Centriste (NC, Modem, ...) / centre|centriste",
     "Union des Démocrates et Indépendants - UC / UDI / 30,180,255 / Union Centriste (NC, Modem, ...) / union.*d[eé]mocrates.*ind[eé]pendants",
     "Union Centriste et Républicaine / UCR / 30,180,255 / Union Centriste (NC, Modem, ...) / centre|centriste",
