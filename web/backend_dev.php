@@ -6,7 +6,6 @@ $configuration = ProjectConfiguration::getApplicationConfiguration('backend', 'd
 // this check prevents access to debug front controllers that are deployed by accident to production servers.
 // feel free to remove this, extend it or make something more sophisticated.
 if (!myTools::isAdminIP(@$_SERVER)) {
-{
   die('You are not allowed to access this file. Check '.basename(__FILE__).' for more information.');
 }
 
