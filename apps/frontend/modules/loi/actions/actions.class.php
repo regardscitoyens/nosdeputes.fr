@@ -42,7 +42,7 @@ class loiActions extends sfActions
     return $amendements;
   }
 
- 
+
   public function executeLoi(sfWebRequest $request) {
     $loi_id = $this->getLoi($request);
     $this->soussections = Doctrine::getTable('TitreLoi')->createquery('t')
@@ -201,7 +201,7 @@ class loiActions extends sfActions
     $this->alineas = Doctrine::getTable('Alinea')
       ->createquery('a')
       ->where('a.article_loi_id = ?', $article->id)
-      ->andWhereIn('a.numero', $index) 
+      ->andWhereIn('a.numero', $index)
       ->orderBy('a.numero')
       ->execute();
     $this->forward404Unless(count($this->alineas));
@@ -259,10 +259,10 @@ class loiActions extends sfActions
 	}
 	if (preg_match('/^(code|livre)/', $loi) && $article) {
     		foreach (Alinea::$code_legif as $code => $legif) if (preg_match('/'.$code.'/', $loi)) {
-      			return $this->redirect('http://www.legifrance.gouv.fr/rechCodeArticle.do?champCode='.$legif.'&champNumArticle='.$article);
+      			return $this->redirect('https://www.legifrance.gouv.fr/rechCodeArticle.do?champCode='.$legif.'&champNumArticle='.$article);
     		}
 	}
-	return $this->redirect('http://www.google.fr/search?btnI=1&q=site%3Alegifrance.gouv.fr+'.urlencode($loi.' article '.$article));
+	return $this->redirect('https://www.google.fr/search?btnI=1&q=site%3Alegifrance.gouv.fr+'.urlencode($loi.' article '.$article));
   }
 
 }

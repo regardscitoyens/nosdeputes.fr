@@ -139,7 +139,7 @@ class Question extends BaseQuestion
       $numero = $match[2];
       $shortnum = preg_replace('/\//', '', preg_replace('/^0+/', '', $numero));
       if (preg_match('/ ([dD]eputee?|AN|[aA]ssemblee\s*[nN]ationale) /', $parag))
-        $link = "http://www.nosdeputes.fr/question/QE/".$shortnum;
+        $link = "https://www.nosdeputes.fr/question/QE/".$shortnum;
       else {
         $shortnumorder = preg_replace('/^(\d+)([a-z])$/i', '\\2\\1', $shortnum);
         $link = url_for('@question_numero?legi='.$this->legislature.'&numero='.$shortnumorder);

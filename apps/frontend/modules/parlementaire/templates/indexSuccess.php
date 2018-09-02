@@ -3,7 +3,7 @@
 <!--
 	// preload img fond sous-menu
 	$('<img />').attr('src', '<?php echo $sf_request->getRelativeUrlRoot()."/css/".$style."/images/sous_menu_combined.png"; ?>');
-	
+
      // Widget page d'accueil
 	commentaires = new Array ();
 	commentaires_update = new Array ();
@@ -14,12 +14,12 @@
 	reprends_a = 0;
 	timerWidget = null;
 	i = 0;
-	
+
 	$(document).ready(function() {
 	  getWidget();
 	  timerUpdate = setInterval(function(){updateWidget();}, update);
 	});
-	
+
 	function getWidget() {
 	  $.ajax({
 	    url: "<?php echo url_for('@commentaires_widget'); ?>",
@@ -51,7 +51,7 @@
 		}
 	  });
     }
-	
+
 	function launchWidget() {
 	  $(".commentaire_widget").each(function () {
 	    commentaires[i] = $(this).attr("id");
@@ -60,7 +60,7 @@
 	  });
 	  changeCommentaire(0);
 	}
-	
+
 	function changeCommentaire(i) {
 	  if(i == commentaires.length) { i = 0; }
 	  cache = i - 2;
@@ -74,7 +74,7 @@
 	  i++;
 	  timerWidget = setTimeout(function(){changeCommentaire(i);}, change);
     }
-	
+
 	function updateWidget() {
 	  $.ajax({
 	    url: "<?php echo url_for('@commentaires_widget'); ?>",
@@ -108,7 +108,7 @@
 		}
 	  });
 	}
-	
+
 	function reorderWidget() {
 	  q = 0;
 	  $("#coms_widget_update div[class='commentaire_widget']").each(function () {
@@ -118,7 +118,7 @@
 	  });
     commentaires = commentaires_update;
 	  commentaires_update = new Array ();
-    
+
 	  /* $.merge(commentaires, commentaires_update);
 	  commentaires_update = null;
 	  commentaires_temp = uniqueArray(commentaires);
@@ -131,24 +131,24 @@
 	  });
 	  commentaires_temp = null; */
 	}
-	
+
   function clearTimer() {
 	  clearTimeout(timerWidget);
 	}
-	
+
 	$(".commentaire_widget").live("mouseover", function() {
 	  clearInterval(timerUpdate);
 	  clearTimeout(timerWidget);
 	  reprends_a = i;
 	});
-	
+
 	$(".commentaire_widget").live("mouseout", function() {
 	  timerUpdate = setInterval(function(){updateWidget();}, update);
 	  timerWidget = setTimeout(function(){changeCommentaire(reprends_a);}, 1000);
 	});
 //-->
 </script>
-<div class="clear"> 
+<div class="clear">
 <div class ="accueil_message">
 <div class="accueil_message_content">
     <h1>Bienvenue sur NosSénateurs.fr</h1>
@@ -157,7 +157,7 @@
     <p>Conçu comme une plateforme de médiation entre citoyens et sénateurs, le site propose à chacun de participer et de s'exprimer sur les débats parlementaires. Au travers de leurs commentaires, les utilisateurs sont invités à créer le débat en partageant leur expertise lorsque cela leur semble utile. Peut-être pourront-ils ainsi nourrir le travail de leurs élus ?</p>
   </div>
   <div class="accueil_message_signature">
-    <p>Toute l'équipe du collectif <a href="http://www.regardscitoyens.org/">RegardsCitoyens.org</a>.</p>
+    <p>Toute l'équipe du collectif <a href="https://www.regardscitoyens.org/">RegardsCitoyens.org</a>.</p>
   </div>
 </div>
 
