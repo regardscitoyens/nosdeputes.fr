@@ -89,9 +89,9 @@ Organisme:
       moretags: [type]
       index_if: has_parlementaires
   columns:
-    nom: 
-      type: string(511)
-      unique: true
+    nom:
+      type: string(512)
+#      unique: true
 #      notnull: true
     type:
       type: enum
