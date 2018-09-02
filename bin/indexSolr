@@ -8,8 +8,6 @@ if test -e $PATH_APP/data/frontend_prod-cli.lck || test -e $PATH_APP/data/fronte
     exit 1;
 fi
 
-export USE_ZEND_ALLOC=0
-
 #CRASHSTATUS
 STATUSFILE="/tmp/indexSolr.tomcatcrash.status"
 if test ! -e $STATUSFILE ;
@@ -39,40 +37,45 @@ then
     exit 1;
 fi
 
-option=''
-if test "$1" = "all"; then
-   option="--all=yes"
-fi
-if test "$1" = "verbose"; then
-   option="--verbose=yes --trace"
-fi
-
-
 echo $$ > $LOCK
 #echo Debut Indexation $option
 #date
 cd $PATH_APP
 
 
-if test -e log/solr/commands.log.lock; then
-    split -a 4 -d -l 600 log/solr/commands.log.lock log/solr/commands.log.$(date +%y%m%d%H%M)-
-    rm -f log/solr/commands.log.lock
+option=''
+if test "$1" = "all"; then
+  echo "Reindexing all!"
+  echo
+  while ! php symfony index:Solr --all=yes; do
+    :
+  done
+else 
+  if test "$1" = "verbose"; then
+      option="--verbose=yes --trace"
+  fi
+  
+  
+  if test -e log/solr/commands.log.lock; then
+      split -a 4 -d -l 600 log/solr/commands.log.lock log/solr/commands.log.$(date +%y%m%d%H%M)-
+      rm -f log/solr/commands.log.lock
+  fi
+  
+  if ! test -e log/solr/commands.log.lock; then
+      nextcommand=$(ls log/solr/commands.log.* 2> /dev/null | grep -v lock | head -n 1)
+      if test "$nextcommand" ; then
+          mv $nextcommand log/solr/commands.log.lock
+      fi
+  fi
+  
+  while ! php symfony index:Solr $option ; do
+  if test "$1" = "" ; then
+      exit;
+  fi
+  sleep 1
+  done
+  #echo Fin Indexation
+  #date
 fi
-
-if ! test -e log/solr/commands.log.lock; then
-    nextcommand=$(ls log/solr/commands.log.* 2> /dev/null | grep -v lock | head -n 1)
-    if test "$nextcommand" ; then
-        mv $nextcommand log/solr/commands.log.lock
-    fi
-fi
-
-while ! php symfony index:Solr $option ; do
-if test "$1" = "" ; then
-    exit;
-fi
-sleep 1
-done
-#echo Fin Indexation
-#date
 echo "0" > $STATUSFILE
 rm $LOCK ;
