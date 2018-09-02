@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="language" content="fr" />
 <meta name="robots" content="index, follow" />
-  
+
     <title></title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/xneth/jquery-ui-1.8.5.custom.css" />
@@ -17,7 +17,7 @@
 	<script type="text/javascript" src="/iepngfix/iepngfix_tilebg.js"></script>
     <style type="text/css">
     img, div { behavior: url('/iepngfix/iepngfix.php') }
-    </style> 
+    </style>
     <![endif]-->
 	<script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
 	<script type="text/javascript" src="/js/jquery-ui-1.8.5.custom.min.js"></script>
@@ -28,17 +28,17 @@
   <div id="contenu">
       <div id="top">
         <div class="initiative">
-          <a href="http://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);">Une initiative de RegardsCitoyens.org</a>
+          <a href="https://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);">Une initiative de RegardsCitoyens.org</a>
         </div>
 <div id="connected" class="identification">
 <p id="loggued_top">
-<a href="/login">Se connecter</a> - 
+<a href="/login">Se connecter</a> -
 <a href="/login">Mon compte</a>
 
 </p>
 </div>
-  <script type="text/javascript"><!-- 
-  $('#connected').load("/ajax/identification"); 
+  <script type="text/javascript"><!--
+  $('#connected').load("/ajax/identification");
 --></script>
       </div>
       <div id="header">
@@ -88,7 +88,7 @@
           </ul>
         </div>
         </div>
-        
+
         <div id="sous_menu_3" style="display:none">
               <div class="elements_sous_menu">
 
@@ -109,7 +109,7 @@
       </div>
       <div id="bottom">
         <div class="regardscitoyens">
-		<a href="http://www.regardscitoyens.org"><span class="RC">R</span>egards<span class="RC">C</span><span style="color: #C1272D;">i</span>toyens.org</a>
+		<a href="https://www.regardscitoyens.org"><span class="RC">R</span>egards<span class="RC">C</span><span style="color: #C1272D;">i</span>toyens.org</a>
 		</div>
 
       </div>

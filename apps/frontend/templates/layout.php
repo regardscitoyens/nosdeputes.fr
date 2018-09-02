@@ -12,7 +12,7 @@
     <meta name="twitter:domain" content="NosSénateurs.fr">
     <meta name="twitter:title" content="NosSénateurs.fr - Regards Citoyens">
     <meta name="twitter:description" content="Observatoire citoyen de l'activité parlementaire au Sénat">
-    <meta name="twitter:image:src" content="http://www.regardscitoyens.org/wp-content/themes/RegardsCitoyens/images/nossenateurs.png">
+    <meta name="twitter:image:src" content="https://www.regardscitoyens.org/wp-content/themes/RegardsCitoyens/images/nossenateurs.png">
 
 <!-- Facebook metas -->
     <meta property="og:type" content="website" />
@@ -21,7 +21,7 @@
     <meta property="og:description" content="Observatoire citoyen de l'activité parlementaire au Sénat" />
     <meta property="og:url" content="https://www.NosSénateurs.fr" />
     <meta property="og:locale" content="fr_FR" />
-    <meta property="og:image" content="http://www.regardscitoyens.org/wp-content/themes/RegardsCitoyens/images/nossenateurs.png" />
+    <meta property="og:image" content="https://www.regardscitoyens.org/wp-content/themes/RegardsCitoyens/images/nossenateurs.png" />
     <meta property="og:image:type" content="image/png" />
 
     <?php include_title() ?>

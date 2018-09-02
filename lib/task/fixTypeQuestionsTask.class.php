@@ -24,7 +24,7 @@ class fixTypeQuestionsTask extends sfBaseTask {
     foreach ($intervs as $itv) {
       if ($seance != $itv->seance_id) {
         $seance = $itv->seance_id;
-        echo "Séance N°$seance : http://www.nossenateurs.fr/seance/$seance\n";
+        echo "Séance N°$seance : https://www.nossenateurs.fr/seance/$seance\n";
       }
       if (preg_match('/^question/i', $itv->Section->titre_complet) && $itv->type != "question") {
         $itv->type = "question";

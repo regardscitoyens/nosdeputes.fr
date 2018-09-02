@@ -25,8 +25,7 @@ class myTools {
 
   public static function url_forAPI($args) {
     sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-    $url = url_for($args, 'absolute=true');
-    return preg_replace('/^https:\/\//', 'http://', $url);
+    return url_for($args, 'absolute=true');
   }
 
   public static function isAdminIP($http_headers) {
