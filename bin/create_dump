@@ -6,7 +6,4 @@ cd $(dirname $0)/..
 source bin/db.inc
 
 mysqldump $MYSQLID $DBNAME parlementaire personnalite amendement intervention organisme parlementaire_amendement parlementaire_organisme parlementaire_photo parlementaire_texteloi presence preuve_presence question seance section alinea article article_loi article_version tag tagging texteloi titre_loi variable_globale > data/sql/donnees.sql
-
-
 gzip -f data/sql/donnees.sql
-
