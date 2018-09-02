@@ -28,12 +28,12 @@ class SolrConnector extends sfLogger
   }
 
 
-  public function updateFromCommands($output = 0) {
+  public function updateFromCommands($output = 0, $limitlines = 1) {
     $file = SolrCommands::getInstance()->getCommandContent();
     $nlines = 0;
     foreach(file($file) as $line) {
       $nlines++;
-      if ($nlines > 601) {
+      if ($limitlines && $nlines > 601) {
         $this->commit(1);
         return false;
       }

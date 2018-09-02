@@ -84,23 +84,17 @@ class indexSolrTask extends sfBaseTask
       return;
     }
 
-    $ct = 0;
     foreach(array("Parlementaire", "Organisme", "Amendement", "Question", "Citoyen", "Commentaire", "Texteloi", "Section", "Intervention") as $table) {
       while (1) {
-	if ($ct > 1000) {
-	  echo "Stopped to avoid memory issues, please restart\n";
-	  $this->writeState();
-	  return false;
-	}
 	$q = Doctrine::getTable($table)
 	  ->createQuery('o')
 	  ->orderBy('o.id ASC');
 	if ($this->state[$table]) {
 	  $q->where('o.id > ?', $this->state[$table]);
 	}
-	$q->limit(100);
+	$q->limit(10);
 	if (!$q->count()) {
-	  echo "Count DONE\n";
+	  echo "$table DONE\n";
 	  break;
 	}
 
@@ -108,10 +102,10 @@ class indexSolrTask extends sfBaseTask
 	  echo get_class($o).' '.$o->id."\n";
 	  $o->Save();
 	  $this->state[$table] = $o->id;
-	  $ct++;
 	}
-	$solr->updateFromCommands($options['verbose'] == 'yes');
+	$solr->updateFromCommands($options['verbose'] == 'yes', 0);
 	$this->writeState();
+	exit(1);
       }
     }
     //    unlink($this->file_conf);
