@@ -2,7 +2,7 @@ MYSQLID="-h database -u cpc -pcpc"
 DBNAME="cpc"
 DUMPDIR="data/sql/dumps"
 PATH_APP="/var/www/cpc"
-SOLR_DATA_PATH="$PATH_APP/data/solr"
+SOLR_DATA_PATH="$PATH_APP/lib/vendor/SolrServer/solr/data"
 {% if cpc_senat == false %}
 VHOST={{ cpc_domain }}
 PADURL=https://etherpad.mozilla.org/xxxxxxxxxxx
