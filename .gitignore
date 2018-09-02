@@ -11,7 +11,7 @@
 
 ansible/books/*.retry
 
-bin/db.inc
+bin/db*.inc
 config/app.yml
 config/databases.yml
 config/ProjectConfiguration.class.php
