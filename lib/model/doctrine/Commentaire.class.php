@@ -88,7 +88,8 @@ class Commentaire extends BaseCommentaire
   public function updateNbCommentaires($inc = 0) {
     if ($this->object_type) {
       $o = Doctrine::getTable($this->object_type)->find($this->object_id);
-      $o->updateNbCommentaires($inc);
+      if ($o)
+        $o->updateNbCommentaires($inc);
     }
     foreach ($this->getObjects() as $object) {
       $o = Doctrine::getTable($object->object_type)->find($object->object_id);

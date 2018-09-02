@@ -84,7 +84,7 @@ class indexSolrTask extends sfBaseTask
       return;
     }
 
-    foreach(array("Parlementaire", "Organisme", "Amendement", "Question", "Citoyen", "Commentaire", "Texteloi", "Section", "Intervention") as $table) {
+    foreach(array("Parlementaire", "Organisme", "Citoyen", "Commentaire", "Texteloi", "Section", "Question", "Intervention", "Amendement") as $table) {
       while (1) {
 	$q = Doctrine::getTable($table)
 	  ->createQuery('o')
