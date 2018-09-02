@@ -15,6 +15,7 @@ bin/db.inc
 config/app.yml
 config/databases.yml
 config/ProjectConfiguration.class.php
+apps/frontend/config/factories.yml
 lib/vendor/SolrServer/solr/conf/solrconfig.xml
 
 data/sql/
@@ -96,6 +97,8 @@ lib/model/doctrine/sfDoctrineActAsTaggablePlugin/
 
 web/amendements/
 web/circonscription.html
+web/circonscriptions/
+web/google*.html
 web/1*/
 web/images/tmp/
 web/liasses/
