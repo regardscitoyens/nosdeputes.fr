@@ -29,6 +29,7 @@ Parlementaire:
       description: [villes]
       moretags: [profession]
       date: debut_mandat
+      no_index_on_save: true
   columns:
     nom_circo: string(255)
     num_circo: integer

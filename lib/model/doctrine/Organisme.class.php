@@ -87,4 +87,9 @@ class Organisme extends BaseOrganisme
       return true;
     return false;
   }
+
+  public function indexInSolr() {
+    $this->getListener()->get("Solr")->addSolrCommand($this);
+  }
+
 }

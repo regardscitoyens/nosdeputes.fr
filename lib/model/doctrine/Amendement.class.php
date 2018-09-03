@@ -200,4 +200,8 @@ class Amendement extends BaseAmendement {
     return true;
   }
 
+  public function indexInSolr() {
+    $this->getListener()->get("Solr")->addSolrCommand($this);
+  }
+
 }

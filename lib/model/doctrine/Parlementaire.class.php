@@ -675,6 +675,7 @@ class Parlementaire extends BaseParlementaire
     }
     $this->setInternalPhoto($s);
   }
+
   public function save(Doctrine_Connection $c = null) {
     parent::save($c);
     if (isset($this->photo) && $this->photo) {
@@ -684,4 +685,9 @@ class Parlementaire extends BaseParlementaire
     }
     return true;
   }
+
+  public function indexInSolr() {
+    $this->getListener()->get("Solr")->addSolrCommand($this);
+  }
+
 }

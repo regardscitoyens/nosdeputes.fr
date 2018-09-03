@@ -130,5 +130,9 @@ class Section extends BaseSection
     $this->save();
   }
 
+  public function indexInSolr() {
+    $this->getListener()->get("Solr")->addSolrCommand($this);
+  }
+
 }
 ?>

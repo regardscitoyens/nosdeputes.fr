@@ -49,4 +49,9 @@ class Citoyen extends BaseCitoyen
     }
     if(is_array($array)) { return $this->_set('parametres', serialize($array)); }
   }
+
+  public function indexInSolr() {
+    $this->getListener()->get("Solr")->addSolrCommand($this);
+  }
+
 }

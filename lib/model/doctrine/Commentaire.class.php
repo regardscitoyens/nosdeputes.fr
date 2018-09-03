@@ -107,4 +107,9 @@ class Commentaire extends BaseCommentaire
     $b = $this->is_public;
     $this->updateNbCommentaires(($b) ? 1 : -1);
   }
+
+  public function indexInSolr() {
+    $this->getListener()->get("Solr")->addSolrCommand($this);
+  }
+
 }

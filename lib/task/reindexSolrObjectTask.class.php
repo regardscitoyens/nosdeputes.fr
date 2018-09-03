@@ -20,14 +20,17 @@ class reindexSolrObjectTask extends sfBaseTask {
       return;
     }
     $id = $arguments['id'];
-    if (!($id >= 0)) {
-      echo "ERREUR : $id n'a pas l'air d'une id correcte";
+    if (!(($id == "all" && $class == "Parlementaire") || $id >= 0)) {
+        echo "ERREUR : $id n'a pas l'air d'une id correcte";
       return;
     }
     if ($class === "Seance") {
-      $inters = Doctrine::getTable('Intervention')->createQuery('i')->where('seance_id = ?', $id)->execute(); 
+      $inters = Doctrine::getTable('Intervention')->createQuery('i')->where('seance_id = ?', $id)->execute();
       foreach ($inters as $i)
         $this->index("Intervention", $i->id);
+    } else if ($id === "all") {
+      foreach (Doctrine::getTable($class)->createQuery()->execute() as $o)
+        $this->index($class, $o->id);
     } else {
       $this->index($class, $id);
     }
@@ -40,7 +43,7 @@ class reindexSolrObjectTask extends sfBaseTask {
       $json->id = $class.'/'.$id;
       SolrCommands::getInstance()->addCommand('DELETE', $json);
     } else {
-      $obj->save();
+      $obj->indexInSolr();
     }
   }
 }

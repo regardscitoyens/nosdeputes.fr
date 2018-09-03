@@ -56,13 +56,13 @@ class Intervention extends BaseIntervention
       $titre .= ' le ';
     }
     $titre .= myTools::displayShortDate($this->date);
-    if ($this->type != 'commission')      
+    if ($this->type != 'commission')
       $titre .= ' : '.ucfirst($this->getDossier());
     return $titre;
   }
 
   public function getDossier() {
-    if ($this->type === 'question' && $section = $this->Section) 
+    if ($this->type === 'question' && $section = $this->Section)
       return $section->getTitre();
     if ($this->type === 'loi' && $section = $this->Section->Section)
       return $section->getTitreComplet();
@@ -91,7 +91,7 @@ class Intervention extends BaseIntervention
     return $id;
   }
 
-  public function setPersonnaliteByNom($nom, $fonction = null) 
+  public function setPersonnaliteByNom($nom, $fonction = null)
   {
     $nom = html_entity_decode($nom, ENT_COMPAT, 'UTF-8');
     $fonction = html_entity_decode($fonction, ENT_COMPAT, 'UTF-8');
@@ -108,7 +108,7 @@ class Intervention extends BaseIntervention
     }else{
       self::$personnalites = array();
     }
-    if (!preg_match('/d([eé]|'.$acc.')put([eé]|'.$acc.')|ministre|secr([eé]|'.$acc.')taire [^t]+tat|commissaire|garde des sceaux/i', $fonction)) { 
+    if (!preg_match('/d([eé]|'.$acc.')put([eé]|'.$acc.')|ministre|secr([eé]|'.$acc.')taire [^t]+tat|commissaire|garde des sceaux/i', $fonction)) {
       $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
       if (!$personne && ($this->type != "commission" || $fonction == null || preg_match('/(s([eé]|'.$acc.')nateur|s([eé]|'.$acc.')natrice|rapporteur|pr([eé]|'.$acc.')sidente?$|pr([eé]|'.$acc.')sidente? de la commission)/i', $fonction))) {
 	$personne = Doctrine::getTable('Parlementaire')->similarToCheckPrenom($nom);
@@ -160,7 +160,7 @@ class Intervention extends BaseIntervention
     if ($this->hasIntervenant())
       return false;
     similar_text(strip_tags($this->intervention), $this->Section->getTitreComplet(), $sim);
-    if ($sim > 70) 
+    if ($sim > 70)
       return false;
     similar_text(strip_tags($this->intervention), $this->Section->getTitre(), $sim);
     if ($sim > 70)
@@ -212,7 +212,7 @@ class Intervention extends BaseIntervention
     $tlois = preg_replace('/[^,\d\-]+/', '', $tlois);
     $tlois = preg_replace('/\s+,/', ',', $tlois);
     $tlois = preg_replace('/,\s+/', ',', $tlois);
-    return explode(',', $tlois); 
+    return explode(',', $tlois);
   }
 
   public function updateTagLois($strlois) {
@@ -287,7 +287,7 @@ class Intervention extends BaseIntervention
         $section1 = Doctrine::getTable('Section')->findOneByContexte($contexte);
         $section2 = Doctrine::getTable('Section')->findOneByIdDossierInstitution($urls[0]['distinct']);
         if ($section2) {
-          if (!$section1) 
+          if (!$section1)
             $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt(str_replace(trim(preg_replace('/^([^>]+)(>.*)?$/', '\\1', $contexte)), $section2->titre, $contexte), $date, $timestamp));
           else if ($section1->section_id == $section2->id)
             $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($section1->titre_complet, $date, $timestamp));
@@ -320,7 +320,7 @@ class Intervention extends BaseIntervention
       $this->addTag($tag);
     }
   }
-  
+
   public function setIntervention($s) {
     $s = str_replace(html_entity_decode('&nbsp;', ENT_COMPAT, "UTF-8"), ' ', $s);
     $this->_set('nb_mots', str_word_count($s));
@@ -387,4 +387,9 @@ class Intervention extends BaseIntervention
     }
     return $intertot;
   }
+
+  public function indexInSolr() {
+    $this->getListener()->get("Solr")->addSolrCommand($this);
+  }
+
 }

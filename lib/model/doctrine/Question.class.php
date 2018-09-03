@@ -164,4 +164,8 @@ class Question extends BaseQuestion
     return myTools::escape_blanks($reponse);
   }
 
+  public function indexInSolr() {
+    $this->getListener()->get("Solr")->addSolrCommand($this);
+  }
+
 }

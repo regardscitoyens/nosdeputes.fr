@@ -70,6 +70,10 @@ class SolrListener extends Doctrine_Record_Listener
   {
     $obj = $event->getInvoker();
 
+    if (isset($this->_options['no_index_on_save']) && $this->_options['no_index_on_save']) {
+      return;
+    }
+
     $t = null;
     if (isset( $this->_options['index_if']) && $t = $this->_options['index_if']) {
       if (!($obj->get($t))) {
@@ -77,6 +81,10 @@ class SolrListener extends Doctrine_Record_Listener
       }
     }
 
+    $this->addSolrCommand($obj);
+  }
+
+  public function addSolrCommand($obj) {
     $json = array();
     $json['id'] = $this->getLuceneObjId($obj);
     $json['object_id'] =  $obj->getId();

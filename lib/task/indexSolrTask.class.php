@@ -100,7 +100,7 @@ class indexSolrTask extends sfBaseTask
 
 	foreach($q->execute() as $o) {
 	  echo get_class($o).' '.$o->id."\n";
-	  $o->Save();
+	  $o->indexInSolr();
 	  $this->state[$table] = $o->id;
 	}
 	$solr->updateFromCommands($options['verbose'] == 'yes', 0);
