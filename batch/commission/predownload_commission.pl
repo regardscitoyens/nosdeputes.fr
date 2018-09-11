@@ -21,7 +21,16 @@ $ok = 1;
 
 foreach $index (@indexes) {
     print "INDEX : $index\n";
-    $a->get($index);
+    eval { $a->get($index); };
+    if( not $a->res->is_success ){
+      print STDERR "ERREUR geting $index, retrying...";
+      eval { $a->get($index); };
+      if( not $a->res->is_success ){
+        print STDERR " ...still failing. skipping it\n";
+        next;
+      }
+      print STDERR "\n";
+    }
     $content = $a->content;
     $p = HTML::TokeParser->new(\$content);
     while ($t = $p->get_tag('a')) {
@@ -34,7 +43,17 @@ foreach $index (@indexes) {
 	    next if ($done{$url});
 	    $done{$url} = 1;
 	    print "MISSION : $url\n";
-	    $a->get($url);
+	    eval { $a->get($url); };
+        if( not $a->res->is_success ){
+          print STDERR "ERREUR geting $url, retrying...";
+          eval { $a->get($url); };
+          if( not $a->res->is_success ){
+            print STDERR " ...still failing. skipping it\n";
+            next;
+          }
+          print STDERR "\n";
+        }
+
 	    $content_page = $a->content;
 	    $pp = HTML::TokeParser->new(\$content_page);
 	    while ($tp = $pp->get_tag('a')) {

@@ -29,7 +29,16 @@ foreach $index (@indexes) {
     if (!$content) {
 	next;
     }
-    $a->get($index);
+    eval { $a->get($index); };
+    if( not $a->res->is_success ){
+      print STDERR "ERREUR geting $index, retrying...";
+      eval { $a->get($index); };
+      if( not $a->res->is_success ){
+        print STDERR " ...still failing. skipping it\n";
+        next;
+      }
+      print STDERR "\n";
+    }
     $p = HTML::TokeParser->new(\$content);
     while ($t = $p->get_tag('a')) {
 	if ($t->[1]{href} =~ /compte-rendu-commissions/ || $t->[1]{href} =~ /\d{6}\d*.html/) {

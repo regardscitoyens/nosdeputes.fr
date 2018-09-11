@@ -120,7 +120,16 @@ sub find_elements {
   my $urlp = shift;
   my $urla = "";
   my $outdir = "";
-  $aif->get($urlp);
+  eval { $aif->get($urlp); };
+  if( not $aif->res->is_success and not $aif->res->is_redirect ){
+    print STDERR "ERREUR geting $urlp, retrying...";
+    eval { $aif->get($urlp); };
+    if( not $aif->res->is_success and not $aif->res->is_redirect ){
+      print STDERR " ...still failing. skipping it\n";
+      return;
+    }
+    print STDERR "\n";
+  }
   if ($donedo{$aif->uri}) {
     return;
   }
@@ -130,7 +139,7 @@ sub find_elements {
   if ($contentleg =~ s/iso-8859-1/utf-8/gi) {
     $contentleg = decode("windows-1252", $contentleg);
   }
-  
+
   $contentleg =~ s/<a/\n<a/ig;
   foreach $line (split /\n/, $contentleg) {
    if ($line =~ /^<a/) {
@@ -154,6 +163,16 @@ sub find_elements {
 sub explore_page {
   my $baseurls = shift;
   $a->get($baseurls);
+  eval { $a->get($baseurls); };
+  if( not $a->res->is_success ){
+    print STDERR "ERREUR geting $baseurls, retrying...";
+    eval { $a->get($baseurls); };
+    if( not $a->res->is_success ){
+      print STDERR " ...still failing. skipping it\n";
+      return;
+    }
+    print STDERR "\n";
+  }
   my $content = $a->content;
   if ($content =~ s/iso-8859-1/utf-8/gi) {
     $content = decode("windows-1252", $content);
@@ -163,6 +182,7 @@ sub explore_page {
    if ($link =~ /^<a/) {
     $link = examine_url($link);
     if ($link =~ /dossier(leg|-legislatif)/) {
+      $link =~ s/dossierleg/dossier-legislatif/;
       find_elements($link);
     }
    }
