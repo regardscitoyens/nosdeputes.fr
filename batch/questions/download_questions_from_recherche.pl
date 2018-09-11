@@ -59,9 +59,9 @@ sub download_one {
   print " saving $uri ... " if ($verbose);
   open FILE, ">:utf8", "html/$htmfile";
   $thecontent = $a->content;
-  if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
-    $thecontent = decode("windows-1252", $thecontent);
-  }
+  #if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
+  #  $thecontent = decode("windows-1252", $thecontent);
+  #}
   print FILE $thecontent;
   close FILE;
   print "$file downloaded.\n" if ($verbose);
@@ -83,9 +83,9 @@ sub find_questions {
   }
   print $baseurl.$start."\n" if ($verbose);
   $content = $a->content;
-  if ($content =~ s/iso-8859-1/utf-8/gi) {
-    $content = decode("windows-1252", $content);
-  }
+  #if ($content =~ s/iso-8859-1/utf-8/gi) {
+  #  $content = decode("windows-1252", $content);
+  #}
   $content = decode_entities($content);
   $content =~ s/\s+/ /g;
   $content =~ s/<a/\n<a/g;

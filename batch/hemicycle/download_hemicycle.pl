@@ -63,9 +63,9 @@ for($mois = $dmois ; $mois <= $lastmonth ; $mois++) {
           $file = uri_escape($a->uri());
 	  open FILE, ">:utf8", "html/$file.tmp";
 	  $thecontent = $a->content;
-	  if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
-	      $thecontent = decode("windows-1252", $thecontent);
-	  }
+	  #if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
+	  #    $thecontent = decode("windows-1252", $thecontent);
+	  #}
 	  print FILE $thecontent;
 	  close FILE;
 	  if (! -e "html/$file" || -s "html/$file" != -s "html/$file.tmp") {
