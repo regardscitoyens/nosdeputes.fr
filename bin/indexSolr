@@ -47,7 +47,7 @@ option=''
 if test "$1" = "all"; then
   echo "Reindexing all!"
   echo
-  while ! php symfony index:Solr --all=yes; do
+  while ! time php symfony index:Solr --all=yes; do
     :
   done
 else 
