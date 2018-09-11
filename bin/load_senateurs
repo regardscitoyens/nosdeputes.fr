@@ -4,4 +4,5 @@ wget -q https://github.com/regardscitoyens/twitter-parlementaires/raw/master/dat
 bash parse_tous.sh 
 cd -
 php symfony update:Senateurs 
+php symfony reindex:SolrObject Parlementaire all
 
