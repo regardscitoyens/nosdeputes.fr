@@ -1,6 +1,7 @@
 #!/bin/bash
 
-cd /home/nossenateurs/prod
+. $(echo $0 | sed 's/[^\/]*$//')db.inc
+cd $PATH_APP
 
 php symfony top:Senateurs
 for month in 10 11 12; do
