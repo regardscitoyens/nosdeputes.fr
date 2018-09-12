@@ -2,7 +2,7 @@
 
 echo Tag Séances
 echo > /tmp/tag_seance.log
-php symfony cc --env=test  --app=frontend
+php symfony cc --env=test  --app=frontend > /dev/null
 date  >> /tmp/tag_seance.log
 while ! php symfony tag:Seance >> /tmp/tag_seance.log ; do
 	date  >> /tmp/tag_seance.log

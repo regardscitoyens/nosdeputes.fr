@@ -42,7 +42,10 @@ $a = WWW::Mechanize->new();
 sub find_senateurs {
 	$url = shift;
 	print "looking for senateurs in $url\n" if ($verbose);
-	$a->get($url);
+	eval { $a->get($url); };
+    if ($a->status() == 404) {
+        return;
+    }
 	$content = $a->content;
 	$p = HTML::TokeParser->new(\$content);
 	while ($t = $p->get_tag('a')) {

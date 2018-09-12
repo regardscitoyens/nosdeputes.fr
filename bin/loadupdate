@@ -67,23 +67,23 @@ fi
 if [[ $jo -eq 1 ]]; then
   echo JO
   echo =======================
-  cd batch/jo ; bash compute_latest.sh senat ; cd -
+  cd batch/jo ; bash compute_latest.sh senat ; cd ../..
 fi
 echo Hemicycles
 echo =======================
-cd batch/hemicycle ; bash compute_hemicycle.sh ; cd -
+cd batch/hemicycle ; bash compute_hemicycle.sh ; cd ../..
 echo Commissions
 echo =======================
-cd batch/commission ; bash compute_latest.sh $total ; cd -
+cd batch/commission ; bash compute_latest.sh $total ; cd ../..
 echo Amendements et Documents
 echo =======================
-cd batch ; perl download_elements_dossiers.pl $total ; cd -
+cd batch ; perl download_elements_dossiers.pl $total ; cd ..
 echo Parse amendements
 echo =======================
-cd batch/amendements ; bash compute_latest.sh ; cd -
+cd batch/amendements ; bash compute_latest.sh ; cd ../..
 echo Parse documents
 echo =======================
-cd batch/documents ; bash compute_latest.sh ; cd -
+cd batch/documents ; bash compute_latest.sh ; cd ../..
 if [[ $questions -ne 0 ]]; then
   echo Questions
   echo =======================
@@ -93,7 +93,7 @@ if [[ $questions -ne 0 ]]; then
   else
     bash compute_latest.sh all
   fi
-  cd -
+  cd ../..
 fi
 
 # Vérification des JSON
