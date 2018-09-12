@@ -18,8 +18,10 @@ class loadDocumentsTask extends sfBaseTask {
 	$cpt = 0;
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == "." || $file == ".svn") continue;
-          if ($cpt > 50)
+          if ($cpt > 10) {
+                echo "\n";
                 exit(1);
+          }
           $cpt ++;
           foreach(file($dir.$file) as $line) {
 	    echo "\n$dir$file ... ";
