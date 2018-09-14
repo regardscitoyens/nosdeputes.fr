@@ -2,7 +2,7 @@
 cd batch/senateur
 wget -q https://github.com/regardscitoyens/twitter-parlementaires/raw/master/data/senateurs.csv --no-check-certificate -O twitter.csv
 bash parse_tous.sh 
-cd -
+cd ../..
 php symfony update:Senateurs 
 php symfony reindex:SolrObject Parlementaire all
 
