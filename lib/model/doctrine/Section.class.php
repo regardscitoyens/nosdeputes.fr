@@ -112,10 +112,18 @@ class Section extends BaseSection
     $titre = myTools::betterUCFirst(preg_replace('/\s*\?$/', '', $this->_get('titre')));
     if (preg_match('/auditions? /i', $titre)) {
       $titre = preg_replace('/audition/', 'Audition', $titre);
-      $titre = preg_replace('/([, ])m([mle\.]+) (.)([^\s\-]+)((-)(.)(\S+))? (d[ulea\'\s]+)?(.)(\S+)/e', '"\\1M\\2 ".strtoupper("\\3")."\\4\\6".strtoupper("\\7")."\\8 \\9".strtoupper("\\10")."\\11"', $titre);
+      $titre = preg_replace_callback(
+        '/([, ])m([mle\.]+) (.)([^\s\-]+)((-)(.)(\S+))? (d[ulea\'\s]+)?(.)(\S+)/',
+        function($m) { return $m[1].'M'.$m[2].' '.strtoupper($m[3]).$m[4].$m[6].strtoupper($m[7]).$m[8].' '.$m[9].strtoupper($m[10]).$m[11]; },
+        $titre
+      );
     }
     if (preg_match('/article/i', $titre))
-      $titre = preg_replace('/\s([a-p]{1,3})\s*(précédemment|réservés?|nouveaux?)*\s*$/e', '" ".strtoupper("\\1")', $titre);
+      $titre = preg_replace_callback(
+        '/\s([a-p]{1,3})\s*(précédemment|réservés?|nouveaux?)*\s*$/',
+        function($m) { return ' '.strtoupper($m[1]); },
+        $titre
+      );
     return $titre;
   }
 
