@@ -273,6 +273,18 @@ class parlementaireActions extends sfActions
       ->groupBy('o.id')
       ->orderBy('o.created_at')
       ->fetchArray();
+    $ids = array();
+    foreach ($this->organismes as $o)
+      $ids[] = $o['id'];
+    $this->old_organismes = Doctrine_Query::create()
+      ->select('o.nom, o.slug, count(distinct s.id) as reunions')
+      ->from('Organisme o')
+      ->leftJoin('o.Seances s')
+      ->where('o.type = ?', $this->type)
+      ->andWhereNotIn('o.id', $ids)
+      ->groupBy('o.id')
+      ->orderBy('o.created_at')
+      ->fetchArray();
     $this->human_type = $this->organisme_types[$this->type];
     $this->title = "Liste des ".$this->human_type;
     myTools::setPageTitle($this->title, $this->response);
