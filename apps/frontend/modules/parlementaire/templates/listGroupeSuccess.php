@@ -5,6 +5,7 @@
 </div>
 <div class="liste">
 <?php $listimp = array_keys($parlementaires);
+  rsort($listimp);
   foreach($listimp as $i) {
     echo '<div class="list_table">';
     include_partial('parlementaire/table', array('deputes' => $parlementaires[$i], 'list' => 1, 'imp' => $i, 'nogroupe' => 1));

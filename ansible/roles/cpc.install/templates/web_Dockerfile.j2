@@ -10,6 +10,7 @@ RUN apt-get update && apt-get -my install --no-install-recommends \
 	libmagickwand-dev \
 	libpng{{ use_stretch | ternary('', '12') }}-dev \
 	libwww-mechanize-perl \
+	python-lxml \
 	python-bs4 \
 	python-html5lib \
 	python-requests

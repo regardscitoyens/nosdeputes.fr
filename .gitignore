@@ -5,7 +5,9 @@
 *.new
 *.old
 *.pyc
+*.save
 *.sql.gz
+*.sv
 
 ansible/books/*.retry
 
@@ -25,17 +27,24 @@ cache/
 log/
 
 batch/amendements/commission/
+batch/amendements/errors/
 batch/amendements/html/
+batch/amendements/htmlall/
 batch/amendements/json/
 batch/amendements/loaded/
-batch/amendements/errors/
 batch/amendements/OpenDataAN/
+batch/amendements/pdfs/
+batch/amendements/to_parse.list
 batch/amendements/liste_sort_indefini.txt
+batch/amendements/missing_amdts_to_ignore.list
+batch/commission/conf/cr.list
+batch/commission/log_predownload
 batch/commission/html/
 batch/commission/tmp/
 batch/commission/out/
 batch/commission/loaded/
 batch/commission/presents/
+batch/commission/modified/
 batch/common/opendata
 batch/depute/html/
 batch/depute/json/
@@ -49,23 +58,39 @@ batch/documents/ppr/
 batch/documents/rap/
 batch/documents/ta/
 batch/documents/out/
+batch/documents/rga/
+batch/documents/tas/
+batch/documents/textes-senat.tar.gz
+batch/documents/to_parse.list
 batch/dossiers/html/
 batch/hemicycle/html/
 batch/hemicycle/out/
 batch/hemicycle/loaded/
+batch/hemicycle/modified/
+batch/hemicycle/new/
 batch/jo/export/
 batch/jo/html/
 batch/jo/pdf/
 batch/jo/json/
+batch/jo/new2016senat.json
+batch/jo/test/
+batch/jo/tmp/
+batch/jo/xml.sv/
 batch/loi/json/
 batch/presences/oldjson/
 batch/presences/json/
+batch/questions/20*/
 batch/questions/html/
 batch/questions/json/
 batch/questions/test/
 batch/questions/dernier_numero.txt
 batch/questions/liste_sans_reponse.txt
 batch/sanctions/
+batch/senateur/html/
+batch/senateur/out.yml/
+batch/senateur/out/
+batch/senateur/test/
+batch/senateur/twitter.csv
 batch/scrutin/scrutins
 batch/scrutin/loaded
 

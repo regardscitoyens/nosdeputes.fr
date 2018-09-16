@@ -343,7 +343,7 @@ class Texteloi extends BaseTexteloi
       else return null;
     }
     $str2 = substr($str, 0, 1000);
-    $str2 = preg_replace('/\s+[^\s]*$/', '', $str2);
+    $str2 = preg_replace('/\s+[^\s\w]*$/', '', $str2);
     if (strlen($str) > 1000) {
       $str2 .= '...';
     } else if (!$str) $str2 = "";

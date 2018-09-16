@@ -19,8 +19,6 @@ phpmyadmin:
   image: corbinu/docker-phpmyadmin
   ports:
     - "127.0.0.1:{{ cpc_port_phpmyadmin }}:80"
-  volumes:
-    - {{ cpc_home }}/mysql:/var/lib/mysql/
   environment:
     - MYSQL_USERNAME=root
     - MYSQL_PASSWORD=password
@@ -33,6 +31,8 @@ database:
   command: --max_allowed_packet={{ cpc_mysql_max_packet }}
   ports:
     - "127.0.0.1:{{ cpc_port_mysql }}:3306"
+  volumes:
+    - {{ cpc_home }}/mysql:/var/lib/mysql/
   environment:
     - MYSQL_ROOT_PASSWORD=password
     - MYSQL_DATABASE=cpc

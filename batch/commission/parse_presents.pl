@@ -200,7 +200,7 @@ foreach $line (split /\n/, $string)
         $commission = $1;
     }
     $origline = $line;
-    if ($special && $line =~ /[pP]résidence de \|M[.me]+ ([A-ZÉ][^|]*)\|/) {
+    if ($special && $line =~ /[pP]résidence de \|?M[.me]+ ([A-ZÉ][^|]*)\|?/) {
         push @presents, $1;
     }
     #print STDERR "TEST $special $present: $line\n";
@@ -210,6 +210,7 @@ foreach $line (split /\n/, $string)
     if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) étai(en)?t présents?..*$/\2/g)) {
 	$line =~ s/<[^>]+>//g;
 	$line =~ s/&[^;]*;/ /g;
+	$line =~ s/(M[.me]+ )\1/\1/g;
     if ($special) {
         next if ($line =~ /Secrétaire d'État/i);
         while ($line =~ s/(M[me.]+ [^,]+, )puis (M[me.]+ [^\/]+)/\1\2/) {}

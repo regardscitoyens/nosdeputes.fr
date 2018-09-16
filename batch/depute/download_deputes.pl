@@ -11,7 +11,16 @@ sub download_fiche {
   $uri =~ s/^\//http:\/\/www2.assemblee-nationale.fr\//;
   print "$uri" if ($verbose);
   $a->max_redirect(0);
-  $a->get($uri);
+  eval { $a->get($uri); };
+  if( not $a->res->is_success and not $a->res->is_redirect ){
+    print STDERR "ERREUR geting $uri, retrying...";
+    eval { $a->get($uri); };
+    if( not $a->res->is_success and not $a->res->is_redirect ){
+      print STDERR " ...still failing. skipping it\n";
+      return;
+    }
+    print STDERR "\n";
+  }
   $status = $a->status();
   if (($status >= 300) && ($status < 400)) {
     $location = $a->response()->header('Location');

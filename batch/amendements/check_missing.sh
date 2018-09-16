@@ -52,18 +52,20 @@ extra=$(diff all_amdts_AN.tmp all_amdts_nosdeputes.tmp | grep "^>" | wc -l)
 if [ $extra -gt 0 ]; then
   echo "- NosDéputés has $extra Amendements not in AN's OpenData yet(?):"
   diff all_amdts_AN.tmp all_amdts_nosdeputes.tmp    |
-    grep "^>"                                               |
+    grep "^>"                                       |
     sed 's/^> //' > extra_amdmts_ND
     echo 'Full list available in "extra_amdmts_ND"'
   echo
 fi
 
-missing=$(diff all_amdts_AN.tmp all_amdts_nosdeputes.tmp | grep "^<" | wc -l)
+ignoring=$(cat missing_amdts_to_ignore.list 2> /dev/null | tr "\n" "|" | sed 's/|$//')
+missing=$(diff all_amdts_AN.tmp all_amdts_nosdeputes.tmp | grep "^<" | grep -vP "$ignoring" | wc -l)
 if [ $missing -gt 0 ]; then
   echo "There are $missing Amendements missing, reloading them:"
   diff all_amdts_AN.tmp all_amdts_nosdeputes.tmp    |
-    grep "^<"                                               |
-    sed 's/^< //'                                           |
+    grep "^<"                                       |
+    grep -vP "$ignoring"                            |
+    sed 's/^< //'                                   |
     while read AMurl; do
       AMfile=$(echo "$AMurl" | sed 's|/|_-_|g')
       perl download_one.pl "$AMurl" 2>/dev/null && ( perl cut_amdmt.pl "html/$AMfile" | python clean_subjects_amdmts.py > "json/$AMfile" ) || echo "ERROR: $AMurl missing from AN web"

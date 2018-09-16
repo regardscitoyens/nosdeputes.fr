@@ -1,0 +1,24 @@
+---
+
+cpc_domain: cocolulu.nossenateurs.fr
+cpc_instance_name: nossenateurs_dev
+
+cpc_user: nossenateurs_dev
+cpc_home: /srv/nossenateurs_dev
+
+cpc_repo: https://github.com/regardscitoyens/nosdeputes.fr
+cpc_version: nossenateurs.fr_foransible
+
+cpc_port_web: 8201
+cpc_port_phpmyadmin: 8202
+cpc_port_mysql: 8203
+cpc_port_memcached: 8204
+cpc_port_solr: 8205
+
+cpc_memcached: false
+cpc_memcached_limit: 100M
+cpc_spool_mails: false
+cpc_solr: true
+
+cpc_senat: true
+cpc_php_show_errors: true
