@@ -18,7 +18,7 @@ all:
     [
     "La France Insoumise / LFI / 204,42,70 / France Insoumise / insoumise",
     "Gauche Démocrate et Républicaine / GDR / 255,30,30 / PCF & ultramarins / gauche\s*d.*mocrate",
-    "Nouvelle Gauche / SOC / 255,50,190 / PS et divers gauche / nouvelle",
+    "Nouvelle Gauche / NG / 255,50,190 / PS et divers gauche / nouvelle",
     "Socialistes et apparentés / SOC / 255,50,190 / PS et divers gauche / socialiste",
     "La République En Marche / LREM / 232,197,5 / En Marche / marche",
     "Mouvement Démocrate et apparentés / MODEM / 247,138,13 / MoDem / mouvement",
