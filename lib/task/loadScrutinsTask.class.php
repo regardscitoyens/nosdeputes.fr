@@ -41,6 +41,10 @@ class loadScrutinsTask extends sfBaseTask
         $new = false;
         $scrutin = Doctrine::getTable('Scrutin')->findOneByNumero($data->numero);
         if (!$scrutin) {
+          if (!$data->seance) {
+            $seances_manquantes++;
+            continue;
+          }
           $scrutin = new Scrutin();
           $scrutin->setNumero($data->numero);
           $scrutin->setType($data->type);
