@@ -55,7 +55,7 @@ clean_subject_amendements_regexp = [(re.compile(reg), res) for (reg, res) in [
     (ur'^(texte .*)?(le sénat|alinéa|résolution|proposition|ppre).*$', ur'proposition de résolution européenne'),
     (r'((?:article|titre|chapitre|tome) [1I])( |$)', r'\1er\2'),
     (r'(section [1I])( |$)', ur'\1ère\2'),
-    (r' : .*$', ''),
+    (r' [-:] .*$', ''),
 ]]
 
 #(résoudre chiffres romains?)
