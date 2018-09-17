@@ -5,15 +5,15 @@ TMPFILE=/tmp/hard_cache.$$
 for url in synthese synthesetri/10 synthesetri/11 synthesetri/12 synthesetri/1 synthesetri/2 synthesetri/3 synthesetri/4 synthesetri/5 synthesetri/6 synthesetri/7 synthesetri/8 synthesetri/9;
 do 
   rm web/$url.html
-  curl -s http://www.nossenateurs.fr/$url > $TMPFILE
+  curl -sL https://www.nossenateurs.fr/$url > $TMPFILE
   mv $TMPFILE web/$url.html
 done;
 
 for seance_id in $(echo "select DISTINCT seance_id from presence order by seance_id" | mysql $MYSQLID $DBNAME | grep -v seance_id )
 do
-	echo "http://www.nossenateurs.fr/seance/$seance_id"
+	echo "https://www.nossenateurs.fr/seance/$seance_id"
 	rm web/seance/$seance_id.html 2> /dev/null
-	curl -s http://www.nossenateurs.fr/seance/$seance_id > $TMPFILE
+	curl -sL https://www.nossenateurs.fr/seance/$seance_id > $TMPFILE
 	mv $TMPFILE web/seance/$seance_id.html
 	sleep 5
 done
