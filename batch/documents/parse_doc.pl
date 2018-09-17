@@ -206,7 +206,7 @@ if ($string =~ s/^.*annexe au procès-verbal de la séance[dule\s]*((\d+e?r? \S*
   $sessions{sessionize(datize($3))}++;
 }
 
-$string =~ s/__+.*$//;
+$string =~ s/(^[+_ ]+|__+.*$)//;
 $string =~ s/\s*Série.*$//;
 $string =~ s/[,\s]*(PRÉSENTÉE? )?EN APPLICATION DE L'ARTICLE \d+(,? \S+\s?\d*,?)? DU RÈGLEMENT[,\s]*/ /i;
 $string =~ s/\s*EXPOSÉ DES MOTIFS.*$//i;
