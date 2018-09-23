@@ -138,7 +138,7 @@ class Scrutin extends BaseScrutin
           throw new Exception("Could not set vote metadata: {$data}");
         }
 
-        if ($has_delegations || (self::DEBUT_DELEGATIONS <= $this->Seance->date && $this->Seance->date <= self::FIN_DELEGATIONS) {
+        if ($has_delegations || (self::DEBUT_DELEGATIONS <= $this->Seance->date && $this->Seance->date <= self::FIN_DELEGATIONS)) {
           $parlscrutin->updatePresence();
         }
 
