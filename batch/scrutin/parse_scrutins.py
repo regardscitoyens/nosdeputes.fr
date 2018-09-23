@@ -217,6 +217,8 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
                         }
                     parl = scrutin["parlementaires"][votant["acteurRef"]]
                     parl["mise_au_point_position"] = position
+                    if position == parl["position"]:
+                        logs.append("WARNING: position and mise_au_point are identical for parl %s on scrutin %s: %s" % (votant["acteurRef"], scrutin["numero"], position))
 
     return scrutin, logs
 
