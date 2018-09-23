@@ -32,9 +32,15 @@ class presenceActions extends sfActions
     if ($this->type != "all")
       $query->andWhere('s.type = ?', $this->type);
     $this->presences = $query->execute();
-    $this->titre = "Présence en ";
-    if ($this->type == "all") $this->titre .= "hémicycle et commissions";
-    else $this->titre .= $this->type;
+
+    $this->titre = "Présences en ";
+    if ($this->type == "all") {
+      $this->titre = "Prises de parole en hémicycle et présences en commissions";
+    }elseif($this->type == "hemicycle") {
+      $this->titre = "Prises de parole en hémicycle";
+    }else{
+      $this->titre .= $this->type;
+    }
     myTools::setPageTitle($this->titre." de ".$this->parlementaire->nom, $this->response);
   }
 
