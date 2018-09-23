@@ -90,7 +90,7 @@ class loadScrutinsTask extends sfBaseTask
 
         $scrutin->save();
 
-        $scrutin->setVotes($data->parlementaires);
+        $scrutin->setVotes($data->parlementaires, $data->nb_delegations);
         $scrutin->free();
 
         rename($dir . $file, $backupdir . $file);

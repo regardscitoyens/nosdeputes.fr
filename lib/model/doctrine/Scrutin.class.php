@@ -2,10 +2,11 @@
 
 class Scrutin extends BaseScrutin
 {
-  // Date des premiers scrutins où les délégations ne sont pas toutes à FALSE
-  // On ne génère pas de preuve de présence à partir des votes avant cette date
-  const DEBUT_DELEGATIONS = '2017-10-24';  # date premier solennel avec délégations
-  #const DEBUT_DELEGATIONS = '2018-03-20'; # date premier ordinaire avec délégations
+  // Date début délégations (cf https://github.com/regardscitoyens/nosdeputes.fr/pull/115#issuecomment-421844588 )
+  // On ne génère pas de preuve de présence à partir des votes avant cette date sauf si le scrutin a des délégations (3 cas particuliers de solennel)
+  const DEBUT_DELEGATIONS = '2018-02-13';
+  // Anticipe potentiel recul de la transparence en matière de publicité des délégations
+  const FIN_DELEGATIONS = '9999-99-99';
 
   public function getLinkSource() {
     return "http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/"
@@ -115,7 +116,7 @@ class Scrutin extends BaseScrutin
         && $this->_set('nombre_abstentions', $nb_abst);
   }
 
-  public function setVotes($parlementaires) {
+  public function setVotes($parlementaires, $has_delegations) {
     foreach ($parlementaires as $id_an => $data) {
       try {
         $parlscrutin = Doctrine::getTable('ParlementaireScrutin')
@@ -137,7 +138,7 @@ class Scrutin extends BaseScrutin
           throw new Exception("Could not set vote metadata: {$data}");
         }
 
-        if ($this->Seance->date >= self::DEBUT_DELEGATIONS) {
+        if ($has_delegations || (self::DEBUT_DELEGATIONS <= $this->Seance->date && $this->Seance->date <= self::FIN_DELEGATIONS) {
           $parlscrutin->updatePresence();
         }
 
