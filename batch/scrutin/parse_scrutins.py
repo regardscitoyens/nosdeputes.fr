@@ -184,10 +184,9 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
                     "mise_au_point_position": None
                 }
 
-    if delegations:
-        scrutin["nb_delegations"] = delegations
-        if 2 * delegations > scrutin["nombre_votants"]:
-            logs.append("Scrutin %s: trop de délégations" % scrutin["numero"])
+    scrutin["nb_delegations"] = delegations
+    if 2 * delegations > scrutin["nombre_votants"]:
+        logs.append("Scrutin %s: trop de délégations" % scrutin["numero"])
 
     vote_map = data["miseAuPoint"]
     if vote_map:
