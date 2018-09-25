@@ -31,7 +31,10 @@ DEBUG = "--debug" in sys.argv
 
 def log(str, debug=False):
     if not debug or DEBUG:
-        print(str, file=sys.stderr)
+        try:
+            print(str, file=sys.stderr)
+        except:
+            print(str.encode("utf-8"), file=sys.stderr)
 
 
 def fetch_an_jsonzip(legislature, objet):
@@ -61,7 +64,7 @@ def fetch_an_jsonzip(legislature, objet):
     log("Téléchargement %s" % url, debug=True)
 
     try:
-        soup = BeautifulSoup(requests.get(url).content, "html5lib")
+        soup = BeautifulSoup(requests.get(url).content, "lxml")
     except Exception:
         raise Exception("Téléchargement %s impossible" % url)
 
