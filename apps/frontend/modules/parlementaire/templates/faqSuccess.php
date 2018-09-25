@@ -1,5 +1,3 @@
-https://github.com/regardscitoyens/nosdeputes.fr/blob/master/apps/frontend/modules/parlementaire/templates/faqSuccess.php
-
 <h1>Questions fréquemment posées</h1>
 <div class="table_des_matieres">
   <ul>
@@ -20,8 +18,6 @@ https://github.com/regardscitoyens/nosdeputes.fr/blob/master/apps/frontend/modul
       <li><a href="#post_8">Pourquoi ne donnez-vous pas également accès aux votes des députés ?</a></li>
       <li><a href="#post_28">Prenez-vous en compte tous les travaux effectués à l'Assemblée nationale ?</a></li>
       <li><a href="#post_9">Pourquoi ne prenez-vous pas en compte le travail des députés dans leur circonscription ?</a></li>
-TODO: ADD MAILS CLASSIQUES
-ADD anciennes législatures
     </ul>
     <li><a href="#post_11">Les responsables du site</a></li>
     <ul>
@@ -31,18 +27,15 @@ ADD anciennes législatures
       <li><a href="#post_15">Quelles sont vos sources d'inspiration ?</a></li>
     </ul>
     <li><a href="#post_16">Utilisation du site</a></li>
-coment écrire à mon député
     <ul>
       <li><a href="#post_17">Pourquoi dois-je créer un compte pour pouvoir déposer un commentaire ?</a></li>
       <li><a href="#post_33">Quelles sont les règles d'encadrement des commentaires ?</a></li>
       <li><a href="#post_18">Comment puis-je relayer mon activité du site sur mes réseaux sociaux ?</a></li>
       <li><a href="#post_19">Comment puis-je vous aider ?</a></li>
       <li><a href="#post_21">Proposez-vous un suivi par alertes e-mails ?</a></li>
-ADD moteur de recherche
     </ul>
     <li><a href="#post_20">Fonctionnalités techniques</a></li>
     <ul>
-Add Opendata
       <li><a href="#post_22">Proposez-vous une API ?</a></li>
       <li><a href="#post_26">Est ce que ce site est un logiciel libre ?</a></li>
       <li><a href="#post_23">Quelles sont les technologies employées pour la création ce site ?</a></li>
@@ -94,8 +87,6 @@ Add Opendata
   <p>La présence au sein des travaux des <a href="/organismes/parlementaire">commissions parlementaires de tous types</a> (permanentes, européenne, spéciales, d'enquête, délégations, offices...) est relevée par les services de l'Assemblée nationale de manière systématique pour chaque réunion (et ce bien avant la mise en place distincte en 2009 du système d'émargement limité aux réunions des commissions permanentes le mercredi matin). Ces relevés sont publiés chaque matin au Journal Officiel, et parfois, lorsque la réunion a donné lieu à un compte-rendu, à la fin de celui-ci. C'est grâce à ces relevés que NosDéputés.fr peut proposer avec précision un indicateur de présence aux réunions de commission, parfois complété par l'identification de présents oubliés par les services mais s'étant manifesté par une intervention consignée au compte-rendu ou au script de sa retranscription vidéo.</p>
   <p>Il n'existe en revanche aucun relevé de la présence des députés dans l'hémicycle : quiconque a déjà assisté à un débat a pu constater le va et vient permanent de nombreux députés tout au long des séances plénières. C'est pourquoi NosDéputés.fr ne propose pas d'indicateur de présence en hémicycle et que les graphiques d'activité affichent non la présence dans l'hémicycle mais la participation effective, identifiable par les prises de parole ou la participation physique aux scrutins électroniques. Un certain nombre de séances ne donne cependant lieu à aucun scrutin électronique et il est relativement rare que tous les députés présents parlent lors d'une séance : NosDéputés.fr ne peut donc pas rendre compte de manière exhaustive de la présence des députés en hémicycle.</p>
 
-parler du fait qu'on pourrait ajouter à l'avenir les applaudissements tirés des didascalies ?
-
   <h3 id="post_6">Quelle est la différence entre une "intervention courte" et une "intervention longue" ?</h3>
   <p>Une intervention courte est une intervention de moins de 20 mots. En parcourant les <a href="/dossiers/date">compte-rendus des débats en hémicycle</a>, vous pourrez en effet constater comme nous que les très courtes interventions n'abordent pas le fond du débat : il s'agit pour l'essentiel de simples interjections ou d'annonces de prises de parole par le président de séance.</p>
 
@@ -122,7 +113,6 @@ parler du fait qu'on pourrait ajouter à l'avenir les applaudissements tirés de
   <p>Il reste à noter qu'une immense majorité des votes se déroulant à main levée, l'analyse des votes au prisme des seuls scrutin publics enregistrés électroniquement ne peut permettre de rendre compte de l'ensemble des positions d'un député.
 
 
-TODO: COMPLETE
   <h3 id="post_28">Prenez-vous en compte tous les travaux effectués à l'Assemblée nationale ?</h3>
   <p>Nous prenons compte de l'ensemble des éléments publics, publiés, et exploitables, disponibles sur le site de l'Assemblée nationale et au Journal Officiel.</p><p>Les travaux des commissions d'enquête, des missions d'information ou encore des offices et délégations sont donc bien intégrés dans la mesure de leur disponibilité.</p><p>Faute de compte-rendu public ou exploitable, les réunions des groupes politiques et de nombreuses délégations ou missions parlementaires internationales restent en revanche difficiles à prendre en compte. Bien qu'elles représentent une charge de travail importante limitant naturellement la participation aux travaux à l'Assemblée, les missions confiées individuellement à quelques députés par le gouvernement ou l'Elysée ne sont malheureusement pas documentées et ne peuvent donc être prises en compte en l'état.</p><p>Nous encourageons régulièrement l'Assemblée nationale à publier plus largement et précisément ces informations afin de renforcer l'exhaustivité de notre observatoire de l'activité parlementaire.</p>
   <p>Nous sommes conscients que les réunions de groupe, ainsi que les participations à divers travaux préparatoires ou une présence dans les bureaux de l'Assemblée ne sont pas visibles via ces sources d'informations, mais il est impossible de les prendre en compte sans source exhaustive.
@@ -133,16 +123,13 @@ TODO: COMPLETE
 
   <h2 id="post_11">Les responsables du site</h2>
 
-    ADD CONTACT ELUS
   <h3 id="post_12">Comment peut-on vous contacter ?</h3>
   <p>Vous pouvez écrire à l'ensemble des responsables du collectif <a rel="nofollow" href="http://www.regardscitoyens.org/">Regards Citoyens</a> à notre adresse de contact&nbsp;: contact [at] regardscitoyens.org</p>
 
   <h3 id="post_13">Etes vous affiliés à un parti ou à une organisation politique ?</h3>
   <p>Les activités du collectif <a rel="nofollow" href="http://regardscitoyens.org/">Regards Citoyens</a> et du site <a rel="nofollow" href="http://nosdeputes.fr/">NosDéputés.fr</a> sont totalement indépendantes de tout parti politique.</p>
-ADD LINK DECLARATIONS INTERETS
 
-  EDIT
-  h3 id="post_14">Avez-vous été payés pour réaliser ce site ?</h3>
+  <h3 id="post_14">Avez-vous été payés pour réaliser ce site ?</h3>
   <p>Non, ce site a été entièrement réalisé par des bénévoles. Nous avons payé nous-mêmes l'ensemble de l'infrastructure technique et les quelques supports de communication nécessaires au lancement du site.</p>
 
   <h3 id="post_15">Quelles sont vos sources d'inspiration ?</h3>
@@ -156,11 +143,9 @@ ADD LINK DECLARATIONS INTERETS
   <h3 id="post_33">Quelles sont les règles d'encadrement des commentaires ?</h3>
   <p>Regards Citoyens a à coeur de permettre à tous de s'exprimer. C'est dans cet objectif que nous faisons le choix d'une modération a posteriori uniquement des commentaires publiés par les citoyens et qui en portent la responsabilité individuelle. Cependant, afin d'assurer un débat constructif, il convient de respecter certaines règles de bienséance :</p><p>- respecter la loi, et donc refuser tout propos raciste, incitation à la haine ou à la violence, ou qui puisse porter atteinte à l'intégrité ou diffamer autrui ;</p><p>- commenter l'objet des travaux lui-même et non sur tout autre sujet sans lien ;</p><p>- éviter à tout prix le copier/coller du même argumentaire d'un commentaire à l'autre.</p><p>En cas de manquement à ces règles, les commentaires pourront être supprimés et le compte de l'utilisateur suspendu de manière temporaire, voire définitive. En cas de conflit ou contestation, il est toujours possible de nous contacter à contact@regardscitoyens.org pour dialoguer.</p>
 
-TODO: UPDATE
   <h3 id="post_18">Comment puis-je relayer mon activité du site sur mes réseaux sociaux ?</h3>
   <p>Comme vous avez pu le constater, nous publions un certain nombre de flux RSS qui vous permettent de suivre en temps réel l'activité des députés que vous choisissez, ainsi que l'activité générale du site. Vous pouvez les utiliser pour relayer votre activité ou celle de votre député sur Twitter ou Identica via le site <a rel="nofollow" href="http://twitterfeed.com/">TwitterFeed</a>. Facebook propose également ce type d'outils.</p>
 
-TODO: UPDATE
   <h3 id="post_19">Comment puis-je vous aider ?</h3>
   <p>La meilleure manière de nous aider est de vous exprimer dans les commentaires sur les travaux parlementaires et ainsi de contribuer aux débats qui ont lieu sur le site. Vous pouvez également enrichir la qualité des données en nous aidant à mettre en valeur les interventions utiles au débat en signalant les commentaires jugés non-constructifs. Si vous le souhaitez, vous pouvez aussi nous aider à populariser le site en en parlant autour de vous. Vous pouvez également <a rel="nofollow" href="http://www.regardscitoyens.org/nous-aider/">nous soutenir financièrement</a>, pour faire face aux coûts de mise en place de ce site. Enfin, si vous avez des idées d'amélioration ou des compétences particulières que vous estimez utiles à notre travail, n'hésitez à nous en faire part également par e-mail!</p>
 
@@ -169,14 +154,12 @@ TODO: UPDATE
 
   <h2 id="post_20">Fonctionnalités techniques</h2>
 
-TODO: UPDATE
   <h3 id="post_22">Proposez-vous une API ?</h3>
   <p>Une API a été développée. Elle est encore en version Beta. Vous trouverez sa documentation sur la page suivante&nbsp;: <a rel="nofollow" href="https://github.com/regardscitoyens/nosdeputes.fr/blob/master/doc/api.md">https://github.com/regardscitoyens/nosdeputes.fr/blob/master/doc/api.md</a></p>
 
   <h3 id="post_26">Est ce que ce site est un logiciel libre ?</h3>
   <p>Oui&nbsp;! Le code source du site et sa documentation technique sont disponibles sous <a rel="nofollow" href="http://www.gnu.org/licenses/agpl-3.0.html">licence AGPL</a> à l'adresse suivante&nbsp;: <a rel="nofollow" href="https://github.com/regardscitoyens/nosdeputes.fr">https://github.com/regardscitoyens/nosdeputes.fr</a></p><p>N'hésitez pas à [nous faire remonter](https://github.com/regardscitoyens/nosdeputes.fr/issues/new) tout bug que vous pourriez rencontrer ou nous proposer des suggestions d'amélioration&nbsp;!</p><p>Et si vous avez des talents de développeur, vous êtes les bienvenus pour nous aider&nbsp;!</p>
 
-TODO: UPDATE
   <h3 id="post_23">Quelles sont les technologies employées pour la création ce site ?</h3>
   <p>Le site a été construit et est hébergé entièrement avec des logiciels libres. Notre serveur est une machine GNU/Linux Debian utilisant les services Apache 2 et MySQL. Le site a été développé en PHP grâce à l'environnement de développement <a rel="nofollow" href="http://www.symfony-project.org/">Symfony</a>. Nous utilisons la librairie <a rel="nofollow" href="http://www.pchart.net/">pChart</a> et <a rel="nofollow" href="https://d3js.org/">d3.js</a> pour tracer les graphiques, gd pour le traitement d'image et jQuery et jQuery-ui pour la surcouche javascript (ainsi que les plugins <a rel="nofollow" href="http://davidlynch.org/projects/maphilight/docs/">mapHighlight</a> et <a rel="nofollow" href="https://www.dynatable.com">DynaTable</a>). Nous nous efforçons de respecter les standards définis par le W3C. Si vous avez des problèmes d'accessibilité, n'hésitez pas à nous le signaler à contact [at] regardscitoyens.org et nous ferons le maximum pour les corriger rapidement.</p>
 </div>
