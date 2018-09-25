@@ -45,6 +45,7 @@ batch/commission/out/
 batch/commission/loaded/
 batch/commission/presents/
 batch/commission/modified/
+batch/common/opendata
 batch/depute/html/
 batch/depute/json/
 batch/depute/collabs.csv
@@ -90,6 +91,8 @@ batch/senateur/out.yml/
 batch/senateur/out/
 batch/senateur/test/
 batch/senateur/twitter.csv
+batch/scrutin/scrutins
+batch/scrutin/loaded
 
 lib/filter/doctrine/
 lib/form/doctrine/

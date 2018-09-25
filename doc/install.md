@@ -17,7 +17,7 @@ Pour le parsing :
 ```bash
 sudo aptitude install libwww-mechanize-perl libfile-path-perl
 sudo aptitude install libxml2-devel libxslt-devel python-devel
-sudo pip install bs4 lxml
+sudo pip install bs4 lxml html5lib requests
 ```
 
 ## Installation
@@ -132,7 +132,7 @@ sudo pip install bs4 lxml
     sudo a2enmod rewrite
     ```
 
- * Pour accéder en local à votre instance de développement sur my.cpc.regardscitoyens.org : 
+ * Pour accéder en local à votre instance de développement sur my.cpc.regardscitoyens.org :
 
     Ajouter cette ligne au fichier `/etc/hosts` (sudo) :
 
@@ -160,7 +160,7 @@ L'utilisation de la page `frontend_dev.php` vous permet de naviguer sur le site 
 
 ### Problèmes connus
 
-Si à l'affichage de frontend_dev.php dans le navigateur, PHP dit qu'il n'a pas pu allouer assez de mémoire, augmenter la taille maximale de mémoire autorisée : 
+Si à l'affichage de frontend_dev.php dans le navigateur, PHP dit qu'il n'a pas pu allouer assez de mémoire, augmenter la taille maximale de mémoire autorisée :
 
 ```bash
 sudo nano /etc/php5/cli/php.ini
@@ -280,4 +280,3 @@ Certains services de mail, ralentissent voire bloquent les envois de mails massi
       spool_arguments:
         Swift_FileSpool: %SF_ROOT_DIR%/data/mails
 ```
- 

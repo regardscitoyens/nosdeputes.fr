@@ -8,21 +8,19 @@ if (isset($absolute) && $absolute) {
 if (!isset($target))
   $target = '';
 
-$titres = array(
-  'semaines_presence'               => 'Semaines d\'activité',
-  'commission_presences'            => 'Présences en commission',
-  'commission_interventions'        => 'Interventions en commission',
-  'hemicycle_presences'             => 'Présences en hémicycle : Information non publique',
-  'hemicycle_interventions'         => 'Interventions longues en hémicycle',
-//'hemicycle_interventions_courtes' => 'Interventions courtes en hémicycle',
-  'amendements_proposes'            => 'Amendements proposés',
-//'amendements_adoptes'             => 'Amendements adoptés',
-//'amendements_rejetes'             => 'Amendements rejetés',
-  'rapports'                        => 'Rapports écrits',
-  'propositions_ecrites'            => 'Propositions de loi écrites',
-  'propositions_signees'            => 'Propositions de loi signées',
-  'questions_ecrites'               => 'Questions écrites',
-  'questions_orales'                => 'Questions orales',
+$indicateurs = myTools::$indicateurs;
+$fields = array(
+  'semaines_presence',
+  'commission_presences',
+  'commission_interventions',
+  'hemicycle_presences',
+  'hemicycle_interventions',
+  'amendements_proposes',
+  'rapports',
+  'propositions_ecrites',
+  'propositions_signees',
+  'questions_ecrites',
+  'questions_orales'
 );
 $images = array(
   'semaines_presence'               => 'ico_sem_%s.png',
@@ -97,13 +95,13 @@ if (myTools::isFinLegislature()) {
 $icosize = 16;
 if (isset($widthrate))
   $icosize = floor($icosize*$widthrate);
-foreach(array_keys($images) as $k) {
+foreach($fields as $k) {
   if ($k === "hemicycle_presences") {
-    echo '<li'.$couleur2style['gris'].'><a'.$target.' href="'.url_for('@faq', $abs).'#post_4" class="jstitle" title="'.$titres[$k].'"><img style="height: '.$icosize.'px; width: '.$icosize.'px;" src="'.$serv.$sf_request->getRelativeUrlRoot().'/images/xneth/'.$images[$k].'" alt="'.$titres[$k].'" /> : ??</a></li>';
+    echo '<li'.$couleur2style['gris'].'><a'.$target.' href="'.url_for('@faq', $abs).'#post_4" class="jstitle" title="'.$indicateurs[$k]['titre'].' --  -- '.$indicateurs[$k]['desc'].'"><img style="height: '.$icosize.'px; width: '.$icosize.'px;" src="'.$serv.$sf_request->getRelativeUrlRoot().'/images/xneth/'.$images[$k].'" alt="'.$indicateurs[$k]['titre'].'" /> : ??</a></li>';
   } else {
     $value = (isset($top[$k]['value']) ? $top[$k]['value'] : 0);
     $couleur = 'gris';
-    $titre = $value.' '.$titres[$k];
+    $titre = $value.' '.$indicateurs[$k]['titre'];
     if ($value < 2)
       $titre = preg_replace('/s$/', '', str_replace('s ', ' ', $titre));
     if ($rank && $top[$k]['rank'] <= 150 && $value) {
@@ -114,6 +112,7 @@ foreach(array_keys($images) as $k) {
       $couleur = 'rouge';
       $titre .= ' (fait partie des 150 moins actifs sur ce critère)';
     }
+    $titre .= ' --  -- '.$indicateurs[$k]['desc'];
     echo '<li'.$couleur2style[$couleur].'>';
     echo '<'.($rank ? 'a' : 'span').$target.' class="jstitle" title="'.$titre.'" href="'.url_for('@top_global_sorted?sort='.$sort[$k].'#'.$parlementaire->slug, $abs).'">';
     echo '<img style="height: '.$icosize.'px; width: '.$icosize.'px;" src="'.$serv.$sf_request->getRelativeUrlRoot().'/images/xneth/';

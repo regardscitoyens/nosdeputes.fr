@@ -49,7 +49,7 @@ $fem = ($parlementaire->sexe == "F" ? "e" : "");
 if (!isset($widthrate) || $widthrate > 1/3) : ?>
 <p><span class="jstitle" title="Nombre de <?php
 $reus = "réunions de commissions auxquelles $lela a été enregistré$fem présent$fem";
-$sean = "séances en hémicycle pendant lesquelles $lela est intervenu$fem même brièvement";
+$sean = "séances en hémicycle pendant lesquelles $lela est intervenu$fem même brièvement ou a participé physiquement à un scrutin public";
 if ($type === "total") echo "$reus et de $sean";
 else if ($type === "hemicycle") echo $sean;
 else echo $reus;
