@@ -17,7 +17,7 @@
 
 <p>Contrairement <a href="http://www.nossenateurs.fr/assister-aux-debats">au Sénat</a>, assister aux débats de l'Assemblée nationale recquiert un petit peu d'anticipation. Pour se faire, deux solutions :</p>
 <ul>
-  <li>s'incrire, dans un délai minimum de 3 jours ouvrés avant la séance souhaitée, sur <a href="https://secure2.assemblee-nationale.fr/visites/reservation">la page dédiée sur le site de l'Assemblée</a>&nbps;</li>
+  <li>s'incrire, dans un délai minimum de 3 jours ouvrés avant la séance souhaitée, sur <a href="https://secure2.assemblee-nationale.fr/visites/reservation">la page dédiée sur le site de l'Assemblée</a>&nbsp;;</li>
   <li>demander, une semaine avant la date de la séance, un <em>«&nbsp;billet de séance&nbsp;»</em> ou <em>«&nbsp;carte d'invitation&nbsp;»</em> à votre député. Pour cela, il vous suffit d'identifier votre député à l'aide du formulaire ci-dessous en recherchant votre code postal ou votre ville, et de cliquer sur le lien de la page du député sur le site de l'Assemblée pour y retrouver le numéro de téléphone de sa permanence à l'Assemblée nationale. N'hésitez pas à appeler, vous tomberez généralement sur un assistant parlementaire du député, qui se fera normalement un plaisir de vous préparer votre billet pour la séance souhaitée.</li>
 </ul>
 
