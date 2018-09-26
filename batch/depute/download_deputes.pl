@@ -13,10 +13,10 @@ sub download_fiche {
   $a->max_redirect(0);
   eval { $a->get($uri); };
   if( not $a->res->is_success and not $a->res->is_redirect ){
-    print STDERR "ERREUR geting $uri, retrying...";
+    sleep 1;
     eval { $a->get($uri); };
     if( not $a->res->is_success and not $a->res->is_redirect ){
-      print STDERR " ...still failing. skipping it\n";
+      print STDERR "ERREUR geting $uri twice in a row, skipping it\n";
       return;
     }
     print STDERR "\n";
@@ -58,6 +58,7 @@ while ($t = $p->get_tag('td')) {
   $t = $p->get_tag('a');
   if ($t->[1]{href} && $t->[1]{href} =~ /deputes\/fiche/) {
     $id = download_fiche($t->[1]{href});
+    if (!$id) { continue; }
     $ret = system("grep -i '>Mandat clos<' html/$id > /dev/null");
     if (! $ret) {
       $t = $p->get_tag('td');
