@@ -7,13 +7,13 @@
       <li><a href="#post_2">D'où viennent les données publiées sur le site ?</a></li>
       <li><a href="#post_3">Avez vous le droit de publier ces données ?</a></li>
       <li><a href="#post_2bis">Vos données sont-elles à jour ?</h3>
-      <li><a href="#post_32">À quoi correspondent les icones et les nombres de la barre « Activité » sur la page de chaque député ?</a></li>
+      <li><a href="#post_32">À quoi correspondent les icones et les nombres de la barre "Activité" sur la page de chaque député ?</a></li>
       <li><a href="#post_322">J'ai vu baisser plusieurs des indicateurs d'activité d'un député, comment cela est-il possible ?</a></li>
       <li><a href="#post_323">Que signifient les couleurs rouge et vert sur les indicateurs d'activité des députés ?</h3>
       <li><a href="#post_10">Proposez-vous un palmarès ou classement général des députés ?</a></li>
       <li><a href="#post_5">Pourquoi proposez-vous un indicateur de présence pour les commissions mais pas pour l'hémicycle ?</a></li>
       <li><a href="#post_6">Quelle est la différence entre une "intervention courte" et une "intervention longue" ?</a></li>
-      <li><a href="#post_27">Que représente l'indicateur « semaines d'activité » proposé pour chaque député ?</a></li>
+      <li><a href="#post_27">Que représente l'indicateur "semaines d'activité" proposé pour chaque député ?</a></li>
       <li><a href="#post_4">À quoi correspondent les différentes informations représentées sur les graphiques d'activité des députés ?</a></li>
       <li><a href="#post_8">Pourquoi ne donnez-vous pas également accès aux votes des députés ?</a></li>
       <li><a href="#post_28">Prenez-vous en compte tous les travaux effectués à l'Assemblée nationale ?</a></li>
@@ -63,7 +63,7 @@
   <p>Les compte-rendus des débats peuvent parfois mettre plusieurs heures voire plusieurs jours avant d'être publiés par les services de l'Assemblée et intégrés par nos soins après un travail de vérification humain préalable. De même, afin de pouvoir intégrer au mieux le fond des interventions des parlementaires, les sommaires des compte-rendus en vidéo ne sont pas pris en compte tant qu'un compte-rendu déclarant explicitement que la vidéo fait office de seul compte-rendu n'a pas été publié.</p>
   <p>Les mises-à-jour sont donc fréquentes et au plus proche de la source, mais les données des dernières semaines sont pour autant toujours amenées à évoluer régulièrement et ne sauraient refléter l'activité en temps réel des députés à l'Assemblée.</p>
 
-  <h3 id="post_32">À quoi correspondent les icones et les nombres de la barre « Activité » sur la page de chaque député ?</h3>
+  <h3 id="post_32">À quoi correspondent les icones et les nombres de la barre "Activité" sur la page de chaque député ?</h3>
   <p>Il s'agit d'une série d'indicateurs permettant d'apprécier de manière synthétique l'activité parlementaire dans sa diversité : travaux en commissions et en séance plénière, propositions d'amendements et de lois, rapports ou encore questions soumises au gouvernement. Vous pouvez survoler ces éléments et lire la suite de ces questions fréquentes pour avoir plus de précisions sur chacun.</p>
   <p>Pour les députés dont le mandat est clos, ces nombres indiquent le total pour chaque indicateur au cours de l'intégralité de la durée du ou des mandats du parlementaire au cours de la législature.</p>
   <p>Pour les députés en activité, ils mesurent la valeur des indicateurs sur les douze derniers mois seulement, comme explicité entre parenthèses. L'ensemble des activités passées des députés reste pour autant naturellement intégré à NosDéputés.fr et accessible à l'aide des multiples liens présentés plus bas qui pointent vers le détail des différentes activités.</p>
@@ -91,7 +91,7 @@
   <h3 id="post_6">Quelle est la différence entre une "intervention courte" et une "intervention longue" ?</h3>
   <p>Une intervention courte est une intervention de moins de 20 mots. En parcourant les <a href="/dossiers/date">compte-rendus des débats en hémicycle</a>, vous pourrez en effet constater comme nous que les très courtes interventions n'abordent pas le fond du débat : il s'agit pour l'essentiel de simples interjections ou d'annonces de prises de parole par le président de séance.</p>
 
-  <h3 id="post_27">Que représente l'indicateur « semaines d'activité » proposé pour chaque député ?</h3>
+  <h3 id="post_27">Que représente l'indicateur "semaines d'activité" proposé pour chaque député ?</h3>
   <p>Les semaines d'activité sont mesurées à partir de tous les éléments disponibles au Journal Officiel et sur le site de l'Assemblée nationale permettant de détecter la participation effective des parlementaires aux travaux des commissions et de l'hémicycle :</p>
   <p>&nbsp;- la <b>présence aux réunions des commissions</b> (<a href="#post_5">voir ci-dessus</a>) ;</p>
   <p>&nbsp;- la <b>participation aux débats</b> en commission et en hémicycle (identifiées par les prises de parole, même brèves, consignées dans les compte-rendus du site de l'Assemblée ou les scripts des retranscriptions vidéos) ;</p>
@@ -116,9 +116,9 @@
   <h3 id="post_28">Prenez-vous en compte tous les travaux effectués à l'Assemblée nationale ?</h3>
   <p>Nous prenons compte de l'ensemble des éléments publics, publiés, et exploitables, disponibles sur le site de l'Assemblée nationale et au Journal Officiel.</p>
   <p>Les travaux des commissions d'enquête, des missions d'information ou encore des offices et délégations sont donc bien intégrés dans la mesure de leur disponibilité.</p>
-  <p>Faute de compte-rendu public ou exploitable, les réunions des groupes politiques et de nombreuses délégations ou missions parlementaires internationales restent en revanche difficiles à prendre en compte. Bien qu'elles représentent une charge de travail importante limitant naturellement la participation aux travaux à l'Assemblée, les missions confiées individuellement à quelques députés par le gouvernement ou l'Elysée ne sont malheureusement pas documentées et ne peuvent donc être prises en compte en l'état. De plus, ces missions réalisées pour le compte de l'exécutif ne sont pas, au regard du principe de séparation des pouvoirs, des travaux parlementaires à proprement parler. Les missions d'information ou d'enquête sont les outils du droit parlementaire permettant de réaliser un travail de cet ordre.</p>
+  <p>Faute de compte-rendu public ou exploitable, les réunions des groupes politiques et de nombreuses délégations ou missions parlementaires internationales ainsi que les participations à divers travaux préparatoires restent en revanche difficiles à prendre en compte à défaut de sources d'information officielles.</p>
+  <p>Bien qu'elles représentent une charge de travail importante limitant naturellement la participation aux travaux à l'Assemblée, les missions confiées individuellement à quelques députés par le gouvernement ou l'Elysée ne sont malheureusement pas documentées et ne peuvent donc être prises en compte en l'état. De plus, ces missions réalisées pour le compte de l'exécutif ne sont pas, au regard du principe de séparation des pouvoirs, des travaux parlementaires à proprement parler. Les missions d'information ou d'enquête sont les outils du droit parlementaire permettant de réaliser un travail de cet ordre.</p>
   <p>Nous encourageons régulièrement l'Assemblée nationale à publier plus largement et précisément ces informations afin de renforcer l'exhaustivité de notre observatoire de l'activité parlementaire.</p>
-  <p>Nous sommes conscients que les réunions de groupe, ainsi que les participations à divers travaux préparatoires ou une présence dans les bureaux de l'Assemblée ne sont pas visibles via ces sources d'informations, mais il est impossible de les prendre en compte sans source officielle.</p>
 
   <h3 id="post_9">Pourquoi ne prenez-vous pas en compte le travail des députés dans leur circonscription ?</h3>
   <p>Comme son sous-titre l'indique, NosDéputés.fr se veut un observatoire de l'activité parlementaire. Comme le définit la Constitution, les députés ne sont pas élus selon le principe du mandat impératif et tout député est donc un élu de la Nation avant d'être celui de sa circonscription. C'est pourquoi nous nous intéressons exclusivement au travail législatif et de contrôle du gouvernement propres à la fonction parlementaire.</p>
@@ -168,7 +168,8 @@
   <p>Une API a été développée. Elle est encore en version Beta. Vous trouverez sa documentation sur la page suivante&nbsp;: <a rel="nofollow" href="https://github.com/regardscitoyens/nosdeputes.fr/blob/master/doc/api.md">https://github.com/regardscitoyens/nosdeputes.fr/blob/master/doc/api.md</a></p>
 
   <h3 id="post_26">Est ce que ce site est un logiciel libre ?</h3>
-  <p>Oui&nbsp;! Le code source du site et sa documentation technique sont disponibles sous <a rel="nofollow" href="http://www.gnu.org/licenses/agpl-3.0.html">licence AGPL</a> à l'adresse suivante&nbsp;: <a rel="nofollow" href="https://github.com/regardscitoyens/nosdeputes.fr">https://github.com/regardscitoyens/nosdeputes.fr</a></p>
+  <p>Oui&nbsp;!</p>
+  <p>Le code source du site et sa documentation technique sont disponibles sous <a rel="nofollow" href="http://www.gnu.org/licenses/agpl-3.0.html">licence AGPL</a> à l'adresse suivante&nbsp;: <a rel="nofollow" href="https://github.com/regardscitoyens/nosdeputes.fr">https://github.com/regardscitoyens/nosdeputes.fr</a></p>
   <p>N'hésitez pas à <a href="https://github.com/regardscitoyens/nosdeputes.fr/issues/new">nous faire remonter</a> tout bug que vous pourriez rencontrer ou nous proposer des suggestions d'amélioration&nbsp;!</p>
   <p>Et si vous avez des talents de développeur, vous êtes les bienvenus pour nous aider&nbsp;!</p>
 
