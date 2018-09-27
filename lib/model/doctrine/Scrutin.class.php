@@ -10,7 +10,7 @@ class Scrutin extends BaseScrutin
 
   public function getLinkSource() {
     return "http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/"
-         . sfConfig::get('app_legislature', 13)
+         . myTools::getLegislature()
          . "/(num)/"
          . $this->numero;
   }

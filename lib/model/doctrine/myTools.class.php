@@ -93,7 +93,7 @@ class myTools {
   }
 
   public static function getLegislature() {
-    return (sfConfig::get('app_legislature', 13));
+    return (sfConfig::get('app_legislature', 15));
   }
 
   public static function getPreviousHost() {
