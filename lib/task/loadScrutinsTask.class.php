@@ -16,6 +16,7 @@ class loadScrutinsTask extends sfBaseTask
     $dir = dirname(__FILE__).'/../../batch/scrutin/scrutins/';
     $backupdir = dirname(__FILE__).'/../../batch/scrutin/loaded/';
     $manager = new sfDatabaseManager($this->configuration);
+    $scrutins_sans_seance = 0;
     $seances_manquantes = 0;
     $seance_ids = array();
 
@@ -42,7 +43,7 @@ class loadScrutinsTask extends sfBaseTask
         $scrutin = Doctrine::getTable('Scrutin')->findOneByNumero($data->numero);
         if (!$scrutin) {
           if (!$data->seance) {
-            $seances_manquantes++;
+            $scrutins_sans_seance++;
             continue;
           }
           $scrutin = new Scrutin();
@@ -118,9 +119,10 @@ class loadScrutinsTask extends sfBaseTask
         }
       }
 
-      if ($seances_manquantes > 0) {
-        echo "WARNING: $seances_manquantes séances non trouvées\n";
-      }
+      if ($scrutins_sans_seance > 0)
+        echo "WARNING: $scrutins_sans_seance scrutins sans séance dans l'OpenData\n";
+      if ($seances_manquantes > 0)
+        echo "WARNING: $seances_manquantes scrutins sans séance dans ND\n";
     }
   }
 }
