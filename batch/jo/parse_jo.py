@@ -39,7 +39,8 @@ reg['com'] = '^(Commissions|Office parlementaire|)'
 reg['start_an'] = u'^[0-9]{0,2}\.? *Membres présents ou excusés'
 reg['start_senat'] = u'^Membres'
 reg['commission'] = u'(.*) :$'
-reg['reunion_an'] = u'^Réunion du (.*) ?à (.*) :'
+reg['reunion_an'] = u'^(?:Réunion|Séance) du (.*) ?à (.*) :'
+reg['reunion_an_bis'] = u'^(?:Réunion|Séance) du (.*) :'
 reg['reunion_senat'] = u'^(.{1,5}éance) du (.*) :'
 reg['reunion_senat_bis'] = u'^(.*), séance du (.*)$'
 reg['presents'] = u'^Présents?.* ?(-|:) (.*)'
@@ -135,7 +136,8 @@ for link in soup.find_all('a'):
         line = line.strip().replace(u' ', ' ')
 
         # Détecter début
-        if re.search(reg['start_'+chamber], line, re.IGNORECASE) is not None:
+        if (re.search(reg['start_'+chamber], line, re.IGNORECASE) is not None or
+          (data.get('commission') and (re.search(reg['reunion_'+chamber], line, re.I) or re.search(reg['reunion_'+chamber+'_bis'], line, re.I)))):
           on = True
 
         # Pre-process
@@ -192,6 +194,10 @@ for link in soup.find_all('a'):
             m = re.search(reg['reunion_an'], line, re.IGNORECASE)
             data['reunion'] = date_iso(m.group(1))
             data['session'] = m.group(2).replace(' :', '').replace(' h ', ':').replace(' heures', ':00')[0:5]
+          elif re.search(reg['reunion_an_bis'], line, re.IGNORECASE) is not None:
+            m = re.search(reg['reunion_an_bis'], line, re.IGNORECASE)
+            data['reunion'] = date_iso(m.group(1))
+            data['session'] = u"1ère réunion"
           elif re.search(reg['reunion_senat'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_senat'], line, re.IGNORECASE)
             data['date'] = date_iso(m.group(2))
