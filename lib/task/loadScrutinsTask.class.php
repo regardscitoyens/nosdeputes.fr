@@ -110,7 +110,7 @@ class loadScrutinsTask extends sfBaseTask
                           ->createQuery("i")
                           ->select("count(1) as cnt")
                           ->where("i.seance_id = ?", $seance->id)
-                          ->andWhere("i.intervention LIKE '%nombre de votants%suffrages exprimés%pour%contre%'")
+                          ->andWhere("i.intervention LIKE '%nombre de votants%suffrages exprimés%pour%contre%' OR i.intervention LIKE '%Majorité requise pour l\'adoption%pour l\'adoption%'")
                           // ->andWhere("i.intervention LIKE '%<table class=\"scrutin%'")
                           ->fetchOne()['cnt'];
 

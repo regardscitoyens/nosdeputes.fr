@@ -36,7 +36,7 @@ class Scrutin extends BaseScrutin
     $inters = Doctrine::getTable('Intervention')
                       ->createQuery('i')
                       ->where('i.seance_id = ?', $this->seance_id)
-                      ->andWhere("i.intervention LIKE '%nombre de votants%suffrages exprimés%pour%contre%'")
+                      ->andWhere("i.intervention LIKE '%nombre de votants%suffrages exprimés%pour%contre%' OR i.intervention LIKE '%Majorité requise pour l\'adoption%pour l\'adoption%'")
                       // ->andWhere("i.intervention LIKE '%table class=\"scrutin\"%'")
                       ->orderBy('i.timestamp')
                       ->execute();
@@ -53,7 +53,11 @@ class Scrutin extends BaseScrutin
       $mp = preg_match_all('/pour l\'(?:adoption|approbation)(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_pour);
       $mc = preg_match_all('/contre(?:<\/td><td>|[,\s])(\d+)/i', $text, $match_contre);
 
-      if ($mv == 0 || $mp == 0 || $mc == 0) {
+      if (preg_match("/Majorité requise pour l'adoption/", $text) && $mp != 0 && intval(end($match_pour[1])) == $this->nombre_votants && intval(end($match_pour[1])) == $this->nombre_pours) {
+        $found = TRUE;
+        $inter->addTag("scrutin:numero={$this->numero}");
+        break;
+      } elseif ($mv == 0 || $mp == 0 || $mc == 0) {
         echo "WARNING: décomptes intervention {$inter->id} incomplets :\n$text\n";
       } elseif (intval(end($match_votant[1])) != $this->nombre_votants
              || intval(end($match_pour[1])) != $this->nombre_pours
