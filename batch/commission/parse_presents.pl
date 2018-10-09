@@ -233,7 +233,7 @@ foreach $line (split /\n/, $string)
     if ($special) {
       if ($origline =~ /Présent[es\s]*:/) {
         $present = 1;
-      } elsif ($origline =~ /Excusé[es\s]*:/) {
+      } elsif ($origline =~ /Excusé[es\s]*[:\/]/) {
         $present = 0;
       }
     } else {
