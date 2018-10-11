@@ -55,7 +55,7 @@ SCRUTINS_DIR = os.path.join(BATCH_DIR, "scrutin", "scrutins")
 TYPES = {"SPS": "solennel", "SPO": "ordinaire"}
 
 CLEAN_DEMANDEUR = [
-    ("President", u"Président"),
+    (u"Pr[eé]sident", u"Président"),
     ("Conference", u"Conférence"),
     ('"', ''),
     (r'\s+', ' '),
@@ -63,7 +63,7 @@ CLEAN_DEMANDEUR = [
 
 def clean_demandeur(d):
     for reg, rep in CLEAN_DEMANDEUR:
-        d = re.compile(reg).sub(rep, d)
+        d = re.compile(reg, re.I).sub(rep, d)
     return d.strip()
 
 MISSING_DEMANDEURS = {
