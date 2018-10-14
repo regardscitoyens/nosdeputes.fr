@@ -20,6 +20,12 @@ class loadScrutinsTask extends sfBaseTask
     $seances_manquantes = 0;
     $seance_ids = array();
 
+    $IGNORE_SEANCES = array(
+      15 => array(
+        220 => 1
+      )
+    );
+
     if (!is_dir($backupdir)) {
       mkdir($backupdir, 0777, TRUE);
     }
@@ -114,7 +120,7 @@ class loadScrutinsTask extends sfBaseTask
                           // ->andWhere("i.intervention LIKE '%<table class=\"scrutin%'")
                           ->fetchOne()['cnt'];
 
-        if ($scrutins != $tables) {
+        if ($scrutins != $tables && !isset($IGNORE_SEANCES[myTools::getLegislature()][$seance->id])) {
           echo "WARNING: séance {$seance->id} du {$seance->date} {$seance->moment} : {$scrutins} scrutins, {$tables} tableaux\n";
         }
       }
