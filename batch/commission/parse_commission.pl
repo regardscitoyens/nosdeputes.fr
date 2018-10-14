@@ -202,7 +202,9 @@ sub setFonction {
     my $fonction = shift;
     my $intervenantorig = shift;
     #print STDERR "FONCTION $fonction $intervenantorig\n";
-    $fonction =~ s/^[Mme\s.]*$intervenantorig[, ]*//;
+    $intervenantorigreg = $intervenantorig;
+    $intervenantorigreg =~ s/([()[\].?])/\\\1/g;
+    $fonction =~ s/^[Mme\s.]*$intervenantorigreg[, ]*//;
     if ($intervenantorig =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$// ||
         $fonction    =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$//) {
       if ($2) {
@@ -573,7 +575,7 @@ $previnterv = 0;
 $listinterv = 0;
 foreach $line (split /\n/, $string)
 {
-    #print "TEST: ".$line."\n";
+    #print STDERR "TEST: ".$line."\n";
     $line =~ s/residen/résiden/ig;
     if ($line =~ /<h[1-9]+/i || $line =~ /"présidence"/ || $line =~ /(Cop|P)résidence de/) {
       if ($line =~ /pr..?sidence[\s\W]+de\s+(M[^<\,]+?)[<,]\s*(pr..?sident d'..?ge)?/i && $line !~ /sarkozy/i) {
@@ -739,7 +741,7 @@ foreach $line (split /\n/, $string)
         }
         $found = $majIntervenant = 1;
         $intervenant = setIntervenant($interv1.$extrainterv);
-	  } elsif (!($line =~ /^\|(?:&#\d+;|–)?\s*(?:Puis de |RENFORCE|Mesures|Réunion|Examen|Compte-rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co]*Présidence|Titre|Chapitre|Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i) &&
+	  } elsif ($line !~ /^\|(?:&#\d+;|–|-)?\s*(?:Puis de |RENFORCE|Mesures|Réunion|Examen|Compte-rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co]*Présidence|Titre|Chapitre|Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i &&
           ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
