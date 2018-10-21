@@ -233,6 +233,7 @@ sub setFonction {
     $fonction =~ s/Président/président/;
     $fonction =~ s/(du ministre )+/\1/i;
     $fonction =~ s/\bpésident/président/i;
+    $fonction =~ s/général général/général/i;
     $fonction =~ s/rap+or?tr?eur/rapporteur/i;
     $fonction =~ s/co[\-r]*rapporteur/co-rapporteur/i;
     $fonction =~ s/^(.*), \1$/\1/;
