@@ -524,6 +524,7 @@ sub rapporteur
 
 $string =~ s/\r//g;
 $string =~ s/&#8217;/'/g;
+$string =~ s/&#8226;/-/g;
 $string =~ s/d\W+évaluation/d'évaluation/g;
 $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
@@ -741,7 +742,7 @@ foreach $line (split /\n/, $string)
         }
         $found = $majIntervenant = 1;
         $intervenant = setIntervenant($interv1.$extrainterv);
-	  } elsif ($line !~ /^\|(?:&#\d+;|–|-)?\s*(?:Puis de |RENFORCE|Mesures|Réunion|Examen|Compte-rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co]*Présidence|Titre|Chapitre|Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i &&
+	  } elsif ($line !~ /^\|(?:&#\d+;|–|-)?\s*(?:Puis de |RENFORCE|Mesures|Réunion|Examen|Compte-rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co\-]*Présidence|Titre|Chapitre|Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i &&
           ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]+)(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
