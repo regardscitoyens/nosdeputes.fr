@@ -883,12 +883,12 @@ foreach $line (split /\n/, $string)
           $element =~ s/^MM\./M. /;
           $element =~ s/^M\.(\S+)/M. \1/;
           $element =~ s/(\S+)\s*\(\s*/\1 (/;
-          if ($element =~ /^M(?:\.|me)?\s+([^,]+),\s*(.*)$/ || $element =~ /^((?:(?:Col|Général|Gal|S\.?E\.?M?|Son Excellence|[PD]r)[. ]+)+[^,]+),\s*(.*)$/) {
+          if ($element =~ /^M(?:\.|me)?\s+([^,]+),\s*(.*)$/ || $element =~ /^((?:(?:Col|Général|Capitaine|Major|Ga?l|S\.?E\.?M?|Son Excellence|[PD]r)[. ]+)+[^,]+),\s*(.*)$/) {
             checkout();
             $intervenant = setFonction($2, $1);
             $intervention = $nointer;
             checkout();
-          } elsif ($element =~ /^M(?:\.|me)?\s+(.*)$/ || $element =~ /^((?:(?:Col|Général|Gal|S\.?E\.?M?|Représentant[es]*|Son Excellence|[DP]r)[. ]+)+.*)$/) {
+          } elsif ($element =~ /^M(?:\.|me)?\s+(.*)$/ || $element =~ /^((?:(?:Col|Général|Capitaine|Major|Ga?l|S\.?E\.?M?|Représentant[es]*|Son Excellence|[DP]r)[. ]+)+.*)$/) {
             checkout();
             $intervenant = setIntervenant($1);
             $intervention = $nointer;
