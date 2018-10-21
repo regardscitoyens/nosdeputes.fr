@@ -39,7 +39,7 @@ foreach($organismes as $o) :
 </table>
 
 <?php if ($old_organismes) : ?>
-<h2>Missions achevées :</h2>
+<h2><?php echo ($type == "groupe" ? "Anciens groupes" : "Missions achevées"); ?> :</h2>
 <table class="list_orgas">
 <thead><tr>
   <th class="orga">Intitulé</th>
