@@ -43,11 +43,11 @@ reg['reunion_an'] = u'^(?:Réunion|Séance) du (.*) ?à (.*) :'
 reg['reunion_an_bis'] = u'^(?:Réunion|Séance) du (.*) :'
 reg['reunion_senat'] = u'^(.{1,5}éance) du (.*) :'
 reg['reunion_senat_bis'] = u'^(.*), séance du (.*)$'
-reg['presents'] = u'^Présents?.* ?(-|:) (.*)'
-reg['presents_an'] = u'^Députés? [pP]résents?.* ?(-|:) (.*)'
-reg['presents_senat'] = u'^Sénateurs? [pP]résents?.* ?(-|:) (.*)'
-reg['excuses'] = u'^(?:Député|Sénateur)s?\s*[eE]xcusé.*(-|:) (.*)'
-reg['assistent'] = u'^Assistai.* (-|:) (.*)'
+reg['presents'] = u'^Présents?.*?[\-:]+\s*(.*)'
+reg['presents_an'] = u'^Députés? [pP]résents?.*?[\-:]+\s*(.*)'
+reg['presents_senat'] = u'^Sénateurs? [pP]résents?.*?[\-:]+\s*(.*)'
+reg['excuses'] = u'^(?:Député|Sénateur)s?\s*[eE]xcusé.*?[\-:]+\s*(.*)'
+reg['assistent'] = u'^Assistai.*?[\-:]+\s*(.*)'
 reg['civilite'] = u' ?(Mme|M\.) '
 reg['fonction_senat'] = u' \([^)]*\)'
 
@@ -154,12 +154,12 @@ for link in soup.find_all('a'):
 
       for line in com_text.split(os.linesep):
 
-        #print >> sys.stderr, line
+        #print >> sys.stderr, line.encode('utf-8')
         m = re.search(reg['presents'], line, re.IGNORECASE)
         if not m:
           m = re.search(reg['presents_'+chamber], line)
         if m:
-          presents = re.sub(reg['civilite'], "", m.group(2))
+          presents = re.sub(reg['civilite'], "", m.group(1))
 
           for present in presents.split(','):
             if chamber == "senat":
@@ -170,7 +170,7 @@ for link in soup.find_all('a'):
             n_presences += 1
         elif re.search(reg['assistent'], line, re.IGNORECASE) is not None:
           m = re.search(reg['assistent'], line, re.IGNORECASE)
-          presents = re.sub(reg['civilite'], "", m.group(2))
+          presents = re.sub(reg['civilite'], "", m.group(1))
           if chamber == "senat":
             presents = re.sub(reg['fonction_senat'], "", presents, re.I)
 
@@ -218,7 +218,7 @@ for link in soup.find_all('a'):
                 data['commission'] = m.group(1)
 
       if not n_presences:
-        sys.exit(' no attendance '+com_link)
+        sys.stderr.write(' no attendance '+com_link+'\n')
       else:
         sys.stderr.write(str(n_presences)+' présences '+com_link+'\n')
 
