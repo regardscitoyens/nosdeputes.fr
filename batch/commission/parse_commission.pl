@@ -749,7 +749,11 @@ foreach $line (split /\n/, $string)
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setFonction($2, $1);
-	  } elsif ($line =~ s/^\|((Une?|Plusieurs) (membres de |députés?).*?|Réponse)[\.\s]*\|//) {
+	  } elsif ($line =~ s/^\|((Une?|Plusieurs) (membres de |députés?).*?)[\.\s:]*\|//) {
+        checkout();
+        $found = $majIntervenant = 1;
+	    $intervenant = setIntervenant($1);
+	  } elsif ($line =~ s/^\|(Réponse)[\.\s:|]*//) {
         checkout();
         $found = $majIntervenant = 1;
 	    $intervenant = setIntervenant($1);
