@@ -249,7 +249,8 @@ def ref_seances(legislature):
 
     MISSING = {
         "RUANR5L15S2018IDS21117": "20180278",
-        "RUANR5L15S2018IDS21120": "20180280"
+        "RUANR5L15S2018IDS21120": "20180280",
+        "RUANR5L15S2019IDS21274": "20190019"
     }
 
     def _extract_list(data):
