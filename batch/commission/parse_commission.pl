@@ -26,6 +26,7 @@ close FILE;
 $string =~ s/\r//g;
 $string =~ s/(M\.\s*&nbsp;\s*)+/M. /g;
 $string =~ s/&#278;/É/g;
+$string =~ s/&#259;/ă/g;
 $string =~ s/&#8211;/–/g;
 
 $mois{'janvier'} = '01';
