@@ -20,7 +20,7 @@ class presenceActions extends sfActions
       $this->response->addMeta('robots', 'noindex,follow');
 
     if ($this->type = $request->getParameter('type'))
-      $this->forward404Unless(preg_match('/(hemicycle|commission)/', $this->type));
+      $this->forward404Unless(preg_match('/^(hemicycle|commission)$/', $this->type));
     else $this->type = "all";
     $query = Doctrine::getTable('Presence')->createQuery('p')
       ->where('p.parlementaire_id = ?', $this->parlementaire->id)
