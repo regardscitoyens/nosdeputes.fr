@@ -9,11 +9,16 @@ for file in $(perl download_commission.pl $LEGISLATURE); do
         echo "...removing empty file $file" | grep -v "http:__www.assemblee-nationale.fr_15_europe_c-rendus_c0"
         rm "html/$file"
         continue
+    elif grep "Ce compte rendu sera disponible dès que possible\." "html/$file" > /dev/null; then
+        echo "...only parsing presents from CR dispo dès que possible $file"
+        perl parse_presents.pl html/$file > presents/$file
+        rm "html/$file"
+        continue
     fi
-	echo try ... ;
-	perl parse_commission.pl html/$file > out/$file ;
-	perl parse_presents.pl html/$file > presents/$file ;
-	echo out/$file done;
+	echo try ...
+	perl parse_commission.pl html/$file > out/$file
+	perl parse_presents.pl html/$file > presents/$file
+	echo out/$file done
 done
 
 bash compute_special_orgs.sh
