@@ -497,6 +497,8 @@ Citoyen:
       fields: [is_active]
     role:
       fields: [role]
+    created_at:
+      fields: [created_at]
 
 VariableGlobale:
   actAs:
@@ -532,6 +534,8 @@ Commentaire:
   indexes:
     commentable:
       fields: [object_type, object_id]
+    created_at:
+      fields: [created_at]
 
 CommentaireObject:
  columns:
