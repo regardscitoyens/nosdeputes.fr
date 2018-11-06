@@ -11,7 +11,7 @@ DEPUTES=$(echo "SELECT nom from parlementaire
                    OR fin_mandat > '$DATE'"     |
           mysql $MYSQLID $DBNAME                |
           grep -v '^nom'                        |
-          sed 's/\W/./g'                        |
+          sed 's/[\Wàâäéèêëîïôöùûüç]/./g'       |
           tr '\n' '|'                           |
           sed 's/|$//')
 
