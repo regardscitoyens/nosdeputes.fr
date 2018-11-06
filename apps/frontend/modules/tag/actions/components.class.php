@@ -1,6 +1,6 @@
 <?php
 
-class tagComponents extends sfComponents 
+class tagComponents extends sfComponents
 {
   public function executeTagcloud() {
     $this->tags = PluginTagTable::getAllTagNameWithCount($this->tagquery, array('model' => $this->model, 'triple' => false, 'min_tags_count' => $this->min_tag, 'limit'=> $this->limit));
@@ -67,21 +67,24 @@ class tagComponents extends sfComponents
   }
 
   public function executeParlementaire() {
-    $this->qtag = Doctrine_Query::create()
-      ->from('Tagging tg, tg.Tag t, Intervention i')
+    $ids = Doctrine::getTable('Intervention')->createQuery('i')
+      ->select('i.id')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365))
-      ->andWhere('i.id = tg.taggable_id');
+      ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+
+    $this->qtag = Doctrine_Query::create()
+      ->from('Tagging tg, tg.Tag t')
+      ->whereIn('tg.taggable_id', $ids);
   }
 
   public function executeGlobalActivite() {
-    $inter = Doctrine::getTable('Intervention')->createQuery('i')
+    $ids = Doctrine::getTable('Intervention')->createQuery('i')
+      ->select('i.id')
       ->orderBy('i.date DESC')
-      ->limit(5000)->fetchArray();
-    $ids = array();
-    foreach($inter as $i) {
-      $ids[] = $i['id'];
-    }
+      ->limit(5000)
+      ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+
     $this->itag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t')
       ->andwhere('tg.taggable_model = ?', 'Intervention')
