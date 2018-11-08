@@ -127,7 +127,7 @@ $string =~ s/Mme François Dumas/Mme Françoise Dumas/gi;
 $string =~ s/Mme la présente/Mme la présidente/gi;
 $string =~ s/M\. Adrien Taché, rapporteur/M. Aurélien Taché, rapporteur/gi;
 
-if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
+if ($string =~ />(?:Réunion|Séance) du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
   $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
   $heure = sprintf("%02d:%02d", $5, $6 || '00');
 }
@@ -544,7 +544,7 @@ $string =~ s/<p>((?:<a name.*?<\/a>)?(?:En conséquence, )?L['es ]+amendements* 
 $string =~ s/<p>\|([A-Z\W]+)\|<\/p>/<p>\/\1\/<\/p>/g;
 $string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|Enfin,|Ensuite,|Par conséquent,|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La commission(?: d[^<\.]*?)?)((?:[\s\/|]+(?:a|par ailleurs|ensuite))+)?[\s\/|]+((?:désign|autoris|approuv|étudi|nomm|examin|lev|emis)(?:e|é|,)*)[\s\/|]+(.*?)<\/p>/<p>\/$1$2$3 $4 $5 $6\/<\/p>/gi;
 $string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|Enfin,|Ensuite,|Par conséquent,|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La commission(?: d\S+(?: [\wéêè][\wéêè]+)*?,?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|passe à|aborde|repousse|se saisit|étudie|est (?:ensuite )?saisie|émet|accept|donne (?:ensuite )?un avis|procède (?:au|à)|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
-$string =~ s/<p>\s*\(?((Un échange de vues a suivi|L'ensemble des articles étant rejetés, la proposition [^<]*|Les résultats du scrutin sont les suivants|Après le départ de[^<]* il est procédé |M[M.me]+ .* prête[^<.]* serment\.|L'audition, suspendue à |La réunion de la commission[^<]*s'achève)[^<]*)\s*<\/p>/<p>\/\1\/<\/p>/gi;
+$string =~ s/<p>\s*\(?((Un échange de vues a suivi|L'ensemble des articles étant rejetés, la proposition [^<]*|Les résultats du scrutin sont les suivants|Après le départ de[^<]* il est procédé |M[M.me]+ .* prête[^<.]* serment\.|L'audition, suspendue à |La réunion (de la commission[^<]*)?(est close|s'achève))[^<]*)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/<p>\s*(Présidence de M[.me]+ [^<]+|(M[.me]+ [^.]*?[, ]+)+(est|sont) élu[^.]*?\.)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/<p[^>]*>[\(\/]+([^<\/\)]+)[\/\)\.]+<\/p>/\n<p>\/\1\/<p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
@@ -635,15 +635,16 @@ foreach $line (split /\n/, $string)
     if ($line =~ /<h[1-9]+/i) {
         rapporteur();
        #print "$line\n";
+        if ($line =~ /SOMseance|"souligne_cra"/i) {
+            if ($line =~ /(\d+)\s*(h(?:eures?)?)\s*(\d*)/i) {
+                $heure = sprintf("%02d:%02d", $1, $3 || "00");
+            }
+        }
         if (!$date && $line =~ /SOM(seance|date)|\"seance\"|h2/) {
             if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
               if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d()!<>]+)\s+(\d\d+)/i) {
                 $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
               }
-            }
-        }elsif ($line =~ /SOMseance|"souligne_cra"/i) {
-            if ($line =~ /(\d+)\s*(h(?:eures?)?)\s*(\d*)/i) {
-                $heure = sprintf("%02d:%02d", $1, $3 || "00");
             }
         }elsif(!$commission && $line =~ /groupe|commission|mission|délégation|office|comité/i) {
             if ($line =~ /[\>\|]\s*((Groupe|Com|Miss|Délé|Offic)[^\>\|]+)[\<\|]/) {

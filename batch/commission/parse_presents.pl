@@ -86,7 +86,7 @@ if ($special && $string =~ />(?:Décisions (?:de Questure )?de la )?[Rr]éunion 
   $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
   $heure = $defaulthoraire;
 }
-if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
+if ($string =~ />(?:Réunion|Séance) du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
   $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
   $heure = sprintf("%02d:%02d", $5, $6 || '00');
 }
@@ -173,18 +173,17 @@ foreach $line (split /\n/, $string)
 	}
     }
     if ($line =~ /<h[1-9]+/i) {
+        if ($line =~ /SOMseance|"souligne_cra"/i) {
+            if ($line =~ /(\d+)\s*(h(?:eures?)?)\s*(\d*)/i) {
+                $heure = sprintf("%02d:%02d", $1, $3 || "00");
+            }
+        }
         if (!$date && $line =~ /SOM(seance|date)|\"seance\"|h2/) {
             if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
               if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d()!<>]+)\s+(\d\d+)/i) {
                 $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
               }
             }
-        }elsif ($line =~ /SOMseance|"souligne_cra"/i) {
-            if ($line =~ /(\d+)\s*(h(?:eures?)?)\s*(\d*)/i) {
-                $heure = sprintf("%02d:%02d", $1, $3 || "00");
-	    }
-
-
         }elsif(!$commission && $line =~ /groupe|commission|mission|délégation|office|comité/i) {
             if ($line =~ /[\>\|]\s*((Groupe|Com|Miss|Délé|Offic)[^\>\|]+)[\<\|]/) {
 		$commission = $1;
