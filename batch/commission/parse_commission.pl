@@ -362,6 +362,7 @@ sub setIntervenant {
     $intervenant =~ s/Yvan Koustoff/Yvan Kouskoff/i;
     $intervenant =~ s/Joachim Son-Forge\b/Joachim Son-Forget/i;
     $intervenant =~ s/Mikaël Nogal/Mickaël Nogal/i;
+    $intervenant =~ s/Bruno le Vigoureux/Fabrice le Vigoureux/i;
     $intervenant =~ s/Célia Delavergne/Célia de Lavergne/i;
     $intervenant =~ s/Sébastien Huygue/Sébastien Huyghe/i;
     $intervenant =~ s/Julien Hubert-Laferri(e|è)re/Hubert Julien-Laferriere/i;
