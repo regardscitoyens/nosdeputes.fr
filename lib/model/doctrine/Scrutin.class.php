@@ -90,7 +90,7 @@ class Scrutin extends BaseScrutin
         if (!$gpe_acro)
           print("WARNING: no groupe acronyme found for $d");
         else $gpes[] = $gpe_acro;
-      } else if (! preg_match('/^(Conférence des Présidents|Gouvernement|Commission )/', $d))
+      } else if (! preg_match('/^(Conférence des Présidents|Gouvernement|Commission)/', $d))
         print("WARNING: unidentified kind of demandeur: $d");
     }
     if ($gpes) {
