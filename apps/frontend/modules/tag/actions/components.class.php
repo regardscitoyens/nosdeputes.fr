@@ -75,7 +75,8 @@ class tagComponents extends sfComponents
 
     $this->qtag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t')
-      ->whereIn('tg.taggable_id', $ids);
+      ->where('tg.taggable_model = ?', 'Intervention')
+      ->andWhereIn('tg.taggable_id', $ids);
   }
 
   public function executeGlobalActivite() {
@@ -87,7 +88,7 @@ class tagComponents extends sfComponents
 
     $this->itag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t')
-      ->andwhere('tg.taggable_model = ?', 'Intervention')
-      ->whereIn('tg.taggable_id', $ids);
+      ->where('tg.taggable_model = ?', 'Intervention')
+      ->andWhereIn('tg.taggable_id', $ids);
   }
 }
