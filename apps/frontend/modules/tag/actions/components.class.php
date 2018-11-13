@@ -75,8 +75,10 @@ class tagComponents extends sfComponents
 
     $this->qtag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t')
-      ->where('tg.taggable_model = ?', 'Intervention')
-      ->andWhereIn('tg.taggable_id', $ids);
+      ->where('tg.taggable_model = ?', 'Intervention');
+    if (count($ids))
+      $this->qtag->andWhereIn('tg.taggable_id', $ids);
+    else $this->qtag->andWhere('FALSE');
   }
 
   public function executeGlobalActivite() {
