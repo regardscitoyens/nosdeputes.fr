@@ -67,13 +67,19 @@ class tagComponents extends sfComponents
   }
 
   public function executeParlementaire() {
-    $this->qtag = Doctrine_Query::create()
-      ->from('Tagging tg, tg.Tag t, Intervention i')
-      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.id = tg.taggable_id');
+    $qids = Doctrine::getTable('Intervention')->createQuery('i')
+      ->select('i.id')
+      ->where('i.parlementaire_id = ?', $this->parlementaire->id);
     if (!myTools::isFinLegislature()) {
-      $this->qtag = $this->qtag->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
-    }
+      $qids->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365))
+    $ids = $qids->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+
+    $this->qtag = Doctrine_Query::create()
+      ->from('Tagging tg, tg.Tag t')
+      ->where('tg.taggable_model = ?', 'Intervention');
+    if (count($ids))
+      $this->qtag->andWhereIn('tg.taggable_id', $ids);
+    else $this->qtag->andWhere('FALSE');
   }
 
   public function executeGlobalActivite() {
