@@ -9,20 +9,15 @@
 <div class="identiques">
 
 </div>
-<?php if ($seance || count($identiques) > 1) { ?>
-<div class="seance_amendements">
-  <h3><?php if ($seance) echo 'Discuté en '.link_to('séance le '.myTools::displayDate($seance['date']), '@interventions_seance?seance='.$seance['seance_id'].'#amend_'.$amendement->numero);
-  $tot = count($identiques)-1;
-  if ($tot > 0) {
-    $ident_titre = " <small>($tot amendement";
-    if ($tot > 1)
-      $ident_titre .= "s identiques : ";
-    else $ident_titre .= " identique : "; ?>
-  <em><?php echo $ident_titre; foreach($identiques as $identique) if ($identique->numero != $amendement->numero)
-      echo link_to($identique->numero, '@amendement?loi='.$identique->texteloi_id.'&numero='.$identique->numero)." "; ?>)</em></small>
-  <?php } ?></h3>
-</div>
-<?php } ?>
+<div class="seance_amendements"><h3>
+<?php $tot = count($identiques)-1;
+if ($tot > 0) {
+  echo "<em><small>($tot amendement".($tot > 1 ? "s identiques" : " identique")." : ";
+  foreach($identiques as $identique) if ($identique->numero != $amendement->numero)
+    echo link_to($identique->numero, '@amendement?loi='.$identique->texteloi_id.'&numero='.$identique->numero)." ";
+  echo ")</em></small>";
+} ?>
+</h3></div>
 <?php if ($sous_admts) { ?>
 <p>Sous-amendements associés&nbsp;: <?php foreach($sous_admts as $sous) {
     if ($sous['sort'] === 'Adopté') echo '<strong>';
@@ -30,28 +25,30 @@
     if ($sous['sort'] === 'Adopté') echo '(Adopté)</strong> ';
   } ?></p>
 <?php } ?>
-<p>Publié le <?php echo myTools::displayDate($amendement->date); ?> par : <span id="liste_deputes"><?php echo preg_replace('/(M[.mle]+)\s+/', '\\1&nbsp;', $amendement->getSignataires(1)); ?>.</span></p>
+<p><u>Publié le <?php echo myTools::displayDate($amendement->date); ?> par :</u> <span id="liste_deputes"><?php echo preg_replace('/(M[.mle]+)\s+/', '\\1&nbsp;', $amendement->getSignataires(1)); ?>.</span></p>
 <div class="signataires">
   <div class="photos"><p>
 <?php $deputes = $amendement->Parlementaires;
   include_partial('parlementaire/photos', array("deputes" => $deputes)); ?>
   </p></div>
 </div>
-<div class="sujet">
-  <h3><?php $sujet = $amendement->getSujet();
-    if ($titreloi && preg_match('/^(.*)?(art(\.|icle)\s*)((\d+|premier).*)$/i', $sujet, $match)) {
-      $art = preg_replace('/premier/i', '1er', $match[4]);
-      $art = strtolower(preg_replace('/\s+/', '-', $art));
-      $sujet = $match[1].link_to($match[2].$match[4], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art);
-    }
-    if ($titreloi)
-      echo link_to(preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $titreloi->titre), '@loi?loi='.$titreloi->texteloi_id);
-    else if ($loi)
-      echo link_to($loititle, '@document?id='.$loi->id);
-    else echo $loititle;
-    echo '</h3><h3>'.$sujet;
-    if ($l = $amendement->getLettreLoi()) echo "($l)"; ?></h3>
-</div>
+<div class="sujet"><h3><?php
+$sujet = $amendement->getSujet();
+if ($titreloi && preg_match('/^(.*)?(art(\.|icle)\s*)((\d+|premier).*)$/i', $sujet, $match)) {
+  $art = preg_replace('/premier/i', '1er', $match[4]);
+  $art = strtolower(preg_replace('/\s+/', '-', $art));
+  $sujet = $match[1].link_to($match[2].$match[4], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art);
+}
+if ($titreloi)
+  echo link_to(preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $titreloi->titre), '@loi?loi='.$titreloi->texteloi_id);
+else if ($loi)
+  echo link_to($loititle, '@document?id='.$loi->id);
+else echo $loititle;
+echo '</h3><h3>'.$sujet;
+if ($l = $amendement->getLettreLoi()) echo "($l)";
+if (!preg_match('/^(Indéfini|Non soutenu|Irrecevable|Retiré avant séance)/', $amendement->sort) && preg_match('/^\d+/', $amendement->numero))
+  echo ' <i>(<a href="/recherche/amendement+'.$amendement->numero.'?object_name=Intervention&tag=loi%3Dnumero%3D'.$amendement->texteloi_id.'&sort=1">consulter les débats</a>)</i></h3>';
+?></h3></div>
 <div class="texte_intervention">
   <?php $texte = $amendement->getTexte();
   if ($titreloi && preg_match('/alin..?a(s)?\D\D?(\d+)[^\d]/', $texte, $match)) {

@@ -6,4 +6,4 @@ _parlemantaireStats:
 _pagerAmendements:
    enabled: false
 show:
-   enabled: false
+   enabled: true
