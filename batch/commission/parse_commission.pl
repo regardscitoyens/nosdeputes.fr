@@ -540,13 +540,14 @@ $string =~ s/d\W+évaluation/d'évaluation/g;
 $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/<\/?sup>//ig;
+$string =~ s/ +/ /g;
 $string =~ s/<p>\|((?:<a name.*?<\/a>)?(?:A(?:vant|près) l')?Article (?:unique|liminaire|\d+e?r?)[^<]*?)\s*\|\s*\/?(.*?)\s*\/?\s*<\/p>/<p>\/$1 $2\/<\/p>/gi;
 $string =~ s/<p>\/?((?:<a name.*?<\/a>)?(?:Suspendue à [^,]*, )?L(?:a réunion|a séance|'audition))(, suspendue à .*?,)?\s*(s'achève|se termine|reprend|est (?:suspendue|reprise|levée))(.*?)\/?<\/p>(© Assemblée nationale)?/<p>\/$1$2 $3$4 $5\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?(?:En conséquence, )?(?:Le rapport |L['es ]+a(?:rticle|mendement)s* .*?)(?:est|sont)(?: également)?)\s*\|?\s*(sans objet|(?:retir|adopt|rejet)és?\s*)\|?(\s*.*?)<\/p>/<p>\/$1 $2$3\/<\/p>/gi;
 $string =~ s/<p>((?:<a name.*?<\/a>)?(?:En conséquence, )?L['es ]+amendements* .*?tomben?t?)\s*\|?\s*(.*?)<\/p>/<p>\/$1 $2\/<\/p>/gi;
 $string =~ s/<p>\|([A-Z\W]+)\|<\/p>/<p>\/\1\/<\/p>/g;
 $string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|Enfin,|Ensuite,|Par conséquent,|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La commission(?: d[^<\.]*?)?)((?:[\s\/|]+(?:a|par ailleurs|ensuite))+)?[\s\/|]+((?:désign|autoris|approuv|étudi|nomm|examin|lev|emis)(?:e|é|,)*)[\s\/|]+(.*?)<\/p>/<p>\/$1$2$3 $4 $5 $6\/<\/p>/gi;
-$string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|Enfin,|Ensuite,|Par conséquent,|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La commission(?: d\S+(?: [\wéêè][\wéêè]+)*?,?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|passe à|aborde|repousse|se saisit|étudie|est (?:ensuite )?saisie|émet|accept|donne (?:ensuite )?un avis|procède (?:au|à)|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
+$string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|À la demande de certains de ses membres,|Enfin,|Ensuite,|Par conséquent,|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La (?:com)?mission(?: d\S+(?: [\wéêè][\wéêè]+)*?,?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|passe à|aborde|repousse|se saisit|étudie|est (?:ensuite )?saisie|émet|accept|donne (?:ensuite )?un avis|procède (?:au|à|préalablement)|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
 $string =~ s/<p[^>]*>[\s(\-]*(((Chap|T)itre |Tome |Volume |Section |Proposition |Un échange de vues a suivi|L'ensemble des articles étant rejetés, la proposition [^<]*|Les résultats du scrutin sont les suivants|Après le départ de[^<]* il est procédé |M[M.me]+ .* prête[^<.]* serment\.|L'audition, suspendue à |La réunion (de la commission[^<]*)?(est close|s'achève))[^<]*)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/<p>\s*(Présidence de M[.me]+ [^<]+|(M[.me]+ [^.]*?[, ]+)+(est|sont) élu[^.]*?\.)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/<p[^>]*>[\(\/]+([^<\/\)]+)[\/\)\.]+<\/p>/\n<p>\/\1\/<p>/gi;
@@ -847,6 +848,14 @@ foreach $line (split /\n/, $string)
     }
     if ($line =~ /^Ont participé (?:au débat|à la discussion)\s*:\s*(M.*?)[\s\.]*$/) {
       foreach $part (split(/\s*(?:,| et)\s+/, $1)) {
+        checkout();
+        $intervenant = setIntervenant($part);
+        $intervention = "<p><i>(non disponible)</i></p>";
+        checkout();
+      }
+    }
+    if ($line =~ /Après les interventions de (M[Mme.s]+.*), la (com)?mission /) {
+      foreach $part (split(/\s*(?:,| et(?: du)?)\s+/, $1)) {
         checkout();
         $intervenant = setIntervenant($part);
         $intervention = "<p><i>(non disponible)</i></p>";
