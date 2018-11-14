@@ -179,11 +179,11 @@ sub checkout {
     $ts = $cpt;
     $out =  '{"commission": "'.$commission.'", "intervention": "'.$intervention.'", "date": "'.$date.'", "source": "'.$source.'", "heure": "'.$heure.'", "session": "'.$session.'", ';
     if ($intervention && $intervenant) {
-	if ($intervenant =~ s/ et (M[mes\.]* (l[ea] )?)?(.+)//) {
-            $second = $3;
-            if ($fonction2inter{comparable($second)}) {
-                $second = $fonction2inter{comparable($second)};
-            }
+	if ($intervenant !~ /Collectif Intersexes/i && $intervenant =~ s/ et (M[mes\.]* (l[ea] )?)?(.+)//) {
+        $second = $3;
+        if ($fonction2inter{comparable($second)}) {
+            $second = $fonction2inter{comparable($second)};
+        }
 	    print $out.'"intervenant": "'.$second.'", "timestamp": "'.$ts.'", "fonction": "'.$inter2fonction{comparable($second)}."\"}\n";
 	    $ts++;
 	}
@@ -288,6 +288,7 @@ sub setFonction {
 
 sub setIntervenant {
     my $intervenant = shift;
+    #print STDERR "TEST1 $intervenant\n";
     $intervenant =~ s/<[^>]+>\s*//g;
     $intervenant =~ s/<[^>]*$//;
     $intervenant =~ s/–/-/g;
@@ -424,7 +425,7 @@ sub setIntervenant {
     $intervenant =~ s/^(l[ea] )?(s..?nat(eur|rice))\s+(.*)$/\4, \2/i;
     $intervenant =~ s/^l[ea] ((co[-\s]*|vice[-\s]*)?présidente?|rapporteure?|[Mm]inistre) (M(\.|me)?\s)?([A-ZÉÈÊÀÂÔÙÛÎÏÇ].*)$/\5, \1/;
     $intervenant =~ s/([A-ZÉÈÊÀÂÔÙÛÎÏÇ][^,\s]+) ([Rr]apporteur|[Pp]résident)/\1, \2/;
-    #print "TEST2 $intervenant\n";
+    #print STDERR "TEST2 $intervenant\n";
     if ($intervenant =~ s/\, (.*)//) {
 	setFonction($1, $intervenant);
     }
@@ -802,6 +803,7 @@ foreach $line (split /\n/, $string)
     }
     $line =~ s/\/\.\//./g;
     $line =~ s/^[\.\:]\s*//;
+    $line =~ s/é\.e\.s\b/é·e·s/ig;
     #print STDERR "LINE: $found $intervenant $line\n";
 	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+([^\.:]*(interroge|, pour le rapport|propose|a p(ubli|os)é|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|ayant )|[^:]*présentent)/) {
 	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Pr\.?|Maître|L[ea] représentante?|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
