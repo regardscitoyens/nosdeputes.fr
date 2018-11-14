@@ -804,7 +804,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/^[\.\:]\s*//;
     #print STDERR "LINE: $found $intervenant $line\n";
 	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+([^\.:]*(interroge|, pour le rapport|propose|a p(ubli|os)é|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|ayant )|[^:]*présentent)/) {
-	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Pr\.?|Maître|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
+	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Pr\.?|Maître|L[ea] représentante?|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
             if (!$intervenant && $line =~ /^\s*$/) {
