@@ -7,6 +7,8 @@ Ce widget permet d'embarquer des morceaux de NosDéputés.fr sur un autre site e
 - sa barre d'activité
 - ses mots-clés
 
+**Note:** Cette fonctionnalité n'est pas encore disponible pour NosSénateurs.fr.
+
 ## Accès
 
 L'accès est proposé via les URLs de la forme http://www.nosdeputes.fr/widget/#NOM avec #NOM idéalement de la forme "slug" (fourni dans les listes et informations individuelles de députés), "Prénom Nom" ou encore (sous réserve d'homonymes) "Nom", par exemple : http://www.nosdeputes.fr/widget/ayrault
