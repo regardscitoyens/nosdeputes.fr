@@ -2,7 +2,7 @@
    $titre = 'Trouver un sénateur par mot-clé'; ?>
 <h1><?php echo $titre; ?></h1>
 <div class="liste_senateurs_tags">
-<?php echo include_component('tag', 'tagcloud', array('querytag'=>$tquery,'route'=>'@tag_result_parlementaires?', 'limit'=>500)); 
+<?php echo include_component('tag', 'tagcloud', array('querytag'=>$tquery,'model'=>'Intervention', 'route'=>'@tag_result_parlementaires?', 'limit'=>500));
  echo "</div>";
  return;
  } else  $titre = 'Les sénateurs spécialistes de "'.$tag.'"';?>
