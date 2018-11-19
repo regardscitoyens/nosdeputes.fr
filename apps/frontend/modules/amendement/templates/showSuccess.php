@@ -47,7 +47,7 @@ else echo $loititle;
 echo '</h3><h3>'.$sujet;
 if ($l = $amendement->getLettreLoi()) echo "($l)";
 if (!preg_match('/^(Indéfini|Non soutenu|Irrecevable|Retiré avant séance)/', $amendement->sort) && preg_match('/^\d+/', $amendement->numero))
-  echo ' <i>(<a href="/recherche/amendement+'.$amendement->numero.'?object_name=Intervention&tag=loi%3Dnumero%3D'.$amendement->texteloi_id.'&sort=1">consulter les débats</a>)</i></h3>';
+  echo ' <i>(<a href="/recherche/amendement+'.preg_replace('/[A-Z]$/', '', $amendement->numero).'?object_name=Intervention&tag=loi%3Dnumero%3D'.$amendement->texteloi_id.'&sort=1">consulter les débats</a>)</i></h3>';
 ?></h3></div>
 <div class="texte_intervention">
   <?php $texte = $amendement->getTexte();
