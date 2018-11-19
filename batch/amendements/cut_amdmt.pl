@@ -245,6 +245,8 @@ foreach $line (split /\n/, $string)
 	}
   } elsif ($line =~ /date_?amend.*([0-9]+e?r? \S+ [0-9]+)\D/i && !$amdmt{'date'}) {
            $amdmt{'date'} = join '-', datize($1);
+  } elsif ($line =~ /Sous réserve de son traitement par les services de l'Assemblée nationale/i) {
+    next;
   } elsif ($line =~ /class="amddispotitre"/i && !$amdmt{'sujet'}) {
             $line =~ s/<[^>]+>//g;
             $amdmt{'sujet'} = $line;
