@@ -341,7 +341,7 @@ foreach $line (split /\n/, $string)
 	}
   } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le [Gg]ouvern)/ && $line !~ /( adopt.*des\s*amendements\s*identiques|rapport.*M[\.Mml])/) {
 	auteurs();
-  } elsif ($line =~ /<p style=".*text-indent:/i) {
+  } elsif ($line =~ /<p style="(text-align: justify;">|.*text-indent:)/i) {
         irrecevable();
 	    texte();
   } elsif ($line =~ /(\s*<(div|p)[^>]*>\s*)+(.*)(\s*<\/(div|p)>\s*)+/i && $texte >= 1) {
