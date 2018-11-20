@@ -755,7 +755,7 @@ foreach $line (split /\n/, $string)
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2.$3;
-        if ($extrainterv =~ s/(Idem|In vino veritas|Quid|Cooking Budgets|\/A \w+i\W*\/)//) {
+        if ($extrainterv =~ s/(Idem|Interprétation|In vino veritas|Quid|Cooking Budgets|\/A \w+i\W*\/)//) {
             $line = $1.$line;
         }
         $found = $majIntervenant = 1;
@@ -812,7 +812,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/^[\.\:]\s*//;
     $line =~ s/é\.e\.s\b/é·e·s/ig;
     #print STDERR "LINE: $found $intervenant $line\n";
-	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+([^\.:]*(interroge|, pour le rapport|est également|propose|a p(ubli|os)é|a mené|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|ayant )|[^:]*présentent)/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.])\s+([^\.:]*(interroge|, pour le rapport|est également|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|ayant )|[^:]*présentent)/) {
 	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Pr\.?|Maître|L[ea] représentante?|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|adame|onsieur|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
@@ -860,7 +860,7 @@ foreach $line (split /\n/, $string)
         checkout();
       }
     }
-    if ($line =~ /Après les interventions de (M[Mme.s]+.*), la (com)?mission /) {
+    if ($line =~ /Après les interventions de (M[Mme.s]+.*), (le président|la (com)?mission) /) {
       foreach $part (split(/\s*(?:,| et(?: du)?)\s+/, $1)) {
         checkout();
         $intervenant = setIntervenant($part);
