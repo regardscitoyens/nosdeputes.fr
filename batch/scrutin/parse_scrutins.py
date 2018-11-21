@@ -125,6 +125,10 @@ ERREURS_AN = {
     "438": "20180174",
 }
 
+MISSING_HISTOGPES = {
+    "PA721632": "UAI"
+}
+
 def parse_scrutin(data, seances, groupes, histo_groupes):
     logs = []
     synthese = data["syntheseVote"]
@@ -203,13 +207,16 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
                 for votant in votants:
                     if votant["acteurRef"] not in scrutin["parlementaires"]:
                         groupe = None
-                        histo = histo_groupes[votant["acteurRef"]]
+                        histo = histo_groupes.get(votant["acteurRef"], None)
                         for h in histo or []:
                             if h["debut"] <= scrutin["date"] <= (h["fin"] or "9999-99-99"):
                                 groupe = h["sigle"]
                                 break
                         if not groupe:
                             logs.append("WARNING: no groupe historique found for parl %s for date %s: %s" % (votant["acteurRef"], scrutin["date"], histo))
+                            if votant["acteurRef"] in MISSING_HISTOGPES:
+                                groupe = MISSING_HISTOGPES[votant["acteurRef"]]
+                                logs.append("  ->  hardfixing it to %s" % groupe)
                         scrutin["parlementaires"][votant["acteurRef"]] = {
                             "position": None,
                             "groupe": groupe,
