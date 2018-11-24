@@ -12,6 +12,7 @@ DEPUTES=$(echo "SELECT nom from parlementaire
           mysql $MYSQLID $DBNAME                |
           grep -v '^nom'                        |
           sed 's/[\Wàâäéèêëîïôöùûüç]/./g'       |
+          sed 's/[ \-]/[ \\-]/g'                |
           tr '\n' '|'                           |
           sed 's/|$//')
 
