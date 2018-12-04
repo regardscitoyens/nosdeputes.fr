@@ -340,7 +340,7 @@ sub setIntervenant {
     $intervenant =~ s/Thérèse Majnoni d'Untignano/Thérèse Majnoni d'Intignano/i;
     $intervenant =~ s/Guillaume Garrot/Guillaume Garot/i;
     $intervenant =~ s/Natalie Ancel/Nathalie Ancel/i;
-    $intervenant =~ s/Amal-Amélia Lakfrafi/Amal-Amélia Lakrafi/i;
+    $intervenant =~ s/Amal[\- ]Amélia Lakf?rafi/Amélia Lakrafi/i;
     $intervenant =~ s/S[iy]ra S[iy]l+a/Sira Sylla/i;
     $intervenant =~ s/Christophe Jer+et+ie/Christophe Jerretie/i;
     $intervenant =~ s/Alexandre Guédon/Xavier Guédon/i;
