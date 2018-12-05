@@ -32,14 +32,15 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   $num = $6+0;
   if ($4 ne "AN") {
     $commission = $4;
-    if ($5) {
-      $tetenum = $5;
-    } else {
-      $tetenum = $4;
-      $tetenum =~ s/[^A-Z]//g;
-    }
-    $num = $tetenum.$num;
   }
+  $tetenum = "";
+  if ($5) {
+    $tetenum = $5;
+  } elsif ($4 ne "AN") {
+    $tetenum = $4;
+    $tetenum =~ s/[^A-Z]//g;
+  }
+  $num = $tetenum.$num;
   if ($amdmt{'loi'} !~ /TA/) {
     $amdmt{'loi'} += 0;
   }
