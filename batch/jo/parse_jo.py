@@ -67,9 +67,9 @@ except IndexError:
 prefix = 'https://www.legifrance.gouv.fr'
 
 if chamber == 'an':
-  text_link = u'Commissions et organes de contrôle'
+  text_link = [u'Commissions et organes de contrôle']
 elif chamber == 'senat':
-  text_link = u'Commissions'
+  text_link = [u'Commissions', u'Commissions / organes temporaires']
 else:
   sys.exit('Le 1er argument doit être "an" ou "senat"')
 
@@ -117,7 +117,7 @@ else:
       data['source'] = 'Journal officiel du '+date_fr
 
       # Commission
-      if link_string == text_link:
+      if link_string in text_link:
         commission_link = True
         n_presences = 0
         com_link = prefix+link.get('href')
