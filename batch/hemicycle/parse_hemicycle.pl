@@ -540,7 +540,7 @@ foreach $line (split /\n/, $string)
         #si italique ou tout gras => commentaire
         $line =~ s/##BR##$//;
         foreach $line (split /##BR##/, $line) {
-            if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/[^\/]*[\/\)\.\s]*$/ || $line =~ /^\/\(.*\)\/$/) {
+            if ($line =~ /^\s*\|.*\|\s*$/ || $line =~ /^\s*\/[^\/]*[\/\)\.\s]*$/ || $line =~ /^\/\(.*\)\s*\/$/) {
                 $oldintervenant = $intervenant;
                 $oldintervenant_url = $intervenant_url;
                 checkout() if ($intervenant);
