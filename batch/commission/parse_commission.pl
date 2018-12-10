@@ -715,6 +715,7 @@ foreach $line (split /\n/, $string)
     next if ($line =~ /\|\/(vice-)?présidente?\/\|/);
     $line =~ s/^\s*–\s*\|\s*/|– /;
     $line =~ s/^\|\s+([A-Z])/|\1/;
+    $line =~ s/^\|\s*(Articles?[^|]+)\s*\|\s*(.*)[\s\/]*$/\/\1 \2\//g;
     $tmpinter = "";
     #print STDERR "$intervenant $line\n";
     #si italique ou tout gras => commentaire
