@@ -559,7 +559,7 @@ $string =~ s/<p>\s*(Présidence de M[.me]+ [^<]+|(M[.me]+ [^.]*?[, ]+)+(est|sont
 $string =~ s/<p[^>]*>[\(\/]+([^<\/\)]+)[\/\)\.]+<\/p>/\n<p>\/\1\/<p>/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
-$string =~ s/<a[^>]*href="[^"]*(?:fiche\/OMC_|tribun\/fiches_id|senat\.fr\/senateur\/)[^"]*"[^>]*>([^<]*)<\/a>/\1/g;
+$string =~ s/<a[^>]*href="[^"]*(?:fiche\/OMC_|gouvernement\.fr\/ministre|tribun\/fiches_id|senat\.fr\/senateur\/)[^"]*"[^>]*>([^<]*)<\/a>/\1/g;
 $string =~ s/(\|M[.me]+ [^.|]*?\.)\s*(–[^|]*)\|/\1\| \2/g;
 $majIntervenant = 0;
 $body = 0;
