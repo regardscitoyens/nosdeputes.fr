@@ -52,7 +52,7 @@ POS_MAP = {
 
 SCRUTINS_DIR = os.path.join(BATCH_DIR, "scrutin", "scrutins")
 
-TYPES = {"SPS": "solennel", "SPO": "ordinaire"}
+TYPES = {"SPS": "solennel", "SPO": "ordinaire", "MOC": "solennel"}
 
 CLEAN_DEMANDEUR = [
     (u"Pr[eé]sident", u"Président"),
@@ -69,7 +69,8 @@ def clean_demandeur(d):
 MISSING_DEMANDEURS = {
     "17": [u"Président du groupe Nouvelle Gauche"],
     "43": [u"Président du groupe La France Insoumise"],
-    "153": [u"Président du groupe Les Républicains"]
+    "153": [u"Président du groupe Les Républicains"],
+    "1573": [u"Président du groupe Gauche démocrate et républicaine", u"Président du groupe Nouvelle Gauche", u"Président du groupe La France Insoumise"]
 }
 def clean_demandeurs(demandeurs, numero):
     if not demandeurs:
