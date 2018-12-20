@@ -142,7 +142,8 @@ ERREURS_AN = {
 }
 
 MISSING_HISTOGPES = {
-    "PA721632": "UAI"
+    "PA721632": "UAI",
+    "PA719664": "LREM"
 }
 
 def parse_scrutin(data, seances, groupes, histo_groupes):
