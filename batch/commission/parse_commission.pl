@@ -206,8 +206,9 @@ sub setFonction {
     $intervenantorigreg = $intervenantorig;
     $intervenantorigreg =~ s/([()[\].?])/\\\1/g;
     $fonction =~ s/^[Mme\s.]*$intervenantorigreg[, ]*//;
-    if ($intervenantorig =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$// ||
-        $fonction    =~ s/ et de (M[me\.](?: \S+)+?)(?:[, ]+([\w\-]*[Pp]r..?sident[^<\.]*))?$//) {
+    $fonction =~ s/[\.\s]+$//;
+    if ($intervenantorig =~ s/,? et (?:de )?(M[me\.]+(?: \S+)+?)(?:[, ]+(ministre[^<\.]*|[\w\-]*[Pp]r..?sident[^<\.]*))?$// ||
+               $fonction =~ s/,? et (?:de )?(M[me\.]+(?: \S+)+?)(?:[, ]+(ministre[^<\.]*|[\w\-]*[Pp]r..?sident[^<\.]*))?$//) {
       if ($2) {
         setFonction($2, $1);
       } else {
@@ -528,10 +529,10 @@ sub rapporteur
 	}
     } elsif ($line =~ /ministre/i) {
         $line =~ s/[\r\n]//g;
-        @pieces = split(/(,|et|, accompagnée?) de M[mes\.]+ /, $line);
+        @pieces = split(/(,| et|, accompagnée?)+ (de )?M[mes\.]+ /, $line);
         foreach $l (@pieces) {
             $l =~ s/, sur .*$//;
-            $l =~ s/, et discussion .*$//;
+            $l =~ s/, et (à la )?discussion .*$//;
             if ($l ne $line && $l !~ /^[\/\|]?l[ea]s? /i && $l =~ /(M[me\.]+\s)?([^,]+), ([Mm]inistre ((, |et |([dl][eaus'\s]+))*(\S+(\s+|$)){1,4})+)/) {
                 setFonction($3, $2);
             }
