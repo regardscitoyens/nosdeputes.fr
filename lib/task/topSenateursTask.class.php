@@ -403,10 +403,11 @@ class topSenateursTask extends sfBaseTask
     foreach(array_keys($this->senateurs) as $id) {
       if ($this->senateurs[$id]['groupe'] == "")
         continue;
+      $groupes[$this->senateurs[$id]['groupe']]['groupe']['nb']++;
       foreach(array_keys($this->senateurs[$id]) as $key) {
         if ($key !== 'groupe') {
-	$groupes[$this->senateurs[$id]['groupe']][$key]['somme'] += $this->senateurs[$id][$key]['value'];
-	$groupes[$this->senateurs[$id]['groupe']][$key]['nb']++;
+            $groupes[$this->senateurs[$id]['groupe']][$key]['somme'] += $this->senateurs[$id][$key]['value'];
+            $groupes[$this->senateurs[$id]['groupe']][$key]['nb']++;
         }
       }
       unset($this->senateurs[$id]['groupe']);
