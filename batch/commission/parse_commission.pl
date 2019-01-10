@@ -530,7 +530,8 @@ sub rapporteur
     } elsif ($line =~ /ministre/i) {
         $line =~ s/[\r\n]//g;
         @pieces = split(/(,| et|, accompagnée?)+ (de )?M[mes\.]+ /, $line);
-        foreach $l (@pieces) {
+        foreach $li (@pieces) {
+            $l = $li;
             $l =~ s/, sur .*$//;
             $l =~ s/, et (à la )?discussion .*$//;
             if ($l ne $line && $l !~ /^[\/\|]?l[ea]s? /i && $l =~ /(M[me\.]+\s)?([^,]+), ([Mm]inistre ((, |et |([dl][eaus'\s]+))*(\S+(\s+|$)){1,4})+)/) {
