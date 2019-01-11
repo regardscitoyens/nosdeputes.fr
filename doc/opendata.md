@@ -41,8 +41,9 @@ Diverses données parlementaires également mises en œuvre sur nos sites et ail
 - Carte SVG des [circonscriptions (depuis 2012)](https://www.data.gouv.fr/fr/datasets/carte-des-circonscriptions-lgislatives-2012/)
 - Carte SVG des [circonscriptions (avant 2012)](../web/circo2007.svg)
 - Carte SVG des [circonscriptions des français de l'étranger (depuis 2012)](../web/circos-francais-etranger.svg)
-- Appartenance des [communes aux circonscriptions législatives](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_insee.csv)
-- Détail des pays appartenant aux [circonscriptions des français de l'étranger](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_etranger.csv)
+- Appartenance des [communes aux circonscriptions législatives (avant 2012)](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_insee_2007.csv)
+- Appartenance des [communes aux circonscriptions législatives (depuis 2012)](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_insee_2012.csv)
+- Détail des pays appartenant aux [circonscriptions des français de l'étranger (depuis 2012)](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_etranger.csv)
 - Catalogue [OpenData officiel de l'Assemblée nationale](http://data.assemblee-nationale.fr)
 - Catalogue [OpenData officiel du Sénat](http://data.senat.fr)
 - [ParlAPI](http://parlapi.fr/) reprenant les données des catalogues officiels OpenData
