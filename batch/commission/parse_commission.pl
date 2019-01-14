@@ -348,6 +348,7 @@ sub setIntervenant {
     $intervenant =~ s/Alexandre Guédon/Xavier Guédon/i;
     $intervenant =~ s/Florence Povey/Florence Poivey/i;
     $intervenant =~ s/Fabien Di Filipo/Fabien Di Filippo/i;
+    $intervenant =~ s/Philipe Herscu/Philippe Herscu/i;
     $intervenant =~ s/Sabine Gaudin/Sandrine Gaudin/i;
     $intervenant =~ s/Michel Pupponi/François Pupponi/i;
     $intervenant =~ s/Michel Castallani/Michel Castellani/i;
