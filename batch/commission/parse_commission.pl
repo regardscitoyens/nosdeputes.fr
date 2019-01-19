@@ -561,7 +561,8 @@ $string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|Enfin,|Ensuite,|Par conséquent,
 $string =~ s/<p>(<a name.*?<\/a>)?((?:(?:Puis,?|À la demande de certains de ses membres,|Enfin,|Ensuite,|Par conséquent,|(?:Su(?:r (?:proposition|le rapport)|ivant l'avis)|À l'issue) d[^,]*,)\s*)*)(Elle|La (?:com)?mission(?: d\S+(?: [\wéêè][\wéêè]+)*?,?|, après[^,]*avis[^,]*,)?)[\s\/|]+((?:en vient|passe (?:ensuite )?à|aborde|repousse|se saisit|étudie|est (?:ensuite )?saisie|émet|accept|donne (?:ensuite )?un avis|procède (?:au|à|préalablement)|adopt|rejet+)[eé,]*)[\s\/|]*(.*?)<\/p>/<p>\/$1$2$3 $4 $5\/<\/p>/gi;
 $string =~ s/<p[^>]*>[\s(\-]*(((Chap|T)itre |Tome |Volume |(?:Sous-?)?Section |Proposition |Un échange de vues a suivi|L'ensemble des articles étant rejetés, la proposition [^<]*|Les résultats du scrutin sont les suivants|Après le départ de[^<]* il est procédé |M[M.me]+ .* prête[^<.]* serment\.|L'audition, suspendue à |La réunion (de la commission[^<]*)?(est close|s'achève))[^<]*)\s*<\/p>/<p>\/\1\/<\/p>/gi;
 $string =~ s/<p>\s*(Présidence de M[.me]+ [^<]+|(M[.me]+ [^.]*?[, ]+)+(est|sont) élu[^.]*?\.)\s*<\/p>/<p>\/\1\/<\/p>/gi;
-$string =~ s/<p[^>]*>[\(\/]+([^<\/\)]+)[\/\)\.]+<\/p>/\n<p>\/\1\/<p>/gi;
+$string =~ s/<p[^>]*>[\(\/]+([^<\/\)]+)[\/\)\.]+<\/p>/\n<p>\/\1\/<\/p>/gi;
+$string =~ s/(<td[^>]*>)\n(<p>\/.*?\/<\/p>[\n\s]*<\/td>)/\1\2/gi;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $string =~ s/<a[^>]*href="[^"]*(?:fiche\/OMC_|gouvernement\.fr\/ministre|tribun\/fiches_id|senat\.fr\/senateur\/)[^"]*"[^>]*>([^<]*)<\/a>/\1/g;
