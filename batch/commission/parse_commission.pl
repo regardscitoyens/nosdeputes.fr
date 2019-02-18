@@ -887,13 +887,17 @@ foreach $line (split /\n/, $string)
     }
     if ($line =~ /(https?.*?(assnat\.fr|videos?\.assemblee-nationale\.(fr|tv)|assemblee-nationale\.tv)\/[^\s"<>]*)([\s"<>]|\.$|$)/ && ($line !~ /commission-elargie/ || $source =~ /commissions_elargies/)) {
       $urlvideo = $1;
-      if ($2 eq "assnat.fr") {
+      if ($2 eq "assnat.fr" || $urlvideo =~ /\/direct\./) {
         $origurl = $urlvideo;
         use WWW::Mechanize;
         $mech = WWW::Mechanize->new(autocheck => 0);
         $mech->max_redirect(0);
         $mech->get($urlvideo);
         $urlvideo = $mech->response()->header('Location');
+        if ($urlvideo !~ /assemblee-nationale\.(fr|tv)/) {
+          $urlvideo =~ s/^\/+//;
+          $urlvideo = "https://videos.assemblee-nationale.fr/$urlvideo";
+        }
         $pos = index($intervention, $origurl);
         while($pos > -1) {
           substr($intervention, $pos, length($origurl), $urlvideo);
@@ -907,7 +911,7 @@ foreach $line (split /\n/, $string)
       #$urlvideo =~ s/http:/https:/i;
       #$intervention = "<p><iframe height=\"660px\" width=\"100%\" src=\"$urlvideo\"></iframe></p>";
       #checkout();
-      if ($urlvideo =~ /assemblee-nationale.*\/video\.([^.]+)\./) {
+      if ($urlvideo =~ /assemblee-nationale.*\/video\.([^.]+)/) {
         $idvideo = $1;
         $urlsommairevid = "http://videos.assemblee-nationale.fr/Datas/an/$idvideo/content/data.nvs";
         use WWW::Mechanize;
