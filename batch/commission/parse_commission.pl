@@ -322,6 +322,7 @@ sub setIntervenant {
     $intervenant =~ s/Pierre Dharéville/Pierre Dharréville/i;
     $intervenant =~ s/Sabine Tillaye/Sabine Thillaye/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
+    $intervenant =~ s/Murielle Ressiguier/Muriel Ressiguier/i;
     $intervenant =~ s/Jean-Louis Thériot/Jean-Louis Thiériot/i;
     $intervenant =~ s/Patrick Verchère/Patrice Verchère/i;
     $intervenant =~ s/Catherine Proccacia/Catherine Procaccia/i;
@@ -918,6 +919,7 @@ foreach $line (split /\n/, $string)
         while ($sommairevid =~ s/<chapter[^>]*label="\s*([^"]+)\s*"[^>]*>//) {
           $element = decode_entities($1);
           utf8::encode($element);
+          $element =~ s/\s+/ /g;
           $element =~ s/^MM\./M. /;
           $element =~ s/^M\.(\S+)/M. \1/;
           $element =~ s/(\S+)\s*\(\s*/\1 (/;
