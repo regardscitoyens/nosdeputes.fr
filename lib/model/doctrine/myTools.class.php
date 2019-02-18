@@ -49,8 +49,7 @@ class myTools {
   }
 
   public static function getProtocol() {
-    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") return "https";
-    return "http";
+    return "https";
   }
 
   public static function setPageTitle($title, $response, $image=true) {
