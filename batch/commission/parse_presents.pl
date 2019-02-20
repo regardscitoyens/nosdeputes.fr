@@ -120,7 +120,7 @@ sub checkout {
     foreach $depute (@presents) {
 	$depute =~ s/[\/<\|]//g;
 	$depute =~ s/^\s*M+([mes]+\s+|\.\s*)//;
-	$depute =~ s/\s+$//;
+	$depute =~ s/[,\s]+$//;
 	$depute =~ s/^\s+//;
     if ($depute !~ /^Vice[ -]|Président|Questeur|Secrétaire|Présent|Excusé/i) {
       print '{"commission": "'.$commission.'","depute": "'.$depute.'","reunion":"'.$date.'","session":"'.$heure.'","source":"'.$source.'"}'."\n";
