@@ -393,6 +393,7 @@ sub setIntervenant {
     $intervenant =~ s/Raphaeïl Schellenberger/Raphaël Schellenberger/i;
     $intervenant =~ s/Brunos Fuchs/Bruno Fuchs/i;
     $intervenant =~ s/Frnçois/François/i;
+    $intervenant =~ s/Yaeïl /Yael /i;
     $intervenant =~ s/Christian Byk/Christien Byk/i;
     $intervenant =~ s/Franck Deconinck/Frank Deconinck/i;
     $intervenant =~ s/Sophie Beaudoin-Hubiere/Sophie Beaudouin-Hubiere/i;
