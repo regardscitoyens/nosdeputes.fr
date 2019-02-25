@@ -51,14 +51,14 @@ class Scrutin extends BaseScrutin
       if (!$source) $source = $inter->source;
       $mv = preg_match_all('/nombre de votants(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_votant);
       $mp = preg_match_all('/pour l\'(?:adoption|approbation)(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_pour);
-      $mc = preg_match_all('/contre(?:<\/td><td>|[,\s])(\d+)/i', $text, $match_contre);
+      $mc = preg_match_all('/contre(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_contre);
 
       if (preg_match("/Majorité requise pour l'adoption/", $text) && $mp != 0 && intval(end($match_pour[1])) == $this->nombre_votants && intval(end($match_pour[1])) == $this->nombre_pours) {
         $found = TRUE;
         $inter->addTag("scrutin:numero={$this->numero}");
         break;
       } elseif ($mv == 0 || $mp == 0 || $mc == 0) {
-        echo "WARNING: décomptes intervention {$inter->id} incomplets :\n$text\n";
+        echo "WARNING: décomptes intervention {$inter->id} incomplets $mv $mp $mc :\n$text\n";
       } elseif (intval(end($match_votant[1])) != $this->nombre_votants
              || intval(end($match_pour[1])) != $this->nombre_pours
              || intval(end($match_contre[1])) != $this->nombre_contres) {
