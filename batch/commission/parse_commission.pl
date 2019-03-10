@@ -765,7 +765,7 @@ foreach $line (split /\n/, $string)
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2.$3;
-        if ($extrainterv =~ s/(Idem|Interprétation|In vino veritas|Quid|Errare humanum est, perseverare diabolicum|Cooking Budgets|\/A \w+i\W*\/)//) {
+        if ($extrainterv =~ s/(Idem|Interprétation|In vino veritas|Quid|« Qui bene amat, bene castigat »…|Errare humanum est, perseverare diabolicum|Cooking Budgets|\/A \w+i\W*\/)//) {
             $line = $1.$line;
         }
         $found = $majIntervenant = 1;
