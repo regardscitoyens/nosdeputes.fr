@@ -187,8 +187,19 @@ class Parlementaire extends BaseParlementaire
         }
       }
 
+      # Check whether it didn't just disappear earlier the same day before reappearing on AN's website
+      $exist = Doctrine::getTable('ParlementaireOrganisme')->createQuery('po')
+        ->where('po.parlementaire_id = ?', $this->id)
+        ->andWhere('po.organisme_id = ?', $orga->id)
+        ->andWhere('po.fonction = ?', $fonction)
+        ->andWhere('po.fin_fonction = ?', $today)
+        ->fetchOne();
+      if ($exist) {
+        echo "NOTE: ".$orga->nom." - ".$this->nom." as ".$fonction." closed earlier today reappeared\n";
+        $exist->setFinFonction(null);
+
       # If it doesn't exist, create it
-      if (!$found) {
+      } elseif (!$found) {
         echo "INFO: ".$orga->nom." - ".$this->nom." joined as ".$fonction."\n";
 
         # Special case of groupe impacting specific field
