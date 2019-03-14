@@ -15,6 +15,7 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^document/(.*)$ http://2007-2012.nosdeputes.fr/document/$1 [R,L]
   RewriteRule ^question/(.*)$ http://2007-2012.nosdeputes.fr/question/$1 [R,L]
   RewriteRule ^widget/(.*)$ http://2007-2012.nosdeputes.fr/widget/$1 [R,L]
+  RewriteRule ^widget14/(.*)$ http://2012-2017.nosdeputes.fr/widget/$1 [R,L]
 
   # handle hardcache html
   # we check if the .html version is here (caching)
