@@ -237,7 +237,7 @@ sub checkout {
             }
             print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
         }
-        if ($intervenant =~ s/^((?:plusieurs|de nombreux) .*?)(,| et) //i) {
+        if ($intervenant !~ / et apparentés/ && $intervenant =~ s/^((?:plusieurs|de nombreux) .*?)(,| et) //i) {
             $plusieurs = $1;
             $plusieurs =~ s/des groupes/du groupe /i;
             $plusieurs =~ s/((?:députés |sur les bancs |du groupe )+)\s*(.*)$/\1/i;
