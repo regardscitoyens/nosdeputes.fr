@@ -165,7 +165,7 @@ foreach $line (split /\n/, $string) {
         $site =~ s/(twitter.com\/)[\s@]+/\1/i;
         $site =~ s/(twitter.com\/.*)\?.*$/\1/i;
         # remove bad twitter accounts from AN
-        if ($site !~ /twitter.com\/(valeriebeauvais2017|sttrompille|Darrieussecq|bernarddeflesselles|Marc_Delatte|davidlorion|Josso2017|ColasRoy2017|GCHICHE2017|obono2017|celiadeputee2017|Vincent.Ledoux59|EricDiardDepute|MireilleRobert|Fdumas2017|PascalBois2017|pgoulet58|micheldelpon|DipompeoChris|Valeria_Faure_M|Thourot2017|FabienGoutte|ainakuric2017|FJolivet2017|CaroleBB2017|ludomds|blanchet2017|MaudPetit_LREM|en_marche_77|BPeyrol_REM0303|CFABRE2017|soniakrimi50|NLePeih2017|Haury2017|CRoussel_06|c_vignon3103|philippemichel1|pierrecabare|zivkapark2017|Laudubray|ykerlogot|RaphaelGauvain|DDavid2017|iflorennesLREM|riottonenmarche|jcleclabart2017|PascalBoisLREM|BCouillard2017|mtamverhaeghe|fbachel1er|jenniferdt5915|caroleem54)/i) {
+        if ($site !~ /twitter.com\/(valeriebeauvais2017|sttrompille|Darrieussecq|bernarddeflesselles|Marc_Delatte|davidlorion|Josso2017|ColasRoy2017|GCHICHE2017|obono2017|celiadeputee2017|Vincent.Ledoux59|EricDiardDepute|MireilleRobert|Fdumas2017|PascalBois2017|pgoulet58|micheldelpon|DipompeoChris|Valeria_Faure_M|Thourot2017|FabienGoutte|ainakuric2017|FJolivet2017|CaroleBB2017|ludomds|blanchet2017|MaudPetit_LREM|en_marche_77|BPeyrol_REM0303|CFABRE2017|soniakrimi50|NLePeih2017|Haury2017|CRoussel_06|c_vignon3103|philippemichel1|pierrecabare|zivkapark2017|Laudubray|ykerlogot|RaphaelGauvain|DDavid2017|iflorennesLREM|riottonenmarche|jcleclabart2017|PascalBoisLREM|BCouillard2017|mtamverhaeghe|fbachel1er|jenniferdt5915|caroleem54|Sach_He)/i) {
           $depute{'sites_web'}{$site} = 1;
         }
       }
