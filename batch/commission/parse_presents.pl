@@ -206,7 +206,7 @@ foreach $line (split /\n/, $string)
     if ($origline =~ /Retour haut de page/) {
         $present = 0;
     }
-	if (!$special && $line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*/) {
+	if (!$special && $line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*/ && $line !~ /Présents? sur /) {
         $present = 1;
     }
     if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) étai(en)?t présents?..*$/\2/g)) {
