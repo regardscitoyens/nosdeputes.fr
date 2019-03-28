@@ -56,16 +56,14 @@ $source =~ s/\.asp$//;
 open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
-$string = decode_entities(decode_entities($string));
-utf8::encode($string);
 #utf8::decode($string) if ($string =~ /charset=UTF-?8/i);
+$string =~ s/&amp;/&/g;
+$string =~ s/(&#160;| )+/ /g;
 $string =~ s/(\<p class="presente".*)\s*\<br[\/]?\>\s*[\n]?\s*(.*)/\1, \2/g;
 #$string =~ s/\<br\>.*\n//g;
 $string =~ s/<!--[^!]*!\[endif\]-->//g;
-#$string =~ s/&amp;/&/g;
 #$string =~ s/(&#8217;|’)/'/g;
 #$string =~ s/&#339;/oe/g;
-#$string =~ s/&#160;/ /g;
 #$string =~ s/&#8211;/-/g;
 #$string =~ s/&deg;/°/g;
 #$string =~ s/&Eacute;/É/g;
@@ -252,7 +250,7 @@ foreach $line (split /\n/, $string)
 	} elsif ($line =~ /name="AUTEUR_ID".*content="\s*([^"]*)\s*"/) {
 	    $firstauteur = $1;
 	} elsif ($line =~ /name="AUTEURS".*content="\s*([^"]*)\s*"/) {
-	    $tmpauteurs = $1;
+	    $tmpauteurs = decode_entities($1);
 	}
   } elsif ($line =~ /date_?amend.*([0-9]+e?r? \S+ [0-9]+)\D/i && !$amdmt{'date'}) {
            $amdmt{'date'} = join '-', datize($1);
@@ -419,6 +417,19 @@ if ($commission) {
   if ($amdmt{'parent'} && $amdmt{'parent'} =~ /^\d/) {
     $amdmt{'parent'} = $tetenum.$amdmt{'parent'};
   }
+}
+
+if ($amdmt{'auteurs'} =~ /&#\d+;/) {
+  $amdmt{'auteurs'} = decode_entities($amdmt{'auteurs'});
+  utf8::encode($amdmt{'auteurs'});
+}
+if ($amdmt{'texte'} =~ /&#\d+;/) {
+  $amdmt{'texte'} = decode_entities($amdmt{'texte'});
+  utf8::encode($amdmt{'texte'});
+}
+if ($amdmt{'expose'} =~ /&#\d+;/) {
+  $amdmt{'expose'} = decode_entities($amdmt{'expose'});
+  utf8::encode($amdmt{'expose'});
 }
 
 print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteur_reel": "'.$firstauteur.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'"'.$extra." } \n";
