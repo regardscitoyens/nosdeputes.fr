@@ -250,7 +250,7 @@ foreach $line (split /\n/, $string)
 	} elsif ($line =~ /name="AUTEUR_ID".*content="\s*([^"]*)\s*"/) {
 	    $firstauteur = $1;
 	} elsif ($line =~ /name="AUTEURS".*content="\s*([^"]*)\s*"/) {
-	    $tmpauteurs = decode_entities($1);
+	    $tmpauteurs = $1;
 	}
   } elsif ($line =~ /date_?amend.*([0-9]+e?r? \S+ [0-9]+)\D/i && !$amdmt{'date'}) {
            $amdmt{'date'} = join '-', datize($1);
@@ -380,6 +380,10 @@ if ($num_ident > 0) {
 if (!$amdmt{'auteurs'}) {
   $amdmt{'auteurs'} = $tmpauteurs;
 }
+if ($amdmt{'auteurs'} =~ /&#\d+;/) {
+  $amdmt{'auteurs'} = decode_entities($amdmt{'auteurs'});
+  utf8::encode($amdmt{'auteurs'});
+}
 $amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
 $amdmt{'auteurs'} =~ s/([a-z])\s+(M[\.Mml])/\1, \2/g;
 $amdmt{'auteurs'} =~ s/,\s*M[\s\.mle]+\s*,/,/g;
@@ -419,10 +423,6 @@ if ($commission) {
   }
 }
 
-if ($amdmt{'auteurs'} =~ /&#\d+;/) {
-  $amdmt{'auteurs'} = decode_entities($amdmt{'auteurs'});
-  utf8::encode($amdmt{'auteurs'});
-}
 if ($amdmt{'texte'} =~ /&#\d+;/) {
   $amdmt{'texte'} = decode_entities($amdmt{'texte'});
   utf8::encode($amdmt{'texte'});
