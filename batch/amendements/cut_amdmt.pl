@@ -2,6 +2,7 @@
 
 $file = shift;
 use HTML::TokeParser;
+use HTML::Entities;
 use File::stat;
 use Date::Format;
 require ("../common/common.pm");
@@ -48,25 +49,33 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   $amdmt{'numero'} .= uc($lettre);
 }
 
+# rewrite new AN's urls
+$source =~ s/(nationale.fr\/)(\d)/\1dyn\/\2/;
+$source =~ s/\.asp$//;
+
 open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
+$string = decode_entities(decode_entities($string));
+utf8::encode($string);
 #utf8::decode($string) if ($string =~ /charset=UTF-?8/i);
 $string =~ s/(\<p class="presente".*)\s*\<br[\/]?\>\s*[\n]?\s*(.*)/\1, \2/g;
-$string =~ s/\<br\>.*\n//g;
+#$string =~ s/\<br\>.*\n//g;
 $string =~ s/<!--[^!]*!\[endif\]-->//g;
-$string =~ s/(&#8217;|’)/'/g;
-$string =~ s/&#339;/oe/g;
-$string =~ s/&#8211;/-/g;
-$string =~ s/&deg;/°/g;
-$string =~ s/&Eacute;/É/g;
-$string =~ s/&eacute;/é/g;
-$string =~ s/&Egrave;/È/g;
-$string =~ s/&egrave;/è/g;
-$string =~ s/&Agrave;/À/g;
-$string =~ s/&agrave;/à/g;
-$string =~ s/&Ccedil;/Ç/g;
-$string =~ s/&ccedil;/ç/g;
+#$string =~ s/&amp;/&/g;
+#$string =~ s/(&#8217;|’)/'/g;
+#$string =~ s/&#339;/oe/g;
+#$string =~ s/&#160;/ /g;
+#$string =~ s/&#8211;/-/g;
+#$string =~ s/&deg;/°/g;
+#$string =~ s/&Eacute;/É/g;
+#$string =~ s/&(#233|eacute);/é/g;
+#$string =~ s/&Egrave;/È/g;
+#$string =~ s/&egrave;/è/g;
+#$string =~ s/&Agrave;/À/g;
+#$string =~ s/&agrave;/à/g;
+#$string =~ s/&Ccedil;/Ç/g;
+#$string =~ s/&ccedil;/ç/g;
 $string =~ s/\\//g;
 close FILE;
 
@@ -207,6 +216,7 @@ sub identiques {
 $string =~ s/\r//g;
 $string =~ s/\t+/ /g;
 $string =~ s/(<\/p>)/\1\n/g;
+$string =~ s/(<meta[^>]*>)/\1\n/g;
 $string =~ s/ +\n+/\n/g;
 $string =~ s/\n+ +/\n/g;
 $string =~ s/&nbsp;| / /g;
@@ -233,7 +243,7 @@ foreach $line (split /\n/, $string)
 	    $line =~ s/^.*content="//i;
 	    $line =~ s/"\s*(name|\>).*$//;
 	    $amdmt{'sujet'} = $line;
-	} elsif ($line =~ /name="SORT_EN_SEANCE"/i) {
+	} elsif ($line =~ /name="SORT(_EN_SEANCE)?"/i) {
 	    $line =~ s/^.*content="//i;
 	    $line =~ s/".*$//;
 	    sortseance();
@@ -260,6 +270,8 @@ foreach $line (split /\n/, $string)
 	}
   } elsif ($presente == 1 && $line =~ /class="tirets"/i) {
 	$presente = 2;
+  } elsif ($line =~ /<div id="modal-gestion-cookies"/ && $texte > 0) {
+    $texte = 0;
   }
   if ($line =~ /(NOEXTRACT|EXPOSE)/i) {
 	if (!$amdmt{'numero'} && ($line =~ /class="numamendement"/i || $line =~ /class="titreamend".*num_partie/i)) {
