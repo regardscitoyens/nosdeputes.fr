@@ -146,7 +146,11 @@ if __name__ == "__main__":
         stripped = line.strip()
         if not stripped:
             break
-        am = json.loads(line)
+        try:
+            am = json.loads(line)
+        except Exception as e:
+            print >> sys.stderr, "%s %s while reading %s" % (type(e), e, line)
+            continue
         am['sujet'] = clean_subject(am['sujet'], source=am['source'])
 
         print json.dumps(am, ensure_ascii=False).encode('utf-8')
