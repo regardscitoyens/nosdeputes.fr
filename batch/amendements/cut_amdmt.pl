@@ -87,9 +87,9 @@ sub numero {
     $line =~ s/^.*content="//;
     $line =~ s/".*$//;
     $line =~ s/[\(\)]//g;
-    if ($line =~ /^\s*(\d+)\s+([1-9a-zA-Z].*)$/i) {
+    if ($line =~ /^\s*((I+-)?\d+)\s+([1-9a-zA-Z].*)$/i) {
       # $amdmt{'numero'} = $1;
-	$suite = $2;
+	$suite = $3;
 	if (!$suite =~ /rect/i) {
 	    $amdmt{'rectif'} = 0;
 	} else {
@@ -245,7 +245,7 @@ foreach $line (split /\n/, $string)
 	    $line =~ s/^.*content="//i;
 	    $line =~ s/".*$//;
 	    sortseance();
-	} elsif ($line =~ /name="NUM_AM(TXT|ENDG?)"/i) {
+	} elsif ($line =~ /name="NUM_AMTXT"/i) {
 	    numero();
 	} elsif ($line =~ /name="AUTEUR_ID".*content="\s*([^"]*)\s*"/) {
 	    $firstauteur = $1;
