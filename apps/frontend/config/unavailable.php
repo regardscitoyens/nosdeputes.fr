@@ -103,10 +103,25 @@
 	     <div style="text-align: center; margin-top: 27px;"><h2>&nbsp;</h2></div>
       </div>
       <div id="corps_page">
+<style>
+.contenu_page h1 {font-size: 3em;}
+.contenu_page p {font-size: 1.8em;}
+</style>
         <div class="contenu_page">
-                              <p class='flash_error'>Le site est momentanément indisponible. Veuillez nous excuser pour la gêne occasionnée.</p>
-                    <div>
-	</div>
+		<h1>    Nosdéputés.fr, c'est fini. </h1>
+
+<p>Décidant pour la première fois, depuis près de 10 ans d'existence, de se pencher sérieusement sur ses propres données, <a href="https://www.RegardsCitoyens.org">Regards Citoyens</a> a découvert, atterrée, que son site <a href="https://www.nosdeputes.fr">NosDéputés.fr</a> a des effets pervers sur la démocratie parlementaire. Les chiffres montrent ainsi, sans ambiguïté, que, très loin d'intéresser les citoyens à l'activité de leurs représentants, le site a eu pour seul et unique impact depuis sa création une pollution du travail législatif par une augmentation éhontée du nombre d'amendements.</p>
+
+<center><img class="alignnone size-medium wp-image-6892" src="https://www.regardscitoyens.org/wp-content/uploads/2019/03/amendements.png" alt="" width="640" height="345"><br/><small>( Sources&nbsp;: <a href="https://www.regardscitoyens.org/wp-content/uploads/2019/03/AN_amendements_sessions.csv">données</a> - <a href="https://www.regardscitoyens.org/wp-content/uploads/2019/03/poisson-amendements-xkcdplots.tar.gz">codes sources</a> )</small></center>
+
+<p><strong>Les membres de l'association ont donc voté à l'unanimité en assemblée générale samedi dernier la fermeture définitive et irrévocable du site NosDéputés.fr</strong>, afin de ne plus encourager les députés à s'investir inutilement en commission ou hémicycle au risque de devenir de véritables députés  « hors sol ». Prenant enfin ses responsabilités face à une réalité incontestable, l'association espère que cet acte fort et courageux permettra aux députés de se concentrer sur l'activité essentielle : le travail de terrain en circonscriptions.</p>
+
+
+<p>Le site NosSénateurs.fr n'ayant pas de tels effets néfastes sur l'activité des sénateurs, le site dédié à l'activité du palais du Luxembourg reste ouvert jusqu'à nouvel ordre.</p>
+
+
+        <div>
+      </div>
       </div>
       <div id="bottom">
         <div class="regardscitoyens">
