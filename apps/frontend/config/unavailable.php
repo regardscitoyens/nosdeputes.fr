@@ -41,7 +41,7 @@
   $('#connected').load("/ajax/identification"); 
 --></script>
       </div>
-      <div id="header">
+      <div id="header" style="width: 971px; margin-left: 45px">
         <a href="/"><img alt="NosDeput&eacute;s.fr" src="/images/xneth/header_indispo.png" /></a>
       </div>
         <div id="menu">
