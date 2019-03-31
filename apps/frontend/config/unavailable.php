@@ -108,17 +108,15 @@
 .contenu_page p {font-size: 1.8em;}
 </style>
         <div class="contenu_page">
-		<h1>    Nosdéputés.fr, c'est fini. </h1>
+		<h1>    NosDéputés.fr, c'est fini. </h1>
 
-<p>Décidant pour la première fois, depuis près de 10 ans d'existence, de se pencher sérieusement sur ses propres données, <a href="https://www.RegardsCitoyens.org">Regards Citoyens</a> a découvert, atterrée, que son site <a href="https://www.nosdeputes.fr">NosDéputés.fr</a> a des effets pervers sur la démocratie parlementaire. Les chiffres montrent ainsi, sans ambiguïté, que, très loin d'intéresser les citoyens à l'activité de leurs représentants, le site a eu pour seul et unique impact depuis sa création une pollution du travail législatif par une augmentation éhontée du nombre d'amendements.</p>
+<p>Décidant pour la première fois, depuis près de 10 ans d'existence, de se pencher sérieusement sur ses propres données, l'équipe de <a href="https://www.RegardsCitoyens.org">Regards Citoyens</a>, alertée par de nombreux nouveaux députés, a découvert atterrée, que son site <a href="https://www.nosdeputes.fr">NosDéputés.fr</a> a des effets pervers sur la démocratie parlementaire. Les chiffres montrent ainsi, sans ambiguïté, que, très loin d'intéresser les citoyens à l'activité de leurs représentants, le site a eu pour seul et unique impact depuis sa création une pollution du travail législatif par une augmentation éhontée du nombre d'amendements déposés.</p>
 
-<center><img class="alignnone size-medium wp-image-6892" src="https://www.regardscitoyens.org/wp-content/uploads/2019/03/amendements.png" alt="" width="640" height="345"><br/><small>( Sources&nbsp;: <a href="https://www.regardscitoyens.org/wp-content/uploads/2019/03/AN_amendements_sessions.csv">données</a> - <a href="https://www.regardscitoyens.org/wp-content/uploads/2019/03/poisson-amendements-xkcdplots.tar.gz">codes sources</a> )</small></center>
+<center><img class="alignnone size-medium wp-image-6892" src="https://www.regardscitoyens.org/wp-content/uploads/2019/03/amendements.png" alt="évolution du nombre d'amendements dans le temps" width="640" height="345"><br/><small>( Sources&nbsp;: <a href="https://www.regardscitoyens.org/wp-content/uploads/2019/03/AN_amendements_sessions.csv">données</a> - <a href="https://www.regardscitoyens.org/wp-content/uploads/2019/03/poisson-amendements-xkcdplots.tar.gz">code source</a> )</small></center>
 
-<p><strong>Les membres de l'association ont donc voté à l'unanimité en assemblée générale samedi dernier la fermeture définitive et irrévocable du site NosDéputés.fr</strong>, afin de ne plus encourager les députés à s'investir inutilement en commission ou hémicycle au risque de devenir de véritables députés  « hors sol ». Prenant enfin ses responsabilités face à une réalité incontestable, l'association espère que cet acte fort et courageux permettra aux députés de se concentrer sur l'activité essentielle : le travail de terrain en circonscriptions.</p>
+<p><strong>Les membres de l'association ont donc voté à l'unanimité en assemblée générale samedi dernier la fermeture définitive et irrévocable du site NosDéputés.fr</strong>, afin d'encourager les députés à cesser de s'investir inutilement en commission ou hémicycle au risque de devenir de véritables députés «&nbsp;hors sol&nbsp;». Prenant enfin ses responsabilités face à une réalité incontestable, l'association espère que cet acte fort permettra aux députés de se concentrer sur leur activité essentielle&nbsp;: le travail de terrain en circonscription.</p>
 
-
-<p>Le site NosSénateurs.fr n'ayant pas de tels effets néfastes sur l'activité des sénateurs, le site dédié à l'activité du palais du Luxembourg reste ouvert jusqu'à nouvel ordre.</p>
-
+<p>Le site <a href="https://www.nossenateurs.fr">NosSénateurs.fr</a> n'ayant pas de tels effets néfastes sur l'activité des sénateurs, le site dédié à l'activité du palais du Luxembourg reste ouvert jusqu'à nouvel ordre.</p>
 
         <div>
       </div>
