@@ -14,7 +14,7 @@ $source =~ s/^.*(http.*)$/\1/i;
 $source =~ s/_-_/\//g;
 
 # Récupération des informations identifiantes à partir de l'url plus sure :
-if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
+if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})(\.asp)?$/i) {
   $amdmt{'legislature'} = $1;
   if ($2-$3 == 0) {
     $amdmt{'loi'} = $3+0;
@@ -26,7 +26,7 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   } else {
     $amdmt{'numero'} = (10000*$lettre+$num);
   }
-} elsif ($source =~ /(\d{2})\/amendements\/(TA\d+|\d{4})([A-Z])?\/?(AN|[A-Z_-]+\d*)?\/([A-Z]+)?(\d+)\./i) {
+} elsif ($source =~ /(\d{2})\/amendements\/(TA\d+|\d{4})([A-Z])?\/?(AN|[A-Z_-]+\d*)?\/([A-Z]+)?(\d+)(\.asp)?$/i) {
   $amdmt{'legislature'} = $1;
   $amdmt{'loi'} = $2;
   $lettre = $3;

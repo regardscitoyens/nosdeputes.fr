@@ -37,7 +37,10 @@ while [ $start -lt $total ]; do
   start=$(($start + 1000))
 done
 
-cat all_amdts_opendataAN.tmp all_amdts_searchAN.tmp | sort -u > all_amdts_AN.tmp
+cat all_amdts_opendataAN.tmp all_amdts_searchAN.tmp |
+  sed 's#/dyn/#/#'                                  |
+  sed -r 's#(\d)$#\1.asp#'                          |
+  sort -u > all_amdts_AN.tmp
 
 echo "Extracting list of Amendements from NosDéputés..."
 echo 'SELECT source FROM amendement WHERE sort NOT LIKE "Rect%" ORDER BY source'    |
@@ -45,6 +48,8 @@ echo 'SELECT source FROM amendement WHERE sort NOT LIKE "Rect%" ORDER BY source'
   sed -r 's|(/T?A?[0-9]{4}[A-Z]?/)([0-9]+\.asp)|\1AN/\2|'                           |
   grep -v "cr-cfiab/12-13/c1213068"                                                 |
   grep -v "source"                                                                  |
+  sed 's#/dyn/#/#'                                                                  |
+  sed -r 's#([0-9])$#\1.asp#'                                                       |
   sort > all_amdts_nosdeputes.tmp
 
 echo "Analysing diff..."
