@@ -6,6 +6,7 @@ Sous une distribution type Ubuntu, installer les packages suivants :
 
 ```bash
 sudo apt-get install git
+sudo apt-get install git tasksel
 sudo tasksel install lamp-server php5-cli
 sudo apt-get install phpmyadmin # optionnel mais recommandé
 sudo apt-get install imagemagick php5-imagick # Pour la carte des circonscriptions
@@ -189,7 +190,7 @@ Solr est le moteur de recherche utilisé dans le projet. Il s'installe sur un mo
  * Installer tomcat6 :
 
     ```bash
-    sudo aptitude install tomcat6
+    sudo apt install tomcat8
     ```
 
  * Préparer le dossier d'accueil des données Solr :
