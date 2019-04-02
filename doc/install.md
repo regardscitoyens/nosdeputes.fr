@@ -190,7 +190,7 @@ Solr est le moteur de recherche utilisé dans le projet. Il s'installe sur un mo
  * Installer tomcat6 :
 
     ```bash
-    sudo apt install tomcat8
+    sudo aptitude install tomcat6
     ```
 
  * Préparer le dossier d'accueil des données Solr :
