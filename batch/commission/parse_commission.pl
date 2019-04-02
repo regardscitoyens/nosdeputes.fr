@@ -893,7 +893,7 @@ foreach $line (split /\n/, $string)
         $origurl = $urlvideo;
         use WWW::Mechanize;
         $mech = WWW::Mechanize->new(autocheck => 0);
-        $mech->max_redirect(0);
+        $mech->max_redirect(1);
         $mech->get($urlvideo);
         $urlvideo = $mech->response()->header('Location');
         if ($urlvideo !~ /assemblee-nationale\.(fr|tv)/) {
