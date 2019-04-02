@@ -201,12 +201,6 @@ Solr est le moteur de recherche utilisé dans le projet. Il s'installe sur un mo
     <dataDir>/MON/REPERTOIRE/lib/vendor/SolrServer/solr/data</dataDir>
     ```
 
-    * Et faire de même dans `bin/db.inc`:
-
-    ```bash
-    SOLR_DATA_PATH="$PATH_APP/lib/vendor/SolrServer/solr/data"
-    ```
-
  * S'assurer que ce répertoire data soit accessible en écriture par l'utilisateur tomcat6 (ou tomcatXX suivant votre version de Tomcat) :
 
     ```bash
