@@ -205,6 +205,8 @@ class Amendement extends BaseAmendement {
   }
 
   public function getLinkPDF() {
+    if (preg_match('/-nationale\.fr\/dyn\//', $this->source))
+      return $this->source.".pdf";
     return preg_replace('/\/amendement/', '/pdf/amendement', preg_replace('/\.asp(.*)$/', '.pdf', $this->source));
   }
 
