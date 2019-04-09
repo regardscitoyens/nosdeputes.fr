@@ -65,7 +65,7 @@ Diverses données parlementaires également mises en œuvre sur nos sites et ail
 
 ## Conditions d'utilisation
 
-Sauf mention contraire, les contenus sont diffusés sous [licence CC-BY-SA](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/) et les données sous [licence ODbL](http://www.vvlibri.org/fr/licence/odbl/10/fr/legalcode).
+Sauf mention contraire, les contenus sont diffusés sous [licence CC-BY-SA](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/) et les données sous [licence ODbL](https://vvlibri.org/fr/licence/odbl-10/legalcode/unofficial).
 
 Cela signifie que vous êtes libre de les réutiliser, modifier et recouper dans la mesure où vous indiquez leur source (NosDéputés.fr (ou NosSénateurs.fr) par Regards Citoyens à partir de l'Assemblée nationale (ou du Sénat) et du Journal Officiel) et que vous republiez de votre côté les éventuelles données modifiées servant à une réutilisation publiée.
 
