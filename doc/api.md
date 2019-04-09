@@ -292,7 +292,7 @@ Nous développons donc un accès simplifié par une API à ces jeux de données 
 
 ## Conditions d'utilisation
 
-Les informations diffusées sur NosDéputés.fr sont disponibles sous [licence CC-BY-SA](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/) pour les contenus et en OpenData sous [licence ODbL](http://www.vvlibri.org/fr/licence/odbl/10/fr/legalcode) pour les données.
+Les informations diffusées sur NosDéputés.fr sont disponibles sous [licence CC-BY-SA](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/) pour les contenus et en OpenData sous [licence ODbL](https://vvlibri.org/fr/licence/odbl-10/legalcode/unofficial) pour les données.
 
 Cela signifie que vous êtes libre de les réutiliser, modifier et recouper dans la mesure où vous indiquez leur source (NosDéputés.fr (ou NosSénateurs.fr) par Regards Citoyens à partir de l'Assemblée nationale (ou du Sénat) et du Journal Officiel) et que vous republiez de votre côté les éventuelles données modifiées servant à une réutilisation publiée.
 
