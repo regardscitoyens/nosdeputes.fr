@@ -188,7 +188,7 @@ for link in soup.find_all('a'):
           pass
         elif re.search(reg['commission'], line) is not None:
 
-          if re.search(reg['start_senat'], line, re.IGNORECASE):
+          if re.search(reg['start_senat'], line, re.IGNORECASE) or line == u'Députés :':
             pass
           elif re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_an'], line, re.IGNORECASE)
