@@ -6,7 +6,7 @@ Sous une distribution type Ubuntu, installer les packages suivants :
 
 ```bash
 sudo apt-get install git
-sudo apt-get install git tasksel
+sudo apt-get install tasksel
 sudo tasksel install lamp-server php5-cli
 sudo apt-get install phpmyadmin # optionnel mais recommandé
 sudo apt-get install imagemagick php5-imagick # Pour la carte des circonscriptions
