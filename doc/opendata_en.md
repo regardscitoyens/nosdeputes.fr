@@ -1,6 +1,6 @@
-# Données parlementaires en OpenData
+# Parliamentary Open Data
 
-[See this documentation in English](opendata_en.md).
+[Voir cette documentation en Français](opendata.md).
 
 Cette page présente une liste non exhaustive des contenus et données réutilisables de [NosDéputés.fr](https://NosDéputés.fr) et [NosSénateurs.fr](https://NosSénateurs.fr) ainsi que diverses sources de données parlementaires utiles.
 
@@ -43,9 +43,8 @@ Diverses données parlementaires également mises en œuvre sur nos sites et ail
 - Carte SVG des [circonscriptions (depuis 2012)](https://www.data.gouv.fr/fr/datasets/carte-des-circonscriptions-lgislatives-2012/)
 - Carte SVG des [circonscriptions (avant 2012)](../web/circo2007.svg)
 - Carte SVG des [circonscriptions des français de l'étranger (depuis 2012)](../web/circos-francais-etranger.svg)
-- Appartenance des [communes aux circonscriptions législatives (avant 2012)](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_insee_2007.csv)
-- Appartenance des [communes aux circonscriptions législatives (depuis 2012)](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_insee_2012.csv)
-- Détail des pays appartenant aux [circonscriptions des français de l'étranger (depuis 2012)](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_etranger.csv)
+- Appartenance des [communes aux circonscriptions législatives](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_insee.csv)
+- Détail des pays appartenant aux [circonscriptions des français de l'étranger](https://github.com/regardscitoyens/nosdeputes.fr/raw/master/batch/depute/static/circo_etranger.csv)
 - Catalogue [OpenData officiel de l'Assemblée nationale](http://data.assemblee-nationale.fr)
 - Catalogue [OpenData officiel du Sénat](http://data.senat.fr)
 - [ParlAPI](http://parlapi.fr/) reprenant les données des catalogues officiels OpenData
@@ -67,7 +66,7 @@ Diverses données parlementaires également mises en œuvre sur nos sites et ail
 
 ## Conditions d'utilisation
 
-Sauf mention contraire, les contenus sont diffusés sous [licence CC-BY-SA](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/) et les données sous [licence ODbL](https://vvlibri.org/fr/licence/odbl-10/legalcode/unofficial).
+Sauf mention contraire, les contenus sont diffusés sous [licence CC-BY-SA](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/) et les données sous [licence ODbL](http://www.vvlibri.org/fr/licence/odbl/10/fr/legalcode).
 
 Cela signifie que vous êtes libre de les réutiliser, modifier et recouper dans la mesure où vous indiquez leur source (NosDéputés.fr (ou NosSénateurs.fr) par Regards Citoyens à partir de l'Assemblée nationale (ou du Sénat) et du Journal Officiel) et que vous republiez de votre côté les éventuelles données modifiées servant à une réutilisation publiée.
 

@@ -1,42 +1,41 @@
-# API de NosDéputés.fr & NosSénateurs.fr
+# NosDéputés.fr & NosSénateurs.fr API
 
-[See the API documentation in English](api_en.md)
+[Voir la documentation de l'API en Français](api.md)
 
-Une API a été développée pour offrir un accès Open Data simplifié aux données de NosDéputés.fr et NosSénateurs.fr aux formats XML, JSON et CSV.
+An API was developed to allow simplified Open Data access to NosDeputés.fr & NosSénateurs.fr data, in XML, JSON and CSV formats.
 
 
-## Sommaire
+## Table of contents
 
-- [Explications](#explications)
+- [Background](#background)
 - [Liste des parlementaires](#liste-des-parlementaires)
 - [Liste des organismes (commissions, groupes, etc)](#liste-des-organismes-commissions-groupes-etc)
 - [Détails de chaque parlementaire](#détails-de-chaque-parlementaire)
 - [Données d'activité des parlementaires](#données-dactivité-des-parlementaires)
 - [Documents et débats parlementaires](#documents-et-débats-parlementaires)
 - [Résultats du moteur de recherche](#résultats-du-moteur-de-recherche)
-- [Outils d'accès simplifié à l'API](#outils-daccès-simplifié-à-lapi)
 - [Librairie Python CPC-API](#librairie-python-cpc-api)
 - [ParlAPI.fr : API sur l'OpenData officielle de l'AN et du Sénat](#parlapifr--api-sur-lopendata-officielle-de-lan-et-du-sénat)
 - [Exemples de réutilisations basées sur l'API](#exemples-de-réutilisations-basées-sur-lapi)
 - [Conditions d'utilisation](#conditions-dutilisation)
 
 
-## Explications
+## Background
 
-- **Format :** La plupart des exemples fournis ci-dessous sont donnés au format XML pour permettre plus de lisibilité dans le navigateur web. Veuillez remplacer `xml` en `json` ou `csv` pour accéder aux autres formats. Pour forcer l'affichage dans le navigateur, vous pouvez utilisez l'option `?textplain=true`.
+- **Format:** Most examples below use the XML format to allow a better readability on web browser.  Just replace `xml` with `json` or `csv` in the URL to access other formats.
 
-- **Encoding :** les données sont proposées en `utf-8`. Si vous vous retrouvez face à des caractères kabbalistiques, cela signifie qu'il vous faut régler l'encodage dans les options du logiciel avec lequel vous manipulez les données. Si votre tableur ne vous permet de spécifier l'encodage, vous pouvez rajouter l'option `?withBOM=true` à la fin des adresses des fichiers CSV que vous cherchez à télécharger.
+- **Encoding:** data are published in `utf-8`.  If you end up seeing weird characters, this probably means you have to set the encoding for the software you use to handle data.  If your spreadsheet software doesn't have such an option, you can try adding `?withBOM=true` to the end of CSV file URLs before downloading them.
 
-- **Anciennes législatures Assemblée :** l'accès aux données de NosDéputés.fr pour les précédentes législatures est accessible de manière permanente en remplaçant www.nosdeputes.fr par les adresses suivantes :
+- **Previous constituencies for Assemblée nationale:** You can access data for previous constituencies by replacing `www.nosdeputes.fr` in the URL by one of the following:
 
-  - pour la 13ème législature : 2007-2012.nosdeputes.fr
-  - pour la 14ème législature : 2012-2017.nosdeputes.fr
+  - for the 13th constituency: 2007-2012.nosdeputes.fr
+  - for the 14th constituency: 2012-2017.nosdeputes.fr
 
-- **Sénat :** les exemples donnés ci-dessous se réfèrent à NosDéputés.fr, mais vous pouvez utiliser l'API de NosSénateurs.fr suivant les mêmes schémas en remplaçant nosdeputes.fr par nossenateurs.fr dans chaque adresse.
+- **Senate data:** examples below refer to NosDéputés.fr but you can use the API for NosSénateurs.fr the same way by replacing `nosdeputes.fr` with `nossenateurs.fr` in each URL.
 
-- **SSL :** les exemples fournis utilisent les adresses sécurisées HTTPS de nos sites, mais vous pouvez remplacer https par http lorsque vous le souhaitez.
+- **SSL:** examples below use secure HTTPS URLs for our sites, but you can also replace `https` with `http` in the URLs if you need to.
 
-L'ensemble des données de ces différents sites est par ailleurs mis à disposition en bloc sous la forme de dumps SQL. Retrouvez les détails ainsi que d'autres [données parlementaires ici](opendata.md).
+All the data for those website is also made available in batch as SQL data dumps.  You can find more information and additional [parliamentary data here](opendata_en.md).
 
 
 ## Liste des parlementaires
@@ -86,7 +85,7 @@ L'ensemble des données de ces différents sites est par ailleurs mis à disposi
 
     *Remarque : les groupes politiques sont également accessibles ainsi via leur `slug`, par exemple pour les non-inscrits : https://www.nosdeputes.fr/organisme/deputes-non-inscrits/xml*
 
-  *Note :* par défaut l'API ne renvoie que les députés actuellement membres du groupe ou de l'organisme souhaité. À partir de la 15<sup>ème</sup> législature il est possible d'inclure également les anciens membres de l'organisme en ajoutant `?includePast=true` à la fin de l'url. Les données renvoient alors également deux champs `fin_fonction` et `groupe_a_fin_fonction` indiquant la date de fin de la fonction et le groupe politique du député à cette date. Par exemple pour la commission des affaires européennes : https://www.nosdeputes.fr/organisme/commission-des-affaires-economiques/xml?includePast=true
+  *Note :* par défaut l'API ne renvoie que les députés actuellement membres du groupe ou de l'organisme souhaité. À partir de la 15ème législature il est possible d'inclure également les anciens membres de l'organisme en ajoutant `?includePast=true` à la fin de l'url. Les données renvoient alors également deux champs `fin_fonction` et `groupe_a_fin_fonction` indiquant la date de fin de la fonction et le groupe politique du député à cette date. Par exemple pour la commission des affaires européennes : https://www.nosdeputes.fr/organisme/commission-des-affaires-economiques/xml?includePast=true
 
 
 ## Détails de chaque parlementaire
@@ -135,15 +134,13 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Les résultats de la recherche renvoient les urls des données détaillées de chaque élément accessible via l'API.
 
-  *Attention : l'Assemblée nationale n'ayant commencé à rendre publics les amendements déposés lors de l’examen des textes en commission qu'à partir de mai 2013 (un an après le début de la 14<sup>ème</sup> législature), seuls ceux déposés en hémicycle sont disponibles pour la 13<sup>ème</sup> législature et le début de la 14<sup>ème</sup>.*
-
-- **Liste des dossiers législatifs** (à partir de la 15<sup>ème</sup> législature uniquement pour l'Assemblée) :
+- **Liste des dossiers législatifs** (à partir de la 15ème législature uniquement pour l'Assemblée) :
 
   - Triés dans l'ordre alphabétique : https://www.nosdeputes.fr/15/dossiers/nom/xml
   - Triés du plus récent au plus ancien : https://www.nosdeputes.fr/15/dossiers/date/xml
   - Triés du plus débattu au moins débattu : https://www.nosdeputes.fr/15/dossiers/plus/xml
 
-- **Détails d'un dossier législatif** (à partir de la 15<sup>ème</sup> législature uniquement pour l'Assemblée) :
+- **Détails d'un dossier législatif** (à partir de la 15ème législature uniquement pour l'Assemblée) :
 
   Plus de détails sont disponibles pour chaque dossier : listes des documents associés, des séances, des intervenants et des sous-sections.
 
@@ -157,7 +154,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Les amendements sont disponibles à partir des numéros des lois correspondantes.
 
-  - À l'Assemblée nationale, par exemple pour le projet de loi initial relatif à la transparence de la vie publique (n° 1005) sous la 14<sup>ème</sup> législature : https://www.nosdeputes.fr/14/amendements/1005/xml
+  - À l'Assemblée nationale, par exemple pour le projet de loi initial relatif à la transparence de la vie publique (n° 1005) sous la 14ème législature : https://www.nosdeputes.fr/14/amendements/1005/xml
 
     *Attention pour l'Assemblée à bien ajuster également le numéro de législature.*
 
@@ -173,7 +170,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Comme pour les amendements, les débats sont accessibles par numéro de loi du texte correspondant. L'accès se fait en deux temps : tout d'abord en obtenant la liste des séances correspondantes, puis en accédant à la liste des interventions pour chaque séance.
 
-  Les exemples ci-dessous s'appliquent au projet de loi initial sur la transparence discuté par l'Assemblée sous la 14<sup>ème</sup> législature.
+  Les exemples ci-dessous s'appliquent au projet de loi initial sur la transparence discuté par l'Assemblée sous la 14ème législature.
 
   - Remarques :
 
@@ -214,13 +211,13 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
 Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche/) sont également accessibles via l'API : il suffit de rajouter le paramètre `format=[xml|json|csv]` à l'url de recherche.
 
-**Exemple :** résultats d'une recherche sur « OpenData » https://www.nosdeputes.fr/recherche/données?format=xml
+**Exemple :** résultats d'une recherche sur « OpenData » https://www.nosdeputes.fr/recherche/opendata?format=xml
 
 - **Pagination :**
 
-  Les résultats indiquent un total de résultats `lastResult` et sont délivrés par lots de 50 ou `count` (maximum 500), numérotés de `start` à `end`.
+  Les résultats indiquent un total de résultats `lastResult` et sont délivrés par lots de 20, numérotés de `start` à `end`.
 
-  Ajoutez à l'url le paramètre `&page=N` pour accéder aux résultats de la page N (contenant les éléments n° count*(N-1)+1 à count*N).
+  Ajoutez à l'url le paramètre `&page=N` pour accéder aux résultats de la page N (contenant les éléments n° 20*(N-1)+1 à 20*N).
 
   **Exemple :** résultats de la 2nde page d'une recherche sur « Internet » https://www.nosdeputes.fr/recherche/internet?page=2&format=xml
 
@@ -230,11 +227,11 @@ Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche
 
   Vous pouvez restreindre les résultats à :
 
-  - un **type d'objet** précis : ajouter `&object_name=OBJTYPE` avec `OBJTYPE` parmi : `Parlementaire`, `Organisme`, `Intervention`, `Amendement`, `QuestionEcrite`, `Section`, `Texteloi`, `Commentaire`, par exemple pour tous les TexteLoi : https://www.nosdeputes.fr/recherche/?object_name=Texteloi&format=xml&count=500
+  - un **type d'objet** précis : ajouter `&object_name=OBJTYPE` avec `OBJTYPE` parmi : `Parlementaire`, `Organisme`, `Intervention`, `Amendement`, `QuestionEcrite`, `Section`, `Texteloi`, `Commentaire`
 
   - une **période temporelle** précise : ajouter `&date=YYYYMMDD%2CYYYYMMDD` par exemple pour les résultats sur « internet » en janvier 2016 : https://www.nosdeputes.fr/recherche/internet?format=xml&date=20160101%2C20160131
 
-  - un **parlementaire** précis : ajouter `&tag=parlementaire=SEARCHSLUG` avec SEARCHSLUG formé ainsi : `prenom+nom`. sans accents ni cédille et en remplaçant les espaces par des + (mais en conservant le trait d'union des prénoms et noms composés, par exemple : `Francois+de+Rugy` `cedric+villani`, `carole+bureau-bonnard` ,`marie-christine+verdier-jouclas`)
+  - un **parlementaire** précis : ajouter `&tag=parlementaire=SLUG`
 
   - ceux associés à des **mots-clés** spécifique : ajouter `&tag=KEYWORD1,KEYWORD2,...` par exemple pour les résultats sur « internet » effectivement taggés "internet" : https://www.nosdeputes.fr/recherche/internet?format=xml&tag=internet
 
@@ -251,19 +248,9 @@ Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche
   *(par périodes d'un mois si la période considérée dépasse 90 jours, par jour sinon)*
 
 
-## Outils d'accès simplifié à l'API
+## Librairie Python [CPC-API](https://pypi.python.org/pypi/cpc_api)
 
-- **Librairie Python [CPC-API](https://pypi.python.org/pypi/cpc_api)**
-
-  Certains des points d'entrée de cette API sont accessibles de manière simplifiée en langage Python à l'aide du paquet pip [`cpc-api`](https://pypi.python.org/pypi/cpc_api) dont le [code source est disponible ici](https://github.com/regardscitoyens/cpc-api).
-
-- **Module PowerShell [RegardsCitoyensPS](https://github.com/Stephanevg/RegardsCitoyenPS)**
-
-  L'API est également accessible depuis PowerShell (sous Windows, MAC & Linux) à l'aide du module [`RegardsCitoyensPS`](https://github.com/Stephanevg/RegardsCitoyenPS) réalisé indépendamment par [@StephaneVG](https://github.com/Stephanevg). Plus de détails sont disponibles sur la page du projet.
-
-- **API GraphQL [Tricoteuses-API-NosDeputes](https://framagit.org/tricoteuses/tricoteuses-api-nosdeputes)**
-
-  L'API est également utilisable sous la forme d'une API GraphQL grâce au travail indépendant d'[Emmanual Raviart](https://framagit.org/eraviart).
+Certains des points d'entrée de cette API sont accessibles de manière simplifiée en langage Python à l'aide du paquet pip [`cpc-api`](https://pypi.python.org/pypi/cpc_api) dont le [code source est disponible ici](https://github.com/regardscitoyens/cpc-api).
 
 
 ## [ParlAPI.fr](http://parlapi.fr) : API sur l'OpenData officielle de l'AN et du Sénat
@@ -275,26 +262,16 @@ Nous développons donc un accès simplifié par une API à ces jeux de données 
 
 ## Exemples de réutilisations basées sur l'API
 
-- [LaFabriqueDeLaLoi.fr](https://www.lafabriquedelaloi.fr)
-
-- [DirectParlement](https://regardscitoyens.github.io/direct-parlement) : outil de génération d'incruste pour encart dans vidéo live de débat parlementaire utilisé par [Accropolis](http://accropolis.fr) ([code-source](https://github.com/regardscitoyens/direct-parlement))
-
-- [Trombinoscope des parlementaires](https://regardscitoyens.github.io/trombi/)
-
 - [LobbyTrack](https://github.com/regardscitoyens/LobbyTrack) : outil d'identification des travaux parlementaires qui se sont inspirés d'un document texte de lobbying
 
-- Analyse sémantique des principaux thèmes investis par les députés dans le [Trombinoscope de Contexte](https://www.contexte.com/article/pouvoirs/les-577-deputes-francais-de-lassemblee-nationale_71506.html)
-
-- [Suivi mensuel de l'activité des députés bretons par Le Télégramme](http://www.letelegramme.fr/dataspot/rentree-parlementaire-suivez-l-activite-des-deputes-bretons-19-09-2017-11669870.php)
-
-- [Visualisation des votes des députés dans l'hémicycle par MédiaPart](https://www.mediapart.fr/journal/france/031017/loi-antiterroriste-qui-vote-quoi?onglet=full)
+- [DirectParlement](https://regardscitoyens.github.io/direct-parlement) : outil de génération d'incruste pour encart dans vidéo live de débat parlementaire utilisé par [Accropolis](http://accropolis.fr) ([code-source](https://github.com/regardscitoyens/direct-parlement))
 
 - [Synthèse globale](https://regardscitoyens.github.io/synthese-globale/) : mini-application agrégeant les données de synthèse mensuelle pour nous permettre de répondre aux sollicitations des députés nous demandant en cours de mandat leur bilan complet ([code-source](https://github.com/regardscitoyens/synthese-globale))
 
 
 ## Conditions d'utilisation
 
-Les informations diffusées sur NosDéputés.fr sont disponibles sous [licence CC-BY-SA](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/) pour les contenus et en OpenData sous [licence ODbL](https://vvlibri.org/fr/licence/odbl-10/legalcode/unofficial) pour les données.
+Les informations diffusées sur NosDéputés.fr sont disponibles sous [licence CC-BY-SA](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/) pour les contenus et en OpenData sous [licence ODbL](http://www.vvlibri.org/fr/licence/odbl/10/fr/legalcode) pour les données.
 
 Cela signifie que vous êtes libre de les réutiliser, modifier et recouper dans la mesure où vous indiquez leur source (NosDéputés.fr (ou NosSénateurs.fr) par Regards Citoyens à partir de l'Assemblée nationale (ou du Sénat) et du Journal Officiel) et que vous republiez de votre côté les éventuelles données modifiées servant à une réutilisation publiée.
 
