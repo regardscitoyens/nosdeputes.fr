@@ -6,7 +6,7 @@
       <?php if ($page == $pager->getPage()): ?>
         <span><b><?php echo $page ?></b></span>
       <?php else: ?>
-        <span><a title="page <?php echo $page; ?>" href="<?php echo $link.'page='.$page; ?>"><?php echo $page; ?></a></span>
+        <span><?php echo link_to($page, $link.'page='.$page, array("title" => "page ".$page)); ?></span>
       <?php endif; ?>
     <?php endforeach; ?>
     <?php if ($pager->getPage() != $pager->getLastPage()) echo link_to('<img alt="right" title="page suivante" src="'.$sf_request->getRelativeUrlRoot().'/images/xneth/right.png"/>', $link.'page='.$pager->getNextPage()); ?>
