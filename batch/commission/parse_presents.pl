@@ -206,7 +206,7 @@ foreach $line (split /\n/, $string)
     if ($origline =~ /Retour haut de page/) {
         $present = 0;
     }
-	if (!$special && $line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*/ && $line !~ /Présents? sur /) {
+	if (!$special && $line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? sur /) {
         $present = 1;
     }
     if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) étai(en)?t présents?..*$/\2/g)) {
@@ -216,7 +216,7 @@ foreach $line (split /\n/, $string)
     if ($special) {
         next if ($line =~ /Secrétaire d'État|Ministre/i);
         while ($line =~ s/(M[me.]+ [^,]+, )puis (M[me.]+ [^\/]+)/\1\2/) {}
-        while ($line =~ s/M[me.]+ [^,]+, \/représentée? par (M[me.]+ [^\/]+)\//\1/) {}
+        while ($line =~ s/M[me.]+ [^,]+(?:, |\/)+représentée? par (M[me.]+ [^\/]+)\//\1/) {}
         while ($line =~ s/^([^\/]*?)[, ]*\/représentant.*/\1/) {}
         while ($line =~ s/^([^\/]*?)[, ]*\/[^\/]*\//\1/) {}
     }

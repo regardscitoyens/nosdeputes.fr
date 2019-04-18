@@ -822,7 +822,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/^[\.\:]\s*//;
     $line =~ s/é\.e\.s\b/é·e·s/ig;
     #print STDERR "LINE: $found $intervenant $line\n";
-	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|, je vous |, merci |, vous|ayant )|[^:]*présentent)/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|, j'entends|, je vous |, merci |, vous|ayant )|[^:]*présentent)/) {
 	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Pr(\.?|ofesseur)|Maître|L[ea] représentante?|Ingénieur|(Géné|Ami|Capo)ral|M(mes?|adame|onsieur|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
@@ -893,9 +893,15 @@ foreach $line (split /\n/, $string)
         $origurl = $urlvideo;
         use WWW::Mechanize;
         $mech = WWW::Mechanize->new(autocheck => 0);
-        $mech->max_redirect(0);
+        $mech->max_redirect(1);
         $mech->get($urlvideo);
         $urlvideo = $mech->response()->header('Location');
+        if (!$urlvideo) {
+          $mech2 = WWW::Mechanize->new(autocheck => 0);
+          $mech2->max_redirect(0);
+          $mech2->get($origurl);
+          $urlvideo = $mech2->response()->header('Location');
+        }
         if ($urlvideo !~ /assemblee-nationale\.(fr|tv)/) {
           $urlvideo =~ s/^\/+//;
           $urlvideo = "https://videos.assemblee-nationale.fr/$urlvideo";
