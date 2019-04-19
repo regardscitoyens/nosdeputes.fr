@@ -58,6 +58,8 @@ def parse_question(url, xmlstring):
     for k, v in extracted_data.iteritems():
         if not v:
             v = ""
+        if u"Ã©" in v or u"Ã¨" in v:
+            v = v.encode('windows-1252').decode('utf-8')
         extracted_data[k] = v.encode('utf-8').replace('\\', '\\\\').replace('"', '\\"').replace('\n', ' ')
 
     return extracted_data
