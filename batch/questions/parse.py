@@ -62,6 +62,7 @@ def parse_question(url, xmlstring):
             try:
                 v = v.encode('windows-1252').decode('utf-8')
             except:
+                print >> sys.stderr, "WARNING: reponse field seems badly encoded in", extracted_data['source']
                 pass
         extracted_data[k] = v.encode('utf-8').replace('\\', '\\\\').replace('"', '\\"').replace('\n', ' ')
 
