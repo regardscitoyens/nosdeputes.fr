@@ -122,7 +122,7 @@ sub checkout {
 	$depute =~ s/^\s*M+([mes]+\s+|\.\s*)//;
 	$depute =~ s/[,\s]+$//;
 	$depute =~ s/^\s+//;
-    if ($depute !~ /^Vice[ -]|Président|Questeur|Secrétaire|Présent|Excusé/i) {
+    if ($depute !~ /^(Vice[ -]|Président|Questeur|Secrétaire|Présent|Excusé)/i) {
       print '{"commission": "'.$commission.'","depute": "'.$depute.'","reunion":"'.$date.'","session":"'.$heure.'","source":"'.$source.'"}'."\n";
     }
     }
@@ -219,6 +219,7 @@ foreach $line (split /\n/, $string)
         while ($line =~ s/M[me.]+ [^,]+(?:, |\/)+représentée? par (M[me.]+ [^\/]+)\//\1/) {}
         while ($line =~ s/^([^\/]*?)[, ]*\/représentant.*/\1/) {}
         while ($line =~ s/^([^\/]*?)[, ]*\/[^\/]*\//\1/) {}
+        $line =~ s/([A-Z]{3,}) (Rapporteur|(Vice-)?Président|).*$/\1/;
     }
 	$line =~ s/^\s*et\s+//gi;
 	$line =~ s/\s+et\s+/, /gi;
