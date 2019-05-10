@@ -348,6 +348,7 @@ sub setIntervenant {
     $intervenant =~ s/S[iy]ra S[iy]l+a/Sira Sylla/i;
     $intervenant =~ s/Christophe Jer+et+ie/Christophe Jerretie/i;
     $intervenant =~ s/Alexandre Guédon/Xavier Guédon/i;
+    $intervenant =~ s/Rémi Rebeyrotte/Rémy Rebeyrotte/i;
     $intervenant =~ s/Jaqcues/Jacques/i;
     $intervenant =~ s/Florence Povey/Florence Poivey/i;
     $intervenant =~ s/Fabien Di Filipo/Fabien Di Filippo/i;
