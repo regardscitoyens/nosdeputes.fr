@@ -638,6 +638,10 @@ foreach $line (split /\n/, $string)
       checkout();
       next;
     }
+    if ($line =~ />CONCLUSIONS</) {
+      checkout();
+      $previnterv = "";
+    }
     if ($line =~ /\<[a]/i) {
       if ($line =~ /<a name=["']([^"']+)["']/) {
         $source = $url."#$1";
@@ -826,7 +830,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/^[\.\:]\s*//;
     $line =~ s/é\.e\.s\b/é·e·s/ig;
     #print STDERR "LINE: $found $intervenant $line\n";
-	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|, j'entends|, je vous |, merci |, vous|ayant )|[^:]*présentent)/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|travaille |, j'entends|, je vous |, merci |, vous|ayant )|[^:]*présentent)/) {
 	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Pr(\.?|ofesseur)|Maître|L[ea] représentante?|Ingénieur|Colonel|(Géné|Ami|Capo)ral|M(mes?|adame|onsieur|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
