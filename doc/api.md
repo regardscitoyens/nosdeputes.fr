@@ -120,9 +120,14 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
 - **Synthèse mensuelle :**
 
-  *Attention : seuls les parlementaires ayant manifesté une activité sur la période sont renvoyés*
+  Il est possible de récupérer les chiffres de la synthèse pour l'ensemble des députés actifs pour un mois donné en indiquant le mois concerné selon le format AAAAMM.
   
-  Exemple pour le mois d'avril 2016 : https://www.nosdeputes.fr/synthese/201604/xml
+  Exemple pour le mois d'avril 2018 : https://www.nosdeputes.fr/synthese/201804/xml
+  
+   **Attention :**
+   
+   - seuls les parlementaires ayant manifesté une activité sur la période sont renvoyés
+   - le nommage des indicateurs d'interventions en hémicycle est légèrement ambigu :  *hemicycle_interventions_courtes* se réfère aux interventions de 20 mots ou moins, et *hemicycle_interventions* à celles de plus de 20 mots. Pour connaitre le nombre d'interventions du parlementaire sur le mois donné, il faut donc sommer les deux indicateurs.
 
 
 ## Documents et débats parlementaires
