@@ -202,7 +202,7 @@ sub checkout {
 sub setFonction {
     my $fonction = shift;
     my $intervenantorig = shift;
-    #print STDERR "FONCTION $fonction $intervenantorig\n";
+    #print STDERR "FONCTION $fonction | $intervenantorig\n";
     $intervenantorigreg = $intervenantorig;
     $intervenantorigreg =~ s/([()[\].?])/\\\1/g;
     $fonction =~ s/^[Mme\s.]*$intervenantorigreg[, ]*//;
@@ -353,6 +353,7 @@ sub setIntervenant {
     $intervenant =~ s/Florian Di Filippo/Fabien Di Filippo/i;
     $intervenant =~ s/Michèle Limon/Monique Limon/i;
     $intervenant =~ s/Antoine Hertz/Antoine Herth/i;
+    $intervenant =~ s/Jean-François Mattei/Jean-Paul Mattei/i;
     $intervenant =~ s/Jaqcues/Jacques/i;
     $intervenant =~ s/Thibaut Bazin/Thibault Bazin/i;
     $intervenant =~ s/Laeïtitia/Laëtitia/i;
@@ -541,7 +542,7 @@ sub rapporteur
 	}
     } elsif ($line =~ /ministre/i) {
         $line =~ s/[\r\n]//g;
-        @pieces = split(/(,| et|, accompagnée?)+ (de )?M[mes\.]+ /, $line);
+        @pieces = split(/([,;:]| et|, accompagnée?)+ (de )?M[mes\.]+ /, $line);
         foreach $li (@pieces) {
             $l = $li;
             $l =~ s/, sur .*$//;
@@ -781,7 +782,7 @@ foreach $line (split /\n/, $string)
         }
         $found = $majIntervenant = 1;
         $intervenant = setIntervenant($interv1.$extrainterv);
-	  } elsif ($line !~ /^\|\/?(?:&#\d+;|–|-|Ø)?\s*(?:Puis de |Travaux |Politique|RENFORCE|Mesures|Désignation|Réunion|Examen|Compte[\-\s]rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co\-]*Présidence|Titre|Chapitre|(?:Sous-?)?Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i &&
+	  } elsif ($line !~ /^\|\/?(?:&#\d+;|–|-|Ø)?\s*(?:Puis de |Travaux |Missions|Politique|RENFORCE|Mesures|Désignation|Réunion|Examen|Compte[\-\s]rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co\-]*Présidence|Titre|Chapitre|(?:Sous-?)?Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i &&
           ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]{,80})(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
@@ -946,7 +947,7 @@ foreach $line (split /\n/, $string)
           $element =~ s/^MM\./M. /;
           $element =~ s/^M\.(\S+)/M. \1/;
           $element =~ s/(\S+)\s*\(\s*/\1 (/;
-          if ($element =~ /^M(?:\.|me)?\s+([^,]+),\s*(.*)$/ || $element =~ /^((?:(?:Col|Général|Capitaine|Major|Ga?l|S[.\s]+E(?:[.\s]+M)?|Son Excellence|[PD]r)[. ]+)+[^,]+),\s*(.*)$/) {
+          if ($element =~ /^M(?:\.|me)?\s+([^,]+),\s*(.*)$/ || $element =~ /^((?:(?:Col|Général|François-Joseph|Capitaine|Major|Ga?l|S[.\s]+E(?:[.\s]+M)?|Son Excellence|[PD]r)[. ]+)+[^,]+),\s*(.*)$/) {
             checkout();
             $intervenant = setFonction($2, $1);
             $intervention = $nointer;
