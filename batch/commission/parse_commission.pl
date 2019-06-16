@@ -542,7 +542,7 @@ sub rapporteur
 	}
     } elsif ($line =~ /ministre/i) {
         $line =~ s/[\r\n]//g;
-        @pieces = split(/([,;:]| et|, accompagnée?)+ (de )?M[mes\.]+ /, $line);
+        @pieces = split(/([,;:]| et|, accompagnée?)+ (de )?M+[mes\.]+ /, $line);
         foreach $li (@pieces) {
             $l = $li;
             $l =~ s/, sur .*$//;
