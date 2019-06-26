@@ -5,19 +5,23 @@ source ../../bin/db-external.inc || source ../../bin/db.inc
 ANroot="http://www.assemblee-nationale.fr"
 
 echo "Downloading Amendements from OpenData AN..."
-rm -f Amendements_*.json*
+mkdir -p opendata
+rm -f Amendements_*.json* all_amdts_opendataAN.tmp
+rm -rf opendata/json
 #wget -q http://data.assemblee-nationale.fr/static/openData/repository/LOI/amendements_legis/Amendements_XIV.json.zip -O Amendements_XIV.json.zip
 wget -q http://data.assemblee-nationale.fr/static/openData/repository/$LEGISLATURE/loi/amendements_legis/Amendements_XV.json.zip -O Amendements_OD.json.zip
-unzip Amendements_OD.json.zip > /dev/null
+unzip Amendements_OD.json.zip -d opendata > /dev/null
 echo "Extracting list of Amendements from OpenData AN..."
-cat Amendements_*.json                                      |
+touch all_amdts_opendataAN.tmp
+ls opendata/json | while read dossier; do ls opendata/json/$dossier | while read texte; do cat opendata/json/$dossier/$texte/*.json |
   sed -r 's/("documentURI": ")/\n\1/g'                      |
   grep '^"documentURI": "/'"$LEGISLATURE"'/'                |
   sed -r 's|^"documentURI": "([^"]*)".*$|'"$ANroot"'\1|'    |
   sed 's/\.pdf/\.asp/'                                      |
-  sort -u > all_amdts_opendataAN.tmp
-
+  sort -u >> all_amdts_opendataAN.tmp
+done; done
 rm -f Amendements_*.json*
+rm -rf opendata/json     
 
 echo "Extracting list of Amendements from search engine AN..."
 searchurl="http://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&leg=$LEGISLATURE&idExamen=&idDossierLegislatif=&missionVisee=&numAmend=&idAuteur=&idArticle=&idAlinea=&sort=&dateDebut=&dateFin=&periodeParlementaire=&texteRecherche=&format=html&tri=ordreTexteasc&typeRes=liste&rows="
