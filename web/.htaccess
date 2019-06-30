@@ -28,4 +28,6 @@ Options +FollowSymLinks +ExecCGI
   RewriteRule ^(.*)$ index.php [QSA,L]
 </IfModule>
 
+Redirect /circonscription/departement/Territoire-de-Belfort /circonscription/departement/Territoire%20de%20Belfort
+
 Header set Access-Control-Allow-Origin *
