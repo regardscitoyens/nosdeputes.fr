@@ -4,6 +4,7 @@ from __future__ import print_function, unicode_literals
 import json
 import os
 import sys
+from copy import deepcopy
 from zipfile import ZipFile
 
 from bs4 import BeautifulSoup
@@ -25,6 +26,30 @@ AN_ENTRYPOINTS = {
         "reunions": "reunions/reunions",
         "scrutins": "travaux-parlementaires/votes",
     },
+}
+
+MODELS = {
+    "amo": {
+        "export": {
+            "@xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
+            "acteurs": {
+                "acteur": "acteur"
+            },
+            "organes": {
+                "organe": "organe"
+            }
+        }
+    },
+    "reunions": {
+        "reunions": {
+            "reunion": "reunion"
+        }
+    },
+    "scrutins": {
+        "scrutins": {
+            "scrutin": "scrutin"
+        }
+    }
 }
 
 DEBUG = "--debug" in sys.argv
@@ -130,11 +155,28 @@ def fetch_an_json(legislature, objet):
     """
 
     localzip, updated = fetch_an_jsonzip(legislature, objet)
+    if legislature >= 15:
+        assembled_data = deepcopy(MODELS[objet])
+        export = assembled_data["export"] if "export" in assembled_data else assembled_data
+        objects = {objname.values()[0]: objcat for objcat, objname in export.items() if type(objname) is dict}
+        for obj, objcat in objects.items():
+            export[objcat][obj] = []
     with ZipFile(localzip, "r") as z:
         for f in [f for f in z.namelist() if f.endswith(".json")]:
             log("JSON extrait : %s" % f, debug=True)
             with z.open(f) as zf:
-                return json.load(zf), updated
+                if legislature >= 15:
+                    objs = objects.items()
+                    for obj, objcat in objs:
+                        if "/%s/" % obj in f or len(objs) == 1:
+                            elmt = json.load(zf)
+                            if obj in elmt:
+                                elmt = elmt[obj]
+                            export[objcat][obj].append(elmt)
+                            break
+                else:
+                    return json.load(zf), updated
+    return assembled_data, updated
 
 
 def _cached_ref(

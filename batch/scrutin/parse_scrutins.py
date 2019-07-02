@@ -86,7 +86,7 @@ def parse_scrutins(legislature, data):
     if not os.path.exists(SCRUTINS_DIR):
         os.makedirs(SCRUTINS_DIR)
 
-    for item in data["scrutins"]["scrutin"]:
+    for item in sorted(data["scrutins"]["scrutin"], key=lambda s: int(s["numero"])):
         scrutin, logs = parse_scrutin(item, seances, groupes, histo_groupes)
 
         numero = "%05d" % scrutin["numero"]
