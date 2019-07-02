@@ -155,6 +155,9 @@ sub savepLoi() {
     if ($no) {
         #print "TEST3 $titre -_- $no\n";
         $ploi{$titre} = $no;
+        $alttitre = $titre;
+        $alttitre =~ s/ au / /;
+        $ploi{$alttitre} = $no;
     }
 }
 
