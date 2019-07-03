@@ -558,7 +558,7 @@ foreach $line (split /\n/, $string)
                     $intervenant_url = $oldintervenant_url;
                     next;
                 }
-            }elsif ($line =~ s/^\s*\|\s*(M[^\|\/\:]+)[\|\/\:]// || ($line !~ /^\s*M[\.Mmle]+[^.]+ (veut|est |d..?nonce|expliqu)/ && $line =~ s/^\s*(M[\.Mmle]+(\s+([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.\:]//)) {
+            }elsif ($line =~ s/^\s*\|\s*(M[^\|\/\:]+)[\|\/\:]// || ($line !~ /^\s*M[\.Mmle]+[^.]+ (veut|avait fait|est |d..?nonce|expliqu)/ && $line =~ s/^\s*(M[\.Mmle]+(\s+([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})[\.\:]//)) {
                 if ($line) {
                     checkout();
                     $majIntervenant = 1;
