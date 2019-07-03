@@ -75,7 +75,8 @@ MISSING_DEMANDEURS = {
 def clean_demandeurs(demandeurs, numero):
     if not demandeurs:
         return MISSING_DEMANDEURS.get(numero, [])
-    demandeurs = re.sub(ur"(\S+)(Commission|Pr[eé]sident)", ur"\1\n\2", demandeurs)
+    demandeurs = re.sub(ur"[\s\n]*(Commission|Pr[eé]sident)", ur"\n\1", demandeurs)
+    demandeurs = demandeurs.replace(u"des\nPr", "des Pr")
     demandeurs = [clean_demandeur(d) for d in demandeurs.split("\n")]
     return [d for d in demandeurs if d]
 
