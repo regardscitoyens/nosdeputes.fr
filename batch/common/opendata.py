@@ -165,18 +165,17 @@ def fetch_an_json(legislature, objet):
         for f in [f for f in z.namelist() if f.endswith(".json")]:
             log("JSON extrait : %s" % f, debug=True)
             with z.open(f) as zf:
-                if legislature >= 15:
-                    objs = objects.items()
-                    for obj, objcat in objs:
-                        if "/%s/" % obj in f or len(objs) == 1:
-                            elmt = json.load(zf)
-                            if obj in elmt:
-                                elmt = elmt[obj]
-                            export[objcat][obj].append(elmt)
-                            break
-                else:
-                    return json.load(zf), updated
-    return assembled_data, updated
+                elmt = json.load(zf)
+                if legislature < 15:
+                    return elmt, updated
+                objs = objects.items()
+                for obj, objcat in objs:
+                    if "/%s/" % obj in f or len(objs) == 1:
+                        if obj in elmt:
+                            elmt = elmt[obj]
+                        export[objcat][obj].append(elmt)
+                        break
+                return assembled_data, updated
 
 
 def _cached_ref(
