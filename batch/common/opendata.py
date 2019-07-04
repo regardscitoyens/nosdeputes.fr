@@ -158,8 +158,8 @@ def fetch_an_json(legislature, objet):
     if legislature >= 15:
         assembled_data = deepcopy(MODELS[objet])
         export = assembled_data["export"] if "export" in assembled_data else assembled_data
-        objects = {objname.values()[0]: objcat for objcat, objname in export.items() if type(objname) is dict}
-        for obj, objcat in objects.items():
+        objects = [(objname.values()[0], objcat) for objcat, objname in export.items() if type(objname) is dict]
+        for obj, objcat in objects:
             export[objcat][obj] = []
     with ZipFile(localzip, "r") as z:
         for f in [f for f in z.namelist() if f.endswith(".json")]:
@@ -168,14 +168,13 @@ def fetch_an_json(legislature, objet):
                 elmt = json.load(zf)
                 if legislature < 15:
                     return elmt, updated
-                objs = objects.items()
-                for obj, objcat in objs:
-                    if "/%s/" % obj in f or len(objs) == 1:
+                for obj, objcat in objects:
+                    if "/%s/" % obj in f or len(objects) == 1:
                         if obj in elmt:
                             elmt = elmt[obj]
                         export[objcat][obj].append(elmt)
                         break
-                return assembled_data, updated
+        return assembled_data, updated
 
 
 def _cached_ref(

@@ -167,9 +167,14 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
     logs = []
     synthese = data["syntheseVote"]
     decompte = synthese["decompte"]
+    try:
+        seance = seances[data["seanceRef"]]
+    except KeyError:
+        print("ERROR parsing scrutin #%s: seance Ref %s missing in AN's reunions OpenData" % (data["numero"], data["seanceRef"]))
+        exit(1)
     scrutin = {
         "numero": int(data["numero"]),
-        "seance": seances[data["seanceRef"]],
+        "seance": seance,
         "date": data["dateScrutin"],
         "titre": data["titre"],
         "type": TYPES[data["typeVote"]["codeTypeVote"]],
