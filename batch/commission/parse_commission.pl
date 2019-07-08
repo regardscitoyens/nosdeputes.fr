@@ -953,6 +953,7 @@ foreach $line (split /\n/, $string)
           $element =~ s/^MM\./M. /;
           $element =~ s/^M\.(\S+)/M. \1/;
           $element =~ s/(\S+)\s*\(\s*/\1 (/;
+          $element =~ s/(\S+)(chef d)/\1, \2/;
           if ($element =~ /^M(?:\.|me)?\s+([^,]+),\s*(.*)$/ || $element =~ /^((?:(?:Col|Général|François-Joseph|Capitaine|Major|Ga?l|S[.\s]+E(?:[.\s]+M)?|Son Excellence|[PD]r)[. ]+)+[^,]+),\s*(.*)$/) {
             checkout();
             $intervenant = setFonction($2, $1);
