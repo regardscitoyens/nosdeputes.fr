@@ -200,7 +200,9 @@ foreach $line (split /\n/, $string)
     }
     $origline = $line;
     if ($special && $line =~ /[pP]résidence de \|?M[.me]+ ([A-ZÉ][^|]*)\|?/) {
+        $present = 1;
         push @presents, $1;
+        next;
     }
     #print STDERR "TEST $special $present: $line\n";
     if ($origline =~ /Retour haut de page/) {
