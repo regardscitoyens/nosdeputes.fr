@@ -269,7 +269,7 @@ foreach $line (split /\n/, $string)
 	}
   } elsif ($presente == 1 && $line =~ /class="tirets"/i) {
 	$presente = 2;
-  } elsif ($line =~ /<div id="modal-gestion-cookies"/ && $texte > 0) {
+  } elsif ($line =~ /<div id="modal-gestion-cookies"|<footer/ && $texte > 0) {
     $texte = 0;
   }
   if ($line =~ /(NOEXTRACT|EXPOSE)/i) {
