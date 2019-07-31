@@ -790,7 +790,7 @@ foreach $line (split /\n/, $string)
         }
         $found = $majIntervenant = 1;
         $intervenant = setIntervenant($interv1.$extrainterv);
-	  } elsif ($line !~ /^\|\/?(?:&#\d+;|–|-|Ø)?\s*(?:Puis de |Travaux |Missions|Politique|RENFORCE|Mesures|Désignation|Réunion|Examen|Compte[\-\s]rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co\-]*Présidence|Titre|Chapitre|(?:Sous-?)?Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i &&
+	  } elsif ($line !~ /^\|\/?(?:&#\d+;|–|-|Ø|Ê)?\s*(?:Puis de |Travaux |Missions|Examen|Politique|RENFORCE|Mesures|Désignation|Réunion|Examen|Compte[\-\s]rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co\-]*Présidence|Titre|Chapitre|(?:Sous-?)?Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i &&
           ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]{,80})(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
