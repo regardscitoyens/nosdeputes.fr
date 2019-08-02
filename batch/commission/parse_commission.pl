@@ -322,6 +322,7 @@ sub setIntervenant {
     $intervenant =~ s/Pierre Dharéville/Pierre Dharréville/i;
     $intervenant =~ s/Sabine Tillaye/Sabine Thillaye/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
+    $intervenant =~ s/Christine Cloarec[\W]*$/Christine Cloarec-Le Nabour/i;
     $intervenant =~ s/Danièle Brulebois/Danielle Brulebois/i;
     $intervenant =~ s/Yves Cravageot/Yannick Cravageot/i;
     $intervenant =~ s/Giselle Biémouret/Gisèle Biémouret/i;
@@ -345,6 +346,7 @@ sub setIntervenant {
     $intervenant =~ s/Philippe Thillaud/Pierre Thillaud/i;
     $intervenant =~ s/Jean Michel Blanquer/Jean-Michel Blanquer/i;
     $intervenant =~ s/ric Pouillat/ric Poulliat/i;
+    $intervenant =~ s/Hervé Pelloin/Hervé Pellois/i;
     $intervenant =~ s/E?lisa Hervy/Elsa Hervy/i;
     $intervenant =~ s/Thérèse Majnoni d'Untignano/Thérèse Majnoni d'Intignano/i;
     $intervenant =~ s/Guillaume Garrot/Guillaume Garot/i;
@@ -842,8 +844,8 @@ foreach $line (split /\n/, $string)
     $line =~ s/^[\.\:]\s*//;
     $line =~ s/é\.e\.s\b/é·e·s/ig;
     #print STDERR "LINE: $found $intervenant $line\n";
-	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|était accompagné|travaille |, j'entends|, (nous|je) vous |, merci |, vous|ayant )|[^:]*présentent)/) {
-	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Pr(\.?|ofesseur)|Maître|L[ea] représentante?|Une auditrice|Ingénieur|Colonel|(Géné|Ami|Capo)ral|M(mes?|adame|onsieur|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|était accompagné|travaille |, veuillez|, j'entends|, (nous|je) vous |, merci |, vous|ayant )|[^:]*présentent)/) {
+	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Pr(\.?|ofesseur)|Maître|L[ea] représentante?|Une auditrice|Une intervenante|Ingénieur|Colonel|(Géné|Ami|Capo)ral|M(mes?|adame|onsieur|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
             if (!$intervenant && $line =~ /^\s*$/) {
