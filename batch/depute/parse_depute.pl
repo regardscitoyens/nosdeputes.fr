@@ -329,7 +329,9 @@ foreach $line (split /\n/, $string) {
 #On récupère le nom de famille à partir des emails
 $nomdep = $depute{'nom'};
 @noms = split / /, $nomdep;
-if ((join " ", keys %{$depute{'mails'}}) =~ /(\S+)\@assemblee/) {
+if ($nomdep == 'Alexandra Valetta Ardisson') {
+  $depute{'nom_de_famille'} = 'Valetta Ardisson';
+} elsif ((join " ", keys %{$depute{'mails'}}) =~ /(\S+)\@assemblee/) {
   $login = $1;
   $login =~ s/^[^\.]+\.//;
   for($i = 0 ; $i <= $#noms ; $i++) {
