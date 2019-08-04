@@ -293,8 +293,11 @@ foreach $line (split /\n/, $string) {
       if ($mission && $line =~ /^(.*?)\(?\s*((Premier ministre|Ministère|Secrétariat).*)\)?\s*$/) {
         $organisme = trim($1);
         $minist = trim($2);
-        $minist =~ s/ - (Premier min|Minist|Secr).*$//;
-        $minist =~ s/[^a-zàéèêëîïôù]+$//;
+        if ($minist =~ / - (Premier min|Minist|Secr).*$/) {
+          $minist = "Gouvernement";
+        } else {
+          $minist =~ s/[^a-zàéèêëîïôù]+$//;
+        }
         $minist = "Mission temporaire pour le $minist";
         if ($organisme !~ /^$/) {
           $organisme =~ s/^La proposition /Proposition /;
