@@ -216,6 +216,10 @@ foreach $line (split /\n/, $string)
 	$line =~ s/&[^;]*;/ /g;
 	$line =~ s/(M[.me]+ )\1/\1/g;
     if ($special) {
+        if ($line =~ /LCP/) {
+            $present = 0;
+            next;
+        }
         next if ($line =~ /Secrétaire d'État|Ministre|VP absents/i);
         while ($line =~ s/(M[me.]+ [^,]+, )puis (M[me.]+ [^\/]+)/\1\2/) {}
         while ($line =~ s/M[me.]+ [^,]+(?:, |\/)+représentée? par (M[me.]+ [^\/]+)\//\1/) {}
