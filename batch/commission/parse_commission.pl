@@ -381,6 +381,8 @@ sub setIntervenant {
     $intervenant =~ s/Françoise Nysse\b/Françoise Nyssen/i;
     $intervenant =~ s/Cédric Cédric Villani/Cédric Villani/i;
     $intervenant =~ s/ric Cocquerel/ric Coquerel/i;
+    $intervenant =~ s/Céline Rilhac/Cécile Rilhac/i;
+    $intervenant =~ s/Bertrand Plancher/Bertrand Pancher/i;
     $intervenant =~ s/Serge Lechtimy/Serge Letchimy/i;
     $intervenant =~ s/Patrick Lavergne/Lionel Lavergne/i;
     $intervenant =~ s/Jean-Baptise Moreau/Jean-Baptiste Moreau/i;
