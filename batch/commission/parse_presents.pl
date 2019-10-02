@@ -4,6 +4,9 @@ $file = $url = shift;
 $special = shift;
 $defaulthoraire = shift;
 #use HTML::TokeParser;
+use Time::Piece;
+$today = Time::Piece->new();
+
 $url =~ s/^[^\/]+\///;
 $url =~ s/_/\//g;
 $source = $url;
@@ -82,8 +85,13 @@ $heures{'cinquante'} = '50';
 $heures{'cinquante-cinq'} = '55';
 $heures{''} = '00';
 
-if ($special && $string =~ />(?:Décisions (?:de Questure )?de la )?(?:Décisions|[Rr]éunion) (?:de Questure )?du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/) {
-  $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
+if ($special && $string =~ />(?:Décisions (?:de Questure )?de la )?(?:Décisions|[Rr]éunion) (?:de Questure )?du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)?/) {
+  if ($4 eq "") {
+    $year = $today->year;
+  } else {
+    $year = $4;
+  }
+  $date = sprintf("%04d-%02d-%02d", $year, $mois{lc($3)}, $2);
   $heure = $defaulthoraire;
 }
 if ($string =~ />(?:Réunion|Séance) du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
