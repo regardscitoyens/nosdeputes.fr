@@ -327,6 +327,7 @@ sub setIntervenant {
     my $intervenant = shift;
     #print STDERR "TEST $intervenant\n";
     $intervenant =~ s/^(M\.|Mme)([^  \s])/$1 $2/;
+    $intervenant =~ s/^Mme s /Mmes /;
     $intervenant =~ s/[\|\/]//g;
     $intervenant =~ s/\s*\&\#8211\;\s*$//;
     $intervenant =~ s/\s*[\.\:]\s*$//;
