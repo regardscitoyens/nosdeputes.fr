@@ -107,8 +107,9 @@ $Test->drawScale($Data,$DataDescr,SCALE_NORMAL,50,50,50,TRUE,0,0,FALSE,1,FALSE);
 if ($link === 'true') {
   $Test->setColorPalette(0,255,255,255);
   $Test->setColorPalette(1,255,255,255);
+  $Test->setColorPalette(2,255,255,255);
   $Test->setImageMap(TRUE,$mapId);
-  $Test->drawOverlayBarGraph($DataLegend,$DataDescrLegend,30,100);
+  $Test->drawOverlayBarGraph($DataLegend,$DataDescrLegend,0,100);
   $Test->setImageMap(FALSE,$mapId);
 }
 $Test->drawGrid(0,TRUE,0,0,0,100);
@@ -145,9 +146,9 @@ if ($type === 'total') {
   else $titre = 'Participation en hémicycle';
   $Test->drawTitle($pos_titre+30,3 + 2*$font, $titre." au cours de".$duree,50,50,50,585);
 }
+
 if ($link === 'true')
   $Test->setImageMap(TRUE,$mapId);
-
 $Test->xsStroke();
 
 ?>
