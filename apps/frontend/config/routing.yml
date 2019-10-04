@@ -524,11 +524,17 @@ parlementaire_amendements:
 parlementaire_amendements_rss:
   url: /:slug/amendements/rss
   param: {module: parlementaire, action: rss, object_name: Amendement, title: "Les derniers amendements signés par %"}
-parlementaire_presences_type:
+parlementaire_presences_type_redirect:
   url: /:slug/presences/:type
+  param: {module: presence, action: redirect}
+parlementaire_presences_type:
+  url: /:slug/activite/:type
   param: {module: presence, action: parlementaire}
-parlementaire_presences:
+parlementaire_presences_redirect:
   url: /:slug/presences
+  param: {module: presence, action: redirect}
+parlementaire_presences:
+  url: /:slug/activite
   param: {module: presence, action: parlementaire}
 parlementaire_plot:
   url: /:slug/graphes/:time

@@ -54,7 +54,7 @@ class presenceActions extends sfActions
       ->leftJoin('s.Organisme')
       ->fetchOne();
     $this->forward404Unless($this->seance);
-    $this->intervenants = Doctrine::getTable('Presence')->createQuery('p')      
+    $this->intervenants = Doctrine::getTable('Presence')->createQuery('p')
       ->leftJoin('p.Parlementaire pa')
       ->leftJoin('p.Preuves pr')
       ->where('p.seance_id = ?', $seance_id)
@@ -69,5 +69,15 @@ class presenceActions extends sfActions
       ->groupBy('pa.id')
       ->orderBy('pa.nom_de_famille ASC')
       ->execute();
+  }
+
+  public function executeRedirect(sfWebRequest $request)
+  {
+    $p = $request->getParameter('slug');
+    $parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($p);
+    $this->forward404Unless($parlementaire);
+    if ($t = $request->getParameter('type'))
+      return $this->redirect('@parlementaire_presences_type?type='.$t.'&slug='.$p);
+    return $this->redirect('@parlementaire_presences?slug='.$p);
   }
 }
