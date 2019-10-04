@@ -1095,11 +1095,18 @@ h1 {
 }
 .barre_activite ul, .barre_activite li {
   display: inline;
-  margin: -3px;
   padding: 0;
-  font-weight: bold;
   line-height: 24px;
   background-color: transparent;
+}
+.barre_activite ul {
+  margin: 1px 0px 0px 0px;
+  width: 725px;
+  float: left;
+}
+.barre_activite li {
+  width: 60px;
+  display: inline-block;
 }
 .barre_activite h3 {
   padding-left: 5px;
@@ -1109,9 +1116,11 @@ h1 {
   color: #6F6F6F;
   line-height: 24px;
   background-color: transparent;
+  width: 190px;
+  float: left;
 }
 .barre_activite li img{
-  margin-left: 25px;
+  margin-left: 12px;
 }
 .barre_activite a {
   text-decoration: none;

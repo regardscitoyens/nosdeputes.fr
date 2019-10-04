@@ -106,6 +106,61 @@ class myTools {
     return $colormap;
   }
 
+  public static $indicateurs = array(
+    'semaines_presence' => array(
+        'titre' => "Semaines d'activité",
+        'desc' => "Nombre de semaines où le sénateur a été relevé présent en commission, -- a pris la parole (même brièvement) dans l'hémicycle -- ou a participé physiquement à un scrutin public"
+    ),
+    'commission_presences' => array(
+        'titre' => "Présences en Commission",
+        'desc' => "Nombre de réunions de commission où le sénateur a été relevé présent"
+    ),
+    'commission_interventions' => array(
+        'titre' => "Interventions en Commission",
+        'desc' => "Nombre d'interventions prononcées par le sénateur dans les commissions"
+    ),
+    'hemicycle_presences' => array(
+        'titre' => "Présences en Hémicycle",
+        'desc' => "Information non publique"
+    ),
+    'hemicycle_interventions' => array(
+        'titre' => "Interventions longues en Hémicycle",
+        'desc' => "Nombre d'interventions de plus de 20 mots -- prononcées par le sénateur en hémicycle"
+    ),
+    'hemicycle_interventions_courtes' => array(
+        'titre' => "Interventions courtes en Hémicycle",
+        'desc' => "Nombre d'interventions de 20 mots et moins -- prononcées par le sénateur en hémicycle"
+    ),
+    'amendements_signes' => array(
+        'titre' => "Amendements signés",
+        'desc' => "Nombre d'amendements proposés ou co-signés par le sénateur"
+    ),
+    'amendements_adoptes' => array(
+        'titre' => "Amendements adoptés",
+        'desc' => "Nombre d'amendements signés par le sénateur -- qui ont été adoptés en séance"
+    ),
+    'rapports' => array(
+        'titre' => "Rapports écrits",
+        'desc' => "Nombre de rapports ou avis dont le sénateur est l'auteur"
+    ),
+    'propositions_ecrites' => array(
+        'titre' => "Propositions de loi écrites",
+        'desc' => "Nombre de propositions de loi ou de résolution -- dont le sénateur est l'auteur"
+    ),
+    'propositions_signees' => array(
+        'titre' => "Propositions de loi signées",
+        'desc' => "Nombre de propositions de loi ou de résolution -- dont le sénateur est cosignataire"
+    ),
+    'questions_ecrites' => array(
+        'titre' => "Questions écrites",
+        'desc' => "Nombre de questions écrites soumises -- par le sénateur au gouvernement"
+    ),
+    'questions_orales' => array(
+        'titre' => "Questions orales",
+        'desc' => "Nombre de questions orales posées -- par le sénateur au gouvernement"
+    )
+  );
+
   static $num_mois = array(
      "01" => "janvier",
      "02" => "février",
