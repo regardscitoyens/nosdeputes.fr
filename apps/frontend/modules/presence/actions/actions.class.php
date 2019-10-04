@@ -92,4 +92,13 @@ class presenceActions extends sfActions
     $this->orga = $this->seance->getOrganisme();
     myTools::setPageTitle(($this->orga !== null ? $this->orga->getNom() : "Hémicycle").' - Députés présents à la '.$this->seance->getTitre(1), $this->response);
   }
+
+  public function executeRedirect(sfWebRequest $request){
+    $p = $request->getParameter('slug');
+    $parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($p);
+    $this->forward404Unless($parlementaire);
+    if ($t = $request->getParameter('type'))
+      return $this->redirect('@parlementaire_presences_type?type='.$t.'&slug='.$p);
+    return $this->redirect('@parlementaire_presences?slug='.$p);
+  }
 }
