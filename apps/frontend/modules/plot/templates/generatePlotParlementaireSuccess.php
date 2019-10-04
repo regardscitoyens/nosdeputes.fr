@@ -36,8 +36,8 @@ if ($link === 'true') {
   }
 }
 
-if ($drawAction === "map" ) {  
-  $Test = new xsPChart(800,$size);  
+if ($drawAction === "map" ) {
+  $Test = new xsPChart(800,$size);
   $Test->getImageMap($mapId, TRUE);
 }
 
@@ -110,7 +110,7 @@ if ($link === 'true') {
   $Test->setImageMap(TRUE,$mapId);
   $Test->drawOverlayBarGraph($DataLegend,$DataDescrLegend,30,100);
   $Test->setImageMap(FALSE,$mapId);
-}  
+}
 $Test->drawGrid(0,TRUE,0,0,0,100);
 $Test->setColorPalette(0,50,50,50);
 $Test->drawOverlayBarGraph($Data2,$DataDescr2,30,100);
@@ -126,7 +126,7 @@ $Test->setColorPalette(0,255,0,0);
 $Test->setColorPalette(1,0,0,0);
 $Test->drawLineGraph($DataBordure,$DataDescrBordure);
 
-$Test->xsSetFontProperties("tahoma.ttf",$font + 3);
+$Test->xsSetFontProperties("tahoma.ttf",$font + 2);
 $pos_titre = 240;
 if ($time === 'lastyear') {
   if (isset($data['mandat_clos'])) {
@@ -139,13 +139,11 @@ if ($time === 'lastyear') {
   $shortduree = $time;
 }
 if ($type === 'total') {
-  $Test->drawTitle($pos_titre,3 + 2*$font,"Participation globale au cours de".$duree." (hémicycle et commissions)",50,50,50,585);
-  $titre = 'globale-'.$shortduree;
+  $Test->drawTitle($pos_titre,3 + 2*$font,"Présences en commissions et participation en hémicycle au cours de".$duree,50,50,50,585);
 } else {
-  $titre = $type;
-  if ($type === 'commission') $titre .= 's';
-  $Test->drawTitle($pos_titre+30,3 + 2*$font,"Participation en ".$titre." au cours de".$duree,50,50,50,585);
-  $titre .= '-'.$shortduree;
+  if ($type === 'commission') $titre = 'Présences et participation en commissions';
+  else $titre = 'Participation en hémicycle';
+  $Test->drawTitle($pos_titre+30,3 + 2*$font, $titre." au cours de".$duree,50,50,50,585);
 }
 if ($link === 'true')
   $Test->setImageMap(TRUE,$mapId);
