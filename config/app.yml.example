@@ -1,8 +1,8 @@
 # default values
 all:
-  base_url: http://www.nossenateurs.fr/
+  base_url: https://www.nossenateurs.fr/
   secret_key: _______PUT_YOUR_KEY_HERE________
-  legislature: 13
+  legislature: 15
   debut_mandature: "2011-10-01"
   debut_data: "2004-10-01"
   groupes_actuels: >
@@ -14,7 +14,6 @@ all:
     "Communiste, Républicain, Citoyen et des Sénateurs du Parti de Gauche / CRC-SPG / 255,30,30 / PCF, PG et ratt. / communiste|citoyen|sénateurs.*gauche",
     "Communiste Républicain et Citoyen / CRC / 255,30,30 / PCF et ratt. / communiste|citoyen",
     "Socialiste / SOCV / 255,50,190 / Socialistes (PS, Verts et ratt.) / socialisteold",
-    #"Socialiste et apparentés / SOC / 255,50,190 / Socialistes (PS et ratt.) / socialiste",
     "Socialiste et républicain / SOC / 255,50,190 / Socialistes (PS et ratt.) / socialiste",
     "Socialiste, Apparentés et Groupe Europe Écologie Les Verts rattaché / SOC-EELV / 255,50,190 / Socialistes (PS, Verts et ratt.) / socialiste|écologie",
     "Écologiste / ECO / 0,230,30 / Écologistes (EELV) / [eéÉ]cologiste",
