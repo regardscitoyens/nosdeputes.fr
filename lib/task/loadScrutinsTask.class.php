@@ -121,7 +121,12 @@ class loadScrutinsTask extends sfBaseTask
                           ->fetchOne()['cnt'];
 
         if ($scrutins != $tables && !isset($IGNORE_SEANCES[myTools::getLegislature()][$seance->id])) {
-          echo "WARNING: séance {$seance->id} du {$seance->date} {$seance->moment} : {$scrutins} scrutins, {$tables} tableaux\n";
+          $source = Doctrine::getTable("Intervention")
+                         ->createQuery("i")
+                         ->where("i.seance_id = ?", $seance->id)
+                         ->andWhere("i.intervention LIKE '%nombre de votants%suffrages exprimés%pour%contre%' OR i.intervention LIKE '%Majorité requise pour l\'adoption%pour l\'adoption%'")
+                         ->fetchOne();
+          echo "WARNING: séance {$seance->id} du {$seance->date} {$seance->moment} : {$scrutins} scrutins, {$tables} tableaux -> {$source->source}\n";
         }
       }
 
