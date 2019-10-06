@@ -2215,7 +2215,9 @@ a:hover img {
 #faq h3, #faq p {
   padding-left: 18px;
 }
-
+#faq a {
+  text-decoration: underline dotted;
+}
 #js_search_box {
   float: right;
 }
