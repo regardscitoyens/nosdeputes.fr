@@ -12,6 +12,7 @@
       <li><a href="#post_323">Que signifient les couleurs rouge et vert sur les indicateurs d'activité des sénateurs ?</h3>
       <li><a href="#post_10">Proposez-vous un palmarès ou classement général des sénateurs ?</a></li>
       <li><a href="#post_5">Pourquoi proposez-vous un indicateur de présence pour les commissions mais pas pour l'hémicycle ?</a></li>
+      <li><a href="post_5bis">Prenez-vous compte des informations présentées au sein des « Tableaux d'activité principale » sur le site du Sénat ?</a></li>
       <li><a href="#post_6">Quelle est la différence entre une "intervention courte" et une "intervention longue" ?</a></li>
       <li><a href="#post_27">Que représente l'indicateur "semaines d'activité" proposé pour chaque sénateur ?</a></li>
       <li><a href="#post_4">À quoi correspondent les différentes informations représentées sur les graphiques d'activité des sénateurs ?</a></li>
