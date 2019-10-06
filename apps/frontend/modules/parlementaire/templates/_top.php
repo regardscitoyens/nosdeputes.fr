@@ -86,7 +86,7 @@ if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->
 $icosize = 16;
 foreach($fields as $k) {
   if ($k === "hemicycle_presences") {
-    echo '<li'.$couleur2style['gris'].'><a href="'.url_for('@faq').'#post_4" class="jstitle" title="'.$indicateurs[$k]['titre'].' --  -- '.$indicateurs[$k]['desc'].'"><img style="height: '.$icosize.'px; width: '.$icosize.'px;" src="/images/xneth/'.$images[$k].'" alt="'.$indicateurs[$k]['titre'].'" /> : ??</a></li>';
+    echo '<li'.$couleur2style['gris'].'><a href="'.url_for('@faq').'#post_5" class="jstitle" title="'.$indicateurs[$k]['titre'].' --  -- '.$indicateurs[$k]['desc'].'"><img style="height: '.$icosize.'px; width: '.$icosize.'px;" src="/images/xneth/'.$images[$k].'" alt="'.$indicateurs[$k]['titre'].'" /> : ??</a></li>';
   } else {
     $value = (isset($top[$k]['value']) ? $top[$k]['value'] : 0);
     $couleur = 'gris';

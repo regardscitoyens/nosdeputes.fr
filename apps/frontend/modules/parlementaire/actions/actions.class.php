@@ -10,6 +10,10 @@
  */
 class parlementaireActions extends sfActions
 {
+  public function executeFaq(sfWebRequest $request) {
+    $this->response->setTitle('Questions fréquemment posées - NosSénateurs.fr');
+  }
+
   public function executeAssister(sfWebRequest $request) {
     $this->response->setTitle('Assister aux débats publics du Sénat - NosSénateurs.fr');
   }

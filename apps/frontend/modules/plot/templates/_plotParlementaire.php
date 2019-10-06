@@ -44,6 +44,6 @@ else echo $reus; ?> pendant lesquelles <?php echo $lela; ?> a participé aux dé
 <span class="jstitle" title="Nombre de dizaines de milliers de mots prononcés par <?php echo $lela; ?> au cours de ses interventions"><span style="background-color: rgb(0,255,0);">&nbsp;</span>&nbsp;Mots prononcés (x&nbsp;10&nbsp;000)</span>&nbsp;&nbsp;&nbsp;
 <?php if ($questions === 'true' && $type !== 'commission') : ?><span class="jstitle" title="Nombre de questions au gouvernement posées en séance par <?php echo $lela; ?>"><span style="background-color: rgba(100,100,255,0.75);">&nbsp;</span>&nbsp;Questions orales</span>&nbsp;&nbsp;<?php endif; ?>
 <span class="jstitle" title="Semaines durant lesquelles les sénateurs ne se sont réunis ni en commission ni en hémicycle"><span style="background-color: rgb(150,150,150);">&nbsp;</span>&nbsp;Vacances parlementaires</span>&nbsp;&nbsp;
-<?php if ($link === 'true') : ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="jstitle graphe_explications" title="Consultez les questions fréquentes pour plus d'explications" href="<?php echo url_for('@faq'); ?>#post_4">Lire plus d'explications</a></span><?php endif; ?>
+<?php if ($link === 'true') : ?><span>&nbsp;&nbsp;&nbsp;&nbsp;<a class="jstitle graphe_explications" title="Consultez les questions fréquentes pour plus d'explications" href="<?php echo url_for('@faq'); ?>#post_1">Lire plus d'explications</a></span><?php endif; ?>
 </p>
 <?php if ($link != 'true') echo '</div>'; ?>
