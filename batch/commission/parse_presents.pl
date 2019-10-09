@@ -248,10 +248,12 @@ foreach $line (split /\n/, $string)
     $line =~ s/<\/?a[^>]*>//ig;
     # Cases of special orgs
     if ($special) {
-      if ($origline =~ /Présent[es\s]*:/) {
+      if ($origline =~ /Présent[es]*( ou excusés?)?\s*:/) {
         $present = 1;
       } elsif ($origline =~ /Excusé[es\s]*[:\/]/) {
         $present = 0;
+      } elsif ($origline =~ /Assistai[en]*t également\s*[:\/]/) {
+        $present = 1;
       }
     } else {
     if ($line =~ /[>\|\/](Membres? (de la commission[\w\s]*?)?présents?( ou excusés?)?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/ || $line =~ /^\s*Députés\s*$/) {
