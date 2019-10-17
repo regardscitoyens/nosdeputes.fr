@@ -597,12 +597,14 @@ $majIntervenant = 0;
 $body = 0;
 
 $string =~ s/<\/p><p>/<\/p>\n<p>/gi;
+$string =~ s/[\s\n]*<\/?center>[\s\n]*//gi;
 $string =~ s/\s*<\/h(\d+)><\/CRPRESIDENT><CRPRESIDENT><h\1[^>]*>\s*/ /gi;
 $string =~ s/(<\/h\d+>)/\1\n/gi;
 $string =~ s/(<\/h\d+>)\n(<\/SOMMAIRE>)/\1\2/gi;
 $string =~ s/<t([rdh])[^>]*( (row|col)span=["\d]+)+[^>]*>/<t\1\2>/gi;
 $string =~ s/<t([rdh])( (row|col)span=["\d]+)*[^>]*>/<t\1\2>/gi;
 $string =~ s/\n+\s*(<\/?t(able|[rdh]))/\1/gi;
+$string =~ s/<td>[\s\n]*<p[^>]*>(.*?)<\/p>/<td>\1/gi;
 $string =~ s/(<\/table>)\s*(<table)/\1\n\2/gi;
 $string =~ s/(<table[^>]* )align="(right|left)"([^>]*>)/\1\3/gi;
 $string =~ s/(<img[^>]*)[\n\r]+([^>]*>)/\1 \2/gi;
