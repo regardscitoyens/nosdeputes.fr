@@ -37,7 +37,9 @@ echo
 
 echo "Parenthèses :"
 echo "-------------"
-grep '(' $JSON                          |
+cat $JSON                               |
+  sed 's/(…)/ /g'                       |
+  grep '('                              |
   sed 's/^.*"contexte": "//'            |
   sed 's/",.*"intervention": "/  |  /'  |
   sed 's/".*$//'                        |
