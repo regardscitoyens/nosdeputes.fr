@@ -322,6 +322,8 @@ sub setIntervenant {
     $intervenant =~ s/Pierre Dharéville/Pierre Dharréville/i;
     $intervenant =~ s/Sabine Tillaye/Sabine Thillaye/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
+    $intervenant =~ s/Valérie Faure-Muntien/Valéria Faure-Muntian/i;
+    $intervenant =~ s/Sandrine Rubin/Sabine Rubin/i;
     $intervenant =~ s/Enerstine/Ernestine/i;
     $intervenant =~ s/Tiphanie Degois/Typhanie Degois/i;
     $intervenant =~ s/Christine Cloarec[\W]*$/Christine Cloarec-Le Nabour/i;
