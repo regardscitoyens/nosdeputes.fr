@@ -732,7 +732,7 @@ class Parlementaire extends BaseParlementaire
     return null;
   }
 
-  public function getNbMois($vacances=null) {
+  public function getNbMois($vacances=null, $onlylast=false) {
     if ($vacances === null) $vacances = myTools::getVacances();
     $debut = strtotime(myTools::getDebutLegislature());
     $fin = min($debut + (5*365-31)*24*3600, time());  # fin législature définie à 4 ans et 11 mois)
@@ -742,6 +742,7 @@ class Parlementaire extends BaseParlementaire
         $match[1] = preg_replace("#^(\d+)/(\d+)/(\d+)$#", "\\3-\\2-\\1", $match[1]);
         $sta = strtotime($match[1]);
         if ($match[2] != "") {
+          if ($onlylast) continue;
           $match[2] = preg_replace("#^(\d+)/(\d+)/(\d+)$#", "\\3-\\2-\\1", $match[2]);
           $end = strtotime($match[2]);
         } else $end = $fin;

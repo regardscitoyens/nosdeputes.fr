@@ -71,7 +71,7 @@ if (myTools::isFinLegislature()) {
   $title = "Bilan d'activité totale -- durant ".$top["nb_mois"]." mois d'exercice du député, -- vacances parlementaires exclues";
   $rank = ($top["nb_mois"] >= 6);
 } else if ($parlementaire->isEnMandat()) {
-  $mois = min(12, $parlementaire->getNbMois(array()));
+  $mois = min(12, $parlementaire->getNbMois(array(), true));
   if ($mois < 12) {
     if ($mois <= 1) $duree = 'premier';
     else if ($mois < 10) $duree = $mois.' premiers';

@@ -54,7 +54,7 @@ class tagActions extends sfActions
       ->andWhere('s.session IS NOT NULL AND s.session <> ""')
       ->groupBy('s.session')->fetchArray();
 
-    $this->mois = min(12, $this->parlementaire->getNbMois(array()));
+    $this->mois = min(12, $this->parlementaire->getNbMois(array(), true));
     $this->txtmois = ($this->mois < 2 ? " premier" : "s $this->mois ".($this->mois < 12 ? "prem" : "dern")."iers");
     myTools::setPageTitle('Champ lexical de '.$this->parlementaire->nom.' sur '.($this->last ? "le".$this->txtmois." mois" : ($this->all ? 'tout son mandat' : ($this->session ? 'la session '.preg_replace('/^(\d{4})/', '\\1-', $this->session): ""))), $this->response);
   }
