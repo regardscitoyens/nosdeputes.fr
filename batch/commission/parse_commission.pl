@@ -120,12 +120,13 @@ foreach (split /\n/, $content) {
 	}elsif (/fait au nom de la (commission d'enquête[^:<]*)(\s*,\s*déposé)/i) {
 		$commission = $1;
 	}else {
-	    $commission = $1 if (/TITLE>\s*((MC?I|Mission|Office|Délégation|Groupe de travail|CE |GT )[^:<]*)/i);
+	    $commission = $1 if (/TITLE>\s*((MC?I|Mission|Office|Délégation|Groupe de (suivi|travail)|CE |G[ST] )[^:<]*)/i);
 	    $commission =~ s/\-[\s\-]+S[é&eacut;]+nat\s*//;
         $commission =~ s/MI /Mission d'information /;
         $commission =~ s/MCI /Mission commune d'information /;
 	    $commission =~ s/CE /Commission d'enquête /;
 	    $commission =~ s/GT /Groupe de travail /;
+	    $commission =~ s/GS /Groupe de suivi /;
 	}
 #	print ;	print "\n";
 	if ((!/\d{4}\-\d{4}/) && (/<(h[123])[^>]*>(\s*<[^>]*>)*([^<\(]+\d{4})(\W*<[^>]*>)*\W*<\/(h[123])>/i) || /(<strong)(>)\(([a-z]+ \d+ [a-zéû]+ \d{4})\)<\/strong>/) {
@@ -152,12 +153,12 @@ foreach (split /\n/, $content) {
         $date = join '-', @date;
         $session = sessionize(@date);
         $titre = $1;
-        $commission = $1 if ($titre =~ /((MCI|Mission|Office|Délégation|Groupe de travail|CE |GT )[^:<]*)/i);
+        $commission = $1 if ($titre =~ /((MCI|Mission|Office|Délégation|Groupe de (suivi|travail)|CE |G[TS] )[^:<]*)/i);
         $heure = '1ère séance';
     }
 	if (/<h[1234][^>]*>(\s*<[^>]*>)*([^<]+)<\/h[1234]>/) {
 		$titre = $2;
-		next if ($titre =~ /^((com)?mission|comptes rendus |office|délégation|groupe de travail)/i && $titre !~/commission mixte paritaire/i);
+		next if ($titre =~ /^((com)?mission|comptes rendus |office|délégation|groupe de (travail|suivi))/i && $titre !~/commission mixte paritaire/i);
 
 		print_inter() if($timestamp);
 		$context = $titre;

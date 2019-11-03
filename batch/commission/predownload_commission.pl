@@ -12,7 +12,7 @@ $with_archive = shift;
 
 @indexes = ("http://www.senat.fr/offices_deleg_observatoire/index.html", "http://www.senat.fr/commission/spec/index.html", "http://www.senat.fr/commission/missions/index.html", "http://www.senat.fr/commission/enquete/index.html");
 
-@more = ("http://www.senat.fr/compte-rendu-commissions/office-parlementaire-d-evaluation-des-choix-scient.-tech..html", "http://www.senat.fr/compte-rendu-commissions/controle-de-la-securite-sociale-mecss.html", "http://www.senat.fr/europe/reunions.html");
+@more = ("http://www.senat.fr/compte-rendu-commissions/office-parlementaire-d-evaluation-des-choix-scient.-tech..html", "http://www.senat.fr/compte-rendu-commissions/controle-de-la-securite-sociale-mecss.html", "http://www.senat.fr/europe/reunions.html", "http://www.senat.fr/compte-rendu-commissions/groupe-de-suivi-brexit.html", "http://www.senat.fr/compte-rendu-commissions/groupe-de-suivi-brexit_archives.html");
 
 $a = WWW::Mechanize->new();
 $start = shift || '0';
