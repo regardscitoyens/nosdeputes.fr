@@ -549,8 +549,8 @@ sub setIntervenant {
 
 sub rapporteur
 {
-    #Si le commentaire contient peu nous aider à identifier le rapport, on tente
-    if ($line =~ /rapport/i && $line !~ /sp..?ciaux|rapporteure?s/i) {
+    # Si le commentaire peut nous aider à identifier le rapport, on tente
+    if ($line =~ /rapport/i && $line !~ /sp..?ciaux|rapporteure?s|grands organismes de recherche/i) {
 	if ($line =~ /M[me\.]+\s([^,()]+)(?:,| est proclamée?) (rapporteur[^\)\,\.\;]*)/i) {
         $fct = $2;
         $fct =~ s/\s+et\s+.*$//;
@@ -802,7 +802,7 @@ foreach $line (split /\n/, $string)
         }
         $found = $majIntervenant = 1;
         $intervenant = setIntervenant($interv1.$extrainterv);
-	  } elsif ($line !~ /^\|\/?(?:&#\d+;|–|-|Ø|Ê)?\s*(?:Puis de |Échanges?|AMÉLIORER|Travaux |Missions|Examen|Politique|RENFORCE|Mesures|Désignation|Réunion|Examen|Compte[\-\s]rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co\-]*Présidence|Titre|Chapitre|(?:Sous-?)?Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i &&
+	  } elsif ($line !~ /^\|\/?(?:&#\d+;|–|-|Ø|Ê)?\s*(?:Puis de |Action|Figure|Échanges?|AMÉLIORER|Travaux |Missions|Examen|Politique|RENFORCE|Mesures|Désignation|Réunion|Examen|Compte[\-\s]rendu|Mission|CONSTRUIRE|Adapter|Clarifier|Communication|Echange de vues|Marges de |de |Ateliers? |(\S+ )?Table ronde|Premiers? échange|En conséquence|Dispositions|Audition|Organisation|Présentation|Nomination|Commission|Accords?|Anciens|[co\-]*Présidence|Titre|Chapitre|(?:Sous-?)?Section|Après|Avant|Articles?|[^|]*pro(jet|proposition) de (loi|résolution))/i &&
           ($line =~ s/^\|([^\|,]+)\s*,\s*([^\|]+)\|// || $line =~ s/^(M(?:me|\.)\s[^\/,]{,80})(?:\/\s*,|,\s*\/)[\/,\s]*([^\.]+)[\.][\/\s]*//)) {
         checkout();
         $found = $majIntervenant = 1;
@@ -854,7 +854,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/^[\.\:]\s*//;
     $line =~ s/é\.e\.s\b/é·e·s/ig;
     #print STDERR "LINE: $found $intervenant $line\n";
-	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|consacre|a souhaité|expliqu|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|était accompagné|travaille |, veuillez|, j'entends|, (nous|je) vous |, merci |, vous|ayant )|[^:]*présentent)/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|consacre|va |a souhaité|expliqu|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|était accompagné|travaille |, veuillez|, j'entends|, (nous|je) vous |, merci |, vous|ayant )|[^:]*présentent)/) {
 	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Pr(\.?|ofesseur)|Maître|L[ea] représentante?|Une auditrice|Une intervenante|Ingénieur|Colonel|(Géné|Ami|Capo)ral|M(mes?|adame|onsieur|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
