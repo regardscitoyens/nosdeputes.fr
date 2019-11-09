@@ -368,6 +368,8 @@ sub setIntervenant {
     $intervenant =~ s/Jean-François Mattei/Jean-Paul Mattei/i;
     $intervenant =~ s/Agnès Bono-Vandorme/Aude Bono-Vandorme/i;
     $intervenant =~ s/Jaqcues/Jacques/i;
+    $intervenant =~ s/ric Borthorel/ric Bothorel/i;
+    $intervenant =~ s/Ian Boucart/Ian Boucard/i;
     $intervenant =~ s/Anissa Kh?edh?er/Anissa Khedher/i;
     $intervenant =~ s/Dimo Cinieri/Dino Cinieri/i;
     $intervenant =~ s/Thibaut Bazin/Thibault Bazin/i;
