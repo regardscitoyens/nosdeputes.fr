@@ -322,6 +322,7 @@ sub setIntervenant {
     $intervenant =~ s/Pierre Dharéville/Pierre Dharréville/i;
     $intervenant =~ s/Sabine Tillaye/Sabine Thillaye/i;
     $intervenant =~ s/Céline Untermaier/Cécile Untermaier/i;
+    $intervenant =~ s/Yolande de Courson/Yolaine de Courson/i;
     $intervenant =~ s/Jean-Jean-/Jean-/i;
     $intervenant =~ s/Valérie Faure-Muntien/Valéria Faure-Muntian/i;
     $intervenant =~ s/Sandrine Rubin/Sabine Rubin/i;
@@ -603,6 +604,7 @@ $majIntervenant = 0;
 $body = 0;
 
 $string =~ s/<\/p><p>/<\/p>\n<p>/gi;
+$string =~ s/\|?(Présidence de)\|<\/p>[\s\n]+<p>\|([^<]*?)\|<\/p>[\s\n]+<p>[\|\/\s]+([^<]*président)[\s\|\/]+(<\/p>)/\/\1 \2 \3\/\4/gi;
 $string =~ s/[\s\n]*<\/?center>[\s\n]*//gi;
 $string =~ s/\s*<\/h(\d+)><\/CRPRESIDENT><CRPRESIDENT><h\1[^>]*>\s*/ /gi;
 $string =~ s/(<\/h\d+>)/\1\n/gi;
