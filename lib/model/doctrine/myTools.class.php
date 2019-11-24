@@ -109,7 +109,7 @@ class myTools {
   public static $indicateurs = array(
     'semaines_presence' => array(
         'titre' => "Semaines d'activité",
-        'desc' => "Nombre de semaines où le sénateur a été relevé présent en commission, -- a pris la parole (même brièvement) dans l'hémicycle -- ou a participé physiquement à un scrutin public"
+        'desc' => "Nombre de semaines où le sénateur a été relevé présent en commission, -- a pris la parole (même brièvement) dans l'hémicycle"
     ),
     'commission_presences' => array(
         'titre' => "Présences en Commission",
