@@ -1083,7 +1083,7 @@ h1 {
 }
 .graph_senateur p {
   text-align: center;
-  margin: 0px;
+  margin: 0px 0px 0px -10px;
   padding: 0px;
 }
 .barre_activite {
@@ -1101,11 +1101,11 @@ h1 {
 }
 .barre_activite ul {
   margin: 1px 0px 0px 0px;
-  width: 725px;
+  width: 712px;
   float: left;
 }
 .barre_activite li {
-  width: 60px;
+  width: 59px;
   display: inline-block;
 }
 .barre_activite h3 {
@@ -1116,11 +1116,11 @@ h1 {
   color: #6F6F6F;
   line-height: 24px;
   background-color: transparent;
-  width: 190px;
+  width: 203px;
   float: left;
 }
 .barre_activite li img{
-  margin-left: 12px;
+  margin-left: 7px;
 }
 .barre_activite a {
   text-decoration: none;
