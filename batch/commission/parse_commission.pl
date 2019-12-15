@@ -798,7 +798,7 @@ foreach $line (split /\n/, $string)
         $previnterv = 0;
         checkout();
     } else {
-      if ($line !~ /(Mar|Mercre)di/ && $line =~ s/^\|(M[.me]+s? [^\|\:,]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:,[\|\s]*\/|[\|\s]*\/\s*,\s*)[^\/]+?\/))(.*\w.*)?/\4/) {
+      if ($line !~ /(est nommé|(Mar|Mercre)di)/ && $line =~ s/^\|(M[.me]+s? [^\|\:,]+?)(?:[\|\:](\/[^\/]+?\/)?|((?:,[\|\s]*\/|[\|\s]*\/\s*,\s*)[^\/]+?\/))(.*\w.*)?/\4/) {
         checkout();
         $interv1 = $1;
 	    $extrainterv = $2.$3;
@@ -859,7 +859,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/^[\.\:]\s*//;
     $line =~ s/é\.e\.s\b/é·e·s/ig;
     #print STDERR "LINE: $found $intervenant $line\n";
-	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|consacre|va |a souhaité|expliqu|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| été nommé|avait assuré|a ainsi |aurait |était accompagné|travaille |, veuillez|, j'entends|, (nous|je) vous |, merci |, vous|ayant )|[^:]*présentent)/) {
+	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|consacre|va |a souhaité|expliqu|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| (est|été) nommé|avait assuré|a ainsi |aurait |était accompagné|travaille |, veuillez|, j'entends|, (nous|je) vous |, merci |, vous|ayant )|[^:]*présentent)/) {
 	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Pr(\.?|ofesseur)|Maître|L[ea] représentante?|Une auditrice|Une intervenante|Ingénieur|Colonel|(Géné|Ami|Capo)ral|M(mes?|adame|onsieur|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
