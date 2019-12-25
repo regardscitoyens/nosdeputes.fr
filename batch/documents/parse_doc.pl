@@ -17,7 +17,7 @@ $doc{'source'} = $file;
 $doc{'source'} =~ s/^[^\/]+\///;
 $doc{'source'} = uri_unescape($doc{'source'});
 $doc{'id'} = $doc{'source'};
-$doc{'id'} =~ s/^http\:\/\/.*\/((motion)?p*j?t?g?[alr]s?)(\d{2,3})-?((\d{3})([\-\d]*))?(_mono)?\.html$/$4/i;
+$doc{'id'} =~ s/^https?\:\/\/.*\/((motion)?p*j?t?g?[alr]s?)(\d{2,3})-?((\d{3})([\-\d]*))?(_mono)?\.html$/$4/i;
 $typeid = lc($1);
 if ($typeid eq "ga") {
   $doc{'num'} = sprintf('%03d', $3);
