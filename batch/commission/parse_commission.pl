@@ -860,7 +860,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/é\.e\.s\b/é·e·s/ig;
     #print STDERR "LINE: $found $intervenant $line\n";
 	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|consacre|va |a souhaité|expliqu|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| (est|été) nommé|avait assuré|a ainsi |aurait |était accompagné|travaille |, veuillez|, j'entends|, (nous|je) vous |, merci |, vous|ayant )|[^:]*présentent)/) {
-	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Pr(\.?|ofesseur)|Maître|L[ea] représentante?|Une auditrice|Une intervenante|Ingénieur|Colonel|(Géné|Ami|Capo)ral|M(mes?|adame|onsieur|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
+	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Sir|Pr(\.?|ofesseur)|Maître|L[ea] représentante?|Une auditrice|Une intervenante|Ingénieur|Colonel|(Géné|Ami|Capo)ral|M(mes?|adame|onsieur|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
             if (!$intervenant && $line =~ /^\s*$/) {
