@@ -16,9 +16,10 @@ while ($t = $p->get_tag('a')) {
   $txt = $p->get_text('/a');
   $curl = $file = $t->[1]{href};
   if ($txt =~ /compte rendu|e nationale \~/i && $curl !~ /(nale\.fr\/dyn\/c\d+\.asp|\/cri\/(2|congres)|\(typeDoc\))/ && $curl =~ /nationale\.fr\/$legislature\//) {
-    $ok = 1;
+    $file =~ s/(^[\s\t]+|[\s\t]+$)//g;
     $file =~ s/\//_/gi;
     $file =~ s/\#.*//;
+    $curl =~ s/(^[\s\t]+|[\s\t]+$)//g;
     $curl =~ s/[^\/]+$//;
     $url{$curl} = 1;
     next if -e "html/$file";
@@ -93,6 +94,7 @@ foreach $url (@url) {
     if ($txt =~ /compte rendu|mission/i && $t->[1]{href} =~ /\d\.asp/) {
       $a->get($t->[1]{href});
       $file = $a->uri();
+      $file =~ s/(^[\s\t]+|[\s\t]+$)//g;
       $file =~ s/\//_/gi;
       $file =~ s/\#.*//;
       #$file =~ s/commissions_elargies_cr_c/commissions_elargies_cr_C/;
