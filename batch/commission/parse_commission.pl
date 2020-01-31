@@ -327,6 +327,7 @@ sub setIntervenant {
     $intervenant =~ s/Valérie Faure-Muntien/Valéria Faure-Muntian/i;
     $intervenant =~ s/Sandrine Rubin/Sabine Rubin/i;
     $intervenant =~ s/Enerstine/Ernestine/i;
+    $intervenant =~ s/Joaquim Son-Forget/Joachim Son-Forget/i;
     $intervenant =~ s/Tiphanie Degois/Typhanie Degois/i;
     $intervenant =~ s/Christine Cloarec[\W]*$/Christine Cloarec-Le Nabour/i;
     $intervenant =~ s/Danièle Brulebois/Danielle Brulebois/i;
@@ -860,7 +861,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/é\.e\.s\b/é·e·s/ig;
     #print STDERR "LINE: $found $intervenant $line\n";
 	if (!$found && !$finished && $line !~ /^\s*M(mes?|[e\.]|adame|onsieur)\s+([^\.:]*(interroge|, pour le rapport|consacre|va |a souhaité|expliqu|est également|la parole|propose|a p(ubli|os)é|a mené|est nommé|convié|souhaite|répond|question|soulève|empêché|faire part| (est|été) nommé|avait assuré|a ainsi |aurait |était accompagné|travaille i|, ont|, veuillez|, j'entends|, (nous|je) vous |, merci |, vous|ayant )|[^:]*présentent)/) {
-	    if ($line =~ s/^\s*((?:\s*(Dr\.?|Son Exc\.?|Sir|Pr(\.?|ofesseur)|Maître|L[ea] représentante?|Une auditrice|Une intervenante|Ingénieur|Colonel|(Géné|Ami|Capo)ral|M(mes?|adame|onsieur|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
+	    if ($line =~ s/^\s*((?:\s*(Dr\.?|S(on|\.) Exc\.?|Sir|Pr(\.?|ofesseur)|Maître|L[ea] représentante?|Une auditrice|Une intervenante|Ingénieur|Colonel|(Géné|Ami|Capo)ral|M(mes?|adame|onsieur|[e\.])))+(\s([dl][eaus'\s]+)*[^\.:\s]{2,}){1,4})([\.:])//) {
             $tmpi = $1;
             $orig = $1.$7;
             if (!$intervenant && $line =~ /^\s*$/) {
@@ -978,7 +979,7 @@ foreach $line (split /\n/, $string)
             $intervenant = setFonction($2, $1);
             $intervention = $nointer;
             checkout();
-          } elsif ($element =~ /^M(?:\.|me)?\s+(.*)$/ || $element =~ /^((?:(?:Col|Général|Capitaine|Major|Ga?l|S[.\s]+E(?:[.\s]+M)?|Représentant[es]*|Son Exc(\.|ellence)|[DP]r)[. ]+)+.*)$/) {
+          } elsif ($element =~ /^M(?:\.|me)?\s+(.*)$/ || $element =~ /^((?:(?:Col|Général|Capitaine|Major|Ga?l|S[.\s]*E(?:[.\s]+M)?|Représentant[es]*|Son Exc(\.|ellence)|[DP]r)[. ]+)+.*)$/) {
             checkout();
             $intervenant = setIntervenant($1);
             $intervention = $nointer;
