@@ -581,6 +581,7 @@ $string =~ s/\r//g;
 $string =~ s/<br>\n//gi;
 $string =~ s/&#8217;/'/g;
 $string =~ s/&#8226;/-/g;
+$string =~ s/&#269;/č/g;
 $string =~ s/d\W+évaluation/d'évaluation/g;
 $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
@@ -974,12 +975,12 @@ foreach $line (split /\n/, $string)
           $element =~ s/^M\.(\S+)/M. \1/;
           $element =~ s/(\S+)\s*\(\s*/\1 (/;
           $element =~ s/(\S+)(chef d)/\1, \2/;
-          if ($element =~ /^M(?:\.|me)?\s+([^,]+),\s*(.*)$/ || $element =~ /^((?:(?:Col|Général|François-Joseph|Capitaine|Major|Ga?l|S[.\s]+E(?:[.\s]+M)?|Son Excellence|[PD]r)[. ]+)+[^,]+),\s*(.*)$/) {
+          if ($element =~ /^M(?:\.|me)?\s+([^,]+),\s*(.*)$/ || $element =~ /^((?:(?:Col|Général|Rémi|François-Joseph|Capitaine|Major|Ga?l|S[.\s]+E(?:[.\s]+M)?|Son Excellence|[PD]r)[. ]+)+[^,]+),\s*(.*)$/) {
             checkout();
             $intervenant = setFonction($2, $1);
             $intervention = $nointer;
             checkout();
-          } elsif ($element =~ /^M(?:\.|me)?\s+(.*)$/ || $element =~ /^((?:(?:Col|Général|Capitaine|Major|Ga?l|S[.\s]*E(?:[.\s]+M)?|Représentant[es]*|Son Exc(\.|ellence)|[DP]r)[. ]+)+.*)$/) {
+          } elsif ($element =~ /^M(?:\.|me)?\s+(.*)$/ || $element =~ /^((?:(?:Col|Général|Rémi|Capitaine|Major|Ga?l|S[.\s]*E(?:[.\s]+M)?|Représentant[es]*|Son Exc(\.|ellence)|[DP]r)[. ]+)+.*)$/) {
             checkout();
             $intervenant = setIntervenant($1);
             $intervention = $nointer;
