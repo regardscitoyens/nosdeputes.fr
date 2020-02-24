@@ -464,7 +464,7 @@ foreach $line (split /\n/, $string)
             $tmpline = $1;
             $tmpline =~ s/<\/?[a-z][^>]*>//g;
             next unless ($tmpline);
-            if (lc($tmpline) ne lc($titre1) && ($tmpline !~ /rappels? au règlement|suspension|reprise/i || $tmpline =~ /demande/i)) {
+            if (lc($tmpline) ne lc($titre1) && ($tmpline !~ /rappels? au règlement|suspension|demande de vérification du quorum|reprise/i)) {
                 $titre2 = $tmpline;
                 $titre2 =~ s/[\/|]//g;
                 $donetitre1 = 0;
@@ -480,7 +480,7 @@ foreach $line (split /\n/, $string)
             $titre =~ s/\///g;
             $titre =~ s/\s+$//;
             next unless ($titre);
-            if ($titre !~ /\b(rappels? au règlement|suspension|reprise)/i) {
+            if ($titre !~ /\b(rappels? au règlement|suspension|reprise|demande de vérification du quorum)/i) {
                 $titre1 = $titre;
                 $titre2 = '';
                 $donetitre1 = 1;
