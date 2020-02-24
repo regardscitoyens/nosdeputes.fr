@@ -13,7 +13,9 @@ wget -q http://data.assemblee-nationale.fr/static/openData/repository/$LEGISLATU
 unzip Amendements_OD.json.zip -d opendata > /dev/null
 echo "Extracting list of Amendements from OpenData AN..."
 touch all_amdts_opendataAN.tmp
-ls opendata/json | while read dossier; do ls opendata/json/$dossier | while read texte; do cat opendata/json/$dossier/$texte/*.json |
+ls opendata/json | while read dossier; do ls opendata/json/$dossier | while read texte; do
+ find opendata/json/$dossier/$texte/ -type f -name "*.json" |
+  xargs cat                                                 |
   sed -r 's/("documentURI": ")/\n\1/g'                      |
   grep '^"documentURI": "/'"$LEGISLATURE"'/'                |
   sed -r 's|^"documentURI": "([^"]*)".*$|'"$ANroot"'\1|'    |

@@ -7,6 +7,7 @@ $a = WWW::Mechanize->new();
 
 $url = $htmfile = shift;
 $url =~ s/(nationale\.fr)(\/\d+\/amendements)/\1\/dyn\2/;
+$url =~ s/\.asp$//;
 $outputdir = shift || "html";
 $htmfile =~ s/^\s+//gi;
 $a->get($url);
