@@ -64,6 +64,7 @@ def parse_question(url, xmlstring):
             except:
                 print >> sys.stderr, "WARNING: reponse field seems badly encoded in", extracted_data['source']
                 pass
+        v = re.sub(ur"\s+", " ", v)
         extracted_data[k] = v.encode('utf-8').replace('\\', '\\\\').replace('"', '\\"').replace('\n', ' ')
 
     return extracted_data
