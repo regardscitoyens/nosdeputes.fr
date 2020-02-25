@@ -165,6 +165,8 @@ ERREURS_AN = {
    "2340": "20200092",
    "2341": "20200092",
    "2342": "20200092",
+   "2446": "20200140",
+   "2447": "20200140",
    "2460": "20200144",
    "2461": "20200144",
    "2462": "20200144"
@@ -202,8 +204,9 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
     }
     if data["numero"] in ERREURS_AN:
         scrutin["seance"] = ERREURS_AN[data["numero"]]
-    elif scrutin["numero"] >= 2446 and scrutin["seance"] and scrutin["seance"].startswith("2020"):
-        scrutin["seance"] = str(int(scrutin["seance"]) - 1)
+    # Temp fix
+    # elif scrutin["numero"] >= 2446 and scrutin["seance"] and scrutin["seance"].startswith("2020"):
+    #     scrutin["seance"] = str(int(scrutin["seance"]) - 1)
     if not scrutin["seance"]:
         logs.append("WARNING: scrutin %s has no seance %s" % (data["numero"], data["seanceRef"]))
     if not scrutin["demandeurs"]:
