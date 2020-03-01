@@ -26,6 +26,8 @@ Options +FollowSymLinks +ExecCGI
 
   # no, so we redirect to our front web controller
   RewriteRule ^(.*)$ index.php [QSA,L]
+
+  RewriteRule ^index.php/(.*)$ $1 [R,L]
 </IfModule>
 
 Redirect /circonscription/departement/Territoire-de-Belfort /circonscription/departement/Territoire%20de%20Belfort
