@@ -118,26 +118,7 @@ def parse_scrutins(legislature, data):
             log("Scrutin %s mis à jour" % scrutin["numero"])
 
 ERREURS_AN = {
-   "120": "20172002", # instead of 20172001
-   "121": "20172002", # instead of 20172001
-   "334": "20180086", # instead of 20180085
-   "335": "20180086", # instead of 20180085
-   "336": "20180086", # instead of 20180085
-   "337": "20180086", # instead of 20180085
-   "361": "20180121", # instead of 20180120
-   "438": "20180174", # instead of 20180173
-   "1704": "20190153", # instead of 20190152
-   "1705": "20190153", # instead of 20190152
-   "1706": "20190153", # instead of 20190152
-   "1840": "20190218", # instead of 20190217
-   "2104": "20200003", # instead of null
-   "2105": "20200003", # instead of null
-   "2339": "20200092", # instead of null
-   "2340": "20200092", # instead of null
-   "2341": "20200092", # instead of null
-   "2342": "20200092", # instead of null
-   "2446": "20200140", # instead of 20200141
-   "2447": "20200140", # instead of 20200141
+#   "120": "20172002", # instead of 20172001
 }
 
 MISSING_HISTOGPES = {
@@ -172,9 +153,6 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
     }
     if data["numero"] in ERREURS_AN:
         scrutin["seance"] = ERREURS_AN[data["numero"]]
-    # Temp fix
-    # elif scrutin["numero"] >= 2446 and scrutin["seance"] and scrutin["seance"].startswith("2020"):
-    #     scrutin["seance"] = str(int(scrutin["seance"]) - 1)
     if not scrutin["seance"]:
         logs.append("WARNING: scrutin %s has no seance %s" % (data["numero"], data["seanceRef"]))
     if not scrutin["demandeurs"]:
