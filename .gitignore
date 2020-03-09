@@ -61,6 +61,7 @@ batch/documents/ta/
 batch/documents/out/
 batch/documents/rga/
 batch/documents/tas/
+batch/documents/loaded/
 batch/documents/textes-senat.tar.gz
 batch/documents/to_parse.list
 batch/dossiers/html/
