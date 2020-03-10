@@ -215,4 +215,69 @@ $string =~ s/\s*#header.*?Accueil\s*&gt; Documents (dossier correspondant|parlem
 
 if ($no_text) { $string = ""; }
 #print "\n";
+#
+# The OpenData fields documented here for:
+#     documents https://data.tricoteuses.fr/doc/assemblee/document.html
+#     dossiers  https://data.tricoteuses.fr/doc/assemblee/dossier.html
+#     the corresponding content is here https://git.en-root.org/tricoteuses/data.tricoteuses.fr/Dossiers_Legislatifs_XV/
+#
+# source: URL of the document (example: http://www.assemblee-nationale.fr/15/budget/plf2018/a0264-tI.asp") OpenData .uid
+#
+# legislature: ordinal (example: 15) OpenData legislature
+#
+# id: uniq id of the document, including the division identifier, relative to the legislature (example 264A-tI) OpenData none
+#
+# numero: uniq id of the document relative to the legislature (example 264) OpenData .notice.numNotice
+#
+# annexe: ??? division identifier, relative to the documnent uni id (example At01) OpenData none
+#
+# date_depot: date of submission at the Journal Officiel (example 2017-10-09) OpenData .cycleDeVie.chrono.dateDepot
+#
+# date_publi: date of publication by the Journal Officiel, may be empty (example 2017-10-10) OpenData .cycleDeVie.chrono.datePublication
+#
+# auteurs: name and mandate of the author of the document, may be empty (example M. Didier Martin Rapporteur, Commission des affaires économiques Auteur) OpenData .auteurs
+#
+# dossier: path to the legislative file relative to the national assembly web site (example loi_finances_2018 matches http://www.assemblee-nationale.fr/15/dossiers/loi_finances_2018.asp) OpenData .dossierRef => .titreDossier.titreChemin
+#
+# type: one of the following, may be empty OpenData .classification.classe.libelle
+#  Avis
+#  Lettre
+#  Projet de loi
+#  Proposition de loi
+#  Proposition de résolution
+#  Rapport
+#  Rapport d'information
+#  Texte de la commission
+#
+# type_details: one of the following, may be empty OpenData .classification.espece.libelle
+#  autorisant la ratification d'une convention
+#  constitutionnelle
+#  de contrôle budgétaire de la commission des finances
+#  de financement de la sécurité sociale
+#  de finances
+#  de finances rectificative
+#  d'enquête
+#  de règlement du budget et d'approbation des comptes
+#  des offices parlementaires ou délégations mixtes
+#  divers
+#  d'une mission d'information constituée au sein d'une commission permanente
+#  en application de Article 34-1 de la Constitution
+#  en application de l'article 151-5 du règlement
+#  modifiant le Règlement de l'Assemblée nationale
+#  organique
+#  présentée en application de l'article 11 de la Constitution
+#  rectificative
+#  supplémentaire
+#  sur des actes de l'Union européenne
+#  sur l'application des lois
+#  sur les travaux conduits par les institutions européennes
+#  sur l'impact d'une loi en application de l'article 145-7 alinéa 3
+#  tendant à la création d'une commission d'enquête
+#
+# titre: title of the document (example visant à requalifier les faits d'atteintes sexuelles en agressions sexuelles ou viol) OpenData .formule
+#
+# categorie: ???, empty most of the time (example 10 axes de travail pour une politique industrielle conquérante) OpenData none
+# motscles: ???, only filled in less than 10 documents (example science et legislation) OpenData none
+# contenu: the list of words in the documents, in the order in which they appear, with no formatting
+# 
 print '{"source": "'.$source.'", "legislature": "'.$legislature.'", "id": "'.$id.'", "numero": "'.$num.'", "annexe": "'.$annexe.'", "date_depot": "'.$date0.'", "date_publi": "'.$date1.'", "auteurs": "'.$auteurs.'", "dossier": "'.$dossier.'", "type": "'.$type0.'", "type_details": "'.$type1.'", "titre": "'.$titre.'", "categorie": "'.$categorie.'", "motscles": "'.$keywords.'", "contenu": "'.$string.'"}'."\n";
