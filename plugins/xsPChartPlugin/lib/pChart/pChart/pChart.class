@@ -1312,7 +1312,7 @@
        foreach ( $DataDescription["Description"] as $keyI => $ValueI )
         { if ( $keyI == $ColName ) { $ColorID = $ID; }; $ID++; }
 
-       $aPoints   = "";
+       $aPoints   = array();
        $aPoints[] = $this->GAreaXOffset;
        $aPoints[] = $LayerHeight;
 
@@ -2752,7 +2752,7 @@
    /* Validate data contained in the data array */
    function validateData($FunctionName,&$Data)
     {
-     $DataSummary = "";
+     $DataSummary = array();
 
      foreach($Data as $key => $Values)
       {
