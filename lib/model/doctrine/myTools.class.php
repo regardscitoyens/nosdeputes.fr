@@ -87,37 +87,6 @@ class myTools {
     return explode('","', $string);
   }
 
-  public static function getProtocol() {
-    if (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != "") return "https";
-    return "http";
-  }
-
-  public static function url_forAPI($args) {
-    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-    $url = url_for($args, 'absolute=true');
-    return preg_replace('/^http:\/\//', 'https://', $url);
-  }
-
-  public static function getAnnounceLink() {
-    return (sfConfig::get('app_announce_link'));
-  }
-
-  public static function getAnnounceText() {
-    return (sfConfig::get('app_announce_text'));
-  }
-
-  public static function hasAnnounce() {
-    return self::getAnnounceLink() && self::getAnnounceText();
-  }
-
-  public static function getAdminIPs() {
-    return (self::convertYamlToArray(sfConfig::get('app_admin_ips')));
-  }
-
-  public static function getLegislature() {
-    return (sfConfig::get('app_legislature', 13));
-  }
-
   public static function getPreviousHost() {
     return (sfConfig::get('app_host_previous_legislature', null));
   }
@@ -139,21 +108,12 @@ class myTools {
     return str_replace($m[1], $m[1] + 5, $date);
   }
 
-  public static function getAnalytics() {
-    return (sfConfig::get('app_analytics_id'));
-  }
-
-  public static function getPiwik() {
-    return array("domain" => sfConfig::get('app_piwik_domain'),
-                 "id" => sfConfig::get('app_piwik_id'));
-  }
-
   public static function isFinLegislature() {
     return (sfConfig::get('app_fin_legislature'));
   }
 
   public static function isLegislatureCloturee() {
-    return (sfConfig::get('host_next_legislature'));
+    return preg_match('/clotur/', sfConfig::get('app_fin_legislature'));
   }
 
   public static function isCommentairesLocked() {
@@ -283,15 +243,15 @@ class myTools {
   }
 
   public static function getLinkDossier($urlan) {
-    return link_to('Dossier sur le site de l\'Assemblée', "http://www.assemblee-nationale.fr/".self::getLegislature()."/dossiers/".$urlan.".asp");
+    return link_to('Dossier sur le site de l\'Assemblée', "http://www.assemblee-nationale.fr/".sfConfig::get('app_legislature', 13)."/dossiers/".$urlan.".asp");
   }
 
   public static function getLinkLoi($id) {
-    return link_to($id, "http://recherche2.assemblee-nationale.fr/resultats-avancee.jsp?11AUTPropositions=&11AUTRap-enq=&11AUTRap-info=&11AUTRapports=&12AUTPropositions=&12AUTRap-enq=&12AUTRap-info=&12AUTRap-infoLoi=&12AUTRapports=&".self::getLegislature()."AUTComptesRendusReunions=&".self::getLegislature()."AUTComptesRendusReunionsDeleg=&".self::getLegislature()."AUTPropositions=&".self::getLegislature()."AUTRap-info=&".self::getLegislature()."AUTRap-infoLoi=&".self::getLegislature()."".self::getLegislature()."AUTRapports=&legislature=".self::getLegislature()."&legisnum=&num_init_11=&num_init_12=&num_init_13=".$id."&searchadvanced=Rechercher&searchtype=&texterecherche=&type=".self::getLegislature()."ProjetsLoi");
+    return link_to($id, "http://recherche2.assemblee-nationale.fr/resultats-avancee.jsp?11AUTPropositions=&11AUTRap-enq=&11AUTRap-info=&11AUTRapports=&12AUTPropositions=&12AUTRap-enq=&12AUTRap-info=&12AUTRap-infoLoi=&12AUTRapports=&".sfConfig::get('app_legislature', 13)."AUTComptesRendusReunions=&".sfConfig::get('app_legislature', 13)."AUTComptesRendusReunionsDeleg=&".sfConfig::get('app_legislature', 13)."AUTPropositions=&".sfConfig::get('app_legislature', 13)."AUTRap-info=&".sfConfig::get('app_legislature', 13)."AUTRap-infoLoi=&".sfConfig::get('app_legislature', 13)."".sfConfig::get('app_legislature', 13)."AUTRapports=&legislature=".sfConfig::get('app_legislature', 13)."&legisnum=&num_init_11=&num_init_12=&num_init_13=".$id."&searchadvanced=Rechercher&searchtype=&texterecherche=&type=".sfConfig::get('app_legislature', 13)."ProjetsLoi");
   }
 
   public static function getLiasseLoiAN($id) {
-    return link_to('liasse de l\'Assemblée', "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?typeEcran=avance&chercherDateParNumero=non&NUM_INIT=".$id."&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&SORT_EN_SEANCE=&DELIBERATION=&NUM_PARTIE=&DateDebut=&DateFin=&periode=&LEGISLATURE=".self::getLegislature()."Amendements&QueryText=&Scope=TEXTEINTEGRAL&SortField=ORDRE_TEXTE&SortOrder=Asc&format=PDF&searchadvanced=Rechercher");
+    return link_to('liasse de l\'Assemblée', "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?typeEcran=avance&chercherDateParNumero=non&NUM_INIT=".$id."&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&SORT_EN_SEANCE=&DELIBERATION=&NUM_PARTIE=&DateDebut=&DateFin=&periode=&LEGISLATURE=".sfConfig::get('app_legislature', 13)."Amendements&QueryText=&Scope=TEXTEINTEGRAL&SortField=ORDRE_TEXTE&SortOrder=Asc&format=PDF&searchadvanced=Rechercher");
   }
 
   public static function getLiasseLoiImpr($id) {

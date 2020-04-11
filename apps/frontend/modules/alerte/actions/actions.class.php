@@ -17,24 +17,9 @@ class alerteActions extends sfActions
     $parlementaire = doctrine::getTable('Parlementaire')->findOneBySlug($slug);
     $this->forward404Unless($parlementaire);
     $alerte = new Alerte();
-    $alerte->query = '"Parlementaire='.$parlementaire.'"';
+    $alerte->query = 'Parlementaire='.urlencode($parlementaire);
     $alerte->no_human_query = 1;
     $alerte->titre = 'Recherche relative aux travaux de '.$parlementaire->nom;
-    $this->submit = 'Créer';
-    $this->form = $this->processForm($request, $alerte);
-    $this->setTemplate('form');
-  }
-
-  public function executeQuestion(sfWebRequest $request)
-  {
-    $num = $request->getParameter('num');
-    $this->forward404Unless($num);
-    $question = doctrine::getTable('QuestionEcrite')->findOneByNumero($num);
-    $this->forward404Unless($question);
-    $alerte = new Alerte();
-    $alerte->query = 'object_id:'.$question->id.' object_name:QuestionEcrite';
-    $alerte->no_human_query = 1;
-    $alerte->titre = 'Changements liés à la Question Écrite N° '.$question->numero;
     $this->submit = 'Créer';
     $this->form = $this->processForm($request, $alerte);
     $this->setTemplate('form');
@@ -51,16 +36,16 @@ class alerteActions extends sfActions
   }
 
 
-  public function executeCreate(sfWebRequest $request)
+  public function executeCreate(sfWebRequest $request) 
   {
     $alerte = new Alerte();
-    $alerte->query = myTools::escapeHtml($request->getParameter('query'));
-    $alerte->filter = myTools::escapeHtml($request->getParameter('filter'));
+    $alerte->query = $request->getParameter('query');
+    $alerte->filter = $request->getParameter('filter');
     $this->submit = 'Créer';
     $this->form = $this->processForm($request, $alerte);
     $this->setTemplate('form');
   }
-  public function executeDelete(sfWebRequest $request)
+  public function executeDelete(sfWebRequest $request) 
   {
     $this->forward404Unless($this->alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
     if ($request->isMethod('post')) {
@@ -73,7 +58,7 @@ class alerteActions extends sfActions
     }
   }
 
-  public function executeEdit(sfWebRequest $request)
+  public function executeEdit(sfWebRequest $request) 
   {
     $this->forward404Unless($alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
     $this->form =  $this->processForm($request, $alerte);
@@ -81,7 +66,7 @@ class alerteActions extends sfActions
     $this->setTemplate('form');
   }
 
-  public function executeConfirmation(sfWebRequest $request)
+  public function executeConfirmation(sfWebRequest $request) 
   {
     $this->forward404Unless($alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
     $alerte->confirmed = 1;
@@ -101,10 +86,6 @@ class alerteActions extends sfActions
   private function processForm($request, $alerte) {
     if ($citoyen_id = $this->getUser()->getAttribute('user_id')) {
       $alerte->citoyen_id = $citoyen_id;
-      if (!$alerte->getCitoyen()->is_active) {
-	$this->getUser()->setFlash('error', "Votre compte n'a pas été confirmé, vous ne pouvez donc pas créer d'alerte");
-	return $this->redirect('@homepage');
-      }
     }
     $form = new AlerteForm($alerte);
     if ($request->isMethod('post')) {
@@ -134,7 +115,7 @@ class alerteActions extends sfActions
     return $form;
   }
   private function confirmeAlerte($alerte) {
-    $message = $this->getMailer()->compose(array('nosdeputes@nosdeputes.fr' => '"Regards Citoyens"'),
+    $message = $this->getMailer()->compose(array('nosdeputes@nosdeputes.fr' => '"Regards Citoyens"'), 
 					   $alerte->email,
 					   '[NosDeputes.fr] Confirmation d\'Alerte email - '.$alerte->titre);
     $text = $this->getPartial('mail/sendConfirmationAlerte', array('alerte' => $alerte));

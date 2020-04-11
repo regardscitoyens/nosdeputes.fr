@@ -12,14 +12,12 @@
 <?php if ($seance || count($identiques) > 1) { ?>
 <div class="seance_amendements">
   <h3><?php if ($seance) echo 'Discuté en '.link_to('séance le '.myTools::displayDate($seance['date']), '@interventions_seance?seance='.$seance['seance_id'].'#amend_'.$amendement->numero);
-  $tot = count($identiques)-1;
-  if ($tot > 0) {
-    $ident_titre = " <small>($tot amendement";
-    if ($tot > 1)
-      $ident_titre .= "s identiques : ";
-    else $ident_titre .= " identique : "; ?>
+  if (count($identiques) > 1) {
+    if (count($identiques) > 2)
+      $ident_titre = " ( amendements identiques : ";
+    else $ident_titre = " ( amendement identique : "; ?>
   <em><?php echo $ident_titre; foreach($identiques as $identique) if ($identique->numero != $amendement->numero)
-      echo link_to($identique->numero, '@amendement?loi='.$identique->texteloi_id.'&numero='.$identique->numero)." "; ?>)</em></small>
+      echo link_to($identique->numero, '@amendement?loi='.$identique->texteloi_id.'&numero='.$identique->numero)." "; ?>)</em>
   <?php } ?></h3>
 </div>
 <?php } ?>
@@ -39,10 +37,10 @@
 </div>
 <div class="sujet">
   <h3><?php $sujet = $amendement->getSujet();
-    if ($titreloi && preg_match('/^(.*)?(art(\.|icle)\s*)((\d+|premier).*)$/i', $sujet, $match)) {
-      $art = preg_replace('/premier/i', '1er', $match[4]);
-      $art = strtolower(preg_replace('/\s+/', '-', $art));
-      $sujet = $match[1].link_to($match[2].$match[4], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art);
+    if ($titreloi && preg_match('/^(.*)?(article\s*)((\d+|premier).*)$/i', $sujet, $match)) {
+      $art = preg_replace('/premier/i', '1er', $match[3]);
+      $art = preg_replace('/\s+/', '-', $art);
+      $sujet = $match[1].link_to($match[2].$match[3], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art);
     }
     if ($titreloi)
       echo link_to(preg_replace('/(Simplifions la loi 2\.0 : )?(.*)\s*<br.*$/', '\2', $titreloi->titre), '@loi?loi='.$titreloi->texteloi_id);
@@ -54,14 +52,14 @@
 </div>
 <div class="texte_intervention">
   <?php $texte = $amendement->getTexte();
-  if ($titreloi && preg_match('/alin..?a(s)?\D\D?(\d+)[^\d]/', $texte, $match)) {
-    $link = link_to('alinéa'.$match[1].' '.$match[2], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art.'#alinea_'.$match[2]);
-    $texte = preg_replace('/(alin..?as?\D\D?\d+)([^\d])/', $link.'\2', $texte);
+  if ($titreloi && preg_match('/alin(e|é)a\s*(\d+)[^\d]/', $texte, $match)) {
+    $link = link_to('alinéa '.$match[2], '@loi_article?loi='.$titreloi->texteloi_id.'&article='.$art.'#alinea_'.$match[2]);
+    $texte = preg_replace('/(alin(e|é)a\s*\d+)([^\d])/', $link.'\3', $texte);
   }
   echo myTools::escape_blanks($texte); ?>
 </div>
 <?php if (isset($amendement->expose)) { ?>
-  <h3>Exposé sommaire :</h3>
+  <h3>Exposé Sommaire :</h3>
   <div class="expose_amendement">
     <?php echo myTools::escape_blanks($amendement->getExpose()); ?>
   </div>
@@ -73,10 +71,10 @@ echo include_component('commentaire', 'form', array('object' => $amendement)); ?
 </div>
 <script type="text/javascript">
 <!--
-$('#liste_deputes a').on('mouseover', function() {
+$('#liste_deputes a').live('mouseover', function() {
  nom = $(this).attr('href');
  nom = nom.replace(/^.*rechercher\/([A-ZÉ][\.\s]+)*/, '');
- $('.photo_fiche[title*="'+nom+'"]').css('opacity', '1');
+ $('.photo_fiche[alt*="'+nom+'"]').css('opacity', '1');
 });
 $('#liste_deputes').bind('mouseover mouseout', function(event) {
  if (event.type == "mouseover") { $('.photo_fiche').css('opacity', '0.3'); $("#liste_deputes").die("mouseover"); }

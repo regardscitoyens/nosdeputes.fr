@@ -37,7 +37,7 @@ if (count($cosign)) {
 <p class="justify tabulation"><?php echo myTools::escape_blanks(preg_replace('/([a-z])\. ([^"»])/', '\\1.</p><p class="justify tabulation">\\2', $doc->getExtract())); ?></p>
 <?php } ?>
 <h3><a href="<?php echo $doc->source; ?>">Consulter le document complet sur le site de l'Assemblée</a></h3>
-<p class="aligncenter">(<?php echo link_to('version pdf', preg_replace('/asp$/', 'pdf', preg_replace('/'.sfConfig::get('app_legislature', 13).'\//', sfConfig::get('app_legislature', 13).'/pdf/', $doc->source))); ?>)</p>
+<p class="aligncenter">(<?php echo link_to('version pdf', preg_replace('/asp$/', 'pdf', preg_replace('/13\//', '13/pdf/', $doc->source))); ?>)</p>
 </div>
 <div class="right">
 <?php print $tags;
@@ -93,7 +93,7 @@ if (count($cosign)) {
   if (count($cosign) < 16) { ?>
 <script type="text/javascript">
 <!--
-$('#liste_deputes a').on('mouseover', function() {
+$('#liste_deputes a').live('mouseover', function() {
  nom = $(this).attr('href').split('/'); nom = nom.reverse(); $('.photo_fiche[src*="'+nom[0]+'"]').css('opacity', '1');
 });
 $('#liste_deputes').bind('mouseover mouseout', function(event) {

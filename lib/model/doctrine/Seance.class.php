@@ -10,7 +10,7 @@ class Seance extends BaseSeance
       return 'réunion du '.myTools::displayDate($this->date).', '.$this->moment;
     return 'séance du '.myTools::displayDate($this->date).', '.$this->moment;
   }
-  
+
   static $debut_session = null;
   public static function identifySession($date) {
     if (!self::$debut_session) {
@@ -47,7 +47,7 @@ class Seance extends BaseSeance
     $presence->free();
     return $res;
   }
- 
+
   public function addPresenceLight($parlementaire_id, $type, $source) {
     $q = Doctrine::getTable('Presence')->createQuery('p');
     $q->where('parlementaire_id = ?', $parlementaire_id)->andWhere('seance_id = ?', $this->id);
@@ -66,7 +66,7 @@ class Seance extends BaseSeance
     return $res;
   }
 
- 
+
   public static function convertMoment($moment) {
     if (strlen($moment) > 25)
       return substr($moment, 0, 255);
@@ -86,15 +86,15 @@ class Seance extends BaseSeance
     }
     return $moment;
   }
- 
+
   public function getShortMoment() {
     if (preg_match('/:/', $this->moment))
       return preg_replace('/^0/', '', str_replace('00', '', str_replace(':', 'h', $this->moment)));
     else if (!$this->moment)
       return "réunion";
-    return preg_replace('/séance/i', 'réunion', $this->moment);
+    return $this->moment;
   }
- 
+
   public function setDate($date) {
     if (!$this->_set('date', $date))
       return false;
@@ -143,9 +143,11 @@ class Seance extends BaseSeance
     return $q->count();
   }
 
-  public function getTitre($miniature = 0) {
+  public function getTitre($miniature = 0, $hemicycle = 0, $ref = '') {
     $titre = '';
-    if ($this->type == 'hemicycle') {
+    if ($ref != '')
+      $titre .= '<a href="'.url_for('@interventions_seance?seance='.$this->id).'#inter_'.$ref.'">';
+    if ($hemicycle == 1) {
       if ($miniature == 0)
         $titre .= 'S';
       else $titre .= 's';
@@ -167,6 +169,10 @@ class Seance extends BaseSeance
     $titre = preg_replace('/00:00/', 'minuit', $titre);
     $titre = preg_replace('/0(\d:\d{2})/', '\\1', $titre);
     $titre = preg_replace('/ (\d+):(\d{2})/', ' \\1h\\2', $titre);
+    if ($this->type == "commission")
+      $titre = str_replace('Séance', 'Réunion', $titre);
+    if ($ref != '')
+      $titre .= '</a>';
     return $titre;
   }
 }

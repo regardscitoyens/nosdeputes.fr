@@ -11,7 +11,7 @@ $plflettre = '';
 if ($id =~ /plf\d{4}\/([a-z])\d{4}/i) {
   $plflettre = uc($1);
 }
-$id =~ s/^http\:\/\/.*(\d{4})(-[atv].*)?\.asp$/\1$plflettre\2/i;
+$id =~ s/^http\:\/\/.*(\d{4})(-[at].*)?\.asp$/\1$plflettre\2/i;
 $id =~ s/^0+//;
 $num = $annexe = $id;
 $num =~ s/^(\d+)([^\d].*)?$/\1/i;
@@ -209,7 +209,6 @@ $string =~ s/if \(window!= top\) top\.location\.href=location\.href//i;
 $string =~ s/Recherche \| Aide \| Plan du site Accueil \&gt\; Documents parlementaires \&gt\; Les rapports législatifs//i;
 $string =~ s/_____ ASSEMBL'E NATIONALE CONSTITUTION DU 4 OCTOBRE 1958 TREIZIÈME LÉGISLATURE//i;
 $string =~ s/__*//i;
-$string =~ s/\s*var _gaq =.*$//;
 
 if ($no_text) { $string = ""; }
 #print "\n";

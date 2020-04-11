@@ -1,11 +1,9 @@
 ============ Alerte NosDeputes.fr ============
 
-Voici les dernières alertes de votre abonnement : <?php echo $alerte->titre; ?>
-----------------------------------------------------------------------
-ATTENTION : répondre à ce mail ne vous permet pas d'écrire à un parlementaire mais simplement aux membres de l'association Regards Citoyens indépendante de l'Assemblée nationale
+Voici les dernières alertes de votre abonnement : <?php echo $alerte->titre; ?> 
 
 <?php
-foreach ($results['response']['docs'] as $res)
+foreach ($results['response']['docs'] as $res) 
 {
   $citoyen = "";
   $titre = $res['object']->getTitre();
@@ -15,6 +13,8 @@ foreach ($results['response']['docs'] as $res)
     echo "Commentaire$citoyen : ";
   } else if ($res['object_name'] === "Section")
     echo "Dossier : ";
+  else if ($res['object_name'] === "QuestionEcrite")
+    $titre = str_replace('Question', 'Question écrite', $titre);
   echo $titre."\n";
  if ($res['object_name'] != 'Texteloi') {
   echo "------------------------------------------------\n";
@@ -34,10 +34,9 @@ foreach ($results['response']['docs'] as $res)
     $text = preg_replace('/ *\n+ */', ' ', implode('...', $printable));
   }
 
-  $text = preg_replace('/\s*\&nbsp;\s*/', ' ', $text);
   $text = html_entity_decode($text);
   $text = preg_replace('/\&\#[0-9]+\;/', '', $text);
-  $text = preg_replace('/\s*(«[\s ]*|[\s ]*»)\s*/', ' " ', $text);
+  $text = preg_replace('/\«\W/', ' " ', $text);
 
   if (strlen($text) > 700) {
 	$text = preg_replace('/[^ ]*$/', '', substr($text, 0, 700)).'...';
@@ -48,7 +47,7 @@ foreach ($results['response']['docs'] as $res)
     $text = substr($text, strlen($citoyen)-4);
   echo "$text\n";
  }
-  echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', $res['object']->getLink())."\n\n";
+  echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', $res['object']->getLink())."\n\n";
 }
 
 ?>
@@ -56,18 +55,18 @@ foreach ($results['response']['docs'] as $res)
 <?php
 if (!isset($nohuman) || !$nohuman) {
 echo "Visualiser cette alerte sur le site :\n";
-echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('@recherche_solr?sort=1&query='.$alerte->query))."\n";
+echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('@recherche_solr?sort=1&query='.$alerte->query))."\n";
 }
 ?>
 Pour éditer cette alerte :
-<?php
-echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/edit?verif='.$alerte->getVerif()));
+<?php 
+echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('alerte/edit?verif='.$alerte->getVerif()));
 ?>
 
 Pour supprimer cette alerte :
-<?php echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/delete?verif='.$alerte->getVerif())); ?>
+<?php echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('alerte/delete?verif='.$alerte->getVerif())); ?>
 
 <?php if ($alerte->citoyen_id) : ?>
 L'interface vous permettant de gérer vos alertes :
-<?php echo sfConfig::get('app_base_url').preg_replace('/symfony\/?/', '', url_for('alerte/list')); ?>
+<?php echo sfConfig::get('app_base_url').'/'.preg_replace('/symfony\/?/', '', url_for('alerte/list')); ?>
 <?php endif; ?>

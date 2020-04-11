@@ -1,0 +1,2 @@
+RewriteEngine on
+RewriteRule index.sort(\d+).php index.php?sort=$1

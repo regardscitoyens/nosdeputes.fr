@@ -7,7 +7,7 @@ class moveSeanceTask extends sfBaseTask {
     $this->name = 'Seance';
     $this->briefDescription = 'Déplace les interventions d\'une séance d\'un dossier vers un autre';
     $this->addArgument('seance', sfCommandArgument::REQUIRED, 'Séance à déplacer');
-    $this->addArgument('baddossier', sfCommandArgument::REQUIRED, 'Dossier d\'origine'); 
+    $this->addArgument('baddossier', sfCommandArgument::REQUIRED, 'Dossier d\'origine');
     $this->addArgument('gooddossier', sfCommandArgument::REQUIRED, 'Dossier d\'acccueil');
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'test');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');

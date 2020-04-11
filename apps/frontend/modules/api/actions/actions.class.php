@@ -92,8 +92,6 @@ class apiActions extends sfActions
     unset($qp);
     $this->res = array();
     $this->champs = array();
-    $this->multi = array();
-    $this->multi["site"] = 1;
     foreach($parlementaires as $p) {
       $tops = $p->top;
       $depute['id'] = $p->id;
@@ -151,6 +149,7 @@ class apiActions extends sfActions
     $this->breakline = 'organisme';
     $colormap = myTools::getGroupesColorMap();
     $groupesorder = myTools::getAllGroupesOrder();
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
     foreach($orgas as $o) {
       $orga = array();
       $orga['id'] = $o->id * 1;
@@ -162,8 +161,8 @@ class apiActions extends sfActions
         $orga['order'] = $groupesorder[$orga['acronyme']];
       }
       $orga['type'] = $o->type;
-      $orga['url_nosdeputes'] = myTools::url_forAPI('@list_parlementaires_organisme?slug='.$orga['slug']);
-      $orga['url_nosdeputes_api'] = myTools::url_forAPI('@list_parlementaires_organisme_api?format='.$request->getParameter('format').'&orga='.$orga['slug']);
+      $orga['url_nosdeputes'] = url_for('@list_parlementaires_organisme?slug='.$orga['slug'], 'absolute=true');
+      $orga['url_nosdeputes_api'] = url_for('@list_parlementaires_organisme_api?format='.$request->getParameter('format').'&orga='.$orga['slug'], 'absolute=true');
       if ($request->getParameter('format') == 'csv')
        foreach(array_keys($orga) as $key)
         if (!isset($this->champs[$key]))
@@ -251,9 +250,8 @@ class apiActions extends sfActions
 	throw new Exception("pas de parlementaire");
     $res['id'] = $parl->id * 1;
     $res['nom'] = $parl->nom;
-    $PrNoPaNP = $parl->getPrenomNomParticule();
-    $res['nom_de_famille'] = $PrNoPaNP[3];
-    $res['prenom'] = $PrNoPaNP[0];
+    $res['nom_de_famille'] = $parl->getNomFamilleCorrect();
+    $res['prenom'] = $parl->getPrenom();
     $res['sexe'] = $parl->sexe;
     $res['date_naissance'] = $parl->date_naissance;
     $res['lieu_naissance'] = $parl->lieu_naissance;
@@ -277,9 +275,7 @@ class apiActions extends sfActions
         $res['groupe'] = "";
     }
     $res['groupe_sigle'] = $parl->groupe_acronyme;
-    if (!$parl->parti)
-      $parl->parti = "";
-    $res['parti_ratt_financier'] = $parl->parti;
+    $res['parti_ratt_financier'] = "";
     if (!$light) {
       $res['responsabilites'] = myTools::array2hash($parl->getResponsabilites(), 'responsabilite');
       $res['responsabilites_extra_parlementaires'] = myTools::array2hash($parl->getExtras(), 'responsabilite');
@@ -298,13 +294,10 @@ class apiActions extends sfActions
     $res['url_an'] = $parl->url_an;
     $res['id_an'] = $parl->id_an;
     $res['slug'] = $parl->getSlug();
-    $res['url_nosdeputes'] = myTools::url_forAPI('@parlementaire?slug='.$res['slug']);
-    $res['url_nosdeputes_api'] = myTools::url_forAPI('api/parlementaire?format='.$format.'&slug='.$res['slug']);
+    sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    $res['url_nosdeputes'] = url_for('@parlementaire?slug='.$res['slug'], 'absolute=true');
+    $res['url_nosdeputes_api'] = url_for('api/parlementaire?format='.$format.'&slug='.$res['slug'], 'absolute=true');
     $res['nb_mandats'] = count(unserialize($parl->getAutresMandats()));
-    $res['twitter'] = "";
-    foreach (unserialize($parl->sites_web) as $site)
-      if (preg_match("/twitter.com/", $site))
-        $res['twitter'] = str_replace("https://twitter.com/", "", $site);
     return $res;
   }
 

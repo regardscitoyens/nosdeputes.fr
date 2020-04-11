@@ -9,9 +9,8 @@ class sendAlertTask extends sfBaseTask
     $this->briefDescription = 'send alerts';
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
-    $this->addOption('verbose', null, sfCommandOption::PARAMETER_OPTIONAL, 'verbose (yes or no)', 'no');
   }
-
+ 
   protected static $period = array('HOUR' => 3600, 'DAY' => 86400, 'WEEK' => 604800, 'MONTH' => 2592000);
 
   protected function execute($arguments = array(), $options = array())
@@ -20,15 +19,12 @@ class sendAlertTask extends sfBaseTask
     $manager = new sfDatabaseManager($this->configuration);
     $context = sfContext::createInstance($this->configuration);
     $this->configuration->loadHelpers(array('Partial', 'Url'));
-    $verbose = ($options['verbose'] == 'yes');
-    $bad_sections = Doctrine_Query::create()->select('id')->from('Section')->where('titre IS NULL OR titre LIKE "Ordre du jour%"')->fetchArray();
-    $exclude_sections = array_map(function($v){ return '-id:Section/'.$v['id']; }, $bad_sections);
+    
     $solr = new SolrConnector();
     $query = Doctrine::getTable('Alerte')->createQuery('a')->where('next_mail < NOW() OR next_mail IS NULL')->andWhere('confirmed = 1');
     foreach($query->execute() as $alerte) if (preg_match("/\w@\w/", $alerte->email)) {
-      $currenttime = time();
       $date = strtotime(preg_replace('/ /', 'T', $alerte->last_mail)."Z")+1;
-      $query = '('.$alerte->query.") ".join(" ", $exclude_sections)." date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d', $currenttime).'T'.date('H:i:s', $currenttime)."Z]";
+      $query = '('.$alerte->query.") date:[".date('Y-m-d', $date).'T'.date('H:i:s', $date)."Z TO ".date('Y-m-d').'T'.date('H:i:s')."Z]";
       foreach (explode('&', $alerte->filter) as $filtre)
         if (preg_match('/^([^=]+)=(.*)$/', $filtre, $match))
           foreach (explode(',', $match[2]) as $value) {
@@ -36,18 +32,14 @@ class sendAlertTask extends sfBaseTask
               $query .= ' '.$match[1].':'.preg_replace('/=(.*)$/', '="$1"', $match[2]);
             else $query .= ' '.$match[1].':"'.$match[2].'"';
           }
-      if ($verbose) {
-	print "LOG: query for alerte ".$alerte->id." to ".$alerte->email.": $query\n";
-      }
       $results = $solr->search($query, array('sort' => 'date desc', 'hl' => 'yes', 'hl.fragsize'=>500));
-      $alerte->next_mail = date('Y-m-d H:i:s', $currenttime + self::$period[$alerte->period]);
+      $alerte->next_mail = date('Y-m-d H:i:s', time() + self::$period[$alerte->period]);
       if (! $results['response']['numFound']) {
-      if ($verbose) print "Save with no new result\n";
 	$alerte->save();
 	continue;
       }
       echo "sending mail to : ".$alerte->email."\n";
-      $message = $this->getMailer()->compose(array('contact@regardscitoyens.org' => '"Regards Citoyens"'),
+      $message = $this->getMailer()->compose(array('contact@regardscitoyens.org' => '"Regards Citoyens"'), 
 					     $alerte->email,
 					     '[NosDeputes.fr] Alerte - '.$alerte->titre);
 
@@ -58,12 +50,11 @@ class sendAlertTask extends sfBaseTask
       try {
 	$this->getMailer()->send($message);
 	$alerte->last_mail = preg_replace('/T/', ' ', preg_replace('/Z/', '', $results['response']['docs'][0]['date']));
-      if ($verbose) print "Save with results\n";
 	$alerte->save();
       }catch(Exception $e) {
 	echo "ERROR: mail could not be sent ($text)\n";
       }
     }
   }
-
+  
 }

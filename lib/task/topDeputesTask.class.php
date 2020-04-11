@@ -122,21 +122,6 @@ class topDeputesTask extends sfBaseTask
     $this->executeMoyenneMois('hemicycle_interventions');
   }
 
-  protected function executeAmendementsProposes($q)
-  {
-    $parlementaires = $q->select('a.auteur_id, count(a.id)')
-      ->from('Amendement a, a.Auteur p')
-      ->groupBy('a.auteur_id')
-      ->andWhere('a.auteur_id != ?', 0)
-      ->andWhere('a.sort != ?', 'Rectifié')
-      ->andWhere('a.numero NOT LIKE ?', '%-%')
-      ->fetchArray();
-    foreach ($parlementaires as $p) {
-      $this->deputes[$p['auteur_id']]['amendements_proposes']['value'] = $p['count'];
-    }
-    $this->executeMoyenneMois('amendements_proposes');
-  }
-
   protected function executeAmendementsSignes($q)
   {
     $parlementaires = $q->select('p.id, count(a.id)')
@@ -252,7 +237,7 @@ class topDeputesTask extends sfBaseTask
       $this->deputes[$id]['semaines_presence']['value'] += 0;
       $this->deputes[$id]['questions_orales']['value'] += 0;
       $this->deputes[$id]['questions_ecrites']['value'] += 0;
-      $this->deputes[$id]['amendements_proposes']['value'] += 0;
+//      $this->deputes[$id]['amendements_rejetes']['value'] += 0;
       $this->deputes[$id]['amendements_signes']['value'] += 0;
       $this->deputes[$id]['amendements_adoptes']['value'] += 0;
       $this->deputes[$id]['rapports']['value'] += 0;
@@ -294,9 +279,9 @@ class topDeputesTask extends sfBaseTask
     $qa = clone $q;
     $qa->where('a.date >= ?', date('Y-m-d', strtotime($date)));
     $qa->andWhere('a.date < ?', date('Y-m-d', strtotime("$date +1month")));
-    $this->executeAmendementsProposes(clone $qa);
     $this->executeAmendementsSignes(clone $qa);
     $this->executeAmendementsAdoptes(clone $qa);
+//    $this->executeAmendementsRejetes(clone $qa);
 
     print "Amendements DONE\n";
 
@@ -332,8 +317,8 @@ class topDeputesTask extends sfBaseTask
       $this->executeMonth($arguments['month']);
       $globale = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$m[1].'_'.$m[2]);
       if (!$globale) {
-        $globale = new VariableGlobale();
-	      $globale->champ = 'stats_month_'.$m[1].'_'.$m[2];
+	$globale = new VariableGlobale();
+	$globale->champ = 'stats_month_'.$m[1].'_'.$m[2];
       }
       $globale->value = serialize($this->deputes);
       $globale->save();
@@ -359,10 +344,9 @@ class topDeputesTask extends sfBaseTask
       $q->where('fin_mandat IS NULL');
 
     $qs = clone $q;
-    if (!$fin) {
+    if (!$fin)
       $qs->andWhere('s.date > ?', date('Y-m-d', time()-60*60*24*365));
-      $qs->andWhere('(s.date > p.debut_mandat)');
-    }
+
 
     $this->executePresence(clone $qs);
     $this->orderDeputes('semaines_presence');
@@ -387,14 +371,14 @@ class topDeputesTask extends sfBaseTask
     $qa = clone $q;
     if (!$fin)
       $qa->andWhere('a.date > ?', date('Y-m-d', time()-60*60*24*365));
-    $this->executeAmendementsProposes(clone $qa);
-    $this->orderDeputes('amendements_proposes');
-
     $this->executeAmendementsSignes(clone $qa);
     $this->orderDeputes('amendements_signes');
 
     $this->executeAmendementsAdoptes(clone $qa);
     $this->orderDeputes('amendements_adoptes');
+
+//    $this->executeAmendementsRejetes(clone $qa);
+//    $this->orderDeputes('amendements_rejetes', 0);
 
     $qd = clone $q;
     if (!$fin)
@@ -422,21 +406,14 @@ class topDeputesTask extends sfBaseTask
     foreach(array_keys($this->deputes) as $id) {
       if ($this->deputes[$id]['groupe'] != "") {
         foreach(array_keys($this->deputes[$id]) as $key) {
-          if(is_array($this->deputes[$id][$key])) {
-  	         $groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
-	           $groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
-          }
+	  $groupes[$this->deputes[$id]['groupe']][$key]['somme'] += $this->deputes[$id][$key]['value'];
+	  $groupes[$this->deputes[$id]['groupe']][$key]['nb']++;
         }
       }
       unset($this->deputes[$id]['groupe']);
       $depute = Doctrine::getTable('Parlementaire')->find($id);
-      if ($depute) {
-        $depute->top = serialize($this->deputes[$id]);
-        $depute->save();
-      }else{
-        echo "ERREUR: député $id non trouvé\n";
-        var_dump($this->deputes[$id]);
-      }
+      $depute->top = serialize($this->deputes[$id]);
+      $depute->save();
     }
 
     $globale = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes');
@@ -481,11 +458,11 @@ class topDeputesTask extends sfBaseTask
 							 date('Y-m-d', strtotime($p->fin_mandat)), ));
 
 
-      $this->executeAmendementsProposes(clone $qa);
-
       $this->executeAmendementsSignes(clone $qa);
 
       $this->executeAmendementsAdoptes(clone $qa);
+
+//      $this->executeAmendementsRejetes(clone $qa);
 
       $qq = clone $q;
       $qq->andWhere('(q.date > ? AND q.date < ?)', array(date('Y-m-d', strtotime($p->debut_mandat)),

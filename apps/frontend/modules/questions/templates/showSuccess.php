@@ -8,10 +8,7 @@
   <div class="source"><a href="<?php echo $question->source; ?>">source</a></div>
   <div id="question">
     <h2>Question soumise le <?php echo myTools::displayDate($question->date) ?></h2>
-<?php if (!$question->reponse) {
-echo '<div class="alerte"><div class="mail"><h3 class="aligncenter">Être alerté lorsque cette<br>question aura une réponse</h3><table width="100%" style="text-align: center"><tbody><tr><td><a href="'.url_for('@alerte_question?num='.$question->numero).'"><img src="/images/xneth/email.png" alt="Email"></a><br><a href="'.url_for('@alerte_question?num='.$question->numero).'">par email</a></td><td></td></tr></tbody></table></div></div>';
-} ?>
-    <?php echo '<p>'.myTools::displayDate($question->question).'</p>'; ?>
+    <?php echo '<p>'.myTools::displayDate($question->question).'</p>' ?>
   </div>
   <div id="reponse">
     <?php if ($question->date_cloture && !$question->reponse && date("Y-m-d") > $question->date_cloture) {
@@ -28,9 +25,7 @@ echo '<div class="alerte"><div class="mail"><h3 class="aligncenter">Être alert�
       echo '</h2>';
       if ($question->reponse)
         echo '<p>'.myTools::escape_blanks($question->reponse).'</p>';
-      else {
-        echo '<p>Cette question n\'a pas encore de réponse.</p>';
-      }
+      else echo '<p>Cette question n\'a pas encore de réponse.</p>';
     } ?>
   </div>
 </div>

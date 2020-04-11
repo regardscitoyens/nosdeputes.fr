@@ -3,7 +3,6 @@ function link_tof($name, $parameters) { return sfProjectConfiguration::getActive
 <div id="sf_admin_container">
   <h1><?php echo link_to($orga->nom, '@commission?id='.$orga->id); ?> (<a href="<?php echo link_tof('list_parlementaires_organisme', array('slug' => $orga['slug'])); ?>">lien frontend</a>)</h1>
   <p style="text-align:center;"><a href="<?php echo url_for('@list_commissions'); ?>">Retour à la liste des commissions</a></p>
-  <p style="text-align:center;"><a href="#" onClick="toggleOK()">Hide/Show unproblematic séances</a></p>
   <div id="sf_admin_header"> </div>
   <div id="sf_admin_content">
     <?php if ($suppr == 2) {
@@ -33,37 +32,4 @@ function link_tof($name, $parameters) { return sfProjectConfiguration::getActive
   </div>
   <div id="sf_admin_footer"><br/></div>
 </div>
-<script type="text/javascript">
-function toggleOK(){
-  var past = "",
-    curr = "",
-    keep = {},
-    opts = {},
-    tmplist = [];
-  $("form tbody tr").each(function(a, b){
-    curr = $(b).attr("class");
-    if(past===curr) {
-      tmplist.push(a)
-      opts[$(b).find('[type="radio"]').attr("name").replace(/\d/g, "")] = 1;
-      if (opts.good && opts.bad) {
-        tmplist.forEach(function(c){
-          keep[c] = 1;
-        });
-      }
-    } else {
-      opts = {};
-      tmplist = [a];
-    }
-    past = curr
-  });
-  $("form tbody tr").each(function(a, b){
-    if (!keep[a]) {
-      if ($(b).is(':visible')) {
-        $(b).hide();
-      } else {
-        $(b).show();
-      }
-    }
-  });
-}
-</script>
+

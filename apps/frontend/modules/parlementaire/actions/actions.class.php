@@ -19,7 +19,7 @@ class parlementaireActions extends sfActions
     if (imageistruecolor($im)) {
       imagetruecolortopalette($im, false, 256);
     }
-
+    
     for ($c = 0; $c < imagecolorstotal($im); $c++) {
       $col = imagecolorsforindex($im, $c);
       $gray = round(0.299 * $col['red'] + 0.587 * $col['green'] + 0.114 * $col['blue']);
@@ -52,7 +52,7 @@ class parlementaireActions extends sfActions
     $file = tempnam(sys_get_temp_dir(), 'Parl');
     $photo = $parlementaire->photo;
     if (!strlen($photo)) {
-      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_depute.jpg', $file);
+      copy(sfConfig::get('sf_root_dir').'/web/images/xneth/avatar_depute.jpg', $file); 
     } else {
       $fh = fopen($file, 'w');
       fwrite($fh ,$photo);
@@ -76,7 +76,7 @@ class parlementaireActions extends sfActions
     else $width2 = $height*$ratio;
     $iorig = imagecreatefromjpeg($file);
     $ih = imagecreatetruecolor($work_height*$ratio, $work_height);
-    if (!$request->getParameter('color') && (($parlementaire->fin_mandat >= $parlementaire->debut_mandat && !myTools::isFinlegislature()) || preg_match('/décè/i', $parlementaire->getAnciensMandats())))
+    if (($parlementaire->fin_mandat >= $parlementaire->debut_mandat && !myTools::isFinlegislature()) || preg_match('/décè/i', $parlementaire->getAnciensMandats()))
       self::imagetograyscale($iorig);
     imagecopyresampled($ih, $iorig, 0, 0, max(0, ($width - $width2)/2), max(0, ($height - $height2)/2), $work_height*$ratio, $work_height, $width2, $height2);
     $width = $work_height*$ratio;
@@ -95,8 +95,8 @@ class parlementaireActions extends sfActions
       if ($groupe == 'GDR') {
 	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 45, 225, imagecolorallocate($ih, 0, 170, 0), IMG_ARC_EDGED);
 	imagefilledarc($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, 225, 45, imagecolorallocate($ih, 240, 0, 0), IMG_ARC_EDGED);
-      } else
-*/
+      } else 
+*/ 
       foreach (myTools::getGroupesInfos() as $gpe)
         if ($gpe[1] == $groupe && preg_match('/^(\d+),(\d+),(\d+)$/', $gpe[2], $match))
          imagefilledellipse($ih, $width-$rayon, $height-$rayon, $rayon, $rayon, imagecolorallocate($ih, $match[1], $match[2], $match[3]));
@@ -140,12 +140,7 @@ class parlementaireActions extends sfActions
     if (myTools::isLegislatureCloturee() && $this->parlementaire->url_nouveau_cpc)
       $this->response->addMeta('robots', 'noindex,follow');
     $this->response->addMeta('parlementaire_id', 'd'.$this->parlementaire->id);
-    $this->response->addMeta('parlementaire_id_url', str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).'id/'.'d'.$this->parlementaire->id);
-    $this->response->addMeta('twitter:card', 'summary_large_image');
-    $this->response->addMeta('twitter:title', "Toute l'activité parlementaire de ".$this->parlementaire->nom.' à l\'Assemblée Nationale');
-    $this->response->addMeta('twitter:description', "NosDéputés.fr propose de découvrir ce que ".$this->parlementaire->nom." fait à l'Assemblée Nationale à travers l'exploitation des documents parlementaires");
-    $this->response->addMeta('twitter:image', str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).$this->parlementaire->slug.'/preview');
-
+    $this->response->addMeta('parlementaire_id_url', 'http://www.nosdeputes.fr/id/'.'d'.$this->parlementaire->id);
 
     $this->commissions_permanentes = array();
     $this->missions = array();
@@ -159,26 +154,13 @@ class parlementaireActions extends sfActions
     }
   }
 
-  public function executePreview(sfWebRequest $request) {
-    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
-    $this->forward404Unless($this->parlementaire);
-
-    $this->getResponse()->setHttpHeader('content-type', 'image/png');
-    $this->setLayout(false);
-
-    $this->url  = sfConfig::get('app_manet_url') .'?url='. urlencode(str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).$this->parlementaire->slug);
-    $this->url .= "&format=jpg&clipRect=".urlencode("0,0,1060,555");
-
-  }
-
-
   public function executeId(sfWebRequest $request)
   {
     $format = $request->getParameter('format');
     if ($format)
 	$format = '/'.$format;
     $id = $request->getParameter('id');
-    if (preg_match('/^s/', $id)) $this->redirect(myTools::getProtocol()."://www.nossenateurs.fr/id/$id".$format);
+    if (preg_match('/^s/', $id)) $this->redirect("http://www.nossenateurs.fr/id/$id".$format);
     $id = preg_replace('/^d/', '', $id);
     $p = Doctrine::getTable('Parlementaire')->find($id);
     $this->forward404Unless($p);
@@ -265,16 +247,16 @@ class parlementaireActions extends sfActions
       if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
       else $this->parlementaires[$imp] = array($depute);
     }
-    $query = Doctrine::getTable('Parlementaire')->createQuery('p')
-      ->select('p.*')
-      ->where('p.groupe_acronyme = ?', strtoupper($acro))
-      ->andWhere('p.fin_mandat IS NOT NULL')
-      ->andWhere('p.fin_mandat > p.debut_mandat')
-      ->orderBy('p.nom_de_famille ASC');
-    foreach ($query->execute() as $depute) {
-      $this->total++;
-      if (isset($this->parlementaires[0])) $this->parlementaires[0][] = $depute;
-      else $this->parlementaires[0] = array($depute);
+    $query = Doctrine::getTable('Parlementaire')->createQuery('p') 
+      ->select('p.*') 
+      ->where('p.groupe_acronyme = ?', strtoupper($acro)) 
+      ->andWhere('p.fin_mandat IS NOT NULL') 
+      ->andWhere('p.fin_mandat > p.debut_mandat') 
+      ->orderBy('p.nom_de_famille ASC'); 
+    foreach ($query->execute() as $depute) { 
+      $this->total++; 
+      if (isset($this->parlementaires[0])) $this->parlementaires[0][] = $depute; 
+      else $this->parlementaires[0] = array($depute); 
     }
     $query2 = Doctrine::getTable('Organisme')->createQuery('o');
     $query2->where('o.nom = ?', $nom);
@@ -441,9 +423,7 @@ class parlementaireActions extends sfActions
       }
       if ($fin)
         $this->tops[$id][0]["nb_mois"] = $tops['nb_mois'];
-      if (!$fin && !isset($this->gpes[$p['groupe_acronyme']]))
-        continue;
-      if ($p['groupe_acronyme'] != "" && isset($this->gpes[$p['groupe_acronyme']]))
+      if (isset($this->gpes[$p['groupe_acronyme']]) && $p['groupe_acronyme'] != "")
         $this->gpes[$p['groupe_acronyme']][0]['nb']++;
       foreach(array_keys($tops) as $key) {
         if ($key == "nb_mois")
@@ -457,7 +437,7 @@ class parlementaireActions extends sfActions
 	  $this->tops[$id][$i]['style'] = ' style="color:green;font-weight:bold;" ';
 	else if ($tops[$key]['rank'] > 577 - 151)
 	  $this->tops[$id][$i]['style'] = ' style="color:red;font-style:italic;" ';
-        if ($p['groupe_acronyme'] != "" && isset($this->gpes[$p['groupe_acronyme']])) {
+        if ($p['groupe_acronyme'] != "") {
           if (!isset($this->gpes[$p['groupe_acronyme']][$i]))
             $this->gpes[$p['groupe_acronyme']][$i] = 0;
           $this->gpes[$p['groupe_acronyme']][$i] += $tops[$key]['value'];
@@ -502,7 +482,7 @@ class parlementaireActions extends sfActions
     if (!$request->getParameter('Document')) {
       $request->setParameter('query', 'tag:"Parlementaire='.$this->parlementaire.'"');
       $request->setParameter('title', preg_replace('/%/', $this->parlementaire->nom, $request->getParameter('title')));
-
+      
       if ($o = $request->getParameter('object_type'))
 	$request->setParameter('query', $request->getParameter('query').' object_type='.$o);
       $request->setParameter('format', 'rss');
@@ -514,29 +494,29 @@ class parlementaireActions extends sfActions
     $news = array();
     $elements = 0;
     if ($request->getParameter('Intervention')) {
-      $elements++;
+      $elements++;  
       foreach(Doctrine::getTable('Intervention')->createQuery('i')
 		->where('i.parlementaire_id = ?', $this->parlementaire->id)
 		->limit($this->limit)->orderBy('updated_at DESC')->execute()
-		as $n)
+		as $n) 
         $news[] = $n;
     }
     if ($request->getParameter('QuestionEcrite')) {
-      $elements++;
+      $elements++;  
       foreach(Doctrine::getTable('QuestionEcrite')->createQuery('q')
 	      ->where('q.parlementaire_id = ?', $this->parlementaire->id)
 	      ->limit($this->limit)->orderBy('updated_at DESC')->execute()
-	      as $n)
+	      as $n) 
 	$news[] = $n;
     }
     if ($request->getParameter('Amendement')) {
-      $elements++;
+      $elements++;  
       foreach(Doctrine::getTable('Amendement')->createQuery('a')
 	      ->leftJoin('a.ParlementaireAmendement pa')
 	      ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
               ->andWhere('a.sort <> ?', 'Rectifié')
               ->orderBy('updated_at DESC')->limit($this->limit)->execute()
-	      as $n)
+	      as $n) 
 	$news[] = $n;
     }
     if ($request->getParameter('Document')) {
@@ -556,7 +536,7 @@ class parlementaireActions extends sfActions
               as $n)
         $news[] = $n;
     }
-
+ 
     if ($elements > 1) usort($news, 'parlementaireActions::dateSort');
 
     $this->news = $news;
@@ -564,21 +544,10 @@ class parlementaireActions extends sfActions
   }
 
   public function executeError404(sfWebRequest $request) {
-    $prevHost = myTools::getPreviousHost();
-    $uri = $_SERVER["REQUEST_URI"];
-    if ($prevHost &&
-      (preg_match('/^\/(api|1\d)\//', $uri) || preg_match('/^\/[^\/]+$/', $uri) || preg_match('/^\/depute\/photo\//', $uri)) &&
-      !preg_match('/^\/'.myTools::getLegislature().'\//', $uri)
-    ) {
-      $this->response->setHttpHeader('Location', myTools::getProtocol()."://".$prevHost.$uri);
-      print myTools::getProtocol()."://".$prevHost.$uri;
-    } elseif (preg_match('#/(xml|json|csv)(\?.*)?$#', $uri, $match)) {
+    if (preg_match('#/(xml|json|csv)(\?.*)?$#', $_SERVER["REDIRECT_URL"], $match)) {
       $this->setLayout(false);
       $this->setTemplate($match[1], "api");
       $this->response->setStatusCode(200);
-    } else {
-      $this->response->setHttpHeader('Status', '404 Not found');
-      $this->response->setTitle("Erreur 404 - Page introuvable - NosDéputés.fr");
     }
   }
 
@@ -612,7 +581,7 @@ class parlementaireActions extends sfActions
   public function executeWidget(sfWebRequest $request) {
     $this->setLayout(false);
     $this->search = $request->getParameter('depute');
-    $this->internal = $request->getParameter('internal');
+    $this->internal = $request->getParameter('internal'); 
     $dep = $this->searchDepute($this->search);
     $this->parl = null;
     if (!$dep) return;

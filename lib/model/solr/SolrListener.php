@@ -41,7 +41,7 @@ class SolrListener extends Doctrine_Record_Listener
 	  }
 	  return $res;
 	}
-	if (is_object($f) && get_class($f) && ! isset($f->id) && ! $f->id)
+	if (is_object($f) && get_class($f) && ! $f->id)
 	  return array();
 	return array(strip_tags($f));
       }
@@ -99,7 +99,7 @@ class SolrListener extends Doctrine_Record_Listener
     // On donne un poids plus important au titre
     if (isset($this->_options['title']) && $t = $this->_options['title']) {
       $json['title']['content'] = $this->getObjFieldsValue($obj, $t);
-      $json['title']['weight'] =  2 * $extra_weight;
+      $json['title']['weight'] =  1.2 * $extra_weight;
     }
     
     // La description
@@ -143,7 +143,7 @@ class SolrListener extends Doctrine_Record_Listener
       }
     }
     
-    $json['tags']['weight'] = 1; //$extra_weight;
+    $json['tags']['weight'] = $extra_weight;
     
     SolrCommands::getInstance()->addCommand('UPDATE', $json);
   }

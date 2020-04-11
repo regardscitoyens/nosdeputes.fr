@@ -31,7 +31,7 @@ class Amendement extends BaseAmendement {
   }
 
   public function setAuteurs($auteurs) {
-    $debug=0;
+#$debug=1;
     $auteurs = html_entity_decode($auteurs, ENT_COMPAT, 'UTF-8');
     $groupe = null;
     $sexe = null;
@@ -60,7 +60,7 @@ class Amendement extends BaseAmendement {
         if ($debug) print "WARN: Skip auteur ".$depute." for ".$this->source."\n";
         continue;
       }
-      if (preg_match('/(membres| groupe |gouvernement|républicain|président|rapporteur|commission|délégation|questeur|apparentés|rattachés|collègues)/i', $depute)) {
+      if (preg_match('/(membres|gouvernement|républicain|président|rapporteur|commission|délégation|questeur|apparentés|rattachés|collègues)/i', $depute)) {
         if ($debug) print "WARN: Skip auteur ".$depute." for ".$this->source."\n";
         continue;
       } elseif (preg_match('/^\s*(M[Mmles]*)[\.\s]+(\w.*)\s*$/', $depute, $match)) {

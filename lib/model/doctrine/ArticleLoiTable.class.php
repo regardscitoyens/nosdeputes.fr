@@ -19,20 +19,7 @@ class ArticleLoiTable extends Doctrine_Table
     return $query->fetchOne();
   }
 
-  private static function getArticleTitreLoi($loi, $levels = array(0, 0, 0, 0)) {
-    $titreloi = $loi;
-    for ($i = 0; $i < 4; $i++) {
-      if ($levels[$i] != 0) {
-        $par = Doctrine::getTable('TitreLoi')->findLevelOrCreate($loi->texteloi_id, $i+1, $levels);
-        $par->nb_articles += 1;
-        $par->save();
-        $titreloi = $par;
-      } else return $titreloi;
-    }
-    return $titreloi;
-  }
-
-  public function findOrCreate($loi, $article, $levels = array(0, 0, 0, 0)) {
+  public function findOrCreate($loi, $article, $chapitre = 0, $section = 0) {
     $art = $this->findOneByLoiTitre($loi, $article);
     if (!$art) {
       $art = new ArticleLoi();
@@ -42,7 +29,21 @@ class ArticleLoiTable extends Doctrine_Table
       $loiobj = Doctrine::getTable('TitreLoi')->findLoiOrCreate($loi);
       $loiobj->nb_articles += 1;
       $loiobj->save();
-      $art->setTitreLoi(self::getArticleTitreLoi($loiobj, $levels));
+      if ($chapitre != 0) {
+        $chap = Doctrine::getTable('TitreLoi')->findChapitreOrCreate($loi, $chapitre);
+        $chap->nb_articles += 1;
+        $chap->save();
+        if ($section != 0) {
+          $sec = Doctrine::getTable('TitreLoi')->findSectionOrCreate($loi, $chapitre, $section);
+          $sec->nb_articles++;
+          $art->setTitreLoi($sec);
+          $sec->save();
+        } else {
+          $art->setTitreLoi($chap);
+        }
+      } else {
+        $art->setTitreLoi($loiobj);
+      }
       $art->save();
     }
     return $art;

@@ -3,8 +3,6 @@ all:
   lifetime: 86400
 show:
   enabled: false
-listSeancesByLoi:
-  enabled: false
 _pagerInterventions:
   enabled: false
 _parlementaireIntervention:

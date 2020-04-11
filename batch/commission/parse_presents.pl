@@ -45,16 +45,10 @@ $mois{'décembre'} = '12';
 $cpt = 0;
 sub checkout {
     if ($#presents <= 0) {
-	print STDERR "$url: Pas de présent trouvé\n";
+	print STDERR "$source: Pas de présent trouvé\n";
 	return ;
     }
     $commission =~ s/"//g;
-    if ($commission =~/^\s*Mission d'information\s*$/i && $commission_meta) {
-        $commission = $commission_meta;
-    }
-    if (!$date) {
-        $date = $tmpdate;
-    }
     foreach $depute (@presents) {
 	$depute =~ s/[\/<\|]//g;
 	$depute =~ s/^\s*M[me\.]+\s+//;
@@ -74,7 +68,6 @@ $majIntervenant = 0;
 $body = 0;
 $present = 0;
 $string =~ s/<br>\n//gi;
-$string =~ s/(<\/h\d+>)/\1\n/gi;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
 #on vire les paragraphes contenus et on didascalise
@@ -82,26 +75,12 @@ $string =~ s/(<\/h\d+>)/\1\n/gi;
 
 $string =~ s/<\/?ul>//gi;
 
-if ($string =~ />Réunion du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)(?:\s+à\s+(\d+)\s*h(?:eure)?s?\s*(\d*))\.?</) {
-  $tmpdate = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
-  $heure = sprintf("%02d:%02d", $5, $6 || '00');
-}
-
-if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([^\.]*)\./i) {
-  $heure = $heure{$1}.':'.$heure{$2};
-}
-
 #print $string; exit;
 
 foreach $line (split /\n/, $string)
 {
     if ($line =~ /<body[^>]*>/) {
 	$body = 1;
-    }
-    if ($line =~ /<meta /) {
-        if($line =~ /name="NOMCOMMISSION" CONTENT="([^"]+)"/i) {
-            $commission_meta = $1;
-        }
     }
     next unless ($body);
     if ($line =~ /\<[a]/i) {
@@ -112,16 +91,16 @@ foreach $line (split /\n/, $string)
 	    if (!$commission && $test =~ /Commission|mission/) {
 		$test =~ s/ Les comptes rendus de la //;
 		$test =~ s/^ +//;
-		if ($test !~ /(spéciale|enquête)$/i) {
+		if ($test !~ /spéciale$/i) {
 			$commission = $test;
 		}
 	    }
 	}
     }
     if ($line =~ /<h[1-9]+/i) {
-	if (!$date && $line =~ /SOM(date|seance)|\"seance\"|h2/) {
+	if (!$date && $line =~ /SOMdate|\"seance\"|h2/) {
 	    if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
-	      if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d()!<>]+)\s+(\d\d+)/i) {
+	      if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)/i) {
 		$date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
 	      }
 	    }
@@ -129,8 +108,6 @@ foreach $line (split /\n/, $string)
 	    if ($line =~ /(\d+)\s*(h|heures?)\s*(\d*)/i) {
 		$heure = sprintf("%02d:%02d", $1, $3 || "00");
 	    }
-
-
 	}elsif(!$commission && $line =~ /groupe|commission|mission|délégation|office|comité/i) {
 	    if ($line =~ /[\>\|]\s*((Groupe|Com|Miss|Délé|Offic)[^\>\|]+)[\<\|]/) {
 		$commission = $1;

@@ -19,11 +19,6 @@ class commentaireActions extends sfActions
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');
     $this->follow_talk = $request->getParameter('follow_talk');
-
-    if (myTools::isCommentairesLocked()) {
-       $this->getUser()->setFlash('error', 'Pour raisons techniques, les commentaires sont momentanément désactivées.');
-       return $this->redirect($redirect_url[$this->type].$this->id);
-    }
     
     $values = $request->getParameter('commentaire');
     $this->commentaire = myTools::clearHtml($values['commentaire']);
@@ -69,15 +64,6 @@ class commentaireActions extends sfActions
 
     if ($isAuthenticated) {
       $citoyen_id = $this->getUser()->getAttribute('user_id');
-      $checkuser = Doctrine::getTable('Citoyen')->createQuery('c')
-        ->where('c.is_active = ?', true)
-        ->andWhere('c.slug = ?', $this->getUser()->getAttribute('slug'))
-        ->andWhere('c.activation_id is null')
-        ->fetchOne();
-      if (!$checkuser) {
-        $this->getUser()->setFlash('error', 'Ce compte a été désactivé');
-        return;
-      }
       $is_active = $this->getUser()->getAttribute('is_active');
     } else if ($values['nom'] && $values['email']) {
       $this->getUser()->setAttribute('partial', 'inscriptioncom');
@@ -100,13 +86,13 @@ class commentaireActions extends sfActions
 
   // On teste l'existence préalable du même commentaire
     if ($existing = Doctrine::getTable('Commentaire')->createQuery('c')
-      ->select('created_at, lien, id')
+      ->select('created_at')
       ->where('citoyen_id = ?', $this->getUser()->getAttribute('user_id'))
-      ->andWhere('commentaire LIKE ?', '%'.$this->commentaire.'%')
-      //->andWhere('object_type = ?', $this->type)
-      //->andWhere('object_id = ?', $this->id)
+      ->andWhere('commentaire LIKE ?', $this->commentaire)
+      ->andWhere('object_type = ?', $this->type)
+      ->andWhere('object_id = ?', $this->id)
       ->fetchArray()) {
-      $this->getUser()->setFlash('error', 'Vous avez déjà posté ce même commentaire <a href="'.url_for($existing[0]['lien']).'#commentaire_'.$existing[0]['id'].'">le '.myTools::displayShortDate($existing[0]['created_at']).'</a>.');
+      $this->getUser()->setFlash('error', 'Vous avez déjà posté ce même commentaire le '.myTools::displayShortDate($existing[0]['created_at']));
       return;
     }
 

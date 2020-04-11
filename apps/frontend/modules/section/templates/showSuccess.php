@@ -55,11 +55,11 @@ if ($subsection->id != $section->id) : ?>
       if (isset($doc['texteloi_id'])) {
         $doctitre = "N°$curid en débat sur NosDéputés.fr&nbsp;: ".strip_tags($doc['titre']);
         if ($doc['nb_commentaires'])
-          $doctitre .= ' (<span class="list_com">'.$doc['nb_commentaires']."&nbsp;commentaire";
+          $doctitre .= " (".$doc['nb_commentaires']."&nbsp;commentaire";
         if ($doc['nb_commentaires'] > 1)
           $doctitre .= "s";
         if ($doc['nb_commentaires'])
-          $doctitre .= "</span>)";
+          $doctitre .= ")";
         echo link_to($doctitre, '@loi?loi='.$doc['texteloi_id']);
       } else if (isset($doc['id'])) {
         $amendements = Texteloi::getAmdmts($doc['type'], $curid, 1);
@@ -95,12 +95,10 @@ if ($subsection->id != $section->id) : ?>
   echo '</ul></div>';
 } ?>
 <div class="seances_dossier">
-<h2>Les débats consacrés à ce dossier</h2>
+<h2>Toutes les séances consacrées à ce dossier</h2>
 <ul>
 <?php foreach($seances as $seance) : ?>
 <li><?php $subtitre = $seance->getTitre();
-if ($seance->type == "commission")
-  $subtitre = preg_replace('/([\' ])(lois|sociales|étrangères|finances|économie|culture|européennes).*$/', '\1\2', $seance->getTypeOrga())."&nbsp;: ".strtolower($subtitre);
   if ($seance->nb_commentaires > 0) {
     $subtitre .= ' (<span class="list_com">'.$seance->nb_commentaires.' commentaire';
     if ($seance->nb_commentaires > 1) $subtitre .= 's';

@@ -2,14 +2,10 @@
 $surtitre = "Graphes d'activité parlementaire";
 $fin = myTools::isFinLegislature();
 if ($fin) $test = 'legislature';
-else {
-  $test = 'lastyear';
-  $mois = min(12, floor((time() - strtotime($parlementaire->debut_mandat) ) / (60*60*24*30)));
-  $txtmois = ($mois < 2 ? " premier" : "s $mois ".($mois < 12 ? "prem" : "dern")."iers");
-}
+else $test = 'lastyear';
 if ($session == $test) {
  if ($fin) $titre = 'Sur toute la législature';
- else $titre = "Sur le$txtmois mois";
+ else $titre = 'Sur les 12 derniers mois';
 } else $titre = 'Sur la session '.preg_replace('/^(\d{4})/', '\\1-', $session);
 $sf_response->setTitle($surtitre.' de '.$parlementaire->nom.' '.strtolower($titre));
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $surtitre));
@@ -19,7 +15,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
   echo '<a href="'.url_for('@parlementaire_plot?slug='.$parlementaire->slug.'&time='.$test).'">';
   else echo '<b>';
   if ($fin) echo 'Toute la législature';
-  else echo "Le$txtmois mois";
+  else echo 'Les 12 derniers mois';
   if ($session != $test) echo '</a>';
   else echo '</b>';
   foreach ($sessions as $s) {
@@ -35,6 +31,6 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
 <?php echo include_component('plot', 'parlementaire', array('parlementaire' => $parlementaire, 'options' => array('plot' => 'all', 'questions' => 'true', 'session' => $session))); ?>
   <div class="explications" id="explications">
     <h2>Explications :</h2>
-    <?php //echo link_to("Présence en réunions de commission et séances d'hémicycle",'@parlementaire_presences?slug='.$parlementaire->getSlug()); ?>
+    <?php //echo link_to("Présence en séances de commission et d'hémicycle",'@parlementaire_presences?slug='.$parlementaire->getSlug()); ?>
     <p class="indent_guillemets"><a href="/faq">voir les questions fréquentes (rubrique FAQ)</a></p>
   </div>

@@ -25,7 +25,7 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   } else {
     $amdmt{'numero'} = (10000*$lettre+$num);
   }
-} elsif ($source =~ /(\d{2})\/amendements\/(TA\d+|\d{4})([A-Z])?\/?(AN|[A-Z_-]+\d*)?\/([A-Z]+)?(\d+)\./i) {
+} elsif ($source =~ /(\d{2})\/amendements\/(TA\d{1,3}|\d{4})([A-Z])?\/?(AN|[A-Z_-]+\d*)?\/([A-Z]+)?(\d+)\./i) {
   $amdmt{'legislature'} = $1;
   $amdmt{'loi'} = $2;
   $lettre = $3;
@@ -57,7 +57,6 @@ $string =~ s/<!--[^!]*!\[endif\]-->//g;
 $string =~ s/(&#8217;|’)/'/g;
 $string =~ s/&#339;/oe/g;
 $string =~ s/&#8211;/-/g;
-$string =~ s/&deg;/°/g;
 $string =~ s/&Eacute;/É/g;
 $string =~ s/&eacute;/é/g;
 $string =~ s/&Egrave;/È/g;
@@ -139,7 +138,7 @@ sub texte {
 sub sortseance {
     if ($line =~ /irrecevable/i) {
 	$amdmt{'sort'} = 'Irrecevable';
-    } elsif ($line =~ /retir.+(s.+ance|discussion|publication)/i) {
+    } elsif ($line =~ /retir.+(s.+ance|publication)/i) {
 	$amdmt{'sort'} = 'Retiré avant séance';
     } elsif ($line =~ /retiré/i) {
 	$amdmt{'sort'} = 'Retiré';
@@ -218,7 +217,7 @@ $string =~ s/<\/span><span>//ig;
 
 foreach $line (split /\n/, $string)
 {
-#print STDERR "TEST: $identiques / $presente / $texte / $line\n";
+#print "TEST: $identiques / $presente / $texte / $line\n";
   if ($line =~ /meta.*content=/) {
 	if ($line =~ /name="DATE_BADAGE"/i) {
 	    $line =~ s/^.*content="//i;
@@ -287,7 +286,7 @@ foreach $line (split /\n/, $string)
 	    }
 	} elsif ($line =~ /class="amdexpotexte"/i) {
 	    texte();
-	} elsif ($line =~ /amendements\s*identiques/i && $line !~ / adopt.*des\s*amendements\s*identiques/) {
+	} elsif ($line =~ /amendements\s*identiques/i) {
 	    $identiques = 1;
 	} elsif ($line =~ /\<div.*\>.*M[\.Mml]/ && !($line =~ /EXPOSE SOMMAIRE/i)) {
 	    if ($identiques == 1) {
@@ -320,7 +319,7 @@ foreach $line (split /\n/, $string)
         if ($amdmt{'texte'} || !$line =~ /article/i) {
             $texte = 2;
         }
-  } elsif ((!$amdt{'sort'} || $amdt{'sort'} == "") && ($line =~ /\<div.*id="sort"/i || $line =~ /retir.+ avant (publication|discussion|s.+ance)/i)) {
+  } elsif ((!$amdt{'sort'} || $amdt{'sort'} == "") && ($line =~ /\<div.*id="sort"/i || $line =~ /retir.+ avant (publication|s.+ance)/i)) {
 	sortseance();
   } elsif ($identiques == 1 && $line =~ /<p[^>]*style="[">]*text-align:.*>.*M[\.Mml]/i) {
 	identiques();
@@ -333,7 +332,7 @@ foreach $line (split /\n/, $string)
 	} else {
 	    texte();
 	}
-  } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le [Gg]ouvern)/ && $line !~ /( adopt.*des\s*amendements\s*identiques|rapport.*M[\.Mml])/) {
+  } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le [Gg]ouvern)/) {
 	auteurs();
   } elsif ($line =~ /<p style=".*text-indent:/i) {
         irrecevable();
@@ -367,10 +366,8 @@ $amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
 $amdmt{'auteurs'} =~ s/([a-z])\s+(M[\.Mml])/\1, \2/g;
 $amdmt{'auteurs'} =~ s/,\s*M[\s\.mle]+\s*,/,/g;
 $amdmt{'auteurs'} =~ s/\s*(,|et)?\s*les\s+[cC]ommissaires.*$//g;
-$amdmt{'auteurs'} =~ s/\s*,?\s*[rR]apporteur[^,]*?\([^)]*?\),\s*M/, M/g;
-$amdmt{'auteurs'} =~ s/\s*,?\s*[rR]apporteur[^,]*?\([^)]*?\)//g;
-$amdmt{'auteurs'} =~ s/\s*,?\s*[rR]apporteur[\s,a-zçéèêàôù\d\(\)\-'°]*?M(.+?)/, M\1/g;
-$amdmt{'auteurs'} =~ s/\s*,?\s*[rR]apporteur[\s,a-zçéèêàôù\d\(\)\-'°]*//gi;
+$amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêàôù\(\)\-']*M(.*)/, M\1/g;
+$amdmt{'auteurs'} =~ s/\s*[,]?\s*[rR]apporteur[\s,a-zéèêàôù\(\)\-']*//gi;
 $amdmt{'auteurs'} =~ s/(,\s*,|,+)/,/g;
 $amdmt{'auteurs'} =~ s/,+/,/g;
 $amdmt{'auteurs'} =~ s/^\s*,\s*//g;

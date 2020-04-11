@@ -28,7 +28,6 @@ class Alinea extends BaseAlinea
      "code de déontologie des architectes" => "LEGITEXT000006074232",
      "code de déontologie des professionnels de l'expertise comptable" => "LEGITEXT000006074510",
      "code disciplinaire et pénal de la marine marchande" => "LEGITEXT000006071188",
-     "code des transports" => "LEGITEXT000023086525",
      "code du domaine de l'état et des collectivités publiques applicable à la collectivité territoriale de mayotte" => "LEGITEXT000006074235",
      "code du domaine de l'état" => "LEGITEXT000006070208",
      "code du domaine public fluvial et de la navigation intérieure" => "LEGITEXT000006074237",
@@ -66,7 +65,6 @@ class Alinea extends BaseAlinea
      "code pénal" => "LEGITEXT000006070719",
      "code des pensions civiles et militaires de retraite" => "LEGITEXT000006070302",
      "code des pensions de retraite des marins français du commerce, de pêche ou de plaisance" => "LEGITEXT000006074066",
-     "code des pensions militaires d'invalidité et des victimes de guerre" => "LEGITEXT000006074068",
      "code des pensions militaires d'invalidité et des victimes de la guerre" => "LEGITEXT000006074068",
      "code des ports maritimes" => "LEGITEXT000006074233",
      "code des postes et des communications électroniques" => "LEGITEXT000006070987",
@@ -94,11 +92,9 @@ class Alinea extends BaseAlinea
     $texte = trim(preg_replace('/\s+/', ' ', $texte));
     foreach (self::$code_legif as $code => $legif) if (preg_match('/'.$code.'/', $texte)) {
       $this->ref_loi = $code;
-      if ($this->numero < 3)
-        return $code;
-      return $refcode;
+      return $code;
     }
-    if (preg_match('/((ordonnance|loi)\sn°\s?[\d\-]+\sdu\s\d+e?r?\s[a-zéû]+\s\d{4})/', $texte, $match)) {
+    if (preg_match('/(loi\sn°\s?[\d\-]+\sdu\s\d+e?r?\s[a-zéû]+\s\d{4})/', $texte, $match)) {
       $this->ref_loi = $match[1];
       return $match[1];
     }

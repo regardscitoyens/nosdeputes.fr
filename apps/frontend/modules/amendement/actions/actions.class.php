@@ -3,7 +3,7 @@
 class amendementActions extends sfActions
 {
   static $seuil_amdmts = 8;
-
+  
   public function executeShow(sfWebRequest $request)
   {
     $query = Doctrine::getTable('Amendement')->createquery('a')
@@ -20,17 +20,15 @@ class amendementActions extends sfActions
        $this->section = NULL;
      else $this->section = $section->getSection(1);
 
-     $this->identiques = Doctrine_Query::create()
-       ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
-       ->from('Amendement a')
+     $this->identiques = Doctrine::getTable('Amendement')->createQuery('a')
        ->where('content_md5 = ?', $this->amendement->content_md5)
-       ->orderBy('num')
+       ->orderBy('numero')
        ->execute();
 
      if (count($this->identiques) < 2) {
        $this->identiques = array();
      }
-
+     
      $this->seance = $this->amendement->getIntervention($this->amendement->numero);
      foreach($this->identiques as $a) {
        if ($this->seance)
@@ -39,14 +37,14 @@ class amendementActions extends sfActions
      }
 
      $this->sous_admts = Doctrine_Query::create()
-       ->select('a.id, a.numero, a.sort, CAST( a.numero AS SIGNED ) AS num')
+       ->select('a.id, a.numero, a.sort')
        ->from('Amendement a')
        ->where('a.sous_amendement_de = ?', $this->amendement->numero)
        ->andWhere('a.texteloi_id = ?', $this->amendement->texteloi_id)
        ->andWhere('a.sort <> ?', 'Rectifié')
-       ->orderBy('num')
+       ->orderBy('a.numero')
        ->fetchArray();
-
+   
      $this->titreloi = Doctrine::getTable('TitreLoi')->findLightLoi($this->amendement->texteloi_id);
      $this->loi = Doctrine::getTable('Texteloi')->findLoi($this->amendement->texteloi_id);
   }
@@ -60,19 +58,17 @@ class amendementActions extends sfActions
     if (myTools::isLegislatureCloturee() && $this->parlementaire->url_nouveau_cpc)
       $this->response->addMeta('robots', 'noindex,follow');
 
-    $this->amendements = Doctrine_Query::create()
-      ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
-      ->from('Amendement a')
+    $this->amendements = Doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('a.sort <> ?', 'Rectifié')
     //  ->andWhere('pa.numero_signataire <= ?', self::$seuil_amdmts)
-      ->orderBy('a.date DESC, a.texteloi_id DESC, num DESC');
+      ->orderBy('a.date DESC, a.texteloi_id DESC, a.numero DESC');
 
     $request->setParameter('rss', array(array('link' => '@parlementaire_amendements_rss?slug='.$this->parlementaire->slug, 'title'=>'Les derniers amendements de '.$this->parlementaire->nom.' en RSS')));
   }
 
-  public function executeParlementaireSection(sfWebRequest $request)
+  public function executeParlementaireSection(sfWebRequest $request) 
   {
     $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
     $this->forward404Unless($this->parlementaire);
@@ -88,16 +84,12 @@ class amendementActions extends sfActions
                                           'key' => 'numero',
                                           'return' => 'value'));
 
-    $this->qamendements = Doctrine_Query::create()
-      ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
-      ->from('Amendement a')
+    $this->qamendements = Doctrine::getTable('Amendement')->createQuery('a')
       ->leftJoin('a.ParlementaireAmendement pa')
       ->where('pa.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('a.sort <> ?', 'Rectifié')
-      ->orderBy('a.texteloi_id DESC, a.date DESC, num DESC');
-    if (count($lois))
-      $this->qamendements->andWhereIn('a.texteloi_id', $lois);
-    else $this->qamendements->andWhere('a.sort = "FALSE"');
+      ->andWhereIn('a.texteloi_id', $lois)
+      ->orderBy('a.texteloi_id DESC, a.date DESC, a.numero DESC');
   }
 
   public function executeSearch(sfWebRequest $request)
@@ -105,7 +97,7 @@ class amendementActions extends sfActions
     $this->mots = $request->getParameter('search');
     $mots = $this->mots;
     $mcle = array();
-
+    
     if (preg_match_all('/("[^"]+")/', $mots, $quotes)) {
       foreach(array_values($quotes[0]) as $q)
 	$mcle[] = '+'.$q;
@@ -128,7 +120,7 @@ class amendementActions extends sfActions
     $ids = array();
     foreach($search as $s)
       $ids[] = $s['id'];
-
+    
     $this->query = Doctrine::getTable('Amendement')->createQuery('a');
     if (count($ids))
       $this->query->whereIn('a.id', $ids);
@@ -157,7 +149,7 @@ class amendementActions extends sfActions
 
   public function executeFind(sfWebRequest $request)
   {
-    $this->lois = preg_split('/,/', $request->getParameter('loi'));
+    $this->lois = split(',', $request->getParameter('loi'));
     $amdt = $request->getParameter('numero');
     $this->forward404Unless(count($this->lois) && $amdt);
     if ($amdt == 'all' || $amdt == 'new' ) {
@@ -166,15 +158,14 @@ class amendementActions extends sfActions
         if (!$this->loi)
           $this->loi = Doctrine::getTable('Texteloi')->findLoi($this->lois[0]);
       }
-      $this->amendements_query = Doctrine_Query::create()
-        ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
-        ->from('Amendement a')
+      $this->amendements_query = Doctrine::getTable('Amendement')
+        ->createQuery('a')
         ->where('a.sort <> ?', 'Rectifié');
       for ($ct=0;$ct<count($this->lois);$ct++)
         $this->amendements_query->andWhere('a.texteloi_id = ?', $this->lois[$ct]);
       if ($amdt == 'new')
-        $this->amendements_query->orderBy('a.texteloi_id DESC, a.created_at DESC, num');
-      else $this->amendements_query->orderBy('a.texteloi_id DESC, num');
+        $this->amendements_query->orderBy('a.texteloi_id DESC, a.created_at DESC, a.source');
+      else $this->amendements_query->orderBy('a.texteloi_id DESC, a.source');
       return ;
     }
     $numeros = array();
@@ -194,21 +185,12 @@ class amendementActions extends sfActions
     }
     $amendements = array();
     foreach($this->lois as $loi) foreach($numeros as $numero) {
-      $query = Doctrine::getTable('Amendement')->createQuery()
-        ->where('numero = ?', $numero)
-        ->andWhere('texteloi_id = ?', $loi)
+      $query = PluginTagTable::getObjectTaggedWithQuery('Amendement', array('loi:amendement='.$numero));
+      $query->andWhere('texteloi_id = ?', $loi)
         ->andWhere('sort <> ?', 'Rectifié');
       $res = $query->execute();
       if (count($res)) foreach ($res as $amd) {
         $amendements[$amd->id] = $amd;
-      } else {
-        $query = PluginTagTable::getObjectTaggedWithQuery('Amendement', array('loi:amendement='.$numero));
-        $query->andWhere('texteloi_id = ?', $loi)
-        ->andWhere('sort <> ?', 'Rectifié');
-        $res = $query->execute();
-        if (count($res)) foreach ($res as $amd) {
-          $amendements[$amd->id] = $amd;
-        }
       }
     }
     if (count($amendements) == 1) {

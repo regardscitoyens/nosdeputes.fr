@@ -5,17 +5,6 @@
   <head>
     <?php include_http_metas() ?>
     <?php include_metas() ?>
-
-<!-- Facebook metas -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="NosDéputés.fr - Regards Citoyens" />
-    <meta property="og:site_name" content="NosDéputés.fr" />
-    <meta property="og:description" content="Observatoire citoyen de l'activité parlementaire à l'Assemblée nationale" />
-    <meta property="og:url" content="https://www.NosDéputés.fr" />
-    <meta property="og:locale" content="fr_FR" />
-    <meta property="og:image" content="http://www.regardscitoyens.org/wp-content/uploads/2009/10/logo_nosdeputes.png" />
-    <meta property="og:image:type" content="image/png" />
-
     <?php include_title() ?>
 <?php
     $rss = $sf_request->getParameter('rss');
@@ -23,23 +12,23 @@ if ($rss) {
   foreach($rss as $r) {
     echo '<link rel="alternate" type="application/rss+xml" title="'.$r['title'].'" href="'.url_for($r['link']).'"/>';
   }
-}
+ }
 $uri = strip_tags($_SERVER['REQUEST_URI']);
 $selectdepute = "";$selectcirco = "";$selectprof = ""; $selectinterv = "";$selectamdmt = "";$selectquestion = ""; $selectcitoyen = '';
 if ( preg_match('/\/circonscription[\/\?]/', $uri))
   $selectcirco = ' selected="selected"';
-else  if ( preg_match('/\/profession[\/\?]/', $uri))
-  $selectprof = ' selected="selected"';
-else if ( preg_match('/\/(interventions?|seance|dossiers?)[\/\?]/',$uri))
-  $selectinterv = ' selected="selected"';
-else if ( preg_match('/\/amendements?[\/\?]/', $uri))
-  $selectamdmt = ' selected="selected"';
-else if ( preg_match('/\/question[\/\?]/', $uri))
-  $selectquestion = ' selected="selected"';
-else if (preg_match('/(\/citoyens?[\/\?]?|\/compterendu|\/commentaires?)/', $uri))
-  $selectcitoyen = 1;
-else if ( !preg_match('/\/(faq|$)/i', $uri))
-  $selectdepute = ' selected="selected"';
+ else  if ( preg_match('/\/profession[\/\?]/', $uri))
+   $selectprof = ' selected="selected"';
+ else if ( preg_match('/\/(interventions?|seance|dossiers?)[\/\?]/',$uri))
+   $selectinterv = ' selected="selected"';
+ else if ( preg_match('/\/amendements?[\/\?]/', $uri))
+   $selectamdmt = ' selected="selected"';
+ else if ( preg_match('/\/question[\/\?]/', $uri))
+   $selectquestion = ' selected="selected"';
+ else if (preg_match('/(\/citoyens?[\/\?]?|\/compterendu|\/commentaires?)/', $uri))
+   $selectcitoyen = 1;
+ else if ( !preg_match('/\/(faq|$)/i', $uri))
+   $selectdepute = ' selected="selected"';
 
 $menu_depute = $selectquestion || $selectdepute || $selectprof || $selectcirco;
 $menu_dossier = $selectinterv || $selectamdmt;
@@ -48,7 +37,7 @@ $menu_citoyen = $selectcitoyen;
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="search" href="<?php echo $sf_request->getRelativeUrlRoot(); ?>/nosdeputesfr.xml" title="Rechercher sur NosDéputés.fr" type="application/opensearchdescription+xml" />
     <?php echo stylesheet_tag($style.'/jquery-ui-1.8.5.custom.css'); ?>
-    <?php echo stylesheet_tag($style.'/style.v.'.trim(file_get_contents("../.git/ORIG_HEAD")).'.css'); ?>
+    <?php echo stylesheet_tag($style.'/style.v.2812.css'); ?>
     <?php echo stylesheet_tag($style.'/print', array('media' => 'print')); ?>
     <!--[if lte IE 6]>
       <?php echo stylesheet_tag($style.'/ie6'); ?>
@@ -58,89 +47,82 @@ $menu_citoyen = $selectcitoyen;
       </style>
     <![endif]-->
     <?php include_partial('parlementaire/cssCouleursGroupes'); ?>
-    <?php echo javascript_include_tag('jquery-1.8.3.min.js'); ?>
+    <?php echo javascript_include_tag('jquery-1.6.2.min.js'); ?>
     <?php echo javascript_include_tag('jquery-ui-1.8.5.custom.min.js'); ?>
-    <?php echo javascript_include_tag('fonctions.v.'.trim(file_get_contents("../.git/ORIG_HEAD")).'.js'); ?>
+    <?php echo javascript_include_tag('fonctions.js'); ?>
   </head>
   <body>
-    <div id="contenu">
+  <div id="contenu">
       <div id="top">
         <div class="initiative">
-          <a target="_blank" href="https://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);">Une initiative de RegardsCitoyens.org</a>
+          <a href="http://www.regardscitoyens.org/" onclick="return(window.open(this.href)?false:true);">Une initiative de RegardsCitoyens.org</a>
         </div>
-        <div id="connected" class="identification">
-          <p id="loggued_top">
-            <a href="/login">Se connecter</a> -
-            <a href="/login">Mon compte</a>
-          </p>
-        </div>
-        <script type="text/javascript"><!--
-$('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
-        --></script>
+<div id="connected" class="identification">
+<p id="loggued_top">
+<a href="/login">Se connecter</a> -
+<a href="/login">Mon compte</a>
+</p>
+</div>
+  <script type="text/javascript"><!--
+  $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
+--></script>
       </div>
       <div id="header">
-        <a style="float:left;" href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo_2012.png', array('id' => 'logo', 'alt' => 'NosDeput&eacute;s.fr')); ?></a>
-        <a style="float:right; margin-right: 55px; margin-top: 2px;" target="_blank" href="https://www.regardscitoyens.org/nous-aider/"><?php echo image_tag('contribuer.png', array('alt' => 'Nous soutenir')); ?></a>
+        <a style="float:left;" href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo_2007.png', array('id' => 'logo', 'alt' => 'NosDeput&eacute;s.fr')); ?></a>
+        <a style="float:right; margin-right: 55px; margin-top: 2px;" href="http://www.regardscitoyens.org/nous-aider/"><?php echo image_tag('contribuer.png', array('alt' => 'Nous soutenir')); ?></a>
       </div>
-      <div id="menu">
+        <div id="menu">
         <div class="menu_navigation">
-          <div id="item1"><a href="<?php echo url_for('@homepage'); ?>" title="Accueil"></a></div>
-            <div id="item2"><a <?php if ($menu_depute) echo 'class="selected" '; ?>href="<?php echo url_for('@list_parlementaires'); ?>"><span class="gris">Les</span> <span class="vert">D</span><span class="gris">&eacute;put&eacute;s</span></a></div>
-            <div id="item3"><a <?php if ($menu_dossier) echo 'class="selected" '; ?>href="<?php echo url_for('@sections?order=date')?>"><span class="gris">Les</span> <span class="orange">D</span><span class="gris">ossiers</span></a></div>
-            <div id="item4"><a <?php if ($menu_citoyen) echo 'class="selected" '; ?>href="<?php echo url_for('@list_citoyens?order=date')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
-            <div id="item5"><a title="Questions fréquemment posées" href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
-          </div>
-          <?php $search = strip_tags($sf_request->getParameter('query'));
-                $extraclass = '' ;
-                if (!$search) {$extraclass="examplevalue"; $search = "Rechercher un député, une ville, un mot, ...";} ?>
-          <div class="menu_recherche">
-            <form action="<?php echo url_for('@recherche_solr'); ?>" method="get">
-              <p>
-                <input class="rechercher<?php echo " ".$extraclass; ?>" name="search" type="text" size="25" value="<?php echo str_replace('"', '&quot;', $search); ?>"/>
-                <input title="Rechercher sur NosDéputés.fr" class="bouton_ok" value="" type="submit"/>
-              </p>
-            </form>
-          </div>
+            <div id="item1"><a href="<?php echo url_for('@homepage'); ?>" title="Accueil"></a></div>
+          <div id="item2"><a <?php if ($menu_depute) echo 'class="selected" '; ?>href="<?php echo url_for('@list_parlementaires'); ?>"><span class="gris">Les</span> <span class="vert">D</span><span class="gris">&eacute;put&eacute;s</span></a></div>
+          <div id="item3"><a <?php if ($menu_dossier) echo 'class="selected" '; ?>href="<?php echo url_for('@sections?order=date')?>"><span class="gris">Les</span> <span class="orange">D</span><span class="gris">ossiers</span></a></div>
+          <div id="item4"><a <?php if ($menu_citoyen) echo 'class="selected" '; ?>href="<?php echo url_for('@list_citoyens?order=date')?>"><span class="gris">Les</span> <span class="bleu">C</span><span class="gris">itoyens</span></a></div>
+          <div id="item5"><a title="Questions fréquemment posées" href="<?php echo url_for('@faq')?>"><span class="gris">FAQ</span></a></div>
         </div>
-        <div id="sous_menu">
-          <div id="sous_menu_1" style="display:<?php if ($menu_depute) echo 'block'; else echo 'none'; ?>">
-          <div class="elements_sous_menu">
-            <ul>
-              <li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@list_parlementaires_circo'); ?>">Par circonscription</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@parlementaires_tags'); ?>">Par mots clés</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@top_global'); ?>">Synthèse</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@parlementaire_random'); ?>">Au hasard</a></li>
-            </ul>
-          </div>
+        <?php $search = strip_tags($sf_request->getParameter('query'));
+              $extraclass = '' ;
+              if (!$search) {$extraclass="examplevalue"; $search = "Rechercher un député, une ville, un mot, ...";} ?>
+        <div class="menu_recherche">
+          <form action="<?php echo url_for('@recherche_solr'); ?>" method="get">
+            <p>
+              <input class="rechercher<?php echo " ".$extraclass; ?>" name="search" type="text" size="25" value="<?php echo str_replace('"', '&quot;', $search); ?>"/>
+              <input title="Rechercher sur NosDéputés.fr" class="bouton_ok" value="" type="submit"/>
+            </p>
+          </form>
+        </div>
+      </div>
+      <div id="sous_menu">
+        <div id="sous_menu_1" style="display:<?php if ($menu_depute) echo 'block'; else echo 'none'; ?>">
+        <div class="elements_sous_menu">
+          <ul>
+            <li><a href="<?php echo url_for('@list_parlementaires'); ?>">Par ordre alphabétique</a> <strong>|</strong></li>
+            <li><a href="<?php echo url_for('@list_parlementaires_circo'); ?>">Par circonscription</a> <strong>|</strong></li>
+            <li><a href="<?php echo url_for('@parlementaires_tags'); ?>">Par mots clés</a> <strong>|</strong></li>
+            <li><a href="<?php echo url_for('@top_global'); ?>">Synthèse</a> <strong>|</strong></li>
+            <li><a href="<?php echo url_for('@parlementaire_random'); ?>">Au hasard</a></li>
+          </ul>
+        </div>
         </div>
         <div id="sous_menu_2" style="display:<?php if ($menu_dossier) echo 'block'; else echo 'none'; ?>">
-          <div class="elements_sous_menu">
-            <ul>
-              <li><a href="<?php echo url_for('@sections?order=date'); ?>">Les derniers dossiers</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@sections?order=plus'); ?>">Les dossiers les plus discutés</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@sections?order=coms'); ?>">Les dossiers les plus commentés</a></li>
-            </ul>
-          </div>
+              <div class="elements_sous_menu">
+          <ul>
+            <li><a href="<?php echo url_for('@sections?order=date'); ?>">Les derniers dossiers</a> <strong>|</strong></li>
+            <li><a href="<?php echo url_for('@sections?order=plus'); ?>">Les dossiers les plus discutés</a> <strong>|</strong></li>
+            <li><a href="<?php echo url_for('@sections?order=coms'); ?>">Les dossiers les plus commentés</a></li>
+          </ul>
+        </div>
         </div>
 
         <div id="sous_menu_3" style="display:<?php if ($menu_citoyen) echo 'block'; else echo 'none'; ?>">
-          <div class="elements_sous_menu">
-            <ul>
-              <li><a href="<?php echo url_for('@list_citoyens?order=date'); ?>">Tous les citoyens</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@assister'); ?>">Assister aux débats</a></li>
-            </ul>
-          </div>
-  	    </div>
-        <?php if (myTools::hasAnnounce()) : ?>
-  	    <div id="announce"><h2><a target="_blank" href="<?php echo myTools::getAnnounceLink(); ?>"><?php echo myTools::getAnnounceText(); ?> : <span>Cliquez ici !</span></a></h2></div>
-        <script type="text/javascript">
-$(document).ready(function() {
-  $('#announce').delay(1500).fadeIn('slow');
-});
-        </script>
-        <?php endif ?>
+              <div class="elements_sous_menu">
+          <ul>
+            <li><a href="<?php echo url_for('@list_citoyens?order=date'); ?>">Tous les citoyens</a> <strong>|</strong></li>
+            <li><a href="<?php echo url_for('@commentaires'); ?>">Les derniers commentaires</a> <strong>|</strong></li>
+            <li><a href="<?php echo url_for('@assister'); ?>">Assister aux débats</a></li>
+          </ul>
+        </div>
+	</div>
+	     <div style="text-align: center; margin-top: 27px;"><h2><a href="http://2012.nosdeputes.fr/deputes">Découvrez vos députés de la 14<sup>ème</sup> législature !</a></h2></div>
       </div>
       <div id="corps_page">
         <div class="contenu_page">
@@ -174,43 +156,22 @@ $(document).ready(function() {
           </span>
         </div>
         <div class="regardscitoyens">
-		  <a target="_blank" href="https://www.regardscitoyens.org"><span class="RC">R</span>egards<span class="RC">C</span><span style="color: #C1272D;">i</span>toyens.org</a>
+		<a href="http://www.regardscitoyens.org"><span class="RC">R</span>egards<span class="RC">C</span><span style="color: #C1272D;">i</span>toyens.org</a>
 		</div>
       </div>
     </div>
-  </body>
-
-<?php $analytics = myTools::getAnalytics();
-if ($analytics) :?>
-  <script type="text/javascript">
-// Google Analytics
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-ga('create', '<?php echo $analytics; ?>', 'auto');
-ga('send', 'pageview');
+<script type="text/javascript">
+// Google
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10423931-2']);
+  _gaq.push (['_gat._anonymizeIp']);
+  _gaq.push(['_setDomainName', 'nosdeputes.fr']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
 </script>
-<?php endif; ?>
-
-<?php $piwik = myTools::getPiwik();
-if ($piwik["domain"] && $piwik["id"]) :?>
-  <script type="text/javascript">
-// Piwik
-var _paq = _paq || [];
-_paq.push(["setDocumentTitle", document.domain + "/" + document.title]);
-_paq.push(["setCookieDomain", "*.nosdeputes.fr"]);
-_paq.push(['trackPageView']);
-_paq.push(['enableLinkTracking']);
-(function() {
-  var u="//<?php echo $piwik["domain"]; ?>/";
-  _paq.push(['setTrackerUrl', u+'piwik.php']);
-  _paq.push(['setSiteId', '<?php echo $piwik["id"]; ?>']);
-  var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
-  g.type='text/javascript'; g.async=true; g.defer=true; g.src=u+'piwik.js'; s.parentNode.insertBefore(g,s);
-})();
-  </script>
-  <noscript><p style="height:0; margin:0"><img src="//<?php echo $piwik["domain"]; ?>/piwik.php?idsite=<?php echo $piwik["id"]; ?>&rec=1" style="border:0; height:0" alt="" /></p></noscript>
-<?php endif;?>
-
+  </body>
 </html>

@@ -16,12 +16,10 @@ if ($typeorganisme) {
 $a->get($url);
 $html = $a->content;
 utf8::encode($html);
-$html =~ s/<strong>/<b>/g;
-$html =~ s/<\/strong>/<\/b>/g;
 $html =~ s/’/'/g;
 $html =~ s/(\n|<br>)/ /gi;
 $html =~ s/\r//g;
-$html =~ s/<\!--[^-]*-->//g;
+$html =~ s/<\!--.*-->//g;
 $html =~ s/<span[^>]*font-weight:\s*\d\d+[^>]*>(.*?)<\/span>/<b>\1<\/b>/ig;
 $html =~ s/<\/[^ab][^>]*>//gi;
 $html =~ s/<[^ba\/][^ba>][^>]*>//gi;
@@ -54,7 +52,6 @@ sub findDate($) {
 	while(/\D+(\d+)[^\d<>]+(janvier|f[^v ]*vrier|mars|avril|mai|juin|juillet|ao[^t ]*t|septembre|octobre|novembre|d[^c ]*cembre)/gi) {
 		$jours[$cpt] = $1;
 		$mois[$cpt--] = $2;
-		last if ($cpt < 0);
 	}
 	if ($cpt > -1) {
 		$fin = $jours[0] = $jours[1];

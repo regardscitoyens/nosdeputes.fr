@@ -3,7 +3,7 @@ $abs = '';
 $serv = '';
 if (isset($absolute) && $absolute) {
   $abs = 'absolute=true';
-  $serv = myTools::getProtocol().'://'.$_SERVER['SERVER_NAME'];
+  $serv = 'http://'.$_SERVER['SERVER_NAME'];
 }
 if (!isset($target))
   $target = '';
@@ -12,7 +12,7 @@ $titres = array('semaines_presence' => 'Semaines d\'activité',
 	       'commission_interventions'=> 'Interventions en commission',
 	       'hemicycle_interventions'=>'Interventions longues en hémicycle',
 	        //             'hemicycle_interventions_courtes'=>'Interventions courtes en hémicycle',
-	       'amendements_proposes' => 'Amendements proposés',
+	       'amendements_signes' => 'Amendements signés',
 		//	       'amendements_adoptes'=>'Amendements adoptés',
 		//	       'amendements_rejetes' => 'Amendements rejetés',
                'rapports' => 'Rapports écrits',
@@ -26,7 +26,7 @@ $images = array('semaines_presence' => 'ico_sem_%s.png',
 	       'commission_interventions'=> 'ico_com_inter_%s.png',
 	       'hemicycle_interventions'=>'ico_inter_hem_long_%s.png',
 		//	       'hemicycle_interventions_courtes'=>'ico_inter_hem_court_%s.png',
-	       'amendements_proposes' => 'ico_amendmt_sign_%s.png',
+	       'amendements_signes' => 'ico_amendmt_sign_%s.png',
 		//	       'amendements_adoptes'=>'ico_amendmt_ado_%s.png',
 		//	       'amendements_rejetes' => 'ico_amendmt_ref_%s.png',
                'rapports' => 'ico_rap_%s.png',
@@ -39,14 +39,13 @@ $sort = array('semaines_presence' => '1',
 	       'commission_interventions'=> '3',
 	       'hemicycle_interventions'=>'4',
 	       'hemicycle_interventions_courtes'=>'5',
-	       'amendements_proposes' => '6',
-	       'amendements_signes' => '7',
-	       'amendements_adoptes'=>'8',
-	       'rapports' => '9',
- 	       'propositions_ecrites' => '10',
-           'propositions_signees' => '11',
-	       'questions_ecrites' => '12',
-	       'questions_orales' => '13');
+	       'amendements_signes' => '6',
+	       'amendements_adoptes'=>'7',
+	       'rapports' => '8',
+ 	       'propositions_ecrites' => '9',
+               'propositions_signees' => '10',
+	       'questions_ecrites' => '11',
+	       'questions_orales' => '12');
 $couleur2style = array('vert' => ' style="color: green;font-weight:bold;"',
 	       'gris' => ' style="font-weight:bold;"',
 	       'rouge' => ' style="color: red;font-style:italic;"');
@@ -66,8 +65,6 @@ if (myTools::isFinLegislature()) {
     else echo $mois;
     echo ' mois de mandat)</small> :</h3>';
     $rank = 0;
-    if ($mois > 10 || ($mois > 2 && time() - strtotime(myTools::getDebutLegislature()) < 60*60*24*310))
-      $rank = 1;
   }else {
     echo '<h3>Activité <small>(12 derniers mois)</small> :</h3>';
     $rank = 1;
@@ -76,7 +73,7 @@ if (myTools::isFinLegislature()) {
   $rank = 0;
   $weeks = (strtotime($parlementaire->fin_mandat) - strtotime($parlementaire->debut_mandat))/(60*60*24*7);
   if ($weeks > 52) $temps = sprintf('%d mois', $weeks/4.33);
-  else $temps = sprintf('%d semaine%s', $weeks, ($weeks >= 2 ? "s" : ""));
+  else $temps = sprintf('%d semaines', $weeks);
   echo '<h3>Activité sur '.$temps.' :</h3>';
  }
 }
@@ -93,7 +90,7 @@ foreach(array_keys($images) as $k) {
   $couleur = 'gris';
   $titre = $value.' '.$titres[$k];
   if ($value < 2) $titre = preg_replace('/s$/', '', str_replace('s ', ' ', $titre));
-  if ($rank && $top[$k]['rank'] <= 150 && $value) {
+  if ($rank && $top[$k]['rank'] <= 150) {
     $couleur = 'vert';
     $titre .=' (fait partie des 150 premiers)';
   }

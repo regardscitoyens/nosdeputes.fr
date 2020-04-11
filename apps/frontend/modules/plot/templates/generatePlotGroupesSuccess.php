@@ -13,8 +13,8 @@ if ($type === "home") {
 $ysize = $ydefsize + $yadd;
 $font = 8;
 
-if ($drawAction === "map") {
-  $Test = new xsPChart($xsize,$ysize);
+if ($drawAction === "map") {  
+  $Test = new xsPChart($xsize,$ysize);  
   $Test->getImageMap($mapId, TRUE);
 }
 
@@ -55,8 +55,8 @@ if ($type === "all") {
   $Test->drawTitle(70,28,"Députés",50,50,50);
   $Test->drawTitle(130,28,"Commission",50,50,50);
   $Test->drawTitle(210,28,"Hémicycle interventions",50,50,50);
-  $Test->drawTitle(380,28,"Amendements",50,50,50);
-  $Test->drawTitle(490,28,"Propositions",50,50,50);
+  $Test->drawTitle(380,28,"Amendements",50,50,50); 
+  $Test->drawTitle(490,28,"Propositions",50,50,50); 
   $Test->drawTitle(600,28,"Questions",50,50,50);
   $Test->xsSetFontProperties("tahoma.ttf",$font+5);
 //  $Test->drawTitle(60,30,"Répartition de l'activité des députés sur les 12 derniers mois par groupe politique",25,25,25);

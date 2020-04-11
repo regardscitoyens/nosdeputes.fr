@@ -1,0 +1,23 @@
+th, td{padding: 0px;border: 0px}
+td{text-align: center;}
+td.n {text-align: left; padding-left: 10px;}
+.hl0 td.border {border-left: 3px solid #EEEEEE; }
+.hl1 td.border {border-left: 3px solid #BBBBBB; }
+.hl1 {padding: 0px; background-color: #EEEEEE; }
+th.n{border-left: 2px solid #FFFFFF; padding-left: 10px;}
+.n{width: 170px;}
+.p{width: 120px;}
+.r{width: 110px;}
+.e{width: 90px;}
+.l{width: 50px;}
+table {border-collapse:collapse;}
+td,th{border-left: 1px solid #EEFFEE; padding:5px;}
+h2{text-align: center; margin-top: 20px; margin-bottom: 20px;}
+.etude{margin: auto; width: 610px}
+.etude a, .etude a:visited, .etude a:link{text-decoration: underline;}
+.table_plus{margin: 10px;}
+table.stats td, table.stats th{border: 1px solid #BBBBBB}
+table.stats th.empty{border: 0px}
+li{margin-left:-20px;}
+.etude p{text-align:justify;"}
+

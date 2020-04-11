@@ -66,7 +66,7 @@ ON qe.parlementaire_id = pa.id;');
 
 exec('mysqldump '.$var['MYSQLID'].' '.$DBNAME.' '.$DBTABLE.' | gzip -v > '.$DEST.'/nosdeputes.fr/'.$DBTABLE.'.sql.gz');
 exec('mkdir -p /tmp/'.$DBTABLE);
-exec('mysqldump '.$var['MYSQLID'].' '.$DBNAME.' '.$DBTABLE.' --tab=/tmp/'.$DBTABLE.' --fields-terminated-by="," --fields-enclosed-by="\""');
+exec('mysqldump '.$var['MYSQLID'].' '.$DBNAME.' '.$DBTABLE.' --tab=/tmp/'.$DBTABLE.' --fields-terminated-by="," --fields-enclosed-by="\"" --single-transaction');
 exec('echo "id,depute_slug,depute_nom,depute_sexe,depute_nom_circo,depute_num_circo,depute_debut_mandat,depute_fin_mandat,depute_place_hemicycle,depute_url_an,depute_profession,depute_groupe_acronyme,source,legislature,numero,date,date_cloture,ministere,themes,question,reponse,motif_retrait" > /tmp/'.$DBTABLE.'/'.$DBTABLE.'.csv');
 exec("sed 's/\\\N//g' /tmp/".$DBTABLE.'/'.$DBTABLE.'.txt >> /tmp/'.$DBTABLE.'/'.$DBTABLE.'.csv');
 exec('gzip -fv /tmp/'.$DBTABLE.'/'.$DBTABLE.'.csv');

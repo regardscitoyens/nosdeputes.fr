@@ -107,7 +107,7 @@ a:hover {
   font-size: 1.2em;
   font-weight: normal;
 }
-.solr h3, .alerte h3 {
+.solr h3 {
   text-align: left;
   font-size: 1.1em;
   font-weight: bold;
@@ -124,14 +124,16 @@ a:hover {
 .solr .options {
   float: right;
 }
-.solr .mail, .solr .facets, .alerte .mail {
+.solr .mail, .solr .facets {
   border:1px solid #E0E0DD;
-  margin:15px 3px 0px 15px;
-  padding: 0px 10px 10px 10px;
+  margin-top:15px;
+  margin-left:15px;
+  margin-right: 3px;
+  padding: 10px;
+  padding-top: 0;
   width:210px;
 }
-
-.solr .options h3, .alerte h3 {
+.solr .options h3 {
   text-align: center;
   padding: 3px;
 }
@@ -323,18 +325,17 @@ a:hover {
 .synthese td.p { width: 112px; }
 .synthese th.p { width: 122px; border-left: 13px solid #FFF; }
 .synthese .we { width: 70px; }
-.synthese .cp { width: 57px; }
-.synthese .ci { width: 57px; }
-.synthese .hl { width: 57px; }
-.synthese .hc { width: 57px; }
-.synthese .ap { width: 57px; }
-.synthese .as { width: 57px; }
-.synthese .aa { width: 57px; }
-.synthese .ra { width: 57px; }
-.synthese .pe { width: 57px; }
-.synthese .ps { width: 57px; }
-.synthese .qe { width: 57px; }
-.synthese .qo { width: 57px; }
+.synthese .cp { width: 63px; }
+.synthese .ci { width: 63px; }
+.synthese .hl { width: 63px; }
+.synthese .hc { width: 63px; }
+.synthese .as { width: 63px; }
+.synthese .aa { width: 63px; }
+.synthese .ra { width: 63px; }
+.synthese .pe { width: 63px; }
+.synthese .ps { width: 63px; }
+.synthese .qe { width: 63px; }
+.synthese .qo { width: 63px; }
 .tr_odd td { border-right: 1px #999999 solid; }
 .tr_odd td.qo { border-right: 0px #999999 solid; }
 
@@ -633,7 +634,7 @@ h1 {
 /* top - barre du haut */
 
 #top {
-  height: 29px;
+  height:29px;
   width: 1060px;
   background: url('images/top.png') no-repeat;
   overflow:hidden;
@@ -775,16 +776,6 @@ h1 {
   height:35px;
   background: url('images/menu.png') no-repeat;
   overflow:hidden;
-}
-
-#announce {
-  text-align: center;
-  margin-top: 25px;
-  display: none;
-}
-
-#announce span {
-  text-decoration: underline;
 }
 
 .menu_navigation {
@@ -1258,12 +1249,6 @@ h2 {
   margin-right: 7px;
   margin-bottom: 7px;
 }
-.intervenant p img {
-  float: none;
-  width: auto;
-  height: auto;
-  max-width: 850px;
-}
 .intervenant {
 
 }
@@ -1272,21 +1257,11 @@ h2 {
 }
 #carte_circo .carte_departement {
   float: right;
-/*
   margin-top: 10px;
   margin-right: 35px;
-*/
 }
 .didascalie {
   font-style: oblique;
-}
-.alineatexte table, .alineatexte td, .alineatexte tr, .alineatexte th, .didascalie table, .didascalie td, .didascalie tr, .didascalie th {
-  font-style: normal;
-  text-align: center;
-  margin: auto;
-}
-.didascalie th {
-  font-weight: bold;
 }
 
 /* form commentaires */
@@ -1303,7 +1278,7 @@ h2 {
   padding: 10px;
   border-bottom: 1px dashed #E8E7E4;
 }
-.inscription input, .connexion input { max-width: 320px; }
+.inscription input, .connexion input { width: 20em; }
 /* commentaires */
 .link_comment {
   height: 11px;
@@ -1315,10 +1290,6 @@ h2 {
   padding-top: 5px;
   clear:both;
   margin-bottom: 15px;
-}
-
-.commentaires .com_ajax textarea {
-  max-width: 840px;
 }
 .commentaire_avatar {
   float: left;
@@ -1351,22 +1322,13 @@ h2 {
 .commentaire span a:hover {
   text-decoration: underline;
 }
-.commentaires .com_link {
-  float: left;
-}
-
-.commentaires th {
-  max-width: 400px;
+.commentaires com_link {
+  float: right;
 }
 .source {
   float: right;
   margin-top: 0px;
   text-decoration: underline;
-}
-.question .alerte {
-  margin: -15px 0px 200px 5px;
-  text-align: center;
-  float: right;
 }
 .question,.loi p {
   text-align: justify;
@@ -1386,25 +1348,11 @@ h2 {
 .question p:first-letter {
   padding-left: 20px;
 }
-#reponse table {
-  min-width: 90%;
-  margin: 10px;
-  border-collapse: collapse;
-}
-#reponse th, #reponse td {
-  border: 1px solid darkgrey;
-}
-#reponse th {
-  background-color: #CCC;
-}
 .loi p:first-letter {
   padding-left: 20px;
 }
-.sommaireloi ul {
-  margin-bottom: 8px;
-}
-.sommaireloi li {
-  margin-top: 5px;
+.loi li {
+  margin-left: -15px;
 }
 .loi blockquote {
   margin-left: 8px;
@@ -1456,7 +1404,7 @@ h2 {
   font-size: 0.8em;
 }
 .alineatexte {
-  max-width: 870px;
+  width: 870px;
 }
 .alineatexte p:first-letter {
   padding-left: 0px;
@@ -1471,71 +1419,27 @@ h2 {
 .alineatexte .com_link {
   display: none;
   float: right;
-  margin-top: 10px;
-  margin-bottom: 3px;
-  margin-right: 18px;
+  margin-top: 13px;
+  margin-bottom: 0px;
+  margin-right: 25px;
   height: 11px;
 }
 .alineatexte .commentaires {
   margin-top: 22px;
   margin-left: 10px;
-  max-width: 850px;
-  clear: both;
-  margin: auto;
 }
 .com_ajax {
   margin-top: 30px;
 }
+.alineatexte .commentaires {
+  clear: both;
+  margin: auto;
+}
 .alineatexte .commentaire_avatar img {
   margin: 6px;
 }
-.loi #expose_court {
-  display: none;
-  text-align: center;
-  opacity: 0.8;
-}
-.loi #expose_complet {
-  display: show;
-}
 .loi, .sommaireloi {
   font-size: 12px;
-}
-.sommaireloi .level1 {
-  font-weight: bold;
-  font-size: 14px;
-}
-.sommaireloi .level2 {
-  font-weight: bold;
-  font-size: 13px;
-  color: #666;
-}
-.sommaireloi .level3 {
-  font-weight: normal;
-  font-size: 13px;
-  color: #333;
-}
-.sommaireloi .level4 {
-  font-weight: normal;
-  font-size: 13px;
-  color: #555;
-}
-.sommaireloi .articleloi {
-  font-weight: normal;
-  font-size: 12px;
-  color: #000;
-}
-.sommaireloi small {
-  font-weight: normal;
-  font-size: 11px;
-  color: #000;
-}
-.alineatexte small {
-  padding-left: 10px;
-}
-.alineatexte small small {
-  padding-left: 0;
-  font-size: 9px;
-  color: #000;
 }
 .loi .alineatexte .commentaire a {
   text-decoration: none;
@@ -1544,9 +1448,6 @@ h2 {
 .alineatexte:hover span {
   display: inline;
   font-weight: bold;
-}
-.alineatexte:hover .orange {
-  font-weight: normal;
 }
 .alineatexte .commentaire span {
   float: left;
@@ -1559,11 +1460,8 @@ h2 {
 .alineatexte .commentaire .clear {
   text-align: right;
 }
-.alineatexte .commentaires .com_link {
+.alineatexte .commentaires com_link {
   float: right;
-}
-.alineatexte .commentaires .com_link tr {
-  max-width: 830px;
 }
 .perso {
   font-weight: bold;
@@ -2011,19 +1909,12 @@ a:hover img {
   display: block;
 }
 .legal {
-  float: left;
-  position: relative;
-  top: 19px;
-  left: 18px;
+    float: left;
+    position: relative;
+    top: 19px;
+    left: 18px;
 }
-#licences {
-  float: left;
-}
-#legalinks {
-  float: left;
-  width: 740px;
-  text-align: center;
-}
+#legalinks {     top: 0px; left: 240px;    position: absolute;    width: 600px; }
 .floatright {
   float: right;
   margin: 10px;
@@ -2041,7 +1932,5 @@ a:hover img {
 #assister p:first-letter {
   padding-left: 10px;
 }
-
-#js_search_box {
-  float: right;
-}
+.vcard { float: left; width: 40%; margin-left: 4%; }
+.fn, .org { font-weight: bold; }

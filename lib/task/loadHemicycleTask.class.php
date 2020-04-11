@@ -24,7 +24,7 @@ class loadHemicyleTask extends sfBaseTask
 	  if (preg_match('/^\./', $file))
 	    continue;
 	  echo "$dir$file\n";
-      $debug = 1;
+          $debug = 1;
 	  $seance = 0;
 	  foreach(file($dir.$file) as $line) {
 	    $json = json_decode($line);
@@ -34,21 +34,20 @@ class loadHemicyleTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
-        $date = $json->date;
+            $date = $json->date;
 	    $id = md5($json->intervention.$json->date.$json->heure.'hemicyle'.$json->timestamp);
 	    $intervention = Doctrine::getTable('Intervention')->findOneByMd5($id);
 	    if ($seance && !$intervention) {
 	      $inter = Doctrine::getTable('Intervention')->findOneBySeanceTimestamp($seance, $json->timestamp);
 	      if ($inter) {
-            $res = similar_text($inter->getIntervention(), $json->intervention, $pc);
-            if ($res > 0 && $pc > 75) {
-              $intervention = $inter;
-              $intervention->setIntervention($json->intervention);
-              $intervention->md5 = $id;
-            }
-            echo "WARNING : Intervention en double trouvée : seance/".$seance."#inter_".$id."\n"; 
+		$res = similar_text($inter->getIntervention(), $json->intervention, $pc);
+	        if ($res > 0 && $pc > 75)
+	          $intervention = $inter;
+		  $intervention->setIntervention($json->intervention);
+		  $intervention->md5 = $id;
+		  echo "WARNING : Intervention en double trouvée : seance/".$seance."#inter_".$id."\n"; 
 	      }
-        }
+            }
 	    if(!$intervention) {
 	      $intervention = new Intervention();
 	      $intervention->md5 = $id;
@@ -65,8 +64,8 @@ class loadHemicyleTask extends sfBaseTask
 	    $lois = null;
 	    if (isset($json->numeros_loi))
 	      $lois = $json->numeros_loi;
-        if ($json->timestamp)
-          $debug = $intervention->setContexte($json->contexte, $json->date.$json->heure, $json->timestamp, $lois, $debug);
+            if ($json->timestamp)
+              $debug = $intervention->setContexte($json->contexte, $json->date.$json->heure, $json->timestamp, $lois, $debug);
 	    if (isset($json->amendements))
 	      $intervention->setAmendements($json->amendements);
 	    if ($json->intervenant) {
@@ -95,7 +94,7 @@ class loadHemicyleTask extends sfBaseTask
 	    $section->updateNbInterventions();
             $section->setMaxDate($date);
           }
-          if (isset($section) && $section) {
+          if ($section) {
 	    $section->free();
 	  }
 	  unset($sections);

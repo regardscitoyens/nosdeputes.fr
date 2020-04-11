@@ -51,8 +51,7 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function getNomPrenom() {
-    $PrNoPaNP = $this->getPrenomNomParticule();
-    return str_replace($PrNoPaNP[0].' ', '', $this->nom).', '.$PrNoPaNP[0];
+    return $this->getNomFamilleCorrect().", ".$this->getPrenom();
   }
 
   public function getNomFamilleCorrect() {
@@ -70,19 +69,6 @@ class Parlementaire extends BaseParlementaire
     $nom = substr($this->nom, $ct+1);
     $prenom = substr($this->nom, 0, strpos($this->nom, $nom));
     return preg_replace('/\s$/', '', $prenom);
-  }
-
-  public function getPrenomNomParticule() {
-    $prenom = $this->getPrenom();
-    $nom = str_replace($prenom.' ', '', $this->nom);
-    $part = "";
-    $nompart = $nom;
-    if (preg_match("/^(.*) (d('|u|e(s| l['a])?))$/i", $prenom, $match)) {
-      $prenom = $match[1];
-      $part = $match[2];
-      $nompart = $nom." (".$part.")";
-    }
-    return array($prenom, $nom, $part, $nompart);
   }
 
   public function getStatut($link = 0) {
@@ -138,7 +124,7 @@ class Parlementaire extends BaseParlementaire
     return $this->setPOrganisme('parlementaire', $array);
   }
   public function setExtras($array) {
-    return $this->setPOrganisme('extra', $array, 1);
+    return $this->setPOrganisme('extra', $array);
   }
   public function setGroupe($array) {
     return $this->setPOrganisme('groupe', $array);
@@ -147,14 +133,14 @@ class Parlementaire extends BaseParlementaire
     return $this->setPOrganisme('groupes', $array);
   }
 
-  public function setPOrganisme($type, $array, $loadEmpty = 0) {
-    if (!$array && !$loadEmpty)
+  public function setPOrganisme($type, $array) {
+    if (!$array)
       return;
     $orgas = $this->getParlementaireOrganismes();
     foreach($orgas->getKeys() as $key) {
       $o = $orgas->get($key);
       if ($o->type == $type)
-      $orgas->remove($key);
+	$orgas->remove($key);
     }
     foreach ($array as $args) {
       $orga = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($args[0], $type);
@@ -167,9 +153,9 @@ class Parlementaire extends BaseParlementaire
       $po->setFonction($fonction);
       $importance = ParlementaireOrganisme::defImportance($fonction);
       $po->setImportance($importance);
-  /*  if (isset($args[2])) {
-        $po->setDebutFonction($args[2]);
-      }*/
+  /*      if (isset($args[2])) {
+	$po->setDebutFonction($args[2]);
+	}*/
       $orgas->add($po);
     }
     $this->_set('ParlementaireOrganismes', $orgas);
@@ -188,8 +174,8 @@ class Parlementaire extends BaseParlementaire
           $po->setParlementaire($this);
           $po->setOrganisme($o);
           return $po;
-      }
-      $i++;
+	}
+	$i++;
       }
       return NULL;
     }
@@ -204,7 +190,7 @@ class Parlementaire extends BaseParlementaire
       return $po;
     foreach($this->getParlementaireOrganismes() as $po) {
       if ($po['Organisme']->nom == $str)
-        return $po;
+	return $po;
     }
   }
   public function setAutresMandats($array) {
@@ -234,14 +220,14 @@ class Parlementaire extends BaseParlementaire
       return $po;
     foreach($this->getParlementaireOrganismes() as $po) {
       if ($po->type === 'groupe')
-        return $po;
+	return $po;
     }
   }
   public function getExtras() {
     $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {
       if ($po->type == 'extra')
-        array_push($res, $po);
+	array_push($res, $po);
     }
     return $res;
   }
@@ -257,7 +243,7 @@ class Parlementaire extends BaseParlementaire
     $res = array();
     foreach($this->getParlementaireOrganismes() as $po) {
       if ($po->type == 'parlementaire')
-        $res[sprintf('%04d',abs(100-$po->importance)).$po->nom]=$po;
+	$res[sprintf('%04d',abs(100-$po->importance)).$po->nom]=$po;
     }
     ksort($res);
     return array_values($res);
@@ -366,7 +352,7 @@ class Parlementaire extends BaseParlementaire
      "Réunion" => "de la",
      "Rhône" => "du",
      "Saint-Pierre-et-Miquelon" => "de",
-     "Saint-Barthélemy et Saint-Martin" => "de",
+     "Saint-Barthélémy et Saint-Martin" => "de",
      "Saône-et-Loire" => "de",
      "Sarthe" => "de la",
      "Savoie" => "de",
@@ -377,7 +363,6 @@ class Parlementaire extends BaseParlementaire
      "Tarn" => "du",
      "Tarn-et-Garonne" => "du",
      "Territoire-de-Belfort" => "du",
-     "Territoire de Belfort" => "du",
      "Val-d'Oise" => "du",
      "Val-de-Marne" => "du",
      "Var" => "du",
@@ -498,12 +483,12 @@ class Parlementaire extends BaseParlementaire
       "974" => "Réunion",
       "975" => "Saint-Pierre-et-Miquelon",
       "976" => "Mayotte",
-      "977" => "Saint-Barthélemy et Saint-Martin",
+//      "977" => "Saint-Barthélémy et Saint-Martin",
       "986" => "Wallis-et-Futuna",
       "987" => "Polynésie Française",
-      "988" => "Nouvelle-Calédonie",
-     # "99"  => "Français établis hors de France",
-      "999"  => "Français établis hors de France");
+      "988" => "Nouvelle-Calédonie",);
+//      "99"  => "Français de l'étranger");
+
   public static function getNomDepartement($numero) {
     $numero = strtolower($numero);
     if ( isset(self::$dptmt_nom["$numero"]) ) return $nom = self::$dptmt_nom["$numero"];
@@ -541,8 +526,8 @@ class Parlementaire extends BaseParlementaire
       "eure" => "27",
       "eure-et-loir" => "28",
       "finistère" => "29",
-      "français établis hors de france" => "999",
-      "français-établis-hors-de-france" => "999",
+      "français établis hors de france" => "99",
+      "français-établis-hors-de-france" => "99",
       "gard" => "30",
       "haute-garonne" => "31",
       "gers" => "32",
@@ -615,8 +600,7 @@ class Parlementaire extends BaseParlementaire
       "réunion" => "974",
       "saint-pierre-et-miquelon" => "975",
       "mayotte" => "976",
-      "saint-barthélemy et saint-martin" => "977",
-      "saint-barthélemy-et-saint-martin" => "977",
+      "saint-barthélémy-et-saint-martin" => "977",
       "wallis-et-futuna" => "986",
       "polynésie française" => "987",
       "polynésie-française" => "987",
@@ -699,7 +683,7 @@ class Parlementaire extends BaseParlementaire
       $this->photo = null;
       $pphoto = doctrine::getTable('ParlementairePhoto')->find($this->id);
       if ($pphoto)
-        $this->photo = $pphoto->photo;
+	$this->photo = $pphoto->photo;
     }
     if (!$this->photo)
       return null;
@@ -717,12 +701,12 @@ class Parlementaire extends BaseParlementaire
   public function setPhoto($s) {
     if (preg_match('/http/', $s)) {
       $len = strlen($this->getInternalPhoto());
-      if ($len < 5200 || date('d') % 3 == 0) {
-        $s = @file_get_contents($s);
+      if ($len < 5200 || date('d') % 8 == 5) {
+	$s = file_get_contents($s);
       }else
-        return true;
+	return true;
       if (!$s)
-        return false;
+	return false;
     }
     $this->setInternalPhoto($s);
   }

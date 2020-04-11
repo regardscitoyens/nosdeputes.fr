@@ -65,7 +65,6 @@ class indexSolrTask extends sfBaseTask
     $manager = new sfDatabaseManager($this->configuration);
     $solr = new SolrConnector();
 
-
     if ($options['removeAll'] == 'yes') {
       $solr->deleteAll();
     }
@@ -85,12 +84,8 @@ class indexSolrTask extends sfBaseTask
       return;
     }
 
-    echo "Reindex all !!!\n";
-
     foreach(array("Parlementaire", "Organisme", "Section", "Intervention", "Amendement", "QuestionEcrite", "Citoyen", "Commentaire", "Texteloi") as $table) {
-      echo "reindex all $table\n";
       while (1) {
-	echo "new querry\n";
 	$q = Doctrine::getTable($table)
 	  ->createQuery('o')
 	  ->orderBy('o.id ASC');

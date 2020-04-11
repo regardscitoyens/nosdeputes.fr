@@ -8,7 +8,7 @@ if (!isset($multi)) {
 if (!isset($champs)) {
   $champs = $res[$champ];
  }
-foreach(array_keys($champs) as $key) 
+foreach(array_keys($champs) as $key)
 {
   echo "$key;";
 }

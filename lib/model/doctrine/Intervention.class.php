@@ -85,7 +85,7 @@ class Intervention extends BaseIntervention
   public function setPersonnaliteByNom($nom, $fonction = null)
   {
     $this->setFonction($fonction);
-    if (!preg_match('/^((premier )?ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux)/i', $fonction)) {
+    if (!preg_match('/ministre|secr[^t]+taire [^t]+tat|commissaire|garde des sceaux/i', $fonction)) {
       $personne = Doctrine::getTable('Parlementaire')->findOneByNom($nom);
       if (!$personne)
 	  $personne = Doctrine::getTable('Parlementaire')->findOneByNomDeFamille($nom);
@@ -118,18 +118,11 @@ class Intervention extends BaseIntervention
       $parlementaire->free();
     }
   }
-
   public function setPersonnalite($personne) {
     if (isset($personne->id)) {
       $this->_set('parlementaire_id', null);
       $this->_set('personnalite_id', $personne->id);
     }
-  }
-
-  public function setAsDidascalie() {
-    $this->_set('parlementaire_id', null);
-    $this->_set('personnalite_id', null);
-    $this->setFonction(null);
   }
 
   public function hasIntervenant() {
@@ -210,7 +203,7 @@ class Intervention extends BaseIntervention
           print "WARNING : Intervention $this->id has tags lois corresponding to multiple id_dossier_ans : ";
           foreach ($urls as $url)
             print $url['distinct']." ; ";
-          print " => Saving to section ".$this->Section."-".$this->Section->id."\n";
+          print " => Saving to section $this->Section->id\n";
           $debug = 0;
         }
         return $debug;
@@ -228,7 +221,7 @@ class Intervention extends BaseIntervention
             $this->setSection(Doctrine::getTable('Section')->findOneByContexteOrCreateIt($contexte, $date, $timestamp));
             if ($debug) {
               print "WARNING : Intervention $this->id has tags lois corresponding to another section $section2->id";
-              print " => Saving to section ".$this->Section."-".$this->Section->id."\n";
+              print " => Saving to section ".$this->Section->id."\n";
               $debug = 0;
             }
             return $debug;
@@ -270,18 +263,13 @@ class Intervention extends BaseIntervention
 
   public function setIntervention($s) {
     $this->_set('nb_mots', str_word_count($s));
-    return $this->_set('intervention', html_entity_decode($s));
+    return $this->_set('intervention', $s);
   }
 
   public function getIntervention($args = array()) {
     $inter = $this->_get('intervention');
     if ($this->type == 'loi' && isset($args['linkify_amendements']) && $linko = $args['linkify_amendements']) {
       $inter = preg_replace('/\(([^\)]+)\)/', '(<i>\\1</i>)', $inter);
-      if (preg_match('/<i>n[°os\s]*([\d,\set]+)<\/i>/', $inter, $match)) {
-        sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
-        foreach (explode(',', preg_replace('/\s+/', '', $match[1])) as $loi)
-          $inter = preg_replace('/'.$loi.'/', '<a href="'.url_for('@document?id='.$loi).'">'.$loi.'</a>', $inter);
-      }
       if (preg_match_all('/(amendements?[,\s]+(identiques?)?[,\s]*)((n[°os\s]*|\d+\s*|,\s*|à\s*|et\s*|rectifié\s*)+)/', $inter, $match)) {
 	$lois = implode(',', $this->getTags(array('is_triple' => true,
 						  'namespace' => 'loi',
@@ -301,6 +289,11 @@ class Intervention extends BaseIntervention
 	    $inter = preg_replace('/'.$match[1][$i].$match[3][$i].'/', $match[1][$i].$replace, $inter);
 	  }
 	}
+      }
+      if (preg_match('/<i>n[°os\s]*([\d,\set]+)<\/i>/', $inter, $match)) {
+        sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+        foreach (explode(',', preg_replace('/\s+/', '', $match[1])) as $loi)
+          $inter = preg_replace('/'.$loi.'/', '<a href="'.url_for('@document?id='.$loi).'">'.$loi.'</a>', $inter);
       }
     }
     return $inter;

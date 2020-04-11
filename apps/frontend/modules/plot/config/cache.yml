@@ -1,6 +1,3 @@
-_parlementaire:
-  enabled: true
-  lifetime: 86400
 _getGroupesData:
   enabled: true
   lifetime: 86400

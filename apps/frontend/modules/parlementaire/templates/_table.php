@@ -4,15 +4,15 @@ if (isset($list)) {
   if (!isset($colonnes))
     $colonnes = 3;
   if (isset($imp)) {
-    if (isset($deputes[0]->fonction)) {
-      $fonction = $deputes[0]->fonction;
-      foreach ($deputes as $depute) if ($depute->sexe === "H") {
-        $fonction = $depute->fonction;
-        break;
-      }
-    } else {
-      $pluriel = (count($deputes) > 1 ? "s" : "");
-      $fonction = "Ancien député";
+    if (isset($deputes[0]->fonction)) { 
+      $fonction = $deputes[0]->fonction; 
+      foreach ($deputes as $depute) if ($depute->sexe === "H") { 
+        $fonction = $depute->fonction; 
+        break; 
+      } 
+    } else { 
+      $pluriel = (count($deputes) > 1 ? "s" : ""); 
+      $fonction = "Ancien député"; 
     }
     echo '<h3 class="aligncenter">'.ucfirst(preg_replace('/d(u|e)s /', 'd\\1 ', (count($deputes) > 1 ? preg_replace('/(,)? /', 's\\1 ', (preg_match('/(spécial|général)/i', $fonction) ? preg_replace('/al$/', 'aux', $fonction) : $fonction)) : $fonction))).(count($deputes) > 1 && !preg_match('/(spécial|général|droit|bureau)$/i', $fonction) ? 's' : '').'</h3>';
   }
@@ -33,9 +33,9 @@ if (isset($list)) {
 }
 foreach($deputes as $depute) {
   $url_depute = url_for('@parlementaire?slug='.$depute->slug);
-  $ct++;
-  $id_circo = preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo); ?>
-  <div class="list_dep<?php if (isset($circo) && ($depute->fin_mandat == null || myTools::isFinLegislature())) echo ' dep_map dep'.$id_circo.'" id="'.sprintf('%03d', $depute->id).$id_circo; ?>" onclick="document.location='<?php echo $url_depute; ?>'"><span title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>" class="jstitle phototitle block"><a class="urlphoto" href="<?php echo $url_depute; ?>"></a>
+  $ct++; 
+  $id_circo = preg_replace('/^(\d[\dab])$/', '0\\1', strtolower(Parlementaire::getNumeroDepartement($depute->nom_circo))).'-'.sprintf('%02d', $depute->num_circo); ?> 
+  <div class="list_dep<?php if (isset($circo) && ($depute->fin_mandat == null || myTools::isFinLegislature())) echo ' dep_map dep'.$id_circo.'" id="'.sprintf('%03d', $depute->id).$id_circo; ?>" onclick="document.location='<?php echo $url_depute; ?>'"><span title="<?php echo $depute->nom.' -- '.$depute->getMoyenStatut(); ?>" class="jstitle phototitle block"><a class="urlphoto" href="<?php echo $url_depute; ?>"></a> 
     <span class="list_nom">
       <a href="<?php echo $url_depute; ?>"><?php echo $depute->getNomPrenom(); ?></a>
     </span>
@@ -49,10 +49,12 @@ foreach($deputes as $depute) {
       } else echo $depute->nom_circo;
     ?></a></span><br/>
     <span class="list_left">
-      <?php echo preg_replace('/\s([A-Z\-]+)$/', ' <a href="'.$url_depute.'"><span class="c_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
+      <?php echo preg_replace('/\s([A-Z]+)$/', ' <a href="'.$url_depute.'"><span class="c_'.strtolower($depute->getGroupeAcronyme()).'">'."\\1</span></a>", $depute->getStatut()); ?>
     </span>
     <span class="list_right"><?php
-      if ($depute->nb_commentaires) {
+      if (!$depute->nb_commentaires)
+        echo "0&nbsp;commentaire";
+      else {
         echo '<a href="'.$url_depute.'"><span class="list_com">'.$depute->nb_commentaires.'&nbsp;commentaire';
         if ($depute->nb_commentaires > 1) echo 's';
         echo '</span></a>';

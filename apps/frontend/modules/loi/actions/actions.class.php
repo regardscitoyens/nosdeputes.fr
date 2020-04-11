@@ -11,131 +11,179 @@
 class loiActions extends sfActions
 {
 
-  private function getAmendements($loi, $articles = 'all', $alineas = 0, $soussections = null) {
+  private function getAmendements($loi, $articles = 'all', $alineas = 0) {
     $amendements = array();
-    $admts = Doctrine_Query::create()
-      ->select('a.*, (sum(a.nb_multiples)-1) as identiques, CAST( a.numero AS SIGNED ) AS num')
-      ->from('Amendement a')
+    $admts = Doctrine::getTable('Amendement')->createquery('a')
       ->where('a.texteloi_id = ?', $loi)
       ->andWhere('a.sort <> ?', 'Rectifié')
-      ->groupBy('a.content_md5')
-      ->orderBy('a.content_md5, a.sort, num');
-    $sections_amdmt = array();
+      ->orderBy('a.numero');
     if ($articles != 'all') {
       $likestr = '';
       foreach ($articles as $article) {
-        if (!isset($sections_amdmt[$article->titre_loi_id]))
-	  $sections_amdmt[$article->titre_loi_id] = array();
-        $sections_amdmt[$article->titre_loi_id][strtolower($article->titre)] = 1;
-        $like = 'a.sujet LIKE "%art% '.preg_replace('/1.?er?/', 'premier', $article->titre).'%"';
-	if (preg_match("/(1.?er?|premier)(.*)$/i", $article->titre, $match))
-          $like .= ' OR a.sujet LIKE "titre" OR a.sujet LIKE "%art% 1e%"';
+        $like = 'a.sujet LIKE "%article '.preg_replace('/1.?er/', 'premier', $article->titre).'"';
         if ($likestr == '') $likestr = $like;
         else $likestr .= ' OR '.$like;
       }
-      if ($likestr != '') $admts->andWhere($likestr);
+      if (!$likestr === '') $admts->andWhere($likestr);
     }
     foreach ($admts->fetchArray() as $adt) {
-      $art = str_replace("È", "è", preg_replace('/premier/', '1er', strtolower($adt['sujet'])));
-      $art = trim(preg_replace("/[l'\s]*art(\.|icle)?\s*/", ' ', $art));
-      $content = $adt['numero'];
-      if ($adt['identiques'])
-        $content .= ' <small>('.$adt['identiques'].' identique'.($adt['identiques'] > 1 ? 's' : '').')</small>';
-      if (preg_match('/(adopté|favorable)/i', $adt['sort'], $match)) $content .= ' <b>'.strtolower($match[1]).'</b>';
-      $add = array($content);
-      if (isset($amendements[$art])) {
-        $amendements[$art] = array_merge($amendements[$art], $add);
-        $amendements[$art.'tot'] += $adt['identiques']+1;
-      } else {
-        $amendements[$art] = $add;
-        $amendements[$art.'tot'] = $adt['identiques']+1;
+      $art = preg_replace('/premier/', '1er', strtolower($adt['sujet']));
+      $art = preg_replace("/(l'\s?)?article\s/", '', $art);
+      if (preg_match('/(adopté|favorable)/i', $adt['sort'], $match)) $add = array($adt['numero'].' <b>'.strtolower($match[1]).'</b>');
+      else $add = array($adt['numero']);
+      if (isset($amendements[$art])) $amendements[$art] = array_merge($amendements[$art], $add);
+      else $amendements[$art] = $add;
+      if ($alineas && !preg_match('/(avant|après)/', $art) && preg_match('/alin(e|é)a\s*(\d+)[^\d]/', $adt['texte'], $match)) {
+        $al = $art.'-'.$match[2];
+        if (isset($amendements[$al])) $amendements[$al] = array_merge($amendements[$al], $add);
+        else $amendements[$al] = $add;
       }
-      if ($alineas && !(preg_match('/(avant|après)/', $art)) && preg_match("/alin..?as?\D\D?(\d+)\D/", $adt['texte'], $match)) {
-        $al = $art.'-'.$match[1];
-        if (isset($amendements[$al])) {
-          $amendements[$al] = array_merge($amendements[$al], $add);
-          $amendements[$al.'tot'] += $adt['identiques']+1;
-        } else {
-          $amendements[$al] = $add;
-          $amendements[$al.'tot'] = $adt['identiques']+1;
-        }
-      }
-    }
-    if ($soussections) {
-      $tmpamdmts = array();
-      foreach ($soussections as $ss) {
-        $tmpamdmts[$ss->id] = 0;
-	foreach (array_keys($sections_amdmt[$ss->id]) as $art) {
-          if (isset($amendements['avant '.$art.'tot'])) $tmpamdmts[$ss->id] += $amendements['avant '.$art.'tot'];
-          if (isset($amendements[$art.'tot'])) $tmpamdmts[$ss->id] += $amendements[$art.'tot'];
-          if (isset($amendements['après '.$art.'tot'])) $tmpamdmts[$ss->id] += $amendements['après '.$art.'tot'];
-        }
-      }
-      $amendements = $tmpamdmts;
     }
     return $amendements;
   }
+
  
   public function executeLoi(sfWebRequest $request) {
     $loi_id = $this->getLoi($request);
     $this->soussections = Doctrine::getTable('TitreLoi')->createquery('t')
       ->where('t.texteloi_id = ?', $loi_id)
       ->andWhere('t.id != t.titre_loi_id')
-      ->orderBy('t.level1, t.level2, t.level3, t.level4')
+      ->orderBy('t.chapitre, t.section')
       ->execute();
     $this->articles = Doctrine::getTable('ArticleLoi')->createquery('a')
       ->where('a.texteloi_id = ?', $loi_id)
       ->orderBy('a.ordre')
       ->fetchArray();
-    $this->articles_sec = Doctrine::getTable('ArticleLoi')->createquery('a')
-      ->where('a.texteloi_id = ?', $loi_id)
-      ->orderBy('a.ordre')
-      ->execute();
-    if (count($this->soussections))
-      $this->amendements_sec = $this->getAmendements($loi_id, $this->articles_sec, 0, $this->soussections);
-    else $this->amendements_art = $this->getAmendements($loi_id, $this->articles_sec);
     $this->amendements = count(Doctrine::getTable('Amendement')->createquery('a')
       ->where('a.texteloi_id = ?', $loi_id)
       ->andWhere('a.sort <> ?', 'Rectifié')
       ->execute());
-    if ($this->loi->getDossier())
-      $this->dossier = $this->loi->getDossier()->id;
-    $this->doc = Doctrine::getTable('Texteloi')->findOneBySource($this->loi->source);
-    $this->response->setTitle("Simplifions la loi - ".strip_tags($this->loi->titre).' - NosDéputés.fr');
+    $this->dossier = $this->loi->getDossier()->id;
+
+    $this->response->setTitle(strip_tags($this->loi->titre).' - NosDéputés.fr');
     $request->setParameter('rss', array(array('link' => '@loi_rss_commentaires?loi='.$loi_id, 'title'=>'Les commentaires sur '.$this->loi->titre)));
+
   }
 
   public function executeSection(sfWebRequest $request)
   {
     $loi_id = $this->getLoi($request, 1);
-    $levels = array();
-    for ($i = 1; $i < 5; $i++)
-      $levels[] = $request->getParameter('level'.$i, 0);
-    $this->section = Doctrine::getTable('TitreLoi')->identifyAndFindLevel($loi_id, $levels);
-    $this->forward404Unless($this->section);
-    $this->level = $this->section->getLevel();
-    $qss = Doctrine::getTable('TitreLoi')->createquery('t')
-      ->where('t.texteloi_id = ?', $loi_id);
-    for ($i = 1; $i <= $this->level; $i++)
-      $qss->andWhere('t.level'.$i.' = ?', $levels[$i-1]);
-    if($this->level < 4)
-      $qss->andWhere('t.level'.($this->level+1).' IS NOT NULL');
-    $this->soussections = $qss->orderBy('t.level1, t.level2, t.level3, t.level4')
-      ->execute();
-    $ids = array($this->section->id);
-    if ($this->soussections) foreach ($this->soussections as $ss) $ids[] = $ss->id;
-    $this->articles = Doctrine::getTable('ArticleLoi')
-      ->createquery('a')
-      ->whereIn('a.titre_loi_id', $ids)
-      ->andWhere('a.texteloi_id = ?', $loi_id)
-      ->orderBy('a.ordre')
-      ->execute();
+    $n_chapitre = $request->getParameter('chapitre');
+    $this->chapitre = Doctrine::getTable('TitreLoi')->findChapitre($loi_id, $n_chapitre);
+    $this->forward404Unless($this->chapitre);
+    $n_section = $request->getParameter('section');
+    $artquery = Doctrine::getTable('ArticleLoi')->createquery('a');
+    if ($n_section && $n_section != 0) {
+      $this->section = Doctrine::getTable('TitreLoi')->findSection($loi_id, $n_chapitre, $n_section);
+      $this->forward404Unless($this->section);
+      $artquery->where('a.titre_loi_id = ?', $this->section->id);
+    } else {
+      $this->soussections = Doctrine::getTable('TitreLoi')->createquery('t')
+        ->where('t.texteloi_id = ?', $loi_id)
+        ->andWhere('t.chapitre = ?', $n_chapitre)
+        ->andWhere('t.section IS NOT NULL')
+        ->orderBy('t.section')
+        ->execute();
+      $ids = array();
+      $ids[] = $this->chapitre->id;
+      if ($this->soussections) foreach ($this->soussections as $ss) $ids[] = $ss->id;
+      $artquery->whereIn('a.titre_loi_id', $ids);
+    }
+    $artquery->andWhere('a.texteloi_id = ?', $loi_id)
+      ->orderBy('a.ordre');
+    $this->articles = $artquery->execute();
     if (count($this->articles) == 1)
       $this->redirect('@loi_article?loi='.$loi_id.'&article='.$this->articles[0]->slug);
     $this->amendements = $this->getAmendements($loi_id, $this->articles);
-    $this->voisins = $this->section->getVoisins();
-    $this->titre = $this->section->getHierarchie()." : ".$this->section->titre;
-    $this->response->setTitle(strip_tags($this->loi->titre.' - '.$this->titre));
+    if (isset($this->section)) {
+      $titre = $this->section->getLargeTitre();
+      if (preg_match('/^(\d+)\s+bis$/',$n_section, $match)) {
+        $this->precedent = $match[1];
+        if (Doctrine::getTable('TitreLoi')->findSection($loi_id, $n_chapitre, $match[1]+1))
+          $this->suivant = $match[1] + 1;
+      } else {
+        $pre = $n_section - 1;
+        $voisins = Doctrine::getTable('TitreLoi')->createQuery('c')
+          ->select('c.section')
+          ->where('c.texteloi_id = ?', $loi_id)
+          ->andWhere('c.chapitre = ?', $n_chapitre)
+          ->andWhereIn('c.section', array($pre, $pre." bis", $n_section." bis", $n_section+1))
+          ->orderBy('c.section')
+          ->fetchArray();
+        $ct = count($voisins);
+        if ($ct == 1) {
+          if ($n_section == 1) $this->suivant = $voisins[0]['section'];
+          else $this->precedent = $voisins[0]['section'];
+        } else if ($ct == 2) {
+          if ($n_section == 1)
+            $this->suivant = $voisins[0]['section'];
+          else if (preg_match('/^(\d+)\s+bis$/', $voisins[1]['section'], $match) && $match[1] < $n_section)
+            $this->precedent = $voisins[1]['section'];
+          else {
+            $this->precedent = $voisins[0]['section'];
+            $this->suivant = $voisins[1]['section'];
+          }
+        } else if ($ct > 2) {
+          if (preg_match('/bis/', $voisins[1]['section']) && preg_match('/bis/', $voisins[2]['section'])) {
+            $this->precedent = $voisins[1]['section'];
+            $this->suivant = $voisins[2]['section'];
+          } else {
+            $this->precedent = $voisins[0]['section'];
+            if (preg_match('/'.$n_section.'/', $voisins[1]['section'])) {
+              $this->precedent = $voisins[0]['section'];
+              $this->suivant = $voisins[1]['section'];
+            } else {
+              $this->precedent = $voisins[1]['section'];
+              $this->suivant = $voisins[2]['section'];
+            }
+          }
+        }
+      }
+    } else {
+      $titre = $this->chapitre->getLargeTitre();
+      if (preg_match('/^(\d+)\s+bis$/',$n_chapitre, $match)) {
+        $this->precedent = $match[1];
+        if (Doctrine::getTable('TitreLoi')->findChapitre($loi_id, $match[1]+1)) $this->suivant = $match[1]+1;
+      } else {
+        $pre = $n_chapitre - 1;
+        $voisins = Doctrine::getTable('TitreLoi')->createQuery('c')
+          ->select('c.chapitre')
+          ->where('c.texteloi_id = ?', $loi_id)
+          ->andWhere('c.section is NULL')
+          ->andWhereIn('c.chapitre', array($pre, $pre." bis", $n_chapitre." bis", $n_chapitre+1))
+          ->orderBy('c.chapitre')
+          ->fetchArray();
+        $ct = count($voisins);
+        if ($ct == 1) {
+          if ($n_chapitre == 1) $this->suivant = $voisins[0]['chapitre'];
+          else $this->precedent = $voisins[0]['chapitre'];
+        } else if ($ct == 2) {
+          if ($n_chapitre == 1)
+            $this->suivant = $voisins[0]['chapitre'];
+          else if (preg_match('/^(\d+)\s+bis$/', $voisins[1]['chapitre'], $match) && $match[1] < $n_chapitre)
+            $this->precedent = $voisins[1]['chapitre'];
+          else {
+            $this->precedent = $voisins[0]['chapitre'];
+            $this->suivant = $voisins[1]['chapitre'];
+          }
+        } else if ($ct > 2) {
+          if (preg_match('/bis/', $voisins[1]['chapitre']) && preg_match('/bis/', $voisins[2]['chapitre'])) {
+            $this->precedent = $voisins[1]['chapitre'];
+            $this->suivant = $voisins[2]['chapitre'];
+          } else {
+            $this->precedent = $voisins[0]['chapitre'];
+            if (preg_match('/'.$n_chapitre.'/', $voisins[1]['chapitre'])) {
+              $this->precedent = $voisins[0]['chapitre'];
+              $this->suivant = $voisins[1]['chapitre'];
+            } else {
+              $this->precedent = $voisins[1]['chapitre'];
+              $this->suivant = $voisins[2]['chapitre'];
+            }
+          }
+        }
+      }
+    }
+    $this->response->setTitle(strip_tags($this->loi->titre.' - '.$titre));
   }
 
  public function executeAlinea(sfWebRequest $request) {
@@ -184,11 +232,10 @@ class loiActions extends sfActions
     $this->amendements = $this->getAmendements($loi_id, array($this->article), 1);
     $this->forward404Unless(count($this->alineas));
     $this->section = $this->article->getTitreLoi();
-    $titre = strip_tags($this->loi->titre);
-    if ($this->section->getHierarchie())
-      $titre .= " (".strip_tags($this->section->getHierarchie()).") ";
     $this->titre = 'Article '.$this->article->titre;
-    $this->response->setTitle($titre.' - '.$this->titre);
+    if (isset($this->section->chapitre) && $this->section->chapitre != 0)
+      $this->titre .= ' ('.$this->section->getLargeTitre().')';
+    $this->response->setTitle(strip_tags($this->loi->titre.' - '.$this->titre));
     if (isset($this->article->expose) && $this->article->expose != "") $this->expose = $this->article->expose;
     else $this->expose = $this->section->expose;
   }
@@ -207,10 +254,9 @@ class loiActions extends sfActions
 	$article = $request->getParameter('article');
 	if (preg_match('/^n°/', $loi)) {
 		$loi = 'loi '.$loi;
-	}else if (!preg_match('/^(code|loi|livre)/', $loi)) {
+	}else if (!preg_match('/^(code|loi|libre)/', $loi)) {
 		$loi ='code '.$loi;
 	}
-    $loi = preg_replace('/ et,?$/', '', $loi);
 	if (preg_match('/^(code|livre)/', $loi) && $article) {
     		foreach (Alinea::$code_legif as $code => $legif) if (preg_match('/'.$code.'/', $loi)) {
       			return $this->redirect('http://www.legifrance.gouv.fr/rechCodeArticle.do?champCode='.$legif.'&champNumArticle='.$article);

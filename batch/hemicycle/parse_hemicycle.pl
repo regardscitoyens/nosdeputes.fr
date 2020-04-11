@@ -56,15 +56,6 @@ $mois{'octobre'} = '10';
 $mois{'novembre'} = '11';
 $mois{'décembre'} = '12';
 
-$heure{'zéro'} = '00';
-$heure{'une'} = '01';
-$heure{'deux'} = '02';
-$heure{'trois'} = '03';
-$heure{'quatre'} = '04';
-$heure{'cinq'} = '05';
-$heure{'six'} = '06';
-$heure{'sept'} = '07';
-$heure{'huit'} = '08';
 $heure{'neuf'} = '09';
 $heure{'dix'} = '10';
 $heure{'onze'} = '11';
@@ -79,21 +70,20 @@ $heure{'dix-neuf'} = '19';
 $heure{'vingt'} = '20';
 $heure{'vingt et une'} = '21';
 $heure{'vingt-deux'} = '22';
-$heure{'vingt-trois'} = '23';
-$heure{'vingt-cinq'} = '25';
+$heure{'quarante'} = '45';
+$heure{'quarante-cinq'} = '45';
 $heure{'trente'} = '30';
 $heure{'trente-cinq'} = '35';
-$heure{'quarante'} = '40';
-$heure{'quarante-cinq'} = '45';
-$heure{'cinquante'} = '50';
-$heure{'cinquante-cinq'} = '55';
+$heure{'quinze'} = '15';
+$heure{'zéro'} = '00';
+$heure{'cinq'} = '00';
 $heure{''} = '00';
 
-if ($string =~ /ouverte[^\.]+à\s+([^\.]+?)\s*heures?\s*([^\.\s]*)\s*\./) {
+if ($string =~ /ance est ouverte/i) {
+    $heure = '09:30';
+}
+if ($string =~ /ouverte[^\.]+à ([^\.]+) heures?\s*([^\.\s]*)\s*\./) {
     $heure = $heure{$1}.':'.$heure{$2};
-} else {
-    print STDERR "ERROR: cannot find start hour in séance $url\n";
-    exit(1);
 }
 
 sub savepLoi() {
@@ -176,7 +166,6 @@ sub checkout {
     if ($titre2) {
         $contexte .= ' > '.$titre2;
     }
-    $contexte =~ s/"/\\"/g;
     $out =  '{"contexte": "'.$contexte.'", "date": "'.$date.'", "source": "'.$source.'", "heure":"'.$heure.'", "session": "'.$session.'", ';
     if (($ploi = getProjetLoi($titre1, $intervention)) && $contexte !~ /questions?\sau|ordre\sdu\sjour|bienvenue|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement/i) {
         $out .= "\"numeros_loi\": \"$ploi\", ";
@@ -189,19 +178,12 @@ sub checkout {
         $ts = $cpt;
         if ($intervention =~ s/^<p>(,| |et)+M[mes\.]*\s+(([A-Z]|é)[^\.]+)\.\s*/<p>/g) {
             $ts++;
-            $i = $2;
-            if (!$inter2fonction{$i} && $i =~ s/, (.*)$//) {
-                setFonction($1, $i);
-            }
-            print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
+            print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$2."\"}\n";
         }
         if ($intervenant =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)$//) {
-            foreach $i (split(/(?:et\s*M[mes\.]*| et |, M[mes\.]*)\s*/, $3)) {
+            foreach $i (split(/ et |, /, $3)) {
                 $ts++;
-                if (!$inter2fonction{$i} && $i =~ s/, (.*)$//) {
-                    setFonction($1, $i);
-                }
-                print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
+                print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i."\"}\n";
             }
         }
         if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é).*)//g) {
@@ -357,7 +339,7 @@ foreach $line (split /\n/, $string)
 
     if ($line =~ /<h[1-9]+/i || $line =~ /"(sompresidence|sstitreinfo)"/) {
         $line =~ s/##BR##/ /g;
-        if ($line =~ /pr..?sidence de ([^<\,]+)[<,]/i && $line !~ /sarkozy|télévision/i) {
+        if ($line =~ /pr..?sidence de ([^<\,]+)[<,]/i && $line !~ /sarkozy/i) {
             $prez = $1;
             $prez =~ s/\s+vice-pr.*$//;
     #        print "Présidence de $prez\n";

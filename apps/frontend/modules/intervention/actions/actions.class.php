@@ -144,9 +144,10 @@ class interventionActions extends sfActions
     $this->query = null ;
     if (!$extrajoin && !$request->getParameter('commission')) {
       $q = PluginTagTable::getObjectTaggedWithQuery('Section', array('loi:numero='.$loi_id));
+      $q->select('Section.id');
       $sections = array();
-      foreach($q->fetchArray() as $s) {
-      		$sections[$s['id']] = $s['id'];
+      foreach($q->execute(array(), Doctrine::HYDRATE_ARRAY) as $s) {
+      		$sections[$s[0]] = $s[0];
       }
       if (count($sections)) {
         $q = Doctrine::getTable('Intervention')->createQuery('i')->whereIn('i.section_id', array_keys($sections))->select('i.seance_id as id')->distinct();
@@ -155,7 +156,6 @@ class interventionActions extends sfActions
         }
       }
     }
-
     foreach($ids as $s) {
       $this->res['seances'][] = array('seance' => $s['id']);
     }
@@ -334,8 +334,8 @@ class interventionActions extends sfActions
       $i['amendements'] = myTools::array2hash($amendements, 'amendement');
       $i['lois'] = myTools::array2hash($lois, 'loi');
       $i['source'] = $int[$h['source']];
-      $i['url_nosdeputes'] = myTools::url_forAPI('@interventions_seance?seance='.$int[$h['seance_id']])."#inter_".$int[$h['md5']];
-      $i['url_nosdeputes_api'] = myTools::url_forAPI("@api_document?class=Intervention&id=".$int[$h['id']]."&format=".$request->getParameter('format'));
+      $i['url_nosdeputes'] = url_for('@interventions_seance?seance='.$int[$h['seance_id']], 'absolute=true')."#inter_".$int[$h['md5']];
+      $i['url_nosdeputes_api'] = url_for("@api_document?class=Intervention&id=".$int[$h['id']]."&format=".$request->getParameter('format'), 'absolute=true');
       $i['id'] = $int[$h['id']];
       $this->res['seance'][] = array('intervention' => $i);
       if (!isset($this->champs)) {

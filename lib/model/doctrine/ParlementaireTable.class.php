@@ -4,16 +4,6 @@
  */
 class ParlementaireTable extends PersonnaliteTable
 {
-
-  public function findOneByIdAn($id_an) {
-    $id_an = preg_replace('/PA/', '', $id_an);
-    $query = $this->createQuery('p')->where('p.id_an = ?', $id_an);
-    $deputes = $query->execute();
-    if (count($deputes) > 1) {
-      throw new sfException("More than one Parlementaire found");
-    }
-    return $deputes[0];
-  }
   public function findOneByNomSexeGroupeCirco($nom, $sexe = null, $groupe = null, $circo = null, $document = null) {
     $depute = null;
     $memeNom = $this->findByNom($nom);
@@ -38,12 +28,6 @@ class ParlementaireTable extends PersonnaliteTable
       if ($document) $query->andWhere('p.fin_mandat is null or p.fin_mandat > ?', $document->getDate());
       $memeNom = $query->execute();
     }
-    if (count($memeNom) > 1) {
-      $exactNom = array();
-      foreach ($memeNom as $d) if ($d->nom_de_famille == $nom)
-        $exactNom[] = $d;
-      if (count($exactNom) == 1) $memeNom = $exactNom;
-    }
     if (count($memeNom) == 0 && preg_match('/(Des |des |de La |de la |de l\'|de |du )?([A-ZÉ].*) ([A-ZÉ].*)/', $nom, $match)) {
       $revert_nom = $match[3]." ".$match[1].$match[2];
       $memeNom = $this->findByNom($revert_nom);
@@ -63,24 +47,17 @@ class ParlementaireTable extends PersonnaliteTable
         if (count($memeSexe) == 0) $memeSexe = $memeNom;
         foreach ($memeSexe as $de) {
           $groupe2 = $de->groupe_acronyme;
-          if ($groupe2 === $groupe) array_push($memeGroupe, $de);
+          if ($groupe2 == $groupe) array_push($memeGroupe, $de);
           else foreach(myTools::convertYamlToArray(sfConfig::get('app_groupes_proximite', '')) as $gpe) {
             $gpes = explode(' / ', $gpe);
-            if (($groupe2 === $gpes[0] && $groupe === $gpes[1]) || ($groupe2 === $gpes[1] && $groupe === $gpes[0]))
+            if (($groupe2 == $gpes[0] && $groupe == $gpes[1]) || ($groupe2 == $gpes[1] && $groupe == $gpe[0]))
               array_push($procheGroupe, $de);
           }
         }
         if (count($memeGroupe) == 1) $depute = $memeGroupe[0];
         elseif (count($procheGroupe) == 1) $depute = $procheGroupe[0];
-        $memeSexe = $memeGroupe;
         unset($memeGroupe);
         unset($procheGroupe);
-      }
-      if (!$depute) {
-        $enmandat = array();
-        foreach ($memeSexe as $de)
-          if (!$de->fin_mandat) array_push($enmandat, $de);
-        if (count($enmandat) == 1) $depute = $enmandat[0];
       }
       unset($memeSexe);
     }

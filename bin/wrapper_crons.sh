@@ -1,9 +1,7 @@
 #!/bin/bash
 
-. $(dirname $0)/db.inc
-
 command=`echo $2 | sed 's#^.*\/\([^\/]\+\)$#\\1#'`
-tmpout=cron-$command-`date +%d%m%Y-%HH%Mm%S`
+tmpout=cron2007-$command-`date +%d%m%Y-%HH%Mm%S`
 tmpoutput=$tmpout
 ct=0
 while [ -f /tmp/$tmpoutput ]; do
@@ -12,15 +10,6 @@ while [ -f /tmp/$tmpoutput ]; do
 done
 
 "$@" >> /tmp/$tmpoutput 2>&1
-
-if test "$PADBOT" && test "$PADURL" ; then
-echo > /tmp/$tmpoutput.date
-date >> /tmp/$tmpoutput.date
-echo "---------------------" >> /tmp/$tmpoutput.date
-echo >> /tmp/$tmpoutput.date
-cat /tmp/$tmpoutput.date /tmp/$tmpoutput | grep -v '^==' | $PADBOT $PADURL write
-rm /tmp/$tmpoutput.date
-fi
 
 cat /tmp/$tmpoutput
 outsize=`ls -l /tmp/$tmpoutput | tail -n 1 | awk '{print $5}'`

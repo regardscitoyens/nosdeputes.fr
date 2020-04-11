@@ -51,7 +51,7 @@ var updatePreview = function() {
      if (slug)   nom = slug;
    }
    $("#preview").show();
-   var url = '//'+window.location.hostname+'<?php echo url_for("@widget");?>/'+nom.replace(/ /, '-')+"?iframe=true&";
+   var url = 'http://'+window.location.hostname+'<?php echo url_for("@widget");?>/'+nom.replace(/ /, '-')+"?iframe=true&";
    if (!$("#titre:checked").val()) {
      url += "notitre=1&";
    }

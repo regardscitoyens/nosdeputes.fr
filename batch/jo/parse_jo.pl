@@ -20,18 +20,18 @@ $mois{'décembre'} = '12';
 
 $on = 0;
 while(<FILE>) {
-    s/(&(#160|nbsp);|\s)+/ /g;
     if ($on) {
 	chomp;
-    s/<br\/?>Présents/\n<i>Présents/g;
-	s/\s*<br\/?>\s*/ /g;
+	s/<br>/ /g;
 	$lines .= $_;
     }
     if (/Membres? présents? ou excusés?/) {
 	$on = 1;
     }
 }
-$lines =~ s/\s+(\d+\. <b>)/\n\1/g;
+$lines =~ s/\s+(\d+\.&nbsp;<b>)/\n\1/g;
+$lines =~ s/&nbsp;<b>/ /g;
+$lines =~ s/&nbsp;/ /g;
 $lines =~ s/<\/b> *<b>/ /g;
 $lines =~ s/<\/b>/<\/b>\n/g;
 $lines =~ s/<\/i>/<\/i>\n/g;
@@ -45,7 +45,6 @@ $lines =~ s/\. <A href[^\n]*//ig;
 $lines =~ s/du\s*(<b>|\n)/du /g;
 $lines =~ s/\nà\s*.<i>/à /g;
 $lines =~ s/, à (<i>)?/ à /g;
-$lines =~ s/ +/ /g;
 $lines =~ s/ : Pr/ <i>Pr/g;
 $lines =~ s/<i>/\n<i>/g;
 $lines =~ s/\.\s*\n/\n/g;
@@ -55,7 +54,7 @@ $lines =~ s/,? ?M(\.|mes?) /\n/g;
 $lines =~ s/<\/?\w>\n/\n/g;
 $lines =~ s/ : ?\n/\n/g;
 $lines =~ s/– //g;
-$lines =~ s/\<hr.*Texte \d+ sur \d+\s*/\n/g;
+$lines =~ s/\<hr.*Texte \d+ sur \d+\s*//g;
 
 $lines =~ s/\<A .*\<\/a\>\s*//ig;
 $lines =~ s/,? ?\<hr/\n<hr/;
@@ -66,7 +65,6 @@ $lines =~ s/\. / /g;
 $lines =~ s/\s+(<i>)?\s*Excusés[.\s–]*/\n<i>Excusés. – /gi;
 
 foreach (split /\n/, $lines) {
-    #print STDERR $_."\n";
     if (/comité|commission|mission|délégation/i && !/Ordre du jour/ && !/(réunion|séance)/i && !/Membres/i && !/^\s*\(/) {
 	$commission = $_;
 	$commission =~ s/.*(Comité|Commission|Mission)/$1/;
@@ -99,8 +97,6 @@ foreach (split /\n/, $lines) {
 			$d = $1.' '.$d;
 		    }
 		    $d =~ s/\([^\)]+\)//;
-		    $d =~ s/-\s+/-/g;
-            $d =~ s/[^àâéèêëîïôùûü\w]+$//;
 		    print '{ ';
 		    print '"reunion": "'.$reunion.'",';
 		    print '"session": "'.$session.'",';

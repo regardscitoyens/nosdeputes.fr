@@ -1,20 +1,16 @@
 <div class="titre_int_et_seance" id="sommaire">
-<?php 
-$nomseance = 'séance';
-if ($seance->type == 'commission') : 
-$nomseance = 'réunion';
-?>
+<?php if ($seance->type == 'commission') : ?>
 <h1><?php echo link_to($orga->getNom(), '@list_parlementaires_organisme?slug='.$orga->getSlug()); ?></h1>
 <h1><?php echo $seance->getTitre(); ?></h1>
 <?php $sf_response->setTitle($orga->getNom().' : '.$seance->getTitre()); ?>
 <?php $plot = 'seance_com_'; else :?>
-<h1><?php echo $seance->getTitre(0); $sf_response->setTitle($seance->getTitre(0).' : NosDeputes.fr'); ?></h1>
+<h1><?php echo $seance->getTitre(0,1); $sf_response->setTitle($seance->getTitre(0,1).' : NosDeputes.fr'); ?></h1>
 <?php $plot = 'seance_hemi_'; endif; ?>
 <div class="resume">
-<h2>Résumé de la <?php echo $nomseance; ?></h2>
+<h2>Résumé de la séance</h2>
 <?php if (count($tags)) { ?>
 <div class="nuage_de_tags">
-<h3>Les mots clés de cette <?php echo $nomseance; ?></h3>
+<h3>Les mots clés de cette séance</h3>
 <ul><?php foreach(array_keys($tags) as $tag) echo "<li>$tag</li>"; ?></ul>
 </div>
 <?php } ?>
@@ -46,10 +42,10 @@ if ($table['nb_interventions']) echo '<span class="dossier">('.link_to('voir le 
 <?php endforeach; ?>
 </ul>
 </div><?php } ?>
-<h2>La <?php echo $nomseance; ?></h2>
+<h2>La séance</h2>
 <div class="interventions">
   <?php if (!count($interventions)) { ?>
-  <p><em>Le contenu de cette <?php echo $nomseance; ?> n'a pas encore été rendu public par les services de l'Assemblée nationale.</em></p>
+  <p><em>Le contenu de cette séance n'a pas encore été rendu public par les services de l'Assemblée nationale.</em></p>
   <?php } else { $table = ''; $titre = 0; $source_displayed = 0; 
 foreach($interventions as $intervention) : 	
 if (! $source_displayed) {
@@ -122,7 +118,7 @@ if ($intervention->section_id && !$sections[$intervention->section_id]->titre) {
   <?php } ?>
 <?php if (!$didascalie) : ?>
     <div class="commentaires" id='com_<?php echo $intervention->id; ?>' style="clear: both;">
-      <span class="com_link list_com" id="com_link_<?php echo $intervention->id; ?>"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> -&nbsp;</span><span class="list_com"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
+      <span class="com_link list_com" id="com_link_<?php echo $intervention->id; ?>"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#commentaires">Voir tous les commentaires</a> - </span><span class="list_com"><a href="<?php echo url_for('@intervention?id='.$intervention->id); ?>#ecrire">Laisser un commentaire</a></span>
     </div>
   <?php endif; ?>
   </div></div>

@@ -40,7 +40,7 @@ class printDumpAmendementsLoiCsvTask extends sfBaseTask {
       $parlslugs = Doctrine_Query::create()->select('p.slug')->from('Parlementaire p')->leftJoin('p.ParlementaireAmendements pa')->where('pa.amendement_id = ?', $a['id'])->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
       if (is_string($parlslugs)) $parlslugs = array($parlslugs);
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
-      $a['url_nosdeputes'] = preg_replace('#http://(symfony/)+#', sfConfig::get('app_base_url'), url_for('@amendement?loi='.$loi.'&numero='.$a['numero'], 'absolute=true'));
+      $a['url_nosdeputes'] = preg_replace('#http://(symfony/)+#', sfConfig::get('app_base_url')."/", url_for('@amendement?loi='.$loi.'&numero='.$a['numero'], 'absolute=true'));
       unset($a['num']);
       foreach(array_keys($a) as $key)
         if (!isset($champs[$key]))

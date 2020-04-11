@@ -2,8 +2,11 @@
 <?php $results = $pager->getNbResults();
 if ($results == 0) $results = 'Aucun'.$feminin;
 $results .= ' '.$typetitre;
-if ($results < 2)
-  $results = str_replace('propositions', 'proposition', str_replace('rapports', 'rapport', $results));
+if ($results > 1) {
+  if ($typetitre === "rapport")
+    $results .= 's';
+  else $results = str_replace('proposition', 'propositions', $results);
+}
 $results .= " signé".$feminin;
 if ($results > 1)
   $results .= 's';

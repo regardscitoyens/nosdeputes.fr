@@ -77,7 +77,8 @@ class sectionActions extends sfActions
         ->select('t.texteloi_id, t.titre, t.nb_commentaires')
         ->from('TitreLoi t')
         ->whereIn('t.texteloi_id', $lois)
-        ->andWhere('t.leveltype = ?', 'loi')
+        ->andWhere('t.chapitre IS NULL')
+        ->andWhere('t.section is NULL')
         ->orderBy('t.texteloi_id')
         ->fetchArray();
 
@@ -92,14 +93,12 @@ class sectionActions extends sfActions
 
     $interventions = array();
 
-    $query = Doctrine_Query::create()
+    $interventions = Doctrine_Query::create()
       ->select('i.id')
       ->from('Intervention i')
-      ->leftJoin('i.Section s');
-    if ($this->section->id == $this->section->section_id)
-      $query->where('s.section_id = ?', $this->section->id);
-    else $query->where('s.id = ?', $this->section->id);
-    $interventions = $query->andWhere('i.nb_mots > 20')
+      ->leftJoin('i.Section s')
+      ->where('s.section_id = ?', $this->section->id)
+      ->andWhere('i.nb_mots > 20')
       ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
 
     //    $this->forward404Unless(count($interventions));
