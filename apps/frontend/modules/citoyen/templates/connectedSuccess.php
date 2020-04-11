@@ -1,8 +1,8 @@
 <?php if(!$sf_user->isAuthenticated()) { ?>
     <form method="post" id="form_header_login" action="<?php echo url_for('@signin'); ?>">
       <p>
-      <input type="text" name="signin[login]" id='header_login' class="examplevalue" value="Identifiant" />
-      <input type="password" name="signin[password]" id='header_pass' value="______________" class="examplevalue"/>
+      <input type="text" name="signin[login]" id='header_login' class="examplevalue" placeholder="Identifiant" />
+      <input type="password" name="signin[password]" id='header_pass' placeholder="************" class="examplevalue"/>
       <input type="checkbox" name="signin[remember]" id="header_remember" title="se rappeler de moi" />
       <button type="submit" value="login" id="bt1"></button>
       <a href="<?php echo url_for('@inscription') ?>"><span id="bt2"></span></a>
