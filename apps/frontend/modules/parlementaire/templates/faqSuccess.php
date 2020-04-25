@@ -45,7 +45,7 @@
 <div id="faq">
   <h2 id="post_0">NosDéputés.fr est-il un site officiel de l'Assemblée nationale ?</h2>
   <p>Non.</p>
-  <p>NosDéputés.fr est une initiative totalement indépendante des institutions publiques proposée par l'association <a href="https://www.regardcitoyens.org">Regards Citoyens</a>.</p>
+  <p>NosDéputés.fr est une initiative totalement indépendante des institutions publiques proposée par l'association <a href="https://www.regardscitoyens.org">Regards Citoyens</a>.</p>
 
   <h2 id="post_1">Origine et nature des données publiées</h2>
 
