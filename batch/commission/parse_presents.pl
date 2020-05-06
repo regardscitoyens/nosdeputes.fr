@@ -32,6 +32,7 @@ $string =~ s/&#278;/É/g;
 if ($special && $url =~ /www2.assemblee/) {
   $commission = $special;
   $string =~ s/[\s\n]+/ /g;
+  $string =~ s/Réunion (lun|mar|mercre|jeu|vendre)di du /Réunion du \1di /g;
   $string =~ s/[,\s]*<br[\/\s]*>[,\s]*/\n/g;
   $string =~ s/<\/?(p|h\d+|div)[^>]*>/\n<\1>/g;
   $string =~ s/((Excusé|Présent)[es\s]*:)\s*/\1\n/g;
@@ -130,7 +131,7 @@ sub checkout {
 	$depute =~ s/^\s*M+([mes]+\s+|\.\s*)//;
 	$depute =~ s/[,\s]+$//;
 	$depute =~ s/^\s+//;
-    if ($depute !~ /^(Vice[ -]|Président|Questeur|Secrétaire|Présent|Excusé)/i) {
+    if ($depute !~ /^(Vice[ -]|Président|Questeur|Secrétaire|Présent|Excusé|:)/i) {
       print '{"commission": "'.$commission.'","depute": "'.$depute.'","reunion":"'.$date.'","session":"'.$heure.'","source":"'.$source.'"}'."\n";
     }
     }
@@ -219,7 +220,7 @@ foreach $line (split /\n/, $string)
 	if (!$special && $line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? sur /) {
         $present = 1;
     }
-    if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) étai(en)?t présents?..*$/\2/g)) {
+    if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) (participai(en)?t à la réunion|étai(en)?t présents?)..*$/\2/g)) {
 	$line =~ s/<[^>]+>//g;
 	$line =~ s/&[^;]*;/ /g;
 	$line =~ s/(M[.me]+ )\1/\1/g;
@@ -248,7 +249,7 @@ foreach $line (split /\n/, $string)
     $line =~ s/<\/?a[^>]*>//ig;
     # Cases of special orgs
     if ($special) {
-      if ($origline =~ /Présent[es]*( ou excusés?)?\s*:/) {
+      if ($origline =~ /Présent[es]*( ou excusés?)?[\s\/]*:/) {
         $present = 1;
       } elsif ($origline =~ /Excusé[es\s]*[:\/]/) {
         $present = 0;
