@@ -6,10 +6,11 @@ use HTML::TokeParser;
 $legislature = shift || 15;
 
 $a = WWW::Mechanize->new(autocheck => 0);
+$b = WWW::Mechanize->new(autocheck => 0);
 $page = 0;
 while ($page < 20) {
   $offset = 10 * $page;
-  $url = "http://www2.assemblee-nationale.fr/recherche/resultats_recherche/(offset)/" . $offset . "/(tri)/date/(legislature)/" . $legislature . "/(query)/eyJxIjoidHlwZURvY3VtZW50OlwiY29tcHRlIHJlbmR1XCIgYW5kIGNvbnRlbnU6YSIsInJvd3MiOjEwLCJzdGFydCI6MCwid3QiOiJwaHAiLCJobCI6ImZhbHNlIiwiZmwiOiJ1cmwsdGl0cmUsdXJsRG9zc2llckxlZ2lzbGF0aWYsdGl0cmVEb3NzaWVyTGVnaXNsYXRpZix0ZXh0ZVF1ZXN0aW9uLHR5cGVEb2N1bWVudCxzc1R5cGVEb2N1bWVudCxydWJyaXF1ZSx0ZXRlQW5hbHlzZSxtb3RzQ2xlcyxhdXRldXIsZGF0ZURlcG90LHNpZ25hdGFpcmVzQW1lbmRlbWVudCxkZXNpZ25hdGlvbkFydGljbGUsc29tbWFpcmUsc29ydCIsInNvcnQiOiIifQ==";
+  $url = "http://www2.assemblee-nationale.fr/recherche/resultats_recherche/(offset)/$offset/(tri)/date/(legislature)/$legislature/(query)/eyJxIjoidHlwZURvY3VtZW50OlwiY29tcHRlIHJlbmR1XCIgYW5kIGNvbnRlbnU6YSIsInJvd3MiOjEwLCJzdGFydCI6MCwid3QiOiJwaHAiLCJobCI6ImZhbHNlIiwiZmwiOiJ1cmwsdGl0cmUsdXJsRG9zc2llckxlZ2lzbGF0aWYsdGl0cmVEb3NzaWVyTGVnaXNsYXRpZix0ZXh0ZVF1ZXN0aW9uLHR5cGVEb2N1bWVudCxzc1R5cGVEb2N1bWVudCxydWJyaXF1ZSx0ZXRlQW5hbHlzZSxtb3RzQ2xlcyxhdXRldXIsZGF0ZURlcG90LHNpZ25hdGFpcmVzQW1lbmRlbWVudCxkZXNpZ25hdGlvbkFydGljbGUsc29tbWFpcmUsc29ydCIsInNvcnQiOiIifQ==";
   $page++;
 
   $a->post($url);
@@ -19,20 +20,36 @@ while ($page < 20) {
     $txt = $p->get_text('/a');
     $curl = $file = $t->[1]{href};
     if ($txt =~ /compte rendu|e nationale \~/i && $curl !~ /(nale\.fr\/dyn\/c\d+\.asp|\/cri\/(2|congres)|\(typeDoc\))/ && $curl =~ /nationale\.fr\/$legislature\//) {
+      $curl =~ s/(^[\s\t]+|[\s\t]+$)//g;
+      $curl =~ s/[^\/]+$//;
+
       $file =~ s/(^[\s\t]+|[\s\t]+$)//g;
       $file =~ s/\//_/gi;
       $file =~ s/\#.*//;
-      $curl =~ s/(^[\s\t]+|[\s\t]+$)//g;
-      $curl =~ s/[^\/]+$//;
-      $url{$curl} = 1;
       next if -e "html/$file";
+
+      $b->get($t->[1]{href});
+      $text = $b->content;
+
+      if ($text !~ /href="(\/dyn\/opendata\/[^"]+\.html)"/) {
+        print STDERR "WARNING: opendata raw html url not found for $curl\n";
+        next;
+      }
+      $raw_url = "http://www.assemblee-nationale.fr$1";
+      $opendata_id = $raw_url;
+      $opendata_id =~ s/^.*opendata\///;
+
       print "$file\n";
-      $a->get($t->[1]{href});
       open FILE, ">:utf8", "html/$file.tmp";
-      print FILE $a->content;
+      print FILE $text;
       close FILE;
       rename "html/$file.tmp", "html/$file";
-      $a->back();
+
+      $b->get($raw_url);
+      open FILE, ">:utf8", "raw/$opendata_id.tmp";
+      print FILE $b->content;
+      close FILE;
+      rename "raw/$opendata_id.tmp", "raw/$opendata_id";
     }
   }
 }
