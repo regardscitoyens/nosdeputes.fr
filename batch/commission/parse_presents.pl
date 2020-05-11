@@ -15,10 +15,17 @@ if ($url =~ /\/(\d+)-(\d+)\//) {
     $session = '20'.$1.'20'.$2;
 }
 
-open(FILE, $file) ;
+open(FILE, $file);
 @string = <FILE>;
 $string = "@string";
 close FILE;
+
+if ($string =~ /href="\/dyn\/opendata\/([^"]+\.html)"/) {
+  open(FILE, "raw/$1");
+  @string = <FILE>;
+  $string = "@string";
+  close FILE;
+}
 
 $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
@@ -28,6 +35,7 @@ $string =~ s/\r//g;
 $string =~ s/(M\.\s*&nbsp;\s*)+/M. /g;
 $string =~ s/\s*&(#160|nbsp);\s*/ /ig;
 $string =~ s/&#278;/É/g;
+$string =~ s/&#xa0;/ /g;
 
 if ($special && $url =~ /www2.assemblee/) {
   $commission = $special;
