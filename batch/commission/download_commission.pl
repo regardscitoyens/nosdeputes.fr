@@ -38,6 +38,7 @@ while ($page < 20) {
       $raw_url = "http://www.assemblee-nationale.fr$1";
       $opendata_id = $raw_url;
       $opendata_id =~ s/^.*opendata\///;
+      next if -e "raw/$opendata_id";
 
       print "$file\n";
       open FILE, ">:utf8", "html/$file.tmp";
