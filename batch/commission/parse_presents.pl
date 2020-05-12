@@ -109,6 +109,23 @@ if ($raw == 1) {
       }
     }
   }
+  if (!$date && !$commission && !$heure) {
+    $p = HTML::TokeParser->new(\$string);
+    while ($t = $p->get_tag('div')) {
+      if ($t->[1]{class} eq "assnatSection1") {
+        $txt = $p->get_text('/div');
+        foreach $line (split /\n/, $txt) {
+          if (!$commission && $line =~ /^\s*(Groupe|Commission|Mission|Délégation|Office)(.*)\s*$/) {
+            $commission = "$1$2";
+          } elsif ($line =~ /^\s*(?:(?:Lun|Mar|Mercre|Jeu|Vendre)di|Dimanche)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
+            $date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
+          } elsif ($line =~ /^\s*(?:Réunion|Séance)\s+de\s+(\d+)\s*h(?:eure)?s?\s*(\d*)/i && !$heure) {
+            $heure = sprintf("%02d:%02d", $1, $2 || '00');
+          }
+        }
+      }
+    }
+  }
 }
 
 if ($special && $string =~ />(?:Décisions (?:de Questure )?de la )?(?:Décisions|[Rr]éunion) (?:de Questure )?du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)?/) {
