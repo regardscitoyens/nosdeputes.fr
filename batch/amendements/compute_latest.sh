@@ -7,7 +7,10 @@ if [ -d html ]; then
   find html -type f | xargs rm
 fi
 
-echo 'SELECT source FROM amendement WHERE sort LIKE "Ind%" AND date > DATE_SUB(CURDATE() , INTERVAL 1 YEAR)' | mysql $MYSQLID $DBNAME | grep -v source > liste_sort_indefini.txt
+echo 'SELECT source FROM amendement WHERE sort LIKE "Ind%" AND date > DATE_SUB(CURDATE() , INTERVAL 1 YEAR)' |
+ mysql $MYSQLID $DBNAME |
+ grep -v "/15/amendements/2623/" |
+ grep -v source > liste_sort_indefini.txt
 
 perl download_amendements.pl $LEGISLATURE > /tmp/download_amendements.log
 
