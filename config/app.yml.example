@@ -12,7 +12,7 @@ all:
   allow_autoclean_solr: false
 
   groupes_actuels: >
-    ["LFI", "GDR", "SOC", "LREM", "MODEM", "UAI", "LR", "NI"]
+    ["LFI", "GDR", "SOC", "LT", "EDS", "LREM", "MODEM", "UDI", "LR", "NI"]
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
   groupes_infos: >
     [
@@ -20,15 +20,18 @@ all:
     "Gauche Démocrate et Républicaine / GDR / 255,30,30 / PCF & ultramarins / gauche\s*d.*mocrate",
     "Nouvelle Gauche / NG / 255,50,190 / PS et divers gauche / nouvelle",
     "Socialistes et apparentés / SOC / 255,50,190 / PS et divers gauche / socialiste",
+    "Libertés et Territoires / LT / 250,195,132 / Radicaux, centristes, ex-LREM, corses... / libert|territoire",
+    "Écologie Démocratie Solidarité / EDS / 164,240,213 / indépendants LREM / cologie",
     "La République En Marche / LREM / 232,197,5 / En Marche / marche",
     "Mouvement Démocrate et apparentés / MODEM / 247,138,13 / MoDem / mouvement",
     "Les Constructifs : Républicains, UDI, Indépendants / LC / 30,180,255 / LR proches d'En Marche & UDI / constructif",
-    "UDI, Agir et Indépendants / UAI / 30,180,255 / LR proches d'En Marche & UDI / ud|agir",
+    "UDI, Agir et Indépendants / UAI / 30,180,255 / LR proches d'En Marche & UDI / agir",
+    "UDI et Indépendants / UDI / 30,180,255 / LR proches d'En Marche & UDI / udi",
     "Les Républicains / LR / 30,30,200 / Les Républicains / les\s*r.*publicains",
-    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (FN, Divers droite, PRG...) / inscrit|non\s*inscrit"
+    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (FN, Divers droite...) / inscrit|non\s*inscrit"
     ]
   groupes_proximite: >
-    ["LFI / GDR", "LFI / SOC", "GDR / SOC", "SOC / LREM", "LREM / MODEM", "LREM / UAI", "MODEM / UAI", "UAI / LR", "LR / NI"]
+    ["LFI / GDR", "LFI / SOC", "GDR / SOC", "SOC / LREM", "SOC / LT", "SOC / EDS", "LT / EDS", "EDS / LREM", "EDS / MODEM", "LREM / LT", "LREM / MODEM", "LREM / UDI", "LT / MODEM", "LT / UDI", "MODEM / UDI", "UDI / LR", "LR / NI"]
 
   commissions_permanentes: >
     [
