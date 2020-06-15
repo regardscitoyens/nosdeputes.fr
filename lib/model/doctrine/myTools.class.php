@@ -79,7 +79,7 @@ class myTools {
   }
 
   public static function hasAnnounce() {
-    return self::getAnnounceLink() && self::getAnnounceText();
+    return self::getAnnounceText();
   }
 
   public static function isAdminIP($http_headers) {

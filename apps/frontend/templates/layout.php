@@ -128,7 +128,12 @@ $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
       <div id="corps_page">
         <div class="contenu_page">
           <?php if (myTools::hasAnnounce()) : ?>
-          <div id="announce"><h2 style="display: none;"><a target="_blank" href="<?php echo myTools::getAnnounceLink(); ?>"><?php echo myTools::getAnnounceText(); ?> : <span>Cliquez ici !</span></a></h2></div>
+          <div id="announce"><h2 style="display: none;">
+              <?php if (myTools::getAnnounceLink()): ?>
+              <a target="_blank" href="<?php echo myTools::getAnnounceLink(); ?>"><?php echo myTools::getAnnounceText(); ?> : <span>Cliquez ici !</span></a>
+              <?php else: ?>
+              <?php echo myTools::getAnnounceText(); ?>
+              <?php endif; ?></h2></div>
             <script type="text/javascript">
                 $(document).ready(function() {
                   $('#announce h2').delay(1500).fadeIn('slow');
