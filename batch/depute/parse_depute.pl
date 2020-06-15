@@ -163,7 +163,9 @@ foreach $line (split /\n/, $string) {
     } else {
       if ($site !~ /facebook\.com\/(sharer\.php|sandramarsaudlarepubliquenmarche|BSmedoc|colas\.roy\.2017)/) { #Evite de prendre les boutons de partage de l'AN et les comptes désuets
         $site =~ s/(twitter.com\/)[\s@]+/\1/i;
-        if ($site !~ /twitter.com\/(valeriebeauvais2017|sttrompille|Darrieussecq|bernarddeflesselles|Marc_Delatte|davidlorion|Josso2017|ColasRoy2017|GCHICHE2017|obono2017|celiadeputee2017|Vincent.Ledoux59|EricDiardDepute|MireilleRobert|Fdumas2017|PascalBois2017|pgoulet58|micheldelpon|DipompeoChris|Valeria_Faure_M|Thourot2017|FabienGoutte|ainakuric2017|FJolivet2017|CaroleBB2017|ludomds|blanchet2017|MaudPetit_LREM|en_marche_77|BPeyrol_REM0303|CFABRE2017|soniakrimi50|NLePeih2017|Haury2017|CRoussel_06|c_vignon3103|philippemichel1|pierrecabare|zivkapark2017|Laudubray|ykerlogot|RaphaelGauvain|DDavid2017|iflorennesLREM|riottonenmarche|jcleclabart2017|PascalBoisLREM|BCouillard2017|mtamverhaeghe|fbachel1er)/i) {   # remove bad twitter accounts from AN
+        $site =~ s/(twitter.com\/.*)\?.*$/\1/i;
+        # remove bad twitter accounts from AN
+        if ($site !~ /twitter.com\/(valeriebeauvais2017|sttrompille|Darrieussecq|bernarddeflesselles|Marc_Delatte|davidlorion|Josso2017|ColasRoy2017|GCHICHE2017|obono2017|celiadeputee2017|Vincent.Ledoux59|EricDiardDepute|MireilleRobert|Fdumas2017|PascalBois2017|pgoulet58|micheldelpon|DipompeoChris|Valeria_Faure_M|Thourot2017|FabienGoutte|ainakuric2017|FJolivet2017|CaroleBB2017|ludomds|blanchet2017|MaudPetit_LREM|en_marche_77|BPeyrol_REM0303|CFABRE2017|soniakrimi50|NLePeih2017|Haury2017|CRoussel_06|c_vignon3103|philippemichel1|pierrecabare|zivkapark2017|Laudubray|ykerlogot|RaphaelGauvain|DDavid2017|iflorennesLREM|riottonenmarche|jcleclabart2017|PascalBoisLREM|BCouillard2017|mtamverhaeghe|fbachel1er|jenniferdt5915|caroleem54|Sach_He|DidierParis|g_vuilletet|TuffnellLREM17|trastour2017|roserenxavier)/i) {
           $depute{'sites_web'}{$site} = 1;
         }
       }
@@ -291,8 +293,11 @@ foreach $line (split /\n/, $string) {
       if ($mission && $line =~ /^(.*?)\(?\s*((Premier ministre|Ministère|Secrétariat).*)\)?\s*$/) {
         $organisme = trim($1);
         $minist = trim($2);
-        $minist =~ s/ - (Premier min|Minist|Secr).*$//;
-        $minist =~ s/[^a-zàéèêëîïôù]+$//;
+        if ($minist =~ / - (Premier min|Minist|Secr).*$/) {
+          $minist = "Gouvernement";
+        } else {
+          $minist =~ s/[^a-zàéèêëîïôù]+$//;
+        }
         $minist = "Mission temporaire pour le $minist";
         if ($organisme !~ /^$/) {
           $organisme =~ s/^La proposition /Proposition /;
@@ -327,7 +332,11 @@ foreach $line (split /\n/, $string) {
 #On récupère le nom de famille à partir des emails
 $nomdep = $depute{'nom'};
 @noms = split / /, $nomdep;
-if ((join " ", keys %{$depute{'mails'}}) =~ /(\S+)\@assemblee/) {
+if ($nomdep =~ /Alexandra Valetta Ardisson/) {
+  $depute{'nom_de_famille'} = 'Valetta Ardisson';
+} elsif ($nomdep =~ /Florence Lasserre/) {
+  $depute{'nom_de_famille'} = 'Lasserre';
+} elsif ((join " ", keys %{$depute{'mails'}}) =~ /(\S+)\@assemblee/) {
   $login = $1;
   $login =~ s/^[^\.]+\.//;
   for($i = 0 ; $i <= $#noms ; $i++) {

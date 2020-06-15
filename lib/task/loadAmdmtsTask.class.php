@@ -27,7 +27,9 @@ class loadAmdmtsTask extends sfBaseTask {
       "419604" => "Commission des affaires culturelles et de l'éducation",
       "419610" => "Commission des affaires économiques",
       "419865" => "Commission du développement durable et de l'aménagement du territoire",
-      "420120" => "Commission des affaires sociales"
+      "420120" => "Commission des affaires sociales",
+      "757134" => "Commission spéciale",
+      "760148" => "Commission spéciale"
     );
 
     if (is_dir($dir)) {

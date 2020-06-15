@@ -38,5 +38,4 @@
 - name: Configuration logrotate docker json logs
   copy:
     src: docker-logrotate
-	dest: /etc/logrotate.d/docker-json
-
+    dest: /etc/logrotate.d/docker-json

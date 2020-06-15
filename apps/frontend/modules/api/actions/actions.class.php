@@ -186,6 +186,9 @@ class apiActions extends sfActions
     $this->forward404Unless($nom);
     $orga = Doctrine::getTable('Organisme')->findOneByNom($nom);
     $this->forward404Unless($orga);
+    if (!$orga->slug) {
+        throw new sfException("incohérence : groupe sans slug");
+    }
     $request->setParameter('orga', $orga->slug);
     $this->executeListParlementaires($request);
   }

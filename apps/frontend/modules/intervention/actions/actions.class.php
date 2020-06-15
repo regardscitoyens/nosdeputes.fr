@@ -235,7 +235,6 @@ class interventionActions extends sfActions
       if (strlen($loi) < 4) {
         $querytag = PluginTagTable::getObjectTaggedWithQuery('Intervention', array('loi:numero='.sprintf('%04d', $loi)));
         $querytag->andWhere('seance_id = ?', $this->seance->id)->select('id');
-        $ids = array('0' => 1);
         foreach ($querytag->execute(array(), Doctrine::HYDRATE_NONE) as $id) {
                 $ids[$id[0]] = 1;
         }

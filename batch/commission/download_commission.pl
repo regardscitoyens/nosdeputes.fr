@@ -4,32 +4,61 @@ use WWW::Mechanize;
 use HTML::TokeParser;
 
 $legislature = shift || 15;
-$start = shift || '0';
-$count = 50;
 
 $a = WWW::Mechanize->new(autocheck => 0);
-$a->post("http://www2.assemblee-nationale.fr/recherche/resultats_recherche/%28tri%29/date/%28query%29/YTo3OntzOjE6InEiO3M6NDY6InR5cGVEb2N1bWVudDoiY29tcHRlIHJlbmR1IiBhbmQgY29udGVudTpjb21wdGUiO3M6NDoicm93cyI7aToxMDA7czo1OiJzdGFydCI7aTowO3M6Mjoid3QiO3M6MzoicGhwIjtzOjI6ImhsIjtzOjU6ImZhbHNlIjtzOjI6ImZsIjtzOjE5NzoidXJsLHRpdHJlLHVybERvc3NpZXJMZWdpc2xhdGlmLHRpdHJlRG9zc2llckxlZ2lzbGF0aWYsdGV4dGVRdWVzdGlvbix0eXBlRG9jdW1lbnQsc3NUeXBlRG9jdW1lbnQscnVicmlxdWUsdGV0ZUFuYWx5c2UsbW90c0NsZXMsYXV0ZXVyLGRhdGVEZXBvdCxzaWduYXRhaXJlc0FtZW5kZW1lbnQsZGVzaWduYXRpb25BcnRpY2xlLHNvbW1haXJlLHNvcnQiO3M6NDoic29ydCI7czowOiIiO30=");
-$content = $a->content;
-$p = HTML::TokeParser->new(\$content);
-while ($t = $p->get_tag('a')) {
-  $txt = $p->get_text('/a');
-  $curl = $file = $t->[1]{href};
-  if ($txt =~ /compte rendu|e nationale \~/i && $curl !~ /(\/cri\/(2|congres)|\(typeDoc\))/ && $curl =~ /nationale\.fr\/$legislature\//) {
-    $ok = 1;
-    $file =~ s/\//_/gi;
-    $file =~ s/\#.*//;
-    $curl =~ s/[^\/]+$//;
-    $url{$curl} = 1;
-    next if -e "html/$file";
-    print "$file\n";
-    $a->get($t->[1]{href});
-    open FILE, ">:utf8", "html/$file.tmp";
-    print FILE $a->content;
-    close FILE;
-    rename "html/$file.tmp", "html/$file";
-    $a->back();
+$b = WWW::Mechanize->new(autocheck => 0);
+$page = 0;
+while ($page < 20) {
+  $offset = 10 * $page;
+  $url = "http://www2.assemblee-nationale.fr/recherche/resultats_recherche/(offset)/$offset/(tri)/date/(legislature)/$legislature/(query)/eyJxIjoidHlwZURvY3VtZW50OlwiY29tcHRlIHJlbmR1XCIgYW5kIGNvbnRlbnU6YSIsInJvd3MiOjEwLCJzdGFydCI6MCwid3QiOiJwaHAiLCJobCI6ImZhbHNlIiwiZmwiOiJ1cmwsdGl0cmUsdXJsRG9zc2llckxlZ2lzbGF0aWYsdGl0cmVEb3NzaWVyTGVnaXNsYXRpZix0ZXh0ZVF1ZXN0aW9uLHR5cGVEb2N1bWVudCxzc1R5cGVEb2N1bWVudCxydWJyaXF1ZSx0ZXRlQW5hbHlzZSxtb3RzQ2xlcyxhdXRldXIsZGF0ZURlcG90LHNpZ25hdGFpcmVzQW1lbmRlbWVudCxkZXNpZ25hdGlvbkFydGljbGUsc29tbWFpcmUsc29ydCIsInNvcnQiOiIifQ==";
+  $page++;
+
+  $a->post($url);
+  $content = $a->content;
+  $p = HTML::TokeParser->new(\$content);
+  while ($t = $p->get_tag('a')) {
+    $txt = $p->get_text('/a');
+    $curl = $file = $t->[1]{href};
+    if ($txt =~ /compte rendu|e nationale \~/i && $curl !~ /(nale\.fr\/dyn\/c\d+\.asp|\/cri\/(2|congres)|\(typeDoc\))/ && $curl =~ /nationale\.fr\/$legislature\//) {
+      $curl =~ s/(^[\s\t]+|[\s\t]+$)//g;
+      $curl =~ s/[^\/]+$//;
+
+      $file =~ s/(^[\s\t]+|[\s\t]+$)//g;
+      $file =~ s/\//_/gi;
+      $file =~ s/\#.*//;
+      next if -e "html/$file";
+
+      $b->get($t->[1]{href});
+      $text = $b->content;
+
+      if ($text !~ /href="(\/dyn\/opendata\/[^"]+\.html)"/) {
+        print STDERR "WARNING: opendata raw html url not found for $curl\n";
+        next;
+      }
+      $raw_url = "http://www.assemblee-nationale.fr$1";
+      $opendata_id = $raw_url;
+      $opendata_id =~ s/^.*opendata\///;
+      next if -e "raw/$opendata_id";
+
+      print "$file\n";
+      open FILE, ">:utf8", "html/$file.tmp";
+      print FILE $text;
+      close FILE;
+      rename "html/$file.tmp", "html/$file";
+
+      $b->get($raw_url);
+      open FILE, ">:utf8", "raw/$opendata_id.tmp";
+      print FILE $b->content;
+      close FILE;
+      rename "raw/$opendata_id.tmp", "raw/$opendata_id";
+    }
   }
 }
+
+exit(0);
+
+
+# Deprecated code for old legislatures since april 2020
 @url = keys %url;
 
 $lastyear = localtime(time);
@@ -77,6 +106,8 @@ if ($legislature == 13) {
   push (@url, "http://www.assemblee-nationale.fr/14/cr-ceaffcahuzac/12-13/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-ceaffcahuzac/13-14/index.asp");
   push (@url, "http://www.assemblee-nationale.fr/14/cr-cenucleaire/13-14/index.asp");
+} elsif ($legislature == 15) {
+  push (@url, "http://www.assemblee-nationale.fr/15/cr-miaidenf/18-19/index.asp");
 }
 
 $a = WWW::Mechanize->new(autocheck => 0);
@@ -90,6 +121,7 @@ foreach $url (@url) {
     if ($txt =~ /compte rendu|mission/i && $t->[1]{href} =~ /\d\.asp/) {
       $a->get($t->[1]{href});
       $file = $a->uri();
+      $file =~ s/(^[\s\t]+|[\s\t]+$)//g;
       $file =~ s/\//_/gi;
       $file =~ s/\#.*//;
       #$file =~ s/commissions_elargies_cr_c/commissions_elargies_cr_C/;

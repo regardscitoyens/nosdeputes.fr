@@ -1,6 +1,6 @@
 <?php
 
-class tagComponents extends sfComponents 
+class tagComponents extends sfComponents
 {
   public function executeTagcloud() {
     $this->tags = PluginTagTable::getAllTagNameWithCount($this->tagquery, array('model' => $this->model, 'triple' => false, 'min_tags_count' => $this->min_tag, 'limit'=> $this->limit));
@@ -67,13 +67,19 @@ class tagComponents extends sfComponents
   }
 
   public function executeParlementaire() {
+    $qids = Doctrine::getTable('Intervention')->createQuery('i')
+      ->select('i.id')
+      ->where('i.parlementaire_id = ?', $this->parlementaire->id);
+    if (!myTools::isFinLegislature())
+      $qids->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
+    $ids = $qids->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+
     $this->qtag = Doctrine_Query::create()
-      ->from('Tagging tg, tg.Tag t, Intervention i')
-      ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.id = tg.taggable_id');
-    if (!myTools::isFinLegislature()) {
-      $this->qtag = $this->qtag->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
-    }
+      ->from('Tagging tg, tg.Tag t')
+      ->where('tg.taggable_model = ?', 'Intervention');
+    if (count($ids))
+      $this->qtag->andWhereIn('tg.taggable_id', $ids);
+    else $this->qtag->andWhere('FALSE');
   }
 
   public function executeGlobalActivite() {
@@ -86,11 +92,10 @@ class tagComponents extends sfComponents
       ->orderBy('i.date DESC')
       ->limit(5000)
       ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
-//      ->fetchArray();
 
     $this->itag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t')
-      ->andwhere('tg.taggable_model = ?', 'Intervention')
-      ->whereIn('tg.taggable_id', $ids);
+      ->where('tg.taggable_model = ?', 'Intervention')
+      ->andWhereIn('tg.taggable_id', $ids);
   }
 }

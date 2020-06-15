@@ -12,13 +12,14 @@ all:
   allow_autoclean_solr: false
 
   groupes_actuels: >
-    ["LFI", "GDR", "NG", "LREM", "MODEM", "UAI", "LR", "NI"]
+    ["LFI", "GDR", "SOC", "LREM", "MODEM", "UAI", "LR", "NI"]
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
   groupes_infos: >
     [
     "La France Insoumise / LFI / 204,42,70 / France Insoumise / insoumise",
     "Gauche Démocrate et Républicaine / GDR / 255,30,30 / PCF & ultramarins / gauche\s*d.*mocrate",
     "Nouvelle Gauche / NG / 255,50,190 / PS et divers gauche / nouvelle",
+    "Socialistes et apparentés / SOC / 255,50,190 / PS et divers gauche / socialiste",
     "La République En Marche / LREM / 232,197,5 / En Marche / marche",
     "Mouvement Démocrate et apparentés / MODEM / 247,138,13 / MoDem / mouvement",
     "Les Constructifs : Républicains, UDI, Indépendants / LC / 30,180,255 / LR proches d'En Marche & UDI / constructif",
@@ -27,7 +28,7 @@ all:
     "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (FN, Divers droite, PRG...) / inscrit|non\s*inscrit"
     ]
   groupes_proximite: >
-    ["LFI / GDR", "LFI / NG", "GDR / NG", "NG / LREM", "LREM / MODEM", "LREM / UAI", "MODEM / UAI", "UAI / LR", "LR / NI"]
+    ["LFI / GDR", "LFI / SOC", "GDR / SOC", "SOC / LREM", "LREM / MODEM", "LREM / UAI", "MODEM / UAI", "UAI / LR", "LR / NI"]
 
   commissions_permanentes: >
     [

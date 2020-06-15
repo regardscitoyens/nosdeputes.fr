@@ -2,6 +2,7 @@
 
 - name: Installation docker
   include: docker.yml
+  when: dont_touch_my_docker == false
 
 - name: Creation user '{{ cpc_user }}'
   user:
@@ -29,6 +30,7 @@
     repo: '{{ cpc_repo }}'
     dest: '{{ cpc_home }}/repo'
     version: '{{ cpc_version }}'
+    force: '{{ cpc_force_git }}'
 
 - name: Permissions repo git
   file:
@@ -46,6 +48,7 @@
   with_items:
     - cache
     - lib/vendor/SolrServer/solr/data
+    - lib/vendor/SolrServer/solr/conf
     - log
     - web/images/tmp/xspchart
 
@@ -180,6 +183,7 @@
 - name: Attente container MySQL
   wait_for:
     port: '{{ cpc_port_mysql }}'
+    delay: 5
     connect_timeout: 5
     timeout: 30
 
@@ -187,17 +191,18 @@
   include: roles/cpc.exec/tasks/main.yml
   vars:
     command: bin/generate_routing.sh
+  when: not cpc_senat
 
 - name: Génération schéma base de données
   include: roles/cpc.exec/tasks/main.yml
   vars:
     command: php symfony doctrine:build --all --no-confirmation
 
+- name: Import dump
+  include: dump.yml
+  when: cpc_dump is defined
+
 - name: Vidage cache
   include: roles/cpc.exec/tasks/main.yml
   vars:
     command: php symfony cc
-
-- name: Import dump
-  include: dump.yml
-  when: cpc_dump is defined

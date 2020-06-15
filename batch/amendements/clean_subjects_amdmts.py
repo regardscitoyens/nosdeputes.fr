@@ -38,12 +38,14 @@ clean_subject_amendements_regexp = [(re.compile(reg), res) for (reg, res) in [
     (r'\s*\([^)]*\)', ''),
     (r'\s*\(.*$', ''),
     (r'^(\d)', r'article \1'),
+    (r'^(art(.|icle) )+', r'article '),
     (r'articles', 'article'),
     (r'art(s|\.|icle|\s)*(\d+|liminaire)', r'article \2'),
     (ur"(après|avant)[l'\s]+article", r"\1 l'article"),
     (ur"(après|avant) (titre|chapitre|tome)", r"\1 le \2"),
     (r'quinquie\b', r'quinquies'),
     (r'(quinquies|ter)([ab])', r'\1 \2'),
+    (r' ([a-z]*)\?([a-z]*)$', r' \1i\2'),
     (r'(\d+e?r? )(a?[a-z]{0,2})$', lambda x: x.group(1) + x.group(2).upper()),
     (r'(\d+e?r? )([a-z]a+)$', lambda x: x.group(1) + x.group(2).upper()),
     (r'(\d+e?r? \S+ )([a-z]+)$', lambda x: x.group(1) + x.group(2).upper()),
@@ -145,7 +147,11 @@ if __name__ == "__main__":
         stripped = line.strip()
         if not stripped:
             break
-        am = json.loads(line)
+        try:
+            am = json.loads(line)
+        except Exception as e:
+            print >> sys.stderr, "%s %s while reading %s" % (type(e), e, line)
+            continue
         am['sujet'] = clean_subject(am['sujet'], source=am['source'])
 
         print json.dumps(am, ensure_ascii=False).encode('utf-8')

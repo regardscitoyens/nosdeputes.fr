@@ -28,7 +28,7 @@ else $width2 = $height*$ratio;
 $iorig = imagecreatefromjpeg($file);
 $ih = imagecreatetruecolor($work_height*$ratio, $work_height);
 if (!$color && ((!$parlementaire->isEnMandat() && !myTools::isFinlegislature()) || preg_match('/décè/i', $parlementaire->getAnciensMandats())))
-  self::imagetograyscale($iorig);
+  parlementaireActions::imagetograyscale($iorig);
 imagecopyresampled($ih, $iorig, 0, 0, max(0, ($width - $width2)/2), max(0, ($height - $height2)/2), $work_height*$ratio, $work_height, $width2, $height2);
 $width = $work_height*$ratio;
 $height = $work_height;

@@ -33,13 +33,18 @@ class AmendementTable extends Doctrine_Table
   }
 
   public function findByCleanedSource($source) {
+    $sources = array();
+    $sources[] = $source;
     $query = $this->createQuery('a');
     if (strpos($source, '/AN/') !== false) {
-      $source2 = preg_replace('/\/AN\//', '/', $source);
-      $query->whereIn('a.source', array($source, $source2));
-    } else {
-      $query->where('a.source = ?', $source);
+      $sources[] = preg_replace('/\/AN\//', '/', $source);
     }
+    if (strpos($source, '/dyn/') !== false) {
+      $sources[] = preg_replace('/\/dyn\//', '/', $source).".asp";
+    } else {
+      $sources[] = preg_replace('/nationale.fr\/(.*)\.asp/', 'nationale.fr/dyn/\\1', $source);
+    }
+    $query->whereIn('a.source', $sources);
     return $query->execute();
   }
 

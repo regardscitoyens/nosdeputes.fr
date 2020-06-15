@@ -84,7 +84,9 @@ class updateDeputesTask extends sfBaseTask
               $parl->autres_mandats = $json->autresmandats;
             if (count($json->anciensmandats))
               $parl->anciens_autres_mandats = $json->anciensmandats;
-            if ($json->groupe && !$json->fin_mandat)
+            $parl->debut_mandat = $json->debut_mandat;
+            $parl->fin_mandat = $json->fin_mandat;
+            if ($json->groupe && (!$parl->fin_mandat || $parl->fin_mandat < $parl->debut_mandat))
               $parl->groupe = $this->splitArrayJson($json->groupe);
             if ($json->parti)
               $parl->parti = $json->parti;
@@ -93,8 +95,6 @@ class updateDeputesTask extends sfBaseTask
             $parl->extras = (count($json->extras) ? $this->splitArrayJson($json->extras) : array());
             if (count($json->groupes))
               $parl->groupes = $this->splitArrayJson($json->groupes);
-            $parl->debut_mandat = $json->debut_mandat;
-            $parl->fin_mandat = $json->fin_mandat;
             if ($json->id_institution)
               $parl->id_an = $json->id_institution;
             if (count($json->mails))

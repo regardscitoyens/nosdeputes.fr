@@ -12,6 +12,7 @@ Une API a été développée pour offrir un accès Open Data simplifié aux donn
 - [Données d'activité des parlementaires](#données-dactivité-des-parlementaires)
 - [Documents et débats parlementaires](#documents-et-débats-parlementaires)
 - [Résultats du moteur de recherche](#résultats-du-moteur-de-recherche)
+- [Outils d'accès simplifié à l'API](#outils-daccès-simplifié-à-lapi)
 - [Librairie Python CPC-API](#librairie-python-cpc-api)
 - [ParlAPI.fr : API sur l'OpenData officielle de l'AN et du Sénat](#parlapifr--api-sur-lopendata-officielle-de-lan-et-du-sénat)
 - [Exemples de réutilisations basées sur l'API](#exemples-de-réutilisations-basées-sur-lapi)
@@ -83,7 +84,7 @@ L'ensemble des données de ces différents sites est par ailleurs mis à disposi
 
     *Remarque : les groupes politiques sont également accessibles ainsi via leur `slug`, par exemple pour les non-inscrits : https://www.nosdeputes.fr/organisme/deputes-non-inscrits/xml*
 
-  *Note :* par défaut l'API ne renvoie que les députés actuellement membres du groupe ou de l'organisme souhaité. À partir de la 15ème législature il est possible d'inclure également les anciens membres de l'organisme en ajoutant `?includePast=true` à la fin de l'url. Les données renvoient alors également deux champs `fin_fonction` et `groupe_a_fin_fonction` indiquant la date de fin de la fonction et le groupe politique du député à cette date. Par exemple pour la commission des affaires européennes : https://www.nosdeputes.fr/organisme/commission-des-affaires-economiques/xml?includePast=true
+  *Note :* par défaut l'API ne renvoie que les députés actuellement membres du groupe ou de l'organisme souhaité. À partir de la 15<sup>ème</sup> législature il est possible d'inclure également les anciens membres de l'organisme en ajoutant `?includePast=true` à la fin de l'url. Les données renvoient alors également deux champs `fin_fonction` et `groupe_a_fin_fonction` indiquant la date de fin de la fonction et le groupe politique du député à cette date. Par exemple pour la commission des affaires européennes : https://www.nosdeputes.fr/organisme/commission-des-affaires-economiques/xml?includePast=true
 
 
 ## Détails de chaque parlementaire
@@ -109,6 +110,8 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
 ## Données d'activité des parlementaires
 
+**Attention :** le nommage de l'indicateur d'activité *semaines_presence* est trompeur : il se réfère en réalité à l'indicateur *semaines d'activité* qui ne correspond pas à une mesure exhaustive de la présence, non mesurable, mais à un ensemble de marqueurs d'activité concrète ([lire la FAQ pour plus de détails](https://www.nosdeputes.fr/faq#post_27)).
+
 - **Synthèse des 12 derniers mois ou de toute la législature :**
 
   *(telle qu'affichée sur la page [synthèse](https://www.nosdeputes.fr/synthese)*
@@ -119,9 +122,14 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
 - **Synthèse mensuelle :**
 
-  *Attention : seuls les parlementaires ayant manifesté une activité sur la période sont renvoyés*
+  Il est possible de récupérer les chiffres de la synthèse pour l'ensemble des députés actifs pour un mois donné en indiquant le mois concerné selon le format AAAAMM.
   
-  Exemple pour le mois d'avril 2016 : https://www.nosdeputes.fr/synthese/201604/xml
+  Exemple pour le mois d'avril 2018 : https://www.nosdeputes.fr/synthese/201804/xml
+  
+   **Attention :**
+   
+   - seuls les parlementaires ayant manifesté une activité sur la période sont renvoyés ;
+   - le nommage des indicateurs d'interventions en hémicycle est légèrement ambigu :  *hemicycle_interventions_courtes* se réfère aux interventions de moins de 20 mots, et *hemicycle_interventions* à celles de 20 mots et plus. Pour connaître le nombre d'interventions total du parlementaire sur le mois donné, il faut donc sommer les deux indicateurs.
 
 
 ## Documents et débats parlementaires
@@ -132,13 +140,15 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Les résultats de la recherche renvoient les urls des données détaillées de chaque élément accessible via l'API.
 
-- **Liste des dossiers législatifs** (à partir de la 15ème législature uniquement pour l'Assemblée) :
+  *Attention : l'Assemblée nationale n'ayant commencé à rendre publics les amendements déposés lors de l’examen des textes en commission qu'à partir de mai 2013 (un an après le début de la 14<sup>ème</sup> législature), seuls ceux déposés en hémicycle sont disponibles pour la 13<sup>ème</sup> législature et le début de la 14<sup>ème</sup>.*
+
+- **Liste des dossiers législatifs** (à partir de la 15<sup>ème</sup> législature uniquement pour l'Assemblée) :
 
   - Triés dans l'ordre alphabétique : https://www.nosdeputes.fr/15/dossiers/nom/xml
   - Triés du plus récent au plus ancien : https://www.nosdeputes.fr/15/dossiers/date/xml
   - Triés du plus débattu au moins débattu : https://www.nosdeputes.fr/15/dossiers/plus/xml
 
-- **Détails d'un dossier législatif** (à partir de la 15ème législature uniquement pour l'Assemblée) :
+- **Détails d'un dossier législatif** (à partir de la 15<sup>ème</sup> législature uniquement pour l'Assemblée) :
 
   Plus de détails sont disponibles pour chaque dossier : listes des documents associés, des séances, des intervenants et des sous-sections.
 
@@ -152,7 +162,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Les amendements sont disponibles à partir des numéros des lois correspondantes.
 
-  - À l'Assemblée nationale, par exemple pour le projet de loi initial relatif à la transparence de la vie publique (n° 1005) sous la 14ème législature : https://www.nosdeputes.fr/14/amendements/1005/xml
+  - À l'Assemblée nationale, par exemple pour le projet de loi initial relatif à la transparence de la vie publique (n° 1005) sous la 14<sup>ème</sup> législature : https://www.nosdeputes.fr/14/amendements/1005/xml
 
     *Attention pour l'Assemblée à bien ajuster également le numéro de législature.*
 
@@ -168,7 +178,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Comme pour les amendements, les débats sont accessibles par numéro de loi du texte correspondant. L'accès se fait en deux temps : tout d'abord en obtenant la liste des séances correspondantes, puis en accédant à la liste des interventions pour chaque séance.
 
-  Les exemples ci-dessous s'appliquent au projet de loi initial sur la transparence discuté par l'Assemblée sous la 14ème législature.
+  Les exemples ci-dessous s'appliquent au projet de loi initial sur la transparence discuté par l'Assemblée sous la 14<sup>ème</sup> législature.
 
   - Remarques :
 
@@ -246,13 +256,20 @@ Tous les résultats du [moteur de recherche](https://www.nosdeputes.fr/recherche
   *(par périodes d'un mois si la période considérée dépasse 90 jours, par jour sinon)*
 
 
-## Librairie Python [CPC-API](https://pypi.python.org/pypi/cpc_api)
+## Outils d'accès simplifié à l'API
 
-Certains des points d'entrée de cette API sont accessibles de manière simplifiée en langage Python à l'aide du paquet pip [`cpc-api`](https://pypi.python.org/pypi/cpc_api) dont le [code source est disponible ici](https://github.com/regardscitoyens/cpc-api).
+- **Librairie Python [CPC-API](https://pypi.python.org/pypi/cpc_api)**
 
-## Module PowerShell [RegardsCitoyensPS](https://github.com/Stephanevg/RegardsCitoyenPS)
+  Certains des points d'entrée de cette API sont accessibles de manière simplifiée en langage Python à l'aide du paquet pip [`cpc-api`](https://pypi.python.org/pypi/cpc_api) dont le [code source est disponible ici](https://github.com/regardscitoyens/cpc-api).
 
-L'API est également accessible depuis PowerShell (sous Windows, MAC & Linux) à l'aide du module [`RegardsCitoyensPS`](https://github.com/Stephanevg/RegardsCitoyenPS) réalisé indépendamment par [@StephaneVG](https://github.com/Stephanevg). Plus de détails sont disponibles sur la page du projet.
+- **Module PowerShell [RegardsCitoyensPS](https://github.com/Stephanevg/RegardsCitoyenPS)**
+
+  L'API est également accessible depuis PowerShell (sous Windows, MAC & Linux) à l'aide du module [`RegardsCitoyensPS`](https://github.com/Stephanevg/RegardsCitoyenPS) réalisé indépendamment par [@StephaneVG](https://github.com/Stephanevg). Plus de détails sont disponibles sur la page du projet.
+
+- **API GraphQL [Tricoteuses-API-NosDeputes](https://framagit.org/tricoteuses/tricoteuses-api-nosdeputes)**
+
+  L'API est également utilisable sous la forme d'une API GraphQL grâce au travail indépendant d'[Emmanual Raviart](https://framagit.org/eraviart).
+
 
 ## [ParlAPI.fr](http://parlapi.fr) : API sur l'OpenData officielle de l'AN et du Sénat
 
@@ -282,7 +299,7 @@ Nous développons donc un accès simplifié par une API à ces jeux de données 
 
 ## Conditions d'utilisation
 
-Les informations diffusées sur NosDéputés.fr sont disponibles sous [licence CC-BY-SA](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/) pour les contenus et en OpenData sous [licence ODbL](http://www.vvlibri.org/fr/licence/odbl/10/fr/legalcode) pour les données.
+Les informations diffusées sur NosDéputés.fr sont disponibles sous [licence CC-BY-SA](http://creativecommons.org/licenses/by-nc-sa/3.0/fr/) pour les contenus et en OpenData sous [licence ODbL](https://vvlibri.org/fr/licence/odbl-10/legalcode/unofficial) pour les données.
 
 Cela signifie que vous êtes libre de les réutiliser, modifier et recouper dans la mesure où vous indiquez leur source (NosDéputés.fr (ou NosSénateurs.fr) par Regards Citoyens à partir de l'Assemblée nationale (ou du Sénat) et du Journal Officiel) et que vous republiez de votre côté les éventuelles données modifiées servant à une réutilisation publiée.
 

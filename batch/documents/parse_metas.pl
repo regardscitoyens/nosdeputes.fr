@@ -116,7 +116,7 @@ $date1 = $3.'-'.$2.'-'.sprintf('%02d', $1);
 }
 if ($string =~ /<meta name="URL_DOSSIER"([^>]+)>/) {
   $line = $1;
-  $line =~ s/^.*content="[^"]+\/([^"]+)\.asp(#[^"]+)?".*$/\1/;
+  $line =~ s/^.*content="[^"]+\/([^"]+?)(\.asp)?(#[^"]+)?".*$/\1/;
   $dossier = $line;
 }
 if ($string =~ /<meta name="TYPE_DOCUMENT"([^>]+)>/) {
@@ -210,6 +210,7 @@ $string =~ s/Recherche \| Aide \| Plan du site Accueil \&gt\; Documents parlemen
 $string =~ s/_____ ASSEMBL'E NATIONALE CONSTITUTION DU 4 OCTOBRE 1958 TREIZIÈME LÉGISLATURE//i;
 $string =~ s/__*//i;
 $string =~ s/\s*var _gaq =.*$//;
+$string =~ s/\s*© Assemblée nationale.*$//;
 $string =~ s/\s*#header.*?Accueil\s*&gt; Documents (dossier correspondant|parlementaires\s*&gt;\s*Projets de loi)\s*/ /;
 
 if ($no_text) { $string = ""; }

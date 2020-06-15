@@ -19,6 +19,7 @@ class rateActions extends sfActions
   */
   public function executeRateIt(sfWebRequest $request)
   {
+    $this->forward404Unless($request->getReferer());
     if (!$this->getUser()->isAuthenticated()) {
       $this->getUser()->setFlash('notice', 'Vous devez être identifié pour donner une opinion sur cet élement');
       return $this->redirect($request->getReferer());
@@ -29,7 +30,7 @@ class rateActions extends sfActions
     $type = $request->getParameter('object_type');
     $object = Doctrine::getTable($type)->find($id);
     $this->forward404Unless($object);
-    
+
     $rate = new Rate();
     $rate->rate = self::$rate_conversion[$note];
     $rate->object_type = $object;

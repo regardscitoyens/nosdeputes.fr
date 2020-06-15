@@ -2,6 +2,7 @@
 
 $file = shift;
 use HTML::TokeParser;
+use HTML::Entities;
 use File::stat;
 use Date::Format;
 require ("../common/common.pm");
@@ -13,7 +14,7 @@ $source =~ s/^.*(http.*)$/\1/i;
 $source =~ s/_-_/\//g;
 
 # Récupération des informations identifiantes à partir de l'url plus sure :
-if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
+if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})(\.asp)?$/i) {
   $amdmt{'legislature'} = $1;
   if ($2-$3 == 0) {
     $amdmt{'loi'} = $3+0;
@@ -25,21 +26,22 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   } else {
     $amdmt{'numero'} = (10000*$lettre+$num);
   }
-} elsif ($source =~ /(\d{2})\/amendements\/(TA\d+|\d{4})([A-Z])?\/?(AN|[A-Z_-]+\d*)?\/([A-Z]+)?(\d+)\./i) {
+} elsif ($source =~ /(\d{2})\/amendements\/(TA\d+|\d{4})([A-Z])?\/?(AN|[A-Z_-]+\d*)?\/([A-Z]+)?(\d+)(\.asp)?$/i) {
   $amdmt{'legislature'} = $1;
   $amdmt{'loi'} = $2;
   $lettre = $3;
   $num = $6+0;
   if ($4 ne "AN") {
     $commission = $4;
-    if ($5) {
-      $tetenum = $5;
-    } else {
-      $tetenum = $4;
-      $tetenum =~ s/[^A-Z]//g;
-    }
-    $num = $tetenum.$num;
   }
+  $tetenum = "";
+  if ($5) {
+    $tetenum = $5;
+  } elsif ($4 ne "AN") {
+    $tetenum = $4;
+    $tetenum =~ s/[^A-Z]//g;
+  }
+  $num = $tetenum.$num;
   if ($amdmt{'loi'} !~ /TA/) {
     $amdmt{'loi'} += 0;
   }
@@ -47,25 +49,32 @@ if ($source =~ /(\d{2})\/amendements\/(\d{4})\/(\d{4})(\d|[A-Z])(\d{4})\./i) {
   $amdmt{'numero'} .= uc($lettre);
 }
 
+# rewrite new AN's urls
+$source =~ s/(nationale.fr\/)(\d)/\1dyn\/\2/;
+$source =~ s/\.asp$//;
+
 open(FILE, $file) ;
 @string = <FILE>;
 $string = "@string";
 #utf8::decode($string) if ($string =~ /charset=UTF-?8/i);
+$string =~ s/&amp;/&/g;
+$string =~ s/&apos;/'/g;
+$string =~ s/(&#160;| )+/ /g;
 $string =~ s/(\<p class="presente".*)\s*\<br[\/]?\>\s*[\n]?\s*(.*)/\1, \2/g;
-$string =~ s/\<br\>.*\n//g;
+#$string =~ s/\<br\>.*\n//g;
 $string =~ s/<!--[^!]*!\[endif\]-->//g;
-$string =~ s/(&#8217;|’)/'/g;
-$string =~ s/&#339;/oe/g;
-$string =~ s/&#8211;/-/g;
-$string =~ s/&deg;/°/g;
-$string =~ s/&Eacute;/É/g;
-$string =~ s/&eacute;/é/g;
-$string =~ s/&Egrave;/È/g;
-$string =~ s/&egrave;/è/g;
-$string =~ s/&Agrave;/À/g;
-$string =~ s/&agrave;/à/g;
-$string =~ s/&Ccedil;/Ç/g;
-$string =~ s/&ccedil;/ç/g;
+#$string =~ s/(&#8217;|’)/'/g;
+#$string =~ s/&#339;/oe/g;
+#$string =~ s/&#8211;/-/g;
+#$string =~ s/&deg;/°/g;
+#$string =~ s/&Eacute;/É/g;
+#$string =~ s/&(#233|eacute);/é/g;
+#$string =~ s/&Egrave;/È/g;
+#$string =~ s/&egrave;/è/g;
+#$string =~ s/&Agrave;/À/g;
+#$string =~ s/&agrave;/à/g;
+#$string =~ s/&Ccedil;/Ç/g;
+#$string =~ s/&ccedil;/ç/g;
 $string =~ s/\\//g;
 close FILE;
 
@@ -79,9 +88,9 @@ sub numero {
     $line =~ s/^.*content="//;
     $line =~ s/".*$//;
     $line =~ s/[\(\)]//g;
-    if ($line =~ /^\s*(\d+)\s+([1-9a-zA-Z].*)$/i) {
+    if ($line =~ /^\s*((I+-)?\d+)\s+([1-9a-zA-Z].*)$/i) {
       # $amdmt{'numero'} = $1;
-	$suite = $2;
+	$suite = $3;
 	if (!$suite =~ /rect/i) {
 	    $amdmt{'rectif'} = 0;
 	} else {
@@ -206,6 +215,7 @@ sub identiques {
 $string =~ s/\r//g;
 $string =~ s/\t+/ /g;
 $string =~ s/(<\/p>)/\1\n/g;
+$string =~ s/(<meta[^>]*>)/\1\n/g;
 $string =~ s/ +\n+/\n/g;
 $string =~ s/\n+ +/\n/g;
 $string =~ s/&nbsp;| / /g;
@@ -232,11 +242,11 @@ foreach $line (split /\n/, $string)
 	    $line =~ s/^.*content="//i;
 	    $line =~ s/"\s*(name|\>).*$//;
 	    $amdmt{'sujet'} = $line;
-	} elsif ($line =~ /name="SORT_EN_SEANCE"/i) {
+	} elsif ($line =~ /name="SORT(_EN_SEANCE)?"/i) {
 	    $line =~ s/^.*content="//i;
 	    $line =~ s/".*$//;
 	    sortseance();
-	} elsif ($line =~ /name="NUM_AM(TXT|ENDG?)"/i) {
+	} elsif ($line =~ /name="NUM_AMTXT"/i) {
 	    numero();
 	} elsif ($line =~ /name="AUTEUR_ID".*content="\s*([^"]*)\s*"/) {
 	    $firstauteur = $1;
@@ -245,6 +255,8 @@ foreach $line (split /\n/, $string)
 	}
   } elsif ($line =~ /date_?amend.*([0-9]+e?r? \S+ [0-9]+)\D/i && !$amdmt{'date'}) {
            $amdmt{'date'} = join '-', datize($1);
+  } elsif ($line =~ /Sous réserve de son traitement par les services de l'Assemblée nationale/i) {
+    next;
   } elsif ($line =~ /class="amddispotitre"/i && !$amdmt{'sujet'}) {
             $line =~ s/<[^>]+>//g;
             $amdmt{'sujet'} = $line;
@@ -257,6 +269,8 @@ foreach $line (split /\n/, $string)
 	}
   } elsif ($presente == 1 && $line =~ /class="tirets"/i) {
 	$presente = 2;
+  } elsif ($line =~ /<div id="modal-gestion-cookies"|<footer/ && $texte > 0) {
+    $texte = 0;
   }
   if ($line =~ /(NOEXTRACT|EXPOSE)/i) {
 	if (!$amdmt{'numero'} && ($line =~ /class="numamendement"/i || $line =~ /class="titreamend".*num_partie/i)) {
@@ -339,7 +353,7 @@ foreach $line (split /\n/, $string)
 	}
   } elsif ($presente == 1 && $line =~ /<(p style=".*text-indent:.*|td[^>]* align="center"[^>]*)>.*(M[\.Mml]|Le [Gg]ouvern)/ && $line !~ /( adopt.*des\s*amendements\s*identiques|rapport.*M[\.Mml])/) {
 	auteurs();
-  } elsif ($line =~ /<p style=".*text-indent:/i) {
+  } elsif ($line =~ /<p style="(text-align: justify;">|.*text-indent:)/i) {
         irrecevable();
 	    texte();
   } elsif ($line =~ /(\s*<(div|p)[^>]*>\s*)+(.*)(\s*<\/(div|p)>\s*)+/i && $texte >= 1) {
@@ -366,6 +380,10 @@ if ($num_ident > 0) {
 
 if (!$amdmt{'auteurs'}) {
   $amdmt{'auteurs'} = $tmpauteurs;
+}
+if ($amdmt{'auteurs'} =~ /&#\d+;/) {
+  $amdmt{'auteurs'} = decode_entities($amdmt{'auteurs'});
+  utf8::encode($amdmt{'auteurs'});
 }
 $amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
 $amdmt{'auteurs'} =~ s/([a-z])\s+(M[\.Mml])/\1, \2/g;
@@ -404,6 +422,15 @@ if ($commission) {
   if ($amdmt{'parent'} && $amdmt{'parent'} =~ /^\d/) {
     $amdmt{'parent'} = $tetenum.$amdmt{'parent'};
   }
+}
+
+if ($amdmt{'texte'} =~ /&#\d+;/) {
+  $amdmt{'texte'} = decode_entities($amdmt{'texte'});
+  utf8::encode($amdmt{'texte'});
+}
+if ($amdmt{'expose'} =~ /&#\d+;/) {
+  $amdmt{'expose'} = decode_entities($amdmt{'expose'});
+  utf8::encode($amdmt{'expose'});
 }
 
 print '{"source": "'.$source.'", "legislature": "'.$amdmt{'legislature'}.'", "loi": "'.$amdmt{'loi'}.'", "numero": "'.$amdmt{'numero'}.'", "serie": "'.$amdmt{'serie'}.'", "rectif": "'.$amdmt{'rectif'}.'", "parent": "'.$amdmt{'parent'}.'", "date": "'.$amdmt{'date'}.'", "auteur_reel": "'.$firstauteur.'", "auteurs": "'.$amdmt{'auteurs'}.'", "sort": "'.$amdmt{'sort'}.'", "sujet": "'.$amdmt{'sujet'}.'", "texte": "'.$amdmt{'texte'}.'", "expose": "'.$amdmt{'expose'}.'"'.$extra." } \n";

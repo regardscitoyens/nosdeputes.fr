@@ -31,7 +31,7 @@ if ($page === "home") {
   }
   echo $divclass.'<div class="liste">';
   $listimp = array_keys($parlementaires);
-
+  rsort($listimp);
   foreach ($listimp as $i) {
     $ndep += count($parlementaires[$i]);
     echo '<div class="list_table">';

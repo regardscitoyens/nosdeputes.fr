@@ -1,0 +1,18 @@
+#!/bin/bash
+
+. $(echo $0 | sed 's/[^\/]*$//')db.inc
+cd $PATH_APP
+
+source bin/db.inc
+
+batch/scrutin/parse_scrutins.py $LEGISLATURE
+
+# Check missing scrutins
+ls batch/scrutin/scrutins/scrutin_15_0*.sha1 | sed 's/^.*scrutin_15_0\+//' | sed 's/.sha1//' > /tmp/numscrutins
+seq 1 `tail -1 /tmp/numscrutins` > /tmp/allscrutins
+if diff /tmp/{num,all}scrutins | grep . > /dev/null; then
+  echo "Some scrutins are missing from OpenData:"
+  diff /tmp/{num,all}scrutins | grep '>' | sed 's|> |- http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/15/(num)/|'
+fi
+
+php symfony load:Scrutins

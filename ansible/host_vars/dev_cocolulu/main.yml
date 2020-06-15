@@ -20,9 +20,9 @@ cpc_memcached_limit: 100M
 cpc_spool_mails: false
 cpc_solr: true
 
-cpc_legislature: 15
-cpc_debut_legislature: '2017-06-21'
-cpc_fin_legislature: false
-
-cpc_host_prev: 2012.nosdeputes.fr
-cpc_host_next:
+cpc_leg_options:
+  legislature: 15
+  debut_legislature: '2017-06-21'
+  fin_legislature: false
+  host_prev: 2012.nosdeputes.fr
+  host_next:

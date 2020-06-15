@@ -14,7 +14,7 @@ class commentaireActions extends sfActions
   public function executePost(sfWebRequest $request)
   {
     $redirect_url = array('Intervention' => '@intervention?id=', 'Amendement' => '@amendement_id?id=', 'QuestionEcrite' => '@question_id?id=', 'ArticleLoi' => '@loi_article_id?id=', 'Alinea' => '@loi_alinea?id=', 'Texteloi' => '@document?id=');
-    $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement déposé", 'QuestionEcrite' => "À propos d'une question écrite d");
+    $about = array('Intervention' => "Suite aux propos d", 'Amendement' => "Au sujet d'un amendement publié", 'QuestionEcrite' => "À propos d'une question écrite d");
 
     $this->type = $request->getParameter('type');
     $this->id = $request->getParameter('id');

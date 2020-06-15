@@ -95,13 +95,16 @@ class parlementaireActions extends sfActions
         $this->main_fonction = ucfirst($resp->fonction);
     }
 
-    $this->anciens_mandats = array();
+    $anciens_mandats = array();
     foreach (unserialize($this->parlementaire->getAnciensMandats()) as $m)
-      if (preg_match("/^(.*) \/ (.*) \/ (.*)$/", $m, $match)) {
-        if ($match[2] != "")
-          $this->anciens_mandats[] = ucfirst($this->parlementaire->getParlFonction())." du $match[1] au $match[2] ($match[3])";
+      if (preg_match("#^((\d+)/(\d+)/(\d+)) / (.*) / (.*)$#", $m, $match)) {
+        if ($match[5] != "")
+          $anciens_mandats[] = "$match[4]$match[3]$match[2]".ucfirst($this->parlementaire->getParlFonction())." du $match[1] au $match[5] ($match[6])";
       }
-    rsort($this->anciens_mandats);
+    rsort($anciens_mandats);
+    $this->anciens_mandats = array();
+    foreach ($anciens_mandats as $m)
+      $this->anciens_mandats[] = substr($m, 8);
   }
 
   public function executePreview(sfWebRequest $request) {
@@ -270,6 +273,18 @@ class parlementaireActions extends sfActions
       ->groupBy('o.id')
       ->orderBy('o.created_at')
       ->fetchArray();
+    $ids = array();
+    foreach ($this->organismes as $o)
+      $ids[] = $o['id'];
+    $this->old_organismes = Doctrine_Query::create()
+      ->select('o.nom, o.slug, count(distinct s.id) as reunions')
+      ->from('Organisme o')
+      ->leftJoin('o.Seances s')
+      ->where('o.type = ?', $this->type)
+      ->andWhereNotIn('o.id', $ids)
+      ->groupBy('o.id')
+      ->orderBy('o.created_at')
+      ->fetchArray();
     $this->human_type = $this->organisme_types[$this->type];
     $this->title = "Liste des ".$this->human_type;
     myTools::setPageTitle($this->title, $this->response);
@@ -320,6 +335,8 @@ class parlementaireActions extends sfActions
         if ($depute->fin_fonction)
           $imp -= 100;
         else if (!preg_match('/[âa]ge$/i', $depute->fonction)) $this->total++;
+        if (preg_match('/[âa]ge$/i', $depute->fonction))
+          $imp -= 300;
         if (isset($this->parlementaires[$imp])) $this->parlementaires[$imp][] = $depute;
         else $this->parlementaires[$imp] = array($depute);
       }
@@ -408,7 +425,7 @@ class parlementaireActions extends sfActions
       $this->check = 'legislature';
     else {
       $this->check = 'lastyear';
-      $mois = min(12, $this->parlementaire->getNbMois(array()));
+      $mois = min(12, $this->parlementaire->getNbMois(array(), true));
       $this->mois = ($mois < 2 ? " premier" : "s $mois ".($mois < 12 ? "prem" : "dern")."iers");
     }
     if ($this->session == $this->check) {

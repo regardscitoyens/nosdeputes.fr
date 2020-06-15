@@ -6,6 +6,7 @@ Sous une distribution type Ubuntu, installer les packages suivants :
 
 ```bash
 sudo apt-get install git
+sudo apt-get install tasksel
 sudo tasksel install lamp-server php5-cli
 sudo apt-get install phpmyadmin # optionnel mais recommandé
 sudo apt-get install imagemagick php5-imagick # Pour la carte des circonscriptions
@@ -16,8 +17,8 @@ Pour le parsing :
 
 ```bash
 sudo aptitude install libwww-mechanize-perl libfile-path-perl
-sudo aptitude install libxml2-devel libxslt-devel python-devel
-sudo pip install bs4 lxml
+sudo aptitude install libxml2-devel libxslt-devel python-devel python-pip
+sudo pip install bs4 lxml html5lib requests
 ```
 
 ## Installation
@@ -132,7 +133,7 @@ sudo pip install bs4 lxml
     sudo a2enmod rewrite
     ```
 
- * Pour accéder en local à votre instance de développement sur my.cpc.regardscitoyens.org : 
+ * Pour accéder en local à votre instance de développement sur my.cpc.regardscitoyens.org :
 
     Ajouter cette ligne au fichier `/etc/hosts` (sudo) :
 
@@ -160,7 +161,7 @@ L'utilisation de la page `frontend_dev.php` vous permet de naviguer sur le site 
 
 ### Problèmes connus
 
-Si à l'affichage de frontend_dev.php dans le navigateur, PHP dit qu'il n'a pas pu allouer assez de mémoire, augmenter la taille maximale de mémoire autorisée : 
+Si à l'affichage de frontend_dev.php dans le navigateur, PHP dit qu'il n'a pas pu allouer assez de mémoire, augmenter la taille maximale de mémoire autorisée :
 
 ```bash
 sudo nano /etc/php5/cli/php.ini
@@ -198,12 +199,6 @@ Solr est le moteur de recherche utilisé dans le projet. Il s'installe sur un mo
 
     ```xml
     <dataDir>/MON/REPERTOIRE/lib/vendor/SolrServer/solr/data</dataDir>
-    ```
-
-    * Et faire de même dans `bin/db.inc`:
-
-    ```bash
-    SOLR_DATA_PATH="$PATH_APP/lib/vendor/SolrServer/solr/data"
     ```
 
  * S'assurer que ce répertoire data soit accessible en écriture par l'utilisateur tomcat6 (ou tomcatXX suivant votre version de Tomcat) :
@@ -280,4 +275,3 @@ Certains services de mail, ralentissent voire bloquent les envois de mails massi
       spool_arguments:
         Swift_FileSpool: %SF_ROOT_DIR%/data/mails
 ```
- 

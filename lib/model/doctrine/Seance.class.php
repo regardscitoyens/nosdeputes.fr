@@ -68,6 +68,35 @@ class Seance extends BaseSeance
     return $res;
   }
 
+  public function setUnsetPresenceLight($parlementaire_id, $groupe_acronyme, $type, $source, $present = TRUE) {
+    $q = Doctrine::getTable('Presence')->createQuery('p');
+    $q->where('parlementaire_id = ?', $parlementaire_id)->andWhere('seance_id = ?', $this->id);
+    $presence = $q->execute()->getFirst();
+    $q->free();
+    unset($q);
+
+    if (!$presence && $present) {
+      $presence = new Presence();
+      $presence->_set('parlementaire_id', $parlementaire_id);
+      $presence->_set('parlementaire_groupe_acronyme', $groupe_acronyme);
+      $presence->Seance = $this;
+      $presence->date = $this->date;
+      $presence->save();
+    }
+
+    if ($present) {
+      $res = $presence->addPreuve($type, $source);
+    } else if ($presence) {
+      $presence->delPreuve($type, $source);
+      if ($presence->nb_preuves == 0) {
+        $presence->delete();
+      }
+    }
+
+    if ($presence) {
+      $presence->free();
+    }
+  }
 
   public static function convertMoment($moment) {
     if (strlen($moment) > 25)

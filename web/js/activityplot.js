@@ -31,13 +31,13 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
       firstdate = get_last_monday(data.date_debut_parl),
       enddate = get_last_monday(data.date_fin),
       all_weeks = {}, // Becomes a list later
-      idx = 1,
+      idx = Object.keys(data.n_presences.commission).length,
       presence = {},
       participations = {},
       questions = (type !== 'commission' && data.n_questions ? {} : undefined),
       vacances = {},
       mediane = {};
-    for (var d = new Date(startdate); d <= enddate; d.setDate(d.getDate() + 7)) {
+    for (var d = new Date(enddate); d >= startdate; d.setDate(d.getDate() - 7)) {
       var md = get_last_monday(d);
       all_weeks[md] = 0;
       if (type === "total") {
@@ -51,7 +51,7 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
         questions[md] = (data.n_questions[idx] || 0)/0.85;
       mediane[md] = data.presences_medi[type][idx];
       vacances[md] = !!data.vacances[idx];
-      idx++;
+      idx--;
     }
     all_weeks = Object.keys(all_weeks)
 

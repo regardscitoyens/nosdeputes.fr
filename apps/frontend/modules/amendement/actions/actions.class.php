@@ -32,13 +32,6 @@ class amendementActions extends sfActions
        $this->identiques = array();
      }
 
-     $this->seance = $this->amendement->getIntervention($this->amendement->numero);
-     foreach($this->identiques as $a) {
-       if ($this->seance)
-         break;
-       $this->seance = $this->amendement->getIntervention($a->numero);
-     }
-
      $this->sous_admts = Doctrine_Query::create()
        ->select('a.id, a.numero, a.sort, CAST( a.numero AS SIGNED ) AS num')
        ->from('Amendement a')

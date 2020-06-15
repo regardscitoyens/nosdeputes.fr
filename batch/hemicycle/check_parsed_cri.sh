@@ -2,6 +2,19 @@
 
 JSON=$1
 
+source ../../bin/db-external.inc
+DATE=$(head -1 $JSON            |
+       sed 's/^.*"date": "//'   |
+       sed 's/".*$//')
+DEPUTES=$(echo "SELECT nom from parlementaire
+                WHERE fin_mandat IS NULL
+                   OR fin_mandat > '$DATE'"     |
+          mysql $MYSQLID $DBNAME                |
+          grep -v '^nom'                        |
+          sed 's/\W/./g'                        |
+          tr '\n' '|'                           |
+          sed 's/|$//')
+
 echo "Didascalies :"
 echo "-------------"
 grep '"intervenant": ""' $JSON      |
@@ -24,7 +37,9 @@ echo
 
 echo "Parenthèses :"
 echo "-------------"
-grep '(' $JSON                          |
+cat $JSON                               |
+  sed 's/(…)/ /g'                       |
+  grep '('                              |
   sed 's/^.*"contexte": "//'            |
   sed 's/",.*"intervention": "/  |  /'  |
   sed 's/".*$//'                        |
@@ -59,20 +74,30 @@ echo
 
 echo "Intervenants:"
 echo "-------------"
+echo " - Députés:"
 grep -v '"intervenant": ""' $JSON   |
   sed 's/^.*"intervenant": "//'     |
   sed 's/",.*"fonction": "/\t\t|  /'|
   sed 's/".*$//'                    |
-  sort  | uniq -c
+  sort | uniq -c                    |
+  grep -iP "$DEPUTES"
+echo "-------------"
+echo " - Autres:"
+grep -v '"intervenant": ""' $JSON   |
+  sed 's/^.*"intervenant": "//'     |
+  sed 's/",.*"fonction": "/\t\t|  /'|
+  sed 's/".*$//'                    |
+  sort | uniq -c                    |
+  grep -viP "$DEPUTES"
 echo "-------------"
 echo
 echo
 
-head -1 $JSON                               |
-  sed 's/^.*"date": "/\nDATE:    /'    |
-  sed 's/", .*"heure": "/ - /'          |
+head -1 $JSON                       |
+  sed 's/^.*"date": "/\nDATE:    /' |
+  sed 's/", .*"heure": "/ - /'      |
   sed 's/".*$//'
 
-head -1 $JSON               |
-  sed 's/^.*"source": "/SOURCE:  /'  |
+head -1 $JSON                       |
+  sed 's/^.*"source": "/SOURCE:  /' |
   sed 's/[#"].*$//'

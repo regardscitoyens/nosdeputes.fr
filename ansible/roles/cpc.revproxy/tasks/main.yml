@@ -3,9 +3,9 @@
 - name: active les modules nécessaires
   apache2_module: state=present name={{item}}
   with_items:
-  - proxy_module
-  - proxy_http_module
-  - headers_module
+  - proxy
+  - proxy_http
+  - headers
   notify:
     - reload apache
 

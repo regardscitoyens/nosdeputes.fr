@@ -91,7 +91,7 @@ class ParlementaireTable extends PersonnaliteTable
   public function getShortMandatesIds() {
     $shorts = array();
     foreach ($this->createQuery('p')->where('fin_mandat IS NULL OR fin_mandat < debut_mandat')->execute() as $d) {
-      $mois = $d->getNbMois(array());
+      $mois = $d->getNbMois(array(), true);
       if ($mois < 10) $shorts[] = $d->id;
     }
     return $shorts;

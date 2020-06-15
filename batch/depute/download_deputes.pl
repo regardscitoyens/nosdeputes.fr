@@ -11,7 +11,16 @@ sub download_fiche {
   $uri =~ s/^\//http:\/\/www2.assemblee-nationale.fr\//;
   print "$uri" if ($verbose);
   $a->max_redirect(0);
-  $a->get($uri);
+  eval { $a->get($uri); };
+  if( not $a->res->is_success and not $a->res->is_redirect ){
+    sleep 1;
+    eval { $a->get($uri); };
+    if( not $a->res->is_success and not $a->res->is_redirect ){
+      print STDERR "ERREUR geting $uri twice in a row, skipping it\n";
+      return;
+    }
+    print STDERR "\n";
+  }
   $status = $a->status();
   if (($status >= 300) && ($status < 400)) {
     $location = $a->response()->header('Location');
@@ -49,6 +58,7 @@ while ($t = $p->get_tag('td')) {
   $t = $p->get_tag('a');
   if ($t->[1]{href} && $t->[1]{href} =~ /deputes\/fiche/) {
     $id = download_fiche($t->[1]{href});
+    if (!$id) { next; }
     $ret = system("grep -i '>Mandat clos<' html/$id > /dev/null");
     if (! $ret) {
       $t = $p->get_tag('td');

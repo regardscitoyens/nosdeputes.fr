@@ -2,4 +2,4 @@ all:
    enabled: true
    lifetime: 28800
 _tagcloud:
-   enabled: false
+   enabled: true

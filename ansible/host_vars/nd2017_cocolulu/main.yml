@@ -31,12 +31,12 @@ cpc_memcached_limit: 1G
 cpc_spool_mails: false
 cpc_solr: true
 
-cpc_legislature: 15
-cpc_debut_legislature: '2017-06-21'
-cpc_fin_legislature: false
-
-cpc_host_prev: 2012.nosdeputes.fr
-cpc_host_next:
+cpc_leg_options:
+  legislature: 15
+  debut_legislature: '2017-06-21'
+  fin_legislature: false
+  host_prev: 2012.nosdeputes.fr
+  host_next:
 
 cpc_ssl_cert: '/var/lib/dehydrated/certs/{{ cpc_domain }}/cert.pem'
 cpc_ssl_key: '/var/lib/dehydrated/certs/{{ cpc_domain }}/privkey.pem'
@@ -48,3 +48,7 @@ cpc_piwik_id: 2
 cpc_manet_url: http://manet.regardscitoyens.org/
 
 cpc_smtp_host: "172.17.42.1"
+
+cpc_announce:
+  link: "//irfm.regardscitoyens.org"
+  text: "Frais des députés, aidez nous à obtenir la transparence"
