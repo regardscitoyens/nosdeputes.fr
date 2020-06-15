@@ -3,22 +3,30 @@
 $file = $url = shift;
 $special = shift;
 $defaulthoraire = shift;
-#use HTML::TokeParser;
+use HTML::TokeParser;
 use Time::Piece;
 $today = Time::Piece->new();
 
 $url =~ s/^[^\/]+\///;
 $url =~ s/_/\//g;
 $source = $url;
-
-if ($url =~ /\/(\d+)-(\d+)\//) {
-    $session = '20'.$1.'20'.$2;
+$raw = 0;
+if ($url =~ /CRCANR.*\.html/) {
+  $raw = 1;
 }
 
-open(FILE, $file) ;
+open(FILE, $file);
 @string = <FILE>;
 $string = "@string";
 close FILE;
+
+if ($string =~ /href="\/dyn\/opendata\/([^"]+\.html)"/) {
+  open(FILE, "raw/$1");
+  @string = <FILE>;
+  $string = "@string";
+  close FILE;
+  $raw = 1;
+}
 
 $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
@@ -28,6 +36,7 @@ $string =~ s/\r//g;
 $string =~ s/(M\.\s*&nbsp;\s*)+/M. /g;
 $string =~ s/\s*&(#160|nbsp);\s*/ /ig;
 $string =~ s/&#278;/É/g;
+$string =~ s/&#xa0;/ /g;
 
 if ($special && $url =~ /www2.assemblee/) {
   $commission = $special;
@@ -85,6 +94,39 @@ $heures{'quarante-cinq'} = '45';
 $heures{'cinquante'} = '50';
 $heures{'cinquante-cinq'} = '55';
 $heures{''} = '00';
+
+if ($raw == 1) {
+  $p = HTML::TokeParser->new(\$string);
+  while ($t = $p->get_tag('p')) {
+    $txt = $p->get_trimmed_text('/p');
+    if ($t->[1]{class} eq "assnatNOMCOMMISSION" && !$commission) {
+      $commission = $txt;
+    } elsif ($t->[1]{class} eq "assnatCRDATE" || $t->[1]{class} eq "assnatCRHEURE") {
+      if ($txt =~ /(?:(?:Lun|Mar|Mercre|Jeu|Vendre)di|Dimanche)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
+        $date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
+      } elsif ($txt =~ /(?:Réunion|Séance)\s+de\s+(\d+)\s*h(?:eure)?s?\s*(\d*)/i && !$heure) {
+        $heure = sprintf("%02d:%02d", $1, $2 || '00');
+      }
+    }
+  }
+  if (!$date && !$commission && !$heure) {
+    $p = HTML::TokeParser->new(\$string);
+    while ($t = $p->get_tag('div')) {
+      if ($t->[1]{class} eq "assnatSection1") {
+        $txt = $p->get_text('/div');
+        foreach $line (split /\n/, $txt) {
+          if (!$commission && $line =~ /^\s*(Groupe|Commission|Mission|Délégation|Office)(.*)\s*$/) {
+            $commission = "$1$2";
+          } elsif ($line =~ /^\s*(?:(?:Lun|Mar|Mercre|Jeu|Vendre)di|Dimanche)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
+            $date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
+          } elsif ($line =~ /^\s*(?:Réunion|Séance)\s+de\s+(\d+)\s*h(?:eure)?s?\s*(\d*)/i && !$heure) {
+            $heure = sprintf("%02d:%02d", $1, $2 || '00');
+          }
+        }
+      }
+    }
+  }
+}
 
 if ($special && $string =~ />(?:Décisions (?:de Questure )?de la )?(?:Décisions|[Rr]éunion) (?:de Questure )?du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)?/) {
   if ($4 eq "") {

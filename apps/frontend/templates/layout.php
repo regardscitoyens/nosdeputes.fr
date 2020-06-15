@@ -124,17 +124,22 @@ $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
             </ul>
           </div>
   	    </div>
-        <?php if (myTools::hasAnnounce()) : ?>
-  	    <div id="announce"><h2><a target="_blank" href="<?php echo myTools::getAnnounceLink(); ?>"><?php echo myTools::getAnnounceText(); ?> : <span>Cliquez ici !</span></a></h2></div>
-        <script type="text/javascript">
-$(document).ready(function() {
-  $('#announce').delay(1500).fadeIn('slow');
-});
-        </script>
-        <?php endif ?>
       </div>
       <div id="corps_page">
         <div class="contenu_page">
+          <?php if (myTools::hasAnnounce()) : ?>
+          <div id="announce"><h2 style="display: none;">
+              <?php if (myTools::getAnnounceLink()): ?>
+              <a target="_blank" href="<?php echo myTools::getAnnounceLink(); ?>"><?php echo myTools::getAnnounceText(); ?> : <span>Cliquez ici !</span></a>
+              <?php else: ?>
+              <?php echo myTools::getAnnounceText(); ?>
+              <?php endif; ?></h2></div>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                  $('#announce h2').delay(1500).fadeIn('slow');
+                });
+            </script>
+          <?php endif ?>
           <?php if ($sf_user->hasFlash('notice')) :?>
           <p class='flash_notice'><?php echo $sf_user->getFlash('notice'); ?></p>
           <?php endif;?>
