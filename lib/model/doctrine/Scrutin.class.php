@@ -2,12 +2,6 @@
 
 class Scrutin extends BaseScrutin
 {
-  // Date début délégations (cf https://github.com/regardscitoyens/nosdeputes.fr/pull/115#issuecomment-421844588 )
-  // On ne génère pas de preuve de présence à partir des votes avant cette date sauf si le scrutin a des délégations (3 cas particuliers de solennel)
-  const DEBUT_DELEGATIONS = '2018-03-20';
-  // Anticipe potentiel recul de la transparence en matière de publicité des délégations
-  const FIN_DELEGATIONS = '9999-99-99';
-
   public function getLinkSource() {
     return "http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/"
          . myTools::getLegislature()
@@ -154,17 +148,10 @@ class Scrutin extends BaseScrutin
     }
   }
 
-  const DELEGATIONS_INDEX_DEBUT = 0;
-  const DELEGATIONS_INDEX_FIN = 1;
-  public function getDelegationsRanges() {
-      return array(
-          array(self::DEBUT_DELEGATIONS, self::FIN_DELEGATIONS)
-      );
-  }
   public function isPartOfDelegationsRanges() {
       $is_part = false;
-      foreach($this->getDelegationsRanges() as $range) {
-          $is_part |= ($range[self::DELEGATIONS_INDEX_DEBUT] <= $this->Seance->date && $this->Seance->date <= $range[self::DELEGATIONS_INDEX_FIN]);
+      foreach(ScrutinTable::getInstance()->getDelegationsRanges() as $range) {
+          $is_part |= ($range[ScrutinTable::DELEGATIONS_INDEX_DEBUT] <= $this->Seance->date && $this->Seance->date <= $range[ScrutinTable::DELEGATIONS_INDEX_FIN]);
       }
       return $is_part;
   }
