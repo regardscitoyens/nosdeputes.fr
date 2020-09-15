@@ -63,6 +63,7 @@ batch/documents/out/
 batch/documents/rga/
 batch/documents/tas/
 batch/documents/loaded/
+batch/documents/opendata/
 batch/documents/textes-senat.tar.gz
 batch/documents/to_parse.list
 batch/dossiers/html/
@@ -75,6 +76,7 @@ batch/jo/export/
 batch/jo/html/
 batch/jo/pdf/
 batch/jo/json/
+batch/jo/opendata/
 batch/jo/new2016senat.json
 batch/jo/test/
 batch/jo/tmp/

@@ -3,7 +3,7 @@
 # Ce script extrait les présences en commission du Journal Officiel
 # Usage : parse_jo.py chamber [day] [stdout]
 # "chamber" peut prendre pour valeur : "an" ou "senat" ; "day" doit être une date de la forme "2016-04-15", si omis, la date du jour sera utilisée ; "stdout" permet d'afficher la sortie du script plutôt que de créer un fichier dans ./json
-import re, os, sys, urllib2, json
+import re, os, sys, urllib2, json, io
 from datetime import date, time, datetime
 from bs4 import BeautifulSoup
 
@@ -23,11 +23,16 @@ def date_iso(datestr):
     u"décembre": "12",
   }
   d = datestr.split(' ')
-  if d[1] == '1er':
-    d[1] = '01'
-  if len(d[1]) == 1:
-    d[1] = '0'+d[1]
-  dateiso = d[3][0:4]+'-'+month[d[2]]+'-'+d[1]
+
+  njour_index = 1
+  if d[0][0].isdigit() > 0:
+      njour_index = 0
+
+  if d[njour_index] == '1er':
+    d[njour_index] = '01'
+  if len(d[njour_index]) == 1:
+    d[njour_index] = '0'+d[njour_index]
+  dateiso = d[njour_index+2][0:4]+'-'+month[d[njour_index+1]]+'-'+d[njour_index]
   if re.search(reg['date'], dateiso) is not None:
     return dateiso
   else:
@@ -36,6 +41,8 @@ def date_iso(datestr):
 reg = {}
 reg['date'] = '^([0-9]{4})-([0-9]{2})-([0-9]{2})$'
 reg['com'] = '^(Commissions|Office parlementaire|)'
+reg['check_an'] = u'>Assemblée nationale<'
+reg['check_senat'] = u'>Sénat<'
 reg['start_an'] = u'^[0-9]{0,2}\.? *Membres présents ou excusés'
 reg['start_senat'] = u'^Membres'
 reg['commission'] = u'(.*) :$'
@@ -57,9 +64,9 @@ try:
 except IndexError:
   sys.exit('Le 1er argument est obligatoire, il doit être "an ou "senat"')
 try:
-  day = sys.argv[2]
+  file = sys.argv[2]
 except IndexError:
-  day = str(datetime.now().date())
+  sys.exit('Le 2d argument est obligatoire, il doit être un fichier du JO')
 try:
   stdout = sys.argv[3]
   stdout = True
@@ -67,63 +74,26 @@ except IndexError:
   stdout = False
 
 prefix = 'https://www.legifrance.gouv.fr'
-
-texts_link = [u"Office parlementaire"]
-if chamber == 'an':
-  texts_link.append(u'Commissions et organes de contrôle')
-elif chamber == 'senat':
-  texts_link.append(u'Commissions')
-else:
-  sys.exit('Le 1er argument doit être "an" ou "senat"')
-
-if re.search(reg['date'], day) is not None:
-  m = re.search(reg['date'], day)
-  date_fr = m.group(3)+'/'+m.group(2)+'/'+m.group(1)
-  jo_eli = prefix+'/eli/jo/'+m.group(1)+'/'+str(int(m.group(2)))+'/'+str(int(m.group(3)))
-else:
-  sys.exit('Le 2ème argument doit être une date de la forme "2016-04-15"')
-
-# Repertoires
-if not os.path.exists('./html'):
-  os.makedirs('./html')
-if not os.path.exists('./json'):
-  os.makedirs('./json')
-
-# Sommaire JO
-summary = urllib2.urlopen(jo_eli)
-soup = BeautifulSoup(summary.read(), "lxml")
-
-sys.stderr.write(chamber.upper()+' '+date_fr+' '+jo_eli+'\n')
-if soup.title.string.strip().startswith(u'Recherche'):
-  sys.exit(' no JO')
-
-# Sauvegarde sommaire
-with open("html/sommaire_"+day+".html", "wb") as file:
-  file.write(soup.prettify("utf-8"))
-
-commission_link = False
 json_file = ''
 
-for link in soup.find_all('a'):
-  link_string = unicode(link.string).strip()
-  if re.search(reg['com'], link_string, re.IGNORECASE) is not None:
+with io.open(file, encoding="utf-8", mode='r') as xmlfile:
 
-    # Commission
-    if any([link_string.startswith(text_link) for text_link in texts_link]):
-      data = {'source': 'Journal officiel du '+date_fr}
-      if link_string.startswith(u"Office parlementaire"):
-        data['commission'] = link_string
-      commission_link = True
-      n_presences = 0
-      com_link = prefix+link.get('href')
-      coms_doc = urllib2.urlopen(com_link)
-      soup = BeautifulSoup(coms_doc.read(), "lxml")
+      xmlstring = xmlfile.read()
 
-      # Sauvegarde commissions
-      with open("html/coms_"+chamber+"_"+day+".html", "wb") as file:
-        file.write(soup.prettify("utf-8"))
+      if (re.search(reg['check_'+chamber], xmlstring, re.IGNORECASE)) is None:
+          sys.exit('Ce XML concerne pas la chambre '+chamber)
 
-      t = soup.find_all("div", "article")
+      soup = BeautifulSoup(xmlstring, "lxml")
+
+      d = soup.find_all("texte")
+      day = d[0]['date_publi']
+      if re.search(reg['date'], day) is not None:
+          m = re.search(reg['date'], day)
+          date_fr = m.group(3)+'/'+m.group(2)+'/'+m.group(1)
+      else:
+          sys.exit('Date de publication non trouvée dans le XML"')
+
+      t = soup.find_all("bloc_textuel")
 
       for br in t[0].findAll('br'):
         br.replace_with(os.linesep)
@@ -132,12 +102,17 @@ for link in soup.find_all('a'):
 
       com_text = ''
 
+      data = {'source': 'Journal officiel du '+date_fr}
+      n_presences = 0
+      com_link = ''
+
+
       for line in t[0].get_text().split(os.linesep):
         line = line.strip().replace(u' ', ' ')
 
         # Détecter début
-        if (re.search(reg['start_'+chamber], line, re.IGNORECASE) is not None or
-          (data.get('commission') and (re.search(reg['reunion_'+chamber], line, re.I) or re.search(reg['reunion_'+chamber+'_bis'], line, re.I)))):
+        if (re.search(reg['start_'+chamber], line, re.IGNORECASE) is not None
+            or (re.search(reg['reunion_'+chamber], line, re.I) or re.search(reg['reunion_'+chamber+'_bis'], line, re.I))):
           on = True
 
         # Pre-process
@@ -207,15 +182,13 @@ for link in soup.find_all('a'):
           else:
             m = re.search(reg['commission'], line)
 
-            if not link_string.startswith(u"Office parlementaire"):
-              data['commission'] = re.sub(':', '', m.group(1)).strip()
+            data['commission'] = re.sub(':', '', m.group(1)).strip()
 
             if chamber == "senat" and re.search(reg['reunion_senat_bis'], data['commission'], re.IGNORECASE):
               m = re.search(reg['reunion_senat_bis'], data['commission'], re.IGNORECASE)
               data['date'] = date_iso(m.group(2))
               data['heure'] = ''
-              if not link_string.startswith(u"Office parlementaire"):
-                data['commission'] = m.group(1)
+              data['commission'] = m.group(1)
 
       if not n_presences:
         sys.stderr.write(' no attendance '+com_link+'\n')
@@ -228,8 +201,3 @@ if json_file:
   else:
     with open("json/"+chamber+"_"+day+".json", "wb") as file:
       file.write(json_file.strip().encode('utf-8'))
-
-if not commission_link:
-  sys.exit(' no commission ')
-
-
