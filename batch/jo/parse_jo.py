@@ -85,6 +85,11 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
 
       soup = BeautifulSoup(xmlstring, "lxml")
 
+      d = soup.find_all("titre_txt")
+      commission = ''
+      if re.search(u'^Office parlementaire|^Délégation', d[0].get_text(), re.IGNORECASE):
+          commission = d[0].get_text()
+
       d = soup.find_all("texte")
       day = d[0]['date_publi']
       if re.search(reg['date'], day) is not None:
@@ -102,7 +107,7 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
 
       com_text = ''
 
-      data = {'source': 'Journal officiel du '+date_fr}
+      data = {'source': 'Journal officiel du '+date_fr, 'commission': commission}
       n_presences = 0
       com_link = ''
 
@@ -161,8 +166,9 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
           pass
         elif re.search(reg['excuses'], line) is not None:
           pass
+        elif commission:
+          pass
         elif re.search(reg['commission'], line) is not None:
-
           if re.search(reg['start_senat'], line, re.IGNORECASE) or line == u'Députés :':
             pass
           elif re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
