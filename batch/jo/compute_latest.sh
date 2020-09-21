@@ -6,7 +6,11 @@ source ../../bin/db.inc
 
 mkdir -p opendata tmp
 
-find ./opendata -name '*tar.gz' > tmp/listfile.old
+if test $1 = "all"; then
+    echo > tmp/listfile.old
+else
+    find ./opendata -name '*tar.gz' > tmp/listfile.old
+fi
 cd opendata
 wget -q -r --no-parent -l 1 -c --reject  'Freemium_*' --reject '*pdf' https://echanges.dila.gouv.fr/OPENDATA/JORF/
 cd -
