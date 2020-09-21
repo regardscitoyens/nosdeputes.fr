@@ -108,7 +108,7 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
 
       com_text = ''
 
-      data = {'source': 'Journal officiel du '+date_fr, 'commission': commission}
+      data = {'source': '<a href="https://www.legifrance.gouv.fr/jorf/id/'+joid+'">Journal officiel du '+date_fr+'</a>', 'commission': commission}
       n_presences = 0
       com_link = ''
 
