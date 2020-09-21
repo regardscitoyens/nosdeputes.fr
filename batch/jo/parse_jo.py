@@ -43,6 +43,7 @@ reg['date'] = '^([0-9]{4})-([0-9]{2})-([0-9]{2})$'
 reg['com'] = '^(Commissions|Office parlementaire|)'
 reg['check_an'] = u'>Assemblée nationale<'
 reg['check_senat'] = u'>Sénat<'
+reg['check_office'] = u'>Offices et délégations<'
 reg['start_an'] = u'^[0-9]{0,2}\.? *Membres présents ou excusés'
 reg['start_senat'] = u'^Membres'
 reg['commission'] = u'(.*) :$'
@@ -80,7 +81,7 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
 
       xmlstring = xmlfile.read()
 
-      if (re.search(reg['check_'+chamber], xmlstring, re.IGNORECASE)) is None:
+      if (re.search(reg['check_'+chamber], xmlstring, re.IGNORECASE)) is None and (re.search(reg['check_office'], xmlstring, re.IGNORECASE)) is None  :
           sys.exit('Ce XML concerne pas la chambre '+chamber)
 
       soup = BeautifulSoup(xmlstring, "lxml")
