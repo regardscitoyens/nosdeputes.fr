@@ -40,7 +40,6 @@ def date_iso(datestr):
 
 reg = {}
 reg['date'] = '^([0-9]{4})-([0-9]{2})-([0-9]{2})$'
-reg['com'] = '^(Commissions|Office parlementaire|)'
 reg['check_an'] = u'>Assemblée nationale<'
 reg['check_senat'] = u'>Sénat<'
 reg['check_office'] = u'>Offices et délégations<'
