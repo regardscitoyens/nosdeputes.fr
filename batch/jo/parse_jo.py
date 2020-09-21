@@ -65,6 +65,7 @@ except IndexError:
   sys.exit('Le 1er argument est obligatoire, il doit être "an ou "senat"')
 try:
   file = sys.argv[2]
+  joid = re.findall(r'(JORFA[^\.\/]*)', file, re.IGNORECASE)[0]
 except IndexError:
   sys.exit('Le 2d argument est obligatoire, il doit être un fichier du JO')
 try:
@@ -205,5 +206,5 @@ if json_file:
   if stdout:
     print(json_file.strip().encode('utf-8'))
   else:
-    with open("json/"+chamber+"_"+day+".json", "wb") as file:
+    with open("json/"+joid+".json", "wb") as file:
       file.write(json_file.strip().encode('utf-8'))
