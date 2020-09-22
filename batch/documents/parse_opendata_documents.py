@@ -9,8 +9,12 @@ def convert_format(data):
     res["categorie"] = ""
     res["annexe"] = ""
     res["type_details"] = ""
-    res["numero"] = data['notice']['numNotice']
-    res["id"] = data['notice']['numNotice']
+    if data['notice'].get('numNotice'):
+        res["numero"] = data['notice']['numNotice']
+    else:
+        res["numero"] = re.sub('^.*[^0-9]+', '', data['uid'])
+
+    res["id"] = res["numero"]
     res["legislature"] = data['legislature']
 
     if data['notice'].get('formule'):
