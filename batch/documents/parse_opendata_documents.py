@@ -53,26 +53,31 @@ def convert_format(data):
         res["date_publi"] = re.sub(r'T.*', '', data['cycleDeVie']['chrono']['datePublication'])
 
     res["type"] = data['classification']['type']['libelle']
-    if data['classification']['sousType']:
+    if data['classification']['sousType'] and data['classification']['sousType'].get('libelle'):
         res["type_details"] = data['classification']['sousType']['libelle']
     res["deputes"] = {"auteurs": [], "coSignataires": [] }
     res["auteurs"] = ""
-    if isinstance(data['auteurs']['auteur'], list):
-        for auteur in data['auteurs']['auteur']:
-            if auteur.get('acteur'):
-#                res["deputes"]["auteurs"].append(auteur['acteur']['acteurRef'])
-                res["auteurs"] += auteur['acteur']['acteurRef']+ " "+auteur['acteur']['qualite']+", "
-            elif auteur.get('organe'):
-#                res["organe"] = auteur['organe']['organeRef']
-                res["auteurs"] += auteur['organe']['organeRef']+", "
-    else:
-#        res["deputes"]["auteurs"].append(data['auteurs']['auteur']['acteur']['acteurRef'])
-      if data['auteurs']['auteur'].get('acteur'):
-        res["auteurs"] += data['auteurs']['auteur']['acteur']['acteurRef']+ " "+data['auteurs']['auteur']['acteur']['qualite']+", "
+
+    if not isinstance(data['auteurs']['auteur'], list):
+        data['auteurs']['auteur'] = [ data['auteurs']['auteur'] ]
+    for auteur in data['auteurs']['auteur']:
+        if auteur.get('acteur'):
+            res["deputes"]["auteurs"].append(auteur['acteur']['acteurRef'])
+            res["auteurs"] += auteur['acteur']['acteurRef']+ " "+auteur['acteur']['qualite']+", "
+        elif auteur.get('organe'):
+            res["organe"] = auteur['organe']['organeRef']
+            res["auteurs"] += auteur['organe']['organeRef']+", "
+
     if data.get('coSignataires'):
+      if not isinstance(data['coSignataires']['coSignataire'], list):
+          data['coSignataires']['coSignataire'] = [ data['coSignataires']['coSignataire'] ]
       for aut in data['coSignataires']['coSignataire']:
-    #    res["deputes"]["coSignataires"].append(aut['acteur']['acteurRef'])
-        res["auteurs"] += data['auteurs']['auteur']['acteur']['acteurRef']+ " Cosignataire, "
+          if aut.get('acteur'):
+              res["deputes"]["coSignataires"].append(aut['acteur']['acteurRef'])
+              res["auteurs"] += aut['acteur']['acteurRef']+ " Cosignataire, "
+          elif aut.get('organe'):
+              res["organe"] = aut['organe']['organeRef']
+              res["auteurs"] += aut['organe']['organeRef']+", "
 
     if data['dossierRef']:
         with open("opendata/dossierParlementaire/"+data['dossierRef']+".json") as dossierfile:
