@@ -94,8 +94,12 @@ def convert_format(data):
     print json.dumps(res)
 
     if data.get('divisions'):
-        for division in data['divisions']['division']:
-            convert_format(division)
+        if isinstance(data['divisions']['division'], list):
+            for division in data['divisions']['division']:
+                print division
+                convert_format(division)
+        else:
+            convert_format(data['divisions']['division'])
 
 with open(sys.argv[1], 'r') as documentfile:
     data = json.load(documentfile)
