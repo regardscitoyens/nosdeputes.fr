@@ -4,7 +4,7 @@
 
 source ../../bin/db.inc
 
-mkdir -p opendata tmp
+mkdir -p opendata tmp json
 
 if test $1 = "all"; then
     echo > tmp/listfile.old

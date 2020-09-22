@@ -25,7 +25,7 @@ def date_iso(datestr):
   d = datestr.split(' ')
 
   njour_index = 1
-  if d[0][0].isdigit() > 0:
+  if d[0][0].isdigit():
       njour_index = 0
 
   if d[njour_index] == '1er':
@@ -82,7 +82,7 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
       xmlstring = xmlfile.read()
 
       if (re.search(reg['check_'+chamber], xmlstring, re.IGNORECASE)) is None and (re.search(reg['check_office'], xmlstring, re.IGNORECASE)) is None  :
-          sys.exit('Ce XML concerne pas la chambre '+chamber)
+          sys.exit()
 
       soup = BeautifulSoup(xmlstring, "lxml")
 
