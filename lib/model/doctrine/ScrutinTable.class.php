@@ -17,7 +17,7 @@ class ScrutinTable extends Doctrine_Table
     public function getDelegationsRanges() {
         return array(
             array('2018-03-20', '2020-03-10'), //début de la publication des délégations de vote
-            array('2020-06-29', '9999-99-99')  //suspension pendant le covid de la publication des délégations
+            array('2020-06-20', '9999-99-99')  //reprise après suspension pendant le covid de la publication des délégations
         );
     }
 
