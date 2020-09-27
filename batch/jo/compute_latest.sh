@@ -4,6 +4,7 @@
 
 source ../../bin/db.inc
 
+rm -rf tmp
 mkdir -p opendata tmp json
 
 if test $1 = "all"; then
@@ -24,4 +25,3 @@ touch tmp/0
 rgrep -l "embres présents ou excusés" tmp/[0-9]* | while read xml; do
     python parse_jo.py an $xml
 done
-rm -rf tmp
