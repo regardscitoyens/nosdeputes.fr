@@ -197,6 +197,8 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
               data['heure'] = ''
               data['commission'] = m.group(1)
 
+
+      sys.stderr.write("https://www.legifrance.gouv.fr/jorf/id/{} : ".format(joid))
       if not n_presences:
         sys.stderr.write(' no attendance '+com_link+'\n')
       else:
@@ -207,4 +209,5 @@ if json_file:
     print(json_file.strip().encode('utf-8'))
   else:
     with open("json/"+joid+".json", "wb") as file:
+      sys.stderr.write("json/{}.json written\n".format(joid))
       file.write(json_file.strip().encode('utf-8'))
