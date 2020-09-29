@@ -48,7 +48,7 @@ reg['start_senat'] = u'^Membres'
 reg['commission'] = u'^([^0-9].* .*) :$'
 reg['reunion_an'] = u'^(?:Réunion|Séance) du (.*) ?à (.*) :'
 reg['reunion_an_bis'] = u'^(?:Réunion|Séance) du (.*) :'
-reg['reunion_senat'] = u'^(.{1,5}éance) du (.*) :'
+reg['reunion_senat'] = u'^(.{1,7}éance) du (.*) :'
 reg['reunion_senat_bis'] = u'^(.*), séance du (.*)$'
 reg['presents'] = u'^Présents?.*?[\-:]+\s*(.*)'
 reg['presents_an'] = u'^Députés? [pP]résents?.*?[\-:]+\s*(.*)'
@@ -121,6 +121,9 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
             or (re.search(reg['reunion_'+chamber], line, re.I) or re.search(reg['reunion_'+chamber+'_bis'], line, re.I))):
           on = True
 
+        if re.search('^Convocations', line, re.IGNORECASE):
+            on = False
+
         # Pre-process
         if on and line:
           if line.startswith(u'Présent') is False and line.startswith(u'Excusé') is False and line.startswith(u'Assistai') is False and line.startswith(u'Ont') is False and line.startswith(u'Les') is False and line.startswith(u'ERRATUM') is False and line.endswith(u' :') is False:
@@ -167,18 +170,20 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
           pass
         elif re.search(reg['excuses'], line) is not None:
           pass
-        elif commission:
-          pass
-        elif re.search(reg['commission'], line) is not None:
+        else:
           if re.search(reg['start_senat'], line, re.IGNORECASE) or line == u'Députés :':
             pass
           elif re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_an'], line, re.IGNORECASE)
             data['reunion'] = date_iso(m.group(1))
+            if chambre == 'senat':
+                data['date'] = data['reunion']
             data['session'] = m.group(2).replace(' :', '').replace(' h ', ':').replace(' heures', ':00')[0:5]
           elif re.search(reg['reunion_an_bis'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_an_bis'], line, re.IGNORECASE)
             data['reunion'] = date_iso(m.group(1))
+            if chambre == 'senat':
+                data['date'] = data['reunion']
             data['session'] = u"1ère réunion"
           elif re.search(reg['reunion_senat'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_senat'], line, re.IGNORECASE)
@@ -188,14 +193,14 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
             data['session'] = data['heure']
           else:
             m = re.search(reg['commission'], line)
+            if (m is not None):
+                data['commission'] = re.sub(':', '', m.group(1)).strip()
 
-            data['commission'] = re.sub(':', '', m.group(1)).strip()
-
-            if chamber == "senat" and re.search(reg['reunion_senat_bis'], data['commission'], re.IGNORECASE):
-              m = re.search(reg['reunion_senat_bis'], data['commission'], re.IGNORECASE)
-              data['date'] = date_iso(m.group(2))
-              data['heure'] = ''
-              data['commission'] = m.group(1)
+                if chamber == "senat" and re.search(reg['reunion_senat_bis'], data['commission'], re.IGNORECASE):
+                    m = re.search(reg['reunion_senat_bis'], data['commission'], re.IGNORECASE)
+                    data['date'] = date_iso(m.group(2))
+                    data['heure'] = ''
+                    data['commission'] = m.group(1)
 
 
       sys.stderr.write("https://www.legifrance.gouv.fr/jorf/id/{} : ".format(joid))
