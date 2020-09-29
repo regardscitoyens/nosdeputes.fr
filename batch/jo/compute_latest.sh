@@ -14,13 +14,13 @@ else
 fi
 cd opendata
 wget -q -r --no-parent -l 1 -c --reject  'Freemium_*' --reject '*pdf' https://echanges.dila.gouv.fr/OPENDATA/JORF/
-cd -
+cd ..
 find ./opendata -name '*tar.gz' > tmp/listfile.new
 cd tmp
 diff listfile.old listfile.new | grep '^>' | sed 's/^. //' | while read file; do
     tar zxf '../'$file
 done
-cd -
+cd ..
 touch tmp/0
 rgrep -l "embres présents ou excusés" tmp/[0-9]* | while read xml; do
     python parse_jo.py senat $xml
