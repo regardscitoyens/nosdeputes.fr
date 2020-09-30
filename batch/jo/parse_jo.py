@@ -176,13 +176,13 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
           elif re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_an'], line, re.IGNORECASE)
             data['reunion'] = date_iso(m.group(1))
-            if chambre == 'senat':
+            if chamber == 'senat':
                 data['date'] = data['reunion']
             data['session'] = m.group(2).replace(' :', '').replace(' h ', ':').replace(' heures', ':00')[0:5]
           elif re.search(reg['reunion_an_bis'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_an_bis'], line, re.IGNORECASE)
             data['reunion'] = date_iso(m.group(1))
-            if chambre == 'senat':
+            if chamber == 'senat':
                 data['date'] = data['reunion']
             data['session'] = u"1ère réunion"
           elif re.search(reg['reunion_senat'], line, re.IGNORECASE) is not None:
