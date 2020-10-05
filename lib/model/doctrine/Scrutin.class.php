@@ -79,7 +79,7 @@ class Scrutin extends BaseScrutin
     $ret = $this->_set('demandeurs', join("|", $demandeurs));
     $gpes = array();
     foreach($demandeurs as $d) {
-      if (preg_match('/^Président\S* du groupe [^A-Z]*(.*)$/', $d, $match)) {
+      if (preg_match('/^Président\S* du groupe [^A-ZÉ]*(.*)$/', $d, $match)) {
         $gpe_acro = myTools::findGroupeAcronyme($match[1]);
         if (!$gpe_acro)
           print("WARNING: no groupe acronyme found for $d");
