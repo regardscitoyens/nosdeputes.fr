@@ -59,6 +59,7 @@ $string = "@string";
 #utf8::decode($string) if ($string =~ /charset=UTF-?8/i);
 $string =~ s/&amp;/&/g;
 $string =~ s/&apos;/'/g;
+$string =~ s/’/'/g;
 $string =~ s/(&#160;| )+/ /g;
 $string =~ s/(\<p class="presente".*)\s*\<br[\/]?\>\s*[\n]?\s*(.*)/\1, \2/g;
 #$string =~ s/\<br\>.*\n//g;
@@ -385,6 +386,7 @@ if ($amdmt{'auteurs'} =~ /&#\d+;/) {
   $amdmt{'auteurs'} = decode_entities($amdmt{'auteurs'});
   utf8::encode($amdmt{'auteurs'});
 }
+$amdmt{'auteurs'} =~ s/’/'/g;
 $amdmt{'auteurs'} =~ s/\s+Mme,\s*/ Mme /g;
 $amdmt{'auteurs'} =~ s/([a-z])\s+(M[\.Mml])/\1, \2/g;
 $amdmt{'auteurs'} =~ s/,\s*M[\s\.mle]+\s*,/,/g;
