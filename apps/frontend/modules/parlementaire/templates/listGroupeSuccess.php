@@ -1,4 +1,4 @@
-<?php $title =  ($orga->getSmallNomGroupe() == "NI" ? '' : 'Groupe ').$orga->getNom()." (".$orga->getSmallNomGroupe().")"; ?>
+<?php $title = ($orga->getSmallNomGroupe() == "NI" ? '' : 'Groupe ').$orga->getNom()." (".$orga->getSmallNomGroupe().")"; ?>
 <h1><?php echo '<span class="c_'.strtolower($orga->getSmallNomGroupe()).'">'.$title.'</span>'; $sf_response->setTitle($title); ?></h1>
 <h2><?php echo $total; ?> sénateur<?php if ($total > 1) echo 's'; ?></h2>
 <div class="liste">

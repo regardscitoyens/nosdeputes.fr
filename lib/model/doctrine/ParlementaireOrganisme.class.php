@@ -12,7 +12,7 @@ class ParlementaireOrganisme extends BaseParlementaireOrganisme
       $val = 50;
       $fonction = preg_replace('/e|é|è/', 'e', strtolower($fonction));
       if (preg_match('/gouverneur|maire/', $fonction)) $val += 40;
-      if (preg_match('/president/', $fonction)) $val += 35;
+      if (preg_match('/(president|chef)/', $fonction)) $val += 35;
       if (preg_match('/^president/', $fonction)) $val += 10;
       if (preg_match('/presidente?$/', $fonction)) $val += 5;
       if (preg_match('/questeur/', $fonction)) $val += 30;

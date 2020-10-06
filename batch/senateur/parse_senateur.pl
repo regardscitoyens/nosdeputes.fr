@@ -77,11 +77,13 @@ sub groupefonction {
 	$str =~ s/"//g;
 	$str =~ s/(['\(])\s/$1/g;
 	$str =~ s/¿/'/g;
+    $str =~ s/\s*\(\s*\*\s*\)\s*//;
 	$str =~ s/membre comité/membre du comité/i;
 	$str =~ s/admistration/administration/ig;
 	$str =~ s/membre commission/membre de la commission/i;
 	$str =~ s/de la (d'|à la )/de la /i;
 	$str =~ s/vice président/vice-président/i;
+	$str =~ s/président mission/président de la mission/i;
 	$str =~ s/ ([^\s]*-métropole) (communauté.*)$/ la $2 de $1/i;
 	$str =~ s/\(ancien[^\)]+\)//ig;
 	if ($str =~ /^(\S+)\s*,\s*(.*)$/) {
@@ -96,16 +98,18 @@ sub groupefonction {
 		$str = "$2 / ".lc($1.$3);
 	} elsif ($str =~ /^([^(]* (maire|conseil d'administration|conseil (génér|région|territori)al|communauté urbaine|communauté de communes|communauté d(e l)?'agglomération)) (du |de la |de l'|des |de |d')?(.+)$/i) {
 		$str = "$6 / ".lc($1);
-	} elsif ($str =~ /^(membre|([1-eèrpmvico\s\-]+)?présidente?|secrétaire)( (d'honneur|du bureau|délégué|titulair|suppléant)e?)? (du |de la |de l')((assemblée|section|association|délégation|communauté|commission|conseil|société|syndicat|comité|gouvernement) .*)$/i) {
+	} elsif ($str =~ /^(membre|([1-eèrpmvico\s\-]+)?présidente?|secrétaire|chef)( (d'honneur|du bureau|délégué|titulair|suppléant)e?)? (du |de la |de l')((assemblée|section|association|délégation|communauté|commission|conseil|société|syndicat|comité|gouvernement) .*)$/i) {
 		$str = "$6 / ".lc($1.$3);
 	} elsif ($str =~ /^(conseiller du président( international)?|membre( du conseil d'aministration)?|adjointe?|administrateur|représentante?) (à la |du |de la |de l' ?|au |des? |d'une |d' ?)(\S.*)$/i) {
 		$str = "$5 / ".lc($1);
-        } elsif ($str =~ /^(.*) (à la |du |de la |de l'|au |des? |d'une |d')(((délégation|syndicat|communauté|institut|section|société|agence|association|pôle) |s[iy].*).*)$/i) {
+    } elsif ($str =~ /^(.*) (à la |du |de la |de l'|au |des? |d'une |d')(((délégation|syndicat|communauté|institut|section|société|agence|association|pôle) |s[iy].*).*)$/i) {
 		$str = "$3 / ".lc($1);
 	} elsif ($str =~ /^(.*) (à la |du |de la |de l'|au |des? |d'une |d')(((conseil|comité|commission|groupe) |s[iy].*).*)$/i) {
 		$str = "$3 / ".lc($1);
 	} elsif ($str =~ /^(.*) (à la |du |de la |de l'|au |des? |d'une |d')((union|assemblée|agglomération|pays) .*)$/i) {
 		$str = "$3 / ".lc($1);
+	} elsif ($str =~ /^(\S+sident) du r(assemblement des .*)$/i) {
+		$str = "R$2 / ".lc($1);
 	} elsif ($str =~ /^(\S+( \S+)?( [^cg]\S+)?) (à la |du |de la |de l'|au |des? |d'une |d')(\S.*)$/i) {
 		$str = "$5 / ".lc($1);
 	}
@@ -172,13 +176,13 @@ sub fonctions {
 		last if ($commission =~ /ancien.*nat(eur|rice)/i);
 		next if ($commission =~ /^S..?nat(rice|eur)$/i);
 		$commission = groupefonction($commission);
-		$commission =~ s/^(S..?nat)$/Bureau du $1/;
+		$commission =~ s/^(S..?nat($| \/))/Bureau du $1/;
 		$comm = $commission;
 		$comm =~ s/ \/ .*$//;
 		if (! $groupes{$comm}) {
 			if ($autres && $autres ne "anciengroupe") {
 				$senateur{$autres}{$commission} = 1;
-			} elsif ($commission =~ /nateurs ne figurant sur la liste d'aucun groupe/ || $commission =~ /^groupe /i) {
+			} elsif ($commission =~ /(nateurs ne figurant sur la liste d'aucun groupe|rassemblement des d..?mocrates, progressistes et ind..?pendants)/i || $commission =~ /^groupe /i) {
 				$commission =~ s/^groupe (d(u |e l'))?//i;
 				$commission =~ s/groupe \/ /groupe politique \/ /i;
 				$commission =~ s/centriste - UDF/Centriste\//i;
