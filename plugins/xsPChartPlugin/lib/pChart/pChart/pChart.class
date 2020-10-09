@@ -1517,7 +1517,7 @@
      $YZero  = $this->GArea_Y2 - ((0-$this->VMin) * $this->DivisionRatio);
      if ( $YZero > $this->GArea_Y2 ) { $YZero = $this->GArea_Y2; }
 
-     $SerieID = 0; $LastValue = "";
+     $SerieID = 0; $LastValue = array();
      foreach ( $DataDescription["Values"] as $Key2 => $ColName )
       {
        $ID = 0;
