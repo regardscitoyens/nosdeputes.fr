@@ -2013,7 +2013,7 @@
 
      /* Calculate all polygons */
      // $Angle    = 0; $TopPlots = "";
-     $TopPlots = "";
+     $TopPlots = array();
      foreach($iValues as $Key => $Value)
       {
        $XCenterPos = cos(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $XPos;
@@ -2741,7 +2741,7 @@
    /* Validate data contained in the data array */
    function validateData($FunctionName,&$Data)
     {
-     $DataSummary = "";
+     $DataSummary = array();
 
      foreach($Data as $key => $Values)
       {
