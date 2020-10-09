@@ -16,8 +16,8 @@ sudo apt-get install php5-gd # Pour les photos et plots sur certaines configs
 Pour le parsing :
 
 ```bash
-sudo aptitude install libwww-mechanize-perl libfile-path-perl
-sudo aptitude install libxml2-devel libxslt-devel python-devel python-pip
+sudo apt-get install libwww-mechanize-perl libfile-path-perl
+sudo apt-get install libxml2-dev libxslt-dev python-dev python-pip
 sudo pip install bs4 lxml html5lib requests
 ```
 
