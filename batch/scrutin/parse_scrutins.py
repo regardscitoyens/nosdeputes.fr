@@ -148,7 +148,9 @@ MISSING_HISTOGPES = {
     "PA342196": "SOC",
     "PA719020": "LR",
     "PA722240": "LREM",
-    "PA722082": "LREM"
+    "PA722082": "LREM",
+    "PA267337": "LREM",
+    "PA342240": "LR"
 }
 
 def parse_scrutin(data, seances, groupes, histo_groupes):
