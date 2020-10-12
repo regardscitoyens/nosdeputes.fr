@@ -138,6 +138,13 @@ ERREURS_AN = {
    "2342": "20200092", # instead of null
    "2446": "20200140", # instead of 20200141
    "2447": "20200140", # instead of 20200141
+   "2699": "20200176", # instead of null
+   "2700": "20200176", # instead of null
+   "2701": "20200176", # instead of null
+   "2702": "20200176", # instead of null
+   "2703": "20200176", # instead of null
+   "2704": "20200176", # instead of null
+   "2705": "20200176", # instead of null
 }
 
 MISSING_HISTOGPES = {
