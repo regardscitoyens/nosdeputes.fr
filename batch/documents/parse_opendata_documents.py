@@ -3,6 +3,8 @@
 
 import json, sys, html2text, re, io, os
 
+romain2num = {'I':'01','1':'01','II':'02','2':'02','III':'03','3':'03','IV':'04','V':'05','VI':'06','VII':'07','VIII':'08','IX':'09','X':'10','XI':'11','XII':'12','XIII':'13','XIV':'14','XV':'15','XVI':'16','XVII':'17','XVIII':'18','XVIII':'19','XVIII':'20'}
+
 def convert_format(data):
     res = {}
     res['motscles'] = ""
@@ -22,15 +24,29 @@ def convert_format(data):
     else:
         res["titre"] = data['titres']['titrePrincipal']
 
+    extra = ''
+    if data['uid'].find('-') > 0:
+        extra = re.sub('.*-', '-', data['uid'])
+        res['id'] += extra
+        if extra == '-COMPA':
+            extra = '-aCOMPA'
+        else:
+            annexe = re.sub('-', '', extra)
+            res['annexe'] = re.sub('[0-9ivx]*$', '', annexe, flags=re.IGNORECASE) + romain2num[re.sub('^[^ivx]', '', annexe, flags=re.IGNORECASE)]
+            res["categorie"] = data['titres']['titrePrincipal']
+
     if data['classification']['type']['code'] == 'PION' or data['classification']['type']['code'] == 'PNRE':
         if data['classification'].get('sousType') and data['classification']['sousType'].get('code') == 'TVXINSTITEUROP':
             res["source"] = 'http://www.assemblee-nationale.fr/{}/europe/resolutions/ppe{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
         else:
             res["source"] = 'http://www.assemblee-nationale.fr/{}/propositions/pion{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
     elif data['classification']['type']['code'] == 'AVIS':
-        res["source"] =  'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
+        res["source"] =  'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
     elif data['classification']['type']['code'] == 'PRJL':
-        res["source"] =  'http://www.assemblee-nationale.fr/{}/projets/pl{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
+        if data['provenance'] == 'Commission':
+            res["source"] =  'http://www.assemblee-nationale.fr/{}/ta-commission/r{:04d}-a0.asp'.format( data['legislature'], int(res["numero"]) )
+        else:
+            res["source"] =  'http://www.assemblee-nationale.fr/{}/projets/pl{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
     elif data['classification']['type']['code'] == 'RAPP':
         if data['classification'].get('sousType'):
             if data['classification']['sousType'].get('code') == 'ENQU':
@@ -38,15 +54,17 @@ def convert_format(data):
             elif data['classification']['sousType'].get('code') == "OFFPARL":
                 res["source"] = 'http://www.assemblee-nationale.fr/{}/rap-off/i{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
             else:
-                res["source"] = 'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
+                res["source"] = 'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
         else:
-            res["source"] = 'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
+            res["source"] = 'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
     elif data['classification']['type']['code'] == 'RINF':
         if data['classification'].get('sousType') and data['classification']['sousType'].get('code') == 'AUE':
             res["source"] = 'http://www.assemblee-nationale.fr/{}/europe/rap-info/i{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
         else:
             res["source"] = 'http://www.assemblee-nationale.fr/{}/rap-info/i{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
 
+    if extra == '-aCOMPA':
+        res["source"] = 'http://www.assemblee-nationale.fr/{}/pdf/rapports/r{:04d}-aCOMPA.pdf'.format(data['legislature'], int(res["numero"]))
 
     res["date_depot"] = re.sub(r'T.*', '', data['cycleDeVie']['chrono']['dateDepot'])
     if data['cycleDeVie']['chrono'].get('datePublication'):
