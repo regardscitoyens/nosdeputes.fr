@@ -36,7 +36,7 @@ def convert_format(data, extra = ''):
         if extra == '-COMPA':
             extra = '-aCOMPA'
         else:
-            annexes = extra.split('-')
+            annexes = extra.upper().split('-')
             res['annexe'] = ''
             if is_plf:
                 res['annexe'] = 'B'
