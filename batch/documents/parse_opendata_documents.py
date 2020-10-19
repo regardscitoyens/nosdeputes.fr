@@ -3,9 +3,9 @@
 
 import json, sys, html2text, re, io, os
 
-romain2num = {'I':'01','1':'01','II':'02','2':'02','III':'03','3':'03','IV':'04','V':'05','VI':'06','VII':'07','VIII':'08','IX':'09','X':'10','XI':'11','XII':'12','XIII':'13','XIV':'14','XV':'15','XVI':'16','XVII':'17','XVIII':'18','XVIII':'19','XVIII':'20'}
+romain2num = {'I':'01','II':'02','III':'03','IV':'04','V':'05','VI':'06','VII':'07','VIII':'08','IX':'09','X':'10','XI':'11','XII':'12','XIII':'13','XIV':'14','XV':'15','XVI':'16','XVII':'17','XVIII':'18','XVIII':'19','XVIII':'20'}
 
-def convert_format(data):
+def convert_format(data, extra = ''):
     res = {}
     res['motscles'] = ""
     res["categorie"] = ""
@@ -24,15 +24,27 @@ def convert_format(data):
     else:
         res["titre"] = data['titres']['titrePrincipal']
 
-    extra = ''
+    is_plf = False
+    data['plf_annee'] = ''
+    if re.search('projet de loi de finances', data["notice"]["formule"]):
+        is_plf = True
+        data['plf_annee'] = int(re.sub(' .*', '', re.sub('.*projet de loi de finances pour ', '', data["notice"]["formule"])))
+
     if data['uid'].find('-') > 0:
-        extra = re.sub('.*-', '-', data['uid'])
+        extra = extra + re.sub('.*-', '-', data['uid'])
         res['id'] += extra
         if extra == '-COMPA':
             extra = '-aCOMPA'
         else:
-            annexe = re.sub('-', '', extra)
-            res['annexe'] = re.sub('[0-9ivx]*$', '', annexe, flags=re.IGNORECASE) + romain2num[re.sub('^[^ivx]', '', annexe, flags=re.IGNORECASE)]
+            annexes = extra.split('-')
+            res['annexe'] = ''
+            if is_plf:
+                res['annexe'] = 'B'
+            for annexe in annexes[1:]:
+                try:
+                    res['annexe'] += re.sub('[0-9ivx]*$', '', annexe, flags=re.IGNORECASE) + str(int(re.sub('^[^ivx]', '', annexe, flags=re.IGNORECASE)))
+                except:
+                    res['annexe'] += re.sub('[0-9ivx]*$', '', annexe, flags=re.IGNORECASE) + romain2num[re.sub('^[^ivx]', '', annexe, flags=re.IGNORECASE)]
             res["categorie"] = data['titres']['titrePrincipal']
 
     if data['classification']['type']['code'] == 'PION' or data['classification']['type']['code'] == 'PNRE':
@@ -55,6 +67,8 @@ def convert_format(data):
                 res["source"] = 'http://www.assemblee-nationale.fr/{}/rap-off/i{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
             else:
                 res["source"] = 'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
+        elif is_plf:
+            res["source"] = 'http://www.assemblee-nationale.fr/{}/budget/plf{:04d}/b{:04d}{}.asp'.format( data['legislature'], data['plf_annee'], int(res["numero"]), extra )
         else:
             res["source"] = 'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
     elif data['classification']['type']['code'] == 'RINF':
@@ -114,7 +128,7 @@ def convert_format(data):
     if data.get('divisions'):
         if isinstance(data['divisions']['division'], list):
             for division in data['divisions']['division']:
-                convert_format(division)
+                convert_format(division, extra)
         else:
             convert_format(data['divisions']['division'])
 
