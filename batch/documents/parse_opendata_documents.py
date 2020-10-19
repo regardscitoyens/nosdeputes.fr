@@ -113,10 +113,12 @@ def convert_format(data, extra = ''):
               res["auteurs"] += aut['organe']['organeRef']+", "
 
     if data['dossierRef']:
-        with open("opendata/dossierParlementaire/"+data['dossierRef']+".json") as dossierfile:
-            datados = json.load(dossierfile)
-            res["dossier"] = datados['dossierParlementaire']['titreDossier']['titreChemin']
-
+        try:
+            with open("opendata/dossierParlementaire/"+data['dossierRef']+".json") as dossierfile:
+                datados = json.load(dossierfile)
+                res["dossier"] = datados['dossierParlementaire']['titreDossier']['titreChemin']
+        except:
+            res["dossier"] = ''
     if os.path.isfile("opendata/html/"+data['uid']+".html"):
       with io.open("opendata/html/"+data['uid']+".html", encoding="utf-8", mode='r') as htmlfile:
         htmloutput = re.sub(r'<style[^<]*<\/style>', '', htmlfile.read().encode('utf-8').strip())
