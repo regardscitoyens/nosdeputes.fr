@@ -80,7 +80,8 @@ def convert_format(data, extra = ''):
     if extra == '-aCOMPA':
         res["source"] = 'http://www.assemblee-nationale.fr/{}/pdf/rapports/r{:04d}-aCOMPA.pdf'.format(data['legislature'], int(res["numero"]))
 
-    res["date_depot"] = re.sub(r'T.*', '', data['cycleDeVie']['chrono']['dateDepot'])
+    if data['cycleDeVie']['chrono']['dateDepot']:
+        res["date_depot"] = re.sub(r'T.*', '', data['cycleDeVie']['chrono']['dateDepot'])
     if data['cycleDeVie']['chrono'].get('datePublication'):
         res["date_publi"] = re.sub(r'T.*', '', data['cycleDeVie']['chrono']['datePublication'])
 
