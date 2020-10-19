@@ -3,7 +3,7 @@
 
 import json, sys, html2text, re, io, os
 
-romain2num = {'I':'01','II':'02','III':'03','IV':'04','V':'05','VI':'06','VII':'07','VIII':'08','IX':'09','X':'10','XI':'11','XII':'12','XIII':'13','XIV':'14','XV':'15','XVI':'16','XVII':'17','XVIII':'18','XVIII':'19','XVIII':'20'}
+romain2num = {'I':'01','V1':'01','II':'02','V2':'02','III':'03','IV':'04','V':'05','VI':'06','VII':'07','VIII':'08','IX':'09','X':'10','XI':'11','XII':'12','XIII':'13','XIV':'14','XV':'15','XVI':'16','XVII':'17','XVIII':'18','XVIII':'19','XVIII':'20'}
 
 def convert_format(data, extra = ''):
     res = {}
