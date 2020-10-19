@@ -114,7 +114,6 @@ def convert_format(data):
     if data.get('divisions'):
         if isinstance(data['divisions']['division'], list):
             for division in data['divisions']['division']:
-                print division
                 convert_format(division)
         else:
             convert_format(data['divisions']['division'])
