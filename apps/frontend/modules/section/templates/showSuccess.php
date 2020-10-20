@@ -87,7 +87,10 @@ if ($subsection->id != $section->id) : ?>
     }
   }
   echo '</ul>';
-  echo '<b><a href="https://www.lafabriquedelaloi.fr/articles.html?loi='.myTools::getLegislature().'-'.$section->id_dossier_an.'">Explorer le texte sur LaFabriqueDeLaLoi.fr</a></b></div>';
+  if ($section->id_dossier_an) {
+    echo '<b><a href="https://www.lafabriquedelaloi.fr/articles.html?loi='.myTools::getLegislature().'-'.$section->id_dossier_an.'">Explorer le texte sur LaFabriqueDeLaLoi.fr</a></b>';
+  }
+  echo '</div>';
 } ?>
 <div class="seances_dossier">
 <h2>Les débats consacrés à ce dossier</h2>
