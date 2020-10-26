@@ -121,12 +121,14 @@ def convert_format(data, extra = ''):
             res["dossier"] = ''
     if os.path.isfile("opendata/html/"+data['uid']+".html"):
       with io.open("opendata/html/"+data['uid']+".html", encoding="utf-8", mode='r') as htmlfile:
-        htmloutput = re.sub(r'<style[^<]*<\/style>', '', htmlfile.read().encode('utf-8').strip())
+        htmloutput = re.sub(bytes('<style[^<]*<\/style>', 'utf8'),
+                            bytes('', 'utf8'),
+                            htmlfile.read().encode('utf-8').strip())
         from bs4 import BeautifulSoup
         soup = BeautifulSoup(htmloutput, features="lxml")
         res["contenu"] = u'N° '+res["numero"]+" - "+data['titres']['titrePrincipal']+" "+re.sub(r'  *', ' ', soup.get_text().replace('\n', ' ').replace('\t', ' '))
 
-    print json.dumps(res)
+    print(json.dumps(res))
 
     if data.get('divisions'):
         if isinstance(data['divisions']['division'], list):
