@@ -55,7 +55,10 @@ def convert_format(data, extra = ''):
         else:
             res["source"] = 'http://www.assemblee-nationale.fr/{}/propositions/pion{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
     elif data['classification']['type']['code'] == 'AVIS':
-        res["source"] =  'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
+        if is_plf:
+            res["source"] = 'http://www.assemblee-nationale.fr/{}/budget/plf{:04d}/a{:04d}{}.asp'.format( data['legislature'], data['plf_annee'], int(res["numero"]), extra )
+        else:
+            res["source"] =  'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
     elif data['classification']['type']['code'] == 'PRJL':
         if data['provenance'] == 'Commission':
             res["source"] =  'http://www.assemblee-nationale.fr/{}/ta-commission/r{:04d}-a0.asp'.format( data['legislature'], int(res["numero"]) )
