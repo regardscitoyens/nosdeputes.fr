@@ -11,7 +11,7 @@ find opendata/document/ -name '*'$docid'*' | while read file ; do
         break;
     fi
 done
-rm /tmp/documents_$$.json
+rm -f /tmp/documents_$$.json
 
 if ! test -s "$output"; then
     echo "$0: $url not found" 1>&2 ;
