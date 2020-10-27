@@ -14,6 +14,12 @@ DEPUTES=$(echo "SELECT nom from parlementaire
           sed 's/\W/./g'                        |
           tr '\n' '|'                           |
           sed 's/|$//')
+date=$(head -1 $JSON                       |
+  sed 's/^.*"date": "/\nDATE:    /' |
+  sed 's/", .*"heure": "/ - /'      |
+  sed 's/".*$//')
+echo $date
+echo "-------------"
 
 echo "Didascalies :"
 echo "-------------"
@@ -38,7 +44,7 @@ echo
 echo "Parenthèses :"
 echo "-------------"
 cat $JSON                               |
-  sed 's/(…)/ /g'                       |
+  sed 's/(\(…\|MoDem\))/ /ig'           |
   grep '('                              |
   sed 's/^.*"contexte": "//'            |
   sed 's/",.*"intervention": "/  |  /'  |
@@ -93,10 +99,7 @@ echo "-------------"
 echo
 echo
 
-head -1 $JSON                       |
-  sed 's/^.*"date": "/\nDATE:    /' |
-  sed 's/", .*"heure": "/ - /'      |
-  sed 's/".*$//'
+echo $date
 
 head -1 $JSON                       |
   sed 's/^.*"source": "/SOURCE:  /' |
