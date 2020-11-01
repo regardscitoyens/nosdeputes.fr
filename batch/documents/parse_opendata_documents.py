@@ -124,6 +124,8 @@ def convert_format(data, extra = ''):
                 res["dossier"] = datados['dossierParlementaire']['titreDossier']['titreChemin']
         except:
             res["dossier"] = ''
+
+    res["contenu"] = "Non encore publié"
     if os.path.isfile("opendata/html/"+data['uid']+".html"):
       with io.open("opendata/html/"+data['uid']+".html", encoding="utf-8", mode='r') as htmlfile:
         htmloutput = re.sub(bytes('<style[^<]*<\/style>', 'utf8'),
