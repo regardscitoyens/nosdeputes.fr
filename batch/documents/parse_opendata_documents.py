@@ -26,7 +26,7 @@ def convert_format(data, extra = ''):
 
     is_plf = False
     data['plf_annee'] = ''
-    if data["notice"].get("formule") and re.search('projet de loi de finances pour ', data["notice"]["formule"]) and data["classification"]["type"]["code"] == 'AVIS':
+    if data["notice"].get("formule") and re.search('projet de loi de finances pour ', data["notice"]["formule"]): # and data["classification"]["type"]["code"] == 'AVIS':
         is_plf = True
         data['plf_annee'] = int(re.sub('[ \.].*', '', re.sub(r'.*projet de loi de finances pour ', '', data["notice"]["formule"])))
 
