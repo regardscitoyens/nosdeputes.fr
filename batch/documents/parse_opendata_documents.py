@@ -100,7 +100,7 @@ def convert_format(data, extra = ''):
         data['auteurs']['auteur'] = [ data['auteurs']['auteur'] ]
     for auteur in data['auteurs']['auteur']:
         if auteur.get('acteur'):
-            res["deputes"]["auteurs"].append(auteur['acteur']['acteurRef'])
+            res["deputes"]["auteurs"].append([auteur['acteur']['acteurRef'], auteur['acteur']['qualite']])
             res["auteurs"] += auteur['acteur']['acteurRef']+ " "+auteur['acteur']['qualite']+", "
         elif auteur.get('organe'):
             res["organe"] = auteur['organe']['organeRef']
