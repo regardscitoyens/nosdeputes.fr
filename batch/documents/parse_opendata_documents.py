@@ -47,11 +47,11 @@ def convert_format(data, extra = ''):
                     res['annexe'] += re.sub('[0-9ivx]*$', '', annexe, flags=re.IGNORECASE) + romain2num[re.sub('^[^ivx]', '', annexe, flags=re.IGNORECASE)]
             res["categorie"] = data['titres']['titrePrincipal']
 
-    if data['classification']['type']['code'] == 'PION' or data['classification']['type']['code'] == 'PNRE':
+    if data['classification'].get('statutAdoption') == 'ADOPTCOM' and data['classification']['type']['code'] != 'RAPP':
+        res["source"] = 'http://www.assemblee-nationale.fr/{}/ta-commission/r{:04d}-a0.asp'.format( data['legislature'], int(res["numero"]) )
+    elif data['classification']['type']['code'] == 'PION' or data['classification']['type']['code'] == 'PNRE':
         if data['classification'].get('sousType') and data['classification']['sousType'].get('code') == 'TVXINSTITEUROP':
             res["source"] = 'http://www.assemblee-nationale.fr/{}/europe/resolutions/ppe{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
-        elif data['classification'].get('statutAdoption') == 'ADOPTCOM':
-            res["source"] = 'http://www.assemblee-nationale.fr/{}/ta-commission/r{:04d}-a0.asp'.format( data['legislature'], int(res["numero"]) )
         else:
             res["source"] = 'http://www.assemblee-nationale.fr/{}/propositions/pion{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
     elif data['classification']['type']['code'] == 'AVIS':
@@ -62,8 +62,6 @@ def convert_format(data, extra = ''):
     elif data['classification']['type']['code'] == 'PRJL':
         if data['provenance'] == 'Commission':
             res["source"] =  'http://www.assemblee-nationale.fr/{}/ta-commission/r{:04d}-a0.asp'.format( data['legislature'], int(res["numero"]) )
-        elif data['classification'].get('statutAdoption') == 'ADOPTCOM':
-            res["source"] = 'http://www.assemblee-nationale.fr/{}/ta-commission/r{:04d}-a0.asp'.format( data['legislature'], int(res["numero"]) )
         else:
             res["source"] =  'http://www.assemblee-nationale.fr/{}/projets/pl{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
     elif data['classification']['type']['code'] == 'RAPP':
