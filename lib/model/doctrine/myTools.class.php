@@ -547,6 +547,8 @@ class myTools {
         if (!$request->getParameter('textplain')) {
           $action->getResponse()->setContentType('text/plain; charset=utf-8');
           $action->getResponse()->setHttpHeader('content-disposition', 'attachment; filename="'.$filename.'.json"');
+        } else {
+          $action->getResponse()->setContentType('application/json; charset=utf-8');
         }
         break;
       case 'xml':
