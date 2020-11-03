@@ -2177,6 +2177,23 @@ a:hover img {
 .list_inter {
   color: #7AA925;
 }
+.vote-pour {
+  color: #7AA925;
+}
+.vote-contre {
+  color: #fb7676;
+}
+.vote-abstention {
+  color: orange;
+}
+table.scrutins td {
+    width: 50%;
+    padding: 10px;
+    vertical-align: top;
+}
+table.scrutins td.votes-autres {
+    border-left: 1px solid black;
+}
 .phototitle {
   vertical-align: middle;
 }
