@@ -591,3 +591,15 @@ parlementaire_documents_rss:
 parlementaire_documents:
   url: /:slug/documents/:type
   param: {module: documents, action: parlementaire}
+parlementaire_votes:
+  url: /:slug/votes
+  param: {module: scrutin, action: parlementaire}
+parlementaire_votes_json:
+  url: /:slug/votes/json
+  param: {module: api, action: votes, format: json}
+parlementaire_votes_xml:
+  url: /:slug/votes/xml
+  param: {module: api, action: votes, format: xml}
+parlementaire_votes_csv:
+  url: /:slug/votes/csv
+  param: {module: api, action: votes, format: csv}
