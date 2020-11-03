@@ -1,3 +1,7 @@
+<?php
+echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => "Votes") )
+?>
+
 <?php 
   foreach ($scrutins as $s) {
 ?>
