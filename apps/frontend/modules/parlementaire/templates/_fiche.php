@@ -178,6 +178,11 @@ if (myTools::isFinLegislature()) {
       <?php echo include_component('documents', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4, 'type' => 'loi')); ?>
       <p class="suivant"><?php echo link_to('Toutes ses propositions de loi cosignées', '@parlementaire_documents?slug='.$parlementaire->slug.'&type=loi'); ?></p>
 
+    <h2>Votes</h2>
+      <h3>Ses derniers votes</h3>
+       <?php echo include_component('scrutin', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
+      <p class="suivant"><?php echo link_to('Tous ses votes', '@parlementaire_votes?slug='.$parlementaire->slug); ?></p>
+
     <h2>Questions au gouvernement</h2>
       <h3>Ses dernières questions orales</h3>
        <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
