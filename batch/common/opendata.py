@@ -261,6 +261,8 @@ def ref_histo_groupes(legislature, ND_names=False):
         return acteur["uid"]["#text"]
 
     def _extract_mapped(acteur, data):
+        if type(acteur["mandats"]["mandat"]) is not list:
+            acteur["mandats"]["mandat"] = [acteur["mandats"]["mandat"]]
         groupes = [{
             "sigle": GROUPES[m["organes"]["organeRef"]],
             "debut": m["dateDebut"],
