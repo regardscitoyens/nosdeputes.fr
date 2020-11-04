@@ -15,6 +15,6 @@ class scrutinComponents extends sfComponents
       ->orderBy('s.date DESC');
     if (isset($this->limit))
       $query->limit($this->limit);
-    $this->scrutins = $query->execute();
+    $this->votes = $query->execute();
   }
 }

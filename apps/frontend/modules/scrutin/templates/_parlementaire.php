@@ -1,13 +1,13 @@
 <ul>
 <?php 
-  foreach ($scrutins as $s) {
+  foreach ($votes as $v) {
 ?>
 <li>
-	<a href="<?= $s->getScrutin()->getURL() ?>">
-		<?= myTools::displayVeryShortDate($s->getScrutin()->date) ?> : <?= $s->getScrutin()->titre ?>
-		(<strong class="vote-<?= $s->position ?>"><?= $s->position ?></strong>)
-		<?php if ($s->mise_au_point_position) { ?>
-			(mise au point: <strong class="vote-<?= $s->mise_au_point_position ?>"><?= $s->getHumanPositionMiseAuPoint() ?></strong>)
+	<a href="<?= $v->getScrutin()->getURL() ?>">
+		<?= myTools::displayVeryShortDate($v->getScrutin()->date) ?> : <?= $v->getScrutin()->titre ?>
+		(<strong class="vote-<?= $v->position ?>"><?= $v->position ?></strong>)
+		<?php if ($v->mise_au_point_position) { ?>
+			(mise au point: <strong class="vote-<?= $v->mise_au_point_position ?>"><?= $v->getHumanPositionMiseAuPoint() ?></strong>)
 		<?php } ?>
 	</a>
 </li>
