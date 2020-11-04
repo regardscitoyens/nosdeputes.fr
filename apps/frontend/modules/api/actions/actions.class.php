@@ -649,7 +649,7 @@ class apiActions extends sfActions
 
     $this->res = array('votes' => array());
     foreach($query->execute() as $vote) {
-      $vote = self::getVoteArray($vote, $format, 1);
+      $vote = self::getVoteArray($vote, $format);
       $this->res['votes'][] = array('vote' => $vote);
     }
 
