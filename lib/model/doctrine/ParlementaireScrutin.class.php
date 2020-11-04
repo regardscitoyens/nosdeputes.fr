@@ -28,4 +28,10 @@ class ParlementaireScrutin extends BaseParlementaireScrutin
     );
   }
 
+  public function getHumanPositionMiseAuPoint() {
+    if ($this->mise_au_point_position == 'nonVotant') {
+      return "non-votant";
+    }
+    return $this->mise_au_point_position;
+  }
 }
