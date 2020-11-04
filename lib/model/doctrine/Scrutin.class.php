@@ -159,4 +159,4 @@ class Scrutin extends BaseScrutin
   public function getURL() {
     return "http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/".myTools::getLegislature()."/(num)/".$this->numero;
   }
-}
+ }
