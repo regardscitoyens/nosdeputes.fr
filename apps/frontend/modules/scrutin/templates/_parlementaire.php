@@ -5,7 +5,7 @@
 <li>
 	<a href="<?= $s->getScrutin()->getURL() ?>">
 		<?= myTools::displayVeryShortDate($s->getScrutin()->date) ?> : <?= $s->getScrutin()->titre ?>
-		(<strong class="vote-<?= $s->position ?>"><?= $s->getHumanPosition() ?></strong>)
+		(<strong class="vote-<?= $s->position ?>"><?= $s->position ?></strong>)
 	</a>
 </li>
 <?php
