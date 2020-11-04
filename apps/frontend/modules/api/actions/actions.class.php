@@ -603,6 +603,14 @@ class apiActions extends sfActions
     $res['par_delegation'] = $vote->par_delegation;
     $res['mise_au_point_position'] = $vote->mise_au_point_position;
     $res['scrutin'] = self::getScrutinArray($vote->getScrutin(), $format);
+
+    if ($format == 'csv') {
+      foreach(array_keys($res['scrutin']) as $key) {
+        $res['scrutin_'.$key] = $res['scrutin'][$key];
+      }
+      unset($res['scrutin']);
+    }
+
     return $res;
   }
 
@@ -637,13 +645,18 @@ class apiActions extends sfActions
 
     $this->champs = array();
     $format = strtolower($request->getParameter('format'));
-    $this->forward404Unless(in_array($format,array('xml', 'json')));
+    $this->forward404Unless(in_array($format,array('csv', 'xml', 'json')));
 
     $this->res = array('votes' => array());
     foreach($query->execute() as $vote) {
       $vote = self::getVoteArray($vote, $format, 1);
       $this->res['votes'][] = array('vote' => $vote);
     }
+
+    if ($request->getParameter('format') == 'csv')
+     foreach(array_keys($vote) as $key)
+      if (!isset($this->champs[$key]))
+       $this->champs[$key] = 1;
 
     $this->breakline = 'vote';
     myTools::templatize($this, $request, 'nosdeputes.fr_votes_'.$request->getParameter('slug').'_'.date('Y-m-d'));

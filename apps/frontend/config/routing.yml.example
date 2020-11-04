@@ -600,3 +600,6 @@ parlementaire_votes_json:
 parlementaire_votes_xml:
   url: /:slug/votes/xml
   param: {module: api, action: votes, format: xml}
+parlementaire_votes_csv:
+  url: /:slug/votes/csv
+  param: {module: api, action: votes, format: csv}
