@@ -501,6 +501,19 @@ alerte_confirmation:
   url: /alerte/confirmation/:verif
   param: {module: alerte, action: confirmation}
 
+scrutins:
+  url: /scrutins
+  param: {module: scrutin, action: list}
+scrutins_json:
+  url: /scrutins/json
+  param: {module: api, action: scrutins, format: json}
+scrutins_xml:
+  url: /scrutins/xml
+  param: {module: api, action: scrutins, format: xml}
+scrutins_csv:
+  url: /scrutins/csv
+  param: {module: api, action: scrutins, format: csv}
+
 parlementaire:
   url: /:slug
   param: {module: parlementaire, action: show}

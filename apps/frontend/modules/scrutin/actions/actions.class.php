@@ -57,4 +57,11 @@ class scrutinActions extends sfActions
         $this->votes[$vote->scrutin_id] = $vote;
     }
   }
+
+  public function executeList(sfWebRequest $request) {
+    $query = Doctrine::getTable('Scrutin')->createQuery('s')
+      ->orderBy('s.date DESC');
+    $this->scrutins = $query->execute();
+    $this->response->setTitle("Scrutins publics");
+  }
 }

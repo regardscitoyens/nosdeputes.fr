@@ -666,4 +666,27 @@ class apiActions extends sfActions
     myTools::templatize($this, $request, 'nosdeputes.fr_votes_'.$request->getParameter('slug').'_'.date('Y-m-d'));
   }
 
+  public function executeScrutins(sfWebRequest $request) {
+    $query = Doctrine::getTable('Scrutin')->createQuery('s')
+      ->orderBy('s.date DESC');
+
+    $this->champs = array();
+    $format = strtolower($request->getParameter('format'));
+    $this->forward404Unless(in_array($format,array('csv', 'xml', 'json')));
+
+    $this->res = array('scrutins' => array());
+    foreach($query->execute() as $scrutin) {
+      $scrutin = self::getScrutinArray($scrutin, $format);
+      $this->res['scrutins'][] = array('scrutin' => $scrutin);
+    }
+
+    if ($request->getParameter('format') == 'csv')
+     foreach(array_keys($scrutin) as $key)
+      if (!isset($this->champs[$key]))
+       $this->champs[$key] = 1;
+
+    $this->breakline = 'scrutin';
+    myTools::templatize($this, $request, 'nosdeputes.fr_scrutins_'.date('Y-m-d'));
+  }
+
 }
