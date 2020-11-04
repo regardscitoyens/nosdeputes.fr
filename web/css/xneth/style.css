@@ -2177,6 +2177,15 @@ a:hover img {
 .list_inter {
   color: #7AA925;
 }
+.vote-pour {
+  color: #7AA925;
+}
+.vote-contre {
+  color: #fb7676;
+}
+.vote-abstention {
+  color: orange;
+}
 .phototitle {
   vertical-align: middle;
 }
