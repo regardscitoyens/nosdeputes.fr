@@ -156,7 +156,7 @@ class Scrutin extends BaseScrutin
       return $is_part;
   }
 
-  public function getURL() {
+  public function getURLInstitution() {
     return "http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/".myTools::getLegislature()."/(num)/".$this->numero;
   }
 
