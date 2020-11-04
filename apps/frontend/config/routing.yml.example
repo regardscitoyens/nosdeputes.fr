@@ -594,3 +594,9 @@ parlementaire_documents:
 parlementaire_votes:
   url: /:slug/votes/
   param: {module: scrutin, action: parlementaire}
+parlementaire_votes_json:
+  url: /:slug/votes/json
+  param: {module: api, action: votes, format: json}
+parlementaire_votes_xml:
+  url: /:slug/votes/xml
+  param: {module: api, action: votes, format: xml}

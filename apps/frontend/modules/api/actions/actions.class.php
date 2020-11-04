@@ -592,4 +592,61 @@ class apiActions extends sfActions
     else $this->links[$lid]['w'] += $weight;
   }
 
+  public static function getVoteArray($vote, $format) {
+    if (!$vote)
+      throw new Exception("pas de vote");
+
+    $res = array();
+    $res['parlementaire_groupe_acronyme'] = $vote->parlementaire_groupe_acronyme;
+    $res['position'] = $vote->position;
+    $res['position_groupe'] = $vote->position_groupe;
+    $res['par_delegation'] = $vote->par_delegation;
+    $res['mise_au_point_position'] = $vote->mise_au_point_position;
+    $res['scrutin'] = self::getScrutinArray($vote->getScrutin(), $format);
+    return $res;
+  }
+
+  public static function getScrutinArray($scrutin, $format) {
+    if (!$scrutin)
+      throw new Exception("pas de scrutin");
+
+    $res['url'] = $scrutin->getURL();
+    $res['date'] = $scrutin->date;
+    $res['titre'] = $scrutin->titre;
+    $res['nombre_votants'] = $scrutin->nombre_votants;
+    $res['nombre_pours'] = $scrutin->nombre_pours;
+    $res['nombre_contres'] = $scrutin->nombre_contres;
+    $res['nombre_abstentions'] = $scrutin->nombre_abstentions;
+    $res['type'] = $scrutin->type;
+    $res['sort'] = $scrutin->sort;
+    $res['titre'] = $scrutin->titre;
+    $res['demandeurs'] = $scrutin->demandeurs;
+    $res['demandeurs_groupes_acronymes'] = $scrutin->demandeurs_groupes_acronymes;;
+
+    return $res;
+  }
+
+  public function executeVotes(sfWebRequest $request) {
+    $this->parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($request->getParameter('slug'));
+    $this->forward404Unless($this->parlementaire);
+
+    $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
+      ->where('ps.parlementaire_id = ?', $this->parlementaire->id)
+      ->leftJoin('ps.Scrutin s')
+      ->orderBy('s.date DESC');
+
+    $this->champs = array();
+    $format = strtolower($request->getParameter('format'));
+    $this->forward404Unless(in_array($format,array('xml', 'json')));
+
+    $this->res = array('votes' => array());
+    foreach($query->execute() as $vote) {
+      $vote = self::getVoteArray($vote, $format, 1);
+      $this->res['votes'][] = array('vote' => $vote);
+    }
+
+    $this->breakline = 'vote';
+    myTools::templatize($this, $request, 'nosdeputes.fr_votes_'.$request->getParameter('slug').'_'.date('Y-m-d'));
+  }
+
 }
