@@ -622,7 +622,8 @@ class apiActions extends sfActions
       throw new Exception("pas de scrutin");
 
     $res['numero'] = $scrutin->numero;
-    $res['url_institution'] = $scrutin->getURL();
+    $res['url_institution'] = $scrutin->getURLInstitution();
+    $res['url_nosdeputes'] = myTools::url_forAPI('@scrutin?numero='.$scrutin->numero);
     $res['date'] = $scrutin->date;
     $res['titre'] = $scrutin->titre;
     $res['nombre_votants'] = $scrutin->nombre_votants;
@@ -632,8 +633,8 @@ class apiActions extends sfActions
     $res['type'] = $scrutin->type;
     $res['sort'] = $scrutin->sort;
     $res['titre'] = $scrutin->titre;
-    $res['demandeurs'] = $scrutin->demandeurs;
-    $res['demandeurs_groupes_acronymes'] = $scrutin->demandeurs_groupes_acronymes;;
+    $res['demandeurs'] = myTools::array2hash($scrutin->demandeurs, 'demandeur');
+    $res['demandeurs_groupes_acronymes'] = myTools::array2hash($scrutin->demandeurs_groupes_acronymes, 'demandeur_groupe_acronyme');
 
     return $res;
   }
@@ -662,8 +663,68 @@ class apiActions extends sfActions
       if (!isset($this->champs[$key]))
        $this->champs[$key] = 1;
 
+    $this->multi = array();
+    $this->multi['demandeur'] = 1;
+    $this->multi['demandeur_groupe_acronyme'] = 1;
     $this->breakline = 'vote';
     myTools::templatize($this, $request, 'nosdeputes.fr_votes_'.$request->getParameter('slug').'_'.date('Y-m-d'));
   }
 
+  public function executeScrutins(sfWebRequest $request) {
+    $query = Doctrine::getTable('Scrutin')->createQuery('s')
+      ->orderBy('s.date ASC');
+
+    $this->champs = array();
+    $format = strtolower($request->getParameter('format'));
+    $this->forward404Unless(in_array($format,array('csv', 'xml', 'json')));
+
+    $this->res = array('scrutins' => array());
+    foreach($query->execute() as $scrutin) {
+      $scrutin = self::getScrutinArray($scrutin, $format);
+      $this->res['scrutins'][] = array('scrutin' => $scrutin);
+    }
+
+    if ($request->getParameter('format') == 'csv')
+     foreach(array_keys($scrutin) as $key)
+      if (!isset($this->champs[$key]))
+       $this->champs[$key] = 1;
+
+    $this->multi = array();
+    $this->multi['demandeur'] = 1;
+    $this->multi['demandeur_groupe_acronyme'] = 1;
+    $this->breakline = 'scrutin';
+    myTools::templatize($this, $request, 'nosdeputes.fr_scrutins_'.date('Y-m-d'));
+  }
+
+  public function executeScrutin(sfWebRequest $request) {
+    $this->scrutin = Doctrine::getTable('Scrutin')->findOneBy('numero',$request->getParameter('numero'));
+    $this->forward404Unless($this->scrutin);
+
+    $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
+      ->leftJoin('ps.Parlementaire p')
+      ->leftJoin('ps.Scrutin s')
+      ->orderBy('ps.parlementaire_groupe_acronyme, ps.position, p.nom')
+      ->where('ps.scrutin_id = '.$this->scrutin->id);
+
+    $this->champs = array();
+    $format = strtolower($request->getParameter('format'));
+    $this->forward404Unless(in_array($format,array('csv', 'xml', 'json')));
+
+    $this->res = array('votes' => array());
+    foreach($query->execute() as $vote) {
+      $vote = self::getVoteArray($vote, $vote->getParlementaire(), $format);
+      $this->res['votes'][] = array('vote' => $vote);
+    }
+
+    if ($request->getParameter('format') == 'csv')
+     foreach(array_keys($vote) as $key)
+      if (!isset($this->champs[$key]))
+       $this->champs[$key] = 1;
+
+    $this->multi = array();
+    $this->multi['demandeur'] = 1;
+    $this->multi['demandeur_groupe_acronyme'] = 1;
+    $this->breakline = 'vote';
+    myTools::templatize($this, $request, 'nosdeputes.fr_scrutin_'.$scrutin->numero.'_'.date('Y-m-d'));
+  }
 }

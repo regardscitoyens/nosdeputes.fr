@@ -110,7 +110,8 @@ $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
             <ul>
               <li><a href="<?php echo url_for('@sections?order=date'); ?>">Les derniers dossiers</a> <strong>|</strong></li>
               <li><a href="<?php echo url_for('@sections?order=plus'); ?>">Les dossiers les plus discutés</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@sections?order=coms'); ?>">Les dossiers les plus commentés</a></li>
+              <li><a href="<?php echo url_for('@sections?order=coms'); ?>">Les dossiers les plus commentés</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@scrutins'); ?>">Tous les scrutins publics</a></li>
             </ul>
           </div>
         </div>
