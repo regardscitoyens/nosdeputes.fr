@@ -592,7 +592,7 @@ class apiActions extends sfActions
     else $this->links[$lid]['w'] += $weight;
   }
 
-  public static function getVoteArray($vote, $format) {
+  public static function getVoteArray($vote, $parlementaire, $format) {
     if (!$vote)
       throw new Exception("pas de vote");
 
@@ -611,6 +611,8 @@ class apiActions extends sfActions
     $res['position_groupe'] = $vote->position_groupe;
     $res['par_delegation'] = $vote->par_delegation;
     $res['mise_au_point_position'] = $vote->mise_au_point_position;
+    $res['parlementaire_groupe_acronyme'] = $vote->parlementaire_groupe_acronyme;
+    $res['parlementaire_slug'] = $parlementaire->slug;
 
     return $res;
   }
@@ -651,7 +653,7 @@ class apiActions extends sfActions
 
     $this->res = array('votes' => array());
     foreach($query->execute() as $vote) {
-      $vote = self::getVoteArray($vote, $format);
+      $vote = self::getVoteArray($vote, $this->parlementaire, $format);
       $this->res['votes'][] = array('vote' => $vote);
     }
 
