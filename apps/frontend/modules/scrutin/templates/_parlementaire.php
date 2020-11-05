@@ -12,7 +12,6 @@
             (mise au point: <strong class="vote-<?= $v->mise_au_point_position ?>"><?= $v->getHumanPositionMiseAuPoint() ?></strong>)
         <?php } ?>
 
-
         <?php if ($v->position == 'abstention' || $v->position == 'nonVotant') { ?>
             sur
         <?php } ?>
