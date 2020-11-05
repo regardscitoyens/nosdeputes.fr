@@ -619,7 +619,8 @@ class apiActions extends sfActions
     if (!$scrutin)
       throw new Exception("pas de scrutin");
 
-    $res['url'] = $scrutin->getURL();
+    $res['numero'] = $scrutin->numero;
+    $res['url_institution'] = $scrutin->getURL();
     $res['date'] = $scrutin->date;
     $res['titre'] = $scrutin->titre;
     $res['nombre_votants'] = $scrutin->nombre_votants;
