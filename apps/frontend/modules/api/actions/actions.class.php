@@ -642,7 +642,7 @@ class apiActions extends sfActions
     $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
       ->where('ps.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('ps.Scrutin s')
-      ->orderBy('s.date DESC');
+      ->orderBy('s.date ASC');
 
     $this->champs = array();
     $format = strtolower($request->getParameter('format'));
