@@ -10,7 +10,7 @@ class scrutinComponents extends sfComponents
   public function executeParlementaire() {
     $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
       ->where('ps.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('ps.position != ?', 'nonVotant')
+      ->andWhere('(ps.position != "nonVotant" OR ps.mise_au_point_position != NULL)')
       ->leftJoin('ps.Scrutin s')
       ->orderBy('s.date DESC');
     if (isset($this->limit))
