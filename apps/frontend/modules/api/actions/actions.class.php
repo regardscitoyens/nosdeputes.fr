@@ -128,7 +128,7 @@ class apiActions extends sfActions
     $type = $request->getParameter('type');
     $this->forward404Unless($type == "extra" || $type == "groupes" || $type == "parlementaire" || $type == "groupe");
     $query = Doctrine::getTable('Organisme')->createQuery('o')
-      ->innerJoin('o.ParlementaireOrganisme po')
+      //->innerJoin('o.ParlementaireOrganisme po')
       ->where('o.type = ?', $type)
       ->groupBy('o.id')
       ->orderBy('o.nom');
@@ -146,6 +146,7 @@ class apiActions extends sfActions
       $orga['nom'] = $o->nom;
       if ($o->type == "groupe") {
         $orga['acronyme'] = $o->getSmallNomGroupe();
+        if (!$orga['acronyme']) continue;
         $orga['couleur'] = $colormap[$orga['acronyme']];
         $orga['order'] = $groupesorder[$orga['acronyme']];
       }
