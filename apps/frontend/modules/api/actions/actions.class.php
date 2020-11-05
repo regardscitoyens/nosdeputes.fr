@@ -597,10 +597,7 @@ class apiActions extends sfActions
       throw new Exception("pas de vote");
 
     $res = array();
-    $res['position'] = $vote->position;
-    $res['position_groupe'] = $vote->position_groupe;
-    $res['par_delegation'] = $vote->par_delegation;
-    $res['mise_au_point_position'] = $vote->mise_au_point_position;
+
     $res['scrutin'] = self::getScrutinArray($vote->getScrutin(), $format);
 
     if ($format == 'csv') {
@@ -609,6 +606,11 @@ class apiActions extends sfActions
       }
       unset($res['scrutin']);
     }
+
+    $res['position'] = $vote->position;
+    $res['position_groupe'] = $vote->position_groupe;
+    $res['par_delegation'] = $vote->par_delegation;
+    $res['mise_au_point_position'] = $vote->mise_au_point_position;
 
     return $res;
   }
