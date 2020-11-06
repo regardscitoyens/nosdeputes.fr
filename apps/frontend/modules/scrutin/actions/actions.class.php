@@ -50,6 +50,10 @@ class scrutinActions extends sfActions
       ->leftJoin('ps.Scrutin s')
       ->orderBy('s.date DESC');
 
-    $this->votes = $query->execute();
+    $votes = $query->execute();
+    $this->votes = array();
+    foreach ($votes as $vote) {
+        $this->votes[$vote->scrutin_id] = $vote;
+    }
   }
 }

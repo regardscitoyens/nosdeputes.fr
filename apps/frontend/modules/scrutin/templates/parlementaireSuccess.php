@@ -12,13 +12,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
             <?php 
               foreach ($scrutins as $s) {
                 if ($s->isOnWholeText()) {
-                    $vote = null;
-                    foreach ($votes as $v) {
-                        if ($v->scrutin_id == $s->id) {
-                            $vote = $v; 
-                            break;
-                        }
-                    }
+                    $vote = isset($votes[$s->id]) ? $votes[$s->id] : null;
                     echo include_component('scrutin', 'vote', array(
                         'vote' => $vote,
                         'scrutin' => $s,
@@ -43,13 +37,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
                     <ul>
                     <?php 
                       foreach ($g as $s) {
-                        $vote = null;
-                        foreach ($votes as $v) {
-                            if ($v->scrutin_id == $s->id) {
-                                $vote = $v; 
-                                break;
-                            }
-                        }
+                        $vote = isset($votes[$s->id]) ? $votes[$s->id] : null;
                         echo include_component('scrutin', 'vote', array(
                             'vote' => $vote,
                             'scrutin' => $s,
