@@ -11,7 +11,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
               foreach ($scrutins as $s) {
                 if ($s->isOnWholeText()) {
                     $vote = isset($votes[$s->id]) ? $votes[$s->id] : null;
-                    echo include_component('scrutin', 'vote', array(
+                    echo include_partial('scrutin/vote', array(
                         'vote' => $vote,
                         'scrutin' => $s,
                         'titre' => $s->titre)
@@ -34,7 +34,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
                     <?php 
                       foreach ($g as $s) {
                         $vote = isset($votes[$s->id]) ? $votes[$s->id] : null;
-                        echo include_component('scrutin', 'vote', array(
+                        echo include_partial('scrutin/vote', array(
                             'vote' => $vote,
                             'scrutin' => $s,
                             'titre' => str_replace($s->getLaw(), '...', $s->titre))

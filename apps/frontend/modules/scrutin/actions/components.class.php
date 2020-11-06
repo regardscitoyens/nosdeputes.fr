@@ -17,6 +17,4 @@ class scrutinComponents extends sfComponents
       $query->limit($this->limit);
     $this->votes = $query->execute();
   }
-  public function executeVote() {
-  }
 }
