@@ -17,6 +17,18 @@ class scrutinActions extends sfActions
 
     $this->scrutins = $query->execute();
 
+    foreach ($this->scrutins as $s) {
+        if ($s->isOnWholeText() === null) {
+            $this->logMessage("isOnWholeText can't parse ".$s->titre, "err");
+        }
+    }
+
+    foreach ($this->scrutins as $s) {
+        if ($s->getLaw() === null) {
+            $this->logMessage("getLaw can't parse ".$s->titre, "debug");
+        }
+    }
+
     $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
       ->where('ps.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('ps.Scrutin s')

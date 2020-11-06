@@ -230,11 +230,11 @@ class Scrutin extends BaseScrutin
     if ($this->titleStartsWith("la demande de constitution de commission spéciale")) { // not sure
       return false;
     }
-    throw new Exception('Unknown if on whole text: '. $this->titre);
+    return null;
   }
 
   public function getLaw() {
-    preg_match_all('/((?:projet|proposition) de loi .*?\))/', $this->titre, $matches, PREG_SET_ORDER, 0);
+    preg_match_all('/((?:projet|proposition) de (?:loi|résolution) .*?(?:\)|$))/', $this->titre, $matches, PREG_SET_ORDER, 0);
     if ($matches) {
       return $matches[0][0];
     }
