@@ -230,7 +230,6 @@ class Scrutin extends BaseScrutin
     if ($this->titleStartsWith("la demande de constitution de commission spéciale")) { // not sure
       return false;
     }
-    return true;
     throw new Exception('Unknown if on whole text: '. $this->titre);
   }
 
