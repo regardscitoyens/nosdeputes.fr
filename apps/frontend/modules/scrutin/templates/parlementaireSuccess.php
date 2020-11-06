@@ -12,12 +12,6 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
             <?php 
               foreach ($scrutins as $s) {
                 if ($s->isOnWholeText()) {
-            ?>
-            <li>
-                <a href="<?= $s->getURL() ?>">
-                    <?= myTools::displayVeryShortDate($s->date) ?> :
-
-                    <?php
                     $vote = null;
                     foreach ($votes as $v) {
                         if ($v->scrutin_id == $s->id) {
@@ -25,31 +19,11 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
                             break;
                         }
                     }
-                    ?>
-
-                    <?php if ($vote) { ?>
-                        <strong class="vote-<?= $vote->position ?>">
-
-                        <?= $vote->getHumanPosition() ?></strong><strong><?php if ($vote->par_delegation) { ?>, par délégation,<?php } ?>
-
-                        </strong>
-
-                        <?php if ($vote->mise_au_point_position) { ?>
-                            (mise au point: <strong class="vote-<?= $vote->mise_au_point_position ?>"><?= $vote->getHumanPositionMiseAuPoint() ?></strong>)
-                        <?php } ?>
-
-                        <?php if ($vote->position == 'abstention' || $vote->position == 'nonVotant') { ?>
-                            sur
-                        <?php } ?>
-
-                    <?php }  else { ?>
-                        <strong class="vote-absent">n'as pas voté</strong> sur
-                    <?php } ?>
-
-                    <?= $s->titre ?>
-                </a>
-            </li>
-            <?php
+                    echo include_component('scrutin', 'vote', array(
+                        'vote' => $vote,
+                        'scrutin' => $s,
+                        'titre' => $s->titre)
+                    );
                 }
               }
             ?>
@@ -87,44 +61,18 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
                     <ul>
                     <?php 
                       foreach ($g as $s) {
-                    ?>
-                        <li>
-                            <a href="<?= $s->getURL() ?>">
-                                <?= myTools::displayVeryShortDate($s->date) ?> :
-
-                                <?php
-                                $vote = null;
-                                foreach ($votes as $v) {
-                                    if ($v->scrutin_id == $s->id) {
-                                        $vote = $v; 
-                                        break;
-                                    }
-                                }
-                                ?>
-
-                                <?php if ($vote) { ?>
-                                    <strong class="vote-<?= $vote->position ?>">
-
-                                    <?= $vote->getHumanPosition() ?></strong><strong><?php if ($vote->par_delegation) { ?>, par délégation,<?php } ?>
-
-                                    </strong>
-
-                                    <?php if ($vote->mise_au_point_position) { ?>
-                                        (mise au point: <strong class="vote-<?= $vote->mise_au_point_position ?>"><?= $vote->getHumanPositionMiseAuPoint() ?></strong>)
-                                    <?php } ?>
-
-                                    <?php if ($vote->position == 'abstention' || $vote->position == 'nonVotant') { ?>
-                                        sur
-                                    <?php } ?>
-
-                                <?php }  else { ?>
-                                    <strong class="vote-absent">n'as pas voté</strong> sur
-                                <?php } ?>
-
-                                <?= str_replace($s->getLaw(), '...', $s->titre) ?>
-                            </a>
-                        </li>
-                    <?php
+                        $vote = null;
+                        foreach ($votes as $v) {
+                            if ($v->scrutin_id == $s->id) {
+                                $vote = $v; 
+                                break;
+                            }
+                        }
+                        echo include_component('scrutin', 'vote', array(
+                            'vote' => $vote,
+                            'scrutin' => $s,
+                            'titre' => str_replace($s->getLaw(), '...', $s->titre))
+                        );
                       }
                     ?>
                     </ul>
