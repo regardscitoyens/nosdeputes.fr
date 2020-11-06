@@ -1,22 +1,24 @@
 <ul>
 <?php 
-  foreach ($votes as $v) {
+  foreach ($voteotes as $vote) {
 ?>
 <li>
-    <a href="<?= $v->getScrutin()->getURL() ?>">
-        <?= myTools::displayVeryShortDate($v->getScrutin()->date) ?> :
+    <a href="<?= $vote->getScrutin()->getURL() ?>">
+        <?= myTools::displayVeryShortDate($vote->getScrutin()->date) ?> :
 
-        <strong class="vote-<?= $v->position ?>"><?= $v->getHumanPosition() ?></strong>
+        <strong class="vote-<?= $vote->position ?>">
+        <?= $vote->getHumanPosition() ?></strong><strong><?php if ($vote->par_delegation) { ?>, par délégation,<?php } ?>
+        </strong>
 
-        <?php if ($v->mise_au_point_position) { ?>
-            (mise au point: <strong class="vote-<?= $v->mise_au_point_position ?>"><?= $v->getHumanPositionMiseAuPoint() ?></strong>)
+        <?php if ($vote->mise_au_point_position) { ?>
+            (mise au point: <strong class="vote-<?= $vote->mise_au_point_position ?>"><?= $vote->getHumanPositionMiseAuPoint() ?></strong>)
         <?php } ?>
 
-        <?php if ($v->position == 'abstention' || $v->position == 'nonVotant') { ?>
+        <?php if ($vote->position == 'abstention' || $vote->position == 'nonVotant') { ?>
             sur
         <?php } ?>
 
-        <?= $v->getScrutin()->titre ?>
+        <?= $vote->getScrutin()->titre ?>
     </a>
 </li>
 <?php

@@ -41,7 +41,11 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
                     ?>
 
                     <?php if ($vote) { ?>
-                        <strong class="vote-<?= $vote->position ?>"><?= $vote->getHumanPosition() ?></strong>
+                        <strong class="vote-<?= $vote->position ?>">
+
+                        <?= $vote->getHumanPosition() ?></strong><strong><?php if ($vote->par_delegation) { ?>, par délégation,<?php } ?>
+
+                        </strong>
 
                         <?php if ($vote->mise_au_point_position) { ?>
                             (mise au point: <strong class="vote-<?= $vote->mise_au_point_position ?>"><?= $vote->getHumanPositionMiseAuPoint() ?></strong>)
