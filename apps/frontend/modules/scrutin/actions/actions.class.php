@@ -21,9 +21,6 @@ class scrutinActions extends sfActions
         if ($s->isOnWholeText() === null) {
             $this->logMessage("isOnWholeText can't parse ".$s->titre, "err");
         }
-    }
-
-    foreach ($this->scrutins as $s) {
         if ($s->getLaw() === null) {
             $this->logMessage("getLaw can't parse ".$s->titre, "debug");
         }
