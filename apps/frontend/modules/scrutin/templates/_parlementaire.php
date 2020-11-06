@@ -1,6 +1,6 @@
 <ul>
 <?php 
-  foreach ($voteotes as $vote) {
+  foreach ($votes as $vote) {
 ?>
 <li>
     <a href="<?= $vote->getScrutin()->getURL() ?>">
