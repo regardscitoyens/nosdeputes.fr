@@ -3,7 +3,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
 ?>
 
 
-<table>
+<table class="scrutins">
     <tr>
         <td>
             <h2>Votes sur l'ensemble</h2>
@@ -82,14 +82,3 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
         </td>
     </tr>
 </table>
-
-<style>
-td {
-    width: 50%;
-    padding: 10px;
-    vertical-align: top;
-}
-td.votes-autres {
-    border-left: 1px solid black;
-}
-</style>
