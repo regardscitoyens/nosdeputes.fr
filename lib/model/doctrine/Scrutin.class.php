@@ -191,13 +191,10 @@ class Scrutin extends BaseScrutin
     if ($this->titleStartsWith("le sous-amendment")) { //typo
       return false;
     }
-    if ($this->titleStartsWith("la déclaration de politique générale")) {
+    if ($this->titleStartsWith("la déclaration ")) {
       return true;
     }
-    if ($this->titleStartsWith("la declaration de politique generale")) { //typo
-      return true;
-    }
-    if ($this->titleStartsWith("la déclaration du Gouvernement")) {
+    if ($this->titleStartsWith("la declaration")) { //typo
       return true;
     }
     if ($this->titleStartsWith("la motion de censure")) {
@@ -233,6 +230,7 @@ class Scrutin extends BaseScrutin
     if ($this->titleStartsWith("la demande de constitution de commission spéciale")) { // not sure
       return false;
     }
+    return true;
     throw new Exception('Unknown if on whole text: '. $this->titre);
   }
 
