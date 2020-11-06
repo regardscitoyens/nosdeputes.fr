@@ -2,12 +2,10 @@
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => "Votes") );
 ?>
 
-
 <table class="scrutins">
     <tr>
         <td>
             <h2>Votes sur l'ensemble</h2>
-
             <ul>
             <?php 
               foreach ($scrutins as $s) {
@@ -26,14 +24,12 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
 
         <td classs='votes-autres'>
             <h2>Autres votes</h2>
-
             <ul>
             <?php 
               foreach ($grouped_scrutins as $g) {
             ?>
                 <li>
                     <?= $g[0]->getLaw() ?>
-
                     <ul>
                     <?php 
                       foreach ($g as $s) {
