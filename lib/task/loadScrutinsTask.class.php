@@ -36,7 +36,7 @@ class loadScrutinsTask extends sfBaseTask
           continue;
         }
 
-        echo "file: $dir$file\n";
+        echo "$dir$file\n";
         $json = file_get_contents($dir . $file);
         $data = json_decode($json);
 
@@ -47,10 +47,10 @@ class loadScrutinsTask extends sfBaseTask
 
         $new = false;
         $scrutin = Doctrine::getTable('Scrutin')->findOneByNumero($data->numero);
-
         if (!$scrutin) {
           if (!$data->seance) {
             $scrutins_sans_seance++;
+            continue;
           }
           $scrutin = new Scrutin();
           $scrutin->setNumero($data->numero);
@@ -60,12 +60,11 @@ class loadScrutinsTask extends sfBaseTask
             $scrutin->setSeance($data->seance);
           } catch (Exception $e) {
             // Commenté pour ne pas spammer les cron avec les séances pas encore publiées
-            echo "ERREUR $file (seance) : {$e->getMessage()}\n";
+            // echo "ERREUR $file (seance) : {$e->getMessage()}\n";
             $seances_manquantes++;
+            continue;
           }
           $new = true;
-          echo "scrutin: $scrutin->numero\n";
-
         }
 
 
@@ -84,6 +83,7 @@ class loadScrutinsTask extends sfBaseTask
 
         } catch(Exception $e) {
           echo "ERREUR $file (scrutin) : {$e->getMessage()}\n";
+          continue;
         }
 
         if ($new) {
@@ -91,12 +91,11 @@ class loadScrutinsTask extends sfBaseTask
             $scrutin->tagIntervention();
           } catch(Exception $e) {
             echo "ERREUR $file (tag interventions) : {$e->getMessage()}\n";
+            continue;
           }
         }
 
         $scrutin->save();
-
-        echo "save\n";
 
         $scrutin->setVotes($data->parlementaires, $data->nb_delegations);
         $scrutin->free();
