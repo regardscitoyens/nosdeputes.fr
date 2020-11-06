@@ -235,4 +235,11 @@ class Scrutin extends BaseScrutin
     }
     throw new Exception('Unknown if on whole text: '. $this->titre);
   }
+
+  public function getLaw() {
+    preg_match_all('/((?:projet|proposition) de loi .*?\))/', $this->titre, $matches, PREG_SET_ORDER, 0);
+    if ($matches) {
+      return $matches[0][0];
+    }
+  }
 }
