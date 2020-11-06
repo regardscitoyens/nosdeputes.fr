@@ -15,9 +15,10 @@ class scrutinActions extends sfActions
     $query = Doctrine::getTable('Scrutin')->createQuery('s')
       ->orderBy('s.date DESC');
 
-    $this->scrutins = $query->execute();
+    $scrutins = $query->execute();
 
-    foreach ($this->scrutins as $s) {
+    // log parsing errors
+    foreach ($scrutins as $s) {
         if ($s->isOnWholeText() === null) {
             $this->logMessage("isOnWholeText can't parse ".$s->titre, "err");
         }
@@ -26,16 +27,19 @@ class scrutinActions extends sfActions
         }
     }
 
-    // group scrutins by law
+    // group scrutins by law and filter them
     $this->grouped_scrutins = array();
+    $this->scrutins_ensemble = array();
     $current_group = false;
-    foreach($this->scrutins as $s) {
+    foreach($scrutins as $s) {
         if (!$s->isOnWholeText()) {
             if ($current_group && $current_group[0]->getLaw() != $s->getLaw()) {
                 $this->grouped_scrutins[] = $current_group;
                 $current_group = array();
             }
             $current_group[] = $s;
+        } else {
+            $this->scrutins_ensemble[] = $s;
         }
     }
     if ($current_group) {

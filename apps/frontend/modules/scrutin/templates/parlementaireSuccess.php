@@ -8,15 +8,13 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
             <h2>Votes sur l'ensemble</h2>
             <ul>
             <?php 
-              foreach ($scrutins as $s) {
-                if ($s->isOnWholeText()) {
-                    $vote = isset($votes[$s->id]) ? $votes[$s->id] : null;
-                    echo include_partial('scrutin/vote', array(
-                        'vote' => $vote,
-                        'scrutin' => $s,
-                        'titre' => $s->titre)
-                    );
-                }
+              foreach ($scrutins_ensemble as $s) {
+                $vote = isset($votes[$s->id]) ? $votes[$s->id] : null;
+                echo include_partial('scrutin/vote', array(
+                    'vote' => $vote,
+                    'scrutin' => $s,
+                    'titre' => $s->titre)
+                );
               }
             ?>
             </ul>
