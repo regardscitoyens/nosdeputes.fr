@@ -33,24 +33,6 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
         <td classs='votes-autres'>
             <h2>Autres votes</h2>
 
-            <?php
-            // group scrutins by law
-            $grouped_scrutins = array();
-            $current_group = false;
-            foreach($scrutins as $s) {
-                if (!$s->isOnWholeText()) {
-                    if ($current_group && $current_group[0]->getLaw() != $s->getLaw()) {
-                        $grouped_scrutins[] = $current_group;
-                        $current_group = array();
-                    }
-                    $current_group[] = $s;
-                }
-            }
-            if ($current_group) {
-                $grouped_scrutins[] = $current_group;
-            }
-            ?>
-
             <ul>
             <?php 
               foreach ($grouped_scrutins as $g) {

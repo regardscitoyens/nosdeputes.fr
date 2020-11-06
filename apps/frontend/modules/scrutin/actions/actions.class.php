@@ -29,6 +29,22 @@ class scrutinActions extends sfActions
         }
     }
 
+    // group scrutins by law
+    $this->grouped_scrutins = array();
+    $current_group = false;
+    foreach($this->scrutins as $s) {
+        if (!$s->isOnWholeText()) {
+            if ($current_group && $current_group[0]->getLaw() != $s->getLaw()) {
+                $this->grouped_scrutins[] = $current_group;
+                $current_group = array();
+            }
+            $current_group[] = $s;
+        }
+    }
+    if ($current_group) {
+        $this->grouped_scrutins[] = $current_group;
+    }
+
     $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
       ->where('ps.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('ps.Scrutin s')
