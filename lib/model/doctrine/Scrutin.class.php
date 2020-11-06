@@ -159,4 +159,80 @@ class Scrutin extends BaseScrutin
   public function getURL() {
     return "http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/".myTools::getLegislature()."/(num)/".$this->numero;
   }
+
+  // https://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php
+  private function titleStartsWith( $needle ) {
+    $length = strlen( $needle );
+    return substr( $this->titre, 0, $length ) === $needle;
+  }
+
+  public function isOnWholeText() {
+    if ($this->titleStartsWith("l'ensemble")) {
+      return true;
+    }
+    if ($this->titleStartsWith("l'amendement")) {
+      return false;
+    }
+    if ($this->titleStartsWith("les crédits")) {
+      return false;
+    }
+    if ($this->titleStartsWith("la motion de rejet préalable")) {
+      return false;
+    }
+    if ($this->titleStartsWith("l'article")) {
+      return false;
+    }
+    if ($this->titleStartsWith("la première partie")) {
+      return false;
+    }
+    if ($this->titleStartsWith("le sous-amendement")) {
+      return false;
+    }
+    if ($this->titleStartsWith("le sous-amendment")) { //typo
+      return false;
+    }
+    if ($this->titleStartsWith("la déclaration de politique générale")) {
+      return true;
+    }
+    if ($this->titleStartsWith("la declaration de politique generale")) { //typo
+      return true;
+    }
+    if ($this->titleStartsWith("la déclaration du Gouvernement")) {
+      return true;
+    }
+    if ($this->titleStartsWith("la motion de censure")) {
+      return true;
+    }
+    if ($this->titleStartsWith("l'opposition à la demande de constitution")) {
+      return true;
+    }
+    if ($this->titleStartsWith("la demande de suspension de séance")) {
+      return false;
+    }
+    if ($this->titleStartsWith("le demande de suspension de séance")) { //typo
+      return false;
+    }
+    if ($this->titleStartsWith("la motion référendaire")) {
+      return false;
+    }
+    if ($this->titleStartsWith("la proposition de résolution")) {
+      return true;
+    }
+    if ($this->titleStartsWith("la motion d'ajournement")) {
+      return false;
+    }
+    if ($this->titleStartsWith("la motion de renvoi en commission")) {
+      return false;
+    }
+    if ($this->titleStartsWith("la motion de renvoi en commision")) { //typo
+      return false;
+    }
+    if ($this->titleStartsWith("les conclusions de rejet")) { // not sure
+      return true;
+    }
+    if ($this->titleStartsWith("la demande de constitution de commission spéciale")) { // not sure
+      return false;
+    }
+    throw new Exception('Unknown if on whole text: '. $this->titre);
+  }
 }
