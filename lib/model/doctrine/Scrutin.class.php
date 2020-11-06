@@ -201,7 +201,7 @@ class Scrutin extends BaseScrutin
       return true;
     }
     if ($this->titleStartsWith("l'opposition à la demande de constitution")) {
-      return true;
+      return false;
     }
     if ($this->titleStartsWith("la demande de suspension de séance")) {
       return false;
