@@ -156,8 +156,14 @@ class Scrutin extends BaseScrutin
       return $is_part;
   }
 
-  public function getURL() {
+  public function getURLInstitution() {
     return "http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/".myTools::getLegislature()."/(num)/".$this->numero;
+  }
+
+  public function getLink() {
+    if (!function_exists('url_for'))
+      sfProjectConfiguration::getActive()->loadHelpers(array('Url'));
+    return url_for($this->scrutin);
   }
 
   // https://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php

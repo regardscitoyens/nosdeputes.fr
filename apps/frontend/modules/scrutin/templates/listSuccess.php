@@ -5,7 +5,7 @@
   foreach ($scrutins as $s) {
 ?>
 <li>
-    <a href="<?= $s->getURL() ?>">
+    <a href="<?= url_for('@scrutin?numero='.$s->numero) ?>">
         <?= myTools::displayVeryShortDate($s->date) ?> : <?= $s->titre ?>
     </a>
 </li>

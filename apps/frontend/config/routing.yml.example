@@ -513,6 +513,9 @@ scrutins_xml:
 scrutins_csv:
   url: /scrutins/csv
   param: {module: api, action: scrutins, format: csv}
+scrutin:
+  url: /scrutins/:numero
+  param: {module: scrutin, action: one}
 
 parlementaire:
   url: /:slug

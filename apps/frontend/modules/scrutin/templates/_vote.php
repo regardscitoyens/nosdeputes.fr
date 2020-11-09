@@ -1,5 +1,5 @@
 <li>
-    <a href="<?= $scrutin->getURL() ?>">
+    <a href="<?= url_for('@scrutin?numero='.$s->numero) ?>">
         <?= myTools::displayVeryShortDate($scrutin->date) ?> :
 
         <?php if ($vote) { ?>
