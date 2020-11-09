@@ -59,5 +59,8 @@ class scrutinActions extends sfActions
   }
 
   public function executeOne(sfWebRequest $request) {
+    $this->scrutin = Doctrine::getTable('Scrutin')->findOneBy('numero',$request->getParameter('numero'));
+    $this->forward404Unless($this->scrutin);
+    myTools::setPageTitle($this->scrutin->titre, $this->response);
   }
 }
