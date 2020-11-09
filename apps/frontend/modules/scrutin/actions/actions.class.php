@@ -58,10 +58,6 @@ class scrutinActions extends sfActions
     }
   }
 
-  public function executeList(sfWebRequest $request) {
-    $query = Doctrine::getTable('Scrutin')->createQuery('s')
-      ->orderBy('s.date DESC');
-    $this->scrutins = $query->execute();
-    $this->response->setTitle("Scrutins publics");
+  public function executeOne(sfWebRequest $request) {
   }
 }

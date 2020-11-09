@@ -501,9 +501,6 @@ alerte_confirmation:
   url: /alerte/confirmation/:verif
   param: {module: alerte, action: confirmation}
 
-scrutins:
-  url: /scrutins
-  param: {module: scrutin, action: list}
 scrutins_json:
   url: /scrutins/json
   param: {module: api, action: scrutins, format: json}
