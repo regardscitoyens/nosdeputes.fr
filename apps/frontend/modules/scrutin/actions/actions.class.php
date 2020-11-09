@@ -47,9 +47,7 @@ class scrutinActions extends sfActions
     }
 
     $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
-      ->where('ps.parlementaire_id = ?', $this->parlementaire->id)
-      ->leftJoin('ps.Scrutin s')
-      ->orderBy('s.date DESC');
+      ->where('ps.parlementaire_id = ?', $this->parlementaire->id);
 
     $votes = $query->execute();
     $this->votes = array();
@@ -62,5 +60,26 @@ class scrutinActions extends sfActions
     $this->scrutin = Doctrine::getTable('Scrutin')->findOneBy('numero',$request->getParameter('numero'));
     $this->forward404Unless($this->scrutin);
     myTools::setPageTitle($this->scrutin->titre, $this->response);
+
+    $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
+      ->leftJoin('ps.Parlementaire p')
+      ->orderBy('ps.parlementaire_groupe_acronyme, ps.position, p.nom')
+      ->where('ps.scrutin_id = '.$this->scrutin->id);
+
+    $votes = $query->execute();
+    // group scrutins by law and filter them
+    $this->grouped_votes = array();
+    $current_group = false;
+    foreach($votes as $v) {
+        if ($current_group && $current_group[0]->parlementaire_groupe_acronyme != $v->parlementaire_groupe_acronyme) {
+            $this->grouped_votes[] = $current_group;
+            $current_group = array();
+        }
+        $current_group[] = $v;
+    }
+    if ($current_group) {
+        $this->grouped_votes[] = $current_group;
+    }
+
   }
 }
