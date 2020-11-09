@@ -623,6 +623,7 @@ class apiActions extends sfActions
 
     $res['numero'] = $scrutin->numero;
     $res['url_institution'] = $scrutin->getURLInstitution();
+    $res['url_nosdeputes'] = $scrutin->getURL();
     $res['date'] = $scrutin->date;
     $res['titre'] = $scrutin->titre;
     $res['nombre_votants'] = $scrutin->nombre_votants;
@@ -633,7 +634,7 @@ class apiActions extends sfActions
     $res['sort'] = $scrutin->sort;
     $res['titre'] = $scrutin->titre;
     $res['demandeurs'] = $scrutin->demandeurs;
-    $res['demandeurs_groupes_acronymes'] = $scrutin->demandeurs_groupes_acronymes;;
+    $res['demandeurs_groupes_acronymes'] = $scrutin->demandeurs_groupes_acronymes;
 
     return $res;
   }
@@ -689,4 +690,32 @@ class apiActions extends sfActions
     myTools::templatize($this, $request, 'nosdeputes.fr_scrutins_'.date('Y-m-d'));
   }
 
+  public function executeScrutin(sfWebRequest $request) {
+    $this->scrutin = Doctrine::getTable('Scrutin')->findOneBy('numero',$request->getParameter('numero'));
+    $this->forward404Unless($this->scrutin);
+
+    $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
+      ->leftJoin('ps.Parlementaire p')
+      ->leftJoin('s.Scrutin s')
+      ->orderBy('ps.parlementaire_groupe_acronyme, ps.position, p.nom')
+      ->where('ps.scrutin_id = '.$this->scrutin->id);
+
+    $this->champs = array();
+    $format = strtolower($request->getParameter('format'));
+    $this->forward404Unless(in_array($format,array('csv', 'xml', 'json')));
+
+    $this->res = array('votes' => array());
+    foreach($query->execute() as $vote) {
+      $vote = self::getVoteArray($vote, $vote->getParlementaire(), $format);
+      $this->res['votes'][] = array('vote' => $vote);
+    }
+
+    if ($request->getParameter('format') == 'csv')
+     foreach(array_keys($scrutin) as $key)
+      if (!isset($this->champs[$key]))
+       $this->champs[$key] = 1;
+
+    $this->breakline = 'vote';
+    myTools::templatize($this, $request, 'nosdeputes.fr_scrutin_'.$scrutin->numero.'_'.date('Y-m-d'));
+  }
 }
