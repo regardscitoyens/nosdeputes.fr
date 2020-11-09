@@ -623,7 +623,7 @@ class apiActions extends sfActions
 
     $res['numero'] = $scrutin->numero;
     $res['url_institution'] = $scrutin->getURLInstitution();
-    $res['url_nosdeputes'] = $scrutin->getURL();
+    $res['url_nosdeputes'] = myTools::url_forAPI('@scrutin?numero='.$scrutin->numero);
     $res['date'] = $scrutin->date;
     $res['titre'] = $scrutin->titre;
     $res['nombre_votants'] = $scrutin->nombre_votants;
@@ -696,7 +696,7 @@ class apiActions extends sfActions
 
     $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
       ->leftJoin('ps.Parlementaire p')
-      ->leftJoin('s.Scrutin s')
+      ->leftJoin('ps.Scrutin s')
       ->orderBy('ps.parlementaire_groupe_acronyme, ps.position, p.nom')
       ->where('ps.scrutin_id = '.$this->scrutin->id);
 

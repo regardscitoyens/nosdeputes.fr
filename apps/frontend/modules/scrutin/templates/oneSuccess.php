@@ -1,5 +1,5 @@
-<h1>Scrutin publique <?= $scrutin->type ?></h1>
-<h3><?= $scrutin->titre ?></h3>
+<h1>Scrutin public n°<?= $scrutin->numero ?> <?= $scrutin->type ?></h1>
+<h3>Sur <?= $scrutin->titre ?></h3>
 <div class="source"><a href="<?= $scrutin->getURLInstitution() ?>">source</a></div>
 
 <p>
@@ -13,7 +13,7 @@
     </ul>
 </p>
 <p>
-    Demandeurs: 
+    À la demande de: 
     <ul>
         <?php foreach($scrutin->demandeurs as $dem) { ?>
         <li><?= $dem ?></li>
