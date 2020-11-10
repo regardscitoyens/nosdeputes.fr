@@ -502,7 +502,7 @@ alerte_confirmation:
   param: {module: alerte, action: confirmation}
 
 scrutins:
-  url: /%LEGISLATURE%/scrutins/
+  url: /%LEGISLATURE%/scrutins
   param: {module: scrutin, action: list}
 scrutins_json:
   url: /%LEGISLATURE%/scrutins/json
