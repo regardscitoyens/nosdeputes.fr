@@ -80,6 +80,44 @@ class scrutinActions extends sfActions
     if ($current_group) {
         $this->grouped_votes[] = $current_group;
     }
-
   }
+
+  public function executeList(sfWebRequest $request) {
+    myTools::setPageTitle("Scrutins publics", $this->response);
+
+    $query = Doctrine::getTable('Scrutin')->createQuery('s')
+      ->orderBy('s.date DESC');
+
+    $scrutins = $query->execute();
+
+    // log parsing errors
+    foreach ($scrutins as $s) {
+        if ($s->isOnWholeText() === null) {
+            $this->logMessage("isOnWholeText can't parse ".$s->titre, "err");
+        }
+        if ($s->getLaw() === null) {
+            $this->logMessage("getLaw can't parse ".$s->titre, "debug");
+        }
+    }
+
+    // group scrutins by law and filter them
+    $this->grouped_scrutins = array();
+    $this->scrutins_ensemble = array();
+    $current_group = false;
+    foreach($scrutins as $s) {
+        if (!$s->isOnWholeText()) {
+            if ($current_group && $current_group[0]->getLaw() != $s->getLaw()) {
+                $this->grouped_scrutins[] = $current_group;
+                $current_group = array();
+            }
+            $current_group[] = $s;
+        } else {
+            $this->scrutins_ensemble[] = $s;
+        }
+    }
+    if ($current_group) {
+        $this->grouped_scrutins[] = $current_group;
+    }
+  }
+
 }
