@@ -59,7 +59,7 @@ class scrutinActions extends sfActions
   public function executeShow(sfWebRequest $request) {
     $this->scrutin = Doctrine::getTable('Scrutin')->findOneBy('numero',$request->getParameter('numero'));
     $this->forward404Unless($this->scrutin);
-    myTools::setPageTitle($this->scrutin->titre, $this->response);
+    myTools::setPageTitle("Scrutin n°".$this->scrutin->numero." - ".$this->scrutin->titre, $this->response);
 
     $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
       ->leftJoin('ps.Parlementaire p')
