@@ -512,7 +512,7 @@ scrutins_csv:
   param: {module: api, action: scrutins, format: csv}
 scrutin:
   url: /%LEGISLATURE%/scrutin/:numero
-  param: {module: scrutin, action: one}
+  param: {module: scrutin, action: show}
 scrutin_json:
   url: /%LEGISLATURE%/scrutin/:numero/json
   param: {module: api, action: scrutin, format: json}
