@@ -63,7 +63,7 @@ class scrutinActions extends sfActions
 
     $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
       ->leftJoin('ps.Parlementaire p')
-      ->orderBy('ps.parlementaire_groupe_acronyme, ps.position, p.nom')
+      ->orderBy('ps.parlementaire_groupe_acronyme, ps.position DESC, p.nom')
       ->where('ps.scrutin_id = '.$this->scrutin->id);
 
     $votes = $query->execute();
