@@ -633,8 +633,14 @@ class apiActions extends sfActions
     $res['type'] = $scrutin->type;
     $res['sort'] = $scrutin->sort;
     $res['titre'] = $scrutin->titre;
-    $res['demandeurs'] = $scrutin->demandeurs;
-    $res['demandeurs_groupes_acronymes'] = $scrutin->demandeurs_groupes_acronymes;
+
+    if ($format == 'csv') {
+      $res['demandeurs'] = join('|', $scrutin->demandeurs);
+      $res['demandeurs_groupes_acronymes'] = join('|', $scrutin->demandeurs_groupes_acronymes);
+    } else {
+      $res['demandeurs'] = myTools::array2hash($scrutin->demandeurs, 'demandeur');
+      $res['demandeurs_groupes_acronymes'] = myTools::array2hash($scrutin->demandeurs_groupes_acronymes, 'demandeur_groupe_acronyme');
+    }
 
     return $res;
   }
