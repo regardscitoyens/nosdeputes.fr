@@ -711,7 +711,7 @@ class apiActions extends sfActions
     }
 
     if ($request->getParameter('format') == 'csv')
-     foreach(array_keys($scrutin) as $key)
+     foreach(array_keys($vote) as $key)
       if (!isset($this->champs[$key]))
        $this->champs[$key] = 1;
 
