@@ -1,4 +1,4 @@
-<h1>Scrutin public n°<?= $scrutin->numero ?> <?= $scrutin->type ?></h1>
+<h1>Scrutin public <?= $scrutin->type ?> n°<?= $scrutin->numero ?></h1>
 <h3>Sur <?= $scrutin->titre ?></h3>
 <div class="source"><a href="<?= $scrutin->getURLInstitution() ?>">source</a></div>
 
