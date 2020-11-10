@@ -502,25 +502,25 @@ alerte_confirmation:
   param: {module: alerte, action: confirmation}
 
 scrutins_json:
-  url: /scrutins/json
+  url: /%LEGISLATURE%/scrutins/json
   param: {module: api, action: scrutins, format: json}
 scrutins_xml:
-  url: /scrutins/xml
+  url: /%LEGISLATURE%/scrutins/xml
   param: {module: api, action: scrutins, format: xml}
 scrutins_csv:
-  url: /scrutins/csv
+  url: /%LEGISLATURE%/scrutins/csv
   param: {module: api, action: scrutins, format: csv}
 scrutin:
-  url: /scrutins/:numero
+  url: /%LEGISLATURE%/scrutin/:numero
   param: {module: scrutin, action: one}
 scrutin_json:
-  url: /scrutins/:numero/json
+  url: /%LEGISLATURE%/scrutin/:numero/json
   param: {module: api, action: scrutin, format: json}
 scrutin_xml:
-  url: /scrutins/:numero/xml
+  url: /%LEGISLATURE%/scrutin/:numero/xml
   param: {module: api, action: scrutin, format: xml}
 scrutin_csv:
-  url: /scrutins/:numero/csv
+  url: /%LEGISLATURE%/scrutin/:numero/csv
   param: {module: api, action: scrutin, format: csv}
 
 
