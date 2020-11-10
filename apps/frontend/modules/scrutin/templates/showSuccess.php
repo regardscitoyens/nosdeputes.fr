@@ -12,14 +12,17 @@
         <li>Abstention: <?= $scrutin->nombre_abstentions ?></li>
     </ul>
 </p>
+<?php if (!empty($scrutin->demandeurs)) { ?>
 <p>
-    À la demande de: 
-    <ul>
-        <?php foreach($scrutin->demandeurs as $dem) { ?>
-        <li><?= $dem ?></li>
-        <?php } ?>
-    </ul>
+    À la demande de : <?php
+    if (count($scrutin->demandeurs) > 1) {
+        echo join(', ', array_slice($scrutin->demandeurs, 0, count($scrutin->demandeurs)-1)).' et '.end($scrutin->demandeurs);
+    } else {
+        echo $scrutin->demandeurs[0];
+    }
+    ?>.
 </p>
+<?php } ?>
 
 <p>Votes:</p>
 <ul>
