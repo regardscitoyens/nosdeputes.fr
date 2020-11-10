@@ -675,7 +675,7 @@ class apiActions extends sfActions
 
   public function executeScrutins(sfWebRequest $request) {
     $query = Doctrine::getTable('Scrutin')->createQuery('s')
-      ->orderBy('s.date DESC');
+      ->orderBy('s.date ASC');
 
     $this->champs = array();
     $format = strtolower($request->getParameter('format'));
