@@ -5,11 +5,11 @@
 <p>
     Voté dans l'hémicycle en <a href="<?= url_for('@interventions_seance?seance='.$scrutin->seance_id) ?>">séance publique le <?= myTools::displayDate($scrutin->date) ?></a> 
 <p>
-    Résultat: <strong><?= $scrutin->sort ?></strong>
+    Résultat : <strong><?= $scrutin->sort ?></strong>
     <ul>
-        <li>Pour: <?= $scrutin->nombre_pours ?></li>
-        <li>Contre: <?= $scrutin->nombre_contres ?></li>
-        <li>Abstention: <?= $scrutin->nombre_abstentions ?></li>
+        <li>Pour : <?= $scrutin->nombre_pours ?></li>
+        <li>Contre : <?= $scrutin->nombre_contres ?></li>
+        <li>Abstention : <?= $scrutin->nombre_abstentions ?></li>
     </ul>
 </p>
 <?php if (!empty($scrutin->demandeurs)) { ?>
@@ -24,7 +24,7 @@
 </p>
 <?php } ?>
 
-<p>Votes:</p>
+<p>Votes :</p>
 <ul>
 <?php 
   foreach ($grouped_votes as $g) {
