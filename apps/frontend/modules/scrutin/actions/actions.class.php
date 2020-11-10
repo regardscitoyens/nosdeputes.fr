@@ -67,7 +67,7 @@ class scrutinActions extends sfActions
       ->where('ps.scrutin_id = '.$this->scrutin->id);
 
     $votes = $query->execute();
-    // group scrutins by law and filter them
+    // group votes by groupe
     $this->grouped_votes = array();
     $current_group = false;
     foreach($votes as $v) {
