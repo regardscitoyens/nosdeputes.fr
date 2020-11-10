@@ -3,7 +3,7 @@
 <div class="source"><a href="<?= $scrutin->getURLInstitution() ?>">source</a></div>
 
 <p>
-    Date: <?= myTools::displayVeryShortDate($scrutin->date) ?>
+    Voté dans l'hémicycle en <a href="<?= url_for('@interventions_seance?seance='.$scrutin->seance_id) ?>">séance publique le <?= myTools::displayDate($scrutin->date) ?></a> 
 <p>
     Résultat: <strong><?= $scrutin->sort ?></strong>
     <ul>
