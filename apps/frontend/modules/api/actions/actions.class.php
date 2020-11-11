@@ -633,14 +633,8 @@ class apiActions extends sfActions
     $res['type'] = $scrutin->type;
     $res['sort'] = $scrutin->sort;
     $res['titre'] = $scrutin->titre;
-
-    if ($format == 'csv') {
-      $res['demandeurs'] = join('|', $scrutin->demandeurs);
-      $res['demandeurs_groupes_acronymes'] = join('|', $scrutin->demandeurs_groupes_acronymes);
-    } else {
-      $res['demandeurs'] = myTools::array2hash($scrutin->demandeurs, 'demandeur');
-      $res['demandeurs_groupes_acronymes'] = myTools::array2hash($scrutin->demandeurs_groupes_acronymes, 'demandeur_groupe_acronyme');
-    }
+    $res['demandeurs'] = myTools::array2hash($scrutin->demandeurs, 'demandeur');
+    $res['demandeurs_groupes_acronymes'] = myTools::array2hash($scrutin->demandeurs_groupes_acronymes, 'demandeur_groupe_acronyme');
 
     return $res;
   }
@@ -669,6 +663,9 @@ class apiActions extends sfActions
       if (!isset($this->champs[$key]))
        $this->champs[$key] = 1;
 
+    $this->multi = array();
+    $this->multi['demandeur'] = 1;
+    $this->multi['demandeur_groupe_acronyme'] = 1;
     $this->breakline = 'vote';
     myTools::templatize($this, $request, 'nosdeputes.fr_votes_'.$request->getParameter('slug').'_'.date('Y-m-d'));
   }
@@ -692,6 +689,9 @@ class apiActions extends sfActions
       if (!isset($this->champs[$key]))
        $this->champs[$key] = 1;
 
+    $this->multi = array();
+    $this->multi['demandeur'] = 1;
+    $this->multi['demandeur_groupe_acronyme'] = 1;
     $this->breakline = 'scrutin';
     myTools::templatize($this, $request, 'nosdeputes.fr_scrutins_'.date('Y-m-d'));
   }
@@ -721,6 +721,9 @@ class apiActions extends sfActions
       if (!isset($this->champs[$key]))
        $this->champs[$key] = 1;
 
+    $this->multi = array();
+    $this->multi['demandeur'] = 1;
+    $this->multi['demandeur_groupe_acronyme'] = 1;
     $this->breakline = 'vote';
     myTools::templatize($this, $request, 'nosdeputes.fr_scrutin_'.$scrutin->numero.'_'.date('Y-m-d'));
   }
