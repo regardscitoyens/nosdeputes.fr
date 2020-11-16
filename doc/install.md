@@ -8,6 +8,7 @@ Sous une distribution type Ubuntu, installer les packages suivants :
 sudo apt-get install git
 sudo apt-get install tasksel
 sudo tasksel install lamp-server php-cli
+sudo apt-get install composer
 sudo apt-get install phpmyadmin # optionnel mais recommandé
 sudo apt-get install imagemagick php-imagick # Pour la carte des circonscriptions
 sudo apt-get install php-gd # Pour les photos et plots sur certaines configs
@@ -56,22 +57,22 @@ sudo pip install bs4 lxml html5lib requests
 
     Cette commande créera les fichiers suivants à adapter en fonction de votre installation :
 
-    * `config/ProjectConfiguration.class.php` : Le chemin vers le dossier de travail est `/home/cpc/project` dans le fichier. Remplacez-le (1 modification) pour le faire correspondre à votre configuration, par exemple `/home/NOM_UTILISATEUR/nosdeputes.fr`.
-
     * `config/databases.yml` : Remplacer `MOT_DE_PASSE` par celui que vous avez choisi pour la base que l'on vient de créer (1 modification), et `cpc` par le nom choisi pour la base et son utilisateur si nécessaire (2 modifications)`.
 
     * `config/app.yml` : Adapter la configuration en fonction de la législature traitée.
+
+ * Installer symfony et préparer l'instance nosdeputés :
+
+    ```bash
+    make all
+    ```
+
+    Cette commande installera symfony dans `lib/vendor` et ajoutera les fichiers suivants éventuellement à ajuster :
 
     * `apps/frontend/config/factories.yml` : Ajuster la configuration uniquement pour optimiser la production ([voir section dédiée](#optimisations-de-la-configuration-pour-le-déploiement-en-production)).
 
     * `bin/db.inc` : Adapter `MYSQLID`, `DBNAME`, `PATH_APP` et `LEGISLATURE` comme pour les précédents fichiers.
 
-
- * Créer le fichier routing pour la législature définie dans `bin/db.inc` :
-
-    ```bash
-    bash bin/generate_routing.sh
-    ```
 
  * Préparer l'environnement de travail php symfony :
 
