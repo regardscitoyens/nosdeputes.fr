@@ -104,14 +104,6 @@ sudo pip install bs4 lxml html5lib requests
     php symfony cc
     ```
 
- * Préparer les droits sur les fichiers :
-
-    Pour permettre la création de graphiques, créez le répertoire suivant et donnez lui les permissions correctes :
-
-    ```bash
-    mkdir -p web/images/tmp/xspchart
-    sudo chown -R www-data:www-data web/images/tmp/xspchart
-    ```
 
 ## Déploiement et développement
 
@@ -128,10 +120,11 @@ sudo pip install bs4 lxml html5lib requests
 
     Changer `/home/cpc/project` pour le chemin vers votre configuration comme précédemment (4 modifications).
 
- * Activer le mod-rewrite d'Apache
+ * Activer les mods rewrite et headers d'Apache
 
     ```bash
     sudo a2enmod rewrite
+    sudo a2enmod headers
     ```
 
  * Pour accéder en local à votre instance de développement sur my.cpc.regardscitoyens.org :
@@ -162,7 +155,7 @@ L'utilisation de la page `frontend_dev.php` vous permet de naviguer sur le site 
 
 ### Problèmes connus
 
-Si à l'affichage de frontend_dev.php dans le navigateur, PHP dit qu'il n'a pas pu allouer assez de mémoire, augmenter la taille maximale de mémoire autorisée :
+- Si à l'affichage de frontend_dev.php dans le navigateur, PHP dit qu'il n'a pas pu allouer assez de mémoire, augmenter la taille maximale de mémoire autorisée :
 
 ```bash
 sudo nano /etc/php5/cli/php.ini
@@ -179,6 +172,8 @@ et mettez une valeur haute, par exemple
 ```
 memory_limit = 128M      ; Maximum amount of memory a script may consume (16MB)
 ```
+
+- Si l'affichage de frontend_dev.php montre une requête SQL et dit qu'elle est "incompatible with sql_mode=only_full_group_by", il faut désactiver ce mode dans SQL, voir par exemple [ici](https://webkul.com/blog/disable-only_full_group_by-in-doctrine/).
 
 N'hésitez pas à nous contacter ou [laisser une issue](https://github.com/regardscitoyens/nosdeputes.fr/issues) pour tout problème rencontré.
 
