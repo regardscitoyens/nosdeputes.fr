@@ -13,7 +13,7 @@ class scrutinActions extends sfActions
     myTools::setPageTitle("Votes de ".$this->parlementaire->nom, $this->response);
 
     $query = Doctrine::getTable('Scrutin')->createQuery('s')
-      ->orderBy('s.date DESC');
+      ->orderBy('s.numero DESC');
 
     $scrutins = $query->execute();
 
@@ -86,7 +86,7 @@ class scrutinActions extends sfActions
     myTools::setPageTitle("Scrutins publics", $this->response);
 
     $query = Doctrine::getTable('Scrutin')->createQuery('s')
-      ->orderBy('s.date DESC');
+      ->orderBy('s.numero DESC');
 
     $scrutins = $query->execute();
 
