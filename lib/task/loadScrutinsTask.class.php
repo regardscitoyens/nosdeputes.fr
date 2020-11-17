@@ -88,7 +88,8 @@ class loadScrutinsTask extends sfBaseTask
 
         if ($new) {
           try {
-            $scrutin->tagIntervention();
+            $inter = $scrutin->tagIntervention();
+            echo " -> http://www.nosdeputes.fr/".myTools::getLegislature()."/seance/$inter  \n";
           } catch(Exception $e) {
             echo "ERREUR $file (tag interventions) : {$e->getMessage()}\n";
             continue;
