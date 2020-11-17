@@ -17,7 +17,7 @@ function compute_org {
     while read url; do
       outf=$(echo $ROOTURL$url | sed 's|/|_|g')
       if ! test -s "html/$outf"; then
-        perl download_one.pl $ROOTURL$url
+        perl download_one.pl $ROOTURL$url 1
 	    perl parse_presents.pl html/$outf "$ORGNAME" "$HORAIRE" > presents.tocheck/$outf
       fi
     done

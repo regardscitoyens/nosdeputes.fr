@@ -4,11 +4,24 @@
 
 source ../../bin/db.inc
 
-mkdir -p html
+rm -rf tmp
+mkdir -p opendata tmp json
 
-lastpdf=$(find ./html -name "coms_$1_*" | sed -e 's/[^0-9-]//g' | sort | tail -1)
-if [ -z "$lastpdf" ]; then
-  startyear=$((LEGISLATURE * 5 + 1942))
-  lastpdf="$startyear-06-23"
+if test $1 = "all"; then
+    echo > tmp/listfile.old
+else
+    find ./opendata -name '*tar.gz' > tmp/listfile.old
 fi
-for date in $(python ../common/date_gen.py $lastpdf --skip-first) ; do python parse_jo.py "$1" "$date" ; done
+cd opendata
+wget -q -r --no-parent -l 1 -c --reject  'Freemium_*' --reject '*pdf' https://echanges.dila.gouv.fr/OPENDATA/JORF/
+cd ..
+find ./opendata -name '*tar.gz' > tmp/listfile.new
+cd tmp
+diff listfile.old listfile.new | grep '^>' | sed 's/^. //' | while read file; do
+    tar zxf '../'$file
+done
+cd ..
+touch tmp/0
+rgrep -l "embres présents ou excusés" tmp/[0-9]* | while read xml; do
+    python parse_jo.py an $xml
+done

@@ -2,7 +2,7 @@
 
 cd $(dirname $0)
 source ../../bin/db-external.inc || source ../../bin/db.inc
-ANroot="http://www.assemblee-nationale.fr"
+ANroot="http://www.assemblee-nationale.fr/"
 
 echo "Downloading Amendements from OpenData AN..."
 mkdir -p opendata
@@ -15,13 +15,10 @@ echo "Extracting list of Amendements from OpenData AN..."
 touch all_amdts_opendataAN.tmp
 ls opendata/json | while read dossier; do ls opendata/json/$dossier | while read texte; do
  find opendata/json/$dossier/$texte/ -type f -name "*.json" |
-  xargs cat                                                 |
-  sed -r 's/("documentURI": ")/\n\1/g'                      |
-  grep '^"documentURI": "/'"$LEGISLATURE"'/'                |
-  sed -r 's|^"documentURI": "([^"]*)".*$|'"$ANroot"'\1|'    |
-  sed 's/\.pdf/\.asp/'                                      |
-  sort -u >> all_amdts_opendataAN.tmp
-done; done
+  while read json; do
+   sed -r 's|^.*"numeroLong": "[I\-]*([^" ]+).*"prefixeOrganeExamen": "([^"]+)".*"urlDivisionTexteVise": "/(..)/textes/([^.]+)\.asp.*$|'$ANroot'\3/amendements/\4/\2/\1.asp\n|' $json
+  done
+done; done | sort -u >> all_amdts_opendataAN.tmp
 rm -f Amendements_*.json*
 rm -rf opendata/json     
 

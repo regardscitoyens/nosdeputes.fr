@@ -75,6 +75,7 @@ MISSING_DEMANDEURS = {
 def clean_demandeurs(demandeurs, numero):
     if not demandeurs:
         return MISSING_DEMANDEURS.get(numero, [])
+    demandeurs = re.sub(ur"(Pr[eé]siden)\s+", ur"\1t ", demandeurs)
     demandeurs = re.sub(ur"[\s\n]*(Commission|Pr[eé]sident)", ur"\n\1", demandeurs)
     demandeurs = demandeurs.replace(u"des\nPr", "des Pr")
     demandeurs = [clean_demandeur(d) for d in demandeurs.split("\n")]
@@ -138,6 +139,13 @@ ERREURS_AN = {
    "2342": "20200092", # instead of null
    "2446": "20200140", # instead of 20200141
    "2447": "20200140", # instead of 20200141
+   "2699": "20200176", # instead of null
+   "2700": "20200176", # instead of null
+   "2701": "20200176", # instead of null
+   "2702": "20200176", # instead of null
+   "2703": "20200176", # instead of null
+   "2704": "20200176", # instead of null
+   "2705": "20200176", # instead of null
 }
 
 MISSING_HISTOGPES = {
@@ -145,7 +153,15 @@ MISSING_HISTOGPES = {
     "PA719664": "LREM",
     "PA722090": "LREM",
     "PA342601": "UAI",
-    "PA342196": "SOC"
+    "PA342196": "SOC",
+    "PA719020": "LR",
+    "PA722240": "LREM",
+    "PA722082": "LREM",
+    "PA267337": "LREM",
+    "PA342240": "LR",
+    "PA721768": "LREM",
+    "PA643004": "UDI",
+    "PA774960": "SOC"
 }
 
 def parse_scrutin(data, seances, groupes, histo_groupes):

@@ -8,12 +8,18 @@ DATE=$(head -1 $JSON            |
        sed 's/".*$//')
 DEPUTES=$(echo "SELECT nom from parlementaire
                 WHERE fin_mandat IS NULL
-                   OR fin_mandat > '$DATE'"     |
+                   OR fin_mandat >= '$DATE'"    |
           mysql $MYSQLID $DBNAME                |
           grep -v '^nom'                        |
           sed 's/\W/./g'                        |
           tr '\n' '|'                           |
           sed 's/|$//')
+date=$(head -1 $JSON                |
+  sed 's/^.*"date": "/\nDATE:    /' |
+  sed 's/", .*"heure": "/ - /'      |
+  sed 's/".*$//')
+echo $date
+echo "-------------"
 
 echo "Didascalies :"
 echo "-------------"
@@ -37,12 +43,12 @@ echo
 
 echo "Parenthèses :"
 echo "-------------"
-cat $JSON                               |
-  sed 's/(…)/ /g'                       |
-  grep '('                              |
-  sed 's/^.*"contexte": "//'            |
-  sed 's/",.*"intervention": "/  |  /'  |
-  sed 's/".*$//'                        |
+cat $JSON                                        |
+  sed 's/(\(…\|MoDem\|suite\|état [A-D]\))/ /ig' |
+  grep '('                                       |
+  sed 's/^.*"contexte": "//'                     |
+  sed 's/",.*"intervention": "/  |  /'           |
+  sed 's/".*$//'                                 |
   grep -v '(.*  |  [^(]*$'
 echo "-------------"
 echo
@@ -93,10 +99,7 @@ echo "-------------"
 echo
 echo
 
-head -1 $JSON                       |
-  sed 's/^.*"date": "/\nDATE:    /' |
-  sed 's/", .*"heure": "/ - /'      |
-  sed 's/".*$//'
+echo $date
 
 head -1 $JSON                       |
   sed 's/^.*"source": "/SOURCE:  /' |
