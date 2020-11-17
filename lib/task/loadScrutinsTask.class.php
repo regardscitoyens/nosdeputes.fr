@@ -55,20 +55,20 @@ class loadScrutinsTask extends sfBaseTask
           $scrutin = new Scrutin();
           $scrutin->setNumero($data->numero);
           $scrutin->setType($data->type);
-
+          $scrutin->setDate($data->date);
+        }
+        if (!$scrutin->seance_id) {
           try {
             $scrutin->setSeance($data->seance);
+            $new = true;
           } catch (Exception $e) {
             // Commenté pour ne pas spammer les cron avec les séances pas encore publiées
             // echo "ERREUR $file (seance) : {$e->getMessage()}\n";
             $seances_manquantes++;
-            continue;
           }
-          $new = true;
         }
 
-
-        if (!in_array($scrutin->seance_id, $seance_ids)) {
+        if ($scrutin->seance_id && !in_array($scrutin->seance_id, $seance_ids)) {
           $seance_ids[] = $scrutin->seance_id;
         }
 
@@ -99,9 +99,12 @@ class loadScrutinsTask extends sfBaseTask
         $scrutin->save();
 
         $scrutin->setVotes($data->parlementaires, $data->nb_delegations);
-        $scrutin->free();
 
-        rename($dir . $file, $backupdir . $file);
+        if ($scrutin->seance_id) {
+          rename($dir . $file, $backupdir . $file);
+        }
+
+        $scrutin->free();
       }
 
       // Vérification des scrutins pour chaque séance modifiée
