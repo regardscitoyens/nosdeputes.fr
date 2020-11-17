@@ -3,7 +3,7 @@
 <div class="source"><a href="<?= $scrutin->getURLInstitution() ?>">source</a></div>
 
 <p>
-    Voté dans l'hémicycle en <a href="<?= url_for('@interventions_seance?seance='.$scrutin->seance_id) ?>">séance publique le <?= myTools::displayDate($scrutin->date) ?></a> 
+    Voté dans l'hémicycle en <a href="<?= url_for('@interventions_seance?seance='.$scrutin->seance_id) ?>">séance publique le <?= myTools::displayDate($scrutin->date) ?></a>
 <p>
     Résultat : <strong><?= $scrutin->sort ?></strong>
     <ul>
@@ -26,17 +26,18 @@
 
 <p>Votes :</p>
 <ul>
-<?php 
+<?php
   foreach ($grouped_votes as $g) {
 ?>
 <li>
     <?= $g[0]->parlementaire_groupe_acronyme ?>
     <ul>
-    <?php 
+    <?php
       foreach ($g as $vote) {
     ?>
         <li>
-            <?= $vote->getParlementaire()->nom ?> :
+            <?php $parl = $vote->getParlementaire(); ?>
+            <a href="<?= url_for('@parlementaire?slug='.$parl->slug) ?>"><?= $parl->nom ?></a> :
 
             <strong class="vote-<?= $vote->position ?>">
             <?= $vote->getHumanPosition() ?></strong><strong><?php if ($vote->par_delegation) { ?>, par délégation<?php } ?>
