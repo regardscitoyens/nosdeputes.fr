@@ -607,12 +607,12 @@ class apiActions extends sfActions
       unset($res['scrutin']);
     }
 
+    $res['parlementaire_groupe_acronyme'] = $vote->parlementaire_groupe_acronyme;
+    $res['parlementaire_slug'] = $parlementaire->slug;
     $res['position'] = $vote->position;
     $res['position_groupe'] = $vote->position_groupe;
     $res['par_delegation'] = $vote->par_delegation;
     $res['mise_au_point_position'] = $vote->mise_au_point_position;
-    $res['parlementaire_groupe_acronyme'] = $vote->parlementaire_groupe_acronyme;
-    $res['parlementaire_slug'] = $parlementaire->slug;
 
     return $res;
   }
@@ -622,19 +622,18 @@ class apiActions extends sfActions
       throw new Exception("pas de scrutin");
 
     $res['numero'] = $scrutin->numero;
-    $res['url_institution'] = $scrutin->getURLInstitution();
-    $res['url_nosdeputes'] = myTools::url_forAPI('@scrutin?numero='.$scrutin->numero);
     $res['date'] = $scrutin->date;
+    $res['type'] = $scrutin->type;
+    $res['sort'] = $scrutin->sort;
     $res['titre'] = $scrutin->titre;
     $res['nombre_votants'] = $scrutin->nombre_votants;
     $res['nombre_pours'] = $scrutin->nombre_pours;
     $res['nombre_contres'] = $scrutin->nombre_contres;
     $res['nombre_abstentions'] = $scrutin->nombre_abstentions;
-    $res['type'] = $scrutin->type;
-    $res['sort'] = $scrutin->sort;
-    $res['titre'] = $scrutin->titre;
     $res['demandeurs'] = myTools::array2hash($scrutin->demandeurs, 'demandeur');
     $res['demandeurs_groupes_acronymes'] = myTools::array2hash($scrutin->demandeurs_groupes_acronymes, 'demandeur_groupe_acronyme');
+    $res['url_institution'] = $scrutin->getURLInstitution();
+    $res['url_nosdeputes'] = myTools::url_forAPI('@scrutin?numero='.$scrutin->numero);
 
     return $res;
   }
