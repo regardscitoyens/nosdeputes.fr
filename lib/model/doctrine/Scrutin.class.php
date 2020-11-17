@@ -50,6 +50,7 @@ class Scrutin extends BaseScrutin
       if (preg_match("/Majorité requise pour l'adoption/", $text) && $mp != 0 && intval(end($match_pour[1])) == $this->nombre_votants && intval(end($match_pour[1])) == $this->nombre_pours) {
         $found = TRUE;
         $inter->addTag("scrutin:numero={$this->numero}");
+        $inter->save();
         break;
       } elseif ($mv == 0 || $mp == 0 || $mc == 0) {
         echo "WARNING: décomptes intervention {$inter->id} incomplets $mv $mp $mc :\n$text\n";
@@ -60,12 +61,13 @@ class Scrutin extends BaseScrutin
       } else {
         $found = TRUE;
         $inter->addTag("scrutin:numero={$this->numero}");
+        $inter->save();
         break;
       }
     }
 
+    $seance = $this->Seance;
     if (!$found) {
-      $seance = $this->Seance;
       throw new Exception(
           "Scrutin {$this->numero} non trouvé dans les interventions "
         . "de la séance {$seance->id} du {$seance->date} {$seance->moment}\n"
@@ -73,6 +75,7 @@ class Scrutin extends BaseScrutin
         . "$info"
       );
     }
+    return "$seance->id#inter_$inter->md5";
   }
 
   public function setDemandeurs($demandeurs) {
