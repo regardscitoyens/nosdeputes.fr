@@ -109,9 +109,9 @@ $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
           <div class="elements_sous_menu">
             <ul>
               <li><a href="<?php echo url_for('@sections?order=date'); ?>">Les derniers dossiers</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@sections?order=plus'); ?>">Les dossiers les plus discutés</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@sections?order=coms'); ?>">Les dossiers les plus commentés</a> <strong>|</strong></li>
-              <li><a href="<?php echo url_for('@scrutins'); ?>">Tous les scrutins publics</a></li>
+              <li><a href="<?php echo url_for('@sections?order=plus'); ?>">Les plus discutés</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@sections?order=coms'); ?>">Les plus commentés</a> <strong>|</strong></li>
+              <li><a href="<?php echo url_for('@scrutins'); ?>">Les scrutins publics</a></li>
             </ul>
           </div>
         </div>
