@@ -12,7 +12,7 @@ class scrutinComponents extends sfComponents
       ->where('ps.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('(ps.position != "nonVotant" OR ps.mise_au_point_position != NULL)')
       ->leftJoin('ps.Scrutin s')
-      ->orderBy('s.date DESC');
+      ->orderBy('s.numero DESC');
     if (isset($this->limit))
       $query->limit($this->limit);
     $this->votes = $query->execute();
