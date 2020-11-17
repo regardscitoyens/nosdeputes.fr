@@ -9,17 +9,28 @@ class Scrutin extends BaseScrutin
          . $this->numero;
   }
 
+  public function setDate($date) {
+    if (!$this->_set('date', $date))
+      return false;
+    $date = strtotime($date);
+    $annee = date('Y', $date);
+    $semaine = date('W', $date);
+    if ($semaine == 53) {
+      $annee++;
+      $semaine = 1;
+    }
+    $this->_set('annee', $annee);
+    $this->_set('numero_semaine', $semaine);
+    return true;
+  }
+
   public function setSeance($id_jo) {
     $seance = Doctrine::getTable('Seance')->findOneByIDJO($id_jo);
     if (!$seance) {
       throw new Exception("Aucune séance trouvée avec l'id JO $id_jo");
     }
 
-    $ret = $this->_set('seance_id', $seance->id)
-        && $this->_set('date', $seance->date)
-        && $this->_set('numero_semaine', $seance->numero_semaine)
-        && $this->_set('annee', $seance->annee);
-
+    $ret = $this->_set('seance_id', $seance->id);
     $seance->free();
     return $ret;
   }
@@ -139,7 +150,7 @@ class Scrutin extends BaseScrutin
           throw new Exception("Could not set vote metadata: {$data}");
         }
 
-        if ($has_delegations || $this->isPartOfDelegationsRanges()) {
+        if ($this->seance_id && ($has_delegations || $this->isPartOfDelegationsRanges())) {
           $parlscrutin->updatePresence();
         }
 
