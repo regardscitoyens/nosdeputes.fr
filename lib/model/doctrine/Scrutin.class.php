@@ -89,6 +89,12 @@ class Scrutin extends BaseScrutin
     return "$seance->id#inter_$inter->md5";
   }
 
+  public function getIntervention() {
+    $query = PluginTagTable::getObjectTaggedWithQuery('Intervention', 'scrutin:numero='.$this->numero);
+    $query->select('Intervention.id, Intervention.date, Intervention.seance_id, Intervention.md5');
+    return $query->fetchOne();
+  }
+
   public function setDemandeurs($demandeurs) {
     $ret = $this->_set('demandeurs', join("|", $demandeurs));
     $gpes = array();
