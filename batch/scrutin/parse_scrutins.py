@@ -161,6 +161,9 @@ MISSING_HISTOGPES = {
     "PA342240": "LR",
     "PA721768": "LREM",
     "PA643004": "UDI",
+    "PA719002": "LR",
+    "PA721666": "LR",
+    "PA774956": "LR",
     "PA774960": "SOC"
 }
 
