@@ -634,6 +634,7 @@ class apiActions extends sfActions
     $res['demandeurs_groupes_acronymes'] = myTools::array2hash($scrutin->demandeurs_groupes_acronymes, 'demandeur_groupe_acronyme');
     $res['url_institution'] = $scrutin->getURLInstitution();
     $res['url_nosdeputes'] = myTools::url_forAPI('@scrutin?numero='.$scrutin->numero);
+    $res['url_nosdeputes_api'] = myTools::url_forAPI('api/scrutin?format='.$format.'&numero='.$scrutin->numero);
 
     return $res;
   }
