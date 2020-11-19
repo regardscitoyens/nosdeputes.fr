@@ -645,7 +645,7 @@ class apiActions extends sfActions
     $query = Doctrine::getTable('ParlementaireScrutin')->createQuery('ps')
       ->where('ps.parlementaire_id = ?', $this->parlementaire->id)
       ->leftJoin('ps.Scrutin s')
-      ->orderBy('s.date ASC');
+      ->orderBy('s.numero ASC');
 
     $this->champs = array();
     $format = strtolower($request->getParameter('format'));
@@ -671,7 +671,7 @@ class apiActions extends sfActions
 
   public function executeScrutins(sfWebRequest $request) {
     $query = Doctrine::getTable('Scrutin')->createQuery('s')
-      ->orderBy('s.date ASC');
+      ->orderBy('s.numero ASC');
 
     $this->champs = array();
     $format = strtolower($request->getParameter('format'));
