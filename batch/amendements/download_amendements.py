@@ -46,7 +46,8 @@ for line in resp.text.split('\n'):
             resp = requests.get(url_amdt, cookies={'website_version': 'old'})
 
             if resp.status_code != 200:
-                raise Exception(url_amdt)
+                print('invalid response')
+                continue
 
             with open(f'html/{texte}-{organe}-{num}.html', 'w') as f:
                 f.write(resp.text)
