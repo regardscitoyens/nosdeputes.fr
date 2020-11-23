@@ -14,7 +14,7 @@ now = datetime.datetime.now()
 day = int(now.strftime("%d"))
 month = int(now.strftime("%m"))
 year = int(now.strftime("%Y"))
-datefin = f"{year+1}-01-01";
+datefin = datetime.datetime(year+1, 1, 1)
 if day > 7:
     day -= 7
 else:
@@ -24,30 +24,32 @@ else:
         year -= 1
     else:
         month -= 1
+datedebut = datetime.datetime(year, month, day)
 
-datedebut = f"{year}-{month:02d}-{year:02d}"
+while datedebut <= datefin:
+    url = "http://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_" + datedebut.strftime('%Y-%m-%d')
+    print(url)
+    resp = requests.get(url)
+    for line in resp.text.split('\n'):
+        if line:
+            _, file_url = line.split(';')
+            if 'opendata/AMAN' in file_url and file_url.endswith('.xml'):
+                print(file_url)
+                resp = requests.get(file_url)
+                soup = bs4.BeautifulSoup(resp.text, 'lxml')
+                code = soup.select_one('code').text
+                num = soup.select_one('numerolong').text.replace(' (Rect)', '')
+                organe = soup.select_one('prefixeorganeexamen').text
+                texte = soup.select_one('textelegislatifref').text.split('B')[1]
+                url_amdt = f"http://www.assemblee-nationale.fr/dyn/15/amendements/{texte}/{organe}/{num}"
 
-url = "http://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_j"
-resp = requests.get(url)
-for line in resp.text.split('\n'):
-    if line:
-        _, file_url = line.split(';')
-        if 'opendata/AMAN' in file_url and file_url.endswith('.xml'):
-            print(file_url)
-            resp = requests.get(file_url)
-            soup = bs4.BeautifulSoup(resp.text, 'lxml')
-            code = soup.select_one('code').text
-            num = soup.select_one('numerolong').text.replace(' (Rect)', '')
-            organe = soup.select_one('prefixeorganeexamen').text
-            texte = soup.select_one('textelegislatifref').text.split('B')[1]
-            url_amdt = f"http://www.assemblee-nationale.fr/dyn/15/amendements/{texte}/{organe}/{num}"
+                print(url_amdt)
+                resp = requests.get(url_amdt, cookies={'website_version': 'old'})
 
-            print(url_amdt)
-            resp = requests.get(url_amdt, cookies={'website_version': 'old'})
+                if resp.status_code != 200:
+                    print('invalid response')
+                    continue
 
-            if resp.status_code != 200:
-                print('invalid response')
-                continue
-
-            with open(f'html/{texte}-{organe}-{num}.html', 'w') as f:
-                f.write(resp.text)
+                with open(f'html/{texte}-{organe}-{num}.html', 'w') as f:
+                    f.write(resp.text)
+    datedebut += datetime.timedelta(days=1)
