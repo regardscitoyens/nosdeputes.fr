@@ -13,6 +13,7 @@ echo 'SELECT source FROM amendement WHERE sort LIKE "Ind%" AND date > DATE_SUB(C
  grep -v source > liste_sort_indefini.txt
 
 python3 download_amendements.py $LEGISLATURE > /tmp/download_amendements.log
+python3 download_amendements_indefinis.py >> /tmp/download_amendements.log
 
 for file in `ls html`; do
   fileout=$(echo $file | sed 's/html/json/' | sed 's/\.html/\.xml/')

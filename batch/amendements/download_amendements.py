@@ -8,7 +8,6 @@ import bs4
 
 legislature = sys.argv[1] if len(sys.argv) > 1 else 15
 count = 0
-count2 = 0
 
 now = datetime.datetime.now()
 day = int(now.strftime("%d"))
@@ -52,4 +51,7 @@ while datedebut <= datefin:
 
                 with open(f'html/{texte}-{organe}-{num}.html', 'w') as f:
                     f.write(resp.text)
+                    count += 1
     datedebut += datetime.timedelta(days=1)
+
+print(count, 'amendements téléchargés')
