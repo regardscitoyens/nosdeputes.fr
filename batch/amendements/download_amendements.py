@@ -26,7 +26,7 @@ while datedebut <= datefin:
                 code = soup.select_one('code').text
                 num = soup.select_one('numerolong').text.replace(' (Rect)', '')
                 organe = soup.select_one('prefixeorganeexamen').text
-                texte = soup.select_one('textelegislatifref').text.split('B')[1]
+                texte = soup.select_one('urldivisiontextevise').text.split('/textes/')[1].split('.asp')[0]
                 url_amdt = f"http://www.assemblee-nationale.fr/dyn/15/amendements/{texte}/{organe}/{num}"
 
                 print(url_amdt)
