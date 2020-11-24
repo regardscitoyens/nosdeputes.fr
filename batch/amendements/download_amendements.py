@@ -9,21 +9,8 @@ import bs4
 legislature = sys.argv[1] if len(sys.argv) > 1 else 15
 count = 0
 
-now = datetime.datetime.now()
-day = int(now.strftime("%d"))
-month = int(now.strftime("%m"))
-year = int(now.strftime("%Y"))
-datefin = datetime.datetime(year+1, 1, 1)
-if day > 7:
-    day -= 7
-else:
-    day += 21
-    if month == 1:
-        month = 12
-        year -= 1
-    else:
-        month -= 1
-datedebut = datetime.datetime(year, month, day)
+datefin = datetime.datetime.now()
+datedebut = datetime.datetime.now() - datetime.timedelta(days=7)
 
 while datedebut <= datefin:
     url = "http://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_" + datedebut.strftime('%Y-%m-%d')
