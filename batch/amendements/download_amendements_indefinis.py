@@ -9,8 +9,8 @@ for url_amdt in open('liste_sort_indefini.txt'):
     if resp.status_code != 200:
         print('invalid response')
         continue
-    slug = url_amdt.replace('/', '_')
-    with open(f'html/{slug}.html', 'w') as f:
+    slug = url_amdt.replace('/', '_-_')
+    with open(f'html/{slug}.asp', 'w') as f:
         f.write(resp.text)
         count += 1
 

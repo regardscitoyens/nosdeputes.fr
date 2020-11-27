@@ -36,7 +36,8 @@ while datedebut <= datefin:
                     print('invalid response')
                     continue
 
-                with open(f'html/{texte}-{organe}-{num}.html', 'w') as f:
+                slug = url_amdt.replace('/', '_-_')
+                with open(f'html/{slug}.asp', 'w') as f:
                     f.write(resp.text)
                     count += 1
     datedebut += datetime.timedelta(days=1)
