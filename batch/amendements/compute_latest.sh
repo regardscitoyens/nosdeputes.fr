@@ -4,7 +4,7 @@
 
 mkdir -p html json loaded
 if [ -d html ]; then
-  find html -type f | xargs rm
+  find html -type f | xargs rm -f
 fi
 
 echo 'SELECT source FROM amendement WHERE sort LIKE "Ind%" AND date > DATE_SUB(CURDATE() , INTERVAL 1 YEAR)' |
