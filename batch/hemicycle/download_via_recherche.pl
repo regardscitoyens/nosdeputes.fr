@@ -10,15 +10,16 @@ $count = 50;
 $ok = 1;
 while ($ok) {
     $ok = 0;
-    $a->get('http://recherche2.assemblee-nationale.fr/resultats_generique.jsp?texterecherche=*&typedoc=crdebats&auteurid=&legislatureNum='.$legislature.'&categoryid=&ResultCount='.$count.'&ResultStart='.$start);
+    $a->get('https://recherche2.assemblee-nationale.fr/resultats_generique.jsp?texterecherche=*&typedoc=crdebats&auteurid=&legislatureNum='.$legislature.'&categoryid=&ResultCount='.$count.'&ResultStart='.$start);
     $content = $a->content;
     $p = HTML::TokeParser->new(\$content);
-    
+
     while ($t = $p->get_tag('a')) {
 	$txt = $p->get_text('/a');
 	if ($txt =~ /compte rendu|ance (unique )?du /i) {
 	    $ok = 1;
 	    $file = $t->[1]{href};
+	    $file =~ s/^https:/http:/;
 	    $file =~ s/\//_/gi;
 	    $file =~ s/\#.*//;
 	    print "$file\n";
@@ -27,7 +28,7 @@ while ($ok) {
 	    open FILE, ">:utf8", "html/$file.tmp";
 	    print FILE $a->content;
 	    close FILE;
-	    rename "html/$file.tmp", "html/$file"; 
+	    rename "html/$file.tmp", "html/$file";
 	    $a->back();
 	}
     }
