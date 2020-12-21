@@ -13,7 +13,7 @@ datefin = datetime.datetime.now()
 datedebut = datetime.datetime.now() - datetime.timedelta(days=7)
 
 while datedebut <= datefin:
-    url = "http://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_" + datedebut.strftime('%Y-%m-%d')
+    url = "https://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_" + datedebut.strftime('%Y-%m-%d')
     print(url)
     resp = requests.get(url)
     for line in resp.text.split('\n'):
@@ -30,7 +30,7 @@ while datedebut <= datefin:
                 url_amdt = f"http://www.assemblee-nationale.fr/dyn/{legislature}/amendements/{texte}/{organe}/{num}"
 
                 print(url_amdt)
-                resp = requests.get(url_amdt, cookies={'website_version': 'old'})
+                resp = requests.get(url_amdt.replace("http://", "https://"), cookies={'website_version': 'old'})
 
                 if resp.status_code != 200:
                     print('invalid response')
