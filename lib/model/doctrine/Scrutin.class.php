@@ -3,7 +3,7 @@
 class Scrutin extends BaseScrutin
 {
   public function getLinkSource() {
-    return "http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/"
+    return "https://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/"
          . myTools::getLegislature()
          . "/(num)/"
          . $this->numero;
@@ -177,7 +177,7 @@ class Scrutin extends BaseScrutin
   }
 
   public function getURLInstitution() {
-    return "http://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/".myTools::getLegislature()."/(num)/".$this->numero;
+    return "https://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/".myTools::getLegislature()."/(num)/".$this->numero;
   }
 
   // https://stackoverflow.com/questions/834303/startswith-and-endswith-functions-in-php

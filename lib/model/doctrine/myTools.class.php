@@ -371,15 +371,15 @@ class myTools {
   }
 
   public static function getLinkDossier($urlan) {
-    return link_to('Dossier sur le site de l\'Assemblée', "http://www.assemblee-nationale.fr/dyn/".self::getLegislature()."/dossiers/alt/".$urlan);
+    return link_to('Dossier sur le site de l\'Assemblée', "https://www.assemblee-nationale.fr/dyn/".self::getLegislature()."/dossiers/alt/".$urlan);
   }
 
   public static function getLinkLoi($id) {
-    return link_to($id, "http://recherche2.assemblee-nationale.fr/resultats-avancee.jsp?11AUTPropositions=&11AUTRap-enq=&11AUTRap-info=&11AUTRapports=&12AUTPropositions=&12AUTRap-enq=&12AUTRap-info=&12AUTRap-infoLoi=&12AUTRapports=&".self::getLegislature()."AUTComptesRendusReunions=&".self::getLegislature()."AUTComptesRendusReunionsDeleg=&".self::getLegislature()."AUTPropositions=&".self::getLegislature()."AUTRap-info=&".self::getLegislature()."AUTRap-infoLoi=&".self::getLegislature()."".self::getLegislature()."AUTRapports=&legislature=".self::getLegislature()."&legisnum=&num_init_11=&num_init_12=&num_init_13=".$id."&searchadvanced=Rechercher&searchtype=&texterecherche=&type=".self::getLegislature()."ProjetsLoi");
+    return link_to($id, "https://recherche2.assemblee-nationale.fr/resultats-avancee.jsp?11AUTPropositions=&11AUTRap-enq=&11AUTRap-info=&11AUTRapports=&12AUTPropositions=&12AUTRap-enq=&12AUTRap-info=&12AUTRap-infoLoi=&12AUTRapports=&".self::getLegislature()."AUTComptesRendusReunions=&".self::getLegislature()."AUTComptesRendusReunionsDeleg=&".self::getLegislature()."AUTPropositions=&".self::getLegislature()."AUTRap-info=&".self::getLegislature()."AUTRap-infoLoi=&".self::getLegislature()."".self::getLegislature()."AUTRapports=&legislature=".self::getLegislature()."&legisnum=&num_init_11=&num_init_12=&num_init_13=".$id."&searchadvanced=Rechercher&searchtype=&texterecherche=&type=".self::getLegislature()."ProjetsLoi");
   }
 
   public static function getLiasseLoiAN($id) {
-    return link_to('liasse de l\'Assemblée', "http://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?typeEcran=avance&chercherDateParNumero=non&NUM_INIT=".$id."&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&SORT_EN_SEANCE=&DELIBERATION=&NUM_PARTIE=&DateDebut=&DateFin=&periode=&LEGISLATURE=".self::getLegislature()."Amendements&QueryText=&Scope=TEXTEINTEGRAL&SortField=ORDRE_TEXTE&SortOrder=Asc&format=PDF&searchadvanced=Rechercher");
+    return link_to('liasse de l\'Assemblée', "https://recherche2.assemblee-nationale.fr/amendements/resultats.jsp?typeEcran=avance&chercherDateParNumero=non&NUM_INIT=".$id."&NUM_AMEND=&AUTEUR=&DESIGNATION_ARTICLE=&DESIGNATION_ALINEA=&SORT_EN_SEANCE=&DELIBERATION=&NUM_PARTIE=&DateDebut=&DateFin=&periode=&LEGISLATURE=".self::getLegislature()."Amendements&QueryText=&Scope=TEXTEINTEGRAL&SortField=ORDRE_TEXTE&SortOrder=Asc&format=PDF&searchadvanced=Rechercher");
   }
 
   public static function getLiasseLoiImpr($id) {

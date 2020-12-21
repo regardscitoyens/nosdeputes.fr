@@ -14,7 +14,7 @@ from . import COMMON_DIR
 
 CACHE_DIR = os.path.join(COMMON_DIR, "opendata")
 
-AN_BASE_URL = "http://data.assemblee-nationale.fr"
+AN_BASE_URL = "https://data.assemblee-nationale.fr"
 AN_ENTRYPOINTS = {
     "14": {
         "amo": "opendata-archives-xive/deputes-senateurs-et-ministres-xive-legislature",

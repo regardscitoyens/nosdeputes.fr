@@ -26,7 +26,7 @@ close FILE;
 #    }
 #}
 
-$url = "http://www2.assemblee-nationale.fr/recherche/resultats_questions";
+$url = "https://www2.assemblee-nationale.fr/recherche/resultats_questions";
 $a = WWW::Mechanize->new(autocheck => 0);
 $a->post($url, ["sort_by" => "numDocument", "sort_order" => "desc", "limit" => "10", "legislature" => $legislature, "ssTypeDocument[]" => "qe"]);
 $content = $a->content;
