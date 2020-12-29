@@ -19,10 +19,11 @@ else {
 }
 $datedebut = $year."-".sprintf('%02d', $month)."-".sprintf('%02d', $day);
 
-$url = "http://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&leg=".$legislature."&idExamen=&idDossierLegislatif=&missionVisee=&numAmend=&idAuteur=&premierSignataire=true&idArticle=&idAlinea=&sort=&dateDebut=".$datedebut."&dateFin=".$datefin."&periodeParlementaire=&texteRecherche=&rows=2500&format=html&tri=datedesc&typeRes=liste&start=";
+$url = "https://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&leg=".$legislature."&idExamen=&idDossierLegislatif=&missionVisee=&numAmend=&idAuteur=&premierSignataire=true&idArticle=&idAlinea=&sort=&dateDebut=".$datedebut."&dateFin=".$datefin."&periodeParlementaire=&texteRecherche=&rows=2500&format=html&tri=datedesc&typeRes=liste&start=";
 
 $a = WWW::Mechanize->new();
 $a->add_header('Cookie', 'website_version=old');
+print "- $url\n";
 $a->get($url);
 foreach $line (split /\n/, $a->content) {
     if ($line =~ /^\[/) {
@@ -32,7 +33,7 @@ foreach $line (split /\n/, $a->content) {
 }
 foreach $line (split /","/, $content) {
     $line =~ s/\\\//\//g;
-    $line =~ s/^.*\|(http:\/\/www.assemblee-nationale.fr\/\d+\/amendements\/[^\|]+)\|.*$/\1/;
+    $line =~ s/^.*\|https?(:\/\/www.assemblee-nationale.fr\/\d+\/amendements\/[^\|]+)\|.*$/http\1/;
     next if (!$line || $line =~ /(index|javascript)/);
     $count++;
     $a->get($line);
