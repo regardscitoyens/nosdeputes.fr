@@ -98,24 +98,51 @@ def convert_format(data, extra = ''):
 
     if not isinstance(data['auteurs']['auteur'], list):
         data['auteurs']['auteur'] = [ data['auteurs']['auteur'] ]
+    auteurs = []
     for auteur in data['auteurs']['auteur']:
         if auteur.get('acteur'):
-            res["deputes"]["auteurs"].append([auteur['acteur']['acteurRef'], auteur['acteur']['qualite']])
-            res["auteurs"] += auteur['acteur']['acteurRef']+ " "+auteur['acteur']['qualite']+", "
+            acteur_id = auteur['acteur']['acteurRef']
+            acteur = acteur_id
+            if os.path.isfile("opendata/acteur/"+acteur_id+".json"):
+                with io.open("opendata/acteur/"+acteur_id+".json", encoding="utf-8", mode='r') as acteur_file:
+                    acteur_json = json.load(acteur_file)
+                    acteur = acteur_json['acteur']['etatCivil']['ident']['civ']+' '+acteur_json['acteur']['etatCivil']['ident']['prenom']+' '+acteur_json['acteur']['etatCivil']['ident']['nom']
+            res["deputes"]["auteurs"].append([auteur['acteur']['acteurRef'], acteur, auteur['acteur']['qualite'].title()])
+            auteurs.append(acteur+ " "+auteur['acteur']['qualite'].title())
         elif auteur.get('organe'):
-            res["organe"] = auteur['organe']['organeRef']
-            res["auteurs"] += auteur['organe']['organeRef']+", "
+            res["organe_id"] = auteur['organe']['organeRef']
+            if res.get('organe_id') and os.path.isfile("opendata/organe/"+res['organe_id']+".json"):
+                with io.open("opendata/organe/"+res['organe_id']+".json", encoding="utf-8", mode='r') as organe_file:
+                    organe_json = json.load(organe_file)
+                    res['organe_name'] = organe_json['organe']['libelle']
+            if res.get('organe_name'):
+                auteurs.append(res['organe_name'])
+            else:
+                auteurs.append(auteur['organe']['organeRef'])
 
     if data.get('coSignataires'):
-      if not isinstance(data['coSignataires']['coSignataire'], list):
-          data['coSignataires']['coSignataire'] = [ data['coSignataires']['coSignataire'] ]
-      for aut in data['coSignataires']['coSignataire']:
-          if aut.get('acteur'):
-              res["deputes"]["coSignataires"].append(aut['acteur']['acteurRef'])
-              res["auteurs"] += aut['acteur']['acteurRef']+ " Cosignataire, "
-          elif aut.get('organe'):
-              res["organe"] = aut['organe']['organeRef']
-              res["auteurs"] += aut['organe']['organeRef']+", "
+        if not isinstance(data['coSignataires']['coSignataire'], list):
+            data['coSignataires']['coSignataire'] = [ data['coSignataires']['coSignataire'] ]
+        for cosign in data['coSignataires']['coSignataire']:
+            if cosign.get('acteur'):
+                acteur_id = cosign['acteur']['acteurRef']
+                acteur = acteur_id
+                if os.path.isfile("opendata/acteur/"+acteur_id+".json"):
+                    with io.open("opendata/acteur/"+acteur_id+".json", encoding="utf-8", mode='r') as acteur_file:
+                        acteur_json = json.load(acteur_file)
+                        acteur = acteur_json['acteur']['etatCivil']['ident']['civ']+' '+acteur_json['acteur']['etatCivil']['ident']['prenom']+' '+acteur_json['acteur']['etatCivil']['ident']['nom']
+                res["deputes"]["coSignataires"].append([acteur_id, acteur, "Cosignataire"])
+                auteurs.append(acteur+ " Cosignataire")
+            elif cosign.get('organe'):
+                organe_id = cosign['organe']['organeRef']
+                organe_name = organe_id
+                if os.path.isfile("opendata/organe/"+organe_id+".json"):
+                    with io.open("opendata/organe/"+organe_id+".json", encoding="utf-8", mode='r') as organe_file:
+                        organe_json = json.load(organe_file)
+                        organe_name = organe_json['organe']['libelle']
+                res["deputes"]["coSignataires"].append([organe_id, organe_name, "Organe"])
+                auteurs.append(organe_name)
+    res["auteurs"] = ', '.join(auteurs)
 
     if data['dossierRef']:
         try:
