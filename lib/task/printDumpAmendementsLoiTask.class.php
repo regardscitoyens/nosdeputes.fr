@@ -37,6 +37,8 @@ class printDumpAmendementsLoiTask extends sfBaseTask {
           ->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
       if (!$a['auteur_groupe_acronyme'])
         $a['auteur_groupe_acronyme'] = "";
+      if (!$a['nb_commentaires'])
+        $a['nb_commentaires'] = 0;
       $parlslugs = Doctrine_Query::create()->select('p.slug')->from('Parlementaire p')->leftJoin('p.ParlementaireAmendements pa')->where('pa.amendement_id = ?', $a['id'])->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
       if (is_string($parlslugs)) $parlslugs = array($parlslugs);
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');
