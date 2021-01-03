@@ -10,7 +10,7 @@ count = 0
 for url_amdt in open('liste_sort_indefini.txt'):
     url_amdt = url_amdt.strip()
     print(url_amdt)
-    resp = requests.get(url_amdt, cookies={'website_version': 'old'})
+    resp = requests.get(url_amdt) #, cookies={'website_version': 'old'})
     if resp.status_code != 200:
         print('invalid response')
         continue
