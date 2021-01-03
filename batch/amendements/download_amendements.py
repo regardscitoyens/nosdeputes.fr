@@ -12,7 +12,7 @@ legislature = sys.argv[1] if len(sys.argv) > 1 else 15
 count = 0
 
 datefin = datetime.datetime.now()
-datedebut = datetime.datetime.now() - datetime.timedelta(days=45)
+datedebut = datetime.datetime.now() - datetime.timedelta(days=7)
 
 while datedebut <= datefin:
     url = "https://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_" + datedebut.strftime('%Y-%m-%d')
@@ -33,7 +33,7 @@ while datedebut <= datefin:
                     url_amdt = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (legislature, texte, organe, num)
 
                     print(url_amdt)
-                    resp = requests.get(url_amdt.replace("http://", "https://"), cookies={'website_version': 'old'})
+                    resp = requests.get(url_amdt.replace("http://", "https://"))#, cookies={'website_version': 'old'})
 
                     if resp.status_code != 200:
                         print('invalid response')

@@ -4,7 +4,7 @@ use Date::Format;
 use WWW::Mechanize;
 use HTML::TokeParser;
 $a = WWW::Mechanize->new();
-$a->add_header('Cookie', 'website_version=old');
+#$a->add_header('Cookie', 'website_version=old');
 
 $url = $htmfile = shift;
 $url =~ s/(nationale\.fr)(\/\d+\/amendements)/\1\/dyn\2/;
