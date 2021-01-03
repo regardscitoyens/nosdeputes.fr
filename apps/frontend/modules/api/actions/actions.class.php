@@ -336,8 +336,11 @@ class apiActions extends sfActions
   public function executeListSections(sfWebRequest $request) {
     $query = Doctrine::getTable('Section')
       ->createQuery()
-      ->where('id = section_id')
-      ->andWhere('id_dossier_an IS NOT NULL');
+      ->where('id = section_id');
+
+    $includeall = $request->getParameter('include', false);
+    if (!$includeall)
+      $query->andWhere('id_dossier_an IS NOT NULL');
 
     $order = $request->getParameter('order', 'plus');
     if ($order == 'date') {

@@ -148,6 +148,9 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
   - Triés du plus récent au plus ancien : https://www.nosdeputes.fr/15/dossiers/date/xml
   - Triés du plus débattu au moins débattu : https://www.nosdeputes.fr/15/dossiers/plus/xml
 
+  Par défaut, seuls les dossiers pour lesquels un dossier législatif identifié sur le site de l'Assemblée nationale a été rattaché sont renvoyés.
+  L'option `?include=all` ajoutée à la fin des urls permet de lever cette limitation et de renvoyer absolument tous les dossiers (y compris les questions au gouvernement, changement d'ordre du jour, annonce de la prochaine séance, hommages, etc.).
+
 - **Détails d'un dossier législatif** (à partir de la 15<sup>ème</sup> législature uniquement pour l'Assemblée) :
 
   Plus de détails sont disponibles pour chaque dossier : listes des documents associés, des séances, des intervenants et des sous-sections.
