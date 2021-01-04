@@ -148,7 +148,8 @@ def convert_format(data, extra = ''):
         try:
             with open("opendata/dossierParlementaire/"+data['dossierRef']+".json") as dossierfile:
                 datados = json.load(dossierfile)
-                res["dossier"] = datados['dossierParlementaire']['titreDossier']['titreChemin']
+                if datados['dossierParlementaire']['titreDossier']['titreChemin']:
+                    res["dossier"] = datados['dossierParlementaire']['titreDossier']['titreChemin']
         except:
             res["dossier"] = ''
 
