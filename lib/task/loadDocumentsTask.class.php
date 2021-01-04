@@ -18,8 +18,8 @@ class loadDocumentsTask extends sfBaseTask {
       if ($dh = opendir($dir)) {
         while (($file = readdir($dh)) != false) {
           if ($file == ".." || $file == "." || $file == ".svn") continue;
+          if ($doc) exit(1);
           foreach(file($dir.$file) as $line) {
-            if ($doc) exit(1);
             echo "$dir$file ... ";
             $json = json_decode($line);
             if (!$json) {
