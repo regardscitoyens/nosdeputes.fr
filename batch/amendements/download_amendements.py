@@ -26,10 +26,9 @@ while datedebut <= datefin:
                     #print(file_url)
                     resp = requests.get(file_url)
                     soup = bs4.BeautifulSoup(resp.text, 'lxml')
-                    code = soup.select_one('code').text
-                    num = soup.select_one('numerolong').text.split(" ")[0].split("-")[-1]
-                    organe = soup.select_one('prefixeorganeexamen').text
-                    texte = soup.select_one('urldivisiontextevise').text.split('/textes/')[1].split('.asp')[0]
+                    num = soup.select_one('numeroLong').text.split(" ")[0].split("-")[-1]
+                    organe = soup.select_one('prefixeOrganeExamen').text
+                    texte = soup.select_one('urlDivisionTexteVise').text.split('/textes/')[1].split('.asp')[0]
                     url_amdt = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (legislature, texte, organe, num)
 
                     print(url_amdt)
