@@ -24,15 +24,14 @@ if not jsonurl:
     sys.exit(1)
 jsonurl = "https://www.assemblee-nationale.fr" + jsonurl.group(1)
 
-
-extract_numero = lambda data: data['identification']['numeroLong'].split(" ")[0].split("-")[-1]
-simplify_url = lambda u: u.replace('https://', 'http://').replace('/dyn/', '/').replace('.asp', '')
-
 try:
     data = requests.get(jsonurl).json()
 except:
     print >> sys.stderr, "ERROR: could not download JSON opendata for amendement %s at %s" % (htmlurl, jsonurl)
     sys.exit(1)
+
+extract_numero = lambda data: data['identification']['numeroLong'].split(" ")[0].split("-")[-1]
+simplify_url = lambda u: u.replace('https://', 'http://').replace('/dyn/', '/').replace('.asp', '')
 
 h = HTMLParser()
 try:
@@ -72,11 +71,17 @@ try:
     amd['auteur_reel'] = data['signataires']['auteur']['acteurRef']
 
     amd['expose'] = fixHTML(data['corps']['contenuAuteur']['exposeSommaire'], h)
+    # TODO: check tableaux ok
     if 'dispositif' in data['corps']['contenuAuteur']:
         amd['texte'] = fixHTML(data['corps']['contenuAuteur']['dispositif'], h)
     else:
-        # TODO: download dispositif from specific url from AN
-        print >> sys.stderr, "ERROR: dispositif missing in opendata for amendement %s" % htmlurl
+        try:
+            dispurl = "https://www.assemblee-nationale.fr/dyn/%s/amendements/dispositif/%s.fragmenthtml" % (amd['legislature'], data['uid'])
+            disphtml = requests.get(dispurl).text
+            amd['texte'] = fixHTML(disphtml, h)
+        except:
+            print >> sys.stderr, "ERROR: could not get missing dispositif for amendement %s: %s" % (htmlurl, dispurl)
+            sys.exit(1)
 
 except Exception as e:
     print >> sys.stderr, "ERROR: could not parse JSON opendata for amendement %s at %s" % (htmlurl, jsonurl)
