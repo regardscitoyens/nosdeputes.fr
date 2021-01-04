@@ -40,7 +40,7 @@ try:
     amd['legislature'] = data['legislature']
     amd['numero'] = extract_numero(data)
     amd['loi'] = data['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
-    amd['sort'] = extractSort(data['cycleDeVie']['sort'])
+    amd['sort'] = extractSort(data['cycleDeVie']['sort'] or data['cycleDeVie']['etatDesTraitements']['sousEtat'].get('libelle', None) or data['cycleDeVie']['etatDesTraitements']['etat'].get('libelle', ''))
     amd['date'] = data['cycleDeVie']['dateDepot']
 
     amd['source'] = htmlurl
