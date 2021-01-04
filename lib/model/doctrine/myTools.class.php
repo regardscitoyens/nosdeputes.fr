@@ -375,7 +375,7 @@ class myTools {
   }
 
   public static function getLinkLoi($id) {
-    return link_to($id, "https://recherche2.assemblee-nationale.fr/resultats-avancee.jsp?11AUTPropositions=&11AUTRap-enq=&11AUTRap-info=&11AUTRapports=&12AUTPropositions=&12AUTRap-enq=&12AUTRap-info=&12AUTRap-infoLoi=&12AUTRapports=&".self::getLegislature()."AUTComptesRendusReunions=&".self::getLegislature()."AUTComptesRendusReunionsDeleg=&".self::getLegislature()."AUTPropositions=&".self::getLegislature()."AUTRap-info=&".self::getLegislature()."AUTRap-infoLoi=&".self::getLegislature()."".self::getLegislature()."AUTRapports=&legislature=".self::getLegislature()."&legisnum=&num_init_11=&num_init_12=&num_init_13=".$id."&searchadvanced=Rechercher&searchtype=&texterecherche=&type=".self::getLegislature()."ProjetsLoi");
+    return link_to($id, 'https://www.google.com/search?hl=fr&q=loi+"nº+'.$id.'"+site%3Aassemblee-nationale.fr%2Fdyn%2F'.self::getLegislature().'%2F&btnI=J%27ai+de+la+chance');
   }
 
   public static function getLiasseLoiAN($id) {

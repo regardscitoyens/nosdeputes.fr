@@ -18,7 +18,7 @@ class printDumpAmendementsLoiTask extends sfBaseTask {
     $this->configuration->loadHelpers(array('Url'));
     $loi = $arguments['loi_id'];
     $amendements = Doctrine::getTable('Amendement')->createQuery('a')
-      ->select('a.id, a.legislature, a.texteloi_id, a.numero, CAST( a.numero AS SIGNED ) AS num, a.sous_amendement_de, a.rectif, a.sujet, a.sort, a.date, a.texte, a.expose, a.content_md5 as cle_unicite, a.signataires, a.source, a.nb_multiples, a.auteur_groupe_acronyme')
+      ->select('a.id, a.legislature, a.texteloi_id, a.numero, CAST( a.numero AS SIGNED ) AS num, a.sous_amendement_de, a.rectif, a.sujet, a.sort, a.date, a.texte, a.expose, a.content_md5 as cle_unicite, a.signataires, a.source, a.nb_multiples, a.auteur_groupe_acronyme, a.nb_commentaires')
       ->from('Amendement a')
       ->where('a.sort <> ?', 'Rectifié')
       ->andWhere('a.texteloi_id = ?', $loi)
@@ -37,6 +37,8 @@ class printDumpAmendementsLoiTask extends sfBaseTask {
           ->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
       if (!$a['auteur_groupe_acronyme'])
         $a['auteur_groupe_acronyme'] = "";
+      if (!$a['nb_commentaires'])
+        $a['nb_commentaires'] = 0;
       $parlslugs = Doctrine_Query::create()->select('p.slug')->from('Parlementaire p')->leftJoin('p.ParlementaireAmendements pa')->where('pa.amendement_id = ?', $a['id'])->execute(array(), Doctrine::HYDRATE_SINGLE_SCALAR);
       if (is_string($parlslugs)) $parlslugs = array($parlslugs);
       $a['parlementaires'] = myTools::array2hash($parlslugs, 'parlementaire');

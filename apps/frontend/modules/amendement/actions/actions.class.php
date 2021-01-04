@@ -20,16 +20,20 @@ class amendementActions extends sfActions
        $this->section = NULL;
      else $this->section = $section->getSection(1);
 
-     $this->identiques = Doctrine_Query::create()
-       ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
-       ->from('Amendement a')
-       ->where('content_md5 = ?', $this->amendement->content_md5)
-       ->andWhere('a.sort <> ?', 'Rectifié')
-       ->orderBy('num')
-       ->execute();
+     if ($this->amendement->sort != "Irrecevable") {
+       $this->identiques = Doctrine_Query::create()
+         ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
+         ->from('Amendement a')
+         ->where('content_md5 = ?', $this->amendement->content_md5)
+         ->andWhere('a.sort <> ?', 'Rectifié')
+         ->orderBy('num')
+         ->execute();
 
-     if (count($this->identiques) < 2) {
-       $this->identiques = array();
+       if (count($this->identiques) < 2) {
+         $this->identiques = array();
+       }
+     } else {
+        $this->identiques = array();
      }
 
      $this->sous_admts = Doctrine_Query::create()
