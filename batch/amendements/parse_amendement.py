@@ -39,7 +39,11 @@ try:
     amd['legislature'] = data['legislature']
     amd['numero'] = extract_numero(data)
     amd['loi'] = data['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
-    amd['sort'] = extractSort(data['cycleDeVie']['sort'] or data['cycleDeVie']['etatDesTraitements']['sousEtat'].get('libelle', None) or data['cycleDeVie']['etatDesTraitements']['etat'].get('libelle', ''))
+    if not data['cycleDeVie']['sort'] and "recevab" in data['cycleDeVie']['etatDesTraitements']['etat']['libelle']:
+        sort = data['cycleDeVie']['etatDesTraitements']['etat']['libelle']
+    else:
+        sort = data['cycleDeVie']['sort'] or data['cycleDeVie']['etatDesTraitements']['sousEtat'].get('libelle', None) or data['cycleDeVie']['etatDesTraitements']['etat'].get('libelle', '')
+    amd['sort'] = extractSort(sort)
     amd['date'] = data['cycleDeVie']['dateDepot']
 
     amd['source'] = htmlurl
@@ -70,18 +74,29 @@ try:
     amd['auteurs'] = cleanAuteurs(amd['auteurs'], h)
     amd['auteur_reel'] = data['signataires']['auteur']['acteurRef']
 
-    amd['expose'] = fixHTML(data['corps']['contenuAuteur']['exposeSommaire'], h)
-    # TODO: check tableaux ok
-    if 'dispositif' in data['corps']['contenuAuteur']:
-        amd['texte'] = fixHTML(data['corps']['contenuAuteur']['dispositif'], h)
-    else:
-        try:
-            dispurl = "https://www.assemblee-nationale.fr/dyn/%s/amendements/dispositif/%s.fragmenthtml" % (amd['legislature'], data['uid'])
-            disphtml = requests.get(dispurl).text
-            amd['texte'] = fixHTML(disphtml, h)
-        except:
-            print >> sys.stderr, "ERROR: could not get missing dispositif for amendement %s: %s" % (htmlurl, dispurl)
+    if not data['corps']['contenuAuteur']:
+        if amd['sort'] == u'Retiré avant publication':
+            amd['texte'] = ''
+            amd['expose'] = u'<p>Cet amendement a été retiré avant sa publication.</p>'
+        elif amd['sort'] == u'Irrecevable':
+            amd['texte'] = ''
+            amd['expose'] = '<p>%s</p>' % data['corps']['cartoucheInformatif']
+        else:
+            print >> sys.stderr, "ERROR: contenuAuteur is missing for amendement %s: %s" % (htmlurl, jsonurl)
             sys.exit(1)
+    else:
+        amd['expose'] = fixHTML(data['corps']['contenuAuteur']['exposeSommaire'], h)
+        # TODO: check tableaux ok
+        if 'dispositif' in data['corps']['contenuAuteur']:
+            amd['texte'] = fixHTML(data['corps']['contenuAuteur']['dispositif'], h)
+        else:
+            try:
+                dispurl = "https://www.assemblee-nationale.fr/dyn/%s/amendements/dispositif/%s.fragmenthtml" % (amd['legislature'], data['uid'])
+                disphtml = requests.get(dispurl).text
+                amd['texte'] = fixHTML(disphtml, h)
+            except:
+                print >> sys.stderr, "ERROR: could not get missing dispositif for amendement %s: %s" % (htmlurl, dispurl)
+                sys.exit(1)
 
 except Exception as e:
     print >> sys.stderr, "ERROR: could not parse JSON opendata for amendement %s at %s" % (htmlurl, jsonurl)
