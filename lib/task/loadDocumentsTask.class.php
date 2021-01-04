@@ -57,7 +57,7 @@ class loadDocumentsTask extends sfBaseTask {
               $doc->date = $json->date_depot;
               $doc->type = $json->type;
             }
-            if ($json->date_publi)
+            if (isset($json->date_publi) && $json->date_publi)
               $doc->date = $json->date_publi;
             $doc->setDossier($json->dossier);
             if ($json->type_details)
