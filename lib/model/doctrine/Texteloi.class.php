@@ -121,7 +121,7 @@ class Texteloi extends BaseTexteloi
     $orga = null;
     $sexe = null;
     $fonction = null;
-    $signataires = preg_replace("/(Auteur|Cosignataire|Rapporteur), /", "\\1#", $signataires);
+    $signataires = preg_replace("/(Auteur|Cosignataire|Rapporteur|Rapporteur Spécial), /", "\\1#", $signataires);
     if ($debug) echo $this->source." : ".$signataires."\n";
     $signataires = preg_split('/#/', $signataires);
     foreach ($signataires as $depute) {
@@ -153,7 +153,7 @@ class Texteloi extends BaseTexteloi
       }
     }
     foreach ($signataires as $depute) {
-      if (preg_match('/^(M[\.mle]+)\s+(.*)\s+(Auteur|Cosignataire|Rapporteur)/', $depute, $match)) {
+      if (preg_match('/^(M[\.mle]+)\s+(.*)\s+(Auteur|Cosignataire|Rapporteur Spécial|Rapporteur)/', $depute, $match)) {
         if (preg_match('/M[ml]/', $match[1]))
           $sexe = 'F';
         else $sexe = 'H';
@@ -189,7 +189,7 @@ class Texteloi extends BaseTexteloi
     $pd->_set('Texteloi', $this);
     if ($fonction === "Auteur")
       $pd->_set('importance', 1);
-    else if ($fonction === "Rapporteur")
+    else if ($fonction === "Rapporteur" || $fonction === "Rapporteur Spécial")
       $pd->_set('importance', 3);
     else if ($fonction === "Cosignataire")
       $pd->_set('importance', 5);
