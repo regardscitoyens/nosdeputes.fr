@@ -3,11 +3,12 @@
 
 from __future__ import print_function
 import os
+import sys
 import requests
 
 count = 0
 
-for url_amdt in open('liste_sort_indefini.txt'):
+for url_amdt in open(sys.argv[1]):
     url_amdt = url_amdt.strip()
     print(url_amdt)
     resp = requests.get(url_amdt) #, cookies={'website_version': 'old'})
