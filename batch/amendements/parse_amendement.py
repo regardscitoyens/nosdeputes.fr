@@ -8,10 +8,11 @@ import requests
 from HTMLParser import HTMLParser
 
 from clean_subjects_amdmts import clean_subject
-from parseAmdtsFromANOpenData import extractNumRectif, cleanAuteurs, extractSort, fixHTML
+from parseAmdtsFromANOpenData import extractNumRectif, cleanAuteurs, extractSort, fixHTML, parseUrl
 
 htmlfile = sys.argv[1]
 htmlurl = htmlfile.replace("html/", "").replace('_-_', '/')
+loi, numero = parseUrl(htmlurl)
 
 with open(htmlfile) as f:
     htmlcontent = f.read()
@@ -37,8 +38,17 @@ h = HTMLParser()
 try:
     amd = {}
     amd['legislature'] = data['legislature']
+    try:
+        amd['loi'] = data['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
+    except:
+        amd['loi'] = loi
+        print >> sys.stderr, "WARNING: could not find numero loi in Open Data (%s) for amendement %s : extracting it from url (%s)" % (jsonurl, htmlurl, loi)
+
+    # TODO handle lettre PJLF example //www.assemblee-nationale.fr/dyn/15/amendements/3360B/AN/1
     amd['numero'] = extract_numero(data)
-    amd['loi'] = data['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
+    if amd['numero'] != numero:
+        print >> sys.stderr, "WARNING: numero parsed from url (%s) is different than Open Data's (%s) for amendement %s" % (numero, amd['numero'], htmlurl)
+
     if not data['cycleDeVie']['sort'] and "recevab" in data['cycleDeVie']['etatDesTraitements']['etat']['libelle']:
         sort = data['cycleDeVie']['etatDesTraitements']['etat']['libelle']
     else:

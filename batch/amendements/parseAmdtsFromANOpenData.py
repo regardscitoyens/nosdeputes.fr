@@ -13,7 +13,8 @@ amdtFilePath="OpenDataAN/Amendements_XIV.json"
 # - see how to handle complexe dispositif (tables) for PJLFs
 
 def parseUrl(urlAN):
-    elements = urlAN[:-4].split("/")
+    shortUrl = urlAN.replace('http://www.assemblee-nationale.fr/', '/').replace('/dyn/', '/').replace('.asp', '')
+    elements = shortUrl.split("/")
     loi = elements[3]
     try:
         lettre = re.search(ur"([A-Z])$", loi, re.I).group(1)
