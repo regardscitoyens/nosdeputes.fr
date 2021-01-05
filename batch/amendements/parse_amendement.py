@@ -60,7 +60,10 @@ try:
     amd['loi'] = str(loi)
 
     amd['numero'] = extract_numero(data)
+    organe = htmlurl.split('/')[-2]
     numstr = amd['numero']
+    if organe != u"AN" and not re.search(ur"^[A-Z]", numstr, re.I):
+        amd['numero'] = re.sub(ur"[^A-Z]", "", organe, re.I) + amd['numero']
     amd['numero'] += lettre
     if amd['numero'] != numero:
         print >> sys.stderr, "WARNING: numero parsed from url (%s) is different than Open Data's (%s) for amendement %s" % (numero, amd['numero'], htmlurl)
