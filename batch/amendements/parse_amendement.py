@@ -12,7 +12,7 @@ from parseAmdtsFromANOpenData import extractNumRectif, cleanAuteurs, extractSort
 
 htmlfile = sys.argv[1]
 htmlurl = htmlfile.replace("html/", "").replace('_-_', '/')
-loi, numero = parseUrl(htmlurl)
+_, numero = parseUrl(htmlurl)
 
 with open(htmlfile) as f:
     htmlcontent = f.read()
@@ -38,14 +38,30 @@ h = HTMLParser()
 try:
     amd = {}
     amd['legislature'] = data['legislature']
+    loi_from_url = htmlurl.split('/')[-3]
     try:
-        amd['loi'] = data['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
+        loi = data['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
+        if loi != loi_from_url:
+            print >> sys.stderr, "WARNING: numero loi parsed from url (%s) is different than Open Data's (%s) for amendement %s" % (loi_from_url, loi, htmlurl)
     except:
-        amd['loi'] = loi
+        loi = loi_from_url
         print >> sys.stderr, "WARNING: could not find numero loi in Open Data (%s) for amendement %s : extracting it from url (%s)" % (jsonurl, htmlurl, loi)
 
-    # TODO handle lettre PJLF example //www.assemblee-nationale.fr/dyn/15/amendements/3360B/AN/1
+    try:
+        lettre = re.search(ur"([A-Z])$", loi, re.I).group(1).upper()
+        loi = loi[:-1]
+    except:
+        lettre = ""
+    if not loi.startswith(u"TA"):
+        loi = int(loi)
+        loistr = "%04d%s" % (loi, lettre)
+    else:
+        loistr = loi + lettre
+    amd['loi'] = str(loi)
+
     amd['numero'] = extract_numero(data)
+    numstr = amd['numero']
+    amd['numero'] += lettre
     if amd['numero'] != numero:
         print >> sys.stderr, "WARNING: numero parsed from url (%s) is different than Open Data's (%s) for amendement %s" % (numero, amd['numero'], htmlurl)
 
@@ -58,7 +74,7 @@ try:
 
     amd['source'] = htmlurl
     organe = data['identification']['prefixeOrganeExamen']
-    amdurl = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (amd['legislature'], amd['loi'], organe, amd['numero'])
+    amdurl = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (amd['legislature'], loistr, organe, numstr)
     if simplify_url(amd['source']) != simplify_url(htmlurl):
         print >> sys.stderr, "WARNING: source URL parsed (%s) different than original URL for amendement %s" % (amdurl, htmlurl)
 
