@@ -103,7 +103,7 @@ try:
     if data['signataires']['suffixe'] and data['signataires']['suffixe'] not in amd['auteurs']:
         amd['auteurs'] += " %s" % data['signataires']['suffixe']
     amd['auteurs'] = cleanAuteurs(amd['auteurs'], h)
-    amd['auteur_reel'] = data['signataires']['auteur']['acteurRef'].lstrip('PA')
+    amd['auteur_reel'] = (data['signataires']['auteur']['auteurRapporteurOrganeRef'] or data['signataires']['auteur']['acteurRef'] or "GVT").lstrip('PAO')
 
     if not data['corps']['contenuAuteur']:
         if amd['sort'] == u'Retiré avant publication':
