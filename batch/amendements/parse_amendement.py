@@ -70,7 +70,7 @@ try:
     if amd['numero'] != numero:
         print >> sys.stderr, "WARNING: numero parsed from url (%s) is different than Open Data's (%s) for amendement %s" % (numero, amd['numero'], htmlurl)
 
-    if not data['cycleDeVie']['sort'] and "recevab" in data['cycleDeVie']['etatDesTraitements']['etat']['libelle']:
+    if not data['cycleDeVie']['sort'] and ("recevab" in data['cycleDeVie']['etatDesTraitements']['etat']['libelle'] or len(data['cycleDeVie']['etatDesTraitements']['sousEtat'].get('libelle', None))) == 1:
         sort = data['cycleDeVie']['etatDesTraitements']['etat']['libelle']
     else:
         sort = data['cycleDeVie']['sort'] or data['cycleDeVie']['etatDesTraitements']['sousEtat'].get('libelle', None) or data['cycleDeVie']['etatDesTraitements']['etat'].get('libelle', '')
