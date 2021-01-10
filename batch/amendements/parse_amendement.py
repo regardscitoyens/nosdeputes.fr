@@ -62,8 +62,10 @@ try:
     amd['numero'] = extract_numero(data)
     organe = htmlurl.split('/')[-2]
     numstr = amd['numero']
-    if organe != u"AN" and not re.search(ur"^[A-Z]", numstr, re.I):
-        amd['numero'] = re.sub(ur"[^A-Z]", "", organe, re.I) + amd['numero']
+    if organe != u"AN":
+        amd['commission'] = organe
+        if not re.search(ur"^[A-Z]", numstr, re.I):
+            amd['numero'] = re.sub(ur"[^A-Z]", "", organe, re.I) + amd['numero']
     amd['numero'] += lettre
     if amd['numero'] != numero:
         print >> sys.stderr, "WARNING: numero parsed from url (%s) is different than Open Data's (%s) for amendement %s" % (numero, amd['numero'], htmlurl)
@@ -97,25 +99,25 @@ try:
     amd['sujet'] = h.unescape(data['pointeurFragmentTexte']['division']['articleDesignation'])
     amd['sujet'] = clean_subject(amd['sujet'], source=htmlurl)
 
-    amd['auteurs'] = data['signataires']['libelle']
-    if data['signataires']['suffixe']:
+    amd['auteurs'] = h.unescape(data['signataires']['libelle'])
+    if data['signataires']['suffixe'] and data['signataires']['suffixe'] not in amd['auteurs']:
         amd['auteurs'] += " %s" % data['signataires']['suffixe']
     amd['auteurs'] = cleanAuteurs(amd['auteurs'], h)
-    amd['auteur_reel'] = data['signataires']['auteur']['acteurRef']
+    amd['auteur_reel'] = data['signataires']['auteur']['acteurRef'].lstrip('PA')
 
     if not data['corps']['contenuAuteur']:
         if amd['sort'] == u'Retiré avant publication':
             amd['texte'] = ''
-            amd['expose'] = u'<p>Cet amendement a été retiré avant sa publication.</p>'
-        elif amd['sort'] == u'Irrecevable':
+            amd['texte'] = u'<p>Cet amendement a été retiré avant sa publication.</p>'
+        elif amd['sort'] == u'Irrecevable' or ('cartoucheInformatif' in data['corps'] and 'recevab' in data['corps']['cartoucheInformatif']):
+            amd['sort'] = 'Irrecevable'
             amd['texte'] = ''
-            amd['expose'] = '<p>%s</p>' % data['corps']['cartoucheInformatif']
+            amd['texte'] = '<p>%s</p>' % data['corps']['cartoucheInformatif']
         else:
             print >> sys.stderr, "ERROR: contenuAuteur is missing for amendement %s: %s" % (htmlurl, jsonurl)
             sys.exit(1)
     else:
         amd['expose'] = fixHTML(data['corps']['contenuAuteur']['exposeSommaire'], h)
-        # TODO: check tableaux ok
         if 'dispositif' in data['corps']['contenuAuteur']:
             amd['texte'] = fixHTML(data['corps']['contenuAuteur']['dispositif'], h)
         else:

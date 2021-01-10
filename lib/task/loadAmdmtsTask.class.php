@@ -52,7 +52,7 @@ class loadAmdmtsTask extends sfBaseTask {
             }
             if (!$json->source || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->texte || !$json->date || !isset($json->rectif)) {
               echo "ERROR mandatory arg missing (source|legis|numero|loi|sujet|texte|date|rectif): $line\n";
-	      rename($dir.$file, $errordir.$file);
+              rename($dir.$file, $errordir.$file);
               continue 2;
             }
             $modif = true;
