@@ -124,10 +124,13 @@ class loadAmdmtsTask extends sfBaseTask {
               if ($json->parent)
                 $amdmt->sous_amendement_de = $json->parent.$lettre;
               $amdmt->sujet = $json->sujet;
-              $amdmt->texte = $json->texte;
+              // Don't overwrite existing content if declared irrecevable
+              if (!$amdmt->texte || $json->sort != "Irrecevable") {
+                $amdmt->texte = $json->texte;
+              }
               if ($json->expose)
                 $amdmt->expose = $json->expose;
-              $amdmt->content_md5 = md5($json->legislature.$json->loi.$json->sujet.$json->texte);
+              $amdmt->content_md5 = md5($json->legislature.$json->loi.$json->sujet.$amdmt->texte);
               if ($json->auteurs) {
                 $amdmt->signataires = $json->auteurs;
                 $amdmt->setAuteurs($json->auteurs);
