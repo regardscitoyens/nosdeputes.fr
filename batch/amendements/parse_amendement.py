@@ -62,10 +62,12 @@ try:
     amd['numero'] = extract_numero(data)
     organe = htmlurl.split('/')[-2]
     numstr = amd['numero']
+    organestr = ""
     if organe != u"AN":
         amd['commission'] = organe
         if not re.search(ur"^[A-Z]", numstr, re.I):
-            amd['numero'] = re.sub(ur"[^A-Z]", "", organe, re.I) + amd['numero']
+            organestr = re.sub(ur"[^A-Z]", "", organe, re.I)
+            amd['numero'] = organestr + amd['numero']
     amd['numero'] += lettre
     if amd['numero'] != numero:
         print >> sys.stderr, "WARNING: numero parsed from url (%s) is different than Open Data's (%s) for amendement %s" % (numero, amd['numero'], htmlurl)
@@ -93,6 +95,8 @@ try:
             parentjson = "https://www.assemblee-nationale.fr/dyn/opendata/%s.json" % data['amendementParentRef']
             parentdata = requests.get(parentjson).json()
             amd['parent'] = extract_numero(parentdata)
+            if organestr and not re.search(ur"^[A-Z]", amd['parent'], re.I):
+                amd['parent'] = organestr + amd['parent']
         except:
             print >> sys.stderr, "WARNING: could not retrieve parent numero from parent amendement's json (%s %s) for amendement %s" % (parentjson, data['amendementParentRef'], htmlurl)
 
