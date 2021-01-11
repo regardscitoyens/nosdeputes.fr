@@ -9,11 +9,9 @@ except ImportError:     # Python 3
 
 amdtFilePath="OpenDataAN/Amendements_XIV.json"
 
-# TODO:
-# - see how to handle complexe dispositif (tables) for PJLFs
-
 def parseUrl(urlAN):
-    elements = urlAN[:-4].split("/")
+    shortUrl = urlAN.replace('http://www.assemblee-nationale.fr/', '/').replace('/dyn/', '/').replace('.asp', '')
+    elements = shortUrl.split("/")
     loi = elements[3]
     try:
         lettre = re.search(ur"([A-Z])$", loi, re.I).group(1)
@@ -100,6 +98,8 @@ def extractSort(sort):
         return u"Indéfini"
     if sort == u"Tombé":
         return u"Tombe"
+    if sort == u"Retiré après publication":
+        return u"Retiré avant séance"
     return sort
 
 reRmAttributes = re.compile(ur"<([pbiu]|t([drh]|able)|span|em|div)\s+[^>]*>", re.I)
@@ -107,15 +107,18 @@ reRmMarkup = re.compile(ur"<\/?(span|div)>", re.I)
 reCleanDoubleBR = re.compile(ur"(</?br */*>\s*)+", re.I)
 reCleanEmpty = re.compile(ur"\s*<p>(</?[bi][r /]*>|\s)*</p>\s*", re.I)
 reCleanDouble = re.compile(ur"\s*((</?p>)(</?[bi][r /]*>|\s)*|(</?[bi][r /]*>|\s)*(</?p>))\s*", re.I)
+reCleanSpaces = re.compile(ur"\s\s+")
 def fixHTML(text, h):
     text = h.unescape(text.strip())
     text = text.replace(u"\xa0", u" ")
     text = text.replace(u"\n", u" ")
+    text = text.replace(u"...<i>(", u"... <i>(")
     text = reRmAttributes.sub(ur"<\1>", text)
     text = reRmMarkup.sub(u"", text)
     text = reCleanDoubleBR.sub(u"<br/>", text)
     text = reCleanEmpty.sub(u" ", text)
     text = reCleanDouble.sub(lambda x: x.group(2) or x.group(5), text)
+    text = reCleanSpaces.sub(u" ", text)
     return text
 
 def convertToNDFormat(amdtOD):

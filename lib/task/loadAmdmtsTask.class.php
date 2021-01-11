@@ -29,7 +29,8 @@ class loadAmdmtsTask extends sfBaseTask {
       "419865" => "Commission du développement durable et de l'aménagement du territoire",
       "420120" => "Commission des affaires sociales",
       "757134" => "Commission spéciale",
-      "760148" => "Commission spéciale"
+      "760148" => "Commission spéciale",
+      "769550" => "Commission spéciale"
     );
 
     if (is_dir($dir)) {
@@ -52,7 +53,7 @@ class loadAmdmtsTask extends sfBaseTask {
             }
             if (!$json->source || !$json->legislature || !$json->numero || !$json->loi || !$json->sujet || !$json->texte || !$json->date || !isset($json->rectif)) {
               echo "ERROR mandatory arg missing (source|legis|numero|loi|sujet|texte|date|rectif): $line\n";
-	      rename($dir.$file, $errordir.$file);
+              rename($dir.$file, $errordir.$file);
               continue 2;
             }
             $modif = true;
@@ -124,10 +125,13 @@ class loadAmdmtsTask extends sfBaseTask {
               if ($json->parent)
                 $amdmt->sous_amendement_de = $json->parent.$lettre;
               $amdmt->sujet = $json->sujet;
-              $amdmt->texte = $json->texte;
+              // Don't overwrite existing content if declared irrecevable
+              if (!$amdmt->texte || $json->sort != "Irrecevable") {
+                $amdmt->texte = $json->texte;
+              }
               if ($json->expose)
                 $amdmt->expose = $json->expose;
-              $amdmt->content_md5 = md5($json->legislature.$json->loi.$json->sujet.$json->texte);
+              $amdmt->content_md5 = md5($json->legislature.$json->loi.$json->sujet.$amdmt->texte);
               if ($json->auteurs) {
                 $amdmt->signataires = $json->auteurs;
                 $amdmt->setAuteurs($json->auteurs);

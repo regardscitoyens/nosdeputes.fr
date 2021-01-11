@@ -77,6 +77,7 @@ def clean_subject(subject, silent=False, source=""):
         except:
             print >> sys.stderr, "ERROR on", source, regex, replacement, subj
         subj = subj.strip(": ")
+    subj = subj.strip(".")
     subj = upper_first(subj)
     if not test_subject(subj, source=source) and subj:
         if not silent:
