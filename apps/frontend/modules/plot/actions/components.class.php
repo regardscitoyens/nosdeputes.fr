@@ -24,13 +24,15 @@ class plotComponents extends sfComponents
         $time_fin = $time_fin - (($dow + 1) * 86400);
       $annee0 = date('o', $last_year);
       $sem0 = date('W', $last_year);
+      if ($sem0 > 53) {
+        $annee0++;
+        $sem0 = 1;
+      }
       $annee = date('o', $time_fin);
       $sem = date('W', $time_fin);
-      if ($sem > 51 && date('n', $time_fin) == 1)
-        $sem = 0;
-      if ($sem < 2 && $annee != date('o', $time_fin)) {
-        $annee = date('o', $time_fin);
-        $sem0 -= 1;
+      if ($sem > 53) {
+        $annee++;
+        $sem0 = 1;
       }
       $date_debut = date('Y-m-d', $last_year);
       $date_fin = date('Y-m-d', $time_fin);
@@ -147,7 +149,7 @@ class plotComponents extends sfComponents
       $debut_legis = strtotime(myTools::getDebutLegislature());
       $an_legis = date('o', $debut_legis);
       $sem_legis = date('W', $debut_legis);
-      if ($sem_legis == 53) {
+      if ($sem_legis > 53) {
         $an_legis++;
         $sem_legis = 1;
       }
@@ -188,7 +190,7 @@ class plotComponents extends sfComponents
     $n_vacances = array_fill(1, $n_weeks, 0);
     $mandat_an0 = date('o', $debut_mandat);
     $mandat_sem0 = date('W', $debut_mandat);
-    if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
+    if ($mandat_sem0 > 53) { $mandat_an0++; $mandat_sem0 = 1; }
     $week0 = ($mandat_an0 - $annee0)*52 + $mandat_sem0 - $sem0 + 1;
     for ($n = 1; $n < $week0 ; $n++)
       $n_vacances[$n] = 20;
@@ -211,27 +213,27 @@ class plotComponents extends sfComponents
         $debut = strtotime($match[1]);
         $mandat_an0 = date('o', $debut);
         $mandat_sem0 = date('W', $debut);
-        if ($mandat_sem0 == 53) { $mandat_an0++; $mandat_sem0 = 1; }
+        if ($mandat_sem0 > 53) { $mandat_an0++; $mandat_sem0 = 1; }
         if ($match[2] != "")
           $fin = strtotime($match[2]);
         else $fin = time();
         $mandat_an1 = date('o', $fin);
         $mandat_sem1 = date('W', $fin);
-        if ($mandat_sem1 == 53) { $mandat_an1++; $mandat_sem1 = 1; }
+        if ($mandat_sem1 > 53) { $mandat_an1++; $mandat_sem1 = 1; }
         while ($n <= $n_weeks && ($annee < $mandat_an0 || ($annee == $mandat_an0 && $sem < $mandat_sem0))) {
           $n_vacances[$n] = 20;
           $sem++;
-          if ($sem == 53) {
+          if ($sem > 53) {
             $annee++;
-            $sem = 0;
+            $sem = 1;
           }
           $n++;
         }
         while ($n <= $n_weeks && ($annee < $mandat_an1 || ($annee == $mandat_an1 && $sem < $mandat_sem1))) {
           $sem++;
-          if ($sem == 53) {
+          if ($sem > 53) {
             $annee++;
-            $sem = 0;
+            $sem = 1;
           }
           $n++;
         }
