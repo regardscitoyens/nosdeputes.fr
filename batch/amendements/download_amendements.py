@@ -9,10 +9,11 @@ import requests
 import bs4
 
 legislature = sys.argv[1] if len(sys.argv) > 1 else 15
+daysback = int(sys.argv[2]) if len(sys.argv) > 2 else 7
 count = 0
 
 datefin = datetime.datetime.now()
-datedebut = datetime.datetime.now() - datetime.timedelta(days=7)
+datedebut = datetime.datetime.now() - datetime.timedelta(days=daysback)
 
 while datedebut <= datefin:
     url = "https://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_" + datedebut.strftime('%Y-%m-%d')
