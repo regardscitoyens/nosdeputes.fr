@@ -110,7 +110,7 @@ try:
     amd['auteur_reel'] = (data['signataires']['auteur']['auteurRapporteurOrganeRef'] or data['signataires']['auteur']['acteurRef'] or "GVT").lstrip('PAO')
 
     if not data['corps']['contenuAuteur']:
-        if amd['sort'] == u'Retiré avant publication':
+        if amd['sort'] == u'Retiré avant séance':
             amd['texte'] = ''
             amd['texte'] = u'<p>Cet amendement a été retiré avant sa publication.</p>'
         elif amd['sort'] == u'Irrecevable' or ('cartoucheInformatif' in data['corps'] and 'recevab' in data['corps']['cartoucheInformatif']):

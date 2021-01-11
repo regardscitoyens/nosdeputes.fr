@@ -92,13 +92,13 @@ def cleanAuteurs(auteurs, h):
     return auteurs.strip(', ')
 
 def extractSort(sort):
-    if sort.startswith("Irrecevable"):
+    if sort.startswith("Irrecevable") or "irrecevab" in sort:
         return u"Irrecevable"
     if sort in [u"A discuter", u"En traitement"]:
         return u"Indéfini"
     if sort == u"Tombé":
         return u"Tombe"
-    if sort == u"Retiré après publication":
+    if sort == u"Retiré après publication" or sort == u"Retiré avant publication":
         return u"Retiré avant séance"
     return sort
 
