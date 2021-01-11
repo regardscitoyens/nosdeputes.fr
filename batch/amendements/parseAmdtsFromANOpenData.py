@@ -94,11 +94,11 @@ def cleanAuteurs(auteurs, h):
 def extractSort(sort):
     if sort.startswith("Irrecevable") or "irrecevab" in sort:
         return u"Irrecevable"
-    if sort in [u"A discuter", u"En traitement"]:
+    if sort in [u"A discuter", u"En traitement", u"En recevabilité"]:
         return u"Indéfini"
     if sort == u"Tombé":
         return u"Tombe"
-    if sort == u"Retiré après publication" or sort == u"Retiré avant publication":
+    if sort in [u"Retiré après publication", u"Retiré avant publication"]:
         return u"Retiré avant séance"
     return sort
 
