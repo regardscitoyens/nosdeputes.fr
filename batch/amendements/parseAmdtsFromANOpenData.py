@@ -10,7 +10,7 @@ except ImportError:     # Python 3
 amdtFilePath="OpenDataAN/Amendements_XIV.json"
 
 def parseUrl(urlAN):
-    shortUrl = urlAN.replace('http://www.assemblee-nationale.fr/', '/').replace('/dyn/', '/').replace('.asp', '')
+    shortUrl = urlAN.replace('http://', '').replace('https://', '').replace('www.assemblee-nationale.fr/', '/').replace('/dyn/', '/').replace('.asp', '')
     elements = shortUrl.split("/")
     loi = elements[3]
     try:
