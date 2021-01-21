@@ -12,7 +12,7 @@ echo 'SELECT source FROM amendement WHERE sort LIKE "Ind%" AND date > DATE_SUB(C
  grep -v "/15/amendements/2623/" |
  grep -v source > liste_sort_indefini.txt
 
-python download_amendements.py $LEGISLATURE > /tmp/download_amendements.log
+python download_amendements.py $LEGISLATURE $1 > /tmp/download_amendements.log
 python download_amendements_indefinis.py liste_sort_indefini.txt >> /tmp/download_amendements.log
 
 for file in `ls html`; do
