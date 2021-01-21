@@ -43,6 +43,9 @@ foreach $baseurl (@urls) {
     }
     $url =~ s/\/documents\/notice//;
     $url =~ s/\/\(index\)\/[a-z]+$/.asp/;
+    $url =~ s/\.pdf/.asp/;
+    $url =~ s/\/pdf\//\//;
+
     next if $url =~ /(dossiers|i0562.asp)/i;
     next if $url =~ /\.pdf$/i;
     next if $url =~ /\/documents\/index/i;
