@@ -46,7 +46,7 @@ class loadDocumentsTask extends sfBaseTask {
               $new = true;
               $doc = new Texteloi();
               $doc->id = $json->id;
-              $doc->source = $json->source;
+              $doc->source = preg_replace('/https:/', 'http:', $json->source);
               $doc->legislature = $json->legislature;
               $doc->numero = $json->numero;
               if ($json->annexe != "") {
