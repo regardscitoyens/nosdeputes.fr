@@ -56,6 +56,7 @@ foreach $baseurl (@urls) {
     $file = $url;
     $file =~ s/\//_/gi;
     $file =~ s/\#.*//;
+    $file =~ s/https/http/;
     $type = "";
     if ($url =~ /(rap|budget)/i) {
       $type = "rap";
