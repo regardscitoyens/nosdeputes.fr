@@ -83,7 +83,7 @@ foreach $baseurl (@urls) {
         system("diff $type/$file $type/$file.tmp 2> /dev/null | grep . > /dev/null");
         if ($? == 0 || !(-e "$type/$file")) {
           rename "$type/$file.tmp", "$type/$file";
-          print "$type/$file\n";
+          print "$url\n";
         } else {
           unlink("$type/$file.tmp");
         }
