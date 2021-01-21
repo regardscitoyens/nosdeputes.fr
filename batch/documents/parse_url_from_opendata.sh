@@ -3,6 +3,10 @@
 url=$1
 output=$2
 
+if ! test "$output"; then
+    output="out/"$(echo $url | base64 -w 0 )".json"
+fi
+
 docid=$(echo $url | sed 's|.*/||' | sed 's/.asp//' | awk -F '-' '{print $1}' | sed 's/[^0-9]//g')
 
 find opendata/document/ -name '*'$docid'*' | while read file ; do
