@@ -6,7 +6,6 @@ import os
 import sys
 import datetime
 import requests
-import bs4
 
 legislature = sys.argv[1] if len(sys.argv) > 1 else 15
 daysback = int(sys.argv[2]) if len(sys.argv) > 2 else 7
@@ -24,12 +23,12 @@ while datedebut <= datefin:
             if line:
                 _, file_url = line.split(';')
                 if 'opendata/AMAN' in file_url and file_url.endswith('.xml'):
+                    file_url = file_url.replace(".xml", ".json")
                     #print(file_url)
-                    resp = requests.get(file_url)
-                    soup = bs4.BeautifulSoup(resp.text, 'lxml')
-                    num = soup.select_one('numeroLong').text.split(" ")[0].split("-")[-1]
-                    organe = soup.select_one('prefixeOrganeExamen').text
-                    texte = soup.select_one('urlDivisionTexteVise').text.split('/textes/')[1].split('.asp')[0]
+                    resp = requests.get(file_url).json()
+                    num = resp['identification']['numeroLong'].split(" ")[0].split("-")[-1]
+                    organe = resp['identification']['prefixeOrganeExamen']
+                    texte = resp['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
                     url_amdt = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (legislature, texte, organe, num)
 
                     print(url_amdt)
