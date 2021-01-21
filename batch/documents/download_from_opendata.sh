@@ -5,7 +5,9 @@ nodownload=$1
 mkdir -p opendata
 cd opendata
 
-if find . -name Dossiers_Legislatifs_XV.json.zip -type f -atime +1 > /dev/null ; then
+find . -name Dossiers_Legislatifs_XV.json.zip -type f -atime +1 -delete > /dev/null
+
+if ! test -f Dossiers_Legislatifs_XV.json.zip ; then
 
 if ! test "$nodownload"; then
 wget -q -O Dossiers_Legislatifs_XV.json.zip  -N http://data.assemblee-nationale.fr/static/openData/repository/15/loi/dossiers_legislatifs/Dossiers_Legislatifs_XV.json.zip
