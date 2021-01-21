@@ -87,6 +87,10 @@ foreach $baseurl (@urls) {
         } else {
           unlink("$type/$file.tmp");
         }
+        if ($a->content =~ /non encore publi/) {
+            unlink("$type/$file");
+            next;
+        }
       }
       $a->back();
     }
