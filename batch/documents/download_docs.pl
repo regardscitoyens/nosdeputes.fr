@@ -11,24 +11,24 @@ $lastyear++;
 $a = WWW::Mechanize->new(autocheck => 0);
 
 #@urls = ("http://www.assemblee-nationale.fr/$legislature/documents/index-depots.asp",
-@urls = ("http://www2.assemblee-nationale.fr/documents/liste/%28type%29/depots",
+@urls = ("https://www2.assemblee-nationale.fr/documents/liste/%28type%29/depots",
          #"http://www.assemblee-nationale.fr/$legislature/documents/index-rapports.asp",
-         "http://www2.assemblee-nationale.fr/documents/liste/%28type%29/rapports",
+         "https://www2.assemblee-nationale.fr/documents/liste/%28type%29/rapports",
          #"http://www.assemblee-nationale.fr/$legislature/documents/index-application_lois.asp",
-         "http://www2.assemblee-nationale.fr/documents/liste/%28type%29/rapports-application-loi",
+         "https://www2.assemblee-nationale.fr/documents/liste/%28type%29/rapports-application-loi",
          #"http://www.assemblee-nationale.fr/$legislature/europe/index-rapinfo.asp",
          #"http://www2.assemblee-nationale.fr/14/autres-commissions/commission-des-affaires-europeennes/%28block%29/RapportsInfoParlementairesInstance/%28init%29/0", // JS LOAD
-         "http://www.assemblee-nationale.fr/$legislature/documents/index-information-comper.asp",
+         "https://www.assemblee-nationale.fr/$legislature/documents/index-information-comper.asp",
          #"http://www.assemblee-nationale.fr/$legislature/documents/index-rapports-legislation.asp",
-         "http://www.assemblee-nationale.fr/$legislature/documents/index-oeps.asp",
-         "http://www.assemblee-nationale.fr/documents/index-general-oecst.asp",
-         "http://www.assemblee-nationale.fr/$legislature/documents/index-territoire.asp",
-         "http://www.assemblee-nationale.fr/$legislature/documents/index-femmes.asp",
-         "http://www.assemblee-nationale.fr/$legislature/documents/index-information-comper.asp",
-         "http://www.assemblee-nationale.fr/$legislature/documents/index-enquete-rapports.asp"
+         "https://www.assemblee-nationale.fr/$legislature/documents/index-oeps.asp",
+         "https://www.assemblee-nationale.fr/documents/index-general-oecst.asp",
+         "https://www.assemblee-nationale.fr/$legislature/documents/index-territoire.asp",
+         "https://www.assemblee-nationale.fr/$legislature/documents/index-femmes.asp",
+         "https://www.assemblee-nationale.fr/$legislature/documents/index-information-comper.asp",
+         "https://www.assemblee-nationale.fr/$legislature/documents/index-enquete-rapports.asp"
 );
 for $year (2008 .. $lastyear) {
-  @urls = (@urls, "http://www.assemblee-nationale.fr/$legislature/budget/plf$year/rapporteurs.asp");
+  @urls = (@urls, "https://www.assemblee-nationale.fr/$legislature/budget/plf$year/rapporteurs.asp");
 }
 
 foreach $baseurl (@urls) {
@@ -39,7 +39,7 @@ foreach $baseurl (@urls) {
     $txt = $p->get_text('/a');
     $url = $t->[1]{href};
     if ($url =~ /^\//) {
-      $url = "http://www.assemblee-nationale.fr".$url;
+      $url = "https://www.assemblee-nationale.fr".$url;
     }
     $url =~ s/\/documents\/notice//;
     $url =~ s/\/\(index\)\/[a-z]+$/.asp/;

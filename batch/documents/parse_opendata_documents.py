@@ -48,42 +48,42 @@ def convert_format(data, extra = ''):
             res["categorie"] = data['titres']['titrePrincipal']
 
     if data['classification'].get('statutAdoption') == 'ADOPTCOM' and data['classification']['type']['code'] != 'RAPP':
-        res["source"] = 'http://www.assemblee-nationale.fr/{}/ta-commission/r{:04d}-a0.asp'.format( data['legislature'], int(res["numero"]) )
+        res["source"] = 'https://www.assemblee-nationale.fr/{}/ta-commission/r{:04d}-a0.asp'.format( data['legislature'], int(res["numero"]) )
     elif data['classification']['type']['code'] == 'PION' or data['classification']['type']['code'] == 'PNRE':
         if data['classification'].get('sousType') and data['classification']['sousType'].get('code') == 'TVXINSTITEUROP':
-            res["source"] = 'http://www.assemblee-nationale.fr/{}/europe/resolutions/ppe{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
+            res["source"] = 'https://www.assemblee-nationale.fr/{}/europe/resolutions/ppe{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
         else:
-            res["source"] = 'http://www.assemblee-nationale.fr/{}/propositions/pion{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
+            res["source"] = 'https://www.assemblee-nationale.fr/{}/propositions/pion{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
     elif data['classification']['type']['code'] == 'AVIS':
         if is_plf:
-            res["source"] = 'http://www.assemblee-nationale.fr/{}/budget/plf{:04d}/a{:04d}{}.asp'.format( data['legislature'], data['plf_annee'], int(res["numero"]), extra )
+            res["source"] = 'https://www.assemblee-nationale.fr/{}/budget/plf{:04d}/a{:04d}{}.asp'.format( data['legislature'], data['plf_annee'], int(res["numero"]), extra )
         else:
-            res["source"] =  'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
+            res["source"] =  'https://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
     elif data['classification']['type']['code'] == 'PRJL':
         if data['provenance'] == 'Commission':
-            res["source"] =  'http://www.assemblee-nationale.fr/{}/ta-commission/r{:04d}-a0.asp'.format( data['legislature'], int(res["numero"]) )
+            res["source"] =  'https://www.assemblee-nationale.fr/{}/ta-commission/r{:04d}-a0.asp'.format( data['legislature'], int(res["numero"]) )
         else:
-            res["source"] =  'http://www.assemblee-nationale.fr/{}/projets/pl{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
+            res["source"] =  'https://www.assemblee-nationale.fr/{}/projets/pl{:04d}.asp'.format( data['legislature'], int(res["numero"]) )
     elif data['classification']['type']['code'] == 'RAPP':
         if data['classification'].get('sousType'):
             if data['classification']['sousType'].get('code') == 'ENQU':
-                res["source"] = 'http://www.assemblee-nationale.fr/{}/rap-enq/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
+                res["source"] = 'https://www.assemblee-nationale.fr/{}/rap-enq/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
             elif data['classification']['sousType'].get('code') == "OFFPARL":
-                res["source"] = 'http://www.assemblee-nationale.fr/{}/rap-off/i{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra  )
+                res["source"] = 'https://www.assemblee-nationale.fr/{}/rap-off/i{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra  )
             else:
-                res["source"] = 'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
+                res["source"] = 'https://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
         elif is_plf:
-            res["source"] = 'http://www.assemblee-nationale.fr/{}/budget/plf{:04d}/b{:04d}{}.asp'.format( data['legislature'], data['plf_annee'], int(res["numero"]), extra )
+            res["source"] = 'https://www.assemblee-nationale.fr/{}/budget/plf{:04d}/b{:04d}{}.asp'.format( data['legislature'], data['plf_annee'], int(res["numero"]), extra )
         else:
-            res["source"] = 'http://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
+            res["source"] = 'https://www.assemblee-nationale.fr/{}/rapports/r{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
     elif data['classification']['type']['code'] == 'RINF':
         if data['classification'].get('sousType') and data['classification']['sousType'].get('code') == 'AUE':
-            res["source"] = 'http://www.assemblee-nationale.fr/{}/europe/rap-info/i{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra  )
+            res["source"] = 'https://www.assemblee-nationale.fr/{}/europe/rap-info/i{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra  )
         else:
-            res["source"] = 'http://www.assemblee-nationale.fr/{}/rap-info/i{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
+            res["source"] = 'https://www.assemblee-nationale.fr/{}/rap-info/i{:04d}{}.asp'.format( data['legislature'], int(res["numero"]), extra )
 
     if extra == '-aCOMPA':
-        res["source"] = 'http://www.assemblee-nationale.fr/{}/pdf/rapports/r{:04d}-aCOMPA.pdf'.format(data['legislature'], int(res["numero"]))
+        res["source"] = 'https://www.assemblee-nationale.fr/{}/pdf/rapports/r{:04d}-aCOMPA.pdf'.format(data['legislature'], int(res["numero"]))
 
     if data['cycleDeVie']['chrono']['dateDepot']:
         res["date_depot"] = re.sub(r'T.*', '', data['cycleDeVie']['chrono']['dateDepot'])
