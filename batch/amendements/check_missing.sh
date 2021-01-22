@@ -15,12 +15,17 @@ echo "Extracting list of Amendements from OpenData AN..."
 touch all_amdts_opendataAN.tmp
 ls opendata/json | while read dossier; do ls opendata/json/$dossier | while read texte; do
  find opendata/json/$dossier/$texte/ -type f -name "*.json" |
-  while read json; do
-   sed -r 's|^.*"numeroLong": "[I\-]*([^" ]+).*"prefixeOrganeExamen": "([^"]+)".*"urlDivisionTexteVise": "/(..)/textes/([^.]+)\.asp.*$|'$ANroot'\3/amendements/\4/\2/\1.asp\n|' $json
+  while read JSON; do
+   URL=`sed -r 's|^.*"numeroLong": "[I\-]*([^" ]+).*"prefixeOrganeExamen": "([^"]+)".*"urlDivisionTexteVise": "/(..)/textes/([^.]+)\.asp.*$|'$ANroot'\3/amendements/\4/\2/\1.asp\n|' $JSON`
+   if ! echo $URL | grep $ANroot > /dev/null; then
+    ID=`echo $JSON | sed -r 's|^.*/([^/]+)\.json$|\1|'`
+    URL=`curl -sIL "https://www.assemblee-nationale.fr/dyn/$LEGISLATURE/amendements/$ID" | grep 'location:' | tail -1 | sed 's/^.*https/http/' | sed 's|/dyn/|/|' | sed -r 's/^(.*).$/\1.asp/'`
+   fi
+   echo $URL
   done
 done; done | sort -u >> all_amdts_opendataAN.tmp
 rm -f Amendements_*.json*
-rm -rf opendata/json     
+rm -rf opendata/json
 
 echo "Extracting list of Amendements from search engine AN..."
 searchurl="http://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&leg=$LEGISLATURE&idExamen=&idDossierLegislatif=&missionVisee=&numAmend=&idAuteur=&idArticle=&idAlinea=&sort=&dateDebut=&dateFin=&periodeParlementaire=&texteRecherche=&format=html&tri=ordreTexteasc&typeRes=liste&rows="
@@ -34,7 +39,7 @@ while [ $start -lt $total ]; do
   curl -sL "${searchurl}1000&start=$start"      |
     grep '^\['                                  |
     sed 's/","/\n/g'                            |
-    sed 's/^.*|http:/http:/'                    |
+    sed 's/^.*|https:/http:/'                   |
     sed 's/|.*$//'                              |
     sed 's|\\/|/|g' >> all_amdts_searchAN.tmp
   start=$(($start + 1000))
