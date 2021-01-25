@@ -13,7 +13,14 @@ RUN apt-get update && apt-get -my install --no-install-recommends \
 	python-lxml \
 	python-bs4 \
 	python-html5lib \
-	python-requests
+	python-requests \
+	unzip \
+	rsync \
+	python3 \
+	python3-html2text \
+	python3-simplejson \
+	python3-jsonschema \
+	python3-bs4
 
 RUN rm -rf /var/lib/apt/lists/*
 
@@ -40,3 +47,13 @@ RUN a2enmod rewrite
 RUN a2enmod headers
 
 WORKDIR /var/www/cpc
+
+
+
+
+
+
+
+
+
+
