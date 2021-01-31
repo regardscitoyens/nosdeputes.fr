@@ -4,6 +4,7 @@
 import re
 import sys
 import json
+import time
 import requests
 from HTMLParser import HTMLParser
 
@@ -25,10 +26,22 @@ if not jsonurl:
     sys.exit(1)
 jsonurl = "https://www.assemblee-nationale.fr" + jsonurl.group(1)
 
+def download(url, as_json=True, retries=5):
+    try:
+        req = requests.get(url)
+        if as_json:
+            return req.json()
+        return req.text
+    except Exception as e:
+        if retries < 5:
+            time.sleep(5)
+            return download(url, as_json=as_json, retries=retries-1)
+        raise(e)
+
 try:
-    data = requests.get(jsonurl).json()
-except:
-    print >> sys.stderr, "ERROR: could not download JSON opendata for amendement %s at %s" % (htmlurl, jsonurl)
+    data = download(jsonurl)
+except Exception as e:
+    print >> sys.stderr, "ERROR: could not download JSON opendata for amendement %s at %s (%s: %s)" % (htmlurl, jsonurl, type(e), e)
     sys.exit(1)
 
 extract_numero = lambda data: data['identification']['numeroLong'].split(" ")[0].split("-")[-1]
@@ -93,12 +106,12 @@ try:
     if data['amendementParentRef']:
         try:
             parentjson = "https://www.assemblee-nationale.fr/dyn/opendata/%s.json" % data['amendementParentRef']
-            parentdata = requests.get(parentjson).json()
+            parentdata = download(parentjson)
             amd['parent'] = extract_numero(parentdata)
             if organestr and not re.search(ur"^[A-Z]", amd['parent'], re.I):
                 amd['parent'] = organestr + amd['parent']
-        except:
-            print >> sys.stderr, "WARNING: could not retrieve parent numero from parent amendement's json (%s %s) for amendement %s" % (parentjson, data['amendementParentRef'], htmlurl)
+        except Exception as e:
+            print >> sys.stderr, "WARNING: could not retrieve parent numero from parent amendement's json (%s %s) for amendement %s (%s: %s)" % (parentjson, data['amendementParentRef'], htmlurl, type(e), e)
 
     amd['sujet'] = h.unescape(data['pointeurFragmentTexte']['division']['articleDesignation'])
     amd['sujet'] = clean_subject(amd['sujet'], source=htmlurl)
@@ -127,10 +140,10 @@ try:
         else:
             try:
                 dispurl = "https://www.assemblee-nationale.fr/dyn/%s/amendements/dispositif/%s.fragmenthtml" % (amd['legislature'], data['uid'])
-                disphtml = requests.get(dispurl).text
+                disphtml = download(dispurl, as_json=False)
                 amd['texte'] = fixHTML(disphtml, h)
-            except:
-                print >> sys.stderr, "ERROR: could not get missing dispositif for amendement %s: %s" % (htmlurl, dispurl)
+            except Exception as e:
+                print >> sys.stderr, "ERROR: could not get missing dispositif for amendement %s: %s (%s: %s)" % (htmlurl, dispurl, type(e), e)
                 sys.exit(1)
 
 except Exception as e:
