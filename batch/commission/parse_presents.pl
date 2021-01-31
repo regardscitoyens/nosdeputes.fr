@@ -158,7 +158,7 @@ if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([
 $cpt = 0;
 sub checkout {
     if ($#presents < 0) {
-	print STDERR "$url: Pas de présent trouvé\n";
+	print STDERR "$url : Pas de présent trouvé\n";
 	return ;
     }
     $commission =~ s/"//g;
