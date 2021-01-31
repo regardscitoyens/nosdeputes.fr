@@ -4,6 +4,7 @@
 from __future__ import print_function
 import os
 import sys
+import time
 import datetime
 import requests
 
@@ -13,6 +14,16 @@ count = 0
 
 datefin = datetime.datetime.now()
 datedebut = datetime.datetime.now() - datetime.timedelta(days=daysback)
+
+def download_json(url, retries=5):
+    try:
+        return requests.get(url).json()
+    except Exception as e:
+        if retries < 5:
+            time.sleep(5)
+            return download_json(url, retries=retries-1)
+        print("ERROR: could not download json at %s: (%s - %s)" % (url, type(e), e), file=sys.stderr)
+        return None
 
 while datedebut <= datefin:
     url = "https://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_" + datedebut.strftime('%Y-%m-%d')
@@ -25,7 +36,9 @@ while datedebut <= datefin:
                 if 'opendata/AMAN' in file_url and file_url.endswith('.xml'):
                     file_url = file_url.replace(".xml", ".json")
                     #print(file_url)
-                    resp = requests.get(file_url).json()
+                    resp = download_json(file_url)
+                    if resp is None:
+                        continue
                     num = resp['identification']['numeroLong'].split(" ")[0].split("-")[-1]
                     organe = resp['identification']['prefixeOrganeExamen']
                     texte = resp['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
@@ -35,7 +48,7 @@ while datedebut <= datefin:
                     resp = requests.get(url_amdt.replace("http://", "https://"))#, cookies={'website_version': 'old'})
 
                     if resp.status_code != 200:
-                        print('invalid response')
+                        print("ERROR: could not download amendement at %s: (HTTP code: %s)" % (url_amdt, resp.status_code), file=sys.stderr)
                         continue
 
                     slug = url_amdt.replace('/', '_-_')
