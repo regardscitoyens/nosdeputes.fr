@@ -15,15 +15,25 @@ count = 0
 datefin = datetime.datetime.now()
 datedebut = datetime.datetime.now() - datetime.timedelta(days=daysback)
 
-def download_json(url, retries=5):
+def download(url, json=True, retries=5):
     try:
-        return requests.get(url).json()
+        resp = requests.get(url)
+        if resp.status_code != 200:
+            if not retries:
+                print("ERROR: could not download amendement at %s: (HTTP code: %s)" % (url, resp.status_code), file=sys.stderr)
+                return None
+            time.sleep((6-retries)*5)
+            return download(url, json=json, retries=retries-1)
+        if json:
+            return resp.json()
+        return resp.text
     except Exception as e:
-        if retries < 5:
-            time.sleep(5)
-            return download_json(url, retries=retries-1)
+        if retries > 0:
+            time.sleep((6-retries)*5)
+            return download(url, json=json, retries=retries-1)
         print("ERROR: could not download json at %s: (%s - %s)" % (url, type(e), e), file=sys.stderr)
         return None
+
 
 while datedebut <= datefin:
     url = "https://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_" + datedebut.strftime('%Y-%m-%d')
@@ -36,8 +46,8 @@ while datedebut <= datefin:
                 if 'opendata/AMAN' in file_url and file_url.endswith('.xml'):
                     file_url = file_url.replace(".xml", ".json")
                     #print(file_url)
-                    resp = download_json(file_url)
-                    if resp is None:
+                    resp = download(file_url)
+                    if not resp:
                         continue
                     num = resp['identification']['numeroLong'].split(" ")[0].split("-")[-1]
                     organe = resp['identification']['prefixeOrganeExamen']
@@ -45,15 +55,13 @@ while datedebut <= datefin:
                     url_amdt = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (legislature, texte, organe, num)
 
                     print(url_amdt)
-                    resp = requests.get(url_amdt.replace("http://", "https://"))#, cookies={'website_version': 'old'})
-
-                    if resp.status_code != 200:
-                        print("ERROR: could not download amendement at %s: (HTTP code: %s)" % (url_amdt, resp.status_code), file=sys.stderr)
+                    text = download(url_amdt.replace("http://", "https://"), json=False)
+                    if not text:
                         continue
 
                     slug = url_amdt.replace('/', '_-_')
                     with open(os.path.join('html', slug), 'w') as f:
-                        f.write(resp.text.encode("utf-8"))
+                        f.write(text.encode("utf-8"))
                         count += 1
     datedebut += datetime.timedelta(days=1)
 
