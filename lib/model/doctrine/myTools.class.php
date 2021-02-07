@@ -408,6 +408,8 @@ class myTools {
     $s = preg_replace('/on[^=\s]+=[^\s>]+/i', '', $s);
     $s = preg_replace('/=[\'"]?javascript:[^\s\>]+/i', '=""', $s);
     $s = preg_replace('/<a /i', '<a rel="nofollow" ', $s);
+    $s = preg_replace('/style\s*=\s*"[^>"]+"', ' ', $s);
+    $s = preg_replace("/style\s*=\s*'[^>']+'", ' ', $s);
     //Conversion des urls en liens
     $s = preg_replace('/(^|\s)(http\S+)/', ' <a rel="nofollow" href="\\2">\\2</a>', $s);
     if (preg_match_all('/(({+|\<depute\>)([^}<]+)(}+|\<\/?depute\>))/i', $s, $matches)) {
