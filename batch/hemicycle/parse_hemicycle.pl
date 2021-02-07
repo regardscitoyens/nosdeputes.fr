@@ -346,6 +346,7 @@ sub setIntervenant {
     $intervenant =~ s/É+/é/gi;
     $intervenant =~ s/\&\#8217\;/'/g;
     $intervenant =~ s/([^\s\,])\s+rapporteur/$1, rapporteur/i;
+    $intervenant =~ s/ et, rapporteur/ et rapporteur/i;
     $intervenant =~ s/M\. /M /;
 
     if ($intervenant =~ /^(plusieurs|un député|de nombreux)/i) {
