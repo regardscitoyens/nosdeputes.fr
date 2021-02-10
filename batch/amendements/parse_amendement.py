@@ -33,8 +33,8 @@ def download(url, as_json=True, retries=5):
             return req.json()
         return req.text
     except Exception as e:
-        if retries < 5:
-            time.sleep(5)
+        if retries > 0:
+            time.sleep((6-retries)*5)
             return download(url, as_json=as_json, retries=retries-1)
         raise(e)
 
