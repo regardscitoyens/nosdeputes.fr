@@ -1457,21 +1457,21 @@ h2 {
 .question p:first-letter {
   padding-left: 20px;
 }
-#reponse table, .didascalie table {
+#reponse table, .didascalie table, .amendement table {
   border-collapse: collapse;
 }
-#reponse table {
+#reponse table, .amendement table {
   min-width: 90%;
   margin: 10px;
 }
 .didascalie table {
   margin: auto;
 }
-#reponse th, #reponse td, .didascalie th, .didascalie td {
+#reponse th, #reponse td, .didascalie th, .didascalie td, .amendement th, .amendement tr {
   border: 1px solid darkgrey;
   padding: 3px 5px;
 }
-#reponse th, .didascalie th, #reponse tr:first-child, .didascalie tr:first-child {
+#reponse th, .didascalie th, #reponse tr:first-child, .didascalie tr:first-child, .amendement tr:first-child, .amendement th {
   background-color: #CCC;
   font-weight: bold;
 }

@@ -266,7 +266,7 @@ sub checkout {
                 print $out.$ts.'", "intervention": "'.$intervention.'", "intervenant": "'.$i.'", "fonction": "'.$inter2fonction{$i}."\"}\n";
             }
         }
-        if ($inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)//) {
+        if ($inter2fonction{$intervenant} !~ /(t|chap)itres/ && $inter2fonction{$intervenant} =~ s/( et|, )(\s*M[mes\.]*|)\s*(([A-Z]|é|plusieurs|un député).*)//) {
             $ts++;
             $extraint = $3;
             if ($extraint =~ s/,\s+(.*)\s*$//) {
@@ -346,6 +346,7 @@ sub setIntervenant {
     $intervenant =~ s/É+/é/gi;
     $intervenant =~ s/\&\#8217\;/'/g;
     $intervenant =~ s/([^\s\,])\s+rapporteur/$1, rapporteur/i;
+    $intervenant =~ s/ et, rapporteur/ et rapporteur/i;
     $intervenant =~ s/M\. /M /;
 
     if ($intervenant =~ /^(plusieurs|un député|de nombreux)/i) {

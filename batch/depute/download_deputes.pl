@@ -39,8 +39,8 @@ sub download_fiche {
   return $file;
 }
 $a = WWW::Mechanize->new();
-print "http://www2.assemblee-nationale.fr/deputes/liste/alphabetique\n" if ($verbose);
-$a->get("http://www2.assemblee-nationale.fr/deputes/liste/alphabetique");
+print "https://www2.assemblee-nationale.fr/deputes/liste/alphabetique\n" if ($verbose);
+$a->get("https://www2.assemblee-nationale.fr/deputes/liste/alphabetique");
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 while ($t = $p->get_tag('a')) {
@@ -51,7 +51,7 @@ while ($t = $p->get_tag('a')) {
 
 open PM, ">finmandats.pm";
 print PM '$legislature = '."$legislature;\n";
-$a->get("http://www2.assemblee-nationale.fr/deputes/liste/clos");
+$a->get("https://www2.assemblee-nationale.fr/deputes/liste/clos");
 $content = $a->content;
 $p = HTML::TokeParser->new(\$content);
 while ($t = $p->get_tag('td')) {

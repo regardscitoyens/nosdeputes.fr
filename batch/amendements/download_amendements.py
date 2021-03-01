@@ -4,9 +4,9 @@
 from __future__ import print_function
 import os
 import sys
+import time
 import datetime
 import requests
-import bs4
 
 legislature = sys.argv[1] if len(sys.argv) > 1 else 15
 daysback = int(sys.argv[2]) if len(sys.argv) > 2 else 7
@@ -14,6 +14,26 @@ count = 0
 
 datefin = datetime.datetime.now()
 datedebut = datetime.datetime.now() - datetime.timedelta(days=daysback)
+
+def download(url, json=True, retries=5):
+    try:
+        resp = requests.get(url)
+        if resp.status_code != 200:
+            if not retries:
+                print("ERROR: could not download amendement at %s: (HTTP code: %s)" % (url, resp.status_code), file=sys.stderr)
+                return None
+            time.sleep((6-retries)*5)
+            return download(url, json=json, retries=retries-1)
+        if json:
+            return resp.json()
+        return resp.text
+    except Exception as e:
+        if retries > 0:
+            time.sleep((6-retries)*5)
+            return download(url, json=json, retries=retries-1)
+        print("ERROR: could not download %s at %s: (%s - %s)" % ('json' if json else 'text', url, type(e), e), file=sys.stderr)
+        return None
+
 
 while datedebut <= datefin:
     url = "https://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_" + datedebut.strftime('%Y-%m-%d')
@@ -24,24 +44,24 @@ while datedebut <= datefin:
             if line:
                 _, file_url = line.split(';')
                 if 'opendata/AMAN' in file_url and file_url.endswith('.xml'):
+                    file_url = file_url.replace(".xml", ".json")
                     #print(file_url)
-                    resp = requests.get(file_url)
-                    soup = bs4.BeautifulSoup(resp.text, 'lxml')
-                    num = soup.select_one('numeroLong').text.split(" ")[0].split("-")[-1]
-                    organe = soup.select_one('prefixeOrganeExamen').text
-                    texte = soup.select_one('urlDivisionTexteVise').text.split('/textes/')[1].split('.asp')[0]
+                    resp = download(file_url)
+                    if not resp:
+                        continue
+                    num = resp['identification']['numeroLong'].split(" ")[0].split("-")[-1]
+                    organe = resp['identification']['prefixeOrganeExamen']
+                    texte = resp['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
                     url_amdt = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (legislature, texte, organe, num)
 
                     print(url_amdt)
-                    resp = requests.get(url_amdt.replace("http://", "https://"))#, cookies={'website_version': 'old'})
-
-                    if resp.status_code != 200:
-                        print('invalid response')
+                    text = download(url_amdt.replace("http://", "https://"), json=False)
+                    if not text:
                         continue
 
                     slug = url_amdt.replace('/', '_-_')
                     with open(os.path.join('html', slug), 'w') as f:
-                        f.write(resp.text.encode("utf-8"))
+                        f.write(text.encode("utf-8"))
                         count += 1
     datedebut += datetime.timedelta(days=1)
 
