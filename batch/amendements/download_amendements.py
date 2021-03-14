@@ -8,13 +8,6 @@ import time
 import datetime
 import requests
 
-legislature = sys.argv[1] if len(sys.argv) > 1 else 15
-daysback = int(sys.argv[2]) if len(sys.argv) > 2 else 7
-count = 0
-
-datefin = datetime.datetime.now()
-datedebut = datetime.datetime.now() - datetime.timedelta(days=daysback)
-
 def download(url, json=True, retries=5):
     try:
         resp = requests.get(url)
@@ -35,34 +28,42 @@ def download(url, json=True, retries=5):
         return None
 
 
-while datedebut <= datefin:
-    url = "https://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_" + datedebut.strftime('%Y-%m-%d')
-    print(url)
-    resp = requests.get(url)
-    if resp.status_code != 404:
-        for line in resp.text.split('\n'):
-            if line:
-                _, file_url = line.split(';')
-                if 'opendata/AMAN' in file_url and file_url.endswith('.xml'):
-                    file_url = file_url.replace(".xml", ".json")
-                    #print(file_url)
-                    resp = download(file_url)
-                    if not resp:
-                        continue
-                    num = resp['identification']['numeroLong'].split(" ")[0].split("-")[-1]
-                    organe = resp['identification']['prefixeOrganeExamen']
-                    texte = resp['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
-                    url_amdt = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (legislature, texte, organe, num)
+if __name__ == "__main__":
+    legislature = sys.argv[1] if len(sys.argv) > 1 else 15
+    daysback = int(sys.argv[2]) if len(sys.argv) > 2 else 7
+    count = 0
 
-                    print(url_amdt)
-                    text = download(url_amdt.replace("http://", "https://"), json=False)
-                    if not text:
-                        continue
+    datefin = datetime.datetime.now()
+    datedebut = datetime.datetime.now() - datetime.timedelta(days=daysback)
 
-                    slug = url_amdt.replace('/', '_-_')
-                    with open(os.path.join('html', slug), 'w') as f:
-                        f.write(text.encode("utf-8"))
-                        count += 1
-    datedebut += datetime.timedelta(days=1)
+    while datedebut <= datefin:
+        url = "https://www.assemblee-nationale.fr/dyn/opendata/list-publication/publication_" + datedebut.strftime('%Y-%m-%d')
+        print(url)
+        resp = requests.get(url)
+        if resp.status_code != 404:
+            for line in resp.text.split('\n'):
+                if line:
+                    _, file_url = line.split(';')
+                    if 'opendata/AMAN' in file_url and file_url.endswith('.xml'):
+                        file_url = file_url.replace(".xml", ".json")
+                        #print(file_url)
+                        resp = download(file_url)
+                        if not resp:
+                            continue
+                        num = resp['identification']['numeroLong'].split(" ")[0].split("-")[-1]
+                        organe = resp['identification']['prefixeOrganeExamen']
+                        texte = resp['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
+                        url_amdt = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (legislature, texte, organe, num)
 
-print(count, 'amendements téléchargés')
+                        print(url_amdt)
+                        text = download(url_amdt, json=False)
+                        if not text:
+                            continue
+
+                        slug = url_amdt.replace('/', '_-_')
+                        with open(os.path.join('html', slug), 'w') as f:
+                            f.write(text.encode("utf-8"))
+                            count += 1
+        datedebut += datetime.timedelta(days=1)
+
+    print(count, 'amendements téléchargés')
