@@ -359,6 +359,7 @@ class interventionActions extends sfActions
     $qtag->where('i.seance_id = ?', $this->seance->id);
     $qtag->andWhere('i.id = tg.taggable_id');
     $qtag->andWhere('t.name NOT LIKE ?', 'loi:%');
+    $qtag->andWhere('t.name NOT LIKE ?', 'scrutin:%');
     $this->tags = PluginTagTable::getPopulars($qtag, array('model' => 'Intervention', 'limit' => 9));
 
     myTools::setPageTitle(($this->seance->type == 'commission' ? $this->orga->getNom().' : '.$this->seance->getTitre(1) : $this->seance->getTitre()), $this->response);
