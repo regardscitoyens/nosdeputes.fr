@@ -54,7 +54,7 @@ reg['presents'] = u'^Présents?.*?[\-:]+\s*(.*)'
 reg['presents_an'] = u'^Députés? [pP]résents?.*?[\-:]+\s*(.*)'
 reg['presents_senat'] = u'^Sénateurs? [pP]résents?.*?[\-:]+\s*(.*)'
 reg['excuses'] = u'^(?:Député|Sénateur)s?\s*[eE]xcusé.*?[\-:]+\s*(.*)'
-reg['assistent'] = u'^Assistai.*?[\-:]+\s*(.*)'
+reg['assistent'] = u'^(Assistai.*|En téléconf.*)[\-:]+\s*(.*)'
 reg['civilite'] = u' ?(Mme|M\.) '
 reg['fonction_senat'] = u' \([^)]*\)'
 
