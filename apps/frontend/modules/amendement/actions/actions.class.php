@@ -20,7 +20,7 @@ class amendementActions extends sfActions
        $this->section = NULL;
      else $this->section = $section->getSection(1);
 
-     if ($this->amendement->sort != "Irrecevable") {
+     if ($this->amendement->sort != "Irrecevable" && $this->amendement->texte != "<p>Cet amendement a été retiré avant sa publication.</p>") {
        $this->identiques = Doctrine_Query::create()
          ->select('a.*, CAST( a.numero AS SIGNED ) AS num')
          ->from('Amendement a')
