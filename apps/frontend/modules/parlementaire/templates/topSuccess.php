@@ -12,7 +12,7 @@ foreach ($tops as $t)
 $indicateurs = myTools::$indicateurs;
 $title = array(
   'semaines_presence'               => "d'activité",
-  'commission_presences'            => 'réunion',
+//  'commission_presences'            => 'réunion',
   'commission_interventions'        => 'interv.',
   'hemicycle_interventions'         => 'interv.<br/>longues',
   'hemicycle_interventions_courtes' => 'interv.<br/>courtes',
@@ -28,7 +28,7 @@ $title = array(
 $class = array(
   'parl'                            => 'p',
   'semaines_presence'               => 'we',
-  'commission_presences'            => 'cp',
+//  'commission_presences'            => 'cp',
   'commission_interventions'        => 'ci',
   'hemicycle_interventions'         => 'hl',
   'hemicycle_interventions_courtes' => 'hc',
@@ -52,7 +52,7 @@ foreach (array_keys($title) as $k)
   <tr>
     <th id="search"></th>
     <th title="Trier par : <?php echo $bulles[1]; ?>" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>"><?php echo link_to('Semaines', '@top_global_sorted?sort=1'); ?></th>
-    <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
+    <th colspan="1" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
     <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
     <th colspan="3" class="<?php if ($sort == 6 || $sort == 7 || $sort == 8) echo 'tr_odd';?>">Amendements</th>
     <th title="Trier par : <?php echo $bulles[9]; ?>" class="jstitle <?php if ($sort == 9) echo 'tr_odd';?>"><?php echo link_to('Rapports', '@top_global_sorted?sort=9'); ?></th>
@@ -70,7 +70,10 @@ foreach (array_keys($title) as $k)
     ?></th>
     <?php $last = end($tops); $i = 0;
     foreach($ktop as $key) :
-      $i++; ?>
+      $i++;
+      //Désactive la commission_presences
+      if ($i == 2) continue;
+      ?>
     <th
       data-dynatable-column="<?php echo $key; ?>"
       data-dynatable-sorts="<?php echo $key; ?>-sort"
@@ -99,6 +102,9 @@ foreach (array_keys($title) as $k)
     if ($fin)
       $field = "moyenne";
     for($i = 1 ; $i < count($t); $i++) {
+      //Désactive la commission_presences
+      if ($i == 2) continue;
+
       echo '<td><span title="'.$t[$i]['value'].' ';
       $leg = $bulles[$i];
       if ($t[$i]['value'] < 2)
@@ -131,7 +137,7 @@ foreach (array_keys($title) as $k)
   <tr>
     <th class="gpes <?php echo $class['parl']; ?>">&nbsp;</th>
     <th title="<?php echo $bulles[1]; ?>" class="jstitle <?php if ($sort == 1) echo 'tr_odd';?>">Semaines</th>
-    <th colspan="2" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
+    <th colspan="1" class="<?php if ($sort == 2 || $sort == 3) echo 'tr_odd';?>">Commission</th>
     <th colspan="2" class="<?php if ($sort == 4 || $sort == 5) echo 'tr_odd';?>">Hémicycle</th>
     <th colspan="3" class="<?php if ($sort == 6 || $sort == 7|| $sort == 8) echo 'tr_odd';?>">Amendements</th>
     <th title="<?php echo $bulles[9]; ?>" class="jstitle <?php if ($sort == 9) echo 'tr_odd';?>">Rapports</th>
@@ -144,6 +150,8 @@ foreach (array_keys($title) as $k)
     foreach($ktop as $key) :
       if ($key === "") continue;
       $i++;
+      //Désactive la commission_presences
+      if ($i == 2) continue;
     ?>
     <th
       data-dynatable-column="<?php echo $key; ?>"
@@ -166,6 +174,9 @@ foreach (array_keys($title) as $k)
   else echo '">'.$t[0]['nom'].$nb;
   echo '</span></td>';
   for($i = 1 ; $i < count($t) ; $i++) {
+    //Désactive la commission_presences
+    if ($i == 2) continue;
+
     $t[$i] = round($t[$i]/$t[0]['nb']);
     echo '<td><span title="'.$t[$i].' '.($t[$i] < 2 ? preg_replace('/s (.*-- )/', ' \\1', preg_replace('/s (.*-- )/', ' \\1', $bulles[$i])) : $bulles[$i]).'" class="jstitle '.$class[$ktop[$i]].'">';
     if (preg_match('/\./', $t[$i]))

@@ -24,7 +24,8 @@ $fields = array(
 );
 $images = array(
   'semaines_presence'               => 'ico_sem_%s.png',
-  'commission_presences'            => 'ico_com_pre_%s.png',
+//  'commission_presences'            => 'ico_com_pre_%s.png',
+  'commission_presences'            => 'ico_com_pre_gris.png',
   'commission_interventions'        => 'ico_com_inter_%s.png',
   'hemicycle_presences'             => 'ico_hem_pre_gris.png',
   'hemicycle_interventions'         => 'ico_inter_hem_long_%s.png',
@@ -96,7 +97,7 @@ $icosize = 16;
 if (isset($widthrate))
   $icosize = floor($icosize*$widthrate);
 foreach($fields as $k) {
-  if ($k === "hemicycle_presences") {
+  if ($k === "hemicycle_presences" || $k === "commission_presences") {
     echo '<li'.$couleur2style['gris'].'><a'.$target.' href="'.url_for('@faq', $abs).'#post_4" class="jstitle" title="'.$indicateurs[$k]['titre'].' --  -- '.$indicateurs[$k]['desc'].'"><img style="height: '.$icosize.'px; width: '.$icosize.'px;" src="'.$serv.$sf_request->getRelativeUrlRoot().'/images/xneth/'.$images[$k].'" alt="'.$indicateurs[$k]['titre'].'" /> : ??</a></li>';
   } else {
     $value = (isset($top[$k]['value']) ? $top[$k]['value'] : 0);
