@@ -50,11 +50,11 @@ reg['reunion_an'] = u'^(?:Réunion|Séance) du (.*) ?à (.*) :'
 reg['reunion_an_bis'] = u'^(?:Réunion|Séance) du (.*) :'
 reg['reunion_senat'] = u'^(.{1,7}éance) du (.*) :'
 reg['reunion_senat_bis'] = u'^(.*), séance du (.*)$'
-reg['presents'] = u'^Présents?.*?[\-:]+\s*(.*)'
-reg['presents_an'] = u'^Députés? [pP]résents?.*?[\-:]+\s*(.*)'
-reg['presents_senat'] = u'^Sénateurs? [pP]résents?.*?[\-:]+\s*(.*)'
-reg['excuses'] = u'^(?:Député|Sénateur)s?\s*[eE]xcusé.*?[\-:]+\s*(.*)'
-reg['assistent'] = u'^(Assistai.*|En téléconf.*)[\-:]+\s*(.*)'
+reg['presents'] = u'^Présents?[^\-:]*[\-:]+\s*(.*)'
+reg['presents_an'] = u'^Députés? [pP]résents?[^\-:]*[\-:]+\s*(.*)'
+reg['presents_senat'] = u'^Sénateurs? [pP]résents?[^\-:]*[\-:]+\s*(.*)'
+reg['excuses'] = u'^(?:Député|Sénateur)s?\s*[eE]xcusé[^\-:]*[\-:]+\s*(.*)'
+reg['assistent'] = u'^(Assistai|En t.l.conf)[^\-:]*[[\-:]+\s*(.*)'
 reg['civilite'] = u' ?(Mme|M\.) '
 reg['fonction_senat'] = u' \([^)]*\)'
 
@@ -154,11 +154,15 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
             n_presences += 1
         elif re.search(reg['assistent'], line, re.IGNORECASE) is not None:
           m = re.search(reg['assistent'], line, re.IGNORECASE)
-          presents = re.sub(reg['civilite'], "", m.group(1))
+          presents = re.sub(reg['civilite'], "", m.group(2))
           if chamber == "senat":
             presents = re.sub(reg['fonction_senat'], "", presents, re.I)
 
           for present in presents.split(','):
+            present = re.sub('\(.*', '', present)
+            present = re.sub('(Assistai|En t.l.conf)[^:]* : ', '', present)
+            present = re.sub('^ +', '', present)
+            present = re.sub('[\. :]+$', '', present)
             if chamber == "senat":
               data['senateur'] = present.strip('. :')
             else:
