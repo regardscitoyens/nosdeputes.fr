@@ -90,7 +90,7 @@ try:
     else:
         sort = data['cycleDeVie']['sort'] or data['cycleDeVie']['etatDesTraitements']['sousEtat'].get('libelle', None) or data['cycleDeVie']['etatDesTraitements']['etat'].get('libelle', '')
     amd['sort'] = extractSort(sort)
-    amd['date'] = data['cycleDeVie']['dateDepot'] or ""
+    amd['date'] = data['cycleDeVie']['dateDepot'] or data['cycleDeVie']['datePublication'] or ""
 
     amd['source'] = htmlurl
     organe = data['identification']['prefixeOrganeExamen']
