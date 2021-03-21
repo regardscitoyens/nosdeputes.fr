@@ -85,6 +85,8 @@ def cleanAuteurs(auteurs, h):
     auteurs = auteurs.replace(u"des affaires culturelles et", "aux affaires culturelles et")
     auteurs = auteurs.replace(u"culturelles et de l'", u"culturelles et à l'")
     auteurs = re_rapp.sub(ur"\1", auteurs)
+    auteurs = auteurs.replace(u"Mme Lecocq", u"Mme Parmentier-Lecocq")
+    auteurs = auteurs.replace(u"M. Favennec Becot", u"M. Favennec")
     auteurs = re_missingSexF.sub(ur", Mme \2", auteurs)
     auteurs = re_missingSexH.sub(ur", M. \2", auteurs)
     auteurs = re_et.sub(ur", \2", auteurs)
