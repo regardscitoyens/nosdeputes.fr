@@ -52,8 +52,12 @@ if __name__ == "__main__":
                             continue
                         num = resp['identification']['numeroLong'].split(" ")[0].split("-")[-1]
                         organe = resp['identification']['prefixeOrganeExamen']
-                        texte = resp['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
-                        url_amdt = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (legislature, texte, organe, num)
+                        try:
+                            texte = resp['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
+                            url_amdt = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (legislature, texte, organe, num)
+                        except KeyError, AttributeError:
+                            r = requests.get("http://www.assemblee-nationale.fr/dyn/15/amendements/%s" % resp["uid"])
+                            url_amdt = r.url.replace("https:", "http:")
 
                         print(url_amdt)
                         text = download(url_amdt, json=False)
