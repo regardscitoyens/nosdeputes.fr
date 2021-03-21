@@ -55,7 +55,7 @@ if __name__ == "__main__":
                         try:
                             texte = resp['pointeurFragmentTexte']['division']['urlDivisionTexteVise'].split('/textes/')[1].split('.asp')[0]
                             url_amdt = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (legislature, texte, organe, num)
-                        except KeyError, AttributeError:
+                        except (KeyError, AttributeError):
                             r = requests.get("http://www.assemblee-nationale.fr/dyn/15/amendements/%s" % resp["uid"])
                             url_amdt = r.url.replace("https:", "http:")
 
