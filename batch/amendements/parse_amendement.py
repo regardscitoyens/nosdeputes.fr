@@ -122,8 +122,11 @@ try:
     amd['auteurs'] = cleanAuteurs(amd['auteurs'], h)
     amd['auteur_reel'] = (data['signataires']['auteur']['auteurRapporteurOrganeRef'] or data['signataires']['auteur']['acteurRef'] or "GVT").lstrip('PAO')
 
-    if data['cardinaliteAmdtMultiples'] > 1:
-        print >> sys.stderr, "WARNING: encountered an amendment with a multiple cardinality(%s): %s %s" % (data['cardinaliteAmdtMultiples'], htmlurl, jsonurl)
+    try:
+        if int(data['cardinaliteAmdtMultiples']) > 1:
+            print >> sys.stderr, "WARNING: encountered an amendment with a multiple cardinality(%s): %s %s" % (data['cardinaliteAmdtMultiples'], htmlurl, jsonurl)
+    except:
+        pass
 
     if not data['corps']['contenuAuteur']:
         if amd['sort'] == u'Retiré avant séance':
