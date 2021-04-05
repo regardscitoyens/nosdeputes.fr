@@ -24,7 +24,7 @@ def download(url, json=True, retries=5):
         if retries > 0:
             time.sleep((6-retries)*5)
             return download(url, json=json, retries=retries-1)
-        print("ERROR: could not download %s at %s: (%s - %s)" % ('json' if json else 'text', url, type(e), e), file=sys.stderr)
+        print("ERROR: could not download %s at %s: (%s - %s)" % ('json' if json else 'html', url, type(e), e), file=sys.stderr)
         return None
 
 
