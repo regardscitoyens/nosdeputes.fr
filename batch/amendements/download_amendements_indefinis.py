@@ -10,12 +10,13 @@ count = 0
 
 for url_amdt in open(sys.argv[1]):
     url_amdt = url_amdt.strip().replace("http://", "https://")
+    slug = url_amdt.replace('/', '_-_')
+    url_amdt = url_amdt.replace(".asp", "").replace("nationale.fr/1", "nationale.fr/dyn/1")
     print(url_amdt)
     text = download(url_amdt, json=False)
     if not text:
         continue
 
-    slug = url_amdt.replace('/', '_-_')
     with open(os.path.join('html', slug), 'w') as f:
         f.write(text.encode("utf-8"))
         count += 1
