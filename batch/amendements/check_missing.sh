@@ -47,7 +47,7 @@ done
 
 cat all_amdts_opendataAN.tmp all_amdts_searchAN.tmp |
   sed 's#/dyn/#/#'                                  |
-  sed -r 's#(\d)$#\1.asp#'                          |
+  sed -r 's#([0-9])$#\1.asp#'                       |
   sort -u > all_amdts_AN.tmp
 
 echo "Extracting list of Amendements from NosDéputés..."
