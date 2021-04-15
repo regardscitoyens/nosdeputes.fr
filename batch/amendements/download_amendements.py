@@ -30,7 +30,7 @@ def download(url, json=True, retries=5):
 
 if __name__ == "__main__":
     legislature = sys.argv[1] if len(sys.argv) > 1 else 15
-    daysback = int(sys.argv[2]) if len(sys.argv) > 2 else 7
+    daysback = int(sys.argv[2]) if len(sys.argv) > 2 else 3
     count = 0
 
     datefin = datetime.datetime.now()
