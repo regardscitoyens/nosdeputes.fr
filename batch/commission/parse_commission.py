@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 import requests
 import base64
 import json
+import urllib
 
 mois2nmois = {'janvier': 1, 'février': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin':6, 'juillet': 7, 'août': 8, 'septembre': 9, 'octobre': 10, 'novembre': 11, 'décembre': 12}
 
@@ -155,17 +156,17 @@ def intervention_video(p):
         video = re.findall(r'(https?://videos.assemblee-nationale.fr/video\.([^\.]*)\.[^<"\']+)', p)
         if not len(video):
             url = re.findall(r'(https?://[^<"\']+)', p)
-            response = requests.get(url[0])
-            video = re.findall(r'(https?://videos.assemblee-nationale.fr/video\.([^\.]*)(\.[^<"\']+|))', response.url)
+            response = requests_get(url[0])
+            video = re.findall(r'(https?://videos.assemblee-nationale.fr/video\.([^\.]*)(\.[^<"\']+|))', response['url'])
         try:
             videoid = video[0][1]
             urlvideo = video[0][0]
             urlvideo_meta = "http://videos.assemblee-nationale.fr/Datas/an/%s/content/data.nvs" % videoid
             urltimestamp = "https://videos.assemblee-nationale.fr/Datas/an/%s/content/finalplayer.nvs" % videoid
-            response = requests.get(urlvideo_meta)
-            soupvideo = BeautifulSoup(response.text, features="lxml")
-            response = requests.get(urltimestamp)
-            souptimestamp = BeautifulSoup(response.text, features="lxml")
+            response = requests_get(urlvideo_meta)
+            soupvideo = BeautifulSoup(response['content'], features="lxml")
+            response = requests_get(urltimestamp)
+            souptimestamp = BeautifulSoup(response['content'], features="lxml")
         except IndexError:
             soupvideo = None
             souptimestamp = None
@@ -187,9 +188,9 @@ def intervention_video(p):
             timestamp_thumbnail = int((timestamp / 1000) / 60 + 1) * 60
         if timestamp_thumbnail:
             urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, timestamp_thumbnail)
-            imagethumbnail = requests.get(urlthumbnail)
+            imagethumbnail = requests_get(urlthumbnail)
             if (imagethumbnail): 
-                imagehtmlthumbnail = "<img src='data:%s;base64,%s'/>" % (imagethumbnail.headers['Content-Type'], base64.b64encode(imagethumbnail.content).decode("utf-8"))
+                imagehtmlthumbnail = "<img src='data:%s;base64,%s'/>" % (imagethumbnail['content_type'], imagethumbnail['content'])
         new_intervention()
         if (chapter.get('label').find('M.') == 0 or chapter.get('label').find('Mme') == 0):
             intervenant = chapter.get('label')
@@ -268,6 +269,29 @@ def getIntervenantFonction(intervenant):
         intervenant2fonction[intervenant] = fonction
         fonction2intervenant[fonction] = intervenant
     return [intervenant, fonction]
+
+def requests_get(url):
+    global content_file
+    cache_file = "%s_%s.cache" % (content_file, urllib.parse.quote(url, '.'))
+    try:
+        with open(cache_file, 'r') as cachefile:
+            response = json.load(cachefile)
+            return response
+    except:
+        response = None
+    request = requests.get(url)
+    try:
+        contenttype = request.headers['Content-Type']
+    except KeyError:
+        contenttype = 'error'
+    if contenttype.find('text') == 0:
+        content = request.text
+    else:
+        content = base64.b64encode(request.content).decode("utf-8")
+    response = {'content': content, 'url': request.url, 'content_type': contenttype}
+    with open(cache_file,'w+') as out_file:
+        json.dump(response, out_file)
+    return response
 
 source_url = sys.argv[2]
 content_file = sys.argv[1]
