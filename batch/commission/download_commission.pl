@@ -51,6 +51,11 @@ while ($page < 20) {
       print FILE $b->content;
       close FILE;
       rename "raw/$opendata_id.tmp", "raw/$opendata_id";
+      open FILE, ">:utf8", "raw/$opendata_id.url";
+      print FILE $raw_url;
+      close FILE;
+      
+      print "raw/$opendata_id html/$file\n";
     }
   }
 }
