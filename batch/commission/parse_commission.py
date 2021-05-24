@@ -67,16 +67,19 @@ def html2json(s):
         p_text = p_text.replace('\xa0', ' ')
         if (p_text.find('Commission') == 0 or p_text.find('Délégation') == 0 or p_text.find('Mission') == 0 or p_text.find('Office') == 0 or p_text.find('Comité') == 0):
             commission = p_text
-        for wday in ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']:
+        for wday in ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'] + list(mois2nmois.keys()):
             if (p_text.lower().find(wday) >= 0):
-                days = re.findall(r'(\d+)e?r? +([^ ]+) +(\d+)', p_text)
-                if len(days) > 0:
-                    date = "%04d-%02d-%02d" % (int(days[0][2]), mois2nmois[days[0][1].lower()], int(days[0][0]))
-                    if (mois2nmois[days[0][1].lower()] > 8):
-                        session = days[0][2]+'-'+str(int(days[0][2]) + 1)
-                    else:
-                        session = str(int(days[0][2]) - 1)+'-'+days[0][2]
-                    break
+                try:
+                    days = re.findall(r'(\d+)e?r? *([^ \d]+) +(\d+)', p_text)
+                    if len(days) > 0:
+                        date = "%04d-%02d-%02d" % (int(days[0][2]), mois2nmois[days[0][1].lower()], int(days[0][0]))
+                        if (mois2nmois[days[0][1].lower()] > 8):
+                            session = days[0][2]+str(int(days[0][2]) + 1)
+                        else:
+                            session = str(int(days[0][2]) - 1)+days[0][2]
+                        break
+                except KeyError:
+                    continue
         if (p_text.lower().find(' heure') > -1 or p_text.find(' h ') > -1):
             heures = re.findall(r'(\d+) *(h|heures?) *(\d*)', p_text.lower())
             if len(heures) > 0 and heures[0][0]: 
