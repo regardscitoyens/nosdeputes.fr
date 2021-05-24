@@ -192,7 +192,10 @@ def intervention_video(p):
         if timestamp_thumbnail:
             urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, timestamp_thumbnail)
             imagethumbnail = requests_get(urlthumbnail)
-            if (imagethumbnail): 
+            if (imagethumbnail['content_type'] == 'error'):
+                urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, timestamp_thumbnail + 1)
+                imagethumbnail = requests_get(urlthumbnail)
+            if (imagethumbnail and imagethumbnail['content_type'] != 'error'):
                 imagehtmlthumbnail = "<img src='data:%s;base64,%s'/>" % (imagethumbnail['content_type'], imagethumbnail['content'])
         new_intervention()
         if (chapter.get('label').find('M.') == 0 or chapter.get('label').find('Mme') == 0):
