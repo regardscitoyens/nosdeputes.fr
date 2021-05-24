@@ -203,6 +203,7 @@ def intervention_video(p):
             intervention = ''
         else:
             intervention = "<p><h4>"+chapter.get('label')+"</h4></p>"
+            continue
         intervention += "<p>"
         if imagehtmlthumbnail: 
             if ahtmltimestamp:
