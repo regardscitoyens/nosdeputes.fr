@@ -253,7 +253,6 @@ def new_intervention():
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
         print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": timestamp, "fonction": fonction }))
-        print(",")
     intervenant = ''
     intervention = ''
 
