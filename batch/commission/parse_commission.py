@@ -18,6 +18,8 @@ fonction2intervenant = {}
 timestamp = 0
 
 def cleanhtml(s):
+    reg_center = re.compile('<p [^>]*text-align:center[^>]*>(.*)</p>')
+    s = reg_center.sub('<p><i>\\1</i></p>', s)
     reg_bold = re.compile('<span [^>]*font-weight:bold[^>]*>([^<]*)</span>')
     s = reg_bold.sub('<b>\\1</b>', s)
     reg_italic = re.compile('<span [^>]*font-style:italic[^>]*>([^<]*)</span>')
