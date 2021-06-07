@@ -133,11 +133,14 @@ def html2json(s):
         if p_str.find('<p>—  1') == 0:
             continue
         if p_str.find('<i>(') > 0 and p_str.find(')</i>') > 0 :
-            didascalie = re.findall(r'(.*)(<i>\([^)]*\)</i>)(</p>)', p_str)
+            didascalie = re.findall(r'(.*)(<i>\([^)]*\)</i>)( *.? *</p>)', p_str)
             if(didascalie):
                 intervention += didascalie[0][0] + didascalie[0][2]
+                oldintervenant = intervenant
                 new_intervention()
                 intervention = '<p>'+didascalie[0][1]+'</p>'
+                new_intervention()
+                intervenant = oldintervenant
                 continue
         elif p_str.find('<p><i>') == 0 and p_str.find('</i></p>') > 0:
             if (intervenant):
