@@ -249,6 +249,7 @@ def new_intervention():
             intervenant = "M "+intervenants[0]
             linterventioncommune = intervention
             new_intervention()
+            timestamp += 1
             intervenant = intervenants[1]
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
