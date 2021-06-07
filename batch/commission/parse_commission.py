@@ -288,7 +288,7 @@ def requests_get(url):
     global content_file
     cache_file = "%s_%s.cache" % (content_file, urllib.parse.quote(url, '.'))
     try:
-        with open(cache_file, 'r') as cachefile:
+        with open(cache_file, 'r', encoding='utf-8') as cachefile:
             response = json.load(cachefile)
             return response
     except:
@@ -303,13 +303,13 @@ def requests_get(url):
     else:
         content = base64.b64encode(request.content).decode("utf-8")
     response = {'content': content, 'url': request.url, 'content_type': contenttype}
-    with open(cache_file,'w+') as out_file:
+    with open(cache_file,'w+', encoding='utf-8') as out_file:
         json.dump(response, out_file)
     return response
 
 source_url = sys.argv[2]
 content_file = sys.argv[1]
-with open(content_file) as f:
+with open(content_file, encoding='utf-8') as f:
     raw_html = f.read()
     html = cleanhtml(raw_html)
     html2json(html)
