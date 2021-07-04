@@ -63,7 +63,7 @@ def html2json(s):
     source = source_url
     cpt = 0
 
-    #Meta
+    # Meta
     for p in p_tags:
         p_text = p.get_text()
         p_text = p_text.replace('\xa0', ' ')
@@ -97,7 +97,7 @@ def html2json(s):
         if (p_text.find('Compte rendu n° ') == 0):
             cpt = int(p_text[16:]) * 1000000
 
-    #Intervensions
+    # Interventions
     try:
         p_tags = soup.find(class_="assnatSection2").find_all(['p', 'h1', 'h2', 'h3', 'h3'])
     except AttributeError:
@@ -258,7 +258,7 @@ def new_intervention():
             intervenant = intervenants[1]
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
-        print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": timestamp, "fonction": fonction }))
+        print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": timestamp, "fonction": fonction }, ensure_ascii=False))
     intervenant = ''
     intervention = ''
 
