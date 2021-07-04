@@ -25,8 +25,8 @@ print "  $htmfile ";
 
 open FILE, ">:utf8", "html/$htmfile.tmp";
 print FILE $content;
-rename "html/$htmfile.tmp", "html/$htmfile";
 close FILE;
+rename "html/$htmfile.tmp", "html/$htmfile";
 
 $a->get($raw_url);
 open FILE, ">:utf8", "raw/$opendata_id.tmp";
@@ -34,4 +34,11 @@ print FILE $a->content;
 close FILE;
 rename "raw/$opendata_id.tmp", "raw/$opendata_id";
 
-print "/ raw/$opendata_id  downloaded.\n";
+open FILE, ">:utf8", "raw/$opendata_id.url";
+print FILE $raw_url;
+close FILE;
+
+if (!$oldstyle) {
+  print "/ raw/$opendata_id html/$file\n";
+}
+print "  downloaded.\n";
