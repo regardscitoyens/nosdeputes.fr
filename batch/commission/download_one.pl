@@ -21,7 +21,7 @@ $opendata_id =~ s/^.*opendata\///;
 $htmfile = $url;
 $htmfile =~ s/\//_/gi;
 $htmfile =~ s/\#.*//;
-print "  $htmfile ";
+print "$url -> html/$htmfile\n";
 
 open FILE, ">:utf8", "html/$htmfile.tmp";
 print FILE $content;
@@ -38,7 +38,4 @@ open FILE, ">:utf8", "raw/$opendata_id.url";
 print FILE $raw_url;
 close FILE;
 
-if (!$oldstyle) {
-  print "/ raw/$opendata_id html/$htmfile";
-}
-print "  downloaded.\n";
+print "raw/$opendata_id $url\n";
