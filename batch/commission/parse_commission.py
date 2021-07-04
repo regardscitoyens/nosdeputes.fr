@@ -36,7 +36,10 @@ def cleanhtml(s):
     reg_p = re.compile('<p [^>]*>')
     s = reg_p.sub('<p>', s)
 
-    s = s.replace('&#xa0;', '&nbsp;')
+    s = s.replace('&#xa0;', ' ')
+
+    s = s.replace('&#039;', "'")
+    s = s.replace('’', "'")
 
     reg_spaces = re.compile(' (</(b|i)>)')
     s = reg_spaces.sub('\\1 ', s)
