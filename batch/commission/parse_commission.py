@@ -32,12 +32,12 @@ def cleanhtml(s):
     s = reg_doubletag.sub(' ', s)
     reg_boldinitalic = re.compile('</i><b>([^<]*)</b><i>')
     s = reg_boldinitalic.sub('<b>\\1</b>', s)
-    
+
     reg_p = re.compile('<p [^>]*>')
     s = reg_p.sub('<p>', s)
-    
+
     s = s.replace('&#xa0;', '&nbsp;')
-    
+
     reg_spaces = re.compile(' (</(b|i)>)')
     s = reg_spaces.sub('\\1 ', s)
     reg_spaces = re.compile('(<(b|i)>) ')
@@ -84,19 +84,19 @@ def html2json(s):
                     continue
         if (p_text.lower().find(' heure') > -1 or p_text.find(' h ') > -1):
             heures = re.findall(r'(\d+) *(h|heures?) *(\d*)', p_text.lower())
-            if len(heures) > 0 and heures[0][0]: 
+            if len(heures) > 0 and heures[0][0]:
                 heure = "%02d:" % int(heures[0][0])
                 if (len(heures[0]) > 2 and heures[0][2]):
                     heure += "%02d" % int(heures[0][2])
                 else:
                     heure += '00'
             continue
-        if (p_text.find('session ') == 0): 
+        if (p_text.find('session ') == 0):
             i = p_text.find(' 20')
             session = p_text[i+1:].replace('-', '')
         if (p_text.find('Compte rendu n° ') == 0):
             cpt = int(p_text[16:]) * 1000000
-    
+
     #Intervensions
     try:
         p_tags = soup.find(class_="assnatSection2").find_all(['p', 'h1', 'h2', 'h3', 'h3'])
@@ -165,7 +165,7 @@ def intervention_video(p):
     global commission, date, heure, session, source, intervenant, intervention, timestamp, content_file
     soupvideo = None
     souptimestamp = None
-    if not soupvideo or not souptimestamp: 
+    if not soupvideo or not souptimestamp:
         video = re.findall(r'(https?://videos.assemblee-nationale.fr/video\.([^\.]*)\.[^<"\']+)', p)
         if not len(video):
             url = re.findall(r'(https?://[^<"\']+)', p)
@@ -215,7 +215,7 @@ def intervention_video(p):
             intervention = "<p><h4>"+chapter.get('label')+"</h4></p>"
             continue
         intervention += "<p>"
-        if imagehtmlthumbnail: 
+        if imagehtmlthumbnail:
             if ahtmltimestamp:
                 intervention += ahtmltimestamp
             intervention += imagehtmlthumbnail
@@ -228,7 +228,7 @@ def intervention_video(p):
         if ahtmltimestamp:
             intervention += "</a>"
         intervention += "</p>"
-    
+
 def new_intervention():
     global commission, date, heure, session, source, intervenant, intervention, timestamp
     #{"commission": "commission des finances, de l'économie générale et du contrôle budgétaire", "intervention": "<p>Présidence de M. Éric Woerth, Président</p>", "date": "2020-01-15", "source": "http://www.assemblee-nationale.fr/15/cr-cfiab/19-20/c1920037.asp#P9_450", "heure": "09:30", "session": "20192020", "intervenant": "", "timestamp": "37000020"}
@@ -290,12 +290,14 @@ def getIntervenantFonction(intervenant):
 def requests_get(url):
     global content_file
     cache_file = "%s_%s.cache" % (content_file, urllib.parse.quote(url, '.'))
-    try:
-        with open(cache_file, 'r', encoding='utf-8') as cachefile:
-            response = json.load(cachefile)
-            return response
-    except:
-        response = None
+    response = None
+    if "--no-cache" not in sys.argv:
+        try:
+            with open(cache_file, 'r', encoding='utf-8') as cachefile:
+                response = json.load(cachefile)
+                return response
+        except:
+            pass
     request = requests.get(url)
     try:
         contenttype = request.headers['Content-Type']
