@@ -39,6 +39,6 @@ print FILE $raw_url;
 close FILE;
 
 if (!$oldstyle) {
-  print "/ raw/$opendata_id html/$file\n";
+  print "/ raw/$opendata_id html/$htmfile";
 }
 print "  downloaded.\n";
