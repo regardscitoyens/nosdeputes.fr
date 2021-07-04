@@ -87,7 +87,6 @@ def html2json(s):
                     continue
         if (p_text.lower().find(' heure') > -1 or p_text.find(' h ') > -1):
             heures = re.findall(r'(\d+) *h(?:eures?)? *(\d*)', p_text.lower())
-            print(p_text, heures)
             if len(heures) > 0 and heures[0][0]:
                 heure = "%02d:" % int(heures[0][0])
                 if (len(heures[0]) > 1 and heures[0][1]):
