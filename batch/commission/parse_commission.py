@@ -159,7 +159,9 @@ def html2json(s):
         if p.find('videos.assemblee-nationale.fr') >= 0 or p.find('assnat.fr') >= 0 :
             intervention += p
             new_intervention()
+            source_backup = source
             intervention_video(p)
+            source = source_backup
             continue
         intervention += p
     new_intervention()
