@@ -51,7 +51,7 @@ foreach $baseurl (@urls) {
     next if $url =~ /\/documents\/index/i;
     next if $url =~ /\/budget\/redirect\//i;
     next if $url =~ /\/$legislature\/liste\//i;
-    next if !($url =~ /nale\.fr\/$legislature\//);
+    next if !($url =~ /nale\.fr\/(dyn\/)?(old\/)?$legislature\//);
     next if $url =~ /app\.(eu\.)?readspeaker\.com/i;
     $file = $url;
     $file =~ s/\//_/gi;
