@@ -195,7 +195,7 @@ def intervention_video(p):
     for videotimestamp_tag in souptimestamp.find_all('synchro'):
         videotimestamps[videotimestamp_tag.get('id')] = videotimestamp_tag.get('timecode')
     for chapter in soupvideo.find_all('chapter'):
-        timestamp += 10
+        timestamp += 10000
         videotimestamp = 0
         videotimestamp_thumbnail = 0
         ahtmltimestamp = ''
