@@ -162,6 +162,7 @@ def html2json(s):
             source_backup = source
             intervention_video(p)
             source = source_backup
+            cpt = timestamp
             continue
         intervention += p
     new_intervention()
@@ -180,35 +181,36 @@ def intervention_video(p):
             videoid = video[0][1]
             urlvideo = video[0][0]
             urlvideo_meta = "http://videos.assemblee-nationale.fr/Datas/an/%s/content/data.nvs" % videoid
-            urltimestamp = "https://videos.assemblee-nationale.fr/Datas/an/%s/content/finalplayer.nvs" % videoid
+            urlvideotimestamp = "https://videos.assemblee-nationale.fr/Datas/an/%s/content/finalplayer.nvs" % videoid
             response = requests_get(urlvideo_meta)
             soupvideo = BeautifulSoup(response['content'], features="lxml")
-            response = requests_get(urltimestamp)
+            response = requests_get(urlvideotimestamp)
             souptimestamp = BeautifulSoup(response['content'], features="lxml")
         except IndexError:
             soupvideo = None
             souptimestamp = None
     if not souptimestamp or not soupvideo:
         return
-    timestamps = {}
-    for timestamp_tag in souptimestamp.find_all('synchro'):
-        timestamps[timestamp_tag.get('id')] = timestamp_tag.get('timecode')
+    videotimestamps = {}
+    for videotimestamp_tag in souptimestamp.find_all('synchro'):
+        videotimestamps[videotimestamp_tag.get('id')] = videotimestamp_tag.get('timecode')
     for chapter in soupvideo.find_all('chapter'):
-        timestamp = 0
-        timestamp_thumbnail = 0
+        timestamp += 10
+        videotimestamp = 0
+        videotimestamp_thumbnail = 0
         ahtmltimestamp = ''
         imagehtmlthumbnail = ''
-        if timestamps.get(chapter.get('id')):
-            timestamp = int(timestamps[chapter.get('id')])
-            ahtmltimestamp = "<a href='"+urlvideo+"?timecode="+str(timestamp)+"'>"
-            source = urlvideo+"?timecode="+str(timestamp)
-        if timestamp:
-            timestamp_thumbnail = int((timestamp / 1000) / 60 + 1) * 60
-        if timestamp_thumbnail:
-            urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, timestamp_thumbnail)
+        if videotimestamps.get(chapter.get('id')):
+            videotimestamp = int(videotimestamps[chapter.get('id')])
+            ahtmltimestamp = "<a href='"+urlvideo+"?timecode="+str(videotimestamp)+"'>"
+            source = urlvideo+"?timecode="+str(videotimestamp)
+        if videotimestamp:
+            videotimestamp_thumbnail = int((videotimestamp / 1000) / 60 + 1) * 60
+        if videotimestamp_thumbnail:
+            urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail)
             imagethumbnail = requests_get(urlthumbnail)
             if (imagethumbnail['content_type'] == 'error'):
-                urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, timestamp_thumbnail + 1)
+                urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail + 1)
                 imagethumbnail = requests_get(urlthumbnail)
             if (imagethumbnail and imagethumbnail['content_type'] != 'error'):
                 imagehtmlthumbnail = "<img src='data:%s;base64,%s'/>" % (imagethumbnail['content_type'], imagethumbnail['content'])
