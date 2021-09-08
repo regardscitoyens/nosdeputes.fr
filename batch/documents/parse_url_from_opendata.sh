@@ -11,7 +11,8 @@ docid=$(echo $url | sed 's|.*/||' | sed 's/.asp//' | awk -F '-' '{print $1}' | s
 
 find opendata/document/ -name '*'$docid'*' | while read file ; do
     python3 parse_opendata_documents.py $file > "/tmp/documents_$$.json"
-    if grep "$url" "/tmp/documents_$$.json"  > "$output" ; then
+    uri=$(echo $url | sed 's|https://www.assemblee-nationale.fr/[^0-9]*/||')
+    if grep "$uri" "/tmp/documents_$$.json"  > "$output" ; then
         break;
     fi
 done
