@@ -50,6 +50,7 @@ def xml2json(s):
                     
         texte = "<p>"
         isdidascalie = False
+        texte_didascalie = ""
         for t in p.texte.childGenerator():
             t_string = str(t.string)
             if isinstance(t,  bs4.element.NavigableString):
@@ -58,14 +59,16 @@ def xml2json(s):
                 texte += "</p><p>"
             #Cas des didascalies
             elif t.name == 'italique' and (t_string[0] == '(' or isdidascalie):
+                if not isdidascalie:
+                    intervention["intervention"] = texte+"</p>"
+                    printintervention(intervention)
                 isdidascalie = True
-                intervention["intervention"] = texte+"</p>"
-                printintervention(intervention)
-                didascalie = intervention_vierge.copy()
-                didascalie['intervention'] = "<p>"+t.get_text()+"</p>"
-                didascalie['intervention'] = didascalie['intervention'].replace('(', '').replace(')', '')
-                printintervention(didascalie)
+                texte_didascalie += t.get_text();
+                texte_didascalie = texte_didascalie.replace('(', '').replace(')', '')
                 if t_string[-1] == ')':
+                    didascalie = intervention_vierge.copy()
+                    didascalie['intervention'] = "<p>"+texte_didascalie+"</p>"
+                    printintervention(didascalie)
                     isdidascalie = False
                 texte = "<p>"
             elif t.string and t_string != '\n':
