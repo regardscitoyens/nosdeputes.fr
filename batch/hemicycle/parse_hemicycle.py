@@ -20,11 +20,11 @@ def xml2json(s):
     intervenant2fonction = {}
     for p in soup.find_all(['paragraphe', 'point']):
         #Gestion des titres/contextes et numéros de loi
-        if p.name == "point" and p.texte.string and p['nivpoint']:
+        if p.name == "point" and p.texte.get_text() and p['nivpoint']:
             contextes = contextes[:int(p['nivpoint']) -1 ]
             if not contextes:
                 contextes = []
-            contextes.append(p.texte.string)
+            contextes.append(p.texte.get_text().replace('\n', ''))
         if p['valeur'] and p['valeur'][0:9] == ' (n[[o]] ':
             numeros_lois = p['valeur'][9:-1].replace(' ', '')
         #Gestion des interventions
