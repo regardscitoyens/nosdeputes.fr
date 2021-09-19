@@ -20,7 +20,7 @@ def xml2json(s):
     intervenant2fonction = {}
     for p in soup.find_all(['paragraphe', 'point']):
         #Gestion des titres/contextes et numéros de loi
-        if p.name == "point" and p.texte.get_text() and p['nivpoint']:
+        if p.name == "point" and p.texte and p.texte.get_text() and int(p['nivpoint']) < 4:
             contextes = contextes[:int(p['nivpoint']) -1 ]
             if not contextes:
                 contextes = []
