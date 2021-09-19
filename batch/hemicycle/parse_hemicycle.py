@@ -83,7 +83,7 @@ def printintervention(i):
     if i['intervention'] == '<p></p>' or i['intervention'] == '<p> </p>':
         return
     timestamp += 10
-    i['timestamp'] = timestamp
+    i['timestamp'] = str(timestamp)
     print(json.dumps(i))
 
 content_file = sys.argv[1]
