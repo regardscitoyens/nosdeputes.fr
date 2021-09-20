@@ -27,6 +27,8 @@ def xml2json(s):
             contextes.append(p.texte.get_text().replace('\n', ''))
         if p['valeur'] and p['valeur'][0:9] == ' (n[[o]] ':
             numeros_lois = p['valeur'][9:-1].replace(' ', '')
+        if p.name == "point":
+            continue
         #Gestion des interventions
         intervention = intervention_vierge.copy()
         intervention["contexte"] = " > ".join(contextes)
