@@ -195,7 +195,7 @@ def intervention_video(p):
     for videotimestamp_tag in souptimestamp.find_all('synchro'):
         videotimestamps[videotimestamp_tag.get('id')] = videotimestamp_tag.get('timecode')
     for chapter in soupvideo.find_all('chapter'):
-        timestamp += 10000
+        timestamp += 10
         videotimestamp = 0
         videotimestamp_thumbnail = 0
         ahtmltimestamp = ''
@@ -255,17 +255,18 @@ def new_intervention():
     intervention = intervention.replace('<p></p>', '')
     intervention = intervention.replace('<p> </p>', '')
     [intervenant, fonction] = getIntervenantFonction(intervenant)
+    curtimestamp = timestamp
     if (intervention):
         intervenants = intervenant.split(' et ')
         if len(intervenants) > 1:
             intervenant = "M "+intervenants[0]
             linterventioncommune = intervention
             new_intervention()
-            timestamp += 1
-            intervenant = intervenants[1]
+            curtimestamp += 1
+            intervenant = intervenants[1:]
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
-        print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": timestamp, "fonction": fonction }, ensure_ascii=False))
+        print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
     intervenant = ''
     intervention = ''
 
