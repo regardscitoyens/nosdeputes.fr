@@ -64,7 +64,6 @@ def html2json(s):
     soup = BeautifulSoup(s, features="lxml")
     p_tags = soup.find(class_="assnatSection1").find_all('p')
     source = source_url
-    cpt = 0
 
     # Meta
     for p in p_tags:
@@ -97,8 +96,6 @@ def html2json(s):
         if (p_text.find('session ') == 0):
             i = p_text.find(' 20')
             session = p_text[i+1:].replace('-', '')
-        if (p_text.find('Compte rendu n° ') == 0):
-            cpt = int(p_text[16:]) * 1000000
 
     # Interventions
     try:
@@ -109,8 +106,6 @@ def html2json(s):
 
     intervention = ''
     for p in p_tags:
-        cpt += 10
-        timestamp = cpt
         b = p.find('b')
         if (b):
             if (b.get_text().find('M.') == 0 or b.get_text().find('Mme') == 0 or b.get_text().find('Monsieur') == 0 or b.get_text().find('Madame') == 0):
@@ -162,7 +157,6 @@ def html2json(s):
             source_backup = source
             intervention_video(p)
             source = source_backup
-            cpt = timestamp
             continue
         intervention += p
     new_intervention()
@@ -195,7 +189,6 @@ def intervention_video(p):
     for videotimestamp_tag in souptimestamp.find_all('synchro'):
         videotimestamps[videotimestamp_tag.get('id')] = videotimestamp_tag.get('timecode')
     for chapter in soupvideo.find_all('chapter'):
-        timestamp += 10
         videotimestamp = 0
         videotimestamp_thumbnail = 0
         ahtmltimestamp = ''
@@ -255,6 +248,7 @@ def new_intervention():
     intervention = intervention.replace('<p></p>', '')
     intervention = intervention.replace('<p> </p>', '')
     [intervenant, fonction] = getIntervenantFonction(intervenant)
+    timestamp += 10
     curtimestamp = timestamp
     if (intervention):
         intervenants = intervenant.split(' et ')
