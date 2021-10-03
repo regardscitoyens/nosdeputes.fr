@@ -228,6 +228,7 @@ def intervention_video(p):
         if ahtmltimestamp:
             intervention += "</a>"
         intervention += "</p>"
+        new_intervention()
 
 def new_intervention():
     global commission, date, heure, session, source, intervenant, intervention, timestamp
