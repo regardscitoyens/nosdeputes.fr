@@ -89,9 +89,12 @@ def printintervention(i):
     global timestamp
     if i['intervention'] == '<p></p>' or i['intervention'] == '<p> </p>':
         return
+    intervenants = i['intervenant'].split(' et ')
     timestamp += 10
-    i['timestamp'] = str(timestamp)
-    print(json.dumps(i))
+    for intervenant in intervenants:
+        i['timestamp'] = str(timestamp)
+        i['intervenant'] = intervenant
+        print(json.dumps(i))
 
 content_file = sys.argv[1]
 with open(content_file, encoding='utf-8') as f:
