@@ -19,6 +19,7 @@ def xml2json(s):
     numeros_lois = None
     intervenant2fonction = {}
     for p in soup.find_all(['paragraphe', 'point']):
+        intervention = intervention_vierge.copy()
         #Gestion des titres/contextes et numéros de loi
         if p.name == "point" and p.texte and p.texte.get_text() and int(p['nivpoint']) < 4:
             contextes = contextes[:int(p['nivpoint']) -1 ]
@@ -27,11 +28,15 @@ def xml2json(s):
             contextes.append(p.texte.get_text().replace('\n', ''))
         if p['valeur'] and p['valeur'][0:9] == ' (n[[o]] ':
             numeros_lois = p['valeur'][9:-1].replace(' ', '')
+        if len(contextes) > 1:
+            intervention["contexte"] = contextes[0] + " > " + contextes[-1]
+        elif len(contextes) == 1:
+            intervention["contexte"] = contextes[0]
         if p.name == "point":
+            intervention['intervention'] = "<p>"+contextes[-1]+"</p>"
+            printintervention(intervention)
             continue
         #Gestion des interventions
-        intervention = intervention_vierge.copy()
-        intervention["contexte"] = " > ".join(contextes)
         if numeros_lois:
             intervention['numeros_loi'] = numeros_lois
         intervention["source"] += "#"+p['id_syceron']
