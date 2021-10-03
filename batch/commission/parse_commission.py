@@ -298,7 +298,7 @@ def requests_get(url):
     global content_file
     cache_file = "%s_%s.cache" % (content_file, urllib.parse.quote(url, '.'))
     response = None
-    if "--no-cache" not in sys.argv:
+    if "--use-cache" in sys.argv:
         try:
             with open(cache_file, 'r', encoding='utf-8') as cachefile:
                 response = json.load(cachefile)
