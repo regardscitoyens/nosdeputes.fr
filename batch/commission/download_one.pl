@@ -38,4 +38,4 @@ open FILE, ">:utf8", "raw/$opendata_id.url";
 print FILE $raw_url;
 close FILE;
 
-print "raw/$opendata_id $url\n";
+print "raw/$opendata_id html/$htmfile $url\n";

@@ -64,7 +64,6 @@ def html2json(s):
     soup = BeautifulSoup(s, features="lxml")
     p_tags = soup.find(class_="assnatSection1").find_all('p')
     source = source_url
-    cpt = 0
 
     # Meta
     for p in p_tags:
@@ -97,8 +96,6 @@ def html2json(s):
         if (p_text.find('session ') == 0):
             i = p_text.find(' 20')
             session = p_text[i+1:].replace('-', '')
-        if (p_text.find('Compte rendu n° ') == 0):
-            cpt = int(p_text[16:]) * 1000000
 
     # Interventions
     try:
@@ -109,8 +106,6 @@ def html2json(s):
 
     intervention = ''
     for p in p_tags:
-        cpt += 10
-        timestamp = cpt
         b = p.find('b')
         if (b):
             if (b.get_text().find('M.') == 0 or b.get_text().find('Mme') == 0 or b.get_text().find('Monsieur') == 0 or b.get_text().find('Madame') == 0):
@@ -162,7 +157,6 @@ def html2json(s):
             source_backup = source
             intervention_video(p)
             source = source_backup
-            cpt = timestamp
             continue
         intervention += p
     new_intervention()
@@ -195,7 +189,6 @@ def intervention_video(p):
     for videotimestamp_tag in souptimestamp.find_all('synchro'):
         videotimestamps[videotimestamp_tag.get('id')] = videotimestamp_tag.get('timecode')
     for chapter in soupvideo.find_all('chapter'):
-        timestamp += 10000
         videotimestamp = 0
         videotimestamp_thumbnail = 0
         ahtmltimestamp = ''
@@ -235,6 +228,7 @@ def intervention_video(p):
         if ahtmltimestamp:
             intervention += "</a>"
         intervention += "</p>"
+        new_intervention()
 
 def new_intervention():
     global commission, date, heure, session, source, intervenant, intervention, timestamp
@@ -255,17 +249,19 @@ def new_intervention():
     intervention = intervention.replace('<p></p>', '')
     intervention = intervention.replace('<p> </p>', '')
     [intervenant, fonction] = getIntervenantFonction(intervenant)
+    timestamp += 10
+    curtimestamp = timestamp
     if (intervention):
         intervenants = intervenant.split(' et ')
         if len(intervenants) > 1:
             intervenant = "M "+intervenants[0]
             linterventioncommune = intervention
             new_intervention()
-            timestamp += 1
-            intervenant = intervenants[1]
+            curtimestamp += 1
+            intervenant = intervenants[1:]
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
-        print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": timestamp, "fonction": fonction }, ensure_ascii=False))
+        print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
     intervenant = ''
     intervention = ''
 
@@ -298,7 +294,7 @@ def requests_get(url):
     global content_file
     cache_file = "%s_%s.cache" % (content_file, urllib.parse.quote(url, '.'))
     response = None
-    if "--no-cache" not in sys.argv:
+    if "--use-cache" in sys.argv:
         try:
             with open(cache_file, 'r', encoding='utf-8') as cachefile:
                 response = json.load(cachefile)

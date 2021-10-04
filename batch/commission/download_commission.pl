@@ -18,21 +18,20 @@ while ($page < 20) {
   $p = HTML::TokeParser->new(\$content);
   while ($t = $p->get_tag('a')) {
     $txt = $p->get_text('/a');
-    $curl = $file = $t->[1]{href};
-    if ($txt =~ /compte rendu|e nationale \~/i && $curl !~ /(nale\.fr\/dyn\/c\d+\.asp|\/cri\/(2|congres)|\(typeDoc\))/ && $curl =~ /nationale\.fr\/$legislature\//) {
-      $curl =~ s/(^[\s\t]+|[\s\t]+$)//g;
-      $curl =~ s/[^\/]+$//;
+    $source_url = $t->[1]{href};
+    $source_url =~ s/(^[\s\t]+|[\s\t]+$)//g;
+    $file = $source_url;
+    if ($txt =~ /compte rendu|e nationale \~/i && $source_url !~ /(nale\.fr\/dyn\/c\d+\.asp|\/cri\/(2|congres)|\(typeDoc\))/ && $source_url =~ /nationale\.fr\/$legislature\//) {
 
-      $file =~ s/(^[\s\t]+|[\s\t]+$)//g;
       $file =~ s/\//_/gi;
       $file =~ s/\#.*//;
       next if -e "html/$file";
 
-      $b->get($t->[1]{href});
+      $b->get($source_url);
       $text = $b->content;
 
       if ($text !~ /href="(\/dyn\/opendata\/[^"]+\.html)"/) {
-        print STDERR "WARNING: opendata raw html url not found for $curl\n";
+        print STDERR "WARNING: opendata raw html url not found for $source_url\n";
         next;
       }
       $raw_url = "http://www.assemblee-nationale.fr$1";
@@ -40,7 +39,6 @@ while ($page < 20) {
       $opendata_id =~ s/^.*opendata\///;
       next if -e "raw/$opendata_id";
 
-      print "$file\n";
       open FILE, ">:utf8", "html/$file.tmp";
       print FILE $text;
       close FILE;
@@ -54,8 +52,8 @@ while ($page < 20) {
       open FILE, ">:utf8", "raw/$opendata_id.url";
       print FILE $raw_url;
       close FILE;
-      
-      print "raw/$opendata_id html/$file\n";
+
+      print "raw/$opendata_id html/$file $source_url\n";
     }
   }
 }
