@@ -35,7 +35,7 @@ $senateur{'Nom'} =~ s/\s+$//;
 $senateur{'Nom'} =~ s/^\s*//;
 $senateur{'Nom'} =~ s/\s+/ /g;
 $senateur{'Nom_de_famille'} = $senateur{'Nom'};
-if ($senateur{'Nom'} =~ /^(de |d'|du )?[A-ZÀÂÉÈÊËÎÏÔÖÙÛÜÇ]{2}/) {
+if ($senateur{'Nom'} =~ /^(de |d'|del |du )?[A-ZÀÂÉÈÊËÎÏÔÖÙÛÜÇ]{2}/) {
 	$senateur{'Nom'} =~ s/^([dD]([eEuU] |'))?(.+[A-ZÀÂÉÈÊËÎÏÔÖÙÛÜÇ]) ((\s*[A-ZÀÂÉÈÊËÎÏÔÖÙÛÜÇ][\L\w][^\s]*)+)$/$4 $1$3/;
 	#print STDERR $senateur{'Nom'}."\n";
 	$nom = $3;
@@ -335,10 +335,14 @@ if ($content =~ /N..e? le ([0-9]*e?r? \S* [0-9]*)/) {
 }
 
 while($content =~ />([^>\s]+\@[^<\s]+)</g) {
+    if ($1 =~ /Intr@S/) {
+        next;
+    }
 	$senateur{'Mails'}{$1} = 1;
 }
 delete $senateur{'Mails'}{'notices-senateurs@senat.fr'};
 delete $senateur{'Mails'}{'e-bure@u'};
+delete $senateur{'Mails'}{'Intr@Sénat'};
 
 if ($content =~ /Sur Internet :<\/dt>(.*)<dt>/) {
 	$sites_str = $1;
