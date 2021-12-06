@@ -110,7 +110,7 @@ def html2json(s):
     for p in p_tags:
         b = p.find('b')
         if (b):
-            if (b.get_text().find('M.') == 0 or b.get_text().find('Mme') == 0 or b.get_text().find('Monsieur') == 0 or b.get_text().find('Madame') == 0):
+            if (b.get_text().find('M.') == 0 or b.get_text().find('Mme') == 0 or b.get_text().find('Monsieur') == 0 or b.get_text().find('Madame') == 0 or (b.get_text().find(' (') and b.get_text()[-2:] == ').')):
                 new_intervention()
                 intervenant = b.get_text()
                 b.clear()
@@ -270,7 +270,8 @@ def new_intervention():
 def getIntervenantFonction(intervenant):
     global intervenant2fonction, fonction2intervenant
     fonction = ''
-    intervenant = ' '.join(intervenant.split(' ')[1:])
+    if intervenant.find('M.') == 0 or intervenant.find('Mme') == 0 or intervenant.find('Monsieur') == 0 or intervenant.find('Madame') == 0 :
+        intervenant = ' '.join(intervenant.split(' ')[1:])
     intervenant = re.sub(r'\. *$', '', intervenant)
     if fonction2intervenant.get(re.sub(r'^la?e? ', '', intervenant)):
         fonction = intervenant
