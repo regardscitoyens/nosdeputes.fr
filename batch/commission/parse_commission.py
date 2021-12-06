@@ -20,6 +20,8 @@ timestamp = 0
 def cleanhtml(s):
     reg_center = re.compile('<p [^>]*text-align:center[^>]*>(.*)</p>')
     s = reg_center.sub('<p><i>\\1</i></p>', s)
+    reg_boldanditalic = re.compile('<span [^>]*font-weight:bold; font-style:italic[^>]*>([^<]*)</span>')
+    s = reg_boldanditalic.sub('<i><b>\\1</b></i>', s)
     reg_bold = re.compile('<span [^>]*font-weight:bold[^>]*>([^<]*)</span>')
     s = reg_bold.sub('<b>\\1</b>', s)
     reg_italic = re.compile('<span [^>]*font-style:italic[^>]*>([^<]*)</span>')
@@ -140,7 +142,7 @@ def html2json(s):
                 new_intervention()
                 intervenant = oldintervenant
                 continue
-        elif p_str.find('<p><i>') == 0 and p_str.find('</i></p>') > 0:
+        elif p_str.find('<p><i>') == 0 and (p_str.find('</i></p>') > 0 or p_str.find('</i>.</p>') > 0):
             if (intervenant):
                 new_intervention()
             p_str = p_str.replace('<i>', '')
