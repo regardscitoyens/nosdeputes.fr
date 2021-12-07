@@ -108,6 +108,12 @@ def html2json(s):
 
     intervention = ''
     for p in p_tags:
+        a_tags = p.find_all('a')
+        for a in a_tags:
+            if a.get('id'):
+                source = source_url+"#"+a.get('id')
+                a.unwrap()
+                break
         b = p.find('b')
         if (b):
             if (b.get_text().find('M.') == 0 or b.get_text().find('Mme') == 0 or b.get_text().find('Monsieur') == 0 or b.get_text().find('Madame') == 0 or (b.get_text().find(' (') and b.get_text()[-2:] == ').')):
@@ -115,11 +121,10 @@ def html2json(s):
                 intervenant = b.get_text()
                 b.clear()
                 b.unwrap()
-        a_tags = p.find_all('a')
-        for a in a_tags:
-            if a.get('id'):
-                source = source_url+"#"+a.get('id')
-                a.unwrap()
+            else:
+                b_str = str(b)
+                if (b_str.find('</b>') > 0) and b_str[b_str.find('</b>'):] == '</b>':
+                    new_intervention()
         span_tags = p.find_all('span')
         for span in span_tags:
             span.unwrap()
