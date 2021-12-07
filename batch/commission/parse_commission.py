@@ -216,20 +216,18 @@ def intervention_video(p):
         else:
             intervention = "<p><h4>"+chapter.get('label')+"</h4></p>"
             continue
-        intervention += "<p>"
+        intervention += "<p>Intervention uniquement disponible en vidéo.<br/><br/><br/></p>"
+        intervention += "<center><p>"
         if imagehtmlthumbnail:
             if ahtmltimestamp:
                 intervention += ahtmltimestamp
             intervention += imagehtmlthumbnail
             if ahtmltimestamp:
                 intervention += "</a>"
-                intervention += "</p><p>"
+                intervention += "</p></center><center><p>"
         if ahtmltimestamp:
-            intervention += ahtmltimestamp
-        intervention += "<i>(disponible uniquement en vidéo)</i>"
-        if ahtmltimestamp:
-            intervention += "</a>"
-        intervention += "</p>"
+            intervention += ahtmltimestamp + "<i>Consulter la vidéo en cliquant sur la miniature</i></a>"
+        intervention += "</p></center>"
         new_intervention()
 
 def new_intervention():
