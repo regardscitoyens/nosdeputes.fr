@@ -135,7 +135,7 @@ def html2json(s):
             continue;
         p_str = str(p)
         p_str = p_str.replace('\xa0', ' ')
-        if (p_str.find('<p>–') == 0 or p_str.find('<p><b>—') == 0 or p_str.find('<p>—') == 0 or p_str.find('<p><b>—') == 0) and (p_str.find('–<') > 0 or p_str.find('—<') > 0):
+        if (p_str.find('<p>–') == 0 or p_str.find('<p><b>–') == 0 or p_str.find('<p>—') == 0 or p_str.find('<p><b>—') == 0) and (p_str.find('–<') > 0 or p_str.find('—<') > 0):
             continue
         if p_str.find('<p>*</p>') == 0 :
             if (intervenant):
