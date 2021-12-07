@@ -21,7 +21,7 @@ def cleanhtml(s):
     reg_center = re.compile('<p [^>]*text-align:center[^>]*>(.*)</p>')
     s = reg_center.sub('<p><i>\\1</i></p>', s)
     reg_boldanditalic = re.compile('<span [^>]*font-weight:bold; font-style:italic[^>]*>([^<]*)</span>')
-    s = reg_boldanditalic.sub('<i><b>\\1</b></i>', s)
+    s = reg_boldanditalic.sub('<b><i>\\1</i></b>', s)
     reg_bold = re.compile('<span [^>]*font-weight:bold[^>]*>([^<]*)</span>')
     s = reg_bold.sub('<b>\\1</b>', s)
     reg_italic = re.compile('<span [^>]*font-style:italic[^>]*>([^<]*)</span>')
@@ -254,13 +254,18 @@ def new_intervention():
     intervention = intervention.replace('</i> <i>', '')
     intervention = intervention.replace('</b> <b>', '')
     intervention = intervention.replace('<h3></h3>', '')
+    intervention = intervention.replace('</i><b><i>', '<b>')
+    intervention = intervention.replace('</i></b><i>', '</b>')
     intervention = intervention.replace('<i></i>', ' ')
     intervention = intervention.replace('<b></b>', ' ')
     intervention = intervention.replace('<i></i>', ' ')
     intervention = intervention.replace('<p></p>', '')
     intervention = intervention.replace('<p> </p>', '')
+    
     intervention = re.sub(r'([^> ])<b>', r'\1 <b>', intervention)
     intervention = re.sub(r'</b>([^< \.])', r'</b> \1', intervention)
+    intervention = re.sub(r'([^> ])<i>', r'\1 <i>', intervention)
+    intervention = re.sub(r'</i>([^< \.])', r'</i> \1', intervention)
     [intervenant, fonction] = getIntervenantFonction(intervenant)
     timestamp += 10
     curtimestamp = timestamp
