@@ -317,7 +317,7 @@ def getIntervenantFonction(intervenant):
     intervenantfonction = re.findall(r'([^,;]*|présidente?)[,;] ([^\.]*)', intervenant, re.IGNORECASE)
     if (len(intervenantfonction) > 0 and not intervenantfonction[0][0].lower().find('président') >= 0):
         [intervenant, fonction] = intervenantfonction[0]
-    prez = re.findall(r'([^,<]*président?c?e?|c?o?-?rapporteure?)[,;]? ([^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
+    prez = re.findall(r'([^,<]*président?c?e?|c?o?-?rapporteure?)[,;]? (..[^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
     if prez:
         [fonction2, intervenant, fonction3] = prez[0]
         if (fonction):
