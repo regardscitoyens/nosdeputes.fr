@@ -28,10 +28,19 @@ def cleanhtml(s):
     s = reg_italic.sub('<i>\\1</i>', s)
     reg_span = re.compile('<span [^>]*>([^<]*)</span>')
     s = reg_span.sub('\\1', s)
+
+    reg_parenthese = re.compile('</b>\).')
+    s = reg_parenthese.sub(').</b>', s)
+
     reg_doubletag = re.compile('(</i><i>|</b><b>)')
     s = reg_doubletag.sub('', s)
-    reg_doubletag = re.compile('(</i> +<i>|</b> +<b>)')
+    reg_doubletag = re.compile('(</i> +<i>|</b> +<b>|<i> +</i>|<b> +</b>)')
     s = reg_doubletag.sub(' ', s)
+    reg_doubletag = re.compile('(</i>, +<i>|</b>, +<b>|<i>, +</i>|<b>, +</b>)')
+    s = reg_doubletag.sub(', ', s)
+    reg_doubletag = re.compile('(</i>[\'’]<i>|</b>[\'’]<b>|<i>[\'’]</i>|<b>[\'’]</b>)')
+    s = reg_doubletag.sub('\'', s)
+
     reg_doubletag = re.compile('(</i></[^>]*><i>|</b></[^>]*><b>)')
     s = reg_doubletag.sub(' ', s)
 
@@ -143,7 +152,7 @@ def html2json(s):
             continue;
         p_str = str(p)
         p_str = p_str.replace('\xa0', ' ')
-        if (p_str.find('<p>–') == 0 or p_str.find('<p>__') == 0 or p_str.find('<p><i>__') == 0 or p_str.find('<p><b>–') == 0 or p_str.find('<p>—') == 0 or p_str.find('<p><b>—') == 0) and (p_str.find('–<') > 0 or p_str.find('_<') > 0 or p_str.find('—<') > 0):
+        if (p_str.find('<p>–') == 0 or p_str.find('<p>__') == 0 or p_str.find('<p><i>—') == 0 or p_str.find('<p><i>__') == 0 or p_str.find('<p><b>–') == 0 or p_str.find('<p>—') == 0 or p_str.find('<p><b>—') == 0) and (p_str.find('–<') > 0 or p_str.find('_<') > 0 or p_str.find('—<') > 0 or p_str.find('—<') > 0):
             continue
         if p_str.find('<p>*</p>') == 0 :
             if (intervenant):
@@ -158,7 +167,7 @@ def html2json(s):
                 new_intervention()
                 intervenant = oldintervenant
                 continue
-        elif p_str.find('<p><i>') == 0 and (p_str.find('</i></p>') > 0 or p_str.find('</i>.</p>') > 0):
+        elif p_str.find('<p><i>') == 0 and (p_str.find('></p>') > 0 or p_str.find('>.</p>') > 0):
             if (intervenant):
                 new_intervention()
             p_str = p_str.replace('<i>', '')
@@ -253,14 +262,12 @@ def new_intervention():
     intervention = intervention.replace('\xa0', ' ')
     intervention = intervention.replace('\xa0', ' ')
     intervention = intervention.replace('\n', ' ')
-    intervention = intervention.replace('> ', '>')
-    intervention = intervention.replace(' </', '</')
     intervention = intervention.replace('<i> </i>', ' ')
     intervention = intervention.replace('<b> </b>', ' ')
+    intervention = intervention.replace('</i> <i>', ' ')
+    intervention = intervention.replace('</b> <b>', ' ')
     intervention = intervention.replace('</i><i>', '')
     intervention = intervention.replace('</b><b>', '')
-    intervention = intervention.replace('</i> <i>', '')
-    intervention = intervention.replace('</b> <b>', '')
     intervention = intervention.replace('<h3></h3>', '')
     intervention = intervention.replace('</i><b><i>', '<b>')
     intervention = intervention.replace('</i></b><i>', '</b>')
@@ -268,6 +275,8 @@ def new_intervention():
     intervention = intervention.replace('<b></b>', ' ')
     intervention = intervention.replace('<i></i>', ' ')
     intervention = intervention.replace('<p></p>', '')
+    intervention = intervention.replace('<p>*</p>', '')
+    intervention = intervention.replace('<p>* *</p>', '')
     intervention = intervention.replace('<p> </p>', '')
     intervention = intervention.replace('<p>. ', '<p>')
 
@@ -277,6 +286,8 @@ def new_intervention():
     intervention = re.sub(r'</b>([^< \.])', r'</b> \1', intervention)
     intervention = re.sub(r'([^> ])<i>', r'\1 <i>', intervention)
     intervention = re.sub(r'</i>([^< \.])', r'</i> \1', intervention)
+    intervention = re.sub(r' style="[^"]+"', r' ', intervention)
+
     [intervenant, fonction] = getIntervenantFonction(intervenant)
     timestamp += 10
     curtimestamp = timestamp
