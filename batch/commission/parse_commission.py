@@ -32,6 +32,9 @@ def cleanhtml(s):
     s = reg_doubletag.sub('', s)
     reg_doubletag = re.compile('(</i> +<i>|</b> +<b>)')
     s = reg_doubletag.sub(' ', s)
+    reg_doubletag = re.compile('(</i></[^>]*><i>|</b></[^>]*><b>)')
+    s = reg_doubletag.sub(' ', s)
+
     reg_boldinitalic = re.compile('</i><b>([^<]*)</b><i>')
     s = reg_boldinitalic.sub('<b>\\1</b>', s)
 
@@ -267,6 +270,7 @@ def new_intervention():
     intervention = intervention.replace('<p></p>', '')
     intervention = intervention.replace('<p> </p>', '')
     
+    intervention = re.sub(r'<a id="[^""]*">([^<]*)</a>', r'\1 ', intervention)
     intervention = re.sub(r'([^> ])<b>', r'\1 <b>', intervention)
     intervention = re.sub(r'</b>([^< \.])', r'</b> \1', intervention)
     intervention = re.sub(r'([^> ])<i>', r'\1 <i>', intervention)
