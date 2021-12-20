@@ -128,7 +128,7 @@ def html2json(s):
                 break
         b = p.find('b')
         if (b):
-            if (b.get_text().find('M.') == 0 or b.get_text().find('Mme') == 0 or b.get_text().find('Monsieur') == 0 or b.get_text().find('Madame') == 0 or b.get_text().find('Me ') == 0 or b.get_text().find('Dr ') == 0 or (b.get_text().find(' (') and b.get_text()[-2:] == ').')):
+            if (b.get_text().find('M.') == 0 or b.get_text().find('Mme') == 0 or b.get_text().find('Monsieur') == 0 or b.get_text().find('Madame') == 0 or b.get_text().find('Me ') == 0 or b.get_text().find('Dr ') == 0 or b.get_text().find('Grand rabbin') == 0 or (not b.get_text().find('amendement') and b.get_text().find(' (') and b.get_text()[-2:] == ').')):
                 new_intervention()
                 intervenant = b.get_text()
                 b.clear()
