@@ -24,6 +24,8 @@ def cleanhtml(s):
     s = reg_boldanditalic.sub('<b><i>\\1</i></b>', s)
     reg_bold = re.compile('<span [^>]*font-weight:bold[^>]*>([^<]*)</span>')
     s = reg_bold.sub('<b>\\1</b>', s)
+    reg_bold = re.compile('<span [^>]*class=.assnatStrong.[^>]*>([^<]*)</span>')
+    s = reg_bold.sub('<b>\\1</b>', s)
     reg_italic = re.compile('<span [^>]*font-style:italic[^>]*>([^<]*)</span>')
     s = reg_italic.sub('<i>\\1</i>', s)
     reg_span = re.compile('<span [^>]*>([^<]*)</span>')
