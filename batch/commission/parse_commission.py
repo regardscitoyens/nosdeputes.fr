@@ -41,11 +41,10 @@ def cleanhtml(s):
     reg_doubletag = re.compile('(</i>[\'’]<i>|</b>[\'’]<b>|<i>[\'’]</i>|<b>[\'’]</b>)')
     s = reg_doubletag.sub('\'', s)
 
-    reg_doubletag = re.compile('(</i></[^>]*><i>|</b></[^>]*><b>)')
-    s = reg_doubletag.sub(' ', s)
-
-    reg_boldinitalic = re.compile('</i><b>([^<]*)</b><i>')
-    s = reg_boldinitalic.sub('<b>\\1</b>', s)
+    reg_doubletag = re.compile('</i>(</[^>]*>)<i>')
+    s = reg_doubletag.sub('\\1', s)
+    reg_doubletag = re.compile('</b>(</[^>]*>)<b>')
+    s = reg_doubletag.sub('\\1', s)
 
     reg_p = re.compile('<p [^>]*>')
     s = reg_p.sub('<p>', s)
@@ -287,6 +286,14 @@ def new_intervention():
     intervention = re.sub(r'([^> ])<i>', r'\1 <i>', intervention)
     intervention = re.sub(r'</i>([^< \.])', r'</i> \1', intervention)
     intervention = re.sub(r' style="[^"]+"', r' ', intervention)
+    intervention = re.sub(r'([a-z])É([a-z])', r'\1é\2', intervention)
+    intervention = re.sub(r'([a-z])É([a-z])', r'\1é\2', intervention)
+    intervention = re.sub(r'([a-z])È([a-z])', r'\1è\2', intervention)
+    intervention = re.sub(r'([a-z])È([a-z])', r'\1è\2', intervention)
+    intervention = re.sub(r'([a-z])Ê([a-z])', r'\1ê\2', intervention)
+    intervention = re.sub(r'([a-z])Ê([a-z])', r'\1ê\2', intervention)
+    intervention = re.sub(r'([a-z]) À ([a-z])', r'\1 à \2', intervention)
+
 
     [intervenant, fonction] = getIntervenantFonction(intervenant)
     timestamp += 10
