@@ -43,9 +43,9 @@ def cleanhtml(s):
     reg_doubletag = re.compile('(</i>[\'’]<i>|</b>[\'’]<b>|<i>[\'’]</i>|<b>[\'’]</b>)')
     s = reg_doubletag.sub('\'', s)
 
-    reg_doubletag = re.compile('</i>(</[^>]*>)<i>')
+    reg_doubletag = re.compile('</i>(<[^>]*>)<i>')
     s = reg_doubletag.sub('\\1', s)
-    reg_doubletag = re.compile('</b>(</[^>]*>)<b>')
+    reg_doubletag = re.compile('</b>(<[^>]*>)<b>')
     s = reg_doubletag.sub('\\1', s)
 
     reg_p = re.compile('<p([^>]*)style="[^>]*"([^>]*)> *')
