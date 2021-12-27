@@ -66,7 +66,9 @@ def cleanhtml(s):
     reg_sautlignes = re.compile('\s*\n\s*</p>')
     s = reg_sautlignes.sub('</p>', s)
 
-    reg_br = re.compile('<br */>')
+    s = s.replace(' , ', ', ')
+
+    reg_br = re.compile('<br */?>')
     s = reg_br.sub(' ', s)
 
     reg_spaces = re.compile('  +')
@@ -334,7 +336,7 @@ def getIntervenantFonction(intervenant):
     if (len(intervenantfonction) > 0 and not intervenantfonction[0][0].lower().find('président') >= 0):
         [intervenant, fonction] = intervenantfonction[0]
     prez = re.findall(r'([^,<]*président?c?e?|c?o?-?rapporteure?)[,;]? (..[^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
-    if prez:
+    if prez and prez[0][1].find('général') != 0:
         [fonction2, intervenant, fonction3] = prez[0]
         if (fonction):
             fonction = fonction2 + ', ' + fonction + fonction3
@@ -345,6 +347,9 @@ def getIntervenantFonction(intervenant):
     elif(fonction):
         intervenant2fonction[intervenant] = fonction
         fonction2intervenant[fonction] = intervenant
+        fonctionaralonge = re.findall('([^,]*), ([^,]*)', fonction)
+        if fonctionaralonge: 
+            fonction2intervenant[fonctionaralonge[0][0]] = intervenant
     return [intervenant, fonction]
 
 def requests_get(url):
