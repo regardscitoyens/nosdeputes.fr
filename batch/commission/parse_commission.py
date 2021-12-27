@@ -346,7 +346,14 @@ def getIntervenantFonction(intervenant):
         fonction = intervenant2fonction[intervenant]
     elif(fonction):
         intervenant2fonction[intervenant] = fonction
+        fonction = re.sub(r'^la?e? ', '', fonction)
         fonction2intervenant[fonction] = intervenant
+        if fonction.find('rapporteure') >= 0 and not fonction2intervenant.get('rapporteure'):
+            fonction2intervenant['rapporteure'] = intervenant
+        if fonction.find('rapporteur') >= 0 and not fonction2intervenant.get('rapporteur'):
+            fonction2intervenant['rapporteur'] = intervenant
+        if fonction.find('ministre') >= 0 and not fonction2intervenant.get('ministre'):
+            fonction2intervenant['ministre'] = intervenant
         fonctionaralonge = re.findall('([^,]*), ([^,]*)', fonction)
         if fonctionaralonge: 
             fonction2intervenant[fonctionaralonge[0][0]] = intervenant
