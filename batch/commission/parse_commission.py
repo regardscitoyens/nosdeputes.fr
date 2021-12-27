@@ -355,6 +355,8 @@ def getIntervenantFonction(intervenant):
             fonction2intervenant['rapporteur'] = intervenant
         if fonction.find('ministre') >= 0 and not fonction2intervenant.get('ministre'):
             fonction2intervenant['ministre'] = intervenant
+        if fonction.find("secrétaire d'État") >= 0 and not fonction2intervenant.get("secrétaire d'État"):
+            fonction2intervenant["secrétaire d'État"] = intervenant
         fonctionaralonge = re.findall('([^,]*), ([^,]*)', fonction)
         if fonctionaralonge: 
             fonction2intervenant[fonctionaralonge[0][0]] = intervenant
