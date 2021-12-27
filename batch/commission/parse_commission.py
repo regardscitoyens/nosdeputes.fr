@@ -46,8 +46,8 @@ def cleanhtml(s):
     reg_doubletag = re.compile('</b>(</[^>]*>)<b>')
     s = reg_doubletag.sub('\\1', s)
 
-    reg_p = re.compile('<p [^>]*>')
-    s = reg_p.sub('<p>', s)
+    reg_p = re.compile('<p([^>]*)style="[^>]*"([^>]*)> *')
+    s = reg_p.sub('<p\\1 \\2>', s)
 
     s = s.replace('&#xa0;', ' ')
 
@@ -59,8 +59,8 @@ def cleanhtml(s):
     reg_spaces = re.compile('(<(b|i)>) ')
     s = reg_spaces.sub(' \\1', s)
 
-    reg_sautlignes = re.compile('<p>\n\s*')
-    s = reg_sautlignes.sub('<p>', s)
+    reg_sautlignes = re.compile('<p([^>]*)>\n\s*')
+    s = reg_sautlignes.sub('<p\\1>', s)
     reg_sautlignes = re.compile('\s*\n\s*</p>')
     s = reg_sautlignes.sub('</p>', s)
 
@@ -119,6 +119,11 @@ def html2json(s):
 
     intervention = ''
     for p in p_tags:
+        if p.get_attribute_list('class') and p.get_attribute_list('class')[0] and p.get_attribute_list('class')[0].find('Titre') > 0:
+            new_intervention()
+            intervention = '<p><h3>' + p.get_text() + '</h3></p>'
+            new_intervention()
+            continue
         a_tags = p.find_all('a')
         for a in a_tags:
             if a.get('id'):
