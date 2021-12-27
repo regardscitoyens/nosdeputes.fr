@@ -329,6 +329,7 @@ def getIntervenantFonction(intervenant):
     if intervenant.find('M.') == 0 or intervenant.find('Mme') == 0 or intervenant.find('Monsieur') == 0 or intervenant.find('Madame') == 0 :
         intervenant = ' '.join(intervenant.split(' ')[1:])
     intervenant = re.sub(r'\. *$', '', intervenant)
+    intervenant = re.sub(r' *$', '', intervenant)
     if fonction2intervenant.get(re.sub(r'^la?e? ', '', intervenant)):
         fonction = intervenant
         intervenant = fonction2intervenant[re.sub(r'^la?e? ', '', intervenant)]
