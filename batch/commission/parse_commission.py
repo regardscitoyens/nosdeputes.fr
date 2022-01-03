@@ -316,7 +316,7 @@ def new_intervention():
             linterventioncommune = intervention
             new_intervention()
             curtimestamp += 1
-            intervenant = intervenants[1:]
+            intervenant = intervenants[1]
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
         print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
