@@ -326,11 +326,23 @@ def new_intervention():
 def getIntervenantFonction(intervenant):
     global intervenant2fonction, fonction2intervenant
     fonction = ''
+    intervenant_sexe = ''
     if intervenant.find('M.') == 0 or intervenant.find('M ') == 0 or intervenant.find('Mme') == 0 or intervenant.find('Monsieur') == 0 or intervenant.find('Madame') == 0 :
+        if intervenant.find('M.') == 0 or intervenant.find('M ') == 0 or intervenant.find('Monsieur') == 0:
+            intervenant_sexe = '|M|'
+        if intervenant.find('Mme') == 0 or intervenant.find('Madame') == 0 :
+            intervenant_sexe = '|F|'
         intervenant = ' '.join(intervenant.split(' ')[1:])
     intervenant = re.sub(r'\. *$', '', intervenant)
     intervenant = re.sub(r' *$', '', intervenant)
-    if fonction2intervenant.get(re.sub(r'^la?e? ', '', intervenant)):
+    if intervenant.find('le ') == 0 or intervenant.find('Le ') == 0 :
+        intervenant_sexe = '|M|'
+    if intervenant.find('la ') == 0 or intervenant.find('La ') == 0 :
+        intervenant_sexe = '|F|'
+    if fonction2intervenant.get(intervenant_sexe+re.sub(r'^la?e? ', '', intervenant)):
+        fonction = intervenant
+        intervenant = fonction2intervenant[intervenant_sexe+re.sub(r'^la?e? ', '', intervenant)]
+    elif fonction2intervenant.get(re.sub(r'^la?e? ', '', intervenant)):
         fonction = intervenant
         intervenant = fonction2intervenant[re.sub(r'^la?e? ', '', intervenant)]
     intervenantfonction = re.findall(r'([^,;]*|présidente?)[,;] ([^\.]*)', intervenant, re.IGNORECASE)
@@ -349,17 +361,35 @@ def getIntervenantFonction(intervenant):
         intervenant2fonction[intervenant] = fonction
         fonction = re.sub(r'^la?e? ', '', fonction)
         fonction2intervenant[fonction] = intervenant
-        if fonction.find('rapporteure') >= 0 and not fonction2intervenant.get('rapporteure'):
+        fonction2intervenant[intervenant_sexe+fonction] = intervenant
+        if fonction.find('rapporteure générale') >= 0:
+            fonction2intervenant['rapporteure générale'] = intervenant
+            fonction2intervenant['|F|rapporteure générale'] = intervenant
+        elif fonction.find('rapporteur général') >= 0:
+            fonction2intervenant['rapporteur général'] = intervenant
+            fonction2intervenant[intervenant_sexe+'rapporteur général'] = intervenant
+        elif fonction.find('rapporteure spéciale') >= 0:
+            fonction2intervenant['rapporteure spéciale'] = intervenant
+            fonction2intervenant['|F|rapporteure spéciale'] = intervenant
+        elif fonction.find('rapporteur spécial') >= 0:
+            fonction2intervenant['rapporteur spécial'] = intervenant
+            fonction2intervenant[intervenant_sexe+'rapporteur spécial'] = intervenant
+        elif fonction.find('rapporteure') >= 0:
             fonction2intervenant['rapporteure'] = intervenant
-        if fonction.find('rapporteur') >= 0 and not fonction2intervenant.get('rapporteur'):
+            fonction2intervenant['|F|rapporteure'] = intervenant
+        elif fonction.find('rapporteur') >= 0:
             fonction2intervenant['rapporteur'] = intervenant
-        if fonction.find('ministre') >= 0 and not fonction2intervenant.get('ministre'):
+            fonction2intervenant[intervenant_sexe+'rapporteur'] = intervenant
+        if fonction.find('ministre') >= 0:
             fonction2intervenant['ministre'] = intervenant
-        if fonction.find("secrétaire d'État") >= 0 and not fonction2intervenant.get("secrétaire d'État"):
+            fonction2intervenant[intervenant_sexe+'ministre'] = intervenant
+        if fonction.find("secrétaire d'État") >= 0:
             fonction2intervenant["secrétaire d'État"] = intervenant
+            fonction2intervenant[intervenant_sexe+"secrétaire d'État"] = intervenant
         fonctionaralonge = re.findall('([^,]*), ([^,]*)', fonction)
         if fonctionaralonge: 
             fonction2intervenant[fonctionaralonge[0][0]] = intervenant
+            fonction2intervenant[intervenant_sexe+fonctionaralonge[0][0]] = intervenant
     return [intervenant, fonction]
 
 def requests_get(url):
