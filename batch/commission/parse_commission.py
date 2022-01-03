@@ -36,7 +36,10 @@ def cleanhtml(s):
 
     reg_doubletag = re.compile('(</i><i>|</b><b>)')
     s = reg_doubletag.sub('', s)
+    s = reg_doubletag.sub('', s)
+
     reg_doubletag = re.compile('(</i> +<i>|</b> +<b>|<i> +</i>|<b> +</b>)')
+    s = reg_doubletag.sub(' ', s)
     s = reg_doubletag.sub(' ', s)
     reg_doubletag = re.compile('(</i>, +<i>|</b>, +<b>|<i>, +</i>|<b>, +</b>)')
     s = reg_doubletag.sub(', ', s)
@@ -76,6 +79,8 @@ def cleanhtml(s):
     
     reg_doubletag = re.compile('(</i> *<i>|</b> *<b>|<i> *</i>|<b> *</b>)')
     s = reg_doubletag.sub(' ', s)
+
+    s = s.replace('<p >', '<p>')
     
     return s
 
