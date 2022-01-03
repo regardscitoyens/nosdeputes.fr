@@ -28,6 +28,8 @@ def cleanhtml(s):
     s = reg_bold.sub('<b>\\1</b>', s)
     reg_italic = re.compile('<span [^>]*font-style:italic[^>]*>([^<]*)</span>')
     s = reg_italic.sub('<i>\\1</i>', s)
+    reg_underline = re.compile('<span [^>]*text-decoration:underline[^>]*>([^<]*)</span>')
+    s = reg_underline.sub('<i>\\1</i>', s)
     reg_span = re.compile('<span [^>]*>([^<]*)</span>')
     s = reg_span.sub('\\1', s)
 
@@ -299,8 +301,6 @@ def new_intervention():
     intervention = intervention.replace('<p> </p>', '')
     intervention = intervention.replace('<p>. ', '<p>')
 
-    intervention = re.sub(r'<p[^>]*>', '<p>', intervention)
-    intervention = re.sub(r'<p> *', '<p>', intervention)
     intervention = re.sub(r'<a id="[^""]*">([^<]*)</a>', r'\1 ', intervention)
     intervention = re.sub(r'([^> ])<b>', r'\1 <b>', intervention)
     intervention = re.sub(r'</b>([^< \.])', r'</b> \1', intervention)
@@ -314,7 +314,8 @@ def new_intervention():
     intervention = re.sub(r'([a-z])Ê([a-z])', r'\1ê\2', intervention)
     intervention = re.sub(r'([a-z])Ê([a-z])', r'\1ê\2', intervention)
     intervention = re.sub(r'([a-z]) À ([a-z])', r'\1 à \2', intervention)
-
+    intervention = re.sub(r'<p[^>]*>', '<p>', intervention)
+    intervention = re.sub(r'<p> *', '<p>', intervention)
 
     [intervenant, fonction] = getIntervenantFonction(intervenant)
     timestamp += 10
