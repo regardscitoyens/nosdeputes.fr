@@ -20,6 +20,8 @@ timestamp = 0
 def cleanhtml(s):
     reg_center = re.compile('<p [^>]*text-align:center[^>]*>(.*)</p>')
     s = reg_center.sub('<p><i>\\1</i></p>', s)
+    reg_normal = re.compile('<span [^>]*font-weight:normal[^>]*>(.*)</span>')
+    s = reg_normal.sub('\\1', s)
     reg_boldanditalic = re.compile('<span [^>]*font-weight:bold; font-style:italic[^>]*>([^<]*)</span>')
     s = reg_boldanditalic.sub('<b><i>\\1</i></b>', s)
     reg_bold = re.compile('<span [^>]*font-weight:bold[^>]*>([^<]*)</span>')
