@@ -73,7 +73,10 @@ def cleanhtml(s):
 
     reg_spaces = re.compile('  +')
     s = reg_spaces.sub(' ', s)
-
+    
+    reg_doubletag = re.compile('(</i> *<i>|</b> *<b>|<i> *</i>|<b> *</b>)')
+    s = reg_doubletag.sub(' ', s)
+    
     return s
 
 def html2json(s):
