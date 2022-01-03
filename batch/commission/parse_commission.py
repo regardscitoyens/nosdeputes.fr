@@ -169,6 +169,8 @@ def html2json(s):
         p_str = str(p)
         p_str = re.sub(r'<p[^>]*>', '<p>', p_str)
         p_str = p_str.replace('\xa0', ' ')
+        if p_str.find("<p></p>") == 0:
+            continue
         if (p_str.find('<p>–') == 0 or p_str.find('<p>__') == 0 or p_str.find('<p><i>—') == 0 or p_str.find('<p><i>__') == 0 or p_str.find('<p><b>–') == 0 or p_str.find('<p>—') == 0 or p_str.find('<p><b>—') == 0) and (p_str.find('–<') > 0 or p_str.find('_<') > 0 or p_str.find('—<') > 0 or p_str.find('—<') > 0):
             continue
         if p_str.find('<p>*</p>') == 0 :
