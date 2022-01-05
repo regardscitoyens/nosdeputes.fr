@@ -80,5 +80,6 @@ head -1 $JSON                               |
 cat $JSON                               |
   sed 's/^.*"source": "/SOURCE:     /'  |
   sed 's/[#"].*$/\n/'                   |
+  sed 's/\?timecode=.*$//'              |
   grep .                                |
   sort -u
