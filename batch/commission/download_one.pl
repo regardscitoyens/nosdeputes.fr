@@ -21,7 +21,6 @@ $opendata_id =~ s/^.*opendata\///;
 $htmfile = $url;
 $htmfile =~ s/\//_/gi;
 $htmfile =~ s/\#.*//;
-print "$url -> html/$htmfile\n";
 
 open FILE, ">:utf8", "html/$htmfile.tmp";
 print FILE $content;
