@@ -31,7 +31,8 @@ cat $JSON | while read line; do
   newinterv=$(echo $line            |
     sed 's/^.*"intervenant": "//'   |
     sed 's/",.*"fonction": "/, /'   |
-    sed 's/".*$//'
+    sed 's/".*$//'                  |
+    sed 's/^, $//'
   )
   newtext=$(echo $line              |
     sed 's/^.*"intervention": "//'  |
