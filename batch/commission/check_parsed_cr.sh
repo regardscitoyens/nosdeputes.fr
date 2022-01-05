@@ -9,7 +9,7 @@ DATE=$(head -1 $JSON            |
 DEPUTES=$(echo "SELECT nom from parlementaire
                 WHERE fin_mandat IS NULL
                    OR fin_mandat > '$DATE'"     |
-          mysql $MYSQLID $DBNAME                |
+          mysql $MYSQLID $DBNAME 2> /dev/null   |
           grep -v '^nom'                        |
           sed 's/[\Wàâäéèêëîïôöùûüç]/./g'       |
           sed 's/[ \-]/[ \\-]/g'                |
