@@ -157,6 +157,10 @@ def html2json(s):
                 b_str = str(b)
                 if (b_str.find('</b>') > 0) and b_str[b_str.find('</b>'):] == '</b>' and len(b_str) > 8 and b_str.find('<b>') < 100:
                     new_intervention()
+                    if (b_str.find(')</b>') > 0 or b_str.find(').</b>') > 0) and not str(p).find('</b></p>') > 0 and not re.search(r'\d', str(p)):
+                        intervenant = b.get_text()
+                        b.clear()
+                        b.unwrap()
         span_tags = p.find_all('span')
         for span in span_tags:
             span.unwrap()
