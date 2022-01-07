@@ -9,7 +9,7 @@ DATE=$(head -1 $JSON            |
 DEPUTES=$(echo "SELECT nom from parlementaire
                 WHERE fin_mandat IS NULL
                    OR fin_mandat > '$DATE'"     |
-          mysql $MYSQLID $DBNAME                |
+          mysql $MYSQLID $DBNAME 2> /dev/null   |
           grep -v '^nom'                        |
           sed 's/[\Wàâäéèêëîïôöùûüç]/./g'       |
           sed 's/[ \-]/[ \\-]/g'                |
@@ -31,7 +31,8 @@ cat $JSON | while read line; do
   newinterv=$(echo $line            |
     sed 's/^.*"intervenant": "//'   |
     sed 's/",.*"fonction": "/, /'   |
-    sed 's/".*$//'
+    sed 's/".*$//'                  |
+    sed 's/^, $//'
   )
   newtext=$(echo $line              |
     sed 's/^.*"intervention": "//'  |
@@ -79,5 +80,6 @@ head -1 $JSON                               |
 cat $JSON                               |
   sed 's/^.*"source": "/SOURCE:     /'  |
   sed 's/[#"].*$/\n/'                   |
+  sed 's/\?timecode=.*$//'              |
   grep .                                |
   sort -u
