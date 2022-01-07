@@ -17,6 +17,13 @@ intervenant2fonction = {}
 fonction2intervenant = {}
 timestamp = 0
 
+def hasPrefixIntervenant(s):
+    for prefix in ['M.', 'Mme', 'Monsieur', 'Madame', 'Me ', 'Dr ', 'Grand rabbin', 'Adjudant', 'Capitaine', 'Caporal', 'Colonel', 'Commandant', 'Commissaire', 'Infirmier', 'Major', 'Maitre', 'Maître', 'Premier', 'Sergent']:
+        if s.find(prefix) == 0:
+            return True
+    return False
+
+
 def cleanhtml(s):
     reg_center = re.compile('<p [^>]*text-align:center[^>]*>(.*)</p>')
     s = reg_center.sub('<p><i>\\1</i></p>', s)
@@ -148,7 +155,7 @@ def html2json(s):
                 break
         b = p.find('b')
         if (b):
-            if (b.get_text().find('M.') == 0 or b.get_text().find('Mme') == 0 or b.get_text().find('Monsieur') == 0 or b.get_text().find('Madame') == 0 or b.get_text().find('Me ') == 0 or b.get_text().find('Dr ') == 0 or b.get_text().find('Grand rabbin') == 0 or (not b.get_text().find('amendement') and b.get_text().find(' (') and b.get_text()[-2:] == ').')):
+            if (hasPrefixIntervenant(b.get_text()) or (not b.get_text().find('amendement') and b.get_text().find(' (') and b.get_text()[-2:] == ').')):
                 new_intervention()
                 intervenant = b.get_text()
                 b.clear()
@@ -262,7 +269,7 @@ def intervention_video(p):
             if (imagethumbnail and imagethumbnail['content_type'] != 'error'):
                 imagehtmlthumbnail = "<img src='data:%s;base64,%s'/>" % (imagethumbnail['content_type'], imagethumbnail['content'])
         new_intervention()
-        if (chapter.get('label').find('M.') == 0 or chapter.get('label').find('Mme') == 0):
+        if hasPrefixIntervenant(chapter.get('label')):
             intervenant = chapter.get('label')
             intervention = ''
         else:
