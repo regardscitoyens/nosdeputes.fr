@@ -19,7 +19,7 @@ timestamp = 0
 has_intervenant = False
 
 def hasPrefixIntervenant(s):
-    for prefix in ['M.', 'Mme', 'Monsieur', 'Madame', 'Me ', 'Dr ', 'Grand rabbin', 'Adjudant', 'Capitaine', 'Caporal', 'Colonel', 'Commandant', 'Commissaire', 'Infirmier', 'Général', 'Major', 'Maitre', 'Maître', 'Premier', 'Sergent']:
+    for prefix in ['M.', 'MM.', 'M ', 'Mme', 'Monsieur', 'Madame', 'Me ', 'Dr ', 'Grand rabbin', 'Adjudant', 'Amiral', 'Capitaine', 'Caporal', 'Colonel', 'Commandant', 'Commissaire', 'Infirmier', 'Général', 'Lieutenant', 'Major', 'Maitre', 'Maître', 'Premier', 'Sergent', 'Pr ', 'Professeur', 'La policière', 'Le Président']:
         if s.find(prefix) == 0:
             return True
     return False
