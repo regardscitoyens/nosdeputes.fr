@@ -10,12 +10,13 @@ import urllib
 
 mois2nmois = {'janvier': 1, 'février': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin':6, 'juillet': 7, 'août': 8, 'septembre': 9, 'octobre': 10, 'novembre': 11, 'décembre': 12}
 
-global commission, date, heure, session, source, intervenant, intervention, timestamp, fonction, intervenant2fonction,fonction2intervenant, content_file
+global commission, date, heure, session, source, intervenant, intervention, timestamp, fonction, intervenant2fonction,fonction2intervenant, content_file, has_intervenant
 
 [commission, date, heure, session, source, intervenant, intervention, fonction] = ['', '', '', '', '', '', '', '']
 intervenant2fonction = {}
 fonction2intervenant = {}
 timestamp = 0
+has_intervenant = False
 
 def hasPrefixIntervenant(s):
     for prefix in ['M.', 'Mme', 'Monsieur', 'Madame', 'Me ', 'Dr ', 'Grand rabbin', 'Adjudant', 'Capitaine', 'Caporal', 'Colonel', 'Commandant', 'Commissaire', 'Infirmier', 'Général', 'Major', 'Maitre', 'Maître', 'Premier', 'Sergent']:
@@ -218,6 +219,9 @@ def html2json(s):
             intervention += p
             new_intervention()
             source_backup = source
+            if has_intervenant:
+                sys.stderr.write("ATTENTION: intervention avec intervenant ET intervention en vidéo ("+source+")\n")
+                print(json.dumps({"commission": "", "intervention": "ATTENTION : intervention avec intervenant ET intervention en vidéo", "date": "", "source": source, "heure": "" }, ensure_ascii=False))
             intervention_video(p)
             source = source_backup
             continue
@@ -292,7 +296,7 @@ def intervention_video(p):
         new_intervention()
 
 def new_intervention():
-    global commission, date, heure, session, source, intervenant, intervention, timestamp
+    global commission, date, heure, session, source, intervenant, intervention, timestamp, has_intervenant
     #{"commission": "commission des finances, de l'économie générale et du contrôle budgétaire", "intervention": "<p>Présidence de M. Éric Woerth, Président</p>", "date": "2020-01-15", "source": "http://www.assemblee-nationale.fr/15/cr-cfiab/19-20/c1920037.asp#P9_450", "heure": "09:30", "session": "20192020", "intervenant": "", "timestamp": "37000020"}
     intervenant = intervenant.replace('\xa0', ' ')
     intervention = intervention.replace('\xa0', ' ')
@@ -346,6 +350,8 @@ def new_intervention():
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
         print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
+    if (intervenant):
+        has_intervenant = True
     intervenant = ''
     intervention = ''
 
