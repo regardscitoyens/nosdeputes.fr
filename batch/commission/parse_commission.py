@@ -44,7 +44,7 @@ def cleanhtml(s):
     reg_span = re.compile('<span [^>]*>([^<]*)</span>')
     s = reg_span.sub('\\1', s)
 
-    reg_parenthese = re.compile('</b>\).')
+    reg_parenthese = re.compile('</b>\)\.')
     s = reg_parenthese.sub(').</b>', s)
 
     reg_doubletag = re.compile('(</i><i>|</b><b>)')
