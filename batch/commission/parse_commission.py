@@ -241,6 +241,7 @@ def intervention_video(p):
         try:
             videoid = video[0][1]
             urlvideo = video[0][0]
+            urlvideo = re.sub('\??timecode=\d*', '', urlvideo)
             urlvideo_meta = "http://videos.assemblee-nationale.fr/Datas/an/%s/content/data.nvs" % videoid
             urlvideotimestamp = "https://videos.assemblee-nationale.fr/Datas/an/%s/content/finalplayer.nvs" % videoid
             response = requests_get(urlvideo_meta)
