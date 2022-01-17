@@ -35,6 +35,8 @@ def cleanhtml(s):
     s = reg_bold.sub('<b>\\1</b>', s)
     reg_bold = re.compile('<span [^>]*class=.assnatStrong.[^>]*>([^<]*)</span>')
     s = reg_bold.sub('<b>\\1</b>', s)
+    reg_bold = re.compile('<span [^>]*class=.assnatGras.[^>]*>([^<]*)</span>')
+    s = reg_bold.sub('<b>\\1</b>', s)
     reg_italic = re.compile('<span [^>]*font-style:italic[^>]*>([^<]*)</span>')
     s = reg_italic.sub('<i>\\1</i>', s)
     reg_underline = re.compile('<span [^>]*text-decoration:underline[^>]*>([^<]*)</span>')
