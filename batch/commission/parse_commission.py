@@ -18,7 +18,7 @@ fonction2intervenant = {}
 timestamp = 0
 
 def hasPrefixIntervenant(s):
-    for prefix in ['M.', 'Mme', 'Monsieur', 'Madame', 'Me ', 'Dr ', 'Grand rabbin', 'Adjudant', 'Capitaine', 'Caporal', 'Colonel', 'Commandant', 'Commissaire', 'Infirmier', 'Major', 'Maitre', 'Maître', 'Premier', 'Sergent']:
+    for prefix in ['M.', 'Mme', 'Monsieur', 'Madame', 'Me ', 'Dr ', 'Grand rabbin', 'Adjudant', 'Capitaine', 'Caporal', 'Colonel', 'Commandant', 'Commissaire', 'Infirmier', 'Général', 'Major', 'Maitre', 'Maître', 'Premier', 'Sergent']:
         if s.find(prefix) == 0:
             return True
     return False
