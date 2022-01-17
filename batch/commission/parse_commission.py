@@ -337,6 +337,19 @@ def new_intervention():
     intervention = re.sub(r'<p[^>]*>', '<p>', intervention)
     intervention = re.sub(r'<p> *', '<p>', intervention)
 
+    if len(intervention) > 200000:
+        intervention = re.sub(r'<p><img [^>]*></p>', '<p><i>(image non chargée)</i></p>', intervention)
+    if len(intervention) > 100000:
+        fin_p = 30000 + intervention[30000:].find('</p>') + 4
+        intervention1 = intervention[0:fin_p]
+        intervention2 = intervention[fin_p:]
+        intervention = intervention1
+        new_intervention()
+        intervention = intervention2
+        new_intervention()
+    if len(source) >= 200:
+        source = re.sub(r'(/video\.[^\.]*)\.[^?]*', r'\1', source)
+
     [intervenant, fonction] = getIntervenantFonction(intervenant)
     timestamp += 10
     curtimestamp = timestamp
