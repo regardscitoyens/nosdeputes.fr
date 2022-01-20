@@ -6,7 +6,7 @@ case "$1" in
     -i inventories/local \
     -b books/local_install.yml \
     -e dont_touch_my_docker=true \
-    -e use_stretch=true \
+    -e use_debian_stretch=true \
     -e cpc_senat=true \
     -e cpc_repo=/home/njoyard/dev/rc/nossenateurs.fr \
     -e cpc_version=nossenateurs.fr_foransible \
