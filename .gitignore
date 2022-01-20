@@ -10,6 +10,8 @@
 *.sv
 
 ansible/books/*.retry
+ansible/cpc
+ansible/venv
 
 bin/db.inc
 config/app.yml
