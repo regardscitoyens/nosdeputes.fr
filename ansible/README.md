@@ -20,7 +20,11 @@ $ pip install "ansible>=2.2"
 
 * docker, docker-compose (avec un alias dans /usr/local/bin)
 * `pip install docker` dans le virtualenv
-* utiliser les books avec `-e dont_touch_my_docker=true -e use_stretch=true`
+* utiliser les books avec `-e dont_touch_my_docker=true -e use_debian_stretch=true`
+
+### Prérequis sur Ubuntu
+
+* utiliser les books avec `-e use_ubuntu=true`
 
 ## Aperçu de la configuration des playbooks
 

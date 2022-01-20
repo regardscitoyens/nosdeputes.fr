@@ -105,4 +105,5 @@ cpc_smtp_host: localhost
 cpc_smtp_port: 25
 
 dont_touch_my_docker: false
-use_stretch: false
+use_debian_stretch: false
+use_ubuntu: false
