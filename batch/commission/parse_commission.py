@@ -257,6 +257,8 @@ def intervention_video(p):
             videoid = video[0][1]
             urlvideo = video[0][0]
             urlvideo = re.sub('\??timecode=\d*', '', urlvideo)
+            if len(urlvideo) >= 180:
+                urlvideo = re.sub(r'(/video\.[^\.]*)\.[^?]*', r'\1', urlvideo)
             urlvideo_meta = "http://videos.assemblee-nationale.fr/Datas/an/%s/content/data.nvs" % videoid
             urlvideotimestamp = "https://videos.assemblee-nationale.fr/Datas/an/%s/content/finalplayer.nvs" % videoid
             response = requests_get(urlvideo_meta)
@@ -366,8 +368,6 @@ def new_intervention():
         new_intervention()
         intervention = intervention2
         new_intervention()
-    if len(source) >= 200:
-        source = re.sub(r'(/video\.[^\.]*)\.[^?]*', r'\1', source)
 
     [intervenant, fonction] = getIntervenantFonction(intervenant)
     timestamp += 10
