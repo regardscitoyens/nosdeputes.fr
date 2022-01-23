@@ -235,8 +235,7 @@ def html2json(s):
             new_intervention()
             source_backup = source
             if has_intervenant:
-                sys.stderr.write("ATTENTION: intervention avec intervenant ET intervention en vidéo ("+source+")\n")
-                print(json.dumps({"commission": "", "intervention": "ATTENTION : intervention avec intervenant ET intervention en vidéo", "date": "", "source": source, "heure": "" }, ensure_ascii=False))
+                print("ATTENTION: compte-rendu contenant à la fois une vidéo et de vraies interventions, à contrôler/nettoyer avant chargement : " + source, file=sys.stderr)
             intervention_video(p)
             source = source_backup
             continue
@@ -383,7 +382,7 @@ def new_intervention():
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
         print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
-    if intervenant:
+    if intervenant and not fonction.find('résident') > 0:
         has_intervenant = True
     intervenant = ''
     intervention = ''
