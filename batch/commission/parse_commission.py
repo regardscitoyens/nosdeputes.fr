@@ -288,11 +288,15 @@ def intervention_video(p):
             if (imagethumbnail and imagethumbnail['content_type'] != 'error'):
                 imagehtmlthumbnail = "<img src='data:%s;base64,%s'/>" % (imagethumbnail['content_type'], imagethumbnail['content'])
         new_intervention()
-        if hasPrefixIntervenant(chapter.get('label')):
-            intervenant = chapter.get('label')
+        label = chapter.get('label')
+        label = re.sub(r'^\s', '', label)
+        label = re.sub(r'\s*$', '', label)
+        label = re.sub(r'\s+', ' ', label)
+        if hasPrefixIntervenant(label):
+            intervenant = label
             intervention = ''
         else:
-            intervention = "<p><h4>"+chapter.get('label')+"</h4></p>"
+            intervention = "<p><h4>"+label+"</h4></p>"
             continue
         intervention += "<p>Intervention uniquement disponible en vidéo.<br/><br/><br/></p>"
         intervention += "<center><p>"
