@@ -90,12 +90,12 @@ def cleanhtml(s):
 
     reg_spaces = re.compile('  +')
     s = reg_spaces.sub(' ', s)
-    
+
     reg_doubletag = re.compile('(</i> *<i>|</b> *<b>|<i> *</i>|<b> *</b>)')
     s = reg_doubletag.sub(' ', s)
 
     s = s.replace('<p >', '<p>')
-    
+
     return s
 
 def html2json(s):
@@ -190,6 +190,7 @@ def html2json(s):
         if p_str.find("<p></p>") == 0:
             continue
         if (p_str.find('<p>–') == 0 or p_str.find('<p>----') == 0 or p_str.find('<p>__') == 0 or p_str.find('<p><i>—') == 0 or p_str.find('<p><i>__') == 0 or p_str.find('<p><b>–') == 0 or p_str.find('<p>—') == 0 or p_str.find('<p><b>—') == 0) and (p_str.find('–<') > 0 or p_str.find('----<') > 0 or p_str.find('_<') > 0 or p_str.find('—<') > 0 or p_str.find('—<') > 0):
+            new_intervention()
             continue
         if p_str.find('<p>*</p>') == 0 :
             if (intervenant):
@@ -433,7 +434,7 @@ def getIntervenantFonction(intervenant):
             fonction2intervenant["secrétaire d'État"] = intervenant
             fonction2intervenant[intervenant_sexe+"secrétaire d'État"] = intervenant
         fonctionaralonge = re.findall('([^,]*), ([^,]*)', fonction)
-        if fonctionaralonge: 
+        if fonctionaralonge:
             fonction2intervenant[fonctionaralonge[0][0]] = intervenant
             fonction2intervenant[intervenant_sexe+fonctionaralonge[0][0]] = intervenant
     return [intervenant, fonction]
