@@ -19,7 +19,7 @@ timestamp = 0
 has_intervenant = False
 
 def hasPrefixIntervenant(s):
-    for prefix in ['M.', 'MM.', 'M ', 'Mme', 'Monsieur', 'Madame', 'Me ', 'Dr ', 'Grand rabbin', 'Adjudant', 'Amiral', 'Capitaine', 'Caporal', 'Colonel', 'Commandant', 'Commissaire', 'Infirmier', 'Général', 'Lieutenant', 'Major', 'Maitre', 'Maître', 'Premier', 'Sergent', 'Pr ', 'Professeur', 'La policière', 'Le Président', 'Thierry', 'Thibault', 'Jacques', 'Jean', 'Nicole', 'Pierre', 'Patrice', 'Francis', 'Gwendal', 'Stéphane', 'Fabrice', 'Fabien', 'Frédéric', 'Laurent', 'Agnès', 'Ugo ']:
+    for prefix in ['M.', 'MM.', 'M ', 'Mme', 'Monsieur', 'Madame', 'Me ', 'Dr ', 'Grand rabbin', 'Adjudant', 'Amiral', 'Capitaine', 'Caporal', 'Colonel', 'Commandant', 'Commissaire', 'Infirmier', 'Général', 'Lieutenant', 'Major', 'Maitre', 'Maître', 'Premier', 'Sergent', 'Pr ', 'Professeur', 'La policière', 'Le Président', 'Thierry', 'Thibault', 'Jacques', 'Jean', 'Nicole', 'Pierre', 'Patrice', 'Francis', 'Gwendal', 'Stéphane', 'Fabrice', 'Fabien', 'Frédéric', 'Laurent', 'Agnès', 'Ugo ', 'CGA ', 'Cr1 ', 'Ica ', 'Quatrier-Maitre']:
         if s.find(prefix) == 0:
             return True
     return False
