@@ -340,7 +340,7 @@ def new_intervention():
 
     if len(intervention) > 200000:
         intervention = re.sub(r'<p><img [^>]*></p>', '<p><i>(image non chargée)</i></p>', intervention)
-    if len(intervention) > 100000:
+    while len(intervention) > 100000:
         fin_p = 30000 + intervention[30000:].find('</p>') + 4
         intervention1 = intervention[0:fin_p]
         intervention2 = intervention[fin_p:]
