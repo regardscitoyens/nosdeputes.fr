@@ -26,8 +26,11 @@ def hasPrefixIntervenant(s):
 
 
 def cleanhtml(s):
+    s = re.sub(r'\t', ' ', s)
     reg_center = re.compile(r'<p [^>]*text-align:center[^>]*>(.*)</p>')
     s = reg_center.sub(r'<p><i>\1</i></p>', s)
+    reg_bold = re.compile(r'(<p [^>]*)class=.assnatRubrique2.([^>]*>)\s*(.*?)\s*</p>')
+    s = reg_bold.sub(r'\1 \2<b>\3</b></p>', s)
     reg_normal = re.compile(r'<span [^>]*font-weight:normal[^>]*>(.*)</span>')
     s = reg_normal.sub(r'\1', s)
     reg_boldanditalic = re.compile(r'<span [^>]*font-weight:bold; font-style:italic[^>]*>([^<]*)</span>')
