@@ -212,6 +212,17 @@ def html2json(s):
             p_str = p_str.replace('</i>', '')
             intervention += p_str
             continue
+        didascalie = re.search(r'(^.*[.…!?]+) *\(([^)]+)\) *(.*</p>)', p_str)
+        if didascalie:
+            intervention += didascalie.group(1) + '</p>'
+            oldintervenant = intervenant
+            new_intervention()
+            intervention = '<p><i>(' + didascalie.group(2) + ')</i></p>'
+            new_intervention()
+            intervenant = oldintervenant
+            intervention = '<p>' + didascalie.group(3)
+            new_intervention()
+            continue
         br = p.find('br')
         if (br):
             br.unwrap()
