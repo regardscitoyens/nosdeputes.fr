@@ -108,31 +108,31 @@ def html2json(s):
     for p in p_tags:
         p_text = p.get_text()
         p_text = p_text.replace('\xa0', ' ')
-        if (p_text.find('Commission') == 0 or p_text.find('Délégation') == 0 or p_text.find('Mission') == 0 or p_text.find('Office') == 0 or p_text.find('Comité') == 0):
+        if p_text.find('Commission') == 0 or p_text.find('Délégation') == 0 or p_text.find('Mission') == 0 or p_text.find('Office') == 0 or p_text.find('Comité') == 0:
             commission = p_text
         for wday in ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'] + list(mois2nmois.keys()):
-            if (p_text.lower().find(wday) >= 0):
+            if p_text.lower().find(wday) >= 0:
                 try:
                     days = re.findall(r'(\d+)e?r? *([^ \d]+) +(\d+)', p_text)
                     if len(days) > 0:
                         date = "%04d-%02d-%02d" % (int(days[0][2]), mois2nmois[days[0][1].lower()], int(days[0][0]))
-                        if (mois2nmois[days[0][1].lower()] > 8):
+                        if mois2nmois[days[0][1].lower()] > 8:
                             session = days[0][2]+str(int(days[0][2]) + 1)
                         else:
                             session = str(int(days[0][2]) - 1)+days[0][2]
                         break
                 except KeyError:
                     continue
-        if (p_text.lower().find(' heure') > -1 or p_text.find(' h ') > -1):
+        if p_text.lower().find(' heure') > -1 or p_text.find(' h ') > -1:
             heures = re.findall(r'(\d+) *h(?:eures?)? *(\d*)', p_text.lower())
             if len(heures) > 0 and heures[0][0]:
                 heure = "%02d:" % int(heures[0][0])
-                if (len(heures[0]) > 1 and heures[0][1]):
+                if len(heures[0]) > 1 and heures[0][1]:
                     heure += "%02d" % int(heures[0][1])
                 else:
                     heure += '00'
             continue
-        if (p_text.find('session ') == 0):
+        if p_text.find('session ') == 0:
             i = p_text.find(' 20')
             session = p_text[i+1:].replace('-', '')
 
@@ -157,15 +157,15 @@ def html2json(s):
                 a.unwrap()
                 break
         b = p.find('b')
-        if (b):
-            if (hasPrefixIntervenant(b.get_text()) or (not b.get_text().find('amendement') and b.get_text().find(' (') and b.get_text()[-2:] == ').')):
+        if b:
+            if hasPrefixIntervenant(b.get_text()) or (not b.get_text().find('amendement') and b.get_text().find(' (') and b.get_text()[-2:] == ').'):
                 new_intervention()
                 intervenant = b.get_text()
                 b.clear()
                 b.unwrap()
             else:
                 b_str = str(b)
-                if (b_str.find('</b>') > 0) and b_str[b_str.find('</b>'):] == '</b>' and len(b_str) > 8 and b_str.find('<b>') < 100:
+                if b_str.find('</b>') > 0 and b_str[b_str.find('</b>'):] == '</b>' and len(b_str) > 8 and b_str.find('<b>') < 100:
                     new_intervention()
                     if (b_str.find(')</b>') > 0 or b_str.find(').</b>') > 0) and not str(p).find('</b></p>') > 0 and not re.search(r'\d', str(p)):
                         intervenant = b.get_text()
@@ -193,11 +193,11 @@ def html2json(s):
             new_intervention()
             continue
         if p_str.find('<p>*</p>') == 0 :
-            if (intervenant):
+            if intervenant:
                 new_intervention()
         if p_str.find('<i>(') > 0 and p_str.find(')</i>') > 0 :
             didascalie = re.findall(r'(.*)(<i>\([^)]*\)</i>)( *.? *</p>)', p_str)
-            if(didascalie):
+            if didascalie:
                 intervention += didascalie[0][0] + didascalie[0][2]
                 oldintervenant = intervenant
                 new_intervention()
@@ -206,7 +206,7 @@ def html2json(s):
                 intervenant = oldintervenant
                 continue
         elif p_str.find('<p><i>') == 0 and (p_str.find('></p>') > 0 or p_str.find('>.</p>') > 0):
-            if (intervenant):
+            if intervenant:
                 new_intervention()
             p_str = p_str.replace('<i>', '')
             p_str = p_str.replace('</i>', '')
@@ -224,7 +224,7 @@ def html2json(s):
             new_intervention()
             continue
         br = p.find('br')
-        if (br):
+        if br:
             br.unwrap()
         p = str(p)
         if p.find('videos.assemblee-nationale.fr') >= 0 or p.find('assnat.fr') >= 0 :
@@ -282,10 +282,10 @@ def intervention_video(p):
         if videotimestamp_thumbnail:
             urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail)
             imagethumbnail = requests_get(urlthumbnail)
-            if (imagethumbnail['content_type'] == 'error'):
+            if imagethumbnail['content_type'] == 'error':
                 urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail + 1)
                 imagethumbnail = requests_get(urlthumbnail)
-            if (imagethumbnail and imagethumbnail['content_type'] != 'error'):
+            if imagethumbnail and imagethumbnail['content_type'] != 'error':
                 imagehtmlthumbnail = "<img src='data:%s;base64,%s'/>" % (imagethumbnail['content_type'], imagethumbnail['content'])
         new_intervention()
         label = chapter.get('label')
@@ -369,7 +369,7 @@ def new_intervention():
     [intervenant, fonction] = getIntervenantFonction(intervenant)
     timestamp += 10
     curtimestamp = timestamp
-    if (intervention):
+    if intervention:
         intervenants = intervenant.split(' et ')
         if len(intervenants) > 1:
             intervenant = "M "+intervenants[0]
@@ -380,7 +380,7 @@ def new_intervention():
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
         print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
-    if (intervenant):
+    if intervenant:
         has_intervenant = True
     intervenant = ''
     intervention = ''
@@ -409,18 +409,18 @@ def getIntervenantFonction(intervenant):
         fonction = intervenant
         intervenant = fonction2intervenant[re.sub(r'^la?e? ', '', intervenant)]
     intervenantfonction = re.findall(r'([^,;]*|présidente?)[,;] ([^\.]*)', intervenant, re.IGNORECASE)
-    if (len(intervenantfonction) > 0 and not intervenantfonction[0][0].lower().find('président') >= 0):
+    if len(intervenantfonction) > 0 and not intervenantfonction[0][0].lower().find('président') >= 0:
         [intervenant, fonction] = intervenantfonction[0]
     prez = re.findall(r'([^,<]*président?c?e?|c?o?-?rapporteure?)[,;]? (..[^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
     if prez and prez[0][1].find('général') != 0:
         [fonction2, intervenant, fonction3] = prez[0]
-        if (fonction):
+        if fonction:
             fonction = fonction2 + ', ' + fonction + fonction3
         else:
             fonction = fonction2 + fonction3
-    if (not fonction and intervenant2fonction.get(intervenant)):
+    if not fonction and intervenant2fonction.get(intervenant):
         fonction = intervenant2fonction[intervenant]
-    elif(fonction):
+    elif fonction:
         intervenant2fonction[intervenant] = fonction
         fonction = re.sub(r'^la?e? ', '', fonction)
         fonction2intervenant[fonction] = intervenant
