@@ -128,17 +128,19 @@ $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
       <div id="corps_page">
         <div class="contenu_page">
           <?php if (myTools::hasAnnounce()) : ?>
-          <div id="announce"><h2 style="display: none;">
+          <div id="announce"><h2 style="<?php if (!isset($_GET['nodelay']) || !$_GET['nodelay']){echo "display: none;"; }else{echo "display: block;";}?>">
               <?php if (myTools::getAnnounceLink()): ?>
               <a target="_blank" href="<?php echo myTools::getAnnounceLink(); ?>"><?php echo myTools::getAnnounceText(); ?> : <span>Cliquez ici !</span></a>
               <?php else: ?>
               <?php echo myTools::getAnnounceText(); ?>
               <?php endif; ?></h2></div>
+            <?php if (!isset($_GET['nodelay']) || !$_GET['nodelay']): ?>
             <script type="text/javascript">
                 $(document).ready(function() {
                   $('#announce h2').delay(1500).fadeIn('slow');
                 });
             </script>
+            <?php endif; ?>
           <?php endif ?>
           <?php if ($sf_user->hasFlash('notice')) :?>
           <p class='flash_notice'><?php echo $sf_user->getFlash('notice'); ?></p>
