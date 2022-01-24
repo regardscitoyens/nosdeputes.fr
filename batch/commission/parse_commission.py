@@ -19,83 +19,86 @@ timestamp = 0
 has_intervenant = False
 
 def hasPrefixIntervenant(s):
-    for prefix in ['M.', 'MM.', 'M ', 'Mme', 'Monsieur', 'Madame', 'Me ', 'Dr ', 'Dr. ', 'Médecin général', 'Grand rabbin', 'Adjudant', 'Amiral', 'Capitaine', 'Caporal', 'Colonel', 'Commandant', 'Commissaire', 'Infirmier', 'Général', 'Lieutenant', 'Major', 'Maitre', 'Maître', 'Premier', 'Sergent', 'Pr ', 'Pr. ', 'Professeur', 'La policière', 'Le Président', 'La présidente', 'Plusieurs députés', 'Un député', 'Une auditrice', 'Une députée', 'Thierry', 'Thibault', 'Jacques', 'Jean', 'Nicole', 'Pierre', 'Patrice', 'Francis', 'Gwendal', 'Stéphane', 'Fabrice', 'Fabien', 'Frédéric', 'Laurent', 'Agnès', 'Ugo ', 'Son Exc. ', 'Alain', 'Alexandre', 'André', 'Brigitte', 'Bruno', 'Cédric', 'Charles', 'Delphine', 'Didier', 'Elisa', 'Emmanuel', 'Gilles', 'Julien', 'Marc', 'Marie', 'Olivier', 'Raphaël', 'Rémi', 'Thomas', 'Vincent', 'Yann', 'Michèle', 'Loïc', 'Yannick', 'Claude' , '']:
+    for prefix in ['Adjudant', 'Agnès', 'Alain', 'Alexandre', 'Amiral', 'André', 'Brigitte', 'Bruno', 'Capitaine', 'Caporal', 'Cédric', 'CGA ', 'Charles', 'Claude', 'Colonel', 'Commandant', 'Commissaire', 'Cr1 ', 'Delphine', 'Didier', 'Dr ', 'Dr. ', 'Elisa', 'Emmanuel', 'Fabien', 'Fabrice', 'Francis', 'Frédéric', 'Général', 'Gilles', 'Grand rabbin', 'Gwendal', 'Ica ', 'Infirmier', 'Jacques', 'Jean', 'Julien', 'La policière', 'La présidente', 'Laurent', 'Le Président', 'Lieutenant', 'Loïc', 'M ', 'M.', 'Madame', 'Maitre', 'Maître', 'Major', 'Marc', 'Marie', 'Me ', 'Médecin général', 'Michèle', 'MM.', 'Mme', 'Monsieur', 'Nicole', 'Olivier', 'Patrice', 'Pierre', 'Plusieurs députés', 'Pr ', 'Pr. ', 'Premier', 'Professeur', 'Quatrier-Maitre', 'Raphaël', 'Rémi', 'Sergent', 'Son Exc. ', 'Stéphane', 'Thibault', 'Thierry', 'Thomas', 'Ugo ', 'Un député', 'Une auditrice', 'Une députée', 'Vincent', 'Yann', 'Yannick']:
         if s.find(prefix) == 0:
             return True
     return False
 
 
 def cleanhtml(s):
-    reg_center = re.compile('<p [^>]*text-align:center[^>]*>(.*)</p>')
-    s = reg_center.sub('<p><i>\\1</i></p>', s)
-    reg_normal = re.compile('<span [^>]*font-weight:normal[^>]*>(.*)</span>')
-    s = reg_normal.sub('\\1', s)
-    reg_boldanditalic = re.compile('<span [^>]*font-weight:bold; font-style:italic[^>]*>([^<]*)</span>')
-    s = reg_boldanditalic.sub('<b><i>\\1</i></b>', s)
-    reg_bold = re.compile('<span [^>]*font-weight:bold[^>]*>([^<]*)</span>')
-    s = reg_bold.sub('<b>\\1</b>', s)
-    reg_bold = re.compile('<span [^>]*class=.assnatStrong.[^>]*>([^<]*)</span>')
-    s = reg_bold.sub('<b>\\1</b>', s)
-    reg_bold = re.compile('<span [^>]*class=.assnatGras.[^>]*>([^<]*)</span>')
-    s = reg_bold.sub('<b>\\1</b>', s)
-    reg_italic = re.compile('<span [^>]*font-style:italic[^>]*>([^<]*)</span>')
-    s = reg_italic.sub('<i>\\1</i>', s)
-    reg_underline = re.compile('<span [^>]*text-decoration:underline[^>]*>([^<]*)</span>')
-    s = reg_underline.sub('<i>\\1</i>', s)
-    reg_span = re.compile('<span [^>]*>([^<]*)</span>')
-    s = reg_span.sub('\\1', s)
+    s = re.sub(r'\t', ' ', s)
+    reg_center = re.compile(r'<p [^>]*text-align:center[^>]*>(.*)</p>')
+    s = reg_center.sub(r'<p><i>\1</i></p>', s)
+    reg_bold = re.compile(r'(<p [^>]*)class=.assnatRubrique2.([^>]*>)\s*(.*?)\s*</p>')
+    s = reg_bold.sub(r'\1 \2<b>\3</b></p>', s)
+    reg_normal = re.compile(r'<span [^>]*font-weight:normal[^>]*>(.*)</span>')
+    s = reg_normal.sub(r'\1', s)
+    reg_boldanditalic = re.compile(r'<span [^>]*font-weight:bold; font-style:italic[^>]*>([^<]*)</span>')
+    s = reg_boldanditalic.sub(r'<b><i>\1</i></b>', s)
+    reg_bold = re.compile(r'<span [^>]*font-weight:bold[^>]*>([^<]*)</span>')
+    s = reg_bold.sub(r'<b>\1</b>', s)
+    reg_bold = re.compile(r'<span [^>]*class=.assnatStrong.[^>]*>([^<]*)</span>')
+    s = reg_bold.sub(r'<b>\1</b>', s)
+    reg_bold = re.compile(r'<span [^>]*class=.assnatGras.[^>]*>([^<]*)</span>')
+    s = reg_bold.sub(r'<b>\1</b>', s)
+    reg_italic = re.compile(r'<span [^>]*font-style:italic[^>]*>([^<]*)</span>')
+    s = reg_italic.sub(r'<i>\1</i>', s)
+    reg_underline = re.compile(r'<span [^>]*text-decoration:underline[^>]*>([^<]*)</span>')
+    s = reg_underline.sub(r'<i>\1</i>', s)
+    reg_span = re.compile(r'<span [^>]*>([^<]*)</span>')
+    s = reg_span.sub(r'\1', s)
 
-    reg_parenthese = re.compile('</b>\)\.')
-    s = reg_parenthese.sub(').</b>', s)
+    reg_parenthese = re.compile(r'</b>\)\.')
+    s = reg_parenthese.sub(r').</b>', s)
 
-    reg_doubletag = re.compile('(</i><i>|</b><b>)')
-    s = reg_doubletag.sub('', s)
-    s = reg_doubletag.sub('', s)
+    reg_doubletag = re.compile(r'(</i><i>|</b><b>)')
+    s = reg_doubletag.sub(r'', s)
+    s = reg_doubletag.sub(r'', s)
 
-    reg_doubletag = re.compile('(</i> +<i>|</b> +<b>|<i> +</i>|<b> +</b>)')
-    s = reg_doubletag.sub(' ', s)
-    s = reg_doubletag.sub(' ', s)
-    reg_doubletag = re.compile('(</i>, +<i>|</b>, +<b>|<i>, +</i>|<b>, +</b>)')
-    s = reg_doubletag.sub(', ', s)
-    reg_doubletag = re.compile('(</i>[\'’]<i>|</b>[\'’]<b>|<i>[\'’]</i>|<b>[\'’]</b>)')
-    s = reg_doubletag.sub('\'', s)
+    reg_doubletag = re.compile(r'(</i> +<i>|</b> +<b>|<i> +</i>|<b> +</b>)')
+    s = reg_doubletag.sub(r' ', s)
+    s = reg_doubletag.sub(r' ', s)
+    reg_doubletag = re.compile(r'(</i>, +<i>|</b>, +<b>|<i>, +</i>|<b>, +</b>)')
+    s = reg_doubletag.sub(r', ', s)
+    reg_doubletag = re.compile(r'(</i>[\'’]<i>|</b>[\'’]<b>|<i>[\'’]</i>|<b>[\'’]</b>)')
+    s = reg_doubletag.sub(r'\'', s)
 
-    reg_doubletag = re.compile('</i>(<[^>]*>)<i>')
-    s = reg_doubletag.sub('\\1', s)
-    reg_doubletag = re.compile('</b>(<[^>]*>)<b>')
-    s = reg_doubletag.sub('\\1', s)
+    reg_doubletag = re.compile(r'</i>(<[^>]*>)<i>')
+    s = reg_doubletag.sub(r'\1', s)
+    reg_doubletag = re.compile(r'</b>(<[^>]*>)<b>')
+    s = reg_doubletag.sub(r'\1', s)
 
-    reg_p = re.compile('<p([^>]*)style="[^>]*"([^>]*)> *')
-    s = reg_p.sub('<p\\1 \\2>', s)
+    reg_p = re.compile(r'<p([^>]*)style="[^>]*"([^>]*)> *')
+    s = reg_p.sub(r'<p\1 \2>', s)
 
     s = s.replace('&#xa0;', ' ')
 
     s = s.replace('&#039;', "'")
     s = s.replace('’', "'")
 
-    reg_spaces = re.compile(' (</(b|i)>)')
-    s = reg_spaces.sub('\\1 ', s)
-    reg_spaces = re.compile('(<(b|i)>) ')
-    s = reg_spaces.sub(' \\1', s)
+    reg_spaces = re.compile(r' (</(b|i)>)')
+    s = reg_spaces.sub(r'\1 ', s)
+    reg_spaces = re.compile(r'(<(b|i)>) ')
+    s = reg_spaces.sub(r' \1', s)
 
-    reg_sautlignes = re.compile('<p([^>]*)>\n\s*')
-    s = reg_sautlignes.sub('<p\\1>', s)
-    reg_sautlignes = re.compile('\s*\n\s*</p>')
-    s = reg_sautlignes.sub('</p>', s)
+    reg_sautlignes = re.compile(r'<p([^>]*)>\n\s*')
+    s = reg_sautlignes.sub(r'<p\1>', s)
+    reg_sautlignes = re.compile(r'\s*\n\s*</p>')
+    s = reg_sautlignes.sub(r'</p>', s)
 
     s = s.replace(' , ', ', ')
 
-    reg_br = re.compile('<br */?>')
-    s = reg_br.sub(' ', s)
+    reg_br = re.compile(r'<br */?>')
+    s = reg_br.sub(r' ', s)
 
-    reg_spaces = re.compile('  +')
-    s = reg_spaces.sub(' ', s)
-    
-    reg_doubletag = re.compile('(</i> *<i>|</b> *<b>|<i> *</i>|<b> *</b>)')
-    s = reg_doubletag.sub(' ', s)
+    reg_spaces = re.compile(r'  +')
+    s = reg_spaces.sub(r' ', s)
+
+    reg_doubletag = re.compile(r'(</i> *<i>|</b> *<b>|<i> *</i>|<b> *</b>)')
+    s = reg_doubletag.sub(r' ', s)
 
     s = s.replace('<p >', '<p>')
-    
+
     return s
 
 def html2json(s):
@@ -108,31 +111,31 @@ def html2json(s):
     for p in p_tags:
         p_text = p.get_text()
         p_text = p_text.replace('\xa0', ' ')
-        if (p_text.find('Commission') == 0 or p_text.find('Délégation') == 0 or p_text.find('Mission') == 0 or p_text.find('Office') == 0 or p_text.find('Comité') == 0):
+        if p_text.find('Commission') == 0 or p_text.find('Délégation') == 0 or p_text.find('Mission') == 0 or p_text.find('Office') == 0 or p_text.find('Comité') == 0:
             commission = p_text
         for wday in ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'] + list(mois2nmois.keys()):
-            if (p_text.lower().find(wday) >= 0):
+            if p_text.lower().find(wday) >= 0:
                 try:
                     days = re.findall(r'(\d+)e?r? *([^ \d]+) +(\d+)', p_text)
                     if len(days) > 0:
                         date = "%04d-%02d-%02d" % (int(days[0][2]), mois2nmois[days[0][1].lower()], int(days[0][0]))
-                        if (mois2nmois[days[0][1].lower()] > 8):
+                        if mois2nmois[days[0][1].lower()] > 8:
                             session = days[0][2]+str(int(days[0][2]) + 1)
                         else:
                             session = str(int(days[0][2]) - 1)+days[0][2]
                         break
                 except KeyError:
                     continue
-        if (p_text.lower().find(' heure') > -1 or p_text.find(' h ') > -1):
+        if p_text.lower().find(' heure') > -1 or p_text.find(' h ') > -1:
             heures = re.findall(r'(\d+) *h(?:eures?)? *(\d*)', p_text.lower())
             if len(heures) > 0 and heures[0][0]:
                 heure = "%02d:" % int(heures[0][0])
-                if (len(heures[0]) > 1 and heures[0][1]):
+                if len(heures[0]) > 1 and heures[0][1]:
                     heure += "%02d" % int(heures[0][1])
                 else:
                     heure += '00'
             continue
-        if (p_text.find('session ') == 0):
+        if p_text.find('session ') == 0:
             i = p_text.find(' 20')
             session = p_text[i+1:].replace('-', '')
 
@@ -157,15 +160,15 @@ def html2json(s):
                 a.unwrap()
                 break
         b = p.find('b')
-        if (b):
-            if (hasPrefixIntervenant(b.get_text()) or (not b.get_text().find('amendement') and b.get_text().find(' (') and b.get_text()[-2:] == ').')):
+        if b:
+            if hasPrefixIntervenant(b.get_text()) or (not b.get_text().find('amendement') and b.get_text().find(' (') and b.get_text()[-2:] == ').'):
                 new_intervention()
                 intervenant = b.get_text()
                 b.clear()
                 b.unwrap()
             else:
                 b_str = str(b)
-                if (b_str.find('</b>') > 0) and b_str[b_str.find('</b>'):] == '</b>' and len(b_str) > 8 and b_str.find('<b>') < 100:
+                if b_str.find('</b>') > 0 and b_str[b_str.find('</b>'):] == '</b>' and len(b_str) > 8 and b_str.find('<b>') < 100:
                     new_intervention()
                     if (b_str.find(')</b>') > 0 or b_str.find(').</b>') > 0) and not str(p).find('</b></p>') > 0 and not re.search(r'\d', str(p)):
                         intervenant = b.get_text()
@@ -189,14 +192,15 @@ def html2json(s):
         p_str = p_str.replace('\xa0', ' ')
         if p_str.find("<p></p>") == 0:
             continue
-        if (p_str.find('<p>–') == 0 or p_str.find('<p>----') == 0 or p_str.find('<p>__') == 0 or p_str.find('<p><i>—') == 0 or p_str.find('<p><i>__') == 0 or p_str.find('<p><b>–') == 0 or p_str.find('<p>—') == 0 or p_str.find('<p><b>—') == 0) and (p_str.find('–<') > 0 or p_str.find('----<') > 0 or p_str.find('_<') > 0 or p_str.find('—<') > 0 or p_str.find('—<') > 0):
+        if (p_str.find('<p>–') == 0 or p_str.find('<p>----') == 0 or p_str.find('<p>__') == 0 or p_str.find('<p><i>—') == 0 or p_str.find('<p><i>__') == 0 or p_str.find('<p><b>–') == 0 or p_str.find('<p>—') == 0 or p_str.find('<p><b>—') == 0) and (p_str.find('–<') > 0 or p_str.find('----<') > 0 or p_str.find('_<') > 0 or p_str.find('—<') > 0):
+            new_intervention()
             continue
         if p_str.find('<p>*</p>') == 0 :
-            if (intervenant):
+            if intervenant:
                 new_intervention()
         if p_str.find('<i>(') > 0 and p_str.find(')</i>') > 0 :
             didascalie = re.findall(r'(.*)(<i>\([^)]*\)</i>)( *.? *</p>)', p_str)
-            if(didascalie):
+            if didascalie:
                 intervention += didascalie[0][0] + didascalie[0][2]
                 oldintervenant = intervenant
                 new_intervention()
@@ -205,14 +209,25 @@ def html2json(s):
                 intervenant = oldintervenant
                 continue
         elif p_str.find('<p><i>') == 0 and (p_str.find('></p>') > 0 or p_str.find('>.</p>') > 0):
-            if (intervenant):
+            if intervenant:
                 new_intervention()
             p_str = p_str.replace('<i>', '')
             p_str = p_str.replace('</i>', '')
             intervention += p_str
             continue
+        didascalie = re.search(r'(^.*[.…!?]+) *\(([^)]+)\) *(.*</p>)', p_str)
+        if didascalie:
+            intervention += didascalie.group(1) + '</p>'
+            oldintervenant = intervenant
+            new_intervention()
+            intervention = '<p><i>(' + didascalie.group(2) + ')</i></p>'
+            new_intervention()
+            intervenant = oldintervenant
+            intervention = '<p>' + didascalie.group(3)
+            new_intervention()
+            continue
         br = p.find('br')
-        if (br):
+        if br:
             br.unwrap()
         p = str(p)
         if p.find('videos.assemblee-nationale.fr') >= 0 or p.find('assnat.fr') >= 0 :
@@ -220,8 +235,7 @@ def html2json(s):
             new_intervention()
             source_backup = source
             if has_intervenant:
-                sys.stderr.write("ATTENTION: intervention avec intervenant ET intervention en vidéo ("+source+")\n")
-                print(json.dumps({"commission": "", "intervention": "ATTENTION : intervention avec intervenant ET intervention en vidéo", "date": "", "source": source, "heure": "" }, ensure_ascii=False))
+                print("ATTENTION: compte-rendu contenant à la fois une vidéo et de vraies interventions, à contrôler/nettoyer avant chargement : " + source, file=sys.stderr)
             intervention_video(p)
             source = source_backup
             continue
@@ -242,6 +256,8 @@ def intervention_video(p):
             videoid = video[0][1]
             urlvideo = video[0][0]
             urlvideo = re.sub('\??timecode=\d*', '', urlvideo)
+            if len(urlvideo) >= 180:
+                urlvideo = re.sub(r'(/video\.[^\.]*)\.[^?]*', r'\1', urlvideo)
             urlvideo_meta = "http://videos.assemblee-nationale.fr/Datas/an/%s/content/data.nvs" % videoid
             urlvideotimestamp = "https://videos.assemblee-nationale.fr/Datas/an/%s/content/finalplayer.nvs" % videoid
             response = requests_get(urlvideo_meta)
@@ -270,17 +286,21 @@ def intervention_video(p):
         if videotimestamp_thumbnail:
             urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail)
             imagethumbnail = requests_get(urlthumbnail)
-            if (imagethumbnail['content_type'] == 'error'):
+            if imagethumbnail['content_type'] == 'error':
                 urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail + 1)
                 imagethumbnail = requests_get(urlthumbnail)
-            if (imagethumbnail and imagethumbnail['content_type'] != 'error'):
+            if imagethumbnail and imagethumbnail['content_type'] != 'error':
                 imagehtmlthumbnail = "<img src='data:%s;base64,%s'/>" % (imagethumbnail['content_type'], imagethumbnail['content'])
         new_intervention()
-        if hasPrefixIntervenant(chapter.get('label')):
-            intervenant = chapter.get('label')
+        label = chapter.get('label')
+        label = re.sub(r'^\s', '', label)
+        label = re.sub(r'\s*$', '', label)
+        label = re.sub(r'\s+', ' ', label)
+        if hasPrefixIntervenant(label):
+            intervenant = label
             intervention = ''
         else:
-            intervention = "<p><h4>"+chapter.get('label')+"</h4></p>"
+            intervention = "<p><h4>"+label+"</h4></p>"
             continue
         intervention += "<p>Intervention uniquement disponible en vidéo.<br/><br/><br/></p>"
         intervention += "<center><p>"
@@ -321,11 +341,11 @@ def new_intervention():
     intervention = intervention.replace('<p> </p>', '')
     intervention = intervention.replace('<p>. ', '<p>')
 
-    intervention = re.sub(r'<a id="[^""]*">([^<]*)</a>', r'\1 ', intervention)
+    intervention = re.sub(r'<a id="[^"]*">([^<]*)</a>', r'\1 ', intervention)
     intervention = re.sub(r'([^> ])<b>', r'\1 <b>', intervention)
-    intervention = re.sub(r'</b>([^< \.])', r'</b> \1', intervention)
+    intervention = re.sub(r'</b>([^< \.,])', r'</b> \1', intervention)
     intervention = re.sub(r'([^> ])<i>', r'\1 <i>', intervention)
-    intervention = re.sub(r'</i>([^< \.])', r'</i> \1', intervention)
+    intervention = re.sub(r'</i>([^< \.,])', r'</i> \1', intervention)
     intervention = re.sub(r' style="[^"]+"', r' ', intervention)
     intervention = re.sub(r'([a-z])É([a-z])', r'\1é\2', intervention)
     intervention = re.sub(r'([a-z])É([a-z])', r'\1é\2', intervention)
@@ -339,7 +359,7 @@ def new_intervention():
 
     if len(intervention) > 200000:
         intervention = re.sub(r'<p><img [^>]*></p>', '<p><i>(image non chargée)</i></p>', intervention)
-    if len(intervention) > 100000:
+    while len(intervention) > 100000:
         fin_p = 30000 + intervention[30000:].find('</p>') + 4
         intervention1 = intervention[0:fin_p]
         intervention2 = intervention[fin_p:]
@@ -347,13 +367,11 @@ def new_intervention():
         new_intervention()
         intervention = intervention2
         new_intervention()
-    if len(source) >= 200:
-        source = re.sub(r'(/video\.[^\.]*)\.[^?]*', r'\1', source)
 
     [intervenant, fonction] = getIntervenantFonction(intervenant)
     timestamp += 10
     curtimestamp = timestamp
-    if (intervention):
+    if intervention:
         intervenants = intervenant.split(' et ')
         if len(intervenants) > 1:
             intervenant = "M "+intervenants[0]
@@ -364,7 +382,7 @@ def new_intervention():
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
         print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
-    if (intervenant):
+    if intervenant and not fonction.find('résident') > 0:
         has_intervenant = True
     intervenant = ''
     intervention = ''
@@ -379,7 +397,8 @@ def getIntervenantFonction(intervenant):
         if intervenant.find('Mme') == 0 or intervenant.find('Madame') == 0 :
             intervenant_sexe = '|F|'
         intervenant = ' '.join(intervenant.split(' ')[1:])
-    intervenant = re.sub(r'\. *$', '', intervenant)
+    intervenant = re.sub(r'[.\s]+$', '', intervenant)
+    intervenant = re.sub(r'\s+\(\s*[A-Z][\w\s]+\)$', '', intervenant)
     intervenant = re.sub(r' *$', '', intervenant)
     if intervenant.find('le ') == 0 or intervenant.find('Le ') == 0 :
         intervenant_sexe = '|M|'
@@ -392,18 +411,18 @@ def getIntervenantFonction(intervenant):
         fonction = intervenant
         intervenant = fonction2intervenant[re.sub(r'^la?e? ', '', intervenant)]
     intervenantfonction = re.findall(r'([^,;]*|présidente?)[,;] ([^\.]*)', intervenant, re.IGNORECASE)
-    if (len(intervenantfonction) > 0 and not intervenantfonction[0][0].lower().find('président') >= 0):
+    if len(intervenantfonction) > 0 and not intervenantfonction[0][0].lower().find('président') >= 0:
         [intervenant, fonction] = intervenantfonction[0]
     prez = re.findall(r'([^,<]*président?c?e?|c?o?-?rapporteure?)[,;]? (..[^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
     if prez and prez[0][1].find('général') != 0:
         [fonction2, intervenant, fonction3] = prez[0]
-        if (fonction):
+        if fonction:
             fonction = fonction2 + ', ' + fonction + fonction3
         else:
             fonction = fonction2 + fonction3
-    if (not fonction and intervenant2fonction.get(intervenant)):
+    if not fonction and intervenant2fonction.get(intervenant):
         fonction = intervenant2fonction[intervenant]
-    elif(fonction):
+    elif fonction:
         intervenant2fonction[intervenant] = fonction
         fonction = re.sub(r'^la?e? ', '', fonction)
         fonction2intervenant[fonction] = intervenant
@@ -433,7 +452,7 @@ def getIntervenantFonction(intervenant):
             fonction2intervenant["secrétaire d'État"] = intervenant
             fonction2intervenant[intervenant_sexe+"secrétaire d'État"] = intervenant
         fonctionaralonge = re.findall('([^,]*), ([^,]*)', fonction)
-        if fonctionaralonge: 
+        if fonctionaralonge:
             fonction2intervenant[fonctionaralonge[0][0]] = intervenant
             fonction2intervenant[intervenant_sexe+fonctionaralonge[0][0]] = intervenant
     return [intervenant, fonction]

@@ -14,4 +14,5 @@ perl download_one.pl $1 | while read line; do
     echo $url
     echo "-> $contentfile + $outfile"
   fi
+  ./reserve_cr_to_check.sh $outfile
 done
