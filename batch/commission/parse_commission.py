@@ -19,7 +19,11 @@ timestamp = 0
 has_intervenant = False
 
 def hasPrefixIntervenant(s):
-    for prefix in ['Adjudant', 'Agnès', 'Alain', 'Alexandre', 'Amiral', 'André', 'Brigitte', 'Bruno', 'Capitaine', 'Caporal', 'Cédric', 'CGA ', 'Charles', 'Claude', 'Colonel', 'Commandant', 'Commissaire', 'Cr1 ', 'Delphine', 'Didier', 'Dr ', 'Dr. ', 'Elisa', 'Emmanuel', 'Fabien', 'Fabrice', 'Francis', 'Frédéric', 'Général', 'Gilles', 'Grand rabbin', 'Gwendal', 'Ica ', 'Infirmier', 'Jacques', 'Jean', 'Julien', 'La policière', 'La présidente', 'Laurent', 'Le Président', 'Lieutenant', 'Loïc', 'M ', 'M.', 'Madame', 'Maitre', 'Maître', 'Major', 'Marc', 'Marie', 'Me ', 'Médecin général', 'Michèle', 'MM.', 'Mme', 'Monsieur', 'Nicole', 'Olivier', 'Patrice', 'Pierre', 'Plusieurs députés', 'Pr ', 'Pr. ', 'Premier', 'Professeur', 'Quatrier-Maitre', 'Raphaël', 'Rémi', 'Sergent', 'Son Exc. ', 'Stéphane', 'Thibault', 'Thierry', 'Thomas', 'Ugo ', 'Un député', 'Une auditrice', 'Une députée', 'Vincent', 'Yann', 'Yannick']:
+    for prefix in [
+        'M ', 'M.', 'Madame', 'MM.', 'Mme', 'Monsieur', 'Un député', 'Une députée',
+        'Adjudant',  'Amiral', 'Capitaine', 'Caporal', 'CGA ', 'Colonel', 'Commandant', 'Commissaire', 'Cr1 ', 'Dr ', 'Dr. ', 'Général', 'Grand rabbin', 'Ica ', 'Infirmier', 'La policière', 'La présidente', 'Le Président', 'Lieutenant', 'Sergent', 'Son Exc. ', 'Maitre', 'Maître', 'Major', 'Me ', 'Médecin général', 'Plusieurs députés', 'Pr ', 'Pr. ', 'Premier', 'Professeur', 'Quatrier-Maitre', 'Une auditrice',
+        'Agnès', 'Alain', 'Alexandre', 'André', 'Brigitte', 'Bruno', 'Cédric', 'Charles', 'Claude', 'Delphine', 'Didier', 'Elisa', 'Emmanuel', 'Fabien', 'Fabrice', 'Francis', 'Frédéric', 'Gilles', 'Gwendal', 'Jacques', 'Jean', 'Julien', 'Laurent', 'Loïc', 'Marc', 'Marie', 'Michèle', 'Nicole', 'Olivier', 'Patrice', 'Pierre', 'Raphaël', 'Rémi', 'Stéphane', 'Thibault', 'Thierry', 'Thomas', 'Ugo ', 'Vincent', 'Yann', 'Yannick'
+    ]:
         if s.find(prefix) == 0:
             return True
     return False
