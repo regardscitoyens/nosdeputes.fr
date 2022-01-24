@@ -120,7 +120,7 @@ class parlementaireActions extends sfActions
       $url .= "/$url4";
     if ($url5 = $request->getParameter('url5'))
       $url .= "/$url5";
-    $this->url  = sfConfig::get('app_manet_url') .'?url='. urlencode(str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).$url);
+    $this->url = sfConfig::get('app_manet_url') .'?url='. urlencode(str_replace('http://', myTools::getProtocol().'://', sfconfig::get('app_base_url')).$url.'?nodelay=1');
     $this->url .= "&format=jpg&clipRect=".urlencode("0,0,1060,555");
   }
 
