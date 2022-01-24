@@ -373,9 +373,9 @@ def new_intervention():
         new_intervention()
 
     [intervenant, fonction] = getIntervenantFonction(intervenant)
-    timestamp += 10
-    curtimestamp = timestamp
     if intervention:
+        timestamp += 10
+        curtimestamp = timestamp
         intervenants = intervenant.split(' et ')
         if len(intervenants) > 1:
             intervenant = "M "+intervenants[0]
@@ -386,8 +386,8 @@ def new_intervention():
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
         print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
-    if intervenant and not fonction.find('résident') > 0:
-        has_intervenant = True
+        if intervenant and not fonction.find('résident') > 0:
+            has_intervenant = True
     intervenant = ''
     intervention = ''
 
