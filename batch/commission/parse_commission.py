@@ -362,6 +362,7 @@ def new_intervention():
     intervention = re.sub(r'([a-z]) À ([a-z])', r'\1 à \2', intervention)
     intervention = re.sub(r'<p[^>]*>', '<p>', intervention)
     intervention = re.sub(r'<p> *', '<p>', intervention)
+    intervention = re.sub(r'<p></p>', '', intervention)
 
     if len(intervention) > 200000:
         intervention = re.sub(r'<p><img [^>]*></p>', '<p><i>(image non chargée)</i></p>', intervention)
