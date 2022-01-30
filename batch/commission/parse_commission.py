@@ -103,6 +103,8 @@ def cleanhtml(s):
 
     s = s.replace('<p >', '<p>')
 
+    s = re.sub(r'(<b>[^<]{5,}\.)( [A-ZÉÊÈÀÇ].?.?)(</b>)', r'\1\3\2', s)
+
     return s
 
 def html2json(s):
