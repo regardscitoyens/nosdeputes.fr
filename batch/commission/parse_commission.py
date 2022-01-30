@@ -123,6 +123,7 @@ def html2json(s):
         p_text = p_text.replace('\xa0', ' ')
         if p_text.find('Commission') == 0 or p_text.find('Délégation') == 0 or p_text.find('Mission') == 0 or p_text.find('Office') == 0 or p_text.find('Comité') == 0:
             commission = p_text
+            commission = re.sub(r'^Commission des affaires sociales (Mission)', r'\1', commission, re.I)
         for wday in ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'] + list(mois2nmois.keys()):
             if p_text.lower().find(wday) >= 0:
                 try:
