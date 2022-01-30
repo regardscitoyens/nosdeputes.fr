@@ -3,12 +3,13 @@
 JSON=$1
 
 if grep '"source": "https://videos.assemblee-nationale.fr/' $JSON > /dev/null; then
-  INTERVS=$(grep -v '"intervenant": ""' $JSON   |
-              sed 's/^.*"intervenant": "//'     |
-              sed 's/",.*"fonction": "/\t\t|  /'|
-              sed 's/".*$//'                    |
-              sort | uniq -c                    |
-              grep -iv "pr[eé]sident"           |
+  INTERVS=$(grep -v '"intervenant": ""' $JSON       |
+              grep -v '"source": "https://videos.'  |
+              sed 's/^.*"intervenant": "//'         |
+              sed 's/",.*"fonction": "/\t\t|  /'    |
+              sed 's/".*$//'                        |
+              sort | uniq -c                        |
+              grep -iv "pr[eé]sident"               |
               wc -l)
   if [ "$INTERVS" -gt 0 ]; then
     OUT=$(echo $JSON | sed 's|out/|checkvideos/|')
