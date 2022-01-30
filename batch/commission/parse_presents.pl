@@ -190,6 +190,7 @@ $body = 0;
 $present = 0;
 $string =~ s/<br>\n//gi;
 $string =~ s/(<\/h\d+>)/\1\n/gi;
+$string =~ s/(<p class="assnat[^>]*>)\n/\1/gi;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
 #on vire les paragraphes contenus et on didascalise
@@ -244,6 +245,8 @@ foreach $line (split /\n/, $string)
 		$cpt = $1*1000000;
 	    }
 	}
+    } elsif ($line =~ /assnatCRHEURE.*>\s*(\d+)\s*(h(?:eures?)?)\s*(\d*)/i) {
+        $heure = sprintf("%02d:%02d", $1, $3 || "00");
     }
     if (!$commission && $line =~ /^\s*<p[^>]*>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
         $commission = $1;
