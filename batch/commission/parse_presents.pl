@@ -47,6 +47,11 @@ if ($special && $url =~ /www2.assemblee/) {
   $string =~ s/<script>.*?<\/script>//g;
 }
 
+if ($raw) {
+  $string =~ s/(<p class="assnat[A-Z]+")([^>]*>)[\n\s\t]*(.*)[\n\s\t]*<\/p>[\n\s\t]*\1[^>]*>[\n\s\t]*(.*)[\n\s\t]*<\/p>/\1\2\3 \4<\/p>/gi;
+  $string =~ s/(<p class="assnat[^>]*>)\n/\1/gi;
+}
+
 $mois{'janvier'} = '01';
 $mois{'février'} = '02';
 $mois{'mars'} = '03';
@@ -190,7 +195,6 @@ $body = 0;
 $present = 0;
 $string =~ s/<br>\n//gi;
 $string =~ s/(<\/h\d+>)/\1\n/gi;
-$string =~ s/(<p class="assnat[^>]*>)\n/\1/gi;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
 #on vire les paragraphes contenus et on didascalise

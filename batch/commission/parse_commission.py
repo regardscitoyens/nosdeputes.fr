@@ -31,6 +31,10 @@ def hasPrefixIntervenant(s):
 
 def cleanhtml(s):
     s = re.sub(r'\t', ' ', s)
+
+    # Assemble metas tags split into two lines such as the commission's name
+    s = re.sub(r'(<p class="assnat[A-Z]+")([^>]*>)[\n\s\t]*(.*?)[\n\s\t]*</p>[\n\s\t]*\1[^>]*>[\n\s\t]*(.*?)[\n\s\t]*</p>', r'\1\2\3 \4</p>', s)
+
     reg_center = re.compile(r'<p [^>]*text-align:center[^>]*>(.*)</p>')
     s = reg_center.sub(r'<p><i>\1</i></p>', s)
     reg_bold = re.compile(r'(<p [^>]*)class=.assnatRubrique2.([^>]*>)\s*(.*?)\s*</p>')
