@@ -103,7 +103,7 @@ if ($raw == 1) {
   $p = HTML::TokeParser->new(\$string);
   while ($t = $p->get_tag('p')) {
     $txt = $p->get_trimmed_text('/p');
-    if ($t->[1]{class} eq "assnatNOMCOMMISSION" && !$commission) {
+    if (($t->[1]{class} eq "assnatNOMCOMMISSION" || $t->[1]{class} eq "assnatStylenomcommissionAvant0ptAprs20pt") && !$commission) {
       $commission = $txt;
     } elsif ($t->[1]{class} eq "assnatCRDATE" || $t->[1]{class} eq "assnatCRHEURE") {
       if ($txt =~ /(?:(?:Lun|Mar|Mercre|Jeu|Vendre)di|Dimanche)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
