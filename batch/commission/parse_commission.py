@@ -424,7 +424,8 @@ def getIntervenantFonction(intervenant):
     intervenantfonction = re.findall(r'([^,;]*|présidente?)[,;] ([^\.]*)', intervenant, re.IGNORECASE)
     if len(intervenantfonction) > 0 and not intervenantfonction[0][0].lower().find('président') >= 0:
         [intervenant, fonction] = intervenantfonction[0]
-    intervenant = re.sub(r'\s+\(\s*[A-Z][\w\s]+\)$', '', intervenant)
+    # cleanup parenthesis from intervenant (groupe) after having separated fonction
+    intervenant = re.sub(r'\s+\(\s*[A-Z][\w\s\-]+\)$', '', intervenant)
     prez = re.findall(r'([^,<]*président?c?e?|c?o?-?rapporteure?)[,;]? (..[^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
     if prez and prez[0][1].find('général') != 0:
         [fonction2, intervenant, fonction3] = prez[0]
