@@ -1,17 +1,16 @@
 #!/usr/bin/perl
 
-$file = $url = shift;
+$file = shift;
+$url = shift;
 $special = shift;
 $defaulthoraire = shift;
 use HTML::TokeParser;
 use Time::Piece;
 $today = Time::Piece->new();
 
-$url =~ s/^[^\/]+\///;
-$url =~ s/_/\//g;
 $source = $url;
 $raw = 0;
-if ($url =~ /CRCANR.*\.html/) {
+if ($file =~ /CRCANR.*\.html/) {
   $raw = 1;
 }
 
@@ -174,7 +173,7 @@ sub checkout {
 	$depute =~ s/[,\s]+$//;
 	$depute =~ s/^\s+//;
     if ($depute !~ /^(Vice[ -]|Président|Questeur|Secrétaire|Présent|Excusé|:)/i) {
-      print '{"commission": "'.$commission.'","depute": "'.$depute.'","reunion":"'.$date.'","session":"'.$heure.'","source":"'.$source.'"}'."\n";
+      print '{"commission": "'.$commission.'", "depute": "'.$depute.'", "reunion":"'.$date.'", "session":"'.$heure.'", "source":"'.$source.'"}'."\n";
     }
     }
 }
