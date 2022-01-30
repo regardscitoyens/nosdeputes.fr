@@ -173,7 +173,7 @@ sub checkout {
 	$depute =~ s/[,\s]+$//;
 	$depute =~ s/^\s+//;
     if ($depute !~ /^(Vice[ -]|Président|Questeur|Secrétaire|Présent|Excusé|:)/i) {
-      print '{"commission": "'.$commission.'", "depute": "'.$depute.'", "reunion":"'.$date.'", "session":"'.$heure.'", "source":"'.$source.'"}'."\n";
+      print '{"commission": "'.$commission.'", "depute": "'.$depute.'", "reunion": "'.$date.'", "session": "'.$heure.'", "source": "'.$source.'"}'."\n";
     }
     }
 }
