@@ -12,6 +12,7 @@ perl download_one.pl $1 | while read line; do
   python parse_commission.py $contentfile $url > $outfile
   if [ ! -z "$2" ]; then
     ./check_parsed_cr.sh $outfile
+    cat $presentsfile
   else
     echo $url
     echo "-> $contentfile + $outfile"
