@@ -10,6 +10,12 @@ import urllib
 
 mois2nmois = {'janvier': 1, 'février': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin':6, 'juillet': 7, 'août': 8, 'septembre': 9, 'octobre': 10, 'novembre': 11, 'décembre': 12}
 
+prefixes_noms = [
+    'M ', 'M.', 'Madame', 'MM.', 'Mme', 'Monsieur', 'Un député', 'Une députée',
+    'Adjudant',  'Amiral', 'Capitaine', 'Caporal', 'CGA ', 'Colonel', 'Commandant', 'Commissaire', 'Cr1 ', 'Dr ', 'Dr. ', 'Général', 'Grand rabbin', 'Ica ', 'Infirmier', 'La policière', 'La présidente', 'Le Président', 'Lieutenant', 'Sergent', 'Son Exc. ', 'Maitre', 'Maître', 'Major', 'Me ', 'Médecin général', 'Plusieurs députés', 'Pr ', 'Pr. ', 'Premier', 'Professeur', 'Quatrier-Maitre', 'Une auditrice',
+    'Agnès', 'Alain', 'Alexandre', 'André', 'Brigitte', 'Bruno', 'Cédric', 'Charles', 'Claude', 'Delphine', 'Didier', 'Elisa', 'Emmanuel', 'Fabien', 'Fabrice', 'Francis', 'Frédéric', 'Gilles', 'Gwendal', 'Jacques', 'Jean', 'Julien', 'Laurent', 'Loïc', 'Marc', 'Marie', 'Michèle', 'Nicole', 'Olivier', 'Patrice', 'Pierre', 'Raphaël', 'Rémi', 'Stéphane', 'Thibault', 'Thierry', 'Thomas', 'Ugo ', 'Vincent', 'Yann', 'Yannick'
+]
+
 global commission, date, heure, session, source, intervenant, intervention, timestamp, fonction, intervenant2fonction,fonction2intervenant, content_file, has_intervenant
 
 [commission, date, heure, session, source, intervenant, intervention, fonction] = ['', '', '', '', '', '', '', '']
@@ -19,11 +25,7 @@ timestamp = 0
 has_intervenant = False
 
 def hasPrefixIntervenant(s):
-    for prefix in [
-        'M ', 'M.', 'Madame', 'MM.', 'Mme', 'Monsieur', 'Un député', 'Une députée',
-        'Adjudant',  'Amiral', 'Capitaine', 'Caporal', 'CGA ', 'Colonel', 'Commandant', 'Commissaire', 'Cr1 ', 'Dr ', 'Dr. ', 'Général', 'Grand rabbin', 'Ica ', 'Infirmier', 'La policière', 'La présidente', 'Le Président', 'Lieutenant', 'Sergent', 'Son Exc. ', 'Maitre', 'Maître', 'Major', 'Me ', 'Médecin général', 'Plusieurs députés', 'Pr ', 'Pr. ', 'Premier', 'Professeur', 'Quatrier-Maitre', 'Une auditrice',
-        'Agnès', 'Alain', 'Alexandre', 'André', 'Brigitte', 'Bruno', 'Cédric', 'Charles', 'Claude', 'Delphine', 'Didier', 'Elisa', 'Emmanuel', 'Fabien', 'Fabrice', 'Francis', 'Frédéric', 'Gilles', 'Gwendal', 'Jacques', 'Jean', 'Julien', 'Laurent', 'Loïc', 'Marc', 'Marie', 'Michèle', 'Nicole', 'Olivier', 'Patrice', 'Pierre', 'Raphaël', 'Rémi', 'Stéphane', 'Thibault', 'Thierry', 'Thomas', 'Ugo ', 'Vincent', 'Yann', 'Yannick'
-    ]:
+    for prefix in prefixes_noms:
         if s.find(prefix) == 0:
             return True
     return False
@@ -388,6 +390,10 @@ def new_intervention():
         print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
         if intervenant and not fonction.find('résident') > 0:
             has_intervenant = True
+            if intervenant.find(' ') >= 0 :
+                prenom = intervenant[0:intervenant.find(' ') - 1]
+                if not prenom in prefixes_noms:
+                    prefixes_noms.append(prenom)
     intervenant = ''
     intervention = ''
 
