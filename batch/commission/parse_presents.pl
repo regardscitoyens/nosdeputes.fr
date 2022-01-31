@@ -1,17 +1,16 @@
 #!/usr/bin/perl
 
-$file = $url = shift;
+$file = shift;
+$url = shift;
 $special = shift;
 $defaulthoraire = shift;
 use HTML::TokeParser;
 use Time::Piece;
 $today = Time::Piece->new();
 
-$url =~ s/^[^\/]+\///;
-$url =~ s/_/\//g;
 $source = $url;
 $raw = 0;
-if ($url =~ /CRCANR.*\.html/) {
+if ($file =~ /CRCANR.*\.html/) {
   $raw = 1;
 }
 
@@ -46,6 +45,11 @@ if ($special && $url =~ /www2.assemblee/) {
   $string =~ s/<\/?(p|h\d+|div)[^>]*>/\n<\1>/g;
   $string =~ s/((Excusé|Présent)[es\s]*:)\s*/\1\n/g;
   $string =~ s/<script>.*?<\/script>//g;
+}
+
+if ($raw) {
+  $string =~ s/(<p class="assnat[A-Z]+")([^>]*>)[\n\s\t]*(.*)[\n\s\t]*<\/p>[\n\s\t]*\1[^>]*>[\n\s\t]*(.*)[\n\s\t]*<\/p>/\1\2\3 \4<\/p>/g;
+  $string =~ s/(<p class="assnat[^>]*>)\n/\1/gi;
 }
 
 $mois{'janvier'} = '01';
@@ -99,7 +103,7 @@ if ($raw == 1) {
   $p = HTML::TokeParser->new(\$string);
   while ($t = $p->get_tag('p')) {
     $txt = $p->get_trimmed_text('/p');
-    if ($t->[1]{class} eq "assnatNOMCOMMISSION" && !$commission) {
+    if (($t->[1]{class} eq "assnatNOMCOMMISSION" || $t->[1]{class} eq "assnatStylenomcommissionAvant0ptAprs20pt") && !$commission) {
       $commission = $txt;
     } elsif ($t->[1]{class} eq "assnatCRDATE" || $t->[1]{class} eq "assnatCRHEURE") {
       if ($txt =~ /(?:(?:Lun|Mar|Mercre|Jeu|Vendre)di|Dimanche)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
@@ -174,7 +178,7 @@ sub checkout {
 	$depute =~ s/[,\s]+$//;
 	$depute =~ s/^\s+//;
     if ($depute !~ /^(Vice[ -]|Président|Questeur|Secrétaire|Présent|Excusé|:)/i) {
-      print '{"commission": "'.$commission.'","depute": "'.$depute.'","reunion":"'.$date.'","session":"'.$heure.'","source":"'.$source.'"}'."\n";
+      print '{"commission": "'.$commission.'", "depute": "'.$depute.'", "reunion": "'.$date.'", "session": "'.$heure.'", "source": "'.$source.'"}'."\n";
     }
     }
 }
@@ -245,6 +249,8 @@ foreach $line (split /\n/, $string)
 		$cpt = $1*1000000;
 	    }
 	}
+    } elsif ($line =~ /assnatCRHEURE.*>\s*(\d+)\s*(h(?:eures?)?)\s*(\d*)/i) {
+        $heure = sprintf("%02d:%02d", $1, $3 || "00");
     }
     if (!$commission && $line =~ /^\s*<p[^>]*>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
         $commission = $1;

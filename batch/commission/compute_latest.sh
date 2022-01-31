@@ -25,10 +25,10 @@ perl download_commission.pl $LEGISLATURE | while read line; do
     fi
     echo try ...
     outfile=$(echo $file | sed 's|^html/|out/|')
+    presentsfile=$(echo $file | sed 's|^html/|presents/|')
+    perl parse_presents.pl $contentfile $url > $presentsfile
     python parse_commission.py $contentfile $url > $outfile
     ./reserve_cr_to_check.sh $outfile
-    #perl parse_commission.pl html/$file > out/$file
-    #perl parse_presents.pl html/$file > presents/$file
     echo out/$file done
 done
 

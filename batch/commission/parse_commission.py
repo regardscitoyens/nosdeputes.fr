@@ -33,6 +33,10 @@ def hasPrefixIntervenant(s):
 
 def cleanhtml(s):
     s = re.sub(r'\t', ' ', s)
+
+    # Assemble metas tags split into two lines such as the commission's name
+    s = re.sub(r'(<p class="assnat[A-Z]+")([^>]*>)[\n\s\t]*(.*?)[\n\s\t]*</p>[\n\s\t]*\1[^>]*>[\n\s\t]*(.*?)[\n\s\t]*</p>', r'\1\2\3 \4</p>', s)
+
     reg_center = re.compile(r'<p [^>]*text-align:center[^>]*>(.*)</p>')
     s = reg_center.sub(r'<p><i>\1</i></p>', s)
     reg_bold = re.compile(r'(<p [^>]*)class=.assnatRubrique2.([^>]*>)\s*(.*?)\s*</p>')
@@ -105,6 +109,8 @@ def cleanhtml(s):
 
     s = s.replace('<p >', '<p>')
 
+    s = re.sub(r'(<b>[^<]{5,}\.)( [A-ZÉÊÈÀÇ].?.?)(</b>)', r'\1\3\2', s)
+
     return s
 
 def html2json(s):
@@ -119,6 +125,7 @@ def html2json(s):
         p_text = p_text.replace('\xa0', ' ')
         if p_text.find('Commission') == 0 or p_text.find('Délégation') == 0 or p_text.find('Mission') == 0 or p_text.find('Office') == 0 or p_text.find('Comité') == 0:
             commission = p_text
+            commission = re.sub(r'^Commission des affaires sociales (Mission)', r'\1', commission, re.I)
         for wday in ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'] + list(mois2nmois.keys()):
             if p_text.lower().find(wday) >= 0:
                 try:
@@ -362,6 +369,7 @@ def new_intervention():
     intervention = re.sub(r'([a-z]) À ([a-z])', r'\1 à \2', intervention)
     intervention = re.sub(r'<p[^>]*>', '<p>', intervention)
     intervention = re.sub(r'<p> *', '<p>', intervention)
+    intervention = re.sub(r'<p></p>', '', intervention)
 
     if len(intervention) > 200000:
         intervention = re.sub(r'<p><img [^>]*></p>', '<p><i>(image non chargée)</i></p>', intervention)
@@ -408,7 +416,6 @@ def getIntervenantFonction(intervenant):
             intervenant_sexe = '|F|'
         intervenant = ' '.join(intervenant.split(' ')[1:])
     intervenant = re.sub(r'[.\s]+$', '', intervenant)
-    intervenant = re.sub(r'\s+\(\s*[A-Z][\w\s]+\)$', '', intervenant)
     intervenant = re.sub(r' *$', '', intervenant)
     if intervenant.find('le ') == 0 or intervenant.find('Le ') == 0 :
         intervenant_sexe = '|M|'
@@ -423,6 +430,8 @@ def getIntervenantFonction(intervenant):
     intervenantfonction = re.findall(r'([^,;]*|présidente?)[,;] ([^\.]*)', intervenant, re.IGNORECASE)
     if len(intervenantfonction) > 0 and not intervenantfonction[0][0].lower().find('président') >= 0:
         [intervenant, fonction] = intervenantfonction[0]
+    # cleanup parenthesis from intervenant (groupe) after having separated fonction
+    intervenant = re.sub(r'\s+\(\s*[A-Z][\w\s\-]+\)$', '', intervenant)
     prez = re.findall(r'([^,<]*président?c?e?|c?o?-?rapporteure?)[,;]? (..[^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
     if prez and prez[0][1].find('général') != 0:
         [fonction2, intervenant, fonction3] = prez[0]
@@ -435,6 +444,16 @@ def getIntervenantFonction(intervenant):
     elif fonction:
         intervenant2fonction[intervenant] = fonction
         fonction = re.sub(r'^la?e? ', '', fonction)
+        if intervenant_sexe == "|F|":
+            if fonction.find("président ") >= 0 or fonction.endswith("président"):
+                fonction = fonction.replace("président", "présidente")
+            elif fonction.find("rapporteur ") >= 0 or fonction.endswith("rapporteur"):
+                fonction = fonction.replace("rapporteur", "rapporteure")
+        elif intervenant_sexe == "|H|":
+            if fonction.find("présidente ") >= 0 or fonction.endswith("présidente"):
+                fonction = fonction.replace("présidente", "président")
+            elif fonction.find("rapporteure ") >= 0 or fonction.endswith("rapporteure"):
+                fonction = fonction.replace("rapporteure", "rapporteur")
         fonction2intervenant[fonction] = intervenant
         fonction2intervenant[intervenant_sexe+fonction] = intervenant
         if fonction.find('rapporteure générale') >= 0:
