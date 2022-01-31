@@ -126,6 +126,7 @@ def html2json(s):
         if p_text.find('Commission') == 0 or p_text.find('Délégation') == 0 or p_text.find('Mission') == 0 or p_text.find('Office') == 0 or p_text.find('Comité') == 0:
             commission = p_text
             commission = re.sub(r'^Commission des affaires sociales (Mission)', r'\1', commission, re.I)
+            commission = commission.strip()
         for wday in ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'] + list(mois2nmois.keys()):
             if p_text.lower().find(wday) >= 0:
                 try:
@@ -151,6 +152,7 @@ def html2json(s):
         if p_text.find('session ') == 0:
             i = p_text.find(' 20')
             session = p_text[i+1:].replace('-', '')
+        session = session.strip()
 
     # Interventions
     try:
@@ -333,7 +335,6 @@ def new_intervention():
     global commission, date, heure, session, source, intervenant, intervention, timestamp, has_intervenant
     #{"commission": "commission des finances, de l'économie générale et du contrôle budgétaire", "intervention": "<p>Présidence de M. Éric Woerth, Président</p>", "date": "2020-01-15", "source": "http://www.assemblee-nationale.fr/15/cr-cfiab/19-20/c1920037.asp#P9_450", "heure": "09:30", "session": "20192020", "intervenant": "", "timestamp": "37000020"}
     intervenant = intervenant.replace('\xa0', ' ')
-    intervention = intervention.replace('\xa0', ' ')
     intervention = intervention.replace('\xa0', ' ')
     intervention = intervention.replace('\n', ' ')
     intervention = intervention.replace('<i> </i>', ' ')
