@@ -5,6 +5,6 @@ seance_id=$1
 
 echo "https://www.nossenateurs.fr/seance/$seance_id"
 rm web/seance/$seance_id.html 2> /dev/null
-curl -qL "https://www.nossenateurs.fr/seance/${seance_id}?_sf_ignore_cache=$$" > $TMPFILE
+curl -kqL "https://www.nossenateurs.fr/seance/${seance_id}?_sf_ignore_cache=$$" > $TMPFILE
 mv $TMPFILE web/seance/$seance_id.html
 
