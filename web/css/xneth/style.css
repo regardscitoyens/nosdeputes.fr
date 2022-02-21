@@ -807,10 +807,6 @@ h1 {
   height: 35px;
 }
 
-#announce h2 {
-    display: none;
-}
-
 #announce span {
   text-decoration: underline;
 }
