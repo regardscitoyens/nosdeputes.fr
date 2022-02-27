@@ -3,6 +3,7 @@
 import sys
 import bs4
 import json
+import re
 
 def xml2json(s):
     global timestamp
@@ -47,47 +48,53 @@ def xml2json(s):
         if len(p.orateurs):
             intervention["intervenant"] = p.orateurs.orateur.nom.get_text()
             if p['id_mandat'] and p['id_mandat'] != "-1":
-                intervention["intervenant_url"] = "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_"+p['id_acteur']
+                intervention["intervenant_url"] = "http://www2.assemblee-nationale.fr/deputes/fiche/OMC_"+p['id_acteur']
+                intervention["intervenant"] = p['id_acteur']
             if p.orateurs.orateur.qualite and p.orateurs.orateur.qualite.string:
                 intervention['fonction'] = p.orateurs.orateur.qualite.get_text()
                 if not intervenant2fonction.get(intervention["intervenant"]) and intervention['fonction']:
                     intervenant2fonction[intervention["intervenant"]] = intervention['fonction']
             elif intervention["intervenant"] == "Mme la présidente":
                 intervention['fonction'] = "présidente"
+                intervention["intervenant"] = '';
             elif intervention["intervenant"] == "M le président":
                 intervention['fonction'] = "président"
+                intervention["intervenant"] = '';
             else:
                 intervention['fonction'] = intervenant2fonction.get(intervention["intervenant"], "")
-                    
+
         texte = "<p>"
         isdidascalie = False
         texte_didascalie = ""
-        for t in p.texte.childGenerator():
-            t_string = str(t.string)
-            if isinstance(t,  bs4.element.NavigableString):
-                texte += t.string
-            elif t.name == 'br':
-                texte += "</p><p>"
-            #Cas des didascalies
-            elif t.name == 'italique' and (t_string[0] == '(' or isdidascalie):
-                if not isdidascalie:
-                    intervention["intervention"] = texte+"</p>"
-                    printintervention(intervention)
-                isdidascalie = True
-                texte_didascalie += t.get_text();
-                texte_didascalie = texte_didascalie.replace('(', '').replace(')', '')
-                if t_string[-1] == ')':
-                    didascalie = intervention_vierge.copy()
-                    didascalie['intervention'] = "<p>"+texte_didascalie+"</p>"
-                    printintervention(didascalie)
-                    isdidascalie = False
-                texte = "<p>"
-            elif t.string and t_string != '\n':
-                texte += t.string
-            texte = texte.replace('\n', '')
+        t_string = str(p.texte)
+        t_string = t_string.replace('>\n', '> ')
+        t_string = re.sub(r' ?<\/?texte> ?', '', t_string)
+        t_string = t_string.replace('<italique>', '<i>')
+        t_string = t_string.replace('</italique>', '</i>')
+        t_string = t_string.replace('n<exposant>o</exposant>', 'n°')
+        t_string = t_string.replace('n<exposant>os</exposant>', 'n°')
+        t_string = t_string.replace('</i> <i>', ' ')
+        t_string = t_string.replace('<br/>', '</p><p>')
+        texte += t_string
         texte += "</p>"
-        intervention["intervention"] = texte            
-        printintervention(intervention)
+        i = 0;
+        for i in re.split(' ?(<i>\([^<]*\)</i> ?)', texte):
+            if i[0] == ' ':
+                i = i[1:]
+            if i[-1] == ' ':
+                i = i[:-1]
+            if (i[0:3] !=  '<p>'):
+                i = '<p>' + i
+            if (i[-4:] !=  '</p>'):
+                i = i + '</p>'
+            if i.find('<p><i>') == 0:
+                didasc = intervention_vierge
+                didasc["intervention"] = i
+                didasc["contexte"] = intervention["contexte"]
+                printintervention(didasc)
+            else:
+                intervention["intervention"] = i
+                printintervention(intervention)
 
 def printintervention(i):
     global timestamp
