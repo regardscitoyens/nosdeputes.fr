@@ -19,6 +19,7 @@ def xml2json(s):
     contextes = ['']
     numeros_lois = None
     intervenant2fonction = {}
+    last_titre = ''
     for p in soup.find_all(['paragraphe', 'point']):
         intervention = intervention_vierge.copy()
         #Gestion des titres/contextes et numéros de loi
@@ -35,7 +36,9 @@ def xml2json(s):
             intervention["contexte"] = contextes[0]
         if p.name == "point":
             intervention['intervention'] = "<p>"+contextes[-1]+"</p>"
-            printintervention(intervention)
+            if (last_titre != contextes[-1]):
+                printintervention(intervention)
+            last_titre = contextes[-1]
             continue
         #Gestion des interventions
         if numeros_lois:
