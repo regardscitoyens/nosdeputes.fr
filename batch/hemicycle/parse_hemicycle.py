@@ -7,6 +7,7 @@ import json
 def xml2json(s):
     global timestamp
     timestamp = 0
+    s = s.replace(u'\xa0', u' ')
     soup = bs4.BeautifulSoup(s, features="lxml")
     intervention_vierge = {"intervenant": "", "contexte": ""}
     intervention_vierge["source"] =  "https://www.assemblee-nationale.fr/dyn/15/comptes-rendus/seance/"+soup.uid.string
