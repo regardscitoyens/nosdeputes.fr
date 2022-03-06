@@ -174,4 +174,4 @@ def convert_format(data, extra = ''):
 
 with open(sys.argv[1], 'r') as documentfile:
     data = json.load(documentfile)
-    convert_format(data['document'])
+    convert_format(data.get("document", data))
