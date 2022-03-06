@@ -144,14 +144,14 @@ def convert_format(data, extra = ''):
                 auteurs.append(organe_name)
     res["auteurs"] = ', '.join(auteurs)
 
-    if data['dossierRef']:
-        try:
-            with open("opendata/dossierParlementaire/"+data['dossierRef']+".json") as dossierfile:
-                datados = json.load(dossierfile)
-                if datados['dossierParlementaire']['titreDossier']['titreChemin']:
-                    res["dossier"] = datados['dossierParlementaire']['titreDossier']['titreChemin']
-        except:
-            res["dossier"] = ''
+    res["dossier"] = ''
+    try:
+        with open("opendata/dossierParlementaire/"+data['dossierRef']+".json") as dossierfile:
+            datados = json.load(dossierfile)
+            if datados['dossierParlementaire']['titreDossier']['titreChemin']:
+                res["dossier"] = datados['dossierParlementaire']['titreDossier']['titreChemin']
+    except:
+        pass
 
     res["contenu"] = "Non encore publié"
     if os.path.isfile("opendata/html/"+data['uid']+".html"):

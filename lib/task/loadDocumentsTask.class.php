@@ -36,8 +36,6 @@ class loadDocumentsTask extends sfBaseTask {
               {echo "ERROR numero : \n"; continue;}
             if(!$json->date_depot)
               {echo "ERROR date_depot : \n"; continue;}
-            if (!$json->dossier)
-              {echo "ERROR dossier : \n"; continue;}
             if (!$json->type)
               {echo "ERROR type : \n"; continue;}
             $new = false;
