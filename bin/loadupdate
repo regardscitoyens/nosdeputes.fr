@@ -95,7 +95,8 @@ echo == Rapports et Textes de lois
 echo =============================
 cd batch/documents
 if [[ $questions -eq 2 ]]; then
- bash reload_latest_ppl.sh
+  bash check_missing_docs.sh
+  bash reload_latest_ppl.sh
 fi
 bash compute_latest.sh
 cd ../..
