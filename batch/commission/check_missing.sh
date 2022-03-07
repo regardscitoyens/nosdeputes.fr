@@ -18,23 +18,23 @@ while [ ! -z "$CRURL" ]; do
     tr "\t\n" " "               |
     sed 's/<d/\n<d/g'           |
     grep 'Accédez au document'  |
-    sed 's/^.*http/http/'       |
+    sed 's/^.*https?/http/'     |
     sed 's/\s*">.*$//'          |
     grep -v '/cri/20' >> all_crs_searchAN.tmp
   CRURL=$(grep '"text">Suivant' all_crs_searchAN_list.tmp |
             head -1                                       |
-            sed -r 's|^.*href="([^"]+)".*$|http://www2.assemblee-nationale.fr\1|')
+            sed -r 's|^.*href="([^"]+)".*$|https://www2.assemblee-nationale.fr\1|')
 done
 sort -u all_crs_searchAN.tmp > all_crs_searchAN
 rm -f all_crs_searchAN*.tmp
 
 rm -f all_crs_listAN.tmp
 function process {
-  download "$1"                                                 |
-    iconv -f "iso-8859-15" -t "utf-8"                           |
-    grep 'href="[^"]*c[0-9\-]\+\.asp'                             |
+  download "$1"                                                  |
+    iconv -f "iso-8859-15" -t "utf-8"                            |
+    grep 'href="[^"]*c[0-9\-]\+\.asp'                            |
     sed -r 's/^.*href="([^"#]*?c[0-9\-]+\.asp)(#[^"]*)?".*$/\1/' |
-    sort -u                                                     |
+    sort -u                                                      |
     while read id; do
       if echo $id | grep '://' > /dev/null; then
         echo "$id" >> all_crs_listAN.tmp
@@ -43,6 +43,8 @@ function process {
       fi
     done
 }
+
+if [ $LEGISLATURE -lt 15 ]; then
 
 echo "Downloading list of Compte-rendus from AN lists..."
 STARTYEAR=$(($LEGISLATURE * 5 + 1941))
@@ -134,6 +136,10 @@ fi
 sort -u all_crs_listAN.tmp > all_crs_listAN 
 rm -f all_crs_listAN.tmp
 
+else
+  echo > all_crs_listAN
+fi
+
 cat all_crs_{list,search}AN |
   sort -u > all_crs_AN
 
@@ -144,6 +150,7 @@ echo 'SELECT source
       ORDER BY source'          |
   mysql $MYSQLID $DBNAME        |
   grep -v "^source"             |
+  grep -v "/video"              |
   sed 's/#.*$//'                |
   sed -r 's|\.fr//|.fr/|'       |
   sed -r 's/^(.*)$/\L\1/'       |
