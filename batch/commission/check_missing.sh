@@ -5,7 +5,7 @@ source ../../bin/db.inc
 
 function download {
   echo "- $1" 1>&2
-  curl -sL "$1"
+  curl -ksL "$1"
 }
 
 echo "Downloading list of Compte-rendus from AN search engine..."
@@ -18,7 +18,7 @@ while [ ! -z "$CRURL" ]; do
     tr "\t\n" " "               |
     sed 's/<d/\n<d/g'           |
     grep 'Accédez au document'  |
-    sed 's/^.*https?/http/'     |
+    sed 's/^.*https\?/http/'     |
     sed 's/\s*">.*$//'          |
     grep -v '/cri/20' >> all_crs_searchAN.tmp
   CRURL=$(grep '"text">Suivant' all_crs_searchAN_list.tmp |
@@ -181,4 +181,4 @@ if [ $missing -gt 0 ]; then
   echo 'while find batch/commission/presents -type f | grep . > /dev/null; do php symfony load:JO --source=cri; done'
 fi
 
-rm -f all_crs_*
+#rm -f all_crs_*
