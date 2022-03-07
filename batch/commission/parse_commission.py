@@ -372,6 +372,11 @@ def new_intervention():
     intervention = re.sub(r'<p> *', '<p>', intervention)
     intervention = re.sub(r'<p></p>', '', intervention)
 
+    intervention = re.sub(r'<t(able|head|body|r|h|d)\s+>', r'<t\1>', intervention)
+    intervention = re.sub(r'<(t(able|head|body|r|h|d)|p)>\s+<(t(able|head|body|r|h|d)|p)>', r'<\1><\3>', intervention)
+    intervention = re.sub(r'</(t(able|head|body|r|h|d)|p)>\s+</(t(able|head|body|r|h|d)|p)>', r'</\1></\3>', intervention)
+    intervention = re.sub(r'</t([rdh])>\s+<t\1>', r'</t\1><t\1>', intervention)
+
     if len(intervention) > 200000:
         intervention = re.sub(r'<p><img [^>]*></p>', '<p><i>(image non chargée)</i></p>', intervention)
     while len(intervention) > 100000:
