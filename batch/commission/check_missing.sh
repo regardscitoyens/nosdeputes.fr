@@ -10,12 +10,16 @@ function download {
 
 echo "Downloading list of Compte-rendus from AN search engine..."
 rm -f all_crs_searchAN.tmp
-CRURL="http://www2.assemblee-nationale.fr/recherche/resultats_recherche/%28tri%29/date/%28query%29/YTo3OntzOjE6InEiO3M6NDY6InR5cGVEb2N1bWVudDoiY29tcHRlIHJlbmR1IiBhbmQgY29udGVudTpjb21wdGUiO3M6NDoicm93cyI7aToxMDA7czo1OiJzdGFydCI7aTowO3M6Mjoid3QiO3M6MzoicGhwIjtzOjI6ImhsIjtzOjU6ImZhbHNlIjtzOjI6ImZsIjtzOjE5NzoidXJsLHRpdHJlLHVybERvc3NpZXJMZWdpc2xhdGlmLHRpdHJlRG9zc2llckxlZ2lzbGF0aWYsdGV4dGVRdWVzdGlvbix0eXBlRG9jdW1lbnQsc3NUeXBlRG9jdW1lbnQscnVicmlxdWUsdGV0ZUFuYWx5c2UsbW90c0NsZXMsYXV0ZXVyLGRhdGVEZXBvdCxzaWduYXRhaXJlc0FtZW5kZW1lbnQsZGVzaWduYXRpb25BcnRpY2xlLHNvbW1haXJlLHNvcnQiO3M6NDoic29ydCI7czowOiIiO30="
+# Recherche de "de" filtrée sur les Compte-rendus depuis https://www2.assemblee-nationale.fr/recherche/resultats_recherche
+CRURL="https://www2.assemblee-nationale.fr/recherche/resultats_recherche/(tri)/date/(legislature)/15/(query)/eyJxIjoidHlwZURvY3VtZW50OlwiY29tcHRlIHJlbmR1XCIgYW5kIGNvbnRlbnU6ZGUiLCJyb3dzIjoxMCwic3RhcnQiOjAsInd0IjoicGhwIiwiaGwiOiJmYWxzZSIsImZsIjoic2NvcmUsdXJsLHRpdHJlLHVybERvc3NpZXJMZWdpc2xhdGlmLHRpdHJlRG9zc2llckxlZ2lzbGF0aWYsdGV4dGVRdWVzdGlvbix0eXBlRG9jdW1lbnQsc3NUeXBlRG9jdW1lbnQscnVicmlxdWUsdGV0ZUFuYWx5c2UsbW90c0NsZXMsYXV0ZXVyLGRhdGVEZXBvdCxzaWduYXRhaXJlc0FtZW5kZW1lbnQsZGVzaWduYXRpb25BcnRpY2xlLHNvbW1haXJlLHNvcnQifQ=="
 while [ ! -z "$CRURL" ]; do
   download "$CRURL" > all_crs_searchAN_list.tmp
-  grep '"Accédez au document" href' all_crs_searchAN_list.tmp   |
-    sed -r 's/^.*href="([^"]+)".*$/\1/'                         |
-    sed -r 's|\.fr//|.fr/|'                                     |
+  cat all_crs_searchAN_list.tmp |
+    tr "\t\n" " "               |
+    sed 's/<d/\n<d/g'           |
+    grep 'Accédez au document'  |
+    sed 's/^.*http/http/'       |
+    sed 's/\s*">.*$//'          |
     grep -v '/cri/20' >> all_crs_searchAN.tmp
   CRURL=$(grep '"text">Suivant' all_crs_searchAN_list.tmp |
             head -1                                       |
@@ -162,10 +166,7 @@ if [ $missing -gt 0 ]; then
     grep "^<"                   |
     sed 's/^< //'               |
     while read CRurl; do
-      CRfile=$(echo $CRurl | sed 's|/|_|g')
-      perl download_one.pl "$CRurl"
-      perl parse_presents.pl html/$CRfile > presents/$CRfile
-      perl parse_commission.pl html/$CRfile > out/$CRfile
+      bash compute_one.sh "$CRurl"
     done
   echo
   echo 'All missing Compte-rendus reloaded and parsed, run to complete:'
