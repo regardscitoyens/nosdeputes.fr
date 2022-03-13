@@ -174,11 +174,17 @@ sub checkout {
     }
     foreach $depute (@presents) {
 	$depute =~ s/[\/<\|]//g;
-	$depute =~ s/^\s*M+([mes]+\s+|\.\s*)//;
+	$depute =~ s/^\s*M+([mes]+\s+|\.\s*|onsieur le |adame la |$)//;
 	$depute =~ s/[,\s]+$//;
 	$depute =~ s/^\s+//;
-    if ($depute !~ /^(Vice[ -]|Président|Questeur|Secrétaire|Présent|Excusé|:)/i) {
-      print '{"commission": "'.$commission.'", "depute": "'.$depute.'", "reunion": "'.$date.'", "session": "'.$heure.'", "source": "'.$source.'"}'."\n";
+    $depute =~ s/Assistaient également à la réunion//;
+	$depute =~ s/Monica Michel$/Monica Michel-Brassart/;
+	$depute =~ s/Audrey Dufeu.?Schubert/Audrey Dufeu/;
+	$depute =~ s/Florence Lasserre.?David/Florence Lasserre/;
+	$depute =~ s/Charlotte Lecocq/Charlotte Parmentier-Lecocq/;
+	$depute =~ s/Claire Picolât/Claire Pitollat/;
+    if ($depute !~ /^(Vice[ -]|Président|Questeur|Parlementaire|Député|Membres?( français)? du parlement|Sénat|Secrétaire|Présent|Excusé|:)/i && $depute !~ /^\s*$/ && $depute !~ /\((député|sénateur|membre du parlement)[^)]*\)$/i) {
+      print '{"commission": "'.$commission.'", "depute": "'.$depute.'", "reunion": "'.$date.'", "session": "'.$heure.'", "source": "'.$source.'", "source_file": "'.$file.'"}'."\n";
     }
     }
 }
@@ -307,7 +313,7 @@ foreach $line (split /\n/, $string)
     } else {
     if ($line =~ /[>\|\/](Membres? (de la commission[\w\s]*?)?présents?( ou excusés?)?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/ || $line =~ /^\s*Députés\s*$/) {
         $present = 1;
-    } elsif ($line =~ /^\s*Sénateurs\s*$/) {
+    } elsif ($line =~ /^\s*[sS]énateurs\s*(:|$)/) {
         $present = 0;
     }
     if ($origline =~ /^\s*<p[^>]*>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
