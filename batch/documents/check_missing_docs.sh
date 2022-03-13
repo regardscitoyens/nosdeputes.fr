@@ -2,11 +2,11 @@
 
 source ../../bin/db.inc
 
-curl "https://www2.assemblee-nationale.fr/documents/liste/(ajax)/1/(limit)/1000/(type)/depots/(legis)/15/(no_margin)/false" > /tmp/alldocs_an
+curl -ksL "https://www2.assemblee-nationale.fr/documents/liste/(ajax)/1/(limit)/1000/(type)/depots/(legis)/15/(no_margin)/false" > /tmp/alldocs_an
 
 seq 10 | while read i; do
   i=$((i * 1000))
-  curl "https://www2.assemblee-nationale.fr/documents/liste/(ajax)/1/(offset)/$i/(limit)/1000/(type)/depots/(legis)/15/(no_margin)/false" >> /tmp/alldocs_an
+  curl -ksL "https://www2.assemblee-nationale.fr/documents/liste/(ajax)/1/(offset)/$i/(limit)/1000/(type)/depots/(legis)/15/(no_margin)/false" >> /tmp/alldocs_an
 done
 
 grep 'data-id=\|<h3>.*N°&\|</i> Document</a>' /tmp/alldocs_an |
