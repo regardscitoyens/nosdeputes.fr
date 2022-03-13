@@ -16,13 +16,12 @@ prefixes_noms = [
     'Agnès', 'Alain', 'Alexandre', 'André', 'Brigitte', 'Bruno', 'Cédric', 'Charles', 'Claude', 'Delphine', 'Didier', 'Elisa', 'Emmanuel', 'Fabien', 'Fabrice', 'Francis', 'Frédéric', 'Gilles', 'Gwendal', 'Jacques', 'Jean', 'Julien', 'Laurent', 'Loïc', 'Marc', 'Marie', 'Michèle', 'Nicole', 'Olivier', 'Patrice', 'Pierre', 'Raphaël', 'Rémi', 'Stéphane', 'Thibault', 'Thierry', 'Thomas', 'Ugo ', 'Vincent', 'Yann', 'Yannick'
 ]
 
-global commission, date, heure, session, source, intervenant, intervention, timestamp, fonction, intervenant2fonction,fonction2intervenant, content_file, has_intervenant
+global commission, date, heure, session, source, intervenant, intervention, timestamp, fonction, intervenant2fonction,fonction2intervenant, content_file
 
 [commission, date, heure, session, source, intervenant, intervention, fonction] = ['', '', '', '', '', '', '', '']
 intervenant2fonction = {}
 fonction2intervenant = {}
 timestamp = 0
-has_intervenant = False
 
 def hasPrefixIntervenant(s):
     for prefix in prefixes_noms:
@@ -249,8 +248,6 @@ def html2json(s):
             intervention += p
             new_intervention()
             source_backup = source
-            if has_intervenant:
-                print("ATTENTION: compte-rendu contenant à la fois une vidéo et de vraies interventions, à contrôler/nettoyer avant chargement : " + source, file=sys.stderr)
             intervention_video(p)
             source = source_backup
             continue
@@ -282,6 +279,8 @@ def intervention_video(p):
         except IndexError:
             soupvideo = None
             souptimestamp = None
+            if '<h1 class="contentheading">Demande de vidéo</h1>' in response['content']:
+                print("WARNING: compte-rendu %s has links to a disappeared video : %s " % (source, video or url), file=sys.stderr)
     if not souptimestamp or not soupvideo:
         return
     videotimestamps = {}
@@ -332,7 +331,7 @@ def intervention_video(p):
         new_intervention()
 
 def new_intervention():
-    global commission, date, heure, session, source, intervenant, intervention, timestamp, has_intervenant
+    global commission, date, heure, session, source, intervenant, intervention, timestamp
     #{"commission": "commission des finances, de l'économie générale et du contrôle budgétaire", "intervention": "<p>Présidence de M. Éric Woerth, Président</p>", "date": "2020-01-15", "source": "http://www.assemblee-nationale.fr/15/cr-cfiab/19-20/c1920037.asp#P9_450", "heure": "09:30", "session": "20192020", "intervenant": "", "timestamp": "37000020"}
     intervenant = intervenant.replace('\xa0', ' ')
     intervention = intervention.replace('\xa0', ' ')
@@ -403,7 +402,6 @@ def new_intervention():
             [intervenant, fonction] = getIntervenantFonction(intervenant)
         print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
         if intervenant and not fonction.find('résident') > 0:
-            has_intervenant = True
             if intervenant.find(' ') >= 0 :
                 prenom = intervenant[0:intervenant.find(' ') - 1]
                 if not prenom in prefixes_noms:
