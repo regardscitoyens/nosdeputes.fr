@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source ../../bin/db.inc
+source ../../bin/init_pyenv38.sh
 
 mkdir -p html out presents loaded raw
 

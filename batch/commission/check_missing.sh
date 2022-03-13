@@ -2,6 +2,7 @@
 
 cd $(dirname $0)
 source ../../bin/db.inc
+source ../../bin/init_pyenv38.sh
 
 function download {
   echo "- $1" 1>&2
