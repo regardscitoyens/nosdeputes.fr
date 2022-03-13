@@ -17,4 +17,4 @@ done
 
 opendataid=$(grep opendata /tmp/source.html  | grep .html | sed 's/"/\//g' | awk -F '/' '{print $5}' )
 
-python parse_commission.py "raw/"$opendataid $source
+python3 parse_commission.py "raw/"$opendataid $source
