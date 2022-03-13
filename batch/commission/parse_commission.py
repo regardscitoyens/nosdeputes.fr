@@ -382,6 +382,8 @@ def new_intervention():
         fin_p = 30000 + intervention[30000:].find('</p>') + 4
         intervention1 = intervention[0:fin_p]
         intervention2 = intervention[fin_p:]
+        if fin_p > 100000:
+            break
         intervention = intervention1
         new_intervention()
         intervention = intervention2
