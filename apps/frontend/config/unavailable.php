@@ -5,8 +5,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="language" content="fr" />
 <meta name="robots" content="index, follow" />
-  
-    <title></title>
+
+    <title>NosDéputés.fr - Indisponibilité temporaire</title>
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/xneth/jquery-ui-1.8.5.custom.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/xneth/style.css" />
@@ -17,7 +17,7 @@
 	<script type="text/javascript" src="/iepngfix/iepngfix_tilebg.js"></script>
     <style type="text/css">
     img, div { behavior: url('/iepngfix/iepngfix.php') }
-    </style> 
+    </style>
     <![endif]-->
 	<script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
 	<script type="text/javascript" src="/js/jquery-ui-1.8.5.custom.min.js"></script>
@@ -32,13 +32,13 @@
         </div>
 <div id="connected" class="identification">
 <p id="loggued_top">
-<a href="/login">Se connecter</a> - 
+<a href="/login">Se connecter</a> -
 <a href="/login">Mon compte</a>
 
 </p>
 </div>
-  <script type="text/javascript"><!-- 
-  $('#connected').load("/ajax/identification"); 
+  <script type="text/javascript"><!--
+  $('#connected').load("/ajax/identification");
 --></script>
       </div>
       <div id="header" style="width: 971px; margin-left: 45px">
@@ -88,7 +88,7 @@
           </ul>
         </div>
         </div>
-        
+
         <div id="sous_menu_3" style="display:none">
               <div class="elements_sous_menu">
 
@@ -108,7 +108,8 @@
 .contenu_page p {font-size: 1.8em;}
 </style>
         <div class="contenu_page">
-		<h1>    NosDéputés.fr, c'est fini. </h1>
+            <p class='flash_error'>Le site est momentanément indisponible. Veuillez nous excuser pour la gêne occasionnée.</p>
+<!--		<h1> NosDéputés.fr, c'est fini. </h1>
 
 <p>Décidant pour la première fois, depuis près de 10 ans d'existence, de se pencher sérieusement sur ses propres données, l'équipe de <a href="https://www.RegardsCitoyens.org">Regards Citoyens</a>, alertée par de nombreux nouveaux députés, a découvert atterrée, que son site <a href="https://www.nosdeputes.fr">NosDéputés.fr</a> a des effets pervers sur la démocratie parlementaire. Les chiffres montrent ainsi, sans ambiguïté, que, très loin d'intéresser les citoyens à l'activité de leurs représentants, le site a eu pour seul et unique impact depuis sa création une pollution du travail législatif par une augmentation éhontée du nombre d'amendements déposés.</p>
 
@@ -118,8 +119,7 @@
 
 <p>Le site <a href="https://www.nossenateurs.fr">NosSénateurs.fr</a> n'ayant pas de tels effets néfastes sur l'activité des sénateurs, le site dédié à l'activité du palais du Luxembourg reste ouvert jusqu'à nouvel ordre.</p>
 
-        <div>
-      </div>
+-->
       </div>
       <div id="bottom">
         <div class="regardscitoyens">
