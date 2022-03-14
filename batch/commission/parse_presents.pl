@@ -27,6 +27,16 @@ if ($string =~ /href="\/dyn\/opendata\/([^"]+\.html)"/) {
   $raw = 1;
 }
 
+$string =~ s/<br>\n//gi;
+$string =~ s/(<p[^>]*>)\s*\n\s*/\1/gi;
+$string =~ s/<span [^>]*font-weight:bold; font-style:italic[^>]*>([^<]*)<\/span>/<b><i>\1<\/i><\/b>/gi;
+$string =~ s/<span [^>]*font-weight:bold[^>]*>([^<]*)<\/span>/<b>\1<\/b>/gi;
+$string =~ s/<span [^>]*font-weight:italic[^>]*>([^<]*)<\/span>/<i>\1<\/i>/gi;
+$string =~ s/<span [^>]*>([^<]*)<\/span>/\1/gi;
+$string =~ s/\s*<\/b>\s*<br[ \/]*>\s*<b>\s*/ /g;
+$string =~ s/<a id="[^"]*">(.*?)<\/a>/\1/g;
+$string =~ s/(<\/h\d+>)/\1\n/gi;
+
 $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
 $string =~ s/‑/-/g;
@@ -108,7 +118,7 @@ if ($raw == 1) {
     } elsif ($t->[1]{class} eq "assnatCRDATE" || $t->[1]{class} eq "assnatCRHEURE") {
       if ($txt =~ /(?:(?:Lun|Mar|Mercre|Jeu|Vendre)di|Dimanche)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
         $date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
-      } elsif ($txt =~ /(?:Réunion|Séance)\s+de\s+(\d+)\s*h(?:eure)?s?\s*(\d*)/i && !$heure) {
+      } elsif ($txt =~ /(?:Réunion|Séance)\s+de\s*(\d+)\s*h(?:eure)?s?\s*(\d*)/i && !$heure) {
         $heure = sprintf("%02d:%02d", $1, $2 || '00');
       }
     }
@@ -123,7 +133,7 @@ if ($raw == 1) {
             $commission = "$1$2";
           } elsif ($line =~ /^\s*(?:(?:Lun|Mar|Mercre|Jeu|Vendre)di|Dimanche)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
             $date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
-          } elsif ($line =~ /^\s*(?:Réunion|Séance)\s+de\s+(\d+)\s*h(?:eure)?s?\s*(\d*)/i && !$heure) {
+          } elsif ($line =~ /^\s*(?:Réunion|Séance)\s+de\s*(\d+)\s*h(?:eure)?s?\s*(\d*)/i && !$heure) {
             $heure = sprintf("%02d:%02d", $1, $2 || '00');
           }
         }
@@ -146,8 +156,16 @@ if ($string =~ />(?:Réunion|Séance) du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\
   $heure = sprintf("%02d:%02d", $5, $6 || '00');
 }
 
-if ($string =~ /réunion.*commission.*commence[^\.]+à\s+([^\.]+)\s+heures?\s*([^\.]*)\./i) {
-  $heure = $heures{$1}.':'.$heures{$2};
+if (!$tmpdate && $string =~ /(?:>|\n\s*)\|?(?:Lun|Mar|Mercre|Jeu|Vendre|Same)di(?:\s+|<br[ \/]*>)+(\d+)[erme]*\s+([^\s\d]+)\s+(\d{4})\|?(<|\n)/i) {
+  $tmpdate = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
+}
+
+if (!$heure && $string =~ />Séance de (\d+)\s*h(?:eures?)?\s*(\d*)\s*(<|\n)/) {
+  $heure = sprintf("%02d:%02d", $1, $2 || '00');
+}
+
+if (!$heure && $string =~ /(?:réunion.*commission.*commence|séance est ouverte)[^<\.]+à\s+([^<\.]+)\s+heures?\s*([^<\.]*)\./i) {
+  $heure = ($heures{$1} || $1).':'.($heures{$2} || $2);
 }
 
 #utf8::decode($string);
@@ -199,8 +217,6 @@ $string =~ s/à l\W+aménagement /à l'aménagement /gi;
 $majIntervenant = 0;
 $body = 0;
 $present = 0;
-$string =~ s/<br>\n//gi;
-$string =~ s/(<\/h\d+>)/\1\n/gi;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
 #on vire les paragraphes contenus et on didascalise
@@ -258,7 +274,7 @@ foreach $line (split /\n/, $string)
     } elsif ($line =~ /assnatCRHEURE.*>\s*(\d+)\s*(h(?:eures?)?)\s*(\d*)/i) {
         $heure = sprintf("%02d:%02d", $1, $3 || "00");
     }
-    if (!$commission && $line =~ /^\s*<p[^>]*>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
+    if (!$commission && $line =~ /^\s*<p[^>]*>\|([^<>]*(groupe|(com)?mission|délégation|office|comité)[^<>]*)\|/i) {
         $commission = $1;
     }
     $origline = $line;
