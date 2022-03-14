@@ -152,6 +152,9 @@ def html2json(s):
             i = p_text.find(' 20')
             session = p_text[i+1:].replace('-', '')
         session = session.strip()
+    if not (commission and heure and session):
+        print("ERROR: "+ sys.argv[1]+" n'a pas de nom de commission, date et heure identifiables dans la section assnatSection1. Merci de les ajouter à la main", file=sys.stderr)
+        exit(2)
 
     # Interventions
     try:
