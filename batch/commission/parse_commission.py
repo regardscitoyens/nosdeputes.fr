@@ -362,6 +362,8 @@ def new_intervention():
     intervention = re.sub(r'</b>([^< \.,])', r'</b> \1', intervention)
     intervention = re.sub(r'([^> ])<i>', r'\1 <i>', intervention)
     intervention = re.sub(r'</i>([^< \.,])', r'</i> \1', intervention)
+    intervention = re.sub(r'(<i>[^<]*)<i>\s*', r'\1', intervention)
+    intervention = re.sub(r'\s*</i>([^<]*</i>)', r'\1', intervention)
     intervention = re.sub(r' style="[^"]+"', r' ', intervention)
     intervention = re.sub(r'([a-z])É([a-z])', r'\1é\2', intervention)
     intervention = re.sub(r'([a-z])É([a-z])', r'\1é\2', intervention)
