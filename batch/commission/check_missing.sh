@@ -19,9 +19,9 @@ while [ ! -z "$CRURL" ]; do
     tr "\t\n" " "               |
     sed 's/<d/\n<d/g'           |
     grep 'Accédez au document'  |
-    sed 's/^.*https\?/http/'     |
+    sed 's/^.*https\?/http/'    |
     sed 's/\s*">.*$//'          |
-    grep -v '/cri/20' >> all_crs_searchAN.tmp
+    grep -v '/cri/\(20\|NaN\)' >> all_crs_searchAN.tmp
   CRURL=$(grep '"text">Suivant' all_crs_searchAN_list.tmp |
             head -1                                       |
             sed -r 's|^.*href="([^"]+)".*$|https://www2.assemblee-nationale.fr\1|')
@@ -141,8 +141,7 @@ else
   echo > all_crs_listAN
 fi
 
-cat all_crs_{list,search}AN |
-  sort -u > all_crs_AN
+cat all_crs_{list,search}AN | grep . | sort -u > all_crs_AN
 
 echo "Extracting list of Compte-rendus from NosDéputés..."
 echo 'SELECT source
@@ -155,6 +154,15 @@ echo 'SELECT source
   sed 's/#.*$//'                |
   sed -r 's|\.fr//|.fr/|'       |
   sed -r 's/^(.*)$/\L\1/'       |
+  sort -u > all_crs_ND_db
+
+ls loaded                       |
+  sed 's/_/\//g'                |
+  sed 's/commissions\/elargies/commissions_elargies/' |
+  sed 's/asp2$/asp/' > all_crs_ND_loaded
+
+cat all_crs_ND_*                 |
+  sed 's/cr-brexit/cr-mibrexit/' |
   sort -u > all_crs_ND
 
 echo "Analysing diff..."
