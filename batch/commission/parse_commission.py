@@ -450,6 +450,11 @@ def getIntervenantFonction(intervenant):
             fonction = fonction2 + ', ' + fonction + fonction3
         else:
             fonction = fonction2 + fonction3
+    intervenant = re.sub(r"^M[.me]+ ", "", intervenant, re.I)
+    intervenant = re.sub(r"Monica Michel$", "Monica Michel-Brassart", intervenant, re.I)
+    intervenant = re.sub(r"Audrey Dufeu.?Schubert", "Audrey Dufeu", intervenant, re.I)
+    intervenant = re.sub(r"Florence Lasserre.?David", "Florence Lasserre", intervenant, re.I)
+    intervenant = re.sub(r"Charlotte Lecocq", "Charlotte Parmentier-Lecocq", intervenant, re.I)
     if not fonction and intervenant2fonction.get(intervenant):
         fonction = intervenant2fonction[intervenant]
     elif fonction:
