@@ -179,16 +179,21 @@ if (!$heure && $string =~ /(?:réunion.*commission.*commence|séance est ouverte
 #exit;
 $cpt = 0;
 sub checkout {
-    if ($#presents < 0) {
-	print STDERR "$url : Pas de présent trouvé\n";
-	return ;
-    }
     $commission =~ s/"//g;
     if ($commission =~/^\s*Mission d'information\s*$/i && $commission_meta) {
         $commission = $commission_meta;
     }
+    $commission =~ s/^Commission des affaires sociales (Mission)/\1/i;
     if (!$date) {
         $date = $tmpdate;
+    }
+    if ($commission =~ /^\s*$/) {
+        print STDERR "ERROR: $url : Pas de nom de commission\n";
+        return ;
+    }
+    if ($#presents < 0) {
+        print STDERR "$url : Pas de présent trouvé\n";
+        return ;
     }
     foreach $depute (@presents) {
 	$depute =~ s/[\/<\|]//g;
