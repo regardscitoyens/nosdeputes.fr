@@ -32,6 +32,7 @@ $string =~ s/(<p[^>]*>)\s*\n\s*/\1/gi;
 $string =~ s/<span [^>]*font-weight:bold; font-style:italic[^>]*>([^<]*)<\/span>/<b><i>\1<\/i><\/b>/gi;
 $string =~ s/<span [^>]*font-weight:bold[^>]*>([^<]*)<\/span>/<b>\1<\/b>/gi;
 $string =~ s/<span [^>]*font-weight:italic[^>]*>([^<]*)<\/span>/<i>\1<\/i>/gi;
+$string =~ s/<span style="font-size:12pt; vertical-align:super">([^<]*)\s*<\/span>\s*/\1 /gi;
 $string =~ s/<span [^>]*>([^<]*)<\/span>/\1/gi;
 $string =~ s/\s*<\/b>\s*<br[ \/]*>\s*<b>\s*/ /g;
 $string =~ s/<a id="[^"]*">(.*?)<\/a>/\1/g;
@@ -116,7 +117,7 @@ if ($raw == 1) {
     if (($t->[1]{class} eq "assnatNOMCOMMISSION" || $t->[1]{class} eq "assnatStylenomcommissionAvant0ptAprs20pt") && !$commission) {
       $commission = $txt;
     } elsif ($t->[1]{class} eq "assnatCRDATE" || $t->[1]{class} eq "assnatCRHEURE") {
-      if ($txt =~ /(?:(?:Lun|Mar|Mercre|Jeu|Vendre)di|Dimanche)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
+      if ($txt =~ /(?:(?:Lun|Mar|Mercr?e|Jeu|Vendre)di|Dimanche|Jour)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
         $date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
       } elsif ($txt =~ /(?:Réunion|Séance)\s+de\s*(\d+)\s*h(?:eure)?s?\s*(\d*)/i && !$heure) {
         $heure = sprintf("%02d:%02d", $1, $2 || '00');
@@ -131,7 +132,7 @@ if ($raw == 1) {
         foreach $line (split /\n/, $txt) {
           if (!$commission && $line =~ /^\s*(Groupe|Commission|Mission|Délégation|Office)(.*)\s*$/) {
             $commission = "$1$2";
-          } elsif ($line =~ /^\s*(?:(?:Lun|Mar|Mercre|Jeu|Vendre)di|Dimanche)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
+          } elsif ($line =~ /^\s*(?:(?:Lun|Mar|Mercr?e|Jeu|Vendre)di|Dimanche|Jour)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
             $date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
           } elsif ($line =~ /^\s*(?:Réunion|Séance)\s+de\s*(\d+)\s*h(?:eure)?s?\s*(\d*)/i && !$heure) {
             $heure = sprintf("%02d:%02d", $1, $2 || '00');
@@ -156,11 +157,11 @@ if ($string =~ />(?:Réunion|Séance) du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\
   $heure = sprintf("%02d:%02d", $5, $6 || '00');
 }
 
-if (!$tmpdate && $string =~ /(?:>|\n\s*)\|?(?:Lun|Mar|Mercre|Jeu|Vendre|Same)di(?:\s+|<br[ \/]*>)+(\d+)[erme]*\s+([^\s\d]+)\s+(\d{4})\|?(<|\n)/i) {
+if (!$tmpdate && $string =~ /(?:>|\n\s*)\|?(?:(?:Lun|Mar|Mercr?e|Jeu|Vendre|Same)di|Dimanche|Jour)(?:\s+|<br[ \/]*>)+(\d+)[erme]*\s+([^\s\d]+)\s+(\d{4})\|?(<|\n)/i) {
   $tmpdate = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
 }
 
-if (!$heure && $string =~ />Séance de (\d+)\s*h(?:eures?)?\s*(\d*)\s*(<|\n)/) {
+if (!$heure && $string =~ />Séance de (\d+)\s*h(?:eures?\s*)?\s*(\d*)\s*(<|\n)/) {
   $heure = sprintf("%02d:%02d", $1, $2 || '00');
 }
 
@@ -261,7 +262,7 @@ foreach $line (split /\n/, $string)
             }
         }
         if (!$date && $line =~ /SOM(seance|date)|\"seance\"|h2/) {
-            if ($line =~ /SOMdate|Lundi|Mardi|Mercredi|Jeudi|Vendredi|Samedi|Dimanche/i) {
+            if ($line =~ /SOMdate|Lundi|Mardi|Mercr?edi|Jeudi|Vendredi|Samedi|Dimanche/i) {
               if ($line =~ /(\w+\s+)?(\d+)[erme]*\s+([^\s\d()!<>]+)\s+(\d\d+)/i) {
                 $date = sprintf("%04d-%02d-%02d", $4, $mois{lc($3)}, $2);
               }
