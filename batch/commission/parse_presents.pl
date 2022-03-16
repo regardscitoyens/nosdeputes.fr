@@ -199,8 +199,8 @@ sub checkout {
     foreach $depute (@presents) {
 	$depute =~ s/[\/<\|]//g;
 	$depute =~ s/^\s*M+([mes]+\s+|\.\s*|onsieur le |adame la |$)//;
-	$depute =~ s/[,\s]+$//;
-	$depute =~ s/^\s+//;
+	$depute =~ s/[,\s\.\-]+$//;
+	$depute =~ s/^[\s\.\-]+//;
     $depute =~ s/Assistaient également à la réunion//;
 	$depute =~ s/Monica Michel$/Monica Michel-Brassart/;
 	$depute =~ s/Audrey Dufeu.?Schubert/Audrey Dufeu/;
@@ -220,6 +220,7 @@ $string =~ s/&#339;|œ+/oe/g;
 $string =~ s/\|(\W+)\|/$1/g;
 $string =~ s/ission d\W+information/ission d'information/gi;
 $string =~ s/à l\W+aménagement /à l'aménagement /gi;
+$string =~ s/ / /g;
 $majIntervenant = 0;
 $body = 0;
 $present = 0;
@@ -293,7 +294,7 @@ foreach $line (split /\n/, $string)
     if ($origline =~ /Retour haut de page/) {
         $present = 0;
     }
-	if (!$special && $line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? sur /) {
+	if (!$special && $line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? (» à partir|dans|sur) /) {
         $present = 1;
     }
     if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) (participai(en)?t à la réunion|étai(en)?t présents?)..*$/\2/g)) {
