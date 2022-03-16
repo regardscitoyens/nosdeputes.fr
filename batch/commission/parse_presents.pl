@@ -185,6 +185,9 @@ sub checkout {
         $commission = $commission_meta;
     }
     $commission =~ s/^Commission des affaires sociales (Mission)/\1/i;
+    $commission =~ s/^(Pour une nouvelle Assemblée nationale |Les rendez-vous des réformes 2017-2022 )*GROUPE DE TRAVAIL N°\s*\d+[\s«]*/Groupe de travail sur /i;
+    $commission =~ s/Groupe de travail sur PROCÉDURE/Groupe de travail sur la procédure/i;
+    $commission =~ s/[ »]*$//i;
     if (!$date) {
         $date = $tmpdate;
     }

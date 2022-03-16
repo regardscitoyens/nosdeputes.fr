@@ -156,7 +156,9 @@ def get_metas(p):
     if p_low.find('commission') == 0 or p_low.find('délégation') == 0 or p_low.find('mission') == 0 or p_low.find('office') == 0 or p_low.find('comité') == 0 or p_low.find("groupe d") == 0:
         commission = p_text
         commission = re.sub(r'^Commission des affaires sociales (Mission)', r'\1', commission, re.I)
-        commission = commission.strip()
+        commission = re.sub(r'^GROUPE DE TRAVAIL N°[\s\d«]+', r'Groupe de travail sur ', commission, re.I)
+        commission = commission.replace("Groupe de travail sur PROCÉDURE", "Groupe de travail sur la Procédure")
+        commission = commission.strip(" »")
     for wday in ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'] + list(mois2nmois.keys()):
         if p_text.lower().find(wday) >= 0:
             try:
