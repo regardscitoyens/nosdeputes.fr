@@ -112,12 +112,48 @@ def cleanhtml(s):
 
     return s
 
+heures_str = {
+    "zéro": 0,
+    "une": 1,
+    "deux": 2,
+    "trois": 3,
+    "quatre": 4,
+    "cinq": 5,
+    "six": 6,
+    "sept": 7,
+    "huit": 8,
+    "neuf": 9,
+    "dix": 10,
+    "onze": 11,
+    "douze": 12,
+    "treize": 13,
+    "quatorze": 14,
+    "quinze": 15,
+    "seize": 16,
+    "dix-sept": 17,
+    "dix-huit": 18,
+    "dix-neuf": 19,
+    "vingt": 20,
+    "vingt et une": 21,
+    "vingt-et-une": 21,
+    "vingt-deux": 22,
+    "vingt-trois": 23,
+    "vingt-cinq": 25,
+    "trente": 30,
+    "trente-cinq": 35,
+    "quarante": 40,
+    "quarante-cinq": 45,
+    "cinquante": 50,
+    "cinquante-cinq": 55,
+    "": 0
+}
+
 def get_metas(p):
     global commission, date, heure, session, source, intervenant, intervention, timestamp
     p_text = p.get_text()
     p_text = p_text.replace('\xa0', ' ')
     p_low = p_text.lower()
-    if p_low.find('commission') == 0 or p_low.find('délégation') == 0 or p_low.find('mission') == 0 or p_low.find('office') == 0 or p_low.find('comité') == 0 or p_low.find("groupe d'") == 0:
+    if p_low.find('commission') == 0 or p_low.find('délégation') == 0 or p_low.find('mission') == 0 or p_low.find('office') == 0 or p_low.find('comité') == 0 or p_low.find("groupe d") == 0:
         commission = p_text
         commission = re.sub(r'^Commission des affaires sociales (Mission)', r'\1', commission, re.I)
         commission = commission.strip()
@@ -142,7 +178,11 @@ def get_metas(p):
                 heure += "%02d" % int(heures[0][1])
             else:
                 heure += '00'
-        return
+            return
+        heures = re.search(r'(?:commence|ouverte) à ([a-z\- ]+) *heures? *([a-z\- ]+)?\.', p_text.lower())
+        if heures:
+            heure = "%02d:%02d" % (heures_str.get(heures.group(1), 0), heures_str.get(heures.group(2), 0))
+            return
     if p_text.find('session ') == 0:
         i = p_text.find(' 20')
         session = p_text[i+1:].replace('-', '')
