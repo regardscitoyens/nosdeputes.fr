@@ -117,7 +117,7 @@ def get_metas(p):
     p_text = p.get_text()
     p_text = p_text.replace('\xa0', ' ')
     p_low = p_text.lower()
-    if p_low.find('commission') == 0 or p_low.find('délégation') == 0 or p_low.find('mission') == 0 or p_low.find('office') == 0 or p_low.find('comité') == 0:
+    if p_low.find('commission') == 0 or p_low.find('délégation') == 0 or p_low.find('mission') == 0 or p_low.find('office') == 0 or p_low.find('comité') == 0 or p_low.find("groupe d'") == 0:
         commission = p_text
         commission = re.sub(r'^Commission des affaires sociales (Mission)', r'\1', commission, re.I)
         commission = commission.strip()
@@ -157,7 +157,8 @@ def html2json(s):
     # Meta
     for p in p_tags:
         get_metas(p)
-    if not (commission and heure and date):
+    extra = soup.find(class_="assnatSection2")
+    if extra and not (commission and heure and date):
         p_tags = soup.find(class_="assnatSection2").find_all('p')
         for i, p in enumerate(p_tags):
             get_metas(p)
@@ -168,11 +169,11 @@ def html2json(s):
         exit(2)
 
     # Interventions
-    try:
-        p_tags = soup.find(class_="assnatSection2").find_all(['p', 'h1', 'h2', 'h3', 'h3', 'table'], recursive=False)
-    except AttributeError:
+    section = soup.find(class_="assnatSection2") or soup.find(class_="assnatSection1")
+    if not section:
         print("ERROR: "+ sys.argv[1]+" n'a pas de section assnatSection2 permettant d'identifier le corps du compte-rendu. Merci de l'ajouter à la main", file=sys.stderr)
         exit(2)
+    p_tags = section.find_all(['p', 'h1', 'h2', 'h3', 'h3', 'table'], recursive=False)
     extras = soup.find(class_="assnatSection3")
     if extras:
         p_tags += extras.find_all(['p', 'h1', 'h2', 'h3', 'h3', 'table'], recursive=False)
