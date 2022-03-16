@@ -162,6 +162,12 @@ def html2json(s):
     except AttributeError:
         print("ERROR: "+ sys.argv[1]+" n'a pas de section assnatSection2 permettant d'identifier le corps du compte-rendu. Merci de l'ajouter à la main", file=sys.stderr)
         exit(2)
+    extras = soup.find(class_="assnatSection3")
+    if extras:
+        p_tags += extras.find_all(['p', 'h1', 'h2', 'h3', 'h3', 'table'], recursive=False)
+    extras = soup.find(class_="assnatSection4")
+    if extras:
+        p_tags += extras.find_all(['p', 'h1', 'h2', 'h3', 'h3', 'table'], recursive=False)
 
     intervention = ''
     for p in p_tags:
