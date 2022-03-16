@@ -587,8 +587,11 @@ def requests_get(url):
         json.dump(response, out_file)
     return response
 
-source_url = sys.argv[2]
+use_cache = "--use-cache" in sys.argv
+if use_cache:
+    sys.argv.remove("--use-cache")
 content_file = sys.argv[1]
+source_url = sys.argv[2]
 with open(content_file, encoding='utf-8') as f:
     raw_html = f.read()
     html = cleanhtml(raw_html)

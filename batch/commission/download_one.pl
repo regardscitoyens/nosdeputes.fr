@@ -4,7 +4,12 @@ use WWW::Mechanize;
 
 $url = shift;
 $url =~ s/^\s+//gi;
-$oldstyle = shift;
+$cache = shift;
+
+$oldstyle = 0;
+if ($url =~ /^http:\/\/www2.assemblee-nationale.fr/) {
+  $oldstyle = 1;
+}
 
 $a = WWW::Mechanize->new();
 $a->get($url);
@@ -27,11 +32,13 @@ print FILE $content;
 close FILE;
 rename "html/$htmfile.tmp", "html/$htmfile";
 
-$a->get($raw_url);
-open FILE, ">:utf8", "raw/$opendata_id.tmp";
-print FILE $a->content;
-close FILE;
-rename "raw/$opendata_id.tmp", "raw/$opendata_id";
+if (!$cache || ! -e "raw/$opendata_id") {
+  $a->get($raw_url);
+  open FILE, ">:utf8", "raw/$opendata_id.tmp";
+  print FILE $a->content;
+  close FILE;
+  rename "raw/$opendata_id.tmp", "raw/$opendata_id";
+}
 
 open FILE, ">:utf8", "raw/$opendata_id.url";
 print FILE $raw_url;

@@ -2,6 +2,8 @@
 
 ROOTURL="http://www2.assemblee-nationale.fr"
 
+mkdir -p presents.tocheck
+
 function compute_org {
   ORGID=$1
   ORGNAME=$2
@@ -17,7 +19,7 @@ function compute_org {
     while read url; do
       outf=$(echo $ROOTURL$url | sed 's|/|_|g')
       if ! test -s "html/$outf"; then
-        perl download_one.pl $ROOTURL$url 1
+        perl download_one.pl $ROOTURL$url
 	    perl parse_presents.pl html/$outf "$ROOTURL$url" "$ORGNAME" "$HORAIRE" > presents.tocheck/$outf
       fi
     done
