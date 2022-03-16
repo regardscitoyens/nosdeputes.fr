@@ -112,6 +112,42 @@ def cleanhtml(s):
 
     return s
 
+def get_metas(p):
+    global commission, date, heure, session, source, intervenant, intervention, timestamp
+    p_text = p.get_text()
+    p_text = p_text.replace('\xa0', ' ')
+    p_low = p_text.lower()
+    if p_low.find('commission') == 0 or p_low.find('délégation') == 0 or p_low.find('mission') == 0 or p_low.find('office') == 0 or p_low.find('comité') == 0:
+        commission = p_text
+        commission = re.sub(r'^Commission des affaires sociales (Mission)', r'\1', commission, re.I)
+        commission = commission.strip()
+    for wday in ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'] + list(mois2nmois.keys()):
+        if p_text.lower().find(wday) >= 0:
+            try:
+                days = re.findall(r'(\d+)e?r? *([^ \d]+) +(\d+)', p_text)
+                if len(days) > 0:
+                    date = "%04d-%02d-%02d" % (int(days[0][2]), mois2nmois[days[0][1].lower()], int(days[0][0]))
+                    if mois2nmois[days[0][1].lower()] > 8:
+                        session = days[0][2]+str(int(days[0][2]) + 1)
+                    else:
+                        session = str(int(days[0][2]) - 1)+days[0][2]
+                    break
+            except KeyError:
+                continue
+    if p_text.lower().find(' heure') > -1 or p_text.find(' h ') > -1:
+        heures = re.findall(r'(\d+) *h(?:eures?)? *(\d*)', p_text.lower())
+        if len(heures) > 0 and heures[0][0]:
+            heure = "%02d:" % int(heures[0][0])
+            if len(heures[0]) > 1 and heures[0][1]:
+                heure += "%02d" % int(heures[0][1])
+            else:
+                heure += '00'
+        return
+    if p_text.find('session ') == 0:
+        i = p_text.find(' 20')
+        session = p_text[i+1:].replace('-', '')
+    session = session.strip()
+
 def html2json(s):
     global commission, date, heure, session, source, intervenant, intervention, timestamp
     soup = BeautifulSoup(s, features="lxml")
@@ -120,40 +156,15 @@ def html2json(s):
 
     # Meta
     for p in p_tags:
-        p_text = p.get_text()
-        p_text = p_text.replace('\xa0', ' ')
-        if p_text.find('Commission') == 0 or p_text.find('Délégation') == 0 or p_text.find('Mission') == 0 or p_text.find('Office') == 0 or p_text.find('Comité') == 0:
-            commission = p_text
-            commission = re.sub(r'^Commission des affaires sociales (Mission)', r'\1', commission, re.I)
-            commission = commission.strip()
-        for wday in ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'] + list(mois2nmois.keys()):
-            if p_text.lower().find(wday) >= 0:
-                try:
-                    days = re.findall(r'(\d+)e?r? *([^ \d]+) +(\d+)', p_text)
-                    if len(days) > 0:
-                        date = "%04d-%02d-%02d" % (int(days[0][2]), mois2nmois[days[0][1].lower()], int(days[0][0]))
-                        if mois2nmois[days[0][1].lower()] > 8:
-                            session = days[0][2]+str(int(days[0][2]) + 1)
-                        else:
-                            session = str(int(days[0][2]) - 1)+days[0][2]
-                        break
-                except KeyError:
-                    continue
-        if p_text.lower().find(' heure') > -1 or p_text.find(' h ') > -1:
-            heures = re.findall(r'(\d+) *h(?:eures?)? *(\d*)', p_text.lower())
-            if len(heures) > 0 and heures[0][0]:
-                heure = "%02d:" % int(heures[0][0])
-                if len(heures[0]) > 1 and heures[0][1]:
-                    heure += "%02d" % int(heures[0][1])
-                else:
-                    heure += '00'
-            continue
-        if p_text.find('session ') == 0:
-            i = p_text.find(' 20')
-            session = p_text[i+1:].replace('-', '')
-        session = session.strip()
+        get_metas(p)
     if not (commission and heure and date):
-        print("ERROR: "+ sys.argv[1]+" n'a pas de nom de commission, date et/ou heure identifiables dans la section assnatSection1. Merci de les ajouter à la main", file=sys.stderr)
+        p_tags = soup.find(class_="assnatSection2").find_all('p')
+        for i, p in enumerate(p_tags):
+            get_metas(p)
+            if i > 10:
+                break
+    if not (commission and heure and date):
+        print("ERROR: "+ sys.argv[1]+" n'a pas de nom de commission ("+commission+"), date ("+date+") et/ou heure ("+heure+") identifiables dans la section assnatSection1. Merci de les ajouter à la main", file=sys.stderr)
         exit(2)
 
     # Interventions
