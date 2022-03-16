@@ -165,7 +165,7 @@ if (!$heure && $string =~ />Séance de (\d+)\s*h(?:eures?\s*)?\s*(\d*)\s*(<|\n)/
   $heure = sprintf("%02d:%02d", $1, $2 || '00');
 }
 
-if (!$heure && $string =~ /(?:réunion.*commission.*commence|séance est ouverte)[^<\.]+à\s+([^<\.]+)\s+heures?\s*([^<\.]*)\./i) {
+if (!$heure && $string =~ /(?:réunion.*commission.*commence|séance est ouverte)[^<\.]+à\s+([^<\.]+)\s+h(?:eures?)?\s*([^<\.]*)\./i) {
   $heure = ($heures{$1} || $1).':'.($heures{$2} || $2);
 }
 
@@ -294,13 +294,14 @@ foreach $line (split /\n/, $string)
     if ($origline =~ /Retour haut de page/) {
         $present = 0;
     }
-	if (!$special && $line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? (» à partir|dans|sur) /) {
+	if (!$special && $line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? (» à partir|dans|depuis|pour|dès|sur|M\.[^<,\.]*, que) /i) {
         $present = 1;
     }
     if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) (participai(en)?t à la réunion|étai(en)?t présents?)..*$/\2/g)) {
 	$line =~ s/<[^>]+>//g;
 	$line =~ s/&[^;]*;/ /g;
 	$line =~ s/(M[.me]+ )\1/\1/g;
+	$line =~ s/M . /M./g;
     if ($special) {
         if ($line =~ /LCP/) {
             $present = 0;
