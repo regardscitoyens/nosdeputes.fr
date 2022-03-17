@@ -207,7 +207,7 @@ sub checkout {
 	$depute =~ s/^\s*M+([mes]+\s+|\.\s*|onsieur le |adame la |$)//;
 	$depute =~ s/[,\s\.\-]+$//;
 	$depute =~ s/^[\s\.\-]+//;
-    $depute =~ s/Assistaient également à la réunion//;
+    $depute =~ s/(Assistaient également à la réunion|rapporteur\W*)//;
 	$depute =~ s/Monica Michel$/Monica Michel-Brassart/;
 	$depute =~ s/Audrey Dufeu.?Schubert/Audrey Dufeu/;
 	$depute =~ s/Florence Lasserre.?David/Florence Lasserre/;
@@ -230,6 +230,7 @@ $string =~ s/ / /g;
 $majIntervenant = 0;
 $body = 0;
 $present = 0;
+$listmultiline = 0;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
 #on vire les paragraphes contenus et on didascalise
@@ -300,7 +301,11 @@ foreach $line (split /\n/, $string)
     if ($origline =~ /Retour haut de page/) {
         $present = 0;
     }
-    if (!$special && ($line =~ />Présences en réunion :(<|$)/ || ($line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? (» à partir|dans|depuis|pour|dès|sur|M\.[^<,\.]*, que) /i))) {
+    if (!$special && $line =~ />Présences en réunion :$/) {
+        $present = 1;
+        $listmultiline = 1;
+    }
+    if (!$special && $line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? (» à partir|dans|depuis|pour|dès|sur|M\.[^<,\.]*, que) /i) {
         $present = 1;
     }
     if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) (participai(en)?t à la réunion|étai(en)?t présents?)..*$/\2/g)) {
@@ -323,7 +328,8 @@ foreach $line (split /\n/, $string)
 	$line =~ s/^\s*et\s+//gi;
 	$line =~ s/\s+et\s+/, /gi;
 	$line =~ s/\.$//;
-	if ($line =~ s/\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*// || ($newcomm && $line =~ /^\s*M+[\.mMes]+\s/) || $special) {
+
+	if ($line =~ s/\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*// || (($newcomm || $listmultiline) && $line =~ /^[\-\s]*M+[\.mMes]+\s/) || $special) {
         $line =~ s/(^|\W+)M+[mes.]+\s+/\1/g;
         if ($line !~ /^([\/\s]*|\s*(le|la|chargée?) .*)$/) {
             push @presents, split /[.,] /, $line; #/
