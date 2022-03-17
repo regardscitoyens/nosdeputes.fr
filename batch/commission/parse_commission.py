@@ -172,7 +172,7 @@ def get_metas(p):
                     break
             except KeyError:
                 continue
-    if p_text.lower().find(' heure') > -1 or p_text.find(' h ') > -1:
+    if not heure and (p_text.lower().find(' heure') > -1 or p_text.find(' h ') > -1):
         heures = re.findall(r'(\d+) *h(?:eures?)? *(\d*)', p_text.lower())
         if len(heures) > 0 and heures[0][0]:
             heure = "%02d:" % int(heures[0][0])
