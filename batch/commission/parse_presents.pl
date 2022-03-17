@@ -40,6 +40,8 @@ $string =~ s/(<\/h\d+>)/\1\n/gi;
 
 $string =~ s/<\/?b>/|/g;
 $string =~ s/<\/?i>/\//g;
+$string =~ s/\|\|//g;
+$string =~ s/\\\\//g;
 $string =~ s/‑/-/g;
 $string =~ s/’/'/g;
 $string =~ s/\r//g;
@@ -165,7 +167,7 @@ if (!$heure && $string =~ />Séance de (\d+)\s*h(?:eures?\s*)?\s*(\d*)\s*(<|\n)/
   $heure = sprintf("%02d:%02d", $1, $2 || '00');
 }
 
-if (!$heure && $string =~ /(?:réunion.*commission.*commence|séance est ouverte)[^<\.]+à\s+([^<\.]+)\s+h(?:eures?)?\s*([^<\.]*)\./i) {
+if (!$heure && $string =~ /(?:réunion(?:.*commission)?.*commence|séance est ouverte)[^<\.]+à\s+([^<\.]+)\s+h(?:eures?)?\s*([^<\.]*)\./i) {
   $heure = ($heures{$1} || $1).':'.($heures{$2} || $2);
 }
 
@@ -185,7 +187,7 @@ sub checkout {
         $commission = $commission_meta;
     }
     $commission =~ s/^Commission des affaires sociales (Mission)/\1/i;
-    $commission =~ s/^(Pour une nouvelle Assemblée nationale |Les rendez-vous des réformes 2017-2022 )*GROUPE DE TRAVAIL N°\s*\d+[\s«]*/Groupe de travail sur /i;
+    $commission =~ s/^(Pour une nouvelle Assemblée nationale |Les rendez-vous des réformes 2017-2022 )*GROUPE DE TRAVAIL N°\s*\d+[\s«–]*/Groupe de travail sur /i;
     $commission =~ s/Groupe de travail sur PROCÉDURE LÉGISLATIVE ET ORGANISATION/Groupe de travail sur la procédure législative et l'organisation/i;
     $commission =~ s/Groupe de travail sur PROCÉDURE LÉGISLATIVE ET ORGANISATION PARLEMENTAIRE ET DROITS DE L'OPPOSITION/Groupe de travail sur la procédure législative et l'organisation parlementaire et les droits de l'opposition/i;
     $commission =~ s/[ »]*$//i;
