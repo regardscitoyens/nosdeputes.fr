@@ -110,6 +110,8 @@ def cleanhtml(s):
 
     s = re.sub(r'(<b>[^<]{5,}\.)( [A-ZÉÊÈÀÇ].?.?)(</b>)', r'\1\3\2', s)
 
+    s = s.replace("heures heures", "heures")
+
     return s
 
 heures_str = {
@@ -213,7 +215,7 @@ def html2json(s):
     # Interventions
     section = soup.find(class_="assnatSection2") or soup.find(class_="assnatSection1")
     if not section:
-        print("ERROR: "+ sys.argv[1]+" n'a pas de section assnatSection2 permettant d'identifier le corps du compte-rendu. Merci de l'ajouter à la main", file=sys.stderr)
+        print("ERROR: "+ sys.argv[1]+" for " + sys.argv[2] + " n'a pas de section assnatSection2 permettant d'identifier le corps du compte-rendu. Merci de l'ajouter à la main", file=sys.stderr)
         exit(2)
     p_tags = section.find_all(['p', 'h1', 'h2', 'h3', 'h3', 'table'], recursive=False)
     extras = soup.find(class_="assnatSection3")

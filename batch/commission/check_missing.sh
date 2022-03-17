@@ -45,7 +45,7 @@ function process {
     done
 }
 
-if [ $LEGISLATURE -lt 15 ]; then
+if [ "$LEGISLATURE" -lt 15 ]; then
 
 echo "Downloading list of Compte-rendus from AN lists..."
 STARTYEAR=$(($LEGISLATURE * 5 + 1941))

@@ -25,8 +25,7 @@ perl download_one.pl $OLDURL $CACHE | while read line; do
     ./check_parsed_cr.sh $outfile
     cat $presentsfile
   else
-    echo $url
-    echo "-> $contentfile + $outfile"
+    echo "$url -> $contentfile + $outfile"
   fi
   ./reserve_cr_to_check.sh $outfile
 done
