@@ -10,6 +10,18 @@ $file = shift;
 $yml = shift || 0;
 $display_text = shift;
 
+my %bureau;
+
+open(FILE, "bureau.csv");
+@bureaulines = <FILE>;
+$bureaulines = "@bureaulines";
+close FILE;
+
+foreach $line (split /\n/, $bureaulines) {
+  @vals = split /;/, $line;
+  $bureau{trim($vals[0])} = trim($vals[1]);
+}
+
 open(FILE, $file);
 @string = <FILE>;
 $string = "@string";
@@ -329,6 +341,20 @@ foreach $line (split /\n/, $string) {
   }
 }
 
+if ($bureau{$depute{"id_institution"}}) {
+  $fonction = $bureau{$depute{"id_institution"}};
+  $fonction =~ s/s de l'Assemblée nationale//g;
+  if ($fonction !~ /e$/ && $depute{"sexe"} eq "F") {
+    $fonction .= "e";
+  }
+  $depute{"fonctions"}{"Bureau de l'Assemblée nationale / ".$fonction} = 1;
+  $orgas{"Bureau de l'Assemblée nationale"} = 1;
+  if ($fonction =~ /questeur/i) {
+    $depute{"fonctions"}{"Questure / ".$fonction} = 1;
+    $orgas{"questure"} = 1;
+  }
+}
+
 #On récupère le nom de famille à partir des emails
 $nomdep = $depute{'nom'};
 @noms = split / /, $nomdep;
@@ -380,7 +406,7 @@ if ($depute{"parti"}) {
 }
 
 if ($yml) {
-  print "  depute_".$depute{'id_an'}.":\n";
+  print "  depute_".$depute{'id_institution'}.":\n";
   foreach $k (keys %depute) {
     if (ref($depute{$k}) =~ /HASH/) {
       print "    ".lc($k).":\n";
