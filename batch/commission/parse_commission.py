@@ -211,7 +211,7 @@ def html2json(s):
             if i > 10:
                 break
     if not (commission and heure and date):
-        print("ERROR: "+ sys.argv[1]+" n'a pas de nom de commission ("+commission+"), date ("+date+") et/ou heure ("+heure+") identifiables dans la section assnatSection1. Merci de les ajouter à la main", file=sys.stderr)
+        print("ERROR: "+ sys.argv[1]+" for " + sys.argv[2] + " n'a pas de nom de commission ("+commission+"), date ("+date+") et/ou heure ("+heure+") identifiables dans la section assnatSection1. Merci de les ajouter à la main", file=sys.stderr)
         exit(2)
 
     # Interventions
