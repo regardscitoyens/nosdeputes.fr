@@ -157,7 +157,7 @@ def get_metas(p):
     p_text = p.get_text()
     p_text = p_text.replace('\xa0', ' ')
     p_low = p_text.lower()
-    if p_low.find('commission') == 0 or p_low.find('délégation') == 0 or p_low.find('mission') == 0 or p_low.find('office') == 0 or p_low.find('comité') == 0 or p_low.find("groupe d") == 0:
+    if not commission and (p_low.find('commission') == 0 or p_low.find('délégation') == 0 or p_low.find('mission') == 0 or p_low.find('office') == 0 or p_low.find('comité') == 0 or p_low.find("groupe d") == 0):
         commission = p_text
         commission = re.sub(r'^Commission des affaires sociales (Mission)', r'\1', commission, re.I)
         commission = re.sub(r'^GROUPE DE TRAVAIL N°[\s\d«–]+', r'Groupe de travail sur ', commission, re.I)
