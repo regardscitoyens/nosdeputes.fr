@@ -204,7 +204,7 @@ sub checkout {
     foreach $depute (@presents) {
 	$depute =~ s/[\/<\|]//g;
 	$depute =~ s/^\s*M+([mes]+\s+|\.\s*|onsieur le |adame la |$)//;
-	$depute =~ s/[,\s\.\-]+$//;
+	$depute =~ s/[,\s\.\-;]+$//;
 	$depute =~ s/^[\s\.\-]+//;
     $depute =~ s/(Assistaient également à la réunion|rapporteur\W*)//;
 	$depute =~ s/Monica Michel$/Monica Michel-Brassart/;
@@ -212,7 +212,7 @@ sub checkout {
 	$depute =~ s/Florence Lasserre.?David/Florence Lasserre/;
 	$depute =~ s/Charlotte Lecocq/Charlotte Parmentier-Lecocq/;
 	$depute =~ s/Claire Picolât/Claire Pitollat/;
-    if ($depute !~ /^(Vice[ -]|Président|Questeur|Parlementaire|Député|Membres?( français)? du parlement|Sénat|Secrétaire|Présent|Excusé|:)/i && $depute !~ /^\s*$/ && $depute !~ /\((député|sénateur|membre du parlement)[^)]*\)$/i) {
+    if ($depute !~ /^(Vice[ -]|Président|Questeur|Parlementaire|Député|Membres?( français)? du parlement|Sénat|Secrétaire|Présent|Excusé|:)/i && $depute !~ /^\s*$/ && $depute !~ /\((député|sénateur|membre du parlement|excusée?)[^)]*\)$/i) {
       print '{"commission": "'.$commission.'", "depute": "'.$depute.'", "reunion": "'.$date.'", "session": "'.$heure.'", "source": "'.$source.'", "source_file": "'.$file.'"}'."\n";
     }
     }
@@ -329,6 +329,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/\.$//;
 
 	if ($line =~ s/\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*// || (($newcomm || $listmultiline) && $line =~ /^[\-\s]*M+[\.mMes]+\s/) || $special) {
+        $line =~ s/\.M/. M/g;
         $line =~ s/(^|\W+)M+[mes.]+\s+/\1/g;
         if ($line !~ /^([\/\s]*|\s*(le|la|chargée?) .*)$/) {
             push @presents, split /[.,] /, $line; #/
