@@ -523,7 +523,7 @@ def getIntervenantFonction(intervenant):
         fonction = intervenant2fonction[intervenant]
     elif fonction:
         intervenant2fonction[intervenant] = fonction
-        fonction = re.sub(r'^la?e? ', '', fonction)
+        fonction = re.sub(r'^(,|la?e?)\s+', '', fonction)
         if intervenant_sexe == "|F|":
             if fonction.find("président ") >= 0 or fonction.endswith("président"):
                 fonction = fonction.replace("président", "présidente")
