@@ -19,7 +19,7 @@ close FILE;
 
 foreach $line (split /\n/, $bureaulines) {
   @vals = split /;/, $line;
-  $bureau{trim($vals[0])} = trim($vals[1]);
+  $bureau{trim($vals[0])} = lc(trim($vals[1]));
 }
 
 open(FILE, $file);
@@ -343,7 +343,7 @@ foreach $line (split /\n/, $string) {
 
 if ($bureau{$depute{"id_institution"}}) {
   $fonction = $bureau{$depute{"id_institution"}};
-  $fonction =~ s/s de l'Assemblée nationale//g;
+  $fonction =~ s/s? de l'assemblée nationale//g;
   if ($fonction !~ /e$/ && $depute{"sexe"} eq "F") {
     $fonction .= "e";
   }
