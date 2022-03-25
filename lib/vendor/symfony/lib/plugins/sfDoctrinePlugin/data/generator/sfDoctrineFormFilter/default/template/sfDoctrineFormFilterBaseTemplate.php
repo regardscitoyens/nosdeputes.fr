@@ -1,4 +1,4 @@
-[?php
+<?php
 
 /**
  * Project filter form base class.

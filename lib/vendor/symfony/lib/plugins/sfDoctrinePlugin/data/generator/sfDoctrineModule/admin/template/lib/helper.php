@@ -1,4 +1,4 @@
-[?php
+<?php
 
 /**
  * <?php echo $this->getModuleName() ?> module configuration.

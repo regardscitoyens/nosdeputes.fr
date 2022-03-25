@@ -86,7 +86,7 @@ abstract class sfGenerator
     require($templateFile);
     $content = ob_get_clean();
 
-    // replace [?php and ?]
+    // replace <?php and ?>
     return $this->replacePhpMarks($content);
   }
 
@@ -99,8 +99,8 @@ abstract class sfGenerator
    */
   protected function replacePhpMarks($text)
   {
-    // replace [?php and ?]
-    return str_replace(array('[?php', '[?=', '?]'), array('<?php', '<?php echo', '?>'), $text);
+    // replace <?php and ?>
+    return str_replace(array('<?php', '[?=', '?>'), array('<?php', '<?php echo', '?>'), $text);
   }
 
   /**

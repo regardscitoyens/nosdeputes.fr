@@ -1,4 +1,4 @@
-[?php
+<?php
 
 /**
  * <?php echo $this->table->getOption('name') ?> filter form.

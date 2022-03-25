@@ -218,7 +218,7 @@ abstract class sfModelGenerator extends sfGenerator
 
     $url_params = $pk_link ? '?'.$this->getPrimaryKeyUrlParams() : '\'';
 
-    return '[?php echo link_to(__(\''.$params['label'].'\', array(), \''.$this->getI18nCatalogue().'\'), \''.$this->getModuleName().'/'.$action.$url_params.', '.$this->asPhp($params['params']).') ?]';
+    return '<?php echo link_to(__(\''.$params['label'].'\', array(), \''.$this->getI18nCatalogue().'\'), \''.$this->getModuleName().'/'.$action.$url_params.', '.$this->asPhp($params['params']).') ?>';
   }
 
   /**
@@ -236,9 +236,9 @@ abstract class sfModelGenerator extends sfGenerator
       $credentials = $this->asPhp($params['credentials']);
 
       return <<<EOF
-[?php if (\$sf_user->hasCredential($credentials)): ?]
+<?php if (\$sf_user->hasCredential($credentials)): ?>
 $content
-[?php endif; ?]
+<?php endif; ?>
 
 EOF;
     }
@@ -345,7 +345,7 @@ EOF;
   {
     if (isset($this->params['non_verbose_templates']) && $this->params['non_verbose_templates'])
     {
-      return '[?php $form->isMultipart() and print \' enctype="multipart/form-data"\' ?]';
+      return '<?php $form->isMultipart() and print \' enctype="multipart/form-data"\' ?>';
     }
     else
     {
