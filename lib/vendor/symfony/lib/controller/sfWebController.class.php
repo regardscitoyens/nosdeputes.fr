@@ -16,15 +16,15 @@
  * @subpackage controller
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfWebController.class.php 28961 2010-04-01 14:17:52Z fabien $
+ * @version    SVN: $Id$
  */
 abstract class sfWebController extends sfController
 {
   /**
    * Generates an URL from an array of parameters.
    *
-   * @param mixed   $parameters An associative array of URL parameters or an internal URI as a string.
-   * @param boolean $absolute   Whether to generate an absolute URL
+   * @param string|array  $parameters An associative array of URL parameters or an internal URI as a string.
+   * @param boolean       $absolute   Whether to generate an absolute URL
    *
    * @return string A URL to a symfony resource
    */
@@ -51,7 +51,7 @@ abstract class sfWebController extends sfController
       {
         return $parameters;
       }
-  
+
       // strip fragment
       if (false !== ($pos = strpos($parameters, '#')))
       {
@@ -87,6 +87,8 @@ abstract class sfWebController extends sfController
    * @param string $url An internal URI
    *
    * @return array An array of parameters
+   *
+   * @throws sfParseException
    */
   public function convertUrlStringToParameters($url)
   {
@@ -120,7 +122,7 @@ abstract class sfWebController extends sfController
     }
 
     // routeName?
-    if ($url[0] == '@')
+    if ($url && $url[0] == '@')
     {
       $route = substr($url, 1);
     }
@@ -166,10 +168,10 @@ abstract class sfWebController extends sfController
   /**
    * Redirects the request to another URL.
    *
-   * @param string $url        An associative array of URL parameters or an internal URI as a string
-   * @param int    $delay      A delay in seconds before redirecting. This is only needed on
-   *                           browsers that do not support HTTP headers
-   * @param int    $statusCode The status code
+   * @param string|array  $url        An associative array of URL parameters or an internal URI as a string
+   * @param int           $delay      A delay in seconds before redirecting. This is only needed on
+   *                                  browsers that do not support HTTP headers
+   * @param int           $statusCode The status code
    *
    * @throws InvalidArgumentException If the url argument is null or an empty string
    */
@@ -177,7 +179,7 @@ abstract class sfWebController extends sfController
   {
     if (empty($url))
     {
-      throw new InvalidArgumentException('Cannot redirect to an empty URL.'); 
+      throw new InvalidArgumentException('Cannot redirect to an empty URL.');
     }
 
     $url = $this->genUrl($url, true);
@@ -190,10 +192,18 @@ abstract class sfWebController extends sfController
     }
 
     // redirect
+    /** @var sfWebResponse $response */
     $response = $this->context->getResponse();
     $response->clearHttpHeaders();
     $response->setStatusCode($statusCode);
-    $response->setHttpHeader('Location', $url);
+
+    // The Location header should only be used for status codes 201 and 3..
+    // For other code, only the refresh meta tag is used
+    if ($statusCode == 201 || ($statusCode >= 300 && $statusCode < 400))
+    {
+      $response->setHttpHeader('Location', $url);
+    }
+
     $response->setContent(sprintf('<html><head><meta http-equiv="refresh" content="%d;url=%s"/></head></html>', $delay, htmlspecialchars($url, ENT_QUOTES, sfConfig::get('sf_charset'))));
     $response->send();
   }

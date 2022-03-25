@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../../bootstrap/unit.php');
+require_once(__DIR__.'/../../../bootstrap/unit.php');
 
 $t = new lime_test(7);
 
@@ -35,7 +35,7 @@ $t->is($months[2], 'févr.', '->configure() automatically changes the date forma
 
 $w = new sfWidgetFormI18nDate(array('culture' => 'fr', 'month_format' => 'number'));
 $months = $w->getOption('months');
-$t->is($months[2], 2, '->configure() automatically changes the date format for the given culture');
+$t->is($months[2], '02', '->configure() automatically changes the date format for the given culture');
 
 try
 {

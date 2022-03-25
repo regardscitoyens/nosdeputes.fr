@@ -4,7 +4,7 @@
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
  * (c) 2004-2006 Sean Kerr <sean@code-box.org>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -16,7 +16,7 @@
  * @subpackage user
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfBasicSecurityUser.class.php 29528 2010-05-19 13:12:27Z fabien $
+ * @version    SVN: $Id$
  */
 class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 {
@@ -42,7 +42,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 
   /**
    * Returns the current user's credentials.
-   * 
+   *
    * @return array
    */
   public function getCredentials()
@@ -70,7 +70,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 
           unset($this->credentials[$key]);
 
-          $this->storage->regenerate(false);
+          $this->storage->regenerate(true);
 
           return;
         }
@@ -117,7 +117,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 
     if ($added)
     {
-      $this->storage->regenerate(false);
+      $this->storage->regenerate(true);
     }
   }
 
@@ -205,7 +205,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 
       $this->dispatcher->notify(new sfEvent($this, 'user.change_authentication', array('authenticated' => $this->authenticated)));
 
-      $this->storage->regenerate(false);
+      $this->storage->regenerate(true);
     }
   }
 
@@ -249,12 +249,6 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
     if (!array_key_exists('timeout', $this->options))
     {
       $this->options['timeout'] = 1800;
-    }
-
-    // force the max lifetime for session garbage collector to be greater than timeout
-    if (ini_get('session.gc_maxlifetime') < $this->options['timeout'])
-    {
-      ini_set('session.gc_maxlifetime', $this->options['timeout']);
     }
 
     // read data from storage

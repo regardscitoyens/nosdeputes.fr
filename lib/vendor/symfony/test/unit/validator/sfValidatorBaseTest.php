@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
 $t = new lime_test(47);
 
@@ -110,7 +110,7 @@ catch (sfValidatorError $e)
   $t->pass('->clean() throws a sfValidatorError exception if the data does not validate');
   $t->is($e->getCode(), 'required', '->clean() throws a sfValidatorError');
 }
-$t->is($v->clean('  foo  '), '  foo  ', '->clean() does not trim whitespaces by default');
+$t->is($v->clean('  foo  '), 'foo', '->clean() trim whitespaces by default');
 
 // ->isEmpty()
 $t->diag('->isEmpty()');
@@ -161,7 +161,7 @@ $t->is($v->getOption('foobar'), 'foo', '->addOption() adds a new option to a val
 // ->getOptions() ->setOptions()
 $t->diag('->getOptions() ->setOptions()');
 $v->setOptions(array('required' => true, 'trim' => false));
-$t->is($v->getOptions(), array('required' => true, 'trim' => false), '->setOptions() changes all options');
+$t->is($v->getOptions(), array('required' => true, 'trim' => false, 'empty_value' => null), '->setOptions() changes all options');
 
 // ->getMessages()
 $t->diag('->getMessages()');
@@ -197,8 +197,8 @@ catch (InvalidArgumentException $e)
 
 // ->setMessages()
 $t->diag('->setMessages()');
-$v->setMessages(array('required' => 'This is required.'));
-$t->is($v->getMessages(), array('required' => 'This is required.'), '->setMessages() changes all error messages');
+$v->setMessages(array('required' => 'This is required!'));
+$t->is($v->getMessages(), array('invalid' => 'Invalid.', 'required' => 'This is required!'), '->setMessages() changes all error messages');
 
 // ->addMessage()
 $t->diag('->addMessage()');

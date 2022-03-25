@@ -3,14 +3,14 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(__DIR__.'/../../bootstrap/unit.php');
 
-$t = new lime_test(89);
+$t = new lime_test(90);
 
 $n = new sfChoiceFormat();
 
@@ -97,6 +97,9 @@ $t->is($n->format($strings[4][0], 0), $strings[4][1][1][0], '->format() returns 
 $t->is($n->format($strings[4][0], 1), $strings[4][1][1][1], '->format() returns the string that match the number');
 $t->is($n->format($strings[4][0], 12), $strings[4][1][1][2], '->format() returns the string that match the number');
 
+// test strings with some set notation
+$t->is($n->format("[0]Some text|[1,Inf] Some text (10)", 12), 'Some text (10)', '->format() does not take into account ranges that are not prefixed with |');
+
 // test set notation
 // tests adapted from Prado unit test suite
 $t->diag('set notation');
@@ -104,7 +107,7 @@ $string = '{n: n%2 == 0} are even numbers |{n: n >= 5} are not even and greater 
 $t->is($n->format($string, 0), 'are even numbers', '->format() can takes a set notation in the format string');
 $t->is($n->format($string, 2), 'are even numbers', '->format() can takes a set notation in the format string');
 $t->is($n->format($string, 4), 'are even numbers', '->format() can takes a set notation in the format string');
-$t->is(!$n->format($string, 1), 'are even numbers', '->format() can takes a set notation in the format string');
+$t->isnt($n->format($string, 1), 'are even numbers', '->format() can takes a set notation in the format string');
 $t->is($n->format($string, 5), 'are not even and greater than or equal to 5', '->format() can takes a set notation in the format string');
 
 $t->diag('set notation for polish');

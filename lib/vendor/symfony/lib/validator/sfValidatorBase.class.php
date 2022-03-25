@@ -16,7 +16,7 @@
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatorBase.class.php 23922 2009-11-14 14:58:38Z fabien $
+ * @version    SVN: $Id$
  */
 abstract class sfValidatorBase
 {
@@ -50,7 +50,7 @@ abstract class sfValidatorBase
    */
   public function __construct($options = array(), $messages = array())
   {
-    $this->options  = array_merge(array('required' => true, 'trim' => false, 'empty_value' => null), $this->options);
+    $this->options  = array_merge(array('required' => true, 'trim' => true, 'empty_value' => null), $this->options);
     $this->messages = array_merge(array('required' => self::$globalDefaultMessages['required'], 'invalid' => self::$globalDefaultMessages['invalid']), $this->messages);
 
     $this->configure($options, $messages);
@@ -139,7 +139,7 @@ abstract class sfValidatorBase
    */
   public function setMessage($name, $value)
   {
-    if (!in_array($name, array_keys($this->messages)))
+    if (!array_key_exists($name, $this->messages))
     {
       throw new InvalidArgumentException(sprintf('%s does not support the following error code: \'%s\'.', get_class($this), $name));
     }
@@ -168,7 +168,7 @@ abstract class sfValidatorBase
    */
   public function setMessages($values)
   {
-    $this->messages = $values;
+    $this->messages = array_merge(array('required' => self::$globalDefaultMessages['required'], 'invalid' => self::$globalDefaultMessages['invalid']), $values);
 
     return $this;
   }
@@ -251,7 +251,7 @@ abstract class sfValidatorBase
    */
   public function setOptions($values)
   {
-    $this->options = $values;
+    $this->options = array_merge(array('required' => true, 'trim' => false, 'empty_value' => null), $values);
 
     return $this;
   }

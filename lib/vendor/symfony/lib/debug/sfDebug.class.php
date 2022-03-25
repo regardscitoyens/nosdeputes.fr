@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage debug
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfDebug.class.php 22118 2009-09-18 07:02:26Z fabien $
+ * @version    SVN: $Id$
  */
 class sfDebug
 {
@@ -44,7 +44,7 @@ class sfDebug
       'extensions' => get_loaded_extensions(),
     );
 
-    natcasesort($values['extensions']); 
+    natcasesort($values['extensions']);
 
     // assign extension version
     if ($values['extensions'])
@@ -124,7 +124,7 @@ class sfDebug
   /**
    * Returns response parameters as an array.
    *
-   * @param sfResponse $response A sfResponse instance
+   * @param sfWebResponse $response A sfResponse instance
    *
    * @return array The response parameters
    */
@@ -161,11 +161,22 @@ class sfDebug
       return array();
     }
 
-    return array(
+    $data = array(
       'options'         => $user->getOptions(),
       'attributeHolder' => self::flattenParameterHolder($user->getAttributeHolder(), true),
       'culture'         => $user->getCulture(),
     );
+
+    if ($user instanceof sfBasicSecurityUser)
+    {
+      $data = array_merge($data, array(
+          'authenticated'   => $user->isAuthenticated(),
+          'credentials'     => $user->getCredentials(),
+          'lastRequest'     => $user->getLastRequestTime(),
+      ));
+    }
+
+    return $data;
   }
 
   /**
@@ -240,9 +251,9 @@ class sfDebug
 
   /**
    * Shortens a file path by replacing symfony directory constants.
-   * 
+   *
    * @param  string $file
-   * 
+   *
    * @return string
    */
   static public function shortenFilePath($file)

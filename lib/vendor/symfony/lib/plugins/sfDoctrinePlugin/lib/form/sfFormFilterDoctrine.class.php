@@ -21,7 +21,7 @@
  * @subpackage form
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- * @version    SVN: $Id: sfFormFilterDoctrine.class.php 28992 2010-04-06 11:30:44Z Kris.Wallsmith $
+ * @version    SVN: $Id$
  */
 abstract class sfFormFilterDoctrine extends sfFormFilter
 {
@@ -64,7 +64,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
 
   /**
    * Sets the query object to use.
-   * 
+   *
    * @param Doctrine_Query $query
    */
   public function setQuery($query)
@@ -75,7 +75,8 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
   /**
    * Returns a Doctrine Query based on the current values form the form.
    *
-   * @return Query A Doctrine Query object
+   * @throws sfValidatorErrorSchema
+   * @return Doctrine_Query A Doctrine Query object
    */
   public function getQuery()
   {
@@ -97,7 +98,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
    * The method must return the processed value or false to remove the value
    * from the array of cleaned up values.
    *
-   * @param  array An array of cleaned up values to process
+   * @param  array $values An array of cleaned up values to process
    *
    * @return array An array of cleaned up values processed by the user defined methods
    */
@@ -126,9 +127,9 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
   /**
    * Builds a Doctrine Query based on the passed values.
    *
-   * @param  array    An array of parameters to build the Query object
+   * @param  array $values An array of parameters to build the Query object
    *
-   * @return Query A Doctrine Query object
+   * @return Doctrine_Query A Doctrine Query object
    */
   public function buildQuery(array $values)
   {
@@ -141,8 +142,9 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
    * Overload this method instead of {@link buildQuery()} to avoid running
    * {@link processValues()} multiple times.
    *
-   * @param  array $values
+   * @throws LogicException
    *
+   * @param  array $values
    * @return Doctrine_Query
    */
   protected function doBuildQuery(array $values)
@@ -290,11 +292,11 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
 
   /**
    * Returns the name of the related model.
-   * 
+   *
    * @param string $alias A relation alias
-   * 
+   *
    * @return string
-   * 
+   *
    * @throws InvalidArgumentException If no relation with the supplied alias exists on the current model
    */
   protected function getRelatedModelName($alias)
@@ -303,7 +305,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
 
     if (!$table->hasRelation($alias))
     {
-      throw new InvalidArgumentException(sprintf('The "%s" model has to "%s" relation.', $this->getModelName(), $alias));
+      throw new InvalidArgumentException(sprintf('The "%s" model has no "%s" relation.', $this->getModelName(), $alias));
     }
 
     $relation = $table->getRelation($alias);
@@ -323,8 +325,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
 
   protected function camelize($text)
   {
-    //return sfToolkit::pregtr($text, array('#/(.?)#e' => "'::'.strtoupper('\\1')", '/(^|_|-)+(.)/e' => "strtoupper('\\2')"));
-    return sfToolkit::camelize($text);
+    return strtr(ucwords(strtr($text, array('/' => ':: ', '_' => ' ', '-' => ' '))), array(' ' => ''));
   }
 
   protected function getTable()

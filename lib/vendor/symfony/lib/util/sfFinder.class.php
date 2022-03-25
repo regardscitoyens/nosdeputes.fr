@@ -26,7 +26,7 @@
  * @package    symfony
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfFinder.class.php 29608 2010-05-24 16:39:39Z Kris.Wallsmith $
+ * @version    SVN: $Id$
  */
 class sfFinder
 {
@@ -49,7 +49,7 @@ class sfFinder
    * Finder will descend at most $level levels of directories below the starting point.
    *
    * @param  int $level
-   * @return object current sfFinder object
+   * @return sfFinder current sfFinder object
    */
   public function maxdepth($level)
   {
@@ -64,7 +64,7 @@ class sfFinder
    * Finder will start applying tests at level $level.
    *
    * @param  int $level
-   * @return object current sfFinder object
+   * @return sfFinder current sfFinder object
    */
   public function mindepth($level)
   {
@@ -82,7 +82,7 @@ class sfFinder
    * Sets the type of elements to returns.
    *
    * @param  string $name  directory or file or any (for both file and directory)
-   * @return object new sfFinder object
+   * @return sfFinder new sfFinder object
    */
   public static function type($name)
   {
@@ -382,7 +382,7 @@ class sfFinder
 
       if ($this->relative)
       {
-        $new_files = str_replace(rtrim($dir, '/').'/', '', $new_files);
+        $new_files = preg_replace('#^'.preg_quote(rtrim($dir, '/'), '#').'/#', '', $new_files);
       }
 
       $files = array_merge($files, $new_files);
@@ -580,10 +580,10 @@ class sfFinder
 
   public static function isPathAbsolute($path)
   {
-    if ($path{0} === '/' || $path{0} === '\\' ||
-        (strlen($path) > 3 && ctype_alpha($path{0}) &&
-         $path{1} === ':' &&
-         ($path{2} === '\\' || $path{2} === '/')
+    if ($path[0] === '/' || $path[0] === '\\' ||
+        (strlen($path) > 3 && ctype_alpha($path[0]) &&
+         $path[1] === ':' &&
+         ($path[2] === '\\' || $path[2] === '/')
         )
        )
     {
@@ -617,7 +617,7 @@ class sfFinder
  * @author     Richard Clamp <richardc@unixbeard.net> perl version
  * @copyright  2004-2005 Fabien Potencier <fabien.potencier@gmail.com>
  * @copyright  2002 Richard Clamp <richardc@unixbeard.net>
- * @version    SVN: $Id: sfFinder.class.php 29608 2010-05-24 16:39:39Z Kris.Wallsmith $
+ * @version    SVN: $Id$
  */
 class sfGlobToRegex
 {
@@ -739,7 +739,7 @@ class sfGlobToRegex
  * @copyright  2004-2005 Fabien Potencier <fabien.potencier@gmail.com>
  * @copyright  2002 Richard Clamp <richardc@unixbeard.net>
  * @see        http://physics.nist.gov/cuu/Units/binary.html
- * @version    SVN: $Id: sfFinder.class.php 29608 2010-05-24 16:39:39Z Kris.Wallsmith $
+ * @version    SVN: $Id$
  */
 class sfNumberCompare
 {

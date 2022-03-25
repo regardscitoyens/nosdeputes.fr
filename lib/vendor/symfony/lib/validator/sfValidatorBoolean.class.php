@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatorBoolean.class.php 10306 2008-07-15 22:12:35Z Carl.Vondrick $
+ * @version    SVN: $Id$
  */
 class sfValidatorBoolean extends sfValidatorBase
 {
@@ -45,12 +45,13 @@ class sfValidatorBoolean extends sfValidatorBase
    */
   protected function doClean($value)
   {
-    if (in_array($value, $this->getOption('true_values')))
+    $checkValue = $value === 0 ? '0' : $value;
+    if (in_array($checkValue, $this->getOption('true_values')))
     {
       return true;
     }
 
-    if (in_array($value, $this->getOption('false_values')))
+    if (in_array($checkValue, $this->getOption('false_values')))
     {
       return false;
     }

@@ -6,7 +6,7 @@
  * @package    project
  * @subpackage cache
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: actions.class.php 28625 2010-03-19 19:00:53Z Kris.Wallsmith $
+ * @version    SVN: $Id$
  */
 class cacheActions extends sfActions
 {
@@ -30,6 +30,7 @@ class cacheActions extends sfActions
 
   public function executeMulti()
   {
+    $this->getResponse()->setTitle('Param: '.$this->getRequestParameter('param'));
   }
 
   public function executeMultiBis()
@@ -91,7 +92,7 @@ class cacheActions extends sfActions
   protected function prepareImage()
   {
     $this->getResponse()->setContentType('image/png');
-    $this->image = file_get_contents(dirname(__FILE__).'/../data/ok48.png');
+    $this->image = file_get_contents(__DIR__.'/../data/ok48.png');
     $this->setTemplate('image');
   }
 

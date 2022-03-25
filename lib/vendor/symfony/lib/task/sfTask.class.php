@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -14,20 +14,21 @@
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfTask.class.php 23437 2009-10-29 16:12:53Z fabien $
+ * @version    SVN: $Id$
  */
 abstract class sfTask
 {
-  protected
-    $namespace           = '',
-    $name                = null,
-    $aliases             = array(),
-    $briefDescription    = '',
-    $detailedDescription = '',
-    $arguments           = array(),
-    $options             = array(),
-    $dispatcher          = null,
-    $formatter           = null;
+  protected $namespace = '';
+  protected $name = null;
+  protected $aliases = array();
+  protected $briefDescription = '';
+  protected $detailedDescription = '';
+  protected $arguments = array();
+  protected $options = array();
+  /** @var sfEventDispatcher */
+  protected $dispatcher = null;
+  /** @var sfFormatter */
+  protected $formatter = null;
 
   /**
    * Constructor.
@@ -74,7 +75,7 @@ abstract class sfTask
   /**
    * Sets the formatter instance.
    *
-   * @param sfFormatter The formatter instance
+   * @param sfFormatter $formatter The formatter instance
    */
   public function setFormatter(sfFormatter $formatter)
   {
@@ -124,7 +125,7 @@ abstract class sfTask
         {
           if ($indexArguments[$name]->isArray())
           {
-            $value = join(' ', (array) $value);
+            $value = implode(' ', (array) $value);
             $arguments[$pos] = isset($arguments[$pos]) ? $arguments[$pos].' '.$value : $value;
           }
           else
@@ -157,7 +158,7 @@ abstract class sfTask
         }
 
         // convert associative array
-        $value = true === $value ? $name : sprintf('%s=%s', $name, isset($indexedOptions[$name]) && $indexedOptions[$name]->isArray() ? join(' --'.$name.'=', (array) $value) : $value);
+        $value = true === $value ? $name : sprintf('%s=%s', $name, isset($indexedOptions[$name]) && $indexedOptions[$name]->isArray() ? implode(' --'.$name.'=', (array) $value) : $value);
       }
 
       // add -- before each option if needed
@@ -176,7 +177,7 @@ abstract class sfTask
   /**
    * Returns the argument objects.
    *
-   * @return sfCommandArgument An array of sfCommandArgument objects.
+   * @return sfCommandArgument[] An array of sfCommandArgument objects.
    */
   public function getArguments()
   {
@@ -186,7 +187,7 @@ abstract class sfTask
   /**
    * Adds an array of argument objects.
    *
-   * @param array $arguments  An array of arguments
+   * @param sfCommandArgument[] $arguments  An array of arguments
    */
   public function addArguments($arguments)
   {
@@ -199,6 +200,10 @@ abstract class sfTask
    * This method always use the sfCommandArgument class to create an option.
    *
    * @see sfCommandArgument::__construct()
+   * @param string $name
+   * @param int    $mode
+   * @param string $help
+   * @param mixed  $default
    */
   public function addArgument($name, $mode = null, $help = '', $default = null)
   {
@@ -208,7 +213,7 @@ abstract class sfTask
   /**
    * Returns the options objects.
    *
-   * @return sfCommandOption An array of sfCommandOption objects.
+   * @return sfCommandOption[] An array of sfCommandOption objects.
    */
   public function getOptions()
   {
@@ -231,6 +236,12 @@ abstract class sfTask
    * This method always use the sfCommandOption class to create an option.
    *
    * @see sfCommandOption::__construct()
+   *
+   * @param string $name
+   * @param string $shortcut
+   * @param int    $mode
+   * @param string $help
+   * @param mixed  $default
    */
   public function addOption($name, $shortcut = null, $mode = null, $help = '', $default = null)
   {
@@ -304,7 +315,10 @@ abstract class sfTask
    */
   public function getDetailedDescription()
   {
-    return preg_replace('/\[(.+?)\|(\w+)\]/se', '$this->formatter->format("$1", "$2")', $this->detailedDescription);
+    $formatter = $this->getFormatter();
+    return preg_replace_callback('/\[(.+?)\|(\w+)\]/s', function ($match) use ($formatter) {
+      return $formatter->format($match['1'], $match['2']);
+    }, $this->detailedDescription);
   }
 
   /**
@@ -356,7 +370,8 @@ abstract class sfTask
 
   protected function doRun(sfCommandManager $commandManager, $options)
   {
-    $this->dispatcher->filter(new sfEvent($this, 'command.filter_options', array('command_manager' => $commandManager)), $options);
+    $event = $this->dispatcher->filter(new sfEvent($this, 'command.filter_options', array('command_manager' => $commandManager)), $options);
+    $options = $event->getReturnValue();
 
     $this->process($commandManager, $options);
 
@@ -449,7 +464,7 @@ abstract class sfTask
    * @param string       $style    The style to use (QUESTION by default)
    * @param string       $default  The default answer if none is given by the user
    *
-   * @param string       The user answer
+   * @return string      The user answer
    */
   public function ask($question, $style = 'QUESTION', $default = null)
   {
@@ -464,7 +479,7 @@ abstract class sfTask
 
     $ret = trim(fgets(STDIN));
 
-    return $ret ? $ret : $default;
+    return $ret ?: $default;
   }
 
   /**
@@ -476,7 +491,7 @@ abstract class sfTask
    * @param string       $style    The style to use (QUESTION by default)
    * @param Boolean      $default  The default answer if the user enters nothing
    *
-   * @param Boolean      true if the user has confirmed, false otherwise
+   * @return Boolean     true if the user has confirmed, false otherwise
    */
   public function askConfirmation($question, $style = 'QUESTION', $default = true)
   {
@@ -509,7 +524,9 @@ abstract class sfTask
    * @param   sfValidatorBase $validator
    * @param   array           $options
    *
-   * @return  mixed
+   * @return mixed
+   *
+   * @throws sfValidatorError
    */
   public function askAndValidate($question, sfValidatorBase $validator, array $options = array())
   {
@@ -537,6 +554,7 @@ abstract class sfTask
     }
 
     // no, ask the user for a valid user
+    /** @var sfValidatorError|null $error */
     $error = null;
     while (false === $options['attempts'] || $options['attempts']--)
     {
@@ -570,7 +588,7 @@ abstract class sfTask
     $dom->formatOutput = true;
     $dom->appendChild($taskXML = $dom->createElement('task'));
     $taskXML->setAttribute('id', $this->getFullName());
-    $taskXML->setAttribute('namespace', $this->getNamespace() ? $this->getNamespace() : '_global');
+    $taskXML->setAttribute('namespace', $this->getNamespace() ?: '_global');
     $taskXML->setAttribute('name', $this->getName());
 
     $taskXML->appendChild($usageXML = $dom->createElement('usage'));
@@ -635,7 +653,7 @@ abstract class sfTask
       }
     }
 
-    return $dom->saveXml();
+    return $dom->saveXML();
   }
 
   /**
@@ -650,6 +668,14 @@ abstract class sfTask
 
    protected function strlen($string)
    {
-     return function_exists('mb_strlen') ? mb_strlen($string) : strlen($string);
+     if (!function_exists('mb_strlen')) {
+         return strlen($string);
+     }
+
+     if (false === $encoding = mb_detect_encoding($string)) {
+         return strlen($string);
+     }
+
+     return mb_strlen($string, $encoding);
    }
 }

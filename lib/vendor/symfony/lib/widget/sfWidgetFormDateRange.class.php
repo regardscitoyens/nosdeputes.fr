@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage widget
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWidgetFormDateRange.class.php 24015 2009-11-16 13:33:34Z bschussek $
+ * @version    SVN: $Id$
  */
 class sfWidgetFormDateRange extends sfWidgetForm
 {
@@ -42,6 +42,8 @@ class sfWidgetFormDateRange extends sfWidgetForm
   }
 
   /**
+   * Renders the widget.
+   *
    * @param  string $name        The element name
    * @param  string $value       The date displayed in this widget
    * @param  array  $attributes  An array of HTML attributes to be merged with the default HTML attributes
@@ -53,11 +55,12 @@ class sfWidgetFormDateRange extends sfWidgetForm
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
-    $values = array_merge(array('from' => '', 'to' => '', 'is_empty' => ''), is_array($value) ? $value : array());
+    $value = array_merge(array('from' => '', 'to' => ''), is_array($value) ? $value : array());
+    $attributes = array_merge(array('from' => array(), 'to' => array()), is_array($attributes) ? $attributes : array());
 
     return strtr($this->translate($this->getOption('template')), array(
-      '%from_date%'      => $this->getOption('from_date')->render($name.'[from]', $value['from']),
-      '%to_date%'        => $this->getOption('to_date')->render($name.'[to]', $value['to']),
+      '%from_date%'      => $this->getOption('from_date')->render($name.'[from]', $value['from'], $attributes['from'], $errors),
+      '%to_date%'        => $this->getOption('to_date')->render($name.'[to]', $value['to'], $attributes['to'], $errors),
     ));
   }
 
@@ -68,7 +71,7 @@ class sfWidgetFormDateRange extends sfWidgetForm
    */
   public function getStylesheets()
   {
-    return array_unique(array_merge($this->getOption('from_date')->getStylesheets(), $this->getOption('to_date')->getStylesheets()));
+    return array_merge($this->getOption('from_date')->getStylesheets(), $this->getOption('to_date')->getStylesheets());
   }
 
   /**
@@ -78,6 +81,6 @@ class sfWidgetFormDateRange extends sfWidgetForm
    */
   public function getJavaScripts()
   {
-    return array_unique(array_merge($this->getOption('from_date')->getJavaScripts(), $this->getOption('to_date')->getJavaScripts()));
+    return array_merge($this->getOption('from_date')->getJavaScripts(), $this->getOption('to_date')->getJavaScripts());
   }
 }

@@ -14,10 +14,11 @@
  * @package    symfony
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfTimerManager.class.php 13339 2008-11-25 14:58:05Z fabien $
+ * @version    SVN: $Id$
  */
 class sfTimerManager
 {
+  /** @var sfTimer[] */
   static public $timers = array();
 
   /**
@@ -27,16 +28,21 @@ class sfTimerManager
    *
    * @param string $name The name of the timer
    *
+   * @param bool   $reset
+   *
    * @return sfTimer The timer instance
    */
-  public static function getTimer($name)
+  public static function getTimer($name, $reset=true)
   {
     if (!isset(self::$timers[$name]))
     {
       self::$timers[$name] = new sfTimer($name);
     }
 
-    self::$timers[$name]->startTimer();
+    if ($reset)
+    {
+       self::$timers[$name]->startTimer();
+    }
 
     return self::$timers[$name];
   }
@@ -44,7 +50,7 @@ class sfTimerManager
   /**
    * Gets all sfTimer instances stored in sfTimerManager.
    *
-   * @return array An array of all sfTimer instances
+   * @return sfTimer[] An array of all sfTimer instances
    */
   public static function getTimers()
   {

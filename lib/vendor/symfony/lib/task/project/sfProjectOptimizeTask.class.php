@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfProjectOptimizeTask.class.php 29415 2010-05-12 06:24:54Z fabien $
+ * @version    SVN: $Id$
  */
 class sfProjectOptimizeTask extends sfBaseTask
 {
@@ -51,6 +51,9 @@ EOF;
     $modules = $this->findModules();
     $target = sfConfig::get('sf_cache_dir').'/'.$arguments['application'].'/'.$arguments['env'].'/config/configuration.php';
 
+    $current_umask = umask();
+    umask(0000);
+
     // remove existing optimization file
     if (file_exists($target))
     {
@@ -58,7 +61,7 @@ EOF;
     }
 
     // recreate configuration without the cache
-    $this->setConfiguration($this->createConfiguration($this->configuration->getApplication(), $this->configuration->getEnvironment()));
+    $this->setConfiguration($this->createConfiguration($arguments['application'], $arguments['env']));
 
     // initialize the context
     sfContext::createInstance($this->configuration);
@@ -66,7 +69,18 @@ EOF;
     // force cache generation for generated modules
     foreach ($modules as $module)
     {
-      $this->configuration->getConfigCache()->import('modules/'.$module.'/config/generator.yml', false, true);
+      $this->logSection('module', $module);
+
+      try
+      {
+        $this->configuration->getConfigCache()->checkConfig('modules/'.$module.'/config/generator.yml',  true);
+      }
+      catch (Exception $e)
+      {
+        $this->dispatcher->notifyUntil(new sfEvent($e, 'application.throw_exception'));
+
+        $this->logSection($module, $e->getMessage(), null, 'ERROR');
+      }
     }
 
     $templates = $this->findTemplates($modules);
@@ -83,6 +97,8 @@ EOF;
 
     $this->logSection('file+', $target);
     file_put_contents($target, '<?php return '.var_export($data, true).';');
+
+    umask($current_umask);
   }
 
   protected function optimizeGetControllerDirs($modules)
@@ -171,22 +187,19 @@ EOF;
     $dirs = array(sfConfig::get('sf_app_module_dir'));
 
     // plugins
-    foreach ($this->configuration->getPluginSubPaths(DIRECTORY_SEPARATOR.'modules') as $path)
+    $pluginSubPaths = $this->configuration->getPluginSubPaths(DIRECTORY_SEPARATOR.'modules');
+    $modules = array();
+    foreach (sfFinder::type('dir')->maxdepth(0)->follow_link()->relative()->in($pluginSubPaths) as $module)
     {
-      // parse out the plugin name
-      if (preg_match("#plugins".preg_quote(DIRECTORY_SEPARATOR)."([^".preg_quote(DIRECTORY_SEPARATOR)."]+)".preg_quote(DIRECTORY_SEPARATOR)."modules#", $path, $matches))
-      {
-        // plugin module enabled?
-        if (in_array($matches[1], sfConfig::get('sf_enabled_modules')))
+        if (in_array($module, sfConfig::get('sf_enabled_modules')))
         {
-          $dirs[] = $path;
+          $modules[] = $module;
         }
-      }
     }
 
     // core modules
     $dirs[] = sfConfig::get('sf_symfony_lib_dir').'/controller';
 
-    return array_unique(sfFinder::type('dir')->maxdepth(0)->follow_link()->relative()->in($dirs));
+    return array_unique(array_merge(sfFinder::type('dir')->maxdepth(0)->follow_link()->relative()->in($dirs), $modules));
   }
 }

@@ -13,7 +13,7 @@
  * {@link http://prado.sourceforge.net/}
  *
  * @author     Wei Zhuo <weizhuo[at]gmail[dot]com>
- * @version    $Id: sfCultureInfo.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
+ * @version    $Id$
  * @package    symfony
  * @subpackage i18n
  */
@@ -225,7 +225,7 @@ class sfCultureInfo
    */
   protected static function dataDir()
   {
-    return dirname(__FILE__).'/data/';
+    return __DIR__.'/data/';
   }
 
   /**
@@ -723,7 +723,15 @@ class sfCultureInfo
    */
   public function getCountries($countries = null)
   {
-    $allCountries = $this->findInfo('Countries', true);
+    // remove integer keys as they do not represent countries
+    $allCountries = array();
+    foreach ($this->findInfo('Countries', true) as $key => $value)
+    {
+      if (!is_int($key))
+      {
+        $allCountries[$key] = $value;
+      }
+    }
 
     // restrict countries to a sub-set
     if (null !== $countries)
@@ -764,15 +772,22 @@ class sfCultureInfo
       $allCurrencies = array_intersect_key($allCurrencies, array_flip($currencies));
     }
 
-    if (!$full)
+    $tmp = array();
+    foreach ($allCurrencies as $key => $value)
     {
-      foreach ($allCurrencies as $key => $value)
-      {
-        $allCurrencies[$key] = $value[1];
-      }
+      $allCurrencies[$key] = $value[1];
+      $tmp[$key] = $value[0];
     }
 
     $this->sortArray($allCurrencies);
+
+    if ($full)
+    {
+        foreach ($allCurrencies as $key => $value)
+        {
+          $allCurrencies[$key] = array($tmp[$key], $value);
+        }
+    }
 
     return $allCurrencies;
   }
@@ -838,7 +853,7 @@ class sfCultureInfo
   /**
    * sorts the passed array according to the locale of this sfCultureInfo class
    *
-   * @param  array the array to pe sorted wiht "asort" and this locale
+   * @param  array the array to be sorted with "asort" and this locale
    */
   public function sortArray(&$array)
   {

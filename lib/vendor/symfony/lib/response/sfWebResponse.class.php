@@ -11,12 +11,12 @@
 /**
  * sfWebResponse class.
  *
- * This class manages web reponses. It supports cookies and headers management.
+ * This class manages web responses. It supports cookies and headers management.
  *
  * @package    symfony
  * @subpackage response
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWebResponse.class.php 28347 2010-03-02 17:47:14Z fabien $
+ * @version    SVN: $Id$
  */
 class sfWebResponse extends sfResponse
 {
@@ -97,7 +97,7 @@ class sfWebResponse extends sfResponse
    * @param  sfEventDispatcher $dispatcher  An sfEventDispatcher instance
    * @param  array             $options     An array of options
    *
-   * @return bool true, if initialization completes successfully, otherwise false
+   * @return void
    *
    * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfResponse
    *
@@ -395,6 +395,12 @@ class sfWebResponse extends sfResponse
   {
     $this->sendHttpHeaders();
     $this->sendContent();
+
+    if (function_exists('fastcgi_finish_request'))
+    {
+      $this->dispatcher->notify(new sfEvent($this, 'response.fastcgi_finish_request'));
+      fastcgi_finish_request();
+    }
   }
 
   /**
@@ -404,11 +410,10 @@ class sfWebResponse extends sfResponse
    *
    * @return string Normalized header
    */
-   protected function normalizeHeaderName($name)
-   {
-     // return preg_replace('/\-(.)/e', "'-'.strtoupper('\\1')", strtr(ucfirst(strtolower($name)), '_', '-'));
-     return preg_replace_callback('/\-(.)/', function ($matches) { return '-'.strtoupper($matches[1]); }, strtr(ucfirst(strtolower($name)), '_', '-'));
-   }
+  protected function normalizeHeaderName($name)
+  {
+    return strtr(ucwords(strtr(strtolower($name), array('_' => ' ', '-' => ' '))), array(' ' => '-'));
+  }
 
   /**
    * Retrieves a formated date.
@@ -480,7 +485,7 @@ class sfWebResponse extends sfResponse
         $currentHeaders[$tmp[0]] = isset($tmp[1]) ? $tmp[1] : null;
       }
     }
-    $currentHeaders[strtr(strtolower($name), '_', '-')] = $value;
+    $currentHeaders[str_replace('_', '-', strtolower($name))] = $value;
 
     $headers = array();
     foreach ($currentHeaders as $key => $value)
@@ -589,6 +594,32 @@ class sfWebResponse extends sfResponse
   }
 
   /**
+   * Preprend title
+   *
+   * @param string  $title      Title name
+   * @param string  $separator  Separator string (default: " - ")
+   * @param boolean $escape     true, for escaping the title
+   */
+  public function prependTitle($title, $separator = ' - ', $escape = true)
+  {
+    if (!isset($this->metas['title']))
+    {
+      $this->setTitle($title);
+
+      return;
+    }
+
+    // FIXME: If you use the i18n layer and escape the data here, it won't work
+    // see include_metas() in AssetHelper
+    if ($escape)
+    {
+      $title = htmlspecialchars($title, ENT_QUOTES, $this->options['charset']);
+    }
+
+    $this->metas['title'] = $title.$separator.$this->metas['title'];
+  }
+
+  /**
    * Sets title for the current web response.
    *
    * @param string  $title   Title name
@@ -649,7 +680,7 @@ class sfWebResponse extends sfResponse
    *
    * @param string $file      The stylesheet file
    * @param string $position  Position
-   * @param string $options   Stylesheet options
+   * @param array  $options   Stylesheet options
    */
   public function addStylesheet($file, $position = '', $options = array())
   {
@@ -668,6 +699,17 @@ class sfWebResponse extends sfResponse
     foreach ($this->getPositions() as $position)
     {
       unset($this->stylesheets[$position][$file]);
+    }
+  }
+
+  /**
+   * Clear all previously added stylesheets
+   */
+  public function clearStylesheets()
+  {
+    foreach (array_keys($this->getStylesheets()) as $file)
+    {
+      $this->removeStylesheet($file);
     }
   }
 
@@ -711,7 +753,7 @@ class sfWebResponse extends sfResponse
    *
    * @param string $file      The JavaScript file
    * @param string $position  Position
-   * @param string $options   Javascript options
+   * @param array  $options   Javascript options
    */
   public function addJavascript($file, $position = '', $options = array())
   {
@@ -730,6 +772,17 @@ class sfWebResponse extends sfResponse
     foreach ($this->getPositions() as $position)
     {
       unset($this->javascripts[$position][$file]);
+    }
+  }
+
+  /**
+   * Clear all previously added javascripts
+   */
+  public function clearJavascripts()
+  {
+    foreach (array_keys($this->getJavascripts()) as $file)
+    {
+      $this->removeJavascript($file);
     }
   }
 
@@ -796,6 +849,10 @@ class sfWebResponse extends sfResponse
     $this->stylesheets = $response->getStylesheets(self::RAW);
     $this->javascripts = $response->getJavascripts(self::RAW);
     $this->slots       = $response->getSlots();
+
+    // HTTP protocol must be from the current request
+    // this fix is not nice but that's the only way to fix it and keep BC (see #9254)
+    $this->options['http_protocol'] = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0';
   }
 
   /**
@@ -824,6 +881,7 @@ class sfWebResponse extends sfResponse
 
   /**
    * @see sfResponse
+   * @inheritdoc
    */
   public function unserialize($serialized)
   {

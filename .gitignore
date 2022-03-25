@@ -18,12 +18,12 @@ config/ProjectConfiguration.class.php
 apps/frontend/config/factories.yml
 lib/vendor/SolrServer/solr/conf/solrconfig.xml
 
-data/sql/
-data/mails/
+./data/sql/
+./data/mails/
 lib/vendor/SolrServer/solr/data/
 
-cache/
-log/
+./cache/
+./log/
 
 batch/amendements/commission/
 batch/amendements/errors/
@@ -89,12 +89,6 @@ batch/senateur/out.yml/
 batch/senateur/out/
 batch/senateur/test/
 batch/senateur/twitter.csv
-
-lib/filter/doctrine/
-lib/form/doctrine/
-lib/form/BaseForm.class.php
-lib/model/doctrine/base/
-lib/model/doctrine/sfDoctrineActAsTaggablePlugin/
 
 web/amendements/
 web/circonscription.html

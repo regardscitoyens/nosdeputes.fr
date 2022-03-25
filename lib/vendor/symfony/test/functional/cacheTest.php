@@ -9,7 +9,7 @@
  */
 
 $app = 'cache';
-if (!include(dirname(__FILE__).'/../bootstrap/functional.php'))
+if (!include(__DIR__.'/../bootstrap/functional.php'))
 {
   return;
 }
@@ -40,8 +40,8 @@ class myTestBrowser extends sfTestBrowser
 
         // contextual partials
         checkElement('#contextualPartial .contextualPartial')->
-        checkElement('#contextualCacheablePartial .contextualCacheablePartial__'.$parameter)->
-        checkElement('#contextualCacheablePartialVarParam .contextualCacheablePartial_varParam_'.$parameter)->
+        checkElement('#contextualCacheablePartial .contextualCacheablePartial__'.$parameter, 'Param: '.$parameter)->
+        checkElement('#contextualCacheablePartialVarParam .contextualCacheablePartial_varParam_'.$parameter, 'Param: '.$parameter)->
 
         // components
         checkElement('#component .component__componentParam_'.$parameter)->
@@ -50,8 +50,8 @@ class myTestBrowser extends sfTestBrowser
         // contextual components
         checkElement('#contextualComponent .contextualComponent__componentParam_'.$parameter)->
         checkElement('#contextualComponentVarParam .contextualComponent_varParam_componentParam_'.$parameter)->
-        checkElement('#contextualCacheableComponent .contextualCacheableComponent__componentParam_'.$parameter)->
-        checkElement('#contextualCacheableComponentVarParam .contextualCacheableComponent_varParam_componentParam_'.$parameter)->
+        checkElement('#contextualCacheableComponent .contextualCacheableComponent__componentParam_'.$parameter, 'Param: '.$parameter)->
+        checkElement('#contextualCacheableComponentVarParam .contextualCacheableComponent_varParam_componentParam_'.$parameter, 'Param: '.$parameter)->
       end()->
 
       with('view_cache')->begin()->
@@ -322,7 +322,7 @@ class myTestBrowser extends sfTestBrowser
 $b = new myTestBrowser();
 
 // non HTML cache
-$image = file_get_contents(dirname(__FILE__).'/fixtures/apps/cache/modules/cache/data/ok48.png');
+$image = file_get_contents(__DIR__.'/fixtures/apps/cache/modules/cache/data/ok48.png');
 sfConfig::set('sf_web_debug', true);
 $b->
   get('/cache/imageWithLayoutCacheWithLayout')->

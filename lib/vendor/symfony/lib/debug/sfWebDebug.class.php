@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage debug
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWebDebug.class.php 27284 2010-01-28 18:34:57Z Kris.Wallsmith $
+ * @version    SVN: $Id$
  */
 class sfWebDebug
 {
@@ -137,6 +137,7 @@ class sfWebDebug
    * Gets an option value by name.
    *
    * @param string $name The option name
+   * @param mixed  $default
    *
    * @return mixed The option value
    */
@@ -154,14 +155,33 @@ class sfWebDebug
    */
   public function injectToolbar($content)
   {
-    $content = str_ireplace('</head>', '<style type="text/css">'.str_replace(array("\r", "\n"), ' ', $this->getStylesheet()).'</style></head>', $content);
+    if (function_exists('mb_stripos'))
+    {
+      $posFunction = 'mb_stripos';
+      $posrFunction = 'mb_strripos';
+      $substrFunction = 'mb_substr';
+    }
+    else
+    {
+      $posFunction = 'stripos';
+      $posrFunction = 'strripos';
+      $substrFunction = 'substr';
+    }
+
+    if (false !== $pos = $posFunction($content, '</head>'))
+    {
+      $styles = '<style type="text/css">'.str_replace(array("\r", "\n"), ' ', $this->getStylesheet()).'</style>';
+      $content = $substrFunction($content, 0, $pos).$styles.$substrFunction($content, $pos);
+    }
 
     $debug = $this->asHtml();
-    $count = 0;
-    $content = str_ireplace('</body>', '<script type="text/javascript">'.$this->getJavascript().'</script>'.$debug.'</body>', $content, $count);
-    if (!$count)
+    if (false === $pos = $posrFunction($content, '</body>'))
     {
       $content .= $debug;
+    }
+    else
+    {
+      $content = $substrFunction($content, 0, $pos).'<script type="text/javascript">'.$this->getJavascript().'</script>'.$debug.$substrFunction($content, $pos);
     }
 
     return $content;
@@ -188,7 +208,7 @@ class sfWebDebug
           $titles[] = sprintf('<li%s><a title="%s" href="%s"%s>%s</a></li>',
             $panel->getStatus() ? ' class="sfWebDebug'.ucfirst($this->getPriority($panel->getStatus())).'"' : '',
             $panel->getPanelTitle(),
-            $panel->getTitleUrl() ? $panel->getTitleUrl() : '#',
+            $panel->getTitleUrl() ?: '#',
             $panel->getTitleUrl() ? '' : ' onclick="sfWebDebugShowDetailsFor(\''.$id.'\'); return false;"',
             $title
           );
@@ -250,7 +270,7 @@ class sfWebDebug
   /**
    * Gets the javascript code to inject in the head tag.
    *
-   * @param string The javascript code
+   * @return string The javascript code
    */
   public function getJavascript()
   {
@@ -404,7 +424,7 @@ EOF;
   /**
    * Gets the stylesheet code to inject in the head tag.
    *
-   * @param string The stylesheet code
+   * @return string The stylesheet code
    */
   public function getStylesheet()
   {
@@ -761,7 +781,7 @@ EOF;
   margin: 0;
   padding: 0;
   margin-left: 20px;
-  list-style: number;
+  list-style: decimal;
 }
 
 #sfWebDebugDatabaseLogs li
