@@ -366,11 +366,7 @@ class circonscriptionActions extends sfActions
     $im->removeImage();
     $im->setResolution($w * $x_ratio, $h * $y_ratio);
     $im->readImageBlob($dom->saveXML());
-<<<<<<< HEAD
-    $im->scaleImage($w, $h);
-=======
     $im->resizeImage($w, $h, imagick::FILTER_LANCZOS, 0.9, true);
->>>>>>> f48e2434 (affreux masi regle le souci de décalage du survol sur les machines avec imagemagick qui galère)
     $im->setImageFormat("png");
     echo $im;
   }
