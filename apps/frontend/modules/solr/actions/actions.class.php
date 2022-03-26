@@ -25,9 +25,9 @@ class solrActions extends sfActions
     case 'Parlementaire':
       return $this->getPartial('parlementaire/photoParlementaire', array('parlementaire'=>$obj, 'height'=>70));
     case 'Commentaire':
-      return '<img width="53" class="jstitle" title="'.$obj->getCitoyen()->getLogin().'" alt="'.$obj->getCitoyen()->getLogin().'" src="'.url_for('@photo_citoyen?slug='.$obj->getCitoyen()->getSlug()).'"/>';
+      return '<img style="width:53px;" class="jstitle" title="'.$obj->getCitoyen()->getLogin().'" alt="'.$obj->getCitoyen()->getLogin().'" src="'.url_for('@photo_citoyen?slug='.$obj->getCitoyen()->getSlug()).'"/>';
     case 'Citoyen':
-      return '<img width="53" class="jstitle" title="'.$obj->getLogin().'" alt="'.$obj->getLogin().'" src="'.url_for('@photo_citoyen?slug='.$obj->getSlug()).'"/>';
+      return '<img style="width:53px;" class="jstitle" title="'.$obj->getLogin().'" alt="'.$obj->getLogin().'" src="'.url_for('@photo_citoyen?slug='.$obj->getSlug()).'"/>';
     case 'NonObjectPage':
       return $obj->getImage();
     }
@@ -41,14 +41,16 @@ class solrActions extends sfActions
   {
     if ($search = $request->getParameter('search')) {
       if ($ob = $request->getParameter('object_name'))
-	$ob = '&object_name='.$ob;
-      return $this->redirect('solr/search?query='.$search.$ob);
-    }
+        $ob = '&object_name='.$ob;
+      return $this->redirect('@recherche_solr?query='.$search.$ob);
+    } else if ($request->hasParameter('search'))
+      return $this->redirect('@recherche_home?sort=1');
+
     $this->query = $request->getParameter('query');
-    
+    $this->query = preg_replace('#^https?://#', '', $this->query);
     $query = preg_replace('/\*/', '', $this->query);
 
-    $nb = 20;
+    $nb = max(1, min($request->getParameter('count', 50), 500));
     $deb = ($request->getParameter('page', 1) - 1) * $nb ;
     $fq = '';
     $this->facet = array();
@@ -60,6 +62,8 @@ class solrActions extends sfActions
     }
     if ($tags = $request->getParameter('tag')) {
       foreach(explode(',', $tags) as $tag) {
+        if (!$on && preg_match('/^(type|sort)=/', $tag))
+          continue;
         $this->selected['tag'][$tag] = 1;
         $fq .= ' tag:"'.$tag.'"';
       }
@@ -95,9 +99,9 @@ class solrActions extends sfActions
 
     if ($format == 'rss') {
       $ob = $request->getParameter('object_name');
-      $senateurnom = $request->getParameter('senateurnom');
-      if (preg_match('/commentaire/i', $ob) && $senateurnom)
-        $this->rsstitle = "Les derniers commentaires sur l'activité parlementaire de ".$senateurnom;
+      $deputenom = $request->getParameter('deputenom');
+      if (preg_match('/commentaire/i', $ob) && $deputenom)
+        $this->rsstitle = "Les derniers commentaires sur l'activité parlementaire de ".$deputenom;
       $this->setTemplate('rss');
       $this->feed = new sfRssFeed();
       $this->feed->setLanguage('fr');
@@ -138,6 +142,7 @@ class solrActions extends sfActions
     
     $period = '';
 
+    $jours_max = 90; // Seuil en nb de jours qui détermine l'affichage par jour ou par mois d'une période
     if ($date) {
       $this->selected['date'][$date] = $date;
       if (preg_match('/\d{8}/',$date)) {
@@ -147,8 +152,7 @@ class solrActions extends sfActions
       list($from, $to) = $dates;
       
       $nbjours = round((strtotime($to) - strtotime($from))/(60*60*24)+1);
-      $jours_max = 90; // Seuil en nb de jours qui détermine l'affichage par jour ou par mois d'une période
-      
+
       $comp_date_from = explode("T", $from);
       $comp_date_from = explode("-", $comp_date_from[0]);
       $comp_date_from = mktime(0, 0, 0, $comp_date_from[1] + 1, $comp_date_from[2], $comp_date_from[0]);
@@ -228,8 +232,9 @@ class solrActions extends sfActions
           $h = preg_replace('/.*=/', '', $h); 
           array_push($high_res, $h);
         }
-        $this->results['docs'][$i]['highlighting'] = preg_replace('/^'."$this->results['docs'][$i]['personne']".'/', '', implode('...', $high_res));
-      } 
+        $cleanpersonne = preg_replace("/, .*$/", "", $this->results['docs'][$i]['personne']);
+        $this->results['docs'][$i]['highlighting'] = preg_replace('/^'.$cleanpersonne.' /', '', implode('...', $high_res));
+      }
       else if (isset($this->results['docs'][$i]['description'])) {
 	$this->results['docs'][$i]['highlighting'] = $this->results['docs'][$i]['description'];
       	if (strlen($this->results['docs'][$i]['highlighting']) > 700) 
@@ -248,27 +253,64 @@ class solrActions extends sfActions
       $this->facet['type']['facet_field'] = 'object_name';
       $this->facet['type']['name'] = 'Types';
       $this->facet['type']['values'] = $results['facet_counts']['facet_fields']['object_name'];
-      
+
+      //Prépare les facets pour les types d'interventions
+      if ($on == 'Intervention') {
+        $this->facet['intervtypes']['prefix'] = 'type=';
+        $this->facet['intervtypes']['facet_field'] = 'tag';
+        $this->facet['intervtypes']['name'] = 'Types interventions';
+      }
+
+      //Prépare les facets pour les types d'organismes
+      if ($on == 'Organisme') {
+        $this->facet['orgtypes']['prefix'] = 'type=';
+        $this->facet['orgtypes']['facet_field'] = 'tag';
+        $this->facet['orgtypes']['name'] = 'Types organismes';
+      }
+
+      //Prépare les facets des sorts pour les amendements
+      if ($on == 'Amendement') {
+        $this->facet['sorts']['prefix'] = 'sort=';
+        $this->facet['sorts']['facet_field'] = 'tag';
+        $this->facet['sorts']['name'] = 'Sorts';
+      }
+
+      //Prépare les facets pour les types de documents
+      if ($on == 'Texteloi') {
+        $this->facet['documenttypes']['prefix'] = 'type=';
+        $this->facet['documenttypes']['facet_field'] = 'tag';
+        $this->facet['documenttypes']['name'] = 'Types documents';
+      }
+
       //Prépare les facets des parlementaires
       $this->facet['parlementaires']['prefix'] = 'parlementaire=';
       $this->facet['parlementaires']['facet_field'] = 'tag';
       $this->facet['parlementaires']['name'] = 'Parlementaires';
-      
-      $tags = $results['facet_counts']['facet_fields']['tag'];
+
+
+      //Prépare les facets des mots-clés
       $this->facet['tag']['prefix'] = '';
       $this->facet['tag']['facet_field'] = 'tag';
       $this->facet['tag']['name'] = 'Tags';
-      foreach($tags as $tag => $nb ) {
+
+      foreach($results['facet_counts']['facet_fields']['tag'] as $tag => $nb ) {
         if (!$nb)
         continue;
         if (!preg_match('/=/', $tag))
           $this->facet['tag']['values'][$tag] = $nb;
-        if (preg_match('/^parlementaire=(.*)/', $tag, $matches)) {
+        else if (preg_match('/^parlementaire=(.*)/', $tag, $matches))
           $this->facet['parlementaires']['values'][$matches[1]] = $nb;
-        }
+        else if ($on == 'Amendement' && preg_match('/^sort=(.*)/', $tag, $matches))
+          $this->facet['sorts']['values'][$matches[1]] = $nb;
+        else if ($on == 'Texteloi' && preg_match('/^type=(.*)/', $tag, $matches))
+          $this->facet['documenttypes']['values'][$matches[1]] = $nb;
+        else if ($on == 'Intervention' && preg_match('/^type=(.*)/', $tag, $matches))
+          $this->facet['intervtypes']['values'][$matches[1]] = $nb;
+        else if ($on == 'Organisme' && preg_match('/^type=(.*)/', $tag, $matches))
+          $this->facet['orgtypes']['values'][$matches[1]] = $nb;
       }
     }
-    
+
     if (!$results['response']['numFound']) {
       if ($format)
       return ;
@@ -291,13 +333,15 @@ class solrActions extends sfActions
       }
     }
   }
-  
+
   public function executeRedirect(sfWebRequest $request)
   {
     if ($p = $request->getParameter('slug')) {
       $parlementaire = Doctrine::getTable('Parlementaire')->findOneBySlug($p);
-      $request->setParameter('tag', 'parlementaire='.$parlementaire);
-      $request->setParameter('senateurnom', $parlementaire->getNom());
+      if ($parlementaire) {
+         $request->setParameter('tag', 'parlementaire='.$parlementaire);
+         $request->setParameter('deputenom', $parlementaire->getNom());
+      }
     }
 
     return $this->forward('solr', 'search');
