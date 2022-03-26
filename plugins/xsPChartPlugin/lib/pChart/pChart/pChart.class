@@ -1301,7 +1301,7 @@
        foreach ( $DataDescription["Description"] as $keyI => $ValueI )
         { if ( $keyI == $ColName ) { $ColorID = $ID; }; $ID++; }
 
-       $aPoints   = "";
+       $aPoints   = [];
        $aPoints[] = $this->GAreaXOffset;
        $aPoints[] = $LayerHeight;
 
