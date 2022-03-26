@@ -45,7 +45,7 @@ class myTools {
     $string = preg_replace('/^\s*\[\s*"\s*/', '', $string);
     $string = preg_replace('/\s*"\s*\]\s*$/', '', $string);
     $string = preg_replace('/",\s*"/', '","', $string);
-    return explode('","', $string);
+    return preg_split('/","/', $string);
   }
 
   public static function getProtocol() {
@@ -169,7 +169,9 @@ class myTools {
     $conf = sfConfig::get('app_groupes_infos', '');
     if (!$conf) {
       $config = sfYaml::load(dirname(__FILE__).'/../../../config/app.yml');
-      $conf = $config['all']['groupes_infos'];
+      if (isset($config['all']) && isset( $config['all']['groupes_infos'])) {
+        $conf = $config['all']['groupes_infos'];
+      }
     }
     $gpes = self::convertYamlToArray($conf);
     $res = array();
@@ -182,7 +184,9 @@ class myTools {
   public static function getGroupes() {
     $groupes = array();
     foreach (self::getGroupesInfos() as $gpe)
-      $groupes[] = $gpe[1];
+      if (isset($gpe[1])) {
+        $groupes[] = $gpe[1];
+      }
     return $groupes;
   }
 
@@ -197,7 +201,9 @@ class myTools {
   public static function getGroupesColorMap() {
     $colormap = array();
     foreach (self::getGroupesInfos() as $gpe)
-      $colormap[$gpe[1]] = $gpe[2];
+      if (isset($gpe[1]) && isset($gpe[2])) {
+        $colormap[$gpe[1]] = $gpe[2];
+      }
     return $colormap;
   }
 
@@ -209,7 +215,7 @@ class myTools {
     $gpes = array();
     $curgpes = self::getCurrentGroupes();
     foreach (self::getGroupesInfos() as $g)
-      if (in_array($g[1], $curgpes))
+      if (isset($g[1]) && in_array($g[1], $curgpes))
         $gpes[] = $g;
     return $gpes;
   }
@@ -224,7 +230,7 @@ class myTools {
   }
 
   public static function getCommissionsPermanentes() {
-    return self::convertYamlToArray(sfConfig::get('app_commissions_permanentes', array()));
+    return self::convertYamlToArray(sfConfig::get('app_commissions_permanentes', ''));
   }
 
   public static $indicateurs = array(

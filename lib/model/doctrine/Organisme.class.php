@@ -40,7 +40,7 @@ class Organisme extends BaseOrganisme
   public static function getNomByAcro($acro) {
     $key = strtolower($acro);
     foreach (myTools::getGroupesInfos() as $gpe)
-      if (strtolower($gpe[1]) == $key)
+      if (isset($gpe[1]) && strtolower($gpe[1]) == $key)
         return $gpe[0];
     return false;
   }

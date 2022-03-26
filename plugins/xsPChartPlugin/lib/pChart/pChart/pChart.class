@@ -1517,7 +1517,7 @@
      $YZero  = $this->GArea_Y2 - ((0-$this->VMin) * $this->DivisionRatio);
      if ( $YZero > $this->GArea_Y2 ) { $YZero = $this->GArea_Y2; }
 
-     $SerieID = 0; $LastValue = "";
+     $SerieID = 0; $LastValue = array();
      foreach ( $DataDescription["Values"] as $Key2 => $ColName )
       {
        $ID = 0;
@@ -2027,7 +2027,7 @@
 
      /* Calculate all polygons */
      // $Angle    = 0; $TopPlots = "";
-     $TopPlots = "";
+     $TopPlots = array();
      foreach($iValues as $Key => $Value)
       {
        // Don't draw empty values
@@ -2758,7 +2758,7 @@
    /* Validate data contained in the data array */
    function validateData($FunctionName,&$Data)
     {
-     $DataSummary = "";
+     $DataSummary = array();
 
      foreach($Data as $key => $Values)
       {

@@ -7,10 +7,11 @@ Sous une distribution type Ubuntu, installer les packages suivants :
 ```bash
 sudo apt-get install git
 sudo apt-get install tasksel
-sudo tasksel install lamp-server php5-cli
+sudo tasksel install lamp-server php-cli
+sudo apt-get install composer
 sudo apt-get install phpmyadmin # optionnel mais recommandé
-sudo apt-get install imagemagick php5-imagick # Pour la carte des circonscriptions
-sudo apt-get install php5-gd # Pour les photos et plots sur certaines configs
+sudo apt-get install imagemagick php-imagick # Pour la carte des circonscriptions
+sudo apt-get install php-gd # Pour les photos et plots sur certaines configs
 ```
 
 Pour le parsing :
@@ -56,22 +57,22 @@ sudo pip install bs4 lxml html5lib requests
 
     Cette commande créera les fichiers suivants à adapter en fonction de votre installation :
 
-    * `config/ProjectConfiguration.class.php` : Le chemin vers le dossier de travail est `/home/cpc/project` dans le fichier. Remplacez-le (1 modification) pour le faire correspondre à votre configuration, par exemple `/home/NOM_UTILISATEUR/nosdeputes.fr`.
-
     * `config/databases.yml` : Remplacer `MOT_DE_PASSE` par celui que vous avez choisi pour la base que l'on vient de créer (1 modification), et `cpc` par le nom choisi pour la base et son utilisateur si nécessaire (2 modifications)`.
 
     * `config/app.yml` : Adapter la configuration en fonction de la législature traitée.
+
+ * Installer symfony et préparer l'instance nosdeputés :
+
+    ```bash
+    make all
+    ```
+
+    Cette commande installera symfony dans `lib/vendor` et ajoutera les fichiers suivants éventuellement à ajuster :
 
     * `apps/frontend/config/factories.yml` : Ajuster la configuration uniquement pour optimiser la production ([voir section dédiée](#optimisations-de-la-configuration-pour-le-déploiement-en-production)).
 
     * `bin/db.inc` : Adapter `MYSQLID`, `DBNAME`, `PATH_APP` et `LEGISLATURE` comme pour les précédents fichiers.
 
-
- * Créer le fichier routing pour la législature définie dans `bin/db.inc` :
-
-    ```bash
-    bash bin/generate_routing.sh
-    ```
 
  * Préparer l'environnement de travail php symfony :
 
@@ -103,14 +104,6 @@ sudo pip install bs4 lxml html5lib requests
     php symfony cc
     ```
 
- * Préparer les droits sur les fichiers :
-
-    Pour permettre la création de graphiques, créez le répertoire suivant et donnez lui les permissions correctes :
-
-    ```bash
-    mkdir -p web/images/tmp/xspchart
-    sudo chown -R www-data:www-data web/images/tmp/xspchart
-    ```
 
 ## Déploiement et développement
 
@@ -127,10 +120,11 @@ sudo pip install bs4 lxml html5lib requests
 
     Changer `/home/cpc/project` pour le chemin vers votre configuration comme précédemment (4 modifications).
 
- * Activer le mod-rewrite d'Apache
+ * Activer les mods rewrite et headers d'Apache
 
     ```bash
     sudo a2enmod rewrite
+    sudo a2enmod headers
     ```
 
  * Pour accéder en local à votre instance de développement sur my.cpc.regardscitoyens.org :
@@ -161,7 +155,7 @@ L'utilisation de la page `frontend_dev.php` vous permet de naviguer sur le site 
 
 ### Problèmes connus
 
-Si à l'affichage de frontend_dev.php dans le navigateur, PHP dit qu'il n'a pas pu allouer assez de mémoire, augmenter la taille maximale de mémoire autorisée :
+- Si à l'affichage de frontend_dev.php dans le navigateur, PHP dit qu'il n'a pas pu allouer assez de mémoire, augmenter la taille maximale de mémoire autorisée :
 
 ```bash
 sudo nano /etc/php5/cli/php.ini
@@ -178,6 +172,8 @@ et mettez une valeur haute, par exemple
 ```
 memory_limit = 128M      ; Maximum amount of memory a script may consume (16MB)
 ```
+
+- Si l'affichage de frontend_dev.php montre une requête SQL et dit qu'elle est "incompatible with sql_mode=only_full_group_by", il faut désactiver ce mode dans SQL, voir par exemple [ici](https://webkul.com/blog/disable-only_full_group_by-in-doctrine/).
 
 N'hésitez pas à nous contacter ou [laisser une issue](https://github.com/regardscitoyens/nosdeputes.fr/issues) pour tout problème rencontré.
 
