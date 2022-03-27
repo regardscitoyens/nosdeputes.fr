@@ -14,10 +14,12 @@ if ($type == "groupe") {
   foreach($organismes as $o)
     $groupes[strtolower($o["nom"])] = $o;
   foreach (myTools::getGroupesInfos() as $gpe) {
+    if (!isset($groupes[strtolower($gpe[0])]))
+        continue;
     $g = $groupes[strtolower($gpe[0])];
     $g["nom"] = $gpe[0].' (<b class="c_'.strtolower($gpe[1]).'">'.$gpe[1].'</b>)';
     $g["acronyme"] = $gpe[1];
-    if ($g["membres"])
+    if (isset($g["membres"]) && $g["membres"])
       $tmporgas[] = $g;
     else $tmpoldorgas[] = $g;
   }

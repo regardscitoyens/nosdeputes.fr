@@ -10,7 +10,7 @@ if ($tagsfacet) {
 
 
 if (!$tags) :?>
-type document;document id;url vers document;interventant;contenu;date;resultats <?php echo $results['start'] + 1; ?> à <?php if ($results['numFound'] == $results['end'] - 1) echo $results['end'] - 1; else echo $results['end']; ?> sur <?php echo $results['numFound']; ?>
+type document;document id;url vers document;intervenant;contenu;date;resultats <?php echo $results['start'] + 1; ?> à <?php if ($results['numFound'] == $results['end'] - 1) echo $results['end'] - 1; else echo $results['end']; ?> sur <?php echo $results['numFound']; ?>
 
 <?php
 
