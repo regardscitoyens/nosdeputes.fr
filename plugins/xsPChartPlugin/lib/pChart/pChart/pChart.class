@@ -2674,6 +2674,7 @@
       $this->SaveImageMap();
 
      imagepng($this->Picture,$FileName);
+     chmod($FileName,"g+rw");
     }
 
    /* Render the current picture to STDOUT */
@@ -2871,7 +2872,8 @@
        $this->Errors[] = "[Warning] SaveImageMap - Image map is empty.";
        return(-1);
       }
-     $Handle = fopen($this->getTmpFolder().DIRECTORY_SEPARATOR.$this->MapID, 'w');
+     $FileName = $this->getTmpFolder().DIRECTORY_SEPARATOR.$this->MapID;
+     $Handle = fopen($FileName, 'w');
      if ( !$Handle )
       {
        $this->Errors[] = "[Warning] SaveImageMap - Cannot save the image map.";
@@ -2883,6 +2885,7 @@
         fwrite($Handle, htmlentities($Value)."\r");
       }
      fclose ($Handle);
+     chmod($FileName,"g+rw");
     }
 
    /* Convert seconds to a time format string */

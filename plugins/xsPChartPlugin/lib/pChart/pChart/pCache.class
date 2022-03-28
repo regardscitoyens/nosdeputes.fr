@@ -76,6 +76,7 @@
      $FileName = $this->CacheFolder.$Hash;
 
      imagepng($Picture->Picture,$FileName);
+     chmod($FileName, "g+rw");
     }
 
    /* This function is removing any cached copy of this chart */
