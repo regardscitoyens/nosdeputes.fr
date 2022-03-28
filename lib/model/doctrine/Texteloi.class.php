@@ -82,7 +82,7 @@ class Texteloi extends BaseTexteloi
       ->andWhere('t.name = ?', "loi:numero=".preg_replace('/^(\d{8}-\d{3}).*$/', '\\1', $this->id))
       ->fetchArray();
     $res = count($sections);
-    if ($res == O) {
+    if ($res == 0) {
      // print "DEBUG : Pas de dossier trouvé pour le texte $this->id\n";
      return false;
     } else if ($res == 1) {
@@ -94,12 +94,13 @@ class Texteloi extends BaseTexteloi
      #print "$section->id, $this->id_dossier_institution\n";
       return true;
     } else {
-     echo "WARNING $this->source : Plusieurs dossiers trouvés pour le texte $this->id de type $this->type\n";
+     echo "\nWARNING $this->source : Plusieurs dossiers trouvés pour le texte $this->id de type $this->type\n";
      return false;
     }
   }
 
   public function setAuteurs($signataires) {
+    $debug=0; $debug2=0;
    // $debug=1; // $debug2=1;
     $this->signataires = $signataires;
    //Set signatires, auteurs via PArlemnaitreTexteDocu et Organisme
@@ -156,7 +157,7 @@ class Texteloi extends BaseTexteloi
         $nom = ucfirst($nom);
         if ($debug2) echo $nom."//".$sexe."//".$orga."//".$circo."//".$fonction." => ";
         $senateur = Doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom, $sexe, null, $circo, $this);
-        if (!$senateur) print "WARNING: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$orga."//".$fonction."\n";
+        if (!$senateur) print "\nWARNING: Auteur introuvable in ".$this->source." : ".$nom." // ".$sexe." // ".$orga."//".$fonction."\n";
         else {
           if ($debug2) echo $senateur->nom."\n";
           $this->addParlementaire($senateur, $fonction, $orga);

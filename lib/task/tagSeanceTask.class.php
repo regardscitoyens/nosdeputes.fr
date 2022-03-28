@@ -12,6 +12,7 @@ class tagSeanceTask extends sfBaseTask
   }
 
   protected function count($array, $excludeS = 0) {
+    $words = array();
     foreach($array as $i) {
       $i = strip_tags($i['intervention']);
       $i = preg_replace('/<[^>]+>/', '', $i);
@@ -57,8 +58,8 @@ class tagSeanceTask extends sfBaseTask
     $q = Doctrine_Query::create();
     $q->select('intervention')->from('Intervention i')->where('i.parlementaire_id IS NOT NULL and i.nb_mots > 10')->orderBy('i.date DESC')->limit(100000);
     $array = $q->fetchArray();
-    echo "count:\n\t";
-    echo count($array)."\n";
+    $ct = min(100000, $q->count());
+    echo "count:\n\t$ct\n";
     $words = $this->count($array);
     $cpt = 0;
     $tot = count($words);
@@ -94,11 +95,12 @@ class tagSeanceTask extends sfBaseTask
       $q = Doctrine_Query::create();
       $q->select('intervention, id, parlementaire_id')->from('Intervention i')->where('seance_id = ?', $s['id'])->andWhere('( i.parlementaire_id IS NOT NULL OR i.personnalite_id IS NOT NULL )')->andWhere('(i.fonction IS NULL OR i.fonction NOT LIKE ? )', 'président%');
 
-      $array = $q->fetchArray();
-      if (!count($array)) {
+      $ct = $q->count();
+      if (!$ct) {
 	echo " pas d'intervention trouvée\n";
         continue;
       }
+      $array = $q->fetchArray();
       $words = $this->count($array, 1);
       $cpt = 0;
       $tot = count($words);
@@ -115,8 +117,8 @@ class tagSeanceTask extends sfBaseTask
         }
       }
 
-      $sentences = null;
-      $sent2word = null;
+      $sentences = array();
+      $sent2word = array();
       //On cherche des groupes de mots commums à partir des tags trouvés
       foreach ($array as $inter) {
         $i = null;

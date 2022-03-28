@@ -114,7 +114,7 @@ class PersonnaliteTable extends Doctrine_Table
     if ($closest_res > $seuil)
       return $this->find($closest['id']);
     //If str is the end of the best parlementaire, it is OK (remove non alpha car to avoid preg pb)
-    if (preg_match('/'.preg_replace('/[^a-z]/i', '', $str).'$/', preg_replace('/[^a-z]/i', '', $closest['nom'])))
+    if ($closest && preg_match('/'.preg_replace('/[^a-z]/i', '', $str).'$/', preg_replace('/[^a-z]/i', '', $closest['nom'])))
       return $this->find($closest['id']);
 
     return null;
