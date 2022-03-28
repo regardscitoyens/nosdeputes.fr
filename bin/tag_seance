@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo Tag Séances
-echo > /tmp/tag_seance.log
+echo > /tmp/tag_seance-ns.log
 php symfony cc --env=test  --app=frontend > /dev/null
-date  >> /tmp/tag_seance.log
-while ! php symfony tag:Seance >> /tmp/tag_seance.log ; do
-	date  >> /tmp/tag_seance.log
+date  >> /tmp/tag_seance-ns.log
+while ! php symfony tag:Seance >> /tmp/tag_seance-ns.log ; do
+	date  >> /tmp/tag_seance-ns.log
         php symfony cc --env=test  --app=frontend > /dev/null
 done;
