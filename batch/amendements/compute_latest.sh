@@ -1,5 +1,6 @@
 #!/bin/bash
 
+source ../../bin/init_pyenv27.sh
 . ../../bin/db.inc
 
 mkdir -p html json loaded
