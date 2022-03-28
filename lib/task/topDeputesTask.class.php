@@ -447,7 +447,7 @@ class topDeputesTask extends sfBaseTask
 
       foreach ($qparlementaires->execute() as $p) {
         $this->depute = array();
-        $cur = ($p->fin_mandat < p.debut_mandat);
+        $cur = ($p->fin_mandat < $p->debut_mandat);
         $datef = date('Y-m-d', strtotime($p->fin_mandat));
 
         $q = Doctrine_Query::create()->where('p.id = ?', $p->id);
@@ -481,7 +481,7 @@ class topDeputesTask extends sfBaseTask
         $this->executePropositionsSignees(clone $qd);
         $this->executeRapports(clone $qd);
 
-        if (count($this->deputes[$p->id])) {
+        if (isset($this->deputes[$p->id])) {
           $p->top = serialize($this->deputes[$p->id]);
           $p->save();
         }
