@@ -2,6 +2,7 @@
 
 cd $(dirname $0)
 source ../../bin/db-external.inc || source ../../bin/db.inc
+source ../../bin/init_pyenv27.sh
 ANroot="http://www.assemblee-nationale.fr/"
 
 echo "Downloading Amendements from OpenData AN..."
@@ -79,6 +80,7 @@ if [ $missing -gt 0 ]; then
     grep "^<"                                       |
     grep -vP "$ignoring"                            |
     sed 's/^< //'                                   |
+    grep .                                          |
     while read AMurl; do
       AMfile=$(echo "$AMurl" | sed 's|/|_-_|g')
       perl download_one.pl "$AMurl" 2>/dev/null && python parse_amendement.py "html/$AMfile" > "json/$AMfile" || echo "ERROR: $AMurl missing from AN web"
