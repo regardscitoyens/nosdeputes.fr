@@ -76,13 +76,13 @@ class updateDeputesTask extends sfBaseTask
               if ($json->num_circonscription)
                 $parl->num_circo = $json->num_circonscription;
             }
-            if (count($json->adresses))
+            if ($json->adresses)
               $parl->adresses = $json->adresses;
-            if (count($json->premiers_mandats))
+            if ($json->premiers_mandats)
               $parl->anciens_mandats = $json->premiers_mandats;
-            if (count($json->autresmandats))
+            if ($json->autresmandats)
               $parl->autres_mandats = $json->autresmandats;
-            if (count($json->anciensmandats))
+            if ($json->anciensmandats)
               $parl->anciens_autres_mandats = $json->anciensmandats;
             $parl->debut_mandat = $json->debut_mandat;
             $parl->fin_mandat = $json->fin_mandat;
@@ -90,15 +90,15 @@ class updateDeputesTask extends sfBaseTask
               $parl->groupe = $this->splitArrayJson($json->groupe);
             if ($json->parti)
               $parl->parti = $json->parti;
-            if (count($json->fonctions))
+            if ($json->fonctions)
               $parl->fonctions = $this->splitArrayJson($json->fonctions);
-            $parl->extras = (count($json->extras) ? $this->splitArrayJson($json->extras) : array());
-            if (count($json->groupes))
+            $parl->extras = ($json->extras ? $this->splitArrayJson($json->extras) : array());
+            if ($json->groupes)
               $parl->groupes = $this->splitArrayJson($json->groupes);
             if ($json->id_institution)
               $parl->id_an = $json->id_institution;
-            if (count($json->mails))
-            $parl->mails = $json->mails;
+            if ($json->mails)
+              $parl->mails = $json->mails;
             if ($json->photo)
               $parl->photo = $json->photo;
             if ($json->place_hemicycle)
@@ -106,7 +106,7 @@ class updateDeputesTask extends sfBaseTask
             if ($json->profession)
               $parl->profession = $json->profession;
             $done_sites = array();
-            if (count($json->sites_web))
+            if ($json->sites_web)
               foreach (array_keys($json->sites_web) as $i) {
                 $json->sites_web[$i] = preg_replace("|(://[^/]+)/$|", "$1", trim($json->sites_web[$i]));
                 $rootsite = strtolower(preg_replace("#^(https?://|www\.|m\.|fr\.|fr-fr\.)*(.*?)[\s/]*$#", "$2", $json->sites_web[$i]));
@@ -114,7 +114,7 @@ class updateDeputesTask extends sfBaseTask
                   $done_sites[$rootsite] = 1;
                 else unset($json->sites_web[$i]);
               }
-            if (isset($sites[$parl->slug]) && count($sites[$parl->slug]))
+            if (isset($sites[$parl->slug]) && $sites[$parl->slug])
               foreach ($sites[$parl->slug] as $site) {
                 $site = preg_replace("|(://[^/]+)/$|", "$1", trim($site));
                 $rootsite = strtolower(preg_replace("#^(https?://|www\.|m\.|fr\.|fr-fr\.)*(.*?)[\s/]*$#", "$2", $site));
@@ -122,7 +122,7 @@ class updateDeputesTask extends sfBaseTask
                   $json->sites_web[] = $site;
                 $done_sites[$rootsite] = 1;
               }
-            if (count($json->sites_web))
+            if ($json->sites_web)
               $parl->sites_web = $json->sites_web;
             else if ($parl->sites_web && !preg_match('/^a:/', $parl->sites_web))
               $parl->sites_web = array($parl->sites_web);
