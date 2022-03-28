@@ -7,7 +7,7 @@ source ../../bin/db.inc
 rm -rf tmp
 mkdir -p opendata tmp json
 
-if test $1 = "all"; then
+if test "$1" = "all"; then
     echo > tmp/listfile.old
 else
     find ./opendata -name '*tar.gz' > tmp/listfile.old
