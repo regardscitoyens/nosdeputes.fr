@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd $(dirname $0)
+source ../../bin/init_pyenv27.sh
 source ../../bin/db.inc
 
 echo "Downloading Questions from OpenData AN..."

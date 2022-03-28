@@ -18,4 +18,4 @@ pyenv activate nosdeputes38
 # This might fail, in which case, first install python dependencies as advised here: https://github.com/pyenv/pyenv/wiki#suggested-build-environment and there: https://github.com/pyenv/pyenv/wiki/Common-build-problems
 # pyenv virtualenv 3.8.12 nosdeputes38
 # pyenv activate nosdeputes38
-# pip install bs4 requests lxml
+# pip install bs4 requests lxml html2text

@@ -2,6 +2,8 @@
 echo "ce script est obsolète il permet de parser toutes les questions de la 13ème législature\n";
 exit;
 
+source ../../bin/init_pyenv27.sh
+
 for file in wget/* ; do
     echo " - "$file;
 #   perl cut_quest.pl $file 1 > $(echo $file | sed 's/html/input/'  | sed 's/wget/input/'| sed 's/htm/xml/')

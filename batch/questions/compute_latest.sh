@@ -8,6 +8,7 @@ if [[ $1 != "all" && $1 != "recent" ]]; then
   exit 1
 fi
 
+source ../../bin/init_pyenv27.sh
 . ../../bin/db.inc
 
 echo "SELECT numero FROM question_ecrite order by numero DESC limit 1" | mysql $MYSQLID $DBNAME | grep -v numero > dernier_numero.txt
