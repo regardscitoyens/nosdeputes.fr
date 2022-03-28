@@ -4,6 +4,7 @@
 cd $PATH_APP
 
 source bin/db.inc
+source bin/init_pyenv27.sh
 
 batch/scrutin/parse_scrutins.py $LEGISLATURE
 
