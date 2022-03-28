@@ -33,7 +33,7 @@ class updateSenateursTask extends sfBaseTask
         fgetcsv($handle);
         while (($data = fgetcsv($handle)) !== FALSE) {
             $row++;
-            if ($row == 1) next;
+            if ($row == 1) continue;
             $sites[$data[18]] = explode("|", $data[16]);
             $sites[$data[18]][] = "https://twitter.com/".$data[0];
         }
@@ -54,6 +54,8 @@ class updateSenateursTask extends sfBaseTask
 	      continue;
 	    }
 	    $json->nom = trim($json->nom);
+        if (!isset($json->fin_mandat))
+          $json->fin_mandat = "";
 	    //	    echo "-".$json->nom.strlen($json->nom)." ".$json->id_institution."\n";
 	    if (preg_match('/(\d{4})$/', $json->fin_mandat, $match)) {
               if ($match[1] < 2004) continue;
@@ -71,25 +73,25 @@ class updateSenateursTask extends sfBaseTask
                $parl->date_naissance = $json->naissance;
 	    if ($json->circonscription)
 	      $parl->circonscription = $json->circonscription;
-	    if (count($json->adresses))
+	    if (isset($json->adresses) && $json->adresses)
 	      $parl->adresses = $json->adresses;
-	    if (count($json->autresmandats))
+	    if (isset($json->autresmandats) && $json->autresmandats)
 	      $parl->autres_mandats = $json->autresmandats;
-	    if (count($json->premiers_mandats))
+	    if ($json->premiers_mandats)
               $parl->anciens_mandats = $json->premiers_mandats;
 	    if ($json->groupe)
 	      $parl->groupe = $this->splitArrayJson($json->groupe);
-            if (count($json->fonctions))
+            if ($json->fonctions)
               $parl->fonctions = $this->splitArrayJson($json->fonctions);
-	    if (count($json->extras))
+	    if (isset($json->extras) && $json->extras)
 	      $parl->extras = $this->splitArrayJson($json->extras);
-	    if (count($json->groupes))
+	    if ($json->groupes)
 	      $parl->groupes = $this->splitArrayJson($json->groupes);
 	    $parl->debut_mandat = $json->debut_mandat;
 	    $parl->fin_mandat = $json->fin_mandat;
 	    if ($json->id_institution)
 	      $parl->id_institution = $json->id_institution;
-	    if (count($json->mails))
+	    if ($json->mails)
 		$parl->mails = $json->mails;
 	    if ($json->photo)
 	      $parl->photo = $json->photo;
@@ -98,12 +100,12 @@ class updateSenateursTask extends sfBaseTask
 	    if ($json->profession)
 	      $parl->profession = $json->profession;
         $done_sites = array();
-	    if (count($json->sites_web))
+	    if (isset($json->sites_web) && $json->sites_web)
           foreach (array_keys($json->sites_web) as $i) {
             $json->sites_web[$i] = preg_replace("|(://[^/]+)/$|", "$1", $json->sites_web[$i]);
             $done_sites[preg_replace("#^(https?://|www\.)*(.*)$#", "$2", $json->sites_web[$i])] = 1;
           }
-        if (isset($sites[$parl->slug]) && count($sites[$parl->slug])) {
+        if (isset($sites[$parl->slug]) && $sites[$parl->slug]) {
           foreach ($sites[$parl->slug] as $site) {
             $site = preg_replace("|(://[^/]+)/$|", "$1", $site);
             $rootsite = preg_replace("#^(https?://|www\.)*(.*)$#", "$2", $site);
@@ -112,14 +114,14 @@ class updateSenateursTask extends sfBaseTask
             $done_sites[$rootsite] = 1;
           }
         }
-	    if (count($json->sites_web))
+	    if (isset($json->sites_web) && $json->sites_web)
 	      $parl->sites_web = $json->sites_web;
 	    if ($json->url_institution)
 	      $parl->url_institution = $json->url_institution;
-	    if ($json->suppleant_de)
+	    if (isset($json->suppleant_de))
 	      $parl->setSuppleantDe($json->suppleant_de);
             $vi = "";
-	    if ($villes->{$parl->getNumDepartement()}) foreach(get_object_vars($villes->{$parl->getNumDepartement()}) as $v) {
+	    if (isset($villes->{$parl->getNumDepartement()})) foreach(get_object_vars($villes->{$parl->getNumDepartement()}) as $v) {
               if ($vi) $vi .= ", ";
               $vi .= $v;
             }
