@@ -9,6 +9,8 @@ perl download_commission.pl $LEGISLATURE | while read line; do
     file=$(echo $line | awk '{print $2}')
     contentfile=$(echo $line | awk '{print $1}')
     url=$(echo $line | awk '{print $3}')
+    outfile=$(echo $file | sed 's|^html/|out/|')
+    presentsfile=$(echo $file | sed 's|^html/|presents/|')
     echo $url $contentfile $file
     if grep "compte rendu .* sera .*é ultérieurement\|Document en attente de mise en ligne.\|La page à laquelle vous souhaitez accéder n'existe pas.\|HTTP Error 503" "$contentfile" > /dev/null; then
         if echo $file | grep -P "_\d+_cr[^_]*_(\d+)-(\d+)_c\d+" > /dev/null; then
@@ -19,14 +21,12 @@ perl download_commission.pl $LEGISLATURE | while read line; do
         rm "$file" "$contentfile"
         continue
     elif grep "Ce compte rendu sera disponible dès que possible\." "$contentfile" > /dev/null; then
-        #echo "...only parsing presents from CR dispo dès que possible $contentfile"
-        #perl parse_presents.pl html/$file > presents/$file
+        echo "...only parsing presents from CR dispo dès que possible $contentfile"
+        perl parse_presents.pl $contentfile $url > $presentsfile
         rm "$file" "$contentfile"
         continue
     fi
     echo try ...
-    outfile=$(echo $file | sed 's|^html/|out/|')
-    presentsfile=$(echo $file | sed 's|^html/|presents/|')
     perl parse_presents.pl $contentfile $url > $presentsfile
     python3 parse_commission.py $contentfile $url > $outfile
     ./reserve_cr_to_check.sh $outfile
