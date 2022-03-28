@@ -13,7 +13,7 @@ ansible/books/*.retry
 ansible/cpc
 ansible/venv
 
-bin/db.inc
+bin/db*.inc
 config/app.yml
 config/databases.yml
 apps/frontend/config/routing.yml
@@ -40,9 +40,11 @@ batch/amendements/to_parse.list
 batch/amendements/liste_sort_indefini.txt
 batch/amendements/missing_amdts_to_ignore.list
 batch/commission/conf/cr.list
+batch/commission/all_crs_*
+batch/commission/*.log
 batch/commission/log_predownload
 batch/commission/html/
-batch/commission/raw/
+batch/commission/raw*/
 batch/commission/tmp/
 batch/commission/out/
 batch/commission/loaded/
@@ -55,6 +57,7 @@ batch/depute/json/
 batch/depute/collabs.csv
 batch/depute/twitter.csv
 batch/depute/finmandats.pm
+batch/depute/bureau.csv
 batch/documents/html/
 batch/documents/pjl/
 batch/documents/ppl/
@@ -98,8 +101,8 @@ batch/senateur/out.yml/
 batch/senateur/out/
 batch/senateur/test/
 batch/senateur/twitter.csv
-batch/scrutin/scrutins
-batch/scrutin/loaded
+batch/scrutin/scrutins*/
+batch/scrutin/loaded*/
 
 lib/filter/doctrine/
 lib/form/doctrine/
