@@ -1,5 +1,5 @@
 #!/bin/bash
-TMPFILE=/tmp/hard_cache.$$
+TMPFILE=/tmp/hard_cache_ns.$$
 
 seance_id=$1
 

@@ -2,7 +2,7 @@
 
 URL=$(echo $1 | sed -r 's#/(xml|json|csv)$##')
 DIR=$(echo $URL | sed 's#^.*nossenateurs.fr#web#')
-TMPFILE=/tmp/hard_cache_api.$$
+TMPFILE=/tmp/hard_cache_api_ns.$$
 
 mkdir -p $DIR
 
