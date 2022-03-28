@@ -99,11 +99,12 @@ class tagSeanceTask extends sfBaseTask
       $q = Doctrine_Query::create();
       $q->select('intervention, id, parlementaire_id')->from('Intervention i')->where('seance_id = ?', $s['id'])->andWhere('( i.parlementaire_id IS NOT NULL OR i.personnalite_id IS NOT NULL )')->andWhere('(i.type = ? OR i.fonction IS NULL OR i.fonction NOT LIKE ?)', array('commission', 'président%'));
 
-      $interventions = $q->fetchArray();
-      if (!count($interventions)) {
+      $totinterventions = $q->count();
+      if (!$totinterventions) {
 	echo " pas d'intervention trouvée\n";
         continue;
       }
+      $interventions = $q->fetchArray();
       $words = $this->wordize($interventions, 1, $minsize);
       $cpt = 0;
       $tot = count($words);
@@ -119,8 +120,8 @@ class tagSeanceTask extends sfBaseTask
         }
       }
 
-      $sentences = null;
-      $sent2word = null;
+      $sentences = array();
+      $sent2word = array();
       //On cherche des groupes de mots communs à partir des tags trouvés
       foreach ($interventions as $inter) {
         $i = null;
