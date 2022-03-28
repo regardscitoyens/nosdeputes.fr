@@ -818,6 +818,9 @@ class sfViewCacheManager
 
     $cache = unserialize($cache);
     $content = $cache['content'];
+    if (!isset($cache['response']) || !$cache['response']) {
+	    return null;
+    }
     $this->context->getResponse()->merge($cache['response']);
 
     if (sfConfig::get('sf_web_debug'))
@@ -892,6 +895,9 @@ class sfViewCacheManager
 
     $cache = unserialize($cache);
     $content = $cache['content'];
+    if (!isset($cache['response']) || !$cache['response']) {
+	    return null;
+    }
     $cache['response']->setEventDispatcher($this->dispatcher);
     $this->context->getResponse()->copyProperties($cache['response']);
 

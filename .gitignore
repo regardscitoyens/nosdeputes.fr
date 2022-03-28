@@ -18,12 +18,12 @@ config/ProjectConfiguration.class.php
 apps/frontend/config/factories.yml
 lib/vendor/SolrServer/solr/conf/solrconfig.xml
 
-./data/sql/
-./data/mails/
+data/sql/dumps
+data/mails/
 lib/vendor/SolrServer/solr/data/
 
-./cache/
-./log/
+cache/
+log/
 
 batch/amendements/commission/
 batch/amendements/errors/
