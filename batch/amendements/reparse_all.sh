@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ../../bin/init_pyenv27.sh
+
 rm -rf json 
 mkdir -p json
 

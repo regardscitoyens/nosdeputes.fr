@@ -176,7 +176,7 @@ sub refnumlois {
   my $lois = shift;
   $lois =~ s/\s*,\s*/,/g;
   my $refnumlois = "";
-  while ($lois =~ /(\d{1,2,3})(| rect[\s\.ifiébs]*)( \((\d{4}-\d{4})\)|)/g) {
+  while ($lois =~ /(\d{1,3})(| rect[\s\.ifiébs]*)( \((\d{4}-\d{4})\)|)/g) {
     if ($4) {
       $refnumlois .= law_numberize($1,$4).",";
     } else {

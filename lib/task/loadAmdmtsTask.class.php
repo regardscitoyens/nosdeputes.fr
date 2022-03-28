@@ -77,7 +77,7 @@ class loadAmdmtsTask extends sfBaseTask {
                 $amdmt->expose = $json->expose;
               if ($json->refloi)
                 $amdmt->ref_loi = $json->refloi;
-              $amdmt->content_md5 = md5($json->legislature.$json->loi.$json->sujet.$json->texte);
+              $amdmt->content_md5 = md5($json->loi.$json->sujet.$json->texte);
               if ($json->auteurs) {
                 $amdmt->signataires = $json->auteurs;
                 $amdmt->setAuteurs($json->auteurs);

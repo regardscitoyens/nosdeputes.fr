@@ -31,6 +31,7 @@ class Amendement extends BaseAmendement {
   }
 
   public function setAuteurs($auteurs) {
+    $debug = 0;
 //$debug = 1;
     $groupe = null;
     $sexe = null;
