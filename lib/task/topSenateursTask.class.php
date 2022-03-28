@@ -480,9 +480,9 @@ class topSenateursTask extends sfBaseTask
       $this->executePropositionsSignees(clone $qd);
       $this->executeRapports(clone $qd);
 
-      if (count($this->senateurs[$p->id])) {
-	$p->top = serialize($this->senateurs[$p->id]);
-	$p->save();
+      if (isset($this->senateurs[$p->id])) {
+        $p->top = serialize($this->senateurs[$p->id]);
+        $p->save();
       }
     }
 
