@@ -1,7 +1,7 @@
 #!/bin/bash
 
 command=`echo $2 | sed 's#^.*\/\([^\/]\+\)$#\\1#'`
-tmpout=cron-$command-`date +%d%m%Y-%HH%Mm%S`
+tmpout=cron-ns-$command-`date +%d%m%Y-%HH%Mm%S`
 tmpoutput=$tmpout
 ct=0
 while [ -f /tmp/$tmpoutput ]; do

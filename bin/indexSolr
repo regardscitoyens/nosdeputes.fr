@@ -9,7 +9,7 @@ if test -e $PATH_APP/data/frontend_prod-cli.lck || test -e $PATH_APP/data/fronte
 fi
 
 #CRASHSTATUS
-STATUSFILE="/tmp/indexSolr.tomcatcrash.status"
+STATUSFILE="/tmp/indexSolr-ns.tomcatcrash.status"
 if test ! -e $STATUSFILE ;
 then
     echo "0" > $STATUSFILE
@@ -17,7 +17,7 @@ fi
 STATUS=`cat $STATUSFILE`
 STATUS=$(($STATUS + 1))
 #LOCK
-LOCK="/tmp/indexSolr.bash.lock"
+LOCK="/tmp/indexSolr-ns.bash.lock"
 if test -e $LOCK ;
 then
     if test ! -e /proc/$(cat $LOCK) ;
@@ -27,8 +27,8 @@ then
         rm $LOCK
         if [ $STATUS -ge 15 ]; then
             echo "trying to restart Tomcat"
-            sudo /etc/init.d/tomcat6 restart > /tmp/log-restart-tomcat 2>&1
-            cat /tmp/log-restart-tomcat
+            sudo /etc/init.d/tomcat6 restart > /tmp/log-restart-tomcat-ns 2>&1
+            cat /tmp/log-restart-tomcat-ns
             STATUS="0"
         fi
         echo "$STATUS" > $STATUSFILE
