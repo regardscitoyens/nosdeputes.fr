@@ -6,13 +6,13 @@
 cd $PATH_APP
 
 #LOCK
-if test -e /tmp/loadupdate.lock ;
+if test -e /tmp/loadupdate-ns.lock ;
 then
-	echo Script locké par $(cat /tmp/loadupdate.lock) : /tmp/loadupdate.lock
+	echo Script locké par $(cat /tmp/loadupdate-ns.lock) : /tmp/loadupdate-ns.lock
 	exit 1;
 fi
 
-echo $$ > /tmp/loadupdate.lock
+echo $$ > /tmp/loadupdate-ns.lock
 
 # Gestion des options
 senateurs=1
@@ -51,7 +51,7 @@ do
        echo "  -j ( --nojo )         : pas de mise-à-jour des séances de commission listées au Journal Officiel"
        echo "  -q ( --noquestions )  : pas de mise-à-jour des questions écrites au gouvernement"
        echo "  -o ( --oldquestions ) : mise-à-jour des questions depuis le début de la législature et reload des ppl des 3 derniers mois"
-	rm /tmp/loadupdate.lock
+	rm /tmp/loadupdate-ns.lock
        exit 1;;
   esac
 done
@@ -162,4 +162,4 @@ echo Update hardcache html
 echo =======================
 bash bin/update_hardcache
 
-rm /tmp/loadupdate.lock
+rm /tmp/loadupdate-ns.lock
