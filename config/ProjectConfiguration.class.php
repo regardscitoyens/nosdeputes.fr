@@ -1,6 +1,6 @@
 <?php
 
-require_once dirname(__FILE__).'/../lib/vendor/autoload.php';
+require_once dirname(__FILE__).'/../lib/vendor/symfony1/autoload.php';
 sfCoreAutoload::register();
 
 class ProjectConfiguration extends sfProjectConfiguration
