@@ -19,7 +19,7 @@ class Parlementaire extends BaseParlementaire
     return '';
   }
   public function getLinkSource() {
-    return $this->url_an;
+    return $this->url_institution;
   }
   public function __tostring() {
     if(isset($this->nom) && $nom = $this->getNom())
@@ -157,7 +157,9 @@ class Parlementaire extends BaseParlementaire
       $po = new ParlementaireOrganisme();
       $po->setParlementaire($this);
       $po->setOrganisme($orga);
-      $fonction = $args[1];
+      $fonction = isset($args[1]) ? $args[1] : "";
+      if (!isset($args[1]))
+        print "WARNING: no fonction for ".$this->nom." in ".$orga->slug." : ".$this->url_institution."\n";
       $po->setFonction($fonction);
       $importance = ParlementaireOrganisme::defImportance($fonction);
       $po->setImportance($importance);

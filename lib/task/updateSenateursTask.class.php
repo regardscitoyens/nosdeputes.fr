@@ -76,16 +76,16 @@ class updateSenateursTask extends sfBaseTask
 	    if (isset($json->adresses) && $json->adresses)
 	      $parl->adresses = $json->adresses;
 	    if (isset($json->autresmandats) && $json->autresmandats)
-	      $parl->autres_mandats = $json->autresmandats;
-	    if ($json->premiers_mandats)
-              $parl->anciens_mandats = $json->premiers_mandats;
-	    if ($json->groupe)
-	      $parl->groupe = $this->splitArrayJson($json->groupe);
-            if ($json->fonctions)
-              $parl->fonctions = $this->splitArrayJson($json->fonctions);
+          $parl->autres_mandats = $json->autresmandats;
+        if ($json->premiers_mandats)
+          $parl->anciens_mandats = $json->premiers_mandats;
+        if (isset($json->groupe))
+          $parl->groupe = $this->splitArrayJson($json->groupe);
+        if (isset($json->fonctions))
+          $parl->fonctions = $this->splitArrayJson($json->fonctions);
 	    if (isset($json->extras) && $json->extras)
 	      $parl->extras = $this->splitArrayJson($json->extras);
-	    if ($json->groupes)
+	    if (isset($json->groupes))
 	      $parl->groupes = $this->splitArrayJson($json->groupes);
 	    $parl->debut_mandat = $json->debut_mandat;
 	    $parl->fin_mandat = $json->fin_mandat;
@@ -93,11 +93,11 @@ class updateSenateursTask extends sfBaseTask
 	      $parl->id_institution = $json->id_institution;
 	    if ($json->mails)
 		$parl->mails = $json->mails;
-	    if ($json->photo)
+	    if (isset($json->photo))
 	      $parl->photo = $json->photo;
-	    if ($json->place_hemicycle)
+	    if (isset($json->place_hemicycle))
 	      $parl->place_hemicycle = $json->place_hemicycle;
-	    if ($json->profession)
+	    if (isset($json->profession))
 	      $parl->profession = $json->profession;
         $done_sites = array();
 	    if (isset($json->sites_web) && $json->sites_web)
