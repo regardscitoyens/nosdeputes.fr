@@ -2,6 +2,7 @@
 *#
 *swp
 *.pyc
+*.svn
 log/
 cache/
 *.new
