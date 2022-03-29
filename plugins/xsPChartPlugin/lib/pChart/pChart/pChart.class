@@ -171,8 +171,9 @@
       $cache = sfConfig::get('sf_cache_dir').'/'.sfConfig::get('sf_app').'/'.sfConfig::get('sf_environment').'/pChart';
       if (!is_dir($cache)) {
       	 mkdir($cache, 0777, true);
-	 if (!is_dir($cache))
-	    $cache = $tmpFolder;
+         chmod($cache, 0777);
+         if (!is_dir($cache))
+	       $cache = $tmpFolder;
       }
       return $cache;
    }
@@ -2674,7 +2675,6 @@
       $this->SaveImageMap();
 
      imagepng($this->Picture,$FileName);
-     chmod($FileName,"g+rw");
     }
 
    /* Render the current picture to STDOUT */
@@ -2885,7 +2885,7 @@
         fwrite($Handle, htmlentities($Value)."\r");
       }
      fclose ($Handle);
-     chmod($FileName,"g+rw");
+     chmod($FileName, 0664);
     }
 
    /* Convert seconds to a time format string */
