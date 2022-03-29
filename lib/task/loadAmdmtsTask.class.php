@@ -48,7 +48,8 @@ class loadAmdmtsTask extends sfBaseTask {
 
             if (!$amdmt) {
 	          if (!$json->sujet) {
-                echo "ERROR sujet missing for new amdmt: $line\n";
+                if ($json->sort != 'Retiré avant séance')
+                  echo "ERROR sujet missing for new amdmt: $line\n";
                 continue;
               }
               $ct_crees++;
