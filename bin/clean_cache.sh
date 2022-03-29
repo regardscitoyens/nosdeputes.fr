@@ -9,3 +9,5 @@ cd cache
 mv frontend frontend-old
 nice -n 19 rm -rf frontend-old
 
+php symfony cc > /dev/null
+

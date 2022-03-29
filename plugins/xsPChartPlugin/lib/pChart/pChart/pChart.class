@@ -171,8 +171,9 @@
       $cache = sfConfig::get('sf_cache_dir').'/'.sfConfig::get('sf_app').'/'.sfConfig::get('sf_environment').'/pChart';
       if (!is_dir($cache)) {
       	 mkdir($cache, 0777, true);
-	 if (!is_dir($cache))
-	    $cache = $tmpFolder;
+         chmod($cache, 0777);
+	     if (!is_dir($cache))
+	        $cache = $tmpFolder;
       }
       return $cache;
    }
@@ -2865,7 +2866,8 @@
        $this->Errors[] = "[Warning] SaveImageMap - Image map is empty.";
        return(-1);
       }
-     $Handle = fopen($this->getTmpFolder().DIRECTORY_SEPARATOR.$this->MapID, 'w');
+     $FileName = $this->getTmpFolder().DIRECTORY_SEPARATOR.$this->MapID;
+     $Handle = fopen($FileName, 'w');
      if ( !$Handle )
       {
        $this->Errors[] = "[Warning] SaveImageMap - Cannot save the image map.";
@@ -2877,6 +2879,7 @@
         fwrite($Handle, htmlentities($Value)."\r");
       }
      fclose ($Handle);
+     chmod($FileName, 0664);
     }
 
    /* Convert seconds to a time format string */
