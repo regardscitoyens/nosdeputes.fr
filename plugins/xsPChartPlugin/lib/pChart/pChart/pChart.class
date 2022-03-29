@@ -1217,7 +1217,7 @@
 
          if ( $YLast != NULL && $AroundZero && !isset($Missing[floor($X)]) && !isset($Missing[floor($X+1)]))
           {
-           $aPoints   = "";
+           $aPoints   = array();
            $aPoints[] = $XLast;
            $aPoints[] = $YLast;
            $aPoints[] = $XPos;
@@ -1254,7 +1254,7 @@
 
          if ( $YLast != NULL && $AroundZero )
           {
-           $aPoints   = "";
+           $aPoints   = array();
            $aPoints[] = $XLast;
            $aPoints[] = $YLast;
            $aPoints[] = $LayerWidth-$this->GAreaXOffset;
@@ -1313,7 +1313,7 @@
        foreach ( $DataDescription["Description"] as $keyI => $ValueI )
         { if ( $keyI == $ColName ) { $ColorID = $ID; }; $ID++; }
 
-       $aPoints   = "";
+       $aPoints   = array();
        $aPoints[] = $this->GAreaXOffset;
        $aPoints[] = $LayerHeight;
 
