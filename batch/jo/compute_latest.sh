@@ -3,6 +3,7 @@
 # "chamber" peut prendre pour valeur : "an" ou "senat"
 
 source ../../bin/db.inc
+source ../../bin/init_pyenv27.sh
 
 rm -rf tmp
 mkdir -p opendata tmp json
