@@ -144,7 +144,7 @@ if ($sommaire) {
     $sessions{sessionize(datize($doc{'date'}))}++;
   }
   $doc{'auteurs'} = $2 if ($sommaire =~ /(de|par) (M[Mlmes\.]\s*.*), déposé/);
-  $doc{'auteurs'} =~ s/\s*(fait )?au nom de la commission mixte paritaire//i;
+  $doc{'auteurs'} =~ s/,?\s*(fait )?au nom de la (Mi[^,]*|commission mixte paritaire)//i;
 }
 
 if ($reperes) {
@@ -161,7 +161,7 @@ if ($reperes) {
     $doc{'auteurs'} = $1 if ($reperes =~ /<![\-\s]*START-auteurs[\-\s]*>Par (M[Mlmes\.]\s*.*)<![\-\s]*END-auteurs[\-\s]*>/i);
     if ($reperes =~ /<![\-\s]*START-organismes[\-\s]*>(.*)<![\-\s]*END-organismes[\-\s]*>/i) {
       $com = $1;
-      if ($com !~ /mixte paritaire/) {
+      if ($com !~ /(mixte paritaire|MI )/) {
         $doc{'auteurs'} .= ", $com Auteur";
       }
     }
