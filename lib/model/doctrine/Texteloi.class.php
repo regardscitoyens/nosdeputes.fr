@@ -189,6 +189,7 @@ class Texteloi extends BaseTexteloi
         else $fonction .= "a ";
       }
       $fonction .= $organisme;
+      $fonction = preg_replace("/(pour la mission d'information) .*$/i", "$1", $fonction);
     }
     $pd->_set('fonction', $fonction);
     if ($pd->save()) {
