@@ -325,7 +325,11 @@ class apiActions extends sfActions
     $res['slug'] = $parl->getSlug();
     $res['url_nosdeputes'] = myTools::url_forAPI('@parlementaire?slug='.$res['slug']);
     $res['url_nosdeputes_api'] = myTools::url_forAPI('api/parlementaire?format='.$format.'&slug='.$res['slug']);
-    $res['nb_mandats'] = count(unserialize($parl->getAutresMandats()));
+    $mandats = unserialize($parl->getAutresMandats());
+    if (!$mandats) {
+	    $mandats = array();
+    }
+    $res['nb_mandats'] = count($mandats);
     $res['twitter'] = "";
     if ($parl->sites_web) foreach (unserialize($parl->sites_web) as $site)
       if (preg_match("/twitter.com/", $site))
