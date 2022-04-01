@@ -103,7 +103,7 @@ class Texteloi extends BaseTexteloi
     $debug=0; $debug2=0;
    // $debug=1; // $debug2=1;
     $this->signataires = $signataires;
-   //Set signatires, auteurs via PArlemnaitreTexteDocu et Organisme
+   //Set signataires, auteurs via PArlemnaitreTexteDocu et Organisme
     $orga = null;
     $sexe = null;
     $fonction = null;
@@ -189,7 +189,7 @@ class Texteloi extends BaseTexteloi
         else $fonction .= "a ";
       }
       $fonction .= $organisme;
-      $fonction = preg_replace("/(pour la mission d'information) .*$/i", "$1", $fonction);
+      $fonction = preg_replace("/(pour la (mission d'information|délégation|commission d'enquête)) .*$/i", "$1", $fonction);
     }
     $pd->_set('fonction', $fonction);
     if ($pd->save()) {
