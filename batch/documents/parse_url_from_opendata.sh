@@ -20,7 +20,9 @@ done
 rm -f /tmp/documents_$$.json
 
 if ! test -s "$output"; then
-    echo "$0: $url not found" 1>&2 ;
+    if ! [ -z "$2" ]; then
+      echo "$0: $url not found" 1>&2 ;
+    fi
     rm -f "$output"
 elif ! jq . < "$output" | grep '"contenu": "[^"]' > /dev/null; then
     echo "$0: erreur de contenu avec $url" 1>&2 ;

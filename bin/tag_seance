@@ -2,6 +2,6 @@
 
 echo > /tmp/tag_seance.log
 php symfony cc --env=test  --app=frontend > /dev/null
-while ! php symfony tag:Seance >> /tmp/tag_seance.log ; do
+while ! php symfony tag:Seance >> /tmp/tag_seance.log 2>&1 ; do
   php symfony cc --env=test  --app=frontend > /dev/null
 done;
