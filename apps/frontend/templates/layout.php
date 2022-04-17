@@ -39,6 +39,7 @@ $gitversion = file_get_contents('../.git/' . trim(substr(file_get_contents('../.
     <link rel="search" href="<?php echo $sf_request->getRelativeUrlRoot(); ?>/nosdeputesfr.xml" title="Rechercher sur NosDéputés.fr" type="application/opensearchdescription+xml" />
     <?php echo stylesheet_tag($style.'/jquery-ui-1.8.5.custom.css'); ?>
     <?php echo stylesheet_tag($style.'/style.css?'.$gitversion); ?>
+    <?php echo stylesheet_tag('fonts/liberation-sans.css'); ?>
     <?php echo stylesheet_tag($style.'/print', array('media' => 'print')); ?>
     <!--[if lte IE 6]>
       <?php echo stylesheet_tag($style.'/ie6'); ?>
