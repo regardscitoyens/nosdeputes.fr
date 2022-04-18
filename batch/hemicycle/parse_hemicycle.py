@@ -128,6 +128,10 @@ def printintervention(i):
         if (intervenant2fonction.get(i['intervenant'])):
             i['fonction'] = intervenant2fonction[i['intervenant']]
         print(json.dumps(i, ensure_ascii=False))
+        if (i.get('fonction')):
+            del i['fonction']
+        if (i.get('intervenant_url')):
+            del i['intervenant_url']
 
 content_file = sys.argv[1]
 source_url = ''
