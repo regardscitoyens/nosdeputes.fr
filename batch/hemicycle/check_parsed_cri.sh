@@ -2,7 +2,7 @@
 
 JSON=$1
 
-source ../../bin/db-external.inc
+source ../../bin/db.inc
 DATE=$(head -1 $JSON            |
        sed 's/^.*"date": "//'   |
        sed 's/".*$//')
