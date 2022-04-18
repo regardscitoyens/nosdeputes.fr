@@ -120,6 +120,7 @@ def printintervention(i):
         print("WARNING, multiple interv: %s" % i, file=sys.stderr)
     for intervenant in intervenants:
         i['timestamp'] = str(timestamp)
+        timestamp += 10
         i['intervenant'] = clean_intervenant(intervenant)
         if (intervenant2url.get(i['intervenant'])):
             i['intervenant_url'] = intervenant2url[i['intervenant']]
