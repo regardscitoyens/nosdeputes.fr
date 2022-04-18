@@ -11,7 +11,7 @@ def xml2json(s):
     s = s.replace(u'\xa0', u' ')
     soup = bs4.BeautifulSoup(s, features="lxml")
     intervention_vierge = {"intervenant": "", "contexte": ""}
-    intervention_vierge["source"] =  "https://www.assemblee-nationale.fr/dyn/15/comptes-rendus/seance/"+soup.uid.string
+    intervention_vierge["source"] = source_url or "https://www.assemblee-nationale.fr/dyn/15/comptes-rendus/seance/"+soup.uid.string
     m = soup.metadonnees
     dateseance = str(m.dateseance.string)
     intervention_vierge["date"] = "%04d-%02d-%02d" % (int(dateseance[0:4]), int(dateseance[4:6]), int(dateseance[6:8]))
@@ -107,6 +107,10 @@ def printintervention(i):
         i['intervenant'] = intervenant
         print(json.dumps(i))
 
+use_cache = "--use-cache" in sys.argv
+if use_cache:
+    sys.argv.remove("--use-cache")
 content_file = sys.argv[1]
+source_url = sys.argv[2]
 with open(content_file, encoding='utf-8') as f:
     xml2json(f.read())

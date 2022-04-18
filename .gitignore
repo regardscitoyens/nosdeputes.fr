@@ -78,6 +78,10 @@ batch/hemicycle/out/
 batch/hemicycle/loaded/
 batch/hemicycle/modified/
 batch/hemicycle/new/
+batch/hemicycle/raw/
+batch/hemicycle/xml/
+batch/hemicycle/all_seances*
+batch/hemicycle/*.zip
 batch/jo/export/
 batch/jo/html/
 batch/jo/pdf/
