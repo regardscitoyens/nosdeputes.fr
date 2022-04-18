@@ -76,8 +76,7 @@ if [ $missing -gt 0 ]; then
     sed 's/^< //'                               |
     while read SEurl; do
       SEfile=$(echo "$SEurl" | sed 's|/|_|g')
-      echo $SEurl
-      #perl download_one.pl "$SEurl" 2>/dev/null && perl parse_hemicycle.pl "html/$SEfile" > "out/$SEfile"
+      bash compute_one.sh "$SEurl"
     done
   echo 'All missing Séances reloaded and parsed, run "php symfony load:Hemicycle" to complete'
 fi
