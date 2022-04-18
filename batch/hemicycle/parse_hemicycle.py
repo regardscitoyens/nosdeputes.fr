@@ -83,7 +83,7 @@ def xml2json(s):
         t_string = t_string.replace('</italique>', '</i>')
         t_string = t_string.replace('n<exposant>o</exposant>', 'n°')
         t_string = t_string.replace('n<exposant>os</exposant>', 'n°')
-        t_string = t_string.replace('</i> <i>', ' ')
+        t_string = t_string.replace('</i> <i>', '')
         t_string = t_string.replace('<br/>', '</p><p>')
         t_string = re.sub(r'\s+', ' ', t_string)
         texte += t_string
