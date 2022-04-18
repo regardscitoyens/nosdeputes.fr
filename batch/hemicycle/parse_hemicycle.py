@@ -130,6 +130,8 @@ def printintervention(i):
         print(json.dumps(i, ensure_ascii=False))
 
 content_file = sys.argv[1]
-source_url = sys.argv[2]
+source_url = ''
+if (len(sys.argv) > 2):
+    source_url = sys.argv[2]
 with open(content_file, encoding='utf-8') as f:
     xml2json(f.read())
