@@ -121,12 +121,17 @@ def printintervention(i):
     for intervenant in intervenants:
         i['timestamp'] = str(timestamp)
         timestamp += 10
+        # extract function from split intervenants
+        if intervenant.find(','):
+            intervenantfonction = intervenant.split(', ')
+            intervenant = intervenantfonction[0]
+            if len(intervenantfonction) > 1:
+                i['fonction'] = intervenantfonction[1]
+        elif intervenant2fonction.get(i['intervenant']):
+            i['fonction'] = intervenant2fonction[i['intervenant']]
         i['intervenant'] = clean_intervenant(intervenant)
         if (intervenant2url.get(i['intervenant'])):
             i['intervenant_url'] = intervenant2url[i['intervenant']]
-        # extract function from split intervenants
-        if (intervenant2fonction.get(i['intervenant'])):
-            i['fonction'] = intervenant2fonction[i['intervenant']]
         print(json.dumps(i, ensure_ascii=False))
         if (i.get('fonction')):
             del i['fonction']
