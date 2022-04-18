@@ -5,6 +5,9 @@ import bs4
 import json
 import re
 
+intervenant2fonction = {}
+intervenant2url = {}
+
 def clean_intervenant(interv):
     interv = re.sub(r'^M(\.|me)\s+', '', interv)
     return interv
@@ -26,7 +29,6 @@ def xml2json(s):
     # TODO :
     # - handle intervenant with different functions along a same CR
     # - handle fonctions simplifiées type secrétaire d'état ou ministre shared between multiple intervenants
-    intervenant2fonction = {}
     last_titre = ''
     for p in soup.find_all(['paragraphe', 'point']):
         intervention = intervention_vierge.copy()
@@ -59,6 +61,7 @@ def xml2json(s):
             intervention["intervenant"] = clean_intervenant(p.orateurs.orateur.nom.get_text())
             if p['id_mandat'] and p['id_mandat'] != "-1":
                 intervention["intervenant_url"] = "http://www2.assemblee-nationale.fr/deputes/fiche/OMC_"+p['id_acteur']
+                intervenant2url[intervention["intervenant"]] = intervention['intervenant_url']
             if p.orateurs.orateur.qualite and p.orateurs.orateur.qualite.string:
                 intervention['fonction'] = p.orateurs.orateur.qualite.get_text()
                 if not intervenant2fonction.get(intervention["intervenant"]) and intervention['fonction']:
@@ -118,7 +121,11 @@ def printintervention(i):
     for intervenant in intervenants:
         i['timestamp'] = str(timestamp)
         i['intervenant'] = clean_intervenant(intervenant)
-        # TODO extract function from split intervenants
+        if (intervenant2url.get(i['intervenant'])):
+            i['intervenant_url'] = intervenant2url[i['intervenant']]
+        # extract function from split intervenants
+        if (intervenant2fonction.get(i['intervenant'])):
+            i['fonction'] = intervenant2fonction[i['intervenant']]
         print(json.dumps(i, ensure_ascii=False))
 
 use_cache = "--use-cache" in sys.argv
