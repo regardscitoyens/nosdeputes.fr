@@ -40,6 +40,12 @@ def xml2json(s):
             contextes.append(p.texte.get_text().replace('\n', ''))
         if p['valeur'] and p['valeur'][0:9] == ' (n[[o]] ':
             numeros_lois = p['valeur'][9:-1].replace(' ', '')
+        for i in range(len(contextes)):
+        # TODO cleanup contextes to behave like before (suite, réservé, rappel au règlement, etc)
+            contextes[i] = contextes[i].replace("’", "'")
+            contextes[i] = re.sub(r'\s+', ' ', contextes[i])
+            contextes[i] = contextes[i].strip()
+
         if len(contextes) > 1:
             intervention["contexte"] = contextes[0] + " > " + contextes[-1]
         elif len(contextes) == 1:
@@ -73,22 +79,24 @@ def xml2json(s):
             elif intervenant2fonction.get(intervention["intervenant"]):
                 intervention['fonction'] = intervenant2fonction[intervention["intervenant"]]
 
-        texte = "<p>"
         isdidascalie = False
         texte_didascalie = ""
         t_string = str(p.texte)
+        t_string = t_string.replace("’", "'")
         t_string = t_string.replace('>\n', '> ')
         t_string = re.sub(r' ?<\/?texte> ?', '', t_string)
         t_string = t_string.replace('<italique>', '<i>')
         t_string = t_string.replace('</italique>', '</i>')
-        t_string = t_string.replace('n<exposant>o</exposant>', 'n°')
-        t_string = t_string.replace('n<exposant>os</exposant>', 'n°')
         t_string = t_string.replace('</i> <i>', '')
         t_string = t_string.replace('<br/>', '</p><p>')
+        t_string = t_string.replace('<p></p>', '')
         t_string = re.sub(r'\s+', ' ', t_string)
-        texte += t_string
-        texte += "</p>"
-        i = 0;
+        t_string = re.sub(r'n[° ]*(<exposant>[os]+</exposant>\s*)+', 'n° ', t_string)
+        if not t_string:
+            continue
+        texte = "<p>%s</p>" % t_string
+
+        i = 0
         # TODO: handle more missing inside didascalies
         for i in re.split(' ?(<i>\([^<]*\)</i> ?)', texte):
             if i[0] == ' ':
@@ -112,7 +120,7 @@ def xml2json(s):
 
 def printintervention(i):
     global timestamp
-    if i['intervention'] == '<p></p>' or i['intervention'] == '<p> </p>':
+    if re.match(r'(<p>\s*</p>\s*)+$', i['intervention']):
         return
     intervenants = i['intervenant'].split(' et ')
     timestamp += 10
@@ -120,7 +128,7 @@ def printintervention(i):
         print("WARNING, multiple interv: %s" % i, file=sys.stderr)
     for intervenant in intervenants:
         i['timestamp'] = str(timestamp)
-        timestamp += 10
+        timestamp += 1
         # extract function from split intervenants
         if intervenant.find(','):
             intervenantfonction = intervenant.split(', ')
