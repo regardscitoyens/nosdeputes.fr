@@ -10,15 +10,15 @@ function download {
 }
 
 echo "Downloading Débats from OpenData AN..."
-rm -f xml
 wget -q https://data.assemblee-nationale.fr/static/openData/repository/$LEGISLATURE/vp/syceronbrut/syseron.xml.zip -O SyceronBrut.xml.zip
+rm -rf xml
 unzip SyceronBrut.xml.zip > /dev/null
+rm -f SyceronBrut.xml.zip
 echo "Extracting list of Séances from OpenData AN..."
 cat xml/compteRendu/*                                               |
   grep '<dateSeance>'                                               |
   sed -r 's/^.*<dateSeance>(....)(..)(..)(..)(..).*$/\1-\2-\3 \4:\5/'  |
   sort -n > all_seances_dates_opendataAN
-rm -f SyceronBrut.xml*
 
 
 echo "Downloading list of Séances from AN website..."
