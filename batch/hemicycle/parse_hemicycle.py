@@ -129,9 +129,6 @@ def printintervention(i):
             i['fonction'] = intervenant2fonction[i['intervenant']]
         print(json.dumps(i, ensure_ascii=False))
 
-use_cache = "--use-cache" in sys.argv
-if use_cache:
-    sys.argv.remove("--use-cache")
 content_file = sys.argv[1]
 source_url = sys.argv[2]
 with open(content_file, encoding='utf-8') as f:
