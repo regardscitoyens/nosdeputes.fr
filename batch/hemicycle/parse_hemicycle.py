@@ -5,13 +5,20 @@ import bs4
 import json
 import re
 
+intervenant2fonction = {}
+intervenant2url = {}
+
+def clean_intervenant(interv):
+    interv = re.sub(r'^M(\.|me)\s+', '', interv)
+    return interv
+
 def xml2json(s):
     global timestamp
     timestamp = 0
     s = s.replace(u'\xa0', u' ')
     soup = bs4.BeautifulSoup(s, features="lxml")
     intervention_vierge = {"intervenant": "", "contexte": ""}
-    intervention_vierge["source"] =  "https://www.assemblee-nationale.fr/dyn/15/comptes-rendus/seance/"+soup.uid.string
+    intervention_vierge["source"] = source_url or "https://www.assemblee-nationale.fr/dyn/15/comptes-rendus/seance/"+soup.uid.string
     m = soup.metadonnees
     dateseance = str(m.dateseance.string)
     intervention_vierge["date"] = "%04d-%02d-%02d" % (int(dateseance[0:4]), int(dateseance[4:6]), int(dateseance[6:8]))
@@ -19,11 +26,13 @@ def xml2json(s):
     intervention_vierge["session"] = str(m.session.string)[-9:].replace('-', '')
     contextes = ['']
     numeros_lois = None
-    intervenant2fonction = {}
+    # TODO :
+    # - handle intervenant with different functions along a same CR
+    # - handle fonctions simplifiées type secrétaire d'état ou ministre shared between multiple intervenants
     last_titre = ''
     for p in soup.find_all(['paragraphe', 'point']):
         intervention = intervention_vierge.copy()
-        #Gestion des titres/contextes et numéros de loi
+        # Gestion des titres/contextes et numéros de loi
         if p.name == "point" and p.texte and p.texte.get_text() and int(p['nivpoint']) < 4:
             contextes = contextes[:int(p['nivpoint']) -1 ]
             if not contextes:
@@ -31,6 +40,12 @@ def xml2json(s):
             contextes.append(p.texte.get_text().replace('\n', ''))
         if p['valeur'] and p['valeur'][0:9] == ' (n[[o]] ':
             numeros_lois = p['valeur'][9:-1].replace(' ', '')
+        for i in range(len(contextes)):
+        # TODO cleanup contextes to behave like before (suite, réservé, rappel au règlement, etc)
+            contextes[i] = contextes[i].replace("’", "'")
+            contextes[i] = re.sub(r'\s+', ' ', contextes[i])
+            contextes[i] = contextes[i].strip()
+
         if len(contextes) > 1:
             intervention["contexte"] = contextes[0] + " > " + contextes[-1]
         elif len(contextes) == 1:
@@ -41,43 +56,48 @@ def xml2json(s):
                 printintervention(intervention)
             last_titre = contextes[-1]
             continue
-        #Gestion des interventions
+        # Gestion des interventions
         if numeros_lois:
             intervention['numeros_loi'] = numeros_lois
         intervention["source"] += "#"+p['id_syceron']
         if len(p.orateurs):
-            intervention["intervenant"] = p.orateurs.orateur.nom.get_text()
+            # TODO handle cases with multiples orateurs (mostly to combine into one)
+            # examples xml/compteRendu/CRSANR5L15S2021O1N068.xml
+            # grep '</orateur>' -A 1 xml/compteRendu/* | grep -v '</orateur>' | grep '<orateur>'
+            intervention["intervenant"] = clean_intervenant(p.orateurs.orateur.nom.get_text())
             if p['id_mandat'] and p['id_mandat'] != "-1":
                 intervention["intervenant_url"] = "http://www2.assemblee-nationale.fr/deputes/fiche/OMC_"+p['id_acteur']
-                intervention["intervenant"] = p['id_acteur']
+                intervenant2url[intervention["intervenant"]] = intervention['intervenant_url']
             if p.orateurs.orateur.qualite and p.orateurs.orateur.qualite.string:
                 intervention['fonction'] = p.orateurs.orateur.qualite.get_text()
                 if not intervenant2fonction.get(intervention["intervenant"]) and intervention['fonction']:
                     intervenant2fonction[intervention["intervenant"]] = intervention['fonction']
-            elif intervention["intervenant"] == "Mme la présidente":
+            elif intervention["intervenant"] == "la présidente":
                 intervention['fonction'] = "présidente"
-                intervention["intervenant"] = '';
-            elif intervention["intervenant"] == "M le président":
+            elif intervention["intervenant"] == "le président":
                 intervention['fonction'] = "président"
-                intervention["intervenant"] = '';
-            else:
-                intervention['fonction'] = intervenant2fonction.get(intervention["intervenant"], "")
+            elif intervenant2fonction.get(intervention["intervenant"]):
+                intervention['fonction'] = intervenant2fonction[intervention["intervenant"]]
 
-        texte = "<p>"
         isdidascalie = False
         texte_didascalie = ""
         t_string = str(p.texte)
+        t_string = t_string.replace("’", "'")
         t_string = t_string.replace('>\n', '> ')
         t_string = re.sub(r' ?<\/?texte> ?', '', t_string)
         t_string = t_string.replace('<italique>', '<i>')
         t_string = t_string.replace('</italique>', '</i>')
-        t_string = t_string.replace('n<exposant>o</exposant>', 'n°')
-        t_string = t_string.replace('n<exposant>os</exposant>', 'n°')
-        t_string = t_string.replace('</i> <i>', ' ')
+        t_string = t_string.replace('</i> <i>', '')
         t_string = t_string.replace('<br/>', '</p><p>')
-        texte += t_string
-        texte += "</p>"
-        i = 0;
+        t_string = t_string.replace('<p></p>', '')
+        t_string = re.sub(r'\s+', ' ', t_string)
+        t_string = re.sub(r'n[° ]*(<exposant>[os]+</exposant>\s*)+', 'n° ', t_string)
+        if not t_string:
+            continue
+        texte = "<p>%s</p>" % t_string
+
+        i = 0
+        # TODO: handle more missing inside didascalies
         for i in re.split(' ?(<i>\([^<]*\)</i> ?)', texte):
             if i[0] == ' ':
                 i = i[1:]
@@ -89,7 +109,9 @@ def xml2json(s):
                 i = i + '</p>'
             if i.find('<p><i>') == 0:
                 didasc = intervention_vierge
-                didasc["intervention"] = i
+                i_str = re.sub(r"<i>[\s(]*", "", i)
+                i_str = re.sub(r"[\s)]*</i>", "", i_str)
+                didasc["intervention"] = i_str
                 didasc["contexte"] = intervention["contexte"]
                 printintervention(didasc)
             else:
@@ -98,15 +120,35 @@ def xml2json(s):
 
 def printintervention(i):
     global timestamp
-    if i['intervention'] == '<p></p>' or i['intervention'] == '<p> </p>':
+    if re.match(r'(<p>\s*</p>\s*)+$', i['intervention']):
         return
     intervenants = i['intervenant'].split(' et ')
     timestamp += 10
+    if len(intervenants) > 1:
+        print("WARNING, multiple interv: %s" % i, file=sys.stderr)
     for intervenant in intervenants:
         i['timestamp'] = str(timestamp)
-        i['intervenant'] = intervenant
-        print(json.dumps(i))
+        timestamp += 1
+        # extract function from split intervenants
+        if intervenant.find(','):
+            intervenantfonction = intervenant.split(', ')
+            intervenant = intervenantfonction[0]
+            if len(intervenantfonction) > 1:
+                i['fonction'] = intervenantfonction[1]
+        elif intervenant2fonction.get(i['intervenant']):
+            i['fonction'] = intervenant2fonction[i['intervenant']]
+        i['intervenant'] = clean_intervenant(intervenant)
+        if (intervenant2url.get(i['intervenant'])):
+            i['intervenant_url'] = intervenant2url[i['intervenant']]
+        print(json.dumps(i, ensure_ascii=False))
+        if (i.get('fonction')):
+            del i['fonction']
+        if (i.get('intervenant_url')):
+            del i['intervenant_url']
 
 content_file = sys.argv[1]
+source_url = ''
+if (len(sys.argv) > 2):
+    source_url = sys.argv[2]
 with open(content_file, encoding='utf-8') as f:
     xml2json(f.read())
