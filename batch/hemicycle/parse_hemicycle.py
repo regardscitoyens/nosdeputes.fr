@@ -52,7 +52,6 @@ def xml2json(s):
         if numeros_lois:
             intervention['numeros_loi'] = numeros_lois
         intervention["source"] += "#"+p['id_syceron']
-        intervention["intervenant"] = []
         if len(p.orateurs):
             # TODO handle cases with multiples orateurs (mostly to combine into one)
             # examples xml/compteRendu/CRSANR5L15S2021O1N068.xml
