@@ -82,9 +82,11 @@ def xml2json(s):
         t_string = t_string.replace('n<exposant>os</exposant>', 'n°')
         t_string = t_string.replace('</i> <i>', ' ')
         t_string = t_string.replace('<br/>', '</p><p>')
+        t_string = re.sub(r'\s+', ' ', t_string)
         texte += t_string
         texte += "</p>"
         i = 0;
+        # TODO: handle more missing inside didascalies
         for i in re.split(' ?(<i>\([^<]*\)</i> ?)', texte):
             if i[0] == ' ':
                 i = i[1:]
@@ -96,7 +98,9 @@ def xml2json(s):
                 i = i + '</p>'
             if i.find('<p><i>') == 0:
                 didasc = intervention_vierge
-                didasc["intervention"] = i
+                i_str = re.sub(r"<i>[\s(]*", "", i)
+                i_str = re.sub(r"[\s)]*</i>", "", i_str)
+                didasc["intervention"] = i_str
                 didasc["contexte"] = intervention["contexte"]
                 printintervention(didasc)
             else:
