@@ -5,6 +5,10 @@ import bs4
 import json
 import re
 
+def clean_intervenant(interv):
+    interv = re.sub(r'^M(\.|me)\s+', '', interv)
+    return interv
+
 def xml2json(s):
     global timestamp
     timestamp = 0
@@ -19,11 +23,14 @@ def xml2json(s):
     intervention_vierge["session"] = str(m.session.string)[-9:].replace('-', '')
     contextes = ['']
     numeros_lois = None
+    # TODO :
+    # - handle intervenant with different functions along a same CR
+    # - handle fonctions simplifiées type secrétaire d'état ou ministre shared between multiple intervenants
     intervenant2fonction = {}
     last_titre = ''
     for p in soup.find_all(['paragraphe', 'point']):
         intervention = intervention_vierge.copy()
-        #Gestion des titres/contextes et numéros de loi
+        # Gestion des titres/contextes et numéros de loi
         if p.name == "point" and p.texte and p.texte.get_text() and int(p['nivpoint']) < 4:
             contextes = contextes[:int(p['nivpoint']) -1 ]
             if not contextes:
@@ -41,27 +48,28 @@ def xml2json(s):
                 printintervention(intervention)
             last_titre = contextes[-1]
             continue
-        #Gestion des interventions
+        # Gestion des interventions
         if numeros_lois:
             intervention['numeros_loi'] = numeros_lois
         intervention["source"] += "#"+p['id_syceron']
+        intervention["intervenant"] = []
         if len(p.orateurs):
-            intervention["intervenant"] = p.orateurs.orateur.nom.get_text()
+            # TODO handle cases with multiples orateurs (mostly to combine into one)
+            # examples xml/compteRendu/CRSANR5L15S2021O1N068.xml
+            # grep '</orateur>' -A 1 xml/compteRendu/* | grep -v '</orateur>' | grep '<orateur>'
+            intervention["intervenant"] = clean_intervenant(p.orateurs.orateur.nom.get_text())
             if p['id_mandat'] and p['id_mandat'] != "-1":
                 intervention["intervenant_url"] = "http://www2.assemblee-nationale.fr/deputes/fiche/OMC_"+p['id_acteur']
-                intervention["intervenant"] = p['id_acteur']
             if p.orateurs.orateur.qualite and p.orateurs.orateur.qualite.string:
                 intervention['fonction'] = p.orateurs.orateur.qualite.get_text()
                 if not intervenant2fonction.get(intervention["intervenant"]) and intervention['fonction']:
                     intervenant2fonction[intervention["intervenant"]] = intervention['fonction']
-            elif intervention["intervenant"] == "Mme la présidente":
+            elif intervention["intervenant"] == "la présidente":
                 intervention['fonction'] = "présidente"
-                intervention["intervenant"] = '';
-            elif intervention["intervenant"] == "M le président":
+            elif intervention["intervenant"] == "le président":
                 intervention['fonction'] = "président"
-                intervention["intervenant"] = '';
-            else:
-                intervention['fonction'] = intervenant2fonction.get(intervention["intervenant"], "")
+            elif intervenant2fonction.get(intervention["intervenant"]):
+                intervention['fonction'] = intervenant2fonction[intervention["intervenant"]]
 
         texte = "<p>"
         isdidascalie = False
@@ -102,10 +110,13 @@ def printintervention(i):
         return
     intervenants = i['intervenant'].split(' et ')
     timestamp += 10
+    if len(intervenants) > 1:
+        print("WARNING, multiple interv: %s" % i, file=sys.stderr)
     for intervenant in intervenants:
         i['timestamp'] = str(timestamp)
-        i['intervenant'] = intervenant
-        print(json.dumps(i))
+        i['intervenant'] = clean_intervenant(intervenant)
+        # TODO extract function from split intervenants
+        print(json.dumps(i, ensure_ascii=False))
 
 use_cache = "--use-cache" in sys.argv
 if use_cache:
