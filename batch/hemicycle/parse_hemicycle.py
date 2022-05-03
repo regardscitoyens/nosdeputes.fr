@@ -44,9 +44,10 @@ def xml2json(s):
             contexte = re.sub(r'\s*\(suite\)\.?$', '', contexte)
             contexte = re.sub(r'\s*-\s*suite\)\.?$', ')', contexte)
             contexte = contexte.strip()
-        # TODO cleanup contextes to behave like before (réservé, rappels? au règlement|suspension|reprise|demande de vérification du quorum)
+        # TODO cleanup contextes to behave like before (rappels? au règlement|suspension|reprise|demande de vérification du quorum)
 
-            contextes.append(contexte)
+            if not re.match(r"Suite\s*de\s*la\s*discussion", contexte):
+                contextes.append(contexte)
         if p['valeur'] and p['valeur'][0:9] == ' (n[[o]] ':
             numeros_lois = p['valeur'][9:-1].replace(' ', '')
 
