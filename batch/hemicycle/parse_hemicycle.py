@@ -8,8 +8,16 @@ import re
 intervenant2fonction = {}
 intervenant2url = {}
 
+def clean_all(text):
+    text = text.replace("’", "'")
+    text = text.replace("<br/>", " ")
+    text = text.replace('\n', ' ')
+    text = re.sub(r'\s+', ' ', text)
+    return text.strip()
+
 def clean_intervenant(interv):
     interv = re.sub(r'^M(\.|me)\s+', '', interv)
+    interv = clean_all(interv)
     return interv
 
 def xml2json(s):
@@ -35,13 +43,11 @@ def xml2json(s):
         intervention = intervention_vierge.copy()
         # Gestion des titres/contextes et numéros de loi
         if p.name == "point":
-            contexte = p.texte.get_text() if p.texte else ""
-            contexte = contexte.replace('\n', '')
-            contexte = contexte.replace("’", "'")
-            contexte = re.sub(r'\s+', ' ', contexte)
+            contexte = clean_all(str(p.texte))
+            contexte = re.sub(r'<\/?[a-z][^>]*>', '', contexte)
             contexte = re.sub(r'\s*\(suite\)\.?$', '', contexte)
             contexte = re.sub(r'\s*-\s*suite\)\.?$', ')', contexte)
-            contexte = contexte.strip()
+            contexte = clean_all(contexte)
 
             if contexte and int(p['nivpoint']) < 4:
                 contextes = contextes[:int(p['nivpoint']) -1]
@@ -92,9 +98,7 @@ def xml2json(s):
 
         isdidascalie = False
         texte_didascalie = ""
-        t_string = str(p.texte)
-        t_string = t_string.replace("’", "'")
-        t_string = t_string.replace('>\n', '> ')
+        t_string = clean_all(str(p.texte))
         t_string = re.sub(r' ?<\/?texte> ?', '', t_string)
         t_string = t_string.replace('<italique>', '<i>')
         t_string = t_string.replace('</italique>', '</i>')
@@ -138,8 +142,8 @@ def printintervention(i):
     if len(intervenants) > 1:
         print("WARNING, multiple interv: %s" % i, file=sys.stderr)
         if intervenants[0].startswith("Plusieurs députés"):
+            intervenants[0] = intervenants[0].replace("des groupes", "du groupe")
             radical = re.sub(r"^(.*?\s)[A-Z].*$", r"\1", intervenants[0])
-            radical = radical.replace("des groupes", "du groupe")
             for idx in range(1, len(intervenants)):
                 intervenants[idx] = radical + intervenants[idx]
     for intervenant in intervenants:
@@ -150,7 +154,7 @@ def printintervention(i):
             intervenantfonction = intervenant.split(', ')
             intervenant = intervenantfonction[0]
             if len(intervenantfonction) > 1:
-                i['fonction'] = intervenantfonction[1]
+                i['fonction'] = clean_all(intervenantfonction[1])
         elif intervenant2fonction.get(i['intervenant']):
             i['fonction'] = intervenant2fonction[i['intervenant']]
         i['intervenant'] = clean_intervenant(intervenant)
