@@ -146,9 +146,10 @@ def printintervention(i):
             radical = re.sub(r"^(.*?\s)[A-Z].*$", r"\1", intervenants[0])
             for idx in range(1, len(intervenants)):
                 intervenants[idx] = radical + intervenants[idx]
+    curtimestamp = timestamp
     for intervenant in intervenants:
-        i['timestamp'] = str(timestamp)
-        timestamp += 1
+        i['timestamp'] = str(curtimestamp)
+        curtimestamp += 1
         # extract function from split intervenants
         if intervenant.find(','):
             intervenantfonction = intervenant.split(', ')
