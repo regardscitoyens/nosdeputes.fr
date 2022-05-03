@@ -42,6 +42,10 @@ def xml2json(s):
     # - handle intervenant with different functions along a same CR
     # - handle fonctions simplifiées type secrétaire d'état ou ministre shared between multiple intervenants
     last_titre = ''
+    # TODO Get detailed gouv fonctions from sommaire
+    for p in soup.find_all(['sommaire2 > para']):
+        pass
+
     for p in soup.find_all(['paragraphe', 'point']):
         contexte = ""
         intervention = intervention_vierge.copy()
@@ -89,15 +93,22 @@ def xml2json(s):
             if p['id_mandat'] and p['id_mandat'] != "-1":
                 intervention["intervenant_url"] = "http://www2.assemblee-nationale.fr/deputes/fiche/OMC_"+p['id_acteur']
                 intervenant2url[intervention["intervenant"]] = intervention['intervenant_url']
+            existingfonction = intervenant2fonction.get(intervention["intervenant"])
             if p.orateurs.orateur.qualite and p.orateurs.orateur.qualite.string:
-                intervention['fonction'] = p.orateurs.orateur.qualite.get_text()
-                if not intervenant2fonction.get(intervention["intervenant"]) and intervention['fonction']:
+                intervention['fonction'] = clean_all(p.orateurs.orateur.qualite.get_text())
+                if not existingfonction and intervention['fonction']:
                     intervenant2fonction[intervention["intervenant"]] = intervention['fonction']
+                elif existingfonction:
+                    if existingfonction.startswith(intervention['fonction']) and len(existingfonction) > len(intervention['fonction']):
+                        intervention["fonction"] = existingfonction
+                    elif intervention['fonction'].startswith(existingfonction) and len(intervention['fonction']) > len(existingfonction):
+                        intervenant2fonction[intervention["intervenant"]] = intervention['fonction']
             elif intervention["intervenant"] == "la présidente":
                 intervention['fonction'] = "présidente"
             elif intervention["intervenant"] == "le président":
                 intervention['fonction'] = "président"
-            elif intervenant2fonction.get(intervention["intervenant"]):
+            # TODO: reset these when changing contexte[0] at least for rapporteurs (but not for ministres & présidents at least)
+            elif existingfonction:
                 intervention['fonction'] = intervenant2fonction[intervention["intervenant"]]
 
         isdidascalie = False
@@ -117,6 +128,7 @@ def xml2json(s):
 
         i = 0
         # TODO: handle more missing inside didascalies
+        curinterv = intervention.copy()
         for i in re.split(' ?(<i>\([^<]*\)</i> ?)', texte):
             if i[0] == ' ':
                 i = i[1:]
@@ -127,13 +139,14 @@ def xml2json(s):
             if (i[-4:] !=  '</p>'):
                 i = i + '</p>'
             if i.find('<p><i>') == 0:
-                didasc = intervention_vierge
+                didasc = intervention_vierge.copy()
                 i_str = re.sub(r"<i>[\s(]*", "", i)
                 i_str = re.sub(r"[\s)]*</i>", "", i_str)
                 didasc["intervention"] = i_str
                 didasc["contexte"] = intervention["contexte"]
                 printintervention(didasc)
             else:
+                intervention = curinterv.copy()
                 intervention["intervention"] = i
                 printintervention(intervention)
 
