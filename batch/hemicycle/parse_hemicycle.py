@@ -31,7 +31,11 @@ def xml2json(s):
     dateseance = str(m.dateseance.string)
     intervention_vierge["date"] = "%04d-%02d-%02d" % (int(dateseance[0:4]), int(dateseance[4:6]), int(dateseance[6:8]))
     intervention_vierge["heure"] = "%02d:%02d" % (int(dateseance[8:10]), int(dateseance[10:12]))
-    intervention_vierge["session"] = str(m.session.string)[-9:].replace('-', '')
+    session = str(m.session.string)
+    session = re.sub(r"\D", "", session)
+    if len(session) == 4:
+        session = "%s%s" % (session, int(session) + 1)
+    intervention_vierge["session"] = session
     contextes = ['']
     numeros_lois = None
     # TODO :
