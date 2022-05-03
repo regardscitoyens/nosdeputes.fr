@@ -31,23 +31,26 @@ def xml2json(s):
     # - handle fonctions simplifiées type secrétaire d'état ou ministre shared between multiple intervenants
     last_titre = ''
     for p in soup.find_all(['paragraphe', 'point']):
+        contexte = ""
         intervention = intervention_vierge.copy()
         # Gestion des titres/contextes et numéros de loi
-        if p.name == "point" and p.texte and p.texte.get_text() and int(p['nivpoint']) < 4:
-            contextes = contextes[:int(p['nivpoint']) -1 ]
-            if not contextes:
-                contextes = []
-            contexte = p.texte.get_text()
+        if p.name == "point":
+            contexte = p.texte.get_text() if p.texte else ""
             contexte = contexte.replace('\n', '')
             contexte = contexte.replace("’", "'")
             contexte = re.sub(r'\s+', ' ', contexte)
             contexte = re.sub(r'\s*\(suite\)\.?$', '', contexte)
             contexte = re.sub(r'\s*-\s*suite\)\.?$', ')', contexte)
             contexte = contexte.strip()
-        # TODO cleanup contextes to behave like before (rappels? au règlement|suspension|reprise|demande de vérification du quorum)
 
-            if not re.match(r"Suite\s*de\s*la\s*discussion", contexte):
-                contextes.append(contexte)
+            if contexte and int(p['nivpoint']) < 4:
+                contextes = contextes[:int(p['nivpoint']) -1]
+                if not contextes:
+                    contextes = []
+
+                if not re.match(r"Suite\s*de\s*la\s*discussion|Rappels?\s*au\s*règlement|Suspension|Reprise\s*de\s*la\s*séance|Faits? personnel|Demandes? de vérification du quorum", contexte):
+                    contextes.append(contexte)
+
         if p['valeur'] and p['valeur'][0:9] == ' (n[[o]] ':
             numeros_lois = p['valeur'][9:-1].replace(' ', '')
 
@@ -55,16 +58,17 @@ def xml2json(s):
             intervention["contexte"] = contextes[0] + " > " + contextes[-1]
         elif len(contextes) == 1:
             intervention["contexte"] = contextes[0]
+
         if p.name == "point":
-            intervention['intervention'] = "<p>"+contextes[-1]+"</p>"
-            if (last_titre != contextes[-1]):
-                printintervention(intervention)
-            last_titre = contextes[-1]
+            if contexte:
+                intervention['intervention'] = "<p>"+contexte+"</p>"
+                if (last_titre != contexte):
+                    printintervention(intervention)
+                last_titre = contexte
             continue
         # Gestion des interventions
-        # TODO rm numeros_lois when questions/odj/etc cf parse_hemicycle.pl
-        # rm numeros_lois from one texte to another without numeros
-        if numeros_lois:
+        # TODO rm numeros_lois from one texte to another without numeros
+        if numeros_lois and not re.search(r"questions?\sau|ordre\sdu\sjour|bienvenue|hommage|annulation|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement", intervention["contexte"], re.I):
             intervention['numeros_loi'] = numeros_lois
         intervention["source"] += "#"+p['id_syceron']
         if len(p.orateurs):

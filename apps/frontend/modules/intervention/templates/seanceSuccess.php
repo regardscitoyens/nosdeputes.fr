@@ -113,7 +113,7 @@ if ($intervention->section_id && !$sections[$intervention->section_id]->titre) {
       $didascalietitre = 0;
       $comparableinter = trim(strtolower(preg_replace('/<[^>]+>/i', '', $intervention->intervention)));
       if (($intervention->section_id && $comparableinter === trim(strtolower($sections[$intervention->section_id]->titre))) ||
-          preg_match('/^(suspension|reprise|demande de vérification du quorum|rappels? au)/', $comparableinter))
+          preg_match('/^(suspension|reprise|demande de vérification du quorum|rappels? au|faits? personnel)/', $comparableinter))
         $didascalietitre = 1;
     } ?>
 <?php
