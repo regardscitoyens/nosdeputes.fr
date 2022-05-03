@@ -140,8 +140,8 @@ def printintervention(i):
         if intervenants[0].startswith("Plusieurs députés"):
             radical = re.sub(r"^(.*?\s)[A-Z].*$", r"\1", intervenants[0])
             radical = radical.replace("des groupes", "du groupe")
-            for i in range(1, len(intervenants)):
-                intervenants[i] = radical + intervenants[i]
+            for idx in range(1, len(intervenants)):
+                intervenants[idx] = radical + intervenants[idx]
     for intervenant in intervenants:
         i['timestamp'] = str(timestamp)
         timestamp += 1
