@@ -16,8 +16,10 @@ def clean_all(text):
     return text.strip()
 
 def clean_intervenant(interv):
-    interv = re.sub(r'^M(\.|me)\s+', '', interv)
     interv = clean_all(interv)
+    interv = re.sub(r'^M(\.|me)\s+', '', interv)
+    # cleanup parenthesis from intervenant (groupe)
+    interv = re.sub(r'\s+\(\s*[A-Z][\w\s\-]+\)$', '', interv)
     return interv
 
 def xml2json(s):
