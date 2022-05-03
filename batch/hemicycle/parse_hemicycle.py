@@ -37,14 +37,18 @@ def xml2json(s):
             contextes = contextes[:int(p['nivpoint']) -1 ]
             if not contextes:
                 contextes = []
-            contextes.append(p.texte.get_text().replace('\n', ''))
+            contexte = p.texte.get_text()
+            contexte = contexte.replace('\n', '')
+            contexte = contexte.replace("’", "'")
+            contexte = re.sub(r'\s+', ' ', contexte)
+            contexte = re.sub(r'\s*\(suite\)\.?$', '', contexte)
+            contexte = re.sub(r'\s*-\s*suite\)\.?$', ')', contexte)
+            contexte = contexte.strip()
+        # TODO cleanup contextes to behave like before (réservé, rappels? au règlement|suspension|reprise|demande de vérification du quorum)
+
+            contextes.append(contexte)
         if p['valeur'] and p['valeur'][0:9] == ' (n[[o]] ':
             numeros_lois = p['valeur'][9:-1].replace(' ', '')
-        for i in range(len(contextes)):
-        # TODO cleanup contextes to behave like before (suite, réservé, rappel au règlement, etc)
-            contextes[i] = contextes[i].replace("’", "'")
-            contextes[i] = re.sub(r'\s+', ' ', contextes[i])
-            contextes[i] = contextes[i].strip()
 
         if len(contextes) > 1:
             intervention["contexte"] = contextes[0] + " > " + contextes[-1]
@@ -57,6 +61,8 @@ def xml2json(s):
             last_titre = contextes[-1]
             continue
         # Gestion des interventions
+        # TODO rm numeros_lois when questions/odj/etc cf parse_hemicycle.pl
+        # rm numeros_lois from one texte to another without numeros
         if numeros_lois:
             intervention['numeros_loi'] = numeros_lois
         intervention["source"] += "#"+p['id_syceron']
