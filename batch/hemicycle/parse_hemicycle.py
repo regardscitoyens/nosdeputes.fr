@@ -39,7 +39,7 @@ def xml2json(s):
         session = "%s%s" % (session, int(session) + 1)
     intervention_vierge["session"] = session
     contextes = ['']
-    numeros_lois = None
+    numeros_loi = None
     last_titre = ''
 
     # Preload detailed gouv fonctions from sommaire
@@ -73,14 +73,17 @@ def xml2json(s):
                 if not re.match(r"Suite\s*de\s*la\s*discussion|Rappels?\s*au\s*règlement|Suspension|Reprise\s*de\s*la\s*séance|Faits? personnel|Demandes? de vérification du quorum", contexte):
                     contextes.append(contexte)
 
-                # Clean rapporteurs when changing section
+                # Clean rapporteurs and numlois when changing dossier
                 if len(contextes) == 1:
                     for (orateur, fonction) in intervenant2fonction.copy().items():
                         if "rapporteur" in fonction or "commission" in fonction:
                             del(intervenant2fonction[orateur])
+                    numeros_loi = None
 
-        if p['valeur'] and p['valeur'][0:9] == ' (n[[o]] ':
-            numeros_lois = p['valeur'][9:-1].replace(' ', '')
+        # Handle crazy variant formats of num_lois in OpenData AN...
+        if p['valeur'] and re.match(r'\s*(\(?T\.?A\.?\s*|\(?n\[?\[?[o°]s?\]?\]?\s*)+(0,\s*)?(T\.?A\.?\s*)?\d+', p['valeur']):
+            numeros_loi = re.sub(r'[^TA\d]+', ',', p['valeur']).strip(",")
+            numeros_loi = re.sub(r'TA0+', 'TA', numeros_loi)
         if numeros_loi and not re.search(r"questions?\sau|ordre\sdu\sjour|bienvenue|hommage|annulation|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement", intervention["contexte"], re.I):
             intervention['numeros_loi'] = numeros_loi
 
@@ -100,7 +103,6 @@ def xml2json(s):
             continue
 
         # Gestion des interventions
-        # TODO rm numeros_lois from one texte to another without numeros
         if len(p.orateurs):
             # TODO handle cases with multiples orateurs (mostly to combine into one)
             # examples xml/compteRendu/CRSANR5L15S2021O1N068.xml
