@@ -171,9 +171,25 @@ def xml2json(s):
                 intervention["intervention"] = i
                 printintervention(intervention)
 
-# TODO assemble divided intervs
-# example bash compute_one.sh http://www.assemblee-nationale.fr/15/cri/2020-2021-extra3/20213008.asp  1
-# needs to store all intervs to edit the last one when needed and only print everything at the end ?
+    for line in output:
+        print(json.dumps(line, ensure_ascii=False))
+
+def record_line(i):
+    global timestamp
+    # Assemble divided successive interventions from same intervenant within same contexte
+    last_i = output[-1] if output else {"intervenant": "", "contexte": ""}
+    if i["intervenant"] and i["intervenant"] == last_i["intervenant"] and i["contexte"] == last_i["contexte"]:
+        timestamp = int(last_i["timestamp"])
+        if i["intervention"] == last_i["intervention"]:
+            return
+        print("WARNING, merging successive interventions from same intervenant", i["intervenant"], last_i["source"], file=sys.stderr)
+        if i["intervenant_url"] and not last_i.get("intervenant_url"):
+            last_i["intervenant_url"] = i["intervenant_url"]
+        if i["fonction"] and (not last_i["fonction"] or i["fonction"].startswith(last_i["fonction"])):
+            last_i["fonction"] = i["fonction"]
+        last_i["intervention"] += i["intervention"]
+    else:
+        output.append(i)
 
 def printintervention(i):
     global timestamp
@@ -204,7 +220,7 @@ def printintervention(i):
             i['fonction'] = existingfonction
         if intervenant2url.get(i['intervenant']):
             i['intervenant_url'] = intervenant2url[i['intervenant']]
-        print(json.dumps(i, ensure_ascii=False))
+        record_line(i.copy())
         if i.get('fonction'):
             del i['fonction']
         if i.get('intervenant_url'):
