@@ -7,6 +7,7 @@ import re
 
 intervenant2fonction = {}
 intervenant2url = {}
+output = []
 
 def clean_all(text):
     text = text.replace("’", "'")
@@ -117,9 +118,9 @@ def xml2json(s):
                 if not existingfonction and intervention['fonction']:
                     intervenant2fonction[intervention["intervenant"]] = intervention['fonction']
                 elif existingfonction:
-                    if existingfonction.startswith(intervention['fonction']) and len(existingfonction) > len(intervention['fonction']):
+                    if existingfonction.startswith(intervention['fonction']):
                         intervention["fonction"] = existingfonction
-                    elif intervention['fonction'].startswith(existingfonction) and len(intervention['fonction']) > len(existingfonction):
+                    elif intervention['fonction'].startswith(existingfonction):
                         intervenant2fonction[intervention["intervenant"]] = intervention['fonction']
             elif intervention["intervenant"] == "la présidente":
                 intervention['fonction'] = "présidente"
@@ -178,6 +179,7 @@ def printintervention(i):
     global timestamp
     if re.match(r'(<p>\s*</p>\s*)+$', i['intervention']):
         return
+    # Split multiple intervenants
     intervenants = re.split(r"(?:\s+et|,)+\s+M(?:\.|mes?)\s+", i['intervenant'])
     timestamp += 10
     if len(intervenants) > 1:
@@ -191,14 +193,14 @@ def printintervention(i):
     for intervenant in intervenants:
         i['timestamp'] = str(curtimestamp)
         curtimestamp += 1
-        # extract function from split intervenants
+        # Extract function from split intervenants
         if ', ' in intervenant:
             intervenantfonction = intervenant.split(', ', 1)
             intervenant = intervenantfonction[0]
             i['fonction'] = clean_all(intervenantfonction[1])
         i['intervenant'] = clean_intervenant(intervenant)
         existingfonction = intervenant2fonction.get(i['intervenant'])
-        if existingfonction and (not i.get('fonction') or len(i['fonction']) < len(existingfonction)):
+        if existingfonction and (not i.get('fonction') or existingfonction.startswith(i['fonction'])):
             i['fonction'] = existingfonction
         if intervenant2url.get(i['intervenant']):
             i['intervenant_url'] = intervenant2url[i['intervenant']]
