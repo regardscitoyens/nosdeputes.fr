@@ -77,11 +77,14 @@ def xml2json(s):
                 if len(contextes) == 1:
                     for (orateur, fonction) in intervenant2fonction.copy().items():
                         if "rapporteur" in fonction or "commission" in fonction:
-                            print("-> CLEANING RAPPORTEURS!", orateur, fonction, contexte, file=sys.stderr)
                             del(intervenant2fonction[orateur])
 
         if p['valeur'] and p['valeur'][0:9] == ' (n[[o]] ':
             numeros_lois = p['valeur'][9:-1].replace(' ', '')
+        if numeros_loi and not re.search(r"questions?\sau|ordre\sdu\sjour|bienvenue|hommage|annulation|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement", intervention["contexte"], re.I):
+            intervention['numeros_loi'] = numeros_loi
+
+        intervention["source"] += "#"+p['id_syceron']
 
         if len(contextes) > 1:
             intervention["contexte"] = contextes[0] + " > " + contextes[-1]
@@ -95,11 +98,9 @@ def xml2json(s):
                     printintervention(intervention)
                 last_titre = contexte
             continue
+
         # Gestion des interventions
         # TODO rm numeros_lois from one texte to another without numeros
-        if numeros_lois and not re.search(r"questions?\sau|ordre\sdu\sjour|bienvenue|hommage|annulation|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement", intervention["contexte"], re.I):
-            intervention['numeros_loi'] = numeros_lois
-        intervention["source"] += "#"+p['id_syceron']
         if len(p.orateurs):
             # TODO handle cases with multiples orateurs (mostly to combine into one)
             # examples xml/compteRendu/CRSANR5L15S2021O1N068.xml
@@ -158,6 +159,9 @@ def xml2json(s):
                 i_str = re.sub(r"[\s)]*</i>", "", i_str)
                 didasc["intervention"] = i_str
                 didasc["contexte"] = intervention["contexte"]
+                didasc["source"] = intervention["source"]
+                if intervention.get("numeros_loi"):
+                    didasc["numeros_loi"] = intervention["numeros_loi"]
                 printintervention(didasc)
             else:
                 intervention = curinterv.copy()
