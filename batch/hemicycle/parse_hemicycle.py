@@ -40,13 +40,19 @@ def xml2json(s):
     intervention_vierge["session"] = session
     contextes = ['']
     numeros_lois = None
-    # TODO :
-    # - handle intervenant with different functions along a same CR
-    # - handle fonctions simplifiées type secrétaire d'état ou ministre shared between multiple intervenants
     last_titre = ''
-    # TODO Get detailed gouv fonctions from sommaire
-    for p in soup.find_all(['sommaire2 > para']):
-        pass
+
+    # Preload detailed gouv fonctions from sommaire
+    for p in soup.find_all(['para']):
+        section = p.parent.parent.titrestruct.intitule.get_text()
+        orateur = p.get_text()
+        if "," in orateur and "rapporteur" not in orateur and "commission" not in orateur:
+            orateur, fonction = orateur.split(', ', 1)
+            orateur = clean_intervenant(orateur)
+            fonction = clean_all(fonction)
+            existing = intervenant2fonction.get(orateur)
+            if not existing or fonction.startswith(existing):
+                intervenant2fonction[orateur] = fonction
 
     for p in soup.find_all(['paragraphe', 'point']):
         contexte = ""
@@ -60,12 +66,19 @@ def xml2json(s):
             contexte = clean_all(contexte)
 
             if contexte and int(p['nivpoint']) < 4:
-                contextes = contextes[:int(p['nivpoint']) -1]
+                contextes = contextes[:int(p['nivpoint'])-1]
                 if not contextes:
                     contextes = []
 
                 if not re.match(r"Suite\s*de\s*la\s*discussion|Rappels?\s*au\s*règlement|Suspension|Reprise\s*de\s*la\s*séance|Faits? personnel|Demandes? de vérification du quorum", contexte):
                     contextes.append(contexte)
+
+                # Clean rapporteurs when changing section
+                if len(contextes) == 1:
+                    for (orateur, fonction) in intervenant2fonction.copy().items():
+                        if "rapporteur" in fonction or "commission" in fonction:
+                            print("-> CLEANING RAPPORTEURS!", orateur, fonction, contexte, file=sys.stderr)
+                            del(intervenant2fonction[orateur])
 
         if p['valeur'] and p['valeur'][0:9] == ' (n[[o]] ':
             numeros_lois = p['valeur'][9:-1].replace(' ', '')
@@ -109,7 +122,6 @@ def xml2json(s):
                 intervention['fonction'] = "présidente"
             elif intervention["intervenant"] == "le président":
                 intervention['fonction'] = "président"
-            # TODO: reset these when changing contexte[0] at least for rapporteurs (but not for ministres & présidents at least)
             elif existingfonction:
                 intervention['fonction'] = intervenant2fonction[intervention["intervenant"]]
 
@@ -171,7 +183,7 @@ def printintervention(i):
         curtimestamp += 1
         # extract function from split intervenants
         if intervenant.find(','):
-            intervenantfonction = intervenant.split(', ')
+            intervenantfonction = intervenant.split(', ', 1)
             intervenant = intervenantfonction[0]
             if len(intervenantfonction) > 1:
                 i['fonction'] = clean_all(intervenantfonction[1])
