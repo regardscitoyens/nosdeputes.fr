@@ -128,16 +128,15 @@ def xml2json(s):
             elif existingfonction:
                 intervention['fonction'] = intervenant2fonction[intervention["intervenant"]]
 
-        isdidascalie = False
-        texte_didascalie = ""
-        t_string = clean_all(str(p.texte))
+        t_string = str(p.texte)
         t_string = re.sub(r' ?<\/?texte> ?', '', t_string)
         t_string = t_string.replace('<italique>', '<i>')
         t_string = t_string.replace('</italique>', '</i>')
-        t_string = t_string.replace('</i> <i>', '')
+        t_string = re.sub(r'\s*</i>([\s–]*)<i>\s*', r'\1', t_string)
+        t_string = re.sub(r'(<i>\([^>)]*\))(<br/>|\s)*(\([^>)]*\)\s*</i>)', r'\1</i> <i>\2', t_string)
         t_string = t_string.replace('<br/>', '</p><p>')
         t_string = t_string.replace('<p></p>', '')
-        t_string = re.sub(r'\s+', ' ', t_string)
+        t_string = clean_all(t_string)
         t_string = re.sub(r'n[° ]*(<exposant>[os]+</exposant>\s*)+', 'n° ', t_string)
         if not t_string:
             continue
@@ -146,14 +145,14 @@ def xml2json(s):
         i = 0
         # TODO: handle more missing inside didascalies
         curinterv = intervention.copy()
-        for i in re.split(' ?(<i>\([^<]*\)</i> ?)', texte):
+        for i in re.split('\s*(<i>\s*\([^<]*\)\s*</i>\s*)', texte):
             if i[0] == ' ':
                 i = i[1:]
             if i[-1] == ' ':
                 i = i[:-1]
-            if (i[0:3] !=  '<p>'):
+            if (i[0:3] != '<p>'):
                 i = '<p>' + i
-            if (i[-4:] !=  '</p>'):
+            if (i[-4:] != '</p>'):
                 i = i + '</p>'
             if i.find('<p><i>') == 0:
                 didasc = intervention_vierge.copy()
@@ -177,6 +176,7 @@ def printintervention(i):
     intervenants = i['intervenant'].split(' et ')
     timestamp += 10
     if len(intervenants) > 1:
+        # TODO Check border cases of multiple such as "A, B et C"
         print("WARNING, multiple interv: %s" % i, file=sys.stderr)
         if intervenants[0].startswith("Plusieurs députés"):
             intervenants[0] = intervenants[0].replace("des groupes", "du groupe")
