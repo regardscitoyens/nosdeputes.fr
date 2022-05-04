@@ -132,6 +132,7 @@ def xml2json(s):
         t_string = re.sub(r' ?<\/?texte> ?', '', t_string)
         t_string = t_string.replace('<italique>', '<i>')
         t_string = t_string.replace('</italique>', '</i>')
+        t_string = re.sub(r'\),\s*</i>\s*', ')</i>, ', t_string)
         t_string = re.sub(r'\s*</i>([\s–]*)<i>\s*', r'\1', t_string)
         t_string = re.sub(r'(<i>\([^>)]*\))(<br/>|\s)*(\([^>)]*\)\s*</i>)', r'\1</i> <i>\2', t_string)
         t_string = t_string.replace('<br/>', '</p><p>')
@@ -169,11 +170,15 @@ def xml2json(s):
                 intervention["intervention"] = i
                 printintervention(intervention)
 
+# TODO assemble divided intervs
+# example bash compute_one.sh http://www.assemblee-nationale.fr/15/cri/2020-2021-extra3/20213008.asp  1
+# needs to store all intervs to edit the last one when needed and only print everything at the end ?
+
 def printintervention(i):
     global timestamp
     if re.match(r'(<p>\s*</p>\s*)+$', i['intervention']):
         return
-    intervenants = i['intervenant'].split(' et ')
+    intervenants = re.split(r" et M[.me]+\s+", i['intervenant'])
     timestamp += 10
     if len(intervenants) > 1:
         # TODO Check border cases of multiple such as "A, B et C"
