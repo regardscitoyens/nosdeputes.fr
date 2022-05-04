@@ -17,7 +17,7 @@ def clean_all(text):
 
 def clean_intervenant(interv):
     interv = clean_all(interv)
-    interv = re.sub(r'^M(\.|me)\s+', '', interv)
+    interv = re.sub(r'^M(\.|mes?)\s+', '', interv)
     # cleanup parenthesis from intervenant (groupe)
     interv = re.sub(r'\s+\(\s*[A-Z][\w\s\-]+\)$', '', interv)
     return interv
@@ -61,8 +61,8 @@ def xml2json(s):
         if p.name == "point":
             contexte = clean_all(str(p.texte))
             contexte = re.sub(r'<\/?[a-z][^>]*>', '', contexte)
-            contexte = re.sub(r'\s*\(suite\)\.?$', '', contexte)
-            contexte = re.sub(r'\s*-\s*suite\)\.?$', ')', contexte)
+            contexte = re.sub(r'\s*\(suite\)[\s.]*$', '', contexte)
+            contexte = re.sub(r'\s*-\s*suite\)[\s.]*$', ')', contexte)
             contexte = clean_all(contexte)
 
             if contexte and int(p['nivpoint']) < 4:
@@ -77,7 +77,7 @@ def xml2json(s):
                 if len(contextes) == 1:
                     for (orateur, fonction) in intervenant2fonction.copy().items():
                         if "rapporteur" in fonction or "commission" in fonction:
-                            del(intervenant2fonction[orateur])
+                            del intervenant2fonction[orateur]
                     numeros_loi = None
 
         # Handle crazy variant formats of num_lois in OpenData AN...
@@ -126,7 +126,7 @@ def xml2json(s):
             elif intervention["intervenant"] == "le président":
                 intervention['fonction'] = "président"
             elif existingfonction:
-                intervention['fonction'] = intervenant2fonction[intervention["intervenant"]]
+                intervention['fonction'] = existingfonction
 
         t_string = str(p.texte)
         t_string = re.sub(r' ?<\/?texte> ?', '', t_string)
@@ -134,7 +134,7 @@ def xml2json(s):
         t_string = t_string.replace('</italique>', '</i>')
         t_string = re.sub(r'\),\s*</i>\s*', ')</i>, ', t_string)
         t_string = re.sub(r'\s*</i>([\s–]*)<i>\s*', r'\1', t_string)
-        t_string = re.sub(r'(<i>\([^>)]*\))(<br/>|\s)*(\([^>)]*\)\s*</i>)', r'\1</i> <i>\2', t_string)
+        t_string = re.sub(r'(<i>\([^>)]*\))(<br/>|\s)+(\([^>)]*\)\s*</i>)', r'\1</i> <i>\2', t_string)
         t_string = t_string.replace('<br/>', '</p><p>')
         t_string = t_string.replace('<p></p>', '')
         t_string = clean_all(t_string)
@@ -178,10 +178,9 @@ def printintervention(i):
     global timestamp
     if re.match(r'(<p>\s*</p>\s*)+$', i['intervention']):
         return
-    intervenants = re.split(r" et M[.me]+\s+", i['intervenant'])
+    intervenants = re.split(r"(?:\s+et|,)+\s+M(?:\.|mes?)\s+", i['intervenant'])
     timestamp += 10
     if len(intervenants) > 1:
-        # TODO Check border cases of multiple such as "A, B et C"
         print("WARNING, multiple interv: %s" % i, file=sys.stderr)
         if intervenants[0].startswith("Plusieurs députés"):
             intervenants[0] = intervenants[0].replace("des groupes", "du groupe")
@@ -193,20 +192,20 @@ def printintervention(i):
         i['timestamp'] = str(curtimestamp)
         curtimestamp += 1
         # extract function from split intervenants
-        if intervenant.find(','):
+        if ', ' in intervenant:
             intervenantfonction = intervenant.split(', ', 1)
             intervenant = intervenantfonction[0]
-            if len(intervenantfonction) > 1:
-                i['fonction'] = clean_all(intervenantfonction[1])
-        elif intervenant2fonction.get(i['intervenant']):
-            i['fonction'] = intervenant2fonction[i['intervenant']]
+            i['fonction'] = clean_all(intervenantfonction[1])
         i['intervenant'] = clean_intervenant(intervenant)
-        if (intervenant2url.get(i['intervenant'])):
+        existingfonction = intervenant2fonction.get(i['intervenant'])
+        if existingfonction and (not i.get('fonction') or len(i['fonction']) < len(existingfonction)):
+            i['fonction'] = existingfonction
+        if intervenant2url.get(i['intervenant']):
             i['intervenant_url'] = intervenant2url[i['intervenant']]
         print(json.dumps(i, ensure_ascii=False))
-        if (i.get('fonction')):
+        if i.get('fonction'):
             del i['fonction']
-        if (i.get('intervenant_url')):
+        if i.get('intervenant_url'):
             del i['intervenant_url']
 
 content_file = sys.argv[1]
