@@ -18,9 +18,10 @@ def clean_all(text):
 
 def clean_intervenant(interv):
     interv = clean_all(interv)
-    interv = re.sub(r'^M(\.|mes?)\s+', '', interv)
+    interv = re.sub(r'^MM?(\.|mes?)\s+', '', interv)
     # cleanup parenthesis from intervenant (groupe)
     interv = re.sub(r'\s+\(\s*[A-Z][\w\s\-]+\)$', '', interv)
+    interv = re.sub(r'([pP])lu[ise]{2,}urs', r'Plusieurs', interv)
     interv = interv.strip(",")
     return interv
 
@@ -213,7 +214,10 @@ def printintervention(i):
         return
 
     # Split multiple intervenants
-    intervenants = re.split(r"(?:\s+et|,)+\s+M(?:\.|mes?)\s+", i['intervenant'])
+    if "lusieurs députés" in i["intervenant"] or (len(i["intervenant"].split(" ")) <= 6 and "," not in i["intervenant"]):
+        intervenants = i["intervenant"].replace(", ", " et ").split(" et ")
+    else:
+        intervenants = re.split(r"(?:\s+et|,)+\s+MM?(?:\.|mes?)\s+", i['intervenant'])
     if len(intervenants) > 1:
         print("WARNING, multiple interv: %s" % i, file=sys.stderr)
         if intervenants[0].startswith("Plusieurs députés"):
