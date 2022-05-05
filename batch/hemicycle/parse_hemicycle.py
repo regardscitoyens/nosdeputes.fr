@@ -21,6 +21,7 @@ def clean_intervenant(interv):
     interv = re.sub(r'^M(\.|mes?)\s+', '', interv)
     # cleanup parenthesis from intervenant (groupe)
     interv = re.sub(r'\s+\(\s*[A-Z][\w\s\-]+\)$', '', interv)
+    interv = interv.strip(",")
     return interv
 
 def xml2json(s):
@@ -105,16 +106,29 @@ def xml2json(s):
 
         # Gestion des interventions
         if len(p.orateurs):
-            # TODO handle cases with multiples orateurs (mostly to combine into one)
-            # examples xml/compteRendu/CRSANR5L15S2021O1N068.xml
-            # grep '</orateur>' -A 1 xml/compteRendu/* | grep -v '</orateur>' | grep '<orateur>'
-            intervention["intervenant"] = clean_intervenant(p.orateurs.orateur.nom.get_text())
+            nom = ""
+            qualite = ""
+            orateurs = p.orateurs.find_all('orateur')
+            if len(orateurs) > 1:
+                for orateur in orateurs:
+                    nom += ", " + orateur.nom.get_text().strip(", ")
+                    if orateur.qualite and orateur.qualite.string:
+                        nom += ", " + orateur.qualite.get_text().strip(", ")
+                    nom = nom.strip(", ")
+                print("WARNING: merged multiple orateurs into one:", nom, file=sys.stderr)
+            else:
+                nom = p.orateurs.orateur.nom.get_text().strip()
+                if p.orateurs.orateur.qualite and p.orateurs.orateur.qualite.string:
+                    qualite = p.orateurs.orateur.qualite.get_text().strip()
+            intervention["intervenant"] = clean_intervenant(nom)
+
             if p['id_mandat'] and p['id_mandat'] != "-1":
                 intervention["intervenant_url"] = "http://www2.assemblee-nationale.fr/deputes/fiche/OMC_"+p['id_acteur']
                 intervenant2url[intervention["intervenant"]] = intervention['intervenant_url']
+
             existingfonction = intervenant2fonction.get(intervention["intervenant"])
-            if p.orateurs.orateur.qualite and p.orateurs.orateur.qualite.string:
-                intervention['fonction'] = clean_all(p.orateurs.orateur.qualite.get_text())
+            if qualite:
+                intervention['fonction'] = clean_all(qualite)
                 if not existingfonction and intervention['fonction']:
                     intervenant2fonction[intervention["intervenant"]] = intervention['fonction']
                 elif existingfonction:
@@ -183,9 +197,9 @@ def record_line(i):
         if i["intervention"] == last_i["intervention"]:
             return
         print("WARNING, merging successive interventions from same intervenant", i["intervenant"], last_i["source"], file=sys.stderr)
-        if i["intervenant_url"] and not last_i.get("intervenant_url"):
+        if i.get("intervenant_url") and not last_i.get("intervenant_url"):
             last_i["intervenant_url"] = i["intervenant_url"]
-        if i["fonction"] and (not last_i["fonction"] or i["fonction"].startswith(last_i["fonction"])):
+        if i.get("fonction") and (not last_i.get("fonction") or i["fonction"].startswith(last_i["fonction"])):
             last_i["fonction"] = i["fonction"]
         last_i["intervention"] += i["intervention"]
     else:
@@ -193,11 +207,13 @@ def record_line(i):
 
 def printintervention(i):
     global timestamp
+
+    # No empty interv
     if re.match(r'(<p>\s*</p>\s*)+$', i['intervention']):
         return
+
     # Split multiple intervenants
     intervenants = re.split(r"(?:\s+et|,)+\s+M(?:\.|mes?)\s+", i['intervenant'])
-    timestamp += 10
     if len(intervenants) > 1:
         print("WARNING, multiple interv: %s" % i, file=sys.stderr)
         if intervenants[0].startswith("Plusieurs députés"):
@@ -205,26 +221,38 @@ def printintervention(i):
             radical = re.sub(r"^(.*?\s)[A-Z].*$", r"\1", intervenants[0])
             for idx in range(1, len(intervenants)):
                 intervenants[idx] = radical + intervenants[idx]
+
+    timestamp += 10
     curtimestamp = timestamp
     for intervenant in intervenants:
         i['timestamp'] = str(curtimestamp)
         curtimestamp += 1
+
         # Extract function from split intervenants
         if ', ' in intervenant:
             intervenantfonction = intervenant.split(', ', 1)
             intervenant = intervenantfonction[0]
-            i['fonction'] = clean_all(intervenantfonction[1])
+            i['fonction'] = clean_all(intervenantfonction[1]).strip(", ")
         i['intervenant'] = clean_intervenant(intervenant)
         existingfonction = intervenant2fonction.get(i['intervenant'])
-        if existingfonction and (not i.get('fonction') or existingfonction.startswith(i['fonction'])):
-            i['fonction'] = existingfonction
+        if not existingfonction and i.get('fonction'):
+            intervenant2fonction[i["intervenant"]] = i['fonction']
+        elif existingfonction:
+            if not i.get('fonction') or existingfonction.startswith(i['fonction']):
+                i['fonction'] = existingfonction
+            elif i['fonction'].startswith(existingfonction):
+                intervenant2fonction[i["intervenant"]] = i['fonction']
+
         if intervenant2url.get(i['intervenant']):
             i['intervenant_url'] = intervenant2url[i['intervenant']]
+
         record_line(i.copy())
+
         if i.get('fonction'):
             del i['fonction']
         if i.get('intervenant_url'):
             del i['intervenant_url']
+
 
 content_file = sys.argv[1]
 source_url = ''
