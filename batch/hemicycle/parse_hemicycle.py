@@ -65,7 +65,10 @@ def xml2json(s):
         intervention = intervention_vierge.copy()
         # Gestion des titres/contextes et numéros de loi
         if p.name == "point":
-            contexte = clean_all(str(p.texte))
+            point_texte = p.texte
+            if point_texte.parent.name == "paragraphe":
+                continue
+            contexte = clean_all(str(point_texte))
             contexte = re.sub(r'<\/?[a-z][^>]*>', '', contexte)
             contexte = re.sub(r'\s*\(suite\)[\s.]*$', '', contexte)
             contexte = re.sub(r'\s*-\s*suite\)[\s.]*$', ')', contexte)
@@ -150,19 +153,20 @@ def xml2json(s):
 
         t_string = str(p.texte)
         t_string = re.sub(r' ?<\/?texte[^>]*> ?', '', t_string)
+        t_string = re.sub(r'n[° ]*(<exposant>[os]+</exposant>\s*)+', 'n° ', t_string)
         t_string = t_string.replace('<italique>', '<i>')
         t_string = t_string.replace('</italique>', '</i>')
         # Cleanup <i> markups when we can
         t_string = re.sub(r'\s*<i>\s*([,.])\s*\(\s*', r'\1 <i>(', t_string)
         t_string = re.sub(r'\s*\(\s*<i>\s*', ' <i>(', t_string)
+        t_string = re.sub(r'\s*</i>\s*\.\s*\)\s*', ')</i>. ', t_string)
         t_string = re.sub(r'\)([,.])\s*</i>\s*', r')</i>\1 ', t_string)
         t_string = re.sub(r'\s*</i>([a-z\s–]{0,5})<i>\s*', r'\1', t_string)
         t_string = re.sub(r'(<i>\([^>)]*\))(<br/>|\s)+(\([^>)]*\)\s*</i>)', r'\1</i> <i>\2', t_string)
-        t_string = t_string.replace('<br/>', '</p><p>')
+        t_string = re.sub(r'\s*<br/>\s*', '</p><p>', t_string)
         t_string = re.sub(r'\)\s*</p>\s*<p>\s*</i>\s*', ')</i></p><p>', t_string)
         t_string = t_string.replace('<p></p>', '')
         t_string = clean_all(t_string)
-        t_string = re.sub(r'n[° ]*(<exposant>[os]+</exposant>\s*)+', 'n° ', t_string)
         if not t_string:
             continue
         texte = "<p>%s</p>" % t_string
@@ -222,7 +226,9 @@ def printintervention(i):
         return
 
     # Split multiple intervenants
-    if "lusieurs députés" in i["intervenant"] or (len(i["intervenant"].split(" ")) <= 6 and "," not in i["intervenant"]):
+    if i["intervenant"].endswith(" et Plusieurs députés"):
+        intervenants = i["intervenant"].split(" et ")
+    elif "lusieurs députés" in i["intervenant"] or (len(i["intervenant"].split(" ")) <= 6 and " et " in i["intervenant"] and "," not in i["intervenant"]):
         intervenants = i["intervenant"].replace(", ", " et ").split(" et ")
     else:
         intervenants = re.split(r"(?:\s+et|,)+\s+MM?(?:\.|mes?)\s+", i['intervenant'])

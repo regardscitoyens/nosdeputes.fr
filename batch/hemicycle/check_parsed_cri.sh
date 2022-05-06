@@ -33,10 +33,10 @@ echo
 
 echo "Sommaire :"
 echo "-------------"
-cat $JSON                           |
-  sed 's/^.*"contexte": "//'        |
-  sed 's/",.*"numeros_loi": "/ | /' |
-  sed 's/".*$//'                    |
+cat $JSON                               |
+  sed 's/^.*"contexte": "//'            |
+  sed 's/",.*"numeros_loi": "/\t\t| /'  |
+  sed 's/".*$//'                        |
   grep . | uniq
 echo "-------------"
 echo
