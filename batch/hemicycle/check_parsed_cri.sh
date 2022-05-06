@@ -50,6 +50,7 @@ cat $JSON                                        |
   sed 's/^.*"contexte": "//'                     |
   sed 's/",.*"intervention": "/  |  /'           |
   sed 's/".*$//'                                 |
+  grep -v 'ordre du jour.*(n°'                   |
   grep -v '(.*  |  [^(]*$'
 echo "-------------"
 echo
