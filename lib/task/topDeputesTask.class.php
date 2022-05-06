@@ -193,7 +193,7 @@ class topDeputesTask extends sfBaseTask
       ->andWhere('i.parlementaire_id IS NOT NULL')
       ->andWhere('i.type = ?', 'question')
       ->andWhere('i.nb_mots > 40')
-      ->andWhere('i.fonction NOT LIKE ?', 'président%')
+      ->andWhere('(i.fonction IS NULL or i.fonction NOT LIKE ?)', 'président%')
       ->groupBy('p.id, i.parlementaire_groupe_acronyme, i.seance_id');
     $this->processResults($q, 'questions_orales');
   }

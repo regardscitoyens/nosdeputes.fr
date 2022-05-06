@@ -88,7 +88,7 @@ class Section extends BaseSection
       ->from('Intervention i')
       ->leftJoin('i.Section s')
       ->where('(i.section_id = ? OR s.section_id = ?)', array($this->id, $this->id))
-      ->andWhere('(i.fonction NOT LIKE ? AND i.fonction NOT LIKE ?)', array('président', 'présidente'))
+      ->andWhere('(i.fonction IS NULL or (i.fonction NOT LIKE ? AND i.fonction NOT LIKE ?))', array('président', 'présidente'))
       ->andWhere('i.nb_mots > 20')
       ->fetchArray();
     $this->_set('nb_interventions', $a[0]['nb']);

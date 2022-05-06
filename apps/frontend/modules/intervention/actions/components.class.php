@@ -9,7 +9,7 @@ class InterventionComponents extends sfComponents
     $query = Doctrine::getTable('Intervention')->createQuery('i')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
       ->andWhere('i.type = ?', 'question')
-      ->andWhere('i.fonction NOT LIKE ?', 'président%')
+      ->andWhere('(i.fonction IS NULL OR i.fonction NOT LIKE ?)', 'président%')
       ->andWhere('i.nb_mots > ?', 40)
       ->groupBy('i.seance_id, i.section_id')
       ->orderBy('i.date DESC, i.timestamp ASC');

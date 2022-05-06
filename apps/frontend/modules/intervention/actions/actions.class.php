@@ -22,7 +22,7 @@ class interventionActions extends sfActions
     if (preg_match('/(commission|question|loi)$/', $this->type)) {
       $this->interventions->andWhere('i.type = ?', $this->type);
       if ($this->type == 'question')
-        $this->interventions->andWhere('i.fonction NOT LIKE ?', 'président%')
+        $this->interventions->andWhere('(i.fonction IS NULL OR i.fonction NOT LIKE ?)', 'président%')
           ->andWhere('i.nb_mots > ?', 40)
           ->groupBy('i.seance_id, i.section_id');
     } else if ($this->type != 'all')
