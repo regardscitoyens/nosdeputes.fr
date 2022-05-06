@@ -18,11 +18,13 @@ def clean_all(text):
 
 def clean_intervenant(interv):
     interv = clean_all(interv)
+    interv = re.sub(r'^(Mmes|MM\.) (.*? et )([A-LN-Z])', r'\1 \2\1 \3', interv)
     interv = re.sub(r'^MM?(\.|mes?)\s+', '', interv)
     # cleanup parenthesis from intervenant (groupe)
     interv = re.sub(r'\s+\(\s*[A-Z][\w\s\-]+\)$', '', interv)
     interv = re.sub(r'([pP])lu[ise]{2,}urs', r'Plusieurs', interv)
-    interv = interv.strip(",")
+    interv = interv.strip(", ")
+    interv = re.sub(r"^et | et$", "", interv)
     return interv
 
 def xml2json(s):
@@ -219,7 +221,7 @@ def printintervention(i):
     else:
         intervenants = re.split(r"(?:\s+et|,)+\s+MM?(?:\.|mes?)\s+", i['intervenant'])
     if len(intervenants) > 1:
-        print("WARNING, multiple interv: %s" % i, file=sys.stderr)
+        #print("WARNING, multiple interv: %s" % i, file=sys.stderr)
         if intervenants[0].startswith("Plusieurs députés"):
             intervenants[0] = intervenants[0].replace("des groupes", "du groupe")
             radical = re.sub(r"^(.*?\s)[A-Z].*$", r"\1", intervenants[0])
