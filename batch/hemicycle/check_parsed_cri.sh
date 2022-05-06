@@ -46,12 +46,12 @@ echo "Parenthèses :"
 echo "-------------"
 cat $JSON                                        |
   sed 's/(\(…\|MoDem\|suite\|état [A-D]\))/ /ig' |
-  sed 's/([A-Z0-9]\+)/ /g'                       |
+  sed 's/([A-Z0-9\s\-\&]\+)/ /g'                 |
+  sed -r 's/\(n[os\s°]+\s*[0-9]+[^)]*\)/ /g'     |
   grep '('                                       |
   sed 's/^.*"contexte": "//'                     |
   sed 's/",.*"intervention": "/  |  /'           |
   sed 's/".*$//'                                 |
-  grep -v 'ordre du jour.*(n°'                   |
   grep -v '(.*  |  [^(]*$'
 echo "-------------"
 echo

@@ -11,6 +11,7 @@ output = []
 
 def clean_all(text):
     text = text.replace("’", "'")
+    text = text.replace("&amp;", "&")
     text = text.replace("<br/>", " ")
     text = text.replace('\n', ' ')
     text = re.sub(r'\s+', ' ', text)
@@ -89,6 +90,7 @@ def xml2json(s):
         if p['valeur'] and re.match(r'\s*(\(?T\.?A\.?\s*|\(?n\[?\[?[o°]s?\]?\]?\s*)+(0,\s*)?(T\.?A\.?\s*)?\d+', p['valeur']):
             numeros_loi = re.sub(r'[^TA\d]+', ',', p['valeur']).strip(",")
             numeros_loi = re.sub(r'TA0+', 'TA', numeros_loi)
+            numeros_loi = re.sub(r'(^|,)0,', r'\1', numeros_loi)
         if numeros_loi and not re.search(r"questions?\sau|ordre\sdu\sjour|bienvenue|hommage|annulation|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement", intervention["contexte"], re.I):
             intervention['numeros_loi'] = numeros_loi
 
@@ -147,14 +149,14 @@ def xml2json(s):
                 intervention['fonction'] = existingfonction
 
         t_string = str(p.texte)
-        t_string = re.sub(r' ?<\/?texte> ?', '', t_string)
+        t_string = re.sub(r' ?<\/?texte[^>]*> ?', '', t_string)
         t_string = t_string.replace('<italique>', '<i>')
         t_string = t_string.replace('</italique>', '</i>')
         # Cleanup <i> markups when we can
         t_string = re.sub(r'\s*<i>\s*([,.])\s*\(\s*', r'\1 <i>(', t_string)
         t_string = re.sub(r'\s*\(\s*<i>\s*', ' <i>(', t_string)
         t_string = re.sub(r'\)([,.])\s*</i>\s*', r')</i>\1 ', t_string)
-        t_string = re.sub(r'\s*</i>([\s–]*| et )<i>\s*', r'\1', t_string)
+        t_string = re.sub(r'\s*</i>([a-z\s–]{0,5})<i>\s*', r'\1', t_string)
         t_string = re.sub(r'(<i>\([^>)]*\))(<br/>|\s)+(\([^>)]*\)\s*</i>)', r'\1</i> <i>\2', t_string)
         t_string = t_string.replace('<br/>', '</p><p>')
         t_string = re.sub(r'\)\s*</p>\s*<p>\s*</i>\s*', ')</i></p><p>', t_string)
