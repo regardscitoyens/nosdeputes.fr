@@ -52,7 +52,6 @@ def xml2json(s):
     intervention_vierge["session"] = session
     contextes = ['']
     numeros_loi = None
-    last_titre = ''
 
     # Preload detailed gouv fonctions from sommaire
     for p in soup.find_all(['para']):
@@ -113,9 +112,7 @@ def xml2json(s):
         if p.name == "point":
             if contexte:
                 intervention['intervention'] = "<p>"+contexte+"</p>"
-                if (last_titre != contexte):
-                    printintervention(intervention)
-                last_titre = contexte
+                printintervention(intervention)
             continue
 
         # Gestion des interventions
