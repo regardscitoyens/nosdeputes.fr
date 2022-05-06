@@ -116,7 +116,7 @@ class plotComponents extends sfComponents
         ->from('Intervention i')
         ->where('i.parlementaire_id = ?', $this->parlementaire->id)
         ->andWhere('i.type = ?', 'question')
-        ->andWhere('i.fonction NOT LIKE ?', 'président%')
+        ->andWhere('(i.fonction IS NULL OR i.fonction NOT LIKE ?)', 'président%')
         ->andWhere('i.nb_mots > ?', 2*$seuil_invective)
         ->leftJoin('i.Seance s');
       if ($this->session === 'lastyear')
@@ -466,7 +466,7 @@ class plotComponents extends sfComponents
       // Préparation des requêtes et attributs suivant le type de graphe
       $qmots = Doctrine_Query::create()
         ->from('Intervention i')
-        ->where('i.fonction NOT LIKE ?', 'président%')
+        ->where('(i.fonction IS NULL OR i.fonction NOT LIKE ?)', 'président%')
         ->andWhere('i.parlementaire_id IS NOT NULL')
         ->groupBy('i.parlementaire_id');
       if (preg_match('/section_(\d+)$/', $this->plot, $match))
