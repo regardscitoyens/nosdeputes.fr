@@ -30,7 +30,7 @@ def clean_intervenant(interv):
 
 def clean_num_lois(s):
     res = re.sub(r'[^TA\d]+', ',', s).strip(",")
-    res = re.sub(r'TA0+', 'TA', res)
+    res = re.sub(r'TA[,0]+', 'TA', res)
     res = re.sub(r'(^|,)0,', r'\1', res)
     return res
 
@@ -96,7 +96,7 @@ def xml2json(s):
                     numeros_loi = None
 
         # Handle crazy variant formats of num_lois in OpenData AN...
-        if p.get('bibard', '').strip():
+        if p.get('bibard', '').strip() and not p.get("code_grammaire", "").startswith("DISC_GENERALE_"):
             numeros_loi = clean_num_lois(p['bibard'])
         elif p['valeur'] and re.match(r'\s*(\(?T\.?A\.?\s*|\(?n\[\[[o°]s?\]\]?\s*)+(0,\s*)?(T\.?A\.?\s*)?\d+', p['valeur']):
             numeros_loi = clean_num_lois(p['valeur'])
@@ -166,10 +166,11 @@ def xml2json(s):
         t_string = re.sub(r'\s*<i>\s*([,.])\s*\(\s*', r'\1 <i>(', t_string)
         t_string = re.sub(r'\s*\(\s*<i>\s*', ' <i>(', t_string)
         t_string = re.sub(r'\s*(</i>\s*\.|\.\s*</i>)\s*\)\s*', ')</i>. ', t_string)
-        t_string = re.sub(r'\)([,.])\s*</i>\s*', r')</i>\1 ', t_string)
+        t_string = re.sub(r'\)([,.…])\s*</i>\s*', r')</i>\1 ', t_string)
         t_string = re.sub(r'\s*</i>([a-z\s–]{0,5})<i>\s*', r'\1', t_string)
         t_string = re.sub(r'(<i>\([^>)]*\))(<br/>|\s)+(\([^>)]*\)\s*</i>)', r'\1</i> <i>\2', t_string)
         t_string = re.sub(r'(<i>\([^<)]*)</i>$', r'\1)</i>', t_string)
+        t_string = re.sub(r'(<i>\w+\W*)(\([^)<]*\)</i>)', r'\1</i> <i>\2', t_string)
         t_string = re.sub(r'\s*<br/>\s*', '</p><p>', t_string)
         t_string = re.sub(r'\)\s*</p>\s*<p>\s*</i>\s*', ')</i></p><p>', t_string)
         t_string = t_string.replace('<p></p>', '')
