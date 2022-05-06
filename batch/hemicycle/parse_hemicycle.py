@@ -165,10 +165,11 @@ def xml2json(s):
         # Cleanup <i> markups when we can
         t_string = re.sub(r'\s*<i>\s*([,.])\s*\(\s*', r'\1 <i>(', t_string)
         t_string = re.sub(r'\s*\(\s*<i>\s*', ' <i>(', t_string)
-        t_string = re.sub(r'\s*</i>\s*\.\s*\)\s*', ')</i>. ', t_string)
+        t_string = re.sub(r'\s*(</i>\s*\.|\.\s*</i>)\s*\)\s*', ')</i>. ', t_string)
         t_string = re.sub(r'\)([,.])\s*</i>\s*', r')</i>\1 ', t_string)
         t_string = re.sub(r'\s*</i>([a-z\s–]{0,5})<i>\s*', r'\1', t_string)
         t_string = re.sub(r'(<i>\([^>)]*\))(<br/>|\s)+(\([^>)]*\)\s*</i>)', r'\1</i> <i>\2', t_string)
+        t_string = re.sub(r'(<i>\([^<)]*)</i>$', r'\1)</i>', t_string)
         t_string = re.sub(r'\s*<br/>\s*', '</p><p>', t_string)
         t_string = re.sub(r'\)\s*</p>\s*<p>\s*</i>\s*', ')</i></p><p>', t_string)
         t_string = t_string.replace('<p></p>', '')
