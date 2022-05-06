@@ -33,9 +33,10 @@ echo
 
 echo "Sommaire :"
 echo "-------------"
-cat $JSON                   |
-  sed 's/^.*"contexte": "//'|
-  sed 's/".*$//'            |
+cat $JSON                           |
+  sed 's/^.*"contexte": "//'        |
+  sed 's/",.*"numeros_loi": "/ | /' |
+  sed 's/".*$//'                    |
   grep . | uniq
 echo "-------------"
 echo
@@ -52,30 +53,6 @@ cat $JSON                                        |
   sed 's/".*$//'                                 |
   grep -v 'ordre du jour.*(n°'                   |
   grep -v '(.*  |  [^(]*$'
-echo "-------------"
-echo
-echo
-
-echo "Meme interv :"
-interv="START"
-cat $JSON | while read line; do
-  newinterv=$(echo $line            |
-    sed 's/^.*"intervenant": "//'   |
-    sed 's/",.*"fonction": "/, /'   |
-    sed 's/".*$//'
-  )
-  newtext=$(echo $line              |
-    sed 's/^.*"intervention": "//'  |
-    sed 's/".*$//'
-  )
-  if [ "$interv" = "$newinterv" ] && [ ! -z "$interv" ]; then
-    echo "-------------"
-    echo "$interv: $text"
-    echo "$newinterv: $newtext"
-  fi
-  interv=$newinterv
-  text=$newtext
-done
 echo "-------------"
 echo
 echo

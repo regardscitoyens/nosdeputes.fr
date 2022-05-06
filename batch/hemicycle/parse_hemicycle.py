@@ -150,6 +150,7 @@ def xml2json(s):
         t_string = re.sub(r' ?<\/?texte> ?', '', t_string)
         t_string = t_string.replace('<italique>', '<i>')
         t_string = t_string.replace('</italique>', '</i>')
+        # Cleanup <i> markups when we can
         t_string = re.sub(r'\s*<i>\s*([,.])\s*\(\s*', r'\1 <i>(', t_string)
         t_string = re.sub(r'\s*\(\s*<i>\s*', ' <i>(', t_string)
         t_string = re.sub(r'\)([,.])\s*</i>\s*', r')</i>\1 ', t_string)
@@ -165,7 +166,7 @@ def xml2json(s):
         texte = "<p>%s</p>" % t_string
 
         i = 0
-        # TODO: handle more missing inside didascalies
+        # Extract didascalies from within discussions
         curinterv = intervention.copy()
         for i in re.split('\s*(<i>\s*\([^<]*\)\s*</i>\s*)', texte):
             if i[0] == ' ':
