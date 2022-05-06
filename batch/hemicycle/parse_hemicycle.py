@@ -28,6 +28,12 @@ def clean_intervenant(interv):
     interv = re.sub(r"^et | et$", "", interv)
     return interv
 
+def clean_num_lois(s):
+    res = re.sub(r'[^TA\d]+', ',', s).strip(",")
+    res = re.sub(r'TA0+', 'TA', res)
+    res = re.sub(r'(^|,)0,', r'\1', res)
+    return res
+
 def xml2json(s):
     global timestamp
     timestamp = 0
@@ -90,10 +96,10 @@ def xml2json(s):
                     numeros_loi = None
 
         # Handle crazy variant formats of num_lois in OpenData AN...
-        if p['valeur'] and re.match(r'\s*(\(?T\.?A\.?\s*|\(?n\[?\[?[o°]s?\]?\]?\s*)+(0,\s*)?(T\.?A\.?\s*)?\d+', p['valeur']):
-            numeros_loi = re.sub(r'[^TA\d]+', ',', p['valeur']).strip(",")
-            numeros_loi = re.sub(r'TA0+', 'TA', numeros_loi)
-            numeros_loi = re.sub(r'(^|,)0,', r'\1', numeros_loi)
+        if p.get('bibard', '').strip():
+            numeros_loi = clean_num_lois(p['bibard'])
+        elif p['valeur'] and re.match(r'\s*(\(?T\.?A\.?\s*|\(?n\[\[[o°]s?\]\]?\s*)+(0,\s*)?(T\.?A\.?\s*)?\d+', p['valeur']):
+            numeros_loi = clean_num_lois(p['valeur'])
         if numeros_loi and not re.search(r"questions?\sau|ordre\sdu\sjour|bienvenue|hommage|annulation|(proclam|nomin)ation|suspension\sde\séance|rappels?\sau\srèglement", intervention["contexte"], re.I):
             intervention['numeros_loi'] = numeros_loi
 
