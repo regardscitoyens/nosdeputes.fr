@@ -233,7 +233,7 @@ def printintervention(i):
     else:
         intervenants = re.split(r"(?:\s+et|,)+\s+MM?(?:\.|mes?)\s+", i['intervenant'])
     if len(intervenants) > 1:
-        #print("WARNING, multiple interv: %s" % i, file=sys.stderr)
+        #print("WARNING, multiple interv: %s" % i, intervenants, file=sys.stderr)
         if intervenants[0].startswith("Plusieurs députés"):
             intervenants[0] = intervenants[0].replace("des groupes", "du groupe")
             radical = re.sub(r"^(.*?\s)[A-Z].*$", r"\1", intervenants[0])

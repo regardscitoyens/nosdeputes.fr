@@ -44,14 +44,15 @@ echo
 
 echo "Parenthèses :"
 echo "-------------"
-cat $JSON                                        |
-  sed 's/(\(…\|MoDem\|suite\|état [A-D]\))/ /ig' |
-  sed 's/([A-Z0-9\s\-\&]\+)/ /g'                 |
-  sed -r 's/\(n[os\s°]+\s*[0-9]+[^)]*\)/ /g'     |
-  grep '('                                       |
-  sed 's/^.*"contexte": "//'                     |
-  sed 's/",.*"intervention": "/  |  /'           |
-  sed 's/".*$//'                                 |
+cat $JSON                                           |
+  sed 's/(\(…\|MoDem\|suite\|état [A-D]\))/ /ig'    |
+  sed 's/([A-Z0-9\s\-\&]\+)/ /g'                    |
+  sed -r 's/\(n[os\s°]+\s*[0-9]+[^)]*\)/ /g'        |
+  sed -r 's/\(pro[^)]* de loi[^)]*\)/ /g'           |
+  grep '('                                          |
+  sed 's/^.*"contexte": "//'                        |
+  sed 's/",.*"intervention": "[^"(]*(/  |  ...(/'   |
+  sed 's/)[^")]*".*$/).../'                         |
   grep -v '(.*  |  [^(]*$'
 echo "-------------"
 echo
