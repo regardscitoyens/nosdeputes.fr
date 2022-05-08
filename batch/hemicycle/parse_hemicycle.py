@@ -160,6 +160,7 @@ def xml2json(s):
         t_string = t_string.replace('<italique> </italique>', ' ')
         t_string = t_string.replace('</italique> <italique>', ' ')
         t_string = re.sub(r'n[° ]*(<exposant>[os]+</exposant>\s*)+', 'n° ', t_string)
+        t_string = re.sub(r'\s*<exposant>e</exposant>\s*<exposant>r</exposant>\s*', r'er ', t_string)
         t_string = re.sub(r'\s*<exposant>([eè][rme]+)</exposant>\s*', r'\1 ', t_string)
         t_string = re.sub(r"(la mission|compte d(’affectation spéciale|e concours financier)s?)\s*</?italique>\s*([^<()]*)\s*</?italique>\s*", r'\1 "\3" ', t_string)
         t_string = re.sub(r'\s*</?italique>\s*((bis|ter|qua|quinqu|sex|sept|oct|non|ies)+)\s*</?italique>\s*', r' \1 ', t_string)
