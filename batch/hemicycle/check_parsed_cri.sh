@@ -44,16 +44,17 @@ echo
 
 echo "Parenthèses :"
 echo "-------------"
-cat $JSON                                         |
-  sed 's/(\(…\|MoDem\|suite\|état [A-D]\))/ /ig'  |
-  sed 's/([A-Z0-9\s\-\&]\+)/ /g'                  |
-  sed -r 's/\(n[os\s°]+\s*[0-9]+[^)]*\)/ /g'      |
-  sed -r 's/\(pro[^)]* de loi[^)]*\)/ /g'         |
-  grep '('                                        |
-  sed 's/^.*"contexte": "//'                      |
-  sed 's/",.*"intervention": "/  |   .../'        |
-  sed -r 's/   \.\.\..*?([^")]{5,8}\()/   ...\1/' |
-  sed -r 's/(\)[^"(]{0,8})[^")]*".*$/\1.../'      |
+cat $JSON                                          |
+  sed -r 's/\([^)]*(précédemment réservés?|par priorité|seconde délibération|coordination|examen simplifiée|mixte paritaire)\)/ /g'                 |
+  sed 's/(\(…\|MoDem\|suite\|état [A-D]\))/ /ig'   |
+  sed -r 's/\((loi )?[A-Z0-9 -\&]+(\-m)?\)/ /g'    |
+  sed -r 's/\(n[os\s°]+\s*[0-9]+[^)]*\)/ /g'       |
+  sed -r 's/\(pro[^)]* de loi[^)]*\)/ /g'          |
+  grep '('                                         |
+  sed 's/^.*"contexte": "//'                       |
+  sed 's/",.*"intervention": "/  |   .../'         |
+  sed -r 's/   \.\.\..*?([^")]{5,8}\()/   ...\1/'  |
+  sed -r 's/(\)[^"(]{0,8})[^")]*".*$/\1.../'       |
   grep -v '(.*  |  [^(]*$'
 echo "-------------"
 echo
