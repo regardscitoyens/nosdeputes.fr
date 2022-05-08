@@ -13,9 +13,15 @@ class scrutinActions extends sfActions
     myTools::setPageTitle("Votes de ".$this->parlementaire->nom, $this->response);
 
     $query = Doctrine::getTable('Scrutin')->createQuery('s')
-      ->orderBy('s.numero DESC');
-
-    $scrutins = $query->execute();
+      ->where('s.date >= ?', $this->parlementaire->debut_mandat);
+    if ($this->parlementaire->fin_mandat)
+      $query->andWhere('s.date <= ?', $this->parlementaire->fin_mandat);
+    foreach ($this->parlementaire->getMandatsLegislature() as $mandat) {
+      if (!preg_match("/;$/", $mandat)) {
+         $query->orWhere('(s.date >= ? AND s.date <= ?)', preg_split("/;/", $mandat));
+      }
+    }
+    $scrutins = $query->orderBy('s.numero DESC')->execute();
 
     // log parsing errors
     foreach ($scrutins as $s) {
