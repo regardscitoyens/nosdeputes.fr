@@ -170,6 +170,7 @@ def xml2json(s):
         t_string = re.sub(r'(<i>\w+\W*)(\([^)<]*\)</i>)', r'\1</i> <i>\2', t_string)
         t_string = re.sub(r'\s*<br/>\s*', '</p><p>', t_string)
         t_string = re.sub(r'\)\s*</p>\s*<p>\s*</i>\s*', ')</i></p><p>', t_string)
+        t_string = re.sub(r'<i>\s*(\([^)<]*\))\s*</i>(\s*[.,:;?!…]+)\s*', r'\2 <i>(\1)</i> ', t_string)
         t_string = t_string.replace('<p></p>', '')
         t_string = clean_all(t_string)
         if not t_string:
@@ -227,7 +228,8 @@ def printintervention(i):
     global timestamp
 
     # No empty interv
-    if re.match(r'(<p>\s*</p>\s*)+$', i['intervention']):
+    i["intervention"] = re.sub(r'(<p>\s*</p>\s*)+', '', i["intervention"])
+    if not i["intervention"]:
         return
 
     # Split multiple intervenants
