@@ -1,6 +1,7 @@
 #!/bin/bash
 
 cd $(dirname $0)
+source ../../bin/init_pyenv38.sh
 source ../../bin/db.inc
 ANroot="http://www.assemblee-nationale.fr"
 
