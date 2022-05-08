@@ -157,20 +157,26 @@ def xml2json(s):
         t_string = str(p.texte)
         t_string = re.sub(r' ?<\/?texte[^>]*> ?', '', t_string)
         t_string = re.sub(r'n[° ]*(<exposant>[os]+</exposant>\s*)+', 'n° ', t_string)
+        t_string = re.sub(r'\s*<exposant>([eè][rme]+)</exposant>\s*', r'\1 ', t_string)
+        t_string = re.sub(r'<italique>((bis|ter|qua|quin)+)</italique', r'\1', t_string)
         t_string = t_string.replace('<italique>', '<i>')
         t_string = t_string.replace('</italique>', '</i>')
         # Cleanup <i> markups when we can
         t_string = re.sub(r'\s*<i>\s*([,.])\s*\(\s*', r'\1 <i>(', t_string)
         t_string = re.sub(r'\s*\(\s*<i>\s*', ' <i>(', t_string)
         t_string = re.sub(r'\s*(</i>\s*\.|\.\s*</i>)\s*\)\s*', ')</i>. ', t_string)
-        t_string = re.sub(r'\)([,.…])\s*</i>\s*', r')</i>\1 ', t_string)
-        t_string = re.sub(r'\s*</i>([a-z\s–]{0,5})<i>\s*', r'\1', t_string)
+        t_string = re.sub(r'\s*</i>\)\s*', ')</i> ', t_string)
+        t_string = re.sub(r'</i>([A-Za-z\s–.»]{0,7})<i>\s*', r'\1', t_string)
+        t_string = re.sub(r'\)(\s*[.,:;?!…–]+)\s*</i>', r')</i>\1 ', t_string)
         t_string = re.sub(r'(<i>\([^>)]*\))(<br/>|\s)+(\([^>)]*\)\s*</i>)', r'\1</i> <i>\2', t_string)
         t_string = re.sub(r'(<i>\([^<)]*)</i>$', r'\1)</i>', t_string)
         t_string = re.sub(r'(<i>\w+\W*)(\([^)<]*\)</i>)', r'\1</i> <i>\2', t_string)
+        t_string = re.sub(r'(<i>\([^)<]*)\)([\s.]*)<br/>\s*(\([^)<]*\).?</i>)', r'\1\2)</i> <i>\3', t_string)
         t_string = re.sub(r'\s*<br/>\s*', '</p><p>', t_string)
         t_string = re.sub(r'\)\s*</p>\s*<p>\s*</i>\s*', ')</i></p><p>', t_string)
-        t_string = re.sub(r'<i>\s*(\([^)<]*\))\s*</i>(\s*[.,:;?!…]+)\s*', r'\2 <i>(\1)</i> ', t_string)
+        t_string = re.sub(r'<i>\s*(\([^)<]*\))\s*</i>(\s*[.,:;?!…–]+)\s*', r'\2 <i>(\1)</i> ', t_string)
+        t_string = re.sub(r'(<i>[^(<]*)\.\s*(\([^)<]*\)</i>)', r'\1</i>. <i>\2', t_string)
+        t_string = re.sub(r'(\([^)<]{0,13}\s*)<i>([^()<]*\)</i>)', r'<i>\1\2', t_string)
         t_string = t_string.replace('<p></p>', '')
         t_string = clean_all(t_string)
         if not t_string:
@@ -181,6 +187,8 @@ def xml2json(s):
         # Extract didascalies from within discussions
         curinterv = intervention.copy()
         for i in re.split('\s*(<i>\s*\([^<]*\)\s*</i>\s*)', texte):
+            if not i:
+                continue
             if i[0] == ' ':
                 i = i[1:]
             if i[-1] == ' ':
