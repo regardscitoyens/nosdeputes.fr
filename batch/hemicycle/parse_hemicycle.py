@@ -224,7 +224,7 @@ def record_line(i):
     global timestamp
     # Assemble divided successive interventions from same intervenant within same contexte
     last_i = output[-1] if output else {"intervenant": "", "contexte": ""}
-    if i["intervenant"] and i["intervenant"] == last_i["intervenant"] and i["contexte"] == last_i["contexte"]:
+    if i["intervenant"] and i["intervenant"] == last_i["intervenant"] and i["contexte"] == last_i["contexte"] and not re.match(r'(Un|Plusieurs) député', i["intervenant"]):
         timestamp = int(last_i["timestamp"])
         if i["intervention"] == last_i["intervention"]:
             return
