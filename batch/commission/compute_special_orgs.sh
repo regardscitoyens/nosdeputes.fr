@@ -10,7 +10,7 @@ function compute_org {
   HORAIRE=$3
   curl -sL "$ROOTURL/layout/set/ajax/content/view/embed/$ORGID" |
     tr "\n" " "                  |
-    sed -r 's/<h3>(Décisions de (Questure de )?la )?Réunion d/\n/gi' |
+    sed -r 's/<h3>(Décisions de (Questure de )?la )?R[ée]union d/\n/gi' |
     grep 'href="/'               |
     grep -v '/convocation/'      |
     grep -v '/(offset)/'         |
@@ -27,5 +27,15 @@ function compute_org {
   
 compute_org 42864 "Bureau de l'Assemblée nationale" "10:00"
 compute_org 47173 "Conférence des présidents" "10:00"
+compute_org "47173/(offset)/6" "Conférence des présidents" "10:00"
+compute_org "47173/(offset)/12" "Conférence des présidents" "10:00"
+compute_org "47173/(offset)/18" "Conférence des présidents" "10:00"
+compute_org "47173/(offset)/24" "Conférence des présidents" "10:00"
+compute_org "47173/(offset)/30" "Conférence des présidents" "10:00"
+compute_org "47173/(offset)/36" "Conférence des présidents" "10:00"
+compute_org "47173/(offset)/42" "Conférence des présidents" "10:00"
+compute_org "47173/(offset)/48" "Conférence des présidents" "10:00"
+compute_org "47173/(offset)/54" "Conférence des présidents" "10:00"
+compute_org "47173/(offset)/60" "Conférence des présidents" "10:00"
 compute_org 48302 "Questure" "08:30"
 
