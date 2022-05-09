@@ -23,6 +23,7 @@ while ($page < 20) {
     $file = $source_url;
     if ($txt =~ /compte rendu|e nationale \~/i && $source_url !~ /(nale\.fr\/dyn\/c\d+\.asp|\/cri\/(2|congres)|\(typeDoc\))/ && $source_url =~ /nationale\.fr\/$legislature\//) {
 
+      $file =~ s/https:/http:/;
       $file =~ s/\//_/gi;
       $file =~ s/\#.*//;
       next if -e "html/$file";
