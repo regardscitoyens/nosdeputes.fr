@@ -230,6 +230,7 @@ class topDeputesTask extends sfBaseTask
   protected function executeDeputesInfo($start, $end) {
     foreach (array_keys($this->deputes) as $id) {
       $dep = Doctrine::getTable('Parlementaire')->find($id);
+      if (!$dep) continue;
       //Bidouille pour avoir les paramètres dans le bon ordre
       $this->deputes[$id]['01_nom']['value'] = $dep->nom;
       $this->deputes[$id]['02_groupe']['value'] = $dep->getGroupeWhen($start, $end);
