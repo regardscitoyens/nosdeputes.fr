@@ -3,7 +3,8 @@
 use WWW::Mechanize;
 
 $url = shift;
-$url =~ s/^\s+//gi;
+$url =~ s/^https:/http:/i;
+$url =~ s/^\s+//i;
 $cache = shift;
 
 $oldstyle = 0;
@@ -15,10 +16,19 @@ $a = WWW::Mechanize->new();
 $a->get($url);
 $content = $a->content;
 
-if (!$oldstyle && $content !~ /href="(\/dyn\/opendata\/[^"]+\.html)"/) {
-  print STDERR "WARNING: opendata raw html url not found for $url\n";
-  exit();
+if (!$oldstyle) {
+  $retry = 10;
+  while ($retry > 0 && $content !~ /href="(\/dyn\/opendata\/[^"]+\.html)"/) {
+    sleep 5;
+    $a->get($url);
+    $content = $a->content;
+  }
+  if ($content !~ /href="(\/dyn\/opendata\/[^"]+\.html)"/) {
+    print STDERR "WARNING: opendata raw html url not found for $url\n";
+    exit();
+  }
 }
+
 $raw_url = "http://www.assemblee-nationale.fr$1";
 $opendata_id = $raw_url;
 $opendata_id =~ s/^.*opendata\///;
