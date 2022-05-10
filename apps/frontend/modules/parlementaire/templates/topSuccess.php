@@ -246,5 +246,15 @@ $(document).ready(function(){
   };
   dynamiseTable('synthese_groupes', false, 100);
   dynamiseTable('synthese_deputes', true, 1500);
+
+  setInterval(function(){
+    var ph = $("#search input")[0].placeholder;
+    if (/départmnt/.test(ph)) {
+      $("#search input")[0].placeholder = 'chercher un député...';
+    } else {
+      $("#search input")[0].placeholder = ph.replace('groupe', 'départmnt').replace('député', 'groupe');
+    }
+  }, 1000);
+
 });
 </script>
