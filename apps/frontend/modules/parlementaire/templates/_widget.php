@@ -9,7 +9,7 @@ if (!$options['photo'])
 else $widthrate = $options['width']/935.;
 $url = url_for('@parlementaire?slug='.$parl->slug, 'absolute=true'); ?>
 <style type="text/css">
- .nosdeputes_widget { width: <?php echo $options['width']; ?>px; text-align: center; font-size: <?php echo max(8, floor(15*$options['width']/935)); ?>px; }
+ .nosdeputes_widget { width: <?php echo $options['width']; ?>px; text-align: center; font-size: <?php echo max(8, floor(15*$options['width']/935)); ?>px; font-family: Liberation Sans, sans-serif; }
  .nosdeputes_widget a { text-decoration: none; color: inherit; }
  .nosdeputes_widget .clearBoth { clear: both; }
 <?php if ($options['photo']) :
@@ -28,9 +28,10 @@ if ($options['graphe']) : ?>
 <?php endif;
 if ($options['activite']) : ?>
  .nosdeputes_widget .barre_activite { font-size: <?php echo floor(12*$options['width']/935); ?>px; background-color: #EBEBEB; float: left; margin-top: <?php echo floor(10*$options['width']/935); ?>px; padding-top: <?php echo floor(3*$options['width']/935); ?>px; width: <?php echo floor($options['width']); ?>px; text-align: left; }
- .nosdeputes_widget .barre_activite ul, .barre_activite li { background-color: transparent; display: inline; font-weight: bold; line-height: <?php echo floor(24*$options['width']/935); ?>px; margin: -<?php echo floor(3*$options['width']/935); ?>px; padding: 0; }
- .nosdeputes_widget .barre_activite ul { display: inline-flex; width: <?php echo floor(690*$options['width']/935); ?>px; margin-top: <?php echo floor(4*$options['width']/935); ?>px; }
- .nosdeputes_widget .barre_activite h3 { background-color: transparent; color: #6B6B6B; display: inline; font-size: 1.2em; width: <?php echo floor(220*$options['width']/935); ?>px; line-height: <?php echo floor(24*$options['width']/935); ?>px; margin: 0; padding-left: <?php echo floor(5*$options['width']/935); ?>px; }
+ .nosdeputes_widget .barre_activite ul, .barre_activite li { background-color: transparent; display: inline; font-weight: bold; line-height: <?php echo floor(24*$options['width']/935); ?>px; padding: 0; }
+ .nosdeputes_widget .barre_activite ul { display: inline; width: <?php echo floor(705*$options['width']/935); ?>px; float: left; margin: 0; }
+ .nosdeputes_widget .barre_activite li { display: inline-block; width: <?php echo floor(64*$options['width']/935); ?>px; }
+ .nosdeputes_widget .barre_activite h3 { background-color: transparent; color: #6B6B6B; display: inline; font-size: 1.2em; width: <?php echo floor(210*$options['width']/935); ?>px; line-height: <?php echo floor(24*$options['width']/935); ?>px; margin: 0; padding-left: <?php echo floor(5*$options['width']/935); ?>px; float: left; }
 <?php endif;
 if ($options['tags']) : ?>
  .nosdeputes_widget .tags_depute { text-align: justify; border: 2px solid #EBEBEB; }

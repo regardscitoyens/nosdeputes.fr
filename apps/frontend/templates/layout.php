@@ -140,7 +140,7 @@ $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
             <script type="text/javascript">
                 $(document).ready(function() {
                   $('#announce h2').fadeOut();
-                  $('#announce h2').delay(1500).fadeIn('slow');
+                  $('#announce h2').delay(250).fadeIn('slow');
                 });
             </script>
             <?php endif; ?>
