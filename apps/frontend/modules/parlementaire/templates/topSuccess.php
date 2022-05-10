@@ -235,10 +235,10 @@ $(document).ready(function(){
         readers: {
           _attributeReader: function(cell, record, column) {
             var $cell = $(cell),
-              text = Number($cell.text()),
+              text = Number($cell.text().replace(",", ".")),
               html = $cell.html().replace(/<a href=".*synthesetri\/\d+">(.*?)<\/a>/, "$1");
             record[column+"-sort"] = (isNaN(text) ? html : text);
-            return Number(html) || html;
+            return Number(html.replace(",", ".")) || html;
           }
         }
       });
