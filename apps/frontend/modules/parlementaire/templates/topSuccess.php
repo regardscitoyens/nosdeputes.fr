@@ -159,7 +159,7 @@ foreach (array_keys($title) as $k)
 </thead>
 <tbody class="tableau_synthese_groupes">
 <?php foreach ($gpes as $gpe => $t) {
-  if (!$t[0]['nb']) continue;
+  if (!$t[0]['nb'] || $t[0]['nb'] < 8) continue;
   $nb = ' ('.$t[0]['nb'].' député'.($t[0]['nb'] > 1 ? 's' : '').')';
   echo '<tr>';
   echo '<td id="'.$gpe.'"><span class="jstitle c_'.strtolower($gpe).' '.$class['parl'].'" title="'.$t[0]['nom'];
