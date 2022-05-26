@@ -103,6 +103,7 @@ foreach $line (split /\n/, $string) {
     $tmprefloi = lc($1);
     if ($tmprefloi =~ /^([eé]tat|\(?(rapport )?annex)/) {
       $amdmt{'sujet'} =~ s/(.)$/$1 /;
+      $tmprefloi =~ s/(annexe . rapport) décrivant.*$/\1/;
       $amdmt{'sujet'} .= $tmprefloi;
     } else {
       if ($tmprefloi =~ / [lo\.\s]+\d/) {
