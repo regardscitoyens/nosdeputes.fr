@@ -32,7 +32,7 @@ if ($cause = $parlementaire->getCauseFinMandat())
   echo '<li><a href="http://fr.wikipedia.org/wiki/'.rawurlencode($parlementaire->nom).'">Page Wikipédia</a></li>';
 if ($parlementaire->sites_web) {
   $moreweb = "";
-  foreach (unserialize($parlementaire->sites_web) as $site) if ($site && !preg_match('/assemblee-nationale\.fr\/deputes\/fiche/', $site)) {
+  foreach (unserialize($parlementaire->sites_web) as $site) if ($site && !preg_match('/assemblee-nationale\.fr\/deputes\/fiche/', $site) && preg_match('/^http/', $site)) {
     $nomsite = "Site web : ".$site;
     if (preg_match('/twitter/', $site)) $nomsite = "Compte Twitter : ".preg_replace("/^.*[^a-z0-9_]([a-z0-9_]+)$/i", "@\\1", $site);
     else if (preg_match('/facebook/', $site)) $nomsite = "Page Facebook";
