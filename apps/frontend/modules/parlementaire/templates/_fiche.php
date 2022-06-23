@@ -84,6 +84,7 @@ if ($parlementaire->sites_web) {
     <?php if ($parlementaire->isEnMandat()) : ?>
     <h2>Responsabilités</h2>
       <ul>
+        <?php if (!myTools::isEmptyLegislature()) : ?>
         <li>Commission permanente :
           <ul>
             <li><?php if ($commission_permanente) {
@@ -95,6 +96,7 @@ echo " ($fonction)";
             } ?></li>
           </ul>
         </li>
+        <?php endif ?>
         <?php if (count($missions)) : ?>
         <li>Missions parlementaires :
           <ul><?php foreach ($missions as $resp) : ?>
@@ -123,6 +125,7 @@ echo " ($fonction)";
       </ul>
     <?php endif ?>
 
+    <?php if (!myTools::isEmptyLegislature()) : ?>
     <h2>Travaux législatifs</h2>
       <h3><?php
 if(myTools::isFinLegislature()) {
@@ -144,7 +147,7 @@ if(myTools::isFinLegislature()) {
         <p class="paddingleft"><?php echo link_to('Consulter tous ses amendements', myTools::get_solr_list_url('', $parlementaire->nom, 'Amendement')); ?></p>
       </div>
       <?php echo include_component('amendement', 'parlementaireStats', array('parlementaire' => $parlementaire)); ?>
-
+    <?php endif ?>
   </div>
 
   <div class="boite_depute" id="b2">
@@ -158,6 +161,8 @@ if(myTools::isFinLegislature()) {
         <td width=33%><a href="<?php echo url_for('@widget?depute='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/widget.png', 'alt="Flux rss"'); ?></a><br/><a href="<?php echo url_for('@widget?depute='.$parlementaire->slug); ?>">sur mon site</a></td>
       </tr></table>
     <?php endif; ?>
+
+    <?php if (!myTools::isEmptyLegislature()) : ?>
     <h2>Champ lexical <small>(<?php
 if (myTools::isFinLegislature()) {
   echo "sur l'ensemble de la législature";
@@ -188,6 +193,7 @@ if (myTools::isFinLegislature()) {
        <?php echo include_component('intervention', 'parlementaireQuestion', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
       <h3>Ses dernières questions écrites</h3>
        <?php echo include_component('questions', 'parlementaire', array('parlementaire' => $parlementaire, 'limit' => 4)); ?>
+    <?php endif ?>
 
     <?php if ($historique || $anciens_mandats) : ?>
     <h2>Historique des fonctions et mandats</h2>

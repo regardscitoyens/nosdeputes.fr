@@ -110,7 +110,12 @@ class myTools {
     return $date;
   }
 
+  public static $dixjours = 864000;
   public static $dixmois = 26280000;
+
+  public static function isEmptyLegislature() {
+    return (time() - strtotime(self::getDebutLegislature()) < self::$dixjours);
+  }
 
   public static function isFreshLegislature() {
     return (time() - strtotime(self::getDebutLegislature()) < self::$dixmois);

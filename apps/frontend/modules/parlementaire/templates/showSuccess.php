@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="graph_depute">
-    <?php echo include_component('plot', 'parlementaire', array('parlementaire' => $parlementaire, 'options' => array('plot' => 'total', 'questions' => 'true', 'link' => 'true'))); ?>
+    <?php if (!myTools::isEmptyLegislature()) echo include_component('plot', 'parlementaire', array('parlementaire' => $parlementaire, 'options' => array('plot' => 'total', 'questions' => 'true', 'link' => 'true'))); ?>
   </div>
   <div class="barre_activite">
     <?php include_partial('top', array('parlementaire'=>$parlementaire)); ?>
@@ -22,6 +22,7 @@
 
 <div class="contenu_depute">
   <?php include_partial('parlementaire/fiche', array('parlementaire'=>$parlementaire, 'commission_permanente' => $commission_permanente, 'missions' => $missions, 'historique' => $parlementaire->getHistorique(true), 'anciens_mandats' => $anciens_mandats, 'main_fonction' => $main_fonction)); ?>
+  <?php if (!myTools::isEmptyLegislature()) { ?>
   <div class="bas_depute">
     <h2 class="list_com">Derniers commentaires concernant les travaux de <?php echo $parlementaire->nom; ?> <span class="rss"><a href="<?php echo url_for('@parlementaire_rss_commentaires?slug='.$parlementaire->slug); ?>"><?php echo image_tag('xneth/rss.png', 'alt="Flux rss"'); ?></a></span></h2>
     <?php if ($parlementaire->nb_commentaires == 0) echo '<p>Le travail de '.$parlementaire->getCeCette(false).' n\'a pas encore inspiré de commentaire aux utilisateurs.</p>';
@@ -31,4 +32,5 @@
         echo '<p class="suivant list_com">'.link_to('Voir les '.$parlementaire->nb_commentaires.' commentaires', '@parlementaire_commentaires?slug='.$parlementaire->slug).'</p><div class="stopfloat"></div>'; ?>
     <?php } ?>
   </div>
+  <?php } ?>
 </div>
