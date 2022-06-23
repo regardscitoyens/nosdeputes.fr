@@ -10,20 +10,22 @@ class ParlementaireOrganisme extends BaseParlementaireOrganisme
   }
 
   public static function defImportance($fonction) {
-    if (preg_match('/^(président|président)/i', $fonction)) {
+    if (preg_match('/^pr(ésident|ésident|emi(e|è)r)/i', $fonction)) {
       if (preg_match('/[âa]ge/i', $fonction)) return 55;
       if (preg_match('/droit/i', $fonction)) return 98;
       return 100;
     } else if (preg_match('/rapporteure? général/i', $fonction)) return 95;
-    else if (preg_match('/(président|président)/i', $fonction)) return 90;
+    else if (preg_match('/pr(ésident|ésident)/i', $fonction)) return 90;
     else if (preg_match('/questeur/i', $fonction)) {
       if (preg_match('/membre/i', $fonction)) return 80;
       return 70;
+    } else if (preg_match('/^ministre/i', $fonction)) {
+      if (!preg_match('/auprès de/i', $fonction)) return 70;
+      return 75;
     } else if (preg_match('/(secretaire|secrétaire)/i', $fonction)) {
       if (!preg_match('/[âa]ge/i', $fonction)) return 65;
       return 50;
-    }
-    else if (preg_match('/rapporteur/i', $fonction)) {
+    } else if (preg_match('/rapporteur/i', $fonction)) {
       if (preg_match('/spécial/i', $fonction)) return 60;
       return 55;
     } else if (preg_match('/membre/i', $fonction)) {

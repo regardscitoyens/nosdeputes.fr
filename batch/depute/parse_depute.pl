@@ -39,6 +39,7 @@ while ($string =~ s/(<li class="contact-adresse">([^<]*)?)(<\/?p>)+(.*<\/li>(<li
 $string =~ s/(<(div|p|ul|\/li|abbr|img|dt|dd|h\d)[ >])/\n\1/ig;
 $string =~ s/<\/?sup>//ig;
 $string =~ s/<svg[^>]*>.*?<\/svg>//ig;
+$string =~ s/’/'/g;
 $string =~ s/\s*'\s*/'/g;
 
 if ($display_text) {
@@ -302,22 +303,25 @@ foreach $line (split /\n/, $string) {
         }
       }
     } else {
-      if ($mission && $line =~ /^(.*?)\(?\s*((Premier ministre|Ministère|Secrétariat).*)\)?\s*$/) {
+      if ($mission && $line =~ /^(.*?)\(?\s*((Premi(e|è)re? ministre|Ministère|Secrétariat)[^)]*)\)?\s*$/) {
         $organisme = trim($1);
         $minist = trim($2);
-        if ($minist =~ / - (Premier min|Minist|Secr).*$/) {
-          $minist = "Gouvernement";
-        } else {
-          $minist =~ s/[^a-zàéèêëîïôù]+$//;
-        }
-        $minist = "Mission temporaire pour le $minist";
         if ($organisme !~ /^$/) {
+          if ($minist =~ / - (Premi(e|è)re? min|Minist|Secr).*$/) {
+            $minist = "Gouvernement";
+          } else {
+            $minist =~ s/[^a-zàéèêëîïôù]+$//;
+          }
+          $minist = "Mission temporaire pour le $minist";
           $organisme =~ s/^La proposition /Proposition /;
           $organisme = "$minist : $organisme";
+          $fonction = "chargé".($depute{'sexe'} eq "F" ? "e" : "")." de mission";
         } else {
-          $organisme = $minist;
+          $organisme = "Gouvernement";
+          $fonction = $minist;
+          $fonction =~ s/^Ministère/Ministre/;
+          $fonction =~ s/^Secrétariat d'/Secrétaire d'/;
         }
-        $fonction = "chargé".($depute{'sexe'} eq "F" ? "e" : "")." de mission";
       } elsif ($line =~ s/ de l'Assemblée nationale depuis le : \d.*$//) {
         $organisme = "Bureau de l'Assemblée nationale";
         $fonction = lc $line;
