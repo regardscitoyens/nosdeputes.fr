@@ -36,8 +36,8 @@ class updateDeputesTask extends sfBaseTask
       while (($data = fgetcsv($handle)) !== FALSE) {
         $row++;
         if ($row == 1) continue;
-        $sites[$data[18]] = explode("|", $data[16]);
-        $sites[$data[18]][] = "https://twitter.com/".$data[0];
+        $sites[$data[19]] = explode("|", $data[17]);
+        $sites[$data[19]][] = "https://twitter.com/".$data[0];
       }
       fclose($handle);
     }
