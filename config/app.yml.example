@@ -2,11 +2,11 @@
 all:
   base_url: http://www.nosdeputes.fr/
   secret_key: _______PUT_YOUR_KEY_HERE________
-  legislature: 15
+  legislature: 16
   # attention : il est important que la date soit entre guillemets
-  debut_legislature: "2017-06-21"
+  debut_legislature: "2022-06-21"
   fin_legislature: false
-  host_previous_legislature: 2012.nosdeputes.fr
+  host_previous_legislature: 2017.nosdeputes.fr
   host_next_legislature:
   lock_commentaires: false
   allow_autoclean_solr: false
