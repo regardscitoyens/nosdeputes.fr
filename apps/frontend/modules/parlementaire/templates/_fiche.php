@@ -6,7 +6,7 @@
         <li><b>Mandat clos</b> rempli du <?php
 echo myTools::displayDate($parlementaire->debut_mandat).' au '.myTools::displayDate($parlementaire->fin_mandat);
 if ($cause = $parlementaire->getCauseFinMandat())
-  echo " (".preg_replace("/^(.*sénat.*)$/i", link_to("\\1 &mdash; Voir sur NosSénateurs.fr", "http://www.nossenateurs.fr/".$parlementaire->slug), $parlementaire->getCauseFinMandat()).")";
+  echo " (".preg_replace("/^(.*sénat.*)$/i", link_to("\\1 &mdash; Voir sur NosSénateurs.fr", "https://www.nossenateurs.fr/".$parlementaire->slug), $parlementaire->getCauseFinMandat()).")";
         ?></li>
         <?php else : ?>
         <li>Mandat en cours depuis le <?php echo myTools::displayDate($parlementaire->debut_mandat); foreach ($missions as $resp) if (preg_match('/^Mission temporaire/', $resp->getNom())) { echo '<br/>&nbsp;(en cours de mission pour le gouvernement)'; break; } ?>
@@ -29,7 +29,7 @@ if ($cause = $parlementaire->getCauseFinMandat())
         <li>Liens :
           <ul><?php
  if ($parlementaire->url_an) echo '<li>'.link_to('Fiche Assemblée nationale', $parlementaire->url_an, array('title' => 'Lien externe', 'rel'=>'nofollow')).'</li>';
-  echo '<li><a href="http://fr.wikipedia.org/wiki/'.rawurlencode($parlementaire->nom).'">Page Wikipédia</a></li>';
+  echo '<li><a href="https://fr.wikipedia.org/wiki/'.rawurlencode($parlementaire->nom).'">Page Wikipédia</a></li>';
 if ($parlementaire->sites_web) {
   $moreweb = "";
   foreach (unserialize($parlementaire->sites_web) as $site) if ($site && !preg_match('/assemblee-nationale\.fr\/deputes\/fiche/', $site) && preg_match('/^http/', $site)) {

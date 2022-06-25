@@ -76,10 +76,10 @@ sub add_mandat {
 
 if ($file =~ /(\d+)/) {
   $depute{'id_institution'} = $1;
-  $depute{'url_institution'} = "http://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA$1";
-  $depute{'old_url_institution'} = "http://www.assemblee-nationale.fr/$legislature/tribun/fiches_id/$1.asp";
-  $depute{'photo'} = "http://www2.assemblee-nationale.fr/static/tribun/$legislature/photos/$1.jpg";
-  $depute{'old_photo'} = "http://www.assemblee-nationale.fr/$legislature/tribun/photos/$1.jpg";
+  $depute{'url_institution'} = "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_PA$1";
+  $depute{'old_url_institution'} = "https://www.assemblee-nationale.fr/$legislature/tribun/fiches_id/$1.asp";
+  $depute{'photo'} = "https://www2.assemblee-nationale.fr/static/tribun/$legislature/photos/$1.jpg";
+  $depute{'old_photo'} = "https://www.assemblee-nationale.fr/$legislature/tribun/photos/$1.jpg";
 }
 
 $read = "";
