@@ -3,7 +3,7 @@
 . $(dirname $0)/db.inc
 
 command=`echo $2 | sed 's#^.*\/\([^\/]\+\)$#\\1#'`
-tmpout=cron-$command-`date +%d%m%Y-%HH%Mm%S`
+tmpout=cron-$command-$LEGISLATURE-`date +%d%m%Y-%HH%Mm%S`
 tmpoutput=$tmpout
 ct=0
 while [ -f /tmp/$tmpoutput ]; do
