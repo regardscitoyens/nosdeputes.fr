@@ -162,6 +162,28 @@ class parlementaireActions extends sfActions
       ->where('p.fin_mandat IS NULL')
       ->orWhere('p.fin_mandat < p.debut_mandat')
       ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
+    $groupes = array();
+    $this->groupes = array();
+    foreach(Doctrine_Query::create()
+      ->select('o.nom, o.slug, count(distinct p.id) as membres, count(distinct s.id) as reunions')
+      ->from('Organisme o')
+      ->leftJoin('o.ParlementaireOrganismes po, po.Parlementaire p, o.Seances s')
+      ->where('o.type = ?', 'groupe')
+      ->andWhere('p.fin_mandat IS NULL')
+      ->andWhere('po.fin_fonction IS NULL')
+      ->groupBy('o.id')
+      ->orderBy('o.created_at')
+      ->fetchArray() as $o)
+      $groupes[strtolower($o["nom"])] = $o;
+    foreach (myTools::getGroupesInfos() as $gpe) {
+      if (!isset($groupes[strtolower($gpe[0])]))
+        continue;
+      $g = $groupes[strtolower($gpe[0])];
+      $g["nom"] = $gpe[0].' (<b class="c_'.strtolower($gpe[1]).'">'.$gpe[1].'</b>)';
+      $g["acronyme"] = $gpe[1];
+      if (isset($g["membres"]) && $g["membres"])
+        $this->groupes[] = $g;
+    }
     myTools::setPageTitle("Liste de tous les députés à l'Assemblée nationale", $this->response);
   }
 
