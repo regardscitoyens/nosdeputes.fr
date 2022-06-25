@@ -131,14 +131,17 @@ class loadAmdmtsTask extends sfBaseTask {
               }
               if ($json->expose)
                 $amdmt->expose = $json->expose;
-              $amdmt->content_md5 = md5($json->legislature.$json->loi.$json->sujet.$amdmt->texte);
+              if (preg_match("/^(Avant|Apr)/i", $json->sujet))
+                $SUJET = "NOUVELARTICLE";
+              else $SUJET = $json->sujet;
+              $amdmt->content_md5 = md5($json->legislature.$json->loi.$SUJET.$amdmt->texte);
               if ($json->auteurs) {
                 $amdmt->signataires = $json->auteurs;
                 $amdmt->setAuteurs($json->auteurs);
               } else if (!$json->sort || !preg_match('/(irrecevable|retir)/i', $json->sort)) {
                 echo "ERROR json auteurs missing : $line\n";
                 $amdmt->free();
-	        rename($dir.$file, $errordir.$file);
+                rename($dir.$file, $errordir.$file);
                 continue 2;
               }
             }
