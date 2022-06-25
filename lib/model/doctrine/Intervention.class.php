@@ -285,7 +285,7 @@ class Intervention extends BaseIntervention
   }
 
   public function setIntervention($s) {
-    $words = (preg_match("/^<p><i>\((non disponible|disponible uniquement en vidéo)\)<\/i><\/p>$/", $s) ? 0 : str_word_count($s));
+    $words = (preg_match("/^<p><i>\((non disponible|disponible uniquement en vidéo)\)<\/i><\/p>$/", $s) ? 0 : str_word_count(preg_replace("/\s*<[a-z][^>]*>\s*/i", " ", $s)));
     $this->_set('nb_mots', $words);
     return $this->_set('intervention', html_entity_decode($s));
   }
