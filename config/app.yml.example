@@ -4,34 +4,34 @@ all:
   secret_key: _______PUT_YOUR_KEY_HERE________
   legislature: 16
   # attention : il est important que la date soit entre guillemets
-  debut_legislature: "2022-06-21"
+  debut_legislature: "2022-06-22"
   fin_legislature: false
-  host_previous_legislature: 2017.nosdeputes.fr
+  host_previous_legislature: 2017-2022.nosdeputes.fr
   host_next_legislature:
   lock_commentaires: false
   allow_autoclean_solr: false
 
   groupes_actuels: >
-    ["LFI", "GDR", "SOC", "LT", "EDS", "LREM", "MODEM", "UDI", "LR", "NI"]
+    ["NI"]
+#    ["LFI", "GDR", "SOC", "ECO", "UTIL", "REN", "MODEM", "HOR", "LR", "RN", "NI"]
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
   groupes_infos: >
     [
-    "La France Insoumise / LFI / 204,42,70 / France Insoumise / insoumise",
-    "Gauche Démocrate et Républicaine / GDR / 255,30,30 / PCF & ultramarins / gauche\s*d.*mocrate",
-    "Nouvelle Gauche / NG / 255,50,190 / PS et divers gauche / nouvelle",
-    "Socialistes et apparentés / SOC / 255,50,190 / PS et divers gauche / socialiste",
-    "Libertés et Territoires / LT / 250,195,132 / Radicaux, centristes, ex-LREM, corses... / libert|territoire",
-    "Écologie Démocratie Solidarité / EDS / 164,240,213 / indépendants LREM / cologie",
-    "La République En Marche / LREM / 232,197,5 / En Marche / marche",
-    "Mouvement Démocrate et apparentés / MODEM / 247,138,13 / MoDem / mouvement",
-    "Les Constructifs : Républicains, UDI, Indépendants / LC / 30,180,255 / LR proches d'En Marche & UDI / constructif",
-    "UDI, Agir et Indépendants / UAI / 30,180,255 / LR proches d'En Marche & UDI / agir",
-    "UDI et Indépendants / UDI / 30,180,255 / LR proches d'En Marche & UDI / udi",
-    "Les Républicains / LR / 30,30,200 / Les Républicains / les\s*r.*publicains",
-    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (FN, Divers droite...) / inscrit|non\s*inscrit"
+  #  "La France Insoumise / LFI / 204,42,70 / France Insoumise / insoumise",
+  #  "Gauche Démocrate et Républicaine / GDR / 255,30,30 / PCF & ultramarins / gauche\s*d.*mocrate",
+  #  "Socialistes et apparentés / SOC / 255,50,190 / PS et divers gauche / socialiste",
+  #  "Écologistes / ECO / 218,254,33 / EELV / cologi",
+  #  "Ultramarins, territoires, insularités, libertés / UTIL / 250,195,132 / Radicaux, centristes, régionalistes... / ultramarin|territoire",
+  #  "Renaissance / REN / 232,197,5 / LREM et proches / renaissance",
+  #  "Mouvement Démocrate et apparentés / MODEM / 247,138,13 / MoDem / mouvement",
+  #  "Horizons / HOR / 99,227,255 / Horizons / agir",
+    #"UDI et Indépendants / UDI / 30,180,255 / UDI & indépendants / udi",
+  #  "Les Républicains / LR / 30,30,200 / Républicains et UDI / les\s*r.*publicains",
+  #  "Rassemblement National / RN / 43,38,68 / RN et patriotes / les\s*r.*publicains",
+    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (divers sans groupe) / inscrit|non\s*inscrit"
     ]
   groupes_proximite: >
-    ["LFI / GDR", "LFI / SOC", "GDR / SOC", "SOC / LREM", "SOC / LT", "SOC / EDS", "LT / EDS", "EDS / LREM", "EDS / MODEM", "LREM / LT", "LREM / MODEM", "LREM / UDI", "LT / MODEM", "LT / UDI", "MODEM / UDI", "UDI / LR", "LR / NI"]
+    ["LFI / GDR", "LFI / SOC", "LFI / ECO", "GDR / SOC", "GDR / ECO", "SOC / ECO", "SOC / UTIL", "UTIL / REN", "UTIL / MODEM", "REN / MODEM", "REN / HOR", "MODEM / HOR", "HOR / LR", "LR / RN"]
 
   commissions_permanentes: >
     [
@@ -49,8 +49,8 @@ all:
     triple_distinct:   true
 
   announce:
-    link: "//irfm.regardscitoyens.org"
-    text: "Frais des députés, aidez nous à obtenir la transparence"
+    link:
+    text: ""
 
   admin_ips: >
     [
