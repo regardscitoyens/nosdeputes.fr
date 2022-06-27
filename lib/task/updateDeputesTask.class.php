@@ -114,7 +114,13 @@ class updateDeputesTask extends sfBaseTask
                   $done_sites[$rootsite] = 1;
                 else unset($json->sites_web[$i]);
               }
-            if (isset($sites[$parl->slug]) && $sites[$parl->slug])
+            if (isset($sites[$parl->slug]) && $sites[$parl->slug]) {
+              foreach (array_keys($json->sites_web) as $i)
+                if (preg_match("/twitter.com\//", $json->sites_web[$i]) {
+                  $rootsite = strtolower(preg_replace("#^(https?://|www\.|m\.|fr\.|fr-fr\.)*(.*?)[\s/]*$#", "$2", $json->sites_web[$i]));
+                  unset($done_sites[$rootsite]);
+                  unset($json->sites_web[$i]);
+                }
               foreach ($sites[$parl->slug] as $site) {
                 $site = preg_replace("|(://[^/]+)/$|", "$1", trim($site));
                 $rootsite = strtolower(preg_replace("#^(https?://|www\.|m\.|fr\.|fr-fr\.)*(.*?)[\s/]*$#", "$2", $site));
@@ -122,6 +128,7 @@ class updateDeputesTask extends sfBaseTask
                   $json->sites_web[] = $site;
                 $done_sites[$rootsite] = 1;
               }
+            }
             if ($json->sites_web)
               $parl->sites_web = $json->sites_web;
             else if ($parl->sites_web && !preg_match('/^a:/', $parl->sites_web))
