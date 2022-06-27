@@ -115,8 +115,8 @@ class updateDeputesTask extends sfBaseTask
                 else unset($json->sites_web[$i]);
               }
             if (isset($sites[$parl->slug]) && $sites[$parl->slug]) {
-              foreach (array_keys($json->sites_web) as $i)
-                if (preg_match("/twitter.com\//", $json->sites_web[$i]) {
+              if ($json->sites_web) foreach (array_keys($json->sites_web) as $i)
+                if (preg_match("/twitter.com\//", $json->sites_web[$i])) {
                   $rootsite = strtolower(preg_replace("#^(https?://|www\.|m\.|fr\.|fr-fr\.)*(.*?)[\s/]*$#", "$2", $json->sites_web[$i]));
                   unset($done_sites[$rootsite]);
                   unset($json->sites_web[$i]);
