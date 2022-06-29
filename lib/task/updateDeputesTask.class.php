@@ -130,7 +130,7 @@ class updateDeputesTask extends sfBaseTask
               }
             }
             if ($json->sites_web)
-              $parl->sites_web = $json->sites_web;
+              $parl->sites_web = array_values($json->sites_web);
             else if ($parl->sites_web && !preg_match('/^a:/', $parl->sites_web))
               $parl->sites_web = array($parl->sites_web);
             $parl->collaborateurs = $json->collabs;
