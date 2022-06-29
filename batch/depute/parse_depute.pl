@@ -148,10 +148,13 @@ foreach $line (split /\n/, $string) {
     }
   } elsif ($line =~ /composition du groupe"[^>]*>([^<]+)</i) {
     $groupe = lc($1);
-    $groupe =~ s/É/é/g;
+    #$groupe =~ s/É/é/g;
     $groupe =~ s/^union pour la démocratie française$/union des démocrates et indépendants/;
     $groupe =~ s/^rassemblement pour la république$/union pour un mouvement populaire/;
-    $groupe =~ s/^socialiste$/socialiste, républicain et citoyen/;
+    #$groupe =~ s/^socialiste$/socialiste, républicain et citoyen/;
+    $groupe =~ s/nouvelle union populaire écologique et sociale/NUPES/i;
+    $groupe =~ s/ \(membre de l'intergroupe NUPES\)/ - NUPES/i;
+    $groupe =~ s/ \(modem et indépendants\)//i;
     $groupe =~ s/^non inscrit$/Députés non inscrits/;
     if ($line =~ /(apparentée?|présidente?)( du groupe)? /i) {
       $gpe = $groupe." / ".(lc $1);
@@ -231,7 +234,7 @@ foreach $line (split /\n/, $string) {
       $line =~ s/Rapporteur(e)? sur .*$/rapporteur\1 thématique/i;
       $line =~ s/\([^)]*\)//i;
       $line =~ s/délégue/délégué/i;
-      $line =~ s/ par le Président de l'Assemblée nationale\s*//i;
+      $line =~ s/ par le?a? Présidente? de l'Assemblée nationale\s*//i;
       $fonction = lc $line;
       next;
     } elsif ($encours =~ /anciensmandats/) {

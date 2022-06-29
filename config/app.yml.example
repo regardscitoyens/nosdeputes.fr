@@ -12,26 +12,24 @@ all:
   allow_autoclean_solr: false
 
   groupes_actuels: >
-    ["NI"]
-#    ["LFI", "GDR", "SOC", "ECO", "UTIL", "REN", "MODEM", "HOR", "LR", "RN", "NI"]
+    ["LFI", "GDR", "SOC", "ECO", "LIOT", "REN", "MODEM", "HOR", "LR", "RN", "NI"]
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
   groupes_infos: >
     [
-  #  "La France Insoumise / LFI / 204,42,70 / France Insoumise / insoumise",
-  #  "Gauche Démocrate et Républicaine / GDR / 255,30,30 / PCF & ultramarins / gauche\s*d.*mocrate",
-  #  "Socialistes et apparentés / SOC / 255,50,190 / PS et divers gauche / socialiste",
-  #  "Écologistes / ECO / 218,254,33 / EELV / cologi",
-  #  "Ultramarins, territoires, insularités, libertés / UTIL / 250,195,132 / Radicaux, centristes, régionalistes... / ultramarin|territoire",
-  #  "Renaissance / REN / 232,197,5 / LREM et proches / renaissance",
-  #  "Mouvement Démocrate et apparentés / MODEM / 247,138,13 / MoDem / mouvement",
-  #  "Horizons / HOR / 99,227,255 / Horizons / agir",
-    #"UDI et Indépendants / UDI / 30,180,255 / UDI & indépendants / udi",
-  #  "Les Républicains / LR / 30,30,200 / Républicains et UDI / les\s*r.*publicains",
-  #  "Rassemblement National / RN / 43,38,68 / RN et patriotes / les\s*r.*publicains",
-    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (divers sans groupe) / inscrit|non\s*inscrit"
+    "La France Insoumise - NUPES / LFI / 204,42,70 / France Insoumise (NUPES) / insoumise",
+    "Gauche Démocrate et Républicaine - NUPES / GDR / 255,30,30 / PCF & ultramarins (NUPES) / gauche\s*d.*mocrate",
+    "Socialistes et apparentés - NUPES / SOC / 255,50,190 / PS et divers gauche (NUPES) / socialiste",
+    "Écologiste - NUPES / ECO / 110,228,46 / EELV (NUPES) / cologi",
+    "Libertés, Indépendants, Outre-mer et Territoires / LIOT / 250,195,132 / Radicaux, centristes, régionalistes... / libertés|indépendants|territoires",
+    "Renaissance / REN / 232,197,5 / LREM et proches (Majorité gouv.) / renaissance",
+    "Démocrate / MODEM / 247,138,13 / MoDem et indépendants (Majorité gouv.) / démocrate|modem",
+    "Horizons et apparentés / HOR / 99,227,255 / Horizons (Majorité gouv.) / agir",
+    "Les Républicains / LR / 30,30,200 / LR et UDI / les\s*r.*publicains",
+    "Rassemblement National / RN / 93,78,58 / RN et patriotes / les\s*r.*publicains",
+    "Députés Non Inscrits / NI / 165,165,165 / Non-Inscrits (divers gauche à droite sans groupe) / inscrit|non\s*inscrit"
     ]
   groupes_proximite: >
-    ["LFI / GDR", "LFI / SOC", "LFI / ECO", "GDR / SOC", "GDR / ECO", "SOC / ECO", "SOC / UTIL", "UTIL / REN", "UTIL / MODEM", "REN / MODEM", "REN / HOR", "MODEM / HOR", "HOR / LR", "LR / RN"]
+    ["LFI / GDR", "LFI / SOC", "LFI / ECO", "GDR / SOC", "GDR / ECO", "SOC / ECO", "SOC / LIOT", "LIOT / REN", "LIOT / MODEM", "REN / MODEM", "REN / HOR", "MODEM / HOR", "HOR / LR", "LR / RN"]
 
   commissions_permanentes: >
     [
