@@ -13,6 +13,6 @@ foreach (myTools::getGroupesInfos() as $gpe) {
     echo '<br/>';
     $txt_l = 0;
   }
-  echo '<span class="square c_b_'.strtolower($gpe[1]).'"></span>&nbsp;'.link_to($gpe[3], '@list_parlementaires_groupe?acro='.$gpe[1]).'&nbsp;&nbsp;';
+  echo '<span title="<b>Groupe '.$gpe[1].'</b><br/>'.$gpe[0].'" class="jstitle"><span class="square c_b_'.strtolower($gpe[1]).'"></span>&nbsp;'.link_to($gpe[3], '@list_parlementaires_groupe?acro='.$gpe[1]).'</span>&nbsp;&nbsp;';
 } ?>
 </p>
