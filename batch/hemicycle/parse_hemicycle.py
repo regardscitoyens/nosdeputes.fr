@@ -248,7 +248,7 @@ def printintervention(i):
     global timestamp
 
     # No empty interv
-    i["intervention"] = re.sub(r'(<p>\s*</p>\s*)+', '', i["intervention"])
+    i["intervention"] = re.sub(r'(<p>[….\s]*</p>\s*)+', '', i["intervention"])
     if not i["intervention"]:
         return
 
