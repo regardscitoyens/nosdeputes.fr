@@ -9,6 +9,7 @@ curl $URL_ANCIEN_CPC/deputes/csv | xsv select -d ";" slug | xsv behead | sort > 
 
 echo "Cases to check :"
 diff slug_deputes_reelus.csv slug_anciens_deputes.csv | grep "<" | sed -r "s#< #$URL_ANCIEN_CPC/#" | while read url; do echo "$url"; curl -sLI $url | grep "HTTP\|Location"; echo; done | grep -B 1 "^http\| 200 \| 40" | grep -v "^--"
+diff slug_deputes_reelus.csv slug_anciens_deputes.csv | grep "<" | sed -r "s#< ##" | while read slug; do echo "UPDATE parlementaire SET url_nouveau_cpc = 'https://$VHOST/$slug' WHERE slug = '$slug';"; done > set_url_nouveau_cpc_old_legislatures.sql
 
 cat slug_deputes_reelus.csv | while read slug; do echo "UPDATE parlementaire SET url_ancien_cpc = '$URL_ANCIEN_CPC/$slug' WHERE slug = '$slug';"; done | sed 's/\/christine-le-nabour/\/christine-cloarec/' > set_url_ancien_cpc.sql
 

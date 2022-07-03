@@ -10,21 +10,21 @@ find . -name Dossiers_Legislatifs_$LEGISLATURE.json.zip -type f -atime +1 -delet
 
 if ! test -f Dossiers_Legislatifs_$LEGISLATURE.json.zip ; then
 
-if ! test "$nodownload"; then
-  wget -q -O Dossiers_Legislatifs_$LEGISLATURE.json.zip -N http://data.assemblee-nationale.fr/static/openData/repository/$LEGISLATURE/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip
-  wget -q -O AMO20_dep_sen_min_tous_mandats_et_organes_$LEGISLATURE.json.zip -N http://data.assemblee-nationale.fr/static/openData/repository/$LEGISLATURE/amo/deputes_senateurs_ministres_legislature/AMO20_dep_sen_min_tous_mandats_et_organes.json.zip
-fi
-
-unzip -q Dossiers_Legislatifs_$LEGISLATURE.json.zip
-unzip -q AMO20_dep_sen_min_tous_mandats_et_organes_$LEGISLATURE.json.zip
-
-mkdir -p document dossierParlementaire
-rsync -a json/document/ document
-rsync -a json/dossierParlementaire/ dossierParlementaire
-rsync -a json/organe/ organe
-rsync -a json/acteur/ acteur
-
-rm -rf json
+  if ! test "$nodownload"; then
+    wget -q -O Dossiers_Legislatifs_$LEGISLATURE.json.zip -N http://data.assemblee-nationale.fr/static/openData/repository/$LEGISLATURE/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip
+    wget -q -O AMO20_dep_sen_min_tous_mandats_et_organes_$LEGISLATURE.json.zip -N http://data.assemblee-nationale.fr/static/openData/repository/$LEGISLATURE/amo/deputes_senateurs_ministres_legislature/AMO20_dep_sen_min_tous_mandats_et_organes.json.zip
+  fi
+  
+  unzip -q Dossiers_Legislatifs_$LEGISLATURE.json.zip
+  unzip -q AMO20_dep_sen_min_tous_mandats_et_organes_$LEGISLATURE.json.zip
+  
+  mkdir -p document dossierParlementaire
+  rsync -a json/document/ document
+  rsync -a json/dossierParlementaire/ dossierParlementaire
+  rsync -a json/organe/ organe
+  rsync -a json/acteur/ acteur
+  
+  rm -rf json
 
 fi
 
