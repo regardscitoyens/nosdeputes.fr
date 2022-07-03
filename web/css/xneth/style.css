@@ -230,10 +230,14 @@ a:hover {
   text-align: center;
   white-space: nowrap;
 }
-.legende .square {
+.legende .square, .plot_groupes .square {
   width: 10px;
   height: 10px;
   display: inline-block;
+  margin-right: 3px;
+}
+.plot_groupes h4 {
+  line-height: 18px;
 }
 .box_tags {
   border: 1px solid #DBDBDB;
