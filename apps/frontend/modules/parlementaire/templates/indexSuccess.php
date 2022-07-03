@@ -9,10 +9,11 @@ $('<img />').attr('src', '<?php echo $sf_request->getRelativeUrlRoot()."/css/".$
     <h1>Bienvenue sur NosDéputés.fr</h1>
     <p>NosDéputés.fr est un site qui cherche à mettre en valeur l'activité parlementaire des députés de l'Assemblée nationale Française. En synthétisant les différentes activités législatives et de contrôle du gouvernement des élus de la nation, ce site essaie de donner aux citoyens de nouveaux outils pour comprendre et analyser le travail de leurs représentants.</p>
     <p>Conçu comme une plateforme de médiation entre citoyens et députés, le site propose à chacun de participer et de s'exprimer sur les débats parlementaires. Au travers de leurs commentaires, les utilisateurs sont invités à créer le débat en partageant leur expertise lorsque cela leur semble utile. Peut-être pourront-ils ainsi nourrir le travail de leurs élus ?</p>
-    <p>Vous pouvez consulter l'activité de leurs collègues du <a href="http://nossenateurs.fr/">Sénat</a> sur notre autre initiative <a href="http://www.NosSenateurs.fr/">Nos Sénateurs</a>.</p>
+    <p>Vous pouvez consulter l'activité de leurs collègues du <a href="https://nossenateurs.fr/">Sénat</a> sur notre autre initiative <a href="https://www.NosSenateurs.fr/">Nos Sénateurs</a>.</p>
+    <?php if (myTools::getPreviousHost() != null) : ?><p>Vous pouvez retrouver le bilan complet des députés de la précédente législature sur <a href="https://<?php echo myTools::getPreviousHost() ?>/"><?php echo myTools::getPreviousHost() ?></a>.</p><?php endif ?>
   </div>
   <div class="accueil_message_signature">
-    <p>Toute l'équipe du collectif <a href="http://www.regardscitoyens.org/">RegardsCitoyens.org</a>.</p>
+    <p>Toute l'équipe du collectif <a href="https://www.regardscitoyens.org/">RegardsCitoyens.org</a>.</p>
   </div>
 </div>
 
