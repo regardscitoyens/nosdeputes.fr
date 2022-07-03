@@ -337,7 +337,7 @@ def intervention_video(p):
             urlvideo = re.sub('\??timecode=\d*', '', urlvideo)
             if len(urlvideo) >= 175:
                 urlvideo = re.sub(r'(/video\.[^\.]*)\.[^?]*', r'\1', urlvideo)
-            urlvideo_meta = "http://videos.assemblee-nationale.fr/Datas/an/%s/content/data.nvs" % videoid
+            urlvideo_meta = "https://videos.assemblee-nationale.fr/Datas/an/%s/content/data.nvs" % videoid
             urlvideotimestamp = "https://videos.assemblee-nationale.fr/Datas/an/%s/content/finalplayer.nvs" % videoid
             response = requests_get(urlvideo_meta)
             soupvideo = BeautifulSoup(response['content'], features="lxml")
@@ -365,10 +365,10 @@ def intervention_video(p):
         if videotimestamp:
             videotimestamp_thumbnail = int((videotimestamp / 1000) / 60 + 1) * 60
         if videotimestamp_thumbnail:
-            urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail)
+            urlthumbnail = "https://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail)
             imagethumbnail = requests_get(urlthumbnail)
             if imagethumbnail['content_type'] == 'error':
-                urlthumbnail = "http://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail + 1)
+                urlthumbnail = "https://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail + 1)
                 imagethumbnail = requests_get(urlthumbnail)
             if imagethumbnail and imagethumbnail['content_type'] != 'error':
                 imagehtmlthumbnail = "<img src='data:%s;base64,%s'/>" % (imagethumbnail['content_type'], imagethumbnail['content'])
@@ -399,7 +399,7 @@ def intervention_video(p):
 
 def new_intervention():
     global commission, date, heure, session, source, intervenant, intervention, timestamp
-    #{"commission": "commission des finances, de l'économie générale et du contrôle budgétaire", "intervention": "<p>Présidence de M. Éric Woerth, Président</p>", "date": "2020-01-15", "source": "http://www.assemblee-nationale.fr/15/cr-cfiab/19-20/c1920037.asp#P9_450", "heure": "09:30", "session": "20192020", "intervenant": "", "timestamp": "37000020"}
+    #{"commission": "commission des finances, de l'économie générale et du contrôle budgétaire", "intervention": "<p>Présidence de M. Éric Woerth, Président</p>", "date": "2020-01-15", "source": "https://www.assemblee-nationale.fr/15/cr-cfiab/19-20/c1920037.asp#P9_450", "heure": "09:30", "session": "20192020", "intervenant": "", "timestamp": "37000020"}
     intervenant = intervenant.replace('\xa0', ' ')
     intervention = intervention.replace('\xa0', ' ')
     intervention = intervention.replace('\n', ' ')

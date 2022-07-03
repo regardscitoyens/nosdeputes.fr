@@ -1,8 +1,8 @@
 #!/bin/bash
 
-ROOTURL="http://www2.assemblee-nationale.fr"
+ROOTURL="https://www2.assemblee-nationale.fr"
 
-mkdir -p presents.tocheck
+mkdir -p html out presents loaded raw presents.tocheck
 
 function compute_org {
   ORGID=$1
@@ -25,17 +25,17 @@ function compute_org {
     done
 }
   
-compute_org 42864 "Bureau de l'Assemblée nationale" "10:00"
-compute_org 47173 "Conférence des présidents" "10:00"
-compute_org "47173/(offset)/6" "Conférence des présidents" "10:00"
-compute_org "47173/(offset)/12" "Conférence des présidents" "10:00"
-compute_org "47173/(offset)/18" "Conférence des présidents" "10:00"
-compute_org "47173/(offset)/24" "Conférence des présidents" "10:00"
-compute_org "47173/(offset)/30" "Conférence des présidents" "10:00"
-compute_org "47173/(offset)/36" "Conférence des présidents" "10:00"
-compute_org "47173/(offset)/42" "Conférence des présidents" "10:00"
-compute_org "47173/(offset)/48" "Conférence des présidents" "10:00"
-compute_org "47173/(offset)/54" "Conférence des présidents" "10:00"
-compute_org "47173/(offset)/60" "Conférence des présidents" "10:00"
-compute_org 48302 "Questure" "08:30"
+compute_org 119145 "Bureau de l'Assemblée nationale" "10:00"
+compute_org 119589 "Conférence des présidents" "10:00"
+compute_org "119589/(offset)/6" "Conférence des présidents" "10:00"
+compute_org "119589/(offset)/12" "Conférence des présidents" "10:00"
+compute_org "119589/(offset)/18" "Conférence des présidents" "10:00"
+compute_org "119589/(offset)/24" "Conférence des présidents" "10:00"
+compute_org "119589/(offset)/30" "Conférence des présidents" "10:00"
+compute_org "119589/(offset)/36" "Conférence des présidents" "10:00"
+compute_org "119589/(offset)/42" "Conférence des présidents" "10:00"
+compute_org "119589/(offset)/48" "Conférence des présidents" "10:00"
+compute_org "119589/(offset)/54" "Conférence des présidents" "10:00"
+compute_org "119589/(offset)/60" "Conférence des présidents" "10:00"
+compute_org 119649 "Questure" "08:30"
 

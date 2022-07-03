@@ -3,12 +3,11 @@
 use WWW::Mechanize;
 
 $url = shift;
-$url =~ s/^https:/http:/i;
 $url =~ s/^\s+//i;
 $cache = shift;
 
 $oldstyle = 0;
-if ($url =~ /^http:\/\/www2.assemblee-nationale.fr/) {
+if ($url =~ /^https:\/\/www2.assemblee-nationale.fr/) {
   $oldstyle = 1;
 }
 
@@ -29,7 +28,7 @@ if (!$oldstyle) {
   }
 }
 
-$raw_url = "http://www.assemblee-nationale.fr$1";
+$raw_url = "https://www.assemblee-nationale.fr$1";
 $opendata_id = $raw_url;
 $opendata_id =~ s/^.*opendata\///;
 

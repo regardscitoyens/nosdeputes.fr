@@ -5,7 +5,7 @@ source ../../bin/init_pyenv38.sh
 
 mkdir -p html out presents loaded raw
 
-perl download_commission.pl $LEGISLATURE | while read line; do
+perl download_commission.pl $LEGISLATURE | sort -u | while read line; do
     file=$(echo $line | awk '{print $2}')
     contentfile=$(echo $line | awk '{print $1}')
     url=$(echo $line | awk '{print $3}')
@@ -14,9 +14,9 @@ perl download_commission.pl $LEGISLATURE | while read line; do
     echo $url $contentfile $file
     if grep "compte rendu .* sera .*é ultérieurement\|Document en attente de mise en ligne.\|La page à laquelle vous souhaitez accéder n'existe pas.\|HTTP Error 503" "$contentfile" > /dev/null; then
         if echo $file | grep -P "_\d+_cr[^_]*_(\d+)-(\d+)_c\d+" > /dev/null; then
-            echo "...removing empty file $file" | grep -v "http:__www.assemblee-nationale.fr_15_europe_c-rendus_c0" | grep -P "_\d+_cr[^_]*_(\d+)-(\d+)_c\1\2"
+            echo "...removing empty file $file" | grep -v "https:__www.assemblee-nationale.fr_15_europe_c-rendus_c0" | grep -P "_\d+_cr[^_]*_(\d+)-(\d+)_c\1\2"
         else
-            echo "...removing empty file $file" | grep -v "http:__www.assemblee-nationale.fr_15_europe_c-rendus_c0"
+            echo "...removing empty file $file" | grep -v "https:__www.assemblee-nationale.fr_15_europe_c-rendus_c0"
         fi
         rm "$file" "$contentfile"
         continue
