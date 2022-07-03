@@ -5,6 +5,8 @@
 source ../../bin/db.inc
 source ../../bin/init_pyenv27.sh
 
+DEBUTLEGIS=$(grep debut_legislature ../../../config/app.yml | sed -r 's/^.*:\s*"?//' | sed -r 's/[\s"]*$//' | sed 's/-//g')
+
 rm -rf tmp
 mkdir -p opendata tmp json
 
@@ -19,7 +21,10 @@ cd ..
 find ./opendata -name '*tar.gz' > tmp/listfile.new
 cd tmp
 diff listfile.old listfile.new | grep '^>' | sed 's/^. //' | while read file; do
-    tar zxf '../'$file
+    dt=$(echo $file | sed 's/^.*JORF_//' | sed 's/-.*$//')
+    if [ "$dt" -ge "$DEBUTLEGIS" ]; then
+      tar zxf '../'$file
+    fi
 done
 cd ..
 touch tmp/0
