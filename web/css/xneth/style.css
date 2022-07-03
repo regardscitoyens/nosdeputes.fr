@@ -813,7 +813,12 @@ h1 {
 
 #announce {
   text-align: center;
-  height: 35px;
+  height: 15px;
+  display: block;
+  margin-top: 10px;
+}
+#announce h2 {
+  margin: 0;
 }
 
 #announce span {
