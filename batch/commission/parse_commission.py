@@ -242,7 +242,7 @@ def html2json(s):
                 break
         b = p.find('b')
         if b:
-            if hasPrefixIntervenant(b.get_text()) or (not b.get_text().find('amendement') and b.get_text().find(' (') and b.get_text()[-2:] == ').'):
+            if (hasPrefixIntervenant(b.get_text()) and b.get_text() != p.get_text()) or (not b.get_text().find('amendement') and b.get_text().find(' (') and b.get_text()[-2:] == ').'):
                 new_intervention()
                 intervenant = b.get_text()
                 b.clear()
@@ -438,7 +438,7 @@ def new_intervention():
     intervention = re.sub(r'([a-z]) À ([a-z])', r'\1 à \2', intervention)
     intervention = re.sub(r'<p[^>]*>', '<p>', intervention)
     intervention = re.sub(r'<p> *', '<p>', intervention)
-    intervention = re.sub(r'<p></p>', '', intervention)
+    intervention = re.sub(r'(<p>[….\s]*</p>\s*)+', '', intervention)
 
     intervention = re.sub(r'<t(able|head|body|r|h|d)\s+>', r'<t\1>', intervention)
     intervention = re.sub(r'<(t(able|head|body|r|h|d)|p)>\s+<(t(able|head|body|r|h|d)|p)>', r'<\1><\3>', intervention)

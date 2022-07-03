@@ -26,9 +26,10 @@ if (!$oldstyle) {
     print STDERR "WARNING: opendata raw html url not found for $url\n";
     exit();
   }
+  $raw_url = "https://www.assemblee-nationale.fr$1";
+
 }
 
-$raw_url = "https://www.assemblee-nationale.fr$1";
 $opendata_id = $raw_url;
 $opendata_id =~ s/^.*opendata\///;
 
