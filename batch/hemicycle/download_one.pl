@@ -26,6 +26,12 @@ if (!$cache || ! -e "html/$htmfile") {
   close FILE;
 }
 
+if ($content =~ /<div class="crs-cr-provisoire">Avertissement: version provisoire/) {
+  print STDERR "WARNING: skipping compte rendu provisoire for now at $url\n";
+  unlink("html/$htmfile");
+  exit();
+}
+
 if ($content !~ /href="(\/dyn\/opendata\/[^"]+\.xml)"/) {
   print STDERR "WARNING: opendata raw html url not found for $url\n";
   exit();
