@@ -88,7 +88,7 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
     '<tr><td><svg><rect class="mediane"/></svg>Médiane des députés</td><td class="tooltip_mediane"></td></tr>' +
   '</table>' +
   '<div class="banner_vacances">' +
-    'Vacances parlementaires' +
+    '<br/>Vacances parlementaires' +
     '<br/><small>(aucune séance ou réunion' +
     '<br/>durant cette semaine' +
     '<br/>ou période hors mandat)</small>' +
@@ -190,9 +190,9 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
       .enter()
       .append("rect")
       .classed('tooltip', true)
-      .attr('x', function (x){ return Math.max(margin_left, timescale(new Date(x)) - week_width/2); })
+      .attr('x', function (x){ return Math.max(margin_left, timescale(new Date(x)) - week_width); })
       .attr('y', yscale(maxval))
-      .attr('width', function(x, idx){ return (idx ? week_width : week_width / 2); })
+      .attr('width', function(x, idx){ return (idx ? week_width : week_width); })
       .attr('height', yscale(0)-yscale(maxval))
       .attr("date", function (x){return x;})
       .on('mouseover', function (x, idx, rects){

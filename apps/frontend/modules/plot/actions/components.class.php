@@ -18,7 +18,7 @@ class plotComponents extends sfComponents
       $legistart = strtotime(myTools::getDebutLegislature());
       if ($this->data['fin'])
         $last_year = $legistart;
-      else $last_year = max($legistart - 1209600, $time_fin - 32054400);
+      else $last_year = max($legistart, $time_fin - 32054400);
       $dow = date('N', $time_fin) % 7;
       if ($dow <= 2)
         $time_fin = $time_fin - (($dow + 1) * 86400);

@@ -1,5 +1,5 @@
 <?php
-$histogram = false;
+$histogram = true;
 $abs = '';
 if (!isset($target))
   $target = '';
