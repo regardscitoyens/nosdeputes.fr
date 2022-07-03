@@ -485,12 +485,7 @@ class plotComponents extends sfComponents
       // Répartition par groupe des interventions
       $qinter = clone($qmots);
       $interventions = $qinter->select('i.parlementaire_groupe_acronyme, count(i.id)')
-        ->andWhere('(i.nb_mots > 20 OR i.nb_mots = 0)')
         ->fetchArray();
-      foreach ($interventions as $p)
-        if (!isset($groupes[$p['parlementaire_groupe_acronyme']]['interventions']))
-          $groupes[$p['parlementaire_groupe_acronyme']]['interventions'] = $p['count'];
-        else $groupes[$p['parlementaire_groupe_acronyme']]['interventions'] += $p['count'];
 
       // Répartition par groupe du temps de parole (= nb mots)
       $qmots->select('i.parlementaire_groupe_acronyme, sum(i.nb_mots)');
@@ -528,15 +523,11 @@ class plotComponents extends sfComponents
         $this->labels[] = $gpe[1];
 
     // On remplit et complète les données dans l'ordre des groupes
-    $this->interventions = array();
     $this->temps = array();
     $this->presences = array();
     $this->parls = array();
     foreach($this->labels as $groupe) {
       if (!isset($this->membres) && !isset($this->groupes)) {
-        if (!isset($groupes[$groupe]['interventions']))
-          $this->interventions[] = 0;
-        else $this->interventions[] = $groupes[$groupe]['interventions'];
         if (!isset($groupes[$groupe]['temps_parole']))
           $this->temps[] = 0;
         else $this->temps[] = $groupes[$groupe]['temps_parole'];
@@ -556,7 +547,6 @@ class plotComponents extends sfComponents
     if (isset($this->membres) || isset($this->groupes))
       $this->parls[] = array_sum($this->parls)*3/5;
     else {
-      $this->interventions[] = array_sum($this->interventions)*3/5;
       $this->temps[] = array_sum($this->temps)*3/5;
       if (isset($presences))
         $this->presences[] = array_sum($this->presences)*3/5;
