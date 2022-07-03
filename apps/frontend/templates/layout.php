@@ -83,7 +83,7 @@ $('#connected').load("<?php echo url_for('@identification_ajax'); ?>");
           </div>
           <?php $search = strip_tags($sf_request->getParameter('query'));
                 $extraclass = '' ;
-                if (!$search) {$extraclass="examplevalue"; $search = "Rechercher un député, une ville, un mot, ...";} ?>
+                if (!$search) {$extraclass="examplevalue"; $search = "Rechercher un député, une ville, un mot...";} ?>
           <div class="menu_recherche">
             <form action="<?php echo url_for('@recherche_solr'); ?>" method="get">
               <p>
