@@ -5,7 +5,7 @@
 source ../../bin/db.inc
 source ../../bin/init_pyenv27.sh
 
-DEBUTLEGIS=$(grep debut_legislature ../../../config/app.yml | sed -r 's/^.*:\s*"?//' | sed -r 's/[\s"]*$//' | sed 's/-//g')
+DEBUTLEGIS=$(grep debut_legislature ../../config/app.yml | sed -r 's/^.*:\s*"?//' | sed -r 's/[\s"]*$//' | sed 's/-//g')
 
 rm -rf tmp
 mkdir -p opendata tmp json
