@@ -10,7 +10,6 @@ fi
 
 echo 'SELECT source FROM amendement WHERE sort LIKE "Ind%" AND date > DATE_SUB(CURDATE() , INTERVAL 1 YEAR)' |
  mysql $MYSQLID $DBNAME |
- grep -v "/15/amendements/2623/" |
  grep -v source > liste_sort_indefini.txt
 
 python download_amendements.py $LEGISLATURE $1 > /tmp/download_amendements.log
