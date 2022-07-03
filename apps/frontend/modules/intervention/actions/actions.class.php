@@ -354,6 +354,14 @@ class interventionActions extends sfActions
     $query = $this->initSeance($request);
     $this->interventions = $query->execute();
 
+    if (!count($this->interventions))
+      $this->source = Doctrine_Query::create()
+        ->select("pp.source")
+        ->from("PreuvePresence pp, Presence p")
+        ->where("p.id = pp.presence_id AND p.seance_id = ? AND pp.source LIKE ?", array($this->seance->id, "%.assemblee-nationale.fr%"))
+        ->limit(1)
+        ->fetchOne();
+
     $qtag = Doctrine_Query::create();
     $qtag->from('Tagging tg, tg.Tag t, Intervention i');
     $qtag->where('i.seance_id = ?', $this->seance->id);

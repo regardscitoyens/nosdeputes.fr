@@ -47,9 +47,11 @@ if ($table['nb_interventions']) echo '<span class="dossier">('.link_to('voir le 
 </div><?php } ?>
 <h2>La <?php echo $nomseance; ?></h2>
 <div class="interventions">
-  <?php if (!count($interventions)) { ?>
-  <p><em>Le contenu de cette <?php echo $nomseance; ?> n'a pas encore été rendu public par les services de l'Assemblée nationale.</em></p>
-  <?php } else { $table = ''; $titre = 0; $source_displayed = 0;
+  <?php if (!count($interventions))
+    if (isset($source))
+      echo "<p><em>Retrouvez le contenu de cette $nomseance <a target=\"_blank\" href=\"$source->source\">sur le site de l'Assemblée nationale</a>.</em></p>";
+    else echo "<p><em>Le contenu de cette $nomseance n'a pas encore été rendu public par les services de l'Assemblée nationale.</em></p>";
+  else { $table = ''; $titre = 0; $source_displayed = 0;
 foreach($interventions as $intervention) :
 if (! $source_displayed) {
 	echo '<p class="source"><a href="'.$intervention->source.'" rel="nofollow">Source</a></p><div class="clear"></div>';
