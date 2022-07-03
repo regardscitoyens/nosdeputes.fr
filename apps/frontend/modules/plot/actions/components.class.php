@@ -485,6 +485,7 @@ class plotComponents extends sfComponents
       // Répartition par groupe des interventions
       $qinter = clone($qmots);
       $interventions = $qinter->select('i.parlementaire_groupe_acronyme, count(i.id)')
+        ->andWhere('(i.nb_mots > 20 OR i.nb_mots = 0)')
         ->fetchArray();
 
       // Répartition par groupe du temps de parole (= nb mots)
