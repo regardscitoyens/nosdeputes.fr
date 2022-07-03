@@ -3,7 +3,7 @@
 use WWW::Mechanize;
 use HTML::TokeParser;
 
-$legislature = shift || 15;
+$legislature = shift || 16;
 $lastyear = localtime(time);
 $lastyear =~ s/^.*\s(\d{4})$/$1/;
 $lastyear++;
@@ -56,7 +56,6 @@ foreach $baseurl (@urls) {
     $file = $url;
     $file =~ s/\//_/gi;
     $file =~ s/\#.*//;
-    $file =~ s/https/http/;
     $type = "";
     if ($url =~ /(rap|budget)/i) {
       $type = "rap";
