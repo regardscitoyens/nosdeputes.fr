@@ -16,13 +16,13 @@ all:
 # groupes_infos: ['nom / acro / couleur(R,G,B) / legende / regexp_identifiante', ...]   USE DOUBLE QUOTES
   groupes_infos: >
     [
-    "La France Insoumise - NUPES / LFI / 204,42,70 / France Insoumise (NUPES) / insoumise",
-    "Gauche Démocrate et Républicaine - NUPES / GDR / 207,77,39 / PCF & ultramarins (NUPES) / gauche\s*d.*mocrate",
-    "Socialistes et apparentés - NUPES / SOC / 255,149,145 / PS et divers gauche (NUPES) / socialiste",
-    "Écologiste - NUPES / ECO / 151,215,74 / EELV (NUPES) / cologi",
+    "La France insoumise – Nouvelle Union Populaire écologique et sociale / LFI / 204,42,70 / France Insoumise (NUPES) / insoumise",
+    "Gauche démocrate et républicaine – NUPES / GDR / 207,77,39 / PCF & ultramarins (NUPES) / gauche\s*d.*mocrate",
+    "Socialistes et apparentés (membre de l’intergroupe NUPES) / SOC / 255,149,145 / PS et divers gauche (NUPES) / socialiste",
+    "Écologiste – NUPES / ECO / 151,215,74 / EELV (NUPES) / cologi",
     "Libertés, Indépendants, Outre-mer et Territoires / LIOT / 216,226,24 / Radicaux, centristes, régionalistes... / libertés|indépendants|territoires",
     "Renaissance / REN / 255,200,0 / LREM et proches (Majorité gouv.) / renaissance",
-    "Démocrate / MODEM / 255,152,0 / MoDem et indépendants (Majorité gouv.) / démocrate|modem",
+    "Démocrate (MoDem et Indépendants) / MODEM / 255,152,0 / MoDem et indépendants (Majorité gouv.) / démocrate|modem",
     "Horizons et apparentés / HOR / 55,157,200 / Horizons (Majorité gouv.) / agir",
     "Les Républicains / LR / 78,81,212 / LR et UDI / les\s*r.*publicains",
     "Rassemblement National / RN / 19,57,62 / RN et patriotes / les\s*r.*publicains",
