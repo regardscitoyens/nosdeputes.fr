@@ -94,7 +94,6 @@ class sectionActions extends sfActions
           $this->docs["$loi"] = $loi;
     }
 
-    $interventions = array();
 
     $query = Doctrine_Query::create()
       ->select('i.id')
@@ -107,6 +106,8 @@ class sectionActions extends sfActions
       ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
 
     //    $this->forward404Unless(count($interventions));
+    if (!is_countable($interventions))
+      $interventions = array();
 
     $this->qtag = Doctrine_Query::create()
       ->from('Tagging tg, tg.Tag t');

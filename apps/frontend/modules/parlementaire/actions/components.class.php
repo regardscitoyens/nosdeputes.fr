@@ -4,7 +4,7 @@ class parlementaireComponents extends sfComponents
   public function executeList()
   {
     $this->parlementaires = array();
-    if (!isset($this->interventions) || !count($this->interventions))
+    if (!isset($this->interventions) || !is_countable($this->interventions) || !count($this->interventions))
       return ;
     $this->parlementaires = Doctrine::getTable('Intervention')->createQuery('i')
       ->leftJoin('i.Parlementaire p')
