@@ -226,6 +226,7 @@ a:hover {
 }
 .legende {
   margin-top: 2px;
+  margin-left: 2px;
   text-align: center;
   white-space: nowrap;
 }
@@ -236,8 +237,8 @@ a:hover {
 }
 .box_tags {
   border: 1px solid #DBDBDB;
-  width: 463px;
-  height: 400px;
+  width: 440px;
+  height: 410px;
   background-color: #FAFAFA;
   float: left;
   margin-bottom: 16px;
@@ -249,8 +250,8 @@ a:hover {
   margin-bottom: 16px;
   float: right;
   margin-right: 5px;
-  height: 400px;
-  width: 435px;
+  height: 410px;
+  width: 454px;
 }
 
 .box_container {
