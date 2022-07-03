@@ -437,7 +437,7 @@ def new_intervention():
     intervention = re.sub(r'([a-z])Ê([a-z])', r'\1ê\2', intervention)
     intervention = re.sub(r'([a-z]) À ([a-z])', r'\1 à \2', intervention)
     intervention = re.sub(r'<p[^>]*>', '<p>', intervention)
-    intervention = re.sub(r'<p> *', '<p>', intervention)
+    intervention = re.sub(r'<p>[: ]*', '<p>', intervention)
     intervention = re.sub(r'(<p>[….\s]*</p>\s*)+', '', intervention)
 
     intervention = re.sub(r'<t(able|head|body|r|h|d)\s+>', r'<t\1>', intervention)
@@ -507,7 +507,7 @@ def getIntervenantFonction(intervenant):
         [intervenant, fonction] = intervenantfonction[0]
     # cleanup parenthesis from intervenant (groupe) after having separated fonction
     intervenant = re.sub(r'\s+\(\s*[A-Z][\w\s\-]+\)$', '', intervenant)
-    prez = re.findall(r'([^,<]*président?c?e?|c?o?-?rapporteure?)[,;]? (..[^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
+    prez = re.findall(r'([^,<]*président?c?e?(?: d\'âge)?|c?o?-?rapporteure?)[,;]? (..[^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
     if prez and prez[0][1].find('général') != 0:
         [fonction2, intervenant, fonction3] = prez[0]
         if fonction:
@@ -522,7 +522,6 @@ def getIntervenantFonction(intervenant):
     if not fonction and intervenant2fonction.get(intervenant):
         fonction = intervenant2fonction[intervenant]
     elif fonction:
-        intervenant2fonction[intervenant] = fonction
         fonction = re.sub(r'^(,|la?e?)\s+', '', fonction)
         if intervenant_sexe == "|F|":
             if fonction.find("président ") >= 0 or fonction.endswith("président"):
@@ -534,6 +533,7 @@ def getIntervenantFonction(intervenant):
                 fonction = fonction.replace("présidente", "président")
             elif fonction.find("rapporteure ") >= 0 or fonction.endswith("rapporteure"):
                 fonction = fonction.replace("rapporteure", "rapporteur")
+        intervenant2fonction[intervenant] = fonction
         fonction2intervenant[fonction] = intervenant
         fonction2intervenant[intervenant_sexe+fonction] = intervenant
         if fonction.find('rapporteure générale') >= 0:
