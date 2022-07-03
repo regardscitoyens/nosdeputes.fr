@@ -640,7 +640,7 @@
        $MaxHeight = $MaxHeight + $TextHeight + 4;
       }
      $MaxHeight = $MaxHeight - 5;
-     $MaxWidth  = $MaxWidth + 32;
+     $MaxWidth  = $MaxWidth + 25;
 
      if ( $Rs == -1 || $Gs == -1 || $Bs == -1 )
       { $Rs = $R-30; $Gs = $G-30; $Bs = $B-30; }
@@ -651,7 +651,7 @@
      $YOffset = 4 + $this->FontSize; $ID = 0;
      foreach($DataDescription["Description"] as $Key => $Value)
       {
-       $this->drawFilledRoundedRectangle($XPos+10,$YPos+$YOffset-4,$XPos+14,$YPos+$YOffset-4,2,$this->Palette[$ID]["R"],$this->Palette[$ID]["G"],$this->Palette[$ID]["B"]);
+       $this->drawFilledRoundedRectangle($XPos+7,$YPos+$YOffset-4,$XPos+17,$YPos+$YOffset-4,2,$this->Palette[$ID]["R"],$this->Palette[$ID]["G"],$this->Palette[$ID]["B"]);
        imagettftext($this->Picture,$this->FontSize,0,$XPos+22,$YPos+$YOffset,$C_TextColor,$this->FontName,$Value);
 
        $Position   = imageftbbox($this->FontSize,0,$this->FontName,$Value);
@@ -1652,10 +1652,10 @@
          for ( $i=0; $i<=$Points; $i++)
           {
            $Angle = -90 + $i * 360/$Points;
-           $X1 = cos($Angle * 3.1418 / 180 ) * $TRadius + $XCenter;
-           $Y1 = sin($Angle * 3.1418 / 180 ) * $TRadius + $YCenter;
-           $X2 = cos($Angle * 3.1418 / 180 ) * ($TRadius+$RadiusScale) + $XCenter;
-           $Y2 = sin($Angle * 3.1418 / 180 ) * ($TRadius+$RadiusScale) + $YCenter;
+           $X1 = cos($Angle * 3.141593 / 180 ) * $TRadius + $XCenter;
+           $Y1 = sin($Angle * 3.141593 / 180 ) * $TRadius + $YCenter;
+           $X2 = cos($Angle * 3.141593 / 180 ) * ($TRadius+$RadiusScale) + $XCenter;
+           $Y2 = sin($Angle * 3.141593 / 180 ) * ($TRadius+$RadiusScale) + $YCenter;
 
            if ( $t % 2 == 1 && $LastX1 != -1)
             {
@@ -1685,8 +1685,8 @@
        for ( $i=0; $i<=$Points; $i++)
         {
          $Angle = -90 + $i * 360/$Points;
-         $X = cos($Angle * 3.1418 / 180 ) * $TRadius + $XCenter;
-         $Y = sin($Angle * 3.1418 / 180 ) * $TRadius + $YCenter;
+         $X = cos($Angle * 3.141593 / 180 ) * $TRadius + $XCenter;
+         $Y = sin($Angle * 3.141593 / 180 ) * $TRadius + $YCenter;
 
          if ( $LastX != -1 )
           $this->drawDottedLine($LastX,$LastY,$X,$Y,4,$S_R,$S_G,$S_B);
@@ -1699,8 +1699,8 @@
      for ( $i=0; $i<=$Points; $i++)
       {
        $Angle = -90 + $i * 360/$Points;
-       $X = cos($Angle * 3.1418 / 180 ) * $Radius + $XCenter;
-       $Y = sin($Angle * 3.1418 / 180 ) * $Radius + $YCenter;
+       $X = cos($Angle * 3.141593 / 180 ) * $Radius + $XCenter;
+       $Y = sin($Angle * 3.141593 / 180 ) * $Radius + $YCenter;
 
        $this->drawLine($XCenter,$YCenter,$X,$Y,$A_R,$A_G,$A_B);
 
@@ -1735,8 +1735,8 @@
        $Angle = -90 + 360 / $Points;
        $X1 = $XCenter;
        $Y1 = $YCenter - $TRadius;
-       $X2 = cos($Angle * 3.1418 / 180 ) * $TRadius + $XCenter;
-       $Y2 = sin($Angle * 3.1418 / 180 ) * $TRadius + $YCenter;
+       $X2 = cos($Angle * 3.141593 / 180 ) * $TRadius + $XCenter;
+       $Y2 = sin($Angle * 3.141593 / 180 ) * $TRadius + $YCenter;
 
        $XPos = floor(($X2-$X1)/2) + $X1;
        $YPos = floor(($Y2-$Y1)/2) + $Y1;
@@ -1792,8 +1792,8 @@
            $Value    = $Data[$Key][$ColName];
            $Strength = ( $Radius / $MaxValue ) * $Value;
 
-           $XPos = cos($Angle * 3.1418 / 180 ) * $Strength + $XCenter;
-           $YPos = sin($Angle * 3.1418 / 180 ) * $Strength + $YCenter;
+           $XPos = cos($Angle * 3.141593 / 180 ) * $Strength + $XCenter;
+           $YPos = sin($Angle * 3.141593 / 180 ) * $Strength + $YCenter;
 
            if ( $XLast != -1 )
             $this->drawLine($XLast,$YLast,$XPos,$YPos,$this->Palette[$ColorID]["R"],$this->Palette[$ColorID]["G"],$this->Palette[$ColorID]["B"]);
@@ -1856,8 +1856,8 @@
            if ( !is_numeric($Value) ) { $Value = 0; }
            $Strength = ( $Radius / $MaxValue ) * $Value;
 
-           $XPos = cos($Angle * 3.1418 / 180 ) * $Strength + $XCenter;
-           $YPos = sin($Angle * 3.1418 / 180 ) * $Strength + $YCenter;
+           $XPos = cos($Angle * 3.141593 / 180 ) * $Strength + $XCenter;
+           $YPos = sin($Angle * 3.141593 / 180 ) * $Strength + $YCenter;
 
            $Plots[] = $XPos;
            $Plots[] = $YPos;
@@ -1941,8 +1941,8 @@
            $Caption  = (floor($Value));
          elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
-         $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius + 10)+ $XPos;
-         $TY       = sin(($TAngle) * 3.1418 / 180 ) * ($Radius+ 10) + $YPos + 4;
+         $TX       = cos(($TAngle) * 3.141593 / 180 ) * ($Radius + 10)+ $XPos;
+         $TY       = sin(($TAngle) * 3.141593 / 180 ) * ($Radius+ 10) + $YPos + 4;
 
         // if ( $TAngle > 90 && $TAngle < 270 )
          if ( $TAngle > 90 && $TAngle < 260 )
@@ -1959,8 +1959,8 @@
        /* Process pie slices */
        for($iAngle=$Angle;$iAngle<=$Angle+$Value*$SpliceRatio;$iAngle=$iAngle+.5)
         {
-         $TopX = cos($iAngle * 3.1418 / 180 ) * $Radius + $XPos;
-         $TopY = sin($iAngle * 3.1418 / 180 ) * $Radius + $YPos;
+         $TopX = cos($iAngle * 3.141593 / 180 ) * $Radius + $XPos;
+         $TopY = sin($iAngle * 3.141593 / 180 ) * $Radius + $YPos;
 
          $TopPlots[$Key][] = $TopX; 
          $TopPlots[$Key][] = $TopY;
@@ -2034,8 +2034,8 @@
        // Don't draw empty values
        if (!$Value) continue;
 
-       $XCenterPos = cos(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $XPos;
-       $YCenterPos = sin(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $YPos;
+       $XCenterPos = cos(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.141593 / 180 ) * $SpliceDistance + $XPos;
+       $YCenterPos = sin(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.141593 / 180 ) * $SpliceDistance + $YPos;
 
        $TopPlots[$Key][] = $XCenterPos;
        $TopPlots[$Key][] = $YCenterPos;
@@ -2052,8 +2052,8 @@
            $Caption  = (floor($Value));
          elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
-         $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius+10+$SpliceDistance)+$XPos;
-         $TY       = sin(($TAngle) * 3.1418 / 180 ) * ($Radius+10+$SpliceDistance) + $YPos + 4;
+         $TX       = cos(($TAngle) * 3.141593 / 180 ) * ($Radius+10+$SpliceDistance)+$XPos;
+         $TY       = sin(($TAngle) * 3.141593 / 180 ) * ($Radius+10+$SpliceDistance) + $YPos + 4;
 
 //         if ( $TAngle > 90 && $TAngle < 270 )
          if ( $TAngle > 90 && $TAngle < 260 )
@@ -2069,39 +2069,39 @@
         }
 
        /* Draw borders to correct imagefilledpolygon bug */
-       $BMax = 2;
+       $BMax = 0;
        for($i=-1;$i<=$BMax;$i++)
         {
-         $BorderX1 = cos(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * ($SpliceDistance+$i) + $XPos;
-         $BorderY1 = sin(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * ($SpliceDistance+$i) + $YPos;
-         $BorderX2 = cos(($Angle+$i*.5) * 3.1418 / 180 ) * (($Radius+$BMax)+$SpliceDistance) + $XPos;
-         $BorderY2 = sin(($Angle+$i*.5) * 3.1418 / 180 ) * (($Radius+$BMax)+$SpliceDistance) + $YPos;
+         $BorderX1 = cos(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.141593 / 180 ) * ($SpliceDistance+$i) + $XPos;
+         $BorderY1 = sin(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.141593 / 180 ) * ($SpliceDistance+$i) + $YPos;
+         $BorderX2 = cos(($Angle+$i*.5) * 3.141593 / 180 ) * (($Radius+$BMax)+$SpliceDistance) + $XPos;
+         $BorderY2 = sin(($Angle+$i*.5) * 3.141593 / 180 ) * (($Radius+$BMax)+$SpliceDistance) + $YPos;
          $this->drawLine($BorderX1,$BorderY1,$BorderX2,$BorderY2,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"]);
 
-         $BorderX1 = cos(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * ($SpliceDistance+$i) + $XPos;
-         $BorderY1 = sin(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * ($SpliceDistance+$i) + $YPos;
-         $BorderX2 = cos(($Angle-$i*.5+$Value*$SpliceRatio) * 3.1418 / 180 ) * (($Radius+$BMax)+$SpliceDistance) + $XPos;
-         $BorderY2 = sin(($Angle-$i*.5+$Value*$SpliceRatio) * 3.1418 / 180 ) * (($Radius+$BMax)+$SpliceDistance) + $YPos;
+         $BorderX1 = cos(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.141593 / 180 ) * ($SpliceDistance+$i) + $XPos;
+         $BorderY1 = sin(($Angle+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.141593 / 180 ) * ($SpliceDistance+$i) + $YPos;
+         $BorderX2 = cos(($Angle-$i*.5+$Value*$SpliceRatio) * 3.141593 / 180 ) * (($Radius+$BMax)+$SpliceDistance) + $XPos;
+         $BorderY2 = sin(($Angle-$i*.5+$Value*$SpliceRatio) * 3.141593 / 180 ) * (($Radius+$BMax)+$SpliceDistance) + $YPos;
          $this->drawLine($BorderX1,$BorderY1,$BorderX2,$BorderY2,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"]);
         }
 
        /* Process pie slices */
-       for($iAngle=$Angle;$iAngle<=$Angle+$Value*$SpliceRatio;$iAngle=$iAngle+.5)
+       for($iAngle=$Angle;$iAngle<=$Angle+$Value*$SpliceRatio;$iAngle=$iAngle+.03125)
         {
-         $TopX = cos($iAngle * 3.1418 / 180 ) * ($Radius+$SpliceDistance) + $XPos;
-         $TopY = sin($iAngle * 3.1418 / 180 ) * ($Radius+$SpliceDistance) + $YPos;
+         $TopX = cos($iAngle * 3.141593 / 180 ) * ($Radius+$SpliceDistance) + $XPos;
+         $TopY = sin($iAngle * 3.141593 / 180 ) * ($Radius+$SpliceDistance) + $YPos;
 
          $TopPlots[$Key][] = $TopX;
          $TopPlots[$Key][] = $TopY;
 
          if ( $iAngle != $Angle )
           {
-           for($i=-1;$i<=2;$i++)
+           for($i=-1;$i<=0;$i++)
             {
-             $BorderX1 = cos(($iAngle-.5) * 3.1418 / 180 ) * (($Radius+$i)+$SpliceDistance) + $XPos;
-             $BorderY1 = sin(($iAngle-.5) * 3.1418 / 180 ) * (($Radius+$i)+$SpliceDistance) + $YPos;
-             $BorderX2 = cos($iAngle * 3.1418 / 180 ) * (($Radius+$i)+$SpliceDistance) + $XPos;
-             $BorderY2 = sin($iAngle * 3.1418 / 180 ) * (($Radius+$i)+$SpliceDistance) + $YPos;
+             $BorderX1 = cos(($iAngle-.03125) * 3.141593 / 180 ) * (($Radius+$i)+$SpliceDistance) + $XPos;
+             $BorderY1 = sin(($iAngle-.03125) * 3.141593 / 180 ) * (($Radius+$i)+$SpliceDistance) + $YPos;
+             $BorderX2 = cos($iAngle * 3.141593 / 180 ) * (($Radius+$i)+$SpliceDistance) + $XPos;
+             $BorderY2 = sin($iAngle * 3.141593 / 180 ) * (($Radius+$i)+$SpliceDistance) + $YPos;
 
              $this->drawLine($BorderX1,$BorderY1,$BorderX2,$BorderY2,$this->Palette[$Key]["R"],$this->Palette[$Key]["G"],$this->Palette[$Key]["B"]);
             }
@@ -2169,10 +2169,10 @@
      $TopPlots = ""; $BotPlots = ""; $CDev = 5;
      foreach($iValues as $Key => $Value)
       {
-       $XCenterPos = cos(($Angle-$CDev+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $XPos;
-       $YCenterPos = sin(($Angle-$CDev+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $YPos;
-       $XCenterPos2 = cos(($Angle+$CDev+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $XPos;
-       $YCenterPos2 = sin(($Angle+$CDev+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.1418 / 180 ) * $SpliceDistance + $YPos;
+       $XCenterPos = cos(($Angle-$CDev+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.141593 / 180 ) * $SpliceDistance + $XPos;
+       $YCenterPos = sin(($Angle-$CDev+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.141593 / 180 ) * $SpliceDistance + $YPos;
+       $XCenterPos2 = cos(($Angle+$CDev+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.141593 / 180 ) * $SpliceDistance + $XPos;
+       $YCenterPos2 = sin(($Angle+$CDev+($Value*$SpliceRatio+$SpliceDistanceRatio)/2) * 3.141593 / 180 ) * $SpliceDistance + $YPos;
 
        $TopPlots[$Key][] = $XCenterPos; $BotPlots[$Key][] = $XCenterPos;
        $TopPlots[$Key][] = $YCenterPos; $BotPlots[$Key][] = $YCenterPos + $SpliceHeight;
@@ -2191,13 +2191,13 @@
          } elseif ($DrawLabels == PIE_LABELS)
           $Caption  = $iLabels[$Key];
 
-        // $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius + 10)+ $XPos;
-         $TX       = cos(($TAngle) * 3.1418 / 180 ) * ($Radius + 5)+ $XPos;
+        // $TX       = cos(($TAngle) * 3.141593 / 180 ) * ($Radius + 10)+ $XPos;
+         $TX       = cos(($TAngle) * 3.141593 / 180 ) * ($Radius + 5)+ $XPos;
 
          if ( $TAngle > 0 && $TAngle < 180 )
-          $TY = sin(($TAngle) * 3.1418 / 180 ) * ($SkewHeight + 10) + $YPos + $SpliceHeight + 4;
+          $TY = sin(($TAngle) * 3.141593 / 180 ) * ($SkewHeight + 10) + $YPos + $SpliceHeight + 4;
          else
-          $TY = sin(($TAngle) * 3.1418 / 180 ) * ($SkewHeight + 10) + $YPos + 4;
+          $TY = sin(($TAngle) * 3.141593 / 180 ) * ($SkewHeight + 10) + $YPos + 4;
 
         // if ( $TAngle > 90 && $TAngle < 270 )
          if ( $TAngle > 90 && $TAngle < 260 )
@@ -2215,8 +2215,8 @@
        /* Process pie slices */
        for($iAngle=$Angle;$iAngle<=$Angle+$Value*$SpliceRatio;$iAngle=$iAngle+.5)
         {
-         $TopX = cos($iAngle * 3.1418 / 180 ) * $Radius + $XPos;
-         $TopY = sin($iAngle * 3.1418 / 180 ) * $SkewHeight + $YPos;
+         $TopX = cos($iAngle * 3.141593 / 180 ) * $Radius + $XPos;
+         $TopY = sin($iAngle * 3.141593 / 180 ) * $SkewHeight + $YPos;
 
          $TopPlots[$Key][] = $TopX; $BotPlots[$Key][] = $TopX;
          $TopPlots[$Key][] = $TopY; $BotPlots[$Key][] = $TopY + $SpliceHeight;
@@ -2372,24 +2372,24 @@
 
      $C_Rectangle = imagecolorallocate($this->Picture,$R,$G,$B);
 
-     $Step = 90 / ((3.1418 * $Radius)/2);
+     $Step = 90 / ((3.141593 * $Radius)/2);
 
      for($i=0;$i<=90;$i=$i+$Step)
       {
-       $X = cos(($i+180)*3.1418/180) * $Radius + $X1 + $Radius;
-       $Y = sin(($i+180)*3.1418/180) * $Radius + $Y1 + $Radius;
+       $X = cos(($i+180)*3.141593/180) * $Radius + $X1 + $Radius;
+       $Y = sin(($i+180)*3.141593/180) * $Radius + $Y1 + $Radius;
        $this->drawAntialiasPixel($X,$Y,$R,$G,$B);
 
-       $X = cos(($i-90)*3.1418/180) * $Radius + $X2 - $Radius;
-       $Y = sin(($i-90)*3.1418/180) * $Radius + $Y1 + $Radius;
+       $X = cos(($i-90)*3.141593/180) * $Radius + $X2 - $Radius;
+       $Y = sin(($i-90)*3.141593/180) * $Radius + $Y1 + $Radius;
        $this->drawAntialiasPixel($X,$Y,$R,$G,$B);
 
-       $X = cos(($i)*3.1418/180) * $Radius + $X2 - $Radius;
-       $Y = sin(($i)*3.1418/180) * $Radius + $Y2 - $Radius;
+       $X = cos(($i)*3.141593/180) * $Radius + $X2 - $Radius;
+       $Y = sin(($i)*3.141593/180) * $Radius + $Y2 - $Radius;
        $this->drawAntialiasPixel($X,$Y,$R,$G,$B);
 
-       $X = cos(($i+90)*3.1418/180) * $Radius + $X1 + $Radius;
-       $Y = sin(($i+90)*3.1418/180) * $Radius + $Y2 - $Radius;
+       $X = cos(($i+90)*3.141593/180) * $Radius + $X1 + $Radius;
+       $Y = sin(($i+90)*3.141593/180) * $Radius + $Y2 - $Radius;
        $this->drawAntialiasPixel($X,$Y,$R,$G,$B);
       }
 
@@ -2410,21 +2410,21 @@
 
      $C_Rectangle = imagecolorallocate($this->Picture,$R,$G,$B);
 
-     $Step = 90 / ((3.1418 * $Radius)/2);
+     $Step = 90 / ((3.141593 * $Radius)/2);
 
      for($i=0;$i<=90;$i=$i+$Step)
       {
-       $Xi1 = cos(($i+180)*3.1418/180) * $Radius + $X1 + $Radius;
-       $Yi1 = sin(($i+180)*3.1418/180) * $Radius + $Y1 + $Radius;
+       $Xi1 = cos(($i+180)*3.141593/180) * $Radius + $X1 + $Radius;
+       $Yi1 = sin(($i+180)*3.141593/180) * $Radius + $Y1 + $Radius;
 
-       $Xi2 = cos(($i-90)*3.1418/180) * $Radius + $X2 - $Radius;
-       $Yi2 = sin(($i-90)*3.1418/180) * $Radius + $Y1 + $Radius;
+       $Xi2 = cos(($i-90)*3.141593/180) * $Radius + $X2 - $Radius;
+       $Yi2 = sin(($i-90)*3.141593/180) * $Radius + $Y1 + $Radius;
 
-       $Xi3 = cos(($i)*3.1418/180) * $Radius + $X2 - $Radius;
-       $Yi3 = sin(($i)*3.1418/180) * $Radius + $Y2 - $Radius;
+       $Xi3 = cos(($i)*3.141593/180) * $Radius + $X2 - $Radius;
+       $Yi3 = sin(($i)*3.141593/180) * $Radius + $Y2 - $Radius;
 
-       $Xi4 = cos(($i+90)*3.1418/180) * $Radius + $X1 + $Radius;
-       $Yi4 = sin(($i+90)*3.1418/180) * $Radius + $Y2 - $Radius;
+       $Xi4 = cos(($i+90)*3.141593/180) * $Radius + $X1 + $Radius;
+       $Yi4 = sin(($i+90)*3.141593/180) * $Radius + $Y2 - $Radius;
 
        imageline($this->Picture,$Xi1,$Yi1,$X1+$Radius,$Yi1,$C_Rectangle);
        imageline($this->Picture,$X2-$Radius,$Yi2,$Xi2,$Yi2,$C_Rectangle);
@@ -2457,12 +2457,12 @@
      if ( $B < 0 ) { $B = 0; } if ( $B > 255 ) { $B = 255; }
 
      $C_Circle = imagecolorallocate($this->Picture,$R,$G,$B);
-     $Step     = 360 / (2 * 3.1418 * max($Width,$Height));
+     $Step     = 360 / (2 * 3.141593 * max($Width,$Height));
 
      for($i=0;$i<=360;$i=$i+$Step)
       {
-       $X = cos($i*3.1418/180) * $Height + $Xc;
-       $Y = sin($i*3.1418/180) * $Width + $Yc;
+       $X = cos($i*3.141593/180) * $Height + $Xc;
+       $Y = sin($i*3.141593/180) * $Width + $Yc;
        $this->drawAntialiasPixel($X,$Y,$R,$G,$B);
       }
     }
@@ -2476,14 +2476,14 @@
      if ( $B < 0 ) { $B = 0; } if ( $B > 255 ) { $B = 255; }
 
      $C_Circle = imagecolorallocate($this->Picture,$R,$G,$B);
-     $Step     = 360 / (2 * 3.1418 * max($Width,$Height));
+     $Step     = 360 / (2 * 3.141593 * max($Width,$Height));
 
      for($i=90;$i<=270;$i=$i+$Step)
       {
-       $X1 = cos($i*3.1418/180) * $Height + $Xc;
-       $Y1 = sin($i*3.1418/180) * $Width + $Yc;
-       $X2 = cos((180-$i)*3.1418/180) * $Height + $Xc;
-       $Y2 = sin((180-$i)*3.1418/180) * $Width + $Yc;
+       $X1 = cos($i*3.141593/180) * $Height + $Xc;
+       $Y1 = sin($i*3.141593/180) * $Width + $Yc;
+       $X2 = cos((180-$i)*3.141593/180) * $Height + $Xc;
+       $Y2 = sin((180-$i)*3.141593/180) * $Width + $Yc;
 
        $this->drawAntialiasPixel($X1-1,$Y1-1,$R,$G,$B);
        $this->drawAntialiasPixel($X2-1,$Y2-1,$R,$G,$B);

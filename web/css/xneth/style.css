@@ -229,6 +229,11 @@ a:hover {
   text-align: center;
   white-space: nowrap;
 }
+.legende .square {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+}
 .box_tags {
   border: 1px solid #DBDBDB;
   width: 463px;
