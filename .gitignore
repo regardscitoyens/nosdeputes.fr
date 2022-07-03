@@ -49,7 +49,7 @@ batch/commission/raw*/
 batch/commission/tmp/
 batch/commission/out/
 batch/commission/loaded/
-batch/commission/presents/
+batch/commission/presents*/
 batch/commission/modified/
 batch/commission/checkvideos/
 batch/common/opendata
