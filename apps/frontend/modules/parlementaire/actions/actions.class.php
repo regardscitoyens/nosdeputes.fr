@@ -95,6 +95,13 @@ class parlementaireActions extends sfActions
         $this->main_fonction = ucfirst($resp->fonction);
     }
 
+    $this->ministre = null;
+    foreach ($this->parlementaire->getExtras() as $resp) {
+      print($resp->Organisme->nom." / ".$resp->fonction);
+      if ($resp->Organisme->nom == "Gouvernement")
+        $this->ministre = $resp->fonction;
+    }
+
     $anciens_mandats = array();
     foreach (unserialize($this->parlementaire->getAnciensMandats()) as $m)
       if (preg_match("#^((\d+)/(\d+)/(\d+)) / (.*) / (.*)$#", $m, $match)) {

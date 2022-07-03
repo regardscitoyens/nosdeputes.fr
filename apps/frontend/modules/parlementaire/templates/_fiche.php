@@ -2,16 +2,18 @@
     <h2>Informations</h2>
       <ul>
         <?php if ($main_fonction) echo "<li><b>$main_fonction de l'Assemblée nationale</b></li>"; ?>
-        <?php if (!$parlementaire->isEnMandat()) : ?>
+        <?php if (!$parlementaire->isEnMandat()) { ?>
         <li><b>Mandat clos</b> rempli du <?php
 echo myTools::displayDate($parlementaire->debut_mandat).' au '.myTools::displayDate($parlementaire->fin_mandat);
 if ($cause = $parlementaire->getCauseFinMandat())
   echo " (".preg_replace("/^(.*sénat.*)$/i", link_to("\\1 &mdash; Voir sur NosSénateurs.fr", "https://www.nossenateurs.fr/".$parlementaire->slug), $parlementaire->getCauseFinMandat()).")";
         ?></li>
-        <?php else : ?>
+        <?php } else if ($ministre) { ?>
+        <li><b>Mandot clos : membre du Gouvernement<br/><?php echo $ministre; ?></b>
+        <?php } else { ?>
         <li>Mandat en cours depuis le <?php echo myTools::displayDate($parlementaire->debut_mandat); foreach ($missions as $resp) if (preg_match('/^Mission temporaire/', $resp->getNom())) { echo '<br/>&nbsp;(en cours de mission pour le gouvernement)'; break; } ?>
         </li>
-        <?php endif;
+        <?php }
         $fem = ($parlementaire->sexe == "F" ? 'e' : '');
         if ($parlementaire->suppleant_de_id && $supplee = $parlementaire->getSuppleantDe())
           echo '<li>Suppléant'.$fem.' de&nbsp;: '.link_to($supplee->nom, "@parlementaire?slug=".$supplee->slug).'</li>';
@@ -45,7 +47,8 @@ if ($parlementaire->sites_web) {
         ?></ul>
       </ul>
 
-    <?php $mails = unserialize($parlementaire->mails);
+  <?php if (!$ministre) :
+    $mails = unserialize($parlementaire->mails);
     $adresses = unserialize($parlementaire->adresses);
     $collabs = unserialize($parlementaire->collaborateurs); ?>
     <h2>Contact</h2>
@@ -80,6 +83,7 @@ if ($parlementaire->sites_web) {
         </li>
         <?php endif; ?>
       </ul>
+    <?php endif; // if $ministre ?>
 
     <?php if ($parlementaire->isEnMandat()) : ?>
     <h2>Responsabilités</h2>
@@ -107,10 +111,13 @@ echo " ($fonction)";
             ?></li>
           <?php endforeach ?></ul>
         </li>
-        <?php endif; ?>
-        <?php if ($parlementaire->getExtras()) : ?>
+        <?php endif;
+        $extras = $parlementaire->getExtras();
+        if (count($extras) == 1 && $extras[0]->nom == "Gouvernement")
+         $extras = array();
+        if ($extras) : ?>
         <li>Fonctions judiciaires, internationales ou extra-parlementaires&nbsp;:
-          <ul><?php foreach ($parlementaire->getExtras() as $extra) { ?>
+          <ul><?php foreach ($extras as $extra) { ?>
             <li><?php echo link_to($extra->getNom(),'@list_parlementaires_organisme?slug='.$extra->getSlug() ); ?> (<?php echo $extra->getFonction(); ?>)</li>
           <?php } ?></ul>
         </li>
@@ -125,7 +132,7 @@ echo " ($fonction)";
       </ul>
     <?php endif ?>
 
-    <?php if (!myTools::isEmptyLegislature()) : ?>
+    <?php if (!myTools::isEmptyLegislature() && !$ministre) : ?>
     <h2>Travaux législatifs</h2>
       <h3><?php
 if(myTools::isFinLegislature()) {
@@ -151,7 +158,7 @@ if(myTools::isFinLegislature()) {
   </div>
 
   <div class="boite_depute" id="b2">
-    <?php if (!$parlementaire->isEnMandat()) : ?>
+    <?php if (!$parlementaire->isEnMandat() || $ministre) : ?>
     <h2>Le mandat de <?php echo $parlementaire->getCeCette(false); ?> est achevé</h2>
     <?php else : ?>
     <h2>Suivre l'activité d<?php echo ($parlementaire->sexe == "F" ? "e la députée" : "u député"); ?></h2>
@@ -162,7 +169,7 @@ if(myTools::isFinLegislature()) {
       </tr></table>
     <?php endif; ?>
 
-    <?php if (!myTools::isEmptyLegislature()) : ?>
+    <?php if (!myTools::isEmptyLegislature() && !$ministre) : ?>
     <h2>Champ lexical <small>(<?php
 if (myTools::isFinLegislature()) {
   echo "sur l'ensemble de la législature";
