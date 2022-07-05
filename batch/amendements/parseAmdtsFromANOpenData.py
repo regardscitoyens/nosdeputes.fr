@@ -126,7 +126,7 @@ def fixHTML(text, h):
 def convertToNDFormat(amdtOD):
     h = HTMLParser()
     formatND = {}
-    formatND['source'] = u"http://www.assemblee-nationale.fr%s.asp" % amdtOD['representation.contenu.documentURI'][:-4]
+    formatND['source'] = u"https://www.assemblee-nationale.fr%s.asp" % amdtOD['representation.contenu.documentURI'][:-4]
 
     try:
         formatND['legislature'] = amdtOD['identifiant.legislature']

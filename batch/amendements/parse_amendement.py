@@ -45,7 +45,7 @@ except Exception as e:
     sys.exit(1)
 
 extract_numero = lambda data: data['identification']['numeroLong'].split(" ")[0].split("-")[-1]
-simplify_url = lambda u: u.replace('https://', 'http://').replace('/dyn/', '/').replace('.asp', '')
+simplify_url = lambda u: u.replace('http://', 'https://').replace('/dyn/', '/').replace('.asp', '')
 
 h = HTMLParser()
 try:
@@ -94,7 +94,7 @@ try:
 
     amd['source'] = htmlurl
     organe = data['identification']['prefixeOrganeExamen']
-    amdurl = "http://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (amd['legislature'], loistr, organe, numstr)
+    amdurl = "https://www.assemblee-nationale.fr/dyn/%s/amendements/%s/%s/%s" % (amd['legislature'], loistr, organe, numstr)
     if simplify_url(amd['source']) != simplify_url(htmlurl):
         print >> sys.stderr, "WARNING: source URL parsed (%s) different than original URL for amendement %s" % (amdurl, htmlurl)
 

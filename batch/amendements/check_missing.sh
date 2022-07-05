@@ -3,14 +3,14 @@
 cd $(dirname $0)
 source ../../bin/db-external.inc || source ../../bin/db.inc
 source ../../bin/init_pyenv27.sh
-ANroot="http://www.assemblee-nationale.fr/"
+ANroot="https://www.assemblee-nationale.fr/"
 
 echo "Downloading Amendements from OpenData AN..."
 mkdir -p opendata
 rm -f Amendements_*.json* all_amdts_opendataAN.tmp
 rm -rf opendata/json
-#wget -q http://data.assemblee-nationale.fr/static/openData/repository/LOI/amendements_legis/Amendements_XIV.json.zip -O Amendements_XIV.json.zip
-wget -q http://data.assemblee-nationale.fr/static/openData/repository/$LEGISLATURE/loi/amendements_legis/Amendements_XV.json.zip -O Amendements_OD.json.zip
+#wget -q https://data.assemblee-nationale.fr/static/openData/repository/LOI/amendements_legis/Amendements_XIV.json.zip -O Amendements_XIV.json.zip
+wget -q https://data.assemblee-nationale.fr/static/openData/repository/$LEGISLATURE/loi/amendements_legis/Amendements_XV.json.zip -O Amendements_OD.json.zip
 unzip Amendements_OD.json.zip -d opendata > /dev/null
 echo "Extracting list of Amendements from OpenData AN..."
 touch all_amdts_opendataAN.tmp
@@ -20,7 +20,7 @@ ls opendata/json | while read dossier; do ls opendata/json/$dossier | while read
    URL=`sed -r 's|^.*"numeroLong": "[I\-]*([^" ]+).*"prefixeOrganeExamen": "([^"]+)".*"urlDivisionTexteVise": "/(..)/textes/([^.]+)\.asp.*$|'$ANroot'\3/amendements/\4/\2/\1.asp\n|' $JSON`
    if ! echo $URL | grep $ANroot > /dev/null; then
     ID=`echo $JSON | sed -r 's|^.*/([^/]+)\.json$|\1|'`
-    URL=`curl -sIL "https://www.assemblee-nationale.fr/dyn/$LEGISLATURE/amendements/$ID" | grep 'location:' | tail -1 | sed 's/^.*https/http/' | sed 's|/dyn/|/|' | sed -r 's/^(.*).$/\1.asp/'`
+    URL=`curl -sIL "https://www.assemblee-nationale.fr/dyn/$LEGISLATURE/amendements/$ID" | grep 'location:' | tail -1 | sed 's/^.*http:/https:/' | sed 's|/dyn/|/|' | sed -r 's/^(.*).$/\1.asp/'`
    fi
    echo $URL
   done
@@ -29,7 +29,7 @@ rm -f Amendements_*.json*
 rm -rf opendata/json
 
 echo "Extracting list of Amendements from search engine AN..."
-searchurl="http://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&leg=$LEGISLATURE&idExamen=&idDossierLegislatif=&missionVisee=&numAmend=&idAuteur=&idArticle=&idAlinea=&sort=&dateDebut=&dateFin=&periodeParlementaire=&texteRecherche=&format=html&tri=ordreTexteasc&typeRes=liste&rows="
+searchurl="https://www2.assemblee-nationale.fr/recherche/query_amendements?typeDocument=amendement&leg=$LEGISLATURE&idExamen=&idDossierLegislatif=&missionVisee=&numAmend=&idAuteur=&idArticle=&idAlinea=&sort=&dateDebut=&dateFin=&periodeParlementaire=&texteRecherche=&format=html&tri=ordreTexteasc&typeRes=liste&rows="
 start=1
 total=$(curl -sL "${searchurl}5"|
   grep '"nb_resultats"'         |
@@ -40,7 +40,7 @@ while [ $start -lt $total ]; do
   curl -sL "${searchurl}1000&start=$start"      |
     grep '^\['                                  |
     sed 's/","/\n/g'                            |
-    sed 's/^.*|https:/http:/'                   |
+    sed 's/^.*|http:/https:/'                   |
     sed 's/|.*$//'                              |
     sed 's|\\/|/|g' >> all_amdts_searchAN.tmp
   start=$(($start + 1000))
@@ -57,6 +57,7 @@ echo 'SELECT source FROM amendement WHERE sort NOT LIKE "Rect%" ORDER BY source'
   sed -r 's|(/T?A?[0-9]{4}[A-Z]?/)([0-9]+\.asp)|\1AN/\2|'                           |
   grep -v "cr-cfiab/12-13/c1213068"                                                 |
   grep -v "source"                                                                  |
+  sed 's/http:/https:/'						                    |
   sed 's#/dyn/#/#'                                                                  |
   sed -r 's#([0-9])$#\1.asp#'                                                       |
   sort > all_amdts_nosdeputes.tmp
