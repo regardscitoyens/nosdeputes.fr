@@ -313,7 +313,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/(M[.me]+ )\1/\1/g;
 	$line =~ s/M . /M./g;
     if ($special) {
-        if ($line =~ /LCP/) {
+        if ($line =~ /LCP\|Répartition des questions au Gouvernement/) {
             $present = 0;
             next;
         }
