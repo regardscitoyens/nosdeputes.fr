@@ -97,7 +97,6 @@ class parlementaireActions extends sfActions
 
     $this->ministre = null;
     foreach ($this->parlementaire->getExtras() as $resp) {
-      print($resp->Organisme->nom." / ".$resp->fonction);
       if ($resp->Organisme->nom == "Gouvernement")
         $this->ministre = $resp->fonction;
     }
