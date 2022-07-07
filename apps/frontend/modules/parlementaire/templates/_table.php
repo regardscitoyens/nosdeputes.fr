@@ -17,14 +17,14 @@ if (isset($list)) {
         $fonction = "Ancien ".$fonction;
       } else if (preg_match('/[âa]ge$/i', $fonction))
         $age = true;
-      $fonction = preg_replace("/^(Ministre( auprès d[^,]*)?|Secrétaire d'État).*$/", "\\1", $fonction);
-      $fonction = preg_replace("/^(Ministre )auprès d.*$/", "\\1délégué", $fonction);
+      $fonction = preg_replace("/^(Ancien )?(Ministre( auprès d[^,]*)?|Secrétaire d'État).*$/", "\\1\\2", $fonction);
+      $fonction = preg_replace("/^(Ancien )?(Ministre )auprès d.*$/", "\\1\\2délégué", $fonction);
     } else {
       $pluriel = (count($deputes) > 1 ? "s" : "");
       $fonction = "Ancien député";
       $anciens = true;
     }
-    echo '<h3 class="aligncenter'.($anciens || $age ? " anciens" : "").'">'.ucfirst(preg_replace('/(avec|voix|d(u|e))s /', '\\1 ', (count($deputes) > 1 ? preg_replace('/(,)? /', 's\\1 ', (preg_match('/(spécial|général)/i', $fonction) ? preg_replace('/al$/', 'aux', $fonction) : $fonction)) : $fonction))).(count($deputes) > 1 && !preg_match('/(spécial|général|droit|bureau)$/i', $fonction) ? 's' : '').'</h3>';
+    echo '<h3 class="aligncenter'.($anciens || $age ? " anciens" : "").'">'.ucfirst(preg_replace('/(avec|voix|d(u|e))s /', '\\1 ', (count($deputes) > 1 ? preg_replace('/(,)? /', 's\\1 ', (preg_match('/(spécial|général)/i', $fonction) ? preg_replace('/al$/', 'aux', $fonction) : $fonction)) : $fonction))).(count($deputes) > 1 && !preg_match('/(spécial|général|droit|bureau|État)$/i', $fonction) ? 's' : '').'</h3>';
   }
   echo '<table summary="Députés'.(isset($lettre) ? ' dont le nom commence par '.$lettre : '').'"><tr>';
   $totaldep = count($deputes);

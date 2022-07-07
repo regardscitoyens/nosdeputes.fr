@@ -348,13 +348,15 @@ class parlementaireActions extends sfActions
       else $this->page = "rapports";
     } else $this->page = "seances";
     if ($this->page === "home") {
+      $duration = 10;
+      if ($this->orga->nom == "Gouvernement") $duration = 0;
       $query = Doctrine::getTable('Parlementaire')->createQuery('p')
         ->select('p.*, po.fonction as fonction, po.importance as imp, po.debut_fonction as debut_fonction, po.fin_fonction as fin_fonction')
         ->leftJoin('p.ParlementaireOrganisme po')
         ->leftJoin('po.Organisme o')
         ->where('o.slug = ?', $orga)
         ->andWhere('(p.fin_mandat IS NULL OR p.fin_mandat < p.debut_mandat)')
-        ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL 10 DAY) >= po.debut_fonction)')
+        ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL ? DAY) >= po.debut_fonction)', $duration)
         ->orderBy("po.fin_fonction, po.importance DESC, p.nom_de_famille ASC");
       $this->parlementaires = array();
       $this->total = 0;
@@ -375,7 +377,7 @@ class parlementaireActions extends sfActions
         ->where('o.slug = ?', $orga)
         ->andWhere('p.fin_mandat IS NOT NULL')
         ->andWhere('p.fin_mandat >= p.debut_mandat')
-        ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL 10 DAY) >= po.debut_fonction)')
+        ->andWhere('(po.fin_fonction IS NULL OR DATE_SUB(po.fin_fonction, INTERVAL ? DAY) >= po.debut_fonction)', $duration)
         ->orderBy('po.fin_fonction, po.importance DESC, p.nom_de_famille ASC');
       foreach ($query->execute() as $depute) {
         if (isset($this->parlementaires[-200])) $this->parlementaires[-200][] = $depute;
