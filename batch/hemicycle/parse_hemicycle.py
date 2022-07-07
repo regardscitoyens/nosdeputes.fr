@@ -17,6 +17,8 @@ def clean_all(text):
     text = text.replace("<br/>", " ")
     text = text.replace('\n', ' ')
     text = re.sub(r'\s+', ' ', text)
+    text = re.sub(r"\s*°–°\s*", " – ", text)
+    text = re.sub(r"([a-zA-Z])\s*(-|–)\s*NUPES", r"\1 – NUPES", text)
     return text.strip()
 
 def clean_intervenant(interv):
@@ -24,7 +26,7 @@ def clean_intervenant(interv):
     interv = re.sub(r'^(Mmes|MM\.) (.*? et )([A-LN-Z])', r'\1 \2\1 \3', interv)
     interv = re.sub(r'^MM?(\.|mes?)\s+', '', interv)
     # cleanup parenthesis from intervenant (groupe)
-    interv = re.sub(r'\s+\(\s*[A-Z][\w\s\-]+\)$', '', interv)
+    interv = re.sub(r'\s+\(\s*[A-ZÉ][\w\s\-–]+\)$', '', interv)
     interv = re.sub(r'([pP])lu[ise]{2,}urs', r'Plusieurs', interv)
     interv = interv.strip(", ")
     interv = re.sub(r"^et | et$", "", interv)

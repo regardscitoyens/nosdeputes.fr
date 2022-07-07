@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source ../../bin/db.inc 
+source ../../bin/init_pyenv38.sh 2> /dev/null
+
 mkdir -p html out loaded raw
 OLDURL=$1
 DEBUG=
