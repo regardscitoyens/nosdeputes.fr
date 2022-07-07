@@ -103,8 +103,8 @@ $Test->xsSetFontProperties("tahoma.ttf",12);
 $Test->drawTitle($xtitre,$ytitre,'Répartition '.$titre,50,50,50);
 $Test->xsSetFontProperties("tahoma.ttf",8);
 if (preg_match('/(section|seance_hemi)/', $plot)) {
-  $Test->drawTitle(160,147,'Temps de parole',50,50,50);
-  $Test->drawTitle(158,161,'(mots prononcés)',50,50,50);
+  $Test->drawTitle(152,135,'Temps de parole',50,50,50);
+  $Test->drawTitle(150,149,'(mots prononcés)',50,50,50);
 } else if ($isComm && $hasWords) {
   $Test->drawTitle(170,155,'Présents',50,50,50);
   $Test->drawTitle(352,147,'Temps de parole',50,50,50);
