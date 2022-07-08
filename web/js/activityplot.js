@@ -55,7 +55,7 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
     }
     all_weeks = Object.keys(all_weeks)
 
-    var week_width = (svg_width-margin_left)/(Object.keys(all_weeks).length);
+    var week_width = (svg_width-margin_left)/(all_weeks.length - 1);
 
     var titre, extra = "";
     if (data.fin)
@@ -99,7 +99,7 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
 
     // Scales
     timescale = d3.scaleTime()
-      .domain([get_last_monday(startdate), new Date(get_last_monday(enddate).getTime())])
+      .domain([get_last_monday(startdate), get_last_monday(enddate)])
       .range([margin_left, svg_width-2]);
     yscale = d3.scaleLinear()
       .domain([0, maxval])
@@ -176,8 +176,8 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
       .attr("d", d3.area()
         .curve(d3.curveStep)
         .x(function (x){return timescale(new Date(x));})
-        .y1(function (x){return yscale(maxval*vacances[x] || 0);})
         .y0(yscale(0))
+        .y1(function (x){return yscale(maxval*vacances[x] || 0);})
         (all_weeks)
       );
 
@@ -190,9 +190,9 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
       .enter()
       .append("rect")
       .classed('tooltip', true)
-      .attr('x', function (x){ return Math.max(margin_left, timescale(new Date(x)) - week_width); })
+      .attr('x', function (x){ return Math.max(margin_left, timescale(new Date(x)) - week_width/2); })
       .attr('y', yscale(maxval))
-      .attr('width', function(x, idx){ return (idx ? week_width : week_width); })
+      .attr('width', function(x, idx){ return (idx == 0 || idx == all_weeks.length - 1 ? week_width/2 : week_width); })
       .attr('height', yscale(0)-yscale(maxval))
       .attr("date", function (x){return x;})
       .on('mouseover', function (x, idx, rects){
