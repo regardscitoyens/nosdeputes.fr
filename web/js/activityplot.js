@@ -9,6 +9,16 @@ d3.timeFormat = d3.timeFormatLocale({
   "months": ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
   "shortMonths": ["Janv.", "Févr.", "Mars", "Avr.", "Mai", "Juin", "Juil.", "Août", "Sept.", "Oct.", "Nov.", "Déc."]
 }).format;
+d3.timeFormatShort = d3.timeFormatLocale({
+  "dateTime": "%A, le %e %B %Y, %X",
+  "date": "%d/%m/%Y",
+  "time": "%H:%M:%S",
+  "periods": ["AM", "PM"],
+  "days": ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"],
+  "shortDays": ["dim.", "lun.", "mar.", "mer.", "jeu.", "ven.", "sam."],
+  "months": ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"],
+  "shortMonths": ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"]
+}).format;
 
 // Returns a date corresponding to the week of 'day'.
 function get_last_monday(day) {
@@ -224,7 +234,7 @@ function plot_activity_data(url, divid, width, height, type, histogram) {
     svg.append("g")
       .classed('timeaxis', true)
       .attr("transform", "translate(0,"+(svg_height-margin_bottom)+")")
-      .call(d3.axisBottom(timescale).ticks(d3.timeMonth.every(data.fin ? 4 : 1)).tickFormat(d3.timeFormat("%b %y")))
+      .call(d3.axisBottom(timescale).ticks(d3.timeMonth.every(data.fin ? 4 : 1)).tickFormat(d3["timeFormat" + (all_weeks.length < 30 ? "Short" : "")]("%b %" + (data.fin ? "y" : "Y"))))
 
     svg.append('text')
       .attr('x', -svg_height/2 + 2)
