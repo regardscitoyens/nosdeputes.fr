@@ -116,9 +116,12 @@ def convert_format(data, extra = ''):
                     organe_json = json.load(organe_file)
                     res['organe_name'] = organe_json['organe']['libelle']
             if res.get('organe_name'):
-                auteurs.append(res['organe_name'])
+                organe_name = res['organe_name'] + " Organe"
             else:
-                auteurs.append(auteur['organe']['organeRef'])
+                organe_name = auteur['organe']['organeRef'] + " Organe"
+            if organe_name not in auteurs:
+                auteurs.append(organe_name)
+
 
     if data.get('coSignataires'):
         if not isinstance(data['coSignataires']['coSignataire'], list):
@@ -132,7 +135,7 @@ def convert_format(data, extra = ''):
                         acteur_json = json.load(acteur_file)
                         acteur = acteur_json['acteur']['etatCivil']['ident']['civ']+' '+acteur_json['acteur']['etatCivil']['ident']['prenom']+' '+acteur_json['acteur']['etatCivil']['ident']['nom']
                 res["deputes"]["coSignataires"].append([acteur_id, acteur, "Cosignataire"])
-                auteurs.append(acteur+ " Cosignataire")
+                auteurs.append(acteur + " Cosignataire")
             elif cosign.get('organe'):
                 organe_id = cosign['organe']['organeRef']
                 organe_name = organe_id
@@ -140,8 +143,14 @@ def convert_format(data, extra = ''):
                     with io.open("opendata/organe/"+organe_id+".json", encoding="utf-8", mode='r') as organe_file:
                         organe_json = json.load(organe_file)
                         organe_name = organe_json['organe']['libelle']
-                res["deputes"]["coSignataires"].append([organe_id, organe_name, "Organe"])
-                auteurs.append(organe_name)
+                organe_name = re.sub(r"Nouvelle Union Populaire écologique et sociale", "NUPES", organe_name, re.I)
+                organe_name = re.sub(r" \(membre de l’intergroupe NUPES\)", " - NUPES", organe_name, re.I)
+                organe_name = re.sub(r" \(modem et indépendants\)", "", organe_name, re.I)
+                orga_name = organe_name + " Organe"
+                if orga_name not in auteurs:
+                    res["deputes"]["coSignataires"].append([organe_id, organe_name, "Organe"])
+                    auteurs.append(orga_name)
+
     res["auteurs"] = ', '.join(auteurs)
 
     res["dossier"] = ''

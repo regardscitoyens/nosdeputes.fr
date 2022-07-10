@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source ../../bin/init_pyenv38.sh
+source ../../bin/init_pyenv38.sh 2> /dev/null
 url=$1
 output=$2
 

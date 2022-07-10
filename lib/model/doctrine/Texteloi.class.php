@@ -117,20 +117,22 @@ class Texteloi extends BaseTexteloi
   public function setAuteurs($signataires) {
     $debug=0;
     $this->signataires = $signataires;
-   //Set signatires, auteurs via PArlemnaitreTexteDocu et Organisme
+   //Set signataires, auteurs via ParlementaireTexteDocu et Organisme
     $orga = null;
     $sexe = null;
     $fonction = null;
-    $signataires = preg_replace("/(Auteur|Cosignataire|Rapporteur|Rapporteur Spécial), /", "\\1#", $signataires);
+    $signataires = preg_replace("/(Auteur|Cosignataire|Rapporteur|Rapporteur Spécial|Organe), /", "\\1#", $signataires);
     if ($debug) echo $this->source." : ".$signataires."\n";
     $signataires = preg_split('/#/', $signataires);
+    $groupes = array();
     foreach ($signataires as $depute) {
       if (preg_match('/^(M[\.mle]+)/', $depute, $match))
         continue;
-      if (preg_match('/^(.*)(\set apparentés)?\s+(Auteur|Cosignataire|Rapporteur)/', $depute, $match)) {
-        $orga = trim($match[1]).$match[2];
+      if (preg_match('/^(.*)\s+(Auteur|Cosignataire|Rapporteur|Organe)/', $depute, $match)) {
+        $orga = trim($match[1]);
         $organisme = Doctrine::getTable('Organisme')->findOneByNomType($orga, 'parlementaire');
-        if ($organisme) {
+    if ($debug) echo "$organisme->slug / $organisme->type\n";
+        if ($organisme && $organisme->type != "groupe") {
           $this->setOrganisme($organisme);
           if (!($this->type_details)) {
             $this->type_details = "de l";
@@ -144,13 +146,21 @@ class Texteloi extends BaseTexteloi
           $orga = $organisme->nom;
         } else {
           $groupe = Doctrine::getTable('Organisme')->findOneByNomType($orga, 'groupe');
-          if ($groupe) {
-            $this->setOrganisme($groupe);
-            $orga = " pour le groupe ".$orga;
+	  if ($groupe) {
+            $groupes[] = $groupe;
           }
         }
-        break;
       }
+    }
+    if (count($groupes) == 1) {
+      $this->setOrganisme($groupe);
+      $orga = " pour le groupe ".$groupe->nom;
+    } else if (count($groupes) > 1) {
+       $orga = " pour les groupes ";
+       $gpes = array();
+       foreach ($groupes as $g)
+	 $gpes[] = $g->getSmallNomGroupe();
+       $orga .= join(", ", $gpes);
     }
     foreach ($signataires as $depute) {
       if (preg_match('/^(M[\.mle]+)\s+(.*)\s+(Auteur|Cosignataire|Rapporteur Spécial|Rapporteur)/', $depute, $match)) {
@@ -195,7 +205,7 @@ class Texteloi extends BaseTexteloi
       $pd->_set('importance', 5);
     else print "ERREUR: fonction mauvaise pour ".$depute->nom." : ".$fonction;
     if ($organisme && $fonction != "Cosignataire") {
-      if (!(preg_match('/^ pour le groupe/', $organisme))) {
+      if (!(preg_match('/^ pour les? groupe/', $organisme))) {
         $fonction .= " pour l";
         if (preg_match('/^[aeiouyh]/i', $organisme))
           $fonction .= "'";
