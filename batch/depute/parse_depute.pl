@@ -110,7 +110,7 @@ foreach $line (split /\n/, $string) {
     $read = "profession";
   } elsif ($line =~ /<li class="allpadding">\s*([^<]*)\s*/i) {
     $depute{'collabs'}{$1} = 1;
-  } elsif ($line =~ /<dt>Suppléant<\/dt>/i) {
+  } elsif ($line =~ /<dt>\s*Suppléante?\s*<\/dt>/i) {
     $read = "suppleant";
   } elsif ($line =~ /<dt>Rattachement au titre du financement/i) {
     $read = "parti";
@@ -429,7 +429,7 @@ if ($yml) {
 }
 
 print "{";
-foreach $k (keys %depute) {
+foreach $k (sort(keys %depute)) {
   if (ref($depute{$k}) =~ /HASH/) {
     print '"'.lc($k).'": ['.join(", ", map { s/"/\\"/g; '"'.$_.'"' } keys %{$depute{$k}})."], ";
   } else {

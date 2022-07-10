@@ -21,3 +21,8 @@ for d in html/* ; do
     perl parse_depute.pl html/$ID > json/$ID.json
   fi
 done
+
+touch suppleants.csv
+rgrep suppleant json/ | sed 's/^.*"nom": "//' | sed 's/".*"suppleant": "/;/' | sed 's/".*$//' >> suppleants.new
+cat suppleants.csv suppleants.new | sort -u > suppleants.csv
+
