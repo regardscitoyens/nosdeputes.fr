@@ -2,13 +2,13 @@
 # -*- coding: utf8 -*-
 import sys
 import re
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, XMLParsedAsHTMLWarning
 import requests
 import base64
 import json
 import urllib
 import warnings
-warnings.filterwarnings('ignore', category=bs4.XMLParsedAsHTMLWarning)
+warnings.filterwarnings('ignore', category=XMLParsedAsHTMLWarning)
 
 mois2nmois = {'janvier': 1, 'février': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin':6, 'juillet': 7, 'août': 8, 'septembre': 9, 'octobre': 10, 'novembre': 11, 'décembre': 12}
 
@@ -109,6 +109,8 @@ def cleanhtml(s):
 
     reg_doubletag = re.compile(r'(</i> *<i>|</b> *<b>|<i> *</i>|<b> *</b>)')
     s = reg_doubletag.sub(r' ', s)
+    reg_doubletag = re.compile(r'\s*(</i>\s*-\s*<i>|</b>\s*-\s*<b>|<i>\s*-\s*</i>|<b>\s*-\s*</b>)\s*')
+    s = reg_doubletag.sub(r' - ', s)
 
     s = s.replace('<p >', '<p>')
 
@@ -508,7 +510,7 @@ def getIntervenantFonction(intervenant):
     if len(intervenantfonction) > 0 and not intervenantfonction[0][0].lower().find('président') >= 0:
         [intervenant, fonction] = intervenantfonction[0]
     # cleanup parenthesis from intervenant (groupe) after having separated fonction
-    intervenant = re.sub(r'\s+\(\s*[A-Z][\w\s\-]+\)$', '', intervenant)
+    intervenant = re.sub(r'\s+\(\s*[A-ZÉ][\w\s\-]+\)$', '', intervenant)
     prez = re.findall(r'([^,<]*président?c?e?(?: d\'âge)?|c?o?-?rapporteure?)[,;]? (..[^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
     if prez and prez[0][1].find('général') != 0:
         [fonction2, intervenant, fonction3] = prez[0]

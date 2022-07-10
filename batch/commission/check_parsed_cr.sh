@@ -11,7 +11,7 @@ DEPUTES=$(echo "SELECT nom from parlementaire
                    OR fin_mandat > '$DATE'"     |
           mysql $MYSQLID $DBNAME 2> /dev/null   |
           grep -v '^nom'                        |
-          sed 's/[\Wàâäéèêëîïôöùûüç]/./g'       |
+          sed 's/[\Wàâäéèêëîïôöùûüç\/]/./ig'    |
           sed 's/[ \-]/[ \\-]/g'                |
           tr '\n' '|'                           |
           sed 's/|$//')
@@ -57,6 +57,7 @@ grep -v '"intervenant": ""' $JSON   |
   sed 's/^.*"intervenant": "//'     |
   sed 's/",.*"fonction": "/\t\t|  /'|
   sed 's/".*$//'                    |
+  sed 's/[ÉÈÊË]/E/g' 		    |
   sort | uniq -c                    |
   grep -iP "$DEPUTES"
 echo "-------------"
@@ -65,6 +66,7 @@ grep -v '"intervenant": ""' $JSON   |
   sed 's/^.*"intervenant": "//'     |
   sed 's/",.*"fonction": "/\t\t|  /'|
   sed 's/".*$//'                    |
+  sed 's/[ÉÈÊË]/E/g' 		    |
   sort | uniq -c                    |
   grep -viP "$DEPUTES"
 echo "-------------"
