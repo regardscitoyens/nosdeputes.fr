@@ -10,6 +10,7 @@ class sendAlertTask extends sfBaseTask
     $this->addOption('env', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'prod');
     $this->addOption('app', null, sfCommandOption::PARAMETER_OPTIONAL, 'Changes the environment this task is run in', 'frontend');
     $this->addOption('verbose', null, sfCommandOption::PARAMETER_OPTIONAL, 'verbose (yes or no)', 'no');
+    $this->addOption('test', null, sfCommandOption::PARAMETER_OPTIONAL, 'do not send mails nor update database (yes or no)', 'no');
   }
 
   protected static $period = array('HOUR' => 3600, 'DAY' => 86400, 'WEEK' => 604800, 'MONTH' => 2592000);
@@ -21,6 +22,7 @@ class sendAlertTask extends sfBaseTask
     $context = sfContext::createInstance($this->configuration);
     $this->configuration->loadHelpers(array('Partial', 'Url'));
     $verbose = ($options['verbose'] == 'yes');
+    $test = ($options['test'] == 'yes');
     $bad_sections = Doctrine_Query::create()->select('id')->from('Section')->where('titre IS NULL OR titre LIKE "Ordre du jour%"')->fetchArray();
     $exclude_sections = array_map(function($v){ return '-id:Section/'.$v['id']; }, $bad_sections);
     $solr = new SolrConnector();
@@ -45,12 +47,16 @@ class sendAlertTask extends sfBaseTask
       $alerte->next_mail = date('Y-m-d H:i:s', $currenttime + self::$period[$alerte->period]);
       if (! $results['response']['numFound']) {
         if ($verbose) print "Save with no new result\n";
-        $alerte->save();
+        if (!$test) $alerte->save();
         continue;
       }
       echo "sending mail to : ".$alerte->email."\n";
       echo $alerte->titre."\n";
       $text = get_partial('mail/sendAlerteTxt', array('alerte' => $alerte, 'results' => $results, 'nohuman' => $alerte->no_human_query));
+      if ($test) {
+        echo $text."\n";
+        continue;
+      }
       $message = $this->getMailer()->compose(array('contact@regardscitoyens.org' => '"Regards Citoyens"'),
 					     $alerte->email,
 					     '[NosDeputes.fr] Alerte - '.$alerte->titre);
