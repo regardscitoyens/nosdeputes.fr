@@ -29,6 +29,7 @@ Une API a été développée pour offrir un accès Open Data simplifié aux donn
 
   - pour la 13ème législature : 2007-2012.nosdeputes.fr
   - pour la 14ème législature : 2012-2017.nosdeputes.fr
+  - pour la 15ème législature : 2017-2022.nosdeputes.fr
 
 - **Sénat :** les exemples donnés ci-dessous se réfèrent à NosDéputés.fr, mais vous pouvez utiliser l'API de NosSénateurs.fr suivant les mêmes schémas en remplaçant nosdeputes.fr par nossenateurs.fr dans chaque adresse.
 
@@ -124,7 +125,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Il est possible de récupérer les chiffres de la synthèse pour l'ensemble des députés actifs pour un mois donné en indiquant le mois concerné selon le format AAAAMM.
   
-  Exemple pour le mois d'avril 2018 : https://www.nosdeputes.fr/synthese/201804/xml
+  Exemple pour le mois de juillet 2022 : https://www.nosdeputes.fr/synthese/202207/xml
   
    **Attention :**
    
@@ -144,9 +145,9 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
 - **Liste des dossiers législatifs** (à partir de la 15<sup>ème</sup> législature uniquement pour l'Assemblée) :
 
-  - Triés dans l'ordre alphabétique : https://www.nosdeputes.fr/15/dossiers/nom/xml
-  - Triés du plus récent au plus ancien : https://www.nosdeputes.fr/15/dossiers/date/xml
-  - Triés du plus débattu au moins débattu : https://www.nosdeputes.fr/15/dossiers/plus/xml
+  - Triés dans l'ordre alphabétique : https://www.nosdeputes.fr/16/dossiers/nom/xml
+  - Triés du plus récent au plus ancien : https://www.nosdeputes.fr/16/dossiers/date/xml
+  - Triés du plus débattu au moins débattu : https://www.nosdeputes.fr/16/dossiers/plus/xml
 
   Par défaut, seuls les dossiers pour lesquels un dossier législatif identifié sur le site de l'Assemblée nationale a été rattaché sont renvoyés.
   L'option `?include=all` ajoutée à la fin des urls permet de lever cette limitation et de renvoyer absolument tous les dossiers (y compris les questions au gouvernement, changement d'ordre du jour, annonce de la prochaine séance, hommages, etc.).
@@ -155,7 +156,7 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
 
   Plus de détails sont disponibles pour chaque dossier : listes des documents associés, des séances, des intervenants et des sous-sections.
 
-  Par exemple : https://www.nosdeputes.fr/15/dossier/1/xml
+  Par exemple : https://www.nosdeputes.fr/16/dossier/1/xml
 
   *Note :* Comme les dossiers, ces accès peuvent être filtrés par dossier législatif en utilisant l'identifiant officiel du projet de loi sur les sites de l'institution retrouvable à la fin des urls dédiées, par exemple pour le projet de loi transparence :
     - à l'Assemblée : http://www.assemblee-nationale.fr/14/dossiers/transparence_vie_publique_pjl.asp -> `transparence_vie_publique_pjl` -> https://www.nosdeputes.fr/15/dossier/transparence_vie_publique_pjl/xml
