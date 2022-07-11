@@ -26,6 +26,11 @@ AN_ENTRYPOINTS = {
         "reunions": "reunions/reunions",
         "scrutins": "travaux-parlementaires/votes",
     },
+    "16": {
+        "amo": "acteurs/historique-des-deputes",
+        "reunions": "reunions/reunions",
+        "scrutins": "travaux-parlementaires/votes",
+    }
 }
 
 MODELS = {
@@ -219,6 +224,7 @@ def ref_groupes(legislature, ND_names=False):
     GROUPES_ND = {
         "UDI-AGIR": "UAI",
         "LAREM": "LREM",
+        "RE": "REN",
         "FI": "LFI"
     }
 
