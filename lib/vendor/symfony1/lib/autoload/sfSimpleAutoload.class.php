@@ -220,7 +220,7 @@ class sfSimpleAutoload
     {
       foreach ($dirs as $dir)
       {
-        if (false !== $key = array_search($dir, $this->dirs))
+        if ($dir && (false !== $key = array_search($dir, $this->dirs)))
         {
           unset($this->dirs[$key]);
           $this->dirs[] = $dir;
@@ -268,7 +268,7 @@ class sfSimpleAutoload
       return;
     }
 
-    if (in_array($file, $this->files))
+    if ($this->files && in_array($file, $this->files))
     {
       if ($this->cacheLoaded)
       {
