@@ -1,4 +1,4 @@
-<?php
+[?php
 
 /**
  * Plugin<?php echo $this->table->getOption('name') ?> form.

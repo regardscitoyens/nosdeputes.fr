@@ -98,7 +98,7 @@ abstract class sfGenerator
    */
   protected function replacePhpMarks($text)
   {
-    return str_replace(array('<?php', '[?=', '?>'), array('<?php', '<?php echo', '?>'), $text);
+    return str_replace(array('[?php', '[?=', '?]'), array('<?php', '<?php echo', '?>'), $text);
   }
 
   /**
