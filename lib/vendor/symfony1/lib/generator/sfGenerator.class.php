@@ -86,12 +86,12 @@ abstract class sfGenerator
     require($templateFile);
     $content = ob_get_clean();
 
-    // replace <?php and ?>
+    // replace php marks
     return $this->replacePhpMarks($content);
   }
 
   /**
-   * Replaces PHP marks by <?php ?>.
+   * Replaces PHP marks
    *
    * @param string $text The PHP code
    *
