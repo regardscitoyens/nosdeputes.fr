@@ -1,4 +1,4 @@
-<?php
+[?php
 
 /**
  * <?php echo $this->modelName ?> form base class.
