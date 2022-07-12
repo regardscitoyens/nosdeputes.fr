@@ -67,10 +67,6 @@ def clean_demandeur(d):
     return d.strip()
 
 MISSING_DEMANDEURS = {
-    "17": [u"Président du groupe Nouvelle Gauche"],
-    "43": [u"Président du groupe La France Insoumise"],
-    "153": [u"Président du groupe Les Républicains"],
-    "1573": [u"Président du groupe Gauche démocrate et républicaine", u"Président du groupe Nouvelle Gauche", u"Président du groupe La France Insoumise"]
 }
 def clean_demandeurs(demandeurs, numero):
     if not demandeurs:
@@ -119,54 +115,9 @@ def parse_scrutins(legislature, data):
             log("Scrutin %s mis à jour" % scrutin["numero"])
 
 ERREURS_AN = {
-   "120": "20172002", # instead of 20172001
-   "121": "20172002", # instead of 20172001
-   "334": "20180086", # instead of 20180085
-   "335": "20180086", # instead of 20180085
-   "336": "20180086", # instead of 20180085
-   "337": "20180086", # instead of 20180085
-   "361": "20180121", # instead of 20180120
-   "438": "20180174", # instead of 20180173
-   "1704": "20190153", # instead of 20190152
-   "1705": "20190153", # instead of 20190152
-   "1706": "20190153", # instead of 20190152
-   "1840": "20190218", # instead of 20190217
-   "2104": "20200003", # instead of null
-   "2105": "20200003", # instead of null
-   "2339": "20200092", # instead of null
-   "2340": "20200092", # instead of null
-   "2341": "20200092", # instead of null
-   "2342": "20200092", # instead of null
-   "2446": "20200140", # instead of 20200141
-   "2447": "20200140", # instead of 20200141
-   "2699": "20200176", # instead of null
-   "2700": "20200176", # instead of null
-   "2701": "20200176", # instead of null
-   "2702": "20200176", # instead of null
-   "2703": "20200176", # instead of null
-   "2704": "20200176", # instead of null
-   "2705": "20200176", # instead of null
 }
 
 MISSING_HISTOGPES = {
-    "PA721632": "UAI",
-    "PA719664": "LREM",
-    "PA722090": "LREM",
-    "PA342601": "UAI",
-    "PA342196": "SOC",
-    "PA719020": "LR",
-    "PA722240": "LREM",
-    "PA722082": "LREM",
-    "PA267337": "LREM",
-    "PA342240": "LR",
-    "PA721768": "LREM",
-    "PA721872": "LREM",
-    "PA643004": "UDI",
-    "PA719002": "LR",
-    "PA721666": "LR",
-    "PA774956": "LR",
-    "PA722280": "LR",
-    "PA774960": "SOC"
 }
 
 def parse_scrutin(data, seances, groupes, histo_groupes):
@@ -194,9 +145,6 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
     }
     if data["numero"] in ERREURS_AN:
         scrutin["seance"] = ERREURS_AN[data["numero"]]
-    # Temp fix
-    # elif scrutin["numero"] >= 2446 and scrutin["seance"] and scrutin["seance"].startswith("2020"):
-    #     scrutin["seance"] = str(int(scrutin["seance"]) - 1)
     if not scrutin["seance"]:
         logs.append("WARNING: scrutin %s has no seance %s" % (data["numero"], data["seanceRef"]))
     if not scrutin["demandeurs"]:
