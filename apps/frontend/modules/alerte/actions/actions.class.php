@@ -91,8 +91,8 @@ class alerteActions extends sfActions
   */
   public function executeResend(sfWebRequest $request)
   {
-    exit;
     $this->forward404Unless($alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
+    exit;
     $this->confirmeAlerte($alerte);
     $this->getUser()->setFlash('notice', 'Alerte réenvoyée');
     return $this->redirect("@homepage");
