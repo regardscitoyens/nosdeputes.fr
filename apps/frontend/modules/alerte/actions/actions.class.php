@@ -86,6 +86,18 @@ class alerteActions extends sfActions
     $this->response->setTitle("Modification d'une alerte e-mail");
   }
 
+/**
+  * Administrative task : remove exit when needed
+  */
+  public function executeResend(sfWebRequest $request)
+  {
+    exit;
+    $this->forward404Unless($alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());
+    $this->confirmeAlerte($alerte);
+    $this->getUser()->setFlash('notice', 'Alerte réenvoyée');
+    return $this->redirect("@homepage");
+  }
+
   public function executeConfirmation(sfWebRequest $request)
   {
     $this->forward404Unless($alerte = Doctrine::getTable('Alerte')->createQuery('a')->where('verif = ?', $request->getParameter('verif'))->fetchOne());

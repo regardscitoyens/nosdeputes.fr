@@ -500,6 +500,9 @@ alerte_delete:
 alerte_confirmation:
   url: /alerte/confirmation/:verif
   param: {module: alerte, action: confirmation}
+alerte_resend:
+  url: /alerte/resend/:verif
+  param: {module: alerte, action: resend}
 
 scrutins:
   url: /%LEGISLATURE%/scrutins
