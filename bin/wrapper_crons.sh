@@ -10,6 +10,7 @@ while [ -f /tmp/$tmpoutput ]; do
   tmpoutput=$tmpout-$ct
   ct=$(($ct + 1))
 done
+sleep 5
 
 "$@" >> /tmp/$tmpoutput 2>&1
 
