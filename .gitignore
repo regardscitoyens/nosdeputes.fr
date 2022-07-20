@@ -55,7 +55,9 @@ batch/commission/checkvideos/
 batch/common/opendata
 batch/depute/html/
 batch/depute/json/
+batch/depute/*.sql
 batch/depute/collabs.csv
+batch/depute/suppleants.csv
 batch/depute/twitter.csv
 batch/depute/finmandats.pm
 batch/depute/bureau.csv
