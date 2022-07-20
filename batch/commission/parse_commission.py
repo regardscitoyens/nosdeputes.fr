@@ -334,6 +334,7 @@ def intervention_video(p):
         if not len(video):
             url = re.findall(r'(https?://[^<"\']+)', p)
             response = requests_get(url[0])
+            response['url'] = response['url'].replace('Datas/an/portail/', '')
             video = re.findall(r'(https?://videos.assemblee-nationale.fr/video\.([^\.]*)(\.[^<"\']+|))', response['url'])
         try:
             videoid = video[0][1]
