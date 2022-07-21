@@ -8,6 +8,6 @@ foreach (myTools::getGroupesColorMap() as $acro => $col) {
   if ($synthese != " ") $synthese .= ", ";
   $synthese .= ".synthese .c_$acro";
 }
-echo $synthese." { padding-left: 2px; padding-right: 2px; color: #6F6F6F; };"
+echo $synthese." { padding: 1px 2px; color: #6F6F6F; };"
 ?>
 </style>

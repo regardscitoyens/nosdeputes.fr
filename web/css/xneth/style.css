@@ -343,9 +343,9 @@ a:hover {
 .synthese_div p {
   font-size: 14px;
 }
-.synthese th, .synthese td { border-right: 1px #FFFFFF solid; }
-.synthese td, .synthese tr { padding: 0px; margin: 0px, border: 0px; height: 25px; }
-.synthese td span.jstitle { display: block; height: 100%; padding-top: 5px; }
+.synthese td, .synthese th { padding: 0px; margin: 0px; text-align: center; border-right: 1px #FFFFFF solid; }
+.synthese td, .synthese tr { padding: 0px; margin: 0px; border: 0px; height: 25px; }
+.synthese td span.jstitle { display: grid; height: 100%; align-content: center}
 .synthese .p { width: 112px; }
 .synthese thead .p { width: 121px; }
 .synthese .we { width: 72px; }
@@ -1852,7 +1852,6 @@ h2 {
 .synthese tbody, .synthese thead {
   display: block;
 }
-.synthese td, .synthese th { padding: 0px; margin: 0px; text-align: center}
 .left {
   width: 48%;
   float: left;
