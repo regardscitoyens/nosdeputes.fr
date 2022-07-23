@@ -10,6 +10,19 @@ $file = shift;
 $yml = shift || 0;
 $display_text = shift;
 
+my %suppleants;
+
+open(FILE, "suppleants.csv");
+@suppleantslines = <FILE>;
+$suppleantslines = "@suppleantslines";
+close FILE;
+
+foreach $line (split /\n/, $suppleantslines) {
+  @vals = split /;/, $line;
+  $vals[1] =~ s/^M[me.]+\s*//;
+  $suppleants{trim($vals[0])} = lc(trim($vals[1]));
+}
+
 my %bureau;
 
 open(FILE, "bureau.csv");
@@ -410,6 +423,10 @@ if ($depute{"parti"}) {
     $depute{"parti"} .= "e";
   };
   $depute{"parti"} =~ s/ \(Debout la République\)//i;
+}
+
+if (!$depute{"suppleant"} && $suppleants{$depute{"nom"}}) {
+  $depute{"suppleant"} = $suppleants{$depute{"nom"}};
 }
 
 if ($yml) {
