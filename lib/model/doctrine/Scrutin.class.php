@@ -80,7 +80,7 @@ class Scrutin extends BaseScrutin
     $seance = $this->Seance;
     if (!$found) {
       throw new Exception(
-          "Scrutin {$this->numero} non trouvé dans les interventions "
+          "Scrutin {$this->numero} https://www2.assemblee-nationale.fr/scrutins/detail/(legislature)/".myTools::getLegislature()."/(num)/{$this->numero} non trouvé dans les interventions "
         . "de la séance {$seance->id} du {$seance->date} {$seance->moment}\n"
         . "{$source}\n"
         . "$info"

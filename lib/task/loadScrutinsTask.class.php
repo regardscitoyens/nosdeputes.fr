@@ -130,7 +130,7 @@ class loadScrutinsTask extends sfBaseTask
                          ->where("i.seance_id = ?", $seance->id)
                          ->andWhere("i.intervention LIKE '%nombre de votants%suffrages exprimés%pour%contre%' OR i.intervention LIKE '%Majorité requise pour l\'adoption%pour l\'adoption%'")
                          ->fetchOne();
-          echo "WARNING: séance {$seance->id} du {$seance->date} {$seance->moment} : {$scrutins} scrutins, {$tables} tableaux -> {$source->source}\n";
+          echo "WARNING: séance {$seance->id} https://www.nosdeputes.fr/".myTools::getLegislature()."/seance/{$seance->id} du {$seance->date} {$seance->moment} : {$scrutins} scrutins, {$tables} tableaux -> {$source->source}\n";
         }
       }
 
