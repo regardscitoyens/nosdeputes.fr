@@ -55,7 +55,7 @@ foreach($deputes as $depute) {
         echo '<span class="clearboth">';
         if (isset($depute->fin_fonction))
           echo 'du '.myTools::displayDate($depute->debut_fonction).' au '.myTools::displayDate($depute->fin_fonction);
-        else echo $depute->old_fonction;
+	else echo preg_replace('/^Ministre auprès.*/', 'Ministre délégué', preg_replace("/^(Secrétaire d'État).*/", '\1', preg_replace("/(,| et) d.*/", '', $depute->old_fonction)));
         echo '</span><br/>';
       }
       if (isset($circo)) {
