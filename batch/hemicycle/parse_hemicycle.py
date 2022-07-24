@@ -137,14 +137,18 @@ def xml2json(s):
                     qualite = p.orateurs.orateur.qualite.get_text().strip()
             intervention["intervenant"] = clean_intervenant(nom)
 
-            if p['id_mandat'] and p['id_mandat'] != "-1":
-                if p['id_acteur'] in ["PA606171", "PA1874"] and "CRSANR5L16S2022O1N169" in content_file:
-                    if nom.startswith("M."):
-                        p['id_acteur'] = "PA793362"
-                    elif nom.startswith("Mme"):
-                        p['id_acteur'] = "PA721908"
-                intervention["intervenant_url"] = "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_"+p['id_acteur']
-                intervenant2url[intervention["intervenant"]] = intervention['intervenant_url']
+            try:
+                if p['id_mandat'] and p['id_mandat'] != "-1":
+                    if p['id_acteur'] in ["PA606171", "PA1874"] and "CRSANR5L16S2022O1N169" in content_file:
+                        if nom.startswith("M."):
+                            p['id_acteur'] = "PA793362"
+                        elif nom.startswith("Mme"):
+                            p['id_acteur'] = "PA721908"
+                    intervention["intervenant_url"] = "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_"+p['id_acteur']
+                    intervenant2url[intervention["intervenant"]] = intervention['intervenant_url']
+            except:
+                print("ERROR: paragraph with missing id_mandat field in xml:", p, file=sys.stderr)
+                exit()
 
             existingfonction = intervenant2fonction.get(intervention["intervenant"])
             if qualite:
