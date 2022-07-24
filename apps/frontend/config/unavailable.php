@@ -8,7 +8,7 @@
 
     <title>NosDéputés.fr - Indisponibilité temporaire</title>
     <link rel="shortcut icon" href="/favicon.ico" />
-    <link rel="stylesheet" type="text/css" media="screen" href="/css/xneth/jquery-ui-1.8.5.custom.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/xneth/jquery-ui-1.8.24.min.css" />
     <link rel="stylesheet" type="text/css" media="screen" href="/css/xneth/style.css" />
 
     <link rel="stylesheet" type="text/css" media="print" href="/css/xneth/print.css" />
@@ -19,8 +19,8 @@
     img, div { behavior: url('/iepngfix/iepngfix.php') }
     </style>
     <![endif]-->
-	<script type="text/javascript" src="/js/jquery-1.6.2.min.js"></script>
-	<script type="text/javascript" src="/js/jquery-ui-1.8.5.custom.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-ui-1.8.24.min.js"></script>
 	<script type="text/javascript" src="/js/fonctions.js"></script>
   </head>
   <body>

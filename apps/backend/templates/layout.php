@@ -15,7 +15,7 @@
 	</script>
     <?php echo stylesheet_tag('/css/backend/style.css'); ?>
     <?php echo javascript_include_tag('jquery-1.8.3.min.js'); ?>
-    <?php echo javascript_include_tag('jquery-ui-1.8.5.custom.min.js'); ?>
+    <?php echo javascript_include_tag('jquery-ui-1.8.24.min.js'); ?>
     <?php echo javascript_include_tag('fonctions.js'); ?>
   </head>
   <body>
