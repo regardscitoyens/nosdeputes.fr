@@ -37,7 +37,7 @@ $gitversion = file_get_contents('../.git/' . trim(substr(file_get_contents('../.
 ?>
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="search" href="<?php echo $sf_request->getRelativeUrlRoot(); ?>/nosdeputesfr.xml" title="Rechercher sur NosDéputés.fr" type="application/opensearchdescription+xml" />
-    <?php echo stylesheet_tag($style.'/jquery-ui-1.8.5.custom.css'); ?>
+    <?php echo stylesheet_tag($style.'/jquery-ui-1.8.24.min.css'); ?>
     <?php echo stylesheet_tag($style.'/style.css?'.$gitversion); ?>
     <?php echo stylesheet_tag('fonts/liberation-sans.css'); ?>
     <?php echo stylesheet_tag($style.'/print', array('media' => 'print')); ?>
@@ -50,7 +50,7 @@ $gitversion = file_get_contents('../.git/' . trim(substr(file_get_contents('../.
     <![endif]-->
     <?php include_partial('parlementaire/cssCouleursGroupes'); ?>
     <?php echo javascript_include_tag('jquery-1.8.3.min.js'); ?>
-    <?php echo javascript_include_tag('jquery-ui-1.8.5.custom.min.js'); ?>
+    <?php echo javascript_include_tag('jquery-ui-1.8.24.min.js'); ?>
     <?php echo javascript_include_tag('fonctions.js?'.$gitversion); ?>
   </head>
   <body>
