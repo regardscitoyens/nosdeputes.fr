@@ -87,6 +87,7 @@ def cleanhtml(s):
     s = s.replace('&#xa0;', ' ')
 
     s = s.replace('&#039;', "'")
+    s = s.replace("&#x2011;", "-")
     s = s.replace('’', "'")
 
     reg_spaces = re.compile(r' (</(b|i)>)')
