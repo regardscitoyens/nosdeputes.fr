@@ -732,7 +732,7 @@ class Parlementaire extends BaseParlementaire
     return null;
   }
 
-  public function getNbMois($vacances=null, $onlylast=false) {
+  public function getNbSemaines($vacances=null, $onlylast=false) {
     if ($vacances === null) $vacances = myTools::getVacances();
     $debut = strtotime(myTools::getDebutLegislature());
     $fin = min($debut + (5*365-31)*24*3600, time());  # fin législature définie à 4 ans et 11 mois)
@@ -758,7 +758,34 @@ class Parlementaire extends BaseParlementaire
         }
       }
     }
-    return round($semaines*12/53);
+    return $semaines;
+  }
+
+  public function getNbMois($vacances=null, $onlylast=false) {
+    return round($this->getNbSemaines($vacances, $onlylast)*12/53);
+  }
+
+  public function getMinistreStatus() {
+    $sems = $this->getNbSemaines();
+    $ministre = null;
+    $ministre_fin_fonction = "2099-01-01";
+    $dur_sems = 0;
+    $extras = array_merge($this->getExtras(), $this->getExtras(true));
+    usort($extras, 'Parlementaire::historiqueSort');
+    foreach ($extras as $resp) {
+      if ($resp->Organisme->nom == "Gouvernement") {
+        if (!$ministre)
+          $ministre = $resp->fonction;
+        $sta = strtotime($resp->debut_fonction);
+        if ($resp->fin_fonction)
+          $end = strtotime($resp->fin_fonction);
+        else $end = time();
+        $dur_sems += ($end - $sta)/(3600*24*7);
+      }
+    }
+    if ($ministre && $sems - $dur_sems < 2)
+      return $ministre;
+    return null;
   }
 
   public function getMandatsLegislature() {

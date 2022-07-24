@@ -95,11 +95,7 @@ class parlementaireActions extends sfActions
         $this->main_fonction = ucfirst($resp->fonction);
     }
 
-    $this->ministre = null;
-    foreach ($this->parlementaire->getExtras() as $resp) {
-      if ($resp->Organisme->nom == "Gouvernement")
-        $this->ministre = $resp->fonction;
-    }
+    $this->ministre = $this->parlementaire->getMinistreStatus();
 
     $anciens_mandats = array();
     foreach (unserialize($this->parlementaire->getAnciensMandats()) as $m)

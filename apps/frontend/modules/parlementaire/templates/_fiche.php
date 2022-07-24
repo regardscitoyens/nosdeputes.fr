@@ -2,14 +2,14 @@
     <h2>Informations</h2>
       <ul>
         <?php if ($main_fonction) echo "<li><b>$main_fonction de l'Assemblée nationale</b></li>"; ?>
-        <?php if (!$parlementaire->isEnMandat()) { ?>
+        <?php if ($ministre) { ?>
+        <li><b>Mandot clos <?php if (!$parlementaire->isEnMandat()) echo "(".myTools::displayDate($parlementaire->debut_mandat).' -> '.myTools::displayDate($parlementaire->fin_mandat).") "; ?>: membre du Gouvernement<br/><?php echo $ministre; ?></b>
+        <?php } else if (!$parlementaire->isEnMandat()) { ?>
         <li><b>Mandat clos</b> rempli du <?php
 echo myTools::displayDate($parlementaire->debut_mandat).' au '.myTools::displayDate($parlementaire->fin_mandat);
 if ($cause = $parlementaire->getCauseFinMandat())
   echo " (".preg_replace("/^(.*sénat.*)$/i", link_to("\\1 &mdash; Voir sur NosSénateurs.fr", "https://www.nossenateurs.fr/".$parlementaire->slug), $parlementaire->getCauseFinMandat()).")";
         ?></li>
-        <?php } else if ($ministre) { ?>
-        <li><b>Mandot clos : membre du Gouvernement<br/><?php echo $ministre; ?></b>
         <?php } else { ?>
         <li>Mandat en cours depuis le <?php echo myTools::displayDate($parlementaire->debut_mandat); foreach ($missions as $resp) if (preg_match('/^Mission temporaire/', $resp->getNom())) { echo '<br/>&nbsp;(en cours de mission pour le gouvernement)'; break; } ?>
         </li>
