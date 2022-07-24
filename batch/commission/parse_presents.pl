@@ -53,11 +53,12 @@ $string =~ s/&#xa0;/ /g;
 if ($special && $url =~ /www2.assemblee/) {
   $commission = $special;
   $string =~ s/[\s\n]+/ /g;
+  $string =~ s/<footer.*$//;
   $string =~ s/Réunion (lun|mar|mercre|jeu|vendre)di du /Réunion du \1di /g;
   $string =~ s/[,\s]*<br[\/\s]*>[,\s]*/\n/g;
   $string =~ s/<\/?(p|h\d+|div)[^>]*>/\n<\1>/g;
   $string =~ s/((Excusé|Présent)[es\s]*:)\s*/\1\n/g;
-  $string =~ s/<script>.*?<\/script>//g;
+  $string =~ s/<script[^>]*>.*?<\/script>//g;
 }
 
 if ($raw) {
@@ -206,7 +207,7 @@ sub checkout {
 	$depute =~ s/^\s*M+([mes]+\s+|\.\s*|onsieur le |adame la |$)//;
 	$depute =~ s/[,\s\.\-;]+$//;
 	$depute =~ s/^[\s\.\-]+//;
-    $depute =~ s/(Assistaient également à la réunion|rapporteur\W*)//;
+    $depute =~ s/(Assistaient également(\s*:| à la réunion)?|rapporteur\W*)//;
 	$depute =~ s/Monica Michel$/Monica Michel-Brassart/;
 	$depute =~ s/Audrey Dufeu.?Schubert/Audrey Dufeu/;
 	$depute =~ s/Florence Lasserre.?David/Florence Lasserre/;
