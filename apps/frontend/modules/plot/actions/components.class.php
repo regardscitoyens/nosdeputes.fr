@@ -205,7 +205,7 @@ class plotComponents extends sfComponents
 
   public static function getVacancesAllMandats($n_weeks, $annee0, $sem0, $mandats) {
     $n_vacances = array_fill(1, $n_weeks, 0);
-    $n = 0;
+    $n = 1;
     $annee = $annee0;
     $sem = $sem0;
     foreach($mandats as $m) {
