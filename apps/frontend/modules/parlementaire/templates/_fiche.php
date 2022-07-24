@@ -26,7 +26,13 @@ if ($cause = $parlementaire->getCauseFinMandat())
         <?php endif;
         if ($parlementaire->parti) : ?>
         <li>Parti politique (rattachement financier) : <?php echo $parlementaire->parti; ?></li>
-        <?php endif; ?>
+        <?php endif;
+        $tz  = new DateTimeZone('Europe/Paris');
+        $age = DateTime::createFromFormat('Y-m-d', $parlementaire->date_naissance, $tz)
+          ->diff(new DateTime('now', $tz))
+          ->y;
+        ?>
+        <li>Né<?php if ($parlementaire->sexe == "F") echo 'e'; ?> le : <?php echo myTools::displayDate($parlementaire->date_naissance)." ($age ans)"; ?> à <?php echo $parlementaire->lieu_naissance; ?></li>
         <li>Profession : <?php if ($parlementaire->profession) : echo link_to($parlementaire->profession, myTools::get_solr_list_url($parlementaire->profession, '', 'Parlementaire', "profession=".myTools::solrize($parlementaire->profession))."&noredirect=1"); else : ?>Non communiquée<?php endif; ?></li>
         <li>Liens :
           <ul><?php
