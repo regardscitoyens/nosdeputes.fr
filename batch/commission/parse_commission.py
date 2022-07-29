@@ -233,6 +233,7 @@ def html2json(s):
         p_tags += extras.find_all(['p', 'h1', 'h2', 'h3', 'h3', 'table'], recursive=False)
 
     intervention = ''
+    infos_commission = False
     for p in p_tags:
         if p.get_attribute_list('class') and p.get_attribute_list('class')[0] and p.get_attribute_list('class')[0].find('Titre') > 0:
             new_intervention()
@@ -246,7 +247,7 @@ def html2json(s):
                 a.unwrap()
                 break
         b = p.find('b')
-        if b:
+        if b and not infos_commission:
             if (hasPrefixIntervenant(b.get_text()) and b.get_text() != p.get_text()) or (not b.get_text().find('amendement') and b.get_text().find(' (') and b.get_text()[-2:] == ').'):
                 new_intervention()
                 intervenant = b.get_text()
@@ -260,6 +261,8 @@ def html2json(s):
                         intervenant = b.get_text()
                         b.clear()
                         b.unwrap()
+        if "Informations relatives à la commission" in p.get_text():
+            infos_commission = True
         span_tags = p.find_all('span')
         for span in span_tags:
             span.unwrap()
@@ -284,7 +287,7 @@ def html2json(s):
         if p_str.find('<p>*</p>') == 0 :
             if intervenant:
                 new_intervention()
-        if p_str.find('<i>(') > 0 and p_str.find(')</i>') > 0 :
+        if p_str.find('<i>(') > 0 and p_str.find(')</i>') > 0 and not infos_commission:
             didascalie = re.findall(r'(.*)(<i>\([^)]*\)</i>)( *.? *</p>)', p_str)
             if didascalie:
                 intervention += didascalie[0][0] + didascalie[0][2]
@@ -294,7 +297,7 @@ def html2json(s):
                 new_intervention()
                 intervenant = oldintervenant
                 continue
-        elif p_str.find('<p><i>') == 0 and (p_str.find('></p>') > 0 or p_str.find('>.</p>') > 0):
+        elif not infos_commission and p_str.find('<p><i>') == 0 and (p_str.find('></p>') > 0 or p_str.find('>.</p>') > 0):
             if intervenant:
                 new_intervention()
             p_str = p_str.replace('<i>', '')
