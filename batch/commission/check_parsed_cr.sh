@@ -2,6 +2,11 @@
 
 JSON=$1
 
+if ! test -s $JSON; then
+  echo "There's nothing in $JSON :("
+  exit
+fi
+
 source ../../bin/db.inc
 DATE=$(head -1 $JSON            |
        sed 's/^.*"date": "//'   |
