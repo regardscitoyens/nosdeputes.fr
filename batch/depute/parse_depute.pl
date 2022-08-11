@@ -194,7 +194,7 @@ foreach $line (split /\n/, $string) {
         $site =~ s/(twitter.com\/)[\s@]+/\1/i;
         $site =~ s/(twitter.com\/.*)\?.*$/\1/i;
         # remove bad twitter accounts from AN
-        if ($site !~ /twitter.com\/(l_boyard)/i) {
+        if ($site !~ /twitter.com\/(l_boyard|mathilde desjonqR)/i) {
           $depute{'sites_web'}{$site} = 1;
         }
       }
