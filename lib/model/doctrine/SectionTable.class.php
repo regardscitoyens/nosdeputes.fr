@@ -27,6 +27,7 @@ class SectionTable extends Doctrine_Table
   }
 
   private static function cleanContexte($contexte) {
+    $contexte = preg_replace('/ë/', 'e', $contexte);
     $contexte = preg_replace('/û/', 'u', $contexte);
     $contexte = preg_replace('/[\/\|«»]/', '', strtolower($contexte));
     $contexte = preg_replace('/\&\#8217\;/', '\'', $contexte);
