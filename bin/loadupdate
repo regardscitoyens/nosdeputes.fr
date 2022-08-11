@@ -122,24 +122,27 @@ if [[ $questions -eq 2 ]]; then
         php symfony cc --env=test  --app=frontend > /dev/null
   done;
 fi
-echo == Load Hemicycle
+echo == Hemicycle to check
 echo =======================
-while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do
-	php symfony cc --env=test  --app=frontend > /dev/null
-	php symfony load:Hemicycle
-done;
-echo "== Load Commissions : http://www.nosdeputes.fr/backend.php/commissions"
+ls batch/hemicycle/out
+#while ls batch/hemicycle/out | grep [a-z] > /dev/null ; do
+#	php symfony cc --env=test  --app=frontend > /dev/null
+#	php symfony load:Hemicycle
+#done;
+echo "== Commissions to check : http://www.nosdeputes.fr/backend.php/commissions"
 echo =======================
-while ls batch/commission/out | grep [a-z] > /dev/null ; do
-	php symfony cc --env=test  --app=frontend > /dev/null
-	php symfony load:Commission
-done;
+ls batch/commission/out
+#while ls batch/commission/out | grep [a-z] > /dev/null ; do
+#	php symfony cc --env=test  --app=frontend > /dev/null
+#	php symfony load:Commission
+#done;
 echo "== Load Présences en Commissions"
 echo =======================
 while ls batch/commission/presents | grep [a-z] > /dev/null ; do
         php symfony cc --env=test  --app=frontend > /dev/null
         php symfony load:JO --source=cri
 done;
+find batch/commission/presents -type f
 echo == Load Amendements
 echo =======================
 while ls batch/amendements/json | grep [a-z] > /dev/null ; do
