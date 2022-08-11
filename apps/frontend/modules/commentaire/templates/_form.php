@@ -5,9 +5,10 @@
   </tr>
   <tr>
     <td colspan="3">
-      <?php echo $form['commentaire']->renderError(); ?>
-      <?php if (myTools::isCommentairesLocked()) echo '<p class="flash_error">Pour raisons techniques, le dépôt des commentaires est momentanément désactivé.</p>'; ?>
-      <?php echo $form['commentaire']->render(); ?>
+      <?php echo $form['commentaire']->renderError();
+      if (myTools::isCommentairesLocked()) echo '<p class="flash_error">'.(myTools::isFinLegislature() ? 'Cette législature étant désormais achevée, les commentaires sont désactivés.<br/>Vous pouvez commenter les travaux des nouveaux députés sur le <a href="https://www.nosdeputes.fr">NosDéputés.fr de la législature en cours</a>' : 'Pour raisons techniques, le dépôt des commentaires est momentanément désactivé').'.</p></td></tr>';
+      else {
+        echo $form['commentaire']->render(); ?>
     </td>
   </tr>
   <?php if (!$sf_user->isAuthenticated()) { ?>
@@ -67,5 +68,6 @@
       <?php endif; ?>
     </td>
   </tr>
+  <?php } ?>
 </table>
 </form>
