@@ -27,6 +27,7 @@ def clean_intervenant(interv):
     interv = re.sub(r'^MM?(\.|mes?)\s+', '', interv)
     # cleanup parenthesis from intervenant (groupe)
     interv = re.sub(r'\s+\(\s*[A-ZÉ][\w\s\-–]+\)$', '', interv)
+    interv = re.sub(r'\s+\(\s*non[ \-]*inscrite?\s*\)$', '', interv, re.I)
     interv = re.sub(r'([pP])lu[ise]{2,}urs', r'Plusieurs', interv)
     interv = interv.strip(", ")
     interv = re.sub(r"^et | et$", "", interv)
