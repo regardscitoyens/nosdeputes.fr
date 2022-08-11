@@ -11,9 +11,11 @@ DEPUTES=$(echo "SELECT nom from parlementaire
                    OR fin_mandat >= '$DATE'"    |
           mysql $MYSQLID $DBNAME                |
           grep -v '^nom'                        |
-          sed 's/\W/./g'                        |
+          sed 's/[\Wàâäéèêëîïôöùûüç\/]/./ig'    |
+          sed 's/[ \-]/[ \\-]/g'                |
           tr '\n' '|'                           |
           sed 's/|$//')
+
 date=$(head -1 $JSON                |
   sed 's/^.*"date": "/\nDATE:    /' |
   sed 's/", .*"heure": "/ - /'      |
