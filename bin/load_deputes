@@ -17,6 +17,8 @@ curl -sL https://www2.assemblee-nationale.fr/layout/set/ajax/content/view/embed/
   fi
  done
 ./parse_tous.sh
+rm -rf loaded
+cp -r json loaded
 cd ../..
 php symfony update:Deputes 
 echo "UPDATE parlementaire_organisme JOIN parlementaire p ON p.id = parlementaire_id SET fin_fonction = p.fin_mandat WHERE fin_fonction IS NULL AND p.fin_mandat IS NOT NULL" | mysql $MYSQLID $DBNAME
