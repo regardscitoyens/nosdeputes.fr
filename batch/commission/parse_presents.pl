@@ -146,7 +146,7 @@ if ($raw == 1) {
   }
 }
 
-if ($special && $string =~ />(?:Décisions (?:de Questure )?de la )?(?:Décisions|[Rr]éunion) (?:de Questure )?du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)?/) {
+if ($special && $string =~ />(?:Relevé de )?(?:[dD]écisions (?:de Questure )?de la )?(?:Décisions|[Rr]éunion) (?:de Questure )?du (\w+\s+)?(\d+)[erme]*\s+([^\s\d]+)\s+(\d+)?/) {
   if ($4 eq "") {
     $year = $today->year;
   } else {
