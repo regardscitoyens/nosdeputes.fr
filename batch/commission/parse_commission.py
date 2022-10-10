@@ -287,6 +287,7 @@ def html2json(s):
         if p_str.find('<p>*</p>') == 0 :
             if intervenant:
                 new_intervention()
+        has_video = p_str.find('videos.assemblee-nationale.fr') >= 0 or p_str.find('assnat.fr') >= 0
         if p_str.find('<i>(') > 0 and p_str.find(')</i>') > 0 and not infos_commission:
             didascalie = re.findall(r'(.*)(<i>\([^)]*\)</i>)( *.? *</p>)', p_str)
             if didascalie:
@@ -297,7 +298,7 @@ def html2json(s):
                 new_intervention()
                 intervenant = oldintervenant
                 continue
-        elif not infos_commission and p_str.find('<p><i>') == 0 and (p_str.find('></p>') > 0 or p_str.find('>.</p>') > 0):
+        elif not has_video and not infos_commission and p_str.find('<p><i>') == 0 and (p_str.find('></p>') > 0 or p_str.find('>.</p>') > 0):
             if intervenant:
                 new_intervention()
             p_str = p_str.replace('<i>', '')
@@ -319,7 +320,7 @@ def html2json(s):
         if br:
             br.unwrap()
         p = str(p)
-        if p.find('videos.assemblee-nationale.fr') >= 0 or p.find('assnat.fr') >= 0 :
+        if has_video:
             intervention += p
             new_intervention()
             source_backup = source
