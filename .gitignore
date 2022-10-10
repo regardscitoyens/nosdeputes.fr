@@ -28,6 +28,7 @@ lib/vendor/SolrServer/solr/data/
 cache/
 log/
 
+batch/*.tar.gz
 batch/amendements/commission/
 batch/amendements/errors/
 batch/amendements/html/
@@ -55,6 +56,7 @@ batch/commission/checkvideos/
 batch/common/opendata
 batch/depute/html/
 batch/depute/json/
+batch/depute/loaded/
 batch/depute/*.sql
 batch/depute/collabs.csv
 batch/depute/suppleants.csv
