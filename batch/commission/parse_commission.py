@@ -345,7 +345,7 @@ def intervention_video(p):
             videoid = video[0][1]
             urlvideo = video[0][0]
             urlvideo = re.sub('\??timecode=\d*', '', urlvideo)
-            if len(urlvideo) >= 170:
+            if len(urlvideo) >= 150:
                 urlvideo = re.sub(r'(/video\.[^\.]*)\.[^?]*', r'\1', urlvideo)
             urlvideo_meta = "https://videos.assemblee-nationale.fr/Datas/an/%s/content/data.nvs" % videoid
             urlvideotimestamp = "https://videos.assemblee-nationale.fr/Datas/an/%s/content/finalplayer.nvs" % videoid
