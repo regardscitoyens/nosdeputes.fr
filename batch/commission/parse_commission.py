@@ -524,13 +524,14 @@ def getIntervenantFonction(intervenant):
         [intervenant, fonction] = intervenantfonction[0]
     # cleanup parenthesis from intervenant (groupe) after having separated fonction
     intervenant = re.sub(r'\s+\(\s*[A-ZÉ][\w\s\-]+\)$', '', intervenant)
-    prez = re.findall(r'([^,<]*président?c?e?(?: d\'âge)?|c?o?-?rapporteure?)[,;]? (..[^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
-    if prez and prez[0][1].find('général') != 0:
+    prez = re.findall(r'([^,<]*président?c?e?(?: d\'âge)?|c?o?-?rapporteure?(?: générale?)?)[,;]? (..[^\.,;]*)([,;] [^\.]*)?', intervenant, re.IGNORECASE)
+    if prez:
         [fonction2, intervenant, fonction3] = prez[0]
         if fonction:
             fonction = fonction2 + ', ' + fonction + fonction3
         else:
             fonction = fonction2 + fonction3
+    intervenant = intervenant.rstrip(" (")
     intervenant = re.sub(r"^M[.me]+ ", "", intervenant, re.I)
     intervenant = re.sub(r"Monica Michel$", "Monica Michel-Brassart", intervenant, re.I)
     intervenant = re.sub(r"Audrey Dufeu.?Schubert", "Audrey Dufeu", intervenant, re.I)
