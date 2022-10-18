@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source ../../bin/init_pyenv27.sh
+. ../../bin/db.inc
+
 mkdir -p html json loaded
 
 AMDTFILE=$(perl download_one.pl $1 | awk '{print $1}')

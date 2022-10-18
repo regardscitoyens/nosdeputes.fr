@@ -77,7 +77,7 @@ class Amendement extends BaseAmendement {
       if (preg_match('/(membres| groupe |gouvernement|républicain|président|rapporteur|commission|délégation|questeur|apparentés|rattachés|collègues)/i', $depute)) {
         if ($debug) print "WARN: Skip auteur ".$depute." for ".$this->source."\n";
         continue;
-      } elseif (preg_match('/^\s*(M[Mmles]*)[\.\s]+(\w.*)\s*$/', $depute, $match)) {
+      } elseif (preg_match('/^\s*(M[Mmles]*)[\.\s]+([\wÉ].*)\s*$/', $depute, $match)) {
           $nom = $match[2];
           if (preg_match('/[el]/', $match[1]))
             $sexe = 'F';
