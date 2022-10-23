@@ -42,9 +42,9 @@ def convert_format(data, extra = ''):
                 res['annexe'] = 'B'
             for annexe in annexes[1:]:
                 try:
-                    res['annexe'] += re.sub('[0-9ivx]*$', '', annexe, flags=re.IGNORECASE) + str(int(re.sub('^[^ivx]', '', annexe, flags=re.IGNORECASE)))
+                    res['annexe'] += re.sub('[0-9ivx]*$', '', annexe, flags=re.IGNORECASE) + str(int(re.sub('^[a-z]+', '', annexe, flags=re.IGNORECASE)))
                 except:
-                    res['annexe'] += re.sub('[0-9ivx]*$', '', annexe, flags=re.IGNORECASE) + romain2num[re.sub('^[^ivx]', '', annexe, flags=re.IGNORECASE)]
+                    res['annexe'] += re.sub('[0-9ivx]*$', '', annexe, flags=re.IGNORECASE) + romain2num[re.sub('^[^ivx]+', '', annexe, flags=re.IGNORECASE)]
             res["categorie"] = data['titres']['titrePrincipal']
 
     if data['classification'].get('statutAdoption') == 'ADOPTCOM' and data['classification']['type']['code'] != 'RAPP':
