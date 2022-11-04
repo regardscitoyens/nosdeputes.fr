@@ -55,7 +55,7 @@ class Scrutin extends BaseScrutin
       $text = $inter->intervention;
       if (!$source) $source = $inter->source;
       $mv = preg_match_all('/nombre de votants(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_votant);
-      $mp = preg_match_all('/pour l(?:\'adoption|\'approbation|a suspension)(?:<\/td><td>|[,\s]*)(\d+)\D/i', $text, $match_pour);
+      $mp = preg_match_all('/pour l(?:\'adoption|\'approbation|a suspension)(?:<\/td><td>|[,\s:]*)(\d+)\D/i', $text, $match_pour);
       $mc = preg_match_all('/contre(?:<\/td><td>|[,\s]*)(\d+)/i', $text, $match_contre);
 
       if (preg_match("/Majorité (absolue|requise pour l'adoption)/", $text) && $mp != 0 && intval(end($match_pour[1])) == $this->nombre_votants && intval(end($match_pour[1])) == $this->nombre_pours) {
