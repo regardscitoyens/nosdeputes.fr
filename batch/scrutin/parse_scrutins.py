@@ -118,6 +118,7 @@ ERREURS_AN = {
 }
 
 MISSING_HISTOGPES = {
+  "PA793528": "REN",
 }
 
 def parse_scrutin(data, seances, groupes, histo_groupes):
@@ -147,7 +148,7 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
         scrutin["seance"] = ERREURS_AN[data["numero"]]
     if not scrutin["seance"]:
         logs.append("WARNING: scrutin %s has no seance %s" % (data["numero"], data["seanceRef"]))
-    if not scrutin["demandeurs"]:
+    if not scrutin["demandeurs"] and not scrutin["titre"].startswith("la motion de censure"):
         logs.append("WARNING: scrutin %s has no demandeurs %s" % (data["numero"], data["demandeur"]))
 
     delegations = 0

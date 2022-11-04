@@ -180,6 +180,7 @@ def xml2json(s):
         t_string = re.sub(r'\s*</?italique>\s*((bis|ter|qua|quinqu|sex|sept|oct|non|ies)+)\s*</?italique>\s*', r' \1 ', t_string)
         t_string = t_string.replace('<italique>', '<i>')
         t_string = t_string.replace('</italique>', '</i>')
+        t_string = re.sub(r'n</i>[°\s\r\n]*(<exposant>[os]+</exposant>[\s\r\n]*)+<i>', 'n° ', t_string)
         # Cleanup <i> markups when we can
         t_string = re.sub(r'\s*<i>\s*([,.])\s*\(\s*', r'\1 <i>(', t_string)
         t_string = re.sub(r'\s*\(\s*<i>\s*', ' <i>(', t_string)
