@@ -294,7 +294,7 @@ def html2json(s):
         if p_str.find('<p>*</p>') == 0 :
             if intervenant:
                 new_intervention()
-        has_video = p_str.find('videos.assemblee-nationale.fr') >= 0 or p_str.find('assnat.fr') >= 0
+        has_video = p_str.find('videos.assemblee-nationale.fr') >= 0 or p_str.find('assnat.fr') >= 0 or p_str.find('assemblee-nationale.fr/video') >= 0
         if p_str.find('<i>(') > 0 and p_str.find(')</i>') > 0 and not infos_commission:
             didascalie = re.findall(r'(.*)(<i>\([^)]*\)</i>)( *.? *</p>)', p_str)
             if didascalie:
@@ -347,7 +347,7 @@ def intervention_video(p):
             url = re.findall(r'(https?://[^<"\']+)', p)
             response = requests_get(url[0])
             response['url'] = response['url'].replace('Datas/an/portail/', '')
-            video = re.findall(r'(https?://videos.assemblee-nationale.fr/video\.([^\.]*)(\.[^<"\']+|))', response['url'])
+            video = re.findall(r'(https?://[^.]+.assemblee-nationale.fr/video\.([^\.]*)(\.[^<"\']+|))', response['url'])
         try:
             videoid = video[0][1]
             urlvideo = video[0][0]
