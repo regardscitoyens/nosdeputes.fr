@@ -43,6 +43,10 @@ def cleanhtml(s):
     reg_del = re.compile(r'<ins[^>]*>(.*)</ins>')
     s = reg_del.sub(r'\1', s)
 
+    reg_ul = re.compile(r'</?ul[^>]*>')
+    s = reg_ul.sub('', s)
+    reg_li = re.compile(r'<li style=[^>]*>[\s\r\n]*(.*?)[\s\r\n]*</li>')
+    s = reg_li.sub(r'<p>\1</p>', s)
     reg_center = re.compile(r'<p [^>]*text-align:center[^>]*>(.*)</p>')
     s = reg_center.sub(r'<p><i>\1</i></p>', s)
     reg_bold = re.compile(r'(<p [^>]*)class=.assnatRubrique2.([^>]*>)\s*(.*?)\s*</p>')
