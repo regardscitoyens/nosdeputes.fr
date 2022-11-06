@@ -10,6 +10,7 @@ $|=1;
 $verbose = shift || 0;
 %done = ();
 $done{'http://www.senat.fr/senateur/ginesta_georges15447f.html'} = 1;
+$done{'http://www.senat.fr/senateur/dubois_emile000322.html'} = 1;
 sub download_fiche {
 	$uri = shift;
 	return if ($done{$uri});
