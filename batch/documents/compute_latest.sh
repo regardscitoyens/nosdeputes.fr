@@ -10,3 +10,5 @@ perl download_docs.pl $LEGISLATURE | while read url ; do
   echo $url
   bash parse_url_from_opendata.sh "$url"
 done;
+
+bash check_missing_docs.sh

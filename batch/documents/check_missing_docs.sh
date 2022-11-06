@@ -9,12 +9,12 @@ seq 10 | while read i; do
   curl -ksL "https://www2.assemblee-nationale.fr/documents/liste/(ajax)/1/(offset)/$i/(limit)/1000/(type)/depots/(legis)/$LEGISLATURE/(no_margin)/false" >> /tmp/alldocs_an
 done
 
-grep 'data-id=\|<h3>.*N°&\|</i> Document</a>' /tmp/alldocs_an |
- tr "\n" " "                                                  |
- sed 's/<\/a>/\n/g'                                           |
- sed 's/^.*<li data-id="OMC_//'                               |
- sed 's/">.*N°&nbsp;/ ; /'                                    |
- sed 's/<\/h3.*href="/ ; /'                                   |
+grep 'data-id=\|<h3>.*N°&\|<a href=".*old.*"><i' /tmp/alldocs_an |
+ tr "\n" " "                                                     |
+ sed 's/<i/\n/g'                                                 |
+ sed 's/^.*<li data-id="OMC_//'                                  |
+ sed 's/">.*N°&nbsp;/ ; /'                                       |
+ sed 's/<\/h3.*href="/ ; /'                                      |
  sed 's/">.*$//' > /tmp/alldocs_an.csv
 
 cat /tmp/alldocs_an.csv | awk '{print $3}' | sort -un > /tmp/alldocs_an.nums
