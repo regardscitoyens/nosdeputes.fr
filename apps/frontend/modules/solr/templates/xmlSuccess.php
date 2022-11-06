@@ -1,4 +1,4 @@
-<?php if (!$tags) : ?>
+<?php if (!$tags) { ?>
 <search>
 <start><?php echo $results['start'] + 1; ?></start>
 <end><?php if ($results['numFound'] == $results['end'] - 1) echo $results['end'] - 1; else echo $results['end']; ?></end>
@@ -14,7 +14,7 @@ foreach ($results['docs'] as $record)
   echo "</result>\n";
 }
 ?></results></search>
-<? return ; endif; ?>
+<?php } else { ?>
 <search>
 <tags>
 <?php
@@ -23,6 +23,6 @@ foreach(array_keys($facet) as $k)
     foreach($facet[$k]['values'] as $value => $nb)
      if ($nb)
        echo "<tag><type>$k</type><nom>$value</nom><nb>$nb</nb></tag>\n";
-
 ?></tags>
 </search>
+<?php } ?>
