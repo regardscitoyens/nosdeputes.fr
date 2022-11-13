@@ -442,7 +442,7 @@ def new_intervention():
     intervention = intervention.replace('<p> </p>', '')
     intervention = intervention.replace('<p>. ', '<p>')
 
-    intervention = re.sub(r'<a id="[^"]*">([^<]*)</a>', r'\1 ', intervention)
+    intervention = re.sub(r'<a id="[^"]*">(.*?)</a>', r'\1 ', intervention)
     intervention = re.sub(r'([^> ])<b>', r'\1 <b>', intervention)
     intervention = re.sub(r'</b>([^< \.,])', r'</b> \1', intervention)
     intervention = re.sub(r'([^> ])<i>', r'\1 <i>', intervention)
