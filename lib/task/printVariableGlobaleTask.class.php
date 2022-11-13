@@ -13,7 +13,7 @@ class printVariableGlobaleTask extends sfBaseTask {
   protected function execute($arguments = array(), $options = array()) {
     $manager = new sfDatabaseManager($this->configuration);
     $option = Doctrine::getTable('VariableGlobale')->findOneByChamp($arguments['variable']);
-    if ($option) print_r(unserialize($option->getValue()));
+    if ($option) print_r($option->getValue());
   }
 }
 

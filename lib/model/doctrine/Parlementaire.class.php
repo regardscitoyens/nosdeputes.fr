@@ -258,13 +258,31 @@ class Parlementaire extends BaseParlementaire
   }
 
   public function setAutresMandats($array) {
-    $this->_set('autres_mandats', serialize($array));
+    $this->_set('autres_mandats', json_encode($array));
+  }
+  public function getAutresMandats($raw = false) {
+    if ($raw) {
+        return $this->_get('autres_mandats');
+    }
+    return VariableGlobale::json_decode_or_unserialize($this->_get('autres_mandats'));
   }
   public function setAnciensMandats($array) {
-    $this->_set('anciens_mandats', serialize($array));
+    $this->_set('anciens_mandats', json_encode($array));
+  }
+  public function getAnciensMandats($raw = false) {
+    if ($raw) {
+        return $this->_get('anciens_mandats');
+    }
+    return VariableGlobale::json_decode_or_unserialize($this->_get('anciens_mandats'));
   }
   public function setAnciensAutresMandats($array) {
-    $this->_set('anciens_autres_mandats', serialize($array));
+    $this->_set('anciens_autres_mandats', json_encode($array));
+  }
+  public function getAnciensAutresMandats($raw = false) {
+    if ($raw) {
+        return $this->_get('anciens_autres_mandats');
+    }
+    return VariableGlobale::json_decode_or_unserialize($this->_get('anciens_autres_mandats'));
   }
   public function setSuppleantDe($nom) {
     if ($p = doctrine::getTable('Parlementaire')->findOneByNomSexeGroupeCirco($nom))
@@ -274,16 +292,49 @@ class Parlementaire extends BaseParlementaire
     return doctrine::getTable('Parlementaire')->findOneBySuppleantDeId($this->id);
   }
   public function setCollaborateurs($array) {
-    $this->_set('collaborateurs', serialize($array));
+    $this->_set('collaborateurs', json_encode($array));
+  }
+  public function getCollaborateurs($raw = false) {
+    if ($raw) {
+        return $this->_get('collaborateurs');
+    }
+    return VariableGlobale::json_decode_or_unserialize($this->_get('collaborateurs'));
   }
   public function setMails($array) {
-    $this->_set('mails', serialize($array));
+    $this->_set('mails', json_encode($array));
+  }
+  public function getMails($raw = false) {
+    if ($raw) {
+        return $this->_get('mails');
+    }
+    return VariableGlobale::json_decode_or_unserialize($this->_get('mails'));
   }
   public function setSitesWeb($array) {
-    $this->_set('sites_web', serialize($array));
+    $this->_set('sites_web', json_encode($array));
+  }
+  public function getSitesWeb($raw = false) {
+    if ($raw) {
+        return $this->_get('sites_web');
+    }
+    return VariableGlobale::json_decode_or_unserialize($this->_get('sites_web'));
   }
   public function setAdresses($array) {
-    $this->_set('adresses', serialize($array));
+    $this->_set('adresses', json_encode($array));
+  }
+  public function getAdresses($raw = false) {
+    if ($raw) {
+        return $this->_get('adresses');
+    }
+    return VariableGlobale::json_decode_or_unserialize($this->_get('adresses'));
+  }
+  public function setTop($array) {
+    $this->_set('top', json_encode($array));
+  }
+  public function getTop($raw = false) {
+    if ($raw) {
+        return $this->_get('top');
+    }
+    return VariableGlobale::json_decode_or_unserialize($this->_get('top'));
   }
   public function getGroupe() {
     foreach($this->getOrganismes() as $po) {
@@ -714,10 +765,6 @@ class Parlementaire extends BaseParlementaire
     else return 0;
   }
 
-  public function getTop() {
-    return unserialize($this->_get('top'));
-  }
-
   public function isEnMandat() {
     return (!$this->fin_mandat || $this->fin_mandat < $this->debut_mandat);
   }
@@ -726,7 +773,7 @@ class Parlementaire extends BaseParlementaire
     if (preg_match('/(\d{4})-(\d{2})-(\d{2})/', $this->fin_mandat, $m))
       $fin =  $m[3].'/'.$m[2].'/'.$m[1];
     else return null;
-    foreach (unserialize($this->getAnciensMandats()) as $m)
+    foreach ($this->getAnciensMandats() as $m)
       if (preg_match("/^(.*) \/ (.*) \/ (.*)$/", $m, $match))
         if ($match[2] === $fin) return $match[3];
     return null;
@@ -737,7 +784,7 @@ class Parlementaire extends BaseParlementaire
     $debut = strtotime(myTools::getDebutLegislature());
     $fin = min($debut + (5*365-31)*24*3600, time());  # fin législature définie à 4 ans et 11 mois)
     $semaines = 0;
-    foreach (unserialize($this->getAnciensMandats()) as $m) {
+    foreach ($this->getAnciensMandats() as $m) {
       if (preg_match("/^(.*) \/ (.*) \/ (.*)$/", $m, $match)) {
         $match[1] = preg_replace("#^(\d+)/(\d+)/(\d+)$#", "\\3-\\2-\\1", $match[1]);
         $sta = strtotime($match[1]);
@@ -764,7 +811,7 @@ class Parlementaire extends BaseParlementaire
   public function getMandatsLegislature() {
     $mandats = array();
     $debut = strtotime(myTools::getDebutLegislature());
-    foreach (unserialize($this->getAnciensMandats()) as $m) {
+    foreach ($this->getAnciensMandats() as $m) {
       if (preg_match("/^(.*) \/ (.*) \/ (.*)$/", $m, $match)) {
         $match[1] = preg_replace("#^(\d+)/(\d+)/(\d+)$#", "\\3-\\2-\\1", $match[1]);
         if ($match[2] != "")

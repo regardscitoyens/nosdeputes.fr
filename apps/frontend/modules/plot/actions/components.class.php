@@ -145,7 +145,7 @@ class plotComponents extends sfComponents
     );
     $presences_medi = Doctrine::getTable('VariableGlobale')->findOneByChamp('presences_medi');
     if ($presences_medi) {
-      $prmedi = unserialize($presences_medi->value);
+      $prmedi = $presences_medi->getValue();
       $debut_legis = strtotime(myTools::getDebutLegislature());
       $an_legis = date('o', $debut_legis);
       $sem_legis = date('W', $debut_legis);
@@ -314,7 +314,7 @@ class plotComponents extends sfComponents
 
     $stats = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes');
     if ($stats)
-      $stats = unserialize($stats->value);
+      $stats = $stats->getValue();
     $lastyear = date('Y-m-d', time()-60*60*24*365);
 
     // Collecte les dernières appartenances de députés à un groupe pour afficher la proportion de députés de chaque groupe sur l'ensemble de la période plutôt que sur le moment

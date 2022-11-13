@@ -113,8 +113,10 @@ class fuseDossiersTask extends sfBaseTask {
     if (!$option) {
       $option = new VariableGlobale();
       $option->setChamp('dossiers');
-      $option->setValue(serialize($corresp));
-    } else $option->setValue(serialize(array_merge(unserialize($option->getValue()), $corresp)));
+      $option->setValue($corresp);
+    } else {
+      $option->mergeValue($corresp);
+    }
     $option->save();
     print_r($corresp);
     print "  ";
@@ -122,11 +124,11 @@ class fuseDossiersTask extends sfBaseTask {
     if (!$option) {
       $option = new VariableGlobale();
       $option->setChamp('linkdossiers');
-      $option->setValue(serialize(array("$bad->id" => "$good->id")));
+      $option->setValue(array("$bad->id" => "$good->id"));
     } else {
-      $value = unserialize($option->getValue());
+      $value = $option->getValue();
       $value["$bad->id"] = "$good->id";
-      $option->setValue(serialize($value));
+      $option->setValue($value);
     }
     $option->save();
     print "$bad->id => $good->id\n";
