@@ -46,8 +46,8 @@ reg['check_office'] = u'>Offices et délégations<'
 reg['start_an'] = u'^[0-9]{0,2}\.? *Membres présents ou excusés'
 reg['start_senat'] = u'^Membres'
 reg['commission'] = u'^([^0-9].* .*) :$'
-reg['reunion_an'] = u'^(?:Réunion|Séance) du (.*) ?à (.*) :'
-reg['reunion_an_bis'] = u'^(?:Réunion|Séance) du (.*) :'
+reg['reunion_an'] = u'^(?:Réunion|Séance) du (.*) ?à (.*)( :)?'
+reg['reunion_an_bis'] = u'^(?:Réunion|Séance) du (.*)( :)?'
 reg['reunion_senat'] = u'^(.{1,5}éance) du (.*) :'
 reg['reunion_senat_bis'] = u'^(.*), séance du (.*)$'
 reg['presents'] = u'^Présents?.*?[\-:]+\s*(.*)'
@@ -57,6 +57,7 @@ reg['excuses'] = u'^(?:Député|Sénateur)s?\s*[eE]xcusé.*?[\-:]+\s*(.*)'
 reg['assistent'] = u'^Assistai.*?[\-:]+\s*(.*)'
 reg['civilite'] = u' ?(Mme|M\.) '
 reg['fonction_senat'] = u' \([^)]*\)'
+senateurs = False
 
 # Paramètres
 try:
@@ -139,7 +140,7 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
         m = re.search(reg['presents'], line, re.IGNORECASE)
         if not m:
           m = re.search(reg['presents_'+chamber], line)
-        if m:
+        if m and not senateurs:
           presents = re.sub(reg['civilite'], "", m.group(1))
 
           for present in presents.split(','):
@@ -149,6 +150,10 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
               data['depute'] = present.strip('. :')
             json_file += json.dumps(data, separators=(',',':'), ensure_ascii=False, sort_keys=True)+os.linesep
             n_presences += 1
+        elif line.startswith(u'Sénateurs'):
+          senateurs = True
+        elif re.search(reg['start_senat'], line, re.IGNORECASE) or line.startswith(u'Députés'):
+          senateurs = False
         elif re.search(reg['assistent'], line, re.IGNORECASE) is not None:
           m = re.search(reg['assistent'], line, re.IGNORECASE)
           presents = re.sub(reg['civilite'], "", m.group(1))
@@ -167,19 +172,17 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
           pass
         elif re.search(reg['excuses'], line) is not None:
           pass
-        elif commission:
-          pass
         elif re.search(reg['commission'], line) is not None:
-          if re.search(reg['start_senat'], line, re.IGNORECASE) or line == u'Députés :':
-            pass
-          elif re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
+          if re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_an'], line, re.IGNORECASE)
             data['reunion'] = date_iso(m.group(1))
             data['session'] = m.group(2).replace(' :', '').replace(' h ', ':').replace(' heures', ':00')[0:5]
+            senateurs = False
           elif re.search(reg['reunion_an_bis'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_an_bis'], line, re.IGNORECASE)
             data['reunion'] = date_iso(m.group(1))
             data['session'] = u"1ère réunion"
+            senateurs = False
           elif re.search(reg['reunion_senat'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_senat'], line, re.IGNORECASE)
             data['date'] = date_iso(m.group(2))
