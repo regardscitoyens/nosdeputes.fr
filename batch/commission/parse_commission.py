@@ -13,7 +13,7 @@ warnings.filterwarnings('ignore', category=XMLParsedAsHTMLWarning)
 mois2nmois = {'janvier': 1, 'février': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin':6, 'juillet': 7, 'août': 8, 'septembre': 9, 'octobre': 10, 'novembre': 11, 'décembre': 12}
 
 prefixes_noms = [
-    'M ', 'M.', 'Madame', 'MM.', 'Mme', 'Monsieur', 'Mr', 'Ms', 'Un député', 'Une députée',
+    'M ', 'M.', 'Madame', 'MM.', 'Mme', 'Monsieur', 'Mr', 'Ms', 'Un député', 'Une députée', 'Représentant',
     'Adjudant',  'Amiral', 'Capitaine', 'Caporal', 'CGA ', 'Colonel', 'Commandant', 'Commissaire', 'Cr1 ', 'Dr ', 'Dr. ', 'Général', 'Grand rabbin', 'Ica ', 'Infirmier', 'La policière', 'La présidente', 'Le Président', 'Lieutenant', 'Sergent', 'Son Exc. ', 'Maitre', 'Maître', 'Major', 'Me ', 'Médecin général', 'Plusieurs députés', 'Pr ', 'Pr. ', 'Premier', 'Professeur', 'Quatrier-Maitre', 'Une auditrice',
     'Agnès', 'Alain', 'Alexandre', 'André', 'Brigitte', 'Bruno', 'Cédric', 'Charles', 'Claude', 'Delphine', 'Didier', 'Elisa', 'Emmanuel', 'Fabien', 'Fabrice', 'Francis', 'Frédéric', 'Gilles', 'Gwendal', 'Jacques', 'Jean', 'Julien', 'Laurent', 'Loïc', 'Marc', 'Marie', 'Michèle', 'Nicole', 'Olivier', 'Patrice', 'Pierre', 'Raphaël', 'Rémi', 'Stéphane', 'Thibault', 'Thierry', 'Thomas', 'Ugo ', 'Vincent', 'Yann', 'Yannick'
 ]
