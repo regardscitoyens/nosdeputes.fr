@@ -203,7 +203,7 @@ def get_metas(p):
             return
         heures = re.search(r'(?:commence|ouverte) à ([a-z\- ]+) *heures? *([a-z\- ]+)?\.', p_text.lower())
         if heures:
-            heure = "%02d:%02d" % (heures_str.get(heures.group(1).strip(), 0), heures_str.get(heures.group(2).strip(), 0))
+            heure = "%02d:%02d" % (heures_str.get(heures.group(1).strip(), 0), heures_str.get((heures.group(2) or "").strip(), 0))
             return
     if p_text.find('session ') == 0:
         i = p_text.find(' 20')
