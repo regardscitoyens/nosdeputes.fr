@@ -213,7 +213,7 @@ sub checkout {
 	$depute =~ s/Florence Lasserre.?David/Florence Lasserre/;
 	$depute =~ s/Charlotte Lecocq/Charlotte Parmentier-Lecocq/;
 	$depute =~ s/Claire Picolât/Claire Pitollat/;
-    if ($depute !~ /^(Vice[ -]|Président|Questeur|Parlementaire|Député|Membres?( français)? du parlement|Sénat|Secrétaire|Présent|Excusé|:)/i && $depute !~ /^\s*$/ && $depute !~ /\((député|sénateur|membre du parlement|excusée?)[^)]*\)$/i) {
+    if ($depute !~ /^(Vice[ -]|Président|Questeur|Parlementaire|Député|Membres?( français)? du parlement|Sénat|Secrétaire|Présent|Excusé|:|représentant |hors membre)/i && $depute !~ /^\s*$/ && $depute !~ /\((député|sénateur|membre du parlement|excusée?)[^)]*\)$/i) {
       print '{"commission": "'.$commission.'", "depute": "'.$depute.'", "reunion": "'.$date.'", "session": "'.$heure.'", "source": "'.$source.'", "source_file": "'.$file.'"}'."\n";
     }
     }
@@ -230,6 +230,7 @@ $string =~ s/ / /g;
 $majIntervenant = 0;
 $body = 0;
 $present = 0;
+$senateurs = 0;
 $listmultiline = 0;
 
 # Le cas de <ul> qui peut faire confondre une nomination à une intervention :
@@ -329,7 +330,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/\s+et\s+/, /gi;
 	$line =~ s/\.$//;
 
-	if ($line =~ s/\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*// || (($newcomm || $listmultiline) && $line =~ /^[\-\s]*M+[\.mMes]+\s/) || $special) {
+	if (($line =~ s/\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*// && !$senateurs) || (($newcomm || $listmultiline) && $line =~ /^[\-\s]*M+[\.mMes]+\s/) || $special) {
         $line =~ s/\.M/. M/g;
         $line =~ s/(^|\W+)M+[mes.]+\s+/\1/g;
         if ($line !~ /^([\/\s]*|\s*(le|la|chargée?) .*)$/) {
@@ -348,9 +349,13 @@ foreach $line (split /\n/, $string)
         $present = 1;
       }
     } else {
-    if ($line =~ /[>\|\/](Membres? (de la commission[\w\s]*?)?présents?( ou excusés?)?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/ || $line =~ /^\s*Députés\s*$/) {
+    if ($line =~ /^\s*Députés\s*$/) {
+        $present = 1;
+	$senateurs = 0;
+    } elsif ($line =~ /[>\|\/](Membres? (de la commission[\w\s]*?)?présents?( ou excusés?)?|Présences? en réunion)[<\|\/]/ || $line =~ /[>\/\|]La séance est levée/) {
         $present = 1;
     } elsif ($line =~ /^\s*[sS]énateurs\s*(:|$)/) {
+	$senateurs = 1;
         $present = 0;
     }
     if ($origline =~ /^\s*<p[^>]*>\|([^<>]*(groupe|mission|délégation|office|comité)[^<>]*)\|<\/p>\s*$/i) {
