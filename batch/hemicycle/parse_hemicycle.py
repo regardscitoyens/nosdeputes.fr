@@ -171,6 +171,7 @@ def xml2json(s):
         t_string = str(p.texte)
         t_string = re.sub(r' ?<\/?texte[^>]*> ?', '', t_string)
         t_string = t_string.replace('<italique></italique>', ' ')
+        t_string = t_string.replace('<italique>…</italique>', '…')
         t_string = t_string.replace('<italique> </italique>', ' ')
         t_string = t_string.replace('</italique> <italique>', ' ')
         t_string = re.sub(r'n[° ]*(<exposant>[os]+</exposant>\s*)+', 'n° ', t_string)
