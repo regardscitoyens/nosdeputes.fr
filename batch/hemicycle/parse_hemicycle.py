@@ -189,7 +189,7 @@ def xml2json(s):
         t_string = re.sub(r'\s*</i>\)\s*', ')</i> ', t_string)
         t_string = re.sub(r'</i>([A-Za-z\s–.»]{0,7})<i>\s*', r'\1', t_string)
         t_string = re.sub(r'\)(\s*[.,:;?!…–]+)\s*</i>', r')</i>\1 ', t_string)
-        t_string = re.sub(r'(<i>\([^>)]*\))(<br/>|\s)+(\([^>)]*\)\s*</i>)', r'\1</i> <i>\2', t_string)
+        t_string = re.sub(r'(<i>\([^>)]*\))(?:<br/>|\s)+(\([^>)]*\)\s*</i>)', r'\1</i> <i>\2', t_string)
         t_string = re.sub(r'(<i>\([^<)]*)</i>$', r'\1)</i>', t_string)
         t_string = re.sub(r'(<i>\w+\W*)(\([^)<]*\)</i>)', r'\1</i> <i>\2', t_string)
         t_string = re.sub(r'(<i>\([^)<]*)\)([\s.]*)<br/>\s*(\([^)<]*\).?</i>)', r'\1\2)</i> <i>\3', t_string)
@@ -199,7 +199,7 @@ def xml2json(s):
         t_string = re.sub(r'(<i>[^(<]*)\.\s*(\([^)<]*\)\s*</i>)', r'\1</i>. <i>\2', t_string)
         t_string = re.sub(r'(\([^)<]{0,13}\s*)<i>([^()<]*\)</i>)', r'<i>\1\2', t_string)
         t_string = t_string.replace('<p></p>', '')
-        t_string = clean_all(t_string)
+        t_string = clean_all(t_string).strip()
         if not t_string:
             continue
         texte = "<p>%s</p>" % t_string
@@ -210,15 +210,12 @@ def xml2json(s):
         for i in re.split('\s*(<i>\s*\([^<]*\)\s*</i>\s*)', texte):
             if not i:
                 continue
-            if i[0] == ' ':
-                i = i[1:]
-            if i[-1] == ' ':
-                i = i[:-1]
-            if (i[0:3] != '<p>'):
+            i = i.strip()
+            if not i.startswith('<p>'):
                 i = '<p>' + i
-            if (i[-4:] != '</p>'):
-                i = i + '</p>'
-            if i.find('<p><i>') == 0:
+            if not i.endswith('</p>'):
+                i += '</p>'
+            if i.startswith('<p><i>(') or i.startswith('<p><i> ('):
                 didasc = intervention_vierge.copy()
                 i_str = re.sub(r"<i>[\s(]*", "", i)
                 i_str = re.sub(r"[\s)]*</i>", "", i_str)
