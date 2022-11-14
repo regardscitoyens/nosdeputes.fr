@@ -493,7 +493,7 @@ def new_intervention():
             intervention = linterventioncommune
             [intervenant, fonction] = getIntervenantFonction(intervenant)
         print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
-        if intervenant and not fonction.find('résident') > 0:
+        if intervenant and not fonction.find('président') >= 0:
             if intervenant.find(' ') >= 0 :
                 prenom = intervenant[0:intervenant.find(' ') - 1]
                 if not prenom in prefixes_noms:
@@ -535,6 +535,7 @@ def getIntervenantFonction(intervenant):
             fonction = fonction2 + ', ' + fonction + fonction3
         else:
             fonction = fonction2 + fonction3
+    fonction = fonction.replace("Président", "président")
     intervenant = intervenant.rstrip(" (")
     intervenant = re.sub(r"^M[.me]+ ", "", intervenant, re.I)
     intervenant = re.sub(r"Monica Michel$", "Monica Michel-Brassart", intervenant, re.I)
