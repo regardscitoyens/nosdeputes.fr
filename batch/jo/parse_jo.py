@@ -152,7 +152,7 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
             n_presences += 1
         elif line.startswith(u'Sénateurs'):
           senateurs = True
-        elif re.search(reg['start_senat'], line, re.IGNORECASE) or line.startswith(u'Députés'):
+        elif line.startswith(u'Députés'):
           senateurs = False
         elif re.search(reg['assistent'], line, re.IGNORECASE) is not None:
           m = re.search(reg['assistent'], line, re.IGNORECASE)
@@ -173,7 +173,9 @@ with io.open(file, encoding="utf-8", mode='r') as xmlfile:
         elif re.search(reg['excuses'], line) is not None:
           pass
         elif re.search(reg['commission'], line) is not None:
-          if re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
+          if re.search(reg['start_senat'], line, re.IGNORECASE):
+            pass
+          elif re.search(reg['reunion_an'], line, re.IGNORECASE) is not None:
             m = re.search(reg['reunion_an'], line, re.IGNORECASE)
             data['reunion'] = date_iso(m.group(1))
             data['session'] = m.group(2).replace(' :', '').replace(' h ', ':').replace(' heures', ':00')[0:5]
