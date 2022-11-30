@@ -164,7 +164,7 @@ if (!$tmpdate && $string =~ /(?:>|\n\s*)\|?(?:(?:Lun|Mar|Mercr?e|Jeu|Vendre|Same
   $tmpdate = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
 }
 
-if (!$heure && $string =~ />Séance de (\d+)\s*h(?:eures?\s*)?\s*(\d*)\s*(<|\n)/) {
+if (!$heure && $string =~ />Séance (?:à|de) (\d+)\s*h(?:eures?\s*)?\s*(\d*)\s*(<|\n)/) {
   $heure = sprintf("%02d:%02d", $1, $2 || '00');
 }
 
