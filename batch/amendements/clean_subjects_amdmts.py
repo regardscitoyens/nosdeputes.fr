@@ -3,6 +3,12 @@
 
 import sys, re, json
 
+bis_27 = ['bis', 'ter', 'quater', 'quinquies', 'sexies', 'septies', 'octies', 'nonies',
+'decies', 'undecies', 'duodecies', 'terdecies', 'quaterdecies', 'quindecies', 'sexdecies', 'septdecies', 'octodecies', 'novodecies',
+'vicies', 'unvicies', 'duovicies', 'tervicies', 'quatervicies', 'quinvicies', 'sexvicies', 'septvicies']
+bister = '(%s)' % '|'.join(bis_27)
+extra = '( %s)?( [A-Z]{1,3})?' % bister
+
 upper_first = lambda t: t[0].upper() + t[1:] if len(t) > 1 else t.upper()
 
 clean_subject_amendements_regexp = [(re.compile(reg), res) for (reg, res) in [
@@ -50,6 +56,7 @@ clean_subject_amendements_regexp = [(re.compile(reg), res) for (reg, res) in [
     (r'(\d+e?r? )([a-z]+)$', lambda x: x.group(1) + x.group(2).upper()),
     (r'(\d+e?r? \S+ )([a-z]+)$', lambda x: x.group(1) + x.group(2).upper()),
     (r'(tat|itre)( [a-divx]+)(er)?', lambda x: x.group(1) + x.group(2).upper() + (x.group(3) or  "").lower()),
+    (r' %s( [A-Z]+|$)' % bister, lambda x: " " + x.group(1).lower() + x.group(2)),
     (ur'iès( [A-Z]+|$)', r'ies\1'),
     (ur'(et )?[eéEÉ](tat [A-H])', r'E\2'),
     (r"(article \d+( [a-z]+?)?) (Etat [A-H])'*", r'\1 et \3'),
@@ -95,12 +102,6 @@ fixed_subjects = [
     u"Motion tendant à opposer la question préalable",
     u"Motion tendant au renvoi en commission"
 ]
-
-bis_27 = ['bis', 'ter', 'quater', 'quinquies', 'sexies', 'septies', 'octies', 'nonies',
-'decies', 'undecies', 'duodecies', 'terdecies', 'quaterdecies', 'quindecies', 'sexdecies', 'septdecies', 'octodecies', 'novodecies',
-'vicies', 'unvicies', 'duovicies', 'tervicies', 'quatervicies', 'quinvicies', 'sexvicies', 'septvicies']
-bister = '(%s)' % '|'.join(bis_27)
-extra = '( %s)?( [A-Z]{1,3})?' % bister
 
 articles = re.compile(ur"^A((vant|près) l'a)?rticle (1er|[2-9]|[1-9]\d+|liminaire)%s( et Etat [A-H])?$" % extra)
 
