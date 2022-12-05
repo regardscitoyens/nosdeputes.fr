@@ -47,7 +47,7 @@ clean_subject_amendements_regexp = [(re.compile(reg), res) for (reg, res) in [
     (r'(quinquies|ter)([ab])', r'\1 \2'),
     (r' ([a-z]*)\?([a-z]*)$', r' \1i\2'),
     (r'(\d+e?r? )(a?[a-z]{0,2})$', lambda x: x.group(1) + x.group(2).upper()),
-    (r'(\d+e?r? )([a-z]a+)$', lambda x: x.group(1) + x.group(2).upper()),
+    (r'(\d+e?r? )([a-z]+)$', lambda x: x.group(1) + x.group(2).upper()),
     (r'(\d+e?r? \S+ )([a-z]+)$', lambda x: x.group(1) + x.group(2).upper()),
     (r'(tat|itre)( [a-divx]+)(er)?', lambda x: x.group(1) + x.group(2).upper() + (x.group(3) or  "").lower()),
     (ur'iès( [A-Z]+|$)', r'ies\1'),
