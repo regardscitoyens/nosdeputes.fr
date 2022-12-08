@@ -56,7 +56,7 @@ clean_subject_amendements_regexp = [(re.compile(reg), res) for (reg, res) in [
     (r'(\d+e?r? )([a-z]+)$', lambda x: x.group(1) + x.group(2).upper()),
     (r'(\d+e?r? \S+ )([a-z]+)$', lambda x: x.group(1) + x.group(2).upper()),
     (r'(tat|itre)( [a-divx]+)(er)?', lambda x: x.group(1) + x.group(2).upper() + (x.group(3) or  "").lower()),
-    (r' %s( [A-Z]+|$)' % bister, lambda x: " " + x.group(1).lower() + x.group(2)),
+    (r' %s( [A-Z]+|$)' % bister.upper(), lambda x: " " + x.group(1).lower() + x.group(2)),
     (ur'iès( [A-Z]+|$)', r'ies\1'),
     (ur'(et )?[eéEÉ](tat [A-H])', r'E\2'),
     (r"(article \d+( [a-z]+?)?) (Etat [A-H])'*", r'\1 et \3'),
