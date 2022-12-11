@@ -136,10 +136,6 @@ class myTools {
     return $vacances;
   }
 
-  public static function getAnalytics() {
-    return (sfConfig::get('app_analytics_id'));
-  }
-
   public static function getPiwik() {
     return array("domain" => sfConfig::get('app_piwik_domain'),
                  "id" => sfConfig::get('app_piwik_id'));
