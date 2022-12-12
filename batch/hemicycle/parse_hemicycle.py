@@ -81,7 +81,7 @@ def xml2json(s):
             contexte = clean_all(str(point_texte))
             contexte = re.sub(r'<\/?[a-z][^>]*>', '', contexte)
             contexte = re.sub(r'\s*\(suite\)[\s.]*$', '', contexte)
-            contexte = re.sub(r'\s*-\s*suite\)[\s.]*$', ')', contexte)
+            contexte = re.sub(r'\s*[\-–]\s*suite\)[\s.]*$', ')', contexte)
             contexte = clean_all(contexte)
 
             if contexte and int(p['nivpoint']) < 4:
