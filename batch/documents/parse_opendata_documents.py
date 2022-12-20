@@ -28,7 +28,7 @@ def convert_format(data, extra = ''):
     data['plf_annee'] = ''
     if data["notice"].get("formule") and re.search('projet de loi de finances pour ', data["notice"]["formule"]): # and data["classification"]["type"]["code"] == 'AVIS':
         is_plf = True
-        data['plf_annee'] = int(re.sub('[ \.].*', '', re.sub(r'.*projet de loi de finances pour ', '', data["notice"]["formule"])))
+        data['plf_annee'] = int(re.sub('[ \.,].*', '', re.sub(r'.*projet de loi de finances pour ', '', data["notice"]["formule"])))
 
     if data['uid'].find('-') > 0:
         extra = extra + re.sub('.*-', '-', data['uid'])
