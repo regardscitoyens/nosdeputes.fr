@@ -16,7 +16,7 @@ if grep '"source": "https\?://videos.assemblee-nationale.fr/' $JSON > /dev/null;
     sed 's/[#"].*$/\n/'                  |
     sed 's/\?timecode=.*$//'             |
     grep .                               |
-    uniq                                 |
+    sort -u                              |
     grep 'https\?://videos.'             |
     wc -l)
   if [ "$INTERVS" -gt 0 ] || [ "$VIDEOSOURCES" -gt 1 ]; then
