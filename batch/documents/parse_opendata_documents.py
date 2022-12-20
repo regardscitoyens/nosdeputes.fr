@@ -11,6 +11,7 @@ def convert_format(data, extra = ''):
     res["categorie"] = ""
     res["annexe"] = ""
     res["type_details"] = ""
+    res["id_opendata"] = data["uid"]
     if data['notice'].get('numNotice'):
         res["numero"] = data['notice']['numNotice']
     else:

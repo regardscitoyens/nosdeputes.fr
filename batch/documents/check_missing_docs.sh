@@ -25,9 +25,11 @@ diff /tmp/alldocs_nd.nums /tmp/alldocs_an.nums | grep '>' | sed 's/> //' > /tmp/
 cat /tmp/missingdocs.nums | while read i; do
   grep "; $i ;" /tmp/alldocs_an.csv
 done | grep -v "^ALCNANR5" | grep -v "^MESSANR5" | while read line; do
-  echo "Downloading missing doc $line"
-  id=$(echo $line | awk '{print $1}')
-  bash compute_one_from_id_opendata.sh $id
+  if ! grep '"'"$line"'"' out/* > /dev/null; then
+    echo "Downloading missing doc $line"
+    id=$(echo $line | awk '{print $1}')
+    bash compute_one_from_id_opendata.sh $id
+  fi
 done
 
 
