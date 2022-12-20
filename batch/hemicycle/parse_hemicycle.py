@@ -179,6 +179,7 @@ def xml2json(s):
         t_string = re.sub(r'\s*<exposant>([eè][rme]+)</exposant>\s*', r'\1 ', t_string)
         t_string = re.sub(r"(la mission|compte d(’affectation spéciale|e concours financier)s?)\s*</?italique>\s*([^<()]*)\s*</?italique>\s*", r'\1 "\3" ', t_string)
         t_string = re.sub(r'\s*</?italique>\s*((bis|ter|qua|quinqu|quin|un|sex|sept|oct|dec|non|ies)+)\s*</?italique>\s*', r' \1 ', t_string)
+        t_string = re.sub(r'((bis|ter|qua|quinqu|quin|un|sex|sept|oct|dec|non|ies)+)\s*,\s*', r'\1, ', t_string)
         t_string = t_string.replace('<italique>', '<i>')
         t_string = t_string.replace('</italique>', '</i>')
         t_string = re.sub(r'n</i>[°\s\r\n]*(<exposant>[os]+</exposant>[\s\r\n]*)+<i>', 'n° ', t_string)
