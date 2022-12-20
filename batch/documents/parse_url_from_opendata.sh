@@ -10,6 +10,10 @@ fi
 
 docid=$(echo $url | sed 's|.*/||' | sed 's/.asp//' | awk -F '-' '{print $1}' | sed 's/[^0-9]//g')
 
+if grep '"'"$docid"'"' out/* > /dev/null; then
+  exit
+fi
+
 find opendata/document/ -name '*'$docid'*' | while read file ; do
     python3 parse_opendata_documents.py $file > "/tmp/documents_$$.json"
     uri=$(echo $url | sed 's|https://www.assemblee-nationale.fr/[^0-9]*/||')
