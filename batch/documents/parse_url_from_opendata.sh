@@ -10,7 +10,7 @@ fi
 
 docid=$(echo $url | sed 's|.*/||' | sed 's/.asp//' | awk -F '-' '{print $1}' | sed 's/[^0-9]//g')
 
-if grep '"'"$docid"'"' out/* > /dev/null; then
+if grep -r '"'"$docid"'"' out > /dev/null; then
   exit
 fi
 
