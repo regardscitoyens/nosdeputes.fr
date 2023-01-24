@@ -12,7 +12,11 @@ def convert_date(s):
 clean_minis = lambda m: m.replace(u"Minsitère", u"Ministère")
 
 def parse_question(url, xmlstring):
-    data = xmltodict.parse(xmlstring)
+    try:
+        data = xmltodict.parse(xmlstring)
+    except Exception as e:
+        print >> sys.stderr, xmlstring
+        raise(e)
 
     qe = data['QUESTION']
 
@@ -73,6 +77,9 @@ if __name__ == '__main__':
     filepath = sys.argv[1]
     url = re.sub(r'^.*/([^/]+)$', r'\1', filepath).replace('_', '/').replace('/vue/xml', '')
     with open(filepath, 'r') as f:
+        xmlstring = f.read()
+        if '<title>50' in xmlstring:
+            sys.exit("Temporary AN server error")
         parsed_data = parse_question(url, f.read())
     print "{%s}" % ", ".join('"%s": "%s"' % (k, parsed_data[k]) for k in parsed_data)
 
