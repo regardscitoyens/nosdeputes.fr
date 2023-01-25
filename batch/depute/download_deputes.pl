@@ -11,7 +11,7 @@ sub download_fiche {
   $uri =~ s/^\//http:\/\/www2.assemblee-nationale.fr\//;
   print "$uri" if ($verbose);
   $a->max_redirect(0);
-  eval { $a->get($uri); };
+  eval { $a->get($uri."?force"); };
   if( not $a->res->is_success and not $a->res->is_redirect ){
     sleep 1;
     eval { $a->get($uri); };
@@ -31,6 +31,7 @@ sub download_fiche {
     $file = $location;
   }
   $file =~ s/^.*\/([^\/]+)/$1/;
+  $file =~ s/\?force//;
   mkdir html unless -e "html/" ;
   open FILE, ">:utf8", "html/$file" || warn("cannot write on html/$file");
   print FILE $a->content;
