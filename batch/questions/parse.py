@@ -80,6 +80,6 @@ if __name__ == '__main__':
         xmlstring = f.read()
         if '<title>50' in xmlstring:
             sys.exit("Temporary AN server error")
-        parsed_data = parse_question(url, f.read())
+        parsed_data = parse_question(url, xmlstring)
     print "{%s}" % ", ".join('"%s": "%s"' % (k, parsed_data[k]) for k in parsed_data)
 
