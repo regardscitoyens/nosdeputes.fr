@@ -51,7 +51,7 @@ class updateDeputesTask extends sfBaseTask
           foreach(file($dir.$file) as $line) {
             $json = json_decode($line);
             if (!isset($json->nom) || !strlen($json->nom)) {
-              echo "WARNING: ".$dir.$file." doesn't appear to be a json file\n";
+              echo "WARNING: ".$dir.$file." contains no député name\n";
               continue;
             }
             $json->nom = trim($json->nom);
