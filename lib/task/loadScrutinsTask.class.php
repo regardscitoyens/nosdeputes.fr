@@ -23,6 +23,9 @@ class loadScrutinsTask extends sfBaseTask
     $IGNORE_SEANCES = array(
       15 => array(
         220 => 1
+      ),
+      16 => array(
+        723 => 1
       )
     );
 
