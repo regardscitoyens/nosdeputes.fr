@@ -245,7 +245,7 @@ class myTools {
     ),
     'commission_presences' => array(
         'titre' => "Présences en Commission",
-        'desc' => "Cette information n'est plus rendue publique par l'Assemblée"
+        'desc' => "Nombre de réunions de commission où le député a été relevé présent"
     ),
     'commission_interventions' => array(
         'titre' => "Interventions en Commission",
