@@ -244,7 +244,7 @@ $tmpauteurs =~ s/[\(\)]//g;
 $tmpauteurs =~ s/^\s*(M[Mlmes\.]+)\s*//;
 $autsexe = $1;
 $tmpstring = $string;
-$tmpstring =~ s/^.*([Mlmes\.\s]+)*$tmpauteurs/Par $autsexe $tmpauteurs/i if ($tmpauteurs);
+$tmpstring =~ s/^.*?([Mlmes\.\s]+)*$tmpauteurs/Par $autsexe $tmpauteurs/i if ($tmpauteurs);
 $tmpstring =~ s/[pP]?(R[EÉ]SENT[EÉ]|r[eé]sent[eé])?[eE]?\s*(D[Ee]|[pP][aA][Rr])[-\s]+(M[Mlmes\.\s]+[A-ZÀÉÈÊÎÏÔÙÇ].*), [dD]éputé[\s\.,]*//;
 if ($tmpstring =~ s/[rR]apporteur[es]* [sS]pécia[leuxs]+ : (M[Mlmes\.\s]+.*) \(1\).*$//) {
   $auteurs = $1;
@@ -257,6 +257,7 @@ if ($tmpstring =~ s/[rR]apporteur[es]* [sS]pécia[leuxs]+ : (M[Mlmes\.\s]+.*) \(
 } elsif ($tmpstring =~ s/[\.,\s]*[pPF](R[EÉ]SENT[EÉ]|r[eé]sent[eé]|ait|AIT)[eE]?\s*[pP][aA][Rr][\-\s]+([A-ZÀÉÈÊÎÏÔÙÇ]\w\w+.*)\s*$//) {
   $auteurs = $2;
 }
+
 $auteurs =~ s/\s*\([^\)]*\)//g;
 $auteurs =~ s/[\s,\-\.]+(M[Mlmes\.\s]+)/, $1/g;
 $auteurs =~ s/, (rapport|général|sénat|présid)[^,]*//ig;
