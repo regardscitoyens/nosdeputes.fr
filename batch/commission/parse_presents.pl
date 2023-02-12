@@ -120,7 +120,7 @@ if ($raw == 1) {
     if (($t->[1]{class} eq "assnatNOMCOMMISSION" || $t->[1]{class} eq "assnatStylenomcommissionAvant0ptAprs20pt") && !$commission) {
       $commission = $txt;
     } elsif ($t->[1]{class} eq "assnatCRDATE" || $t->[1]{class} eq "assnatCRHEURE") {
-      if ($txt =~ /(?:(?:Lun|Mar|Mercr?e|Jeu|Vendre)di|Dimanche|Jour)\s+(\d+)[erme]*\s+([^\s\d]+)\s+(20\d+)/i && !$date) {
+      if ($txt =~ /(?:(?:Lun|Mar|Mercr?e|Jeu|Vendre)di|Dimanche|Jour)\s+(\d+)[erme]*\s*([^\s\d]+)\s+(20\d+)/i && !$date) {
         $date = sprintf("%04d-%02d-%02d", $3, $mois{lc($2)}, $1);
       } elsif ($txt =~ /(?:Réunion|Séance)\s+de\s*(\d+)\s*h(?:eure)?s?\s*(\d*)/i && !$heure) {
         $heure = sprintf("%02d:%02d", $1, $2 || '00');
