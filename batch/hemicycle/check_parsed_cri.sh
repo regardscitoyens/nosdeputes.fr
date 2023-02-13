@@ -52,7 +52,7 @@ echo
 echo "Parenthèses :"
 echo "-------------"
 cat $JSON                                          |
-  sed -r 's/\([^)]*(précédemment réservés?|par priorité|seconde délibération|coordination|examen simplifiée|mixte paritaire)\)/ /g'                 |
+  sed -r "s/\([^)]*(précédemment réservés?|par priorité|seconde délibération|coordination|examen simplifiée|mixte paritaire|membre de l'intergroupe NUPES)\)/ /g"                 |
   sed 's/(\(…\|MoDem\|suite\|état [A-D]\))/ /ig'   |
   sed -r 's/\((loi )?[A-Z0-9 -\&]+(\-m)?\)/ /g'    |
   sed -r 's/\(n[os\s°]+\s*[0-9]+[^)]*\)/ /g'       |
