@@ -191,6 +191,8 @@ sub checkout {
     $commission =~ s/^(Pour une nouvelle Assemblée nationale |Les rendez-vous des réformes 2017-2022 )*GROUPE DE TRAVAIL N°\s*\d+[\s«–]*/Groupe de travail sur /i;
     $commission =~ s/Groupe de travail sur PROCÉDURE LÉGISLATIVE ET ORGANISATION PARLEMENTAIRE ET DROITS DE L'OPPOSITION/Groupe de travail sur la procédure législative et l'organisation parlementaire et les droits de l'opposition/i;
     $commission =~ s/[ »]*$//i;
+    $commission =~ s/\s*–\s*/-/g;
+    $commission =~ s/\s*Réunion .*$//;
     if (!$date) {
         $date = $tmpdate;
     }
@@ -199,7 +201,7 @@ sub checkout {
         return ;
     }
     if ($#presents < 0) {
-        print STDERR "$url : Pas de présent trouvé\n";
+        print STDERR "$url $commission : Pas de présent trouvé\n";
         return ;
     }
     foreach $depute (@presents) {
@@ -302,11 +304,11 @@ foreach $line (split /\n/, $string)
     if ($origline =~ /Retour haut de page/) {
         $present = 0;
     }
-    if (!$special && $line =~ />Présences en réunion :$/) {
+    if (!$special && $line =~ />\|*(Étaient présents|Présences en réunion) :\|*$/) {
         $present = 1;
         $listmultiline = 1;
     }
-    if (!$special && $line =~ /\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? (» à partir|au banc|de \d+|dans|depuis|pour|dès|sur|M\.[^<,\.]*, que) /i) {
+    if (!$special && $line =~ /[\/\|]?(Présents?|Assistai(en)?t également à la réunion|(E|É)tai[en]*t (également )?présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? (» à partir|au banc|de \d+|dans|depuis|pour|dès|sur|M\.[^<,\.]*, que) /i) {
         $present = 1;
     }
     if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) (participai(en)?t à la réunion|étai(en)?t présents?)..*$/\2/g)) {

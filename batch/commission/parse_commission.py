@@ -178,7 +178,9 @@ def get_metas(p):
         commission = re.sub(r'^Commission des affaires sociales (Mission)', r'\1', commission, re.I)
         commission = re.sub(r'^(Groupe de travail n|GROUPE DE TRAVAIL N)°[\s\d«–]+', r'Groupe de travail sur ', commission, re.I)
         commission = commission.replace("Groupe de travail sur PROCÉDURE LÉGISLATIVE ET ORGANISATION PARLEMENTAIRE ET DROITS DE L'OPPOSITION", "Groupe de travail sur la procédure législative et l'organisation parlementaire et les droits de l'opposition")
+        commission = re.sub(r"\s*Réunion .*$", "", commission)
         commission = commission.strip(" »")
+        commission = re.sub(r"\s*–\s*", "-", commission)
     for wday in ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche'] + list(mois2nmois.keys()):
         if p_text.lower().find(wday) >= 0:
             try:
@@ -466,14 +468,14 @@ def new_intervention():
     intervention = re.sub(r'</(t(able|head|body|r|h|d)|p)>\s+</(t(able|head|body|r|h|d)|p)>', r'</\1></\3>', intervention)
     intervention = re.sub(r'</t([rdh])>\s+<t\1>', r'</t\1><t\1>', intervention)
 
-    if re.match(r'<p>\s*(<img [^>]*>\s*){2,}</p>', intervention):
+    if re.match(r'(<p>[^<]*</p>)*<p>\s*(<img [^>]*>\s*){2,}</p>', intervention) and not intervenant:
         intervention = re.sub(r'([^p]>)\s*<img ', r'\1</p><p><img ', intervention)
     while len(intervention) > 100000:
         fin_p = 30000 + intervention[30000:].find('</p>') + 4
         if fin_p > 100000:
-            if re.match(r'<p><img [^>]*></p>', intervention):
+            if re.match(r'(<p>[^<]*</p>)*<p><img [^>]*></p>', intervention):
                 fin_i = intervention.find('</p>') + 4
-                intervention1 = re.sub(r'^<p><img [^>]*></p>', '<p><i>(image non chargée)</i></p>', intervention[0:fin_i])
+                intervention1 = re.sub(r'^((<p>[^<]*</p>)*<p>)<img [^>]*></p>', r'\1<i>(image non chargée)</i></p>', intervention[0:fin_i])
                 intervention2 = intervention[fin_i:]
                 intervention = intervention1
                 new_intervention()
