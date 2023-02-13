@@ -65,7 +65,7 @@ def xml2json(s):
         if "," in orateur and "rapporteur" not in orateur and "commission" not in orateur:
             orateur, fonction = orateur.split(', ', 1)
             orateur = clean_intervenant(orateur)
-            fonction = clean_all(fonction)
+            fonction = clean_all(fonction).strip(", .")
             existing = intervenant2fonction.get(orateur)
             if not existing or fonction.startswith(existing):
                 intervenant2fonction[orateur] = fonction
@@ -153,7 +153,7 @@ def xml2json(s):
 
             existingfonction = intervenant2fonction.get(intervention["intervenant"])
             if qualite:
-                intervention['fonction'] = clean_all(qualite)
+                intervention['fonction'] = clean_all(qualite).strip(", .")
                 if not existingfonction and intervention['fonction']:
                     intervenant2fonction[intervention["intervenant"]] = intervention['fonction']
                 elif existingfonction:
