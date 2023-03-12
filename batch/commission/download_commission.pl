@@ -4,6 +4,7 @@ use WWW::Mechanize;
 use HTML::TokeParser;
 use URI::Escape;
 use Encode;
+use Try::Tiny;
 
 #Prend en compte uniquement les pages de commission qui ont changé depuis moins de x heures (-1 pour désactiver)
 $since_hour = shift || 48;
@@ -47,7 +48,7 @@ foreach $index (@indexes) {
 	    next if ($curl =~ /\/presse\// || $curl =~ /prog.html/);
 	    next if ($url{$curl});
 	    $uriurl = $curl;
-	    $uriurl =~ s/^\//http:\/\/www.senat.fr\//;
+	    $uriurl =~ s/^\//https:\/\/www.senat.fr\//;
  	    next if -e "html/".uri_escape($uriurl);
 	    eval {$a->get($curl);};
 	    if ($a->status() == 404) {
@@ -65,7 +66,15 @@ foreach $index (@indexes) {
 	    $thecontent = $a->content;
 	    if ($thecontent) {
 		if ($thecontent =~ s/iso-8859-1/utf-8/gi) {
-		    $thecontent = decode("windows-1252", $thecontent);
+                    try {
+		      $thecontent = decode("windows-1252", $thecontent);
+		    } catch {
+                      try {
+  		        $thecontent = decode("iso-8859-1", $thecontent);
+  		      } catch {
+ 			print STDERR "WARNING: could not decode content of $uri\n";
+  	              }
+		    }
 		}
 		print FILE $thecontent;
 		close FILE;

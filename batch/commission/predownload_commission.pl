@@ -8,11 +8,11 @@ use Encode;
 
 $with_archive = shift;
 
-@archive = ("http://www.senat.fr/compte-rendu-commissions/commission-mixte-paritaire_archives.html", "http://www.senat.fr/compte-rendu-commissions/affaires-etrangeres_archives.html", "http://www.senat.fr/compte-rendu-commissions/controle-de-la-securite-sociale_archives.html", "http://www.senat.fr/compte-rendu-commissions/affaires-sociales_archives.html", "http://www.senat.fr/compte-rendu-commissions/culture_archives.html","http://www.senat.fr/compte-rendu-commissions/economie_archives.html",  "http://www.senat.fr/compte-rendu-commissions/finances_archives.html", "http://www.senat.fr/compte-rendu-commissions/lois_archives.html", "http://www.senat.fr/compte-rendu-commissions/delegation-aux-droits-des-femmes_archives.html", "http://www.senat.fr/europe/reunions/archives.html");
+@archive = ("https://www.senat.fr/compte-rendu-commissions/commission-mixte-paritaire_archives.html", "https://www.senat.fr/compte-rendu-commissions/affaires-etrangeres_archives.html", "https://www.senat.fr/compte-rendu-commissions/controle-de-la-securite-sociale_archives.html", "https://www.senat.fr/compte-rendu-commissions/affaires-sociales_archives.html", "https://www.senat.fr/compte-rendu-commissions/culture_archives.html","https://www.senat.fr/compte-rendu-commissions/economie_archives.html",  "https://www.senat.fr/compte-rendu-commissions/finances_archives.html", "https://www.senat.fr/compte-rendu-commissions/lois_archives.html", "https://www.senat.fr/compte-rendu-commissions/delegation-aux-droits-des-femmes_archives.html", "https://www.senat.fr/europe/reunions/archives.html");
 
-@indexes = ("http://www.senat.fr/offices_deleg_observatoire/index.html", "http://www.senat.fr/commission/spec/index.html", "http://www.senat.fr/commission/missions/index.html", "http://www.senat.fr/commission/enquete/index.html");
+@indexes = ("https://www.senat.fr/offices_deleg_observatoire/index.html", "https://www.senat.fr/commission/spec/index.html", "https://www.senat.fr/commission/missions/index.html", "https://www.senat.fr/commission/enquete/index.html");
 
-@more = ("http://www.senat.fr/compte-rendu-commissions/office-parlementaire-d-evaluation-des-choix-scient.-tech..html", "http://www.senat.fr/compte-rendu-commissions/controle-de-la-securite-sociale-mecss.html", "http://www.senat.fr/europe/reunions.html", "http://www.senat.fr/compte-rendu-commissions/groupe-de-suivi-brexit.html", "http://www.senat.fr/compte-rendu-commissions/groupe-de-suivi-brexit_archives.html");
+@more = ("https://www.senat.fr/compte-rendu-commissions/office-parlementaire-d-evaluation-des-choix-scient.-tech..html", "https://www.senat.fr/compte-rendu-commissions/controle-de-la-securite-sociale-mecss.html", "https://www.senat.fr/europe/reunions.html", "https://www.senat.fr/compte-rendu-commissions/groupe-de-suivi-brexit.html", "https://www.senat.fr/compte-rendu-commissions/groupe-de-suivi-brexit_archives.html");
 
 $a = WWW::Mechanize->new();
 $start = shift || '0';
@@ -70,8 +70,9 @@ foreach $index (@indexes) {
 		    $cr = $a->uri();
 		    $a->back();
 		}
-		$cr = "http://www.senat.fr$cr" if ($cr =~ /^\//);
+		$cr = "https://www.senat.fr$cr" if ($cr =~ /^\//);
 		$cr =~ s/\#.*//;
+		$cr =~ s/^http:/https:/;
 		next if ($cr{$cr});
 		print "CR FOUND: $cr\n";
 		$cr{$cr} = 1;
