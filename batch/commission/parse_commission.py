@@ -85,7 +85,7 @@ def cleanhtml(s):
     reg_doubletag = re.compile(r'(</i>, +<i>|</b>, +<b>|<i>, +</i>|<b>, +</b>)')
     s = reg_doubletag.sub(r', ', s)
     reg_doubletag = re.compile(r'(</i>[\'’]<i>|</b>[\'’]<b>|<i>[\'’]</i>|<b>[\'’]</b>)')
-    s = reg_doubletag.sub(r'\'', s)
+    s = reg_doubletag.sub(r"'", s)
 
     reg_doubletag = re.compile(r'</i>(<[^>]*>)<i>')
     s = reg_doubletag.sub(r'\1', s)
