@@ -131,7 +131,7 @@ def xml2json(s):
                     if orateur.qualite and orateur.qualite.string:
                         nom += ", " + orateur.qualite.get_text().strip(", ")
                     nom = nom.strip(", ")
-                print("WARNING: merged multiple orateurs into one:", nom, file=sys.stderr)
+                #print("WARNING: merged multiple orateurs into one:", nom, file=sys.stderr)
             else:
                 nom = p.orateurs.orateur.nom.get_text().strip()
                 if p.orateurs.orateur.qualite and p.orateurs.orateur.qualite.string:

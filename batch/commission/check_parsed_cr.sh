@@ -25,7 +25,8 @@ echo "Didascalies :"
 echo "-------------"
 grep '"intervenant": ""' $JSON      |
   sed 's/^.*"intervention": "/-> /' |
-  sed 's/".*$//'
+  sed 's/".*$//'		    |
+  sed 's/<\/p><p>/<\p>\n-> <p>/g'
 echo "-------------"
 echo
 echo
