@@ -302,7 +302,7 @@ def html2json(s):
                 new_intervention()
         has_video = p_str.find('videos.assemblee-nationale.fr') >= 0 or p_str.find('assnat.fr') >= 0 or p_str.find('assemblee-nationale.fr/video') >= 0
         if p_str.find('<i>(') > 0 and p_str.find(')</i>') > 0 and not infos_commission:
-            didascalie = re.findall(r'(.*)(<i>\([^)]*\)</i>)( *.? *</p>)', p_str)
+            didascalie = re.findall(r'(.*)(<i>\([^)]{5,}\)</i>)( *.? *</p>)', p_str)
             if didascalie:
                 intervention += didascalie[0][0] + didascalie[0][2]
                 oldintervenant = intervenant
@@ -318,7 +318,7 @@ def html2json(s):
             p_str = p_str.replace('</i>', '')
             intervention += p_str
             continue
-        didascalie = re.search(r'(^.*[.…!?]+) *\(([^)]+)\) *(.*</p>)', p_str)
+        didascalie = re.search(r'(^.*[.…!?]+) *\(([^)]{5,})\) *(.*</p>)', p_str)
         if didascalie:
             intervention += didascalie.group(1) + '</p>'
             oldintervenant = intervenant
