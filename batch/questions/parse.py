@@ -78,7 +78,7 @@ if __name__ == '__main__':
     url = re.sub(r'^.*/([^/]+)$', r'\1', filepath).replace('_', '/').replace('/vue/xml', '')
     with open(filepath, 'r') as f:
         xmlstring = f.read()
-        if '<title>50' in xmlstring:
+        if '<title>50' in xmlstring or u'Échec temporaire dans la résolution du nom' in xmlstring:
             sys.exit("Temporary AN server error")
         parsed_data = parse_question(url, xmlstring)
     print "{%s}" % ", ".join('"%s": "%s"' % (k, parsed_data[k]) for k in parsed_data)
