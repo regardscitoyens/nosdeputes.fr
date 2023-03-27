@@ -329,7 +329,6 @@ def html2json(s):
             new_intervention()
             intervenant = oldintervenant
             intervention = '<p>' + didascalie.group(3)
-            new_intervention()
             continue
         br = p.find('br')
         if br:
