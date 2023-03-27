@@ -523,7 +523,7 @@ def getIntervenantFonction(intervenant):
             intervenant_sexe = '|F|'
         intervenant = ' '.join(intervenant.split(' ')[1:])
     intervenant = re.sub(r'[.\s]+[\-–‑]?$', '', intervenant)
-    intervenant = re.sub(r' *$', '', intervenant)
+    intervenant = re.sub(r'[, ]*$', '', intervenant)
     if intervenant.find('le ') == 0 or intervenant.find('Le ') == 0 :
         intervenant_sexe = '|M|'
     if intervenant.find('la ') == 0 or intervenant.find('La ') == 0 :
