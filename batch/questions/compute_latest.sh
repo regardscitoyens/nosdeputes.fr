@@ -25,7 +25,7 @@ find html/ -name http* -exec rm -f {} \;
 #log cette partie très verbeuse
 perl download_questions.pl $LEGISLATURE > /tmp/download_questions.log
 
-for file in `grep -Lr "\(The \(page\|system\) cannot \(be found\|find\)\|Aucun résultat .e correspond à votre recherche\|Error 503 Service Unavailable\)" html/`; do
+for file in `grep -Lr "\(The \(page\|system\) cannot \(be found\|find\)\|Échec temporaire dans la résolution du nom\|Aucun résultat .e correspond à votre recherche\|Error 503 Service Unavailable\)" html/`; do
 	fileout=$(echo $file | sed 's/html/json/' | sed 's/\.htm/\.xml/')
 #	perl cut_quest.pl $file > $fileout
 	python parse.py $file > $fileout || echo "ERREUR parsing $file"
