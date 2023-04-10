@@ -390,7 +390,7 @@ def intervention_video(p):
             videotimestamp_thumbnail = int((videotimestamp / 1000) / 60 + 1) * 60
         if videotimestamp_thumbnail:
             urlthumbnail = "https://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail)
-            imagethumbnail = requests_get(urlthumbnail)
+            imagethumbnail = requests_get(urlthumbnail, return_errors=True)
             if imagethumbnail['content_type'] == 'error':
                 urlthumbnail = "https://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail + 1)
                 imagethumbnail = requests_get(urlthumbnail)
@@ -600,7 +600,7 @@ def getIntervenantFonction(intervenant):
             fonction2intervenant[intervenant_sexe+fonctionaralonge[0][0]] = intervenant
     return [intervenant, fonction]
 
-def requests_get(url):
+def requests_get(url, return_errors=False):
     global content_file
     cache_file = "%s_%s.cache" % (content_file, urllib.parse.quote(url, '.'))
     response = None
@@ -611,11 +611,13 @@ def requests_get(url):
                 return response
         except:
             pass
-    request = requests.get(url)
     try:
+        request = requests.get(url)
         contenttype = request.headers['Content-Type']
-    except KeyError:
-        contenttype = 'error'
+    except (KeyError, requests.exceptions.ConnectionError) as e:
+        if not return_errors:
+            sys.exit("ERROR downloading %s: %s - %s" % (url, type(e), e))
+        contenttype = "error"
     if contenttype.find('text') == 0:
         content = request.text
     else:
