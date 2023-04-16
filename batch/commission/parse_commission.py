@@ -130,6 +130,8 @@ def cleanhtml(s):
 
     s = s.replace("heures heures", "heures")
 
+    s = s.replace("é", "é")
+
     return s
 
 heures_str = {
