@@ -359,6 +359,8 @@ def intervention_video(p):
             video = re.findall(r'(https?://[^.]+.assemblee-nationale.fr/video\.([^\.]*)(\.[^<"\']+|))', response['url'])
         try:
             videoid = video[0][1]
+            if "?timecode" in videoid:
+                videoid = videoid.split("?")[0]
             urlvideo = video[0][0]
             urlvideo = re.sub('\??timecode=\d*', '', urlvideo)
             if len(urlvideo) >= 120:
@@ -395,7 +397,7 @@ def intervention_video(p):
             imagethumbnail = requests_get(urlthumbnail, return_errors=True)
             if imagethumbnail['content_type'] == 'error':
                 urlthumbnail = "https://videos.assemblee-nationale.fr/Datas/an/%s/files/storyboard/%d.jpg" % (videoid, videotimestamp_thumbnail + 1)
-                imagethumbnail = requests_get(urlthumbnail)
+                imagethumbnail = requests_get(urlthumbnail, return_errors=True)
             if imagethumbnail and imagethumbnail['content_type'] != 'error':
                 imagehtmlthumbnail = "<img src='data:%s;base64,%s'/>" % (imagethumbnail['content_type'], imagethumbnail['content'])
         new_intervention()
@@ -419,7 +421,7 @@ def intervention_video(p):
                 intervention += "</a>"
                 intervention += "</p></center><center><p>"
         if ahtmltimestamp:
-            intervention += ahtmltimestamp + "<i>Consulter la vidéo en cliquant sur la miniature</i></a>"
+            intervention += ahtmltimestamp + "<i>Consulter la vidéo en cliquant " + ("sur la miniature" if imagehtmlthumbnail else "ici") + "</i></a>"
         intervention += "</p></center>"
         new_intervention()
 
