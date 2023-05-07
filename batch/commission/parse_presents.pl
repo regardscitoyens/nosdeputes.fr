@@ -308,7 +308,7 @@ foreach $line (split /\n/, $string)
         $present = 1;
         $listmultiline = 1;
     }
-    if (!$special && $line =~ /[\/\|]?(Présents?|Assistai(en)?t également à la réunion|(E|É)tai[en]*t (également )?présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? (» à partir|au banc|de \d+|dans|depuis|pour|dès|sur|M\.[^<,\.]*, que) /i) {
+    if (!$special && $line =~ /[\/\|]?(Présents?|Assistai(en)?t également à la réunion|(E|É)tai[en]*t (également )?présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? (» à partir|soviétique|au banc|de \d+|dans|depuis|pour|dès|sur|M\.[^<,\.]*, que) /i) {
         $present = 1;
     }
     if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) (participai(en)?t à la réunion|étai(en)?t présents?)..*$/\2/g)) {
