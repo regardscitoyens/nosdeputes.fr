@@ -260,7 +260,7 @@ def printintervention(i):
         return
 
     # Split multiple intervenants
-    if re.search(r"et .* député.*$", i["intervenant"]):
+    if re.search(r"et .* (membre|député).*$", i["intervenant"]):
         intervenants = i["intervenant"].split(" et ")
     elif "lusieurs députés" in i["intervenant"] or (len(i["intervenant"].split(" ")) <= 6 and " et " in i["intervenant"] and "," not in i["intervenant"]):
         intervenants = i["intervenant"].replace(", ", " et ").split(" et ")
