@@ -146,6 +146,13 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
     }
     if data["numero"] in ERREURS_AN:
         scrutin["seance"] = ERREURS_AN[data["numero"]]
+    # Temp fix
+    elif not scrutin["seance"]:
+        if 1428 <= scrutin["numero"] < 1446 and not seance:
+            scrutin["seance"] = 20230215
+        elif 1446 <= scrutin["numero"] < 1456 and not seance:
+            scrutin["seance"] = 20230216
+
     if not scrutin["seance"]:
         logs.append("WARNING: scrutin %s has no seance %s" % (data["numero"], data["seanceRef"]))
     if not scrutin["demandeurs"] and not scrutin["titre"].startswith("la motion de censure"):
