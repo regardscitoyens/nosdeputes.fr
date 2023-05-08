@@ -483,16 +483,22 @@ def new_intervention():
                 intervention1 = re.sub(r'^((<p>[^<]*</p>)*<p>)<img [^>]*></p>', r'\1<i>(image non chargée)</i></p>', intervention[0:fin_i])
                 intervention2 = intervention[fin_i:]
                 intervention = intervention1
+                oldintervenant = intervenant
                 new_intervention()
+                intervenant = oldintervenant
                 intervention = intervention2
                 new_intervention()
+                intervenant = oldintervenant
             break
         intervention1 = intervention[0:fin_p]
         intervention2 = intervention[fin_p:]
         intervention = intervention1
+        oldintervenant = intervenant
         new_intervention()
+        intervenant = oldintervenant
         intervention = intervention2
         new_intervention()
+        intervenant = oldintervenant
 
     [intervenant, fonction] = getIntervenantFonction(intervenant)
     if intervention:
