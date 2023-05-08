@@ -504,15 +504,17 @@ def new_intervention():
     if intervention:
         timestamp += 10
         curtimestamp = timestamp
-        intervenants = intervenant.split(' et ')
-        if len(intervenants) > 1:
-            intervenant = "M "+intervenants[0]
-            linterventioncommune = intervention
-            new_intervention()
-            curtimestamp += 1
-            intervenant = intervenants[1]
-            intervention = linterventioncommune
-            [intervenant, fonction] = getIntervenantFonction(intervenant)
+        if intervenant and not "et de l" in intervenant:
+            intervenants = intervenant.split(' et ')
+            if len(intervenants) > 1:
+                intervenant = "M "+intervenants[0]
+                linterventioncommune = intervention
+                timestamp -= 10
+                new_intervention()
+                curtimestamp += 1
+                intervenant = intervenants[1]
+                intervention = linterventioncommune
+                [intervenant, fonction] = getIntervenantFonction(intervenant)
         print(json.dumps({"commission": commission, "intervention": intervention, "date": date, "source": source, "heure": heure, "session": session, "intervenant": intervenant, "timestamp": curtimestamp, "fonction": fonction }, ensure_ascii=False))
         if intervenant and not fonction.find('président') >= 0:
             if intervenant.find(' ') >= 0 :
