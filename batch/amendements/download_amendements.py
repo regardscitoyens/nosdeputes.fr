@@ -42,7 +42,7 @@ if __name__ == "__main__":
         resp = requests.get(url)
         if resp.status_code != 404:
             for line in resp.text.split('\n'):
-                if line:
+                if line and ';' in line:
                     _, file_url = line.split(';')
                     if 'opendata/AMAN' in file_url and file_url.endswith('.xml'):
                         file_url = file_url.replace(".xml", ".json")
