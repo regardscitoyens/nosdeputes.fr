@@ -308,7 +308,7 @@ foreach $line (split /\n/, $string)
         $present = 1;
         $listmultiline = 1;
     }
-    if (!$special && $line =~ /[\/\|]?(Présents?|Assistai(en)?t également à la réunion|(E|É)tai[en]*t (également )?présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? (» à partir|soviétique|au banc|de \d+|dans|depuis|pour|dès|sur|M\.[^<,\.]*, que) /i) {
+    if (!$special && $line =~ /[\/\|]?(Présente?s?|Assistai(en)?t également à la réunion|(E|É)tai[en]*t (également )?présent[es]*)[^\wé]+\s*/ && $line !~ /Présents? (» à partir|soviétique|au banc|de \d+|dans|depuis|pour|dès|sur|M\.[^<,\.]*, que) /i) {
         $present = 1;
     }
     if ($present || ($special && $line =~ s/(<[^>]*>|\/)*(M[.me]+ .*) (participai(en)?t à la réunion|étai(en)?t présents?)..*$/\2/g)) {
@@ -332,7 +332,7 @@ foreach $line (split /\n/, $string)
 	$line =~ s/\s+et\s+/, /gi;
 	$line =~ s/\.$//;
 
-	if (($line =~ s/\/?(Présents?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*// && !$senateurs) || (($newcomm || $listmultiline) && $line =~ /^[\-\s]*M+[\.mMes]+\s/) || $special) {
+	if (($line =~ s/\/?(Présente?s?|Assistai(en)?t également à la réunion|(E|É)tait également présent[es]*)\W+\s*// && !$senateurs) || (($newcomm || $listmultiline) && $line =~ /^[\-\s]*M+[\.mMes]+\s/) || $special) {
         $line =~ s/\.M/. M/g;
         $line =~ s/(^|\W+)M+[mes.]+\s+/\1/g;
         if ($line !~ /^([\/\s]*|\s*(le|la|chargée?) .*)$/) {
