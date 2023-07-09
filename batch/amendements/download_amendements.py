@@ -8,11 +8,13 @@ import time
 import datetime
 import requests
 
+GLOBAL_RETRIES = 0
+
 def download(url, json=True, retries=5):
     try:
         resp = requests.get(url)
         if resp.status_code != 200:
-            if not retries:
+            if not retries or (retries < 5 and resp.status_code == 404):
                 print("ERROR: could not download amendement at %s: (HTTP code: %s)" % (url, resp.status_code), file=sys.stderr)
                 return None
             time.sleep((6-retries)*5)
@@ -21,6 +23,10 @@ def download(url, json=True, retries=5):
             return resp.json()
         return resp.text
     except Exception as e:
+        if not resp or resp.status_code != 404:
+            GLOBAL_RETRIES += 1
+            if GLOBAL_RETRIES > 50:
+                sys.exit("ERROR: too many retries, server AN seems to error")
         if retries > 0:
             time.sleep((6-retries)*5)
             return download(url, json=json, retries=retries-1)
