@@ -11,6 +11,7 @@ import requests
 GLOBAL_RETRIES = 0
 
 def download(url, json=True, retries=5):
+    resp = None
     try:
         resp = requests.get(url)
         if resp.status_code != 200:
