@@ -155,7 +155,7 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
 
     if not scrutin["seance"]:
         logs.append("WARNING: scrutin %s has no seance %s" % (data["numero"], data["seanceRef"]))
-    if scrutin["seance"].startswith("20231") and not scrutin["seance"].startswith("202310"):
+    elif scrutin["seance"].startswith("20231") and not scrutin["seance"].startswith("202310"):
         goodseance = int(scrutin["seance"].replace("20231", "")) - 293
         scrutin["seance"] = "20231%03d" % goodseance
     if not scrutin["demandeurs"] and not scrutin["titre"].startswith("la motion de censure"):
