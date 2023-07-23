@@ -11,6 +11,7 @@ import requests
 GLOBAL_RETRIES = 0
 
 def download(url, json=True, retries=5):
+    global GLOBAL_RETRIES
     resp = None
     try:
         resp = requests.get(url)
