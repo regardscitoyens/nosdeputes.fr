@@ -33,6 +33,9 @@ def hasPrefixIntervenant(s):
 
 
 def cleanhtml(s):
+
+    s = re.sub(r'(assnatSection)_(\d)', r'\1\2', s)
+
     s = re.sub(r'\t', ' ', s)
 
     # Assemble metas tags split into two lines such as the commission's name
