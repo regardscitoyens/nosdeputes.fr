@@ -25,7 +25,8 @@ class loadCommissionTask extends sfBaseTask
           if (preg_match('/^\./', $file))
             continue;
           echo "$dir$file\n";
-          $first = 1;
+	  $first = 1;
+	  $orga = null;
           foreach(file($dir.$file) as $line) {
             $json = json_decode($line);
             if (!$json || !$json->intervention || !$json->date || !$json->commission || !$json->source) {
@@ -41,7 +42,8 @@ class loadCommissionTask extends sfBaseTask
 
             if ($first) { #On teste si la séance existe déjà.
               $first = 0;
-              $seance = Doctrine::getTable('Seance')->getFromSeanceArgs('commission', $json->date, $json->heure, $json->session, $json->commission);
+	      $seance = Doctrine::getTable('Seance')->getFromSeanceArgs('commission', $json->date, $json->heure, $json->session, $json->commission);
+	      $orga = $seance->organisme_id;
               if ($seance) {
                 try {
                   if (count($seance->Interventions)) {
@@ -70,8 +72,8 @@ class loadCommissionTask extends sfBaseTask
             }
             if ($json->intervenant) {
               if ($verbose)
-                echo "Set Intervenant for $id (".$json->intervenant.")\n";
-              $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction, $seance->organisme_id);
+                echo "Set Intervenant for $id (".$json->intervenant.") orga ".$orga."\n";
+              $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction, $orga);
               if ($verbose)
                 echo "Parlementaire ".$intervention->parlementaire_id." set for $id\n";
             }
