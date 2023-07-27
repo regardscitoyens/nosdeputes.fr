@@ -135,7 +135,10 @@ class loadAmdmtsTask extends sfBaseTask {
                 $SUJET = "NOUVELARTICLE";
               else $SUJET = $json->sujet;
               $amdmt->content_md5 = md5($json->legislature.$json->loi.$SUJET.$amdmt->texte);
-              if ($json->auteurs) {
+              if (count($json->auteurs_ids)) {
+                $amdmt->signataires = $json->auteurs;
+                $amdmt->setAuteursByIdAn($json->auteurs_ids);
+              } else if ($json->auteurs) {
                 $amdmt->signataires = $json->auteurs;
                 $amdmt->setAuteurs($json->auteurs);
               } else if (!$json->sort || !preg_match('/(irrecevable|retir)/i', $json->sort)) {

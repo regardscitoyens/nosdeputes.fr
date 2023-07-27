@@ -47,6 +47,21 @@ class Amendement extends BaseAmendement {
     $this->_set('auteur_groupe_acronyme', $auteur->groupe_acronyme);
   }
 
+  public function setAuteursByIdAn($auteurs_ids) {
+    $debug=0;
+    $signataireindex = 1;
+    foreach ($auteurs_ids as $depute) {
+      $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($depute);
+      if (!$parl) print "ERROR: Auteur introuvable in ".$this->source." : ".$depute."\n";
+      else {
+        if ($debug) echo $parl->nom."\n";
+        $this->addParlementaire($parl, $signataireindex);
+        $parl->free();
+      }
+      $signataireindex++;
+    }
+  }
+
   public function setAuteurs($auteurs) {
     $debug=0;
     $auteurs = html_entity_decode($auteurs, ENT_COMPAT, 'UTF-8');
