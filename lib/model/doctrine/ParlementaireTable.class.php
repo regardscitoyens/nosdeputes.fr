@@ -9,6 +9,9 @@ class ParlementaireTable extends PersonnaliteTable
     $id_an = preg_replace('/PA/', '', $id_an);
     $query = $this->createQuery('p')->where('p.id_an = ?', $id_an);
     $deputes = $query->execute();
+    if (count($deputes) == 0) {
+      return;
+    }
     if (count($deputes) > 1) {
       throw new sfException("More than one Parlementaire found");
     }
