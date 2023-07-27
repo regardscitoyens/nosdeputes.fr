@@ -121,7 +121,10 @@ try:
         amd['auteurs'] += " %s" % data['signataires']['suffixe']
     amd['auteurs'] = cleanAuteurs(amd['auteurs'], h)
     amd['auteur_reel'] = (data['signataires']['auteur']['auteurRapporteurOrganeRef'] or data['signataires']['auteur']['acteurRef'] or "GVT").lstrip('PAO')
-    amd['auteurs_ids'] = [amd['auteur_reel']] + (data['signataires'].get('cosignataires', {}).get('acteurRef', []) or [])
+    cosign = data['signataires'].get('cosignataires', {}).get('acteurRef', []) or []
+    if type(cosign) != list:
+        cosign = [cosign]
+    amd['auteurs_ids'] = [amd['auteur_reel']] + cosign
 
     try:
         if int(data['cardinaliteAmdtMultiples']) > 1:
