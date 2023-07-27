@@ -43,6 +43,12 @@ class loadJOTask extends sfBaseTask
 	      echo "\n";
 	      continue;
 	    }
+
+	    $typeorganisme = 'parlementaire';
+	    if (isset($jo->typeorganisme))
+	      $typeorganisme = $jo->typeorganisme;
+	    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($jo->commission, $typeorganisme);
+
 	    if (!$jo->depute) {
 	      echo "ERROR null : ";
 	      echo $line;
@@ -57,20 +63,15 @@ class loadJOTask extends sfBaseTask
               }
               continue;
             }
-	    $depute = Doctrine::getTable('Parlementaire')->findOneByNom($jo->depute);
-	    if ($jo->depute && !$depute) {
+	    $depute = Doctrine::getTable('Parlementaire')->findOneByNomAndOrga($jo->depute, $commission->id);
+	    if ($jo->depute && !$depute)
 	      $depute = Doctrine::getTable('Parlementaire')->similarTo($jo->depute);
-	    }
 	    if (!$depute) {
 	      echo "ERROR depute : ";
 	      echo $line;
 	      echo "\n";
 	      continue;
 	    }
-	    $typeorganisme = 'parlementaire';
-	    if (isset($jo->typeorganisme))
-	      $typeorganisme = $jo->typeorganisme;
-	    $commission = Doctrine::getTable('Organisme')->findOneByNomOrCreateIt($jo->commission, $typeorganisme);
 	    $seance = $commission->getSeanceByDateAndMomentOrCreateIt($jo->reunion, $jo->session);
 	    $seance->addPresence($depute, $typesource, $jo->source);
 	    $seance->free();

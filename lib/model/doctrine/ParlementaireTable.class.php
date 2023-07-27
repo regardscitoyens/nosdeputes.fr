@@ -17,6 +17,32 @@ class ParlementaireTable extends PersonnaliteTable
     }
     return $deputes[0];
   }
+  public function findOneByNomAndOrga($nom, $orga_id) {
+    $memeNom = $this->findByNom($nom);
+    if (count($memeNom) != 1 && $orga_id) {
+      $query = $this->createQuery('p')
+        ->leftJoin('p.ParlementaireOrganismes o')
+        ->where('p.nom = ?', $nom)
+        ->andWhere('o.organisme_id = ?', $orga_id);
+      $memeNom = $query->execute();
+    }
+    if (count($memeNom) == 0) {
+      $memeNom = $this->findByNomDeFamille($nom);
+      if(count($memeNom) != 1 && $orga_id) {
+        $query = $this->createQuery('p')
+          ->leftJoin('p.ParlementaireOrganismes o')
+          ->where('p.nom_de_famille = ?', $nom)
+          ->andWhere('o.organisme_id = ?', $orga_id);
+        $memeNom = $query->execute();
+      }
+    }
+    if (count($memeNom) > 1)
+      throw new sfException("More than one Parlementaire found for ".$nom);
+    if (count($memeNom) == 1)
+      return $memeNom[0];
+    return null;
+  }
+
   public function findOneByNomSexeGroupeCirco($nom, $sexe = null, $groupe = null, $circo = null, $document = null) {
     $depute = null;
     $memeNom = $this->findByNom($nom);

@@ -71,7 +71,7 @@ class loadCommissionTask extends sfBaseTask
             if ($json->intervenant) {
               if ($verbose)
                 echo "Set Intervenant for $id (".$json->intervenant.")\n";
-              $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction);
+              $intervention->setPersonnaliteByNom($json->intervenant, $json->fonction, $seance->organisme_id);
               if ($verbose)
                 echo "Parlementaire ".$intervention->parlementaire_id." set for $id\n";
             }
