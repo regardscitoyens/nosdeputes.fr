@@ -43,6 +43,16 @@ class QuestionEcrite extends BaseQuestionEcrite
     return $titre;
   }
 
+  public function setAuteurByIdAn($id_an) {
+    $depute = Doctrine::getTable('Parlementaire')->findOneByIdAn($id_an);
+    if (!$depute) print "ERROR: Auteur introuvable in ".$this->source." : ".$id_an."\n";
+    else {
+      $this->_set('parlementaire_id', $depute->id);
+      $this->_set('parlementaire_groupe_acronyme', $depute->groupe_acronyme);
+      $depute->free();
+    }
+  }
+
   public function setAuteur($depute) {
     $sexe = null;
     if (preg_match('/^\s*(M+[\s\.ml]{1})[a-z]*\s*([dA-Z].*)\s*$/', $depute, $match)) {

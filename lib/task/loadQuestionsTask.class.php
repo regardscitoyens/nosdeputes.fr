@@ -38,6 +38,8 @@ class loadQuestionsTask extends sfBaseTask {
 		  $missing ='date';
 		if (!$json->auteur)
 		  $missing = 'auteur';
+		if (!$json->auteur_id_an)
+		  $missing = 'auteur_id_an';
 		if (!$json->type)
 		  $missing = 'type';
 		if (!$json->question && !$json->date_retrait)
@@ -58,7 +60,7 @@ class loadQuestionsTask extends sfBaseTask {
               $quest->source = $json->source;
               $quest->legislature = $json->legislature;
               $quest->numero = $json->numero;
-              $quest->setAuteur($json->auteur);
+              $quest->setAuteurByIdAn($json->auteur_id_an);
             }
             $quest->ministere = $json->ministere_interroge." / ".$json->ministere_attribue;
             if (!$quest->reponse || $quest->reponse === "") {

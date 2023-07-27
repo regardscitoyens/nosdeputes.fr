@@ -47,6 +47,7 @@ def parse_question(url, xmlstring):
         'question': qe['DEPOT'][1]['TEXTE_DEPOT'] if qe['DEPOT'][1] else '',
         'reponse': qe['REPONSE']['TEXTE_REPONSE'],
         'auteur': qe['AUTEUR']['PRENOM'] + ' ' + qe['AUTEUR']['NOM'],
+        'auteur_id_an': qe['AUTEUR']['ID_ACTEUR'],
     # unused fields
         'date_signalement': max(convert_date(qe.get('RENOUVELLEMENT', {}).get('DATE_JO', '')), \
                                 convert_date(qe.get('SIGNALEMENT', {}).get('DATE_JO', ''))),
