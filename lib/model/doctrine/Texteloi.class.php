@@ -114,6 +114,64 @@ class Texteloi extends BaseTexteloi
     }
   }
 
+  public function setAuteursByIdAn($auteurs, $signataires) {
+    $debug=0;
+    $this->signataires = $signataires;
+    $orga = null;
+    $groupes = array();
+    foreach ($auteurs as $depute) {
+      if ($depute[2] == "Organe") {
+        $orga = trim($depute[1]);
+        $organisme = Doctrine::getTable('Organisme')->findOneByNomType($orga, 'parlementaire');
+        if ($debug) echo "$organisme->slug / $organisme->type\n";
+        if ($organisme && $organisme->type != "groupe") {
+          $this->setOrganisme($organisme);
+          if (!($this->type_details)) {
+            $this->type_details = "de l";
+            if (preg_match('/^[aeiouyh]/i', $organisme->nom))
+              $this->type_details .= "'";
+            else if (preg_match('/^comit/i', $organisme))
+              $this->type_details .= "e ";
+            else $this->type_details .= "a ";
+            $this->type_details .= $organisme->nom;
+          }
+          $orga = $organisme->nom;
+        } else {
+          $groupe = Doctrine::getTable('Organisme')->findOneByNomType($orga, 'groupe');
+          if ($groupe) {
+            $groupes[] = $groupe;
+          }
+        }
+      }
+    }
+    if (count($groupes) == 1) {
+      $this->setOrganisme($groupe);
+      $orga = " pour le groupe ".$groupe->nom;
+    } else if (count($groupes) > 1) {
+       $orga = " pour les groupes ";
+       $gpes = array();
+       foreach ($groupes as $g)
+         $gpes[] = $g->getSmallNomGroupe();
+       $orga .= join(", ", $gpes);
+    }
+    foreach ($auteurs as $depute) {
+      if ($depute[1] && $depute[2] && $depute[2] != "Organe") {
+        if (preg_match('/(ministre|[eéÉ]tat|président|haut-commissaire)/i', $depute[1]." ".$depute[2])) {
+          if ($debug) print "WARN: Skip auteur ".$depute[1]." ".$depute[2]." for ".$this->source."\n";
+          continue;
+        }
+        if ($debug) echo $depute[0]."//".$depute[1]."//".$depute[2]."//".$orga." => ";
+        $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($depute[0]);
+        if (!$parl) print "\nWARNING: Auteur introuvable in ".$this->source." : ".$depute[0]."//".$depute[1]."//".$depute[2]."//".$orga."\n";
+        else {
+          if ($debug) echo $parl->nom."\n";
+          $this->addParlementaire($parl, $depute[2], $orga);
+          $parl->free();
+        }
+      }
+    }
+  }
+
   public function setAuteurs($signataires) {
     $debug=0;
     $this->signataires = $signataires;

@@ -64,7 +64,9 @@ class loadDocumentsTask extends sfBaseTask {
               $doc->titre = $json->titre;
             if ($json->categorie)
               $doc->categorie = $json->categorie;
-            if ($json->auteurs)
+            if ($json->deputes)
+              $doc->setAuteursByIdAn($json->deputes, $json->auteurs);
+            elseif ($json->auteurs)
               $doc->setAuteurs($json->auteurs);
             if ($json->motscles)
               foreach (explode('.', $json->motscles) as $tag)

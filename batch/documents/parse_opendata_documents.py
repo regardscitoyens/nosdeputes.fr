@@ -94,7 +94,7 @@ def convert_format(data, extra = ''):
     res["type"] = data['classification']['type']['libelle']
     if data['classification']['sousType'] and data['classification']['sousType'].get('libelle'):
         res["type_details"] = data['classification']['sousType']['libelle']
-    res["deputes"] = {"auteurs": [], "coSignataires": [] }
+    res["deputes"] = []
     res["auteurs"] = ""
 
     if not isinstance(data['auteurs']['auteur'], list):
@@ -108,7 +108,7 @@ def convert_format(data, extra = ''):
                 with io.open("opendata/acteur/"+acteur_id+".json", encoding="utf-8", mode='r') as acteur_file:
                     acteur_json = json.load(acteur_file)
                     acteur = acteur_json['acteur']['etatCivil']['ident']['civ']+' '+acteur_json['acteur']['etatCivil']['ident']['prenom']+' '+acteur_json['acteur']['etatCivil']['ident']['nom']
-            res["deputes"]["auteurs"].append([auteur['acteur']['acteurRef'], acteur, auteur['acteur']['qualite'].title()])
+            res["deputes"].append([auteur['acteur']['acteurRef'], acteur, auteur['acteur']['qualite'].title()])
             auteurs.append(acteur+ " "+auteur['acteur']['qualite'].title())
         elif auteur.get('organe'):
             res["organe_id"] = auteur['organe']['organeRef']
@@ -121,6 +121,7 @@ def convert_format(data, extra = ''):
             else:
                 organe_name = auteur['organe']['organeRef'] + " Organe"
             if organe_name not in auteurs:
+                res["deputes"].append([auteur['organe']['organeRef'], organe_name, "Organe"])
                 auteurs.append(organe_name)
 
 
@@ -135,7 +136,7 @@ def convert_format(data, extra = ''):
                     with io.open("opendata/acteur/"+acteur_id+".json", encoding="utf-8", mode='r') as acteur_file:
                         acteur_json = json.load(acteur_file)
                         acteur = acteur_json['acteur']['etatCivil']['ident']['civ']+' '+acteur_json['acteur']['etatCivil']['ident']['prenom']+' '+acteur_json['acteur']['etatCivil']['ident']['nom']
-                res["deputes"]["coSignataires"].append([acteur_id, acteur, "Cosignataire"])
+                res["deputes"].append([acteur_id, acteur, "Cosignataire"])
                 auteurs.append(acteur + " Cosignataire")
             elif cosign.get('organe'):
                 organe_id = cosign['organe']['organeRef']
@@ -149,7 +150,7 @@ def convert_format(data, extra = ''):
                 organe_name = re.sub(r" \(modem et indépendants\)", "", organe_name, re.I)
                 orga_name = organe_name + " Organe"
                 if orga_name not in auteurs:
-                    res["deputes"]["coSignataires"].append([organe_id, organe_name, "Organe"])
+                    res["deputes"].append([organe_id, organe_name, "Organe"])
                     auteurs.append(orga_name)
 
     res["auteurs"] = ', '.join(auteurs)
