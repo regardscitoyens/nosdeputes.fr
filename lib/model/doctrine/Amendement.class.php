@@ -50,7 +50,25 @@ class Amendement extends BaseAmendement {
   public function setAuteursByIdAn($auteurs_ids) {
     $debug=0;
     $signataireindex = 1;
+    $orgas = array(
+      "GVT"    => "Gouvernement",
+      "59046"  => "Commission de la défense nationale et des forces armées",
+      "59047"  => "Commission des affaires étrangères",
+      "59048"  => "Commission des finances",
+      "59051"  => "Commission des lois",
+      "419604" => "Commission des affaires culturelles et de l'éducation",
+      "419610" => "Commission des affaires économiques",
+      "419865" => "Commission du développement durable et de l'aménagement du territoire",
+      "420120" => "Commission des affaires sociales",
+      "757134" => "Commission spéciale",
+      "760148" => "Commission spéciale",
+      "769550" => "Commission spéciale"
+    );
     foreach ($auteurs_ids as $depute) {
+      $depute = preg_replace('/PA/', '', $depute);
+      if (array_key_exists($depute), $orgas)
+        // TODO Handle those?
+        continue;
       $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($depute);
       if (!$parl) print "ERROR: Auteur introuvable in ".$this->source." : ".$depute."\n";
       else {

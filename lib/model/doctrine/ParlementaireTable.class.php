@@ -7,6 +7,11 @@ class ParlementaireTable extends PersonnaliteTable
 
   public function findOneByIdAn($id_an) {
     $id_an = preg_replace('/PA/', '', $id_an);
+    $modified_ids = array(
+      "267999" => "344201"
+    );
+    if (array_key_exists($id_an, $modified_ids))
+      $id_an = $modified_ids[$id_an];
     $query = $this->createQuery('p')->where('p.id_an = ?', $id_an);
     $deputes = $query->execute();
     if (count($deputes) == 0) {
