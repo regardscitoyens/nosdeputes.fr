@@ -66,7 +66,7 @@ class Amendement extends BaseAmendement {
     );
     foreach ($auteurs_ids as $depute) {
       $depute = preg_replace('/PA/', '', $depute);
-      if (array_key_exists($depute), $orgas)
+      if (array_key_exists($depute, $orgas))
         // TODO Handle those?
         continue;
       $parl = Doctrine::getTable('Parlementaire')->findOneByIdAn($depute);
