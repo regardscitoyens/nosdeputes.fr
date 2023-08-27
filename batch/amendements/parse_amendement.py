@@ -159,8 +159,7 @@ try:
 except Exception as e:
     print >> sys.stderr, "ERROR: could not parse JSON opendata for amendement %s at %s" % (htmlurl, jsonurl)
     print >> sys.stderr, "%s: %s" % (type(e), e)
-    from pprint import pprint
-    pprint(data)
+    print >> sys.stderr, data
     sys.exit(1)
 
 print json.dumps(amd, ensure_ascii=False).encode('utf-8')
