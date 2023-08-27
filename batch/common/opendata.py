@@ -5,7 +5,7 @@ import json
 import os
 import sys
 from copy import deepcopy
-from zipfile import ZipFile
+from zipfile import ZipFile, BadZipfile
 
 from bs4 import BeautifulSoup
 import requests
@@ -166,7 +166,8 @@ def fetch_an_json(legislature, objet):
         objects = [(objname.values()[0], objcat) for objcat, objname in export.items() if type(objname) is dict]
         for obj, objcat in objects:
             export[objcat][obj] = []
-    with ZipFile(localzip, "r") as z:
+    try:
+      with ZipFile(localzip, "r") as z:
         for f in [f for f in z.namelist() if f.endswith(".json")]:
             log("JSON extrait : %s" % f, debug=True)
             with z.open(f) as zf:
@@ -180,6 +181,8 @@ def fetch_an_json(legislature, objet):
                         export[objcat][obj].append(elmt)
                         break
         return assembled_data, updated
+    except BadZipfile:
+      sys.exit("The ZIP file %s seems to have been badly downloaded." % localzip)
 
 
 def _cached_ref(
