@@ -4,7 +4,7 @@ cd $PATH_APP
 source bin/db.inc
 cd batch/depute
 wget -q https://github.com/regardscitoyens/twitter-parlementaires/raw/master/data/deputes.csv --no-check-certificate -O twitter.csv
-perl download_deputes.pl $LEGISLATURE
+perl download_deputes.pl $LEGISLATURE || (echo "AN's website seems to error" && exit)
 rm -f bureau.csv
 curl -sL https://www2.assemblee-nationale.fr/layout/set/ajax/content/view/embed/119106 |
  grep "<h3>\|instance-composition-nom.*OMC_PA" |

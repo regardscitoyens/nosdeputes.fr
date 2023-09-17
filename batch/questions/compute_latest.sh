@@ -23,7 +23,7 @@ echo $sql_string | mysql $MYSQLID $DBNAME | grep -v source > liste_sans_reponse.
 find html/ -name http* -exec rm -f {} \;
 
 #log cette partie très verbeuse
-perl download_questions.pl $LEGISLATURE > /tmp/download_questions.log
+perl download_questions.pl $LEGISLATURE > /tmp/download_questions.log || (echo "AN's website seems to error" && exit)
 
 for file in `grep -Lr "\(The \(page\|system\) cannot \(be found\|find\)\|<title>50\|Échec temporaire dans la résolution du nom\|Aucun résultat .e correspond à votre recherche\|Error 503 Service Unavailable\)" html/`; do
 	fileout=$(echo $file | sed 's/html/json/' | sed 's/\.htm/\.xml/')
