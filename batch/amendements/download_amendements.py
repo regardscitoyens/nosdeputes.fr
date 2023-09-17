@@ -16,6 +16,8 @@ def download(url, json=True, retries=5):
     try:
         resp = requests.get(url)
         if resp.status_code != 200:
+            if (resp.status_code == 404 and "/ESPNUM/CS" in url):
+                return download(url.replace("/ESPNUM/CS", "/ESPNUM/"), json=json, retries=retries)
             if not retries or (retries < 5 and resp.status_code == 404):
                 print("ERROR: could not download amendement at %s: (HTTP code: %s)" % (url, resp.status_code), file=sys.stderr)
                 return None
