@@ -43,14 +43,13 @@ class loadCommissionTask extends sfBaseTask
             if ($first) { #On teste si la séance existe déjà.
               $first = 0;
 	      $seance = Doctrine::getTable('Seance')->getFromSeanceArgs('commission', $json->date, $json->heure, $json->session, $json->commission);
-	      $orga = $seance->organisme_id;
               if ($seance) {
                 try {
                   if (count($seance->Interventions)) {
                     echo "WARNING: removing existing interventions from compte-rendu ".$seance->Interventions[0]->source."\n";
                   }
                   $seance->deleteInterventions();
-                }catch(Exception $e) {
+                } catch(Exception $e) {
                   echo "ERROR: Impossible de supprimer la séance ".$seance->id." (".$e->getMessage().")\n";
                   continue 2;
                 }
@@ -69,7 +68,10 @@ class loadCommissionTask extends sfBaseTask
               $intervention->date = $json->date;
               $intervention->setSource($json->source);
               $intervention->setTimestamp($json->timestamp);
-            }
+	    }
+	    $seance = Doctrine::getTable("Seance")->find($intervention->seance_id);
+	    $orga = $seance->organisme_id;
+
             if ($json->intervenant) {
               if ($verbose)
                 echo "Set Intervenant for $id (".$json->intervenant.") orga ".$orga."\n";
