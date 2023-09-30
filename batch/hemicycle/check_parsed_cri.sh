@@ -33,8 +33,8 @@ echo "-------------"
 grep '"intervenant": ""' $JSON      |
   sed 's/^.*"intervention": "/-> /' |
   sed 's/".*$//'                    |
-  sed 's/<\/p><p>/<\p>\n-> <p>/g'   |
-  sed 's/\. – /.<\p>\n-> <p>/g'     |
+  sed 's/<\/p><p>/<\/p>\n-> <p>/g'   |
+  sed 's/\. – /.<\/p>\n-> <p>/g'     |
   sort -u
 echo "-------------"
 echo
