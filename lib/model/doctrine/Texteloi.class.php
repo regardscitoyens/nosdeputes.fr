@@ -257,7 +257,7 @@ class Texteloi extends BaseTexteloi
     $pd->_set('Texteloi', $this);
     if ($fonction === "Auteur")
       $pd->_set('importance', 1);
-    else if ($fonction === "Rapporteur" || $fonction === "Rapporteur Spécial")
+    else if ($fonction === "Rapporteur" || $fonction === "Rapporteur Spécial" || $fonction === "Rapporteur Pour Avis" || $fonction === "Rapporteur Général")
       $pd->_set('importance', 3);
     else if ($fonction === "Cosignataire")
       $pd->_set('importance', 5);

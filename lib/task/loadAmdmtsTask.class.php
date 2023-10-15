@@ -30,7 +30,8 @@ class loadAmdmtsTask extends sfBaseTask {
       "420120" => "Commission des affaires sociales",
       "757134" => "Commission spéciale",
       "760148" => "Commission spéciale",
-      "769550" => "Commission spéciale"
+      "769550" => "Commission spéciale",
+      "826232" => "Commission spéciale"
     );
 
     if (is_dir($dir)) {
