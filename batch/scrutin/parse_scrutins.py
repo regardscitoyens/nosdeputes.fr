@@ -115,6 +115,7 @@ def parse_scrutins(legislature, data):
             log("Scrutin %s mis à jour" % scrutin["numero"])
 
 ERREURS_AN = {
+    "2625": "20240004"
 }
 
 MISSING_HISTOGPES = {
