@@ -128,8 +128,11 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
     try:
         seance = seances[data["seanceRef"]]
     except KeyError:
-        print("ERROR parsing scrutin #%s: seance Ref %s missing in AN's reunions OpenData" % (data["numero"], data["seanceRef"]))
-        exit(1)
+        try:
+            seance = seances[data["seanceRef"].replace("RUANR5L16S2023IDS", "RUANR5L16S2024IDS")]
+        except KeyError:
+            print("ERROR parsing scrutin #%s: seance Ref %s missing in AN's reunions OpenData" % (data["numero"], data["seanceRef"]))
+            exit(1)
     scrutin = {
         "numero": int(data["numero"]),
         "seance": seance,
