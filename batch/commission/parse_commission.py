@@ -208,7 +208,7 @@ def get_metas(p):
             else:
                 heure += '00'
             return
-        heures = re.search(r'(?:commence|ouverte) à ([a-z\- ]+) *heures? *([a-z\- ]+)?\.', p_text.lower())
+        heures = re.search(r'(?:commence|ouverte) à ([a-z\- ]+) *heures? *([a-z\- ]+)?(\.|$)', p_text.lower())
         if heures:
             heure = "%02d:%02d" % (heures_str.get(heures.group(1).strip(), 0), heures_str.get((heures.group(2) or "").strip(), 0))
             return
