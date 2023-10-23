@@ -475,26 +475,36 @@ def new_intervention():
     intervention = re.sub(r'<(t(able|head|body|r|h|d)|p)>\s+<(t(able|head|body|r|h|d)|p)>', r'<\1><\3>', intervention)
     intervention = re.sub(r'</(t(able|head|body|r|h|d)|p)>\s+</(t(able|head|body|r|h|d)|p)>', r'</\1></\3>', intervention)
     intervention = re.sub(r'</t([rdh])>\s+<t\1>', r'</t\1><t\1>', intervention)
+    intervention = re.sub(r'<t([rdh])>\s*<p[^>]*>\s*', r'<t\1>', intervention)
+    intervention = re.sub(r'\s*</p>\s*</t([rdh])>', r'</t\1>', intervention)
 
     if re.match(r'(<p>[^<]*</p>)*<p>\s*(<img [^>]*>\s*){2,}</p>', intervention) and not intervenant:
         intervention = re.sub(r'([^p]>)\s*<img ', r'\1</p><p><img ', intervention)
     while len(intervention) > 100000:
-        fin_p = 30000 + intervention[30000:].find('</p>') + 4
-        if fin_p > 100000:
-            if re.match(r'(<p>[^<]*</p>)*<p><img [^>]*></p>', intervention):
-                fin_i = intervention.find('</p>') + 4
-                intervention1 = re.sub(r'^((<p>[^<]*</p>)*<p>)<img [^>]*></p>', r'\1<i>(image non chargée)</i></p>', intervention[0:fin_i])
-                intervention2 = intervention[fin_i:]
-                intervention = intervention1
-                oldintervenant = intervenant
-                new_intervention()
-                intervenant = oldintervenant
-                intervention = intervention2
-                new_intervention()
-                intervenant = oldintervenant
-            break
-        intervention1 = intervention[0:fin_p]
-        intervention2 = intervention[fin_p:]
+        if not "<table" in intervention:
+            fin_p = 30000 + intervention[30000:].find('</p>') + 4
+            if fin_p > 100000:
+                if re.match(r'(<p>[^<]*</p>)*<p><img [^>]*></p>', intervention):
+                    fin_i = intervention.find('</p>') + 4
+                    intervention1 = re.sub(r'^((<p>[^<]*</p>)*<p>)<img [^>]*></p>', r'\1<i>(image non chargée)</i></p>', intervention[0:fin_i])
+                    intervention2 = intervention[fin_i:]
+                    intervention = intervention1
+                    oldintervenant = intervenant
+                    new_intervention()
+                    intervenant = oldintervenant
+                    intervention = intervention2
+                    new_intervention()
+                    intervenant = oldintervenant
+                break
+            intervention1 = intervention[0:fin_p]
+            intervention2 = intervention[fin_p:]
+        else:
+            fin_p = 90000 + intervention[90000:].find('</tr>') + 5
+            if fin_p > 100000:
+                break
+            intervention1 = intervention[0:fin_p] + '</tbody></table>'
+            intervention2 = '<table><tbody>' + intervention[fin_p:]
+
         intervention = intervention1
         oldintervenant = intervenant
         new_intervention()
