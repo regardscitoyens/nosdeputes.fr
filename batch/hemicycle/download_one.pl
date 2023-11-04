@@ -26,7 +26,7 @@ if (!$cache || ! -e "html/$htmfile") {
   close FILE;
 }
 
-if ($content =~ /<div class="crs-cr-provisoire">Avertissement: version provisoire/) {
+if ($content =~ /<div class="crs-cr-provisoire">Avertissement: version provisoire/ || $content =~ /---------Cette partie de la s..?ance est en cours de finalisation-------------/) {
   print STDERR "WARNING: skipping compte rendu provisoire for now at $url\n";
   unlink("html/$htmfile");
   exit();
