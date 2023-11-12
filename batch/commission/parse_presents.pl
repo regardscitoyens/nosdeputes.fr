@@ -215,6 +215,7 @@ sub checkout {
 	$depute =~ s/Florence Lasserre.?David/Florence Lasserre/;
 	$depute =~ s/Charlotte Lecocq/Charlotte Parmentier-Lecocq/;
 	$depute =~ s/Claire Picolât/Claire Pitollat/;
+	$depute =~ s/Claire Col+omb[\- ]Pitollat/Claire Pitollat/;
     if ($depute !~ /^(Vice[ -]|Président|Questeur|Parlementaire|Député|Membres?( français)? du parlement|Sénat|Secrétaire|Présent|Excusé|:|représentant |hors membre)/i && $depute !~ /^\s*$/ && $depute !~ /\((député|sénateur|membre du parlement|excusée?)[^)]*\)$/i) {
       print '{"commission": "'.$commission.'", "depute": "'.$depute.'", "reunion": "'.$date.'", "session": "'.$heure.'", "source": "'.$source.'", "source_file": "'.$file.'"}'."\n";
     }
