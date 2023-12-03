@@ -10,6 +10,7 @@ Une API a été développée pour offrir un accès Open Data simplifié aux donn
 - [Liste des organismes (commissions, groupes, etc)](#liste-des-organismes-commissions-groupes-etc)
 - [Détails de chaque parlementaire](#détails-de-chaque-parlementaire)
 - [Données d'activité des parlementaires](#données-dactivité-des-parlementaires)
+- [Scrutins et votes des parlementaires](#scrutins-et-votes-des-parlementaires)
 - [Documents et débats parlementaires](#documents-et-débats-parlementaires)
 - [Résultats du moteur de recherche](#résultats-du-moteur-de-recherche)
 - [Outils d'accès simplifié à l'API](#outils-daccès-simplifié-à-lapi)
@@ -20,6 +21,8 @@ Une API a été développée pour offrir un accès Open Data simplifié aux donn
 
 
 ## Explications
+
+Pour accéder aux données sous-jacentes à une certaine page des sites NosDéputés.fr et NosSénateurs.fr, il suffit d'ajouter `/xml`, `/json` ou `/csv` au chemin de l'url de la page. Cette page de documentation référence les chemins d'accès à l'API qui sont disponibles.
 
 - **Format :** La plupart des exemples fournis ci-dessous sont donnés au format XML pour permettre plus de lisibilité dans le navigateur web. Veuillez remplacer `xml` en `json` ou `csv` pour accéder aux autres formats. Pour forcer l'affichage dans le navigateur, vous pouvez utilisez l'option `?textplain=true`.
 
@@ -132,6 +135,21 @@ Vous pouvez retrouver ces identifiants au sein des listes des parlementaires ou 
    - seuls les parlementaires ayant manifesté une activité sur la période sont renvoyés ;
    - le nommage des indicateurs d'interventions en hémicycle est légèrement ambigu :  *hemicycle_interventions_courtes* se réfère aux interventions de moins de 20 mots, et *hemicycle_interventions* à celles de 20 mots et plus. Pour connaître le nombre d'interventions total du parlementaire sur le mois donné, il faut donc sommer les deux indicateurs.
 
+## Scrutins et votes des parlementaires
+
+On peut obtenir la liste des scrutins auxquels un parlementaire particulier a participé avec les informations du scrutin.
+
+Par exemple: https://2017-2022.nosdeputes.fr/bruno-duverge/votes/xml
+
+Inversement, on peut aussi obtenir la liste des parlementaires ayant participé à un scrutin particulier avec aussi les informations des scrutins.
+
+Par exemple: https://www.nosdeputes.fr/16/scrutin/1/xml
+
+Enfin, on peut obtenir la liste de tous les scrutins directement mais sans information sur les votes.
+
+Par exemple: https://www.nosdeputes.fr/16/scrutins/xml
+
+*Note: Cette dernière requête peut échouer car les données chargées sont très lourde.*
 
 ## Documents et débats parlementaires
 
