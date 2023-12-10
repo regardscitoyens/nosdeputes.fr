@@ -306,6 +306,8 @@ def html2json(s):
             if intervenant:
                 new_intervention()
         has_video = p_str.find('videos.assemblee-nationale.fr') >= 0 or p_str.find('assnat.fr') >= 0 or p_str.find('assemblee-nationale.fr/video') >= 0
+        if has_video and "cr-cloi" in source and p_str.find("Lien vidéo"):
+            has_video = False
         p_str = re.sub(r'(<i>\s*\(|\(\s*<i>)', '<i>(', p_str)
         p_str = re.sub(r'(</i>\s*\)|\)\s*</i>)', ')</i>', p_str)
         if p_str.find('<i>(') > 0 and p_str.find(')</i>') > 0 and not infos_commission:
