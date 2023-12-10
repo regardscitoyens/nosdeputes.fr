@@ -24,6 +24,7 @@ clean_subject_amendements_regexp = [(re.compile(reg), res) for (reg, res) in [
     (r'^((titre|chapitre|tome|section) [ivx0-9]+(er)?)[\s\(]+du ((titre|chapitre|tome|section) [ivx0-9]+(er)?)\)?', r'\4 \1'),
     (r'^(.*(titre|chapitre|tome|section) [ivx0-9]+(er)?)[\s\(]+du ((titre|chapitre|tome|section) [ivx0-9]+(er)?)\)?$', r'\4 \1'),
 
+    (ur'article article', 'article'),
     (ur'annexe stratégie nationale', ''),
     (ur'rapport annex[ée]', 'annexe'),
     (ur'annexe n°\s*', 'annexe '),
