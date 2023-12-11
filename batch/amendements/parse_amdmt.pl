@@ -42,6 +42,8 @@ $string =~ s/"/\&quot;/g;
 $string =~ s/\n((<[^=>]+>(.|Objet|\))?)+\n)+/\n/g;
 $string =~ s/ *\n */\n/g;
 $string =~ s/ *, */, /g;
+$string =~ s/\x9F//g;
+$string =~ s/&#129130;/→/g;
 $string =~ s/\\/\//g;
 $string =~ s/(<div><strong>)/\n\1/g;
 $string =~ s/##NEXT##/\nNEXT\n/g;
