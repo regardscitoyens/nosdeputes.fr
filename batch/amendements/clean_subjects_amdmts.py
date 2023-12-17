@@ -3,10 +3,12 @@
 
 import sys, re, json
 
-bis_27 = ['bis', 'ter', 'quater', 'quinquies', 'sexies', 'septies', 'octies', 'nonies',
+bis_39 = ['bis', 'ter', 'quater', 'quinquies', 'sexies', 'septies', 'octies', 'nonies',
 'decies', 'undecies', 'duodecies', 'terdecies', 'quaterdecies', 'quindecies', 'sexdecies', 'septdecies', 'octodecies', 'novodecies',
-'vicies', 'unvicies', 'duovicies', 'tervicies', 'quatervicies', 'quinvicies', 'sexvicies', 'septvicies']
-bister = '(%s)' % '|'.join(bis_27)
+'vicies', 'unvicies', 'duovicies', 'tervicies', 'quatervicies', 'quinvicies', 'sexvicies', 'septvicies', 'octovicies', 'novovicies',
+'tricies', 'untricies', 'duotricies', 'tertricies', 'quatertricies', 'quintricies', 'sextricies', 'septricies', 'octotricies', 'novotricies'
+]
+bister = '(%s)' % '|'.join(bis_39)
 extra = '( %s)?( [A-Z]{1,3})?' % bister
 
 upper_first = lambda t: t[0].upper() + t[1:] if len(t) > 1 else t.upper()
