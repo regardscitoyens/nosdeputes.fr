@@ -150,14 +150,17 @@ def parse_scrutin(data, seances, groupes, histo_groupes):
         "demandeurs": clean_demandeurs(data["demandeur"]["texte"], data["numero"]),
         "parlementaires": {},
     }
+    tmpnum = int(scrutin["numero"])
     if data["numero"] in ERREURS_AN:
         scrutin["seance"] = ERREURS_AN[data["numero"]]
     # Temp fix
     elif not scrutin["seance"]:
-        if 1428 <= scrutin["numero"] < 1446 and not seance:
-            scrutin["seance"] = 20230215
-        elif 1446 <= scrutin["numero"] < 1456 and not seance:
-            scrutin["seance"] = 20230216
+        if 1428 <= tmpnum < 1446 and not seance:
+            scrutin["seance"] = "20230215"
+        elif 1446 <= tmpnum < 1456 and not seance:
+            scrutin["seance"] = "20230216"
+    elif 3336 <= tmpnum <= 3350:
+        scrutin["seance"] = str(int(scrutin["seance"]) + 1)
 
     if not scrutin["seance"]:
         logs.append("WARNING: scrutin %s has no seance %s" % (data["numero"], data["seanceRef"]))
