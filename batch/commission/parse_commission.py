@@ -639,7 +639,7 @@ def requests_get(url, return_errors=False):
         except:
             pass
     try:
-        request = requests.get(url)
+        request = requests.get(url, verify=False)
         contenttype = request.headers['Content-Type']
     except (KeyError, requests.exceptions.ConnectionError) as e:
         if not return_errors:
