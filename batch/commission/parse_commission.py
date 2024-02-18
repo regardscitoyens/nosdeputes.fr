@@ -9,6 +9,7 @@ import json
 import urllib
 import warnings
 warnings.filterwarnings('ignore', category=XMLParsedAsHTMLWarning)
+warnings.filterwarnings('ignore', message="Unverified HTTPS request is being made to host")
 
 mois2nmois = {'janvier': 1, 'février': 2, 'mars': 3, 'avril': 4, 'mai': 5, 'juin':6, 'juillet': 7, 'août': 8, 'septembre': 9, 'octobre': 10, 'novembre': 11, 'décembre': 12}
 
