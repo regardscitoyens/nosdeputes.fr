@@ -42,6 +42,9 @@ all:
   sfDoctrineActAsTaggablePlugin:
     triple_distinct:   true
 
+  announce:
+    link:
+    text: ""
 
   admin_ips: >
     [

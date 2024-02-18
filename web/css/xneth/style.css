@@ -783,6 +783,20 @@ h1 {
   overflow:hidden;
 }
 
+#announce {
+  text-align: center;
+  height: 15px;
+  display: block;
+  margin-top: 10px;
+}
+#announce h2 {
+  margin: 0;
+}
+
+#announce span {
+  text-decoration: underline;
+}
+
 .menu_navigation {
   float:left;
   height:35px;

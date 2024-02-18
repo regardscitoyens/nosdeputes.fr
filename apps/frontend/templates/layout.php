@@ -143,6 +143,22 @@ $menu_citoyen = $selectcitoyen;
       </div>
       <div id="corps_page">
         <div class="contenu_page">
+          <?php if (myTools::hasAnnounce()) : ?>
+          <div id="announce"><h2>
+              <?php if (myTools::getAnnounceLink()): ?>
+	      <a <?php if (!preg_match('/^\//', myTools::getAnnounceLink())) echo 'target="_blank" '; ?>href="<?php echo myTools::getAnnounceLink(); ?>"><?php echo myTools::getAnnounceText(); ?> : <span>Cliquez ici !</span></a>
+              <?php else: ?>
+              <?php echo myTools::getAnnounceText(); ?>
+              <?php endif; ?></h2></div>
+            <?php if (!isset($_GET['nodelay']) || !$_GET['nodelay']): ?>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                  $('#announce h2').fadeOut();
+                  $('#announce h2').delay(250).fadeIn('slow');
+                });
+            </script>
+            <?php endif; ?>
+          <?php endif ?>
           <?php if ($sf_user->hasFlash('notice')) :?>
           <p class='flash_notice'><?php echo $sf_user->getFlash('notice'); ?></p>
           <?php endif;?>

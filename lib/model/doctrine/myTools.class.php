@@ -28,6 +28,18 @@ class myTools {
     return url_for($args, 'absolute=true');
   }
 
+  public static function getAnnounceLink() {
+    return (sfConfig::get('app_announce_link'));
+  }
+
+  public static function getAnnounceText() {
+    return (sfConfig::get('app_announce_text'));
+  }
+
+  public static function hasAnnounce() {
+    return self::getAnnounceText();
+  }
+
   public static function isAdminIP($http_headers) {
     $admins = self::convertYamlToArray(sfConfig::get('app_admin_ips', ''));
     $admins[] = "127.0.0.1";
