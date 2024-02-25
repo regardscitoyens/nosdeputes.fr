@@ -41,7 +41,7 @@ class apiActions extends sfActions
     $date = preg_replace('/^(\d{2})(\d{2})$/', '20\\1\\2', $date);
     $d[1] = preg_replace('/^(\d{2})$/', '20\\1', $d[1]);
     $vg = Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_month_'.$d[1].'_'.$d[2]);
-    $top = unserialize($vg->value);
+    $top = $vg->value;
     $this->forward404Unless($top);
 
     $this->res = array();
@@ -309,15 +309,15 @@ class apiActions extends sfActions
       $res['groupes_parlementaires'] = myTools::array2hash($parl->getGroupes(), 'responsabilite');
       $res['historique_responsabilites'] = myTools::array2hash($parl->getHistorique(), 'responsabilite');
     }
-    $res['sites_web'] = myTools::array2hash(unserialize($parl->sites_web), 'site');
-    $res['emails'] = myTools::array2hash(unserialize($parl->mails), 'email');
+    $res['sites_web'] = myTools::array2hash($parl->getSitesWeb(), 'site');
+    $res['emails'] = myTools::array2hash($parl->getMails(), 'email');
     if ($light != 2) {
-      $res['adresses'] = myTools::array2hash(unserialize($parl->adresses), 'adresse');
-      $res['collaborateurs'] = myTools::array2hash(unserialize($parl->collaborateurs), 'collaborateur');
-      $res['autres_mandats'] = myTools::array2hash(unserialize($parl->autres_mandats), 'mandat');
-      $res['anciens_autres_mandats'] = myTools::array2hash(unserialize($parl->anciens_autres_mandats), 'mandat');
+      $res['adresses'] = myTools::array2hash($parl->getAdresses(), 'adresse');
+      $res['collaborateurs'] = myTools::array2hash($parl->getCollaborateurs(), 'collaborateur');
+      $res['autres_mandats'] = myTools::array2hash($parl->getAutresMandats(), 'mandat');
+      $res['anciens_autres_mandats'] = myTools::array2hash($parl->getAnciensAutresMandats(), 'mandat');
     }
-    $res['anciens_mandats'] = myTools::array2hash(unserialize($parl->anciens_mandats), 'mandat');
+    $res['anciens_mandats'] = myTools::array2hash($parl->getAnciensMandats(), 'mandat');
     $res['profession'] = $parl->profession;
     $res['place_en_hemicycle'] = $parl->place_hemicycle;
     $res['url_an'] = $parl->url_an;
@@ -325,13 +325,13 @@ class apiActions extends sfActions
     $res['slug'] = $parl->getSlug();
     $res['url_nosdeputes'] = myTools::url_forAPI('@parlementaire?slug='.$res['slug']);
     $res['url_nosdeputes_api'] = myTools::url_forAPI('api/parlementaire?format='.$format.'&slug='.$res['slug']);
-    $mandats = unserialize($parl->getAutresMandats());
+    $mandats = $parl->getAutresMandats();
     if (!$mandats) {
 	    $mandats = array();
     }
     $res['nb_mandats'] = count($mandats);
     $res['twitter'] = "";
-    if ($parl->sites_web) foreach (unserialize($parl->sites_web) as $site)
+    if ($parl->sites_web) foreach ($parl->getSitesWeb() as $site)
       if (preg_match("/twitter.com/", $site))
         $res['twitter'] = str_replace("https://twitter.com/", "", $site);
     return $res;
@@ -382,7 +382,7 @@ class apiActions extends sfActions
     $this->forward404Unless($secid);
 
     if ($option = Doctrine::getTable('VariableGlobale')->findOneByChamp('linkdossiers')) {
-      $links = unserialize($option->getValue());
+      $links = $option->getValue();
       if (isset($links[$secid]))
         $secid = $links[$secid];
     }

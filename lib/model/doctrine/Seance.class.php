@@ -15,7 +15,7 @@ class Seance extends BaseSeance
   public static function identifySession($date) {
     if (!self::$debut_session) {
       $session = Doctrine::getTable('VariableGlobale')->findOneByChamp('session');
-      self::$debut_session = unserialize($session->value);
+      self::$debut_session = $session->getValue();
     }
     if (!is_array(self::$debut_session))
 	return ;

@@ -23,7 +23,7 @@ class setSessionTask extends sfBaseTask {
       $var = new VariableGlobale();
       $var->champ = 'session';
     }
-    $var->value = serialize($serialize);
+    $var->setValue($serialize);
     $var->save();
   }
 }

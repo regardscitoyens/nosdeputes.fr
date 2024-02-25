@@ -37,7 +37,8 @@ class Citoyen extends BaseCitoyen
   }
 
   public function getParametres() {
-    $a = unserialize($this->_get('parametres'));
+    $p = $this->_get('parametres');
+    $a = VariableGlobale::json_decode_or_unserialize($p);
     if (!is_array($a)) {
       $a = array();
     }
@@ -47,6 +48,6 @@ class Citoyen extends BaseCitoyen
     if (!empty($array) && !is_array($array)) {
       throw new Exception('Parametres requires an array');
     }
-    if(is_array($array)) { return $this->_set('parametres', serialize($array)); }
+    if(is_array($array)) { return $this->_set('parametres', json_encode($array)); }
   }
 }

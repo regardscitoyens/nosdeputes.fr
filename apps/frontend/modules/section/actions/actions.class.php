@@ -53,7 +53,7 @@ class sectionActions extends sfActions
     $secid = $request->getParameter('id');
     $this->forward404Unless($secid);
     if ($option = Doctrine::getTable('VariableGlobale')->findOneByChamp('linkdossiers')) {
-      $links = unserialize($option->getValue());
+      $links = $option->getValue();
       if (isset($links[$secid]))
         $secid = $links[$secid];
     }

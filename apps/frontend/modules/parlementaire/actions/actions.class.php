@@ -98,7 +98,7 @@ class parlementaireActions extends sfActions
     $this->ministre = $this->parlementaire->getMinistreStatus();
 
     $anciens_mandats = array();
-    foreach (unserialize($this->parlementaire->getAnciensMandats()) as $m)
+    foreach ($this->parlementaire->getAnciensMandats() as $m)
       if (preg_match("#^((\d+)/(\d+)/(\d+)) / (.*) / (.*)$#", $m, $match)) {
         if ($match[5] != "")
           $anciens_mandats[] = "$match[4]$match[3]$match[2]".ucfirst($this->parlementaire->getParlFonction())." du $match[1] au $match[5] ($match[6])";
@@ -484,7 +484,7 @@ class parlementaireActions extends sfActions
 
     $this->tops = array();
     foreach($parlementaires as $p) {
-      $tops = unserialize($p['top']);
+      $tops = VariableGlobale::json_decode_or_unserialize($p['top']);
 
       // En mode bilan final on n'affiche que les députés avec plus de 6 mois de mandat
       if ($fin && $tops['nb_mois'] < 6)

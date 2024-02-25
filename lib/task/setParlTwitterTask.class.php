@@ -22,7 +22,7 @@ class setParlTwitterTask extends sfBaseTask {
     print "FOUND parl : ".$parl->nom."\n";
     $sites = array();
     if ($parl->sites_web) {
-      foreach (unserialize($parl->sites_web) as $s) {
+      foreach ($parl->getSitesWeb() as $s) {
         if (preg_match('/twitter.com\//', $s))
           print "REMOVING $s to its websites\n";
         else $sites[] = $s;
@@ -33,7 +33,7 @@ class setParlTwitterTask extends sfBaseTask {
     $turl = "https://twitter.com/$twitter";
     print "ADDING $turl to its websites\n";
     $sites[] = $turl;
-    $parl->sites_web = $sites;
+    $parl->setSitesWeb($sites);
     $parl->save();
   }
 }
