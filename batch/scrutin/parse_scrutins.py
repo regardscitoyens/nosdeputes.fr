@@ -52,7 +52,7 @@ POS_MAP = {
 
 SCRUTINS_DIR = os.path.join(BATCH_DIR, "scrutin", "scrutins")
 
-TYPES = {"SPS": "solennel", "SPO": "ordinaire", "MOC": "solennel"}
+TYPES = {"SPS": "solennel", "SPO": "ordinaire", "MOC": "solennel", "SSG": "solennel"}
 
 CLEAN_DEMANDEUR = [
     (u"Pr[eé]sident", u"Président"),
@@ -86,6 +86,10 @@ def parse_scrutins(legislature, data):
         os.makedirs(SCRUTINS_DIR)
 
     for item in sorted(data["scrutins"]["scrutin"], key=lambda s: int(s["numero"])):
+        if item["typeVote"]["codeTypeVote"] == "SSG":
+            print("Ignore scrutin congrès with messy number and sénateurs", item, file=sys.stderr)
+            continue
+
         scrutin, logs = parse_scrutin(item, seances, groupes, histo_groupes)
 
         numero = "%05d" % scrutin["numero"]
