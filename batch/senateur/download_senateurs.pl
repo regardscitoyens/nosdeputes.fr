@@ -80,7 +80,7 @@ find_senateurs("https://web.archive.org/web/20230101000000/https://www.senat.fr/
 #find_senateurs("https://web.archive.org/web/20230101000000/https://www.senat.fr/senateurs/news_2006-2007.html");
 #find_senateurs("https://web.archive.org/web/20230101000000/https://www.senat.fr/senateurs/news_2005-2006.html");
 #find_senateurs("https://web.archive.org/web/20230101000000/https://www.senat.fr/senateurs/news_2004-2005.html");
-#find_senateurs("https://web.archive.org/web/20230101000000/https://www.senat.fr/anciens-senateurs-5eme-republique/senatl.html");
+find_senateurs("https://web.archive.org/web/20230101000000/https://www.senat.fr/anciens-senateurs-5eme-republique/senatl.html");
 find_senateurs("https://web.archive.org/web/20230101000000/https://www.senat.fr/anciens-senateurs-5eme-republique/ump.html");
 find_senateurs("https://web.archive.org/web/20230101000000/https://www.senat.fr/anciens-senateurs-5eme-republique/soc.html");
 find_senateurs("https://web.archive.org/web/20230101000000/https://www.senat.fr/anciens-senateurs-5eme-republique/uc.html");
