@@ -177,7 +177,7 @@ a:hover {
 
 /* Widget page d'accueil */
 .box_widget h2 {
-  background: #9CDAE1 url("images/fond_translucide.png");
+  background: #bbbbbb url("images/fond_translucide.png");
   font-size:1.4em;
   line-height:1.4em;
   margin:0;
@@ -266,7 +266,7 @@ a:hover {
   background-color: #DFDACF;
 }
 .box_news h2 {
-  background-color: #f2e2b5;
+  background-color: #bbbbbb;
 }
 .box_repartition h2, .box_tags h2, .box_news h2 {
   background-image:url("images/fond_translucide.png");
@@ -1705,6 +1705,19 @@ h2 {
 .accueil .carte_departement{
     height: 250px;
     float: left;
+    filter: gray;
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+}
+.box_repartition aligncenter img {
+    filter: gray;
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
+}
+#graph_groupes {
+    filter: gray;
+    -webkit-filter: grayscale(1);
+    filter: grayscale(1);
 }
 .accueil_liste_liens {
   float:left;
@@ -1737,7 +1750,7 @@ h2 {
   color: #6F6F6F;
   text-shadow: 0 0 4px #FFFFFF;
   margin: 0;
-  background: rgb(240,150,173) url("images/fond_translucide.png");
+  background: #bbbbbb url("images/fond_translucide.png");
   border-bottom: 1px solid #DDDDDD;
 }
 .accueil_senateurs_jour {
