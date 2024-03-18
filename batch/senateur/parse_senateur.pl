@@ -13,6 +13,9 @@ $yml = shift || 0;
 open $fh, $file ;
 @content = <$fh>;
 $content = "@content";
+$content =~ s/https?:..web.archive.org.web.[^\/]*.//g;
+$content =~ s/\/web\/[^\/]*//g;
+$content =~ s/http[^>]*senat.fr.//g;
 $content =~ s/&nbsp;/ /ig;
 $content =~ s/[\r\n\s  ]+/ /ig;
 $p = HTML::TokeParser->new(\$content);
@@ -23,6 +26,7 @@ my %groupes;
 if ($file =~ /%2F([^%]+).html/) {
     $senateur{'id_institution'} = $1;
     $senateur{'url_institution'} = uri_unescape($file);
+    $senateur{'url_institution'} =~ s/https?:..web.archive.org.web.[0-9]*.//g;
     $senateur{'url_institution'} =~ s/html\///;
 }
 
