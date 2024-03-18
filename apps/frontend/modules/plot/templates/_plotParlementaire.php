@@ -14,7 +14,7 @@ $PictureID = "Map_".rand(1,10000).".map";
 
 <?php if ($link === 'true') echo '<a href="'.url_for('@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear').'">';
 else echo '<div class="par_session">'; ?>
-<img id="graph<?php echo $PictureID; ?>" alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>" src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type).'?questions='.$questions.'&link='.$link.'&mapId='.$PictureID; ?>" onmousemove="getMousePosition(event);" onmouseout="nd();"/>
+<img id="graph<?php echo $PictureID; ?>" alt="Participation <?php echo $titre; ?> de <?php echo $parlementaire->nom; ?>" src="<?php echo url_for('@parlementaire_plot_graph?slug='.$parlementaire->slug.'&time='.$time.'&type='.$type).'?questions='.$questions.'&link='.$link.'&mapId='.$PictureID; ?>" onmousemove="getMousePosition(event);" onmouseout="nd();" style="filter: gray;-webkit-filter: grayscale(1);filter: grayscale(1);"/>
 <?php if ($link === 'true') { ?>
 <script type="text/javascript">
 <!--
