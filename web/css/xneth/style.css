@@ -1116,11 +1116,11 @@ h1 {
 }
 .barre_activite ul {
   margin: 1px 0px 0px 0px;
-  width: 712px;
+  min-width: 712px;
   float: left;
 }
 .barre_activite li {
-  width: 59px;
+  min-width: 59px;
   display: inline-block;
 }
 .barre_activite h3 {
@@ -1131,7 +1131,7 @@ h1 {
   color: #6F6F6F;
   line-height: 24px;
   background-color: transparent;
-  width: 203px;
+  width: 199px;
   float: left;
 }
 .barre_activite li img{
