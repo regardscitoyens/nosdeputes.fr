@@ -766,6 +766,7 @@ h1 {
   border-right: 1px solid #b5b5b3;
   margin-left: 44px;
   overflow:hidden;
+  margin-top: -3px;
 }
 
 #header img {
