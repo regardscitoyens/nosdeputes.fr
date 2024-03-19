@@ -88,8 +88,8 @@ $menu_citoyen = $selectcitoyen;
       </div>
       <div id="header">
         <a style="float: left" href="<?php echo url_for('@homepage');?>"><?php echo image_tag($style.'/header_logo.png', array('alt' => 'NosS&eacut;enateurs.fr')); ?></a>
-        <h3 style="float: left; width: 275px; margin-top: 19px; font-size: 1.55em">Ce site est une archive.</h3>
-        <h4 style="float: left; width: 275px; margin-top: -5px; font-size: 1.45em">Il reflète uniquement l'activité des sénateurs sur la période d'octobre 2004 à mars 2023.</h4>
+        <h3 style="float: left; width: 275px; margin-top: 17px; margin-left: 12px; font-size: 1.6em">Ce site est une archive.</h3>
+        <h4 style="float: left; width: 275px; margin-top: -5px; margin-left: 12px; font-size: 1.45em">Il reflète uniquement l'activité des sénateurs sur la période d'octobre 2004 à mars 2023.</h4>
       </div>
         <div id="menu">
         <div class="menu_navigation">
