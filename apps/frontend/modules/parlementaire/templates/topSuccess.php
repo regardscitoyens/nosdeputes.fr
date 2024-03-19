@@ -1,6 +1,6 @@
 <?php foreach ($tops as $t) if (!isset($date)) $date = $t[0]['updated_at']; ?>
-<h1>Synthèse générale de l'activité parlementaire<br/><small><?php if (myTools::isDebutMandature()) echo "depuis le début de la mandature (".myTools::displayDate(myTools::getDebutMandature()).")"; else echo "sur l".myTools::getTextEndDataWithContext(); ?></small></h1>
-<h2 class="aligncenter"><small>(dernière <a href="<?php echo url_for('@faq'); ?>#post_2bis">mise-à-jour</a> le <?php echo preg_replace('/20(\d+)-(\d+)-(\d+) (\d+):(\d+):\d+/', '$3/$2/$1 à $4H$5', $date); ?>)</small></h2>
+<h1>Synthèse générale de l'activité parlementaire<br/><small><?php if (myTools::isDebutMandature()) echo "depuis le début de la mandature (".myTools::displayDate(myTools::getDebutMandature()).")"; else echo "sur l".myTools::getTextEndDataWithShortContext(); ?></small></h1>
+<?php if (!myTools::getEndData()) { ?><h2 class="aligncenter"><small>(dernière <a href="<?php echo url_for('@faq'); ?>#post_2bis">mise-à-jour</a> le <?php echo preg_replace('/20(\d+)-(\d+)-(\d+) (\d+):(\d+):\d+/', '$3/$2/$1 à $4H$5', $date); ?>)</small></h2><?php } ?>
 <h2>Activité de tous les sénateurs <?php if (myTools::isDebutMandature()) echo "en activité"; else echo "ayant au moins 10 mois de mandat"; ?> :</h2>
 <?php
 $sf_response->setTitle('Synthèse générale des sénateurs');
@@ -138,7 +138,7 @@ $bulles = array("",
 </div>
 </div>
 <div class="synthese_div">
-<h2>Répartition de l'activité des sénateurs sur <?php if (myTools::isDebutMandature()) echo "le début de la mandature"; else echo "l".myTools::getTextEndDataWithContext(); ?> par groupe politique :</h2>
+<h2>Répartition de l'activité des sénateurs sur <?php if (myTools::isDebutMandature()) echo "le début de la mandature"; else echo "l".myTools::getTextEndDataWithShortContext(); ?> par groupe politique :</h2>
 <div class="aligncenter"><?php echo include_component('plot', 'newGroupes', array('type' => 'all')); ?></div>
 </div>
 <div class="synthese_div">

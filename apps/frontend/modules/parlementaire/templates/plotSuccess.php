@@ -1,6 +1,6 @@
 <?php
 $surtitre = "Graphes d'activité parlementaire";
-if ($session == 'lastyear') $titre = 'Sur l'.myTools::getTextEndDataWithContext();
+if ($session == 'lastyear') $titre = 'Sur l'.myTools::getTextEndDataWithShortContext();
 else $titre = 'Sur la session '.preg_replace('/^(\d{4})/', '\\1-', $session);
 $sf_response->setTitle($surtitre.' de '.$parlementaire->nom.' '.strtolower($titre));
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $surtitre));
@@ -9,7 +9,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
 <?php if ($session != 'lastyear')
   echo '<a href="'.url_for('@parlementaire_plot?slug='.$parlementaire->slug.'&time=lastyear').'">';
   else echo '<b>';
-  echo 'L'.myTools::getTextEndDataWithContext();
+  echo 'L'.myTools::getTextEndDataWithShortContext();
   if ($session != 'lastyear') echo '</a>';
   else echo '</b>';
   foreach ($sessions as $s) {

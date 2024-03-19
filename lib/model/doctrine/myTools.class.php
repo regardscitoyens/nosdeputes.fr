@@ -75,6 +75,13 @@ class myTools {
     return $txt;
   }
 
+  public static function getTextEndDataWithShortContext() {
+    $txt = sfConfig::get('app_text_end_data');
+    if (!$txt)
+      $txt = "es 12 derniers mois";
+    return "a période ".$txt;
+  }
+
   public static function getTextEndDataWithContext() {
     $txt = sfConfig::get('app_text_end_data');
     if (!$txt)

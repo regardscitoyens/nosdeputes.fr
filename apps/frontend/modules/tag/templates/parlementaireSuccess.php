@@ -1,28 +1,28 @@
 <?php
 $surtitre = 'Champ lexical';
-if ($last) $titre = 'Sur l'.myTools::getTextEndDataWithContext();
+if ($last) $titre = 'Sur l'.myTools::getTextEndDataWithShortContext();
 else if ($all) $titre = 'Sur tout son mandat';
 else if ($session) $titre = 'Sur la session '.preg_replace('/^(\d{4})/', '\\1-', $session);
 $sf_response->setTitle($surtitre.' de '.$parlementaire->nom.' '.strtolower($titre));
 echo include_component('parlementaire', 'header', array('parlementaire' => $parlementaire, 'titre' => $surtitre));
 ?>
   <div class="par_session"><p>
-<?php if (! $parlementaire->fin_mandat) { 
-   if (!$last) 
+<?php if (! $parlementaire->fin_mandat) {
+   if (!$last)
     echo '<a href="'.url_for('@parlementaire_tags?slug='.$parlementaire->slug).'">';
    else echo '<b>';
-   echo 'L'.myTools::getTextEndDataWithContext();
+   echo 'L'.myTools::getTextEndDataWithShortContext();
    if (!$last)
      echo '</a>';
    else echo '</b>';
-   echo ', ';  
- } 
+   echo ', ';
+ }
 if (!$all)
   echo '<a href="'.url_for('@parlementaire_all_tags?slug='.$parlementaire->slug).'">';
 else echo '<b>';
 echo 'tout son mandat';
 if (!$all)
-  echo '</a>'; 
+  echo '</a>';
 else echo '</b>';
 foreach ($sessions as $s) {
   echo ', ';
