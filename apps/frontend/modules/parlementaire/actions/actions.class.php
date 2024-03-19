@@ -79,7 +79,7 @@ class parlementaireActions extends sfActions
     $colortop = imagecolorat($iorig, 1, 1);
     $ih = imagecreatetruecolor($work_height*$width/$height, $work_height);
 
-    if (!$request->getParameter('color') && $parlementaire->fin_mandat >= $parlementaire->debut_mandat)
+    if (true || !$request->getParameter('color') && $parlementaire->fin_mandat >= $parlementaire->debut_mandat)
       self::imagetograyscale($iorig);
 
     imagecopyresampled($ih, $iorig, 0, 0, 0, 0, $work_height*$width/$height, $work_height, $width, $height);
