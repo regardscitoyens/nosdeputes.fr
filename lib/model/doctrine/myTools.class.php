@@ -56,6 +56,32 @@ class myTools {
     return $date;
   }
 
+  public static function getEndData() {
+    $date = sfConfig::get('app_end_data');
+    if (!$date) return;
+    return $date;
+  }
+
+  public static function getEndDataTime() {
+    $date = sfConfig::get('app_end_data');
+    if (!$date) return time();
+    return strtotime($date);
+  }
+
+  public static function getTextEndData() {
+    $txt = sfConfig::get('app_text_end_data');
+    if (!$txt)
+      $txt = "12 derniers mois";
+    return $txt;
+  }
+
+  public static function getTextEndDataWithContext() {
+    $txt = sfConfig::get('app_text_end_data');
+    if (!$txt)
+      $txt = "es 12 derniers mois";
+    return "e la période ".$txt;
+  }
+
   public static function getDebutMandature() {
     $date = sfConfig::get('app_debut_mandature');
     if (!$date)

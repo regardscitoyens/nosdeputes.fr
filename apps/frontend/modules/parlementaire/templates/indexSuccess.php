@@ -190,7 +190,7 @@
   <?php echo include_component('tag', 'globalActivite'); ?>
   </div>
   <div class="box_repartition aligncenter"><div style="margin: auto;">
-  <h2><span style="margin-right: 5px;"><img alt="activite" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_graph.png" /></span><a href="<?php echo url_for('@top_global'); ?>">Activité parlementaire des 12 derniers mois</a></h2>
+  <h2><span style="margin-right: 5px;"><img alt="activite" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/ico_graph.png" /></span><a href="<?php echo url_for('@top_global'); ?>">Activité parlementaire d<?php echo myTools::getTextEndDataWithContext(); ?></a></h2>
   <?php echo include_component('plot', 'newGroupes', array('type' => 'home')); ?>
   <?php // echo include_component('plot', 'groupes', array('plot' => 'total')); ?>
   </div></div>

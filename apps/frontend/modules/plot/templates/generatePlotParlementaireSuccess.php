@@ -133,18 +133,18 @@ if ($time === 'lastyear') {
   if (isset($data['mandat_clos'])) {
     $pos_titre = 210;
     $duree = ' sa dernière année de mandat';
-  } else $duree = 's 12 derniers mois';
+  } else $duree = myTools::getTextEndDataWithContext();
   $shortduree = 'annee';
 } else {
-  $duree = " la session ".preg_replace('/^(\d{4})/', '\\1-', $time);
+  $duree = "e la session ".preg_replace('/^(\d{4})/', '\\1-', $time);
   $shortduree = $time;
 }
 if ($type === 'total') {
-  $Test->drawTitle($pos_titre,3 + 2*$font,"Présences en commissions et participation en hémicycle au cours de".$duree,50,50,50,585);
+  $Test->drawTitle($pos_titre,3 + 2*$font,"Présences en commissions et participation en hémicycle au cours d".$duree,50,50,50,585);
 } else {
   if ($type === 'commission') $titre = 'Présences et participation en commissions';
   else $titre = 'Participation en hémicycle';
-  $Test->drawTitle($pos_titre+30,3 + 2*$font, $titre." au cours de".$duree,50,50,50,585);
+  $Test->drawTitle($pos_titre+30,3 + 2*$font, $titre." au cours d".$duree,50,50,50,585);
 }
 
 if ($link === 'true')

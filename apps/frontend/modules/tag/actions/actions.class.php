@@ -32,7 +32,7 @@ class tagActions extends sfActions
       $qids->leftJoin('i.Seance s')->andWhere('s.session = ?', $this->session);
     } elseif (!$request->getParameter('all') && !$this->parlementaire->fin_mandat) {
       $this->last = 1;
-      $qids->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365));
+      $qids->andWhere('i.date > ?', date('Y-m-d', myTools::getEndDataTime()-60*60*24*365));
     } else $this->all = 1;
     $ids = $qids->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
 

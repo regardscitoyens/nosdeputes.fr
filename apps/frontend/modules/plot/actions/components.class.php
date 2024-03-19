@@ -13,7 +13,7 @@ class plotComponents extends sfComponents
       if (isset($this->parlementaire->fin_mandat) && $this->parlementaire->fin_mandat > $this->parlementaire->debut_mandat) {
         $date = strtotime($this->parlementaire->fin_mandat);
         $this->data['mandat_clos'] = true;
-      } else $date = time();
+      } else $date = myTools::getEndDataTime();
       $annee = date('Y', $date); $sem = date('W', $date);
       $last_year = $date - 32054400;
       $date_fin = date('Y-m-d', $date);
@@ -177,7 +177,8 @@ class plotComponents extends sfComponents
     $stats = unserialize(Doctrine::getTable('VariableGlobale')->findOneByChamp('stats_groupes')->value);
     if (myTools::isDebutMandature())
       $enddate = myTools::getDebutMandature();
-    else $enddate = date('Y-m-d', time()-60*60*24*365);
+    else $enddate = date('Y-m-d', myTools::getEndDataTime()-60*60*24*365);
+    $startdate = date('Y-m-d', myTools::getEndDataTime());
     $query = Doctrine_Query::create()
       ->select('p.groupe_acronyme, count(DISTINCT(a.id)) as ct')
       ->from('Parlementaire p')
@@ -187,6 +188,7 @@ class plotComponents extends sfComponents
       ->andWhere('p.groupe_acronyme IS NOT NULL')
       ->andWhere('a.sort <> ?', 'Rectifié')
       ->andWhere('a.date > ?', $enddate)
+      ->andWhere('a.date < ?', $startdate)
       ->groupBy('p.groupe_acronyme');
     $qamdmts = clone($query);
     $amdmts = $qamdmts->fetchArray();
@@ -199,6 +201,7 @@ class plotComponents extends sfComponents
       ->select('p.groupe_acronyme, count(DISTINCT(t.id)) as ct')
       ->from('Parlementaire p, p.ParlementaireTextelois pt, pt.Texteloi t')
       ->where('t.date > ?', $enddate)
+      ->andWhere('t.date < ?', $startdate)
       ->andWhere('pt.importance = 1')
       ->andWhere('t.type LIKE ?', "proposition%")
       ->andWhere('p.groupe_acronyme IS NOT NULL')

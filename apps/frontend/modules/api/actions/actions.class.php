@@ -81,7 +81,7 @@ class apiActions extends sfActions
     $this->withBOM = $request->getParameter('withBOM');
     $qp = Doctrine::getTable('Parlementaire')->createQuery('p');
     $qp->andWhere('fin_mandat IS NULL');
-    $dixmois = time() - round(60*60*24*3650/12);
+    $dixmois = myTools::getEndDataTime() - round(60*60*24*3650/12);
     $qp->orderBy('nom_de_famille');
     $parlementaires = $qp->execute();
     unset($qp);

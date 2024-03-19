@@ -344,8 +344,10 @@ class topSenateursTask extends sfBaseTask
 
     if (myTools::isDebutMandature())
       $enddate = myTools::getDebutMandature();
-    else $enddate = date('Y-m-d', time()-60*60*24*365);
+    else $enddate = date('Y-m-d', myTools::getEndDataTime()-60*60*24*365);
+    $startdate = date('Y-m-d', myTools::getEndDataTime());
     $qs->andWhere('s.date > ?', $enddate);
+    $qs->andWhere('s.date < ?', $startdate);
 
 
     $this->executePresence(clone $qs);
@@ -356,6 +358,7 @@ class topSenateursTask extends sfBaseTask
 
     $qi = clone $q;
     $qi->andWhere('i.date > ?', $enddate);
+    $qi->andWhere('i.date < ?', $startdate);
 
     $this->executeCommissionInterventions(clone $qi);
     $this->orderSenateurs('commission_interventions');
@@ -369,6 +372,7 @@ class topSenateursTask extends sfBaseTask
 
     $qa = clone $q;
     $qa->andWhere('a.date > ?', $enddate);
+    $qa->andWhere('a.date < ?', $startdate);
     $this->executeAmendementsSignes(clone $qa);
     $this->orderSenateurs('amendements_signes');
 
@@ -380,6 +384,7 @@ class topSenateursTask extends sfBaseTask
 
     $qd = clone $q;
     $qd->where('t.date > ?',$enddate);
+    $qd->andWhere('t.date < ?', $startdate);
     $this->executeRapports(clone $qd);
     $this->orderSenateurs('rapports');
 
@@ -391,6 +396,7 @@ class topSenateursTask extends sfBaseTask
 
     $qq = clone $q;
     $qq->where('q.date > ?', $enddate);
+    $qq->andWhere('q.date < ?', $startdate);
     $this->executeQuestionsEcrites(clone $qq);
     $this->orderSenateurs('questions_ecrites');
 

@@ -62,7 +62,7 @@ if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->
     $rank = 1;
   }
   else $stdate = $parlementaire->debut_mandat;
-  $mois = floor((time() - strtotime($stdate) ) / (60*60*24*30));
+  $mois = floor((myTools::getEndDataTime() - strtotime($stdate) ) / (60*60*24*30));
   if($mois < 12) {
     echo '<h3>Activité <small>(';
     if ($mois <= 1) echo $headstr;
@@ -71,7 +71,7 @@ if (!$parlementaire->fin_mandat || $parlementaire->fin_mandat < $parlementaire->
     echo ' mois de mandat)</small> :</h3>';
     if ($mois < 4) $rank = 0;
   }else {
-    echo '<h3>Activité <small>(12 derniers mois)</small> :</h3>';
+    echo '<h3>Activité <small>('.myTools::getTextEndData().')</small> :</h3>';
     $rank = 1;
   }
  } else {

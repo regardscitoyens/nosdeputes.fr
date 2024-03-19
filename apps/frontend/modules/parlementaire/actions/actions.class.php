@@ -375,7 +375,7 @@ class parlementaireActions extends sfActions
     }
     if (myTools::isDebutMandature())
       $enddate = myTools::getDebutMandature();
-    else $enddate = date('Y-m-d', time()-round(60*60*24*3650/12));
+    else $enddate = date('Y-m-d', myTools::getEndDataTime()-round(60*60*24*3650/12));
     $qp->andWhere('fin_mandat IS NULL')
       ->andWhere('debut_mandat < ?', $enddate)
       ->orderBy('nom_de_famille');

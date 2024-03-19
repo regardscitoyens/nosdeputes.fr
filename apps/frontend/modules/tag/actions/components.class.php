@@ -70,7 +70,7 @@ class tagComponents extends sfComponents
     $ids = Doctrine::getTable('Intervention')->createQuery('i')
       ->select('i.id')
       ->where('i.parlementaire_id = ?', $this->parlementaire->id)
-      ->andWhere('i.date > ?', date('Y-m-d', time()-60*60*24*365))
+      ->andWhere('i.date > ?', date('Y-m-d', myTools::getEndDataTime()-60*60*24*365))
       ->execute(array(), Doctrine_Core::HYDRATE_SINGLE_SCALAR);
 
     $this->qtag = Doctrine_Query::create()

@@ -1,6 +1,6 @@
 <?php
 $surtitre = 'Champ lexical';
-if ($last) $titre = 'Sur les 12 derniers mois';
+if ($last) $titre = 'Sur l'.myTools::getTextEndDataWithContext();
 else if ($all) $titre = 'Sur tout son mandat';
 else if ($session) $titre = 'Sur la session '.preg_replace('/^(\d{4})/', '\\1-', $session);
 $sf_response->setTitle($surtitre.' de '.$parlementaire->nom.' '.strtolower($titre));
@@ -11,7 +11,7 @@ echo include_component('parlementaire', 'header', array('parlementaire' => $parl
    if (!$last) 
     echo '<a href="'.url_for('@parlementaire_tags?slug='.$parlementaire->slug).'">';
    else echo '<b>';
-   echo 'Les 12 derniers mois';
+   echo 'L'.myTools::getTextEndDataWithContext();
    if (!$last)
      echo '</a>';
    else echo '</b>';

@@ -31,7 +31,7 @@ class setVacancesTask extends sfBaseTask {
       else { $annee = $seance['annee']; $sem = $seance['numero_semaine'] + 1; }
     }
 
-    $date = time();
+    $date = myTools::getEndDataTime();
     $last_annee = date('Y', $date);
     $last_sem = date('W', $date);
     $day = date('w', $date);

@@ -5,6 +5,8 @@ all:
   legislature: 15
   debut_mandature: "2011-10-01"
   debut_data: "2004-10-01"
+  end_data: "2023-03-31"
+  text_end_data: "avril 2022 / mars 2023"
 
   groupes_actuels: >
     ["CRCE", "EST", "SER", "RDSE", "RDPI", "RTLI", "UC", "LR", "NI"]
