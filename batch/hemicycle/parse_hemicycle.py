@@ -62,7 +62,7 @@ def xml2json(s):
     for p in soup.find_all(['para']):
         section = p.parent.parent.titrestruct.intitule.get_text()
         orateur = p.get_text()
-        if "," in orateur and "rapporteur" not in orateur and "commission" not in orateur:
+        if "," in orateur and "rapporteur" not in orateur and "commission" not in orateur and "mendement" not in orateur:
             orateur, fonction = orateur.split(', ', 1)
             orateur = clean_intervenant(orateur)
             fonction = clean_all(fonction).strip(", .")
