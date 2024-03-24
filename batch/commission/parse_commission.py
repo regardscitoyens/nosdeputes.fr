@@ -307,7 +307,7 @@ def html2json(s):
             if intervenant:
                 new_intervention()
         has_video = p_str.find('videos.assemblee-nationale.fr') >= 0 or p_str.find('assnat.fr') >= 0 or p_str.find('assemblee-nationale.fr/video') >= 0
-        if has_video and (not p.get_text().strip() or ("cr-cloi" in source and p_str.find("Lien vidéo") and not intervention.find("ne font pas l’objet d’un compte rendu"))):
+        if has_video and (not p.get_text().strip() or ("cr-cloi" in source and "Lien vidéo" in p_str and not "ne font pas l’objet d’un compte rendu" in intervention)):
             has_video = False
         p_str = re.sub(r'(<i>\s*\(|\(\s*<i>)', '<i>(', p_str)
         p_str = re.sub(r'(</i>\s*\)|\)\s*</i>)', ')</i>', p_str)
