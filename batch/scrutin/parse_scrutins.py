@@ -87,7 +87,7 @@ def parse_scrutins(legislature, data):
 
     for item in sorted(data["scrutins"]["scrutin"], key=lambda s: int(s["numero"])):
         if item["typeVote"]["codeTypeVote"] == "SSG":
-            print("Ignore scrutin congrès with messy number (%s) and sénateurs: %s %s" % (item["numero"], item["uid"], item["seanceRef"]), file=sys.stderr)
+            print("Ignore scrutin congres with messy number (%s) and senateurs: %s %s" % (item["numero"], item["uid"], item["seanceRef"]), file=sys.stderr)
             print(item["titre"].encode("utf-8"), file=sys.stderr)
             continue
 
