@@ -147,8 +147,9 @@ def xml2json(s):
                             p['id_acteur'] = "PA721908"
                     intervention["intervenant_url"] = "https://www2.assemblee-nationale.fr/deputes/fiche/OMC_"+p['id_acteur']
                     intervenant2url[intervention["intervenant"]] = intervention['intervenant_url']
-            except:
-                print("WARNING: paragraph with missing id_mandat field in xml:", p, file=sys.stderr)
+            except KeyError:
+                #print("WARNING: paragraph with missing id_mandat field in xml:", p, file=sys.stderr)
+                pass
 
             existingfonction = intervenant2fonction.get(intervention["intervenant"])
             if qualite:
