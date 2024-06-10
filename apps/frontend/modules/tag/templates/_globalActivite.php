@@ -1,4 +1,4 @@
-<?php if (!count($itag)) return ; ?>
+<?php //if (!count($itag)) return ; ?>
 <div class="box_tags">
 <h2><span style="margin-right: 5px;"><img alt="tags" src="<?php echo $sf_request->getRelativeUrlRoot(); ?>/images/xneth/assemblee-nationale.png" /></span><?php
 if (myTools::isFinLegislature()) {
