@@ -16,9 +16,9 @@ class setCommissionsTask extends sfBaseTask {
  //   $commissions = array();
 
 
-//    $option->setValue(serialize($commissions));
+//    $option->setValue($commissions);
 //    $option->save();
-    print_r(unserialize($option->getValue()));
+    print_r($option->getValue());
   }
 }
 

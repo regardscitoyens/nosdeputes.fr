@@ -22,14 +22,14 @@ class removeParlSiteTask extends sfBaseTask {
     $site = $arguments['site'];
     $sites = array();
     if ($parl->sites_web) {
-      foreach (unserialize($parl->sites_web) as $s) {
+      foreach ($parl->getSitesWeb() as $s) {
         if ($site === $s)
           print "REMOVING $s from websites\n";
         else $sites[] = $s;
       }
     }
     print_r($sites);
-    $parl->sites_web = $sites;
+    $parl->setSitesWeb($sites);
     $parl->save();
   }
 }
