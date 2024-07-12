@@ -1,5 +1,5 @@
 <h1>Tous les députés par ordre alphabétique</h1>
-<p>Retrouvez ici l'ensemble des <?php echo $total; ?> députés de la <?php echo sfConfig::get('app_legislature', 13); ?><sup>ème</sup> législature<?php if ($actifs != $total) echo "(dont ".$actifs." en cours de mandat)"; ?>.<br/>
+<p>Retrouvez ici l'ensemble des <?php echo $total; ?> députés de la <?php echo sfConfig::get('app_legislature', 13); ?><sup>ème</sup> législature<?php if ($actifs != $total) echo " (dont ".$actifs." en cours de mandat)"; ?>.<br/>
 Les informations relatives aux députés des précédentes législatures restent accessibles sur les liens suivants&nbsp;: <a style="text-decoration:underline" href="https://2007-2012.nosdeputes.fr/deputes">entre 2007 et 2012</a>, <a style="text-decoration:underline" href="https://2012-2017.nosdeputes.fr/deputes">entre 2012 et 2017</a>, et <a style="text-decoration:underline" href="https://2017-2022.nosdeputes.fr/deputes">entre 2017 et 2022</a>.</p>
 <center>
   <div class="plot_groupes">
