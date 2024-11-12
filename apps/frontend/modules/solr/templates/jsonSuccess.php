@@ -29,9 +29,9 @@ foreach ($results['docs'] as $record)
     echo ",";
   else
     $nb = 1;
-  echo "[document_type:\"".get_class($record['object'])."\",";
-  echo "document_id:".$record['object']->id.",";
-  echo "document_url:\"".sfConfig::get('app_baseurl').url_for('@api_document?format='.$format.'&class='.get_class($record['object']).'&id='.$record['object']->id)."\"]";
+  echo '{"document_type": "'.get_class($record['object']).'", ';
+  echo '"document_id": '.($record['object']->id ? (is_numeric($record['object']->id) ? $record['object']->id : '"'.$record['object']->id.'"') : '""').", ";
+  echo '"document_url": "'.sfConfig::get('app_base_url').url_for('@api_document?format='.$format.'&class='.get_class($record['object']).'&id='.$record['object']->id).'"}';
 }
 ?> }}<?php return;
 endif;
@@ -41,7 +41,7 @@ endif;
     $cpt = 0;
 foreach(array_keys($facet) as $k)
   if (isset($facet[$k]['values']) && count($facet[$k]['values']))
-    foreach($facet[$k]['values'] as $value => $nb) 
+    foreach($facet[$k]['values'] as $value => $nb)
       if ($nb) {
 	if ($cpt)
 	  echo ",";
