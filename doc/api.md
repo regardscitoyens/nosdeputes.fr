@@ -318,6 +318,8 @@ Nous développons donc un accès simplifié par une API à ces jeux de données 
 
 - [Synthèse globale](https://regardscitoyens.github.io/synthese-globale/) : mini-application agrégeant les données de synthèse mensuelle pour nous permettre de répondre aux sollicitations des députés nous demandant en cours de mandat leur bilan complet ([code-source](https://github.com/regardscitoyens/synthese-globale))
 
+- [PANDORÆ](https://github.com/Guillaume-Levrier/PANDORAE) : application desktop dédiée à la récupération/normalisation/exploration de données pouvant être abstraites comme documents.
+
 
 ## Conditions d'utilisation
 
