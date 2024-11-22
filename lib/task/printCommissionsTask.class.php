@@ -12,7 +12,7 @@ class printCommissionsTask extends sfBaseTask {
   protected function execute($arguments = array(), $options = array()) {
     $manager = new sfDatabaseManager($this->configuration);
     $option = Doctrine::getTable('VariableGlobale')->findOneByChamp('commissions');
-    if ($option) foreach (unserialize($option->getValue()) as $bad => $good)
+    if ($option) foreach ($option->getValue() as $bad => $good)
       echo '"'.$bad.'" => "'.$good.'",'."\n";
   }
 }

@@ -326,7 +326,7 @@ class topDeputesTask extends sfBaseTask
         $globale = new VariableGlobale();
         $globale->champ = 'stats_month_'.$m[1].'_'.$m[2];
       }
-      $globale->value = serialize($this->deputes);
+      $globale->setValue($this->deputes);
       $globale->save();
       return;
     }
@@ -419,7 +419,7 @@ class topDeputesTask extends sfBaseTask
     foreach(array_keys($this->deputes) as $id) {
       $depute = Doctrine::getTable('Parlementaire')->find($id);
       if ($depute) {
-        $depute->top = serialize($this->deputes[$id]);
+        $depute->setTop($this->deputes[$id]);
         $depute->save();
       } else {
         echo "ERREUR: député '$id' non trouvé\n";
@@ -433,7 +433,7 @@ class topDeputesTask extends sfBaseTask
       $globale = new VariableGlobale();
       $globale->champ = 'stats_groupes';
     }
-    $globale->value = serialize($this->groupes);
+    $globale->setValue($this->groupes);
     $globale->save();
 
 
@@ -483,7 +483,7 @@ class topDeputesTask extends sfBaseTask
         $this->executeRapports(clone $qd);
 
         if (isset($this->deputes[$p->id])) {
-          $p->top = serialize($this->deputes[$p->id]);
+          $p->setTop($this->deputes[$p->id]);
           $p->save();
         }
       }
@@ -531,7 +531,7 @@ class topDeputesTask extends sfBaseTask
       $globale2 = new VariableGlobale();
       $globale2->champ = 'presences_medi';
     }
-    $globale2->value = serialize($this->presences_medi);
+    $globale2->setValue($this->presences_medi);
     $globale2->save();
   }
 

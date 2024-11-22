@@ -254,8 +254,10 @@ class organismeActions extends autoOrganismeActions
         if (!$option) {
           $option = new VariableGlobale();
           $option->setChamp('commissions');
-          $option->setValue(serialize($corresp));
-        } else $option->setValue(serialize(array_merge(unserialize($option->getValue()), $corresp)));
+          $option->setValue($corresp);
+        } else {
+          $option->mergeValue($corresp);
+        }
         $option->save();
 
         if ($this->article && $this->article->object_id == $this->bad) {

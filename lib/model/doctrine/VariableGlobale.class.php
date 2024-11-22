@@ -5,5 +5,49 @@
  */
 class VariableGlobale extends BaseVariableGlobale
 {
+    public static function isSerialized($v) {
+        if (!$v) {
+            return false;
+        }
+        return (in_array($v[0], ['a', 'i', 's']) && $v[1] == ':');
+    }
+    public static function isJsonEncoded($v) {
+        if (!$v) {
+            return false;
+        }
+        return in_array($v[0], ['{', '"', '[']);
+    }
 
+    public static function json_decode_or_unserialize($v) {
+        if (self::isSerialized($v)) {
+            return unserialize($v);
+        }
+        if (self::isJsonEncoded($v)) {
+            return json_decode($v, true);
+        }
+        if (!$v) {
+            return null;
+        }
+        print_r($v);exit;
+        throw new sfException('value not unserializable');
+    }
+
+    function getValue($raw = false) {
+        $v = $this->_get('value');
+        if ($raw) {
+            return $v;
+        }
+        return VariableGlobale::json_decode_or_unserialize($v);
+    }
+
+    public function setValue($v, $serialized = false) {
+        if (  $serialized || ( is_string($v) && ( self::isSerialized($v) || self::isJsonEncoded($v) ) ) ) {
+            return $this->_set('value', $v);
+        }
+        return $this->_set('value', json_encode($v));
+    }
+
+    public function mergeValue($v) {
+        return $this->_set('value', json_encode(array_merge($option->getValue(), $corresp)));
+    }
 }

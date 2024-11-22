@@ -130,8 +130,9 @@ class myTools {
   public static function getVacances() {
     $vacances = array();
     $vacs = Doctrine::getTable('VariableGlobale')->findOneByChamp('vacances');
-    if ($vacs)
-      $vacances = unserialize($vacs->value);
+    if ($vacs) {
+      $vacances = $vacs->getValue();
+    }
     unset($vacs);
     return $vacances;
   }

@@ -8,7 +8,7 @@ class OrganismeTable extends Doctrine_Table
     $nom = self::cleanNom($nom);
 
     if ($option = Doctrine::getTable('VariableGlobale')->findOneByChamp('commissions')) {
-      $commissions = unserialize($option->getValue());
+      $commissions = $option->getValue();
       if (isset($commissions[$nom]) && $org = $this->findOneByNom($commissions[$nom]))
         return $org;
       $comcor = str_replace('’', '\'', $nom);

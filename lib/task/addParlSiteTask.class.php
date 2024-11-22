@@ -22,7 +22,7 @@ class addParlSiteTask extends sfBaseTask {
     $site = $arguments['site'];
     $sites = array();
     if ($parl->sites_web)
-      foreach (unserialize($parl->sites_web) as $s)
+      foreach ($parl->getSitesWeb() as $s)
         if ($site !== $s)
           $sites[] = $s;
     $sites[] = $site;
